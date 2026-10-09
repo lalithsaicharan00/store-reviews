@@ -4,6 +4,7 @@ import { CompactSign, importPKCS8 } from "jose";
 import { describe, expect, it, vi } from "vitest";
 import type { Account } from "../src/account";
 import { storeBackup } from "../src/backup";
+import { everyonePlus } from "../src/account";
 import { verifyAccessToken } from "../src/tokens";
 import intermediatePem from "./fixtures/test-intermediate.pem?raw";
 import leafKeyPem from "./fixtures/test-leaf.pk8?raw";
@@ -308,5 +309,14 @@ describe("backup on our server (accounts that don't sync)", () => {
   it("Plus accounts may back up too (a second copy beside sync)", async () => {
     const me = await testSignIn();
     expect((await upload(me.json.accessToken, backupFile())).status).toBe(201);
+  });
+});
+
+// TEMPORARY (the user, 8 Oct 2026; Current Work item 68): every person's dev account is Plus while sync is tested.
+describe("Every account is Plus (dev only, temporary)", () => {
+  it("is on for dev only while EVERYONE_PLUS is \"true\"", () => {
+    expect(everyonePlus({ ENVIRONMENT: "dev", EVERYONE_PLUS: "true" })).toBe(true);
+    expect(everyonePlus({ ENVIRONMENT: "dev", EVERYONE_PLUS: "false" })).toBe(false);
+    expect(everyonePlus({ ENVIRONMENT: "production", EVERYONE_PLUS: "true" } as never)).toBe(false);
   });
 });

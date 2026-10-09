@@ -71,6 +71,9 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         if (dao.state(ACCOUNT) == accountId) return
         dao.setState(LocalStateRecord(ACCOUNT, accountId))
         dao.setState(LocalStateRecord(CURSOR, "0"))
+        // Everything comes down the first time, this device's own earlier changes included: after a reinstall the same
+        // iPhone keeps its device ID (the Keychain survives), and the server skips a device's own ops (Current Work 72).
+        dao.setState(LocalStateRecord(FULL_PULL, "1"))
         dao.clearOutbox()
         sending = true
         for (meta in dao.allSyncMeta()) {
@@ -160,6 +163,8 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         const val CLOCK = "sync.clock"
         const val ACCOUNT = "sync.account"
         const val CURSOR = "sync.cursor"
+        /** "1" from signing in until the first full download has finished: the server sends own ops too. */
+        const val FULL_PULL = "sync.fullPull"
         const val STAMPED = "sync.stamped"
         const val LAST_SYNCED = "sync.last_synced"
 

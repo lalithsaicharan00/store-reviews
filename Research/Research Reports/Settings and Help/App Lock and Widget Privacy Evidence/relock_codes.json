@@ -1,0 +1,80 @@
+{
+  "_about": "Decision 3 (when the lock asks again), 9 Oct 2026. Hand-coded from the earlier read (read.jsonl codes RELOCK, AUTOASK, BYPASS, PEEK, ANNOY) plus a re-scan (scan_relock.py: 928 hits, 774 not read before; a tighter pass for app-lock words near timing words left 7, none about app-lock timing). Codes: EVERY_TIME_PRAISE, EVERY_TIME_ASK (wants a re-ask on every return), DIDNT_ASK (complains it opened without asking), WANT_GRACE, MIDUSE_PROMPT (asked while in use), KEEP_PLACE, AUTO_PROMPT, PEEK_ON_RESUME, FRICTION.",
+  "7830092557": [
+    "EVERY_TIME_PRAISE"
+  ],
+  "5557b8ff-6a24-48bb-8a28-45c7e0c8bfd5": [
+    "EVERY_TIME_PRAISE",
+    "PEEK_ON_RESUME"
+  ],
+  "1012921241": [
+    "EVERY_TIME_ASK"
+  ],
+  "3401141982": [
+    "EVERY_TIME_ASK"
+  ],
+  "10785016178": [
+    "EVERY_TIME_ASK"
+  ],
+  "2004605175": [
+    "DIDNT_ASK"
+  ],
+  "3674778427": [
+    "DIDNT_ASK"
+  ],
+  "1326179122": [
+    "DIDNT_ASK"
+  ],
+  "12813881333": [
+    "DIDNT_ASK"
+  ],
+  "9267360102": [
+    "DIDNT_ASK"
+  ],
+  "2179934699": [
+    "DIDNT_ASK"
+  ],
+  "8841869821": [
+    "DIDNT_ASK"
+  ],
+  "989435187": [
+    "WANT_GRACE",
+    "FRICTION"
+  ],
+  "8611987056": [
+    "MIDUSE_PROMPT"
+  ],
+  "8617159346": [
+    "MIDUSE_PROMPT"
+  ],
+  "94f4dc6f-954c-4747-8027-f6a89dd81534": [
+    "KEEP_PLACE"
+  ],
+  "10613163108": [
+    "KEEP_PLACE"
+  ],
+  "3236220997": [
+    "AUTO_PROMPT"
+  ],
+  "3399514212": [
+    "AUTO_PROMPT"
+  ],
+  "11651021316": [
+    "AUTO_PROMPT"
+  ],
+  "10766419410": [
+    "AUTO_PROMPT"
+  ],
+  "3342902073": [
+    "PEEK_ON_RESUME"
+  ],
+  "4919677921": [
+    "FRICTION"
+  ],
+  "5892033795": [
+    "KEEP_PLACE_SIGNIN_ANALOGY"
+  ],
+  "5771848072": [
+    "KEEP_PLACE"
+  ]
+}

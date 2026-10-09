@@ -74,6 +74,14 @@ final class AppModel {
         if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-widget-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
             UserDefaults(suiteName: WidgetDisk.group)?.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.widgetTiming")
         }
+        // SyncDeviceTests (Current Work 67): `-sync-old-timing on` brings back the sync timing from before item 67 (3 s,
+        // no background time), so the same build shows the old problem and the fix side by side (T12).
+        if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-sync-old-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
+            UserDefaults.standard.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.syncOldTiming")
+        }
+        if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-sync-fail"), flag + 1 < ProcessInfo.processInfo.arguments.count {
+            UserDefaults.standard.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.syncFail")
+        }
         WidgetTiming.mark("app: model init")
         // WidgetLatencyDeviceTests: the old week-long widget timelines or the new short ones, side by side (S2).
         if ProcessInfo.processInfo.arguments.contains("-widget-week-timeline") {
@@ -200,7 +208,12 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
                 await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))
             }
-            if !ProcessInfo.processInfo.arguments.contains("-empty") { await store.seedDemo() }
+            // Demo data never goes into an account: a reinstalled Debug build is still signed in (the Keychain survives
+            // deleting the app), and demo habits added before the account's data arrives would merge into it (8 Oct
+            // 2026, Current Work 72: 28 demo habits reached the user's account and had to be removed by ID).
+            // Test launches have their own in-memory database (D8): no account to protect, and no Keychain read at launch.
+            let signedIn = !ProcessInfo.processInfo.arguments.contains("-uitest") && (sync?.isSignedIn ?? false)
+            if !ProcessInfo.processInfo.arguments.contains("-empty") && !signedIn { await store.seedDemo() }
             // WidgetLatencyDeviceTests: take back exactly the widget logs its real taps made (source widget, made
             // after the test began), so measuring on the person's iPhone leaves their day as it was.
             if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-undo-widget-logs-since"),
@@ -213,7 +226,7 @@ final class AppModel {
                 }
                 await store.flush()
             }
-            if !ProcessInfo.processInfo.arguments.contains("-uitest") && !ProcessInfo.processInfo.arguments.contains("-empty") {
+            if !ProcessInfo.processInfo.arguments.contains("-uitest") && !ProcessInfo.processInfo.arguments.contains("-empty") && !signedIn {
                 await store.addEveryTypeToAnytime()
             }
             #endif
@@ -230,6 +243,14 @@ final class AppModel {
                 backup?.dataChanged()
             }
             sync?.onRemoteChanges = { [store] in store.reloadAfterSync() }
+            // A sync that failed with changes waiting (offline, the server busy): iOS retries it in the background in
+            // about 15 minutes, as well as the next time the app opens (Current Work 67).
+            sync?.onWaitingAfterFailure = { [weak self] in
+                #if DEBUG
+                WidgetTiming.mark("sync: background retry asked for in 15 min")
+                #endif
+                self?.scheduleRefresh(after: 15 * 60)
+            }
             sync?.onAccountChange = { [backup] in backup?.refresh() }
             #if DEBUG
             // End-to-end tests on GitHub Actions sign in with the run's identity token (server: POST /v1/auth/ci).
@@ -248,7 +269,10 @@ final class AppModel {
             #endif
             // Each step's time goes to the system log (`LaunchLog`), which CI saves as app.log (Current Work 11).
             var started = Date.now
-            sync?.appBecameActive()
+            // Not when iOS started the app in the background for a widget, a notification or the Live Activity: that
+            // change is sent by itself (`scheduleSoon`), and fetching other devices' changes waits for the app to open
+            // (one request per tap, not two; Current Work 67).
+            if UIApplication.shared.applicationState != .background { sync?.appBecameActive() }
             LaunchLog.took("Sync: app became active", since: started)
             Task { [backup] in
                 let started = Date.now
@@ -266,6 +290,11 @@ final class AppModel {
             started = .now
             await widgets.publish(store)
             LaunchLog.took("Widgets: publish", since: started)
+            #if DEBUG
+            await SyncCheck.deleteListedIfAsked(store: store)
+            SyncCheck.runIfAsked(store: store, sync: sync)
+            ReminderLiveTest.runIfAsked(store: store, scheduler: scheduler)
+            #endif
         }
         loading = task
         await task.value
@@ -280,6 +309,9 @@ final class AppModel {
     /// A notification's Done or +1, or an alarm's Done: the same store method a tap on Today uses,
     /// but only ever adding. Then reminders are re-planned, which clears the row's follow-ups.
     func logFromReminder(_ target: ReminderTarget, event: String? = nil) async {
+        #if DEBUG
+        WidgetTiming.mark("reminder action: logging, app \(UIApplication.shared.applicationState == .active ? "in front" : "in the background")")
+        #endif
         await ensureLoaded()
         guard let habit = store.habits.first(where: { $0.id == target.habit }) else { return }
         let token = event ?? target.event ?? "reminder.\(target.habit).\(target.time?.uuidString ?? "legacy").\(target.day.key)"
@@ -293,9 +325,15 @@ final class AppModel {
     func stopTimerFromLiveActivity(_ habitID: UUID) async {
         await ensureLoaded()
         guard let habit = store.habits.first(where: { $0.id == habitID }), store.timers[habitID] != nil else {
+            #if DEBUG
+            WidgetTiming.mark("live activity pause: no running timer for that habit (\(store.habits.contains { $0.id == habitID } ? "habit found" : "no habit"), \(store.timers.count) running)")
+            #endif
             await timerPresence.sync(store)
             return
         }
+        #if DEBUG
+        WidgetTiming.mark("live activity pause: stopping the timer")
+        #endif
         store.toggleTimer(habit)
         await store.flush()
         await timerPresence.sync(store)
@@ -407,10 +445,11 @@ final class AppModel {
 
     // MARK: Background refresh
 
-    /// Keeps the next days' reminders planned even when the app isn't opened for a while.
-    func scheduleRefresh() {
+    /// Keeps the next days' reminders planned even when the app isn't opened for a while. `after` is sooner when a
+    /// sync failed with changes still waiting (Current Work 67): iOS decides the actual time.
+    func scheduleRefresh(after: TimeInterval = 12 * 3600) {
         let request = BGAppRefreshTaskRequest(identifier: Self.refreshTaskID)
-        request.earliestBeginDate = .now.addingTimeInterval(12 * 3600)
+        request.earliestBeginDate = .now.addingTimeInterval(after)
         try? BGTaskScheduler.shared.submit(request)
     }
 
@@ -418,6 +457,8 @@ final class AppModel {
         scheduleRefresh()
         let work = Task { [self] in
             await ensureLoaded()
+            // Anything still waiting to reach the server (a sync that failed offline) goes now (Current Work 67).
+            await sync?.syncNow()
             await scheduler.reconcile(store)
             // The nightly backup, when the app wasn't opened (Backup, Sync and Accounts §4.2).
             await backup?.runIfDue()
@@ -499,8 +540,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 /// Handles taps and actions on the app's notifications.
-final class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
-    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+///
+/// On the main actor (8 Oct 2026, Current Work 70): with `nonisolated` async methods, iOS was told "finished" from a
+/// background thread and UIKit stopped the app (`NSInternalInconsistencyException` in
+/// `_performBlockAfterCATransactionCommitSynchronizes`) a moment after every reminder Done or +1, after the log was
+/// saved but before it was synced. Crash report `Habits-2026-10-08-150605.ips`.
+final class NotificationHandler: NSObject, @preconcurrency UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let action = response.actionIdentifier
         let info = response.notification.request.content.userInfo
         let target = ReminderTarget(userInfo: info)
@@ -521,7 +567,7 @@ final class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
     }
 
     /// While the app is open, reminders still show as banners.
-    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
         let request = notification.request
         guard request.identifier.hasPrefix("reminder.") else { return [.banner, .list, .sound] }
         let model = await AppModel.shared

@@ -230,7 +230,11 @@ private struct PlacementCheckView: View {
                 if let habit = store.habits.first(where: { $0.name == "Widget cut down" }),
                    store.entries(of: habit.id).filter({ $0.source == .widget }).count == 1 {
                     result = "Widget system: persisted log"
-                } else { result = "Widget system: no durable widget log · " + WidgetDisk.diagnostic }
+                } else {
+                    // Where a widget tap stopped (Current Work 66): still waiting in the shared file means the app never
+                    // saved it; nothing there and no log means the widget's intent never ran.
+                    result = "Widget system: no durable widget log · \(WidgetTaps.read().count) taps waiting in the shared file"
+                }
                 return
             }
             if arguments.contains("-appreliability") {

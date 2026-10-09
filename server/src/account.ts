@@ -47,6 +47,11 @@ export interface SyncRequest {
   ops: unknown[];
   /** Where this account's data lives (from the access token): which bucket its nightly snapshots go to. */
   jurisdiction?: Jurisdiction;
+  /**
+   * The device's first full download after signing in: its own ops come back too. A reinstalled iPhone keeps its
+   * device ID (the Keychain survives), so without this it got nothing of what it had made (Current Work 72).
+   */
+  full?: boolean;
 }
 
 /** What restoring a snapshot into an account found, per table, and whether it was applied. */
@@ -96,6 +101,11 @@ export interface AccountSummary {
   createdAt: number;
   keys: { provider: string; email: string | null; isPrivateEmail: boolean; addedAt: number }[];
   devices: { id: string; platform: string; name: string; appVersion: string; lastSeen: number; signedIn: boolean }[];
+}
+
+/** Dev only, while `EVERYONE_PLUS` is "true" (TEMPORARY, Current Work item 68). Never on production. */
+export function everyonePlus(env: Pick<Env, "ENVIRONMENT" | "EVERYONE_PLUS">): boolean {
+  return env.ENVIRONMENT === "dev" && env.EVERYONE_PLUS === "true";
 }
 
 export class Account extends DurableObject<Env> {
@@ -188,7 +198,10 @@ export class Account extends DurableObject<Env> {
   }
 
   private hasPlus(): boolean {
-    return this.sql.exec("SELECT 1 FROM purchase WHERE revoked_at IS NULL LIMIT 1").toArray().length > 0;
+    if (this.sql.exec("SELECT 1 FROM purchase WHERE revoked_at IS NULL LIMIT 1").toArray().length > 0) return true;
+    // TEMPORARY (the user, 8 Oct 2026; Current Work item 68): on dev, every person's account (an Apple or Google
+    // sign-in) is Plus. Test and CI accounts keep the Plus they asked for, so free-account tests stay free.
+    return everyonePlus(this.env) && this.sql.exec("SELECT 1 FROM sign_in_key WHERE provider IN ('apple', 'google') LIMIT 1").toArray().length > 0;
   }
 
   async entitlements(): Promise<Entitlements | null> {
@@ -251,13 +264,13 @@ export class Account extends DurableObject<Env> {
     });
     if (changed) await this.scheduleSnapshot(now, request.jurisdiction);
 
-    // Pull: scan forward from the cursor, skipping this device's own ops (it has them), and move the cursor past
-    // everything scanned so its own ops are never scanned again.
+    // Pull: scan forward from the cursor, skipping this device's own ops (it has them) unless it asks for a full
+    // download, and move the cursor past everything scanned so its own ops are never scanned again.
     const cursor = Number.isSafeInteger(request.cursor) && request.cursor > 0 ? request.cursor : 0;
     const rows = this.sql
       .exec<{ seq: number; device_id: string; op: string }>("SELECT seq, device_id, op FROM op_log WHERE seq > ? ORDER BY seq LIMIT ?", cursor, MAX_PULL)
       .toArray();
-    const ops = rows.filter((r) => r.device_id !== deviceId).map((r) => JSON.parse(r.op) as unknown);
+    const ops = rows.filter((r) => request.full === true || r.device_id !== deviceId).map((r) => JSON.parse(r.op) as unknown);
     const last = rows.at(-1);
     return { ok: true, applied, rejected, ops, cursor: last ? last.seq : cursor, more: rows.length === MAX_PULL };
   }

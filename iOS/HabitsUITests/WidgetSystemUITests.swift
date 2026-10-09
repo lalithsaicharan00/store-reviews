@@ -33,7 +33,9 @@ final class WidgetSystemUITests: XCTestCase {
         // Disarm the destructive setup arguments before any system-triggered restart.
         // A hosted intent may reuse a previously recorded launch configuration.
         app.terminate()
-        app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
+        // -widget-fixture again: the first launch can be ended before its fixture is complete; this one finishes it (it
+        // adds only what's missing, never resets).
+        app.launchArguments = ["-empty", "-widget-fixture", "-free", "-dbname", "habits"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
         // The app's background handler waits for durable writes and the shared snapshot.
@@ -64,15 +66,27 @@ final class WidgetSystemUITests: XCTestCase {
         // Check the real system gallery's complete Home catalogue, not just app-rendered views.
         let previews = [("One habit", "Small"), ("Today", "Medium"), ("Today", "Large"), ("This week", "Medium"),
                         ("Tasks", "Medium"), ("Tasks", "Large")]
+        // The gallery's own page indicator ("page 2 of 6"). A swipe it didn't take (still on page 2 of 6 in run
+        // 37774276922, on a slow hosted Mac) is made again, only while it's confirmed still on the page before: never
+        // a page skipped. Without the indicator, one swipe a page, as before.
+        func galleryPage(_ number: Int) -> XCUIElement {
+            springboard.pageIndicators.matching(NSPredicate(format: "value == %@", "page \(number) of \(previews.count)")).firstMatch
+        }
+        func swipe(to number: Int, from current: Int) {
+            for _ in 0..<3 {
+                if number > current { springboard.swipeLeft() } else { springboard.swipeRight() }
+                if galleryPage(number).waitForExistence(timeout: 3) || !galleryPage(current).exists { return }
+            }
+        }
         for (index, expected) in previews.enumerated() {
-            if index > 0 { springboard.swipeLeft() }
+            if index > 0 { swipe(to: index + 1, from: index) }
             let preview = springboard.buttons["Often Enough, " + expected.0].firstMatch
             XCTAssertTrue(preview.waitForExistence(timeout: 8), springboard.debugDescription)
             XCTAssertTrue((preview.value as? String)?.contains(expected.1) == true, springboard.debugDescription)
             save(springboard, "home-gallery-\(index)-\(expected.1)")
         }
         // Back from the sixth page to the medium Today page, and install it.
-        for _ in 0..<4 { springboard.swipeRight() }
+        for page in stride(from: previews.count, to: 2, by: -1) { swipe(to: page - 1, from: page) }
         XCTAssertTrue((springboard.buttons["Often Enough, Today"].firstMatch.value as? String)?.contains("Medium") == true)
         let confirm = springboard.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add Widget")).firstMatch
         guard confirm.waitForExistence(timeout: 5) else {
@@ -86,17 +100,32 @@ final class WidgetSystemUITests: XCTestCase {
         // Today's first card is Quit or Cut Down: the limit's +1 logs where it is (a cold intent, written first).
         let add = springboard.buttons["Add 1 to Widget cut down"]
         XCTAssertTrue(add.waitForExistence(timeout: 15), springboard.debugDescription)
-        add.tap()
+        // The card's switch covers the whole row, but only its round button takes the touch; the row's middle opens Day
+        // details (locked W2). So tap the +1 where it is, at the row's right edge (locked doc §6, as
+        // WidgetLatencyDeviceTests does). A plain tap() hit the middle and opened the app (run 37763470033, 8 Oct 2026).
+        let plus = springboard.coordinate(withNormalizedOffset: .zero)
+            .withOffset(CGVector(dx: add.frame.maxX - 22, dy: add.frame.midY))
+        plus.tap()
         let logged = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "1 of 3 cups")).firstMatch
+        // iOS flips the card the moment a touch reaches its switch (locked W2). On the hosted simulator, the first touch on
+        // the just-installed widget was once not taken at all: no flip, no intent, no tap waiting, no app launch (run
+        // 37778952272; the same tap logged in 37769869356). Only when nothing changed, tap once more. A second log would
+        // still fail the check at the end, which wants exactly one widget log in the database.
+        if !logged.waitForExistence(timeout: 8), springboard.staticTexts["0 of 3 cups · Daily limit"].exists {
+            save(springboard, "home-widget-touch-not-taken")
+            print("Widget system: the first touch wasn't taken (no flip in 8 s); tapping once more")
+            plus.tap()
+        }
         if !logged.waitForExistence(timeout: 30) {
             // One line (CI keeps a failure's first line): what the widget shows, and how far the intent got in the app.
             let shown = Self.labels(in: springboard)
+            let opened = app.state == .runningForeground ? " The tap opened the app." : ""
             save(springboard, "home-widget-log-missing")
             app.launchArguments = ["-empty", "-free", "-dbname", "habits", "-widget-system-verify"]
             app.launch()
             let result = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Widget system")).firstMatch
             _ = result.waitForExistence(timeout: 15)
-            XCTFail("The widget didn't show the committed log. Widget: \(shown). App: \(result.exists ? result.label : "no result")")
+            XCTFail("The widget didn't show the committed log.\(opened) Widget: \(shown). App: \(result.exists ? result.label : "no result")")
             return
         }
         save(springboard, "home-widget-after-cold-log")

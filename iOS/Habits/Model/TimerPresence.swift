@@ -136,6 +136,9 @@ final class TimerPresence {
         for activity in activities where !shown || wanted[activity.attributes.habitID] == nil {
             await activity.end(nil, dismissalPolicy: .immediate)
         }
+        #if DEBUG
+        WidgetTiming.mark("live activity: \(running.count) timer(s) running, \(activities.count) activit(ies), shown \(shown), allowed \(ActivityAuthorizationInfo().areActivitiesEnabled)")
+        #endif
         guard shown, ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         for timer in running {
             let content = ActivityContent(state: timer.state, staleDate: nil)
@@ -149,7 +152,16 @@ final class TimerPresence {
                     await live.update(content)
                 }
             } else {
+                #if DEBUG
+                do {
+                    _ = try Activity.request(attributes: timer.attributes, content: content, pushType: nil)
+                    WidgetTiming.mark("live activity: started")
+                } catch {
+                    WidgetTiming.mark("live activity: couldn't start (\(error))")
+                }
+                #else
                 _ = try? Activity.request(attributes: timer.attributes, content: content, pushType: nil)
+                #endif
             }
         }
     }

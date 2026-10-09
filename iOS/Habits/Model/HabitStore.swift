@@ -1789,7 +1789,12 @@ final class HabitStore {
     /// Re-reads everything after sync merged in other devices' changes. It waits its turn behind local changes,
     /// so a change being saved right now is neither lost nor shown twice.
     func reloadAfterSync() {
-        perform { [self] _ in await load() }
+        perform { [self] _ in
+            await load()
+            // A tap made while reloading is on screen but not yet written (a ▶, a +1); the reload may have hidden it.
+            // Reload again after its write, as after a failed one.
+            if pendingWrites > 1 { reloadWhenWritten = true }
+        }
     }
 
     func add(_ habit: Habit, suggestion: Bool = false) {
@@ -2546,6 +2551,12 @@ final class HabitStore {
             reminders: habits.flatMap { $0.reminderRecords() },
             entries: entries.map(\.record),
             settings: [])
+        // Nothing shows until it's saved and read back. Shown first, a tap on a demo row before the reload below (a test's
+        // ▶ as Today first appeared) started the timer on screen, and the reload took it away before its own save
+        // (TimerUITests.testScreenCanBeTurnedOff, run 37763470033, 8 Oct 2026).
+        habits = []
+        entries = []
+        entriesReplaced()
         do { try await repository.importAll(snapshot: snapshot) } catch { problem = "Demo data couldn't be saved." }
         await load()
         let arguments = ProcessInfo.processInfo.arguments

@@ -1,5 +1,8 @@
 # Often Enough API
 
+> **TEMPORARY on dev (8 Oct 2026): every account is Plus** (`EVERYONE_PLUS` in `wrangler.jsonc`, `everyonePlus` in
+> `src/account.ts`), so sync can be tested before buying Plus is built. Revert: Current Work Checklist item 68.
+
 > **Picking this up?** Start with [Architecture/Server, Sync and Launch — Status.md](<../Architecture/Server, Sync and Launch — Status.md>): what's next, in order.
 
 The server for accounts: a Cloudflare Worker, one Durable Object per account, a small D1 directory, and R2 for the

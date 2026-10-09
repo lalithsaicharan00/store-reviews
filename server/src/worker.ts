@@ -389,12 +389,12 @@ async function sync(request: Request, env: Env): Promise<Response> {
   const claims = await authenticate(request, env);
   if (!claims.plus) throw new HttpError(403, "plus_required", "Sync is part of Plus. Your habits stay on this device and in your backup.");
   await limit(env.SYNC_LIMIT, claims.accountId);
-  const body = await readJson<{ cursor?: unknown; ops?: unknown }>(request, 2 * 1024 * 1024);
+  const body = await readJson<{ cursor?: unknown; ops?: unknown; full?: unknown }>(request, 2 * 1024 * 1024);
   const ops = body.ops ?? [];
   if (!Array.isArray(ops)) throw new HttpError(400, "bad_request", '"ops" must be a list.');
   if (ops.length > MAX_PUSH) throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
   const cursor = typeof body.cursor === "number" ? body.cursor : 0;
-  const result = await accountStub(env, claims).sync(claims.deviceId, { cursor, ops, jurisdiction: claims.jurisdiction });
+  const result = await accountStub(env, claims).sync(claims.deviceId, { cursor, ops, jurisdiction: claims.jurisdiction, full: body.full === true });
   if (!result.ok) {
     if (result.reason === "too_many_ops") throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
     throw signedOut();

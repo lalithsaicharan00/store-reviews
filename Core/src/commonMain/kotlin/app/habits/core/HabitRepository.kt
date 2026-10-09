@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
@@ -219,7 +220,9 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     suspend fun syncRequest(maxOps: Int = 500): String = offMain {
         val cursor = dao.state(SyncWriter.CURSOR)?.toLongOrNull() ?: 0
         val ops = dao.outbox(maxOps).map { Json.parseToJsonElement(it.op) }
-        JsonObject(mapOf("cursor" to JsonPrimitive(cursor), "ops" to JsonArray(ops))).toString()
+        val request = mutableMapOf<String, JsonElement>("cursor" to JsonPrimitive(cursor), "ops" to JsonArray(ops))
+        if (dao.state(SyncWriter.FULL_PULL) == "1") request["full"] = JsonPrimitive(true)
+        JsonObject(request).toString()
     }
 
     /**
@@ -245,6 +248,8 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             rejected.forEach { (id, problem) -> dao.markOutboxProblem(id, problem) }
             ops.filter { SyncRules.problem(it) == null }.forEach { sync.receive(it) }
             dao.setState(LocalStateRecord(SyncWriter.CURSOR, cursor.toString()))
+            // The last page of the first full download has arrived: from now on, own ops are skipped again.
+            if (!more) dao.setState(LocalStateRecord(SyncWriter.FULL_PULL, "0"))
             dao.setState(LocalStateRecord(SyncWriter.LAST_SYNCED, now.toString()))
             more || dao.outboxCount() > 0
         }

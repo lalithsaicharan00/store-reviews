@@ -136,6 +136,9 @@ nonisolated struct HabitAlarmData: AlarmMetadata {
 struct MarkHabitDoneIntent: LiveActivityIntent {
     static let title: LocalizedStringResource = "Mark Habit Done"
     static let isDiscoverable = false
+    /// An alarm mostly rings on a locked phone: Done works there without unlocking (8 Oct 2026, Current Work 70), as
+    /// the Live Activity's Pause and every widget button do. Without it iOS asked for Face ID first.
+    static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
 
     @Parameter(title: "Habit") var habit: String
     @Parameter(title: "Time") var time: String?
@@ -155,6 +158,9 @@ struct MarkHabitDoneIntent: LiveActivityIntent {
     }
 
     func perform() async throws -> some IntentResult {
+        #if DEBUG
+        WidgetTiming.mark("alarm done: intent ran")
+        #endif
         if let id = UUID(uuidString: habit), let day = LocalDay(key: day) {
             await AppModel.shared.logFromReminder(ReminderTarget(habit: id, time: time.flatMap(UUID.init(uuidString:)), day: day, slot: slot, section: nil, signature: signature, event: event))
         }

@@ -60,7 +60,8 @@ Tap on a ✓ or + (only the round button takes the touch)
         → HabitStore.logFromWidget (database) → flush
         → taps removed from widget-taps.json only after they're saved
         → widgets republished from the database (`publish(hold: true)`), reminders re-planned
-        → sync and backup follow from the store's normal change path
+        → sync: the store's change asks `SyncService.scheduleSoon`, which keeps the app running in the background
+          (`beginBackgroundTask`) until the server has it, 2 s after the last tap (W18)
 ```
 
 The app also runs `saveWidgetTaps` when it starts (`ensureLoaded`) and every time it comes back to the front
@@ -86,6 +87,7 @@ The app also runs `saveWidgetTaps` when it starts (`ensureLoaded`) and every tim
 | W14 | **A week or month goal fills toward its period** (row and card), as Today's row. | §1; supersedes nothing the user ever said. |
 | W15 | **Check habits keep their ✓** (`.add where item.type == "check"` draws a ✓ that adds one check). | Current Work 64. |
 | W16 | **VoiceOver:** each card's switch is one button named for what it does ("Add 1 to Water", "Mark Meds done") with the card's state as its value; not "switch, off". | The switch would otherwise read as a toggle; tests and VoiceOver look for buttons. |
+| W18 | **A tap reaches the server without the app being opened** (8 Oct 2026, the user's go-ahead; Current Work 67). The change asks for a sync (`SyncService.scheduleSoon`), which holds `beginBackgroundTask` until the server has it: 2 s after the last change in the background (a quick run of taps is one request), 3 s in front, never more than 10 s; no request when nothing is waiting; one sync at a time; no launch pull when iOS starts the app in the background. A failed sync keeps the change in the outbox and asks for a background refresh (~15 min), which syncs. **Nothing here waits in an intent:** the visual side (W1–W17) is untouched. | Measured on the iPhone: before, five widget taps with the app already started were saved but never sent (iOS suspended the app inside the 3 s wait); after, one request with all five ~2 s after the last, the app never in front; the widget still shows each + at 0.3 s (PERFORMANCE-LESSONS L25). |
 | W17 | **Snapshot writes are coordinated** (`NSFileCoordinator`) in both the app (`WidgetDisk.write`) and the widget (`applyTap`). | Both write the same file within milliseconds of each other. |
 
 ### Known, accepted limits
@@ -153,7 +155,7 @@ launches write their demo habits into the widgets' file (a known D8 gap, tracked
 
 ## 7. Change policy
 
-- Locked: W1–W17. Ask the user before changing any of them, and say which.
+- Locked: W1–W18. Ask the user before changing any of them, and say which.
 - Code that implements them carries a comment starting `LOCKED (widget taps, 8 Oct 2026)` pointing here.
 - Adding a new widget kind or action: follow §2 (switch over the card, `after` from the app, `WidgetTapIntent` →
   `WidgetSaveIntent`, idempotent saving), then run the §6 checks and hand it to the user.

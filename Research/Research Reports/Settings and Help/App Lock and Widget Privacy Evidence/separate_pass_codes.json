@@ -1,0 +1,330 @@
+{
+ "screened": 164,
+ "read": "all 164 read in full",
+ "codes": {
+  "22": {
+   "codes": "SEPARATE",
+   "review_id": "8229153542",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5
+  },
+  "23": {
+   "codes": "SEPARATE WHY_OTHERS",
+   "review_id": "8103285120",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 4
+  },
+  "98": {
+   "codes": "SEPARATE",
+   "review_id": "10230392220",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "110": {
+   "codes": "SEPARATE WHY_OTHERS",
+   "review_id": "13517894671",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "119": {
+   "codes": "SEPARATE",
+   "review_id": "11453642691",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "121": {
+   "codes": "SEPARATE LIKE",
+   "review_id": "11163066888",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "123": {
+   "codes": "SEPARATE GRANULAR WHY_OTHERS",
+   "review_id": "10432412489",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "149": {
+   "codes": "SEPARATE WHY_OTHERS",
+   "review_id": "12170737214",
+   "app": "7. Google Keep - Notes and lists",
+   "rating": 3
+  },
+  "154": {
+   "codes": "SEPARATE GRANULAR",
+   "review_id": "2267913550",
+   "app": "7. Google Keep - Notes and lists",
+   "rating": 3
+  },
+  "82": {
+   "codes": "HINT_LEAK",
+   "review_id": "14412740926",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "83": {
+   "codes": "ASK_APPLEID",
+   "review_id": "10241028490",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "128": {
+   "codes": "ASK_PHONECODE",
+   "review_id": "9717305128",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "137": {
+   "codes": "ASK_BIO ASK_PHONECODE",
+   "review_id": "8067167658",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "109": {
+   "codes": "ASK_BIO",
+   "review_id": "13688226697",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "57": {
+   "codes": "ACCIDENT",
+   "review_id": "0f9d83e0-3e5d-469f-b62a-c6e85dc5e47f",
+   "app": "3. Loop Habit Tracker",
+   "rating": 5
+  },
+  "147": {
+   "codes": "SYSTEMCODE",
+   "review_id": "7961484659",
+   "app": "7. Google Keep - Notes and lists",
+   "rating": 4
+  },
+  "88": {
+   "codes": "LOCKOUT",
+   "review_id": "8953033055",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "89": {
+   "codes": "LOCKOUT",
+   "review_id": "12511293642",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "90": {
+   "codes": "LOCKOUT",
+   "review_id": "11576739144",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "91": {
+   "codes": "LOCKOUT",
+   "review_id": "10501005606",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "92": {
+   "codes": "LOCKOUT",
+   "review_id": "9190165422",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "93": {
+   "codes": "LOCKOUT",
+   "review_id": "7837547703",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "95": {
+   "codes": "LOCKOUT",
+   "review_id": "10214395985",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "96": {
+   "codes": "LOCKOUT",
+   "review_id": "8359383929",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "97": {
+   "codes": "LOCKOUT",
+   "review_id": "7970421900",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "99": {
+   "codes": "LOCKOUT",
+   "review_id": "9471629910",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "101": {
+   "codes": "LOCKOUT",
+   "review_id": "13837364192",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "102": {
+   "codes": "LOCKOUT",
+   "review_id": "13167769767",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "103": {
+   "codes": "LOCKOUT",
+   "review_id": "12014663952",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "104": {
+   "codes": "LOCKOUT",
+   "review_id": "10317128165",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "105": {
+   "codes": "LOCKOUT",
+   "review_id": "10067978455",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "106": {
+   "codes": "LOCKOUT",
+   "review_id": "12651923725",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 2
+  },
+  "107": {
+   "codes": "LOCKOUT",
+   "review_id": "14442952246",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "108": {
+   "codes": "LOCKOUT",
+   "review_id": "14226861565",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "111": {
+   "codes": "LOCKOUT",
+   "review_id": "13480149109",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "112": {
+   "codes": "LOCKOUT",
+   "review_id": "13142352289",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "114": {
+   "codes": "LOCKOUT",
+   "review_id": "12404963898",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "116": {
+   "codes": "LOCKOUT",
+   "review_id": "11771560572",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "117": {
+   "codes": "LOCKOUT",
+   "review_id": "11558421440",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 4
+  },
+  "118": {
+   "codes": "LOCKOUT",
+   "review_id": "11464674295",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 5
+  },
+  "120": {
+   "codes": "LOCKOUT",
+   "review_id": "11309204108",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "122": {
+   "codes": "LOCKOUT",
+   "review_id": "11009440592",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 2
+  },
+  "125": {
+   "codes": "LOCKOUT",
+   "review_id": "10276006731",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "126": {
+   "codes": "LOCKOUT",
+   "review_id": "10124018992",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "127": {
+   "codes": "LOCKOUT",
+   "review_id": "9886573992",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "129": {
+   "codes": "LOCKOUT",
+   "review_id": "9597852349",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 2
+  },
+  "130": {
+   "codes": "LOCKOUT",
+   "review_id": "9097426502",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 2
+  },
+  "132": {
+   "codes": "LOCKOUT",
+   "review_id": "9049230715",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "134": {
+   "codes": "LOCKOUT",
+   "review_id": "8463303627",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "135": {
+   "codes": "LOCKOUT",
+   "review_id": "8362663199",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 2
+  },
+  "136": {
+   "codes": "LOCKOUT",
+   "review_id": "8305813164",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 3
+  },
+  "138": {
+   "codes": "LOCKOUT",
+   "review_id": "8023758452",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "140": {
+   "codes": "LOCKOUT",
+   "review_id": "7936856616",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  },
+  "142": {
+   "codes": "LOCKOUT",
+   "review_id": "9765452973",
+   "app": "3. Notes - Take note of almost anything",
+   "rating": 1
+  }
+ }
+}

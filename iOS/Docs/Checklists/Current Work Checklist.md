@@ -18,8 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 75; 67–73 are on the other agent's
-  `sync-outside-app` / `sync-reliability-cloud` branches, 8 Oct 2026).
+  still resolve; give new items the next unused number (currently 75).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -284,6 +283,15 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     Design Rules and `LOCKED` comments in the code.
   - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`, `TodayUITests`, `TimerUITests`; the in-app
     widget checks. Expect label changes for T3: a card is one button named for its action, with the state as its value.
+    **Found 8 Oct by item 67's runs:** `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` fails on `main`
+    (run 37746030895): "The widget didn't show the committed log. Widget: . App: … intent not dispatched". The test
+    still reads the older `WidgetLogIntent` diagnostics and the shown labels came back empty; `WidgetUITests` (6/6)
+    and the other widget tests passed.
+    **Fixed 8 Oct (cloud session, test only; no widget behaviour changed):** it tapped the row's middle, which opens Day
+    details (locked W2), now the +1 by position; its fixture could be left without its "sample set added" mark, so the
+    cold save added the Debug samples; a gallery swipe the hosted simulator didn't take is made again once confirmed
+    not taken; a first touch the simulator didn't deliver is tapped once more (exactly one log is still required).
+    `WidgetSystemUITests` and `WidgetUITests` passed in run 37784250768 (`27ce48c`); `TodayUITests` wasn't in that run.
   - Research for the user's question "do people expect widgets to respond instantly?": our widget study (7,818 coded
     reviews) has ticking from the widget among the most valued themes (695 reviews, 97 apps in the 30 Sep scan) and
     broken or not-updating widgets at 15.7% of widget reviews (3.27★). Speed scan (8 Oct): 431 keyword candidates
@@ -291,7 +299,205 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     tapping a widget and seeing it change, 18 more call widgets slow or delayed, 42 say taps stopped responding, 6 that a
     tap opened the app instead; 8 praise instant ticking (`Research/Temp/widget-speed/classification.py`).
 
+- **Hand-over, 8 Oct 2026 evening (the user: "create a new branch and push everything … we will run it in the
+  cloud"):** items 67–72 are on branch `sync-reliability-cloud` (same commits as `sync-outside-app`). Still to do,
+  from the cloud: (1) the final `[ios-ci] [ios-sync]` run on this branch (the evening runs were cancelled by the user);
+  (2) `TimerUITests.testScreenCanBeTurnedOff` failed once in run 37763470033 ("Stop Read timer" didn't appear within
+  3 s) after passing twice: rerun once (T2), and if it fails again find the cause; (3)
+  `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` fails on `main` too (item 66); (4) the user's first
+  nightly server snapshot, due 9 Oct 02:00 UTC in R2 `often-enough-backups-dev` under `snapshots/<account>/` (needs
+  Cloudflare access); (5) merge into `main` only after the tests pass and the user says so (W3). iPhone checks can't
+  run in the cloud.
+  - **Cloud session, 8 Oct 2026 (Claude):** (2) is a real race, not a flake (T2). The failing build (`3e7f758`) had no
+    Keychain read at launch (that came in `1575150`), so that suspect is cleared. The failure screenshot shows Read
+    still on ▶ after the tap: `seedDemo` showed the demo rows before saving them, then reloaded; a ▶ in that window
+    started the timer on screen and the reload took it away before its own save. Fixed (`3c24675`): nothing shows until
+    it's saved. The same gap in the app proper, fixed too: a tap made while a sync reload runs is reloaded again after
+    its own write (`reloadAfterSync`, Rulebook S7). (3) was the test: the card's switch covers the row but only the
+    round button takes the touch (locked W2), and `tap()` hit the row's middle, which opened Day details (the failure
+    screenshot: the app on "Widget cut down", 0 cups). The test now taps the +1 by position (locked doc §6); no widget
+    behaviour changed. `-widget-system-verify` now says how many taps wait in the shared file instead of the retired
+    `WidgetLogIntent` diagnostic. CI: run 37767538992 died before any test in "Pick a simulator" (Apple's first-boot
+    data migration, 8.2 min against the step's 8; it took 2–5 min on 7 Oct and up to 7.8 this morning); the step now
+    has 15. (4) This session can read R2 (`often-enough-backups-dev`: the 7 Oct snapshot of another account is there);
+    a check is set for 9 Oct 02:20 UTC. Test run: 37769869356 (`8ea0d9d`).
+
+- [x] **67. A change made outside the app reaches the server as soon as possible, without opening the app.** Added 8
+  October 2026, from the user: "once someone completes a widget, it should store that data on this device, and later
+  sync it to the server … as soon as possible." The user approved changing the widgets' sync timing (U28).
+  - **Found (Claude, 8 Oct, from the code):** a widget tap is saved on the phone reliably (`WidgetTapIntent` →
+    `widget-taps.json` → `WidgetSaveIntent` → `AppModel.saveWidgetTaps` → database). Sync is only *scheduled*:
+    `SyncService.scheduleSoon()` waits 3 s, and nothing asks iOS for background time, so iOS can suspend the app
+    before it sends; the change then waits in the outbox until the app is next opened. The same gap: a notification's
+    Done/+1, the Live Activity's Pause, the widget timer, and an in-app log made just before leaving the app. The
+    12-hourly background refresh doesn't sync. Only Plus syncs.
+  - **Agreed approach:** in `SyncService`, send at once when the app isn't in front (3 s quiet only while it is), and
+    hold a `beginBackgroundTask` from scheduling until the sync finishes (or fails; the outbox keeps it). No intent
+    waits for the network; the widget stays exactly as fast (W1–W17 unchanged). Locked doc gets a W18.
+  - **The user's points, 8 Oct (branch `sync-outside-app`; "test it thoroughly, for a production system"):**
+    - [x] In the app: a tick reaches the server's database.
+    - [x] Widgets, the most important: a tick on a Home Screen or Lock Screen widget reaches the app and then the
+      server, without the app being opened.
+    - [x] Nothing is ever lost for a Plus user: every change reaches the server.
+    - [x] Not a request per tap: a run of taps is sent together, production-style, so nobody can run into (or abuse)
+      the server's limits (`SYNC_LIMIT`, 60 a minute per account).
+    - [ ] Nightly backups work (Plus: the server's 02:00 UTC snapshot of a changed account; Architecture 06 §9).
+    - [x] The widgets look and respond exactly as before: their visual feedback (the switches) isn't changed or
+      slowed ("people don't care how it works in the background, but it should be reliable").
+  - [x] Built 8 Oct 2026 (Claude, branch `sync-outside-app`): `SyncService` holds `beginBackgroundTask` until the
+    server has a change; 2 s of quiet in the background, 3 s in front, at most 10 s; no empty requests; one sync at a
+    time; no launch pull for a background launch; a failed sync asks for a background refresh (~15 min), which syncs.
+    Debug: sync marks in the timing log, `-sync-verify`, `-sync-old-timing`, `-sync-fail`, `SyncDeviceTests`.
+  - [x] On the iPhone, 8 Oct (dev server logs + the phone's log; PERFORMANCE-LESSONS L25). Old timing: five widget
+    taps saved, never sent. New: a widget tap → one request ~3 s later; five quick taps → one request with 5; ten quick
+    in-app taps → one with 10; tap then Home → sent within ~1 s; widget timer ▶/⏸ → sent ~2 s later; Lock Screen widget
+    taps (phone locked) → one request with both, 3 s later; with sync failing, six taps waited and all went once it
+    worked; `-sync-verify` MATCH every time (final: 711/711 logs, 30/30 habits, 0 waiting, 0 kept aside).
+  - [x] Widget visuals unchanged: `testQuickPlusAndTimer` Water 58 → 59 → 60 → 61 at 0.3 s, ▶ → ⏸ at 0.3 s.
+    (`testWholeCardChangesAtOnce` couldn't start: Meds was already ticked today.)
+  - [x] **Bug found and fixed: the Live Activity's Pause didn't work on the Lock Screen.** `StopTimerIntent` had no
+    `authenticationPolicy`, so iOS asked for Face ID and then opened the app on the timer instead of pausing. Now
+    `.alwaysAllowed`, like every widget button. The user's check, 8 Oct 13:01: Pause stopped the timer without
+    unlocking, and the session reached the server 2 s later.
+  - **Found, not changed (locked, W7):** on the Lock Screen *widget*, ⏸ asks for Face ID before pausing (then pauses
+    and syncs). Ticking on the Lock Screen widget needs no unlock (it runs in the widget's process); timer intents run
+    in the app's process. Ask the user before touching it.
+  - [x] A notification's Done/+1 on the iPhone: same path (`logFromReminder` → store change → `scheduleSoon`). Seen
+    with item 70: each tap reached the server ~2.5 s later once the crash was fixed; the user's locked-phone check
+    (15:32–15:35) synced 2 s later.
+  - [ ] Nightly backup: the user's account changed today, so its first snapshot is due 9 Oct 02:00 UTC (07:30 IST) in
+    `often-enough-backups-dev` under `snapshots/<account>/`. The mechanism wrote one on 7 Oct 02:00 UTC. The cloud
+    session can read the bucket (8 Oct) and checks it at 9 Oct 02:20 UTC; recorded under item 71.
+  - [x] Tests on GitHub (T7/T10), `[ios-ci] [ios-sync]` (SyncUITests, BackupUITests, WidgetUITests,
+    WidgetSystemUITests, TimerUITests). Run 37742196989 (`4b98582`): 39 passed, 3 failed; one was ours
+    (`BackupUITests.testAFreeAccountBacksUpToTheServer`: dev's every-account-Plus switch made the test's free account
+    Plus; narrowed to Apple/Google sign-ins, item 68). Final run 37746011302 (`893c622`): 20 passed, 1 skipped, 1 failed:
+    `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` ("intent not dispatched"), which **fails the same
+    way on `main`** (run 37746030895 on `98fa746` = `main` + an empty commit; T2). Not from this item: it belongs to
+    item 66's GitHub tests.
+  - [x] **Final, from the cloud (8 Oct):** run 37784250768 (`27ce48c`): Core storage and migrations, build, and every UI test
+    passed (26 passed, 0 failed, 1 skipped: `testLockScreenWidgetPickerAvailability`, the hosted simulator's Lock
+    Screen gallery, skipped in every run): SyncUITests, BackupUITests (8), WidgetUITests (6), WidgetSystemUITests,
+    TimerUITests (5, `testScreenCanBeTurnedOff` included), RemindersUITests (4), PlacementUITests. Server: `npm test`
+    139/139, typecheck clean. Speed run for the `HabitStore` change (S2): run 37788586127 (`91a6260`) passed; no change from this branch: a signed-out tap does the same work as on `main` (`scheduleSoon` returns when not Plus), and its numbers sit inside `main`'s own spread measured the same day (+1 alone 18.1 ms/s here, 5.8 and 25.2 on `main` in run 37774018835; day ‹ › 128 here, 68–79 there; +1 and day ‹ › 72 here, 124 there). The slower +1 since 4 Oct is `main`'s, under item 49's bisect.
+
+- [ ] **68. REVERT LATER: every account on the dev server is Plus.** Added 8 October 2026, from the user: "make every
+  account Plus, as of now … note it down somewhere safe that we need to revert it back later … first, syncing is
+  important." Done by Claude the same day and deployed to dev (version `49c6052a`).
+  - **What:** `EVERYONE_PLUS: "true"` in `server/wrangler.jsonc` (dev vars only); `everyonePlus` in `server/src/account.ts`
+    makes every account with an Apple or Google sign-in Plus on dev (test and CI sign-ins keep the Plus they ask for, so free-account tests stay free: `BackupUITests.testAFreeAccountBacksUpToTheServer` failed in run 37742196989 until this was narrowed, 8 Oct). Production has `"false"` and the code
+    ignores it there anyway. No purchase is written into any account, so nothing has to be cleaned up.
+  - **Why:** buying Plus isn't built yet (Product Roadmap 64), and sync must be tested end to end now (item 67).
+  - **To revert:** set `EVERYONE_PLUS` to `"false"` in `server/wrangler.jsonc`, `npm run deploy:dev`; accounts go
+    back to their real purchases at their next sign-in or token refresh (access tokens last minutes). Then remove
+    `everyonePlus` and its test once buying Plus works. **Revert before buying Plus (Roadmap 64) is tested**, or
+    a broken purchase would look like it works.
+
+- [x] **69. Lock Screen timers: pause without unlocking.** Added 8 October 2026, from the user's Lock Screen checks for
+  item 67 ("if users expect it to work, then it should be that way").
+  - Users show they want to pause a timer from the Lock Screen and the Dynamic Island (5 reviews; ≈41 want the timer
+    there; report "Timers — What People Expect When They Tap ▶"); the iPhone's Clock timer pauses there without
+    unlocking.
+  - [x] **The Live Activity's Pause didn't work locked:** `StopTimerIntent` had no `authenticationPolicy`, so iOS asked
+    for Face ID, then opened the app on the timer. Now `.alwaysAllowed`. The user, 8 Oct 13:01: Pause stopped the timer
+    without unlocking; the session reached the server 2 s later.
+  - [x] **The Lock Screen widget's ▶/⏸ asks for Face ID** (then works and syncs). Tried 8 Oct: running the tap in the
+    widget's process and handing over (as ✓ does) made iOS refuse to start the Live Activity ("couldn't start
+    (visibility)": only an intent run directly in the app may start one) and the button flicked back to ▶ at 0.3 s.
+    Reverted the same day; the widget timer is exactly as approved (W7; checked: ⏸ at 0.3 s, Live Activity started).
+    The no-unlock way to pause on the Lock Screen is the Live Activity's Pause. Leave the widget as it is unless iOS
+    changes.
+  - [x] Tests on GitHub (with item 70's run): TimerUITests 5/5 in run 37784250768 (`27ce48c`).
+
+- [x] **70. Reminders, alarms and "Remind again" work reliably, on the iPhone.** Added 8 October 2026, from the user:
+  "reminders are also important … alarms … for reliability, alarms should be full screen … if not done, remind me
+  again … they all should work reliably. Test it thoroughly on the iPhone." Also: is logging from a long-press on the
+  notification what people expect? Yes: users want to complete from the notification without opening the app (Feature
+  Ledger C252, Strong, 7 apps); iOS shows a notification's buttons only on a long-press (or swipe → View).
+  - Debug kit: `-reminder-live <name> <check|amount> <notification|alarm> <minutes ahead> <remind-again min>`,
+    `-reminder-live-status`, `-reminder-live-cleanup` (`ReminderLiveTest`); `ReminderDeviceTests` waits on the Home
+    Screen for the real banners and alarms and taps their buttons (`REMINDER_PLAN`).
+  - [x] **Bug found and fixed: every reminder Done/+1 crashed the app** a moment after saving (since 28 Sep):
+    `NotificationHandler`'s `nonisolated` async methods told iOS "finished" from a background thread and UIKit stopped
+    the app (crash reports 14:54, 14:58, 14:59, 15:06; `NSInternalInconsistencyException` in
+    `_performBlockAfterCATransactionCommitSynchronizes`). The log was saved but the sync was cut off, so the change
+    waited until the app was opened. Now on the main actor; no crash since, and each tap reached the server ~2.5 s later.
+  - [x] **Alarm Done on a locked phone:** `MarkHabitDoneIntent` had no `authenticationPolicy` (the same gap as the
+    Live Activity's Pause); now `.alwaysAllowed`.
+  - [x] On the iPhone, 8 Oct (Claude's tests, unlocked): reminders arrive on the minute (14:57:00, 14:58:00…); "Not done
+    yet" repeats every interval while not done (an amount at 1 of 3 kept repeating); Done on a repeat stops the rest;
+    +1 glass adds one; done habits' notifications are cleared from Notification Center. Alarm (unlocked): rang at
+    15:13:00 in the Dynamic Island with ✓ and ✕; ✓ logged and synced 2 s later; the 15:15 repeat didn't ring.
+  - [x] The user, phone locked, 8 Oct 15:32–15:35: the alarm rang full screen; Done logged without Face ID and synced;
+    the notification's Done logged and synced 2 s later; the user's own task alarm Done synced too.
+  - **Full screen:** iOS shows an alarm full screen on a locked phone and in the Dynamic Island while the phone is in use,
+    as the Clock app's alarms do; apps can't change it.
+  - [x] Tests on GitHub: `[ios-ci] [ios-sync]` now adds RemindersUITests and PlacementUITests (which runs the
+    reminder planning checks): 4/4 and 1/1 in run 37784250768 (`27ce48c`).
+
+- [ ] **71. VERY IMPORTANT, PENDING: test sync end to end on a second real device.** Added 8 October 2026, from the user:
+  "in the main, as in very important thing, syncing … on one iPhone, you have tested it. In the other iPhone, like in
+  other devices, we have to test it. So it is pending." Waiting for a second device (none available on 8 Oct).
+  - GitHub (8 Oct): SyncUITests (two simulated phones, the real dev server) passed in run 37784250768 (`27ce48c`). Still open:
+    the second real device below.
+  - **Proven so far (8 Oct, items 67–70):** on the user's iPhone 16, every way of logging (app, Home Screen and Lock
+    Screen widgets, timers, the Live Activity's Pause, reminder and alarm buttons) reaches the dev server within seconds
+    without opening the app; failed syncs wait and go later; the account's export matched the phone exactly (720/720
+    logs, 31/31 habits). Server → another device is proven only on GitHub's simulators (`SyncUITests.
+    testChangesTravelBetweenThisPhoneAndAnotherDevice`, two simulated phones, one test account, the real dev server).
+  - **To do on a second iPhone or iPad** (Debug build, the same Apple ID, Plus on dev, item 68):
+    - [ ] Sign in on the second device: everything from the first appears (habits, logs, notes, order, settings).
+    - [ ] Log on the first (app, widget, reminder) → it appears on the second, with the app open and from closed.
+    - [ ] Log on the second → it appears on the first, and the first's widgets update.
+    - [ ] The same habit changed on both while one is offline → both end the same, nothing lost (merge rules, D3).
+    - [ ] Done on one device clears that habit's reminders and alarms on the other ("done means gone everywhere").
+    - [ ] Delete and archive on one → the same on the other; undo works.
+    - [ ] `-sync-verify` on both devices: each matches the server.
+  - **Also pending, one device:** the nightly server snapshot of the user's account (due 9 Oct 02:00 UTC,
+    `snapshots/<account>/` in `often-enough-backups-dev`). Reinstall-and-restore: done, item 72.
+  - **Later (the user, 8 Oct):** the app is iPhone-only for now; Android, Mac and desktop come after the iPhone app is
+    complete, and sync is tested across all of them then.
+
+- [x] **72. A reinstalled iPhone got none of its data back from the account. Fixed.** Added 8 October 2026, from the
+  user's test: "let's uninstall the app … on a fresh install, does the data survive?" … "I used Apple sign in itself,
+  but I didn't get any of the habits back. So I think that is a bug."
+  - **Cause:** the device ID lives in the Keychain, which survives deleting the app, so the reinstalled phone was "the
+    same device"; the server never sends a device its own changes, and every change in the account had been made on
+    this phone. The sync said OK and brought nothing.
+  - [x] **Fix (8 Oct, Claude):** signing in to an account on a database marks a **full download** (`sync.fullPull`,
+    set in `SyncWriter.bind`); `syncRequest` sends `"full": true` until the last page has arrived; the server then
+    sends the device's own ops too (`SyncRequest.full`). Tests: Core `SyncTest.theSamePhoneReinstalledGetsEverythingBack`
+    (1,500 logs over two pages, then own ops skipped again); server `a reinstalled phone … gets its own ops back on a
+    full download, over every page`. Server deployed to dev (version `5a3066a4`).
+  - [x] **On the iPhone, 8 Oct:** a safety copy of the app's data was taken first (`Research/Temp/pre-uninstall-backup`,
+    with a row-by-row dump); uninstall → install → sign out and sign in with Apple → "they did come back" (the user).
+    Every row compared: habits 38/38, logs 929/929, steps 7/7, reminder times 12/12, settings 13/13; **0 missing, 0
+    changed**. `-sync-verify`: 720/720 logs, 31/31 habits, 0 waiting.
+  - **A slip during the test (Claude):** a debug launch without `-empty` on the still-empty reinstalled app let the Debug
+    build's demo data (`seedDemo`, `addEveryTypeToAnytime`) in, and 28 demo habits and 405 logs synced into the account.
+    The user's own data was checked untouched (every habit, log and setting), and the demo items were removed by ID
+    (`-delete-listed-habits`). Now the Debug build never adds demo data while signed in. The App Store build never adds it.
+  - [x] Tests on GitHub: the core and server tests run with `[ios-ci] [ios-sync]` (Core storage and migrations,
+    SyncUITests): both passed in run 37784250768 (`27ce48c`); server tests 139/139 locally.
+
 ## Planned improvements — build later
+
+
+- [ ] **73. Onboarding, and getting everything back for someone returning (build later).** Added 8 October 2026, from
+  the user: "we need to improve the onboarding experience. As well as in the onboarding, who has already the account,
+  … once you log in, everything should get back again. You don't have to … go to backup and sign out and sign in …
+  Even if they are using just iCloud … we will work on it later." Found during item 72's reinstall test.
+  - **The onboarding experience overall** needs improving (separate from the restore flow below; see
+    [Onboarding and Help](<Onboarding and Help.md>)).
+  - **Someone who already has an account:** the welcome screen offers only "Restore from a Backup File". Add a clear
+    way to sign in there; once signed in, everything comes back by itself (the full download from item 72), with no
+    trip to ≡ → Backup & Sync → Account.
+  - **A reinstalled app that still looks signed in** (the Keychain keeps the session) must not need Sign Out and Sign In
+    to restore: either restore automatically on launch or ask once, clearly. Today it stays empty until the person
+    signs out and back in.
+  - **Someone using only iCloud (no account):** on a new install, offer to bring back their habits from the iCloud
+    backup just as simply (iCloud backup is waiting for the Apple Developer account, `BackupFeatures.iCloudBackup`).
+  - Research what people expect before building (W2); relates to item 3 (account up front) and Rulebook D4/D5/D14.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
@@ -356,6 +562,35 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     Lock Screen designs show counts only; the code hides everything).
   - Evidence and the widget side: [Implementation Spec §9](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Implementation Spec — Every Widget.md#9-privacy-app-lock-and-whats-next>),
     [App Lock — Private Without Lock-outs](<../../../Research/Research Reports/Settings and Help/App Lock — Private Without Lock-outs.md>).
+  - [x] **Research: what people expect (the user, 8 Oct 2026: "first, let's do research on what people expect and how
+    it should work … on the iPhone").** Done 8 Oct 2026 by Claude:
+    [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>).
+    3,861 reviews read (2,205 on topic) plus Apple's documentation. Found gaps besides the widgets: reminders, Siri
+    ("What's left" reads names, also on a locked phone) and the Live Activity name habits while App Lock is on; no UI
+    test covers the lock.
+  - [ ] **The user's decisions** (report §6): widgets while locked (discreet / hidden / a choice); separate code or the
+    iPhone's own; when it locks; notifications, Siri and Live Activity while locked; locking some habits only.
+    - [x] **1. Widgets while App Lock is on: Discreet** (the user, 9 Oct 2026). Hide habit names, task titles and
+      section names (also in VoiceOver); keep icons, colours, fills, counts, "N of M done" and the ✓ / + / ▶ buttons, which
+      keep logging; task widgets show "N tasks left"; anything that opens the app meets the lock first. Replaces today's
+      "Content hidden". Definition per widget: report §6a. Widgets are locked (U28): this is the user's say-so for this change.
+      **The user, 9 Oct 2026:** agents may change the widget code for this, but must preserve the near-instant logging
+      (the card changes at once, work happens behind), data reliability (every tap saved once, in order) and syncing
+      without opening the app (W1–W18, D12). Report §6b lists exactly what to keep and how to check it.
+      **Also decided 9 Oct:** ≡ → Widgets' "Hide widget content" becomes "Hide names on widgets" (same discreet look,
+      works without App Lock); App Lock turns it on and holds it on (greyed, "On while App Lock is on").
+    - [x] **2. Separate code: offered as an option** (the user, 9 Oct 2026). Default stays the iPhone's Face ID and passcode;
+      Privacy offers "Face ID and an Often Enough code": the phone's passcode never opens it; the code lives in this
+      iPhone's Keychain only (survives reinstall, never syncs); Face ID resets a forgotten code; a changed Face ID / Touch ID
+      set (someone added their face) stops Face ID until the code is typed; otherwise a **24-hour** delayed reset with the
+      iPhone passcode, shown on the lock screen and cancellable; no hints or questions; nothing deleted. Report §6c.
+      After a Face ID / Touch ID change, typing the code must not silently re-trust the new set (it may include someone
+      else's face): ask "Use Face ID again" / "Keep Face ID off" and point to Settings → Face ID & Passcode (§6c, point 4).
+    - [x] 3. When it locks (decided 9 Oct 2026): every time by default; Privacy offers Ask again: Immediately / After 1 minute / After 15 minutes; locking the iPhone always locks the app at once; nothing past 15 minutes; never asks while in front or after the iPhone's own interruptions; keeps the place and typed text; every way in waits for the unlock (report §6d).
+    - [x] 4. Names outside the app (decided 9 Oct 2026): "Hide names on widgets" becomes **Hide names outside the app** (widgets, reminders, alarms, the timer's Live Activity, Siri); App Lock turns it on and holds it on; icons, numbers and Done / + stay (+ without a unit); reminders and alarms use a new optional per-habit **"Reminder says…"** field, else "Reminder · 8:00"; Siri answers without names and per-habit phrases/suggestions are withdrawn; `hiddenPreviewsBodyPlaceholder` "Reminder" (report §6e).
+    - 5. Some habits only: **moved to Future** (the user, 9 Oct 2026); see "Lock only some habits" there.
+  - [x] **How it's shown in the app: spec written** (the user, 9 Oct 2026: "it should be communicated in UI properly, like app asks separate code when Face ID is changed and about cooling period … everything should be in privacy and security tab and remove widgets tab"). [Privacy & Security — What to Build](<../Specs/Privacy & Security — What to Build.md>): ≡ → Privacy becomes **Privacy & Security**; the **Widgets** page is removed, its switch moves to Privacy & Security and its guide (kinds, adding, choosing a habit, the update problem with Try again) moves to Help → Widgets, where a widget's Choose a habit link now goes (U5); every message for the code, Face ID changed, the 24-hour reset, wrong codes, Ask Again, hidden names and Reminder Says.
+  - [ ] Build, then check on the iPhone (U9): every door through the lock, drafts kept, Stolen Device Protection.
 
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
@@ -399,6 +634,12 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after.
 - [ ] **A Library** to add dedicated trackers and guided habits from (or wherever research says they belong). Only
   after release.
+
+- [ ] **Lock only some habits** (from item 58, decision 5; moved here by the user, 9 Oct 2026). Lock single habits
+  or a section instead of the whole app. Users show it strongly in notes apps (315 reviews want single notes locked) and
+  weakly in habit apps (24, mostly diary sections):
+  [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>) §6, point 5.
+  Revisit if diaries or the Daily Reflection (item 12) arrive.
 
 ## Completed
 
@@ -464,7 +705,7 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   - [x] **Tested on GitHub, 8 Oct 2026:** run `37847053285`, `HabitPageUITests` 10/10 with the new
     `testYearInPixelsDayNumbers` (pictures `hp-year-days-light|dark|large-text-1-top|2-middle|3-end` in the run's
     `ios-screenshots`: every number beside its row, readable, none overlapping). Speed run of the habit page in the same
-    run (Progress scrolling 23.2 ms/s; 7.9 in run `37836789385` with the same change: machines vary, L25). Found and
+    run (Progress scrolling 23.2 ms/s; 7.9 in run `37836789385` with the same change: machines vary, L29). Found and
     fixed on the way: a tab tap lost on a busy simulator (the test now checks the tab switched) and Add note's
     keyboard that never came when the sheet's slide outlasted 350 ms (it asks again until the field has it; Add note
     typing 8.6 ms/s). **iPhone look (U9): still to do.**
@@ -627,7 +868,7 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   - **Fourth, four rounds** (run `37804587883`, `tap-today`; a slower machine, every number ~2.5× the earlier runs):
     +1 and day ‹ › base 159.1 / `84d42ef` 159.2 / `main` 181.6 (`main`'s rounds 138–191, base's 139–174); day ‹ › alone
     141.0 / 145.8 / 128.8; +1 alone 6.8 / 11.3 / 8.7. **Nothing has got slower since 4 Oct.** The 5 Oct numbers compared
-    runs on different hosted machines (lesson L25; Rulebook S2 now says a regression is called only from builds measured
+    runs on different hosted machines (lesson L29; Rulebook S2 now says a regression is called only from builds measured
     in turns in one job, four rounds or more).
   - [x] **Done 8 Oct 2026** (cloud session): no app code to undo; the bisect tool (`ios-perf-bisect.yml`,
     `Tools/perf/bisect_perf.sh`) and the speed-run switch `-perf-no-widget-publish` stay for the next time. Runs

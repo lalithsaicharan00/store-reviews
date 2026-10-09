@@ -88,6 +88,9 @@ jobs:
             case "$MESSAGE" in *"[ios-widgets-validation]"*) echo "TESTS=WidgetUITests/testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks,WidgetSystemUITests/testHomeScreenInstallTapAndColdPersistence,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-build]"*) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
+            # Sync after changes made inside and outside the app (Current Work 67): end-to-end sync with the dev server,
+            # backup, widgets, timers, reminders and alarms (Current Work 70).
+            case "$MESSAGE" in *"[ios-sync]"*) echo "TESTS=SyncUITests,BackupUITests,WidgetUITests,WidgetSystemUITests,TimerUITests,RemindersUITests,PlacementUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-tasks]"*) echo "TESTS=TasksUITests,TodayUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTasksPage testTaskEdit testScrollToday" >> "$GITHUB_ENV";; esac
@@ -183,7 +186,9 @@ jobs:
 
       - name: Pick a simulator
         if: steps.build.outcome == 'success' && !contains(env.MESSAGE, '[ios-contract-only]')
-        timeout-minutes: 8
+        # A fresh simulator's first boot runs Apple's data migration: 2–5 minutes on 7 Oct 2026, 5–8 on 8 Oct, and a run
+        # timed out at 8 in "Waiting on Data Migration" before any test (37767538992). 15 still catches a hang.
+        timeout-minutes: 15
         run: |
           set -o pipefail
           {
