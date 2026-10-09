@@ -224,7 +224,8 @@ final class SmallScreenUITests: XCTestCase {
 
     /// Today's after-log line never runs past the row (the user, 9 Oct 2026: a long step name in Undo pushed Add Note off
     /// the screen). A step's Undo is "Undo Last Step"; an amount's names it ("Undo +1 tablespoon"); at the largest text
-    /// that still shows words, both stay on one line inside the row, with Add Note whole.
+    /// that still shows words, both stay on one line inside the row (there Add Note shows only its icon, so Undo keeps
+    /// its words).
     func testAfterLogLineStaysInsideTheRow() {
         app.launchArguments = ["-uitest", "-longtext", "-clock-hour", "9", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
         app.launch()

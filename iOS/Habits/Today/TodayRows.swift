@@ -809,6 +809,9 @@ struct RowAfterLog: View {
                     Label(note ? "Edit Note" : "Add Note", systemImage: note ? "note.text" : "square.and.pencil")
                 }
                 .fixedSize()
+                // At the largest text that still shows words, the note gives up its words before Undo does: on the SE
+                // Undo read "Undo La…" beside a whole "Add Note" (run 37902708954). Its words stay for VoiceOver.
+                .labelStyle(AfterLogLabel(iconOnly: icons || (undo != nil && typeSize >= .xxxLarge)))
                 .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
             }
             if let mark {
