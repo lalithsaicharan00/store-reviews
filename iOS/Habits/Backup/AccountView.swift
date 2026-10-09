@@ -52,6 +52,12 @@ struct AccountView: View {
             }
             LabeledContent("Plan", value: backup.isPlus ? "Plus" : "Free")
                 .accessibilityIdentifier("account-plan")
+            // With Plus, when this iPhone last synced: a status, never a switch (users show they want to know when it
+            // last ran, and no one asks to turn it off: report "Backup & Export and Your Account" §2).
+            if backup.isPlus, let synced = backup.lastSynced {
+                LabeledContent("Last Synced", value: HabitCopy.capitalized(BackupSyncView.when(synced)))
+                    .accessibilityIdentifier("account-last-synced")
+            }
         }
         if let details, !details.devices.isEmpty {
             Section("Devices") {

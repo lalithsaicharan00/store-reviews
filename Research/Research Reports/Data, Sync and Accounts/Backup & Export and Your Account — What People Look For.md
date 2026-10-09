@@ -86,7 +86,8 @@ iPhone*. Every case ends with **Send a Backup File** (the share sheet).
 ### Account (≡ → Account, and Backup & Export → Your Account)
 
 Signed out: **Sign In** and one line (*Back up to your account, and with Plus, use your habits on all your devices*).
-Signed in: **Signed in with** (Apple / Google and the email), **Plan** (Plus or Free), **Devices**, then **Sign Out** (one
+Signed in: **Signed in with** (Apple / Google and the email), **Plan** (Plus or Free), with Plus **Last Synced** (when this
+iPhone last synced: people want to know when it last ran, §2.6), **Devices**, then **Sign Out** (one
 line: *Your habits stay on this iPhone*) and **Delete Account…** at the bottom. Signing out leaves the page on its
 signed-out state rather than closing it.
 

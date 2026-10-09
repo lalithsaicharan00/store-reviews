@@ -69,6 +69,8 @@ final class BackupCenter {
     private(set) var isPlus = false
     /// When the main backup last succeeded and was checked.
     private(set) var lastGood: Date? = nil
+    /// When this iPhone last synced with the account (Plus), since the app opened; nil until the first sync.
+    private(set) var lastSynced: Date? = nil
     /// A problem with the main backup, told at once (§4.4).
     private(set) var issue: Issue? = nil
     /// A problem with the second copy only: a grey line in Settings, nothing more.
@@ -106,6 +108,7 @@ final class BackupCenter {
             hidden = (id, Date(timeIntervalSince1970: defaults.double(forKey: Key.hiddenUntil)))
         }
         refresh()
+        sync.onSynced = { [weak self] date in self?.lastSynced = date }
     }
 
     // MARK: State

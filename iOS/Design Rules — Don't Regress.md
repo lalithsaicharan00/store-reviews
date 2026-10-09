@@ -478,7 +478,7 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 Report: [Backup & Export and Your Account — What People Look For](<../Research/Research Reports/Data, Sync and Accounts/Backup & Export and Your Account — What People Look For.md>).
 
 - **≡ → Account** (the user, 9 Oct 2026, changing the final menu): signing in, the plan, devices, Sign Out and Delete
-  Account at the bottom. Signed out, the menu row says **Sign In**. Backup & Export's **Your Account** row opens the same
+  Account at the bottom. With Plus, **Last Synced** (*Just now*, *Today 09:14*): a status, never a switch. Signed out, the menu row says **Sign In**. Backup & Export's **Your Account** row opens the same
   page. Signing out leaves the page on its signed-out state.
 - **Backup & Export, in the order people come for it:** the status (**Backed up today 09:14** / *In your account and
   iCloud*; **Only on this iPhone** / *Deleting the app deletes your habits*; a problem in red with its fix) and **Back Up

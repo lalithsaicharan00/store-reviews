@@ -251,6 +251,9 @@ final class SyncService {
     private var again = false
     /// Called when a sync failed with changes still waiting, so the app can ask iOS for a background retry.
     var onWaitingAfterFailure: (() -> Void)?
+    /// Called after a sync finished with the server (≡ → Account's Last Synced; kept in memory, so a sync never writes
+    /// a setting, S15).
+    var onSynced: ((Date) -> Void)?
 
     private func holdAwake() {
         guard awake == .invalid else { return }
@@ -310,6 +313,7 @@ final class SyncService {
                 if Self.hasOps(data) { onRemoteChanges?() }
             }
             lastError = nil
+            onSynced?(Date.now)
             #if DEBUG
             let waiting = (try? await repository.syncStatus())?.waiting ?? -1
             WidgetTiming.mark("sync: finished ok, \(sent) changes sent in \(rounds) request(s), \(waiting) waiting")

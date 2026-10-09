@@ -146,6 +146,7 @@ final class BackupUITests: XCTestCase {
         app.buttons["Back Up Now"].tap()
         let backedUp = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Backed up'")).firstMatch
         XCTAssertTrue(backedUp.waitForExistence(timeout: 30), "The backup is confirmed by the server's checksum")
+        let signedIn = XCTAttachment(screenshot: app.screenshot()); signedIn.name = "backup-signed-in-free"; signedIn.lifetime = .keepAlways; add(signedIn)
 
         // The server holds the copy, with the habit counted.
         let other = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "device": device()])
@@ -185,6 +186,7 @@ final class BackupUITests: XCTestCase {
         account.tap()
         XCTAssertTrue(app.navigationBars["Account"].waitForExistence(timeout: 5))
         XCTAssertTrue(shows(app, row: "account-plan", "Free", within: 10), "The plan is on the account page")
+        let page = XCTAttachment(screenshot: app.screenshot()); page.name = "account-signed-in-free"; page.lifetime = .keepAlways; add(page)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '(this device)'")).firstMatch.waitForExistence(timeout: 10), "This device is listed")
         app.buttons["Delete Account…"].tap()
         XCTAssertTrue(app.navigationBars["Delete Account"].waitForExistence(timeout: 5))

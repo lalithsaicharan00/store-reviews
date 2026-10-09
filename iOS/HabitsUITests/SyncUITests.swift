@@ -80,6 +80,27 @@ final class SyncUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Undo Synced stretch"].exists || app.buttons["Anytime, All done"].exists || !app.buttons["Mark Synced stretch done"].exists,
                       "The phone's own tick is still there after merging")
 
+        // What the person sees signed in with Plus (Current Work 58.10–58.11): Backup & Export says when and where, and
+        // ≡ → Account says the plan and when this iPhone last synced.
+        func shot(_ name: String) {
+            let attachment = XCTAttachment(screenshot: app.screenshot()); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+        }
+        app.buttons["menu-button"].tap()
+        XCTAssertTrue(app.buttons["menu-backup"].waitForExistence(timeout: 5))
+        app.buttons["menu-backup"].tap()
+        let status = app.descendants(matching: .any)["backup-status"]
+        XCTAssertTrue(status.waitForExistence(timeout: 10))
+        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Backed up'"), object: status)], timeout: 30)
+        XCTAssertTrue(status.label.contains("In your account"), "Signed in, the copies are in the account: \(status.label)")
+        shot("backup-signed-in-plus")
+        app.descendants(matching: .any)["backup-account"].tap()
+        XCTAssertTrue(app.navigationBars["Account"].waitForExistence(timeout: 5))
+        let synced = app.descendants(matching: .any)["account-last-synced"]
+        XCTAssertTrue(synced.waitForExistence(timeout: 15), "Plus: when this iPhone last synced")
+        shot("account-signed-in-plus")
+        app.navigationBars["Account"].buttons.firstMatch.tap()
+        app.navigationBars["Backup & Export"].buttons.firstMatch.tap()
+
         // And it's saved on the phone: it's still there after a relaunch, with no sign-in.
         app.terminate()
         app.launchArguments = ["-dbname", "uitest-sync", "-empty"]
