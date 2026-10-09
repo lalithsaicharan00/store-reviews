@@ -325,9 +325,15 @@ final class GroupsUITests: XCTestCase {
                       app.buttons.allElementsBoundByIndex.map(\.label).joined(separator: " | "))
         let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
         // Slowly, and held where it lands, so the list takes the drop (a quick release was missed once, 5 Oct 2026).
+        // Dropped in Health's upper third, inside the rows: the old target, 5 % down Health (3.5 pt under the section's
+        // top), carried the lifted row over the section header, where the list has no place for it, and the drop was
+        // cancelled. The failing run's recording (37400560919, 6 Oct) shows Health make room, then the gap close as
+        // the row reached that edge, and Home go back on release (Current Work 53, 8 Oct 2026). Held 2 s there, as a
+        // finger rests before letting go: only the first drag of a launch ever missed, and on a slow simulator its
+        // moves and release can arrive together after the first lift's one-time cost (run 37865611952, 9 Oct).
         handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-            .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.05)),
-                   withVelocity: .slow, thenHoldForDuration: 0.6)
+            .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.3)),
+                   withVelocity: .slow, thenHoldForDuration: 2)
         app.navigationBars["Groups"].buttons["Done"].tap()
         XCTAssertTrue(app.buttons["groups-sort-az"].waitForExistence(timeout: 3), "Your order, with Sort A to Z")
         shot("g14-your-order")
@@ -338,6 +344,48 @@ final class GroupsUITests: XCTestCase {
         backToFilter()
         XCTAssertLessThan(chip("Health").frame.minX, chip("Home").frame.minX, "Sort A to Z goes back")
         closeFilter()
+    }
+
+    /// The first drag after a launch, again and again (Current Work 53, 8–9 Oct 2026; Rulebook T12). Run 37865611952
+    /// showed it's the first drag of a launch that misses (1 of 6; drags 2–6 took): the lifted row reached its place
+    /// and went back on release. Measured side by side for how long the finger stays at the place before lifting.
+    /// Each step checks the screen rather than trusting a tap.
+    func testGroupDragDropsReliably() {
+        var results: [String] = []
+        var missesHeld = 0
+        let launches = 4
+        // Run 37869406687 measured both, 0.6 s and 2 s: none of 4 missed either way. Add 0.6 back to compare again.
+        for hold in [2.0] {
+            var misses = 0
+            for _ in 0..<launches {
+                app.terminate()
+                launch(["-groups-demo"])
+                openGroupsEditor()
+                let bar = app.navigationBars["Groups"]
+                let handle = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'reorder' AND label CONTAINS 'Home'")).firstMatch
+                bar.buttons.matching(NSPredicate(format: "label == 'Edit'")).firstMatch.tap()
+                XCTAssertTrue(handle.waitForExistence(timeout: 5), "Edit mode shows the reorder handles")
+                let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
+                handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+                    .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.3)),
+                           withVelocity: .slow, thenHoldForDuration: hold)
+                bar.buttons.matching(NSPredicate(format: "label == 'Done'")).firstMatch.tap()
+                if !handle.waitForNonExistence(timeout: 5) {
+                    bar.buttons.matching(NSPredicate(format: "label == 'Done'")).firstMatch.tap()
+                    XCTAssertTrue(handle.waitForNonExistence(timeout: 5), "Done leaves edit mode")
+                }
+                if !app.buttons["groups-sort-az"].waitForExistence(timeout: 3) { misses += 1 }
+            }
+            results.append("hold \(hold) s: \(misses) of \(launches) first drags missed")
+            if hold > 1 { missesHeld = misses }
+        }
+        let line = results.joined(separator: "; ")
+        let note = XCTAttachment(string: line)
+        note.name = "group-drag-misses"
+        note.lifetime = .keepAlways
+        add(note)
+        print("GROUP DRAG: " + line)
+        XCTAssertEqual(missesHeld, 0, "Every held first drag takes: " + line)
     }
 
     /// Today and Progress keep their own group; Start on a filtered Today plays only the habits shown.

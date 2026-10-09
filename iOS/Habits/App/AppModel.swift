@@ -66,11 +66,15 @@ final class AppModel {
     static let refreshTaskID = "com.oftenenough.app.refresh"
 
     private init() {
+        // Before anything reads a setting: a test launch holds the person's settings aside; an ordinary one puts them
+        // back (Current Work 74, D8).
+        TestLaunchIsolation.begin()
         // "Hide widget content" becomes Hide Names Outside the App, keeping the person's choice (Current Work 58), before
         // anything reads it.
         HideNames.migrate()
         lock = AppLock()
         #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-testlaunch-report") { TestLaunchIsolation.makeReport() }
         if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-widget-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
             UserDefaults(suiteName: WidgetDisk.group)?.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.widgetTiming")
         }
@@ -129,7 +133,7 @@ final class AppModel {
                 UserDefaults.standard.removeObject(forKey: key)
             }
         } else if let i = arguments.firstIndex(of: "-dbname"), i + 1 < arguments.count {
-            opened = try? Persistence.onDisk(name: arguments[i + 1], reset: arguments.contains("-reset-db"))
+            opened = try? Persistence.onDisk(name: arguments[i + 1], reset: Self.resetsDatabase(arguments))
         } else {
             opened = try? Persistence.onDisk()
         }
@@ -147,7 +151,7 @@ final class AppModel {
         let testLaunch = arguments.contains("-uitest")
         let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil }
             ?? (testLaunch ? "uitest" : "habits")
-        sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: arguments.contains("-reset-db")) }
+        sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: Self.resetsDatabase(arguments)) }
         if let opened, let sync {
             backup = BackupCenter(repository: opened.repository, sync: sync, store: store, sandboxed: testLaunch)
         } else {
@@ -185,6 +189,18 @@ final class AppModel {
         await widgets.publish(store, immediate: true)
         await scheduler.reconcile(store)
         await timerPresence.sync(store)
+    }
+
+    /// `-reset-db` (system tests: `-dbname habits -reset-db`). On a real iPhone it never deletes the person's own
+    /// database, "habits", or its sign-in: those tests are for the simulator (D8; found 8 Oct 2026, Current Work 74).
+    private static func resetsDatabase(_ arguments: [String]) -> Bool {
+        guard arguments.contains("-reset-db") else { return false }
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        let name = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil } ?? "habits"
+        return name != "habits"
+        #endif
     }
 
     /// Loads once, however many callers ask; later callers wait for the first load.
@@ -233,7 +249,8 @@ final class AppModel {
             Task { await self.saveWidgetTaps() }
             store.onChange = { [store, scheduler, timerPresence, widgets, sync, backup] in
                 scheduler.scheduleReconcile(store)
-                widgets.schedule(store)
+                // Speed runs only (Current Work 49): `-perf-no-widget-publish` leaves the publication out, to see its cost.
+                if PerfSwitches.widgetPublication { widgets.schedule(store) }
                 // Siri's phrases name each habit: refreshed when one is added, renamed or archived (cheap otherwise).
                 perfTimed("Change: Siri's habit names") { HabitShortcuts.habitsChanged(store) }
                 Task { await timerPresence.sync(store) }

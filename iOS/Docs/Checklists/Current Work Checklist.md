@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 74).
+  still resolve; give new items the next unused number (currently 75).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -39,6 +39,48 @@ bugs. Item 16 combines reliability work with a product decision; item 18 is a co
 work. Preserve those distinctions when recording findings. New feedback items 23–32 (4 October) are recorded
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
+
+### The cloud session's list (the user, 8 Oct 2026)
+
+Written by Claude (Claude Code), 8 October 2026, from the user's request. Branch `claude/exciting-mccarthy-g6vlu5`
+(the session's branch; made from `main` at `e3afd6c`). **One item at a time, in this order;** an item is finished
+when it's built, its tests have passed on GitHub and it's ticked here with the date and the run ID. When all are done:
+merge `main` in, run every touched test class plus a speed run once more, then merge into `main` (the user approved
+that merge). The other agent works on its own branches (`sync-*`); never touch those or their runs (W3, T10).
+
+**Final check and merge (9 Oct 2026):** `main` (the other agent's 67–72 and 58) merged in; every touched class passed
+on the merged code: runs `37883781450` (34/34), `37892533149` (15/15), `37892535525` (25/25); speed `37883786912` (every
+scenario: Today scrolling 0.0 ms/s, +1 0.4, day ‹ › 9.5, habit form typing 11.3, Progress period ‹ › 82.6 with no freeze)
+and `37892538257` (Add note typing 0.0, Edit note 0.7); habit page side by side with `main` `37889969212` (Progress
+scrolling median 5.9 against 9.1). Found on the way and fixed: Add note's keyboard that never came on a slow simulator
+(asked again until iOS shows it). Merged into `main` by fast-forward.
+
+**iPhone checks still to do (U9):** 49 the speed numbers on the phone (`measure_perf_device.sh`; day ‹ ›, habit form
+typing and Progress's period switch are above the targets on every build); 18 the completion sound and haptic for each
+kind; 26 and 28 History's and Notes' buttons, light and dark; 74 run any UI test on the phone, then open the app: your own
+habits on the widgets, your Today settings unchanged; 32 Year in Pixels' day numbers, larger text and dark; 31 the
+Progress tab cards' spacing, larger text and dark; 23 the streak pair; 53 a first drag in Groups after opening the app;
+and the Add note keyboard coming up by itself.
+
+- [x] 1. **Item 49**: the speed regression. *Done 8 Oct: nothing had got slower side by side (runs `37774018835`,
+  `37788595991`, `37797217908`, `37804587883`); iPhone speed check still to do.* Bisect the timer/swipe/limits/completion-sound merge with speed runs
+  (`scroll-today`, `tap-today`, `new-habit`, `progress`), variants side by side in one run (S2); fix it; numbers
+  back under the targets; numbers in `iOS/PERFORMANCE-LESSONS.md`. The iPhone speed check stays to do.
+- [ ] 2. **Item 53**: `GroupsUITests.testGroupOrderIsThePersonsOwn`: why the drop sometimes misses; fix the cause,
+  never loosen the test (T2). *Mitigated, not closed (9 Oct): only a launch's first drag misses, rarely; the drop is
+  cancelled on release. Fixed what was found (drop point, S7, a 2 s hold); cause not proven. Runs `37812076363`,
+  `37817858014`, `37821382415`, `37865611952`, `37869406687`.*
+- [x] 3. **Items 18, 25, 26, 28**: run their pending tests (`CompletionFeedbackUITests`, `HabitPageUITests`
+  `testHistoryFlows` and `testNotesFlows`, the squares-key tests; 25 is superseded by 57), fix failures, tick each.
+  *Done 8 Oct: all 11 passed first time, run `37826155392`; iPhone checks for 18, 26, 28 still to do.*
+- [x] 4. **Item 74** (new): a `-uitest` launch on a real iPhone must not write the widgets' shared file or the
+  person's settings (D8). Prove it with a test. *Done 8 Oct: run `37831649390` (24/24); iPhone check still to do.*
+- [x] 5. **Item 32**: Year in Pixels shows every day number 1–31, in Progress and on the habit page; simulator
+  screenshots in the run; the iPhone look stays to do (U9). *Done 8 Oct: run `37847053285`; iPhone look still to do.*
+- [x] 6. **Item 31**: Week, Month and Year card padding and spacing (Progress and the habit page's Progress tab);
+  screenshots; the iPhone look stays to do. *Done 8 Oct: runs `37853078424`, `37858625841`; iPhone look still to do.*
+- [x] 7. **Item 23**: streaks back on the habit page, in its Progress tab; screenshots; the iPhone look stays to do.
+  *Done 9 Oct: run `37860896648` (13/13); iPhone look still to do.*
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
@@ -111,68 +153,6 @@ Their placement records scope and priority; implementation has not started.
     [Today — Row Sheet, Swipe Actions, Order and Tap Again](<Today — Row Sheet, Swipe Actions, Order and Tap Again.md>)
     and [Today — Row Layout, Subtext, Notes and the Task Sheet](<Today — Row Layout, Subtext, Notes and the Task Sheet.md>).
 
-- [ ] **23. Restore streaks on the habit details page.** Added 4 October 2026; a standalone task, not a subtask of
-  the header, Overall Record or milestone redesign.
-  - The user reports streaks used to be visible on this page and were removed during the redesign. Check the earlier
-    presentation and current code, then restore a clear, visible streak presentation.
-  - Preserve the correct meaning for each supported habit and frequency; do not silently label weekly/monthly
-    success as a daily streak. Record what was restored and verify its values against the existing streak logic.
-  - This remains open even if another design item touches the same screen. Documentation does not confirm the
-    regression has been reproduced or fixed.
-  - **5 Oct placement research (item 48):** Current/Best belong visibly in the early individual habit Progress summary, not the common header above History/Notes; retain Today's quick streak access, correct units and Show Streaks. The six existing design studies now reflect that recommendation. This does not close the native implementation/correctness check in item 23.
-
-- [ ] **25. “What the squares mean”: expand automatically only on the first visit to each explanation context.**
-  **Superseded by item 57 (the user, 6 Oct 2026): one app-wide state, folded everywhere once folded anywhere.**
-  Added 4 October 2026; a standalone behavior task covering both the habit details page and the main Progress page.
-  - **First visit:** the accordion must already be open when the person first opens the particular habit's details
-    page and reaches its explanation, so the meaning of the squares is visible without discovering an extra tap.
-  - **Main Progress:** apply the same behavior to the first visit to Week, Month, Year, and any other relevant view
-    with this explanation. Seeing Week's explanation must not incorrectly suppress a first-time explanation in
-    Month or Year; seeing one habit's explanation must not consume another habit's first visit.
-  - **Later visits:** once the person has seen that explanation, start it collapsed on subsequent visits. They can
-    manually expand it whenever they want. Leaving it open once must not make it default to open forever.
-  - Record first-view state across normal navigation and app relaunches. Switching dates/periods or rebuilding a
-    view is not a new first visit. Do not automatically collapse it immediately during the first visit; the request
-    is to change the default on the next visit.
-  - Use the exact context of the explanation when implementing this: the applicable habit page or Progress view.
-    Cover every instance of this accordion, and document the state scope so it does not repeat unexpectedly or
-    stay closed for a context the person has never seen. Reset/reinstall and cross-device state policy was not
-    specified by the user.
-  - Verify first visit open → next visit closed → manual reopening works, independently for the relevant habits
-    and Progress ranges. This task must remain separate from card padding and other visual redesigns.
-  - **The user's words, 5 Oct:** "It should be open only for the very first time; everywhere else, closed."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): open by
-    itself only on the first visit to each habit's page and each Progress range; folded on later visits, a tap opens
-    it, never folds during a visit; kept across launches. Tests: pending.
-
-- [ ] **26. History: fix the unreadable Add Entry button.** Added 4 October 2026; a readability issue independent of
-  the action-placement research in item 27.
-  - The user observes a white/light-gray button background with white text, making Add Entry illegible. Verify the
-    current rendered appearance and fix the contrast in the actual button states.
-  - Check light and dark mode and the real iPhone; the label must stay readable. Preserve the action's function.
-    Moving the button to another location alone does not fix its text/background contrast.
-  - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
-    item 22. Do not solve this by removing History's Add Entry action.
-  - **The user's words, 5 Oct:** "Apart from being unreadable, they look a little big: they aren't primary actions,
-    they're secondary. People use them rarely, but for those who do, they should be good."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and
-    Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>) §5): the cause was Add Entry's
-    filled style, white text on dark mode's off-white ink. Add Entry and Go to Date are now native bordered buttons at
-    their own width (ink text on a light ink tint, readable in both modes), regular size; Notes' Add Note the same.
-    Then (the user, 5 Oct: "Add Note was bigger than a cramped search bar; do we need search there or a full-page
-    search?"): Notes keeps an inline search, now across the full width, with Add Note on its own row under it, one
-    shared button style with History. Tests: pending (`HabitPageUITests.testHistoryFlows`, `testNotesFlows`, the
-    dark pictures).
-
-- [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
-  when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
-  as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
-  - **The user's words, 5 Oct, tidied:** "Overall completion only: the 4th of 4 steps; the log that crosses an amount
-    of 10, even to 11; the same for time, typed time included. Never for quit habits or Log Slip."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
-    decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
-    goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
-
 - [ ] **53. `GroupsUITests.testGroupOrderIsThePersonsOwn` fails on `main` now and then (three nights in a row): the dragged group doesn't move.**
   Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–52, not by the user. Not caused by
   that branch: `main` itself (`f0e52f4`) fails it the same way (run `37400560919`).
@@ -182,18 +162,30 @@ Their placement records scope and priority; implementation has not started.
     Drag a group…"), so the list never took the drop, or `moveGroups` didn't save it.
   - **Then passed** at ~04:00 UTC on the same branch (run `37410173465`), so it's intermittent, not only at night.
   - **To do:** find what makes the drop miss (machine speed, the drag's timing); don't loosen the test (T2).
-
-- [ ] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
-  `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
-  merges (`claude/habit-details-perf`, 4 Oct; hitch ms/s, targets under 5): Today scrolling 0 → 28; +1 alone 1–3 → 25;
-  day ‹ › alone 30–63 → 116; habit form typing 8–9 → 45 (a 496 ms freeze); Progress period ‹ › 50–125 → 164; menu
-  47–114 → 54. Hosted runs vary 2–3×, so repeated before blaming anything (S2).
-  - **Not from the Day-details merge:** three runs each of `main` just before it (`3530e98`, the timer/swipe/limits
-    branch) and after (`c09cdb9`): Today scrolling 18/64/44 vs 41/23/23, day ‹ › alone 119/99/92 vs 162/51/59, +1 alone
-    4.4/1.6/1.8 vs 15.5/5.5/3.4, Day sheet scrolling 36/20/44 vs 14/7/8; habit form 32 vs 30, Progress 163 vs 165 (runs
-    `37324688193`, `37330377255`, `37330449077` vs `37324703983`, `37330393173`, `37330464579`).
-  - **So the change came with the timer/swipe/limits/completion-sound merge.** To do: bisect its commits with the
-    scenarios above (Today `scroll-today`, `tap-today`; `new-habit`; `progress`), fix, and measure on the iPhone.
+  - **8 Oct 2026 (cloud session): what the recordings show.** The failing run's screen recording (`37400560919`, 6 Oct,
+    02:01 UTC) shows Home lifted and dragged up, Health making room, then, as the drag reached the test's target (5 % down
+    the Health row, 3.5 pt under the section's top), the lifted row riding over the section header, the gap closing,
+    and Home going back on release: the list never called `onMove` (the hierarchy after: A to Z, footer "A to Z"). With
+    the target moved inside the rows (Health's upper third), one more run failed (`37812076363`, 17:22 UTC): its
+    recording shows Health making room and the drop held there for the 0.6 s, and still undone on release. The
+    machines were slow (XCUITest needed 8–16 s to synthesise the drag; 30 s per accessibility query in one run).
+  - **Changed, 8–9 Oct:** (1) the test drops inside the rows, never at a section's edge (the first recording); (2)
+    `moveGroups` changes the list before `onMove` returns and writes after, as every tap does (S7; before, the row
+    snapped back under the finger and jumped when the write landed); (3) both drag tests hold the drop 2 s before
+    letting go (the assertion is unchanged). Tried and taken back: leaving drags to the Filter sheet's content
+    (`presentationContentInteraction(.scrolls)` on a group screen): the miss came back with it (run `37865611952`).
+  - **What the runs show:** `GroupsUITests` 10/10 (run `37821382415`, 16 repeated drags, 0 missed); then, after
+    `main` was merged in, the probe caught it once (`37865611952`: **1 of 6, the first drag after the launch**; drags 2–6
+    took). Every failure so far is a launch's first drag, on a slow machine: its recording shows the row lifted, moved
+    above Health, Health making room, the row held, and undone on release, so the list never called `onMove`. Likely
+    cause, **not proven**: the first lift of a launch pays a one-time cost (the first drag preview and haptic), and
+    XCUITest's moves and release then arrive together, with no hold. `testGroupDragDropsReliably` now repeats exactly
+    that case (a new launch, the first drag) four times; run `37869406687` measured 0.6 s and 2 s holds side by side:
+    0 of 4 missed either way, and `testGroupOrderIsThePersonsOwn` passed. The miss is rarer than 1 in 10 first drags.
+  - [ ] **Mitigated 9 Oct 2026, cause not proven** (cloud session). Leave open: if the probe or the nightly test misses
+    again, compare holds with `[0.6, 2.0]` in the probe and record a launch's first lift (`sample` or a
+    `perfTimed` around the first edit-mode drag) on the same machine. iPhone check: a person's first drag in Groups
+    after opening the app stays where it's dropped.
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
@@ -744,18 +736,6 @@ Their placement records scope and priority; implementation has not started.
   - Record the reasoning and design choice before implementation. The Add Entry contrast problem must be fixed
     independently (item 26), wherever the buttons end up.
 
-- [ ] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
-  - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area
-    the user describes as just below the progress bar. Assess whether it should stay there or move to a sticky
-    bottom action instead.
-  - Research a native, discoverable and easy-to-reach arrangement that preserves search and note browsing. Check
-    scrolling, safe-area spacing and keyboard behavior; a bottom action must not obscure notes or search results.
-  - Record the recommended placement before implementing it. The user has asked for research rather than deciding
-    that both History and Notes must use bottom controls.
-  - **Built, 5 Oct 2026, with item 26** (branch `claude/timer-swipe-limits-and-fixes`): the 4 Oct handoff's
-    recommendation (no sticky bottom bar; search across the full width, Add Note on its own row under it), at the
-    user's request that Add Note match History's buttons. Tests: pending (`HabitPageUITests.testNotesFlows`).
-
 - [ ] **29. Redesign the Overall Record card.** Added 4 October 2026.
   - The Overall Record card in the habit details Progress tab does not look good to the user; improve its visual
     hierarchy and presentation. Record any applicable equivalent in the main Progress page when assessing scope.
@@ -771,26 +751,6 @@ Their placement records scope and priority; implementation has not started.
     criticism as a request to change milestone rules. Review any relevant Milestones presentation in Progress and
     the habit details Progress tab.
   - Keep this a separate open task. Do not mark it done because Overall Record or Week/Month/Year spacing was fixed.
-
-- [ ] **31. Improve Week, Month and Year card padding and spacing.** Added 4 October 2026; review the main Progress
-  page and the habit details Progress tab wherever these period cards appear.
-  - **Week:** the “Week” heading is almost against the card's top edge; the top padding is too small and looks poor.
-    Increase the breathing room above the heading and improve spacing between the card's internal elements.
-  - **Month:** the same top-edge/padding concern applies. Review both heading inset and the spacing of the content.
-  - **Year / Year in Pixels:** improve spacing and hierarchy here too, so the card/grid and its labels feel balanced.
-  - Apply consistent spacing rules across the period cards, adapted to their content. Check card boundaries,
-    heading-to-content gaps and internal alignment, not only one top padding value. Preserve statistics and square
-    meanings. Verify on the iPhone, including larger text and light/dark mode.
-  - Keep the accordion behavior (item 25), all-date labels (item 32), Overall Record and Milestones separately tracked.
-
-- [ ] **32. Year in Pixels: show every day-number label from 1 through 31.** Added 4 October 2026.
-  - Currently only selected numbers such as 1, 5, 10, 15, 20, 25 and 30 are shown. The user wants all day numbers
-    visible: 1, 2, 3 … 31, including the currently omitted dates and 31 itself.
-  - Keep the labels aligned with the correct day rows/squares and readable. Coordinate the layout with the spacing
-    work in item 31; do not satisfy it by crowding or overlapping labels.
-  - Preserve the correct treatment of shorter months and leap years; showing row labels 1–31 does not make an
-    invalid date a recorded day. Review every relevant Year in Pixels instance in Progress and habit details.
-  - Verify all 31 labels are present and that existing values, square meanings and accessibility remain correct.
 
 - [ ] **3. Account out of Backup & Export.** Backup & Export holds only backup and export (the backup account it
   uses can stay there). Making an account, signing in and deleting the account are not backup things.
@@ -960,6 +920,212 @@ Their placement records scope and priority; implementation has not started.
   Revisit if diaries or the Daily Reflection (item 12) arrive.
 
 ## Completed
+
+- [x] **23. Restore streaks on the habit details page.** Added 4 October 2026; a standalone task, not a subtask of
+  the header, Overall Record or milestone redesign.
+  - The user reports streaks used to be visible on this page and were removed during the redesign. Check the earlier
+    presentation and current code, then restore a clear, visible streak presentation.
+  - Preserve the correct meaning for each supported habit and frequency; do not silently label weekly/monthly
+    success as a daily streak. Record what was restored and verify its values against the existing streak logic.
+  - This remains open even if another design item touches the same screen. Documentation does not confirm the
+    regression has been reproduced or fixed.
+  - **5 Oct placement research (item 48):** Current/Best belong visibly in the early individual habit Progress summary, not the common header above History/Notes; retain Today's quick streak access, correct units and Show Streaks. The six existing design studies now reflect that recommendation. This does not close the native implementation/correctness check in item 23.
+  - **What was there (8 Oct):** the streak survived only as small grey text at the end of the Milestones card's "In a
+    row" title ("Now 23 · best 23"): not a clear streak presentation.
+  - **Built, 8 Oct 2026** (cloud session): the "In a row" track opens with **Current streak** and **Best streak** side by
+    side (title 2 numbers, one VoiceOver element each), then "Next: 30 days in a row". The research's place (early in
+    this habit's Progress, after Overall record; no new card, nothing in the header). Units follow the goal: days for a
+    daily habit, weeks for a weekly goal, months, or times for a selected-days habit (the store's existing `streakUnit`).
+    Values come from `runs(of:)`, the same walk as Today's `streak` and the best streak, so they agree. Show Streaks off
+    hides the pair, "In total" stays; quit habits keep their run in Overall record; tasks have no Progress tab.
+  - [x] **Tested on GitHub, 8–9 Oct 2026:** run `37860896648`, 13/13: `HabitPageUITests` (with the new
+    `testStreaksOnTheProgressTab`: Water "23 days" / "23 days", Running "2 weeks" / "11 weeks", Show Streaks off shows
+    none) and `ProgressUITests.testHabitPageYearAndMilestones`; pictures `hp-streaks-water|running|off` and the dark
+    pages. Speed run of the habit page in the same run. **iPhone look (U9): still to do.**
+
+- [x] **31. Improve Week, Month and Year card padding and spacing.** Added 4 October 2026; review the main Progress
+  page and the habit details Progress tab wherever these period cards appear.
+  - **Week:** the “Week” heading is almost against the card's top edge; the top padding is too small and looks poor.
+    Increase the breathing room above the heading and improve spacing between the card's internal elements.
+  - **Month:** the same top-edge/padding concern applies. Review both heading inset and the spacing of the content.
+  - **Year / Year in Pixels:** improve spacing and hierarchy here too, so the card/grid and its labels feel balanced.
+  - Apply consistent spacing rules across the period cards, adapted to their content. Check card boundaries,
+    heading-to-content gaps and internal alignment, not only one top padding value. Preserve statistics and square
+    meanings. Verify on the iPhone, including larger text and light/dark mode.
+  - Keep the accordion behavior (item 25), all-date labels (item 32), Overall Record and Milestones separately tracked.
+  - **What it was (8 Oct):** on the habit page's Progress tab, the period cards' header (`PeriodHeader`) had a `-8`
+    vertical padding so its 44-pt ‹ › fitted: it pulled "Week", "Month" and "Year in Pixels" up against the card's top
+    edge. Progress's own cards were already 16 all round (checked in the run's pictures), so they're unchanged.
+  - **Built, 8 Oct 2026** (cloud session): the header keeps the card's whole 16-pt top padding (the ‹ › still reach the
+    edge); every gap between a card's parts stays 16, smaller only inside a part (headline and detail 4, a chart's title
+    and chart 8); Year in Pixels 12 at the sides (twelve columns on the SE), now 16 above and below. Design Rules,
+    "Habit details: Progress tab cards".
+  - [x] **Tested on GitHub, 8 Oct 2026:** run `37853078424`, `HabitPageUITests` 10/11 with the new
+    `testPeriodCardSpacing` (pictures `hp-cards-light|dark|large-text-habit-progress-week|month|habit-year-grid`: each
+    title about as far from the card's top as from its side, in all three); the 11th, `testNotesFlows`, never started
+    (XCUITest couldn't terminate the previous test's app), and passed on the rerun, run `37858625841` (2/2). Speed in
+    the same run: habit page Progress scrolling 0.1 ms/s, switching tabs 8.4. **iPhone look (U9), larger text and dark:
+    still to do.**
+
+- [x] **32. Year in Pixels: show every day-number label from 1 through 31.** Added 4 October 2026.
+  - Currently only selected numbers such as 1, 5, 10, 15, 20, 25 and 30 are shown. The user wants all day numbers
+    visible: 1, 2, 3 … 31, including the currently omitted dates and 31 itself.
+  - Keep the labels aligned with the correct day rows/squares and readable. Coordinate the layout with the spacing
+    work in item 31; do not satisfy it by crowding or overlapping labels.
+  - Preserve the correct treatment of shorter months and leap years; showing row labels 1–31 does not make an
+    invalid date a recorded day. Review every relevant Year in Pixels instance in Progress and habit details.
+  - Verify all 31 labels are present and that existing values, square meanings and accessibility remain correct.
+  - **Where it is (8 Oct):** Year in Pixels (month columns by day rows) is on the habit page's Progress tab
+    (`HeatYearPixels`); Progress's own Year view is a different map (weeks by weekdays, one per habit) with no day rows.
+  - **Built, 8 Oct 2026** (cloud session): every number 1–31, one per 27-pt row, right-aligned 4 pt before the squares
+    (caption 2, monospaced digits); the labels stop growing at the xLarge text size, where "31" still fits the gutter
+    and each month name its column (the squares never grow). Days a month doesn't have stay empty.
+  - [x] **Tested on GitHub, 8 Oct 2026:** run `37847053285`, `HabitPageUITests` 10/10 with the new
+    `testYearInPixelsDayNumbers` (pictures `hp-year-days-light|dark|large-text-1-top|2-middle|3-end` in the run's
+    `ios-screenshots`: every number beside its row, readable, none overlapping). Speed run of the habit page in the same
+    run (Progress scrolling 23.2 ms/s; 7.9 in run `37836789385` with the same change: machines vary, L29). Found and
+    fixed on the way: a tab tap lost on a busy simulator (the test now checks the tab switched) and Add note's
+    keyboard that never came when the sheet's slide outlasted 350 ms (it asks again until the field has it; Add note
+    typing 8.6 ms/s). **iPhone look (U9): still to do.**
+
+- [x] **74. A test launch on a real iPhone writes its demo habits into the widgets and resets the person's settings.**
+  Added 8 October 2026 by Claude (Claude Code), from item 65's finding (the user listed it, 8 Oct). A `-uitest`
+  launch on the iPhone publishes its demo habits into the widgets' shared file (the person's Home Screen widgets then
+  show the demo habits) and resets some of the person's own settings (Hide Completed, done order), because test
+  launches share `UserDefaults` and the App Group with the person's app. D8: a test launch never touches the person's
+  data. Keep a test launch's widget snapshot and settings separate from the person's, and prove it with a test.
+  - **Also found (8 Oct):** a test launch saves widget taps waiting in the shared file at start-up (`saveWidgetTaps`): on
+    the iPhone it would have saved the person's waiting taps into its throwaway in-memory database, then removed them
+    from the file. And `-dbname habits -reset-db` (WidgetSystemUITests) names the person's own database.
+  - **Built, 8 Oct 2026** (cloud session): `WidgetDisk.directory` gives a `-uitest` launch an App Group folder of its own
+    (`uitest/`), so its snapshot, waiting taps, timing log, paging and analytics files never touch the person's; the
+    widget extension and ordinary launches are unchanged (no W1–W17 decision changed; noted in the locked widget doc).
+    `TestLaunchIsolation` holds the person's `UserDefaults` aside on the first test launch in a row and puts them back,
+    exactly, on the next ordinary launch, before anything reads them; test launches still reset their own (T8).
+    `-reset-db` never deletes "habits" on a real iPhone. Rulebook D8.
+  - [x] **Tested on GitHub, 8 Oct 2026:** run `37831649390`, 24/24: the new
+    `TestLaunchIsolationUITests.testATestLaunchLeavesThePersonsWidgetsAndSettings` (an ordinary launch turns Hide
+    Completed on; a `-uitest` launch starts with it off and logs; the next ordinary launch finds the same widget habits,
+    by ID, and Hide Completed still on), with `WidgetUITests`, `ArrangeUITests`, `TodayUITests` and `PersistenceUITests`.
+    The test wasn't run against the old build (it would publish over the person's file and reset the switch, by the
+    code it replaced). **iPhone check:** run any UI test on the phone, then open the app: the Home Screen widgets show
+    your own habits and your Today settings are as you left them.
+
+- [x] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
+  - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area
+    the user describes as just below the progress bar. Assess whether it should stay there or move to a sticky
+    bottom action instead.
+  - Research a native, discoverable and easy-to-reach arrangement that preserves search and note browsing. Check
+    scrolling, safe-area spacing and keyboard behavior; a bottom action must not obscure notes or search results.
+  - Record the recommended placement before implementing it. The user has asked for research rather than deciding
+    that both History and Notes must use bottom controls.
+  - **Built, 5 Oct 2026, with item 26** (branch `claude/timer-swipe-limits-and-fixes`): the 4 Oct handoff's
+    recommendation (no sticky bottom bar; search across the full width, Add Note on its own row under it), at the
+    user's request that Add Note match History's buttons. Tests: pending (`HabitPageUITests.testNotesFlows`).
+  - [x] **Tested on GitHub** (run `37826155392`, 8 Oct 2026): `testNotesFlows`, `testNotesFoldByMonthLikeHistory` and `testNoteViewEditAndDelete`
+    passed. iPhone check (U9): still to do.
+
+- [x] **26. History: fix the unreadable Add Entry button.** Added 4 October 2026; a readability issue independent of
+  the action-placement research in item 27.
+  - The user observes a white/light-gray button background with white text, making Add Entry illegible. Verify the
+    current rendered appearance and fix the contrast in the actual button states.
+  - Check light and dark mode and the real iPhone; the label must stay readable. Preserve the action's function.
+    Moving the button to another location alone does not fix its text/background contrast.
+  - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
+    item 22. Do not solve this by removing History's Add Entry action.
+  - **The user's words, 5 Oct:** "Apart from being unreadable, they look a little big: they aren't primary actions,
+    they're secondary. People use them rarely, but for those who do, they should be good."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and
+    Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>) §5): the cause was Add Entry's
+    filled style, white text on dark mode's off-white ink. Add Entry and Go to Date are now native bordered buttons at
+    their own width (ink text on a light ink tint, readable in both modes), regular size; Notes' Add Note the same.
+    Then (the user, 5 Oct: "Add Note was bigger than a cramped search bar; do we need search there or a full-page
+    search?"): Notes keeps an inline search, now across the full width, with Add Note on its own row under it, one
+    shared button style with History. Tests: pending (`HabitPageUITests.testHistoryFlows`, `testNotesFlows`, the
+    dark pictures).
+  - [x] **Tested on GitHub** (run `37826155392`, 8 Oct 2026): `HabitPageUITests` 10/10, `testHistoryFlows`, `testNotesFlows` and
+    `testPicturesDark` included. The dark and light pictures show Add log and Go to Date (the 7 Oct names, U21) as
+    readable bordered buttons at their own width, and Add note on its own row. iPhone check (U9): still to do.
+
+- [x] **25. “What the squares mean”: expand automatically only on the first visit to each explanation context.**
+  **Superseded by item 57 (the user, 6 Oct 2026): one app-wide state, folded everywhere once folded anywhere.**
+  Added 4 October 2026; a standalone behavior task covering both the habit details page and the main Progress page.
+  - **First visit:** the accordion must already be open when the person first opens the particular habit's details
+    page and reaches its explanation, so the meaning of the squares is visible without discovering an extra tap.
+  - **Main Progress:** apply the same behavior to the first visit to Week, Month, Year, and any other relevant view
+    with this explanation. Seeing Week's explanation must not incorrectly suppress a first-time explanation in
+    Month or Year; seeing one habit's explanation must not consume another habit's first visit.
+  - **Later visits:** once the person has seen that explanation, start it collapsed on subsequent visits. They can
+    manually expand it whenever they want. Leaving it open once must not make it default to open forever.
+  - Record first-view state across normal navigation and app relaunches. Switching dates/periods or rebuilding a
+    view is not a new first visit. Do not automatically collapse it immediately during the first visit; the request
+    is to change the default on the next visit.
+  - Use the exact context of the explanation when implementing this: the applicable habit page or Progress view.
+    Cover every instance of this accordion, and document the state scope so it does not repeat unexpectedly or
+    stay closed for a context the person has never seen. Reset/reinstall and cross-device state policy was not
+    specified by the user.
+  - Verify first visit open → next visit closed → manual reopening works, independently for the relevant habits
+    and Progress ranges. This task must remain separate from card padding and other visual redesigns.
+  - **The user's words, 5 Oct:** "It should be open only for the very first time; everywhere else, closed."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): open by
+    itself only on the first visit to each habit's page and each Progress range; folded on later visits, a tap opens
+    it, never folds during a visit; kept across launches. Tests: pending.
+  - [x] **Closed by item 57** (one app-wide state replaced the per-place rule); its tests passed on GitHub (run `37826155392`, 8 Oct 2026):
+    `HabitPageUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere` and `WeekCardsUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere`.
+
+- [x] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
+  when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
+  as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
+  - **The user's words, 5 Oct, tidied:** "Overall completion only: the 4th of 4 steps; the log that crosses an amount
+    of 10, even to 11; the same for time, typed time included. Never for quit habits or Log Slip."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
+    decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
+    goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
+  - [x] **Tested on GitHub** (run `37826155392`, 8 Oct 2026, cloud session): `CompletionFeedbackUITests` passed on the current branch (`main` plus
+    items 49 and 53). iPhone check (U9): hear and feel each kind complete once.
+
+- [x] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
+  `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
+  merges (`claude/habit-details-perf`, 4 Oct; hitch ms/s, targets under 5): Today scrolling 0 → 28; +1 alone 1–3 → 25;
+  day ‹ › alone 30–63 → 116; habit form typing 8–9 → 45 (a 496 ms freeze); Progress period ‹ › 50–125 → 164; menu
+  47–114 → 54. Hosted runs vary 2–3×, so repeated before blaming anything (S2).
+  - **Not from the Day-details merge:** three runs each of `main` just before it (`3530e98`, the timer/swipe/limits
+    branch) and after (`c09cdb9`): Today scrolling 18/64/44 vs 41/23/23, day ‹ › alone 119/99/92 vs 162/51/59, +1 alone
+    4.4/1.6/1.8 vs 15.5/5.5/3.4, Day sheet scrolling 36/20/44 vs 14/7/8; habit form 32 vs 30, Progress 163 vs 165 (runs
+    `37324688193`, `37330377255`, `37330449077` vs `37324703983`, `37330393173`, `37330464579`).
+  - **So the change came with the timer/swipe/limits/completion-sound merge.** To do: bisect its commits with the
+    scenarios above (Today `scroll-today`, `tap-today`; `new-habit`; `progress`), fix, and measure on the iPhone.
+  - **8 Oct 2026 (cloud session): side by side in one job** (new `ios-perf-bisect.yml`, `Tools/perf/bisect_perf.sh`: each
+    commit built in the same job, every scenario run on each in turn, two rounds, rotated order; run `37774018835`).
+    Median hitch ms/s, base `396c40e` (4 Oct) / end of timer-swipe-limits `c9909e6` / `main` `e3afd6c`: Today scrolling
+    12.6 / 27.6 / 11.3 (each variant's first round carries the first-scroll freeze; second rounds 5.2 / 7.7 / 4.9);
+    habit form typing 14.2 / 18.8 / 15.8; Progress period ‹ › and range 107.5 / 128.5 / 93.1; day ‹ › alone 59.8 /
+    87.8 / 73.5. **So scrolling, typing and Progress are not slower on `main` than on 4 Oct**: the 5 Oct numbers were
+    separate runs on different machines (L22). **What is slower: the +1 tap** (+1 alone 1.5 / 3.4 / 15.5; +1 and day
+    ‹ › 62.3 / 83.7 / 123.8), and it came after `c9909e6`. Next: bisect `c9909e6..e3afd6c` with `tap-today`.
+  - **Second bisect** (run `37788595991`, `tap-today`, three rounds): base `396c40e` / `3530e98` (completion sound) /
+    `a3d33bf` (6 Oct week goals) / `84d42ef` (7 Oct redesign) / `main`: +1 alone 3.6 / 2.6 / 1.1 / 1.2 / 1.1 (so the first
+    run's 15.5 was one bad round); +1 and day ‹ › 54.5 / 53.1 / 55.4 / 57.0 / **115.6**; day ‹ › alone 59.4 / 65.5 / 62.9 /
+    61.5 / 90.7. Only the last commit, `e3afd6c` (widget taps, 8 Oct), differs. Its timed work showed 14 widget
+    publications inside the window (0 before): the locked delay went from 2 s to 0.5 s (W11), and a cycle of +1, ‹, ›
+    takes 1.05 s.
+  - **Third** (run `37797217908`, a speed-run switch `-perf-no-widget-publish` beside `main`): +1 and day ‹ › `84d42ef`
+    52.0 / `main` 95.2 / `main` without publication 103.8. **So the publication isn't the cost.** The same binary with
+    and without the switch also measured habit-form typing 57.5 against 22.6 and Progress paging 148 against 111 in
+    scenarios where no publication happened at all: on that machine, identical work varied 2.5×. Two rounds aren't
+    enough to judge a 2× difference; the next run takes four.
+  - **Fourth, four rounds** (run `37804587883`, `tap-today`; a slower machine, every number ~2.5× the earlier runs):
+    +1 and day ‹ › base 159.1 / `84d42ef` 159.2 / `main` 181.6 (`main`'s rounds 138–191, base's 139–174); day ‹ › alone
+    141.0 / 145.8 / 128.8; +1 alone 6.8 / 11.3 / 8.7. **Nothing has got slower since 4 Oct.** The 5 Oct numbers compared
+    runs on different hosted machines (lesson L29; Rulebook S2 now says a regression is called only from builds measured
+    in turns in one job, four rounds or more).
+  - [x] **Done 8 Oct 2026** (cloud session): no app code to undo; the bisect tool (`ios-perf-bisect.yml`,
+    `Tools/perf/bisect_perf.sh`) and the speed-run switch `-perf-no-widget-publish` stay for the next time. Runs
+    `37774018835`, `37788595991`, `37797217908`, `37804587883`. **Still above the targets on every build, 4 Oct's included**
+    (not a regression; listed under "Open" in `PERFORMANCE-LESSONS.md`): Today's day ‹ ›, habit-form typing at a letter
+    every 50–80 ms, Progress's period and range switch, Today's first scroll. **iPhone speed check: still to do**
+    (`measure_perf_device.sh`; the phone has the final word, and on 2 Oct it measured the day switch with +1 at 40 ms/s and
+    Progress's switch at 110).
 
 - [x] **9. Widgets: choose the habit, one widget per habit, and a visual overhaul.** Widgets work (free and Plus
   kinds), but adding a widget always shows one particular habit: there's no way to pick which habit, switch to

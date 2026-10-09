@@ -62,8 +62,13 @@ final class HabitPageUITests: XCTestCase {
         sleep(1)
     }
 
+    /// Switches tab and checks it switched: on a busy hosted simulator a tap during the page's first seconds was lost
+    /// and the test went on scrolling History (run 37836789385, 8 Oct 2026).
     private func tab(_ title: String) {
-        app.segmentedControls["habit-tabs"].buttons[title].tap()
+        let button = app.segmentedControls["habit-tabs"].buttons[title]
+        button.tap()
+        if !button.wait(for: \.isSelected, toEqual: true, timeout: 5) { button.tap() }
+        XCTAssertTrue(button.wait(for: \.isSelected, toEqual: true, timeout: 5), "\(title) is the tab shown")
         sleep(1)
     }
 
@@ -72,6 +77,21 @@ final class HabitPageUITests: XCTestCase {
     private func scrollTo(_ element: XCUIElement, swipes: Int = 10) -> Bool {
         for _ in 0..<swipes where !(element.exists && element.isHittable) { app.swipeUp(velocity: .slow) }
         return element.exists && element.isHittable
+    }
+
+    /// Drags the page 250 pt at a time until the element's top edge is in the screen's upper part (below the tabs), so a
+    /// card taller than the screen shows its top, not its middle.
+    @discardableResult
+    private func bringTopIntoView(_ element: XCUIElement) -> Bool {
+        let middle = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.6))
+        for _ in 0..<30 {
+            let top = element.exists ? element.frame.minY : .infinity
+            if top > 180 && top < 420 { return true }
+            let up = top >= 420
+            middle.press(forDuration: 0.05, thenDragTo: middle.withOffset(CGVector(dx: 0, dy: up ? -250 : 120)))
+            sleep(1)
+        }
+        return false
     }
 
     private func topOfPage() {
@@ -323,5 +343,74 @@ final class HabitPageUITests: XCTestCase {
         app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.minX + 12 + 20 + 12, dy: frame.minY + 120)).tap()
         sleep(1)
         shot("hp-year-1-selected")
+    }
+
+    /// Streaks on the habit's Progress tab (Current Work 23, 8 Oct 2026): Current and Best, early, in the goal's own unit
+    /// (days for a daily habit, weeks for a weekly total); gone when Show Streaks is off, while the total stays.
+    func testStreaksOnTheProgressTab() {
+        launch()
+        for (name, unit) in [("Water", "day"), ("Running", "week")] {
+            open(name)
+            tab("Progress")
+            let current = app.descendants(matching: .any)["habit-streak-current"]
+            let best = app.descendants(matching: .any)["habit-streak-best"]
+            XCTAssertTrue(bringTopIntoView(current), "\(name): the current streak, early in Progress")
+            XCTAssertTrue(current.label.hasPrefix("Current streak") && current.label.contains(unit), "\(name): \(current.label)")
+            XCTAssertTrue(best.label.hasPrefix("Best streak") && best.label.contains(unit), "\(name): \(best.label)")
+            func number(_ label: String) -> Int { Int(label.split(separator: " ").first { Int($0) != nil } ?? "") ?? -1 }
+            XCTAssertLessThanOrEqual(number(current.label), number(best.label), "\(name): the best is never below the current")
+            shot("hp-streaks-\(name.lowercased())")
+            back()
+        }
+        app.terminate()
+        app.launchArguments = ["-uitest", "-year-demo", "-progress.showStreaks", "NO"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+        open("Water")
+        tab("Progress")
+        let milestones = app.descendants(matching: .any)["habit-milestones"]
+        XCTAssertTrue(bringTopIntoView(milestones), "Milestones stay: a total isn't a streak")
+        XCTAssertFalse(app.descendants(matching: .any)["habit-streak-current"].exists, "Show Streaks off: no streak")
+        shot("hp-streaks-off")
+    }
+
+    /// The Week, Month and Year cards' spacing (Current Work 31, 8 Oct 2026): each card's title with the card's full top
+    /// padding, in light, dark and a large accessibility text size. Pictures of each card's top.
+    func testPeriodCardSpacing() {
+        for (name, theme, size) in [("light", "light", ""), ("dark", "dark", ""), ("large-text", "light", "UICTContentSizeCategoryAccessibilityL")] {
+            app.terminate()
+            app.launchArguments = ["-uitest", "-year-demo", "-appearance.theme", theme]
+                + (size.isEmpty ? [] : ["-UIPreferredContentSizeCategoryName", size])
+            app.launch()
+            XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+            open("Water")
+            tab("Progress")
+            for card in ["habit-progress-week", "habit-progress-month", "habit-year-grid"] {
+                let element = app.descendants(matching: .any)[card]
+                XCTAssertTrue(bringTopIntoView(element), "\(card)'s top on screen (\(name))")
+                shot("hp-cards-\(name)-\(card)")
+            }
+        }
+    }
+
+    /// Every day number, 1 to 31, beside its row (Current Work 32, 8 Oct 2026): light, dark and a large accessibility
+    /// text size (the labels stop growing where "31" still fits). Pictures only: the grid is one Canvas.
+    func testYearInPixelsDayNumbers() {
+        for (name, theme, size) in [("light", "light", ""), ("dark", "dark", ""), ("large-text", "light", "UICTContentSizeCategoryAccessibilityL")] {
+            app.terminate()
+            app.launchArguments = ["-uitest", "-year-demo", "-appearance.theme", theme]
+                + (size.isEmpty ? [] : ["-UIPreferredContentSizeCategoryName", size])
+            app.launch()
+            XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+            open("Swim")
+            tab("Progress")
+            let grid = app.descendants(matching: .any)["habit-year-grid"]
+            XCTAssertTrue(scrollTo(grid, swipes: 16), "Year in Pixels (\(name))")
+            shot("hp-year-days-\(name)-1-top")
+            app.swipeUp(velocity: .slow); sleep(1)
+            shot("hp-year-days-\(name)-2-middle")
+            app.swipeUp(velocity: .slow); sleep(1)
+            shot("hp-year-days-\(name)-3-end") // 27 to 31
+        }
     }
 }

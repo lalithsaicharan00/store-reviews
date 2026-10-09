@@ -1,0 +1,142 @@
+# Speed bisect (8 Oct 2026, Current Work 49): builds several commits in ONE job and measures them side by side on one
+# simulator (iOS/Tools/perf/bisect_perf.sh), because hosted runs vary 2-3x between machines and only variants measured
+# in the same run can be compared (Rulebook S2, PERFORMANCE-LESSONS L22).
+#
+# Runs only on a push whose commit message contains [ios-perf-bisect], with lines naming what to measure:
+#   perf-variants: base=396c40e head=HEAD nosound=HEAD+-perf-switch+no-sound
+#   perf-scenarios: scroll-today tap-today new-habit progress
+#   perf-rounds: 4   (four or more to call a difference: two rounds on one machine have varied 2.5x, L29)
+# A variant is name=ref, optionally with extra launch arguments after "+" (PerfSwitches). Keep the builds to three or
+# four: each takes ~4-5 minutes and the job stops at 60. Results: the summary goes to ci-results like ios-tests.yml.
+# Before a tagged push, check the repository's live runs (Rulebook T10).
+name: iOS speed bisect
+
+on:
+  push:
+    branches-ignore: [ci-results]
+
+permissions:
+  contents: write  # to push the summary to the ci-results branch
+
+jobs:
+  bisect:
+    if: contains(github.event.head_commit.message, '[ios-perf-bisect]')
+    concurrency:
+      group: ios-job-${{ github.ref }}
+      cancel-in-progress: false
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      MESSAGE: ${{ github.event.head_commit.message }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: What to measure
+        run: |
+          VARIANTS=$(printf '%s\n' "$MESSAGE" | sed -n 's/^perf-variants: *//p' | head -1)
+          SCENARIOS=$(printf '%s\n' "$MESSAGE" | sed -n 's/^perf-scenarios: *//p' | head -1)
+          ROUNDS=$(printf '%s\n' "$MESSAGE" | sed -n 's/^perf-rounds: *//p' | head -1)
+          echo "VARIANTS=${VARIANTS:-base=HEAD~1 head=HEAD}" >> "$GITHUB_ENV"
+          echo "SCENARIOS=${SCENARIOS:-scroll-today tap-today new-habit progress}" >> "$GITHUB_ENV"
+          echo "ROUNDS=${ROUNDS:-2}" >> "$GITHUB_ENV"
+          # The tools come from this commit, whatever the commit being built.
+          cp -R iOS/Tools/perf "$RUNNER_TEMP/perf-tools"
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}-apple-release
+          restore-keys: |
+            gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Build each commit
+        run: |
+          set -o pipefail
+          HEAD_SHA=$(git rev-parse HEAD)
+          REFS=$(for V in $VARIANTS; do S="${V#*=}"; echo "${S%%+*}"; done | awk '!seen[$0]++')
+          # Every ref resolved before the first checkout moves HEAD.
+          PAIRS=$(for REF in $REFS; do echo "$REF=$(git rev-parse "$REF")"; done)
+          for PAIR in $PAIRS; do
+            REF="${PAIR%%=*}"; SHA="${PAIR#*=}"
+            echo "::group::Build $REF ($SHA)"
+            git -c advice.detachedHead=false checkout -q -f "$SHA"
+            (cd iOS && xcodebuild build -project Habits.xcodeproj -scheme Habits -configuration Debug \
+              -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath "$RUNNER_TEMP/dd" ARCHS=arm64 \
+              CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 \
+              | tee "$RUNNER_TEMP/build-$REF.log" | grep -E "error:|BUILD" || true)
+            grep -q "BUILD SUCCEEDED" "$RUNNER_TEMP/build-$REF.log" || { echo "Build of $REF failed"; exit 1; }
+            mkdir -p "$RUNNER_TEMP/apps/$REF"
+            cp -R "$RUNNER_TEMP/dd/Build/Products/Debug-iphonesimulator/Habits.app" "$RUNNER_TEMP/apps/$REF/"
+            echo "::endgroup::"
+          done
+          git -c advice.detachedHead=false checkout -q -f "$HEAD_SHA"
+
+      - name: Pick a simulator
+        timeout-minutes: 8
+        run: |
+          sudo xcodebuild -runFirstLaunch
+          xcrun simctl shutdown all || true
+          ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+          echo "SIM=$ID" >> "$GITHUB_ENV"
+          xcrun simctl erase "$ID"
+          xcrun simctl boot "$ID" || true
+          xcrun simctl bootstatus "$ID" -b
+
+      - name: Measure side by side
+        run: |
+          mkdir -p iOS/bisect
+          "$RUNNER_TEMP/perf-tools/bisect_perf.sh" "$SIM" iOS/bisect "$RUNNER_TEMP/apps" "$VARIANTS" "$SCENARIOS" "$ROUNDS"
+
+      - name: Write the summary
+        if: always()
+        run: |
+          {
+            echo "# ${GITHUB_REF_NAME} @ ${GITHUB_SHA:0:7} (speed bisect)"
+            echo
+            echo "Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} · $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo "Commit: $(git log -1 --format=%s)"
+            echo
+            echo "Variants: \`$VARIANTS\` · scenarios: \`$SCENARIOS\` · rounds: $ROUNDS"
+            echo
+            for V in $VARIANTS; do S="${V#*=}"; R="${S%%+*}"; echo "- ${V%%=*}: $(git log -1 --format='%h %s' "$R" 2>/dev/null | cut -c1-110)"; done
+            echo
+            cat iOS/bisect/bisect-summary.md 2>/dev/null || echo "No results."
+          } > iOS/summary.md
+          cat iOS/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Push the summary to ci-results
+        if: always()
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DIR="$RUNNER_TEMP/ci-results"; mkdir -p "$DIR"; cd "$DIR"
+          git init -q
+          git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git fetch -q --depth 1 origin ci-results; then git checkout -q -b ci-results FETCH_HEAD; else git checkout -q --orphan ci-results; fi
+          mkdir -p runs
+          cp "$GITHUB_WORKSPACE/iOS/summary.md" latest.md
+          cp latest.md "runs/$(date -u +%Y-%m-%d-%H%M)-${GITHUB_REF_NAME//\//-}-${GITHUB_SHA:0:7}-bisect.md"
+          git add -A
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Bisect results for ${GITHUB_SHA:0:7} (${GITHUB_REF_NAME})"
+          for i in 1 2 3; do git push -q origin ci-results && break; git pull -q --rebase origin ci-results; done
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-bisect
+          path: iOS/bisect
+          retention-days: 7

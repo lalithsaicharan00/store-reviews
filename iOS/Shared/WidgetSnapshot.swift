@@ -189,7 +189,20 @@ nonisolated enum WidgetDisk {
     static let group = "group.com.oftenenough.app"
     static let privacyKey = "widgets.hideContent"
     static let maximumBytes = 16 * 1024 * 1024
-    static var directory: URL? { FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: group) }
+    /// The person's widget files, in the App Group. A test launch (`-uitest`: its own in-memory database) keeps its own
+    /// in a folder of their own: a UI test on a real iPhone never shows its demo habits on the person's Home Screen,
+    /// never saves the person's waiting taps into its throwaway database (and removes them), and never changes their
+    /// widgets' privacy or analytics files (the user, 8 Oct 2026, Current Work 74; D8). The widget extension is never a
+    /// test launch, so it always reads the person's. Every W1–W17 decision is unchanged.
+    static var directory: URL? {
+        guard let root = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: group) else { return nil }
+        guard testLaunch else { return root }
+        let own = root.appendingPathComponent("uitest", isDirectory: true)
+        try? FileManager.default.createDirectory(at: own, withIntermediateDirectories: true)
+        return own
+    }
+    /// A UI test's launch of the app (`-uitest`); never the widget extension.
+    static let testLaunch = ProcessInfo.processInfo.arguments.contains("-uitest")
     static var url: URL? { directory?.appendingPathComponent("widget-snapshot-v2.json") }
 
     #if DEBUG
