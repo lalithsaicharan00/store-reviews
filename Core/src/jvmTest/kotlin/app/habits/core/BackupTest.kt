@@ -225,6 +225,23 @@ class BackupTest {
             println("BACKUP SIZE $label: full ${readable / 1024} KB, automatic ${automatic / 1024} KB (${100 * automatic / readable}%), automatic gzipped again ${gz / 1024} KB")
             assertTrue(automatic < readable * 0.25, "$label: automatic $automatic vs full $readable")
         }
+
+        // The research's average free user a year in (Free Plan Backups §5.2: 5 habits, about 1,500 records), as a phone
+        // makes them: random UUIDs, varied times and values, a note now and then. What 80 uploads a month cost in data.
+        val random = Random(42)
+        val real = repo("realistic")
+        val ids = List(5) { java.util.UUID.randomUUID().toString() }
+        ids.forEachIndexed { i, id -> real.saveHabit(habit(id, listOf("Water", "Read", "Walk", "Stretch", "Journal")[i]), emptyList(), listOf(ReminderRecord(java.util.UUID.randomUUID().toString(), id, 8 + i, 0, null)), 1) }
+        repeat(1_500) { n ->
+            val day = java.time.LocalDate.of(2025, 10, 1).plusDays((n / 4).toLong()).toString()
+            real.addEntry(EntryRecord(java.util.UUID.randomUUID().toString(), ids[n % 5], null, day, (1 + random.nextInt(8)).toDouble(),
+                1_759_000_000_000 + n * 3_600_000L + random.nextInt(3_600_000), "Europe/London", null, null))
+            if (n % 30 == 0) real.saveSetting("note.${ids[n % 5]}|$day", "Felt good after ${random.nextInt(60)} minutes")
+        }
+        val readable = bytes(real.backupFile(info)).size
+        val automatic = bytes(real.automaticBackupFile(info)).size
+        println("BACKUP SIZE 5 habits, 1500 check-ins, real IDs: full ${readable / 1024} KB, automatic ${automatic / 1024} KB (${100 * automatic / readable}%), 80 uploads a month ${80 * automatic / 1024 / 1024.0} MB vs ${80 * readable / 1024 / 1024.0} MB")
+        assertTrue(automatic < readable * 0.35, "realistic: automatic $automatic vs full $readable")
     }
 
     /** A compact file whose other entries were deflated, or with a deflated data.json under format 1, is refused. */

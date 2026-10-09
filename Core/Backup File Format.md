@@ -73,9 +73,16 @@ are `HabitRepository.automaticBackupFile`: the same `manifest.json` (`"format": 
   before inflating anything. The CRC-32, `data.sha256` and `data.bytes` are of the inflated `data.json`, as before.
 - **No `csv/` folder**: it repeated `data.json` for people opening the file in a spreadsheet, and no reader uses it.
 
-Any unzip tool still opens it. Measured (`BackupTest.theAutomaticFileIsSmallerAndRestoresTheSame`, 10 Oct 2026): a
-year of 30 habits and 720 check-ins is **8 KB instead of 187 KB**; 12 habits × 365 days is **41 KB instead of
-1,019 KB** (4 %). Real habits repeat less than the test's, so expect nearer a tenth.
+Any unzip tool still opens it. Measured (`BackupTest.theAutomaticFileIsSmallerAndRestoresTheSame`, 10 Oct 2026):
+
+| Data | Format 1 (full) | Format 2 (automatic) |
+|---|---|---|
+| The research's average free user a year in: 5 habits, 1,500 check-ins, real UUIDs, varied times, notes | 555 KB | **75 KB (13 %)** |
+| 30 habits, 720 check-ins (short test IDs) | 187 KB | 8 KB (4 %) |
+| 12 habits × 365 days (short test IDs) | 1,019 KB | 41 KB (4 %) |
+
+Backed up as you go (about 80 uploads a month, Free Plan Backups §5.2), the average user's **mobile data falls from
+about 43 MB a month to about 6 MB**, under the report's 11 MB target.
 
 Files made for a person stay **format 1** (Save a Backup File, Move to Another Device, a restore's undo file), which
 every app version opens. An app older than 10 Oct 2026 shown a format 2 file says "Update the app" (`newer_version`)
