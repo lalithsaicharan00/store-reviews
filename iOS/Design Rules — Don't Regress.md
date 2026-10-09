@@ -488,6 +488,15 @@ Report: [Backup & Export and Your Account — What People Look For](<../Research
   for) · Erase All My Data (signed out).
 - **Never** a paragraph explaining the screen, "our server" or "we", a row that shows a value nobody can change (no
   "Sync: On"), or anything that makes backup look like part of Plus (D10).
+- **Second pass (the user's review, 9 Oct 2026, Current Work 58.12):** without an account the status says the habits
+  are backed up to **iCloud** (*Backed up today 09:14 · In iCloud*), and an **iCloud** row shows its own state: when, or
+  **Full** (red, fix: back up to an account), **Off** (fix: Settings) or **New Apple Account**. **Create Account** (never a
+  bare "Sign In") with one line: *Encrypted daily backups that follow you to a new phone*; its sheet lists four short
+  benefits (every day, encrypted, a new phone just signs in, devices in sync with Plus). **Never "deleting the app deletes
+  your habits"** (wrong with iCloud on, and it makes people anxious): the free limit is said instead, **one device**
+  (*Free · One device* on the account; Move to a New iPhone: *Without Plus, the two don't stay in sync*). Plus syncs every
+  change and writes no iCloud copy, so it shows *In your account* and no iCloud switch. "Encrypted" means in transit and
+  at rest (Architecture 06), never end-to-end.
 
 ## Sidebar data, tasks and reminders — 30 September 2026
 

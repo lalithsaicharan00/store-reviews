@@ -102,3 +102,29 @@ on these screens is rewritten ("Couldn't reach your account" …).
 D3 (the "No account yet → Create an Account" step), D4 (backup automatic, free, visible with its time), D5 (30-day undo,
 every export importable), D9 (delete account, erase this phone only if chosen), D10 (nothing here is Plus-only), U1/U2
 (native rows, monochrome, red only for problems and Delete), U11 (plain words). Checked with the user on the iPhone (U9).
+
+## 6. Second pass: the user's review (9 Oct 2026, Current Work 58.12)
+
+The user, on the first build: without an account the habits are still backed up to iCloud, and the screen didn't say
+so; "Sign In" alone didn't say why an account is worth it; "Deleting the app deletes your habits" is wrong when there's an
+iCloud copy and makes people anxious; the free plan's real limit is one device, with no sync between devices.
+
+Facts checked before writing a word (Architecture 02, 03, 06; `BackupCenter`; `server/src/backup.ts`):
+
+- **No account:** the backup goes to the person's own iCloud (`iCloud.com.oftenenough.app`, a hidden iCloud Drive
+  folder), read back and checked by SHA-256, on each day something changed. It survives deleting the app, and Restore
+  offers it after reinstalling.
+- **A free account:** the same daily backup goes to the account (seven daily copies), with the iCloud copy beside it.
+  **Encrypted in transit (TLS) and at rest (Cloudflare)**; not end-to-end, so the app says "encrypted", never "only you
+  can read it".
+- **Plus:** every change syncs between devices; no iCloud copy is written (so the screen no longer claims one).
+- **Devices:** free is one device (phone or tablet) with no sync (Architecture 02, 1 Oct); moving takes a backup file
+  or a sign-in. The iOS app is iPhone-only today.
+- **Google Drive** is decided for Android only; the iOS app has no Drive code. A Drive row on iOS would do nothing, so
+  it isn't shown; adding Drive on iOS is a separate piece of work for the user to decide.
+
+What changed: §4's table now reads, without an account, *Backed up today 09:14 · In iCloud* (or *Only on this iPhone ·
+No backup copy yet*), an **iCloud** row with its state (when / Full / Off / New Apple Account, a problem opening its
+fix) and **Create Account** with *Encrypted daily backups that follow you to a new phone*. The sheet behind it lists the
+four reasons in one line each. The account shows *Free · One device*; Move to a New iPhone adds *Without Plus, the two
+don't stay in sync*. Help's "Before deleting the app" now says what really happens.

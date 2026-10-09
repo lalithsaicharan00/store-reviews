@@ -87,7 +87,7 @@ struct RestoreStartView: View {
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
         .task(id: backup.isSignedIn) { await loadCopies() }
         .task { await loadICloud() }
-        .sheet(isPresented: $showSignIn) { SignInSheet() }
+        .sheet(isPresented: $showSignIn) { SignInSheet(title: "Sign In") }
         .sheet(item: $pending) { pending in
             NavigationStack { RestorePreviewView(pending: pending) { dismiss() } }
         }

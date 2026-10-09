@@ -304,7 +304,7 @@ enum HelpTopics {
             HelpTopic(question: "Back up or move to a new phone",
                       answer: "Signed in (free, in ≡ › Account), your habits are backed up for you: on the new phone, sign in. Without an account, ≡ › Backup & Export › Move to a New iPhone sends a backup file; on the new phone, open it, or choose Restore Habits From a Backup and pick it. You see what it holds before anything changes."),
             HelpTopic(question: "Before deleting the app",
-                      answer: "Deleting the app deletes its data from this iPhone. Save a backup file outside the app first, then restore it after reinstalling."),
+                      answer: "With iCloud on or an account, your backup stays: after reinstalling, choose Restore Habits From a Backup (or sign in). With neither, save a backup file outside the app first. Offload App in iPhone Settings keeps everything."),
             HelpTopic(question: "Open my history in a spreadsheet",
                       answer: "In ≡ › Backup & Export, choose Export a Spreadsheet (CSV). Each row is a day's entry or note, with its date."),
             HelpTopic(question: "What's free, and what Plus adds",

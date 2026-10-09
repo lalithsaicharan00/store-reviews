@@ -40,7 +40,8 @@ struct BackupSyncView: View {
                         LabeledContent("Your Account", value: backup.isPlus ? "Plus" : "Free")
                     }
                     .accessibilityIdentifier("backup-account")
-                    if BackupFeatures.iCloudBackup {
+                    // Plus syncs every change instead of writing an iCloud copy, so the switch is only for a free account.
+                    if BackupFeatures.iCloudBackup && !backup.isPlus {
                         Toggle(isOn: Binding(get: { backup.iCloudCopyOn }, set: { backup.setICloudCopy($0) })) {
                             Text("iCloud")
                             if let note = backup.secondCopyNote { Text(note) }
@@ -48,10 +49,12 @@ struct BackupSyncView: View {
                         .accessibilityIdentifier("backup-icloud")
                     }
                 } else {
+                    // Without an account the habits are still backed up to iCloud (free, every day something changed):
+                    // say so, with iCloud's own state (the user, 9 Oct 2026, Current Work 58.12).
+                    if BackupFeatures.iCloudBackup { iCloudRow }
                     Button { showSignIn = true } label: {
-                        LabeledContent("Your Account") { Text("Sign In").foregroundStyle(Color.ink) }
+                        TitleAndLine(title: "Create Account", line: "Encrypted daily backups that follow you to a new phone")
                     }
-                    .foregroundStyle(Color.primary)
                     .accessibilityIdentifier("backup-sign-in")
                 }
             }
@@ -89,7 +92,7 @@ struct BackupSyncView: View {
         .navigationTitle("Backup & Export")
         .navigationBarTitleDisplayMode(.inline)
         .task { await backup.runIfDue() }
-        .sheet(isPresented: $showSignIn) { SignInSheet() }
+        .sheet(isPresented: $showSignIn) { SignInSheet(title: backup.issue?.fix == .signIn ? "Sign In" : "Create Account") }
         .sheet(isPresented: $showRestore) { NavigationStack { RestoreStartView() } }
         .sheet(item: Binding(get: { sharing.map(SharedBackup.init) }, set: { sharing = $0?.url })) { item in
             ShareFileSheet(url: item.url, onFinish: { sharing = nil })
@@ -122,7 +125,7 @@ struct BackupSyncView: View {
                 .accessibilityIdentifier("backup-status")
         } else if backup.place == .phone {
             Label {
-                TitleAndLine(title: "Only on this iPhone", line: "Deleting the app deletes your habits")
+                TitleAndLine(title: "Only on this iPhone", line: "No backup copy yet")
             } icon: { Image(systemName: "iphone") }
                 .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
@@ -144,9 +147,39 @@ struct BackupSyncView: View {
     /// Where the copies are, the way people say it.
     private var placeText: String {
         switch backup.place {
-        case .account: backup.iCloudCopyOn ? "In your account and iCloud" : "In your account"
+        case .account: backup.iCloudCopyOn && !backup.isPlus ? "In your account and iCloud" : "In your account"
         case .iCloud: "In iCloud"
         case .phone: "Only on this iPhone"
+        }
+    }
+
+    /// iCloud without an account: when it last backed up, or what's wrong (Full, Off, New Apple Account), in one row.
+    /// A problem opens its fix; a working iCloud just says when.
+    @ViewBuilder private var iCloudRow: some View {
+        let state = backup.iCloudState
+        let value: String = {
+            if backup.place == .phone { return "Off" }
+            switch state {
+            case .full: return "Full"
+            case .signedOut, .offForApp: return "Off"
+            case .accountChanged: return "New Apple Account"
+            case nil: return backup.lastGood.map { HabitCopy.capitalized(Self.when($0)) } ?? "Not yet"
+            }
+        }()
+        let problem = backup.place == .phone || (state != nil && state != .accountChanged)
+        if problem {
+            Button {
+                if state == .full { fix(.backUpToAccount) } else { fix(.openSettings) }
+            } label: {
+                LabeledContent("iCloud") {
+                    Text(value).foregroundStyle(state == .full ? Color.red : Color.secondary)
+                }
+            }
+            .foregroundStyle(Color.primary)
+            .accessibilityIdentifier("backup-icloud-status")
+        } else {
+            LabeledContent("iCloud", value: value)
+                .accessibilityIdentifier("backup-icloud-status")
         }
     }
 
@@ -254,6 +287,9 @@ struct MoveToNewIPhoneView: View {
                 ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
                     Label(step, systemImage: "\(index + 1).circle")
                 }
+            } footer: {
+                // The free plan's honest limit (the user, 9 Oct 2026): one device at a time; syncing devices is Plus.
+                if !backup.isPlus { Text("Without Plus, the two don't stay in sync: this copies everything once.") }
             }
             Section {
                 Button("Send a Backup File") { Task { await send() } }

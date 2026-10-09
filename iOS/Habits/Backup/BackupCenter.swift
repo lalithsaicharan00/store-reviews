@@ -64,11 +64,18 @@ final class BackupCenter {
     /// app's own, so a test run on a real iPhone can't back its demo habits up over the person's backups, offer them as
     /// an undo, or erase the person's local copies (2 Oct 2026). iCloud counts as absent, as on the simulator.
     @ObservationIgnored private let sandboxed: Bool
+    #if DEBUG
+    /// Test launches only: `-test-icloud ok|full|signedOut|offForApp` stands in for this iPhone's iCloud, which a test
+    /// launch never uses (D8) and the simulator doesn't have, so Backup & Export's iCloud states can be checked.
+    @ObservationIgnored private let testICloud: String?
+    #endif
 
     private(set) var isSignedIn = false
     private(set) var isPlus = false
     /// When the main backup last succeeded and was checked.
     private(set) var lastGood: Date? = nil
+    /// What's wrong with the iCloud copy, if anything (full, off, a different Apple Account): Backup & Export's iCloud row.
+    private(set) var iCloudState: ICloudProblem? = nil
     /// When this iPhone last synced with the account (Plus), since the app opened; nil until the first sync.
     private(set) var lastSynced: Date? = nil
     /// A problem with the main backup, told at once (§4.4).
@@ -102,6 +109,10 @@ final class BackupCenter {
         self.sync = sync
         self.store = store
         self.sandboxed = sandboxed
+        #if DEBUG
+        let arguments = ProcessInfo.processInfo.arguments
+        testICloud = sandboxed ? arguments.firstIndex(of: "-test-icloud").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil } : nil
+        #endif
         defaults = sandboxed ? UserDefaults(suiteName: "com.oftenenough.app.uitest") ?? .standard : .standard
         if sandboxed { Self.sandboxFolder = FileManager.default.temporaryDirectory.appending(path: "uitest", directoryHint: .isDirectory) }
         if let id = defaults.string(forKey: Key.hiddenID) {
@@ -119,6 +130,9 @@ final class BackupCenter {
     /// never had iCloud keeps its habits on the phone (and says so); one whose iCloud worked before and has gone away
     /// stays on iCloud, so the "isn't signed in to iCloud" card says what's wrong (found on GitHub's simulator, 2 Oct).
     var iCloudCopyOn: Bool {
+        #if DEBUG
+        if testICloud != nil { return !defaults.bool(forKey: Key.iCloudOff) }
+        #endif
         guard BackupFeatures.iCloudBackup, !sandboxed, !defaults.bool(forKey: Key.iCloudOff) else { return false }
         return FileManager.default.ubiquityIdentityToken != nil || defaults.data(forKey: Key.iCloudIdentity) != nil
             || defaults.string(forKey: Key.iCloudProblem) != nil
@@ -150,7 +164,14 @@ final class BackupCenter {
         isPlus = sync.isPlus
         lastGood = date(Key.lastGood)
         undoFile = Self.newestUndo()
-        let iCloudProblem = defaults.string(forKey: Key.iCloudProblem).flatMap(ICloudProblem.init(rawValue:))
+        var iCloudProblem = defaults.string(forKey: Key.iCloudProblem).flatMap(ICloudProblem.init(rawValue:))
+        #if DEBUG
+        if let testICloud, !isSignedIn {
+            iCloudProblem = ICloudProblem(rawValue: testICloud)
+            if iCloudProblem == nil && lastGood == nil { lastGood = Date.now.addingTimeInterval(-30) }
+        }
+        #endif
+        iCloudState = place == .phone ? nil : iCloudProblem
         secondCopyNote = place == .account && iCloudCopyOn ? iCloudProblem?.secondCopyNote : nil
         issue = currentIssue(iCloudProblem: iCloudProblem)
         // Fixed: the next problem, even the same kind, may notify again.
@@ -216,6 +237,9 @@ final class BackupCenter {
     /// At every open and background refresh: backs up when due, and re-checks for problems.
     func runIfDue() async {
         refresh()
+        #if DEBUG
+        if testICloud != nil && !isSignedIn { return }
+        #endif
         if isPlus { await readSyncStatus(); return }
         guard place != .phone, !working else { return }
         let now = Date.now
@@ -230,6 +254,9 @@ final class BackupCenter {
     @discardableResult
     func backUpNow() async -> Bool {
         guard !working else { return false }
+        #if DEBUG
+        if let testICloud, !isSignedIn { return testICloud == "ok" }
+        #endif
         if isPlus {
             await sync.syncNow()
             await readSyncStatus()

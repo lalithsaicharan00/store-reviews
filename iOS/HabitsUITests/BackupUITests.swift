@@ -37,7 +37,9 @@ final class BackupUITests: XCTestCase {
         }
         // The status says where the habits are and what deleting the app does, in one line (report "Backup & Export
         // and Your Account", 9 Oct 2026); the groups follow what people come to do; no Sync row and no "our server".
-        XCTAssertTrue(shows(app, row: "backup-status", "Deleting the app deletes your habits"), status(app))
+        XCTAssertTrue(shows(app, row: "backup-status", "No backup copy yet"), status(app))
+        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] 'Deleting the app'")).firstMatch.exists,
+                       "Never \"deleting the app deletes your habits\" (the user, 9 Oct 2026)")
         for header in ["Backed Up To", "Restore & Move", "Export"] {
             XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ==[c] %@", header)).firstMatch.exists, header)
         }
@@ -78,7 +80,8 @@ final class BackupUITests: XCTestCase {
         openBackup(app)
         XCTAssertTrue(shows(app, row: "backup-status", "Only on this iPhone"), status(app))
         XCTAssertFalse(app.buttons["Back Up Now"].exists, "Nowhere to back up to without an account")
-        XCTAssertTrue(app.buttons["backup-sign-in"].exists, "Your Account: Sign In, where the copies go")
+        XCTAssertTrue(app.buttons["backup-sign-in"].label.hasPrefix("Create Account"), "Create Account, with why: \(app.buttons["backup-sign-in"].label)")
+        XCTAssertTrue(shows(app, row: "backup-icloud-status", "Off"), "No iCloud here: the iCloud row says Off")
         XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Sync is part of Plus'")).firstMatch.exists,
                        "Backup never looks like a Plus perk")
         app.revealAndTap(app.buttons["backup-save"])
@@ -220,13 +223,17 @@ final class BackupUITests: XCTestCase {
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-account"]
         XCTAssertTrue(row.waitForExistence(timeout: 5))
-        XCTAssertTrue(row.label.contains("Sign In"), "Signed out, the row says so: \(row.label)")
+        XCTAssertTrue(row.label.contains("Not Signed In"), "Signed out, the row says so: \(row.label)")
         row.tap()
         XCTAssertTrue(app.navigationBars["Account"].waitForExistence(timeout: 5))
         app.buttons["account-sign-in"].tap()
-        XCTAssertTrue(app.navigationBars["Sign In"].waitForExistence(timeout: 5), "Sign In opens the sign-in sheet")
+        XCTAssertTrue(app.navigationBars["Create Account"].waitForExistence(timeout: 5), "Create Account opens the account sheet")
+        for line in ["Backed up every day, automatically", "Encrypted and stored safely", "Back on a new phone just by signing in", "With Plus, all your devices stay in sync"] {
+            XCTAssertTrue(app.staticTexts[line].exists, line)
+        }
+        let sheet = XCTAttachment(screenshot: app.screenshot()); sheet.name = "create-account"; sheet.lifetime = .keepAlways; add(sheet)
         XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] 'our server'")).firstMatch.exists)
-        app.navigationBars["Sign In"].buttons["Cancel"].tap()
+        app.navigationBars["Create Account"].buttons["Cancel"].tap()
         app.navigationBars["Account"].buttons.firstMatch.tap()
 
         openBackup(app)
@@ -237,6 +244,45 @@ final class BackupUITests: XCTestCase {
         let shared = app.otherElements["ActivityListView"].waitForExistence(timeout: 10) || app.buttons["Save to Files"].waitForExistence(timeout: 2)
         XCTAssertTrue(shared, "Send a Backup File opens the share sheet")
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "move-to-a-new-iphone"; shot.lifetime = .keepAlways; add(shot)
+    }
+
+    /// Without an account the habits back up to iCloud, and Backup & Export says so, with iCloud's own state: working
+    /// (when), full (red, with Back Up to Your Account Instead), off (Open Settings) (the user, 9 Oct 2026, Current Work
+    /// 58.12). The simulator has no iCloud, so `-test-icloud` stands in for it (test launches only, D8).
+    func testICloudWithoutAnAccount() {
+        let app = XCUIApplication()
+        func open(_ state: String) {
+            app.terminate()
+            app.launchArguments = ["-uitest", "-test-icloud", state]
+            app.launch()
+            openBackup(app)
+        }
+        func shot(_ name: String) {
+            let attachment = XCTAttachment(screenshot: app.screenshot()); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+        }
+        open("ok")
+        XCTAssertTrue(shows(app, row: "backup-status", "Backed up"), status(app))
+        XCTAssertTrue(shows(app, row: "backup-status", "In iCloud"), status(app))
+        XCTAssertTrue(shows(app, row: "backup-icloud-status", "Just now"), "The iCloud row says when")
+        XCTAssertTrue(app.buttons["backup-now"].exists, "Back Up Now, to iCloud")
+        XCTAssertTrue(app.buttons["backup-sign-in"].label.hasPrefix("Create Account"))
+        shot("backup-icloud-ok")
+
+        open("full")
+        XCTAssertTrue(shows(app, row: "backup-status", "your iCloud is full"), status(app))
+        XCTAssertTrue(shows(app, row: "backup-icloud-status", "Full"))
+        XCTAssertTrue(app.buttons["backup-fix"].label.contains("Back Up to Your Account Instead"), app.buttons["backup-fix"].label)
+        shot("backup-icloud-full")
+
+        open("signedOut")
+        XCTAssertTrue(shows(app, row: "backup-status", "isn't signed in to iCloud"), status(app))
+        XCTAssertTrue(shows(app, row: "backup-icloud-status", "Off"))
+        XCTAssertTrue(app.buttons["backup-fix"].label.contains("Open Settings"))
+        shot("backup-icloud-signed-out")
+
+        open("offForApp")
+        XCTAssertTrue(shows(app, row: "backup-status", "turned off for Often Enough"), status(app))
+        XCTAssertTrue(app.buttons["backup-fix"].label.contains("Open Settings"))
     }
 
     // MARK: Helpers

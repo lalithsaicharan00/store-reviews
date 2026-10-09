@@ -25,7 +25,7 @@ struct BackupIssueSection: View {
                     }
                 }
                 .padding(.vertical, 4)
-                .sheet(isPresented: $showSignIn) { SignInSheet() }
+                .sheet(isPresented: $showSignIn) { SignInSheet(title: backup.issue?.fix == .signIn ? "Sign In" : "Create Account") }
             }
         }
     }

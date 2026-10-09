@@ -32,10 +32,10 @@ struct AccountView: View {
 
     @ViewBuilder private var signedOut: some View {
         Section {
-            Button("Sign In") { showSignIn = true }
+            Button("Create Account") { showSignIn = true }
                 .accessibilityIdentifier("account-sign-in")
         } footer: {
-            Text("Back up to your account, and with Plus, use your habits on all your devices.")
+            Text("Encrypted daily backups that follow you to a new phone. With Plus, all your devices stay in sync. Have one already? This signs you in.")
         }
     }
 
@@ -50,7 +50,7 @@ struct AccountView: View {
             } else {
                 ProgressView()
             }
-            LabeledContent("Plan", value: backup.isPlus ? "Plus" : "Free")
+            LabeledContent("Plan", value: backup.isPlus ? "Plus" : "Free · One device")
                 .accessibilityIdentifier("account-plan")
             // With Plus, when this iPhone last synced: a status, never a switch (users show they want to know when it
             // last ran, and no one asks to turn it off: report "Backup & Export and Your Account" §2).

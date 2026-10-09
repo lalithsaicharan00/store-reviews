@@ -158,8 +158,8 @@ private struct SideMenu: View {
         case .habits: String(store.habits.filter { !$0.archived && $0.kind != .task }.count)
         case .tasks: String(store.habits.filter { !$0.archived && $0.kind == .task }.count)
         case .plus: store.isPlus ? nil : "\(store.activeHabitCount) of \(HabitStore.freeHabitLimit)"
-        // Signed out, the row says where signing in is (report "Backup & Export and Your Account", 9 Oct 2026).
-        case .account: AppModel.shared.backup?.isSignedIn == false ? "Sign In" : nil
+        // Signed out, the row says so (report "Backup & Export and Your Account", 9 Oct 2026).
+        case .account: AppModel.shared.backup?.isSignedIn == false ? "Not Signed In" : nil
         default: nil
         }
     }

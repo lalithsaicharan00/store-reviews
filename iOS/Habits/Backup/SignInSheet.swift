@@ -11,16 +11,23 @@ struct SignInSheet: View {
     @State private var google = GoogleSignIn()
     @State private var apple = AppleSignIn()
     var onSignedIn: () -> Void = {}
+    /// "Create Account" where people come to make one; "Sign In" where the account already exists (restoring from it,
+    /// or signing back in after the account ended the session).
+    var title = "Create Account"
 
     var body: some View {
         NavigationStack {
             Form {
-                // One line each: what an account does, and what's done with the habits in it (report "Backup & Export
-                // and Your Account", 9 Oct 2026: no "we", no "our server").
+                // Why make an account, one short line each (the user, 9 Oct 2026, Current Work 58.12): daily backups,
+                // encrypted (in transit and at rest; Architecture 06), a new phone just signs in, and devices in sync
+                // with Plus. No "we", no "our server", no paragraphs.
                 Section {
-                    Text("Back up to your account, and get your habits back on any phone by signing in.")
+                    Label("Backed up every day, automatically", systemImage: "clock.arrow.circlepath")
+                    Label("Encrypted and stored safely", systemImage: "lock")
+                    Label("Back on a new phone just by signing in", systemImage: "iphone")
+                    Label("With Plus, all your devices stay in sync", systemImage: "arrow.triangle.2.circlepath")
+                } footer: {
                     Text("Used only to back up and sync your habits. Never sold, never for ads.")
-                        .foregroundStyle(.secondary)
                 }
                 Section {
                     if BackupFeatures.appleSignIn {
@@ -35,14 +42,15 @@ struct SignInSheet: View {
                         .accessibilityIdentifier("sign-in-google")
                     }
                 } footer: {
-                    Text(BackupFeatures.iCloudBackup ? "Prefer not to? Your backup stays in your iCloud." : "Prefer not to? Your habits stay on this iPhone.")
+                    Text((BackupFeatures.iCloudBackup ? "Not now? Your habits stay on this one device, backed up to iCloud." : "Not now? Your habits stay on this one device.")
+                         + " Have an account already? These sign you in.")
                 }
                 .disabled(working)
                 if let failure {
                     Section { Text(failure).foregroundStyle(.red) }
                 }
             }
-            .navigationTitle("Sign In")
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
