@@ -445,8 +445,13 @@ final class AppLock {
         if mode == "code", LockKeychain.vault.codeHash == nil {
             let code = value("-test-lock-code") ?? "123456"
             let semaphore = DispatchSemaphore(value: 0)
+            #if DEBUG
+            let trusted: Data? = FakeAuthenticator.startingDomainState
+            #else
+            let trusted: Data? = nil
+            #endif
             Task.detached {
-                await LockKeychain.setCode(code, trusting: FakeAuthenticator.startingDomainState)
+                await LockKeychain.setCode(code, trusting: trusted)
                 semaphore.signal()
             }
             semaphore.wait()

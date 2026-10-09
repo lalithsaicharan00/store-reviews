@@ -429,7 +429,7 @@ struct WidgetActionButton: View {
     static func label(for item: WidgetItem) -> String {
         // Names hidden (Current Work 58): what the button does, without the habit's name ("Add 1", "Mark done").
         if item.name.isEmpty { return discreetLabel(for: item) }
-        switch item.action {
+        return switch item.action {
         case .check: item.done ? "Undo \(item.name)" : "Mark \(item.name) done"
         case .add: "Add \(String((item.actionText ?? "+1").dropFirst())) to \(item.name)"
         case .timerStart: "Start \(item.name) timer"

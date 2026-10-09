@@ -52,7 +52,7 @@ enum WidgetCheck {
         var failures: [String] = []
         func expect(_ value: Bool, _ name: String) { if !value { failures.append(name) } }
         let named = store.widgetSnapshot(now: now)
-        let discreet = named.discreet()
+        let discreet = named.withoutNames()
         let json = (try? JSONEncoder().encode(discreet)).flatMap { String(data: $0, encoding: .utf8) } ?? ""
         let words = store.habits.map(\.name) + store.sections.map(\.name) + ["Quit or Cut Down"]
         let leaked = words.filter { !$0.isEmpty && json.contains($0) }
@@ -604,7 +604,7 @@ enum WidgetCheck {
 /// Uses exactly the views shipped in the extension, at iPhone widget sizes: a rendering test, not WidgetKit's host.
 struct WidgetRenderCheck: View {
     @State private var frame: WidgetFrame?
-    /// The same day with names hidden outside the app (`WidgetSnapshot.discreet()`, Current Work 58).
+    /// The same day with names hidden outside the app (`WidgetSnapshot.withoutNames()`, Current Work 58).
     @State private var discreetFrame: WidgetFrame?
     @State private var discreet = false
     @State private var weekdays: [String] = []
@@ -658,7 +658,7 @@ struct WidgetRenderCheck: View {
             await AppModel.shared.ensureLoaded()
             let snapshot = AppModel.shared.store.widgetSnapshot()
             frame = snapshot.frames.first; weekdays = snapshot.weekdays
-            discreetFrame = snapshot.discreet().frames.first
+            discreetFrame = snapshot.withoutNames().frames.first
             selected = frame?.items.first { !$0.isTask }?.id
         }
     }

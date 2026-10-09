@@ -525,7 +525,7 @@ extension WidgetSnapshot {
     /// icons, colours, fills, counts, "N of M done", the ✓ / + / ▶ / ⏸ buttons, every item, list and token stay, so taps
     /// log exactly as before. Edit Widget's choices say "Habit 1", "Habit 2"… with their icons, sections "Section 1"….
     /// Done here in the app, never in the widget (U26). Not the old `hidden` (no items, taps refused).
-    func discreet() -> WidgetSnapshot {
+    func withoutNames() -> WidgetSnapshot {
         var copy = self
         copy.discreet = true
         copy.hidden = false
@@ -534,19 +534,19 @@ extension WidgetSnapshot {
         copy.choices = choices.enumerated().map { WidgetChoice(id: $1.id, name: "Habit \($0 + 1)", symbol: $1.symbol) }
         copy.frames = frames.map { frame in
             var shown = frame
-            shown.items = frame.items.map(Self.discreet)
+            shown.items = frame.items.map(Self.withoutNames)
             return shown
         }
         return copy
     }
 
     /// One item without its words: no name, and no section before its line.
-    static func discreet(_ item: WidgetItem) -> WidgetItem {
+    static func withoutNames(_ item: WidgetItem) -> WidgetItem {
         var item = item
         item.name = ""
         item.place = ""
         item.todayLine = item.line
-        item.after = item.after?.map(discreet)
+        item.after = item.after?.map(withoutNames)
         return item
     }
 }
@@ -597,7 +597,7 @@ enum PartSectionDone {
         guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
         let telemetry = store.analytics.ticket
         // Hide Names Outside the App (Current Work 58): the same snapshot, every item and button kept, with the words
-        // taken out here in the app (`discreet()`), so the names never reach the shared file (U26).
+        // taken out here in the app (`withoutNames()`), so the names never reach the shared file (U26).
         let discreet = HideNames.isOn
         let ticket = WidgetPublicationOrder.next()
         latestTicket = ticket
@@ -613,7 +613,7 @@ enum PartSectionDone {
         WidgetTiming.mark("publish: snapshot prepared, \(snapshot.frames.first?.items.count ?? 0) items")
         #endif
         guard !Task.isCancelled else { return }
-        if discreet || HideNames.isOn { snapshot = snapshot.discreet() }
+        if discreet || HideNames.isOn { snapshot = snapshot.withoutNames() }
         do {
             // Detached I/O avoids encoding and file coordination on the UI thread.
             // A widget tap (`hold`) or leaving the app reloads at once: the person is about to look at the widget.
@@ -642,7 +642,7 @@ private actor WidgetSnapshotWriter {
         guard ticket >= (latest[file] ?? 0) else { return }
         var snapshot = original
         // A preparation that started before names were hidden can't publish them afterwards.
-        if HideNames.isOn && snapshot.discreet != true { snapshot = snapshot.discreet() }
+        if HideNames.isOn && snapshot.discreet != true { snapshot = snapshot.withoutNames() }
         try WidgetDisk.write(snapshot, to: file)
         #if DEBUG
         WidgetTiming.mark("publish: snapshot written, \((try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? -1) bytes")

@@ -165,7 +165,7 @@ nonisolated struct WidgetSnapshot: Codable, Sendable {
     /// kept so a snapshot written by an older build still reads.
     var hidden: Bool
     /// Hide Names Outside the App (Current Work 58): the app wrote this snapshot without a habit name, task title or
-    /// section name anywhere (`WidgetSnapshot.discreet()`, in the app). Every item, count and button stays, and taps log
+    /// section name anywhere (`WidgetSnapshot.withoutNames()`, in the app). Every item, count and button stays, and taps log
     /// as always. The widget draws the same cards without the words. nil in a snapshot from an older build.
     var discreet: Bool? = nil
     /// The habit lists' cards in Today's order (the person's own, U13), and the task lists' (no Quit or Cut Down).
