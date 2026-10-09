@@ -298,6 +298,9 @@ struct CodeSetup: View {
             }
         }
         .id(first == nil ? "first" : "second")
+        // A code sheet over the locked cover has its own keypad; the container tells the two apart (T9).
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("code-setup")
     }
 }
 

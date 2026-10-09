@@ -18,14 +18,27 @@ final class AppLockUITests: XCTestCase {
     private var cover: (XCUIApplication) -> XCUIElement { { $0.descendants(matching: .any)["app-lock-cover"] } }
 
     /// The test Face ID panel's answer (it stands in for the system's prompt).
+    /// A tap on the test panel that left it showing (once, at a launch, run 37880056940) is said in the log and
+    /// screenshot, then tried once more: the panel is the test's stand-in for the system's prompt, not the app.
     private func answer(_ app: XCUIApplication, _ ok: Bool, file: StaticString = #filePath, line: UInt = #line) {
         let button = app.buttons[ok ? "fake-auth-ok" : "fake-auth-cancel"]
         XCTAssertTrue(button.waitForExistence(timeout: 10), "No Face ID prompt: \(labels(app))", file: file, line: line)
+        let reason = app.staticTexts["fake-auth-reason"].label
         button.tap()
+        let panel = app.descendants(matching: .any)["fake-auth"]
+        let still = app.staticTexts["fake-auth-reason"]
+        if !gone(panel, timeout: 3), still.exists, still.label == reason {
+            print("AppLockUITests: the test Face ID panel's tap was lost (\(reason)); tapping again. \(labels(app))")
+            shot(app, "fake-auth-tap-lost")
+            button.tap()
+        }
     }
 
+    /// The code keys: a code sheet's own (`code-setup`) when one is up over the cover's keypad.
     private func enterCode(_ app: XCUIApplication, _ code: String) {
-        for digit in code { app.buttons["code-key-\(digit)"].tap() }
+        let setup = app.descendants(matching: .any)["code-setup"]
+        let scope: XCUIElement = setup.exists ? setup : app
+        for digit in code { scope.buttons["code-key-\(digit)"].tap() }
     }
 
     private func openPrivacy(_ app: XCUIApplication) {

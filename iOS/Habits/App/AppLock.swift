@@ -260,8 +260,15 @@ final class AppLock {
             let changed = faceIDChanged
             if hadReset { LockKeychain.update { $0.cancelReset() } }
             message = hadReset ? "The code reset was cancelled." : nil
-            opened()
-            if changed { askTrustFaceID = true }
+            // Face ID changed: the cover stays until "Use Face ID again?" is answered (it's asked on the cover; opening
+            // first took the cover, and the question with it, away: AppLockUITests, run 37880056940).
+            if changed {
+                LockKeychain.update { $0.failures = 0; $0.waitEnds = nil }
+                bump()
+                askTrustFaceID = true
+            } else {
+                opened()
+            }
         } else {
             LockKeychain.update { vault in
                 vault.failures += 1
@@ -276,13 +283,15 @@ final class AppLock {
         }
     }
 
-    /// "Use Face ID again?": trust the set as it is now, or keep Face ID off (only the code opens the app).
+    /// "Use Face ID again?": trust the set as it is now, or keep Face ID off (only the code opens the app). Answered on
+    /// the cover, it opens the app.
     func trustFaceID(_ trust: Bool) {
         let state = Self.authenticator.domainState
         LockKeychain.update { vault in
             if trust { vault.trustedDomainState = state; vault.faceIDOff = false } else { vault.faceIDOff = true }
         }
         bump()
+        isLocked = false
     }
 
     /// The page's Use Face ID Again: Face ID once, then trusted as it is now.

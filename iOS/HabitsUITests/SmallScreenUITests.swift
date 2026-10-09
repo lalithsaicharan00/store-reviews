@@ -199,14 +199,14 @@ final class SmallScreenUITests: XCTestCase {
         func row(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
         row("Build or maintain,").tap(); row("Check it off,").tap()
         let reminders = app.descendants(matching: .any)["reminders-row"]
-        for _ in 0..<6 where !reminders.isHittable { app.swipeUp() }
+        // The form builds its rows as they scroll in (at this text size the row is far down): reveal it (run 37881272574).
+        XCTAssertTrue(app.reveal(reminders, maxSwipes: 20), frames(["reminders-row"]))
         reminders.tap()
         let remind = app.switches["Remind Me"]
         XCTAssertTrue(remind.waitForExistence(timeout: 5))
         remind.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
         let says = app.textFields["reminder-says-field"]
-        for _ in 0..<6 where !says.isHittable { app.swipeUp() }
-        XCTAssertTrue(says.isHittable, frames(["reminder-says-field"]))
+        XCTAssertTrue(app.reveal(says, maxSwipes: 20), frames(["reminder-says-field"]))
         says.tap(); says.typeText("The usual")
         XCTAssertTrue(keyboard.waitForExistence(timeout: 5))
         aboveKeyboard(says, "Reminder Says")
