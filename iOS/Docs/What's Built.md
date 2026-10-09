@@ -113,7 +113,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 - [x] ≡ at the top left (replaces the avatar); Today's top bar is ≡ · Filter · +
 - [x] Slides in over Today: opens with ≡ or a swipe from the left edge; closes with a tap on Today, a drag left, or a row
-- [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Reminders · Appearance, Backup & Export · Privacy, Plus, Help & Feedback · About
+- [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Day and Week · Reminders · Appearance, Backup & Export · Privacy & Security, Plus, Help & Feedback · About *(9 Oct 2026, Current Work 58: Privacy became Privacy & Security and the Widgets row went; its guide is Help → Widgets)*
 - [x] Wired: Progress, Habits, all saved Tasks with creation and editing, Times of Day, Day and Week, Appearance, Reminders, Backup & Export, Plus. Help & Feedback and About are blank as requested
 
 ## Progress (≡ → Progress; Phase 1, 30 Sep 2026)
@@ -173,6 +173,17 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 ## From the earlier feature branch (rebuilt on the current app, 1 Oct 2026)
 
 - [x] Lock with Face ID (≡ → Privacy): the iPhone's own Face ID, Touch ID or passcode, never a separate code; a cover whenever the app isn't in front; the switch changes only after Face ID works
+- [x] **Privacy & Security (Current Work 58, 9 Oct 2026; branch `app-lock-privacy-security`, iPhone check pending):**
+  [spec](<Specs/Privacy & Security — What to Build.md>). Unlock With: Face ID or iPhone Passcode (default), or Face ID or an
+  Often Enough code (six digits, a PBKDF2 hash in this iPhone's Keychain only, outliving a reinstall); Face ID changed
+  asks for the code, then "Use Face ID again?"; Forgot Code? (Face ID at once, or a 24-hour reset with the iPhone
+  passcode, shown on the lock screen and the page, cancelled by Face ID or the code); wrong codes wait 1, 5, 15 minutes,
+  then an hour, erasing nothing; Ask Again (Immediately, After 1 Minute, After 15 Minutes; locking the iPhone always
+  locks it). **Hide Names Outside the App** (was Hide widget content, choice carried over; held on by App Lock):
+  discreet widgets whose ✓ / + / ▶ keep logging, reminders and alarms with the habit's own **Reminder Says** words or
+  "Reminder · 8:00", the timer's Live Activity without a name, Siri without names or per-habit suggestions. Help &
+  Feedback has Widgets and Privacy & Security sections. Tests: `AppLockUITests`, `-applockcheck`, `WidgetCheck`,
+  `WidgetReliabilityCheck`, Core `MigrationTest`/`BackupTest`/`SyncTest`, server sync test
 - [x] Siri and Shortcuts: Log a Habit, What's Left Today, Get Habit Progress, Open a Habit; found by ID, so renaming a habit keeps a shortcut working
 - [x] Milestones: "30 days in a row" or "All 5 done today" beside the row's Undo when a tap reaches it, and a Milestones card on the habit page (Show Streaks off hides them); never a pop-up
 - [x] Asking for a review: only Apple's own request, after a week of use, at the tap that finishes today, once per version and 120 days apart

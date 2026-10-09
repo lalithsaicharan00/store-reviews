@@ -42,11 +42,11 @@ enum AppLockCheck {
         expect(lock.waitText == "Try again in 1 minute.", "Five wrong codes in a row: 1 minute (\(lock.waitText ?? "none"))")
         await lock.enter("246810")
         expect(LockKeychain.vault.failures == 5, "While waiting, even the right code isn't taken")
-        for (failures, expected) in [(5, "Try again in 5 minutes."), (6, "Try again in 15 minutes."), (7, "Try again in 1 hour."), (9, "Try again in 1 hour.")] {
-            LockKeychain.update { $0.failures = failures; $0.waitEnds = nil }
+        for (wrong, expected) in [(5, "Try again in 5 minutes."), (6, "Try again in 15 minutes."), (7, "Try again in 1 hour."), (9, "Try again in 1 hour.")] {
+            LockKeychain.update { $0.failures = wrong; $0.waitEnds = nil }
             lock.bump()
             await lock.enter("000000")
-            expect(lock.waitText == expected, "Wrong code \(failures + 1): \(expected) (\(lock.waitText ?? "none"))")
+            expect(lock.waitText == expected, "Wrong code \(wrong + 1): \(expected) (\(lock.waitText ?? "none"))")
         }
         LockKeychain.update { $0.waitEnds = LockClock.now - 1 }
         lock.bump()
