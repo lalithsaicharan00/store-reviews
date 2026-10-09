@@ -328,10 +328,12 @@ final class GroupsUITests: XCTestCase {
         // Dropped in Health's upper third, inside the rows: the old target, 5 % down Health (3.5 pt under the section's
         // top), carried the lifted row over the section header, where the list has no place for it, and the drop was
         // cancelled. The failing run's recording (37400560919, 6 Oct) shows Health make room, then the gap close as
-        // the row reached that edge, and Home go back on release (Current Work 53, 8 Oct 2026).
+        // the row reached that edge, and Home go back on release (Current Work 53, 8 Oct 2026). Held 2 s there, as a
+        // finger rests before letting go: only the first drag of a launch ever missed, and on a slow simulator its
+        // moves and release can arrive together after the first lift's one-time cost (run 37865611952, 9 Oct).
         handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
             .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.3)),
-                   withVelocity: .slow, thenHoldForDuration: 0.6)
+                   withVelocity: .slow, thenHoldForDuration: 2)
         app.navigationBars["Groups"].buttons["Done"].tap()
         XCTAssertTrue(app.buttons["groups-sort-az"].waitForExistence(timeout: 3), "Your order, with Sort A to Z")
         shot("g14-your-order")
@@ -352,7 +354,8 @@ final class GroupsUITests: XCTestCase {
         var results: [String] = []
         var missesHeld = 0
         let launches = 4
-        for hold in [0.6, 2.0] {
+        // Run 37869406687 measured both, 0.6 s and 2 s: none of 4 missed either way. Add 0.6 back to compare again.
+        for hold in [2.0] {
             var misses = 0
             for _ in 0..<launches {
                 app.terminate()

@@ -22,20 +22,6 @@ extension View {
     }
 }
 
-/// Speed and test runs only (Current Work 53, 8 Oct 2026): `-groups-sheet-mode resizes|scrolls|nodismiss` compares the
-/// Filter sheet's gesture settings on a group screen side by side (`GroupsUITests.testGroupDragDropsReliably`).
-enum GroupsSheetDebug {
-    private static var mode: String? {
-        #if DEBUG
-        let arguments = ProcessInfo.processInfo.arguments
-        if let flag = arguments.firstIndex(of: "-groups-sheet-mode"), flag + 1 < arguments.count { return arguments[flag + 1] }
-        #endif
-        return nil
-    }
-    static var onGroupScreen: PresentationContentInteraction { mode == "resizes" || mode == "nodismiss" ? .automatic : .scrolls }
-    static var holdsDismiss: Bool { mode == "nodismiss" }
-}
-
 /// Today's Filter (the button beside +): what Today shows, and the home of groups (Navigation, Round 3; Today reports 13,
 /// 17, 18, 27). Show: All Habits or one group, each chip's number being how many habits it shows on the day open on
 /// Today. Then New Group and Edit Groups, always in sight; then Hide Completed Habits and Hide Completed Tasks, each its
@@ -105,10 +91,6 @@ struct FilterSheet: View {
             .groupDestinations()
         }
         .presentationDetents([.medium, .large], selection: $detent)
-        // On a group screen (full height), a drag in the content is the content's: the sheet's own resize and dismiss
-        // pan doesn't compete with dragging a group into place (Current Work 53, 8 Oct 2026).
-        .presentationContentInteraction(path.isEmpty ? .automatic : GroupsSheetDebug.onGroupScreen)
-        .interactiveDismissDisabled(!path.isEmpty && GroupsSheetDebug.holdsDismiss)
         .onChange(of: path.count) { if path.count > 0 { withAnimation { detent = .large } } }
     }
 
