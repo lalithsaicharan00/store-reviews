@@ -1,7 +1,7 @@
 # 10 Oct 2026: for people who sync across devices, do they want a separate backup (iCloud/Drive/file) too? What goes wrong?
 import json, re, glob, os, sys, collections
 sys.stdout.reconfigure(encoding="utf-8")
-ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "..", "..", "Research")  # the repo's Research/ folder
 P = {
  "WANT_BACKUP_BESIDES_SYNC": r"(sync|synced|syncing|cloud).{0,80}\b(also|additional|separate|independent|extra|second|local|offline)\b (backup|copy|export)|(backup|export).{0,50}\bin case\b.{0,40}(sync|server|cloud|company|app)|sync (is|isn'?t|is not) (a |the same as a )?backup",
  "SYNC_SPREAD_LOSS": r"(sync\w*).{0,80}(deleted|wiped|erased|overwrote|overwritten|lost|disappeared).{0,60}(all|both|every|other) (devices|device|phones|my devices)|(deleted|wiped|erased|gone) (on|from) (all|both|every) (my )?(devices|phones)",
