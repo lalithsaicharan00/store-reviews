@@ -680,6 +680,29 @@ Their placement records scope and priority; implementation has not started.
     - 5. Some habits only: **moved to Future** (the user, 9 Oct 2026); see "Lock only some habits" there.
   - [x] **How it's shown in the app: spec written** (the user, 9 Oct 2026: "it should be communicated in UI properly, like app asks separate code when Face ID is changed and about cooling period … everything should be in privacy and security tab and remove widgets tab"). [Privacy & Security — What to Build](<../Specs/Privacy & Security — What to Build.md>): ≡ → Privacy becomes **Privacy & Security**; the **Widgets** page is removed, its switch moves to Privacy & Security and its guide (kinds, adding, choosing a habit, the update problem with Try again) moves to Help → Widgets, where a widget's Choose a habit link now goes (U5); every message for the code, Face ID changed, the 24-hour reset, wrong codes, Ask Again, hidden names and Reminder Says.
   - [ ] Build, then check on the iPhone (U9): every door through the lock, drafts kept, Stolen Device Protection.
+    Built by Claude on branch `app-lock-privacy-security` from 9 Oct 2026 (the prompt in the user's 8 Oct request). Each
+    sub-point is ticked with its commit and GitHub run once built and tested on GitHub; the iPhone check is noted
+    separately (W1).
+    - [ ] 58.1 Baseline speed run of `main` before any change (S2): Today, widgets, the menu, the habit form.
+    - [ ] 58.2 Menu: Privacy becomes **Privacy & Security** (row, title, subtitle); the Widgets row and page go; each of
+      its parts moves (spec §1, U5); a widget's Choose a habit link opens Help → Widgets → "Choose a habit for a widget";
+      `widgets_settings` is no longer sent; Design Rules' menu line updated.
+    - [ ] 58.3 App Lock: Unlock With (iPhone passcode / Often Enough code, Keychain this device only, salted slow hash);
+      Face ID changed → code → "Use Face ID again?"; Forgot Code? (Face ID at once, else the 24-hour reset with Cancel
+      Reset and its notification); wrong-code waits 1, 5, 15 min, 1 h; Ask Again (Immediately / 1 / 15 min); locking the
+      iPhone locks the app at once; every way in waits for the unlock.
+    - [ ] 58.4 Hide Names Outside the App (replaces Hide widget content, stored choice migrated; held on by App Lock):
+      discreet widgets whose taps still log, once each, in order (U28 say-so for decisions 1 and 4 only); reminders
+      ("Reminder says…" words / "Reminder · 8:00" / "3 reminders · 8:00" / "Still open · 8:00", "+1", placeholder
+      "Reminder"); alarms; the timer's Live Activity; Siri and Shortcuts.
+    - [ ] 58.5 Reminder Says: a habit field in the form's Reminders screen; Core schema 8 (column added only if
+      missing, D2), `MigrationTest` from every past version, sync, backup and import round trip (D5, D12, D14); server
+      checked (T6).
+    - [ ] 58.6 Help & Feedback: the Widgets section and the Privacy & Security topics (spec §4).
+    - [ ] 58.7 Tests: a new App Lock UI class (test-only lock with a fake authenticator, own Keychain service, D8);
+      `-applockcheck`; widget tests rewritten for discreet cards (T3); PerfDriver scenarios for Privacy & Security and
+      the keypad (T4); small screens (T15).
+    - [ ] 58.8 Regression set and a full speed run compared with 58.1.
 
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
