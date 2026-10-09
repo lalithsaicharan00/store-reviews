@@ -1,5 +1,46 @@
 import SwiftUI
 import Observation
+import UIKit
+
+/// Brings a text field's keyboard up once its screen has arrived (Current Work 32's runs, 8–9 Oct 2026). Focus asked
+/// for while a sheet still slides in is dropped, and SwiftUI can still report the field as focused, so neither one
+/// request nor the focus state can be trusted: it asks again, focus off and on, until iOS says the keyboard is showing,
+/// for up to about 6 s (a slow hosted simulator: runs 37841204161, 37889919376 never showed it). A person who puts the
+/// keyboard away after it has come up isn't overruled.
+@MainActor enum KeyboardArrival {
+    /// How many times the keyboard has come up, so a keyboard shown once and put away stops the asking too.
+    private(set) static var shown = 0
+    /// Whether the keyboard is on screen now (it can already be up when a screen opens from a typing field).
+    private(set) static var visible = false
+    private static var watching = false
+
+    /// Called at launch (`HabitsApp`), so it knows about a keyboard already up when a note screen opens.
+    static func watch() {
+        guard !watching else { return }
+        watching = true
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { _ in
+            MainActor.assumeIsolated { shown += 1; visible = true }
+        }
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { _ in
+            MainActor.assumeIsolated { visible = false }
+        }
+    }
+
+    static func bringUp(_ focused: FocusState<Bool>.Binding, after first: Int = 350) async {
+        watch()
+        let before = shown
+        for attempt in 0..<16 {
+            try? await Task.sleep(for: .milliseconds(attempt == 0 ? first : 400))
+            if Task.isCancelled || shown > before || (visible && focused.wrappedValue && attempt > 0) { return }
+            if focused.wrappedValue {
+                focused.wrappedValue = false
+                try? await Task.sleep(for: .milliseconds(50))
+                if Task.isCancelled { return }
+            }
+            focused.wrappedValue = true
+        }
+    }
+}
 
 // Notes: Add note, Note (view) and Edit note (7 October 2026 redesign, design decisions §7; Rulebook U19, U21). The
 // same mental model as a log: adding is one job; a saved note opens to be read, with Delete note | Edit at the bottom;
@@ -184,16 +225,9 @@ struct AddNoteView: View {
                 asked = true
                 draft.reset(saved(on: day) ?? "")
             }
-            // The keyboard comes up once the sheet has arrived: focus asked for while the sheet still slides in was
-            // sometimes dropped (HabitPageUITests, 5 Oct 2026). On a slow phone the slide can outlast 350 ms, and then
-            // the keyboard never came at all (run 37841204161, 8 Oct 2026): ask again until the field has it, briefly.
-            .task {
-                for wait in [350, 400, 600, 900] {
-                    try? await Task.sleep(for: .milliseconds(wait))
-                    if Task.isCancelled || focused { return }
-                    focused = true
-                }
-            }
+            // The keyboard comes up once the sheet has arrived (`KeyboardArrival`): focus asked for while the sheet
+            // still slides in was dropped, and on a slow device the keyboard never came at all.
+            .task { await KeyboardArrival.bringUp($focused) }
             .onChange(of: day) {
                 // Another day: its own note, if it has one, unless something new has been written already.
                 guard !draft.differs else { return }
@@ -348,10 +382,7 @@ struct NoteView: View {
         draft = NoteDraft(note ?? "")
         editing = true
         // The cursor goes to the end of the text, with the keyboard up, once the switch has drawn.
-        Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(startsEditing ? 350 : 50))
-            focused = true
-        }
+        Task { @MainActor in await KeyboardArrival.bringUp($focused, after: startsEditing ? 350 : 50) }
     }
 
     private func leaveEditing() {

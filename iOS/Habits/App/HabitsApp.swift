@@ -11,6 +11,7 @@ struct HabitsApp: App {
     init() {
         Preferences.register()
         ArrangeTip.configure()
+        KeyboardArrival.watch()
     }
 
     var body: some Scene {
