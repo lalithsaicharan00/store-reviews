@@ -525,7 +525,7 @@ extension WidgetSnapshot {
     /// icons, colours, fills, counts, "N of M done", the ✓ / + / ▶ / ⏸ buttons, every item, list and token stay, so taps
     /// log exactly as before. Edit Widget's choices say "Habit 1", "Habit 2"… with their icons, sections "Section 1"….
     /// Done here in the app, never in the widget (U26). Not the old `hidden` (no items, taps refused).
-    func withoutNames() -> WidgetSnapshot {
+    nonisolated func withoutNames() -> WidgetSnapshot {
         var copy = self
         copy.discreet = true
         copy.hidden = false
@@ -541,7 +541,7 @@ extension WidgetSnapshot {
     }
 
     /// One item without its words: no name, and no section before its line.
-    static func withoutNames(_ item: WidgetItem) -> WidgetItem {
+    nonisolated static func withoutNames(_ item: WidgetItem) -> WidgetItem {
         var item = item
         item.name = ""
         item.place = ""
