@@ -300,9 +300,9 @@ enum HelpTopics {
         ]),
         HelpSection(title: "Your Data", topics: [
             HelpTopic(question: "Where my habits are",
-                      answer: "On this iPhone, and in its iCloud or computer backup if you have one turned on. An account is optional and free: signed in, a copy is also kept on our server so you never lose them. Without one, nothing is sent anywhere unless you share it."),
+                      answer: "On this iPhone, and in its iCloud or computer backup if you have one turned on. An account is optional and free: signed in, a copy is also kept in your account so you never lose them. Without one, nothing is sent anywhere unless you share it."),
             HelpTopic(question: "Back up or move to a new phone",
-                      answer: "Signed in (free, in ≡ › Backup & Export), your habits are backed up for you: on the new phone, sign in and choose Restore. Without an account, choose Save a Backup File and keep it outside the app, in Files or sent to yourself; on the new phone, choose Restore and pick the file. You see what it holds before anything changes."),
+                      answer: "Signed in (free, in ≡ › Account), your habits are backed up for you: on the new phone, sign in. Without an account, ≡ › Backup & Export › Move to a New iPhone sends a backup file; on the new phone, open it, or choose Restore Habits From a Backup and pick it. You see what it holds before anything changes."),
             HelpTopic(question: "Before deleting the app",
                       answer: "Deleting the app deletes its data from this iPhone. Save a backup file outside the app first, then restore it after reinstalling."),
             HelpTopic(question: "Open my history in a spreadsheet",

@@ -184,7 +184,7 @@ final class BackupCenter {
         }
         // Short gaps are normal (no signal, a trip): nothing for the first 2 days.
         if let since = date(Key.failingSince), Date.now.timeIntervalSince(since) > 2 * 86_400 {
-            return Issue(id: "unreachable", text: "Your habits haven't been backed up for 2 days: we can't reach our server. They're safe on this iPhone.", fix: .tryNow)
+            return Issue(id: "unreachable", text: "Not backed up for 2 days: your account can't be reached. Your habits are safe on this iPhone.", fix: .tryNow)
         }
         return nil
     }

@@ -324,7 +324,7 @@ enum PerfDriver {
             await open("Blank page (control, first)") { send(.openBlank) }
             send(.close)
             await pause(1)
-            for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .backup, .privacy, .plus, .help, .about] {
+            for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .account, .backup, .privacy, .plus, .help, .about] {
                 // Twice: the first pays one-time costs (a launch's first form, picker, search bar); the second is
                 // what every later opening costs.
                 await openTwice(place.title) { send(.openPlace(place)) }

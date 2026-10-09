@@ -151,12 +151,15 @@ private struct SideMenu: View {
         }
     }
 
-    /// A count where it helps choose: how many habits and tasks, and how much of the free plan is used.
+    /// A count where it helps choose: how many habits and tasks, and how much of the free plan is used; Sign In on Account
+    /// while signed out.
     private func detail(_ place: MenuPlace) -> String? {
         switch place {
         case .habits: String(store.habits.filter { !$0.archived && $0.kind != .task }.count)
         case .tasks: String(store.habits.filter { !$0.archived && $0.kind == .task }.count)
         case .plus: store.isPlus ? nil : "\(store.activeHabitCount) of \(HabitStore.freeHabitLimit)"
+        // Signed out, the row says where signing in is (report "Backup & Export and Your Account", 9 Oct 2026).
+        case .account: AppModel.shared.backup?.isSignedIn == false ? "Sign In" : nil
         default: nil
         }
     }
@@ -203,6 +206,8 @@ struct MenuPage: View {
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
         case .plus: PlusView(fromMenu: true)
+        case .account:
+            if let backup = AppModel.shared.backup { AccountView().environment(backup) } else { ComingSoonView(place: place) }
         case .backup:
             // Without a database (it couldn't be opened) there's no backup centre; the older page says what's wrong.
             if let backup = AppModel.shared.backup { BackupSyncView().environment(backup) } else { BackupExportView() }

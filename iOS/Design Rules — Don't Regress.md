@@ -466,12 +466,28 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 **Decided and final. Don't reopen it.** The top-left button is a ≡ menu that slides in from the left over Today. Everything that isn't used every day lives there: **Progress, Habits (All Habits) and Tasks leave Today's top bar**, and every setting goes in too. The user overrode Round 3's suggestions to keep Progress in the top bar and to open ≡ as a sheet. Research: [Navigation, Round 3](<../Research/Research Reports/Home Screen and Visual Design/Navigation Pattern/Navigation, Round 3 — The Menu, Filter and Two Ways In.md>). Checklist: [Sidebar Menu](<Docs/Checklists/Sidebar Menu.md>). Code: `Habits/Menu/`. *Supersedes: the avatar at the top left, the Progress and All habits (☑︎ `checklist`) top-bar buttons, and Round 2's avatar-and-icons top bar.*
 
 - **Today's top bar is ≡ · Edit · (Filter +)** (3 Oct 2026). Edit is a word in its own capsule (Apple: keep text-labelled actions apart from symbol ones); Filter and + share one. While arranging: only Done. Filter's icon is `line.3.horizontal.decrease.circle`, never the bare three lines, which look like ≡.
-- **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Day and Week · Reminders · Appearance | Backup & Export · Privacy & Security | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only). There is no Widgets row: how widgets work is Help & Feedback → Widgets, and a widget's Choose a habit opens it there (Current Work 58, 9 Oct 2026).
+- **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Day and Week · Reminders · Appearance | Account · Backup & Export · Privacy & Security | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only). There is no Widgets row: how widgets work is Help & Feedback → Widgets, and a widget's Choose a habit opens it there (Current Work 58, 9 Oct 2026).
   - **Built 9 Oct 2026 (Current Work 58; iPhone check pending):** Privacy became **Privacy & Security**, and the **Widgets** row went: its "Hide widget content" switch is Privacy & Security's **Hide Names Outside the App**, and its guide is Help & Feedback → Widgets (a widget's Choose a habit link opens it). Spec: [Privacy & Security — What to Build](<Docs/Specs/Privacy & Security — What to Build.md>). The lock's own questions ("Use Face ID again?") are asked on the cover, and the app opens only once they're answered. **The cover is in its own window, above sheets, alerts and pushed pages** (an overlay on the root view sat under a sheet and showed a half-typed form, 9 Oct 2026), and locking ends typing so the keyboard never shows over it; the typed text stays.
 - **Every row pushes its page onto Today's own navigation stack** (`MenuModel.path`), so Back and the edge swipe return to Today. A page that isn't built opens a "coming" page that says what it will hold; wire the real page in `MenuPage`.
 - **One screen per thing, however many ways in:** ≡ → Times of Day (`TimesOfDayList`) and Today's Edit (`ArrangeDayView`) open the same `SectionEditor` for a time of day; Habits and Tasks are one `AllHabitsView(kind:)`.
 - **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
 - **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.
+
+## Account and Backup & Export (built 9 Oct 2026, Current Work 58.10–58.11; iPhone check pending)
+
+Report: [Backup & Export and Your Account — What People Look For](<../Research/Research Reports/Data, Sync and Accounts/Backup & Export and Your Account — What People Look For.md>).
+
+- **≡ → Account** (the user, 9 Oct 2026, changing the final menu): signing in, the plan, devices, Sign Out and Delete
+  Account at the bottom. Signed out, the menu row says **Sign In**. Backup & Export's **Your Account** row opens the same
+  page. Signing out leaves the page on its signed-out state.
+- **Backup & Export, in the order people come for it:** the status (**Backed up today 09:14** / *In your account and
+  iCloud*; **Only on this iPhone** / *Deleting the app deletes your habits*; a problem in red with its fix) and **Back Up
+  Now** · **Backed Up To** (Your Account, the iCloud switch only when it can be changed) · **Restore & Move** (**Restore
+  Habits From a Backup…**, never a bare "Restore": 58 of 123 restore reviews mean purchases; **Move to a New iPhone** with
+  its two steps; Undo Last Restore) · **Export** (Save a Backup File, Export a Spreadsheet, one line each saying what it's
+  for) · Erase All My Data (signed out).
+- **Never** a paragraph explaining the screen, "our server" or "we", a row that shows a value nobody can change (no
+  "Sync: On"), or anything that makes backup look like part of Plus (D10).
 
 ## Sidebar data, tasks and reminders — 30 September 2026
 

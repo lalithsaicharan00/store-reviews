@@ -113,7 +113,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 - [x] ≡ at the top left (replaces the avatar); Today's top bar is ≡ · Filter · +
 - [x] Slides in over Today: opens with ≡ or a swipe from the left edge; closes with a tap on Today, a drag left, or a row
-- [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Day and Week · Reminders · Appearance, Backup & Export · Privacy & Security, Plus, Help & Feedback · About *(9 Oct 2026, Current Work 58: Privacy became Privacy & Security and the Widgets row went; its guide is Help → Widgets)*
+- [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Day and Week · Reminders · Appearance, Account · Backup & Export · Privacy & Security, Plus, Help & Feedback · About *(9 Oct 2026, Current Work 58: Privacy became Privacy & Security, the Widgets row went (its guide is Help → Widgets) and Account joined)*
 - [x] Wired: Progress, Habits, all saved Tasks with creation and editing, Times of Day, Day and Week, Appearance, Reminders, Backup & Export, Plus. Help & Feedback and About are blank as requested
 
 ## Progress (≡ → Progress; Phase 1, 30 Sep 2026)
@@ -203,10 +203,14 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 Design: [Backup, Sync and Accounts — One Seamless Experience](<../../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>).
 
-- [x] **≡ → Backup & Export** (merged with the menu's page, 1 Oct): where the backup is and when it last worked, Back Up
-      Now, Restore, Move to Another Device, Save a Backup File, Export a Spreadsheet (CSV), Undo Last Restore (30 days),
-      "Before You Delete the App" (no account); Sync ("part of Plus" when free); sign in or out. Restore also takes the
-      older database backup files (adds only what's missing)
+- [x] **≡ → Backup & Export** (redesigned 9 Oct 2026 from research, Current Work 58.10; iPhone check pending): the
+      status (when, and where: *In your account and iCloud*, or *Only on this iPhone*) with Back Up Now; Backed Up To
+      (Your Account, the iCloud switch); Restore & Move (Restore Habits From a Backup, Move to a New iPhone with its two
+      steps and a file to send, Undo Last Restore for 30 days); Export (Save a Backup File, Export a Spreadsheet); Erase
+      All My Data when signed out. No Sync row and no paragraphs. Restore also takes the older database backup files
+      (adds only what's missing). Report: [Backup & Export and Your Account](<../../Research/Research Reports/Data, Sync and Accounts/Backup & Export and Your Account — What People Look For.md>)
+- [x] **≡ → Account** (9 Oct 2026, Current Work 58.11; iPhone check pending): Sign In when signed out (the menu row says
+      so); signed in, how you sign in, your plan, devices, Sign Out and Delete Account
 - [x] **Accounts are optional and free:** Google sign-in (the system web sheet, no SDK); an unknown sign-in asks
       before creating an account. Sign in with Apple is written but off until the Apple Developer account
 - [x] **A free account backs up to our server** once on each day something changed, confirmed by the server's checksum;

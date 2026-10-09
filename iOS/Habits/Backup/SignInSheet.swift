@@ -15,9 +15,11 @@ struct SignInSheet: View {
     var body: some View {
         NavigationStack {
             Form {
+                // One line each: what an account does, and what's done with the habits in it (report "Backup & Export
+                // and Your Account", 9 Oct 2026: no "we", no "our server").
                 Section {
-                    Text("Your habits are backed up to your account every night, so a new phone just needs a sign-in. Sync between devices comes with Plus.")
-                    Text("We store your habits on our server only to back them up and sync them. We never sell them or use them for ads. Delete everything any time in Settings.")
+                    Text("Back up to your account, and get your habits back on any phone by signing in.")
+                    Text("Used only to back up and sync your habits. Never sold, never for ads.")
                         .foregroundStyle(.secondary)
                 }
                 Section {

@@ -1,71 +1,84 @@
 import LocalAuthentication
 import SwiftUI
 
-/// ≡ → Backup & Export → Your account: how you sign in, your devices, signing out and deleting the account
-/// (Architecture 01 §3.7, 09 §7).
+/// ≡ → Account, and Backup & Export → Your Account (report "Backup & Export and Your Account — What People Look For",
+/// 9 Oct 2026): where people look for signing in and out. Signed out, Sign In and one line. Signed in, how you sign in
+/// and your plan, your devices, then Sign Out and Delete Account at the bottom (Architecture 01 §3.7, 09 §7). Signing out
+/// leaves this page on its signed-out state.
 struct AccountView: View {
     @Environment(BackupCenter.self) private var backup
-    @Environment(\.dismiss) private var dismiss
     @State private var details: BackupCenter.AccountDetails?
     @State private var failed = false
     @State private var confirmSignOut = false
     @State private var showDelete = false
+    @State private var showSignIn = false
 
     var body: some View {
         Form {
-            Section("Sign in with") {
-                if let details {
-                    ForEach(details.signIns) { key in
-                        LabeledContent(Self.providerName(key.provider), value: key.isPrivateEmail ? "Private email" : (key.email ?? ""))
-                    }
-                } else if failed {
-                    Text("Couldn't load your account. Check your connection.").foregroundStyle(.secondary)
-                } else {
-                    ProgressView()
-                }
-            }
-            if let details, !details.devices.isEmpty {
-                Section("Devices") {
-                    ForEach(details.devices) { device in
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(device.isThis ? "\(device.name) (this device)" : device.name)
-                            Text(device.signedIn ? "Last used \(BackupSyncView.when(device.lastSeen))" : "Signed out")
-                                .font(.footnote).foregroundStyle(.secondary)
-                        }
-                        .accessibilityElement(children: .combine)
-                    }
-                }
-            }
-            Section {
-                Button("Sign Out") { confirmSignOut = true }
-                    .accessibilityIdentifier("account-sign-out")
-            } footer: {
-                Text("Your habits stay on this iPhone when you sign out.")
-            }
-            Section {
-                Button("Delete Account…", role: .destructive) { showDelete = true }
-                    .accessibilityIdentifier("account-delete")
-            }
+            if backup.isSignedIn { signedIn } else { signedOut }
         }
-        .navigationTitle("Your Account")
+        .analyticsScreen(.account)
+        .navigationTitle("Account")
         .navigationBarTitleDisplayMode(.inline)
-        .task { await load() }
+        .task(id: backup.isSignedIn) { if backup.isSignedIn { await load() } else { details = nil } }
         .confirmationDialog("Sign out?", isPresented: $confirmSignOut, titleVisibility: .visible) {
-            Button("Sign Out", role: .destructive) {
-                Task {
-                    await backup.signOut()
-                    dismiss()
-                }
-            }
+            Button("Sign Out", role: .destructive) { Task { await backup.signOut() } }
         } message: {
             Text("Your habits stay on this iPhone. They won't be backed up to your account until you sign in again.")
         }
-        .sheet(isPresented: $showDelete, onDismiss: { if !backup.isSignedIn { dismiss() } }) {
-            NavigationStack { DeleteAccountView() }
+        .sheet(isPresented: $showDelete) { NavigationStack { DeleteAccountView() } }
+        .sheet(isPresented: $showSignIn) { SignInSheet() }
+    }
+
+    @ViewBuilder private var signedOut: some View {
+        Section {
+            Button("Sign In") { showSignIn = true }
+                .accessibilityIdentifier("account-sign-in")
+        } footer: {
+            Text("Back up to your account, and with Plus, use your habits on all your devices.")
+        }
+    }
+
+    @ViewBuilder private var signedIn: some View {
+        Section("Signed In With") {
+            if let details {
+                ForEach(details.signIns) { key in
+                    LabeledContent(Self.providerName(key.provider), value: key.isPrivateEmail ? "Private email" : (key.email ?? ""))
+                }
+            } else if failed {
+                Text("Couldn't load your account. Check your connection.").foregroundStyle(.secondary)
+            } else {
+                ProgressView()
+            }
+            LabeledContent("Plan", value: backup.isPlus ? "Plus" : "Free")
+                .accessibilityIdentifier("account-plan")
+        }
+        if let details, !details.devices.isEmpty {
+            Section("Devices") {
+                ForEach(details.devices) { device in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(device.isThis ? "\(device.name) (this device)" : device.name)
+                        Text(device.signedIn ? "Last used \(BackupSyncView.when(device.lastSeen))" : "Signed out")
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        }
+        Section {
+            Button("Sign Out") { confirmSignOut = true }
+                .accessibilityIdentifier("account-sign-out")
+        } footer: {
+            Text("Your habits stay on this iPhone.")
+        }
+        Section {
+            Button("Delete Account…", role: .destructive) { showDelete = true }
+                .accessibilityIdentifier("account-delete")
         }
     }
 
     private func load() async {
+        failed = false
         do { details = try await backup.accountDetails() } catch { failed = true }
     }
 
@@ -95,11 +108,11 @@ struct DeleteAccountView: View {
                 Section {
                     Label("Your account is deleted.", systemImage: "checkmark.circle.fill")
                         .accessibilityIdentifier("account-deleted")
-                    Text("Everything on our server is gone now. Every copy, backups included, is gone by \(goneBy.formatted(date: .long, time: .omitted)).")
+                    Text("Everything in your account is gone now. Every copy, backups included, is gone by \(goneBy.formatted(date: .long, time: .omitted)).")
                 }
             } else {
                 Section {
-                    Text("Deleting your account removes everything on our server: your backups, synced habits, devices and sign-ins. Other devices are signed out and keep what's on them.")
+                    Text("Deleting your account removes everything in it: your backups, synced habits, devices and sign-ins. Other devices are signed out and keep what's on them.")
                     if backup.isPlus {
                         Text("Plus stays yours: restore it from the App Store on this or any new account.")
                     }

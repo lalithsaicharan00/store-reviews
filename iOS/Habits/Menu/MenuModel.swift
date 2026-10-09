@@ -57,15 +57,16 @@ import SwiftUI
 enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     case progress, habits, tasks
     case timesOfDay, dayAndWeek, reminders, appearance
-    case backup, privacy
+    case account, backup, privacy
     case plus
     case help, about
 
     var id: String { rawValue }
 
-    /// The menu's groups, separated by a gap like the iPhone's own Settings.
+    /// The menu's groups, separated by a gap like the iPhone's own Settings. Account leads its group, where people look
+    /// for signing in and out (the user, 9 Oct 2026; report "Backup & Export and Your Account").
     static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
-                                        [.backup, .privacy], [.plus], [.help, .about]]
+                                        [.account, .backup, .privacy], [.plus], [.help, .about]]
 
     var title: String {
         switch self {
@@ -76,6 +77,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .dayAndWeek: "Day and Week"
         case .reminders: "Reminders"
         case .appearance: "Appearance"
+        case .account: "Account"
         case .backup: "Backup & Export"
         case .privacy: "Privacy & Security"
         case .plus: "Plus"
@@ -94,6 +96,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .dayAndWeek: "calendar"
         case .reminders: "bell"
         case .appearance: "circle.lefthalf.filled"
+        case .account: "person.crop.circle"
         case .backup: "externaldrive"
         case .privacy: "hand.raised"
         case .plus: "plus.circle"
@@ -110,6 +113,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .privacy: "Lock the app, hide names outside it, and choose what's shared."
         case .help: "Answers to common questions, and a way to reach us."
         case .about: "The privacy policy and terms."
+        case .account: "Sign in, your plan and devices, signing out."
         case .progress, .habits, .tasks, .timesOfDay, .dayAndWeek, .appearance, .plus: nil
         }
     }

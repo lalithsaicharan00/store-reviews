@@ -3,9 +3,12 @@ import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
-/// ≡ → Backup & Export (Backup, Sync and Accounts §4.3; the menu's name, Design Rules "Sidebar"): one screen, two
-/// clearly separate parts. Backup is "a copy so you never lose your habits"; sync is "the same habits on all your
-/// devices". The two words are never mixed. Free, with or without an account: a backup file, a spreadsheet, restore.
+/// ≡ → Backup & Export (report "Backup & Export and Your Account — What People Look For", 9 Oct 2026; the user: "clean
+/// and easy to understand, easy to scan"). In the order people come for it: whether they're safe (when and where, with
+/// Back Up Now), where the copies are, getting habits back or onto a new iPhone, and files to keep. One line at most under
+/// a row, never a paragraph explaining the screen; places named as people name them ("your account", "iCloud", "this
+/// iPhone"), never "our server". No Sync row: sync is part of the account, and backup and sync are never mixed. Free, with
+/// or without an account (D10).
 struct BackupSyncView: View {
     @Environment(BackupCenter.self) private var backup
     @Environment(HabitStore.self) private var store
@@ -20,79 +23,65 @@ struct BackupSyncView: View {
         Form {
             Section {
                 status
-                LabeledContent("Where", value: whereText)
-                    .accessibilityIdentifier("backup-where")
-                if BackupFeatures.iCloudBackup && backup.isSignedIn {
-                    Toggle("Also a copy in your iCloud", isOn: Binding(get: { backup.iCloudCopyOn }, set: { backup.setICloudCopy($0) }))
-                }
-                if let note = backup.secondCopyNote {
-                    Text(note).font(.footnote).foregroundStyle(.secondary)
+                if let issue = backup.issue, issue.fix != .backUpNow {
+                    Button(issue.fixLabel) { fix(issue.fix) }
+                        .accessibilityIdentifier("backup-fix")
                 }
                 if backup.place != .phone {
                     Button("Back Up Now") { Task { await backUpNow() } }
                         .disabled(backup.working)
                         .accessibilityIdentifier("backup-now")
                 }
-                Button("Restore…") { showRestore = true }
+            }
+
+            Section("Backed Up To") {
+                if backup.isSignedIn {
+                    NavigationLink { AccountView() } label: {
+                        LabeledContent("Your Account", value: backup.isPlus ? "Plus" : "Free")
+                    }
+                    .accessibilityIdentifier("backup-account")
+                    if BackupFeatures.iCloudBackup {
+                        Toggle(isOn: Binding(get: { backup.iCloudCopyOn }, set: { backup.setICloudCopy($0) })) {
+                            Text("iCloud")
+                            if let note = backup.secondCopyNote { Text(note) }
+                        }
+                        .accessibilityIdentifier("backup-icloud")
+                    }
+                } else {
+                    Button { showSignIn = true } label: {
+                        LabeledContent("Your Account") { Text("Sign In").foregroundStyle(Color.ink) }
+                    }
+                    .foregroundStyle(Color.primary)
+                    .accessibilityIdentifier("backup-sign-in")
+                }
+            }
+
+            Section("Restore & Move") {
+                Button("Restore Habits From a Backup…") { showRestore = true }
                     .accessibilityIdentifier("backup-restore")
-                Button("Move to Another Device") { Task { await share() } }
+                NavigationLink { MoveToNewIPhoneView() } label: { Text("Move to a New iPhone") }
                     .accessibilityIdentifier("backup-move")
-                Button("Save a Backup File") { Task { await share() } }
-                    .accessibilityIdentifier("backup-save")
-                Button("Export a Spreadsheet (CSV)") { Task { await exportSpreadsheet() } }
-                    .accessibilityIdentifier("backup-export-csv")
                 if backup.undoFile != nil {
                     Button("Undo Last Restore") { confirmUndo = true }
                         .accessibilityIdentifier("backup-undo")
                 }
-            } header: {
-                Text("Backup")
-            } footer: {
-                Text(backupFooter)
             }
 
-            Section {
-                if backup.isPlus {
-                    LabeledContent("Sync", value: "On")
-                    Text("Your habits sync to every device you sign in on.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                } else {
-                    Text("Sync is part of Plus. Your devices talk through your account.")
-                        .accessibilityIdentifier("sync-plus-only")
+            Section("Export") {
+                Button { Task { await share() } } label: {
+                    TitleAndLine(title: "Save a Backup File", line: "To restore later, here or on another iPhone")
                 }
-            } header: {
-                Text("Sync")
-            } footer: {
-                Text("Sync keeps the same habits on all your devices.")
+                .accessibilityIdentifier("backup-save")
+                Button { Task { await exportSpreadsheet() } } label: {
+                    TitleAndLine(title: "Export a Spreadsheet (CSV)", line: "To open in Numbers, Excel or Google Sheets")
+                }
+                .accessibilityIdentifier("backup-export-csv")
             }
 
             if !backup.isSignedIn {
                 Section {
                     Button("Erase All My Data…", role: .destructive) { confirmErase = true }
                         .accessibilityIdentifier("backup-erase")
-                } footer: {
-                    Text("Removes your habits, check-ins, notes and settings from this iPhone, with its backup copies. Copies in your iCloud and files you exported stay yours.")
-                }
-            }
-
-            Section("Account") {
-                if backup.isSignedIn {
-                    NavigationLink { AccountView() } label: {
-                        LabeledContent("Your account", value: backup.isPlus ? "Plus" : "Free")
-                    }
-                    .accessibilityIdentifier("backup-account")
-                } else {
-                    Button("Sign In to Back Up to Your Account") { showSignIn = true }
-                        .accessibilityIdentifier("backup-sign-in")
-                }
-            }
-
-            if backup.place == .phone {
-                Section("Before You Delete the App") {
-                    Text("Deleting Often Enough removes its data from this iPhone. Reinstalling alone does not bring it back.")
-                    Text("Sign in, or save a backup file somewhere outside the app (Files, AirDrop, Mail), first. After reinstalling, choose Restore.")
-                    Text("Offload App in iPhone Settings keeps your data. Delete App removes it.")
-                        .foregroundStyle(.secondary)
                 }
             }
         }
@@ -111,7 +100,7 @@ struct BackupSyncView: View {
             Button("Erase Everything", role: .destructive) { Task { await erase() } }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Your habits and their history can't be brought back after this, unless you have a backup or an exported file.")
+            Text("Your habits, check-ins, notes and settings leave this iPhone and can't be brought back without a backup. Copies in iCloud and files you saved stay yours.")
         }
         .confirmationDialog("Undo the last restore?", isPresented: $confirmUndo, titleVisibility: .visible) {
             Button("Undo Restore") { Task { await undo() } }
@@ -120,39 +109,53 @@ struct BackupSyncView: View {
         }
     }
 
+    /// Whether they're safe: when, and where (one line under it). A problem says what happened, in red, with its fix.
     @ViewBuilder private var status: some View {
         if let issue = backup.issue {
             Label { Text(issue.text) } icon: { Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.red) }
                 .foregroundStyle(.red)
+                .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         } else if backup.working {
             Label("Backing up…", systemImage: "arrow.triangle.2.circlepath")
+                .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         } else if backup.place == .phone {
-            Label("Saved only on this iPhone", systemImage: "iphone")
+            Label {
+                TitleAndLine(title: "Only on this iPhone", line: "Deleting the app deletes your habits")
+            } icon: { Image(systemName: "iphone") }
+                .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         } else if let last = backup.lastGood {
-            Label { Text("Backed up · " + Self.when(last)) } icon: { Image(systemName: "checkmark.circle.fill").foregroundStyle(.green) }
+            Label {
+                TitleAndLine(title: "Backed up " + Self.when(last), line: placeText)
+            } icon: { Image(systemName: "checkmark.circle.fill").foregroundStyle(.green) }
+                .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         } else {
-            Label("Not backed up yet", systemImage: "clock")
+            Label {
+                TitleAndLine(title: "Not backed up yet", line: placeText)
+            } icon: { Image(systemName: "clock") }
+                .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         }
     }
 
-    private var whereText: String {
+    /// Where the copies are, the way people say it.
+    private var placeText: String {
         switch backup.place {
-        case .account: "Your account (our server)"
-        case .iCloud: "Your iCloud"
-        case .phone: "This iPhone only"
+        case .account: backup.iCloudCopyOn ? "In your account and iCloud" : "In your account"
+        case .iCloud: "In iCloud"
+        case .phone: "Only on this iPhone"
         }
     }
 
-    private var backupFooter: String {
-        switch backup.place {
-        case .account: "A copy so you never lose your habits. On a new phone, just sign in. We store your habits only to back them up and sync them, never sell them or use them for ads."
-        case .iCloud: "A copy so you never lose your habits, in your own iCloud. We can't see it."
-        case .phone: "Your habits are in this iPhone's own backup (if it's on in your iPhone's settings). If this iPhone is lost without one, your habits are lost too. Sign in, or export a file, to keep a copy elsewhere."
+    private func fix(_ fix: BackupCenter.Issue.Fix) {
+        switch fix {
+        case .signIn, .backUpToAccount: showSignIn = true
+        case .tryNow, .backUpNow: Task { await backUpNow() }
+        case .openSettings:
+            if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
         }
     }
 
@@ -167,7 +170,7 @@ struct BackupSyncView: View {
 
     private func backUpNow() async {
         if !(await backup.backUpNow()), backup.issue == nil {
-            message = BackupAlert(title: "Not Backed Up Yet", text: "We couldn't reach our server. Your habits are safe on this iPhone; we'll try again soon.")
+            message = BackupAlert(title: "Not Backed Up Yet", text: "Couldn't reach your account. Your habits are safe on this iPhone and back up when you're online.")
         }
     }
 
@@ -221,4 +224,63 @@ struct BackupAlert: Identifiable {
 private struct SharedBackup: Identifiable {
     let url: URL
     var id: URL { url }
+}
+
+/// A row's title with one plain line under it: what it's for, never a paragraph.
+struct TitleAndLine: View {
+    let title: String
+    let line: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+            Text(line).font(.footnote).foregroundStyle(.secondary)
+        }
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// Backup & Export → Move to a New iPhone: the two steps for how this iPhone backs up, and a backup file to send either
+/// way (users show moving phones goes well with clear steps: report "Backup & Export and Your Account", §2). It used to
+/// be a second "Save a Backup File" row that did the same thing.
+struct MoveToNewIPhoneView: View {
+    @Environment(BackupCenter.self) private var backup
+    @State private var sharing: URL?
+    @State private var failed = false
+
+    var body: some View {
+        Form {
+            Section {
+                ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
+                    Label(step, systemImage: "\(index + 1).circle")
+                }
+            }
+            Section {
+                Button("Send a Backup File") { Task { await send() } }
+                    .accessibilityIdentifier("backup-move-send")
+            } footer: {
+                Text(backup.place == .phone ? "With AirDrop, Messages or Files." : "If the new iPhone uses a different account or Apple Account.")
+            }
+        }
+        .navigationTitle("Move to a New iPhone")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: Binding(get: { sharing.map(SharedBackup.init) }, set: { sharing = $0?.url })) { item in
+            ShareFileSheet(url: item.url, onFinish: { sharing = nil })
+        }
+        .alert("Couldn't Make the File", isPresented: $failed) {} message: {
+            Text("Your habits are safe on this iPhone. Please try again.")
+        }
+    }
+
+    private var steps: [String] {
+        switch backup.place {
+        case .account: ["Install Often Enough on the new iPhone", "Sign in with the same account"]
+        case .iCloud: ["Install Often Enough on the new iPhone", "Choose Restore Habits From a Backup"]
+        case .phone: ["Send a backup file to the new iPhone", "Open it there with Often Enough"]
+        }
+    }
+
+    private func send() async {
+        do { sharing = try await backup.makeFile() } catch { failed = true }
+    }
 }
