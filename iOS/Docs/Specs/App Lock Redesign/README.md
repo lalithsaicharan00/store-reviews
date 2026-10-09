@@ -221,6 +221,12 @@ built one (`lock.faceIDChanged`, `askTrustFaceID`, spec §3.4); this changes the
   - **No, Turn It Off** (the cancel role, so it's the bold, safe default) → `trustFaceID(false)`: only the app
     passcode opens the app; the App Lock page shows **Use Face ID Again** (screen 7, row 5) to turn it back on later.
   - Either way the app then opens where the person was.
+- **A pop-up (alert), not a bottom sheet** (the user asked which, 10 Oct 2026; reasoned from first principles and
+  Apple's guidance): the app asks this, the person didn't start it, and it needs an answer before anything else
+  happens. An alert is iOS's pattern for exactly that, and it can't be swiped away unanswered; a bottom sheet is for
+  choices about something the person chose to do, and swiping it down would leave the question unanswered (it would
+  need dismissal turned off, which feels broken). The question is two short lines and two answers, which fits an
+  alert; nothing behind it (the keypad) needs to stay visible.
 - Why ask at all: typing the passcode proves the owner is here, but if the app then trusted the changed Face ID
   silently, a face someone else added would open the app from then on. So the owner decides, once.
 - In iPhone-passcode mode none of this shows (the iPhone's own lock already decides who can unlock).
