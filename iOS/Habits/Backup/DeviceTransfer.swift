@@ -96,7 +96,7 @@ nonisolated enum TransferCode {
 
     /// Whether the sending device was signed in (Account and Backup Redesign §7 item 3, decided 10 Oct 2026). Sign-ins
     /// never travel between devices; the new one only learns to ask "Sign in to keep your account".
-    enum Account: UInt8 { case none = 0, free = 1, plus = 2 }
+    nonisolated enum Account: UInt8, Sendable { case none = 0, free = 1, plus = 2 }
 
     static func header(for file: Data, account: Account = .none) -> Data {
         var length = UInt64(file.count).bigEndian

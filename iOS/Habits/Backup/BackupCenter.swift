@@ -432,8 +432,9 @@ final class BackupCenter {
         if targets.contains(.account) {
             ok = await backUpToAccount(file)
             // Read back and checked: from now on the account is the one place (switch-over, D4).
-            if ok && !accountChecked && (await accountHas(file.sha256)) {
-                defaults.set(true, forKey: Key.accountChecked)
+            if ok && !accountChecked {
+                let checked = await accountHas(file.sha256)
+                if checked { defaults.set(true, forKey: Key.accountChecked) }
             }
         }
         if ok && !keptOlder {

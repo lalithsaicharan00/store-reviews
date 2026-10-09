@@ -467,38 +467,48 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 
 - **Today's top bar is ≡ · Edit · (Filter +)** (3 Oct 2026). Edit is a word in its own capsule (Apple: keep text-labelled actions apart from symbol ones); Filter and + share one. While arranging: only Done. Filter's icon is `line.3.horizontal.decrease.circle`, never the bare three lines, which look like ≡.
 - **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Day and Week · Reminders · Appearance | Backup & Export · Privacy & Security · Account (redesign, 10 Oct 2026; was Account first) | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only). There is no Widgets row: how widgets work is Help & Feedback → Widgets, and a widget's Choose a habit opens it there (Current Work 58, 9 Oct 2026).
-  - **Built 9 Oct 2026 (Current Work 58; iPhone check pending):** Privacy became **Privacy & Security**, and the **Widgets** row went: its "Hide widget content" switch is Privacy & Security's **Hide Names Outside the App**, and its guide is Help & Feedback → Widgets (a widget's Choose a habit link opens it). Spec: [Privacy & Security — What to Build](<Docs/Specs/Privacy & Security — What to Build.md>). **App Lock redesigned 9 Oct 2026 (to build):** a row on Privacy & Security ("App Lock", "Lock the app with Face ID", Off/On) opens a page with one switch; options appear only once it's on; turning it on asks "If Face ID doesn't work" (iPhone Passcode / App Passcode, no badge) before anything is set; on-screen words say "the app" (never "Often Enough") and "app passcode" (never "code"); the 24-hour reset is fixed, not a setting. Spec: [App Lock Redesign](<Docs/Specs/App Lock Redesign/README.md>). The lock's own questions ("Use Face ID again?") are asked on the cover, and the app opens only once they're answered. **The cover is in its own window, above sheets, alerts and pushed pages** (an overlay on the root view sat under a sheet and showed a half-typed form, 9 Oct 2026), and locking ends typing so the keyboard never shows over it; the typed text stays.
+  - **Built 9 Oct 2026 (Current Work 58; iPhone check pending):** Privacy became **Privacy & Security**, and the **Widgets** row went: its "Hide widget content" switch is Privacy & Security's **Hide Names Outside the App**, and its guide is Help & Feedback → Widgets (a widget's Choose a habit link opens it). Spec: [Privacy & Security — What to Build](<Docs/Specs/Privacy & Security — What to Build.md>). **App Lock redesigned 9 Oct 2026, built 10 Oct (Current Work 58.13; iPhone check pending):** a row on Privacy & Security ("App Lock", "Lock the app with Face ID", Off/On) opens a page with one switch; options appear only once it's on; turning it on asks "If Face ID doesn't work" (iPhone Passcode / App Passcode, no badge) before anything is set; on-screen words say "the app" (never "Often Enough") and "app passcode" (never "code"); the 24-hour reset is fixed, not a setting. Spec: [App Lock Redesign](<Docs/Specs/App Lock Redesign/README.md>). The lock's own questions ("Did you change Face ID?", an alert, never a sheet) are asked on the cover, and the app opens only once they're answered. **The cover is in its own window, above sheets, alerts and pushed pages** (an overlay on the root view sat under a sheet and showed a half-typed form, 9 Oct 2026), and locking ends typing so the keyboard never shows over it; the typed text stays.
 - **Every row pushes its page onto Today's own navigation stack** (`MenuModel.path`), so Back and the edge swipe return to Today. A page that isn't built opens a "coming" page that says what it will hold; wire the real page in `MenuPage`.
 - **One screen per thing, however many ways in:** ≡ → Times of Day (`TimesOfDayList`) and Today's Edit (`ArrangeDayView`) open the same `SectionEditor` for a time of day; Habits and Tasks are one `AllHabitsView(kind:)`.
 - **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
 - **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.
 
-## Account and Backup & Export (built 9 Oct 2026, Current Work 58.10–58.11; iPhone check pending)
+## Account and Backup & Export (redesigned 10 Oct 2026 and built, Current Work 76; first built 9 Oct, 58.10–58.12; iPhone check pending)
 
-> **Redesigned 10 Oct 2026, to build (Current Work 76):** [Account and Backup Redesign](<Docs/Specs/Account and Backup Redesign/README.md>) replaces the layout and words below: Account last in the menu's data group (Backup & Export · Privacy & Security · Account); the Account page shows who you are, then **Sign In** and **Create Account** as separate rows, each opening its sheet; one backup place at a time (iCloud or Google Drive without an account, the account when signed in); the same Backup & Export rows in every state; Move to Another Device opens the transfer code directly; Plus keeps Restore (any day in the last 90 days). Where the two disagree, the redesign wins.
+Spec (the source of truth): [Account and Backup Redesign](<Docs/Specs/Account and Backup Redesign/README.md>). Reports:
+[Backup & Export and Your Account — What People Look For](<../Research/Research Reports/Data, Sync and Accounts/Backup & Export and Your Account — What People Look For.md>),
+[Free Plan Backups](<../Research/Research Reports/Data, Sync and Accounts/Free Plan Backups — iPhone and iPad, and a Backup That's Never a Day Behind.md>).
+Every screen starts from what people want to see there (Rulebook W6).
 
-Report: [Backup & Export and Your Account — What People Look For](<../Research/Research Reports/Data, Sync and Accounts/Backup & Export and Your Account — What People Look For.md>).
-
-- **≡ → Account** (the user, 9 Oct 2026, changing the final menu): signing in, the plan, devices, Sign Out and Delete
-  Account at the bottom. With Plus, **Last Synced** (*Just now*, *Today 09:14*): a status, never a switch. Signed out, the menu row says **Sign In**. Backup & Export's **Your Account** row opens the same
-  page. Signing out leaves the page on its signed-out state.
-- **Backup & Export, in the order people come for it:** the status (**Backed up today 09:14** / *In your account and
-  iCloud*; **Only on this iPhone** / *Deleting the app deletes your habits*; a problem in red with its fix) and **Back Up
-  Now** · **Backed Up To** (Your Account, the iCloud switch only when it can be changed) · **Restore & Move** (**Restore
-  Habits From a Backup…**, never a bare "Restore": 58 of 123 restore reviews mean purchases; **Move to a New iPhone** with
-  its two steps; Undo Last Restore) · **Export** (Save a Backup File, Export a Spreadsheet, one line each saying what it's
-  for) · Erase All My Data (signed out).
-- **Never** a paragraph explaining the screen, "our server" or "we", a row that shows a value nobody can change (no
-  "Sync: On"), or anything that makes backup look like part of Plus (D10).
-- **Second pass (the user's review, 9 Oct 2026, Current Work 58.12):** without an account the status says the habits
-  are backed up to **iCloud** (*Backed up today 09:14 · In iCloud*), and an **iCloud** row shows its own state: when, or
-  **Full** (red, fix: back up to an account), **Off** (fix: Settings) or **New Apple Account**. **Create Account** (never a
-  bare "Sign In") with one line: *Encrypted daily backups that follow you to a new phone*; its sheet lists four short
-  benefits (every day, encrypted, a new phone just signs in, devices in sync with Plus). **Never "deleting the app deletes
-  your habits"** (wrong with iCloud on, and it makes people anxious): the free limit is said instead, **one device**
-  (*Free · One device* on the account; Move to a New iPhone: *Without Plus, the two don't stay in sync*). Plus syncs every
-  change and writes no iCloud copy, so it shows *In your account* and no iCloud switch. "Encrypted" means in transit and
-  at rest (Architecture 06), never end-to-end.
+- **≡ → Account, signed out:** who you are first (*Not signed in* · *Your habits are on this iPhone and backed up to
+  iCloud.*), then **Sign In** and **Create Account** as two plain rows (never one "Create Account" that also signs in,
+  never a list of benefits): returning people look for the words *sign in*. Each opens its own bottom sheet with Apple's
+  own `SignInWithAppleButton` and Google's button (drawn to Google's branding rules), ✕ to close. Sign In never makes an
+  account without asking (D3); Create Account with an account that exists signs into it. The menu row shows **no value
+  signed out**, **Free** or **Plus** signed in.
+- **≡ → Account, signed in:** *Signed in with Apple* / *Email hidden by Apple* (or the Google address), **Plan** (Free,
+  or **Plus (lifetime)**), **Last Backup** (free) or **Last Synced** (Plus), **Devices** with how to get on another one,
+  **Sign Out** (*Your habits stay on this iPhone.*) and **Delete Account…** (red, its own page).
+- **One backup place at a time** (the user, 10 Oct 2026; Rulebook D4): no account, iCloud (or Google Drive once it
+  works); signed in, the account only (no iCloud copy beside it, free or Plus). Signing in backs up to the account at
+  once and stops iCloud only once that copy is in the account's list with its checksum; the old iCloud copies are never
+  deleted. Signing out backs up to iCloud again at once.
+- **Backup & Export: the same rows in every state**, the backup place first: status (**Backed up** / *Today 9:14 ·
+  iCloud*; Plus **Backed up and in sync** / *Just now · Your account · 2 devices*; problems in red with their fix) and
+  **Back Up Now** · **Backed Up To** (no account: **iCloud** ✓ with its state, then **Your Account ›** *Not signed in*
+  as an option; signed in: **Your Account ›** first, saying iCloud and Google Drive are used only when not signed in) ·
+  **Move and Restore** (**Move to Another Device**, which opens the transfer code at once; **Restore From a Backup**;
+  Undo Last Restore) · **Export** (Save a Backup File, Export a Spreadsheet (CSV)) · **Erase All My Data…** (no
+  account only).
+- **Restore From a Backup** asks *Where is your backup stored?*: no account **iCloud** (by device and day) · **Backup
+  File**; signed in **Your Account** (free *Any of the last 7 days*, Plus *Any day in the last 90 days*) · **Backup File**.
+  Plus's restore replaces the habits on every device and asks first, saying so; every restore keeps its 30-day undo (D5).
+- **Move to Another Device** says three steps (*Install Often Enough on the other device*: the name stays there because
+  people search for it), the code, *Waiting for the other device…*, and that the habits stay here too. Signed in, the new
+  device asks once *Sign in to keep your account* (sign-ins never travel between devices).
+- **Never** a paragraph explaining the screen, "our server" or "we", a row that shows a value nobody can change, a Google
+  Drive row before Drive truly works, "deleting the app deletes your habits", or anything that makes backup look like
+  part of Plus (D10). "Encrypted" means in transit and at rest (Architecture 06), never end-to-end.
 
 ## Sidebar data, tasks and reminders — 30 September 2026
 

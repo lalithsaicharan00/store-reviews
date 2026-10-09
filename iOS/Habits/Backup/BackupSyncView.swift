@@ -100,7 +100,9 @@ struct BackupSyncView: View {
         .navigationTitle("Backup & Export")
         .navigationBarTitleDisplayMode(.inline)
         .task { await backup.runIfDue() }
-        .task(id: backup.isSignedIn) { details = backup.isSignedIn ? try? await backup.accountDetails() : nil }
+        .task(id: backup.isSignedIn) {
+            if backup.isSignedIn { details = try? await backup.accountDetails() } else { details = nil }
+        }
         .navigationDestination(isPresented: $perfAccount) { AccountView() }
         .navigationDestination(isPresented: $perfRestore) { RestoreStartView() }
         .onPerfCommand { action in

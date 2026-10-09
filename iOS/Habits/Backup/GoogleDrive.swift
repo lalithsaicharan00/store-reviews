@@ -182,9 +182,10 @@ extension GoogleDrive: @preconcurrency ASWebAuthenticationPresentationContextPro
 
 /// Google's refresh token for Drive, in this iPhone's Keychain only (never synced or backed up).
 nonisolated enum GoogleDriveKeychain {
-    private static let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                               kSecAttrService as String: "com.oftenenough.app.google-drive",
-                                               kSecAttrAccount as String: "refresh-token"]
+    private static var query: [String: Any] {
+        [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: "com.oftenenough.app.google-drive",
+         kSecAttrAccount as String: "refresh-token"]
+    }
 
     static var refreshToken: String? {
         get {

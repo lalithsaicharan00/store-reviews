@@ -30,7 +30,7 @@ nonisolated struct BackupFolder: Sendable {
     static let shrinkMinRecords = 20
 
     /// One copy, as the index describes it.
-    struct Copy: Codable, Equatable, Sendable {
+    nonisolated struct Copy: Codable, Equatable, Sendable {
         var slot: String
         var createdAt: Date
         var habits: Int
@@ -41,7 +41,7 @@ nonisolated struct BackupFolder: Sendable {
     }
 
     /// `index.json`: the device's name and its copies.
-    struct Index: Codable, Equatable, Sendable {
+    nonisolated struct Index: Codable, Equatable, Sendable {
         var deviceID: String
         var deviceName: String
         var platform: String
@@ -49,7 +49,7 @@ nonisolated struct BackupFolder: Sendable {
     }
 
     /// What's being backed up.
-    struct Upload: Sendable {
+    nonisolated struct Upload: Sendable {
         let data: Data
         let sha256: String
         let createdAt: Date
@@ -60,7 +60,7 @@ nonisolated struct BackupFolder: Sendable {
         let platform: String
     }
 
-    enum Outcome: Equatable, Sendable {
+    nonisolated enum Outcome: Equatable, Sendable {
         /// Written, read back and checked, into this weekday's slot.
         case written(slot: String, keptPrevious: Bool)
         /// The new copy is empty and this device's newest copy has habits: nothing was written (Rulebook D4).
@@ -70,7 +70,7 @@ nonisolated struct BackupFolder: Sendable {
     }
 
     /// A copy of any device, for Restore.
-    struct Listed: Identifiable, Hashable, Sendable {
+    nonisolated struct Listed: Identifiable, Hashable, Sendable {
         let url: URL
         let deviceID: String
         let deviceName: String
