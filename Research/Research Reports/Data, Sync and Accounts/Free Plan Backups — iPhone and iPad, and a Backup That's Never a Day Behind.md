@@ -1,6 +1,10 @@
 # Free Plan Backups — iPhone and iPad, and a Backup That's Never a Day Behind
 
-*Written by Claude (Claude Code), 9 Oct 2026. Current Work 75. Research and a recommendation, not a decision.*
+*Written by Claude (Claude Code), 9 Oct 2026. Current Work 75. Research and a recommendation.*
+
+> **Decided by the user, 10 Oct 2026: option B, backed up as you go**, for every free user, as §7 sets out (10-minute
+> gap, a smaller file first, the iCloud reinstall fix before release). The user asked first whether it would cost too
+> much; §5's model answers it.
 
 **The user's questions (9 Oct):**
 1. How backup works today is confusing: explain it from the reports.

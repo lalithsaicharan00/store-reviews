@@ -684,8 +684,35 @@ Their placement records scope and priority; implementation has not started.
   - [x] If backing up everything isn't the answer, research and find the best solution instead.
   - [x] One report with the recommendation (W2). Done 9 Oct 2026: [Free Plan Backups — iPhone and iPad, and a
     Backup That's Never a Day Behind](<../../../Research/Research Reports/Data, Sync and Accounts/Free Plan Backups — iPhone and iPad, and a Backup That's Never a Day Behind.md>).
-  - [ ] **The user's decision** on the recommendation (§7), then build. The iCloud reinstall overwrite (§7 step 1) is a
-    data-loss bug whatever is decided: fix before release, and check it with a real reinstall on the iPhone.
+  - [x] **The user's decision** on the recommendation (§7): **decided 10 Oct 2026, option B, "backed up as you go"**
+    for every free user, with or without an account (after asking whether it costs too much: about $0.45 a month per
+    1,000 free accounts against $0.17 today; no-account copies cost nothing). As §7 says: an upload on leaving the app
+    when something changed, at least 10 minutes after the last; after a widget, notification or Live Activity log; and
+    at least once a day. Still one copy per device, the 7 weekday copies overwritten in place, never syncing (sync stays
+    Plus). Make the backup file smaller first (§7 step 2), so it costs about 11 MB of mobile data a month, not 47.
+  - [ ] Build, in §7's order: (1) **the iCloud reinstall overwrite**, a data-loss bug whatever else happens: never back
+    up an empty database over a copy with habits; no backup before the welcome is finished; 7 weekday files and a
+    before-shrink copy in iCloud; copies named by device; check with a real reinstall on the iPhone. (2) A smaller
+    backup file, measured on the iPhone, still importable (D5). (3) Backed up as you go (`scheduleSoon`-style background
+    time, D12), the server's per-copy limit raised to about 12 an hour. (4) After launch, check the real uploads a month
+    against the model's 80.
+
+- [ ] **76. Sidebar, Account and Backup & Export: redesign** (added 10 October 2026, from the user, with five
+  screenshots). The account must be easy to find in the sidebar without pushing anyone to make one; say clearly what an
+  account gives (free: backed up as you go to the account, one device, no sync between devices; Plus: sync); without
+  an account an iPhone backs up to iCloud by default, and people can choose Google Drive; improve Create Account and
+  the signed-in Account page; Backup & Export shows export, moving to another device (phone or tablet) by transfer code
+  or backup file, and restoring, matching onboarding. Use the research reports; a new Figma section.
+  - [x] Designed 10 Oct 2026 (Figma 950:309, iPhone SE): [Account and Backup Redesign](<../Specs/Account and Backup Redesign/README.md>).
+  - [ ] The user's review, and the points to confirm (spec §6: as-you-go backup for free, Google Drive on iOS, the
+    transfer service, choosing one of 7 daily copies).
+  - [x] Decided with the user, 10 Oct 2026: **one backup place at a time** (iCloud or Google Drive without an account;
+    the account when signed in; the free account's iCloud copy beside the account stops), and **Move to Another Device
+    opens the transfer code directly** (no options screen). On creating an account or signing in, back up to the
+    account at once and stop iCloud / Google Drive only after that copy is checked; Restore when signed in lists Your
+    Account and Backup File only. Plus keeps Restore: any day in the last 90 days from the account, or a backup
+    file; it replaces the habits on every device and says so first.
+  - [ ] Remaining states and sizes, then a build spec; then build, tests on GitHub, iPhone check.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
