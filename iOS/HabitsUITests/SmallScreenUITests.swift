@@ -173,11 +173,11 @@ final class SmallScreenUITests: XCTestCase {
         // At this text size the menu is taller than the SE: scroll it (not Today) to Privacy & Security.
         if !app.buttons["menu-privacy"].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
         app.buttons["menu-privacy"].tap()
-        let row = app.buttons["privacy-app-lock"]
-        XCTAssertTrue(row.waitForExistence(timeout: 5))
-        XCTAssertTrue(row.frame.maxY <= window.maxY, "The App Lock row on screen: \(row.frame)")
+        let lockRow = app.buttons["privacy-app-lock"]
+        XCTAssertTrue(lockRow.waitForExistence(timeout: 5))
+        XCTAssertTrue(lockRow.frame.maxY <= window.maxY, "The App Lock row on screen: \(lockRow.frame)")
         shot("se-privacy-off")
-        row.tap()
+        lockRow.tap()
         let lock = app.switches["privacy-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
         shot("se-app-lock-off")
