@@ -4,7 +4,7 @@ Written by Claude (Claude Code), 9 October 2026, at the user's request: "everyth
 tab and remove widgets tab … it should be communicated in UI properly, like app asks separate code when Face ID is
 changed and about cooling period and whichever is important."
 
-**Status: decided, not built.** Current Work item 58. The decisions behind every line are in
+**Status: built on branch `app-lock-privacy-security` (9 Oct 2026), tested on GitHub; iPhone check pending (U9).** Current Work item 58. Built differently from this spec, and why: the lock cover is in its own window above sheets and alerts (an overlay sat under a sheet), and locking ends typing (the keyboard sits above every window; the typed text stays); "Use Face ID again?" is answered on the cover before the app opens. The decisions behind every line are in
 [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>)
 §6a–§6e (decisions 1–4, the user, 9 Oct 2026). Decision 5 (locking only some habits) is in the checklist's Future list.
 
