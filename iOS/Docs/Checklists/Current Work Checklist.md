@@ -730,6 +730,15 @@ Their placement records scope and priority; implementation has not started.
     - [ ] 58.11 (the user, 9 Oct 2026) **Where the account lives.** Signing in, creating an account and signing out sit
       only inside Backup & Export. Research where people expect them (a menu row, the top of settings, Backup) and move
       or add them there; Backup keeps a link to what it needs from the account.
+    - [ ] 58.12 (the user's review of the redesign, 9 Oct 2026) **Backup & Export, second pass.** (1) Without an account
+      the habits are still backed up to iCloud, and the screen must say so, with iCloud's own state (full, off, a
+      problem) shown clearly and tested. (2) Say why to make an account, simply: automatic backups every night, more
+      reliable, stored safely and encrypted, and back on a new phone just by signing in; offer **Create Account**, not a
+      bare "Sign In". (3) Never "Deleting the app deletes your habits" (wrong when there's an iCloud copy, and it makes
+      people anxious): the honest limit of the free plan is **one device** (phone or tablet), with no sync between
+      devices; moving to another device takes a backup file; syncing devices comes with Plus. Say it here or on the
+      create-account screen. (4) Google Drive: Android has it; show it on iOS too if the research supports it.
+      (5) No text walls. Research the plan facts first; claim only what's true (encryption, frequency).
 
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
