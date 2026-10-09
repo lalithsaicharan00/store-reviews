@@ -1,0 +1,11 @@
+how                                uploads/mo phone MB/mo  $ per 1,000/mo  $ per user/yr
+today: once a day                          20        11.8           0.167        0.00200
+as you go: on leaving the app              80        47.1           0.455        0.00546
+sync engine, push only                     80         0.2           0.802        0.00962
+as you go, file 4.4x smaller (gz)          80        10.6           0.400        0.00480
+as you go: on leaving the app: one extra Plus sale ($12.74 after Apple's 15%) pays for 3,687 free-account user-years
+sync engine, push only: one extra Plus sale ($12.74 after Apple's 15%) pays for 1,671 free-account user-years
+    1,000 free accounts: today $0.17/mo · as you go $0.45/mo · sync engine $0.80/mo
+   10,000 free accounts: today $1.67/mo · as you go $4.55/mo · sync engine $8.02/mo
+  100,000 free accounts: today $16.67/mo · as you go $45.47/mo · sync engine $80.21/mo
+1,000,000 free accounts: today $166.71/mo · as you go $454.71/mo · sync engine $802.08/mo

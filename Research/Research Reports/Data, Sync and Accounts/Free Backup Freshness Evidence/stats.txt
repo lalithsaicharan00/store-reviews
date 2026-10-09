@@ -1,0 +1,4 @@
+screened 1238784 {'A': 337331, 'P': 901453}; candidates 103
+RECENT_MISSING           64    24 A    42 P    22 mean 2.33
+FREQUENCY                14     9 A     4 P    10 mean 3.86
+ACCOUNT_STILL_LOST       27    13 A    16 P    11 mean 2.15

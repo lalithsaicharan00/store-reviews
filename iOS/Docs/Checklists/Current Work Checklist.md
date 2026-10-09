@@ -555,6 +555,137 @@ Their placement records scope and priority; implementation has not started.
   - **Someone using only iCloud (no account):** on a new install, offer to bring back their habits from the iCloud
     backup just as simply (iCloud backup is waiting for the Apple Developer account, `BackupFeatures.iCloudBackup`).
   - Research what people expect before building (W2); relates to item 3 (account up front) and Rulebook D4/D5/D14.
+  - **Started 9 October 2026, together with item 3** (the user: "The next thing we need to work on is onboarding, which
+    is 73 + 3: onboarding returning users and moving the account out of the backup and export. This includes a sign-in
+    on the welcome screen and a reinstall that restores by itself. Obviously, we have to do the research first.").
+    Branch `app-lock-privacy-security` (the user, 9 Oct 2026: one branch, not a separate one). Designs go on the Figma page
+    [onboarding](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=767-9100) (empty on 9 Oct).
+    - [x] **Today's screens in Figma** (the user, 9 Oct: "take the current screenshots and paste them into Figma …
+      properly arranged"): 28 screenshots from the iPhone 16 on the onboarding page, frame "Current screens — 9 Oct
+      2026": the welcome, where it ends, Show the Welcome Again, ≡ → Backup & Export (signed out) and its sheets, Plus,
+      Privacy. Taken by `OnboardingBackupScreenshotUITests` (a test launch, D8); files in
+      `Research/Temp/ios-shots/onboarding-backup-current/`. Not yet captured: the signed-in screens (Your Account,
+      Delete Account, Backup & Export with an account), which need a real account. Share sheets left out (they show
+      the person's contacts).
+    - **The user, 9 Oct 2026, on the screenshots** ([A01, the welcome's first page](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=770-15)):
+      "we need improve the overall experience and onboarding so the flow should be in such a way that every type of
+      user should feel seamless". Points, each to be answered by the research:
+      - [x] There are different people: **new** users, and **returning / existing** users (an account backup, a
+        backup file); think about the flow for each, and each must feel seamless. (Report §5: a path for each;
+        Figma rows 1–3.)
+      - [x] Today's first screen is for first-time users and doesn't make sense for existing users, yet it still shows
+        an existing user's option ("Restore from a Backup File") to a first-timer. (Proposed: N1 replaces it with
+        "I've used Often Enough before".)
+      - [x] Getting back in must be easy for existing users: from the account or from a backup file. (R1–R7.)
+      - [x] **The user's assumption, to test:** the first screen splits people into new and returning. **Holds**, with
+        a refinement: recognise returning people automatically first (reinstall, new iPhone, iCloud marker), and
+        split on the first screen only when nothing is known, with the new path as the main button. Decision 1.
+      - [x] Research top-notch UX and flow for first-time and returning users; every screen clean and minimal; the
+        main thing: it must never confuse anyone. (9 Oct 2026, Claude: [Onboarding for New and Returning People — Research and Proposed Flow](<../../../Research/Research Reports/Habit Creation/Onboarding for New and Returning People — Research and Proposed Flow.md>). 1,613 reviews read, 1,078
+        on topic, 34 quotes verified; Apple's HIG and AuthenticationServices docs.)
+      - [x] Propose a new flow from the research, and draw that flow in Figma (onboarding page): frame **"Proposed
+        flow — 9 Oct 2026"** beside today's screens: the launch checks (A–D), new person (N1–N4), coming back
+        (R1–R7), recognised by the app (B1, B2, C1, A1), the account in ≡ (S1–S5), and the six decisions.
+      - [x] **The user, 9 Oct 2026, on the proposed flow** (N1 Welcome, R1 Get your habits back, 0 · the launch
+        checks): "before these screens … instead of doing all these we should have one which asks only one thing
+        which is are you existing user or new user, that screen should look good and very intuitive … it shouldn't
+        feel weird for first time users and for existing users it shouldn't feel like friction or unneccessary so
+        yeah do research and create wireframe screen". Done 9 Oct 2026: report §6a (796 returning reviews: people
+        say "new phone", "reinstall", "log in", almost never "existing user"); Figma frame "First screen — new or
+        coming back (9 Oct 2026)", F1 on iPhone 16 and SE: "I'm new here" / "I've used it before", one tap each.
+      - [ ] **The user's decisions** (report §6): 1 the first screen; 2 a reinstall with the session (automatic or
+        ask); 3 day and week start in onboarding or not; 4 three or four new-person pages; 5 the iCloud marker;
+        6 the account at the top or bottom of ≡.
+    - [x] Research: what people coming back expect at the welcome, after a reinstall, on a new phone, with only
+      iCloud; where they look for their account (with item 3). Done 9 Oct 2026 (the report above).
+    - [x] The user's decisions, then a design on the Figma page. **Settled by the user's own wireframes, 9 Oct 2026**:
+      [Onboarding — Current wireframes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=835-503)
+      (35 screens, one row per path). They answer decisions 1 (one question first: "I'm new here" / "I've used it
+      before"), 3 (day and week start stay, as their own page) and 4 (new people: What's included, three pages on
+      what the app does, days and weeks, a first habit).
+    - [ ] **73.1 Build the onboarding from the wireframes** (the user, 9 Oct 2026; committed on
+      `app-lock-privacy-security`, at the user's request). **The mockups set the screens, the order and the copy; every control is
+      the app's own** ("these are just mockups … you should sync everything with our app, like how we have it in our
+      app"). The user's points:
+      - [x] Before anything: bring the local repository up to date with `app-lock-privacy-security` and install that
+        branch's latest build on the connected iPhone. Done 9 Oct 2026: this branch fast-forwarded to 773156b5, and
+        that build installed on the iPhone 16 (`devicectl device install app`).
+      - [x] **01 Welcome** (row 1): the first screen for anyone who has just installed. The app icon's place is a grey
+        square for now (no icon yet). **The copy is final**: Often Enough · "Habits grow through repetition. You choose
+        how often is enough." · "Have you used Often Enough before?" · I'm new here / I've used it before.
+      - [x] **I'm new here** (row 2), in order: **02 What's included** in the free plan (up to 5 habits, unlimited
+        tasks, widgets included, no account needed, iCloud backup); **Skip setup** on any of these pages goes straight
+        to Today; **03** you can build habits, with the kinds of habit; **04** you can quit or cut down, with the kinds;
+        **05** tasks, unlimited even on the free plan; **06** your days and weeks (day start, week start), with the
+        small line "You can change this later in settings" put right grammatically; **07** your first habit. Built: the
+        line reads "You can change these later in ≡ › Day and Week." (the app's place for them; it has no Settings page).
+      - [x] **07 → a habit idea opens the form directly, filled in** (rows 3–4, e.g. Drink water → 08A): no "What do you
+        want to do?" or "How do you want to track it?" first, as the idea already says how it's tracked.
+      - [x] **07 → "Create on my own"** follows exactly the same flow as + in the app (What do you want to do? → Build or
+        maintain / Quit or cut down / Add a task → the form). Full screen or a sheet: whichever is better. Built full
+        screen: the same `NewItemChoices` pushed as the welcome's next page (a sheet over the full-screen welcome would
+        be a second layer with its own Cancel; one stack keeps one Back).
+      - [x] **Better words for "Create on my own"** (what does "my own" mean?), e.g. "Create my own habit". Built:
+        **Create my own habit**.
+      - [x] **I've used it before → R01 Welcome back**: Sign in to your account · Restore a backup · Move from another
+        device · Start without restoring. **R01B**, the same screen when the app finds data already on this device:
+        "We found data on this device. Continue with this data?" with Continue, then the other ways under it. Built:
+        found = habits or tasks already on the iPhone ("17 habits. Continue with this data?"); also an account still
+        signed in after a reinstall ("You're still signed in."), whose Continue brings the account's data back.
+      - [x] **Sign in → R02 Sign back in** (Continue with Apple / Google; Restore a backup instead), then the loading
+        screen while the account's data comes back (R03).
+      - [x] **Restore a backup → R04** (iCloud, Google Drive, a backup file); **R05/R06** when a backup is already found
+        in iCloud (or Google Drive): that backup first, the others under "Other backups". Built for iCloud and a backup
+        file, then a review page ("Your backup.": what's in it, made on, when; Restore, or Replace/Merge when the iPhone
+        has data). **Google Drive is left out on purpose:** nothing backs up to Google Drive yet, so there is nothing to
+        find; it needs Google Drive backup first (and the Drive API turned on in the Google Cloud project).
+      - [x] **Move from another device → R07 Enter transfer code**, like WhatsApp's chat transfer: the old phone
+        prepares everything and shows a code; on the new phone you type the code and the data comes over from that
+        phone. **Start without restoring** goes straight to Today. Built: the old iPhone's ≡ › Backup & Export › Move to
+        a New iPhone › **Show a Transfer Code**; the new iPhone types it; the file comes over the local network (or
+        peer-to-peer), encrypted with a key made from the code, nothing through the server, no account. **Checked
+        between two simulators, 9 Oct:** the right code brought all 17 demo habits and their history onto an empty
+        phone (sender: "Sent"); a wrong code said "That code doesn't match" within seconds and the old phone kept
+        waiting; the right code then still worked. Not yet tried between two real iPhones (only one is here).
+      - [x] **One loading screen, its words fitted to what's happening** (R08, R09): signing in with Apple or Google →
+        "Getting your data" (from the account); from another device → "Getting your data" / from your other device;
+        iCloud or Google Drive → e.g. "Restoring your backup"; a backup file → "Processing your data" / from your backup
+        file; **the data already on this device → not "getting" (it's already here): "Setting up" or the like.** Short
+        words, chosen for each case. Built: Getting your data (from your account / from your other device),
+        Processing your data (from your backup file), Restoring your backup / your data, Setting things up (with the
+        data already on this iPhone).
+      - [ ] Implement everything thoroughly, then cross-check everything thoroughly. **Don't start the tests**: the user
+        says what comes next. Built 9 Oct 2026; the app and UI tests compile, `check_rules.sh` passes, every page was
+        looked at in the simulator (light, dark, the largest text). UI tests rewritten for the new flow
+        (`OnboardingUITests`, `BackupUITests` Move, the screenshot test) and a speed scenario added (`onboarding`, T4),
+        **none run yet**, as asked. Still to do: GitHub tests and a speed run when the user says, then the iPhone (U9):
+        sign-in with a real account (Plus and free), an iCloud backup found, a backup file, a transfer between two
+        iPhones, a real reinstall, and the iPhone SE layout (T15).
+    - [ ] Build, test on GitHub, check on the iPhone (U9), including a real reinstall.
+
+- [ ] **75. Free plan: iCloud on iPhone and iPad, and how fresh a free account's backup is (research first).** Added
+  9 October 2026, from the user (research only; nothing is built until the user decides):
+  - [x] Read the reports and explain how it works today: it's confusing. (Report §1: one table.)
+  - [x] **iPhone and iPad without an account:** both back up to the same iCloud. Can the two copies collide or
+    duplicate? On the free plan the two devices must **not** sync. Answered (§2): no collision (one file per device
+    ID), no sync; but **a reinstall overwrites the iCloud copy with an empty one at first launch** (found in the code,
+    matching the server's shrink-guard record of 8 Oct), no history in iCloud, and copies aren't named by device.
+  - [x] **A free account backs up nightly, once a day.** Someone who made an account believes they're backed up, loses
+    the phone, signs in on a new one and is missing the last day's progress. Is that fine? If not, how to solve it.
+    Answered (§3): not fine; really "since the first open today", and the newest day carries the streak.
+  - [x] **Should a free account back up everything as it happens** (server "sync" for that one device, using Workers),
+    while devices still never sync with each other on the free plan (on purpose)? Free users have few habits and
+    usually one device, so the requests are small. Answered (§4): yes, as you go, but as per-device copies, not
+    through the sync engine (it would merge a free iPhone and iPad).
+  - [x] **What we give and what we get:** a little profit given away, against goodwill and good reviews (data loss gets
+    terrible reviews). The goal is as many conversions as possible: does this help or not? Will it cost extra? Being
+    generous may be an edge, not only saving everywhere.
+  - [x] **Use Cloudflare's own numbers:** how average users will use it and what it costs; the best possible result.
+  - [x] If backing up everything isn't the answer, research and find the best solution instead.
+  - [x] One report with the recommendation (W2). Done 9 Oct 2026: [Free Plan Backups — iPhone and iPad, and a
+    Backup That's Never a Day Behind](<../../../Research/Research Reports/Data, Sync and Accounts/Free Plan Backups — iPhone and iPad, and a Backup That's Never a Day Behind.md>).
+  - [ ] **The user's decision** on the recommendation (§7), then build. The iCloud reinstall overwrite (§7 step 1) is a
+    data-loss bug whatever is decided: fix before release, and check it with a real reinstall on the iPhone.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
@@ -638,6 +769,9 @@ Their placement records scope and priority; implementation has not started.
   uses can stay there). Making an account, signing in and deleting the account are not backup things.
   - Account up front: the ≡ sidebar shows the account state, at the bottom or wherever fits, e.g. "No account"
     with a clear "Create an account". Research where it goes and what it says.
+  - **Started 9 October 2026 with item 73** (one piece of work: the account up front, and signing in from the welcome).
+    Research and decisions are tracked under item 73. Item 58 (another agent, branch `app-lock-privacy-security`) is
+    also changing the ≡ sidebar (Privacy & Security, the Widgets page removed): coordinate before building.
 
 - [ ] **58. App Lock and widget privacy: decide how they should work, then build** (added 6 October 2026, from the
   user; **next after the widgets**). Today the app's Face ID lock (`AppLock.swift`) or the switch Menu → Widgets →
