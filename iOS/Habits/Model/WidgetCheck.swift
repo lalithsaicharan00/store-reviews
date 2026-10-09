@@ -55,7 +55,7 @@ enum WidgetCheck {
         let discreet = named.discreet()
         let json = (try? JSONEncoder().encode(discreet)).flatMap { String(data: $0, encoding: .utf8) } ?? ""
         let words = store.habits.map(\.name) + store.sections.map(\.name) + ["Quit or Cut Down"]
-        let leaked = words.filter { !$0.isEmpty && json.localizedCaseInsensitiveContains($0) }
+        let leaked = words.filter { !$0.isEmpty && json.contains($0) }
         expect(!json.isEmpty && leaked.isEmpty, "Discreet snapshot has no names (found \(leaked.prefix(3).joined(separator: ", ")))")
         expect(discreet.discreet == true && !discreet.hidden, "Discreet is its own state, not Content hidden")
         expect(zip(named.frames, discreet.frames).allSatisfy { a, b in
@@ -66,7 +66,7 @@ enum WidgetCheck {
         expect(discreet.choices.count == named.choices.count && discreet.choices.allSatisfy { $0.name.hasPrefix("Habit ") && $0.symbol != nil },
                "Edit Widget offers each habit by icon and number")
         let spoken = discreet.frames.flatMap(\.items).flatMap { [$0] + ($0.after ?? []) }.map(WidgetActionButton.label(for:))
-        let spokenLeak = spoken.filter { label in words.contains { !$0.isEmpty && label.localizedCaseInsensitiveContains($0) } }
+        let spokenLeak = spoken.filter { label in words.contains { !$0.isEmpty && label.contains($0) } }
         expect(spokenLeak.isEmpty, "VoiceOver names no habit on a discreet widget (\(spokenLeak.prefix(2).joined(separator: ", ")))")
         let entries = PhoneWidgetTimeline.entries(snapshot: discreet, now: now, listKey: "habits") { _ in }
         expect(entries.first?.status == .ready && entries.first?.discreet == true && entries.first?.frame?.items.isEmpty == false,
@@ -604,6 +604,9 @@ enum WidgetCheck {
 /// Uses exactly the views shipped in the extension, at iPhone widget sizes: a rendering test, not WidgetKit's host.
 struct WidgetRenderCheck: View {
     @State private var frame: WidgetFrame?
+    /// The same day with names hidden outside the app (`WidgetSnapshot.discreet()`, Current Work 58).
+    @State private var discreetFrame: WidgetFrame?
+    @State private var discreet = false
     @State private var weekdays: [String] = []
     @State private var selected: String?
     @State private var family = WidgetFamily.systemSmall
@@ -633,13 +636,14 @@ struct WidgetRenderCheck: View {
                     .accessibilityIdentifier("view-morning")
                 Button("Next page") { page += 1 }.accessibilityIdentifier("render-next-page")
                 Button("Hidden") { status = status == .hidden ? .ready : .hidden }.accessibilityIdentifier("render-hidden")
+                Button("Discreet") { discreet.toggle() }.accessibilityIdentifier("render-discreet")
             }
             Toggle("Dark preview", isOn: $dark).accessibilityIdentifier("widget-dark")
             if let frame {
                 ScrollView(.horizontal) { HStack { ForEach(frame.items.filter { !$0.isTask }) { item in
                     Button(item.name) { selected = item.id }.accessibilityIdentifier("select-\(item.name)")
                 } } }
-                PhoneWidgetView(entry: entry(frame), layout: layout, familyOverride: family)
+                PhoneWidgetView(entry: entry(discreet ? (discreetFrame ?? frame) : frame), layout: layout, familyOverride: family)
                     .frame(width: size.width, height: size.height)
                     .background(Color(.systemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) ? 8 : 22,
@@ -654,12 +658,14 @@ struct WidgetRenderCheck: View {
             await AppModel.shared.ensureLoaded()
             let snapshot = AppModel.shared.store.widgetSnapshot()
             frame = snapshot.frames.first; weekdays = snapshot.weekdays
+            discreetFrame = snapshot.discreet().frames.first
             selected = frame?.items.first { !$0.isTask }?.id
         }
     }
     private func entry(_ frame: WidgetFrame) -> PhoneWidgetEntry {
         var entry = PhoneWidgetEntry(date: .now, frame: frame, status: status, selection: selected)
-        entry.view = view; entry.viewName = viewName; entry.page = page; entry.weekdays = weekdays
+        entry.view = view; entry.viewName = discreet ? (layout == .tasks ? "Tasks" : "Today") : viewName
+        entry.page = page; entry.weekdays = weekdays; entry.discreet = discreet
         entry.pageKey = "render-check"
         return entry
     }

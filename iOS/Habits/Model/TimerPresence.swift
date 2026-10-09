@@ -45,7 +45,8 @@ final class TimerPresence {
         await Self.syncActivities(running, shown: UserDefaults.standard.bool(forKey: Preferences.timerLiveActivity))
     }
 
-    private func runningTimers(_ store: HabitStore, now: Date) -> [Running] {
+    /// Internal for `AppLockCheck` (the activity carries no name to draw while names are hidden).
+    func runningTimers(_ store: HabitStore, now: Date) -> [Running] {
         let today = store.today(now: now)
         return store.timers.compactMap { id, _ in
             guard let habit = store.habits.first(where: { $0.id == id && !$0.archived }) else { return nil }

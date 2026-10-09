@@ -111,7 +111,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-appreliability", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-appreliability", "-applockcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
@@ -235,6 +235,11 @@ private struct PlacementCheckView: View {
                     // saved it; nothing there and no log means the widget's intent never ran.
                     result = "Widget system: no durable widget log · \(WidgetTaps.read().count) taps waiting in the shared file"
                 }
+                return
+            }
+            if arguments.contains("-applockcheck") {
+                let failures = await AppLockCheck.run()
+                result = failures.isEmpty ? "App lock: all checks passed" : "App lock failed (\(failures.count)): " + failures.joined(separator: "; ")
                 return
             }
             if arguments.contains("-appreliability") {

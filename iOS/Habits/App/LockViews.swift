@@ -193,6 +193,13 @@ struct CodeEntry: View {
         }
         .padding(.horizontal, 24)
         .onChange(of: shakes) { shake() }
+        .onPerfCommand { action in
+            switch action {
+            case .codeKey(let digit): press(.digit(digit))
+            case .codeDelete: press(.delete)
+            default: break
+            }
+        }
     }
 
     private func press(_ key: CodeKeypad.Key) {

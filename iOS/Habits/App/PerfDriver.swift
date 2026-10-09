@@ -20,6 +20,8 @@ enum PerfAction: Equatable {
     case habitTab(Int)
     /// Today's Edit: Arrange Your Day (3 Oct 2026).
     case openArrange
+    /// The lock's keypad (Current Work 58): a digit, or Delete.
+    case codeKey(Int), codeDelete
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
@@ -198,8 +200,40 @@ enum PerfDriver {
             }
             send(.close)
         case "widget-guide":
+            // The Widgets guide is Help → Widgets now (Current Work 58), opened as a widget's Choose a habit opens it.
             await openTwice("Widgets guide") { send(.openWidgets) }
             await measure("Widgets guide: scrolling") { await scroll() }
+        case "privacy":
+            // Privacy & Security (Current Work 58, T4): opening it, scrolling it, and hiding names outside the app, which
+            // publishes the widgets at once and re-plans reminders (spec §2.3).
+            await openTwice("Privacy & Security") { send(.openPlace(.privacy)) }
+            await measure("Privacy & Security: scrolling") { await scroll() }
+            await measure("Hide names: widgets published and reminders re-planned") {
+                await repeatFor(window) {
+                    HideNames.setChosen(!HideNames.chosen)
+                    await AppModel.shared.privacyChanged()
+                    await pause(0.5)
+                }
+            }
+            HideNames.setChosen(false)
+            await AppModel.shared.privacyChanged()
+            send(.close)
+        case "lock-keypad":
+            // The lock's cover with its keypad (Current Work 58, T4): showing it, typing on it (never six digits, so it
+            // stays), then the right code, which opens the app. A test launch's own lock (D8).
+            let lock = AppModel.shared.lock
+            await open("Lock cover with keypad") { Task { await lock.perfLock() } }
+            await measure("Lock keypad: typing") {
+                await repeatFor(window) {
+                    for digit in [1, 2, 3, 4, 5] { send(.codeKey(digit)); await pause(0.12) }
+                    for _ in 0..<5 { send(.codeDelete); await pause(0.12) }
+                }
+            }
+            await measure("Lock: the right code opens") {
+                for digit in [1, 2, 3, 4, 5, 6] { send(.codeKey(digit)); await pause(0.12) }
+                await pause(1.5)
+            }
+            lock.turnOff()
         case "widget-log":
             guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# ERROR no Water") }
             let day = store.today()

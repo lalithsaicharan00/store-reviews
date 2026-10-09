@@ -134,7 +134,25 @@ final class WidgetUITests: XCTestCase {
         choose(app, family: "accessoryInline")
         XCTAssertTrue(shows(app, "0 of 5 habits done"), labels(app))
 
-        // Private: no names anywhere.
+        // Names hidden outside the app (Current Work 58): discreet cards, no names anywhere, buttons still there.
+        app.buttons["render-discreet"].tap()
+        app.buttons["layout-habits"].tap(); app.buttons["view-today"].tap(); choose(app, family: "systemLarge")
+        XCTAssertTrue(shows(app, "Today") && shows(app, "of 5 done") && !shows(app, "Widget ", timeout: 1), labels(app))
+        XCTAssertTrue(app.buttons["Add 1"].exists || app.buttons["Mark done"].exists, "Discreet rows keep their buttons: \(labels(app))")
+        shot(app, "widget-discreet-large-today")
+        app.buttons["layout-item"].tap(); choose(app, family: "systemSmall"); select(app, "Widget water")
+        XCTAssertTrue(shows(app, "0 of 8 glasses") && app.buttons["Add 1"].exists && !shows(app, "Widget water", timeout: 1), labels(app))
+        shot(app, "widget-discreet-small")
+        choose(app, family: "accessoryCircular")
+        XCTAssertTrue(shows(app, "Habit, ") && !shows(app, "Widget water", timeout: 1), labels(app))
+        app.buttons["layout-tasks"].tap(); app.buttons["view-today"].tap(); choose(app, family: "systemLarge")
+        XCTAssertTrue(shows(app, "7 tasks left") && !shows(app, "Widget task", timeout: 1), labels(app))
+        shot(app, "widget-discreet-tasks")
+        app.buttons["layout-habits"].tap(); choose(app, family: "accessoryRectangular")
+        XCTAssertTrue(shows(app, "5 left") && !shows(app, "Widget", timeout: 1), labels(app))
+        app.buttons["render-discreet"].tap()
+
+        // A snapshot from an older build ("Content hidden") still draws as before.
         app.buttons["render-hidden"].tap(); choose(app, family: "systemLarge")
         XCTAssertTrue(shows(app, "Content hidden") && !shows(app, "Widget", timeout: 1), labels(app))
         shot(app, "widget-hidden")
@@ -149,15 +167,24 @@ final class WidgetUITests: XCTestCase {
         shot(app, "widget-dark-week")
     }
 
+    /// The Widgets page went into Help → Widgets, and its switch into Privacy & Security (Current Work 58, spec §1, T3).
     func testGuideAndPrivacyAreFree() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty", "-free"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
-        app.buttons["menu-button"].tap(); app.buttons["menu-widgets"].tap()
-        XCTAssertTrue(app.navigationBars["Widgets"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["One habit · small"].exists, labels(app))
+        app.buttons["menu-button"].tap()
+        XCTAssertTrue(app.buttons["menu-privacy"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["menu-widgets"].exists, "No Widgets page in the menu any more")
+        app.buttons["menu-help"].tap()
+        XCTAssertTrue(app.navigationBars["Help & Feedback"].waitForExistence(timeout: 5))
+        let kinds = app.descendants(matching: .any)["help-topic-Which widgets are there?"]
+        for _ in 0..<8 where !kinds.isHittable { app.swipeUp() }
+        XCTAssertTrue(kinds.isHittable, "Help → Widgets lists the widgets")
         XCTAssertFalse(app.staticTexts["See Plus"].exists, "No Plus restrictions on widgets for now (the user, 6 Oct 2026)")
-        let privacy = app.switches["widgets-hide"]
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.buttons["menu-button"].tap(); app.buttons["menu-privacy"].tap()
+        XCTAssertTrue(app.navigationBars["Privacy & Security"].waitForExistence(timeout: 5))
+        let privacy = app.switches["privacy-hide-names"]
         for _ in 0..<6 where !privacy.isHittable || privacy.frame.maxY > app.frame.maxY - 100 { app.swipeUp() }
         XCTAssertTrue(privacy.isHittable, labels(app))
         let before = privacy.value as? String

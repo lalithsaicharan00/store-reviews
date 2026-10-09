@@ -146,7 +146,8 @@ final class WidgetSystemUITests: XCTestCase {
         app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
-        app.buttons["menu-button"].tap(); app.buttons["menu-widgets"].tap()
+        // The Widgets guide is in Help now (Current Work 58).
+        app.buttons["menu-button"].tap(); app.buttons["menu-help"].tap()
         // A separate diagnostic view validates disk state, without re-seeding or reusing memory.
         app.terminate(); app.launchArguments += ["-widget-system-verify"]; app.launch()
         XCTAssertTrue(app.staticTexts["Widget system: persisted log"].waitForExistence(timeout: 15), app.debugDescription)

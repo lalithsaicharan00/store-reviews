@@ -105,7 +105,12 @@ struct WhatsLeftIntent: AppIntent {
     nonisolated init() {}
 
     @MainActor func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
-        let store = await HabitShortcuts.loadedStore()
+        let text = Self.answer(await HabitShortcuts.loadedStore())
+        return .result(value: text, dialog: "\(text)")
+    }
+
+    /// What Siri says: how many are done, and which are left (none named while names are hidden outside the app).
+    @MainActor static func answer(_ store: HabitStore) -> String {
         let rows = store.shortcutDay(store.today())
         // Limits are check-ins, never "still to do".
         let left = rows.filter { !$0.done && !$0.habit.atMost }.map(\.habit.name)
@@ -123,7 +128,7 @@ struct WhatsLeftIntent: AppIntent {
             let list = ListFormatter.localizedString(byJoining: names)
             text = "\(done) of \(rows.count) done. Still to do: \(list)."
         }
-        return .result(value: text, dialog: "\(text)")
+        return text
     }
 }
 

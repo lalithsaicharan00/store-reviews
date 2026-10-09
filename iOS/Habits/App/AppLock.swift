@@ -405,6 +405,18 @@ final class AppLock {
 
     // MARK: Test launches
 
+    #if DEBUG
+    /// Speed runs (`lock-keypad`): the test launch's own lock in code mode ("123456"), locked now, with no trusted Face
+    /// ID, so the keypad shows straight away.
+    func perfLock() async {
+        guard Self.testing else { return }
+        if LockKeychain.vault.codeHash == nil { await LockKeychain.setCode("123456", trusting: nil) }
+        Self.setEnabled(true)
+        bump()
+        isLocked = true
+    }
+    #endif
+
     /// `-test-lock passcode|code` (with `-test-lock-code 123456` for a code), `-test-lock-fresh` (an empty test Keychain
     /// item), `-test-lock-ask 0|60|900`. Every test launch otherwise starts with the lock off (T8).
     nonisolated private static func applyTestLaunch() {
