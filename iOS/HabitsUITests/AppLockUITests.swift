@@ -88,6 +88,17 @@ final class AppLockUITests: XCTestCase {
         chooseCode(app, code, file: file, line: line)
     }
 
+    /// Lock Again, a menu in its row: by its id, or by its title where the menu button doesn't carry the id.
+    private func lockAgain(_ app: XCUIApplication) -> XCUIElement {
+        let byID = app.buttons["privacy-lock-again"]
+        return byID.exists ? byID : app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Lock Again'")).firstMatch
+    }
+
+    /// Any element whose label contains `text` (a row whose texts are combined into one element).
+    private func shows(_ app: XCUIApplication, _ text: String) -> Bool {
+        app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch.exists
+    }
+
     private func flip(_ toggle: XCUIElement) {
         toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
     }
@@ -155,7 +166,7 @@ final class AppLockUITests: XCTestCase {
         let lock = app.switches["privacy-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
         XCTAssertEqual(value(lock), "0", "Off by default")
-        XCTAssertFalse(app.buttons["unlock-iphone-passcode"].exists || app.buttons["privacy-lock-again"].exists, "Options only once it's on")
+        XCTAssertFalse(app.buttons["unlock-iphone-passcode"].exists || lockAgain(app).exists, "Options only once it's on")
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "The app will ask for Face ID each time you open it.")).firstMatch.exists, labels(app))
         shot(app, "app-lock-off")
         // On: the sheet first; the switch stays off meanwhile.
@@ -178,7 +189,8 @@ final class AppLockUITests: XCTestCase {
         XCTAssertFalse(app.buttons["privacy-change-code"].exists, "No Change App Passcode in iPhone-passcode mode")
         shot(app, "app-lock-on-iphone-passcode")
         // Lock Again: a menu in its row.
-        let again = app.buttons["privacy-lock-again"]
+        XCTAssertTrue(app.buttons["unlock-app-passcode"].waitForExistence(timeout: 5))
+        let again = lockAgain(app)
         XCTAssertTrue(again.waitForExistence(timeout: 5), labels(app))
         XCTAssertTrue((again.label + " " + value(again)).contains("Immediately"), "Immediately is the default: \(again.label) \(value(again))")
         again.tap()
@@ -199,7 +211,7 @@ final class AppLockUITests: XCTestCase {
         openAppLock(app)
         flip(lock); answer(app, true)
         XCTAssertTrue(waitFor(lock, value: "0"))
-        XCTAssertFalse(app.buttons["privacy-lock-again"].exists, "The page collapses back")
+        XCTAssertFalse(lockAgain(app).exists, "The page collapses back")
         back(app)
         XCTAssertTrue(waitFor(hide, value: "0") && hide.isEnabled, "Turning the lock off gives back the person's choice")
         // The person's choice on, then the lock on and off: still on.
@@ -233,7 +245,7 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["How your app passcode works"].waitForExistence(timeout: 5), labels(app))
         for text in ["If you forget it", "Use Face ID to choose a new app passcode.", "If Face ID changes", "If you forget it and Face ID can't help",
                      "Your habits are never deleted, whatever happens."] {
-            XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch.exists, "\(text): \(labels(app))")
+            XCTAssertTrue(shows(app, text), "\(text): \(labels(app))")
         }
         shot(app, "app-lock-how-it-works")
         back(app)
@@ -381,7 +393,7 @@ final class AppLockUITests: XCTestCase {
         answer(app, true)
         XCTAssertTrue(waitFor(lock, value: "1"), labels(app))
         XCTAssertFalse(app.buttons["unlock-app-passcode"].exists, "No app passcode choice without Face ID")
-        XCTAssertTrue(app.buttons["privacy-lock-again"].exists, labels(app))
+        XCTAssertTrue(lockAgain(app).exists, labels(app))
     }
 
     /// Wrong codes: "That's not the code."; five in a row wait a minute, the keypad says so and takes nothing; the minute

@@ -205,8 +205,7 @@ final class SmallScreenUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Enter it again"].waitForExistence(timeout: 5), frames(ids))
         shot("se-setup-again")
         for digit in "123456" { app.buttons["code-key-\(digit)"].tap() }
-        let again = app.buttons["privacy-lock-again"]
-        XCTAssertTrue(again.waitForExistence(timeout: 5), frames(["privacy-lock", "unlock-app-passcode", "privacy-change-code", "privacy-lock-again"]))
+        XCTAssertTrue(app.buttons["privacy-change-code"].waitForExistence(timeout: 5), frames(["privacy-lock", "unlock-app-passcode", "privacy-change-code", "privacy-lock-again"]))
         shot("se-app-lock-on")
         app.terminate()
 
