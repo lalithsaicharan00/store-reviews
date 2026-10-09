@@ -200,6 +200,31 @@ The image shows app-passcode mode. In iPhone-passcode mode rows 4 and 5 are abse
 - Hide Names Outside the App is on and disabled while App Lock is on (as built); footer: **On while App Lock is on.**
   then the same sentence as screen 1. Turning App Lock off restores the person's own choice (as built).
 
+### Screens 9 and 10 · Lock screen: Face ID was changed, then the question (app passcode only)
+
+<img src="Images/9 Lock screen — Face ID was changed.png" width="300"> <img src="Images/10 Lock screen — Did you change Face ID.png" width="300">
+
+When does this happen: App Lock is on with an app passcode, and Face ID was changed on the iPhone since the passcode
+was set (a face or fingerprint added or removed, or Face ID reset). iOS says only *that* it changed
+(`LADomainState`), never whose face, so the app can't tell the owner's change from someone else's. Behaviour is the
+built one (`lock.faceIDChanged`, `askTrustFaceID`, spec §3.4); this changes the words and the cover's layout.
+
+- **Screen 9, the cover:** the lock icon, title **Face ID was changed** (one line), under it **Enter your app passcode
+  to open the app.**, the six dots, the keypad, and **Forgot App Passcode?** under it. Face ID is not offered here
+  (no Use Face ID button). On this screen the keypad's own prompt line is left out, since the line under the title
+  already asks (`CodeEntry` with an empty prompt). Wrong passcodes and waits as built.
+- **Screen 10, after the right passcode:** the question is asked **once, on the cover, before the app opens** (as
+  built: the cover answers its question before it goes, Rulebook T16). A native alert:
+  - Title **Did you change Face ID?**
+  - Message **If not, someone may have added their face. Turn it off and check Settings → Face ID & Passcode.**
+  - **Yes, Use Face ID** → `trustFaceID(true)`: the new Face ID is trusted and opens the app from now on.
+  - **No, Turn It Off** (the cancel role, so it's the bold, safe default) → `trustFaceID(false)`: only the app
+    passcode opens the app; the App Lock page shows **Use Face ID Again** (screen 7, row 5) to turn it back on later.
+  - Either way the app then opens where the person was.
+- Why ask at all: typing the passcode proves the owner is here, but if the app then trusted the changed Face ID
+  silently, a face someone else added would open the app from then on. So the owner decides, once.
+- In iPhone-passcode mode none of this shows (the iPhone's own lock already decides who can unlock).
+
 ---
 
 ## 5. Screens not redrawn: same behaviour, new words
@@ -212,8 +237,8 @@ lock screen is the next design round). Update only their words, so the whole fea
 | Cover title (`LockViews` 20, 103, 149) | Often Enough is locked | **The app is locked** |
 | Cover, reset ready (136) | The 24 hours are up. Choose a new code with your iPhone passcode. | **The 24 hours are up. Choose a new app passcode with your iPhone passcode.** |
 | Button (140, 123) | Choose a New Code | **Choose a New App Passcode** |
-| Face ID changed title / detail (146–147) | Face ID has changed on this iPhone / A face or a fingerprint was added or removed in Settings. Enter your Often Enough code to continue. | **Face ID was changed on this iPhone** / **Enter your app passcode to continue.** |
-| Alert after the right passcode (126–130) | Use Face ID again? · If you changed Face ID yourself, use it again. If you didn't, someone may have added their face: keep Face ID off and check Settings → Face ID & Passcode. · Use Face ID Again / Keep Face ID Off | **Did you change Face ID?** · **If it wasn't you, someone may have added their face. Turn Face ID off for the app and check Settings → Face ID & Passcode.** · **Yes, Use Face ID** / **No, Turn It Off** ⚠ to confirm with the user in the lock-screen round; keep the question (typing the passcode must never silently trust a changed set, spec §3.4) |
+| Face ID changed title / detail (146–147) | Face ID has changed on this iPhone / A face or a fingerprint was added or removed in Settings. Enter your Often Enough code to continue. | Drawn: screen 9 (**Face ID was changed** / **Enter your app passcode to open the app.**) |
+| Alert after the right passcode (126–130) | Use Face ID again? · If you changed Face ID yourself, use it again. If you didn't, someone may have added their face: keep Face ID off and check Settings → Face ID & Passcode. · Use Face ID Again / Keep Face ID Off | Drawn: screen 10 (**Did you change Face ID?** · **If not, someone may have added their face. Turn it off and check Settings → Face ID & Passcode.** · **Yes, Use Face ID** / **No, Turn It Off**; approved by the user, 9 Oct 2026) |
 | Keypad prompt (157, 491) | Enter your code / Enter your Often Enough code | **Enter your app passcode** |
 | Button (160) | Forgot Code? | **Forgot App Passcode?** |
 | Wrong entry (`AppLock` 285, 410) | That's not the code. | **That's not your app passcode.** |
@@ -236,7 +261,7 @@ stay as they are.
 | **Lock the app** | In ≡ › Privacy & Security, tap App Lock and turn on Lock with Face ID, then choose what opens the app if Face ID doesn't work. Lock Again sets how long it stays open after you leave it; locking your iPhone always locks it. |
 | **Use an app passcode instead of your iPhone passcode** | In ≡ › Privacy & Security › App Lock, under If Face ID doesn't work, choose App Passcode and create a six-digit passcode. Your iPhone passcode no longer opens the app, so people who know it can't. |
 | **Forgot your app passcode** | On the lock screen, tap Forgot App Passcode?. Face ID lets you choose a new one straight away. If Face ID can't help, tap Start 24-Hour Reset: after 24 hours your iPhone passcode lets you choose a new one. Your habits stay as they are. |
-| **"Face ID was changed"** | Whenever Face ID is changed on your iPhone, the app asks for your app passcode once, so no one else can get in with their face. If you made the change, choose Yes, Use Face ID; if not, turn it off and check Settings › Face ID & Passcode. |
+| **"Face ID was changed"** | Whenever Face ID is changed on your iPhone, the app asks for your app passcode once, so no one else can get in with their face. Then it asks Did you change Face ID?: choose Yes, Use Face ID if you did; if not, choose No, Turn It Off and check Settings › Face ID & Passcode. You can turn Face ID back on later in ≡ › Privacy & Security › App Lock › Use Face ID Again. |
 | **Hide names outside the app** | In ≡ › Privacy & Security, turn on Hide Names Outside the App. Widgets, reminders, alarms, the timer on the Lock Screen and Siri then show icons and numbers without habit names, and ✓ and + still work. It's always on while App Lock is on. To make a reminder say something you'll recognise, add Reminder Says in the habit's Reminders. |
 | **Make a reminder say something else** | (unchanged) |
 | **App Lock on a new iPhone** | App Lock and your app passcode stay on the iPhone they were set on. After moving to a new iPhone or restoring a backup, App Lock is off: turn it on again in ≡ › Privacy & Security › App Lock. Your Reminder Says words come with your habits. |
@@ -273,7 +298,7 @@ Also in Help: "A widget looks out of date" starts "Open the app: …" (the rule 
   menu and the reset-waiting section; remove `UnlockWithPage` and `AskAgainPage` (their jobs move inline; keep
   `AskAgainPage.name` or an equivalent for the menu's labels). Hide-names footer and header text (§4, screen 1).
 - `iOS/Habits/App/LockViews.swift`: the setup sheet (screens 3–6) replaces `YourOwnCodeSheet`'s intro and reuses
-  `NewCodeSheet`/`CodeEntry`; every string in §5.
+  `NewCodeSheet`/`CodeEntry`; the Face ID changed cover and alert (screens 9–10); every string in §5.
 - `iOS/Habits/App/AppLock.swift`: strings in §5 only. **No change to the vault, hashing, waits, domain state, reset
   timing or the cover window.**
 - `iOS/Habits/Help/HelpView.swift`: §6.
@@ -288,7 +313,7 @@ headings are headers; Dynamic Type up to accessibility sizes (screen 4's rows wr
 `setup-continue`, `setup-create-app-passcode`), `privacy-lock` (now on the App Lock page, reached through
 `privacy-app-lock`). Update `AppLockUITests`, `SmallScreenUITests` and any test that reads the changed labels. Add:
 turning on with iPhone Passcode; turning on with App Passcode through 3 → 4 → 5 → 6; ✕ on each step leaves the switch
-off; a mismatch returns to 5; switching modes both ways; Lock Again menu.
+off; a mismatch returns to 5; switching modes both ways; Lock Again menu. The Face ID changed test (`lock-face-id-changed`) reads the new title, line and alert buttons (**Yes, Use Face ID** / **No, Turn It Off**).
 
 **Small screens (T15).** Screens 3–7 were designed on the SE (375 × 667) and fit without scrolling at the default text
 size; check on the SE simulator with the frames named on one line (T14).
@@ -300,8 +325,8 @@ and a phone without a passcode.
 
 ## 9. Not designed yet (next round, after this is built or as the user asks)
 
-The lock cover and its states (locked, wrong passcode and waits, Forgot, Face ID changed and its question, reset
-waiting and ready), the Change App Passcode sheet's own look, and the mini and 6.1-inch sizes. Until then they keep
+The lock cover's other states (locked, wrong passcode and waits, Forgot, reset waiting and ready; Face ID changed is
+drawn, screens 9–10), the Change App Passcode sheet's own look, and the mini and 6.1-inch sizes. Until then they keep
 their built layout with §5's words.
 
 ## 10. Checklist (the user's points, 9 Oct 2026)
@@ -315,5 +340,7 @@ their built layout with §5's words.
 - [x] Remove the Recommended badge.
 - [x] Decide whether the security delay is a setting: no, fixed 24 hours (§7).
 - [x] Document the whole flow with images in one folder for implementation; push to `app-lock-privacy-security`.
+- [x] Draw the Face ID changed lock screen and the Did you change Face ID? question (screens 9–10), with the new
+      words (the user, 10 Oct 2026).
 - [ ] Build it (§8), tests on GitHub, then the iPhone check (U9).
-- [ ] Design the lock cover and recovery screens (§9).
+- [ ] Design the lock cover's other states (§9).
