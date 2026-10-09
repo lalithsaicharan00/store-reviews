@@ -368,4 +368,42 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Help & Feedback"].waitForExistence(timeout: 5), labels(app))
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Touch and hold the widget, tap Edit Widget")).firstMatch.waitForExistence(timeout: 3), labels(app))
     }
+
+    // MARK: Reminder Says
+
+    /// The habit form's Reminders: Reminder Says, under the times, saved with the habit and shown again when editing
+    /// (spec §3.7). 24 characters at most (U6).
+    func testReminderSaysIsSavedWithTheHabit() {
+        let app = launch(["-reminder-fake"])
+        let new = app.navigationBars.buttons["New Habit"].firstMatch
+        XCTAssertTrue(new.waitForExistence(timeout: 10), labels(app)); new.tap()
+        func row(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
+        row("Build or maintain,").tap(); row("Check it off,").tap()
+        let name = app.descendants(matching: .any)["name-field"]
+        XCTAssertTrue(name.waitForExistence(timeout: 5)); name.tap(); name.typeText("Private habit\n")
+        let reminders = app.descendants(matching: .any)["reminders-row"]
+        for _ in 0..<6 where !reminders.isHittable { app.swipeUp() }
+        reminders.tap()
+        let says = app.textFields["reminder-says-field"]
+        XCTAssertFalse(says.waitForExistence(timeout: 1), "Only while there's a reminder")
+        let remind = app.switches["Remind Me"]
+        XCTAssertTrue(remind.waitForExistence(timeout: 5)); flip(remind)
+        for _ in 0..<4 where !says.isHittable { app.swipeUp() }
+        XCTAssertTrue(says.isHittable, labels(app))
+        XCTAssertTrue(app.staticTexts["Shown in this habit's reminders. When names are hidden outside the app, it's shown instead of the name."].exists, labels(app))
+        says.tap(); says.typeText("Evening check-in, the long version")
+        XCTAssertEqual(says.value as? String, "Evening check-in, the lo", "Cut at 24 characters")
+        shot(app, "reminder-says")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.navigationBars["New Habit"].buttons["Add"].tap()
+        XCTAssertTrue(app.navigationBars["New Habit"].waitForNonExistence(timeout: 5), labels(app))
+        let row = app.staticTexts["Private habit"].firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 5)); row.press(forDuration: 1.0)
+        app.buttons["Edit Habit"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Edit Habit"].waitForExistence(timeout: 5))
+        for _ in 0..<6 where !reminders.isHittable { app.swipeUp() }
+        reminders.tap()
+        for _ in 0..<4 where !says.isHittable { app.swipeUp() }
+        XCTAssertEqual(says.value as? String, "Evening check-in, the lo", "Saved with the habit")
+    }
 }

@@ -71,6 +71,8 @@ private struct LockedScreen: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .defaultScrollAnchor(.center)
+        // After a wait the keypad takes codes again by itself.
+        .task(id: lock.waitText) { await lock.waitOut() }
         .sheet(item: $lock.coverSheet) { sheet in
             switch sheet {
             case .forgot: ForgotCodeSheet(lock: lock)
@@ -450,6 +452,7 @@ struct CodeCheckSheet: View {
                 .padding(.vertical, 24)
             }
             .scrollBounceBehavior(.basedOnSize)
+            .task(id: lock.waitText) { await lock.waitOut() }
             .navigationTitle(check.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { LockSheetClose { check.finish(false); dismiss() } }

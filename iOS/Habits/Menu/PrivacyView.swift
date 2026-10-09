@@ -14,6 +14,7 @@ struct PrivacyView: View {
     @State private var usageOn = Analytics.shared.consented
     // Consent remains separate; no crash collector is present in this consolidated app.
     @State private var crashOn = UserDefaults.standard.bool(forKey: "privacy.crashConsent")
+    @State private var askAgain = AppLock.askAgain
     @State private var settingCode = false
     @State private var changingCode = false
 
@@ -65,6 +66,7 @@ struct PrivacyView: View {
         .analyticsScreen(.privacy)
         .navigationTitle("Privacy & Security")
         .task(id: scenePhase == .active) { if scenePhase == .active { ability = await AppLock.ability() } }
+        .onAppear { askAgain = AppLock.askAgain }
         .sheet(isPresented: $settingCode) {
             YourOwnCodeSheet(lock: lock) { chosen in
                 settingCode = false
@@ -103,7 +105,7 @@ struct PrivacyView: View {
                     NavigationLink {
                         AskAgainPage()
                     } label: {
-                        LabeledContent("Ask Again", value: AskAgainPage.name(AppLock.askAgain))
+                        LabeledContent("Ask Again", value: AskAgainPage.name(askAgain))
                     }
                     .accessibilityIdentifier("privacy-ask-again")
                 }

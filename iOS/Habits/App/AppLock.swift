@@ -72,15 +72,15 @@ final class AppLock {
         func finish(_ ok: Bool) { answer?(ok); answer = nil }
     }
 
-    private var unlocking = false
+    @ObservationIgnored private var unlocking = false
     /// Ask the next time the app is in front: at launch and after leaving it, but not after a cancelled prompt (the
     /// prompt itself makes the app inactive and active again, which would ask forever).
-    private var promptWhenActive: Bool
+    @ObservationIgnored private var promptWhenActive: Bool
     /// When the app left the screen (`LockClock`), for Ask Again.
-    private var leftAt: TimeInterval?
-    private var phoneLockObserver: NSObjectProtocol?
-    private var phoneUnlockObserver: NSObjectProtocol?
-    private var backgroundTask = UIBackgroundTaskIdentifier.invalid
+    @ObservationIgnored private var leftAt: TimeInterval?
+    @ObservationIgnored private var phoneLockObserver: NSObjectProtocol?
+    @ObservationIgnored private var phoneUnlockObserver: NSObjectProtocol?
+    @ObservationIgnored private var backgroundTask = UIBackgroundTaskIdentifier.invalid
 
     init() {
         Self.applyTestLaunch()
@@ -230,7 +230,7 @@ final class AppLock {
         case .passcode:
             if await Self.authenticator.authenticate(.deviceOwner, reason: "Unlock your habits") { isLocked = false }
         case .code:
-            guard step == .code, faceIDUsable, !LockKeychain.vault.resetWaiting else { return }
+            guard step == .code, faceIDUsable else { return }
             if await Self.authenticator.authenticate(.biometrics, reason: "Unlock Often Enough") { opened() }
         }
     }
@@ -292,6 +292,15 @@ final class AppLock {
     }
 
     func clearMessage() { message = nil }
+
+    /// The keypad waits until a wrong-code wait is over, then takes codes again (the cover and the code sheet run this).
+    func waitOut() async {
+        guard let left = LockKeychain.vault.waitLeft else { return }
+        try? await Task.sleep(for: .seconds(left + 0.2))
+        guard !Task.isCancelled else { return }
+        message = nil
+        bump()
+    }
 
     // MARK: Forgot code, and the 24-hour reset
 
@@ -552,13 +561,16 @@ nonisolated enum LockKeychain {
     private static let lock = NSLock()
     nonisolated(unsafe) private static var cached: LockVault?
 
-    /// The vault (read once, then kept in memory; every change is written straight through).
+    /// The vault (read once, then kept in memory; every change is written straight through). A read the iPhone refuses
+    /// (before its first unlock since a restart) isn't remembered as "no code": it's read again next time.
     static var vault: LockVault {
         lock.lock(); defer { lock.unlock() }
         if let cached { return cached }
-        let read = load() ?? LockVault()
-        cached = read
-        return read
+        switch load() {
+        case .found(let read): cached = read; return read
+        case .none: cached = LockVault(); return LockVault()
+        case .unreadable: return LockVault()
+        }
     }
 
     /// In code mode: read at launch, so a reinstalled app keeps its code lock.
@@ -566,7 +578,17 @@ nonisolated enum LockKeychain {
 
     static func update(_ change: (inout LockVault) -> Void) {
         lock.lock(); defer { lock.unlock() }
-        var value = cached ?? load() ?? LockVault()
+        var value: LockVault
+        if let cached {
+            value = cached
+        } else {
+            switch load() {
+            case .found(let read): value = read
+            case .none: value = LockVault()
+            // Never written over with an empty vault while the iPhone won't let it be read.
+            case .unreadable: return
+            }
+        }
         value.creditReset()
         change(&value)
         cached = value
@@ -603,13 +625,19 @@ nonisolated enum LockKeychain {
         [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account]
     }
 
-    private static func load() -> LockVault? {
+    private enum Read { case found(LockVault), none, unreadable }
+
+    private static func load() -> Read {
         var q = query()
         q[kSecReturnData as String] = true
         q[kSecMatchLimit as String] = kSecMatchLimitOne
         var result: CFTypeRef?
-        guard SecItemCopyMatching(q as CFDictionary, &result) == errSecSuccess, let data = result as? Data else { return nil }
-        return try? JSONDecoder().decode(LockVault.self, from: data)
+        let status = SecItemCopyMatching(q as CFDictionary, &result)
+        if status == errSecItemNotFound { return .none }
+        guard status == errSecSuccess, let data = result as? Data, let vault = try? JSONDecoder().decode(LockVault.self, from: data) else {
+            return .unreadable
+        }
+        return .found(vault)
     }
 
     private static func save(_ value: LockVault) {
@@ -712,7 +740,7 @@ extension AppLock {
             let context = LAContext()
             let available = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
             let biometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
-            return Ability(available: available, method: methodName(context), biometrics: biometrics)
+            return Ability(available: available, method: AppLock.methodName(context), biometrics: biometrics)
         }.value
     }
 

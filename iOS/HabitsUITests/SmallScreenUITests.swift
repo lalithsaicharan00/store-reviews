@@ -138,4 +138,78 @@ final class SmallScreenUITests: XCTestCase {
         }
         shot("se-day-details-four-logs-note")
     }
+
+    // MARK: Privacy & Security on the smallest iPhone (Current Work 58, T15), at an accessibility text size
+
+    /// The cover with its keypad: every key, Forgot Code? and the dots on screen, at the largest accessibility size too.
+    func testLockKeypadFitsAtAccessibilitySizes() {
+        for size in ["UICTContentSizeCategoryL", "UICTContentSizeCategoryAccessibilityL"] {
+            app.terminate()
+            app.launchArguments = ["-uitest", "-empty", "-test-lock", "code", "-test-lock-code", "123456", "-test-lock-fresh",
+                                   "-test-face", "none", "-UIPreferredContentSizeCategoryName", size]
+            app.launch()
+            let ids = ["code-dots", "code-key-1", "code-key-3", "code-key-0", "code-delete", "lock-forgot"]
+            XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 10), frames(ids))
+            shot("se-lock-keypad-\(size)")
+            // At an accessibility size the cover scrolls; each key is reachable and whole.
+            for id in ids {
+                let element = app.descendants(matching: .any)[id].firstMatch
+                for _ in 0..<4 where !element.isHittable { app.swipeUp() }
+                XCTAssertTrue(element.isHittable && element.frame.maxY <= window.maxY, "\(id) on screen (\(size)): \(frames(ids))")
+            }
+            for digit in "123456" { app.buttons["code-key-\(digit)"].tap() }
+            XCTAssertFalse(app.descendants(matching: .any)["app-lock-cover"].waitForExistence(timeout: 1) && app.buttons["code-key-1"].isHittable,
+                           "The code opens it (\(size))")
+        }
+    }
+
+    /// Privacy & Security, Your Own Code and the code entry sheet, and the habit form's Reminders with Reminder Says.
+    func testPrivacyCodeSheetsAndReminderSaysFit() {
+        app.launchArguments = ["-uitest", "-empty", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityM"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+        app.buttons["menu-button"].tap(); app.buttons["menu-privacy"].tap()
+        let lock = app.switches["privacy-lock"]
+        XCTAssertTrue(lock.waitForExistence(timeout: 5))
+        shot("se-privacy-off")
+        lock.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+        XCTAssertTrue(app.buttons["fake-auth-ok"].waitForExistence(timeout: 5)); app.buttons["fake-auth-ok"].tap()
+        let unlockWith = app.buttons["privacy-unlock-with"]
+        XCTAssertTrue(unlockWith.waitForExistence(timeout: 5))
+        shot("se-privacy-on")
+        unlockWith.tap()
+        app.buttons["unlock-with-code"].tap()
+        XCTAssertTrue(app.buttons["fake-auth-ok"].waitForExistence(timeout: 5)); app.buttons["fake-auth-ok"].tap()
+        let choose = app.buttons["lock-choose-code"]
+        XCTAssertTrue(choose.waitForExistence(timeout: 5))
+        XCTAssertTrue(choose.isHittable && choose.frame.maxY <= window.maxY, "Choose a Code on screen: \(choose.frame), window \(window)")
+        shot("se-your-own-code")
+        choose.tap()
+        let ids = ["code-dots", "code-key-1", "code-key-0", "code-delete"]
+        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5), frames(ids))
+        shot("se-choose-code")
+        app.buttons["lock-sheet-cancel"].tap()
+        app.terminate()
+
+        // The habit form's Reminders: Reminder Says under the times, above the keyboard while typing.
+        app.launchArguments = ["-uitest", "-empty", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityM"]
+        app.launch()
+        let new = app.navigationBars.buttons["New Habit"].firstMatch
+        XCTAssertTrue(new.waitForExistence(timeout: 10)); new.tap()
+        func row(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
+        row("Build or maintain,").tap(); row("Check it off,").tap()
+        let reminders = app.descendants(matching: .any)["reminders-row"]
+        for _ in 0..<6 where !reminders.isHittable { app.swipeUp() }
+        reminders.tap()
+        let remind = app.switches["Remind Me"]
+        XCTAssertTrue(remind.waitForExistence(timeout: 5))
+        remind.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+        let says = app.textFields["reminder-says-field"]
+        for _ in 0..<6 where !says.isHittable { app.swipeUp() }
+        XCTAssertTrue(says.isHittable, frames(["reminder-says-field"]))
+        says.tap(); says.typeText("The usual")
+        XCTAssertTrue(keyboard.waitForExistence(timeout: 5))
+        aboveKeyboard(says, "Reminder Says")
+        shot("se-reminder-says")
+    }
 }
