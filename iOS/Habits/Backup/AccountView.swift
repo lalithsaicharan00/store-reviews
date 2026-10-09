@@ -1,17 +1,20 @@
 import LocalAuthentication
 import SwiftUI
 
-/// ≡ → Account, and Backup & Export → Your Account (report "Backup & Export and Your Account — What People Look For",
-/// 9 Oct 2026): where people look for signing in and out. Signed out, Sign In and one line. Signed in, how you sign in
-/// and your plan, your devices, then Sign Out and Delete Account at the bottom (Architecture 01 §3.7, 09 §7). Signing out
-/// leaves this page on its signed-out state.
+/// ≡ → Account, and Backup & Export → Your Account (Account and Backup Redesign, screens 2, 3 and 3b; Current Work 76).
+/// It leads with what people come for (users show, report §4a): who they are here, then the actions by their own names.
+///
+/// - **Signed out:** "Not signed in" and where the habits are; **Sign In** and **Create Account** as two plain rows,
+///   each opening its own sheet; two facts, never a list of benefits or a push.
+/// - **Signed in:** which account, the plan (Plus says lifetime), Last Backup or Last Synced, the devices with how to get
+///   on another one, Sign Out and Delete Account (Architecture 01 §3.7, 09 §7). Signing out leaves this page signed out.
 struct AccountView: View {
     @Environment(BackupCenter.self) private var backup
     @State private var details: BackupCenter.AccountDetails?
     @State private var failed = false
     @State private var confirmSignOut = false
     @State private var showDelete = false
-    @State private var showSignIn = false
+    @State private var sheet: String?
 
     var body: some View {
         Form {
@@ -24,53 +27,95 @@ struct AccountView: View {
         .confirmationDialog("Sign out?", isPresented: $confirmSignOut, titleVisibility: .visible) {
             Button("Sign Out", role: .destructive) { Task { await backup.signOut() } }
         } message: {
-            Text("Your habits stay on this iPhone. They won't be backed up to your account until you sign in again.")
+            Text(backup.signOutLine)
         }
         .sheet(isPresented: $showDelete) { NavigationStack { DeleteAccountView() } }
-        .sheet(isPresented: $showSignIn) { SignInSheet() }
+        .sheet(item: Binding(get: { sheet.map(SheetTitle.init) }, set: { sheet = $0?.title })) { item in
+            SignInSheet(title: item.title)
+        }
     }
+
+    // MARK: Signed out (screen 2)
 
     @ViewBuilder private var signedOut: some View {
         Section {
-            Button("Create Account") { showSignIn = true }
-                .accessibilityIdentifier("account-sign-in")
+            Identity(symbol: "person.crop.circle.fill", filled: false, title: "Not signed in", line: backup.whereHabitsAre)
+                .accessibilityIdentifier("account-identity")
+        }
+        Section {
+            row("Sign In", id: "account-sign-in") { sheet = "Sign In" }
+            row("Create Account", id: "account-create") { sheet = "Create Account" }
         } footer: {
-            Text("Encrypted daily backups that follow you to a new phone. With Plus, all your devices stay in sync. Have one already? This signs you in.")
+            VStack(alignment: .leading, spacing: 8) {
+                Text("With an account, your habits are backed up to it as you go, and come back when you sign in on a new phone or tablet.")
+                Text("A free account is for one device. Syncing several devices is part of Plus.")
+            }
         }
     }
 
+    private func row(_ title: String, id: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(title).foregroundStyle(Color.primary)
+                Spacer()
+                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+            }
+            .contentShape(Rectangle())
+        }
+        .accessibilityIdentifier(id)
+    }
+
+    // MARK: Signed in (screens 3 and 3b)
+
     @ViewBuilder private var signedIn: some View {
-        Section("Signed In With") {
-            if let details {
-                ForEach(details.signIns) { key in
-                    LabeledContent(Self.providerName(key.provider), value: key.isPrivateEmail ? "Private email" : (key.email ?? ""))
-                }
+        Section {
+            if let key = details?.signIns.first {
+                Identity(symbol: key.provider == "apple" ? "apple.logo" : "person.crop.circle.fill", filled: true,
+                         title: "Signed in with \(Self.providerName(key.provider))",
+                         line: key.isPrivateEmail ? "Email hidden by Apple" : (key.email ?? ""))
+                    .accessibilityIdentifier("account-identity")
             } else if failed {
                 Text("Couldn't load your account. Check your connection.").foregroundStyle(.secondary)
             } else {
                 ProgressView()
             }
-            LabeledContent("Plan", value: backup.isPlus ? "Plus" : "Free · One device")
-                .accessibilityIdentifier("account-plan")
-            // With Plus, when this iPhone last synced: a status, never a switch (users show they want to know when it
-            // last ran, and no one asks to turn it off: report "Backup & Export and Your Account" §2).
-            if backup.isPlus, let synced = backup.lastSynced {
-                LabeledContent("Last Synced", value: HabitCopy.capitalized(BackupSyncView.when(synced)))
-                    .accessibilityIdentifier("account-last-synced")
-            }
         }
-        if let details, !details.devices.isEmpty {
-            Section("Devices") {
+        Section {
+            NavigationLink { PlusView(fromMenu: true) } label: {
+                LabeledContent("Plan", value: backup.isPlus ? "Plus (lifetime)" : "Free")
+            }
+            .accessibilityIdentifier("account-plan")
+            if backup.isPlus {
+                LabeledContent("Last Synced", value: backup.lastSynced.map { HabitCopy.capitalized(BackupSyncView.when($0)) } ?? "Not yet")
+                    .accessibilityIdentifier("account-last-synced")
+            } else {
+                LabeledContent("Last Backup", value: backup.lastGood.map { HabitCopy.capitalized(BackupSyncView.when($0)) } ?? "Not yet")
+                    .accessibilityIdentifier("account-last-backup")
+            }
+        } footer: {
+            Text(backup.isPlus ? "Every change syncs to all your devices." : "Backed up as you go, with the last 7 days kept.")
+        }
+        Section {
+            if let details {
                 ForEach(details.devices) { device in
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(device.isThis ? "\(device.name) (this device)" : device.name)
-                        Text(device.signedIn ? "Last used \(BackupSyncView.when(device.lastSeen))" : "Signed out")
-                            .font(.footnote).foregroundStyle(.secondary)
+                    HStack(spacing: 14) {
+                        Image(systemName: device.platform == "ipados" ? "ipad" : "iphone").font(.title3).frame(width: 26)
+                            .accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(device.isThis ? "\(device.name) (this device)" : device.name)
+                            Text(deviceLine(device)).font(.footnote).foregroundStyle(.secondary)
+                        }
                     }
                     .accessibilityElement(children: .combine)
                 }
             }
+        } header: {
+            Text("Devices")
+        } footer: {
+            Text(backup.isPlus ? "To add a device, sign in on it with this account."
+                               : "A free account is for one device. To use a new phone or tablet instead, sign in on it.")
         }
+        .accessibilityIdentifier("account-devices")
         Section {
             Button("Sign Out") { confirmSignOut = true }
                 .accessibilityIdentifier("account-sign-out")
@@ -81,6 +126,12 @@ struct AccountView: View {
             Button("Delete Account…", role: .destructive) { showDelete = true }
                 .accessibilityIdentifier("account-delete")
         }
+    }
+
+    private func deviceLine(_ device: BackupCenter.AccountDetails.Device) -> String {
+        if !device.signedIn { return "Signed out" }
+        if device.isThis && !backup.isPlus, let last = backup.lastGood { return "Backed up " + BackupSyncView.when(last) }
+        return "Last used " + BackupSyncView.when(device.lastSeen)
     }
 
     private func load() async {
@@ -94,6 +145,36 @@ struct AccountView: View {
         case "google": "Google"
         default: provider.capitalized
         }
+    }
+}
+
+private struct SheetTitle: Identifiable {
+    let title: String
+    var id: String { title }
+}
+
+/// Who you are here, the top of the Account page in every state: a round mark, a title and one line.
+private struct Identity: View {
+    let symbol: String
+    let filled: Bool
+    let title: String
+    let line: String
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(systemName: symbol)
+                .font(.system(size: filled ? 20 : 36))
+                .foregroundStyle(filled ? Color.onInk : Color.secondary)
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(filled ? Color.ink : Color(.tertiarySystemFill)))
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(.headline)
+                if !line.isEmpty { Text(line).font(.subheadline).foregroundStyle(.secondary) }
+            }
+        }
+        .padding(.vertical, 4)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -150,7 +231,7 @@ struct DeleteAccountView: View {
             Button("Erase This iPhone Too", role: .destructive) { Task { await delete(erase: true) } }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("If you keep them, Often Enough keeps working on this iPhone without an account.")
+            Text("If you keep them, the app keeps working on this iPhone without an account.")
         }
         .sheet(item: Binding(get: { sharing.map(SharedFileItem.init) }, set: { sharing = $0?.url })) { item in
             ShareFileSheet(url: item.url, onFinish: { sharing = nil })

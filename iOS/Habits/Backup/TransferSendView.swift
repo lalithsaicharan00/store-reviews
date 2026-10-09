@@ -1,10 +1,12 @@
 import SwiftUI
 import UIKit
 
-/// Backup & Export → Move to a New iPhone → Show a Transfer Code (Current Work 73.1): the old iPhone's half of Move from
-/// another device. It makes a fresh backup of everything, shows a code, and sends the backup to the new iPhone that
-/// types it (`TransferSender`). The screen stays awake while it waits; leaving it ends the code. This iPhone keeps
-/// everything: it's a copy, not a move.
+/// Backup & Export → Move to Another Device (Account and Backup Redesign, screen 5; Current Work 73.1 and 76): the old
+/// device's half of Move from another device, opened straight from the row, like a messaging app's transfer (the user,
+/// 10 Oct 2026: no options screen first). Three steps, the code, and that it's waiting. It makes a fresh backup of
+/// everything and sends it to the device that types the code (`TransferSender`), with whether this device is signed in
+/// so the other one can ask to sign in too. The screen stays awake while it waits; leaving it ends the code. This
+/// device keeps everything: it's a copy, not a move.
 struct TransferSendView: View {
     @Environment(BackupCenter.self) private var backup
     @State private var sender = TransferSender()
@@ -12,7 +14,12 @@ struct TransferSendView: View {
     var body: some View {
         Form {
             Section {
-                VStack(spacing: 14) {
+                step(1, "Install \(Onboarding.appName) on the other device")
+                step(2, "Choose I've used it before, then Move from another device")
+                step(3, "Enter this code")
+            }
+            Section {
+                VStack(spacing: 12) {
                     Text(TransferCode.display(sender.code))
                         .font(.system(size: 40, weight: .bold, design: .monospaced))
                         .minimumScaleFactor(0.6)
@@ -25,7 +32,7 @@ struct TransferSendView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
             } footer: {
-                Text("On your new iPhone, open \(Onboarding.appName), choose I've used it before, then Move from another device, and type this code. Keep this screen open and both iPhones close.")
+                Text("Keep this screen open until your habits arrive on the other device. They stay on this device too.")
             }
             if case .failed = sender.state {
                 Section { Button("Try Again") { restart() }.accessibilityIdentifier("transfer-try-again") }
@@ -38,7 +45,7 @@ struct TransferSendView: View {
                 }
             }
         }
-        .navigationTitle("Transfer Code")
+        .navigationTitle("Move to Another Device")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: ObjectIdentifier(sender)) { await prepare() }
         .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
@@ -48,6 +55,18 @@ struct TransferSendView: View {
         }
     }
 
+    private func step(_ number: Int, _ text: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text("\(number)").font(.subheadline.weight(.semibold)).monospacedDigit()
+                .frame(width: 26, height: 26)
+                .background(Circle().fill(Color(.tertiarySystemFill)))
+                .alignmentGuide(.firstTextBaseline) { $0[.firstTextBaseline] }
+            Text(text).fixedSize(horizontal: false, vertical: true)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("transfer-step-\(number)")
+    }
+
     @ViewBuilder private var status: some View {
         switch sender.state {
         case .preparing:
@@ -55,7 +74,7 @@ struct TransferSendView: View {
         case .waiting:
             HStack(spacing: 8) {
                 ProgressView()
-                Text("Waiting for your new iPhone…")
+                Text("Waiting for the other device…")
             }
             .foregroundStyle(.secondary)
         case .sending(let done):
@@ -64,10 +83,10 @@ struct TransferSendView: View {
                 Text("Sending… \(Int((done * 100).rounded()))%").monospacedDigit()
             }
         case .sent:
-            Label("Sent. Your habits are on your new iPhone.", systemImage: "checkmark.circle.fill")
+            Label("Done. Your habits are on the other device.", systemImage: "checkmark.circle.fill")
                 .accessibilityIdentifier("transfer-sent")
         case .needsPermission:
-            Text("\(Onboarding.appName) needs Local Network to reach your new iPhone. Turn it on in Settings, then try again.")
+            Text("The app needs Local Network to reach the other device. Turn it on in Settings, then try again.")
                 .multilineTextAlignment(.center)
         case .failed(let text):
             Text(text).multilineTextAlignment(.center)
@@ -78,9 +97,9 @@ struct TransferSendView: View {
         do {
             let file = try await backup.transferFile()
             guard !Task.isCancelled else { return }
-            await sender.start(file: file)
+            await sender.start(file: file, account: backup.isSignedIn ? (backup.isPlus ? .plus : .free) : .none)
         } catch {
-            sender.fail("Couldn't get your data ready. Your habits are safe on this iPhone. Please try again.")
+            sender.fail("Couldn't get your data ready. Your habits are safe on this device. Please try again.")
         }
     }
 

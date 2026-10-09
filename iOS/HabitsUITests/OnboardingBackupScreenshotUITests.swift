@@ -132,28 +132,32 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         shot("D03-backup-export-top")
 
         // Restore first, while it's on screen: the erase question below is a popover with no Cancel.
-        if tap(app.buttons["backup-restore"], "Restore…") {
-            XCTAssertTrue(app.navigationBars["Restore Your Habits"].waitForExistence(timeout: 5))
-            shot("D08-restore-your-habits")
-            if tap(app.buttons["restore-sign-in"], "Restore → Sign In") {
-                shot("D09-restore-sign-in")
-                app.navigationBars["Sign In"].buttons["Cancel"].tap()
+        if tap(app.buttons["backup-restore"], "Restore From a Backup") {
+            XCTAssertTrue(app.navigationBars["Restore From a Backup"].waitForExistence(timeout: 5))
+            shot("D08-restore-from-a-backup")
+            if tap(app.buttons["restore-icloud"], "Restore → iCloud") {
+                shot("D09-restore-icloud")
+                back()
             }
-            if tap(app.buttons["restore-import"], "Import a File") {
+            if tap(app.buttons["restore-import"], "Backup File") {
                 shot("D10-import-a-file")
                 let cancel = app.buttons["Cancel"].firstMatch
                 if cancel.waitForExistence(timeout: 5) { cancel.tap() }
             }
-            app.navigationBars["Restore Your Habits"].buttons["Close"].tap()
+            back()
         }
 
         app.swipeUp()
         shot("D04-backup-export-middle")
         app.swipeUp(); app.swipeUp()
         shot("D05-backup-export-bottom")
-        if tap(app.buttons["backup-sign-in"], "Sign In to Back Up to Your Account") {
-            shot("D06-sign-in-sheet")
-            closeSheet()
+        if tap(app.buttons["backup-account"], "Your Account") {
+            shot("D06-your-account")
+            if tap(app.buttons["account-sign-in"], "Sign In") {
+                shot("D06b-sign-in-sheet")
+                closeSheet()
+            }
+            back()
         }
         // Share sheets are left out: on the iPhone they show the person's own contacts.
         if tap(app.buttons["backup-erase"], "Erase All My Data") {

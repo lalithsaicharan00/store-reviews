@@ -57,16 +57,18 @@ import SwiftUI
 enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     case progress, habits, tasks
     case timesOfDay, dayAndWeek, reminders, appearance
-    case account, backup, privacy
+    case backup, privacy, account
     case plus
     case help, about
 
     var id: String { rawValue }
 
-    /// The menu's groups, separated by a gap like the iPhone's own Settings. Account leads its group, where people look
-    /// for signing in and out (the user, 9 Oct 2026; report "Backup & Export and Your Account").
+    /// The menu's groups, separated by a gap like the iPhone's own Settings, ordered by importance: daily places, how the
+    /// app works, your data (backup matters to everyone, privacy to many, an account only to those who want one), Plus,
+    /// then Help and About. Account is last in the data group: easy to find, never pushed (the user, 10 Oct 2026;
+    /// Account and Backup Redesign §4, screen 1).
     static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
-                                        [.account, .backup, .privacy], [.plus], [.help, .about]]
+                                        [.backup, .privacy, .account], [.plus], [.help, .about]]
 
     var title: String {
         switch self {

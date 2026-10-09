@@ -12,6 +12,9 @@ import type { AccessClaims } from "./tokens";
  *   (`before-shrink`), so a bug that empties the phone can't push the last good copy out.
  * - Checked: the phone sends the file's SHA-256, R2 refuses the write if the bytes don't match, and the reply carries
  *   the checksum R2 stored. The phone shows "Backed up" only when it matches (Architecture 03 §3.4).
+ * - At most 12 uploads an hour per device (Current Work 75): the phone backs up as you go, at least 10 minutes apart,
+ *   so this only stops a loop. The upload times of the last hour ride on the newest copy's metadata (`recent`), so it
+ *   costs no extra read or write. Cloudflare's rate-limit binding (`BACKUP_LIMIT`) still stops bursts within a minute.
  * - EU accounts' copies go to an EU-jurisdiction bucket. Every bucket has a lifecycle rule deleting copies 365 days
  *   after their upload, so a device that stops backing up leaves nothing behind for long.
  *
@@ -25,6 +28,9 @@ const KEPT_SLOT = "before-shrink";
 const SHRINK_RATIO = 0.5;
 /** ...once the newest one is big enough for a drop to mean something. */
 const SHRINK_MIN_RECORDS = 20;
+/** Uploads a device may make in an hour (Free Plan Backups §7 step 3: "about 12 an hour as a loop guard"). */
+export const MAX_UPLOADS_PER_HOUR = 12;
+const HOUR_MS = 3_600_000;
 
 export interface BackupCopy {
   device: string;
@@ -70,8 +76,9 @@ function text(value: string | null, field: string, maxLength: number): string {
 }
 
 /** R2 custom metadata holds strings only. */
-function toMetadata(copy: Omit<BackupCopy, "device" | "slot" | "size" | "sha256" | "kept">): Record<string, string> {
+function toMetadata(copy: Omit<BackupCopy, "device" | "slot" | "size" | "sha256" | "kept">, recent: number[] = []): Record<string, string> {
   return {
+    recent: recent.join(","),
     deviceName: encodeURIComponent(copy.deviceName),
     platform: copy.platform,
     appVersion: copy.appVersion,
@@ -154,12 +161,19 @@ export async function storeBackup(request: Request, env: Env, claims: AccessClai
   const store = bucket(env, claims.jurisdiction);
   const prefix = `${claims.accountId}/${claims.deviceId}/`;
 
-  // Shrink guard: keep the newest copy aside before a much smaller one arrives.
-  let kept = false;
   const newest = (await listObjects(store, prefix))
     .map((o) => ({ object: o, copy: fromObject(o) }))
     .filter((c) => !c.copy.kept)
     .sort((a, b) => b.copy.uploadedAt - a.copy.uploadedAt)[0];
+
+  // At most 12 an hour per device: a loop can't run up the bill.
+  const recent = (newest?.object.customMetadata?.recent ?? "").split(",").map(Number).filter((t) => Number.isFinite(t) && t > now - HOUR_MS && t <= now);
+  if (recent.length >= MAX_UPLOADS_PER_HOUR) {
+    throw new HttpError(429, "too_many_backups", "This device has backed up many times in the last hour. It will try again later.");
+  }
+
+  // Shrink guard: keep the newest copy aside before a much smaller one arrives.
+  let kept = false;
   if (newest && newest.copy.records >= SHRINK_MIN_RECORDS && details.records < newest.copy.records * SHRINK_RATIO) {
     const previous = await store.get(newest.object.key);
     if (previous) {
@@ -177,7 +191,7 @@ export async function storeBackup(request: Request, env: Env, claims: AccessClai
   const written = await store.put(`${prefix}${slot}`, body, {
     sha256,
     httpMetadata: { contentType: "application/zip" },
-    customMetadata: toMetadata(details),
+    customMetadata: toMetadata(details, [...recent, now]),
   });
   const copy = fromObject(written);
   console.log(JSON.stringify({ event: "backup_stored", size: copy.size, kept }));

@@ -71,6 +71,87 @@ enum BackupCheck {
 
         } catch { failures.append("backup operation: \(error.localizedDescription)") }
         failures += folderFailures()
+        failures += placeAndTimingFailures()
+        failures += await compactFileFailures()
+        return failures
+    }
+
+    /// One backup place at a time, the switch-over on signing in, and backing up as you go (Current Work 75 and 76;
+    /// Rulebook D4), as the plain functions `BackupCenter` decides with, at set times (T11).
+    static func placeAndTimingFailures() -> [String] {
+        var failures: [String] = []
+        func expect(_ condition: Bool, _ name: String) { if !condition { failures.append("plan: " + name) } }
+        typealias C = BackupCenter
+        // One place at a time.
+        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: true) == [.iCloud], "no account: iCloud only")
+        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: false).isEmpty, "no account, no iCloud: only on this iPhone")
+        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: true, googleDrive: true) == [.googleDrive], "no account, Google Drive chosen: Drive only")
+        expect(C.lanes(signedIn: true, accountChecked: true, iCloudAvailable: true) == [.account], "signed in and checked: the account only, no iCloud copy")
+        expect(C.lanes(signedIn: true, accountChecked: true, iCloudAvailable: true, googleDrive: true) == [.account], "signed in and checked: no Drive copy")
+        // The switch-over: iCloud keeps going until the account's copy is read back and checked.
+        expect(C.lanes(signedIn: true, accountChecked: false, iCloudAvailable: true) == [.account, .iCloud], "signing in: the account and iCloud until checked")
+        expect(C.lanes(signedIn: true, accountChecked: false, iCloudAvailable: true, googleDrive: true) == [.account, .googleDrive], "signing in: the account and Drive until checked")
+        expect(C.lanes(signedIn: true, accountChecked: false, iCloudAvailable: false) == [.account], "signing in without iCloud: the account")
+        // Signing out: back to iCloud.
+        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: true) == [.iCloud], "signed out: iCloud again")
+        // Checked means this device's copy with this checksum is in the account's list.
+        expect(C.accountHas("abc", in: [(isThisDevice: true, sha256: "abc")]), "the account has this device's copy")
+        expect(!C.accountHas("abc", in: [(isThisDevice: false, sha256: "abc"), (isThisDevice: true, sha256: "def")]), "another device's copy, or an older one, doesn't count")
+
+        // Backed up as you go, with a set clock.
+        let now = Date(timeIntervalSince1970: 1_791_115_200)
+        func ago(_ minutes: Double) -> Date { now.addingTimeInterval(-minutes * 60) }
+        expect(C.isDue(.leaving, now: now, lastGood: ago(11), lastAttempt: ago(11), dirty: true), "leaving, something changed, 11 minutes on: due")
+        expect(!C.isDue(.leaving, now: now, lastGood: ago(9), lastAttempt: ago(9), dirty: true), "leaving within 10 minutes of the last upload: not yet")
+        expect(!C.isDue(.leaving, now: now, lastGood: ago(60), lastAttempt: ago(60), dirty: false), "leaving with nothing changed: nothing")
+        expect(C.isDue(.outside, now: now, lastGood: ago(10), lastAttempt: ago(10), dirty: true), "a widget log 10 minutes on: due")
+        expect(!C.isDue(.outside, now: now, lastGood: ago(2), lastAttempt: ago(2), dirty: true), "a widget log 2 minutes on: waits (a refresh is asked for)")
+        expect(C.isDue(.open, now: now, lastGood: nil, lastAttempt: nil, dirty: false), "first open: the first backup")
+        expect(C.isDue(.open, now: now, lastGood: ago(21 * 60), lastAttempt: ago(21 * 60), dirty: true), "the daily floor: a day's change, 21 hours on")
+        expect(!C.isDue(.open, now: now, lastGood: ago(60), lastAttempt: ago(60), dirty: true), "opening an hour later isn't the daily one")
+        expect(C.isDue(.open, now: now, lastGood: ago(8 * 24 * 60), lastAttempt: ago(8 * 24 * 60), dirty: false), "a week with none: due even unchanged")
+        expect(!C.isDue(.open, now: now, lastGood: ago(25 * 60), lastAttempt: ago(30), dirty: true), "after a failure, an hour before trying again")
+        expect(C.isDue(.open, now: now, lastGood: ago(25 * 60), lastAttempt: ago(61), dirty: true), "an hour after a failure: again")
+        // The most a day of as-you-go can upload by itself: one every 10 minutes, at most 144 a day, under the server's
+        // 12 an hour (backup.ts).
+        var last: Date? = nil, uploads = 0
+        for minute in stride(from: 0, to: 24 * 60, by: 1) {
+            let t = now.addingTimeInterval(Double(minute) * 60)
+            if C.isDue(.leaving, now: t, lastGood: last, lastAttempt: last, dirty: true) { uploads += 1; last = t }
+        }
+        expect(uploads <= 144 && uploads >= 140, "leaving every minute uploads at most every 10 minutes (\(uploads) a day)")
+        return failures
+    }
+
+    /// The automatic backup file (format 2, Current Work 75): smaller than the one made for a person, and it restores
+    /// the same (D5). Sizes are shown on failure.
+    static func compactFileFailures() async -> [String] {
+        var failures: [String] = []
+        let repository = Persistence.inMemory().repository
+        let store = HabitStore(repository: repository)
+        await store.load()
+        store.isPlus = true
+        for i in 0..<12 {
+            store.add(Habit(name: "Habit \(i)", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8))
+        }
+        await store.flush()
+        for habit in store.habits { for d in 0..<30 { store.addProgress(habit, value: 1, on: store.today().adding(days: -d, calendar: store.calendar)) } }
+        await store.flush()
+        do {
+            let info = BackupCenter.info
+            let full = try await repository.backupFile(info: info)
+            let auto = try await repository.automaticBackupFile(info: info)
+            if !(auto.format == 2 && full.format == 1) { failures.append("compact: formats \(auto.format)/\(full.format)") }
+            if !(Double(auto.size) < Double(full.size) * 0.4) { failures.append("compact: \(auto.size) bytes vs \(full.size)") }
+            let target = Persistence.inMemory().repository
+            let result = try await target.restore(file: auto.base64, mode: .replace, info: info)
+            let back = try await target.backupFile(info: info)
+            if !(back.habits == full.habits && back.entries == full.entries && result.changes.habitsAdded == full.habits) {
+                failures.append("compact: restored \(back.habits) habits, \(back.entries) check-ins of \(full.habits), \(full.entries)")
+            }
+        } catch {
+            failures.append("compact: \(error.localizedDescription)")
+        }
         return failures
     }
 

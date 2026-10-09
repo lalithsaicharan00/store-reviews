@@ -151,15 +151,16 @@ private struct SideMenu: View {
         }
     }
 
-    /// A count where it helps choose: how many habits and tasks, and how much of the free plan is used; Sign In on Account
-    /// while signed out.
+    /// A count where it helps choose: how many habits and tasks, and how much of the free plan is used; the account's
+    /// plan once signed in (Free or Plus), and nothing while signed out ("Not Signed In" read like a warning; Account and
+    /// Backup Redesign, screen 1).
     private func detail(_ place: MenuPlace) -> String? {
         switch place {
         case .habits: String(store.habits.filter { !$0.archived && $0.kind != .task }.count)
         case .tasks: String(store.habits.filter { !$0.archived && $0.kind == .task }.count)
         case .plus: store.isPlus ? nil : "\(store.activeHabitCount) of \(HabitStore.freeHabitLimit)"
-        // Signed out, the row says so (report "Backup & Export and Your Account", 9 Oct 2026).
-        case .account: AppModel.shared.backup?.isSignedIn == false ? "Not Signed In" : nil
+        case .account:
+            if let backup = AppModel.shared.backup, backup.isSignedIn { backup.isPlus ? "Plus" : "Free" } else { nil }
         default: nil
         }
     }

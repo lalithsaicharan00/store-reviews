@@ -12,6 +12,8 @@ import UIKit
 struct ReturningBackup {
     let pending: BackupCenter.Pending
     let source: ReturnSource
+    /// From another device: whether it was signed in, so this one can ask to sign in too (Current Work 76).
+    var senderAccount: TransferCode.Account = .none
 }
 
 enum ReturnSource: Hashable {
@@ -744,7 +746,7 @@ struct WorkingPage: View {
                 failure = Failure(text: BackupCenter.words(for: problem), main: .back, other: .startFresh)
                 return
             }
-            await restoreOrReview(pending, from: .otherDevice, backup, started: started)
+            await restoreOrReview(pending, from: .otherDevice, backup, started: started, senderAccount: receiver.senderAccount)
         } catch let problem as TransferReceiver.Failure {
             failure = switch problem {
             case .notFound: Failure(text: "Couldn't find your other device. Keep both iPhones close, with \(Onboarding.appName) open on the transfer code.", main: .tryAgain, other: .back)
@@ -791,7 +793,8 @@ struct WorkingPage: View {
 
     /// An empty iPhone has nothing to lose (and an undo file is kept): restore straight away. Otherwise the person
     /// chooses Replace or Merge on the review page.
-    private func restoreOrReview(_ pending: BackupCenter.Pending, from source: ReturnSource, _ backup: BackupCenter, started: Date) async {
+    private func restoreOrReview(_ pending: BackupCenter.Pending, from source: ReturnSource, _ backup: BackupCenter, started: Date,
+                                 senderAccount: TransferCode.Account = .none) async {
         // Nothing in it: say so, rather than "restore" nothing and open an empty Today as if it had worked.
         if let preview = pending.check.preview, preview.fileHabits == 0 && preview.fileEntries == 0 {
             failure = Failure(text: source == .otherDevice ? "Your other device has no habits or tasks to send yet."
@@ -799,7 +802,7 @@ struct WorkingPage: View {
                               main: .back, other: .startFresh)
             return
         }
-        flow.review = ReturningBackup(pending: pending, source: source)
+        flow.review = ReturningBackup(pending: pending, source: source, senderAccount: senderAccount)
         let empty = pending.check.preview.map { $0.phoneHabits == 0 && $0.phoneEntries == 0 } ?? false
         guard empty else {
             show(.review)
@@ -816,6 +819,9 @@ struct WorkingPage: View {
             _ = try await backup.restore(review.pending, mode: mode == .replace ? .replace : .merge)
             // Signed in: the account gets what came back (its backup was held back while signing in).
             if backup.isSignedIn { Task { await backup.backUpNow() } }
+            // Moved from a device that was signed in: once on Today, ask to sign in with the same account (sign-ins never
+            // travel between devices; Account and Backup Redesign §7 item 3).
+            if review.source == .otherDevice, review.senderAccount != .none, !backup.isSignedIn { backup.suggestSignIn = review.senderAccount }
             await settle(since: started)
             end(review.source == .account ? .signedIn : review.source == .otherDevice ? .transferred : .restored)
         } catch {

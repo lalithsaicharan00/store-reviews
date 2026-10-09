@@ -239,7 +239,10 @@ final class AppModel {
                 Task { await timerPresence.sync(store) }
                 sync?.scheduleSoon()
                 backup?.dataChanged()
+                // A log made outside the app (a widget, a notification, the Live Activity): backed up as you go (D12).
+                if UIApplication.shared.applicationState != .active { backup?.changedOutside() }
             }
+            backup?.onRetryLater = { [weak self] seconds in self?.scheduleRefresh(after: seconds) }
             sync?.onRemoteChanges = { [store] in store.reloadAfterSync() }
             // A sync that failed with changes waiting (offline, the server busy): iOS retries it in the background in
             // about 15 minutes, as well as the next time the app opens (Current Work 67).
@@ -251,6 +254,21 @@ final class AppModel {
             }
             sync?.onAccountChange = { [backup] in backup?.refresh() }
             #if DEBUG
+            // BackupUITests (Current Work 76): a backup file with one habit, opened as if from Files, so the restore
+            // preview's words (this iPhone, or with Plus every device) can be checked without the file picker.
+            if ProcessInfo.processInfo.arguments.contains("-test-restore-preview"), let backup {
+                Task { @MainActor in
+                    let repository = Persistence.inMemory().repository
+                    let sample = HabitStore(repository: repository)
+                    await sample.load()
+                    sample.isPlus = true
+                    sample.add(Habit(name: "Restored habit", symbol: "star", color: .orange, kind: .check, goal: 1))
+                    await sample.flush()
+                    if let file = try? await repository.backupFile(info: BackupCenter.info), let data = Data(base64Encoded: file.base64) {
+                        backup.incoming = await backup.check(data)
+                    }
+                }
+            }
             // End-to-end tests on GitHub Actions sign in with the run's identity token (server: POST /v1/auth/ci).
             let arguments = ProcessInfo.processInfo.arguments
             if let i = arguments.firstIndex(of: "-ci-sign-in"), i + 2 < arguments.count {
@@ -458,7 +476,9 @@ final class AppModel {
             // Anything still waiting to reach the server (a sync that failed offline) goes now (Current Work 67).
             await sync?.syncNow()
             await scheduler.reconcile(store)
-            // The nightly backup, when the app wasn't opened (Backup, Sync and Accounts §4.2).
+            // A log made outside the app within 10 minutes of the last upload, then the daily backup when the app wasn't
+            // opened (Current Work 75).
+            await backup?.runIfDue(.outside)
             await backup?.runIfDue()
             await backup?.notifyIfClosed()
             await widgets.publish(store)

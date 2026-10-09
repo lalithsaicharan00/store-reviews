@@ -283,6 +283,27 @@ class BackupTest {
         assertFailsWith<BackupProblem> { Deflate.decompress(byteArrayOf(0x07), 10) }
     }
 
+    /**
+     * A Plus account's day from the server (`server/src/snapshotFile.ts`, Current Work 76): made by the server from a
+     * nightly snapshot, it's an ordinary format 1 file that checks and restores like any other. The sample was written
+     * by the server's own code (`backupFileFrom`), so this checks the two sides agree.
+     */
+    @Test fun aDayFromAPlusAccountRestoresLikeAnyBackup() = runBlocking {
+        val sample = File("src/jvmTest/resources/backups/from-account-snapshot.zip").readBytes()
+        val contents = BackupFile.read(sample)
+        assertEquals(1, contents.format)
+        assertEquals("Your account", contents.deviceName)
+        assertEquals(listOf("Gone", "Water"), contents.snapshot.habits.map { it.name }.sorted())
+        assertEquals(listOf("e1", "e2"), contents.snapshot.entries.map { it.id }.sorted())
+        val phone = repo("phone").apply { fill() }
+        val check = phone.checkBackup(base64(sample))
+        assertNull(check.problem)
+        assertEquals(1, check.preview!!.fileHabits)
+        phone.restore(base64(sample), RestoreMode.REPLACE, info)
+        assertEquals(listOf("Water"), phone.load().habits.map { it.name })
+        assertEquals(listOf("Fill bottle"), phone.load().steps.map { it.name })
+    }
+
     /** Every app version reads every older format (03 §3.2): the first file ever written stays readable. */
     @Test fun format1SampleStillReads() = runBlocking {
         val sample = File("src/jvmTest/resources/backups/format-1.zip")

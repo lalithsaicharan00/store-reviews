@@ -7,6 +7,7 @@ import { accountStub } from "./stubs";
 import { dailyReport, recordRequest } from "./report";
 import { processConfirmation, retryConfirmations, scheduleConfirmation } from "./email";
 import { deleteSnapshots } from "./snapshots";
+import { listSnapshots, snapshotBackupFile } from "./snapshotFile";
 import {
   type Jurisdiction,
   createAccount,
@@ -84,6 +85,8 @@ async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext
   if (url.pathname.startsWith("/v1/admin/")) return adminRoute(request, url, env);
   const copy = /^\/v1\/backup\/([^/]+)\/([^/]+)$/.exec(url.pathname);
   if (copy && request.method === "GET") return backupFile(request, env, copy[1]!, copy[2]!);
+  const snapshotDay = /^\/v1\/snapshots\/([^/]+)$/.exec(url.pathname);
+  if (snapshotDay && request.method === "GET") return snapshotDownload(request, env, snapshotDay[1]!);
   switch (key) {
     case "GET /v1/status":
       return json({ ok: true, environment: env.ENVIRONMENT, time: Date.now() }, 200, { "cache-control": "public, max-age=30" });
@@ -117,6 +120,8 @@ async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext
       return backupList(request, env);
     case "DELETE /v1/backup":
       return backupDelete(request, env);
+    case "GET /v1/snapshots":
+      return snapshotList(request, env);
     case "POST /v1/purchases/verify":
       return verifyPurchase(request, env, ctx);
     case "GET /v1/purchases":
@@ -427,6 +432,24 @@ async function backupFile(request: Request, env: Env, device: string, slot: stri
   const claims = await authenticate(request, env);
   await limit(env.SYNC_LIMIT, claims.accountId);
   return readBackup(env, claims, device, slot);
+}
+
+// MARK: Restore From a Backup for Plus (snapshotFile.ts)
+
+/** Plus only: the account's daily copies are its snapshots; a free account's are its backups (`GET /v1/backup`). */
+async function plusClaims(request: Request, env: Env): Promise<AccessClaims> {
+  const claims = await authenticate(request, env);
+  if (!claims.plus) throw new HttpError(403, "plus_required", "Daily copies of a synced account are part of Plus.");
+  await limit(env.SYNC_LIMIT, claims.accountId);
+  return liveAccount(env, claims);
+}
+
+async function snapshotList(request: Request, env: Env): Promise<Response> {
+  return listSnapshots(env, await plusClaims(request, env));
+}
+
+async function snapshotDownload(request: Request, env: Env, day: string): Promise<Response> {
+  return snapshotBackupFile(env, await plusClaims(request, env), day);
 }
 
 /** "Keep my backup only in my iCloud" (Backup, Sync and Accounts §4.3): every copy on the server goes. */

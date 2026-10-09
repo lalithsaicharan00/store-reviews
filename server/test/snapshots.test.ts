@@ -189,3 +189,73 @@ describe("restoring one account (support)", () => {
     expect(((await stub(me.json.accountId).record("habit", lost)) as any).fields.name).toBe("Walk");
   });
 });
+
+describe("Restore From a Backup for Plus: the account's daily copies (Current Work 76)", () => {
+  /** A stored zip's entries (stored only, as BackupFile and snapshotFile.ts write them), with every CRC checked. */
+  async function unzip(bytes: Uint8Array): Promise<Record<string, string>> {
+    const { crc32 } = await import("../src/snapshotFile");
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const out: Record<string, string> = {};
+    let at = 0;
+    while (view.getUint32(at, true) === 0x04034b50) {
+      const crc = view.getUint32(at + 14, true);
+      const size = view.getUint32(at + 18, true);
+      const nameLength = view.getUint16(at + 26, true);
+      const name = new TextDecoder().decode(bytes.subarray(at + 30, at + 30 + nameLength));
+      const data = bytes.subarray(at + 30 + nameLength, at + 30 + nameLength + size);
+      expect(crc32(data)).toBe(crc);
+      out[name] = new TextDecoder().decode(data);
+      at += 30 + nameLength + size;
+    }
+    return out;
+  }
+
+  it("lists a Plus account's days and hands one back as an ordinary, checked backup file", async () => {
+    const me = await testSignIn();
+    const habitId = crypto.randomUUID();
+    const orphanHabit = crypto.randomUUID();
+    await call("POST", "/v1/sync", {
+      cursor: 0,
+      ops: [habit(habitId, "Read"), entry(crypto.randomUUID(), habitId), entry(crypto.randomUUID(), orphanHabit),
+        { id: crypto.randomUUID(), table: "setting", row: "placement_v2", fields: { value: "done" }, hlc: hlc(Date.now()), schema: 6 },
+        { id: crypto.randomUUID(), table: "setting", row: "week_start", fields: { value: "2" }, hlc: hlc(Date.now()), schema: 6 }],
+    }, me.json.accessToken);
+    const takenAt = Date.UTC(2026, 9, 3, 2, 0);
+    await stub(me.json.accountId).snapshotNow("default", takenAt);
+
+    const list = await call("GET", "/v1/snapshots", undefined, me.json.accessToken);
+    expect(list.status).toBe(200);
+    expect(list.json.snapshots).toEqual([{ day: "2026-10-03", takenAt, records: 5 }]);
+
+    const response = await exports.default.fetch("https://api-dev.oftenenough.com/v1/snapshots/2026-10-03", { headers: { authorization: `Bearer ${me.json.accessToken}` } });
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toBe("application/zip");
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    const digest = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map((b) => b.toString(16).padStart(2, "0")).join("");
+    expect(response.headers.get("x-backup-sha256")).toBe(digest);
+    expect(response.headers.get("x-backup-habits")).toBe("1");
+    const files = await unzip(bytes);
+    const manifest = JSON.parse(files["manifest.json"]!);
+    const data = JSON.parse(files["data.json"]!);
+    expect(manifest).toMatchObject({ format: 1, createdAt: takenAt, deviceName: "Your account", counts: { habit: 1, step: 0, reminder: 0, entry: 1, setting: 1 }, live: { habits: 1, entries: 1 } });
+    expect(manifest.data.sha256).toBe([...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(files["data.json"]!)))].map((b) => b.toString(16).padStart(2, "0")).join(""));
+    expect(data.habit[0]).toMatchObject({ id: habitId, name: "Read", deleted_at: null });
+    expect(data.entry).toHaveLength(1); // the log whose habit isn't there is left out
+    expect(data.setting).toEqual([{ id: "week_start", value: "2" }]); // never this device's own settings
+
+    expect((await call("GET", "/v1/snapshots/2026-10-04", undefined, me.json.accessToken)).status).toBe(404);
+    expect((await call("GET", "/v1/snapshots/../x", undefined, me.json.accessToken)).status).toBe(404);
+  });
+
+  it("is part of Plus, and nobody sees another account's days", async () => {
+    const { freeSignIn } = await import("./helpers");
+    const free = await freeSignIn();
+    expect((await call("GET", "/v1/snapshots", undefined, free.json.accessToken)).status).toBe(403);
+    const owner = await testSignIn();
+    await call("POST", "/v1/sync", { cursor: 0, ops: [habit(crypto.randomUUID(), "Private")] }, owner.json.accessToken);
+    await stub(owner.json.accountId).snapshotNow("default", Date.UTC(2026, 9, 5, 2, 0));
+    const other = await testSignIn();
+    expect((await call("GET", "/v1/snapshots", undefined, other.json.accessToken)).json.snapshots).toEqual([]);
+    expect((await call("GET", "/v1/snapshots/2026-10-05", undefined, other.json.accessToken)).status).toBe(404);
+  });
+});

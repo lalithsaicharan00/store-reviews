@@ -239,6 +239,22 @@ enum PerfDriver {
             await open("App Lock: setup sheet (again)") { send(.openLockSetup) }
             await measure("App Lock: setup sheet scrolling") { await scroll() }
             send(.close)
+        case "account":
+            // ≡ → Account (Current Work 76, T4): signed out, as a test launch is (D8); and its Sign In sheet.
+            await openTwice("Account") { send(.openPlace(.account)) }
+            await measure("Account: scrolling") { await scroll() }
+            send(.close)
+            await pause(1.2)
+            send(.openPlace(.backup))
+            await pause(1.5)
+            await open("Backup & Export → Your Account") { send(.openAccount) }
+            send(.close)
+        case "backup-page":
+            // ≡ → Backup & Export (Current Work 76, T4): opening it, scrolling it, and Restore From a Backup from it.
+            await openTwice("Backup & Export") { send(.openPlace(.backup)) }
+            await measure("Backup & Export: scrolling") { await scroll() }
+            await open("Backup & Export → Restore From a Backup") { send(.openRestore) }
+            send(.close)
         case "lock-keypad":
             // The lock's cover with its keypad (Current Work 58, T4): showing it, typing on it (never six digits, so it
             // stays), then the right code, which opens the app. A test launch's own lock (D8).

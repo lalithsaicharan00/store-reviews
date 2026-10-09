@@ -10,6 +10,10 @@ nonisolated enum BackupFeatures {
     static let googleSignIn = true
     static let appleSignIn = true
     static let iCloudBackup = true
+    /// Google Drive as the backup place without an account (`GoogleDrive`): off until the Drive API is enabled and
+    /// `drive.appdata` is on the OAuth consent screen in Google's console (Current Work 76, asked 10 Oct 2026). No
+    /// Google Drive row shows while it's off.
+    static let googleDrive = false
 }
 
 /// A provider's proof of who someone is, for `POST /v1/auth/apple|google`. The server gets `nonce` raw; the provider
@@ -127,6 +131,28 @@ final class AppleSignIn: NSObject {
         return try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
             controller.performRequests()
+        }
+    }
+
+    /// Apple's own button (`SignInWithAppleButton`, the sign-in sheets): its request, with a fresh nonce.
+    func prepare(_ request: ASAuthorizationAppleIDRequest) {
+        nonce = SignInNonce.make()
+        request.requestedScopes = [.email]
+        request.nonce = SignInNonce.sha256Hex(nonce)
+    }
+
+    /// …and its answer. Throws `CancellationError` if the person closed Apple's sheet.
+    func finish(_ result: Result<ASAuthorization, Error>) throws -> ProviderToken {
+        switch result {
+        case .success(let authorization):
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                  let data = credential.identityToken, let token = String(data: data, encoding: .utf8) else {
+                throw URLError(.badServerResponse)
+            }
+            let code = credential.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+            return ProviderToken(path: "/v1/auth/apple", idToken: token, nonce: nonce, authorizationCode: code)
+        case .failure(let error):
+            throw (error as? ASAuthorizationError)?.code == .canceled ? CancellationError() : error
         }
     }
 }

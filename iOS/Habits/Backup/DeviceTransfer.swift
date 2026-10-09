@@ -5,8 +5,8 @@ import Network
 import Observation
 
 /// Move from another device (Current Work 73.1, 9 Oct 2026): the user asked for it to work "very similar to WhatsApp's
-/// transfer chats". The old iPhone makes a fresh, checked backup file and shows a code (Backup & Export → Move to a New
-/// iPhone → Show a Transfer Code); the new iPhone, in onboarding, types that code and the file comes straight from the
+/// transfer chats". The old iPhone makes a fresh, checked backup file and shows a code (Backup & Export → Move to Another
+/// Device); the new iPhone, in onboarding, types that code and the file comes straight from the
 /// old one over the local network (Wi‑Fi, or peer-to-peer when they share none). Nothing passes through our server and
 /// no account is needed, so it works on the free plan (D10). The new iPhone then restores it like any backup file:
 /// checked first, an undo file kept (D5).
@@ -87,19 +87,25 @@ nonisolated enum TransferCode {
         return parameters
     }
 
-    /// What goes over the connection: "OET1", the file's length (8 bytes) and SHA-256 (32 bytes), then the file. The
-    /// new iPhone answers one byte, 1, once the file has arrived whole and its checksum matches.
-    static let magic = Data("OET1".utf8)
+    /// What goes over the connection: "OET2", the file's length (8 bytes) and SHA-256 (32 bytes), one byte for the
+    /// sending device's account (`Account`), then the file. The new iPhone answers one byte, 1, once the file has
+    /// arrived whole and its checksum matches. "OET1" (9 Oct 2026) is the same without the account byte; still read.
+    static let magic = Data("OET2".utf8)
+    static let magicV1 = Data("OET1".utf8)
     static let headerLength = 4 + 8 + 32
 
-    static func header(for file: Data) -> Data {
+    /// Whether the sending device was signed in (Account and Backup Redesign §7 item 3, decided 10 Oct 2026). Sign-ins
+    /// never travel between devices; the new one only learns to ask "Sign in to keep your account".
+    enum Account: UInt8 { case none = 0, free = 1, plus = 2 }
+
+    static func header(for file: Data, account: Account = .none) -> Data {
         var length = UInt64(file.count).bigEndian
-        return magic + Data(bytes: &length, count: 8) + Data(SHA256.hash(data: file))
+        return magic + Data(bytes: &length, count: 8) + Data(SHA256.hash(data: file)) + Data([account.rawValue])
     }
 
-    /// The length and checksum from a header, or nil if it isn't one.
+    /// The length and checksum from a header's first 44 bytes (either version), or nil if it isn't one.
     static func read(header: Data) -> (length: Int, sha256: Data)? {
-        guard header.count == headerLength, header.prefix(4) == magic else { return nil }
+        guard header.count == headerLength, header.prefix(4) == magic || header.prefix(4) == magicV1 else { return nil }
         let length = header.dropFirst(4).prefix(8).reduce(UInt64(0)) { $0 << 8 | UInt64($1) }
         guard length > 0, length < 512 * 1024 * 1024 else { return nil }
         return (Int(length), Data(header.suffix(32)))
@@ -129,10 +135,12 @@ final class TransferSender {
     @ObservationIgnored private var listener: NWListener?
     @ObservationIgnored private var connection: NWConnection?
     @ObservationIgnored private var file = Data()
+    @ObservationIgnored private var account = TransferCode.Account.none
 
-    /// Starts listening with `file`, the backup the new iPhone will get.
-    func start(file: Data) async {
+    /// Starts listening with `file`, the backup the new iPhone will get, and whether this device is signed in.
+    func start(file: Data, account: TransferCode.Account = .none) async {
         self.file = file
+        self.account = account
         let code = code
         let key = await Task.detached { TransferCode.key(for: code) }.value
         do {
@@ -171,7 +179,7 @@ final class TransferSender {
         case .waiting(let error):
             if TransferCode.isPermissionDenied(error) { state = .needsPermission }
         case .failed(let error):
-            state = TransferCode.isPermissionDenied(error) ? .needsPermission : .failed("Stopped waiting for your new iPhone. Please try again.")
+            state = TransferCode.isPermissionDenied(error) ? .needsPermission : .failed("Stopped waiting for the other device. Please try again.")
             stop()
         default: break
         }
@@ -191,7 +199,7 @@ final class TransferSender {
                 case .ready: self.send(on: new)
                 case .failed, .cancelled:
                     // A wrong code, or the new iPhone went away before the end: keep waiting for the right one.
-                    if case .sending = self.state { self.state = .failed("The connection to your new iPhone was lost. Please try again.") }
+                    if case .sending = self.state { self.state = .failed("The connection to the other device was lost. Please try again.") }
                     self.connection = nil
                 default: break
                 }
@@ -203,7 +211,7 @@ final class TransferSender {
     private func send(on connection: NWConnection) {
         state = .sending(0)
         listener?.cancel() // used once: nobody else can connect with this code now
-        connection.send(content: TransferCode.header(for: file), completion: .idempotent)
+        connection.send(content: TransferCode.header(for: file, account: account), completion: .idempotent)
         sendChunk(from: 0, on: connection)
     }
 
@@ -213,7 +221,7 @@ final class TransferSender {
         connection.send(content: file.subdata(in: offset..<end), completion: .contentProcessed { [weak self] error in
             MainActor.assumeIsolated {
                 guard let self else { return }
-                if error != nil { self.state = .failed("The connection to your new iPhone was lost. Please try again."); return }
+                if error != nil { self.state = .failed("The connection to the other device was lost. Please try again."); return }
                 self.state = .sending(Double(end) / Double(max(self.file.count, 1)))
                 if end < self.file.count { self.sendChunk(from: end, on: connection) } else { self.waitForAnswer(on: connection) }
             }
@@ -224,7 +232,7 @@ final class TransferSender {
         connection.receive(minimumIncompleteLength: 1, maximumLength: 1) { [weak self] data, _, _, _ in
             MainActor.assumeIsolated {
                 guard let self else { return }
-                self.state = data == Data([1]) ? .sent : .failed("Your new iPhone couldn't read the data. Please try again.")
+                self.state = data == Data([1]) ? .sent : .failed("The other device couldn't read the data. Please try again.")
                 self.stop()
             }
         }
@@ -246,6 +254,8 @@ final class TransferReceiver {
 
     /// 0…1 once the file is arriving; nil while looking.
     private(set) var progress: Double?
+    /// Whether the sending device was signed in (its header says; an older sender says nothing).
+    private(set) var senderAccount = TransferCode.Account.none
     @ObservationIgnored private var browser: NWBrowser?
     @ObservationIgnored private var connections: [NWConnection] = []
     @ObservationIgnored private var tried: Set<NWEndpoint> = []
@@ -362,6 +372,19 @@ final class TransferReceiver {
                 }
                 self.expected = header
                 self.received = Data(capacity: header.length)
+                self.senderAccount = .none
+                if data.prefix(4) == TransferCode.magic { self.readAccount(on: connection) } else { self.progress = 0; self.readBody(on: connection) }
+            }
+        }
+    }
+
+    /// Version 2's account byte, between the header and the file.
+    private func readAccount(on connection: NWConnection) {
+        connection.receive(minimumIncompleteLength: 1, maximumLength: 1) { [weak self] data, _, _, error in
+            MainActor.assumeIsolated {
+                guard let self else { return }
+                guard error == nil, let byte = data?.first else { return self.finish(.failure(error == nil ? Failure.damaged : Failure.lost)) }
+                self.senderAccount = TransferCode.Account(rawValue: byte) ?? .none
                 self.progress = 0
                 self.readBody(on: connection)
             }

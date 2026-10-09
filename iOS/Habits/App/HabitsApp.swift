@@ -71,6 +71,8 @@ struct HabitsApp: App {
             // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
             // write, so a tap made just before switching away is never lost (30 Sep).
             if scenePhase == .background { finishWrites() }
+            // Backed up as you go (Current Work 75): leaving with something changed, 10 minutes after the last upload.
+            if scenePhase == .background { model.backup?.appLeaving() }
             // Leaving locks the app (when the lock is on, after Ask Again's time); coming back asks once.
             if scenePhase == .background { model.lock.lock() }
             if scenePhase == .active { Task { await model.lock.appeared() } }
@@ -137,6 +139,7 @@ struct HabitsApp: App {
             todayView
                 .environment(backup)
                 .modifier(IncomingBackupSheet(backup: backup))
+                .modifier(KeepYourAccount(backup: backup))
                 #if DEBUG
                 // Two simulators checked against each other: `-transfer-send` opens the old iPhone's code screen.
                 // Only once the demo habits are saved (S7), so the file isn't made from an empty database.
@@ -204,6 +207,27 @@ private struct IncomingBackupSheet: ViewModifier {
             NavigationStack { RestorePreviewView(pending: pending) }
                 .environment(backup)
         }
+    }
+}
+
+/// After moving habits from a device that was signed in: "Sign in to keep your account", once, with Sign In (its own
+/// sheet) or Not Now (Account and Backup Redesign §7 item 3; decided 10 Oct 2026). Plus syncs once signed in; a free
+/// account backs this device up to it.
+private struct KeepYourAccount: ViewModifier {
+    @Bindable var backup: BackupCenter
+    @State private var signingIn = false
+
+    func body(content: Content) -> some View {
+        content
+            .alert("Sign in to keep your account", isPresented: Binding(get: { backup.suggestSignIn != nil }, set: { if !$0 { backup.suggestSignIn = nil } })) {
+                Button("Sign In") { backup.suggestSignIn = nil; signingIn = true }
+                Button("Not Now", role: .cancel) { backup.suggestSignIn = nil }
+            } message: {
+                Text(backup.suggestSignIn == .plus
+                     ? "Your other device used an account with Plus. Sign in the same way here to keep your devices in sync."
+                     : "Your other device used an account. Sign in the same way here to keep backing up to it.")
+            }
+            .sheet(isPresented: $signingIn) { SignInSheet(title: "Sign In").environment(backup) }
     }
 }
 

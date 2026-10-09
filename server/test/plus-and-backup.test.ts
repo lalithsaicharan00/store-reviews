@@ -238,6 +238,31 @@ describe("backup on our server (accounts that don't sync)", () => {
     expect(Math.min(...copies.map((c) => c.createdAt))).toBe(day0 + 3 * 86_400_000);
   });
 
+  it("backed up as you go: at most 12 uploads an hour per device, and the next hour takes them again", async () => {
+    const dev = device();
+    const me = await freeSignIn(undefined, dev);
+    const claims = (await verifyAccessToken(me.json.accessToken, "test-token-key-0123456789abcdef0123456789"))!;
+    const start = Date.UTC(2026, 9, 1, 9, 0);
+    const put = async (at: number) => {
+      const bytes = backupFile(`at ${at}`);
+      const request = new Request(`${BASE}/v1/backup`, { method: "PUT", headers: await backupHeaders(bytes, { "x-backup-created-at": String(at) }), body: bytes });
+      try {
+        return (await storeBackup(request, env, claims, at)).status;
+      } catch (error) {
+        return (error as { status: number }).status;
+      }
+    };
+    // Every 5 minutes for an hour: 12 are taken, the 13th within the hour isn't.
+    const statuses: number[] = [];
+    for (let i = 0; i < 13; i++) statuses.push(await put(start + i * 4 * 60_000));
+    expect(statuses.slice(0, 12).every((s) => s === 201)).toBe(true);
+    expect(statuses[12]).toBe(429);
+    // An hour after the first, there's room again; another device of the account is never held back.
+    expect(await put(start + 61 * 60_000)).toBe(201);
+    const other = await freeSignIn(undefined, device({ name: "iPad", platform: "ipados" }));
+    expect((await upload(other.json.accessToken, backupFile())).status).toBe(201);
+  });
+
   it("shrink guard: a copy with far fewer records never pushes out the last good one", async () => {
     const dev = device();
     const me = await freeSignIn(undefined, dev);
