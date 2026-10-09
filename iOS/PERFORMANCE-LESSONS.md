@@ -56,6 +56,14 @@ here the same day, with its numbers.
   layout. Each has a different cause.
 - **Hosted-Mac numbers vary two to three times between runs.** Compare variants inside the same run, repeat a
   surprising number, and compare patterns (the same freeze in the same place) rather than single values.
+  **9 Oct 2026 (Current Work 58, App Lock):** a full speed run of the branch showed Today's "+1 and day ‹ ›" at 128.9
+  ms/s against `main`'s 78.2 earlier that day, group filter 55.4 vs 24.8, hide completed 116.7 vs 68.8, Arrange's move
+  34.9 vs 19.4 (runs 37883016504, 37871921866), with the same redraw counts and timed work. Run at the same moment on
+  two hosted Macs (`main` @ 4543c68 run 37892222401, the branch @ 1918454 run 37892225073, scenarios `tap-today groups
+  arrange`): 43.4 vs 46.7, group filter 42.1 vs 30.8, hide completed 23.1 vs 35.5, move and sort 4.4 vs 14.6, every
+  count and timed total the same, no freeze on either side but one 111 ms on the branch's hide completed. `main`
+  itself measured 78.2 and 43.4 for the same scenario on the same day. When the counts and timed work agree, a gap is
+  the machine; run both sides together before calling it a regression.
 - **First appearances are where freezes hide.** A screen that scrolls smoothly after the first time can still freeze
   the first time, and that's what people feel. Measure first opens and first scrolls on their own.
 - **A screen with no scenario has no speed.** The quit habit's page and the weekly-total page were never measured
