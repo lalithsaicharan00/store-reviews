@@ -236,11 +236,23 @@ final class AppLockUITests: XCTestCase {
         enterCode(app, "445566")
         XCTAssertTrue(gone(cover(app)))
         app.terminate()
-        // Another change, and this time Use Face ID Again: Face ID opens it next time.
+        // Face ID kept off: a later change has nothing to ask (only the code opens it until Use Face ID Again).
         app = launch(["-test-lock", "code", "-test-face-domain", "C"])
         XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 10), labels(app))
+        XCTAssertFalse(app.buttons["fake-auth-ok"].waitForExistence(timeout: 2), "Face ID stays off")
         enterCode(app, "445566")
-        XCTAssertTrue(app.alerts["Use Face ID again?"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.alerts["Use Face ID again?"].waitForExistence(timeout: 2), "Nothing to ask while Face ID is off")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        app.terminate()
+        // Face ID trusted again (a fresh code), then a change, and this time Use Face ID Again: Face ID opens it next time.
+        app = launch(["-test-lock", "code", "-test-lock-code", "445566", "-test-lock-fresh"])
+        answer(app, true)
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        app.terminate()
+        app = launch(["-test-lock", "code", "-test-face-domain", "B"])
+        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 10), labels(app))
+        enterCode(app, "445566")
+        XCTAssertTrue(app.alerts["Use Face ID again?"].waitForExistence(timeout: 5), labels(app))
         app.alerts["Use Face ID again?"].buttons["Use Face ID Again"].tap()
         XCTAssertTrue(gone(cover(app)))
         leaveAndReturn(app)
@@ -347,6 +359,12 @@ final class AppLockUITests: XCTestCase {
         leaveAndReturn(app)
         answer(app, false)
         XCTAssertTrue(app.buttons["app-unlock"].waitForExistence(timeout: 5), "After a cancel: Unlock")
+        // The cover is over the sheet: Unlock can be tapped, and the half-typed form and the keyboard can't be seen
+        // (an overlay sat under the sheet, run 37883781520).
+        XCTAssertTrue(app.buttons["app-unlock"].isHittable, "The cover is over the New Habit sheet: \(labels(app))")
+        XCTAssertFalse(name.isHittable, "The form can't be seen over the cover")
+        XCTAssertFalse(app.keyboards.firstMatch.exists, "Typing ended when it locked")
+        shot(app, "lock-over-a-sheet")
         app.buttons["app-unlock"].tap()
         answer(app, true)
         XCTAssertTrue(gone(cover(app)))

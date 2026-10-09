@@ -5,7 +5,7 @@ import UIKit
 // code question the page asks in code mode. Native parts only (U1), monochrome chrome (U2), plain words (U11).
 
 /// What shows instead of the app while it's locked, or while it isn't in front (so the app switcher shows this, not the
-/// habits). Drawn only while it's needed: it costs nothing while the app is unlocked and in front (S6).
+/// habits). In its own window (`LockWindow`), hidden while the app is unlocked and in front, so it costs nothing then (S6).
 struct LockCover: View {
     let lock: AppLock
     /// false: only covering (the app isn't in front), nothing to answer.
@@ -22,6 +22,47 @@ struct LockCover: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("app-lock-cover")
+    }
+}
+
+/// The cover's own window, above the app's window, so it covers everything the app shows: sheets, alerts and pushed
+/// pages too. An overlay on the app's root view sat under a presented sheet, and a half-typed New Habit form showed
+/// over the locked cover (AppLockUITests, run 37883781520). Shown while locked, or while the app isn't in front (the app
+/// switcher's picture). Locking ends typing (`AppLock.lockNow`): the keyboard sits above every window.
+@MainActor enum LockWindow {
+    private static var window: UIWindow?
+
+    static func show(_ shown: Bool, lock: AppLock) {
+        if shown {
+            guard let window = window ?? make(lock) else { return }
+            guard window.isHidden else { return }
+            if let scene = window.windowScene {
+                window.overrideUserInterfaceStyle = scene.windows.first { $0 !== window }?.overrideUserInterfaceStyle ?? .unspecified
+            }
+            window.makeKeyAndVisible()
+        } else if let window, !window.isHidden {
+            window.isHidden = true
+            window.windowScene?.windows.first { $0 !== window && $0.windowLevel == .normal }?.makeKey()
+        }
+    }
+
+    private static func make(_ lock: AppLock) -> UIWindow? {
+        guard let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first else { return nil }
+        let host = UIHostingController(rootView: LockWindowRoot(lock: lock))
+        host.view.backgroundColor = .clear
+        let made = UIWindow(windowScene: scene)
+        made.windowLevel = .alert
+        made.rootViewController = host
+        made.isHidden = true
+        window = made
+        return made
+    }
+}
+
+private struct LockWindowRoot: View {
+    let lock: AppLock
+    var body: some View {
+        LockCover(lock: lock, locked: lock.isLocked).tint(.ink)
     }
 }
 

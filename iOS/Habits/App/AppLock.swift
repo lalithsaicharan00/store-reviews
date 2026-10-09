@@ -158,6 +158,9 @@ final class AppLock {
     }
 
     private func lockNow() {
+        // The keyboard sits above every window, the cover's too: typing ends (the text stays in its field), so neither
+        // the keyboard nor its suggestions show over the cover.
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         isLocked = true
         promptWhenActive = true
         leftAt = nil

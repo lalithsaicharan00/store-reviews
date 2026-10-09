@@ -20,11 +20,10 @@ struct HabitsApp: App {
                 // switch couldn't be told from "off" (the user, on the iPhone, 2 Oct 2026). A Toggle inside a Menu
                 // sets `.toggleStyle(.automatic)` so it stays a menu item with a check (ProgressScreen).
                 .toggleStyle(.appSwitch)
-                // While locked, or whenever the app isn't in front (so the app switcher never shows the habits).
-                .overlay {
-                    if model.lock.isLocked || (AppLock.isEnabled && scenePhase != .active) {
-                        LockCover(lock: model.lock, locked: model.lock.isLocked)
-                    }
+                // While locked, or whenever the app isn't in front (so the app switcher never shows the habits): the
+                // cover in its own window, over sheets and alerts too (`LockWindow`).
+                .onChange(of: model.lock.isLocked || (AppLock.isEnabled && scenePhase != .active), initial: true) { _, covered in
+                    LockWindow.show(covered, lock: model.lock)
                 }
                 .task {
                     #if DEBUG
