@@ -6,6 +6,8 @@ import UIKit
 /// (482 reviews say a missing help screen cost them; C075). Every answer names the exact place to tap, in the app's own
 /// words. **When a way in changes, change its answer here too.**
 struct HelpView: View {
+    /// A topic opened and shown on arrival (a widget's Choose a habit: "Choose a habit for a widget").
+    var open: String? = nil
     @State private var query = ""
     @State private var observedSearch = false
     @State private var showWelcome = false
@@ -13,6 +15,17 @@ struct HelpView: View {
     @Environment(\.openURL) private var openURL
 
     var body: some View {
+        ScrollViewReader { proxy in
+            list
+                .task {
+                    guard let open else { return }
+                    try? await Task.sleep(for: .milliseconds(150))
+                    withAnimation { proxy.scrollTo(open, anchor: .top) }
+                }
+        }
+    }
+
+    private var list: some View {
         List {
             if trimmedQuery.isEmpty {
                 Section {
@@ -29,7 +42,10 @@ struct HelpView: View {
                 }
                 ForEach(HelpTopics.sections) { section in
                     Section(section.title) {
-                        ForEach(section.topics) { TopicRow(topic: $0) }
+                        // Widgets: a problem publishing them, at the top, only while there is one, with Try again
+                        // (it was on the Widgets page, spec §1).
+                        if section.title == HelpTopics.widgets { WidgetProblemRows() }
+                        ForEach(section.topics) { TopicRow(topic: $0, expanded: $0.question == open).id($0.question) }
                     }
                 }
             } else {
@@ -104,10 +120,32 @@ enum Support {
     }
 }
 
+/// "Widget updates": widgets couldn't be updated, and Try again (spec §1; shown only while there's a problem).
+private struct WidgetProblemRows: View {
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        if let problem = AppModel.shared.widgets.problem {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Widget updates").font(.headline)
+                Text(problem).foregroundStyle(.secondary)
+            }
+            .accessibilityElement(children: .combine)
+            Button("Try again") { Task { await AppModel.shared.widgets.publish(store) } }
+                .accessibilityIdentifier("help-widgets-try-again")
+        }
+    }
+}
+
 /// One question and its answer, opened in place.
 private struct TopicRow: View {
     let topic: HelpTopic
-    @State private var expanded = false
+    @State private var expanded: Bool
+
+    init(topic: HelpTopic, expanded: Bool = false) {
+        self.topic = topic
+        _expanded = State(initialValue: expanded)
+    }
 
     var body: some View {
         DisclosureGroup(isExpanded: $expanded) {
@@ -161,6 +199,9 @@ struct HelpSection: Identifiable {
 /// The answers, grouped as people look for them. The questions are the ones reviews show people couldn't answer:
 /// undo, filling in a day, deleting, skip or pause, how streaks and Progress count, a late night, where the data is.
 enum HelpTopics {
+    static let widgets = "Widgets"
+    static let chooseHabitForWidget = "Choose a habit for a widget"
+
     static let sections: [HelpSection] = [
         HelpSection(title: "Logging", topics: [
             HelpTopic(question: "Log a habit",
@@ -227,8 +268,35 @@ enum HelpTopics {
                       answer: "In ≡ › Day and Week, choose Week Starts On. Weekly goals and week streaks count in those weeks."),
             HelpTopic(question: "Dark mode, sound and vibration",
                       answer: "In ≡ › Appearance: Theme, Haptics and Sound When Done."),
-            HelpTopic(question: "Lock the app with Face ID",
-                      answer: "In ≡ › Privacy. The app then asks for Face ID (or Touch ID) each time you open it, and your iPhone passcode always works, so you can't be locked out."),
+        ]),
+        // What the Widgets page explained (Current Work 58, spec §1 and §4): every answer names the exact button.
+        HelpSection(title: widgets, topics: [
+            HelpTopic(question: "Which widgets are there?",
+                      answer: "One habit (small), Today (medium and large: your habits for today, or one time of day), This week (one habit, medium) and Tasks (medium and large). On the Lock Screen: one habit, Today, and a line above the clock."),
+            HelpTopic(question: "What the buttons on a widget do",
+                      answer: "✓ and + log right on the widget, and ▶ and ⏸ start and stop a timer, without opening the app. An amount you type, a slip, or a checklist's steps open their own screen in the app. Lists keep your order and show five (large) or two (medium) at a time: ‹ › show the rest."),
+            HelpTopic(question: "Add a widget",
+                      answer: "Home Screen: touch and hold an empty area, tap Edit, then Add Widget. Search for Often Enough, choose a size, and tap Add Widget. Lock Screen: touch and hold the Lock Screen, tap Customize, choose Lock Screen, then tap the widget area and choose Often Enough."),
+            HelpTopic(question: chooseHabitForWidget,
+                      answer: "Touch and hold the widget, tap Edit Widget, then tap Habit (or Section, for a list) and choose. Each widget keeps its own choice. While names are hidden outside the app, the choices show each habit's icon and its place in your order instead of its name."),
+            HelpTopic(question: "A widget looks out of date",
+                      answer: "Open Often Enough: it updates every widget when it opens, and after you change your time zone. iPhone decides when widgets refresh, so a widget can take a moment to follow a change."),
+        ]),
+        HelpSection(title: "Privacy & Security", topics: [
+            HelpTopic(question: "Lock Often Enough",
+                      answer: "In ≡ › Privacy & Security, turn on Lock with Face ID. Often Enough then asks for Face ID each time you open it, and your iPhone passcode works too, so you can't be locked out. Ask Again sets how long it stays open after you switch to another app; locking your iPhone always locks it."),
+            HelpTopic(question: "Use a code instead of your iPhone passcode",
+                      answer: "In ≡ › Privacy & Security, tap Unlock With, choose Face ID or Often Enough Code, then Choose a Code. Your iPhone passcode no longer opens Often Enough, so people who know it can't."),
+            HelpTopic(question: "Forgot your Often Enough code",
+                      answer: "On the lock screen, tap Forgot Code?. Face ID resets it straight away. If Face ID can't, tap Start 24-Hour Reset: after 24 hours your iPhone passcode lets you choose a new code. Your habits stay as they are."),
+            HelpTopic(question: "\"Face ID has changed\"",
+                      answer: "A face or a fingerprint was added or removed in Settings, so Often Enough asks for your code once. Then choose Use Face ID Again if you made the change, or Keep Face ID Off and check Settings › Face ID & Passcode."),
+            HelpTopic(question: "Hide names outside the app",
+                      answer: "In ≡ › Privacy & Security, turn on Hide Names Outside the App. Widgets, reminders, alarms, the timer on the Lock Screen and Siri then show icons and numbers without habit names, and ✓ and + still work. It's always on while the lock is on."),
+            HelpTopic(question: "Make a reminder say something else",
+                      answer: "Edit the habit, tap Reminders, and type your words in Reminder Says. They're shown in its reminders, and instead of its name while names are hidden outside the app."),
+            HelpTopic(question: "Lock Often Enough on a new iPhone",
+                      answer: "The lock and your code stay on the iPhone they were set on. After moving to a new iPhone or restoring a backup, the lock is off: turn it on again in ≡ › Privacy & Security. Your Reminder Says words come with your habits."),
         ]),
         HelpSection(title: "Your Data", topics: [
             HelpTopic(question: "Where my habits are",

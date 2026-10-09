@@ -64,7 +64,7 @@ extension HabitStore {
             generated: now, timeZone: calendar.timeZone.identifier, locale: Locale.current.identifier, plus: isPlus, hidden: false,
             sections: cards.map { WidgetSection(id: $0, name: widgetCardName($0)) },
             taskSections: taskCards.map { WidgetSection(id: $0, name: widgetCardName($0)) },
-            choices: active.filter { $0.kind != .task }.map { WidgetChoice(id: $0.id.uuidString, name: $0.name) },
+            choices: active.filter { $0.kind != .task }.map { WidgetChoice(id: $0.id.uuidString, name: $0.name, symbol: $0.symbol) },
             weekdays: weekdays,
             timerOpensScreen: UserDefaults.standard.bool(forKey: Preferences.timerScreen),
             frames: frames)
@@ -519,6 +519,38 @@ extension HabitStore {
     }
 }
 
+extension WidgetSnapshot {
+    /// Hide Names Outside the App (Current Work 58; report §6a, §6b): the same snapshot without a word the person wrote.
+    /// Habit names, task titles and section names go (in every item's "after" cards too, or a tap would flash the name);
+    /// icons, colours, fills, counts, "N of M done", the ✓ / + / ▶ / ⏸ buttons, every item, list and token stay, so taps
+    /// log exactly as before. Edit Widget's choices say "Habit 1", "Habit 2"… with their icons, sections "Section 1"….
+    /// Done here in the app, never in the widget (U26). Not the old `hidden` (no items, taps refused).
+    func discreet() -> WidgetSnapshot {
+        var copy = self
+        copy.discreet = true
+        copy.hidden = false
+        copy.sections = sections.enumerated().map { WidgetSection(id: $1.id, name: "Section \($0 + 1)") }
+        copy.taskSections = taskSections.enumerated().map { WidgetSection(id: $1.id, name: "Section \($0 + 1)") }
+        copy.choices = choices.enumerated().map { WidgetChoice(id: $1.id, name: "Habit \($0 + 1)", symbol: $1.symbol) }
+        copy.frames = frames.map { frame in
+            var shown = frame
+            shown.items = frame.items.map(Self.discreet)
+            return shown
+        }
+        return copy
+    }
+
+    /// One item without its words: no name, and no section before its line.
+    static func discreet(_ item: WidgetItem) -> WidgetItem {
+        var item = item
+        item.name = ""
+        item.place = ""
+        item.todayLine = item.line
+        item.after = item.after?.map(discreet)
+        return item
+    }
+}
+
 /// Today's "done" for one row (`PartSection.isDone`): skipped, or done for the day (a section's own tick for a habit
 /// ticked per section counts once all are). Used to sink done rows the way Today does.
 enum PartSectionDone {
@@ -564,7 +596,9 @@ enum PartSectionDone {
         await store.flush()
         guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
         let telemetry = store.analytics.ticket
-        let hidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
+        // Hide Names Outside the App (Current Work 58): the same snapshot, every item and button kept, with the words
+        // taken out here in the app (`discreet()`), so the names never reach the shared file (U26).
+        let discreet = HideNames.isOn
         let ticket = WidgetPublicationOrder.next()
         latestTicket = ticket
         let destination = testDestination ?? WidgetDisk.url
@@ -573,14 +607,13 @@ enum PartSectionDone {
         #if DEBUG
         WidgetTiming.mark("publish: started")
         #endif
-        var snapshot = await store.preparedWidgetSnapshot(now: now, hidden: hidden, previous: previous,
+        var snapshot = await store.preparedWidgetSnapshot(now: now, previous: previous,
                                                           hold: hold ? now.addingTimeInterval(1.5) : nil)
         #if DEBUG
         WidgetTiming.mark("publish: snapshot prepared, \(snapshot.frames.first?.items.count ?? 0) items")
         #endif
         guard !Task.isCancelled else { return }
-        let currentHidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
-        if currentHidden != hidden { snapshot = store.widgetSnapshot(hidden: currentHidden) }
+        if discreet || HideNames.isOn { snapshot = snapshot.discreet() }
         do {
             // Detached I/O avoids encoding and file coordination on the UI thread.
             // A widget tap (`hold`) or leaving the app reloads at once: the person is about to look at the widget.
@@ -608,15 +641,8 @@ private actor WidgetSnapshotWriter {
         guard let file else { throw CocoaError(.fileNoSuchFile) }
         guard ticket >= (latest[file] ?? 0) else { return }
         var snapshot = original
-        // A preparation that started before privacy was enabled cannot republish names afterward.
-        let locked = !ProcessInfo.processInfo.arguments.contains("-uitest") && UserDefaults.standard.bool(forKey: "app_lock")
-        if locked || UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) {
-            snapshot.hidden = true
-            snapshot.sections = []; snapshot.taskSections = []; snapshot.choices = []
-            snapshot.frames = snapshot.frames.map { frame in
-                var hidden = frame; hidden.items = []; hidden.lists = [:]; hidden.held = nil; return hidden
-            }
-        }
+        // A preparation that started before names were hidden can't publish them afterwards.
+        if HideNames.isOn && snapshot.discreet != true { snapshot = snapshot.discreet() }
         try WidgetDisk.write(snapshot, to: file)
         #if DEBUG
         WidgetTiming.mark("publish: snapshot written, \((try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? -1) bytes")

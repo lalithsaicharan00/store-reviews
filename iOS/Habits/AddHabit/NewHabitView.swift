@@ -209,7 +209,7 @@ struct ChoiceLabel: View {
 /// pushed, never a sheet, so the whole flow moves one way.
 struct HabitForm: View {
     private let fromSuggestion: Bool
-    enum Field: Hashable { case name, description, amount, unit, increment, minutes, item(UUID) }
+    enum Field: Hashable { case name, description, amount, unit, increment, minutes, reminderText, item(UUID) }
 
     /// One reminder. `part` is the time of day it's for (nil for Anytime); its time stays inside that part.
     struct DraftTime: Identifiable, Hashable {
@@ -240,6 +240,8 @@ struct HabitForm: View {
     @State private var shownName = ""
     /// What counts, how to do it, why it matters: optional, shown in the routine player (notes report, 29 Sep).
     @State private var descriptionText = ""
+    /// "Reminder says…" (Current Work 58): typed in its own field (`ReminderSaysField`), so a letter redraws only it (S11).
+    @State private var reminderWords = ReminderWords("")
     /// The description as saved, when editing.
     private var originalDescription = ""
     @State private var symbol: String
@@ -331,6 +333,7 @@ struct HabitForm: View {
         originalDescription = description
         _descriptionText = State(initialValue: description)
         _typed = State(initialValue: TypedName(habit.name))
+        _reminderWords = State(initialValue: ReminderWords(habit.reminderText ?? ""))
         _shownName = State(initialValue: habit.name)
         _symbol = State(initialValue: habit.symbol)
         _pickedSymbol = State(initialValue: true)
@@ -394,7 +397,7 @@ struct HabitForm: View {
     }
     private var editChanged: Bool {
         // The saved name here, and the name field's own "changed": the typed text is never read while drawing.
-        (edited(name: original?.name ?? "").map { $0 != original } ?? false) || typed.isChanged || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
+        (edited(name: original?.name ?? "").map { $0 != original } ?? false) || typed.isChanged || reminderWords.isChanged || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
             || groupID != originalGroup
     }
 
@@ -1095,6 +1098,13 @@ struct HabitForm: View {
                     }
                 }
                 .listSectionSpacing(.compact)
+                // The person's own words for these reminders (Privacy & Security spec §3.7), under the times.
+                Section {
+                    ReminderSaysField(words: reminderWords, focus: $focus)
+                } footer: {
+                    Text("Shown in this habit's reminders. When names are hidden outside the app, it's shown instead of the name.").formNote()
+                }
+                .listSectionSpacing(.compact)
             }
         }
     }
@@ -1207,6 +1217,9 @@ struct HabitForm: View {
             .sorted { store.dayMinute($0.minuteOfDay) < store.dayMinute($1.minuteOfDay) }
         }
         habit.remind = remind
+        // Read live, never while drawing (`ReminderWords.current`): kept with the habit even while reminders are off.
+        let words = TextLimit.clean(reminderWords.current, TextLimit.reminderText)
+        habit.reminderText = words.isEmpty ? nil : words
         // Start and end dates: for habits and repeating tasks (a one-time task has only its date).
         if isHabit || (type == .task && taskRepeats) {
             habit.startsOn = LocalDay(startDate)
@@ -1295,6 +1308,49 @@ private struct NameField: View {
                 guard !Task.isCancelled else { return }
                 onPause()
             }
+    }
+}
+
+/// "Reminder says…" as typed. The field reads `text`; the form reads only `isChanged`, and saving reads `current`,
+/// which isn't observed, so typing never redraws the form (S11).
+@Observable final class ReminderWords {
+    var text: String {
+        didSet {
+            guard text != oldValue else { return }
+            current = text
+            let changed = TextLimit.clean(text, TextLimit.reminderText) != saved
+            if isChanged != changed { isChanged = changed }
+        }
+    }
+    @ObservationIgnored private(set) var current: String
+    private(set) var isChanged = false
+    @ObservationIgnored private let saved: String
+
+    init(_ text: String) {
+        self.text = text
+        current = text
+        saved = TextLimit.clean(text, TextLimit.reminderText)
+    }
+}
+
+/// The Reminder Says field on its own row, so typing redraws only it (S11); one line, 24 characters (U6).
+private struct ReminderSaysField: View {
+    let words: ReminderWords
+    var focus: FocusState<HabitForm.Field?>.Binding
+
+    var body: some View {
+        @Bindable var words = words
+        HStack(spacing: 12) {
+            Text("Reminder Says").layoutPriority(1)
+            TextField("Your words, e.g. The usual", text: $words.text)
+                .multilineTextAlignment(.trailing)
+                .focused(focus, equals: .reminderText)
+                .limitText($words.text, to: TextLimit.reminderText)
+                .submitLabel(.done)
+                .onSubmit { focus.wrappedValue = nil }
+                .accessibilityLabel("Reminder Says")
+                .accessibilityIdentifier("reminder-says-field")
+        }
     }
 }
 

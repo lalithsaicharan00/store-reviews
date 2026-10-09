@@ -12,21 +12,26 @@ nonisolated struct WidgetSelection: AppEntity {
     static let defaultQuery = WidgetSelectionQuery()
     var id: String
     var name: String
-    var displayRepresentation: DisplayRepresentation { .init(title: "\(name)") }
+    var symbol: String? = nil
+    var displayRepresentation: DisplayRepresentation {
+        .init(title: "\(name)", image: symbol.map { DisplayRepresentation.Image(systemName: $0) })
+    }
 }
 nonisolated struct WidgetSelectionQuery: EntityStringQuery {
     func entities(for identifiers: [String]) async throws -> [WidgetSelection] {
         let choices = WidgetDisk.read()?.choices ?? []
         return identifiers.map { id in
-            WidgetSelection(id: id, name: choices.first { $0.id == id }?.name ?? "Habit unavailable — choose another")
+            let choice = choices.first { $0.id == id }
+            return WidgetSelection(id: id, name: choice?.name ?? "Habit unavailable — choose another", symbol: choice?.symbol)
         }
     }
     func entities(matching string: String) async throws -> [WidgetSelection] {
         try await suggestedEntities().filter { $0.name.localizedStandardContains(string) }
     }
-    /// The person's habits in their own order (U13). None while widget content is hidden.
+    /// The person's habits in their own order (U13), with their icons. While names are hidden outside the app, the app
+    /// wrote "Habit 1", "Habit 2"… instead of the names (Current Work 58).
     func suggestedEntities() async throws -> [WidgetSelection] {
-        (WidgetDisk.read()?.choices ?? []).map { WidgetSelection(id: $0.id, name: $0.name) }
+        (WidgetDisk.read()?.choices ?? []).map { WidgetSelection(id: $0.id, name: $0.name, symbol: $0.symbol) }
     }
 }
 

@@ -34,7 +34,10 @@ nonisolated struct HabitQuery: EntityStringQuery {
         return store.habits.filter { !$0.archived && $0.name.localizedStandardContains(string) }.map(HabitShortcuts.entity)
     }
 
+    /// None while names are hidden outside the app (Current Work 58): Spotlight, Siri Suggestions and Shortcuts then
+    /// offer only the general phrases. "Log Water" still works: the person said the name (`entities(matching:)`).
     @MainActor func suggestedEntities() async throws -> [HabitEntity] {
+        guard !HideNames.isOn else { return [] }
         let store = await HabitShortcuts.loadedStore()
         let active = store.habits.filter { !$0.archived }
         let first = store.shortcutDay(store.today()).map(\.habit)
@@ -73,17 +76,22 @@ struct LogHabitIntent: AppIntent {
             let ask: IntentDialog = found.kind == .duration ? "How many minutes?" : "How much?"
             throw $amount.needsValueError(ask)
         case .openApp:
-            text = found.kind == .quit ? "Log a slip for \(found.name) in Often Enough." : "Tick \(found.name)'s steps in Often Enough."
+            if HideNames.isOn {
+                text = found.kind == .quit ? "Log the slip in Often Enough." : "Tick its steps in Often Enough."
+            } else {
+                text = found.kind == .quit ? "Log a slip for \(found.name) in Often Enough." : "Tick \(found.name)'s steps in Often Enough."
+            }
         case .paused:
-            text = "\(found.name) is paused."
+            text = HideNames.isOn ? "That habit is paused." : "\(found.name) is paused."
         case .alreadyDone:
-            text = store.shortcutStatus(found, on: day)
+            text = store.shortcutStatus(found, on: day, named: !HideNames.isOn)
         case .logged:
             await store.flush()
             guard store.problem == nil else { throw HabitShortcuts.Problem.notSaved }
             // Straight away, in case iOS suspends the app: the row's reminders stop.
             await model.scheduler.reconcile(store)
-            text = store.shortcutStatus(found, on: day)
+            // Names hidden: "Logged." and the numbers, never the name (Current Work 58).
+            text = HideNames.isOn ? "Logged. " + store.shortcutStatus(found, on: day, named: false) : store.shortcutStatus(found, on: day)
         }
         return .result(value: text, dialog: "\(text)")
     }
@@ -107,6 +115,9 @@ struct WhatsLeftIntent: AppIntent {
             text = "Nothing planned today."
         } else if left.isEmpty {
             text = rows.count == 1 ? "Done for today." : "All \(rows.count) done today."
+        } else if HideNames.isOn {
+            // Names hidden outside the app, also on a locked phone (Current Work 58; spec §2.3).
+            text = "\(done) of \(rows.count) done. Open Often Enough to see which."
         } else {
             let names = left.count > 6 ? Array(left.prefix(5)) + ["\(left.count - 5) more"] : left
             let list = ListFormatter.localizedString(byJoining: names)
@@ -134,7 +145,7 @@ struct HabitProgressIntent: AppIntent {
         guard let found = store.habits.first(where: { $0.id == habit.id }) else {
             throw HabitShortcuts.Problem.habitGone
         }
-        let text = store.shortcutStatus(found, on: store.today())
+        let text = store.shortcutStatus(found, on: store.today(), named: !HideNames.isOn)
         return .result(value: text, dialog: "\(text)")
     }
 }
@@ -201,7 +212,8 @@ nonisolated struct HabitShortcuts: AppShortcutsProvider {
     @MainActor private static var names: [String] = []
 
     @MainActor static func habitsChanged(_ store: HabitStore) {
-        let now = store.habits.filter { !$0.archived }.map { $0.id.uuidString + $0.name }
+        // Names hidden: no habit in Siri's phrases (`suggestedEntities` returns none), refreshed when the setting changes.
+        let now = HideNames.isOn ? ["hidden"] : store.habits.filter { !$0.archived }.map { $0.id.uuidString + $0.name }
         guard now != names else { return }
         names = now
         updateAppShortcutParameters()

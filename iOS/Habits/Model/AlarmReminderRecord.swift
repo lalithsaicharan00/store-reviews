@@ -7,10 +7,16 @@ struct AlarmReminderRecord: Codable {
     let minute: Int
     let color: HabitColor
     init(_ alert: ReminderScheduler.Alert) {
-        target = alert.target; title = alert.habit.name; minute = alert.time.minuteOfDay; color = alert.habit.color
+        target = alert.target; title = Self.title(alert); minute = alert.time.minuteOfDay; color = alert.habit.color
+    }
+    /// The alarm's title as shown: the habit's name ("… · not done yet" for a repeat), or while names are hidden outside
+    /// the app the same words as a reminder's (Current Work 58). A change of either reschedules the alarm.
+    static func title(_ alert: ReminderScheduler.Alert) -> String {
+        if HideNames.isOn { return ReminderScheduler.hiddenTitle(alert).title }
+        return alert.followUp > 0 ? "\(alert.habit.name) · not done yet" : alert.habit.name
     }
     func matches(_ alert: ReminderScheduler.Alert) -> Bool {
-        target == alert.target && title == alert.habit.name && minute == alert.time.minuteOfDay && color == alert.habit.color
+        target == alert.target && title == Self.title(alert) && minute == alert.time.minuteOfDay && color == alert.habit.color
     }
     func isCurrent(in store: HabitStore, now: Date = .now) -> Bool {
         guard store.canActOnReminder(target, now: now),

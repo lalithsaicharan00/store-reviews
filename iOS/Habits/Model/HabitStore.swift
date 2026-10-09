@@ -2243,11 +2243,12 @@ final class HabitStore {
     /// A widget's button (Accepted Widget Contract): one deliberate tap is one change, committed before any widget shows
     /// it. `mode` is what the drawn button said: "check" ticks, "uncheck" takes that day's tick back (U14), "add" adds
     /// one saved step (+1 stays +1 above the goal). The event is the tap's identity: a retried callback never logs twice,
-    /// and an uncheck only removes a tick that is still there. A tap from an old day, an edited habit, a paused, skipped
-    /// or archived one, or with widget privacy on, changes nothing (D7).
+    /// and an uncheck only removes a tick that is still there. A tap from an old day, an edited habit, or a paused,
+    /// skipped or archived one changes nothing (D7). With App Lock on or names hidden, taps log as always: the widget is
+    /// discreet, not off (Current Work 58, decision 1).
     func logFromWidget(id: UUID, day: LocalDay, event: UUID, signature: String, mode: String = "add", now: Date = .now) {
         perform { [self] telemetry in
-            guard problem == nil, !AppLock.isEnabled, !UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey),
+            guard problem == nil,
                   day == today(now: now), let habit = habits.first(where: { $0.id == id }),
                   !habit.archived, !isPaused(habit, on: day), !isSkipped(habit, on: day),
                   startDay(of: habit) <= day, isDue(habit, on: day, now: now),
@@ -2298,7 +2299,7 @@ final class HabitStore {
     /// only stops, so a retried callback never undoes itself. Returns false when the tap is stale.
     @discardableResult
     func timerFromWidget(id: UUID, day: LocalDay, start: Bool, signature: String, now: Date = .now) -> Bool {
-        guard problem == nil, isStorageReady, !AppLock.isEnabled, !UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey),
+        guard problem == nil, isStorageReady,
               day == today(now: now), let habit = habits.first(where: { $0.id == id }), !habit.archived,
               rule(habit, on: day).kind == .duration, !isPaused(habit, on: day), !isSkipped(habit, on: day),
               isDue(habit, on: day, now: now), signature == Self.widgetSignature(habit) else {

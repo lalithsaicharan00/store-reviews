@@ -40,11 +40,13 @@ struct HabitTimerLiveActivity: Widget {
                         .padding(.trailing, 4)
                 }
                 DynamicIslandExpandedRegion(.center) {
-                    Text(context.attributes.name).font(.headline).lineLimit(1)
+                    if context.state.hidesName != true {
+                        Text(context.attributes.name).font(.headline).lineLimit(1)
+                    }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     HStack(spacing: 12) {
-                        GoalBar(state: context.state, color: color, label: context.attributes.goalLabel)
+                        GoalBar(state: context.state, color: color, label: context.state.hidesName == true ? nil : context.attributes.goalLabel)
                         PauseButton(habitID: context.attributes.habitID, color: color)
                     }
                     .padding(.horizontal, 4)
@@ -52,6 +54,7 @@ struct HabitTimerLiveActivity: Widget {
             } compactLeading: {
                 Image(systemName: context.attributes.symbol)
                     .foregroundStyle(color)
+                    .accessibilityLabel(context.state.hidesName == true ? "Timer running" : context.attributes.name)
             } compactTrailing: {
                 Clock(start: context.state.clockStart)
                     .font(.caption.weight(.semibold))
@@ -71,17 +74,22 @@ private struct LockScreenTimer: View {
 
     var body: some View {
         let color = TimerColor.named(attributes.color)
+        let hidden = state.hidesName == true
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 12) {
                 TimerIcon(symbol: attributes.symbol, color: color, size: 40)
-                Text(attributes.name).font(.headline).lineLimit(1)
+                    // Names hidden (Current Work 58): VoiceOver hears "Timer running" and the clock, never the habit.
+                    .accessibilityLabel(hidden ? "Timer running" : attributes.name)
+                if !hidden {
+                    Text(attributes.name).font(.headline).lineLimit(1)
+                }
                 Spacer(minLength: 8)
                 Clock(start: state.clockStart)
                     .font(.title.weight(.semibold))
                     .frame(maxWidth: 140, alignment: .trailing)
             }
             HStack(spacing: 12) {
-                GoalBar(state: state, color: color, label: attributes.goalLabel)
+                GoalBar(state: state, color: color, label: hidden ? nil : attributes.goalLabel)
                 PauseButton(habitID: attributes.habitID, color: color)
             }
         }
@@ -121,18 +129,18 @@ private struct Clock: View {
     }
 }
 
-/// Fills to the goal as time passes, then stays full; the goal is written under it.
+/// Fills to the goal as time passes, then stays full; the goal is written under it (not while names are hidden).
 private struct GoalBar: View {
     let state: HabitTimerAttributes.ContentState
     let color: Color
-    let label: String
+    let label: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             ProgressView(timerInterval: state.clockStart...max(state.goalAt, state.clockStart.addingTimeInterval(1)),
                          countsDown: false, label: { EmptyView() }, currentValueLabel: { EmptyView() })
                 .tint(color)
-            Text("Goal \(label)").font(.caption).foregroundStyle(.secondary)
+            if let label { Text("Goal \(label)").font(.caption).foregroundStyle(.secondary) }
         }
     }
 }

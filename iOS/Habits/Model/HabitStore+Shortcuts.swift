@@ -56,8 +56,10 @@ extension HabitStore {
     }
 
     /// "Water: 3 of 8 glasses today. 5 in a row." / "Stretch is done today." Streaks only while they're shown.
-    func shortcutStatus(_ habit: Habit, on day: LocalDay) -> String {
-        if habit.kind == .quit { return "\(habit.name): log slips in Often Enough." }
+    /// - Parameter named: false while names are hidden outside the app (Current Work 58): the same answer without the
+    ///   habit's name ("3 of 8 glasses today.", "Done today.").
+    func shortcutStatus(_ habit: Habit, on day: LocalDay, named: Bool = true) -> String {
+        if habit.kind == .quit { return named ? "\(habit.name): log slips in Often Enough." : "Log slips in Often Enough." }
         let rule = rule(habit, on: day)
         let done = isSatisfied(habit, on: day)
         var text: String
@@ -67,10 +69,12 @@ extension HabitStore {
             let when = rule.frequency.isDayBased ? " today" : ""
             let logged = progress(of: habit, on: day)
             let amount = rule.kind == .duration ? HabitCopy.minutes(logged) : HabitCopy.number(logged)
-            text = "\(habit.name): \(amount) of \(progressValue(goal, rule))\(when)."
+            text = (named ? "\(habit.name): " : "") + "\(amount) of \(progressValue(goal, rule))\(when)."
             if done { text += " Done." }
-        } else {
+        } else if named {
             text = done ? "\(habit.name) is done today." : "\(habit.name) isn't done yet today."
+        } else {
+            text = done ? "Done today." : "Not done yet today."
         }
         if isPaused(habit, on: day) { text += " It's paused." }
         let streak = streak(of: habit, asOf: day)

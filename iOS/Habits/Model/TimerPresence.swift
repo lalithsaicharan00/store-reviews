@@ -61,7 +61,7 @@ final class TimerPresence {
                 habit: habit, section: section, goal: goal,
                 attributes: HabitTimerAttributes(habitID: id.uuidString, name: habit.name, symbol: habit.symbol,
                                                  color: habit.color.rawValue, goalLabel: Self.goalLabel(habit, goal: goal)),
-                state: .init(clockStart: clockStart, goalAt: goalAt),
+                state: .init(clockStart: clockStart, goalAt: goalAt, hidesName: HideNames.isOn),
                 goalReached: goalAt > now ? goalAt : nil)
         }
     }
@@ -101,7 +101,8 @@ final class TimerPresence {
         for timer in due {
             guard let fire = timer.goalReached else { continue }
             let content = UNMutableNotificationContent()
-            content.title = timer.habit.name
+            // Names hidden outside the app (Current Work 58): the habit's own reminder words, or "Timer".
+            content.title = HideNames.isOn ? (timer.habit.reminderText ?? "Timer") : timer.habit.name
             content.body = Self.goalMessage(timer.habit, goal: timer.goal)
             content.sound = .default
             // Tapping it opens today's section, like a reminder.
@@ -147,8 +148,10 @@ final class TimerPresence {
             }
             if let live {
                 // Time added by hand while it runs moves the clock; otherwise leave it be.
+                // So does Hide Names Outside the App changing (Current Work 58).
                 let old = live.content.state
-                if abs(old.clockStart.timeIntervalSince(timer.state.clockStart)) > 1 || abs(old.goalAt.timeIntervalSince(timer.state.goalAt)) > 1 {
+                if abs(old.clockStart.timeIntervalSince(timer.state.clockStart)) > 1 || abs(old.goalAt.timeIntervalSince(timer.state.goalAt)) > 1
+                    || (old.hidesName ?? false) != (timer.state.hidesName ?? false) {
                     await live.update(content)
                 }
             } else {

@@ -11,7 +11,7 @@ enum WidgetReliabilityCheck {
     static func run() async -> [String] {
         var failures: [String] = []
         func expect(_ value: Bool, _ name: String) { if !value { failures.append(name) } }
-        UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey)
+        HideNames.setChosen(false)
         UserDefaults.standard.set(DoneOrder.bottom.rawValue, forKey: Preferences.doneOrder)
         UserDefaults.standard.set(false, forKey: Preferences.timerScreen)
         defer { UserDefaults.standard.set(true, forKey: Preferences.timerScreen) }
@@ -78,15 +78,21 @@ enum WidgetReliabilityCheck {
         expect(store.dayProgress(of: edited, on: day) == beforeEdit && store.problem != nil, "A button drawn before an edit is refused")
         store.problem = nil
 
-        // MARK: Privacy switched on in the middle of a run of taps
+        // MARK: Names hidden in the middle of a run of taps (Current Work 58): every tap still counts, once, in order
 
         for _ in 0..<5 { store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: signature(edited), now: now) }
         await store.flush()
-        UserDefaults.standard.set(true, forKey: WidgetDisk.privacyKey)
-        for _ in 0..<5 { store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: signature(edited), now: now) }
+        HideNames.setChosen(true)
+        let discreetEvents = (0..<5).map { _ in UUID() }
+        for event in discreetEvents { store.logFromWidget(id: cut.id, day: day, event: event, signature: signature(edited), now: now) }
+        // iOS retrying the same callbacks: each counts once.
+        for event in discreetEvents { store.logFromWidget(id: cut.id, day: day, event: event, signature: signature(edited), now: now) }
         await store.flush()
-        UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey)
-        expect(store.dayProgress(of: edited, on: day) == beforeEdit + 5, "Taps after Hide widget content change nothing")
+        HideNames.setChosen(false)
+        expect(store.dayProgress(of: edited, on: day) == beforeEdit + 10 && store.problem == nil,
+               "Taps after names are hidden still log, each once")
+        let order = store.entries(of: cut.id).filter { discreetEvents.contains($0.id) }.map(\.id)
+        expect(order == discreetEvents, "Taps with names hidden are saved in the order made")
         store.problem = nil
 
         // MARK: Undo, then the undone tap retried

@@ -185,6 +185,11 @@ private struct SideMenu: View {
     }
 }
 
+/// Help & Feedback opened on one topic (a widget's Choose a habit: Help → Widgets → "Choose a habit for a widget").
+struct HelpLink: Hashable {
+    let topic: String
+}
+
 /// What a menu row opens, pushed onto Today's stack.
 struct MenuPage: View {
     let place: MenuPlace
@@ -197,7 +202,6 @@ struct MenuPage: View {
         case .timesOfDay: TimesOfDayList()
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
-        case .widgets: WidgetsView()
         case .plus: PlusView(fromMenu: true)
         case .backup:
             // Without a database (it couldn't be opened) there's no backup centre; the older page says what's wrong.

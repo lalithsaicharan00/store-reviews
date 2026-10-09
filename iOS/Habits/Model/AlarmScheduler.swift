@@ -66,8 +66,8 @@ final class AlarmScheduler {
             records[id] = AlarmReminderRecord(alert)
             AlarmReminderRecord.save(records)
             do {
-                let title = alert.followUp > 0 ? "\(alert.habit.name) · not done yet" : alert.habit.name
-                try await Self.schedule(id: id, title: title, action: Self.actionLabel(alert.habit), tint: alert.habit.color.color, fire: alert.fire, target: alert.target)
+                try await Self.schedule(id: id, title: AlarmReminderRecord.title(alert), action: Self.actionLabel(alert.habit),
+                                        tint: alert.habit.color.color, fire: alert.fire, target: alert.target)
             } catch AlarmManager.AlarmError.maximumLimitReached {
                 records.removeValue(forKey: id)
                 break
@@ -93,7 +93,8 @@ final class AlarmScheduler {
     static func actionLabel(_ habit: Habit) -> String? {
         switch habit.kind {
         case .check, .task: return "Done"
-        case .amount(let unit, _): return habit.quickIncrement.map { "+" + HabitCopy.amount($0, unit) }
+        // Names hidden outside the app: "+1", without the unit (Current Work 58).
+        case .amount(let unit, _): return habit.quickIncrement.map { "+" + (HideNames.isOn ? Format.amount($0) : HabitCopy.amount($0, unit)) }
         default: return nil // timers and checklists require the app; no misleading Done button
         }
     }

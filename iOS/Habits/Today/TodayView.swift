@@ -77,6 +77,7 @@ struct TodayView: View {
             // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
             .analyticsScreen(.today)
             .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
+            .navigationDestination(for: HelpLink.self) { HelpView(open: $0.topic).analyticsScreen(.help) }
             // Open Habit Page from a row's touch-and-hold menu: the page on Today's own stack, Back returns to Today.
             .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id) }
             .perfBlankDestination()
@@ -294,11 +295,12 @@ struct TodayView: View {
         replacingPresented { store.timerScreen = id }
     }
 
-    /// A widget's "Choose a habit": the Widgets guide, which explains Edit Widget.
+    /// A widget's "Choose a habit": Help → Widgets → "Choose a habit for a widget", which explains Edit Widget (the
+    /// Widgets page it opened went into Help, Current Work 58).
     private func routeWidgetSetup() {
         guard store.isLoaded, router.widgetSetup else { return }
         router.widgetSetup = false
-        replacingPresented { menu.path.append(MenuPlace.widgets) }
+        replacingPresented { menu.path.append(HelpLink(topic: HelpTopics.chooseHabitForWidget)) }
     }
 
     /// Speed runs (`PerfDriver`): the same state changes the buttons make.
@@ -358,7 +360,7 @@ struct TodayView: View {
             let next = selectedDay.adding(days: 1, calendar: store.calendar)
             day = next == store.today() ? nil : next
         case .openAllHabits: menu.path.append(MenuPlace.habits) // Habits lives in the ≡ menu now
-        case .openWidgets: menu.path.append(MenuPlace.widgets)
+        case .openWidgets: menu.path.append(HelpLink(topic: HelpTopics.chooseHabitForWidget))
         case .openPlace(let place): menu.path.append(place)
         case .openBlank: menu.path.append(PerfBlankPage())
         case .openTypingControl: menu.path.append(PerfTypingPage())

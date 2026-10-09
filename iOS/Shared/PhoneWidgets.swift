@@ -48,6 +48,9 @@ nonisolated struct PhoneWidgetEntry: TimelineEntry {
     var noHabits = false
     /// Gallery and placeholder: sample content whose buttons do nothing.
     var sample = false
+    /// Names hidden outside the app (Current Work 58): the snapshot has no names; the same cards are drawn without them,
+    /// and task lists show how many are left.
+    var discreet = false
     var selected: WidgetItem? { frame?.item(selection) }
     func listKey(_ prefix: String) -> String { view == WidgetListSection.today ? prefix : prefix + ":" + view }
 }
@@ -74,6 +77,7 @@ nonisolated enum PhoneWidgetTimeline {
             var entry = PhoneWidgetEntry(date: date, frame: frame, status: status, selection: selection)
             entry.weekdays = snapshot?.weekdays ?? []
             entry.noHabits = snapshot.map { !$0.hidden && $0.choices.isEmpty } ?? false
+            entry.discreet = snapshot?.discreet == true
             setup(&entry)
             return entry
         }
@@ -191,7 +195,8 @@ nonisolated struct AgendaWidgetProvider: AppIntentTimelineProvider {
         let page = WidgetDisk.page(key: pageKey)
         return PhoneWidgetTimeline.entries(snapshot: snapshot, listKey: key) { entry in
             entry.view = view
-            entry.viewName = view == WidgetListSection.today ? "Today"
+            // Names hidden: a section's list is titled "Today" too (report §6a), whatever iOS kept as its name.
+            entry.viewName = view == WidgetListSection.today || snapshot?.discreet == true ? "Today"
                 : snapshot?.sections.first { $0.id == view }?.name ?? config.view?.name ?? "Section"
             entry.viewMissing = view != WidgetListSection.today && snapshot.map { !$0.hidden && !$0.sections.contains { $0.id == view } } == true
             entry.page = page; entry.pageKey = pageKey; entry.kind = kind
@@ -215,7 +220,7 @@ nonisolated struct TasksWidgetProvider: AppIntentTimelineProvider {
         let page = WidgetDisk.page(key: pageKey)
         return PhoneWidgetTimeline.entries(snapshot: snapshot, listKey: key) { entry in
             entry.view = view
-            entry.viewName = view == WidgetListSection.today ? "Tasks"
+            entry.viewName = view == WidgetListSection.today || snapshot?.discreet == true ? "Tasks"
                 : (snapshot?.taskSections.first { $0.id == view }?.name ?? config.view?.name ?? "Section") + " tasks"
             entry.viewMissing = view != WidgetListSection.today && snapshot.map { !$0.hidden && !$0.taskSections.contains { $0.id == view } } == true
             entry.page = page; entry.pageKey = pageKey; entry.kind = PhoneWidgetKind.tasks
@@ -422,6 +427,8 @@ struct WidgetActionButton: View {
     private var label: String { Self.label(for: item) }
 
     static func label(for item: WidgetItem) -> String {
+        // Names hidden (Current Work 58): what the button does, without the habit's name ("Add 1", "Mark done").
+        if item.name.isEmpty { return discreetLabel(for: item) }
         switch item.action {
         case .check: item.done ? "Undo \(item.name)" : "Mark \(item.name) done"
         case .add: "Add \(String((item.actionText ?? "+1").dropFirst())) to \(item.name)"
@@ -433,6 +440,22 @@ struct WidgetActionButton: View {
             case "slip": "Record a slip for \(item.name)"
             case "timer": item.timerClock == nil ? "Start \(item.name) timer" : "Open \(item.name) timer"
             default: item.type == "checklist" && item.state == nil ? "Open \(item.name) steps" : "Open \(item.name)"
+            }
+        }
+    }
+
+    static func discreetLabel(for item: WidgetItem) -> String {
+        switch item.action {
+        case .check: item.done ? "Undo" : "Mark done"
+        case .add: "Add \(String((item.actionText ?? "+1").dropFirst()))"
+        case .timerStart: "Start timer"
+        case .timerPause: "Pause timer"
+        case .open:
+            switch item.route?.split(separator: "/").dropFirst().first.map({ String($0) }) ?? "" {
+            case "log": "Log an amount"
+            case "slip": "Record a slip"
+            case "timer": item.timerClock == nil ? "Start timer" : "Open timer"
+            default: item.type == "checklist" && item.state == nil ? "Open steps" : "Open"
             }
         }
     }
@@ -759,6 +782,11 @@ struct ListWidget: View {
             header(counted: counted.count, done: done, page: page, pages: pages)
             if entry.status != .ready || entry.frame == nil || entry.viewMissing || items.isEmpty {
                 message
+            } else if tasks && entry.discreet {
+                // A task without its title means nothing (report §6a): how many are left, and the way into the app.
+                let left = items.filter { !$0.done }.count
+                WidgetMessage(symbol: "checklist", title: left == 0 ? "All done" : left == 1 ? "1 task left" : "\(left) tasks left",
+                              subtitle: "Open Often Enough")
             } else {
                 VStack(spacing: 12) {
                     ForEach(0..<slots, id: \.self) { slot in
@@ -961,7 +989,8 @@ struct WidgetRowContent: View {
                 .frame(width: 28, height: 28)
             VStack(alignment: .leading, spacing: 1) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
-                    Text(item.name).font(.headline).lineLimit(1)
+                    // Names hidden: the icon, the line and the button tell rows apart (report §6a).
+                    if !item.name.isEmpty { Text(item.name).font(.headline).lineLimit(1) }
                     if item.type == "quit", item.state == nil, item.quitStart != nil {
                         Spacer(minLength: 4)
                         Text(WidgetLive.quitLine(item, at: date)).font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1)
@@ -1041,7 +1070,7 @@ struct SmallWidget: View {
                 }
             }
             Spacer(minLength: 4)
-            Text(item.name).font(.headline).lineLimit(1)
+            if !item.name.isEmpty { Text(item.name).font(.headline).lineLimit(1) }
             Group {
                 if item.type == "quit", let start = item.quitStart, item.state == nil {
                     QuitClock(start: start, date: entry.date).font(.subheadline.weight(.semibold))
@@ -1153,8 +1182,10 @@ struct WeekWidget: View {
             Image(systemName: item.symbol).font(.system(size: 34, weight: .medium))
                 .foregroundStyle(WidgetPalette.mark(item.color)).widgetAccentable()
                 .frame(height: 44)
-            Text(item.name).font(.subheadline.weight(.semibold)).multilineTextAlignment(.center).lineLimit(2)
-                .minimumScaleFactor(0.85)
+            if !item.name.isEmpty {
+                Text(item.name).font(.subheadline.weight(.semibold)).multilineTextAlignment(.center).lineLimit(2)
+                    .minimumScaleFactor(0.85)
+            }
             underName(item)
             Spacer(minLength: 0)
         }
@@ -1418,10 +1449,12 @@ struct LockCircle: View {
     }
 
     private func spoken(_ item: WidgetItem) -> String {
+        // Names hidden: "Habit, 6 of 8" (report §6a).
+        let name = item.name.isEmpty ? "Habit" : item.name
         if item.type == "quit", let start = item.quitStart {
-            return "\(item.name), \(HabitRunText.compact(entry.date.timeIntervalSince(start))) quit"
+            return "\(name), \(HabitRunText.compact(entry.date.timeIntervalSince(start))) quit"
         }
-        return "\(item.name), \(item.state == nil ? item.value : item.caption ?? item.value)"
+        return "\(name), \(item.state == nil ? item.value : item.caption ?? item.value)"
     }
 }
 
@@ -1463,10 +1496,12 @@ struct LockInline: View {
     }
 
     private func text(_ item: WidgetItem) -> String {
-        if item.state == "paused" { return "\(item.name) · Paused" }
-        if item.type == "quit", let start = item.quitStart { return "\(item.name) · " + HabitRunText.compact(entry.date.timeIntervalSince(start)) }
-        if item.type == "check" && item.lock == nil { return "\(item.name) · \(item.done ? "Done" : "Not yet")" }
-        return "\(item.name) · \(item.lock ?? item.value)"
+        // Names hidden: the icon and the value only.
+        let name = item.name.isEmpty ? "" : item.name + " · "
+        if item.state == "paused" { return name + "Paused" }
+        if item.type == "quit", let start = item.quitStart { return name + HabitRunText.compact(entry.date.timeIntervalSince(start)) }
+        if item.type == "check" && item.lock == nil { return name + (item.done ? "Done" : "Not yet") }
+        return name + (item.lock ?? item.value)
     }
 }
 
@@ -1500,7 +1535,7 @@ struct LockRectangle: View {
                     }
                     .accessibilityHidden(true)
                     let left = counted.filter { !$0.countsDone }
-                    Text(left.isEmpty ? "All done" : "\(left.count) left · " + left.map(\.name).joined(separator: ", "))
+                    Text(left.isEmpty ? "All done" : entry.discreet ? "\(left.count) left" : "\(left.count) left · " + left.map(\.name).joined(separator: ", "))
                         .font(.subheadline).lineLimit(1)
                 }
             }

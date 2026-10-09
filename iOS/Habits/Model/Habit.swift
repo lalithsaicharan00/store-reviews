@@ -214,6 +214,9 @@ struct Habit: Identifiable, Codable, Hashable, Sendable {
     var startsOn: LocalDay?
     /// The last day it's due; nil means it never ends.
     var endsOn: LocalDay?
+    /// "Reminder says…" (Current Work 58): the person's own words for this habit's reminders and alarms, nil for none.
+    /// With names shown they're the reminder's body; while names are hidden outside the app, its title.
+    var reminderText: String?
     /// Quit habits: when the current run started (the last slip, or when the habit was made).
     var quitSince: Date?
     var createdAt: Date = .now
@@ -316,6 +319,7 @@ enum TextLimit {
     static let noteText = 1000       // a habit's or a day's note: a few lines, never an essay editor
     static let descriptionText = 200 // a habit's standing description: what counts, why it matters
     static let group = 24            // group names: the same as habit names ("Morning medicines" 17)
+    static let reminderText = 24     // "Reminder says…": one line, as names (Privacy & Security spec §3.7)
 
     /// "3 characters left", only in the last 5, so the limit is never a surprise.
     static func note(_ text: String, _ limit: Int) -> String? {

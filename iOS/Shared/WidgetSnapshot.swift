@@ -126,6 +126,8 @@ nonisolated struct WidgetSection: Codable, Hashable, Sendable {
 nonisolated struct WidgetChoice: Codable, Hashable, Sendable {
     var id: String
     var name: String
+    /// Its icon, shown beside the name (the only way to tell habits apart while names are hidden).
+    var symbol: String? = nil
 }
 
 nonisolated struct WidgetFrame: Codable, Sendable {
@@ -159,7 +161,13 @@ nonisolated struct WidgetSnapshot: Codable, Sendable {
     var timeZone: String
     var locale: String
     var plus: Bool
+    /// Before 9 Oct 2026, "Content hidden": no items, and taps refused. The app no longer writes it (Current Work 58);
+    /// kept so a snapshot written by an older build still reads.
     var hidden: Bool
+    /// Hide Names Outside the App (Current Work 58): the app wrote this snapshot without a habit name, task title or
+    /// section name anywhere (`WidgetSnapshot.discreet()`, in the app). Every item, count and button stays, and taps log
+    /// as always. The widget draws the same cards without the words. nil in a snapshot from an older build.
+    var discreet: Bool? = nil
     /// The habit lists' cards in Today's order (the person's own, U13), and the task lists' (no Quit or Cut Down).
     var sections: [WidgetSection] = []
     var taskSections: [WidgetSection] = []

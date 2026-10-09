@@ -23,10 +23,13 @@ struct HabitsApp: App {
                 // While locked, or whenever the app isn't in front (so the app switcher never shows the habits).
                 .overlay {
                     if model.lock.isLocked || (AppLock.isEnabled && scenePhase != .active) {
-                        LockCover(locked: model.lock.isLocked) { Task { await model.lock.unlock() } }
+                        LockCover(lock: model.lock, locked: model.lock.isLocked)
                     }
                 }
                 .task {
+                    #if DEBUG
+                    FakeAuthWindow.install()
+                    #endif
                     await model.lock.appeared()
                     Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
                     AnalyticsInteractionObserver.install()
@@ -69,7 +72,7 @@ struct HabitsApp: App {
             // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
             // write, so a tap made just before switching away is never lost (30 Sep).
             if scenePhase == .background { finishWrites() }
-            // Leaving locks the app (when the lock is on); coming back asks once.
+            // Leaving locks the app (when the lock is on, after Ask Again's time); coming back asks once.
             if scenePhase == .background { model.lock.lock() }
             if scenePhase == .active { Task { await model.lock.appeared() } }
         }
@@ -78,7 +81,7 @@ struct HabitsApp: App {
     /// The app's links, from widgets and the Live Activity (Implementation Spec §3): each opens exactly the screen its
     /// button names, so logging takes one tap after the app opens.
     ///   today · section/<id> · item/<id> (Day details) · log/<id> (amount entry) · slip/<id> (Record a slip)
-    ///   timer/<id> (its screen; ?start=1 starts it first) · widgets (the Widgets guide: how to choose a habit)
+    ///   timer/<id> (its screen; ?start=1 starts it first) · widgets (Help → Widgets → "Choose a habit for a widget")
     static func route(_ url: URL, model: AppModel) {
         let id = UUID(uuidString: url.lastPathComponent)
         let router = model.router

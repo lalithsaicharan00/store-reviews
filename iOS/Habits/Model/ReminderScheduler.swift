@@ -123,7 +123,7 @@ final class ReminderScheduler {
             problem = "Some alarms couldn’t be added. Often Enough is using notifications for them when allowed."
         }
         if let alarmProblem = alarmDelivery.problem { problem = alarmProblem }
-        center.categories(Self.categories(for: store.habits))
+        center.categories(Self.categories(for: store.habits, hidden: HideNames.isOn))
         let allPending = await center.pending()
         let pending = allPending.filter { $0.identifier.hasPrefix(Self.prefix) }
         // Timer goal alerts share iOS's 64 slots. Reserve for already-pending and running timers.
@@ -250,12 +250,21 @@ final class ReminderScheduler {
     private func single(_ alert: Alert, store: HabitStore) -> UNNotificationRequest {
         let habit = alert.habit
         let content = UNMutableNotificationContent()
-        content.title = habit.name
-        var body = reminderBody(habit, store: store)
-        // A habit ticked per section says which tick this is.
-        if alert.placement.slot != nil { body = "\(store.section(alert.placement.section).name) · \(body)" }
-        if alert.followUp > 0 { body = "Not done yet · \(body)" }
-        content.body = body
+        if HideNames.isOn {
+            // Names hidden outside the app (Current Work 58; spec §3.7): the person's own words, or the time; never the
+            // name, a section's name or a note (U3: "Still open", never "missed").
+            let words = Self.hiddenTitle(alert)
+            content.title = words.title
+            content.body = words.body
+        } else {
+            content.title = habit.name
+            // "Reminder says…", when set, instead of the usual line.
+            var body = habit.reminderText ?? reminderBody(habit, store: store)
+            // A habit ticked per section says which tick this is.
+            if alert.placement.slot != nil { body = "\(store.section(alert.placement.section).name) · \(body)" }
+            if alert.followUp > 0 { body = "Not done yet · \(body)" }
+            content.body = body
+        }
         content.sound = .default
         content.threadIdentifier = alert.section.id
         content.categoryIdentifier = Self.category(for: habit)
@@ -267,8 +276,14 @@ final class ReminderScheduler {
         let first = bucket[0]
         let names = bucket.map(\.habit.name)
         let content = UNMutableNotificationContent()
-        content.title = first.section.name
-        content.body = names.prefix(3).joined(separator: ", ") + (names.count > 3 ? " +\(names.count - 3)" : "")
+        if HideNames.isOn {
+            // "3 reminders · 8:00": no section or habit names (spec §3.7).
+            content.title = "\(bucket.count) reminders · \(DaySection.clock(first.time.minuteOfDay))"
+            content.body = ""
+        } else {
+            content.title = first.section.name
+            content.body = names.prefix(3).joined(separator: ", ") + (names.count > 3 ? " +\(names.count - 3)" : "")
+        }
         content.sound = .default
         content.threadIdentifier = first.section.id
         content.categoryIdentifier = Self.groupCategory
@@ -293,6 +308,14 @@ final class ReminderScheduler {
             && a.content.threadIdentifier == b.content.threadIdentifier
             && NSDictionary(dictionary: a.content.userInfo).isEqual(to: b.content.userInfo)
             && (a.trigger as? UNCalendarNotificationTrigger)?.dateComponents == (b.trigger as? UNCalendarNotificationTrigger)?.dateComponents
+    }
+
+    /// A reminder's words while names are hidden (spec §3.7): "Reminder says…" or "Reminder · 8:00"; a repeat
+    /// "Still open · 8:00", with the person's own words under it.
+    static func hiddenTitle(_ alert: Alert) -> (title: String, body: String) {
+        let clock = DaySection.clock(alert.time.minuteOfDay)
+        if alert.followUp > 0 { return ("Still open · \(clock)", alert.habit.reminderText ?? "") }
+        return (alert.habit.reminderText ?? "Reminder · \(clock)", "")
     }
 
     private func reminderBody(_ habit: Habit, store: HabitStore) -> String {
@@ -321,22 +344,27 @@ final class ReminderScheduler {
 
     /// The fixed categories, set at launch so actions work before the first reconcile.
     static func registerCategories() {
-        UNUserNotificationCenter.current().setNotificationCategories(categories(for: []))
+        UNUserNotificationCenter.current().setNotificationCategories(categories(for: [], hidden: HideNames.isOn))
     }
 
-    private static func categories(for habits: [Habit]) -> Set<UNNotificationCategory> {
+    /// What a phone with previews off shows instead of the text, on every category (spec §3.7).
+    static let previewPlaceholder = "Reminder"
+
+    static func categories(for habits: [Habit], hidden: Bool) -> Set<UNNotificationCategory> {
         var set: Set<UNNotificationCategory> = [
             UNNotificationCategory(identifier: singleCategory, actions: [UNNotificationAction(identifier: doneAction, title: "Done", options: [])],
-                                   intentIdentifiers: []),
-            UNNotificationCategory(identifier: groupCategory, actions: [], intentIdentifiers: []),
+                                   intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: previewPlaceholder, options: []),
+            UNNotificationCategory(identifier: groupCategory, actions: [], intentIdentifiers: [],
+                                   hiddenPreviewsBodyPlaceholder: previewPlaceholder, options: []),
         ]
-        // An amount's button names its own step, so each amount habit has its own category.
+        // An amount's button names its own step, so each amount habit has its own category. Names hidden: "+1", without
+        // the unit (spec §3.7, U16).
         for habit in habits where !habit.archived {
             guard case .amount(let unit, _) = habit.kind, let increment = habit.quickIncrement else { continue }
-            let title = "+" + HabitCopy.amount(increment, unit)
+            let title = "+" + (hidden ? Format.amount(increment) : HabitCopy.amount(increment, unit))
             set.insert(UNNotificationCategory(identifier: addCategoryPrefix + habit.id.uuidString,
                                               actions: [UNNotificationAction(identifier: addAction, title: title, options: [])],
-                                              intentIdentifiers: []))
+                                              intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: previewPlaceholder, options: []))
         }
         return set
     }

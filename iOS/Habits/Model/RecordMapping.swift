@@ -44,7 +44,7 @@ extension Habit {
             position: Int32(position), createdAt: createdAt.millis, updatedAt: now.millis,
             archivedAt: archived ? KotlinLong(value: now.millis) : nil, deletedAt: deleted ? KotlinLong(value: now.millis) : nil,
             remind: remind, alert: alert.rawValue, followUpMinutes: followUpMinutes.map { KotlinInt(value: Int32($0)) },
-            startsOn: startsOn?.key, endsOn: endsOn?.key)
+            startsOn: startsOn?.key, endsOn: endsOn?.key, reminderText: reminderText)
     }
 
     func stepRecords() -> [StepRecord] {
@@ -92,6 +92,7 @@ extension Habit {
         followUpMinutes = r.followUpMinutes.map { Int($0.int32Value) }
         startsOn = r.startsOn.flatMap(LocalDay.init(key:))
         endsOn = r.endsOn.flatMap(LocalDay.init(key:))
+        reminderText = r.reminderText.flatMap { $0.isEmpty ? nil : $0 }
         self.steps = steps.filter { $0.habitId == r.id }.sorted { $0.position < $1.position }
             .compactMap { s in UUID(uuidString: s.id).map { Step(id: $0, name: s.name) } }
         self.reminders = reminders.filter { $0.habitId == r.id }

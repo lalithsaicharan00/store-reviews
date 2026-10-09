@@ -45,10 +45,39 @@ enum WidgetFixture {
 /// actions, day boundaries, privacy and the snapshot on disk. Rendering is `WidgetRenderCheck`; WidgetKit itself is
 /// `WidgetSystemUITests`.
 enum WidgetCheck {
+    /// Names hidden outside the app (Current Work 58; report §6a, §6b): the discreet snapshot as written holds no habit
+    /// name, task title or section name anywhere (the "after" cards and the Edit Widget choices included), and nothing
+    /// a widget reads aloud names one; every item, list, token and button is as with names shown.
+    static func discreetFailures(_ store: HabitStore, now: Date) -> [String] {
+        var failures: [String] = []
+        func expect(_ value: Bool, _ name: String) { if !value { failures.append(name) } }
+        let named = store.widgetSnapshot(now: now)
+        let discreet = named.discreet()
+        let json = (try? JSONEncoder().encode(discreet)).flatMap { String(data: $0, encoding: .utf8) } ?? ""
+        let words = store.habits.map(\.name) + store.sections.map(\.name) + ["Quit or Cut Down"]
+        let leaked = words.filter { !$0.isEmpty && json.localizedCaseInsensitiveContains($0) }
+        expect(!json.isEmpty && leaked.isEmpty, "Discreet snapshot has no names (found \(leaked.prefix(3).joined(separator: ", ")))")
+        expect(discreet.discreet == true && !discreet.hidden, "Discreet is its own state, not Content hidden")
+        expect(zip(named.frames, discreet.frames).allSatisfy { a, b in
+            a.items.map(\.id) == b.items.map(\.id) && a.items.map(\.token) == b.items.map(\.token)
+                && a.items.map(\.action) == b.items.map(\.action) && a.items.map(\.value) == b.items.map(\.value)
+                && a.items.map { $0.after?.count } == b.items.map { $0.after?.count } && a.lists == b.lists
+        }, "Discreet keeps every item, token, button, count and after card")
+        expect(discreet.choices.count == named.choices.count && discreet.choices.allSatisfy { $0.name.hasPrefix("Habit ") && $0.symbol != nil },
+               "Edit Widget offers each habit by icon and number")
+        let spoken = discreet.frames.flatMap(\.items).flatMap { [$0] + ($0.after ?? []) }.map(WidgetActionButton.label(for:))
+        let spokenLeak = spoken.filter { label in words.contains { !$0.isEmpty && label.localizedCaseInsensitiveContains($0) } }
+        expect(spokenLeak.isEmpty, "VoiceOver names no habit on a discreet widget (\(spokenLeak.prefix(2).joined(separator: ", ")))")
+        let entries = PhoneWidgetTimeline.entries(snapshot: discreet, now: now, listKey: "habits") { _ in }
+        expect(entries.first?.status == .ready && entries.first?.discreet == true && entries.first?.frame?.items.isEmpty == false,
+               "A discreet snapshot is drawn, not Content hidden")
+        return failures
+    }
+
     static func run() async -> [String] {
         var failures: [String] = []
         func expect(_ value: Bool, _ name: String) { if !value { failures.append(name) } }
-        UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey)
+        HideNames.setChosen(false)
         UserDefaults.standard.set(DoneOrder.bottom.rawValue, forKey: Preferences.doneOrder)
         UserDefaults.standard.set(true, forKey: Preferences.timerScreen)
         UserDefaults.standard.set(true, forKey: ProgressOptions.showStreaks)
@@ -375,15 +404,17 @@ enum WidgetCheck {
 
         // MARK: Privacy
 
-        UserDefaults.standard.set(true, forKey: WidgetDisk.privacyKey)
+        // Hide Names Outside the App (Current Work 58, decision 1): discreet cards whose taps still log, once each, in order.
+        HideNames.setChosen(true)
+        let cutBefore = store.dayProgress(of: cut, on: day)
         store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await store.flush()
-        expect(store.dayProgress(of: cut, on: day) == 4, "Hide widget content turns widget logging off")
-        UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey); store.problem = nil
+        expect(store.dayProgress(of: cut, on: day) == cutBefore + 1 && store.problem == nil, "With names hidden, a widget tap still logs")
+        HideNames.setChosen(false); store.problem = nil
+        for failure in Self.discreetFailures(store, now: now) { failures.append(failure) }
+        // A snapshot written by a build before 9 Oct ("Content hidden") still reads as hidden.
         let hidden = store.widgetSnapshot(now: now, hidden: true)
-        expect(hidden.hidden && hidden.frames.allSatisfy { $0.items.isEmpty && $0.lists.isEmpty } && hidden.sections.isEmpty && hidden.choices.isEmpty,
-               "A private snapshot holds no names, sections or progress")
         let hiddenEntries = PhoneWidgetTimeline.entries(snapshot: hidden, now: now, listKey: "habits") { _ in }
-        expect(hiddenEntries.count == 1 && hiddenEntries[0].status == .hidden, "Every widget shows Content hidden")
+        expect(hiddenEntries.count == 1 && hiddenEntries[0].status == .hidden, "An older build's hidden snapshot still shows Content hidden")
 
         // MARK: Pages (Implementation Spec §5)
 
@@ -537,13 +568,15 @@ enum WidgetCheck {
             let visible = WidgetPublisher(file: file)
             let older = Task { await visible.publish(racing) }
             await Task.yield()
-            UserDefaults.standard.set(true, forKey: WidgetDisk.privacyKey)
+            HideNames.setChosen(true)
             await WidgetPublisher(file: file).publish(racing)
             await older.value
             let privateSnapshot = WidgetDisk.read(from: file)
-            expect(privateSnapshot?.hidden == true && privateSnapshot?.frames.allSatisfy { $0.items.isEmpty } == true,
-                   "Turning privacy on mid-publication never republishes names")
-            UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey)
+            let written = (try? String(contentsOf: file, encoding: .utf8)) ?? ""
+            expect(privateSnapshot?.discreet == true && !racing.habits.contains { written.contains($0.name) }
+                   && privateSnapshot?.frames.first?.items.count == racing.habits.filter { !$0.archived }.count,
+                   "Hiding names mid-publication never republishes them, and keeps every item")
+            HideNames.setChosen(false)
             let preserved = privateSnapshot?.generated
             let cancelled = Task { await visible.publish(racing) }
             cancelled.cancel(); await cancelled.value

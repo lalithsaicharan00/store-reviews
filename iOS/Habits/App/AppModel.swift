@@ -50,8 +50,8 @@ final class AppModel {
     let widgets = WidgetPublisher()
     /// The ≡ menu and Today's navigation path.
     let menu = MenuModel()
-    /// Lock with Face ID (≡ → Privacy). Off unless turned on.
-    let lock = AppLock()
+    /// App Lock (≡ → Privacy & Security). Off unless turned on.
+    let lock: AppLock
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 
@@ -66,6 +66,10 @@ final class AppModel {
     static let refreshTaskID = "com.oftenenough.app.refresh"
 
     private init() {
+        // "Hide widget content" becomes Hide Names Outside the App, keeping the person's choice (Current Work 58), before
+        // anything reads it.
+        HideNames.migrate()
+        lock = AppLock()
         #if DEBUG
         if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-widget-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
             UserDefaults(suiteName: WidgetDisk.group)?.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.widgetTiming")
@@ -170,6 +174,17 @@ final class AppModel {
             store.clock = { Date.now.addingTimeInterval(offset) }
         }
         #endif
+    }
+
+    /// Hide Names Outside the App or App Lock changed (Current Work 58; spec §2.3): the widgets are published at once,
+    /// reminders and alarms re-planned, a running timer's Live Activity updated and Siri's habit phrases refreshed, so the
+    /// next of each already follows it.
+    func privacyChanged() async {
+        guard store.isLoaded else { return }
+        HabitShortcuts.habitsChanged(store)
+        await widgets.publish(store, immediate: true)
+        await scheduler.reconcile(store)
+        await timerPresence.sync(store)
     }
 
     /// Loads once, however many callers ask; later callers wait for the first load.

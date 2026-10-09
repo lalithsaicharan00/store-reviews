@@ -11,9 +11,14 @@ nonisolated struct HabitTimerAttributes: ActivityAttributes {
         var clockStart: Date
         /// When the total reaches the goal. The bar fills up to here, then stays full.
         var goalAt: Date
+        /// Hide Names Outside the App (Current Work 58): the activity shows the icon, colour, clock and fill, with no name
+        /// and no goal text. Optional, so an activity started by an older build still reads. Changing the setting
+        /// updates a running activity.
+        var hidesName: Bool? = nil
     }
 
     var habitID: String
+    /// Kept for the app's own use; drawn only while names are shown (`ContentState.hidesName`).
     var name: String
     var symbol: String
     /// `HabitColor` raw value ("blue").
