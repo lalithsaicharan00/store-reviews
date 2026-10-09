@@ -285,6 +285,9 @@ final class BackupUITests: XCTestCase {
         app.buttons["sign-in-cancel"].tap()
         XCTAssertTrue(app.navigationBars["Create Account"].waitForNonExistence(timeout: 5))
         app.navigationBars["Account"].buttons.firstMatch.tap()
+        // Back on Today before the menu opens again: ≡ tapped while Account was still sliding away left the menu open
+        // with Backup & Export not taken (run 37995167302).
+        XCTAssertTrue(app.navigationBars["Account"].waitForNonExistence(timeout: 5), labels(app))
 
         // Move to Another Device: the transfer code at once, with its three steps.
         openBackup(app)
@@ -418,6 +421,16 @@ final class BackupUITests: XCTestCase {
 
     // MARK: Helpers
 
+    /// Polls `condition` until it holds or `seconds` pass.
+    private func waitUntil(_ seconds: TimeInterval, _ condition: () -> Bool) -> Bool {
+        let deadline = Date().addingTimeInterval(seconds)
+        repeat {
+            if condition() { return true }
+            Thread.sleep(forTimeInterval: 0.25)
+        } while Date() < deadline
+        return condition()
+    }
+
     /// What's on screen, on one line (T14).
     private func labels(_ app: XCUIApplication) -> String {
         app.descendants(matching: .any).allElementsBoundByIndex.prefix(60).map(\.label).filter { !$0.isEmpty }.joined(separator: " | ")
@@ -431,11 +444,14 @@ final class BackupUITests: XCTestCase {
 
     /// ≡ → Backup & Export.
     private func openBackup(_ app: XCUIApplication) {
-        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
-        app.buttons["menu-button"].tap()
-        XCTAssertTrue(app.buttons["menu-backup"].waitForExistence(timeout: 5))
-        app.buttons["menu-backup"].tap()
-        XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 5))
+        let menuButton = app.buttons["menu-button"], row = app.buttons["menu-backup"]
+        XCTAssertTrue(menuButton.waitForExistence(timeout: 10))
+        XCTAssertTrue(waitUntil(5) { menuButton.isHittable }, "≡ on Today: \(labels(app))")
+        menuButton.tap()
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        XCTAssertTrue(waitUntil(5) { row.isHittable }, "The menu open: \(labels(app))")
+        row.tap()
+        XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 5), labels(app))
     }
 
     /// A Form row made of a title and a value (`LabeledContent`) is one element: its value holds the text.

@@ -330,8 +330,11 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertTrue(text(containing: "Other ways to get your data").exists)
         shot("R01B-found-data")
         tap("onboarding-found-continue")
-        XCTAssertTrue(page("onboarding-page-working").waitForExistence(timeout: 5))
-        XCTAssertEqual(page("onboarding-page-working").label, "Setting things up.")
+        // The page shows for about a second (`WorkingPage.settle`), so its title is checked in the same query that
+        // finds it: a second query can come after Today has replaced it (run 37995167302).
+        let working = app.staticTexts.matching(NSPredicate(format: "identifier == %@ AND label == %@",
+                                                           "onboarding-page-working", "Setting things up.")).firstMatch
+        XCTAssertTrue(working.waitForExistence(timeout: 5), "Continue shows \"Setting things up.\"")
         shot("R09-setting-things-up")
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10), "Today opens with the data")
         XCTAssertFalse(page("onboarding-page-working").exists)

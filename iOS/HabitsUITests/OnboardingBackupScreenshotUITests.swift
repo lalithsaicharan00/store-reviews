@@ -78,11 +78,14 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         app.swipeDown()
         if tap(app.buttons["idea-Exercise"], "Exercise idea") {
             shot("A11-idea-form")
-            back()
+            // The idea's form is a sheet over the welcome: its own Cancel, not the welcome's back button.
+            tap(app.navigationBars["New Habit"].buttons["Cancel"], "The idea form's Cancel")
+            XCTAssertTrue(app.staticTexts["onboarding-page-ideas"].waitForExistence(timeout: 5), "Cancel returns to the ideas")
         }
         if tap(app.buttons["onboarding-make-own"], "Create my own habit") {
             shot("A12-create-my-own")
-            back()
+            tap(app.navigationBars["New"].buttons.firstMatch, "New's back button")
+            XCTAssertTrue(app.staticTexts["onboarding-page-ideas"].waitForExistence(timeout: 5), "Back returns to the ideas")
         }
         tap(app.buttons["onboarding-skip"], "Skip setup")
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10))
