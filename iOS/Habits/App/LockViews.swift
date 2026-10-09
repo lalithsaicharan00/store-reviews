@@ -489,7 +489,9 @@ struct FakeAuthPanel: View {
     }
 }
 
-/// Puts the panel in a window of its own over the app's, shown only while a request waits.
+/// Puts the panel in a window of its own over the app's, shown only while a request waits. While shown it takes every
+/// touch, as the system's Face ID prompt does: a window that passed touches through to the app lost the panel's own
+/// buttons too, since a SwiftUI hosting view answers `hitTest` with itself (iOS 18; AppLockUITests, run 37875404027).
 @MainActor enum FakeAuthWindow {
     private static var window: UIWindow?
 
@@ -498,19 +500,15 @@ struct FakeAuthPanel: View {
               let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first else { return }
         let host = UIHostingController(rootView: FakeAuthPanel(fake: FakeAuthenticator.shared))
         host.view.backgroundColor = .clear
-        let made = PassThroughWindow(windowScene: scene)
+        let made = UIWindow(windowScene: scene)
         made.windowLevel = .alert + 1
         made.rootViewController = host
-        made.isHidden = false
+        made.isHidden = FakeAuthenticator.shared.request == nil
         window = made
     }
-}
 
-/// Touches go through to the app except on the panel itself.
-private final class PassThroughWindow: UIWindow {
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let hit = super.hitTest(point, with: event)
-        return hit === rootViewController?.view ? nil : hit
+    static func show(_ showing: Bool) {
+        window?.isHidden = !showing
     }
 }
 #endif

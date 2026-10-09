@@ -789,12 +789,14 @@ final class FakeAuthenticator: LockAuthenticator {
         return await withCheckedContinuation { continuation in
             answer = continuation
             request = Request(policy: policy, reason: reason)
+            FakeAuthWindow.show(true)
         }
     }
 
     /// The test's tap: Succeed (Face ID), Passcode (only for the iPhone-passcode policy) or Cancel.
     func respond(_ ok: Bool) {
         request = nil
+        FakeAuthWindow.show(false)
         answer?.resume(returning: ok)
         answer = nil
     }
