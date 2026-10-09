@@ -423,7 +423,8 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(says.isHittable, labels(app))
         XCTAssertTrue(app.staticTexts["Shown in this habit's reminders. When names are hidden outside the app, it's shown instead of the name."].exists, labels(app))
         says.tap(); says.typeText("Evening check-in, the long version")
-        XCTAssertEqual(says.value as? String, "Evening check-in, the lo", "Cut at 24 characters")
+        // The field catches up after the last key (run 37889767163 read it mid-way: "Evening check-in").
+        XCTAssertTrue(waitFor(says, value: "Evening check-in, the lo"), "Cut at 24 characters: \(value(says))")
         shot(app, "reminder-says")
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.navigationBars["New Habit"].buttons["Add"].tap()
