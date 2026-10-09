@@ -719,7 +719,7 @@ Their placement records scope and priority; implementation has not started.
       the same rules. Checked on the iPhone SE at the largest text size that shows words (`SmallScreenUITests.
       testAfterLogLineStaysInsideTheRow`).
       **Done (tests on GitHub; iPhone check pending):** SmallScreenUITests.testAfterLogLineStaysInsideTheRow on the iPhone SE at the largest text (run 37905189350: "Undo Last Step" and "Undo +1 tablespoon" whole, Add Note as its icon), TodayRowLayout/RoutineCalendar/FocusPlayer (run 37896908831).
-    - [ ] 58.10 (the user, 9 Oct 2026, with two screenshots) **Backup & Export redesigned from research.** Today it's
+    - [x] 58.10 (the user, 9 Oct 2026, with two screenshots) **Backup & Export redesigned from research.** Today it's
       one long list (status, Where "Your account (our server)", iCloud switch, Back Up Now, Restore…, Move to Another
       Device, Save a Backup File, Export a Spreadsheet, a paragraph, a Sync row that only says "On"), with no grouping or
       order, Restore lost in the middle, the jobs' differences unclear and text explaining the UI. The user's points:
@@ -727,10 +727,12 @@ Their placement records scope and priority; implementation has not started.
       group by what people come to do, keep it native, **no paragraphs explaining the UI** ("if you're using a lot of text
       to explain things, the UI is bad"), never "our server", and a Sync row only if it can be changed (otherwise it
       goes). Explain how the nightly backup and iCloud fit, without text walls.
-    - [ ] 58.11 (the user, 9 Oct 2026) **Where the account lives.** Signing in, creating an account and signing out sit
+      **Done (tests on GitHub; iPhone check pending):** report "Backup & Export and Your Account — What People Look For" (897,899 reviews screened, 829 hand-coded); BackupUITests 10/10 (run 37923643875), with Sync, Today and Onboarding (run 37920022403); speed run 37900900842.
+    - [x] 58.11 (the user, 9 Oct 2026) **Where the account lives.** Signing in, creating an account and signing out sit
       only inside Backup & Export. Research where people expect them (a menu row, the top of settings, Backup) and move
       or add them there; Backup keeps a link to what it needs from the account.
-    - [ ] 58.12 (the user's review of the redesign, 9 Oct 2026) **Backup & Export, second pass.** (1) Without an account
+      **Done (tests on GitHub; iPhone check pending):** ≡ → Account (sign in, plan, Last Synced with Plus, devices, Sign Out, Delete Account); BackupUITests.testAccountInTheMenuAndMovingToANewIPhone and testDeletingTheAccountAndErasingThisPhone, SyncUITests on the dev server (runs 37908430043, 37920022403). The menu row was added at the user's request, changing the "final" menu.
+    - [x] 58.12 (the user's review of the redesign, 9 Oct 2026) **Backup & Export, second pass.** (1) Without an account
       the habits are still backed up to iCloud, and the screen must say so, with iCloud's own state (full, off, a
       problem) shown clearly and tested. (2) Say why to make an account, simply: automatic backups every night, more
       reliable, stored safely and encrypted, and back on a new phone just by signing in; offer **Create Account**, not a
@@ -739,7 +741,7 @@ Their placement records scope and priority; implementation has not started.
       devices; moving to another device takes a backup file; syncing devices comes with Plus. Say it here or on the
       create-account screen. (4) Google Drive: Android has it; show it on iOS too if the research supports it.
       (5) No text walls. Research the plan facts first; claim only what's true (encryption, frequency).
-
+      **Done (tests on GitHub; iPhone check pending):** iCloud shown without an account with its states (BackupUITests.testICloudWithoutAnAccount through `-test-icloud`, runs 37920022403, 37923643875), Create Account with four benefits, the one-device limit, no "deleting the app deletes your habits", Plus no longer claims an iCloud copy. Google Drive: not shown on iOS (no iOS Drive code; a separate build for the user to decide). The real iCloud needs the iPhone.
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
   habits, with its own statistics, completely different from a habit's.
