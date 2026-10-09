@@ -876,6 +876,13 @@ Their placement records scope and priority; implementation has not started.
       create-account screen. (4) Google Drive: Android has it; show it on iOS too if the research supports it.
       (5) No text walls. Research the plan facts first; claim only what's true (encryption, frequency).
       **Done (tests on GitHub; iPhone check pending):** iCloud shown without an account with its states (BackupUITests.testICloudWithoutAnAccount through `-test-icloud`, runs 37920022403, 37923643875), Create Account with four benefits, the one-device limit, no "deleting the app deletes your habits", Plus no longer claims an iCloud copy. Google Drive: not shown on iOS (no iOS Drive code; a separate build for the user to decide). The real iCloud needs the iPhone.
+    - [ ] 58.13 (the user, 9 Oct 2026, with WhatsApp's App lock screenshots) **App Lock redesign.** Privacy &
+      Security's App Lock block says what it's for and whether it's on; App Lock opens with one switch and shows its
+      options only once it's on; turning it on first asks what opens the app if Face ID doesn't work, and explains
+      the app passcode, a changed Face ID and the 24-hour wait in simple full sentences; one set of words ("the app",
+      never "Often Enough"; "app passcode"); no Recommended badge; the security delay stays a fixed 24 hours.
+      **Designed (Figma 935:309) and documented for building:** [App Lock Redesign — What to Build](<../Specs/App Lock Redesign/README.md>).
+      To do: build it, tests on GitHub, iPhone check; then design the lock cover and recovery screens.
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
   habits, with its own statistics, completely different from a habit's.

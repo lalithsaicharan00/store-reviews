@@ -8,6 +8,10 @@ changed and about cooling period and whichever is important."
 [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>)
 §6a–§6e (decisions 1–4, the user, 9 Oct 2026). Decision 5 (locking only some habits) is in the checklist's Future list.
 
+> **9 Oct 2026: the App Lock parts are redesigned.** §2.1, §2.2, §2.4 and §3.1 (layout, order and every App Lock
+> word) are replaced by [App Lock Redesign — What to Build](<App Lock Redesign/README.md>). The security model
+> here (§3.3–§3.6, §5) is unchanged.
+
 Rules that apply throughout: native Form rows and system alerts only (U1); monochrome chrome, green switches (U2); plain
 words (U11); widgets are locked (U28): this spec changes only what the user approved for decisions 1 and 4, and keeps
 §6b of the report (taps at once, every tap saved, sync without opening the app).
