@@ -711,6 +711,17 @@ Their placement records scope and priority; implementation has not started.
       pushing anything out, for every habit type (amounts with long units too); the quit row's Undo Slip line follows
       the same rules. Checked on the iPhone SE at the largest text size that shows words (`SmallScreenUITests.
       testAfterLogLineStaysInsideTheRow`).
+    - [ ] 58.10 (the user, 9 Oct 2026, with two screenshots) **Backup & Export redesigned from research.** Today it's
+      one long list (status, Where "Your account (our server)", iCloud switch, Back Up Now, Restore…, Move to Another
+      Device, Save a Backup File, Export a Spreadsheet, a paragraph, a Sync row that only says "On"), with no grouping or
+      order, Restore lost in the middle, the jobs' differences unclear and text explaining the UI. The user's points:
+      research how people think about backup, restore and export (reviews and the web), put the most important first,
+      group by what people come to do, keep it native, **no paragraphs explaining the UI** ("if you're using a lot of text
+      to explain things, the UI is bad"), never "our server", and a Sync row only if it can be changed (otherwise it
+      goes). Explain how the nightly backup and iCloud fit, without text walls.
+    - [ ] 58.11 (the user, 9 Oct 2026) **Where the account lives.** Signing in, creating an account and signing out sit
+      only inside Backup & Export. Research where people expect them (a menu row, the top of settings, Backup) and move
+      or add them there; Backup keeps a link to what it needs from the account.
 
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
