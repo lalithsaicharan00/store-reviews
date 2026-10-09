@@ -81,7 +81,7 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.buttons["backup-sign-in"].exists, "Your Account: Sign In, where the copies go")
         XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Sync is part of Plus'")).firstMatch.exists,
                        "Backup never looks like a Plus perk")
-        app.revealAndTap(app.buttons["Save a Backup File"])
+        app.revealAndTap(app.buttons["backup-save"])
         let shared = app.otherElements["ActivityListView"].waitForExistence(timeout: 10) || app.buttons["Save to Files"].waitForExistence(timeout: 2)
         XCTAssertTrue(shared, "The share sheet opens with the backup file")
     }
