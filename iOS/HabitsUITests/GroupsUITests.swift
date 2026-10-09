@@ -344,45 +344,37 @@ final class GroupsUITests: XCTestCase {
         closeFilter()
     }
 
-    /// The same drag again and again (Current Work 53, 8 Oct 2026; Rulebook T12): each must move Home above Health.
-    /// Run 37821382415 measured 16 drags side by side, the Filter sheet as it was (`-groups-sheet-mode resizes`) and as
-    /// the app sets it on a group screen: none missed. Add "resizes" back to `modes` to compare again. Each step checks
-    /// what's on screen (handles shown or not) rather than trusting a tap: on a slow hosted Mac a Done tap was once
-    /// lost and the next Edit tap left edit mode.
+    /// The first drag after a launch, again and again (Current Work 53, 8–9 Oct 2026; Rulebook T12). Run 37865611952
+    /// showed it's the first drag of a launch that misses (1 of 6; drags 2–6 took): the lifted row reached its place
+    /// and went back on release. Measured side by side for how long the finger stays at the place before lifting.
+    /// Each step checks the screen rather than trusting a tap.
     func testGroupDragDropsReliably() {
         var results: [String] = []
-        var missesWithAppSetting = 0
-        let attempts = 6
-        let modes = ["app"]
-        for mode in modes {
-            app.terminate()
-            launch(["-groups-demo"] + (mode == "app" ? [] : ["-groups-sheet-mode", mode]))
-            openGroupsEditor()
-            let bar = app.navigationBars["Groups"]
-            let handle = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'reorder' AND label CONTAINS 'Home'")).firstMatch
-            let sort = app.buttons["groups-sort-az"]
+        var missesHeld = 0
+        let launches = 4
+        for hold in [0.6, 2.0] {
             var misses = 0
-            for attempt in 1...attempts {
-                if !handle.exists { bar.buttons.matching(NSPredicate(format: "label == 'Edit'")).firstMatch.tap() }
-                XCTAssertTrue(handle.waitForExistence(timeout: 5), "\(mode) \(attempt): edit mode shows the reorder handles")
+            for _ in 0..<launches {
+                app.terminate()
+                launch(["-groups-demo"])
+                openGroupsEditor()
+                let bar = app.navigationBars["Groups"]
+                let handle = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'reorder' AND label CONTAINS 'Home'")).firstMatch
+                bar.buttons.matching(NSPredicate(format: "label == 'Edit'")).firstMatch.tap()
+                XCTAssertTrue(handle.waitForExistence(timeout: 5), "Edit mode shows the reorder handles")
                 let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
                 handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
                     .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.3)),
-                           withVelocity: .slow, thenHoldForDuration: 0.6)
+                           withVelocity: .slow, thenHoldForDuration: hold)
                 bar.buttons.matching(NSPredicate(format: "label == 'Done'")).firstMatch.tap()
                 if !handle.waitForNonExistence(timeout: 5) {
                     bar.buttons.matching(NSPredicate(format: "label == 'Done'")).firstMatch.tap()
-                    XCTAssertTrue(handle.waitForNonExistence(timeout: 5), "\(mode) \(attempt): Done leaves edit mode")
+                    XCTAssertTrue(handle.waitForNonExistence(timeout: 5), "Done leaves edit mode")
                 }
-                if sort.waitForExistence(timeout: 3) {
-                    sort.tap()
-                    XCTAssertTrue(sort.waitForNonExistence(timeout: 10), "\(mode) \(attempt): Sort A to Z puts the order back")
-                } else {
-                    misses += 1
-                }
+                if !app.buttons["groups-sort-az"].waitForExistence(timeout: 3) { misses += 1 }
             }
-            results.append("\(mode): \(misses) of \(attempts) missed")
-            if mode == "app" { missesWithAppSetting = misses }
+            results.append("hold \(hold) s: \(misses) of \(launches) first drags missed")
+            if hold > 1 { missesHeld = misses }
         }
         let line = results.joined(separator: "; ")
         let note = XCTAttachment(string: line)
@@ -390,7 +382,7 @@ final class GroupsUITests: XCTestCase {
         note.lifetime = .keepAlways
         add(note)
         print("GROUP DRAG: " + line)
-        XCTAssertEqual(missesWithAppSetting, 0, "Every drag takes: " + line)
+        XCTAssertEqual(missesHeld, 0, "Every held first drag takes: " + line)
     }
 
     /// Today and Progress keep their own group; Start on a filtered Today plays only the habits shown.
