@@ -198,15 +198,21 @@ final class SmallScreenUITests: XCTestCase {
         XCTAssertTrue(new.waitForExistence(timeout: 10)); new.tap()
         func row(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
         row("Build or maintain,").tap(); row("Check it off,").tap()
+        // A name first, as people fill the form; then the form itself scrolls to Reminders (drags that began on the
+        // name field focused it and pulled the sheet down: runs 37881272574, 37883783862).
+        let name = app.descendants(matching: .any)["name-field"]
+        XCTAssertTrue(name.waitForExistence(timeout: 5)); name.tap(); name.typeText("Private habit\n")
+        let form = app.collectionViews["habit-form"]
         let reminders = app.descendants(matching: .any)["reminders-row"]
-        // The form builds its rows as they scroll in (at this text size the row is far down): reveal it (run 37881272574).
-        XCTAssertTrue(app.reveal(reminders, maxSwipes: 20), frames(["reminders-row"]))
+        for _ in 0..<12 where !(reminders.exists && reminders.isHittable) { form.swipeUp(velocity: .slow) }
+        XCTAssertTrue(reminders.isHittable, frames(["reminders-row"]))
         reminders.tap()
         let remind = app.switches["Remind Me"]
         XCTAssertTrue(remind.waitForExistence(timeout: 5))
         remind.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
         let says = app.textFields["reminder-says-field"]
-        XCTAssertTrue(app.reveal(says, maxSwipes: 20), frames(["reminder-says-field"]))
+        for _ in 0..<8 where !(says.exists && says.isHittable) { app.collectionViews.firstMatch.swipeUp(velocity: .slow) }
+        XCTAssertTrue(says.isHittable, frames(["reminder-says-field"]))
         says.tap(); says.typeText("The usual")
         XCTAssertTrue(keyboard.waitForExistence(timeout: 5))
         aboveKeyboard(says, "Reminder Says")
