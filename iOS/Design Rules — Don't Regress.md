@@ -282,6 +282,11 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
   card's top edge). 16 pt all round, 16 between the card's parts, smaller only inside a part (the headline and its
   detail 4; a chart's title and chart 8). Year in Pixels keeps 12 at the sides so twelve month columns fit the iPhone
   SE, and 16 above and below. Pictures: `HabitPageUITests.testPeriodCardSpacing`.
+- **Current streak and Best streak open the Milestones card's "In a row" track** (Current Work 23, 8 Oct 2026; the 5 Oct
+  placement research): early in this habit's Progress tab, never in the header over History and Notes; in the goal's own
+  unit (days, weeks, months, or times for a selected-days habit), from the same runs as Today's streak; Show Streaks off
+  hides them and keeps "In total". A quit habit's current and best run stay in its Overall record. No new card.
+  `testStreaksOnTheProgressTab`.
 - **Year in Pixels shows every day number, 1 to 31** (Current Work 32), right-aligned 4 pt before its row; the labels
   stop growing at the xLarge text size, where "31" still fits. Pictures: `testYearInPixelsDayNumbers`.
 

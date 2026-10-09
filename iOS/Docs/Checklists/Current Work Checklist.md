@@ -65,7 +65,8 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   screenshots in the run; the iPhone look stays to do (U9). *Done 8 Oct: run `37847053285`; iPhone look still to do.*
 - [x] 6. **Item 31**: Week, Month and Year card padding and spacing (Progress and the habit page's Progress tab);
   screenshots; the iPhone look stays to do. *Done 8 Oct: runs `37853078424`, `37858625841`; iPhone look still to do.*
-- [ ] 7. **Item 23**: streaks back on the habit page, in its Progress tab; screenshots; the iPhone look stays to do.
+- [x] 7. **Item 23**: streaks back on the habit page, in its Progress tab; screenshots; the iPhone look stays to do.
+  *Done 9 Oct: run `37860896648` (13/13); iPhone look still to do.*
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
@@ -137,16 +138,6 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     happened. Detailed previous requirements and decisions are in
     [Today — Row Sheet, Swipe Actions, Order and Tap Again](<Today — Row Sheet, Swipe Actions, Order and Tap Again.md>)
     and [Today — Row Layout, Subtext, Notes and the Task Sheet](<Today — Row Layout, Subtext, Notes and the Task Sheet.md>).
-
-- [ ] **23. Restore streaks on the habit details page.** Added 4 October 2026; a standalone task, not a subtask of
-  the header, Overall Record or milestone redesign.
-  - The user reports streaks used to be visible on this page and were removed during the redesign. Check the earlier
-    presentation and current code, then restore a clear, visible streak presentation.
-  - Preserve the correct meaning for each supported habit and frequency; do not silently label weekly/monthly
-    success as a daily streak. Record what was restored and verify its values against the existing streak logic.
-  - This remains open even if another design item touches the same screen. Documentation does not confirm the
-    regression has been reproduced or fixed.
-  - **5 Oct placement research (item 48):** Current/Best belong visibly in the early individual habit Progress summary, not the common header above History/Notes; retain Today's quick streak access, correct units and Show Streaks. The six existing design studies now reflect that recommendation. This does not close the native implementation/correctness check in item 23.
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
@@ -410,6 +401,28 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after release.
 
 ## Completed
+
+- [x] **23. Restore streaks on the habit details page.** Added 4 October 2026; a standalone task, not a subtask of
+  the header, Overall Record or milestone redesign.
+  - The user reports streaks used to be visible on this page and were removed during the redesign. Check the earlier
+    presentation and current code, then restore a clear, visible streak presentation.
+  - Preserve the correct meaning for each supported habit and frequency; do not silently label weekly/monthly
+    success as a daily streak. Record what was restored and verify its values against the existing streak logic.
+  - This remains open even if another design item touches the same screen. Documentation does not confirm the
+    regression has been reproduced or fixed.
+  - **5 Oct placement research (item 48):** Current/Best belong visibly in the early individual habit Progress summary, not the common header above History/Notes; retain Today's quick streak access, correct units and Show Streaks. The six existing design studies now reflect that recommendation. This does not close the native implementation/correctness check in item 23.
+  - **What was there (8 Oct):** the streak survived only as small grey text at the end of the Milestones card's "In a
+    row" title ("Now 23 · best 23"): not a clear streak presentation.
+  - **Built, 8 Oct 2026** (cloud session): the "In a row" track opens with **Current streak** and **Best streak** side by
+    side (title 2 numbers, one VoiceOver element each), then "Next: 30 days in a row". The research's place (early in
+    this habit's Progress, after Overall record; no new card, nothing in the header). Units follow the goal: days for a
+    daily habit, weeks for a weekly goal, months, or times for a selected-days habit (the store's existing `streakUnit`).
+    Values come from `runs(of:)`, the same walk as Today's `streak` and the best streak, so they agree. Show Streaks off
+    hides the pair, "In total" stays; quit habits keep their run in Overall record; tasks have no Progress tab.
+  - [x] **Tested on GitHub, 8–9 Oct 2026:** run `37860896648`, 13/13: `HabitPageUITests` (with the new
+    `testStreaksOnTheProgressTab`: Water "23 days" / "23 days", Running "2 weeks" / "11 weeks", Show Streaks off shows
+    none) and `ProgressUITests.testHabitPageYearAndMilestones`; pictures `hp-streaks-water|running|off` and the dark
+    pages. Speed run of the habit page in the same run. **iPhone look (U9): still to do.**
 
 - [x] **31. Improve Week, Month and Year card padding and spacing.** Added 4 October 2026; review the main Progress
   page and the habit details Progress tab wherever these period cards appear.
