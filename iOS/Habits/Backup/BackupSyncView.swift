@@ -28,7 +28,7 @@ struct BackupSyncView: View {
                         .accessibilityIdentifier("backup-fix")
                 }
                 // Not while iCloud can't take it (full, off): the problem's own fix is the one thing to tap.
-                if backup.place != .phone && !(backup.place == .iCloud && [.full, .signedOut, .offForApp].contains(backup.iCloudState)) {
+                if backup.place != .phone && !(backup.place == .iCloud && iCloudBlocked) {
                     Button("Back Up Now") { Task { await backUpNow() } }
                         .disabled(backup.working)
                         .accessibilityIdentifier("backup-now")
@@ -152,6 +152,12 @@ struct BackupSyncView: View {
         case .iCloud: "In iCloud"
         case .phone: "Only on this iPhone"
         }
+    }
+
+    /// iCloud can't take a backup now (full, signed out, off for the app).
+    private var iCloudBlocked: Bool {
+        guard let state = backup.iCloudState else { return false }
+        return state != .accountChanged
     }
 
     /// iCloud without an account: when it last backed up, or what's wrong (Full, Off, New Apple Account), in one row.
