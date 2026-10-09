@@ -57,6 +57,12 @@ milliseconds; days are `YYYY-MM-DD` in the user's calendar. Readers ignore field
 fields an older file lacks with the same defaults sync uses. Settings that only make sense on one device
 (`SyncCodec.isLocalSetting`) are never written.
 
+Habit fields added since format 1, each optional for readers (an older file simply lacks them):
+
+| Field | Schema | Meaning |
+|---|---|---|
+| `reminder_text` | 8 (9 Oct 2026, Current Work 58) | "Reminder says…": the person's own words for the habit's reminders, at most 24 characters; `null` for none. A file from schema 7 or earlier restores with none |
+
 ## Checks before anything changes
 
 Reading stops with a reason, and changes nothing, if any of these fail (03 §3.6 step 5):

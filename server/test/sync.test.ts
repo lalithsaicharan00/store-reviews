@@ -95,6 +95,22 @@ describe("sync", () => {
     expect(ipad.fields("entry", "e1")).toMatchObject({ habit_id: "h1", value: 1 });
   });
 
+  it("a field from a newer app (schema 8's reminder words) is stored, synced and cleared without the server knowing it", async () => {
+    // Current Work 58: "Reminder says…" (habit.reminder_text). The server never needs the apps' schema (05 §12).
+    const subject = crypto.randomUUID();
+    const phone = await Device.signIn(subject, "phone");
+    const ipad = await Device.signIn(subject, "ipad");
+    phone.change("habit", "h1", { name: "Meds", reminder_text: "The usual", deleted_at: null }, 1000);
+    await phone.sync();
+    await ipad.sync();
+    expect(ipad.fields("habit", "h1")).toEqual({ name: "Meds", reminder_text: "The usual", deleted_at: null });
+    phone.change("habit", "h1", { reminder_text: null }, 2000);
+    await phone.sync();
+    await ipad.sync();
+    expect(ipad.fields("habit", "h1")).toEqual({ name: "Meds", reminder_text: null, deleted_at: null });
+    expect((await serverRecord(await accountOf(phone), "habit", "h1"))?.fields).toEqual({ name: "Meds", reminder_text: null, deleted_at: null });
+  });
+
   it("edits to different fields on two offline devices are both kept, everywhere", async () => {
     const subject = crypto.randomUUID();
     const phone = await Device.signIn(subject, "phone");

@@ -34,6 +34,7 @@ internal object SyncCodec {
         "created_at" to n(h.createdAt), "updated_at" to n(h.updatedAt), "archived_at" to n(h.archivedAt),
         "deleted_at" to n(h.deletedAt), "remind" to b(h.remind), "alert" to s(h.alert),
         "follow_up_minutes" to n(h.followUpMinutes), "starts_on" to s(h.startsOn), "ends_on" to s(h.endsOn),
+        "reminder_text" to s(h.reminderText),
     )
 
     fun step(x: StepRecord): Map<String, JsonElement> = mapOf(
@@ -86,6 +87,7 @@ internal object SyncCodec {
             archivedAt = f.optLng("archived_at"), deletedAt = f.optLng("deleted_at"),
             remind = f.bool("remind", default = true), alert = f.optStr("alert") ?: "notification",
             followUpMinutes = f.optLng("follow_up_minutes")?.toInt(), startsOn = f.optStr("starts_on"), endsOn = f.optStr("ends_on"),
+            reminderText = f.optStr("reminder_text"),
         )
     }
 

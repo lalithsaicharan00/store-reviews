@@ -74,6 +74,13 @@ internal object Migrations {
         }
     }
 
+    /** Schema 8: "Reminder says…" per habit. Added only if missing, so a database that already has it still opens. */
+    val v7ToV8 = object : Migration(7, 8) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            if (!connection.hasColumn("habit", "reminder_text")) connection.execSQL("ALTER TABLE habit ADD COLUMN reminder_text TEXT")
+        }
+    }
+
     private fun SQLiteConnection.hasColumn(table: String, column: String): Boolean =
         prepare("PRAGMA table_info(`$table`)").use { statement ->
             while (statement.step()) if (statement.getText(1) == column) return@use true

@@ -121,6 +121,20 @@ class BackupTest {
         assertEquals("Lalith’s iPhone" to "ios", contents.deviceName to contents.platform)
     }
 
+    /** "Reminder says…" (schema 8, Current Work 58) goes into the file and comes back with a restore (D5). */
+    @Test fun reminderWordsRoundTripThroughAFileAndARestore() = runBlocking {
+        val phone = repo("phone").apply {
+            fill()
+            saveHabit(habit("h3", "Meds").copy(reminderText = "The usual"), emptyList(), listOf(ReminderRecord("r3", "h3", 8, 0, null)), 1)
+        }
+        val file = phone.backupFile(info)
+        assertEquals("The usual", BackupFile.read(file.base64).snapshot.habits.single { it.id == "h3" }.reminderText)
+        val newPhone = repo("new-phone")
+        newPhone.restore(file.base64, RestoreMode.REPLACE, info)
+        assertEquals("The usual", newPhone.load().habits.single { it.name == "Meds" }.reminderText)
+        assertEquals(null, newPhone.load().habits.single { it.name == "Water" }.reminderText)
+    }
+
     // MARK: Checks before anything changes
 
     @Test fun aDamagedFileIsRefusedAndNothingChanges() = runBlocking {

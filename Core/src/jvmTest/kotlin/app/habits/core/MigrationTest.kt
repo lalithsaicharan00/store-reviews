@@ -189,4 +189,62 @@ class MigrationTest {
         repo.close()
     }
 
+    /**
+     * Schema 8 adds "Reminder says…" (`habit.reminder_text`, Current Work 58). Every schema a phone ever had upgrades
+     * to it with nothing lost and no words invented, and the words are kept once saved.
+     */
+    @Test fun everyPastVersionUpgradesToReminderWords() = runTest {
+        for (version in 1 until HabitRepository.SCHEMA_VERSION) {
+            File(path).delete(); File("$path-wal").delete(); File("$path-shm").delete()
+            createSchema(version).close()
+            val repo = HabitRepository.open(path)
+            assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"), "version $version upgrades")
+            val habit = HabitRecord(
+                id = "h$version", name = "Read", symbol = "book", color = "orange", kind = "check", unit = null, increment = 1.0,
+                part = "anytime", goal = 1.0, period = "day", scheduleDays = null, frequency = "daily", dueDay = null, dueMinute = null,
+                atMost = false, quitSince = null, position = 0, createdAt = 1_000, updatedAt = 1_000, archivedAt = null, deletedAt = null,
+                reminderText = "The usual",
+            )
+            repo.saveHabit(habit, emptyList(), emptyList(), 2_000)
+            assertEquals("The usual", repo.load().habits.single().reminderText, "version $version keeps the words")
+            repo.close()
+        }
+    }
+
+    @Test fun version7KeepsEverythingAndHasNoReminderWords() = runTest {
+        val connection = createSchema(7)
+        connection.execSQL(
+            "INSERT INTO habit VALUES ('h1', 'Read', 'book', 'orange', 'duration', NULL, 1.0, 'anytime', 20.0, 'day', " +
+                "NULL, 'daily', NULL, NULL, 0, NULL, 0, 1000, 1000, NULL, NULL, 1, 'notification', 30, '2026-09-01', NULL)"
+        )
+        connection.execSQL("INSERT INTO reminder VALUES ('r1', 'h1', 8, 0, NULL)")
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 20.0, 2000, 'Europe/London', NULL, NULL, 'widget')")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        val snapshot = repo.load()
+        val habit = snapshot.habits.single()
+        assertEquals(null, habit.reminderText)
+        assertEquals(30, habit.followUpMinutes)
+        assertEquals("2026-09-01", habit.startsOn)
+        assertEquals(listOf(8), snapshot.reminders.map { it.hour })
+        assertEquals("widget", snapshot.entries.single().source)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
+    /** A database that already has the column (a test build, or an upgrade cut off after the ALTER) still opens. */
+    @Test fun version7ThatAlreadyHasReminderWordsStillOpens() = runTest {
+        val connection = createSchema(7)
+        connection.execSQL("ALTER TABLE habit ADD COLUMN reminder_text TEXT")
+        connection.execSQL(
+            "INSERT INTO habit VALUES ('h1', 'Read', 'book', 'orange', 'check', NULL, 1.0, 'anytime', 1.0, 'day', " +
+                "NULL, 'daily', NULL, NULL, 0, NULL, 0, 1000, 1000, NULL, NULL, 1, 'notification', NULL, NULL, NULL, 'Evening check-in')"
+        )
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals("Evening check-in", repo.load().habits.single().reminderText)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
 }

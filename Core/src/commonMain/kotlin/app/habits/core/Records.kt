@@ -52,6 +52,9 @@ data class HabitRecord(
     @ColumnInfo(name = "starts_on") val startsOn: String? = null,
     /** Schema 5: the last day it's due ("YYYY-MM-DD"); null means it never ends. */
     @ColumnInfo(name = "ends_on") val endsOn: String? = null,
+    /** Schema 8: "Reminder says…", the person's own words for this habit's reminders (24 characters at most); null
+     *  when none. Shown instead of the habit's name while names are hidden outside the app. */
+    @ColumnInfo(name = "reminder_text") val reminderText: String? = null,
 )
 
 @Entity(tableName = "step", indices = [Index("habit_id")])

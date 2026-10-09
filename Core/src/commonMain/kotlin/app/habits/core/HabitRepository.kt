@@ -289,7 +289,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
 
     companion object {
         /** Bump with every schema change, and add a migration plus a migration test. */
-        const val SCHEMA_VERSION = 7
+        const val SCHEMA_VERSION = 8
 
         @Throws(Exception::class)
         fun open(path: String): HabitRepository = HabitRepository(configure(databaseBuilder(path)), ::currentTimeMillis)
@@ -304,7 +304,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             builder
                 .setDriver(BundledSQLiteDriver())
                 .setQueryCoroutineContext(databaseDispatcher)
-                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6, Migrations.v6ToV7)
+                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6, Migrations.v6ToV7, Migrations.v7ToV8)
                 .addCallback(Durability)
                 .build()
     }

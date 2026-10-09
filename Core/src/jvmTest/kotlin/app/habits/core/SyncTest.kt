@@ -120,6 +120,20 @@ class SyncTest {
         listOf(phone, ipad).forEach { it.close() }
     }
 
+    /** "Reminder says…" (schema 8, Current Work 58) reaches the other device, and clearing it does too (D12, D14). */
+    @Test fun reminderWordsSyncAndCanBeCleared() = runBlocking {
+        val (phone, ipad) = devices("phone", "ipad")
+        phone.repo.saveHabit(habit("h1").copy(reminderText = "Evening check-in"), emptyList(), listOf(ReminderRecord("r1", "h1", 20, 0, null)), 1)
+        phone.sync(); ipad.sync()
+        assertEquals("Evening check-in", ipad.state().habits.single().reminderText)
+        phone.wall += 1_000
+        phone.repo.saveHabit(habit("h1").copy(reminderText = null), emptyList(), listOf(ReminderRecord("r1", "h1", 20, 0, null)), phone.wall)
+        phone.sync(); ipad.sync()
+        assertEquals(null, ipad.state().habits.single().reminderText)
+        assertEquals(phone.state(), ipad.state())
+        listOf(phone, ipad).forEach { it.close() }
+    }
+
     @Test fun editsOnTwoOfflineDevicesMergeFieldByField() = runBlocking {
         val (phone, ipad) = devices("phone", "ipad")
         phone.repo.saveHabit(habit("h1"), emptyList(), emptyList(), 1)
