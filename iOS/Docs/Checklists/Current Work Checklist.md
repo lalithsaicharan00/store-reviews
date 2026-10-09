@@ -683,7 +683,8 @@ Their placement records scope and priority; implementation has not started.
     Built by Claude on branch `app-lock-privacy-security` from 9 Oct 2026 (the prompt in the user's 8 Oct request). Each
     sub-point is ticked with its commit and GitHub run once built and tested on GitHub; the iPhone check is noted
     separately (W1).
-    - [ ] 58.1 Baseline speed run of `main` before any change (S2): Today, widgets, the menu, the habit form.
+    - [x] 58.1 Baseline speed run of `main` before any change (S2): Today, widgets, the menu, the habit form. Run
+      37871921866 on `main` @ 4543c68 (9 Oct 2026; `ci-results` runs/2026-10-09-0243-main-4543c68.md).
     - [ ] 58.2 Menu: Privacy becomes **Privacy & Security** (row, title, subtitle); the Widgets row and page go; each of
       its parts moves (spec §1, U5); a widget's Choose a habit link opens Help → Widgets → "Choose a habit for a widget";
       `widgets_settings` is no longer sent; Design Rules' menu line updated.
