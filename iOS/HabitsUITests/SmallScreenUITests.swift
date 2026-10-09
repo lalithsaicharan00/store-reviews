@@ -163,6 +163,82 @@ final class SmallScreenUITests: XCTestCase {
         }
     }
 
+    /// Set Up App Lock at the default text size (App Lock Redesign §8: screens 3–7 were designed on the SE and fit
+    /// without scrolling): both choices above the button, and every rule of "How your app passcode works" above its
+    /// button. Frames named on one line (T14).
+    func testAppLockSetupFitsWithoutScrolling() {
+        app.launchArguments = ["-uitest", "-empty"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+        app.buttons["menu-button"].tap()
+        XCTAssertTrue(app.buttons["menu-privacy"].waitForExistence(timeout: 5))
+        app.buttons["menu-privacy"].tap()
+        XCTAssertTrue(app.buttons["privacy-app-lock"].waitForExistence(timeout: 5))
+        app.buttons["privacy-app-lock"].tap()
+        let lock = app.switches["privacy-lock"]
+        XCTAssertTrue(lock.waitForExistence(timeout: 5))
+        lock.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+        let passcode = app.buttons["setup-app-passcode"], turnOn = app.buttons["setup-turn-on"]
+        XCTAssertTrue(passcode.waitForExistence(timeout: 5) && turnOn.exists)
+        let ids = ["setup-iphone-passcode", "setup-app-passcode", "setup-turn-on"]
+        XCTAssertLessThanOrEqual(passcode.frame.maxY, turnOn.frame.minY, "Both choices above the button: \(frames(ids))")
+        XCTAssertLessThanOrEqual(turnOn.frame.maxY, window.maxY, frames(ids))
+        shot("se-setup-choose-default")
+        passcode.tap()
+        app.buttons["setup-continue"].tap()
+        let create = app.buttons["setup-create-app-passcode"]
+        XCTAssertTrue(create.waitForExistence(timeout: 5))
+        let last = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'cancel it if it wasn'")).firstMatch
+        XCTAssertTrue(last.exists)
+        XCTAssertLessThanOrEqual(last.frame.maxY, create.frame.minY, "The last rule above Create App Passcode: rule \(last.frame), button \(create.frame)")
+        shot("se-setup-how-it-works-default")
+    }
+
+    /// The redesigned Account, its Sign In sheet, Backup & Export, Restore From a Backup and Move to Another Device on
+    /// the SE (Account and Backup Redesign, designed on 375 × 667): what each screen leads with is on screen without
+    /// scrolling, and the sheet's two buttons fit. Frames on one line (T14).
+    func testAccountBackupRestoreAndMoveFit() {
+        app.launchArguments = ["-uitest"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+        app.buttons["menu-button"].tap()
+        if !app.buttons["menu-account"].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
+        app.buttons["menu-account"].tap()
+        let create = app.buttons["account-create"]
+        XCTAssertTrue(create.waitForExistence(timeout: 5))
+        XCTAssertLessThanOrEqual(create.frame.maxY, window.maxY, frames(["account-identity", "account-sign-in", "account-create"]))
+        shot("se-account-signed-out")
+        app.buttons["account-sign-in"].tap()
+        let google = app.buttons["sign-in-google"]
+        XCTAssertTrue(google.waitForExistence(timeout: 5))
+        XCTAssertLessThanOrEqual(google.frame.maxY, window.maxY, frames(["sign-in-apple", "sign-in-google", "sign-in-cancel"]))
+        shot("se-sign-in-sheet")
+        app.buttons["sign-in-cancel"].tap()
+        XCTAssertTrue(google.waitForNonExistence(timeout: 5))
+        app.navigationBars["Account"].buttons.firstMatch.tap()
+        app.buttons["menu-button"].tap()
+        XCTAssertTrue(app.buttons["menu-backup"].waitForExistence(timeout: 5))
+        app.buttons["menu-backup"].tap()
+        let restore = app.buttons["backup-restore"]
+        XCTAssertTrue(restore.waitForExistence(timeout: 5))
+        let top = ["backup-status", "backup-icloud-status", "backup-account", "backup-move", "backup-restore"]
+        XCTAssertLessThanOrEqual(app.buttons["backup-account"].frame.maxY, window.maxY, "Status, where it's backed up and Your Account without scrolling: \(frames(top))")
+        shot("se-backup-export")
+        app.buttons["backup-move"].tap()
+        let code = app.staticTexts["transfer-code"]
+        XCTAssertTrue(code.waitForExistence(timeout: 5))
+        XCTAssertLessThanOrEqual(code.frame.maxY, window.maxY, frames(["transfer-step-1", "transfer-step-3", "transfer-code"]))
+        shot("se-move-to-another-device")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(restore.waitForExistence(timeout: 5))
+        for _ in 0..<4 where !restore.isHittable { app.collectionViews.containing(.button, identifier: "backup-restore").firstMatch.swipeUp() }
+        restore.tap()
+        let file = app.buttons["restore-import"]
+        XCTAssertTrue(file.waitForExistence(timeout: 5))
+        XCTAssertLessThanOrEqual(file.frame.maxY, window.maxY, frames(["restore-icloud", "restore-import"]))
+        shot("se-restore-from-a-backup")
+    }
+
     /// Privacy & Security, App Lock, Set Up App Lock (screens 3–6 of the App Lock redesign, designed on the SE) and the
     /// habit form's Reminders with Reminder Says, at a large text size. Every screen's button stays on screen.
     func testPrivacyCodeSheetsAndReminderSaysFit() {
@@ -187,6 +263,11 @@ final class SmallScreenUITests: XCTestCase {
         let turnOn = app.buttons["setup-turn-on"]
         XCTAssertTrue(turnOn.isHittable && turnOn.frame.maxY <= window.maxY, frames(["setup-iphone-passcode", "setup-app-passcode", "setup-turn-on"]))
         shot("se-setup-choose")
+        // At this text size the sheet scrolls: its own list, never Today's behind it (T9).
+        let sheetList = app.collectionViews.containing(.button, identifier: "setup-app-passcode").firstMatch
+        for _ in 0..<5 where passcode.frame.maxY > turnOn.frame.minY { sheetList.swipeUp() }
+        XCTAssertLessThanOrEqual(passcode.frame.maxY, turnOn.frame.minY, "App Passcode scrolls into view above the button: \(frames(["setup-app-passcode", "setup-turn-on"]))")
+        shot("se-setup-choose-scrolled")
         passcode.tap()
         let next = app.buttons["setup-continue"]
         XCTAssertTrue(next.waitForExistence(timeout: 5))
