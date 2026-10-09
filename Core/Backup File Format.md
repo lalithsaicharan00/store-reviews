@@ -63,6 +63,24 @@ Habit fields added since format 1, each optional for readers (an older file simp
 |---|---|---|
 | `reminder_text` | 8 (9 Oct 2026, Current Work 58) | "Reminder says…": the person's own words for the habit's reminders, at most 24 characters; `null` for none. A file from schema 7 or earlier restores with none |
 
+## Format 2: the compact automatic backup (10 Oct 2026)
+
+The copies the apps make by themselves, as you go (the person's iCloud or Google Drive, the account: Current Work 75,
+[Free Plan Backups §7 step 2](<../Research/Research Reports/Data, Sync and Accounts/Free Plan Backups — iPhone and iPad, and a Backup That's Never a Day Behind.md>)),
+are `HabitRepository.automaticBackupFile`: the same `manifest.json` (`"format": 2`) and `data.json`, with two changes:
+
+- `data.json` is **deflated** (zip method 8, raw DEFLATE). `manifest.json` stays stored, so a reader learns the format
+  before inflating anything. The CRC-32, `data.sha256` and `data.bytes` are of the inflated `data.json`, as before.
+- **No `csv/` folder**: it repeated `data.json` for people opening the file in a spreadsheet, and no reader uses it.
+
+Any unzip tool still opens it. Measured (`BackupTest.theAutomaticFileIsSmallerAndRestoresTheSame`, 10 Oct 2026): a
+year of 30 habits and 720 check-ins is **8 KB instead of 187 KB**; 12 habits × 365 days is **41 KB instead of
+1,019 KB** (4 %). Real habits repeat less than the test's, so expect nearer a tenth.
+
+Files made for a person stay **format 1** (Save a Backup File, Move to Another Device, a restore's undo file), which
+every app version opens. An app older than 10 Oct 2026 shown a format 2 file says "Update the app" (`newer_version`)
+and changes nothing. DEFLATE is in common Kotlin (`Deflate.kt`, checked against the JVM's zlib both ways).
+
 ## Checks before anything changes
 
 Reading stops with a reason, and changes nothing, if any of these fail (03 §3.6 step 5):
@@ -70,7 +88,7 @@ Reading stops with a reason, and changes nothing, if any of these fail (03 §3.6
 | Check | Reason |
 |---|---|
 | A zip with `manifest.json`, a known `format` | `not_a_backup`, or `newer_version` |
-| Every entry stored (a file unzipped and zipped again by another app is deflated) | `repacked`: "use the original file" |
+| Every entry stored, except format 2's `data.json` (a file unzipped and zipped again by another app is deflated) | `repacked`: "use the original file" |
 | Every entry's CRC-32 | `damaged` |
 | `data.json`'s SHA-256 equals the manifest's | `damaged` |
 | Each table's row count equals the manifest's | `damaged` |

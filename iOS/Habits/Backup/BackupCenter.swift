@@ -241,7 +241,7 @@ final class BackupCenter {
         if testICloud != nil && !isSignedIn { return }
         #endif
         if isPlus { await readSyncStatus(); return }
-        guard place != .phone, !working else { return }
+        guard place != .phone, !working, mayBackUp else { return }
         let now = Date.now
         let sinceGood = now.timeIntervalSince(lastGood ?? .distantPast)
         let sinceAttempt = now.timeIntervalSince(date(Key.lastAttempt) ?? .distantPast)
@@ -262,7 +262,7 @@ final class BackupCenter {
             await readSyncStatus()
             return lastGood.map { Date.now.timeIntervalSince($0) < 60 } ?? false
         }
-        guard place != .phone else { return false }
+        guard place != .phone, mayBackUp else { return false }
         working = true
         defer { working = false; refresh() }
         await store.flush()
@@ -270,20 +270,40 @@ final class BackupCenter {
         defaults.set(false, forKey: Key.dirty) // a change made during the upload marks it again
         let file: BackupFileData
         do {
-            file = try await repository.backupFile(info: Self.info)
+            // Without the CSV copies (Current Work 75): smaller, and imported the same way by every version (D5).
+            file = try await repository.automaticBackupFile(info: Self.info)
         } catch {
             dataChanged()
             return false
         }
         var ok = true
-        if iCloudCopyOn { ok = await backUpToICloud(file) || place == .account }
+        var keptOlder = false
+        if iCloudCopyOn {
+            switch await backUpToICloud(file) {
+            case .backedUp: break
+            case .keptOlder: keptOlder = true
+            case .failed: ok = place == .account
+            }
+        }
         if place == .account { ok = await backUpToAccount(file) }
-        if ok {
+        if ok && !keptOlder {
             setDate(Key.lastGood, .now)
-        } else {
+        } else if !ok {
             dataChanged()
         }
         return ok
+    }
+
+    /// No backup until the welcome is finished on a fresh install (Current Work 75, Free Plan Backups §2.2 #1): a
+    /// reinstalled iPhone's empty database would otherwise reach its own iCloud copy within seconds of the first launch,
+    /// before "I've used it before → Restore a backup". Someone who already has habits (an update from a build before the
+    /// welcome) backs up as before. Test launches have their own folders and no iCloud (D8).
+    var mayBackUp: Bool {
+        sandboxed || Self.backupAllowed(welcomeFinished: UserDefaults.standard.bool(forKey: Onboarding.doneKey), hasHabits: !store.habits.isEmpty)
+    }
+
+    nonisolated static func backupAllowed(welcomeFinished: Bool, hasHabits: Bool) -> Bool {
+        welcomeFinished || hasHabits
     }
 
     private func backUpToAccount(_ file: BackupFileData) async -> Bool {
@@ -357,25 +377,43 @@ final class BackupCenter {
         }
     }
 
-    /// Writes the file to the app's hidden iCloud folder (not shown in Files), reads it back and compares.
-    private func backUpToICloud(_ file: BackupFileData) async -> Bool {
+    enum ICloudResult { case backedUp, keptOlder, failed }
+
+    /// Writes this weekday's copy to the app's hidden iCloud folder (not shown in Files), with every rule of
+    /// `BackupFolder`: per device, 7 weekday copies, never an empty copy over one with habits, the shrink guard, named
+    /// by device, read back and compared (Current Work 75; Rulebook D4).
+    private func backUpToICloud(_ file: BackupFileData) async -> ICloudResult {
         let identity = FileManager.default.ubiquityIdentityToken
         let identityData = identity.flatMap { try? NSKeyedArchiver.archivedData(withRootObject: $0, requiringSecureCoding: true) }
         let previous = defaults.data(forKey: Key.iCloudIdentity)
         defaults.set(identityData, forKey: Key.iCloudIdentity)
         guard identity != nil else { return iCloudFailed(.signedOut) }
+        guard let data = Data(base64Encoded: file.base64) else { return .failed }
         let deviceID = sync.deviceID
-        let base64 = file.base64
-        let expected = file.sha256
+        let upload = BackupFolder.Upload(data: data, sha256: file.sha256, createdAt: Date(timeIntervalSince1970: Double(file.createdAt) / 1000),
+                                         habits: Int(file.habits), entries: Int(file.entries), records: Int(file.records),
+                                         deviceName: UIDevice.current.name, platform: SyncService.platform)
+        // The layout before 10 Oct 2026 (`Backups/<device>.zip`): what it holds, so a reinstall can't replace it either.
+        let older: Data? = await Task.detached {
+            guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return nil }
+            let folder = BackupFolder(root: container.appending(path: "Backups", directoryHint: .isDirectory), deviceID: deviceID)
+            guard folder.readIndex() == nil else { return nil }
+            return await BackupFolder.read(folder.olderFile, wait: 10)
+        }.value
+        var olderRecords: Int?
+        if let older, let preview = await check(older)?.check.preview {
+            olderRecords = Int(preview.fileHabits + preview.fileEntries)
+        }
+        let records = olderRecords
         let result: Int = await Task.detached {
             guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return 1 }
-            let folder = container.appending(path: "Backups", directoryHint: .isDirectory)
-            let target = folder.appending(path: "\(deviceID).zip")
+            let folder = BackupFolder(root: container.appending(path: "Backups", directoryHint: .isDirectory), deviceID: deviceID)
             do {
-                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-                try Data(base64Encoded: base64)?.write(to: target, options: .atomic)
-                let back = try Data(contentsOf: target)
-                return Self.sha256(back) == expected ? 0 : 3
+                switch try folder.write(upload, olderRecords: records) {
+                case .written: return 0
+                case .keptOlder: return 4
+                case .damaged: return 3
+                }
             } catch let error as CocoaError where error.code == .fileWriteOutOfSpace {
                 return 2
             } catch {
@@ -383,22 +421,22 @@ final class BackupCenter {
             }
         }.value
         switch result {
-        case 0:
+        case 0, 4:
             if previous != nil && identityData != previous {
                 defaults.set(ICloudProblem.accountChanged.rawValue, forKey: Key.iCloudProblem)
-                return true
+            } else {
+                defaults.removeObject(forKey: Key.iCloudProblem)
             }
-            defaults.removeObject(forKey: Key.iCloudProblem)
-            return true
+            return result == 0 ? .backedUp : .keptOlder
         case 1: return iCloudFailed(.offForApp)
         case 2: return iCloudFailed(.full)
-        default: return false
+        default: return .failed
         }
     }
 
-    private func iCloudFailed(_ problem: ICloudProblem) -> Bool {
+    private func iCloudFailed(_ problem: ICloudProblem) -> ICloudResult {
         defaults.set(problem.rawValue, forKey: Key.iCloudProblem)
-        return false
+        return .failed
     }
 
     nonisolated static func sha256(_ data: Data) -> String {
@@ -667,12 +705,31 @@ final class BackupCenter {
         return await check(body)
     }
 
-    /// A copy in the person's own iCloud (§4.1 "We found your backup in iCloud"), one per device of their Apple Account.
+    /// A copy in the person's own iCloud (§4.1 "We found your backup in iCloud"): 7 weekday copies per device of their
+    /// Apple Account, named by device (`BackupFolder`), and the older one-file-per-device layout.
     struct ICloudCopy: Identifiable, Hashable {
         let url: URL
         let modified: Date
         let isThisDevice: Bool
+        let deviceID: String
+        let deviceName: String
+        let slot: String
+        let habits: Int?
+        let entries: Int?
         var id: URL { url }
+
+        /// "Lalith's iPad", or for an older copy with no name, which device it is.
+        var title: String {
+            if !deviceName.isEmpty { return isThisDevice ? "\(deviceName) (this device)" : deviceName }
+            return isThisDevice ? "This device's backup" : "Another device's backup"
+        }
+
+        /// "today 9:41 · 12 habits, 400 check-ins".
+        var detail: String {
+            let when = BackupSyncView.when(modified)
+            guard let habits, let entries else { return when }
+            return when + " · " + RestoreStartView.counts(habits: habits, entries: entries)
+        }
     }
 
     /// The copies in the app's hidden iCloud folder, newest first. Copies not yet on this device are asked for; they
@@ -680,33 +737,30 @@ final class BackupCenter {
     func iCloudCopies() async -> (copies: [ICloudCopy], downloading: Int) {
         guard BackupFeatures.iCloudBackup, !sandboxed, FileManager.default.ubiquityIdentityToken != nil else { return ([], 0) }
         let me = sync.deviceID
-        let (found, downloading): ([(URL, Date)], Int) = await Task.detached {
+        let (found, downloading): ([BackupFolder.Listed], Int) = await Task.detached {
             guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return ([], 0) }
-            let folder = container.appending(path: "Backups", directoryHint: .isDirectory)
-            let files = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: [.contentModificationDateKey])) ?? []
-            var found: [(URL, Date)] = []
-            var downloading = 0
-            for file in files {
-                let name = file.lastPathComponent
-                if name.hasPrefix("."), name.hasSuffix(".zip.icloud") {
-                    // Not on this device yet: iCloud keeps a placeholder named ".<name>.icloud".
-                    let real = folder.appending(path: String(name.dropFirst().dropLast(".icloud".count)))
-                    try? FileManager.default.startDownloadingUbiquitousItem(at: real)
-                    downloading += 1
-                } else if name.hasSuffix(".zip") {
-                    found.append((file, (try? file.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast))
-                }
-            }
-            return (found, downloading)
+            return BackupFolder.list(root: container.appending(path: "Backups", directoryHint: .isDirectory), thisDevice: me)
         }.value
-        let copies = found.map { ICloudCopy(url: $0.0, modified: $0.1, isThisDevice: $0.0.lastPathComponent == "\(me).zip") }
-        return (copies.sorted { $0.modified > $1.modified }, downloading)
+        let copies = found.map { ICloudCopy(url: $0.url, modified: $0.createdAt, isThisDevice: $0.isThisDevice, deviceID: $0.deviceID,
+                                            deviceName: $0.deviceName, slot: $0.slot, habits: $0.habits, entries: $0.entries) }
+        return (copies, downloading)
+    }
+
+    /// Each device's newest copy, this device's first (Free Plan Backups §7: a reinstall picks its own copy, not just
+    /// the newest of any device), then newest first.
+    static func newestPerDevice(_ copies: [ICloudCopy]) -> [ICloudCopy] {
+        var newest: [String: ICloudCopy] = [:]
+        for copy in copies where copy.habits != 0 || copy.entries != 0 || copy.habits == nil {
+            if let seen = newest[copy.deviceID], seen.modified >= copy.modified { continue }
+            newest[copy.deviceID] = copy
+        }
+        return newest.values.sorted { ($0.isThisDevice ? 1 : 0, $0.modified) > ($1.isThisDevice ? 1 : 0, $1.modified) }
     }
 
     /// Reads an iCloud copy and prepares its preview.
     func open(_ copy: ICloudCopy) async -> Pending? {
         let url = copy.url
-        guard let data = await Task.detached(operation: { try? Data(contentsOf: url) }).value else { return nil }
+        guard let data = await Task.detached(operation: { await BackupFolder.read(url) }).value else { return nil }
         return await check(data)
     }
 

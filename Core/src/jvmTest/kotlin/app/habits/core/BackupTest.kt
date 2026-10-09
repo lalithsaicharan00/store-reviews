@@ -170,7 +170,7 @@ class BackupTest {
 
     @Test fun aFileFromANewerAppSaysUpdateFirst() = runBlocking {
         val good = bytes(repo("source").apply { fill() }.backupFile(info))
-        val newer = rezip(good) { name, data -> if (name == "manifest.json") data.decodeToString().replace("\"format\":1", "\"format\":2").encodeToByteArray() else data }
+        val newer = rezip(good) { name, data -> if (name == "manifest.json") data.decodeToString().replace("\"format\":1", "\"format\":${BackupFile.NEWEST_FORMAT + 1}").encodeToByteArray() else data }
         assertEquals(BackupProblem.NEWER_VERSION, repo("target").checkBackup(base64(newer)).problem)
     }
 
@@ -185,6 +185,104 @@ class BackupTest {
         assertEquals(BackupProblem.REPACKED, repo("target").checkBackup(base64(out.toByteArray())).problem)
     }
 
+    /**
+     * The automatic backups (iCloud, the account) leave out the CSV copies (Current Work 75, Free Plan Backups §7 step 2):
+     * the same format, read and restored exactly as the full file, and measured here on a realistic history. Sizes are
+     * printed for PERFORMANCE-LESSONS / the checklist.
+     */
+    @Test fun theAutomaticFileIsSmallerAndRestoresTheSame() = runBlocking {
+        val phone = repo("phone").apply { fill() }
+        val full = phone.backupFile(info)
+        val auto = phone.automaticBackupFile(info)
+        val names = mutableListOf<String>()
+        ZipInputStream(ByteArrayInputStream(bytes(auto))).use { zip -> while (true) { names += (zip.nextEntry ?: break).name } }
+        assertEquals(listOf(BackupFile.MANIFEST, BackupFile.DATA), names)
+        assertEquals(full.records, auto.records)
+        assertEquals(BackupFile.FORMAT_COMPACT, auto.format)
+        assertEquals(BackupFile.FORMAT, full.format)
+        // Any unzip tool opens it too (java.util.zip inflates data.json and checks its CRC).
+        ZipInputStream(ByteArrayInputStream(bytes(auto))).use { zip ->
+            while (true) { val e = zip.nextEntry ?: break; if (e.name == BackupFile.DATA) assertTrue(zip.readBytes().decodeToString().startsWith("{")) }
+        }
+        assertNull(repo("check").checkBackup(auto.base64).problem)
+        val target = repo("target")
+        target.restore(auto.base64, RestoreMode.REPLACE, info)
+        assertEquals(phone.content(), target.content())
+
+        // A year of history: 30 habits, about 712 check-ins (the 8 Oct dev copy) and a heavier one, 12 habits × 365 days.
+        for ((label, habits, perHabit) in listOf(Triple("30 habits, 720 check-ins", 30, 24), Triple("12 habits, 4380 check-ins", 12, 365))) {
+            val big = repo("big-$habits")
+            repeat(habits) { h ->
+                big.saveHabit(habit("hb$h", "Habit number $h"), emptyList(), listOf(ReminderRecord("rb$h", "hb$h", 8, 0, null)), 1)
+                repeat(perHabit) { d ->
+                    val day = java.time.LocalDate.of(2025, 10, 1).plusDays(d.toLong()).toString()
+                    big.addEntry(entry("eb$h-$d", "hb$h", day, 1.0 + d % 3))
+                }
+            }
+            val readable = bytes(big.backupFile(info)).size
+            val automatic = bytes(big.automaticBackupFile(info)).size
+            val gz = java.io.ByteArrayOutputStream().also { out -> java.util.zip.GZIPOutputStream(out).use { it.write(bytes(big.automaticBackupFile(info))) } }.size()
+            println("BACKUP SIZE $label: full ${readable / 1024} KB, automatic ${automatic / 1024} KB (${100 * automatic / readable}%), automatic gzipped again ${gz / 1024} KB")
+            assertTrue(automatic < readable * 0.25, "$label: automatic $automatic vs full $readable")
+        }
+    }
+
+    /** A compact file whose other entries were deflated, or with a deflated data.json under format 1, is refused. */
+    @Test fun onlyTheCompactFormatsDataIsDeflated() = runBlocking {
+        val auto = bytes(repo("phone").apply { fill() }.automaticBackupFile(info))
+        val files = Zip.read(auto).files
+        val rezipped = Zip.write(files.map { (name, data) -> Zip.Entry(name, data, deflate = true) }, wall)
+        assertEquals(BackupProblem.REPACKED, repo("target").checkBackup(base64(rezipped)).problem)
+        val asFormat1 = Zip.write(listOf(
+            Zip.Entry(BackupFile.MANIFEST, files.getValue(BackupFile.MANIFEST).decodeToString().replace("\"format\":2", "\"format\":1").encodeToByteArray()),
+            Zip.Entry(BackupFile.DATA, files.getValue(BackupFile.DATA), deflate = true),
+        ), wall)
+        assertEquals(BackupProblem.REPACKED, repo("target2").checkBackup(base64(asFormat1)).problem)
+        val newer = Zip.write(listOf(
+            Zip.Entry(BackupFile.MANIFEST, files.getValue(BackupFile.MANIFEST).decodeToString().replace("\"format\":2", "\"format\":3").encodeToByteArray()),
+            Zip.Entry(BackupFile.DATA, files.getValue(BackupFile.DATA), deflate = true),
+        ), wall)
+        assertEquals(BackupProblem.NEWER_VERSION, repo("target3").checkBackup(base64(newer)).problem)
+    }
+
+    /** Our DEFLATE against the JVM's zlib, both ways, on text, repeats, random bytes and nothing at all. */
+    @Test fun deflateMatchesZlibBothWays() {
+        val random = Random(7)
+        val samples = listOf(
+            ByteArray(0),
+            "a".encodeToByteArray(),
+            "{\"habit\":[{\"id\":\"h1\",\"name\":\"Water\"}]}".repeat(500).encodeToByteArray(),
+            ByteArray(100_000) { 'x'.code.toByte() },
+            ByteArray(70_000) { random.nextInt(256).toByte() },
+            ByteArray(200_000) { (random.nextInt(20) + 'a'.code).toByte() },
+        )
+        for (sample in samples) {
+            // Ours → zlib.
+            val ours = Deflate.compress(sample)
+            val inflater = java.util.zip.Inflater(true)
+            inflater.setInput(ours)
+            val out = ByteArray(sample.size + 1)
+            val n = if (sample.isEmpty()) inflater.inflate(out) else generateSequence { 0 }.let { var total = 0; while (!inflater.finished() && total <= sample.size) { val k = inflater.inflate(out, total, out.size - total); if (k == 0 && inflater.needsInput()) break; total += k }; total }
+            assertTrue(inflater.finished(), "zlib reads ours to the end")
+            assertContentEquals(sample, out.copyOf(n))
+            assertContentEquals(sample, Deflate.decompress(ours, sample.size))
+            // zlib → ours, at every level (stored blocks at 0, dynamic Huffman above).
+            for (level in listOf(0, 1, 6, 9)) {
+                val deflater = java.util.zip.Deflater(level, true)
+                deflater.setInput(sample); deflater.finish()
+                val buffer = ByteArray(sample.size * 2 + 1024)
+                val size = deflater.deflate(buffer)
+                assertContentEquals(sample, Deflate.decompress(buffer.copyOf(size), sample.size), "level $level, ${sample.size} bytes")
+            }
+        }
+        val text = samples[2]
+        val packed = Deflate.compress(text)
+        assertFailsWith<BackupProblem> { Deflate.decompress(packed.copyOf(packed.size / 2), text.size) }
+        assertFailsWith<BackupProblem> { Deflate.decompress(packed, text.size - 1) }
+        assertFailsWith<BackupProblem> { Deflate.decompress(packed, text.size + 1) }
+        assertFailsWith<BackupProblem> { Deflate.decompress(byteArrayOf(0x07), 10) }
+    }
+
     /** Every app version reads every older format (03 §3.2): the first file ever written stays readable. */
     @Test fun format1SampleStillReads() = runBlocking {
         val sample = File("src/jvmTest/resources/backups/format-1.zip")
@@ -194,6 +292,24 @@ class BackupTest {
         }
         val contents = BackupFile.read(sample.readBytes())
         assertEquals(1, contents.format)
+        assertEquals(listOf("=Read, \"slowly\"\nnow", "Water"), contents.snapshot.habits.map { it.name }.sorted())
+        assertEquals(3, contents.snapshot.entries.size)
+        val target = repo("target")
+        target.restore(base64(sample.readBytes()), RestoreMode.REPLACE, info)
+        assertEquals(2, target.load().habits.size)
+    }
+
+    // MARK: Preview
+
+    /** The compact automatic backup (format 2, 10 Oct 2026) stays readable by every later version. */
+    @Test fun format2SampleStillReads() = runBlocking {
+        val sample = File("src/jvmTest/resources/backups/format-2.zip")
+        if (!sample.exists() && System.getenv("WRITE_BACKUP_SAMPLE") == "1") {
+            sample.parentFile.mkdirs()
+            sample.writeBytes(bytes(repo("sample").apply { fill() }.automaticBackupFile(info)))
+        }
+        val contents = BackupFile.read(sample.readBytes())
+        assertEquals(2, contents.format)
         assertEquals(listOf("=Read, \"slowly\"\nnow", "Water"), contents.snapshot.habits.map { it.name }.sorted())
         assertEquals(3, contents.snapshot.entries.size)
         val target = repo("target")
@@ -343,13 +459,13 @@ class BackupTest {
 
     /** Rewrites a backup's entries and zips it again the way BackupFile does (stored, fresh CRCs). */
     private fun rezip(file: ByteArray, change: (String, ByteArray) -> ByteArray): ByteArray {
-        val entries = Zip.read(file).map { (name, data) -> Zip.Entry(name, change(name, data)) }
+        val entries = Zip.read(file).files.map { (name, data) -> Zip.Entry(name, change(name, data)) }
         return Zip.write(entries, wall)
     }
 
     /** Edits data.json and updates the manifest's hash to match, so only the deeper checks can catch the edit. */
     private fun rezipWithManifestFixed(file: ByteArray, edit: (String) -> String): ByteArray {
-        val files = Zip.read(file)
+        val files = Zip.read(file).files
         val data = edit(files.getValue("data.json").decodeToString()).encodeToByteArray()
         val manifest = files.getValue("manifest.json").decodeToString()
             .replace(Regex("\"sha256\":\"[0-9a-f]{64}\""), "\"sha256\":\"${Sha256.hex(data)}\"")

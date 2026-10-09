@@ -25,8 +25,8 @@ struct RestoreStartView: View {
                     ForEach(iCloud) { copy in
                         Button { Task { await openICloud(copy) } } label: {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(copy.isThisDevice ? "This device's backup" : "Another device's backup").foregroundStyle(Color.primary)
-                                Text(BackupSyncView.when(copy.modified)).font(.footnote).foregroundStyle(.secondary)
+                                Text(copy.title).foregroundStyle(Color.primary)
+                                Text(copy.detail).font(.footnote).foregroundStyle(.secondary)
                             }
                         }
                     }

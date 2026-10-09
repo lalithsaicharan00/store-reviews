@@ -316,8 +316,8 @@ struct RestoreSourcePage: View {
                 Section {
                     ForEach(copies) { copy in
                         Button { chosen = copy } label: {
-                            WayLabel(symbol: "icloud.and.arrow.down", title: copy.isThisDevice ? "This iPhone's backup" : "iCloud backup",
-                                     detail: BackupSyncView.when(copy.modified), checked: copies.count > 1 && chosen == copy)
+                            WayLabel(symbol: "icloud.and.arrow.down", title: copy.deviceName.isEmpty ? (copy.isThisDevice ? "This iPhone's backup" : "iCloud backup") : copy.deviceName,
+                                     detail: copy.detail, checked: copies.count > 1 && chosen == copy)
                         }
                         .accessibilityIdentifier("onboarding-icloud-copy")
                     }
@@ -377,7 +377,9 @@ struct RestoreSourcePage: View {
         searching = true
         defer { searching = false; searched = true }
         for _ in 0..<20 {
-            let (found, downloading) = await backup.iCloudCopies()
+            // Each device's newest copy with habits, this iPhone's own first (a reinstall picks its own, Current Work 75).
+            let (all, downloading) = await backup.iCloudCopies()
+            let found = BackupCenter.newestPerDevice(all)
             if !found.isEmpty {
                 copies = found
                 if chosen == nil || !found.contains(where: { $0 == chosen }) { chosen = found.first }

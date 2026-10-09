@@ -22,7 +22,10 @@ import kotlinx.serialization.json.longOrNull
  * - `manifest.json`: format version, who made it and when, record counts, and the SHA-256 of `data.json`;
  * - `data.json`: every row of every table, deleted ones included (so a deleted habit stays deleted after a restore),
  *   as the same fields sync uses;
- * - `csv/`: one readable CSV per table, for Excel or Numbers.
+ * - `csv/`: one readable CSV per table, for Excel or Numbers. Only in a file made for a person (Save a Backup File,
+ *   Move to Another Device, a restore's undo): the automatic backups (iCloud, the account) leave it out, since it repeats
+ *   `data.json` and no reader uses it. Same format either way, so every app version imports both (Current Work 75,
+ *   Free Plan Backups §7 step 2; Rulebook D5).
  *
  * Reading checks everything before anything is changed: the zip's own checksums, the data's SHA-256, the counts, and
  * that every row can be built. Any mismatch is a [BackupProblem] and nothing is restored (03 §3.6 step 5).
@@ -30,13 +33,24 @@ import kotlinx.serialization.json.longOrNull
 object BackupFile {
     /** Bump only with a new layout; every app version keeps reading every older one (tests keep a sample of each). */
     const val FORMAT = 1
+    /**
+     * Format 2 (10 Oct 2026, Current Work 75): the automatic backups (iCloud, the account), with `data.json` deflated and
+     * no CSV copies, about a tenth of the size (Free Plan Backups §7 step 2). Files made for a person (Save a Backup File,
+     * Move to Another Device, a restore's undo) stay format 1, which every app version and any unzip tool opens.
+     */
+    const val FORMAT_COMPACT = 2
+    /** The newest format this version reads. */
+    const val NEWEST_FORMAT = FORMAT_COMPACT
     const val MANIFEST = "manifest.json"
     const val DATA = "data.json"
 
     private val json = Json
 
-    /** Makes the file from every row of [data]. Settings that only make sense on this device are left out. */
-    internal fun write(data: Snapshot, info: BackupInfo, now: Long): BackupFileData {
+    /**
+     * Makes the file from every row of [data]. Settings that only make sense on this device are left out. [readable]
+     * false makes the compact automatic backup ([FORMAT_COMPACT]): `data.json` deflated, no CSV copies.
+     */
+    internal fun write(data: Snapshot, info: BackupInfo, now: Long, readable: Boolean = true): BackupFileData {
         val settings = data.settings.filterNot { SyncCodec.isLocalSetting(it.key) }
         val rows: Map<String, List<Pair<String, Map<String, JsonElement>>>> = mapOf(
             SyncCodec.HABIT to data.habits.map { it.id to SyncCodec.habit(it) },
@@ -53,7 +67,7 @@ object BackupFile {
         val records = rows.values.sumOf { it.size }
         val manifest = JsonObject(
             mapOf(
-                "format" to JsonPrimitive(FORMAT),
+                "format" to JsonPrimitive(if (readable) FORMAT else FORMAT_COMPACT),
                 "app" to JsonPrimitive("Often Enough"),
                 "appVersion" to JsonPrimitive(info.appVersion),
                 "platform" to JsonPrimitive(info.platform),
@@ -67,7 +81,7 @@ object BackupFile {
         ).toString().encodeToByteArray()
 
         val habitNames = data.habits.associate { it.id to it.name }
-        val csv = rows.map { (table, list) ->
+        val csv = if (!readable) emptyList() else rows.map { (table, list) ->
             val extra = if (table == SyncCodec.ENTRY) listOf("habit") else emptyList()
             val fieldNames = list.firstOrNull()?.second?.keys?.toList() ?: SyncCodec.knownFields.getValue(table).toList()
             val header = listOf("id") + extra + fieldNames
@@ -77,10 +91,10 @@ object BackupFile {
             }
             Zip.Entry("csv/${csvName(table)}.csv", (listOf(header.joinToString(",")) + lines).joinToString("\r\n", postfix = "\r\n").encodeToByteArray())
         }
-        val bytes = Zip.write(listOf(Zip.Entry(MANIFEST, manifest), Zip.Entry(DATA, dataJson)) + csv, now)
+        val bytes = Zip.write(listOf(Zip.Entry(MANIFEST, manifest), Zip.Entry(DATA, dataJson, deflate = !readable)) + csv, now)
         return BackupFileData(
             base64 = Base64.encode(bytes), sha256 = Sha256.hex(bytes), size = bytes.size, createdAt = now,
-            habits = liveHabits, entries = liveEntries, records = records, format = FORMAT,
+            habits = liveHabits, entries = liveEntries, records = records, format = if (readable) FORMAT else FORMAT_COMPACT,
         )
     }
 
@@ -95,11 +109,15 @@ object BackupFile {
     }
 
     internal fun read(bytes: ByteArray): BackupContents {
-        val files = Zip.read(bytes)
+        val zip = Zip.read(bytes)
+        val files = zip.files
         val manifest = files[MANIFEST]?.let { parseObject(it) } ?: throw BackupProblem(BackupProblem.NOT_A_BACKUP)
         val format = (manifest["format"] as? JsonPrimitive)?.intOrNull ?: throw BackupProblem(BackupProblem.NOT_A_BACKUP)
-        if (format > FORMAT) throw BackupProblem(BackupProblem.NEWER_VERSION)
+        if (format > NEWEST_FORMAT) throw BackupProblem(BackupProblem.NEWER_VERSION)
         if (format < 1) throw BackupProblem(BackupProblem.NOT_A_BACKUP)
+        // Format 1 is stored only: a deflated entry means another app zipped it again (use the original file). Format 2
+        // deflates `data.json`, and only that.
+        if (zip.deflated.any { format < FORMAT_COMPACT || it != DATA }) throw BackupProblem(BackupProblem.REPACKED)
 
         val data = files[DATA] ?: throw BackupProblem(BackupProblem.DAMAGED)
         val expected = (manifest["data"] as? JsonObject)?.get("sha256")?.let { (it as? JsonPrimitive)?.content }
@@ -216,9 +234,12 @@ class BackupProblem(val reason: String) : Exception("Backup problem: $reason") {
     }
 }
 
-/** A minimal zip: stored entries only, which is all [BackupFile] writes. */
+/** A minimal zip: stored entries, and deflated ones for the compact automatic backup (format 2). */
 internal object Zip {
-    class Entry(val name: String, val data: ByteArray)
+    class Entry(val name: String, val data: ByteArray, val deflate: Boolean = false)
+
+    /** Every entry by name (inflated), and the names of those that were deflated. */
+    class Contents(val files: Map<String, ByteArray>, val deflated: Set<String>)
 
     fun write(entries: List<Entry>, modifiedAt: Long): ByteArray {
         val out = Bytes()
@@ -228,11 +249,13 @@ internal object Zip {
             val name = entry.name.encodeToByteArray()
             val crc = Crc32.of(entry.data)
             val offset = out.size
-            out.u32(0x04034b50); out.u16(20); out.u16(0x0800); out.u16(0); out.u16(time); out.u16(date)
-            out.u32(crc); out.u32(entry.data.size); out.u32(entry.data.size); out.u16(name.size); out.u16(0)
-            out.bytes(name); out.bytes(entry.data)
-            central.u32(0x02014b50); central.u16(20); central.u16(20); central.u16(0x0800); central.u16(0)
-            central.u16(time); central.u16(date); central.u32(crc); central.u32(entry.data.size); central.u32(entry.data.size)
+            val stored = if (entry.deflate) Deflate.compress(entry.data) else entry.data
+            val method = if (entry.deflate) 8 else 0
+            out.u32(0x04034b50); out.u16(20); out.u16(0x0800); out.u16(method); out.u16(time); out.u16(date)
+            out.u32(crc); out.u32(stored.size); out.u32(entry.data.size); out.u16(name.size); out.u16(0)
+            out.bytes(name); out.bytes(stored)
+            central.u32(0x02014b50); central.u16(20); central.u16(20); central.u16(0x0800); central.u16(method)
+            central.u16(time); central.u16(date); central.u32(crc); central.u32(stored.size); central.u32(entry.data.size)
             central.u16(name.size); central.u16(0); central.u16(0); central.u16(0); central.u16(0); central.u32(0); central.u32(offset)
             central.bytes(name)
         }
@@ -245,7 +268,7 @@ internal object Zip {
     }
 
     /** Every entry by name. Bounds, signatures and CRCs are all checked. */
-    fun read(bytes: ByteArray): Map<String, ByteArray> {
+    fun read(bytes: ByteArray): Contents {
         fun u16(at: Int): Int {
             if (at < 0 || at + 2 > bytes.size) throw BackupProblem(BackupProblem.NOT_A_BACKUP)
             return (bytes[at].toInt() and 0xff) or ((bytes[at + 1].toInt() and 0xff) shl 8)
@@ -264,6 +287,7 @@ internal object Zip {
         var entry = u32(end + 16).toInt()
         if (entry < 0 || entry > bytes.size) throw BackupProblem(BackupProblem.NOT_A_BACKUP)
         val files = mutableMapOf<String, ByteArray>()
+        val deflated = mutableSetOf<String>()
         repeat(count) {
             if (u32(entry) != 0x02014b50L) throw BackupProblem(BackupProblem.NOT_A_BACKUP)
             val flags = u16(entry + 8)
@@ -279,18 +303,22 @@ internal object Zip {
             val name = bytes.decodeToString(entry + 46, entry + 46 + nameLength)
             entry += 46 + nameLength + extraLength + commentLength
             if (flags and 1 != 0) throw BackupProblem(BackupProblem.NOT_A_BACKUP) // encrypted
-            if (method != 0) throw BackupProblem(BackupProblem.REPACKED)
-            if (compressed != size || size > Int.MAX_VALUE) throw BackupProblem(BackupProblem.DAMAGED)
+            if (method != 0 && method != 8) throw BackupProblem(BackupProblem.REPACKED)
+            if ((method == 0 && compressed != size) || size > MAX_ENTRY || compressed > Int.MAX_VALUE) throw BackupProblem(BackupProblem.DAMAGED)
             if (u32(local) != 0x04034b50L) throw BackupProblem(BackupProblem.DAMAGED)
             val start = local + 30 + u16(local + 26) + u16(local + 28)
-            val stop = start.toLong() + size
+            val stop = start.toLong() + compressed
             if (start < 0 || stop > bytes.size) throw BackupProblem(BackupProblem.DAMAGED)
-            val data = bytes.copyOfRange(start, stop.toInt())
+            val raw = bytes.copyOfRange(start, stop.toInt())
+            val data = if (method == 8) Deflate.decompress(raw, size.toInt()).also { deflated += name } else raw
             if (Crc32.of(data).toLong() and 0xffffffffL != crc) throw BackupProblem(BackupProblem.DAMAGED)
             files[name] = data
         }
-        return files
+        return Contents(files, deflated)
     }
+
+    /** No entry inflates past this: a file that claims more is damaged, never a reason to run out of memory. */
+    private const val MAX_ENTRY = 256L * 1024 * 1024
 
     /** MS-DOS time and date (UTC), as zip stores them. */
     private fun dosTime(epochMillis: Long): Pair<Int, Int> {

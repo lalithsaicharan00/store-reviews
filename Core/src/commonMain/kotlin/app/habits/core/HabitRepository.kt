@@ -157,6 +157,15 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     suspend fun backupFile(info: BackupInfo): BackupFileData = offMain { BackupFile.write(dao.restoreSnapshot(), info, clock()) }
 
     /**
+     * The same file for the automatic backups (iCloud, the account), without the CSV copies a person opens in a
+     * spreadsheet: smaller to send as you go, and imported the same way by every app version (Current Work 75).
+     */
+    @Throws(Exception::class)
+    suspend fun automaticBackupFile(info: BackupInfo): BackupFileData = offMain {
+        BackupFile.write(dao.restoreSnapshot(), info, clock(), readable = false)
+    }
+
+    /**
      * Checks a backup file (base64) and says what restoring it would change, both ways. Never throws for a bad file:
      * `problem` says why it can't be used, and nothing is changed.
      */
