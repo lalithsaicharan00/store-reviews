@@ -272,6 +272,7 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(shows(app, row: "backup-status", "your iCloud is full"), status(app))
         XCTAssertTrue(shows(app, row: "backup-icloud-status", "Full"))
         XCTAssertTrue(app.buttons["backup-fix"].label.contains("Back Up to Your Account Instead"), app.buttons["backup-fix"].label)
+        XCTAssertFalse(app.buttons["backup-now"].exists, "No Back Up Now while iCloud is full: the fix is the one thing to tap")
         shot("backup-icloud-full")
 
         open("signedOut")

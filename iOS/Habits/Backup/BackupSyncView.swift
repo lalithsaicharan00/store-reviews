@@ -27,7 +27,8 @@ struct BackupSyncView: View {
                     Button(issue.fixLabel) { fix(issue.fix) }
                         .accessibilityIdentifier("backup-fix")
                 }
-                if backup.place != .phone {
+                // Not while iCloud can't take it (full, off): the problem's own fix is the one thing to tap.
+                if backup.place != .phone && !(backup.place == .iCloud && [.full, .signedOut, .offForApp].contains(backup.iCloudState)) {
                     Button("Back Up Now") { Task { await backUpNow() } }
                         .disabled(backup.working)
                         .accessibilityIdentifier("backup-now")
