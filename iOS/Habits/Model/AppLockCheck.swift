@@ -37,7 +37,7 @@ enum AppLockCheck {
         // MARK: Wrong codes and their waits
 
         for _ in 0..<4 { await lock.enter("000000") }
-        expect(lock.message == "That's not the code." && lock.waitText == nil, "Four wrong codes: no wait yet")
+        expect(lock.message == "That's not your app passcode." && lock.waitText == nil, "Four wrong codes: no wait yet")
         await lock.enter("000000")
         expect(lock.waitText == "Try again in 1 minute.", "Five wrong codes in a row: 1 minute (\(lock.waitText ?? "none"))")
         await lock.enter("246810")
@@ -71,7 +71,7 @@ enum AppLockCheck {
         LockKeychain.update { $0.askReset(at: Date.now) }
         lock.bump()
         await lock.enter("246810")
-        expect(LockKeychain.vault.resetAskedAt == nil && lock.message == "The code reset was cancelled.",
+        expect(LockKeychain.vault.resetAskedAt == nil && lock.message == "The reset was cancelled.",
                "Typing the right code cancels a waiting reset, and says so")
 
         // MARK: Face ID changed

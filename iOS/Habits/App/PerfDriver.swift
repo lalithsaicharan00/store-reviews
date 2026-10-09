@@ -24,6 +24,10 @@ enum PerfAction: Equatable {
     case codeKey(Int), codeDelete
     /// The welcome (Current Work 73.1): shown over Today, a page pushed by name (`OnboardingRoute.perf`), and Back.
     case openOnboarding, onboardingPage(String), onboardingBack
+    /// Privacy & Security's App Lock page, and its setup sheet (Current Work 58.13).
+    case openAppLock, openLockSetup
+    /// Backup & Export's Account and Restore pages (Current Work 76).
+    case openAccount, openRestore
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
@@ -219,6 +223,21 @@ enum PerfDriver {
             }
             HideNames.setChosen(false)
             await AppModel.shared.privacyChanged()
+            send(.close)
+        case "app-lock":
+            // App Lock's page and its setup sheet (Current Work 58.13, T4): the page from Privacy & Security, and the sheet
+            // the switch opens (screens 2 and 3). A test launch's own lock, which stays off (D8).
+            send(.openPlace(.privacy))
+            await pause(1.5)
+            await open("App Lock page (first)") { send(.openAppLock) }
+            await open("App Lock: setup sheet (first)") { send(.openLockSetup) }
+            send(.close)
+            await pause(1.2)
+            send(.openPlace(.privacy))
+            await pause(1.5)
+            await open("App Lock page (again)") { send(.openAppLock) }
+            await open("App Lock: setup sheet (again)") { send(.openLockSetup) }
+            await measure("App Lock: setup sheet scrolling") { await scroll() }
             send(.close)
         case "lock-keypad":
             // The lock's cover with its keypad (Current Work 58, T4): showing it, typing on it (never six digits, so it

@@ -17,7 +17,7 @@ struct LockCover: View {
             if locked {
                 LockedScreen(lock: lock)
             } else {
-                LockTitle(title: "Often Enough is locked", detail: nil)
+                LockTitle(title: "The app is locked", detail: nil)
             }
         }
         .accessibilityElement(children: .contain)
@@ -90,7 +90,7 @@ private struct LockTitle: View {
     }
 }
 
-/// The locked cover: Unlock (iPhone-passcode mode), or the keypad with Use Face ID and Forgot Code? (code mode), and a
+/// The locked cover: Unlock (iPhone-passcode mode), or the keypad with Use Face ID and Forgot App Passcode? (app-passcode mode), and a
 /// waiting reset with Cancel Reset.
 private struct LockedScreen: View {
     @Bindable var lock: AppLock
@@ -100,7 +100,7 @@ private struct LockedScreen: View {
             VStack(spacing: 20) {
                 switch lock.mode {
                 case .passcode:
-                    LockTitle(title: "Often Enough is locked", detail: nil)
+                    LockTitle(title: "The app is locked", detail: nil)
                     Button { Task { await lock.unlock() } } label: {
                         Text("Unlock").fontWeight(.semibold).foregroundStyle(Color.onInk).frame(minWidth: 120)
                     }
@@ -120,33 +120,36 @@ private struct LockedScreen: View {
         .sheet(item: $lock.coverSheet) { sheet in
             switch sheet {
             case .forgot: ForgotCodeSheet(lock: lock)
-            case .newCode: NewCodeSheet(lock: lock, title: "Choose a New Code")
+            case .newCode: NewCodeSheet(lock: lock, title: "Choose a New App Passcode")
             }
         }
-        .alert("Use Face ID again?", isPresented: $lock.askTrustFaceID) {
-            Button("Use Face ID Again") { lock.trustFaceID(true) }
-            Button("Keep Face ID Off", role: .cancel) { lock.trustFaceID(false) }
+        // Asked once, on the cover, before the app opens (spec screen 10; T16). An alert, not a sheet: the app asks, the
+        // person didn't start it, and it can't be swiped away unanswered. No is the cancel role: the bold, safe default.
+        .alert("Did you change Face ID?", isPresented: $lock.askTrustFaceID) {
+            Button("Yes, Use Face ID") { lock.trustFaceID(true) }
+            Button("No, Turn It Off", role: .cancel) { lock.trustFaceID(false) }
         } message: {
-            Text("If you changed Face ID yourself, use it again. If you didn't, someone may have added their face: keep Face ID off and check Settings → Face ID & Passcode.")
+            Text("If not, someone may have added their face. Turn it off and check Settings → Face ID & Passcode.")
         }
     }
 
     @ViewBuilder private var codeScreen: some View {
         if lock.step == .resetReady {
-            LockTitle(title: "Often Enough is locked", detail: "The 24 hours are up. Choose a new code with your iPhone passcode.")
+            LockTitle(title: "The app is locked", detail: "The 24 hours are up. Choose a new app passcode with your iPhone passcode.")
             Button {
                 Task { if await lock.chooseNewCodeAfterReset() { lock.coverSheet = .newCode } }
             } label: {
-                Text("Choose a New Code").fontWeight(.semibold).foregroundStyle(Color.onInk).frame(minWidth: 180)
+                Text("Choose a New App Passcode").fontWeight(.semibold).foregroundStyle(Color.onInk).frame(minWidth: 180)
             }
             .buttonStyle(.borderedProminent).tint(.ink)
             .accessibilityIdentifier("lock-choose-new-code")
         } else {
-            if lock.faceIDChanged {
-                LockTitle(title: "Face ID has changed on this iPhone",
-                          detail: "A face or a fingerprint was added or removed in Settings. Enter your Often Enough code to continue.")
+            let changed = lock.faceIDChanged
+            if changed {
+                // Screen 9: the line under the title already asks, so the keypad's own prompt is left out.
+                LockTitle(title: "Face ID was changed", detail: "Enter your app passcode to open the app.")
             } else {
-                LockTitle(title: "Often Enough is locked", detail: nil)
+                LockTitle(title: "The app is locked", detail: nil)
             }
             if let times = lock.resetTimes, lock.resetWaiting { ResetWaitingBox(lock: lock, asked: times.asked, ready: times.ready) }
             if lock.faceIDUsable {
@@ -154,16 +157,16 @@ private struct LockedScreen: View {
                     .fontWeight(.semibold)
                     .accessibilityIdentifier("lock-use-face-id")
             }
-            CodeEntry(prompt: "Enter your code", message: lock.message, shakes: lock.wrongCount, disabled: lock.waitText != nil) { code in
+            CodeEntry(prompt: changed ? "" : "Enter your app passcode", message: lock.message, shakes: lock.wrongCount, disabled: lock.waitText != nil) { code in
                 await lock.enter(code)
             }
-            Button("Forgot Code?") { lock.coverSheet = .forgot }
+            Button("Forgot App Passcode?") { lock.coverSheet = .forgot }
                 .accessibilityIdentifier("lock-forgot")
         }
     }
 }
 
-/// "Code reset asked for · Tue 10:14. You can choose a new code from Wed 10:14." with Cancel Reset (spec §3.5).
+/// "App passcode reset asked for · Tue 10:14. You can choose a new app passcode from Wed 10:14." with Cancel Reset.
 private struct ResetWaitingBox: View {
     let lock: AppLock
     let asked: Date
@@ -171,10 +174,10 @@ private struct ResetWaitingBox: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Label("Code reset asked for", systemImage: "hourglass").font(.headline)
-            Text("\(LockText.when(asked)). You can choose a new code from \(LockText.when(ready)).")
+            Label("App passcode reset asked for", systemImage: "hourglass").font(.headline)
+            Text("\(LockText.when(asked)). You can choose a new app passcode from \(LockText.when(ready)).")
                 .font(.subheadline)
-            Text("If you didn't ask for this, cancel it with Face ID or your code.")
+            Text("If you didn't ask for this, cancel it with Face ID or your app passcode.")
                 .font(.subheadline).foregroundStyle(.secondary)
             Button("Cancel Reset") {
                 Task { _ = await lock.cancelReset() }
@@ -216,7 +219,7 @@ struct CodeEntry: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text(prompt).font(.headline).accessibilityIdentifier("code-prompt")
+            if !prompt.isEmpty { Text(prompt).font(.headline).accessibilityIdentifier("code-prompt") }
             HStack(spacing: 16) {
                 ForEach(0..<6, id: \.self) { i in
                     Circle()
@@ -319,21 +322,27 @@ struct CodeKeypad: View {
     }
 }
 
-/// Enter a code, then Enter it again; different: "The two codes are different. Try again." and back to the first.
+/// Enter a six-digit passcode, then Enter it again; different: "The passcodes didn't match. Try again." and back to
+/// the first (spec screens 5 and 6).
 struct CodeSetup: View {
     let onChosen: @MainActor (String) async -> Void
     @State private var first: String?
     @State private var message: String?
     @State private var mismatches = 0
 
+    static let firstPrompt = "Enter a six-digit passcode"
+    static let firstLine = "You'll only need it when Face ID doesn't work."
+    static let mismatch = "The passcodes didn't match. Try again."
+
     var body: some View {
-        CodeEntry(prompt: first == nil ? "Enter a code" : "Enter it again", message: message, shakes: mismatches) { code in
+        CodeEntry(prompt: first == nil ? Self.firstPrompt : "Enter it again", message: first == nil ? (message ?? Self.firstLine) : nil,
+                  shakes: mismatches) { code in
             if let first {
                 if first == code {
                     await onChosen(code)
                 } else {
                     self.first = nil
-                    message = "The two codes are different. Try again."
+                    message = Self.mismatch
                     mismatches += 1
                 }
             } else {
@@ -362,42 +371,201 @@ private struct LockSheetClose: ToolbarContent {
     }
 }
 
-/// "Your Own Code": what choosing a code means, then the code twice (spec §3.1).
-struct YourOwnCodeSheet: View {
+/// Set Up App Lock (spec §4, screens 3–6), in its own navigation: what opens the app when Face ID can't (iPhone
+/// Passcode by default, no badge), then for an app passcode how it works, the owner's Face ID or passcode once, the
+/// passcode and the passcode again. Nothing is saved until the second entry matches; ✕, a failed check, a mismatch or
+/// leaving part-way changes nothing (the switch stays off).
+struct AppLockSetupSheet: View {
+    enum Start: String, Identifiable {
+        /// From the switch: screen 3 first.
+        case choose
+        /// From If Face ID doesn't work → App Passcode: screen 4 first.
+        case appPasscode
+        var id: String { rawValue }
+    }
+
+    private enum Step: Hashable { case explain, enter, again(String) }
+
     let lock: AppLock
+    let start: Start
+    /// "Face ID", or the method this iPhone has.
+    let method: String
     let onDone: (Bool) -> Void
-    @State private var choosing = false
+    @State private var path: [Step] = []
+    @State private var appPasscode = false
+    @State private var mismatch = false
+    @State private var mismatches = 0
+    @State private var checking = false
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Group {
-                if choosing {
-                    ScrollView { CodeSetup { code in await lock.saveCode(code); onDone(true) }.padding(.vertical, 24) }
-                        .scrollBounceBehavior(.basedOnSize)
-                } else {
-                    Form {
-                        Section {
-                            Label("Only Face ID or this code opens Often Enough. Your iPhone passcode won't.", systemImage: "lock")
-                            Label("Forgot it? Face ID resets it straight away.", systemImage: "faceid")
-                            Label("If Face ID can't help, your iPhone passcode resets it after 24 hours. Often Enough tells you on its lock screen while a reset is waiting, so you can cancel it.", systemImage: "hourglass")
-                        }
-                    }
-                    .safeAreaInset(edge: .bottom) {
-                        RecordBottomBar {
-                            DayButton("Choose a Code", prominent: true, id: "lock-choose-code") { choosing = true }
-                        }
-                    }
+                switch start {
+                case .choose: choose
+                case .appPasscode: explain
                 }
             }
-            .navigationTitle("Your Own Code")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar { LockSheetClose { onDone(false) } }
+            .navigationDestination(for: Step.self) { step in
+                switch step {
+                case .explain: explain
+                case .enter: enter
+                case .again(let first): again(first)
+                }
+            }
         }
         .interactiveDismissDisabled()
+        .tint(.ink)
+    }
+
+    // MARK: Screen 3: If Face ID doesn't work
+
+    private var choose: some View {
+        Form {
+            Section {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("If \(method) doesn't work").font(.title2.bold()).accessibilityAddTraits(.isHeader)
+                    Text("\(method) is always tried first. Choose what opens the app when it can't recognise you.")
+                        .foregroundStyle(.secondary)
+                }
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 4, trailing: 4))
+            }
+            Section {
+                option("iPhone Passcode", "Nothing new to remember. Anyone who knows your iPhone passcode can open the app.",
+                       selected: !appPasscode, id: "setup-iphone-passcode") { appPasscode = false }
+                option("App Passcode", "Six digits, just for this app. Your iPhone passcode won't open it. Good if people around you know it.",
+                       selected: appPasscode, id: "setup-app-passcode") { appPasscode = true }
+            }
+        }
+        .contentMargins(.top, 8, for: .scrollContent)
+        .navigationTitle("Set Up App Lock")
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .bottom) {
+            RecordBottomBar {
+                if appPasscode {
+                    DayButton("Continue", prominent: true, id: "setup-continue") { path.append(.explain) }
+                } else {
+                    DayButton("Turn On App Lock", prominent: true, id: "setup-turn-on") { Task { await turnOnWithIPhonePasscode() } }
+                        .disabled(checking)
+                }
+            }
+        }
+    }
+
+    private func option(_ title: String, _ detail: String, selected: Bool, id: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(alignment: .firstTextBaseline) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title).foregroundStyle(Color.primary)
+                    Text(detail).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 8)
+                if selected { Image(systemName: "checkmark").fontWeight(.semibold).foregroundStyle(Color.ink) }
+            }
+            .contentShape(Rectangle())
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(selected ? [.isSelected, .isButton] : .isButton)
+        .accessibilityIdentifier(id)
+    }
+
+    private func turnOnWithIPhonePasscode() async {
+        checking = true
+        defer { checking = false }
+        guard await AppLock.authenticate(reason: "Turn on App Lock") else { return }
+        AppLock.setEnabled(true)
+        lock.bump()
+        onDone(true)
+    }
+
+    // MARK: Screen 4: How your app passcode works
+
+    private var explain: some View {
+        Form {
+            Section {
+                Text("How your app passcode works").font(.title2.bold()).accessibilityAddTraits(.isHeader)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 4, trailing: 4))
+            }
+            Section {
+                rule("If you forget it", "Use \(method) to choose a new app passcode.")
+                rule("If \(method) changes", "Whenever \(method) is changed on your iPhone, the app asks for your app passcode once, so no one else can get in with their face.")
+                rule("If you forget it and \(method) can't help", "For example, if \(method) is broken or turned off. Your iPhone passcode can set a new app passcode after a 24-hour wait. The wait gives you time to notice and cancel it if it wasn't you.")
+            } footer: {
+                Text("Your habits are never deleted, whatever happens.")
+            }
+        }
+        .contentMargins(.top, 8, for: .scrollContent)
+        .navigationTitle("App Passcode")
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .bottom) {
+            RecordBottomBar {
+                DayButton("Create App Passcode", prominent: true, id: "setup-create-app-passcode") { Task { await createAppPasscode() } }
+                    .disabled(checking)
+            }
+        }
+    }
+
+    private func rule(_ title: String, _ detail: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title).fontWeight(.semibold)
+            Text(detail).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.vertical, 2)
+        .accessibilityElement(children: .combine)
+    }
+
+    /// The owner, this once: Face ID or the iPhone passcode (an app passcode doesn't exist yet).
+    private func createAppPasscode() async {
+        checking = true
+        defer { checking = false }
+        guard await AppLock.authenticate(reason: "Create your app passcode") else { return }
+        mismatch = false
+        path.append(.enter)
+    }
+
+    // MARK: Screens 5 and 6: Enter, then enter it again
+
+    private var enter: some View {
+        ScrollView {
+            CodeEntry(prompt: CodeSetup.firstPrompt, message: mismatch ? CodeSetup.mismatch : CodeSetup.firstLine, shakes: mismatches) { code in
+                mismatch = false
+                path.append(.again(code))
+            }
+            .padding(.vertical, 24)
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("code-setup")
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .navigationTitle("App Passcode")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func again(_ first: String) -> some View {
+        ScrollView {
+            CodeEntry(prompt: "Enter it again", message: nil, shakes: 0) { code in
+                if code == first {
+                    await lock.saveCode(code)
+                    onDone(true)
+                } else {
+                    // Back to the first entry, cleared, saying why.
+                    mismatch = true
+                    mismatches += 1
+                    path.removeLast()
+                }
+            }
+            .padding(.vertical, 24)
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("code-setup")
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .navigationTitle("App Passcode")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-/// Change Code, or a new code after a reset: the code twice.
+/// Change App Passcode, or a new app passcode after a reset: the passcode twice.
 struct NewCodeSheet: View {
     let lock: AppLock
     let title: String
@@ -426,7 +594,7 @@ struct NewCodeSheet: View {
     }
 }
 
-/// "Forgot Your Code" (spec §3.5): Face ID resets it at once; otherwise the 24-hour reset with the iPhone passcode.
+/// "Forgot App Passcode" (spec §3.5): Face ID sets a new one at once; otherwise the 24-hour reset with the iPhone passcode.
 struct ForgotCodeSheet: View {
     let lock: AppLock
     @State private var choosing = false
@@ -447,7 +615,7 @@ struct ForgotCodeSheet: View {
                     .scrollBounceBehavior(.basedOnSize)
                 } else if lock.faceIDUsable {
                     Form {
-                        Section { Text("Use Face ID to choose a new code.") }
+                        Section { Text("Use Face ID to choose a new app passcode.") }
                     }
                     .safeAreaInset(edge: .bottom) {
                         RecordBottomBar {
@@ -459,7 +627,7 @@ struct ForgotCodeSheet: View {
                 } else {
                     Form {
                         Section {
-                            Text("Your iPhone passcode can reset the code after a 24-hour wait. The wait keeps someone who knows your passcode from doing it quickly without you seeing. Your habits stay as they are.")
+                            Text("Your iPhone passcode can set a new app passcode after a 24-hour wait. The wait gives you time to notice and cancel it if it wasn't you. Your habits stay as they are.")
                         }
                     }
                     .safeAreaInset(edge: .bottom) {
@@ -472,7 +640,7 @@ struct ForgotCodeSheet: View {
                     }
                 }
             }
-            .navigationTitle("Forgot Your Code")
+            .navigationTitle("Forgot App Passcode")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { LockSheetClose { lock.coverSheet = nil; dismiss() } }
         }
@@ -488,7 +656,7 @@ struct CodeCheckSheet: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                CodeEntry(prompt: "Enter your Often Enough code", message: lock.message, shakes: lock.wrongCount,
+                CodeEntry(prompt: "Enter your app passcode", message: lock.message, shakes: lock.wrongCount,
                           disabled: lock.waitText != nil) { code in
                     if await lock.check(code) {
                         lock.clearMessage()

@@ -11,7 +11,7 @@ import UserNotifications
 /// "App Lock and Widget Privacy — What People Expect" §6c–§6d.
 ///
 /// - **Unlock With:** the iPhone's own Face ID and passcode (the default, which can never lock anyone out), or Face ID
-///   and an Often Enough code, for people whose family knows the phone's passcode. In code mode the iPhone passcode
+///   and an app passcode, for people whose family knows the phone's passcode. In code mode the iPhone passcode
 ///   never opens the app or turns the lock off.
 /// - **The code** is six digits, kept only as a salted slow hash in this iPhone's Keychain
 ///   (`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, never synced or backed up), with the wrong-code count, the
@@ -48,7 +48,7 @@ final class AppLock {
     }
 
     private(set) var isLocked: Bool
-    /// Shown under the keypad or the title: "That's not the code.", "Try again in 5 minutes.", "The code reset was cancelled."
+    /// Shown under the keypad or the title: "That's not your app passcode.", "Try again in 5 minutes.", "The reset was cancelled."
     private(set) var message: String?
     /// Bumped on a wrong code, so the dots shake.
     private(set) var wrongCount = 0
@@ -122,6 +122,9 @@ final class AppLock {
     }
 
     var mode: Mode { _ = revision; return LockKeychain.vault.codeHash != nil ? .code : .passcode }
+
+    /// Whether the lock is on, for views: redraws when it changes here (`bump`).
+    var isOn: Bool { _ = revision; return Self.isEnabled }
 
     /// Ask Again, in seconds: 0 (Immediately, the default), 60 or 900. Nothing past 15 minutes (report §6d).
     static var askAgain: Int {
@@ -231,10 +234,10 @@ final class AppLock {
         defer { unlocking = false }
         switch mode {
         case .passcode:
-            if await Self.authenticator.authenticate(.deviceOwner, reason: "Unlock your habits") { isLocked = false }
+            if await Self.authenticator.authenticate(.deviceOwner, reason: "Unlock the app") { isLocked = false }
         case .code:
             guard step == .code, faceIDUsable else { return }
-            if await Self.authenticator.authenticate(.biometrics, reason: "Unlock Often Enough") { opened() }
+            if await Self.authenticator.authenticate(.biometrics, reason: "Unlock the app") { opened() }
         }
     }
 
@@ -253,7 +256,7 @@ final class AppLock {
         return minutes >= 60 ? "Try again in 1 hour." : minutes == 1 ? "Try again in 1 minute." : "Try again in \(minutes) minutes."
     }
 
-    /// The keypad's code. Wrong: "That's not the code."; after 5 in a row, a wait of 1, 5, 15 minutes, then 1 hour
+    /// The keypad's code. Wrong: "That's not your app passcode."; after 5 in a row, a wait of 1, 5, 15 minutes, then 1 hour
     /// after each further wrong code. Nothing is ever erased.
     func enter(_ code: String) async {
         guard LockKeychain.vault.waitLeft == nil else { message = waitText; return }
@@ -262,7 +265,7 @@ final class AppLock {
             let hadReset = LockKeychain.vault.resetAskedAt != nil
             let changed = faceIDChanged
             if hadReset { LockKeychain.update { $0.cancelReset() } }
-            message = hadReset ? "The code reset was cancelled." : nil
+            message = hadReset ? "The reset was cancelled." : nil
             // Face ID changed: the cover stays until "Use Face ID again?" is answered (it's asked on the cover; opening
             // first took the cover, and the question with it, away: AppLockUITests, run 37880056940).
             if changed {
@@ -282,7 +285,7 @@ final class AppLock {
             }
             bump()
             wrongCount += 1
-            message = waitText ?? "That's not the code."
+            message = waitText ?? "That's not your app passcode."
         }
     }
 
@@ -299,7 +302,7 @@ final class AppLock {
 
     /// The page's Use Face ID Again: Face ID once, then trusted as it is now.
     func useFaceIDAgain() async {
-        guard await Self.authenticator.authenticate(.biometrics, reason: "Use Face ID for Often Enough") else { return }
+        guard await Self.authenticator.authenticate(.biometrics, reason: "Use Face ID for the app") else { return }
         trustFaceID(true)
     }
 
@@ -319,28 +322,28 @@ final class AppLock {
     /// Forgot Code? with Face ID: Face ID, then a new code (spec §3.5).
     func forgotWithFaceID() async -> Bool {
         guard faceIDUsable else { return false }
-        return await Self.authenticator.authenticate(.biometrics, reason: "Choose a new Often Enough code")
+        return await Self.authenticator.authenticate(.biometrics, reason: "Choose a new app passcode")
     }
 
     /// Start 24-Hour Reset: the iPhone passcode, then the wait begins, and a notification says so (no habit names).
     func startReset() async {
-        guard await Self.authenticator.authenticate(.deviceOwner, reason: "Reset your Often Enough code") else { return }
+        guard await Self.authenticator.authenticate(.deviceOwner, reason: "Reset your app passcode") else { return }
         LockKeychain.update { $0.askReset(at: Date.now) }
         bump()
         coverSheet = nil
         let content = UNMutableNotificationContent()
-        content.title = "Often Enough"
-        content.body = "A code reset was asked for. If it wasn't you, open Often Enough and cancel it."
+        content.title = "App Lock"
+        content.body = "A reset of your app passcode was asked for. If it wasn't you, open the app and cancel it."
         content.sound = .default
         try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "app-lock.reset", content: content, trigger: nil))
     }
 
     /// Cancel Reset: Face ID if trusted, otherwise the code (`enter` cancels it too).
     func cancelReset() async -> Bool {
-        if faceIDUsable, await Self.authenticator.authenticate(.biometrics, reason: "Cancel the code reset") {
+        if faceIDUsable, await Self.authenticator.authenticate(.biometrics, reason: "Cancel the reset") {
             LockKeychain.update { $0.cancelReset() }
             bump()
-            message = "The code reset was cancelled."
+            message = "The reset was cancelled."
             return true
         }
         return false
@@ -349,7 +352,7 @@ final class AppLock {
     /// Choose a New Code after the wait: the iPhone passcode, then the new code (spec §3.5).
     func chooseNewCodeAfterReset() async -> Bool {
         guard LockKeychain.vault.resetReady else { return false }
-        return await Self.authenticator.authenticate(.deviceOwner, reason: "Choose a new Often Enough code")
+        return await Self.authenticator.authenticate(.deviceOwner, reason: "Choose a new app passcode")
     }
 
     /// A new code is saved (first set, changed, or after a reset): Face ID is trusted as it is now.
@@ -385,7 +388,7 @@ final class AppLock {
         case .code:
             if faceIDUsable, await Self.authenticator.authenticate(.biometrics, reason: reason) { return true }
             return await withCheckedContinuation { continuation in
-                codeCheck = CodeCheck(title: "Enter Your Code") { continuation.resume(returning: $0) }
+                codeCheck = CodeCheck(title: "Enter Your App Passcode") { continuation.resume(returning: $0) }
             }
         }
     }
@@ -407,7 +410,7 @@ final class AppLock {
         }
         bump()
         wrongCount += 1
-        message = waitText ?? "That's not the code."
+        message = waitText ?? "That's not your app passcode."
         return false
     }
 

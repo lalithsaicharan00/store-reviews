@@ -163,7 +163,8 @@ final class SmallScreenUITests: XCTestCase {
         }
     }
 
-    /// Privacy & Security, Your Own Code and the code entry sheet, and the habit form's Reminders with Reminder Says.
+    /// Privacy & Security, App Lock, Set Up App Lock (screens 3–6 of the App Lock redesign, designed on the SE) and the
+    /// habit form's Reminders with Reminder Says, at a large text size. Every screen's button stays on screen.
     func testPrivacyCodeSheetsAndReminderSaysFit() {
         app.launchArguments = ["-uitest", "-empty", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityM"]
         app.launch()
@@ -172,26 +173,41 @@ final class SmallScreenUITests: XCTestCase {
         // At this text size the menu is taller than the SE: scroll it (not Today) to Privacy & Security.
         if !app.buttons["menu-privacy"].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
         app.buttons["menu-privacy"].tap()
+        let row = app.buttons["privacy-app-lock"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        XCTAssertTrue(row.frame.maxY <= window.maxY, "The App Lock row on screen: \(row.frame)")
+        shot("se-privacy-off")
+        row.tap()
         let lock = app.switches["privacy-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
-        shot("se-privacy-off")
+        shot("se-app-lock-off")
         lock.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+        let passcode = app.buttons["setup-app-passcode"]
+        XCTAssertTrue(passcode.waitForExistence(timeout: 5))
+        let turnOn = app.buttons["setup-turn-on"]
+        XCTAssertTrue(turnOn.isHittable && turnOn.frame.maxY <= window.maxY, frames(["setup-iphone-passcode", "setup-app-passcode", "setup-turn-on"]))
+        shot("se-setup-choose")
+        passcode.tap()
+        let next = app.buttons["setup-continue"]
+        XCTAssertTrue(next.waitForExistence(timeout: 5))
+        XCTAssertTrue(next.isHittable && next.frame.maxY <= window.maxY, frames(["setup-app-passcode", "setup-continue"]))
+        next.tap()
+        let create = app.buttons["setup-create-app-passcode"]
+        XCTAssertTrue(create.waitForExistence(timeout: 5))
+        XCTAssertTrue(create.isHittable && create.frame.maxY <= window.maxY, "Create App Passcode on screen: \(create.frame), window \(window)")
+        shot("se-setup-how-it-works")
+        create.tap()
         XCTAssertTrue(app.buttons["fake-auth-ok"].waitForExistence(timeout: 5)); app.buttons["fake-auth-ok"].tap()
-        let unlockWith = app.buttons["privacy-unlock-with"]
-        XCTAssertTrue(unlockWith.waitForExistence(timeout: 5))
-        shot("se-privacy-on")
-        unlockWith.tap()
-        app.buttons["unlock-with-code"].tap()
-        XCTAssertTrue(app.buttons["fake-auth-ok"].waitForExistence(timeout: 5)); app.buttons["fake-auth-ok"].tap()
-        let choose = app.buttons["lock-choose-code"]
-        XCTAssertTrue(choose.waitForExistence(timeout: 5))
-        XCTAssertTrue(choose.isHittable && choose.frame.maxY <= window.maxY, "Choose a Code on screen: \(choose.frame), window \(window)")
-        shot("se-your-own-code")
-        choose.tap()
         let ids = ["code-dots", "code-key-1", "code-key-0", "code-delete"]
         XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5), frames(ids))
-        shot("se-choose-code")
-        app.buttons["lock-sheet-cancel"].tap()
+        shot("se-setup-enter")
+        for digit in "123456" { app.buttons["code-key-\(digit)"].tap() }
+        XCTAssertTrue(app.staticTexts["Enter it again"].waitForExistence(timeout: 5), frames(ids))
+        shot("se-setup-again")
+        for digit in "123456" { app.buttons["code-key-\(digit)"].tap() }
+        let again = app.buttons["privacy-lock-again"]
+        XCTAssertTrue(again.waitForExistence(timeout: 5), frames(["privacy-lock", "unlock-app-passcode", "privacy-change-code", "privacy-lock-again"]))
+        shot("se-app-lock-on")
         app.terminate()
 
         // The habit form's Reminders: Reminder Says under the times, above the keyboard while typing.
