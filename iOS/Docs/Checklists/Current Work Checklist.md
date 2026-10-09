@@ -685,32 +685,40 @@ Their placement records scope and priority; implementation has not started.
     separately (W1).
     - [x] 58.1 Baseline speed run of `main` before any change (S2): Today, widgets, the menu, the habit form. Run
       37871921866 on `main` @ 4543c68 (9 Oct 2026; `ci-results` runs/2026-10-09-0243-main-4543c68.md).
-    - [ ] 58.2 Menu: Privacy becomes **Privacy & Security** (row, title, subtitle); the Widgets row and page go; each of
+    - [x] 58.2 Menu: Privacy becomes **Privacy & Security** (row, title, subtitle); the Widgets row and page go; each of
       its parts moves (spec §1, U5); a widget's Choose a habit link opens Help → Widgets → "Choose a habit for a widget";
       `widgets_settings` is no longer sent; Design Rules' menu line updated.
-    - [ ] 58.3 App Lock: Unlock With (iPhone passcode / Often Enough code, Keychain this device only, salted slow hash);
+      **Done (tests on GitHub; iPhone check pending):** TodayUITests.testMenu and WidgetUITests (run 37903473973), AppLockUITests.testWidgetChooseLinkOpensHelp (run 37903470666).
+    - [x] 58.3 App Lock: Unlock With (iPhone passcode / Often Enough code, Keychain this device only, salted slow hash);
       Face ID changed → code → "Use Face ID again?"; Forgot Code? (Face ID at once, else the 24-hour reset with Cancel
       Reset and its notification); wrong-code waits 1, 5, 15 min, 1 h; Ask Again (Immediately / 1 / 15 min); locking the
       iPhone locks the app at once; every way in waits for the unlock.
-    - [ ] 58.4 Hide Names Outside the App (replaces Hide widget content, stored choice migrated; held on by App Lock):
+      **Done (tests on GitHub; iPhone check pending):** AppLockUITests 12/12 (run 37903470666), `-applockcheck`, the lock keypad and code sheets on the iPhone SE (run 37905189350). Testing found and fixed: the test Face ID panel's taps were lost (T16), "Use Face ID again?" never showed, the cover sat under sheets (now its own window; locking ends typing), and a sheet could outlive the cover.
+    - [x] 58.4 Hide Names Outside the App (replaces Hide widget content, stored choice migrated; held on by App Lock):
       discreet widgets whose taps still log, once each, in order (U28 say-so for decisions 1 and 4 only); reminders
       ("Reminder says…" words / "Reminder · 8:00" / "3 reminders · 8:00" / "Still open · 8:00", "+1", placeholder
       "Reminder"); alarms; the timer's Live Activity; Siri and Shortcuts.
-    - [ ] 58.5 Reminder Says: a habit field in the form's Reminders screen; Core schema 8 (column added only if
+      **Done (tests on GitHub; iPhone check pending):** `-applockcheck` (widgets, reminders, alarms, Siri, Live Activity), WidgetUITests 6/6 and WidgetSystemUITests (runs 37903473973, 37903470666), RemindersUITests 4/4; widget taps still log once each, in order, with names hidden (WidgetReliabilityCheck); Timer, Undo, Sync and Backup unchanged (run 37896911637).
+    - [x] 58.5 Reminder Says: a habit field in the form's Reminders screen; Core schema 8 (column added only if
       missing, D2), `MigrationTest` from every past version, sync, backup and import round trip (D5, D12, D14); server
       checked (T6).
-    - [ ] 58.6 Help & Feedback: the Widgets section and the Privacy & Security topics (spec §4).
-    - [ ] 58.7 Tests: a new App Lock UI class (test-only lock with a fake authenticator, own Keychain service, D8);
+      **Done (tests on GitHub; iPhone check pending):** Core 63/63 (MigrationTest from every version, BackupTest, SyncTest), server 140/140 and typecheck, AppLockUITests.testReminderSaysIsSavedWithTheHabit (run 37903470666), the field on the iPhone SE (run 37905189350).
+    - [x] 58.6 Help & Feedback: the Widgets section and the Privacy & Security topics (spec §4).
+      **Done (tests on GitHub):** AppLockUITests.testWidgetChooseLinkOpensHelp, WidgetUITests.testGuideAndPrivacyAreFree.
+    - [x] 58.7 Tests: a new App Lock UI class (test-only lock with a fake authenticator, own Keychain service, D8);
       `-applockcheck`; widget tests rewritten for discreet cards (T3); PerfDriver scenarios for Privacy & Security and
       the keypad (T4); small screens (T15).
-    - [ ] 58.8 Regression set and a full speed run compared with 58.1.
-    - [ ] 58.9 (the user, 9 Oct 2026, with a screenshot) Today's after-log line: a checklist step's Undo named the step
+      **Done:** AppLockUITests (new), `-applockcheck`, widget tests for discreet cards, PerfDriver `privacy` and `lock-keypad`, SmallScreenUITests (3 new).
+    - [x] 58.8 Regression set and a full speed run compared with 58.1.
+      **Done:** every touched class green on GitHub (runs 37896908831, 37896911637, 37896915259, 37903470666, 37903473973, 37905189350); full speed run 37900900842 against 58.1, and the slower-looking Today scenarios run side by side with `main` (37892222401 / 37892225073): same work, no regression (PERFORMANCE-LESSONS, 9 Oct).
+    - [x] 58.9 (the user, 9 Oct 2026, with a screenshot) Today's after-log line: a checklist step's Undo named the step
       ("Undo Bsbsbbsbsbsbdbsbdbbdbdbd") and pushed Add Note off the row. A step's Undo is now **"Undo Last Step"**
       (Today's line, swipe, touch-and-hold menu and the routine player; Day details' per-log Undo still names its step
       for VoiceOver); the line is offered the row's width, Add Note keeps its size and Undo shortens with … rather than
       pushing anything out, for every habit type (amounts with long units too); the quit row's Undo Slip line follows
       the same rules. Checked on the iPhone SE at the largest text size that shows words (`SmallScreenUITests.
       testAfterLogLineStaysInsideTheRow`).
+      **Done (tests on GitHub; iPhone check pending):** SmallScreenUITests.testAfterLogLineStaysInsideTheRow on the iPhone SE at the largest text (run 37905189350: "Undo Last Step" and "Undo +1 tablespoon" whole, Add Note as its icon), TodayRowLayout/RoutineCalendar/FocusPlayer (run 37896908831).
     - [ ] 58.10 (the user, 9 Oct 2026, with two screenshots) **Backup & Export redesigned from research.** Today it's
       one long list (status, Where "Your account (our server)", iCloud switch, Back Up Now, Restore…, Move to Another
       Device, Save a Backup File, Export a Spreadsheet, a paragraph, a Sync row that only says "On"), with no grouping or
