@@ -48,6 +48,20 @@ when it's built, its tests have passed on GitHub and it's ticked here with the d
 merge `main` in, run every touched test class plus a speed run once more, then merge into `main` (the user approved
 that merge). The other agent works on its own branches (`sync-*`); never touch those or their runs (W3, T10).
 
+**Final check and merge (9 Oct 2026):** `main` (the other agent's 67–72 and 58) merged in; every touched class passed
+on the merged code: runs `37883781450` (34/34), `37892533149` (15/15), `37892535525` (25/25); speed `37883786912` (every
+scenario: Today scrolling 0.0 ms/s, +1 0.4, day ‹ › 9.5, habit form typing 11.3, Progress period ‹ › 82.6 with no freeze)
+and `37892538257` (Add note typing 0.0, Edit note 0.7); habit page side by side with `main` `37889969212` (Progress
+scrolling median 5.9 against 9.1). Found on the way and fixed: Add note's keyboard that never came on a slow simulator
+(asked again until iOS shows it). Merged into `main` by fast-forward.
+
+**iPhone checks still to do (U9):** 49 the speed numbers on the phone (`measure_perf_device.sh`; day ‹ ›, habit form
+typing and Progress's period switch are above the targets on every build); 18 the completion sound and haptic for each
+kind; 26 and 28 History's and Notes' buttons, light and dark; 74 run any UI test on the phone, then open the app: your own
+habits on the widgets, your Today settings unchanged; 32 Year in Pixels' day numbers, larger text and dark; 31 the
+Progress tab cards' spacing, larger text and dark; 23 the streak pair; 53 a first drag in Groups after opening the app;
+and the Add note keyboard coming up by itself.
+
 - [x] 1. **Item 49**: the speed regression. *Done 8 Oct: nothing had got slower side by side (runs `37774018835`,
   `37788595991`, `37797217908`, `37804587883`); iPhone speed check still to do.* Bisect the timer/swipe/limits/completion-sound merge with speed runs
   (`scroll-today`, `tap-today`, `new-habit`, `progress`), variants side by side in one run (S2); fix it; numbers
