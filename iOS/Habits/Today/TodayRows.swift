@@ -770,7 +770,9 @@ enum RowSpace {
 
 /// After a log on this row: the named Undo, the note (Add Note, or Edit Note once there is one) and a milestone the
 /// tap reached, as small capsule buttons on one line under the text (the user, 3 Oct 2026: nothing wraps, even
-/// spacing, never typed in the row). Only while the offer lasts. Only this reads the store's offers, so a log redraws
+/// spacing, never typed in the row). The line never runs past the row (the user, 9 Oct 2026: a long step name in Undo
+/// pushed Add Note off the screen): Add Note keeps its size, Undo shortens with "…" if it must, and a milestone
+/// shortens first. Only while the offer lasts. Only this reads the store's offers, so a log redraws
 /// this line, not each row's whole body (lesson L16, 2 Oct 2026).
 struct RowAfterLog: View {
     let habit: Habit
@@ -799,7 +801,7 @@ struct RowAfterLog: View {
                 Button { store.undoEntry(undo.id) } label: {
                     Label(undo.undoLabel(for: habit), systemImage: "arrow.uturn.backward")
                 }
-                .fixedSize()
+                .layoutPriority(1)
                 .accessibilityIdentifier("habit-inline-undo")
             }
             if day <= store.today() {
@@ -826,6 +828,9 @@ struct RowAfterLog: View {
         .tint(.secondary)
         .font(.caption.weight(.medium))
         .lineLimit(1)
+        .truncationMode(.tail)
+        // Offered the row's width, not its own: the line fits it instead of running off the screen.
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     /// Opens the note sheet for this habit and day (as the row's swipe and menu do).
@@ -841,6 +846,7 @@ struct QuitAfterSlip: View {
     let slip: UUID
     let onDone: () -> Void
     @Environment(HabitStore.self) private var store
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
         let note = store.note(of: habit, on: day) != nil
@@ -852,14 +858,16 @@ struct QuitAfterSlip: View {
             }
             .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
         }
-        .labelStyle(AfterLogLabel(iconOnly: false))
+        // As every row's after-log line: icons at the accessibility sizes (the words stay for VoiceOver), and never
+        // wider than the row.
+        .labelStyle(AfterLogLabel(iconOnly: typeSize.isAccessibilitySize))
         .buttonStyle(.bordered)
         .buttonBorderShape(.capsule)
         .controlSize(.small)
         .tint(.secondary)
         .font(.caption.weight(.medium))
         .lineLimit(1)
-        .fixedSize()
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.leading, RowSpace.textLeading)
         .padding(.top, RowSpace.afterBand)
         .task(id: slip) {

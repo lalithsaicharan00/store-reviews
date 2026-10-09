@@ -493,8 +493,10 @@ extension Entry {
 
     /// Says what Undo takes back, before it's tapped (the user, 3 Oct 2026; report "Today's Rows"): always this one
     /// entry, never the day. "Undo +1 glass", "Undo 20 min", "Undo +1", "Undo Done", "Undo Slip", "Undo Cleanser".
+    /// A step's is "Undo Last Step", never the step's own name: a long name pushed Today's after-log buttons off the
+    /// row (the user, 9 Oct 2026). Where one step's own row is shown, `undoSpoken(for:)` names it for VoiceOver.
     func undoLabel(for habit: Habit) -> String {
-        if let stepID { return "Undo " + (habit.steps.first { $0.id == stepID }?.name ?? "Step") }
+        if stepID != nil { return "Undo Last Step" }
         switch habit.kind {
         case .amount: return "Undo +" + description(for: habit)
         case .duration: return "Undo " + description(for: habit)
@@ -504,6 +506,12 @@ extension Entry {
         case .quit: return "Undo Slip"
         case .checklist: return "Undo"
         }
+    }
+
+    /// VoiceOver's name for Undo on this log's own row (Day details' logs), where the step is the one beside it.
+    func undoSpoken(for habit: Habit) -> String {
+        if let stepID, let step = habit.steps.first(where: { $0.id == stepID }) { return "Undo " + step.name }
+        return undoLabel(for: habit)
     }
 
     /// Whether this log has a fact of its own to see and correct in the Log view (U19): an amount, a time, a slip's

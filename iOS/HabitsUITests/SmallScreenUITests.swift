@@ -218,4 +218,42 @@ final class SmallScreenUITests: XCTestCase {
         aboveKeyboard(says, "Reminder Says")
         shot("se-reminder-says")
     }
+
+    /// Today's after-log line never runs past the row (the user, 9 Oct 2026: a long step name in Undo pushed Add Note off
+    /// the screen). A step's Undo is "Undo Last Step"; an amount's names it ("Undo +1 tablespoon"); at the largest text
+    /// that still shows words, both stay on one line inside the row, with Add Note whole.
+    func testAfterLogLineStaysInsideTheRow() {
+        app.launchArguments = ["-uitest", "-longtext", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Floss"].firstMatch.waitForExistence(timeout: 20), "The sample habits are there")
+        func button(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
+        func checkLine(_ what: String, label expected: String) {
+            let undo = app.buttons["habit-inline-undo"], add = app.buttons["habit-add-note"]
+            XCTAssertTrue(undo.waitForExistence(timeout: 3) && add.exists, "\(what): Undo and Add Note after a log")
+            XCTAssertEqual(undo.label, expected, what)
+            let line = "\(what): undo \(undo.frame), add note \(add.frame), window \(window)"
+            XCTAssertLessThan(abs(undo.frame.midY - add.frame.midY), 2, "On one line: " + line)
+            XCTAssertLessThan(undo.frame.height, 44, "Undo never wraps: " + line)
+            XCTAssertLessThan(undo.frame.maxX, add.frame.minX, "Undo first, apart from Add Note: " + line)
+            XCTAssertLessThanOrEqual(add.frame.maxX, window.maxX, "Add Note whole on screen: " + line)
+            XCTAssertGreaterThanOrEqual(undo.frame.minX, window.minX, "Undo on screen: " + line)
+        }
+        // A checklist step at its 24-character limit.
+        let step = button("Mark Double cleanse")
+        if !step.exists {
+            let show = button("Show Morning skincare")
+            XCTAssertTrue(app.reveal(show, clear: true), "The checklist row is on Today")
+            show.tap()
+        }
+        XCTAssertTrue(app.reveal(step, clear: true), "The long step is shown")
+        step.tap()
+        checkLine("A long step", label: "Undo Last Step")
+        shot("se-after-log-step")
+        // An amount with the longest unit.
+        let plus = button("Add 1 tablespoon")
+        XCTAssertTrue(app.reveal(plus, clear: true), "The amount row is on Today")
+        plus.tap()
+        checkLine("A long unit", label: "Undo +1 tablespoon")
+        shot("se-after-log-amount")
+    }
 }

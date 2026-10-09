@@ -704,6 +704,13 @@ Their placement records scope and priority; implementation has not started.
       `-applockcheck`; widget tests rewritten for discreet cards (T3); PerfDriver scenarios for Privacy & Security and
       the keypad (T4); small screens (T15).
     - [ ] 58.8 Regression set and a full speed run compared with 58.1.
+    - [ ] 58.9 (the user, 9 Oct 2026, with a screenshot) Today's after-log line: a checklist step's Undo named the step
+      ("Undo Bsbsbbsbsbsbdbsbdbbdbdbd") and pushed Add Note off the row. A step's Undo is now **"Undo Last Step"**
+      (Today's line, swipe, touch-and-hold menu and the routine player; Day details' per-log Undo still names its step
+      for VoiceOver); the line is offered the row's width, Add Note keeps its size and Undo shortens with … rather than
+      pushing anything out, for every habit type (amounts with long units too); the quit row's Undo Slip line follows
+      the same rules. Checked on the iPhone SE at the largest text size that shows words (`SmallScreenUITests.
+      testAfterLogLineStaysInsideTheRow`).
 
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from

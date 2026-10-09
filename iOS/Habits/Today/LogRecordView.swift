@@ -313,7 +313,7 @@ struct DayLogRow: View {
                 Button("Undo") { store.undoEntry(entry.id) }
                     .fontWeight(.semibold)
                     .buttonStyle(.borderless)
-                    .accessibilityLabel(entry.undoLabel(for: habit) + " at " + store.clockText(of: entry))
+                    .accessibilityLabel(entry.undoSpoken(for: habit) + " at " + store.clockText(of: entry))
                     .accessibilityIdentifier("undo-entry-\(entry.id)")
             }
         }
