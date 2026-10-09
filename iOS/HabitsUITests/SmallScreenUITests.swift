@@ -168,7 +168,10 @@ final class SmallScreenUITests: XCTestCase {
         app.launchArguments = ["-uitest", "-empty", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityM"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
-        app.buttons["menu-button"].tap(); app.buttons["menu-privacy"].tap()
+        app.buttons["menu-button"].tap()
+        // At this text size the menu is taller than the SE: scroll it (not Today) to Privacy & Security.
+        if !app.buttons["menu-privacy"].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
+        app.buttons["menu-privacy"].tap()
         let lock = app.switches["privacy-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
         shot("se-privacy-off")
@@ -248,7 +251,10 @@ final class SmallScreenUITests: XCTestCase {
             XCTAssertTrue(app.reveal(show, clear: true), "The checklist row is on Today")
             show.tap()
         }
-        XCTAssertTrue(app.reveal(step, clear: true), "The long step is shown")
+        // The sample day has every step done: untick the long one first, so ticking it logs and offers Undo.
+        let done = button("Undo Double cleanse")
+        XCTAssertTrue(app.reveal(step, clear: true) || app.reveal(done, clear: true), "The long step is shown")
+        if done.exists { done.tap(); XCTAssertTrue(step.waitForExistence(timeout: 3), "Unticked") }
         step.tap()
         checkLine("A long step", label: "Undo Last Step")
         shot("se-after-log-step")
