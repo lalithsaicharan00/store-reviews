@@ -129,9 +129,11 @@ enum BackupCheck {
         expect(C.lanes(signedIn: true, accountChecked: false, iCloudAvailable: false) == [.account], "signing in without iCloud: the account")
         // Signing out: back to iCloud.
         expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: true) == [.iCloud], "signed out: iCloud again")
-        // Checked means this device's copy with this checksum is in the account's list.
-        expect(C.accountHas("abc", in: [(isThisDevice: true, sha256: "abc")]), "the account has this device's copy")
-        expect(!C.accountHas("abc", in: [(isThisDevice: false, sha256: "abc"), (isThisDevice: true, sha256: "def")]), "another device's copy, or an older one, doesn't count")
+        // The account has everything once sync has sent it all and the server said so (Current Work 78; D4): only then
+        // does iCloud stop.
+        expect(C.accountHasEverything(waiting: 0, lastSyncedAt: 1_791_115_200_000), "nothing waiting, acknowledged: the account has it all")
+        expect(!C.accountHasEverything(waiting: 1, lastSyncedAt: 1_791_115_200_000), "a change still waiting: iCloud keeps going")
+        expect(!C.accountHasEverything(waiting: 0, lastSyncedAt: nil), "never acknowledged: iCloud keeps going")
 
         // Backed up as you go, with a set clock.
         let now = Date(timeIntervalSince1970: 1_791_115_200)

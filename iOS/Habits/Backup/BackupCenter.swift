@@ -481,10 +481,16 @@ final class BackupCenter {
         return text.addingPercentEncoding(withAllowedCharacters: plain) ?? "iPhone"
     }
 
+    /// The account has everything: nothing waits in the outbox and the server has acknowledged a sync (05 §11.2). Only
+    /// then does iCloud stop after signing in (D4).
+    nonisolated static func accountHasEverything(waiting: Int, lastSyncedAt: Int64?) -> Bool {
+        waiting == 0 && lastSyncedAt != nil
+    }
+
     /// Signed in: synced = the server acknowledged everything (05 §11.2).
     private func readSyncStatus() async {
         guard let status = try? await repository.syncStatus() else { return }
-        if status.waiting == 0, let at = status.lastSyncedAt {
+        if Self.accountHasEverything(waiting: Int(status.waiting), lastSyncedAt: status.lastSyncedAt?.int64Value), let at = status.lastSyncedAt {
             lastGood = Date(timeIntervalSince1970: Double(at.int64Value) / 1000)
             setDate(Key.lastGood, lastGood)
             // Everything is in the account and acknowledged: the switch-over is done (D4).
