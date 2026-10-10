@@ -297,6 +297,9 @@ struct HabitForm: View {
     /// The 6th-habit sheet, and whether to add the habit once it closes (Plus bought or room made).
     @State private var sixthHabit = false
     @State private var addAfterSheet = false
+    /// The name as it was when Add was tapped: the sheet never reads the typed text, so typing never redraws the form
+    /// for it (S11).
+    @State private var sixthName = ""
 
     /// How much (amounts and limits: typed, with a unit) or how long (Time it: hours and minutes).
     /// They start as the suggestion for the name, and follow it until the person changes them.
@@ -593,7 +596,7 @@ struct HabitForm: View {
             addAfterSheet = false
             addNew()
         }) {
-            SixthHabitSheet(reason: .adding(trimmedName)) { addAfterSheet = true }
+            SixthHabitSheet(reason: .adding(sixthName)) { addAfterSheet = true }
         }
         // Icon and colour are quick picks, so they pop up over the form (the user's choice).
         .sheet(isPresented: $showAppearance) {
@@ -1304,6 +1307,7 @@ struct HabitForm: View {
             return
         }
         if type.isHabit && !store.canAddHabit {
+            sixthName = trimmedName
             sixthHabit = true
             return
         }

@@ -226,6 +226,31 @@ final class PlusUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Mark Read done"].exists, "Every habit stays: \(labels(app))")
     }
 
+    /// Screen 4: bringing back an archived habit at 5 of 5 opens the same sheet; once room is made it comes back.
+    func testBringingBackAnArchivedHabit() {
+        let app = launch()
+        app.buttons["menu-button"].tap()
+        XCTAssertTrue(app.buttons["menu-habits"].waitForExistence(timeout: 5))
+        app.buttons["menu-habits"].tap()
+        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 5), labels(app))
+        let stretch = button(startingWith: "Stretch", app)
+        XCTAssertTrue(stretch.waitForExistence(timeout: 5), labels(app))
+        stretch.swipeLeft()
+        let restore = app.buttons["Restore"]
+        XCTAssertTrue(restore.waitForExistence(timeout: 3), labels(app))
+        restore.tap()
+        XCTAssertTrue(app.staticTexts["Bring back Stretch"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(app.staticTexts["Stretch would be your 6th habit."].exists, labels(app))
+        shot(app, "plus-04-restoring")
+        app.buttons["plus-make-room"].tap()
+        XCTAssertTrue(app.buttons["make-room-archive-Walk"].waitForExistence(timeout: 5), labels(app))
+        app.buttons["make-room-archive-Walk"].tap()
+        XCTAssertTrue(app.staticTexts["Bring back Stretch"].waitForNonExistence(timeout: 8), labels(app))
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 8), "Stretch is back on Today: \(labels(app))")
+        XCTAssertFalse(app.buttons["Mark Walk done"].exists, "Walk was archived to make room")
+    }
+
     /// Screen 16: a second device on the free plan. Plus first with See Plus (the Plus page), the free move last with the
     /// only filled button; ✕ changes nothing.
     func testSecondDeviceSheetOpensThePlusPage() {
