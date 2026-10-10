@@ -226,6 +226,25 @@ final class PlusUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Mark Read done"].exists, "Every habit stays: \(labels(app))")
     }
 
+    /// Screen 16: a second device on the free plan. Plus first with See Plus (the Plus page), the free move last with the
+    /// only filled button; ✕ changes nothing.
+    func testSecondDeviceSheetOpensThePlusPage() {
+        let app = launch(["-test-ask-replace", "iPhone"])
+        let title = app.staticTexts["use-here-title"]
+        XCTAssertTrue(title.waitForExistence(timeout: 15), labels(app))
+        XCTAssertTrue(title.label.hasPrefix("Use your habits on this "), title.label)
+        let seePlus = app.buttons["use-here-see-plus"], move = app.buttons["use-here-continue"]
+        XCTAssertTrue(seePlus.exists && move.exists, labels(app))
+        XCTAssertLessThan(seePlus.frame.minY, move.frame.minY, "Plus first, the free move last")
+        shot(app, "plus-16-second-device")
+        seePlus.tap()
+        XCTAssertTrue(app.buttons["plus-buy"].waitForExistence(timeout: 5), "See Plus opens the Plus page: \(labels(app))")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["use-here-cancel"].waitForExistence(timeout: 5), labels(app))
+        app.buttons["use-here-cancel"].tap()
+        XCTAssertTrue(title.waitForNonExistence(timeout: 5), "✕ closes it")
+    }
+
     private func openPlusPageWithPlus(_ app: XCUIApplication) {
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]

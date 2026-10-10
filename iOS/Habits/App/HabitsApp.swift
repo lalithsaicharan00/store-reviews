@@ -17,7 +17,11 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             root
+                // Here as well as on Today: sheets presented around Today ("Plus has ended", the second device's See
+                // Plus) are outside Today's own environment, and a missing one stops the app (PlusUITests, run
+                // 38063952336).
                 .environment(model.plus)
+                .environment(model.store)
                 // Switches in the iPhone's own green: the app's ink tint is near-white in dark mode, where an "on"
                 // switch couldn't be told from "off" (the user, on the iPhone, 2 Oct 2026). A Toggle inside a Menu
                 // sets `.toggleStyle(.automatic)` so it stays a menu item with a check (ProgressScreen).
