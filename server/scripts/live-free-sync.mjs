@@ -146,7 +146,8 @@ const measured = {};
 // 4. Move to Another Device through the server (anonymous; the content is opaque bytes here).
 {
   const id = [...crypto.getRandomValues(new Uint8Array(32))].map((b) => b.toString(16).padStart(2, "0")).join("");
-  const bytes = crypto.getRandomValues(new Uint8Array(75_000)); // about a realistic backup file
+  const bytes = new Uint8Array(75_000); // about a realistic backup file
+  for (let i = 0; i < bytes.length; i += 65_536) crypto.getRandomValues(bytes.subarray(i, i + 65_536));
   const put = await fetch(`${base}/v1/transfer/${id}`, { method: "PUT", body: bytes });
   const waiting = await (await fetch(`${base}/v1/transfer/${id}/status`)).json();
   const got = new Uint8Array(await (await fetch(`${base}/v1/transfer/${id}`)).arrayBuffer());
