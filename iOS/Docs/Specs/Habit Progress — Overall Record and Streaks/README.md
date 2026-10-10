@@ -167,11 +167,13 @@ so 10 days, 3 weeks and 2 months come early; later ones are spaced so no gap is 
 done (75 between 50 and 100, 150 and 250 between 100 and 365, 39 and 78 weeks, 9 and 15 months). 21 and 66 days stay
 out: they're "habit-forming" numbers with no evidence behind them (3 Oct report).
 
-### 4.2 Everything else (unchanged)
+### 4.2 In total, and Today's line
 
 | Track | Values (keep all of them) | Code |
 |---|---|---|
-| In total (goals met), every unit | 10, 25, 50, 100, 250, 500, 1,000, 2,500, 5,000 | `milestoneTracks` `totalLadder` |
+| In total (goals met): day goals, selected days, week goals, limits | 10, 25, 50, 100, 250, 500, 1,000, 2,500, 5,000 (unchanged) | `milestoneTracks` `totalLadder` |
+| In total: month goals | **3, 6** (new), then 10, 25, 50, 100, 250, 500, 1,000, 2,500, 5,000 | same, by the goal's unit |
+| In total: year goals | **2, 5** (new), then 10, 25, 50, 100, 250, 500, 1,000, 2,500, 5,000 | same |
 | Today's after-tap line | a streak reaching any in-a-row value in §4.1; "All N done today" | `milestoneOffer` |
 
 - **Where the code changes:** `StreakUnit.isMilestone` (`Milestones.swift`) for days/times, weeks, months and years;
@@ -180,8 +182,9 @@ out: they're "habit-forming" numbers with no evidence behind them (3 Oct report)
 - **Self-checks to update** (`ProgressCheck` G19): `StreakUnit.days.milestones(upTo: 400)` becomes
   `[3, 7, 10, 14, 30, 50, 75, 100, 150, 200, 250, 365]`; `StreakUnit.weeks.nextMilestone(after: 4)` becomes 6. G9's
   quit "Next: 7 days · in 2 days" stays (nothing added below 7).
-- Still a proposal, **not approved:** In total for month goals adding 3 and 6 before 10, and for year goals 2 and 5
-  (E5). Build In total as above unless the user says yes.
+- **In total for month and year goals: approved by the user, 11 Oct 2026** (E5). Month goals add 3 and 6 before 10
+  (a first total marker after a season, not after almost a year); year goals add 2 and 5. Every existing value stays,
+  up to 5,000; the others keep 10 … 5,000. Build it in `milestoneTracks` from the goal's unit (`record.unit`).
 
 ## 5. Every habit type and goal period
 
@@ -238,7 +241,7 @@ broken; a limit's period counts only once it's over; Today shows "3 wk" / "2 mo"
 
 Found in the code on `app-lock-privacy-security` (`Milestones.swift`; `HabitStore+HabitPage.swift` `milestoneTracks`,
 `habitRecord`, `nthCounted`; `HabitStore.swift` `walkRuns`; `Habit.swift` `streakUnit`). E1–E3 are bugs to fix in this
-build; E4 and E6 are answered by the new ladders (§4.1); E5 is still a proposal.
+build; E4, E5 and E6 are answered by the new ladders (§4.1, §4.2).
 
 | # | What happens today | Example | Build this |
 |---|---|---|---|
@@ -246,7 +249,7 @@ build; E4 and E6 are answered by the new ladders (§4.1); E5 is still a proposal
 | E2 | **Totals mix days and weeks.** After a change from an amount-or-count-a-day goal (`flexible(.day)`) to a week goal, each old day counts as a "week" in Goal met and In total | 40 days of "20 min a day", then "2 h a week": "Goal met in 46 of 50 weeks" | Goal met and the In total count only periods of today's unit; earlier eras keep their own medals (E1) |
 | E3 | **A period's reached date drifts.** `nthCounted` and `habitRecord.metDates` use the period's last day, or today while it's running | Week goal met Wed 8 Oct: the medal says 8 Oct, 9 Oct, 10 Oct … then Sat 11 Oct | The date is **the day the period's goal was met** (the day of the entry that met it) |
 | E4 | Month milestones are sparse: 3, 6, 12, then every 12 | First medal after 3 months; nothing between 12 and 24 | Decided: the months ladder of §4.1 (2, 3, 4, 5, 6, 9, 12, 15, 18, 24, 30, 36, then every 12) |
-| E5 | In total uses 10 … 5,000 for every unit | A month goal: 25 months of goals met is two years away | Keep 10 … 5,000; proposed, not approved: add 3, 6 for months, 2, 5 for years (§4.2) |
+| E5 | In total uses 10 … 5,000 for every unit | A month goal: 25 months of goals met is two years away | Decided: keep 10 … 5,000 and add 3, 6 for month goals, 2, 5 for year goals (§4.2) |
 | E6 | Year goals start at 2 years in a row | Nothing for the first year | Decided: every year from 1 (§4.1) |
 | E7 | A run reaching a milestone a second time | Best 41, a new run reaches 7 again | No second medal: a milestone is reached once, dated by the first run that reached it. Today's after-tap line still says "7 days in a row" (it's about the current run) |
 | E8 | Editing or deleting an entry | The entry that reached 30 days is deleted | Milestones are worked out from records, never stored, so the medal moves or goes honestly (as today) |
@@ -276,7 +279,7 @@ build; E4 and E6 are answered by the new ladders (§4.1); E5 is still a proposal
   2 of 3") and Best week / month / year for period goals.
 - `milestoneTracks`: E1 (eras, kept medals), E3 (dates), the ring fraction (current ÷ target), the wording of §5.3.
 - `habitRecord`: E2 and E3 for Goal met.
-- Ladders: the in-a-row and quit ladders of §4.1 (adding values only); In total unchanged (§4.2).
+- Ladders: the in-a-row and quit ladders of §4.1 and the In total ladders of §4.2 (adding values only).
 
 **Tests:** update the UI tests that read the old Milestones and streaks (`ProgressUITests.testHabitPageYearAndMilestones`,
 `HabitPageUITests.testStreaksOnTheProgressTab`) in the same change (T3); add `ProgressCheck` cases
@@ -289,6 +292,6 @@ Wednesday); a `PerfDriver` scenario for the All milestones page (T4) and a speed
 1. **Goal met spanning the row when box 4 doesn't apply** (check once a day, checklist, limits; and with Show Streaks
    off and no best day, Goal met alone). Recommended and assumed in §5.1; the user hasn't confirmed it. Build it this
    way unless they say otherwise.
-2. **In total for month and year goals** (E5, §4.2): not approved; build In total as 10 … 5,000.
+2. ~~In total for month and year goals~~: approved 11 Oct (§4.2).
 3. **Dark mode** wasn't drawn; follow the light frames with the system's dark colours (the user's phone is in dark
    mode, so check it there).
