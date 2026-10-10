@@ -1,8 +1,8 @@
 # Apple Watch App — What People Want, What Breaks, and How Ours Works
 
 Written by Claude (Claude Code), 10 October 2026. Roadmap #65 (Apple Watch app, Plus; Feature Ledger C022). Written for
-the no-server world (Rulebook D16): sync through the person's own iCloud ([Architecture 11](<../../../Architecture/11. iCloud Sync with CloudKit.md>)).
-It replaces the server-based Watch design in [Architecture 07 §4](<../../../Architecture/07. Other Surfaces.md>).
+the no-server world (Rulebook D16): sync through the person's own iCloud ([Architecture 11](<../../../../Architecture/11. iCloud Sync with CloudKit.md>)).
+It replaces the server-based Watch design in [Architecture 07 §4](<../../../../Architecture/07. Other Surfaces.md>).
 
 **Evidence:** all 337,331 App Store reviews of the 74 habit and routine apps were scanned for any mention of a watch, in
 English and eight other languages. All 3,051 matches were read one by one and coded by hand. The full per-review index and the scripts are in
@@ -235,6 +235,8 @@ when built.
 
 ### 5.3 How changes travel (with iCloud, no server)
 
+*Worked out in full, 10 Oct 2026: [Architecture 12 — Apple Watch, Data and Sync](<../Data and Sync (Architecture 12).md>).*
+
 ```
    Apple Watch (Plus)                     iPhone (the person's main device)          iCloud (their own)
  ┌────────────────────────┐   WatchConnectivity   ┌────────────────────────┐   CKSyncEngine   ┌──────────────┐
@@ -289,8 +291,9 @@ when built.
 3. **Timer:** the running clock from its start time, ⏸ / ■, time left to the goal; an end alert as a local notification.
 4. **Not Plus:** "Apple Watch is part of Plus", what it does in one line, [Open on iPhone]. No purchase on the Watch.
 
-**Not in version 1** (asked for, but rarely, or risky): running a routine on the Watch (59 out-of-step reviews show
-it's the hardest to get right: version 2, with one device running a routine at a time), adding habits by voice (6),
+**The routine player is in version 1** (10 Oct, step 1: [Running a Routine on the Watch](<Running a Routine on the Watch — Can It Be Done.md>)).
+
+**Not in version 1** (asked for rarely): adding habits by voice (6),
 history and statistics, controls (watchOS 26), Siri on the Watch.
 
 ---
@@ -335,8 +338,9 @@ history and statistics, controls (watchOS 26), Siri on the Watch.
 
 ## 9. Decisions for the user
 
-1. **Version 1's scope** as in §5.5 (Today, a habit's day, timers, complications; routines on the Watch in version 2).
-   Recommended.
+1. **Version 1's scope** as in §5.5 (Today, a habit's day, timers, complications), **plus the routine player**: step 1
+   of the user's plan found routines can run on the Watch and our player avoids the usual failures
+   ([Running a Routine on the Watch](<Running a Routine on the Watch — Can It Be Done.md>), rules R1–R9). Recommended.
 2. **Minimum watchOS 11** (interactive complications, Double Tap, Live Activities in the Smart Stack). It leaves out
    Series 4, 5 and the first SE (2018–2020 watches), which can't update past watchOS 10; supporting them would mean
    complications that can't log and no Double Tap. Recommended.

@@ -20,6 +20,14 @@ Q = [("11458708619","Sometimes I keep my phone out of reach to avoid distraction
 ("6213582796","It's not until I open the app on my iphone that the watch resets."),
 ("10832845541","including habits that aren’t scheduled for tod"),
 ("12717025537","the Apple Watch app doesn’t work without the phone around"),
+("12936726099","Now I can ditch my phone and actually focus on completing my habit"),
+("11427409205","on the apple watch it turns off the moment you leave the app or the screen gets dimmer."),
+("10179113941","If I start from the watch, it almost never records that on the phone."),
+("8283285093","When I pause the routine on my watch, the phone app will continue counting down."),
+("12442067714","On the Watch, there’s no option to move a task to the end, only complete or skip."),
+("6777298636","would love a watch face complication showing my current habit and time remaining."),
+("10924800327","I really don’t like having to pull up the app on my phone first in order to use it on my watch."),
+("13786020408",None),
 ("11368755180",None),("14269287686",None),("8509098000",None),("1480955144",None),("9886812490",None),("8343208608",None)]
 bad = 0
 for i, q in Q:
