@@ -697,8 +697,9 @@ and the Add note keyboard coming up by itself.
     files not brought down yet count as coming (`BackupFolder.place`), never written over (`.notReady`); Restore asks
     iCloud's own list (`ICloudLookup`, `NSMetadataQuery`) and keeps looking 20 s while nothing is found; the first
     backup of an install waits for that list; a copy its index doesn't name is still listed; the iCloud container is
-    set up at launch. Logic checks in `BackupCheck`. Still to do: BackupUITests on GitHub; on the iPhone, delete the app
-    and reinstall, and open it on a second device with the same Apple Account (U9). Not covered by any code: a phone
+    set up at launch. Logic checks in `BackupCheck`. Still to do: on the iPhone, delete the app
+    and reinstall, and open it on a second device with the same Apple Account (U9). BackupUITests passed on GitHub
+    (run 38026303087, 10 Oct 2026). Not covered by any code: a phone
     lost before iCloud finished uploading its newest copy (the user, 10 Oct: nothing to do there).
 
 - [ ] **76. Sidebar, Account and Backup & Export: redesign** (added 10 October 2026, from the user, with five
@@ -761,8 +762,12 @@ and the Add note keyboard coming up by itself.
   - [x] **App built** (commit `35c16841`; A1–A8): sync for every signed-in account, "Use on This iPhone?" (7), "Signed
     out on this iPhone" (8), Backup & Export's same list in every state (4, 4b, 4c, 4e), Account's Last Synced,
     Restore's 7 / 90 days, Help topics, analytics. Google Drive stays hidden behind its flag (not working yet).
-  - [ ] Tests on GitHub (BackupUITests' two-device free account end to end, OnboardingUITests, screenshots, Sync,
-    Analytics; SmallScreen on the SE; speed): runs pending.
+  - [x] Tests on GitHub (10 Oct 2026): Backup, Onboarding, the screenshots, Sync and Analytics, with BackupUITests'
+    two-device free account end to end through dev, in runs **38037588319** (7 failures: 6 tests out of date and the
+    closed sidebar reported as an "alert", fixed in `8b453f03`) and **38039875406** (all of them passed but the share
+    sheet's ✕ tapped too early, fixed in `d0ee0bd1`, BackupUITests re-run); the SE (SmallScreenUITests) **38037590271**;
+    speed **38037591549** (Backup & Export and Account: 0 ms/s hitches, no freezes); the screens behind the ≡ menu
+    (Today, Groups, App Lock, App Reliability, Test Launch Isolation, Persistence: 78/78) **38039877414**.
   - [ ] **iPhone checks pending (U9):** two real devices on one free account (sign in on the second: the first is
     signed out and keeps everything; sign back in on the first: changes made on both merge); a widget or notification
     change syncing in the background on a free account (D12, `SyncDeviceTests`); a locked iPhone (D13); mobile data used
@@ -781,8 +786,8 @@ and the Add note keyboard coming up by itself.
   - [x] App: `DeviceTransfer.swift` seals the backup file with AES-256-GCM, key and ID both from PBKDF2 of the code; no
     local network and no Local Network permission any more; any network, any distance; iPhone ⇄ Android-ready (the same
     recipe, Architecture 04).
-  - [ ] Tests on GitHub: OnboardingUITests moves the demo habits between two launches through dev and refuses a wrong
-    code; BackupUITests shows the code reaching the server; BackupCheck's seal / open checks. Runs pending.
+  - [x] Tests on GitHub: OnboardingUITests moves the demo habits between two launches through dev and refuses a wrong
+    code, BackupUITests shows the code reaching the server, BackupCheck's seal / open checks: run **38039875406**.
   - [ ] **iPhone check pending (U9):** two real iPhones on different networks (one on mobile data).
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
