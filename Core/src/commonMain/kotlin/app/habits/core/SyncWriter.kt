@@ -25,13 +25,19 @@ import kotlinx.serialization.json.jsonPrimitive
 class SyncWriter internal constructor(private val dao: HabitDao, private val now: Long) {
     private lateinit var clock: HlcClock
     private var sending = false
+    /** True while this device keeps a queue for its paired device (the iPhone for its Apple Watch, and the other way). */
+    private var peering = false
+
+    /** Where a change came from: the server (or iCloud), or the paired device (Architecture 12 §3.1). */
+    enum class Source { SERVER, PEER, FILL }
 
     internal suspend fun begin() {
-        // One query for the four, not four: every write on the device starts here (speed run, 1 Oct).
-        val state = dao.states(listOf(NODE, CLOCK, ACCOUNT, STAMPED)).associate { it.key to it.value }
+        // One query for all of them, not one each: every write on the device starts here (speed run, 1 Oct).
+        val state = dao.states(listOf(NODE, CLOCK, ACCOUNT, STAMPED, PEER)).associate { it.key to it.value }
         val node = state[NODE] ?: newNode().also { dao.setState(LocalStateRecord(NODE, it)) }
         clock = HlcClock(node, state[CLOCK]?.let(Hlc::parse))
         sending = state[ACCOUNT] != null
+        peering = state[PEER] == "1"
         if (state[STAMPED] == null) stampExistingRows()
     }
 
@@ -48,16 +54,42 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         if (changed.isEmpty()) return
         val op = Op(newOpId(), table, row, changed, clock.now(now).encode(), HabitRepository.SCHEMA_VERSION)
         apply(op)
-        if (sending) dao.insertOutbox(OutboxRecord(opId = op.id, op = SyncRules.encodeOp(op)))
+        if (!sending && !peering) return
+        val encoded = SyncRules.encodeOp(op)
+        if (sending) dao.insertOutbox(OutboxRecord(opId = op.id, op = encoded))
+        if (peering) dao.insertPeerOut(PeerOutRecord(opId = op.id, op = encoded))
     }
 
     suspend fun exists(table: String, row: String): Boolean = dao.syncMeta(table, row) != null
 
     // MARK: Changes from other devices
 
-    suspend fun receive(op: Op) {
+    /**
+     * Merges another device's change. A change that altered something is passed on along the other path, never back
+     * where it came from: one from the server goes to the paired device's queue, one from the paired device to the
+     * outbox (Architecture 12 §3.1 step 3). A change that altered nothing is already known here, so it stops: with the
+     * op ID unique in each queue, no change can loop between devices.
+     */
+    suspend fun receive(op: Op, from: Source = Source.SERVER) {
         Hlc.parse(op.hlc)?.let { clock.observe(it, now) }
-        apply(op)
+        if (!apply(op)) return
+        when (from) {
+            Source.SERVER -> if (peering) dao.insertPeerOutIfNew(PeerOutRecord(opId = op.id, op = SyncRules.encodeOp(op)))
+            Source.PEER -> if (sending) dao.insertOutboxIfNew(OutboxRecord(opId = op.id, op = SyncRules.encodeOp(op)))
+            Source.FILL -> Unit // a first fill copies what the paired device already has and sends on itself
+        }
+    }
+
+    /**
+     * Merges a whole record from the paired device's first fill, every field with the stamp it really has, so a change
+     * made since on either device still wins over the copy (Architecture 12 §3.1 step 1).
+     */
+    suspend fun receiveRecord(table: String, row: String, record: SyncRecord) {
+        for ((hlc, names) in record.clocks.entries.groupBy({ it.value }, { it.key })) {
+            val fields = names.mapNotNull { name -> record.fields[name]?.let { name to it } }.toMap()
+            if (fields.isEmpty() || !Hlc.isValid(hlc)) continue
+            receive(Op(newOpId(), table, row, fields, hlc, HabitRepository.SCHEMA_VERSION), Source.FILL)
+        }
     }
 
     // MARK: Accounts
@@ -88,12 +120,14 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
 
     // MARK: Merging
 
-    private suspend fun apply(op: Op) {
-        if (op.table == SyncCodec.SETTING && SyncCodec.isLocalSetting(op.row)) return
+    /** Returns true when the op changed the stored record. */
+    private suspend fun apply(op: Op): Boolean {
+        if (op.table == SyncCodec.SETTING && SyncCodec.isLocalSetting(op.row)) return false
         val current = current(op.table, op.row)
         val merged = SyncRules.merge(current, op)
-        if (merged == current) return
+        if (merged == current) return false
         store(op.table, op.row, merged)
+        return true
     }
 
     /** The row as sync sees it: its columns plus kept-aside fields, each with its stamp. Null if sync has never seen it. */
@@ -167,6 +201,10 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         const val FULL_PULL = "sync.fullPull"
         const val STAMPED = "sync.stamped"
         const val LAST_SYNCED = "sync.last_synced"
+        /** "1" while this device keeps `peer_out` for its paired device (Architecture 12 §3.1). */
+        const val PEER = "peer.enabled"
+        /** "1" on the Apple Watch once the iPhone's first fill has fully arrived (WA2). */
+        const val PEER_FILLED = "peer.filled"
 
         private val json = Json
 

@@ -81,6 +81,18 @@ internal object Migrations {
         }
     }
 
+    /**
+     * Schema 9: the paired device's queue (`peer_out`, Architecture 12 §3.1), for the Apple Watch. Only adds a table
+     * and an index on `entry` for the fill; nothing existing changes, and an upgrade cut off after creating it runs again harmlessly.
+     */
+    val v8ToV9 = object : Migration(8, 9) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL("CREATE TABLE IF NOT EXISTS `peer_out` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL)")
+            connection.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_peer_out_op_id` ON `peer_out` (`op_id`)")
+            connection.execSQL("CREATE INDEX IF NOT EXISTS `index_entry_day_id` ON `entry` (`day`, `id`)")
+        }
+    }
+
     private fun SQLiteConnection.hasColumn(table: String, column: String): Boolean =
         prepare("PRAGMA table_info(`$table`)").use { statement ->
             while (statement.step()) if (statement.getText(1) == column) return@use true

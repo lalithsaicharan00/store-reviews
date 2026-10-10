@@ -49,12 +49,13 @@ interface HabitDao {
     @Query("DELETE FROM outbox") suspend fun eraseOutbox()
     @Query("DELETE FROM sync_meta") suspend fun eraseSyncMeta()
     @Query("DELETE FROM local_state") suspend fun eraseLocalState()
+    @Query("DELETE FROM peer_out") suspend fun erasePeerOut()
 
     /** Every row of every table, in one transaction: the database is as on first launch. */
     @Transaction
     suspend fun eraseAll() {
         eraseHabits(); eraseSteps(); eraseReminders(); eraseEntries(); eraseSettings()
-        eraseOutbox(); eraseSyncMeta(); eraseLocalState()
+        eraseOutbox(); eraseSyncMeta(); eraseLocalState(); erasePeerOut()
     }
 
     /** Everything a restore compares against, read in one transaction. */
@@ -109,6 +110,21 @@ interface HabitDao {
     @Query("DELETE FROM outbox WHERE op_id IN (:ids)") suspend fun deleteOutbox(ids: List<String>)
     @Query("UPDATE outbox SET problem = :problem WHERE op_id = :id") suspend fun markOutboxProblem(id: String, problem: String)
     @Query("DELETE FROM outbox") suspend fun clearOutbox()
+    /** A change passed on from the paired device may already be waiting (it came both ways): kept once. */
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertOutboxIfNew(op: OutboxRecord)
+
+    // The paired device's queue (schema 9, Architecture 12 §3.1).
+    @Insert suspend fun insertPeerOut(op: PeerOutRecord)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertPeerOutIfNew(op: PeerOutRecord)
+    @Query("SELECT * FROM peer_out ORDER BY seq LIMIT :limit") suspend fun peerOut(limit: Int): List<PeerOutRecord>
+    @Query("SELECT count(*) FROM peer_out") suspend fun peerOutCount(): Int
+    @Query("DELETE FROM peer_out WHERE seq <= :seq") suspend fun deletePeerOutThrough(seq: Long)
+
+    // The first fill, read a page at a time by key, so rows added meanwhile never shift a page and skip a row.
+    @Query("SELECT * FROM sync_meta WHERE (table_name != 'entry' OR pending = 1) AND (table_name > :table OR (table_name = :table AND row_id > :row)) ORDER BY table_name, row_id LIMIT :limit")
+    suspend fun fillMeta(table: String, row: String, limit: Int): List<SyncMetaRecord>
+    @Query("SELECT id, day FROM entry WHERE day < :day OR (day = :day AND id < :id) ORDER BY day DESC, id DESC LIMIT :limit")
+    suspend fun fillEntries(day: String, id: String, limit: Int): List<EntryKey>
 
     /** Runs [block] in one transaction with a [SyncWriter]: every change and its op commit together, or not at all. */
     @Transaction
@@ -125,10 +141,13 @@ interface HabitDao {
 
 }
 
+/** An entry's place in the first fill's newest-first order. */
+data class EntryKey(val id: String, val day: String)
+
 @Database(
     entities = [
         HabitRecord::class, StepRecord::class, ReminderRecord::class, EntryRecord::class, SettingRecord::class,
-        OutboxRecord::class, SyncMetaRecord::class, LocalStateRecord::class,
+        OutboxRecord::class, SyncMetaRecord::class, LocalStateRecord::class, PeerOutRecord::class,
     ],
     version = HabitRepository.SCHEMA_VERSION,
     exportSchema = true,

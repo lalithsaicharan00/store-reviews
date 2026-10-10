@@ -247,4 +247,46 @@ class MigrationTest {
         repo.close()
     }
 
+    /**
+     * Schema 9 adds the Apple Watch's queue (`peer_out`) and the (day, id) index the first fill reads by (Architecture 12
+     * §5). A schema-8 database keeps everything, and only queues changes once a paired device is started.
+     */
+    @Test fun version8UpgradesAndGetsThePeerQueue() = runTest {
+        val connection = createSchema(8)
+        connection.execSQL(
+            "INSERT INTO habit VALUES ('h1', 'Read', 'book', 'orange', 'check', NULL, 1.0, 'anytime', 1.0, 'day', " +
+                "NULL, 'daily', NULL, NULL, 0, NULL, 0, 1000, 1000, NULL, NULL, 1, 'notification', NULL, NULL, NULL, 'Evening')"
+        )
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 1.0, 2000, 'Europe/London', NULL, NULL, 'today')")
+        connection.execSQL("INSERT INTO outbox (op_id, op, problem) VALUES ('op-1', '{}', NULL)")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        val snapshot = repo.load()
+        assertEquals("Evening", snapshot.habits.single().reminderText)
+        assertEquals(listOf("e1"), snapshot.entries.map { it.id })
+        assertEquals(0, repo.peerStatus().waiting)
+        repo.addEntry(EntryRecord("e2", "h1", null, "2026-09-28", 1.0, 3000, "Europe/London", null, null, "today"))
+        assertEquals(0, repo.peerStatus().waiting, "nothing is queued for a Watch that isn't there")
+        repo.peerStart()
+        repo.addEntry(EntryRecord("e3", "h1", null, "2026-09-29", 1.0, 4000, "Europe/London", null, null, "watch"))
+        assertEquals(1, repo.peerStatus().waiting)
+        repo.close()
+        val after = BundledSQLiteDriver().open(path)
+        val waiting = after.prepare("SELECT count(*) FROM outbox").use { it.step(); it.getLong(0) }
+        val index = after.prepare("SELECT count(*) FROM sqlite_master WHERE name = 'index_entry_day_id'").use { it.step(); it.getLong(0) }
+        after.close()
+        assertEquals(1L, waiting, "what was waiting to sync is still there")
+        assertEquals(1L, index)
+    }
+
+    /** An upgrade cut off after creating the queue (the app killed mid-migration) runs again and still opens. */
+    @Test fun version8ThatAlreadyHasThePeerQueueStillOpens() = runTest {
+        val connection = createSchema(8)
+        connection.execSQL("CREATE TABLE IF NOT EXISTS `peer_out` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL)")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
 }

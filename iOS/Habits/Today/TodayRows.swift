@@ -1,51 +1,6 @@
 import SwiftUI
 import UIKit
 
-/// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 steps", "1/3 times", "0/2 cups max": one format for every habit.
-/// While a timer runs, time is a live clock instead: "7:42/20 min" ("Timing a Habit", 28 Sep).
-func goalLine(_ habit: Habit, progress: Double, goal: Double, running: Bool = false) -> String {
-    let period = switch habit.frequency {
-    case .perWeek: " this week"
-    case .perMonth: " this month"
-    case .perYear: " this year"
-    default: ""
-    }
-    // A limit reads like any count, with "max" after it (as the player says it): "1/2 cups max" (3 Oct 2026).
-    let max = habit.atMost ? " max" : ""
-    switch habit.kind {
-    case .duration:
-        // Time is always hours and minutes: "12 min/1 h 30 min".
-        let done = running ? Format.clock(progress) : Format.minutes(progress.rounded(.down))
-        return "\(done)/\(Format.minutes(goal))\(max)\(period)"
-    case .amount(let unit, _):
-        // No unit: just the numbers ("3/8").
-        return "\(Format.amount(progress))/\(Format.amount(goal))\(unit.isEmpty ? "" : " " + unit)\(max)\(period)"
-    case .checklist:
-        return "\(Format.amount(progress))/\(Format.amount(goal)) steps\(period)"
-    case .check where habit.checkUnit != nil:
-        return "\(Format.amount(progress))/\(Format.amount(goal)) \(habit.checkUnit!)\(period)"
-    case .check:
-        // Counted with no unit of its own: "1/3 times", so the number never stands alone.
-        return "\(Format.amount(progress))/\(Format.amount(goal))\(habit.frequency.isDayBased ? " times" : "")\(max)\(period)"
-    case .quit, .task:
-        return "\(Format.amount(progress))/\(Format.amount(goal))\(max)\(period)"
-    }
-}
-
-/// A task's line always says it's a task (report "Today's Rows — The Line Under the Name": people want tasks and habits
-/// told apart), then its time if set, or where it came from if it moved forward: "Task", "Task · 5:00 PM".
-func taskLine(_ habit: Habit, shownOn day: LocalDay, calendar: Calendar) -> String {
-    var parts = ["Task"]
-    if let due = habit.dueDay, due < day {
-        parts.append("From " + due.date(calendar: calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))
-    }
-    if let minute = habit.dueMinute {
-        let time = calendar.date(bySettingHour: minute / 60, minute: minute % 60, second: 0, of: .now)!
-        parts.append(time.formatted(date: .omitted, time: .shortened))
-    }
-    return parts.joined(separator: " · ")
-}
-
 struct HabitRow: View {
     /// Names in tight places (the timer bar, a sheet's title) show this many characters, then "…". Rows use their
     /// width instead, ending in "…" only when they run out (report "Today's Rows — The Line Under the Name").
@@ -250,23 +205,9 @@ struct HabitRow: View {
         store.noteTarget = .init(habit: habit.id, day: day)
     }
 
-    /// The line under the name (report "Today's Rows — The Line Under the Name", 3 Oct 2026): what today asks of this
-    /// habit, the same kind of fact on every row. Counted: how much and how far along ("3/8 glasses", "2/3 this week",
-    /// "1/4 steps", "1/2 cups max"). A single tick: how often ("Every day", "Every Mon, Wed and Fri"), since the ✓ is
-    /// its done-or-not and "0/1" says nothing. Then its time. A task says it's a task; a skipped day says so.
+    /// The line under the name: `HabitStore.rowLine`, the same words on the Apple Watch.
     private func rowLine(progress: Double, goal: Double) -> String {
-        if habit.kind == .task { return taskLine(habit, shownOn: day, calendar: store.calendar) }
-        let time = self.time.map { " · " + DaySection.clock($0.minuteOfDay) } ?? ""
-        if store.isSkipped(habit, on: day) { return (day == store.today() ? "Skipped today" : "Skipped") + time }
-        if case .flexible(let period, let needed) = habit.frequency, let count = store.flexibleProgress(habit, on: day) {
-            let days = "\(count)/\(needed) \(needed == 1 ? "day" : "days") this \(period.noun)"
-            // A tick on some days a week: the days are the progress. An amount or a time: today's, then the days.
-            return (habit.kind == .check ? days : goalLine(habit, progress: progress, goal: goal, running: isRunning) + " · " + days) + time
-        }
-        if habit.kind == .check && habit.frequency.isDayBased && (slot != nil || goal <= 1) {
-            return HabitCopy.capitalized(HabitCopy.rhythm(habit.frequency, weekStart: store.settings.weekStart, short: true)) + time
-        }
-        return goalLine(habit, progress: progress, goal: goal, running: isRunning) + time
+        store.rowLine(habit, on: day, slot: slot, time: time, progress: progress, goal: goal, running: isRunning)
     }
 
     @ViewBuilder

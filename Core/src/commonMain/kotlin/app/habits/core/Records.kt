@@ -76,8 +76,11 @@ data class ReminderRecord(
     @ColumnInfo(name = "deleted_at") val deletedAt: Long?,
 )
 
-/** One thing the user logged. Its ID is made at the tap, so the same tap saved twice counts once. */
-@Entity(tableName = "entry", indices = [Index("habit_id", "day")])
+/**
+ * One thing the user logged. Its ID is made at the tap, so the same tap saved twice counts once. The (day, id) index
+ * (schema 9) lets the Watch's first fill read logs newest first a page at a time (Architecture 12 §3.1).
+ */
+@Entity(tableName = "entry", indices = [Index("habit_id", "day"), Index("day", "id")])
 data class EntryRecord(
     @PrimaryKey val id: String,
     @ColumnInfo(name = "habit_id") val habitId: String,
@@ -147,4 +150,17 @@ data class SyncMetaRecord(
 data class LocalStateRecord(
     @PrimaryKey val key: String,
     val value: String,
+)
+
+/**
+ * Schema 9: a change waiting for the paired device (the Apple Watch on the iPhone, the iPhone on the Watch;
+ * Architecture 12 §3.1). Written in the same transaction as the change, like [OutboxRecord], and removed only when the
+ * other device acknowledges the batch it was in, so a closed app or a Watch out of range never loses one.
+ */
+@Entity(tableName = "peer_out", indices = [Index("op_id", unique = true)])
+data class PeerOutRecord(
+    @PrimaryKey(autoGenerate = true) val seq: Long = 0,
+    @ColumnInfo(name = "op_id") val opId: String,
+    /** The op as JSON, exactly as it will be sent. */
+    val op: String,
 )
