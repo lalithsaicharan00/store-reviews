@@ -123,6 +123,7 @@ final class CloudSync: CloudTransportHandler {
     /// A save found no zone: why is learned from the next fetch before anything is uploaded again (§7, §11).
     @ObservationIgnored private var zoneMissing = false
     @ObservationIgnored private var reloadPending = false
+    @ObservationIgnored private var lastRemoteChange = Date.distantPast
     /// Work started in the background (the engine's start, a hand-over, a zone made again), so `idle()` can wait for it.
     @ObservationIgnored private var background: [UUID: Task<Void, Never>] = [:]
 
@@ -473,12 +474,18 @@ final class CloudSync: CloudTransportHandler {
     /// From this many records in one fetch, the page says it's bringing habits in.
     static let bigFetch = 500
 
-    /// The screen re-reads once per moment, not once per page of a big fetch.
+    /// The screen re-reads once the pages stop arriving (Rulebook S16), not once per page of a big fetch: re-reading a
+    /// year's history every 300 ms of a 20,000-record fetch froze Today's taps (the speed run, 10 Oct 2026). A long
+    /// fetch still shows what has come every few seconds.
     private func remoteChanged() {
+        lastRemoteChange = .now
         guard !reloadPending else { return }
         reloadPending = true
+        let first = Date.now
         track { [self] in
-            try? await Task.sleep(for: .milliseconds(300))
+            repeat {
+                try? await Task.sleep(for: .milliseconds(200))
+            } while Date.now.timeIntervalSince(lastRemoteChange) < 0.6 && Date.now.timeIntervalSince(first) < 4
             reloadPending = false
             onRemoteChanges?()
         }

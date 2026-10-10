@@ -12,6 +12,7 @@ import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.coroutines.withContext
 
 /**
  * The database's side of iCloud sync (Architecture 11 §6–9). CloudKit itself is driven by the app (`CloudSync` on
@@ -28,11 +29,21 @@ import kotlinx.serialization.json.jsonPrimitive
  */
 class CloudStore internal constructor(private val dao: HabitDao, private val clock: () -> Long) {
 
+    /**
+     * Swift calls these on the main thread, and Kotlin runs a suspend function on the thread that called it until it
+     * suspends: merging a page of fetched records or building a batch there froze Today during a big fetch (the speed
+     * run, 10 Oct 2026). Every call runs on the database's background dispatcher, as `HabitRepository`'s do.
+     */
+    private suspend fun <T> offMain(work: suspend () -> T): T = withContext(databaseDispatcher) { work() }
+
+    /** One transaction, off the main thread. */
+    private suspend fun <T> synced(block: suspend (SyncWriter) -> T): T = offMain { dao.synced(clock(), block) }
+
     // MARK: The account
 
     /** The account this device's outbox is kept for ("icloud:<hash>"), or null if it has never synced. */
     @Throws(Exception::class)
-    suspend fun account(): String? = dao.state(SyncWriter.ACCOUNT)
+    suspend fun account(): String? = offMain { dao.state(SyncWriter.ACCOUNT) }
 
     /**
      * Starts keeping every change for [account]. The first time, or for a different account (after the person chose
@@ -40,12 +51,12 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
      * nothing is replaced by what's (or isn't) there: both merge by ID. The same account resumes where it stopped.
      */
     @Throws(Exception::class)
-    suspend fun bind(account: String) = dao.synced(clock()) { it.bind(account) }
+    suspend fun bind(account: String) = synced { it.bind(account) }
 
     /** Everything on this device goes up again as new records (the person deleted the app's iCloud data and chose Back
      *  Up Again, or the zone had to be made again). Nothing local changes. */
     @Throws(Exception::class)
-    suspend fun uploadEverythingAgain() = dao.synced(clock()) { sync ->
+    suspend fun uploadEverythingAgain() = synced { sync ->
         val account = dao.state(SyncWriter.ACCOUNT) ?: return@synced
         sync.bind(account, force = true)
     }
@@ -54,7 +65,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
 
     /** Record names (`<table>:<row>`) of rows with changes waiting, oldest change first, each once. */
     @Throws(Exception::class)
-    suspend fun waitingRows(limit: Int): List<String> = dao.oldestWaiting(limit * 4).distinct().take(limit)
+    suspend fun waitingRows(limit: Int): List<String> = offMain { dao.oldestWaiting(limit * 4).distinct().take(limit) }
 
     /**
      * The records for [names], each from its row's current merged state, with the system fields kept from its last
@@ -62,7 +73,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
      * kept aside with a problem the iCloud page shows, never retried forever and never dropped.
      */
     @Throws(Exception::class)
-    suspend fun batch(names: List<String>): CloudBatch = dao.synced(clock()) { sync ->
+    suspend fun batch(names: List<String>): CloudBatch = synced { sync ->
         val rows = mutableListOf<CloudRow>()
         val refused = mutableListOf<String>()
         val missing = mutableListOf<String>()
@@ -105,7 +116,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
      * leave the outbox. Returns how many changes are still waiting (ops, not rows: cheap to count).
      */
     @Throws(Exception::class)
-    suspend fun saved(results: List<CloudSaved>): Int = dao.synced(clock()) {
+    suspend fun saved(results: List<CloudSaved>): Int = synced {
         for (result in results) {
             val (table, row) = split(result.name) ?: continue
             if (result.system != null) dao.setCloudSystem(table, row, result.system)
@@ -117,14 +128,14 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
 
     /** The changes to these rows can never be accepted (`invalidArguments`): kept aside, with why. */
     @Throws(Exception::class)
-    suspend fun keepAside(name: String, problem: String) = dao.synced(clock()) {
+    suspend fun keepAside(name: String, problem: String) = synced {
         val (table, row) = split(name) ?: return@synced
         dao.markRowProblem(table, row, problem)
     }
 
     /** The saved records' system fields no longer match CloudKit's (`unknownItem`): the next save makes them anew. */
     @Throws(Exception::class)
-    suspend fun forgetSystemFields(names: List<String>) = dao.synced(clock()) {
+    suspend fun forgetSystemFields(names: List<String>) = synced {
         for (name in names) {
             val (table, row) = split(name) ?: continue
             dao.setCloudSystem(table, row, null)
@@ -133,7 +144,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
 
     /** Every row's system fields go (the zone is new): the next saves make every record anew. */
     @Throws(Exception::class)
-    suspend fun forgetAllSystemFields() = dao.synced(clock()) { dao.clearCloudSystem() }
+    suspend fun forgetAllSystemFields() = synced { dao.clearCloudSystem() }
 
     // MARK: Fetching (§8)
 
@@ -145,7 +156,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
      * page is held, so nothing jumps the queue while one waits. Records this version can't read are kept aside.
      */
     @Throws(Exception::class)
-    suspend fun fetched(records: List<CloudIncoming>, deleteAllowance: Int, holdAll: Boolean): CloudApplied = dao.synced(clock()) { sync ->
+    suspend fun fetched(records: List<CloudIncoming>, deleteAllowance: Int, holdAll: Boolean): CloudApplied = synced { sync ->
         val readable = mutableListOf<Pair<CloudIncoming, Pair<Pair<String, String>, SyncRecord>>>()
         var quarantined = 0
         for (incoming in records) {
@@ -180,7 +191,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
 
     /** The person chose to apply what the brake held: every held page, in order, in one transaction. */
     @Throws(Exception::class)
-    suspend fun applyHeld(): CloudApplied = dao.synced(clock()) { sync ->
+    suspend fun applyHeld(): CloudApplied = synced { sync ->
         var changed = 0
         var deleted = 0
         for (page in dao.statesWithPrefix(HELD)) {
@@ -198,7 +209,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
 
     /** Records kept aside because an older version couldn't read them: merged now if this version can. */
     @Throws(Exception::class)
-    suspend fun retryKeptAside(): Int = dao.synced(clock()) { sync ->
+    suspend fun retryKeptAside(): Int = synced { sync ->
         var applied = 0
         for (kept in dao.statesWithPrefix(QUARANTINE)) {
             val incoming = runCatching { decode(Json.parseToJsonElement(kept.value).jsonObject) }.getOrNull() ?: continue
@@ -213,7 +224,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
     // MARK: Where things stand
 
     @Throws(Exception::class)
-    suspend fun counts(): CloudCounts =
+    suspend fun counts(): CloudCounts = offMain {
         CloudCounts(
             waitingOps = dao.outboxCount(),
             waitingRows = dao.waitingRowCount(),
@@ -228,23 +239,24 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
             lastSent = dao.state(LAST_SENT)?.toLongOrNull(),
             lastFetched = dao.state(LAST_FETCHED)?.toLongOrNull(),
         )
+    }
 
     /** Device state kept in this database, beside the data it describes (the engine's state, the account's hash, …). */
     @Throws(Exception::class)
-    suspend fun state(key: String): String? = dao.state(CLOUD + key)
+    suspend fun state(key: String): String? = offMain { dao.state(CLOUD + key) }
 
     @Throws(Exception::class)
     suspend fun setState(key: String, value: String?) {
-        if (value == null) dao.removeState(CLOUD + key) else dao.setState(LocalStateRecord(CLOUD + key, value))
+        offMain { if (value == null) dao.removeState(CLOUD + key) else dao.setState(LocalStateRecord(CLOUD + key, value)) }
     }
 
     /** This device's clock node. */
     @Throws(Exception::class)
-    suspend fun node(): String? = dao.state(SyncWriter.NODE)
+    suspend fun node(): String? = offMain { dao.state(SyncWriter.NODE) }
 
     /** A new node, for a device restored from another's backup (§13.4), so two devices never share stamps. */
     @Throws(Exception::class)
-    suspend fun renewNode() = dao.synced(clock()) { it.renewNode() }
+    suspend fun renewNode() = synced { it.renewNode() }
 
     companion object {
         /** A record bigger than this is refused before sending (§6): CloudKit's limit is 1 MB. */
