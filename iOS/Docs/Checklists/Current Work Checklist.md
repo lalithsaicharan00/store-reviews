@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 80).
+  still resolve; give new items the next unused number (currently 81).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -790,6 +790,169 @@ and the Add note keyboard coming up by itself.
     code, BackupUITests shows the code reaching the server, BackupCheck's seal / open checks: run **38039875406**.
   - [ ] **iPhone check pending (U9):** two real iPhones on different networks (one on mobile data).
 
+- [ ] **80. Buying Plus: the App Store purchase, checked by the server and kept with the account (research first).**
+  Added 10 October 2026, from the user (Product Roadmap 64; "the Plus screen exists but it isn't connected"):
+  - [ ] People can buy Plus from the App Store, in the app.
+  - [ ] As the plan says, the purchase is verified on the server (Cloudflare) and stored against the person once they
+    buy it.
+  - [ ] The user's assumption, to test: buying Plus mandatorily links an account; without an account, no Plus.
+    **Research first whether the account should be mandatory**; if the research says so, implement it that way.
+  - [ ] Take care of entitlement problems overall (restore, refunds, a second device, reinstalls, family sharing,
+    an account that changes, offline, revoked or expired purchases).
+  - [ ] Research first (W2); then the plan; then build. The Apple Watch app and the iPad layout come after (Roadmap 65,
+    66). Revert dev's "every account is Plus" (item 68) before testing a real purchase.
+  - [x] Research done 10 Oct 2026: [Buying Plus — Should an Account Be Required?](<../../../Research/Research Reports/Business Model and Monetization/Buying Plus — Should an Account Be Required.md>).
+    342 reviews read (paid but locked out by a failing login 46, 1.96★; forced account 37, 1.62★; no-account praise 24,
+    4.83★); Apple 5.1.1(v) and App Review's purchase wording. Recommendation: no account wall; signed-in buyers buy into
+    their account; signed-out buyers get "keep Plus with your account" right after paying (Not now kept); Plus is the
+    App Store purchase **or** the account's record, removed only by a confirmed refund. Every entitlement case (§5) and
+    what's left to build (§6). The server already verifies and records purchases and handles refunds.
+  - [ ] The user's decision: optional account (recommended) or required; and the price.
+  - **The user, 10 Oct 2026:** the account comes only after buying, never before; the question is whether it's
+    mandatory then. Their worry: without an account, is Plus recognised on another device later? Answered: on any Apple
+    device with the same Apple Account, yes, from the App Store itself (StoreKit 2), and the purchase can be attached
+    to an account whenever they sign in; another Apple ID, Android, the web and sync need the account. Buyers without
+    an account are welcome (they cost no server).
+  - [ ] **Designs first** (the user, 10 Oct 2026): on the Figma page `onboarding` (767:9100), a new section beside the
+    others with the overall flow. Before drawing screens, work out every screen and page needed: the Plus page (never
+    finished), buying, after buying, Plus Family, and the rest. *Done 10 Oct: Figma 1011:309, 36 screens in 8 groups.*
+  - [x] **The user's question, 10 Oct 2026:** Plus is lifetime but server costs keep running; switch to yearly or
+    monthly? If the app becomes a hit, can we end up unable to pay for many Plus users' servers? And does sync mean phone
+    to phone, or phone, desktop and web? *Answered the same day:
+    [Plus — One-Time or Subscription, and What Sync Costs Over the Years](<../../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/Plus — One-Time or Subscription, and What Sync Costs Over the Years.md>):
+    a typical Plus user costs ~$0.80 over 10 years against $12.74 from one sale; keep one-time, keep ~$2 a sale in
+    reserve; sync covers every device on the account, any platform.* **Decided by the user, 10 Oct 2026: Plus stays
+    one-time** (lifetime; never a subscription).
+  - [x] **Groups 2–4: the remaining purchase screens** (the user, 10 Oct 2026: "let's create the remaining purchase
+    screens"): the Plus page (Plus or Plus Family, prices that can't load, what an owner sees), buying (Apple's sheet,
+    waiting for approval, purchases turned off, didn't go through), after paying (Plus is yours signed out / signed in,
+    saved to your account, couldn't reach it, bought for another account, the next-launch step, Plus Family's sign-in).
+    *Designed 10 Oct, Figma 1018:309: P3, P3b, P4, P5; B1–B4; A1–A7. Placeholder prices $14.99 / $29.99 / $15.00.*
+  - [x] **The user, 10 Oct 2026: arrange the designs as flows, not groups** ("if something belongs to the same page,
+    everything should be together … create it as flows, where they encounter Plus"; iPhone only, other platforms
+    later). *Done: one section, Figma 1021:309, "Plus on iPhone — every flow": Flow 1 starting a 6th habit (New →
+    the sheet → Apple's sheet → Plus is yours → saved to the account, with each step's other outcomes under it);
+    Flow 2 ≡ › Plus (every state of the Plus page together); Flow 3 the other ways to the Plus page; Flow 4 Plus
+    Family; Flow 5 once Plus is yours; other platforms as a note. The two grouped sections are gone; the older Plus
+    page variant (count + "what Plus adds") was replaced by the page with Plus / Plus Family.*
+  - [ ] The user's review of the flows; then what's left: Plus Family (your family, inviting, joining), Restore
+    Purchases' result, when Plus ends (a refund), an iPad or new iPhone on the same Apple Account.
+  - **The user's review of the flows, 10 Oct 2026:**
+    - [x] Plus and Plus Family are both important: the 6th-habit sheet offers **both**, not only "Get Plus · $14.99"
+      (people who need a family plan would think there isn't one). Family prices aren't final: say so on the designs.
+    - [x] The 6th-habit sheet adds a simple way to make room for free: **archive a habit (keeps its progress) or
+      delete one**, for people who don't want to upgrade.
+    - [x] Keep the sheet's own habit icons (the person's existing habits): "that looks cool".
+    - [x] **Drop the "At 5 of 5" New screen (1.2):** people go straight to the sheet.
+    - [x] **The second-device sheet ("Use on This iPad?") is an important place to upgrade:** redesign it clean and
+      clear, never feeling like an upsell; Plus there is a shortcut (its button opens the Plus page), and the content is
+      presented neatly, not a block of text. Research how to do this well (the web).
+    - [x] Design and complete every other Plus or upgrade screen the iPhone needs.
+    - *Done 10 Oct 2026 in Figma 1021:309 (research: contextual prompts at the moment of need, keep the person's place,
+      a free path as clear as the paid one, few choices, the full price shown; Apple's HIG "let people experience your
+      app before making a purchase"). Flow 1: the 6th-habit sheet with Plus and Plus Family side by side and "Make room
+      instead" (1.2–1.2b), Make Room (1.3a: Archive on each habit, Delete in ••• asking first, 1.3b); the 5-of-5 screen
+      removed. Flow 3: the second-device sheet redesigned (Move to this iPad first, Keep both in sync with Plus beside
+      it, See Plus). Flow 4: Your family, Invite, remove / cancel. Flow 5: Restore results, Upgrade to Plus Family.
+      Flow 6 (new): joining with an invite (Have an invite?, the code, sign in, Join Maria's family?, you're in, leave,
+      can't join). Flow 7 (new): when Plus ends (refund, another device, a family that ended). Flow 8 (new): a new
+      device on the same Apple Account. Prices and Plus Family details marked not final.*
+    - [ ] The user's review of these.
+  - **The user, 10 Oct 2026 (in this order, one after the other):**
+    - [x] **1. The price of Plus**, as overall value in dollars (not a US price): what we pay out (Apple's cut, tax,
+      servers, fixed costs) and what we keep. Assume **every user is an extreme power user**: many habits, syncing very
+      often, for 10, 15 or more years; free users too (their cost comes out of Plus, since they never pay). Write the
+      assumptions down.
+    - [x] **2. The price of Plus Family**, worked out the same way.
+    - [x] **3. How many people Plus Family holds** (today the buyer + 5 = 6): research it; generous is fine, too
+      generous isn't.
+      *Done 10 Oct (1–3): [Plus and Plus Family — Price and Size from the Extreme Case](<../../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/Plus and Plus Family — Price and Size from the Extreme Case.md>).*
+  - **Decided by the user, 10 Oct 2026 (after reading 1–3):**
+    - Plus list price **never below $24.99**; raise it if the evidence allows. **Nothing anywhere below $19.99**
+      (regional, student or sale); the working floor is $20.99.
+    - **Plus Family: $59.99 one-time, 5 people** (the buyer + 4).
+    - **Free users must be cheap by design** (the report's §5); the prices hold only with it.
+    - **Every sale profitable with a good margin**, never at break-even, with inflation counted; discounts real
+      (never a raised price crossed out), never stacked.
+  - The user, 10 Oct 2026, second pass:
+    - [x] Check the earlier price research (where people start complaining; sync as the reason to pay), inflation,
+      regional and student prices, and the margin. *Done 10 Oct, the same report §0–§8: as built, $24.99 loses money in
+      the realistic-pessimistic case; with the server changes in §5 one sale costs $8.74; $29.99 keeps 52% at Apple
+      30% (61% at 15%) and is recommended (the reviews' objection line is ~$30–35); regional and student prices up to
+      30% off at $29.99, never below $20.99; Family discounts at most $10.*
+    - [ ] The user's choice: Plus at **$29.99** (recommended) or $24.99; the student price and how students are
+      verified (Apple offer codes work for one-time purchases since 2025).
+    - [ ] **Build the cost changes before launch** (report §5): free accounts push-only, quiet free accounts archived
+      to R2 after ~12 months and restored on sign-in, 7 daily copies; for every account push sync (hibernating
+      WebSocket), only the last 2 years in the Durable Object, 3 rows a record, nightly copies as changes; the daily
+      cost report and alerts.
+    - [ ] Update the Plus screens in Figma (1021:309) to the final prices and "You + 4 people" once the Plus price is
+      chosen.
+  - **The user, 10 Oct 2026, third pass:** a one-time Plus with a server we pay for over many years keeps bringing us
+    back to square one. Can we have no server, so each sale is profit, without losing entitlements or data safety,
+    still thinking of every user as extreme and never taking away what people had? What sync do people want? Would
+    they still buy?
+    - [x] Research it. *Done 10 Oct: [Plus Without a Server](<../../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/Plus Without a Server — Sync, Entitlements and Data Safety on Apple's Own Services.md>).
+      Yes for Apple devices: CloudKit (CKSyncEngine) for sync and backup, StoreKit for Plus, Family Sharing for Plus
+      Family (then 6 people); about 92% of a $24.99 sale kept. Not possible without a server: iPhone ⇄ Android, web,
+      one purchase on both stores.*
+    - [x] The user's choice: no server for launch (recommended) or the server with the cost changes. *Decided 10 Oct
+      2026 for Apple: **no server; CloudKit (`CKSyncEngine`) is final.** Android still open.* If no server:
+      rewrite D3, D4, D9, D12, D14, D15 and the Plus screens; set the server, accounts and invites aside.
+  - **The user, 10 Oct 2026, fourth pass:** put everything from the price to here in one folder, with the prompts;
+    is CloudKit part of the developer account, limited or charged; what about Android, and a Mac with an Android
+    phone? An account only for Plus across stores is acceptable, on Cloudflare's free plan.
+    - [x] One folder: [Plus, Price and the Server — How We Decided](<../../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/README.md>)
+      (decisions, open questions, the reports in order, the user's prompts word for word).
+    - [x] CloudKit, Android and mixed devices researched: [Android and Mixed Devices Without a Server](<../../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/Android and Mixed Devices Without a Server — and CloudKit's Limits.md>).
+    - [ ] The user's choices: the Android plan, Google Drive as the sync place for mixed devices, the
+      entitlement-only account; check Google Play's rules (purchases from another store; family sharing).
+  - **The user, 10 Oct 2026, fifth pass:** "for Apple it has been finalized" (CloudKit, no server). Is Android sync
+    through Google Drive practical, or only theoretical? Has anyone done it; is there a framework?
+    - [x] Researched: [Android Sync Through Google Drive](<../../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/Android Sync Through Google Drive — Practical or Only Theoretical.md>).
+      *Practical for us (our merge is order-free, so Drive is only a mailbox); no framework exists; prove it with a
+      two-device prototype before Plus promises it.*
+    - [x] The user's choice: Android launches with the two free backups, Drive sync for Plus after the prototype
+      passes; build the prototype now or after the Apple CloudKit work. *Decided 10 Oct 2026: the recommendation;
+      the prototype after the CloudKit work.*
+  - **Decided by the user, 10 Oct 2026, final (Rulebook D16):** no server holds anyone's habits. Apple first: iCloud
+    (CloudKit, `CKSyncEngine`), StoreKit, Family Sharing for Plus Family (the buyer + 5). Then Android: Auto Backup and
+    a daily Drive file free; Drive sync for Plus after the prototype. Full privacy: habits never reach us. Plus $24.99,
+    Plus Family $59.99. An entitlement record (never habits) on Cloudflare's free plan when Android launches.
+    - [ ] **Build CloudKit sync and backup on Apple** (replacing our server sync and accounts); rewrite D3, D4, D9,
+      D12, D14, D15 and Architecture 02/05 as it lands. (New item number to be taken when started; W1.)
+    - [x] **Update the Plus screens in Figma (1021:309) to the final decisions:** no account steps, Family Sharing
+      instead of invites, $24.99 / $59.99, "full privacy" said plainly. *Done 10 Oct: every price $24.99 / $59.99 /
+      $35.00 upgrade; 1.4 Plus is yours (no account, privacy line); 3.1 second device reworded for iCloud; 4.3 Plus
+      Family shared through Family Sharing (buyer + 5); Flow 6 is now the family member's view; 7.1, 7.1b, 8.1 and the
+      restore alert reworded; 17 account and invite screens moved to "Retired with the server", not to be built.*
+    - [ ] Open: the ≡ menu still has an Account row (B1, B1b). With no account on Apple, what replaces it (for example
+      "iCloud Sync & Backup")?
+    - [ ] Then Android: the two backups; after the CloudKit work, the Drive sync prototype (six tests).
+    - [x] **4. The 6th-habit sheet (1023:309) looks poor; improve it.** "Not now" doubles the ✕ on a sheet: remove it;
+      "Or, for free" can become plain text, a small note, or go if it's unnecessary.
+      *Done 10 Oct in Figma (1023:309, 1023:354, 1023:399): Not now and the "Or, for free" card gone; a short "Both plans
+      include" list (unlimited habits, iPad and Apple Watch, sync) replaces the grey sentence; under Get Plus, a plain
+      "Make room instead" text button with a small note (archive or delete). Shows the recommended, not final, prices.*
+    - [x] **5. The second-device sheet (3.2):** should Plus ("Keep both in sync") go above "Move to this iPad"? A Plus
+      button at the bottom is the easiest to tap by accident, and people would call that pushy: research the order,
+      or redesign it.
+      *Done 10 Oct: [Where the Plus Button Goes](<../../../Research/Research Reports/Business Model and Monetization/Where the Plus Button Goes — Accidental Taps and Pushy Placement.md>)
+      (48 hand-read reviews of accidental paid taps, 1.60★, mostly a paid button where "go on" was expected). Figma
+      1024:309: Plus card first with an outlined See Plus; Move to this iPad last with the only filled button.*
+  - [ ] **Group 1, Ways in** (the user, 10 Oct 2026), in a new Figma section:
+    - [x] The 6th habit, **in context, not a bare "upgrade"**: "you've reached the limit; get Plus to add a 6th habit,
+      unlimited habits" (ledger C137 the moment of need, C236 announced before investing, C204 never lose work).
+      *Designed 10 Oct, Figma 1013:309 row A: A1 the count before the limit, A2 at 5 of 5 (Plus tags on the habit
+      rows), A3 "Add a 6th habit with Plus" (their 5 habits and an empty 6th), A4 from an idea ("Add Drink water with
+      Plus", the form kept), A5 restoring ("Bring back Read with Plus").*
+    - [x] ≡ › the Plus row, and the screen it opens; the same for no account and a free account (the count is
+      app-wide; the account doesn't matter). *Row B: B1/B1b the row at 3 and 5 of 5, B2/B3 the Plus page (the count,
+      what Plus adds, the price, Restore Purchases).*
+    - [x] The other ways in (Account › Plan; a second device on a free account). *Row C: C1, C2.*
+    - [x] Other platforms (the Apple Watch's way in) later: documented, not drawn. *Row C note.*
+    - [ ] The user's review of group 1.
+
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
   - **What it is:** the screen a single entry opens to, from the Day sheet's entries and the habit page's History
@@ -1007,6 +1170,64 @@ and the Add note keyboard coming up by itself.
       never "Often Enough"; "app passcode"); no Recommended badge; the security delay stays a fixed 24 hours.
       **Designed (Figma 935:309) and documented for building:** [App Lock Redesign — What to Build](<../Specs/App Lock Redesign/README.md>).
       To do: build it, tests on GitHub, iPhone check; then design the lock cover and recovery screens.
+      - **The user's iPhone check, 10 Oct 2026** (with the Figma section 935:309): turning on Lock with Face ID asked
+        for the iPhone passcode at once and turned App Lock on; no Set Up App Lock sheet (screen 3), no How your app
+        passcode works (4), no passcode twice (5–6); the App Lock page then showed only the switch and Lock Again (not
+        screen 7). The user expects exactly the Figma flow: Face ID first, then the iPhone passcode; the choice of a
+        separate app passcode; how it works; the six digits twice; then on.
+        - [x] Cause found: Face ID is switched off for the app in the iPhone's Settings (Face ID & Passcode → Other
+          Apps: listed, off). The code took "Face ID not allowed for this app" for "this iPhone has no Face ID", so it
+          took the passcode-only path (skip the sheet, hide If Face ID doesn't work). Branch `app-lock-face-id-off`.
+        - [ ] Fix: an iPhone with Face ID set up always gets the Figma flow (3 → 7), whether or not the app is allowed to
+          use it; while it isn't, the App Lock page says so and opens Settings; an app passcode set then lets Face ID
+          back in with Use Face ID Again once it's allowed. *Built 10 Oct (`AppLock.Ability.biometricsAllowed`,
+          `faceIDNotTrusted`, Allow Face ID in Settings; the Face ID permission text now says "the app"); installed on the
+          iPhone 16 for the user's check; GitHub tests not run yet.*
+        - [ ] A test for it (`-test-face denied`), tests on GitHub, then the user's iPhone check (U9).
+      - **The user's model for App Lock, 10 Oct 2026** (after the check above; "first let's create those missing designs
+        in the Figma … do some research, figure it out; if they are okay, then update the designs"). Each point:
+        - [ ] Never show "Lock with Face ID" (or a switch that reads as on) when Face ID can't be used: say plainly why,
+          for each case: **Face ID not allowed for the app in Settings** ("can't be turned on, it isn't allowed in
+          Settings"), **Face ID not set up on this iPhone**, **no iPhone passcode at all**.
+        - [ ] Never lock straight away with the iPhone passcode: always ask first.
+        - [ ] **People choose their everyday way to unlock:** Face ID (the default), iPhone Passcode, or App Passcode.
+        - [ ] **An app passcode is always created** (the answer "Always"), whichever way is chosen: with Face ID or the
+          iPhone passcode it's the backup, asked whenever anything changes (Face ID changed, the passcode removed).
+        - [ ] **App Passcode as the everyday way:** Face ID and the iPhone passcode play no part; forgot it → only a
+          24-hour security delay, then a new one. No data is ever lost.
+        - [ ] Face ID or iPhone passcode as the everyday way, and Face ID doesn't work or changed: the iPhone passcode
+          can reset the app passcode; if the passcode doesn't work or isn't there, the 24-hour delay alone.
+        - [ ] **An iPhone with no passcode:** App Lock still works, with the app passcode only (and the 24-hour delay).
+        - [x] Research whether these assumptions hold (W2), say where they don't, then draw every missing scenario in
+          Figma beside section 935:309 and update the spec. Building waits for the user. *Done 10 Oct 2026:
+          [App Lock — Choosing How to Open the App](<../../../Research/Research Reports/Settings and Help/App Lock — Choosing How to Open the App.md>)
+          (all seven hold; iOS can't ask for the passcode alone, and never reports a changed passcode; the Face ID
+          way's iPhone-passcode reset keeps the 24-hour wait, for the user to confirm). Figma
+          [1003:309](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1003-309): 23 screens (A1–A8
+          setup in every state, B1–B5 the page per way, C1–C6 the lock screen, D1–D4 Forgot). The spec points to it.*
+        - [ ] The user's review of the Figma round, then rewrite the spec and build (replaces the 10 Oct quick fix's
+          screens). **The user, 10 Oct 2026:** the 24-hour delay stays as the App Lock report says (it only makes sure
+          the owner notices; nothing can stop everyone). "Implement all of this and then test it thoroughly on the
+          iPhone": setting the passcodes, every option, the 24-hour delay; a thorough hunt for bugs and flaws, not
+          random tapping.
+          - [x] Built (10 Oct 2026, branch `app-lock-face-id-off`, not committed yet): the everyday way (Face ID,
+            iPhone Passcode, App Passcode), the app passcode always made, every Face ID / passcode state (A1–A8, B1–B5,
+            C1–C6, D1–D4). Found and fixed while building: a Face ID lock-out was shown as "turned off in Settings"; a new
+            app passcode after a reset re-trusted Face ID by itself; a dimmed row faded its reason; the self-check made
+            its widget snapshot in UTC (failed on an iPhone in India). Spec §0, Design Rules, Help updated.
+          - [x] Tested on the iPhone (automated, the test Face ID stand-in): AppLockUITests **21/21** on the iPhone 16,
+            final run 10 Oct 17:5x IST, after the layout fixes (every way, every state, switching ways, Change App
+            Passcode, Forgot in each way, the 24-hour reset started / waiting at 23 h / cancelled / ready at 24 h,
+            wrong-passcode waits, an older lock's upgrade, `-applockcheck`).
+          - [ ] The user's own check with real Face ID and the iPhone passcode (U9): "Allow Face ID?", Face ID
+            switched off in Settings, locking the iPhone, the reset notification.
+          - [x] The passcode screens' layout (the user's report): the prompt and dots up, the keypad lower, the spare
+            space shared evenly, keys 76 pt; the lock screen the same. Checked in iPhone screenshots.
+          - [ ] Tests on GitHub (AppLockUITests, SmallScreenUITests on the SE).
+          - [x] **The user's iPhone check, 10 Oct 2026: the "set a new passcode" screen** (Enter a six-digit passcode /
+            Enter it again): the dots and keypad sit high with a lot of empty space below; the space isn't used, or
+            something is too small. Fix the layout (after the test run), on every passcode screen (setup, Change,
+            Forgot, the lock screen), checked on the iPhone 16 and the SE.
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
   habits, with its own statistics, completely different from a habit's.

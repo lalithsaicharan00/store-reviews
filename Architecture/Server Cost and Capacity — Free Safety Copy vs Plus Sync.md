@@ -1,5 +1,7 @@
 # Server Cost and Capacity — Free Safety Copy vs Plus Sync
 
+> **Superseded in part, 10 Oct 2026 (the user, final): no server holds anyone's habits** (Rulebook D16). Apple syncs and backs up through iCloud (CloudKit), Plus comes from StoreKit and Plus Family from Apple's Family Sharing; Android follows. What this document says about accounts, our server sync and invites stays only until the CloudKit work rewrites it. See [Plus, Price and the Server — How We Decided](<../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/README.md>).
+
 > **Updated 1 Oct 2026:** the anonymous free "safety copy" was dropped ([Backup, Sync and Accounts — One Seamless Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>)). The free lane below now serves **free accounts only**: nightly backup to R2 for people who chose an account. Users without an account cost us nothing. The prices and the Plus lane are unchanged.
 
 *Written by Claude (Claude Code), 1 Oct 2026. A plan, not a decision. It prices two things on Cloudflare: the free "safety copy" proposed in [Free Plan Data Protection](<../Research/Research Reports/Data, Sync and Accounts/Free Plan Data Protection — Backup Without Giving Away Plus.md>), and Plus sync as it is being built on branch `claude/server-and-sync` (commit `7a2f9d3`). Prices are from Cloudflare's docs on 1 Oct 2026.*
@@ -151,3 +153,20 @@ Plus phone ── POST /v1/sync ───────────────►
 - **Rows written per op** (4, counting indexes) and **50 ms per Durable Object call** are cautious guesses. Cloudflare's pricing page doesn't say whether index updates count as rows written.
 - Prices are as of 1 Oct 2026 and change. Rerun `server_cost_model.py` with new prices.
 - Apple and Google fees, the domain, Resend and Sentry are not included. Their free tiers cover launch (06, Email Delivery Decision).
+
+## 7. Required before launch: cost by design (decided by the user, 10 Oct 2026)
+
+The Plus prices (Billing 02 §3.7) are profitable at the extreme case, with inflation and Apple at 30%, **only with
+these changes**; as built, a US$24.99 sale loses money in that case ([Price and Size from the Extreme Case](<../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/Plus and Plus Family — Price and Size from the Extreme Case.md>) §4–5).
+The user: free users must be cheap by design.
+
+**Free accounts:** one device, push only (never a timer); quiet for ~12 months → data compressed to R2 and restored on
+sign-in, never deleted; 7 daily copies; change log trimmed.
+
+**Every account:** sync by push (a hibernating WebSocket) instead of the 60-second poll; only the last 2 years of
+history in the Durable Object, older years compressed in R2; 3 rows written per record; nightly copies as changes
+(monthly full copy plus daily changes); the daily cost report and alerts (§4.5).
+
+Result in the model (`Research/Temp/plus-pricing/pricing_v3.py`): an extreme Plus account costs about $3.57 over 15
+years (it was $13.30), and one Plus sale with its 20 free accounts about $8.74.
+
