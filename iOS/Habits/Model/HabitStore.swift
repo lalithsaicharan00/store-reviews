@@ -1964,8 +1964,11 @@ final class HabitStore {
         return runs
     }
 
-    private func walkRuns(of habit: Habit, today: LocalDay) -> [Run] {
-        let kind = periodKind(rule(habit, on: today))
+    /// Every run counted in `kind`'s periods (by default today's goal period): periods under a goal of another kind end a
+    /// run. The habit page also asks for an earlier goal's kind, so a goal change never takes away what was reached in it
+    /// (spec "Habit Progress" E1).
+    func walkRuns(of habit: Habit, today: LocalDay, kind wanted: GoalPeriod? = nil) -> [Run] {
+        let kind = wanted ?? periodKind(rule(habit, on: today))
         var runs: [Run] = []
         var start: LocalDay?, end: LocalDay?, length = 0
         func close() {

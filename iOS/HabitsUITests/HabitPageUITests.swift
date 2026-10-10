@@ -368,10 +368,141 @@ final class HabitPageUITests: XCTestCase {
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         open("Water")
         tab("Progress")
+        let record = app.descendants(matching: .any)["habit-progress-record"]
+        XCTAssertTrue(record.waitForExistence(timeout: 5), "Overall record")
+        XCTAssertTrue(app.descendants(matching: .any)["habit-record-goal-met"].exists, "Show Streaks off: Goal met stays")
+        XCTAssertTrue(app.descendants(matching: .any)["habit-record-best-period"].exists, "Show Streaks off: Best day stays")
+        shot("hp-record-streaks-off")
         let milestones = app.descendants(matching: .any)["habit-milestones"]
         XCTAssertTrue(bringTopIntoView(milestones), "Milestones stay: a total isn't a streak")
         XCTAssertFalse(app.descendants(matching: .any)["habit-streak-current"].exists, "Show Streaks off: no streak")
+        XCTAssertFalse(app.descendants(matching: .any)["habit-milestone-next-inARow"].exists, "Show Streaks off: no in-a-row Next")
+        XCTAssertTrue(app.descendants(matching: .any)["habit-milestone-next-inTotal"].exists, "Show Streaks off: In total stays")
         shot("hp-streaks-off")
+    }
+
+    /// Overall record (spec "Habit Progress" §2, 11 Oct 2026): the headline, then Current and Best streak, Goal met and
+    /// Best day as four boxes, each one VoiceOver element.
+    func testOverallRecordBoxes() {
+        launch()
+        open("Water")
+        tab("Progress")
+        let headline = app.descendants(matching: .any)["habit-record-headline"]
+        XCTAssertTrue(headline.waitForExistence(timeout: 5), "The Overall record's headline")
+        XCTAssertTrue(headline.label.hasSuffix("glasses recorded"), "Headline: \(headline.label)")
+        let boxes = ["habit-streak-current": "Current streak, ", "habit-streak-best": "Best streak, ",
+                     "habit-record-goal-met": "Goal met, ", "habit-record-best-period": "Best day, "]
+        for (id, start) in boxes {
+            let box = app.descendants(matching: .any)[id]
+            XCTAssertTrue(box.exists && box.label.hasPrefix(start), "\(id): \(box.exists ? box.label : "missing")")
+        }
+        let current = app.descendants(matching: .any)["habit-streak-current"].frame
+        let best = app.descendants(matching: .any)["habit-streak-best"].frame
+        let goal = app.descendants(matching: .any)["habit-record-goal-met"].frame
+        XCTAssertTrue(abs(current.minY - best.minY) < 1 && abs(current.height - best.height) < 1 && goal.minY > current.maxY,
+                      "Two boxes a row, equal heights: current \(current), best \(best), goal met \(goal)")
+        shot("hp-record-water")
+    }
+
+    /// Milestones (spec §3): none reached (Lunch, no phone: 2 days so far), one (No screens: 3 days), many (Brush teeth:
+    /// 90 days), then See all opens the All milestones page and Back returns.
+    func testMilestonesNoneOneMany() {
+        launch()
+        func card(_ name: String) -> XCUIElement {
+            open(name)
+            tab("Progress")
+            let milestones = app.descendants(matching: .any)["habit-milestones"]
+            XCTAssertTrue(bringTopIntoView(milestones), "\(name): Milestones")
+            return milestones
+        }
+        let latest = app.descendants(matching: .any)["habit-milestone-latest"]
+        let seeAll = app.descendants(matching: .any)["habit-milestones-see-all"]
+        let nextRow = app.descendants(matching: .any)["habit-milestone-next-inARow"]
+        let nextTotal = app.descendants(matching: .any)["habit-milestone-next-inTotal"]
+
+        _ = card("Lunch, no phone")
+        XCTAssertFalse(latest.exists, "None reached: no medal")
+        XCTAssertFalse(seeAll.exists, "None reached: no See all")
+        XCTAssertTrue(nextRow.label.hasPrefix("Next: 3 days in a row"), "None reached, next in a row: \(nextRow.label)")
+        XCTAssertTrue(nextTotal.label.hasPrefix("Next: 10 times in total"), "None reached, next in total: \(nextTotal.label)")
+        shot("hp-milestones-none")
+        back()
+
+        _ = card("No screens")
+        XCTAssertTrue(latest.waitForExistence(timeout: 5) && latest.label.hasPrefix("3 days in a row, reached "), "One reached: \(latest.label)")
+        XCTAssertFalse(seeAll.exists, "One reached: no See all")
+        XCTAssertTrue(app.staticTexts["1 reached"].exists, "One reached: \"1 reached\" in the title line")
+        shot("hp-milestones-one")
+        back()
+
+        _ = card("Brush teeth")
+        XCTAssertTrue(latest.waitForExistence(timeout: 5) && latest.label.hasPrefix("Latest: "), "Many reached: \(latest.label)")
+        XCTAssertTrue(seeAll.exists && seeAll.label.hasPrefix("See all ") && seeAll.label.hasSuffix(" milestones"), "See all: \(seeAll.label)")
+        XCTAssertTrue(app.descendants(matching: .any)["habit-milestone-shelf"].exists, "Many reached: the Earlier shelf")
+        shot("hp-milestones-many")
+        seeAll.tap()
+        let page = app.descendants(matching: .any)["all-milestones"]
+        XCTAssertTrue(page.waitForExistence(timeout: 5) && app.navigationBars["Milestones"].exists, "The All milestones page")
+        XCTAssertTrue(app.descendants(matching: .any)["all-milestones-inARow"].exists, "All milestones: In a row")
+        XCTAssertTrue(app.descendants(matching: .any)["all-milestones-inTotal"].exists, "All milestones: In total")
+        XCTAssertTrue(app.staticTexts["Milestones you reach stay here, even when a run starts again."].exists
+                      || { app.swipeUp(velocity: .slow); return app.staticTexts["Milestones you reach stay here, even when a run starts again."].exists }(),
+                      "All milestones: the footnote")
+        shot("hp-milestones-all")
+        app.navigationBars["Milestones"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.segmentedControls["habit-tabs"].waitForExistence(timeout: 5), "Back on the habit page")
+        XCTAssertTrue(app.segmentedControls["habit-tabs"].buttons["Progress"].isSelected, "Still on Progress")
+    }
+
+    /// A week goal (spec §5.2): Call family, 3 times a week, 4 weeks met. The streak in weeks with this week's progress,
+    /// Goal met in weeks, Best week, and "weeks of goals met" for In total.
+    func testWeeklyGoalProgress() {
+        launch()
+        open("Call family")
+        tab("Progress")
+        let current = app.descendants(matching: .any)["habit-streak-current"]
+        XCTAssertTrue(current.waitForExistence(timeout: 5), "Current streak")
+        XCTAssertTrue(current.label.contains("weeks") && current.label.contains("This week: "), "Current: \(current.label)")
+        let goal = app.descendants(matching: .any)["habit-record-goal-met"]
+        XCTAssertTrue(goal.label.hasPrefix("Goal met, ") && goal.label.contains(" weeks"), "Goal met: \(goal.label)")
+        let bestWeek = app.descendants(matching: .any)["habit-record-best-period"]
+        XCTAssertTrue(bestWeek.label.hasPrefix("Best week, "), "Best week: \(bestWeek.label)")
+        shot("hp-record-weekly")
+        let milestones = app.descendants(matching: .any)["habit-milestones"]
+        XCTAssertTrue(bringTopIntoView(milestones), "Milestones")
+        let total = app.descendants(matching: .any)["habit-milestone-next-inTotal"]
+        XCTAssertTrue(total.label.contains("weeks of goals met"), "Next in total: \(total.label)")
+        let latest = app.descendants(matching: .any)["habit-milestone-latest"]
+        XCTAssertTrue(latest.label.contains("weeks in a row, reached "), "Latest: \(latest.label)")
+        shot("hp-milestones-weekly")
+    }
+
+    /// Pictures for the user's review (11 Oct 2026), light and dark: Overall record, Milestones with none, one and many
+    /// reached, the All milestones page, and a week goal.
+    func testProgressRedesignPictures() {
+        for theme in ["light", "dark"] {
+            app.terminate()
+            launch(theme)
+            for (name, picture) in [("Brush teeth", "many"), ("No screens", "one"), ("Lunch, no phone", "none"), ("Call family", "weekly")] {
+                open(name)
+                tab("Progress")
+                XCTAssertTrue(app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 5), "\(name): Overall record")
+                shot("hp-redesign-\(theme)-\(picture)-record")
+                let milestones = app.descendants(matching: .any)["habit-milestones"]
+                XCTAssertTrue(bringTopIntoView(milestones), "\(name): Milestones")
+                shot("hp-redesign-\(theme)-\(picture)-milestones")
+                let seeAll = app.descendants(matching: .any)["habit-milestones-see-all"]
+                if picture == "many", seeAll.exists {
+                    seeAll.tap()
+                    XCTAssertTrue(app.descendants(matching: .any)["all-milestones"].waitForExistence(timeout: 5), "All milestones")
+                    sleep(1)
+                    shot("hp-redesign-\(theme)-all-milestones")
+                    app.navigationBars["Milestones"].buttons.element(boundBy: 0).tap()
+                    sleep(1)
+                }
+                back()
+            }
+        }
     }
 
     /// The Week, Month and Year cards' spacing (Current Work 31, 8 Oct 2026): each card's title with the card's full top

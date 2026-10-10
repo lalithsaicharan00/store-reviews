@@ -11,7 +11,7 @@ set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BUNDLE=com.oftenenough.app
-SCENARIOS="${PERF_SCENARIOS:-scroll-today tap-today groups arrange menu menu-pages all-habits habit-page habit-page-total habit-page-quit habit-edit progress progress-year calendar new-habit form-parts player day-sheet log-sheet add-screens notes typing-control widget-guide widget-log widget-publish privacy app-lock lock-keypad account backup-page backup-states onboarding}"
+SCENARIOS="${PERF_SCENARIOS:-scroll-today tap-today groups arrange menu menu-pages all-habits habit-page habit-milestones habit-page-total habit-page-quit habit-edit progress progress-year calendar new-habit form-parts player day-sheet log-sheet add-screens notes typing-control widget-guide widget-log widget-publish privacy app-lock lock-keypad account backup-page backup-states onboarding}"
 SUMMARY="$OUT/perf-summary.md"
 OPENS="$OUT/opens.txt"; : > "$OPENS"
 TIMED="$OUT/timed.txt"; : > "$TIMED"

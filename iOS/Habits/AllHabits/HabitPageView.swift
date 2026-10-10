@@ -25,6 +25,9 @@ struct HabitPageView: View {
     @State private var confirmingDelete = false
     @State private var openDay: LocalDay?
     @State private var addEntryDay: LocalDay?
+    /// The All milestones page, pushed from Milestones' "See all": held here, not by the card, so it stays while the
+    /// Progress tab redraws under it (U27).
+    @State private var showMilestones = false
 
     init(id: UUID, overTime: OverTimeStart? = nil) {
         self.id = id
@@ -58,7 +61,8 @@ struct HabitPageView: View {
                     case .notes:
                         HabitNotesTab(habit: habit, months: model.notes)
                     case .progress:
-                        HabitProgressTab(habit: habit, model: model, start: overTime, openDay: { openDay = $0 })
+                        HabitProgressTab(habit: habit, model: model, start: overTime, openDay: { openDay = $0 },
+                                         openMilestones: { showMilestones = true })
                     }
                 } header: {
                     tabBar(tabs)
@@ -72,6 +76,7 @@ struct HabitPageView: View {
         .onAppear { model.load(key, tab: tab, store: store) }
         .onChange(of: key) { model.load(key, tab: tab, store: store) }
         .onChange(of: tab) { model.load(key, tab: tab, store: store) }
+        .navigationDestination(isPresented: $showMilestones) { AllMilestonesPage(model: model, color: habit.color) }
         .analyticsScreen(.habitDetail)
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)
@@ -94,7 +99,8 @@ struct HabitPageView: View {
             switch action {
             case .openDay(let day): openDay = day
             case .openEdit: showEdit = true
-            case .closeDay: openDay = nil; showEdit = false
+            case .closeDay: openDay = nil; showEdit = false; showMilestones = false
+            case .openMilestones: showMilestones = true
             case .habitTab(let index): if index < tabs.count { tab = tabs[index] }
             default: break
             }
