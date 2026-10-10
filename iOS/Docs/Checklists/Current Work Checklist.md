@@ -798,6 +798,8 @@ and the Add note keyboard coming up by itself.
   - [ ] **Build it** from [Habit Progress — Overall Record, Streaks and Milestones](<../Specs/Habit Progress — Overall Record and Streaks/README.md>)
     (the user, 11 Oct 2026: document everything so another agent can build it; keep every milestone value up to 5,000;
     goal changes never take reached milestones away). Designed, approved and documented 11 Oct; not built.
+  - [x] **11 Oct 2026, from the user:** more in-a-row milestones for every goal period (days, weeks, months; "not 50
+    or 60, maybe 10, 15 if it makes sense"). Decided in the spec §4: about 15 per ladder, adding values only.
   - The Overall Record card in the habit details Progress tab does not look good to the user; improve its visual
     hierarchy and presentation. Record any applicable equivalent in the main Progress page when assessing scope.
   - Make the information feel deliberately designed, with clear grouping, spacing and readable numbers/labels.

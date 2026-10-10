@@ -285,7 +285,8 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
 - **Designed 11 Oct 2026, not built yet: [Habit Progress — Overall Record, Streaks and Milestones](<Docs/Specs/Habit Progress — Overall Record and Streaks/README.md>).**
   Once built it replaces the next bullet: Current and Best streak move into **Overall record** (a 2 × 2 grid with Goal met
   and Best day / Best week), and Milestones become **medals for reached milestones plus one Next ring per track**; the
-  row of squares (reached, next and later) is retired. Every milestone value is kept (10 … 5,000 in total), a reached
+  row of squares (reached, next and later) is retired. Every milestone value is kept (10 … 5,000 in total) and the in-a-row
+  ladders grow to about 15 each (days, weeks, months, quit; spec §4.1), a reached
   milestone is never taken away, even when the goal changes, and only the next one is drawn.
 - **Current streak and Best streak open the Milestones card's "In a row" track** (Current Work 23, 8 Oct 2026; the 5 Oct
   placement research): early in this habit's Progress tab, never in the header over History and Notes; in the goal's own
