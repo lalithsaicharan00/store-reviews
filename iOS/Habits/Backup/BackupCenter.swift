@@ -405,13 +405,13 @@ final class BackupCenter {
     /// `BackupFolder`: per device, 7 weekday copies, never an empty copy over one with habits, the shrink guard, named
     /// by device, read back and compared (Current Work 75; Rulebook D4).
     private func backUpToICloud(_ file: BackupFileData) async -> ICloudResult {
-        let identity = FileManager.default.ubiquityIdentityToken
-        let identityData = identity.flatMap { try? NSKeyedArchiver.archivedData(withRootObject: $0, requiringSecureCoding: true) }
+        let token = FileManager.default.ubiquityIdentityToken
+        let identityData = token.flatMap { try? NSKeyedArchiver.archivedData(withRootObject: $0, requiringSecureCoding: true) }
         let previous = defaults.data(forKey: Key.iCloudIdentity)
         defaults.set(identityData, forKey: Key.iCloudIdentity)
-        guard identity != nil else { return iCloudFailed(.signedOut) }
+        guard token != nil else { return iCloudFailed(.signedOut) }
         guard let data = Data(base64Encoded: file.base64) else { return .failed }
-        let deviceID = identity.deviceID
+        let deviceID = self.identity.deviceID
         // This install's first iCloud backup (a reinstall's included) waits for iCloud's list of the folder first, so
         // the copies already there are seen before anything is written beside them (10 Oct 2026).
         if previous == nil { _ = await ICloudLookup.look(timeout: .seconds(15)) }

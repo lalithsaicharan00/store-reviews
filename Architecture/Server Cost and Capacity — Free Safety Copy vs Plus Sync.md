@@ -1,5 +1,9 @@
 # Server Cost and Capacity — Free Safety Copy vs Plus Sync
 
+> **Replaced by [Architecture 11 — iCloud Sync with CloudKit](<11. iCloud Sync with CloudKit.md>) on Apple devices (built 10 Oct
+> 2026, Current Work 81).** Habits are in each person's own iCloud, counted against their storage, not ours; the costs here no longer apply. Kept as the record of the server-era design; `server/` is tagged
+> `server-final-2026-10` and removed from `main` once CloudKit sync has passed the device checks (11 §17).
+
 > **Superseded in part, 10 Oct 2026 (the user, final): no server holds anyone's habits** (Rulebook D16). Apple syncs and backs up through iCloud (CloudKit), Plus comes from StoreKit and Plus Family from Apple's Family Sharing; Android follows. What this document says about accounts, our server sync and invites stays only until the CloudKit work rewrites it. See [Plus, Price and the Server — How We Decided](<../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/README.md>).
 
 > **Updated 1 Oct 2026:** the anonymous free "safety copy" was dropped ([Backup, Sync and Accounts — One Seamless Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>)). The free lane below now serves **free accounts only**: nightly backup to R2 for people who chose an account. Users without an account cost us nothing. The prices and the Plus lane are unchanged.
