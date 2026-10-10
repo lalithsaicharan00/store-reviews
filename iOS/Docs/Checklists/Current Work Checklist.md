@@ -390,7 +390,8 @@ and the Add note keyboard coming up by itself.
     - [x] Nothing is ever lost for a Plus user: every change reaches the server.
     - [x] Not a request per tap: a run of taps is sent together, production-style, so nobody can run into (or abuse)
       the server's limits (`SYNC_LIMIT`, 60 a minute per account).
-    - [ ] Nightly backups work (Plus: the server's 02:00 UTC snapshot of a changed account; Architecture 06 §9).
+    - [x] Nightly backups work (Plus: the server's 02:00 UTC snapshot of a changed account; Architecture 06 §9): see the
+      nightly backup point below (9 Oct).
     - [x] The widgets look and respond exactly as before: their visual feedback (the switches) isn't changed or
       slowed ("people don't care how it works in the background, but it should be reliable").
   - [x] Built 8 Oct 2026 (Claude, branch `sync-outside-app`): `SyncService` holds `beginBackgroundTask` until the
@@ -414,9 +415,9 @@ and the Add note keyboard coming up by itself.
   - [x] A notification's Done/+1 on the iPhone: same path (`logFromReminder` → store change → `scheduleSoon`). Seen
     with item 70: each tap reached the server ~2.5 s later once the crash was fixed; the user's locked-phone check
     (15:32–15:35) synced 2 s later.
-  - [ ] Nightly backup: the user's account changed today, so its first snapshot is due 9 Oct 02:00 UTC (07:30 IST) in
+  - [x] Nightly backup: the user's account changed today, so its first snapshot is due 9 Oct 02:00 UTC (07:30 IST) in
     `often-enough-backups-dev` under `snapshots/<account>/`. The mechanism wrote one on 7 Oct 02:00 UTC. The cloud
-    session can read the bucket (8 Oct) and checks it at 9 Oct 02:20 UTC; recorded under item 71.
+    session can read the bucket (8 Oct) and checks it at 9 Oct 02:20 UTC; recorded under item 71. **9 Oct:** the first nightly snapshot of the user's account is in R2: `snapshots/72f6ea46-…/2026-10-09.json.gz`, 128,747 bytes, written 9 Oct 02:00:04 UTC. Read back by the cloud session (D4): it opens (format 1, taken 02:00:03 UTC, cursor 2145) and holds 1,451 records (1,339 log rows, 66 habit rows, 20 settings, 14 steps, 12 reminder times). The server keeps every row the account ever had, so these are more than the phone's 31 habits and 720 logs (the 28 demo habits removed on 8 Oct, item 72, among them); not compared row by row.
   - [x] Tests on GitHub (T7/T10), `[ios-ci] [ios-sync]` (SyncUITests, BackupUITests, WidgetUITests,
     WidgetSystemUITests, TimerUITests). Run 37742196989 (`4b98582`): 39 passed, 3 failed; one was ours
     (`BackupUITests.testAFreeAccountBacksUpToTheServer`: dev's every-account-Plus switch made the test's free account
@@ -502,8 +503,8 @@ and the Add note keyboard coming up by itself.
     - [ ] Done on one device clears that habit's reminders and alarms on the other ("done means gone everywhere").
     - [ ] Delete and archive on one → the same on the other; undo works.
     - [ ] `-sync-verify` on both devices: each matches the server.
-  - **Also pending, one device:** the nightly server snapshot of the user's account (due 9 Oct 02:00 UTC,
-    `snapshots/<account>/` in `often-enough-backups-dev`). Reinstall-and-restore: done, item 72.
+  - [x] **One device: the nightly server snapshot** (9 Oct 2026, checked 02:20 UTC): the first nightly snapshot of the user's account is in R2: `snapshots/72f6ea46-…/2026-10-09.json.gz`, 128,747 bytes, written 9 Oct 02:00:04 UTC. Read back by the cloud session (D4): it opens (format 1, taken 02:00:03 UTC, cursor 2145) and holds 1,451 records (1,339 log rows, 66 habit rows, 20 settings, 14 steps, 12 reminder times). The server keeps every row the account ever had, so these are more than the phone's 31 habits and 720 logs (the 28 demo habits removed on 8 Oct, item 72, among them); not compared row by row. Reinstall-and-restore:
+    done, item 72.
   - **Later (the user, 8 Oct):** the app is iPhone-only for now; Android, Mac and desktop come after the iPhone app is
     complete, and sync is tested across all of them then.
 
