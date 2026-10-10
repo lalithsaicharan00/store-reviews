@@ -8,16 +8,16 @@ import UserNotifications
 /// Backup on this device: where it goes, whether it's working, moving and restoring
 /// (Backup, Sync and Accounts — One Seamless Experience §4; Architecture 03; Account and Backup Redesign §8).
 ///
-/// **One backup place at a time** (the user, 10 Oct 2026; Rulebook D4):
+/// **One backup place at a time** (the user, 10–11 Oct 2026; Rulebook D4):
 /// - **No account:** the person's own iCloud (`BackupFolder`: 7 weekday copies per device), else it stays on this
 ///   iPhone (its own backup and the daily copies, `Persistence`).
-/// - **Signed in, free:** the checked backup file goes to the account; nothing goes to iCloud.
-/// - **Plus:** every change goes to the account through sync; "backed up" is the last sync with nothing waiting.
-/// - **Switching over:** signing in or making an account backs up to the account at once, and iCloud keeps going too
-///   until that copy has been read back and checked (`accountChecked`); the old iCloud copies are never deleted.
-///   Signing out backs up to iCloud again at once.
+/// - **Signed in, free or Plus:** every change goes to the account through sync (Current Work 78: free on one device,
+///   Plus on all); "synced" is the last sync with nothing waiting. Free accounts no longer upload whole files.
+/// - **Switching over:** signing in or making an account syncs at once, and iCloud keeps going too until the server
+///   has acknowledged everything (`accountChecked`); the old iCloud copies are never deleted. Signing out, by the
+///   person or by another device's sign-in (`signedOutBy`), backs up to iCloud again at once.
 ///
-/// **Backed up as you go** for every free user (Current Work 75; Free Plan Backups §7): on leaving the app when
+/// **Backed up as you go** without an account (Current Work 75; Free Plan Backups §7): on leaving the app when
 /// something changed, at least 10 minutes after the last upload; after a log from a widget, a notification or the Live
 /// Activity (with background time, as sync's `scheduleSoon`, D12); and at least once a day.
 ///
@@ -39,7 +39,7 @@ final class BackupCenter {
             case .tryNow: "Try Now"
             case .openSettings: "Open Settings"
             case .backUpNow: "Back Up Now"
-            case .backUpToAccount: "Back Up to Your Account Instead"
+            case .backUpToAccount: "Sync to Your Account Instead"
             }
         }
     }
@@ -100,6 +100,23 @@ final class BackupCenter {
     /// Habits just moved from a device that was signed in (free or Plus): Today asks once to sign in with the same
     /// account, so moving never leaves the account behind (Account and Backup Redesign §7 item 3).
     var suggestSignIn: TransferCode.Account? = nil
+    /// Signed out because the account is now used on another device: its name, until the notice (screen 8) is seen.
+    private(set) var signedOutBy: String? = nil
+    /// A sign-in waiting on "Use on This iPhone?" (screen 7) that no sheet of its own can ask (a test launch's).
+    var askReplace: ReplaceQuestion? = nil
+
+    #if DEBUG
+    /// Speed runs only (`PerfDriver` "backup-states", T4): shows the pages as a free account (false) or Plus (true) would
+    /// see them, without signing in (a speed run never touches an account, D8). Nil: as it really is.
+    var perfSignedIn: Bool? { didSet { refresh() } }
+    #endif
+
+    /// "Use on This iPad?": the other device's name, and what Continue does.
+    struct ReplaceQuestion: Identifiable {
+        let id = UUID()
+        let otherDevice: String
+        let proceed: @MainActor () async -> Void
+    }
 
     private enum Key {
         static let lastGood = "backup.lastGood"
@@ -173,6 +190,7 @@ final class BackupCenter {
         }
         refresh()
         sync.onSynced = { [weak self] date in self?.lastSynced = date }
+        sync.onSignedOutElsewhere = { [weak self] in Task { await self?.signedOutElsewhere() } }
         // Apple's advice: set up the iCloud container early, off the main thread, so iCloud starts bringing its list
         // down while the welcome is read (a fresh install's restore looks there, 10 Oct 2026).
         if BackupFeatures.iCloudBackup && !sandboxed {
@@ -181,6 +199,9 @@ final class BackupCenter {
     }
 
     // MARK: State
+
+    /// Our server, for Move to Another Device (`TransferServer`), which needs no account.
+    var api: URL { sync.api }
 
     var place: Place { isSignedIn ? .account : usesGoogleDrive ? .googleDrive : (iCloudAvailable ? .iCloud : .phone) }
 
@@ -252,6 +273,13 @@ final class BackupCenter {
     func refresh() {
         isSignedIn = sync.isSignedIn
         isPlus = sync.isPlus
+        signedOutBy = sync.signedOutBy
+        #if DEBUG
+        if let perfSignedIn {
+            isSignedIn = true
+            isPlus = perfSignedIn
+        }
+        #endif
         lastGood = date(Key.lastGood)
         accountChecked = isSignedIn && defaults.bool(forKey: Key.accountChecked)
         undoFile = Self.newestUndo()
@@ -292,15 +320,7 @@ final class BackupCenter {
             return Issue(id: "signed-out", text: "You're signed out, so your habits aren't being backed up to your account. They're safe on this iPhone.", fix: .signIn)
         }
         if place == .iCloud, let iCloudProblem { return iCloudProblem.issue }
-        // Switching over to the account, iCloud's own problem doesn't count: the account is the place now.
-        guard place == .account, !isPlus else { return nil }
-        if defaults.integer(forKey: Key.checkFailures) >= 2 {
-            return Issue(id: "check-failed", text: "The last backup didn't save correctly. It's tried again soon; the one before is safe.", fix: .backUpNow)
-        }
-        // Short gaps are normal (no signal, a trip): nothing for the first 2 days.
-        if let since = date(Key.failingSince), Date.now.timeIntervalSince(since) > 2 * 86_400 {
-            return Issue(id: "unreachable", text: "Not backed up for 2 days: your account can't be reached. Your habits are safe on this iPhone.", fix: .tryNow)
-        }
+        // Signed in, the account syncs: waiting changes are kept in the outbox and sent when it can (05 §11.2).
         return nil
     }
 
@@ -332,7 +352,7 @@ final class BackupCenter {
         #if DEBUG
         if testICloud != nil && !isSignedIn { return }
         #endif
-        if isPlus {
+        if isSignedIn {
             await readSyncStatus()
             if !accountChecked && !lanes.subtracting([.account]).isEmpty { await backUpNow() }
             return
@@ -346,7 +366,7 @@ final class BackupCenter {
     /// The app is leaving the screen (Current Work 75): if something changed and the last upload was 10 minutes ago or
     /// more, back up now, with time from iOS to finish (the app may be suspended straight after).
     func appLeaving() {
-        guard !isPlus, place != .phone, mayBackUp,
+        guard !isSignedIn, place != .phone, mayBackUp,
               Self.isDue(.leaving, now: .now, lastGood: lastGood, lastAttempt: date(Key.lastAttempt), dirty: defaults.bool(forKey: Key.dirty)) else { return }
         withBackgroundTime("Back up on leaving") { await self.backUpNow() }
     }
@@ -357,7 +377,7 @@ final class BackupCenter {
     /// moment later, once the taps stop, with background time (D12); within 10 minutes of the last upload, iOS's
     /// background refresh is asked for when the gap is over, so the last tap of a run isn't left for the next open.
     func changedOutside() {
-        guard !isPlus, place != .phone else { return }
+        guard !isSignedIn, place != .phone else { return }
         outsideWait?.cancel()
         outsideWait = Task { [weak self] in
             try? await Task.sleep(for: .seconds(2))
@@ -393,7 +413,7 @@ final class BackupCenter {
         #if DEBUG
         if let testICloud, !isSignedIn { return testICloud == "ok" }
         #endif
-        if isPlus {
+        if isSignedIn {
             await sync.syncNow()
             await readSyncStatus()
             // Switching over: iCloud keeps a copy until the account has everything (D4).
@@ -424,22 +444,14 @@ final class BackupCenter {
             switch await backUpToICloud(file) {
             case .backedUp: break
             case .keptOlder: keptOlder = true
-            case .failed: ok = targets.contains(.account)
+            case .failed: ok = false
             }
         }
         if targets.contains(.googleDrive) {
             switch await backUpToGoogleDrive(file) {
             case .backedUp: break
             case .keptOlder: keptOlder = true
-            case .failed: ok = targets.contains(.account)
-            }
-        }
-        if targets.contains(.account) {
-            ok = await backUpToAccount(file)
-            // Read back and checked: from now on the account is the one place (switch-over, D4).
-            if ok && !accountChecked {
-                let checked = await accountHas(file.sha256)
-                if checked { defaults.set(true, forKey: Key.accountChecked) }
+            case .failed: ok = false
             }
         }
         if ok && !keptOlder {
@@ -462,48 +474,6 @@ final class BackupCenter {
         welcomeFinished || hasHabits
     }
 
-    private func backUpToAccount(_ file: BackupFileData) async -> Bool {
-        guard let data = Data(base64Encoded: file.base64) else { return false }
-        let headers = [
-            "content-type": "application/zip",
-            "x-backup-sha256": file.sha256,
-            "x-backup-device-name": Self.headerSafe(UIDevice.current.name),
-            "x-backup-platform": SyncService.platform,
-            "x-backup-app-version": SyncService.appVersion,
-            "x-backup-format": String(file.format),
-            "x-backup-created-at": String(file.createdAt),
-            "x-backup-habits": String(file.habits),
-            "x-backup-entries": String(file.entries),
-            "x-backup-records": String(file.records),
-        ]
-        do {
-            let (status, body) = try await sync.request("PUT", "/v1/backup", body: data, headers: headers)
-            let reply = (try? JSONSerialization.jsonObject(with: body)) as? [String: Any]
-            if status == 201, reply?["sha256"] as? String == file.sha256 {
-                setDate(Key.failingSince, nil)
-                defaults.set(0, forKey: Key.checkFailures)
-                return true
-            }
-            if status == 400, reply?["error"] as? String == "checksum_mismatch" {
-                defaults.set(defaults.integer(forKey: Key.checkFailures) + 1, forKey: Key.checkFailures)
-            }
-        } catch {
-            // Offline, or signed out (SyncService records that; refresh() turns it into the issue).
-        }
-        if date(Key.failingSince) == nil { setDate(Key.failingSince, .now) }
-        return false
-    }
-
-    /// The account's list of copies has this device's copy with this checksum: the copy is there, whole (D4).
-    private func accountHas(_ sha256: String) async -> Bool {
-        guard let copies = try? await serverCopies() else { return false }
-        return Self.accountHas(sha256, in: copies.map { (isThisDevice: $0.isThisDevice, sha256: $0.sha256) })
-    }
-
-    nonisolated static func accountHas(_ sha256: String, in copies: [(isThisDevice: Bool, sha256: String)]) -> Bool {
-        copies.contains { $0.isThisDevice && $0.sha256 == sha256 }
-    }
-
     /// Percent-encodes everything but plain ASCII letters and digits (`CharacterSet.alphanumerics` also lets "é" or "中"
     /// through, which a header can't carry), so the server's `decodeURIComponent` gets the name back exactly.
     nonisolated static func headerSafe(_ text: String) -> String {
@@ -511,7 +481,7 @@ final class BackupCenter {
         return text.addingPercentEncoding(withAllowedCharacters: plain) ?? "iPhone"
     }
 
-    /// Plus: backed up = the server acknowledged everything (05 §11.2).
+    /// Signed in: synced = the server acknowledged everything (05 §11.2).
     private func readSyncStatus() async {
         guard let status = try? await repository.syncStatus() else { return }
         if status.waiting == 0, let at = status.lastSyncedAt {
@@ -640,48 +610,82 @@ final class BackupCenter {
     /// someone who used Apple before isn't silently given a second account through Google (01 §3.3).
     /// `backUp` false: onboarding's "Sign back in" (Current Work 73.1) brings the account's habits back first, so an
     /// empty iPhone is never backed up over them; it backs up once they're here.
-    func signIn(with token: ProviderToken, create: Bool, backUp: Bool = true) async throws {
+    /// `replace`: the person chose Continue on "Use on This iPad?" (screen 7): a free account signed in on another
+    /// device moves here, and that device is signed out keeping its habits (Current Work 78).
+    func signIn(with token: ProviderToken, create: Bool, backUp: Bool = true, replace: Bool = false) async throws {
         var body: [String: Any] = ["idToken": token.idToken, "nonce": token.nonce]
         if let code = token.authorizationCode { body["authorizationCode"] = code }
+        if replace { body["replace"] = true }
         if create {
             body["create"] = true
             if let country = await Storefront.current?.countryCode { body["country"] = country }
         }
         try await sync.signIn(path: token.path, body: body)
-        // Switching over (D4): the account at once; iCloud stops only once that copy is read back and checked.
+        if replace { recordAccount("sign_in_replaced_other_device") }
+        // Switching over (D4): the account at once; iCloud stops only once the server has everything.
         defaults.set(false, forKey: Key.accountChecked)
         dataChanged()
         refresh()
         if backUp { await backUpNow() }
     }
 
+    /// Another device's sign-in ended this one's session (SyncService has already signed out, keeping every habit):
+    /// back to iCloud / Google Drive at once, as after Sign Out, and the notice waits for the person (screen 8).
+    private func signedOutElsewhere() async {
+        for key in [Key.lastGood, Key.failingSince, Key.checkFailures, Key.lastAttempt, Key.accountChecked] { defaults.removeObject(forKey: key) }
+        recordAccount("signed_out_elsewhere")
+        dataChanged()
+        refresh()
+        await backUpNow()
+    }
+
+    /// The notice was seen (OK).
+    func acknowledgeSignedOutElsewhere() {
+        sync.forgetSignedOutBy()
+        refresh()
+    }
+
+    /// "Your account is now used on your iPad. This iPhone keeps its habits and backs them up to iCloud." (screen 8)
+    var signedOutLine: String {
+        let other = Self.yourDevice(signedOutBy ?? "")
+        let here: String = switch place {
+        case .iCloud: "This iPhone keeps its habits and backs them up to iCloud."
+        case .googleDrive: "This iPhone keeps its habits and backs them up to Google Drive."
+        default: "This iPhone keeps its habits."
+        }
+        return "Your account is now used on \(other). " + here
+    }
+
+    /// "your iPad" for a device named by its kind (the app sends the model, "iPhone" or "iPad"); a name as it is.
+    nonisolated static func yourDevice(_ name: String) -> String {
+        if name.isEmpty { return "another device" }
+        return ["iPhone", "iPad", "iPod touch", "Android", "Mac", "Website"].contains(name) ? "your \(name)" : name
+    }
+
+    /// Usage sharing (optional, content-free): a free account moving between devices (Current Work 78, A8).
+    private func recordAccount(_ action: String) {
+        store.analytics.event(.account, ["action": .text(action), "provider": .text("server"), "result": .text("success"),
+                                         "new_account": .text("false"), "failure_code": .text("none")], ticket: store.analytics.ticket)
+    }
+
     // MARK: Coming back (onboarding, Current Work 73.1)
 
     /// What onboarding's "Getting your data" found in the account, once signed in.
     enum AccountReturn {
-        /// Plus: the first full sync after signing in brought everything (D14).
+        /// The first full sync after signing in brought everything (D14).
         case synced
-        /// A free account: its newest backup with something in it, ready to restore.
-        case backup(Pending)
-        /// The account has no backup with habits in it.
-        case empty
     }
 
-    /// Brings the account's data to this iPhone after signing in. Plus waits for a full sync (one runs as signing in
-    /// ends, so this is usually immediate); a free account downloads and checks its newest backup that holds anything,
-    /// from any of its devices. Throws when the account can't be reached.
+    /// Brings the account's data to this iPhone after signing in: a full sync (one runs as signing in ends, so this is
+    /// usually immediate). Throws when the account can't be reached.
     func accountReturn() async throws -> AccountReturn {
         refresh()
-        if isPlus {
-            await sync.syncNow()
-            if let problem = sync.lastError { throw ServerError(status: 0, code: problem) }
-            await readSyncStatus()
-            return .synced
-        }
-        let copies = try await serverCopies().filter { $0.habits > 0 || $0.entries > 0 }
-        guard let newest = copies.max(by: { $0.createdAt < $1.createdAt }) else { return .empty }
-        guard let pending = try await download(newest) else { throw ServerError(status: 0, code: "damaged") }
-        return .backup(pending)
+        // Every account syncs (Current Work 78): the first full sync after signing in brings everything (D14). Files an
+        // older build uploaded stay listed in Restore From a Backup → Your Account.
+        await sync.syncNow()
+        if let problem = sync.lastError { throw ServerError(status: 0, code: problem) }
+        await readSyncStatus()
+        return .synced
     }
 
     /// The checked backup file for Move from another device (`TransferSender`): made fresh from this iPhone's data and
@@ -901,14 +905,15 @@ final class BackupCenter {
         return await check(body)
     }
 
-    /// One day of a Plus account (its nightly snapshot, kept 90 days): Restore From a Backup → Your Account (screen 6c).
+    /// One day of the account (its nightly snapshot, kept 7 days on free, 90 on Plus): Restore From a Backup → Your
+    /// Account (screens 6b, 6c).
     struct AccountDay: Identifiable, Hashable {
         let day: String
         let takenAt: Date
         var id: String { day }
     }
 
-    /// A Plus account's days, newest first (`GET /v1/snapshots`).
+    /// The account's days, newest first (`GET /v1/snapshots`).
     func accountDays() async throws -> [AccountDay] {
         let (status, body) = try await sync.request("GET", "/v1/snapshots")
         guard status == 200, let json = (try? JSONSerialization.jsonObject(with: body)) as? [String: Any],
@@ -919,7 +924,7 @@ final class BackupCenter {
         }
     }
 
-    /// A Plus account's day as a backup file: the server makes it from the snapshot; the file's own checks (every entry's
+    /// One of the account's days as a backup file: the server makes it from the snapshot; the file's own checks (every entry's
     /// CRC, the data's SHA-256 and the counts) prove it arrived whole, then it's previewed and restored like any other,
     /// with its undo (D5).
     func download(_ day: AccountDay) async throws -> Pending? {

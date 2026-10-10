@@ -4,9 +4,10 @@ import Security
 import UIKit
 
 /// Keeps this device in step with the account's other devices (Architecture 05 §11, 06 §7), and holds the
-/// account's session. Accounts are optional and free; **only Plus syncs** (Backup, Sync and Accounts, rule 1): the
-/// server says whether the account has Plus with every token, and a free account's data never enters the outbox.
-/// A free account's backup goes to the server through `BackupCenter` instead.
+/// account's session. Accounts are optional and free; **every signed-in account syncs** (Current Work 78, Free Sync —
+/// One Device at a Time): Plus across its devices, a free account on one. Signing in to a free account that's signed
+/// in elsewhere asks first (`other_device_signed_in`, with the other device's name) and moves it here with `replace`;
+/// the other device's next contact is answered `session_ended`, and it signs out keeping every habit (`signedOutBy`).
 ///
 /// It is never in the way: every change is already saved on the phone before sync hears of it, nothing waits for
 /// the network, failures are retried quietly on the next trigger, and a failed session never clears any data
@@ -15,7 +16,8 @@ import UIKit
 @MainActor
 final class SyncService {
     private let repository: HabitRepository
-    private let api: URL
+    /// The server (dev in debug builds): sync, and Move to Another Device (`TransferServer`).
+    let api: URL
     private let keychain: Keychain
     private let defaults: UserDefaults = .standard
     private let storeName: String
@@ -39,7 +41,7 @@ final class SyncService {
         keychain = Keychain(service: "com.oftenenough.app.sync.\(storeName)")
         if reset {
             keychain.removeAll()
-            for key in [Key.account, Key.plus, Key.sessionEnded] { defaults.removeObject(forKey: key + storeName) }
+            for key in [Key.account, Key.plus, Key.sessionEnded, Key.signedOutBy] { defaults.removeObject(forKey: key + storeName) }
         }
     }
 
@@ -47,13 +49,26 @@ final class SyncService {
         static let account = "account.id."
         static let plus = "account.plus."
         static let sessionEnded = "account.sessionEnded."
+        static let signedOutBy = "account.signedOutBy."
     }
 
     var isSignedIn: Bool { keychain.read(.refreshToken) != nil }
     /// The account this device is signed in to (kept after the server ends a session, so "Sign in" can say so).
     var accountID: String? { defaults.string(forKey: Key.account + storeName) }
-    /// The account had Plus at the last sign-in or refresh. Only Plus syncs.
+    /// The account had Plus at the last sign-in or refresh (Plus syncs every device; free, this one).
     var isPlus: Bool { isSignedIn && defaults.bool(forKey: Key.plus + storeName) }
+    /// Signed out because the account is now used on another device (free, one device; or Plus ended there): that
+    /// device's name, until the notice has been seen (screen 8). Nil otherwise.
+    var signedOutBy: String? { defaults.string(forKey: Key.signedOutBy + storeName) }
+    /// The notice was seen (OK).
+    func forgetSignedOutBy() { defaults.removeObject(forKey: Key.signedOutBy + storeName) }
+    #if DEBUG
+    /// Test launches only (`-test-signed-out-by`): as if another device had signed this one out.
+    func testSignedOutBy(_ name: String) { defaults.set(name, forKey: Key.signedOutBy + storeName) }
+    #endif
+    /// Called when another device's sign-in signed this one out, after the tokens are gone (BackupCenter goes back to
+    /// iCloud / Google Drive at once).
+    var onSignedOutElsewhere: (() -> Void)?
     /// The server ended this device's session (signed out elsewhere, or the account was deleted). Cleared by signing
     /// in again or signing out here. Backup & Sync and Today say so (Backup, Sync and Accounts §4.4).
     var sessionEnded: Bool { defaults.bool(forKey: Key.sessionEnded + storeName) }
@@ -68,9 +83,10 @@ final class SyncService {
 
     // MARK: Signing in
 
-    /// Signs in through `path` (`/v1/auth/apple`, …) with the provider's details in `body`. With Plus, this device's
-    /// data starts syncing with the account; without, nothing is queued. Throws `ServerError` (`unknown_key` when
-    /// there's no account for this sign-in and `create` wasn't sent).
+    /// Signs in through `path` (`/v1/auth/apple`, …) with the provider's details in `body`. This device's data starts
+    /// syncing with the account (free or Plus). Throws `ServerError`: `unknown_key` when there's no account for this
+    /// sign-in and `create` wasn't sent; `other_device_signed_in` (with `deviceName`) when a free account is signed in
+    /// on another device and `replace` wasn't sent.
     func signIn(path: String, body: [String: Any]) async throws {
         var body = body
         body["device"] = [
@@ -84,13 +100,17 @@ final class SyncService {
               let accountID = json["accountId"] as? String,
               let access = json["accessToken"] as? String,
               let refresh = json["refreshToken"] as? String else {
-            throw ServerError(status: status, code: json["error"] as? String ?? "unexpected")
+            let other = (json["device"] as? [String: Any])?["name"] as? String
+            throw ServerError(status: status, code: json["error"] as? String ?? "unexpected", deviceName: other)
         }
         keychain.write(.refreshToken, refresh)
         accessToken = access
         defaults.set(accountID, forKey: Key.account + storeName)
         defaults.set(false, forKey: Key.sessionEnded + storeName)
+        forgetSignedOutBy()
         try await setPlus(json["plus"] as? Bool ?? false)
+        // Every account syncs: everything here is queued once and merged with the account's (D3).
+        try await repository.bindAccount(accountId: accountID)
         onAccountChange?()
         await syncNow()
     }
@@ -126,12 +146,10 @@ final class SyncService {
         onAccountChange?()
     }
 
-    /// Records whether the account has Plus. Plus arriving starts sync: everything here is queued once (05 §5).
-    /// Plus going (a refund) stops it; nothing on the phone changes.
+    /// Records whether the account has Plus (every device, or one). Sync runs either way; nothing on the phone changes.
     private func setPlus(_ plus: Bool) async throws {
         let was = defaults.bool(forKey: Key.plus + storeName)
         defaults.set(plus, forKey: Key.plus + storeName)
-        if plus, let accountID { try await repository.bindAccount(accountId: accountID) }
         if plus != was { onAccountChange?() }
     }
 
@@ -150,7 +168,7 @@ final class SyncService {
     /// iOS suspended the app first and the change waited on the phone until the app was next opened. A failed sync
     /// keeps everything in the outbox and asks for a background retry (`onWaitingAfterFailure`).
     func scheduleSoon() {
-        guard isPlus else { return }
+        guard isSignedIn else { return }
         #if DEBUG
         if UserDefaults.standard.bool(forKey: "debug.syncOldTiming") {
             // The timing before item 67, for SyncDeviceTests only: 3 s of quiet, no background time.
@@ -196,7 +214,7 @@ final class SyncService {
 
     /// The app is open: sync now, then pull every 60 seconds as a fallback to push.
     func appBecameActive() {
-        guard isPlus else { return }
+        guard isSignedIn else { return }
         Task { await syncNow() }
         poll?.cancel()
         poll = Task { [weak self] in
@@ -221,7 +239,7 @@ final class SyncService {
     /// One full sync. A call that arrives while one is running waits for it, and that run goes round once more, so
     /// every change made before the call is sent, by one request after another, never several at once.
     func syncNow() async {
-        guard isPlus else { return }
+        guard isSignedIn else { return }
         if let running {
             again = true
             await running.value
@@ -232,7 +250,7 @@ final class SyncService {
             repeat {
                 self.again = false
                 await self.run()
-            } while self.again && self.isPlus
+            } while self.again && self.isSignedIn
             // In the same turn as the last check of `again`, so a call can't slip in between and be missed.
             self.running = nil
         }
@@ -300,7 +318,7 @@ final class SyncService {
                 #endif
                 var (status, data) = try await send("POST", "/v1/sync", body: Data(request.utf8), authorized: true)
                 if status == 403 && Self.errorCode(data) == "plus_required" {
-                    // The token may be older than a purchase: refresh once, which also re-reads Plus.
+                    // A server from before free sync (Current Work 78): refresh once, which also re-reads Plus.
                     accessToken = nil
                     try await refresh()
                     guard isPlus else { lastError = nil; return }
@@ -355,6 +373,7 @@ final class SyncService {
         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
         if authorized && status == 401 && !retried {
             let code = Self.errorCode(data)
+            if code == "session_ended" { signedOutElsewhere(data); throw ServerError(status: 401, code: code) }
             if code == "signed_out" || code == "account_deleted" { signedOut(deleted: code == "account_deleted"); throw ServerError(status: 401, code: code) }
             accessToken = nil
             return try await send(method, path, body: body, authorized: true, headers: headers, retried: true)
@@ -365,6 +384,10 @@ final class SyncService {
     private func refresh() async throws {
         guard let token = keychain.read(.refreshToken) else { throw ServerError(status: 401, code: "signed_out") }
         let (status, json) = try await post("/v1/auth/refresh", json: ["refreshToken": token], authorized: false)
+        if status == 401 && json["error"] as? String == "session_ended" {
+            signedOutElsewhere(try JSONSerialization.data(withJSONObject: json))
+            throw ServerError(status: 401, code: "session_ended")
+        }
         if status == 401 {
             let deleted = json["error"] as? String == "account_deleted"
             signedOut(deleted: deleted)
@@ -394,6 +417,17 @@ final class SyncService {
         onAccountChange?()
     }
 
+    /// Another device signed in to this free account (or Plus ended and another device was kept): signed out here, as
+    /// Sign Out does, keeping every habit (D1), and the other device's name is kept for the one-time notice (screen 8).
+    /// There's no "signed in but not syncing" state (Current Work 78).
+    private func signedOutElsewhere(_ reply: Data) {
+        let json = (try? JSONSerialization.jsonObject(with: reply)) as? [String: Any]
+        let name = json?["deviceName"] as? String ?? (json?["device"] as? [String: Any])?["name"] as? String ?? ""
+        defaults.set(name, forKey: Key.signedOutBy + storeName)
+        forgetAccount()
+        onSignedOutElsewhere?()
+    }
+
     private static func errorCode(_ data: Data) -> String {
         ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?["error"] as? String ?? "unexpected"
     }
@@ -413,6 +447,8 @@ final class SyncService {
 nonisolated struct ServerError: Error, CustomStringConvertible {
     let status: Int
     let code: String
+    /// `other_device_signed_in`: the device the free account is signed in on ("iPhone").
+    var deviceName: String? = nil
     var description: String { "\(status) \(code)" }
 }
 

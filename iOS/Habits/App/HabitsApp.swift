@@ -144,6 +144,7 @@ struct HabitsApp: App {
                 .environment(backup)
                 .modifier(IncomingBackupSheet(backup: backup))
                 .modifier(KeepYourAccount(backup: backup))
+                .modifier(SignedOutElsewhere(backup: backup))
                 #if DEBUG
                 // Two simulators checked against each other: `-transfer-send` opens the old iPhone's code screen.
                 // Only once the demo habits are saved (S7), so the file isn't made from an empty database.
@@ -232,6 +233,36 @@ private struct KeepYourAccount: ViewModifier {
                      : "Your other device used an account. Sign in the same way here to keep backing up to it.")
             }
             .sheet(isPresented: $signingIn) { SignInSheet(title: "Sign In").environment(backup) }
+    }
+}
+
+/// "Signed out on this iPhone" (Account and Backup Redesign, screen 8; Current Work 78): once, after another device's
+/// sign-in moved the free account there. An alert: it's unexpected and needs acknowledging. Also asks "Use on This
+/// iPhone?" (screen 7) for a sign-in that has no sheet of its own to ask in (a test launch's).
+private struct SignedOutElsewhere: ViewModifier {
+    @Bindable var backup: BackupCenter
+
+    func body(content: Content) -> some View {
+        content
+            .alert("Signed out on this \(UIDevice.current.model)",
+                   isPresented: Binding(get: { backup.signedOutBy != nil && backup.askReplace == nil },
+                                        set: { if !$0 { backup.acknowledgeSignedOutElsewhere() } })) {
+                Button("OK") { backup.acknowledgeSignedOutElsewhere() }
+            } message: {
+                Text(backup.signedOutLine)
+            }
+            .sheet(item: $backup.askReplace) { ask in
+                UseHereQuestion(otherDevice: ask.otherDevice) {
+                    Task {
+                        await ask.proceed()
+                        backup.askReplace = nil
+                    }
+                } onCancel: {
+                    backup.askReplace = nil
+                }
+                .presentationDetents([.height(300)])
+                .presentationDragIndicator(.visible)
+            }
     }
 }
 

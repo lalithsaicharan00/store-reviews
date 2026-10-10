@@ -1,5 +1,6 @@
 import AuthenticationServices
 import SwiftUI
+import UIKit
 
 /// Sign In and Create Account (Account and Backup Redesign, screens 2b and 2c; Current Work 76): a bottom sheet that
 /// fits its content, ✕ to close, one line, Apple's own button and Google's, and a footer. Both do the same thing
@@ -8,6 +9,8 @@ import SwiftUI
 ///
 /// - **Sign In** never makes an account by itself: an unknown sign-in asks first (Rulebook D3).
 /// - **Create Account** with a sign-in that already has an account signs into it (the server's `create: true` does).
+/// - **A free account signed in on another device** (Current Work 78): the sheet becomes "Use on This iPad?" (screen 7);
+///   Continue signs in with `replace`, Cancel leaves everything as it was.
 struct SignInSheet: View {
     enum Purpose { case signIn, create }
 
@@ -16,6 +19,8 @@ struct SignInSheet: View {
     @Environment(\.colorScheme) private var colorScheme
     @State private var working = false
     @State private var unknown: ProviderToken?
+    /// Signed in on another device: the token and whether it was Create Account, until Continue or Cancel.
+    @State private var other: (token: ProviderToken, create: Bool, device: String)?
     @State private var failure: String?
     @State private var google = GoogleSignIn()
     @State private var apple = AppleSignIn()
@@ -26,10 +31,25 @@ struct SignInSheet: View {
     private var purpose: Purpose { title == "Sign In" ? .signIn : .create }
 
     var body: some View {
+        if let other {
+            UseHereQuestion(otherDevice: other.device, working: working) {
+                finish(other.token, create: other.create, replace: true)
+            } onCancel: {
+                self.other = nil
+                dismiss()
+            }
+            .presentationDetents([.height(300)])
+            .presentationDragIndicator(.visible)
+        } else {
+            providers
+        }
+    }
+
+    private var providers: some View {
         NavigationStack {
             VStack(spacing: 14) {
                 Text(purpose == .signIn ? "Use the same way you signed in before."
-                                        : "Choose how you'll sign in. Already have an account? You'll be signed in to it.")
+                                        : "A free account syncs your habits on one device and brings them back when you sign in on a new device.")
                     .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                 if BackupFeatures.appleSignIn {
@@ -50,7 +70,7 @@ struct SignInSheet: View {
                         .accessibilityIdentifier("sign-in-google")
                 }
                 Text(purpose == .signIn ? "No account found? You'll be asked before a new one is made."
-                                        : "Used only to back up your habits. Never sold, never for ads.")
+                                        : "Already have an account? You'll be signed in to it. Never sold, never for ads.")
                     .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                 if let failure {
@@ -103,20 +123,72 @@ struct SignInSheet: View {
         }
     }
 
-    private func finish(_ token: ProviderToken, create: Bool) {
+    private func finish(_ token: ProviderToken, create: Bool, replace: Bool = false) {
         working = true
         Task {
             defer { working = false }
             do {
-                try await backup.signIn(with: token, create: create)
+                try await backup.signIn(with: token, create: create, replace: replace)
                 onSignedIn()
                 dismiss()
             } catch let error as ServerError where error.code == "unknown_key" {
                 unknown = token
+            } catch let error as ServerError where error.code == "other_device_signed_in" {
+                other = (token, create, error.deviceName ?? "")
             } catch {
+                other = nil
                 failure = "Couldn't sign in. Check your connection and try again."
             }
         }
+    }
+}
+
+/// "Use on This iPad?" (Account and Backup Redesign, screen 7; Current Work 78): signing in to a free account that's
+/// signed in on another device. Continue moves the account here and signs the other device out (it keeps its habits);
+/// Cancel changes nothing on either. Never words like "active device" or "session" (Free Sync §5).
+struct UseHereQuestion: View {
+    let otherDevice: String
+    var working = false
+    let onContinue: () -> Void
+    let onCancel: () -> Void
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Use on This \(UIDevice.current.model)?")
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("use-here-title")
+            Text("Free syncs one device, so \(BackupCenter.yourDevice(otherDevice)) will be signed out. It keeps its habits.")
+                .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier("use-here-text")
+            VStack(spacing: 10) {
+                Button(action: onContinue) {
+                    Group {
+                        if working { ProgressView().tint(Color.onInk) } else { Text("Continue").font(.headline) }
+                    }
+                    .foregroundStyle(Color.onInk)
+                    .frame(maxWidth: .infinity, minHeight: 32)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+                .tint(.ink)
+                .accessibilityIdentifier("use-here-continue")
+                Button(action: onCancel) {
+                    Text("Cancel").font(.headline).foregroundStyle(Color.primary).frame(maxWidth: .infinity, minHeight: 32)
+                }
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+                .tint(.secondary)
+                .accessibilityIdentifier("use-here-cancel")
+            }
+            .disabled(working)
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 28)
+        .frame(maxHeight: .infinity, alignment: .top)
     }
 }
 

@@ -264,6 +264,21 @@ enum PerfDriver {
             await measure("Backup & Export: scrolling") { await scroll() }
             await open("Backup & Export → Restore From a Backup") { send(.openRestore) }
             send(.close)
+        case "backup-states":
+            // Backup & Export and Account in each state (Current Work 78, T4): no account, a free account (syncs this
+            // iPhone), Plus; shown as they would be, without signing in (D8).
+            for (name, plus) in [("no account", nil), ("free", false), ("Plus", true)] as [(String, Bool?)] {
+                AppModel.shared.backup?.perfSignedIn = plus
+                await pause(0.5)
+                await open("Backup & Export (\(name))") { send(.openPlace(.backup)) }
+                await measure("Backup & Export (\(name)): scrolling") { await scroll() }
+                send(.close)
+                await pause(1.2)
+                await open("Account (\(name))") { send(.openPlace(.account)) }
+                send(.close)
+                await pause(1.2)
+            }
+            AppModel.shared.backup?.perfSignedIn = nil
         case "lock-keypad":
             // The lock's cover with its keypad (Current Work 58, T4): showing it, typing on it (never six digits, so it
             // stays), then the right code, which opens the app. A test launch's own lock (D8).

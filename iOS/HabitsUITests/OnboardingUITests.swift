@@ -307,14 +307,58 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertEqual(page("onboarding-page-working").label, "Getting your data.")
         XCTAssertTrue(text(containing: "From your other device.").exists)
         shot("R08-getting-your-data")
-        tap("onboarding-working-cancel")
-        XCTAssertTrue(page("onboarding-page-transfer").waitForExistence(timeout: 5), "Cancel returns to the code")
+        // No device is showing this code: the server has nothing for it, and the page says so (through the server
+        // since 10 Oct 2026; a wrong code is told within seconds).
+        let failure = app.staticTexts["onboarding-working-failure"]
+        XCTAssertTrue(failure.waitForExistence(timeout: 30), "A code nobody showed is refused")
+        XCTAssertTrue(failure.label.hasPrefix("That code doesn't match"), failure.label)
+        shot("R08-code-doesnt-match")
+        tap("onboarding-working-main")
+        XCTAssertTrue(page("onboarding-page-transfer").waitForExistence(timeout: 5), "Enter the code again returns to the code")
         app.navigationBars.buttons.firstMatch.tap()
 
         // Start without restoring: Today, empty.
         XCTAssertTrue(page("onboarding-page-returning").waitForExistence(timeout: 5))
         tap("onboarding-start-fresh")
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 5))
+    }
+
+    /// Move from another device through the server, end to end with the dev server (the user, 10 Oct 2026: "server
+    /// based … like WhatsApp"): the old device seals its habits with its code and hands them to the server; the new one,
+    /// on the welcome, types the code and gets them, without either needing an account or the same network.
+    func testMoveFromAnotherDeviceThroughTheServer() {
+        let code = String((0..<8).map { _ in "0123456789ABCDEFGHJKMNPQRSTVWXYZ".randomElement()! })
+        // The old device: the demo habits; ≡ › Backup & Export › Move to Another Device shows this test's code.
+        launch(onboarding: false, empty: false, extra: ["-transfer-code", code])
+        XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 15), "The old device has the demo habits")
+        let menuButton = app.buttons["menu-button"], backupRow = app.buttons["menu-backup"]
+        XCTAssertTrue(menuButton.waitForExistence(timeout: 10))
+        menuButton.tap()
+        XCTAssertTrue(backupRow.waitForExistence(timeout: 5))
+        // The menu has finished opening before its row is tapped (T12).
+        let open = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: backupRow)
+        XCTAssertEqual(XCTWaiter.wait(for: [open], timeout: 5), .completed, "The menu opened")
+        backupRow.tap()
+        XCTAssertTrue(app.buttons["backup-move"].waitForExistence(timeout: 5))
+        app.buttons["backup-move"].tap()
+        XCTAssertTrue(app.staticTexts["Waiting for the other device…"].waitForExistence(timeout: 30), "Handed to the server")
+        shot("M01-old-device-waiting")
+        // Ends without leaving the screen, so the sealed file waits on the server (for at most its hour).
+        app.terminate()
+
+        // The new device: nothing on it, the welcome.
+        launch()
+        XCTAssertTrue(page("onboarding-page-welcome").waitForExistence(timeout: 10))
+        tap("onboarding-returning")
+        tap("onboarding-way-transfer")
+        let field = app.textFields["onboarding-transfer-code"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        if !app.keyboards.firstMatch.waitForExistence(timeout: 3) { field.tap() }
+        field.typeText(code)
+        tap("onboarding-get-data")
+        XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 45),
+                      "The habits arrived: \(app.staticTexts["onboarding-working-failure"].exists ? app.staticTexts["onboarding-working-failure"].label : "no failure shown")")
+        shot("M02-new-device-today")
     }
 
     /// Data already on this iPhone (here, the demo habits): Welcome back offers it first; Continue says it's setting

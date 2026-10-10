@@ -35,7 +35,7 @@ enum SyncCheck {
     static func run(store: HabitStore, sync: SyncService?) async {
         var lines = ["checked \(iso.string(from: .now))"]
         defer { write(lines) }
-        guard let sync, sync.isPlus else { lines.append("result: NOT PLUS (nothing syncs)"); return }
+        guard let sync, sync.isSignedIn else { lines.append("result: NOT SIGNED IN (nothing syncs)"); return }
         await store.flush()
         await sync.syncNow()
         if let status = await sync.status() {

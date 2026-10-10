@@ -208,8 +208,9 @@ struct ICloudCopiesView: View {
     }
 }
 
-/// Restore From a Backup → Your Account: a free account's copies (each of its devices, one a day for 7 days), or Plus's
-/// days (90). Plus's day replaces the habits on every device, and its preview says so first.
+/// Restore From a Backup → Your Account: the account's days, as it was each night (Current Work 78: the last 7 days on
+/// free, 90 on Plus, from `GET /v1/snapshots`). A Plus day replaces the habits on every device, and its preview says so
+/// first. Backup files an earlier version of the app uploaded are listed under them while they last (U5).
 struct AccountCopiesView: View {
     @Environment(BackupCenter.self) private var backup
     @State private var copies: [BackupCenter.ServerCopy] = []
@@ -222,7 +223,7 @@ struct AccountCopiesView: View {
         Form {
             if loading {
                 Section { ProgressView() }
-            } else if backup.isPlus {
+            } else {
                 Section {
                     if days.isEmpty { Text("No daily copies yet. The first is kept tonight.").foregroundStyle(.secondary) }
                     ForEach(days) { day in
@@ -232,15 +233,12 @@ struct AccountCopiesView: View {
                         .accessibilityIdentifier("restore-account-day")
                     }
                 } footer: {
-                    Text("Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days.")
-                }
-            } else {
-                if copies.isEmpty {
-                    Section { Text("No backups in your account yet.").foregroundStyle(.secondary) }
+                    Text(backup.isPlus ? "Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days."
+                                       : "Restoring replaces the habits on this iPhone. You can undo it for 30 days.")
                 }
                 ForEach(devices, id: \.self) { device in
                     let mine = copies.filter { $0.device == device }
-                    Section(mine.first.map { $0.isThisDevice ? "\($0.deviceName) (this device)" : $0.deviceName } ?? "") {
+                    Section {
                         ForEach(mine) { copy in
                             CopyRow(title: copy.slot == "before-shrink" ? "Kept before it shrank" : HabitCopy.capitalized(BackupSyncView.when(copy.createdAt)),
                                     line: RestoreStartView.counts(habits: copy.habits, entries: copy.entries)) {
@@ -248,6 +246,8 @@ struct AccountCopiesView: View {
                             }
                             .accessibilityIdentifier("restore-account-copy")
                         }
+                    } header: {
+                        Text("Saved earlier · " + (mine.first.map { $0.isThisDevice ? "\($0.deviceName) (this device)" : $0.deviceName } ?? ""))
                     }
                 }
             }
@@ -271,7 +271,8 @@ struct AccountCopiesView: View {
         loading = true
         defer { loading = false }
         do {
-            if backup.isPlus { days = try await backup.accountDays() } else { copies = try await backup.serverCopies() }
+            days = try await backup.accountDays()
+            copies = ((try? await backup.serverCopies()) ?? []).filter { $0.habits > 0 || $0.entries > 0 }
         } catch {
             failure = "Couldn't reach your account. Check your connection and try again."
         }

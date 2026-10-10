@@ -156,18 +156,34 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         shot("D04-backup-export-middle")
         app.swipeUp(); app.swipeUp()
         shot("D05-backup-export-bottom")
+        // Without an account, Your Account opens Create Account over the page (screen 4e).
         if tap(app.buttons["backup-account"], "Your Account") {
-            shot("D06-your-account")
-            if tap(app.buttons["account-sign-in"], "Sign In") {
-                shot("D06b-sign-in-sheet")
-                closeSheet()
-            }
-            back()
+            shot("D06-create-account-sheet")
+            closeSheet()
         }
         // Share sheets are left out: on the iPhone they show the person's own contacts.
         if tap(app.buttons["backup-erase"], "Erase All My Data") {
             shot("D07-erase-question")
         }
+
+        // Free accounts sync one device (Current Work 78): the new device's question (7) and the old one's notice (8).
+        app.terminate()
+        launch(["-test-ask-replace", "iPhone"])
+        if tap(app.buttons["use-here-cancel"], "Use on This iPhone?") == true {
+            shot("D08-use-here-cancelled")
+        }
+        app.terminate()
+        launch(["-test-ask-replace", "iPhone"])
+        XCTAssertTrue(app.staticTexts["use-here-title"].waitForExistence(timeout: 10), "Use on This iPhone?")
+        shot("D08-use-on-this-iphone")
+        app.terminate()
+        launch(["-test-signed-out-by", "iPad"])
+        let notice = app.alerts.firstMatch
+        XCTAssertTrue(notice.waitForExistence(timeout: 10), "Signed out on this iPhone")
+        XCTAssertTrue(notice.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Your account is now used on your iPad.'")).firstMatch.exists, notice.debugDescription)
+        shot("D09-signed-out-on-this-iphone")
+        notice.buttons["OK"].tap()
+        XCTAssertTrue(notice.waitForNonExistence(timeout: 5), "OK closes it")
     }
 
     /// The other pages that speak about the account or the data: Plus and Privacy.

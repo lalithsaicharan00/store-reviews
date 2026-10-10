@@ -63,13 +63,5 @@
 	<string>Often Enough uses Face ID to unlock when you turn on the lock in Privacy.</string>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
-	<!-- Move from another device (Current Work 73.1): the two iPhones find each other on the local network with a
-	     transfer code. Asked only when a transfer starts, never at launch. -->
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>Often Enough uses your local network to move your habits between your iPhones when you use a transfer code.</string>
-	<key>NSBonjourServices</key>
-	<array>
-		<string>_oftenenough._tcp</string>
-	</array>
 </dict>
 </plist>

@@ -6,8 +6,9 @@ import SwiftUI
 ///
 /// - **Signed out:** "Not signed in" and where the habits are; **Sign In** and **Create Account** as two plain rows,
 ///   each opening its own sheet; two facts, never a list of benefits or a push.
-/// - **Signed in:** which account, the plan (Plus says lifetime), Last Backup or Last Synced, the devices with how to get
-///   on another one, Sign Out and Delete Account (Architecture 01 §3.7, 09 §7). Signing out leaves this page signed out.
+/// - **Signed in:** which account, the plan (Plus says lifetime), Last Synced (free and Plus both sync, Current Work 78),
+///   the devices with how to get on another one, Sign Out and Delete Account (Architecture 01 §3.7, 09 §7). Signing out
+///   leaves this page signed out.
 struct AccountView: View {
     @Environment(BackupCenter.self) private var backup
     @State private var details: BackupCenter.AccountDetails?
@@ -47,8 +48,8 @@ struct AccountView: View {
             row("Create Account", id: "account-create") { sheet = "Create Account" }
         } footer: {
             VStack(alignment: .leading, spacing: 8) {
-                Text("With an account, your habits are backed up to it as you go, and come back when you sign in on a new phone or tablet.")
-                Text("A free account is for one device. Syncing several devices is part of Plus.")
+                Text("A free account syncs your habits on one device and brings them back when you sign in on a new device.")
+                Text("Plus syncs across your devices.")
             }
         }
     }
@@ -85,15 +86,11 @@ struct AccountView: View {
                 LabeledContent("Plan", value: backup.isPlus ? "Plus (lifetime)" : "Free")
             }
             .accessibilityIdentifier("account-plan")
-            if backup.isPlus {
-                LabeledContent("Last Synced", value: backup.lastSynced.map { HabitCopy.capitalized(BackupSyncView.when($0)) } ?? "Not yet")
-                    .accessibilityIdentifier("account-last-synced")
-            } else {
-                LabeledContent("Last Backup", value: backup.lastGood.map { HabitCopy.capitalized(BackupSyncView.when($0)) } ?? "Not yet")
-                    .accessibilityIdentifier("account-last-backup")
-            }
+            LabeledContent("Last Synced", value: lastSynced.map { HabitCopy.capitalized(BackupSyncView.when($0)) } ?? "Not yet")
+                .accessibilityIdentifier("account-last-synced")
         } footer: {
-            Text(backup.isPlus ? "Every change syncs to all your devices." : "Backed up as you go, with the last 7 days kept.")
+            Text(backup.isPlus ? "Syncs across your devices, with a copy of each day for 90 days."
+                               : "Free syncs one device, with a copy of each of the last 7 days.")
         }
         Section {
             if let details {
@@ -113,7 +110,7 @@ struct AccountView: View {
             Text("Devices")
         } footer: {
             Text(backup.isPlus ? "To add a device, sign in on it with this account."
-                               : "A free account is for one device. To use a new phone or tablet instead, sign in on it.")
+                               : "To use another phone or tablet instead, sign in on it. This iPhone is then signed out and keeps its habits.")
         }
         .accessibilityIdentifier("account-devices")
         Section {
@@ -128,9 +125,12 @@ struct AccountView: View {
         }
     }
 
+    /// When this iPhone last synced: this session's last sync, else the last time the server had everything.
+    private var lastSynced: Date? { backup.lastSynced ?? backup.lastGood }
+
     private func deviceLine(_ device: BackupCenter.AccountDetails.Device) -> String {
         if !device.signedIn { return "Signed out" }
-        if device.isThis && !backup.isPlus, let last = backup.lastGood { return "Backed up " + BackupSyncView.when(last) }
+        if device.isThis, let last = lastSynced { return "Synced " + BackupSyncView.when(last) }
         return "Last used " + BackupSyncView.when(device.lastSeen)
     }
 

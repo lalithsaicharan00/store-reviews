@@ -4,9 +4,10 @@ import UIKit
 /// Backup & Export → Move to Another Device (Account and Backup Redesign, screen 5; Current Work 73.1 and 76): the old
 /// device's half of Move from another device, opened straight from the row, like a messaging app's transfer (the user,
 /// 10 Oct 2026: no options screen first). Three steps, the code, and that it's waiting. It makes a fresh backup of
-/// everything and sends it to the device that types the code (`TransferSender`), with whether this device is signed in
-/// so the other one can ask to sign in too. The screen stays awake while it waits; leaving it ends the code. This
-/// device keeps everything: it's a copy, not a move.
+/// everything, seals it with the code and hands it to our server for the device that types the code (`TransferSender`;
+/// through the server since 10 Oct 2026, so the devices can be anywhere), with whether this device is signed in so the
+/// other one can ask to sign in too. The screen stays awake while it waits; leaving it ends the code and deletes the
+/// file from the server. This device keeps everything: it's a copy, not a move.
 struct TransferSendView: View {
     @Environment(BackupCenter.self) private var backup
     @State private var sender = TransferSender()
@@ -36,13 +37,8 @@ struct TransferSendView: View {
             }
             if case .failed = sender.state {
                 Section { Button("Try Again") { restart() }.accessibilityIdentifier("transfer-try-again") }
-            } else if sender.state == .needsPermission {
-                Section {
-                    Button("Open Settings") {
-                        if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
-                    }
-                    Button("Try Again") { restart() }
-                }
+            } else if sender.state == .expired {
+                Section { Button("Show a New Code") { restart() }.accessibilityIdentifier("transfer-try-again") }
             }
         }
         .navigationTitle("Move to Another Device")
@@ -77,17 +73,13 @@ struct TransferSendView: View {
                 Text("Waiting for the other device…")
             }
             .foregroundStyle(.secondary)
-        case .sending(let done):
-            VStack(spacing: 8) {
-                ProgressView(value: done)
-                Text("Sending… \(Int((done * 100).rounded()))%").monospacedDigit()
-            }
         case .sent:
             Label("Done. Your habits are on the other device.", systemImage: "checkmark.circle.fill")
                 .accessibilityIdentifier("transfer-sent")
-        case .needsPermission:
-            Text("The app needs Local Network to reach the other device. Turn it on in Settings, then try again.")
+        case .expired:
+            Text("This code has expired. Show a new code to try again.")
                 .multilineTextAlignment(.center)
+                .accessibilityIdentifier("transfer-expired")
         case .failed(let text):
             Text(text).multilineTextAlignment(.center)
         }
@@ -97,7 +89,7 @@ struct TransferSendView: View {
         do {
             let file = try await backup.transferFile()
             guard !Task.isCancelled else { return }
-            await sender.start(file: file, account: backup.isSignedIn ? (backup.isPlus ? .plus : .free) : .none)
+            await sender.start(file: file, account: backup.isSignedIn ? (backup.isPlus ? .plus : .free) : .none, api: backup.api)
         } catch {
             sender.fail("Couldn't get your data ready. Your habits are safe on this device. Please try again.")
         }

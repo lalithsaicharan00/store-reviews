@@ -61,7 +61,7 @@ nonisolated enum AnalyticsContract {
         "cohort": ["fresh_first_run", "restored", "existing", "unknown"], "flow_mode": ["first_run", "replay", "restore"],
         "step": ["welcome", "free_plan", "build", "quit", "tasks", "day_week", "first_item", "returning", "sign_in", "restore_source", "transfer_code"],
         "outcome": ["completed", "skipped", "restore_handoff", "started_fresh", "signed_in", "restored", "transferred", "kept_on_device"],
-        "action": ["register", "sign_in", "link", "sign_out", "delete"], "provider": ["apple", "google", "not_applicable", "local", "server", "icloud", "google_drive", "unknown"],
+        "action": ["register", "sign_in", "link", "sign_out", "delete", "sign_in_replaced_other_device", "signed_out_elsewhere"], "provider": ["apple", "google", "not_applicable", "local", "server", "icloud", "google_drive", "unknown"],
         "result": ["success", "cancelled", "failed", "verified", "pending", "restored", "no_entitlement"],
         "new_account": ["true", "false", "unknown"], "failure_code": ["none", "storage_write", "storage_read", "unavailable", "network", "invalid_backup", "newer_version", "verification", "unknown"],
         "entry_point": ["menu", "habit_limit", "widget_configuration", "feature_gate"], "product_tier": ["plus", "family", "family_upgrade"],

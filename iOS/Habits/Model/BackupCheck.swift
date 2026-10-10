@@ -74,6 +74,40 @@ enum BackupCheck {
         failures += folderFailures()
         failures += placeAndTimingFailures()
         failures += await compactFileFailures()
+        failures += transferFailures()
+        return failures
+    }
+
+    /// Move to Another Device through the server (`TransferCode`, 10 Oct 2026): the code makes the same key and ID on
+    /// both devices, the server's ID never gives the key away, a sealed file opens only with its own code and arrives
+    /// whole or not at all; and the words for the device a free account moved to (Current Work 78).
+    static func transferFailures() -> [String] {
+        var failures: [String] = []
+        func expect(_ condition: Bool, _ name: String) { if !condition { failures.append("transfer: " + name) } }
+        let code = "K7PQ49XM"
+        let a = TransferCode.secrets(for: code), b = TransferCode.secrets(for: TransferCode.normalize("k7pq-49xm"))
+        expect(a == b, "the code typed on the other device makes the same key and ID")
+        expect(a.id.count == 64 && a.id.allSatisfy(\.isHexDigit) && a.key.count == 32, "a 64-hex ID and a 32-byte key")
+        expect(a.id != a.key.map { String(format: "%02x", $0) }.joined(), "the server's ID isn't the key")
+        let other = TransferCode.secrets(for: "K7PQ49XN")
+        expect(other.id != a.id && other.key != a.key, "one character more makes another ID and key")
+        let file = Data((0..<5000).map { UInt8($0 % 251) })
+        do {
+            let sealed = try TransferCode.seal(file, account: .free, key: a.key)
+            expect(sealed.count == file.count + 5 + 28, "sealed: 4-byte mark, account, the file, nonce and tag (\(sealed.count))")
+            expect(sealed.range(of: file.prefix(64)) == nil, "the file can't be read on the way")
+            let opened = TransferCode.open(sealed, key: a.key)
+            expect(opened?.file == file && opened?.account == .free, "opens with its own code, the account with it")
+            expect(TransferCode.open(sealed, key: other.key) == nil, "another code can't open it")
+            var damaged = sealed
+            damaged[damaged.startIndex + 40] ^= 0x01
+            expect(TransferCode.open(damaged, key: a.key) == nil, "a damaged file is refused, never half-opened")
+            expect(TransferCode.open(Data("not sealed".utf8), key: a.key) == nil, "something else isn't taken for a file")
+        } catch {
+            failures.append("transfer: seal threw \(error)")
+        }
+        expect(BackupCenter.yourDevice("iPad") == "your iPad" && BackupCenter.yourDevice("Lalith's iPhone") == "Lalith's iPhone"
+               && BackupCenter.yourDevice("") == "another device", "the device the account moved to, in words")
         return failures
     }
 

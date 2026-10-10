@@ -178,6 +178,8 @@ struct SignBackInPage: View {
     @Environment(OnboardingFlow.self) private var flow
     @State private var working: String?
     @State private var unknown: ProviderToken?
+    /// A free account signed in on another device: "Use on This iPhone?" (screen 7, Current Work 78).
+    @State private var other: OtherDevice?
     @State private var failure: String?
     @State private var google = GoogleSignIn()
     @State private var apple = AppleSignIn()
@@ -214,6 +216,16 @@ struct SignBackInPage: View {
             EmptyView()
         }
         .onAppear { flow.reached("sign_in") }
+        .sheet(item: $other) { ask in
+            UseHereQuestion(otherDevice: ask.device, working: working != nil) {
+                working = "replace"
+                finish(ask.token, create: false, replace: true)
+            } onCancel: {
+                other = nil
+            }
+            .presentationDetents([.height(300)])
+            .presentationDragIndicator(.visible)
+        }
         .alert("No account for this sign-in", isPresented: Binding(get: { unknown != nil }, set: { if !$0 { unknown = nil } })) {
             Button("Try Another Sign-In", role: .cancel) { unknown = nil }
             Button("Restore a Backup Instead") { unknown = nil; flow.go(.restore) }
@@ -243,19 +255,29 @@ struct SignBackInPage: View {
     }
 
     /// Signs in without backing this iPhone up first: the account's data comes back on the next page, then it backs up.
-    private func finish(_ token: ProviderToken, create: Bool) {
+    private func finish(_ token: ProviderToken, create: Bool, replace: Bool = false) {
         guard let backup else { failure = "Couldn't sign in on this iPhone."; working = nil; return }
         Task {
             defer { working = nil }
             do {
-                try await backup.signIn(with: token, create: create, backUp: false)
+                try await backup.signIn(with: token, create: create, backUp: false, replace: replace)
+                other = nil
                 flow.go(.working(.account))
             } catch let error as ServerError where error.code == "unknown_key" {
                 unknown = token
+            } catch let error as ServerError where error.code == "other_device_signed_in" {
+                other = OtherDevice(token: token, device: error.deviceName ?? "")
             } catch {
+                other = nil
                 failure = "Couldn't sign in. Check your connection and try again."
             }
         }
+    }
+
+    private struct OtherDevice: Identifiable {
+        let id = UUID()
+        let token: ProviderToken
+        let device: String
     }
 }
 
@@ -628,7 +650,7 @@ struct WorkingPage: View {
                             .font(.system(size: 40, weight: .medium))
                             .symbolEffect(.rotate, options: .repeat(.continuous), isActive: !reduceMotion)
                             .accessibilityHidden(true)
-                        WorkingStatus(status: status, receiver: work.isTransfer ? receiver : nil)
+                        WorkingStatus(status: status)
                     }
                 }
             }
@@ -720,14 +742,6 @@ struct WorkingPage: View {
                 status = "Bringing back your habits…"
                 await settle(since: started)
                 end(.signedIn)
-            case .backup(let pending):
-                if let problem = pending.check.problem {
-                    failure = Failure(text: BackupCenter.words(for: problem), main: .restoreInstead, other: .startFresh)
-                } else {
-                    await restoreOrReview(pending, from: .account, backup, started: started)
-                }
-            case .empty:
-                failure = Failure(text: "Your account doesn't have a backup yet.", main: .restoreInstead, other: .startFresh)
             }
         } catch is CancellationError {
         } catch {
@@ -736,10 +750,12 @@ struct WorkingPage: View {
         }
     }
 
+    /// The file the code points to, through our server (`TransferReceiver`); the server deletes it once it has been
+    /// checked here, and the other device says "Done".
     private func receive(_ code: String, _ backup: BackupCenter, started: Date) async {
-        status = "Looking for your other device…"
+        status = "Getting your data from your other device…"
         do {
-            let data = try await receiver.receive(code: code)
+            let data = try await receiver.receive(code: code, api: backup.api)
             status = "Checking your data…"
             guard let pending = await backup.check(data) else {
                 failure = Failure(text: "Your data didn't arrive whole, so nothing was changed. Please try again.", main: .tryAgain, other: .back)
@@ -749,13 +765,15 @@ struct WorkingPage: View {
                 failure = Failure(text: BackupCenter.words(for: problem), main: .back, other: .startFresh)
                 return
             }
+            await receiver.confirm()
             await restoreOrReview(pending, from: .otherDevice, backup, started: started, senderAccount: receiver.senderAccount)
         } catch let problem as TransferReceiver.Failure {
+            // At least a second on this page, so what happened can be read before it changes (as `settle`).
+            await settle(since: started)
+            guard !Task.isCancelled else { return }
             failure = switch problem {
-            case .notFound: Failure(text: "Couldn't find your other device. Keep both iPhones close, with \(Onboarding.appName) open on the transfer code.", main: .tryAgain, other: .back)
-            case .wrongCode: Failure(text: "That code doesn't match. Check the code on your other device.", main: .back, other: .tryAgain)
-            case .needsPermission: Failure(text: "\(Onboarding.appName) needs Local Network to find your other device. Turn it on in Settings, then try again.", main: .openSettings, other: .tryAgain)
-            case .lost: Failure(text: "The connection was lost, so nothing was changed. Keep both iPhones close and try again.", main: .tryAgain, other: .back)
+            case .wrongCode: Failure(text: "That code doesn't match, or it has expired. Check the code on your other device.", main: .back, other: .tryAgain)
+            case .unreachable: Failure(text: "Couldn't reach the server, so nothing was changed. Check your connection and try again.", main: .tryAgain, other: .back)
             case .damaged: Failure(text: "Your data didn't arrive whole, so nothing was changed. Please try again.", main: .tryAgain, other: .back)
             }
         } catch {
@@ -844,15 +862,12 @@ private extension OnboardingWork {
     var isTransfer: Bool { if case .transfer = self { true } else { false } }
 }
 
-/// What the loading page is doing now; while a file arrives from the other device, how far it's got. Only this view
-/// reads the transfer's progress, so its updates redraw one line (S6).
+/// What the loading page is doing now.
 private struct WorkingStatus: View {
     let status: String
-    let receiver: TransferReceiver?
 
     var body: some View {
-        let progress = receiver?.progress
-        Text(progress.map { "Receiving your data… \(Int(($0 * 100).rounded()))%" } ?? status)
+        Text(status)
             .font(.headline)
             .multilineTextAlignment(.center)
             .monospacedDigit()

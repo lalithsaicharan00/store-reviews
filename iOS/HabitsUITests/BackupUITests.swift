@@ -72,7 +72,8 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.otherElements["ActivityListView"].waitForNonExistence(timeout: 10))
     }
 
-    /// No account: the screen says the habits are only on this iPhone, sync is Plus, and a file can be made.
+    /// No account: the screen says the habits are only on this iPhone, the account is offered as one more place, and a
+    /// file can be made. Your Account opens Create Account straight over the page (screen 4e).
     func testWithoutAnAccountEverythingStaysOnThePhone() throws {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest"]
@@ -80,16 +81,24 @@ final class BackupUITests: XCTestCase {
         openBackup(app)
         XCTAssertTrue(shows(app, row: "backup-status", "Only on this iPhone"), status(app))
         XCTAssertFalse(app.buttons["Back Up Now"].exists, "Nowhere to back up to without an account")
-        // Account and Backup Redesign, screen 4: the backup place first, the account below it as an option.
+        // Account and Backup Redesign, screen 4: the same list in every state, iCloud first and Your Account last.
         let account = app.buttons["backup-account"]
-        XCTAssertTrue(account.label.contains("Your Account") && account.label.contains("Not signed in"), account.label)
-        XCTAssertTrue(app.staticTexts["Optional. If you sign in, your habits are backed up to your account instead."].exists, "The account is an option")
+        XCTAssertTrue(account.label.contains("Your Account") && account.label.contains("Create one to sync your habits"), account.label)
+        XCTAssertTrue(app.staticTexts["iCloud backs up your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device."].exists, labels(app))
         let iCloud = app.buttons["backup-icloud-status"]
         XCTAssertTrue(shows(app, row: "backup-icloud-status", "Off"), "No iCloud here: the iCloud row says Off")
         XCTAssertLessThan(iCloud.frame.minY, account.frame.minY, "iCloud comes before Your Account without an account")
         XCTAssertFalse(app.buttons["backup-google-drive"].exists, "No Google Drive row until it truly works")
         XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Sync is part of Plus'")).firstMatch.exists,
                        "Backup never looks like a Plus perk")
+        // 4e: Create Account over this page, not the Account page.
+        account.tap()
+        XCTAssertTrue(app.navigationBars["Create Account"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(app.staticTexts["A free account syncs your habits on one device and brings them back when you sign in on a new device."].exists, labels(app))
+        let create = XCTAttachment(screenshot: app.screenshot()); create.name = "backup-create-account"; create.lifetime = .keepAlways; add(create)
+        app.buttons["sign-in-cancel"].tap()
+        XCTAssertTrue(app.navigationBars["Create Account"].waitForNonExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Backup & Export"].exists, "Still on Backup & Export")
         app.revealAndTap(app.buttons["backup-save"])
         let shared = app.otherElements["ActivityListView"].waitForExistence(timeout: 10) || app.buttons["Save to Files"].waitForExistence(timeout: 2)
         XCTAssertTrue(shared, "The share sheet opens with the backup file")
@@ -138,13 +147,16 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'iCloud'")).firstMatch.waitForExistence(timeout: 70), labels(app))
     }
 
-    /// A free account: the phone backs up to the server, the server holds a checked copy, and Restore lists it.
-    func testAFreeAccountBacksUpToTheServer() throws {
+    /// A free account syncs on one device (Current Work 78), end to end with the dev server: the phone syncs (screen
+    /// 4b, Account's Last Synced, Restore's 7 days); a second device signing in is asked "Use on This iPhone?" (7) and
+    /// Continue brings the habit there; the first, opened again, says "Signed out on this iPhone" (8) once, keeps its
+    /// habit and is back to "Create one to sync your habits".
+    func testAFreeAccountSyncsOnOneDevice() throws {
         continueAfterFailure = false
         let token = try ciToken()
-        let subject = "backup-ui-\(UUID().uuidString)"
+        let subject = "free-sync-ui-\(UUID().uuidString)"
         let app = XCUIApplication()
-        app.launchArguments = ["-dbname", "uitest-backup", "-reset-db", "-empty", "-ci-sign-in-free", token, subject]
+        app.launchArguments = ["-dbname", "uitest-free-a", "-reset-db", "-empty", "-ci-sign-in-free", token, subject]
         app.launch()
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 20), "The app opens with no habits")
         app.buttons["New Habit"].firstMatch.tap()
@@ -154,47 +166,63 @@ final class BackupUITests: XCTestCase {
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
-        name.typeText("Backed up walk")
+        name.typeText("Synced walk")
         app.navigationBars["New Habit"].buttons["Add"].tap()
-        XCTAssertTrue(app.buttons["Mark Backed up walk done"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Mark Synced walk done"].waitForExistence(timeout: 5))
 
+        // Screen 4b: Synced · Your account; Your Account ✓ Free · Syncs this iPhone; iCloud is for when you're signed out.
         openBackup(app)
-        XCTAssertTrue(shows(app, row: "backup-status", "Your account", within: 10), "Signed in: the backup goes to the account. \(status(app))")
-        // Screen 4b: the account first, and why iCloud isn't used; no iCloud row, no Erase (Delete Account is on Account).
-        XCTAssertTrue(shows(app, row: "backup-account", "Free", within: 10), "Your Account · Free")
-        XCTAssertTrue(app.staticTexts["Backed up as you go, with the last 7 days kept. iCloud and Google Drive are used only when you're not signed in."].exists, labels(app))
-        XCTAssertFalse(app.buttons["backup-icloud-status"].exists, "One backup place at a time: no iCloud row signed in")
-        XCTAssertFalse(app.buttons["backup-erase"].exists)
-        app.buttons["Back Up Now"].tap()
-        let backedUp = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Backed up'")).firstMatch
-        XCTAssertTrue(backedUp.waitForExistence(timeout: 30), "The backup is confirmed by the server's checksum")
-        let signedIn = XCTAttachment(screenshot: app.screenshot()); signedIn.name = "backup-signed-in-free"; signedIn.lifetime = .keepAlways; add(signedIn)
-
-        // The server holds the copy, with the habit counted.
-        let other = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "device": device()])
-        XCTAssertEqual(other.status, 200, "\(other.json)")
-        let access = try XCTUnwrap(other.json["accessToken"] as? String)
-        let list = try call("GET", "/v1/backup", nil, token: access)
-        let copies = try XCTUnwrap(list.json["copies"] as? [[String: Any]])
-        XCTAssertTrue(copies.contains { ($0["habits"] as? Int) == 1 }, "The server's copy has the habit: \(list.json)")
-
-        // A copy uploaded by itself (backed up as you go) is at most 12 an hour; the server took this one (above).
-        // Restore lists it under Your Account (screen 6b: any of the last 7 days); restoring it here changes nothing.
+        let status = app.descendants(matching: .any)["backup-status"]
+        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Synced'"), object: status)], timeout: 30)
+        XCTAssertTrue(status.label.hasPrefix("Synced") && status.label.contains("Your account"), status.label)
+        XCTAssertTrue(shows(app, row: "backup-account", "Free · Syncs this iPhone", within: 10), labels(app))
+        XCTAssertTrue(app.buttons["backup-account"].isSelected, "✓ on Your Account")
+        XCTAssertTrue(app.buttons["Sync Now"].exists, "Signed in: Sync Now")
+        XCTAssertTrue(app.staticTexts["Free syncs one device. If you sign in on another phone or tablet, this iPhone is signed out and keeps its habits."].exists, labels(app))
+        XCTAssertFalse(app.buttons["backup-erase"].exists, "Signed in, Delete Account is on the Account page")
+        app.buttons["Sync Now"].tap()
+        XCTAssertTrue(shows(app, row: "backup-status", "Synced", within: 30), status.label)
+        let synced = XCTAttachment(screenshot: app.screenshot()); synced.name = "backup-signed-in-free"; synced.lifetime = .keepAlways; add(synced)
         app.buttons["backup-restore"].tap()
         XCTAssertTrue(app.navigationBars["Restore From a Backup"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["restore-icloud"].exists, "Signed in, the account is the only backup place")
-        let account = app.buttons["restore-account"]
-        XCTAssertTrue(account.exists && account.label.contains("Any of the last 7 days"), account.label)
-        account.tap()
+        let restore = app.buttons["restore-account"]
+        XCTAssertTrue(restore.exists && restore.label.contains("Any of the last 7 days"), restore.label)
+        restore.tap()
         XCTAssertTrue(app.navigationBars["Your Account"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS[c] '(this device)'")).firstMatch.waitForExistence(timeout: 15), labels(app))
-        let copy = app.buttons["restore-account-copy"].firstMatch
-        XCTAssertTrue(copy.waitForExistence(timeout: 15))
-        let restoreShot = XCTAttachment(screenshot: app.screenshot()); restoreShot.name = "restore-free-account"; restoreShot.lifetime = .keepAlways; add(restoreShot)
-        copy.tap()
-        XCTAssertTrue(app.staticTexts["Everything in this backup is already here. Nothing needs to change."].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.staticTexts["No daily copies yet. The first is kept tonight."].waitForExistence(timeout: 15), labels(app))
+        app.terminate()
 
-        _ = try? call("POST", "/v1/account/delete", [:], token: access)
+        // A second device signs in to the same free account: it asks first, then the habit comes over.
+        app.launchArguments = ["-dbname", "uitest-free-b", "-reset-db", "-empty", "-ci-sign-in-free", token, subject]
+        app.launch()
+        let ask = app.staticTexts["use-here-title"]
+        XCTAssertTrue(ask.waitForExistence(timeout: 30), "Use on This iPhone? \(labels(app))")
+        XCTAssertTrue(ask.label.hasPrefix("Use on This "), ask.label)
+        XCTAssertTrue(app.staticTexts["use-here-text"].label.contains("will be signed out. It keeps its habits."), app.staticTexts["use-here-text"].label)
+        let question = XCTAttachment(screenshot: app.screenshot()); question.name = "free-use-here"; question.lifetime = .keepAlways; add(question)
+        app.buttons["use-here-continue"].tap()
+        XCTAssertTrue(app.buttons["Mark Synced walk done"].waitForExistence(timeout: 45), "The habit synced to the new device: \(labels(app))")
+        app.terminate()
+
+        // The first device, opened again: told once, and keeps its habit.
+        app.launchArguments = ["-dbname", "uitest-free-a", "-empty"]
+        app.launch()
+        let alert = app.alerts.matching(NSPredicate(format: "label BEGINSWITH 'Signed out on this'")).firstMatch
+        XCTAssertTrue(alert.waitForExistence(timeout: 30), "Signed out on this iPhone: \(labels(app))")
+        XCTAssertTrue(alert.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Your account is now used on'")).firstMatch.exists, alert.debugDescription)
+        let notice = XCTAttachment(screenshot: app.screenshot()); notice.name = "free-signed-out-elsewhere"; notice.lifetime = .keepAlways; add(notice)
+        alert.buttons["OK"].tap()
+        XCTAssertTrue(app.buttons["Mark Synced walk done"].waitForExistence(timeout: 5), "This iPhone keeps its habits")
+        openBackup(app)
+        XCTAssertTrue(shows(app, row: "backup-account", "Create one to sync your habits", within: 10), "Signed out here: \(labels(app))")
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 20))
+        XCTAssertFalse(app.alerts.firstMatch.waitForExistence(timeout: 3), "The notice is shown once")
+
+        let me = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "replace": true, "device": device()])
+        if let access = me.json["accessToken"] as? String { _ = try? call("POST", "/v1/account/delete", [:], token: access) }
     }
 
     /// Deleting the account from the app: the server says so to the account's other devices, and "Erase This iPhone
@@ -204,15 +232,19 @@ final class BackupUITests: XCTestCase {
         let token = try ciToken()
         let subject = "delete-ui-\(UUID().uuidString)"
         let app = XCUIApplication()
+        // Another device of the same account, signed in first: the app asks before moving the free account to itself
+        // (screen 7), and that device keeps a token the server can answer.
+        let other = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "create": true, "device": device()])
+        let refresh = try XCTUnwrap(other.json["refreshToken"] as? String, "\(other.json)")
         app.launchArguments = ["-dbname", "uitest-delete", "-reset-db", "-skip-device-auth", "-ci-sign-in-free", token, subject]
         app.launch()
-        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 20))
+        let continueHere = app.buttons["use-here-continue"]
+        XCTAssertTrue(continueHere.waitForExistence(timeout: 30), "Use on This iPhone? \(labels(app))")
+        continueHere.tap()
+        XCTAssertTrue(continueHere.waitForNonExistence(timeout: 10))
         openBackup(app)
         let account = app.descendants(matching: .any)["backup-account"]
-        XCTAssertTrue(account.waitForExistence(timeout: 20), "Signed in (the app made the account), the account row is there")
-        // Another device of the same account, signed in before the deletion.
-        let other = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "device": device()])
-        let refresh = try XCTUnwrap(other.json["refreshToken"] as? String, "\(other.json)")
+        XCTAssertTrue(shows(app, row: "backup-account", "Free · Syncs this iPhone", within: 20), "Signed in, the account row is the place: \(labels(app))")
         account.tap()
         XCTAssertTrue(app.navigationBars["Account"].waitForExistence(timeout: 5))
         XCTAssertTrue(shows(app, row: "account-plan", "Free", within: 10), "The plan is on the account page")
@@ -235,7 +267,7 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.buttons["account-sign-in"].waitForExistence(timeout: 10), "The account page is signed out now")
         app.navigationBars["Account"].buttons.firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 10), "Back on Backup & Export")
-        XCTAssertTrue(shows(app, row: "backup-account", "Not signed in", within: 10), "Signed out here too")
+        XCTAssertTrue(shows(app, row: "backup-account", "Create one to sync your habits", within: 10), "Signed out here too")
         app.navigationBars["Backup & Export"].buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10), "This iPhone was erased")
     }
@@ -262,7 +294,8 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(shows(app, row: "account-identity", "Not signed in"), labels(app))
         XCTAssertTrue(app.buttons["account-sign-in"].exists && app.buttons["account-create"].exists, labels(app))
         XCTAssertLessThan(app.buttons["account-sign-in"].frame.minY, app.buttons["account-create"].frame.minY, "Sign In first")
-        XCTAssertTrue(app.staticTexts["A free account is for one device. Syncing several devices is part of Plus."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts["A free account syncs your habits on one device and brings them back when you sign in on a new device."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts["Plus syncs across your devices."].exists, labels(app))
         XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] 'our server'")).firstMatch.exists)
         let page = XCTAttachment(screenshot: app.screenshot()); page.name = "account-signed-out"; page.lifetime = .keepAlways; add(page)
         func apple() -> Bool { app.buttons["sign-in-apple"].exists || app.buttons["Continue with Apple"].exists || app.otherElements["sign-in-apple"].exists }
@@ -278,8 +311,8 @@ final class BackupUITests: XCTestCase {
         // Create Account.
         app.buttons["account-create"].tap()
         XCTAssertTrue(app.navigationBars["Create Account"].waitForExistence(timeout: 5), labels(app))
-        XCTAssertTrue(app.staticTexts["Choose how you'll sign in. Already have an account? You'll be signed in to it."].exists, labels(app))
-        XCTAssertTrue(app.staticTexts["Used only to back up your habits. Never sold, never for ads."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts["A free account syncs your habits on one device and brings them back when you sign in on a new device."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts["Already have an account? You'll be signed in to it. Never sold, never for ads."].exists, labels(app))
         XCTAssertTrue(apple() && app.buttons["sign-in-google"].exists, labels(app))
         let create = XCTAttachment(screenshot: app.screenshot()); create.name = "create-account-sheet"; create.lifetime = .keepAlways; add(create)
         app.buttons["sign-in-cancel"].tap()
@@ -307,6 +340,8 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(code.waitForExistence(timeout: 5))
         XCTAssertEqual(code.label.count, "Transfer code: ".count + 15, "Eight characters, read one by one: \(code.label)")
         XCTAssertTrue(app.staticTexts["Keep this screen open until your habits arrive on the other device. They stay on this device too."].exists, labels(app))
+        // Sealed with the code and handed to the server (dev): then it waits for the other device.
+        XCTAssertTrue(app.staticTexts["Waiting for the other device…"].waitForExistence(timeout: 30), labels(app))
         let codeShot = XCTAttachment(screenshot: app.screenshot()); codeShot.name = "move-to-another-device"; codeShot.lifetime = .keepAlways; add(codeShot)
         app.navigationBars["Move to Another Device"].buttons.firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 5))
@@ -336,10 +371,12 @@ final class BackupUITests: XCTestCase {
         app.navigationBars["Account"].buttons.firstMatch.tap()
         openBackup(app)
         let status = app.descendants(matching: .any)["backup-status"]
-        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Backed up and in sync'"), object: status)], timeout: 30)
-        XCTAssertTrue(status.label.hasPrefix("Backed up and in sync") && status.label.contains("Your account"), status.label)
-        XCTAssertTrue(shows(app, row: "backup-account", "Plus · Keeps your devices in sync"), labels(app))
-        XCTAssertFalse(app.buttons["backup-icloud-status"].exists, "Plus keeps no iCloud copy")
+        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Synced'"), object: status)], timeout: 30)
+        XCTAssertTrue(status.label.hasPrefix("Synced") && status.label.contains("Your account"), status.label)
+        XCTAssertTrue(shows(app, row: "backup-account", "Plus · Syncs across your devices"), labels(app))
+        XCTAssertTrue(app.staticTexts["Every change syncs across your devices."].exists, labels(app))
+        XCTAssertTrue(shows(app, row: "backup-icloud-status", "Used when you're not signed in"), "Plus keeps no iCloud copy: \(labels(app))")
+        XCTAssertFalse(app.buttons["backup-icloud-status"].exists, "iCloud can't be chosen while signed in")
         let backupShot = XCTAttachment(screenshot: app.screenshot()); backupShot.name = "backup-plus"; backupShot.lifetime = .keepAlways; add(backupShot)
         app.buttons["backup-restore"].tap()
         XCTAssertTrue(app.navigationBars["Restore From a Backup"].waitForExistence(timeout: 5))
@@ -385,7 +422,7 @@ final class BackupUITests: XCTestCase {
     }
 
     /// Without an account the habits back up to iCloud, and Backup & Export says so, with iCloud's own state: working
-    /// (when), full (red, with Back Up to Your Account Instead), off (Open Settings) (the user, 9 Oct 2026, Current Work
+    /// (when), full (red, with Sync to Your Account Instead), off (Open Settings) (the user, 9 Oct 2026, Current Work
     /// 58.12). The simulator has no iCloud, so `-test-icloud` stands in for it (test launches only, D8).
     func testICloudWithoutAnAccount() {
         let app = XCUIApplication()
@@ -404,14 +441,14 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(shows(app, row: "backup-icloud-status", "Your Apple Account"), "iCloud, the place in use")
         XCTAssertTrue(app.buttons["backup-icloud-status"].isSelected, "✓ on iCloud")
         XCTAssertTrue(app.buttons["backup-now"].exists, "Back Up Now, to iCloud")
-        XCTAssertTrue(shows(app, row: "backup-account", "Not signed in"))
-        XCTAssertTrue(app.staticTexts["Backed up automatically as you go."].exists, labels(app))
+        XCTAssertTrue(shows(app, row: "backup-account", "Create one to sync your habits"))
+        XCTAssertTrue(app.staticTexts["iCloud backs up your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device."].exists, labels(app))
         shot("backup-icloud-ok")
 
         open("full")
         XCTAssertTrue(shows(app, row: "backup-status", "your iCloud is full"), status(app))
         XCTAssertTrue(shows(app, row: "backup-icloud-status", "Full"))
-        XCTAssertTrue(app.buttons["backup-fix"].label.contains("Back Up to Your Account Instead"), app.buttons["backup-fix"].label)
+        XCTAssertTrue(app.buttons["backup-fix"].label.contains("Sync to Your Account Instead"), app.buttons["backup-fix"].label)
         XCTAssertFalse(app.buttons["backup-now"].exists, "No Back Up Now while iCloud is full: the fix is the one thing to tap")
         shot("backup-icloud-full")
 

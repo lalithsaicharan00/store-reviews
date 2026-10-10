@@ -3,16 +3,19 @@ import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
-/// ≡ → Backup & Export (Account and Backup Redesign, screens 4, 4b and 4c; Current Work 76; the user: "clean and easy
-/// to understand, easy to scan"). The same rows in every state; only their order and words change. First whether
-/// they're safe (when and where, with Back Up Now), then where the backup goes (one place at a time: iCloud without an
-/// account, the account when signed in, saying why iCloud isn't used then), then moving and getting habits back, then
-/// files to keep. One line at most under a row; places named as people name them, never "our server". Free, with or
-/// without an account (D10).
+/// ≡ → Backup & Export (Account and Backup Redesign, screens 4, 4b, 4c and 4e; Current Work 76 and 78; the user: "clean
+/// and easy to understand, easy to scan"). The same list in every state: **Backed Up To** iCloud · Google Drive · Your
+/// Account, in that order, and the tick shows where the habits are kept (the user, 11 Oct 2026: "it's all for storing
+/// your data"). First whether they're safe (Backed up / Synced, when and where, with Back Up Now or Sync Now), then the
+/// places, then moving and getting habits back, then files to keep. iCloud and Google Drive **back up**; the account
+/// **syncs** (free on this iPhone, Plus across devices). One line at most under a row; places named as people name them,
+/// never "our server". Free, with or without an account (D10).
 struct BackupSyncView: View {
     @Environment(BackupCenter.self) private var backup
     @Environment(HabitStore.self) private var store
     @State private var showSignIn = false
+    /// Without an account, Your Account opens Create Account over this page (4e), not the Account page.
+    @State private var showCreate = false
     @State private var sharing: URL?
     @State private var message: BackupAlert?
     @State private var confirmUndo = false
@@ -32,35 +35,21 @@ struct BackupSyncView: View {
                 }
                 // Not while iCloud can't take it (full, off): the problem's own fix is the one thing to tap.
                 if backup.place != .phone && !(backup.place == .iCloud && iCloudBlocked) {
-                    Button("Back Up Now") { Task { await backUpNow() } }
+                    Button(backup.isSignedIn ? "Sync Now" : "Back Up Now") { Task { await backUpNow() } }
                         .disabled(backup.working)
                         .accessibilityIdentifier("backup-now")
                 }
             }
 
-            if backup.isSignedIn {
-                Section {
-                    accountRow
-                } header: {
-                    Text("Backed Up To")
-                } footer: {
-                    Text(backup.isPlus ? "Keeps every device in sync, with a copy of each day for 90 days. iCloud and Google Drive are used only when you're not signed in."
-                                       : "Backed up as you go, with the last 7 days kept. iCloud and Google Drive are used only when you're not signed in.")
-                }
-            } else {
-                Section {
-                    if BackupFeatures.iCloudBackup { iCloudRow }
-                    if BackupFeatures.googleDrive { googleDriveRow }
-                } header: {
-                    Text("Backed Up To")
-                } footer: {
-                    Text(BackupFeatures.googleDrive ? "Backed up automatically as you go, to the one you choose." : "Backed up automatically as you go.")
-                }
-                Section {
-                    accountRow
-                } footer: {
-                    Text("Optional. If you sign in, your habits are backed up to your account instead.")
-                }
+            Section {
+                if BackupFeatures.iCloudBackup { iCloudRow }
+                // Shown only once Google Drive truly works (a row that does nothing never ships; `BackupFeatures`).
+                if BackupFeatures.googleDrive { googleDriveRow }
+                accountRow
+            } header: {
+                Text("Backed Up To")
+            } footer: {
+                Text(placesFooter)
             }
 
             Section("Move and Restore") {
@@ -113,6 +102,7 @@ struct BackupSyncView: View {
             }
         }
         .sheet(isPresented: $showSignIn) { SignInSheet(title: "Sign In") }
+        .sheet(isPresented: $showCreate) { SignInSheet(title: "Create Account") }
         .sheet(item: Binding(get: { sharing.map(SharedBackup.init) }, set: { sharing = $0?.url })) { item in
             ShareFileSheet(url: item.url, onFinish: { sharing = nil })
         }
@@ -139,7 +129,7 @@ struct BackupSyncView: View {
                 .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         } else if backup.working {
-            Label("Backing up…", systemImage: "arrow.triangle.2.circlepath")
+            Label(backup.isSignedIn ? "Syncing…" : "Backing up…", systemImage: "arrow.triangle.2.circlepath")
                 .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         } else if backup.place == .phone {
@@ -150,17 +140,28 @@ struct BackupSyncView: View {
                 .accessibilityIdentifier("backup-status")
         } else if let last = backup.lastGood {
             Label {
-                TitleAndLine(title: backup.isPlus ? "Backed up and in sync" : "Backed up", line: HabitCopy.capitalized(Self.when(last)) + " · " + placeText)
-            } icon: { Image(systemName: backup.place == .iCloud ? "icloud.fill" : "checkmark.circle.fill").foregroundStyle(Color.primary) }
+                TitleAndLine(title: backup.isSignedIn ? "Synced" : "Backed up", line: HabitCopy.capitalized(Self.when(last)) + " · " + placeText)
+            } icon: {
+                Image(systemName: backup.isSignedIn ? "arrow.triangle.2.circlepath" : backup.place == .iCloud ? "icloud.fill" : "checkmark.circle.fill")
+                    .foregroundStyle(Color.primary)
+            }
                 .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         } else {
             Label {
-                TitleAndLine(title: "Not backed up yet", line: placeText)
+                TitleAndLine(title: backup.isSignedIn ? "Not synced yet" : "Not backed up yet", line: placeText)
             } icon: { Image(systemName: "clock") }
                 .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("backup-status")
         }
+    }
+
+    /// Under Backed Up To: backup is the word for iCloud and Google Drive, sync for the account (the user, 11 Oct 2026).
+    private var placesFooter: String {
+        if backup.isPlus { return "Every change syncs across your devices." }
+        if backup.isSignedIn { return "Free syncs one device. If you sign in on another phone or tablet, this iPhone is signed out and keeps its habits." }
+        let places = BackupFeatures.googleDrive ? "iCloud and Google Drive back up" : "iCloud backs up"
+        return "\(places) your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device."
     }
 
     /// Where the backup is, the way people say it (one place at a time).
@@ -168,33 +169,38 @@ struct BackupSyncView: View {
         switch backup.place {
         case .account:
             guard backup.isPlus, let count = details?.devices.filter(\.signedIn).count, count > 1 else { return "Your account" }
-            return "Your account · \(count) devices"
+            return "\(count) devices"
         case .iCloud: return "iCloud"
         case .googleDrive: return "Google Drive"
         case .phone: return "Only on this iPhone"
         }
     }
 
-    /// Your Account: opens the Account page (Back returns here). Signed out it's an option; signed in, the place.
-    private var accountRow: some View {
-        NavigationLink { AccountView() } label: {
-            if backup.isSignedIn {
-                IconRow(symbol: "person.crop.circle", title: "Your Account", line: accountLine)
-            } else {
+    /// Your Account: signed in, the place (✓), opening the Account page (Back returns here); without an account, "Create
+    /// one to sync your habits", opening Create Account straight over this page (4e).
+    @ViewBuilder private var accountRow: some View {
+        if backup.isSignedIn {
+            NavigationLink { AccountView() } label: {
                 HStack {
-                    IconRow(symbol: "person.crop.circle", title: "Your Account", line: nil)
+                    IconRow(symbol: "person.crop.circle", title: "Your Account", line: backup.isPlus ? "Plus · Syncs across your devices" : "Free · Syncs this iPhone")
                     Spacer()
-                    Text("Not signed in").foregroundStyle(.secondary)
+                    Image(systemName: "checkmark").fontWeight(.semibold).foregroundStyle(Color.ink)
                 }
             }
+            .accessibilityAddTraits(.isSelected)
+            .accessibilityIdentifier("backup-account")
+        } else {
+            Button { showCreate = true } label: {
+                HStack {
+                    IconRow(symbol: "person.crop.circle", title: "Your Account", line: "Create one to sync your habits")
+                    Spacer()
+                    Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+                }
+                .contentShape(Rectangle())
+            }
+            .foregroundStyle(Color.primary)
+            .accessibilityIdentifier("backup-account")
         }
-        .accessibilityIdentifier("backup-account")
-    }
-
-    private var accountLine: String {
-        if backup.isPlus { return "Plus · Keeps your devices in sync" }
-        guard let provider = details?.signIns.first?.provider else { return "Free" }
-        return "Free · Signed in with " + AccountView.providerName(provider)
     }
 
     /// iCloud can't take a backup now (full, signed out, off for the app).
@@ -206,6 +212,15 @@ struct BackupSyncView: View {
     /// iCloud without an account: the place, ✓ when it's the one in use, or what's wrong (Full, Off, New Apple Account)
     /// with its fix.
     @ViewBuilder private var iCloudRow: some View {
+        if backup.isSignedIn {
+            IconRow(symbol: "icloud", title: "iCloud", line: "Used when you're not signed in")
+                .accessibilityIdentifier("backup-icloud-status")
+        } else {
+            iCloudPlace
+        }
+    }
+
+    @ViewBuilder private var iCloudPlace: some View {
         let state = backup.iCloudState
         let problem = backup.place == .phone || (state != nil && state != .accountChanged)
         let line: String = {
@@ -233,11 +248,16 @@ struct BackupSyncView: View {
     }
 
     /// Google Drive (Step 6 of Current Work 76), shown only once it truly works (`BackupFeatures.googleDrive`).
-    private var googleDriveRow: some View {
-        NavigationLink { GoogleDriveChoiceView() } label: {
-            IconRow(symbol: "externaldrive.badge.icloud", title: "Google Drive", line: "Your Google account")
+    @ViewBuilder private var googleDriveRow: some View {
+        if backup.isSignedIn {
+            IconRow(symbol: "externaldrive.badge.icloud", title: "Google Drive", line: "Used when you're not signed in")
+                .accessibilityIdentifier("backup-google-drive")
+        } else {
+            NavigationLink { GoogleDriveChoiceView() } label: {
+                IconRow(symbol: "externaldrive.badge.icloud", title: "Google Drive", line: backup.usesGoogleDrive ? "Your Google account" : "Connect your Google account")
+            }
+            .accessibilityIdentifier("backup-google-drive")
         }
-        .accessibilityIdentifier("backup-google-drive")
     }
 
     private func fix(_ fix: BackupCenter.Issue.Fix) {
@@ -260,8 +280,8 @@ struct BackupSyncView: View {
 
     private func backUpNow() async {
         if !(await backup.backUpNow()), backup.issue == nil {
-            message = BackupAlert(title: "Not Backed Up Yet", text: backup.place == .account
-                ? "Couldn't reach your account. Your habits are safe on this iPhone and back up when you're online."
+            message = BackupAlert(title: backup.place == .account ? "Not Synced Yet" : "Not Backed Up Yet", text: backup.place == .account
+                ? "Couldn't reach your account. Your habits are safe on this iPhone and sync when you're online."
                 : "Couldn't back up to iCloud just now. Your habits are safe on this iPhone.")
         }
     }

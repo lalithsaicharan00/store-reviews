@@ -1,28 +1,25 @@
 import CommonCrypto
 import CryptoKit
 import Foundation
-import Network
 import Observation
 
-/// Move from another device (Current Work 73.1, 9 Oct 2026): the user asked for it to work "very similar to WhatsApp's
-/// transfer chats". The old iPhone makes a fresh, checked backup file and shows a code (Backup & Export → Move to Another
-/// Device); the new iPhone, in onboarding, types that code and the file comes straight from the
-/// old one over the local network (Wi‑Fi, or peer-to-peer when they share none). Nothing passes through our server and
-/// no account is needed, so it works on the free plan (D10). The new iPhone then restores it like any backup file:
-/// checked first, an undo file kept (D5).
+/// Move from another device (Current Work 73.1; through the server since 10 Oct 2026, the user: "it should be server
+/// based … like WhatsApp", mainly for people without an account). The old device makes a fresh, checked backup file and
+/// shows a code (Backup & Export → Move to Another Device); the new device, in onboarding, types that code and gets the
+/// file through our server, so the two can be anywhere, on any network, and later iPhone or Android. No account is
+/// needed, so it works on the free plan (D10). The new device then restores it like any backup file: checked first, an
+/// undo file kept (D5).
 ///
-/// **The code is the key.** Both phones turn it into a TLS pre-shared key (Apple's own pattern for local peer-to-peer
-/// apps), so only the phone that knows the code can connect, and everything sent is encrypted. The key is stretched
-/// (PBKDF2, 100,000 rounds), so trying codes against a recorded connection costs years, not hours. A code lasts only
-/// while its screen is open, and is used once.
+/// **The code is the key, and the server never sees it** (`server/src/transfer.ts`): both devices stretch the code
+/// (PBKDF2-SHA256, 100,000 rounds, 64 bytes). The first 32 bytes are the AES-256-GCM key the old device seals the file
+/// with; the SHA-256 of the last 32 is the transfer's ID, all the server is given. A code works once, for an hour at
+/// most, and only while the old device's screen is open; the server deletes the file the moment it has arrived.
 nonisolated enum TransferCode {
     /// Crockford's base32: digits and letters with no I, L, O or U, so nothing looks like something else.
     static let alphabet = Array("0123456789ABCDEFGHJKMNPQRSTVWXYZ")
     static let length = 8
-    static let serviceType = "_oftenenough._tcp"
 
-    /// Debug builds only: `-transfer-code XXXXXXXX` fixes the old iPhone's code, so two simulators can be checked
-    /// against each other.
+    /// Debug builds only: `-transfer-code XXXXXXXX` fixes the old device's code, so a test can type it on another.
     static var debugCode: String? {
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
@@ -61,367 +58,218 @@ nonisolated enum TransferCode {
         return String(code.prefix(4)) + " " + String(code.dropFirst(4))
     }
 
-    /// The pre-shared key for a code. Slow on purpose (~50 ms on an iPhone), so run it off the main thread.
-    static func key(for code: String) -> Data {
+    /// What both devices make from a code: the key that seals the file and the transfer's ID on the server.
+    nonisolated struct Secrets: Sendable, Equatable {
+        let key: Data
+        let id: String
+    }
+
+    /// Slow on purpose (~0.1 s on an iPhone): run it off the main thread. Android follows the same recipe.
+    static func secrets(for code: String) -> Secrets {
         let password = Array(code.utf8).map { Int8(bitPattern: $0) }
-        let salt = Array("com.oftenenough.app.transfer".utf8)
-        var key = [UInt8](repeating: 0, count: 32)
+        let salt = Array("com.oftenenough.app.transfer.v2".utf8)
+        var out = [UInt8](repeating: 0, count: 64)
         _ = CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2), password, password.count, salt, salt.count,
-                                 CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256), 100_000, &key, key.count)
-        return Data(key)
+                                 CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256), 100_000, &out, out.count)
+        let id = SHA256.hash(data: Data(out[32..<64])).map { String(format: "%02x", $0) }.joined()
+        return Secrets(key: Data(out[0..<32]), id: id)
     }
-
-    /// TCP with TLS keyed by the code (`key(for:)`). Peer-to-peer is on, so two iPhones with no Wi‑Fi in common still
-    /// find each other.
-    static func parameters(key: Data) -> NWParameters {
-        let tls = NWProtocolTLS.Options()
-        let secret = key.withUnsafeBytes { DispatchData(bytes: $0) }
-        let identity = Data("OftenEnough".utf8).withUnsafeBytes { DispatchData(bytes: $0) }
-        sec_protocol_options_add_pre_shared_key(tls.securityProtocolOptions, secret as __DispatchData, identity as __DispatchData)
-        sec_protocol_options_append_tls_ciphersuite(tls.securityProtocolOptions, tls_ciphersuite_t(rawValue: UInt16(TLS_PSK_WITH_AES_128_GCM_SHA256))!)
-        let tcp = NWProtocolTCP.Options()
-        tcp.enableKeepalive = true
-        tcp.keepaliveIdle = 2
-        let parameters = NWParameters(tls: tls, tcp: tcp)
-        parameters.includePeerToPeer = true
-        return parameters
-    }
-
-    /// What goes over the connection: "OET2", the file's length (8 bytes) and SHA-256 (32 bytes), one byte for the
-    /// sending device's account (`Account`), then the file. The new iPhone answers one byte, 1, once the file has
-    /// arrived whole and its checksum matches. "OET1" (9 Oct 2026) is the same without the account byte; still read.
-    static let magic = Data("OET2".utf8)
-    static let magicV1 = Data("OET1".utf8)
-    static let headerLength = 4 + 8 + 32
 
     /// Whether the sending device was signed in (Account and Backup Redesign §7 item 3, decided 10 Oct 2026). Sign-ins
     /// never travel between devices; the new one only learns to ask "Sign in to keep your account".
     nonisolated enum Account: UInt8, Sendable { case none = 0, free = 1, plus = 2 }
 
-    static func header(for file: Data, account: Account = .none) -> Data {
-        var length = UInt64(file.count).bigEndian
-        return magic + Data(bytes: &length, count: 8) + Data(SHA256.hash(data: file)) + Data([account.rawValue])
+    /// What's sealed: "OEX1", the sending device's account byte, then the backup file.
+    static let magic = Data("OEX1".utf8)
+
+    static func seal(_ file: Data, account: Account, key: Data) throws -> Data {
+        let plain = magic + Data([account.rawValue]) + file
+        guard let sealed = try AES.GCM.seal(plain, using: SymmetricKey(data: key)).combined else { throw CocoaError(.coderInvalidValue) }
+        return sealed
     }
 
-    /// The length and checksum from a header's first 44 bytes (either version), or nil if it isn't one.
-    static func read(header: Data) -> (length: Int, sha256: Data)? {
-        guard header.count == headerLength, header.prefix(4) == magic || header.prefix(4) == magicV1 else { return nil }
-        let length = header.dropFirst(4).prefix(8).reduce(UInt64(0)) { $0 << 8 | UInt64($1) }
-        guard length > 0, length < 512 * 1024 * 1024 else { return nil }
-        return (Int(length), Data(header.suffix(32)))
-    }
-
-    /// A local-network permission refusal: iOS reports it as a DNS-SD "policy denied".
-    static func isPermissionDenied(_ error: NWError) -> Bool {
-        if case .dns(let code) = error, code == DNSServiceErrorType(kDNSServiceErr_PolicyDenied) { return true }
-        return false
+    /// The file and the sender's account, or nil when it wasn't sealed with this key or arrived damaged (GCM checks both).
+    static func open(_ sealed: Data, key: Data) -> (file: Data, account: Account)? {
+        guard let box = try? AES.GCM.SealedBox(combined: sealed),
+              let plain = try? AES.GCM.open(box, using: SymmetricKey(data: key)),
+              plain.count > magic.count + 1, plain.prefix(magic.count) == magic else { return nil }
+        let account = Account(rawValue: plain[plain.startIndex + magic.count]) ?? .none
+        return (Data(plain.dropFirst(magic.count + 1)), account)
     }
 }
 
-/// The old iPhone's side: shows the code, waits for the new iPhone, and sends the file once.
+/// The server's half of a move (`server/src/transfer.ts`): no account, only the ID the code makes.
+nonisolated struct TransferServer: Sendable {
+    let api: URL
+    let id: String
+
+    nonisolated enum Problem: Error, Equatable {
+        /// Nothing under this ID: a wrong code, or one that has expired or was cancelled.
+        case notFound
+        case tooLarge
+        case server(Int)
+    }
+
+    private func url(_ suffix: String = "") -> URL { api.appending(path: "/v1/transfer/\(id)\(suffix)") }
+
+    private func send(_ method: String, _ suffix: String = "", body: Data? = nil) async throws -> (Int, Data) {
+        var request = URLRequest(url: url(suffix), timeoutInterval: (body?.count ?? 0) > 1_000_000 ? 120 : 30)
+        request.httpMethod = method
+        let data: Data
+        let response: URLResponse
+        if let body {
+            request.setValue("application/octet-stream", forHTTPHeaderField: "content-type")
+            (data, response) = try await URLSession.shared.upload(for: request, from: body)
+        } else {
+            (data, response) = try await URLSession.shared.data(for: request)
+        }
+        return ((response as? HTTPURLResponse)?.statusCode ?? 0, data)
+    }
+
+    func upload(_ sealed: Data) async throws {
+        let (status, _) = try await send("PUT", body: sealed)
+        guard status == 201 else { throw status == 413 ? Problem.tooLarge : Problem.server(status) }
+    }
+
+    func download() async throws -> Data {
+        let (status, data) = try await send("GET")
+        if status == 404 { throw Problem.notFound }
+        guard status == 200 else { throw Problem.server(status) }
+        return data
+    }
+
+    /// The new device has the file, opened and checked: the server deletes it, and the old device sees "Done".
+    func received() async throws {
+        _ = try await send("POST", "/received")
+    }
+
+    /// "waiting", "received" or "gone".
+    func status() async throws -> String {
+        let (status, data) = try await send("GET", "/status")
+        guard status == 200 else { throw Problem.server(status) }
+        return ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?["state"] as? String ?? "waiting"
+    }
+
+    func cancel() async throws {
+        _ = try await send("DELETE")
+    }
+}
+
+/// The old device's side: seals the file with the code, hands it to the server, and waits until the new device has it.
 @Observable
 final class TransferSender {
     enum State: Equatable {
         case preparing
         case waiting
-        case sending(Double)
         case sent
-        case needsPermission
+        /// The hour is over, or the file went: a new code is needed.
+        case expired
         case failed(String)
     }
 
     private(set) var state: State = .preparing
     let code = TransferCode.debugCode ?? TransferCode.make()
-    @ObservationIgnored private var listener: NWListener?
-    @ObservationIgnored private var connection: NWConnection?
-    @ObservationIgnored private var file = Data()
-    @ObservationIgnored private var account = TransferCode.Account.none
+    @ObservationIgnored private var server: TransferServer?
+    @ObservationIgnored private var polling: Task<Void, Never>?
+    @ObservationIgnored private var stopped = false
 
-    /// Starts listening with `file`, the backup the new iPhone will get, and whether this device is signed in.
-    func start(file: Data, account: TransferCode.Account = .none) async {
-        self.file = file
-        self.account = account
+    /// Sends `file`, the backup the new device will get, with whether this device is signed in, through `api`.
+    func start(file: Data, account: TransferCode.Account = .none, api: URL) async {
         let code = code
-        let key = await Task.detached { TransferCode.key(for: code) }.value
         do {
-            let listener = try NWListener(using: TransferCode.parameters(key: key))
-            listener.service = NWListener.Service(name: "Often Enough " + String(UUID().uuidString.prefix(6)), type: TransferCode.serviceType)
-            listener.stateUpdateHandler = { [weak self] state in
-                MainActor.assumeIsolated { self?.listenerChanged(state) }
+            let (server, sealed) = try await Task.detached {
+                let secrets = TransferCode.secrets(for: code)
+                return (TransferServer(api: api, id: secrets.id), try TransferCode.seal(file, account: account, key: secrets.key))
+            }.value
+            self.server = server
+            try await server.upload(sealed)
+            // The screen was left while it uploaded: the file mustn't wait on the server for nobody.
+            guard !stopped else {
+                self.server = nil
+                Task.detached { try? await server.cancel() }
+                return
             }
-            listener.newConnectionHandler = { [weak self] connection in
-                MainActor.assumeIsolated { self?.accept(connection) }
-            }
-            self.listener = listener
-            listener.start(queue: .main)
+            state = .waiting
+            poll(server)
+        } catch TransferServer.Problem.tooLarge {
+            state = .failed("Your data is too large to move with a code. Save a backup file and open it on the other device instead.")
         } catch {
-            state = .failed("Couldn't get ready to send. Please try again.")
+            state = .failed("Couldn't reach the server. Check your connection and try again. Your habits are safe on this device.")
         }
     }
 
-    /// Something went wrong before waiting started (the backup couldn't be made).
+    /// Asks every 5 s whether the file has arrived (well inside the server's 60 a minute per address).
+    private func poll(_ server: TransferServer) {
+        polling = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(5))
+                guard !Task.isCancelled else { return }
+                guard let state = try? await server.status() else { continue }
+                guard let self else { return }
+                if state == "received" { self.state = .sent; self.server = nil; return }
+                if state == "gone" { self.state = .expired; self.server = nil; return }
+            }
+        }
+    }
+
+    /// Something went wrong before the upload (the backup couldn't be made).
     func fail(_ text: String) {
         stop()
         state = .failed(text)
     }
 
+    /// Leaving the screen ends the code: the file is deleted from the server unless it has already arrived.
     func stop() {
-        listener?.cancel()
-        listener = nil
-        connection?.cancel()
-        connection = nil
-    }
-
-    private func listenerChanged(_ new: NWListener.State) {
-        switch new {
-        case .ready:
-            if state == .preparing { state = .waiting }
-        case .waiting(let error):
-            if TransferCode.isPermissionDenied(error) { state = .needsPermission }
-        case .failed(let error):
-            state = TransferCode.isPermissionDenied(error) ? .needsPermission : .failed("Stopped waiting for the other device. Please try again.")
-            stop()
-        default: break
-        }
-    }
-
-    /// The first phone that knows the code; a phone with the wrong code never gets past the TLS handshake, and the
-    /// code is used once.
-    private func accept(_ new: NWConnection) {
-        guard state == .waiting else { new.cancel(); return }
-        // A connection still shaking hands (a wrong code can hang there) never blocks the next phone.
-        connection?.cancel()
-        connection = new
-        new.stateUpdateHandler = { [weak self, weak new] state in
-            MainActor.assumeIsolated {
-                guard let self, let new, self.connection === new else { return }
-                switch state {
-                case .ready: self.send(on: new)
-                case .failed, .cancelled:
-                    // A wrong code, or the new iPhone went away before the end: keep waiting for the right one.
-                    if case .sending = self.state { self.state = .failed("The connection to the other device was lost. Please try again.") }
-                    self.connection = nil
-                default: break
-                }
-            }
-        }
-        new.start(queue: .main)
-    }
-
-    private func send(on connection: NWConnection) {
-        state = .sending(0)
-        listener?.cancel() // used once: nobody else can connect with this code now
-        connection.send(content: TransferCode.header(for: file, account: account), completion: .idempotent)
-        sendChunk(from: 0, on: connection)
-    }
-
-    /// The file in 256 KB pieces, so the screen can show how far it's got.
-    private func sendChunk(from offset: Int, on connection: NWConnection) {
-        let end = min(offset + 256 * 1024, file.count)
-        connection.send(content: file.subdata(in: offset..<end), completion: .contentProcessed { [weak self] error in
-            MainActor.assumeIsolated {
-                guard let self else { return }
-                if error != nil { self.state = .failed("The connection to the other device was lost. Please try again."); return }
-                self.state = .sending(Double(end) / Double(max(self.file.count, 1)))
-                if end < self.file.count { self.sendChunk(from: end, on: connection) } else { self.waitForAnswer(on: connection) }
-            }
-        })
-    }
-
-    private func waitForAnswer(on connection: NWConnection) {
-        connection.receive(minimumIncompleteLength: 1, maximumLength: 1) { [weak self] data, _, _, _ in
-            MainActor.assumeIsolated {
-                guard let self else { return }
-                self.state = data == Data([1]) ? .sent : .failed("The other device couldn't read the data. Please try again.")
-                self.stop()
-            }
+        stopped = true
+        polling?.cancel()
+        polling = nil
+        if let server, state != .sent {
+            self.server = nil
+            Task.detached { try? await server.cancel() }
         }
     }
 }
 
-/// The new iPhone's side: finds the old iPhone that shows this code and receives the file.
+/// The new device's side: gets the file the code points to, and opens it with the code.
 @Observable
 final class TransferReceiver {
     enum Failure: Error, Equatable {
-        /// No old iPhone answered at all.
-        case notFound
-        /// An old iPhone answered, but not with this code.
+        /// Nothing for this code: mistyped, expired, or the old device left its screen.
         case wrongCode
-        case needsPermission
-        case lost
+        case unreachable
         case damaged
     }
 
-    /// 0…1 once the file is arriving; nil while looking.
-    private(set) var progress: Double?
-    /// Whether the sending device was signed in (its header says; an older sender says nothing).
+    /// Whether the sending device was signed in (sealed with the file).
     private(set) var senderAccount = TransferCode.Account.none
-    @ObservationIgnored private var browser: NWBrowser?
-    @ObservationIgnored private var connections: [NWConnection] = []
-    @ObservationIgnored private var tried: Set<NWEndpoint> = []
-    /// Phones offering a transfer that turned this code away (checked in the simulator, 9 Oct 2026: the handshake
-    /// fails as a reset connection, not always as a TLS error, so any failure to a phone that was just found counts).
-    @ObservationIgnored private var refused: Set<NWEndpoint> = []
-    @ObservationIgnored private var continuation: CheckedContinuation<Data, Error>?
-    @ObservationIgnored private var received = Data()
-    @ObservationIgnored private var expected: (length: Int, sha256: Data)?
-    @ObservationIgnored private var receiving: NWConnection?
-    @ObservationIgnored private var key = Data()
+    @ObservationIgnored private var server: TransferServer?
 
-    /// The file from the old iPhone. Gives up after `timeout` seconds without one (it keeps going while a file is
-    /// arriving).
-    func receive(code: String, timeout: Double = 30) async throws -> Data {
-        // A fresh start each time (Try again): every phone nearby is worth trying again.
-        tried = []
-        refused = []
-        received = Data()
-        expected = nil
-        progress = nil
-        let key = await Task.detached { TransferCode.key(for: code) }.value
-        self.key = key
-        return try await withTaskCancellationHandler {
-            try await withCheckedThrowingContinuation { continuation in
-                self.continuation = continuation
-                self.browse()
-                Task { [weak self] in
-                    try? await Task.sleep(for: .seconds(timeout))
-                    guard let self, self.receiving == nil else { return }
-                    self.finish(.failure(self.refused.isEmpty ? Failure.notFound : Failure.wrongCode))
-                }
-            }
-        } onCancel: {
-            Task { @MainActor [weak self] in self?.finish(.failure(CancellationError())) }
+    /// The file from the old device, through `api`.
+    func receive(code: String, api: URL) async throws -> Data {
+        let secrets = await Task.detached { TransferCode.secrets(for: code) }.value
+        let server = TransferServer(api: api, id: secrets.id)
+        let sealed: Data
+        do {
+            sealed = try await server.download()
+        } catch TransferServer.Problem.notFound {
+            throw Failure.wrongCode
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch let error as URLError where error.code == .cancelled {
+            throw CancellationError()
+        } catch {
+            throw Failure.unreachable
         }
+        guard let opened = TransferCode.open(sealed, key: secrets.key) else { throw Failure.damaged }
+        self.server = server
+        senderAccount = opened.account
+        return opened.file
     }
 
-    private func browse() {
-        let browser = NWBrowser(for: .bonjour(type: TransferCode.serviceType, domain: nil), using: TransferCode.parameters(key: key))
-        browser.stateUpdateHandler = { [weak self] state in
-            MainActor.assumeIsolated {
-                switch state {
-                case .waiting(let error) where TransferCode.isPermissionDenied(error), .failed(let error) where TransferCode.isPermissionDenied(error):
-                    self?.finish(.failure(Failure.needsPermission))
-                default: break
-                }
-            }
-        }
-        browser.browseResultsChangedHandler = { [weak self] results, _ in
-            MainActor.assumeIsolated {
-                for result in results { self?.connect(to: result.endpoint) }
-            }
-        }
-        self.browser = browser
-        browser.start(queue: .main)
-    }
-
-    /// Tries each old iPhone that's offering a transfer; only the one showing this code completes the handshake.
-    private func connect(to endpoint: NWEndpoint) {
-        guard receiving == nil, tried.insert(endpoint).inserted else { return }
-        let connection = NWConnection(to: endpoint, using: TransferCode.parameters(key: key))
-        connections.append(connection)
-        connection.stateUpdateHandler = { [weak self, weak connection] state in
-            MainActor.assumeIsolated {
-                guard let self, let connection else { return }
-                switch state {
-                case .ready:
-                    guard self.receiving == nil else { connection.cancel(); return }
-                    self.receiving = connection
-                    self.readHeader(on: connection)
-                case .waiting, .failed:
-                    if self.receiving !== connection {
-                        // A phone showing a different code.
-                        connection.cancel()
-                        self.refused.insert(endpoint)
-                        self.giveUpIfAllRefused()
-                    } else if case .failed = state {
-                        self.finish(.failure(Failure.lost))
-                    }
-                default: break
-                }
-            }
-        }
-        connection.start(queue: .main)
-        // A phone with a different code doesn't always fail the handshake: it can simply never answer (seen in the
-        // simulator, 9 Oct 2026). Five seconds without one counts as turning the code away.
-        Task { [weak self, weak connection] in
-            try? await Task.sleep(for: .seconds(5))
-            guard let self, let connection, self.receiving !== connection, self.continuation != nil else { return }
-            if case .ready = connection.state { return }
-            connection.cancel()
-            self.refused.insert(endpoint)
-            self.giveUpIfAllRefused()
-        }
-    }
-
-    /// Every phone found so far turned the code away: wait a few seconds for another to appear, then say the code
-    /// doesn't match, rather than wait out the whole time.
-    private func giveUpIfAllRefused() {
-        Task { [weak self] in
-            try? await Task.sleep(for: .seconds(3))
-            guard let self, self.receiving == nil, !self.refused.isEmpty, self.refused == self.tried else { return }
-            self.finish(.failure(Failure.wrongCode))
-        }
-    }
-
-    private func readHeader(on connection: NWConnection) {
-        connection.receive(minimumIncompleteLength: TransferCode.headerLength, maximumLength: TransferCode.headerLength) { [weak self] data, _, _, error in
-            MainActor.assumeIsolated {
-                guard let self else { return }
-                guard error == nil, let data, let header = TransferCode.read(header: data) else {
-                    return self.finish(.failure(error == nil ? Failure.damaged : Failure.lost))
-                }
-                self.expected = header
-                self.received = Data(capacity: header.length)
-                self.senderAccount = .none
-                if data.prefix(4) == TransferCode.magic { self.readAccount(on: connection) } else { self.progress = 0; self.readBody(on: connection) }
-            }
-        }
-    }
-
-    /// Version 2's account byte, between the header and the file.
-    private func readAccount(on connection: NWConnection) {
-        connection.receive(minimumIncompleteLength: 1, maximumLength: 1) { [weak self] data, _, _, error in
-            MainActor.assumeIsolated {
-                guard let self else { return }
-                guard error == nil, let byte = data?.first else { return self.finish(.failure(error == nil ? Failure.damaged : Failure.lost)) }
-                self.senderAccount = TransferCode.Account(rawValue: byte) ?? .none
-                self.progress = 0
-                self.readBody(on: connection)
-            }
-        }
-    }
-
-    private func readBody(on connection: NWConnection) {
-        guard let expected else { return }
-        connection.receive(minimumIncompleteLength: 1, maximumLength: min(256 * 1024, expected.length - received.count)) { [weak self] data, _, complete, error in
-            MainActor.assumeIsolated {
-                guard let self, let expected = self.expected else { return }
-                if let data { self.received.append(data) }
-                self.progress = Double(self.received.count) / Double(expected.length)
-                if self.received.count >= expected.length {
-                    guard Data(SHA256.hash(data: self.received)) == expected.sha256 else { return self.finish(.failure(Failure.damaged)) }
-                    // Tell the old iPhone it arrived whole, then hand the file over once that's sent.
-                    let file = self.received
-                    connection.send(content: Data([1]), completion: .contentProcessed { [weak self] _ in
-                        MainActor.assumeIsolated { self?.finish(.success(file)) }
-                    })
-                } else if error != nil || complete {
-                    self.finish(.failure(Failure.lost))
-                } else {
-                    self.readBody(on: connection)
-                }
-            }
-        }
-    }
-
-    private func finish(_ result: Result<Data, Error>) {
-        guard let continuation else { return }
-        self.continuation = nil
-        browser?.cancel()
-        browser = nil
-        for connection in connections { connection.cancel() }
-        connections = []
-        receiving = nil
-        continuation.resume(with: result)
+    /// The file was checked and can be restored: the server deletes it, and the old device says "Done".
+    func confirm() async {
+        guard let server else { return }
+        self.server = nil
+        try? await server.received()
     }
 }

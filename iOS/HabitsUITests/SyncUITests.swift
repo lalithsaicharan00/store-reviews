@@ -90,7 +90,7 @@ final class SyncUITests: XCTestCase {
         app.buttons["menu-backup"].tap()
         let status = app.descendants(matching: .any)["backup-status"]
         XCTAssertTrue(status.waitForExistence(timeout: 10))
-        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Backed up'"), object: status)], timeout: 30)
+        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Synced'"), object: status)], timeout: 30)
         XCTAssertTrue(status.label.contains("Your account"), "Signed in, the copies are in the account: \(status.label)")
         shot("backup-signed-in-plus")
         app.descendants(matching: .any)["backup-account"].tap()

@@ -152,6 +152,8 @@ final class AppModel {
         let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil }
             ?? (testLaunch ? "uitest" : "habits")
         sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: Self.resetsDatabase(arguments)) }
+        // A test launch starts without a notice another test left ("Signed out on this iPhone", T8).
+        if testLaunch { sync?.forgetSignedOutBy() }
         if let opened, let sync {
             backup = BackupCenter(repository: opened.repository, sync: sync, store: store, sandboxed: testLaunch)
         } else {
@@ -293,11 +295,33 @@ final class AppModel {
                 try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true])
                 LaunchLog.took("CI sign-in", since: started)
             }
-            // The same, as a free account (BackupUITests): backups go to the server, nothing syncs.
-            if let i = arguments.firstIndex(of: "-ci-sign-in-free"), i + 2 < arguments.count {
+            // The same, as a free account (BackupUITests, SyncUITests): it syncs from one device (Current Work 78). Signed in
+            // on another device already (another `-dbname`), it asks "Use on This iPhone?" (screen 7) as a real sign-in
+            // does, and Continue moves the account here with `replace`.
+            if let i = arguments.firstIndex(of: "-ci-sign-in-free"), i + 2 < arguments.count, let sync {
                 let started = Date.now
-                try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true, "plus": false])
+                let body: [String: Any] = ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true, "plus": false]
+                do {
+                    try await sync.signIn(path: "/v1/auth/ci", body: body)
+                } catch let error as ServerError where error.code == "other_device_signed_in" {
+                    backup?.askReplace = BackupCenter.ReplaceQuestion(otherDevice: error.deviceName ?? "") { [backup] in
+                        var again = body
+                        again["replace"] = true
+                        try? await sync.signIn(path: "/v1/auth/ci", body: again)
+                        backup?.refresh()
+                        await backup?.backUpNow()
+                    }
+                } catch {}
                 LaunchLog.took("CI sign-in (free)", since: started)
+            }
+            // Screens 7 and 8 without a server (SmallScreenUITests, screenshots): `-test-ask-replace iPhone` asks "Use on
+            // This iPhone?"; `-test-signed-out-by iPad` shows "Signed out on this iPhone".
+            if let i = arguments.firstIndex(of: "-test-ask-replace"), i + 1 < arguments.count {
+                backup?.askReplace = BackupCenter.ReplaceQuestion(otherDevice: arguments[i + 1]) {}
+            }
+            if let i = arguments.firstIndex(of: "-test-signed-out-by"), i + 1 < arguments.count {
+                sync?.testSignedOutBy(arguments[i + 1])
+                backup?.refresh()
             }
             #endif
             // Each step's time goes to the system log (`LaunchLog`), which CI saves as app.log (Current Work 11).
