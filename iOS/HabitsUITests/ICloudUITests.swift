@@ -70,7 +70,8 @@ final class ICloudUITests: XCTestCase {
                 XCTAssertTrue(app.buttons["cloud-restore-instead"].exists, "Restore From a Backup one tap away")
             default: break
             }
-            XCTAssertTrue(app.buttons["backup-save"].exists && app.buttons["backup-export-csv"].exists, "\(state): export one tap away")
+            // Export is on the page in every state (D10); the list draws rows as they scroll in, so scroll to it.
+            XCTAssertTrue(app.reveal(app.buttons["backup-save"]) && app.reveal(app.buttons["backup-export-csv"]), "\(state): export on the page · \(labels(app))")
             let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "icloud-\(state)"; shot.lifetime = .keepAlways; add(shot)
         }
     }

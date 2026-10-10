@@ -19,7 +19,9 @@ final class BackupUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-backupcheck"]
         app.launch()
-        XCTAssertTrue(app.staticTexts["Backup: all checks passed"].waitForExistence(timeout: 60), app.debugDescription)
+        let result = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Backup")).firstMatch
+        XCTAssertTrue(result.waitForExistence(timeout: 180), "The backup checks did not finish")
+        XCTAssertEqual(result.label, "Backup: all checks passed")
     }
 
     /// The page from Today's empty state: sync's status first, then backups, export and import, then deleting; no

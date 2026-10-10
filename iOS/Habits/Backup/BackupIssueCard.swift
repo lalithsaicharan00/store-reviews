@@ -15,6 +15,7 @@ struct BackupIssueSection: View {
             Section {
                 VStack(alignment: .leading, spacing: 10) {
                     Label { Text(CloudStatus.of(cloud, isPlus: false).title) } icon: { Image(systemName: "exclamationmark.icloud.fill").foregroundStyle(.red) }
+                        .accessibilityElement(children: .combine)
                         .accessibilityIdentifier("cloud-card")
                     Button("Open iCloud & Backup") { open() }
                         .buttonStyle(.borderedProminent).tint(.ink)
