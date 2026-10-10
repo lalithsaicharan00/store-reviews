@@ -215,9 +215,9 @@ final class SmallScreenUITests: XCTestCase {
         let lock = app.switches["privacy-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
         lock.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
-        let passcode = app.buttons["setup-app-passcode"], turnOn = app.buttons["setup-turn-on"]
+        let passcode = app.buttons["setup-app-passcode"], turnOn = app.buttons["setup-continue"]
         XCTAssertTrue(passcode.waitForExistence(timeout: 5) && turnOn.exists)
-        let ids = ["setup-iphone-passcode", "setup-app-passcode", "setup-turn-on"]
+        let ids = ["setup-face-id", "setup-iphone-passcode", "setup-app-passcode", "setup-continue"]
         XCTAssertLessThanOrEqual(passcode.frame.maxY, turnOn.frame.minY, "Both choices above the button: \(frames(ids))")
         XCTAssertLessThanOrEqual(turnOn.frame.maxY, window.maxY, frames(ids))
         shot("se-setup-choose-default")
@@ -297,13 +297,13 @@ final class SmallScreenUITests: XCTestCase {
         lock.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
         let passcode = app.buttons["setup-app-passcode"]
         XCTAssertTrue(passcode.waitForExistence(timeout: 5))
-        let turnOn = app.buttons["setup-turn-on"]
-        XCTAssertTrue(turnOn.isHittable && turnOn.frame.maxY <= window.maxY, frames(["setup-iphone-passcode", "setup-app-passcode", "setup-turn-on"]))
+        let turnOn = app.buttons["setup-continue"]
+        XCTAssertTrue(turnOn.isHittable && turnOn.frame.maxY <= window.maxY, frames(["setup-face-id", "setup-iphone-passcode", "setup-app-passcode", "setup-continue"]))
         shot("se-setup-choose")
         // At this text size the sheet scrolls: its own list, never Today's behind it (T9).
         let sheetList = app.collectionViews.containing(.button, identifier: "setup-app-passcode").firstMatch
         for _ in 0..<5 where passcode.frame.maxY > turnOn.frame.minY { sheetList.swipeUp() }
-        XCTAssertLessThanOrEqual(passcode.frame.maxY, turnOn.frame.minY, "App Passcode scrolls into view above the button: \(frames(["setup-app-passcode", "setup-turn-on"]))")
+        XCTAssertLessThanOrEqual(passcode.frame.maxY, turnOn.frame.minY, "App Passcode scrolls into view above the button: \(frames(["setup-app-passcode", "setup-continue"]))")
         shot("se-setup-choose-scrolled")
         passcode.tap()
         let next = app.buttons["setup-continue"]
@@ -314,8 +314,8 @@ final class SmallScreenUITests: XCTestCase {
         XCTAssertTrue(create.waitForExistence(timeout: 5))
         XCTAssertTrue(create.isHittable && create.frame.maxY <= window.maxY, "Create App Passcode on screen: \(create.frame), window \(window)")
         shot("se-setup-how-it-works")
+        // The App Passcode way has nothing else to check: straight to the passcode.
         create.tap()
-        XCTAssertTrue(app.buttons["fake-auth-ok"].waitForExistence(timeout: 5)); app.buttons["fake-auth-ok"].tap()
         let ids = ["code-dots", "code-key-1", "code-key-0", "code-delete"]
         XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5), frames(ids))
         shot("se-setup-enter")

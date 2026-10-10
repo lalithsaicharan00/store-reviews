@@ -3,8 +3,10 @@ import XCTest
 /// App Lock, Privacy & Security and Hide Names Outside the App (Current Work 58; spec "Privacy & Security — What to
 /// Build"). Test launches never use the person's lock (D8): `-test-lock passcode|code` turns on the test's own lock, with
 /// its own Keychain item, and a test Face ID panel (`fake-auth`) answers in place of the system's prompt.
-/// `-test-face none` is an iPhone without Face ID, `-test-face-domain B` one whose faces changed, and
-/// `-test-lock-advance N` moves the lock's clock on N seconds (T11).
+/// `-test-face none` is an iPhone without Face ID, `-test-face denied` Face ID switched off for the app,
+/// `-test-passcode none` an iPhone with no passcode, `-test-face-domain B` one whose faces changed, and
+/// `-test-lock-advance N` moves the lock's clock on N seconds (T11). `-test-lock faceid|iphone|app` starts with that
+/// everyday way and its app passcode; `-test-lock passcode|code` is a lock made before round 2 (no way saved).
 final class AppLockUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
 
@@ -42,6 +44,15 @@ final class AppLockUITests: XCTestCase {
         enterCode(app, code)
     }
 
+    /// A code sheet over the app (not the cover): wait until the cover the app shows while it isn't in front has gone
+    /// (it flashed after the test Face ID panel closed and took a digit: run of 10 Oct 2026, testSwitchingWays), then
+    /// type.
+    private func enterCodeInSheet(_ app: XCUIApplication, _ code: String, file: StaticString = #filePath, line: UInt = #line) {
+        XCTAssertTrue(gone(cover(app), timeout: 5), "The cover is in the way: \(labels(app))", file: file, line: line)
+        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5) && app.buttons["code-key-1"].isHittable, labels(app), file: file, line: line)
+        enterCode(app, code)
+    }
+
     /// The code keys: a code sheet's own (`code-setup`) when one is up over the cover's keypad.
     private func enterCode(_ app: XCUIApplication, _ code: String) {
         let setup = app.descendants(matching: .any)["code-setup"]
@@ -69,23 +80,39 @@ final class AppLockUITests: XCTestCase {
         app.navigationBars.buttons.element(boundBy: 0).tap()
     }
 
-    /// The switch, then Set Up App Lock with iPhone Passcode (the default): Turn On App Lock and Face ID.
-    private func turnOnWithIPhonePasscode(_ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
+    /// The switch, then Set Up App Lock (A2): the way, Continue, Create App Passcode (Face ID or the iPhone passcode
+    /// once, except for App Passcode), the passcode twice; App Lock reads on.
+    private func turnOn(_ app: XCUIApplication, way: String, code: String, file: StaticString = #filePath, line: UInt = #line) {
         flip(app.switches["privacy-lock"])
         XCTAssertTrue(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 5), labels(app), file: file, line: line)
-        app.buttons["setup-turn-on"].tap()
-        answer(app, true, file: file, line: line)
-        XCTAssertTrue(gone(app.navigationBars["Set Up App Lock"]), labels(app), file: file, line: line)
+        app.buttons["setup-\(way)"].tap()
+        XCTAssertTrue(app.buttons["setup-\(way)"].isSelected, "\(way) chosen: \(labels(app))", file: file, line: line)
+        app.buttons["setup-continue"].tap()
+        createAppPasscode(app, code, ownerCheck: way != "app-passcode", file: file, line: line)
+        XCTAssertTrue(gone(app.navigationBars["App Passcode"]), labels(app), file: file, line: line)
         XCTAssertTrue(waitFor(app.switches["privacy-lock"], value: "1"), labels(app), file: file, line: line)
     }
 
-    /// From the explainer (screen 4): Create App Passcode, Face ID, the passcode twice.
-    private func createAppPasscode(_ app: XCUIApplication, _ code: String, file: StaticString = #filePath, line: UInt = #line) {
-        XCTAssertTrue(app.staticTexts["How your app passcode works"].waitForExistence(timeout: 5), labels(app), file: file, line: line)
-        app.buttons["setup-create-app-passcode"].tap()
-        answer(app, true, file: file, line: line)
+    /// From the explainer (A6–A8): Create App Passcode, the owner check when the way has one, the passcode twice.
+    private func createAppPasscode(_ app: XCUIApplication, _ code: String, ownerCheck: Bool = true, file: StaticString = #filePath, line: UInt = #line) {
+        let create = app.buttons["setup-create-app-passcode"]
+        XCTAssertTrue(create.waitForExistence(timeout: 5), labels(app), file: file, line: line)
+        create.tap()
+        if ownerCheck { answer(app, true, file: file, line: line) }
         XCTAssertTrue(app.staticTexts["Enter a six-digit passcode"].waitForExistence(timeout: 5), labels(app), file: file, line: line)
         chooseCode(app, code, file: file, line: line)
+    }
+
+    /// A row's text, wherever iOS puts a combined row's words (its label, or its value). A way that can't be chosen is
+    /// plain text, not a button.
+    private func row(_ app: XCUIApplication, _ id: String) -> String {
+        let element = app.descendants(matching: .any)[id].firstMatch
+        return element.label + " " + value(element)
+    }
+
+    /// A way that can't be chosen: shown (with its reason), but not a button.
+    private func unavailable(_ app: XCUIApplication, _ id: String) -> Bool {
+        app.descendants(matching: .any)[id].firstMatch.exists && !app.buttons[id].exists
     }
 
     /// Lock Again, a menu in its row: by its id, or by its title where the menu button doesn't carry the id.
@@ -107,6 +134,11 @@ final class AppLockUITests: XCTestCase {
 
     private func waitFor(_ element: XCUIElement, value expected: String, timeout: TimeInterval = 5) -> Bool {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: element)
+        return XCTWaiter.wait(for: [expectation], timeout: timeout) == .completed
+    }
+
+    private func waitForSelected(_ element: XCUIElement, timeout: TimeInterval = 5) -> Bool {
+        let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isSelected == true"), object: element)
         return XCTWaiter.wait(for: [expectation], timeout: timeout) == .completed
     }
 
@@ -143,17 +175,18 @@ final class AppLockUITests: XCTestCase {
         }
     }
 
-    // MARK: The page
+    // MARK: The page and Set Up App Lock (round 2: A1–A8, B1–B5)
 
-    /// The App Lock row says Off; the switch opens Set Up App Lock and stays off until it's done (a cancelled Face ID
-    /// changes nothing); on with iPhone Passcode, Hide Names is held on and the row says On; Lock Again is a menu; off
-    /// again, Hide Names goes back to the person's own choice.
+    /// A1: the switch is "App Lock", never named for Face ID; the row says Off. The switch opens Set Up App Lock (A2,
+    /// Face ID the default) and stays off until the end; the Face ID way's explainer (A6) and its owner check (cancelled
+    /// stays); on (B1, B5): Face ID chosen, Change App Passcode, Lock Again a menu, Hide Names held on. Off again with
+    /// Face ID; Hide Names goes back to the person's own choice.
     func testLockOnAndOffAndHideNamesFollows() {
         let app = launch([])
         openPrivacy(app)
-        let row = app.buttons["privacy-app-lock"], hide = app.switches["privacy-hide-names"]
-        XCTAssertTrue(row.waitForExistence(timeout: 5) && hide.exists, labels(app))
-        XCTAssertTrue(row.label.contains("Off") && row.label.contains("Lock the app with Face ID"), row.label)
+        let lockRow = app.buttons["privacy-app-lock"], hide = app.switches["privacy-hide-names"]
+        XCTAssertTrue(lockRow.waitForExistence(timeout: 5) && hide.exists, labels(app))
+        XCTAssertTrue(lockRow.label.contains("Off") && lockRow.label.contains("Lock the app with Face ID or a passcode"), lockRow.label)
         XCTAssertEqual(value(hide), "0")
         XCTAssertTrue(hide.isEnabled, "Hide Names is the person's own switch while unlocked")
         XCTAssertTrue(app.staticTexts["Widgets, reminders, alarms and Siri show icons and numbers instead of habit names."].exists, labels(app))
@@ -165,31 +198,42 @@ final class AppLockUITests: XCTestCase {
         openAppLock(app)
         let lock = app.switches["privacy-lock"]
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
+        XCTAssertEqual(lock.label, "App Lock", "A1: the switch never names Face ID")
         XCTAssertEqual(value(lock), "0", "Off by default")
-        XCTAssertFalse(app.buttons["unlock-iphone-passcode"].exists || lockAgain(app).exists, "Options only once it's on")
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "The app will ask for Face ID each time you open it.")).firstMatch.exists, labels(app))
-        shot(app, "app-lock-off")
+        XCTAssertFalse(app.buttons["unlock-face-id"].exists || lockAgain(app).exists, "Options only once it's on")
+        XCTAssertTrue(shows(app, "The app asks for Face ID or a passcode each time you open it."), labels(app))
+        shot(app, "a1-app-lock-off")
         // On: the sheet first; the switch stays off meanwhile.
         flip(lock)
         XCTAssertTrue(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 5), labels(app))
-        XCTAssertTrue(app.staticTexts["If Face ID doesn't work"].exists, labels(app))
-        XCTAssertTrue(app.buttons["setup-iphone-passcode"].isSelected, "iPhone Passcode is the default")
+        XCTAssertTrue(app.staticTexts["How do you want to open the app?"].exists, labels(app))
+        XCTAssertTrue(app.buttons["setup-face-id"].isSelected, "A2: Face ID is the default")
+        XCTAssertTrue(app.buttons["setup-face-id"].isEnabled && app.buttons["setup-iphone-passcode"].isEnabled && app.buttons["setup-app-passcode"].isEnabled)
+        XCTAssertTrue(row(app, "setup-face-id").contains("If Face ID can't recognise you, your app passcode opens the app."), row(app, "setup-face-id"))
+        XCTAssertTrue(row(app, "setup-iphone-passcode").contains("As when you unlock your iPhone: Face ID, or your iPhone passcode."), row(app, "setup-iphone-passcode"))
+        XCTAssertFalse(app.buttons["privacy-allow-face-id"].exists, "Face ID is allowed: nothing to allow")
         XCTAssertFalse(app.staticTexts["Recommended"].exists, "No badge")
-        shot(app, "app-lock-setup")
-        // A cancelled Face ID: still on the sheet, nothing changed.
-        app.buttons["setup-turn-on"].tap()
+        XCTAssertEqual(value(lock), "0", "Still off while setting up")
+        shot(app, "a2-choose")
+        app.buttons["setup-continue"].tap()
+        XCTAssertTrue(app.staticTexts["Now create an app passcode"].waitForExistence(timeout: 5), labels(app))
+        for text in ["It opens the app whenever Face ID can't.", "When it's asked", "If you forget it", "Face ID sets a new one straight away.",
+                     "If Face ID can't help either", "Your habits are never deleted, whatever happens."] {
+            XCTAssertTrue(shows(app, text), "A6 \(text): \(labels(app))")
+        }
+        shot(app, "a6-face-id-backup")
+        // A cancelled owner check stays on A6.
+        app.buttons["setup-create-app-passcode"].tap()
         answer(app, false)
-        XCTAssertTrue(app.navigationBars["Set Up App Lock"].exists, "A cancelled Face ID stays on the sheet")
-        app.buttons["setup-turn-on"].tap()
-        answer(app, true)
-        XCTAssertTrue(gone(app.navigationBars["Set Up App Lock"]), labels(app))
+        XCTAssertTrue(app.staticTexts["Now create an app passcode"].exists && !app.staticTexts["Enter a six-digit passcode"].exists, labels(app))
+        createAppPasscode(app, "246802")
         XCTAssertTrue(waitFor(lock, value: "1"), labels(app))
-        XCTAssertTrue(app.buttons["unlock-iphone-passcode"].isSelected && !app.buttons["unlock-app-passcode"].isSelected, labels(app))
-        XCTAssertTrue(app.staticTexts["Anyone who knows your iPhone passcode can open the app."].exists, labels(app))
-        XCTAssertFalse(app.buttons["privacy-change-code"].exists, "No Change App Passcode in iPhone-passcode mode")
-        shot(app, "app-lock-on-iphone-passcode")
+        XCTAssertTrue(app.buttons["unlock-face-id"].isSelected && !app.buttons["unlock-iphone-passcode"].isSelected && !app.buttons["unlock-app-passcode"].isSelected, labels(app))
+        XCTAssertTrue(shows(app, "If Face ID can't recognise you, your app passcode opens the app. Your iPhone passcode can't."), labels(app))
+        XCTAssertTrue(app.buttons["privacy-change-code"].label.contains("Change App Passcode"), labels(app))
+        XCTAssertFalse(app.buttons["privacy-use-face-id-again"].exists)
+        shot(app, "b1-on-face-id")
         // Lock Again: a menu in its row.
-        XCTAssertTrue(app.buttons["unlock-app-passcode"].waitForExistence(timeout: 5))
         let again = lockAgain(app)
         XCTAssertTrue(again.waitForExistence(timeout: 5), labels(app))
         XCTAssertTrue((again.label + " " + value(again)).contains("Immediately"), "Immediately is the default: \(again.label) \(value(again))")
@@ -200,13 +244,13 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(gone(fifteen, timeout: 3))
         XCTAssertTrue((again.label + " " + value(again)).contains("After 15 Minutes"), "\(again.label) \(value(again))")
         again.tap()
-        XCTAssertTrue(app.buttons["After 1 Minute"].waitForExistence(timeout: 5)); app.buttons["After 1 Minute"].tap()
-        XCTAssertTrue((again.label + " " + value(again)).contains("After 1 Minute"), "\(again.label) \(value(again))")
+        XCTAssertTrue(app.buttons["Immediately"].waitForExistence(timeout: 5)); app.buttons["Immediately"].tap()
         back(app)
         XCTAssertTrue(waitFor(hide, value: "1") && !hide.isEnabled, "App Lock turns Hide Names on and holds it")
-        XCTAssertTrue(app.buttons["privacy-app-lock"].label.contains("On"), app.buttons["privacy-app-lock"].label)
+        XCTAssertTrue(app.buttons["privacy-app-lock"].label.contains("On") && app.buttons["privacy-app-lock"].label.contains("Opens with Face ID"),
+                      app.buttons["privacy-app-lock"].label)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "On while App Lock is on.")).firstMatch.exists, labels(app))
-        shot(app, "privacy-app-lock-on")
+        shot(app, "b5-privacy-on")
         // Off again: Face ID, and Hide Names back to the person's own choice (off).
         openAppLock(app)
         flip(lock); answer(app, true)
@@ -217,55 +261,58 @@ final class AppLockUITests: XCTestCase {
         // The person's choice on, then the lock on and off: still on.
         flip(hide); XCTAssertTrue(waitFor(hide, value: "1"))
         openAppLock(app)
-        turnOnWithIPhonePasscode(app)
+        turnOn(app, way: "iphone-passcode", code: "135791")
         flip(lock); answer(app, true); XCTAssertTrue(waitFor(lock, value: "0"))
         back(app)
         XCTAssertTrue(waitFor(hide, value: "1"), "The person's own choice (on) is kept")
         flip(hide)
     }
 
-    /// ✕ or a failed check at each step of Set Up App Lock leaves App Lock off, with nothing saved.
+    /// ✕ or a failed check at each step of Set Up App Lock leaves App Lock off, with nothing saved; a mismatch goes back
+    /// to the first entry.
     func testCancellingSetUpAtEachStepChangesNothing() {
         let app = launch([])
         openPrivacy(app)
         openAppLock(app)
         let lock = app.switches["privacy-lock"]
         let sheet = app.navigationBars["Set Up App Lock"]
-        // Screen 3: ✕.
+        // A2: ✕.
         flip(lock)
         XCTAssertTrue(sheet.waitForExistence(timeout: 5), labels(app))
         app.buttons["lock-sheet-cancel"].tap()
         XCTAssertTrue(gone(sheet) && waitFor(lock, value: "0"), labels(app))
-        // Screen 4: back, then ✕.
+        // A8: back, then ✕.
         flip(lock)
         XCTAssertTrue(sheet.waitForExistence(timeout: 5))
         app.buttons["setup-app-passcode"].tap()
         XCTAssertTrue(app.buttons["setup-app-passcode"].isSelected)
         app.buttons["setup-continue"].tap()
-        XCTAssertTrue(app.staticTexts["How your app passcode works"].waitForExistence(timeout: 5), labels(app))
-        for text in ["If you forget it", "Use Face ID to choose a new app passcode.", "If Face ID changes", "If you forget it and Face ID can't help",
-                     "Your habits are never deleted, whatever happens."] {
-            XCTAssertTrue(shows(app, text), "\(text): \(labels(app))")
+        XCTAssertTrue(app.staticTexts["Create your app passcode"].waitForExistence(timeout: 5), labels(app))
+        for text in ["It's the only way into the app.", "Every time you open the app", "Face ID and your iPhone passcode won't open it.",
+                     "Ask for a reset. After 24 hours you choose a new app passcode.", "Why the wait"] {
+            XCTAssertTrue(shows(app, text), "A8 \(text): \(labels(app))")
         }
-        shot(app, "app-lock-how-it-works")
+        shot(app, "a8-app-passcode")
         back(app)
         XCTAssertTrue(sheet.waitForExistence(timeout: 5))
         app.buttons["lock-sheet-cancel"].tap()
         XCTAssertTrue(gone(sheet) && waitFor(lock, value: "0"), labels(app))
-        // Screen 4: the owner check cancelled stays there.
+        // A8 → 5 → 6, a mismatch back to 5, then back out of every screen and ✕.
         flip(lock)
         XCTAssertTrue(sheet.waitForExistence(timeout: 5))
         app.buttons["setup-app-passcode"].tap(); app.buttons["setup-continue"].tap()
         XCTAssertTrue(app.buttons["setup-create-app-passcode"].waitForExistence(timeout: 5))
         app.buttons["setup-create-app-passcode"].tap()
-        answer(app, false)
-        XCTAssertTrue(app.staticTexts["How your app passcode works"].exists && !app.staticTexts["Enter a six-digit passcode"].exists, labels(app))
-        // Screens 5 and 6: a passcode once, then back out of every screen and ✕.
-        app.buttons["setup-create-app-passcode"].tap()
-        answer(app, true)
+        XCTAssertFalse(app.buttons["fake-auth-ok"].waitForExistence(timeout: 2), "App Passcode: no Face ID or iPhone passcode check")
         XCTAssertTrue(app.staticTexts["Enter a six-digit passcode"].waitForExistence(timeout: 5), labels(app))
-        XCTAssertTrue(app.staticTexts["You'll only need it when Face ID doesn't work."].exists, labels(app))
-        shot(app, "app-lock-enter")
+        XCTAssertTrue(app.staticTexts["You'll enter it each time you open the app."].exists, labels(app))
+        shot(app, "a8-enter")
+        enterCode(app, "246802")
+        XCTAssertTrue(app.staticTexts["Enter it again"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertEqual(value(lock), "0", "Still off part-way")
+        enterCode(app, "246803")
+        XCTAssertTrue(app.staticTexts["The passcodes didn't match. Try again."].waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(app.staticTexts["Enter a six-digit passcode"].exists, "A mismatch returns to 5")
         enterCode(app, "246802")
         XCTAssertTrue(app.staticTexts["Enter it again"].waitForExistence(timeout: 5), labels(app))
         back(app)
@@ -276,124 +323,331 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(gone(sheet) && waitFor(lock, value: "0"), "Nothing saved: \(labels(app))")
         back(app)
         XCTAssertTrue(app.buttons["privacy-app-lock"].label.contains("Off"), app.buttons["privacy-app-lock"].label)
+        // Nothing was saved: leaving and coming back doesn't lock.
+        leaveAndReturn(app)
+        XCTAssertFalse(cover(app).waitForExistence(timeout: 2), "No lock after a cancelled setup: \(labels(app))")
     }
 
-    /// App Passcode through screens 3 → 4 → 5 → 6, a mismatch back to 5; then the cover asks Face ID, and after a
-    /// cancel the keypad: wrong, then right, back to the same page. Off again in app-passcode mode takes the app passcode.
-    func testChooseCodeThenUnlockWithIt() {
+    /// The iPhone Passcode way (A7, B2): its explainer, then on; coming back asks iOS's own check (Unlock, no keypad);
+    /// Change App Passcode takes the iPhone passcode, never the old app passcode.
+    func testIPhonePasscodeWay() {
         let app = launch([])
         openPrivacy(app)
         openAppLock(app)
         flip(app.switches["privacy-lock"])
         XCTAssertTrue(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 5), labels(app))
-        app.buttons["setup-app-passcode"].tap()
-        XCTAssertTrue(app.buttons["setup-continue"].waitForExistence(timeout: 3), "App Passcode: the button says Continue")
+        app.buttons["setup-iphone-passcode"].tap()
         app.buttons["setup-continue"].tap()
-        XCTAssertTrue(app.buttons["setup-create-app-passcode"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(app.staticTexts["Now create an app passcode"].waitForExistence(timeout: 5), labels(app))
+        for text in ["It opens the app if this iPhone's passcode is ever turned off.", "Only if this iPhone has no passcode any more.",
+                     "Your iPhone passcode sets a new one straight away. With no iPhone passcode, after a 24-hour wait."] {
+            XCTAssertTrue(shows(app, text), "A7 \(text): \(labels(app))")
+        }
+        shot(app, "a7-iphone-passcode-backup")
         app.buttons["setup-create-app-passcode"].tap()
         answer(app, true)
-        XCTAssertTrue(app.staticTexts["Enter a six-digit passcode"].waitForExistence(timeout: 5))
-        enterCode(app, "135790")
-        XCTAssertTrue(app.staticTexts["Enter it again"].waitForExistence(timeout: 5))
-        XCTAssertEqual(value(app.switches["privacy-lock"]), "0", "Still off part-way")
-        enterCode(app, "135791")
-        XCTAssertTrue(app.staticTexts["The passcodes didn't match. Try again."].waitForExistence(timeout: 5), labels(app))
-        XCTAssertTrue(app.staticTexts["Enter a six-digit passcode"].exists, "A mismatch returns to 5")
-        chooseCode(app, "135790")
-        XCTAssertTrue(gone(app.navigationBars["Set Up App Lock"]), labels(app))
+        XCTAssertTrue(app.staticTexts["You'll only need it if this iPhone's passcode is turned off."].waitForExistence(timeout: 5), labels(app))
+        chooseCode(app, "314159")
         XCTAssertTrue(waitFor(app.switches["privacy-lock"], value: "1"), labels(app))
-        XCTAssertTrue(app.buttons["unlock-app-passcode"].isSelected, labels(app))
-        XCTAssertTrue(app.staticTexts["Only Face ID or your app passcode opens the app. Your iPhone passcode can't."].exists, labels(app))
-        XCTAssertTrue(app.buttons["privacy-change-code"].exists, labels(app))
-        shot(app, "app-lock-on-app-passcode")
-        // Away and back: Face ID first; cancelled, the keypad.
-        leaveAndReturn(app)
-        XCTAssertTrue(cover(app).waitForExistence(timeout: 5), labels(app))
-        answer(app, false)
-        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5) && app.buttons["lock-forgot"].exists, labels(app))
-        XCTAssertTrue(app.staticTexts["The app is locked"].exists && app.staticTexts["Enter your app passcode"].exists, labels(app))
-        XCTAssertTrue(app.buttons["Forgot App Passcode?"].exists, labels(app))
-        XCTAssertTrue(app.buttons["lock-use-face-id"].exists, "Use Face ID above the keypad when Face ID can be used")
-        shot(app, "lock-cover-keypad")
-        enterCode(app, "000000")
-        XCTAssertTrue(app.staticTexts["That's not your app passcode."].waitForExistence(timeout: 5), labels(app))
-        enterCode(app, "135790")
-        XCTAssertTrue(gone(cover(app)), labels(app))
-        XCTAssertTrue(app.navigationBars["App Lock"].exists, "Back on the same page")
-        // Change App Passcode: Face ID, then the passcode twice in its own sheet.
+        XCTAssertTrue(app.buttons["unlock-iphone-passcode"].isSelected, labels(app))
+        XCTAssertTrue(shows(app, "Face ID or your iPhone passcode opens the app. Your app passcode is the backup if this iPhone's passcode is turned off."), labels(app))
+        shot(app, "b2-on-iphone-passcode")
+        // Change App Passcode: the iPhone's own check, then the new passcode twice.
         app.buttons["privacy-change-code"].tap()
         answer(app, true)
         XCTAssertTrue(app.navigationBars["Change App Passcode"].waitForExistence(timeout: 5), labels(app))
-        chooseCode(app, "246813")
+        XCTAssertFalse(app.navigationBars["Enter Your App Passcode"].exists, "The old app passcode isn't asked in this way")
+        chooseCode(app, "271828")
         XCTAssertTrue(gone(app.navigationBars["Change App Passcode"]), labels(app))
-        // Turning the lock off in app-passcode mode: Face ID cancelled, then the app passcode (never the iPhone passcode).
-        flip(app.switches["privacy-lock"]); answer(app, false)
-        XCTAssertTrue(app.staticTexts["Enter your app passcode"].waitForExistence(timeout: 5), labels(app))
-        XCTAssertTrue(app.navigationBars["Enter Your App Passcode"].exists, labels(app))
-        enterCode(app, "246813")
-        XCTAssertTrue(waitFor(app.switches["privacy-lock"], value: "0"), labels(app))
-    }
-
-    /// If Face ID doesn't work, both ways: iPhone Passcode → App Passcode opens the sheet at "How your app passcode
-    /// works"; App Passcode → iPhone Passcode takes Face ID (or the app passcode), and the passcode is gone.
-    func testSwitchingModesBothWays() {
-        let app = launch([])
-        openPrivacy(app)
-        openAppLock(app)
-        turnOnWithIPhonePasscode(app)
-        app.buttons["unlock-app-passcode"].tap()
-        XCTAssertTrue(app.navigationBars["App Passcode"].waitForExistence(timeout: 5), "Straight to screen 4: \(labels(app))")
-        XCTAssertTrue(app.buttons["lock-sheet-cancel"].exists, "✕ on the sheet's first screen")
-        // ✕ keeps iPhone Passcode.
-        app.buttons["lock-sheet-cancel"].tap()
-        XCTAssertTrue(gone(app.navigationBars["App Passcode"]))
-        XCTAssertTrue(app.buttons["unlock-iphone-passcode"].isSelected, labels(app))
-        app.buttons["unlock-app-passcode"].tap()
-        createAppPasscode(app, "975310")
-        XCTAssertTrue(gone(app.navigationBars["App Passcode"]), labels(app))
-        XCTAssertTrue(app.buttons["unlock-app-passcode"].isSelected && app.buttons["privacy-change-code"].exists, labels(app))
-        XCTAssertEqual(value(app.switches["privacy-lock"]), "1")
-        // Back: Face ID cancelled, then the app passcode.
-        app.buttons["unlock-iphone-passcode"].tap()
-        answer(app, false)
-        XCTAssertTrue(app.navigationBars["Enter Your App Passcode"].waitForExistence(timeout: 5), labels(app))
-        enterCode(app, "975310")
-        XCTAssertTrue(gone(app.navigationBars["Enter Your App Passcode"]), labels(app))
-        XCTAssertTrue(app.buttons["unlock-iphone-passcode"].isSelected, labels(app))
-        XCTAssertFalse(app.buttons["privacy-change-code"].exists, "The app passcode is gone")
-        XCTAssertEqual(value(app.switches["privacy-lock"]), "1", "App Lock stays on")
-        // Away and back: iPhone-passcode mode asks Face ID with the passcode (no keypad).
+        // Away and back: iOS's own check; a cancel leaves Unlock, never a keypad.
         leaveAndReturn(app)
         XCTAssertTrue(cover(app).waitForExistence(timeout: 5), labels(app))
         answer(app, false)
         XCTAssertTrue(app.buttons["app-unlock"].waitForExistence(timeout: 5) && !app.buttons["code-key-1"].exists, labels(app))
+        shot(app, "c-iphone-passcode-unlock")
         app.buttons["app-unlock"].tap(); answer(app, true)
-        XCTAssertTrue(gone(cover(app)))
+        XCTAssertTrue(gone(cover(app)), labels(app))
     }
 
-    /// An iPhone with no passcode: the switch is shown, off and disabled, and the footer says why.
-    func testNoPasscodeShowsWhy() {
-        let app = launch(["-test-passcode", "none", "-test-face", "none"])
+    /// The App Passcode way (B3, C4, D4, C5, C6): only the keypad, never Face ID; Forgot is the 24-hour wait with nothing
+    /// else to check; while it waits the lock screen says so and the right passcode cancels it; started again, after 24
+    /// hours (a set clock) a new passcode, again with nothing else to check.
+    func testAppPasscodeWayAndItsReset() {
+        var app = launch([])
         openPrivacy(app)
-        XCTAssertTrue(app.buttons["privacy-app-lock"].label.contains("Lock the app with your passcode"), app.buttons["privacy-app-lock"].label)
         openAppLock(app)
-        let lock = app.switches["privacy-lock"]
-        XCTAssertTrue(lock.waitForExistence(timeout: 5) && !lock.isEnabled, labels(app))
-        XCTAssertTrue(app.staticTexts["To use App Lock, set a passcode for this iPhone first: Settings → Face ID & Passcode."].exists, labels(app))
+        turnOn(app, way: "app-passcode", code: "580580")
+        XCTAssertTrue(app.buttons["unlock-app-passcode"].isSelected, labels(app))
+        XCTAssertTrue(shows(app, "Only your app passcode opens the app. Face ID and your iPhone passcode can't."), labels(app))
+        shot(app, "b3-on-app-passcode")
+        // Away and back: the keypad at once, no Face ID.
+        leaveAndReturn(app)
+        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertFalse(app.buttons["fake-auth-ok"].waitForExistence(timeout: 2), "App Passcode: Face ID is never asked")
+        XCTAssertFalse(app.buttons["lock-use-face-id"].exists, "No Use Face ID")
+        XCTAssertTrue(app.staticTexts["The app is locked"].exists && app.staticTexts["Enter your app passcode"].exists, labels(app))
+        shot(app, "c4-app-passcode")
+        enterCode(app, "000000")
+        XCTAssertTrue(app.staticTexts["That's not your app passcode."].waitForExistence(timeout: 5), labels(app))
+        // Forgot: the 24-hour wait alone.
+        app.buttons["lock-forgot"].tap()
+        XCTAssertTrue(app.navigationBars["Forgot App Passcode"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(app.staticTexts["Reset your app passcode"].exists, labels(app))
+        XCTAssertTrue(shows(app, "After a 24-hour wait you can choose a new app passcode."), labels(app))
+        XCTAssertTrue(shows(app, "Entering your app passcode before then cancels it"), labels(app))
+        shot(app, "d4-forgot-app-passcode")
+        app.buttons["lock-start-reset"].tap()
+        XCTAssertFalse(app.buttons["fake-auth-ok"].waitForExistence(timeout: 2), "Nothing else to check")
+        let waiting = app.descendants(matching: .any)["lock-reset-waiting"]
+        XCTAssertTrue(waiting.waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(shows(app, "You can choose a new app passcode from"), labels(app))
+        XCTAssertTrue(shows(app, "If you didn't ask for this, enter your app passcode to cancel it."), labels(app))
+        XCTAssertFalse(app.buttons["lock-cancel-reset"].exists, "No Face ID to cancel with")
+        XCTAssertFalse(app.buttons["lock-forgot"].exists, "No second reset while one waits")
+        shot(app, "c5-reset-waiting")
+        // The right passcode cancels it and opens the app.
+        enterCode(app, "580580")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        XCTAssertTrue(app.navigationBars["App Lock"].waitForExistence(timeout: 5), "Back where it was: \(labels(app))")
+        XCTAssertFalse(app.buttons["privacy-cancel-reset"].exists, "The reset was cancelled")
+        // Asked again, and this time left alone.
+        leaveAndReturn(app)
+        XCTAssertTrue(app.buttons["lock-forgot"].waitForExistence(timeout: 5), labels(app))
+        app.buttons["lock-forgot"].tap(); app.buttons["lock-start-reset"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["lock-reset-waiting"].waitForExistence(timeout: 5), labels(app))
+        app.terminate()
+        // 23 hours on: still waiting, still the keypad.
+        app = launch(["-test-lock", "app", "-test-lock-advance", "82800"])
+        XCTAssertTrue(app.descendants(matching: .any)["lock-reset-waiting"].waitForExistence(timeout: 10), "23 hours: still waiting: \(labels(app))")
+        XCTAssertFalse(app.buttons["lock-choose-new-code"].exists, labels(app))
+        app.terminate()
+        // 24 hours on: ready, and a new passcode with nothing else to check.
+        app = launch(["-test-lock", "app", "-test-lock-advance", "87000"])
+        XCTAssertTrue(app.buttons["lock-choose-new-code"].waitForExistence(timeout: 10), labels(app))
+        XCTAssertTrue(app.staticTexts["The 24 hours are up"].exists && app.staticTexts["You can choose a new app passcode now."].exists, labels(app))
+        shot(app, "c6-reset-ready")
+        app.buttons["lock-choose-new-code"].tap()
+        XCTAssertFalse(app.buttons["fake-auth-ok"].waitForExistence(timeout: 2), "Nothing else to check")
+        XCTAssertTrue(app.staticTexts["Enter a six-digit passcode"].waitForExistence(timeout: 5), labels(app))
+        chooseCode(app, "424242")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 5), "The habits are all there")
+        leaveAndReturn(app)
+        enterCode(app, "424242")
+        XCTAssertTrue(gone(cover(app)), "The new passcode opens it")
     }
 
-    /// An iPhone with a passcode and no Face ID or Touch ID: no sheet, iPhone-passcode mode at once.
-    func testNoFaceIDTurnsOnWithThePasscode() {
+    /// Changing the everyday way on the page: each change asks the current way first (Face ID → iPhone Passcode by Face
+    /// ID; iPhone Passcode → App Passcode by the iPhone's own check; App Passcode → Face ID by the app passcode, then Face
+    /// ID once to trust it). The app passcode stays the same throughout. Off from the Face ID way never takes the iPhone
+    /// passcode: Face ID cancelled, then the app passcode.
+    func testSwitchingWays() {
+        let app = launch(["-test-lock", "faceid", "-test-lock-code", "975310", "-test-lock-fresh"])
+        answer(app, true)
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        openPrivacy(app)
+        openAppLock(app)
+        XCTAssertTrue(app.buttons["unlock-face-id"].waitForExistence(timeout: 5) && app.buttons["unlock-face-id"].isSelected, labels(app))
+        app.buttons["unlock-iphone-passcode"].tap()
+        XCTAssertTrue(app.staticTexts["fake-auth-reason"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertEqual(app.staticTexts["fake-auth-reason"].label, "Change how the app opens")
+        answer(app, true)
+        XCTAssertTrue(waitForSelected(app.buttons["unlock-iphone-passcode"]), labels(app))
+        app.buttons["unlock-app-passcode"].tap()
+        answer(app, true)
+        XCTAssertTrue(waitForSelected(app.buttons["unlock-app-passcode"]), labels(app))
+        app.buttons["unlock-face-id"].tap()
+        XCTAssertTrue(app.navigationBars["Enter Your App Passcode"].waitForExistence(timeout: 5), "App Passcode: its own passcode first: \(labels(app))")
+        enterCodeInSheet(app, "975310")
+        answer(app, true)
+        XCTAssertTrue(waitForSelected(app.buttons["unlock-face-id"]), labels(app))
+        // The same app passcode all along: Face ID cancelled on return, then the keypad.
+        leaveAndReturn(app)
+        answer(app, false)
+        XCTAssertTrue(app.buttons["lock-use-face-id"].waitForExistence(timeout: 5), "Use Face ID above the keypad: \(labels(app))")
+        shot(app, "c1-face-id-didnt-work")
+        enterCode(app, "975310")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        // Off: Face ID cancelled, then the app passcode (never the iPhone passcode).
+        flip(app.switches["privacy-lock"]); answer(app, false)
+        XCTAssertTrue(app.navigationBars["Enter Your App Passcode"].waitForExistence(timeout: 5), labels(app))
+        enterCodeInSheet(app, "975310")
+        XCTAssertTrue(waitFor(app.switches["privacy-lock"], value: "0"), labels(app))
+    }
+
+    /// Face ID set up but switched off for the app in Settings (the user's iPhone, 10 Oct 2026): A3 says Face ID can't be
+    /// used and offers Settings, with iPhone Passcode the default; never the old no-Face-ID shortcut. Chosen before and
+    /// switched off since (B4, C2): the keypad, and the page says why. Allowed again with an untrusted passcode: Use Face
+    /// ID Again.
+    func testFaceIDOffForTheApp() {
+        var app = launch(["-test-face", "denied"])
+        openPrivacy(app)
+        openAppLock(app)
+        flip(app.switches["privacy-lock"])
+        XCTAssertTrue(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 5), "The setup sheet, as designed: \(labels(app))")
+        XCTAssertTrue(unavailable(app, "setup-face-id"), "Face ID can't be chosen: \(labels(app))")
+        XCTAssertTrue(row(app, "setup-face-id").contains("Can't be used: Face ID is turned off for this app in Settings."), row(app, "setup-face-id"))
+        XCTAssertTrue(app.buttons["privacy-allow-face-id"].exists, labels(app))
+        XCTAssertTrue(app.buttons["setup-iphone-passcode"].isSelected, "A3: iPhone Passcode is the default")
+        XCTAssertTrue(row(app, "setup-iphone-passcode").contains("Your iPhone passcode opens the app."), row(app, "setup-iphone-passcode"))
+        shot(app, "a3-face-id-not-allowed")
+        app.buttons["lock-sheet-cancel"].tap()
+        app.terminate()
+        // Chosen before, switched off since.
+        app = launch(["-test-lock", "faceid", "-test-lock-code", "864200", "-test-lock-fresh", "-test-face", "denied"])
+        XCTAssertTrue(cover(app).waitForExistence(timeout: 10), labels(app))
+        XCTAssertFalse(app.buttons["fake-auth-ok"].waitForExistence(timeout: 2), "Face ID isn't asked while it's switched off")
+        XCTAssertTrue(app.staticTexts["Face ID is turned off for the app in Settings."].exists, labels(app))
+        XCTAssertFalse(app.buttons["lock-use-face-id"].exists, labels(app))
+        shot(app, "c2-face-id-turned-off")
+        enterCode(app, "864200")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        openPrivacy(app)
+        XCTAssertTrue(app.buttons["privacy-app-lock"].label.contains("Opens with Face ID"), app.buttons["privacy-app-lock"].label)
+        openAppLock(app)
+        XCTAssertTrue(app.buttons["unlock-face-id"].waitForExistence(timeout: 5) && app.buttons["unlock-face-id"].isSelected, labels(app))
+        XCTAssertTrue(row(app, "unlock-face-id").contains("Turned off for this app in Settings."), row(app, "unlock-face-id"))
+        XCTAssertTrue(app.buttons["privacy-allow-face-id"].exists, labels(app))
+        XCTAssertTrue(shows(app, "Until Face ID is allowed, your app passcode opens the app."), labels(app))
+        XCTAssertFalse(app.buttons["privacy-use-face-id-again"].exists, "Nothing to turn back on while Face ID isn't allowed")
+        shot(app, "b4-face-id-turned-off")
+        app.terminate()
+        // Allowed again: the passcode made meanwhile trusts no Face ID, so the keypad, then Use Face ID Again.
+        app = launch(["-test-lock", "faceid", "-test-lock-code", "864200", "-test-lock-fresh", "-test-lock-untrusted"])
+        XCTAssertTrue(cover(app).waitForExistence(timeout: 10), labels(app))
+        XCTAssertFalse(app.buttons["lock-use-face-id"].exists, "No untrusted Face ID on the cover: \(labels(app))")
+        enterCode(app, "864200")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        openPrivacy(app)
+        openAppLock(app)
+        let useAgain = app.buttons["privacy-use-face-id-again"]
+        XCTAssertTrue(useAgain.waitForExistence(timeout: 5), labels(app))
+        XCTAssertFalse(app.buttons["privacy-allow-face-id"].exists, labels(app))
+        useAgain.tap(); answer(app, true)
+        XCTAssertTrue(gone(useAgain, timeout: 5), labels(app))
+        leaveAndReturn(app)
+        answer(app, true)
+        XCTAssertTrue(gone(cover(app)), "Face ID opens it again: \(labels(app))")
+    }
+
+    /// Face ID locked out after failed tries (not switched off): the lock screen never blames Settings; the app passcode
+    /// opens it, and Face ID can still be chosen in setup (the passcode ends a lock-out).
+    func testFaceIDLockedOutIsNotTurnedOff() {
+        var app = launch(["-test-lock", "faceid", "-test-lock-code", "246135", "-test-lock-fresh", "-test-face", "lockout"])
+        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 10), labels(app))
+        XCTAssertTrue(app.staticTexts["The app is locked"].exists, labels(app))
+        XCTAssertFalse(app.staticTexts["Face ID is turned off for the app in Settings."].exists, "A lock-out isn't Settings: \(labels(app))")
+        enterCode(app, "246135")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        app.terminate()
+        app = launch(["-test-face", "lockout"])
+        openPrivacy(app)
+        openAppLock(app)
+        flip(app.switches["privacy-lock"])
+        XCTAssertTrue(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(app.buttons["setup-face-id"].isEnabled && app.buttons["setup-face-id"].isSelected, labels(app))
+        XCTAssertFalse(app.buttons["privacy-allow-face-id"].exists, labels(app))
+    }
+
+    /// No Face ID on this iPhone (A4): Face ID can't be chosen and says where to set it up; the iPhone Passcode way
+    /// is only the passcode.
+    func testNoFaceIDOnThisIPhone() {
         let app = launch(["-test-face", "none"])
         openPrivacy(app)
+        XCTAssertTrue(app.buttons["privacy-app-lock"].label.contains("Lock the app with a passcode"), app.buttons["privacy-app-lock"].label)
+        openAppLock(app)
+        flip(app.switches["privacy-lock"])
+        XCTAssertTrue(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 5), "Always the setup sheet: \(labels(app))")
+        XCTAssertTrue(unavailable(app, "setup-face-id"), labels(app))
+        XCTAssertTrue(row(app, "setup-face-id").contains("Not set up on this iPhone. Set it up in Settings › Face ID & Passcode."), row(app, "setup-face-id"))
+        XCTAssertFalse(app.buttons["privacy-allow-face-id"].exists, "Nothing to allow")
+        XCTAssertTrue(app.buttons["setup-iphone-passcode"].isSelected, labels(app))
+        XCTAssertTrue(row(app, "setup-iphone-passcode").contains("Your iPhone passcode opens the app. Anyone who knows it can open the app."), row(app, "setup-iphone-passcode"))
+        shot(app, "a4-no-face-id")
+        app.buttons["setup-continue"].tap()
+        createAppPasscode(app, "112358")
+        XCTAssertTrue(waitFor(app.switches["privacy-lock"], value: "1"), labels(app))
+        XCTAssertTrue(unavailable(app, "unlock-face-id"), "Face ID can't be chosen on the page either: \(labels(app))")
+        XCTAssertTrue(shows(app, "Your iPhone passcode opens the app. Your app passcode is the backup if this iPhone's passcode is turned off."), labels(app))
+    }
+
+    /// An iPhone with no passcode (A5): Face ID and iPhone Passcode can't be chosen; App Lock still works with the app
+    /// passcode alone (the user, 10 Oct 2026), and Forgot is the 24-hour wait.
+    func testNoPasscodeUsesTheAppPasscodeAlone() {
+        let app = launch(["-test-passcode", "none", "-test-face", "none"])
+        openPrivacy(app)
         openAppLock(app)
         let lock = app.switches["privacy-lock"]
+        XCTAssertTrue(lock.waitForExistence(timeout: 5) && lock.isEnabled, "App Lock can be turned on: \(labels(app))")
         flip(lock)
-        XCTAssertFalse(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 2), "No sheet without Face ID")
-        answer(app, true)
+        XCTAssertTrue(app.navigationBars["Set Up App Lock"].waitForExistence(timeout: 5), labels(app))
+        XCTAssertTrue(unavailable(app, "setup-face-id") && unavailable(app, "setup-iphone-passcode"), labels(app))
+        XCTAssertTrue(row(app, "setup-face-id").contains("Needs a passcode on this iPhone."), row(app, "setup-face-id"))
+        XCTAssertTrue(row(app, "setup-iphone-passcode").contains("This iPhone has no passcode."), row(app, "setup-iphone-passcode"))
+        XCTAssertTrue(app.buttons["setup-app-passcode"].isSelected, labels(app))
+        XCTAssertTrue(shows(app, "To use Face ID or your iPhone passcode, set a passcode in Settings › Face ID & Passcode."), labels(app))
+        shot(app, "a5-no-passcode")
+        app.buttons["setup-continue"].tap()
+        createAppPasscode(app, "909090", ownerCheck: false)
         XCTAssertTrue(waitFor(lock, value: "1"), labels(app))
-        XCTAssertFalse(app.buttons["unlock-app-passcode"].exists, "No app passcode choice without Face ID")
-        XCTAssertTrue(lockAgain(app).exists, labels(app))
+        XCTAssertTrue(app.buttons["unlock-app-passcode"].isSelected, labels(app))
+        leaveAndReturn(app)
+        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5), labels(app))
+        app.buttons["lock-forgot"].tap()
+        XCTAssertTrue(shows(app, "After a 24-hour wait you can choose a new app passcode."), labels(app))
+        app.buttons["lock-sheet-cancel"].tap()
+        enterCode(app, "909090")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+    }
+
+    /// The iPhone passcode turned off after the iPhone Passcode way was chosen (C3): the backup app passcode opens the
+    /// app, Forgot is the wait alone. A lock made before round 2 with no app passcode, on an iPhone with no passcode:
+    /// nothing can check anyone, so it opens (never a lock-out) and the page offers Create App Passcode.
+    func testIPhonePasscodeTurnedOff() {
+        var app = launch(["-test-lock", "iphone", "-test-lock-code", "314159", "-test-lock-fresh", "-test-passcode", "none"])
+        XCTAssertTrue(app.staticTexts["This iPhone has no passcode now"].waitForExistence(timeout: 10), labels(app))
+        XCTAssertTrue(app.buttons["code-key-1"].exists && !app.buttons["app-unlock"].exists, labels(app))
+        shot(app, "c3-no-passcode-now")
+        app.buttons["lock-forgot"].tap()
+        XCTAssertTrue(shows(app, "After a 24-hour wait you can choose a new app passcode."), labels(app))
+        app.buttons["lock-sheet-cancel"].tap()
+        enterCode(app, "314159")
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        openPrivacy(app)
+        openAppLock(app)
+        XCTAssertTrue(shows(app, "This iPhone has no passcode now. Your app passcode opens the app."), labels(app))
+        app.terminate()
+        app = launch(["-test-lock", "passcode", "-test-passcode", "none"])
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10), "An older lock with nothing to check opens: \(labels(app))")
+        XCTAssertFalse(cover(app).exists)
+        openPrivacy(app)
+        openAppLock(app)
+        XCTAssertTrue(app.buttons["privacy-change-code"].label.contains("Create App Passcode"), labels(app))
+        XCTAssertTrue(shows(app, "This iPhone has no passcode now, so nothing can lock the app. Create an app passcode."), labels(app))
+    }
+
+    /// A lock made before round 2 (the iPhone's own check, no app passcode): it keeps working as it did; the page offers
+    /// Create App Passcode (the backup), and moving to App Passcode makes the passcode first.
+    func testOlderLockUpgrades() {
+        let app = launch(["-test-lock", "passcode"])
+        answer(app, true)
+        XCTAssertTrue(gone(cover(app)), labels(app))
+        openPrivacy(app)
+        openAppLock(app)
+        XCTAssertTrue(app.buttons["unlock-iphone-passcode"].waitForExistence(timeout: 5) && app.buttons["unlock-iphone-passcode"].isSelected, labels(app))
+        XCTAssertTrue(app.buttons["privacy-change-code"].label.contains("Create App Passcode"), labels(app))
+        XCTAssertTrue(shows(app, "Create an app passcode as a backup, in case this iPhone's passcode is turned off."), labels(app))
+        shot(app, "older-lock")
+        app.buttons["unlock-app-passcode"].tap()
+        answer(app, true)
+        XCTAssertTrue(app.staticTexts["Create your app passcode"].waitForExistence(timeout: 5), "Straight to its app passcode: \(labels(app))")
+        createAppPasscode(app, "777333", ownerCheck: false)
+        XCTAssertTrue(waitForSelected(app.buttons["unlock-app-passcode"]), labels(app))
+        XCTAssertTrue(app.buttons["privacy-change-code"].label.contains("Change App Passcode"), labels(app))
+        leaveAndReturn(app)
+        XCTAssertTrue(app.buttons["code-key-1"].waitForExistence(timeout: 5), labels(app))
+        enterCode(app, "777333")
+        XCTAssertTrue(gone(cover(app)), labels(app))
     }
 
     /// Wrong codes: "That's not the code."; five in a row wait a minute, the keypad says so and takes nothing; the minute
@@ -485,7 +739,8 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(app.buttons["lock-forgot"].waitForExistence(timeout: 5), labels(app))
         app.buttons["lock-forgot"].tap()
         XCTAssertTrue(app.navigationBars["Forgot App Passcode"].waitForExistence(timeout: 5), labels(app))
-        XCTAssertTrue(app.staticTexts["Use Face ID to choose a new app passcode."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts["Face ID can prove it's you."].exists, labels(app))
+        shot(app, "d1-forgot-face-id")
         app.buttons["lock-forgot-face-id"].tap()
         answer(app, true)
         XCTAssertTrue(app.staticTexts["Enter a six-digit passcode"].waitForExistence(timeout: 5), labels(app))
@@ -509,7 +764,8 @@ final class AppLockUITests: XCTestCase {
         let waiting = app.descendants(matching: .any)["lock-reset-waiting"]
         XCTAssertTrue(waiting.waitForExistence(timeout: 5), labels(app))
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "You can choose a new app passcode from")).firstMatch.exists, labels(app))
-        XCTAssertTrue(app.buttons["lock-cancel-reset"].exists)
+        XCTAssertFalse(app.buttons["lock-cancel-reset"].exists, "No Face ID to cancel with: the app passcode cancels it")
+        XCTAssertTrue(shows(app, "If you didn't ask for this, enter your app passcode to cancel it."), labels(app))
         shot(app, "lock-reset-waiting")
         // The code still works throughout, and cancels the reset.
         enterCode(app, "556677")
@@ -526,7 +782,7 @@ final class AppLockUITests: XCTestCase {
         app.terminate()
         app = launch(["-test-lock", "code", "-test-face", "none", "-test-lock-advance", "87000"])
         XCTAssertTrue(app.buttons["lock-choose-new-code"].waitForExistence(timeout: 10), labels(app))
-        XCTAssertTrue(app.staticTexts["The 24 hours are up. Choose a new app passcode with your iPhone passcode."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts["The 24 hours are up"].exists && app.staticTexts["Choose a new app passcode with your iPhone passcode."].exists, labels(app))
         shot(app, "lock-reset-ready")
         app.buttons["lock-choose-new-code"].tap()
         answer(app, true)

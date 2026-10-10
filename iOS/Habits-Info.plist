@@ -60,7 +60,7 @@
 	<key>AnalyticsProductionEnabled</key>
 	<false/>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Often Enough uses Face ID to unlock when you turn on the lock in Privacy.</string>
+	<string>Face ID unlocks the app when App Lock is on.</string>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
 </dict>

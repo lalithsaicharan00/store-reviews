@@ -2,7 +2,67 @@
 
 Written by Claude (Claude Code), 9 October 2026, from the user's design review the same day. Current Work 58.13.
 
-**Status: designed, approved for implementation by the user (9 Oct 2026); not built.** This folder is everything an
+> **Round 2 (10 Oct 2026), approved and built: this is now the spec for how App Lock opens.** It replaces screens 2, 3
+> and 7 and §4's "If Face ID doesn't work" below with the user's model. Figma
+> [App Lock — how to open the app, and every case](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1003-309)
+> (A1–A8, B1–B5, C1–C6, D1–D4); reasoning in [App Lock — Choosing How to Open the App](<../../../../Research/Research Reports/Settings and Help/App Lock — Choosing How to Open the App.md>).
+> Everything else below (the vault, hashing, wrong-passcode waits, Face ID changed and its question, Lock Again, the
+> cover's window, Hide Names) stands. See **§0 Round 2** first.
+
+**Status: round 1 designed and approved 9 Oct 2026; round 2 (§0) approved and built 10 Oct 2026 (Current Work 58.13).**
+
+## 0. Round 2: the everyday way, and every case (built 10 Oct 2026)
+
+**The model (the user, 10 Oct 2026).** Turning App Lock on always asks first; it never locks straight away with the
+iPhone passcode. People choose how the app opens day to day; **an app passcode is always made**; the 24-hour wait
+stays, as the report says: it only makes sure the owner notices.
+
+| Everyday way | Opens with | The app passcode is | Forgot the app passcode |
+|---|---|---|---|
+| **Face ID** (default when the app may use it) | Face ID; when it can't, the app passcode (never the iPhone passcode) | The backup: asked when Face ID fails, is switched off for the app, was changed, or the iPhone passcode is turned off | Face ID unchanged: a new one at once (D1). Otherwise the iPhone passcode starts a 24-hour wait (D3); no iPhone passcode: the wait alone (D4) |
+| **iPhone Passcode** | iOS's own check: Face ID first when allowed, then the iPhone passcode (iOS has no passcode-only check) | The backup: asked only if the iPhone passcode is turned off (iOS never reports a mere change) | The iPhone passcode sets a new one (Change App Passcode takes the iPhone's own check); no iPhone passcode: the wait alone |
+| **App Passcode** | The six digits only | The only way in | The 24-hour wait alone (D4), started with nothing else to check |
+
+**What the iPhone allows, and what each screen does.**
+
+- **A1 · App Lock off.** The switch is **App Lock** (never named for Face ID). Footer: *The app asks for Face ID or a
+  passcode each time you open it.* / *Widgets and reminders keep working, without habit names.* It's never disabled:
+  an iPhone with no passcode can still use the app passcode.
+- **A2–A5 · Set Up App Lock: How do you want to open the app?** Three rows, one checked (`setup-face-id`,
+  `setup-iphone-passcode`, `setup-app-passcode`), Continue. Unavailable rows are dimmed and say why: Face ID switched off
+  for the app (*Can't be used: Face ID is turned off for this app in Settings.*, plus **Allow Face ID in Settings**,
+  which opens the app's own page: iOS lets an app open no other); Face ID not set up (*Not set up on this iPhone. Set it
+  up in Settings › Face ID & Passcode.*); no iPhone passcode (Face ID: *Needs a passcode on this iPhone.*; iPhone
+  Passcode: *This iPhone has no passcode.*; footer: where to set one). Default: Face ID if allowed, else iPhone Passcode,
+  else App Passcode. A Face ID lock-out after failed tries is neither "off" nor "not set up": Face ID can still be chosen.
+- **A6–A8 · App Passcode: what it's for** (the words per way are in `AppLockText.explainer`), then **Create App
+  Passcode**: Face ID or the iPhone passcode once (iOS asks "Allow Face ID?" here the first time); the App Passcode way
+  has nothing else to check. Then 5 → 6 as round 1, with the line under the dots per way (`AppLockText.whenNeeded`).
+- **B1–B4 · App Lock on.** **Open the App With**: Face ID · iPhone Passcode · App Passcode (`unlock-face-id`,
+  `unlock-iphone-passcode`, `unlock-app-passcode`), each dimmed with its reason when it can't be chosen; Allow Face ID in
+  Settings when Face ID is switched off for the app; a footer per way. Changing the way asks the current way first
+  (Face ID or the app passcode; the iPhone's own check; the app passcode), and choosing Face ID asks Face ID once and
+  trusts it then. Change App Passcode; Use Face ID Again; Lock Again.
+- **B5 · Privacy & Security row:** off *Lock the app with Face ID or a passcode*; on *Opens with Face ID* / *Opens with
+  your iPhone passcode* / *Opens with your app passcode*.
+- **C1–C6 · The lock screen:** Face ID failed (keypad, Use Face ID, Forgot); Face ID switched off for the app (*Face ID
+  is turned off for the app in Settings.*); the iPhone passcode turned off (*This iPhone has no passcode now*, the
+  keypad); App Passcode (the keypad at once, never Face ID); a reset waiting (when it's ready; *enter your app passcode
+  to cancel it*; Cancel Reset only when Face ID can be used; no second Forgot); the 24 hours up (*The 24 hours are up*,
+  Choose a New App Passcode: the iPhone passcode first only in the Face ID way).
+- **D1–D4 · Forgot App Passcode** as in the table. D2 is reached through Change App Passcode (the iPhone Passcode
+  way's lock screen asks iOS's own check, never the app passcode, while the iPhone has a passcode).
+- **A new app passcode outside setup** (Change, Forgot, after a reset) never re-trusts Face ID by itself: a changed
+  Face ID is still asked about, and *No, Turn It Off* stays off (found while building, 10 Oct 2026).
+- **Older locks** (before round 2, no way saved) keep working: a code reads as the Face ID way, none as the iPhone
+  Passcode way, which offers **Create App Passcode**. An older lock with nothing left to check (no app passcode, the
+  iPhone passcode turned off) opens rather than lock its owner out.
+
+**Ids for tests:** as above, plus `privacy-allow-face-id`, `privacy-change-code` (reads Create App Passcode on an older
+lock), `lock-forgot-iphone-passcode`. Test launches: `-test-lock faceid|iphone|app` (with `-test-lock-code`),
+`-test-face none|denied|lockout`, `-test-passcode none`.
+
+--- This folder is everything an
 agent needs to build it: this file, the screen images in [`Images/`](Images/), and the Figma section
 [App Lock — redesign, main flow](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=935-309)
 (iPhone SE, 375 × 667). Read the Rulebook first; U1, U2, U11, U12, U18, U28, D-rules, T3, T4, T15 and U9 apply.
@@ -120,6 +180,11 @@ app part-way changes nothing (nothing is saved until the second entry matches an
   - App Passcode selected: **Continue** → push screen 4.
 - **No Face ID or Touch ID enrolled** (passcode only): skip the sheet; the switch authenticates and turns on in
   iPhone-passcode mode directly (an app passcode without Face ID could only ever be reset by the 24-hour wait).
+- **Face ID set up but switched off for the app** (Settings → Face ID & Passcode → Other Apps) is **not** "no Face ID"
+  (the user's iPhone, 10 Oct 2026: treated as none, the sheet never showed and screen 7 lost its rows). The whole flow
+  runs as designed; the App Lock page adds a section, **Allow Face ID in Settings** (opens the app's Settings page) with
+  the footer **Face ID is turned off for the app in your iPhone's Settings, so the app asks for a passcode instead.**
+  An app passcode made then has no trusted Face ID: once Face ID is allowed, the page offers **Use Face ID Again**.
 - The image shows App Passcode selected (the button reads Continue).
 
 ### Screen 4 · How your app passcode works

@@ -24,7 +24,7 @@ struct PrivacyView: View {
         Form {
             Section {
                 NavigationLink { AppLockPage() } label: {
-                    AppLockRow(subtitle: AppLockText.rowSubtitle(ability), on: lockOn)
+                    AppLockRow(subtitle: AppLockText.rowSubtitle(ability, way: lockOn ? lock.way : nil), on: lockOn)
                 }
                 .accessibilityIdentifier("privacy-app-lock")
             }
@@ -103,18 +103,72 @@ private struct AppLockRow: View {
     }
 }
 
-/// The words App Lock uses in more than one place (spec §2, §5): "the app", never the app's name; "app passcode".
+/// The words App Lock uses in more than one place (spec §2, §5, round 2): "the app", never the app's name; "app
+/// passcode".
 enum AppLockText {
-    /// "Lock the app with Face ID" (Touch ID, Optic ID); with no biometrics, "…with your passcode".
-    static func rowSubtitle(_ ability: AppLock.Ability?) -> String {
-        guard let ability, ability.biometrics else { return ability == nil ? "Lock the app with Face ID" : "Lock the app with your passcode" }
-        return "Lock the app with \(ability.method)"
+    /// Off: "Lock the app with Face ID or a passcode"; on: how it opens ("Opens with Face ID").
+    static func rowSubtitle(_ ability: AppLock.Ability?, way: LockWay?) -> String {
+        switch way {
+        case .faceID: "Opens with \(method(ability))"
+        case .iPhonePasscode: "Opens with your iPhone passcode"
+        case .appPasscode: "Opens with your app passcode"
+        case nil: ability?.biometrics == false ? "Lock the app with a passcode" : "Lock the app with \(method(ability)) or a passcode"
+        }
     }
 
-    /// "Face ID", or the method this iPhone has.
+    /// "Face ID", or Touch ID / Optic ID on those iPhones.
     static func method(_ ability: AppLock.Ability?) -> String {
-        guard let ability, ability.biometrics else { return "Face ID" }
+        guard let ability, ability.method != "Passcode" else { return "Face ID" }
         return ability.method
+    }
+
+    /// A2–A5's Face ID line: what it does, or why it can't be used here.
+    static func faceIDDetail(_ ability: AppLock.Ability?) -> String {
+        let name = method(ability)
+        guard let ability else { return "Quickest. If \(name) can't recognise you, your app passcode opens the app." }
+        if !ability.available { return "Needs a passcode on this iPhone." }
+        if ability.biometricsAllowed { return "Quickest. If \(name) can't recognise you, your app passcode opens the app." }
+        if ability.biometrics { return "Can't be used: \(name) is turned off for this app in Settings." }
+        return "Not set up on this iPhone. Set it up in Settings › Face ID & Passcode."
+    }
+
+    /// A2–A5's iPhone Passcode line. iOS asks Face ID first whenever the app may use it, so the line says so.
+    static func iPhonePasscodeDetail(_ ability: AppLock.Ability?) -> String {
+        guard let ability else { return "As when you unlock your iPhone: Face ID, or your iPhone passcode. Anyone who knows it can open the app." }
+        if !ability.available { return "This iPhone has no passcode." }
+        if ability.biometricsAllowed {
+            return "As when you unlock your iPhone: \(method(ability)), or your iPhone passcode. Anyone who knows it can open the app."
+        }
+        return "Your iPhone passcode opens the app. Anyone who knows it can open the app."
+    }
+
+    /// A6–A8: what the app passcode is for in each way.
+    static func explainer(_ way: LockWay, method: String) -> (heading: String, sub: String, rules: [(String, String)]) {
+        switch way {
+        case .faceID:
+            ("Now create an app passcode", "It opens the app whenever \(method) can't.", [
+                ("When it's asked", "If \(method) can't recognise you, is turned off for the app, or was changed on your iPhone."),
+                ("If you forget it", "\(method) sets a new one straight away."),
+                ("If \(method) can't help either", "Your iPhone passcode sets a new one after a 24-hour wait. The wait gives you time to cancel it if it wasn't you.")])
+        case .iPhonePasscode:
+            ("Now create an app passcode", "It opens the app if this iPhone's passcode is ever turned off.", [
+                ("When it's asked", "Only if this iPhone has no passcode any more."),
+                ("If you forget it", "Your iPhone passcode sets a new one straight away. With no iPhone passcode, after a 24-hour wait.")])
+        case .appPasscode:
+            ("Create your app passcode", "It's the only way into the app.", [
+                ("Every time you open the app", "\(method) and your iPhone passcode won't open it."),
+                ("If you forget it", "Ask for a reset. After 24 hours you choose a new app passcode."),
+                ("Why the wait", "It gives you time to notice and cancel it if it wasn't you: entering your app passcode cancels it.")])
+        }
+    }
+
+    /// Under the first entry's dots (5): when this passcode will be needed.
+    static func whenNeeded(_ way: LockWay, method: String) -> String {
+        switch way {
+        case .faceID: "You'll need it when \(method) can't be used."
+        case .iPhonePasscode: "You'll only need it if this iPhone's passcode is turned off."
+        case .appPasscode: "You'll enter it each time you open the app."
+        }
     }
 
     static func lockAgain(_ seconds: Int) -> String {
@@ -122,13 +176,14 @@ enum AppLockText {
     }
 }
 
-/// App Lock (spec §4, screens 2 and 7): one switch, off by default, like a messaging app's App lock. Everything else
-/// appears only once it's on: the waiting reset, If Face ID doesn't work (inline), Change App Passcode, Use Face ID
-/// Again and Lock Again. Turning the switch on never sets anything by itself: it stays off and the setup sheet opens
-/// (`AppLockSetupSheet`); it reads on only once setup finishes. Nothing here can lock anyone out.
+/// App Lock (spec round 2, A1 and B1–B4): one switch, App Lock, never named for Face ID. Off, nothing else; turning it on
+/// never sets anything by itself: it stays off and the setup sheet opens (`AppLockSetupSheet`), and it reads on only once
+/// the app passcode is saved. On: a waiting reset, Open the app with (Face ID, iPhone Passcode, App Passcode, each saying
+/// when it can't be used), Change App Passcode, Use Face ID Again and Lock Again. Nothing here can lock anyone out.
 struct AppLockPage: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openURL) private var openURL
     @State private var ability: AppLock.Ability?
     @State private var askAgain = AppLock.askAgain
     @State private var setup: AppLockSetupSheet.Start?
@@ -155,45 +210,52 @@ struct AppLockPage: View {
                 }
             }
             Section {
-                Toggle("Lock with \(ability?.method ?? "Face ID")", isOn: Binding(get: { lock.isOn }, set: { setLock($0) }))
-                    .disabled(!on && ability?.available != true)
+                Toggle("App Lock", isOn: Binding(get: { lock.isOn }, set: { setLock($0) }))
                     .accessibilityIdentifier("privacy-lock")
             } footer: {
-                Text(lockFooter(on: on, method: ability?.method ?? "Face ID"))
+                Text(on ? "Habit names are hidden on widgets, reminders and Siri while App Lock is on."
+                        : "The app asks for \(method) or a passcode each time you open it.\n\nWidgets and reminders keep working, without habit names.")
             }
             if on {
-                if ability?.biometrics == true || lock.mode == .code {
-                    Section {
-                        modeRow(.passcode, "iPhone Passcode", id: "unlock-iphone-passcode")
-                        modeRow(.code, "App Passcode", id: "unlock-app-passcode")
-                    } header: {
-                        Text("If \(method) doesn't work")
-                    } footer: {
-                        Text(lock.mode == .code
-                             ? "Only \(method) or your app passcode opens the app. Your iPhone passcode can't."
-                             : "Anyone who knows your iPhone passcode can open the app.")
+                let way = lock.way
+                Section {
+                    wayRow(.faceID, method, detail: faceIDRowDetail(way, method: method), id: "unlock-face-id")
+                    if ability?.biometrics == true && ability?.biometricsAllowed == false {
+                        AllowFaceIDRow(method: method) {
+                            if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+                        }
                     }
+                    wayRow(.iPhonePasscode, "iPhone Passcode",
+                           detail: ability?.available == false ? "This iPhone has no passcode." : nil, id: "unlock-iphone-passcode")
+                    wayRow(.appPasscode, "App Passcode", detail: nil, id: "unlock-app-passcode")
+                } header: {
+                    Text("Open the app with")
+                } footer: {
+                    Text(wayFooter(way, method: method))
                 }
-                if lock.mode == .code {
-                    Section {
-                        Button {
+                Section {
+                    Button {
+                        if lock.hasCode {
                             Task { if await lock.confirmOwner("Change your app passcode") { changingCode = true } }
-                        } label: {
-                            HStack {
-                                Text("Change App Passcode").foregroundStyle(Color.primary)
-                                Spacer()
-                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
-                            }
-                            .contentShape(Rectangle())
+                        } else {
+                            // An older iPhone Passcode lock: its backup app passcode, made now.
+                            Task { if await lock.confirmOwner("Create your app passcode") { setup = .create(.iPhonePasscode) } }
                         }
-                        .accessibilityIdentifier("privacy-change-code")
-                        if lock.faceIDOff && ability?.biometrics == true {
-                            Button("Use \(method) Again") { Task { await lock.useFaceIDAgain() } }
-                                .accessibilityIdentifier("privacy-use-face-id-again")
+                    } label: {
+                        HStack {
+                            Text(lock.hasCode ? "Change App Passcode" : "Create App Passcode").foregroundStyle(Color.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                         }
-                    } footer: {
-                        if lock.faceIDOff { Text("\(method) is off for the app. Turn it back on with Use \(method) Again.") }
+                        .contentShape(Rectangle())
                     }
+                    .accessibilityIdentifier("privacy-change-code")
+                    if useFaceIDAgain {
+                        Button("Use \(method) Again") { Task { await lock.useFaceIDAgain() } }
+                            .accessibilityIdentifier("privacy-use-face-id-again")
+                    }
+                } footer: {
+                    if useFaceIDAgain { Text("\(method) is off for the app. Turn it back on with Use \(method) Again.") }
                 }
                 Section {
                     Picker("Lock Again", selection: Binding(get: { askAgain }, set: { askAgain = $0; AppLock.askAgain = $0 })) {
@@ -208,10 +270,12 @@ struct AppLockPage: View {
         }
         .navigationTitle("App Lock")
         .navigationBarTitleDisplayMode(.inline)
-        .task(id: scenePhase == .active) { if scenePhase == .active { ability = await AppLock.ability() } }
+        .task(id: scenePhase == .active) {
+            if scenePhase == .active { ability = await AppLock.ability(); lock.bump() }
+        }
         .onAppear { askAgain = AppLock.askAgain }
         .sheet(item: $setup) { start in
-            AppLockSetupSheet(lock: lock, start: start, method: method) { turnedOn in
+            AppLockSetupSheet(lock: lock, start: start, ability: ability) { turnedOn in
                 setup = nil
                 if turnedOn { changed() }
             }
@@ -229,62 +293,96 @@ struct AppLockPage: View {
         }
     }
 
-    private func lockFooter(on: Bool, method: String) -> String {
-        if on { return "Habit names are hidden on widgets, reminders and Siri while App Lock is on." }
-        if ability?.available == false { return "To use App Lock, set a passcode for this iPhone first: Settings → Face ID & Passcode." }
-        return "The app will ask for \(method) each time you open it.\n\nWidgets and reminders keep working, without habit names."
+    /// The Face ID way, Face ID allowed for the app but not trusted (turned off on the cover, or the passcode was made
+    /// while Face ID was switched off for the app).
+    private var useFaceIDAgain: Bool { lock.way == .faceID && ability?.biometricsAllowed == true && lock.faceIDNotTrusted }
+
+    /// Why Face ID can't be chosen, or (chosen) why it isn't opening the app now.
+    private func faceIDRowDetail(_ way: LockWay, method: String) -> String? {
+        guard let ability else { return nil }
+        if !ability.available { return "Needs a passcode on this iPhone." }
+        if ability.biometrics && !ability.biometricsAllowed { return "Turned off for this app in Settings." }
+        if !ability.biometrics { return "Not set up on this iPhone." }
+        return nil
     }
 
-    private func modeRow(_ mode: AppLock.Mode, _ title: String, id: String) -> some View {
-        let selected = lock.mode == mode
-        return Button { choose(mode) } label: {
-            HStack {
-                Text(title).foregroundStyle(Color.primary)
-                Spacer()
-                if selected { Image(systemName: "checkmark").fontWeight(.semibold).foregroundStyle(Color.ink) }
+    private func wayFooter(_ way: LockWay, method: String) -> String {
+        switch way {
+        case .faceID:
+            if ability?.available == false { return "This iPhone has no passcode now, so \(method) can't be used. Your app passcode opens the app." }
+            if ability?.biometricsAllowed == false { return "Until \(method) is allowed, your app passcode opens the app." }
+            return "If \(method) can't recognise you, your app passcode opens the app. Your iPhone passcode can't."
+        case .iPhonePasscode:
+            if ability?.available == false {
+                return lock.hasCode ? "This iPhone has no passcode now. Your app passcode opens the app."
+                                    : "This iPhone has no passcode now, so nothing can lock the app. Create an app passcode."
             }
-            .contentShape(Rectangle())
+            let opens = ability?.biometricsAllowed == true ? "\(method) or your iPhone passcode opens the app." : "Your iPhone passcode opens the app."
+            return lock.hasCode ? opens + " Your app passcode is the backup if this iPhone's passcode is turned off."
+                                : opens + " Create an app passcode as a backup, in case this iPhone's passcode is turned off."
+        case .appPasscode:
+            return "Only your app passcode opens the app. \(method) and your iPhone passcode can't."
         }
-        .accessibilityAddTraits(selected ? .isSelected : [])
-        .accessibilityIdentifier(id)
     }
 
-    /// On: the setup sheet first (nothing turns on until it finishes); an iPhone with no Face ID or Touch ID turns on in
-    /// iPhone-passcode mode straight away (an app passcode there could only be reset by the 24-hour wait). Off: Face ID
-    /// or, in app-passcode mode, the app passcode (never the iPhone passcode).
+    private func available(_ way: LockWay) -> Bool {
+        switch way {
+        case .faceID: ability?.biometricsAllowed == true
+        case .iPhonePasscode: ability?.available != false
+        case .appPasscode: true
+        }
+    }
+
+    /// A way that can be chosen (or the one chosen) is a button; one that can't is plain text with its reason fully
+    /// readable (a disabled button fades its whole label).
+    @ViewBuilder private func wayRow(_ way: LockWay, _ title: String, detail: String?, id: String) -> some View {
+        let selected = lock.way == way
+        let enabled = selected || available(way)
+        let label = HStack(alignment: detail == nil ? .center : .firstTextBaseline) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).foregroundStyle(enabled ? Color.primary : Color.secondary)
+                if let detail { Text(detail).font(.subheadline).foregroundStyle(.secondary) }
+            }
+            Spacer()
+            if selected { Image(systemName: "checkmark").fontWeight(.semibold).foregroundStyle(Color.ink) }
+        }
+        if enabled {
+            Button { choose(way) } label: { label.contentShape(Rectangle()) }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(selected ? [.isSelected, .isButton] : .isButton)
+                .accessibilityIdentifier(id)
+        } else {
+            label
+                .accessibilityElement(children: .combine)
+                .accessibilityIdentifier(id)
+        }
+    }
+
+    /// On: always the setup sheet first (nothing turns on until the app passcode is saved). Off: the owner, by the
+    /// everyday way (the App Passcode way only its passcode; the Face ID way never the iPhone passcode).
     private func setLock(_ on: Bool) {
         Task { @MainActor in
             if on {
-                guard let ability, ability.available else { return }
-                if ability.biometrics {
-                    setup = .choose
-                    return
-                }
-                guard await AppLock.authenticate(reason: "Turn on App Lock") else { return }
-                AppLock.setEnabled(true)
-                lock.bump()
-            } else {
-                guard await lock.confirmOwner("Turn off App Lock") else { return }
-                lock.turnOff()
+                setup = .choose
+                return
             }
+            guard await lock.confirmOwner("Turn off App Lock") else { return }
+            lock.turnOff()
             changed()
         }
     }
 
-    /// If Face ID doesn't work: App Passcode opens the setup sheet at "How your app passcode works"; back to iPhone
-    /// Passcode needs Face ID or the app passcode (never the iPhone passcode itself).
-    private func choose(_ mode: AppLock.Mode) {
-        guard mode != lock.mode else { return }
+    /// Another everyday way: the current way confirms the owner first; the app passcode is already there (an older lock
+    /// without one makes it now).
+    private func choose(_ way: LockWay) {
+        guard way != lock.way, available(way) else { return }
         Task { @MainActor in
-            switch mode {
-            case .code:
-                setup = .appPasscode
-            case .passcode:
-                guard await lock.confirmOwner("Use your iPhone passcode for the app") else { return }
-                lock.removeCode()
-                AppLock.setEnabled(true)
-                lock.bump()
+            guard await lock.confirmOwner("Change how the app opens") else { return }
+            if !lock.hasCode, way != .iPhonePasscode {
+                setup = .create(way)
+                return
             }
+            if await lock.useWay(way) { changed() }
         }
     }
 

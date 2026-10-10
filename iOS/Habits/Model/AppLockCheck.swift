@@ -9,6 +9,8 @@ import UserNotifications
 ///   an hour; the right code clears the wait; nothing is ever erased;
 /// - the 24-hour reset: waiting, ready, cancelled by the code; a clock set back (a restart) never shortens it;
 /// - Face ID changed is noticed, and only the person's answer trusts the new set;
+/// - the everyday ways (round 2): what each opens with, what Forgot offers, the App Passcode way's reset with nothing
+///   else to check, and older locks (no way saved) read as they worked before;
 /// - names hidden outside the app: widgets (`WidgetCheck.discreetFailures`), reminders and alarms (own words,
 ///   "Reminder · 8:00", "3 reminders · 8:00", "Still open · 8:00", "+1", "Reminder" with previews off), Siri (no names,
 ///   no suggestions) and the timer's Live Activity (no name drawn); App Lock holds it on and turning the lock off gives
@@ -24,9 +26,9 @@ enum AppLockCheck {
 
         lock.turnOff()
         HideNames.setChosen(false)
-        expect(lock.mode == .passcode && !AppLock.isEnabled, "Starts off, in iPhone-passcode mode")
+        expect(lock.way == .iPhonePasscode && !lock.hasCode && !AppLock.isEnabled, "Starts off, with no app passcode")
         await lock.saveCode("246810")
-        expect(lock.mode == .code && AppLock.isEnabled, "A saved code turns on code mode")
+        expect(lock.way == .faceID && AppLock.isEnabled, "An app passcode with no way saved reads as the Face ID way (older locks)")
         expect(LockKeychain.vault.codeHash?.count == 32 && LockKeychain.vault.salt?.count == 16 && LockKeychain.vault.iterations >= 100_000,
                "The code is kept as a salted slow hash")
         expect(!String(decoding: (try? JSONEncoder().encode(LockKeychain.vault)) ?? Data(), as: UTF8.self).contains("246810"),
@@ -91,13 +93,66 @@ enum AppLockCheck {
         lock.trustFaceID(true)
         expect(!lock.faceIDOff && lock.faceIDUsable, "Use Face ID Again trusts the set as it is now")
 
+        // MARK: The everyday ways (round 2)
+
+        lock.turnOff()
+        await lock.saveCode("135790", way: .appPasscode)
+        LockKeychain.update { $0.trustedDomainState = FakeAuthenticator.startingDomainState }
+        lock.bump()
+        expect(lock.way == .appPasscode && AppLock.isEnabled && lock.step == .code, "App Passcode: the keypad")
+        expect(!lock.faceIDUsable && !lock.faceIDChanged, "App Passcode: Face ID never opens it, even when it could")
+        expect(lock.forgotWay == .resetAlone, "App Passcode: Forgot is the 24-hour wait alone")
+        expect(!(await lock.chooseNewCodeAfterReset()), "No new passcode before a reset is ready")
+        await lock.startReset()
+        expect(lock.resetWaiting, "App Passcode: the reset starts with nothing else to check")
+        LockKeychain.update { $0.resetCredited = LockVault.resetWait; $0.resetMark = LockClock.now }
+        lock.bump()
+        expect(lock.resetReady && lock.step == .resetReady, "App Passcode: after 24 hours, Choose a New App Passcode")
+        expect(await lock.chooseNewCodeAfterReset(), "App Passcode: a new passcode after the wait, with nothing else to check")
+        await lock.saveCode("975310")
+        let newChecks = await LockKeychain.check("975310")
+        expect(!lock.resetWaiting && !lock.resetReady && lock.way == .appPasscode && newChecks,
+               "The new passcode ends the reset and keeps the way")
+
+        await lock.saveCode("135790", way: .iPhonePasscode)
+        expect(lock.way == .iPhonePasscode && lock.hasCode && lock.step == .iPhonePasscode, "iPhone Passcode: iOS's own check, the app passcode kept as the backup")
+        expect(lock.forgotWay == .iPhonePasscode && !lock.faceIDUsable, "iPhone Passcode: Forgot uses the iPhone passcode at once")
+
+        await lock.saveCode("135790", way: .faceID)
+        expect(lock.way == .faceID && lock.faceIDUsable && lock.forgotWay == .faceID, "Face ID: Face ID opens it and resets a forgotten passcode")
+        LockKeychain.update { $0.trustedDomainState = nil }
+        lock.bump()
+        expect(!lock.faceIDUsable && lock.faceIDNotTrusted && lock.forgotWay == .resetWithPasscode,
+               "Face ID untrusted: the app passcode, and Forgot waits 24 hours for the iPhone passcode")
+        // A new passcode outside setup (Change, Forgot, after a reset) never re-trusts Face ID by itself.
+        LockKeychain.update { $0.trustedDomainState = FakeAuthenticator.startingDomainState; $0.faceIDOff = true }
+        await lock.saveCode("135790")
+        expect(LockKeychain.vault.faceIDOff && !lock.faceIDUsable, "No, Turn It Off stays off after a new passcode")
+        LockKeychain.update { $0.trustedDomainState = Data("B".utf8); $0.faceIDOff = false }
+        await lock.saveCode("135790")
+        expect(lock.faceIDChanged && LockKeychain.vault.trustedDomainState == Data("B".utf8),
+               "A changed Face ID is still asked about after a new passcode")
+        LockKeychain.update { $0.trustedDomainState = FakeAuthenticator.startingDomainState }
+        _ = await lock.useWay(.appPasscode)
+        let kept = await LockKeychain.check("135790")
+        expect(lock.way == .appPasscode && kept, "Changing the way keeps the app passcode")
+
+        // Older vaults (before round 2) carry no way: they open as they did.
+        let older = try? JSONDecoder().decode(LockVault.self, from: Data(#"{"failures":0,"resetCredited":0,"resetMark":0,"iterations":0,"faceIDOff":false}"#.utf8))
+        expect(older != nil && older?.way == nil && older?.everydayWay == .iPhonePasscode, "An older vault with no code reads as the iPhone Passcode way")
+        var olderCode = older ?? LockVault()
+        olderCode.codeHash = Data(count: 32)
+        expect(olderCode.everydayWay == .faceID, "An older vault with a code reads as the Face ID way")
+        lock.turnOff()
+        await lock.saveCode("246810")
+
         // MARK: Hide names, held on by the lock
 
         HideNames.setChosen(false)
         expect(HideNames.isOn, "App Lock holds names hidden")
         lock.removeCode()
         AppLock.setEnabled(true)
-        expect(lock.mode == .passcode && AppLock.isEnabled && HideNames.isOn, "Back to the iPhone passcode: still locked, names still hidden")
+        expect(lock.way == .iPhonePasscode && AppLock.isEnabled && HideNames.isOn, "An older iPhone-passcode lock: still locked, names still hidden")
         lock.turnOff()
         expect(!HideNames.isOn, "Turning the lock off gives back the person's choice (off)")
         HideNames.setChosen(true)
@@ -107,12 +162,14 @@ enum AppLockCheck {
 
         // MARK: Everything outside the app, with names hidden
 
-        var utc = Calendar(identifier: .gregorian); utc.timeZone = TimeZone(secondsFromGMT: 0)!
-        let store = HabitStore(repository: Persistence.inMemory().repository, calendar: utc)
+        // The iPhone's own time zone: a widget snapshot made in another one is rightly treated as out of date (on an
+        // iPhone in India this check failed while GitHub's UTC simulators passed it, 10 Oct 2026).
+        var local = Calendar(identifier: .gregorian); local.timeZone = .current
+        let store = HabitStore(repository: Persistence.inMemory().repository, calendar: local)
         await store.load()
         await WidgetFixture.install(in: store)
         let day = store.today()
-        let start = day.adding(days: -5, calendar: utc)
+        let start = day.adding(days: -5, calendar: local)
         let meds = Habit(name: "Secret meds", symbol: "pills", color: .red, kind: .check,
                          reminders: [ReminderTime(hour: 8, minute: 0)], remind: true, followUpMinutes: 15, startsOn: start,
                          reminderText: "The usual")
@@ -130,7 +187,7 @@ enum AppLockCheck {
         HideNames.setChosen(true)
         failures += WidgetCheck.discreetFailures(store, now: Date.now)
 
-        let now = ReminderClock.date(on: day, hour: 0, minute: 0, calendar: utc)!
+        let now = ReminderClock.date(on: day, hour: 0, minute: 0, calendar: local)!
         let scheduler = ReminderScheduler(notifications: FakeReminderNotifications(), alarms: FakeReminderAlarms())
         let plan = scheduler.plan(store, now: now).filter { $0.day == day }
         let requests = scheduler.requests(for: plan, store: store)

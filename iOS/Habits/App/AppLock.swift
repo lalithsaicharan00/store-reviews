@@ -10,16 +10,20 @@ import UserNotifications
 /// [Privacy & Security — What to Build](iOS/Docs/Specs/Privacy & Security — What to Build.md) and the report
 /// "App Lock and Widget Privacy — What People Expect" §6c–§6d.
 ///
-/// - **Unlock With:** the iPhone's own Face ID and passcode (the default, which can never lock anyone out), or Face ID
-///   and an app passcode, for people whose family knows the phone's passcode. In code mode the iPhone passcode
-///   never opens the app or turns the lock off.
+/// - **The everyday way** (round 2, the user's model, 10 Oct 2026; report "App Lock — Choosing How to Open the App"):
+///   **Face ID** (the default; when it can't, the app passcode; the iPhone passcode never opens the app), **iPhone
+///   Passcode** (as the iPhone opens: Face ID first when allowed, then the passcode; iOS has no passcode-only check), or
+///   **App Passcode** (the six digits only). **An app passcode is always made**: the backup for the first two (asked
+///   when Face ID can't be used or changed, or the iPhone passcode is turned off), the only way in for the third.
 /// - **The code** is six digits, kept only as a salted slow hash in this iPhone's Keychain
 ///   (`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, never synced or backed up), with the wrong-code count, the
 ///   wait, a waiting reset and the trusted Face ID set (`LockVault`). It outlives deleting the app.
 /// - **Face ID changed** (someone may have added a face): Face ID stops until the code is typed, and then the person is
 ///   asked; the new set is never trusted silently.
-/// - **Forgot Code?** Face ID resets it at once; otherwise the iPhone passcode can, after a 24-hour wait counted on a
-///   clock that changing the iPhone's time can't move (`LockClock`).
+/// - **Forgot App Passcode?** The everyday way sets a new one at once while it still works (Face ID unchanged; the
+///   iPhone passcode). Face ID can't help → the iPhone passcode after a 24-hour wait. App Passcode, or no iPhone
+///   passcode → the 24-hour wait alone. The wait is counted on a clock that changing the iPhone's time can't move
+///   (`LockClock`); it only makes sure the owner notices (the user, 10 Oct 2026).
 /// - **Ask Again:** Immediately, After 1 Minute or After 15 Minutes; locking the iPhone always locks the app at once.
 ///
 /// Rules that hold whatever is chosen (report §6d): never ask while the app is in front; never for the iPhone's own
@@ -35,16 +39,29 @@ final class AppLock {
     /// Read before anything is drawn, so a locked app never shows a frame of habits at launch.
     nonisolated static let launchKey = "app_lock"
 
-    enum Mode: String, Sendable { case passcode, code }
-
     /// What the cover asks for while locked.
     enum Step: Equatable {
-        /// iPhone-passcode mode, or code mode with Face ID available: Face ID is (or was) asked for.
-        case biometrics
-        /// Code mode: the keypad.
+        /// The iPhone Passcode way on an iPhone with a passcode: iOS's own check (Face ID, then the passcode).
+        case iPhonePasscode
+        /// The keypad (Face ID offered above it when it's trusted).
         case code
-        /// A reset whose 24 hours are up: Choose a New Code.
+        /// A reset whose 24 hours are up: Choose a New App Passcode.
         case resetReady
+        /// Nothing on this iPhone can check anyone (an App Lock from before the app passcode, on an iPhone whose
+        /// passcode was then turned off): it opens rather than lock its owner out.
+        case open
+    }
+
+    /// Forgot App Passcode?: the way back in follows the everyday way (spec round 2, D1–D4).
+    enum ForgotWay: Equatable {
+        /// Face ID, unchanged since the passcode was made: a new one at once.
+        case faceID
+        /// The iPhone passcode (the iPhone Passcode way): a new one at once.
+        case iPhonePasscode
+        /// The Face ID way when Face ID can't help: the iPhone passcode starts the 24-hour wait.
+        case resetWithPasscode
+        /// The App Passcode way, or no iPhone passcode: the 24-hour wait alone.
+        case resetAlone
     }
 
     private(set) var isLocked: Bool
@@ -110,8 +127,8 @@ final class AppLock {
     nonisolated static var enabledKey: String { prefix + launchKey }
     nonisolated static var askAgainKey: String { prefix + "app_lock.askAgain" }
 
-    /// Whether the lock is on. In a test launch only the test's own switch counts. The Keychain says so too in code
-    /// mode, so deleting and reinstalling the app doesn't remove a code lock (report §6c point 2).
+    /// Whether the lock is on. In a test launch only the test's own switch counts. The Keychain says so too once an app
+    /// passcode exists, so deleting and reinstalling the app doesn't remove the lock (report §6c point 2).
     nonisolated static var isEnabled: Bool {
         if UserDefaults.standard.bool(forKey: enabledKey) { return true }
         return LockKeychain.cachedCodeMode
@@ -121,7 +138,14 @@ final class AppLock {
         UserDefaults.standard.set(on, forKey: enabledKey)
     }
 
-    var mode: Mode { _ = revision; return LockKeychain.vault.codeHash != nil ? .code : .passcode }
+    /// The everyday way. A vault from before round 2 has none: a code meant Face ID with the code, none the iPhone's own.
+    var way: LockWay { _ = revision; return LockKeychain.vault.everydayWay }
+
+    /// An app passcode exists (always, since round 2; an older iPhone Passcode lock may have none).
+    var hasCode: Bool { _ = revision; return LockKeychain.vault.codeHash != nil }
+
+    /// This iPhone has a passcode (asked of the system, so a passcode turned off since is noticed).
+    var passcodeSet: Bool { _ = revision; return Self.authenticator.passcodeSet }
 
     /// Whether the lock is on, for views: redraws when it changes here (`bump`).
     var isOn: Bool { _ = revision; return Self.isEnabled }
@@ -199,45 +223,75 @@ final class AppLock {
     /// What the cover shows now.
     var step: Step {
         _ = revision
-        guard mode == .code else { return .biometrics }
-        if LockKeychain.vault.resetReady { return .resetReady }
-        return .code
+        let vault = LockKeychain.vault
+        if vault.everydayWay == .iPhonePasscode, Self.authenticator.passcodeSet { return .iPhonePasscode }
+        guard vault.codeHash != nil else { return .open }
+        return vault.resetReady ? .resetReady : .code
     }
 
-    /// Face ID (or Touch ID) can open the app in code mode: available, not turned off, and the same set as when it was
-    /// trusted.
+    /// Face ID (or Touch ID) can open the app: the Face ID way, allowed for the app, not turned off, and the same set as
+    /// when it was trusted.
     var faceIDUsable: Bool {
         _ = revision
         let vault = LockKeychain.vault
-        guard !vault.faceIDOff, let trusted = vault.trustedDomainState else { return false }
+        guard vault.everydayWay == .faceID, !vault.faceIDOff, let trusted = vault.trustedDomainState else { return false }
         let auth = Self.authenticator
         return auth.biometricsAvailable && auth.domainState == trusted
     }
 
-    /// The set of faces or fingers changed since it was trusted (spec §3.4); only in code mode.
+    /// The set of faces or fingers changed since it was trusted (spec §3.4); only the Face ID way.
     var faceIDChanged: Bool {
         _ = revision
         let vault = LockKeychain.vault
-        guard mode == .code, !vault.faceIDOff, let trusted = vault.trustedDomainState else { return false }
+        guard vault.everydayWay == .faceID, !vault.faceIDOff, let trusted = vault.trustedDomainState else { return false }
         let auth = Self.authenticator
         return auth.biometricsAvailable && auth.domainState != trusted
     }
 
+    /// The Face ID way, with Face ID set up but switched off for the app in Settings (spec round 2, B4 and C2).
+    var faceIDNotAllowed: Bool {
+        _ = revision
+        guard LockKeychain.vault.everydayWay == .faceID else { return false }
+        return Self.authenticator.biometricsDenied
+    }
+
+    var forgotWay: ForgotWay {
+        _ = revision
+        switch way {
+        case .faceID: return faceIDUsable ? .faceID : passcodeSet ? .resetWithPasscode : .resetAlone
+        case .iPhonePasscode: return passcodeSet ? .iPhonePasscode : .resetAlone
+        case .appPasscode: return .resetAlone
+        }
+    }
+
     var faceIDOff: Bool { _ = revision; return LockKeychain.vault.faceIDOff }
 
-    /// Asked by itself on return and by Unlock: iPhone-passcode mode asks Face ID with the passcode fallback (as before);
-    /// code mode asks Face ID only, and only when it's trusted; otherwise the keypad waits.
+    /// Code mode with no trusted Face ID: turned off on the cover, or the app passcode was made while Face ID was switched
+    /// off for the app in Settings (nothing to trust then). The page offers Use Face ID Again once the app may use it.
+    var faceIDNotTrusted: Bool {
+        _ = revision
+        let vault = LockKeychain.vault
+        return vault.faceIDOff || vault.trustedDomainState == nil
+    }
+
+    /// Asked by itself on return and by Unlock: the iPhone Passcode way asks iOS's own check (Face ID, then the
+    /// passcode); the Face ID way asks Face ID only, and only when it's trusted; otherwise (and always in the App
+    /// Passcode way) the keypad waits.
     func unlock() async {
         guard isLocked, !unlocking else { return }
         guard Self.isEnabled else { isLocked = false; return }
         unlocking = true
         defer { unlocking = false }
-        switch mode {
-        case .passcode:
+        switch step {
+        case .open:
+            isLocked = false
+        case .iPhonePasscode:
             if await Self.authenticator.authenticate(.deviceOwner, reason: "Unlock the app") { isLocked = false }
         case .code:
-            guard step == .code, faceIDUsable else { return }
+            guard faceIDUsable else { return }
             if await Self.authenticator.authenticate(.biometrics, reason: "Unlock the app") { opened() }
+        case .resetReady:
+            return
         }
     }
 
@@ -319,15 +373,28 @@ final class AppLock {
 
     // MARK: Forgot code, and the 24-hour reset
 
-    /// Forgot Code? with Face ID: Face ID, then a new code (spec §3.5).
-    func forgotWithFaceID() async -> Bool {
-        guard faceIDUsable else { return false }
-        return await Self.authenticator.authenticate(.biometrics, reason: "Choose a new app passcode")
+    /// Forgot App Passcode? at once (D1, D2): Face ID in the Face ID way, the iPhone passcode in the iPhone Passcode way.
+    /// Then a new app passcode.
+    func forgotAtOnce() async -> Bool {
+        switch forgotWay {
+        case .faceID: return await Self.authenticator.authenticate(.biometrics, reason: "Choose a new app passcode")
+        case .iPhonePasscode: return await Self.authenticator.authenticate(.deviceOwner, reason: "Choose a new app passcode")
+        case .resetWithPasscode, .resetAlone: return false
+        }
     }
 
-    /// Start 24-Hour Reset: the iPhone passcode, then the wait begins, and a notification says so (no habit names).
+    /// Start 24-Hour Reset: in the Face ID way the iPhone passcode first (D3); with the App Passcode way or no iPhone
+    /// passcode nothing can prove who it is, so the wait alone (D4). The wait begins, and a notification says so (no
+    /// habit names).
     func startReset() async {
-        guard await Self.authenticator.authenticate(.deviceOwner, reason: "Reset your app passcode") else { return }
+        switch forgotWay {
+        case .resetWithPasscode:
+            guard await Self.authenticator.authenticate(.deviceOwner, reason: "Reset your app passcode") else { return }
+        case .resetAlone:
+            break
+        case .faceID, .iPhonePasscode:
+            return
+        }
         LockKeychain.update { $0.askReset(at: Date.now) }
         bump()
         coverSheet = nil
@@ -349,19 +416,37 @@ final class AppLock {
         return false
     }
 
-    /// Choose a New Code after the wait: the iPhone passcode, then the new code (spec §3.5).
+    /// Choose a New App Passcode after the wait (C6): the Face ID way on an iPhone with a passcode asks the iPhone
+    /// passcode first; otherwise straight to the new passcode.
     func chooseNewCodeAfterReset() async -> Bool {
         guard LockKeychain.vault.resetReady else { return false }
+        guard way == .faceID, passcodeSet else { return true }
         return await Self.authenticator.authenticate(.deviceOwner, reason: "Choose a new app passcode")
     }
 
-    /// A new code is saved (first set, changed, or after a reset): Face ID is trusted as it is now.
-    func saveCode(_ code: String) async {
+    /// A new code is saved. From setup (a way chosen), Face ID is trusted as it is now. Changed, or after Forgot or a
+    /// reset, Face ID's trust stays exactly as it was: a reset proves the iPhone passcode, not whose face was added, so
+    /// a changed set is still asked about ("Did you change Face ID?") and "No, Turn It Off" stays off.
+    func saveCode(_ code: String, way: LockWay? = nil) async {
         let state = Self.authenticator.domainState
-        await LockKeychain.setCode(code, trusting: state)
+        await LockKeychain.setCode(code, trusting: state, way: way, keepTrust: way == nil)
         Self.setEnabled(true)
         bump()
         if isLocked { opened() }
+    }
+
+    /// Another everyday way, once the owner is confirmed (the app passcode already exists). Choosing Face ID asks Face
+    /// ID once and trusts the set as it is now; if it fails, nothing changes.
+    func useWay(_ newWay: LockWay) async -> Bool {
+        if newWay == .faceID {
+            guard await Self.authenticator.authenticate(.biometrics, reason: "Use Face ID for the app") else { return false }
+            let state = Self.authenticator.domainState
+            LockKeychain.update { $0.way = .faceID; $0.trustedDomainState = state; $0.faceIDOff = false }
+        } else {
+            LockKeychain.update { $0.way = newWay }
+        }
+        bump()
+        return true
     }
 
     /// Back to Face ID or iPhone Passcode: the code and everything kept with it go.
@@ -379,17 +464,27 @@ final class AppLock {
 
     // MARK: The page's checks
 
-    /// The owner, before the lock's settings change. iPhone-passcode mode: Face ID or the passcode (as before). Code
-    /// mode: Face ID if trusted, otherwise the code; the iPhone passcode is never accepted (spec §3.2).
+    /// The owner, before the lock's settings change, by the everyday way: the iPhone Passcode way iOS's own check (the
+    /// app passcode once the iPhone has no passcode); the Face ID way Face ID if trusted, otherwise the app passcode
+    /// (never the iPhone passcode); the App Passcode way only the app passcode.
     func confirmOwner(_ reason: String) async -> Bool {
-        switch mode {
-        case .passcode:
-            return await Self.authenticator.authenticate(.deviceOwner, reason: reason)
-        case .code:
+        switch way {
+        case .iPhonePasscode:
+            if passcodeSet { return await Self.authenticator.authenticate(.deviceOwner, reason: reason) }
+            // An older lock with no app passcode, on an iPhone with no passcode: nothing can check anyone.
+            if !hasCode { return true }
+            return await askForCode()
+        case .faceID:
             if faceIDUsable, await Self.authenticator.authenticate(.biometrics, reason: reason) { return true }
-            return await withCheckedContinuation { continuation in
-                codeCheck = CodeCheck(title: "Enter Your App Passcode") { continuation.resume(returning: $0) }
-            }
+            return await askForCode()
+        case .appPasscode:
+            return await askForCode()
+        }
+    }
+
+    private func askForCode() async -> Bool {
+        await withCheckedContinuation { continuation in
+            codeCheck = CodeCheck(title: "Enter Your App Passcode") { continuation.resume(returning: $0) }
         }
     }
 
@@ -441,8 +536,10 @@ final class AppLock {
     }
     #endif
 
-    /// `-test-lock passcode|code` (with `-test-lock-code 123456` for a code), `-test-lock-fresh` (an empty test Keychain
-    /// item), `-test-lock-ask 0|60|900`. Every test launch otherwise starts with the lock off (T8).
+    /// `-test-lock faceid|iphone|app` (an everyday way with its app passcode, `-test-lock-code 123456`), `-test-lock
+    /// passcode|code` (a lock from before round 2: no way saved; `code` has an app passcode), `-test-lock-fresh` (an empty
+    /// test Keychain item), `-test-lock-untrusted` (a code made while Face ID was switched off for the app: no trusted
+    /// Face ID), `-test-lock-ask 0|60|900`. Every test launch otherwise starts with the lock off (T8).
     nonisolated private static func applyTestLaunch() {
         guard testing else { return }
         let arguments = ProcessInfo.processInfo.arguments
@@ -453,20 +550,22 @@ final class AppLock {
         defaults.removeObject(forKey: enabledKey)
         defaults.removeObject(forKey: askAgainKey)
         defaults.removeObject(forKey: HideNames.key)
-        if arguments.contains("-test-lock-fresh") || value("-test-lock") == nil { LockKeychain.clear() }
+        // `passcode` is an older lock with no app passcode: never one left behind by the test before (T8).
+        if arguments.contains("-test-lock-fresh") || value("-test-lock") == nil || value("-test-lock") == "passcode" { LockKeychain.clear() }
         if let ask = value("-test-lock-ask").flatMap(Int.init) { defaults.set(ask, forKey: askAgainKey) }
         guard let mode = value("-test-lock") else { return }
         defaults.set(true, forKey: enabledKey)
-        if mode == "code", LockKeychain.vault.codeHash == nil {
+        let way: LockWay? = ["faceid": .faceID, "iphone": .iPhonePasscode, "app": .appPasscode][mode]
+        if mode == "code" || way != nil, LockKeychain.vault.codeHash == nil {
             let code = value("-test-lock-code") ?? "123456"
             let semaphore = DispatchSemaphore(value: 0)
             #if DEBUG
-            let trusted: Data? = FakeAuthenticator.startingDomainState
+            let trusted: Data? = arguments.contains("-test-lock-untrusted") ? nil : FakeAuthenticator.startingDomainState
             #else
             let trusted: Data? = nil
             #endif
             Task.detached {
-                await LockKeychain.setCode(code, trusting: trusted)
+                await LockKeychain.setCode(code, trusting: trusted, way: way)
                 semaphore.signal()
             }
             semaphore.wait()
@@ -523,8 +622,15 @@ nonisolated enum LockClock {
 
 // MARK: - What's kept in the Keychain
 
-/// Everything the code lock keeps, in one Keychain item on this iPhone only (spec §5).
+/// How the app opens day to day (spec round 2). Kept in the Keychain with the app passcode.
+nonisolated enum LockWay: String, Codable, Sendable {
+    case faceID, iPhonePasscode, appPasscode
+}
+
+/// Everything the lock keeps, in one Keychain item on this iPhone only (spec §5).
 nonisolated struct LockVault: Codable, Equatable, Sendable {
+    /// The everyday way; nil in a vault from before round 2 (`everydayWay` reads it as it worked then).
+    var way: LockWay?
     var codeHash: Data?
     var salt: Data?
     var iterations = 0
@@ -541,6 +647,9 @@ nonisolated struct LockVault: Codable, Equatable, Sendable {
     var faceIDOff = false
 
     static let resetWait: TimeInterval = 24 * 3600
+
+    /// Before round 2 a code meant Face ID with the code, and no code the iPhone's own Face ID and passcode.
+    var everydayWay: LockWay { way ?? (codeHash != nil ? .faceID : .iPhonePasscode) }
 
     var waitLeft: TimeInterval? {
         guard let waitEnds else { return nil }
@@ -622,15 +731,18 @@ nonisolated enum LockKeychain {
     }
 
     /// Hashes off the main thread (a slow hash on purpose: PBKDF2-SHA256).
-    static func setCode(_ code: String, trusting state: Data?) async {
+    static func setCode(_ code: String, trusting state: Data?, way: LockWay? = nil, keepTrust: Bool = false) async {
         let salt = Data((0..<16).map { _ in UInt8.random(in: 0...255) })
         let iterations = 120_000
         let hash = await Task.detached(priority: .userInitiated) { CodeHash.derive(code, salt: salt, iterations: iterations) }.value
         update { vault in
+            // Only a passcode replacing another keeps Face ID's trust; a first passcode always sets it.
+            let keep = keepTrust && vault.codeHash != nil
             vault.codeHash = hash; vault.salt = salt; vault.iterations = iterations
             vault.failures = 0; vault.waitEnds = nil
             vault.cancelReset()
-            vault.trustedDomainState = state; vault.faceIDOff = false
+            if !keep { vault.trustedDomainState = state; vault.faceIDOff = false }
+            if let way { vault.way = way }
         }
     }
 
@@ -709,6 +821,11 @@ nonisolated enum LockPolicy: Sendable {
 /// What asks the system, so test launches can stand in for it (`FakeAuthenticator`).
 protocol LockAuthenticator {
     var passcodeSet: Bool { get }
+    /// Face ID (or Touch ID) is set up on this iPhone, whether or not the app may use it.
+    var biometricsSetUp: Bool { get }
+    /// Set up, but switched off for this app in Settings (never a lock-out after failed tries, which the passcode ends).
+    var biometricsDenied: Bool { get }
+    /// Face ID (or Touch ID) can be used by the app now: set up on the iPhone and allowed for the app.
     var biometricsAvailable: Bool { get }
     /// The current set of faces or fingers, as iOS summarises it.
     var domainState: Data? { get }
@@ -720,6 +837,8 @@ protocol LockAuthenticator {
 struct SystemAuthenticator: LockAuthenticator {
     var passcodeSet: Bool { LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) }
     var biometricsAvailable: Bool { LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) }
+    var biometricsSetUp: Bool { AppLock.biometricsSetUp(LAContext()).setUp }
+    var biometricsDenied: Bool { AppLock.biometricsSetUp(LAContext()).denied }
     var domainState: Data? {
         let context = LAContext()
         guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) else { return nil }
@@ -737,7 +856,29 @@ struct SystemAuthenticator: LockAuthenticator {
 
 extension AppLock {
     /// Whether this iPhone can lock the app, and with what, asked off the main thread (asking the system is slow).
-    nonisolated struct Ability: Sendable { let available: Bool; let method: String; let biometrics: Bool }
+    /// `biometrics`: Face ID (or Touch ID) is set up on this iPhone, so App Lock offers the whole setup (spec screens
+    /// 3–7). `biometricsAllowed`: the app may use it now. Face ID switched off for the app in Settings (Face ID &
+    /// Passcode → Other Apps) is set up but not allowed: it is never "no Face ID" (the user's iPhone, 10 Oct 2026: the
+    /// passcode-only path skipped the setup sheet and hid If Face ID doesn't work).
+    nonisolated struct Ability: Sendable {
+        let available: Bool
+        let method: String
+        let biometrics: Bool
+        let biometricsAllowed: Bool
+    }
+
+    /// Set up on this iPhone, whether or not the app is allowed to use it: iOS names the kind (`biometryType`) even when
+    /// it refuses, and says "not enrolled" only when none is set up. `denied`: switched off for the app in Settings, which
+    /// iOS reports as "not available" while naming the kind. A lock-out after failed tries is neither: it's set up and
+    /// allowed, and the passcode (iOS's own, or the app passcode in the Face ID way) ends it.
+    nonisolated static func biometricsSetUp(_ context: LAContext) -> (setUp: Bool, allowed: Bool, denied: Bool) {
+        var error: NSError?
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) { return (true, true, false) }
+        let code = error?.domain == LAErrorDomain ? error?.code : nil
+        let setUp = context.biometryType != .none && code != LAError.Code.biometryNotEnrolled.rawValue
+        let denied = setUp && code == LAError.Code.biometryNotAvailable.rawValue
+        return (setUp, setUp && !denied, denied)
+    }
 
     nonisolated static func methodName(_ context: LAContext) -> String {
         _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
@@ -753,14 +894,16 @@ extension AppLock {
         #if DEBUG
         if testing {
             let fake = FakeAuthenticator.shared
-            return Ability(available: fake.passcodeSet, method: fake.methodName, biometrics: fake.biometricsAvailable)
+            return Ability(available: fake.passcodeSet, method: fake.methodName, biometrics: fake.biometricsSetUp,
+                           biometricsAllowed: fake.biometricsSetUp && !fake.biometricsDenied)
         }
         #endif
         return await Task.detached(priority: .userInitiated) {
             let context = LAContext()
             let available = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
-            let biometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
-            return Ability(available: available, method: AppLock.methodName(context), biometrics: biometrics)
+            let biometrics = AppLock.biometricsSetUp(context)
+            return Ability(available: available, method: AppLock.methodName(context), biometrics: biometrics.setUp,
+                           biometricsAllowed: biometrics.allowed)
         }.value
     }
 
@@ -773,7 +916,8 @@ extension AppLock {
 #if DEBUG
 /// A test launch's Face ID: a panel over everything (`FakeAuthPanel`) asks the test to tap Succeed, Passcode or Cancel,
 /// so every path is testable without the system's prompt (D8: the person's own Face ID is never involved).
-/// `-test-face none` means no Face ID on this "iPhone"; `-test-face-domain B` is a changed set of faces.
+/// `-test-face none` means no Face ID on this "iPhone"; `-test-face denied`, Face ID set up but switched off for the
+/// app in Settings; `-test-face-domain B` is a changed set of faces.
 @MainActor @Observable
 final class FakeAuthenticator: LockAuthenticator {
     static let shared = FakeAuthenticator()
@@ -794,12 +938,17 @@ final class FakeAuthenticator: LockAuthenticator {
     }
 
     nonisolated var passcodeSet: Bool { Self.value("-test-passcode") != "none" }
-    nonisolated var biometricsAvailable: Bool { Self.value("-test-face") != "none" }
+    /// Face ID needs an iPhone passcode, as on a real iPhone.
+    nonisolated var biometricsSetUp: Bool { passcodeSet && Self.value("-test-face") != "none" }
+    nonisolated var biometricsDenied: Bool { biometricsSetUp && Self.value("-test-face") == "denied" }
+    /// `-test-face lockout`: too many failed tries, until a passcode is typed (set up and allowed, but not usable now).
+    nonisolated var biometricsAvailable: Bool { biometricsSetUp && !biometricsDenied && Self.value("-test-face") != "lockout" }
     nonisolated var domainState: Data? { biometricsAvailable ? Data((Self.value("-test-face-domain") ?? "A").utf8) : nil }
-    nonisolated var methodName: String { biometricsAvailable ? "Face ID" : "Passcode" }
+    nonisolated var methodName: String { biometricsSetUp ? "Face ID" : "Passcode" }
 
     func authenticate(_ policy: LockPolicy, reason: String) async -> Bool {
         if policy == .biometrics && !biometricsAvailable { return false }
+        if policy == .deviceOwner && !passcodeSet { return false }
         answer?.resume(returning: false)
         return await withCheckedContinuation { continuation in
             answer = continuation

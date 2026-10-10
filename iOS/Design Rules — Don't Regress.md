@@ -504,6 +504,25 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 - **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
 - **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.
 
+## App Lock (round 2, built 10 Oct 2026, Current Work 58.13; iPhone check pending)
+
+Spec: [App Lock Redesign §0](<Docs/Specs/App Lock Redesign/README.md>). Report: [App Lock — Choosing How to Open the App](<../Research/Research Reports/Settings and Help/App Lock — Choosing How to Open the App.md>).
+
+- **The switch is "App Lock", never "Lock with Face ID".** A switch named for Face ID read as "Face ID is on" while
+  Face ID was switched off for the app (the user's iPhone, 10 Oct 2026).
+- **Turning it on always opens Set Up App Lock; it never locks straight away** with the iPhone passcode, whatever the
+  iPhone has.
+- **Three everyday ways, an app passcode always made** (Face ID default; iPhone Passcode; App Passcode). Never drop the
+  app passcode from a way to "save a step".
+- **Face ID switched off for the app is not "no Face ID", and a lock-out after failed tries is neither.** Read
+  `biometryType` and the error (`AppLock.biometricsSetUp`): denied → "turned off for this app in Settings" with Allow
+  Face ID in Settings; not enrolled → "not set up"; lock-out → still Face ID. Every unavailable way says why, dimmed,
+  never hidden.
+- **"iPhone Passcode" says Face ID comes first** when the app may use it (iOS has no passcode-only check).
+- **A new app passcode outside setup never re-trusts Face ID** (a changed set is still asked about; Turn It Off stays).
+- **The 24-hour wait stays** in every way that has no other proof; the right app passcode cancels it, the lock screen
+  shows it, and nothing is ever deleted.
+
 ## Account and Backup & Export (redesigned 10 Oct 2026 and built, Current Work 76; free sync on one device 11 Oct, Current Work 78; first built 9 Oct, 58.10–58.12; iPhone check pending)
 
 Spec (the source of truth): [Account and Backup Redesign](<Docs/Specs/Account and Backup Redesign/README.md>). Reports:
