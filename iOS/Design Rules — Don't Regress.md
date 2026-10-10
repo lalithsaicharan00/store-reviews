@@ -601,6 +601,9 @@ Tests: `PlusUITests`, `SmallScreenUITests.testPlusSheetAndPageFit`; speed scenar
   `-plus-owned-family`, `-plus-family-member`, `-plus-ended refund|family`; `-plus-fixture` is the free plan full.
   `-real-storekit` uses the App Store (the scheme's `OftenEnough.storekit` when run from Xcode).
 - **To see the buy screens in a Debug build on the iPhone, launch with `-free`** (Debug is Plus by default).
+- **A sheet presented around Today (a modifier in `HabitsApp`, like "Plus has ended" or the second device's question)
+  is outside Today's own environment.** `PlusStore` and `HabitStore` are given at the root for that reason; a screen
+  there that reads a missing one stops the app (PlusUITests, run 38063952336).
 
 ## Sidebar data, tasks and reminders — 30 September 2026
 
