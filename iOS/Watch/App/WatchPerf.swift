@@ -191,7 +191,7 @@ enum WatchPerf {
                         total, years, parts, biggest / 1024, Double(sent) / 1_048_576, seconds, firstToday ?? seconds, madeSeconds,
                         Double(size) / 1_048_576, loadSeconds, loaded.entries.count, peak))
             if loaded.entries.count != total { MainThreadMeter.mark("# ERROR fill merged \(loaded.entries.count) of \(total) logs") }
-            phone.close(); watch.close()
+            try? phone.close(); try? watch.close()
         } catch {
             MainThreadMeter.mark("# ERROR first fill: \(error)")
         }
