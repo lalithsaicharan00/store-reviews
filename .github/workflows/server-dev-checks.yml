@@ -1,0 +1,28 @@
+# Live checks of the dev server (api-dev.oftenenough.com) with this run's GitHub identity: no secret needed.
+# Current Work 78 (free accounts sync one device at a time) and Move to Another Device through the server; also measures
+# rows written per change and stored bytes per record (Free Sync — One Device at a Time §2.1).
+#
+# Runs on a push to a branch whose name ends in `-server-checks` (a workflow_dispatch needs the file on main first),
+# or by hand once it's on main. Never touches production. See server/README.md, "Live checks".
+name: Server dev checks
+on:
+  push:
+    branches: ["**-server-checks"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write  # POST /v1/auth/ci accepts this repository's runs only
+concurrency:
+  group: server-dev-checks-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Live checks on dev
+        run: node server/scripts/live-free-sync.mjs
