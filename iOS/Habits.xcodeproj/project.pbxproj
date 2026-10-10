@@ -47,6 +47,7 @@
 			membershipExceptions = (
 				"Analytics/AnalyticsContract.swift",
 				"App/MainThreadMeter.swift",
+				"Intents/HabitIntents.swift",
 				"Model/GoalInput.swift",
 				"Model/Habit.swift",
 				"Model/HabitCopy.swift",
@@ -78,6 +79,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"WidgetSnapshot.swift",
+				"WidgetTaps.swift",
 				"WidgetTiming.swift",
 			);
 			target = EE0000000000000000000005 /* OftenEnoughWatch */;
@@ -86,6 +88,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"WidgetSnapshot.swift",
+				"WidgetTaps.swift",
 				"WidgetTiming.swift",
 			);
 			target = FF0000000000000000000005 /* OftenEnoughWatchWidgets */;

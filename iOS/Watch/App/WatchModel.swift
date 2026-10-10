@@ -32,6 +32,8 @@ final class WatchModel {
         var failed = false
         if Self.testLaunch {
             repository = Persistence.inMemory().repository
+            // A test launch's own switches (D8: never the person's): names hidden for E5 and D4.
+            UserDefaults.standard.set(ProcessInfo.processInfo.arguments.contains("-hide-names"), forKey: HideNames.key)
         } else {
             do { repository = try Persistence.onDisk().repository } catch { failed = true }
         }
@@ -60,7 +62,9 @@ final class WatchModel {
                 await refreshPeerStatus()
                 link.activate()
             }
+            await saveWidgetTaps()
             widgets.schedule(store)
+            scheduleRefresh()
         }
         loading = task
         await task.value
@@ -80,6 +84,7 @@ final class WatchModel {
         widgets.schedule(store)
         guard !Self.testLaunch else { return }
         let store = store
+        HabitShortcuts.habitsChanged(store)
         Task {
             await WatchNotifications.syncTimerAlerts(store)
             WatchNotifications.registerCategories(habits: store.habits)
@@ -94,6 +99,40 @@ final class WatchModel {
             await refreshPeerStatus()
             await widgets.publish(store)
         }
+    }
+
+    // MARK: Complication taps
+
+    /// Saves the complications' waiting taps (`WatchTapIntent`), in the order they were made, each once: a + by its own
+    /// ID, a ✓ as the state it set (`HabitStore.logFromWidget`, the iPhone's own rule). A tap the store refuses (another
+    /// day, a changed habit) is dropped; a storage failure keeps them all for the next try.
+    func saveWidgetTaps() async {
+        guard store.isLoaded, store.isStorageReady, store.problem == nil else { return }
+        let taps = WidgetTaps.read()
+        guard !taps.isEmpty else { return }
+        for tap in taps {
+            guard let id = UUID(uuidString: tap.item), let day = LocalDay(key: tap.day), let event = UUID(uuidString: tap.event) else { continue }
+            store.logFromWidget(id: id, day: day, event: event, signature: tap.signature, mode: tap.mode, now: tap.at)
+        }
+        await store.flush()
+        if store.problem != nil, !store.isStorageReady { return }
+        store.problem = nil
+        WidgetTaps.remove(Set(taps.map(\.event)))
+        await widgets.publish(store, hold: true)
+        link.sendNow()
+    }
+
+    /// Asks watchOS to wake the app about every 15 minutes (with a complication on the face it allows about four an hour):
+    /// complication taps are saved and the face is kept fresh even when the app isn't opened.
+    func scheduleRefresh() {
+        guard !Self.testLaunch else { return }
+        WKApplication.shared().scheduleBackgroundRefresh(withPreferredDate: .now.addingTimeInterval(15 * 60), userInfo: nil) { _ in }
+    }
+
+    /// Plus decides what the face shows without it (G7): the snapshot says so, and the face shows no names or counts.
+    func plusChanged() {
+        let plus = self.plus.access != .none
+        if store.isPlus != plus { store.isPlus = plus }
     }
 
     /// Today as the person's day counts it (D7, WA5).

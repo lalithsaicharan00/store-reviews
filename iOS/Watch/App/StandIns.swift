@@ -55,6 +55,9 @@ enum HeatPalette {
 /// itself"). Default: done habits sink, as on the iPhone.
 enum Preferences {
     static let doneOrder = "today.doneOrder"
+    /// The iPhone's "Open Timer Full Screen". The Watch has no separate timer screen: a complication's ▶ starts the
+    /// timer and opens its Day details, so this stays off here.
+    static let timerScreen = "timers.openScreen"
 }
 
 enum DoneOrder: String {
@@ -64,7 +67,8 @@ enum DoneOrder: String {
 /// Hide Names Outside the App, copied from the iPhone by `WatchLink` (App Lock on counts as on, as there). Complications
 /// and notifications then show counts and the person's own words, never a name (D4, E5).
 nonisolated enum HideNames {
-    static let key = "privacy.hideNames"
+    /// A test launch keeps its own (D8), as on the iPhone.
+    static var key: String { ProcessInfo.processInfo.arguments.contains("-uitest") ? "uitest.privacy.hideNames" : "privacy.hideNames" }
     static var isOn: Bool { UserDefaults.standard.bool(forKey: key) }
 }
 

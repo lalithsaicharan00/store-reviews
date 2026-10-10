@@ -38,6 +38,14 @@ struct HabitsApp: App {
                 .onChange(of: model.lock.isLocked) {
                     Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
                 }
+                // Handoff from the Apple Watch: "Open on iPhone" (a habit's page) and "Continue on iPhone" (Plus), G1, B13.
+                .onContinueUserActivity("com.oftenenough.app.open-habit") { activity in
+                    if let id = (activity.userInfo?["habit"] as? String).flatMap(UUID.init(uuidString:)) { model.router.openHabit = id }
+                }
+                .onContinueUserActivity("com.oftenenough.app.open-plus") { _ in
+                    model.menu.reset()
+                    model.menu.path.append(MenuPlace.plus)
+                }
                 .onOpenURL { url in
                     // A backup file opened from AirDrop, Files or Mail (Backup, Sync and Accounts §4.8).
                     if url.isFileURL, let backup = model.backup { Task { await backup.open(url) }; return }

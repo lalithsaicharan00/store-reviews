@@ -48,6 +48,8 @@ final class AppModel {
     /// Where the backup goes, whether it works, moving and restoring (Backup, Sync and Accounts). Nil without a database.
     let backup: BackupCenter?
     let widgets = WidgetPublisher()
+    /// The paired Apple Watch's copy of the data (Architecture 12). Nil for test launches and without a database (D8).
+    let watch: PhoneWatchLink?
     /// The ≡ menu and Today's navigation path.
     let menu = MenuModel()
     /// App Lock (≡ → Privacy & Security). Off unless turned on.
@@ -152,6 +154,7 @@ final class AppModel {
         let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil }
             ?? (testLaunch ? "uitest" : "habits")
         sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: Self.resetsDatabase(arguments)) }
+        watch = testLaunch ? nil : opened.map { PhoneWatchLink(repository: $0.repository, store: store) }
         // A test launch starts without a notice another test left ("Signed out on this iPhone", T8).
         if testLaunch { sync?.forgetSignedOutBy() }
         if let opened, let sync {
@@ -249,7 +252,9 @@ final class AppModel {
             #endif
             // Widget taps made while the app wasn't running, saved before anything is shown (Current Work 66).
             Task { await self.saveWidgetTaps() }
-            store.onChange = { [store, scheduler, timerPresence, widgets, sync, backup] in
+            store.onChange = { [store, scheduler, timerPresence, widgets, sync, backup, watch] in
+                // The Watch hears of every change 0.5 s after the last (Architecture 12 §3.1).
+                watch?.scheduleSend()
                 scheduler.scheduleReconcile(store)
                 // Speed runs only (Current Work 49): `-perf-no-widget-publish` leaves the publication out, to see its cost.
                 if PerfSwitches.widgetPublication { widgets.schedule(store) }
@@ -262,7 +267,12 @@ final class AppModel {
                 if UIApplication.shared.applicationState != .active { backup?.changedOutside() }
             }
             backup?.onRetryLater = { [weak self] seconds in self?.scheduleRefresh(after: seconds) }
-            sync?.onRemoteChanges = { [store] in store.reloadAfterSync() }
+            sync?.onRemoteChanges = { [store, watch] in
+                store.reloadAfterSync()
+                // Other devices' changes were queued for the Watch as they merged (core: `receive`).
+                watch?.scheduleSend()
+            }
+            watch?.activate()
             // A sync that failed with changes waiting (offline, the server busy): iOS retries it in the background in
             // about 15 minutes, as well as the next time the app opens (Current Work 67).
             sync?.onWaitingAfterFailure = { [weak self] in

@@ -27,7 +27,9 @@ struct OftenEnoughWatchApp: App {
                     WatchPerf.startIfAsked(model: model, navigation: navigation)
                 }
                 .onOpenURL { navigation.open($0, model: model) }
+                .onChange(of: model.plus.access, initial: true) { model.plusChanged() }
                 .onChange(of: phase) { _, now in
+                    if now == .active { Task { await model.saveWidgetTaps() } }
                     if now == .background {
                         // Leaving: the face and the iPhone get the latest at once (S16).
                         Task { await model.widgets.publish(model.store, immediate: true) }
@@ -44,10 +46,39 @@ struct WatchRoot: View {
     @Environment(WatchModel.self) private var model
 
     var body: some View {
-        switch plus.access {
-        case .plus: TodayScreen()
-        case .checking: TodayScreen() // never wait on the App Store to show Today (WA1); a Watch without Plus switches to G1
-        case .none: PlusScreen()
+        content
+            .modifier(TestDisplay())
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if TestDisplay.faceGallery {
+            FaceGallery()
+        } else {
+            switch plus.access {
+            case .plus: TodayScreen()
+            case .checking: TodayScreen() // never wait on the App Store to show Today (WA1); a Watch without Plus switches to G1
+            case .none: PlusScreen()
+            }
+        }
+    }
+}
+
+/// Test launches only, for the screenshot review: `-wrist-down` (Always On, B8), `-text-size accessibility2` (H20),
+/// `-hide-names` (E5, D4), `-face-gallery` (E). An ordinary launch ignores them.
+struct TestDisplay: ViewModifier {
+    nonisolated(unsafe) private static let launchArguments = ProcessInfo.processInfo.arguments
+    static let arguments = launchArguments.contains("-uitest") ? launchArguments : []
+    static var faceGallery: Bool { arguments.contains("-face-gallery") }
+
+    func body(content: Content) -> some View {
+        let size = Self.arguments.firstIndex(of: "-text-size").flatMap { $0 + 1 < Self.arguments.count ? Self.arguments[$0 + 1] : nil }
+        if Self.arguments.contains("-wrist-down") {
+            content.environment(\.isLuminanceReduced, true)
+        } else if size == "accessibility2" {
+            content.dynamicTypeSize(.accessibility2)
+        } else {
+            content
         }
     }
 }
@@ -71,6 +102,11 @@ final class WatchNavigation {
             case ("watch", "habit", let id?):
                 routine = nil
                 path = [.day(id)]
+                // A complication's ▶: start that timer, as the face's button said (U26).
+                if url.query?.contains("start=1") == true, let habit = store.habits.first(where: { $0.id == id }),
+                   store.rule(habit, on: store.today()).kind == .duration {
+                    store.startTimerOnWatch(habit)
+                }
             case ("watch", "routine", let id?):
                 guard let habit = store.habits.first(where: { $0.id == id }) else { return }
                 let day = store.today()
@@ -104,8 +140,12 @@ final class WatchDelegate: NSObject, WKApplicationDelegate {
                 WatchModel.shared.link.hold(connectivity)
             case let refresh as WKApplicationRefreshBackgroundTask:
                 Task { @MainActor in
-                    await WatchModel.shared.ensureLoaded()
-                    await WatchModel.shared.widgets.publish(WatchModel.shared.store)
+                    let model = WatchModel.shared
+                    await model.ensureLoaded()
+                    await model.saveWidgetTaps()
+                    await model.widgets.publish(model.store)
+                    model.link.sendNow()
+                    model.scheduleRefresh()
                     refresh.setTaskCompletedWithSnapshot(false)
                 }
             default:
