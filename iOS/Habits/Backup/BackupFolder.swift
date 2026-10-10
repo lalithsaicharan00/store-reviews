@@ -117,13 +117,27 @@ nonisolated struct BackupFolder: Sendable {
         weekdays[(calendar.component(.weekday, from: date) - 1) % 7]
     }
 
-    /// The week's slot (the week of the year, in turn) and the month's.
+    /// The week's slot and the month's, in turn. Weeks are counted without a break from a fixed Sunday: the week of the
+    /// year starts again each January, which put two "weekly" copies a day apart (`BackupCheck`, 10 Oct 2026).
     static func weekSlot(for date: Date, calendar: Calendar = .current) -> String {
-        weeks[calendar.component(.weekOfYear, from: date) % weeks.count]
+        weeks[week(of: date, calendar: calendar) % weeks.count]
     }
 
     static func monthSlot(for date: Date, calendar: Calendar = .current) -> String {
-        months[calendar.component(.month, from: date) % months.count]
+        months[month(of: date, calendar: calendar) % months.count]
+    }
+
+    /// Whole weeks since Sunday 7 January 2001, in the calendar's own days.
+    static func week(of date: Date, calendar: Calendar = .current) -> Int {
+        let sunday = calendar.date(from: DateComponents(year: 2001, month: 1, day: 7)) ?? .distantPast
+        let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: sunday), to: calendar.startOfDay(for: date)).day ?? 0
+        return max(0, days) / 7
+    }
+
+    /// Months since the year 0, so each month has its own number.
+    static func month(of date: Date, calendar: Calendar = .current) -> Int {
+        let parts = calendar.dateComponents([.year, .month], from: date)
+        return max(0, (parts.year ?? 0) * 12 + (parts.month ?? 1) - 1)
     }
 
     /// Older iOS shows a file that isn't downloaded as a `.name.icloud` stand-in; newer iOS keeps it under its own name
@@ -222,11 +236,15 @@ nonisolated struct BackupFolder: Sendable {
                         records: upload.records, sha256: upload.sha256, size: upload.data.count)
         index.copies.removeAll { $0.slot == slot }
         index.copies.append(copy)
-        // The week's and the month's copy, each replaced only once it's a week or a month old (§13.3).
-        for (longer, age) in [(Self.weekSlot(for: upload.createdAt, calendar: calendar), 6.0 * 86_400),
-                              (Self.monthSlot(for: upload.createdAt, calendar: calendar), 27.0 * 86_400)] {
+        // The week's and the month's copy (§13.3): the first copy of each week and month, kept until its slot comes
+        // round again (4 weeks, 6 months later). Never by age: "6 days old" replaced a week's copy on its own Saturday.
+        let period: [(slot: String, of: (Date) -> Int)] = [
+            (Self.weekSlot(for: upload.createdAt, calendar: calendar), { Self.week(of: $0, calendar: calendar) }),
+            (Self.monthSlot(for: upload.createdAt, calendar: calendar), { Self.month(of: $0, calendar: calendar) }),
+        ]
+        for (longer, number) in period {
             let existing = index.copies.first { $0.slot == longer }
-            guard existing.map({ upload.createdAt.timeIntervalSince($0.createdAt) >= age }) ?? true else { continue }
+            guard existing.map({ number($0.createdAt) != number(upload.createdAt) }) ?? true else { continue }
             let file = url(longer)
             try? FileManager.default.removeItem(at: file)
             try FileManager.default.copyItem(at: target, to: file)
