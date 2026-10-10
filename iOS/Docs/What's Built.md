@@ -229,6 +229,22 @@ Design: [Backup, Sync and Accounts — One Seamless Experience](<../../Research/
       Apple Developer account)
 - [ ] The Plus purchase flow's "One last step" and "Turn on sync" lines (waits for the Plus screen design)
 
+## Apple Watch (10–11 Oct 2026, branch `apple-watch`, Current Work 82; Watch check pending)
+
+Designs: [Apple Watch](<Apple Watch/README.md>). Decisions: Design Rules' "Apple Watch". Data and sync: [Architecture 12](<Apple Watch/Data and Sync (Architecture 12).md>).
+
+- [x] **Today on the wrist** from the Watch's own database, opened at once, offline: Today's sections, order and words; ✓, +N, ▶, steps and slips from the round button; a named Undo; done rows sink after the pause; nothing-planned, first-launch and no-habits states
+- [x] **Day details for today:** the dial and main action, Log manually with the Digital Crown (amounts, decimals from the last value, hours and minutes), today's logs (view and Delete), Skip today and Undo skip, streak and best, limits, week goals, tasks, quit runs and slips, milestones
+- [x] **Routines** from any section's ▶: one habit per page, the Crown pages without logging, the list jumps, ✕ keeps a running timer
+- [x] **Timers** shared with the iPhone (one start time, stopped on either device logs once); the goal alert from the device that started it
+- [x] **Notifications:** reminder Done / +1 on the wrist saved with the same ID; names hidden as on the iPhone
+- [x] **Watch face and Smart Stack:** rectangular, circular, corner and inline complications and a Smart Stack widget, drawn from the Watch's own snapshot; buttons that log; names hidden; "Part of Plus" without Plus
+- [x] **Siri on the Watch:** Log a Habit, What's Left Today, Open a Habit
+- [x] **Plus on the Watch:** the offer with the App Store's price, Apple's purchase sheet, Ask to Buy, App Store unreachable, Plus ended (nothing deleted), Restore Purchases, Continue on iPhone
+- [x] **iPhone ↔ Watch sync** over WatchConnectivity: every change both ways, acknowledged, never lost or counted twice (`peer_out`); the first fill in checked parts with every field's stamp; works with the iPhone off and catches up later
+- [x] **42 mm and larger text** without cut-offs
+- [ ] Watch face controls (watchOS 26 Control Center, the Action button): after version 1
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app

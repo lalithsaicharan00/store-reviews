@@ -514,14 +514,15 @@ jobs:
         working-directory: iOS
         run: |
           set -o pipefail
+          # No -sdk: the embedded Watch app and its widgets build for watchOS, the rest for iOS.
           xcodebuild build -project Habits.xcodeproj -scheme Habits \
-            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedDataPhone ARCHS=arm64 \
+            -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedDataPhone ARCHS=arm64 \
             CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee iphone-build.log | grep -E "error:|BUILD" || true
           grep -q "BUILD SUCCEEDED" iphone-build.log
           ls DerivedDataPhone/Build/Products/Debug-iphonesimulator/Habits.app/Watch/ | tee embedded.txt
 
       - name: Pick Watch simulators
-        if: steps.build.outcome == 'success' && (env.WATCH_TESTS != 'none' || env.WATCH_SHOTS == '1' || env.WATCH_PERF == '1')
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && (env.WATCH_TESTS != 'none' || env.WATCH_SHOTS == '1' || env.WATCH_PERF == '1') }}
         timeout-minutes: 15
         run: |
           set -o pipefail
@@ -541,7 +542,7 @@ jobs:
 
       - name: Watch UI tests
         id: tests
-        if: env.WATCH_TESTS != 'none' && steps.build.outcome == 'success'
+        if: ${{ !cancelled() && env.WATCH_TESTS != 'none' && steps.build.outcome == 'success' }}
         working-directory: iOS
         run: |
           set -o pipefail

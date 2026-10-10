@@ -4,6 +4,7 @@ import SwiftUI
 /// mirrors the iPhone's notifications without this app).
 struct PlusScreen: View {
     @Environment(PlusState.self) private var plus
+    @State private var handingOff = false
 
     var body: some View {
         ScrollView {
@@ -51,10 +52,16 @@ struct PlusScreen: View {
         .accessibilityIdentifier("get-plus")
     }
 
-    /// Opens Plus on the iPhone by Handoff (the app's icon in the iPhone's app switcher).
-    private var continueOnIPhone: some View {
-        Button("Continue on iPhone") {}
+    /// Opens Plus on the iPhone by Handoff: this page is offered to the iPhone all the time it's open (the app's icon in
+    /// the iPhone's app switcher opens ≡ › Plus there). watchOS can't push an app to the iPhone's screen, so the button
+    /// says where to look.
+    @ViewBuilder private var continueOnIPhone: some View {
+        Button("Continue on iPhone") { withAnimation { handingOff = true } }
             .accessibilityIdentifier("continue-on-iphone")
+        if handingOff {
+            detail("On your iPhone, open the app switcher and tap Often Enough at the bottom.")
+                .accessibilityIdentifier("handoff-hint")
+        }
     }
 
     // G1
