@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Merged with the keys Xcode generates (GENERATE_INFOPLIST_FILE). The Apple Watch app (Current Work 82). -->
+	<!-- A tap on the iPhone's timer Live Activity in the Smart Stack opens the Watch app at that habit (R8). -->
+	<key>WKSupportsLiveActivityLaunchAttributeTypes</key>
+	<array>
+		<string>HabitTimerAttributes</string>
+	</array>
+</dict>
+</plist>

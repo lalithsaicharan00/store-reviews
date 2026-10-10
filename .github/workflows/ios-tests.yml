@@ -424,3 +424,241 @@ jobs:
             iOS/perf-xctest
             iOS/screenshots
           retention-days: 7
+
+  # The Apple Watch app (Current Work 82), its own job so the iPhone's runs stay as they are. Runs on a push whose
+  # commit message contains one of these tags (Rulebook T10: only when deliberately testing):
+  #   [watch-build]  the core's watchOS framework, the Watch app and the iPhone app that embeds it; no tests
+  #   [watch-ci]     that, plus the core's tests (thousands of seeded paired-device runs, the extreme first fill) and the
+  #                  Watch UI tests (WATCH_TESTS below, or the classes named after "[watch-tests:" up to "]")
+  #   [watch-shots]  that, plus WatchScreenshotTests on 46 mm and 42 mm, exported as PNGs to ci-results/watch/shots
+  #   [watch-perf]   the Watch speed runs (Tools/perf/measure_watch_perf.sh)
+  # Results: git fetch origin ci-results && git show origin/ci-results:watch/latest.md
+  watch:
+    if: >-
+      github.event_name == 'push' && (
+      contains(github.event.head_commit.message, '[watch-build]') ||
+      contains(github.event.head_commit.message, '[watch-ci]') ||
+      contains(github.event.head_commit.message, '[watch-shots]') ||
+      contains(github.event.head_commit.message, '[watch-perf]'))
+    concurrency:
+      group: watch-job-${{ github.ref }}
+      cancel-in-progress: false
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      MESSAGE: ${{ github.event.head_commit.message }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: What to run
+        run: |
+          python3 - <<'PY' >> "$GITHUB_ENV"
+          import os, re
+          m = os.environ["MESSAGE"]
+          tests = re.search(r"\[watch-tests:([^\]]*)\]", m)
+          ci = "[watch-ci]" in m
+          shots = "[watch-shots]" in m
+          print("WATCH_CORE=" + ("1" if ci else "0"))
+          print("WATCH_IPHONE=" + ("0" if "[watch-perf]" in m and not ci else "1"))
+          print("WATCH_TESTS=" + (tests.group(1).strip() if tests else ("WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests,WatchRoutineTests,WatchPlusTests,WatchLogManuallyTests" if ci else "none")))
+          print("WATCH_SHOTS=" + ("1" if shots else "0"))
+          print("WATCH_PERF=" + ("1" if "[watch-perf]" in m else "0"))
+          PY
+          cat "$GITHUB_ENV"
+
+      - name: Speed rules
+        run: iOS/Tools/perf/check_rules.sh
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}-watch
+          restore-keys: |
+            gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+            gradle-${{ runner.os }}-
+
+      - name: Core tests (paired devices, first fill, migrations)
+        id: core
+        if: env.WATCH_CORE == '1'
+        working-directory: Core
+        env:
+          PEER_SEEDS: "3000"
+          PEER_EXTREME: "1"
+        run: ./gradlew jvmTest
+
+      - name: Build the Watch app
+        id: build
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing -project Habits.xcodeproj -scheme OftenEnoughWatch \
+            -sdk watchsimulator -destination "generic/platform=watchOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 \
+            CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee watch-build.log | grep -E "error:|warning: .*Watch|BUILD" || true
+          grep -q "BUILD SUCCEEDED" watch-build.log
+
+      - name: Build the iPhone app with the Watch app inside
+        id: iphone
+        if: env.WATCH_IPHONE == '1' && steps.build.outcome == 'success'
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          xcodebuild build -project Habits.xcodeproj -scheme Habits \
+            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedDataPhone ARCHS=arm64 \
+            CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee iphone-build.log | grep -E "error:|BUILD" || true
+          grep -q "BUILD SUCCEEDED" iphone-build.log
+          ls DerivedDataPhone/Build/Products/Debug-iphonesimulator/Habits.app/Watch/ | tee embedded.txt
+
+      - name: Pick Watch simulators
+        if: steps.build.outcome == 'success' && (env.WATCH_TESTS != 'none' || env.WATCH_SHOTS == '1' || env.WATCH_PERF == '1')
+        timeout-minutes: 15
+        run: |
+          set -o pipefail
+          {
+            sudo xcodebuild -runFirstLaunch
+            xcrun simctl list runtimes
+            xcrun simctl list devicetypes | grep -i watch
+            RUNTIME=$(xcrun simctl list runtimes available -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x.get('platform')=='watchOS']; print(r[-1]['identifier'])")
+            pick() { xcrun simctl list devicetypes -j | python3 -c "import json,sys; t=[x for x in json.load(sys.stdin)['devicetypes'] if 'Watch' in x['name'] and '$1' in x['name']]; print(t[-1]['identifier'])"; }
+            BIG=$(xcrun simctl create "Watch 46" "$(pick 46mm)" "$RUNTIME")
+            SMALL=$(xcrun simctl create "Watch 42" "$(pick 42mm)" "$RUNTIME")
+            echo "WATCH46=$BIG" >> "$GITHUB_ENV"
+            echo "WATCH42=$SMALL" >> "$GITHUB_ENV"
+            xcrun simctl boot "$BIG"; xcrun simctl bootstatus "$BIG" -b
+            xcrun simctl list devices booted
+          } 2>&1 | tee iOS/watch-sim.log
+
+      - name: Watch UI tests
+        id: tests
+        if: env.WATCH_TESTS != 'none' && steps.build.outcome == 'success'
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          ONLY=""; for t in ${WATCH_TESTS//,/ }; do ONLY="$ONLY -only-testing:OftenEnoughWatchUITests/$t"; done
+          xcodebuild test-without-building -project Habits.xcodeproj -scheme OftenEnoughWatch -sdk watchsimulator \
+            -destination "id=$WATCH46" -derivedDataPath DerivedData -resultBundlePath WatchResults.xcresult $ONLY \
+            2>&1 | tee watch-test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
+          grep -q "TEST EXECUTE SUCCEEDED" watch-test.log
+
+      - name: Watch screenshots (46 mm, 42 mm, larger text)
+        id: shots
+        if: ${{ !cancelled() && env.WATCH_SHOTS == '1' && steps.build.outcome == 'success' }}
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          xcrun simctl boot "$WATCH42" || true; xcrun simctl bootstatus "$WATCH42" -b
+          for SIM in "$WATCH46" "$WATCH42"; do
+            xcodebuild test-without-building -project Habits.xcodeproj -scheme OftenEnoughWatch -sdk watchsimulator \
+              -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath "Shots-$SIM.xcresult" \
+              -only-testing:OftenEnoughWatchUITests/WatchScreenshotTests 2>&1 | tee -a watch-shots.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
+          done
+          mkdir -p shots
+          for r in Shots-*.xcresult; do xcrun xcresulttool export attachments --path "$r" --output-path "shots-raw-${r%.xcresult}" || true; done
+          python3 Tools/ci/watch_shots.py shots-raw-* shots
+
+      - name: Watch speed runs
+        id: perf
+        if: ${{ !cancelled() && env.WATCH_PERF == '1' && steps.build.outcome == 'success' }}
+        working-directory: iOS
+        run: Tools/perf/measure_watch_perf.sh "$WATCH46" watch-perf
+
+      - name: Write the Watch summary
+        if: always()
+        run: |
+          {
+            echo "# Watch: ${GITHUB_REF_NAME} @ ${GITHUB_SHA:0:7}"
+            echo
+            echo "Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} · $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo "Commit: $(git log -1 --format=%s)"
+            echo
+            echo "- Core tests: ${{ steps.core.outcome }}"
+            echo "- Watch build: ${{ steps.build.outcome }}"
+            echo "- iPhone build with the Watch app: ${{ steps.iphone.outcome }}"
+            echo "- Watch UI tests ($WATCH_TESTS): ${{ steps.tests.outcome }}"
+            echo "- Screenshots: ${{ steps.shots.outcome }}"
+            echo "- Speed: ${{ steps.perf.outcome }}"
+            if [ -f iOS/embedded.txt ]; then echo; echo "Embedded in the iPhone app: $(cat iOS/embedded.txt | tr '\n' ' ')"; fi
+            for log in iOS/watch-build.log iOS/iphone-build.log; do
+              if [ -f "$log" ] && ! grep -q "BUILD SUCCEEDED" "$log"; then
+                echo; echo "## Errors in $(basename $log)"; echo '```'; grep -E "error:" "$log" | sed 's|.*/iOS/||' | sort -u | head -80; echo '```'
+              fi
+            done
+            if ls Core/build/test-results/jvmTest/*.xml >/dev/null 2>&1; then
+              echo; echo "## Core tests"; echo '```'
+              python3 - <<'PY'
+          import glob, re
+          for f in sorted(glob.glob("Core/build/test-results/jvmTest/*.xml")):
+              s = open(f, encoding="utf-8", errors="replace").read()
+              m = re.search(r'<testsuite name="([^"]+)" tests="(\d+)" skipped="(\d+)" failures="(\d+)" errors="(\d+)"[^>]*time="([^"]+)"', s)
+              if m: print(f"{m.group(1).split('.')[-1]}: {m.group(2)} tests, {m.group(4)} failures, {m.group(5)} errors, {m.group(6)} s")
+              for line in re.findall(r"(first fill:[^\n<]*|peer property test:[^\n<]*|random sync:[^\n<]*)", s): print("  " + line)
+              for fail in re.findall(r'<testcase name="([^"]+)"[^>]*>\s*<failure message="([^"]{0,400})', s): print("  FAILED " + fail[0] + ": " + fail[1])
+          PY
+              echo '```'
+            fi
+            if [ -f iOS/watch-test.log ]; then
+              echo; echo "## Watch UI tests"; echo '```'
+              grep -E "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-test.log | sed 's/^.*Test Case/Test Case/' | sort -u | head -80
+              echo '```'
+            fi
+            if [ -f iOS/watch-shots.log ]; then
+              echo; echo "## Screenshots"; echo '```'
+              grep -E "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-shots.log | sed 's/^.*Test Case/Test Case/' | sort -u | head -40
+              ls iOS/shots | head -200
+              echo '```'
+            fi
+            if [ -f iOS/watch-perf/perf-summary.md ]; then echo; echo "## Speed"; echo; cat iOS/watch-perf/perf-summary.md; fi
+          } > watch-summary.md
+          cat watch-summary.md
+          cat watch-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Push the Watch summary and screenshots to ci-results
+        if: always()
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DIR="$RUNNER_TEMP/ci-results"; mkdir -p "$DIR"; cd "$DIR"
+          git init -q
+          git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for attempt in 1 2 3 4; do
+            if git fetch -q --depth 1 origin ci-results; then git checkout -q -f -B ci-results FETCH_HEAD; git clean -fdq; else git checkout -q --orphan ci-results; fi
+            mkdir -p watch/runs watch/schemas
+            cp "$GITHUB_WORKSPACE/watch-summary.md" watch/latest.md
+            cp watch/latest.md "watch/runs/$(date -u +%Y-%m-%d-%H%M)-${GITHUB_SHA:0:7}.md"
+            cp "$GITHUB_WORKSPACE"/Core/schemas/app.habits.core.HabitDatabase/*.json watch/schemas/ 2>/dev/null || true
+            if [ -d "$GITHUB_WORKSPACE/iOS/shots" ]; then rm -rf watch/shots; mkdir -p watch/shots; cp -R "$GITHUB_WORKSPACE"/iOS/shots/. watch/shots/; fi
+            if [ -d "$GITHUB_WORKSPACE/iOS/watch-perf" ]; then rm -rf watch/perf; mkdir -p watch/perf; cp "$GITHUB_WORKSPACE"/iOS/watch-perf/*.md "$GITHUB_WORKSPACE"/iOS/watch-perf/*.txt watch/perf/ 2>/dev/null || true; fi
+            git add -A
+            git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Watch results for ${GITHUB_SHA:0:7} (${GITHUB_REF_NAME})" || true
+            git push -q origin ci-results && break
+            sleep $((attempt * 5))
+          done
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: watch-results
+          path: |
+            watch-summary.md
+            Core/build/reports/tests
+            Core/schemas
+            iOS/watch-build.log
+            iOS/iphone-build.log
+            iOS/watch-test.log
+            iOS/watch-shots.log
+            iOS/watch-sim.log
+            iOS/shots
+            iOS/watch-perf
+            iOS/WatchResults.xcresult
+          retention-days: 7

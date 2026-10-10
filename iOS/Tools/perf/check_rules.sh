@@ -13,7 +13,7 @@ grep -q 'SWIFT_OPTIMIZATION_LEVEL = "-Onone"' "$P" &&
 [ "$(grep -c 'KOTLIN_FRAMEWORK_BUILD_TYPE = release' "$P")" -ge 2 ] ||
   fail "The Kotlin core isn't built as release in both configurations" "Rulebook S1"
 
-SWIFT=$(find Habits HabitsLiveActivity Shared -name '*.swift')
+SWIFT=$(find Habits HabitsLiveActivity Shared Watch WatchShared WatchWidgets -name '*.swift')
 
 # 2. A TimelineView anchored at .now or .distantPast redraws nonstop (froze the app, 28 Sep).
 grep -nE 'periodic\(from: *(\.now|\.distantPast|Date\(\))' $SWIFT &&

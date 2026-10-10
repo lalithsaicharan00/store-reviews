@@ -699,11 +699,7 @@ struct ProgressQuitRowView: View {
     }
 
     /// "12 d 4 h", "5 h 20 min".
-    static func short(_ t: TimeInterval) -> String {
-        let minutes = max(0, Int(t / 60))
-        let d = minutes / 1440, h = minutes % 1440 / 60, m = minutes % 60
-        return d > 0 ? "\(d) d \(h) h" : "\(h) h \(m) min"
-    }
+    static func short(_ t: TimeInterval) -> String { RunWords.short(t) }
 }
 
 /// A quit card's headline: the run going on now, "12 d 11 h current run". Only this text ticks, once a minute,

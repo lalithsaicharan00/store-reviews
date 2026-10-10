@@ -62,6 +62,38 @@ enum Format {
     }
 }
 
+/// A quit run's length: "15 d 22 h", "3 h 20 min" (moved from ProgressQuitRowView).
+enum RunWords {
+    static func short(_ t: TimeInterval) -> String {
+        let minutes = max(0, Int(t / 60))
+        let d = minutes / 1440, h = minutes % 1440 / 60, m = minutes % 60
+        return d > 0 ? "\(d) d \(h) h" : "\(h) h \(m) min"
+    }
+}
+
+/// A running timer's goal alert, moved from TimerPresence so the Apple Watch says the same (D3).
+enum TimerWords {
+    static func period(_ habit: Habit) -> String {
+        switch habit.frequency {
+        case .perWeek: " this week"
+        case .perMonth: " this month"
+        case .perYear: " this year"
+        default: ""
+        }
+    }
+
+    /// "20 min done." / "That's your 1 h limit for today." Says what counts, never "failed" or
+    /// "overdue" (Design Rules, copy).
+    static func goalMessage(_ habit: Habit, goal: Double) -> String {
+        let amount = Format.minutes(goal)
+        let period = period(habit)
+        if habit.atMost {
+            return "That's your \(amount) limit for \(period.isEmpty ? "today" : String(period.dropFirst()))."
+        }
+        return "\(amount) done\(period). The timer keeps going until you stop it."
+    }
+}
+
 // MARK: - Today's rows
 
 /// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 steps", "1/3 times", "0/2 cups max": one format for every habit.
@@ -162,6 +194,12 @@ enum DayWords {
         day.date(calendar: calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
     }
 
+    /// "Paused · back Mon, 13 Oct", or "Paused until you turn it back on" (moved from HabitPageView).
+    static func paused(_ pause: HabitPause, calendar: Calendar) -> String {
+        guard let last = pause.through else { return "Paused until you turn it back on" }
+        return "Paused · back " + short(last.adding(days: 1, calendar: calendar), calendar: calendar)
+    }
+
     /// "9:40 PM", in the given calendar's zone.
     static func clock(_ date: Date, calendar: Calendar) -> String {
         date.formatted(Date.FormatStyle(date: .omitted, time: .shortened, calendar: calendar, timeZone: calendar.timeZone))
@@ -230,6 +268,7 @@ extension Entry {
         case .daySheet: return "\(verb) in Day details."
         case .shortcut: return "\(verb) with Siri or Shortcuts."
         case .widget: return "\(verb) from a widget."
+        case .watch: return "\(verb) on Apple Watch."
         }
     }
 }

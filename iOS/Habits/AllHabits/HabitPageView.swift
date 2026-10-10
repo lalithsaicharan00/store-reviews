@@ -236,10 +236,7 @@ struct HabitPageView: View {
         return HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart, short: true))
     }
 
-    static func pausedText(_ pause: HabitPause, store: HabitStore) -> String {
-        guard let last = pause.through else { return "Paused until you turn it back on" }
-        return "Paused · back " + PauseSheet.short(last.adding(days: 1, calendar: store.calendar), calendar: store.calendar)
-    }
+    static func pausedText(_ pause: HabitPause, store: HabitStore) -> String { DayWords.paused(pause, calendar: store.calendar) }
 
     static func firstOfMonth(_ day: LocalDay, _ calendar: Calendar) -> LocalDay {
         LocalDay(year: day.year, month: day.month, day: 1)

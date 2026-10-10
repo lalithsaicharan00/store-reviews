@@ -117,9 +117,7 @@ struct PauseSheet: View {
     }
 
     /// "Mon 6 Oct".
-    static func short(_ day: LocalDay, calendar: Calendar) -> String {
-        day.date(calendar: calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
-    }
+    static func short(_ day: LocalDay, calendar: Calendar) -> String { DayWords.short(day, calendar: calendar) }
 }
 
 /// Pause…, Resume or Cancel Pause, for a row's long-press menu.
