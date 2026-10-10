@@ -363,38 +363,3 @@ extension View {
         listRowInsets(EdgeInsets()).listRowBackground(Color.clear)
     }
 }
-
-extension HabitStore {
-    /// One day's result, never a weekly total labelled Today.
-    func dayResult(_ habit: Habit, on day: LocalDay) -> String {
-        if isPaused(habit, on: day) { return "Paused" }
-        if isSkipped(habit, on: day) { return "Skipped" }
-        if day < startDay(of: habit) { return "Before it started" }
-        let rule = rule(habit, on: day)
-        let progress = dayProgress(of: rule, on: day)
-        let goal = dayGoal(of: rule)
-        // A period total has no invented daily target. This row describes only the selected day;
-        // the saved weekly/monthly/yearly plan is shown separately in the sheet.
-        if !rule.frequency.isDayBased && !rule.frequency.isFlexible {
-            switch rule.kind {
-            case .amount(let unit, _): return HabitCopy.amount(progress, unit) + " logged"
-            case .duration: return Format.minutes(progress) + " logged"
-            case .check: return HabitCopy.amount(progress, rule.checkUnit ?? "times") + " logged"
-            default: break
-            }
-        }
-        if rule.atMost {
-            if rule.kind == .duration { return "\(Format.minutes(progress)) logged · limit \(Format.minutes(goal))" }
-            if case .amount(let unit, _) = rule.kind { return "\(HabitCopy.amount(progress, unit)) logged · limit \(HabitCopy.amount(goal, unit))" }
-        }
-        switch rule.kind {
-        case .quit: return entries(of: habit.id, on: day).isEmpty ? "No slips" : "Slipped"
-        case .task: return progress > 0 ? "Done" : "Not done"
-        case .check where goal <= 1: return progress > 0 ? "Done" : "Not done"
-        default:
-            var daily = rule
-            daily.frequency = .daily
-            return goalLine(daily, progress: progress, goal: goal)
-        }
-    }
-}

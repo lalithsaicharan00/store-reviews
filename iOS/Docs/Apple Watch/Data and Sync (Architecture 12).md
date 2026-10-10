@@ -36,6 +36,12 @@ The same tables as the iPhone: `habit`, `step`, `reminder`, `entry`, `setting`, 
   a year with indexes; Architecture 11's yearly compaction applies here too. Watches have 32–64 GB.
 - **Where:** the Watch app's own container. Its complications and Smart Stack widgets read a small snapshot file in an
   App Group (as the iPhone's widgets do, U26), never the database.
+- **A complication's ✓ or +** (as built, 10 Oct 2026): the face changes at once to the app's own "after one tap" card,
+  and the tap is written to the waiting-taps file in the App Group (the iPhone's `WidgetTaps` format). The Watch app
+  saves waiting taps in order, each once, whenever it runs: on opening, on its background refresh (watchOS allows about
+  four an hour with a complication on the face; the app asks for one every 15 minutes) and when the iPhone's changes
+  wake it. A watchOS widget's intent runs in the extension, which has no database, so a tap reaches the database at the
+  app's next run, not at once; it's on disk from the moment it's made and never lost. To check on the Series 10.
 - **Test launches** use an in-memory database and their own App Group folder (D8).
 
 ## 3. The two ways changes travel
@@ -44,12 +50,23 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
 
 ### 3.1 Watch ⇄ iPhone (WatchConnectivity), from the first version
 
-1. **First fill.** When the Watch app first runs with an empty database (or a database with fewer rows than the
-   iPhone says it has), the iPhone sends a whole copy as a **checked backup file** (the core's `backupFile`, with its
-   checksum) by `transferFile`. The Watch checks it (`checkBackup`) and **merges** it in (`restore`, Merge), never
-   replacing anything. The Watch shows "Getting your habits from your iPhone…" until then (A6, WA2).
+1. **First fill.** When the Watch app first runs with an empty database (or was wiped, or never finished its fill), it
+   asks the iPhone for a whole copy, a part at a time. Each part is a **checked file** made by the core
+   (`peerFillPart`: a zip with a manifest, a record count and the SHA-256 of its records, made and checked like the
+   backup file) sent by `transferFile`; the Watch checks it (`acceptPeerFill`) and **merges** it, never replacing
+   anything. A damaged part is refused before anything changes, and asked for again. Habits, steps, reminders and
+   settings come first, then logs newest first, so Today is right after the first parts; a fill cut off half-way resumes
+   from the last part that arrived. The Watch shows "Getting your habits from your iPhone…" until the last part (A6, WA2).
+   *Changed while building (10 Oct 2026):* this said "the core's `backupFile`… merges it in (`restore`, Merge)". A backup
+   file carries no sync stamps, so a restore stamps every row anew on the Watch; the copy would then win over edits made
+   on the iPhone while it travelled (a rename made after the file left was undone when the Watch sent its "newer" copy
+   back). So a fill part carries every field's own stamp and merges exactly as if each change had arrived one by one
+   (`PeerSyncTest.theFillNeverOverwritesAChangeMadeWhileItTravelled`). Measured: an extreme account (25,000 logs a year
+   for 15 years) fills in 76 parts of at most 73 KB, 22.5 s on GitHub's JVM, a Watch database of 118 MB.
 2. **After that, ops both ways.** Each side keeps a small queue for the other device:
-   - a new table **`peer_out`** (seq, op ID, op), filled in the same transaction as the change (like `outbox`);
+   - a new table **`peer_out`** (seq, op ID, op; schema 9), filled in the same transaction as the change (like `outbox`)
+     once the device has started its link (`peerStart`: the Watch when it first opens, the iPhone when its Watch first says
+     hello or asks for a fill, before the first part is made, so nothing falls between the fill and the queue);
    - sent in batches by `transferUserInfo` (queued by the system, delivered in the background, survives the app being
      closed), 0.5 s after the last change (S16); a large batch (more than ~100 ops) goes as a file;
    - the receiver applies the batch in one transaction (`SyncWriter.receive`) and then acknowledges the highest
@@ -59,7 +76,8 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
    the Watch itself isn't syncing with iCloud. So when the iPhone receives an op from the Watch, it also puts it in its
    own `outbox`; and ops the iPhone fetches from iCloud go into `peer_out` for the Watch. **This is the one change to
    today's core:** `receive(op, from = peer)` forwards to the other paths; an op never goes back to where it came from,
-   and the op ID (unique in each queue) stops loops.
+   and the op ID (unique in each queue) stops loops. *As built:* only an op that changed something is passed on; one
+   that changed nothing is already known here, so it stops (3,000 seeded three-device runs converge, `PeerSyncTest`).
 4. **The watch face.** While our complication is on the active face, the iPhone sends batches that change today by
    `transferCurrentComplicationUserInfo` (50 a day, Apple), so the face updates promptly; otherwise by
    `transferUserInfo`. The Watch reloads its widgets after every applied batch.

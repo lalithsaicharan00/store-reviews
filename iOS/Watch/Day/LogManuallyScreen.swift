@@ -100,6 +100,12 @@ struct AmountEntry: View {
                 }
             }
         }
+        .background {
+            #if DEBUG
+            // Speed runs only: the driver turns the Crown (WatchPerfControl).
+            Color.clear.onChange(of: WatchPerfControl.shared.crownStep) { _, tick in change(tick % 20 < 10 ? step : -step) }
+            #endif
+        }
         .onAppear {
             guard !started else { return }
             started = true

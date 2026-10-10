@@ -87,6 +87,7 @@ struct TodayList: View {
 
     var body: some View {
         let ordered = orderedRows()
+        ScrollViewReader { proxy in
         List {
             if store.problem != nil {
                 SaveProblemBanner()
@@ -110,6 +111,13 @@ struct TodayList: View {
         }
         .listStyle(.plain)
         .accessibilityIdentifier("today-list")
+        .onAppear { WatchPerf.todayAppeared() }
+        .background {
+            #if DEBUG
+            PerfScroller(proxy: proxy, ids: plan.sections.flatMap { ordered[$0.id] ?? $0.rows }.map(\.id))
+            #endif
+        }
+        }
     }
 
     /// Each section's rows: the held order while Today holds still, otherwise done rows below the rest (unless the
@@ -314,3 +322,24 @@ struct FirstLaunchView: View {
         .accessibilityIdentifier("first-launch")
     }
 }
+
+#if DEBUG
+/// Speed runs only: scrolls Today a row at a time down and back up when the driver says so (WatchPerfControl). Its own
+/// small view, so the driver's ticks redraw it and never the list (S6).
+private struct PerfScroller: View {
+    let proxy: ScrollViewProxy
+    let ids: [String]
+    private let control = WatchPerfControl.shared
+
+    var body: some View {
+        Color.clear
+            .onChange(of: control.scrollStep) { _, step in
+                guard !ids.isEmpty else { return }
+                let cycle = max(1, ids.count * 2 - 2)
+                let i = step % cycle
+                let index = i < ids.count ? i : cycle - i
+                withAnimation(.easeOut(duration: 0.1)) { proxy.scrollTo(ids[index], anchor: .center) }
+            }
+    }
+}
+#endif

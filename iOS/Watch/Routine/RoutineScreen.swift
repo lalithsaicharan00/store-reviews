@@ -68,6 +68,14 @@ struct RoutineScreen: View {
             }
         }
         .onDisappear { TimerPresence.playerOpen = false }
+        .background {
+            #if DEBUG
+            // Speed runs only: the driver pages as the Crown would (WatchPerfControl).
+            Color.clear.onChange(of: WatchPerfControl.shared.pageStep) { _, _ in
+                withAnimation { index = (index + 1) % max(1, session.habits.count) }
+            }
+            #endif
+        }
         .onChange(of: index) { _, new in UserDefaults.standard.set(new, forKey: placeKey) }
         .accessibilityIdentifier("routine")
     }

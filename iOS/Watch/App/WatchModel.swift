@@ -135,6 +135,22 @@ final class WatchModel {
         if store.isPlus != plus { store.isPlus = plus }
     }
 
+    #if DEBUG
+    /// Test launches: history added in one transaction, then read back (a year of logs for the speed runs).
+    func importForTest(_ entries: [Entry]) async {
+        guard let repository else { return }
+        _ = try? await repository.importAll(snapshot: Snapshot(habits: [], steps: [], reminders: [], entries: entries.map(\.record), settings: []))
+        await store.load()
+    }
+
+    /// Speed runs: a batch as if from the iPhone, merged and shown the way `WatchLink` does.
+    func applyPeerBatchForTest(_ batch: String) async throws {
+        guard let repository else { return }
+        _ = try await repository.acceptPeerBatch(batch: batch)
+        receivedFromPhone()
+    }
+    #endif
+
     /// Today as the person's day counts it (D7, WA5).
     var today: LocalDay { store.today() }
 }

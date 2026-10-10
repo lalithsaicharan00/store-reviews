@@ -20,7 +20,31 @@ enum WatchFixtures {
         await store.flush()
         await log(name, store: store)
         await store.flush()
+        #if DEBUG
+        if arguments.contains("-perf-history") { await addYear(model) }
+        #endif
     }
+
+    #if DEBUG
+    /// A year of history for every habit (the speed runs, S2: "test with a year of history").
+    private static func addYear(_ model: WatchModel) async {
+        let store = model.store
+        let today = store.today()
+        var entries: [Entry] = []
+        for habit in store.habits where habit.kind != .quit && habit.kind != .task {
+            for d in 1...365 where d % 3 != 0 {
+                let day = today.adding(days: -d, calendar: store.calendar)
+                let value: Double = switch habit.kind {
+                case .amount: max(1, store.goal(of: habit) / 2)
+                case .duration: 10
+                default: 1
+                }
+                entries.append(Entry(habitID: habit.id, day: day, value: value, createdAt: day.date(calendar: store.calendar), source: .watch))
+            }
+        }
+        await model.importForTest(entries)
+    }
+    #endif
 
     private static let day: TimeInterval = 86_400
 
