@@ -284,7 +284,14 @@ final class BackupUITests: XCTestCase {
         let create = XCTAttachment(screenshot: app.screenshot()); create.name = "create-account-sheet"; create.lifetime = .keepAlways; add(create)
         app.buttons["sign-in-cancel"].tap()
         XCTAssertTrue(app.navigationBars["Create Account"].waitForNonExistence(timeout: 5))
-        app.navigationBars["Account"].buttons.firstMatch.tap()
+        // Back once the sheet has gone, checked at each step (T12): a Back tapped while Create Account was still
+        // sliding away was taken by nothing, and Account stayed (run 38024262349).
+        let back = app.navigationBars["Account"].buttons.firstMatch
+        for _ in 0..<3 where app.navigationBars["Account"].exists {
+            _ = waitUntil(3) { back.isHittable }
+            back.tap()
+            _ = app.navigationBars["Account"].waitForNonExistence(timeout: 3)
+        }
         // Back on Today before the menu opens again: ≡ tapped while Account was still sliding away left the menu open
         // with Backup & Export not taken (run 37995167302).
         XCTAssertTrue(app.navigationBars["Account"].waitForNonExistence(timeout: 5), labels(app))
