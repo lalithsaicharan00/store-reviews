@@ -135,7 +135,7 @@ final class PerformanceUITests: XCTestCase {
 
     func testBackupPage() {
         open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-backup"])
-        open("Backup & Export", tapping: app.buttons["menu-backup"], until: app.navigationBars["Backup & Export"])
+        open("iCloud & Backup", tapping: app.buttons["menu-backup"], until: app.navigationBars["iCloud & Backup"])
         ready()
         keepGoing(scrollUpAndDown)
     }

@@ -43,9 +43,11 @@ final class AppModel {
     /// A running timer on the Lock Screen, and its one "goal reached" notification.
     let timerPresence = TimerPresence()
     let router = AppRouter()
-    /// Keeps this device in step with the account's other devices once someone signs in (Plus). Nil without a database.
-    let sync: SyncService?
-    /// Where the backup goes, whether it works, moving and restoring (Backup, Sync and Accounts). Nil without a database.
+    /// Sync with the person's own iCloud (Architecture 11; Rulebook D16). Nil without a database.
+    let cloud: CloudSync?
+    /// This device's ID (kept in its Keychain): its iCloud backup folder, and the free plan's syncing device.
+    let identity: DeviceIdentity
+    /// The backup files, restoring and exporting (Architecture 03, 11 §13.3). Nil without a database.
     let backup: BackupCenter?
     let widgets = WidgetPublisher()
     /// The ≡ menu and Today's navigation path.
@@ -54,14 +56,6 @@ final class AppModel {
     let lock: AppLock
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
-
-    /// Debug builds (Xcode, GitHub's UI tests) use dev; release builds (TestFlight, the App Store) use production, which
-    /// has no test sign-ins. Launch a debug build with `-api <url>` to point it elsewhere.
-    #if DEBUG
-    private static let apiBase = URL(string: "https://api-dev.oftenenough.com")!
-    #else
-    private static let apiBase = URL(string: "https://api.oftenenough.com")!
-    #endif
 
     static let refreshTaskID = "com.oftenenough.app.refresh"
 
@@ -77,14 +71,6 @@ final class AppModel {
         if ProcessInfo.processInfo.arguments.contains("-testlaunch-report") { TestLaunchIsolation.makeReport() }
         if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-widget-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
             UserDefaults(suiteName: WidgetDisk.group)?.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.widgetTiming")
-        }
-        // SyncDeviceTests (Current Work 67): `-sync-old-timing on` brings back the sync timing from before item 67 (3 s,
-        // no background time), so the same build shows the old problem and the fix side by side (T12).
-        if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-sync-old-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
-            UserDefaults.standard.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.syncOldTiming")
-        }
-        if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-sync-fail"), flag + 1 < ProcessInfo.processInfo.arguments.count {
-            UserDefaults.standard.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.syncFail")
         }
         WidgetTiming.mark("app: model init")
         // WidgetLatencyDeviceTests: the old week-long widget timelines or the new short ones, side by side (S2).
@@ -142,20 +128,17 @@ final class AppModel {
         #endif
         persistence = opened
         store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository, databaseOpened: opened != nil)
-        var api = Self.apiBase
-        #if DEBUG
-        if let i = arguments.firstIndex(of: "-api"), i + 1 < arguments.count, let url = URL(string: arguments[i + 1]) { api = url }
-        #endif
-        // A test launch on its in-memory database never uses the app's own sign-in (its keychain and account keys are
-        // named after the store): on a real iPhone it could otherwise sync its demo habits into the person's account.
+        // A test launch never uses the person's iCloud (D8): its device ID is named after its own store, and its iCloud is
+        // `FakeCloud`, signed out unless the test asks (`-test-cloud`), so demo habits can never reach the person's iCloud.
         let testLaunch = arguments.contains("-uitest")
         let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil }
             ?? (testLaunch ? "uitest" : "habits")
-        sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: Self.resetsDatabase(arguments)) }
-        // A test launch starts without a notice another test left ("Signed out on this iPhone", T8).
-        if testLaunch { sync?.forgetSignedOutBy() }
-        if let opened, let sync {
-            backup = BackupCenter(repository: opened.repository, sync: sync, store: store, sandboxed: testLaunch)
+        let identity = DeviceIdentity(storeName: storeName, reset: Self.resetsDatabase(arguments))
+        self.identity = identity
+        let cloud = opened.map { CloudSync(repository: $0.repository, transport: Self.cloudTransport(arguments), identity: identity) }
+        self.cloud = cloud
+        if let opened {
+            backup = BackupCenter(repository: opened.repository, identity: identity, cloud: cloud, store: store, sandboxed: testLaunch)
         } else {
             backup = nil
         }
@@ -193,6 +176,14 @@ final class AppModel {
         await timerPresence.sync(store)
     }
 
+    /// The person's iCloud through `CKSyncEngine`; for any test launch (`-uitest`, `-dbname`), `FakeCloud` instead (D8).
+    private static func cloudTransport(_ arguments: [String]) -> CloudTransport {
+        #if DEBUG
+        if arguments.contains("-uitest") || arguments.contains("-dbname") { return CloudTestStates.transport(arguments) }
+        #endif
+        return CloudKitTransport()
+    }
+
     /// `-reset-db` (system tests: `-dbname habits -reset-db`). On a real iPhone it never deletes the person's own
     /// database, "habits", or its sign-in: those tests are for the simulator (D8; found 8 Oct 2026, Current Work 74).
     private static func resetsDatabase(_ arguments: [String]) -> Bool {
@@ -225,11 +216,11 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
                 await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))
             }
-            // Demo data never goes into an account: a reinstalled Debug build is still signed in (the Keychain survives
-            // deleting the app), and demo habits added before the account's data arrives would merge into it (8 Oct
-            // 2026, Current Work 72: 28 demo habits reached the user's account and had to be removed by ID).
-            // Test launches have their own in-memory database (D8): no account to protect, and no Keychain read at launch.
-            let signedIn = !ProcessInfo.processInfo.arguments.contains("-uitest") && (sync?.isSignedIn ?? false)
+            // Demo data never goes to iCloud (D14, Architecture 11 §13.1): a Debug build on a phone with iCloud adds none,
+            // so demo habits can't merge into the person's habits there (8 Oct 2026, Current Work 72: 28 demo habits
+            // reached the user's account and had to be removed by ID). Test launches have their own database and iCloud (D8).
+            let testLaunch = ProcessInfo.processInfo.arguments.contains("-uitest") || ProcessInfo.processInfo.arguments.contains("-dbname")
+            let signedIn = !testLaunch && FileManager.default.ubiquityIdentityToken != nil
             if !ProcessInfo.processInfo.arguments.contains("-empty") && !signedIn { await store.seedDemo() }
             // WidgetLatencyDeviceTests: take back exactly the widget logs its real taps made (source widget, made
             // after the test began), so measuring on the person's iPhone leaves their day as it was.
@@ -249,29 +240,30 @@ final class AppModel {
             #endif
             // Widget taps made while the app wasn't running, saved before anything is shown (Current Work 66).
             Task { await self.saveWidgetTaps() }
-            store.onChange = { [store, scheduler, timerPresence, widgets, sync, backup] in
+            var plus = store.isPlus
+            store.onChange = { [store, scheduler, timerPresence, widgets, cloud, backup] in
                 scheduler.scheduleReconcile(store)
                 // Speed runs only (Current Work 49): `-perf-no-widget-publish` leaves the publication out, to see its cost.
                 if PerfSwitches.widgetPublication { widgets.schedule(store) }
                 // Siri's phrases name each habit: refreshed when one is added, renamed or archived (cheap otherwise).
                 perfTimed("Change: Siri's habit names") { HabitShortcuts.habitsChanged(store) }
                 Task { await timerPresence.sync(store) }
-                sync?.scheduleSoon()
+                cloud?.scheduleSoon()
+                // Plus arrived or ended: every device syncs, or one (Architecture 11 §12).
+                if store.isPlus != plus { plus = store.isPlus; cloud?.planChanged() }
                 backup?.dataChanged()
                 // A log made outside the app (a widget, a notification, the Live Activity): backed up as you go (D12).
                 if UIApplication.shared.applicationState != .active { backup?.changedOutside() }
             }
             backup?.onRetryLater = { [weak self] seconds in self?.scheduleRefresh(after: seconds) }
-            sync?.onRemoteChanges = { [store] in store.reloadAfterSync() }
-            // A sync that failed with changes waiting (offline, the server busy): iOS retries it in the background in
-            // about 15 minutes, as well as the next time the app opens (Current Work 67).
-            sync?.onWaitingAfterFailure = { [weak self] in
-                #if DEBUG
-                WidgetTiming.mark("sync: background retry asked for in 15 min")
-                #endif
-                self?.scheduleRefresh(after: 15 * 60)
-            }
-            sync?.onAccountChange = { [backup] in backup?.refresh() }
+            cloud?.onRemoteChanges = { [store] in store.reloadAfterSync() }
+            // Changes left waiting after a failure (offline, iCloud busy): iOS retries in the background in about 15
+            // minutes, as well as the next time the app opens (Current Work 67).
+            cloud?.onWaitingAfterFailure = { [weak self] in self?.scheduleRefresh(after: 15 * 60) }
+            cloud?.isPlus = { [store] in store.isPlus }
+            cloud?.habitCount = { [store] in store.habits.filter { $0.kind != .task && !$0.archived }.count }
+            // A fresh install sends nothing until its welcome is finished, so an empty phone is never the truth (§13.1).
+            cloud?.sendingAllowed = { [store] in BackupCenter.backupAllowed(welcomeFinished: UserDefaults.standard.bool(forKey: Onboarding.doneKey), hasHabits: !store.habits.isEmpty) }
             #if DEBUG
             // BackupUITests (Current Work 76): a backup file with one habit, opened as if from Files, so the restore
             // preview's words (this iPhone, or with Plus every device) can be checked without the file picker.
@@ -288,49 +280,16 @@ final class AppModel {
                     }
                 }
             }
-            // End-to-end tests on GitHub Actions sign in with the run's identity token (server: POST /v1/auth/ci).
-            let arguments = ProcessInfo.processInfo.arguments
-            if let i = arguments.firstIndex(of: "-ci-sign-in"), i + 2 < arguments.count {
-                let started = Date.now
-                try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true])
-                LaunchLog.took("CI sign-in", since: started)
-            }
-            // The same, as a free account (BackupUITests, SyncUITests): it syncs from one device (Current Work 78). Signed in
-            // on another device already (another `-dbname`), it asks "Use on This iPhone?" (screen 7) as a real sign-in
-            // does, and Continue moves the account here with `replace`.
-            if let i = arguments.firstIndex(of: "-ci-sign-in-free"), i + 2 < arguments.count, let sync {
-                let started = Date.now
-                let body: [String: Any] = ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true, "plus": false]
-                do {
-                    try await sync.signIn(path: "/v1/auth/ci", body: body)
-                } catch let error as ServerError where error.code == "other_device_signed_in" {
-                    backup?.askReplace = BackupCenter.ReplaceQuestion(otherDevice: error.deviceName ?? "") { [backup] in
-                        var again = body
-                        again["replace"] = true
-                        try? await sync.signIn(path: "/v1/auth/ci", body: again)
-                        backup?.refresh()
-                        await backup?.backUpNow()
-                    }
-                } catch {}
-                LaunchLog.took("CI sign-in (free)", since: started)
-            }
-            // Screens 7 and 8 without a server (SmallScreenUITests, screenshots): `-test-ask-replace iPhone` asks "Use on
-            // This iPhone?"; `-test-signed-out-by iPad` shows "Signed out on this iPhone".
-            if let i = arguments.firstIndex(of: "-test-ask-replace"), i + 1 < arguments.count {
-                backup?.askReplace = BackupCenter.ReplaceQuestion(otherDevice: arguments[i + 1]) {}
-            }
-            if let i = arguments.firstIndex(of: "-test-signed-out-by"), i + 1 < arguments.count {
-                sync?.testSignedOutBy(arguments[i + 1])
-                backup?.refresh()
-            }
+            await CloudTestStates.prepareIfAsked(cloud: cloud, repository: persistence?.repository)
             #endif
             // Each step's time goes to the system log (`LaunchLog`), which CI saves as app.log (Current Work 11).
             var started = Date.now
-            // Not when iOS started the app in the background for a widget, a notification or the Live Activity: that
-            // change is sent by itself (`scheduleSoon`), and fetching other devices' changes waits for the app to open
-            // (one request per tap, not two; Current Work 67).
-            if UIApplication.shared.applicationState != .background { sync?.appBecameActive() }
-            LaunchLog.took("Sync: app became active", since: started)
+            // iCloud: the account and the plan decide whether the engine runs; then fetch and send. Started in the
+            // background for a widget, a notification or the Live Activity, the change is sent by itself (`scheduleSoon`).
+            if let cloud {
+                Task { await cloud.start(); if UIApplication.shared.applicationState != .background { cloud.appBecameActive() } }
+            }
+            LaunchLog.took("iCloud: started", since: started)
             Task { [backup] in
                 let started = Date.now
                 await backup?.runIfDue()
@@ -348,8 +307,6 @@ final class AppModel {
             await widgets.publish(store)
             LaunchLog.took("Widgets: publish", since: started)
             #if DEBUG
-            await SyncCheck.deleteListedIfAsked(store: store)
-            SyncCheck.runIfAsked(store: store, sync: sync)
             ReminderLiveTest.runIfAsked(store: store, scheduler: scheduler)
             #endif
         }
@@ -514,8 +471,8 @@ final class AppModel {
         scheduleRefresh()
         let work = Task { [self] in
             await ensureLoaded()
-            // Anything still waiting to reach the server (a sync that failed offline) goes now (Current Work 67).
-            await sync?.syncNow()
+            // Anything still waiting to reach iCloud (a send that failed offline) goes now (Current Work 67).
+            await cloud?.backgroundRefresh()
             await scheduler.reconcile(store)
             // A log made outside the app within 10 minutes of the last upload, then the daily backup when the app wasn't
             // opened (Current Work 75).
@@ -594,7 +551,18 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                 AppModel.shared.handleRefresh(task)
             }
         }
+        // iCloud's silent pushes tell this device another one changed something (`CKSyncEngine` listens for them).
+        // Never for a test launch, which has no iCloud of the person's (D8).
+        let arguments = ProcessInfo.processInfo.arguments
+        if !arguments.contains("-uitest") && !arguments.contains("-dbname") { application.registerForRemoteNotifications() }
         return true
+    }
+
+    /// A silent push from iCloud: changes are waiting there. Fetched now, while iOS gives the app the time.
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async -> UIBackgroundFetchResult {
+        await AppModel.shared.ensureLoaded()
+        await AppModel.shared.cloud?.backgroundRefresh()
+        return .newData
     }
 }
 
@@ -614,7 +582,7 @@ final class NotificationHandler: NSObject, @preconcurrency UNUserNotificationCen
             // Finish the write before returning, so iOS keeps the app awake until it's saved.
             if let target { await AppModel.shared.logFromReminder(target, event: response.notification.request.identifier) }
         } else if action == UNNotificationDefaultActionIdentifier, info[BackupCenter.notificationKey] != nil {
-            // Straight to ≡ → Backup & Export, on Today's stack so Back is Today.
+            // Straight to ≡ → iCloud & Backup, on Today's stack so Back is Today.
             await MainActor.run {
                 let menu = AppModel.shared.menu
                 menu.reset()

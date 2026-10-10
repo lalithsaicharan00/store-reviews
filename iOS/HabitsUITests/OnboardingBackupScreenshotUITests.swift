@@ -1,8 +1,8 @@
 import XCTest
 
-/// Current Work 73 + 3 (9 Oct 2026): every screen of the welcome and ≡ → Backup & Export, as built, for the Figma
+/// Current Work 73 + 3 (9 Oct 2026): every screen of the welcome and ≡ → iCloud & Backup, as built, for the Figma
 /// page "onboarding" (first taken of the earlier welcome; the welcome's tests follow the rebuilt one, 73.1). Screenshots only: each is named in the order it's laid out (`A01-welcome-name`). A test launch
-/// (`-uitest`: in-memory database, signed out), so the person's habits and account are never touched (D8).
+/// (`-uitest`: in-memory database, its own fake iCloud), so the person's habits and iCloud are never touched (D8).
 final class OnboardingBackupScreenshotUITests: XCTestCase {
     private var app: XCUIApplication!
 
@@ -99,15 +99,14 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         launch(["-empty", "-onboarding"])
         tap(app.buttons["onboarding-returning"], "I've used it before")
         shot("B01-welcome-back")
-        tap(app.buttons["onboarding-way-sign-in"], "Sign in to your account")
-        shot("B02-sign-back-in")
-        back()
         tap(app.buttons["onboarding-way-restore"], "Restore a backup")
         shot("B03-restore-a-backup")
         back()
-        tap(app.buttons["onboarding-way-transfer"], "Move from another device")
-        shot("B04-transfer-code")
-        back()
+        app.terminate()
+        launch(["-empty", "-onboarding", "-test-cloud", "has-habits"])
+        tap(app.buttons["onboarding-returning"], "I've used it before")
+        _ = app.descendants(matching: .any)["onboarding-found"].waitForExistence(timeout: 20)
+        shot("B02-welcome-back-from-icloud")
         app.terminate()
         launch(["-onboarding"])
         tap(app.buttons["onboarding-returning"], "I've used it before")
@@ -127,14 +126,14 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         }
     }
 
-    /// ≡ → Backup & Export without an account (the demo habits), and every sheet and question it opens.
-    func testD_BackupAndExport() {
-        launch([])
+    /// ≡ → iCloud & Backup (the demo habits), in its states, and every sheet and question it opens.
+    func testD_ICloudAndBackup() {
+        launch(["-test-cloud", "synced"])
         tap(app.buttons["menu-button"], "≡")
         shot("D01-sidebar")
-        tap(app.buttons["menu-backup"], "Backup & Export")
-        XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 5))
-        shot("D03-backup-export-top")
+        tap(app.buttons["menu-backup"], "iCloud & Backup")
+        XCTAssertTrue(app.navigationBars["iCloud & Backup"].waitForExistence(timeout: 5))
+        shot("D03-icloud-backup-top")
 
         // Restore first, while it's on screen: the erase question below is a popover with no Cancel.
         if tap(app.buttons["backup-restore"], "Restore From a Backup") {
@@ -144,50 +143,23 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
                 shot("D09-restore-icloud")
                 back()
             }
-            if tap(app.buttons["restore-import"], "Backup File") {
-                shot("D10-import-a-file")
-                // The file picker closes with Cancel, or an ✕ (iOS 26) named Close.
-                let cancel = app.buttons.matching(NSPredicate(format: "label IN %@ OR identifier IN %@",
-                                                              ["Cancel", "Close"], ["Cancel", "Close", "xmark"])).firstMatch
-                if cancel.waitForExistence(timeout: 5) { cancel.tap() } else { app.swipeDown(velocity: .fast) }
-                XCTAssertTrue(app.navigationBars["Restore From a Backup"].waitForExistence(timeout: 5), "The file picker closed")
-            }
             back()
         }
-
-        // Without an account, Your Account opens Create Account over the page (screen 4e). Near the top, so before
-        // scrolling: the list drops rows that have scrolled away.
-        if tap(app.buttons["backup-account"], "Your Account") {
-            shot("D06-create-account-sheet")
-            closeSheet()
-        }
         app.swipeUp()
-        shot("D04-backup-export-middle")
+        shot("D04-icloud-backup-middle")
         app.swipeUp(); app.swipeUp()
-        shot("D05-backup-export-bottom")
-        // Share sheets are left out: on the iPhone they show the person's own contacts.
-        if tap(app.buttons["backup-erase"], "Erase All My Data") {
-            shot("D07-erase-question")
+        shot("D05-icloud-backup-bottom")
+        if tap(app.buttons["cloud-delete"], "Delete My Data From iCloud") {
+            shot("D06-delete-from-icloud-question")
         }
 
-        // Free accounts sync one device (Current Work 78): the new device's question (7) and the old one's notice (8).
-        app.terminate()
-        launch(["-test-ask-replace", "iPhone"])
-        if tap(app.buttons["use-here-cancel"], "Use on This iPhone?") == true {
-            shot("D08-use-here-cancelled")
+        // The states that need the person, and the questions (Architecture 11 §10–12).
+        for state in ["full", "waiting", "off", "held", "free-other", "removed", "other-account"] {
+            app.terminate()
+            launch(["-test-cloud", state] + (state == "free-other" ? ["-free"] : []))
+            sleep(3)
+            shot("D10-\(state)-on-launch")
         }
-        app.terminate()
-        launch(["-test-ask-replace", "iPhone"])
-        XCTAssertTrue(app.staticTexts["use-here-title"].waitForExistence(timeout: 10), "Use on This iPhone?")
-        shot("D08-use-on-this-iphone")
-        app.terminate()
-        launch(["-test-signed-out-by", "iPad"])
-        let notice = app.alerts.matching(NSPredicate(format: "label BEGINSWITH 'Signed out on this'")).firstMatch
-        XCTAssertTrue(notice.waitForExistence(timeout: 10), "Signed out on this iPhone")
-        XCTAssertTrue(notice.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Your account is now used on your iPad.'")).firstMatch.exists, notice.debugDescription)
-        shot("D09-signed-out-on-this-iphone")
-        notice.buttons["OK"].tap()
-        XCTAssertTrue(notice.waitForNonExistence(timeout: 5), "OK closes it")
     }
 
     /// The other pages that speak about the account or the data: Plus and Privacy.

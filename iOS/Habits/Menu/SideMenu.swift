@@ -153,16 +153,12 @@ private struct SideMenu: View {
         }
     }
 
-    /// A count where it helps choose: how many habits and tasks, and how much of the free plan is used; the account's
-    /// plan once signed in (Free or Plus), and nothing while signed out ("Not Signed In" read like a warning; Account and
-    /// Backup Redesign, screen 1).
+    /// A count where it helps choose: how many habits and tasks, and how much of the free plan is used.
     private func detail(_ place: MenuPlace) -> String? {
         switch place {
         case .habits: String(store.habits.filter { !$0.archived && $0.kind != .task }.count)
         case .tasks: String(store.habits.filter { !$0.archived && $0.kind == .task }.count)
         case .plus: store.isPlus ? nil : "\(store.activeHabitCount) of \(HabitStore.freeHabitLimit)"
-        case .account:
-            if let backup = AppModel.shared.backup, backup.isSignedIn { backup.isPlus ? "Plus" : "Free" } else { nil }
         default: nil
         }
     }
@@ -209,11 +205,13 @@ struct MenuPage: View {
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
         case .plus: PlusView(fromMenu: true)
-        case .account:
-            if let backup = AppModel.shared.backup { AccountView().environment(backup) } else { ComingSoonView(place: place) }
         case .backup:
             // Without a database (it couldn't be opened) there's no backup centre; the older page says what's wrong.
-            if let backup = AppModel.shared.backup { BackupSyncView().environment(backup) } else { BackupExportView() }
+            if let backup = AppModel.shared.backup, let cloud = AppModel.shared.cloud {
+                ICloudPage().environment(backup).environment(cloud)
+            } else {
+                BackupExportView()
+            }
         case .reminders: RemindersView()
         case .privacy: PrivacyView()
         case .help: HelpView().analyticsScreen(.help)

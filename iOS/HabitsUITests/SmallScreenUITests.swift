@@ -231,49 +231,38 @@ final class SmallScreenUITests: XCTestCase {
         shot("se-setup-how-it-works-default")
     }
 
-    /// The redesigned Account, its Sign In sheet, Backup & Export, Restore From a Backup and Move to Another Device on
-    /// the SE (Account and Backup Redesign, designed on 375 × 667): what each screen leads with is on screen without
-    /// scrolling, and the sheet's two buttons fit. Frames on one line (T14).
-    func testAccountBackupRestoreAndMoveFit() {
-        app.launchArguments = ["-uitest"]
-        app.launch()
-        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
-        app.buttons["menu-button"].tap()
-        if !app.buttons["menu-account"].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
-        app.buttons["menu-account"].tap()
-        let create = app.buttons["account-create"]
-        XCTAssertTrue(create.waitForExistence(timeout: 5))
-        XCTAssertLessThanOrEqual(create.frame.maxY, window.maxY, frames(["account-identity", "account-sign-in", "account-create"]))
-        shot("se-account-signed-out")
-        app.buttons["account-sign-in"].tap()
-        let google = app.buttons["sign-in-google"]
-        XCTAssertTrue(google.waitForExistence(timeout: 5))
-        XCTAssertLessThanOrEqual(google.frame.maxY, window.maxY, frames(["sign-in-apple", "sign-in-google", "sign-in-cancel"]))
-        shot("se-sign-in-sheet")
-        app.buttons["sign-in-cancel"].tap()
-        XCTAssertTrue(google.waitForNonExistence(timeout: 5))
-        app.navigationBars["Account"].buttons.firstMatch.tap()
-        app.buttons["menu-button"].tap()
-        XCTAssertTrue(app.buttons["menu-backup"].waitForExistence(timeout: 5))
-        app.buttons["menu-backup"].tap()
+    /// iCloud & Backup (Architecture 11 §17), the second-device sheet (the Plus screens' image 16) and Restore From a
+    /// Backup on the SE: sync's status and its one action without scrolling in each state that needs the person, and the
+    /// sheet's two choices. Frames on one line (T14).
+    func testICloudPageSecondDeviceAndRestoreFit() {
+        for state in ["full", "held", "synced"] {
+            app.terminate()
+            app.launchArguments = ["-uitest", "-test-cloud", state]
+            app.launch()
+            XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+            app.buttons["menu-button"].tap()
+            XCTAssertTrue(app.buttons["menu-backup"].waitForExistence(timeout: 5))
+            app.buttons["menu-backup"].tap()
+            let action = app.buttons[state == "full" ? "cloud-manage-storage" : state == "held" ? "cloud-apply-held" : "cloud-sync-now"]
+            XCTAssertTrue(action.waitForExistence(timeout: 20), "\(state): \(frames(["cloud-status"]))")
+            XCTAssertLessThanOrEqual(action.frame.maxY, window.maxY, "\(state): \(frames(["cloud-status", "cloud-sync-now", "cloud-manage-storage", "cloud-apply-held"]))")
+            shot("se-icloud-\(state)")
+        }
         let restore = app.buttons["backup-restore"]
-        XCTAssertTrue(restore.waitForExistence(timeout: 5))
-        let top = ["backup-status", "backup-icloud-status", "backup-account", "backup-move", "backup-restore"]
-        XCTAssertLessThanOrEqual(app.buttons["backup-account"].frame.maxY, window.maxY, "Status, where it's backed up and Your Account without scrolling: \(frames(top))")
-        shot("se-backup-export")
-        app.buttons["backup-move"].tap()
-        let code = app.staticTexts["transfer-code"]
-        XCTAssertTrue(code.waitForExistence(timeout: 5))
-        XCTAssertLessThanOrEqual(code.frame.maxY, window.maxY, frames(["transfer-step-1", "transfer-step-3", "transfer-code"]))
-        shot("se-move-to-another-device")
-        app.navigationBars.buttons.element(boundBy: 0).tap()
-        XCTAssertTrue(restore.waitForExistence(timeout: 5))
         for _ in 0..<4 where !restore.isHittable { app.collectionViews.containing(.button, identifier: "backup-restore").firstMatch.swipeUp() }
         restore.tap()
         let file = app.buttons["restore-import"]
         XCTAssertTrue(file.waitForExistence(timeout: 5))
         XCTAssertLessThanOrEqual(file.frame.maxY, window.maxY, frames(["restore-icloud", "restore-import"]))
         shot("se-restore-from-a-backup")
+
+        app.terminate()
+        app.launchArguments = ["-uitest", "-free", "-test-cloud", "free-other"]
+        app.launch()
+        let move = app.buttons["second-device-move"]
+        XCTAssertTrue(move.waitForExistence(timeout: 20))
+        XCTAssertLessThanOrEqual(move.frame.maxY, window.maxY, "Both choices without scrolling: \(frames(["second-device-title", "second-device-see-plus", "second-device-move"]))")
+        shot("se-second-device-sheet")
     }
 
     /// Privacy & Security, App Lock, Set Up App Lock (screens 3–6 of the App Lock redesign, designed on the SE) and the

@@ -126,6 +126,8 @@ interface HabitDao {
     @Query("DELETE FROM outbox WHERE table_name = :table AND row_id = :row AND seq <= :upTo AND problem IS NULL")
     suspend fun deleteConfirmed(table: String, row: String, upTo: Long)
     @Query("SELECT coalesce(max(seq), 0) FROM outbox") suspend fun lastOutboxSeq(): Long
+    @Query("SELECT EXISTS(SELECT 1 FROM outbox WHERE table_name = :table AND row_id = :row AND deletes = 1 AND problem IS NULL)")
+    suspend fun hasWaitingDelete(table: String, row: String): Boolean
     @Query("UPDATE outbox SET problem = :problem WHERE table_name = :table AND row_id = :row AND problem IS NULL")
     suspend fun markRowProblem(table: String, row: String, problem: String)
     @Query("SELECT table_name || ':' || row_id || ' ' || problem FROM outbox WHERE problem IS NOT NULL GROUP BY table_name, row_id LIMIT 50")

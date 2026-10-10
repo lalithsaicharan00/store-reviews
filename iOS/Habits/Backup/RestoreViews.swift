@@ -2,11 +2,10 @@ import Core
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// Backup & Export → Restore From a Backup (Account and Backup Redesign, screens 6, 6b and 6c; Current Work 76): "Where
-/// is your backup stored?", by state, each place naming what it holds. Without an account: iCloud (and Google Drive,
-/// once it works) and Backup File. Signed in, the account is the only backup place: Your Account (a free account's
-/// last 7 days, Plus's last 90) and Backup File. Restoring replaces the habits here, or with Plus on every device, and
-/// keeps an undo for 30 days (D5).
+/// iCloud & Backup → Restore From a Backup (Account and Backup Redesign, screens 6 and 6b; Current Work 76; Architecture
+/// 11 §13.3): "Where is your backup stored?", each place naming what it holds: iCloud (each device's dated copies, and
+/// Google Drive once it works) and Backup File. Restoring replaces the habits here, or with Plus on every syncing device,
+/// and keeps an undo for 30 days (D5).
 struct RestoreStartView: View {
     @Environment(BackupCenter.self) private var backup
     @State private var importing = false
@@ -18,25 +17,17 @@ struct RestoreStartView: View {
     var body: some View {
         Form {
             Section {
-                if backup.isSignedIn {
-                    NavigationLink { AccountCopiesView() } label: {
-                        PlaceRow(symbol: "person.crop.circle", title: "Your Account",
-                                 line: backup.isPlus ? "Any day in the last 90 days" : "Any of the last 7 days")
+                if BackupFeatures.iCloudBackup {
+                    NavigationLink { ICloudCopiesView() } label: {
+                        PlaceRow(symbol: "icloud", title: "iCloud", line: "Any day of the last week, month or six months.")
                     }
-                    .accessibilityIdentifier("restore-account")
-                } else {
-                    if BackupFeatures.iCloudBackup {
-                        NavigationLink { ICloudCopiesView() } label: {
-                            PlaceRow(symbol: "icloud", title: "iCloud", line: "Find a backup saved in iCloud.")
-                        }
-                        .accessibilityIdentifier("restore-icloud")
+                    .accessibilityIdentifier("restore-icloud")
+                }
+                if BackupFeatures.googleDrive {
+                    NavigationLink { GoogleDriveCopiesView() } label: {
+                        PlaceRow(symbol: "externaldrive.badge.icloud", title: "Google Drive", line: "Find a backup saved in Google Drive.")
                     }
-                    if BackupFeatures.googleDrive {
-                        NavigationLink { GoogleDriveCopiesView() } label: {
-                            PlaceRow(symbol: "externaldrive.badge.icloud", title: "Google Drive", line: "Find a backup saved in Google Drive.")
-                        }
-                        .accessibilityIdentifier("restore-google-drive")
-                    }
+                    .accessibilityIdentifier("restore-google-drive")
                 }
                 Button { importing = true } label: {
                     HStack {
@@ -50,7 +41,7 @@ struct RestoreStartView: View {
             } header: {
                 Text("Where is your backup stored?").font(.body).foregroundStyle(.secondary).textCase(nil)
             } footer: {
-                Text(backup.isPlus ? "Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days."
+                Text(backup.restoresEverywhere ? "Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days."
                                    : "Restoring replaces the habits on this iPhone. You can undo it for 30 days.")
             }
             if let imported {
@@ -159,7 +150,7 @@ struct ICloudCopiesView: View {
             ForEach(devices, id: \.self) { device in
                 Section(copies.first { $0.deviceID == device }?.title ?? "") {
                     ForEach(copies.filter { $0.deviceID == device }) { copy in
-                        CopyRow(title: copy.slot == BackupFolder.keptSlot ? "Kept before it shrank" : HabitCopy.capitalized(BackupSyncView.when(copy.modified)),
+                        CopyRow(title: copy.slot == BackupFolder.keptSlot ? "Kept before it shrank" : HabitCopy.capitalized(ICloudPage.when(copy.modified)),
                                 line: copy.habits.map { RestoreStartView.counts(habits: $0, entries: copy.entries ?? 0) } ?? "") {
                             Task { await open(copy) }
                         }
@@ -208,97 +199,6 @@ struct ICloudCopiesView: View {
     }
 }
 
-/// Restore From a Backup → Your Account: the account's days, as it was each night (Current Work 78: the last 7 days on
-/// free, 90 on Plus, from `GET /v1/snapshots`). A Plus day replaces the habits on every device, and its preview says so
-/// first. Backup files an earlier version of the app uploaded are listed under them while they last (U5).
-struct AccountCopiesView: View {
-    @Environment(BackupCenter.self) private var backup
-    @State private var copies: [BackupCenter.ServerCopy] = []
-    @State private var days: [BackupCenter.AccountDay] = []
-    @State private var loading = true
-    @State private var pending: BackupCenter.Pending?
-    @State private var failure: String?
-
-    var body: some View {
-        Form {
-            if loading {
-                Section { ProgressView() }
-            } else {
-                Section {
-                    if days.isEmpty { Text("No daily copies yet. The first is kept tonight.").foregroundStyle(.secondary) }
-                    ForEach(days) { day in
-                        CopyRow(title: day.takenAt.formatted(date: .complete, time: .omitted), line: "As it was that night") {
-                            Task { await open(day) }
-                        }
-                        .accessibilityIdentifier("restore-account-day")
-                    }
-                } footer: {
-                    Text(backup.isPlus ? "Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days."
-                                       : "Restoring replaces the habits on this iPhone. You can undo it for 30 days.")
-                }
-                ForEach(devices, id: \.self) { device in
-                    let mine = copies.filter { $0.device == device }
-                    Section {
-                        ForEach(mine) { copy in
-                            CopyRow(title: copy.slot == "before-shrink" ? "Kept before it shrank" : HabitCopy.capitalized(BackupSyncView.when(copy.createdAt)),
-                                    line: RestoreStartView.counts(habits: copy.habits, entries: copy.entries)) {
-                                Task { await open(copy) }
-                            }
-                            .accessibilityIdentifier("restore-account-copy")
-                        }
-                    } header: {
-                        Text("Saved earlier · " + (mine.first.map { $0.isThisDevice ? "\($0.deviceName) (this device)" : $0.deviceName } ?? ""))
-                    }
-                }
-            }
-            if let failure { Section { Text(failure).foregroundStyle(.red) } }
-        }
-        .navigationTitle("Your Account")
-        .navigationBarTitleDisplayMode(.inline)
-        .task { await load() }
-        .sheet(item: $pending) { pending in NavigationStack { RestorePreviewView(pending: pending) } }
-    }
-
-    private var devices: [String] {
-        var seen: [String] = []
-        for copy in copies.sorted(by: { ($0.isThisDevice ? 1 : 0, $0.createdAt) > ($1.isThisDevice ? 1 : 0, $1.createdAt) }) where !seen.contains(copy.device) {
-            seen.append(copy.device)
-        }
-        return seen
-    }
-
-    private func load() async {
-        loading = true
-        defer { loading = false }
-        do {
-            days = try await backup.accountDays()
-            copies = ((try? await backup.serverCopies()) ?? []).filter { $0.habits > 0 || $0.entries > 0 }
-        } catch {
-            failure = "Couldn't reach your account. Check your connection and try again."
-        }
-    }
-
-    private func open(_ copy: BackupCenter.ServerCopy) async {
-        failure = nil
-        do {
-            pending = try await backup.download(copy)
-            if pending == nil { failure = BackupCenter.words(for: "damaged") }
-        } catch {
-            failure = "Couldn't download this backup. Check your connection and try again."
-        }
-    }
-
-    private func open(_ day: BackupCenter.AccountDay) async {
-        failure = nil
-        do {
-            pending = try await backup.download(day)
-            if pending == nil { failure = BackupCenter.words(for: "damaged") }
-        } catch {
-            failure = "Couldn't download this day. Check your connection and try again."
-        }
-    }
-}
-
 /// What a backup holds, what each choice would do, and the choice (03 §3.6). Nothing changes until a button is
 /// tapped; an import that would add nothing says so instead of "success" with an empty screen (§4.8).
 struct RestorePreviewView: View {
@@ -332,13 +232,13 @@ struct RestorePreviewView: View {
                 .accessibilityIdentifier("restore-replace-everywhere")
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Your devices stay in sync, so every one of them gets the habits from this backup. You can undo it for 30 days in Backup & Export.")
+            Text("Your devices stay in sync, so every one of them gets the habits from this backup. You can undo it for 30 days in iCloud & Backup.")
         }
     }
 
     /// Replace: with Plus, asked first, since it changes every device.
     private func replace() {
-        if backup.isPlus { confirmEverywhere = true } else { Task { await restore(.replace) } }
+        if backup.restoresEverywhere { confirmEverywhere = true } else { Task { await restore(.replace) } }
     }
 
     @ViewBuilder private func content(_ preview: RestorePreview) -> some View {
@@ -359,10 +259,10 @@ struct RestorePreviewView: View {
             }
         } else {
             Section {
-                Button(backup.isPlus ? "Replace on All Devices" : "Replace What's on This Device") { replace() }
+                Button(backup.restoresEverywhere ? "Replace on All Devices" : "Replace What's on This Device") { replace() }
                     .accessibilityIdentifier("restore-replace")
             } footer: {
-                Text((backup.isPlus ? "All your devices become exactly the backup. " : "This device becomes exactly the backup. ") + Self.describe(preview.replace))
+                Text((backup.restoresEverywhere ? "All your devices become exactly the backup. " : "This device becomes exactly the backup. ") + Self.describe(preview.replace))
             }
             Section {
                 Button("Merge") { Task { await restore(.merge) } }
@@ -377,8 +277,8 @@ struct RestorePreviewView: View {
         }
         if done == nil {
             Section {
-                Text(backup.isPlus ? "Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days in Backup & Export."
-                                   : "You can undo a restore for 30 days in Backup & Export.").font(.footnote).foregroundStyle(.secondary)
+                Text(backup.restoresEverywhere ? "Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days in iCloud & Backup."
+                                   : "You can undo a restore for 30 days in iCloud & Backup.").font(.footnote).foregroundStyle(.secondary)
             }
         }
     }

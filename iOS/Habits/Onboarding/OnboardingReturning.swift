@@ -3,40 +3,33 @@ import SwiftUI
 import UniformTypeIdentifiers
 import UIKit
 
-// "I've used it before" (Current Work 73.1; Figma rows 5–9, 9 Oct 2026): every way back on one page, then one loading
-// page whose words say what's happening ("Getting your data" from an account or the other device, "Restoring your
-// backup" from iCloud or a file, "Setting things up" with what's already here). Signing in never deletes and never
-// quietly makes an account (D3); a restore keeps an undo file (D5); nothing is backed up over the data on its way back.
+// "I've used it before" (Current Work 73.1; Figma rows 5–9, 9 Oct 2026; Architecture 11 §13.1): habits come back by
+// themselves from iCloud, so the page first says what iCloud is bringing, and "Start without restoring" waits until iCloud
+// has been looked in; then the other ways back (a backup in iCloud, a file), and one loading page whose words say what's
+// happening ("Restoring your backup", "Setting things up"). A restore keeps an undo file (D5); nothing is sent to
+// iCloud or backed up over the data on its way back until the welcome is finished.
 
 /// A checked backup on its way back, and where it came from.
 struct ReturningBackup {
     let pending: BackupCenter.Pending
     let source: ReturnSource
-    /// From another device: whether it was signed in, so this one can ask to sign in too (Current Work 76).
-    var senderAccount: TransferCode.Account = .none
 }
 
 enum ReturnSource: Hashable {
-    case account, iCloud, file, otherDevice
+    case iCloud, file
 
     /// The line under the loading page's title.
     var from: String {
         switch self {
-        case .account: "From your account."
         case .iCloud: "From iCloud."
         case .file: "From your backup file."
-        case .otherDevice: "From your other device."
         }
     }
 }
 
 /// What a loading page does.
 enum OnboardingWork: Hashable {
-    /// Signed in (just now, or still from before a reinstall): the account's data comes back.
-    case account
-    /// Move from another device, with the code the other device shows.
-    case transfer(String)
-    /// Continue with the data already on this iPhone.
+    /// Continue with the data already on this iPhone (that came with an iPhone backup, or from iCloud).
     case thisDevice
     /// A backup file: checked, then shown for review.
     case file(URL)
@@ -48,50 +41,58 @@ enum ReturnMode: Hashable { case replace, merge }
 
 // MARK: - R01 · Welcome back
 
-/// Every way back, most common first, and Start without restoring. When this iPhone already has something (habits
-/// that came with an iPhone backup or a sync, or the account still signed in after a reinstall), that comes first,
-/// with its own Continue (R01B).
+/// Every way back, most common first, and Start without restoring. iCloud comes first: on a phone signed in to iCloud
+/// the habits come back by themselves, so the page says what iCloud is doing, and what's here once they've come (R01B).
+/// "Start without restoring" waits until iCloud has been looked in, so an empty phone is never taken for "nothing to
+/// bring back" (Architecture 11 §13.1).
 struct WelcomeBackPage: View {
     @Environment(HabitStore.self) private var store
-    @Environment(BackupCenter.self) private var backup: BackupCenter?
+    @Environment(CloudSync.self) private var cloud: CloudSync?
     @Environment(OnboardingFlow.self) private var flow
 
-    fileprivate enum Found { case data(String), account }
-
-    /// What's already here: habits or tasks, else an account still signed in (its Keychain session outlives a reinstall).
-    private var found: Found? {
+    /// What's already here: habits or tasks (from iCloud, or with an iPhone backup).
+    private var found: String? {
         let items = store.habits.filter { !$0.archived }
-        if !items.isEmpty {
-            let habits = items.filter { $0.kind != .task }.count
-            let tasks = items.count - habits
-            var parts: [String] = []
-            if habits > 0 { parts.append("\(habits) \(habits == 1 ? "habit" : "habits")") }
-            if tasks > 0 { parts.append("\(tasks) \(tasks == 1 ? "task" : "tasks")") }
-            return .data(parts.joined(separator: " and "))
+        guard !items.isEmpty else { return nil }
+        let habits = items.filter { $0.kind != .task }.count
+        let tasks = items.count - habits
+        var parts: [String] = []
+        if habits > 0 { parts.append("\(habits) \(habits == 1 ? "habit" : "habits")") }
+        if tasks > 0 { parts.append("\(tasks) \(tasks == 1 ? "task" : "tasks")") }
+        return parts.joined(separator: " and ")
+    }
+
+    /// iCloud is still being looked in for the first time, or a big fetch is still coming.
+    private var lookingInICloud: Bool {
+        guard let cloud else { return false }
+        switch cloud.phase {
+        case .starting: return true
+        case .on: return !cloud.firstLookDone || cloud.bringingIn != nil
+        default: return false
         }
-        if backup?.isSignedIn == true { return .account }
-        return nil
     }
 
     var body: some View {
         let found = found
         OnboardingList(title: "Welcome back.", lead: "Get your habits, tasks and history back.", id: "onboarding-page-returning") {
             if let found {
-                Section {
-                    foundCard(found)
-                }
+                Section { foundCard(found) }
                 Section {
                     ways
                 } header: {
                     Text("Other ways to get your data").font(.subheadline.weight(.semibold)).foregroundStyle(Color.primary).textCase(nil)
                 }
             } else {
-                Section { ways }
+                Section {
+                    iCloudCard
+                    ways
+                }
             }
             Section {
                 OnboardingButton(title: "Start without restoring", id: "onboarding-start-fresh", prominent: false) {
                     flow.finish(.startedFresh)
                 }
+                .disabled(lookingInICloud && found == nil)
                 .listRowBackground(Color.clear)
             }
         } bottom: {
@@ -100,47 +101,62 @@ struct WelcomeBackPage: View {
         .onAppear { flow.reached("returning") }
     }
 
-    @ViewBuilder private func foundCard(_ found: Found) -> some View {
-        let (title, line, work): (String, String, OnboardingWork) = switch found {
-        case .data(let what): ("We found data on this device.", "\(what). Continue with this data?", .thisDevice)
-        case .account: ("You're still signed in.", "Your account is on this iPhone. Get your habits back from it?", .account)
-        }
+    @ViewBuilder private func foundCard(_ what: String) -> some View {
+        let fromICloud = cloud?.phase == .on
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 14) {
-                OnboardingTile(symbol: found.isAccount ? "person.crop.circle" : "tray.full")
+                OnboardingTile(symbol: fromICloud ? "icloud" : "tray.full")
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(title).font(.body.weight(.semibold))
-                    Text(line).font(.subheadline).foregroundStyle(.secondary)
+                    Text(fromICloud ? "Your habits are here from iCloud." : "We found data on this device.").font(.body.weight(.semibold))
+                    Text(lookingInICloud ? "\(what) so far. More are coming from iCloud." : "\(what). Continue with this data?")
+                        .font(.subheadline).foregroundStyle(.secondary)
                 }
                 .fixedSize(horizontal: false, vertical: true)
             }
             .accessibilityElement(children: .combine)
             .accessibilityIdentifier("onboarding-found")
-            OnboardingButton(title: "Continue", id: "onboarding-found-continue") { flow.go(.working(work)) }
+            OnboardingButton(title: "Continue", id: "onboarding-found-continue") { flow.go(.working(.thisDevice)) }
         }
         .padding(.vertical, 6)
     }
 
-    /// One card per way back, each opening its page.
-    @ViewBuilder private var ways: some View {
-        NavigationLink(value: OnboardingRoute.signIn) {
-            WayLabel(symbol: "person.crop.circle", title: "Sign in to your account", detail: "Continue with Apple or Google.")
+    /// iCloud: looking, nothing there, or off (Settings turns it on).
+    @ViewBuilder private var iCloudCard: some View {
+        if lookingInICloud {
+            HStack(spacing: 14) {
+                OnboardingTile(symbol: "icloud.and.arrow.down")
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Looking in iCloud…").font(.body.weight(.semibold))
+                    Text("Your habits come back by themselves if they're there.").font(.subheadline).foregroundStyle(.secondary)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+                ProgressView()
+            }
+            .padding(.vertical, 6)
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("onboarding-icloud-looking")
+        } else if let cloud, case .off(.noAccount) = cloud.phase {
+            Button {
+                if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+            } label: {
+                WayLabel(symbol: "icloud.slash", title: "Sign in to iCloud", detail: "In Settings. Your habits come back by themselves if they're there.")
+            }
+            .accessibilityIdentifier("onboarding-icloud-settings")
+        } else if cloud?.phase == .on {
+            WayLabel(symbol: "icloud", title: "No habits in iCloud", detail: "None came back from this Apple Account's iCloud.")
+                .accessibilityIdentifier("onboarding-icloud-empty")
         }
-        .accessibilityIdentifier("onboarding-way-sign-in")
+    }
+
+    /// The other ways back, each opening its page.
+    @ViewBuilder private var ways: some View {
         NavigationLink(value: OnboardingRoute.restore) {
-            WayLabel(symbol: "icloud.and.arrow.down", title: "Restore a backup",
-                     detail: BackupFeatures.iCloudBackup ? "From iCloud or a backup file." : "From a backup file.")
+            WayLabel(symbol: "clock.arrow.circlepath", title: "Restore a backup",
+                     detail: BackupFeatures.iCloudBackup ? "A day's copy from iCloud, or a backup file." : "From a backup file.")
         }
         .accessibilityIdentifier("onboarding-way-restore")
-        NavigationLink(value: OnboardingRoute.transferCode) {
-            WayLabel(symbol: "iphone", title: "Move from another device", detail: "Enter the code shown on the other device.")
-        }
-        .accessibilityIdentifier("onboarding-way-transfer")
     }
-}
-
-private extension WelcomeBackPage.Found {
-    var isAccount: Bool { if case .account = self { true } else { false } }
 }
 
 /// A way back: an icon tile, a title and one line. The row's own chevron comes from the list.
@@ -166,147 +182,6 @@ struct WayLabel: View {
         .padding(.vertical, 6)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(checked ? .isSelected : [])
-    }
-}
-
-// MARK: - R02 · Sign back in
-
-/// Apple and Google, the same size (HIG), then the account's data comes back on the loading page. An unknown sign-in
-/// never quietly becomes a new, empty account (D3): it says so and offers the other ways.
-struct SignBackInPage: View {
-    @Environment(BackupCenter.self) private var backup: BackupCenter?
-    @Environment(OnboardingFlow.self) private var flow
-    @State private var working: String?
-    @State private var unknown: ProviderToken?
-    /// A free account signed in on another device: "Use on This iPhone?" (screen 7, Current Work 78).
-    @State private var other: OtherDevice?
-    @State private var failure: String?
-    @State private var google = GoogleSignIn()
-    @State private var apple = AppleSignIn()
-
-    var body: some View {
-        OnboardingList(title: "Sign back in.", lead: "Use the same sign-in you used before.", id: "onboarding-page-sign-in") {
-            Section {
-                if BackupFeatures.appleSignIn {
-                    SignInButton(symbol: "apple.logo", title: "Continue with Apple", working: working == "apple", id: "onboarding-apple") {
-                        start("apple") { try await apple.signIn() }
-                    }
-                }
-                if BackupFeatures.googleSignIn {
-                    SignInButton(symbol: "g.circle", title: "Continue with Google", working: working == "google", id: "onboarding-google") {
-                        start("google") { try await google.signIn() }
-                    }
-                }
-            } footer: {
-                if let failure {
-                    Text(failure).font(.callout).foregroundStyle(.red).accessibilityIdentifier("onboarding-sign-in-failure")
-                }
-            }
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
-            .disabled(working != nil)
-            Section {
-                OnboardingButton(title: "Restore a backup instead", id: "onboarding-restore-instead", prominent: false) {
-                    flow.go(.restore)
-                }
-                .listRowBackground(Color.clear)
-            }
-        } bottom: {
-            EmptyView()
-        }
-        .onAppear { flow.reached("sign_in") }
-        .sheet(item: $other) { ask in
-            UseHereQuestion(otherDevice: ask.device, working: working != nil) {
-                working = "replace"
-                finish(ask.token, create: false, replace: true)
-            } onCancel: {
-                other = nil
-            }
-            .presentationDetents([.height(300)])
-            .presentationDragIndicator(.visible)
-        }
-        .alert("No account for this sign-in", isPresented: Binding(get: { unknown != nil }, set: { if !$0 { unknown = nil } })) {
-            Button("Try Another Sign-In", role: .cancel) { unknown = nil }
-            Button("Restore a Backup Instead") { unknown = nil; flow.go(.restore) }
-            Button("Create a New Account") {
-                guard let token = unknown else { return }
-                unknown = nil
-                finish(token, create: true)
-            }
-        } message: {
-            Text("There's no \(Onboarding.appName) account for this sign-in. If you used a different one before, try that instead.")
-        }
-    }
-
-    private func start(_ provider: String, _ signIn: @escaping @MainActor () async throws -> ProviderToken) {
-        working = provider
-        failure = nil
-        Task {
-            do {
-                finish(try await signIn(), create: false)
-            } catch is CancellationError {
-                working = nil
-            } catch {
-                working = nil
-                failure = "Couldn't sign in. Check your connection and try again."
-            }
-        }
-    }
-
-    /// Signs in without backing this iPhone up first: the account's data comes back on the next page, then it backs up.
-    private func finish(_ token: ProviderToken, create: Bool, replace: Bool = false) {
-        guard let backup else { failure = "Couldn't sign in on this iPhone."; working = nil; return }
-        Task {
-            defer { working = nil }
-            do {
-                try await backup.signIn(with: token, create: create, backUp: false, replace: replace)
-                other = nil
-                flow.go(.working(.account))
-            } catch let error as ServerError where error.code == "unknown_key" {
-                unknown = token
-            } catch let error as ServerError where error.code == "other_device_signed_in" {
-                other = OtherDevice(token: token, device: error.deviceName ?? "")
-            } catch {
-                other = nil
-                failure = "Couldn't sign in. Check your connection and try again."
-            }
-        }
-    }
-
-    private struct OtherDevice: Identifiable {
-        let id = UUID()
-        let token: ProviderToken
-        let device: String
-    }
-}
-
-/// "Continue with Apple" / "Continue with Google": full width, the same size, on the card colour.
-private struct SignInButton: View {
-    let symbol: String
-    let title: String
-    let working: Bool
-    let id: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 10) {
-                if working { ProgressView() } else { Image(systemName: symbol).font(.title3).accessibilityHidden(true) }
-                Text(title).font(.headline)
-            }
-            .foregroundStyle(Color.primary)
-            .frame(maxWidth: .infinity, minHeight: 52)
-            .contentShape(Capsule())
-        }
-        .buttonStyle(SignInButtonStyle())
-        .accessibilityIdentifier(id)
-    }
-}
-
-private struct SignInButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label.background(configuration.isPressed ? Color(.systemGray4) : Color.card, in: Capsule())
     }
 }
 
@@ -430,88 +305,6 @@ struct RestoreSourcePage: View {
     }
 }
 
-// MARK: - R07 · Enter transfer code
-
-/// The code the other iPhone shows (≡ → Backup & Export → Move to a New iPhone → Show a Transfer Code).
-struct TransferCodePage: View {
-    @Environment(OnboardingFlow.self) private var flow
-    @State private var draft = TransferDraft()
-
-    var body: some View {
-        OnboardingList(title: "Enter transfer code.", lead: "Use the code shown on your other device.", id: "onboarding-page-transfer") {
-            Section {
-                TransferCodeField(draft: draft, onSubmit: start)
-            } header: {
-                Text("Transfer code").font(.subheadline.weight(.semibold)).foregroundStyle(Color.primary).textCase(nil)
-            } footer: {
-                Text("On your other iPhone, open \(Onboarding.appName) and go to ≡ › Backup & Export › Move to a New iPhone › Show a Transfer Code. Keep both iPhones close.")
-                    .formNote()
-            }
-        } bottom: {
-            TransferGetButton(draft: draft, action: start)
-        }
-        .onAppear { flow.reached("transfer_code") }
-    }
-
-    private func start() {
-        guard draft.isComplete else { return }
-        flow.go(.working(.transfer(draft.code)))
-    }
-}
-
-/// The typed code. Only the field reads `text`; the page reads `isComplete`, which changes once, at the eighth
-/// character (S11).
-@Observable final class TransferDraft {
-    var text = "" {
-        didSet {
-            guard text != oldValue else { return }
-            let complete = TransferCode.normalize(text).count == TransferCode.length
-            if complete != isComplete { isComplete = complete }
-        }
-    }
-    private(set) var isComplete = false
-    var code: String { TransferCode.normalize(text) }
-}
-
-private struct TransferCodeField: View {
-    let draft: TransferDraft
-    let onSubmit: () -> Void
-    @FocusState private var focused: Bool
-
-    var body: some View {
-        @Bindable var draft = draft
-        TextField("Enter code", text: $draft.text)
-            .font(.title2.monospaced().weight(.semibold))
-            .textInputAutocapitalization(.characters)
-            .autocorrectionDisabled()
-            .keyboardType(.asciiCapable)
-            .textContentType(.oneTimeCode)
-            .submitLabel(.go)
-            .focused($focused)
-            .onSubmit(onSubmit)
-            .frame(minHeight: 44)
-            .accessibilityLabel("Transfer code")
-            .accessibilityIdentifier("onboarding-transfer-code")
-            .onChange(of: draft.text) { _, new in
-                // Capitals, the dash and spaces dropped, eight at most: put back on the next turn, or the field keeps
-                // showing what wasn't kept (U6).
-                let clean = TransferCode.normalize(new)
-                if clean != new { Task { @MainActor in if draft.text == new { draft.text = clean } } }
-            }
-            .task { focused = true }
-    }
-}
-
-private struct TransferGetButton: View {
-    let draft: TransferDraft
-    let action: () -> Void
-
-    var body: some View {
-        OnboardingButton(title: "Get my data", id: "onboarding-get-data", action: action)
-            .disabled(!draft.isComplete)
-    }
-}
-
 // MARK: - Review
 
 /// What a backup holds before anything changes: how much, from which iPhone and when. On an empty iPhone, one button;
@@ -532,7 +325,7 @@ struct ReviewBackupPage: View {
         let preview = check.preview
         let empty = preview.map { $0.phoneHabits == 0 && $0.phoneEntries == 0 } ?? true
         let nothing = preview.map { $0.replace.changesNothing && $0.merge.changesNothing } ?? false
-        OnboardingList(title: review.source == .otherDevice ? "Your data." : "Your backup.", lead: lead(review), id: "onboarding-page-review") {
+        OnboardingList(title: "Your backup.", lead: lead(review), id: "onboarding-page-review") {
             if let problem = check.problem {
                 Section { Text(BackupCenter.words(for: problem)) }
             } else if let preview {
@@ -564,7 +357,7 @@ struct ReviewBackupPage: View {
                 }
                 Section {
                 } footer: {
-                    Text("You can undo a restore for 30 days in ≡ › Backup & Export.").formNote()
+                    Text("You can undo a restore for 30 days in ≡ › iCloud & Backup.").formNote()
                 }
             }
         } bottom: {
@@ -602,7 +395,6 @@ struct WorkingPage: View {
     @State private var failure: Failure?
     @State private var writing = false
     @State private var attempt = 0
-    @State private var receiver = TransferReceiver()
 
     /// A problem and the two ways on from it.
     private struct Failure: Equatable {
@@ -614,17 +406,14 @@ struct WorkingPage: View {
 
     private var title: String {
         switch work {
-        case .account, .transfer: "Getting your data."
         case .thisDevice: "Setting things up."
         case .file: "Processing your data."
-        case .restore: flow.review?.source == .otherDevice ? "Restoring your data." : "Restoring your backup."
+        case .restore: "Restoring your backup."
         }
     }
 
     private var from: String {
         switch work {
-        case .account: ReturnSource.account.from
-        case .transfer: ReturnSource.otherDevice.from
         case .thisDevice: "With the data already on this iPhone."
         case .file: ReturnSource.file.from
         case .restore: flow.review?.source.from ?? ""
@@ -683,7 +472,7 @@ struct WorkingPage: View {
     private func label(_ next: Failure.Next) -> String {
         switch next {
         case .tryAgain: "Try again"
-        case .back: work.isTransfer ? "Enter the code again" : "Back"
+        case .back: "Back"
         case .openSettings: "Open Settings"
         case .restoreInstead: "Restore a backup instead"
         case .startFresh: "Start without restoring"
@@ -722,8 +511,6 @@ struct WorkingPage: View {
             return
         }
         switch work {
-        case .account: await bringBackAccount(backup, started: started)
-        case .transfer(let code): await receive(code, backup, started: started)
         case .thisDevice:
             status = "Getting everything ready…"
             await store.flush()
@@ -731,53 +518,6 @@ struct WorkingPage: View {
             end(.keptOnDevice)
         case .file(let url): await process(url, backup, started: started)
         case .restore(let mode): await restore(mode, backup, started: started)
-        }
-    }
-
-    private func bringBackAccount(_ backup: BackupCenter, started: Date) async {
-        status = "Checking your account…"
-        do {
-            switch try await backup.accountReturn() {
-            case .synced:
-                status = "Bringing back your habits…"
-                await settle(since: started)
-                end(.signedIn)
-            }
-        } catch is CancellationError {
-        } catch {
-            guard !Task.isCancelled else { return }
-            failure = Failure(text: "Couldn't reach your account. Check your connection and try again.", main: .tryAgain, other: .back)
-        }
-    }
-
-    /// The file the code points to, through our server (`TransferReceiver`); the server deletes it once it has been
-    /// checked here, and the other device says "Done".
-    private func receive(_ code: String, _ backup: BackupCenter, started: Date) async {
-        status = "Getting your data from your other device…"
-        do {
-            let data = try await receiver.receive(code: code, api: backup.api)
-            status = "Checking your data…"
-            guard let pending = await backup.check(data) else {
-                failure = Failure(text: "Your data didn't arrive whole, so nothing was changed. Please try again.", main: .tryAgain, other: .back)
-                return
-            }
-            if let problem = pending.check.problem {
-                failure = Failure(text: BackupCenter.words(for: problem), main: .back, other: .startFresh)
-                return
-            }
-            await receiver.confirm()
-            await restoreOrReview(pending, from: .otherDevice, backup, started: started, senderAccount: receiver.senderAccount)
-        } catch let problem as TransferReceiver.Failure {
-            // At least a second on this page, so what happened can be read before it changes (as `settle`).
-            await settle(since: started)
-            guard !Task.isCancelled else { return }
-            failure = switch problem {
-            case .wrongCode: Failure(text: "That code doesn't match, or it has expired. Check the code on your other device.", main: .back, other: .tryAgain)
-            case .unreachable: Failure(text: "Couldn't reach the server, so nothing was changed. Check your connection and try again.", main: .tryAgain, other: .back)
-            case .damaged: Failure(text: "Your data didn't arrive whole, so nothing was changed. Please try again.", main: .tryAgain, other: .back)
-            }
-        } catch {
-            // Cancelled: the page has gone.
         }
     }
 
@@ -812,39 +552,14 @@ struct WorkingPage: View {
         show(.review)
     }
 
-    /// An empty iPhone has nothing to lose (and an undo file is kept): restore straight away. Otherwise the person
-    /// chooses Replace or Merge on the review page.
-    private func restoreOrReview(_ pending: BackupCenter.Pending, from source: ReturnSource, _ backup: BackupCenter, started: Date,
-                                 senderAccount: TransferCode.Account = .none) async {
-        // Nothing in it: say so, rather than "restore" nothing and open an empty Today as if it had worked.
-        if let preview = pending.check.preview, preview.fileHabits == 0 && preview.fileEntries == 0 {
-            failure = Failure(text: source == .otherDevice ? "Your other device has no habits or tasks to send yet."
-                                                           : "This backup has no habits or tasks in it.",
-                              main: .back, other: .startFresh)
-            return
-        }
-        flow.review = ReturningBackup(pending: pending, source: source, senderAccount: senderAccount)
-        let empty = pending.check.preview.map { $0.phoneHabits == 0 && $0.phoneEntries == 0 } ?? false
-        guard empty else {
-            show(.review)
-            return
-        }
-        await restore(.replace, backup, started: started)
-    }
-
     private func restore(_ mode: ReturnMode, _ backup: BackupCenter, started: Date) async {
         guard let review = flow.review, !Task.isCancelled else { return }
         writing = true
         status = "Bringing back your habits…"
         do {
             _ = try await backup.restore(review.pending, mode: mode == .replace ? .replace : .merge)
-            // Signed in: the account gets what came back (its backup was held back while signing in).
-            if backup.isSignedIn { Task { await backup.backUpNow() } }
-            // Moved from a device that was signed in: once on Today, ask to sign in with the same account (sign-ins never
-            // travel between devices; Account and Backup Redesign §7 item 3).
-            if review.source == .otherDevice, review.senderAccount != .none, !backup.isSignedIn { backup.suggestSignIn = review.senderAccount }
             await settle(since: started)
-            end(review.source == .account ? .signedIn : review.source == .otherDevice ? .transferred : .restored)
+            end(.restored)
         } catch {
             writing = false
             failure = Failure(text: "Couldn't restore, so nothing was changed. Please try again.", main: .tryAgain, other: .back)
@@ -856,10 +571,6 @@ struct WorkingPage: View {
         let left = 1.0 - Date.now.timeIntervalSince(started)
         if left > 0 { try? await Task.sleep(for: .seconds(left)) }
     }
-}
-
-private extension OnboardingWork {
-    var isTransfer: Bool { if case .transfer = self { true } else { false } }
 }
 
 /// What the loading page is doing now.

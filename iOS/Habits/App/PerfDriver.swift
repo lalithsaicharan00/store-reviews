@@ -28,8 +28,8 @@ enum PerfAction: Equatable {
     case openOnboarding, onboardingPage(String), onboardingBack
     /// Privacy & Security's App Lock page, and its setup sheet (Current Work 58.13).
     case openAppLock, openLockSetup
-    /// Backup & Export's Account and Restore pages (Current Work 76).
-    case openAccount, openRestore
+    /// iCloud & Backup's Restore page (Current Work 76).
+    case openRestore
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
@@ -253,37 +253,35 @@ enum PerfDriver {
             await open("App Lock: setup sheet (again)") { send(.openLockSetup) }
             await measure("App Lock: setup sheet scrolling") { await scroll() }
             send(.close)
-        case "account":
-            // ≡ → Account (Current Work 76, T4): signed out, as a test launch is (D8); and its Sign In sheet.
-            await openTwice("Account") { send(.openPlace(.account)) }
-            await measure("Account: scrolling") { await scroll() }
+        case "icloud-page":
+            // ≡ → iCloud & Backup (Architecture 11 §17, T4): opening it, scrolling it, and Restore From a Backup from it.
+            await openTwice("iCloud & Backup") { send(.openPlace(.backup)) }
+            await measure("iCloud & Backup: scrolling") { await scroll() }
+            await open("iCloud & Backup → Restore From a Backup") { send(.openRestore) }
             send(.close)
-            await pause(1.2)
-            send(.openPlace(.backup))
-            await pause(1.5)
-            await open("Backup & Export → Your Account") { send(.openAccount) }
-            send(.close)
-        case "backup-page":
-            // ≡ → Backup & Export (Current Work 76, T4): opening it, scrolling it, and Restore From a Backup from it.
-            await openTwice("Backup & Export") { send(.openPlace(.backup)) }
-            await measure("Backup & Export: scrolling") { await scroll() }
-            await open("Backup & Export → Restore From a Backup") { send(.openRestore) }
-            send(.close)
-        case "backup-states":
-            // Backup & Export and Account in each state (Current Work 78, T4): no account, a free account (syncs this
-            // iPhone), Plus; shown as they would be, without signing in (D8).
-            for (name, plus) in [("no account", nil), ("free", false), ("Plus", true)] as [(String, Bool?)] {
-                AppModel.shared.backup?.perfSignedIn = plus
+        case "icloud-states":
+            // iCloud & Backup in each state it can be in (§17, T4), as each would be shown, on a test launch's own iCloud (D8).
+            for state in CloudTestStates.pageStates {
+                CloudTestStates.show(state)
                 await pause(0.5)
-                await open("Backup & Export (\(name))") { send(.openPlace(.backup)) }
-                await measure("Backup & Export (\(name)): scrolling") { await scroll() }
-                send(.close)
-                await pause(1.2)
-                await open("Account (\(name))") { send(.openPlace(.account)) }
+                await open("iCloud & Backup (\(state))") { send(.openPlace(.backup)) }
+                await measure("iCloud & Backup (\(state)): scrolling") { await scroll() }
                 send(.close)
                 await pause(1.2)
             }
-            AppModel.shared.backup?.perfSignedIn = nil
+        case "today-big-fetch":
+            // Today while a big fetch from iCloud is applied (Architecture 11 §8, §19; T4): 20,000 logs arriving in pages
+            // as Today scrolls, then as it's tapped.
+            await CloudTestStates.startBigFetch(records: 20_000)
+            await measure("Today: scrolling during a big iCloud fetch") { await scroll() }
+            guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# NOTE no Water") }
+            await measure("Today: +1 during a big iCloud fetch") {
+                await repeatFor(window) {
+                    withAnimation { store.increment(water, on: store.today()) }
+                    await pause(0.35)
+                }
+            }
+            await CloudTestStates.finishBigFetch()
         case "lock-keypad":
             // The lock's cover with its keypad (Current Work 58, T4): showing it, typing on it (never six digits, so it
             // stays), then the right code, which opens the app. A test launch's own lock (D8).
@@ -390,7 +388,7 @@ enum PerfDriver {
             await open("Blank page (control, first)") { send(.openBlank) }
             send(.close)
             await pause(1)
-            for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .account, .backup, .privacy, .plus, .help, .about] {
+            for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .backup, .privacy, .plus, .help, .about] {
                 // Twice: the first pays one-time costs (a launch's first form, picker, search bar); the second is
                 // what every later opening costs.
                 await openTwice(place.title) { send(.openPlace(place)) }

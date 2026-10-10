@@ -62,13 +62,14 @@ struct HabitsApp: App {
                 Task { await model.saveWidgetTaps() }
                 model.scheduler.scheduleReconcile(model.store)
                 model.widgets.schedule(model.store)
-                // Pull on every return to the app (another device may have changed something).
-                model.sync?.appBecameActive()
+                // iCloud on every return to the app: what waits is retried, and another device's changes fetched (pushes
+                // aren't guaranteed, Architecture 11 §8).
+                model.cloud?.appBecameActive()
                 // Every open re-checks the backup, so a problem is told as soon as we know (§4.4).
                 Task { await model.backup?.runIfDue() }
             }
-            // Stop polling for other devices' changes while away.
-            if scenePhase == .background { model.sync?.appWentToBackground() }
+            // Leaving: a change still waiting for its quiet moment goes to iCloud now, with time from iOS.
+            if scenePhase == .background { model.cloud?.appWentToBackground() }
             // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
             // write, so a tap made just before switching away is never lost (30 Sep).
             if scenePhase == .background { finishWrites() }
@@ -113,7 +114,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-appreliability", "-applockcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-appreliability", "-applockcheck", "-widget-system-verify", "-cloudcheck", "-cloudcheck-extreme"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
@@ -139,19 +140,12 @@ struct HabitsApp: App {
     }
 
     @ViewBuilder private var today: some View {
-        if let backup = model.backup {
+        if let backup = model.backup, let cloud = model.cloud {
             todayView
                 .environment(backup)
+                .environment(cloud)
                 .modifier(IncomingBackupSheet(backup: backup))
-                .modifier(KeepYourAccount(backup: backup))
-                .modifier(SignedOutElsewhere(backup: backup))
-                #if DEBUG
-                // Two simulators checked against each other: `-transfer-send` opens the old iPhone's code screen.
-                // Only once the demo habits are saved (S7), so the file isn't made from an empty database.
-                .sheet(isPresented: .constant(ProcessInfo.processInfo.arguments.contains("-transfer-send") && !model.store.habits.isEmpty)) {
-                    NavigationStack { TransferSendView() }.environment(backup)
-                }
-                #endif
+                .modifier(CloudQuestions(cloud: cloud, backup: backup))
         } else {
             todayView
         }
@@ -175,7 +169,7 @@ struct HabitsApp: App {
                 .environment(model.scheduler)
                 .environment(model.menu)
                 .environment(model.router)
-                .modifier(OptionalBackup(backup: model.backup))
+                .modifier(OptionalBackup(backup: model.backup, cloud: model.cloud))
                 .tint(.ink)
             }
             #if DEBUG
@@ -215,62 +209,13 @@ private struct IncomingBackupSheet: ViewModifier {
     }
 }
 
-/// After moving habits from a device that was signed in: "Sign in to keep your account", once, with Sign In (its own
-/// sheet) or Not Now (Account and Backup Redesign §7 item 3; decided 10 Oct 2026). Plus syncs once signed in; a free
-/// account backs this device up to it.
-private struct KeepYourAccount: ViewModifier {
-    @Bindable var backup: BackupCenter
-    @State private var signingIn = false
-
-    func body(content: Content) -> some View {
-        content
-            .alert("Sign in to keep your account", isPresented: Binding(get: { backup.suggestSignIn != nil }, set: { if !$0 { backup.suggestSignIn = nil } })) {
-                Button("Sign In") { backup.suggestSignIn = nil; signingIn = true }
-                Button("Not Now", role: .cancel) { backup.suggestSignIn = nil }
-            } message: {
-                Text(backup.suggestSignIn == .plus
-                     ? "Your other device used an account with Plus. Sign in the same way here to keep your devices in sync."
-                     : "Your other device used an account. Sign in the same way here to keep backing up to it.")
-            }
-            .sheet(isPresented: $signingIn) { SignInSheet(title: "Sign In").environment(backup) }
-    }
-}
-
-/// "Signed out on this iPhone" (Account and Backup Redesign, screen 8; Current Work 78): once, after another device's
-/// sign-in moved the free account there. An alert: it's unexpected and needs acknowledging. Also asks "Use on This
-/// iPhone?" (screen 7) for a sign-in that has no sheet of its own to ask in (a test launch's).
-private struct SignedOutElsewhere: ViewModifier {
-    @Bindable var backup: BackupCenter
-
-    func body(content: Content) -> some View {
-        content
-            .alert("Signed out on this \(UIDevice.current.model)",
-                   isPresented: Binding(get: { backup.signedOutBy != nil && backup.askReplace == nil },
-                                        set: { if !$0 { backup.acknowledgeSignedOutElsewhere() } })) {
-                Button("OK") { backup.acknowledgeSignedOutElsewhere() }
-            } message: {
-                Text(backup.signedOutLine)
-            }
-            .sheet(item: $backup.askReplace) { ask in
-                UseHereQuestion(otherDevice: ask.otherDevice) {
-                    Task {
-                        await ask.proceed()
-                        backup.askReplace = nil
-                    }
-                } onCancel: {
-                    backup.askReplace = nil
-                }
-                .presentationDetents([.height(300)])
-                .presentationDragIndicator(.visible)
-            }
-    }
-}
-
-/// The backup centre for a screen shown over Today in its own presentation, when there is one (none without a database).
+/// The backup centre and iCloud for a screen shown over Today in its own presentation, when there are (none without a
+/// database).
 private struct OptionalBackup: ViewModifier {
     let backup: BackupCenter?
+    let cloud: CloudSync?
     func body(content: Content) -> some View {
-        if let backup { content.environment(backup) } else { content }
+        if let backup, let cloud { content.environment(backup).environment(cloud) } else { content }
     }
 }
 
@@ -311,6 +256,16 @@ private struct PlacementCheckView: View {
                     // saved it; nothing there and no log means the widget's intent never ran.
                     result = "Widget system: no durable widget log · \(WidgetTaps.read().count) taps waiting in the shared file"
                 }
+                return
+            }
+            if arguments.contains("-cloudcheck") {
+                let failures = await CloudSyncCheck.run()
+                result = failures.isEmpty ? "iCloud sync: all checks passed" : "iCloud sync failed (\(failures.count)): " + failures.prefix(20).joined(separator: "; ")
+                return
+            }
+            if arguments.contains("-cloudcheck-extreme") {
+                let (failures, summary) = await CloudSyncCheck.extremeAccount()
+                result = failures.isEmpty ? "Extreme account: all checks passed · " + summary : "Extreme account failed: " + failures.joined(separator: "; ")
                 return
             }
             if arguments.contains("-applockcheck") {

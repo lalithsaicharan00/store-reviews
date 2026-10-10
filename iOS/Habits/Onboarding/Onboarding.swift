@@ -2,10 +2,10 @@ import SwiftUI
 
 /// The first launch, rebuilt from the user's wireframes (Current Work 73.1, 9 Oct 2026; Figma "Onboarding — Current
 /// wireframes", one row per path). One question first, **Have you used Often Enough before?**, then either the new
-/// person's pages (what's included, what the app does, days and weeks, a first habit) or every way back (sign in,
-/// restore a backup, move from another device). Research: "Onboarding for New and Returning People — Research and
-/// Proposed Flow" (9 Oct 2026). Nothing here asks for a permission or a purchase; an account is only for someone
-/// coming back to one.
+/// person's pages (what's included, what the app does, days and weeks, a first habit) or every way back (iCloud brings
+/// the habits by itself; a backup in iCloud or a file, Architecture 11 §13.1). Research: "Onboarding for New and
+/// Returning People — Research and Proposed Flow" (9 Oct 2026). Nothing here asks for a permission or a purchase, and
+/// there's no account to make.
 enum Onboarding {
     /// Set once the welcome is finished, skipped or left for a restore. Kept in UserDefaults: it's about this phone.
     static let doneKey = "onboarding.done"
@@ -156,7 +156,7 @@ enum OnboardingRoute: Hashable {
     // I'm new here (row 2)
     case included, build, quit, tasks, days, firstHabit, createOwn
     // I've used it before (rows 5–9)
-    case welcomeBack, signIn, restore, transferCode, review
+    case welcomeBack, restore, review
     case working(OnboardingWork)
     case privacy
 }
@@ -285,9 +285,7 @@ struct OnboardingView: View {
         case .firstHabit: FirstHabitPage()
         case .createOwn: NewItemChoices(onAdded: { _ in finishAfterSave() })
         case .welcomeBack: WelcomeBackPage()
-        case .signIn: SignBackInPage()
         case .restore: RestoreSourcePage()
-        case .transferCode: TransferCodePage()
         case .review: ReviewBackupPage()
         case .working(let work): WorkingPage(work: work)
         case .privacy: PrivacyView()
@@ -308,7 +306,7 @@ struct OnboardingView: View {
         guard let ticket = Analytics.shared.ticket, observedSteps.insert(step).inserted else { return }
         analyticsStepTicket = ticket
         if !replay && step == "welcome" { Analytics.shared.cohort("fresh_first_run", ticket: analyticsStepTicket) }
-        let returning = ["returning", "sign_in", "restore_source", "transfer_code"].contains(step)
+        let returning = ["returning", "restore_source"].contains(step)
         Analytics.shared.event(.onboardingStep, ["flow_mode": .text(replay ? "replay" : returning ? "restore" : "first_run"),
             "step": .text(step)], ticket: analyticsStepTicket)
     }
@@ -338,11 +336,9 @@ extension OnboardingRoute {
         case "firstHabit": .firstHabit
         case "createOwn": .createOwn
         case "welcomeBack": .welcomeBack
-        case "signIn": .signIn
         case "restore": .restore
-        case "transferCode": .transferCode
-        // Screenshots only: the loading page as it looks while looking for the other device.
-        case "gettingData": .working(.transfer(TransferCode.debugCode ?? "00000000"))
+        // Screenshots only: the loading page as it looks while setting things up.
+        case "gettingData": .working(.thisDevice)
         default: nil
         }
     }

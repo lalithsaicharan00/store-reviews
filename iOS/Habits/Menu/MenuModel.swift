@@ -57,18 +57,17 @@ import SwiftUI
 enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     case progress, habits, tasks
     case timesOfDay, dayAndWeek, reminders, appearance
-    case backup, privacy, account
+    case backup, privacy
     case plus
     case help, about
 
     var id: String { rawValue }
 
     /// The menu's groups, separated by a gap like the iPhone's own Settings, ordered by importance: daily places, how the
-    /// app works, your data (backup matters to everyone, privacy to many, an account only to those who want one), Plus,
-    /// then Help and About. Account is last in the data group: easy to find, never pushed (the user, 10 Oct 2026;
-    /// Account and Backup Redesign §4, screen 1).
+    /// app works, your data (iCloud and backups matter to everyone, privacy to many), Plus, then Help and About. There's
+    /// no account: iCloud & Backup replaced Account and Backup & Export (Architecture 11 §17, 10 Oct 2026).
     static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
-                                        [.backup, .privacy, .account], [.plus], [.help, .about]]
+                                        [.backup, .privacy], [.plus], [.help, .about]]
 
     var title: String {
         switch self {
@@ -79,8 +78,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .dayAndWeek: "Day and Week"
         case .reminders: "Reminders"
         case .appearance: "Appearance"
-        case .account: "Account"
-        case .backup: "Backup & Export"
+        case .backup: "iCloud & Backup"
         case .privacy: "Privacy & Security"
         case .plus: "Plus"
         case .help: "Help & Feedback"
@@ -98,8 +96,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .dayAndWeek: "calendar"
         case .reminders: "bell"
         case .appearance: "circle.lefthalf.filled"
-        case .account: "person.crop.circle"
-        case .backup: "externaldrive"
+        case .backup: "icloud"
         case .privacy: "hand.raised"
         case .plus: "plus.circle"
         case .help: "questionmark.circle"
@@ -111,11 +108,10 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     var plan: String? {
         switch self {
         case .reminders: "Whether notifications and alarms are allowed, and what a new reminder starts as."
-        case .backup: "Backups on this phone, a copy you can export or import, and moving to a new phone."
+        case .backup: "iCloud sync, backups, restoring and exporting."
         case .privacy: "Lock the app, hide names outside it, and choose what's shared."
         case .help: "Answers to common questions, and a way to reach us."
         case .about: "The privacy policy and terms."
-        case .account: "Sign in, your plan and devices, signing out."
         case .progress, .habits, .tasks, .timesOfDay, .dayAndWeek, .appearance, .plus: nil
         }
     }

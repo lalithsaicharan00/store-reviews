@@ -66,6 +66,7 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
         val rows = mutableListOf<CloudRow>()
         val refused = mutableListOf<String>()
         val missing = mutableListOf<String>()
+        var deletes = 0
         // Every op queued so far has already been merged into its row, so a record built now contains them all.
         val upTo = dao.lastOutboxSeq()
         for (name in names) {
@@ -93,9 +94,10 @@ class CloudStore internal constructor(private val dao: HabitDao, private val clo
                 refused += name
                 continue
             }
+            if (dao.hasWaitingDelete(table, row)) deletes++
             rows += CloudRow(name, table, row, fields, clocks, HabitRepository.SCHEMA_VERSION, meta.ckSystem, upTo)
         }
-        CloudBatch(rows, refused, missing)
+        CloudBatch(rows, refused, missing, deletes)
     }
 
     /**
@@ -324,7 +326,9 @@ data class CloudRow(
     val system: String?, val upTo: Long,
 )
 
-data class CloudBatch(val rows: List<CloudRow>, val refused: List<String>, val missing: List<String>)
+/** A batch to send; records refused (kept aside) or with nothing to send; and how many rows in it carry a delete that
+ *  isn't part of one confirmed action (the brake checks before sending those, §13.2). */
+data class CloudBatch(val rows: List<CloudRow>, val refused: List<String>, val missing: List<String>, val deletes: Int)
 
 /** A confirmed save: the record's name, its new system fields, and the outbox position it was built at. */
 data class CloudSaved(val name: String, val system: String?, val upTo: Long)
