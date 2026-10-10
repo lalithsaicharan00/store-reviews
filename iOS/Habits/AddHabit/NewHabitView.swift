@@ -424,7 +424,9 @@ struct HabitForm: View {
         }
     }
     private var remind: Bool { remindOn && !times.isEmpty }
-    private var hasChanges: Bool { editing ? editChanged : typed.isFilled || !filledItems.isEmpty }
+    /// Something the person typed (U18: Cancel asks first only then). An idea's own name isn't typed: its form leaves
+    /// by Back without a question until it's changed (run 37999286664).
+    private var hasChanges: Bool { editing ? editChanged : typed.isChanged || !filledItems.isEmpty }
     private var isHabit: Bool { type.isBuild || type == .cutBack }
     /// How it's tracked: the type chosen before the form.
     private var kind: ItemType { type }
