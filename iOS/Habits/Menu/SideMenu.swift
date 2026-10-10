@@ -96,7 +96,9 @@ private struct MenuLayer: View {
                 .simultaneousGesture(closeDrag(width: width))
                 .allowsHitTesting(menu.isOpen)
                 .accessibilityHidden(!menu.isOpen)
-                .accessibilityAddTraits(.isModal)
+                // Modal only while open: closed, the panel still sat off screen as an "alert" XCUITest found
+                // (BackupUITests, run 38037588319).
+                .accessibilityAddTraits(menu.isOpen ? .isModal : [])
                 .accessibilityAction(.escape) { menu.setOpen(false, reduceMotion: reduceMotion) }
             }
         }

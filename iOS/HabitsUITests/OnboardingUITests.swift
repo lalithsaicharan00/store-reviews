@@ -309,7 +309,8 @@ final class OnboardingUITests: XCTestCase {
         shot("R08-getting-your-data")
         // No device is showing this code: the server has nothing for it, and the page says so (through the server
         // since 10 Oct 2026; a wrong code is told within seconds).
-        let failure = app.staticTexts["onboarding-working-failure"]
+        // `firstMatch`: the page reads as one element, which carries the text's id as well as the text itself.
+        let failure = app.staticTexts["onboarding-working-failure"].firstMatch
         XCTAssertTrue(failure.waitForExistence(timeout: 30), "A code nobody showed is refused")
         XCTAssertTrue(failure.label.hasPrefix("That code doesn't match"), failure.label)
         shot("R08-code-doesnt-match")
@@ -330,7 +331,8 @@ final class OnboardingUITests: XCTestCase {
         let code = String((0..<8).map { _ in "0123456789ABCDEFGHJKMNPQRSTVWXYZ".randomElement()! })
         // The old device: the demo habits; ≡ › Backup & Export › Move to Another Device shows this test's code.
         launch(onboarding: false, empty: false, extra: ["-transfer-code", code])
-        XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 15), "The old device has the demo habits")
+        // Water, in Anytime, is shown at any hour (Stretch's Morning card folds once its hour has passed).
+        XCTAssertTrue(app.buttons["Add 1 glass to Water"].waitForExistence(timeout: 15), "The old device has the demo habits")
         let menuButton = app.buttons["menu-button"], backupRow = app.buttons["menu-backup"]
         XCTAssertTrue(menuButton.waitForExistence(timeout: 10))
         menuButton.tap()
@@ -356,8 +358,9 @@ final class OnboardingUITests: XCTestCase {
         if !app.keyboards.firstMatch.waitForExistence(timeout: 3) { field.tap() }
         field.typeText(code)
         tap("onboarding-get-data")
-        XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 45),
-                      "The habits arrived: \(app.staticTexts["onboarding-working-failure"].exists ? app.staticTexts["onboarding-working-failure"].label : "no failure shown")")
+        let failure = app.staticTexts["onboarding-working-failure"].firstMatch
+        XCTAssertTrue(app.buttons["Add 1 glass to Water"].waitForExistence(timeout: 45),
+                      "The habits arrived: \(failure.exists ? failure.label : "no failure shown")")
         shot("M02-new-device-today")
     }
 

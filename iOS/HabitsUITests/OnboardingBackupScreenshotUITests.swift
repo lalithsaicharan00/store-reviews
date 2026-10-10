@@ -146,21 +146,25 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
             }
             if tap(app.buttons["restore-import"], "Backup File") {
                 shot("D10-import-a-file")
-                let cancel = app.buttons["Cancel"].firstMatch
-                if cancel.waitForExistence(timeout: 5) { cancel.tap() }
+                // The file picker closes with Cancel, or an ✕ (iOS 26) named Close.
+                let cancel = app.buttons.matching(NSPredicate(format: "label IN %@ OR identifier IN %@",
+                                                              ["Cancel", "Close"], ["Cancel", "Close", "xmark"])).firstMatch
+                if cancel.waitForExistence(timeout: 5) { cancel.tap() } else { app.swipeDown(velocity: .fast) }
+                XCTAssertTrue(app.navigationBars["Restore From a Backup"].waitForExistence(timeout: 5), "The file picker closed")
             }
             back()
         }
 
-        app.swipeUp()
-        shot("D04-backup-export-middle")
-        app.swipeUp(); app.swipeUp()
-        shot("D05-backup-export-bottom")
-        // Without an account, Your Account opens Create Account over the page (screen 4e).
+        // Without an account, Your Account opens Create Account over the page (screen 4e). Near the top, so before
+        // scrolling: the list drops rows that have scrolled away.
         if tap(app.buttons["backup-account"], "Your Account") {
             shot("D06-create-account-sheet")
             closeSheet()
         }
+        app.swipeUp()
+        shot("D04-backup-export-middle")
+        app.swipeUp(); app.swipeUp()
+        shot("D05-backup-export-bottom")
         // Share sheets are left out: on the iPhone they show the person's own contacts.
         if tap(app.buttons["backup-erase"], "Erase All My Data") {
             shot("D07-erase-question")
@@ -178,7 +182,7 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         shot("D08-use-on-this-iphone")
         app.terminate()
         launch(["-test-signed-out-by", "iPad"])
-        let notice = app.alerts.firstMatch
+        let notice = app.alerts.matching(NSPredicate(format: "label BEGINSWITH 'Signed out on this'")).firstMatch
         XCTAssertTrue(notice.waitForExistence(timeout: 10), "Signed out on this iPhone")
         XCTAssertTrue(notice.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Your account is now used on your iPad.'")).firstMatch.exists, notice.debugDescription)
         shot("D09-signed-out-on-this-iphone")

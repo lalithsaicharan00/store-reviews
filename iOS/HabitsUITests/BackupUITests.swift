@@ -84,7 +84,7 @@ final class BackupUITests: XCTestCase {
         // Account and Backup Redesign, screen 4: the same list in every state, iCloud first and Your Account last.
         let account = app.buttons["backup-account"]
         XCTAssertTrue(account.label.contains("Your Account") && account.label.contains("Create one to sync your habits"), account.label)
-        XCTAssertTrue(app.staticTexts["iCloud backs up your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label == %@", "iCloud backs up your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device.")).firstMatch.exists, labels(app))
         let iCloud = app.buttons["backup-icloud-status"]
         XCTAssertTrue(shows(app, row: "backup-icloud-status", "Off"), "No iCloud here: the iCloud row says Off")
         XCTAssertLessThan(iCloud.frame.minY, account.frame.minY, "iCloud comes before Your Account without an account")
@@ -219,7 +219,8 @@ final class BackupUITests: XCTestCase {
         app.terminate()
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 20))
-        XCTAssertFalse(app.alerts.firstMatch.waitForExistence(timeout: 3), "The notice is shown once")
+        XCTAssertFalse(app.alerts.matching(NSPredicate(format: "label BEGINSWITH 'Signed out on this'")).firstMatch.waitForExistence(timeout: 3),
+                       "The notice is shown once")
 
         let me = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "replace": true, "device": device()])
         if let access = me.json["accessToken"] as? String { _ = try? call("POST", "/v1/account/delete", [:], token: access) }
@@ -442,7 +443,7 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.buttons["backup-icloud-status"].isSelected, "✓ on iCloud")
         XCTAssertTrue(app.buttons["backup-now"].exists, "Back Up Now, to iCloud")
         XCTAssertTrue(shows(app, row: "backup-account", "Create one to sync your habits"))
-        XCTAssertTrue(app.staticTexts["iCloud backs up your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device."].exists, labels(app))
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label == %@", "iCloud backs up your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device.")).firstMatch.exists, labels(app))
         shot("backup-icloud-ok")
 
         open("full")
