@@ -204,7 +204,7 @@ struct MenuPage: View {
         case .timesOfDay: TimesOfDayList()
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
-        case .plus: PlusView(fromMenu: true)
+        case .plus: PlusPage()
         case .backup:
             // Without a database (it couldn't be opened) there's no backup centre; the older page says what's wrong.
             if let backup = AppModel.shared.backup, let cloud = AppModel.shared.cloud {

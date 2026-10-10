@@ -54,6 +54,8 @@ final class AppModel {
     let menu = MenuModel()
     /// App Lock (≡ → Privacy & Security). Off unless turned on.
     let lock: AppLock
+    /// Plus from the App Store (StoreKit 2, Current Work 80): listening from launch.
+    let plus: PlusStore
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 
@@ -151,6 +153,15 @@ final class AppModel {
             guard UIApplication.shared.applicationState == .active else { return }
             TickFeedback.logged(finished: completed)
         }
+        // Plus from the App Store, beside the account's: either unlocks unlimited habits. A test launch uses a stand-in
+        // App Store and never sees the person's own purchases (D8), unless `-real-storekit` asks for the real one.
+        var storeBackend: PlusBackend = AppStoreBackend()
+        #if DEBUG
+        if testLaunch && !arguments.contains("-real-storekit") { storeBackend = PlusTestBackend() }
+        #endif
+        plus = PlusStore(backend: storeBackend, remembers: !testLaunch && !arguments.contains("-dbname"))
+        plus.onChange = { [store] has in store.storePlus = has }
+        plus.start()
         #if DEBUG
         // Debug builds behave like Plus, so the design's 14 habits fit. Launch with -free to test the free limit.
         store.isPlus = !arguments.contains("-free")
@@ -212,6 +223,7 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-widget-fixture") { await WidgetFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-reminder-fixture") { await ReminderFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-task-fixture") { await TaskFixture.install(in: store) }
+            if ProcessInfo.processInfo.arguments.contains("-plus-fixture") { await PlusFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-day-details-fixture") { await DayDetailsFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
                 await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))

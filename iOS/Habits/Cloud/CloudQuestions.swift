@@ -73,51 +73,30 @@ struct SecondDeviceSheet: View {
                             .font(.title2.bold())
                             .multilineTextAlignment(.center)
                             .accessibilityAddTraits(.isHeader)
-                            .accessibilityIdentifier("second-device-title")
+                            .accessibilityIdentifier("use-here-title")
                         Text("The free plan syncs one device at a time through iCloud.")
                             .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
                     .padding(.bottom, 4)
-                    card {
+                    VStack(alignment: .leading, spacing: 12) {
                         VStack(alignment: .leading, spacing: 4) {
-                            HStack(spacing: 6) {
-                                Text("Keep both in sync").font(.headline)
-                                Text("Plus").font(.caption.weight(.semibold)).padding(.horizontal, 6).padding(.vertical, 2)
-                                    .background(Color(.tertiarySystemFill), in: Capsule())
-                            }
+                            Text("Keep both in sync").font(.headline)
                             Text("With Plus, \(other), this \(here) and any other device stay in sync. A one-time purchase.")
                                 .font(.subheadline).foregroundStyle(.secondary)
                         }
-                        Button { showPlus = true } label: {
-                            Text("See Plus").font(.headline).frame(maxWidth: .infinity, minHeight: 34)
-                        }
-                        .buttonStyle(.bordered)
-                        .buttonBorderShape(.capsule)
-                        .controlSize(.large)
-                        .tint(.primary)
-                        .accessibilityIdentifier("second-device-see-plus")
+                        PlusSecondButton(title: "See Plus", id: "use-here-see-plus") { showPlus = true }
                     }
-                    card {
+                    .plusCard()
+                    VStack(alignment: .leading, spacing: 12) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Move to this \(here)").font(.headline)
                             Text("Your habits come here from iCloud. \(HabitCopy.capitalized(other)) stops syncing and keeps everything it has.")
                                 .font(.subheadline).foregroundStyle(.secondary)
-                                .accessibilityIdentifier("second-device-text")
+                                .accessibilityIdentifier("use-here-text")
                         }
-                        Button(action: onMove) {
-                            Group {
-                                if working { ProgressView().tint(Color.onInk) } else { Text("Use on This \(here)").font(.headline) }
-                            }
-                            .foregroundStyle(Color.onInk)
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .buttonBorderShape(.capsule)
-                        .controlSize(.large)
-                        .tint(.ink)
-                        .disabled(working)
-                        .accessibilityIdentifier("second-device-move")
+                        PlusMainButton(title: "Use on This \(here)", working: working, id: "use-here-continue", action: onMove)
                     }
+                    .plusCard()
                     Text("✕ keeps this \(here) on its own. Nothing changes on \(other).")
                         .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 }
@@ -129,23 +108,16 @@ struct SecondDeviceSheet: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(action: onClose) { Image(systemName: "xmark") }
                         .accessibilityLabel("Close")
-                        .accessibilityIdentifier("second-device-close")
+                        .accessibilityIdentifier("use-here-cancel")
                         .disabled(working)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(isPresented: $showPlus) { MenuPage(place: .plus) }
+            .navigationDestination(isPresented: $showPlus) { PlusPage() }
         }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         .interactiveDismissDisabled(working)
-    }
-
-    private func card(@ViewBuilder _ content: () -> some View) -> some View {
-        VStack(alignment: .leading, spacing: 12) { content() }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 

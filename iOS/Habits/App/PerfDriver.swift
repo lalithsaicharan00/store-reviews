@@ -30,6 +30,8 @@ enum PerfAction: Equatable {
     case openAppLock, openLockSetup
     /// iCloud & Backup's Restore page (Current Work 76).
     case openRestore
+    /// The Plus page's and the 6th-habit sheet's other plan; New's 6th-habit sheet (Current Work 80).
+    case nextPlan, openSixthHabit
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
@@ -375,6 +377,23 @@ enum PerfDriver {
                     UserDefaults.standard.set(false, forKey: Preferences.hideDoneHabits); await pause(0.5)
                 }
             }
+        case "plus-page":
+            // ≡ › Plus without Plus (Current Work 80, T4): the page, choosing a plan, and New's 6th-habit sheet (a year of
+            // history has more than 5 habits, so New's habit rows open it).
+            store.isPlus = false
+            await openTwice("Plus page") { send(.openPlace(.plus)) }
+            await measure("Plus page: choosing a plan") {
+                await repeatFor(window) { send(.nextPlan); await pause(0.4) }
+            }
+            send(.close)
+            await pause(1.2)
+            send(.openNewHabit)
+            await pause(1.5)
+            await open("6th-habit sheet (first)") { send(.openSixthHabit) }
+            await measure("6th-habit sheet: choosing a plan") {
+                await repeatFor(window) { send(.nextPlan); await pause(0.4) }
+            }
+            send(.close)
         case "menu":
             await measure("Menu: open and close") {
                 await repeatFor(window) { send(.toggleMenu); await pause(0.6) }

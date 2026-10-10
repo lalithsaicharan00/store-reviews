@@ -98,18 +98,14 @@ struct IdeasList: View {
     }
 }
 
-/// The New Habit form, filled in from an idea. A habit past the free limit gets the Plus screen, as in New.
+/// The New Habit form, filled in from an idea. Past the free limit, Add opens the 6th-habit sheet and the form is kept
+/// (Current Work 80).
 struct IdeaForm: View {
     let idea: HabitIdea
     var onAdded: (UUID) -> Void
-    @Environment(HabitStore.self) private var store
 
     var body: some View {
-        if idea.type.isHabit && !store.canAddHabit {
-            PlusView()
-        } else {
-            HabitForm(type: idea.type, idea: idea, onSaved: onAdded)
-        }
+        HabitForm(type: idea.type, idea: idea, onSaved: onAdded)
     }
 }
 

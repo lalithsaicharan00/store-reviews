@@ -128,17 +128,17 @@ final class ICloudUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-free", "-test-cloud", "free-other"]
         app.launch()
-        let title = app.staticTexts["second-device-title"]
+        let title = app.staticTexts["use-here-title"]
         XCTAssertTrue(title.waitForExistence(timeout: 20), labels(app))
         XCTAssertEqual(title.label, "Use your habits on this iPhone?")
         XCTAssertTrue(app.staticTexts["The free plan syncs one device at a time through iCloud."].exists, labels(app))
-        let plus = app.buttons["second-device-see-plus"], move = app.buttons["second-device-move"]
+        let plus = app.buttons["use-here-see-plus"], move = app.buttons["use-here-continue"]
         XCTAssertTrue(plus.exists && move.exists)
         XCTAssertLessThan(plus.frame.minY, move.frame.minY, "Plus first, the free move last (the user's decision)")
-        XCTAssertTrue(app.staticTexts["second-device-text"].label.contains("Your iPad stops syncing and keeps everything it has"), app.staticTexts["second-device-text"].label)
+        XCTAssertTrue(app.staticTexts["use-here-text"].label.contains("Your iPad stops syncing and keeps everything it has"), app.staticTexts["use-here-text"].label)
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "second-device-sheet"; shot.lifetime = .keepAlways; add(shot)
         // ✕ changes nothing: the page says the iPad is the one syncing.
-        app.buttons["second-device-close"].tap()
+        app.buttons["use-here-cancel"].tap()
         XCTAssertTrue(title.waitForNonExistence(timeout: 5))
         openICloud(app)
         XCTAssertTrue(shows(app, "cloud-status", "Your iPad is the one syncing"), label(app, "cloud-status"))
