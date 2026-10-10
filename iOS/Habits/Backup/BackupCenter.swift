@@ -173,6 +173,11 @@ final class BackupCenter {
         }
         refresh()
         sync.onSynced = { [weak self] date in self?.lastSynced = date }
+        // Apple's advice: set up the iCloud container early, off the main thread, so iCloud starts bringing its list
+        // down while the welcome is read (a fresh install's restore looks there, 10 Oct 2026).
+        if BackupFeatures.iCloudBackup && !sandboxed {
+            Task.detached(priority: .utility) { _ = FileManager.default.url(forUbiquityContainerIdentifier: nil) }
+        }
     }
 
     // MARK: State
@@ -546,6 +551,9 @@ final class BackupCenter {
         guard identity != nil else { return iCloudFailed(.signedOut) }
         guard let data = Data(base64Encoded: file.base64) else { return .failed }
         let deviceID = sync.deviceID
+        // This install's first iCloud backup (a reinstall's included) waits for iCloud's list of the folder first, so
+        // the copies already there are seen before anything is written beside them (10 Oct 2026).
+        if previous == nil { _ = await ICloudLookup.look(timeout: .seconds(15)) }
         let upload = BackupFolder.Upload(data: data, sha256: file.sha256, createdAt: Date(timeIntervalSince1970: Double(file.createdAt) / 1000),
                                          habits: Int(file.habits), entries: Int(file.entries), records: Int(file.records),
                                          deviceName: UIDevice.current.name, platform: SyncService.platform)
@@ -553,7 +561,7 @@ final class BackupCenter {
         let older: Data? = await Task.detached {
             guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return nil }
             let folder = BackupFolder(root: container.appending(path: "Backups", directoryHint: .isDirectory), deviceID: deviceID)
-            guard folder.readIndex() == nil else { return nil }
+            guard BackupFolder.place(of: folder.indexURL) == .nowhere else { return nil }
             return await BackupFolder.read(folder.olderFile, wait: 10)
         }.value
         var olderRecords: Int?
@@ -564,11 +572,13 @@ final class BackupCenter {
         let result: Int = await Task.detached {
             guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return 1 }
             let folder = BackupFolder(root: container.appending(path: "Backups", directoryHint: .isDirectory), deviceID: deviceID)
+            // This device's index is in iCloud but not here yet (a reinstall): wait for it rather than write a new one.
+            if BackupFolder.place(of: folder.indexURL) == .inCloud { _ = await BackupFolder.read(folder.indexURL, wait: 20) }
             do {
                 switch try folder.write(upload, olderRecords: records) {
                 case .written: return 0
                 case .keptOlder: return 4
-                case .damaged: return 3
+                case .damaged, .notReady: return 3
                 }
             } catch let error as CocoaError where error.code == .fileWriteOutOfSpace {
                 return 2
@@ -947,16 +957,33 @@ final class BackupCenter {
 
     /// The copies in the app's hidden iCloud folder, newest first. Copies not yet on this device are asked for; they
     /// show once iCloud has brought them (`downloading` > 0 means try again shortly).
+    ///
+    /// iCloud's own list comes first (`ICloudLookup`): while its first look isn't finished, that counts as one more on its
+    /// way, so a fresh install never reads "nothing yet" as "no backup".
     func iCloudCopies() async -> (copies: [ICloudCopy], downloading: Int) {
-        guard BackupFeatures.iCloudBackup, !sandboxed, FileManager.default.ubiquityIdentityToken != nil else { return ([], 0) }
+        guard canLookInICloud else { return ([], 0) }
         let me = sync.deviceID
-        let (found, downloading): ([BackupFolder.Listed], Int) = await Task.detached {
+        let lookup = await ICloudLookup.look()
+        let (found, listing): ([BackupFolder.Listed], Int) = await Task.detached {
             guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return ([], 0) }
             return BackupFolder.list(root: container.appending(path: "Backups", directoryHint: .isDirectory), thisDevice: me)
         }.value
         let copies = found.map { ICloudCopy(url: $0.url, modified: $0.createdAt, isThisDevice: $0.isThisDevice, deviceID: $0.deviceID,
                                             deviceName: $0.deviceName, slot: $0.slot, habits: $0.habits, entries: $0.entries) }
-        return (copies, downloading)
+        return (copies, max(listing, lookup.notHere) + (lookup.finished ? 0 : 1))
+    }
+
+    /// This iPhone's iCloud can be looked in (signed in, not a test launch).
+    var canLookInICloud: Bool { BackupFeatures.iCloudBackup && !sandboxed && FileManager.default.ubiquityIdentityToken != nil }
+
+    /// How long a restore keeps looking in iCloud when it has found nothing and nothing is on its way: iCloud's list of
+    /// the folder can reach a fresh install a little after its first look (10 Oct 2026).
+    nonisolated static let iCloudFirstLook: TimeInterval = 20
+
+    /// Whether a restore looks in iCloud again (every 3 s, at most a minute): while copies are still coming, and for
+    /// `iCloudFirstLook` seconds while nothing at all has been found.
+    nonisolated static func keepLooking(found: Bool, downloading: Int, elapsed: TimeInterval) -> Bool {
+        downloading > 0 || (!found && elapsed < iCloudFirstLook)
     }
 
     /// Each device's newest copy, this device's first (Free Plan Backups §7: a reinstall picks its own copy, not just

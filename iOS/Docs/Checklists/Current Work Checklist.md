@@ -688,6 +688,17 @@ and the Add note keyboard coming up by itself.
     backup file, measured on the iPhone, still importable (D5). (3) Backed up as you go (`scheduleSoon`-style background
     time, D12), the server's per-copy limit raised to about 12 an hour. (4) After launch, check the real uploads a month
     against the model's 80.
+  - [ ] **A fresh install finds its iCloud backup** (10 Oct 2026, from the user's question "will the data survive
+    deleting the app, losing the phone, or on an iPad with the same iCloud?"). The copies live in the person's iCloud
+    (the app's own iCloud Drive folder, not the iPhone's device backup), so they survive all three; but a reinstall,
+    a new iPhone or an iPad starts with an empty folder that iCloud fills in, and the code took "nothing here yet" for
+    "no backup", and could have written a new index over one still in iCloud (hiding the other six days). Built:
+    files not brought down yet count as coming (`BackupFolder.place`), never written over (`.notReady`); Restore asks
+    iCloud's own list (`ICloudLookup`, `NSMetadataQuery`) and keeps looking 20 s while nothing is found; the first
+    backup of an install waits for that list; a copy its index doesn't name is still listed; the iCloud container is
+    set up at launch. Logic checks in `BackupCheck`. Still to do: BackupUITests on GitHub; on the iPhone, delete the app
+    and reinstall, and open it on a second device with the same Apple Account (U9). Not covered by any code: a phone
+    lost before iCloud finished uploading its newest copy (the user, 10 Oct: nothing to do there).
 
 - [ ] **76. Sidebar, Account and Backup & Export: redesign** (added 10 October 2026, from the user, with five
   screenshots). The account must be easy to find in the sidebar without pushing anyone to make one; say clearly what an

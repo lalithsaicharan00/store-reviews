@@ -188,11 +188,15 @@ struct ICloudCopiesView: View {
         return seen
     }
 
+    /// Looks again every 3 s while copies are on their way, and a little while nothing has been found (a fresh install,
+    /// `BackupCenter.keepLooking`); "No backup found" only after that.
     private func load() async {
+        let started = Date.now
+        defer { searched = true }
         for _ in 0..<20 {
             (copies, downloading) = await backup.iCloudCopies()
-            searched = true
-            if downloading == 0 || Task.isCancelled { return }
+            let more = backup.canLookInICloud && BackupCenter.keepLooking(found: !copies.isEmpty, downloading: downloading, elapsed: Date.now.timeIntervalSince(started))
+            if !more || Task.isCancelled { return }
             try? await Task.sleep(for: .seconds(3))
         }
     }

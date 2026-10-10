@@ -17,6 +17,12 @@ import Foundation
 ///
 /// The layout before 10 Oct 2026, one `Backups/<device ID>.zip` per device, is still read (`list`) and never deleted.
 /// Plain files, so `BackupCheck` proves every rule on a temporary folder standing in for iCloud (D8).
+///
+/// **A file iCloud hasn't brought to this iPhone yet is never taken for "no file"** (10 Oct 2026). On a fresh install
+/// (a reinstall, a new iPhone, an iPad) the folder fills in as iCloud brings its list down, and a file that's listed but
+/// not downloaded is either a `.name.icloud` stand-in or a file of its own name with no data (`place(of:)`). So `list`
+/// counts it as coming, `write` never writes a new index over one that's still in iCloud, and a copy the index doesn't
+/// name is still listed by its date.
 nonisolated struct BackupFolder: Sendable {
     /// `Backups/` in the app's iCloud container (or a test's folder).
     let root: URL
@@ -67,7 +73,12 @@ nonisolated struct BackupFolder: Sendable {
         case keptOlder
         /// Read back, it didn't match.
         case damaged
+        /// This device's index is in iCloud but not on this iPhone yet: nothing was written (it's asked for; try again).
+        case notReady
     }
+
+    /// Where a file is: on this iPhone, in iCloud only (not brought down yet), or nowhere.
+    nonisolated enum Place: Equatable, Sendable { case here, inCloud, nowhere }
 
     /// A copy of any device, for Restore.
     nonisolated struct Listed: Identifiable, Hashable, Sendable {
@@ -96,8 +107,32 @@ nonisolated struct BackupFolder: Sendable {
         weekdays[(calendar.component(.weekday, from: date) - 1) % 7]
     }
 
+    /// Older iOS shows a file that isn't downloaded as a `.name.icloud` stand-in; newer iOS keeps it under its own name
+    /// with no data. Both are `.inCloud`. A plain folder (a test's) has only `.here` and `.nowhere`.
+    static func place(of url: URL) -> Place {
+        let fm = FileManager.default
+        if fm.fileExists(atPath: url.path) {
+            var fresh = url
+            fresh.removeAllCachedResourceValues() // asked again while waiting for a download
+            let values = try? fresh.resourceValues(forKeys: [.isUbiquitousItemKey, .ubiquitousItemDownloadingStatusKey])
+            if values?.isUbiquitousItem == true, values?.ubiquitousItemDownloadingStatus == .notDownloaded { return .inCloud }
+            return .here
+        }
+        let standIn = url.deletingLastPathComponent().appending(path: ".\(url.lastPathComponent).icloud")
+        return fm.fileExists(atPath: standIn.path) ? .inCloud : .nowhere
+    }
+
+    /// The slot a file in a device's folder holds ("mon.zip", or its stand-in ".mon.zip.icloud"); nil for anything else.
+    static func slot(ofFile name: String) -> String? {
+        var name = name
+        if name.hasPrefix("."), name.hasSuffix(".icloud") { name = String(name.dropFirst().dropLast(".icloud".count)) }
+        guard name.hasSuffix(".zip") else { return nil }
+        let slot = String(name.dropLast(4))
+        return weekdays.contains(slot) || slot == keptSlot ? slot : nil
+    }
+
     func readIndex() -> Index? {
-        guard let data = try? Data(contentsOf: indexURL) else { return nil }
+        guard Self.place(of: indexURL) == .here, let data = try? Data(contentsOf: indexURL) else { return nil }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
         return try? decoder.decode(Index.self, from: data)
@@ -119,6 +154,12 @@ nonisolated struct BackupFolder: Sendable {
     /// copy in the older layout, when there's no index yet (read from the file by the caller), so a reinstall's empty
     /// database can't replace that either.
     func write(_ upload: Upload, olderRecords: Int? = nil, calendar: Calendar = .current) throws -> Outcome {
+        // A reinstall can back up before iCloud has brought this device's index down. A new index written then would
+        // replace it (hiding the other days) and the guards below couldn't see what the newest copy holds.
+        if Self.place(of: indexURL) == .inCloud {
+            try? FileManager.default.startDownloadingUbiquitousItem(at: indexURL)
+            return .notReady
+        }
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         var index = readIndex() ?? Index(deviceID: deviceID, deviceName: upload.deviceName, platform: upload.platform, copies: [])
         let newest = newest(in: index)
@@ -187,18 +228,27 @@ nonisolated struct BackupFolder: Sendable {
                                      habits: nil, entries: nil, isThisDevice: device == thisDevice, isOlderLayout: true))
             } else if (try? item.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true {
                 let folder = BackupFolder(root: root, deviceID: name)
-                guard let index = folder.readIndex() else {
-                    let placeholder = item.appending(path: ".index.json.icloud")
-                    if fm.fileExists(atPath: placeholder.path) {
-                        try? fm.startDownloadingUbiquitousItem(at: folder.indexURL)
-                        downloading += 1
-                    }
+                if Self.place(of: folder.indexURL) == .inCloud {
+                    try? fm.startDownloadingUbiquitousItem(at: folder.indexURL)
+                    downloading += 1
                     continue
                 }
-                for copy in index.copies {
-                    copies.append(Listed(url: folder.url(copy.slot), deviceID: name, deviceName: index.deviceName, slot: copy.slot,
+                let index = folder.readIndex()
+                for copy in index?.copies ?? [] {
+                    copies.append(Listed(url: folder.url(copy.slot), deviceID: name, deviceName: index?.deviceName ?? "", slot: copy.slot,
                                          createdAt: copy.createdAt, habits: copy.habits, entries: copy.entries,
                                          isThisDevice: name == thisDevice, isOlderLayout: false))
+                }
+                // A copy the index doesn't name (no index, or one written before iCloud brought the old one) is still
+                // listed, by its date; its counts show once it's opened.
+                let named = Set(index?.copies.map(\.slot) ?? [])
+                var seen = Set<String>()
+                let files = (try? fm.contentsOfDirectory(at: item, includingPropertiesForKeys: [.contentModificationDateKey])) ?? []
+                for file in files {
+                    guard let fileSlot = Self.slot(ofFile: file.lastPathComponent), !named.contains(fileSlot), seen.insert(fileSlot).inserted else { continue }
+                    let modified = (try? file.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                    copies.append(Listed(url: folder.url(fileSlot), deviceID: name, deviceName: index?.deviceName ?? "", slot: fileSlot,
+                                         createdAt: modified, habits: nil, entries: nil, isThisDevice: name == thisDevice, isOlderLayout: false))
                 }
             }
         }
@@ -208,12 +258,12 @@ nonisolated struct BackupFolder: Sendable {
     /// A copy's bytes, asking iCloud for it first if it isn't on this device yet (up to `wait` seconds).
     static func read(_ url: URL, wait: TimeInterval = 30) async -> Data? {
         let fm = FileManager.default
-        if let data = try? Data(contentsOf: url) { return data }
+        if Self.place(of: url) == .here, let data = try? Data(contentsOf: url) { return data }
         try? fm.startDownloadingUbiquitousItem(at: url)
         let until = Date.now.addingTimeInterval(wait)
         while Date.now < until {
             try? await Task.sleep(for: .seconds(1))
-            if let data = try? Data(contentsOf: url) { return data }
+            if Self.place(of: url) == .here, let data = try? Data(contentsOf: url) { return data }
         }
         return nil
     }

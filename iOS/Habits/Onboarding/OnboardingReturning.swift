@@ -373,11 +373,13 @@ struct RestoreSourcePage: View {
         .accessibilityIdentifier("onboarding-restore-file")
     }
 
-    /// iCloud brings copies that aren't on this iPhone yet; look again until they're here (at most a minute).
+    /// iCloud brings copies that aren't on this iPhone yet; look again until they're here (at most a minute), and keep
+    /// looking a little while nothing has been found (`BackupCenter.keepLooking`).
     private func search() async {
         guard BackupFeatures.iCloudBackup, let backup, !searching else { return }
         searching = true
         defer { searching = false; searched = true }
+        let started = Date.now
         for _ in 0..<20 {
             // Each device's newest copy with habits, this iPhone's own first (a reinstall picks its own, Current Work 75).
             let (all, downloading) = await backup.iCloudCopies()
@@ -386,7 +388,8 @@ struct RestoreSourcePage: View {
                 copies = found
                 if chosen == nil || !found.contains(where: { $0 == chosen }) { chosen = found.first }
             }
-            if downloading == 0 || Task.isCancelled { return }
+            let more = backup.canLookInICloud && BackupCenter.keepLooking(found: !copies.isEmpty, downloading: downloading, elapsed: Date.now.timeIntervalSince(started))
+            if !more || Task.isCancelled { return }
             try? await Task.sleep(for: .seconds(3))
         }
     }

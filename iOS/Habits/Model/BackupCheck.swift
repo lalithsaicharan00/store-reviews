@@ -228,6 +228,32 @@ enum BackupCheck {
             let newest = BackupCenter.newestPerDevice(copies)
             expect(newest.first?.isThisDevice == true, "this device's own copy comes first, not just the newest")
             expect(Set(newest.map(\.deviceID)).count == newest.count, "one row per device")
+
+            // A fresh install before iCloud has brought a device's files down (older iOS's `.name.icloud` stand-ins; newer
+            // iOS's files with no data are the same `.inCloud`): never "no file" (10 Oct 2026).
+            let fresh = BackupFolder(root: root, deviceID: "44444444-4444-4444-4444-444444444444")
+            try FileManager.default.createDirectory(at: fresh.folder, withIntermediateDirectories: true)
+            try Data().write(to: fresh.folder.appending(path: ".index.json.icloud"))
+            try Data().write(to: fresh.folder.appending(path: ".mon.zip.icloud"))
+            expect(BackupFolder.place(of: fresh.indexURL) == .inCloud, "an index not brought down yet is in iCloud")
+            expect(BackupFolder.place(of: iPhone.indexURL) == .here && BackupFolder.place(of: fresh.url("tue")) == .nowhere, "here, and nowhere")
+            expect(try fresh.write(upload("one habit", at: day(1), habits: 1, entries: 1, records: 2), calendar: calendar) == .notReady,
+                   "nothing is written while this device's index is still in iCloud")
+            expect(!FileManager.default.fileExists(atPath: fresh.indexURL.path) && !FileManager.default.fileExists(atPath: fresh.url("mon").path),
+                   "no new index or copy is written beside the one in iCloud")
+            let waiting = BackupFolder.list(root: root, thisDevice: iPhone.deviceID)
+            expect(waiting.downloading == 1, "an index still in iCloud counts as on its way (\(waiting.downloading))")
+
+            // An index that doesn't name every copy (written before iCloud brought the old one): the rest still show.
+            let unnamed = BackupFolder(root: root, deviceID: "55555555-5555-5555-5555-555555555555")
+            try FileManager.default.createDirectory(at: unnamed.folder, withIntermediateDirectories: true)
+            try Data("friday".utf8).write(to: unnamed.url("fri"))
+            _ = try unnamed.write(upload("monday", at: day(1), habits: 3, entries: 3, records: 6, name: "Old iPhone"), calendar: calendar)
+            let both = BackupFolder.list(root: root, thisDevice: iPhone.deviceID).copies.filter { $0.deviceID == unnamed.deviceID }
+            expect(Set(both.map(\.slot)) == ["mon", "fri"] && both.contains { $0.slot == "fri" && $0.habits == nil && $0.deviceName == "Old iPhone" },
+                   "a copy the index doesn't name is still listed (\(both.map(\.slot)))")
+            expect(BackupFolder.slot(ofFile: ".sat.zip.icloud") == "sat" && BackupFolder.slot(ofFile: "before-shrink.zip") == BackupFolder.keptSlot
+                   && BackupFolder.slot(ofFile: "writing-sat.tmp") == nil && BackupFolder.slot(ofFile: "index.json") == nil, "copy names")
         } catch {
             failures.append("folder: \(error.localizedDescription)")
         }
@@ -236,6 +262,12 @@ enum BackupCheck {
         expect(!BackupCenter.backupAllowed(welcomeFinished: false, hasHabits: false), "a fresh install backs up nothing during the welcome")
         expect(BackupCenter.backupAllowed(welcomeFinished: true, hasHabits: false), "after the welcome, it backs up")
         expect(BackupCenter.backupAllowed(welcomeFinished: false, hasHabits: true), "an update with habits backs up")
+
+        // Restore keeps looking in iCloud a little while nothing is found: a fresh install's list arrives late (10 Oct 2026).
+        expect(BackupCenter.keepLooking(found: false, downloading: 0, elapsed: 3), "nothing found yet: look again")
+        expect(!BackupCenter.keepLooking(found: false, downloading: 0, elapsed: BackupCenter.iCloudFirstLook), "then: no backup found")
+        expect(BackupCenter.keepLooking(found: true, downloading: 1, elapsed: 50), "copies still coming: look again")
+        expect(!BackupCenter.keepLooking(found: true, downloading: 0, elapsed: 0), "found, and nothing coming: done")
         return failures
     }
 }
