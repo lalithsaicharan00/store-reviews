@@ -61,15 +61,20 @@ final class BackupUITests: XCTestCase {
         // The remote share container appears before its buttons. Wait for Close instead of
         // swiping the container while its content is still arriving.
         let close = app.buttons["header.closeButton"]
-        XCTAssertTrue(close.waitForExistence(timeout: 15), app.debugDescription)
-        close.tap()
-        XCTAssertTrue(app.otherElements["ActivityListView"].waitForNonExistence(timeout: 10), app.debugDescription)
+        let sheet = app.otherElements["ActivityListView"]
+        /// The system's share sheet can ignore a ✕ tapped while its content is still arriving (run 38039875406: the
+        /// sheet stayed open): tap it again if the sheet is still there.
+        func closeSheet(_ what: String) {
+            XCTAssertTrue(close.waitForExistence(timeout: 15), "\(what): the share sheet's ✕")
+            close.tap()
+            if !sheet.waitForNonExistence(timeout: 4), close.exists { close.tap() }
+            XCTAssertTrue(sheet.waitForNonExistence(timeout: 10), "\(what): the share sheet closes")
+        }
+        closeSheet("Export a Spreadsheet")
         let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: app.buttons["backup-save"])
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed, app.debugDescription)
         app.buttons["backup-save"].tap()
-        XCTAssertTrue(close.waitForExistence(timeout: 15), app.debugDescription)
-        close.tap()
-        XCTAssertTrue(app.otherElements["ActivityListView"].waitForNonExistence(timeout: 10))
+        closeSheet("Save a Backup File")
     }
 
     /// No account: the screen says the habits are only on this iPhone, the account is offered as one more place, and a
