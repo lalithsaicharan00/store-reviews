@@ -19,7 +19,7 @@ enum PerfAction: Equatable {
     /// The habit page's History · Notes · Progress, by position (3 Oct 2026).
     case habitTab(Int)
     /// The habit page's All milestones page (spec "Habit Progress" §3.2, 11 Oct 2026).
-    case openMilestones
+    case openMilestones, showMilestones
     /// Today's Edit: Arrange Your Day (3 Oct 2026).
     case openArrange
     /// The lock's keypad (Current Work 58): a digit, or Delete.
@@ -38,6 +38,9 @@ enum PerfSwitches {
     /// False opens the habit form without putting the cursor in its name field, to tell the form's own opening from
     /// the keyboard's (2 Oct 2026).
     static var focusFormName = true
+    /// True (scenario `habit-milestones-blank`) pushes an empty page where All milestones goes, the same way: the
+    /// control for its first opening (22.6 s and 50 s in two speed runs, 167 ms and 2 s with the profiler, 10 Oct 2026).
+    static var blankMilestonesPage = false
     /// False (`-perf-no-widget-publish`, a launch argument) leaves out the widgets' publication after each change, to
     /// measure what it costs the screen the person is using (8 Oct 2026, Current Work 49). Always true outside speed runs.
     static let widgetPublication: Bool = {
@@ -421,18 +424,25 @@ enum PerfDriver {
                     send(.habitTab(2)); await pause(0.5)
                 }
             }
-        case "habit-milestones":
+        case "habit-milestones", "habit-milestones-blank":
+            PerfSwitches.blankMilestonesPage = scenario == "habit-milestones-blank"
             // Milestones (spec "Habit Progress", 11 Oct 2026): the Progress tab with a year of medals, its Earlier shelf
             // scrolled sideways, then the All milestones page opened and scrolled.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Brush teeth")) }
             await open("Habit page: Progress (milestones)") { send(.habitTab(2)) }
+            await measure("Habit page: Progress scrolling (milestones)") { await scroll() }
+            send(.showMilestones)
+            await pause(1)
             await measure("Habit page: Milestones shelf scrolling") { await scrollSideways() }
-            await open("All milestones (first)") { send(.openMilestones) }
-            await measure("All milestones: scrolling") { await scroll() }
-            send(.closeDay)
-            await pause(1.2)
-            await open("All milestones (again)") { send(.openMilestones) }
+            // Opened three times: the first run's first opening read 50 s in one launch and 2 s in another, with the
+            // main thread asleep in the profile (10 Oct 2026); the later openings say what it costs every other time.
+            for round in ["first", "second", "third"] {
+                await open("All milestones (\(round))") { send(.openMilestones) }
+                if round == "first" { await measure("All milestones: scrolling") { await scroll() } }
+                send(.closeDay)
+                await pause(1.2)
+            }
         case "habit-page-total":
             // A weekly total (15 km a week): its Progress has the week's total against its goal.
             await open("All Habits") { send(.openAllHabits) }

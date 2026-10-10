@@ -47,7 +47,7 @@ struct HabitPageView: View {
         let today = store.today()
         let key = HabitPageModel.Key(habit: habit, version: store.dataVersion, today: today)
         let tabs = HabitTab.tabs(for: habit)
-        return ScrollView {
+        return ScrollViewReader { proxy in ScrollView {
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                 header(habit, today: today)
                     .padding(.horizontal, WeekSpacing.card)
@@ -69,6 +69,11 @@ struct HabitPageView: View {
                 }
             }
             .padding(.bottom, WeekSpacing.section)
+        }
+        .onPerfCommand { action in
+            // Speed runs: the Milestones card at the top, so its shelf can be scrolled sideways.
+            if action == .showMilestones { withAnimation(nil) { proxy.scrollTo(Self.milestonesCard, anchor: .top) } }
+        }
         }
         .background(Color(.systemGroupedBackground))
         .environment(heatVisit)
@@ -118,6 +123,9 @@ struct HabitPageView: View {
             Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.")
         }
     }
+
+    /// The Milestones card's id on the page, for the speed runs' `showMilestones`.
+    static let milestonesCard = "habit-milestones-card"
 
     // MARK: Header
 
