@@ -1,13 +1,14 @@
-import { type Account, type DeviceInfo, MAX_PUSH, type PurchaseRecord } from "./account";
+import { type Account, type DeviceInfo, type EndedReason, MAX_PUSH, type OtherDevice, type PurchaseRecord, type SyncResult } from "./account";
 import { APPLE_ROOT_CA_G3, verifyAppleSigned } from "./apple";
 import { exchangeAppleCode, revokeAppleToken } from "./appleTokens";
 import { deleteBackups, listBackups, readBackup, storeBackup } from "./backup";
 import { adminRoute } from "./admin";
 import { accountStub } from "./stubs";
-import { dailyReport, recordRequest } from "./report";
+import { countUsage, dailyReport, recordRequest, recordSync } from "./report";
 import { processConfirmation, retryConfirmations, scheduleConfirmation } from "./email";
 import { deleteSnapshots } from "./snapshots";
 import { listSnapshots, snapshotBackupFile } from "./snapshotFile";
+import { cancelTransfer, getTransfer, pruneTransfers, putTransfer, receivedTransfer, transferStatus } from "./transfer";
 import {
   type Jurisdiction,
   createAccount,
@@ -76,6 +77,7 @@ export default {
         .then(() => dailyReport(env, controller.scheduledTime))
         .catch(failed("daily_report")),
     );
+    ctx.waitUntil(pruneTransfers(env, controller.scheduledTime).catch(failed("transfers")));
   },
 } satisfies ExportedHandler<Env>;
 
@@ -87,6 +89,8 @@ async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext
   if (copy && request.method === "GET") return backupFile(request, env, copy[1]!, copy[2]!);
   const snapshotDay = /^\/v1\/snapshots\/([^/]+)$/.exec(url.pathname);
   if (snapshotDay && request.method === "GET") return snapshotDownload(request, env, snapshotDay[1]!);
+  const move = /^\/v1\/transfer\/([^/]+)(\/received|\/status)?$/.exec(url.pathname);
+  if (move) return transfer(request, env, move[1]!, move[2] ?? "");
   switch (key) {
     case "GET /v1/status":
       return json({ ok: true, environment: env.ENVIRONMENT, time: Date.now() }, 200, { "cache-control": "public, max-age=30" });
@@ -113,7 +117,7 @@ async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext
     case "POST /v1/account/delete":
       return remove(request, env);
     case "POST /v1/sync":
-      return sync(request, env);
+      return sync(request, env, ctx);
     case "PUT /v1/backup":
       return backupUpload(request, env);
     case "GET /v1/backup":
@@ -151,6 +155,12 @@ interface SignInBody {
   plus?: unknown;
   /** Apple only: the credential's one-time code, exchanged for a token we can revoke on deletion (appleTokens.ts). */
   authorizationCode?: unknown;
+  /**
+   * The person chose Continue on "Use on This iPad?": a free account signed in on another device moves here, and that
+   * device is signed out, keeping its habits (Current Work 78). Without it, such a sign-in answers 409
+   * `other_device_signed_in`.
+   */
+  replace?: unknown;
 }
 
 async function signIn(request: Request, env: Env, verify: (body: SignInBody) => Promise<VerifiedKey>, ctx?: ExecutionContext): Promise<Response> {
@@ -168,8 +178,13 @@ async function signIn(request: Request, env: Env, verify: (body: SignInBody) => 
   }
   const claims: AccessClaims = { accountId: account.accountId, deviceId: device.id, jurisdiction: account.jurisdiction };
   const testPlus = key.provider === "test" || key.provider === "ci" ? body.plus !== false : null;
-  const session = await accountStub(env, claims).openSession(account.accountId, key, device, testPlus);
+  const session = await accountStub(env, claims).openSession(account.accountId, key, device, testPlus, Date.now(), body.replace === true);
+  if (!session.ok && session.reason === "other_device") {
+    // Free accounts sync one device: the app asks "Use on This iPad?" and signs in again with `replace` (screen 7).
+    throw new HttpError(409, "other_device_signed_in", `This account is signed in on ${session.device.name}. A free account syncs one device.`, { device: session.device });
+  }
   if (!session.ok) throw new HttpError(409, "account_unavailable", "This account can't be opened right now. Please try again.");
+  if (session.replaced) countUsage(env, ctx, "replaced_device");
   if (ctx) keepAppleToken(env, ctx, account, key, body.authorizationCode);
   return json({ accountId: account.accountId, created, ...(await tokens(env, { ...claims, plus: session.plus }, session.secret)) }, created ? 201 : 200);
 }
@@ -238,6 +253,7 @@ async function refresh(request: Request, env: Env): Promise<Response> {
   if (!result.ok && result.reason === "gone" && (await wasDeleted(env.DIRECTORY, parsed.accountId))) {
     throw new HttpError(401, "account_deleted", "This account was deleted. Everything on this device is kept.");
   }
+  if (!result.ok && result.reason === "ended") throw sessionEnded(result.ended, result.by);
   if (!result.ok) throw signedOut();
   return json(await tokens(env, { ...parsed, plus: result.plus }, result.secret));
 }
@@ -245,6 +261,15 @@ async function refresh(request: Request, env: Env): Promise<Response> {
 /** The app keeps all its data and shows "Sign in again to keep syncing" (01 §3.5). */
 function signedOut() {
   return new HttpError(401, "signed_out", "Sign in again to keep syncing. Everything on this device is kept.");
+}
+
+/**
+ * Another device signed in to this free account (or Plus ended and another device was kept): the app signs out here
+ * keeping every habit, goes back to iCloud / Google Drive, and says so once (screen 8, Current Work 78).
+ */
+function sessionEnded(reason: EndedReason, by: OtherDevice | null) {
+  const message = by ? `Your account is now used on ${by.name}. Everything on this device is kept.` : "Signed out on this device. Everything on it is kept.";
+  return new HttpError(401, "session_ended", message, { reason, deviceName: by?.name ?? null, device: by });
 }
 
 async function authenticate(request: Request, env: Env): Promise<AccessClaims> {
@@ -387,25 +412,30 @@ async function appleSignInEvent(request: Request, env: Env): Promise<Response> {
 // MARK: Sync
 
 /**
- * `{cursor, ops}` → `{applied, rejected, ops, cursor, more}` (Architecture 05, 06 §4). Only Plus syncs: a free
- * account is answered here, before any Durable Object is called (Server Cost and Capacity §4.2).
+ * `{cursor, ops}` → `{applied, rejected, ops, cursor, more}` (Architecture 05, 06 §4). Every account syncs: Plus across
+ * its devices, a free account from its one signed-in device (Current Work 78; the Durable Object knows which).
  */
-async function sync(request: Request, env: Env): Promise<Response> {
+async function sync(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const claims = await authenticate(request, env);
-  if (!claims.plus) throw new HttpError(403, "plus_required", "Sync is part of Plus. Your habits stay on this device and in your backup.");
   await limit(env.SYNC_LIMIT, claims.accountId);
   const body = await readJson<{ cursor?: unknown; ops?: unknown; full?: unknown }>(request, 2 * 1024 * 1024);
   const ops = body.ops ?? [];
   if (!Array.isArray(ops)) throw new HttpError(400, "bad_request", '"ops" must be a list.');
   if (ops.length > MAX_PUSH) throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
   const cursor = typeof body.cursor === "number" ? body.cursor : 0;
-  const result = await accountStub(env, claims).sync(claims.deviceId, { cursor, ops, jurisdiction: claims.jurisdiction, full: body.full === true });
+  const measure = env.ENVIRONMENT === "dev";
+  const result = await accountStub(env, claims).sync(claims.deviceId, { cursor, ops, jurisdiction: claims.jurisdiction, full: body.full === true, measure });
   if (!result.ok) {
     if (result.reason === "too_many_ops") throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
+    if (result.reason === "ended") throw sessionEnded(result.ended, result.by);
     throw signedOut();
   }
-  const { ok: _ok, ...reply } = result;
-  return json(reply);
+  // The RPC stub's types lose the success case (its `unknown[]` ops), so name it.
+  const { ok: _ok, usage, ...reply } = result as unknown as Extract<SyncResult, { ok: true }>;
+  recordSync(env, usage);
+  if (usage.firstToday) countUsage(env, ctx, usage.plus ? "syncing_plus" : "syncing_free");
+  // Dev only: what this sync cost, so the cost model's estimates can be measured (Free Sync §2.1).
+  return json(measure ? { ...reply, usage } : reply);
 }
 
 // MARK: Backup (accounts that don't sync; see backup.ts)
@@ -434,22 +464,36 @@ async function backupFile(request: Request, env: Env, device: string, slot: stri
   return readBackup(env, claims, device, slot);
 }
 
-// MARK: Restore From a Backup for Plus (snapshotFile.ts)
+// MARK: Restore From a Backup (snapshotFile.ts)
 
-/** Plus only: the account's daily copies are its snapshots; a free account's are its backups (`GET /v1/backup`). */
-async function plusClaims(request: Request, env: Env): Promise<AccessClaims> {
+/** Every account's daily copies are its snapshots: the last 7 days on free, 90 on Plus (Current Work 78). */
+async function snapshotClaims(request: Request, env: Env): Promise<AccessClaims> {
   const claims = await authenticate(request, env);
-  if (!claims.plus) throw new HttpError(403, "plus_required", "Daily copies of a synced account are part of Plus.");
   await limit(env.SYNC_LIMIT, claims.accountId);
   return liveAccount(env, claims);
 }
 
 async function snapshotList(request: Request, env: Env): Promise<Response> {
-  return listSnapshots(env, await plusClaims(request, env));
+  return listSnapshots(env, await snapshotClaims(request, env));
 }
 
 async function snapshotDownload(request: Request, env: Env, day: string): Promise<Response> {
-  return snapshotBackupFile(env, await plusClaims(request, env), day);
+  return snapshotBackupFile(env, await snapshotClaims(request, env), day);
+}
+
+// MARK: Move to Another Device (transfer.ts)
+
+/** No account: the code is the only key, and every route is limited per IP so codes can't be guessed. */
+async function transfer(request: Request, env: Env, id: string, action: string): Promise<Response> {
+  const ip = request.headers.get("cf-connecting-ip");
+  if (ip) await limit(env.TRANSFER_LIMIT, ip);
+  const route = `${request.method} ${action}`;
+  if (route === "PUT ") return putTransfer(request, env, id);
+  if (route === "GET ") return getTransfer(env, id);
+  if (route === "DELETE ") return cancelTransfer(env, id);
+  if (route === "POST /received") return receivedTransfer(env, id);
+  if (route === "GET /status") return transferStatus(env, id);
+  throw new HttpError(404, "not_found", "There's nothing here.");
 }
 
 /** "Keep my backup only in my iCloud" (Backup, Sync and Accounts §4.3): every copy on the server goes. */

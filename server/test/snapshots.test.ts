@@ -43,6 +43,12 @@ describe("when snapshots run", () => {
     expect(new Date(nextNight(Date.UTC(2026, 9, 1, 23, 0))).toISOString()).toBe("2026-10-02T02:00:00.000Z");
   });
 
+  it("free keeps the last 7 nightlies and no monthly copies", () => {
+    const now = Date.UTC(2026, 9, 10, 2, 0);
+    const keys = ["2026-10-10", "2026-10-04", "2026-10-03", "2026-10-01", "2026-09-01"].map((d) => `snapshots/a/${d}.json.gz`);
+    expect(prunable(keys, now, false)).toEqual(["snapshots/a/2026-10-03.json.gz", "snapshots/a/2026-10-01.json.gz", "snapshots/a/2026-09-01.json.gz"]);
+  });
+
   it("keeps 90 nightlies, then each month's 1st", () => {
     const now = Date.UTC(2026, 9, 1);
     const keys = ["2026-09-30", "2026-07-04", "2026-07-01", "2026-06-15", "2026-06-01", "2025-11-01"].map((d) => `snapshots/a/${d}.json.gz`);
@@ -247,10 +253,21 @@ describe("Restore From a Backup for Plus: the account's daily copies (Current Wo
     expect((await call("GET", "/v1/snapshots/../x", undefined, me.json.accessToken)).status).toBe(404);
   });
 
-  it("is part of Plus, and nobody sees another account's days", async () => {
+  it("a free account sees its last 7 days, Plus every day kept; nobody sees another account's days", async () => {
     const { freeSignIn } = await import("./helpers");
     const free = await freeSignIn();
-    expect((await call("GET", "/v1/snapshots", undefined, free.json.accessToken)).status).toBe(403);
+    expect((await call("GET", "/v1/snapshots", undefined, free.json.accessToken)).json).toEqual({ snapshots: [] });
+    await call("POST", "/v1/sync", { cursor: 0, ops: [habit(crypto.randomUUID(), "Free")] }, free.json.accessToken);
+    // Written nights ago, so its listing (made today) sees each age: 2 and 6 days back are in, 8 days back isn't.
+    const now = Date.now();
+    for (const daysAgo of [8, 6, 2]) await stub(free.json.accountId).snapshotNow("default", now - daysAgo * 86_400_000);
+    const days = (await call("GET", "/v1/snapshots", undefined, free.json.accessToken)).json.snapshots.map((s: { day: string }) => s.day);
+    const ago = (n: number) => new Date(now - n * 86_400_000).toISOString().slice(0, 10);
+    expect(days).toEqual([ago(2), ago(6)]);
+    const file = await exports.default.fetch(`https://api-dev.oftenenough.com/v1/snapshots/${ago(6)}`, { headers: { authorization: `Bearer ${free.json.accessToken}` } });
+    expect(file.status).toBe(200);
+    await file.arrayBuffer();
+    expect((await call("GET", `/v1/snapshots/${ago(8)}`, undefined, free.json.accessToken)).status).toBe(404);
     const owner = await testSignIn();
     await call("POST", "/v1/sync", { cursor: 0, ops: [habit(crypto.randomUUID(), "Private")] }, owner.json.accessToken);
     await stub(owner.json.accountId).snapshotNow("default", Date.UTC(2026, 9, 5, 2, 0));

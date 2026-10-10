@@ -13,7 +13,7 @@ import { newSecret, sha256Hex } from "./tokens";
  * An object with no `account_id` in `meta` is not an account (never set up, or deleted): every call says "gone".
  */
 
-const SCHEMA_VERSION = 5;
+const SCHEMA_VERSION = 6;
 
 /** Sync limits (Architecture 06 §4): a push is at most 500 ops (bigger outboxes come in chunks); a pull at most 1,000. */
 export const MAX_PUSH = 500;
@@ -38,8 +38,29 @@ export interface DeviceInfo {
   appVersion: string;
 }
 
-/** `plus` goes into the new access token: only Plus accounts may sync (Server Cost and Capacity §4.2). */
-export type SessionResult = { ok: true; secret: string; plus: boolean } | { ok: false; reason: "gone" | "invalid" | "reused" | "expired" };
+/**
+ * Why a device's session was ended for it (Current Work 78): another device signed in to the free account, or Plus
+ * ended (a refund) and another device was kept. Remembered, so the device's next contact says why.
+ */
+export type EndedReason = "signed_in_elsewhere" | "plus_ended";
+
+/** Another device of the account, as the person would recognise it ("Lalith's iPad"). */
+export interface OtherDevice {
+  name: string;
+  platform: string;
+  lastSeen: number;
+}
+
+/**
+ * `plus` goes into the new access token. `replaced`: this sign-in signed another device out (free, one device).
+ * `other_device`: a free account is signed in on another device; sign in again with `replace` to move it here.
+ * `ended`: this device was signed out by another device's sign-in (or when Plus ended).
+ */
+export type SessionResult =
+  | { ok: true; secret: string; plus: boolean; replaced: boolean }
+  | { ok: false; reason: "gone" | "invalid" | "reused" | "expired" }
+  | { ok: false; reason: "other_device"; device: OtherDevice }
+  | { ok: false; reason: "ended"; ended: EndedReason; by: OtherDevice | null };
 
 export interface SyncRequest {
   /** The last `cursor` this device received; 0 the first time. */
@@ -52,7 +73,23 @@ export interface SyncRequest {
    * device ID (the Keychain survives), so without this it got nothing of what it had made (Current Work 72).
    */
   full?: boolean;
+  /** Dev only: answer with `usage` (rows written, records, database size), to measure the cost model (Free Sync §2.1). */
+  measure?: boolean;
 }
+
+/** What one sync cost, for the report and the dev measurements. */
+export type SyncUsage = {
+  /** SQLite rows written by this sync (what Durable Objects bill), op log and indexes included. */
+  rowsWritten: number;
+  /** Ops this sync applied for the first time (retries not counted). */
+  changes: number;
+  /** The account's first sync of the UTC day: counted once in the report's "accounts syncing". */
+  firstToday: boolean;
+  plus: boolean;
+  /** On the day's first sync (and on dev, every sync): records stored and the database's size in bytes. */
+  records?: number;
+  databaseBytes?: number;
+};
 
 /** What restoring a snapshot into an account found, per table, and whether it was applied. */
 export interface RestoreReport {
@@ -74,8 +111,10 @@ export type SyncResult =
       cursor: number;
       /** More ops are waiting: sync again straight away with the new cursor. */
       more: boolean;
+      usage: SyncUsage;
     }
-  | { ok: false; reason: "gone" | "signed_out" | "too_many_ops" };
+  | { ok: false; reason: "gone" | "signed_out" | "too_many_ops" }
+  | { ok: false; reason: "ended"; ended: EndedReason; by: OtherDevice | null };
 
 /** A verified store purchase (Architecture 02 §3.3). */
 export interface PurchaseRecord {
@@ -162,6 +201,14 @@ export class Account extends DurableObject<Env> {
         // sign-in removed (appleTokens.ts). Never returned by any route, export included.
         this.sql.exec("ALTER TABLE sign_in_key ADD COLUMN revoke_token TEXT");
       }
+      if (current < 6) {
+        // Free accounts sync one device at a time (Current Work 78). A session another device's sign-in ended is
+        // remembered (with its secrets, so only that device learns it), and its next contact says "signed in
+        // elsewhere" rather than a plain sign-out.
+        this.sql.exec(`CREATE TABLE ended_session (
+          device_id TEXT PRIMARY KEY, reason TEXT NOT NULL, by_device_id TEXT, secret_hash TEXT, previous_hash TEXT,
+          ended_at INTEGER NOT NULL)`);
+      }
       this.setMeta("schema", String(SCHEMA_VERSION));
     });
   }
@@ -179,9 +226,82 @@ export class Account extends DurableObject<Env> {
     return this.entitlements();
   }
 
-  /** A refund or revocation confirmed by the store (02 §3.11). `revokedAt: null` undoes it (Apple REFUND_REVERSED). */
-  async setRevoked(store: string, originalId: string, revokedAt: number | null): Promise<void> {
+  /**
+   * A refund or revocation confirmed by the store (02 §3.11). `revokedAt: null` undoes it (Apple REFUND_REVERSED).
+   * Plus ending leaves the account free, so one device: the most recently synced keeps syncing, and the others are
+   * signed out at their next contact, keeping their habits (Current Work 78, Free Sync §3.4).
+   */
+  async setRevoked(store: string, originalId: string, revokedAt: number | null, now = Date.now()): Promise<void> {
     this.sql.exec("UPDATE purchase SET revoked_at = ? WHERE store = ? AND original_id = ?", revokedAt, store, originalId);
+    if (revokedAt !== null && this.accountId !== undefined && !this.hasPlus()) this.keepOneDevice(now);
+  }
+
+  private keepOneDevice(now: number) {
+    const sessions = this.sql
+      .exec<{ device_id: string }>(
+        `SELECT s.device_id FROM session s JOIN device d ON d.id = s.device_id
+         WHERE d.platform != 'web' AND s.expires_at > ? ORDER BY d.last_seen DESC, s.rotated_at DESC`,
+        now,
+      )
+      .toArray();
+    const [keep, ...rest] = sessions;
+    if (!keep || rest.length === 0) return;
+    this.ctx.storage.transactionSync(() => {
+      for (const other of rest) this.endFor(other.device_id, "plus_ended", keep.device_id, now);
+    });
+  }
+
+  /** Ends a device's session for it, remembering why (`ended_session`). Its device row and data stay. */
+  private endFor(deviceId: string, reason: EndedReason, byDeviceId: string | null, now: number) {
+    const session = this.sql
+      .exec<{ secret_hash: string; previous_hash: string | null }>("SELECT secret_hash, previous_hash FROM session WHERE device_id = ?", deviceId)
+      .toArray()[0];
+    this.sql.exec("DELETE FROM session WHERE device_id = ?", deviceId);
+    this.sql.exec(
+      `INSERT INTO ended_session (device_id, reason, by_device_id, secret_hash, previous_hash, ended_at) VALUES (?, ?, ?, ?, ?, ?)
+       ON CONFLICT(device_id) DO UPDATE SET reason = excluded.reason, by_device_id = excluded.by_device_id,
+         secret_hash = excluded.secret_hash, previous_hash = excluded.previous_hash, ended_at = excluded.ended_at`,
+      deviceId, reason, byDeviceId, session?.secret_hash ?? null, session?.previous_hash ?? null, now,
+    );
+  }
+
+  /** Why this device's session was ended for it, if it was. */
+  private endedFor(deviceId: string): { ended: EndedReason; by: OtherDevice | null; secretHash: string | null; previousHash: string | null } | null {
+    const row = this.sql
+      .exec<{ reason: string; by_device_id: string | null; secret_hash: string | null; previous_hash: string | null }>(
+        "SELECT reason, by_device_id, secret_hash, previous_hash FROM ended_session WHERE device_id = ?",
+        deviceId,
+      )
+      .toArray()[0];
+    if (!row) return null;
+    const by = row.by_device_id
+      ? this.sql.exec<{ name: string; platform: string; last_seen: number }>("SELECT name, platform, last_seen FROM device WHERE id = ?", row.by_device_id).toArray()[0]
+      : undefined;
+    return {
+      ended: row.reason === "plus_ended" ? "plus_ended" : "signed_in_elsewhere",
+      by: by ? { name: by.name, platform: by.platform, lastSeen: by.last_seen } : null,
+      secretHash: row.secret_hash,
+      previousHash: row.previous_hash,
+    };
+  }
+
+  /** The account's other devices with a live session, newest first. The website's sessions never count. */
+  private otherSessions(deviceId: string, now: number): (OtherDevice & { id: string })[] {
+    return this.sql
+      .exec<{ id: string; name: string; platform: string; last_seen: number }>(
+        `SELECT d.id, d.name, d.platform, d.last_seen FROM session s JOIN device d ON d.id = s.device_id
+         WHERE s.device_id != ? AND s.expires_at > ? AND d.platform != 'web' ORDER BY d.last_seen DESC`,
+        deviceId, now,
+      )
+      .toArray()
+      .map((d) => ({ id: d.id, name: d.name, platform: d.platform, lastSeen: d.last_seen }));
+  }
+
+  /** Whether the account is Plus once a test or CI sign-in's `testPlus` has been applied. */
+  private plusAfter(testPlus: boolean | null): boolean {
+    if (testPlus === null) return this.hasPlus();
+    if (testPlus) return true;
+    return this.sql.exec("SELECT 1 FROM purchase WHERE revoked_at IS NULL AND store != 'test' LIMIT 1").toArray().length > 0;
   }
 
   /** Dev only (test and CI sign-ins): gives or takes away a test Plus, so end-to-end tests can be free or Plus. */
@@ -224,7 +344,8 @@ export class Account extends DurableObject<Env> {
   async sync(deviceId: string, request: SyncRequest, now = Date.now()): Promise<SyncResult> {
     if (this.accountId === undefined) return { ok: false, reason: "gone" };
     if (this.sql.exec("SELECT 1 FROM session WHERE device_id = ?", deviceId).toArray().length === 0) {
-      return { ok: false, reason: "signed_out" };
+      const ended = this.endedFor(deviceId);
+      return ended ? { ok: false, reason: "ended", ended: ended.ended, by: ended.by } : { ok: false, reason: "signed_out" };
     }
     if (request.ops.length > MAX_PUSH) return { ok: false, reason: "too_many_ops" };
 
@@ -244,23 +365,30 @@ export class Account extends DurableObject<Env> {
     }
 
     let changed = false;
+    let rowsWritten = 0;
+    let changes = 0;
+    const today = new Date(now).toISOString().slice(0, 10);
+    const firstToday = this.meta("synced_day") !== today;
     this.ctx.storage.transactionSync(() => {
       for (const op of valid) {
         applied.push(op.id);
         if (this.sql.exec("SELECT 1 FROM op_log WHERE op_id = ?", op.id).toArray().length > 0) continue;
         changed = true;
+        changes++;
         const current = this.sql
           .exec<{ data: string }>("SELECT data FROM record WHERE table_name = ? AND row_id = ?", op.table, op.row)
           .toArray()[0]?.data;
         const merged = syncMerge(current ?? null, op.json);
-        this.sql.exec(
+        rowsWritten += this.sql.exec(
           "INSERT INTO record (table_name, row_id, data) VALUES (?, ?, ?) ON CONFLICT(table_name, row_id) DO UPDATE SET data = excluded.data",
           op.table, op.row, merged,
-        );
-        this.sql.exec("INSERT INTO op_log (op_id, device_id, op, received_at) VALUES (?, ?, ?, ?)", op.id, deviceId, op.json, now);
+        ).rowsWritten;
+        rowsWritten += this.sql.exec("INSERT INTO op_log (op_id, device_id, op, received_at) VALUES (?, ?, ?, ?)", op.id, deviceId, op.json, now).rowsWritten;
       }
       // At most once an hour: an UPDATE that matches no row writes nothing.
-      this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ? AND last_seen <= ?", now, deviceId, now - LAST_SEEN_PRECISION_MS);
+      rowsWritten += this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ? AND last_seen <= ?", now, deviceId, now - LAST_SEEN_PRECISION_MS).rowsWritten;
+      // Once a day: the report counts accounts syncing (one row a day, not one per sync).
+      if (firstToday) this.setMeta("synced_day", today);
     });
     if (changed) await this.scheduleSnapshot(now, request.jurisdiction);
 
@@ -272,7 +400,13 @@ export class Account extends DurableObject<Env> {
       .toArray();
     const ops = rows.filter((r) => request.full === true || r.device_id !== deviceId).map((r) => JSON.parse(r.op) as unknown);
     const last = rows.at(-1);
-    return { ok: true, applied, rejected, ops, cursor: last ? last.seq : cursor, more: rows.length === MAX_PULL };
+    const usage: SyncUsage = { rowsWritten, changes, firstToday, plus: this.hasPlus() };
+    if (request.measure === true || firstToday) {
+      // Records are never deleted (a deletion is a field), so the last rowid is their count, read from one row.
+      usage.records = Number(this.sql.exec<{ n: number | null }>("SELECT max(rowid) AS n FROM record").one().n ?? 0);
+      usage.databaseBytes = this.sql.databaseSize;
+    }
+    return { ok: true, applied, rejected, ops, cursor: last ? last.seq : cursor, more: rows.length === MAX_PULL, usage };
   }
 
   /** Everything this object holds about the person, for `/v1/account/export` (09 §8): synced records as plain fields. */
@@ -308,13 +442,31 @@ export class Account extends DurableObject<Env> {
   /**
    * Signs a device in: sets the account up if it's new, records the key and device, and starts a fresh session.
    * `testPlus` (dev-only test and CI sign-ins, else null) gives or takes away a test Plus first.
+   *
+   * **A free account syncs one device at a time** (Current Work 78, Free Sync §3.2): with another device signed in,
+   * this answers `other_device` (nothing is written) unless `replace` says the person chose Continue; then the other
+   * device's session ends (`signed_in_elsewhere`, its device row kept) and this one opens. Plus is never limited, and
+   * the website's sessions (deleting or exporting the account) neither count nor end anyone's.
    */
-  async openSession(accountId: string, key: VerifiedKey, device: DeviceInfo, testPlus: boolean | null = null, now = Date.now()): Promise<SessionResult> {
+  async openSession(
+    accountId: string,
+    key: VerifiedKey,
+    device: DeviceInfo,
+    testPlus: boolean | null = null,
+    now = Date.now(),
+    replace = false,
+  ): Promise<SessionResult> {
     const secret = newSecret();
     const hash = await sha256Hex(secret);
     // From here on nothing awaits, so no other request can run in between (the read and the writes are one step).
     const existing = this.accountId;
     if (existing !== undefined && existing !== accountId) return { ok: false, reason: "gone" };
+    const limited = existing !== undefined && device.platform !== "web" && !this.plusAfter(testPlus);
+    const others = limited ? this.otherSessions(device.id, now) : [];
+    if (others.length > 0 && !replace) {
+      const { id: _id, ...other } = others[0]!;
+      return { ok: false, reason: "other_device", device: other };
+    }
     this.ctx.storage.transactionSync(() => {
       if (existing === undefined) {
         this.setMeta("account_id", accountId);
@@ -334,9 +486,11 @@ export class Account extends DurableObject<Env> {
            created_at = excluded.created_at, rotated_at = excluded.rotated_at, expires_at = excluded.expires_at, provider = excluded.provider`,
         device.id, hash, now, now, now + SESSION_LIFETIME_MS, key.provider,
       );
+      for (const other of others) this.endFor(other.id, "signed_in_elsewhere", device.id, now);
+      this.sql.exec("DELETE FROM ended_session WHERE device_id = ?", device.id);
       if (testPlus !== null) this.setTestPlus(testPlus, now);
     });
-    return { ok: true, secret, plus: this.hasPlus() };
+    return { ok: true, secret, plus: this.hasPlus(), replaced: others.length > 0 };
   }
 
   /**
@@ -359,7 +513,12 @@ export class Account extends DurableObject<Env> {
         deviceId,
       )
       .toArray()[0];
-    if (!session) return { ok: false, reason: "invalid" };
+    if (!session) {
+      // Signed out by another device's sign-in: only the device holding that session's token learns it, and who.
+      const ended = this.endedFor(deviceId);
+      const own = ended && ((ended.secretHash !== null && sameHash(hash, ended.secretHash)) || (ended.previousHash !== null && sameHash(hash, ended.previousHash)));
+      return ended && own ? { ok: false, reason: "ended", ended: ended.ended, by: ended.by } : { ok: false, reason: "invalid" };
+    }
     const isCurrent = sameHash(hash, session.secret_hash);
     const isRetry = !isCurrent && session.previous_hash !== null && sameHash(hash, session.previous_hash);
     if (isRetry && now - session.rotated_at > RETRY_GRACE_MS) {
@@ -378,7 +537,7 @@ export class Account extends DurableObject<Env> {
       );
       this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ?", now, deviceId);
     });
-    return { ok: true, secret: next, plus: this.hasPlus() };
+    return { ok: true, secret: next, plus: this.hasPlus(), replaced: false };
   }
 
   /** True if this device still has a session: a signed-out or stolen-token device can't keep using old access tokens for long. */
@@ -505,7 +664,8 @@ export class Account extends DurableObject<Env> {
       httpMetadata: { contentType: "application/gzip" },
       customMetadata: { records: String(records.length), cursor: String(cursor), takenAt: String(now) },
     });
-    const old = prunable((await bucket.list({ prefix: snapshotPrefix(accountId) })).objects.map((o) => o.key), now);
+    // Free keeps 7 nightlies, Plus 90 and then each month's 1st (Current Work 78, Free Sync §4 S3).
+    const old = prunable((await bucket.list({ prefix: snapshotPrefix(accountId) })).objects.map((o) => o.key), now, this.hasPlus());
     if (old.length > 0) await bucket.delete(old);
     this.setMeta("last_snapshot", String(now));
     console.log(JSON.stringify({ event: "snapshot", records: records.length, pruned: old.length }));

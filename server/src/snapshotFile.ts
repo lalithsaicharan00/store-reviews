@@ -1,10 +1,10 @@
 import { HttpError, json } from "./http";
-import { type Snapshot, gunzip, snapshotBucket, snapshotPrefix } from "./snapshots";
+import { type Snapshot, firstKeptDay, gunzip, snapshotBucket, snapshotPrefix } from "./snapshots";
 import type { AccessClaims } from "./tokens";
 
 /**
  * Restore From a Backup for Plus (Account and Backup Redesign, screen 6c; Current Work 76): "any day in the last 90
- * days". Sync copies a mistake to every device within seconds, so the account's nightly snapshots (snapshots.ts) are the
+ * days"; for a free account, which syncs one device, the last 7 days (6b; Current Work 78). Sync copies a mistake to every device within seconds, so the account's nightly snapshots (snapshots.ts) are the
  * only way back. The app lists them and gets one day as an ordinary backup file (`Core/Backup File Format.md`, format
  * 1), which it checks, previews and restores like any other, with its 30-day undo (D5); the restore syncs to every
  * device like any edit. The snapshot itself is never changed.
@@ -19,15 +19,20 @@ const LOCAL_SETTINGS = new Set(["placement_v1", "placement_v2"]);
 /** Core's database schema when this was written (`HabitRepository.SCHEMA_VERSION`); for support only, readers ignore it. */
 const SCHEMA = 8;
 
-export async function listSnapshots(env: Env, claims: AccessClaims): Promise<Response> {
+/**
+ * Free accounts see the last 7 days, Plus every copy kept (90 nightlies, then monthly) (Current Work 78). A free
+ * account's older copies are pruned at its next snapshot; until then they're not offered.
+ */
+export async function listSnapshots(env: Env, claims: AccessClaims, now = Date.now()): Promise<Response> {
   const bucket = snapshotBucket(env, claims.jurisdiction);
+  const first = claims.plus === true ? "" : firstKeptDay(now, false);
   const snapshots: { day: string; takenAt: number; records: number }[] = [];
   let cursor: string | undefined;
   do {
     const page = await bucket.list({ prefix: snapshotPrefix(claims.accountId), cursor, include: ["customMetadata"] });
     for (const o of page.objects) {
       const day = o.key.slice(-18, -8);
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) continue;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || day < first) continue;
       snapshots.push({ day, takenAt: Number(o.customMetadata?.takenAt ?? 0) || o.uploaded.getTime(), records: Number(o.customMetadata?.records ?? 0) });
     }
     cursor = page.truncated ? page.cursor : undefined;
@@ -36,8 +41,9 @@ export async function listSnapshots(env: Env, claims: AccessClaims): Promise<Res
   return json({ snapshots });
 }
 
-export async function snapshotBackupFile(env: Env, claims: AccessClaims, day: string): Promise<Response> {
+export async function snapshotBackupFile(env: Env, claims: AccessClaims, day: string, now = Date.now()): Promise<Response> {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) throw new HttpError(404, "not_found", "There's nothing here.");
+  if (claims.plus !== true && day < firstKeptDay(now, false)) throw new HttpError(404, "no_snapshot", "There's no copy for that day.");
   const object = await snapshotBucket(env, claims.jurisdiction).get(`${snapshotPrefix(claims.accountId)}${day}.json.gz`);
   if (!object) throw new HttpError(404, "no_snapshot", "There's no copy for that day.");
   const snapshot = JSON.parse(await gunzip(object.body)) as Snapshot;

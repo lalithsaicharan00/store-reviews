@@ -7,7 +7,8 @@ import type { Jurisdiction } from "./directory";
  * - The first change of a day sets the account's alarm for the next 02:00 UTC; the alarm writes the whole account
  *   (every record with its field stamps, and the op-log cursor) to `snapshots/<account>/<YYYY-MM-DD>.json.gz` in the
  *   account's backup bucket (EU accounts: the EU bucket). An account that didn't change writes nothing.
- * - Kept: 90 nightlies, then the 1st of each month; the bucket's lifecycle rule removes everything after 365 days.
+ * - Kept: on Plus, 90 nightlies, then the 1st of each month; on free, the last 7 nightlies (Current Work 78). The
+ *   bucket's lifecycle rule removes everything after 365 days.
  * - A failed alarm is retried by Cloudflare (with back-off), so a bad night is caught up the same night.
  * - Deleting the account deletes its snapshots.
  *
@@ -19,7 +20,9 @@ import type { Jurisdiction } from "./directory";
 export const SNAPSHOT_FORMAT = 1;
 const DAY_MS = 86_400_000;
 const NIGHT_HOUR_UTC = 2;
-const KEEP_NIGHTLY_DAYS = 90;
+/** Restore From a Backup offers "any day in the last 90 days" on Plus and the last 7 days on free (Free Sync §1). */
+export const PLUS_SNAPSHOT_DAYS = 90;
+export const FREE_SNAPSHOT_DAYS = 7;
 
 export interface SnapshotRecord {
   table: string;
@@ -59,12 +62,20 @@ export function nextNight(now: number): number {
   return today > now ? today : today + DAY_MS;
 }
 
-/** Snapshot keys to delete: nightlies older than 90 days, except each month's 1st (kept until the 365-day rule). */
-export function prunable(keys: string[], now: number): string[] {
-  const cutoff = day(now - KEEP_NIGHTLY_DAYS * DAY_MS);
+/** The first day a plan keeps: Plus 90 days back, free the last 7 days (today and the 6 before). */
+export function firstKeptDay(now: number, plus: boolean): string {
+  return plus ? day(now - PLUS_SNAPSHOT_DAYS * DAY_MS) : day(now - (FREE_SNAPSHOT_DAYS - 1) * DAY_MS);
+}
+
+/**
+ * Snapshot keys to delete. Plus: nightlies older than 90 days, except each month's 1st (kept until the 365-day rule).
+ * Free: everything older than the last 7 days.
+ */
+export function prunable(keys: string[], now: number, plus = true): string[] {
+  const cutoff = firstKeptDay(now, plus);
   return keys.filter((key) => {
     const name = key.slice(key.lastIndexOf("/") + 1, key.lastIndexOf("/") + 11);
-    return /^\d{4}-\d{2}-\d{2}$/.test(name) && name < cutoff && !name.endsWith("-01");
+    return /^\d{4}-\d{2}-\d{2}$/.test(name) && name < cutoff && (!plus || !name.endsWith("-01"));
   });
 }
 

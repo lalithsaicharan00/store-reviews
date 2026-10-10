@@ -50,6 +50,8 @@ describe("Sign in with Apple notifications", () => {
   it("consent revoked: Apple's sessions end, other sign-ins' sessions and the data stay", async () => {
     const subject = `apple-${crypto.randomUUID()}`;
     const phone = await appleSignIn(subject);
+    // Plus, so a second device may sign in (a free account syncs one device, Current Work 78).
+    await stub(phone.json.accountId).recordPurchase({ store: "apple", originalId: subject, productId: "com.oftenenough.app.plus", grants: "plus", environment: "Xcode", purchasedAt: Date.now(), revokedAt: null });
     // The same account also opened on an iPad with Google.
     const nonce = crypto.randomUUID();
     await call("POST", "/v1/account/link", { provider: "google", idToken: await idToken({ key: google, issuer: "https://accounts.google.com", audience: GOOGLE_AUDIENCE, subject: `g-${subject}`, nonce }), nonce }, phone.json.accessToken);

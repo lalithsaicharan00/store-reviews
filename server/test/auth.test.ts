@@ -49,10 +49,10 @@ function googleToken(subject: string, nonce: string, extra: Partial<Parameters<t
   return idToken({ key: google, issuer: "https://accounts.google.com", audience: GOOGLE_AUDIENCE, subject, nonce, ...extra });
 }
 
-async function appleSignIn(subject: string, options: { create?: boolean; dev?: ReturnType<typeof device>; country?: string; email?: string; isPrivateEmail?: boolean } = {}) {
+async function appleSignIn(subject: string, options: { create?: boolean; dev?: ReturnType<typeof device>; country?: string; email?: string; isPrivateEmail?: boolean; replace?: boolean } = {}) {
   const nonce = crypto.randomUUID();
   const token = await appleToken(subject, nonce, { email: options.email, emailVerified: options.email ? "true" : undefined, isPrivateEmail: options.isPrivateEmail });
-  return call("POST", "/v1/auth/apple", { idToken: token, nonce, create: options.create ?? true, device: options.dev ?? device(), country: options.country });
+  return call("POST", "/v1/auth/apple", { idToken: token, nonce, create: options.create ?? true, device: options.dev ?? device(), country: options.country, replace: options.replace });
 }
 
 function stubFor(accountId: string) {
@@ -87,7 +87,11 @@ describe("signing in with Apple", () => {
     expect(first.status).toBe(201);
     expect(first.json.created).toBe(true);
     expect(first.json.refreshToken).toMatch(/^rt1\.d\./);
-    const again = await appleSignIn("apple-a");
+    // A free account syncs one device (Current Work 78): another device is asked first, then moves the account.
+    const asked = await appleSignIn("apple-a");
+    expect(asked.status).toBe(409);
+    expect(asked.json.error).toBe("other_device_signed_in");
+    const again = await appleSignIn("apple-a", { replace: true });
     expect(again.status).toBe(200);
     expect(again.json.created).toBe(false);
     expect(again.json.accountId).toBe(first.json.accountId);
@@ -101,7 +105,8 @@ describe("signing in with Apple", () => {
   });
 
   it("two creates at the same moment make one account", async () => {
-    const results = await Promise.all([appleSignIn("apple-race"), appleSignIn("apple-race"), appleSignIn("apple-race")]);
+    const phone = device();
+    const results = await Promise.all([appleSignIn("apple-race", { dev: phone }), appleSignIn("apple-race", { dev: phone }), appleSignIn("apple-race", { dev: phone })]);
     expect(new Set(results.map((r) => r.json.accountId)).size).toBe(1);
     const accounts = await env.DIRECTORY.prepare("SELECT count(*) AS n FROM account_key WHERE subject = 'apple-race'").first<{ n: number }>();
     expect(accounts?.n).toBe(1);
@@ -132,21 +137,23 @@ describe("signing in with Apple", () => {
   });
 
   it("picks up Apple's new signing key when Apple rotates it", async () => {
-    await appleSignIn("apple-rotate"); // caches the current keys
+    const phone = device();
+    await appleSignIn("apple-rotate", { dev: phone }); // caches the current keys
     const rotated = await newSigningKey("apple-2");
     published[APPLE_KEYS_URL] = [apple, rotated];
     const fetchesBefore = keyFetches[APPLE_KEYS_URL]!;
     const nonce = crypto.randomUUID();
     const token = await idToken({ key: rotated, issuer: "https://appleid.apple.com", audience: APPLE_AUDIENCE, subject: "apple-rotate", nonce });
-    const { status } = await call("POST", "/v1/auth/apple", { idToken: token, nonce, device: device() });
+    const { status } = await call("POST", "/v1/auth/apple", { idToken: token, nonce, device: phone });
     expect(status).toBe(200);
     expect(keyFetches[APPLE_KEYS_URL]).toBe(fetchesBefore + 1);
   });
 
   it("keeps using cached keys when Apple's key server is down", async () => {
-    await appleSignIn("apple-outage");
+    const phone = device();
+    await appleSignIn("apple-outage", { dev: phone });
     published[APPLE_KEYS_URL] = []; // the server now returns nothing useful
-    expect((await appleSignIn("apple-outage")).status).toBe(200);
+    expect((await appleSignIn("apple-outage", { dev: phone })).status).toBe(200);
   });
 });
 
@@ -297,12 +304,13 @@ describe("sessions", () => {
 
 describe("linking and unlinking sign-in methods", () => {
   it("adds Google to an Apple account; both open it", async () => {
-    const created = await appleSignIn("apple-link");
+    const phone = device();
+    const created = await appleSignIn("apple-link", { dev: phone });
     const nonce = crypto.randomUUID();
     const linked = await call("POST", "/v1/account/link", { provider: "google", idToken: await googleToken("google-link", nonce), nonce }, created.json.accessToken);
     expect(linked.status).toBe(200);
     const nonce2 = crypto.randomUUID();
-    const viaGoogle = await call("POST", "/v1/auth/google", { idToken: await googleToken("google-link", nonce2), nonce: nonce2, device: device() });
+    const viaGoogle = await call("POST", "/v1/auth/google", { idToken: await googleToken("google-link", nonce2), nonce: nonce2, device: phone });
     expect(viaGoogle.status).toBe(200);
     expect(viaGoogle.json.accountId).toBe(created.json.accountId);
     const summary = await call("GET", "/v1/account", undefined, viaGoogle.json.accessToken);
@@ -406,7 +414,8 @@ describe("where data is kept", () => {
   // namespace stands in for itself, and the test checks the Worker asks for it. Checked for real on api-dev.
   it("an account from an EU storefront is stored in the EU and works normally", async () => {
     const asked = vi.spyOn(env.ACCOUNT, "jurisdiction").mockImplementation(() => env.ACCOUNT);
-    const created = await appleSignIn("apple-eu", { country: "DEU" });
+    const phone = device();
+    const created = await appleSignIn("apple-eu", { country: "DEU", dev: phone });
     expect(asked).toHaveBeenCalledWith("eu");
     expect(created.status).toBe(201);
     expect(created.json.refreshToken).toMatch(/^rt1\.e\./);
@@ -416,7 +425,7 @@ describe("where data is kept", () => {
     const refreshed = await call("POST", "/v1/auth/refresh", { refreshToken: created.json.refreshToken });
     expect(refreshed.status).toBe(200);
     // Signing in again later (any country) finds the same EU account.
-    const again = await appleSignIn("apple-eu", { country: "USA" });
+    const again = await appleSignIn("apple-eu", { country: "USA", dev: phone });
     expect(again.json.accountId).toBe(created.json.accountId);
     expect(again.json.refreshToken).toMatch(/^rt1\.e\./);
     expect(asked.mock.calls.every(([where]) => where === "eu")).toBe(true);

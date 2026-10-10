@@ -5,6 +5,8 @@ export class HttpError extends Error {
     readonly status: number,
     readonly code: string,
     message: string,
+    /** More fields for the reply, beside `error` and `message` (e.g. which device is signed in). */
+    readonly extra: Record<string, unknown> = {},
   ) {
     super(message);
   }
@@ -15,7 +17,7 @@ export function json(body: unknown, status = 200, headers: HeadersInit = {}): Re
 }
 
 export function errorResponse(error: HttpError): Response {
-  return json({ error: error.code, message: error.message }, error.status, error.status === 429 ? { "retry-after": "60" } : {});
+  return json({ ...error.extra, error: error.code, message: error.message }, error.status, error.status === 429 ? { "retry-after": "60" } : {});
 }
 
 /** Request bodies here are small (tokens, device details); anything bigger is refused before it's read. */

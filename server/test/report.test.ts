@@ -17,6 +17,9 @@ describe("request metrics", () => {
   it("name routes without any IDs in them", () => {
     expect(routeName("GET", `/v1/backup/${crypto.randomUUID()}/mon`)).toBe("GET /v1/backup/:device/:slot");
     expect(routeName("POST", "/v1/sync")).toBe("POST /v1/sync");
+    expect(routeName("GET", `/v1/transfer/${"ab".repeat(32)}/status`)).toBe("GET /v1/transfer/:id/status");
+    expect(routeName("PUT", `/v1/transfer/${"ab".repeat(32)}`)).toBe("PUT /v1/transfer/:id");
+    expect(routeName("GET", "/v1/snapshots/2026-10-05")).toBe("GET /v1/snapshots/:day");
     expect(routeName("POST", "/v1/auth/google")).toBe("POST /v1/auth/google");
     expect(routeName("GET", "/wp-admin/../../etc/passwd")).toBe("other");
     expect(routeName("GET", `/v1/${crypto.randomUUID()}`)).toBe("other");
@@ -31,6 +34,17 @@ describe("request metrics", () => {
 });
 
 describe("the daily report", () => {
+  it("counts accounts syncing, free and Plus, and free sign-ins that signed another device out (Current Work 78)", async () => {
+    const now = Date.now() + 2 * 86_400_000; // a day of its own
+    const day = new Date(now - 86_400_000).toISOString().slice(0, 10);
+    for (const [metric, n] of [["syncing_free", 7], ["syncing_plus", 2], ["replaced_device", 3]] as const) {
+      await env.DIRECTORY.prepare("INSERT INTO usage_day (day, metric, n) VALUES (?, ?, ?)").bind(day, metric, n).run();
+    }
+    const report = await buildReport(env, now);
+    expect(report.sync).toEqual({ freeAccounts: 7, plusAccounts: 2, replacedDevice: 3, rowsPerChange: null, bytesPerRecord: null });
+    expect(reportText(report)).toContain("Syncing: 7 free, 2 Plus; free sign-ins that signed another device out: 3");
+  });
+
   it("counts new and deleted accounts, purchases and failed snapshots in the last 24 hours", async () => {
     const before = await buildReport(env);
     const a = await testSignIn();

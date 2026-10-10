@@ -60,7 +60,10 @@
     // Per IP: sign-in and refresh.
     { "name": "AUTH_LIMIT", "namespace_id": "1002", "simple": { "limit": 30, "period": 60 } },
     // Per device: backup uploads (the app uploads at most a few times a day; this only stops loops).
-    { "name": "BACKUP_LIMIT", "namespace_id": "1003", "simple": { "limit": 2, "period": 60 } }
+    { "name": "BACKUP_LIMIT", "namespace_id": "1003", "simple": { "limit": 2, "period": 60 } },
+    // Per IP: Move to Another Device through the server (src/transfer.ts). The old phone asks every 5 s whether its
+    // file has arrived; 60 a minute leaves room for that and stops anyone typing codes at random.
+    { "name": "TRANSFER_LIMIT", "namespace_id": "1004", "simple": { "limit": 60, "period": 60 } }
   ],
   "d1_databases": [
     {
@@ -105,7 +108,8 @@
       "ratelimits": [
         { "name": "SYNC_LIMIT", "namespace_id": "2001", "simple": { "limit": 60, "period": 60 } },
         { "name": "AUTH_LIMIT", "namespace_id": "2002", "simple": { "limit": 30, "period": 60 } },
-        { "name": "BACKUP_LIMIT", "namespace_id": "2003", "simple": { "limit": 2, "period": 60 } }
+        { "name": "BACKUP_LIMIT", "namespace_id": "2003", "simple": { "limit": 2, "period": 60 } },
+        { "name": "TRANSFER_LIMIT", "namespace_id": "2004", "simple": { "limit": 60, "period": 60 } }
       ],
       "d1_databases": [
         {

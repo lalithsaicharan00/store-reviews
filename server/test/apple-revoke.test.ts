@@ -71,6 +71,9 @@ async function fakeApple(url: string, form: URLSearchParams): Promise<Response> 
 }
 
 /** A code Apple issued to `codeFor` (default: the person signing in). */
+/** One phone per Apple ID here: a free account's second device is asked first (Current Work 78), which isn't what these test. */
+const phones = new Map<string, ReturnType<typeof device>>();
+
 async function appleSignIn(subject: string, options: { code?: string | null; codeFor?: string; create?: boolean } = {}) {
   const nonce = crypto.randomUUID();
   const token = await idToken({ key: apple, issuer: "https://appleid.apple.com", audience: APPLE_AUDIENCE, subject, nonce });
@@ -79,7 +82,8 @@ async function appleSignIn(subject: string, options: { code?: string | null; cod
     code = options.code ?? `code-${crypto.randomUUID()}`;
     codes.set(code, options.codeFor ?? subject);
   }
-  return call("POST", "/v1/auth/apple", { idToken: token, nonce, create: options.create ?? true, device: device(), authorizationCode: code });
+  if (!phones.has(subject)) phones.set(subject, device());
+  return call("POST", "/v1/auth/apple", { idToken: token, nonce, create: options.create ?? true, device: phones.get(subject), authorizationCode: code });
 }
 
 const stub = (accountId: string) => env.ACCOUNT.get(env.ACCOUNT.idFromName(accountId)) as DurableObjectStub<Account>;

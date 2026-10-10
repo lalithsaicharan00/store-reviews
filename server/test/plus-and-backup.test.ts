@@ -13,8 +13,8 @@ import rootPem from "./fixtures/test-root.pem?raw";
 import { call, device, freeSignIn, testSignIn } from "./helpers";
 
 /**
- * Only Plus syncs, and accounts that don't sync back up to R2 (Backup, Sync and Accounts — One Seamless Experience;
- * Server Cost and Capacity §4–5).
+ * Every account syncs (free on one device, Plus on all: Current Work 78), and the older builds' backup files on R2
+ * (Backup, Sync and Accounts — One Seamless Experience; Server Cost and Capacity §4–5) keep working.
  */
 
 const BASE = "https://api-dev.oftenenough.com";
@@ -85,15 +85,107 @@ async function plusTransaction(accountId: string) {
   return sign(payload);
 }
 
-describe("only Plus syncs", () => {
-  it("a free account's sign-in says so, and its sync stops in the Worker with nothing stored", async () => {
+describe("every account syncs: free on one device, Plus on all (Current Work 78)", () => {
+  const refresh = (refreshToken: string) => call("POST", "/v1/auth/refresh", { refreshToken });
+
+  it("a free account syncs from its one signed-in device, and the change is stored", async () => {
     const me = await freeSignIn();
     expect(me.json.plus).toBe(false);
     const op = habitOp();
     const { status, json } = await sync(me.json.accessToken, [op]);
-    expect(status).toBe(403);
-    expect(json.error).toBe("plus_required");
-    expect(await stub(me.json.accountId).record("habit", op.row)).toBeNull();
+    expect(status).toBe(200);
+    expect(json.applied).toEqual([op.id]);
+    expect(await stub(me.json.accountId).record("habit", op.row)).not.toBeNull();
+  });
+
+  it("a second device of a free account is asked first, with the first device's name; nothing changes", async () => {
+    const subject = crypto.randomUUID();
+    const phone = await freeSignIn(subject, device({ name: "Lalith's iPhone" }));
+    const ipad = await freeSignIn(subject, device({ name: "Lalith's iPad", platform: "ipados" }));
+    expect(ipad.status).toBe(409);
+    expect(ipad.json.error).toBe("other_device_signed_in");
+    expect(ipad.json.device).toMatchObject({ name: "Lalith's iPhone", platform: "ios" });
+    expect(ipad.json.accessToken).toBeUndefined();
+    expect((await sync(phone.json.accessToken, [habitOp()])).status).toBe(200);
+    expect((await refresh(phone.json.refreshToken)).status).toBe(200);
+  });
+
+  it("Continue signs the first device out: its next sync and refresh say where the account went", async () => {
+    const subject = crypto.randomUUID();
+    const phone = await freeSignIn(subject, device({ name: "Lalith's iPhone" }));
+    const op = habitOp();
+    await sync(phone.json.accessToken, [op]);
+    const ipad = await freeSignIn(subject, device({ name: "Lalith's iPad", platform: "ipados" }), { replace: true });
+    expect(ipad.status).toBe(200);
+    const ended = await sync(phone.json.accessToken, [habitOp()]);
+    expect(ended.status).toBe(401);
+    expect(ended.json).toMatchObject({ error: "session_ended", reason: "signed_in_elsewhere", deviceName: "Lalith's iPad" });
+    const refreshed = await refresh(phone.json.refreshToken);
+    expect(refreshed.status).toBe(401);
+    expect(refreshed.json).toMatchObject({ error: "session_ended", reason: "signed_in_elsewhere", deviceName: "Lalith's iPad" });
+    // The iPad's first download brings everything the phone sent (D14).
+    const first = await call("POST", "/v1/sync", { cursor: 0, ops: [], full: true }, ipad.json.accessToken);
+    expect(first.json.ops.map((o: { id: string }) => o.id)).toContain(op.id);
+    const summary = await call("GET", "/v1/account", undefined, ipad.json.accessToken);
+    expect(summary.json.devices).toHaveLength(2); // the phone's device row is kept
+    expect(summary.json.devices.filter((d: { signedIn: boolean }) => d.signedIn)).toHaveLength(1);
+  });
+
+  it("only the device whose session it was learns who took over", async () => {
+    const subject = crypto.randomUUID();
+    const phone = await freeSignIn(subject, device({ name: "Lalith's iPhone" }));
+    await freeSignIn(subject, device({ name: "Lalith's iPad" }), { replace: true });
+    const [prefix, secret] = [phone.json.refreshToken.slice(0, phone.json.refreshToken.lastIndexOf(".") + 1), "x".repeat(43)];
+    const forged = await refresh(prefix + secret);
+    expect(forged.status).toBe(401);
+    expect(forged.json.error).toBe("signed_out");
+    expect(forged.json.deviceName).toBeUndefined();
+  });
+
+  it("signing back in on the first device merges both devices' changes; nothing is lost (D3)", async () => {
+    const subject = crypto.randomUUID();
+    const phoneDevice = device({ name: "Lalith's iPhone" });
+    const phone = await freeSignIn(subject, phoneDevice);
+    const ipad = await freeSignIn(subject, device({ name: "Lalith's iPad" }), { replace: true });
+    const onIpad = habitOp();
+    expect((await sync(ipad.json.accessToken, [onIpad])).status).toBe(200);
+    // A change the phone made while signed out (it kept its habits), sent once it signs in again.
+    const onPhone = habitOp();
+    expect((await sync(phone.json.accessToken, [onPhone])).status).toBe(401);
+    const again = await freeSignIn(subject, phoneDevice, { replace: true });
+    expect(again.status).toBe(200);
+    const merged = await call("POST", "/v1/sync", { cursor: 0, ops: [onPhone], full: true }, again.json.accessToken);
+    expect(merged.status).toBe(200);
+    expect(merged.json.applied).toEqual([onPhone.id]);
+    expect(merged.json.ops.map((o: { id: string }) => o.id)).toContain(onIpad.id);
+    expect(await stub(again.json.accountId).record("habit", onIpad.row)).not.toBeNull();
+    expect(await stub(again.json.accountId).record("habit", onPhone.row)).not.toBeNull();
+    // And now the iPad is the one told.
+    expect((await sync(ipad.json.accessToken)).json).toMatchObject({ error: "session_ended", deviceName: "Lalith's iPhone" });
+  });
+
+  it("the same device signing in again is never asked", async () => {
+    const subject = crypto.randomUUID();
+    const phoneDevice = device();
+    await freeSignIn(subject, phoneDevice);
+    expect((await freeSignIn(subject, phoneDevice)).status).toBe(200);
+  });
+
+  it("the website's sign-in (deleting or exporting the account) neither counts nor signs the phone out", async () => {
+    const subject = crypto.randomUUID();
+    const phone = await freeSignIn(subject);
+    const web = await freeSignIn(subject, device({ platform: "web", name: "Website" }));
+    expect(web.status).toBe(200);
+    expect((await sync(phone.json.accessToken)).status).toBe(200);
+  });
+
+  it("Plus is never limited: every device signs in and syncs", async () => {
+    const subject = crypto.randomUUID();
+    const phone = await testSignIn(subject, device({ name: "iPhone" }));
+    const ipad = await testSignIn(subject, device({ name: "iPad", platform: "ipados" }));
+    expect(ipad.status).toBe(200);
+    expect((await sync(phone.json.accessToken, [habitOp()])).status).toBe(200);
+    expect((await sync(ipad.json.accessToken, [habitOp()])).status).toBe(200);
   });
 
   it("buying Plus hands back a token that syncs at once, and every refresh keeps it", async () => {
@@ -106,26 +198,50 @@ describe("only Plus syncs", () => {
     expect((await sync(refreshed.json.accessToken)).status).toBe(200);
   });
 
-  it("after a refund, the next refreshed token can't sync", async () => {
-    const me = await freeSignIn();
+  it("after a refund, the most recently synced device keeps syncing; the others are signed out at their next contact", async () => {
+    const subject = crypto.randomUUID();
+    const phoneDevice = device({ name: "Lalith's iPhone" });
+    const me = await freeSignIn(subject, phoneDevice);
     const jws = await plusTransaction(me.json.accountId);
     const bought = await call("POST", "/v1/purchases/verify", { jws }, me.json.accessToken);
-    expect((await sync(bought.json.accessToken)).status).toBe(200);
+    expect(bought.json.plus).toBe(true);
+    const ipad = await freeSignIn(subject, device({ name: "Lalith's iPad", platform: "ipados" }));
+    expect(ipad.status).toBe(200); // Plus: no question
+    // The phone was last seen a day ago; the iPad just now.
+    await runInDurableObject(stub(me.json.accountId), (instance: Account, state) => {
+      state.storage.sql.exec("UPDATE device SET last_seen = ? WHERE id = ?", Date.now() - 86_400_000, phoneDevice.id);
+    });
     const transaction = JSON.parse(atob(jws.split(".")[1]!.replace(/-/g, "+").replace(/_/g, "/")));
     const signedTransactionInfo = await sign({ ...transaction, revocationDate: Date.now(), revocationReason: 0 });
     const signedPayload = await sign({ notificationType: "REFUND", data: { bundleId: "com.oftenenough.app", signedTransactionInfo } });
     expect((await call("POST", "/v1/hooks/apple", { signedPayload })).status).toBe(200);
-    const refreshed = await call("POST", "/v1/auth/refresh", { refreshToken: me.json.refreshToken });
-    expect(refreshed.json.plus).toBe(false);
-    expect((await sync(refreshed.json.accessToken)).json.error).toBe("plus_required");
+    const phoneRefresh = await call("POST", "/v1/auth/refresh", { refreshToken: me.json.refreshToken });
+    expect(phoneRefresh.status).toBe(401);
+    expect(phoneRefresh.json).toMatchObject({ error: "session_ended", reason: "plus_ended", deviceName: "Lalith's iPad" });
+    const ipadRefresh = await call("POST", "/v1/auth/refresh", { refreshToken: ipad.json.refreshToken });
+    expect(ipadRefresh.json.plus).toBe(false);
+    expect((await sync(ipadRefresh.json.accessToken, [habitOp()])).status).toBe(200);
   });
 
-  it("an access token from before the Plus check (no claim) is treated as free until it's refreshed", async () => {
+  it("an access token from before the Plus check (no claim) syncs like any account's", async () => {
     const me = await testSignIn();
     const claims = (await verifyAccessToken(me.json.accessToken, "test-token-key-0123456789abcdef0123456789"))!;
     const { issueAccessToken } = await import("../src/tokens");
     const old = await issueAccessToken({ accountId: claims.accountId, deviceId: claims.deviceId, jurisdiction: claims.jurisdiction }, "test-token-key-0123456789abcdef0123456789");
-    expect((await sync(old.token)).status).toBe(403);
+    expect((await sync(old.token)).status).toBe(200);
+  });
+
+  it("on dev, a sync says what it cost: rows written, records and the database's size (Free Sync §2.1)", async () => {
+    const me = await freeSignIn();
+    const { json } = await sync(me.json.accessToken, [habitOp(), habitOp()]);
+    expect(json.usage).toMatchObject({ changes: 2, plus: false });
+    expect(json.usage.rowsWritten).toBeGreaterThanOrEqual(4);
+    expect(json.usage.records).toBe(2);
+    expect(json.usage.databaseBytes).toBeGreaterThan(0);
+    const day = new Date().toISOString().slice(0, 10);
+    await new Promise((r) => setTimeout(r, 50));
+    const counted = await env.DIRECTORY.prepare("SELECT n FROM usage_day WHERE day = ? AND metric = 'syncing_free'").bind(day).first<{ n: number }>();
+    expect(counted?.n).toBeGreaterThanOrEqual(1);
   });
 });
 
@@ -282,7 +398,7 @@ describe("backup on our server (accounts that don't sync)", () => {
     const phone = await freeSignIn(subject, phoneDevice);
     const bytes = backupFile("the phone's habits");
     const stored = await upload(phone.json.accessToken, bytes);
-    const ipad = await freeSignIn(subject, device({ name: "iPad", platform: "ipados" }));
+    const ipad = await freeSignIn(subject, device({ name: "iPad", platform: "ipados" }), { replace: true });
     const copies = (await call("GET", "/v1/backup", undefined, ipad.json.accessToken)).json.copies;
     expect(copies[0]).toMatchObject({ device: phoneDevice.id, deviceName: "Lalith’s iPhone" });
     expect((await download(ipad.json.accessToken, phoneDevice.id, stored.json.slot)).bytes).toEqual(bytes);

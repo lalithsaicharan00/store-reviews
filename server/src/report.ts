@@ -22,6 +22,10 @@ interface MonitoringEnv extends Env {
 /** A route as a short name with no IDs in it: `GET /v1/backup/:device/:slot`, `other` for unknown paths. */
 export function routeName(method: string, path: string): string {
   if (/^\/v1\/backup\/[^/]+\/[^/]+$/.test(path)) return `${method} /v1/backup/:device/:slot`;
+  if (/^\/v1\/snapshots\/[^/]+$/.test(path)) return `${method} /v1/snapshots/:day`;
+  const move = /^\/v1\/transfer\/[^/]+(\/received|\/status)?$/.exec(path);
+  if (move) return `${method} /v1/transfer/:id${move[1] ?? ""}`;
+  if (path === "/v1/snapshots") return `${method} ${path}`;
   if (/^\/v1\/(status|auth\/[a-z]+|account(\/[a-z]+)?|sync|backup|purchases(\/verify)?|hooks\/apple|admin\/[a-z]+)$/.test(path)) return `${method} ${path}`;
   return "other";
 }
@@ -34,10 +38,44 @@ export function recordRequest(env: Env, method: string, path: string, status: nu
   }
 }
 
+/**
+ * What one sync cost (Current Work 78, Free Sync §4 S7): changes and SQLite rows written, so the report can say rows
+ * written per change; on an account's first sync of the day, its records and database size, for bytes per record.
+ * Content-free: no account ID, no data. Only when Analytics Engine is set up.
+ */
+export function recordSync(env: Env, usage: { rowsWritten: number; changes: number; plus: boolean; firstToday: boolean; records?: number; databaseBytes?: number }) {
+  try {
+    const metrics = (env as MonitoringEnv).METRICS;
+    if (!metrics) return;
+    const plan = usage.plus ? "plus" : "free";
+    if (usage.changes > 0 || usage.rowsWritten > 0) metrics.writeDataPoint({ blobs: ["usage:sync", plan], doubles: [usage.changes, usage.rowsWritten], indexes: [env.ENVIRONMENT] });
+    if (usage.firstToday && usage.records !== undefined && usage.databaseBytes !== undefined) {
+      metrics.writeDataPoint({ blobs: ["usage:size", plan], doubles: [usage.records, usage.databaseBytes], indexes: [env.ENVIRONMENT] });
+    }
+  } catch {
+    // Metrics must never fail a request.
+  }
+}
+
+/** Adds one to today's count of a metric (`usage_day`), after the reply. Never fails a request. */
+export function countUsage(env: Env, ctx: ExecutionContext | undefined, metric: "syncing_free" | "syncing_plus" | "replaced_device", now = Date.now()) {
+  const day = new Date(now).toISOString().slice(0, 10);
+  const write = env.DIRECTORY.prepare("INSERT INTO usage_day (day, metric, n) VALUES (?, ?, 1) ON CONFLICT(day, metric) DO UPDATE SET n = n + 1")
+    .bind(day, metric)
+    .run()
+    .catch((error) => console.error(JSON.stringify({ event: "usage_count_failed", error: String(error) })));
+  if (ctx) ctx.waitUntil(write);
+}
+
 export interface DailyReport {
   environment: string;
   day: string;
   accounts: { total: number; new: number; deleted: number };
+  /**
+   * Sync (Current Work 78): accounts that synced that day, free sign-ins that signed another device out, and (with
+   * Analytics Engine) rows written per change and stored bytes per record, the cost model's two estimates.
+   */
+  sync: { freeAccounts: number; plusAccounts: number; replacedDevice: number; rowsPerChange: number | null; bytesPerRecord: number | null };
   purchases: { linked: number; new: number };
   jobs: { snapshotFailures: number; emailsSent: number; emailsFailed: number; emailsWaiting: number };
   requests: null | { total: number; errors: number; errorRate: number; freePlanShare: number; byRoute: { route: string; total: number; errors: number }[] };
@@ -60,6 +98,13 @@ export async function buildReport(env: Env, now = Date.now()): Promise<DailyRepo
       new: await one("SELECT count(*) AS n FROM account WHERE created_at >= ?", since),
       deleted: await one("SELECT count(*) AS n FROM deleted_account WHERE deleted_at >= ?", since),
     },
+    sync: {
+      freeAccounts: await one("SELECT coalesce(sum(n), 0) AS n FROM usage_day WHERE day = ? AND metric = 'syncing_free'", new Date(since).toISOString().slice(0, 10)),
+      plusAccounts: await one("SELECT coalesce(sum(n), 0) AS n FROM usage_day WHERE day = ? AND metric = 'syncing_plus'", new Date(since).toISOString().slice(0, 10)),
+      replacedDevice: await one("SELECT coalesce(sum(n), 0) AS n FROM usage_day WHERE day = ? AND metric = 'replaced_device'", new Date(since).toISOString().slice(0, 10)),
+      rowsPerChange: null,
+      bytesPerRecord: null,
+    },
     purchases: {
       linked: await one("SELECT count(*) AS n FROM purchase"),
       new: await one("SELECT count(*) AS n FROM purchase WHERE created_at >= ?", since),
@@ -74,6 +119,8 @@ export async function buildReport(env: Env, now = Date.now()): Promise<DailyRepo
     warnings: [],
     notes: [],
   };
+  const cost = await syncCost(env as MonitoringEnv);
+  if (cost) Object.assign(report.sync, cost);
   if (report.jobs.emailsFailed > 0) report.warnings.push(`${report.jobs.emailsFailed} purchase confirmation emails couldn't be sent.`);
   if (report.jobs.snapshotFailures > 0) report.warnings.push(`${report.jobs.snapshotFailures} nightly snapshot attempts failed (retried automatically; check the logs).`);
   if (report.requests && report.requests.errorRate > 0.01) report.warnings.push(`Server errors: ${(report.requests.errorRate * 100).toFixed(1)}% of requests (alert level 1%).`);
@@ -89,7 +136,7 @@ async function requestCounts(env: MonitoringEnv): Promise<DailyReport["requests"
   if (!env.ANALYTICS_TOKEN || !env.ACCOUNT_ID) return null;
   const dataset = env.ENVIRONMENT === "production" ? "often_enough" : "often_enough_dev";
   const sql = `SELECT blob1 AS route, sum(_sample_interval) AS total, sum(if(toUInt32(blob2) >= 500, _sample_interval, 0)) AS errors
-    FROM ${dataset} WHERE timestamp > NOW() - INTERVAL '1' DAY GROUP BY route ORDER BY total DESC FORMAT JSON`;
+    FROM ${dataset} WHERE timestamp > NOW() - INTERVAL '1' DAY AND blob1 NOT LIKE 'usage:%' GROUP BY route ORDER BY total DESC FORMAT JSON`;
   try {
     const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.ACCOUNT_ID}/analytics_engine/sql`, {
       method: "POST",
@@ -107,12 +154,41 @@ async function requestCounts(env: MonitoringEnv): Promise<DailyReport["requests"
   }
 }
 
+/** Rows written per change and stored bytes per record, yesterday, from Analytics Engine (`recordSync`). */
+async function syncCost(env: MonitoringEnv): Promise<{ rowsPerChange: number | null; bytesPerRecord: number | null } | null> {
+  if (!env.ANALYTICS_TOKEN || !env.ACCOUNT_ID) return null;
+  const dataset = env.ENVIRONMENT === "production" ? "often_enough" : "often_enough_dev";
+  const sql = `SELECT blob1 AS kind, sum(double1 * _sample_interval) AS a, sum(double2 * _sample_interval) AS b
+    FROM ${dataset} WHERE timestamp > NOW() - INTERVAL '1' DAY AND blob1 LIKE 'usage:%' GROUP BY kind FORMAT JSON`;
+  try {
+    const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.ACCOUNT_ID}/analytics_engine/sql`, {
+      method: "POST",
+      headers: { authorization: `Bearer ${env.ANALYTICS_TOKEN}` },
+      body: sql,
+    });
+    if (!response.ok) return null;
+    const rows = ((await response.json()) as { data: { kind: string; a: number | string; b: number | string }[] }).data;
+    const of = (kind: string) => rows.find((r) => r.kind === kind);
+    const sync = of("usage:sync");
+    const size = of("usage:size");
+    return {
+      rowsPerChange: sync && Number(sync.a) > 0 ? Number(sync.b) / Number(sync.a) : null,
+      bytesPerRecord: size && Number(size.a) > 0 ? Number(size.b) / Number(size.a) : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function reportText(r: DailyReport): string {
   const lines = [
     `Often Enough (${r.environment}), ${r.day}`,
     "",
     ...(r.warnings.length ? ["Needs a look:", ...r.warnings.map((w) => `- ${w}`), ""] : ["All fine.", ""]),
     `Accounts: ${r.accounts.total} (new and still open ${r.accounts.new}, deleted ${r.accounts.deleted})`,
+    `Syncing: ${r.sync.freeAccounts} free, ${r.sync.plusAccounts} Plus; free sign-ins that signed another device out: ${r.sync.replacedDevice}` +
+      (r.sync.rowsPerChange !== null ? `; ${r.sync.rowsPerChange.toFixed(1)} rows written a change` : "") +
+      (r.sync.bytesPerRecord !== null ? `; ${Math.round(r.sync.bytesPerRecord)} bytes stored a record` : ""),
     `Purchases linked: ${r.purchases.linked} (new ${r.purchases.new})`,
     `Nightly snapshot failures: ${r.jobs.snapshotFailures}`,
     `Purchase emails: sent ${r.jobs.emailsSent}, failed ${r.jobs.emailsFailed}, waiting ${r.jobs.emailsWaiting}`,
