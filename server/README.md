@@ -37,6 +37,11 @@ npx wrangler deploy
 TEST_LOGIN_SECRET=... node scripts/live-smoke.mjs     # live check
 ```
 
+**Live checks without the test secret:** push to a branch ending in `-server-checks` (or run "Server dev checks" by
+hand once the workflow is on main). `.github/workflows/server-dev-checks.yml` runs `scripts/live-free-sync.mjs` with the
+run's GitHub identity (`/v1/auth/ci`): two devices on one free account (asked, moved, told, merged), Plus never limited,
+the transfer up / down / gone, and the rows written per change and bytes stored per record, in the run's summary.
+
 ## Deploy production
 
 ```sh
@@ -78,15 +83,17 @@ Needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment.
 | Route | Does |
 |---|---|
 | `GET /v1/status` | health check, no sign-in |
-| `POST /v1/auth/apple`, `/v1/auth/google` | `{idToken, nonce, create?, device, country?}` → tokens and `plus`. An unknown key answers `404 unknown_key` unless `create: true`. Apple also takes `authorizationCode`: after the reply, the server swaps it at Apple for a refresh token, kept with the key only to revoke it |
+| `POST /v1/auth/apple`, `/v1/auth/google` | `{idToken, nonce, create?, device, country?, replace?}` → tokens and `plus`. An unknown key answers `404 unknown_key` unless `create: true`. **A free account signed in on another device** answers `409 other_device_signed_in` with `device: {name, platform, lastSeen}`; the same request with `replace: true` signs that device out (it keeps its data; its next sync or refresh gets `401 session_ended`) and opens this one (Current Work 78). The website's sessions (`platform: "web"`) never count. Apple also takes `authorizationCode`: after the reply, the server swaps it at Apple for a refresh token, kept with the key only to revoke it |
 | `POST /v1/auth/test` | dev only: `{secret, subject, create?, device, plus?}`. Plus unless `plus: false` (a free account) |
-| `POST /v1/auth/refresh` | `{refreshToken}` → new tokens and `plus`. The old one may be retried for 2 minutes (lost replies); later reuse signs that device out |
+| `POST /v1/auth/refresh` | `{refreshToken}` → new tokens and `plus`. The old one may be retried for 2 minutes (lost replies); later reuse signs that device out. A device another sign-in signed out gets `401 session_ended` with `reason` (`signed_in_elsewhere`, or `plus_ended` after a refund) and `deviceName`, only with its own token |
 | `GET /v1/account` | keys and devices |
 | `POST /v1/account/link`, `/unlink` | add or remove a sign-in method (never the last one) |
 | `POST /v1/account/signout`, `/delete` | end this device's session; delete the account (directory first, then its data, then its Apple sign-in is revoked at Apple). Unlinking Apple revokes it too |
 | `POST /v1/auth/ci` | dev only: GitHub Actions runs of this repository sign in with the run's identity token (iPhone end-to-end tests); Plus unless `plus: false` |
-| `POST /v1/sync` | **Plus only.** `{cursor, ops}` → `{applied, rejected, ops, cursor, more}`; merges with the shared Kotlin rules in `core/`. A free account gets `403 plus_required` from the Worker, before any Durable Object |
-| `PUT /v1/backup` | The body is the backup file (at most 5 MB). Headers: `x-backup-sha256` (hex), `x-backup-device-name` (URL-encoded), `x-backup-platform`, `x-backup-app-version`, `x-backup-format`, `x-backup-created-at` (ms), `x-backup-habits`, `x-backup-entries`, `x-backup-records`. → `201` with the copy's details and the `sha256` R2 stored. One copy per device per weekday (UTC); a copy with under half the records of the newest one first keeps the newest aside as `before-shrink` |
+| `POST /v1/sync` | **Every account** (Current Work 78): Plus from all its devices, a free account from its one signed-in device. `{cursor, ops, full?}` → `{applied, rejected, ops, cursor, more}`; merges with the shared Kotlin rules in `core/`. A device signed out by another answers `401 session_ended`. On dev the reply also carries `usage` (rows written, records, database bytes) |
+| `GET /v1/snapshots`, `/v1/snapshots/{day}` | the account's daily copies (`{snapshots: [{day, takenAt, records}]}`) and one day as a backup file: the last 7 days on free, every kept day on Plus (90, then monthly) |
+| `PUT/GET/DELETE /v1/transfer/{id}`, `POST …/received`, `GET …/status` | **Move to Another Device, no account** (`src/transfer.ts`, Architecture 04 §4.3): the old device puts its file sealed with the code (≤ 25 MB), the new one gets it and says `received` (deleted at once), the old one asks `status` (`waiting`, `received`, `gone`). An hour at most; `404 no_transfer` for a wrong or expired code. The server only sees the ID and ciphertext |
+| `PUT /v1/backup` | **Older builds only** (free accounts sync since Current Work 78; kept until no build uses it). The body is the backup file (at most 5 MB). Headers: `x-backup-sha256` (hex), `x-backup-device-name` (URL-encoded), `x-backup-platform`, `x-backup-app-version`, `x-backup-format`, `x-backup-created-at` (ms), `x-backup-habits`, `x-backup-entries`, `x-backup-records`. → `201` with the copy's details and the `sha256` R2 stored. One copy per device per weekday (UTC); a copy with under half the records of the newest one first keeps the newest aside as `before-shrink` |
 | `GET /v1/backup` | `{copies: [...]}`: every copy of every device of the account, newest first |
 | `GET /v1/backup/{device}/{slot}` | one copy's file (`slot`: `sun`…`sat`, `before-shrink`) |
 | `DELETE /v1/backup` | removes every copy ("keep my backup only in my iCloud") |
@@ -101,11 +108,12 @@ The app sends `nonce` raw and gives Apple or Google its SHA-256 (hex). `device` 
 backups go to the EU bucket.
 
 **Plus in the access token:** set from the account's purchases whenever a token is issued (sign-in, refresh, purchase).
-A refund takes sync away at the next refresh (within an hour). A token from before this check has no claim and counts as
-free: the app refreshes on `403 plus_required` once before believing it.
+It decides how many devices sync and how many daily copies are listed. A refund leaves the account free: the most
+recently seen device keeps syncing and the others are signed out at their next contact (`plus_ended`).
 
 **Rate limits** (Cloudflare's rate-limit binding, per location, approximate): 60 a minute per account for sync and backup
-reads, 30 a minute per IP for `/v1/auth/*`, 2 a minute per device for backup uploads. Over the limit: `429 slow_down`
+reads, 30 a minute per IP for `/v1/auth/*`, 2 a minute per device for backup uploads, 60 a minute per IP for
+`/v1/transfer/*`. Over the limit: `429 slow_down`
 with `Retry-After: 60`. `device.last_seen` is written at most once an hour.
 
 `core/` is the shared Kotlin sync code compiled to JavaScript. After changing `Core/sync`, run `scripts/build-core.sh`.

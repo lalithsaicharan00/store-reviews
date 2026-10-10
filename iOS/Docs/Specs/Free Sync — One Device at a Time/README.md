@@ -4,7 +4,9 @@ Written by Claude (Claude Code), 11 October 2026, at the user's request: "let's 
 time in free plans … document everything in one particular document: what we need to update in the server, what we
 need to do, all of that … and update the UI." Current Work 78.
 
-**Status: decided by the user (11 Oct 2026); planned; not built.** Builds on branch `app-lock-privacy-security`.
+**Status: decided by the user (11 Oct 2026); built 10 Oct 2026 on branch `app-lock-privacy-security`** (server
+`20a05468`, deployed to dev only; app `35c16841`); tests and iPhone checks in Current Work 78. Production waits for the
+user's go-ahead.
 Screens: [Figma, Account, Backup & Export section](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=950-309)
 (4, 4b, 4c, 7, 8; also 2, 3, 3b); images in [`Images/`](Images/) and in the
 [Account and Backup Redesign](<../Account and Backup Redesign/README.md>) spec, which this plan updates.
@@ -60,6 +62,17 @@ smaller):
 | 100,000 free users, year 5, after the plan's included amounts | **~$55 a month** | **~$44 a month** (32 M rows written fit inside the 50 M included) |
 | The user's mobile data a month: year 1 / year 5 / a heavy user | ~31 MB / ~157 MB / ~940 MB | **< 0.1 MB, every year** |
 | Freshness after a lost phone | minutes | seconds |
+
+**Measured on dev, 10 Oct 2026** (`server/scripts/live-free-sync.mjs`, run 38028154237, a free account used as the app
+uses it: 5 habits, 100 logs one sync each, 20 edits): **5 SQLite rows written per new record and 4 per edit** (the
+estimate was ~4: the record, its op-log row and their indexes); **about 1,390 bytes stored per new log** and 2,220 per
+record overall (the estimate was ~300). The difference is the op log: every change is kept as its own JSON beside the
+merged record, which new devices' first downloads read (D14). So for **100,000 free users in year 5** (5,000 records
+each, ~7 MB): **about 700 GB stored, ~$140 a month** at $0.20 a GB-month, against the ~$44 estimated above; rows written
+(~40 M a month) still fit inside the 50 M included. Storage is the number to watch, not rows. Two things would bring it
+down if it matters: compacting the op log (a first download can start from the merged records, so ops every device has
+already received can go), and measuring again on a full-size account (a small database pays SQLite's page overhead).
+The daily report now carries both numbers from real use (`report.ts`, Analytics Engine).
 
 **R2 charges per upload, not per megabyte**, so the whole file doesn't grow *our* bill much; it grows the *person's*
 mobile data every year. Sync sends only what changed. At scale sync is no dearer for us, much lighter for people, and

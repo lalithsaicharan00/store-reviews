@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 78).
+  still resolve; give new items the next unused number (currently 80).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -745,7 +745,44 @@ and the Add note keyboard coming up by itself.
     pushing; free says it syncs one device, Plus says it syncs across devices. The new device's sheet and the old
     device's notice (Figma 950:309, screens 4, 4b, 4c, 7, 8; 2, 3, 3b reworded).
   - [x] Updated the Rulebook (D4), Free Plan Backups (75), the Account and Backup spec (76).
-  - [ ] Build, test on GitHub, iPhone checks.
+  - [x] **Server built and on dev** (10 Oct 2026, commit `20a05468`; S1–S8): one signed-in device per free account
+    (409 `other_device_signed_in`, `replace`, 401 `session_ended` `signed_in_elsewhere` only to that device's token; the
+    website never counts; a refund keeps the most recently seen device), `POST /v1/sync` open to free, snapshots kept
+    and listed 7 days on free / 90 on Plus, the daily report's sync counts, older builds' backup files still accepted.
+    `npm test` 161/161, typecheck clean, deployed to **dev only** (production waits for the user's go-ahead, T6).
+  - [x] **Live checks on dev with two devices** (`.github/workflows/server-dev-checks.yml`, the run's own GitHub
+    identity): run **38028154237**, 13/13: first sign-in, the second device asked first with the first's name, Continue
+    moves it, the first device's sync and refresh told where it went, the new device's first download has everything
+    (D14), signing back in merges both devices' changes (D3), the daily copies listed, Plus never limited.
+  - [x] **Measured on dev** (the plan's two estimates, Free Sync §2.1): **5 rows written per new record, 4 per edit**
+    (estimate 4); **about 1,390 bytes stored per new log** (estimate ~300), because the op log keeps every change as
+    well as the merged record. Storage, not rows, is the cost to watch: see Free Sync §2.1's update.
+  - [x] **App built** (commit `35c16841`; A1–A8): sync for every signed-in account, "Use on This iPhone?" (7), "Signed
+    out on this iPhone" (8), Backup & Export's same list in every state (4, 4b, 4c, 4e), Account's Last Synced,
+    Restore's 7 / 90 days, Help topics, analytics. Google Drive stays hidden behind its flag (not working yet).
+  - [ ] Tests on GitHub (BackupUITests' two-device free account end to end, OnboardingUITests, screenshots, Sync,
+    Analytics; SmallScreen on the SE; speed): runs pending.
+  - [ ] **iPhone checks pending (U9):** two real devices on one free account (sign in on the second: the first is
+    signed out and keeps everything; sign back in on the first: changes made on both merge); a widget or notification
+    change syncing in the background on a free account (D12, `SyncDeviceTests`); a locked iPhone (D13); mobile data used
+    in a week. **On dev, every Apple or Google account is Plus while `EVERYONE_PLUS` is "true" (item 68): free
+    behaviour on a real iPhone needs it set to "false" first, which is the user's call.**
+
+- [ ] **79. Move to Another Device through the server** (added 10 October 2026, from the user: "it should be server
+  based rather than depending on the mobile phone … like WhatsApp", mainly for people without an account; "if it won't
+  cost a lot, then implement it"). Replaces the local-network transfer of item 73.1.
+  - [x] Cost: one upload and one download per move (R2 class A + B, $4.50 and $0.36 a million), the file kept minutes;
+    100,000 moves a month fit inside the included amounts: about $0.
+  - [x] Server: `server/src/transfer.ts` (`PUT/GET/DELETE /v1/transfer/<id>`, `/received`, `/status`): no account, the
+    file end-to-end encrypted (the server sees an ID and ciphertext only), deleted on receipt, an hour at most, 25 MB,
+    limited per IP, pruned daily. `npm test` (8 transfer tests), dev deployed, live check up / down / gone (run
+    38028154237).
+  - [x] App: `DeviceTransfer.swift` seals the backup file with AES-256-GCM, key and ID both from PBKDF2 of the code; no
+    local network and no Local Network permission any more; any network, any distance; iPhone ⇄ Android-ready (the same
+    recipe, Architecture 04).
+  - [ ] Tests on GitHub: OnboardingUITests moves the demo habits between two launches through dev and refuses a wrong
+    code; BackupUITests shows the code reaching the server; BackupCheck's seal / open checks. Runs pending.
+  - [ ] **iPhone check pending (U9):** two real iPhones on different networks (one on mobile data).
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."

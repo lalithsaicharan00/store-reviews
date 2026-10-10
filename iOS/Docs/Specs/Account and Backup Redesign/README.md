@@ -225,8 +225,11 @@ other device needs no instructions, so neither is offered here.
   another device** (onboarding R01's words) · **Enter this code**.
 - The code, large. **K7QM 4X2P is an example**: its length and format are the transfer service's.
 - **Waiting for the other device…** under it, then *Keep this screen open until your habits arrive on the other
-  device. They stay on this device too.* No expiry is promised until the service has one. Then *Sending your
-  habits…* and *Done*, as onboarding R08 (not drawn).
+  device. They stay on this device too.* Then *Done*, as onboarding R08 (not drawn). A code works for an hour; after
+  that the screen says so and offers **Show a New Code**.
+- **Built through the server** (10 Oct 2026, Current Work 79; the user: "server based … like WhatsApp"): the devices can
+  be anywhere, no account, no Local Network permission; the data is sealed with the code and the server never sees it
+  ([Architecture 04 §4.3](<../../../../Architecture/04. Phone Migration.md>), Rulebook D15).
 - **For whoever builds it:** with an account, the new device should end up signed in to the same account after the
   transfer (Plus: it then syncs), so moving never leaves the account behind. To decide with the transfer service.
 
@@ -285,7 +288,8 @@ is Google's (SDK), and Apple's is Apple's.
    project, upload, list and restore. Enabling the API or changing the consent screen is done in Google's console by the
    user: if that's needed, stop and ask. Never ship a Google Drive row that does nothing (Backup & Export research §6).
 3. **The transfer code exists** (Current Work 73.1: `DeviceTransfer.swift`, `TransferSendView.swift`; 8-character
-   code, the file goes straight between the two devices over the local network, nothing through the server). What's
+   code; **through the server since 10 Oct 2026, Current Work 79**, sealed with the code; it went over the local network
+   before). What's
    new: Move to Another Device opens it directly (screen 5), with the screen's new words. With an account, the new device
    should end up signed in to the same account after the transfer (Plus then syncs): decide how with the code that
    exists, or say on the new device "Sign in to keep your account".

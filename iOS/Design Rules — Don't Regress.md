@@ -494,7 +494,7 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 - **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
 - **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.
 
-## Account and Backup & Export (redesigned 10 Oct 2026 and built, Current Work 76; first built 9 Oct, 58.10–58.12; iPhone check pending)
+## Account and Backup & Export (redesigned 10 Oct 2026 and built, Current Work 76; free sync on one device 11 Oct, Current Work 78; first built 9 Oct, 58.10–58.12; iPhone check pending)
 
 Spec (the source of truth): [Account and Backup Redesign](<Docs/Specs/Account and Backup Redesign/README.md>). Reports:
 [Backup & Export and Your Account — What People Look For](<../Research/Research Reports/Data, Sync and Accounts/Backup & Export and Your Account — What People Look For.md>),
@@ -508,16 +508,26 @@ Every screen starts from what people want to see there (Rulebook W6).
   account without asking (D3); Create Account with an account that exists signs into it. The menu row shows **no value
   signed out**, **Free** or **Plus** signed in.
 - **≡ → Account, signed in:** *Signed in with Apple* / *Email hidden by Apple* (or the Google address), **Plan** (Free,
-  or **Plus (lifetime)**), **Last Backup** (free) or **Last Synced** (Plus), **Devices** with how to get on another one,
+  or **Plus (lifetime)**), **Last Synced** (free and Plus both sync), **Devices** with how to get on another one (free:
+  *To use another phone or tablet instead, sign in on it. This iPhone is then signed out and keeps its habits.*),
   **Sign Out** (*Your habits stay on this iPhone.*) and **Delete Account…** (red, its own page).
-- **One backup place at a time** (the user, 10 Oct 2026; Rulebook D4): no account, iCloud (or Google Drive once it
-  works); signed in, the account only (no iCloud copy beside it, free or Plus). Signing in backs up to the account at
-  once and stops iCloud only once that copy is in the account's list with its checksum; the old iCloud copies are never
-  deleted. Signing out backs up to iCloud again at once.
-- **Backup & Export: the same rows in every state**, the backup place first: status (**Backed up** / *Today 9:14 ·
-  iCloud*; Plus **Backed up and in sync** / *Just now · Your account · 2 devices*; problems in red with their fix) and
-  **Back Up Now** · **Backed Up To** (no account: **iCloud** ✓ with its state, then **Your Account ›** *Not signed in*
-  as an option; signed in: **Your Account ›** first, saying iCloud and Google Drive are used only when not signed in) ·
+- **A free account syncs on one device** (the user, 11 Oct 2026, Current Work 78): signing in on another device asks
+  first in a sheet, **Use on This iPad?** · *Free syncs one device, so your iPhone will be signed out. It keeps its
+  habits.* · **Continue** · **Cancel**; the old device, next time it opens, shows the alert **Signed out on this iPhone**
+  · *Your account is now used on your iPad. This iPhone keeps its habits and backs them up to iCloud.* · **OK**, once.
+  There's no "signed in but not syncing". Never "active device", "primary device", "one device at a time", "session" or
+  "handover" on screen. Plus shows neither.
+- **One backup place at a time** (the user, 10–11 Oct 2026; Rulebook D4): no account, iCloud (or Google Drive once it
+  works), backed up as you go; signed in, the account only, by sync (free or Plus; no iCloud copy beside it). Signing in
+  syncs at once and stops iCloud only once the server has acknowledged everything; the old iCloud copies are never
+  deleted. Any sign-out (the person's, or another device's sign-in) backs up to iCloud again at once.
+- **Backup & Export: the same list in every state**: status (**Backed up** / *Today 9:14 · iCloud* and **Back Up Now**
+  without an account; **Synced** / *Just now · Your account* (Plus *· 2 devices*) and **Sync Now** signed in; problems in
+  red with their fix) · **Backed Up To**: **iCloud · Google Drive (once it works) · Your Account**, always in that order,
+  the ✓ where the habits are kept (no account: iCloud ✓ *Your Apple Account*, Your Account *Create one to sync your
+  habits* › opening **Create Account over the page**; signed in: iCloud and Google Drive *Used when you're not signed in*,
+  Your Account ✓ *Free · Syncs this iPhone* / *Plus · Syncs across your devices* › the Account page). Backup is the
+  word for iCloud and Google Drive, sync for the account ·
   **Move and Restore** (**Move to Another Device**, which opens the transfer code at once; **Restore From a Backup**;
   Undo Last Restore) · **Export** (Save a Backup File, Export a Spreadsheet (CSV)) · **Erase All My Data…** (no
   account only).
@@ -525,11 +535,14 @@ Every screen starts from what people want to see there (Rulebook W6).
   File**; signed in **Your Account** (free *Any of the last 7 days*, Plus *Any day in the last 90 days*) · **Backup File**.
   Plus's restore replaces the habits on every device and asks first, saying so; every restore keeps its 30-day undo (D5).
 - **Move to Another Device** says three steps (*Install Often Enough on the other device*: the name stays there because
-  people search for it), the code, *Waiting for the other device…*, and that the habits stay here too. Signed in, the new
-  device asks once *Sign in to keep your account* (sign-ins never travel between devices).
+  people search for it), the code, *Waiting for the other device…*, and that the habits stay here too. **Through the
+  server** since 10 Oct 2026 (Current Work 79, D15): any network, any distance, no Local Network permission, a code
+  works for an hour. Signed in, the new device asks once *Sign in to keep your account* (sign-ins never travel between
+  devices).
 - **Never** a paragraph explaining the screen, "our server" or "we", a row that shows a value nobody can change, a Google
   Drive row before Drive truly works, "deleting the app deletes your habits", or anything that makes backup look like
-  part of Plus (D10). "Encrypted" means in transit and at rest (Architecture 06), never end-to-end.
+  part of Plus (D10). "Encrypted" means in transit and at rest (Architecture 06), never end-to-end, except the move with
+  a code, which is sealed with the code before it leaves the device (D15).
 
 ## Sidebar data, tasks and reminders — 30 September 2026
 
@@ -584,12 +597,13 @@ every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the
   D5); a backup from iCloud or a file is shown first (**Your backup.**: what's in it, made on, when) with Restore. With
   something already on the iPhone, always **Replace What's on This iPhone** or **Merge**, each saying what it would do.
   **A backup with nothing in it is never "restored"**: the page says so.
-- **Move from another device, like moving chats:** the old iPhone's ≡ › Backup & Export › Move to a New iPhone › **Show
-  a Transfer Code** makes a fresh backup and shows eight characters (two groups of four, Crockford letters); the new
-  iPhone types them. The code is the TLS key (PBKDF2-stretched), local network or peer-to-peer only, nothing through the
-  server, no account, used once, gone when the screen closes. The screen stays awake. A wrong code says "That code
-  doesn't match" within seconds (a mismatched handshake can hang rather than fail: checked in the simulator 9 Oct, so
-  each phone gets 5 s). The code field cleans as typed (capitals, no dash, eight at most) on the next turn (U6).
+- **Move from another device, like moving chats:** the old device's ≡ › Backup & Export › Move to Another Device makes
+  a fresh backup and shows eight characters (two groups of four, Crockford letters); the new device types them. **Through
+  the server since 10 Oct 2026** (Current Work 79, D15): the file is sealed with a key stretched from the code, the
+  server only sees an ID and ciphertext, an hour at most, deleted on receipt; no account, any network. The screen stays
+  awake; leaving it deletes the file. A wrong or expired code says "That code doesn't match, or it has expired" within
+  seconds. The code field cleans as typed (capitals, no dash, eight at most) on the next turn (U6). (9 Oct–10 Oct it went
+  over the local network, with the code as the TLS key.)
 - **Google Drive** is in the wireframes but nothing backs up there yet, so it isn't offered; add it to Restore a backup
   when Google Drive backup exists.
 - **Help → Show the Welcome Again** shows What's included and the three pages on what the app does, ✕ to close, Done
