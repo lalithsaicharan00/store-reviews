@@ -26,6 +26,16 @@ final class WatchModel {
     /// A test launch (`-uitest`) never touches the person's data (D8): an in-memory database, its own App Group folder
     /// (`WidgetDisk.directory` under `uitest/`), and no link to an iPhone.
     static let testLaunch = ProcessInfo.processInfo.arguments.contains("-uitest")
+    /// The paired-simulator check (`-uitest -pair-test`, `Tools/ci/watch_pair.sh`): a test launch that still links to
+    /// its iPhone, itself a test launch with its own in-memory database. Simulator Debug builds only, so a test launch
+    /// on a real Watch can never reach the person's iPhone (D8).
+    static let pairTest: Bool = {
+        #if DEBUG && targetEnvironment(simulator)
+        return ProcessInfo.processInfo.arguments.contains("-pair-test")
+        #else
+        return false
+        #endif
+    }()
 
     private init() {
         var repository: HabitRepository?
@@ -41,7 +51,7 @@ final class WatchModel {
         openFailed = failed
         let opened = repository ?? Persistence.inMemory().repository
         store = HabitStore(repository: opened, databaseOpened: repository != nil)
-        link = WatchLink(repository: repository, testLaunch: Self.testLaunch)
+        link = WatchLink(repository: repository, testLaunch: Self.testLaunch && !Self.pairTest)
         plus = PlusState(testLaunch: Self.testLaunch)
         store.isPlus = true // the Watch app is Plus; `PlusState` decides whether it opens at all (G1)
         store.onChange = { [weak self] in self?.changed() }
@@ -55,7 +65,7 @@ final class WatchModel {
         if let loading { return await loading.value }
         let task = Task { @MainActor in
             await store.load()
-            if Self.testLaunch {
+            if Self.testLaunch && !Self.pairTest {
                 await WatchFixtures.installIfAsked(self)
             } else {
                 try? await repository?.peerStart()
@@ -71,7 +81,7 @@ final class WatchModel {
     }
 
     func refreshPeerStatus() async {
-        guard let repository, !Self.testLaunch else { return }
+        guard let repository, !Self.testLaunch || Self.pairTest else { return }
         if let status = try? await repository.peerStatus() { filled = status.filled }
     }
 

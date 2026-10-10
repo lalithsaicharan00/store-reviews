@@ -71,14 +71,14 @@ final class WatchLink: NSObject {
               let seq = PeerMessage.seq(of: batch) else { inFlight = nil; return }
         inFlight = seq
         inFlightSince = .now
-        session.transferUserInfo([PeerMessage.kind: PeerMessage.ops, PeerMessage.batch: batch])
+        PeerMessage.deliver([PeerMessage.kind: PeerMessage.ops, PeerMessage.batch: batch], on: session)
     }
 
     /// Hello: the iPhone starts its queue for this Watch and sends its settings; and asks for the first fill if needed.
     private func hello() async {
         guard let session, let repository else { return }
         let status = try? await repository.peerStatus()
-        session.transferUserInfo([PeerMessage.kind: PeerMessage.hello, PeerMessage.filled: status?.filled ?? false])
+        PeerMessage.deliver([PeerMessage.kind: PeerMessage.hello, PeerMessage.filled: status?.filled ?? false], on: session)
         if status?.filled != true { askForFill(from: status?.fillCursor) }
         await sendBatch()
     }
@@ -88,12 +88,7 @@ final class WatchLink: NSObject {
         // Asked once a minute at most while waiting; the iPhone answers with a file.
         if let asked = fillAsked, Date.now.timeIntervalSince(asked) < 60 { return }
         fillAsked = .now
-        let message: [String: Any] = [PeerMessage.kind: PeerMessage.fillRequest, PeerMessage.cursor: cursor ?? ""]
-        if session.isReachable {
-            session.sendMessage(message, replyHandler: nil) { _ in session.transferUserInfo(message) }
-        } else {
-            session.transferUserInfo(message)
-        }
+        PeerMessage.deliver([PeerMessage.kind: PeerMessage.fillRequest, PeerMessage.cursor: cursor ?? ""], on: session)
     }
 
     // MARK: Receiving
@@ -106,8 +101,13 @@ final class WatchLink: NSObject {
         case PeerMessage.ops:
             guard let batch = info[PeerMessage.batch] as? String,
                   let seq = try? await repository.acceptPeerBatch(batch: batch) else { return }
-            session?.transferUserInfo([PeerMessage.kind: PeerMessage.ack, PeerMessage.seq: NSNumber(value: seq.int64Value)])
+            if let session { PeerMessage.deliver([PeerMessage.kind: PeerMessage.ack, PeerMessage.seq: NSNumber(value: seq.int64Value)], on: session) }
             model?.receivedFromPhone()
+        case PeerMessage.fill:
+            // A first-fill part sent as a message (the app was open): the same check as a file.
+            guard let part = info[PeerMessage.part] as? String else { return }
+            await receivedFill(base64: part, cursor: info[PeerMessage.cursor] as? String)
+            return
         case PeerMessage.ack:
             guard let seq = (info[PeerMessage.seq] as? NSNumber)?.int64Value else { return }
             try? await repository.ackPeer(seq: seq)
@@ -127,11 +127,16 @@ final class WatchLink: NSObject {
 
     @MainActor
     private func receivedFill(at url: URL, cursor: String?) async {
+        guard let data = try? Data(contentsOf: url) else { fillAsked = nil; askForFill(from: cursor); return }
+        await receivedFill(base64: data.base64EncodedString(), cursor: cursor)
+    }
+
+    @MainActor
+    private func receivedFill(base64: String, cursor: String?) async {
         guard let repository else { return }
         await model?.ensureLoaded()
-        guard let data = try? Data(contentsOf: url) else { fillAsked = nil; askForFill(from: cursor); return }
         do {
-            let receipt = try await repository.acceptPeerFill(base64: data.base64EncodedString())
+            let receipt = try await repository.acceptPeerFill(base64: base64)
             fillAsked = nil
             model?.receivedFromPhone()
             if let next = receipt.next { askForFill(from: next) }

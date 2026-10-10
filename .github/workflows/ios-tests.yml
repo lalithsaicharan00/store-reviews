@@ -432,6 +432,7 @@ jobs:
   #                  Watch UI tests (WATCH_TESTS below, or the classes named after "[watch-tests:" up to "]")
   #   [watch-shots]  that, plus WatchScreenshotTests on 46 mm and 42 mm, exported as PNGs to ci-results/watch/shots
   #   [watch-perf]   the Watch speed runs (Tools/perf/measure_watch_perf.sh)
+  #   [watch-pair]   end to end on a paired iPhone and Watch simulator (Tools/ci/watch_pair.sh; also with [watch-ci])
   # Results: git fetch origin ci-results && git show origin/ci-results:watch/latest.md
   watch:
     if: >-
@@ -439,7 +440,8 @@ jobs:
       contains(github.event.head_commit.message, '[watch-build]') ||
       contains(github.event.head_commit.message, '[watch-ci]') ||
       contains(github.event.head_commit.message, '[watch-shots]') ||
-      contains(github.event.head_commit.message, '[watch-perf]'))
+      contains(github.event.head_commit.message, '[watch-perf]') ||
+      contains(github.event.head_commit.message, '[watch-pair]'))
     concurrency:
       group: watch-job-${{ github.ref }}
       cancel-in-progress: false
@@ -463,6 +465,7 @@ jobs:
           print("WATCH_TESTS=" + (tests.group(1).strip() if tests else ("WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests,WatchRoutineTests,WatchPlusTests,WatchLogManuallyTests" if ci else "none")))
           print("WATCH_SHOTS=" + ("1" if shots else "0"))
           print("WATCH_PERF=" + ("1" if "[watch-perf]" in m else "0"))
+          print("WATCH_PAIR=" + ("1" if ("[watch-pair]" in m or ci) else "0"))
           PY
           cat "$GITHUB_ENV"
 
@@ -574,6 +577,13 @@ jobs:
         working-directory: iOS
         run: Tools/perf/measure_watch_perf.sh "$WATCH46" watch-perf
 
+      - name: Paired iPhone and Watch simulators, end to end
+        id: pair
+        if: ${{ !cancelled() && env.WATCH_PAIR == '1' && steps.iphone.outcome == 'success' }}
+        timeout-minutes: 20
+        working-directory: iOS
+        run: Tools/ci/watch_pair.sh watch-pair
+
       - name: Write the Watch summary
         if: always()
         run: |
@@ -589,6 +599,7 @@ jobs:
             echo "- Watch UI tests ($WATCH_TESTS): ${{ steps.tests.outcome }}"
             echo "- Screenshots: ${{ steps.shots.outcome }}"
             echo "- Speed: ${{ steps.perf.outcome }}"
+            echo "- Paired simulators: ${{ steps.pair.outcome }}"
             if [ -f iOS/embedded.txt ]; then echo; echo "Embedded in the iPhone app: $(cat iOS/embedded.txt | tr '\n' ' ')"; fi
             for log in iOS/watch-build.log iOS/iphone-build.log; do
               if [ -f "$log" ] && ! grep -q "BUILD SUCCEEDED" "$log"; then
@@ -620,6 +631,7 @@ jobs:
               echo '```'
             fi
             if [ -f iOS/watch-perf/perf-summary.md ]; then echo; echo "## Speed"; echo; cat iOS/watch-perf/perf-summary.md; fi
+            if [ -f iOS/watch-pair/pair.md ]; then echo; echo "## Paired simulators"; echo; cat iOS/watch-pair/pair.md; fi
           } > watch-summary.md
           cat watch-summary.md
           cat watch-summary.md >> "$GITHUB_STEP_SUMMARY"
@@ -661,5 +673,6 @@ jobs:
             iOS/watch-sim.log
             iOS/shots
             iOS/watch-perf
+            iOS/watch-pair
             iOS/WatchResults.xcresult
           retention-days: 7

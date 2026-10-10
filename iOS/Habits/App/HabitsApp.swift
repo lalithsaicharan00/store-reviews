@@ -203,6 +203,7 @@ struct HabitsApp: App {
                 }
                 #if DEBUG
                 PerfDriver.startIfAsked(store: model.store)
+                PairDriver.startIfAsked(store: model.store)
                 #endif
                 model.scheduleRefresh()
                 await model.dailySnapshot()

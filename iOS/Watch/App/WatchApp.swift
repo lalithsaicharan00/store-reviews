@@ -25,6 +25,9 @@ struct OftenEnoughWatchApp: App {
                     await model.ensureLoaded()
                     LaunchLog.took("watch: Today usable", since: started)
                     WatchPerf.startIfAsked(model: model, navigation: navigation)
+                    #if DEBUG
+                    WatchPairDriver.startIfAsked(model: model, navigation: navigation)
+                    #endif
                 }
                 .onOpenURL { navigation.open($0, model: model) }
                 .onChange(of: model.plus.access, initial: true) { model.plusChanged() }

@@ -60,10 +60,10 @@ final class PhoneWatchLink: NSObject {
         inFlight = seq
         inFlightSince = .now
         let message: [String: Any] = [PeerMessage.kind: PeerMessage.ops, PeerMessage.batch: batch]
-        if session.isComplicationEnabled && session.remainingComplicationUserInfoTransfers > 0 {
+        if !session.isReachable && session.isComplicationEnabled && session.remainingComplicationUserInfoTransfers > 0 {
             session.transferCurrentComplicationUserInfo(message)
         } else {
-            session.transferUserInfo(message)
+            PeerMessage.deliver(message, on: session)
         }
     }
 
@@ -84,12 +84,17 @@ final class PhoneWatchLink: NSObject {
         ])
     }
 
-    /// A first-fill part from `cursor`, as a checked file.
+    /// A first-fill part from `cursor`, as a checked file: a message while the Watch app is open and the part is small,
+    /// otherwise a file transfer.
     private func sendFill(from cursor: String) async {
         guard let session else { return }
         try? await repository.peerStart()
-        guard let part = try? await repository.peerFillPart(cursor: cursor.isEmpty ? nil : cursor, maxRecords: 5_000),
-              let data = Data(base64Encoded: part.base64) else { return }
+        guard let part = try? await repository.peerFillPart(cursor: cursor.isEmpty ? nil : cursor, maxRecords: 5_000) else { return }
+        if session.isReachable && part.base64.utf8.count <= PeerMessage.largestMessagePart {
+            PeerMessage.deliver([PeerMessage.kind: PeerMessage.fill, PeerMessage.cursor: cursor, PeerMessage.part: part.base64], on: session)
+            return
+        }
+        guard let data = Data(base64Encoded: part.base64) else { return }
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("watch-fill-\(UUID().uuidString).zip")
         guard (try? data.write(to: url, options: .atomic)) != nil else { return }
         session.transferFile(url, metadata: [PeerMessage.kind: "fill", PeerMessage.cursor: cursor])
@@ -97,7 +102,7 @@ final class PhoneWatchLink: NSObject {
 
     /// The iPhone's data was replaced (a restore): the Watch fills again.
     func dataReplaced() {
-        session?.transferUserInfo([PeerMessage.kind: PeerMessage.refill])
+        if let session { PeerMessage.deliver([PeerMessage.kind: PeerMessage.refill], on: session) }
     }
 
     // MARK: Receiving
@@ -115,7 +120,7 @@ final class PhoneWatchLink: NSObject {
         case PeerMessage.ops:
             guard let batch = info[PeerMessage.batch] as? String,
                   let seq = try? await repository.acceptPeerBatch(batch: batch) else { return }
-            session?.transferUserInfo([PeerMessage.kind: PeerMessage.ack, PeerMessage.seq: NSNumber(value: seq.int64Value)])
+            if let session { PeerMessage.deliver([PeerMessage.kind: PeerMessage.ack, PeerMessage.seq: NSNumber(value: seq.int64Value)], on: session) }
             store.reloadAfterSync()
             onReceived?()
         case PeerMessage.ack:

@@ -50,6 +50,16 @@ final class AppModel {
     let widgets = WidgetPublisher()
     /// The paired Apple Watch's copy of the data (Architecture 12). Nil for test launches and without a database (D8).
     let watch: PhoneWatchLink?
+    /// The paired-simulator check (`-uitest -pair-test`, `Tools/ci/watch_pair.sh`): a test launch that still links to
+    /// its Watch, itself a test launch with its own in-memory database. Simulator Debug builds only, so a test launch on
+    /// a real iPhone can never reach the person's Watch (D8).
+    static let pairTest: Bool = {
+        #if DEBUG && targetEnvironment(simulator)
+        return ProcessInfo.processInfo.arguments.contains("-pair-test")
+        #else
+        return false
+        #endif
+    }()
     /// The ≡ menu and Today's navigation path.
     let menu = MenuModel()
     /// App Lock (≡ → Privacy & Security). Off unless turned on.
@@ -154,7 +164,7 @@ final class AppModel {
         let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil }
             ?? (testLaunch ? "uitest" : "habits")
         sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: Self.resetsDatabase(arguments)) }
-        watch = testLaunch ? nil : opened.map { PhoneWatchLink(repository: $0.repository, store: store) }
+        watch = testLaunch && !Self.pairTest ? nil : opened.map { PhoneWatchLink(repository: $0.repository, store: store) }
         // A test launch starts without a notice another test left ("Signed out on this iPhone", T8).
         if testLaunch { sync?.forgetSignedOutBy() }
         if let opened, let sync {

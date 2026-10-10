@@ -64,6 +64,7 @@
 				"Model/HowOften.swift",
 				"Model/LaunchLog.swift",
 				"Model/Milestones.swift",
+				"Model/PairLog.swift",
 				"Model/PeerMessage.swift",
 				"Model/Persistence.swift",
 				"Model/RecordMapping.swift",
