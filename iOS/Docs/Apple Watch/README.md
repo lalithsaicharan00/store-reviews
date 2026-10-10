@@ -4,6 +4,9 @@ Written by Claude (Claude Code), 10 October 2026. Everything for building the Ap
 roadmap #65) in one folder: the research, the data and sync design, the designs as pictures, and their notes. No
 design-tool links: everything needed is in here.
 
+> **Building it:** [Build Prompt (Delete When Done)](<Build Prompt (Delete When Done).md>) is the hand-off for the cloud
+> session that builds the Watch app (11 Oct 2026); it deletes that file when the work is merged.
+
 ## What the Watch app is
 
 - **Plus only.** Someone without Plus sees one screen that sells it (G); reminders still reach the wrist for free.

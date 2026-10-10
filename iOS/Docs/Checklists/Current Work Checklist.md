@@ -1047,6 +1047,9 @@ and the Add note keyboard coming up by itself.
       Watch's changes on; a timer stopped on both devices logs once (entry ID from the habit and its start). GitHub's
       macOS 26 runner has the watchOS SDKs and Watch simulators, so it builds and tests there; the real Watch is for
       complication transfers, real iCloud, haptics, Double Tap, Always On and the final look (U9).*
+  - [ ] **Build it (11 Oct 2026: handed to a cloud session):** [Build Prompt (Delete When Done)](<../Apple Watch/Build Prompt (Delete When Done).md>),
+    on branch `apple-watch`: every screen, data and sync, complications, notifications, Plus; screenshot review on
+    46 mm and 42 mm; data reliability, sync, storage and speed tests.
   - [ ] Build, in the report's order (§8): the core on watchOS; the app with its own database; WatchConnectivity;
     `CKSyncEngine` on the Watch; complications; timers, notification buttons and the Plus gate.
   - [ ] Tests on GitHub's simulator (§7), then the device checks on the user's iPhone and Watch (U9); add WA1–WA13 to
