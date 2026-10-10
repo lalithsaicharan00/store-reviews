@@ -435,16 +435,16 @@ extension HabitStore {
         return (HabitCopy.number(value), HabitCopy.unitWord(value, unit))
     }
 
-    /// "8 Oct", "26 Sep – 1 Oct", "23–29 Aug"; with the year when it isn't this year. From the month names, with no
-    /// date formatter (as `weekSpan`).
+    /// "Oct 8", "Sep 26 – Oct 1", "Aug 23 – 29" in the phone's own order (as every other date on the page); with the
+    /// year when it isn't this year. Made once per data change, so a formatter here costs nothing while drawing (S8).
     func daySpan(_ range: ClosedRange<LocalDay>, today: LocalDay) -> String {
-        let a = range.lowerBound, b = range.upperBound
-        let months = calendar.shortStandaloneMonthSymbols
-        let year = b.year == today.year ? "" : " \(b.year)"
-        if a == b { return "\(b.day) \(months[b.month - 1])" + year }
-        if a.year != b.year { return "\(a.day) \(months[a.month - 1]) \(a.year) – \(b.day) \(months[b.month - 1]) \(b.year)" }
-        if a.month == b.month { return "\(a.day)–\(b.day) \(months[b.month - 1])" + year }
-        return "\(a.day) \(months[a.month - 1]) – \(b.day) \(months[b.month - 1])" + year
+        let a = range.lowerBound.date(calendar: calendar), b = range.upperBound.date(calendar: calendar)
+        let thisYear = range.lowerBound.year == today.year && range.upperBound.year == today.year
+        if range.lowerBound == range.upperBound {
+            return thisYear ? a.formatted(.dateTime.day().month(.abbreviated)) : a.formatted(.dateTime.day().month(.abbreviated).year())
+        }
+        let style: Date.IntervalFormatStyle = thisYear ? .interval.day().month(.abbreviated) : .interval.day().month(.abbreviated).year()
+        return (a..<b).formatted(style)
     }
 
     /// "26 September to 1 October", for VoiceOver.
