@@ -798,7 +798,7 @@ and the Add note keyboard coming up by itself.
     new device), the upgrade to Plus Family, Plus is yours, Plus has ended and the second-device sheet. Plus is
     `HabitStore.isPlus` (the account's or Debug's) OR an App Store entitlement. Tests: PlusUITests 10/10 (runs
     38067172071, 38068020591, which found and fixed a crash in Plus has ended), Today, Persistence, Onboarding and
-    Backup 42/42 (38063952336), NewFlowUITests (38068020591), the SE (SmallScreenUITests.testPlusSheetAndPageFit,
+    Backup 42/42 (38063952336), NewFlowUITests (38068020591), LongTextUITests 3/3 on the merged head (38084157868), the SE (SmallScreenUITests.testPlusSheetAndPageFit,
     38063954222); speed: choosing a plan 0 ms/s on the page and the sheet (38063956093), habit form typing side by
     side with main 21.2 against 21.9 ms/s over six rounds (38067941263). iPhone check (U9) still to do; the three
     products must be created in App Store Connect before a real sandbox purchase.*
