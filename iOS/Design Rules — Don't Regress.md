@@ -282,17 +282,27 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
   card's top edge). 16 pt all round, 16 between the card's parts, smaller only inside a part (the headline and its
   detail 4; a chart's title and chart 8). Year in Pixels keeps 12 at the sides so twelve month columns fit the iPhone
   SE, and 16 above and below. Pictures: `HabitPageUITests.testPeriodCardSpacing`.
-- **Designed 11 Oct 2026, not built yet: [Habit Progress — Overall Record, Streaks and Milestones](<Docs/Specs/Habit Progress — Overall Record and Streaks/README.md>).**
-  Once built it replaces the next bullet: Current and Best streak move into **Overall record** (a 2 × 2 grid with Goal met
-  and Best day / Best week), and Milestones become **medals for reached milestones plus one Next ring per track**; the
-  row of squares (reached, next and later) is retired. Every milestone value is kept (10 … 5,000 in total) and the in-a-row
-  ladders grow to about 15 each (days, weeks, months, quit; spec §4.1), a reached
-  milestone is never taken away, even when the goal changes, and only the next one is drawn.
-- **Current streak and Best streak open the Milestones card's "In a row" track** (Current Work 23, 8 Oct 2026; the 5 Oct
-  placement research): early in this habit's Progress tab, never in the header over History and Notes; in the goal's own
-  unit (days, weeks, months, or times for a selected-days habit), from the same runs as Today's streak; Show Streaks off
-  hides them and keeps "In total". A quit habit's current and best run stay in its Overall record. No new card.
-  `testStreaksOnTheProgressTab`.
+- **Overall record holds the streaks; Milestones are medals** (built 10 Oct 2026 on `habit-progress-milestones`, from
+  [Habit Progress — Overall Record, Streaks and Milestones](<Docs/Specs/Habit Progress — Overall Record and Streaks/README.md>);
+  Current Work 29 and 30). Overall record: the title and "Since …" on one line, a large headline, then a 2 × 2 `Grid` of
+  boxes: **Current streak** (🔥, tinted with the habit's colour; for a week, month or year goal "This week: 2 of 3" or
+  "This week: done" under it), **Best streak** (with the best run's dates), **Goal met** (X of Y days / weeks · % when
+  Show percentages is on) and **Best day** (amounts, time, several checks a day) or **Best week / month / year** (period
+  goals). A box with no partner takes the whole row; one column at accessibility sizes, from `dynamicTypeSize` (never
+  `ViewThatFits`, S10). Show Streaks off removes the two streak boxes. Quit habits keep their own card. Milestones: the
+  newest medal on a tinted plate ("Latest" once there are others), the rest on a sideways Earlier shelf, newest first,
+  then **one Next row per track with a ring (current ÷ target)**; "See all N ›" pushes the All milestones page, held by
+  the habit page (`navigationDestination(isPresented:)`, U27). **Never draw milestones not yet reached** beyond each
+  track's next one, and never bring back the row of squares (U5: it read as a to-do list of locked items). A medal is
+  reached once (dated by the first run that reached it), kept when the goal changes (in its own unit: "8 weeks in a
+  row" stays after a change to a day goal), and a week's medal is dated the day its goal was met. Goal met and In total
+  count only today's kind of period. Words: "7 days in a row", "7 times in a row", "8 weeks in a row", "10 times in
+  total", "10 weeks of goals met" (never "10 weeks in total"), "10 days within the limit", "30 days since a slip".
+  The newest medal scales in once with a light haptic the first time it's shown (none with Reduce Motion); which medals
+  were shown is written only when a new one appears (S15). Tests: `ProgressCheck` G19 and G21,
+  `HabitPageUITests.testOverallRecordBoxes`, `testMilestonesNoneOneMany`, `testWeeklyGoalProgress`,
+  `testStreaksOnTheProgressTab`, `SmallScreenUITests.testOverallRecordFitsWithoutScrolling`; speed scenario
+  `habit-milestones`. *Supersedes "Current streak and Best streak open the Milestones card's In a row track" (8 Oct).*
 - **Year in Pixels shows every day number, 1 to 31** (Current Work 32), right-aligned 4 pt before its row; the labels
   stop growing at the xLarge text size, where "31" still fits. Pictures: `testYearInPixelsDayNumbers`.
 
