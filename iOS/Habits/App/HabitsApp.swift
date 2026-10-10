@@ -17,6 +17,7 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             root
+                .environment(model.plus)
                 // Switches in the iPhone's own green: the app's ink tint is near-white in dark mode, where an "on"
                 // switch couldn't be told from "off" (the user, on the iPhone, 2 Oct 2026). A Toggle inside a Menu
                 // sets `.toggleStyle(.automatic)` so it stays a menu item with a check (ProgressScreen).
@@ -164,6 +165,7 @@ struct HabitsApp: App {
             .environment(model.scheduler)
             .environment(model.router)
             .tint(.ink)
+            .modifier(PlusEndedNotice(plus: model.plus))
             .onChange(of: model.store.problem) {
                 if model.store.problem == nil && model.store.isStorageReady { model.scheduler.scheduleReconcile(model.store) }
             }
@@ -260,9 +262,19 @@ private struct SignedOutElsewhere: ViewModifier {
                 } onCancel: {
                     backup.askReplace = nil
                 }
-                .presentationDetents([.height(300)])
-                .presentationDragIndicator(.visible)
             }
+    }
+}
+
+/// "Plus has ended" (screens 23 and 24), once, the next time the app opens after the App Store took Plus away. Only this
+/// modifier reads `ended`, so Today never redraws for it.
+private struct PlusEndedNotice: ViewModifier {
+    @Bindable var plus: PlusStore
+
+    func body(content: Content) -> some View {
+        content.sheet(item: Binding(get: { plus.ended }, set: { if $0 == nil { plus.acknowledgeEnded() } })) { reason in
+            PlusEndedView(reason: reason)
+        }
     }
 }
 

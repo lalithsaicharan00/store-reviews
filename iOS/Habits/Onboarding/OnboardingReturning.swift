@@ -223,8 +223,6 @@ struct SignBackInPage: View {
             } onCancel: {
                 other = nil
             }
-            .presentationDetents([.height(300)])
-            .presentationDragIndicator(.visible)
         }
         .alert("No account for this sign-in", isPresented: Binding(get: { unknown != nil }, set: { if !$0 { unknown = nil } })) {
             Button("Try Another Sign-In", role: .cancel) { unknown = nil }

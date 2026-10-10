@@ -13,7 +13,8 @@ struct AllHabitsView: View {
     @State private var pausing: PauseTargets?
     @State private var deleting: [Habit] = []
     @State private var confirmingDelete = false
-    @State private var showPlus = false
+    /// An archived habit brought back past the free limit: the 6th-habit sheet first (Current Work 80).
+    @State private var restoring: Habit?
     @State private var addingTask = false
     /// Speed runs: a habit page opened by `PerfDriver`.
     @State private var perfPage: UUID?
@@ -107,7 +108,7 @@ struct AllHabitsView: View {
         .sheet(isPresented: $addingTask) {
             NavigationStack { HabitForm(type: .task, onSaved: { _ in addingTask = false }) }
         }
-        .sheet(isPresented: $showPlus) { PlusView() }
+        .restoringPastTheLimit($restoring)
         .confirmationDialog(deleteTitle, isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) { store.delete(deleting); finish() }
             if deleting.contains(where: { !$0.archived }) {
@@ -165,7 +166,7 @@ struct AllHabitsView: View {
             Button("Delete", systemImage: "trash") { ask([habit]) }
                 .tint(.red)
             if habit.archived {
-                Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(habit) { showPlus = true } }
+                Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(habit) { restoring = habit } }
                     .tint(.blue)
             } else {
                 Button("Archive", systemImage: "archivebox") { store.archive([habit]) }

@@ -108,18 +108,22 @@ struct NewItemChoices: View {
     /// Called with the new item's ID once it's saved. The caller closes whatever the flow is in.
     let onAdded: (UUID) -> Void
     @Environment(HabitStore.self) private var store
+    /// At 5 of 5: the 6th-habit sheet, for the choice that opened it (Current Work 80).
+    @State private var sixthHabit: Kind?
+    /// Plus bought or room made in that sheet: the choice goes ahead once the sheet has closed.
+    @State private var unlocked: Kind?
+    @State private var pushed: Kind?
 
-    private enum Kind: Hashable { case good, bad }
+    private enum Kind: Hashable, Identifiable {
+        case good, bad
+        var id: Self { self }
+    }
 
     var body: some View {
         List {
             Section {
-                NavigationLink(value: Kind.good) {
-                    ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing.")
-                }
-                NavigationLink(value: Kind.bad) {
-                    ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less.")
-                }
+                habitChoice(.good, ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing."))
+                habitChoice(.bad, ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less."))
                 NavigationLink {
                     BuiltWhenShown { form(.task) }
                 } label: {
@@ -134,15 +138,48 @@ struct NewItemChoices: View {
                 }
             }
         }
-        .navigationDestination(for: Kind.self) { kind in
-            switch kind {
-            case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
-            case .bad: question("What do you want to do?", [.quit, .cutBack])
-            }
+        .navigationDestination(for: Kind.self) { kind in questions(kind) }
+        .navigationDestination(item: $pushed) { kind in questions(kind) }
+        .sheet(item: $sixthHabit, onDismiss: {
+            guard let unlocked else { return }
+            self.unlocked = nil
+            pushed = unlocked
+        }) { kind in
+            SixthHabitSheet(reason: .sixth) { unlocked = kind }
         }
+        .onPerfCommand { action in if action == .openSixthHabit { sixthHabit = .good } }
         .analyticsScreen(.newHabit)
         .navigationTitle("New")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    @ViewBuilder
+    private func questions(_ kind: Kind) -> some View {
+        switch kind {
+        case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
+        case .bad: question("What do you want to do?", [.quit, .cutBack])
+        }
+    }
+
+    /// Build or maintain, Quit or cut down. At 5 of 5 free habits the 6th-habit sheet opens straight away (the user,
+    /// 10 Oct 2026: no "5 of 5" screen first); the row still looks like it leads on.
+    @ViewBuilder
+    private func habitChoice(_ kind: Kind, _ label: ChoiceLabel) -> some View {
+        if store.canAddHabit {
+            NavigationLink(value: kind) { label }
+        } else {
+            Button { sixthHabit = kind } label: {
+                HStack(spacing: 8) {
+                    label
+                    Image(systemName: "chevron.right")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.tertiary)
+                        .accessibilityHidden(true)
+                }
+                .contentShape(Rectangle())
+            }
+            .foregroundStyle(Color.primary)
+        }
     }
 
     /// The second question: the same list style as the first.
@@ -164,13 +201,8 @@ struct NewItemChoices: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    @ViewBuilder
     private func form(_ type: ItemType) -> some View {
-        if type.isHabit && !store.canAddHabit {
-            PlusView()
-        } else {
-            HabitForm(type: type, group: group, onSaved: onAdded)
-        }
+        HabitForm(type: type, group: group, onSaved: onAdded)
     }
 }
 
@@ -262,6 +294,9 @@ struct HabitForm: View {
     @State private var pickedSymbol = false
     @State private var color: HabitColor
     @State private var showAppearance = false
+    /// The 6th-habit sheet, and whether to add the habit once it closes (Plus bought or room made).
+    @State private var sixthHabit = false
+    @State private var addAfterSheet = false
 
     /// How much (amounts and limits: typed, with a unit) or how long (Time it: hours and minutes).
     /// They start as the suggestion for the name, and follow it until the person changes them.
@@ -550,6 +585,16 @@ struct HabitForm: View {
             }
         }
         .interactiveDismissDisabled(hasChanges)
+        // Adding a 6th habit on the free plan (an idea's form, or a form opened before the limit was reached): the
+        // 6th-habit sheet, and the form is kept whatever happens there. Saved once there's Plus or room; ✕ comes back
+        // here (Current Work 80).
+        .sheet(isPresented: $sixthHabit, onDismiss: {
+            guard addAfterSheet else { return }
+            addAfterSheet = false
+            addNew()
+        }) {
+            SixthHabitSheet(reason: .adding(trimmedName)) { addAfterSheet = true }
+        }
         // Icon and colour are quick picks, so they pop up over the form (the user's choice).
         .sheet(isPresented: $showAppearance) {
             NavigationStack {
@@ -1258,6 +1303,14 @@ struct HabitForm: View {
             dismiss()
             return
         }
+        if type.isHabit && !store.canAddHabit {
+            sixthHabit = true
+            return
+        }
+        addNew()
+    }
+
+    private func addNew() {
         let habit = makeHabit(name: trimmedName)
         // Reminders are on by default, so permission is asked when the habit is saved, not before.
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
