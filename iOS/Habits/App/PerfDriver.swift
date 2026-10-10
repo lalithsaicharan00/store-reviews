@@ -38,6 +38,9 @@ enum PerfSwitches {
     /// False opens the habit form without putting the cursor in its name field, to tell the form's own opening from
     /// the keyboard's (2 Oct 2026).
     static var focusFormName = true
+    /// True (scenario `habit-milestones-blank`) pushes an empty page where All milestones goes, the same way: the
+    /// control for its first opening (22.6 s and 50 s in two speed runs, 167 ms and 2 s with the profiler, 10 Oct 2026).
+    static var blankMilestonesPage = false
     /// False (`-perf-no-widget-publish`, a launch argument) leaves out the widgets' publication after each change, to
     /// measure what it costs the screen the person is using (8 Oct 2026, Current Work 49). Always true outside speed runs.
     static let widgetPublication: Bool = {
@@ -421,7 +424,8 @@ enum PerfDriver {
                     send(.habitTab(2)); await pause(0.5)
                 }
             }
-        case "habit-milestones":
+        case "habit-milestones", "habit-milestones-blank":
+            PerfSwitches.blankMilestonesPage = scenario == "habit-milestones-blank"
             // Milestones (spec "Habit Progress", 11 Oct 2026): the Progress tab with a year of medals, its Earlier shelf
             // scrolled sideways, then the All milestones page opened and scrolled.
             await open("All Habits") { send(.openAllHabits) }

@@ -390,6 +390,16 @@ struct AllMilestonesPage: View {
     var body: some View {
         let milestones = model.milestones.shown(streaks: showStreaks)
         let columns = typeSize.isAccessibilitySize ? 2 : 3
+        if PerfSwitches.blankMilestonesPage {
+            ScrollView { Color.clear.frame(height: 2000) }
+                .navigationTitle("Milestones")
+                .navigationBarTitleDisplayMode(.inline)
+        } else {
+            page(milestones, columns: columns)
+        }
+    }
+
+    private func page(_ milestones: HabitMilestones, columns: Int) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: WeekSpacing.card) {
                 ForEach(milestones.next) { next in
