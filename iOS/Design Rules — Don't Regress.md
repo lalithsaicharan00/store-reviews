@@ -573,6 +573,35 @@ Every screen starts from what people want to see there (Rulebook W6).
   part of Plus (D10). "Encrypted" means in transit and at rest (Architecture 06), never end-to-end, except the move with
   a code, which is sealed with the code before it leaves the device (D15).
 
+## Plus screens (built 10 Oct 2026, Current Work 80; iPhone check pending)
+
+From the user's Figma flows (1021:309), built native and calm. Code: `Habits/Plus/` (`PlusStore.swift` StoreKit 2,
+`PlusScreens.swift` every screen), the second-device sheet in `Backup/SignInSheet.swift` (`UseHereQuestion`).
+Tests: `PlusUITests`, `SmallScreenUITests.testPlusSheetAndPageFit`; speed scenario `plus-page`.
+
+- **Plus is `HabitStore.isPlus`: the account's or Debug's (`grantedPlus`) OR the App Store's (`storePlus`, set by
+  `PlusStore`).** Never replace one with the other: the server/account path stays until the iCloud work (D16).
+- **Prices are only ever the App Store's `displayPrice`.** No price is typed in the app; prices that don't load show
+  no price at all (a grey placeholder while loading, "Prices didn't load" and Try Again after).
+- **The 6th habit opens the sheet straight away** (New → Build or maintain / Quit or cut down at 5 of 5; an idea's or
+  any form's Add; Restore on an archived habit). **✕ is the only way out; never a "Not now".** Whatever the person
+  was doing is kept and goes ahead after the sheet closes (`onUnlocked`, then the caller saves in `onDismiss`): never
+  push or save while the sheet is still dismissing.
+- **Make Room:** Archive is the plain action on each row; Delete only in •••, asking first with Archive Instead.
+  It waits for the archive to be saved (`store.flush()`) and goes on only once there's really room (`canAddHabit`):
+  after Plus ended someone can be several habits over.
+- **Once Plus is yours, ≡ › Plus never says Get Plus again.** A family member sees no purchase buttons; leaving the
+  family is done in Settings (no in-app Leave Family). The upgrade page is pushed by a destination `PlusPage` holds
+  (`navigationDestination(isPresented:)`), not its row, which disappears once Plus Family is bought (U27).
+- **No made-up states:** no "Sync through your iCloud: On" row until iCloud sync exists; Restore names what it found
+  or says nothing was found, never "restored". "Plus has ended" shows once, only for a refund (a revoked purchase) or
+  a family that stopped sharing, never because the App Store simply didn't list Plus (signed out of it).
+- **Test launches never see the person's purchases (D8):** `-uitest` uses `PlusTestBackend`, scripted by
+  `-plus-prices-fail`, `-plus-ask-to-buy`, `-plus-purchase-fails`, `-plus-payments-off`, `-plus-owned`,
+  `-plus-owned-family`, `-plus-family-member`, `-plus-ended refund|family`; `-plus-fixture` is the free plan full.
+  `-real-storekit` uses the App Store (the scheme's `OftenEnough.storekit` when run from Xcode).
+- **To see the buy screens in a Debug build on the iPhone, launch with `-free`** (Debug is Plus by default).
+
 ## Sidebar data, tasks and reminders — 30 September 2026
 
 - Backup/export/restore are available to free users. Delete App removes the sandbox; explain free external backup and Offload clearly. Never promise local-only uninstall retention. Restore must preserve current edits and tombstones; validate before changing the destination.
