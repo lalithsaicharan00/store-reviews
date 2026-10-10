@@ -65,7 +65,7 @@ Review of the first pass (10 Oct 2026):
 | Fact | Source |
 |---|---|
 | No account: backed up to the person's iCloud; nothing syncs; iPhone and iPad each keep their own copy | [Free Plan Backups](<../../../../Research/Research Reports/Data, Sync and Accounts/Free Plan Backups — iPhone and iPad, and a Backup That's Never a Day Behind.md>) §1–2 |
-| Free account: backed up to the account (today also to iCloud beside it; that stops, §4), 7 daily copies kept, encrypted in transit and at rest; one device; **never syncs** | Free Plan Backups §1, §4; Backup & Export research §6 |
+| Free account: **syncs, one device** (Current Work 78; [Free Sync](<../Free Sync — One Device at a Time/README.md>)); before that decision, backed up to the account (and to iCloud beside it; that stops, §4); 7 daily copies kept, encrypted in transit and at rest; one device; **never syncs** | Free Plan Backups §1, §4; Backup & Export research §6 |
 | Backed up **as you go** (not once a day), with or without an account | Free Plan Backups §7, recommendation B: **decided by the user, 10 Oct 2026** |
 | Plus: every change syncs to every device; daily snapshots kept 90 days; no iCloud copy (one backup place at a time, §4) | Free Plan Backups §1; Backup & Export research §6 |
 | Free covers one device, phone **or tablet** | Architecture 02 (1 Oct) |
@@ -120,8 +120,8 @@ review scan in §4a:
 2. **Sign In** › and **Create Account** › as two rows. Returning people look for the words *sign in / log in*; a page
    that only says create or register reads to them as "no login option" (§4a). Two plain rows, no filled button: the
    page informs, it doesn't push.
-3. Footer, facts only: *With an account, your habits are backed up to it as you go, and come back when you sign in on
-   a new phone or tablet.* / *A free account is for one device. Syncing several devices is part of Plus.* (People
+3. Footer, facts only: *A free account syncs your habits on one device and brings them back when you sign in on a new
+   device.* / *Plus syncs across your devices.* (People
    assume an account means sync or a guaranteed restore and are angry when it isn't: §4a, and Free Plan Backups §3.)
 
 Gone: the "What an account adds" list, the single Create an Account button and its "the same button signs you in"
@@ -135,8 +135,10 @@ note.
   Apple** (Apple's button) and **Continue with Google** (Google's button).
 - **Sign In:** *Use the same way you signed in before.* Footer: *No account found? You'll be asked before a new one is
   made.* (D3: an unknown sign-in never creates an account silently.)
-- **Create Account:** *Choose how you'll sign in. Already have an account? You'll be signed in to it.* Footer: *Used
-  only to back up your habits. Never sold, never for ads.*
+- **Create Account** (the same sheet from the Account page and from Backup & Export, 4e): *A free account syncs your
+  habits on one device and brings them back when you sign in on a new device.* Footer: *Already have an
+  account? You'll be signed in to it. Never sold, never for ads.* It says what an account gives and nothing about other
+  devices being signed out: that comes only when it happens (screen 7).
 - With Apple and Google both buttons do the same thing underneath; the two titles exist because people come with two
   different intentions and look for their own word.
 - A sheet, not an alert: the person chose to start this, and the branded buttons are custom content.
@@ -147,11 +149,11 @@ note.
 
 - **Signed in with Apple** / *Email hidden by Apple* (or the Google email): which account, first.
 - **Plan: Free ›** or **Plus (lifetime) ›** (Plus is a one-time purchase, Architecture 02; reviewers ask "did I buy a
-  lifetime or yearly…?"). Free: **Last Backup**, footer *Backed up as you go, with the last 7 days kept.* Plus: **Last
-  Synced**, footer *Every change syncs to all your devices.*
-- **Devices**, with how to get on another one right under it: free *A free account is for one device. To use a new
-  phone or tablet instead, sign in on it.*; Plus *To add a device, sign in on it with this account.* (Reviewers ask
-  "how do I connect to my account on another device?")
+  lifetime or yearly…?"). **Last Synced** for both. Footer, free: *Free syncs one device, with a copy of each of the last
+  7 days.* Plus: *Syncs across your devices, with a copy of each day for 90 days.*
+- **Devices**, with how to get on another one right under it: free *To use another phone or tablet instead, sign in on
+  it. This iPhone is then signed out and keeps its habits.*; Plus *To add a device, sign in on it with this account.*
+  (Reviewers ask "how do I connect to my account on another device?")
 - **Sign Out** (*Your habits stay on this iPhone.*) and **Delete Account…** (red text, its own confirmation page as
   built).
 
@@ -159,43 +161,56 @@ note.
 
 <img src="Images/4 Backup & Export — not signed in.png" width="260"> <img src="Images/4b Backup & Export — free account.png" width="260"> <img src="Images/4c Backup & Export — Plus.png" width="260">
 
-**One backup place at a time** (the user, 10 Oct 2026, after asking why a synced or signed-in person would need an
-iCloud or Google Drive copy too):
+**Free accounts sync, one device** (the user, 11 Oct 2026; Current Work 78). Everything about it, server and app, is in
+[Free Sync — One Device at a Time](<../Free Sync — One Device at a Time/README.md>). In short:
 
-- **No account:** the backup lives in **iCloud or Google Drive**, the person's choice.
-- **Signed in (free or Plus):** the backup lives in **the account**. iCloud and Google Drive aren't written to.
-- **Signing out** goes back to iCloud or Google Drive.
-- **The moment someone creates an account or signs in, the app backs up to the account at once**, then stops backing
-  up to iCloud or Google Drive (the user, 10 Oct 2026). Data safety (D4): the iCloud / Google Drive backups stop only
-  after the account copy has been read back and checked; until then both keep going. The old iCloud or Google Drive
-  copy is left where it is, never deleted.
+- **No account:** the backup lives in **iCloud or Google Drive**, the person's choice, backed up as you go.
+- **Free account:** every change syncs to **the account** within seconds; one device is signed in at a time, and signing
+  in on another phone or tablet signs this one out (it keeps its habits).
+- **Plus:** syncs across the person's devices.
+- **One backup place at a time** (the user, 10 Oct 2026; Rulebook D4): signed in, the account only; iCloud / Google
+  Drive stop only once the account has acknowledged everything, and start again the moment the device is signed out;
+  the old iCloud / Google Drive copy is never deleted. Why not both (users show, [`Evidence/scan3.py`](Evidence/scan3.py),
+  every match read): almost nobody who syncs asks for a second copy elsewhere (6 reviews come near it, treating sync as
+  the backup: "It syncs all tasks to one's Google account (Better than a local backup imho)", To Do List, 5★,
+  `12aafc1e-44bf-4f8a-a856-0e78bbefa92e`); what goes wrong is too many copies (duplicates, 13 reviews, 3.15★, e.g. "No
+  matter what I do, duplicates appear on regular basis", Streaks, 2★, `8591937731`).
 
-Why (users show, fresh scan [`Evidence/scan3.py`](Evidence/scan3.py), every match read): almost nobody who syncs asks
-for a second copy elsewhere (6 reviews come near it, and they treat sync as the backup: "It syncs all tasks to one's
-Google account (Better than a local backup imho)", To Do List, 5★, `12aafc1e-44bf-4f8a-a856-0e78bbefa92e`); what goes
-wrong is too many copies: duplicates (13 reviews, 3.15★, e.g. "No matter what I do, duplicates appear on regular
-basis", Streaks, 2★, `8591937731`) and one device overwriting another (2 reviews, 1.5★). Reasoned: with an account,
-its daily copies (7 days free, 90 days Plus) already undo a mistake, and Save a Backup File covers the account itself
-failing; an iCloud file per device would add nothing but more look-alike copies in Restore.
-**Today's build:** Plus already writes no iCloud copy; a free account writes one beside the account copy. That stops.
+**The same list in every state** (the user, 11 Oct 2026: "iCloud, Google Drive and our account are at the same level;
+it's all for storing your data"): **Backed up to** shows **iCloud · Google Drive · Your Account**, in that order, every
+time; the tick shows where the habits are kept. Nothing appears or disappears when someone signs in or upgrades; only
+the tick and the words move.
 
 | Part | No account (4) | Free account (4b) | Plus (4c) |
 |---|---|---|---|
-| **Status** | **Backed up** · *Today 9:14 · iCloud* | **Backed up** · *Just now · Your account* | **Backed up and in sync** · *Just now · Your account · 2 devices* |
-| | **Back Up Now** | **Back Up Now** | **Back Up Now** |
-| **Backed up to** | **iCloud** ✓ / **Google Drive** (one choice, iCloud by default), *Backed up automatically as you go, to the one you choose.* Then **Your Account ›** · *Not signed in*, *Optional. If you sign in, your habits are backed up to your account instead.* | **Your Account ›** · *Free · Signed in with Apple*, *Backed up as you go, with the last 7 days kept. iCloud and Google Drive are used only when you're not signed in.* | **Your Account ›** · *Plus · Keeps your devices in sync*, *Keeps every device in sync, with a copy of each day for 90 days. iCloud and Google Drive are used only when you're not signed in.* |
-| **Move and restore** (same in all) | **Move to Another Device** (*A new phone or tablet*) · **Restore From a Backup** | the same | the same |
-| **Export** (same in all) | Save a Backup File · Export a Spreadsheet (CSV) | the same | the same |
+| **Status** | **Backed up** · *Today 9:14 · iCloud* · **Back Up Now** | **Synced** · *Just now · Your account* · **Sync Now** | **Synced** · *Just now · 2 devices* · **Sync Now** |
+| **iCloud** | ✓ *Your Apple Account* | *Used when you're not signed in* | *Used when you're not signed in* |
+| **Google Drive** | *Connect your Google account* (it needs Google's sign-in first) | *Used when you're not signed in* | *Used when you're not signed in* |
+| **Your Account** | *Create one to sync your habits* › opens the **Create Account** sheet straight over this page (4e); no trip to the Account page | ✓ *Free · Syncs this iPhone* | ✓ *Plus · Syncs across your devices* |
+| **Footer** | *iCloud and Google Drive back up your habits automatically. A free account syncs them on one device and brings them back when you sign in on a new device.* (Backup is the word for iCloud / Google Drive, sync for the account; the user, 11 Oct 2026) | *Free syncs one device. If you sign in on another phone or tablet, this iPhone is signed out and keeps its habits.* | *Every change syncs across your devices.* |
+| **Move and restore** | **Move to Another Device** (*A new phone or tablet*) · **Restore From a Backup** | the same | the same |
+| **Export** | Save a Backup File · Export a Spreadsheet (CSV) | the same | the same |
 | **Last** | **Erase All My Data…** (red, asks first, offers a file first) | — (Delete Account is on the Account page) | — |
 
-- **Order (the user, 10 Oct 2026):** the place the habits are actually backed up comes first, under the status:
-  iCloud / Google Drive without an account (the account row sits quietly below, worded as an option); the account
-  when signed in. The page says where the backup goes and, when signed in, why iCloud and Google Drive aren't there,
-  so nothing seems to vanish without a reason.
-- **Your Account ›** (every version) opens the same Account page as the sidebar's Account row (screens 2, 3, 3b),
-  pushed on top of Backup & Export, so Back returns here.
+- **Without an account, Your Account opens the Create Account sheet over Backup & Export (4e)**, not the Account page
+  (the user, 11 Oct 2026: moving them to another page doesn't make sense).
+
+  <img src="Images/4e Backup & Export — Create Account sheet.png" width="300">
+
+- Signed in, tapping **Your Account** opens the Account page (3, 3b), pushed on top, so Back returns here.
 - Choosing Google Drive asks for Google's permission (Drive access only; it never creates an app account).
 - On the SE these pages scroll; the dashed line in the images is where the SE screen ends.
+
+### 7 · New device (free) and 8 · the old device
+
+<img src="Images/7 New device — signs the other out.png" width="300"> <img src="Images/8 Old device — signed out.png" width="300">
+
+- **7:** signing in to a free account that's signed in on another device shows a sheet first: **Use on This iPad?** ·
+  *Free syncs one device, so your iPhone will be signed out. It keeps its habits.* · **Continue** · **Cancel**.
+- **8:** the old device, next time it opens: **Signed out on this iPhone** · *Your account is now used on your iPad. This
+  iPhone keeps its habits and backs them up to iCloud.* · **OK**. An alert: it's unexpected and needs acknowledging.
+- Plus never shows either: every device stays signed in.
+- How it works on the server and in the app: [Free Sync — One Device at a Time §3](<../Free Sync — One Device at a Time/README.md#3-how-it-works>).
 
 ### 5 · Move to Another Device
 
@@ -262,8 +277,9 @@ is Google's (SDK), and Apple's is Apple's.
 
 ## 7. Still open (for whoever builds it)
 
-1. ~~Backed up as you go~~ **Decided, 10 Oct 2026: yes**, for every free user, with or without an account (Current
-   Work 75; Rulebook D4).
+1. ~~Backed up as you go~~ **Decided, 10 Oct 2026; changed 11 Oct 2026:** "backed up as you go" now applies **only
+   without an account** (iCloud / Google Drive); **a free account syncs, one device** (Current Work 78,
+   [Free Sync — One Device at a Time](<../Free Sync — One Device at a Time/README.md>)).
 2. **Google Drive on iOS** isn't built (Google *sign-in* is, `SignInProviders.swift`; Drive backup isn't). It needs the
    Drive scope (`drive.appdata`, the app's hidden folder) on Google's consent, the Drive API enabled in the Google Cloud
    project, upload, list and restore. Enabling the API or changing the consent screen is done in Google's console by the
@@ -303,12 +319,13 @@ reports linked in §3. Widgets are locked (U28): nothing here touches widget cod
 2. **Switching over on sign-in or account creation:** back up to the account at once; stop iCloud / Google Drive only
    after that copy has been read back and checked (D4); until then both run. Leave the old iCloud / Drive copy where it
    is, never delete it. **On sign-out:** back up to iCloud / Google Drive again at once, then as usual.
-3. **Backed up as you go** (Current Work 75, Free Plan Backups §7, Rulebook D4): on leaving the app when something
-   changed, at least 10 minutes after the last upload; after a widget, notification or Live Activity log (through
-   `SyncService.scheduleSoon`-style background time, D12); and at least once a day. Each device keeps its own copies;
-   nothing syncs on the free plan. Raise the server's per-copy limit to about 12 an hour. Do the iCloud reinstall fix
-   first (Free Plan Backups §2.2 #1, a data-loss bug): never back up an empty database over a copy that has habits, and
-   no backup until the welcome is finished.
+3. **Without an account, backed up as you go** to iCloud / Google Drive (Current Work 75, Free Plan Backups §7,
+   Rulebook D4): on leaving the app when something changed, at least 10 minutes after the last upload; after a widget,
+   notification or Live Activity log; and at least once a day. Do the iCloud reinstall fix first (Free Plan Backups
+   §2.2 #1, a data-loss bug). **A free account syncs, one device**: build it from
+   [Free Sync — One Device at a Time](<../Free Sync — One Device at a Time/README.md>) §4–§5 (the server lets free
+   accounts sync from one signed-in device; signing in elsewhere signs the first out; free accounts stop uploading
+   whole files).
 4. **Restore lists by state:** no account iCloud · Google Drive · Backup File; free Your Account (7 days) · Backup File;
    Plus Your Account (90 days) · Backup File. Plus restores replace the habits on every device and the confirmation says
    so; every restore keeps the 30-day undo (D5).

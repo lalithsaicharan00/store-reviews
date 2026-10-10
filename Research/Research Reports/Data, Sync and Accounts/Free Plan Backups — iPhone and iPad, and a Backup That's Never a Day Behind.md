@@ -5,6 +5,13 @@
 > **Decided by the user, 10 Oct 2026: option B, backed up as you go**, for every free user, as §7 sets out (10-minute
 > gap, a smaller file first, the iCloud reinstall fix before release). The user asked first whether it would cost too
 > much; §5's model answers it.
+>
+> **Changed by the user, 11 Oct 2026 (Current Work 78):** for **free accounts**, sync with one device signed in at a time
+> (this report's option C, with a sign-in rule instead of server-side "one device" merging rules) replaces option B.
+> Cloudflare's prices re-checked that day: R2 charges per upload, not per megabyte, and with the $5 plan's included
+> amounts sync costs about the same as B at 100,000 free users (~$44 against ~$55 a month in year 5), while sending the
+> whole file grows each person's mobile data every year (B: ~157 MB a month in year 5; sync: under 0.1 MB). Option B
+> stays for people **without an account** (iCloud / Google Drive). Plan: [Free Sync — One Device at a Time](<../../../iOS/Docs/Specs/Free Sync — One Device at a Time/README.md>).
 
 **The user's questions (9 Oct):**
 1. How backup works today is confusing: explain it from the reports.

@@ -709,6 +709,8 @@ and the Add note keyboard coming up by itself.
   - [x] Designed 10 Oct 2026 (Figma 950:309, iPhone SE): [Account and Backup Redesign](<../Specs/Account and Backup Redesign/README.md>).
   - [ ] The user's review, and the points to confirm (spec §6: as-you-go backup for free, Google Drive on iOS, the
     transfer service, choosing one of 7 daily copies).
+  - [x] 11 Oct 2026: free accounts now **sync, one device** (item 78), not "backed up as you go"; Backup & Export's
+    list is the same in every state (iCloud · Google Drive · Your Account, the tick shows where).
   - [x] Decided with the user, 10 Oct 2026: **one backup place at a time** (iCloud or Google Drive without an account;
     the account when signed in; the free account's iCloud copy beside the account stops), and **Move to Another Device
     opens the transfer code directly** (no options screen). On creating an account or signing in, back up to the
@@ -727,6 +729,23 @@ and the Add note keyboard coming up by itself.
     copy without an account on iPhone; take Google Drive off iPhone (it's Android's place); the account only once
     signed in (as built).
   - [ ] The user's decision. Until then the branch keeps iCloud on and Google Drive hidden behind its flag.
+
+- [ ] **78. Free accounts sync one device at a time (plan, then build).** Added 11 October 2026, from the user, after
+  checking Cloudflare's prices: instead of uploading the whole backup file ("backed up as you go"), a free account
+  syncs like Plus, but with one active device; signing in on another device moves the habits there. Plus syncs across
+  devices.
+  - [x] One document with everything: what changes on the server and in the app, costs (re-checked with Cloudflare),
+    data safety, tests, rollout. Done 11 Oct 2026: [Free Sync — One Device at a Time](<../Specs/Free Sync — One Device at a Time/README.md>).
+  - [x] Phone + iPad on free? Checked from reviews (device sync is the top reason people pay; almost no complaints that
+    it's paid): **no, free stays one device** (the user, 11 Oct 2026).
+  - [x] Signing in on another device **signs the first one out** (it keeps its habits), said first on the new device and
+    once on the old one; no "signed in but not syncing" state (the user, 11 Oct 2026).
+  - [x] The UI: iCloud, Google Drive and Your Account at the same level on Backup & Export in every state; without an
+    account the account row says what it gives ("Create one to sync your habits", opening Create Account), without
+    pushing; free says it syncs one device, Plus says it syncs across devices. The new device's sheet and the old
+    device's notice (Figma 950:309, screens 4, 4b, 4c, 7, 8; 2, 3, 3b reworded).
+  - [x] Updated the Rulebook (D4), Free Plan Backups (75), the Account and Backup spec (76).
+  - [ ] Build, test on GitHub, iPhone checks.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
