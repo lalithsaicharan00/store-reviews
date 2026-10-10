@@ -247,4 +247,56 @@ class MigrationTest {
         repo.close()
     }
 
+
+    /**
+     * Schema 9 adds iCloud's bookkeeping (Architecture 11 §6–7): each row's CloudKit system fields, and each waiting op's
+     * row and stamp. Every past schema upgrades; changes already waiting (from the server era) keep waiting with their
+     * row named, a delete is marked as one, and an op that can't be read is kept aside, never dropped.
+     */
+    @Test fun version8UpgradesAndWaitingChangesKeepWaiting() = runTest {
+        val connection = createSchema(8)
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 1.0, 2000, 'Europe/London', 3000, NULL, NULL)")
+        connection.execSQL("INSERT INTO sync_meta VALUES ('entry', 'e1', '000000000000003000-00000-n1', NULL, NULL, 0)")
+        connection.execSQL("INSERT INTO local_state VALUES ('sync.account', 'server-account')")
+        val op = """{"id":"op-1","table":"entry","row":"e1","fields":{"deleted_at":3000},"hlc":"000000000000003000-00000-n1","schema":8}"""
+        connection.execSQL("INSERT INTO outbox (op_id, op, problem) VALUES ('op-1', '${op.replace("'", "''")}', NULL)")
+        connection.execSQL("INSERT INTO outbox (op_id, op, problem) VALUES ('op-2', 'not json', NULL)")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        val counts = repo.cloud.counts()
+        assertEquals(1, counts.waitingRows, "the waiting delete still waits, its row named")
+        assertEquals(1, counts.waitingDeletes)
+        assertEquals(1, counts.keptAside, "the unreadable op is kept aside")
+        assertEquals(listOf("entry:e1"), repo.cloud.waitingRows(10))
+        assertEquals(listOf("e1"), repo.loadForRestore().entries.map { it.id })
+        repo.close()
+    }
+
+    @Test fun everyPastVersionUpgradesToICloudBookkeeping() = runTest {
+        for (version in 1 until HabitRepository.SCHEMA_VERSION) {
+            File(path).delete(); File("$path-wal").delete(); File("$path-shm").delete()
+            createSchema(version).close()
+            val repo = HabitRepository.open(path)
+            assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"), "version $version upgrades")
+            repo.cloud.bind("icloud:a")
+            repo.saveSetting("week_start", "2")
+            val batch = repo.cloud.batch(repo.cloud.waitingRows(10))
+            assertEquals(listOf("setting:week_start"), batch.rows.map { it.name }, "version $version sends")
+            repo.cloud.saved(batch.rows.map { CloudSaved(it.name, "tag-1", it.upTo) })
+            assertEquals(0, repo.cloud.counts().waitingRows, "version $version confirms")
+            repo.close()
+        }
+    }
+
+    /** A database that already has a schema 9 column (an upgrade cut off part-way) still opens. */
+    @Test fun version8WithPartOfSchema9StillOpens() = runTest {
+        val connection = createSchema(8)
+        connection.execSQL("ALTER TABLE sync_meta ADD COLUMN ck_system TEXT")
+        connection.execSQL("ALTER TABLE outbox ADD COLUMN table_name TEXT")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
 }

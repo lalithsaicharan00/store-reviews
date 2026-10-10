@@ -19,6 +19,9 @@ internal object SyncCodec {
     const val ENTRY = "entry"
     const val SETTING = "setting"
 
+    /** The tables whose rows are deleted with `deleted_at` (habits and records: what the mass-change brake counts). */
+    val deletable = setOf(HABIT, STEP, REMINDER, ENTRY)
+
     /** Settings that only make sense on this device (one-off local repairs); they never sync. */
     fun isLocalSetting(key: String): Boolean = key == "placement_v1" || key == "placement_v2"
 

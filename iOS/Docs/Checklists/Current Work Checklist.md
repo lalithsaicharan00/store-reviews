@@ -989,6 +989,22 @@ and the Add note keyboard coming up by itself.
     user's 25,000 records a year), `CKSyncEngine` with `SyncRules` (conflicts, deletes), which device is the free
     plan's one syncing device, data safety (iCloud sync isn't a backup: keep the daily file and "never replace with
     less"), what's deleted with the server, and what GitHub's simulator can test.
+  - **The build (the user, 10 Oct 2026, to a cloud session):** "build iCloud sync with CloudKit as designed in
+    Architecture 11, following the Rulebook. Data must never be lost: that comes first. Test against the fake iCloud on
+    GitHub, fix any real bugs, and merge into main once tests pass." Steps 1–4 of Architecture 11 §21, on branch
+    `claude/lucid-johnson-egrjup`:
+    - [ ] 81.1 Groundwork: `CloudTransport` (the real `CKSyncEngine` behind it, `FakeCloud` for tests),
+      `SyncRules.mergeRecord`, the schema 9 migration (`sync_meta.ck_system`), `CloudSync` (§5–9).
+    - [ ] 81.2 Accounts, zones and the free plan's one syncing device (§10–12).
+    - [ ] 81.3 Safety: the fresh-install wait, the mass-change brake, the dated backup files, the clone check, sending
+      after changes made outside the app (§13, §15).
+    - [ ] 81.4 The iCloud page (replacing Account and the sync parts of Backup & Export), the ≡ row "iCloud & Backup",
+      and removing the server code of §17.
+    - [ ] 81.5 Tests: `FakeCloud` with every error and event, the property test, the extreme account, `jvmTest`
+      (`mergeRecord`), the migration from every past schema, UI tests of every iCloud page state and the SE, speed
+      scenarios; all on GitHub.
+    - [ ] 81.6 Rulebook D3, D4, D9, D12, D14, D15 rewritten for iCloud; "replaced by 11" notes in Architecture 01, 02,
+      04, 05, 06; What's Built; Design Rules' iCloud page; merged into `main`; branches marked safe to delete.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."

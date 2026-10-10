@@ -110,6 +110,33 @@ interface HabitDao {
     @Query("UPDATE outbox SET problem = :problem WHERE op_id = :id") suspend fun markOutboxProblem(id: String, problem: String)
     @Query("DELETE FROM outbox") suspend fun clearOutbox()
 
+    // iCloud (Architecture 11 §6–8): the CloudKit system fields kept with each row, and the outbox by row.
+    @Query("UPDATE sync_meta SET ck_system = :system WHERE table_name = :table AND row_id = :row")
+    suspend fun setCloudSystem(table: String, row: String, system: String?)
+    @Query("UPDATE sync_meta SET ck_system = NULL WHERE ck_system IS NOT NULL") suspend fun clearCloudSystem()
+    /** The oldest waiting ops' rows, in order (a row with several ops is named several times; the caller keeps each
+     *  once). By `seq` alone, so it reads only the head of the outbox however long it is (an extreme first upload). */
+    @Query("SELECT table_name || ':' || row_id FROM outbox WHERE problem IS NULL AND table_name IS NOT NULL ORDER BY seq LIMIT :limit")
+    suspend fun oldestWaiting(limit: Int): List<String>
+    @Query("SELECT count(*) FROM (SELECT 1 FROM outbox WHERE problem IS NULL AND table_name IS NOT NULL GROUP BY table_name, row_id)")
+    suspend fun waitingRowCount(): Int
+    @Query("SELECT count(*) FROM (SELECT 1 FROM outbox WHERE problem IS NULL AND deletes = :kind GROUP BY table_name, row_id)")
+    suspend fun waitingDeleteCount(kind: Int): Int
+    /** Removes the ops a confirmed save contained: the row's ops queued before its record was built (`seq` ≤ `upTo`). */
+    @Query("DELETE FROM outbox WHERE table_name = :table AND row_id = :row AND seq <= :upTo AND problem IS NULL")
+    suspend fun deleteConfirmed(table: String, row: String, upTo: Long)
+    @Query("SELECT coalesce(max(seq), 0) FROM outbox") suspend fun lastOutboxSeq(): Long
+    @Query("UPDATE outbox SET problem = :problem WHERE table_name = :table AND row_id = :row AND problem IS NULL")
+    suspend fun markRowProblem(table: String, row: String, problem: String)
+    @Query("SELECT table_name || ':' || row_id || ' ' || problem FROM outbox WHERE problem IS NOT NULL GROUP BY table_name, row_id LIMIT 50")
+    suspend fun keptAsideRows(): List<String>
+    @Query("SELECT (SELECT count(*) FROM habit WHERE deleted_at IS NULL) + (SELECT count(*) FROM entry WHERE deleted_at IS NULL) + (SELECT count(*) FROM step WHERE deleted_at IS NULL) + (SELECT count(*) FROM reminder WHERE deleted_at IS NULL)")
+    suspend fun liveRecordCount(): Int
+    @Query("SELECT count(*) FROM habit WHERE deleted_at IS NULL AND kind != 'task'") suspend fun liveHabitCount(): Int
+    @Query("SELECT * FROM local_state WHERE `key` LIKE :prefix || '%' ORDER BY `key`") suspend fun statesWithPrefix(prefix: String): List<LocalStateRecord>
+    @Query("DELETE FROM local_state WHERE `key` = :key") suspend fun removeState(key: String)
+    @Query("DELETE FROM local_state WHERE `key` LIKE :prefix || '%'") suspend fun removeStatesWithPrefix(prefix: String)
+
     /** Runs [block] in one transaction with a [SyncWriter]: every change and its op commit together, or not at all. */
     @Transaction
     suspend fun <T> synced(now: Long, block: suspend (SyncWriter) -> T): T {

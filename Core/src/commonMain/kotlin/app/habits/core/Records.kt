@@ -111,17 +111,25 @@ data class Snapshot(
 // Sync (schema 6). Local bookkeeping only: none of these rows are synced themselves.
 
 /**
- * A change waiting for the server (Architecture 05 §5). Written in the same transaction as the change itself and
- * removed only when the server acknowledges it, so a crash or a dead network never loses one. `problem` is set when
- * the server can never accept the op; it's then kept aside instead of being retried forever.
+ * A change that hasn't reached iCloud yet (Architecture 05 §5, 11 §7). Written in the same transaction as the change
+ * itself and removed only when CloudKit confirms a saved record that contains it, so a crash, a full iCloud or a dead
+ * network never loses one. `problem` is set when the change can never be accepted (a record too large, refused); it's
+ * then kept aside instead of being retried forever, and the iCloud page says so.
  */
-@Entity(tableName = "outbox", indices = [Index("op_id", unique = true)])
+@Entity(tableName = "outbox", indices = [Index("op_id", unique = true), Index("table_name", "row_id")])
 data class OutboxRecord(
     @PrimaryKey(autoGenerate = true) val seq: Long = 0,
     @ColumnInfo(name = "op_id") val opId: String,
-    /** The op as JSON, exactly as it will be sent. */
+    /** The op as JSON. */
     val op: String,
     val problem: String? = null,
+    /** Schema 9: the row the op changes and its stamp, so a confirmed save removes exactly the ops it contained. */
+    @ColumnInfo(name = "table_name") val tableName: String? = null,
+    @ColumnInfo(name = "row_id") val rowId: String? = null,
+    val hlc: String? = null,
+    /** Schema 9: 0 when the op doesn't delete its row, 1 when it does (`deleted_at` set), 2 when it does as part of one
+     *  explicit action the person confirmed (a restore that replaces). For the mass-change brake (11 §13.2). */
+    @ColumnInfo(defaultValue = "0") val deletes: Int = 0,
 )
 
 /**
@@ -140,9 +148,11 @@ data class SyncMetaRecord(
     val extra: String?,
     /** True when the row can't be built yet (a change arrived before the record was complete); all fields are in `extra`. */
     val pending: Boolean,
+    /** Schema 9: the row's CloudKit record system fields (`encodeSystemFields`, base64), so a save isn't a conflict. */
+    @ColumnInfo(name = "ck_system") val ckSystem: String? = null,
 )
 
-/** This device's sync state: its clock, its node ID, the account it syncs with, and the server cursor. */
+/** This device's sync state: its clock, its node ID, the account it syncs with, and iCloud's engine state (`cloud.*`). */
 @Entity(tableName = "local_state")
 data class LocalStateRecord(
     @PrimaryKey val key: String,

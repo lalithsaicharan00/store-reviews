@@ -3,6 +3,7 @@ package app.habits.core
 import androidx.room3.migration.Migration
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.execSQL
+import app.habits.sync.SyncRules
 
 /**
  * Every schema change is a migration that only adds, never drops or renames (Architecture 08 §3).
@@ -78,6 +79,39 @@ internal object Migrations {
     val v7ToV8 = object : Migration(7, 8) {
         override suspend fun migrate(connection: SQLiteConnection) {
             if (!connection.hasColumn("habit", "reminder_text")) connection.execSQL("ALTER TABLE habit ADD COLUMN reminder_text TEXT")
+        }
+    }
+
+    /**
+     * Schema 9: iCloud (Architecture 11 §6–7). Each row keeps its CloudKit record's system fields, and each waiting op
+     * names its row and stamp, so a confirmed save removes exactly what it contained. Only adds; each column only if it's
+     * missing. Ops already waiting get their row and stamp from their own JSON; one that can't be read is kept aside,
+     * never deleted.
+     */
+    val v8ToV9 = object : Migration(8, 9) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            if (!connection.hasColumn("sync_meta", "ck_system")) connection.execSQL("ALTER TABLE sync_meta ADD COLUMN ck_system TEXT")
+            if (!connection.hasColumn("outbox", "table_name")) connection.execSQL("ALTER TABLE outbox ADD COLUMN table_name TEXT")
+            if (!connection.hasColumn("outbox", "row_id")) connection.execSQL("ALTER TABLE outbox ADD COLUMN row_id TEXT")
+            if (!connection.hasColumn("outbox", "hlc")) connection.execSQL("ALTER TABLE outbox ADD COLUMN hlc TEXT")
+            if (!connection.hasColumn("outbox", "deletes")) connection.execSQL("ALTER TABLE outbox ADD COLUMN deletes INTEGER NOT NULL DEFAULT 0")
+            connection.execSQL("CREATE INDEX IF NOT EXISTS `index_outbox_table_name_row_id` ON `outbox` (`table_name`, `row_id`)")
+            val waiting = mutableListOf<Pair<Long, String>>()
+            connection.prepare("SELECT seq, op FROM outbox WHERE table_name IS NULL").use { statement ->
+                while (statement.step()) waiting += statement.getLong(0) to statement.getText(1)
+            }
+            for ((seq, text) in waiting) {
+                val op = SyncRules.decodeOp(text)
+                if (op == null) {
+                    connection.prepare("UPDATE outbox SET problem = 'unreadable' WHERE seq = ?").use { it.bindLong(1, seq); it.step() }
+                    continue
+                }
+                connection.prepare("UPDATE outbox SET table_name = ?, row_id = ?, hlc = ?, deletes = ? WHERE seq = ?").use {
+                    it.bindText(1, op.table); it.bindText(2, op.row); it.bindText(3, op.hlc)
+                    it.bindLong(4, if (SyncWriter.deletes(op)) 1L else 0L); it.bindLong(5, seq)
+                    it.step()
+                }
+            }
         }
     }
 

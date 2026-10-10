@@ -9,6 +9,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
@@ -25,6 +26,9 @@ import kotlinx.serialization.json.jsonPrimitive
 class SyncWriter internal constructor(private val dao: HabitDao, private val now: Long) {
     private lateinit var clock: HlcClock
     private var sending = false
+    /** Deletes in this transaction are one explicit action the person confirmed (a restore that replaces): the
+     *  mass-change brake lets them through (Architecture 11 §13.2). */
+    internal var explicitDeletes = false
 
     internal suspend fun begin() {
         // One query for the four, not four: every write on the device starts here (speed run, 1 Oct).
@@ -48,7 +52,12 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         if (changed.isEmpty()) return
         val op = Op(newOpId(), table, row, changed, clock.now(now).encode(), HabitRepository.SCHEMA_VERSION)
         apply(op)
-        if (sending) dao.insertOutbox(OutboxRecord(opId = op.id, op = SyncRules.encodeOp(op)))
+        if (sending) queue(op)
+    }
+
+    private suspend fun queue(op: Op) {
+        val deletes = when { !deletes(op) -> 0; explicitDeletes -> 2; else -> 1 }
+        dao.insertOutbox(OutboxRecord(opId = op.id, op = SyncRules.encodeOp(op), tableName = op.table, rowId = op.row, hlc = op.hlc, deletes = deletes))
     }
 
     suspend fun exists(table: String, row: String): Boolean = dao.syncMeta(table, row) != null
@@ -60,16 +69,54 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         apply(op)
     }
 
+    /**
+     * A whole record from iCloud (Architecture 11 §8): merged field by field with [SyncRules.mergeRecord], the same as
+     * receiving the ops it was made from. Its CloudKit system fields are kept with the row (`system`), so this device's
+     * next save of the row isn't taken for a conflict. Returns whether the row changed. Never touches the outbox: a
+     * change made here and not yet in iCloud stays queued, and goes up merged.
+     */
+    suspend fun receiveRecord(table: String, row: String, record: SyncRecord, system: String?): Boolean {
+        record.clocks.values.maxOrNull()?.let(Hlc::parse)?.let { clock.observe(it, now) }
+        if (table == SyncCodec.SETTING && SyncCodec.isLocalSetting(row)) return false
+        val meta = dao.syncMeta(table, row)
+        val current = current(meta, table, row)
+        val merged = SyncRules.mergeRecord(current, record)
+        val keep = system ?: meta?.ckSystem
+        if (merged == current) {
+            if (meta != null && system != null && system != meta.ckSystem) dao.setCloudSystem(table, row, system)
+            return false
+        }
+        store(table, row, merged, keep)
+        return true
+    }
+
+    /** What merging [record] would do, without changing anything: whether it would delete a row that's live here. */
+    internal suspend fun wouldDelete(table: String, row: String, record: SyncRecord): Boolean {
+        if (table !in SyncCodec.deletable) return false
+        val current = current(dao.syncMeta(table, row), table, row) ?: return false
+        if (current.isDeleted) return false
+        return SyncRules.mergeRecord(current, record).isDeleted
+    }
+
     // MARK: Accounts
+
+    /** A new node ID for this device (a clone restored from another iPhone's backup, Architecture 11 §13.4). */
+    internal suspend fun renewNode() {
+        val node = newNode()
+        dao.setState(LocalStateRecord(NODE, node))
+        clock = HlcClock(node, clock.last)
+    }
 
     /**
      * Starts syncing with [accountId]. Signing in to the account this device synced with before resumes where it
      * stopped (its unsent changes are still in the outbox). A different account starts from scratch: everything
      * on this device is queued for upload, so nothing is lost or replaced by an empty account (05 §5, 01 §3.4).
      */
-    suspend fun bind(accountId: String) {
-        if (dao.state(ACCOUNT) == accountId) return
+    suspend fun bind(accountId: String, force: Boolean = false) {
+        if (!force && dao.state(ACCOUNT) == accountId) return
         dao.setState(LocalStateRecord(ACCOUNT, accountId))
+        // Records in another account's iCloud (or a removed zone) aren't this account's: every row is saved as new.
+        dao.clearCloudSystem()
         dao.setState(LocalStateRecord(CURSOR, "0"))
         // Everything comes down the first time, this device's own earlier changes included: after a reinstall the same
         // iPhone keeps its device ID (the Keychain survives), and the server skips a device's own ops (Current Work 72).
@@ -81,7 +128,7 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
             // One op per stamp, so every field keeps the stamp it really has.
             for ((hlc, names) in record.clocks.entries.groupBy({ it.value }, { it.key })) {
                 val op = Op(newOpId(), meta.tableName, meta.rowId, names.associateWith { record.fields.getValue(it) }, hlc, HabitRepository.SCHEMA_VERSION)
-                dao.insertOutbox(OutboxRecord(opId = op.id, op = SyncRules.encodeOp(op)))
+                queue(op)
             }
         }
     }
@@ -90,15 +137,18 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
 
     private suspend fun apply(op: Op) {
         if (op.table == SyncCodec.SETTING && SyncCodec.isLocalSetting(op.row)) return
-        val current = current(op.table, op.row)
+        val meta = dao.syncMeta(op.table, op.row)
+        val current = current(meta, op.table, op.row)
         val merged = SyncRules.merge(current, op)
         if (merged == current) return
-        store(op.table, op.row, merged)
+        store(op.table, op.row, merged, meta?.ckSystem)
     }
 
     /** The row as sync sees it: its columns plus kept-aside fields, each with its stamp. Null if sync has never seen it. */
-    internal suspend fun current(table: String, row: String): SyncRecord? {
-        val meta = dao.syncMeta(table, row) ?: return null
+    internal suspend fun current(table: String, row: String): SyncRecord? = current(dao.syncMeta(table, row), table, row)
+
+    private suspend fun current(meta: SyncMetaRecord?, table: String, row: String): SyncRecord? {
+        if (meta == null) return null
         val extra = meta.extra?.let(::decodeObject) ?: emptyMap()
         val columns = if (meta.pending) emptyMap() else columns(table, row) ?: emptyMap()
         val fields = columns + extra
@@ -116,7 +166,7 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
     }
 
     /** Writes the merged record: into its table's row when it's complete, and its stamps and extra fields into sync_meta. */
-    private suspend fun store(table: String, row: String, record: SyncRecord) {
+    private suspend fun store(table: String, row: String, record: SyncRecord, ckSystem: String?) {
         val known = SyncCodec.knownFields[table] ?: emptySet()
         val built: Boolean = when (table) {
             SyncCodec.HABIT -> SyncCodec.decodeHabit(row, record.fields)?.let { dao.upsertHabit(it) } != null
@@ -142,6 +192,7 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
                 clocks = exceptions.takeIf { it.isNotEmpty() }?.let { JsonObject(it.mapValues { e -> JsonPrimitive(e.value) }).toString() },
                 extra = extra.takeIf { it.isNotEmpty() }?.let { JsonObject(it).toString() },
                 pending = !built && table != SyncCodec.SETTING,
+                ckSystem = ckSystem,
             ),
         )
     }
@@ -174,6 +225,9 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
 
         @OptIn(ExperimentalUuidApi::class)
         fun newOpId(): String = Uuid.random().toString()
+
+        /** The op deletes its row: it sets `deleted_at` (an undo of a delete never does: "not deleted" can't win). */
+        fun deletes(op: Op): Boolean = op.fields[SyncRules.DELETED_AT].let { it != null && it !is JsonNull }
 
         @OptIn(ExperimentalUuidApi::class)
         fun newNode(): String = Uuid.random().toHexString().take(16)
