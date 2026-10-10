@@ -842,22 +842,31 @@ and the Add note keyboard coming up by itself.
     (the user, 11 Oct 2026: document everything so another agent can build it; keep every milestone value up to 5,000;
     goal changes never take reached milestones away). Designed, approved and documented 11 Oct. **Started 10 Oct 2026
     by Claude on branch `habit-progress-milestones`** (from `app-lock-privacy-security`; W3). The user's build points:
-    - [ ] Overall record (§2, §5.1): title line + Since, headline, 2 × 2 boxes (Current streak 🔥 tinted, Best streak
+    - [x] Overall record (§2, §5.1): title line + Since, headline, 2 × 2 boxes (Current streak 🔥 tinted, Best streak
       with its dates, Goal met X of Y · %, Best day); Best week / month / year and "This week: 2 of 3" for period goals;
       box 4 absent for check-once, checklist and limits (Goal met spans the row); Show Streaks off drops the streak
       boxes; quit keeps its own card; one column at accessibility sizes; fully visible on the SE.
-    - [ ] Milestones (§3): medals (habit-colour gradient, inner ring, white number) for reached only; the latest on a
+    - [x] Milestones (§3): medals (habit-colour gradient, inner ring, white number) for reached only; the latest on a
       tinted plate; Earlier shelf newest first; one Next row per track with a ring (current ÷ target); See all N › to a
       new All milestones page; later milestones never drawn; the squares retired; first-seen scale-in + light haptic
       (none with Reduce Motion); VoiceOver labels (§3.3); light and dark.
-    - [ ] Ladders (§4): every existing value kept, the new in-a-row, quit and In total values added; Today's after-tap
+    - [x] Ladders (§4): every existing value kept, the new in-a-row, quit and In total values added; Today's after-tap
       line uses the same ladders.
-    - [ ] Edge cases (§6), especially E1 (goal eras keep their medals), E2 (Goal met and In total only in today's
+    - [x] Edge cases (§6), especially E1 (goal eras keep their medals), E2 (Goal met and In total only in today's
       unit), E3 (a period's date is the day its goal was met), E7 (reached once).
-    - [ ] Wording per type and goal period (§5.3).
-    - [ ] Tests on GitHub: check_rules; ProgressCheck G19 updated and E1, E2, E3, E7, month/year totals, ring, Best week,
-      "This week: 2 of 3"; UI tests (the two old ones updated, new ones for the boxes, Show Streaks off, See all and
-      back, a weekly goal, none / one / many reached); PerfDriver scenario and a speed run; SmallScreenUITests on the SE.
+    - [x] Wording per type and goal period (§5.3).
+    - [x] Tests on GitHub (10 Oct 2026): check_rules; ProgressCheck G19 updated and G21 (E1, E2, E3, E7, month and
+      year totals, the ring, Best week, "This week: 2 of 3") and the old and new UI tests in ProgressUITests
+      (**38039010621**, **38046477483** after the dates followed the phone's language); HabitPageUITests and
+      WeekCardsUITests 26/26 with the light and dark pictures (**38042248151**); SmallScreenUITests on the SE 11/11
+      (**38042249924**); speed scenario `habit-milestones` (**38039014037**, **38042251659**, **38044515941**,
+      **38046476058**: the shelf and All milestones scroll at 0 ms/s of hitches; All milestones' first opening read
+      50 s and 22.6 s in two launches with the main thread asleep in the profile, and 150–370 ms in the seven launches
+      since, as a blank page pushed the same way). Merged into `main` 10 Oct 2026 (the user's one-time decision, then
+      each fix once its run passed).
+    - [x] **The SE and "What the squares mean"** (the user, 10 Oct 2026): until the key is folded once, it pushes Overall
+      record down and its last row is below the SE's screen; that's fine ("they will eventually fold it"). With the
+      key folded the card fits (SmallScreenUITests checks that).
     - [ ] iPhone check (U9), light and dark mode: for the user.
   - [x] **11 Oct 2026, from the user:** more in-a-row milestones for every goal period (days, weeks, months; "not 50
     or 60, maybe 10, 15 if it makes sense"). Decided in the spec §4: about 15 per ladder, adding values only.
