@@ -856,7 +856,7 @@ and the Add note keyboard coming up by itself.
       (**38042249924**); speed scenario `habit-milestones` (**38039014037**, **38042251659**, **38044515941**,
       **38046476058**: the shelf and All milestones scroll at 0 ms/s of hitches; All milestones' first opening read
       50 s and 22.6 s in two launches with the main thread asleep in the profile, and 150–370 ms in the seven launches
-      since, as a blank page pushed the same way). Merged into `main` 10 Oct 2026 (the user's one-time decision, then
+      since, as a blank page pushed the same way). Side by side with `main` before the redesign, one job, four rounds (**38048447170**): Progress scrolling 8.3 ms/s against 9.9 before, switching tabs 37.7 against 41.6; History (not changed) 7.7 against 2.9 with the rounds disagreeing (3.0 against 7.1 in one): nothing slower by the S2 rule. Merged into `main` 10 Oct 2026 (the user's one-time decision, then
       each fix once its run passed).
     - [x] **The SE and "What the squares mean"** (the user, 10 Oct 2026): until the key is folded once, it pushes Overall
       record down and its last row is below the SE's screen; that's fine ("they will eventually fold it"). With the
