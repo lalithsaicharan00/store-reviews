@@ -31,7 +31,7 @@ enum HabitTab: String, CaseIterable, Identifiable, Hashable {
 
     private(set) var history: [HistoryMonth] = []
     private(set) var record: HabitOverall?
-    private(set) var tracks: [MilestoneTrack] = []
+    private(set) var milestones = HabitMilestones.none
     private(set) var notes: [NoteMonth] = []
     @ObservationIgnored private var historyKey: Key?
     @ObservationIgnored private var recordKey: Key?
@@ -48,7 +48,7 @@ enum HabitTab: String, CaseIterable, Identifiable, Hashable {
             recordKey = key
             let record = perfTimed("Habit page: overall record") { store.habitRecord(of: key.habit, today: key.today) }
             self.record = record
-            tracks = perfTimed("Habit page: milestones") { store.milestoneTracks(of: key.habit, record: record, today: key.today) }
+            milestones = perfTimed("Habit page: milestones") { store.habitMilestones(of: key.habit, record: record, today: key.today) }
         case .notes:
             guard key != notesKey else { return }
             notesKey = key

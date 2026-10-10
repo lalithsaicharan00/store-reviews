@@ -5,7 +5,8 @@ Progress) one thing at a time: bring the streaks back where they can be seen, im
 redesign Milestones so they feel earned, for every habit type and every goal period. Current Work 29 (its 11 Oct
 sub-points).
 
-**Status: designed and approved by the user, 11 Oct 2026; ready to build. Not built.** Build from this document. Week,
+**Status: designed and approved by the user, 11 Oct 2026; built 10 Oct 2026 by Claude on branch
+`habit-progress-milestones` (Current Work 29: tests and the iPhone check are recorded there).** Build from this document. Week,
 Month and Year in Pixels are not part of this work and don't change.
 
 - Figma: [section "Habit Progress — Overall record and streaks"](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=984-309)

@@ -150,11 +150,13 @@ extension HabitStore {
         calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
     }
 
-    /// Milestones for a quit run: 1, 3, 7, 14, 30, 60, 90 and 180 days, then each year (report §10.3).
+    /// Milestones for a quit run (report §10.3, with the user's 11 Oct 2026 additions: spec "Habit Progress" §4.1):
+    /// 1, 3, 7, 10, 14, 30, 45, 60, 90, 120, 180, 270, 365, 500 and 730 days, then every year after two, up to at least
+    /// a year past `days`. Every earlier value stays.
     static func quitMilestones(upTo days: Int) -> [Int] {
-        var ladder = [1, 3, 7, 14, 30, 60, 90, 180]
-        var year = 365
-        while year <= max(days, 365) + 365 { ladder.append(year); year += 365 }
+        var ladder = [1, 3, 7, 10, 14, 30, 45, 60, 90, 120, 180, 270, 365, 500, 730]
+        var year = 1095
+        while year <= max(days, 730) + 365 { ladder.append(year); year += 365 }
         return ladder
     }
 

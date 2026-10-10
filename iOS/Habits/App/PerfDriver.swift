@@ -18,6 +18,8 @@ enum PerfAction: Equatable {
     case openBlank, openTypingControl
     /// The habit page's History · Notes · Progress, by position (3 Oct 2026).
     case habitTab(Int)
+    /// The habit page's All milestones page (spec "Habit Progress" §3.2, 11 Oct 2026).
+    case openMilestones
     /// Today's Edit: Arrange Your Day (3 Oct 2026).
     case openArrange
     /// The lock's keypad (Current Work 58): a digit, or Delete.
@@ -419,6 +421,18 @@ enum PerfDriver {
                     send(.habitTab(2)); await pause(0.5)
                 }
             }
+        case "habit-milestones":
+            // Milestones (spec "Habit Progress", 11 Oct 2026): the Progress tab with a year of medals, its Earlier shelf
+            // scrolled sideways, then the All milestones page opened and scrolled.
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page") { send(.openHabit("Brush teeth")) }
+            await open("Habit page: Progress (milestones)") { send(.habitTab(2)) }
+            await measure("Habit page: Milestones shelf scrolling") { await scrollSideways() }
+            await open("All milestones (first)") { send(.openMilestones) }
+            await measure("All milestones: scrolling") { await scroll() }
+            send(.closeDay)
+            await pause(1.2)
+            await open("All milestones (again)") { send(.openMilestones) }
         case "habit-page-total":
             // A weekly total (15 km a week): its Progress has the week's total against its goal.
             await open("All Habits") { send(.openAllHabits) }

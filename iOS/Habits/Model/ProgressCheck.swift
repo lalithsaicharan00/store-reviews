@@ -471,8 +471,122 @@ enum ProgressCheck {
             await tick(s, read, on: friday)
             same(s.milestoneOffer?.text, "All 2 done today", "G19 finishing the day")
             expect(s.dayFinishedAt != nil, "G19 the finishing tap is noted for the review prompt")
-            same(StreakUnit.days.milestones(upTo: 400), [3, 7, 14, 30, 50, 100, 200, 365], "G19 day milestones (3 Oct 2026 ladder)")
-            same(StreakUnit.weeks.nextMilestone(after: 4), 8, "G19 next week milestone")
+            // The 11 Oct 2026 ladders (spec "Habit Progress" §4): every earlier value kept, more between them.
+            same(StreakUnit.days.milestones(upTo: 400), [3, 7, 10, 14, 30, 50, 75, 100, 150, 200, 250, 365], "G19 day milestones (11 Oct 2026 ladder)")
+            same(StreakUnit.weeks.nextMilestone(after: 4), 6, "G19 next week milestone")
+            same(StreakUnit.months.milestones(upTo: 40), [2, 3, 4, 5, 6, 9, 12, 15, 18, 24, 30, 36], "G19 month milestones")
+            same(StreakUnit.months.nextMilestone(after: 36), 48, "G19 every 12 months after 36")
+            same(StreakUnit.years.milestones(upTo: 3), [1, 2, 3], "G19 every year from 1 (E6)")
+            same(StreakUnit.days.nextMilestone(after: 1000), 1095, "G19 every 365 days after 730")
+            same(Array(HabitStore.quitMilestones(upTo: 0).prefix(15)), [1, 3, 7, 10, 14, 30, 45, 60, 90, 120, 180, 270, 365, 500, 730], "G19 quit ladder")
+            same(TotalMilestones.ladder(for: .day), [10, 25, 50, 100, 250, 500, 1000, 2500, 5000], "G19 in total")
+            same(Array(TotalMilestones.ladder(for: .month).prefix(3)), [3, 6, 10], "G19 in total, month goals (E5)")
+            same(Array(TotalMilestones.ladder(for: .year).prefix(3)), [2, 5, 10], "G19 in total, year goals (E5)")
+        }
+
+        // G21, the habit Progress tab (spec "Habit Progress — Overall Record, Streaks and Milestones", 11 Oct 2026).
+        // A week goal: Gym 3 times a week from Mon 7 Sep; met Wed 9 and Thu 17; this week 2 so far.
+        do {
+            let (s, _) = await store()
+            let gym = Habit(name: "Gym", symbol: "dumbbell", color: .red, kind: .check, frequency: .perWeek(3), startsOn: day(7))
+            await add(s, gym)
+            for d in [7, 8, 9, 14, 16, 17, 21, 22] { await tick(s, gym, on: day(d)) }
+            let record = s.habitRecord(of: gym, today: friday)
+            same(record.headline, "8 times recorded", "G21 week goal headline")
+            same(record.current?.number, "2", "G21 current streak")
+            same(record.current?.unit, "weeks", "G21 in weeks")
+            same(record.current?.detail, "This week: 2 of 3", "G21 the running week")
+            same(record.best?.detail, "7–20 Sep", "G21 best run's dates")
+            same(record.goalMet?.number, "2", "G21 goal met")
+            same(record.goalMet?.unit, "of 2 weeks", "G21 of weeks")
+            same(record.percentNoun, "of weeks", "G21 percent of weeks")
+            same(record.bestPeriod?.title, "Best week", "G21 best week")
+            same(record.bestPeriod?.number, "3", "G21 best week's count")
+            same(record.bestPeriod?.unit, "times", "G21 best week's unit")
+            same(record.bestPeriod?.detail, "7–13 Sep", "G21 best week's dates")
+            // E3: a week is dated the day its goal was met, not its last day or today.
+            same(record.metDates, [day(9), day(17)], "G21 E3 weeks dated the day they were met")
+            let m = s.habitMilestones(of: gym, record: record, today: friday)
+            same(m.reached.map(\.title), ["2 weeks in a row"], "G21 one medal")
+            same(m.reached.first?.reached, day(17), "G21 E3 the medal's date")
+            same(m.reached.first?.shelfTop, "2 weeks", "G21 shelf caption")
+            same(m.reached.first?.shelfBottom, "in a row", "G21 shelf caption, second line")
+            same(m.next.map(\.title), ["3 weeks in a row", "10 weeks of goals met"], "G21 next, worded per §5.3")
+            same(m.next.map(\.detail), ["1 to go · now 2", "8 to go · 2 so far"], "G21 next details")
+            same(m.next.map(\.fraction), [2.0 / 3.0, 0.2], "G21 ring: current ÷ target")
+            await tick(s, gym, on: day(23))
+            let done = s.habitRecord(of: gym, today: friday)
+            same(done.current?.detail, "This week: done", "G21 this week done")
+            same(done.current?.number, "3", "G21 the running week adds once met")
+            same(done.metDates.last, day(23), "G21 E3 met on Wednesday")
+            runsAgree(s, gym, "G21")
+        }
+
+        // G21 E7: a milestone is reached once, dated by the first run that reached it. Read daily from 1 Sep: 1–10, then
+        // 19–25 (today).
+        do {
+            let (s, _) = await store()
+            let read = Habit(name: "Read", symbol: "book", color: .blue, kind: .check, startsOn: day(1))
+            await add(s, read)
+            for d in Array(1...10) + Array(19...25) { await tick(s, read, on: day(d)) }
+            let record = s.habitRecord(of: read, today: friday)
+            same(record.headline, "Done on 17 days", "G21 E7 headline")
+            same(record.current?.number, "7", "G21 E7 current")
+            same(record.best?.number, "10", "G21 E7 best")
+            same(record.best?.detail, "1–10 Sep", "G21 E7 best run's dates")
+            same(record.current?.detail, nil, "G21 a day goal has no running-period line")
+            same(record.goalMet?.unit, "of 25 days", "G21 goal met of planned days")
+            same(record.bestPeriod, nil, "G21 once a day: no best day")
+            let m = s.habitMilestones(of: read, record: record, today: friday)
+            same(m.reached.map(\.id), ["inARow-days-10", "inTotal-day-10", "inARow-days-7", "inARow-days-3"], "G21 E7 one medal each, newest first")
+            same(m.reached.first { $0.id == "inARow-days-7" }?.reached, day(7), "G21 E7 dated by the first run")
+            same(m.reached.first { $0.id == "inARow-days-7" }?.shelfTop, "7 in a row", "G21 daily shelf caption")
+            same(m.next.first?.title, "14 days in a row", "G21 E7 next above the best")
+            same(m.next.first?.detail, "7 to go · now 7, best 10", "G21 E7 next detail")
+            same(m.next.last?.title, "25 times in total", "G21 next total")
+            same(m.shown(streaks: false).reached.map(\.id), ["inTotal-day-10"], "G21 E9 Show Streaks off keeps totals")
+            same(m.shown(streaks: false).next.count, 1, "G21 E9 no in-a-row Next")
+        }
+
+        // G21 E1 and E2: Walk once a week for 8 weeks (from Mon 6 Jul), then a day goal from Mon 31 Aug, done 21–25 Sep.
+        do {
+            let (s, _) = await store()
+            var walk = Habit(name: "Walk", symbol: "figure.walk", color: .green, kind: .check, frequency: .perWeek(1), startsOn: day(6, 7))
+            await add(s, walk)
+            for d in [day(6, 7), day(13, 7), day(20, 7), day(27, 7), day(3, 8), day(10, 8), day(17, 8), day(24, 8)] { await tick(s, walk, on: d) }
+            s.clock = { moment(day(31, 8)) }
+            walk.frequency = .daily
+            s.update(walk); await s.flush()
+            s.clock = { moment(friday) }
+            for d in 21...25 { await tick(s, walk, on: day(d)) }
+            let record = s.habitRecord(of: walk, today: friday)
+            same(record.current?.number, "5", "G21 E1 the run starts with the new goal")
+            same(record.current?.unit, "days", "G21 E1 in the new goal's unit")
+            same(record.best?.number, "5", "G21 E1 best follows today's goal")
+            // E2: Goal met counts only days now; the 8 weeks never count as days.
+            same(record.goalMet?.number, "5", "G21 E2 goal met")
+            same(record.goalMet?.unit, "of 26 days", "G21 E2 only days of the day goal")
+            same(record.kinds, [.week, .day], "G21 E1 both kinds of goal")
+            let m = s.habitMilestones(of: walk, record: record, today: friday)
+            let ids = Set(m.reached.map(\.id))
+            expect(ids.isSuperset(of: ["inARow-weeks-8", "inARow-weeks-6", "inARow-weeks-2", "inARow-days-3"]), "G21 E1 kept medals: \(ids)")
+            same(m.reached.first { $0.id == "inARow-weeks-8" }?.title, "8 weeks in a row", "G21 E1 in their own unit")
+            same(m.reached.first { $0.id == "inARow-weeks-8" }?.reached, day(24, 8), "G21 E1 dated the day the 8th week was met")
+            same(m.next.first?.title, "7 days in a row", "G21 E1 Next follows today's goal")
+        }
+
+        // G21 a month goal: In total starts at 3 (E5). Call home once a month from 1 Jun; met 1 Jun, 1 Jul, 1 Aug.
+        do {
+            let (s, _) = await store()
+            let call = Habit(name: "Call", symbol: "phone", color: .green, kind: .check, frequency: .perMonth(1), startsOn: day(1, 6))
+            await add(s, call)
+            for d in [day(1, 6), day(1, 7), day(1, 8)] { await tick(s, call, on: d) }
+            let record = s.habitRecord(of: call, today: friday)
+            same(record.current?.detail, "This month: 0 of 1", "G21 the running month")
+            same(record.bestPeriod?.title, "Best month", "G21 best month")
+            let m = s.habitMilestones(of: call, record: record, today: friday)
+            same(m.reached.map(\.title), ["3 months in a row", "3 months of goals met", "2 months in a row"], "G21 month medals")
+            same(m.next.last?.title, "6 months of goals met", "G21 next month total")
         }
 
         // G20, Siri and Shortcuts (ported 1 Oct 2026): logs like a tap, never twice, and asks how much when it must.

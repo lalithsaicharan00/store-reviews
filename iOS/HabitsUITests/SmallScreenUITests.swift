@@ -56,6 +56,35 @@ final class SmallScreenUITests: XCTestCase {
         XCTAssertGreaterThanOrEqual(element.frame.minY, 0, "\(what) is below the top edge", file: file, line: line)
     }
 
+    /// Habit details → Progress (spec "Habit Progress" §2, 11 Oct 2026): the whole Overall record, its four boxes
+    /// included, is on screen without scrolling (it ends at about 610 pt of the SE's 667).
+    func testOverallRecordFitsWithoutScrolling() {
+        app.launchArguments = ["-uitest", "-year-demo", "-appearance.theme", "dark"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10), "Today")
+        let habits = app.buttons["menu-habits"]
+        app.buttons["menu-button"].tap()
+        if !habits.waitForExistence(timeout: 5) { app.buttons["menu-button"].tap() }
+        XCTAssertTrue(habits.waitForExistence(timeout: 10), "The ≡ menu")
+        habits.tap()
+        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 5), "Habits")
+        app.revealAndTap(app.staticTexts["Water"].firstMatch)
+        let progress = app.segmentedControls["habit-tabs"].buttons["Progress"]
+        XCTAssertTrue(progress.waitForExistence(timeout: 5), "Water's page")
+        progress.tap()
+        if !progress.wait(for: \.isSelected, toEqual: true, timeout: 5) { progress.tap() }
+        let ids = ["habit-progress-record", "habit-record-headline", "habit-streak-current", "habit-streak-best",
+                   "habit-record-goal-met", "habit-record-best-period"]
+        let record = app.descendants(matching: .any)["habit-progress-record"]
+        XCTAssertTrue(record.waitForExistence(timeout: 5), "Overall record")
+        sleep(1)
+        XCTAssertTrue(record.frame.minY >= 0 && record.frame.maxY <= window.maxY, "The Overall record fits: " + frames(ids))
+        for id in ids.dropFirst() {
+            XCTAssertTrue(app.descendants(matching: .any)[id].isHittable, "\(id) is on screen: " + frames(ids))
+        }
+        shot("se-progress-record")
+    }
+
     func testAddLogFitsAboveTheKeyboard() {
         launch(["-open-add", "Water"])
         XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 30))

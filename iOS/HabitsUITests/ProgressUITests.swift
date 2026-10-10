@@ -226,6 +226,12 @@ final class ProgressUITests: XCTestCase {
         let milestones = app.descendants(matching: .any)["habit-milestones"]
         for _ in 0..<6 where !(milestones.exists && milestones.isHittable) { app.swipeUp(velocity: .slow) }
         XCTAssertTrue(milestones.exists, "Milestones")
+        // Read (a time habit, 6 days so far): its 3-day medal and the next of each track (spec "Habit Progress" §3).
+        let latest = app.descendants(matching: .any)["habit-milestone-latest"]
+        XCTAssertTrue(latest.exists && latest.label.contains("days in a row, reached "), "Latest medal: \(latest.exists ? latest.label : "missing")")
+        let next = app.descendants(matching: .any)["habit-milestone-next-inARow"]
+        XCTAssertTrue(next.exists && next.label.hasPrefix("Next: ") && next.label.contains(" to go."), "Next in a row: \(next.exists ? next.label : "missing")")
+        XCTAssertTrue(app.descendants(matching: .any)["habit-milestone-next-inTotal"].exists, "Next in total")
         let grid = app.descendants(matching: .any)["habit-year-grid"]
         for _ in 0..<10 where !(grid.exists && grid.isHittable) { app.swipeUp(velocity: .slow) }
         XCTAssertTrue(grid.exists, "Year in Pixels")
