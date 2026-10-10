@@ -126,6 +126,7 @@ final class CloudSync: CloudTransportHandler {
     @ObservationIgnored private var lastRemoteChange = Date.distantPast
     /// Between the engine's "will fetch" and "did fetch".
     @ObservationIgnored private var fetching = false
+    @ObservationIgnored private var reloadedThisFetch = false
     /// Work started in the background (the engine's start, a hand-over, a zone made again), so `idle()` can wait for it.
     @ObservationIgnored private var background: [UUID: Task<Void, Never>] = [:]
 
@@ -417,6 +418,7 @@ final class CloudSync: CloudTransportHandler {
             }
         case .willFetch:
             fetching = true
+            reloadedThisFetch = false
             runLive = Int((try? await store.counts())?.liveRecords ?? 0)
             runDeleted = 0
             runFetched = 0
@@ -480,19 +482,23 @@ final class CloudSync: CloudTransportHandler {
     static let bigFetch = 500
 
     /// The screen re-reads once the changes stop (Rulebook S16), not once per page of a big fetch: re-reading a year's
-    /// history every 300 ms of a 20,000-record fetch froze Today's taps, and each re-read slowed the next page (the
-    /// speed runs, 10 Oct 2026). During a fetch it re-reads every 5 s, to show what has come, and once it ends.
+    /// history every 300 ms of a 20,000-record fetch froze Today's taps, and every re-read (hundreds of ms with that
+    /// much history) slowed the fetch and showed as a hitch (the speed runs, 10 Oct 2026). During a fetch it re-reads
+    /// soon after the first page (habits come first, and the welcome says what has come), then every 15 s, and once
+    /// it ends.
     private func remoteChanged() {
         lastRemoteChange = .now
         guard !reloadPending else { return }
         reloadPending = true
         let first = Date.now
+        let gap: TimeInterval = reloadedThisFetch ? 15 : 1
         track { [self] in
             while true {
                 try? await Task.sleep(for: .milliseconds(200))
                 let waited = Date.now.timeIntervalSince(first)
-                if fetching ? waited >= 5 : (Date.now.timeIntervalSince(lastRemoteChange) >= 0.6 || waited >= 4) { break }
+                if fetching ? waited >= gap : (Date.now.timeIntervalSince(lastRemoteChange) >= 0.6 || waited >= 4) { break }
             }
+            if fetching { reloadedThisFetch = true }
             reloadPending = false
             onRemoteChanges?()
         }

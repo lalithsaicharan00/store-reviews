@@ -93,6 +93,9 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
     /** What merging [record] would do, without changing anything: whether it would delete a row that's live here. */
     internal suspend fun wouldDelete(table: String, row: String, record: SyncRecord): Boolean {
         if (table !in SyncCodec.deletable) return false
+        // Only a record that carries a delete can delete (a delete always wins, and nothing else sets `deleted_at`):
+        // every other record is answered without reading the database, which halved a big fetch's work.
+        if (!record.isDeleted) return false
         val current = current(dao.syncMeta(table, row), table, row) ?: return false
         if (current.isDeleted) return false
         return SyncRules.mergeRecord(current, record).isDeleted
