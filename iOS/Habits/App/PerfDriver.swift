@@ -272,6 +272,7 @@ enum PerfDriver {
         case "today-big-fetch":
             // Today while a big fetch from iCloud is applied (Architecture 11 §8, §19; T4): 20,000 logs arriving in pages
             // as Today scrolls, then as it's tapped.
+            let fetchStart = Date.now
             await CloudTestStates.startBigFetch(records: 20_000)
             await measure("Today: scrolling during a big iCloud fetch") { await scroll() }
             guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# NOTE no Water") }
@@ -282,6 +283,7 @@ enum PerfDriver {
                 }
             }
             await CloudTestStates.finishBigFetch()
+            MainThreadMeter.mark("# NOTE the big fetch and its uploads finished in \(Int(Date.now.timeIntervalSince(fetchStart))) s")
         case "lock-keypad":
             // The lock's cover with its keypad (Current Work 58, T4): showing it, typing on it (never six digits, so it
             // stays), then the right code, which opens the app. A test launch's own lock (D8).

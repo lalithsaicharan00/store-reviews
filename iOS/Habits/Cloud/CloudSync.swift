@@ -124,6 +124,8 @@ final class CloudSync: CloudTransportHandler {
     @ObservationIgnored private var zoneMissing = false
     @ObservationIgnored private var reloadPending = false
     @ObservationIgnored private var lastRemoteChange = Date.distantPast
+    /// Between the engine's "will fetch" and "did fetch".
+    @ObservationIgnored private var fetching = false
     /// Work started in the background (the engine's start, a hand-over, a zone made again), so `idle()` can wait for it.
     @ObservationIgnored private var background: [UUID: Task<Void, Never>] = [:]
 
@@ -348,6 +350,7 @@ final class CloudSync: CloudTransportHandler {
     private func stopEngine() {
         transport.stop()
         bringingIn = nil
+        fetching = false
     }
 
     // MARK: The queue (§7)
@@ -413,6 +416,7 @@ final class CloudSync: CloudTransportHandler {
                 await evaluate()
             }
         case .willFetch:
+            fetching = true
             runLive = Int((try? await store.counts())?.liveRecords ?? 0)
             runDeleted = 0
             runFetched = 0
@@ -433,6 +437,7 @@ final class CloudSync: CloudTransportHandler {
             guard zone == .habits else { return }
             await zoneDeleted(reason)
         case .didFetch:
+            fetching = false
             bringingIn = nil
             firstLookDone = true
             zoneMissing = await zoneStillMissing()
@@ -474,18 +479,20 @@ final class CloudSync: CloudTransportHandler {
     /// From this many records in one fetch, the page says it's bringing habits in.
     static let bigFetch = 500
 
-    /// The screen re-reads once the pages stop arriving (Rulebook S16), not once per page of a big fetch: re-reading a
-    /// year's history every 300 ms of a 20,000-record fetch froze Today's taps (the speed run, 10 Oct 2026). A long
-    /// fetch still shows what has come every few seconds.
+    /// The screen re-reads once the changes stop (Rulebook S16), not once per page of a big fetch: re-reading a year's
+    /// history every 300 ms of a 20,000-record fetch froze Today's taps, and each re-read slowed the next page (the
+    /// speed runs, 10 Oct 2026). During a fetch it re-reads every 5 s, to show what has come, and once it ends.
     private func remoteChanged() {
         lastRemoteChange = .now
         guard !reloadPending else { return }
         reloadPending = true
         let first = Date.now
         track { [self] in
-            repeat {
+            while true {
                 try? await Task.sleep(for: .milliseconds(200))
-            } while Date.now.timeIntervalSince(lastRemoteChange) < 0.6 && Date.now.timeIntervalSince(first) < 4
+                let waited = Date.now.timeIntervalSince(first)
+                if fetching ? waited >= 5 : (Date.now.timeIntervalSince(lastRemoteChange) >= 0.6 || waited >= 4) { break }
+            }
             reloadPending = false
             onRemoteChanges?()
         }
