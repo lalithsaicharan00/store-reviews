@@ -150,3 +150,25 @@ R1–R9 in [Running a Routine on the Watch](<../Research/Running a Routine on th
 - **H17** watchOS 26 controls: Start the Now routine and +1 for a chosen habit, in Control Center, the Smart Stack and the Ultra's Action button. Proposed for after version 1.
 - **H18** A failed write: the Watch goes back to what's saved and says so (S7). Rare: the Watch's database is local.
 - **H19–H20** The 42 mm Watch (187 × 223) and larger text: rows grow and wrap; the round button moves to the row's top line; nothing is cut off.
+
+## As built: where version 1 differs from the pictures (11 Oct 2026)
+
+Built on branch `apple-watch` (Current Work 82). The built screens, photographed on CI, are in
+[Built Screens](<../Built Screens/>). What differs, and why:
+
+- **E2, a tap on the watch face:** the face changes at once (the app's own "after one tap" card), and the tap is on
+  disk from that moment, but it's saved into the Watch's database the next time the app runs: on opening, on its
+  background refresh (about four an hour with a complication on the face), or when the iPhone's changes wake it.
+  watchOS runs a complication's intent in the widget extension and has no way to hand it to the app's process (the
+  iPhone does that with a `LiveActivityIntent`, Rulebook U26), so the tap waits in the shared waiting-taps file.
+- **H16, Siri:** the result names what was logged; it has no Undo button (App Intents' result on the Watch shows a
+  dialog, not buttons). Undo is on Today and Day details as always.
+- **H17, controls:** not built (after version 1, as the notes say).
+- **D, notifications and H11–H12, alarms:** drawn by watchOS, not by the app; XCUITest can't photograph them, so the
+  screenshot review covers them through the categories and words the app registers, and the Series 10 check (U9).
+- **E, the watch face:** XCUITest can't photograph a real face; the screenshot review shows the complications'
+  own views in a gallery screen (`-face-gallery`, test launches only), the same views the face draws.
+- **Continue on iPhone (G1):** watchOS can't put an app on the iPhone's screen, so the page offers Handoff for as long
+  as it's open (the app's icon in the iPhone's app switcher opens ≡ › Plus), and the button says where to look.
+- **Messages between the two apps** go straight away while both are running (`sendMessage`), and are queued by the
+  system otherwise (`transferUserInfo`), as Architecture 12 §3.1 describes; repeats are harmless.
