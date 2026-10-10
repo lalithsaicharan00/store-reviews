@@ -10,7 +10,8 @@ final class PlusState {
     /// What G1–G6 shows while not Plus.
     enum Moment: Equatable { case offer, purchasing, bought, waiting, unreachable, ended }
 
-    static let products = ["com.oftenenough.app.plus", "com.oftenenough.app.plusfamily", "com.oftenenough.app.plusfamily.upgrade"]
+    /// The iPhone's own list (`PlusProduct`): Plus, Plus Family, or the upgrade, bought on any device of the Apple Account.
+    static let products = PlusProduct.all
     /// The Watch had Plus before: if it ends, say so (G6) instead of the first offer.
     private static let hadPlusKey = "plus.hadPlus"
 
@@ -55,7 +56,7 @@ final class PlusState {
                 entitled = true
             }
         }
-        if product == nil, let found = try? await Product.products(for: [Self.products[0]]).first {
+        if product == nil, let found = try? await Product.products(for: [PlusProduct.plus]).first {
             product = found
             price = found.displayPrice
         }
@@ -75,7 +76,7 @@ final class PlusState {
     func buy() async {
         moment = .purchasing
         do {
-            if product == nil { product = try await Product.products(for: [Self.products[0]]).first; price = product?.displayPrice }
+            if product == nil { product = try await Product.products(for: [PlusProduct.plus]).first; price = product?.displayPrice }
             guard let product else { moment = .unreachable; return }
             switch try await product.purchase() {
             case .success(let verification):

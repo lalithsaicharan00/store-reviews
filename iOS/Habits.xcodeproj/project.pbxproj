@@ -73,6 +73,7 @@
 				"Model/Schedule.swift",
 				"Model/SectionPlan.swift",
 				"Model/Words.swift",
+				"Plus/PlusProduct.swift",
 			);
 			target = EE0000000000000000000005 /* OftenEnoughWatch */;
 		};

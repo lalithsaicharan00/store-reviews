@@ -25,15 +25,6 @@ enum PlusPlan: String, CaseIterable, Identifiable {
     }
 }
 
-/// The App Store's product IDs (`iOS/OftenEnough.storekit`; created in App Store Connect before a real purchase).
-enum PlusProduct {
-    static let plus = "com.oftenenough.app.plus"
-    static let family = "com.oftenenough.app.plusfamily"
-    /// Plus → Plus Family, the difference; offered only to Plus owners.
-    static let upgrade = "com.oftenenough.app.plusfamily.upgrade"
-    static let all = [plus, family, upgrade]
-}
-
 /// Who has Plus on this Apple Account, as the App Store says.
 enum PlusOwnership: Equatable {
     case none
