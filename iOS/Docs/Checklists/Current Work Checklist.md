@@ -1006,6 +1006,71 @@ and the Add note keyboard coming up by itself.
     - [ ] 81.6 Rulebook D3, D4, D9, D12, D14, D15 rewritten for iCloud; "replaced by 11" notes in Architecture 01, 02,
       04, 05, 06; What's Built; Design Rules' iCloud page; merged into `main`; branches marked safe to delete.
 
+- [ ] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
+  #65; **to build later**, when the user says so, after item 81's iPhone CloudKit work).
+  - [x] **Research and design:** *done 10 Oct: [Apple Watch App — What People Want, What Breaks, and How Ours Works](<../Apple Watch/Research/Apple Watch App — What People Want, What Breaks, and How Ours Works.md>).
+    All 3,051 App Store reviews naming a watch read and coded; Apple's watchOS limits checked; the core's Room 3 and
+    SQLite libraries confirmed for watchOS. Design: an independent Watch app with its own database, changes by
+    WatchConnectivity and its own `CKSyncEngine` at once, counted once; rules WA1–WA13.*
+  - [ ] The user's four decisions (report §9): version 1's scope (routines on the Watch in version 2); ~~minimum
+    watchOS 11~~ *decided 11 Oct: watchOS 11 is fine (the user)*; a custom Smart Stack layout for the timer Live Activity (widget lock, U28); ~~an Apple Watch on the
+    user's Apple Account for the device checks~~ *answered 10 Oct: the user has an Apple Watch Series 10 (GPS) on
+    watchOS 26 (arm64, so it checks that build directly).*
+  - **The user's plan, 10 Oct 2026, one step at a time** ("we will go step-by-step"; each step finished before the
+    next):
+    - [x] **Step 1. Can a focused routine run on the Watch?** Check Routinery and other routine apps: does their
+      Watch app run timed routines (start, step timers, next/previous, finish), how well (reviews), and what watchOS
+      allows. If yes, our Watch app runs focused routines too (moves routines from version 2 into version 1).
+      *Done 10 Oct: yes. Routinery has run timed routines on the Watch since Nov 2020, and people love it when it
+      works, but 57% of its 182 Watch reviews report sync failure or a broken app: routines that end when the wrist
+      drops, two devices running different copies, fewer actions on the Watch. Our player (place per device, timers
+      as synced start times, nothing auto-advances) avoids most of it; rules R1–R9 in [Running a Routine on the Watch](<../Apple Watch/Research/Running a Routine on the Watch — Can It Be Done.md>).
+      The routine player moves into version 1.*
+    - [x] **Step 2. Design every Watch screen in Figma**, with proper navigation. Pictures of every screen and their notes:
+      [Apple Watch/Designs](<../Apple Watch/Designs/Design Notes.md>).
+      *Done 10 Oct (section 1048:2 on the "watch" page, 46 mm): what's on the Watch vs only on the iPhone; the
+      navigation rules (one stack from Today, two levels at most, the Crown scrolls and moves between a routine's
+      habits, main action in the bottom bar); A Today (7 screens), B Day details for every kind (14: amount, another
+      amount with the Crown, check, timer, running, Always On, checklist, quit, one log, delete, ⋯, skipped), D the
+      routine player (6), E notifications and timer alerts (4), F watch face, interactive complications and Smart
+      Stack (6), G the navigation map. Text is SF Pro in Figma (SF Compact isn't installed there).*
+      *Revised 10 Oct after the user's review: one section per group (Decisions, A Today, B a habit's page, C routine,
+      D notifications, E watch face, F map; B is Day details, the sheet a Today row opens, today only, renamed 10 Oct at the user's question; no notes on the Watch) with the notes in their own section; headers inside the rounded corners
+      (title and time inset, buttons clear of the edges); dials centred; every time-of-day section has its own Start
+      (filled in Now, grey elsewhere, none for Quitting), as on the iPhone.*
+    - [x] **Step 3. The Plus screen on the Watch:** someone without Plus who opens the Watch app is told it's part of
+      Plus and how to upgrade. *Done 10 Oct (Figma section "Watch · G · Plus on the Watch"): the Watch sells Plus itself
+      (StoreKit's purchase works on watchOS 8+; Apple's own sheet, the side button to pay) with the App Store's price,
+      Continue on iPhone (Handoff to ≡ › Plus) and Restore Purchases always on the page; Plus is yours; Ask to Buy
+      waiting; couldn't reach the App Store; Plus ended (nothing deleted); our complication without Plus. Plus Family
+      is chosen on the iPhone; reminders still reach the wrist free (watchOS mirrors the iPhone's notifications).*
+    - [x] **Cross-check against the iPhone (the user, 10 Oct: "have we covered everything… like widgets… alarms").**
+      *Done 10 Oct: Figma section "Watch · H · Added after the cross-check" (20 screens) and its notes. Added: limit
+      habits (row, page, over the limit), a week-goal check, tasks on Today, skipped and paused, logging a slip and after,
+      a milestone beside Undo, the streak in Day details, alarms (watchOS has no alarm API; Apple shows the iPhone's
+      AlarmKit alarm on the paired Watch, buttons to check on the Series 10), Remind Again, grouped reminders, a timer
+      reminder without Done, Siri on the Watch, controls and the Action button (proposed, after version 1), a failed
+      save, the 42 mm Watch and larger text. Fixed to match the iPhone: Today's row lines ("3/8 glasses", "Every day")
+      and the notification words ("Done", "Not done yet · …", "Reminder · 8:00" with buttons that still log).*
+    - [x] **Manual logging on the Watch (the user, 10 Oct: "only if it is good UX").** *Done 10 Oct: yes for amounts and
+      times. Figma B15–B18: hours and minutes wheels for time (Apple's Timers pattern, ends now); an amount that asks how
+      much opens at the last value, decimals by the Crown; a number far away is said or typed with Apple's own input.
+      "Log manually" with a pencil beside +1 and Start, "Log amount" as the main action when an amount always asks, as
+      on the iPhone. Words fixed to the iPhone's: "Record a slip", "Add a check".*
+    - [x] **Step 4. The Watch's database design.** *Done 10 Oct: [Architecture 12 — Apple Watch, Data and Sync](<../Apple Watch/Data and Sync (Architecture 12).md>).
+      A full copy on the Watch in the same Room database; synced straight with the iPhone (WatchConnectivity: a checked
+      backup file first, then ops both ways with acknowledgements) and with iCloud after item 81; the iPhone passes the
+      Watch's changes on; a timer stopped on both devices logs once (entry ID from the habit and its start). GitHub's
+      macOS 26 runner has the watchOS SDKs and Watch simulators, so it builds and tests there; the real Watch is for
+      complication transfers, real iCloud, haptics, Double Tap, Always On and the final look (U9).*
+  - [ ] **Build it (11 Oct 2026: handed to a cloud session):** [Build Prompt (Delete When Done)](<../Apple Watch/Build Prompt (Delete When Done).md>),
+    on branch `apple-watch`: every screen, data and sync, complications, notifications, Plus; screenshot review on
+    46 mm and 42 mm; data reliability, sync, storage and speed tests.
+  - [ ] Build, in the report's order (§8): the core on watchOS; the app with its own database; WatchConnectivity;
+    `CKSyncEngine` on the Watch; complications; timers, notification buttons and the Plus gate.
+  - [ ] Tests on GitHub's simulator (§7), then the device checks on the user's iPhone and Watch (U9); add WA1–WA13 to
+    the Rulebook once built.
+
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
   - **What it is:** the screen a single entry opens to, from the Day sheet's entries and the habit page's History

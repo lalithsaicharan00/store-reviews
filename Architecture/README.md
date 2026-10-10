@@ -29,6 +29,7 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 | 9 | **Privacy and account deletion**: what we store, deletion across stores and servers, legal | Store requirements | [Done](<09. Privacy and Account Deletion.md>) |
 | 10 | **Figma system diagram** (page "App Architecture") | Draws 1–9 | Next: waiting for your go-ahead |
 | 11 | **iCloud sync with CloudKit** (`CKSyncEngine`): replaces our server's sync and accounts on Apple devices (Rulebook D16); data layout, limits, failures, the free plan's one device, safety nets, tests | Decided 10 Oct 2026: no server holds habits | [Research done, ready to build](<11. iCloud Sync with CloudKit.md>) |
+| 12 | **Apple Watch — data and sync**: a full copy on the Watch (same Room database and core), synced straight with the iPhone over WatchConnectivity and with iCloud after item 11; the iPhone passes on the Watch's changes; the timer-stop entry ID; what GitHub's simulator can and can't test | Decided 10 Oct 2026 (Current Work 82, step 4) | [Ready to build](<../iOS/Docs/Apple Watch/Data and Sync (Architecture 12).md>) |
 
 ## Related work
 
