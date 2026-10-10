@@ -996,8 +996,8 @@ and the Add note keyboard coming up by itself.
     All 3,051 App Store reviews naming a watch read and coded; Apple's watchOS limits checked; the core's Room 3 and
     SQLite libraries confirmed for watchOS. Design: an independent Watch app with its own database, changes by
     WatchConnectivity and its own `CKSyncEngine` at once, counted once; rules WA1–WA13.*
-  - [ ] The user's four decisions (report §9): version 1's scope (routines on the Watch in version 2); minimum
-    watchOS 11; a custom Smart Stack layout for the timer Live Activity (widget lock, U28); ~~an Apple Watch on the
+  - [ ] The user's four decisions (report §9): version 1's scope (routines on the Watch in version 2); ~~minimum
+    watchOS 11~~ *decided 11 Oct: watchOS 11 is fine (the user)*; a custom Smart Stack layout for the timer Live Activity (widget lock, U28); ~~an Apple Watch on the
     user's Apple Account for the device checks~~ *answered 10 Oct: the user has an Apple Watch Series 10 (GPS) on
     watchOS 26 (arm64, so it checks that build directly).*
   - **The user's plan, 10 Oct 2026, one step at a time** ("we will go step-by-step"; each step finished before the

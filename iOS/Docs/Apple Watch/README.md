@@ -43,11 +43,11 @@ design-tool links: everything needed is in here.
 - Manual logging with the Digital Crown (wheels for time, the last value as the start for amounts), with − / + and
   dictation as touch and voice backups.
 - watchOS has no alarm API; the iPhone's AlarmKit alarms appear on the Watch by themselves.
+- **Minimum watchOS 11** (the user, 11 Oct 2026): interactive complications, Double Tap, Live Activities in the Smart
+  Stack; leaves out Series 4, 5 and the first SE.
 
 ## Still open for the user
 
-- Minimum watchOS 11 (recommended: interactive complications, Double Tap, Live Activities in the Smart Stack; leaves out
-  Series 4, 5 and the first SE).
 - A custom Smart Stack layout for the timer's Live Activity: touches locked widget code (U28), so only with the user's
   say-so.
 - Controls and the Action button (H17): proposed for after version 1.

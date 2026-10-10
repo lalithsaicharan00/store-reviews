@@ -54,8 +54,8 @@ the document in the same change and say why; don't silently do something else.
   (G), Siri (H16), the failed-save banner (H18), the 42 mm Watch and larger text (H19–H20).
 - **Not in version 1:** controls and the Action button (H17); a custom Smart Stack layout for the iPhone's timer Live
   Activity (it touches the locked widget code, U28: the user decides separately); anything Wear OS.
-- **Minimum watchOS 11** (interactive complications, Double Tap, Live Activities in the Smart Stack). The user may still
-  change this; keep the version in one build setting.
+- **Minimum watchOS 11** (decided by the user, 11 Oct 2026): interactive complications, Double Tap, Live Activities in
+  the Smart Stack.
 - **Data:** a full copy on the Watch in the same Room database (the shared core built for watchOS); WatchConnectivity
   with the iPhone; the iPhone passes the Watch's changes on; a timer stopped on both devices logs once
   (Architecture 12).
