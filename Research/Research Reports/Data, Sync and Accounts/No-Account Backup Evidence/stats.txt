@@ -1,0 +1,27 @@
+validated: 2505 coded, 0 unknown, 0 duplicates
+code              App n     ★ apps  Play n     ★ apps   all
+off                 423  2.25   39    295  2.41   32   718
+want_cloud          269  3.83   37    195  4.15   22   464
+loss_local          194  2.76   29    145  2.80   24   339
+multi               192  3.69   29     37  3.81   15   229
+fail                212  2.85   19     15  3.20    9   227
+acct_fail            60  1.97   12    119  1.66   18   179
+noacct_praise        54  4.89   27    119  4.82   23   173
+want_account         74  3.53   17     75  3.13   20   149
+fear_local           54  3.43   20     65  3.80   17   119
+fail_loss            93  1.91   13     24  2.58   10   117
+cause_device         45  3.27    9     71  3.07   12   116
+cause_bug            68  2.22   22     42  1.93   14   110
+acct_dislike         24  1.42    7     72  1.61   17    96
+praise_cloud         71  4.87   20     15  4.87    6    86
+cause_delete         31  2.97    8     13  3.62    6    44
+icloud_dislike       42  3.60   14      1  1.00    1    43
+local_praise         11  4.82    6     25  4.60    8    36
+icloud_prefer        11  2.18    3      2  4.00    2    13
+want_file_backup      1  2.00    1      4  1.50    2     5
+saved_device          3  5.00    3      2  5.00    2     5
+offline_want          0  0.00    0      4  3.25    1     4
+praise_account        0  0.00    0      4  5.00    3     4
+saved_account         0  0.00    0      4  4.75    4     4
+saved_backup          0  0.00    0      1  5.00    1     1
+22 of 22

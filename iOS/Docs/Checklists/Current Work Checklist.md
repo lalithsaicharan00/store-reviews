@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 75).
+  still resolve; give new items the next unused number (currently 78).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -705,6 +705,17 @@ and the Add note keyboard coming up by itself.
     Account and Backup File only. Plus keeps Restore: any day in the last 90 days from the account, or a backup
     file; it replaces the habits on every device and says so first.
   - [ ] Remaining states and sizes, then a build spec; then build, tests on GitHub, iPhone check.
+
+- [ ] **77. Without an account: iCloud and Google Drive backup, or only this phone? (research first).** Added 10 October
+  2026, from the user: big companies' apps mostly don't offer "back up to Google Drive / iCloud"; on the free plan
+  without an account, should we keep the iCloud and Google Drive backup being built on `app-lock-privacy-security`, or
+  remove it so data stays only on the device and a (free) account backs up and syncs one device?
+  - [x] Go through the reviews thoroughly and report. Done 10 Oct 2026: [Without an Account — iCloud and Google Drive
+    Backup, or Only This Phone](<../../../Research/Research Reports/Data, Sync and Accounts/Without an Account — iCloud and Google Drive Backup, or Only This Phone.md>)
+    (all 2,505 third-party matches read, 363 from the big companies' own apps). Recommendation: keep the automatic iCloud
+    copy without an account on iPhone; take Google Drive off iPhone (it's Android's place); the account only once
+    signed in (as built).
+  - [ ] The user's decision. Until then the branch keeps iCloud on and Google Drive hidden behind its flag.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
