@@ -26,7 +26,7 @@ This is the short list of what the iPhone app can do today. The reasons behind e
 - [x] Description (a standing note on the habit)
 - [x] Live preview at the top: the Today row and one sentence that says the whole habit, pinned on every screen the form opens
 - [x] Text limits (names 24, steps 24, times of day 16, units 12)
-- [x] Free limit: 5 habits, then the Plus screen (purchase not wired up yet)
+- [x] Free limit: 5 habits, then the 6th-habit sheet: Plus or Plus Family with StoreKit 2, or Make Room (archive or delete one) *(10 Oct 2026, Current Work 80)*
 
 ## Reminders
 
@@ -254,5 +254,6 @@ Designs: [Apple Watch](<Apple Watch/README.md>). Decisions: Design Rules' "Apple
 
 - [ ] Settings still to build: restore purchase, Erase All Data in Privacy (help, About, theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
 - [x] iPhone Home-screen and Lock-screen widget (merged into `main` 1 Oct, from `codex/iphone-widgets`): free Today, One Item and Lock summaries; Plus Icons and History; shared App Group, durable additive actions and privacy. [Validation and release checks](<../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Native Integration and Release.md>) retain unverified system/device checks separately.
-- [ ] Plus: purchase, account, sync and server backup
+- [x] **Plus screens and the App Store purchase (StoreKit 2, 10 Oct 2026, Current Work 80):** the 6th-habit sheet (Plus and Plus Family side by side, Make Room), ≡ › Plus (the plans, prices that don't load, purchases turned off, Ask to Buy, Restore Purchases), Your Plus (owner, family member, a new device), the upgrade to Plus Family, Plus is yours, Plus has ended (a refund, a family that stopped sharing) and the second-device sheet. Products must be created in App Store Connect before a real sandbox purchase
+- [ ] Plus: sync through iCloud (D16; later, separate work)
 - [ ] Apple Watch, iPad, Apple Health

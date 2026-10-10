@@ -208,7 +208,7 @@ struct MenuPage: View {
         case .timesOfDay: TimesOfDayList()
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
-        case .plus: PlusView(fromMenu: true)
+        case .plus: PlusPage()
         case .account:
             if let backup = AppModel.shared.backup { AccountView().environment(backup) } else { ComingSoonView(place: place) }
         case .backup:

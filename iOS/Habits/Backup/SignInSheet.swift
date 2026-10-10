@@ -38,8 +38,6 @@ struct SignInSheet: View {
                 self.other = nil
                 dismiss()
             }
-            .presentationDetents([.height(300)])
-            .presentationDragIndicator(.visible)
         } else {
             providers
         }
@@ -143,52 +141,114 @@ struct SignInSheet: View {
     }
 }
 
-/// "Use on This iPad?" (Account and Backup Redesign, screen 7; Current Work 78): signing in to a free account that's
-/// signed in on another device. Continue moves the account here and signs the other device out (it keeps its habits);
-/// Cancel changes nothing on either. Never words like "active device" or "session" (Free Sync §5).
+/// "Use your habits on this iPad?" (Account and Backup Redesign, screen 7; Current Work 78; redesigned with the Plus
+/// screens, 10 Oct 2026, screen 16): signing in to a free account that's signed in on another device. Plus comes first,
+/// as a calm card whose See Plus opens the Plus page; the free move comes last, with the only filled button: it moves the
+/// account here and signs the other device out (it keeps its habits). ✕ changes nothing on either. Never words like
+/// "active device" or "session" (Free Sync §5).
 struct UseHereQuestion: View {
     let otherDevice: String
     var working = false
     let onContinue: () -> Void
     let onCancel: () -> Void
+    @State private var showPlus = false
+
+    private var here: String { UIDevice.current.model }
+    private var other: String { BackupCenter.yourDevice(otherDevice) }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Use on This \(UIDevice.current.model)?")
-                .font(.headline)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityIdentifier("use-here-title")
-            Text("Free syncs one device, so \(BackupCenter.yourDevice(otherDevice)) will be signed out. It keeps its habits.")
-                .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityIdentifier("use-here-text")
-            VStack(spacing: 10) {
-                Button(action: onContinue) {
-                    Group {
-                        if working { ProgressView().tint(Color.onInk) } else { Text("Continue").font(.headline) }
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 16) {
+                    DevicePair(other: otherDevice, here: here)
+                    VStack(spacing: 6) {
+                        Text("Use your habits on this \(here)?")
+                            .font(.title2.bold())
+                            .multilineTextAlignment(.center)
+                            .accessibilityAddTraits(.isHeader)
+                            .accessibilityIdentifier("use-here-title")
+                        Text("The free plan syncs one device at a time.")
+                            .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
-                    .foregroundStyle(Color.onInk)
-                    .frame(maxWidth: .infinity, minHeight: 32)
+                    .padding(.bottom, 4)
+                    VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Keep both in sync").font(.headline)
+                            Text("With Plus, \(other), this \(here) and any other device stay in sync. A one-time purchase.")
+                                .font(.subheadline).foregroundStyle(.secondary)
+                        }
+                        PlusSecondButton(title: "See Plus", id: "use-here-see-plus") { showPlus = true }
+                    }
+                    .plusCard()
+                    VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Move to this \(here)").font(.headline)
+                            Text("\(other.prefix(1).uppercased() + other.dropFirst()) will be signed out. It keeps its habits.")
+                                .font(.subheadline).foregroundStyle(.secondary)
+                                .accessibilityIdentifier("use-here-text")
+                        }
+                        PlusMainButton(title: "Use on This \(here)", working: working, id: "use-here-continue", action: onContinue)
+                    }
+                    .plusCard()
+                    Text("✕ keeps this \(here) on its own. Nothing changes on \(other).")
+                        .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-                .tint(.ink)
-                .accessibilityIdentifier("use-here-continue")
-                Button(action: onCancel) {
-                    Text("Cancel").font(.headline).foregroundStyle(Color.primary).frame(maxWidth: .infinity, minHeight: 32)
-                }
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-                .tint(.secondary)
-                .accessibilityIdentifier("use-here-cancel")
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
             }
-            .disabled(working)
+            .background(Color(.systemGroupedBackground))
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(action: onCancel) { Image(systemName: "xmark") }
+                        .accessibilityLabel("Close")
+                        .accessibilityIdentifier("use-here-cancel")
+                        .disabled(working)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $showPlus) { PlusPage() }
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 28)
-        .frame(maxHeight: .infinity, alignment: .top)
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+        .interactiveDismissDisabled(working)
+    }
+}
+
+/// The other device and this one, drawn plainly: the other's outline, an arrow, this one's outline (screen 16).
+private struct DevicePair: View {
+    let other: String
+    let here: String
+
+    var body: some View {
+        HStack(alignment: .bottom, spacing: 14) {
+            device(symbol(for: other), name: other.isEmpty ? "Other device" : other, current: false)
+            Image(systemName: "arrow.right").font(.title3).foregroundStyle(.secondary).padding(.bottom, 30)
+            device(symbol(for: here), name: "This \(here)", current: true)
+        }
+        .padding(.top, 8)
+        .accessibilityHidden(true)
+    }
+
+    private func device(_ symbol: String, name: String, current: Bool) -> some View {
+        VStack(spacing: 6) {
+            Image(systemName: symbol)
+                .font(.system(size: current ? 56 : 40, weight: .ultraLight))
+                .foregroundStyle(current ? Color.ink : Color.secondary)
+                .frame(height: 64, alignment: .bottom)
+            Text(name)
+                .font(.caption.weight(current ? .semibold : .regular))
+                .foregroundStyle(current ? Color.primary : Color.secondary)
+                .lineLimit(1)
+        }
+    }
+
+    private func symbol(for name: String) -> String {
+        switch name {
+        case "iPad": "ipad"
+        case "Mac": "macbook"
+        case "iPhone", "Android", "": "iphone"
+        default: name.localizedCaseInsensitiveContains("iPad") ? "ipad" : "iphone"
+        }
     }
 }
 

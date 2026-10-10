@@ -355,6 +355,40 @@ final class SmallScreenUITests: XCTestCase {
         shot("se-reminder-says")
     }
 
+    /// The 6th-habit sheet and ≡ › Plus (Current Work 80): both plans, the filled button and Make room instead (the
+    /// sheet) or Restore Purchases (the page) all on screen without scrolling, the plans above the button.
+    func testPlusSheetAndPageFit() {
+        app.launchArguments = ["-uitest", "-free", "-empty", "-plus-fixture"]
+        app.launch()
+        let new = app.buttons["New Habit"].firstMatch
+        XCTAssertTrue(new.waitForExistence(timeout: 15))
+        func fits(_ ids: [String], _ what: String) {
+            let buy = app.buttons["plus-buy"]
+            XCTAssertTrue(buy.waitForExistence(timeout: 5), "\(what): \(frames(ids))")
+            for id in ids {
+                let element = app.descendants(matching: .any)[id].firstMatch
+                XCTAssertTrue(element.exists && element.isHittable, "\(what), \(id) on screen: \(frames(ids))")
+                XCTAssertLessThanOrEqual(element.frame.maxY, window.maxY + 1, "\(what), \(id) inside the window: \(frames(ids))")
+            }
+            for plan in ["plan-plus", "plan-family"] {
+                XCTAssertLessThanOrEqual(app.buttons[plan].frame.maxY, buy.frame.minY, "\(what), \(plan) above the button: \(frames(ids))")
+            }
+        }
+        new.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
+        fits(["plan-plus", "plan-family", "plus-buy", "plus-make-room"], "The 6th-habit sheet")
+        shot("se-plus-sixth-habit")
+        app.buttons["plus-close"].tap()
+        XCTAssertTrue(app.buttons["plus-close"].waitForNonExistence(timeout: 5))
+        app.navigationBars["New"].buttons["Cancel"].tap()
+        app.buttons["menu-button"].tap()
+        let row = app.buttons["menu-plus"]
+        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-appearance"].swipeUp() }
+        row.tap()
+        fits(["plan-plus", "plan-family", "plus-buy", "plus-restore"], "The Plus page")
+        shot("se-plus-page")
+    }
+
     /// Today's after-log line never runs past the row (the user, 9 Oct 2026: a long step name in Undo pushed Add Note off
     /// the screen). A step's Undo is "Undo Last Step"; an amount's names it ("Undo +1 tablespoon"); at the largest text
     /// that still shows words, both stay on one line inside the row (there Add Note shows only its icon, so Undo keeps

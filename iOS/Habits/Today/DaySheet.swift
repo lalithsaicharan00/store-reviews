@@ -22,7 +22,8 @@ struct DaySheet: View {
     @State private var perfNote = false
     @State private var destination: Destination?
     @State private var confirmingDelete = false
-    @State private var showPlus = false
+    /// An archived habit brought back past the free limit: the 6th-habit sheet first (Current Work 80).
+    @State private var restoring: Habit?
     @State private var showPage = false
     /// The days Another day… offers, worked out when it's tapped.
     @State private var pickingDays: ClosedRange<LocalDay>?
@@ -102,7 +103,7 @@ struct DaySheet: View {
                 case .note: AddNoteView(habit: current, day: day, picksDay: false)
                 }
             }
-            .sheet(isPresented: $showPlus) { PlusView() }
+            .restoringPastTheLimit($restoring)
             .confirmationDialog("Delete \(current.name)?", isPresented: $confirmingDelete, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
                     dismiss()
@@ -216,7 +217,7 @@ struct DaySheet: View {
             }
             Section {
                 if current.archived {
-                    Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(current) { showPlus = true } }
+                    Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(current) { restoring = current } }
                 } else {
                     Button("Archive", systemImage: "archivebox") { store.archive([current]); dismiss() }
                 }

@@ -792,13 +792,25 @@ and the Add note keyboard coming up by itself.
 
 - [ ] **80. Buying Plus: the App Store purchase, checked by the server and kept with the account (research first).**
   Added 10 October 2026, from the user (Product Roadmap 64; "the Plus screen exists but it isn't connected"):
-  - [ ] People can buy Plus from the App Store, in the app.
+  - [x] People can buy Plus from the App Store, in the app. *Built 10 Oct 2026 (the Plus screens, StoreKit 2, branch
+    `claude/awesome-newton-pmu4y7`): the 6th-habit sheet (Plus and Plus Family side by side, Make Room), ≡ › Plus
+    (prices that don't load, purchases turned off, Ask to Buy, Restore Purchases), Your Plus (owner, family member, a
+    new device), the upgrade to Plus Family, Plus is yours, Plus has ended and the second-device sheet. Plus is
+    `HabitStore.isPlus` (the account's or Debug's) OR an App Store entitlement. Tests: PlusUITests 10/10 (runs
+    38067172071, 38068020591, which found and fixed a crash in Plus has ended), Today, Persistence, Onboarding and
+    Backup 42/42 (38063952336), NewFlowUITests (38068020591), LongTextUITests 3/3 on the merged head (38084157868), the SE (SmallScreenUITests.testPlusSheetAndPageFit,
+    38063954222); speed: choosing a plan 0 ms/s on the page and the sheet (38063956093), habit form typing side by
+    side with main 21.2 against 21.9 ms/s over six rounds (38067941263). iPhone check (U9) still to do; the three
+    products must be created in App Store Connect before a real sandbox purchase.*
   - [ ] As the plan says, the purchase is verified on the server (Cloudflare) and stored against the person once they
     buy it.
   - [ ] The user's assumption, to test: buying Plus mandatorily links an account; without an account, no Plus.
     **Research first whether the account should be mandatory**; if the research says so, implement it that way.
   - [ ] Take care of entitlement problems overall (restore, refunds, a second device, reinstalls, family sharing,
-    an account that changes, offline, revoked or expired purchases).
+    an account that changes, offline, revoked or expired purchases). *Partly, 10 Oct 2026, on the App Store side:
+    Restore Purchases (`AppStore.sync()`) with a real result, refunds and a family that stopped sharing ("Plus has
+    ended", once; nothing hidden), a new device or reinstall (StoreKit already says Plus), family sharing
+    (`ownershipType`), Ask to Buy, offline prices. The account and server parts wait for the iCloud work (D16).*
   - [ ] Research first (W2); then the plan; then build. The Apple Watch app and the iPad layout come after (Roadmap 65,
     66). Revert dev's "every account is Plus" (item 68) before testing a real purchase.
   - [x] Research done 10 Oct 2026: [Buying Plus — Should an Account Be Required?](<../../../Research/Research Reports/Business Model and Monetization/Buying Plus — Should an Account Be Required.md>).

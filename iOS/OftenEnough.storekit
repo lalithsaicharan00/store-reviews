@@ -1,16 +1,14 @@
 {
   "identifier" : "4F1D9C2E",
-  "nonRenewingSubscriptions" : [
-
-  ],
+  "nonRenewingSubscriptions" : [],
   "products" : [
     {
-      "displayPrice" : "14.99",
+      "displayPrice" : "24.99",
       "familyShareable" : false,
       "internalID" : "6740000001",
       "localizations" : [
         {
-          "description" : "Every device, sync and backup, unlimited habits. Yours for good.",
+          "description" : "Unlimited habits, your iPad and Apple Watch, sync through your own iCloud. One payment, yours forever.",
           "displayName" : "Often Enough Plus",
           "locale" : "en_US"
         }
@@ -20,12 +18,12 @@
       "type" : "NonConsumable"
     },
     {
-      "displayPrice" : "29.99",
-      "familyShareable" : false,
+      "displayPrice" : "59.99",
+      "familyShareable" : true,
       "internalID" : "6740000002",
       "localizations" : [
         {
-          "description" : "Plus for you and up to 5 people you invite, on any phone. Yours for good.",
+          "description" : "Plus for you and up to 5 people in your Apple family, through Family Sharing. One payment, yours forever.",
           "displayName" : "Often Enough Plus Family",
           "locale" : "en_US"
         }
@@ -35,12 +33,12 @@
       "type" : "NonConsumable"
     },
     {
-      "displayPrice" : "14.99",
-      "familyShareable" : false,
+      "displayPrice" : "35.00",
+      "familyShareable" : true,
       "internalID" : "6740000003",
       "localizations" : [
         {
-          "description" : "Turns your Plus into Plus Family.",
+          "description" : "Turns your Plus into Plus Family: you pay only the difference.",
           "displayName" : "Upgrade to Plus Family",
           "locale" : "en_US"
         }
@@ -55,9 +53,7 @@
     "_locale" : "en_US",
     "_storefront" : "USA"
   },
-  "subscriptionGroups" : [
-
-  ],
+  "subscriptionGroups" : [],
   "version" : {
     "major" : 3,
     "minor" : 0

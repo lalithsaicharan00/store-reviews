@@ -82,7 +82,7 @@ struct AccountView: View {
             }
         }
         Section {
-            NavigationLink { PlusView(fromMenu: true) } label: {
+            NavigationLink { PlusPage() } label: {
                 LabeledContent("Plan", value: backup.isPlus ? "Plus (lifetime)" : "Free")
             }
             .accessibilityIdentifier("account-plan")

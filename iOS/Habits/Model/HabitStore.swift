@@ -201,8 +201,14 @@ final class HabitStore {
         let day: LocalDay
         var id: String { (habit?.uuidString ?? "day") + day.key }
     }
-    /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
-    var isPlus = false { didSet { if oldValue != isPlus { onChange?() } } }
+    /// Plus unlocks unlimited habits: the account's Plus or Debug's default (`grantedPlus`, set through `isPlus`), or an
+    /// App Store purchase (`storePlus`, set by `PlusStore`). Either is enough (Current Work 80).
+    var isPlus: Bool {
+        get { grantedPlus || storePlus }
+        set { grantedPlus = newValue }
+    }
+    private var grantedPlus = false { didSet { if oldValue != grantedPlus { onChange?() } } }
+    var storePlus = false { didSet { if oldValue != storePlus { onChange?() } } }
     static let freeHabitLimit = 5
 
     /// Tasks are always free; only active build and quit habits use a habit slot.

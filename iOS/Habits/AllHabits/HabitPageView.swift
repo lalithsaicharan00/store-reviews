@@ -20,7 +20,8 @@ struct HabitPageView: View {
     @Environment(\.isPresented) private var isPresented
     @State private var showEdit = false
     @State private var showPause = false
-    @State private var showPlus = false
+    /// An archived habit brought back past the free limit: the 6th-habit sheet first (Current Work 80).
+    @State private var restoring: Habit?
     @State private var showGoTo = false
     @State private var confirmingDelete = false
     @State private var openDay: LocalDay?
@@ -112,7 +113,7 @@ struct HabitPageView: View {
         }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
-        .sheet(isPresented: $showPlus) { PlusView() }
+        .restoringPastTheLimit($restoring)
         .confirmationDialog("Delete \(habit.name)?", isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
                 dismiss()
@@ -197,7 +198,7 @@ struct HabitPageView: View {
                 }
             }
             if habit.archived {
-                Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(habit) { showPlus = true } }
+                Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(habit) { restoring = habit } }
             } else {
                 Button("Archive", systemImage: "archivebox") { store.archive([habit]) }
             }

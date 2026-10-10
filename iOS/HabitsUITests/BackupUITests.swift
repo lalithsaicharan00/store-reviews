@@ -203,7 +203,7 @@ final class BackupUITests: XCTestCase {
         app.launch()
         let ask = app.staticTexts["use-here-title"]
         XCTAssertTrue(ask.waitForExistence(timeout: 30), "Use on This iPhone? \(labels(app))")
-        XCTAssertTrue(ask.label.hasPrefix("Use on This "), ask.label)
+        XCTAssertTrue(ask.label.hasPrefix("Use your habits on this "), ask.label)
         XCTAssertTrue(app.staticTexts["use-here-text"].label.contains("will be signed out. It keeps its habits."), app.staticTexts["use-here-text"].label)
         let question = XCTAttachment(screenshot: app.screenshot()); question.name = "free-use-here"; question.lifetime = .keepAlways; add(question)
         app.buttons["use-here-continue"].tap()
