@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 81).
+  still resolve; give new items the next unused number (currently 82).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -952,6 +952,43 @@ and the Add note keyboard coming up by itself.
     - [x] The other ways in (Account › Plan; a second device on a free account). *Row C: C1, C2.*
     - [x] Other platforms (the Apple Watch's way in) later: documented, not drawn. *Row C note.*
     - [ ] The user's review of group 1.
+
+- [ ] **81. Move sync and backup from our server to iCloud (CloudKit with `CKSyncEngine`), and simplify the app
+  around it** (added 10 October 2026, from the user; Rulebook D16; **to work on later**, when the user says so).
+  The user: "first let's set up the overall groundwork like CK sync engine … we have to move it from [Cloudflare] …
+  delete the unnecessary code and improvise the application … we have to change the backup and restore page as well
+  as account page, because now we are using CloudKit, I mean iCloud. So everything will be much simpler."
+  - [x] **Research and a hand-off report first**, written like the Plus screens prompt, for another agent to build:
+    *Done 10 Oct: [Architecture 11 — iCloud Sync with CloudKit](<../../../Architecture/11. iCloud Sync with CloudKit.md>):
+    the phone stays the truth, the outbox until CloudKit confirms, deletes as fields never CloudKit deletions, dated
+    backup files outside sync, a mass-change brake, every CloudKit limit and error, the free plan's handover, yearly
+    compaction for extreme users, tests on a fake iCloud.* *Its four decisions made by the user, 10 Oct 2026: no encrypted
+    fields (they can't be recovered after an account recovery); Google Drive backup kept as it is, nothing new built;
+    the server folder tagged and removed after CloudKit ships and passes the device checks; the brake at 20% / 50 rows.*
+    how `CKSyncEngine` maps onto our sync (records, `SyncRules` merge, tombstones, the outbox), what Apple setup is
+    needed (the iCloud container, entitlements, CloudKit schema), migration from today's server and accounts, tests.
+    The user will enable whatever is needed in the Apple Developer account and provide any data asked for.
+  - [ ] Can a cloud agent build it? To answer in the report. Known so far: the code and most tests can be written and
+    run on GitHub's simulator with a stand-in for iCloud; GitHub's simulator can't sign in to an Apple Account, so real
+    iCloud sync is checked on the user's iPhone and an iPad (or a second iPhone).
+  - [ ] Replace the server's sync and backup with CloudKit; delete the code that's no longer needed (accounts, our
+    sync, invites, moving with a code through the server), with D3, D4, D9, D12, D14, D15 and Architecture 02/05
+    rewritten as it lands.
+  - [ ] **Redesign the Backup & Restore page and the Account page** for iCloud (no account on Apple); decide what
+    replaces the ≡ menu's Account row.
+  - [x] **Decided by the user, 10 Oct 2026:** free keeps **one syncing device at a time** (an iPad works on its own as
+    the one device; the same habits on iPhone and iPad is Plus); **the "This week" widget becomes Plus** (Today,
+    Tasks, One habit and Lock Screen stay free; the user's say-so for locked widgets, U28; check on the iPhone Home
+    Screen when built). Still open: an optional quiet Plus line at a success moment.
+  - [ ] Apple setup, known so far: the iCloud container `iCloud.com.oftenenough.app` already exists (iCloud Drive
+    backup); the build adds the CloudKit service and push notifications (silent pushes tell a device something
+    changed), which automatic signing registers on the first iPhone build. The user, later: two devices on one Apple
+    Account for testing, and "Deploy to Production" in the CloudKit Console before release (or a CloudKit management
+    token so an agent can do it).
+  - [ ] The research must settle: the CloudKit record layout (per record or batched; Apple's limits for an extreme
+    user's 25,000 records a year), `CKSyncEngine` with `SyncRules` (conflicts, deletes), which device is the free
+    plan's one syncing device, data safety (iCloud sync isn't a backup: keep the daily file and "never replace with
+    less"), what's deleted with the server, and what GitHub's simulator can test.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."

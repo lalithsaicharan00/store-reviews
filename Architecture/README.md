@@ -28,6 +28,7 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 | 8 | **Release safety and operations**: migrations, phased rollout, the data-loss canary, crash-loop recovery, support tools, incident communication | Stops the "update wiped everything" disaster | [Done](<08. Release Safety and Operations.md>) |
 | 9 | **Privacy and account deletion**: what we store, deletion across stores and servers, legal | Store requirements | [Done](<09. Privacy and Account Deletion.md>) |
 | 10 | **Figma system diagram** (page "App Architecture") | Draws 1–9 | Next: waiting for your go-ahead |
+| 11 | **iCloud sync with CloudKit** (`CKSyncEngine`): replaces our server's sync and accounts on Apple devices (Rulebook D16); data layout, limits, failures, the free plan's one device, safety nets, tests | Decided 10 Oct 2026: no server holds habits | [Research done, ready to build](<11. iCloud Sync with CloudKit.md>) |
 
 ## Related work
 
