@@ -42,7 +42,11 @@ final class BackupUITests: XCTestCase {
         for header in ["Backups", "Export and Import"] {
             XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ==[c] %@", header)).firstMatch.exists, header)
         }
-        for gone in ["Your Account", "Sign In", "Create Account", "Move to Another Device", "our server"] {
+        // No account rows ("Sign in to iCloud in Settings" is iCloud's own and stays).
+        for gone in ["Your Account", "Sign In", "Create Account"] {
+            XCTAssertFalse(app.descendants(matching: .any).matching(NSPredicate(format: "label ==[c] %@", gone)).firstMatch.exists, gone)
+        }
+        for gone in ["Move to Another Device", "our server"] {
             XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", gone)).firstMatch.exists, gone)
         }
         XCTAssertFalse(app.buttons["cloud-delete"].exists, "Nothing to delete from iCloud while iCloud is off")

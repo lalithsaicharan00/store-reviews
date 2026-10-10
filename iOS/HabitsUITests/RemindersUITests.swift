@@ -10,7 +10,9 @@ final class RemindersUITests: XCTestCase {
     func testPlanningActionsPermissionsFailuresAndClockChanges() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-remindercheck", "-perf-reminders", "-perf-history"]
         app.launch()
-        XCTAssertTrue(app.staticTexts["Reminders: all checks passed"].waitForExistence(timeout: 90), app.debugDescription)
+        let result = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Reminders")).firstMatch
+        XCTAssertTrue(result.waitForExistence(timeout: 90), "The reminder checks did not finish")
+        XCTAssertEqual(result.label, "Reminders: all checks passed")
         print("REMINDER-PLANNING " + app.staticTexts["reminder-planning-metric"].label)
     }
     func testSavedRemindersOpenEditableTaskWithoutPermissionPrompt() {
