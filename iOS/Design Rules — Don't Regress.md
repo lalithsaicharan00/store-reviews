@@ -282,6 +282,11 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
   card's top edge). 16 pt all round, 16 between the card's parts, smaller only inside a part (the headline and its
   detail 4; a chart's title and chart 8). Year in Pixels keeps 12 at the sides so twelve month columns fit the iPhone
   SE, and 16 above and below. Pictures: `HabitPageUITests.testPeriodCardSpacing`.
+- **Designed 11 Oct 2026, not built yet: [Habit Progress — Overall Record, Streaks and Milestones](<Docs/Specs/Habit Progress — Overall Record and Streaks/README.md>).**
+  Once built it replaces the next bullet: Current and Best streak move into **Overall record** (a 2 × 2 grid with Goal met
+  and Best day / Best week), and Milestones become **medals for reached milestones plus one Next ring per track**; the
+  row of squares (reached, next and later) is retired. Every milestone value is kept (10 … 5,000 in total), a reached
+  milestone is never taken away, even when the goal changes, and only the next one is drawn.
 - **Current streak and Best streak open the Milestones card's "In a row" track** (Current Work 23, 8 Oct 2026; the 5 Oct
   placement research): early in this habit's Progress tab, never in the header over History and Notes; in the goal's own
   unit (days, weeks, months, or times for a selected-days habit), from the same runs as Today's streak; Show Streaks off

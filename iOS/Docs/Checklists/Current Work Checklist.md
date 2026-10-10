@@ -778,6 +778,26 @@ and the Add note keyboard coming up by itself.
     independently (item 26), wherever the buttons end up.
 
 - [ ] **29. Redesign the Overall Record card.** Added 4 October 2026.
+  - [x] **11 Oct 2026, from the user (with screenshots of Read's Progress tab):** work on the habit's Progress tab one
+    thing at a time. First: (1) bring the streaks back, visibly, in this tab (today they are only the small grey
+    "Now 0 · best 6" inside Milestones); decide where, and whether it's just Current and Best or more; (2) decide
+    whether Overall record needs improving, for every habit type (time: "2 h 43 min recorded", check: "50 times",
+    checklist: "56 steps done" …); (3) designs in a new Figma section. Don't touch Week, Month and Year; Milestones
+    comes after.
+    - [x] One example drawn and approved by the user, 11 Oct (Read, time habit, iPhone SE); no frame per habit type,
+      the build adapts the layout to each type's existing content:
+      [Habit Progress — Overall Record and Streaks](<../Specs/Habit Progress — Overall Record and Streaks/README.md>).
+  - [x] **11 Oct 2026, from the user (with screenshots of Read's Milestones):** Milestones feel like "just another
+    record", a bunch of squares filling up; they should feel like a reward or a surprise, but not gamified, and work for
+    every habit type. Research how milestones should be presented, including whether every milestone should be visible
+    up front (they're predictable), then design one screen. Researched (report "Milestones That Feel Earned — Awards,
+    Not Squares") and designed: medals for reached milestones, one Next ring per track, See all page (Figma frames 2–4).
+  - [x] **11 Oct 2026, from the user:** do streaks and milestones work for weekly and monthly goals (any habit type:
+    time, check, steps)? Check the code and its edge cases, say whether the design scales and how they're shown
+    ("5 weeks in a row", "1 month"). Checked: spec §5–§6 (edge cases E1–E11); weekly example drawn (frame 5).
+  - [ ] **Build it** from [Habit Progress — Overall Record, Streaks and Milestones](<../Specs/Habit Progress — Overall Record and Streaks/README.md>)
+    (the user, 11 Oct 2026: document everything so another agent can build it; keep every milestone value up to 5,000;
+    goal changes never take reached milestones away). Designed, approved and documented 11 Oct; not built.
   - The Overall Record card in the habit details Progress tab does not look good to the user; improve its visual
     hierarchy and presentation. Record any applicable equivalent in the main Progress page when assessing scope.
   - Make the information feel deliberately designed, with clear grouping, spacing and readable numbers/labels.
@@ -786,6 +806,8 @@ and the Add note keyboard coming up by itself.
 
 - [ ] **30. Improve the Milestones design — later work.** Added 4 October 2026; explicitly noted by the user as
   something to work on later, but definitely needed.
+  - Designed 11 Oct 2026 with item 29: build it from the same spec,
+    [Habit Progress — Overall Record, Streaks and Milestones](<../Specs/Habit Progress — Overall Record and Streaks/README.md>) §3–§6.
   - The current Milestones presentation looks basic and dull. Improve the card/section design and hierarchy so
     milestones feel meaningful and visually considered, consistent with the app's style.
   - Preserve the existing achieved/upcoming milestone information and its meaning; do not treat the visual
