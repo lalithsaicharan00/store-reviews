@@ -19,7 +19,7 @@ enum PerfAction: Equatable {
     /// The habit page's History · Notes · Progress, by position (3 Oct 2026).
     case habitTab(Int)
     /// The habit page's All milestones page (spec "Habit Progress" §3.2, 11 Oct 2026).
-    case openMilestones
+    case openMilestones, showMilestones
     /// Today's Edit: Arrange Your Day (3 Oct 2026).
     case openArrange
     /// The lock's keypad (Current Work 58): a digit, or Delete.
@@ -427,12 +427,18 @@ enum PerfDriver {
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Brush teeth")) }
             await open("Habit page: Progress (milestones)") { send(.habitTab(2)) }
+            await measure("Habit page: Progress scrolling (milestones)") { await scroll() }
+            send(.showMilestones)
+            await pause(1)
             await measure("Habit page: Milestones shelf scrolling") { await scrollSideways() }
-            await open("All milestones (first)") { send(.openMilestones) }
-            await measure("All milestones: scrolling") { await scroll() }
-            send(.closeDay)
-            await pause(1.2)
-            await open("All milestones (again)") { send(.openMilestones) }
+            // Opened three times: the first run's first opening read 50 s in one launch and 2 s in another, with the
+            // main thread asleep in the profile (10 Oct 2026); the later openings say what it costs every other time.
+            for round in ["first", "second", "third"] {
+                await open("All milestones (\(round))") { send(.openMilestones) }
+                if round == "first" { await measure("All milestones: scrolling") { await scroll() } }
+                send(.closeDay)
+                await pause(1.2)
+            }
         case "habit-page-total":
             // A weekly total (15 km a week): its Progress has the week's total against its goal.
             await open("All Habits") { send(.openAllHabits) }

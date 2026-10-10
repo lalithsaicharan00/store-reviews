@@ -77,6 +77,14 @@ final class SmallScreenUITests: XCTestCase {
                    "habit-record-goal-met", "habit-record-best-period"]
         let record = app.descendants(matching: .any)["habit-progress-record"]
         XCTAssertTrue(record.waitForExistence(timeout: 5), "Overall record")
+        // The spec's layout (ends at about 610 pt) has "What the squares mean" folded; until the person folds it once,
+        // it's open and pushes the card down (run 38039012506: 521–838 pt), a picture of which is kept for the user.
+        shot("se-progress-record-key-open")
+        let key = app.descendants(matching: .any)["progress-key"]
+        if key.exists {
+            app.buttons["heat-key-toggle"].tap()
+            XCTAssertTrue(key.waitForNonExistence(timeout: 3), "The key folds")
+        }
         sleep(1)
         XCTAssertTrue(record.frame.minY >= 0 && record.frame.maxY <= window.maxY, "The Overall record fits: " + frames(ids))
         for id in ids.dropFirst() {

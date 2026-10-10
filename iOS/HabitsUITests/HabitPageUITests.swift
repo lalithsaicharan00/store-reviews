@@ -483,7 +483,8 @@ final class HabitPageUITests: XCTestCase {
         for theme in ["light", "dark"] {
             app.terminate()
             launch(theme)
-            for (name, picture) in [("Brush teeth", "many"), ("No screens", "one"), ("Lunch, no phone", "none"), ("Call family", "weekly")] {
+            // In the Habits list's order, top to bottom.
+            for (name, picture) in [("Call family", "weekly"), ("Brush teeth", "many"), ("Lunch, no phone", "none"), ("No screens", "one")] {
                 open(name)
                 tab("Progress")
                 XCTAssertTrue(app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 5), "\(name): Overall record")

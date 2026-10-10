@@ -41,6 +41,7 @@ struct HabitProgressTab: View {
         if !milestones.next.isEmpty {
             MilestonesCard(habitID: habit.id, milestones: milestones, color: habit.color, seeAll: openMilestones)
                 .pageItem()
+                .id(HabitPageView.milestonesCard)
         }
         HabitPeriodCard(habit: habit, kind: .week, anchor: start?.range == .week ? start?.anchor : nil)
             .pageItem()
