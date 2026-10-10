@@ -990,6 +990,20 @@ and the Add note keyboard coming up by itself.
     plan's one syncing device, data safety (iCloud sync isn't a backup: keep the daily file and "never replace with
     less"), what's deleted with the server, and what GitHub's simulator can test.
 
+- [ ] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
+  #65; **to build later**, when the user says so, after item 81's iPhone CloudKit work).
+  - [x] **Research and design:** *done 10 Oct: [Apple Watch App — What People Want, What Breaks, and How Ours Works](<../../../Research/Research Reports/Apple Watch/Apple Watch App — What People Want, What Breaks, and How Ours Works.md>).
+    All 3,051 App Store reviews naming a watch read and coded; Apple's watchOS limits checked; the core's Room 3 and
+    SQLite libraries confirmed for watchOS. Design: an independent Watch app with its own database, changes by
+    WatchConnectivity and its own `CKSyncEngine` at once, counted once; rules WA1–WA13.*
+  - [ ] The user's four decisions (report §9): version 1's scope (routines on the Watch in version 2); minimum
+    watchOS 11; a custom Smart Stack layout for the timer Live Activity (widget lock, U28); an Apple Watch on the
+    user's Apple Account for the device checks.
+  - [ ] Build, in the report's order (§8): the core on watchOS; the app with its own database; WatchConnectivity;
+    `CKSyncEngine` on the Watch; complications; timers, notification buttons and the Plus gate.
+  - [ ] Tests on GitHub's simulator (§7), then the device checks on the user's iPhone and Watch (U9); add WA1–WA13 to
+    the Rulebook once built.
+
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
   - **What it is:** the screen a single entry opens to, from the Day sheet's entries and the habit page's History
