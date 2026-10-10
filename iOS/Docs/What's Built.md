@@ -199,7 +199,38 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] ≡ → Help & Feedback: Contact Us (email with the app and iOS versions, or the address to copy), Show the Welcome Again, How It Works (33 answers, searchable)
 - [x] ≡ → About: version, the name, privacy, open-source acknowledgements
 - [x] Checked with `OnboardingUITests`
-## Backup, sync and accounts (1 Oct 2026, branch `claude/server-and-sync`)
+## iCloud sync and backup (10 Oct 2026, Current Work 81; iPhone checks pending)
+
+Design: [Architecture 11 — iCloud Sync with CloudKit](<../../Architecture/11. iCloud Sync with CloudKit.md>) (§24 "As
+built"). Rulebook D3, D4, D9, D12, D14–D17. No server of ours holds anyone's habits (D16).
+
+- [x] **Every change syncs through the person's own iCloud** (CloudKit private database, `CKSyncEngine`; `CloudSync`,
+      `CloudKitTransport`): the outbox is the truth, a change leaves it only when iCloud confirms a record built after
+      it; per-field merge (`SyncRules.mergeRecord`), deletes are tombstones, never CloudKit deletions
+- [x] **Free syncs one device at a time, Plus every device** (`activeDevice`): a free second device asks first (See Plus
+      / Use on This iPhone), and the old device sends what it has before it stops
+- [x] **Asks first, never deletes** on a different Apple Account or iCloud data that was removed; a sign-out, a full
+      iCloud or a deleted zone never deletes anything on the phone (D3)
+- [x] **A fresh install brings everything back from iCloud first** and sends nothing until its welcome is finished
+      (D14); the welcome looks in iCloud before Start without restoring
+- [x] **The mass-change brake, both ways** (D17): big deletes wait on the iCloud page, with Restore From a Backup one tap
+      away
+- [x] **Changes made outside the app** (widgets, notifications, Live Activity, leaving the app) reach iCloud in the
+      background (`CloudSync.scheduleSoon`, D12)
+- [x] **Dated backup files apart from sync** in iCloud Drive: per device, 7 days, 4 weeks, 6 months, within 300 MB,
+      never fewer than 3 (`BackupFolder`)
+- [x] **≡ → iCloud & Backup** replaces Backup & Export and Account: the status first with its one fix, devices, backups,
+      Export and Import, Delete My Data From iCloud, Erase All My Data; a card on Today only when iCloud needs the person
+- [x] **Delete My Data From iCloud** removes both zones and the backup files, for every device (D9)
+- [x] Tested against `FakeCloud` on GitHub (`ICloudUITests`: every guard and error of §3 and §7, the property test, the
+      15-year extreme account; the page in every state); Core's `CloudStoreTest` and `MigrationTest` (schema 9)
+- [ ] On the iPhone (Architecture 11 §19): two devices, Airplane Mode, a full iCloud, another Apple Account, a reinstall;
+      deploy the CloudKit schema to Production before TestFlight
+
+## Backup, sync and accounts (1 Oct 2026, branch `claude/server-and-sync`; replaced by iCloud sync, 10 Oct 2026)
+
+*The account, server backup, sign-in and transfer below were removed on 10 Oct 2026 (D16); the iCloud page above
+replaces them. Kept as history.*
 
 Design: [Backup, Sync and Accounts — One Seamless Experience](<../../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>).
 
@@ -238,5 +269,5 @@ Design: [Backup, Sync and Accounts — One Seamless Experience](<../../Research/
 
 - [ ] Settings still to build: restore purchase, Erase All Data in Privacy (help, About, theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
 - [x] iPhone Home-screen and Lock-screen widget (merged into `main` 1 Oct, from `codex/iphone-widgets`): free Today, One Item and Lock summaries; Plus Icons and History; shared App Group, durable additive actions and privacy. [Validation and release checks](<../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Native Integration and Release.md>) retain unverified system/device checks separately.
-- [ ] Plus: purchase, account, sync and server backup
+- [ ] Plus: purchase (sync is iCloud, built 10 Oct 2026)
 - [ ] Apple Watch, iPad, Apple Health

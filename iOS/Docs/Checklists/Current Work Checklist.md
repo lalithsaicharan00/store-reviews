@@ -1005,6 +1005,20 @@ and the Add note keyboard coming up by itself.
       scenarios; all on GitHub.
     - [ ] 81.6 Rulebook D3, D4, D9, D12, D14, D15 rewritten for iCloud; "replaced by 11" notes in Architecture 01, 02,
       04, 05, 06; What's Built; Design Rules' iCloud page; merged into `main`; branches marked safe to delete.
+    - **Left for the user** (step 5 of §21; a cloud session can't do these):
+      - [ ] The device checks of Architecture 11 §19 on the iPhone and an iPad (or a second iPhone) on one Apple
+        Account: a change on one shows on the other; Airplane Mode, then back; a full iCloud; signing in to another
+        Apple Account (the question, both answers); deleting the app's iCloud data in Settings (Back Up Again / Not
+        Now); a reinstall gets everything back before Start without restoring; free: the second-device sheet, Move
+        Here, the old device sending what it has; Delete My Data From iCloud; a widget tap, a notification's Done and
+        the Live Activity reaching the other device without opening the app (D12, D13: also with the phone locked).
+      - [ ] The first iPhone build from Xcode registers the CloudKit service and push notifications (automatic
+        signing); the CloudKit Console then shows the container's Development schema (`Row`, `Active`, `Device`).
+      - [ ] **Deploy the CloudKit schema to Production** in the CloudKit Console before the first TestFlight build
+        (TestFlight and the App Store use Production; without it nothing syncs there), and switch
+        `aps-environment` to `production` for that archive (Xcode does this for App Store distribution).
+      - [ ] Once CloudKit has shipped and passed these checks: tag the server `server-final-2026-10` and remove
+        `server/` (the user's decision, 10 Oct 2026; nothing in the app calls it any more).
 
 - [ ] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
   #65; **to build later**, when the user says so, after item 81's iPhone CloudKit work).

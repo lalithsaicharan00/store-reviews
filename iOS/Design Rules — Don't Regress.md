@@ -497,7 +497,7 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 **Decided and final. Don't reopen it.** The top-left button is a ≡ menu that slides in from the left over Today. Everything that isn't used every day lives there: **Progress, Habits (All Habits) and Tasks leave Today's top bar**, and every setting goes in too. The user overrode Round 3's suggestions to keep Progress in the top bar and to open ≡ as a sheet. Research: [Navigation, Round 3](<../Research/Research Reports/Home Screen and Visual Design/Navigation Pattern/Navigation, Round 3 — The Menu, Filter and Two Ways In.md>). Checklist: [Sidebar Menu](<Docs/Checklists/Sidebar Menu.md>). Code: `Habits/Menu/`. *Supersedes: the avatar at the top left, the Progress and All habits (☑︎ `checklist`) top-bar buttons, and Round 2's avatar-and-icons top bar.*
 
 - **Today's top bar is ≡ · Edit · (Filter +)** (3 Oct 2026). Edit is a word in its own capsule (Apple: keep text-labelled actions apart from symbol ones); Filter and + share one. While arranging: only Done. Filter's icon is `line.3.horizontal.decrease.circle`, never the bare three lines, which look like ≡.
-- **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Day and Week · Reminders · Appearance | Backup & Export · Privacy & Security · Account (redesign, 10 Oct 2026; was Account first) | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only). There is no Widgets row: how widgets work is Help & Feedback → Widgets, and a widget's Choose a habit opens it there (Current Work 58, 9 Oct 2026).
+- **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Day and Week · Reminders · Appearance | iCloud & Backup · Privacy & Security (10 Oct 2026, Current Work 81: iCloud & Backup replaced Backup & Export and Account went with the server) | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only). There is no Widgets row: how widgets work is Help & Feedback → Widgets, and a widget's Choose a habit opens it there (Current Work 58, 9 Oct 2026).
   - **Built 9 Oct 2026 (Current Work 58; iPhone check pending):** Privacy became **Privacy & Security**, and the **Widgets** row went: its "Hide widget content" switch is Privacy & Security's **Hide Names Outside the App**, and its guide is Help & Feedback → Widgets (a widget's Choose a habit link opens it). Spec: [Privacy & Security — What to Build](<Docs/Specs/Privacy & Security — What to Build.md>). **App Lock redesigned 9 Oct 2026, built 10 Oct (Current Work 58.13; iPhone check pending):** a row on Privacy & Security ("App Lock", "Lock the app with Face ID", Off/On) opens a page with one switch; options appear only once it's on; turning it on asks "If Face ID doesn't work" (iPhone Passcode / App Passcode, no badge) before anything is set; on-screen words say "the app" (never "Often Enough") and "app passcode" (never "code"); the 24-hour reset is fixed, not a setting. Spec: [App Lock Redesign](<Docs/Specs/App Lock Redesign/README.md>). The lock's own questions ("Did you change Face ID?", an alert, never a sheet) are asked on the cover, and the app opens only once they're answered. **The cover is in its own window, above sheets, alerts and pushed pages** (an overlay on the root view sat under a sheet and showed a half-typed form, 9 Oct 2026), and locking ends typing so the keyboard never shows over it; the typed text stays.
 - **Every row pushes its page onto Today's own navigation stack** (`MenuModel.path`), so Back and the edge swipe return to Today. A page that isn't built opens a "coming" page that says what it will hold; wire the real page in `MenuPage`.
 - **One screen per thing, however many ways in:** ≡ → Times of Day (`TimesOfDayList`) and Today's Edit (`ArrangeDayView`) open the same `SectionEditor` for a time of day; Habits and Tasks are one `AllHabitsView(kind:)`.
@@ -523,55 +523,50 @@ Spec: [App Lock Redesign §0](<Docs/Specs/App Lock Redesign/README.md>). Report:
 - **The 24-hour wait stays** in every way that has no other proof; the right app passcode cancels it, the lock screen
   shows it, and nothing is ever deleted.
 
-## Account and Backup & Export (redesigned 10 Oct 2026 and built, Current Work 76; free sync on one device 11 Oct, Current Work 78; first built 9 Oct, 58.10–58.12; iPhone check pending)
+## iCloud page (built 10 Oct 2026, Current Work 81; iPhone check pending)
 
-Spec (the source of truth): [Account and Backup Redesign](<Docs/Specs/Account and Backup Redesign/README.md>). Reports:
-[Backup & Export and Your Account — What People Look For](<../Research/Research Reports/Data, Sync and Accounts/Backup & Export and Your Account — What People Look For.md>),
-[Free Plan Backups](<../Research/Research Reports/Data, Sync and Accounts/Free Plan Backups — iPhone and iPad, and a Backup That's Never a Day Behind.md>).
-Every screen starts from what people want to see there (Rulebook W6).
+Design: [Architecture 11 — iCloud Sync with CloudKit](<../Architecture/11. iCloud Sync with CloudKit.md>) §17 (screens)
+and §10–13 (the questions). Rulebook D3, D4, D9, D14, D17. Code: `Habits/Backup/ICloudPage.swift`, `Habits/Cloud/`.
+*Supersedes the Account page and the account parts of Backup & Export (Current Work 58.10–58.12, 76, 78, 79): there is
+no account, no Sign In, no Move to Another Device with a code and no server anywhere on screen (D16). The old section's
+decisions that still hold are kept below; the rest went with the server.*
 
-- **≡ → Account, signed out:** who you are first (*Not signed in* · *Your habits are on this iPhone and backed up to
-  iCloud.*), then **Sign In** and **Create Account** as two plain rows (never one "Create Account" that also signs in,
-  never a list of benefits): returning people look for the words *sign in*. Each opens its own bottom sheet with Apple's
-  own `SignInWithAppleButton` and Google's button (drawn to Google's branding rules), ✕ to close. Sign In never makes an
-  account without asking (D3); Create Account with an account that exists signs into it. The menu row shows **no value
-  signed out**, **Free** or **Plus** signed in.
-- **≡ → Account, signed in:** *Signed in with Apple* / *Email hidden by Apple* (or the Google address), **Plan** (Free,
-  or **Plus (lifetime)**), **Last Synced** (free and Plus both sync), **Devices** with how to get on another one (free:
-  *To use another phone or tablet instead, sign in on it. This iPhone is then signed out and keeps its habits.*),
-  **Sign Out** (*Your habits stay on this iPhone.*) and **Delete Account…** (red, its own page).
-- **A free account syncs on one device** (the user, 11 Oct 2026, Current Work 78): signing in on another device asks
-  first in a sheet, **Use on This iPad?** · *Free syncs one device, so your iPhone will be signed out. It keeps its
-  habits.* · **Continue** · **Cancel**; the old device, next time it opens, shows the alert **Signed out on this iPhone**
-  · *Your account is now used on your iPad. This iPhone keeps its habits and backs them up to iCloud.* · **OK**, once.
-  There's no "signed in but not syncing". Never "active device", "primary device", "one device at a time", "session" or
-  "handover" on screen. Plus shows neither.
-- **One backup place at a time** (the user, 10–11 Oct 2026; Rulebook D4): no account, iCloud (or Google Drive once it
-  works), backed up as you go; signed in, the account only, by sync (free or Plus; no iCloud copy beside it). Signing in
-  syncs at once and stops iCloud only once the server has acknowledged everything; the old iCloud copies are never
-  deleted. Any sign-out (the person's, or another device's sign-in) backs up to iCloud again at once.
-- **Backup & Export: the same list in every state**: status (**Backed up** / *Today 9:14 · iCloud* and **Back Up Now**
-  without an account; **Synced** / *Just now · Your account* (Plus *· 2 devices*) and **Sync Now** signed in; problems in
-  red with their fix) · **Backed Up To**: **iCloud · Google Drive (once it works) · Your Account**, always in that order,
-  the ✓ where the habits are kept (no account: iCloud ✓ *Your Apple Account*, Your Account *Create one to sync your
-  habits* › opening **Create Account over the page**; signed in: iCloud and Google Drive *Used when you're not signed in*,
-  Your Account ✓ *Free · Syncs this iPhone* / *Plus · Syncs across your devices* › the Account page). Backup is the
-  word for iCloud and Google Drive, sync for the account ·
-  **Move and Restore** (**Move to Another Device**, which opens the transfer code at once; **Restore From a Backup**;
-  Undo Last Restore) · **Export** (Save a Backup File, Export a Spreadsheet (CSV)) · **Erase All My Data…** (no
-  account only).
-- **Restore From a Backup** asks *Where is your backup stored?*: no account **iCloud** (by device and day) · **Backup
-  File**; signed in **Your Account** (free *Any of the last 7 days*, Plus *Any day in the last 90 days*) · **Backup File**.
-  Plus's restore replaces the habits on every device and asks first, saying so; every restore keeps its 30-day undo (D5).
-- **Move to Another Device** says three steps (*Install Often Enough on the other device*: the name stays there because
-  people search for it), the code, *Waiting for the other device…*, and that the habits stay here too. **Through the
-  server** since 10 Oct 2026 (Current Work 79, D15): any network, any distance, no Local Network permission, a code
-  works for an hour. Signed in, the new device asks once *Sign in to keep your account* (sign-ins never travel between
-  devices).
-- **Never** a paragraph explaining the screen, "our server" or "we", a row that shows a value nobody can change, a Google
-  Drive row before Drive truly works, "deleting the app deletes your habits", or anything that makes backup look like
-  part of Plus (D10). "Encrypted" means in transit and at rest (Architecture 06), never end-to-end, except the move with
-  a code, which is sealed with the code before it leaves the device (D15).
+- **≡ row "iCloud & Backup"** (`icloud` symbol), where Backup & Export was; there is no Account row. The page's title
+  is the row's name.
+- **The status comes first, in one row, in words people use** (`CloudStatus.of`): Synced with iCloud · *Just now* ·
+  Waiting for a connection · *3 changes not sent yet* · iCloud is full · iCloud is off · iCloud isn't allowed on this
+  iPhone · Bringing your habits from iCloud · *12,000 so far* · Your iPad is the one syncing · Waiting for you: N
+  deletions … Every line that isn't "synced" says **Your habits are on this iPhone** (they are: D1). **One action under
+  it, the fix for that state** (Sync Now, Open Settings, Manage Storage, Turn On, Back Up Again, Move Here, Apply the
+  Changes / Send to iCloud), never a list of buttons. Never "zone", "record", "CloudKit", "server", "account" for
+  iCloud's own Apple Account, "active device" or "handover" on screen.
+- **Questions are asked, never decided for the person** (D3): a different Apple Account (an alert: *This iPhone uses a
+  different Apple Account* · what's on each side · **Add to This Account's iCloud** · **Keep on This iPhone Only**);
+  the habits removed from iCloud (*Your habits were removed from iCloud* · **Back Up Again** · **Not Now**). Until
+  answered, nothing goes up and nothing is deleted; the status row repeats the question with the same two buttons.
+- **The brake (D17) waits on this page**: *Waiting for you: 120 deletions from iCloud* with **Apply the Changes**, and
+  **Restore From a Backup Instead** one tap away; this device's own big delete: *Waiting for you: 60 deletions* with
+  **Send to iCloud**.
+- **Devices**: Plus lists every device on the Apple Account (*This iPhone* first, each with when it last synced). Free:
+  *This iPhone is the one syncing* with **See Plus**, or *Your iPad is the one syncing* with **Move Here** and See Plus.
+  A free second device is asked once, in a sheet (the Plus screens' image 16): *Use your habits on this iPhone?* ·
+  *The free plan syncs one device at a time through iCloud.* · **See Plus** first, **Use on This iPhone** last (the
+  user's order) · what happens to the other device (*keeps everything it has*). ✕ changes nothing.
+- **Backups**, kept apart from sync (D4): *Backed up* · *Today 9:14 · iCloud*, **Back Up Now**, **Restore From a
+  Backup** (*Any day of the last week, month or six months*), Undo Last Restore while it can. Google Drive stays exactly
+  as built for someone who keeps iCloud off (the user, 10 Oct 2026), off until it works (`BackupFeatures.googleDrive`).
+- **Export and Import**: Save a Backup File, Export a Spreadsheet (CSV), Import a Backup File, always on the page in
+  every state (D10).
+- **Last, in red text:** **Delete My Data From iCloud…** (only while iCloud has something: asks first, offers a backup
+  file, says this iPhone keeps everything unless chosen too, D9) and **Erase All My Data…** (turns iCloud sync off here
+  first, so the habits don't come back).
+- **Today shows a small card only when iCloud needs the person** (full, a question, the brake: `cloud-card`, opening
+  this page). Nothing about sync shows on Today otherwise, and never a spinner.
+- **The welcome looks in iCloud first** (D14): *Looking in iCloud…* (Start Fresh waits), then *Your habits are here from
+  iCloud.* or nothing found; iCloud off says how to turn it on in Settings.
+- **Kept from the old page:** no paragraph explaining the screen; never a row that shows a value nobody can change;
+  nothing that makes backup or sync of what someone has look like part of Plus (D10): only more than one device
+  syncing is Plus.
 
 ## Sidebar data, tasks and reminders — 30 September 2026
 
@@ -608,39 +603,29 @@ every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the
 - **An idea opens its form straight away, filled in** (name, icon, how it's tracked, how often; amounts empty, nothing
   saved until Add): never "What do you want to do?" first. **Create my own habit** (not "Create on my own") pushes the
   same `NewItemChoices` that + shows, as the next page of the welcome, full screen: one stack, one Back.
-- **I've used it before → Welcome back:** Sign in to your account · Restore a backup · Move from another device ·
-  Start without restoring. **When something is already here, it comes first with its own Continue:** habits or tasks on
-  this iPhone ("We found data on this device. 17 habits. Continue with this data?") or an account still signed in after
-  a reinstall ("You're still signed in."). Then "Other ways to get your data".
-- **One loading page, its words fitted to the job:** Getting your data (from your account / from your other device),
-  Processing your data (from your backup file), Restoring your backup / your data (after the review), **Setting things
+- **I've used it before → Welcome back** (rebuilt for iCloud 10 Oct 2026, Current Work 81, D14): iCloud first.
+  *Looking in iCloud…* · *Your habits come back by themselves if they're there.* while the first look runs (**Start
+  without restoring** waits until it ends, so a reinstall never starts empty over its own iCloud copy); then *Your
+  habits are here from iCloud.* with a count and Continue, or *No habits in iCloud*; iCloud off: **Sign in to iCloud**
+  (in Settings). Then Restore a backup and Start without restoring. **When something is already here, it comes first
+  with its own Continue** ("We found data on this device. 17 habits. Continue with this data?"). No Sign in to your
+  account and no Move from another device: they went with the server (D15, D16).
+- **One loading page, its words fitted to the job:** Processing your data (from your backup file), Restoring your backup / your data (after the review), **Setting things
   up** for data already on the iPhone (never "getting" what's already here). A turning symbol (still with Reduce Motion),
   what it's doing now, Cancel at the bottom; no Cancel or Back once a restore is writing; at least a second on screen.
   A problem is said in place with two ways on (Try again / Back, Open Settings, Restore a backup instead, Start without
   restoring). Leaving the page stops its work from ending the welcome later.
-- **Signing in here never backs the empty iPhone up first** (`signIn(… backUp: false)`); it backs up once the data is
-  back. Plus: the first full sync brings everything (D14). Free: the account's newest backup with something in it.
-  An unknown sign-in says so (Try Another Sign-In / Restore a Backup Instead / Create a New Account), never quietly
-  makes an account (D3).
-- **On an empty iPhone an account or a transfer restores straight away** (nothing to lose, and the undo file is kept,
-  D5); a backup from iCloud or a file is shown first (**Your backup.**: what's in it, made on, when) with Restore. With
+- **On an empty iPhone, iCloud brings everything back by itself** (D14); a backup from iCloud or a file is shown first (**Your backup.**: what's in it, made on, when) with Restore. With
   something already on the iPhone, always **Replace What's on This iPhone** or **Merge**, each saying what it would do.
   **A backup with nothing in it is never "restored"**: the page says so.
-- **Move from another device, like moving chats:** the old device's ≡ › Backup & Export › Move to Another Device makes
-  a fresh backup and shows eight characters (two groups of four, Crockford letters); the new device types them. **Through
-  the server since 10 Oct 2026** (Current Work 79, D15): the file is sealed with a key stretched from the code, the
-  server only sees an ID and ciphertext, an hour at most, deleted on receipt; no account, any network. The screen stays
-  awake; leaving it deletes the file. A wrong or expired code says "That code doesn't match, or it has expired" within
-  seconds. The code field cleans as typed (capitals, no dash, eight at most) on the next turn (U6). (9 Oct–10 Oct it went
-  over the local network, with the code as the TLS key.)
 - **Google Drive** is in the wireframes but nothing backs up there yet, so it isn't offered; add it to Restore a backup
   when Google Drive backup exists.
 - **Help → Show the Welcome Again** shows What's included and the three pages on what the app does, ✕ to close, Done
   on the last; no Skip setup.
 - **Never add a question the app can't act on**, a goals survey, a score, a pledge, a permission request or a paywall
-  (C111, C283, C160, C209). An account appears only for someone coming back to one.
+  (C111, C283, C160, C209). There is no account (D16).
 - **Not shown** in UI or speed tests (`-uitest`, `-dbname`) unless `-onboarding`, nor to anyone who already has habits,
-  nor over a storage problem. Debug only: `-onboarding-page a,b` opens it on those pages; `-transfer-code` and
-  `-transfer-send` check a transfer between two simulators.
+  nor over a storage problem. Debug only: `-onboarding-page a,b` opens it on those pages; `-test-cloud has-habits` puts
+  another device's habits in the test launch's fake iCloud.
 - **The empty Today is never a dead end and never says "every day":** New Habit, Start From an Idea, Restore from a Backup File, How It Works.
 - **Help & Feedback:** Contact Us and Show the Welcome Again first, then How It Works, searchable. **Every answer names the exact button**; when a way in or a label changes, change its answer in `HelpTopics` in the same change. Contact Us sends no habit data. About lists the open-source libraries with their licences; no links to pages that don't exist yet.
