@@ -27,6 +27,10 @@ doesn't lose the thread and think otherwise.
 | **Privacy** | **Full privacy: habits never reach us.** They live on the person's devices and in their own iCloud or Google Drive. A new advantage to say plainly in the listing and on the Plus page |
 | **Plus price** | **$24.99** (the user's price; $29.99 was suggested only to carry server costs, now gone) |
 
+**Next (to work on later, Current Work 81):** move sync and backup from our server to CloudKit with `CKSyncEngine`,
+delete the code it replaces, and redesign the Backup & Restore and Account pages for iCloud. **The design is done:**
+[Architecture 11 — iCloud Sync with CloudKit](<../../../../Architecture/11. iCloud Sync with CloudKit.md>).
+
 **Still open:** the student price and how students are verified (Apple offer codes work for one-time purchases);
 before Android, Google Play's rules on unlocking purchases from another store and its family sharing.
 
