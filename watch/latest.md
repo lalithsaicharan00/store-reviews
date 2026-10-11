@@ -1,160 +1,67 @@
-# Watch: apple-watch-ci4 @ 83a8c5c
+# Watch: apple-watch-ci2 @ e64a020
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38126060880 · 2026-10-11 09:13 UTC
-Commit: Apple Watch: final screenshots on the merged code (scratch branch run)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38126057997 · 2026-10-11 09:17 UTC
+Commit: Apple Watch: final round on the merged code (scratch branch run)
 
-- Core tests: skipped
+- Core tests: success
 - Watch build: success
 - iPhone build with the Watch app: success
-- Watch UI tests (none): skipped
-- Screenshots: success
+- Watch UI tests (WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests): success
+- Screenshots: skipped
 - Speed: skipped
 - Paired simulators: skipped
 
 Embedded in the iPhone app: OftenEnoughWatch.app 
 
-## Screenshots
+## Core tests
 ```
-Test case 'WatchScreenshotTests.testATodayStates()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (27513)' (100.668 seconds)
-Test case 'WatchScreenshotTests.testATodayStates()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (27511)' (90.015 seconds)
-Test case 'WatchScreenshotTests.testBDayDetails()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (27513)' (298.111 seconds)
-Test case 'WatchScreenshotTests.testBDayDetails()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (27511)' (262.160 seconds)
-Test case 'WatchScreenshotTests.testCRoutine()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (27513)' (54.081 seconds)
-Test case 'WatchScreenshotTests.testCRoutine()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (27511)' (62.311 seconds)
-Test case 'WatchScreenshotTests.testEFaceGallery()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (27513)' (29.060 seconds)
-Test case 'WatchScreenshotTests.testEFaceGallery()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (27511)' (31.221 seconds)
-Test case 'WatchScreenshotTests.testGPlus()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (27513)' (37.778 seconds)
-Test case 'WatchScreenshotTests.testGPlus()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (27511)' (37.396 seconds)
-Test case 'WatchScreenshotTests.testHLargerText()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (27513)' (38.253 seconds)
-Test case 'WatchScreenshotTests.testHLargerText()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (27511)' (38.484 seconds)
-Test case 'WatchScreenshotTests.testHStates()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (27513)' (138.321 seconds)
-Test case 'WatchScreenshotTests.testHStates()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (27511)' (136.805 seconds)
+BackupTest: 20 tests, 0 failures, 0 errors, 8.155 s
+CloudStoreTest: 16 tests, 0 failures, 0 errors, 180.714 s
+DurabilityTest: 11 tests, 0 failures, 0 errors, 18.258 s
+HabitRepositoryTest: 13 tests, 0 failures, 0 errors, 0.295 s
+LiveSyncTest: 1 tests, 0 failures, 0 errors, 0.358 s
+MigrationTest: 16 tests, 0 failures, 0 errors, 1.36 s
+PeerSyncTest: 18 tests, 0 failures, 0 errors, 158.89 s
+  peer property test: 3000 seeded runs converged
+  first fill: 375000 logs (15 years) in 76 parts, biggest part 73 KB, total 5 MB, 26.8 s (made in 16.1 s); Watch database 118 MB; peak heap 93 MB
+SyncTest: 13 tests, 0 failures, 0 errors, 2.178 s
+  random sync: {entries=25, undone=13, deletedHabits=2, names=3, fieldClocks=16}
+```
+
+## Watch UI tests
+```
+Test case 'WatchDayDetailsTests.testAmountDialMainActionAndLogs()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (42.571 seconds)
+Test case 'WatchDayDetailsTests.testAmountDialMainActionAndLogs()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (45.813 seconds)
+Test case 'WatchDayDetailsTests.testChecklistStepsTick()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (37.426 seconds)
+Test case 'WatchDayDetailsTests.testChecklistStepsTick()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (28.504 seconds)
+Test case 'WatchDayDetailsTests.testCheckMarkDoneThenUndo()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (21.132 seconds)
+Test case 'WatchDayDetailsTests.testCheckMarkDoneThenUndo()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (23.032 seconds)
+Test case 'WatchDayDetailsTests.testDeleteALogAsksFirstAndGoesBackFirst()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (23.074 seconds)
+Test case 'WatchDayDetailsTests.testDeleteALogAsksFirstAndGoesBackFirst()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (22.997 seconds)
+Test case 'WatchDayDetailsTests.testLimitAndWeekGoal()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (23.986 seconds)
+Test case 'WatchDayDetailsTests.testLimitAndWeekGoal()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (22.780 seconds)
+Test case 'WatchDayDetailsTests.testQuitSlipAsksFirst()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (11.516 seconds)
+Test case 'WatchDayDetailsTests.testQuitSlipAsksFirst()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (12.233 seconds)
+Test case 'WatchDayDetailsTests.testSkipAndUndoSkip()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (20.275 seconds)
+Test case 'WatchDayDetailsTests.testSkipAndUndoSkip()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (17.500 seconds)
+Test case 'WatchDayDetailsTests.testTimerStartsAndPauses()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (27.385 seconds)
+Test case 'WatchDayDetailsTests.testTimerStartsAndPauses()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (27.355 seconds)
+Test case 'WatchLaunchTests.testOpensToToday()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (5.989 seconds)
+Test case 'WatchLaunchTests.testOpensToToday()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (6.191 seconds)
+Test case 'WatchTodayTests.testACheckTogglesAndDoneRowsSinkAfterThePause()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (31.723 seconds)
+Test case 'WatchTodayTests.testACheckTogglesAndDoneRowsSinkAfterThePause()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (32.177 seconds)
+Test case 'WatchTodayTests.testAFailedSaveSaysSoAndShowsWhatsSaved()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (71.025 seconds)
+Test case 'WatchTodayTests.testAFailedSaveSaysSoAndShowsWhatsSaved()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (65.718 seconds)
+Test case 'WatchTodayTests.testAPlusOneLogsAtOnceAndUndoNamesIt()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (18.250 seconds)
+Test case 'WatchTodayTests.testAPlusOneLogsAtOnceAndUndoNamesIt()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (18.062 seconds)
+Test case 'WatchTodayTests.testEmptyAndNothingPlanned()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (11.500 seconds)
+Test case 'WatchTodayTests.testEmptyAndNothingPlanned()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (12.032 seconds)
+Test case 'WatchTodayTests.testFirstLaunchNeverSaysNoHabits()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (6.095 seconds)
+Test case 'WatchTodayTests.testFirstLaunchNeverSaysNoHabits()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (6.004 seconds)
+Test case 'WatchTodayTests.testLimitsTasksSkippedAndPaused()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (38.750 seconds)
+Test case 'WatchTodayTests.testLimitsTasksSkippedAndPaused()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (37.024 seconds)
+Test case 'WatchTodayTests.testOpensWithTheIPhonesSectionsAndWords()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (42821)' (31.664 seconds)
+Test case 'WatchTodayTests.testOpensWithTheIPhonesSectionsAndWords()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (42763)' (29.552 seconds)
 
 Failures:
-42mm-A1-today.png
-42mm-A2-whole-list-2.png
-42mm-A2-whole-list-3.png
-42mm-A2-whole-list-end.png
-42mm-A2-whole-list.png
-42mm-A3-after-a-tap.png
-42mm-A4-all-done.png
-42mm-A5-nothing-planned.png
-42mm-A6-first-launch.png
-42mm-A7-no-habits.png
-42mm-B1-amount.png
-42mm-B10-quit.png
-42mm-B11-one-log.png
-42mm-B12-delete-asks-first.png
-42mm-B13-more.png
-42mm-B14-skipped.png
-42mm-B15-log-manually-time.png
-42mm-B16-asks-how-much.png
-42mm-B17-decimals-from-last.png
-42mm-B18-say-or-type.png
-42mm-B2-four-logs.png
-42mm-B2-todays-logs.png
-42mm-B3-log-manually-amount.png
-42mm-B4-check.png
-42mm-B5-check-done.png
-42mm-B6-time.png
-42mm-B7-running.png
-42mm-B8-wrist-down.png
-42mm-B9-checklist.png
-42mm-C1-morning-1.png
-42mm-C2-morning-2-running.png
-42mm-C2-morning-2.png
-42mm-C3-morning-3-done.png
-42mm-C4-routine-list.png
-42mm-C5-morning-done.png
-42mm-C6-closed-timer-running.png
-42mm-E1-complications.png
-42mm-E2-log-from-the-face.png
-42mm-E3-E4-timer-and-smart-stack.png
-42mm-E3-while-a-timer-runs.png
-42mm-E5-names-hidden.png
-42mm-G1-scrolled.png
-42mm-G1-without-plus.png
-42mm-G3-plus-is-yours.png
-42mm-G4-waiting-for-approval.png
-42mm-G5-couldnt-reach-app-store.png
-42mm-G6-plus-ended.png
-42mm-G7-face-without-plus.png
-42mm-H1-limits.png
-42mm-H10-streak.png
-42mm-H18-couldnt-save.png
-42mm-H2-limit-page.png
-42mm-H20-larger-text-day-details.png
-42mm-H20-larger-text-routine.png
-42mm-H20-larger-text-today.png
-42mm-H3-over-the-limit.png
-42mm-H4-three-times-a-week.png
-42mm-H5-tasks.png
-42mm-H6-skipped-and-paused.png
-42mm-H6-skipped.png
-42mm-H7-record-a-slip.png
-42mm-H8-after-a-slip.png
-42mm-H9-milestone.png
-46mm-A1-today.png
-46mm-A2-whole-list-2.png
-46mm-A2-whole-list-3.png
-46mm-A2-whole-list-end.png
-46mm-A2-whole-list.png
-46mm-A3-after-a-tap.png
-46mm-A4-all-done.png
-46mm-A5-nothing-planned.png
-46mm-A6-first-launch.png
-46mm-A7-no-habits.png
-46mm-B1-amount.png
-46mm-B10-quit.png
-46mm-B11-one-log.png
-46mm-B12-delete-asks-first.png
-46mm-B13-more.png
-46mm-B14-skipped.png
-46mm-B15-log-manually-time.png
-46mm-B16-asks-how-much.png
-46mm-B17-decimals-from-last.png
-46mm-B18-say-or-type.png
-46mm-B2-four-logs.png
-46mm-B2-todays-logs.png
-46mm-B3-log-manually-amount.png
-46mm-B4-check.png
-46mm-B5-check-done.png
-46mm-B6-time.png
-46mm-B7-running.png
-46mm-B8-wrist-down.png
-46mm-B9-checklist.png
-46mm-C1-morning-1.png
-46mm-C2-morning-2-running.png
-46mm-C2-morning-2.png
-46mm-C3-morning-3-done.png
-46mm-C4-routine-list.png
-46mm-C5-morning-done.png
-46mm-C6-closed-timer-running.png
-46mm-E1-complications.png
-46mm-E2-log-from-the-face.png
-46mm-E3-E4-timer-and-smart-stack.png
-46mm-E3-while-a-timer-runs.png
-46mm-E5-names-hidden.png
-46mm-G1-scrolled.png
-46mm-G1-without-plus.png
-46mm-G3-plus-is-yours.png
-46mm-G4-waiting-for-approval.png
-46mm-G5-couldnt-reach-app-store.png
-46mm-G6-plus-ended.png
-46mm-G7-face-without-plus.png
-46mm-H1-limits.png
-46mm-H10-streak.png
-46mm-H18-couldnt-save.png
-46mm-H2-limit-page.png
-46mm-H20-larger-text-day-details.png
-46mm-H20-larger-text-routine.png
-46mm-H20-larger-text-today.png
-46mm-H3-over-the-limit.png
-46mm-H4-three-times-a-week.png
-46mm-H5-tasks.png
-46mm-H6-skipped-and-paused.png
-46mm-H6-skipped.png
-46mm-H7-record-a-slip.png
-46mm-H8-after-a-slip.png
-46mm-H9-milestone.png
 ```
