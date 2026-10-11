@@ -1111,7 +1111,7 @@ private struct DayCountButton: View {
 /// height, so a column that grows or shrinks redraws only itself, never Today (Rulebook S6). With the heights on Today,
 /// one day change redrew every column once per column (run 38131557328: 683 ms/s and 37 freezes on +1 and day ‹ ›; held
 /// per column, 738 → 648 in run 38143097108). Holding the height still through a run of taps changed nothing (run
-/// 38146701137: 598 → 630), so it isn't the resizing: every row of every column is drawn (PERFORMANCE-LESSONS L32).
+/// 38146701137: 598 → 630), so it isn't the resizing: every row of every column is drawn (PERFORMANCE-LESSONS L33).
 private struct PadColumnList<Content: View>: View {
     let card: String
     let estimate: CGFloat

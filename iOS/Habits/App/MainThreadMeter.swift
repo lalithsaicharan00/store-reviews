@@ -1,5 +1,6 @@
-#if DEBUG
 import Foundation
+
+#if DEBUG
 
 /// Speed tests only (launched with `-perf-meter`, 30 Sep 2026): records every stretch of 17 ms or more that the main
 /// thread worked without a break, from waking up to going back to sleep. Each one is at least one dropped frame; one
@@ -65,6 +66,13 @@ final class MainThreadMeter {
     }
 }
 #endif
+
+/// Records how long something took since `start` (awaited work `perfTimed` can't wrap), in speed runs only.
+func perfNote(_ name: @autoclosure () -> String, since start: CFAbsoluteTime) {
+    #if DEBUG
+    MainThreadMeter.mark(String(format: "# TIME %@|%.2f", name(), (CFAbsoluteTimeGetCurrent() - start) * 1000))
+    #endif
+}
 
 /// Times `work` in speed runs (`MainThreadMeter.time`); in release builds it only runs `work`.
 @inline(__always)

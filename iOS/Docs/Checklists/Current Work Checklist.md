@@ -82,7 +82,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 89; 83 and 84 are on `claude/lucid-johnson-egrjup`).
+  still resolve; give new items the next unused number (currently 92; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -159,6 +159,15 @@ Their placement records scope and priority; implementation has not started.
       D1 `often-enough-directory` and `often-enough-directory-dev`; R2 `often-enough-backups` (empty) and
       `often-enough-backups-dev` (exported). Then `server/` and `server-dev-checks.yml` leave the repository (archive
       branch first) and item 68 closes.
+    - [ ] **The old Google sign-in clients were deleted** (the user, 11 Oct 2026: "we are not using Google Drive right
+      now … later we have to change it"): the Web client `367584981284-i2afctg5…` and the iOS client
+      `367584981284-c8q0v1eq…` in the Google Cloud project. Still referring to them: the website's delete-account page
+      (`website/public/delete-account.js`: its Google sign-in no longer works; remove the page or its Google button with
+      the server's removal) and the old server's settings (`server/wrangler.jsonc`, `worker-configuration.d.ts`: they go
+      with `server/`). The iPhone's Google Drive backup (`iOS/Habits/Backup/BackupFeatures.swift`, the URL scheme in
+      `iOS/Habits-Info.plist`, off behind its flag) needs a **new iOS client** if Google Drive comes to the iPhone
+      (item 77). New client made the same day: Web "Drive sync tests" (only for the Drive tests; GitHub secrets
+      `GDRIVE_TEST_CLIENT_ID`, `GDRIVE_TEST_CLIENT_SECRET`, `GDRIVE_TEST_REFRESH_TOKEN`; item 89).
     - [ ] **Speed on the iPhone:** `iOS/Tools/perf/measure_perf_device.sh` with Today's day ‹ ›, Add log, the note sheet
       and Arrange's Hide Completed (S2: the phone has the final word; the simulator's numbers vary 2–6×).
 
@@ -816,7 +825,7 @@ and the Add note keyboard coming up by itself.
     portrait (Apple's own purchase sheet is the system's): pictures 18–20, Design Notes §9.*
   - [x] **Build the iPad app** from the build prompt (deleted when done, as it asked; the user's go-ahead, 11 Oct:
     "build the iPad app exactly as the build prompt says … the iPhone must not change at all"). Branch
-    `claude/pensive-gates-3n4ie8`; what was built and decided: [iPad README](<../iPad/README.md>) "Built"; rules U30, T18.
+    `claude/pensive-gates-3n4ie8`; what was built and decided: [iPad README](<../iPad/README.md>) "Built"; rules U35, T20.
     - [x] Universal app (iPhone and iPad), every iPad orientation, one window (`UIApplicationSupportsMultipleScenes`
       false). *Run 38129334834 (iPad Air 11-inch): builds, release build, Today and Day details screenshots.*
     - [x] The sidebar (docked in landscape, over Today in portrait and in a narrow window, "N left" beside Today);
@@ -853,7 +862,7 @@ and the Add note keyboard coming up by itself.
       iPhone's view tree (runs 38131504505, 38138422562); ⌘1 / ⌘2 never reached the menu bar from before the
       sidebar group; Today was readable by VoiceOver under a page; no sidebar button on a pushed page in portrait.
     - [ ] **Open, for the user:** the Columns view's day change, 600–650 ms/s on the simulator (PERFORMANCE-LESSONS
-      L32): each column scrolling on its own would draw less, but changes the design (Design Notes §6).
+      L33): each column scrolling on its own would draw less, but changes the design (Design Notes §6).
     - [ ] **Five tests fail on the iPhone SE on `main` too, not from this branch** (found 11 Oct: the same five, same
       lines, on `main` `bac8a1b` run 38136626357 and on this branch run 38136627928; these classes normally run on the
       newest iPhone only): `AppLockUITests` `testCancellingSetUpAtEachStepChangesNothing` (line 297) and
@@ -898,6 +907,85 @@ and the Add note keyboard coming up by itself.
     and the move itself are `CloudSyncCheck`'s "back to the iPhone" (same run). The free-other test device is now the
     opposite of the device under test, so the iPad's own run asks "Use your habits on this iPad?" about the iPhone.
     The iPhone check (U9) remains, noted separately (W1).*
+
+- [ ] **89. The Android app: what Plus is, and how sync works without a server** (added 11 October 2026, from the user:
+  "let's go to the Android … the same thing what we have for iPhone should also work for Android … whatever we are
+  designing for Android should work for iPhone as well, the same way"). **Everything is in [`Android/Docs/`](<../../../Android/Docs/README.md>)**
+  (start there: the decisions A1–A9 with the user's words, the research, the sync design and the evidence).
+  - [x] **What Android people pay for, measured the same way on both stores** (1,500 reviews read by hand): the same list
+    as the iPhone (more habits, widgets, sync and other devices, themes, backup), except the Watch (iPhone only). Sync and
+    other devices is a bigger share of what Android people pay for than on the iPhone. Android people pay less often.
+  - [x] **Different iPhone and Android apps cause complaints** (other version has more, a different price, a purchase
+    that doesn't follow the person). So Plus is the same on both, at the same price, minus the Watch.
+  - [x] **Sync on Android through the person's Google Drive: download, merge, upload** (never replace), with the shared
+    merge rules the iPhone uses for iCloud, one file per year, and the **version chain** (each saved copy reserves the
+    next file's ID; Drive refuses a second save with the same ID, so no device can overwrite another). Prove in a
+    two-device prototype that the refusal also comes from a second device.
+  - [x] **No relay server** (the user, 11 Oct 2026: "not necessary cost and unnecessary relay"): sync on open, about
+    once a minute while the app is on screen, and in the background.
+  - [x] **Offline is said, not hidden** (the user): the app works offline; nobody expects sync without internet.
+  - [ ] Decide: one purchase working on both stores from Android's launch (the entitlement record, D16); Plus Family on
+    Android (Google Play can't share an in-app purchase with a family); Google Drive on iPhone and Mac (item 77; the
+    user, 11 Oct 2026: the Mac needs the Google Drive option too).
+  - [ ] Decide where sync status shows ([Sync Status Across Devices](<../../../Android/Docs/Research/Sync Status Across Devices — When It Shows, Where, and the Complaints Behind It.md>) §2, §3c; *decided: item 91*): a quiet line at the end of Today's list only
+    when there's something to say (changes the decided "nothing about sync on Today"); "Logged on Pixel 8" on a log;
+    the iCloud & Backup page (Android: Sync & Backup) with Sync Now and each device's last sync.
+  - [ ] Design what still causes complaints (Sync Status Across Devices §3, 197 sync complaints read): the same field
+    edited on two offline devices (keep the other in history, "Use This Instead"); a delete from another device
+    ("Archived on Pixel 8", Restore); the same thing logged on two devices ("Keep Both / Remove One"); two devices that
+    each created the same habit before joining (combine them); widgets refreshed the moment synced changes arrive.
+  - [x] **First: Google Drive sync in the shared core** (the user, 11 Oct 2026, decision A9): transport, version chain
+    and merge, tested against a stand-in Drive on GitHub, then a real-Drive check that a second device's save under a
+    taken ID is refused. **Done 11 Oct 2026, verdict Go with changes**
+    ([Prototype Results](<../../../Android/Docs/Research/Google Drive Sync — Prototype Results.md>)): `DriveSync`,
+    `DriveStore`, `GoogleDrive` in `Core/`; the deciding check held 420 of 420 on the real Drive (runs 38162572860,
+    38163084653, 38165537627); full rounds with 3–6 devices identical; 2,000 seeded stand-in runs converge (Core tests run
+    38164233802, the new `core-tests.yml`; iPhone and Watch targets compile). Still needed later: two Android devices or
+    emulators and an Android OAuth client (stage 3); a new iOS client (stage 4).
+  - [ ] Alongside: the Android research report (what Android people want beyond Plus, Google's own rules); then the
+    day/schedule/streak/progress rules moved into the shared core; then designs in Figma, small screens first; then
+    the build with Drive sync plugged in.
+
+- [ ] **90. When iCloud or Google Drive can't be used after someone bought Plus: offer a refund** (added 11 October
+  2026, from the user: "we can't check beforehand … if it is not working, then we will just refund it … if you have any
+  other iCloud, connect to it; same thing for Google Drive; if you don't have it, you can request a refund").
+  - [ ] Everything else they bought keeps working (more habits, widget designs; D1, D10); only sync and the cloud backup
+    pause, and the status row says why with its one fix (iCloud full: Manage Storage; iCloud off: Open Settings; Google
+    Drive full or not connected: Manage Storage / Connect).
+  - [ ] When sync can't work, the status row also says, without blame: connect another iCloud / Google account if
+    they have one, or ask for a refund, and opens the refund.
+  - [ ] **iPhone:** refunds are Apple's decision; the app opens Apple's own refund request inside the app (StoreKit's
+    `beginRefundRequest`), so it says "You can ask Apple for a refund", not that the money will come back. Confirm the
+    current API when built. (iCloud being signed out or off can be read without asking, `CKContainer.accountStatus`;
+    only "full" shows up when a save fails.)
+  - [ ] **Android:** Google Play lets the developer refund an order (Play Console, or the Play Developer API), so here
+    the app can promise it; decide whether refunds are done by hand on request or by the entitlement record. Confirm
+    Google's current refund rules when built.
+  - [ ] A refund ends Plus but never hides data (D10): habits over the free limit stay readable, as when Plus ends.
+
+- [ ] **91. A quiet sync line at the end of Today's list, only when there's something to say** (added 11 October 2026,
+  from the user: "I'll vote for iPhone also … Android, you need to do it … only in Today; the remaining places are
+  covered"). Changes the iCloud page decision "nothing about sync shows on Today" (Design Rules, updated the same day).
+  Design and wording: [Sync Status Across Devices](<../../../Android/Docs/Research/Sync Status Across Devices — When It Shows, Where, and the Complaints Behind It.md>) §1–2, §3c.
+  - [ ] **iPhone and iPad:** one grey line after the last row of Today, never a spinner, never during a run of taps
+    (U4), shown only for:
+    - this device's changes waiting: "3 changes waiting to sync" (with Waiting for a connection, as the iCloud page);
+    - another of the person's devices gone quiet while in use (§1's four conditions: this device just synced; the
+      other changed something in the last 7 days; silent for over 3× its usual gap and at least 2 hours; it was
+      logging that day): "Pixel 8 last synced at 9:14 AM. Anything logged there since will show up here once it's
+      back online.";
+    - just caught up: "Updated with 3 logs from Pixel 8", gone after the next visit.
+    Tapping it opens iCloud & Backup. Each device keeps a small record of itself (name, last checked in, last change
+    sent) in the person's iCloud for this. Words: name the device, never the person; never "error", "failed",
+    "missed", "not saved" (U3, U11).
+  - [ ] **Apple Watch:** one small line at the end of its habit list only when changes have waited more than a few
+    minutes: "2 not synced yet"; tapping it: "Saved on this Watch. They'll sync when your iPhone is nearby or the
+    Watch is online." with **Sync Now**. Never on faces or the Smart Stack. The iPhone's iCloud & Backup lists "Apple
+    Watch · last synced 9:14".
+  - [ ] **Already covered, check only:** iCloud & Backup's status row and Sync Now, its device list with each device's
+    last sync (Plus); a log's view naming the device it came from ("Logged on Pixel 8", U19's "where it came from").
+  - [ ] **Android: the same line, the same rules and words** (Sync & Backup instead of iCloud & Backup), built with
+    item 89.
 
 - [ ] **85. Edit Group: padding around the colour swatches, and show only the group's own habits (build later).** Added
   11 October 2026, from the user: "we need to make some updates later, but not now." The screen is New Group / Edit
@@ -1111,6 +1199,14 @@ and the Add note keyboard coming up by itself.
     copy without an account on iPhone; take Google Drive off iPhone (it's Android's place); the account only once
     signed in (as built).
   - [ ] The user's decision. Until then the branch keeps iCloud on and Google Drive hidden behind its flag.
+  - [ ] **11 Oct 2026:** the user, on the Mac: "we need to include the Google Drive option" (decision A2 in
+    [`Android/Docs/`](<../../../Android/Docs/README.md>)). Proposed the same day: Google Drive **sync** on iPhone, iPad and Mac as an
+    alternative to iCloud, using the Android code (for a full or unusable iCloud, and for people with Apple and Android
+    devices); iCloud stays the default; one sync place at a time. **Decided: yes** (the user, 11 Oct 2026: "we are
+    obviously including it for iOS"; decision A10 in `Android/Docs/`). Built after the Drive prototype passes (stage 4).
+  - [ ] **The old iOS Google client was deleted on 11 Oct 2026** (see item 84): turning Google Drive on for the iPhone
+    needs a new iOS client in the Google Cloud project, and its ID in `BackupFeatures.swift` and the URL scheme in
+    `Habits-Info.plist`.
 
 - [ ] **78. Free accounts sync one device at a time (plan, then build).** Added 11 October 2026, from the user, after
   checking Cloudflare's prices: instead of uploading the whole backup file ("backed up as you go"), a free account
@@ -1433,7 +1529,7 @@ and the Add note keyboard coming up by itself.
       - [ ] Once CloudKit has shipped and passed these checks: tag the server `server-final-2026-10` and remove
         `server/` (the user's decision, 10 Oct 2026; nothing in the app calls it any more).
 
-- [ ] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
+- [x] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
   #65; **to build later**, when the user says so, after item 81's iPhone CloudKit work).
   - [x] **Research and design:** *done 10 Oct: [Apple Watch App — What People Want, What Breaks, and How Ours Works](<../Apple Watch/Research/Apple Watch App — What People Want, What Breaks, and How Ours Works.md>).
     All 3,051 App Store reviews naming a watch read and coded; Apple's watchOS limits checked; the core's Room 3 and
@@ -1490,13 +1586,59 @@ and the Add note keyboard coming up by itself.
       Watch's changes on; a timer stopped on both devices logs once (entry ID from the habit and its start). GitHub's
       macOS 26 runner has the watchOS SDKs and Watch simulators, so it builds and tests there; the real Watch is for
       complication transfers, real iCloud, haptics, Double Tap, Always On and the final look (U9).*
-  - [ ] **Build it (11 Oct 2026: handed to a cloud session):** [Build Prompt (Delete When Done)](<../Apple Watch/Build Prompt (Delete When Done).md>),
-    on branch `apple-watch`: every screen, data and sync, complications, notifications, Plus; screenshot review on
-    46 mm and 42 mm; data reliability, sync, storage and speed tests.
-  - [ ] Build, in the report's order (§8): the core on watchOS; the app with its own database; WatchConnectivity;
-    `CKSyncEngine` on the Watch; complications; timers, notification buttons and the Plus gate.
-  - [ ] Tests on GitHub's simulator (§7), then the device checks on the user's iPhone and Watch (U9); add WA1–WA13 to
-    the Rulebook once built.
+  - [x] **Build it (10–11 Oct 2026, a cloud session, branch `apple-watch`, merged into `main` the same day):** every
+    screen in the designs (A Today, B Day details for every kind, C the routine, D notifications, E the watch face and
+    Smart Stack, G Plus, H18–H20), data and sync per [Architecture 12](<../Apple Watch/Data and Sync (Architecture 12).md>),
+    Siri on the Watch (H16). Where version 1 differs from the pictures: [Design Notes, "As built"](<../Apple Watch/Designs/Design Notes.md>).
+    Built screens, photographed on CI: [Built Screens](<../Apple Watch/Built Screens/>).
+    - [x] **The core on watchOS** (Room 3, SQLite bundled): the paired-device queue `peer_out` (schema 10, migrated
+      from every past version), the first fill in checked parts carrying every field's sync stamp, the timer-stop log
+      ID, forwarding only what changed something, the 400-day window read into memory (U34). `PeerSyncTest` 20/20:
+      3,000 seeded three-device runs converge, every Architecture 12 §4 case, the extreme first fill (375,000 logs in
+      76 parts, 73 KB at most); `MigrationTest` 16/16, from every past version and from either branch's schema 9
+      (run 38126558505, with `main`'s iCloud work).
+    - [x] **The Watch app** with its own database (opens at once, WA1), the iPhone's model code shared (U32), the
+      iPhone's words; WatchConnectivity both ways, acknowledged, never counted twice; complications and the Smart Stack
+      from the app's snapshot with buttons that log; notification Done / +1; Plus from StoreKit (7 states).
+    - [x] **iCloud on the Watch** (Architecture 12 §3.2, built once item 81 reached `main`): the iPhone's `CloudSync`
+      built for watchOS; only with Plus and after the first fill; the Watch sends only its own changes, to iCloud and
+      the iPhone, and joining iCloud uploads only what its iPhone hasn't acknowledged (U33). `PeerSyncTest` (run 38126558505).
+    - [x] **UI tests** on the 46 mm and 42 mm Watch, all six classes, on the final code: runs 38127575684 (Launch,
+      Today, Day details), 38127577038 (Log manually, Routine, Plus) and 38134018379 (Day details and Today again after
+      the last fixes). The iPhone's touched classes with the Watch app inside it: Today, Timer, Persistence, Plus, test
+      launch isolation, reliability, Undo (38127622227); Backup, Day details, Habit page, iCloud, Widget, Progress
+      (38127636567, 38132386203, 38132384471, 38145611296). `ICloudUITests.testTheICloudPageInEveryState` failed once
+      (its first state's menu didn't open within 5 s) and passed on its re-run (38150216496) and on `main`
+      (38150234198). The iPhone speed run and `main` side by side: nothing slower (PERFORMANCE-LESSONS L32).
+    - [x] **Screenshot review** of every screen on 46 mm, 42 mm and larger text, fixed over four rounds (the iPhone's
+      section name, limits, Day details' first screen, the routine, larger-text rows, the face's text, a permission
+      prompt over the pictures), then a fifth (text under Day details' bottom buttons; a quit run counted to the real
+      time in test launches after 10:30): final pictures, run 38134016683.
+    - [x] **Speed** (Watch simulator, a year of history): Today's taps 0.0–6.1 ms/s, Day details +1 0.6–9.4, the
+      Crown 0.0, Day details opens within
+      a blank page's time, the extreme account's Today in 1.2–1.8 s (27 s before the window). Still over the targets
+      on the simulator: scrolling 30 habits 7.8 ms/s, a 5,000-change batch 6.5–9.7, the routine's opening (+120 ms on
+      a blank cover), Log manually's first opening (+65 ms) (PERFORMANCE-LESSONS L32, "Open").
+    - [x] **Paired simulators, end to end:** not possible on GitHub's runner. Messages from the Watch reach the iPhone,
+      but the iPhone never counts the Watch app as installed (pairing service errors), so it refuses every send
+      (Architecture 12 §6). The proof is the core's paired-device tests, and the check on the user's devices below.
+  - [ ] **Left for the user, on the iPhone and the Apple Watch Series 10 (watchOS 26):**
+    - [ ] Install from Xcode on the Mac: run the iPhone app (the Watch app ships inside it; Xcode installs both).
+    - [ ] Open the Watch app with the iPhone near: "Getting your habits from your iPhone…", then Today in the
+      iPhone's order; log on the Watch, see it on the iPhone, and back; start a timer on one, stop it on the other
+      (one log); run a routine on the Watch while the iPhone app is open (the simulators couldn't do this, §6).
+    - [ ] Architecture 12 §6's real-Watch checks: complication transfers (the face updating promptly after a change on
+      the iPhone), real iCloud on the Watch (a change made on the Watch with the iPhone switched off reaches
+      iCloud and the iPhone once it's back; one made on another device reaches the Watch with the iPhone off), the
+      background refresh saving a face tap within about 15 minutes,
+      haptics (a tap's click, a goal's success), Double Tap pressing the main action, Always On (a running timer in
+      minutes, dimmed), a reminder's Done / +1 and the iPhone's alarm buttons pressed on the wrist, the arm64 build.
+    - [ ] Look at every screen on the real Watch (U9), against [Built Screens](<../Apple Watch/Built Screens/>), and
+      measure speed there (scrolling, a big batch, the routine's opening are the simulator's open items).
+  - [ ] **Next, found while building:** a question iCloud raises (another Apple Account, the app's iCloud data
+    removed) stops iCloud on the Watch, and the person's answer on the iPhone doesn't reach it: the Watch keeps syncing
+    through the iPhone, nothing is deleted, but its own iCloud path stays off until the Watch app is reinstalled. Pass
+    the answer to the Watch over WatchConnectivity (Architecture 12 §3.2).
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."

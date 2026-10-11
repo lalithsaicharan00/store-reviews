@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- The face's complications read the app's snapshot through this group (Current Work 82). -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.oftenenough.app</string>
+	</array>
+	<!-- iCloud on the Watch (Architecture 12 §3.2): the same private container and CKSyncEngine as the iPhone, and its
+	     silent pushes. "development" for Xcode builds; an App Store build gets "production" from its profile. -->
+	<key>aps-environment</key>
+	<string>development</string>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array>
+		<string>iCloud.com.oftenenough.app</string>
+	</array>
+	<key>com.apple.developer.icloud-services</key>
+	<array>
+		<string>CloudKit</string>
+	</array>
+</dict>
+</plist>

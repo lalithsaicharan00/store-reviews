@@ -21,6 +21,9 @@ its rule numbers, and add to it the same day you learn something.
   Speed work and bug fixes that keep the instant switch and never lose or delay-sync a tap are allowed (its §8).
   The app's specs and the user's checklists are in `iOS/Docs/` ([index](<iOS/Docs/README.md>)): open only the spec for
   the screen you're changing.
+- `Android/` — the Android app. **Start at [`Android/Docs/README.md`](<Android/Docs/README.md>)**: the decisions (with the
+  user's words), the research, the Google Drive sync design. Whatever is designed for one platform works the same on the
+  other (the user, 11 Oct 2026).
 - Builds, tests, speed runs and CI: Rulebook T1–T10. **Before every push/test dispatch, follow T10:** ordinary
   pushes have no trigger tags; start your own tests when ready, never waiting for other agents' runs, and never
   cancel or replace theirs (use temporary branches of your own for parallel runs; the user, 9 Oct 2026); do not use the widget cancellation tag without explicit authorization. Check live status without relying on a

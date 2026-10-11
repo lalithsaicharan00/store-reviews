@@ -1,6 +1,8 @@
 import AppIntents
 import Foundation
 
+/// Shared by the iPhone and the Apple Watch (H16): each app's `ShortcutHost` gives its own store.
+///
 /// Siri, Shortcuts, Spotlight and the Action button (report "Siri and Shortcuts — Log by Voice and Automation", 30 Sep;
 /// Feature Ledger C046). Free. Ported from the 30 Sep feature branch on 1 Oct 2026. They run in the app's own process (iOS starts it in the background),
 /// so they use the one store and write the same way a tap on Today does.
@@ -63,9 +65,7 @@ struct LogHabitIntent: AppIntent {
     nonisolated init() {}
 
     @MainActor func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
-        let model = AppModel.shared
-        await model.ensureLoaded()
-        let store = model.store
+        let store = await HabitShortcuts.loadedStore()
         guard let found = store.habits.first(where: { $0.id == habit.id }) else {
             throw HabitShortcuts.Problem.habitGone
         }
@@ -88,8 +88,8 @@ struct LogHabitIntent: AppIntent {
         case .logged:
             await store.flush()
             guard store.problem == nil else { throw HabitShortcuts.Problem.notSaved }
-            // Straight away, in case iOS suspends the app: the row's reminders stop.
-            await model.scheduler.reconcile(store)
+            // Straight away, in case iOS suspends the app: the row's reminders stop (on the Watch: the iPhone hears of it).
+            await ShortcutHost.logged(store)
             // Names hidden: "Logged." and the numbers, never the name (Current Work 58).
             text = HideNames.isOn ? "Logged. " + store.shortcutStatus(found, on: day, named: false) : store.shortcutStatus(found, on: day)
         }
@@ -165,7 +165,7 @@ struct OpenHabitIntent: OpenIntent {
     nonisolated init() {}
 
     @MainActor func perform() async throws -> some IntentResult {
-        AppModel.shared.router.openHabit = target.id
+        ShortcutHost.open(target.id)
         return .result()
     }
 }
@@ -205,8 +205,7 @@ nonisolated struct HabitShortcuts: AppShortcutsProvider {
     }
 
     @MainActor static func loadedStore() async -> HabitStore {
-        await AppModel.shared.ensureLoaded()
-        return AppModel.shared.store
+        await ShortcutHost.loadedStore()
     }
 
     @MainActor static func entity(_ habit: Habit) -> HabitEntity {

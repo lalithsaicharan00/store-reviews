@@ -149,7 +149,7 @@ is in `iOS/Habits/Pad/` (`PadRoot.swift`: the sidebar, the pages beside it, list
 `PadSupport.swift`: the device's words, the Day details popover and its anchor, popover sizing, form sheets) and, gated on
 the iPad, in the screens it reshapes. **On the iPhone every change is behind `Device.isPad` (false there), and every
 iPad-only modifier returns the view untouched there, so the iPhone runs the same views, words and presentations as before**
-(Rulebook U30; side by side with `main`, below). Test runs and their numbers: Current Work 86 (the checklist).
+(Rulebook U35; side by side with `main`, below). Test runs and their numbers: Current Work 86 (the checklist).
 
 What building it settled, and why (each a refinement of a decision above, not a new design):
 
@@ -168,7 +168,7 @@ What building it settled, and why (each a refinement of a decision above, not a 
 | **as List ⌘1 and as Columns ⌘2 sit in the sidebar's own group of the View menu**, beside Hide Sidebar, with a checkmark on the one in use | Commands placed before that group never reached the iPad's menu bar, as Toggles or as Buttons (runs 38141959437, 38149917285); the group's own commands did. |
 | **A page beside the sidebar covers Today as the routine player does: Today stays alive and draws nothing behind it** | Today keeps its day and the widgets' routes while you visit a page. Hiding it any other way left its rows readable by VoiceOver (SwiftUI's flag on Today, its list and its rows, then UIKit's on its container: runs 38149917285–38162641513; U1). Coming back costs nothing measurable (run 38165599443). |
 | **The sidebar's button stays beside Back on the pages a place opens** (another place, Help, a habit's page) | As iPadOS's own sidebars; pages a settings page opens itself (a time of day's editor) have Back first (run 38165603132). |
-| **Day details takes the iPad's options (no ✕ in a popover, the habit's page beside the list) from the iPad's code** | So the iPhone's Day details reads nothing it didn't before (U30). |
+| **Day details takes the iPad's options (no ✕ in a popover, the habit's page beside the list) from the iPad's code** | So the iPhone's Day details reads nothing it didn't before (U35). |
 
 **Tested on GitHub's simulators (11 Oct 2026):**
 
@@ -189,7 +189,7 @@ What building it settled, and why (each a refinement of a decision above, not a 
   above; its tap is Large's own card, which passed on the iPhone's Home Screen (`WidgetSystemUITests`, run 38131146101).
 - **Failing on `main` too, not from this build:** five tests on the iPhone SE and `LongTextUITests`' two (Current Work
   86's own item).
-- **Open:** the Columns view's day change, 600–650 ms/s on the simulator (PERFORMANCE-LESSONS L32; each column scrolling
+- **Open:** the Columns view's day change, 600–650 ms/s on the simulator (PERFORMANCE-LESSONS L33; each column scrolling
   on its own would draw less, which changes the design and waits for the user).
 
 **Capabilities to check on a real iPad** (the simulator can't show them; nothing is promised until checked): Live

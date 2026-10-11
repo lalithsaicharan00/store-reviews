@@ -1,0 +1,122 @@
+# slow: 164 matches, showing 40
+
+[A33#898] 2★ 2019 | 33. Habitify - Habit Tra
+  >> Getting worse — UI is getting worse with confusing habit management; watch app often gets out of sync; I don&#39;t need daytime based habits but the feature adds clutter all over the app.
+
+[P10#6931] 2★ 2024 | 10. Habit Tracker - Habi
+  >> The real bummer is how slow it loads and having to watch an ad every time I open it.
+
+[A86#52] 2★ 2021 | 86. Today Habit tracker 
+  >> Slow updates on apps, no Apple Watch complications, many other things.
+
+[A13#11615] 3★ 2023 | 13. Productive - Habit T
+  >> Almost the best, but behind on the times — This app genuinely might be the best at handling habits right now, but it is seriously missing a feature that modern apps really need to be functional for the modern productivity-minded individual: syncing across devices!
+
+[P84#16838] 3★ 2021 | 84. Tasks - To Do List &
+  >> Sync between webapp and mobile app lags and navigating between sublist and lists is not seamless
+
+[A23#2061] 3★ 2022 | 23. Streaks - The habit-
+  >> iCloud sync between devices is super slow — I complete on iphone.
+
+[A46#1764] 5★ 2024 | 46. everyday - Habit Tra
+  >> Apple Watch integration is a huge plus, but there can be some syncing delays.
+
+[P8#9886] 5★ 2016 | 8. Habitica - Gamify You
+  >> A bit slow syncing at times but does everything I want it to do.
+
+[A46#1477] 2★ 2025 | 46. everyday - Habit Tra
+  >> Bad Mac App — The Mac app is slow and clunky.
+
+[P111#11591] 5★ 2014 | 111. My Study Life - Sch
+  >> The sync between desktop, tablet and mobile is sometimes a little slow/glitchy the fact it's an option is fantastic.
+
+[A23#5237] 5★ 2019 | 23. Streaks - The habit-
+  >> Now that I have an iPad and use it on their to sync things I find the sync slow and unreliable.
+
+[A1#55502] 4★ 2022 | 1. Habit Tracker - Goal 
+  >> I paid for the premium membership so that it could sync but it sometimes takes hours for it to sync up.
+
+[P111#8385] 4★ 2016 | 111. My Study Life - Sch
+  >> Also, faster update/syncing of info would be helpful, the action os a little delayed, specifically I'm talking about the time left in a class and "time bar" in the calendar view.
+
+[A2#60] 2★ 2019 | 2. Daily Habits - Habit 
+  >> Syncing makes a slow app even slower and the developers seemed to have stopped supporting the app.
+
+[P120#9] 1★ 2026 | 120. Habit Health
+  >> On top of that, the desktop screen flickers non-stop, and mobile is painfully slow.
+
+[P12#63040] 5★ 2019 | 12. Fabulous Daily Routi
+  >> It's nice to have aid, being a mother and boss while also work as well as dealing with everyday life can truly knock you out of sync with everything.
+
+[A85#3162] 5★ 2016 | 85. Habitica - Gamified 
+  >> My only criticisms are that the app does not yet have the full features of the web version, but they are slowly integrating them!
+
+[A23#651] 2★ 2020 | 23. Streaks - The habit-
+  >> Does not update on Apple Watch — Great app overall, but I archived tasks and they still appear in the Apple Watch, everything is out of sync, even though it says it’s in sync with the Apple Watch in the settings.
+
+[A13#7031] 4★ 2016 | 13. Productive - Habit T
+  >> Csak azért nem 5 csillag, mert nincsen iPad-re alkalmazása.
+
+[P12#18417] 1★ 2023 | 12. Fabulous Daily Routi
+  >> No syncing between devices, only backing up and restoring, which takes AGES.
+
+[A13#6421] 3★ 2018 | 13. Productive - Habit T
+  >> Productive App — Only second day of using this &amp; feels motivating &amp; keeping me focussed on positive habits - only draw back it is slow or not syncing with my iPad &amp; doesn’t allow dates for monthly habits, so had to deduct 2 stars for these.
+
+[P126#59616] 2★ 2020 | 126. To Do List
+  >> Does not sync notes associated with Google tasks, so no use to me because I make notes behind most tasks regarding ideas I have to tackle them.
+
+[P122#17230] 5★ 2023 | 122. Hevy - Gym Log Work
+  >> I used to track my progress in an excel sheet but this app does it for me AND I can set my rest period and not throw myself out of sync.
+
+[A1#56020] 5★ 2020 | 1. Habit Tracker - Goal 
+  >> The other apps I tried were slow to sync.
+
+[P8#6108] 1★ 2020 | 8. Habitica - Gamify You
+  >> Then app finally let me create tasks, but every time i tried to "do" a task it said i was out of sync.
+
+[A86#1313] 3★ 2018 | 86. Today Habit tracker 
+  >> crashing — love this app overall, but since the last update it’s been very laggy and the watch app just crashes when it tries to sync (iphone 8, watch series 1), before that, everything worked great.
+
+[A1#50885] 4★ 2020 | 1. Habit Tracker - Goal 
+  >> And my watch is slow too...
+
+[A23#2751] 5★ 2022 | 23. Streaks - The habit-
+  >> The widgets and settings are sometimes out of sync, including the color and sound settings.
+
+[A31#1788] 3★ 2024 | 31. Do Habits - Get It D
+  >> Great but lagging — The app use is great and I like the Apple Watch notification but the it keep lagging and it makes the experience feel like it’s not worth it anymore.
+
+[A33#797] 2★ 2022 | 33. Habitify - Habit Tra
+  >> The response time is getting slower, synchronisation simply doesn’t work, UI in the web version became unusable after recent update.
+
+[A13#11941] 1★ 2022 | 13. Productive - Habit T
+  >> But the syncing of different devices is lagging.
+
+[P5#198] 1★ 2025 | 5. Routine Planner, Habi
+  >> its buggy enough as it is, with reminders routinely just not coming, but since the change for summertime, every planned routine gets delayed an hour, even though it's synchronized and notifications come..
+
+[A23#3951] 3★ 2023 | 23. Streaks - The habit-
+  >> fix apple watch app on watchOS 10 — After redesigning the application on Apple watch, the pages lag terribly when scrolling, but if you swipe with your finger, there will be less lags during animation.
+
+[P12#64856] 1★ 2019 | 12. Fabulous Daily Routi
+  >> but since then I have slowly watch this app worsen.
+
+[P122#9409] 2★ 2025 | 122. Hevy - Gym Log Work
+  >> The app so laggy on phone and also on samsung watch after the newest update, please fix this because i love this app :(
+
+[A86#1238] 3★ 2020 | 86. Today Habit tracker 
+  >> I would update something in my watch but hours later, when I pull it up in my phone, nothing it updated.
+
+[A23#1426] 4★ 2023 | 23. Streaks - The habit-
+  >> Yet, since iOS 17 the Apple Watch app has been plagued with bugs, making it unreliable, or altogether useless.
+
+[A13#15338] 2★ 2019 | 13. Productive - Habit T
+  >> Even after several hours it would stay out of sync.
+
+[A23#4812] 5★ 2021 | 23. Streaks - The habit-
+  >> The widget is almost always out of sync, even if you’ve just closed the app.
+
+[P12#31144] 3★ 2021 | 12. Fabulous Daily Routi
+  >> The design is very pretty, but the app is generally very slow and takes a lot of time to watch the animations.
+

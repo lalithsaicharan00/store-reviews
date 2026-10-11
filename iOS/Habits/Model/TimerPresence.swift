@@ -69,28 +69,11 @@ final class TimerPresence {
 
     /// "20 min", "3 h this week", "1 h max": the goal as the row shows it.
     static func goalLabel(_ habit: Habit, goal: Double) -> String {
-        Format.minutes(goal) + (habit.atMost ? " max" : "") + period(habit)
+        Format.minutes(goal) + (habit.atMost ? " max" : "") + TimerWords.period(habit)
     }
 
-    private static func period(_ habit: Habit) -> String {
-        switch habit.frequency {
-        case .perWeek: " this week"
-        case .perMonth: " this month"
-        case .perYear: " this year"
-        default: ""
-        }
-    }
-
-    /// "20 min done." / "That's your 1 h limit for today." Says what counts, never "failed" or
-    /// "overdue" (Design Rules, copy).
-    static func goalMessage(_ habit: Habit, goal: Double) -> String {
-        let amount = Format.minutes(goal)
-        let period = period(habit)
-        if habit.atMost {
-            return "That's your \(amount) limit for \(period.isEmpty ? "today" : String(period.dropFirst()))."
-        }
-        return "\(amount) done\(period). The timer keeps going until you stop it."
-    }
+    /// "20 min done." / "That's your 1 h limit for today." (`TimerWords`, shared with the Apple Watch.)
+    static func goalMessage(_ habit: Habit, goal: Double) -> String { TimerWords.goalMessage(habit, goal: goal) }
 
     // MARK: Notifications
 

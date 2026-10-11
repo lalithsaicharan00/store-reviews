@@ -243,7 +243,7 @@ extension View {
     }
 
     /// Tells an iPad popover how tall this screen's content is, while it's the screen on top. Nothing outside a popover.
-    /// Nothing at all on the iPhone: not even an environment read on its Day details screens (U30).
+    /// Nothing at all on the iPhone: not even an environment read on its Day details screens (U35).
     @ViewBuilder func fitsPadPopover(_ screen: String) -> some View {
         if Device.isPad { modifier(FitsPadPopover(screen: screen)) } else { self }
     }

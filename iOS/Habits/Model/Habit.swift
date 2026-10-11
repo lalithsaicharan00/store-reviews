@@ -244,6 +244,8 @@ enum EntrySource: String, Codable, Sendable {
     case today, manual, routine, reminder, timer, daySheet
     /// Siri, Shortcuts, Spotlight or the Action button (1 Oct 2026).
     case shortcut, widget
+    /// Logged on the Apple Watch (Current Work 82). Older app versions read an unknown origin as none, never a guess.
+    case watch
     var label: String {
         switch self {
         case .today: "Today"
@@ -255,6 +257,7 @@ enum EntrySource: String, Codable, Sendable {
         case .daySheet: "Day details"
         case .shortcut: "Siri or Shortcuts"
         case .widget: "Widget"
+        case .watch: "Apple Watch"
         }
     }
 }

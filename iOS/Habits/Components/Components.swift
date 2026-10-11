@@ -197,64 +197,6 @@ struct MiniRing: View {
     }
 }
 
-// MARK: - Formatting
-
-enum Format {
-    /// Numbers as entered: whole stays whole ("8"), decimals up to two places ("0.25", "2.5"),
-    /// and from 1,000 the k suffix with at most one decimal ("1k", "5.2k", "12.5k").
-    static func amount(_ v: Double) -> String {
-        if abs(v) >= 1000 {
-            let k = (v / 100).rounded() / 10
-            return trimmed(k, places: 1) + "k"
-        }
-        return trimmed(v, places: 2)
-    }
-
-    /// Minutes as hours and minutes: "45 min", "1 h", "1 h 25 min". Never decimals or "k".
-    static func minutes(_ v: Double) -> String {
-        let total = Int(v.rounded())
-        let h = total / 60, m = total % 60
-        if h == 0 { return "\(m) min" }
-        return m == 0 ? "\(h) h" : "\(h) h \(m) min"
-    }
-
-    /// A running timer's clock, counting up: "0:07", "7:42", "1:07:42". Minutes in, whole seconds out.
-    static func clock(_ minutes: Double) -> String {
-        let total = max(0, Int((minutes * 60).rounded(.down)))
-        let h = total / 3600, m = total / 60 % 60, s = total % 60
-        return h > 0 ? String(format: "%d:%02d:%02d", h, m, s) : String(format: "%d:%02d", m, s)
-    }
-
-    /// One formatter per number of places, made once (PERFORMANCE.md rule 8): a new `NumberFormatter` for each
-    /// number was nearly all of a Today row's own time, and of the New Habit preview's (profile, 1 Oct 2026).
-    /// `autoupdatingCurrent` follows a change of region while the app runs.
-    private static var trimmers: [Int: NumberFormatter] = [:]
-
-    private static func trimmed(_ v: Double, places: Int) -> String {
-        let f = trimmers[places] ?? {
-            let f = NumberFormatter()
-            f.minimumFractionDigits = 0
-            f.maximumFractionDigits = places
-            f.usesGroupingSeparator = false
-            f.locale = .autoupdatingCurrent
-            trimmers[places] = f
-            return f
-        }()
-        return f.string(from: NSNumber(value: v)) ?? String(v)
-    }
-
-    /// "12d 11:23:07"
-    static func elapsed(_ t: TimeInterval) -> String {
-        let s = Int(t)
-        return String(format: "%dd %02d:%02d:%02d", s / 86400, s % 86400 / 3600, s % 3600 / 60, s % 60)
-    }
-
-    static func days(_ t: TimeInterval) -> String {
-        let d = Int(t / 86400)
-        return d == 1 ? "1 day" : "\(d) days"
-    }
-}
-
 // MARK: - Text fields and rows
 
 extension View {

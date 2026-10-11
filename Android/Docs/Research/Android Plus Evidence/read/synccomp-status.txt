@@ -1,0 +1,122 @@
+# status: 56 matches, showing 40
+
+[A55#1575] 1★ 2017 | 55. Habit-Bull - Daily G
+  >> Where exactly is it synced to and how would I even do a restore.
+
+[P84#14698] 4★ 2022 | 84. Tasks - To Do List &
+  >> A dedicated Sync button would be much more effective.
+
+[A55#1596] 5★ 2017 | 55. Habit-Bull - Daily G
+  >> But it is not syncing, even when I manually sync.
+
+[P98#271] 4★ 2023 | 98. Rabit - Habit Tracke
+  >> I have bought the lifetime premium, only to learn that one cannot manually sync and has to depend on strange syncing schedules.
+
+[P97#2829] 5★ 2024 | 97. To-do list - tasks p
+  >> Is it synced with own cloud or google drive?
+
+[P24#11808] 2★ 2016 | 24. Habit Tracker
+  >> Find it frustrating that my phone and tablet are completely out of sync unless I manually sync them.
+
+[A65#385] 2★ 2023 | 65. Rabit - Daily Routin
+  >> It would be PERFECT if there was a desktop version that was synced with mobile.
+
+[P111#8250] 1★ 2016 | 111. My Study Life - Sch
+  >> Sync almost always never works, even after a force sync.
+
+[P111#12238] 3★ 2014 | 111. My Study Life - Sch
+  >> Not even a force sync works.
+
+[P24#24034] 3★ 2017 | 24. Habit Tracker
+  >> And also synchronization doesn't work automatically, I need to push the sync button every time after I mark the days.
+
+[P24#9239] 1★ 2018 | 24. Habit Tracker
+  >> Made sure data was synced but upon reinstall all my data was gone.
+
+[A5#452] 3★ 2022 | 5. Routine Planner, Habi
+  >> Has a lot of potential - Sync on Apple Watch needs work — The app itself is quite fantastic, but the developer needs to implement a manual sync button on the apple watch component.
+
+[A13#15861] 4★ 2018 | 13. Productive - Habit T
+  >> I do not see a way to manually sync.
+
+[A13#13120] 3★ 2020 | 13. Productive - Habit T
+  >> I’ve reset the watch, phone, and checked to make sure iCloud is synced on both devices.
+
+[A55#1793] 4★ 2016 | 55. Habit-Bull - Daily G
+  >> Request added functionality — I have been using habitbull for almost a week now and I am loving it particularly the statistics and tracking that it offers, I am however using it across devices and I find it really inconvenient to have to go to the more page and then to my account just to sync the data, the other device I have it on uses the google play store and that version of the app has easy access to a sync butto
+
+[A1#51261] 4★ 2026 | 1. Habit Tracker - Goal 
+  >> Is there a way to force a sync?
+
+[P111#10315] 5★ 2015 | 111. My Study Life - Sch
+  >> I found the "force sync" option and it fixed my problems.
+
+[P84#22712] 4★ 2020 | 84. Tasks - To Do List &
+  >> I have spent so much time trying out todo apps with reminders and this is probably the best one ever, but I would really want to be able to manage it all across more than one device, such as with an autimatic periodic upload or one-touch sync button like in colornote.
+
+[P111#8340] 2★ 2016 | 111. My Study Life - Sch
+  >> Won't even force sync.
+
+[A13#13187] 2★ 2020 | 13. Productive - Habit T
+  >> There’s no way to force a sync or even tell if your sync is working.
+
+[A23#4460] 1★ 2023 | 23. Streaks - The habit-
+  >> When syncing, the app seems to take the task configuration from the last device that is synced.
+
+[A23#2061] 3★ 2022 | 23. Streaks - The habit-
+  >> I have to kill the app to force a sync.
+
+[P111#8230] 5★ 2016 | 111. My Study Life - Sch
+  >> The only thing I would like to see is that the app would refresh in the backup without having to re open the app and/or press the sync button.
+
+[A10#11550] 4★ 2025 | 10. Finch - Self-Care Pe
+  >> — girl, i had a streak of 229 and my phone turned off for 17 hours due to water damage so while waiting for it to air dry i used my backup phone, which is synced to this one and has the exact same finch account.
+
+[A1#54782] 5★ 2022 | 1. Habit Tracker - Goal 
+  >> One bug ruins my experience using this App tho: if the data is synced from another device, the widgets doesn’t update.
+
+[P24#15629] 3★ 2015 | 24. Habit Tracker
+  >> Have to manually force sync on each device which is cumbersome.
+
+[A1#55593] 5★ 2021 | 1. Habit Tracker - Goal 
+  >> I just wish there was a way to embed my habits to notion by way of a link or an HTML embed that was synced as I updated just as I see it on my iPhone widgets.
+
+[A31#4772] 2★ 2020 | 31. Do Habits - Get It D
+  >> Manual syncing is so 2010 at best!
+
+[P84#30060] 5★ 2019 | 84. Tasks - To Do List &
+  >> It would be even more beautiful if it was synced with a simple web application.
+
+[A1#46092] 4★ 2021 | 1. Habit Tracker - Goal 
+  >> Very good app — But my steps have stopped syncing and I can’t find anything in settings to reconnect or force a sync.
+
+[P122#3194] 1★ 2026 | 122. Hevy - Gym Log Work
+  >> why does this app not have a manual "force sync" button for Google health connect?!
+
+[P122#7640] 5★ 2025 | 122. Hevy - Gym Log Work
+  >> Easy to use on a smaller display and all the data is synced when I return to the car.
+
+[P111#10691] 4★ 2015 | 111. My Study Life - Sch
+  >> WOULD NOT SYNC even with " force sync".
+
+[P24#4158] 1★ 2019 | 24. Habit Tracker
+  >> Still loads all my old data from last sync.
+
+[P24#2069] 3★ 2022 | 24. Habit Tracker
+  >> Each time need to press the sync button
+
+[A33#3307] 4★ 2024 | 33. Habitify - Habit Tra
+  >> I have a goal of walking so many miles a week and that is synced with my Apple Watch, so when I walk more than my goal number of miles it does log that overachievement but not habits that you have to manually enter.
+
+[P105#1103] 4★ 2020 | 105. Avocation Goal & Ha
+  >> Additionally, you say that the data is synced with Google drive but there is no option to login and connect my Gmail so how would the same take place?
+
+[A5#1828] 4★ 2022 | 5. Routine Planner, Habi
+  >> However, I’ve noticed that finished tasks on my Apple Watch don’t register on my iPad, even though my account is synced and the making of routines does sync quickly.
+
+[P111#10565] 2★ 2015 | 111. My Study Life - Sch
+  >> I tried force syncing the app and uninstall/reinstalling but it's basically useless to me right now.
+
+[A1#55434] 3★ 2022 | 1. Habit Tracker - Goal 
+  >> Is there a sync button that i am not seeing?
+

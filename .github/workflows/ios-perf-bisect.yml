@@ -79,7 +79,7 @@ jobs:
             echo "::group::Build $REF ($SHA)"
             git -c advice.detachedHead=false checkout -q -f "$SHA"
             (cd iOS && xcodebuild build -project Habits.xcodeproj -scheme Habits -configuration Debug \
-              -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath "$RUNNER_TEMP/dd" ARCHS=arm64 \
+              -destination "generic/platform=iOS Simulator" -derivedDataPath "$RUNNER_TEMP/dd" ARCHS=arm64 \
               CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 \
               | tee "$RUNNER_TEMP/build-$REF.log" | grep -E "error:|BUILD" || true)
             grep -q "BUILD SUCCEEDED" "$RUNNER_TEMP/build-$REF.log" || { echo "Build of $REF failed"; exit 1; }

@@ -9,7 +9,9 @@ kotlin {
 
     // Desktop JVM: runs the storage tests on the Mac, and later the Windows/Mac desktop builds.
     jvm()
-    listOf(iosArm64(), iosSimulatorArm64()).forEach { target ->
+    // The iPhone, and the Apple Watch (Architecture 12 §5): arm64_32 for Series 4–8 and SE, arm64 for Series 9 and later
+    // on watchOS 26, and the Watch simulator. Room and SQLite publish all three (checked 10 Oct 2026).
+    listOf(iosArm64(), iosSimulatorArm64(), watchosArm64(), watchosDeviceArm64(), watchosSimulatorArm64()).forEach { target ->
         target.binaries.framework {
             baseName = "Core"
             isStatic = true
@@ -37,7 +39,19 @@ room3 {
 }
 
 dependencies {
-    listOf("kspJvm", "kspIosArm64", "kspIosSimulatorArm64").forEach {
+    listOf("kspJvm", "kspIosArm64", "kspIosSimulatorArm64", "kspWatchosArm64", "kspWatchosDeviceArm64", "kspWatchosSimulatorArm64").forEach {
         add(it, "androidx.room3:room3-compiler:3.0.3")
     }
+}
+
+// The real-Google-Drive checks (.github/workflows/drive-real.yml) run test code as plain JVM processes, several at once
+// (two "devices" are two processes): this writes the classpath they need.
+tasks.register("writeJvmTestClasspath") {
+    dependsOn("jvmTestClasses")
+    val compilation = kotlin.jvm().compilations.getByName("test")
+    val files = compilation.output.allOutputs + compilation.runtimeDependencyFiles!!
+    val out = layout.buildDirectory.file("jvmTestClasspath.txt")
+    inputs.files(files)
+    outputs.file(out)
+    doLast { out.get().asFile.writeText(files.joinToString(File.pathSeparator) { it.path }) }
 }

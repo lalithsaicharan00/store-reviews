@@ -1,7 +1,11 @@
 import Core
 import Foundation
 import Observation
+#if os(watchOS)
+import WatchKit
+#else
 import UIKit
+#endif
 
 /// Sync with the person's own iCloud (Architecture 11; Rulebook D16): one `CKSyncEngine` (behind `CloudTransport`), the
 /// phone's database as the truth, the outbox as the record of what hasn't reached iCloud.
@@ -105,7 +109,11 @@ final class CloudSync: CloudTransportHandler {
     /// Called when changes are left waiting after a failure, so iOS is asked for a background retry.
     @ObservationIgnored var onWaitingAfterFailure: (() -> Void)?
     /// `identifierForVendor`, for the clone check (§13.4).
+    #if os(watchOS)
+    @ObservationIgnored var vendorID: () -> String? = { WKInterfaceDevice.current().identifierForVendor?.uuidString }
+    #else
     @ObservationIgnored var vendorID: () -> String? = { UIDevice.current.identifierForVendor?.uuidString }
+    #endif
 
     @ObservationIgnored private var starting: Task<Void, Never>?
     @ObservationIgnored private var started = false
@@ -713,7 +721,11 @@ final class CloudSync: CloudTransportHandler {
 
     @ObservationIgnored private var debounce: Task<Void, Never>?
     @ObservationIgnored private var firstWaiting: Date?
+    #if os(watchOS)
+    @ObservationIgnored private var awake: WatchAwake?
+    #else
     @ObservationIgnored private var awake = UIBackgroundTaskIdentifier.invalid
+    #endif
     @ObservationIgnored private var generation = 0
 
     /// After a change (in the app, or from a widget, a notification or the Live Activity, which save through the app):
@@ -729,7 +741,11 @@ final class CloudSync: CloudTransportHandler {
         let now = Date.now
         let first = firstWaiting ?? now
         firstWaiting = first
+        #if os(watchOS)
+        let quiet = WKApplication.shared().applicationState == .active ? Self.quietInFront : Self.quietInBackground
+        #else
         let quiet = UIApplication.shared.applicationState == .active ? Self.quietInFront : Self.quietInBackground
+        #endif
         let wait = max(0, min(quiet, first.addingTimeInterval(Self.longestWait).timeIntervalSince(now)))
         debounce?.cancel()
         debounce = Task { [weak self] in
@@ -748,6 +764,17 @@ final class CloudSync: CloudTransportHandler {
     static let quietInBackground: TimeInterval = 2
     static let longestWait: TimeInterval = 10
 
+    #if os(watchOS)
+    private func holdAwake() {
+        guard awake == nil else { return }
+        awake = WatchAwake(reason: "Send changes to iCloud")
+    }
+
+    private func releaseAwake() {
+        awake?.end()
+        awake = nil
+    }
+    #else
     private func holdAwake() {
         guard awake == .invalid else { return }
         awake = UIApplication.shared.beginBackgroundTask(withName: "Send changes to iCloud") { [weak self] in
@@ -760,6 +787,7 @@ final class CloudSync: CloudTransportHandler {
         UIApplication.shared.endBackgroundTask(awake)
         awake = .invalid
     }
+    #endif
 
     // MARK: The person's answers
 
@@ -960,3 +988,21 @@ final class CloudSync: CloudTransportHandler {
     }
     #endif
 }
+
+#if os(watchOS)
+/// watchOS has no `beginBackgroundTask`: an expiring activity keeps the Watch app running instead, until the send is done
+/// or watchOS needs the time back (Architecture 12 §3.2, D12).
+nonisolated final class WatchAwake: Sendable {
+    private let release = DispatchSemaphore(value: 0)
+
+    init(reason: String) {
+        let release = release
+        ProcessInfo.processInfo.performExpiringActivity(withReason: reason) { expired in
+            // Called once to start (held here until `end`), and again with `expired` if watchOS wants the time back.
+            if expired { release.signal() } else { _ = release.wait(timeout: .now() + 30) }
+        }
+    }
+
+    func end() { release.signal() }
+}
+#endif

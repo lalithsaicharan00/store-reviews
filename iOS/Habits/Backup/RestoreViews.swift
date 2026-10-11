@@ -44,7 +44,7 @@ struct RestoreStartView: View {
                 Text("Where is your backup stored?").font(.body).foregroundStyle(.secondary).textCase(nil)
             } footer: {
                 Text(backup.restoresEverywhere ? "Restoring replaces your habits on all your devices, since they stay in sync. You can undo it for 30 days."
-                                   : "Restoring replaces the habits on this iPhone. You can undo it for 30 days.")
+                                   : Device.words("Restoring replaces the habits on this iPhone. You can undo it for 30 days."))
             }
             if let imported {
                 Section { Text(imported).accessibilityIdentifier("restore-imported") }
@@ -146,7 +146,7 @@ struct ICloudCopiesView: View {
                     } else if FileManager.default.ubiquityIdentityToken == nil {
                         Text("This iPhone isn't signed in to iCloud.").foregroundStyle(.secondary)
                     } else {
-                        Text("No backup found in this iPhone's iCloud.").foregroundStyle(.secondary)
+                        Text(Device.words("No backup found in this iPhone's iCloud.")).foregroundStyle(.secondary)
                     }
                 }
             }

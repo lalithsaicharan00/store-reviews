@@ -567,7 +567,12 @@ decisions that still hold are kept below; the rest went with the server.*
   file, says this iPhone keeps everything unless chosen too, D9) and **Erase All My Data…** (turns iCloud sync off here
   first, so the habits don't come back).
 - **Today shows a small card only when iCloud needs the person** (full, a question, the brake: `cloud-card`, opening
-  this page). Nothing about sync shows on Today otherwise, and never a spinner.
+  this page). Never a spinner. **Changed 11 Oct 2026 (the user, Current Work 91):** besides the card, one quiet grey
+  line after Today's last row, only when there's something to say: this device's changes waiting ("3 changes waiting
+  to sync"), another device gone quiet while in use ("Pixel 8 last synced at 9:14 AM. Anything logged there since
+  will show up here once it's back online."), or just caught up ("Updated with 3 logs from Pixel 8"). It opens this
+  page, never moves during a run of taps (U4), names the device, never the person. The Watch has the same at the end
+  of its list; Android the same. Nothing else about sync on Today.
 - **The welcome looks in iCloud first** (D14): *Looking in iCloud…* (Start Fresh waits), then *Your habits are here from
   iCloud.* or nothing found; iCloud off says how to turn it on in Settings.
 - **Kept from the old page:** no paragraph explaining the screen; never a row that shows a value nobody can change;
@@ -668,6 +673,40 @@ every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the
 - **The empty Today is never a dead end and never says "every day":** New Habit, Start From an Idea, Restore from a Backup File, How It Works.
 - **Help & Feedback:** Contact Us and Show the Welcome Again first, then How It Works, searchable. **Every answer names the exact button**; when a way in or a label changes, change its answer in `HelpTopics` in the same change. Contact Us sends no habit data. About lists the open-source libraries with their licences; no links to pages that don't exist yet.
 
+## Apple Watch (built 10–11 Oct 2026, Current Work 82; Watch check pending)
+
+Designs and notes: [Apple Watch](<Docs/Apple Watch/README.md>) ([Design Notes](<Docs/Apple Watch/Designs/Design Notes.md>)).
+Data and sync: [Architecture 12](<Docs/Apple Watch/Data and Sync (Architecture 12).md>). Rules: Rulebook U30–U34
+(WA1–WA13, R1–R9). Built screens, as photographed on CI: [Built Screens](<Docs/Apple Watch/Built Screens/>).
+
+- **Today only, opened from the Watch's own database at once** (WA1). Nothing on the Watch waits for the iPhone to
+  show something; first launch says it's getting your habits and never says "no habits" before hearing back (WA2).
+- **The iPhone's words, always.** Rows, Undo labels, Day details, notifications and Siri use the same functions as the
+  iPhone (`Words.swift`, `HabitCopy`, `dayResult`), compiled into both targets (U32). Never write a Watch-only
+  version of a sentence the iPhone already has.
+- **A row is the iPhone's row:** the round button acts (✓ toggles today, + adds the saved step, ▶ starts/pauses, ☰
+  opens the steps, ↗ opens a quit habit), the row opens Day details (U14). Done rows sink 1.5 s after the last tap
+  (U4, U13). Each section has its own ▶ (filled for Now, grey for the others, none for Quitting).
+- **Day details is today's sheet, not the habit page:** dial, one main action in white, Log manually (pencil) and ⋯
+  in the bottom corners, up to three logs then "All N logs ›" (U17), Skip today last and plain. No History, notes,
+  past days, statistics, "complete all" or settings on the Watch (WA5, WA8, WA12).
+- **Log manually uses the Crown** (− and + by touch; tap the number to say or type it); time is hours and minutes,
+  ending now; an amount that asks every time opens at the last value. No number pad drawn by us.
+- **A log on the Watch: view and Delete only** (Delete asks first and goes back before removing, U19, U27); editing
+  is on the iPhone.
+- **A routine is a mode** (full screen, ✕ top left, the Crown pages, never logs or skips by moving; ✕ never stops a
+  timer; the list at the bottom left jumps). Everything is saved as it happens, so Done only closes (R1–R9).
+- **Limits and slips are available, never invited** (glass, not white; neutral fills, never red; U3, U16, U25).
+- **Plus only** (G1–G7): state first, the App Store's own price, Restore Purchases always on the page, Continue on
+  iPhone by Handoff. An ended purchase sends what's waiting first and deletes nothing (D10). Debug builds follow the
+  iPhone's "everyone is Plus" unless launched with `-free`.
+- **Complications and Smart Stack draw only the Watch's snapshot** (`WidgetSnapshot`, U26); their buttons write to
+  the shared waiting-taps file and the app saves them with the same IDs (WA13). Names hidden: counts only.
+- **Larger text and 42 mm:** rows grow and wrap, the round button moves to the row's top line, nothing is cut off
+  (H19–H20). Checked by `WatchScreenshotTests` on 46 mm, 42 mm and an accessibility size.
+- **Not in version 1, on purpose:** watchOS 26 controls (H17), a custom Live Activity layout (the iPhone's is locked,
+  U28), and changing which habit a complication shows from inside the app (Apple's face editor does it).
+
 ## iPad (built 11 Oct 2026, Current Work 86; real-iPad check pending)
 
 The iPad is the iPhone's app in Apple's iPad frame; every decision and its reason is in
@@ -675,7 +714,7 @@ The iPad is the iPhone's app in Apple's iPad frame; every decision and its reaso
 not regress:
 
 - **The iPhone never changes for the iPad.** Every iPad difference is behind `Device.isPad` or a regular-width size class
-  on an iPad; on the iPhone the same views, words and presentations run as before (Build Prompt §1, priority 1).
+  on an iPad; on the iPhone the same views, words and presentations run as before (U35).
 - **A narrow iPad window is the iPhone's Today** (I2): the iPhone's top bar with the sidebar button, the bottom day bar,
   Day details as the sheet with ✕. The sidebar button is always the system's `sidebar.left` on the iPad, never ≡.
 - **Today is one view at every size** (`PadRoot`): never move it between containers as the window changes, or an open

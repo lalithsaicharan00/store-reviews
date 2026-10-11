@@ -50,6 +50,18 @@ final class AppModel {
     /// The backup files, restoring and exporting (Architecture 03, 11 §13.3). Nil without a database.
     let backup: BackupCenter?
     let widgets = WidgetPublisher()
+    /// The paired Apple Watch's copy of the data (Architecture 12). Nil for test launches and without a database (D8).
+    let watch: PhoneWatchLink?
+    /// The paired-simulator check (`-uitest -pair-test`, `Tools/ci/watch_pair.sh`): a test launch that still links to
+    /// its Watch, itself a test launch with its own in-memory database. Simulator Debug builds only, so a test launch on
+    /// a real iPhone can never reach the person's Watch (D8).
+    static let pairTest: Bool = {
+        #if DEBUG && targetEnvironment(simulator)
+        return ProcessInfo.processInfo.arguments.contains("-pair-test")
+        #else
+        return false
+        #endif
+    }()
     /// The ≡ menu and Today's navigation path.
     let menu = MenuModel()
     /// App Lock (≡ → Privacy & Security). Off unless turned on.
@@ -130,7 +142,9 @@ final class AppModel {
         if arguments.contains("-simulate-open-failure") { opened = nil } // PersistenceUITests
         #endif
         persistence = opened
-        store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository, databaseOpened: opened != nil)
+        // A local, so closures made below capture the store rather than `self` before init ends.
+        let store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository, databaseOpened: opened != nil)
+        self.store = store
         // A test launch never uses the person's iCloud (D8): its device ID is named after its own store, and its iCloud is
         // `FakeCloud`, signed out unless the test asks (`-test-cloud`), so demo habits can never reach the person's iCloud.
         let testLaunch = arguments.contains("-uitest")
@@ -140,6 +154,9 @@ final class AppModel {
         self.identity = identity
         let cloud = opened.map { CloudSync(repository: $0.repository, transport: Self.cloudTransport(arguments), identity: identity) }
         self.cloud = cloud
+        // The paired Apple Watch's copy (Architecture 12); none for test launches but the paired-simulator check (D8).
+        let watch = testLaunch && !Self.pairTest ? nil : opened.map { PhoneWatchLink(repository: $0.repository, store: store) }
+        self.watch = watch
         if let opened {
             backup = BackupCenter(repository: opened.repository, identity: identity, cloud: cloud, store: store, sandboxed: testLaunch)
         } else {
@@ -254,7 +271,9 @@ final class AppModel {
             // Widget taps made while the app wasn't running, saved before anything is shown (Current Work 66).
             Task { await self.saveWidgetTaps() }
             var plus = store.isPlus
-            store.onChange = { [store, scheduler, timerPresence, widgets, cloud, backup] in
+            store.onChange = { [store, scheduler, timerPresence, widgets, cloud, backup, watch] in
+                // The Watch hears of every change 0.5 s after the last (Architecture 12 §3.1).
+                watch?.scheduleSend()
                 scheduler.scheduleReconcile(store)
                 // Speed runs only (Current Work 49): `-perf-no-widget-publish` leaves the publication out, to see its cost.
                 if PerfSwitches.widgetPublication { widgets.schedule(store) }
@@ -269,7 +288,12 @@ final class AppModel {
                 if UIApplication.shared.applicationState != .active { backup?.changedOutside() }
             }
             backup?.onRetryLater = { [weak self] seconds in self?.scheduleRefresh(after: seconds) }
-            cloud?.onRemoteChanges = { [store] in store.reloadAfterSync() }
+            cloud?.onRemoteChanges = { [store, watch] in
+                store.reloadAfterSync()
+                // Other devices' changes from iCloud were queued for the Watch as they merged (core: `receiveRecord`).
+                watch?.scheduleSend()
+            }
+            watch?.activate()
             // Changes left waiting after a failure (offline, iCloud busy): iOS retries in the background in about 15
             // minutes, as well as the next time the app opens (Current Work 67).
             cloud?.onWaitingAfterFailure = { [weak self] in self?.scheduleRefresh(after: 15 * 60) }
@@ -496,42 +520,6 @@ final class AppModel {
             task.setTaskCompleted(success: !Task.isCancelled && store.isStorageReady && scheduler.problem == nil)
         }
         task.expirationHandler = { work.cancel() }
-    }
-}
-
-/// What a notification or alarm is about, carried in its user info (or an intent's parameters).
-nonisolated struct ReminderTarget: Codable, Hashable, Sendable {
-    var habit: UUID
-    var time: UUID?
-    var day: LocalDay
-    /// The section tick it is for, for a habit ticked once per section.
-    var slot: String?
-    /// The section the time falls in, opened when the notification is tapped.
-    var section: String?
-    var signature: String?
-    var event: String?
-
-    var userInfo: [String: String] {
-        var info = ["habit": habit.uuidString, "day": day.key]
-        if let time { info["time"] = time.uuidString }
-        if let slot { info["slot"] = slot }
-        if let section { info["section"] = section }
-        if let signature { info["signature"] = signature }
-        if let event { info["event"] = event }
-        return info
-    }
-
-    init(habit: UUID, time: UUID?, day: LocalDay, slot: String?, section: String?, signature: String? = nil, event: String? = nil) {
-        self.habit = habit; self.time = time; self.day = day; self.slot = slot; self.section = section
-        self.signature = signature; self.event = event
-    }
-
-    init?(userInfo: [AnyHashable: Any]) {
-        guard let habit = (userInfo["habit"] as? String).flatMap(UUID.init(uuidString:)),
-              let day = (userInfo["day"] as? String).flatMap(LocalDay.init(key:)) else { return nil }
-        self.init(habit: habit, time: (userInfo["time"] as? String).flatMap(UUID.init(uuidString:)), day: day,
-                  slot: userInfo["slot"] as? String, section: userInfo["section"] as? String,
-                  signature: userInfo["signature"] as? String, event: userInfo["event"] as? String)
     }
 }
 

@@ -34,8 +34,22 @@ The same tables as the iPhone: `habit`, `step`, `reminder`, `entry`, `setting`, 
 - **Day start and week start** are synced settings, so "today" is the same day on both (D7, WA5).
 - **Size:** a log is a few hundred bytes. An extreme user (25,000 logs a year, Architecture 11 §14) is about 7–10 MB
   a year with indexes; Architecture 11's yearly compaction applies here too. Watches have 32–64 GB.
+- **What's read into memory** (as built, 11 Oct 2026): the database keeps every log, but the app reads its last 400
+  days (a year goal's whole year, with room) and every log of a quit habit or a task (their runs and repeats read the
+  whole past, and they are few): `HabitRepository.loadSince`, `HabitStore.historyWindowDays`. Measured on the Watch
+  simulator for the extreme account (25,000 logs a year for 15 years, 225 MB): reading it all took 27 s and 202 MB of
+  memory (run 38109083512), against WA1's "opens at once". The rules above still read the same data for today, the
+  week, the month and the year; only a run longer than the window, or a best run before it, can't be counted here, so
+  the Watch shows no streak it isn't sure of and no best for a habit with older logs (WA11: not sure, no count). The
+  iPhone keeps reading everything.
 - **Where:** the Watch app's own container. Its complications and Smart Stack widgets read a small snapshot file in an
   App Group (as the iPhone's widgets do, U26), never the database.
+- **A complication's ✓ or +** (as built, 10 Oct 2026): the face changes at once to the app's own "after one tap" card,
+  and the tap is written to the waiting-taps file in the App Group (the iPhone's `WidgetTaps` format). The Watch app
+  saves waiting taps in order, each once, whenever it runs: on opening, on its background refresh (watchOS allows about
+  four an hour with a complication on the face; the app asks for one every 15 minutes) and when the iPhone's changes
+  wake it. A watchOS widget's intent runs in the extension, which has no database, so a tap reaches the database at the
+  app's next run, not at once; it's on disk from the moment it's made and never lost. To check on the Series 10.
 - **Test launches** use an in-memory database and their own App Group folder (D8).
 
 ## 3. The two ways changes travel
@@ -44,12 +58,23 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
 
 ### 3.1 Watch ⇄ iPhone (WatchConnectivity), from the first version
 
-1. **First fill.** When the Watch app first runs with an empty database (or a database with fewer rows than the
-   iPhone says it has), the iPhone sends a whole copy as a **checked backup file** (the core's `backupFile`, with its
-   checksum) by `transferFile`. The Watch checks it (`checkBackup`) and **merges** it in (`restore`, Merge), never
-   replacing anything. The Watch shows "Getting your habits from your iPhone…" until then (A6, WA2).
+1. **First fill.** When the Watch app first runs with an empty database (or was wiped, or never finished its fill), it
+   asks the iPhone for a whole copy, a part at a time. Each part is a **checked file** made by the core
+   (`peerFillPart`: a zip with a manifest, a record count and the SHA-256 of its records, made and checked like the
+   backup file) sent by `transferFile`; the Watch checks it (`acceptPeerFill`) and **merges** it, never replacing
+   anything. A damaged part is refused before anything changes, and asked for again. Habits, steps, reminders and
+   settings come first, then logs newest first, so Today is right after the first parts; a fill cut off half-way resumes
+   from the last part that arrived. The Watch shows "Getting your habits from your iPhone…" until the last part (A6, WA2).
+   *Changed while building (10 Oct 2026):* this said "the core's `backupFile`… merges it in (`restore`, Merge)". A backup
+   file carries no sync stamps, so a restore stamps every row anew on the Watch; the copy would then win over edits made
+   on the iPhone while it travelled (a rename made after the file left was undone when the Watch sent its "newer" copy
+   back). So a fill part carries every field's own stamp and merges exactly as if each change had arrived one by one
+   (`PeerSyncTest.theFillNeverOverwritesAChangeMadeWhileItTravelled`). Measured: an extreme account (25,000 logs a year
+   for 15 years) fills in 76 parts of at most 73 KB, 22.5 s on GitHub's JVM, a Watch database of 118 MB.
 2. **After that, ops both ways.** Each side keeps a small queue for the other device:
-   - a new table **`peer_out`** (seq, op ID, op), filled in the same transaction as the change (like `outbox`);
+   - a new table **`peer_out`** (seq, op ID, op; schema 9), filled in the same transaction as the change (like `outbox`)
+     once the device has started its link (`peerStart`: the Watch when it first opens, the iPhone when its Watch first says
+     hello or asks for a fill, before the first part is made, so nothing falls between the fill and the queue);
    - sent in batches by `transferUserInfo` (queued by the system, delivered in the background, survives the app being
      closed), 0.5 s after the last change (S16); a large batch (more than ~100 ops) goes as a file;
    - the receiver applies the batch in one transaction (`SyncWriter.receive`) and then acknowledges the highest
@@ -59,7 +84,8 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
    the Watch itself isn't syncing with iCloud. So when the iPhone receives an op from the Watch, it also puts it in its
    own `outbox`; and ops the iPhone fetches from iCloud go into `peer_out` for the Watch. **This is the one change to
    today's core:** `receive(op, from = peer)` forwards to the other paths; an op never goes back to where it came from,
-   and the op ID (unique in each queue) stops loops.
+   and the op ID (unique in each queue) stops loops. *As built:* only an op that changed something is passed on; one
+   that changed nothing is already known here, so it stops (3,000 seeded three-device runs converge, `PeerSyncTest`).
 4. **The watch face.** While our complication is on the active face, the iPhone sends batches that change today by
    `transferCurrentComplicationUserInfo` (50 a day, Apple), so the face updates promptly; otherwise by
    `transferUserInfo`. The Watch reloads its widgets after every applied batch.
@@ -74,6 +100,20 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
   arrives as a duplicate that merges as nothing.
 - The Watch fetches when it opens, on a push, and on background refresh (about four times an hour with a complication
   on the face). It never waits for any of these to show anything (WA1).
+- **As built (11 Oct 2026, after item 81 reached `main`):** the Watch compiles the iPhone's `CloudSync`, `CloudTransport`,
+  `CloudKitTransport` and `DeviceIdentity` (Rulebook U32; watchOS has no `beginBackgroundTask`, so an expiring activity
+  holds the app while a change is sent). Only the iPhone passes changes on: the Watch (`peerStartOnWatch`) sends its
+  own changes to iCloud and to the iPhone, never the iPhone's changes to iCloud again, never iCloud's to the iPhone
+  (the iPhone sends and fetches its own), so nothing travels twice. Joining iCloud, the Watch uploads only its changes
+  the iPhone hasn't acknowledged, never its whole copy (an extreme account's 375,000 logs came from the iPhone, which
+  put them in iCloud); a zone made again is filled by the iPhone the same way. It starts only with Plus (`isPlus` is
+  always true while it runs, so it never takes or hands over the free plan's one syncing device) and only after its
+  first fill, so its first fetch merges as nothing. Plus ending sends what waits and stops iCloud until the app opens
+  again; nothing is deleted. A question iCloud raises (another Apple Account, a removed zone) has no screen on the
+  Watch: iCloud stops there, nothing is deleted and the Watch keeps syncing through its iPhone, where the person
+  answers. Version 1 doesn't pass that answer back, so the Watch's own iCloud path stays off until the app is
+  reinstalled (Current Work 82, "Next"). Tests: `PeerSyncTest.aWatchOnICloudSendsOnlyItsOwnChanges`,
+  `aWatchJoiningICloudUploadsOnlyWhatItsIPhoneHasntAcknowledged`, and the seeded runs with the Watch on iCloud.
 
 ## 4. Cases that need care
 
@@ -97,15 +137,26 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
    with duplicates, drops and both stops of one timer (the `LiveSyncTest` pattern).
 2. **iPhone app:** a `WatchLink` (WCSession) that sends `peer_out` batches, the first-fill file and acknowledgements,
    and applies what the Watch sends. Nothing else on the iPhone changes.
-3. **Watch app:** the same `HabitRepository` and store rules, its own `WatchLink`, the widget snapshot, and later the
-   `CloudSync` layer from item 81.
+3. **Watch app:** the same `HabitRepository` and store rules, its own `WatchLink`, the widget snapshot, and the
+   `CloudSync` layer from item 81 (§3.2, as built).
 
 ## 6. Building and testing without and with a real Watch
 
 - **GitHub can build and test it.** GitHub's macOS 26 runner (the one our workflow uses) has the watchOS 26 SDKs and
   Watch simulators installed (Series 11 42/46 mm, SE 3, Ultra 3; runner image readme, read 10 Oct 2026). Unit tests,
   the core on watchOS, XCUITest UI tests on the Watch simulator, and speed runs all run there, the same way as the
-  iPhone app's. A paired iPhone + Watch simulator pair can exchange `sendMessage` and `transferUserInfo`.
+  iPhone app's. ~~A paired iPhone + Watch simulator pair can exchange `sendMessage` and `transferUserInfo`.~~
+  **As found on GitHub's runner, 11 Oct 2026** (`Tools/ci/watch_pair.sh`, `[watch-pair]`, runs 38115225030,
+  38116345106 and the one after): the two simulators pair and boot, and messages from the Watch reach the iPhone app
+  (`sendMessage`, read on the iPhone), but **nothing goes from the iPhone to the Watch**: WatchConnectivity refuses
+  every send with `WCErrorCodeWatchAppNotInstalled`. The iPhone never counts the Watch app as installed: `simctl
+  pair_activate` fails, installing the iPhone app never installs its Watch app on the paired Watch (waited 240 s),
+  a Watch app installed straight onto the Watch isn't recognised, and the iPhone's `wcd` logs "IDS Registration: XPC
+  has informed us that a fatal error has occurred" throughout (the device-pairing service doesn't run there). So the
+  end-to-end check can't pass on hosted runners. **The proof of the sync is the core's paired-device tests**
+  (`PeerSyncTest`: a stand-in link carrying batches both ways, out of order and twice, through restarts; 3,000 seeded
+  three-device runs and every §4 case), and the check on the user's iPhone and Series 10 (U9). The script stays, for a
+  Mac or a runner where pairing works.
 - **What needs the real Watch** (the user's Series 10, watchOS 26): Apple's complication transfers (the Simulator
   doesn't support `transferCurrentComplicationUserInfo`), real iCloud (CI can't sign in), the background refresh
   budget, haptics, Double Tap, Always On, notification buttons pressed on the wrist, and the arm64 build on a Series 9

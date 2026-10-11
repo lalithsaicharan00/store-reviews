@@ -4,8 +4,10 @@ Written by Claude (Claude Code), 10 October 2026. Everything for building the Ap
 roadmap #65) in one folder: the research, the data and sync design, the designs as pictures, and their notes. No
 design-tool links: everything needed is in here.
 
-> **Building it:** [Build Prompt (Delete When Done)](<Build Prompt (Delete When Done).md>) is the hand-off for the cloud
-> session that builds the Watch app (11 Oct 2026); it deletes that file when the work is merged.
+> **Built** (10–11 Oct 2026, a cloud session, merged into `main` on 11 Oct; the build prompt was deleted then): the app
+> as built is in [Built Screens](<Built Screens/>), what differs from the pictures in
+> [Design Notes, "As built"](<Designs/Design Notes.md>), and what's left for the real iPhone and Watch in
+> [Current Work, item 82](<../Checklists/Current Work Checklist.md>).
 
 ## What the Watch app is
 

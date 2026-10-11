@@ -1,0 +1,102 @@
+# Google Drive sync on the real Google Drive (stage 2 of Android/Docs' build prompt), with the test Google account the
+# user made for it (never theirs; scope drive.appdata only). By hand only, never on a push: GitHub → Actions →
+# "Google Drive (real) checks" → Run workflow, on the branch to test.
+#
+# Secrets: GDRIVE_TEST_CLIENT_ID, GDRIVE_TEST_CLIENT_SECRET, GDRIVE_TEST_REFRESH_TOKEN. The refresh token is exchanged
+# for an access token at run time; nothing prints a token, a request body or a file's content (Rulebook D11). In
+# Google's Testing mode the refresh token can expire after about 7 days: then every step stops with "NOT CONNECTED"
+# and the user renews it in the OAuth Playground. The app folder is emptied before and after.
+#
+# Checks: (1) the deciding check: two processes (two "devices", each its own HTTP client and token) create files under
+# the same reserved IDs at the same moment, IDs reserved by either; then six processes on the same IDs. Exactly one may
+# succeed and every other must get 409, every time. (2) full DriveSync rounds with three to six devices. (3) how Drive
+# itself behaves: list lag, IDs, half-written uploads, bursts, speed.
+name: Google Drive (real) checks
+
+on:
+  workflow_dispatch:
+    inputs:
+      rounds:
+        description: "Race rounds per run of the deciding check (two IDs per round: one reserved by each process)"
+        default: "60"
+      checks:
+        description: "Which checks: all, race, rounds, behaviour, extreme"
+        default: "all"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: drive-real  # one test account: one run at a time, whichever branch
+  cancel-in-progress: false
+
+jobs:
+  real:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GDRIVE_TEST_CLIENT_ID: ${{ secrets.GDRIVE_TEST_CLIENT_ID }}
+      GDRIVE_TEST_CLIENT_SECRET: ${{ secrets.GDRIVE_TEST_CLIENT_SECRET }}
+      GDRIVE_TEST_REFRESH_TOKEN: ${{ secrets.GDRIVE_TEST_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-linux-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: gradle-linux-
+      - name: Build
+        working-directory: Core
+        run: ./gradlew --console=plain writeJvmTestClasspath
+      - name: Empty the app folder
+        working-directory: Core
+        run: java -cp "$(cat build/jvmTestClasspath.txt)" app.habits.core.RealDriveKt clean
+      - name: "Check 1: two processes, one ID"
+        if: inputs.checks == 'all' || inputs.checks == 'race'
+        working-directory: Core
+        run: |
+          cp="$(cat build/jvmTestClasspath.txt)"
+          mkdir -p race && cd race
+          # Each process reserves half the IDs with its own client; both then use every ID.
+          java -cp "$cp" app.habits.core.RealDriveKt ids "${{ inputs.rounds }}" a-ids.txt &
+          java -cp "$cp" app.habits.core.RealDriveKt ids "${{ inputs.rounds }}" b-ids.txt &
+          wait
+          paste -d '\n' a-ids.txt b-ids.txt > ids.txt
+          start=$(( $(date +%s%3N) + 20000 ))
+          java -cp "$cp" app.habits.core.RealDriveKt race A ids.txt "$start" A.txt &
+          java -cp "$cp" app.habits.core.RealDriveKt race B ids.txt "$start" B.txt &
+          wait
+          java -cp "$cp" app.habits.core.RealDriveKt race-check ids.txt A.txt B.txt
+      - name: "Check 1b: six processes, one ID"
+        if: inputs.checks == 'all' || inputs.checks == 'race'
+        working-directory: Core
+        run: |
+          cp="$(cat build/jvmTestClasspath.txt)"
+          mkdir -p race6 && cd race6
+          java -cp "$cp" app.habits.core.RealDriveKt ids 20 ids.txt
+          start=$(( $(date +%s%3N) + 25000 ))
+          for r in A B C D E F; do java -cp "$cp" app.habits.core.RealDriveKt race "$r" ids.txt "$start" "$r.txt" & done
+          wait
+          java -cp "$cp" app.habits.core.RealDriveKt race-check ids.txt A.txt B.txt C.txt D.txt E.txt F.txt
+      - name: "Check 2: full sync rounds"
+        if: always() && (inputs.checks == 'all' || inputs.checks == 'rounds')
+        working-directory: Core
+        run: java -cp "$(cat build/jvmTestClasspath.txt)" app.habits.core.RealDriveKt rounds
+      - name: "Check 3: how Drive behaves"
+        if: always() && (inputs.checks == 'all' || inputs.checks == 'behaviour')
+        working-directory: Core
+        run: java -cp "$(cat build/jvmTestClasspath.txt)" app.habits.core.RealDriveKt behaviour
+      - name: "Check 3b: an extreme account (15 years) on the real Drive"
+        if: always() && (inputs.checks == 'all' || inputs.checks == 'extreme')
+        working-directory: Core
+        run: java -Xmx3g -cp "$(cat build/jvmTestClasspath.txt)" app.habits.core.RealDriveKt extreme 15
+      - name: Empty the app folder
+        if: always()
+        working-directory: Core
+        run: java -cp "$(cat build/jvmTestClasspath.txt)" app.habits.core.RealDriveKt clean

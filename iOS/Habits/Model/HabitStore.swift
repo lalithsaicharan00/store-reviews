@@ -2,7 +2,11 @@ import Core
 import Foundation
 import Observation
 import SwiftUI
+#if os(watchOS)
+import WatchKit
+#else
 import UIKit
+#endif
 
 /// User settings that change how days and weeks are counted (Architecture 05 §4.2–4.3).
 struct DaySettings: Codable, Hashable, Sendable {
@@ -174,6 +178,11 @@ final class HabitStore {
     private(set) var dayFinishedAt: Date?
     /// What the last tap reached: "30 days in a row", "All 5 done today". Shown beside that row's Undo while it lasts.
     private(set) var milestoneOffer: MilestoneOffer?
+    /// The Apple Watch keeps this many days of logs in memory (a quit habit's and a task's whole); 0 keeps everything,
+    /// as the iPhone does. Set before the first load.
+    @ObservationIgnored var historyWindowDays = 0
+    /// With a window: the habits that have logs from before it, whose runs may be longer than counted here.
+    private(set) var historyBeforeWindow: Set<UUID> = []
     struct MilestoneOffer: Equatable { let entry: UUID; let habit: UUID; let day: LocalDay; let text: String }
     /// Only writes what changes: every row reads these, and an observed write redraws them even when it's nil to nil.
     func clearLogOffer() {
@@ -1453,7 +1462,23 @@ final class HabitStore {
     /// Reads everything from the database. Rows this version can't read are skipped, never deleted.
     func load() async {
         do {
-            let snapshot = try await repository.load()
+            let readStarted = CFAbsoluteTimeGetCurrent()
+            let snapshot: Snapshot
+            if historyWindowDays > 0 {
+                // The Apple Watch: its window of logs in memory (quit habits and tasks whole); the database keeps
+                // every log (Architecture 12). Reading 15 years took 27 s on the Watch simulator (run 38109083512).
+                let start = today().adding(days: -historyWindowDays, calendar: calendar)
+                snapshot = try await repository.loadSince(day: start.key)
+                let oldest = try await repository.oldestLogDays()
+                historyBeforeWindow = Set(oldest.compactMap { id, day in
+                    (LocalDay(key: day).map { $0 < start } ?? false) ? UUID(uuidString: id) : nil
+                })
+            } else {
+                snapshot = try await repository.load()
+            }
+            perfNote("Store load: read the database", since: readStarted)
+            let mapStarted = CFAbsoluteTimeGetCurrent()
+            defer { perfNote("Store load: into the app (\(snapshot.entries.count) logs)", since: mapStarted) }
             let steps = Dictionary(grouping: snapshot.steps, by: \.habitId)
             let reminders = Dictionary(grouping: snapshot.reminders, by: \.habitId)
             habits = snapshot.habits.compactMap { Habit(record: $0, steps: steps[$0.id] ?? [], reminders: reminders[$0.id] ?? []) }
@@ -2398,8 +2423,11 @@ final class HabitStore {
     func stopTimer(_ habit: Habit, on day: LocalDay, through end: Date = .now, source: EntrySource = .timer) {
         guard let start = timers[habit.id] else { return }
         let minutes = max(0, end.timeIntervalSince(start)) / 60
+        // The log's ID comes from the habit and the timer's start, so the same timer stopped on the iPhone and on the
+        // Apple Watch is one log, never counted twice (Architecture 12 §4).
         let entry = minutes >= 1 / 60
-            ? Entry(habitID: habit.id, day: day, value: minutes, slot: timerSlots[habit.id], source: source) : nil
+            ? Entry(id: Self.timerEntryID(habit.id, start: start), habitID: habit.id, day: day, value: minutes,
+                    slot: timerSlots[habit.id], source: source) : nil
         // Same as starting: the time shows as saved at once; the database write follows in order. The timer goes first,
         // so "complete before" counts only what was saved before this session.
         timers.removeValue(forKey: habit.id)
@@ -2414,6 +2442,11 @@ final class HabitStore {
             analytics.count(.timerStopped, ticket: telemetry)
             if let entry { analyticsTracked(entry, ticket: telemetry) }
         }
+    }
+
+    /// The ID of the log a timer's stop writes (`TimerStop` in the core): the same on every device for the same timer.
+    static func timerEntryID(_ habit: UUID, start: Date) -> UUID {
+        UUID(uuidString: TimerStop.shared.entryId(habitId: habit.uuidString, startMillis: start.millis)) ?? UUID()
     }
 
     /// Written-first logging, for changes made away from the screen (a notification's Done).
@@ -2469,7 +2502,7 @@ final class HabitStore {
         if milestoneOffer == nil, let score, !wasFull, score.isFull, score.planned > 1 {
             milestoneOffer = MilestoneOffer(entry: entry.id, habit: entry.habitID, day: entry.day, text: "All \(score.planned) done today")
         }
-        if let mark = milestoneOffer, UIAccessibility.isVoiceOverRunning {
+        if let mark = milestoneOffer, Self.voiceOverRunning {
             AccessibilityNotification.Announcement(mark.text).post()
         }
         perform { [self] telemetry in
@@ -2495,11 +2528,20 @@ final class HabitStore {
         }
     }
 
+    /// VoiceOver is on (the iPhone and the Apple Watch ask in their own ways).
+    static var voiceOverRunning: Bool {
+        #if os(watchOS)
+        WKAccessibilityIsVoiceOverRunning()
+        #else
+        UIAccessibility.isVoiceOverRunning
+        #endif
+    }
+
     private func offerUndo(_ entry: Entry) {
-        guard !TimerPresence.playerOpen, entry.source == .today || entry.source == .manual || entry.source == .timer else { return }
+        guard !TimerPresence.playerOpen, entry.source == .today || entry.source == .manual || entry.source == .timer || entry.source == .watch else { return }
         undoOffer = entry
         noteOffer = .init(habit: entry.habitID, day: entry.day)
-        if UIAccessibility.isVoiceOverRunning { AccessibilityNotification.Announcement("Logged. Undo is available.").post() }
+        if Self.voiceOverRunning { AccessibilityNotification.Announcement("Logged. Undo is available.").post() }
     }
 
     /// Editing preserves identity, the tracking day, step, slot, time zone and source.

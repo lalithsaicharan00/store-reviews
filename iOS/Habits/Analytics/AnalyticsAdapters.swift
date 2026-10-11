@@ -28,6 +28,7 @@ extension EntrySource {
         case .daySheet: return .history
         case .shortcut: return .shortcut
         case .widget: return .widget
+        case .watch: return .watch
         }
     }
 }
