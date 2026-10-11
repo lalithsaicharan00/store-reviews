@@ -1056,10 +1056,10 @@ and the Add note keyboard coming up by itself.
         fetch scrolls at 0.0 ms/s and +1 at 15.2 (one 250 ms freeze), the fetch and uploads done in 96 s; Today's own
         windows unchanged. Found and fixed on the way: `CloudStore` on the main thread (PERFORMANCE-LESSONS L31,
         Rulebook S16), re-reads per fetched page, two file pickers in one stack (Restore froze 14–46 s), weekly
-        backup copies a day apart after New Year (the backup check). Still open: the iCloud page's first opening is
-        ~700 ms on the hosted simulator (the old Backup & Export page 150–500 ms; measure on the iPhone first), and
-        "Widgets: one habit's week" takes up to 831 ms with 20,000 extra logs (locked widget code, U28: the user's
-        say-so before any change).
+        backup copies a day apart after New Year (the backup check). Opening the page and Restore,
+        measured the same hour against `main`: first 523 ms (`main`'s Backup & Export 1,154), again 291 (348), Restore
+        190 (298) (runs `38099547344`, `38099545468`); Restore once measured 2.5 s after the fix (hosted noise, three
+        other runs ~0.2 s). "Widgets: one habit's week" (up to 831 ms with 20,000 extra logs) is item 83.
     - **Left for the user** (step 5 of §21; a cloud session can't do these):
       - [ ] The device checks of Architecture 11 §19 on the iPhone and an iPad (or a second iPhone) on one Apple
         Account: a change on one shows on the other; Airplane Mode, then back; a full iCloud; signing in to another
