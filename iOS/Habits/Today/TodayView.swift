@@ -591,7 +591,6 @@ struct TodayView: View {
                         }
                         .accessibilityHint("Edit the note for the day")
                         .accessibilityIdentifier("day-note")
-                        .padCoveredRow()
                     }
                 }
                 // Anytime and Quit or Cut Down sit where the person put them; the times of day follow their times.
@@ -609,11 +608,9 @@ struct TodayView: View {
                         PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: open, onStart: nil,
                                    onToggle: { layout.setOpen(Self.pausedCard, !open, reduceMotion: reduceMotion) })
                             .accessibilityIdentifier("paused-card")
-                            .padCoveredRow()
                         if open {
                             ForEach(paused) { habit in
                                 PausedRow(habit: habit, day: shown)
-                                    .padCoveredRow()
                                     .id(Self.rowKey(Self.pausedCard, habit.id))
                             }
                         }
@@ -626,7 +623,6 @@ struct TodayView: View {
                             Label("Note for the Day", systemImage: "note.text")
                         }
                         .accessibilityIdentifier("add-day-note")
-                        .padCoveredRow()
                         .buttonStyle(.borderless)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -728,7 +724,6 @@ struct TodayView: View {
                                             icon: { Image(systemName: "note.text").foregroundStyle(.secondary) }
                                     }
                                     .accessibilityIdentifier("day-note")
-                                    .padCoveredRow()
                                 }
                             }
                             if card == .quittingCard {
@@ -744,10 +739,8 @@ struct TodayView: View {
                                 PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: true, onStart: nil,
                                            onToggle: {}, folds: false)
                                     .accessibilityIdentifier("paused-card")
-                                    .padCoveredRow()
                                 ForEach(paused) { habit in
                                     PausedRow(habit: habit, day: day)
-                                        .padCoveredRow()
                                         .id(Self.rowKey(Self.pausedCard, habit.id))
                                 }
                             }
@@ -781,7 +774,6 @@ struct TodayView: View {
                 .contextMenu {
                     Button("Arrange Your Day", systemImage: "arrow.up.arrow.down") { arrange(true) }
                 }
-                .padCoveredRow()
             if open {
                 ForEach(habits) { habit in
                     let key = Self.rowKey(Self.quitting, habit.id)

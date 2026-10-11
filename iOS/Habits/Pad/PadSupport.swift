@@ -97,18 +97,37 @@ struct PadSidebarControl {
     var openHabit: ((Habit) -> Void)?
 }
 
-extension View {
-    /// A Today row or header hidden from VoiceOver while a page beside the sidebar covers Today (kept alive behind it):
-    /// rows are cells UIKit hosts, which a hidden flag on Today, or on the list's content, didn't reach (runs 38149917285,
-    /// 38156983870; U1). Nothing at all on the iPhone (U30).
-    @ViewBuilder func padCoveredRow() -> some View {
-        if Device.isPad { modifier(PadCoveredRow()) } else { self }
-    }
-}
+/// Today hidden from VoiceOver while a page beside the sidebar covers it (Today stays alive behind the page, so its day,
+/// its scroll and the widgets' routes stay with it). SwiftUI's hidden flag, on Today, on its list or on each row, didn't
+/// reach the cells UIKit hosts (runs 38149917285, 38156983870, 38159789736; U1), so this sets UIKit's own flag on the
+/// navigation container Today sits in. The iPad only (`PadDayPresenter`).
+struct PadCoveredProbe: UIViewRepresentable {
+    let covered: Bool
 
-private struct PadCoveredRow: ViewModifier {
-    func body(content: Content) -> some View {
-        content.accessibilityHidden(PadAnchor.shared.covered)
+    final class Probe: UIView {
+        var covered = false { didSet { if covered != oldValue { apply() } } }
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            apply()
+        }
+
+        private func apply() {
+            var responder: UIResponder? = next
+            while let current = responder, !(current is UINavigationController) { responder = current.next }
+            (responder as? UINavigationController)?.view.accessibilityElementsHidden = covered
+        }
+    }
+
+    func makeUIView(context: Context) -> Probe {
+        let probe = Probe()
+        probe.isUserInteractionEnabled = false
+        probe.isAccessibilityElement = false
+        return probe
+    }
+
+    func updateUIView(_ probe: Probe, context: Context) {
+        probe.covered = covered
     }
 }
 
@@ -142,7 +161,7 @@ struct PadDayOptions {
     /// The row Day details points at, once chosen, and where it was last seen.
     var key: String?
     var rect: CGRect?
-    /// A page beside the sidebar covers Today: its rows are hidden from VoiceOver (`padCoveredRow`).
+    /// A page beside the sidebar covers Today: Today is hidden from VoiceOver (`PadCoveredProbe`).
     var covered = false
 
     func tapped(_ habit: UUID, section: String?) {
@@ -174,7 +193,6 @@ struct PadDayAnchorRow: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .accessibilityHidden(PadAnchor.shared.covered)
             .background {
                 if PadAnchor.shared.key == key {
                     Color.clear
@@ -198,6 +216,7 @@ struct PadDayPresenter: ViewModifier {
         let anchor = PadAnchor.shared
         content
                 .coordinateSpace(.named(PadAnchor.space))
+                .background { PadCoveredProbe(covered: anchor.covered).frame(width: 0, height: 0) }
                 .popover(isPresented: Binding(get: { shown }, set: { if !$0 && shown { store.dayTarget = nil } }),
                          attachmentAnchor: .rect(.rect(anchor.rect ?? .zero))) {
                     if let target = store.dayTarget, let habit = store.habits.first(where: { $0.id == target.habitID }) {

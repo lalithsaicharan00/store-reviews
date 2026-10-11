@@ -45,7 +45,8 @@ final class IPadUITests: XCTestCase {
         XCUIDevice.shared.orientation = landscape ? .landscapeLeft : .portrait
         app.launchArguments = ["-uitest", "-appearance.theme", "light"] + extra
         app.launch()
-        XCTAssertTrue(today.waitForExistence(timeout: 20), "Today: \(labels())")
+        // 45 s: the run's first launch on a freshly booted iPad simulator took longer than 20 (run 38159789736).
+        XCTAssertTrue(today.waitForExistence(timeout: 45), "Today: \(labels())")
     }
 
     // MARK: Elements
