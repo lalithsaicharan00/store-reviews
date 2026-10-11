@@ -1,51 +1,18 @@
-# claude/pensive-gates-3n4ie8 @ a15854c
+# claude/pensive-gates-3n4ie8-perf4 @ d793e7c (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38129334834 · 2026-10-11 10:40 UTC
-Commit: Current Work 86: universal app (iPhone and iPad), every iPad orientation, one window
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38131509630 · 2026-10-11 11:05 UTC
+Commit: Speed bisect: the iPad build against main on the iPhone, side by side, four rounds [ios-perf-bisect] perf-variants: main=bac8a1b5 branch=HEAD~1 perf-scenarios: new-habit habit-page perf-rounds: 4
 
-- Core storage and migrations: success
-- Build: success
-- Release build: success
-- Same-build speed baseline: skipped
-- UI tests (TodayUITests/testMenu,DayDetailsScreenshotUITests): success
-- Speed tests: skipped
-- Speed tests through XCTest: skipped
+Variants: `main=bac8a1b5 branch=HEAD~1` · scenarios: `new-habit habit-page` · rounds: 4
 
-## UI tests
-```
-	 Executed 21 tests, with 0 failures (0 unexpected) in 987.981 (988.000) seconds
-	 Executed 22 tests, with 0 failures (0 unexpected) in 1104.953 (1104.976) seconds
-	 Executed 22 tests, with 0 failures (0 unexpected) in 1104.953 (1104.977) seconds
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test01_amount]' passed (126.567 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test02_noUnitWeek]' passed (54.789 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test03_currencyMonth]' passed (34.301 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test04_limit]' passed (37.963 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test05_time]' passed (44.815 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test06_timerRunningAndEarlierDay]' passed (36.168 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test07_fractionalTimer]' passed (28.373 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test08_onceADay]' passed (42.922 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test09_severalADay]' passed (47.883 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test10_weekGoal]' passed (41.448 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test11_monthGoal]' passed (40.412 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test12_daysAWeek]' passed (39.459 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test12b_olderMultiCheckLog]' passed (26.800 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test13_checklist]' passed (42.675 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test14_quit]' passed (54.983 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test15_task]' passed (25.449 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test16_dayStates]' passed (81.133 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test17_notes]' passed (56.514 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test18_deleteConfirmations]' passed (70.877 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test19_lightMode]' passed (27.839 seconds).
-Test Case '-[HabitsUITests.DayDetailsScreenshotUITests test20_managementMenu]' passed (26.610 seconds).
-Test Case '-[HabitsUITests.TodayUITests testMenu]' passed (116.972 seconds).
-```
+- main: bac8a1b5 Current Work 88: coming back to the iPhone after using the iPad, "Use your habits on this iPhone?" (t
+- branch: 7aca590e Current Work 86: container ids keep their rows' own (T9), the sidebar command names itself, onboardin
 
-## Release build
-```
-** BUILD SUCCEEDED **
-```
+Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
-## Native analytics checks
-```
-Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
-```
+| Window | main | branch |
+|---|---|---|
+| Habit form: typing | **23.0**<br>37.1 (88, 0), 21.4 (145, 1), 24.6 (130, 1), 14.1 (53, 0) | **22.5**<br>94.4 (457, 3), 23.2 (103, 1), 19.1 (64, 0), 21.9 (79, 0) |
+| Habit page: History scrolling | **6.9**<br>20.6 (126, 1), 7.3 (96, 0), 5.1 (87, 0), 6.6 (47, 0) | **7.4**<br>7.7 (117, 1), 7.1 (66, 0), 7.8 (130, 1), 5.3 (63, 0) |
+| Habit page: Progress scrolling | **7.0**<br>14 (116, 1), 6 (74, 0), 5.3 (48, 0), 7.9 (48, 0) | **13.8**<br>28.1 (300, 1), 10.2 (106, 1), 17.5 (87, 0), 7.9 (54, 0) |
+| Habit page: switching tabs | **26.5**<br>2.6 (48, 0), 35.2 (65, 0), 17.7 (76, 0), 65.2 (84, 0) | **29.4**<br>35.7 (110, 1), 34.4 (53, 0), 0.8 (30, 0), 24.3 (43, 0) |
