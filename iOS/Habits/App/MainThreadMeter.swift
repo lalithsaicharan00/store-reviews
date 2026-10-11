@@ -1,5 +1,6 @@
-#if DEBUG
 import Foundation
+
+#if DEBUG
 
 /// Speed tests only (launched with `-perf-meter`, 30 Sep 2026): records every stretch of 17 ms or more that the main
 /// thread worked without a break, from waking up to going back to sleep. Each one is at least one dropped frame; one
