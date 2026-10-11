@@ -94,13 +94,26 @@ final class WatchModel {
     /// After every saved change: the iPhone hears of it 0.5 s after the last one (S16), and the face is redrawn.
     private func changed() {
         link.scheduleSend()
-        widgets.schedule(store)
+        scheduleFace()
         guard !Self.testLaunch else { return }
         let store = store
         HabitShortcuts.habitsChanged(store)
         Task {
             await WatchNotifications.syncTimerAlerts(store)
             WatchNotifications.registerCategories(habits: store.habits)
+        }
+    }
+
+    /// The face is redrawn 3 s after the last change while the app is open, and at once when it leaves the screen
+    /// (WatchApp): working out the snapshot takes up to 58 ms on the main thread (run 38111296058), too much to repeat
+    /// after every run of taps while the face isn't even showing. The iPhone's own publisher (locked, U28) is unchanged.
+    @ObservationIgnored private var faceTask: Task<Void, Never>?
+    private func scheduleFace() {
+        faceTask?.cancel()
+        faceTask = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(3))
+            guard !Task.isCancelled, let self else { return }
+            await self.widgets.publish(self.store)
         }
     }
 

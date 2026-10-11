@@ -4,7 +4,7 @@ import WatchKit
 /// One Today row on the Watch (A1–A3, H1, H5, H6, H9): the habit's icon, name and the iPhone's own line under it, a fill
 /// in the habit's colour as far as today has got, and the round button that does what Today's does (U14, WA6). Tapping
 /// the row opens the habit's Day details; tapping the button logs.
-struct WatchRow: View {
+struct WatchRow: View, Equatable {
     let row: TodayPlan.Row
     let day: LocalDay
     let open: () -> Void
@@ -15,6 +15,9 @@ struct WatchRow: View {
     @Environment(\.dynamicTypeSize) private var textSize
 
     private var habit: Habit { row.habit }
+
+    /// The closures are left out: they act on this row's habit and ask Today for anything else when called.
+    static func == (a: WatchRow, b: WatchRow) -> Bool { a.row == b.row && a.day == b.day }
 
     var body: some View {
         let _ = perfTimed("Count: a Today row drawn") { 0 }
@@ -109,31 +112,10 @@ struct WatchRow: View {
         }
     }
 
-    /// "Undo +1 glass" right under the row just logged, naming what it takes back (U14, WA7); a milestone beside it (H9).
-    @ViewBuilder
-    private var after: some View {
-        if let offer = store.undoOffer, offer.habitID == habit.id, offer.day == day {
-            VStack(alignment: .leading, spacing: 4) {
-                if let mark = store.milestoneOffer, mark.entry == offer.id,
-                   store.streakIsSure(habit, current: store.streak(of: habit, asOf: day), on: day) {
-                    Text(mark.text).font(.footnote.weight(.semibold))
-                        .accessibilityIdentifier("milestone")
-                }
-                Button(offer.undoLabel(for: store.rule(habit, on: day))) {
-                    tapped()
-                    WKInterfaceDevice.current().play(.click)
-                    store.undoEntry(offer.id)
-                }
-                .font(.footnote.weight(.semibold))
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.capsule)
-                .controlSize(.small)
-                .fixedSize()
-                .accessibilityIdentifier("undo")
-            }
-            .padding(.leading, 32)
-        }
-    }
+    /// The after-log line in its own small view: the store's one Undo offer changes with every log, and read here it
+    /// would redraw every row on every tap (S6).
+    private var after: some View { RowAfter(habit: habit, day: day, tapped: tapped) }
+
 
     // MARK: The round button
 
@@ -238,5 +220,37 @@ struct QuitRunText: View {
                 try? await Task.sleep(for: .seconds(wait))
                 now = .now
             }
+    }
+}
+
+/// "Undo +1 glass" right under the row just logged, naming what it takes back (U14, WA7); a milestone beside it (H9).
+struct RowAfter: View {
+    let habit: Habit
+    let day: LocalDay
+    let tapped: () -> Void
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        if let offer = store.undoOffer, offer.habitID == habit.id, offer.day == day {
+            VStack(alignment: .leading, spacing: 4) {
+                if let mark = store.milestoneOffer, mark.entry == offer.id,
+                   store.streakIsSure(habit, current: store.streak(of: habit, asOf: day), on: day) {
+                    Text(mark.text).font(.footnote.weight(.semibold))
+                        .accessibilityIdentifier("milestone")
+                }
+                Button(offer.undoLabel(for: store.rule(habit, on: day))) {
+                    tapped()
+                    WKInterfaceDevice.current().play(.click)
+                    store.undoEntry(offer.id)
+                }
+                .font(.footnote.weight(.semibold))
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+                .controlSize(.small)
+                .fixedSize()
+                .accessibilityIdentifier("undo")
+            }
+            .padding(.leading, 32)
+        }
     }
 }

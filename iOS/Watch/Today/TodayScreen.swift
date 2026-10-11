@@ -67,8 +67,16 @@ struct TodayScreen: View {
     private(set) var order: [String: [String]]?
     @ObservationIgnored private var release: Task<Void, Never>?
 
-    func tapped(_ plan: TodayPlan, current: [String: [String]]) {
-        if order == nil { order = current }
+    @ObservationIgnored private var latest: [String: [String]] = [:]
+
+    /// The order Today last drew (never observed, so remembering it doesn't redraw anything).
+    func remember(_ current: [String: [String]]) -> Bool {
+        latest = current
+        return true
+    }
+
+    func tapped() {
+        if order == nil { order = latest }
         release?.cancel()
         release = Task { @MainActor [weak self] in
             try? await Task.sleep(for: .seconds(1.5))
@@ -87,6 +95,9 @@ struct TodayList: View {
 
     var body: some View {
         let ordered = orderedRows()
+        // The order as shown, for the hold a tap starts; rows keep their own closures across redraws (they skip when
+        // their habit hasn't changed), so they ask for it when tapped rather than capturing this one.
+        let _ = hold.remember(currentOrder(ordered))
         ScrollViewReader { proxy in
         List {
             if store.problem != nil {
@@ -101,9 +112,13 @@ struct TodayList: View {
             ForEach(plan.sections) { section in
                 Section {
                     ForEach(ordered[section.id] ?? section.rows) { row in
+                        // Equatable by habit and day: a change to another habit, or Today's plan being worked out again,
+                        // leaves this row alone; its own habit's changes still redraw it (S6). Every row redrew on every
+                        // tap, also behind Day details (run 38111296058: 414 row draws for 60 changes).
                         WatchRow(row: row, day: plan.day,
                                  open: { navigation.path.append(WatchRoute.day(row.habit.id)) },
-                                 tapped: { hold.tapped(plan, current: currentOrder(ordered)) })
+                                 tapped: { hold.tapped() })
+                            .equatable()
                     }
                 } header: {
                     SectionHeaderView(section: section, plan: plan)
