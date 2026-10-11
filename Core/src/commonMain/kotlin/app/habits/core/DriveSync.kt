@@ -303,8 +303,10 @@ class DriveSync(
             val bytes = DriveSnapshot.write(chain, seq, built.rows, node, clock())
             val file = try {
                 call { drive.create(id, "often-enough-$chain-${seq.toString().padStart(6, '0')}", properties, bytes) }
-            } catch (_: DriveError.Conflict) {
-                // Another device saved first: take its version in and try the one after it.
+            } catch (e: DriveError) {
+                // Another device saved first (409), or saved and the version was since tidied away (Drive refuses a
+                // deleted file's ID with 400): take the winner in and try the one after it, or start again.
+                if (e !is DriveError.Conflict && !(e is DriveError.Rejected && e.code == 400)) throw e
                 val winner = call { drive.get(id) }?.let { Version(it) }?.takeIf { it.valid && it.chain == chain } ?: throw Gone()
                 listing.add(winner.file)
                 if (!absorb(listing, winner, round)) return false

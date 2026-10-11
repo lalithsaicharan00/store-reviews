@@ -20,6 +20,7 @@ class FakeDrive(private val random: Random = Random(0)) {
     private val lock = Any()
     val files = LinkedHashMap<String, Stored>()
     private val reserved = mutableSetOf<String>()
+    private val deleted = mutableSetOf<String>()
     private var nextId = 0
     /** Drive's clock for list lag: the test moves it on. */
     var tick = 0L
@@ -89,7 +90,9 @@ class FakeDrive(private val random: Random = Random(0)) {
                     log += Event.Conflict(this.name, id)
                     throw DriveError.Conflict()
                 }
-                if (id !in reserved) throw DriveError.Rejected(400, "invalid id")
+                if (id !in reserved) throw DriveError.Rejected(400, "fileIdNotUsable")
+                // Drive never takes a deleted file's ID again (measured on the real Drive, 11 Oct 2026).
+                if (id in deleted) throw DriveError.Rejected(400, "invalid")
                 if (fullQuota) throw DriveError.Full()
                 val kept = if (fault == Fault.StoreDamaged) content.copyOf(content.size / 2) else content
                 val file = DriveFile(id, name, properties, kept.size.toLong(), tick, sha256(kept))
@@ -126,7 +129,7 @@ class FakeDrive(private val random: Random = Random(0)) {
 
         override suspend fun delete(id: String) {
             throwIfError(begin())
-            synchronized(lock) { files.remove(id) }
+            synchronized(lock) { if (files.remove(id) != null) deleted += id }
         }
 
         override suspend fun quota(): DriveQuota {

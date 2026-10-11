@@ -263,6 +263,32 @@ class DriveSyncTest {
         checkChains(drive, "two first versions")
     }
 
+    @Test fun aDeviceFarBehindSavesAfterVersionsThatWereTidiedAway() = runBlocking<Unit> {
+        val drive = FakeDrive()
+        val (phone, mac) = List(2) { Device("d$it", drive).also(Device::connect) }
+        phone.repo.saveHabit(habit("water"), emptyList(), emptyList(), now())
+        settle(listOf(phone, mac))
+        // The Mac lists, and stops before saving (its listing goes stale).
+        val stale = DriveSync.Listing(drive.versions()).canonical(DriveStore.BASE)!!
+        // Meanwhile the phone saves five more versions and tidies the oldest away, the Mac's head's successor too.
+        repeat(5) { i -> clockNow += 1_000; phone.repo.saveSetting("week_start", "${i + 1}"); phone.syncNow() }
+        assertEquals(null, drive.files[stale.next], "the Mac's next ID was used, then deleted")
+        // The Mac saves after its stale head: Drive refuses the used ID with 400; the Mac lists again and saves after the newest.
+        mac.repo.saveSetting("daynote.2026-10-11", "from the Mac")
+        var staleOnce = true
+        val lagging = object : DriveApi by mac.client {
+            override suspend fun list(): List<DriveFile> = if (staleOnce) { staleOnce = false; listOf(stale.file) } else mac.client.list()
+        }
+        mac.sync = DriveSync(mac.repo, lagging, mac.name, "android", clock = { now() }, pause = {})
+        val status = mac.syncNow()
+        assertEquals(DriveState.SYNCED, status.state, status.problem ?: "")
+        assertEquals(0, status.waiting)
+        settle(listOf(phone, mac))
+        assertSame(listOf(phone, mac), "far behind")
+        assertEquals("from the Mac", phone.live().settings.single { it.key == "daynote.2026-10-11" }.value)
+        checkChains(drive, "far behind")
+    }
+
     @Test fun aFreshInstallDownloadsBeforeItSendsAnything() = runBlocking<Unit> {
         val drive = FakeDrive()
         val phone = Device("phone", drive).also(Device::connect)
