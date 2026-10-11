@@ -60,6 +60,13 @@
 	<string>production</string>
 	<key>AnalyticsProductionEnabled</key>
 	<false/>
+	<!-- One window (the user, 11 Oct 2026, Current Work 86): no second window of the app on the iPad. Every window size
+	     still works; per-window state is kept in @SceneStorage so a second window can come later without changes. -->
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID unlocks the app when App Lock is on.</string>
 	<key>NSAlarmKitUsageDescription</key>

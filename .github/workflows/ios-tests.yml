@@ -201,7 +201,10 @@ jobs:
             # A chosen device type (the iPhone SE checks, 7 Oct 2026): made fresh on the newest iOS runtime.
             if [ -n "${DEVICE:-}" ]; then
               RUNTIME=$(xcrun simctl list runtimes available -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x.get('platform')=='iOS']; print(r[-1]['identifier'])")
-              TYPE=$(xcrun simctl list devicetypes -j | DEVICE="$DEVICE" python3 -c "import json,sys,os; print(next(t['identifier'] for t in json.load(sys.stdin)['devicetypes'] if t['name']==os.environ['DEVICE']))")
+              # The exact name, else the newest type whose name starts with it ("iPad Pro 13-inch" finds "iPad Pro 13-inch (M5)");
+              # the iPad's types change names with each chip (Current Work 86, 11 Oct 2026). Every type is listed in the log.
+              xcrun simctl list devicetypes | grep -E "iPad|iPhone" || true
+              TYPE=$(xcrun simctl list devicetypes -j | DEVICE="$DEVICE" python3 -c "import json,sys,os; t=json.load(sys.stdin)['devicetypes']; d=os.environ['DEVICE']; m=[x for x in t if x['name']==d] or [x for x in t if x['name'].startswith(d)]; print(m[-1]['identifier'])")
               ID=$(xcrun simctl create "Test device" "$TYPE" "$RUNTIME")
               echo "Created $DEVICE ($TYPE) on $RUNTIME: $ID"
             fi
