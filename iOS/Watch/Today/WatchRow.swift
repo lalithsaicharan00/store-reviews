@@ -204,7 +204,9 @@ struct QuitRunText: View {
     @State private var now = Date.now
 
     var body: some View {
-        Text(RunWords.short(store.quitRuns(of: habit, now: now).current))
+        // `now` only moves the text each minute; the run is counted to the store's clock (D7), never to an earlier
+        // moment than a slip just recorded.
+        Text(RunWords.short(store.quitRuns(of: habit, now: max(now, store.clock())).current))
             .task(id: now) {
                 let wait = 60 - now.timeIntervalSince1970.truncatingRemainder(dividingBy: 60)
                 try? await Task.sleep(for: .seconds(wait))

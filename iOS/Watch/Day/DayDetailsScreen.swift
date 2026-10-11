@@ -57,10 +57,10 @@ struct DayDetailsScreen: View {
         }
         .sheet(isPresented: $more) { MoreSheet(habit: habit, day: day) }
         .confirmationDialog("Record a slip?", isPresented: $askSlip, titleVisibility: .visible) {
-            Button("Record a slip") { store.slip(habit, on: day, at: .now, source: .watch) }
+            Button("Record a slip") { store.slip(habit, on: day, at: store.clock(), source: .watch) }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("\(habit.name) · now, \(DayWords.clock(.now, calendar: store.calendar))")
+            Text("\(habit.name) · now, \(DayWords.clock(store.clock(), calendar: store.calendar))")
         }
         .accessibilityIdentifier("day-details")
     }
@@ -323,7 +323,7 @@ struct DayDial: View {
         QuitRunText(habit: habit)
             .font(.system(size: 26, weight: .bold, design: .rounded))
             .minimumScaleFactor(0.6).lineLimit(1)
-        let runs = store.quitRuns(of: habit)
+        let runs = store.quitRuns(of: habit, now: store.clock())
         if let since = store.slips(of: habit).last ?? habit.quitSince {
             small("since " + DayWords.short(LocalDay(since, calendar: store.calendar), calendar: store.calendar)
                   + ", " + DayWords.clock(since, calendar: store.calendar))

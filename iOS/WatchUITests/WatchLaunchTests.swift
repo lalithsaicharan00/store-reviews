@@ -6,6 +6,8 @@ final class WatchLaunchTests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-watch-fixture", "design", "-clock-hour", "10"]
         app.launch()
-        XCTAssertTrue(app.staticTexts["Vitamins"].waitForExistence(timeout: 20), "Today shows the habits")
+        // The first section in the iPhone's default order is Quitting; the day bar counts the rest.
+        XCTAssertTrue(app.staticTexts["No smoking"].waitForExistence(timeout: 20), "Today shows the habits")
+        XCTAssertTrue(app.staticTexts["1 of 7 done"].exists, "Today's day bar")
     }
 }

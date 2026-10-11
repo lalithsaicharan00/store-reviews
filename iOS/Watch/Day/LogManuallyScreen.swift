@@ -151,7 +151,7 @@ struct TimeEntry: View {
             }
             .pickerStyle(.wheel)
             .frame(height: 92)
-            Text("Finished now, " + DayWords.clock(.now, calendar: store.calendar))
+            Text("Finished now, " + DayWords.clock(store.clock(), calendar: store.calendar))
                 .font(.footnote).foregroundStyle(.secondary)
         }
         .navigationTitle(habit.name)
@@ -159,7 +159,7 @@ struct TimeEntry: View {
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button("Add " + Format.minutes(Double(hours * 60 + minutes))) {
-                    store.addProgress(habit, value: Double(hours * 60 + minutes), on: store.today(), at: .now, source: .watch)
+                    store.addProgress(habit, value: Double(hours * 60 + minutes), on: store.today(), at: store.clock(), source: .watch)
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent).tint(.white).foregroundStyle(.black)

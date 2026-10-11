@@ -32,9 +32,13 @@ class WatchTestCase: XCTestCase {
         XCTAssertTrue(screen.contains(frame), "\(what) at \(frame) leaves the screen \(screen)", file: file, line: line)
     }
 
+    /// Scrolls to the element (short drags, `WatchScroll`), failing with what was on screen if it never shows.
+    func reveal(_ element: XCUIElement, _ what: String, file: StaticString = #filePath, line: UInt = #line) {
+        if !app.reveal(element) { XCTFail("\(what) not found. On screen: \(labels())", file: file, line: line) }
+    }
+
     func openRow(_ name: String) {
-        for _ in 0..<5 where !app.staticTexts[name].firstMatch.isHittable { app.swipeUp() }
-        require(app.staticTexts[name].firstMatch, "\(name)'s row")
+        reveal(app.staticTexts[name].firstMatch, "\(name)'s row")
         app.staticTexts[name].firstMatch.tap()
         require(app.buttons["more"], "Day details for \(name)")
     }
@@ -45,20 +49,22 @@ class WatchTestCase: XCTestCase {
 final class WatchTodayTests: WatchTestCase {
     func testOpensWithTheIPhonesSectionsAndWords() {
         launch("design")
-        require(app.staticTexts["Vitamins"], "Vitamins")
+        // The iPhone's default order: Quitting, Anytime, Morning, Afternoon, Evening (store.todayCards).
         require(app.staticTexts["1 of 7 done"], "the day bar's count (habits, not ticks)")
-        XCTAssertTrue(app.staticTexts["Morning"].exists, "Morning section. On screen: \(labels())")
-        XCTAssertTrue(app.staticTexts["Every day"].exists, "a single tick's line says how often. On screen: \(labels())")
-        XCTAssertTrue(app.staticTexts["12/20 min"].exists, "Meditate's line. On screen: \(labels())")
-        requireOnScreen(app.staticTexts["Vitamins"], "Vitamins")
+        require(app.staticTexts["Quitting"], "Quitting, first as on the iPhone")
+        reveal(app.staticTexts["Water"].firstMatch, "Water, in Anytime")
+        reveal(app.buttons["start-morning"], "Morning's ▶")
         requireOnScreen(app.buttons["start-morning"], "Morning's ▶")
+        reveal(app.staticTexts["Vitamins"].firstMatch, "Vitamins")
+        XCTAssertTrue(app.staticTexts["Every day"].exists, "a single tick's line says how often. On screen: \(labels())")
+        reveal(app.staticTexts["12/20 min"].firstMatch, "Meditate's line")
+        requireOnScreen(app.staticTexts["Vitamins"].firstMatch, "Vitamins")
     }
 
     func testAPlusOneLogsAtOnceAndUndoNamesIt() {
         launch("design")
-        for _ in 0..<3 where !app.buttons["button-Add 1 glass to Water"].isHittable { app.swipeUp() }
         let add = app.buttons["button-Add 1 glass to Water"]
-        require(add, "Water's +1")
+        reveal(add, "Water's +1")
         add.tap()
         require(app.staticTexts["4/8 glasses"], "Water at 4/8 after one tap")
         let undo = app.buttons["undo"]
@@ -71,7 +77,7 @@ final class WatchTodayTests: WatchTestCase {
     func testACheckTogglesAndDoneRowsSinkAfterThePause() {
         launch("design")
         let vitamins = app.buttons["button-Mark Vitamins done"]
-        require(vitamins, "Vitamins' ✓")
+        reveal(vitamins, "Vitamins' ✓")
         let before = app.staticTexts["Vitamins"].frame.minY
         vitamins.tap()
         require(app.buttons["button-Undo Vitamins"], "Vitamins ticked")
@@ -99,20 +105,19 @@ final class WatchTodayTests: WatchTestCase {
         launch("limits")
         require(app.staticTexts["1/2 cups max"], "a limit's line")
         launch("tasks")
-        require(app.staticTexts["Task · 2:00 PM"], "a task's line")
+        // The time is the system's ("2:00 PM" with a narrow space before PM), so match its start.
+        require(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Task · 2:00")).firstMatch, "a task's line")
         launch("skipped-paused")
         require(app.staticTexts["Skipped today"], "a skipped habit stays, neutral")
-        for _ in 0..<5 where !app.buttons["paused"].exists { app.swipeUp() }
-        require(app.buttons["paused"], "the folded Paused row")
+        reveal(app.buttons["paused"], "the folded Paused row")
     }
 
     func testAFailedSaveSaysSoAndShowsWhatsSaved() {
         launch("design", ["-fail-entry-writes"])
-        for _ in 0..<3 where !app.buttons["button-Add 1 glass to Water"].isHittable { app.swipeUp() }
+        reveal(app.buttons["button-Add 1 glass to Water"], "Water's +1")
         app.buttons["button-Add 1 glass to Water"].tap()
         require(app.staticTexts["3/8 glasses"], "Water back at what's saved", timeout: 10)
-        for _ in 0..<4 { app.swipeDown() }
-        require(app.buttons["save-problem"], "Couldn't save that log")
+        reveal(app.buttons["save-problem"], "Couldn't save that log")
     }
 }
 
@@ -126,9 +131,8 @@ final class WatchDayDetailsTests: WatchTestCase {
         require(main, "+1 glass")
         main.tap()
         require(app.staticTexts["4"], "the dial at 4")
-        app.swipeUp()
-        require(app.staticTexts["Today's logs"], "today's logs")
-        require(app.buttons["skip-today"], "Skip today, last")
+        reveal(app.staticTexts["Today's logs"], "today's logs")
+        reveal(app.buttons["skip-today"], "Skip today, last")
     }
 
     func testCheckMarkDoneThenUndo() {
@@ -182,7 +186,7 @@ final class WatchDayDetailsTests: WatchTestCase {
     func testDeleteALogAsksFirstAndGoesBackFirst() {
         launch("design")
         openRow("Water")
-        app.swipeUp()
+        reveal(app.buttons["log-row"].firstMatch, "a log")
         app.buttons["log-row"].firstMatch.tap()
         require(app.buttons["delete"], "the log's Delete")
         app.buttons["delete"].tap()
@@ -243,6 +247,7 @@ final class WatchLogManuallyTests: WatchTestCase {
 final class WatchRoutineTests: WatchTestCase {
     func testPagesNeverLogAndTheFinishSummarises() {
         launch("design")
+        reveal(app.buttons["start-morning"], "Morning's ▶")
         app.buttons["start-morning"].tap()
         require(app.buttons["routine-main"], "the routine")
         XCTAssertEqual(app.buttons["routine-main"].label, "Mark done")
@@ -253,21 +258,23 @@ final class WatchRoutineTests: WatchTestCase {
         require(app.buttons["routine-main"], "Next")
         XCTAssertEqual(app.buttons["routine-main"].label, "Next")
         app.buttons["routine-close"].tap()
-        require(app.buttons["button-Undo Vitamins"], "Vitamins ticked on Today after the routine")
+        reveal(app.buttons["button-Undo Vitamins"], "Vitamins ticked on Today after the routine")
     }
 
     func testClosingKeepsTheTimerRunning() {
         launch("design")
+        reveal(app.buttons["start-morning"], "Morning's ▶")
         app.buttons["start-morning"].tap()
         require(app.buttons["routine-main"], "the routine")
         app.swipeUp()
         app.buttons["routine-main"].tap() // start Meditate
         app.buttons["routine-close"].tap()
-        require(app.buttons["button-Stop Meditate timer"], "the timer still running on Today (C6)")
+        reveal(app.buttons["button-Stop Meditate timer"], "the timer still running on Today (C6)")
     }
 
     func testTheListJumpsWithoutLogging() {
         launch("design")
+        reveal(app.buttons["start-morning"], "Morning's ▶")
         app.buttons["start-morning"].tap()
         app.buttons["routine-list"].tap()
         require(app.buttons["Stretch"].firstMatch, "Stretch in the list")
@@ -282,8 +289,7 @@ final class WatchPlusTests: WatchTestCase {
         launch("design", ["-free", "-plus-moment", "offer"])
         require(app.staticTexts["Apple Watch is part of Plus"], "G1")
         require(app.buttons["get-plus"], "Get Plus")
-        for _ in 0..<3 { app.swipeUp() }
-        require(app.buttons["restore"], "Restore Purchases, always on the page")
+        reveal(app.buttons["restore"], "Restore Purchases, always on the page")
     }
 
     func testEveryMoment() {
@@ -296,6 +302,6 @@ final class WatchPlusTests: WatchTestCase {
 
     func testWithPlusTodayOpens() {
         launch("design")
-        require(app.staticTexts["Vitamins"], "Today with Plus")
+        reveal(app.staticTexts["Vitamins"].firstMatch, "Today with Plus")
     }
 }

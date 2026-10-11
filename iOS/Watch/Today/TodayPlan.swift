@@ -39,7 +39,9 @@ struct TodayPlan {
     }
 
     @MainActor
-    static func make(_ store: HabitStore, now: Date = .now) -> TodayPlan {
+    static func make(_ store: HabitStore, now: Date? = nil) -> TodayPlan {
+        // The store's clock (D7): the same moment the store counts "today" and "Now" from.
+        let now = now ?? store.clock()
         let today = store.today(now: now)
         let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= today }
         let restraint = active.filter { habit in

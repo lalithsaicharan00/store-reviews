@@ -541,7 +541,8 @@ jobs:
             SMALL=$(xcrun simctl create "Watch 42" "$(pick 42mm)" "$RUNTIME")
             echo "WATCH46=$BIG" >> "$GITHUB_ENV"
             echo "WATCH42=$SMALL" >> "$GITHUB_ENV"
-            xcrun simctl boot "$BIG"; xcrun simctl bootstatus "$BIG" -b
+            xcrun simctl boot "$BIG"; xcrun simctl boot "$SMALL"
+            xcrun simctl bootstatus "$BIG" -b; xcrun simctl bootstatus "$SMALL" -b
             xcrun simctl list devices booted
           } 2>&1 | tee iOS/watch-sim.log
 
@@ -552,8 +553,10 @@ jobs:
         run: |
           set -o pipefail
           ONLY=""; for t in ${WATCH_TESTS//,/ }; do ONLY="$ONLY -only-testing:OftenEnoughWatchUITests/$t"; done
+          # On the 46 mm and the 42 mm Watch at once.
           xcodebuild test-without-building -project Habits.xcodeproj -scheme OftenEnoughWatch -sdk watchsimulator \
-            -destination "id=$WATCH46" -derivedDataPath DerivedData -resultBundlePath WatchResults.xcresult $ONLY \
+            -destination "id=$WATCH46" -destination "id=$WATCH42" -maximum-concurrent-test-simulator-destinations 2 \
+            -derivedDataPath DerivedData -resultBundlePath WatchResults.xcresult $ONLY \
             2>&1 | tee watch-test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" watch-test.log
 
@@ -563,12 +566,11 @@ jobs:
         working-directory: iOS
         run: |
           set -o pipefail
-          xcrun simctl boot "$WATCH42" || true; xcrun simctl bootstatus "$WATCH42" -b
-          for SIM in "$WATCH46" "$WATCH42"; do
-            xcodebuild test-without-building -project Habits.xcodeproj -scheme OftenEnoughWatch -sdk watchsimulator \
-              -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath "Shots-$SIM.xcresult" \
-              -only-testing:OftenEnoughWatchUITests/WatchScreenshotTests 2>&1 | tee -a watch-shots.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
-          done
+          # Both sizes at once (one after the other took 28 minutes, run 38097123253).
+          xcodebuild test-without-building -project Habits.xcodeproj -scheme OftenEnoughWatch -sdk watchsimulator \
+            -destination "id=$WATCH46" -destination "id=$WATCH42" -maximum-concurrent-test-simulator-destinations 2 \
+            -derivedDataPath DerivedData -resultBundlePath "Shots-both.xcresult" \
+            -only-testing:OftenEnoughWatchUITests/WatchScreenshotTests 2>&1 | tee -a watch-shots.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           mkdir -p shots
           for r in Shots-*.xcresult; do xcrun xcresulttool export attachments --path "$r" --output-path "shots-raw-${r%.xcresult}" || true; done
           python3 Tools/ci/watch_shots.py shots-raw-* shots
