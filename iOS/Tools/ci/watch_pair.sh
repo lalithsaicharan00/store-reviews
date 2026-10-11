@@ -38,11 +38,22 @@ WATCH=$(xcrun simctl create "Pair Watch" "$(devicetype "Apple Watch Series 10 (4
 PAIR=$(xcrun simctl pair "$WATCH" "$PHONE" 2>>"$OUT/setup.txt")
 echo "- iPhone $PHONE, Watch $WATCH, pair ${PAIR:-none}" >> "$OUT/pair.md"
 step 180 "booted the iPhone" sh -c "xcrun simctl boot '$PHONE'; xcrun simctl bootstatus '$PHONE' -b"
-step 180 "booted the Watch" sh -c "xcrun simctl boot '$WATCH'; xcrun simctl bootstatus '$WATCH' -b"
+step 300 "booted the Watch" sh -c "xcrun simctl boot '$WATCH'; xcrun simctl bootstatus '$WATCH' -b"
 step 60 "activated the pair" xcrun simctl pair_activate "$PAIR"
 xcrun simctl list pairs >> "$OUT/setup.txt" 2>&1
 step 180 "installed the iPhone app" xcrun simctl install "$PHONE" "$PHONE_APP"
-step 180 "installed the Watch app" xcrun simctl install "$WATCH" "$WATCH_APP"
+# As on real devices: installing the iPhone app on a paired iPhone installs its Watch app on the Watch, and only then
+# does the iPhone's WatchConnectivity count it as installed. A Watch app installed straight onto the Watch with simctl
+# is refused every transfer from the iPhone ("WCErrorCodeWatchAppNotInstalled", run 38116345106).
+installed_on_watch() { xcrun simctl listapps "$WATCH" 2>/dev/null | grep -q "$WATCH_BUNDLE"; }
+WAITED_INSTALL=0
+until installed_on_watch || [ $WAITED_INSTALL -ge 240 ]; do sleep 5; WAITED_INSTALL=$((WAITED_INSTALL + 5)); done
+if installed_on_watch; then
+  echo "- $(( $(date +%s) - STARTED )) s: the iPhone installed the Watch app on the Watch by itself (${WAITED_INSTALL} s)" >> "$OUT/pair.md"
+else
+  echo "- $(( $(date +%s) - STARTED )) s: the Watch app never arrived from the iPhone in 240 s; installing it directly (the iPhone may refuse to send)" >> "$OUT/pair.md"
+  step 180 "installed the Watch app directly" xcrun simctl install "$WATCH" "$WATCH_APP"
+fi
 sleep 10
 step 60 "launched the iPhone app" xcrun simctl launch "$PHONE" "$PHONE_BUNDLE" -uitest -empty -pair-test -pair-drive
 sleep 5
