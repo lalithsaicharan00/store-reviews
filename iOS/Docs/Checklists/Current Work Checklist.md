@@ -82,7 +82,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 88; 83 and 84 are on `claude/lucid-johnson-egrjup`).
+  still resolve; give new items the next unused number (currently 89; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -803,8 +803,38 @@ and the Add note keyboard coming up by itself.
     decision → reason → source table; `Designs/Design Notes.md` with all 17 pictures inline; `Research/` with the report,
     the user's prompts and the evidence scripts, moved from `Research/Research Reports/Home Screen and Visual Design/iPad
     Layout/`; the build prompt); listed in the Docs index and in the research index under "iPad".*
+  - [x] **The main Plus screens on the iPad, landscape and portrait** (the user, 11 Oct: "in the iPad, the user can use
+    the free itself and they can upgrade from there also … the main ones"). *Done 11 Oct: Add a 6th habit, Make Room,
+    Plus is yours, the second-device sheet (form sheets) and Your Plus (beside the sidebar); `iOS/Docs/iPad/Designs/18 ·
+    Plus.png`, Design Notes §9.*
+  - [x] **One window** (the user, 11 Oct: "keep it one window itself"): no second window of the app; every window size
+    still works. *Recorded in the README's decisions and the build prompt §4.*
+  - [x] **Every Plus screen covered** (the user, 11 Oct: "in Plus, all of the required screens, have you covered?").
+    *Done 11 Oct: all 26 screens of the iPhone's Plus flows 1–8 (Figma `1021:309`) now have iPad versions, landscape and
+    portrait (Apple's own purchase sheet is the system's): pictures 18–20, Design Notes §9.*
   - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (next; the user will discuss the
     app-level changes first).
+
+- [ ] **88. Coming back to the iPhone after using the iPad: "Use your habits on this iPhone?"** (added 11 October 2026,
+  from the user; to do next). The iPad shows "Use your habits on this iPad?" when the free plan's syncing device is the
+  iPhone (design `iOS/Docs/iPad/Designs/20 · Plus — owners, other devices, when Plus ends.png`; iPhone design Figma
+  `1024:309`). The user: the iPhone needs the same when the person **used the iPad and comes back to the iPhone**,
+  whichever device they started on: detect it and let them know, offering to move syncing back ("log out from the
+  iPad" in the user's words; there are no accounts, so in the app's words: the iPad stops syncing and keeps
+  everything it has).
+  - [ ] **Check what exists.** *Found 11 Oct (code on `main`, not yet tried on a device):* `SecondDeviceSheet`
+    (`Cloud/CloudQuestions.swift`) is shared and uses the device's own name, so on an iPhone it should read "Use your
+    habits on this iPhone?" with "Your iPad stops syncing and keeps everything it has"; `CloudSync.askAboutSecondDevice`
+    shows it once per takeover (keyed by the other device and the time it took over), so iPhone → iPad → iPhone asks
+    again; the device that loses syncing gets a hand-over notice (`handedOverTo`), and iCloud & Backup says "Your
+    iPad is the one syncing" with Move Here. Confirm all of it in the simulator (the `CloudTestStates` fake iCloud,
+    `CloudSyncCheck` §12) and on the iPhone.
+  - [ ] **Design the iPhone version** (Figma has only the iPad wording): "Use your habits on this iPhone?", in both
+    orders (started on the iPhone, moved to the iPad, came back; started on the iPad, then the iPhone); and the
+    notice the iPad shows after the iPhone takes syncing back. Same layout as `1024:309`.
+  - [ ] **Fix whatever the check finds missing**, with a UI test for the come-back case (free plan, the iPad syncing,
+    the iPhone opened: the question shows once; Move to this iPhone works; ✕ changes nothing), then the iPhone check
+    (U9).
 
 - [ ] **85. Edit Group: padding around the colour swatches, and show only the group's own habits (build later).** Added
   11 October 2026, from the user: "we need to make some updates later, but not now." The screen is New Group / Edit

@@ -15,7 +15,7 @@ Everything from the iPad work is here, so a session without Figma has it all:
 | `README.md` | This page: what the iPad app is, every decision and why, the words that change, data and sync, the build order |
 | `Build Prompt (Delete When Done).md` | The hand-off for the building session |
 | `Designs/Design Notes.md` | Every screen with its picture inline, what it shows and why, in the order they were designed with the user |
-| `Designs/01 · Today.png` … `17 · Widgets.png` | The designs: each picture is one screen, landscape first, its portrait beside it |
+| `Designs/01 · Today.png` … `20 · Plus — owners, other devices, when Plus ends.png` | The designs: each picture is one screen, landscape first, its portrait beside it |
 | `Research/The iPad Layout — Familiar Like the iPhone, Native to the iPad.md` | The research: what people say about apps on the iPad, Apple's iPadOS guidance, how 14 top iPad apps do it, rules I1–I12 |
 | `Research/The User's Prompts, Word for Word.md` | What the user asked for, verbatim |
 | `Research/iPad Layout Evidence/` | The review coding, the scripts that re-run and check it, and what each top app's iPad screenshots show (described in words: no other apps' images in git, D11) |
@@ -61,6 +61,9 @@ Everything from the iPad work is here, so a session without Figma has it all:
 | 15 | [13-inch Today](<Designs/15 · 13-inch Today.png>) | The same layout with more margin |
 | 16 | [Columns view](<Designs/16 · Columns view.png>) | Each time of day a column; the View menu that switches it |
 | 17 | [Widgets](<Designs/17 · Widgets.png>) | The Extra Large Today and its states, the Home Screen, the Lock Screen |
+| 18 | [Plus — reaching the limit and buying](<Designs/18 · Plus — reaching the limit and buying.png>) | Add a 6th habit, from an idea, restoring an archived habit, Make Room and its delete alert, Plus is yours, Plus Family is yours |
+| 19 | [Plus — the Plus page and its states](<Designs/19 · Plus — the Plus page and its states.png>) | Plus Family chosen, prices didn't load, purchases turned off, waiting for approval, didn't go through, nothing found to restore |
+| 20 | [Plus — owners, other devices, when Plus ends](<Designs/20 · Plus — owners, other devices, when Plus ends.png>) | Your Plus, Plus found, Upgrade to Plus Family, shared by your family, on a new iPad, the second-device sheet, Plus has ended (refund, family) |
 
 The pictures show layout, hierarchy and behaviour at 11-inch (1180 × 820) and 13-inch (1376 × 1032) sizes, light mode.
 Build with native components; where a native component does it better than a picture, use the native component.
@@ -93,6 +96,8 @@ and the design notes (N = [Design Notes](<Designs/Design Notes.md>)). Read the r
 | **Columns view: an option, switched from the View menu (⌘1/⌘2) and Appearance → Layout; nothing extra on Today** | Reminders' Columns (praised); 4 reviews want more of the day at once; Reminders keeps the switch in a menu, so the user chose no ⋯ on Today | R §3.4, §6.2; N §6 |
 | **13-inch: the same layout with more margin** | The room is what the Columns view is for; rows past ≈ 700 pt read poorly | N §6 |
 | **Widgets: the iPhone's unchanged, plus an Extra Large Today** | The widgets' principles are locked (instant tap, safe save), not their use on new devices (the user); Apple's extra-large widgets show more of the same content | N §8 |
+| **Plus on the iPad: every iPhone Plus screen, as form sheets, pages beside the sidebar, and the system's alerts** | The iPad is free, so the 6th-habit limit and the upgrade happen there too (the user); the iPhone's screens and words (Current Work 80), presented the iPad way (§5's patterns). The second-device sheet is the iPad's own moment: Architecture 11 §12 | N §9 |
+| **One window** (no second window of the app) | The user, 11 Oct 2026: "keep it one window". No review asks for two windows of a habit app; the sidebar and the Columns view already show more at once. Every window size still works (iPadOS 26), and per-window state is kept so a second window can come later | — |
 | **Light-mode designs only** | The user: native colours give dark mode | — |
 | **No day rings in the calendar** | The user, 2 and 11 Oct 2026; Design Rules, "Calendar and Back to Today" | N §5 |
 | **Every orientation and window size; keyboard shortcuts** (I8, I11) | 165 reviews complain of portrait-only against 12 praising landscape; Apple TN3192; people use the iPad with a keyboard | R §3.2, §3.6, §4 |

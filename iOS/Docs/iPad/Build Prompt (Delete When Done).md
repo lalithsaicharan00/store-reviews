@@ -58,6 +58,9 @@ work, fix the document in the same change and say why; don't silently do somethi
   (`.presentationSizing(.form)`); the calendar and Filter as **popovers** from their buttons; Edit Group pushed inside
   Filter (only its own habits + Add Habits; Current Work 85).
 - **Full screen:** the routine player and the timer, as on the iPhone.
+- **Plus:** every iPhone Plus screen (`Plus/PlusScreens.swift`, flows 1–8) on the iPad: sheets as form sheets on
+  regular width (Make Room pushed inside the 6th-habit sheet), pages beside the sidebar, alerts as the system's
+  (Design Notes §9, pictures 18–20); the wording names the other devices and "this iPad".
 - **Keyboard and pointer (I11):** the menu bar's View menu (as List ⌘1, as Columns ⌘2, Hide Sidebar ⌃⌘S, Go to Today
   ⌘T, Previous Day ⌘←, Next Day ⌘→) and New Habit ⌘N, with SwiftUI `.commands`; hover effects; a right-click opens a
   row's long-press menu; Return adds on an Add screen.
@@ -76,7 +79,7 @@ backups and App Group. Build these, and nothing in the data layer:
 
 1. `TARGETED_DEVICE_FAMILY = 1,2`; iPad orientations: all four; keep the generated launch screen (Apple's TN3192:
    iPad apps support every orientation and any window size; `UIRequiresFullScreen` is deprecated).
-2. **Windows:** one window (`UIApplicationSupportsMultipleScenes` off) for version 1; every window size still works
+2. **Windows:** one window (`UIApplicationSupportsMultipleScenes` off), **decided by the user, 11 Oct 2026**; every window size still works
    (iPadOS 26 windows resize freely). Keep per-window UI state (sidebar choice, open day, open sheet) in
    `@SceneStorage`, never in the store, so a second window can be added later without changes.
 3. **Size classes:** regular → split view, popovers; compact → the iPhone's stack, ≡ drawer behaviour with the
