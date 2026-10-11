@@ -54,10 +54,14 @@ struct PadRoot: View {
                         .allowsHitTesting(menu.padPlace == nil)
                         .accessibilityHidden(menu.padPlace != nil)
                     if let place = menu.padPlace {
+                        // Modal to VoiceOver: hidden Today's list and bars are hosted by UIKit, which the hidden flag
+                        // above didn't reach (run 38141959437 found Today's rows under Times of Day; U1).
                         PadPage(place: place, pageMenu: pageMenu, root: menu)
+                            .accessibilityAddTraits(.isModal)
                             .id(place)
                     }
                 }
+                .accessibilityElement(children: .contain)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             if !docked {
@@ -464,6 +468,14 @@ struct PadListDetail: View {
 struct PadMenuCommands: Commands {
     @AppStorage(Preferences.padLayout) private var layout = PadLayout.list.rawValue
 
+    private func layoutButton(_ value: PadLayout, _ key: KeyEquivalent) -> some View {
+        Button { layout = value.rawValue } label: {
+            if layout == value.rawValue { Label("as \(value.title)", systemImage: "checkmark") } else { Text("as \(value.title)") }
+        }
+        .keyboardShortcut(key)
+        .disabled(!Device.isPad)
+    }
+
     var body: some Commands {
         CommandGroup(after: .newItem) {
             Button("New Habit") { PadCommands.shared.today(.openNewHabit) }
@@ -471,12 +483,10 @@ struct PadMenuCommands: Commands {
                 .disabled(!Device.isPad)
         }
         CommandGroup(before: .sidebar) {
-            Toggle("as List", isOn: Binding(get: { layout == PadLayout.list.rawValue }, set: { if $0 { layout = PadLayout.list.rawValue } }))
-                .keyboardShortcut("1")
-                .disabled(!Device.isPad)
-            Toggle("as Columns", isOn: Binding(get: { layout == PadLayout.columns.rawValue }, set: { if $0 { layout = PadLayout.columns.rawValue } }))
-                .keyboardShortcut("2")
-                .disabled(!Device.isPad)
+            // Buttons, not Toggles: a Toggle's shortcut never fired from the iPad's menu bar (run 38141959437: ⌘2 did
+            // nothing while ⌘N, ⌘T, ⌘← ⌘→ and ⌃⌘S worked). The one in use carries a checkmark, as in Reminders' View menu.
+            layoutButton(.list, "1")
+            layoutButton(.columns, "2")
             Divider()
         }
         CommandGroup(replacing: .sidebar) {

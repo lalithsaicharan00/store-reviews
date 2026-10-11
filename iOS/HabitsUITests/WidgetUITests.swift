@@ -201,7 +201,9 @@ final class WidgetUITests: XCTestCase {
         shot(app, "widget-extra-large-hidden")
         app.buttons["render-hidden"].tap()
         app.buttons["render-discreet"].tap()
-        // Rows drawn afresh as Hidden went off redraw without names a moment later: wait for the names to go.
+        // Drawn afresh, as WidgetKit draws each entry (the check page toggled in place kept the earlier rows' names,
+        // run 38141959437).
+        choose(app, family: "systemLarge"); choose(app, family: "systemExtraLarge")
         XCTAssertTrue(shows(app, "of 5 done") && gone(app, "Widget "), labels(app))
         shot(app, "widget-extra-large-discreet")
         app.buttons["render-discreet"].tap()

@@ -132,7 +132,8 @@ final class IPadUITests: XCTestCase {
         // Today's cards: one column at most ~700 pt, centred in the room beside the sidebar.
         let header = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Anytime'")).firstMatch
         XCTAssertTrue(header.waitForExistence(timeout: 5), "Anytime's header: \(labels())")
-        let card = app.collectionViews.firstMatch.cells.containing(.button, identifier: nil).firstMatch
+        // Today's own card (the sidebar is a list too): the cell holding Anytime's header.
+        let card = app.cells.containing(NSPredicate(format: "label BEGINSWITH 'Anytime'")).firstMatch
         XCTAssertLessThanOrEqual(card.frame.width, 720, "The column is ≈ 700 pt: header \(frame(header)), cell \(frame(card))")
         XCTAssertGreaterThanOrEqual(card.frame.width, 600, "…and uses the room: cell \(frame(card))")
         let room = (sidebar.frame.maxX, window.maxX)
@@ -325,8 +326,9 @@ final class IPadUITests: XCTestCase {
         XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Dynamic Island'")).firstMatch.exists, "No Dynamic Island")
         place("menu-reminders")
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ==[c] 'On This iPad'")).firstMatch.waitForExistence(timeout: 3), "\"On This iPad\": \(labels())")
-        // A page a setting opens is pushed in the same place.
+        // A page a setting opens is pushed in the same place; Today, kept behind it, can't be reached (U1).
         place("menu-timesOfDay")
+        XCTAssertFalse(app.buttons["filter-button"].exists, "Today's controls behind a page are hidden from VoiceOver: \(labels())")
         let morning = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Morning'")).firstMatch
         if morning.waitForExistence(timeout: 3) {
             morning.tap()

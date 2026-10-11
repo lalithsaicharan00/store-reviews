@@ -61,7 +61,10 @@ final class IPadWidgetSystemUITests: XCTestCase {
             springboard.swipeLeft()
         }
         save(springboard, "home-gallery-extra-large")
-        XCTAssertTrue(found, "Today in Extra Large in the iPad's gallery: \(springboard.debugDescription.prefix(2000))")
+        // One line of what the gallery offered (T14): every "Often Enough" button with its value.
+        let offered = springboard.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Often Enough'")).allElementsBoundByIndex
+            .prefix(20).map { "\($0.label) [\(($0.value as? String) ?? "")]" }.joined(separator: " | ")
+        XCTAssertTrue(found, "Today in Extra Large in the iPad's gallery: \(offered.isEmpty ? labels(springboard) : offered)")
         guard found else { return }
         let confirm = springboard.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add Widget")).firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
