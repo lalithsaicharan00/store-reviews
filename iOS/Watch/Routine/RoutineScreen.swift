@@ -45,6 +45,7 @@ struct RoutineScreen: View {
                     .toolbar { bar }
                 }
             }
+            .containerBackground(Color.black, for: .navigation)
             .navigationTitle(finished ? session.title : "\(session.title) \(index + 1)/\(session.habits.count)")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -77,6 +78,7 @@ struct RoutineScreen: View {
             #endif
         }
         .onChange(of: index) { _, new in UserDefaults.standard.set(new, forKey: placeKey) }
+        .background(Color.black.ignoresSafeArea())
         .accessibilityIdentifier("routine")
     }
 
@@ -115,22 +117,30 @@ struct RoutinePage: View {
     var body: some View {
         let live = store.habits.first { $0.id == habit.id } ?? habit
         let ruled = store.rule(live, on: day)
-        VStack(spacing: 6) {
+        ZStack {
             if ruled.kind == .checklist {
                 ScrollView { ChecklistSteps(habit: live, ruled: ruled, day: day, locked: false) }
             } else {
-                Text(live.name).font(.headline).lineLimit(1)
+                // The name inside the dial, under its icon; the title is the routine and its place (C1). The dial fits
+                // between the title and the bottom bar (it ran into the buttons, run 38108831710).
                 DayDial(habit: live, ruled: ruled, day: day, skipped: store.isSkipped(live, on: day),
-                        paused: store.isPaused(live, on: day), dimmed: wristDown)
+                        paused: store.isPaused(live, on: day), dimmed: wristDown, name: live.name)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: max(110, WKInterfaceDevice.current().screenBounds.height - 96))
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
+            // Black, as the designs: never Today showing through. A running timer tints the page in its colour (C2).
             if store.timers[habit.id] != nil && !wristDown {
                 LinearGradient(colors: [live.color.watchColor.opacity(0.85), live.color.watchColor.opacity(0.25), .black],
                                startPoint: .top, endPoint: .bottom)
                     .ignoresSafeArea()
+            } else {
+                Color.black.ignoresSafeArea()
             }
         }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("routine-page-\(live.name)")
     }
 }

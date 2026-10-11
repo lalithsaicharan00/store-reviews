@@ -232,6 +232,8 @@ struct DayDial: View {
     let skipped: Bool
     let paused: Bool
     let dimmed: Bool
+    /// The habit's name inside the dial, under its icon: the routine's pages, whose title is the routine (C1–C3).
+    var name: String? = nil
     @Environment(HabitStore.self) private var store
 
     var body: some View {
@@ -247,6 +249,9 @@ struct DayDial: View {
                 Image(systemName: habit.symbol)
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(skipped ? Color.secondary : habit.color.watchColor)
+                if let name {
+                    Text(name).font(.footnote.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.7)
+                }
                 centre
                 if skipped {
                     Button("Undo skip") { withAnimation { store.setSkipped(habit, on: day, false) } }

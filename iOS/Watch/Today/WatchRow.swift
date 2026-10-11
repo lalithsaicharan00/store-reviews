@@ -12,6 +12,7 @@ struct WatchRow: View {
     let tapped: () -> Void
     @Environment(HabitStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var textSize
 
     private var habit: Habit { row.habit }
 
@@ -23,23 +24,22 @@ struct WatchRow: View {
         let done = TodayPlan.isDone(row, on: day, store: store) && !store.isSkipped(habit, on: day)
         let fraction = fillFraction(ruled, progress: progress, goal: goal, done: done)
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Image(systemName: habit.symbol)
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(store.isSkipped(habit, on: day) ? Color.secondary : habit.color.watchColor)
-                    .frame(width: 24)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(habit.name)
-                        .font(.body)
-                        .lineLimit(2)
-                    line(progress: progress, goal: goal, running: running)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
+            if textSize.isAccessibilitySize {
+                // Larger text (H20): the icon and the round button share the top line and the name and its line get
+                // the row's whole width, wrapping, never cut. Chosen from the text size, never ViewThatFits (S10).
+                HStack(spacing: 8) {
+                    icon
+                    Spacer(minLength: 4)
+                    button(ruled, done: done, running: running)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                button(ruled, done: done, running: running)
+                words(progress: progress, goal: goal, running: running, lines: nil)
+            } else {
+                HStack(spacing: 8) {
+                    icon
+                    words(progress: progress, goal: goal, running: running, lines: 2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    button(ruled, done: done, running: running)
+                }
             }
             after
         }
@@ -61,6 +61,27 @@ struct WatchRow: View {
                 .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
         )
         .accessibilityIdentifier("row-\(habit.name)")
+    }
+
+    private var icon: some View {
+        Image(systemName: habit.symbol)
+            .font(.system(size: 17, weight: .semibold))
+            .foregroundStyle(store.isSkipped(habit, on: day) ? Color.secondary : habit.color.watchColor)
+            .frame(width: 24)
+            .accessibilityHidden(true)
+    }
+
+    private func words(progress: Double, goal: Double, running: Bool, lines: Int?) -> some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text(habit.name)
+                .font(.body)
+                .lineLimit(lines)
+            line(progress: progress, goal: goal, running: running)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .lineLimit(lines)
+        }
+        .fixedSize(horizontal: false, vertical: lines == nil)
     }
 
     /// The share of the row filled: today's goal, or the period's for a week or month goal (U25); nothing for a quit habit.

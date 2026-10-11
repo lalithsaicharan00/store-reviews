@@ -17,7 +17,16 @@ extension XCUIApplication {
         let window = windows.firstMatch
         let from = window.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: down ? 0.72 : 0.32))
         let to = window.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: down ? 0.32 : 0.72))
-        from.press(forDuration: 0.05, thenDragTo: to)
+        // A plain press-and-drag still flung (two of them skipped two sections, run 38108831710): drag slowly and hold
+        // before lifting, so the list stops where the finger stops. Looked up at run time: the slow drag isn't
+        // declared for watchOS in every Xcode, and a missing method mustn't break the build.
+        let selector = NSSelectorFromString("pressForDuration:thenDragToCoordinate:withVelocity:thenHoldForDuration:")
+        if from.responds(to: selector), let method = from.method(for: selector) {
+            typealias SlowDrag = @convention(c) (AnyObject, Selector, Double, AnyObject, Double, Double) -> Void
+            unsafeBitCast(method, to: SlowDrag.self)(from, selector, 0.05, to, 150, 0.4)
+        } else {
+            from.press(forDuration: 0.05, thenDragTo: to)
+        }
     }
 
     /// Scrolls until `element` is on the screen: down first, then back up. Returns whether it got there.
