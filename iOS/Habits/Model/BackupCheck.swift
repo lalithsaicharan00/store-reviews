@@ -78,62 +78,25 @@ enum BackupCheck {
         return failures
     }
 
-    /// Move to Another Device through the server (`TransferCode`, 10 Oct 2026): the code makes the same key and ID on
-    /// both devices, the server's ID never gives the key away, a sealed file opens only with its own code and arrives
-    /// whole or not at all; and the words for the device a free account moved to (Current Work 78).
+    /// The words for the device the free plan's syncing moved to (Architecture 11 §12; the second-device sheet).
     static func transferFailures() -> [String] {
         var failures: [String] = []
-        func expect(_ condition: Bool, _ name: String) { if !condition { failures.append("transfer: " + name) } }
-        let code = "K7PQ49XM"
-        let a = TransferCode.secrets(for: code), b = TransferCode.secrets(for: TransferCode.normalize("k7pq-49xm"))
-        expect(a == b, "the code typed on the other device makes the same key and ID")
-        expect(a.id.count == 64 && a.id.allSatisfy(\.isHexDigit) && a.key.count == 32, "a 64-hex ID and a 32-byte key")
-        expect(a.id != a.key.map { String(format: "%02x", $0) }.joined(), "the server's ID isn't the key")
-        let other = TransferCode.secrets(for: "K7PQ49XN")
-        expect(other.id != a.id && other.key != a.key, "one character more makes another ID and key")
-        let file = Data((0..<5000).map { UInt8($0 % 251) })
-        do {
-            let sealed = try TransferCode.seal(file, account: .free, key: a.key)
-            expect(sealed.count == file.count + 5 + 28, "sealed: 4-byte mark, account, the file, nonce and tag (\(sealed.count))")
-            expect(sealed.range(of: file.prefix(64)) == nil, "the file can't be read on the way")
-            let opened = TransferCode.open(sealed, key: a.key)
-            expect(opened?.file == file && opened?.account == .free, "opens with its own code, the account with it")
-            expect(TransferCode.open(sealed, key: other.key) == nil, "another code can't open it")
-            var damaged = sealed
-            damaged[damaged.startIndex + 40] ^= 0x01
-            expect(TransferCode.open(damaged, key: a.key) == nil, "a damaged file is refused, never half-opened")
-            expect(TransferCode.open(Data("not sealed".utf8), key: a.key) == nil, "something else isn't taken for a file")
-        } catch {
-            failures.append("transfer: seal threw \(error)")
-        }
+        func expect(_ condition: Bool, _ name: String) { if !condition { failures.append("devices: " + name) } }
         expect(BackupCenter.yourDevice("iPad") == "your iPad" && BackupCenter.yourDevice("Lalith's iPhone") == "Lalith's iPhone"
-               && BackupCenter.yourDevice("") == "another device", "the device the account moved to, in words")
+               && BackupCenter.yourDevice("") == "another device", "the device syncing moved to, in words")
         return failures
     }
 
-    /// One backup place at a time, the switch-over on signing in, and backing up as you go (Current Work 75 and 76;
-    /// Rulebook D4), as the plain functions `BackupCenter` decides with, at set times (T11).
+    /// One backup place at a time, and backing up as you go (Current Work 75 and 76; Rulebook D4), as the plain
+    /// functions `BackupCenter` decides with, at set times (T11).
     static func placeAndTimingFailures() -> [String] {
         var failures: [String] = []
         func expect(_ condition: Bool, _ name: String) { if !condition { failures.append("plan: " + name) } }
         typealias C = BackupCenter
         // One place at a time.
-        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: true) == [.iCloud], "no account: iCloud only")
-        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: false).isEmpty, "no account, no iCloud: only on this iPhone")
-        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: true, googleDrive: true) == [.googleDrive], "no account, Google Drive chosen: Drive only")
-        expect(C.lanes(signedIn: true, accountChecked: true, iCloudAvailable: true) == [.account], "signed in and checked: the account only, no iCloud copy")
-        expect(C.lanes(signedIn: true, accountChecked: true, iCloudAvailable: true, googleDrive: true) == [.account], "signed in and checked: no Drive copy")
-        // The switch-over: iCloud keeps going until the account's copy is read back and checked.
-        expect(C.lanes(signedIn: true, accountChecked: false, iCloudAvailable: true) == [.account, .iCloud], "signing in: the account and iCloud until checked")
-        expect(C.lanes(signedIn: true, accountChecked: false, iCloudAvailable: true, googleDrive: true) == [.account, .googleDrive], "signing in: the account and Drive until checked")
-        expect(C.lanes(signedIn: true, accountChecked: false, iCloudAvailable: false) == [.account], "signing in without iCloud: the account")
-        // Signing out: back to iCloud.
-        expect(C.lanes(signedIn: false, accountChecked: false, iCloudAvailable: true) == [.iCloud], "signed out: iCloud again")
-        // The account has everything once sync has sent it all and the server said so (Current Work 78; D4): only then
-        // does iCloud stop.
-        expect(C.accountHasEverything(waiting: 0, lastSyncedAt: 1_791_115_200_000), "nothing waiting, acknowledged: the account has it all")
-        expect(!C.accountHasEverything(waiting: 1, lastSyncedAt: 1_791_115_200_000), "a change still waiting: iCloud keeps going")
-        expect(!C.accountHasEverything(waiting: 0, lastSyncedAt: nil), "never acknowledged: iCloud keeps going")
+        expect(C.lanes(iCloudAvailable: true) == [.iCloud], "iCloud")
+        expect(C.lanes(iCloudAvailable: false).isEmpty, "no iCloud: only on this iPhone")
+        expect(C.lanes(iCloudAvailable: true, googleDrive: true) == [.googleDrive], "Google Drive chosen: Drive only")
 
         // Backed up as you go, with a set clock.
         let now = Date(timeIntervalSince1970: 1_791_115_200)
@@ -220,7 +183,9 @@ enum BackupCheck {
                 expect(out == .written(slot: BackupFolder.slot(for: day(n), calendar: calendar), keptPrevious: false), "day \(n) written to its weekday")
             }
             let index = iPhone.readIndex()
-            expect(index?.copies.count == 7, "7 weekday copies kept (\(index?.copies.count ?? 0))")
+            expect(index?.copies.filter { BackupFolder.weekdays.contains($0.slot) }.count == 7, "7 weekday copies kept (\(index?.copies.count ?? 0))")
+            expect(index?.copies.filter { BackupFolder.weeks.contains($0.slot) }.count == 2, "a copy for each of the 2 weeks")
+            expect(index?.copies.filter { BackupFolder.months.contains($0.slot) }.count == 1, "a copy for the month")
             expect(index?.deviceName == "Lalith's iPhone", "copies are named by device")
             expect((try? String(contentsOf: iPhone.url("sun"), encoding: .utf8)) == "day 7", "the 8th day replaces the 1st weekday only")
             expect((try? String(contentsOf: iPhone.url("mon"), encoding: .utf8)) == "day 1", "the other days stay")
@@ -258,7 +223,8 @@ enum BackupCheck {
             let listed = BackupFolder.list(root: root, thisDevice: iPhone.deviceID).copies
             expect(listed.contains { $0.deviceName == "Lalith's iPad" && !$0.isThisDevice && $0.habits == 4 }, "the iPad's copy is listed by name")
             expect(listed.contains { $0.isOlderLayout && $0.deviceID == older.deviceID }, "the older layout's copy is listed")
-            expect(listed.filter { $0.deviceID == iPhone.deviceID }.count == 8, "this device's 7 days and before-shrink are listed")
+            expect(listed.filter { $0.deviceID == iPhone.deviceID && (BackupFolder.weekdays.contains($0.slot) || $0.slot == BackupFolder.keptSlot) }.count == 8,
+                   "this device's 7 days and before-shrink are listed")
             let copies = listed.map { BackupCenter.ICloudCopy(url: $0.url, modified: $0.createdAt, isThisDevice: $0.isThisDevice, deviceID: $0.deviceID,
                                                                deviceName: $0.deviceName, slot: $0.slot, habits: $0.habits, entries: $0.entries) }
             let newest = BackupCenter.newestPerDevice(copies)
@@ -286,8 +252,32 @@ enum BackupCheck {
             try Data("friday".utf8).write(to: unnamed.url("fri"))
             _ = try unnamed.write(upload("monday", at: day(1), habits: 3, entries: 3, records: 6, name: "Old iPhone"), calendar: calendar)
             let both = BackupFolder.list(root: root, thisDevice: iPhone.deviceID).copies.filter { $0.deviceID == unnamed.deviceID }
-            expect(Set(both.map(\.slot)) == ["mon", "fri"] && both.contains { $0.slot == "fri" && $0.habits == nil && $0.deviceName == "Old iPhone" },
+            expect(Set(both.map(\.slot)).isSuperset(of: ["mon", "fri"]) && both.contains { $0.slot == "fri" && $0.habits == nil && $0.deviceName == "Old iPhone" },
                    "a copy the index doesn't name is still listed (\(both.map(\.slot)))")
+            // Half a year, a copy a day (Architecture 11 §13.3): the last 7 days, 4 weeks and 6 months, never more.
+            let year = BackupFolder(root: root, deviceID: "66666666-6666-6666-6666-666666666666")
+            for n in 0..<200 {
+                _ = try year.write(upload("day \(n)", at: day(n), habits: 5, entries: 100 + n, records: 105 + n), calendar: calendar)
+            }
+            let kept = year.readIndex()?.copies ?? []
+            expect(kept.filter { BackupFolder.weekdays.contains($0.slot) }.count == 7, "7 days")
+            expect(kept.filter { BackupFolder.weeks.contains($0.slot) }.count == 4, "4 weeks")
+            expect(kept.filter { BackupFolder.months.contains($0.slot) }.count == 6, "6 months")
+            let oldestMonth = kept.filter { BackupFolder.months.contains($0.slot) }.map(\.createdAt).min() ?? .now
+            expect(day(199).timeIntervalSince(oldestMonth) > 140 * 86_400, "the oldest month's copy is months old")
+            let weeks = kept.filter { BackupFolder.weeks.contains($0.slot) }.map(\.createdAt).sorted()
+            expect(zip(weeks, weeks.dropFirst()).allSatisfy { $1.timeIntervalSince($0) >= 6 * 86_400 }, "the weeks' copies are a week apart")
+            for copy in kept { expect(FileManager.default.fileExists(atPath: year.url(copy.slot).path), "\(copy.slot)'s file is there") }
+            // The size budget: the oldest go first, before-shrink last, and never fewer than 3 stay.
+            func copy(_ slot: String, _ daysOld: Int, _ size: Int) -> BackupFolder.Copy {
+                .init(slot: slot, createdAt: day(-daysOld), habits: 1, entries: 1, records: 2, sha256: "", size: size)
+            }
+            let five = [copy("sun", 0, 40), copy("sat", 1, 40), copy("week-1", 9, 40), copy("month-2", 40, 40), copy(BackupFolder.keptSlot, 50, 40)]
+            expect(BackupFolder.overBudget(five, budget: 130).map(\.slot) == ["month-2", "week-1"], "over budget: the oldest go, before-shrink kept")
+            expect(BackupFolder.overBudget(five, budget: 10).count == 2, "never fewer than 3 stay")
+            expect(BackupFolder.overBudget(five, budget: 1_000).isEmpty, "under budget: nothing goes")
+            expect(BackupFolder.slot(ofFile: "week-2.zip") == "week-2" && BackupFolder.slot(ofFile: ".month-5.zip.icloud") == "month-5", "dated copy names")
+
             expect(BackupFolder.slot(ofFile: ".sat.zip.icloud") == "sat" && BackupFolder.slot(ofFile: "before-shrink.zip") == BackupFolder.keptSlot
                    && BackupFolder.slot(ofFile: "writing-sat.tmp") == nil && BackupFolder.slot(ofFile: "index.json") == nil, "copy names")
         } catch {

@@ -5,8 +5,11 @@ import Foundation
 ///
 /// - **One folder per device** (`Backups/<device ID>/`), so an iPhone and an iPad on one iCloud never write the same
 ///   file, and nothing syncs between them.
-/// - **Seven copies, one per weekday** (`sun.zip` … `sat.zip`, the local day), overwritten in turn: a bad day never
-///   destroys the other six.
+/// - **The last 7 days, 4 weeks and 6 months** (Architecture 11 §13.3): one copy per weekday (`sun.zip` … `sat.zip`, the
+///   local day), overwritten in turn, so a bad day never destroys the other six; and from them one a week
+///   (`week-0` … `week-3`, by the week of the year) and one a month (`month-0` … `month-5`), each replaced only once it's a
+///   week or a month old. These never change when a delete syncs, so they can bring back what sync spread.
+/// - **A size budget** (`budget`, per device): past it the oldest copies go, never fewer than 3 kept.
 /// - **Never an empty copy over one with habits** (a reinstalled iPhone's first launch, Current Work 75): it's not
 ///   written at all, and the copies stay as they were.
 /// - **Shrink guard:** before a copy with far fewer records than the newest one is written, the newest is kept aside as
@@ -29,7 +32,14 @@ nonisolated struct BackupFolder: Sendable {
     let deviceID: String
 
     static let weekdays = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+    static let weeks = (0..<4).map { "week-\($0)" }
+    static let months = (0..<6).map { "month-\($0)" }
     static let keptSlot = "before-shrink"
+    /// Every slot a copy can be in.
+    static let slots = Set(weekdays + weeks + months + [keptSlot])
+    /// A device's copies stay under this many bytes in all; the oldest go first, but never fewer than `minimumKept`.
+    static let budget = 300 * 1024 * 1024
+    static let minimumKept = 3
     /// A copy with fewer records than this share of the newest one's keeps the newest aside…
     static let shrinkRatio = 0.5
     /// …once the newest is big enough for a drop to mean something (as the server).
@@ -107,6 +117,29 @@ nonisolated struct BackupFolder: Sendable {
         weekdays[(calendar.component(.weekday, from: date) - 1) % 7]
     }
 
+    /// The week's slot and the month's, in turn. Weeks are counted without a break from a fixed Sunday: the week of the
+    /// year starts again each January, which put two "weekly" copies a day apart (`BackupCheck`, 10 Oct 2026).
+    static func weekSlot(for date: Date, calendar: Calendar = .current) -> String {
+        weeks[week(of: date, calendar: calendar) % weeks.count]
+    }
+
+    static func monthSlot(for date: Date, calendar: Calendar = .current) -> String {
+        months[month(of: date, calendar: calendar) % months.count]
+    }
+
+    /// Whole weeks since Sunday 7 January 2001, in the calendar's own days.
+    static func week(of date: Date, calendar: Calendar = .current) -> Int {
+        let sunday = calendar.date(from: DateComponents(year: 2001, month: 1, day: 7)) ?? .distantPast
+        let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: sunday), to: calendar.startOfDay(for: date)).day ?? 0
+        return max(0, days) / 7
+    }
+
+    /// Months since the year 0, so each month has its own number.
+    static func month(of date: Date, calendar: Calendar = .current) -> Int {
+        let parts = calendar.dateComponents([.year, .month], from: date)
+        return max(0, (parts.year ?? 0) * 12 + (parts.month ?? 1) - 1)
+    }
+
     /// Older iOS shows a file that isn't downloaded as a `.name.icloud` stand-in; newer iOS keeps it under its own name
     /// with no data. Both are `.inCloud`. A plain folder (a test's) has only `.here` and `.nowhere`.
     static func place(of url: URL) -> Place {
@@ -128,7 +161,7 @@ nonisolated struct BackupFolder: Sendable {
         if name.hasPrefix("."), name.hasSuffix(".icloud") { name = String(name.dropFirst().dropLast(".icloud".count)) }
         guard name.hasSuffix(".zip") else { return nil }
         let slot = String(name.dropLast(4))
-        return weekdays.contains(slot) || slot == keptSlot ? slot : nil
+        return slots.contains(slot) ? slot : nil
     }
 
     func readIndex() -> Index? {
@@ -199,12 +232,56 @@ nonisolated struct BackupFolder: Sendable {
         }
         index.deviceName = upload.deviceName
         index.platform = upload.platform
+        let copy = Copy(slot: slot, createdAt: upload.createdAt, habits: upload.habits, entries: upload.entries,
+                        records: upload.records, sha256: upload.sha256, size: upload.data.count)
         index.copies.removeAll { $0.slot == slot }
-        index.copies.append(Copy(slot: slot, createdAt: upload.createdAt, habits: upload.habits, entries: upload.entries,
-                                 records: upload.records, sha256: upload.sha256, size: upload.data.count))
+        index.copies.append(copy)
+        // The week's and the month's copy (§13.3): the first copy of each week and month, kept until its slot comes
+        // round again (4 weeks, 6 months later). Never by age: "6 days old" replaced a week's copy on its own Saturday.
+        let period: [(slot: String, of: (Date) -> Int)] = [
+            (Self.weekSlot(for: upload.createdAt, calendar: calendar), { Self.week(of: $0, calendar: calendar) }),
+            (Self.monthSlot(for: upload.createdAt, calendar: calendar), { Self.month(of: $0, calendar: calendar) }),
+        ]
+        for (longer, number) in period {
+            let existing = index.copies.first { $0.slot == longer }
+            guard existing.map({ number($0.createdAt) != number(upload.createdAt) }) ?? true else { continue }
+            let file = url(longer)
+            try? FileManager.default.removeItem(at: file)
+            try FileManager.default.copyItem(at: target, to: file)
+            guard SHA256Hex.of(try Data(contentsOf: file)) == upload.sha256 else { continue }
+            var kept = copy
+            kept.slot = longer
+            index.copies.removeAll { $0.slot == longer }
+            index.copies.append(kept)
+        }
         index.copies.sort { $0.createdAt > $1.createdAt }
+        prune(&index)
         try writeIndex(index)
         return .written(slot: slot, keptPrevious: kept)
+    }
+
+    /// Past the size budget, the oldest copies go (the one kept before a shrink last), never fewer than `minimumKept`.
+    private func prune(_ index: inout Index) {
+        for copy in Self.overBudget(index.copies) {
+            try? FileManager.default.removeItem(at: url(copy.slot))
+            index.copies.removeAll { $0.slot == copy.slot }
+        }
+    }
+
+    /// The copies that go to bring a device under `budget`: oldest first, the one kept before a shrink last, never
+    /// leaving fewer than `minimumKept`.
+    static func overBudget(_ copies: [Copy], budget: Int = BackupFolder.budget) -> [Copy] {
+        var left = copies
+        var total = left.reduce(0) { $0 + $1.size }
+        var gone: [Copy] = []
+        while total > budget && left.count > minimumKept {
+            guard let oldest = left.filter({ $0.slot != keptSlot }).min(by: { $0.createdAt < $1.createdAt })
+                    ?? left.min(by: { $0.createdAt < $1.createdAt }) else { break }
+            left.removeAll { $0.slot == oldest.slot }
+            total -= oldest.size
+            gone.append(oldest)
+        }
+        return gone
     }
 
     /// Every copy in `root`, any device, newest first; with how many files iCloud is still bringing (`downloading`).

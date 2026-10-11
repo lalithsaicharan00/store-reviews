@@ -46,7 +46,7 @@ on:
 
 permissions:
   contents: write  # to push the summary to the ci-results branch
-  id-token: write  # SyncUITests sign in to the dev server with this run's GitHub identity token (server: POST /v1/auth/ci)
+  id-token: write  # a UI test may ask GitHub for this run's identity token (server checks: POST /v1/auth/ci)
 
 jobs:
   test:
@@ -88,9 +88,8 @@ jobs:
             case "$MESSAGE" in *"[ios-widgets-validation]"*) echo "TESTS=WidgetUITests/testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks,WidgetSystemUITests/testHomeScreenInstallTapAndColdPersistence,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-build]"*) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
-            # Sync after changes made inside and outside the app (Current Work 67): end-to-end sync with the dev server,
-            # backup, widgets, timers, reminders and alarms (Current Work 70).
-            case "$MESSAGE" in *"[ios-sync]"*) echo "TESTS=SyncUITests,BackupUITests,WidgetUITests,WidgetSystemUITests,TimerUITests,RemindersUITests,PlacementUITests" >> "$GITHUB_ENV";; esac
+            # iCloud sync (Architecture 11) against the fake iCloud, with backup, widgets, timers and reminders.
+            case "$MESSAGE" in *"[ios-sync]"*) echo "TESTS=ICloudUITests/testSyncAgainstTheFakeICloud,ICloudUITests/testTheICloudPageInEveryState,BackupUITests,WidgetUITests,TimerUITests,RemindersUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-tasks]"*) echo "TESTS=TasksUITests,TodayUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTasksPage testTaskEdit testScrollToday" >> "$GITHUB_ENV";; esac
@@ -230,7 +229,7 @@ jobs:
           else
             for t in ${TESTS//,/ }; do ONLY="$ONLY -only-testing:HabitsUITests/$t"; done
           fi
-          # Lets SyncUITests ask GitHub for this run's identity token (TEST_RUNNER_ variables reach the test runner).
+          # Lets a UI test ask GitHub for this run's identity token (TEST_RUNNER_ variables reach the test runner).
           export TEST_RUNNER_ACTIONS_ID_TOKEN_REQUEST_URL="$ACTIONS_ID_TOKEN_REQUEST_URL"
           export TEST_RUNNER_ACTIONS_ID_TOKEN_REQUEST_TOKEN="$ACTIONS_ID_TOKEN_REQUEST_TOKEN"
           xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits \

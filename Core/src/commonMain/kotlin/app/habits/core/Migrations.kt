@@ -3,6 +3,7 @@ package app.habits.core
 import androidx.room3.migration.Migration
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.execSQL
+import app.habits.sync.SyncRules
 
 /**
  * Every schema change is a migration that only adds, never drops or renames (Architecture 08 §3).
@@ -82,14 +83,56 @@ internal object Migrations {
     }
 
     /**
-     * Schema 9: the paired device's queue (`peer_out`, Architecture 12 §3.1), for the Apple Watch. Only adds a table
-     * and an index on `entry` for the fill; nothing existing changes, and an upgrade cut off after creating it runs again harmlessly.
+     * Schema 9: iCloud (Architecture 11 §6–7). Each row keeps its CloudKit record's system fields, and each waiting op
+     * names its row and stamp, so a confirmed save removes exactly what it contained. Only adds; each column only if it's
+     * missing. Ops already waiting get their row and stamp from their own JSON; one that can't be read is kept aside,
+     * never deleted.
      */
     val v8ToV9 = object : Migration(8, 9) {
         override suspend fun migrate(connection: SQLiteConnection) {
+            connection.addCloudColumns()
+        }
+    }
+
+    /**
+     * Schema 10: the paired device's queue (`peer_out`, Architecture 12 §3.1), for the Apple Watch, and an index on
+     * `entry` for its first fill. Only adds; an upgrade cut off part way runs again harmlessly. It also adds schema 9's
+     * iCloud columns where they're missing: the Watch's branch numbered its queue 9 before iCloud's 9 reached `main`
+     * (11 Oct 2026), so a database at "9" from either one ends the same here (D2).
+     */
+    val v9ToV10 = object : Migration(9, 10) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.addCloudColumns()
             connection.execSQL("CREATE TABLE IF NOT EXISTS `peer_out` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL)")
             connection.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_peer_out_op_id` ON `peer_out` (`op_id`)")
             connection.execSQL("CREATE INDEX IF NOT EXISTS `index_entry_day_id` ON `entry` (`day`, `id`)")
+        }
+    }
+
+    /** Schema 9's iCloud columns and the waiting ops' row and stamp, each only where missing (safe to run twice). */
+    private fun SQLiteConnection.addCloudColumns() {
+        val connection = this
+        if (!connection.hasColumn("sync_meta", "ck_system")) connection.execSQL("ALTER TABLE sync_meta ADD COLUMN ck_system TEXT")
+        if (!connection.hasColumn("outbox", "table_name")) connection.execSQL("ALTER TABLE outbox ADD COLUMN table_name TEXT")
+        if (!connection.hasColumn("outbox", "row_id")) connection.execSQL("ALTER TABLE outbox ADD COLUMN row_id TEXT")
+        if (!connection.hasColumn("outbox", "hlc")) connection.execSQL("ALTER TABLE outbox ADD COLUMN hlc TEXT")
+        if (!connection.hasColumn("outbox", "deletes")) connection.execSQL("ALTER TABLE outbox ADD COLUMN deletes INTEGER NOT NULL DEFAULT 0")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_outbox_table_name_row_id` ON `outbox` (`table_name`, `row_id`)")
+        val waiting = mutableListOf<Pair<Long, String>>()
+        connection.prepare("SELECT seq, op FROM outbox WHERE table_name IS NULL").use { statement ->
+            while (statement.step()) waiting += statement.getLong(0) to statement.getText(1)
+        }
+        for ((seq, text) in waiting) {
+            val op = SyncRules.decodeOp(text)
+            if (op == null) {
+                connection.prepare("UPDATE outbox SET problem = 'unreadable' WHERE seq = ?").use { it.bindLong(1, seq); it.step() }
+                continue
+            }
+            connection.prepare("UPDATE outbox SET table_name = ?, row_id = ?, hlc = ?, deletes = ? WHERE seq = ?").use {
+                it.bindText(1, op.table); it.bindText(2, op.row); it.bindText(3, op.hlc)
+                it.bindLong(4, if (SyncWriter.deletes(op)) 1L else 0L); it.bindLong(5, seq)
+                it.step()
+            }
         }
     }
 

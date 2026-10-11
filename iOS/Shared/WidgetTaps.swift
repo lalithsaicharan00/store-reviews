@@ -1,6 +1,6 @@
 import Foundation
 
-// LOCKED (widget taps, 8 Oct 2026): the waiting-taps file and the card swap on tap (W3, W4, W5). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+// LOCKED (widget taps, 8 Oct 2026): the waiting-taps file and the card swap on tap (W3, W4, W5). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
 
 // A widget tap (Current Work 66, the user, 8 Oct 2026): "visually things should look instant; in the background the app
 // can do its work, but the data is never lost." Two halves:

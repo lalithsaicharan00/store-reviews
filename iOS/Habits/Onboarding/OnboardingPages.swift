@@ -66,7 +66,7 @@ struct WelcomePage: View {
             OnboardingCard(symbol: "sparkle", title: "I'm new here", detail: "Build habits and keep track of your tasks.",
                            id: "onboarding-new") { flow.go(.included) }
             OnboardingCard(symbol: "arrow.counterclockwise", title: "I've used it before",
-                           detail: "Sign in or restore a backup to get your habits back.",
+                           detail: "Get your habits back from iCloud or a backup.",
                            id: "onboarding-returning") { flow.go(.welcomeBack) }
             // Kept from the first welcome (U5): what's shared, before anything is (Analytics Contract).
             Button("Privacy & Optional Usage Sharing") { flow.go(.privacy) }
@@ -98,7 +98,7 @@ struct IncludedPage: View {
             Section {
                 IncludedRow(symbol: "person.crop.circle", title: "No account needed")
                 if BackupFeatures.iCloudBackup {
-                    IncludedRow(symbol: "icloud", title: "iCloud backup", detail: "Uses your iPhone's iCloud account.")
+                    IncludedRow(symbol: "icloud", title: "iCloud sync and backup", detail: "In your own iCloud. We never see your habits.")
                 }
             } footer: {
                 Text("More habits with optional Plus.").formNote()
@@ -377,7 +377,7 @@ struct OnboardingList<Content: View, Bottom: View>: View {
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground))
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            // A page whose actions are in its list (Welcome back, Sign back in) has no bar at all.
+            // A page whose actions are in its list (Welcome back) has no bar at all.
             if Bottom.self != EmptyView.self { OnboardingBottomBar { bottom } }
         }
         .navigationBarTitleDisplayMode(.inline)

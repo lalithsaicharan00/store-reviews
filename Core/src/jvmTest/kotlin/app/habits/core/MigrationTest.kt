@@ -247,8 +247,61 @@ class MigrationTest {
         repo.close()
     }
 
+
     /**
-     * Schema 9 adds the Apple Watch's queue (`peer_out`) and the (day, id) index the first fill reads by (Architecture 12
+     * Schema 9 adds iCloud's bookkeeping (Architecture 11 §6–7): each row's CloudKit system fields, and each waiting op's
+     * row and stamp. Every past schema upgrades; changes already waiting (from the server era) keep waiting with their
+     * row named, a delete is marked as one, and an op that can't be read is kept aside, never dropped.
+     */
+    @Test fun version8UpgradesAndWaitingChangesKeepWaiting() = runTest {
+        val connection = createSchema(8)
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 1.0, 2000, 'Europe/London', 3000, NULL, NULL)")
+        connection.execSQL("INSERT INTO sync_meta VALUES ('entry', 'e1', '000000000000003000-00000-n1', NULL, NULL, 0)")
+        connection.execSQL("INSERT INTO local_state VALUES ('sync.account', 'server-account')")
+        val op = """{"id":"op-1","table":"entry","row":"e1","fields":{"deleted_at":3000},"hlc":"000000000000003000-00000-n1","schema":8}"""
+        connection.execSQL("INSERT INTO outbox (op_id, op, problem) VALUES ('op-1', '${op.replace("'", "''")}', NULL)")
+        connection.execSQL("INSERT INTO outbox (op_id, op, problem) VALUES ('op-2', 'not json', NULL)")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        val counts = repo.cloud.counts()
+        assertEquals(1, counts.waitingRows, "the waiting delete still waits, its row named")
+        assertEquals(1, counts.waitingDeletes)
+        assertEquals(1, counts.keptAside, "the unreadable op is kept aside")
+        assertEquals(listOf("entry:e1"), repo.cloud.waitingRows(10))
+        assertEquals(listOf("e1"), repo.loadForRestore().entries.map { it.id })
+        repo.close()
+    }
+
+    @Test fun everyPastVersionUpgradesToICloudBookkeeping() = runTest {
+        for (version in 1 until HabitRepository.SCHEMA_VERSION) {
+            File(path).delete(); File("$path-wal").delete(); File("$path-shm").delete()
+            createSchema(version).close()
+            val repo = HabitRepository.open(path)
+            assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"), "version $version upgrades")
+            repo.cloud.bind("icloud:a")
+            repo.saveSetting("week_start", "2")
+            val batch = repo.cloud.batch(repo.cloud.waitingRows(10))
+            assertEquals(listOf("setting:week_start"), batch.rows.map { it.name }, "version $version sends")
+            repo.cloud.saved(batch.rows.map { CloudSaved(it.name, "tag-1", it.upTo) })
+            assertEquals(0, repo.cloud.counts().waitingRows, "version $version confirms")
+            repo.close()
+        }
+    }
+
+    /** A database that already has a schema 9 column (an upgrade cut off part-way) still opens. */
+    @Test fun version8WithPartOfSchema9StillOpens() = runTest {
+        val connection = createSchema(8)
+        connection.execSQL("ALTER TABLE sync_meta ADD COLUMN ck_system TEXT")
+        connection.execSQL("ALTER TABLE outbox ADD COLUMN table_name TEXT")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
+    /**
+     * Schema 10 adds the Apple Watch's queue (`peer_out`) and the (day, id) index the first fill reads by (Architecture 12
      * §5). A schema-8 database keeps everything, and only queues changes once a paired device is started.
      */
     @Test fun version8UpgradesAndGetsThePeerQueue() = runTest {
@@ -281,12 +334,36 @@ class MigrationTest {
     }
 
     /** An upgrade cut off after creating the queue (the app killed mid-migration) runs again and still opens. */
-    @Test fun version8ThatAlreadyHasThePeerQueueStillOpens() = runTest {
-        val connection = createSchema(8)
+    @Test fun version9ThatAlreadyHasThePeerQueueStillOpens() = runTest {
+        val connection = createSchema(9)
         connection.execSQL("CREATE TABLE IF NOT EXISTS `peer_out` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL)")
         connection.close()
         val repo = HabitRepository.open(path)
         assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
         repo.close()
+    }
+
+    /**
+     * The Watch's branch numbered its queue 9 before iCloud's 9 reached `main` (11 Oct 2026): a database at "9" with the
+     * queue and none of iCloud's columns upgrades to 10 with both, keeping its waiting changes.
+     */
+    @Test fun aWatchBranchVersion9GetsICloudsColumnsToo() = runTest {
+        val connection = createSchema(8)
+        connection.execSQL("CREATE TABLE IF NOT EXISTS `peer_out` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL)")
+        connection.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_peer_out_op_id` ON `peer_out` (`op_id`)")
+        connection.execSQL("INSERT INTO peer_out (op_id, op) VALUES ('p-1', '{}')")
+        connection.execSQL("PRAGMA user_version = 9")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+        val after = BundledSQLiteDriver().open(path)
+        val columns = after.prepare("SELECT count(*) FROM pragma_table_info('outbox') WHERE name IN ('table_name', 'row_id', 'hlc', 'deletes')").use { it.step(); it.getLong(0) }
+        val ckSystem = after.prepare("SELECT count(*) FROM pragma_table_info('sync_meta') WHERE name = 'ck_system'").use { it.step(); it.getLong(0) }
+        val queued = after.prepare("SELECT count(*) FROM peer_out").use { it.step(); it.getLong(0) }
+        after.close()
+        assertEquals(4L, columns, "iCloud's outbox columns")
+        assertEquals(1L, ckSystem, "iCloud's system fields")
+        assertEquals(1L, queued, "what was waiting for the Watch still waits")
     }
 }

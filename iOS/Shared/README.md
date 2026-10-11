@@ -9,8 +9,9 @@ only what the app worked out (`WidgetSnapshot`, Rulebook U26).
 
 **Read [Widgets — Taps and Updates (Locked)](<../Docs/Widgets — Taps and Updates (Locked).md>) before changing anything
 about widget taps, saving, updating or what a widget button does.** The user approved it on the iPhone on 8 Oct 2026
-after a long search, and asked for it to be locked. Changes need their say-so, then the Home Screen checks in that
-page's §6.
+after a long search, and asked for it to be locked. Changes to what it does need their say-so, then the Home Screen
+checks in that page's §6. Speed work and bug fixes that keep the instant switch, the saving of every tap and syncing
+without opening the app are welcome (the user, 11 Oct 2026; that page's §8).
 
 In short:
 

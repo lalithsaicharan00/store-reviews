@@ -15,10 +15,74 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## App logo exploration — current feedback
+
+- [x] **87. Often Enough app logo: research, finalized design and Figma variations.** Added and completed as a design task 11 October 2026, from the user. Native asset integration and device validation are separate pending work.
+  - [x] Fetch and verify the local checkout against `origin/main`; preserve existing edits. Work on `codex/app-logo-concepts` (W3).
+  - [x] Read the app identity, onboarding research, native welcome copy and current Figma welcome screen (W2/U8).
+  - [x] Research logo clarity, memorability, existing category symbols and Apple's iOS app-icon template. [Research notes](<../../../Research/Research Reports/Home Screen and Visual Design/App Logo Exploration/README.md>).
+  - [x] Generate Round 01 raster concepts related to the name and repetition; image generation only for the marks, no Figma vectors. Results are not accepted; see the review below.
+  - [x] Start with one 1024 × 1024 iOS icon size and place Round 01 images on the linked Figma assets page.
+  - [x] Review directions with the user, refine the chosen one, then finalize the app/brand symbol. The user explicitly finalizes the updated tilted tonal artwork on 11 October; see final variation package below. Native integration and device rendering remain separate (U9).
+  - **11 October user review:** Round 01 feels weird and insufficiently meaningful/professional. B (O Meets e) and D (Growing Loop) are rejected, including poor legibility at small sizes. A and C are tentative references only, not accepted. Start from the intended meaning, then develop the mark.
+  - [x] Study accessible Satori Graphics and The Futur tutorial material; use public video view counts as one relevance signal and record source/limitations.
+  - **Accepted message (11 October): “Small actions, repeated often enough, build something lasting.”** The user likes this meaning, asks to keep the line and put it in Figma. Start small, repeat often enough, build lasting habits.
+  - [x] Add the accepted guiding sentence to [Round 02 in Figma](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1086-2) and develop the next round from that message (U29).
+  - [x] Generate a revised shortlist: Growth Rings, Building Blocks and Built Arch. Set aside the shutter-like woven result; record the remaining bar-geometry limitation. Save three 1024 × 1024 PNGs and all prompts in the [research package](<../../../Research/Research Reports/Home Screen and Visual Design/App Logo Exploration/README.md>).
+  - [x] Inspect the [60 / 40 / 29 px preview panel](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1088-2) at 1×, plus the composed board. Built Arch is the agent's meaning-based preference, not user acceptance. Recognition/memorability testing and final iPhone review remain open.
+  - **Latest 11 October user review:** Growth Rings is generic, childish and unprofessional; rejected. Built Arch looks unprofessional and unfinished; rejected. Building Blocks is the only direction to develop, but is still generic and not ready. Make its identity specific to Often Enough.
+  - [x] Present Building Blocks refinement tests tied to the name and accepted meaning, using image generation only: A — Stepped E and B — Assembled E. [Round 03 board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1094-2) preserves the guiding sentence; Round 02 marks Growth Rings and Built Arch rejected. Save opaque 1024 × 1024 RGB PNGs and exact prompts. Inspect both composed boards and the original/A/B 60 / 40 / 29 px panel at 1× (U29). B is the agent's preference, not accepted; subtle tonal variation and softened seams at 29 px remain. User selection, measured memorability and final iPhone acceptance remain open.
+  - **Latest Round 03 review, 11 October:** The user likes the assembled E / stepped building-piece direction. The first, Stepped E, is rejected as weird and difficult to understand. The second and its seam-refined generation look similar. Explore adding **O for Often** together with **E for Enough**, keeping the stepped construction and the accepted small-actions/repetition/lasting meaning. This is direction approval, not final logo acceptance.
+  - [x] Generate and place O + E combinations in Figma, keeping Assembled E as the reference and checking the added letter at actual small sizes (U29). [Round 04](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1100-2): Shared Stroke OE and Built OE, opaque 1024 × 1024 PNGs with 60 / 40 / 29 px comparisons. Both subsequently rejected by the user.
+  - **Latest review, 11 October:** O + E results are not good; discard them. The user references the previous letter study but redirects the exploration to **Building Blocks used differently**, with a professional and catchy result. Develop the construction symbol itself rather than adding initials.
+  - [x] Present a fresh Building Blocks symbol exploration in [Round 05](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1107-2): three units joined into one stepped shape, with soft and tighter corner refinements. Set aside a literal four-brick study; fix the initial three-tile generation's disconnected structure with image generation. Mark both OE studies discarded; preserve the accepted meaning. Save two opaque 1024 × 1024 RGB PNGs and all prompts. Inspect the composed board and original/soft/tight 60 / 40 / 29 px panel at 1×. The notches soften at 29 px; B is the agent's preference, not user acceptance. Final selection and real-iPhone review remain open.
+  - **Latest image-specific review, 11 October:** The attached image identifies the liked reference as the **initial separate rising tiles**, not either connected-square refinement. Both connected-square variants (including soft corners) are rejected. The four-brick study is now explicitly user-rejected as a brick wall. Keep monochrome. Check similarity to existing apps and top brands, specifically Atlassian products; improve consistency and professional finish, explore stacking variations while keeping small repeated actions building over time as the primary meaning. The reference is liked, not accepted as final.
+  - [x] Audit official brand artwork for resemblance, then generate monochrome refinements of the attached separate-tile reference. [Round 06](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1113-2) preserves that exact baseline beside A — Solid Rising Tiles and B — Compact Stack. Official Jira artwork shares three folded rising units; A retains the diagonal, while B tests an upright construction. Inspect reference/A/B at 60 / 40 / 29 px and the full composition; save three verified opaque 1024 × 1024 PNGs and exact prompts. A's corner distinction weakens at 29 px; B is clearer but still risks feeling generic. This focused brand screen does not establish global uniqueness. Both refinements subsequently rejected.
+  - **Latest review after Round 06, 11 October:** Both new variations do not look good; rejected. The user asks for something better. The attached initial separate-tile reference remains the last liked direction, not a final logo. Keep the accepted meaning and monochrome brief; explore a stronger identifying construction rather than more plain bars or squares.
+  - **Round 07 interrupted by new direction:** Three construction studies and an assembled-block refinement were generated. The compact whole-block candidate is superseded by the user's specific stacking brief below; it is not selected or finalized.
+  - **Latest stacking brief, 11 October:** Preserve the square style of the initial reference or the newer Keyed Steps study. The current cutouts suggest lower pieces cutting the ones above and reverse the sense of progress. Use complete squares with correct layering: bottom-left square behind the middle square, middle behind the top-right square. Each newer square sits on the earlier one. Show restrained premium monochrome depth through contact shadows, white highlights and subtle texture; shadows should read as stacking, not cutouts or merging. This explicitly allows shading and texture within black and white.
+  - [x] Generate square-stack refinements with corrected overlap order and premium monochrome shadow treatment. [Round 08](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1123-2) shows the original beside Satin Stack and Paper Stack. Full foreground squares overlay earlier ones; contact shadows replace cutouts. Inspect the composition and 60 / 40 / 29 px panel at 1×. Save two verified 1024 × 1024 opaque RGB PNGs and exact built-in generation prompts. The silhouette survives at 29 px, while texture and shadow distinctions soften; minor module-size variation remains. Mark Round 07 superseded. Final selection, measured memorability and native iPhone acceptance remain open.
+  - **Latest Paper Stack review, 11 October:** The user likes the attached Paper Stack version but says it feels too 3D. Preserve the stacking construction and make it read as a flat 2D logo. Reduce the dimensional material treatment; this is direction approval, not final acceptance.
+  - [x] Generate a flatter Paper Stack refinement and compare it beside the liked version in [Round 09](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1126-2). Retain square construction and layering; reduce texture, thickness and broad shadows to smooth faces with narrow overlap shading. Save the verified 1024 × 1024 opaque RGB PNG and exact built-in prompt. Inspect the full composition and actual 60 / 40 / 29 px panel at 1×; the silhouette holds, while gray overlap separation weakens at 29 px. Slight background tonal variation and geometric drift remain. Final selection and native acceptance remain open.
+  - **Latest color brief, 11 October:** The user says the construction is getting close and asks to try one different color per square. Colors may sit outside the existing brand palette. Research color psychology and meanings in relation to small actions repeated often enough building something lasting. Overlap shadows currently feel too small; try slightly clearer shadows with color while retaining the flatter logo character. Earlier monochrome-only instructions are superseded for these studies.
+  - [x] Research color associations and separate evidence from design interpretations (W2/U29). Generate one color per square with shallow, clearer overlap shadows: A — Begin / Grow / Last (amber → green → blue), B — Steady Growth (blue → teal → leaf green). [Round 10](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1129-2) compares both with the white baseline. Inspect the full board and actual 60 / 40 / 29 px panel at 1×; all three colors remain visible, while shadow detail softens at 29 px. Save two verified 1024 × 1024 opaque RGB PNGs and exact built-in prompts. A is the agent's preference for clearer color separation, not user selection. Slight tonal variation and geometric drift remain; final selection and native acceptance stay open.
+
+
+  - **Latest color-meaning discussion, 11 October:** The user favors green for a positive achieved result. The working sequence is now amber → blue → green: begin, keep building, build something lasting. Meanings remain contextual design interpretations; this is not final asset approval. The user asks which shades work together on the color wheel.
+  - [x] Study color-wheel relationships and propose amber `#E7AF55` → blue `#6695D1` → green `#67B58C`. RGB hue calculation places amber and blue about 177° apart, with green as a related cool accent; this is not a strict triadic or split-complementary scheme. Moderate saturation provides a starting balance, subject to visual review rather than guaranteed harmony. Preserve the sequence's design meanings and record the chosen wheel model (W2/U29). This is a palette proposal, not a new image-generated logo or final approval.
+
+  - **Latest direct Figma brief, 11 October:** Inspect linked nodes `1130:316` and `1130:317`. The user requests Google/Material palette colors, keeping the supplied Google Pay-like blue in the center, green at the top and amber at the base. Create a frame and adjust colors, corner radius and spacing directly in Figma; begin in light mode. This explicit request permits editable Figma geometry for this round, superseding the earlier image-generation-only method for these adjustments.
+  - [x] Inspect linked frames and preserve their exact supplied blue `#1B6DF4`. Directly refine `1130:317` to A — Balanced (Amber 600 `#FFB300`, blue center, Green 600 `#43A047`) on white. Standardize three 360-pixel squares, 48-pixel corners with 0.6 smoothing, and equal 176-pixel diagonal steps; use clipped contact shadows only on the lower squares. [Round 11 comparison](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1137-4) adds Deeper (Amber/Green 700) and Lighter (Amber/Green 400). Verify full composition, linked master and actual 60 / 40 / 29 px previews; three colors remain visible. Material amber/green values verified from official Flutter docs; Google Pay attribution for the supplied blue is not independently established. Editable Figma artwork per the latest user request; final selection and native acceptance remain open (U9/U29).
+
+  - **Latest shadow and sizing brief, 11 October:** The user finalizes the linked frame's colors and asks to improve its shadows for a more convincing 3D look. Bring the iOS app-icon guide with circles, diagonals and placement bounds into Figma behind the logo, and scale the mark appropriately so it stays visible at small sizes. Color selection is settled; shadow, placement and final icon acceptance are still open.
+  - [x] **Round 12 design study, 11 October:** Read current actual paints (`#FABB05`, `#4285F4`, `#34A853`) and preserve them. Simplify five outer shadows plus prior clipped casters to contact/cast shadows sharing an upper-right light source; proportionally enlarge the mark from 712 to 800 pixels within the 1024 canvas. Import the exact official Apple OS27 grid and icon outline behind the linked logo, locked and named for hiding before export. [Round 12 board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1141-2) preserves Before / Clean / Guided with masked 60 / 40 / 29 px previews. Visually verify all three masters and actual-size panel; all three colored units remain distinct. The 800-pixel bound is our optical sizing choice, not Apple's mandatory safe area. Latest template is OS27; native device rendering and final logo acceptance remain open (U9/U29). Apple template files remain gitignored Temp (D11).
+
+  - **Latest approval and dark-mode brief, 11 October:** The user says Round 12 is good and requests a dark-mode version. Preserve the approved light artwork and finalized tile colors; derive the dark treatment with matching geometry, guide and small-size verification. This approves the light design study, not an installed native asset.
+  - [x] **Round 13 dark design study, 11 October:** Create a [clean dark master](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1144-38) on `#202124`, retaining the current finalized tile fills and approved 800-pixel geometry. Tune shadow opacity for charcoal without changing direction or effect dimensions. [Comparison board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1144-2) places approved light, clean dark and guided dark together. Inspect master, composed board and masked 60 / 40 / 29 px previews at 1×; the three colors remain distinct. Original light artwork preserved. Dark approval and native icon acceptance remain open (U9/U29).
+
+  - **Latest cross-platform review, 11 October:** The user says current small logos look ugly, pieces/colors are insufficiently distinguishable, circular crops look poor, and Figma contrast-checker darkening did not help. Inspect linked examples `1142:386`, `1144:99`, `1142:478`. Refine corner proportions, geometry and small-size separation; obtain Android and iOS guides and compare circle and rounded-square appearances in light/dark. The user reopens color choice and explicitly permits alternative palettes and monochrome. Prior light approval does not settle this cross-platform sizing/legibility problem.
+  - [x] **Round 14 cross-platform study, 11 October:** Inspect all three linked references and current Apple/Android/Google Play guidance. [Review board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1146-2) compares compact rounder 700-pixel stacks in A — Amber/Cobalt/Leaf, B — Blue Progression and C — Monochrome, with crisp overlap seams. Keep six clean 1024-pixel masters separately. Reuse official Apple OS27 grid; reconstruct labeled Android 108/72/66-dp guide from published dimensions (official Figma template web access blocked). Inspect 128 light/dark mask previews at 60 / 48 / 32 / 24 px across iOS / circle / representative rounded-square / square; brighten A dark blue after inspection. Build true transparent C seams and inspect 12 single-tint theme simulations. C is the agent's strongest small-size recommendation, not user selection; lighter colored top tiles remain less distinct on near-white. Native effects, launcher motion, real generated themes and device acceptance remain open (U9/U29).
+
+  - **Latest circular-composition review, 11 October:** The user likes the referenced style and monochromatic treatment, clarifying that this need not mean black and white. The circular appearance still does not look good and needs more drama. Inspect exact nodes `1146:39`, `1146:467`, `1146:430`; preserve the stacked-piece identity and compare bolder circle compositions, with small-size and rounded-square checks.
+  - [x] **Round 15 circular study, 11 October:** Inspect exact liked references: C's rounded shape and B's monochromatic-blue circle/iOS previews. [Review board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1154-2) develops A — Blue Field, B — Tonal Lift and C — Tilted Stack (12° clockwise), using larger 420-pixel pieces in a centered 720-pixel construction with genuine transparent seams. Preserve six clean 1024 masters and original examples. Inspect six enlarged circles, 128 default/dark previews through four masks at 60/48/32/24 pixels, conservative Android radial guides and composed board. A is the agent's preferred circular treatment for stronger separation; B retains tonal progression and C adds a more expressive angle. Native effects, layer packaging and final user acceptance remain open (U9/U29).
+
+  - **Latest tilted tonal brief, 11 October:** The user chooses the tilted stack direction and likes the tonal-lift treatment. Their edited examples (`1154:599`, `1154:660`, `1154:906`, `1154:845`) reduce the inner artwork frame from 60 to 52 pixels within a 60-pixel icon. Preserve this 52:60 scale and centered placement at every preview size. Try neutral tones: gray to black on white in light mode, gray to white in dark mode. Check the existing iOS construction guide and circular/square masks. Direction chosen; final neutral shades and native assets remain unapproved (U9/U29).
+  - [x] **Round 16 tilted neutral study, 11 October:** [Figma review](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1156-2) combines the selected 12° tilt with neutral tonal steps and the inspected 52:60 inset. Two clean 1024 masters use gray → black on white, and gray → white on charcoal. Proportionally scale inner artwork to 52/41.60/34.67/27.73/20.80 pixels at outer 60/48/40/32/24 sizes. Inspect four enlarged previews, both 1× mask matrices (40 previews), guides and composed board. Reuse the actual official Apple OS27 guide; no historical iOS 11 template is claimed. Original edited examples preserved. New neutral shades, native packaging/device effects and final asset approval remain open (U9/U29).
+
+  - **Final logo approval, 11 October:** The user updates colors and explicitly finalizes the supplied light/dark tilted stack (`1158:309`, `1158:659`, `1158:1046`, `1158:669`), then asks for all variations. Preserve current actual paints and 52:60 inset, rather than stale gray names. Light pieces are neutral 75% / 40% / 20% channels on white; dark pieces 25% / 65% / 100%. Both dark references changed during the work to a shared 5% gray background; read back and use that current value, consolidating duplicate dark treatments. Final visual design approved; native integration remains separate (U9/U29).
+  - [x] **Final Figma variation package, 11 October:** [Review board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1160-2) and [export-ready sources](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1160-5) contain light/dark 1024 square artwork, four transparent tonal/single-ink marks, Android light/dark foreground/background and monochrome layer references, and two square 512 listing sources. Configure SVG/PNG exports and app-size presets. Inspect 72 actual-size mask previews from 16–120 pixels, four enlarged appearances, brand demonstrations and source board; verify paints, dimensions and export settings. User originals preserved. Final design approved; native asset packaging/integration, actual system lighting/tinting and device review remain open. No app code or CI changed (U9/U29).
+
+  - **Tonal-only guide brief, 11 October:** The user says tonal artwork fits the app/brand better and rejects single-ink black and white wherever used. Create a logo guide and remove unnecessary variants from the active final package. Tone-order wording mentions both brightest and darkest top tiles for dark mode; confirm against the finalized artwork before reversing paints. “Zigzag ones” has no node reference and current Figma selection is empty; clarify which additional studies to remove. Continue guide construction and known single-ink cleanup while those answers are pending.
+  - **Guide clarification:** The user confirms the finalized order: top darkest on light, brightest on dark. Remove only single-ink versions; retain earlier concept boards.
+  - [x] **Tonal-only logo guide and cleanup, 11 October:** [Figma guide](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1163-2) and [portable guide](<../../../Research/Research Reports/Home Screen and Visual Design/App Logo Exploration/Logo Guide.md>) document meaning, approved tonal palettes/order, 12° tilt, 52:60 sizing, clear-space/minimum-size recommendations, masks, export sources and misuse. Remove single-ink black/white brand sources/previews and the monochrome foreground from the active final boards. Preserve approved tonal originals and historical concepts. Inspect guide and 1× small examples; verify 55 SF Pro text nodes, editable layers, zero raster fills and zero remaining active single-ink nodes. Native tinting/lighting/launcher implementation remains separate; it does not reopen visual approval (U9/U29).
+
+  - **Root brand package and main publication brief, 11 October:** The user requests a new root folder for brand/logo documentation, all decisions and their reasons, the evolution from stack → colored stack → one color family → tonal light/dark, exact 52-in-60 sizing and 12° tilt, exported assets, and a commit on `main`. Inspect the supplied milestone references (`1160:2`, `1163:2`, `1086:15`, `1113:55`, `1154:597`) rather than substituting approximate examples. Preserve earlier evidence and unrelated changes; publish only this logo work.
+  - [x] **Root brand documentation/export package:** Create `Brand/`, document the complete decision path and current guide, export final tonal/platform sources and own historical milestones, verify dimensions/alpha/SVGs and links, publish this package onto `main` with an ordinary documentation message (W3/W4/T10). Delivery evidence: [root Brand folder](<../../../Brand/README.md>), complete decision history, 51 exported/derived PNG/SVG assets with dimensions/alpha/XML/checksums verified, all current Brand links checked, and exported guide/review sheets visually inspected. This documentation/assets publication contains no app-code or CI-workflow change; native/device integration remains separate.
+
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 82).
+  still resolve; give new items the next unused number (currently 88; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -39,6 +103,91 @@ bugs. Item 16 combines reliability work with a product decision; item 18 is a co
 work. Preserve those distinctions when recording findings. New feedback items 23–32 (4 October) are recorded
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
+
+- [ ] **84. Everything left that doesn't need the user** (added 11 October 2026, from the user: "work on the items that
+  we have on Speed still above target, measured on GitHub's simulator, then on 22, 53, 68 … for 68 if you want that
+  code then do it and if update or delete things on Cloudflare also do it, since we don't need Cloudflare; leave out
+  73, and 82 [another agent is working on it]; and for whatever things that need me, note down that and complete all
+  the work till you don't need me").
+  - [x] **Speed still above target on GitHub's simulator** (S rules; measured in item 81's runs): Today's +1 and day ‹ ›
+    13–67 ms/s against 5; first openings of Add log (~1 s) and the note sheet (1.4–5.5 s); Arrange's Hide Completed
+    26 ms/s. Measure side by side before changing anything (S2, PERFORMANCE-LESSONS L29), fix what is ours, and say
+    which are the hosted simulator's own (the first keyboard is judged on the iPhone only, L18). *Looked at 11 Oct: the
+    day ‹ › window is one ~30 ms stall per switch (21 in 15 s; run `38094560760`), with the main thread 5.9 % busy and the
+    app's own code under 1 % of it (the profile): it is SwiftUI laying out ~10 rows for the new day, with row identities
+    already stable across days. The same code measured 13.0 and 76.6 ms/s on two machines (L29). Add log's and the note
+    sheet's first openings are the launch's first keyboard (L18). Nothing of ours to cut on the simulator; the next step
+    is the iPhone's numbers (below).*
+  - [x] The iCloud page's first opening: not slower than the page it replaced, measured the same hour (523 ms against
+    `main`'s Backup & Export 1,154 ms; Restore 190 against 298; runs `38099547344`, `38099545468`).
+  - [x] **Item 22** (Today row sheet wording and actions per habit type): built on 4 and 7 Oct (items 47, 59–63); check
+    every case in its table on the current build with screenshots, fix what still reads as "entries", update tests (T3).
+    *Checked 11 Oct on `DayDetailsScreenshotUITests` (31 states) and `DayDetailsUITests`, 46/46 with Groups (run
+    `38102266531`): a once-a-day check reads "Not done · Mark done" then "Done · Checked at 1:59 AM · Undo done"; several a
+    day "4 of 3 times · Goal reached · Add a check" with "Checks today", each its own Undo; a week goal "1 time today · 1 of
+    3 times this week"; a past day is titled "Yesterday", "For Sat, Oct 10", Skip this day; amounts and time have Log
+    amount / Log time and Log manually; slips Record a slip. No "entry" anywhere on screen (the last, on the no-database
+    backup page, now says "check-ins"); the tick is the habit's own colour, no green. Left: the iPhone in light and dark
+    (item 47's own iPhone check).*
+  - [x] **Item 53** (`GroupsUITests` group drag, now and then): look for the cause again; never loosen the test (T2).
+    *11 Oct: `GroupsUITests` 10/10 with both drag tests (`38102266531`); the one Groups failure in these runs was another
+    test (`testChipsAndEmptyGroup` checking "Moves from Mind" the instant after a tap; it passed on its rerun, T2). No
+    drag missed, so there's nothing new to find the cause from; item 53 stays open as it says, for the next miss.*
+  - [ ] **Item 68 and Cloudflare** ("we don't need Cloudflare"): iCloud replaced the server (item 81, D16). Inventory,
+    11 Oct (read only): Workers `often-enough-api` and `often-enough-api-dev` (sync, with `api.` and
+    `api-dev.oftenenough.com`), D1 `often-enough-directory` and `-dev`, R2 `often-enough-backups` and `-dev` (server
+    backups): **to delete** once item 81 is in `main` (until then `main`'s app and other agents' runs still use
+    `api-dev`), after exporting what they hold. **Kept:** the website Worker `oftenenough-site`
+    (`site-dev.oftenenough.com`), the analytics buckets `oftenenough-events-dev` and `-prod`, and the
+    `oftenenough.com` zone (the domain, needed for the App Store's privacy and support links). Then `server/` and its
+    workflows leave the repository (kept on an archive branch), which also ends item 68.
+    *11 Oct: item 81 is in `main` (`3cc5a396`). Exported first (given to the user, never committed: the repository is
+    public, D11): the dev backups bucket's 11 files (each account's nightly snapshots, about 130 KB for the main account,
+    and device backups) and both D1 directories (production: no accounts; dev: 18 accounts, 184 deleted). Deleting the
+    production Worker, its domain, D1 and its empty bucket was refused by this session's permission check (a mass
+    delete of cloud storage), so nothing on Cloudflare was deleted, and the server's removal from the repository is held
+    with it. Dev should go after the `apple-watch` branch (another agent, still on the server-sync base) has merged
+    `main`, and after the user's iPhone runs the iCloud build: until then that build syncs to `api-dev`.*
+  - **Needs the user** (everything else here is done without them):
+    - [ ] The iPhone checks listed in items 81 (§19 device checks), 83, 58.13 (real Face ID) and 71.
+    - [ ] Deploy the CloudKit schema to Production before TestFlight (item 81).
+    - [ ] Whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
+      the user says.
+    - [ ] **Cloudflare deletion:** allow it (this session's permission rules) or do it in the dashboard: Workers
+      `often-enough-api` (production, `api.oftenenough.com`; nothing in it) now, `often-enough-api-dev`
+      (`api-dev.oftenenough.com`) once the `apple-watch` branch has merged `main` and the iPhone runs the iCloud build;
+      D1 `often-enough-directory` and `often-enough-directory-dev`; R2 `often-enough-backups` (empty) and
+      `often-enough-backups-dev` (exported). Then `server/` and `server-dev-checks.yml` leave the repository (archive
+      branch first) and item 68 closes.
+    - [ ] **Speed on the iPhone:** `iOS/Tools/perf/measure_perf_device.sh` with Today's day ‹ ›, Add log, the note sheet
+      and Arrange's Hide Completed (S2: the phone has the final word; the simulator's numbers vary 2–6×).
+
+- [x] **83. Widgets faster, widget and App Lock issues fixed, and the widget lock opened for speed work** (added 11
+  October 2026, from the user, during item 81: "work on widgets as well, improve performance, but preserve overall
+  like switch based widgets, and syncing and all of that, because data should be handled robustly and should never be
+  lost; and fix widgets related issues and app lock related issues as well; once these are complete mark them as
+  complete in the checklist; and also update the locked documentation of widgets so that for performance and
+  improvement agents can work on it, but [keep] the near-instant switch-based widget UI updating, and they give top
+  data robustness and syncing reliability, so no matter what, data is never lost").
+  - [x] **Widget speed:** "Widgets: one habit's week" took up to 831 ms on the main thread with 20,000 extra logs (item
+    81's speed run; 50–120 ms with a year's demo history). Make it fast without changing what a widget shows, how a
+    tap shows (the switch, W1–W3) or how it's saved and synced (W4, W5, W18). *Done 11 Oct: week and month totals from
+    the per-day index (`HabitStore.loggedTotal`): 47 ms at most, 247 ms for 102 weeks (run `38099892738`, was 1,030 ms
+    for 85); Progress and Undo pass on it (`38099890971`); PERFORMANCE-LESSONS L31.*
+  - [x] **Widget issues:** items 64, 65 and 66 have only their tests on GitHub left (`WidgetUITests`,
+    `WidgetSystemUITests`, `TodayUITests`, `TodayRowLayoutUITests`, `RoutineCalendarUITests`, `TimerUITests`): run
+    them, fix what fails. *All passed 11 Oct (runs `38099886275`, `38099889413`); 64–66 ticked.*
+  - [x] **App Lock issues:** item 58.13 has its tests on GitHub left (`AppLockUITests`, `SmallScreenUITests` on the SE);
+    `SmallScreenUITests.testPrivacyCodeSheetsAndReminderSaysFit` fails on `main` too (run `38085507312`): find why and
+    fix it. *Done 11 Oct: the setup sheet makes its third way only as it scrolls in; the test now scrolls the sheet's
+    own list to it (T9). Both classes pass (runs `38099883963`, `38099888008`). Left: the user's real Face ID check.*
+  - [x] **The widget lock opened for speed work** (the user's say-so): update
+    [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>), Rulebook U28 and the code's
+    `LOCKED` notes: agents may improve widget performance and fix bugs, as long as the switch-based instant update, the
+    hand-over saving, idempotent taps, the waiting-taps safety net and syncing without opening the app all stay exactly
+    as they are, checked the same way. W18 also names the server sync (`SyncService`), now iCloud (`CloudSync`). *Done
+    11 Oct: the locked page's §8, Rulebook U28, Design Rules, Shared/README, CLAUDE.md and the 15 `LOCKED` notes; W18
+    now names iCloud.*
 
 ### The cloud session's list (the user, 8 Oct 2026)
 
@@ -249,7 +398,7 @@ and the Add note keyboard coming up by itself.
     History). A multi-check habit lost its whole-day Done switch (research matrix "Avoid"); History's Add Entry
     still adds several checks at once (U5).
 
-- [ ] **64. Check habits with a week or month goal (and several a day) show +1 instead of ✓.** Added 7 October 2026, from
+- [x] **64. Check habits with a week or month goal (and several a day) show +1 instead of ✓.** Added 7 October 2026, from
   the user: "the user has chosen a check-based habit specifically… you are turning it into an amount or quantity-based
   habit." Item 54 (6 Oct) had turned them into +1 counters to stop the sound and the fill after one tap.
   - **The user's rule:** a check habit's button is ✓ wherever it shows. Each tap adds one check and never takes one back;
@@ -262,9 +411,10 @@ and the Add note keyboard coming up by itself.
   - [x] On the iPhone, 7 Oct 2026: the user: "the check is working perfectly." `TodayUITests` on the iPhone: 7 of 8
     passed; `testDayWeekAndAppearance` failed only because this phone has the sound switched on (test launches share
     the person's settings on a real iPhone; not this change).
-  - [ ] Tests on GitHub (T1/T7/T10): `TodayUITests`, `TodayRowLayoutUITests`, `WidgetUITests`, `RoutineCalendarUITests`.
+  - [x] Tests on GitHub (T1/T7/T10): `TodayUITests`, `TodayRowLayoutUITests`, `WidgetUITests`, `RoutineCalendarUITests`.
+    *Passed 11 Oct 2026 (item 83): Today, row layout and routine calendar 19/19 (run `38099886275`); Widgets (`38099889413`).*
 
-- [ ] **65. Widgets respond very slowly; a tap sometimes opens the app; Medium rows flicker.** Added 7 October 2026, from
+- [x] **65. Widgets respond very slowly; a tap sometimes opens the app; Medium rows flicker.** Added 7 October 2026, from
   the user: "majority of the widgets… when I click on the main action buttons they were not even responding… even when
   it does respond, after a very long time." Then: "all items are flickering in the medium widget… in the small widget
   the interactivity is gone, it is directly opening." Asked for Apple's guidance first, and for testing on the iPhone.
@@ -284,11 +434,13 @@ and the Add note keyboard coming up by itself.
   - [x] On the iPhone, 7 Oct 2026: `WidgetUITests` 6/6 passed. Same-run page flips: week-long 0.9 / 1.4 s, short
     0.7–0.8 s. Real taps: app closed → Small redrawn +0.52 s, Medium +0.76 s; app in the background +0.11 s / +0.20 s.
   - [x] The user's check on the iPhone (U9): superseded and approved through item 66 (8 Oct 2026).
-  - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`.
+  - [x] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`. *Passed 11 Oct 2026 (item 83): Widget, Widget
+    system and Timer 13 tests, one skipped by design (the hosted simulator has no Home Screen Add Widget; that check stays
+    on the iPhone), run `38099889413`.*
   - Found, not fixed (separate task): a `-uitest` launch on a real iPhone publishes its demo habits into the widgets'
     shared file, and resets some of the person's own settings (Hide Completed, done order); D8.
 
-- [ ] **66. Widgets: the tap shows at once; the app saves, syncs and backs up behind it; nothing is lost.** Added 7 October
+- [x] **66. Widgets: the tap shows at once; the app saves, syncs and backs up behind it; nothing is lost.** Added 7 October
   2026, from the user, after item 65's measurements (a ✓/+1 tap took 3.9–4.5 s to show on the iPhone: iOS waits ~3 s
   after an app-process intent before showing the reload; widget-process intents showed in ~0.2 s).
   - [x] **Visual first, at once:** the widget changes the moment it's tapped. Built as iOS switches (`Toggle`, which iOS
@@ -330,7 +482,7 @@ and the Add note keyboard coming up by itself.
   - [x] The user's check on the iPhone (U9), 8 Oct 2026: "everything is perfect … lock it down." Locked in
     [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>) (Rulebook U28), with README,
     Design Rules and `LOCKED` comments in the code.
-  - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`, `TodayUITests`, `TimerUITests`; the in-app
+  - [x] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`, `TodayUITests`, `TimerUITests`; the in-app
     widget checks. Expect label changes for T3: a card is one button named for its action, with the state as its value.
     **Found 8 Oct by item 67's runs:** `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` fails on `main`
     (run 37746030895): "The widget didn't show the committed log. Widget: . App: … intent not dispatched". The test
@@ -532,6 +684,141 @@ and the Add note keyboard coming up by itself.
 
 ## Planned improvements — build later
 
+
+- [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
+  Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
+  [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:
+  - [x] **Research first; tell the user when it's done**, before any design. Report (now in `iOS/Docs/iPad/Research/`)
+    (W2), the user's words kept word for word beside it. *Done 11 Oct: [The iPad Layout — Familiar Like the iPhone,
+    Native to the iPad](<../iPad/Research/The iPad Layout — Familiar Like the iPhone, Native to the iPad.md>).
+    Every iPad/tablet/landscape/multitasking review read and hand-coded (2,071 habit-app, 455 platform-app, 209 Play
+    Store); Apple's iPadOS 26 guidance. Recommendation: the iPhone's Today cards side by side in iPhone-width columns
+    chosen by window width, the ≡ menu as a sidebar with a count of what's left, the day control in the top bar, every
+    orientation and window size, form sheets, keyboard shortcuts; a compact window is the iPhone layout. Six decisions
+    for the user (its §8), starting with free or Plus.*
+  - [x] **Today's whole point is quick scanning:** the person sees at a glance how much is left for the day. Take into
+    account what the iPhone already does for that (time-of-day sections, a closed section showing how many things it
+    holds, the day bar, the ≡ side menu, the filter) and work out how the iPad's Today should do it with far more room.
+  - [x] **Familiar, not new:** the iPad should feel like the same app as the iPhone ("it's kind of the same"), not
+    something entirely new.
+  - [x] **And native:** at the same time it must feel like an iPad app, intuitive ("oh, this is very intuitive").
+  - [x] **Design for the room the iPad has:** everything laid out for the larger screen, not a stretched iPhone.
+  - [x] **Then the designs, in Figma**, on the page made for the iPad (file `Ncccsm1l2O62GJ5xLSInqk`, node `1078:309`,
+    empty on 11 Oct); one example first for the user's approval, then the rest.
+  - **Decided by the user, 11 Oct 2026 (the report's §8):** (1) **the iPad layout is free** (sync between devices
+    stays Plus); (6) **design the 11-inch iPad first, then think about the 13-inch.**
+  - [x] **The other layout questions are answered by research, not by the user** (the user, 11 Oct: "these questions
+    shouldn't be for me … take inspiration from top apps and top patterns in the iPad"; the user has worked on web, not
+    native iPad apps): how sections sit in two columns, whether Day details is a centered sheet or a panel, three
+    columns on wide windows, where the day control goes. Study how Apple's own iPad apps (Reminders, Notes, Calendar,
+    Mail, Health…) and top third-party apps look in **portrait and landscape**, what people praise and dislike, and
+    the most important iPad navigation patterns and "how the native iPad feels"; reuse what we already have.
+    *Done 11 Oct: report §6 (14 top iPad apps' current App Store screenshots read, HIG popovers/tab bars, platform
+    reviews). Answers: one column of the iPhone's section cards at ≈ 700 pt (Reminders' Today is also Morning /
+    Afternoon / Tonight; Things, TickTick, Habitify one column); a sidebar with a count beside Today; Day details as a
+    popover at the row (Calendar, Reminders); the day control in the top bar's centre (Calendar); a Columns view later
+    as an option (Reminders' Columns).*
+  - [x] Design from that research; ask the user only what research can't settle (the user will say which questions
+    need more research and which they'll answer).
+  - [x] **11-inch landscape Today**: approved by the user, 11 Oct ("I like the overall tablet layout for … landscape").
+  - [x] **11-inch portrait, and how the iPhone's bottom sheet (Day details) works in portrait and landscape**, taken
+    from native apps, not invented (the user, 11 Oct). *Designed 11 Oct, waiting for the user: portrait Today (sidebar
+    put away), the sidebar sliding over, and Day details as a popover pointing at the row in both orientations
+    (regular width in both; Apple's HIG and Calendar's event popover); the iPhone's sheet only in a narrow window.
+    Notes: `iOS/Docs/iPad/Designs/Design Notes.md`.* **Popover in both orientations and no ✕:
+    approved by the user, 11 Oct** ("if the native app itself is not using it, then obviously people don't expect it").
+  - [x] **Is a popover what people expect, and what about many logs?** (the user, 11 Oct). *Answered 11 Oct: iPad
+    Calendar and Reminders users expect details to pop up (`N2#16334`, `N1#7979`); the iPhone's three-log rule keeps the
+    popover's size, and All logs opens inside it with a back button (frames `1114:2`, `1114:301`, `1114:606`).*
+    **Approved by the user, 11 Oct** ("this looks good … everything what you have created till now").
+  - [x] **Add log with the iPad keyboard** (the user, 11 Oct: "go ahead with the add log keyboard one"). *Designed
+    11 Oct, waiting for the user: landscape (`1120:2`, the popover moves up above the keyboard with the SE's short
+    form) and portrait (`1120:355`, still pointing at the row, full form); ✕ stays, outside taps don't close it while
+    something is typed.*
+  - [x] **A narrow window** (the user, 11 Oct: "go ahead with the narrow window one"). *Designed 11 Oct, waiting for
+    the user: beside another app the window is compact width and the app is the iPhone app exactly: the sidebar
+    button after the window controls, Edit · Filter +, the bottom day bar, Day details as the iPhone's sheet with ✕
+    (`1122:2`, `1122:196`).*
+  - [x] **One menu icon, used consistently** (the user, 11 Oct: the sidebar icon in some frames, ≡ in others, "make
+    sure be consistent"). *Done 11 Oct: on the iPad the menu's button is the system's sidebar button (`sidebar.left`) at
+    every width, portrait, landscape and a narrow window, because iPadOS draws that button for every app's sidebar;
+    the iPhone keeps its ≡ (Design Rules, ≡ Menu, final). Also matched the sidebar's icons to the app's code: Habits
+    `checklist`, Day and Week `calendar`.*
+  - [x] **Every other screen on the iPad, not just Today** (the user, 11 Oct: "we have a lot of other screens … complete
+    them"). Each follows the iPad pattern that top apps use for that kind of screen (notes: Design Notes §6):
+    *Designed 11 Oct, waiting for the user (frames and reasons: Design Notes §5; words that change on the iPad: §5's
+    last part):*
+    - [x] Habits and Tasks: the list and a habit's details side by side (list–detail, as in Notes, Mail and Reminders)
+      (`1133:2`; portrait `1172:2`)
+    - [x] Habit details: its tabs in the detail column (inside `1133:2`)
+    - [x] Progress: the habit cards using the room, two across (Health's Summary pattern) (`1134:2`)
+    - [x] The settings pages (Times of Day, Day and Week, Reminders, Appearance, iCloud & Backup, Privacy & Security,
+      Plus, Help & Feedback, About): the page beside the sidebar, as in the iPad's Settings app (`1135:*`, `1168:*`)
+    - [x] New Habit (+): a form sheet in the middle of the screen (`1169:2`)
+    - [x] Today's calendar (Today ⌄) and Filter: popovers from their buttons (`1169:281`, `1169:597`)
+    - [x] Edit (Arrange Your Day) on the iPad (`1171:2`)
+    - [x] The routine player and the timer: full screen, laid out for the iPad (`1171:342`, `1171:377`)
+    - [x] Welcome (onboarding), an empty Today and App Lock's cover (`1171:395`, `1171:419`, `1171:675`)
+    - [ ] Words that name the device read right on the iPad ("iPhone" → "iPad", ≡ → the sidebar, Face ID → Touch ID
+      where the iPad has it, no Haptics row); Live Activities and alarms on the iPad checked on a real iPad
+  - [x] **No day rings in the calendar** (the user, 11 Oct: "in our app, we don't have these rings … remove them"; "fix
+    it in the design rules too"). *Done 11 Oct: the iPad's "Go to a day" popover (`1169:281`) rebuilt from the app's
+    `CalendarSheet` (plain dates, today bold, the open day in a grey circle); Design Rules' "Calendar and Back to Today"
+    no longer says "a filled circle inside its ring".*
+  - [x] **The 13-inch and the Columns view** (the user, 11 Oct: "go ahead with the 13 inch and columns view").
+    *Designed 11 Oct, waiting for the user (Design Notes §6): 13-inch Today in List, landscape and portrait (`1175:2`,
+    `1175:1209`): the same layout with more margin; the Columns view, each time of day its own column in the person's
+    order, scrolling sideways, as in Reminders (`1175:246` 13-inch, `1175:730` 11-inch); switched from the menu bar's
+    View menu, as List ⌘1 / as Columns ⌘2 (`1176:2`), and Appearance → Layout (`1135:873`).*
+  - **The user's decisions and requests, 11 Oct (the loop to finish the iPad hand-over):**
+    - [x] **The Columns switch stays where it is** (the View menu and Appearance): "if it is yes then keep it that way
+      itself, we don't need to add anything extra". No ⋯ on Today's top bar.
+    - [x] **No dark-mode designs**: "we are using native components … it is very easy … to convert it into a dark mode".
+      Light mode only; native colours give dark mode.
+    - [x] **Portrait versions wherever the layout changes in portrait**: "whichever portrait versions are needed,
+      create them". *Done 11 Oct: every landscape-only screen has its portrait beside it (Design Notes §7).*
+    - [x] **The deeper screens, in light mode**: a habit's Notes and Progress tabs, the New Habit form inside its sheet,
+      a help topic, App Lock setup, restore, Edit Group and the rest. *Done 11 Oct (Design Notes §7); Edit Group follows
+      Current Work 85.*
+    - [x] **Widgets on the iPad**, one kind after another, *done 11 Oct (Design Notes §8): the iPhone widgets unchanged,
+      an Extra Large Today (ten a page, two columns of Large Today's rows), the Home Screen and the Lock Screen;* from the iPhone widgets in Figma (nodes `537:2981`, `585:4698`,
+      `622:6436`, `659:5131`, `687:7558`, `695:8747`). The user: widgets were never "locked" as code or UI: what's locked
+      is the principles (a tap shows its result near-instantly, and every tap is saved safely behind it, even many quick
+      taps, even with no internet).
+    - [x] **Everything an agent needs to build the iPad**: "we are going to assign this to an agent". Screenshots from a
+      GitHub simulator run may be used for reference. *Done 11 Oct: `iOS/Docs/iPad/` (README: what it is, every
+      decision, the words that change; `Designs/`: 17 pictures of every screen; `Build Prompt (Delete When Done).md`),
+      listed in the Docs index. No simulator screenshots were needed: the iPhone's own designs and code were the source.*
+    - [x] **Then answer: does the iPad need any architecture or storage design** (as the Watch had its own database
+      research), or only UI? *Answered 11 Oct: no new data design. The iPad is the same app on another device: its own
+      copy of the database, sync through iCloud as Architecture 11 already designs it (the iPad is named there; the
+      free plan's one syncing device, §12), the same backups and App Group. It needs app-level system changes only
+      (device family, orientations, windows and state per window, menu-bar commands, the Extra Large widget family) and
+      real-iPad checks of Live Activities, AlarmKit, Health steps and Touch ID (README, Build Prompt §4).*
+  - [x] **All the iPad designs are complete** (the user, 11 Oct: "design related stuff is completed"): the items marked
+    "waiting for the user" above are approved with it.
+  - [x] **Everything documented in one folder, with the pictures, the research and why each decision was taken** (the
+    user, 11 Oct: "document everything … with images … the research … refer to those wherever you have taken any
+    decisions … keep this data … in one folder"), then pushed to main. *Done 11 Oct: `iOS/Docs/iPad/` (README with a
+    decision → reason → source table; `Designs/Design Notes.md` with all 17 pictures inline; `Research/` with the report,
+    the user's prompts and the evidence scripts, moved from `Research/Research Reports/Home Screen and Visual Design/iPad
+    Layout/`; the build prompt); listed in the Docs index and in the research index under "iPad".*
+  - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (next; the user will discuss the
+    app-level changes first).
+
+- [ ] **85. Edit Group: padding around the colour swatches, and show only the group's own habits (build later).** Added
+  11 October 2026, from the user: "we need to make some updates later, but not now." The screen is New Group / Edit
+  Group (`GroupForm` in `iOS/Habits/Groups/GroupScreens.swift`).
+  - [ ] **The colour block has no side padding.** The swatches in the Colour section (`ColorGrid`) touch the card's
+    left and right edges and corners. Give them proper padding inside the card, left and right (and check top and
+    bottom), at every text size and on the iPhone SE.
+  - [ ] **Show only the habits in this group.** Today the form lists every habit with a ✓ / ○ beside it, so with many
+    habits Pause These Habits… and Delete Group are pushed to the very bottom. Instead, list just the habits this group
+    has, with a way to add more (for example an "Add Habits" row that opens the full list to choose from) and a way to
+    take one out. Pause These Habits… and Delete Group then stay in easy reach.
+  - Before building: read the Groups section of Design Rules and report 17 (U12); New Group (no habits yet) needs its
+    own empty state; a habit is still in one group at a time. Update `GroupsUITests` that tap the old list (T3), and
+    check on the iPhone (U9).
 
 - [ ] **73. Onboarding, and getting everything back for someone returning (build later).** Added 8 October 2026, from
   the user: "we need to improve the onboarding experience. As well as in the onboarding, who has already the account,
@@ -965,7 +1252,7 @@ and the Add note keyboard coming up by itself.
     - [x] Other platforms (the Apple Watch's way in) later: documented, not drawn. *Row C note.*
     - [ ] The user's review of group 1.
 
-- [ ] **81. Move sync and backup from our server to iCloud (CloudKit with `CKSyncEngine`), and simplify the app
+- [x] **81. Move sync and backup from our server to iCloud (CloudKit with `CKSyncEngine`), and simplify the app
   around it** (added 10 October 2026, from the user; Rulebook D16; **to work on later**, when the user says so).
   The user: "first let's set up the overall groundwork like CK sync engine … we have to move it from [Cloudflare] …
   delete the unnecessary code and improvise the application … we have to change the backup and restore page as well
@@ -980,27 +1267,78 @@ and the Add note keyboard coming up by itself.
     how `CKSyncEngine` maps onto our sync (records, `SyncRules` merge, tombstones, the outbox), what Apple setup is
     needed (the iCloud container, entitlements, CloudKit schema), migration from today's server and accounts, tests.
     The user will enable whatever is needed in the Apple Developer account and provide any data asked for.
-  - [ ] Can a cloud agent build it? To answer in the report. Known so far: the code and most tests can be written and
+  - [x] Can a cloud agent build it? Yes (10 Oct 2026): everything was built and tested on GitHub against `FakeCloud`; only the device checks below need the user. To answer in the report. Known so far: the code and most tests can be written and
     run on GitHub's simulator with a stand-in for iCloud; GitHub's simulator can't sign in to an Apple Account, so real
     iCloud sync is checked on the user's iPhone and an iPad (or a second iPhone).
-  - [ ] Replace the server's sync and backup with CloudKit; delete the code that's no longer needed (accounts, our
+  - [x] Replace the server's sync and backup with CloudKit; delete the code that's no longer needed (accounts, our
     sync, invites, moving with a code through the server), with D3, D4, D9, D12, D14, D15 and Architecture 02/05
     rewritten as it lands.
-  - [ ] **Redesign the Backup & Restore page and the Account page** for iCloud (no account on Apple); decide what
+  - [x] **Redesign the Backup & Restore page and the Account page** for iCloud (no account on Apple); decide what
     replaces the ≡ menu's Account row.
   - [x] **Decided by the user, 10 Oct 2026:** free keeps **one syncing device at a time** (an iPad works on its own as
     the one device; the same habits on iPhone and iPad is Plus); **the "This week" widget becomes Plus** (Today,
     Tasks, One habit and Lock Screen stay free; the user's say-so for locked widgets, U28; check on the iPhone Home
     Screen when built). Still open: an optional quiet Plus line at a success moment.
-  - [ ] Apple setup, known so far: the iCloud container `iCloud.com.oftenenough.app` already exists (iCloud Drive
+  - [x] Apple setup, known so far: the iCloud container `iCloud.com.oftenenough.app` already exists (iCloud Drive
     backup); the build adds the CloudKit service and push notifications (silent pushes tell a device something
     changed), which automatic signing registers on the first iPhone build. The user, later: two devices on one Apple
     Account for testing, and "Deploy to Production" in the CloudKit Console before release (or a CloudKit management
     token so an agent can do it).
-  - [ ] The research must settle: the CloudKit record layout (per record or batched; Apple's limits for an extreme
+  - [x] The research must settle: the CloudKit record layout (per record or batched; Apple's limits for an extreme
     user's 25,000 records a year), `CKSyncEngine` with `SyncRules` (conflicts, deletes), which device is the free
     plan's one syncing device, data safety (iCloud sync isn't a backup: keep the daily file and "never replace with
     less"), what's deleted with the server, and what GitHub's simulator can test.
+  - **The build (the user, 10 Oct 2026, to a cloud session):** "build iCloud sync with CloudKit as designed in
+    Architecture 11, following the Rulebook. Data must never be lost: that comes first. Test against the fake iCloud on
+    GitHub, fix any real bugs, and merge into main once tests pass." Steps 1–4 of Architecture 11 §21, on branch
+    `claude/lucid-johnson-egrjup`:
+    - [x] 81.1 Groundwork: `CloudTransport` (the real `CKSyncEngine` behind it, `FakeCloud` for tests),
+      `SyncRules.mergeRecord`, the schema 9 migration (`sync_meta.ck_system`), `CloudSync` (§5–9).
+    - [x] 81.2 Accounts, zones and the free plan's one syncing device (§10–12).
+    - [x] 81.3 Safety: the fresh-install wait, the mass-change brake, the dated backup files, the clone check, sending
+      after changes made outside the app (§13, §15).
+    - [x] 81.4 The iCloud page (replacing Account and the sync parts of Backup & Export), the ≡ row "iCloud & Backup",
+      and removing the server code of §17.
+    - [x] 81.5 Tests: `FakeCloud` with every error and event, the property test, the extreme account, `jvmTest`
+      (`mergeRecord`), the migration from every past schema, UI tests of every iCloud page state and the SE, speed
+      scenarios; all on GitHub.
+    - [x] 81.6 Rulebook D3, D4, D9, D12, D14, D15 rewritten for iCloud; "replaced by 11" notes in Architecture 01, 02,
+      04, 05, 06; What's Built; Design Rules' iCloud page; merged into `main`; branches marked safe to delete.
+    - **Done and tested on GitHub, 10–11 Oct 2026** (branch `claude/lucid-johnson-egrjup`, final code `052be04`; the
+      runs on `ad48b96` and the fixes after them):
+      - Core: `jvmTest` passes in every run (`CloudStoreTest`: `mergeRecord` ≡ the per-clock ops, confirming by outbox
+        position, the brake both ways, the extreme account 375,000 records up and down; `MigrationTest`: schema 9 from
+        every past schema).
+      - Against the fake iCloud: `ICloudUITests` every guard and error of §3 and §7 and the property test
+        (`testSyncAgainstTheFakeICloud`), the page in every state, Today's card, the two questions, the second-device
+        sheet (runs `38094553071`, `38087945437`); the extreme account (`38094557875`: all checks passed; on the hosted
+        simulator import 618 s, upload 1,087 s in 1,501 requests, fetch 474 s).
+      - Every class it touches: Backup 7/7 (`38096927765`), Onboarding, Today and Plus 28/28 (`38094554630`), Widgets,
+        Timers and Reminders 15/15 (`38094559336`), OnboardingBackupScreenshot (`38094553071`), the iPhone SE 11/12
+        (`38094556445`; the 12th, `testPrivacyCodeSheetsAndReminderSaysFit`, fails the same way on `main`, run
+        `38085507312`: App Lock, not this work).
+      - Speed (`38094560760`): every iCloud page state scrolls at 0–5.3 ms/s with no freeze; Today during a 20,000-log
+        fetch scrolls at 0.0 ms/s and +1 at 15.2 (one 250 ms freeze), the fetch and uploads done in 96 s; Today's own
+        windows unchanged. Found and fixed on the way: `CloudStore` on the main thread (PERFORMANCE-LESSONS L31,
+        Rulebook S16), re-reads per fetched page, two file pickers in one stack (Restore froze 14–46 s), weekly
+        backup copies a day apart after New Year (the backup check). Opening the page and Restore,
+        measured the same hour against `main`: first 523 ms (`main`'s Backup & Export 1,154), again 291 (348), Restore
+        190 (298) (runs `38099547344`, `38099545468`); Restore once measured 2.5 s after the fix (hosted noise, three
+        other runs ~0.2 s). "Widgets: one habit's week" (up to 831 ms with 20,000 extra logs) is item 83.
+    - **Left for the user** (step 5 of §21; a cloud session can't do these):
+      - [ ] The device checks of Architecture 11 §19 on the iPhone and an iPad (or a second iPhone) on one Apple
+        Account: a change on one shows on the other; Airplane Mode, then back; a full iCloud; signing in to another
+        Apple Account (the question, both answers); deleting the app's iCloud data in Settings (Back Up Again / Not
+        Now); a reinstall gets everything back before Start without restoring; free: the second-device sheet, Move
+        Here, the old device sending what it has; Delete My Data From iCloud; a widget tap, a notification's Done and
+        the Live Activity reaching the other device without opening the app (D12, D13: also with the phone locked).
+      - [ ] The first iPhone build from Xcode registers the CloudKit service and push notifications (automatic
+        signing); the CloudKit Console then shows the container's Development schema (`Row`, `Active`, `Device`).
+      - [ ] **Deploy the CloudKit schema to Production** in the CloudKit Console before the first TestFlight build
+        (TestFlight and the App Store use Production; without it nothing syncs there), and switch
+        `aps-environment` to `production` for that archive (Xcode does this for App Store distribution).
+      - [ ] Once CloudKit has shipped and passed these checks: tag the server `server-final-2026-10` and remove
+        `server/` (the user's decision, 10 Oct 2026; nothing in the app calls it any more).
 
 - [ ] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
   #65; **to build later**, when the user says so, after item 81's iPhone CloudKit work).
@@ -1296,26 +1634,26 @@ and the Add note keyboard coming up by itself.
         - [x] Cause found: Face ID is switched off for the app in the iPhone's Settings (Face ID & Passcode → Other
           Apps: listed, off). The code took "Face ID not allowed for this app" for "this iPhone has no Face ID", so it
           took the passcode-only path (skip the sheet, hide If Face ID doesn't work). Branch `app-lock-face-id-off`.
-        - [ ] Fix: an iPhone with Face ID set up always gets the Figma flow (3 → 7), whether or not the app is allowed to
+        - [x] Fix: an iPhone with Face ID set up always gets the Figma flow (3 → 7), whether or not the app is allowed to
           use it; while it isn't, the App Lock page says so and opens Settings; an app passcode set then lets Face ID
           back in with Use Face ID Again once it's allowed. *Built 10 Oct (`AppLock.Ability.biometricsAllowed`,
           `faceIDNotTrusted`, Allow Face ID in Settings; the Face ID permission text now says "the app"); installed on the
           iPhone 16 for the user's check; GitHub tests not run yet.*
-        - [ ] A test for it (`-test-face denied`), tests on GitHub, then the user's iPhone check (U9).
+        - [x] A test for it (`-test-face denied`), tests on GitHub, then the user's iPhone check (U9).
       - **The user's model for App Lock, 10 Oct 2026** (after the check above; "first let's create those missing designs
         in the Figma … do some research, figure it out; if they are okay, then update the designs"). Each point:
-        - [ ] Never show "Lock with Face ID" (or a switch that reads as on) when Face ID can't be used: say plainly why,
+        - [x] Never show "Lock with Face ID" (or a switch that reads as on) when Face ID can't be used: say plainly why,
           for each case: **Face ID not allowed for the app in Settings** ("can't be turned on, it isn't allowed in
           Settings"), **Face ID not set up on this iPhone**, **no iPhone passcode at all**.
-        - [ ] Never lock straight away with the iPhone passcode: always ask first.
-        - [ ] **People choose their everyday way to unlock:** Face ID (the default), iPhone Passcode, or App Passcode.
-        - [ ] **An app passcode is always created** (the answer "Always"), whichever way is chosen: with Face ID or the
+        - [x] Never lock straight away with the iPhone passcode: always ask first.
+        - [x] **People choose their everyday way to unlock:** Face ID (the default), iPhone Passcode, or App Passcode.
+        - [x] **An app passcode is always created** (the answer "Always"), whichever way is chosen: with Face ID or the
           iPhone passcode it's the backup, asked whenever anything changes (Face ID changed, the passcode removed).
-        - [ ] **App Passcode as the everyday way:** Face ID and the iPhone passcode play no part; forgot it → only a
+        - [x] **App Passcode as the everyday way:** Face ID and the iPhone passcode play no part; forgot it → only a
           24-hour security delay, then a new one. No data is ever lost.
-        - [ ] Face ID or iPhone passcode as the everyday way, and Face ID doesn't work or changed: the iPhone passcode
+        - [x] Face ID or iPhone passcode as the everyday way, and Face ID doesn't work or changed: the iPhone passcode
           can reset the app passcode; if the passcode doesn't work or isn't there, the 24-hour delay alone.
-        - [ ] **An iPhone with no passcode:** App Lock still works, with the app passcode only (and the 24-hour delay).
+        - [x] **An iPhone with no passcode:** App Lock still works, with the app passcode only (and the 24-hour delay).
         - [x] Research whether these assumptions hold (W2), say where they don't, then draw every missing scenario in
           Figma beside section 935:309 and update the spec. Building waits for the user. *Done 10 Oct 2026:
           [App Lock — Choosing How to Open the App](<../../../Research/Research Reports/Settings and Help/App Lock — Choosing How to Open the App.md>)
@@ -1323,7 +1661,8 @@ and the Add note keyboard coming up by itself.
           way's iPhone-passcode reset keeps the 24-hour wait, for the user to confirm). Figma
           [1003:309](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1003-309): 23 screens (A1–A8
           setup in every state, B1–B5 the page per way, C1–C6 the lock screen, D1–D4 Forgot). The spec points to it.*
-        - [ ] The user's review of the Figma round, then rewrite the spec and build (replaces the 10 Oct quick fix's
+        *Built 10 Oct and tested on GitHub 11 Oct: `AppLockUITests` 21/21 (run `38099883963`), every way and state above, `-test-face denied` (`testFaceIDOffForTheApp`), no passcode (`testNoPasscodeUsesTheAppPasscodeAlone`), Forgot and the 24-hour reset; the user's own Face ID check stays below.*
+        - [x] The user's review of the Figma round, then rewrite the spec and build (replaces the 10 Oct quick fix's
           screens). **The user, 10 Oct 2026:** the 24-hour delay stays as the App Lock report says (it only makes sure
           the owner notices; nothing can stop everyone). "Implement all of this and then test it thoroughly on the
           iPhone": setting the passcodes, every option, the 24-hour delay; a thorough hunt for bugs and flaws, not
@@ -1341,7 +1680,9 @@ and the Add note keyboard coming up by itself.
             switched off in Settings, locking the iPhone, the reset notification.
           - [x] The passcode screens' layout (the user's report): the prompt and dots up, the keypad lower, the spare
             space shared evenly, keys 76 pt; the lock screen the same. Checked in iPhone screenshots.
-          - [ ] Tests on GitHub (AppLockUITests, SmallScreenUITests on the SE).
+          - [x] Tests on GitHub (AppLockUITests, SmallScreenUITests on the SE). *11 Oct 2026: AppLockUITests 21/21
+            (`38099883963`); SmallScreenUITests 12/12 on the SE (`38099888008`), after its App Lock test was made to
+            scroll the setup sheet to App Passcode (it failed on `main` too, `38085507312`).*
           - [x] **The user's iPhone check, 10 Oct 2026: the "set a new passcode" screen** (Enter a six-digit passcode /
             Enter it again): the dots and keypad sit high with a lot of empty space below; the space isn't used, or
             something is too small. Fix the layout (after the test run), on every passcode screen (setup, Change,

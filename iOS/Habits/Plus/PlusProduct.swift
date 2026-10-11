@@ -1,7 +1,7 @@
 import Foundation
 
 /// The App Store's product IDs (`iOS/OftenEnough.storekit`; created in App Store Connect before a real purchase).
-/// Its own file so the Apple Watch app compiles the same list (Rulebook U31): one purchase, read the same on both.
+/// Its own file so the Apple Watch app compiles the same list (Rulebook U32): one purchase, read the same on both.
 nonisolated enum PlusProduct {
     static let plus = "com.oftenenough.app.plus"
     static let family = "com.oftenenough.app.plusfamily"

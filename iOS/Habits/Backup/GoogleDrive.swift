@@ -267,7 +267,7 @@ struct GoogleDriveCopiesView: View {
                 } label: {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(file.properties["deviceName"] ?? "A backup").foregroundStyle(Color.primary)
-                        Text(HabitCopy.capitalized(BackupSyncView.when(file.modified))).font(.footnote).foregroundStyle(.secondary)
+                        Text(HabitCopy.capitalized(ICloudPage.when(file.modified))).font(.footnote).foregroundStyle(.secondary)
                     }
                 }
             }

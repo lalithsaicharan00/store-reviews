@@ -61,12 +61,41 @@ object SyncRules {
         else -> null
     }
 
-    fun merge(current: SyncRecord?, op: Op): SyncRecord {
+    fun merge(current: SyncRecord?, op: Op): SyncRecord = mergeFields(current, op.fields, op.hlc)
+
+    /**
+     * Merges a whole record, each field with its own stamp, as CloudKit hands one back (Architecture 11 §5). Exactly the
+     * same as applying one op per stamp, in any order: so it's order-free and idempotent, and a record merged twice, or
+     * a record and the ops it was made from, end in the same place. A field with no stamp is ignored (never guessed).
+     */
+    fun mergeRecord(current: SyncRecord?, incoming: SyncRecord): SyncRecord {
+        var merged = current
+        val byClock = incoming.fields.keys.filter { incoming.clocks[it] != null }.groupBy { incoming.clocks.getValue(it) }
+        for (hlc in byClock.keys.sorted()) {
+            merged = mergeFields(merged, byClock.getValue(hlc).associateWith { incoming.fields.getValue(it) }, hlc)
+        }
+        return merged ?: SyncRecord(emptyMap(), emptyMap())
+    }
+
+    /** Why a whole record (from CloudKit) can't be merged, or null if it's well formed. Same limits as an op's. */
+    fun recordProblem(table: String, row: String, record: SyncRecord): String? = when {
+        !TABLE.matches(table) -> "invalid table"
+        !ID.matches(row) -> "invalid row id"
+        record.fields.isEmpty() -> "no fields"
+        record.fields.size > MAX_FIELDS -> "too many fields"
+        record.fields.keys.any { !FIELD.matches(it) || it == "id" } -> "invalid field name"
+        record.fields.values.any { it !is JsonPrimitive } -> "fields must be plain values"
+        record.fields.keys.any { record.clocks[it] == null } -> "a field has no stamp"
+        record.clocks.values.any { !Hlc.isValid(it) } -> "invalid hlc"
+        else -> null
+    }
+
+    private fun mergeFields(current: SyncRecord?, changed: Map<String, JsonElement>, hlc: String): SyncRecord {
         val fields = current?.fields?.toMutableMap() ?: mutableMapOf()
         val clocks = current?.clocks?.toMutableMap() ?: mutableMapOf()
-        for ((name, value) in op.fields) {
+        for ((name, value) in changed) {
             val clock = clocks[name]
-            val later = clock == null || op.hlc > clock
+            val later = clock == null || hlc > clock
             val wins = if (name == DELETED_AT) {
                 val deleted = fields[name].let { it != null && it !is JsonNull }
                 when {
@@ -79,7 +108,7 @@ object SyncRules {
             }
             if (wins) {
                 fields[name] = value
-                clocks[name] = op.hlc
+                clocks[name] = hlc
             }
         }
         return SyncRecord(fields, clocks)

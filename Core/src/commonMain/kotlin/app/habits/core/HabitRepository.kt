@@ -27,6 +27,9 @@ import kotlinx.serialization.json.long
 class HabitRepository private constructor(private val database: HabitDatabase, private val clock: () -> Long) {
     private val dao = database.dao()
 
+    /** Sync with the person's iCloud (Architecture 11): what CloudKit sends and what it brought, each in one transaction. */
+    val cloud = CloudStore(dao, clock)
+
     @Throws(Exception::class)
     suspend fun load(): Snapshot = dao.snapshot()
 
@@ -220,6 +223,8 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         val contents = BackupFile.read(file)
         val now = clock()
         dao.synced(now) { sync ->
+            // The person chose this restore and saw what it removes: one explicit action (Architecture 11 §13.2).
+            sync.explicitDeletes = true
             val phone = dao.restoreSnapshot()
             val undo = BackupFile.write(phone, info, now)
             val plan = RestorePlanner.plan(phone, dao.knownSettingKeys().toSet(), contents.snapshot, mode, now)
@@ -430,7 +435,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         internal const val PEER_FILL_CURSOR = "peer.fill_cursor"
 
         /** Bump with every schema change, and add a migration plus a migration test. */
-        const val SCHEMA_VERSION = 9
+        const val SCHEMA_VERSION = 10
 
         @Throws(Exception::class)
         fun open(path: String): HabitRepository = HabitRepository(configure(databaseBuilder(path)), ::currentTimeMillis)
@@ -448,7 +453,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             builder
                 .setDriver(BundledSQLiteDriver())
                 .setQueryCoroutineContext(databaseDispatcher)
-                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6, Migrations.v6ToV7, Migrations.v7ToV8, Migrations.v8ToV9)
+                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6, Migrations.v6ToV7, Migrations.v7ToV8, Migrations.v8ToV9, Migrations.v9ToV10)
                 .addCallback(Durability)
                 .build()
     }

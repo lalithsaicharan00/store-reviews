@@ -1,0 +1,2 @@
+# Preserve exported vector bytes so manifest checksums survive Windows checkouts.
+Assets/**/*.svg -text

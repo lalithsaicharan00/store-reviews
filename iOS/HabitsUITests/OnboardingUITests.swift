@@ -251,71 +251,29 @@ final class OnboardingUITests: XCTestCase {
         shot("02-after-idea")
     }
 
-    /// I've used it before: every way back on one page, each opening its own; the transfer code typed key by key, as
-    /// a person types it; the loading page's words; and Start without restoring.
+    /// I've used it before, with iCloud off here: iCloud says how to turn it on, Restore a backup opens its page, and
+    /// Start without restoring opens an empty Today (Architecture 11 §13.1). No sign-in and no code (§17).
     func testReturningWaysBack() {
         launch()
         XCTAssertTrue(page("onboarding-page-welcome").waitForExistence(timeout: 10))
         tap("onboarding-returning")
         XCTAssertTrue(page("onboarding-page-returning").waitForExistence(timeout: 5))
         XCTAssertTrue(text(containing: "Get your habits, tasks and history back.").exists)
-        XCTAssertFalse(app.descendants(matching: .any)["onboarding-found"].exists, "Nothing on this iPhone, nothing signed in")
-        for id in ["onboarding-way-sign-in", "onboarding-way-restore", "onboarding-way-transfer", "onboarding-start-fresh"] {
+        XCTAssertFalse(app.descendants(matching: .any)["onboarding-found"].exists, "Nothing on this iPhone")
+        XCTAssertTrue(app.buttons["onboarding-icloud-settings"].waitForExistence(timeout: 10), "iCloud off: how to turn it on")
+        for id in ["onboarding-way-restore", "onboarding-start-fresh"] {
             XCTAssertTrue(app.buttons[id].exists, id)
+        }
+        for gone in ["onboarding-way-sign-in", "onboarding-way-transfer"] {
+            XCTAssertFalse(app.buttons[gone].exists, gone)
         }
         shot("R01-welcome-back")
 
-        // Sign back in: Apple and Google, and Restore a backup instead.
-        tap("onboarding-way-sign-in")
-        XCTAssertTrue(page("onboarding-page-sign-in").waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["onboarding-google"].exists)
-        XCTAssertTrue(app.buttons["onboarding-apple"].exists)
-        shot("R02-sign-back-in")
-        tap("onboarding-restore-instead")
+        tap("onboarding-way-restore")
         XCTAssertTrue(page("onboarding-page-restore").waitForExistence(timeout: 5))
-        XCTAssertTrue(text(containing: "Where is your backup stored?").waitForExistence(timeout: 5), "No iCloud backup in a test launch")
+        XCTAssertTrue(text(containing: "Where is your backup stored?").waitForExistence(timeout: 30), "No iCloud backup in a test launch")
         XCTAssertTrue(app.buttons["onboarding-restore-file"].exists)
         shot("R04-restore-a-backup")
-        app.navigationBars.buttons.firstMatch.tap()
-        XCTAssertTrue(page("onboarding-page-sign-in").waitForExistence(timeout: 5))
-        app.navigationBars.buttons.firstMatch.tap()
-        XCTAssertTrue(page("onboarding-page-returning").waitForExistence(timeout: 5))
-
-        // Move from another device: the code, typed key by key, is cleaned as it's typed; Get my data waits for all
-        // eight characters.
-        tap("onboarding-way-transfer")
-        XCTAssertTrue(page("onboarding-page-transfer").waitForExistence(timeout: 5))
-        let field = app.textFields["onboarding-transfer-code"]
-        XCTAssertTrue(field.waitForExistence(timeout: 5))
-        if !app.keyboards.firstMatch.waitForExistence(timeout: 3) { field.tap() }
-        let get = app.buttons["onboarding-get-data"]
-        XCTAssertFalse(get.isEnabled, "Nothing to get without a code")
-        var typed = ""
-        for key in "k7pq-49x" {
-            field.typeText(String(key))
-            if key != "-" { typed.append(Character(String(key).uppercased())) }
-            // The field puts the cleaned code back on the next turn (U6): compare what it holds once cleaned.
-            let shown = ((field.value as? String) ?? "").uppercased().filter { $0 != "-" }
-            XCTAssertEqual(shown, typed, "After \(key)")
-        }
-        XCTAssertFalse(get.isEnabled, "Seven characters aren't a code")
-        field.typeText("m")
-        XCTAssertTrue(get.waitForExistence(timeout: 2) && get.isEnabled, "Eight characters are")
-        shot("R07-transfer-code")
-        get.tap()
-        XCTAssertTrue(page("onboarding-page-working").waitForExistence(timeout: 5))
-        XCTAssertEqual(page("onboarding-page-working").label, "Getting your data.")
-        XCTAssertTrue(text(containing: "From your other device.").exists)
-        shot("R08-getting-your-data")
-        // No device is showing this code: the server has nothing for it, and the page says so (through the server
-        // since 10 Oct 2026; a wrong code is told within seconds).
-        // `firstMatch`: the page reads as one element, which carries the text's id as well as the text itself.
-        let failure = app.staticTexts["onboarding-working-failure"].firstMatch
-        XCTAssertTrue(failure.waitForExistence(timeout: 30), "A code nobody showed is refused")
-        XCTAssertTrue(failure.label.hasPrefix("That code doesn't match"), failure.label)
-        shot("R08-code-doesnt-match")
-        tap("onboarding-working-main")
-        XCTAssertTrue(page("onboarding-page-transfer").waitForExistence(timeout: 5), "Enter the code again returns to the code")
         app.navigationBars.buttons.firstMatch.tap()
 
         // Start without restoring: Today, empty.
@@ -324,44 +282,19 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 5))
     }
 
-    /// Move from another device through the server, end to end with the dev server (the user, 10 Oct 2026: "server
-    /// based … like WhatsApp"): the old device seals its habits with its code and hands them to the server; the new one,
-    /// on the welcome, types the code and gets them, without either needing an account or the same network.
-    func testMoveFromAnotherDeviceThroughTheServer() {
-        let code = String((0..<8).map { _ in "0123456789ABCDEFGHJKMNPQRSTVWXYZ".randomElement()! })
-        // The old device: the demo habits; ≡ › Backup & Export › Move to Another Device shows this test's code.
-        launch(onboarding: false, empty: false, extra: ["-transfer-code", code])
-        // Water, in Anytime, is shown at any hour (Stretch's Morning card folds once its hour has passed).
-        XCTAssertTrue(app.buttons["Add 1 glass to Water"].waitForExistence(timeout: 15), "The old device has the demo habits")
-        let menuButton = app.buttons["menu-button"], backupRow = app.buttons["menu-backup"]
-        XCTAssertTrue(menuButton.waitForExistence(timeout: 10))
-        menuButton.tap()
-        XCTAssertTrue(backupRow.waitForExistence(timeout: 5))
-        // The menu has finished opening before its row is tapped (T12).
-        let open = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: backupRow)
-        XCTAssertEqual(XCTWaiter.wait(for: [open], timeout: 5), .completed, "The menu opened")
-        backupRow.tap()
-        XCTAssertTrue(app.buttons["backup-move"].waitForExistence(timeout: 5))
-        app.buttons["backup-move"].tap()
-        XCTAssertTrue(app.staticTexts["Waiting for the other device…"].waitForExistence(timeout: 30), "Handed to the server")
-        shot("M01-old-device-waiting")
-        // Ends without leaving the screen, so the sealed file waits on the server (for at most its hour).
-        app.terminate()
-
-        // The new device: nothing on it, the welcome.
-        launch()
+    /// A reinstall or a new iPhone with habits in iCloud (§13.1): they come back by themselves, the welcome says so,
+    /// and Continue opens Today with them.
+    func testHabitsComeBackFromICloud() {
+        launch(extra: ["-test-cloud", "has-habits"])
         XCTAssertTrue(page("onboarding-page-welcome").waitForExistence(timeout: 10))
         tap("onboarding-returning")
-        tap("onboarding-way-transfer")
-        let field = app.textFields["onboarding-transfer-code"]
-        XCTAssertTrue(field.waitForExistence(timeout: 5))
-        if !app.keyboards.firstMatch.waitForExistence(timeout: 3) { field.tap() }
-        field.typeText(code)
-        tap("onboarding-get-data")
-        let failure = app.staticTexts["onboarding-working-failure"].firstMatch
-        XCTAssertTrue(app.buttons["Add 1 glass to Water"].waitForExistence(timeout: 45),
-                      "The habits arrived: \(failure.exists ? failure.label : "no failure shown")")
-        shot("M02-new-device-today")
+        let found = app.descendants(matching: .any)["onboarding-found"]
+        XCTAssertTrue(found.waitForExistence(timeout: 20), "the habits came from iCloud")
+        XCTAssertTrue(found.label.contains("Your habits are here from iCloud."), found.label)
+        XCTAssertTrue(found.label.contains("2 habits"), found.label)
+        shot("R01C-from-icloud")
+        tap("onboarding-found-continue")
+        XCTAssertTrue(app.staticTexts["Read from iCloud"].waitForExistence(timeout: 10), "Today has them")
     }
 
     /// Data already on this iPhone (here, the demo habits): Welcome back offers it first; Continue says it's setting

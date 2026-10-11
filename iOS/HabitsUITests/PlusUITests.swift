@@ -252,9 +252,10 @@ final class PlusUITests: XCTestCase {
     }
 
     /// Screen 16: a second device on the free plan. Plus first with See Plus (the Plus page), the free move last with the
-    /// only filled button; ✕ changes nothing.
+    /// only filled button; ✕ changes nothing. Since 10 Oct 2026 the free plan's one syncing device is iCloud's (Current
+    /// Work 81): an iPad in the test launch's own fake iCloud is the one syncing (`-test-cloud free-other`).
     func testSecondDeviceSheetOpensThePlusPage() {
-        let app = launch(["-test-ask-replace", "iPhone"])
+        let app = launch(["-test-cloud", "free-other"])
         let title = app.staticTexts["use-here-title"]
         XCTAssertTrue(title.waitForExistence(timeout: 15), labels(app))
         XCTAssertTrue(title.label.hasPrefix("Use your habits on this "), title.label)

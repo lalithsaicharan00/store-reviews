@@ -91,7 +91,7 @@ final class TodayUITests: XCTestCase {
 
         menu.tap()
         let rows = ["today", "progress", "habits", "tasks", "timesOfDay", "dayAndWeek", "reminders", "appearance",
-                    "account", "backup", "privacy", "plus", "help", "about"]
+                    "backup", "privacy", "plus", "help", "about"]
         for row in rows {
             // The last rows can sit below a small screen's edge: scroll the menu (not Today) to reach them.
             if !app.buttons["menu-" + row].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
@@ -122,7 +122,7 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today")
 
         // The other wired pages, Progress among them.
-        for (row, title) in [("tasks", "Tasks"), ("timesOfDay", "Times of Day"), ("account", "Account"), ("plus", "Plus"), ("progress", "Progress")] {
+        for (row, title) in [("tasks", "Tasks"), ("timesOfDay", "Times of Day"), ("backup", "iCloud & Backup"), ("plus", "Plus"), ("progress", "Progress")] {
             openFromMenu(row, title: title)
             shot("m03-" + row)
             back()

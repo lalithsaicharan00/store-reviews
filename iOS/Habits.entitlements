@@ -7,12 +7,12 @@
 	<array>
 		<string>group.com.oftenenough.app</string>
 	</array>
-	<!-- Sign in with Apple (Backup, Sync and Accounts; BackupFeatures.appleSignIn). -->
-	<key>com.apple.developer.applesignin</key>
-	<array>
-		<string>Default</string>
-	</array>
-	<!-- The backup copy in the person's own iCloud Drive, in the app's private container (BackupFeatures.iCloudBackup). -->
+	<!-- iCloud's silent pushes, which CKSyncEngine listens for (Architecture 11 §4, §18). "development" for Xcode builds;
+	     an App Store build gets "production" from its provisioning profile. -->
+	<key>aps-environment</key>
+	<string>development</string>
+	<!-- The person's own iCloud, in the app's private container: sync with CloudKit (Architecture 11) and the dated
+	     backup files in iCloud Drive (BackupFeatures.iCloudBackup). -->
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>iCloud.com.oftenenough.app</string>
@@ -20,6 +20,7 @@
 	<key>com.apple.developer.icloud-services</key>
 	<array>
 		<string>CloudDocuments</string>
+		<string>CloudKit</string>
 	</array>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>

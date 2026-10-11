@@ -132,7 +132,7 @@ extension HabitStore {
             let moment = max(now, dayBounds(day).lowerBound)
             var item = widgetItem(habit, on: day, now: moment, isToday: offset == 0, signature: signature, showStreaks: showStreaks)
             item.heat = heat
-            // LOCKED (widget taps, 8 Oct 2026): the "after" cards, a ✓ flipped and a + five taps ahead (W3). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // LOCKED (widget taps, 8 Oct 2026): the "after" cards, a ✓ flipped and a + five taps ahead (W3). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
             // Today's ✓ or +: the card as it will be after one tap, drawn by the widget the moment it's touched, so the
             // whole card changes at once while the app saves behind (the user, 8 Oct 2026, Current Work 66).
             if offset == 0, item.state == nil, item.action == .check || item.action == .add {
@@ -572,7 +572,7 @@ enum PartSectionDone {
     func schedule(_ store: HabitStore) {
         scheduled?.cancel()
         scheduled = Task {
-            // LOCKED (widget taps, 8 Oct 2026): 0.5 s after the last change; at once on leaving the app (W11). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // LOCKED (widget taps, 8 Oct 2026): 0.5 s after the last change; at once on leaving the app (W11). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
             // Half a second after the last change, so a run of taps pays for one publication, after the taps. Not
             // the 2 s of 2 Oct: a person who logged and went straight back to the Home Screen saw the old widget,
             // because the update came after the app had left the screen and iOS held it back (the user, 8 Oct 2026).

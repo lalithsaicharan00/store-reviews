@@ -64,7 +64,7 @@ nonisolated enum PhoneWidgetTimeline {
     /// So a timeline holds only the next few hours and the next day's start; WidgetKit asks again after that (well
     /// within its 40–70 reloads a day), and the snapshot's seven days still carry the widget through days without the
     /// app. Apple: entries at least about 5 minutes apart.
-    // LOCKED (widget taps, 8 Oct 2026): 3 hours and the next day's start; entries at least 5 minutes apart (W10). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    // LOCKED (widget taps, 8 Oct 2026): 3 hours and the next day's start; entries at least 5 minutes apart (W10). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
     static let horizon: TimeInterval = 3 * 3600
 
     /// One entry for now, then each moment a drawn value changes before `horizon`: the moment held rows settle (U4), a
@@ -474,7 +474,7 @@ struct WidgetRoundToggleStyle: ToggleStyle {
 }
 
 /// ▶ and ⏸ as a switch: on is running.
-// LOCKED (widget taps, 8 Oct 2026): ▶/⏸ is a switch; the timer runs on the widget (W7). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+// LOCKED (widget taps, 8 Oct 2026): ▶/⏸ is a switch; the timer runs on the widget (W7). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
 struct WidgetTimerToggleStyle: ToggleStyle {
     let item: WidgetItem
     let size: CGFloat
@@ -536,7 +536,7 @@ struct WidgetRoundFace: View {
         case .open:
             if item.state == nil, item.route?.hasPrefix("oftenenough://timer/") == true {
                 Image(systemName: item.timerClock == nil ? "play.fill" : "pause.fill").font(.system(size: glyphSize - 2, weight: .semibold))
-            // LOCKED (widget taps, 8 Oct 2026): a number to type shows a plain +; ↗ only for steps and quit (W8). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // LOCKED (widget taps, 8 Oct 2026): a number to type shows a plain +; ↗ only for steps and quit (W8). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
             } else if item.state == nil, item.route?.hasPrefix("oftenenough://log/") == true {
                 // A number typed in the app: a plain +, as on Today's row (the user, 8 Oct 2026). The arrow stays for
                 // what opens a screen of its own (a checklist's steps, a quit habit's slip).
@@ -551,7 +551,7 @@ struct WidgetRoundFace: View {
 
 // MARK: - The whole card at once (Current Work 66)
 
-// LOCKED (widget taps, 8 Oct 2026): the card switch, its touch area, the header count and VoiceOver (W2, W6, W12, W13, W16). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+// LOCKED (widget taps, 8 Oct 2026): the card switch, its touch area, the header count and VoiceOver (W2, W6, W12, W13, W16). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
 
 /// Where a card's switch takes the touch: only its round button. The rest of the card keeps its own link.
 nonisolated enum WidgetButtonRegion: Sendable {

@@ -76,7 +76,7 @@ enum ReminderLiveTest {
             lines.append("\(habit.name): pending \(fires), delivered \(shown), alarms \(alarmTimes), logged today \(logs)")
         }
         if tests.isEmpty { lines.append("no test habits") }
-        if let sync = AppModel.shared.sync, let s = await sync.status() { lines.append("sync: waiting \(s.waiting), kept aside \(s.keptAside)") }
+        if let cloud = AppModel.shared.cloud { lines.append("iCloud: waiting \(cloud.waiting), kept aside \(cloud.keptAside)") }
         return lines
     }
 

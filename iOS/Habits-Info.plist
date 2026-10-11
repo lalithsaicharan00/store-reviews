@@ -11,6 +11,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<!-- Google sign-in returns to the app on its iOS client ID, reversed (Architecture/Backlog.md, 1 Oct 2026); widgets on
 	     oftenenough://. One CFBundleURLTypes key only: a second one would silently replace the first. -->
