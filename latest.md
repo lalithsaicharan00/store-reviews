@@ -1,70 +1,57 @@
-# claude/pensive-gates-3n4ie8-ci12 @ e67883a
+# claude/pensive-gates-3n4ie8-ci4 @ e67883a
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38177733182 · 2026-10-11 22:13 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38172270422 · 2026-10-11 22:15 UTC
 Commit: Merge main (the Apple Watch app, Google Drive sync in the core, docs) into the iPad build
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (none): skipped
-- Speed tests: success
+- UI tests (OnboardingUITests,HabitPageUITests,ArrangeUITests,FocusPlayerUITests,RemindersUITests,TasksUITests): cancelled
+- Speed tests: skipped
 - Speed tests through XCTest: skipped
+
+## UI tests
+```
+	 Executed 15 tests, with 0 failures (0 unexpected) in 431.146 (431.160) seconds
+	 Executed 5 tests, with 1 failure (0 unexpected) in 287.723 (287.754) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/ArrangeUITests.swift:117: error: -[HabitsUITests.ArrangeUITests testAddTimeOfDay] : XCTAssertTrue failed - The new one in Your day
+Test Case '-[HabitsUITests.ArrangeUITests testAddTimeOfDay]' failed (55.142 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testArrangeChecks]' passed (72.103 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testEditArrangesTheDay]' passed (90.536 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testGroupRowBeforeAnyGroup]' passed (35.895 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testHideCompleted]' passed (34.047 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testBottomRowStaysPutAndOptionsShowEverything]' passed (41.207 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testChecklistPreservesPriorStepsAndQueueCanRevisit]' passed (31.520 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testCompactProgressAcrossPeriodsAndTypes]' passed (57.637 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testCountCheckAndUndoStayOnTheCurrentHabit]' passed (20.131 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testFastNavigationNeverSlidesBack]' passed (35.467 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testLargeTextKeepsActionsAndChecklistReachable]' passed (17.133 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testLimitIsNotInTheRoutineAndWaitsUnderQuitOrCutDown]' passed (23.465 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testManualTimePausesAndTheClockAlwaysShows]' passed (33.002 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testNavigationDoesNotWaitForSlowTimerWrites]' passed (18.598 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testOnlyALimitShowsUnderQuitOrCutDownWithoutStart]' passed (11.396 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testSavedFocusProgressSurvivesTermination]' passed (26.599 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testSwipeMovesOneHabitAtATime]' passed (16.372 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerDayBoundaryAndExactUndoPersistence]' passed (7.425 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerGoalDoesNotAutoAdvanceAndManualLogIsReachable]' passed (47.566 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerPauseBackgroundAndSkipPreserveTime]' passed (43.629 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testHistoryFlows]' passed (49.083 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testMilestonesNoneOneMany]' passed (110.368 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testNotesFlows]' passed (46.983 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testNotesFoldByMonthLikeHistory]' passed (43.759 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testNoteViewEditAndDelete]' passed (62.930 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testOverallRecordBoxes]' passed (25.675 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testPeriodCardSpacing]' passed (192.862 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testPicturesDailyTypes]' passed (288.078 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testPicturesDark]' passed (121.974 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testPicturesPeriodLimitQuit]' passed (242.134 seconds).
+```
 
 ## Release build
 ```
 ** BUILD SUCCEEDED **
 ```
-
-## Speed (the app drives itself, no XCTest attached; compare runs, not absolute numbers)
-
-| What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms | Main thread busy | Most time in the app's own code |
-|---|---|---|---|---|---|
-| Day sheet: entry list scrolling | 0.0 | 0 ms | 0 | 12.2 % (separate profile) | 1.7%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.7%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.4%  partial apply for closure #1 in static PerfDriver.startIfAsked(store:)<br>1.4%  closure #1 in static PerfDriver.startIfAsked(store:) |
-| All logs: scrolling | 0.0 | 0 ms | 0 | 12.2 % (separate profile) | 1.7%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.7%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.4%  partial apply for closure #1 in static PerfDriver.startIfAsked(store:)<br>1.4%  closure #1 in static PerfDriver.startIfAsked(store:) |
-| Entry editor: typing | 32.9 | 390 ms | 1 | 12.2 % (separate profile) | 1.7%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.7%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.4%  partial apply for closure #1 in static PerfDriver.startIfAsked(store:)<br>1.4%  closure #1 in static PerfDriver.startIfAsked(store:) |
-| Day sheet: add, edit and exact undo | 332.2 | 255 ms | 8 | 12.2 % (separate profile) | 1.7%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.7%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.4%  partial apply for closure #1 in static PerfDriver.startIfAsked(store:)<br>1.4%  closure #1 in static PerfDriver.startIfAsked(store:) |
-| Today: scrolling | 22.8 | 128 ms | 2 | 3.7 % (separate profile) | 1.0%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.0%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.0%  partial apply for closure #1 in AppModel.ensureLoaded()<br>1.0%  closure #1 in AppModel.ensureLoaded() |
-
-Timing runs have no profiler attached. Main-thread busy and function names come from separate profiling launches. Command delivery does not invalidate covered screens (30 Sep 2026).
-
-Opening a screen (longest stall in the 1.5 s after the command; under 100 ms feels instant):
-
-- All Habits: longest stall 904 ms
-- Habit page: longest stall 14298 ms
-- Day sheet (first): longest stall 0 ms
-- Day sheet (again): longest stall 276 ms
-- All logs: longest stall 183 ms
-- Day sheet (for a log): longest stall 346 ms
-- Entry editor: longest stall 188 ms
-- Edit log (keyboard): longest stall 2642 ms
-- Save entry: longest stall 335 ms
-
-Timed work on the main thread (MainThreadMeter.time; the slowest first within each scenario):
-
-| Scenario | What | Times | Total | Longest |
-|---|---|---|---|---|
-| day-sheet | Store load: read the database | 2 | 1013 ms | 741.4 ms |
-| day-sheet | Habit page: history | 136 | 964 ms | 34.4 ms |
-| day-sheet | Widgets: one habit's week | 18 | 506 ms | 196.4 ms |
-| day-sheet | Store load: into the app (5592 logs) | 1 | 62 ms | 61.5 ms |
-| day-sheet | Change: Siri's habit names | 135 | 13 ms | 0.6 ms |
-| day-sheet | Widgets: the snapshot | 2 | 6 ms | 3.2 ms |
-| day-sheet | Store load: into the app (0 logs) | 1 | 3 ms | 3.0 ms |
-| day-sheet | Reminders: plan every alert | 7 | 1 ms | 0.8 ms |
-| day-sheet | Count: Today's list drawn | 9 | 1 ms | 0.9 ms |
-| day-sheet | Count: the Day sheet drawn | 155 | 1 ms | 0.5 ms |
-| day-sheet | Entry editor: whole editor drawn | 185 | 1 ms | 0.6 ms |
-| day-sheet | Count: the Day sheet's activity drawn | 200 | 0 ms | 0.0 ms |
-| day-sheet | Count: a Today row drawn | 174 | 0 ms | 0.0 ms |
-| scroll-today | Store load: read the database | 2 | 782 ms | 715.5 ms |
-| scroll-today | Widgets: one habit's week | 17 | 110 ms | 63.8 ms |
-| scroll-today | Store load: into the app (5592 logs) | 1 | 66 ms | 66.1 ms |
-| scroll-today | Widgets: the snapshot | 1 | 1 ms | 1.2 ms |
-| scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
-| scroll-today | Reminders: plan every alert | 1 | 0 ms | 0.1 ms |
-| scroll-today | Count: Today's list drawn | 10 | 0 ms | 0.0 ms |
-| scroll-today | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
 
 ## Native analytics checks
 ```
