@@ -1,43 +1,37 @@
-# claude/pensive-gates-3n4ie8-ci2 @ fee7a39
+# claude/pensive-gates-3n4ie8-ci8 @ fc7ec60
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38149917285 · 2026-10-11 16:07 UTC
-Commit: Current Work 86: as List / as Columns are buttons that fire from the menu bar; a page beside the sidebar is modal to VoiceOver
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38138209575 · 2026-10-11 16:09 UTC
+Commit: Current Work 86: the calendar popover keeps one height as the month changes
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (IPadUITests,WidgetUITests/testExtraLargeTodayOnTheIPad,IPadWidgetSystemUITests): failure
+- UI tests (WeekCardsUITests,LongTextUITests): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 15 tests, with 3 failures (0 unexpected) in 713.536 (713.569) seconds
-	 Executed 17 tests, with 5 failures (0 unexpected) in 1104.626 (1104.673) seconds
-	 Executed 17 tests, with 5 failures (0 unexpected) in 1104.626 (1104.685) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:137: error: -[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl] : XCTAssertLessThanOrEqual failed: ("740.0") is greater than ("720.0") - The column is ≈ 700 pt: header 400,413 526×20, cell 380,386 740×74
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:334: error: -[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar] : Failed to not hittable: Button, {{400.0, 584.5}, {631.0, 37.5}}, label: 'Morning, Starts 6 AM, All done'
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:73: error: -[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands] : XCTAssertTrue failed - ⌘2 shows Columns: Often Enough | pad-sidebar | sidebar-hide | Hide Sidebar | menu-today | Today, 9 left | sun.max | Brightness Higher | Today | sidebar-today-left | 9 left | menu-progress | Progress | chart.bar.xaxis | menu-habits | Habits, 17 | checklist | Habits | 17 | menu-tasks | Tasks, 0 | list.bullet | List | Tasks | 0 | menu-timesOfDay | Times of Day | rectangle.split.3x1 | Column View | menu-dayAndWeek | Day and Week | calendar | Calendar | menu-reminders | Reminders | bell | Notifications | menu-appearance | Appearance | circle.lefthalf.filled | menu-backup | iCloud & Backup | icloud | Icloud | menu-privacy | Privacy & Security | hand.raised | Block | menu-plus | Plus | plus.circle | Add | Vertical scroll bar, 2 pages | _TtGC7SwiftUI32NavigationStackHosting | chevron.left | Previous day | Today, 6 of 15 done. Open calendar | chevron.down | Go Down | 6/15
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadWidgetSystemUITests.swift:61: error: -[HabitsUITests.IPadWidgetSystemUITests testExtraLargeTodayOnTheHomeScreen] : Failed to get list of active applications: Accessibility error kAXErrorIPCTimeout from AXUIElementCopyMultipleAttributeValues for 1102
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WidgetUITests.swift:179: error: -[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad] : Failed to get list of active applications: Accessibility error kAXErrorIPCTimeout from AXUIElementCopyMultipleAttributeValues for 1102
-Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' passed (106.697 seconds).
-Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (22.975 seconds).
-Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' failed (65.184 seconds).
-Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (39.222 seconds).
-Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (32.028 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' passed (26.991 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (83.247 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (16.390 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (31.941 seconds).
-Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (35.465 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (30.063 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' failed (95.016 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (36.794 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' failed (77.733 seconds).
-Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (13.788 seconds).
-Test Case '-[HabitsUITests.IPadWidgetSystemUITests testExtraLargeTodayOnTheHomeScreen]' failed (330.350 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad]' failed (60.740 seconds).
+	 Executed 10 tests, with 0 failures (0 unexpected) in 477.478 (477.484) seconds
+	 Executed 13 tests, with 2 failures (0 unexpected) in 556.301 (556.313) seconds
+	 Executed 13 tests, with 2 failures (0 unexpected) in 556.301 (556.315) seconds
+	 Executed 3 tests, with 2 failures (0 unexpected) in 78.823 (78.827) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/LongTextUITests.swift:125: error: -[HabitsUITests.LongTextUITests testFormWithLongText] : Failed to tap Button (First Match): No matches found for first query match sequence: `Descendants matching type Button` -> `Elements matching predicate 'label BEGINSWITH "Build or maintain"'`, given input App element pid: 34797
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/LongTextUITests.swift:68: error: -[HabitsUITests.LongTextUITests testTodayWithLongText] : XCTAssertTrue failed
+Test Case '-[HabitsUITests.LongTextUITests testChooserShowsEverything]' passed (49.823 seconds).
+Test Case '-[HabitsUITests.LongTextUITests testFormWithLongText]' failed (13.716 seconds).
+Test Case '-[HabitsUITests.LongTextUITests testTodayWithLongText]' failed (15.284 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testHabitPageDark]' passed (48.592 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testMonthCards]' passed (39.440 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testMonthCardsDark]' passed (27.065 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testSquaresKeyFoldedOnceIsFoldedEverywhere]' passed (47.463 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsDark]' passed (63.365 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsLight]' passed (72.368 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsWithGroups]' passed (20.666 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testYearCards]' passed (67.433 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testYearCardsDark]' passed (33.759 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testYearScrollAndHabitPage]' passed (57.327 seconds).
 ```
 
 ## Release build
