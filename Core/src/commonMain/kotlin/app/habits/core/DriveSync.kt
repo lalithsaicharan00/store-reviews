@@ -207,6 +207,7 @@ class DriveSync(
                 null
             }
             if (contents != null && contents.chain == current.chain) return merge(current.chain, contents.rows, round)
+            // Damaged: what it added is still with the device that saved it (not confirmed there), and comes again.
             at = predecessor(listing, current)
         }
         return true
@@ -227,6 +228,8 @@ class DriveSync(
             return false
         }
         round.deleted += merged.deleted
+        val held = store.state(ROWS_MERGED + chain)?.toLongOrNull() ?: 0
+        if (rows.size > held) store.setState(ROWS_MERGED + chain, rows.size.toString())
         if (merged.unreadable > 0) {
             block(chain, "records")
             round.blocked = true
@@ -279,9 +282,10 @@ class DriveSync(
             }
             val built = store.build(chain)
             val moved = store.state(MOVED + chain)?.toLongOrNull() ?: 0
-            if (after != null && built.rows.size < after.rows - moved) {
-                // Never shrink (D4): a version never holds fewer records than the one before it (deletes are kept as
-                // deletes). This device's data is missing something it merged: save nothing, keep the larger.
+            val merged = store.state(ROWS_MERGED + chain)?.toLongOrNull() ?: 0
+            if (built.rows.size < merged - moved) {
+                // Never shrink (D4): a version never holds fewer records than the largest one this device merged into
+                // this file (deletes are kept as deletes). Its data is missing something: save nothing, keep the larger.
                 round.problem = "shrink:$chain"
                 return true
             }
@@ -317,6 +321,7 @@ class DriveSync(
                 return true
             }
             store.confirm(chain, built.upTo)
+            store.setState(ROWS_MERGED + chain, built.rows.size.toString())
             store.setState(DIRTY + chain, null)
             store.setState(MOVED + chain, null)
             store.setState(LAST_SENT, clock().toString())
@@ -558,6 +563,8 @@ class DriveSync(
         private const val DIRTY = "dirty."
         private const val MOVED = "moved."
         private const val BLOCKED = "blocked."
+        /** The most records this device has merged from, or saved to, each file: the never-shrink guard's measure. */
+        private const val ROWS_MERGED = "rows."
         private const val IDS = "ids"
         private const val IDS_AT = "idsAt"
         private const val DEVICE_FILE = "deviceFile"
