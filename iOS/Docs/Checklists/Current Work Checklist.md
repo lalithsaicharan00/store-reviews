@@ -40,6 +40,28 @@ work. Preserve those distinctions when recording findings. New feedback items 23
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
 
+- [ ] **83. Widgets faster, widget and App Lock issues fixed, and the widget lock opened for speed work** (added 11
+  October 2026, from the user, during item 81: "work on widgets as well, improve performance, but preserve overall
+  like switch based widgets, and syncing and all of that, because data should be handled robustly and should never be
+  lost; and fix widgets related issues and app lock related issues as well; once these are complete mark them as
+  complete in the checklist; and also update the locked documentation of widgets so that for performance and
+  improvement agents can work on it, but [keep] the near-instant switch-based widget UI updating, and they give top
+  data robustness and syncing reliability, so no matter what, data is never lost").
+  - [ ] **Widget speed:** "Widgets: one habit's week" took up to 831 ms on the main thread with 20,000 extra logs (item
+    81's speed run; 50–120 ms with a year's demo history). Make it fast without changing what a widget shows, how a
+    tap shows (the switch, W1–W3) or how it's saved and synced (W4, W5, W18).
+  - [ ] **Widget issues:** items 64, 65 and 66 have only their tests on GitHub left (`WidgetUITests`,
+    `WidgetSystemUITests`, `TodayUITests`, `TodayRowLayoutUITests`, `RoutineCalendarUITests`, `TimerUITests`): run
+    them, fix what fails.
+  - [ ] **App Lock issues:** item 58.13 has its tests on GitHub left (`AppLockUITests`, `SmallScreenUITests` on the SE);
+    `SmallScreenUITests.testPrivacyCodeSheetsAndReminderSaysFit` fails on `main` too (run `38085507312`): find why and
+    fix it.
+  - [ ] **The widget lock opened for speed work** (the user's say-so): update
+    [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>), Rulebook U28 and the code's
+    `LOCKED` notes: agents may improve widget performance and fix bugs, as long as the switch-based instant update, the
+    hand-over saving, idempotent taps, the waiting-taps safety net and syncing without opening the app all stay exactly
+    as they are, checked the same way. W18 also names the server sync (`SyncService`), now iCloud (`CloudSync`).
+
 ### The cloud session's list (the user, 8 Oct 2026)
 
 Written by Claude (Claude Code), 8 October 2026, from the user's request. Branch `claude/exciting-mccarthy-g6vlu5`
