@@ -640,6 +640,10 @@ jobs:
             if [ -f iOS/watch-shots.log ]; then
               echo; echo "## Screenshots"; echo '```'
               grep -iE "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-shots.log | sed -E 's/^.*Test [Cc]ase/Test case/' | sort -u | head -60
+              if [ -d iOS/Shots-both.xcresult ]; then
+                echo; echo "Failures:"
+                xcrun xcresulttool get test-results tests --path iOS/Shots-both.xcresult 2>/dev/null | python3 iOS/Tools/ci/xcresult_failures.py | sort -u | head -60
+              fi
               ls iOS/shots | head -200
               echo '```'
             fi
