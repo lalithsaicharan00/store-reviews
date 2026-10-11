@@ -212,9 +212,12 @@ struct QuitRunText: View {
     @State private var now = Date.now
 
     var body: some View {
-        // `now` only moves the text each minute; the run is counted to the store's clock (D7), never to an earlier
-        // moment than a slip just recorded.
-        Text(RunWords.short(store.quitRuns(of: habit, now: max(now, store.clock())).current))
+        // `now` only moves the text each minute; the run is counted to the store's clock alone (D7), read as the text is
+        // drawn, so never to a moment before a slip just recorded. Not the later of the two: a test launch's clock
+        // (`-clock-hour 10`) runs behind the real time after 10:30, and a slip just made read "0 h 2 min" (T11, run
+        // 38129622827).
+        let _ = now
+        Text(RunWords.short(store.quitRuns(of: habit, now: store.clock()).current))
             .task(id: now) {
                 let wait = 60 - now.timeIntervalSince1970.truncatingRemainder(dividingBy: 60)
                 try? await Task.sleep(for: .seconds(wait))
