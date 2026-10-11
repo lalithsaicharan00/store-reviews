@@ -61,7 +61,7 @@ struct TodayPlan {
         for card in store.todayCards {
             if card == .quittingCard {
                 let rows = restraint.filter { !store.isPaused($0, on: today) }.map { Row(habit: $0, placement: nil) }
-                if !rows.isEmpty { sections.append(Section(id: Section.quitting, title: "Quitting", isNow: false, rows: rows, left: nil)) }
+                if !rows.isEmpty { sections.append(Section(id: Section.quitting, title: store.widgetCardName(.quittingCard), isNow: false, rows: rows, left: nil)) }
                 continue
             }
             guard let rows = bySection[card], !rows.isEmpty else { continue }

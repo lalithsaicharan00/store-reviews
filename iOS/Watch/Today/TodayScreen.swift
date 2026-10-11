@@ -92,8 +92,12 @@ struct TodayList: View {
             if store.problem != nil {
                 SaveProblemBanner()
             }
-            DayBarView(done: plan.done, total: plan.total)
-                .listRowBackground(Color.clear)
+            // Only when something counts toward it: a day of limits and quits alone has no bar (H1), never
+            // "Nothing planned" above habits.
+            if plan.total > 0 {
+                DayBarView(done: plan.done, total: plan.total)
+                    .listRowBackground(Color.clear)
+            }
             ForEach(plan.sections) { section in
                 Section {
                     ForEach(ordered[section.id] ?? section.rows) { row in

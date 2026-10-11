@@ -106,6 +106,9 @@ final class WatchNotifications: NSObject, @preconcurrency UNUserNotificationCent
         var started = UserDefaults.standard.dictionary(forKey: startedHereKey) as? [String: Double] ?? [:]
         started[habit.uuidString] = start.timeIntervalSince1970
         UserDefaults.standard.set(started, forKey: startedHereKey)
+        // A test launch never asks: the system's question stays on the screen over every later launch (the screenshot
+        // review's Plus and watch-face pictures were taken under it, run 38097123253).
+        guard !WatchModel.testLaunch else { return }
         Task { _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
     }
 }

@@ -163,8 +163,10 @@ struct HabitFace: View {
                         Text(entry.discreet ? "Habit" : item.name).font(.headline).lineLimit(1)
                         Text(item.value).font(.footnote).lineLimit(1)
                     }
-                    Spacer()
+                    Spacer(minLength: 4)
+                    // Its own small circle: the button's background otherwise takes half the width and cuts the line.
                     FaceButton(item: item, day: entry.frame?.day ?? "")
+                        .frame(width: 44, height: 44)
                 }
             }
         } else {
@@ -175,10 +177,17 @@ struct HabitFace: View {
     @ViewBuilder
     private func circle(_ item: WidgetItem) -> some View {
         if item.type == "quit", let start = item.quitStart {
-            // A quit habit's current run (E1: "15d").
+            // A quit habit's current run (E1: "15 d"), in the app's words (RunWords), counted to this entry's date;
+            // under a day the system's own clock keeps it moving between entries.
+            let days = Int(entry.date.timeIntervalSince(start) / 86_400)
             VStack(spacing: 0) {
                 Image(systemName: item.symbol).font(.caption)
-                Text(start, style: .relative).font(.caption2).lineLimit(1).minimumScaleFactor(0.5)
+                if days >= 1 {
+                    Text("\(days) d").font(.caption.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.5)
+                } else {
+                    Text(timerInterval: start...Date.distantFuture, countsDown: false)
+                        .font(.caption2).monospacedDigit().lineLimit(1).minimumScaleFactor(0.5)
+                }
             }
         } else if let ring = item.ring {
             Gauge(value: min(1, ring)) {

@@ -115,7 +115,10 @@ struct WatchRow: View {
     // MARK: The round button
 
     @ViewBuilder
-    private func button(_ ruled: Habit, done: Bool, running: Bool) -> some View {
+    private func button(_ ruled: Habit, done reached: Bool, running: Bool) -> some View {
+        // A limit's button never takes the completed treatment: staying under a limit isn't an action to reward, and
+        // a filled button would invite the next +1 (U2, U25, H1).
+        let done = reached && !ruled.isQuitOrLimit
         switch ruled.kind {
         case .check where row.placement?.slot == nil && store.countsUp(habit, on: day):
             RoundButton(symbol: "checkmark", done: done, color: habit.color, label: "Add 1 to \(habit.name)") {

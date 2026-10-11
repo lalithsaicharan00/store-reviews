@@ -51,7 +51,7 @@ final class WatchTodayTests: WatchTestCase {
         launch("design")
         // The iPhone's default order: Quitting, Anytime, Morning, Afternoon, Evening (store.todayCards).
         require(app.staticTexts["1 of 7 done"], "the day bar's count (habits, not ticks)")
-        require(app.staticTexts["Quitting"], "Quitting, first as on the iPhone")
+        require(app.staticTexts["Quit or Cut Down"], "Quit or Cut Down, first and named as on the iPhone")
         reveal(app.staticTexts["Water"].firstMatch, "Water, in Anytime")
         reveal(app.buttons["start-morning"], "Morning's ▶")
         requireOnScreen(app.buttons["start-morning"], "Morning's ▶")

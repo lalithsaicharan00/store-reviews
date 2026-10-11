@@ -23,6 +23,22 @@ struct DayDetailsScreen: View {
 
     private var day: LocalDay { store.today() }
 
+    /// The height between the inline title and the bottom bar: about 150 pt on the 46 mm Watch, 125 on the 42 mm.
+    private var firstScreen: CGFloat { max(110, WKInterfaceDevice.current().screenBounds.height - 96) }
+
+    /// After a log here, its named Undo, one tap away (WA7, U14); a check's Undo is the main action itself (B5).
+    @ViewBuilder
+    private func undo(_ habit: Habit, ruled: Habit) -> some View {
+        if let offer = store.undoOffer, offer.habitID == habit.id, offer.day == day, ruled.kind != .check || store.countsUp(habit, on: day) {
+            Button(offer.undoLabel(for: ruled)) { store.undoEntry(offer.id) }
+                .font(.footnote.weight(.semibold))
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .lineLimit(1)
+                .accessibilityIdentifier("undo")
+        }
+    }
+
     @ViewBuilder
     private func page(_ habit: Habit) -> some View {
         let ruled = store.rule(habit, on: day)
@@ -34,7 +50,15 @@ struct DayDetailsScreen: View {
                 if ruled.kind == .checklist {
                     ChecklistSteps(habit: habit, ruled: ruled, day: day, locked: skipped || paused)
                 } else {
-                    DayDial(habit: habit, ruled: ruled, day: day, skipped: skipped, paused: paused, dimmed: wristDown)
+                    // The first screen is the dial and nothing else but its named Undo, centred between the title and
+                    // the bottom bar; today's logs, the streak and Skip today are below, reached with the Crown (B1, B2).
+                    // Rows that started right under the dial showed through the bottom buttons (run 38097123253).
+                    VStack(spacing: 6) {
+                        DayDial(habit: habit, ruled: ruled, day: day, skipped: skipped, paused: paused, dimmed: wristDown)
+                        if !wristDown { undo(habit, ruled: ruled) }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: firstScreen)
                 }
                 if !wristDown {
                     lower(habit, ruled: ruled)
@@ -167,10 +191,9 @@ struct DayDetailsScreen: View {
     private func lower(_ habit: Habit, ruled: Habit) -> some View {
         let logs = store.dayLogs(of: habit, on: day)
         VStack(alignment: .leading, spacing: 8) {
-            if let offer = store.undoOffer, offer.habitID == habit.id, offer.day == day, ruled.kind != .check || store.countsUp(habit, on: day) {
-                Button(offer.undoLabel(for: ruled)) { store.undoEntry(offer.id) }
-                    .buttonStyle(.bordered)
-                    .accessibilityIdentifier("undo")
+            if ruled.kind == .checklist {
+                // A checklist has no dial: its "Undo Last Step" follows the steps.
+                undo(habit, ruled: ruled)
             }
             if showStreaks, habit.kind != .task, habit.kind != .quit {
                 StreakCard(habit: habit, day: day)
@@ -234,9 +257,11 @@ struct DayDial: View {
                         .accessibilityIdentifier("undo-skip")
                 }
             }
-            .padding(14)
+            .padding(10)
         }
-        .frame(width: 132, height: 132)
+        // Up to 132 pt, smaller when the first screen also holds an Undo or the Watch is the 42 mm.
+        .frame(maxWidth: 132, maxHeight: 132)
+        .aspectRatio(1, contentMode: .fit)
         .frame(maxWidth: .infinity)
         .padding(.top, 2)
         .accessibilityElement(children: skipped ? .contain : .ignore)
