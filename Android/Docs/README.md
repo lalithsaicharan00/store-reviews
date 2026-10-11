@@ -54,7 +54,7 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 (2,000 seeded runs of 2–4 devices converge), then on the real Google Drive with the test account:
 
 - **A4, the version chain, holds on the real Drive:** separate processes saving under the same reserved ID at the same
-  moment, IDs reserved by either: exactly one save succeeded and every other was refused with 409, **280 of 280**
+  moment, IDs reserved by either: exactly one save succeeded and every other was refused with 409, **420 of 420**
   (two and six devices). A half-written upload never blocks the chain or overwrites it.
 - Full rounds with three to six devices on the real Drive ended identical every time (offline, simultaneous saves,
   cut-off uploads, a reinstall, the brake). An idle round is one call (~0.25 s).

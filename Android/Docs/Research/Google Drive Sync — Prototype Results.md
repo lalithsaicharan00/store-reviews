@@ -6,7 +6,7 @@ with the test account the user made. Everything below was measured on GitHub's m
 
 ## The verdict: **Go with changes**
 
-**The version chain works on the real Google Drive.** The deciding check (§2) ran 280 times across two runs, with
+**The version chain works on the real Google Drive.** The deciding check (§2) ran 420 times across three runs, with
 separate processes (two "devices", each with its own connection and its own sign-in) creating files under the same
 reserved ID at the same moment: **every time exactly one save succeeded and every other was refused with 409**, IDs
 reserved by either device, with two and with six devices. No ID ever held two files, and no save ever replaced another.
@@ -67,9 +67,11 @@ device A were used by device B and the other way round). Then six processes on t
 | 38162572860 | 6 | 20 | **20 / 20** | 20 | 654 / 2,085 / 2,619 ms |
 | 38163084653 | 2 | 120 | **120 / 120** | 120 | 628 / 1,203 / 3,786 ms |
 | 38163084653 | 6 | 20 | **20 / 20** | 20 | 593 / 1,852 / 2,471 ms |
+| 38165537627 (final code) | 2 | 120 | **120 / 120** (the step fails on any miss) | 120 | — |
+| 38165537627 (final code) | 6 | 20 | **20 / 20** | 20 | 712 / 846 / 1,066 ms |
 
 The winner varied (A won 84 and 69 of 120; with six, five different winners), so these were real races, not one side
-always first. **Drive enforced "only the first save under an ID" every time: 280 of 280.**
+always first. **Drive enforced "only the first save under an ID" every time: 420 of 420.**
 
 ## 3. How Drive itself behaves (run 38163084653, "what I saw")
 
@@ -87,34 +89,47 @@ always first. **Drive enforced "only the first save under an ID" every time: 280
 
 ## 4. Full rounds and numbers
 
-**On the real Drive** (run 38163084653, three devices, then six; every scenario ended with all devices identical):
+**On the real Drive** (run 38163084653, repeated on the final code in run 38165537627 with the same results; three
+devices, then six; every scenario ended with all devices identical):
 
 | Scenario | Result |
 |---|---|
 | Phone logs 3; tablet and Mac download | 3 everywhere; first save 3.8 s, first download 3.1 s (includes sign-in) |
 | Phone offline logs 2, tablet logs 1 | Phone said Offline with 2 waiting; then 6 everywhere |
-| All three save at once, 10 times | 29 refusals (409) met and handled; all 36 logs kept |
+| All three save at once, 10 times | 29 and 30 refusals (409) met and handled; all 36 logs kept |
 | Upload cut off before Drive kept it; then after | Still waiting both times; each log saved once (38) |
 | Mac reinstalled | Downloaded everything in 0.7 s, sent nothing before its welcome finished |
 | A log in 2025 and 40 deletes at once | Tablet held its deletes until approved; the phone held them (Held, 40) until applied |
-| Six devices save one file at once | 15 refusals handled; all six logs kept |
-| An idle round | **1 call, 242 ms** |
+| Six devices save one file at once | 15 refusals handled (both runs); all six logs kept |
+| An idle round | **1 call, 242–264 ms** |
 
 **An extreme account** (25,000 logs a year for 15 years = 375,000 logs; 12 habits):
 
-| | Stand-in Drive (run 38162929267) | Real Drive (run 38163084653) |
+| | Stand-in Drive (runs 38162929267, 38164233802) | Real Drive (runs 38163084653, 38165537627) |
 |---|---|---|
 | Each year's file | ~385 KB (deflated); base 1 KB | 399–401 KB each; 16 files |
-| First upload of everything | 6.8 s | 25.9 s |
-| A new device's first download and merge | 15.7 s | 84.6 s |
-| A save after one new log (this year's file only) | 0.4 s, 3 calls | 2.0 s |
-| The other device taking that in | 0.5–0.7 s | 5.8 s |
-| An idle round | 29–38 ms, 1 call | 0.3 s, 1 call |
+| First upload of everything | 6.8–11.3 s | 25.9–27.2 s |
+| A new device's first download and merge | 15.7–27.3 s | 84.4–84.6 s |
+| A save after one new log (this year's file only) | 0.4–0.6 s, 3 calls | 1.9–2.0 s |
+| The other device taking that in | 0.5–0.7 s | 5.6–5.8 s |
+| An idle round | 29–42 ms, 1 call | 0.3 s, 1 call |
 
 A typical person's whole history is a few KB; the round that runs about once a minute is one list call (and once every
 15 minutes the device's own check-in, so two).
 
-**Against the stand-in Drive** (every push to `Core/`): PROPERTY_LINE
+**Against the stand-in Drive** (every push to `Core/`; run 38164233802 on the final code): **2,000 seeded runs**, each
+2–4 devices with clocks up to a day apart and 60 random steps (logs around New Year so two year files, undos, renames,
+colours, settings, the same tap on two devices, a timer stopped on two devices, offline spells, months away, list lag,
+uploads cut off before and after Drive kept them, files stored damaged, rate limits and server errors, the app killed
+mid-call, reinstalls, forgotten "seen" marks, and devices saving at the same moment interleaved call by call): **every
+run converged**, identical to merging every change in any order (a reinstall loses only what that device hadn't sent),
+nothing deleted came back, and every version saved held everything the version before it held, saved only after its
+writer had read that version (354 s). Plus 21 named tests: the user's six examples (two glasses + one = three; rename +
+colour; delete vs offline log; a stale device; the same tap twice; one timer on two devices), the race (60 seeded races,
+9 refusals, all merged), two first versions tidied, a fresh install, a device with data joining, a device far behind
+after tidying, never-shrink, the brake both ways, each error state with backoff, cut-off uploads, a damaged file, a
+newer app's file, device check-ins, logs in their year's file, and the idle round's one call; and 6 protocol tests of
+`GoogleDrive` against scripted answers.
 
 ## 5. What broke, and what changed
 
@@ -158,7 +173,8 @@ A typical person's whole history is a few KB; the round that runs about once a m
 
 ## Runs
 
-- Core tests (stand-in Drive, iPhone and Watch compile): RUN_LIST
+- Core tests (stand-in Drive, iPhone and Watch compile): 38164233802 (final code, all green); earlier 38162271523,
+  38162482141, 38162929267, 38163842038 (the failures in §5).
 - Real Drive: 38162572860 (the deciding check), 38163084653 (all checks: race, rounds, behaviour, extreme account),
-  FINAL_REAL.
+  38165537627 (all checks again, on the final code).
 - iOS job (the core compiled into the iPhone app; sync and iCloud tests): IOS_RUNS.
