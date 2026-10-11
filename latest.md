@@ -1,37 +1,63 @@
-# claude/pensive-gates-3n4ie8-main-se @ bac8a1b
+# codex/store-today-capture @ 737f77b
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38136626357 · 2026-10-11 15:58 UTC
-Commit: Current Work 88: coming back to the iPhone after using the iPad, "Use your habits on this iPhone?" (the user, to do next)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38151781373 · 2026-10-11 16:03 UTC
+Commit: Prepare native Today artwork capture with habits and one task
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (AppLockUITests/testCancellingSetUpAtEachStepChangesNothing,AppLockUITests/testReminderSaysIsSavedWithTheHabit,DayDetailsUITests/testTimeLogAddViewAndEdit,OnboardingUITests/testHelpAndTheWelcomeAgain,PlusUITests/testSecondDeviceSheetOpensThePlusPage): failure
-- Speed tests: skipped
+- UI tests (TodayUITests/testStoreTodayCapture): success
+- Speed tests: success
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 2 tests, with 2 failures (0 unexpected) in 130.724 (130.728) seconds
-	 Executed 5 tests, with 5 failures (0 unexpected) in 249.886 (249.893) seconds
-	 Executed 5 tests, with 5 failures (0 unexpected) in 249.886 (249.895) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/AppLockUITests.swift:297: error: -[HabitsUITests.AppLockUITests testCancellingSetUpAtEachStepChangesNothing] : XCTAssertTrue failed
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/AppLockUITests.swift:906: error: -[HabitsUITests.AppLockUITests testReminderSaysIsSavedWithTheHabit] : Failed to tap "Add" Button: No matches found for Elements matching predicate '"New Habit" IN identifiers' from input {(
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/DayDetailsUITests.swift:364: error: -[HabitsUITests.DayDetailsUITests testTimeLogAddViewAndEdit] : XCTAssertTrue failed - The clock row is Finished at
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/OnboardingUITests.swift:388: error: -[HabitsUITests.OnboardingUITests testHelpAndTheWelcomeAgain] : Failed to tap "menu-about" Button: No matches found for Elements matching predicate '"menu-about" IN identifiers' from input {(
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/PlusUITests.swift:269: error: -[HabitsUITests.PlusUITests testSecondDeviceSheetOpensThePlusPage] : XCTAssertTrue failed - Often Enough | Often Enough | Menu | Edit | Edit | Filter | New Habit | Anytime, 5 left | Anytime | 5 left | Start Anytime routine | Play | Start | Fold Anytime | Water Drop | Drink water | Every day | Mark Drink water done | Bookmark | Read | Every day | Mark Read done | Walk | Walk | Every day | Mark Walk done | brain.head.profile | Meditate | Every day | Mark Meditate done | Medicine | Vitamins | Every day | Mark Vitamins done | Note for the Day | Notes | Note for the Day | Vertical scroll bar, 2 pages | Vertical scroll bar, 2 pages | Toolbar | Previous day | Today, 0 of 5 done. Open calendar | Today, 0 of 5 done. Open calendar | Today | Go Down | 0/5 | Next day | Sheet Grabber | Back | Plus | Plus | One payment, yours forever. | 5 of 5 free habits used | 5 of 5 free habits used | Plus · just you, Unlimited habits, your iPad and Apple Watch, sync through your own iCloud, $24.99 | Selected | Plus · just you | Unlimited habits, your iPad and Apple Watch, sync through your own iCloud | $24.99 | Plus Family · you + 5, Everything in Plus for you and up to 5 people in your Apple family, each with their own habits, $59.99
-Test Case '-[HabitsUITests.AppLockUITests testCancellingSetUpAtEachStepChangesNothing]' failed (87.001 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testReminderSaysIsSavedWithTheHabit]' failed (43.723 seconds).
-Test Case '-[HabitsUITests.DayDetailsUITests testTimeLogAddViewAndEdit]' failed (44.540 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testHelpAndTheWelcomeAgain]' failed (56.656 seconds).
-Test Case '-[HabitsUITests.PlusUITests testSecondDeviceSheetOpensThePlusPage]' failed (17.966 seconds).
+Test Case '-[HabitsUITests.TodayUITests testStoreTodayCapture]' passed (64.249 seconds).
 ```
 
 ## Release build
 ```
 ** BUILD SUCCEEDED **
 ```
+
+## Speed (the app drives itself, no XCTest attached; compare runs, not absolute numbers)
+
+| What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms | Main thread busy | Most time in the app's own code |
+|---|---|---|---|---|---|
+| Today: scrolling | 17.5 | 214 ms | 1 | 6.3 % (separate profile) | 1.0%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.0%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.7%  partial apply for closure #1 in static PerfDriver.startIfAsked(store:)<br>0.7%  closure #1 in static PerfDriver.startIfAsked(store:) |
+| Today: +1 and day ‹ › | 101.1 | 118 ms | 1 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
+| Today: +1 alone | 5.1 | 39 ms | 0 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
+| Today: day ‹ › alone | 107.8 | 135 ms | 2 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
+| Today: Day sheet scrolling | 0.0 | 0 ms | 0 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
+| Timer screen: a running clock | 7.3 | 61 ms | 0 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
+
+Timing runs have no profiler attached. Main-thread busy and function names come from separate profiling launches. Command delivery does not invalidate covered screens (30 Sep 2026).
+
+Opening a screen (longest stall in the 1.5 s after the command; under 100 ms feels instant):
+
+- Today: a row's Day sheet (first): longest stall 840 ms
+- Today: a row's Day sheet (again): longest stall 401 ms
+- Today: the note sheet: longest stall 2594 ms
+- Today: the timer screen: longest stall 1901 ms
+
+Timed work on the main thread (MainThreadMeter.time; the slowest first within each scenario):
+
+| Scenario | What | Times | Total | Longest |
+|---|---|---|---|---|
+| scroll-today | Widgets: one habit's week | 17 | 77 ms | 37.9 ms |
+| scroll-today | Widgets: the snapshot | 1 | 4 ms | 3.8 ms |
+| scroll-today | Reminders: plan every alert | 1 | 0 ms | 0.2 ms |
+| scroll-today | Count: Today's list drawn | 7 | 0 ms | 0.2 ms |
+| scroll-today | Count: a Today row drawn | 12 | 0 ms | 0.0 ms |
+| tap-today | Widgets: one habit's week | 33 | 186 ms | 67.2 ms |
+| tap-today | Widgets: the snapshot | 17 | 32 ms | 6.5 ms |
+| tap-today | Change: Siri's habit names | 58 | 8 ms | 1.9 ms |
+| tap-today | Reminders: plan every alert | 58 | 7 ms | 2.6 ms |
+| tap-today | Count: Today's list drawn | 96 | 0 ms | 0.1 ms |
+| tap-today | Count: a Today row drawn | 630 | 0 ms | 0.0 ms |
+| tap-today | Count: the Day sheet drawn | 11 | 0 ms | 0.0 ms |
+| tap-today | Count: the Day sheet's activity drawn | 11 | 0 ms | 0.0 ms |
 
 ## Native analytics checks
 ```
