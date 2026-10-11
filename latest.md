@@ -1,29 +1,22 @@
-# claude/pensive-gates-3n4ie8-ci6 @ 4144c98
+# apple-watch-ci2 @ f8081ff
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38140558803 · 2026-10-11 13:50 UTC
-Commit: Rulebook U30 and T18: what building the iPad taught (Current Work 86)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38132384471 · 2026-10-11 14:01 UTC
+Commit: Apple Watch: compile BackupFeatures for SHA256Hex, which iCloud's transport uses
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (TestLaunchIsolationUITests,OnboardingBackupScreenshotUITests): failure
+- UI tests (ICloudUITests,WidgetUITests): cancelled
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 5 tests, with 2 failures (0 unexpected) in 318.124 (318.129) seconds
-	 Executed 6 tests, with 2 failures (0 unexpected) in 366.267 (366.274) seconds
-	 Executed 6 tests, with 2 failures (0 unexpected) in 366.267 (366.276) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/OnboardingBackupScreenshotUITests.swift:30: error: -[HabitsUITests.OnboardingBackupScreenshotUITests testA_Welcome] : failed - Skip setup not found
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/OnboardingBackupScreenshotUITests.swift:90: error: -[HabitsUITests.OnboardingBackupScreenshotUITests testA_Welcome] : XCTAssertTrue failed - Back returns to the ideas
-Test Case '-[HabitsUITests.OnboardingBackupScreenshotUITests testA_Welcome]' failed (136.869 seconds).
-Test Case '-[HabitsUITests.OnboardingBackupScreenshotUITests testB_WelcomeBack]' passed (39.262 seconds).
-Test Case '-[HabitsUITests.OnboardingBackupScreenshotUITests testC_WelcomeReplay]' passed (20.894 seconds).
-Test Case '-[HabitsUITests.OnboardingBackupScreenshotUITests testD_ICloudAndBackup]' passed (100.315 seconds).
-Test Case '-[HabitsUITests.OnboardingBackupScreenshotUITests testE_PlusAndPrivacy]' passed (20.785 seconds).
-Test Case '-[HabitsUITests.TestLaunchIsolationUITests testATestLaunchLeavesThePersonsWidgetsAndSettings]' passed (48.142 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testADifferentAppleAccountAsksFirst]' passed (51.473 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testRemovedFromICloudAsksFirst]' passed (21.616 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testSyncAgainstTheFakeICloud]' passed (157.861 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testTheExtremeAccount]' passed (1686.920 seconds).
 ```
 
 ## Release build
