@@ -17,11 +17,12 @@ WATCH_BUNDLE=com.oftenenough.app.watchkitapp
 [ -d "$WATCH_APP" ] || { echo "No Watch app inside $PHONE_APP" | tee "$OUT/pair.md"; exit 1; }
 
 runtime() { xcrun simctl list runtimes available -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x.get('platform')=='$1']; print(r[-1]['identifier'])"; }
-devicetype() { xcrun simctl list devicetypes -j | python3 -c "import json,sys; t=[x for x in json.load(sys.stdin)['devicetypes'] if '$1' in x['name'] and '$2' in x['name'] and 'Pro' not in x['name'] and 'Plus' not in x['name'] and 'Max' not in x['name']]; print(t[-1]['identifier'])"; }
+# By name, first one this Xcode has: never a match on part of a name (an old model the runtime can't run).
+devicetype() { xcrun simctl list devicetypes -j | python3 -c "import json,sys; t={x['name']: x['identifier'] for x in json.load(sys.stdin)['devicetypes']}; print(next(t[n] for n in sys.argv[1:] if n in t))" "$@"; }
 
 {
-  PHONE=$(xcrun simctl create "Pair iPhone" "$(devicetype iPhone 1)" "$(runtime iOS)")
-  WATCH=$(xcrun simctl create "Pair Watch" "$(devicetype Watch 46mm)" "$(runtime watchOS)")
+  PHONE=$(xcrun simctl create "Pair iPhone" "$(devicetype "iPhone 17" "iPhone 16")" "$(runtime iOS)")
+  WATCH=$(xcrun simctl create "Pair Watch" "$(devicetype "Apple Watch Series 10 (46mm)" "Apple Watch Series 11 (46mm)")" "$(runtime watchOS)")
   PAIR=$(xcrun simctl pair "$WATCH" "$PHONE")
   echo "iPhone $PHONE, Watch $WATCH, pair $PAIR"
   xcrun simctl boot "$PHONE"; xcrun simctl boot "$WATCH"

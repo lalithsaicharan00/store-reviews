@@ -155,7 +155,9 @@ final class AppModel {
         if arguments.contains("-simulate-open-failure") { opened = nil } // PersistenceUITests
         #endif
         persistence = opened
-        store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository, databaseOpened: opened != nil)
+        // A local, so closures made below capture the store rather than `self` before init ends.
+        let store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository, databaseOpened: opened != nil)
+        self.store = store
         var api = Self.apiBase
         #if DEBUG
         if let i = arguments.firstIndex(of: "-api"), i + 1 < arguments.count, let url = URL(string: arguments[i + 1]) { api = url }

@@ -534,7 +534,9 @@ jobs:
             xcrun simctl list runtimes
             xcrun simctl list devicetypes | grep -i watch
             RUNTIME=$(xcrun simctl list runtimes available -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x.get('platform')=='watchOS']; print(r[-1]['identifier'])")
-            pick() { xcrun simctl list devicetypes -j | python3 -c "import json,sys; t=[x for x in json.load(sys.stdin)['devicetypes'] if 'Watch' in x['name'] and '$1' in x['name']]; print(t[-1]['identifier'])"; }
+            # By name: the Series 10 (the user's watch), else the Series 11. "42mm" alone also matches a Series 2 or 3,
+            # which watchOS 26 can't run ("Incompatible device", 11 Oct 2026).
+            pick() { xcrun simctl list devicetypes -j | python3 -c "import json,sys; t={x['name']: x['identifier'] for x in json.load(sys.stdin)['devicetypes']}; print(next(t[n] for n in ['Apple Watch Series 10 ($1)', 'Apple Watch Series 11 ($1)'] if n in t))"; }
             BIG=$(xcrun simctl create "Watch 46" "$(pick 46mm)" "$RUNTIME")
             SMALL=$(xcrun simctl create "Watch 42" "$(pick 42mm)" "$RUNTIME")
             echo "WATCH46=$BIG" >> "$GITHUB_ENV"
