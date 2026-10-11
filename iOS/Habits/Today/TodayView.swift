@@ -428,7 +428,10 @@ struct TodayView: View {
         }
     }
     /// Today comes back the moment the player starts closing, so it's drawn while the cover slides away.
-    private var covered: Bool { playerCovering && routine != nil }
+    /// Covered: the routine player over Today, or (the iPad) a page beside the sidebar in front of it. Today stays alive
+    /// (its day, the widgets' routes) but draws nothing: its rows hidden any other way were still read by VoiceOver
+    /// (runs 38149917285–38162641513; U1).
+    private var covered: Bool { (playerCovering && routine != nil) || (Device.isPad && PadAnchor.shared.covered) }
 
     /// Moves `clock` on at each of `TodaySchedule`'s moments until Today is covered or the goal times change.
     private func tick() async {
