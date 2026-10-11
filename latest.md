@@ -1,37 +1,38 @@
-# claude/pensive-gates-3n4ie8-ci13 @ cb035ab
+# claude/pensive-gates-3n4ie8-ci2 @ cb035ab
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38156985780 · 2026-10-11 17:22 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38156983870 · 2026-10-11 17:24 UTC
 Commit: Current Work 86: the iPad's Home Screen widget test leaves the Home Screen as it found it, and lets the gallery settle between pages
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (IPadUITests,WidgetUITests/testExtraLargeTodayOnTheIPad): success
+- UI tests (IPadUITests,WidgetUITests/testExtraLargeTodayOnTheIPad): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 15 tests, with 0 failures (0 unexpected) in 794.675 (794.703) seconds
-	 Executed 16 tests, with 0 failures (0 unexpected) in 837.413 (837.448) seconds
-	 Executed 16 tests, with 0 failures (0 unexpected) in 837.413 (837.450) seconds
-Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' passed (146.212 seconds).
-Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (34.631 seconds).
-Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' passed (73.961 seconds).
-Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (50.505 seconds).
-Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (41.187 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' passed (35.558 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (84.487 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (18.399 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (42.745 seconds).
-Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (39.327 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (30.523 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' passed (98.221 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (31.375 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' passed (56.590 seconds).
-Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (10.955 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad]' passed (42.738 seconds).
+	 Executed 15 tests, with 1 failure (0 unexpected) in 815.002 (815.036) seconds
+	 Executed 16 tests, with 1 failure (0 unexpected) in 857.987 (858.033) seconds
+	 Executed 16 tests, with 1 failure (0 unexpected) in 857.987 (858.036) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:335: error: -[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar] : Failed to not hittable: Button, {{400.0, 584.5}, {631.0, 37.5}}, label: 'Morning, Starts 6 AM, All done'
+Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' passed (127.872 seconds).
+Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (27.776 seconds).
+Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' passed (71.866 seconds).
+Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (64.216 seconds).
+Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (44.053 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' passed (44.879 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (85.441 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (19.351 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (34.621 seconds).
+Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (34.087 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (31.482 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' failed (109.056 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (38.963 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' passed (69.692 seconds).
+Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (11.647 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad]' passed (42.985 seconds).
 ```
 
 ## Release build
