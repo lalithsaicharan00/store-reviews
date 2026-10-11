@@ -1,19 +1,19 @@
-# claude/drive-sync-ci2 @ e5a1559
+# claude/drive-sync-ci3 @ cf69cdb
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38165535866 · 2026-10-11 19:45 UTC
-Commit: Android: Google Drive sync prototype results (draft; final run IDs to come)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38168170690 · 2026-10-11 19:52 UTC
+Commit: Docs: Google Drive sync results with the final runs (420 of 420; 2,000 seeded runs)
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (ICloudUITests/testTheExtremeAccount): success
+- UI tests (BackupUITests/testErasingEverything): success
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-Test Case '-[HabitsUITests.ICloudUITests testTheExtremeAccount]' passed (1419.541 seconds).
+Test Case '-[HabitsUITests.BackupUITests testErasingEverything]' passed (48.238 seconds).
 ```
 
 ## Release build
