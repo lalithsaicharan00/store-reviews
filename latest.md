@@ -1,32 +1,32 @@
-# apple-watch-ci2 @ f8081ff
+# claude/pensive-gates-3n4ie8-ci6 @ 5d1ca26
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38145611296 · 2026-10-11 15:09 UTC
-Commit: Apple Watch: compile BackupFeatures for SHA256Hex, which iCloud's transport uses
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38144971935 · 2026-10-11 15:13 UTC
+Commit: Current Work 86: each Columns list holds its own height, so a column that changes redraws only itself
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (ICloudUITests/testTheICloudPageInEveryState,ICloudUITests/testTodaysCardWhenICloudNeedsYou,ICloudUITests/testTheSecondDeviceSheet,WidgetUITests): failure
+- UI tests (OnboardingBackupScreenshotUITests/testA_Welcome,OnboardingUITests): success
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 3 tests, with 1 failure (0 unexpected) in 173.724 (173.727) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 319.530 (319.540) seconds
-	 Executed 9 tests, with 1 failure (0 unexpected) in 493.255 (493.269) seconds
-	 Executed 9 tests, with 1 failure (0 unexpected) in 493.255 (493.272) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/ICloudUITests.swift:176: error: -[HabitsUITests.ICloudUITests testTheICloudPageInEveryState] : XCTAssertTrue failed
-Test Case '-[HabitsUITests.ICloudUITests testTheICloudPageInEveryState]' failed (100.893 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testTheSecondDeviceSheet]' passed (38.964 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testTodaysCardWhenICloudNeedsYou]' passed (33.866 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes]' passed (194.532 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testGuideAndPrivacyAreFree]' passed (38.639 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testLargerTextCountersAndCutDownAreReadable]' passed (35.469 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testLongNamesAndUnitsKeepQuickActionVisible]' passed (19.278 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testReliabilityUnderBurstsRetriesAndRollover]' passed (21.782 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks]' passed (9.831 seconds).
+	 Executed 10 tests, with 0 failures (0 unexpected) in 383.257 (383.264) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 524.898 (524.908) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 524.898 (524.910) seconds
+Test Case '-[HabitsUITests.OnboardingBackupScreenshotUITests testA_Welcome]' passed (141.641 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testCreateMyOwnHabitIsTheUsualNewFlow]' passed (66.153 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testDataOnThisDeviceComesFirst]' passed (20.136 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testFirstHabitAfterMidnightBeforeTheDayStartShowsOnToday]' passed (47.423 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testHabitsComeBackFromICloud]' passed (18.352 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testHelpAndTheWelcomeAgain]' passed (73.813 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testLargestTextReachesContinue]' passed (27.490 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testNewPersonToFirstHabit]' passed (58.069 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testNoWelcomeInOtherRuns]' passed (7.716 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testReturningWaysBack]' passed (24.011 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testSkipSetupLeadsToAHelpfulToday]' passed (40.095 seconds).
 ```
 
 ## Release build
