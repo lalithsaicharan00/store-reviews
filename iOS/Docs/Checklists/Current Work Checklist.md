@@ -40,6 +40,34 @@ work. Preserve those distinctions when recording findings. New feedback items 23
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
 
+- [ ] **84. Everything left that doesn't need the user** (added 11 October 2026, from the user: "work on the items that
+  we have on Speed still above target, measured on GitHub's simulator, then on 22, 53, 68 … for 68 if you want that
+  code then do it and if update or delete things on Cloudflare also do it, since we don't need Cloudflare; leave out
+  73, and 82 [another agent is working on it]; and for whatever things that need me, note down that and complete all
+  the work till you don't need me").
+  - [ ] **Speed still above target on GitHub's simulator** (S rules; measured in item 81's runs): Today's +1 and day ‹ ›
+    13–67 ms/s against 5; first openings of Add log (~1 s) and the note sheet (1.4–5.5 s); Arrange's Hide Completed
+    26 ms/s. Measure side by side before changing anything (S2, PERFORMANCE-LESSONS L29), fix what is ours, and say
+    which are the hosted simulator's own (the first keyboard is judged on the iPhone only, L18).
+  - [x] The iCloud page's first opening: not slower than the page it replaced, measured the same hour (523 ms against
+    `main`'s Backup & Export 1,154 ms; Restore 190 against 298; runs `38099547344`, `38099545468`).
+  - [ ] **Item 22** (Today row sheet wording and actions per habit type): built on 4 and 7 Oct (items 47, 59–63); check
+    every case in its table on the current build with screenshots, fix what still reads as "entries", update tests (T3).
+  - [ ] **Item 53** (`GroupsUITests` group drag, now and then): look for the cause again; never loosen the test (T2).
+  - [ ] **Item 68 and Cloudflare** ("we don't need Cloudflare"): iCloud replaced the server (item 81, D16). Inventory,
+    11 Oct (read only): Workers `often-enough-api` and `often-enough-api-dev` (sync, with `api.` and
+    `api-dev.oftenenough.com`), D1 `often-enough-directory` and `-dev`, R2 `often-enough-backups` and `-dev` (server
+    backups): **to delete** once item 81 is in `main` (until then `main`'s app and other agents' runs still use
+    `api-dev`), after exporting what they hold. **Kept:** the website Worker `oftenenough-site`
+    (`site-dev.oftenenough.com`), the analytics buckets `oftenenough-events-dev` and `-prod`, and the
+    `oftenenough.com` zone (the domain, needed for the App Store's privacy and support links). Then `server/` and its
+    workflows leave the repository (kept on an archive branch), which also ends item 68.
+  - **Needs the user** (everything else here is done without them):
+    - [ ] The iPhone checks listed in items 81 (§19 device checks), 83, 58.13 (real Face ID) and 71.
+    - [ ] Deploy the CloudKit schema to Production before TestFlight (item 81).
+    - [ ] Whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
+      the user says.
+
 - [ ] **83. Widgets faster, widget and App Lock issues fixed, and the widget lock opened for speed work** (added 11
   October 2026, from the user, during item 81: "work on widgets as well, improve performance, but preserve overall
   like switch based widgets, and syncing and all of that, because data should be handled robustly and should never be
