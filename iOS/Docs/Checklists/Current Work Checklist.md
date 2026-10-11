@@ -760,7 +760,9 @@ and the Add note keyboard coming up by itself.
     - [x] The routine player and the timer: full screen, laid out for the iPad (`1171:342`, `1171:377`)
     - [x] Welcome (onboarding), an empty Today and App Lock's cover (`1171:395`, `1171:419`, `1171:675`)
     - [ ] Words that name the device read right on the iPad ("iPhone" → "iPad", ≡ → the sidebar, Face ID → Touch ID
-      where the iPad has it, no Haptics row); Live Activities and alarms on the iPad checked on a real iPad
+      where the iPad has it, no Haptics row); Live Activities and alarms on the iPad checked on a real iPad. *Words
+      built 11 Oct (`Device.words`; `IPadUITests.testSettingsPagesBesideTheSidebar` reads them); the real-iPad checks
+      remain.*
   - [x] **No day rings in the calendar** (the user, 11 Oct: "in our app, we don't have these rings … remove them"; "fix
     it in the design rules too"). *Done 11 Oct: the iPad's "Go to a day" popover (`1169:281`) rebuilt from the app's
     `CalendarSheet` (plain dates, today bold, the open day in a grey circle); Design Rules' "Calendar and Back to Today"
@@ -812,8 +814,31 @@ and the Add note keyboard coming up by itself.
   - [x] **Every Plus screen covered** (the user, 11 Oct: "in Plus, all of the required screens, have you covered?").
     *Done 11 Oct: all 26 screens of the iPhone's Plus flows 1–8 (Figma `1021:309`) now have iPad versions, landscape and
     portrait (Apple's own purchase sheet is the system's): pictures 18–20, Design Notes §9.*
-  - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (next; the user will discuss the
-    app-level changes first).
+  - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (the user's go-ahead, 11 Oct:
+    "build the iPad app exactly as the build prompt says … the iPhone must not change at all"). Branch
+    `claude/pensive-gates-3n4ie8`; what was built and decided: [iPad README](<../iPad/README.md>) "Built"; rules U30, T18.
+    - [x] Universal app (iPhone and iPad), every iPad orientation, one window (`UIApplicationSupportsMultipleScenes`
+      false). *Run 38129334834 (iPad Air 11-inch): builds, release build, Today and Day details screenshots.*
+    - [x] The sidebar (docked in landscape, over Today in portrait and in a narrow window, "N left" beside Today);
+      Today's 700-pt column with the day control at the top centre; Day details as a popover at its row, with Add log,
+      Add note and All logs pushed inside it; a narrow window is the iPhone's app.
+    - [x] Habits and Tasks list–detail; Progress two across; settings pages beside the sidebar (700 pt), Plus (540 pt);
+      form sheets (New, the habit form, App Lock, restore, Plus's sheets); popovers (the calendar, Filter); the timer and
+      the routine player full screen; Arrange Your Day; the welcome in a 480-pt column.
+    - [x] The Columns view, the View menu (as List ⌘1, as Columns ⌘2, Hide Sidebar ⌃⌘S, Go to Today ⌘T, Previous and
+      Next Day ⌘← ⌘→), New Habit ⌘N, Return adds; Appearance → Layout.
+    - [x] The Extra Large Today widget (ten a page, two columns of Large's rows); every widget family drawn at the iPad's
+      sizes in the render check. The locked tap (U28) unchanged.
+    - [x] Words that name the device (`Device.words`, `Device.otherDevices`: "this iPad", "the sidebar", "iPad
+      Settings", "Your iPhone and Apple Watch"); no Haptics row, no silent-switch or Dynamic Island footers on the iPad.
+    - [ ] Tests on GitHub, all green on the final commit: iPad 11-inch and 13-inch (`IPadUITests`,
+      `IPadWidgetSystemUITests`, Extra Large), the iPhone's full UI set on the newest iPhone and the iPhone SE, the
+      speed comparisons against `main` (S). *Found and fixed so far:* Day details lost Add log and its typed amount as
+      the window narrowed (a branching sizing modifier, run 38131431056); Plus's Buy spanned 828 pt (same run); the
+      Columns view redrew every column per column height (run 38131557328, 683 ms/s; held per column, then held still
+      during a run of taps); iPad-only modifiers taken off the iPhone's view tree (runs 38131504505, 38138422562).
+    - [ ] The real iPad and iPhone checks (U9; list in the README): Live Activities, AlarmKit, Health steps, Touch ID /
+      Face ID, the popover with the on-screen keyboard, Stage Manager, a hardware keyboard; the iPhone's U9 checks.
 
 - [ ] **88. Coming back to the iPhone after using the iPad: "Use your habits on this iPhone?"** (added 11 October 2026,
   from the user; to do next). The iPad shows "Use your habits on this iPad?" when the free plan's syncing device is the
@@ -822,19 +847,30 @@ and the Add note keyboard coming up by itself.
   whichever device they started on: detect it and let them know, offering to move syncing back ("log out from the
   iPad" in the user's words; there are no accounts, so in the app's words: the iPad stops syncing and keeps
   everything it has).
-  - [ ] **Check what exists.** *Found 11 Oct (code on `main`, not yet tried on a device):* `SecondDeviceSheet`
+  - [x] **Check what exists.** *Checked 11 Oct in the simulator: `CloudSyncCheck`'s "back to the iPhone" (free plan:
+    iPhone → iPad → iPhone asks again, once per takeover; Move Here; the iPad's hand-over notice) and "plus offline"
+    (both sync, offline and back, nothing lost or doubled), in `ICloudUITests.testSyncAgainstTheFakeICloud`, passed in
+    run 38131144606 with the iPhone's sheet (`testTheSecondDeviceSheet`: "Use your habits on this iPhone?", "Your iPad
+    stops syncing…", ✕ changes nothing, Move Here); the iPad's in `IPadUITests.testSecondDeviceSheetOnTheIPad` (run
+    38131431056). The iPhone check (U9) remains.* *Found 11 Oct (code on `main`, not yet tried on a device):* `SecondDeviceSheet`
     (`Cloud/CloudQuestions.swift`) is shared and uses the device's own name, so on an iPhone it should read "Use your
     habits on this iPhone?" with "Your iPad stops syncing and keeps everything it has"; `CloudSync.askAboutSecondDevice`
     shows it once per takeover (keyed by the other device and the time it took over), so iPhone → iPad → iPhone asks
     again; the device that loses syncing gets a hand-over notice (`handedOverTo`), and iCloud & Backup says "Your
     iPad is the one syncing" with Move Here. Confirm all of it in the simulator (the `CloudTestStates` fake iCloud,
     `CloudSyncCheck` §12) and on the iPhone.
-  - [ ] **Design the iPhone version** (Figma has only the iPad wording): "Use your habits on this iPhone?", in both
+  - [x] **Design the iPhone version** (Figma has only the iPad wording). *11 Oct: the shared sheet (`1024:309`'s
+    layout) takes each device's own name, so the iPhone reads "Use your habits on this iPhone?" and the iPad's notice
+    "Your habits now sync on your iPhone"; no separate frame needed:* "Use your habits on this iPhone?", in both
     orders (started on the iPhone, moved to the iPad, came back; started on the iPad, then the iPhone); and the
     notice the iPad shows after the iPhone takes syncing back. Same layout as `1024:309`.
-  - [ ] **Fix whatever the check finds missing**, with a UI test for the come-back case (free plan, the iPad syncing,
+  - [x] **Fix whatever the check finds missing**, with a UI test for the come-back case (free plan, the iPad syncing,
     the iPhone opened: the question shows once; Move to this iPhone works; ✕ changes nothing), then the iPhone check
-    (U9).
+    (U9). *11 Oct: nothing was missing. The come-back case's UI test is `ICloudUITests.testTheSecondDeviceSheet` (the
+    iPad syncing, the iPhone opened: the question, ✕ changes nothing, Move Here; run 38131144606); "once per takeover"
+    and the move itself are `CloudSyncCheck`'s "back to the iPhone" (same run). The free-other test device is now the
+    opposite of the device under test, so the iPad's own run asks "Use your habits on this iPad?" about the iPhone.
+    The iPhone check (U9) remains, noted separately (W1).*
 
 - [ ] **85. Edit Group: padding around the colour swatches, and show only the group's own habits (build later).** Added
   11 October 2026, from the user: "we need to make some updates later, but not now." The screen is New Group / Edit
