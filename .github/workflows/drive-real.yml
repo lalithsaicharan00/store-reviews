@@ -20,7 +20,7 @@ on:
         description: "Race rounds per run of the deciding check (two IDs per round: one reserved by each process)"
         default: "60"
       checks:
-        description: "Which checks: all, race, rounds, behaviour"
+        description: "Which checks: all, race, rounds, behaviour, extreme"
         default: "all"
 
 permissions:
@@ -92,6 +92,10 @@ jobs:
         if: always() && (inputs.checks == 'all' || inputs.checks == 'behaviour')
         working-directory: Core
         run: java -cp "$(cat build/jvmTestClasspath.txt)" app.habits.core.RealDriveKt behaviour
+      - name: "Check 3b: an extreme account (15 years) on the real Drive"
+        if: always() && (inputs.checks == 'all' || inputs.checks == 'extreme')
+        working-directory: Core
+        run: java -Xmx3g -cp "$(cat build/jvmTestClasspath.txt)" app.habits.core.RealDriveKt extreme 15
       - name: Empty the app folder
         if: always()
         working-directory: Core

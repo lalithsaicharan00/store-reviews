@@ -25,6 +25,7 @@ import kotlinx.coroutines.runBlocking
  *   race-check <ids> <out>...              exactly one create per ID succeeded, every other got 409
  *   rounds                                 full DriveSync rounds with three devices
  *   behaviour                              how Drive itself behaves (list lag, IDs, half-written uploads, limits, speed)
+ *   extreme <years>                        an extreme account (25,000 logs a year): first upload, a new device's download
  *   show <label>                           what's in the app folder
  *   clean                                  empties the app folder
  */
@@ -59,6 +60,7 @@ object RealDrive {
         "race-check" -> raceCheck(File(args[1]).readLines().filter { it.isNotBlank() }, args.drop(2).map(::File))
         "rounds" -> RealRounds().all()
         "behaviour" -> behaviour()
+        "extreme" -> extreme(args.getOrElse(1) { "15" }.toInt())
         "show" -> { show(drive(), args.getOrElse(1) { "" }); 0 }
         "clean" -> { clean(drive()); 0 }
         else -> { println("usage: ids|race|race-check|rounds|behaviour|show|clean"); 2 }
@@ -192,6 +194,49 @@ object RealDrive {
         println("QUOTA: ${quota.usage / 1024} KB used of ${quota.limit?.let { it / (1L shl 20) }} MB")
         clean(drive)
         return 0
+    }
+
+    /** An extreme account on the real Drive: its first upload, a new device's first download, one more log, an idle round. */
+    private suspend fun extreme(years: Int): Int {
+        clean(drive())
+        var t = System.nanoTime()
+        val phone = HabitRepository.openInMemory()
+        val now = System.currentTimeMillis()
+        val habits = List(12) { i ->
+            HabitRecord("h$i", "Habit $i", "star", "blue", "amount", "glasses", 1.0, "anytime", 8.0, "day", null, "daily", null, null, false, null, i, 1_000, 1_000, null, null)
+        }
+        val entries = (0 until years).flatMap { y ->
+            List(25_000) { i ->
+                EntryRecord("e$y-$i", "h${i % 12}", null, "${2026 - y}-${(i % 12 + 1).toString().padStart(2, '0')}-${(i % 28 + 1).toString().padStart(2, '0')}", 1.0, now - i, "Europe/London", null, null, "today")
+            }
+        }
+        phone.importAll(Snapshot(habits, emptyList(), emptyList(), entries, emptyList()))
+        println("EXTREME: ${entries.size} logs over $years years made in ${ms(t)} ms")
+        val phoneSync = DriveSync(phone, drive(), "Pixel 8", "android")
+        phoneSync.connect("gdrive:real-extreme")
+        t = System.nanoTime()
+        val first = phoneSync.syncNow()
+        println("EXTREME: first upload ${ms(t)} ms (${first.state}, ${first.waiting} waiting)")
+        show(drive(), "extreme account")
+        val fresh = HabitRepository.openInMemory()
+        val freshSync = DriveSync(fresh, drive(), "Pixel 9", "android")
+        freshSync.connect("gdrive:real-extreme")
+        t = System.nanoTime()
+        val came = freshSync.syncNow(allowUpload = false)
+        val got = fresh.load().entries.size
+        println("EXTREME: a new device's first download and merge ${ms(t)} ms (${came.state}): $got of ${entries.size} logs")
+        phone.addEntry(EntryRecord("one-more", "h0", null, "2026-10-11", 1.0, System.currentTimeMillis(), "Europe/London", null, null, "today"))
+        t = System.nanoTime()
+        phoneSync.syncNow()
+        println("EXTREME: a save after one more log ${ms(t)} ms")
+        t = System.nanoTime()
+        freshSync.syncNow()
+        println("EXTREME: the other device takes it in ${ms(t)} ms")
+        t = System.nanoTime()
+        freshSync.syncNow()
+        println("EXTREME: an idle round ${ms(t)} ms")
+        clean(drive())
+        return if (got == entries.size && first.waiting == 0) 0 else 1
     }
 
     /** Starts a resumable upload under [id], sends half, stops; then another client makes a file under the same ID. */
