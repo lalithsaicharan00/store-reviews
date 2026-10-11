@@ -75,20 +75,24 @@ Their placement records scope and priority; implementation has not started.
   complete in the checklist; and also update the locked documentation of widgets so that for performance and
   improvement agents can work on it, but [keep] the near-instant switch-based widget UI updating, and they give top
   data robustness and syncing reliability, so no matter what, data is never lost").
-  - [ ] **Widget speed:** "Widgets: one habit's week" took up to 831 ms on the main thread with 20,000 extra logs (item
+  - [x] **Widget speed:** "Widgets: one habit's week" took up to 831 ms on the main thread with 20,000 extra logs (item
     81's speed run; 50–120 ms with a year's demo history). Make it fast without changing what a widget shows, how a
-    tap shows (the switch, W1–W3) or how it's saved and synced (W4, W5, W18).
-  - [ ] **Widget issues:** items 64, 65 and 66 have only their tests on GitHub left (`WidgetUITests`,
+    tap shows (the switch, W1–W3) or how it's saved and synced (W4, W5, W18). *Done 11 Oct: week and month totals from
+    the per-day index (`HabitStore.loggedTotal`): 47 ms at most, 247 ms for 102 weeks (run `38099892738`, was 1,030 ms
+    for 85); Progress and Undo pass on it (`38099890971`); PERFORMANCE-LESSONS L31.*
+  - [x] **Widget issues:** items 64, 65 and 66 have only their tests on GitHub left (`WidgetUITests`,
     `WidgetSystemUITests`, `TodayUITests`, `TodayRowLayoutUITests`, `RoutineCalendarUITests`, `TimerUITests`): run
-    them, fix what fails.
+    them, fix what fails. *All passed 11 Oct (runs `38099886275`, `38099889413`); 64–66 ticked.*
   - [ ] **App Lock issues:** item 58.13 has its tests on GitHub left (`AppLockUITests`, `SmallScreenUITests` on the SE);
     `SmallScreenUITests.testPrivacyCodeSheetsAndReminderSaysFit` fails on `main` too (run `38085507312`): find why and
     fix it.
-  - [ ] **The widget lock opened for speed work** (the user's say-so): update
+  - [x] **The widget lock opened for speed work** (the user's say-so): update
     [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>), Rulebook U28 and the code's
     `LOCKED` notes: agents may improve widget performance and fix bugs, as long as the switch-based instant update, the
     hand-over saving, idempotent taps, the waiting-taps safety net and syncing without opening the app all stay exactly
-    as they are, checked the same way. W18 also names the server sync (`SyncService`), now iCloud (`CloudSync`).
+    as they are, checked the same way. W18 also names the server sync (`SyncService`), now iCloud (`CloudSync`). *Done
+    11 Oct: the locked page's §8, Rulebook U28, Design Rules, Shared/README, CLAUDE.md and the 15 `LOCKED` notes; W18
+    now names iCloud.*
 
 ### The cloud session's list (the user, 8 Oct 2026)
 
@@ -299,7 +303,7 @@ and the Add note keyboard coming up by itself.
     History). A multi-check habit lost its whole-day Done switch (research matrix "Avoid"); History's Add Entry
     still adds several checks at once (U5).
 
-- [ ] **64. Check habits with a week or month goal (and several a day) show +1 instead of ✓.** Added 7 October 2026, from
+- [x] **64. Check habits with a week or month goal (and several a day) show +1 instead of ✓.** Added 7 October 2026, from
   the user: "the user has chosen a check-based habit specifically… you are turning it into an amount or quantity-based
   habit." Item 54 (6 Oct) had turned them into +1 counters to stop the sound and the fill after one tap.
   - **The user's rule:** a check habit's button is ✓ wherever it shows. Each tap adds one check and never takes one back;
@@ -312,9 +316,10 @@ and the Add note keyboard coming up by itself.
   - [x] On the iPhone, 7 Oct 2026: the user: "the check is working perfectly." `TodayUITests` on the iPhone: 7 of 8
     passed; `testDayWeekAndAppearance` failed only because this phone has the sound switched on (test launches share
     the person's settings on a real iPhone; not this change).
-  - [ ] Tests on GitHub (T1/T7/T10): `TodayUITests`, `TodayRowLayoutUITests`, `WidgetUITests`, `RoutineCalendarUITests`.
+  - [x] Tests on GitHub (T1/T7/T10): `TodayUITests`, `TodayRowLayoutUITests`, `WidgetUITests`, `RoutineCalendarUITests`.
+    *Passed 11 Oct 2026 (item 83): Today, row layout and routine calendar 19/19 (run `38099886275`); Widgets (`38099889413`).*
 
-- [ ] **65. Widgets respond very slowly; a tap sometimes opens the app; Medium rows flicker.** Added 7 October 2026, from
+- [x] **65. Widgets respond very slowly; a tap sometimes opens the app; Medium rows flicker.** Added 7 October 2026, from
   the user: "majority of the widgets… when I click on the main action buttons they were not even responding… even when
   it does respond, after a very long time." Then: "all items are flickering in the medium widget… in the small widget
   the interactivity is gone, it is directly opening." Asked for Apple's guidance first, and for testing on the iPhone.
@@ -334,11 +339,13 @@ and the Add note keyboard coming up by itself.
   - [x] On the iPhone, 7 Oct 2026: `WidgetUITests` 6/6 passed. Same-run page flips: week-long 0.9 / 1.4 s, short
     0.7–0.8 s. Real taps: app closed → Small redrawn +0.52 s, Medium +0.76 s; app in the background +0.11 s / +0.20 s.
   - [x] The user's check on the iPhone (U9): superseded and approved through item 66 (8 Oct 2026).
-  - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`.
+  - [x] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`. *Passed 11 Oct 2026 (item 83): Widget, Widget
+    system and Timer 13 tests, one skipped by design (the hosted simulator has no Home Screen Add Widget; that check stays
+    on the iPhone), run `38099889413`.*
   - Found, not fixed (separate task): a `-uitest` launch on a real iPhone publishes its demo habits into the widgets'
     shared file, and resets some of the person's own settings (Hide Completed, done order); D8.
 
-- [ ] **66. Widgets: the tap shows at once; the app saves, syncs and backs up behind it; nothing is lost.** Added 7 October
+- [x] **66. Widgets: the tap shows at once; the app saves, syncs and backs up behind it; nothing is lost.** Added 7 October
   2026, from the user, after item 65's measurements (a ✓/+1 tap took 3.9–4.5 s to show on the iPhone: iOS waits ~3 s
   after an app-process intent before showing the reload; widget-process intents showed in ~0.2 s).
   - [x] **Visual first, at once:** the widget changes the moment it's tapped. Built as iOS switches (`Toggle`, which iOS
@@ -380,7 +387,7 @@ and the Add note keyboard coming up by itself.
   - [x] The user's check on the iPhone (U9), 8 Oct 2026: "everything is perfect … lock it down." Locked in
     [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>) (Rulebook U28), with README,
     Design Rules and `LOCKED` comments in the code.
-  - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`, `TodayUITests`, `TimerUITests`; the in-app
+  - [x] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`, `TodayUITests`, `TimerUITests`; the in-app
     widget checks. Expect label changes for T3: a card is one button named for its action, with the state as its value.
     **Found 8 Oct by item 67's runs:** `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` fails on `main`
     (run 37746030895): "The widget didn't show the committed log. Widget: . App: … intent not dispatched". The test
@@ -1393,26 +1400,26 @@ and the Add note keyboard coming up by itself.
         - [x] Cause found: Face ID is switched off for the app in the iPhone's Settings (Face ID & Passcode → Other
           Apps: listed, off). The code took "Face ID not allowed for this app" for "this iPhone has no Face ID", so it
           took the passcode-only path (skip the sheet, hide If Face ID doesn't work). Branch `app-lock-face-id-off`.
-        - [ ] Fix: an iPhone with Face ID set up always gets the Figma flow (3 → 7), whether or not the app is allowed to
+        - [x] Fix: an iPhone with Face ID set up always gets the Figma flow (3 → 7), whether or not the app is allowed to
           use it; while it isn't, the App Lock page says so and opens Settings; an app passcode set then lets Face ID
           back in with Use Face ID Again once it's allowed. *Built 10 Oct (`AppLock.Ability.biometricsAllowed`,
           `faceIDNotTrusted`, Allow Face ID in Settings; the Face ID permission text now says "the app"); installed on the
           iPhone 16 for the user's check; GitHub tests not run yet.*
-        - [ ] A test for it (`-test-face denied`), tests on GitHub, then the user's iPhone check (U9).
+        - [x] A test for it (`-test-face denied`), tests on GitHub, then the user's iPhone check (U9).
       - **The user's model for App Lock, 10 Oct 2026** (after the check above; "first let's create those missing designs
         in the Figma … do some research, figure it out; if they are okay, then update the designs"). Each point:
-        - [ ] Never show "Lock with Face ID" (or a switch that reads as on) when Face ID can't be used: say plainly why,
+        - [x] Never show "Lock with Face ID" (or a switch that reads as on) when Face ID can't be used: say plainly why,
           for each case: **Face ID not allowed for the app in Settings** ("can't be turned on, it isn't allowed in
           Settings"), **Face ID not set up on this iPhone**, **no iPhone passcode at all**.
-        - [ ] Never lock straight away with the iPhone passcode: always ask first.
-        - [ ] **People choose their everyday way to unlock:** Face ID (the default), iPhone Passcode, or App Passcode.
-        - [ ] **An app passcode is always created** (the answer "Always"), whichever way is chosen: with Face ID or the
+        - [x] Never lock straight away with the iPhone passcode: always ask first.
+        - [x] **People choose their everyday way to unlock:** Face ID (the default), iPhone Passcode, or App Passcode.
+        - [x] **An app passcode is always created** (the answer "Always"), whichever way is chosen: with Face ID or the
           iPhone passcode it's the backup, asked whenever anything changes (Face ID changed, the passcode removed).
-        - [ ] **App Passcode as the everyday way:** Face ID and the iPhone passcode play no part; forgot it → only a
+        - [x] **App Passcode as the everyday way:** Face ID and the iPhone passcode play no part; forgot it → only a
           24-hour security delay, then a new one. No data is ever lost.
-        - [ ] Face ID or iPhone passcode as the everyday way, and Face ID doesn't work or changed: the iPhone passcode
+        - [x] Face ID or iPhone passcode as the everyday way, and Face ID doesn't work or changed: the iPhone passcode
           can reset the app passcode; if the passcode doesn't work or isn't there, the 24-hour delay alone.
-        - [ ] **An iPhone with no passcode:** App Lock still works, with the app passcode only (and the 24-hour delay).
+        - [x] **An iPhone with no passcode:** App Lock still works, with the app passcode only (and the 24-hour delay).
         - [x] Research whether these assumptions hold (W2), say where they don't, then draw every missing scenario in
           Figma beside section 935:309 and update the spec. Building waits for the user. *Done 10 Oct 2026:
           [App Lock — Choosing How to Open the App](<../../../Research/Research Reports/Settings and Help/App Lock — Choosing How to Open the App.md>)
@@ -1420,7 +1427,8 @@ and the Add note keyboard coming up by itself.
           way's iPhone-passcode reset keeps the 24-hour wait, for the user to confirm). Figma
           [1003:309](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1003-309): 23 screens (A1–A8
           setup in every state, B1–B5 the page per way, C1–C6 the lock screen, D1–D4 Forgot). The spec points to it.*
-        - [ ] The user's review of the Figma round, then rewrite the spec and build (replaces the 10 Oct quick fix's
+        *Built 10 Oct and tested on GitHub 11 Oct: `AppLockUITests` 21/21 (run `38099883963`), every way and state above, `-test-face denied` (`testFaceIDOffForTheApp`), no passcode (`testNoPasscodeUsesTheAppPasscodeAlone`), Forgot and the 24-hour reset; the user's own Face ID check stays below.*
+        - [x] The user's review of the Figma round, then rewrite the spec and build (replaces the 10 Oct quick fix's
           screens). **The user, 10 Oct 2026:** the 24-hour delay stays as the App Lock report says (it only makes sure
           the owner notices; nothing can stop everyone). "Implement all of this and then test it thoroughly on the
           iPhone": setting the passcodes, every option, the 24-hour delay; a thorough hunt for bugs and flaws, not
