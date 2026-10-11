@@ -200,5 +200,6 @@ Home Screen checks on the iPhone and the user's try. Record the numbers in PERFO
 - 11 Oct 2026 (Current Work 83): a habit's week and month totals are read from the per-day index
   (`HabitStore.loggedTotal`) instead of walking the habit's whole history on every call. "Widgets: one habit's week"
   took up to 831 ms with 20,000 extra logs (a week-goal habit's streaks for the coming days walked back week by week,
-  reading every log each week). Nothing a widget shows changed.
+  reading every log each week). After: 47 ms at most, 247 ms for 102 weeks in the same scenario (run `38099892738`);
+  `WidgetUITests`, `WidgetSystemUITests` and `TimerUITests` on GitHub. Nothing a widget shows changed.
 
