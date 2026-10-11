@@ -559,7 +559,7 @@ jobs:
           xcodebuild test-without-building -project Habits.xcodeproj -scheme OftenEnoughWatch -sdk watchsimulator \
             -destination "id=$WATCH46" -destination "id=$WATCH42" -maximum-concurrent-test-simulator-destinations 2 \
             -derivedDataPath DerivedData -resultBundlePath WatchResults.xcresult $ONLY \
-            2>&1 | tee watch-test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
+            2>&1 | tee watch-test.log | grep -iE "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" watch-test.log
 
       - name: Watch screenshots (46 mm, 42 mm, larger text)
@@ -572,7 +572,7 @@ jobs:
           xcodebuild test-without-building -project Habits.xcodeproj -scheme OftenEnoughWatch -sdk watchsimulator \
             -destination "id=$WATCH46" -destination "id=$WATCH42" -maximum-concurrent-test-simulator-destinations 2 \
             -derivedDataPath DerivedData -resultBundlePath "Shots-both.xcresult" \
-            -only-testing:OftenEnoughWatchUITests/WatchScreenshotTests 2>&1 | tee -a watch-shots.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
+            -only-testing:OftenEnoughWatchUITests/WatchScreenshotTests 2>&1 | tee -a watch-shots.log | grep -iE "Test Case .*(passed|failed)|error:|Executed" || true
           mkdir -p shots
           for r in Shots-*.xcresult; do xcrun xcresulttool export attachments --path "$r" --output-path "shots-raw-${r%.xcresult}" || true; done
           python3 Tools/ci/watch_shots.py shots-raw-* shots
@@ -627,12 +627,12 @@ jobs:
             fi
             if [ -f iOS/watch-test.log ]; then
               echo; echo "## Watch UI tests"; echo '```'
-              grep -E "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-test.log | sed 's/^.*Test Case/Test Case/' | sort -u | head -80
+              grep -iE "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-test.log | sed -E 's/^.*Test [Cc]ase/Test case/' | sort -u | head -120
               echo '```'
             fi
             if [ -f iOS/watch-shots.log ]; then
               echo; echo "## Screenshots"; echo '```'
-              grep -E "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-shots.log | sed 's/^.*Test Case/Test Case/' | sort -u | head -40
+              grep -iE "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-shots.log | sed -E 's/^.*Test [Cc]ase/Test case/' | sort -u | head -60
               ls iOS/shots | head -200
               echo '```'
             fi

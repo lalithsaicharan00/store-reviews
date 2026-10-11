@@ -41,7 +41,7 @@ cat "$OUT/setup.txt"
 PDATA=$(xcrun simctl get_app_container "$PHONE" "$PHONE_BUNDLE" data 2>/dev/null)
 WDATA=$(xcrun simctl get_app_container "$WATCH" "$WATCH_BUNDLE" data 2>/dev/null)
 WAITED=0
-until { grep -q "^.*# PAIR DONE" "$PDATA/tmp/pair.txt" 2>/dev/null && grep -q "# PAIR DONE" "$WDATA/tmp/pair.txt" 2>/dev/null; } || [ $WAITED -ge 480 ]; do
+until { grep -q "^.*# PAIR DONE" "$PDATA/tmp/pair.txt" 2>/dev/null && grep -q "# PAIR DONE" "$WDATA/tmp/pair.txt" 2>/dev/null; } || [ $WAITED -ge 360 ]; do
   sleep 2; WAITED=$((WAITED + 2))
 done
 cp "$PDATA/tmp/pair.txt" "$OUT/iphone.txt" 2>/dev/null || echo "(the iPhone app wrote nothing)" > "$OUT/iphone.txt"
@@ -49,10 +49,13 @@ cp "$WDATA/tmp/pair.txt" "$OUT/watch.txt" 2>/dev/null || echo "(the Watch app wr
 
 OK=0
 grep -q "# PAIR DONE ok" "$OUT/iphone.txt" && grep -q "# PAIR DONE ok" "$OUT/watch.txt" && OK=1
+# Runs a command for at most $1 seconds (macOS has no `timeout`): `log show` over minutes of a simulator's log
+# can take longer than the step's limit (it ran out the 20 minutes, run 38108830332).
+bounded() { local limit=$1; shift; "$@" & local pid=$!; ( sleep "$limit"; kill "$pid" 2>/dev/null ) & local guard=$!; wait "$pid" 2>/dev/null; kill "$guard" 2>/dev/null; }
 if [ $OK = 0 ]; then
   # What WatchConnectivity said, to tell a simulator limitation from our bug.
-  xcrun simctl spawn "$PHONE" log show --last 12m --style compact --predicate 'subsystem CONTAINS "WatchConnectivity" OR process == "wcd" OR process == "Habits"' 2>/dev/null | grep -iE "wcsession|wcd|transfer|reachab|paired|install|error" | tail -120 > "$OUT/iphone-wc-log.txt"
-  xcrun simctl spawn "$WATCH" log show --last 12m --style compact --predicate 'subsystem CONTAINS "WatchConnectivity" OR process == "wcd" OR process == "OftenEnoughWatch"' 2>/dev/null | grep -iE "wcsession|wcd|transfer|reachab|paired|install|error" | tail -120 > "$OUT/watch-wc-log.txt"
+  bounded 90 sh -c "xcrun simctl spawn '$PHONE' log show --last 6m --style compact --predicate 'process == \"wcd\" OR process == \"Habits\"' 2>/dev/null | grep -iE 'wcsession|transfer|reachab|paired|install|error' | tail -120 > '$OUT/iphone-wc-log.txt'"
+  bounded 90 sh -c "xcrun simctl spawn '$WATCH' log show --last 6m --style compact --predicate 'process == \"wcd\" OR process == \"OftenEnoughWatch\"' 2>/dev/null | grep -iE 'wcsession|transfer|reachab|paired|install|error' | tail -120 > '$OUT/watch-wc-log.txt'"
 fi
 {
   echo "Paired simulators: $([ $OK = 1 ] && echo "passed" || echo "FAILED") (waited ${WAITED} s)"
