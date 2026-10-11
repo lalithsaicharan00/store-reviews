@@ -46,8 +46,8 @@ extension XCUIApplication {
     /// (`swipeUp()` on the whole screen didn't turn it, run 38112417583).
     func page(down: Bool = true) {
         let window = windows.firstMatch
-        let from = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: down ? 0.62 : 0.3))
-        let to = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: down ? 0.2 : 0.72))
+        let from = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: down ? 0.7 : 0.25))
+        let to = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: down ? 0.1 : 0.8))
         from.press(forDuration: 0.02, thenDragTo: to)
     }
 

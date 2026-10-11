@@ -73,6 +73,9 @@ struct TodayScreen: View {
     @ObservationIgnored private var release: Task<Void, Never>?
 
     @ObservationIgnored private var latest: [String: [String]] = [:]
+    /// 1.5 s after the last tap (U4). Test launches can ask for 5 s (`-long-hold`): XCUITest's own waiting after a tap
+    /// outlasted 1.5 s on the 42 mm simulator, so "nothing moved during the hold" was checked after it (T13).
+    static let pause: Double = WatchModel.testLaunch && ProcessInfo.processInfo.arguments.contains("-long-hold") ? 5 : 1.5
 
     /// The order Today last drew (never observed, so remembering it doesn't redraw anything).
     func remember(_ current: [String: [String]]) -> Bool {
@@ -84,7 +87,7 @@ struct TodayScreen: View {
         if order == nil { order = latest }
         release?.cancel()
         release = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(1.5))
+            try? await Task.sleep(for: .seconds(Self.pause))
             guard !Task.isCancelled else { return }
             withAnimation(.snappy) { self?.order = nil }
         }

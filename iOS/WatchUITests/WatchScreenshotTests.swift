@@ -112,7 +112,8 @@ final class WatchScreenshotTests: XCTestCase {
         if reveal(app.buttons["log-manually"], "Log manually") { app.buttons["log-manually"].tap() }
         wait(app.otherElements["amount"].firstMatch.exists ? app.otherElements["amount"].firstMatch : app.staticTexts["glasses"], "Log manually")
         shot("B3-log-manually-amount")
-        app.staticTexts["1"].firstMatch.tap()
+        // The number is named "1 glass" for VoiceOver; its identifier is "amount".
+        app.descendants(matching: .any).matching(identifier: "amount").firstMatch.tap()
         Thread.sleep(forTimeInterval: 1)
         shot("B18-say-or-type")
 
@@ -186,8 +187,11 @@ final class WatchScreenshotTests: XCTestCase {
         if reveal(start, "Morning's ▶") { start.tap() }
         wait(app.otherElements["routine"].firstMatch.exists ? app.otherElements["routine"].firstMatch : app.buttons["routine-main"], "the routine")
         shot("C1-morning-1")
-        app.page()
-        wait(app.otherElements["routine-page-Meditate"], "Meditate's page")
+        for _ in 0..<3 where !app.staticTexts["Morning 2/3"].exists {
+            app.page()
+            _ = app.staticTexts["Morning 2/3"].waitForExistence(timeout: 2)
+        }
+        wait(app.staticTexts["Morning 2/3"], "Meditate's page")
         shot("C2-morning-2")
         Thread.sleep(forTimeInterval: 0.6)
         if wait(app.buttons["routine-main"], "Start") { app.buttons["routine-main"].tap() }
@@ -206,7 +210,7 @@ final class WatchScreenshotTests: XCTestCase {
         wait(app.buttons["routine-done"], "Morning done")
         shot("C5-morning-done")
         if app.buttons["routine-done"].exists { app.buttons["routine-done"].tap() }
-        wait(app.buttons["button-Stop Meditate timer"], "Meditate still running on Today")
+        reveal(app.buttons["button-Stop Meditate timer"], "Meditate still running on Today")
         shot("C6-closed-timer-running")
     }
 

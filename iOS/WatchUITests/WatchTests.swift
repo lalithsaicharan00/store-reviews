@@ -37,6 +37,15 @@ class WatchTestCase: XCTestCase {
         if !app.reveal(element) { XCTFail("\(what) not found. On screen: \(labels())", file: file, line: line) }
     }
 
+    /// Turns the routine's page and checks the title says where it is, flicking again if a flick didn't turn it (T12).
+    func turn(to title: String, down: Bool = true, file: StaticString = #filePath, line: UInt = #line) {
+        for _ in 0..<3 {
+            app.page(down: down)
+            if app.staticTexts[title].waitForExistence(timeout: 2) { return }
+        }
+        XCTFail("the routine never showed \(title). On screen: \(labels())", file: file, line: line)
+    }
+
     func openRow(_ name: String) {
         reveal(app.staticTexts[name].firstMatch, "\(name)'s row")
         app.staticTexts[name].firstMatch.tap()
@@ -76,7 +85,7 @@ final class WatchTodayTests: WatchTestCase {
     }
 
     func testACheckTogglesAndDoneRowsSinkAfterThePause() {
-        launch("design")
+        launch("design", ["-long-hold"])
         let vitamins = app.buttons["button-Mark Vitamins done"]
         reveal(vitamins, "Vitamins' ✓")
         let before = app.staticTexts["Vitamins"].frame.minY
@@ -86,7 +95,7 @@ final class WatchTodayTests: WatchTestCase {
         XCTAssertEqual(app.staticTexts["Vitamins"].frame.minY, before, accuracy: 2, "Vitamins moved during the hold")
         // …then, after the pause, it sinks below the rest of Morning (U13). Off the screen a row isn't in the tree, so
         // scroll to it and check it now comes after Stretch.
-        Thread.sleep(forTimeInterval: 2.5)
+        Thread.sleep(forTimeInterval: 5.5)
         reveal(app.staticTexts["Vitamins"].firstMatch, "Vitamins after the pause")
         let stretch = app.staticTexts["Stretch"].firstMatch
         XCTAssertTrue(stretch.exists && stretch.frame.minY < app.staticTexts["Vitamins"].firstMatch.frame.minY,
@@ -259,10 +268,8 @@ final class WatchRoutineTests: WatchTestCase {
         app.buttons["start-morning"].tap()
         require(app.buttons["routine-main"], "the routine")
         XCTAssertEqual(app.buttons["routine-main"].label, "Mark done")
-        app.page() // move to Meditate: nothing logged
-        require(app.otherElements["routine-page-Meditate"], "page 2")
-        app.page(down: false)
-        require(app.otherElements["routine-page-Vitamins"], "back on page 1")
+        turn(to: "Morning 2/3") // move to Meditate: nothing logged
+        turn(to: "Morning 1/3", down: false)
         Thread.sleep(forTimeInterval: 0.6)
         app.buttons["routine-main"].tap() // Vitamins done
         XCTAssertTrue(app.waitForLabel(app.buttons["routine-main"], "Next"), "Next after Mark done, not \(app.buttons["routine-main"].label)")
@@ -276,8 +283,7 @@ final class WatchRoutineTests: WatchTestCase {
         reveal(app.buttons["start-morning"], "Morning's ▶")
         app.buttons["start-morning"].tap()
         require(app.buttons["routine-main"], "the routine")
-        app.page()
-        require(app.otherElements["routine-page-Meditate"], "Meditate's page")
+        turn(to: "Morning 2/3")
         Thread.sleep(forTimeInterval: 0.6)
         app.buttons["routine-main"].tap() // start Meditate
         // watchOS names the toolbar's ✕ by its symbol ("xmark"); its label is Close.
