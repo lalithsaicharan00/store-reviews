@@ -92,6 +92,8 @@ final class WatchNavigation {
     static let shared = WatchNavigation()
     var path: [WatchRoute] = []
     var routine: RoutineSession?
+    /// Speed runs only: an empty full-screen cover, the control the routine's opening is measured against (S2).
+    var blankCover = false
 
     /// `oftenenough://watch/habit/<id>` (a complication, a notification) and `…/routine/<id>` (the iPhone's timer in the
     /// Smart Stack, R8; a complication while a routine runs, E3).

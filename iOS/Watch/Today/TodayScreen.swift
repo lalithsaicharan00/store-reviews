@@ -24,6 +24,8 @@ struct TodayScreen: View {
         NavigationStack(path: $navigation.path) {
             content
                 .navigationTitle("Today")
+                // On the stack's content, not beside the routine's cover: two covers on one view can clash.
+                .fullScreenCover(isPresented: $navigation.blankCover) { Color.black.ignoresSafeArea() }
                 .navigationDestination(for: WatchRoute.self) { route in
                     switch route {
                     case .day(let id): DayDetailsScreen(habitID: id)

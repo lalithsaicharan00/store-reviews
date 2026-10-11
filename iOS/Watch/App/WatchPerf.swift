@@ -100,6 +100,13 @@ enum WatchPerf {
         case "routine":
             let plan = TodayPlan.make(store)
             guard let section = plan.sections.first(where: { !$0.isQuitting && $0.rows.count > 1 }) else { return note("no section") }
+            // The control (S2): an empty full-screen cover, presented the same way.
+            await open("Blank cover (control, first)") { navigation.blankCover = true }
+            navigation.blankCover = false
+            await pause(1.2)
+            await open("Blank cover (control, again)") { navigation.blankCover = true }
+            navigation.blankCover = false
+            await pause(1.2)
             await open("Routine (open)") {
                 navigation.routine = RoutineSession(part: section.id, title: section.title, day: plan.day, habits: section.rows.map(\.habit))
             }
