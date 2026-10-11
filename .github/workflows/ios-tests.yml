@@ -460,12 +460,14 @@ jobs:
           python3 - <<'PY' >> "$GITHUB_ENV"
           import os, re
           m = os.environ["MESSAGE"]
-          tests = re.search(r"\[watch-tests:([^\]]*)\]", m)
+          # The last list of real class names (a subject quoting "[watch-tests:...]" ran a class named "...").
+          lists = [t.strip() for t in re.findall(r"\[watch-tests:([^\]]*)\]", m) if re.fullmatch(r"[A-Za-z0-9_,/ ]+", t.strip())]
+          tests = lists[-1] if lists else None
           ci = "[watch-ci]" in m
           shots = "[watch-shots]" in m
           print("WATCH_CORE=" + ("1" if ci or "[watch-core]" in m else "0"))
           print("WATCH_IPHONE=" + ("0" if "[watch-perf]" in m and not ci else "1"))
-          print("WATCH_TESTS=" + (tests.group(1).strip() if tests else ("WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests,WatchRoutineTests,WatchPlusTests,WatchLogManuallyTests" if ci else "none")))
+          print("WATCH_TESTS=" + (tests if tests else ("WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests,WatchRoutineTests,WatchPlusTests,WatchLogManuallyTests" if ci else "none")))
           print("WATCH_SHOTS=" + ("1" if shots else "0"))
           print("WATCH_PERF=" + ("1" if "[watch-perf]" in m else "0"))
           print("WATCH_PAIR=" + ("1" if ("[watch-pair]" in m or ci) else "0"))
