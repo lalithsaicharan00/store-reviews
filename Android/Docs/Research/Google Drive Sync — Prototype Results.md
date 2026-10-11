@@ -177,4 +177,10 @@ newer app's file, device check-ins, logs in their year's file, and the idle roun
   38162482141, 38162929267, 38163842038 (the failures in §5).
 - Real Drive: 38162572860 (the deciding check), 38163084653 (all checks: race, rounds, behaviour, extreme account),
   38165537627 (all checks again, on the final code).
-- iOS job (the core compiled into the iPhone app; sync and iCloud tests): IOS_RUNS.
+- iOS job on the final code (the core compiled into the iPhone app and the Release build; T7): **all 7 iCloud tests
+  passed** (38165533575: six, 556 s; 38165535866 on the scratch branch `claude/drive-sync-ci2`: the extreme account,
+  1,420 s), and 6 of 7 backup tests. `BackupUITests.testErasingEverything` failed once ("The demo habits are there to
+  start with") and passed on its one re-run (38168170690) and on `main` (38168168209). Not this change: the test checks
+  that "No habits yet" is absent the moment the menu shows, before the demo habits are saved and shown (S7), and it
+  has failed the same way on other branches (`claude/lucid-johnson-egrjup`). Its fix is to wait for a demo habit's row
+  first; left for the iPhone work, not widened into this one.
