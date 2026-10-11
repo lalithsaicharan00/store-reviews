@@ -1,66 +1,65 @@
-# TIME Store load: read the database|25.80
-# TIME Store load: into the app (0 logs)|0.38
-1791697573.502 50.8
-# TIME Watch Today: plan|0.30
-# READY 1791697573.583
-1791697573.560 23.5
+# TIME Store load: read the database|10.50
+# TIME Store load: into the app (0 logs)|0.47
+1791699476.374 29.3
+1791699476.403 20.6
+# TIME Watch Today: plan|0.22
+# READY 1791699476.447
+1791699476.426 20.8
 # TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.06
+# TIME Count: a Today row drawn|0.00
+1791699476.447 68.5
 # TIME Watch Today: plan|0.07
 # TIME Count: a Today row drawn|0.00
-1791697573.583 70.4
-# TIME Watch Today: plan|0.07
+# TIME Watch Today: plan|0.08
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.09
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.09
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.13
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791697573.685 20.3
+# TIME Watch Today: plan|0.08
 # TIME Watch Today: plan|0.10
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
+1791699476.555 21.2
+# TIME Watch Today: plan|0.12
 # TIME Watch Today: plan|0.09
 # TIME Count: a Today row drawn|0.00
+1791699476.595 24.6
+# TIME Watch Today: plan|0.11
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791697573.719 17.6
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.09
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Store load: read the database|109.10
-# TIME Store load: into the app (1716 logs)|15.88
-# TIME Watch Today: plan|1.04
+# TIME Store load: read the database|95.93
+# TIME Store load: into the app (1716 logs)|14.85
+# TIME Watch Today: plan|0.86
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Watch Today: plan|0.12
 # TIME Count: a Today row drawn|0.00
-1791697575.739 29.5
-# TIME Widgets: one habit's week|10.99
-# TIME Widgets: one habit's week|0.71
-# TIME Widgets: one habit's week|0.63
+1791699477.845 29.1
+# TIME Widgets: one habit's week|10.82
+# TIME Widgets: one habit's week|0.62
+# TIME Widgets: one habit's week|0.57
 # TIME Widgets: one habit's week|1.07
-# TIME Widgets: one habit's week|1.81
-# TIME Widgets: one habit's week|1.00
-# TIME Widgets: one habit's week|0.63
-# TIME Widgets: one habit's week|1.55
+# TIME Widgets: one habit's week|2.20
+# TIME Widgets: one habit's week|1.17
+# TIME Widgets: one habit's week|0.66
+# TIME Widgets: one habit's week|1.67
+# TIME Widgets: the snapshot|0.44
 # TIME Widgets: the snapshot|0.46
-# TIME Widgets: the snapshot|0.50
 # MEASURING
 # TIME Watch Today: plan|0.10
+1791699484.176 101.2
+# OPEN Blank cover (control, first)|1791699484.177|1791699485.689
+# TIME Watch Today: plan|0.14
+# TIME Watch Today: plan|0.18
+1791699486.907 29.0
+# OPEN Blank cover (control, again)|1791699486.907|1791699488.422
+# TIME Watch Today: plan|0.16
+1791699488.435 34.9
+# TIME Watch Today: plan|0.13
 # TIME Count: a routine page drawn|0.00
-# TIME Watch Day details: the dial's words|0.07
-1791697582.027 250.9
-# OPEN Routine (open)|1791697582.028|1791697583.531
+# TIME Watch Day details: the dial's words|0.08
+1791699489.638 221.0
+# OPEN Routine (open)|1791699489.638|1791699491.152
 # TIME Count: a routine page drawn|0.00
-# TIME Watch Day details: the dial's words|1.83
-1791697583.547 34.0
-1791697592.304 30.6
-# WINDOW Routine: paging with the Crown|1791697583.531|1791697595.990
+# TIME Watch Day details: the dial's words|1.43
+1791699491.183 20.7
+# WINDOW Routine: paging with the Crown|1791699491.152|1791699503.590
 # DONE
-# TIME Watch Today: plan|0.22
-1791697596.687 29.6
+# TIME Watch Today: plan|0.16
