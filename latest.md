@@ -1,17 +1,46 @@
-# claude/pensive-gates-3n4ie8-perf7 @ 0d913a1 (speed bisect)
+# claude/pensive-gates-3n4ie8-ci12 @ b56e54f
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38146701137 · 2026-10-11 15:34 UTC
-Commit: Speed bisect: Columns lists that shrink only after the taps, against growing and shrinking at once [ios-perf-bisect] perf-variants: before=5d1ca265 after=HEAD~1 perf-scenarios: pad-columns perf-rounds: 4 perf-device: iPad Air 11-inch
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38149307244 · 2026-10-11 15:37 UTC
+Commit: Current Work 86 and 88: what's built, what was found and fixed, and the checks done so far
 
-Variants: `before=5d1ca265 after=HEAD~1` · scenarios: `pad-columns` · rounds: 4
+- Core storage and migrations: success
+- Build: success
+- Release build: success
+- Same-build speed baseline: skipped
+- UI tests (TodayUITests,UndoUITests): success
+- Speed tests: skipped
+- Speed tests through XCTest: skipped
 
-- before: 5d1ca265 Current Work 86: each Columns list holds its own height, so a column that changes redraws only itself
-- after: 7a882174 Current Work 86: a Columns list grows at once but shrinks only once the taps stop
+## UI tests
+```
+	 Executed 16 tests, with 0 failures (0 unexpected) in 588.286 (588.312) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 588.286 (588.314) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 250.668 (250.676) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 337.618 (337.633) seconds
+Test Case '-[HabitsUITests.TodayUITests testBackToToday]' passed (35.910 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDayWeekAndAppearance]' passed (48.088 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDoneRowStaysInPlace]' passed (21.190 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDoneRowWaitsForThePause]' passed (27.598 seconds).
+Test Case '-[HabitsUITests.TodayUITests testFoldAndOpen]' passed (15.567 seconds).
+Test Case '-[HabitsUITests.TodayUITests testMenu]' passed (127.352 seconds).
+Test Case '-[HabitsUITests.TodayUITests testSettingsChecks]' passed (18.096 seconds).
+Test Case '-[HabitsUITests.TodayUITests testTodayScreen]' passed (43.816 seconds).
+Test Case '-[HabitsUITests.UndoUITests testDayControlsAndCalendarOpeningAreExplicit]' passed (34.903 seconds).
+Test Case '-[HabitsUITests.UndoUITests testEditAndDeleteOneEntryInDaySheet]' passed (52.856 seconds).
+Test Case '-[HabitsUITests.UndoUITests testInlineUndoSurvivesAndIsExact]' passed (36.355 seconds).
+Test Case '-[HabitsUITests.UndoUITests testLogManuallyAddsOneLog]' passed (34.030 seconds).
+Test Case '-[HabitsUITests.UndoUITests testRoutineUndoStaysVisibleAndLeavesEarlierLogsIntact]' passed (23.096 seconds).
+Test Case '-[HabitsUITests.UndoUITests testSkipFromTodayKeepsHistoryOpenAndCanBeUndone]' passed (20.754 seconds).
+Test Case '-[HabitsUITests.UndoUITests testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited]' passed (33.246 seconds).
+Test Case '-[HabitsUITests.UndoUITests testStoreCorrectionsRecalculateAndPersist]' passed (15.428 seconds).
+```
 
-Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
+## Release build
+```
+** BUILD SUCCEEDED **
+```
 
-| Window | before | after |
-|---|---|---|
-| iPad Columns: scrolling sideways | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.1**<br>0.1 (18, 0), 0 (0, 0), 0 (0, 0), 1.9 (44, 0) |
-| iPad Columns: scrolling down | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| iPad Columns: +1 and day ‹ › | **598.4**<br>701.5 (1794, 35), 573.4 (444, 39), 598.4 (454, 38) | **629.7**<br>642.1 (479, 42), 617.3 (508, 39), 571.5 (368, 36), 770.5 (713, 46) |
+## Native analytics checks
+```
+Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
+```
