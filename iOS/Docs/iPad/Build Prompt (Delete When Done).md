@@ -58,6 +58,9 @@ work, fix the document in the same change and say why; don't silently do somethi
   (`.presentationSizing(.form)`); the calendar and Filter as **popovers** from their buttons; Edit Group pushed inside
   Filter (only its own habits + Add Habits; Current Work 85).
 - **Full screen:** the routine player and the timer, as on the iPhone.
+- **Plus:** the iPhone's Plus screens (`Plus/PlusScreens.swift`) as form sheets on regular width (Add a 6th habit,
+  Make Room pushed inside it, Plus is yours, the second-device sheet) and the Plus pages beside the sidebar (Design
+  Notes §9); the wording names the other devices.
 - **Keyboard and pointer (I11):** the menu bar's View menu (as List ⌘1, as Columns ⌘2, Hide Sidebar ⌃⌘S, Go to Today
   ⌘T, Previous Day ⌘←, Next Day ⌘→) and New Habit ⌘N, with SwiftUI `.commands`; hover effects; a right-click opens a
   row's long-press menu; Return adds on an Add screen.

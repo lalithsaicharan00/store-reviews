@@ -803,6 +803,10 @@ and the Add note keyboard coming up by itself.
     decision → reason → source table; `Designs/Design Notes.md` with all 17 pictures inline; `Research/` with the report,
     the user's prompts and the evidence scripts, moved from `Research/Research Reports/Home Screen and Visual Design/iPad
     Layout/`; the build prompt); listed in the Docs index and in the research index under "iPad".*
+  - [x] **The main Plus screens on the iPad, landscape and portrait** (the user, 11 Oct: "in the iPad, the user can use
+    the free itself and they can upgrade from there also … the main ones"). *Done 11 Oct: Add a 6th habit, Make Room,
+    Plus is yours, the second-device sheet (form sheets) and Your Plus (beside the sidebar); `iOS/Docs/iPad/Designs/18 ·
+    Plus.png`, Design Notes §9.*
   - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (next; the user will discuss the
     app-level changes first).
 

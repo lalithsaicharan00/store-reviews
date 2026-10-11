@@ -251,6 +251,25 @@ is iPhone only.
 
 ![iPad widgets: the Extra Large Today and its states, the Home Screen, the Lock Screen](<17 · Widgets.png>)
 
-## 9. Still to design
+## 9. Plus on the iPad (the user, 11 Oct 2026: "in the iPad, the user can use the free itself and they can upgrade from there also")
+
+The iPhone's Plus screens (Current Work 80, built; Figma section "Plus — every screen", node `1011:309`) come to the
+iPad with the same words, prices and order; only the presentation changes, as everywhere else on the iPad: what is a
+sheet on the iPhone is a **form sheet** in the middle of the screen, and a page from the menu sits **beside the
+sidebar**. Only the main screens are drawn (the user: "we don't need to create everything, the main Plus screens");
+the rest follow the same two patterns.
+
+| Screen (iPhone card) | On the iPad |
+|---|---|
+| **Add a 6th habit** (E1) | A form sheet over Today when a sixth habit is added: the five habits and a dashed +, Plus and Plus Family side by side, what both include ("Your iPhone and Apple Watch" on the iPad: the plan names the *other* devices), Get Plus, Make room instead |
+| **Make Room** | Pushed inside the same form sheet (‹ back), never a sheet on a sheet: Archive on each habit, ⋯ for Delete |
+| **The Plus page** (P1/P2) | Beside the sidebar (§5, `1168:280` and its portrait) |
+| **Plus is yours** (A1/A2, after buying) | A form sheet with Done, after Apple's own purchase sheet |
+| **Use your habits on this iPad?** (E4/D1, the second-device sheet) | **The iPad's own moment:** a free person opening the app on an iPad with habits already in iCloud. A form sheet: Keep both in sync (Plus) · See Plus, or Move to this iPad · Use on This iPad; ✕ keeps this iPad on its own (Architecture 11 §12) |
+| **Your Plus** (Y1, owners) | Beside the sidebar, Plus selected: included, Upgrade to Plus Family, Restore Purchases, Contact Us |
+
+![Plus on the iPad: the 6th habit, Make Room, Plus is yours, the second-device sheet and Your Plus, landscape and portrait](<18 · Plus.png>)
+
+## 10. Still to design
 
 Nothing on the list. Each design waits for the user's review (checklist item 86), then building.
