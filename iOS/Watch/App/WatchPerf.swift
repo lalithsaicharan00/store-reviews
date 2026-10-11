@@ -69,6 +69,13 @@ enum WatchPerf {
             }
         case "day-details":
             guard let water = store.habits.first(where: { $0.name == "Water" || $0.name == "Habit 2" }) else { return note("no habit") }
+            // The control (S2): a blank page pushed the same way in the same run; an opening adds under 50 ms to it.
+            await open("Blank page (control, first)") { navigation.path = [.blank] }
+            navigation.path = []
+            await pause(1.2)
+            await open("Blank page (control, again)") { navigation.path = [.blank] }
+            navigation.path = []
+            await pause(1.2)
             await open("Day details (first)") { navigation.path = [.day(water.id)] }
             navigation.path = []
             await pause(1.2)

@@ -42,6 +42,15 @@ struct AmountEntry: View {
         return 1
     }
 
+    /// The Crown's end: a few times the goal or the number shown, never the app's maximum (9 trillion in steps of one
+    /// made the Crown's detents uncountable and the app stopped, run 38113615094). − and + and typing still reach any
+    /// number; the end moves up with the number.
+    private var crownLimit: Double {
+        let goal = store.dayGoal(of: ruled)
+        let far = max(step * 200, max(goal, value) * 3)
+        return min(GoalNumber.maximum, (far / step).rounded(.up) * step)
+    }
+
     var body: some View {
         VStack(spacing: 6) {
             HStack(spacing: 6) {
@@ -57,7 +66,7 @@ struct AmountEntry: View {
                         .stroke(focused ? Color.green : Color.white.opacity(0.3), lineWidth: 2.5))
                     .focusable()
                     .focused($focused)
-                    .digitalCrownRotation($crown, from: 0, through: GoalNumber.maximum, by: step, sensitivity: .medium,
+                    .digitalCrownRotation($crown, from: 0, through: crownLimit, by: step, sensitivity: .medium,
                                           isContinuous: false, isHapticFeedbackEnabled: true)
                     .onChange(of: crown) { _, new in value = (new / step).rounded() * step }
                     .onTapGesture { typed = HabitCopy.number(value); typing = true }

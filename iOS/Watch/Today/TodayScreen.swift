@@ -7,6 +7,8 @@ enum WatchRoute: Hashable {
     case logManually(UUID)
     case log(UUID)
     case allLogs(UUID)
+    /// Speed runs only: an empty page pushed the same way, the control an opening is measured against (S2).
+    case blank
 }
 
 /// Today on the Watch (A): opens straight from the Watch's own database (WA1), today's habits and tasks in Today's own
@@ -28,6 +30,7 @@ struct TodayScreen: View {
                     case .logManually(let id): LogManuallyScreen(habitID: id)
                     case .log(let id): LogScreen(entryID: id)
                     case .allLogs(let id): AllLogsScreen(habitID: id)
+                    case .blank: Color.black.navigationTitle("Blank")
                     }
                 }
         }
