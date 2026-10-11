@@ -54,7 +54,9 @@ for S in $SCENARIOS; do
     HISTORY="-perf-history"; [ "$S" = "launch" ] && HISTORY=""
     LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-meter $HISTORY -perf-drive "$S" -watch-fixture "$(fixture "$S")" -clock-hour 10 2>&1)
     echo "$LAUNCH" > "$OUT/launch-$S-$ROUND.txt"
-    LIMIT=200; [ "$S" = "first-fill-extreme" ] && LIMIT=1500
+    # The extreme first fill took ~1,100 s on one hosted Mac (making the account ~330 s, the fill ~730 s) and passed
+    # 1,500 s on a slower one (run 38128109360): 2,100 s still leaves the job inside its 60 minutes.
+    LIMIT=200; [ "$S" = "first-fill-extreme" ] && LIMIT=2100
     WAITED=0
     until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge $LIMIT ]; do sleep 1; WAITED=$((WAITED + 1)); done
     cp "$REC" "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null
