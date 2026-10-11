@@ -1,20 +1,20 @@
-# apple-watch-ci5 @ 1cc16d8
+# apple-watch-ci2 @ e64a020
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38125310837 · 2026-10-11 08:40 UTC
-Commit: Apple Watch: Day details' first screen is the dial alone, sized to what shows; the Undo first below it
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38126067324 · 2026-10-11 09:00 UTC
+Commit: Apple Watch: final round on the merged code (scratch branch run)
 
 - Core storage and migrations: success
-- Build: failure
-- Release build: skipped
+- Build: success
+- Release build: failure
 - Same-build speed baseline: skipped
-- UI tests (none): skipped
+- UI tests (TodayUITests,TimerUITests,PersistenceUITests,PlusUITests,TestLaunchIsolationUITests,AppReliabilityUITests,UndoUITests): skipped
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
-## Build errors
+## Release build
 ```
-/Users/runner/work/store-reviews/store-reviews/iOS/WatchWidgets/WatchWidgets.swift:42:91: error: 'accessoryCorner' is unavailable in iOS
-/Users/runner/work/store-reviews/store-reviews/iOS/WatchWidgets/WatchWidgets.swift:98:91: error: 'accessoryCorner' is unavailable in iOS
+/Users/runner/work/store-reviews/store-reviews/iOS/Habits/App/MainThreadMeter.swift:70:63: error: cannot find type 'CFAbsoluteTime' in scope
+** BUILD FAILED **
 ```
 
 ## Native analytics checks
