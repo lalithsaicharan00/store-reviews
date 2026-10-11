@@ -443,7 +443,8 @@ jobs:
       contains(github.event.head_commit.message, '[watch-shots]') ||
       contains(github.event.head_commit.message, '[watch-perf]') ||
       contains(github.event.head_commit.message, '[watch-pair]') ||
-      contains(github.event.head_commit.message, '[watch-core]'))
+      contains(github.event.head_commit.message, '[watch-core]') ||
+      contains(github.event.head_commit.message, '[watch-tests:'))
     concurrency:
       group: watch-job-${{ github.ref }}
       cancel-in-progress: false
