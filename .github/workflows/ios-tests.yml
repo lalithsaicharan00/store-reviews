@@ -680,5 +680,4 @@ jobs:
             iOS/shots
             iOS/watch-perf
             iOS/watch-pair
-            iOS/WatchResults.xcresult
           retention-days: 7
