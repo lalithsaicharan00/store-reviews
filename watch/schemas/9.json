@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "1a7e057121a26deca438e55d8da87ced",
+    "identityHash": "cbf6fc7d83257cbc03370c7b8c9fd347",
     "entities": [
       {
         "tableName": "habit",
@@ -351,16 +351,6 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_entry_habit_id_day` ON `${TABLE_NAME}` (`habit_id`, `day`)"
-          },
-          {
-            "name": "index_entry_day_id",
-            "unique": false,
-            "columnNames": [
-              "day",
-              "id"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_entry_day_id` ON `${TABLE_NAME}` (`day`, `id`)"
           }
         ]
       },
@@ -390,7 +380,7 @@
       },
       {
         "tableName": "outbox",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL, `problem` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL, `problem` TEXT, `table_name` TEXT, `row_id` TEXT, `hlc` TEXT, `deletes` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "seq",
@@ -414,6 +404,28 @@
             "fieldPath": "problem",
             "columnName": "problem",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "tableName",
+            "columnName": "table_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "rowId",
+            "columnName": "row_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "hlc",
+            "columnName": "hlc",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "deletes",
+            "columnName": "deletes",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -431,12 +443,22 @@
             ],
             "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_outbox_op_id` ON `${TABLE_NAME}` (`op_id`)"
+          },
+          {
+            "name": "index_outbox_table_name_row_id",
+            "unique": false,
+            "columnNames": [
+              "table_name",
+              "row_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbox_table_name_row_id` ON `${TABLE_NAME}` (`table_name`, `row_id`)"
           }
         ]
       },
       {
         "tableName": "sync_meta",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`table_name` TEXT NOT NULL, `row_id` TEXT NOT NULL, `hlc` TEXT NOT NULL, `clocks` TEXT, `extra` TEXT, `pending` INTEGER NOT NULL, PRIMARY KEY(`table_name`, `row_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`table_name` TEXT NOT NULL, `row_id` TEXT NOT NULL, `hlc` TEXT NOT NULL, `clocks` TEXT, `extra` TEXT, `pending` INTEGER NOT NULL, `ck_system` TEXT, PRIMARY KEY(`table_name`, `row_id`))",
         "fields": [
           {
             "fieldPath": "tableName",
@@ -471,6 +493,11 @@
             "columnName": "pending",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "ckSystem",
+            "columnName": "ck_system",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -504,52 +531,11 @@
             "key"
           ]
         }
-      },
-      {
-        "tableName": "peer_out",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "seq",
-            "columnName": "seq",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "opId",
-            "columnName": "op_id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "op",
-            "columnName": "op",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "seq"
-          ]
-        },
-        "indices": [
-          {
-            "name": "index_peer_out_op_id",
-            "unique": true,
-            "columnNames": [
-              "op_id"
-            ],
-            "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_peer_out_op_id` ON `${TABLE_NAME}` (`op_id`)"
-          }
-        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1a7e057121a26deca438e55d8da87ced')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cbf6fc7d83257cbc03370c7b8c9fd347')"
     ]
   }
 }
