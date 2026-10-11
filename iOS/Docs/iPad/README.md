@@ -181,6 +181,10 @@ What building it settled, and why (each a refinement of a decision above, not a 
   has too (below). Side by side with `main` in one job, six rounds: Today's +1 and day, the habit page, Day details,
   typing and scrolling at or under `main`'s medians (runs 38146864538, 38154788830, 38154786500), with Day details'
   add, edit and undo the one median above `main`'s in each of three runs, its rounds overlapping each time.
+- **Extra Large on the Home Screen** (`IPadWidgetSystemUITests`): GitHub's hosted iPad simulator's Home Screen stopped
+  answering XCUITest in the widget gallery in all three runs (38149917285, 38149953441, 38156987610: timeouts, then a
+  hang to the 60-minute limit), so adding it from the gallery and tapping it is a real-iPad check. Its drawing is tested
+  above; its tap is Large's own card, which passed on the iPhone's Home Screen (`WidgetSystemUITests`, run 38131146101).
 - **Failing on `main` too, not from this build:** five tests on the iPhone SE and `LongTextUITests`' two (Current Work
   86's own item).
 - **Open:** the Columns view's day change, 600–650 ms/s on the simulator (PERFORMANCE-LESSONS L32; each column scrolling

@@ -4,6 +4,10 @@ import XCTest
 /// system's widget gallery, a cold tap with the app closed flips the card at once and is saved behind it, quick taps all
 /// count, and paging works with the app closed (Rulebook U26, U28: the switch and the safe save, unchanged). As with
 /// `WidgetSystemUITests`, a skip means the hosted simulator didn't expose the gallery, never a pass. iPad only.
+/// **11 Oct 2026: on GitHub's hosted iPad simulators the Home Screen stopped answering XCUITest in the gallery** (an
+/// accessibility timeout in run 38149917285, a swipe timeout in 38149953441, a hang to the 60-minute limit in
+/// 38156987610). Run it on its own, or on a real iPad; the widget's drawing is `WidgetUITests.testExtraLargeTodayOnTheIPad`'s
+/// and its tap is Large's own card, tested on the iPhone's Home Screen (`WidgetSystemUITests`).
 final class IPadWidgetSystemUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
