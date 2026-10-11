@@ -1,13 +1,13 @@
-# apple-watch-ci6 @ 5ea9c0e
+# apple-watch-ci2 @ 21d53d8
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38126070390 · 2026-10-11 09:02 UTC
-Commit: iPhone CI: build without -sdk, so the embedded Watch app builds for watchOS
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38126935713 · 2026-10-11 09:13 UTC
+Commit: Release build: MainThreadMeter imports Foundation outside #if DEBUG
 
-- Core storage and migrations: cancelled
+- Core storage and migrations: skipped
 - Build: skipped
 - Release build: skipped
 - Same-build speed baseline: skipped
-- UI tests (none): skipped
+- UI tests (TodayUITests,TimerUITests,PersistenceUITests,PlusUITests,TestLaunchIsolationUITests,AppReliabilityUITests,UndoUITests): skipped
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
