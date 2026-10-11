@@ -1,21 +1,15 @@
-# apple-watch-ci2 @ e64a020
+# apple-watch-ci6 @ 5ea9c0e
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38126067324 · 2026-10-11 09:00 UTC
-Commit: Apple Watch: final round on the merged code (scratch branch run)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38126070390 · 2026-10-11 09:02 UTC
+Commit: iPhone CI: build without -sdk, so the embedded Watch app builds for watchOS
 
-- Core storage and migrations: success
-- Build: success
-- Release build: failure
+- Core storage and migrations: cancelled
+- Build: skipped
+- Release build: skipped
 - Same-build speed baseline: skipped
-- UI tests (TodayUITests,TimerUITests,PersistenceUITests,PlusUITests,TestLaunchIsolationUITests,AppReliabilityUITests,UndoUITests): skipped
+- UI tests (none): skipped
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
-
-## Release build
-```
-/Users/runner/work/store-reviews/store-reviews/iOS/Habits/App/MainThreadMeter.swift:70:63: error: cannot find type 'CFAbsoluteTime' in scope
-** BUILD FAILED **
-```
 
 ## Native analytics checks
 ```
