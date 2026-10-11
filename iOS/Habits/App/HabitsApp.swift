@@ -183,6 +183,8 @@ struct HabitsApp: App {
                 // Every way back (sign in, restore, move from another device) finishes inside the welcome, so it
                 // always ends on Today (Current Work 73.1).
                 OnboardingView { showOnboarding = false }
+                // The iPad: the welcome in a 480-pt column in the middle (Design Notes §5).
+                .padColumn(480)
                 .environment(model.store)
                 .environment(model.scheduler)
                 .environment(model.menu)

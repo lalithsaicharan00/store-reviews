@@ -671,7 +671,17 @@ struct WidgetRenderCheck: View {
         return entry
     }
     private var size: CGSize {
-        switch family {
+        // The iPad's own sizes (an 11-inch's), so every widget is drawn as the iPad shows it (Current Work 86).
+        if Device.isPad {
+            switch family {
+            case .systemSmall: return .init(width: 155, height: 155)
+            case .systemMedium: return .init(width: 342, height: 155)
+            case .systemLarge: return .init(width: 342, height: 342)
+            case .systemExtraLarge: return .init(width: 715, height: 342)
+            default: break
+            }
+        }
+        return switch family {
         case .systemSmall: .init(width: 158, height: 158)
         case .systemMedium: .init(width: 338, height: 158)
         case .systemLarge: .init(width: 338, height: 354)

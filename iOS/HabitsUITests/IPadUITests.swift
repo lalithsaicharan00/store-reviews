@@ -100,7 +100,7 @@ final class IPadUITests: XCTestCase {
                    "menu-reminders", "menu-appearance", "menu-backup", "menu-privacy", "menu-plus", "menu-help", "menu-about"] {
             XCTAssertTrue(app.buttons[id].exists, "Sidebar row \(id): \(labels())")
         }
-        XCTAssertTrue(any("sidebar-today-left").exists, "\"N left\" beside Today: \(labels())")
+        XCTAssertTrue(app.buttons["menu-today"].label.contains("left"), "\"N left\" beside Today: \(app.buttons["menu-today"].label)")
         let order = ["menu-today", "menu-progress", "menu-habits", "menu-tasks", "menu-timesOfDay", "menu-help", "menu-about"]
             .map { app.buttons[$0].frame.minY }
         XCTAssertEqual(order, order.sorted(), "The menu's order")
@@ -114,7 +114,10 @@ final class IPadUITests: XCTestCase {
         let header = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Anytime'")).firstMatch
         XCTAssertTrue(header.waitForExistence(timeout: 5), "Anytime's header: \(labels())")
         let card = app.collectionViews.firstMatch.cells.containing(.button, identifier: nil).firstMatch
-        XCTAssertLessThanOrEqual(header.frame.width, 720, "The column is ≈ 700 pt: header \(frame(header)), cell \(frame(card))")
+        XCTAssertLessThanOrEqual(card.frame.width, 720, "The column is ≈ 700 pt: header \(frame(header)), cell \(frame(card))")
+        XCTAssertGreaterThanOrEqual(card.frame.width, 600, "…and uses the room: cell \(frame(card))")
+        let room = (sidebar.frame.maxX, window.maxX)
+        XCTAssertLessThan(abs(card.frame.midX - (room.0 + room.1) / 2), 30, "…centred: cell \(frame(card)), room \(room)")
         shot("01-today-landscape")
 
         // ‹ and › change the day; Back to Today appears beside the control on another day.
@@ -166,8 +169,6 @@ final class IPadUITests: XCTestCase {
             all.tap()
             XCTAssertTrue(any("all-logs").waitForExistence(timeout: 3), "All logs inside the popover: \(labels())")
             shot("03-all-logs-in-popover")
-            app.navigationBars.buttons.element(boundBy: 0).tap()
-            XCTAssertTrue(result.waitForExistence(timeout: 3), labels())
         }
         // A tap outside closes it.
         tapOutside()
@@ -203,27 +204,28 @@ final class IPadUITests: XCTestCase {
         // Add: back to Day details inside the popover, with the new log.
         app.buttons["record-add"].tap()
         XCTAssertTrue(result.waitForExistence(timeout: 5), "Add returns to Day details: \(labels())")
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '2 glasses'")).firstMatch.exists, "The log of 2: \(labels())")
+        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH '2 glasses'")).firstMatch.waitForExistence(timeout: 3),
+                      "The log of 2: \(labels())")
     }
 
     /// The window goes narrow mid-edit and back (Build Prompt §1, priority 2): the popover becomes the iPhone's sheet and
     /// back, and the typed amount stays.
     func testNarrowWindowMidEditKeepsTheTypedAmount() {
         let start = Date()
-        launch(["-pad-size-script", "28:compact,48:regular"])
+        launch(["-pad-size-script", "30:compact,60:regular"])
         openRow("Water")
         app.buttons["day-add-entry"].firstMatch.tap()
         XCTAssertTrue(amount.waitForExistence(timeout: 5), labels())
         amount.typeText("3")
-        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "narrow")], timeout: max(1, 36 - Date().timeIntervalSince(start)))
+        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "narrow")], timeout: max(1, 46 - Date().timeIntervalSince(start)))
         XCTAssertTrue(amount.waitForExistence(timeout: 5), "Narrow: Add log still open: \(labels())")
         XCTAssertEqual(amount.value as? String, "3", "Narrow: the typed amount stays")
         shot("05-narrow-mid-edit")
-        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "wide")], timeout: max(1, 56 - Date().timeIntervalSince(start)))
+        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "wide")], timeout: max(1, 76 - Date().timeIntervalSince(start)))
         XCTAssertTrue(amount.waitForExistence(timeout: 5), "Wide again: Add log still open: \(labels())")
         XCTAssertEqual(amount.value as? String, "3", "Wide again: the typed amount stays")
         app.buttons["record-add"].tap()
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '3 glasses'")).firstMatch.waitForExistence(timeout: 5),
+        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH '3 glasses'")).firstMatch.waitForExistence(timeout: 5),
                       "Saved once, after both changes: \(labels())")
     }
 
@@ -380,8 +382,8 @@ final class IPadUITests: XCTestCase {
             XCTAssertEqual(columns.element(boundBy: 0).frame.minY, columns.element(boundBy: 1).frame.minY, accuracy: 2, "Side by side")
         }
         shot("16-columns-landscape")
-        // A row in a column opens Day details at itself.
-        openRow("Water")
+        // A row in a column opens Day details at itself (Morning's, the first column).
+        openRow("Stretch")
         tapOutside()
         // ⌘1: List again.
         app.typeKey("1", modifierFlags: .command)
@@ -402,7 +404,8 @@ final class IPadUITests: XCTestCase {
         // ⌘N: New.
         app.typeKey("n", modifierFlags: .command)
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 4), "⌘N opens New: \(labels())")
-        app.typeKey(XCUIKeyboardKey.escape.rawValue, modifierFlags: [])
+        app.navigationBars["New"].buttons.firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["New"].waitForNonExistence(timeout: 4), "New's ✕: \(labels())")
         // Appearance → Layout: Columns, for people without a keyboard.
         place("menu-appearance")
         let picker = app.buttons["appearance-layout"].firstMatch

@@ -85,6 +85,7 @@ struct PadRoot: View {
         // The menu bar's Hide Sidebar (⌃⌘S).
         .onChange(of: commands.sidebarRequests) { toggle() }
         .onChange(of: docks) { overlayOpen = false }
+        .onChange(of: docked || overlayOpen, initial: true) { commands.sidebarShown = docked || overlayOpen }
         .onChange(of: commands.placeRequest) {
             guard let request = commands.placeRequest else { return }
             commands.placeRequest = nil
@@ -199,6 +200,8 @@ struct PadSidebarPanel: View {
         }
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
         .padding(8)
+        // A container's id needs `.contain`, or every row inside takes it (Rulebook T9).
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("pad-sidebar")
     }
 
@@ -433,6 +436,8 @@ struct PadListDetail: View {
     static let shared = PadCommands()
     /// Counts each Hide Sidebar, so the same command twice is seen twice.
     var sidebarRequests = 0
+    /// Whether the sidebar is out, for the command's name (Hide Sidebar or Show Sidebar).
+    var sidebarShown = true
     /// A place to show (Go to Today: nil).
     var placeRequest: PlaceRequest?
     /// Today's day and New Habit, as the speed runs' commands.
@@ -473,7 +478,7 @@ struct PadMenuCommands: Commands {
             Divider()
         }
         CommandGroup(replacing: .sidebar) {
-            Button("Show or Hide Sidebar") { PadCommands.shared.sidebarRequests += 1 }
+            Button(PadCommands.shared.sidebarShown ? "Hide Sidebar" : "Show Sidebar") { PadCommands.shared.sidebarRequests += 1 }
                 .keyboardShortcut("s", modifiers: [.control, .command])
                 .disabled(!Device.isPad)
         }

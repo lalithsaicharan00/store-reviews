@@ -667,3 +667,26 @@ every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the
   another device's habits in the test launch's fake iCloud.
 - **The empty Today is never a dead end and never says "every day":** New Habit, Start From an Idea, Restore from a Backup File, How It Works.
 - **Help & Feedback:** Contact Us and Show the Welcome Again first, then How It Works, searchable. **Every answer names the exact button**; when a way in or a label changes, change its answer in `HelpTopics` in the same change. Contact Us sends no habit data. About lists the open-source libraries with their licences; no links to pages that don't exist yet.
+
+## iPad (built 11 Oct 2026, Current Work 86; real-iPad check pending)
+
+The iPad is the iPhone's app in Apple's iPad frame; every decision and its reason is in
+[`Docs/iPad/README.md`](<Docs/iPad/README.md>) (and its "Built" section), the screens in `Docs/iPad/Designs/`. What must
+not regress:
+
+- **The iPhone never changes for the iPad.** Every iPad difference is behind `Device.isPad` or a regular-width size class
+  on an iPad; on the iPhone the same views, words and presentations run as before (Build Prompt §1, priority 1).
+- **A narrow iPad window is the iPhone's Today** (I2): the iPhone's top bar with the sidebar button, the bottom day bar,
+  Day details as the sheet with ✕. The sidebar button is always the system's `sidebar.left` on the iPad, never ≡.
+- **Today is one view at every size** (`PadRoot`): never move it between containers as the window changes, or an open
+  Day details and a typed amount are lost. That's why the sidebar isn't a `NavigationSplitView`.
+- **Day details is a popover hanging on Today's content**, pointing at its row (`PadDayPresenter`, `PadAnchor`), never a
+  popover on the row: a recycled row would close it. No ✕ in the popover; Add log, Add note and All logs are pushed inside
+  it; a typed amount blocks the tap outside.
+- **Today's cards: one column ≈ 700 pt, centred** (`padColumn`), the list still spanning the room so it scrolls from
+  anywhere; the 13-inch only adds margin. Columns is an option (View ⌘1/⌘2, Appearance → Layout), never the default.
+- **The day control at the top centre** with Back to Today beside it on another day; the calendar and Filter are popovers
+  from their buttons (no Done); New, the habit form, Plus's sheets, App Lock setup and the second-device sheet are form
+  sheets; the routine player and the timer are full screen.
+- **Words come from the device** (`Device.words`, `Device.otherDevices`): "this iPad", "iPad Settings", "the sidebar ›"; no
+  Haptics row and no Dynamic Island on the iPad.

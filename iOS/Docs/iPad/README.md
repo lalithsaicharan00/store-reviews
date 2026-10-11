@@ -141,3 +141,32 @@ steps (Walk) and Touch ID.
 7. Widgets: Extra Large Today; check the others at iPad sizes; Lock Screen.
 8. Words that name the device.
 9. Tests on the iPad simulator; speed runs; then the real iPad checks.
+
+## Built (11 Oct 2026), and what building it changed
+
+Built by Claude (Claude Code) on 11 October 2026 from the build prompt, on branch `claude/pensive-gates-3n4ie8`. The code
+is in `iOS/Habits/Pad/` (`PadRoot.swift`: the sidebar, the pages beside it, list–detail, the menu bar's commands;
+`PadSupport.swift`: the device's words, the Day details popover and its anchor, popover sizing, form sheets) and, gated on
+the iPad, in the screens it reshapes. **On the iPhone every change is behind `Device.isPad` (false there), so the iPhone
+runs the same views, words and presentations as before.** Test runs and their numbers: Current Work 86 (the checklist).
+
+What building it settled, and why (each a refinement of a decision above, not a new design):
+
+| What | Why |
+|---|---|
+| **The sidebar is built from system parts, not `NavigationSplitView`** (a `List` in the sidebar style in a floating panel, the system's `sidebar.left` button, the iPadOS spring) | A split view collapses into one navigation stack in a narrow window, with the sidebar's list as its first page: not the iPhone's menu over Today that §4 of the design notes asks for. And moving Today from the split view to another container when the window changes width rebuilds it, which closed an open Day details and lost a typed amount (the build prompt's priority 2). Here Today is one view in one place at every size. |
+| **A sidebar row shows its page in place at every width**, a narrow window included (no Back to Today) | The same as portrait, where the sidebar slides over; one navigation model at every width, so dragging the window narrow or wide never moves you or rebuilds the page you're on. Pages a page opens are still pushed with a back button. |
+| **Day details' popover hangs on Today's whole content**, pointing at the row's reported frame | A `List` recycles a row that leaves the screen (rotating to landscape can push it below the fold); a popover on the row closed with it. On the content it stays open, pointing where the row was. |
+| **Add log and Add note open inside Day details in a narrow window too** (pushed, with ✕) | So the popover adapting to the iPhone's sheet and back (the window resized mid-edit) never closes a screen with typing in it. On the iPhone they stay sheets. |
+| **The calendar and Filter are popovers only on a regular width**; in a narrow window they're the iPhone's sheets | As the design says; nothing typed in either, so a resize just closes the popover. |
+| **Restore From a Backup is pushed beside the sidebar**, as every page a setting opens (§5), not a form sheet | The iPhone pushes it too; a pushed page in the settings column is the iPad Settings app's own pattern. |
+| **Edit Group in the Filter popover is today's Edit Group** | Showing only the group's own habits is Current Work 85, a separate item that changes the iPhone too; not built here. |
+| **Progress's cards are two across in Week, Month and Year** | The design shows Week; Month and Year use the same cards. |
+| **Return adds on Add log** with a hardware keyboard; the View menu names Hide Sidebar or Show Sidebar as it is | I11. |
+| **The Columns view's columns are 320 pt** (each a grouped list sized to its cards, the page scrolling down together) | 300 pt of card plus the grouped list's own margins. |
+
+**Capabilities to check on a real iPad** (the simulator can't show them; nothing is promised until checked): Live
+Activities for a running timer, AlarmKit alarms, Health steps for a Walk habit, Touch ID / Face ID for App Lock (the words
+come from `biometryType`; App Lock's "Settings › Face ID & Passcode" line still names Face ID), popover placement with the
+on-screen keyboard, Stage Manager and windowed resizing, a hardware keyboard and the menu bar, the Extra Large widget on
+the Home Screen.

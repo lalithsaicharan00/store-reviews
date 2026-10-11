@@ -752,6 +752,7 @@ struct TodayView: View {
                 .padding(.horizontal, 4)
             }
             .scrollIndicators(.hidden)
+            .accessibilityElement(children: .contain)
             .accessibilityIdentifier("today-columns")
         }
         .background(Color(.systemGroupedBackground))
@@ -771,6 +772,7 @@ struct TodayView: View {
                 if abs((columnHeights[card] ?? 0) - rounded) >= 1 { columnHeights[card] = rounded }
             }
             .frame(width: 320, height: max(columnHeights[card] ?? CGFloat(80 + count * 60), 120))
+            .accessibilityElement(children: .contain)
             .accessibilityIdentifier("today-column-" + card)
     }
 
