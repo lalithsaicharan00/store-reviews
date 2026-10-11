@@ -10,6 +10,17 @@ final class IPadWidgetSystemUITests: XCTestCase {
         try XCTSkipUnless(UIDevice.current.userInterfaceIdiom == .pad, "iPad only")
     }
 
+    /// The Home Screen back to normal whatever happened, so the next test can talk to it: a run that stopped in the
+    /// gallery left the springboard unanswering, and the test after it failed before it began (runs 38149917285,
+    /// 38149953441: "Failed to get list of active applications").
+    override func tearDown() {
+        XCUIDevice.shared.press(.home)
+        Thread.sleep(forTimeInterval: 1)
+        XCUIDevice.shared.press(.home)
+        XCUIDevice.shared.orientation = .portrait
+        super.tearDown()
+    }
+
     private func save(_ app: XCUIApplication, _ name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "ipad-" + name; shot.lifetime = .keepAlways; add(shot)
     }
@@ -21,7 +32,6 @@ final class IPadWidgetSystemUITests: XCTestCase {
         throw XCTSkip("Cold widget fixture uses the erased CI simulator's default database; never reset a device user's database")
         #endif
         XCUIDevice.shared.orientation = .landscapeLeft
-        defer { XCUIDevice.shared.orientation = .portrait }
         let app = XCUIApplication()
         app.launchArguments = ["-empty", "-widget-fixture", "-free", "-dbname", "habits", "-reset-db"]
         app.launch()
@@ -58,7 +68,11 @@ final class IPadWidgetSystemUITests: XCTestCase {
         var found = false
         for _ in 0..<9 {
             if today.waitForExistence(timeout: 3), (today.value as? String)?.contains("Extra Large") == true { found = true; break }
-            springboard.swipeLeft()
+            // A drag across the gallery's middle, then a moment for its previews to draw: a swipe that made the
+            // springboard work out its whole tree timed out while the previews were still drawing (run 38149953441).
+            let middle = springboard.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.75, dy: 0.5))
+            middle.press(forDuration: 0.05, thenDragTo: springboard.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.5)))
+            Thread.sleep(forTimeInterval: 1.5)
         }
         save(springboard, "home-gallery-extra-large")
         // One line of what the gallery offered (T14): every "Often Enough" button with its value.
