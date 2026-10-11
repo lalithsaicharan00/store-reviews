@@ -102,7 +102,11 @@ here the same day, with its numbers.
   Day details moved between the two scenarios' windows: 211 + 50 before, 92 + 189 after). So the first run was the
   hosted Mac, not the code (S2: repeat a surprising number). Day details +1 is 9.4 there, above its earlier 0.6–4.8:
   on the Series 10's list too. The second run's extreme first fill passed the script's 1,500 s limit on a slower Mac
-  (the limit is 2,100 s now).
+  (the limit is 2,100 s now). **The iPhone after the merge, side by side with `main` (`38132967688`, four rounds):** Habit
+  page Progress scrolling median 2.4 against `main`'s 4.9 (`main` had the one freeze, 492 ms: the 758 ms of
+  `38127623686` was a first round, not this branch); History 1.8 / 2.6; tabs 9.6 / 13.7; Progress period ‹ › 109.5 /
+  86.9 with the rounds overlapping (62–162 / 56–107), and nothing on its path changed (`RunWords.short` is the same
+  words moved into `Words.swift`): spread, not a regression; it stays on the list above.
 
 **Above the targets on every build, not a regression (8 Oct 2026, Current Work 49; side by side, simulator):** Today's
 day ‹ › 55–160 ms/s depending on the machine (one 40–60 ms stall per switch), habit-form typing at a letter every
