@@ -1,19 +1,45 @@
-# claude/pensive-gates-3n4ie8-perf5 @ fc86a77 (speed bisect)
+# claude/pensive-gates-3n4ie8-ci13 @ cb035ab
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38154788830 · 2026-10-11 17:14 UTC
-Commit: Speed bisect: Today's taps, the iPad build's newest commit against main on the iPhone, six rounds [ios-perf-bisect] perf-variants: main=bac8a1b5 branch=HEAD~1 perf-scenarios: tap-today perf-rounds: 6
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38156985780 · 2026-10-11 17:22 UTC
+Commit: Current Work 86: the iPad's Home Screen widget test leaves the Home Screen as it found it, and lets the gallery settle between pages
 
-Variants: `main=bac8a1b5 branch=HEAD~1` · scenarios: `tap-today` · rounds: 6
+- Core storage and migrations: success
+- Build: success
+- Release build: success
+- Same-build speed baseline: skipped
+- UI tests (IPadUITests,WidgetUITests/testExtraLargeTodayOnTheIPad): success
+- Speed tests: skipped
+- Speed tests through XCTest: skipped
 
-- main: bac8a1b5 Current Work 88: coming back to the iPhone after using the iPad, "Use your habits on this iPhone?" (t
-- branch: 555410fb Current Work 86: Day details takes the iPad's options from the iPad's own code; the iPhone's reads no
+## UI tests
+```
+	 Executed 15 tests, with 0 failures (0 unexpected) in 794.675 (794.703) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 837.413 (837.448) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 837.413 (837.450) seconds
+Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' passed (146.212 seconds).
+Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (34.631 seconds).
+Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' passed (73.961 seconds).
+Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (50.505 seconds).
+Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (41.187 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' passed (35.558 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (84.487 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (18.399 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (42.745 seconds).
+Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (39.327 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (30.523 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' passed (98.221 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (31.375 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' passed (56.590 seconds).
+Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (10.955 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad]' passed (42.738 seconds).
+```
 
-Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
+## Release build
+```
+** BUILD SUCCEEDED **
+```
 
-| Window | main | branch |
-|---|---|---|
-| Today: +1 and day ‹ › | **56.5**<br>37.3 (90, 0), 80.3 (115, 2), 70.2 (94, 0), 94.3 (176, 3), 34.5 (62, 0), 42.7 (65, 0) | **52.7**<br>68.2 (120, 1), 184.9 (159, 4), 38.1 (79, 0), 14.2 (38, 0), 57.8 (82, 0), 47.6 (93, 0) |
-| Today: +1 alone | **1.8**<br>1.8 (41, 0), 3.2 (47, 0), 1.8 (30, 0), 1.9 (45, 0), 1.7 (29, 0), 0.2 (20, 0) | **1.4**<br>2.9 (39, 0), 5.2 (38, 0), 2.2 (36, 0), 0.6 (22, 0), 0.2 (20, 0), 0.5 (24, 0) |
-| Today: day ‹ › alone | **39.7**<br>125 (107, 1), 67.3 (118, 1), 36.5 (59, 0), 40.3 (53, 0), 39.1 (56, 0), 19.5 (44, 0) | **64.8**<br>91.5 (108, 1), 78.9 (78, 0), 22.9 (50, 0), 12.3 (37, 0), 117.4 (127, 2), 50.6 (79, 0) |
-| Today: Day sheet scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| Timer screen: a running clock | **0.0**<br>28.7 (114, 1), 0.2 (20, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 19 (101, 1), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+## Native analytics checks
+```
+Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
+```
