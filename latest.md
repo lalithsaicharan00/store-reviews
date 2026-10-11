@@ -1,61 +1,69 @@
-# claude/pensive-gates-3n4ie8-ci7 @ c5b1da3
+# claude/pensive-gates-3n4ie8-ci3 @ c5b1da3
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38131146101 · 2026-10-11 11:37 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38131139022 · 2026-10-11 11:37 UTC
 Commit: Current Work 86/88: Day details' popover hangs on Today, pointing at its row; iPad tests; iPad speed runs; coming back to the iPhone
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (WidgetUITests,WidgetSystemUITests,AppLockUITests,AppReliabilityUITests,RemindersUITests,TasksUITests): success
+- UI tests (TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests,DayDetailsUITests): cancelled
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 2 tests, with 1 test skipped and 0 failures (0 unexpected) in 278.338 (278.342) seconds
-	 Executed 21 tests, with 0 failures (0 unexpected) in 1315.092 (1315.110) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 119.840 (119.842) seconds
-	 Executed 38 tests, with 2 tests skipped and 0 failures (0 unexpected) in 2191.213 (2191.257) seconds
-	 Executed 38 tests, with 2 tests skipped and 0 failures (0 unexpected) in 2191.213 (2191.258) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 113.922 (113.926) seconds
-	 Executed 7 tests, with 1 test skipped and 0 failures (0 unexpected) in 338.304 (338.312) seconds
-Test Case '-[HabitsUITests.AppLockUITests testALinkOpensBehindTheCoverAndShowsAfterUnlock]' passed (36.035 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testAppPasscodeWayAndItsReset]' passed (159.278 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testAskAgainImmediatelyAndAfterAMinute]' passed (46.480 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testCancelLeavesUnlockAndTypedTextIsKept]' passed (38.149 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testCancellingSetUpAtEachStepChangesNothing]' passed (74.412 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testFaceIDChangedAsksForTheCodeAndThenAsks]' passed (91.182 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testFaceIDLockedOutIsNotTurnedOff]' passed (50.110 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testFaceIDOffForTheApp]' passed (135.824 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testForgotCodeTwentyFourHourReset]' passed (111.091 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testForgotCodeWithFaceID]' passed (32.652 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testIPhonePasscodeTurnedOff]' passed (41.474 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testIPhonePasscodeWay]' passed (61.127 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testLockOnAndOffAndHideNamesFollows]' passed (114.367 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testLockRulesAndHiddenNamesEverywhere]' passed (6.598 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testNoFaceIDOnThisIPhone]' passed (39.648 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testNoPasscodeUsesTheAppPasscodeAlone]' passed (45.064 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testOlderLockUpgrades]' passed (46.806 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testReminderSaysIsSavedWithTheHabit]' passed (50.240 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testSwitchingWays]' passed (66.890 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testWidgetChooseLinkOpensHelp]' passed (25.383 seconds).
-Test Case '-[HabitsUITests.AppLockUITests testWrongCodesWaitThenTheRightCodeOpens]' passed (42.282 seconds).
-Test Case '-[HabitsUITests.AppReliabilityUITests testBurstsRetriesStormsMidnightTravelAndAYear]' passed (25.717 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testDeniedPermissionOffersSettingsAndEmptyState]' passed (14.781 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testPlanningActionsPermissionsFailuresAndClockChanges]' passed (66.208 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testRealEmptyPageHasNoUnexpectedAlarmErrorOrPermissionPrompt]' passed (12.942 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testSavedRemindersOpenEditableTaskWithoutPermissionPrompt]' passed (19.991 seconds).
-Test Case '-[HabitsUITests.TasksUITests testCreateTaskFromTasksAndEditSurvivesRelaunch]' passed (46.179 seconds).
-Test Case '-[HabitsUITests.TasksUITests testEveryTaskAppearsAndCanOpenEdit]' passed (68.035 seconds).
-Test Case '-[HabitsUITests.TasksUITests testTaskModelAndPersistence]' passed (5.626 seconds).
-Test Case '-[HabitsUITests.WidgetSystemUITests testHomeScreenInstallTapAndColdPersistence]' passed (148.181 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes]' passed (219.339 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testGuideAndPrivacyAreFree]' passed (38.849 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testLargerTextCountersAndCutDownAreReadable]' passed (30.451 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testLongNamesAndUnitsKeepQuickActionVisible]' passed (16.629 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testReliabilityUnderBurstsRetriesAndRollover]' passed (20.166 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks]' passed (12.628 seconds).
+	 Executed 10 tests, with 0 failures (0 unexpected) in 500.157 (500.163) seconds
+	 Executed 15 tests, with 3 failures (0 unexpected) in 1239.249 (1239.262) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 110.287 (110.290) seconds
+	 Executed 9 tests, with 0 failures (0 unexpected) in 221.219 (221.223) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/DayDetailsUITests.swift:604: error: -[HabitsUITests.DayDetailsUITests testTasksReschedule] : XCTAssertTrue failed - Moving closes Day details
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/DayDetailsUITests.swift:68: error: -[HabitsUITests.DayDetailsUITests testEveryKindDark] : Failed to not hittable: StaticText, {{76.0, 212.8}, {87.7, 20.3}}, label: 'Less coffee'
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/DayDetailsUITests.swift:75: error: -[HabitsUITests.DayDetailsUITests testEveryKindDark] : XCTAssertTrue failed
+Test Case '-[HabitsUITests.DayDetailsUITests testCurrencyAndNoUnitAmounts]' passed (58.946 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testEveryKindDark]' failed (166.972 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testEveryKindsAddScreen]' passed (363.013 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testEveryKindShowsItsOwnDay]' passed (115.129 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testHistoryDaysOpenDayDetails]' passed (129.078 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testLogsRuleAndAllLogs]' passed (36.459 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testLogViewThenEditThenDelete]' passed (46.352 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testMarkADayDoneOnlyOnce]' passed (45.347 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testOlderMultiCheckLogStillCorrects]' passed (36.406 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testPastDayLogKeepsItsDayAndChosenTime]' passed (30.252 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testQuitSlipAddViewEditAndDelete]' passed (36.975 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testSkippedDayKeepsLogsAndNote]' passed (40.803 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testTasksReschedule]' failed (77.400 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testTickSteps]' passed (18.260 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testTimeLogAddViewAndEdit]' passed (37.857 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testChipsAndEmptyGroup]' passed (33.190 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testDeletingAGroupKeepsItsHabits]' passed (34.737 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testEditRenameDeleteAndEmptyDay]' passed (62.950 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testFirstGroupFromFilter]' passed (43.220 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testGroupDragDropsReliably]' passed (131.844 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testGroupInHabitForm]' passed (60.980 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testGroupOrderIsThePersonsOwn]' passed (36.521 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testNamesAreUniqueAndAGroupCanPause]' passed (36.862 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testProgressAndHabitsByGroup]' passed (29.421 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testTodayAndProgressKeepTheirOwnChoiceAndStartPlaysWhatsShown]' passed (30.432 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testEmptyState]' passed (11.722 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testHabitPageYearAndMilestones]' passed (23.889 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testHidePercentages]' passed (58.133 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testLogSlipAndUndo]' passed (40.339 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testOpenSwitchAndBack]' passed (22.916 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testPreviousStopsAtFirstPeriod]' passed (15.622 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testProgressChecks]' passed (6.567 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testRowOpensHabitPageAtProgress]' passed (24.110 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testYearAndMonthTap]' passed (17.921 seconds).
+Test Case '-[HabitsUITests.TimerUITests testLiveActivityWhileRunning]' passed (26.858 seconds).
+Test Case '-[HabitsUITests.TimerUITests testPlayOpensTimerScreenThatClosesWithoutStopping]' passed (29.210 seconds).
+Test Case '-[HabitsUITests.TimerUITests testRowTicksBarShowsWhenOutOfSightAndStopKeepsTime]' passed (26.500 seconds).
+Test Case '-[HabitsUITests.TimerUITests testScreenCanBeTurnedOff]' passed (10.785 seconds).
+Test Case '-[HabitsUITests.TimerUITests testTimerScreenPauseKeepsTimeAndResumes]' passed (16.933 seconds).
+Test Case '-[HabitsUITests.TodayUITests testBackToToday]' passed (18.460 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDayWeekAndAppearance]' passed (37.127 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDoneRowStaysInPlace]' passed (16.689 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDoneRowWaitsForThePause]' passed (22.749 seconds).
+Test Case '-[HabitsUITests.TodayUITests testFoldAndOpen]' passed (12.208 seconds).
 ```
 
 ## Release build
