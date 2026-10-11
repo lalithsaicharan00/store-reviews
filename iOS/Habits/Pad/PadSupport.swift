@@ -100,12 +100,21 @@ struct PadOpenHabit {
 /// Which row Day details points at on the iPad (Design Notes §3): the row that was tapped; for a habit opened another
 /// way (a widget, Siri), its first row on screen; with no row on screen (a folded card, another group), a form sheet
 /// in the middle instead (`fallback`), latched so it never jumps to a row that scrolls in behind it.
+///
+/// The popover itself hangs on Today's whole content, never on the row: a List recycles a row that leaves the screen
+/// (rotating to landscape can push it below the fold), and a popover on that row would close with it, losing a typed
+/// amount. The row only reports where it is (`rect`); if it goes, the popover stays where it pointed.
 @Observable final class PadAnchor {
     static let shared = PadAnchor()
+    /// Today's coordinate space, where the row's frame is read and the popover is attached.
+    static let space = "pad-today"
     /// The section of the row last tapped, per habit (a habit ticked in several sections has a row in each).
     @ObservationIgnored private var tappedSection: [UUID: String] = [:]
     /// The Day details shown as a sheet because its habit had no row on screen.
     var fallback: HabitStore.DayTarget?
+    /// The row Day details points at, once chosen, and where it was last seen.
+    var key: String?
+    var rect: CGRect?
 
     func tapped(_ habit: UUID, section: String?) {
         if let section { tappedSection[habit] = section } else { tappedSection[habit] = nil }
@@ -120,34 +129,58 @@ struct PadOpenHabit {
         }
         return visible.filter { $0.hasSuffix(suffix) }.min()
     }
+
+    /// Day details closed: nothing to point at.
+    func clear() {
+        if fallback != nil { fallback = nil }
+        if key != nil { key = nil }
+        if rect != nil { rect = nil }
+    }
 }
 
-/// Day details as a popover pointing at this row, on the iPad (Design Notes §3; Rulebook I9): in both orientations on a
-/// regular width, and the iPhone's sheet in a narrow window (`presentationCompactAdaptation(.sheet)`), from the same
-/// presentation, so a typed amount inside it survives the window changing size. Only on the iPad: on the iPhone this is
-/// the row itself (Today's `.sheet` shows Day details there).
-struct PadDayPopover: ViewModifier {
-    let habit: Habit
-    let day: LocalDay
+/// A Today row on the iPad that reports where it is while Day details points at it (`PadAnchor`). The row itself on the
+/// iPhone (and on the iPad while it isn't the one).
+struct PadDayAnchorRow: ViewModifier {
     let key: String
-    let visible: VisibleRows
+
+    func body(content: Content) -> some View {
+        content.background {
+            if PadAnchor.shared.key == key {
+                Color.clear
+                    .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(PadAnchor.space)) } action: { rect in
+                        if PadAnchor.shared.key == key { PadAnchor.shared.rect = rect }
+                    }
+            }
+        }
+    }
+}
+
+/// Day details as a popover pointing at its row, on the iPad (Design Notes §3; Rulebook I9): in both orientations on a
+/// regular width, and the iPhone's sheet in a narrow window (`presentationCompactAdaptation(.sheet)`), from the same
+/// presentation, so a typed amount inside it survives rotating and the window changing size. On Today's content, in the
+/// coordinate space its rows report in. Nothing on the iPhone (Today's `.sheet` shows Day details there).
+struct PadDayPresenter: ViewModifier {
     @Environment(HabitStore.self) private var store
     @Environment(\.horizontalSizeClass) private var sizeClass
 
     func body(content: Content) -> some View {
         if Device.isPad {
-            content.popover(isPresented: Binding(get: { shown }, set: { if !$0 && shown { store.dayTarget = nil } })) {
-                PadDayDetails(habit: habit, day: day, regular: sizeClass == .regular)
-            }
+            let anchor = PadAnchor.shared
+            content
+                .coordinateSpace(.named(PadAnchor.space))
+                .popover(isPresented: Binding(get: { shown }, set: { if !$0 && shown { store.dayTarget = nil } }),
+                         attachmentAnchor: .rect(.rect(anchor.rect ?? .zero))) {
+                    if let target = store.dayTarget, let habit = store.habits.first(where: { $0.id == target.habitID }) {
+                        PadDayDetails(habit: habit, day: target.day, regular: sizeClass == .regular)
+                    }
+                }
         } else {
             content
         }
     }
 
     private var shown: Bool {
-        guard let target = store.dayTarget, target.habitID == habit.id, target.day == day,
-              PadAnchor.shared.fallback == nil else { return false }
-        return PadAnchor.shared.key(for: target, visible: visible.keys) == key
+        store.dayTarget != nil && PadAnchor.shared.fallback == nil && PadAnchor.shared.rect != nil
     }
 }
 
@@ -273,14 +306,9 @@ private struct PadPopoverContent<Content: View>: View {
 }
 
 extension View {
-    /// Day details as a popover at this Today row on the iPad (`PadDayPopover`), and the row registered as on screen.
-    /// The row itself on the iPhone.
-    @ViewBuilder func padDayPopover(_ habit: Habit, day: LocalDay, key: String, visible: VisibleRows) -> some View {
-        if Device.isPad {
-            modifier(PadDayPopover(habit: habit, day: day, key: key, visible: visible))
-        } else {
-            self
-        }
+    /// A Today row on the iPad that Day details can point at (`PadDayAnchorRow`). The row itself on the iPhone.
+    @ViewBuilder func padDayAnchor(_ key: String) -> some View {
+        if Device.isPad { modifier(PadDayAnchorRow(key: key)) } else { self }
     }
 }
 

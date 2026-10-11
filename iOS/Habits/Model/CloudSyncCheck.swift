@@ -127,6 +127,8 @@ enum CloudSyncCheck {
         ("accounts", accountsNeverDeleteHere),
         ("brake", brakeBothWays),
         ("free plan", freePlanHandover),
+        ("back to the iPhone", comingBackToThePhone),
+        ("plus offline", plusOfflineAndBack),
         ("fresh install", freshInstallWaits),
         ("delete from iCloud", deleteFromICloud),
         ("clone", cloneGetsItsOwnNode),
@@ -403,6 +405,83 @@ enum CloudSyncCheck {
         // Two free devices both thinking they're the one: the first to reach iCloud keeps it.
         let stale = CloudActive(deviceID: "nobody", name: "iPhone", at: .distantPast, system: Data("old".utf8))
         do { _ = try await phone.transport.claimActive(phone.sync.active ?? stale, expected: stale); failures.append("a stale claim loses") } catch {}
+        return failures
+    }
+
+    /// Current Work 88: the iPhone, then the iPad (Move Here), then the iPhone again. Opening the iPhone again asks once
+    /// ("Use your habits on this iPhone?"); ✕ changes nothing anywhere; Move to this iPhone brings the iPad's changes, sends
+    /// what the iPhone made meanwhile, and the iPad stops syncing keeping everything it has. Nothing lost, nothing doubled.
+    static func comingBackToThePhone() async -> [String] {
+        var failures: [String] = []
+        let cloud = FakeCloud()
+        let phone = Device("phone", cloud: cloud, plus: false), iPad = Device("ipad", cloud: cloud, plus: false)
+        await phone.start()
+        await phone.addHabit(id(1))
+        await phone.log(id(800), habit: id(1))
+        await phone.syncNow()
+        // The person moves to the iPad and logs there.
+        await iPad.start()
+        if !(await iPad.sync.moveHere()) { failures.append("the iPad moves here") }
+        await iPad.sync.idle()
+        await iPad.log(id(801), habit: id(1))
+        await iPad.syncNow()
+        // The iPhone notices, sends nothing more and says where its habits sync now.
+        await phone.syncNow()
+        if case .otherDevice = phone.sync.phase {} else { failures.append("the iPhone stops syncing (\(phone.sync.phase))") }
+        if phone.sync.handedOverTo == nil { failures.append("the iPhone says where its habits sync now") }
+        // Back on the iPhone (opened again): asked once.
+        phone.relaunch(); await phone.start()
+        if phone.sync.secondDevice == nil { failures.append("opening the iPhone again asks (Use your habits on this iPhone?)") }
+        // ✕: nothing changes anywhere; a log made here stays here, waiting, never lost.
+        phone.sync.secondDevice = nil
+        await phone.log(id(802), habit: id(1))
+        await phone.syncNow()
+        if cloud.rows()["entry:" + id(802)] != nil { failures.append("✕ keeps the iPhone on its own: nothing sent") }
+        if case .otherDevice = phone.sync.phase {} else { failures.append("✕: the iPad still syncs (\(phone.sync.phase))") }
+        phone.relaunch(); await phone.start()
+        if phone.sync.secondDevice != nil { failures.append("asked only once for the same move") }
+        // Move to this iPhone: the iPad's log comes down, the iPhone's waiting log goes up. (A move is asked about once,
+        // keyed by the second it happened: real moves are seconds apart, so the check waits one.)
+        try? await Task.sleep(for: .seconds(1.1))
+        if !(await phone.sync.moveHere()) { failures.append("Move to this iPhone") }
+        await phone.sync.idle()
+        await phone.syncNow()
+        if cloud.rows()["entry:" + id(802)] == nil { failures.append("the iPhone's log made meanwhile reaches iCloud") }
+        let onPhone = await phone.liveEntries()
+        if onPhone != 3 { failures.append("the iPhone has all three logs, none twice (\(onPhone))") }
+        // The iPad stops, keeping everything, and asks once when opened again.
+        await iPad.syncNow()
+        if case .otherDevice = iPad.sync.phase {} else { failures.append("the iPad stops syncing (\(iPad.sync.phase))") }
+        if iPad.sync.handedOverTo == nil { failures.append("the iPad says where its habits sync now") }
+        let onIPad = await iPad.liveEntries()
+        if onIPad < 2 { failures.append("the iPad keeps everything it had (\(onIPad))") }
+        iPad.relaunch(); await iPad.start()
+        if iPad.sync.secondDevice == nil { failures.append("the iPad asks again after the iPhone moved back") }
+        return failures
+    }
+
+    /// Plus: the iPhone and the iPad both sync. Each logs while offline; back online, both have every log once.
+    static func plusOfflineAndBack() async -> [String] {
+        var failures: [String] = []
+        let cloud = FakeCloud()
+        let phone = Device("phone", cloud: cloud), iPad = Device("ipad", cloud: cloud)
+        await phone.start(); await iPad.start()
+        await phone.addHabit(id(1))
+        await phone.syncNow(); await iPad.syncNow()
+        phone.transport.offline = true; iPad.transport.offline = true
+        for n in 0..<5 { await phone.log(id(900 + n), habit: id(1)) }
+        for n in 0..<5 { await iPad.log(id(950 + n), habit: id(1)) }
+        await phone.syncNow(); await iPad.syncNow()
+        if cloud.rows()["entry:" + id(900)] != nil { failures.append("offline: nothing reaches iCloud") }
+        let waiting = await phone.waiting()
+        if waiting < 5 { failures.append("offline: the iPhone's logs wait (\(waiting))") }
+        phone.transport.offline = false; iPad.transport.offline = false
+        await phone.syncNow(); await iPad.syncNow(); await phone.syncNow()
+        let a = await phone.liveEntries(), b = await iPad.liveEntries()
+        if a != 10 || b != 10 { failures.append("back online: every log on both, once (\(a), \(b))") }
+        if await phone.state() != iPad.state() { failures.append("back online: the two agree") }
+        let left = await phone.waiting() + iPad.waiting()
+        if left != 0 { failures.append("back online: nothing left waiting (\(left))") }
         return failures
     }
 

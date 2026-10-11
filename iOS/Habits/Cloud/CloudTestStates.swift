@@ -39,8 +39,10 @@ enum CloudTestStates {
         case "full":
             fake.full = true
         case "free-other":
-            _ = try? fake.claim(CloudActive(deviceID: "other-ipad", name: "iPad", at: .now, system: nil), expected: nil)
-            try? fake.saveDevice(CloudDevice(id: "other-ipad", name: "iPad", platform: "ipados", lastSync: .now, habits: 12))
+            // The other device: an iPad when the test runs on an iPhone, an iPhone when it runs on an iPad (Current Work 86).
+            let other = Device.isPad ? "iPhone" : "iPad"
+            _ = try? fake.claim(CloudActive(deviceID: "other-ipad", name: other, at: .now, system: nil), expected: nil)
+            try? fake.saveDevice(CloudDevice(id: "other-ipad", name: other, platform: Device.isPad ? "ios" : "ipados", lastSync: .now, habits: 12))
         case "plus":
             try? fake.saveDevice(CloudDevice(id: "other-ipad", name: "iPad", platform: "ipados", lastSync: .now.addingTimeInterval(-3600), habits: 12))
         case "other-account":
@@ -78,7 +80,7 @@ enum CloudTestStates {
         case "full": cloud.setForTest(phase: .on, waiting: 214, full: true, devices: [phone])
         case "off": cloud.setForTest(phase: .off(.noAccount))
         case "bringing": cloud.setForTest(phase: .on, bringingIn: 12_000, devices: [phone])
-        case "free-other": cloud.setForTest(phase: .otherDevice(name: "iPad"))
+        case "free-other": cloud.setForTest(phase: .otherDevice(name: Device.isPad ? "iPhone" : "iPad"))
         case "plus": cloud.setForTest(phase: .on, devices: [phone, iPad], lastSynced: now.addingTimeInterval(-30))
         case "removed": cloud.setForTest(phase: .asking(.removed))
         case "other-account": cloud.setForTest(phase: .asking(.differentAccount(iCloudHabits: 14)))

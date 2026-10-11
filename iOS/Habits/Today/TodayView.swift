@@ -82,6 +82,8 @@ struct TodayView: View {
                     content(now: clock)
                         .task(id: goalTimes()) { await tick() }
                         .modifier(ClocksPausedUnderMenu(menu: menu))
+                        // The iPad's Day details popover, pointing at its row (`PadDayPresenter`).
+                        .modifier(PadDayPresenter())
                 }
             }
             .toolbar { if !covered { topBar } }
@@ -789,12 +791,12 @@ struct TodayView: View {
                     let key = Self.rowKey(Self.quitting, habit.id)
                     if habit.kind == .quit {
                         QuitRow(habit: habit, highlighted: highlighted == key)
-                            .padDayPopover(habit, day: store.today(), key: key, visible: visibleRows)
+                            .padDayAnchor(key)
                             .padVisibleRow(key, in: visibleRows)
                             .id(key)
                     } else {
                         HabitRow(habit: habit, day: day, isToday: isToday, highlighted: highlighted == key)
-                            .padDayPopover(habit, day: day, key: key, visible: visibleRows)
+                            .padDayAnchor(key)
                             .id(key)
                             .onAppear { visibleRows.show(key) }
                             .onDisappear { visibleRows.hide(key) }
@@ -965,11 +967,15 @@ private struct PadToday: ViewModifier {
     func body(content: Content) -> some View {
         if Device.isPad {
             content
-                .onChange(of: store.dayTarget?.id) {
+                // Day details opened: point at its row on screen (`PadAnchor`), or, with none, a form sheet.
+                .onChange(of: store.dayTarget?.id, initial: true) {
                     let anchor = PadAnchor.shared
-                    guard let target = store.dayTarget else { anchor.fallback = nil; return }
+                    guard let target = store.dayTarget else { anchor.clear(); return }
                     if anchor.fallback?.id == target.id { return }
-                    anchor.fallback = anchor.key(for: target, visible: visible.keys) == nil ? target : nil
+                    let key = anchor.key(for: target, visible: visible.keys)
+                    anchor.key = key
+                    if key == nil { anchor.rect = nil }
+                    anchor.fallback = key == nil ? target : nil
                 }
                 .fullScreenCover(isPresented: Binding(get: { store.timerScreen != nil }, set: { if !$0 { store.timerScreen = nil } })) {
                     if let id = store.timerScreen { TimerScreen(habitID: id) }

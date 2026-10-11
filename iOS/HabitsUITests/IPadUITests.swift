@@ -422,4 +422,64 @@ final class IPadUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
         shot("14-welcome-or-empty-portrait")
     }
+
+    // MARK: Plus and the second device
+
+    func testPlusOnTheIPad() {
+        launch(["-free", "-empty", "-plus-fixture"])
+        // The Plus page beside the sidebar, in a 540-pt column; the sidebar counts the free plan.
+        XCTAssertTrue(app.buttons["menu-plus"].label.contains("5 of 5"), "Sidebar: \(app.buttons["menu-plus"].label)")
+        place("menu-plus")
+        XCTAssertTrue(app.navigationBars["Plus"].waitForExistence(timeout: 5), labels())
+        let buy = app.buttons["plus-buy"]
+        XCTAssertTrue(buy.waitForExistence(timeout: 5), labels())
+        XCTAssertLessThanOrEqual(buy.frame.width, 560, "Plus reads in a 540-pt column: \(frame(buy))")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'your iPhone and Apple Watch'")).firstMatch.exists,
+                      "Plus names the other devices on the iPad: \(labels())")
+        shot("19-plus-page")
+        // The 6th habit: a form sheet over Today, Make Room pushed inside it.
+        place("menu-today")
+        app.buttons["New Habit"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 5), labels())
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
+        let title = app.staticTexts["Add a 6th habit"]
+        XCTAssertTrue(title.waitForExistence(timeout: 5), labels())
+        XCTAssertLessThan(buy.frame.width, app.windows.firstMatch.frame.width - 200, "A form sheet: \(frame(buy))")
+        shot("18-sixth-habit")
+        app.buttons["plus-make-room"].tap()
+        XCTAssertTrue(app.navigationBars["Make Room"].waitForExistence(timeout: 5) || app.staticTexts["Make Room"].waitForExistence(timeout: 2),
+                      "Make Room pushed inside the sheet: \(labels())")
+        shot("18-make-room")
+    }
+
+    func testSecondDeviceSheetOnTheIPad() {
+        app.launchArguments = ["-uitest", "-free", "-test-cloud", "free-other"]
+        app.launch()
+        let title = app.staticTexts["use-here-title"]
+        XCTAssertTrue(title.waitForExistence(timeout: 20), labels())
+        XCTAssertEqual(title.label, "Use your habits on this iPad?")
+        XCTAssertTrue(app.staticTexts["use-here-text"].label.contains("Your iPhone stops syncing and keeps everything it has"),
+                      app.staticTexts["use-here-text"].label)
+        XCTAssertLessThan(title.frame.width, app.windows.firstMatch.frame.width - 200, "A form sheet: \(frame(title))")
+        shot("20-second-device")
+        app.buttons["use-here-cancel"].tap()
+        XCTAssertTrue(title.waitForNonExistence(timeout: 5))
+        place("menu-backup")
+        let status = any("cloud-status")
+        XCTAssertTrue(status.waitForExistence(timeout: 5) && status.label.contains("Your iPhone is the one syncing"), "\(status.label) — \(labels())")
+        app.buttons["cloud-move-here"].tap()
+        let device = app.descendants(matching: .any).matching(NSPredicate(format: "identifier == 'cloud-device' AND label CONTAINS 'This iPad is the one syncing'")).firstMatch
+        XCTAssertTrue(device.waitForExistence(timeout: 20), labels())
+        shot("12-icloud-this-ipad")
+    }
+
+    func testPlusEndedIsAFormSheet() {
+        launch(["-free", "-empty", "-plus-fixture", "-plus-ended", "refund"])
+        let ended = app.staticTexts["Plus has ended"]
+        XCTAssertTrue(ended.waitForExistence(timeout: 10), labels())
+        XCTAssertLessThan(app.buttons["plus-ended-ok"].frame.width, app.windows.firstMatch.frame.width - 200, "A form sheet")
+        shot("20-plus-ended")
+        app.buttons["plus-ended-ok"].tap()
+        XCTAssertTrue(ended.waitForNonExistence(timeout: 5))
+    }
 }

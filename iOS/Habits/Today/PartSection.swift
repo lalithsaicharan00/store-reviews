@@ -73,7 +73,7 @@ struct PartSection: View {
                     let steps = layout.steps(habit.id)
                     HabitRow(habit: habit, day: day, isToday: isToday, slot: item.placement.slot,
                              time: item.placement.times.first, highlighted: highlighted == key, steps: steps)
-                        .padDayPopover(habit, day: day, key: key, visible: visibleRows)
+                        .padDayAnchor(key)
                         .id(key)
                         .onAppear { visibleRows.show(key) }
                         .onDisappear { visibleRows.hide(key) }
