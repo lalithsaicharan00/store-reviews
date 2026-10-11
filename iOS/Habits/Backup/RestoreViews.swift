@@ -7,6 +7,8 @@ import UniformTypeIdentifiers
 /// Google Drive once it works) and Backup File. Restoring replaces the habits here, or with Plus on every syncing device,
 /// and keeps an undo for 30 days (D5).
 struct RestoreStartView: View {
+    /// Opened by iCloud & Backup's Import a Backup File: the file picker shows at once.
+    var pickFile = false
     @Environment(BackupCenter.self) private var backup
     @State private var importing = false
     @State private var pending: BackupCenter.Pending?
@@ -53,6 +55,7 @@ struct RestoreStartView: View {
         }
         .navigationTitle("Restore From a Backup")
         .navigationBarTitleDisplayMode(.inline)
+        .task { if pickFile { importing = true } }
         .sheet(item: $pending) { pending in
             NavigationStack { RestorePreviewView(pending: pending) }
         }

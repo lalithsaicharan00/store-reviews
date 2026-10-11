@@ -1,7 +1,6 @@
 import Core
 import SwiftUI
 import UIKit
-import UniformTypeIdentifiers
 
 /// ≡ → iCloud & Backup (Architecture 11 §17; replaces the Account page and Backup & Export, 10 Oct 2026). **What people
 /// want to see first is whether their habits are safe** (W6; 14 of 44 reviews of iCloud failing in habit apps: "sync
@@ -17,8 +16,8 @@ struct ICloudPage: View {
     @State private var confirmUndo = false
     @State private var confirmErase = false
     @State private var confirmDelete = false
-    @State private var importing = false
-    @State private var pending: BackupCenter.Pending?
+    /// Restore From a Backup, opened by Import a Backup File with its file picker showing.
+    @State private var importFromRestore = false
     @State private var showPlus = false
     @State private var showRestore = false
 
@@ -64,7 +63,7 @@ struct ICloudPage: View {
                     IconRow(symbol: "tablecells", title: "Export a Spreadsheet (CSV)", line: "To open in Numbers, Excel or Google Sheets")
                 }
                 .accessibilityIdentifier("backup-export-csv")
-                Button { importing = true } label: {
+                Button { importFromRestore = true } label: {
                     IconRow(symbol: "square.and.arrow.down", title: "Import a Backup File", line: "From Files, AirDrop or Mail")
                 }
                 .accessibilityIdentifier("backup-import")
@@ -86,16 +85,15 @@ struct ICloudPage: View {
         .task { await backup.runIfDue() }
         .navigationDestination(isPresented: $showPlus) { MenuPage(place: .plus) }
         .navigationDestination(isPresented: $showRestore) { RestoreStartView() }
+        // One file picker in the stack, Restore's own: a second `.fileImporter` on this page, under Restore's, froze the
+        // main thread for 14–46 s when Restore opened, in two of four speed runs (10 Oct 2026; the old Backup & Export
+        // page had none).
+        .navigationDestination(isPresented: $importFromRestore) { RestoreStartView(pickFile: true) }
         .onPerfCommand { action in
             if action == .openRestore { showRestore = true }
         }
         .sheet(item: Binding(get: { sharing.map(SharedBackup.init) }, set: { sharing = $0?.url })) { item in
             ShareFileSheet(url: item.url, onFinish: { sharing = nil })
-        }
-        .sheet(item: $pending) { pending in NavigationStack { RestorePreviewView(pending: pending) } }
-        .fileImporter(isPresented: $importing, allowedContentTypes: [.zip, .data], allowsMultipleSelection: false) { result in
-            guard case .success(let urls) = result, let url = urls.first else { return }
-            Task { await importFile(url) }
         }
         .alert(item: $message) { Alert(title: Text($0.title), message: Text($0.text)) }
         .confirmationDialog("Delete your data from iCloud?", isPresented: $confirmDelete, titleVisibility: .visible) {
@@ -316,27 +314,6 @@ struct ICloudPage: View {
         do { sharing = try await backup.makeFile() } catch {
             message = BackupAlert(title: "Couldn't Make the File", text: "Your habits are safe on this \(DeviceIdentity.name). Please try again.")
         }
-    }
-
-    private func importFile(_ url: URL) async {
-        let scoped = url.startAccessingSecurityScopedResource()
-        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-        guard let data = try? Data(contentsOf: url) else {
-            message = BackupAlert(title: "Couldn't Open the File", text: "Nothing was changed.")
-            return
-        }
-        if BackupCenter.isOlderBackupFile(data) {
-            do {
-                let added = try await backup.importOlderFile(url)
-                message = BackupAlert(title: added.changed ? "Imported" : "Nothing to Add", text: added.changed
-                    ? "Added \(added.habits) habits or tasks, \(added.entries) check-ins and \(added.settings) notes or settings. Everything already here was kept."
-                    : "Everything in this file is already here. Nothing was changed.")
-            } catch {
-                message = BackupAlert(title: "Couldn't Import", text: error.localizedDescription)
-            }
-            return
-        }
-        pending = await backup.check(data)
     }
 
     /// A spreadsheet for reading the history (not for restoring): one row per day's entry or note.
