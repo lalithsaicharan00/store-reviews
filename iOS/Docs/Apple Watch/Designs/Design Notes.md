@@ -170,5 +170,8 @@ Built on branch `apple-watch` (Current Work 82). The built screens, photographed
   own views in a gallery screen (`-face-gallery`, test launches only), the same views the face draws.
 - **Continue on iPhone (G1):** watchOS can't put an app on the iPhone's screen, so the page offers Handoff for as long
   as it's open (the app's icon in the iPhone's app switcher opens ≡ › Plus), and the button says where to look.
+- **H10, the streak in Day details:** a habit with logs older than the Watch's 400 days in memory shows its streak
+  only when it certainly falls inside them, and no best; the iPhone has both (Architecture 12, "What's read into
+  memory").
 - **Messages between the two apps** go straight away while both are running (`sendMessage`), and are queued by the
   system otherwise (`transferUserInfo`), as Architecture 12 §3.1 describes; repeats are harmless.

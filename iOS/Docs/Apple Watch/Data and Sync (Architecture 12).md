@@ -34,6 +34,14 @@ The same tables as the iPhone: `habit`, `step`, `reminder`, `entry`, `setting`, 
 - **Day start and week start** are synced settings, so "today" is the same day on both (D7, WA5).
 - **Size:** a log is a few hundred bytes. An extreme user (25,000 logs a year, Architecture 11 §14) is about 7–10 MB
   a year with indexes; Architecture 11's yearly compaction applies here too. Watches have 32–64 GB.
+- **What's read into memory** (as built, 11 Oct 2026): the database keeps every log, but the app reads its last 400
+  days (a year goal's whole year, with room) and every log of a quit habit or a task (their runs and repeats read the
+  whole past, and they are few): `HabitRepository.loadSince`, `HabitStore.historyWindowDays`. Measured on the Watch
+  simulator for the extreme account (25,000 logs a year for 15 years, 225 MB): reading it all took 27 s and 202 MB of
+  memory (run 38109083512), against WA1's "opens at once". The rules above still read the same data for today, the
+  week, the month and the year; only a run longer than the window, or a best run before it, can't be counted here, so
+  the Watch shows no streak it isn't sure of and no best for a habit with older logs (WA11: not sure, no count). The
+  iPhone keeps reading everything.
 - **Where:** the Watch app's own container. Its complications and Smart Stack widgets read a small snapshot file in an
   App Group (as the iPhone's widgets do, U26), never the database.
 - **A complication's ✓ or +** (as built, 10 Oct 2026): the face changes at once to the app's own "after one tap" card,
