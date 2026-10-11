@@ -336,6 +336,8 @@ final class IPadUITests: XCTestCase {
             morning.tap()
             XCTAssertTrue(sidebar.exists, "Pushed beside the sidebar")
             shot("13-time-of-day")
+            // Back to Times of Day: a page a settings page opens has Back; the sidebar's button is on the place's pages.
+            app.navigationBars.buttons.firstMatch.tap()
         }
         XCUIDevice.shared.orientation = .portrait
         place("menu-about")

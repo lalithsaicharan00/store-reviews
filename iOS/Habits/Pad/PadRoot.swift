@@ -333,14 +333,27 @@ private struct PadStack<Content: View>: View {
     var body: some View {
         NavigationStack(path: Bindable(pageMenu).path) {
             content
-                .toolbar {
-                    if showsSidebarButton, let sidebar, !sidebar.docked {
-                        ToolbarItem(placement: .topBarLeading) { PadSidebarButton(control: sidebar) }
-                    }
+                .modifier(SidebarButton(shows: showsSidebarButton, sidebar: sidebar))
+                // The pages this stack opens keep the sidebar's button beside Back, as iPadOS's own sidebars do.
+                .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0).modifier(SidebarButton(shows: true, sidebar: sidebar)) }
+                .navigationDestination(for: HelpLink.self) {
+                    HelpView(open: $0.topic).analyticsScreen(.help).modifier(SidebarButton(shows: true, sidebar: sidebar))
                 }
-                .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
-                .navigationDestination(for: HelpLink.self) { HelpView(open: $0.topic).analyticsScreen(.help) }
-                .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id) }
+                .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id).modifier(SidebarButton(shows: true, sidebar: sidebar)) }
+        }
+    }
+}
+
+/// The sidebar's button at the top left while the sidebar is put away (portrait, a narrow window, or hidden).
+private struct SidebarButton: ViewModifier {
+    let shows: Bool
+    let sidebar: PadSidebarControl?
+
+    func body(content: Content) -> some View {
+        content.toolbar {
+            if shows, let sidebar, !sidebar.docked {
+                ToolbarItem(placement: .topBarLeading) { PadSidebarButton(control: sidebar) }
+            }
         }
     }
 }
