@@ -3,8 +3,9 @@
 Written by Claude (Claude Code), 11 October 2026. Everything for building the iPad app (Current Work 86) in one
 place: what it is, every decision, pictures of every screen, the system changes, and the build order.
 
-> **Building it:** [Build Prompt (Delete When Done)](<Build Prompt (Delete When Done).md>) is the hand-off for the
-> session that builds the iPad app; it deletes that file when the work is merged.
+> **Built 11 Oct 2026** (Current Work 86; "Built", below). The build prompt it was built from was deleted when the work
+> was merged, as it asked; code comments that cite "Build Prompt §…" refer to it in git history (`git log --all --
+> "iOS/Docs/iPad/Build Prompt (Delete When Done).md"`).
 
 ## What's in this folder
 
@@ -13,7 +14,6 @@ Everything from the iPad work is here, so a session without Figma has it all:
 | Path | What it is |
 |---|---|
 | `README.md` | This page: what the iPad app is, every decision and why, the words that change, data and sync, the build order |
-| `Build Prompt (Delete When Done).md` | The hand-off for the building session |
 | `Designs/Design Notes.md` | Every screen with its picture inline, what it shows and why, in the order they were designed with the user |
 | `Designs/01 · Today.png` … `20 · Plus — owners, other devices, when Plus ends.png` | The designs: each picture is one screen, landscape first, its portrait beside it |
 | `Research/The iPad Layout — Familiar Like the iPhone, Native to the iPad.md` | The research: what people say about apps on the iPad, Apple's iPadOS guidance, how 14 top iPad apps do it, rules I1–I12 |
@@ -166,17 +166,19 @@ What building it settled, and why (each a refinement of a decision above, not a 
 | **Return adds on Add log** with a hardware keyboard; the View menu names Hide Sidebar or Show Sidebar as it is | I11. |
 | **The Columns view's columns are 320 pt** (each a grouped list sized to its cards, the page scrolling down together) | 300 pt of card plus the grouped list's own margins. |
 | **as List ⌘1 and as Columns ⌘2 sit in the sidebar's own group of the View menu**, beside Hide Sidebar, with a checkmark on the one in use | Commands placed before that group never reached the iPad's menu bar, as Toggles or as Buttons (runs 38141959437, 38149917285); the group's own commands did. |
-| **A page beside the sidebar covers Today, kept alive behind it, and hides Today's rows from VoiceOver** | Today keeps its day and scroll while you visit a page; its rows are cells UIKit hosts, which a hidden flag on Today didn't reach (run 38149917285, U1). |
+| **A page beside the sidebar covers Today as the routine player does: Today stays alive and draws nothing behind it** | Today keeps its day and the widgets' routes while you visit a page. Hiding it any other way left its rows readable by VoiceOver (SwiftUI's flag on Today, its list and its rows, then UIKit's on its container: runs 38149917285–38162641513; U1). Coming back costs nothing measurable (run 38165599443). |
+| **The sidebar's button stays beside Back on the pages a place opens** (another place, Help, a habit's page) | As iPadOS's own sidebars; pages a settings page opens itself (a time of day's editor) have Back first (run 38165603132). |
 | **Day details takes the iPad's options (no ✕ in a popover, the habit's page beside the list) from the iPad's code** | So the iPhone's Day details reads nothing it didn't before (U30). |
 
 **Tested on GitHub's simulators (11 Oct 2026):**
 
-- **iPad Pro 13-inch, `cb035ab`, run 38156985780: all green** — the 15 `IPadUITests` (sidebar, Today's column and day
+- **The final build, `0176922`: iPad Air 11-inch run 38168398257 and iPad Pro 13-inch run 38169397645, all green** — the 15 `IPadUITests` (sidebar, Today's column and day
   control; the Day details popover with Add log, Add note and All logs inside it; a typed amount through rotation, a tap
   outside and the window going narrow and wide; a narrow window as the iPhone's app; Habits list–detail; Progress; every
   settings page and the iPad's words; sheets and popovers; Arrange, the timer and the player; Columns and every keyboard
   command; the welcome; Plus, the second-device sheet and Plus ended) and the Extra Large render (ten a page in two
-  columns, paging, hidden and names-hidden states). The iCloud two-device check on the iPad passed in run 38149953441.
+  columns, paging, hidden and names-hidden states). The iCloud two-device check on the iPad passed in run 38149953441;
+  the iPhone's Today, Undo and Timer on the final iPhone code in run 38164207979.
 - **The iPhone, unchanged:** every UI class on the newest iPhone passed on this branch, apart from failures that `main`
   has too (below). Side by side with `main` in one job, six rounds: Today's +1 and day, the habit page, Day details,
   typing and scrolling at or under `main`'s medians (runs 38146864538, 38154788830, 38154786500), with Day details'

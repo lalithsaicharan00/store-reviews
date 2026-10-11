@@ -814,7 +814,7 @@ and the Add note keyboard coming up by itself.
   - [x] **Every Plus screen covered** (the user, 11 Oct: "in Plus, all of the required screens, have you covered?").
     *Done 11 Oct: all 26 screens of the iPhone's Plus flows 1–8 (Figma `1021:309`) now have iPad versions, landscape and
     portrait (Apple's own purchase sheet is the system's): pictures 18–20, Design Notes §9.*
-  - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (the user's go-ahead, 11 Oct:
+  - [x] **Build the iPad app** from the build prompt (deleted when done, as it asked; the user's go-ahead, 11 Oct:
     "build the iPad app exactly as the build prompt says … the iPhone must not change at all"). Branch
     `claude/pensive-gates-3n4ie8`; what was built and decided: [iPad README](<../iPad/README.md>) "Built"; rules U30, T18.
     - [x] Universal app (iPhone and iPad), every iPad orientation, one window (`UIApplicationSupportsMultipleScenes`
@@ -831,12 +831,29 @@ and the Add note keyboard coming up by itself.
       sizes in the render check. The locked tap (U28) unchanged.
     - [x] Words that name the device (`Device.words`, `Device.otherDevices`: "this iPad", "the sidebar", "iPad
       Settings", "Your iPhone and Apple Watch"); no Haptics row, no silent-switch or Dynamic Island footers on the iPad.
-    - [ ] Tests on GitHub, all green on the final commit: iPad 11-inch and 13-inch (`IPadUITests`,
+    - [x] Tests on GitHub, all green on the final commit: iPad 11-inch and 13-inch (`IPadUITests`,
       `IPadWidgetSystemUITests`, Extra Large), the iPhone's full UI set on the newest iPhone and the iPhone SE, the
-      speed comparisons against `main` (S). *Found and fixed so far:* Day details lost Add log and its typed amount as
+      speed comparisons against `main` (S). *Done 11 Oct, final code `0176922`: iPad Air 11-inch run 38168398257 and
+      iPad Pro 13-inch run 38169397645 (15 `IPadUITests` and the Extra Large render each); the iPhone: every UI class
+      passed on this branch (runs 38131146101, 38131142188, 38131140603, 38131144606, 38138209575's batch,
+      38140558803, 38144971935, 38148837844, 38149307244, 38159794690, 38164207979), apart from the failures `main`
+      has too (below); the iCloud two-device checks (free, Move Here, back to the iPhone, Plus, offline and back)
+      run 38131144606 on the iPhone and 38149953441 on the iPad; speed side by side with `main`, six rounds: runs
+      38146864538, 38154788830, 38154786500, 38159808960 (at or under `main` but Day details' add, edit and undo,
+      whose median sat above `main`'s in three runs with rounds overlapping each time); the iPad's own speed runs
+      38131557328, 38143097108, 38146701137, 38165599443. `IPadWidgetSystemUITests` couldn't run on the hosted
+      iPad simulator (the Home Screen stopped answering in the gallery: runs 38149917285, 38149953441,
+      38156987610): a real-iPad check. Once-failed, then passed (cause not found, T2): `OnboardingBackupScreenshot
+      UITests.testA_Welcome`, `NewFlowUITests.testFlow`, `NewHabitUITests.testRemindMeOffHidesTheRest`, Core's
+      `DurabilityTest.killingTheAppMidWriteLosesNothingThatWasSaved` (run 38136471253, Core unchanged from `main`).*
+      *Found and fixed:* Day details lost Add log and its typed amount as
       the window narrowed (a branching sizing modifier, run 38131431056); Plus's Buy spanned 828 pt (same run); the
       Columns view redrew every column per column height (run 38131557328, 683 ms/s; held per column, then held still
-      during a run of taps); iPad-only modifiers taken off the iPhone's view tree (runs 38131504505, 38138422562).
+      during a run of taps; holding them still bought nothing and was reverted); iPad-only modifiers taken off the
+      iPhone's view tree (runs 38131504505, 38138422562); ⌘1 / ⌘2 never reached the menu bar from before the
+      sidebar group; Today was readable by VoiceOver under a page; no sidebar button on a pushed page in portrait.
+    - [ ] **Open, for the user:** the Columns view's day change, 600–650 ms/s on the simulator (PERFORMANCE-LESSONS
+      L32): each column scrolling on its own would draw less, but changes the design (Design Notes §6).
     - [ ] **Five tests fail on the iPhone SE on `main` too, not from this branch** (found 11 Oct: the same five, same
       lines, on `main` `bac8a1b` run 38136626357 and on this branch run 38136627928; these classes normally run on the
       newest iPhone only): `AppLockUITests` `testCancellingSetUpAtEachStepChangesNothing` (line 297) and
