@@ -1062,6 +1062,10 @@ and the Add note keyboard coming up by itself.
   - [ ] **Build it (11 Oct 2026: handed to a cloud session):** [Build Prompt (Delete When Done)](<../Apple Watch/Build Prompt (Delete When Done).md>),
     on branch `apple-watch`: every screen, data and sync, complications, notifications, Plus; screenshot review on
     46 mm and 42 mm; data reliability, sync, storage and speed tests.
+    *Progress, 11 Oct 03:45 UTC: the core passes on GitHub (3,000 seeded three-device runs, the 15-year first fill);
+    the Watch app and the iPhone app with the Watch app inside build; the first screenshot review found and fixed
+    the iPhone's section name, limits, Day details' first screen, a slip's run and the face's text. Still running:
+    the six Watch UI test classes on 46 and 42 mm, the paired-simulator check, the screenshots and the speed runs.*
   - [ ] Build, in the report's order (§8): the core on watchOS; the app with its own database; WatchConnectivity;
     `CKSyncEngine` on the Watch; complications; timers, notification buttons and the Plus gate.
   - [ ] Tests on GitHub's simulator (§7), then the device checks on the user's iPhone and Watch (U9); add WA1–WA13 to
