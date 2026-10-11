@@ -37,8 +37,23 @@ final class PhoneWatchLink: NSObject {
 
     private var session: WCSession? {
         guard WCSession.isSupported(), WCSession.default.activationState == .activated,
-              WCSession.default.isPaired, WCSession.default.isWatchAppInstalled else { return nil }
+              WCSession.default.isPaired, Self.installed(WCSession.default) else { return nil }
         return WCSession.default
+    }
+
+    /// Whether the Watch app is on the paired Watch. On paired simulators an app installed with `simctl install` is
+    /// never reported as installed, though its messages arrive ("counterpart app not installed", run 38115225030), so
+    /// the paired-simulator check (`-pair-test`, simulator Debug builds only) counts it as there. Real devices: as reported.
+    nonisolated private static func installed(_ session: WCSession) -> Bool {
+        session.isWatchAppInstalled || ProcessInfo.processInfo.arguments.contains("-pair-test") && simulator
+    }
+
+    nonisolated private static var simulator: Bool {
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
     }
 
     // MARK: Sending
@@ -141,7 +156,7 @@ final class PhoneWatchLink: NSObject {
 
 extension PhoneWatchLink: WCSessionDelegate {
     nonisolated func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {
-        let paired = session.isPaired, installed = session.isWatchAppInstalled
+        let paired = session.isPaired, installed = Self.installed(session)
         Task { @MainActor in
             await watchStateChanged(paired: paired, installed: installed)
             if paired && installed { await sendBatch() }
@@ -156,7 +171,7 @@ extension PhoneWatchLink: WCSessionDelegate {
     }
 
     nonisolated func sessionWatchStateDidChange(_ session: WCSession) {
-        let paired = session.isPaired, installed = session.isWatchAppInstalled
+        let paired = session.isPaired, installed = Self.installed(session)
         Task { @MainActor in await watchStateChanged(paired: paired, installed: installed) }
     }
 
