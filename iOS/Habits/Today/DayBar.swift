@@ -130,7 +130,8 @@ struct CalendarSheet: View {
             .onPerfCommand { action in
                 if action == .previousMonth { moveMonth(-1) } else if action == .nextMonth { moveMonth(1) }
             }
-            .fitsPadPopover("calendar")
+            // One height for every month (six weeks fit): the popover doesn't resize as ‹ › change the month.
+            .padPopoverHeight("calendar", 560)
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
