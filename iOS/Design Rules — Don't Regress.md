@@ -567,7 +567,12 @@ decisions that still hold are kept below; the rest went with the server.*
   file, says this iPhone keeps everything unless chosen too, D9) and **Erase All My Data…** (turns iCloud sync off here
   first, so the habits don't come back).
 - **Today shows a small card only when iCloud needs the person** (full, a question, the brake: `cloud-card`, opening
-  this page). Nothing about sync shows on Today otherwise, and never a spinner.
+  this page). Never a spinner. **Changed 11 Oct 2026 (the user, Current Work 91):** besides the card, one quiet grey
+  line after Today's last row, only when there's something to say: this device's changes waiting ("3 changes waiting
+  to sync"), another device gone quiet while in use ("Pixel 8 last synced at 9:14 AM. Anything logged there since
+  will show up here once it's back online."), or just caught up ("Updated with 3 logs from Pixel 8"). It opens this
+  page, never moves during a run of taps (U4), names the device, never the person. The Watch has the same at the end
+  of its list; Android the same. Nothing else about sync on Today.
 - **The welcome looks in iCloud first** (D14): *Looking in iCloud…* (Start Fresh waits), then *Your habits are here from
   iCloud.* or nothing found; iCloud off says how to turn it on in Settings.
 - **Kept from the old page:** no paragraph explaining the screen; never a row that shows a value nobody can change;

@@ -1,0 +1,122 @@
+# overwrite: 76 matches, showing 40
+
+[A31#4887] 1★ 2019 | 31. Do Habits - Get It D
+  >> After several days of tedious Installation, set up, configuration, and responsible back up to iCloud, It would all be wiped out (including back ups) within 24 hours.
+
+[A55#1250] 1★ 2020 | 55. Habit-Bull - Daily G
+  >> App is buggy and data syncing is unreliable — lost all habit data — Data syncing is buggy and unreliable.
+
+[A13#15625] 5★ 2018 | 13. Productive - Habit T
+  >> To replace my old journal I now use this app (Productive), a planner/to-do list/assistant app called 24me (the free version is really great, but the paid version is worth it if you use it for everything like I do), and I use my ‘Notes’ app for almost everything else (I have a Mac so I can also edit ‘Notes’ on my computer, but google docs would be a good alternative if you have android or a pc).
+
+[A13#413] 2★ 2019 | 13. Productive - Habit T
+  >> — Been using this app to track my habits and it’s been great to use, however I was not able to sync my progress on iCloud and once I deleted the app I lost everything.
+
+[A86#23] 1★ 2019 | 86. Today Habit tracker 
+  >> I’ve lost my data so many times now to the iCloud backup that I’ve given up!
+
+[P3#6704] 4★ 2022 | 3. Loop Habit Tracker
+  >> I love a lot of features of this app, especially the yearly overview of habits Upgrade that would really help: 1) Back up & sync to google acc (I'm worried if I lost my phone or something) 2) Web version
+
+[A2#192] 1★ 2017 | 2. Daily Habits - Habit 
+  >> Premium is a waste of money — Paid for the premium version so it’ll sync with my apple watch - not only it’s not working properly (won’t sync after the first time) but when I turned my watch off and back on in hope that it’ll finally sync the app erased everything on the phone app and restored all the settings to how it was originally.
+
+[A10#28056] 5★ 2025 | 10. Finch - Self-Care Pe
+  >> Apple iCloud lost all of my information.
+
+[P8#7318] 3★ 2019 | 8. Habitica - Gamify You
+  >> The app and browser also don't sync well, and one time I lost all of my health and money upon opening my app version for the first time in a long while even though I had used the browser version earlier.
+
+[P3#17766] 3★ 2016 | 3. Loop Habit Tracker
+  >> I lost all my data even though I exported it to my cloud and SD card.
+
+[A1#43608] 2★ 2026 | 1. Habit Tracker - Goal 
+  >> iCloud sync don’t work — I used to love this app, I have lifetime membership and all…but I’ve changed my iPhone and lost ALL my habits and progress of MONTHS!
+
+[A43#282] 1★ 2022 | 43. Habit Hub - Routine 
+  >> I deleted the app and reinstalled and lost everything even though it was backed up to iCloud.
+
+[P111#9684] 3★ 2015 | 111. My Study Life - Sch
+  >> It says it syncs most of the time but when I logged in after I factory reset my phone, my data was all gone.
+
+[P24#3938] 1★ 2020 | 24. Habit Tracker
+  >> A de/reinstall has now lost all my data and looking at other users with this issue, it looks like it is lost forever because of the sync function never working and no contact from developers.
+
+[A1#55219] 2★ 2022 | 1. Habit Tracker - Goal 
+  >> Lost all my information — I lost all my information and I had iCloud activated and I am a premium member.
+
+[A13#17113] 1★ 2017 | 13. Productive - Habit T
+  >> iCloud Syncing, Please — Lost everything when I moved to a new device.
+
+[A23#4576] 5★ 2022 | 23. Streaks - The habit-
+  >> I hadn&#39;t used my MacBook in a few days, and after using it I realized that instead of syncing all of my latest changes from my phone to my MBP, Streaks did the opposite and replaced all the work I&#39;d done today with the days-old versions from my Mac.
+
+[P3#9724] 3★ 2020 | 3. Loop Habit Tracker
+  >> Simple, good design, fast, has reminders, view all the data,monthly or daily, best performance and more color theme but don't has a auto backup or import data to cloud, when my device broke I was lost my data if this app will become able to auto backup for cloud, it will become the best ever
+
+[P3#1529] 3★ 2026 | 3. Loop Habit Tracker
+  >> loved this app but my phone broke and I have now lost all the old data and can't sync it to a new phone
+
+[P111#16206] 1★ 2024 | 111. My Study Life - Sch
+  >> New version can't even sync to Google, lost all data.
+
+[A3#8262] 4★ 2023 | 3. Days Since - Quit Hab
+  >> Got this app specifically because of the Apple Watch functionality and after upgrading to a new iPhone and a glitch occurring and me having to reset my watch to factory settings I had a hard time trying to figure out how to get this app to display on the watch.
+
+[A10#11565] 5★ 2025 | 10. Finch - Self-Care Pe
+  >> I loved this app — I’ve had this app for a few months now but my little cousin deleted it and I lost all my progress I was almost on a 30 day streak and I wish that you could just log back in with an email because I didn’t back it up to the iCloud
+
+[A48#3016] 4★ 2018 | 48. Strides - Habit Trac
+  >> If I change some settings on some habits using my iPad and close the app before it has a chance to sync and make some changes using my iPhone, those changes will get overwritten the next time I use the app on the iPad.
+
+[A10#12241] 5★ 2024 | 10. Finch - Self-Care Pe
+  >> Sadly, due to upgrading my iPhone with no cloud backup space I lost my last finch, but I’ve redownloaded the App and started a new journey.
+
+[A23#4193] 5★ 2025 | 23. Streaks - The habit-
+  >> I hadn&#39;t used my MacBook in a few days, and after using it I realized that instead of syncing all of my latest changes from my phone to my MBP, Streaks did the opposite and replaced all the work I&#39;d done today with the days-old versions from my Mac.
+
+[A20#1256] 1★ 2021 | 20. Habit — Daily Tracke
+  >> I tried to delete and reinstall the app but guess what the iCloud backup doesn’t work either and wiped all the history on my tasks!
+
+[P24#2374] 2★ 2021 | 24. Habit Tracker
+  >> But once i did the new update, i lost all my progress and this app doesn't let you to sync to your mail in free version.
+
+[A5#1889] 4★ 2025 | 5. Routine Planner, Habi
+  >> I lost my streak because of AW synchronization problem :/
+
+[A23#4633] 1★ 2022 | 23. Streaks - The habit-
+  >> If I open the app on the Mac the Mac version overwrites all of the changes I&#39;ve made on either the iPad or the iPhone.
+
+[A20#3400] 2★ 2021 | 20. Habit — Daily Tracke
+  >> It’s asking me to purchase a third time so I backed up from iCloud and of course lost everything since my last back up
+
+[A76#5695] 5★ 2016 | 76. Way of Life - Habit 
+  >> — I lost all my habits when I got a new phone even though I paid for the app and had it on my icloud.
+
+[A31#3701] 1★ 2022 | 31. Do Habits - Get It D
+  >> When I tried to back up my data from iCloud it tells me “Oops, something went wrong” so now I’ve lost all my data.
+
+[P84#17063] 5★ 2021 | 84. Tasks - To Do List &
+  >> The only criticism I have is that it doesn't upload to cloud and when I lost my phone, I lost all my data and records.
+
+[P15#595] 2★ 2025 | 15. Habit Tracker - Habi
+  >> Everything is good but with the pro version and stopwatch methods of completing a habit is not working properly, I have used it so many times and noticed, while continuing the time and doing that work, the watch completely stop around 15 minutes everytime, and never end it on time, so I always lost my progress and distracted to stop my work and check what's wrong with the app, it's frustrating, so my recommendation p
+
+[P126#46321] 1★ 2021 | 126. To Do List
+  >> In addition, the app has issues syncing properly so I lost all my data on my new phone.
+
+[A1#45751] 1★ 2023 | 1. Habit Tracker - Goal 
+  >> DATA DOEST SAVE — Paid for premium, had to reset my phone and found out the hard way that habits don’t save despite icloud sync being on.
+
+[A10#27156] 4★ 2025 | 10. Finch - Self-Care Pe
+  >> My only note is you should be able to sign into an account on another device, because I lost all my progress one time because of it..
+
+[A23#2046] 2★ 2022 | 23. Streaks - The habit-
+  >> Sync issues — I have this app on my phone and iPad, whenever I open the app on either device, it ALWAYS overwrites what’s on the other device, it never sync first, so I end up with lost data whenever I open it on my other device :(
+
+[P3#6031] 4★ 2022 | 3. Loop Habit Tracker
+  >> Love it and want to give it five stars but it doesn't sync with Google so when my old phone died I lost all my data - would love it if it would auto sync.
+
+[A20#156] 1★ 2025 | 20. Habit — Daily Tracke
+  >> Lost all habits — Lost all habits randomly, would be good to have automatic backups to icloud instead of having to do it manually
+

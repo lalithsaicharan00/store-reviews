@@ -1,0 +1,124 @@
+# missing: 294 matches, showing 40
+
+[P84#41087] 5★ 2019 | 84. Tasks - To Do List &
+  >> The only thing which is missing for me, could be the auto backup to Google drive or something like that.
+
+[P2#1396] 5★ 2026 | 2. HabitNow Daily Routin
+  >> Please come out with a desktop version as well, that's all that's missing
+
+[P122#1334] 4★ 2024 | 122. Hevy - Gym Log Work
+  >> Great App, only thing missing is a Wear Os App.
+
+[A23#3203] 5★ 2020 | 23. Streaks - The habit-
+  >> Almost perfect — 4.9 stars rounded to 5, the only thing missing for perfection is iCloud sync using just the widget.
+
+[P1#111] 5★ 2024 | 1. Habit Builder
+  >> Cloud BackUp and Google signIn will be the best feature is still missing.
+
+[A13#2803] 4★ 2019 | 13. Productive - Habit T
+  >> Nice, but some small details are missing — For example I would love to see cloud synchronizing (same goals on different gadgets)
+
+[P9#403] 2★ 2025 | 9. Habit Tracker - Habit
+  >> The only thing it's missing, it's being able to create an account and save your progress in different devices that syncs automatically and not just the export/import option (that only works when you're gonna change devices once, and it's manual) that it's really annoying and discouraging.
+
+[A86#1496] 2★ 2017 | 86. Today Habit tracker 
+  >> — It&#39;s missing the Apple Watch app!
+
+[P49#3888] 4★ 2022 | 49. RoutineFlow - Routin
+  >> Only thing missing for 5 stars is sync to multiple devices.
+
+[A23#435] 3★ 2021 | 23. Streaks - The habit-
+  >> Feature missing on Streaks for Apple Watch — On the app for Apple Watch, it&#39;s not possible to mark a task as completed the day before.
+
+[P126#74961] 1★ 2018 | 126. To Do List
+  >> Unreliable apps, all your records will disappear when you synchronize your data
+
+[A23#4814] 2★ 2021 | 23. Streaks - The habit-
+  >> Sync constantly disappear — My streaks are constantly disappearing and being replaced by old streaks I’ve deleted on several occasions.
+
+[P8#8426] 2★ 2017 | 8. Habitica - Gamify You
+  >> Constant connection erros, synchronization problems, features missing, confusing and hard to use UI and the buttons take so long to be synced with the servers that they look unresponsive.
+
+[P2#9823] 4★ 2022 | 2. HabitNow Daily Routin
+  >> App Is Very Good But one Feature is missing kindly please add google fit and bluetooth conectivtiy to track Daily Smart watch tracking in this app
+
+[P2#4799] 3★ 2024 | 2. HabitNow Daily Routin
+  >> "Missing Features" Multi-device sync Accountability / Collaboration Widget to App Multi Device: The UI/UX of switching devices is quite difficult.
+
+[P84#17452] 4★ 2021 | 84. Tasks - To Do List &
+  >> I have two main complaints right now: - The desktop app that syncs with the phone app is buggy and missing quite a few features.
+
+[P84#12886] 3★ 2023 | 84. Tasks - To Do List &
+  >> Newly created list did not appear on another device after sync.
+
+[P19#667] 4★ 2024 | 19. TheFor - Habit Track
+  >> finally one that I like, I can create enough habits, have a widget that has all my habits (what Loop was missing), but still missing sync, and a habit that is every X days
+
+[A1#46113] 5★ 2020 | 1. Habit Tracker - Goal 
+  >> Great app, but why is the complication not working — I installed it, set it up and all is beautiful and easy - the best habit tracker so far (tried at least 20), what&#39;s disappointing is that complications do not work on Apple Watch (not showing at all).
+
+[A33#3626] 1★ 2018 | 33. Habitify - Habit Tra
+  >> Also, the “H” icon is not showable in the display corners of most of the watch face options, as the description leads users to believe.
+
+[P2#4635] 4★ 2024 | 2. HabitNow Daily Routin
+  >> The only missing thing is sync between devices.
+
+[A1#52536] 2★ 2024 | 1. Habit Tracker - Goal 
+  >> Our habits won’t sync or they disappear once they close the app.
+
+[A43#193] 4★ 2019 | 43. Habit Hub - Routine 
+  >> One thing missing for me - Apple Watch support.
+
+[A31#2324] 2★ 2023 | 31. Do Habits - Get It D
+  >> Watch app — Watch app is not showing all habits
+
+[A24#30485] 1★ 2022 | 24. Fabulous - Daily Hab
+  >> The app on my iPhone is deleted, the Watch app does not show Fabulous is installed BUT I keep getting messages and updates.
+
+[A33#3319] 3★ 2023 | 33. Habitify - Habit Tra
+  >> The Mac is lets you log habits but not see your progress — This app is a nice companion to the mobile experiece but is missing the statistics and charts of progress that we have avalible on mobile.
+
+[A41#441] 5★ 2024 | 41. Awesome Habits - Hab
+  >> Cons:
+-Web version missing
+-Would be better if I had the functionality to check on &amp; compete with my family member on their habits
+
+[P111#10631] 4★ 2015 | 111. My Study Life - Sch
+  >> Great app, just missing Google calendar sync.
+
+[P126#75373] 4★ 2018 | 126. To Do List
+  >> Great app but doesn't appear to sync across devices as far as I can tell
+
+[A36#479] 5★ 2022 | 36. (Not Boring) Habits 
+  >> Great app, but missing Apple Watch integration — Since a lot of habits can be built from using the Apple Watch, it seems like the perfect app to also have available on Apple Watch.
+
+[P126#45498] 2★ 2021 | 126. To Do List
+  >> Missing sync features (Dropbox or Google drive)
+
+[A7#447] 5★ 2025 | 7. Habit Tracker - Habit
+  >> The only thing missing is cross-device sync, but the developer has mentioned that it’s in progress, which would make the experience even better.
+
+[A20#3607] 3★ 2020 | 20. Habit — Daily Tracke
+  >> Fun experience, sync missing — Usability, feedback are rather funny.
+
+[P5#336] 5★ 2020 | 5. Routine Planner, Habi
+  >> One thing is missing though: Pleeeease add Wear OS integration so that we can use Routinery on a Smartwatch :)
+
+[P3#5260] 5★ 2023 | 3. Loop Habit Tracker
+  >> One thing it is missing is the ability to sync across multiple devices
+
+[A31#386] 4★ 2025 | 31. Do Habits - Get It D
+  >> One thing I noticed is that the watch app does not show weekly habits.
+
+[P120#8] 1★ 2026 | 120. Habit Health
+  >> But my steps are not syncing and not showing in the challenge, followed all the steps as suggested.
+
+[P3#7246] 4★ 2021 | 3. Loop Habit Tracker
+  >> Great app, the only thing I thought it was missing is the ability to synchronize progress across different devices, that would be very nice
+
+[A13#12669] 1★ 2020 | 13. Productive - Habit T
+  >> Unless I’m missing something, along with all the other limited functionality, iCloud sync does not even sync.
+
+[A33#1359] 1★ 2025 | 33. Habitify - Habit Tra
+  >> But surprisingly all habits on the ios app disappeared because I deleted them on the Mac OS app.
+

@@ -82,7 +82,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 89; 83 and 84 are on `claude/lucid-johnson-egrjup`).
+  still resolve; give new items the next unused number (currently 92; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -836,6 +836,81 @@ and the Add note keyboard coming up by itself.
     the iPhone opened: the question shows once; Move to this iPhone works; ✕ changes nothing), then the iPhone check
     (U9).
 
+- [ ] **89. The Android app: what Plus is, and how sync works without a server** (added 11 October 2026, from the user:
+  "let's go to the Android … the same thing what we have for iPhone should also work for Android … whatever we are
+  designing for Android should work for iPhone as well, the same way"). **Everything is in [`Android/Docs/`](<../../../Android/Docs/README.md>)**
+  (start there: the decisions A1–A9 with the user's words, the research, the sync design and the evidence).
+  - [x] **What Android people pay for, measured the same way on both stores** (1,500 reviews read by hand): the same list
+    as the iPhone (more habits, widgets, sync and other devices, themes, backup), except the Watch (iPhone only). Sync and
+    other devices is a bigger share of what Android people pay for than on the iPhone. Android people pay less often.
+  - [x] **Different iPhone and Android apps cause complaints** (other version has more, a different price, a purchase
+    that doesn't follow the person). So Plus is the same on both, at the same price, minus the Watch.
+  - [x] **Sync on Android through the person's Google Drive: download, merge, upload** (never replace), with the shared
+    merge rules the iPhone uses for iCloud, one file per year, and the **version chain** (each saved copy reserves the
+    next file's ID; Drive refuses a second save with the same ID, so no device can overwrite another). Prove in a
+    two-device prototype that the refusal also comes from a second device.
+  - [x] **No relay server** (the user, 11 Oct 2026: "not necessary cost and unnecessary relay"): sync on open, about
+    once a minute while the app is on screen, and in the background.
+  - [x] **Offline is said, not hidden** (the user): the app works offline; nobody expects sync without internet.
+  - [ ] Decide: one purchase working on both stores from Android's launch (the entitlement record, D16); Plus Family on
+    Android (Google Play can't share an in-app purchase with a family); Google Drive on iPhone and Mac (item 77; the
+    user, 11 Oct 2026: the Mac needs the Google Drive option too).
+  - [ ] Decide where sync status shows ([Sync Status Across Devices](<../../../Android/Docs/Research/Sync Status Across Devices — When It Shows, Where, and the Complaints Behind It.md>) §2, §3c; *decided: item 91*): a quiet line at the end of Today's list only
+    when there's something to say (changes the decided "nothing about sync on Today"); "Logged on Pixel 8" on a log;
+    the iCloud & Backup page (Android: Sync & Backup) with Sync Now and each device's last sync.
+  - [ ] Design what still causes complaints (Sync Status Across Devices §3, 197 sync complaints read): the same field
+    edited on two offline devices (keep the other in history, "Use This Instead"); a delete from another device
+    ("Archived on Pixel 8", Restore); the same thing logged on two devices ("Keep Both / Remove One"); two devices that
+    each created the same habit before joining (combine them); widgets refreshed the moment synced changes arrive.
+  - [ ] **First: Google Drive sync in the shared core** (the user, 11 Oct 2026, decision A9): transport, version chain
+    and merge, tested against a stand-in Drive on GitHub, then a real-Drive check that a second device's save under a
+    taken ID is refused. Needs from the user: a Google Cloud project, an OAuth client limited to `drive.appdata`, a test
+    Google account; later two Android devices or emulators.
+  - [ ] Alongside: the Android research report (what Android people want beyond Plus, Google's own rules); then the
+    day/schedule/streak/progress rules moved into the shared core; then designs in Figma, small screens first; then
+    the build with Drive sync plugged in.
+
+- [ ] **90. When iCloud or Google Drive can't be used after someone bought Plus: offer a refund** (added 11 October
+  2026, from the user: "we can't check beforehand … if it is not working, then we will just refund it … if you have any
+  other iCloud, connect to it; same thing for Google Drive; if you don't have it, you can request a refund").
+  - [ ] Everything else they bought keeps working (more habits, widget designs; D1, D10); only sync and the cloud backup
+    pause, and the status row says why with its one fix (iCloud full: Manage Storage; iCloud off: Open Settings; Google
+    Drive full or not connected: Manage Storage / Connect).
+  - [ ] When sync can't work, the status row also says, without blame: connect another iCloud / Google account if
+    they have one, or ask for a refund, and opens the refund.
+  - [ ] **iPhone:** refunds are Apple's decision; the app opens Apple's own refund request inside the app (StoreKit's
+    `beginRefundRequest`), so it says "You can ask Apple for a refund", not that the money will come back. Confirm the
+    current API when built. (iCloud being signed out or off can be read without asking, `CKContainer.accountStatus`;
+    only "full" shows up when a save fails.)
+  - [ ] **Android:** Google Play lets the developer refund an order (Play Console, or the Play Developer API), so here
+    the app can promise it; decide whether refunds are done by hand on request or by the entitlement record. Confirm
+    Google's current refund rules when built.
+  - [ ] A refund ends Plus but never hides data (D10): habits over the free limit stay readable, as when Plus ends.
+
+- [ ] **91. A quiet sync line at the end of Today's list, only when there's something to say** (added 11 October 2026,
+  from the user: "I'll vote for iPhone also … Android, you need to do it … only in Today; the remaining places are
+  covered"). Changes the iCloud page decision "nothing about sync shows on Today" (Design Rules, updated the same day).
+  Design and wording: [Sync Status Across Devices](<../../../Android/Docs/Research/Sync Status Across Devices — When It Shows, Where, and the Complaints Behind It.md>) §1–2, §3c.
+  - [ ] **iPhone and iPad:** one grey line after the last row of Today, never a spinner, never during a run of taps
+    (U4), shown only for:
+    - this device's changes waiting: "3 changes waiting to sync" (with Waiting for a connection, as the iCloud page);
+    - another of the person's devices gone quiet while in use (§1's four conditions: this device just synced; the
+      other changed something in the last 7 days; silent for over 3× its usual gap and at least 2 hours; it was
+      logging that day): "Pixel 8 last synced at 9:14 AM. Anything logged there since will show up here once it's
+      back online.";
+    - just caught up: "Updated with 3 logs from Pixel 8", gone after the next visit.
+    Tapping it opens iCloud & Backup. Each device keeps a small record of itself (name, last checked in, last change
+    sent) in the person's iCloud for this. Words: name the device, never the person; never "error", "failed",
+    "missed", "not saved" (U3, U11).
+  - [ ] **Apple Watch:** one small line at the end of its habit list only when changes have waited more than a few
+    minutes: "2 not synced yet"; tapping it: "Saved on this Watch. They'll sync when your iPhone is nearby or the
+    Watch is online." with **Sync Now**. Never on faces or the Smart Stack. The iPhone's iCloud & Backup lists "Apple
+    Watch · last synced 9:14".
+  - [ ] **Already covered, check only:** iCloud & Backup's status row and Sync Now, its device list with each device's
+    last sync (Plus); a log's view naming the device it came from ("Logged on Pixel 8", U19's "where it came from").
+  - [ ] **Android: the same line, the same rules and words** (Sync & Backup instead of iCloud & Backup), built with
+    item 89.
+
 - [ ] **85. Edit Group: padding around the colour swatches, and show only the group's own habits (build later).** Added
   11 October 2026, from the user: "we need to make some updates later, but not now." The screen is New Group / Edit
   Group (`GroupForm` in `iOS/Habits/Groups/GroupScreens.swift`).
@@ -1048,6 +1123,10 @@ and the Add note keyboard coming up by itself.
     copy without an account on iPhone; take Google Drive off iPhone (it's Android's place); the account only once
     signed in (as built).
   - [ ] The user's decision. Until then the branch keeps iCloud on and Google Drive hidden behind its flag.
+  - [ ] **11 Oct 2026:** the user, on the Mac: "we need to include the Google Drive option" (decision A2 in
+    [`Android/Docs/`](<../../../Android/Docs/README.md>)). Proposed the same day: Google Drive **sync** on iPhone, iPad and Mac as an
+    alternative to iCloud, using the Android code (for a full or unusable iCloud, and for people with Apple and Android
+    devices); iCloud stays the default; one sync place at a time. Waiting for the user's yes.
 
 - [ ] **78. Free accounts sync one device at a time (plan, then build).** Added 11 October 2026, from the user, after
   checking Cloudflare's prices: instead of uploading the whole backup file ("backed up as you go"), a free account
