@@ -837,6 +837,12 @@ and the Add note keyboard coming up by itself.
       the window narrowed (a branching sizing modifier, run 38131431056); Plus's Buy spanned 828 pt (same run); the
       Columns view redrew every column per column height (run 38131557328, 683 ms/s; held per column, then held still
       during a run of taps); iPad-only modifiers taken off the iPhone's view tree (runs 38131504505, 38138422562).
+    - [ ] **Five tests fail on the iPhone SE on `main` too, not from this branch** (found 11 Oct: the same five, same
+      lines, on `main` `bac8a1b` run 38136626357 and on this branch run 38136627928; these classes normally run on the
+      newest iPhone only): `AppLockUITests` `testCancellingSetUpAtEachStepChangesNothing` (line 297) and
+      `testReminderSaysIsSavedWithTheHabit` (New Habit not found), `DayDetailsUITests.testTimeLogAddViewAndEdit` ("The
+      clock row is Finished at": on the SE Date and Time share a row, U22), `OnboardingUITests.testHelpAndTheWelcomeAgain`
+      (About below the fold in ≡), `PlusUITests.testSecondDeviceSheetOpensThePlusPage`. To fix as their own item (T2).
     - [ ] The real iPad and iPhone checks (U9; list in the README): Live Activities, AlarmKit, Health steps, Touch ID /
       Face ID, the popover with the on-screen keyboard, Stage Manager, a hardware keyboard; the iPhone's U9 checks.
 
