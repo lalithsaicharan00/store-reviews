@@ -45,15 +45,30 @@ Their placement records scope and priority; implementation has not started.
   code then do it and if update or delete things on Cloudflare also do it, since we don't need Cloudflare; leave out
   73, and 82 [another agent is working on it]; and for whatever things that need me, note down that and complete all
   the work till you don't need me").
-  - [ ] **Speed still above target on GitHub's simulator** (S rules; measured in item 81's runs): Today's +1 and day ‹ ›
+  - [x] **Speed still above target on GitHub's simulator** (S rules; measured in item 81's runs): Today's +1 and day ‹ ›
     13–67 ms/s against 5; first openings of Add log (~1 s) and the note sheet (1.4–5.5 s); Arrange's Hide Completed
     26 ms/s. Measure side by side before changing anything (S2, PERFORMANCE-LESSONS L29), fix what is ours, and say
-    which are the hosted simulator's own (the first keyboard is judged on the iPhone only, L18).
+    which are the hosted simulator's own (the first keyboard is judged on the iPhone only, L18). *Looked at 11 Oct: the
+    day ‹ › window is one ~30 ms stall per switch (21 in 15 s; run `38094560760`), with the main thread 5.9 % busy and the
+    app's own code under 1 % of it (the profile): it is SwiftUI laying out ~10 rows for the new day, with row identities
+    already stable across days. The same code measured 13.0 and 76.6 ms/s on two machines (L29). Add log's and the note
+    sheet's first openings are the launch's first keyboard (L18). Nothing of ours to cut on the simulator; the next step
+    is the iPhone's numbers (below).*
   - [x] The iCloud page's first opening: not slower than the page it replaced, measured the same hour (523 ms against
     `main`'s Backup & Export 1,154 ms; Restore 190 against 298; runs `38099547344`, `38099545468`).
-  - [ ] **Item 22** (Today row sheet wording and actions per habit type): built on 4 and 7 Oct (items 47, 59–63); check
+  - [x] **Item 22** (Today row sheet wording and actions per habit type): built on 4 and 7 Oct (items 47, 59–63); check
     every case in its table on the current build with screenshots, fix what still reads as "entries", update tests (T3).
-  - [ ] **Item 53** (`GroupsUITests` group drag, now and then): look for the cause again; never loosen the test (T2).
+    *Checked 11 Oct on `DayDetailsScreenshotUITests` (31 states) and `DayDetailsUITests`, 46/46 with Groups (run
+    `38102266531`): a once-a-day check reads "Not done · Mark done" then "Done · Checked at 1:59 AM · Undo done"; several a
+    day "4 of 3 times · Goal reached · Add a check" with "Checks today", each its own Undo; a week goal "1 time today · 1 of
+    3 times this week"; a past day is titled "Yesterday", "For Sat, Oct 10", Skip this day; amounts and time have Log
+    amount / Log time and Log manually; slips Record a slip. No "entry" anywhere on screen (the last, on the no-database
+    backup page, now says "check-ins"); the tick is the habit's own colour, no green. Left: the iPhone in light and dark
+    (item 47's own iPhone check).*
+  - [x] **Item 53** (`GroupsUITests` group drag, now and then): look for the cause again; never loosen the test (T2).
+    *11 Oct: `GroupsUITests` 10/10 with both drag tests (`38102266531`); the one Groups failure in these runs was another
+    test (`testChipsAndEmptyGroup` checking "Moves from Mind" the instant after a tap; it passed on its rerun, T2). No
+    drag missed, so there's nothing new to find the cause from; item 53 stays open as it says, for the next miss.*
   - [ ] **Item 68 and Cloudflare** ("we don't need Cloudflare"): iCloud replaced the server (item 81, D16). Inventory,
     11 Oct (read only): Workers `often-enough-api` and `often-enough-api-dev` (sync, with `api.` and
     `api-dev.oftenenough.com`), D1 `often-enough-directory` and `-dev`, R2 `often-enough-backups` and `-dev` (server
@@ -62,11 +77,26 @@ Their placement records scope and priority; implementation has not started.
     (`site-dev.oftenenough.com`), the analytics buckets `oftenenough-events-dev` and `-prod`, and the
     `oftenenough.com` zone (the domain, needed for the App Store's privacy and support links). Then `server/` and its
     workflows leave the repository (kept on an archive branch), which also ends item 68.
+    *11 Oct: item 81 is in `main` (`3cc5a396`). Exported first (given to the user, never committed: the repository is
+    public, D11): the dev backups bucket's 11 files (each account's nightly snapshots, about 130 KB for the main account,
+    and device backups) and both D1 directories (production: no accounts; dev: 18 accounts, 184 deleted). Deleting the
+    production Worker, its domain, D1 and its empty bucket was refused by this session's permission check (a mass
+    delete of cloud storage), so nothing on Cloudflare was deleted, and the server's removal from the repository is held
+    with it. Dev should go after the `apple-watch` branch (another agent, still on the server-sync base) has merged
+    `main`, and after the user's iPhone runs the iCloud build: until then that build syncs to `api-dev`.*
   - **Needs the user** (everything else here is done without them):
     - [ ] The iPhone checks listed in items 81 (§19 device checks), 83, 58.13 (real Face ID) and 71.
     - [ ] Deploy the CloudKit schema to Production before TestFlight (item 81).
     - [ ] Whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
       the user says.
+    - [ ] **Cloudflare deletion:** allow it (this session's permission rules) or do it in the dashboard: Workers
+      `often-enough-api` (production, `api.oftenenough.com`; nothing in it) now, `often-enough-api-dev`
+      (`api-dev.oftenenough.com`) once the `apple-watch` branch has merged `main` and the iPhone runs the iCloud build;
+      D1 `often-enough-directory` and `often-enough-directory-dev`; R2 `often-enough-backups` (empty) and
+      `often-enough-backups-dev` (exported). Then `server/` and `server-dev-checks.yml` leave the repository (archive
+      branch first) and item 68 closes.
+    - [ ] **Speed on the iPhone:** `iOS/Tools/perf/measure_perf_device.sh` with Today's day ‹ ›, Add log, the note sheet
+      and Arrange's Hide Completed (S2: the phone has the final word; the simulator's numbers vary 2–6×).
 
 - [x] **83. Widgets faster, widget and App Lock issues fixed, and the widget lock opened for speed work** (added 11
   October 2026, from the user, during item 81: "work on widgets as well, improve performance, but preserve overall
