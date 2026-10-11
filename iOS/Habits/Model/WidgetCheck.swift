@@ -616,7 +616,8 @@ struct WidgetRenderCheck: View {
     @State private var page = 0
     @State private var status = PhoneWidgetEntry.Status.ready
     @State private var dark = false
-    private let families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryCircular, .accessoryRectangular]
+    private let families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryCircular, .accessoryRectangular,
+                                            .systemExtraLarge]
     var body: some View {
         VStack(spacing: 6) {
             ScrollView(.horizontal) {
@@ -674,6 +675,8 @@ struct WidgetRenderCheck: View {
         case .systemSmall: .init(width: 158, height: 158)
         case .systemMedium: .init(width: 338, height: 158)
         case .systemLarge: .init(width: 338, height: 354)
+        // The iPad's Extra Large (an 11-inch's, in landscape): two Large widths and the gap between them.
+        case .systemExtraLarge: .init(width: 715, height: 354)
         case .accessoryInline: .init(width: 234, height: 26)
         case .accessoryCircular: .init(width: 72, height: 72)
         default: .init(width: 160, height: 72)

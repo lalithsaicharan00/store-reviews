@@ -167,6 +167,43 @@ final class WidgetUITests: XCTestCase {
         shot(app, "widget-dark-week")
     }
 
+    /// The iPad's Extra Large Today (Current Work 86, Design Notes §8): ten a page in two columns of Large's own rows, read
+    /// down then across, Large's paging, privacy and empty states. iPad only (an Extra Large widget is wider than an iPhone).
+    func testExtraLargeTodayOnTheIPad() throws {
+        try XCTSkipUnless(UIDevice.current.userInterfaceIdiom == .pad, "Extra Large is the iPad's")
+        XCUIDevice.shared.orientation = .landscapeLeft
+        defer { XCUIDevice.shared.orientation = .portrait }
+        let app = launchRender()
+        app.buttons["layout-habits"].tap(); app.buttons["view-today"].tap(); choose(app, family: "systemExtraLarge")
+        // Every habit on one page (Large needs two): the cut-down card first, Widget routine further on, no pager.
+        XCTAssertTrue(shows(app, "Today") && shows(app, "0 of 5 done"), labels(app))
+        XCTAssertTrue(shows(app, "Widget cut down") && shows(app, "Widget routine"), "Ten a page — \(labels(app))")
+        XCTAssertFalse(shows(app, "Page 1 of", timeout: 1), "No pager with ten or fewer — \(labels(app))")
+        // Two columns: the first row and the sixth side by side.
+        let rows = app.descendants(matching: .any)["widget-render"].descendants(matching: .switch)
+        if rows.count >= 6 {
+            XCTAssertEqual(rows.element(boundBy: 0).frame.minY, rows.element(boundBy: 5).frame.minY, accuracy: 4,
+                           "Read down then across: row 6 starts the second column")
+            XCTAssertGreaterThan(rows.element(boundBy: 5).frame.minX, rows.element(boundBy: 0).frame.maxX, "…to the right")
+        }
+        shot(app, "widget-extra-large-today")
+        app.buttons["view-morning"].tap()
+        XCTAssertTrue(shows(app, "Morning") && shows(app, "Widget check"), labels(app))
+        shot(app, "widget-extra-large-morning")
+        app.buttons["view-today"].tap()
+        app.buttons["render-hidden"].tap()
+        XCTAssertTrue(shows(app, "Content hidden") && !shows(app, "Widget", timeout: 1), labels(app))
+        shot(app, "widget-extra-large-hidden")
+        app.buttons["render-hidden"].tap()
+        app.buttons["render-discreet"].tap()
+        XCTAssertTrue(shows(app, "of 5 done") && !shows(app, "Widget ", timeout: 1), labels(app))
+        shot(app, "widget-extra-large-discreet")
+        app.buttons["render-discreet"].tap()
+        // Large and Medium unchanged beside it.
+        choose(app, family: "systemLarge")
+        XCTAssertTrue(shows(app, "Page 1 of 2"), "Large still pages at five — \(labels(app))")
+    }
+
     /// The Widgets page went into Help → Widgets, and its switch into Privacy & Security (Current Work 58, spec §1, T3).
     func testGuideAndPrivacyAreFree() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty", "-free"]

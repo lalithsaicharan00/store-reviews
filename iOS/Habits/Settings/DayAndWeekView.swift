@@ -30,11 +30,11 @@ struct DayAndWeekView: View {
                 }
                 .accessibilityIdentifier("week-start-picker")
             } footer: {
-                Text("Weekly goals, week streaks, the calendar and Progress count in these weeks, past weeks too. Automatic follows your iPhone's region.")
+                Text(Device.words("Weekly goals, week streaks, the calendar and Progress count in these weeks, past weeks too. Automatic follows your iPhone's region."))
             }
 
             Section {
-                Label("Times follow your iPhone's 24-Hour Time setting, in General › Date & Time.", systemImage: "clock")
+                Label(Device.words("Times follow your iPhone's 24-Hour Time setting, in General › Date & Time."), systemImage: "clock")
                 Label("Daylight saving and travel are handled for you: what you log keeps its day, and reminders keep their time.",
                       systemImage: "globe")
             } header: {

@@ -23,6 +23,8 @@ struct PartSection: View {
     /// Opens Arrange Your Day (touch and hold on the header: a shortcut, never the only way in).
     let onArrange: () -> Void
     let visibleRows: VisibleRows
+    /// The iPad's Columns view: every column open, never folding (Design Notes §6).
+    var alwaysOpen = false
     @Environment(HabitStore.self) private var store
     @Environment(TodayLayout.self) private var layout
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -38,7 +40,7 @@ struct PartSection: View {
         let done = Dictionary(items.map { ($0.id, Self.isDone($0, on: day, store: store)) }, uniquingKeysWith: { a, _ in a })
         let left = done.values.filter { !$0 }.count
         // Default: the Now part and Anytime are open while anything is left; finished parts fold (after the pause).
-        let open = layout.isOpen(part, rule: left > 0 && (isNow || part == .anytime || !isToday))
+        let open = alwaysOpen || layout.isOpen(part, rule: left > 0 && (isNow || part == .anytime || !isToday))
         // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it offers
         // "Add note" (or its note is being written), so the offer is where the person is looking.
         let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
@@ -53,13 +55,15 @@ struct PartSection: View {
         Section {
             PartHeader(title: title, habits: items.map(\.habit), left: left, isNow: isNow, isOpen: open,
                        onStart: isToday && items.contains(where: { done[$0.id] != true }) ? onStart : nil,
-                       onToggle: { layout.setOpen(part, !open, reduceMotion: reduceMotion) },
-                       subtitle: store.section(part).start.map(DaySection.startsText))
+                       onToggle: { if !alwaysOpen { layout.setOpen(part, !open, reduceMotion: reduceMotion) } },
+                       subtitle: store.section(part).start.map(DaySection.startsText), folds: !alwaysOpen)
                 .id(TodayView.headerKey(part))
                 .contextMenu {
                     Button("Arrange Your Day", systemImage: "arrow.up.arrow.down", action: onArrange)
-                    Button(open ? "Fold" : "Open", systemImage: open ? "chevron.up" : "chevron.down") {
-                        layout.setOpen(part, !open, reduceMotion: reduceMotion)
+                    if !alwaysOpen {
+                        Button(open ? "Fold" : "Open", systemImage: open ? "chevron.up" : "chevron.down") {
+                            layout.setOpen(part, !open, reduceMotion: reduceMotion)
+                        }
                     }
                 }
             if open {
@@ -69,6 +73,7 @@ struct PartSection: View {
                     let steps = layout.steps(habit.id)
                     HabitRow(habit: habit, day: day, isToday: isToday, slot: item.placement.slot,
                              time: item.placement.times.first, highlighted: highlighted == key, steps: steps)
+                        .padDayPopover(habit, day: day, key: key, visible: visibleRows)
                         .id(key)
                         .onAppear { visibleRows.show(key) }
                         .onDisappear { visibleRows.hide(key) }

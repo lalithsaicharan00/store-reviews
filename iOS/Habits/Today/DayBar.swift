@@ -62,6 +62,8 @@ struct CalendarSheet: View {
     @State private var month: LocalDay
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    /// The iPad's popover from "Today ⌄": no Done; picking a day or a tap outside closes it (Design Notes §5).
+    @Environment(\.inPadPopover) private var inPopover
 
     init(day: LocalDay, today: LocalDay, onPick: @escaping (LocalDay?) -> Void) {
         selected = day
@@ -128,10 +130,13 @@ struct CalendarSheet: View {
             .onPerfCommand { action in
                 if action == .previousMonth { moveMonth(-1) } else if action == .nextMonth { moveMonth(1) }
             }
+            .fitsPadPopover("calendar")
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
+                if !inPopover {
+                    ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
+                }
             }
         }
     }

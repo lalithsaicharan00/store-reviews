@@ -7,6 +7,9 @@ import SwiftUI
 struct AllHabitsView: View {
     enum Kind { case habits, tasks }
     var kind: Kind = .habits
+    /// The iPad's list beside a habit's page (`PadListDetail`): a tap shows that habit's page beside the list, with no
+    /// push; the chosen row is marked and has no ›. Nil on the iPhone and in a narrow window.
+    var selected: Binding<UUID?>? = nil
     @Environment(HabitStore.self) private var store
     @State private var editMode: EditMode = .inactive
     @State private var selection = Set<UUID>()
@@ -144,23 +147,40 @@ struct AllHabitsView: View {
         }
     }
 
-    private func row(_ habit: Habit) -> some View {
-        let paused = store.isPaused(habit, on: store.today())
-        // A link with its page, not a value: in a List with a selection, a value link only selected the row and the
-        // page never opened (the speed test on GitHub, 30 Sep).
-        return NavigationLink {
-            HabitPageView(id: habit.id)
-        } label: {
-            HStack(spacing: 12) {
-                HabitIcon(symbol: habit.symbol, color: habit.color)
-                    .opacity(habit.archived || paused ? 0.5 : 1)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(habit.name).lineLimit(1)
-                    Text(HabitPageView.summary(habit, store: store)).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
-                }
+    @ViewBuilder private func link(_ habit: Habit) -> some View {
+        if let selected, !editMode.isEditing {
+            // The iPad: the page beside the list (Notes, Mail, Reminders); the chosen row is marked, with no ›.
+            Button { selected.wrappedValue = habit.id } label: { label(habit).contentShape(Rectangle()) }
+                .buttonStyle(.plain)
+                .listRowBackground(selected.wrappedValue == habit.id ? Color(.systemFill) : Color(.secondarySystemGroupedBackground))
+                .accessibilityAddTraits(selected.wrappedValue == habit.id ? .isSelected : [])
+                .accessibilityIdentifier("habits-row-" + habit.name)
+        } else {
+            // A link with its page, not a value: in a List with a selection, a value link only selected the row and the
+            // page never opened (the speed test on GitHub, 30 Sep).
+            NavigationLink {
+                HabitPageView(id: habit.id)
+            } label: {
+                label(habit)
             }
-            .padding(.vertical, 2)
         }
+    }
+
+    private func label(_ habit: Habit) -> some View {
+        let paused = store.isPaused(habit, on: store.today())
+        return HStack(spacing: 12) {
+            HabitIcon(symbol: habit.symbol, color: habit.color)
+                .opacity(habit.archived || paused ? 0.5 : 1)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(habit.name).lineLimit(1)
+                Text(HabitPageView.summary(habit, store: store)).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+            }
+        }
+        .padding(.vertical, 2)
+    }
+
+    private func row(_ habit: Habit) -> some View {
+        link(habit)
         .tag(habit.id)
         .swipeActions(edge: .trailing) {
             Button("Delete", systemImage: "trash") { ask([habit]) }

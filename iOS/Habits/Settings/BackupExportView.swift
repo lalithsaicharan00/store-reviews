@@ -14,8 +14,8 @@ struct BackupExportView: View {
     var body: some View {
         Form {
             Section {
-                Label("Saved on this iPhone", systemImage: "iphone")
-                Text("Your data is eligible for your iPhone’s device backup. Whether a backup exists depends on your iPhone settings.")
+                Label(Device.words("Saved on this iPhone"), systemImage: "iphone")
+                Text(Device.words("Your data is eligible for your iPhone’s device backup. Whether a backup exists depends on your iPhone settings."))
                     .foregroundStyle(.secondary)
             }
             Section {
@@ -30,9 +30,9 @@ struct BackupExportView: View {
             }
             .disabled(working)
             Section("Before You Delete the App") {
-                Text("Deleting Often Enough removes its data and recovery copies from this iPhone. Reinstalling alone does not bring them back.")
+                Text(Device.words("Deleting Often Enough removes its data and recovery copies from this iPhone. Reinstalling alone does not bring them back."))
                 Text("Save a Backup File to a folder outside Often Enough in Files first. After reinstalling, use Restore from a Backup File. A file saved inside Often Enough’s own folder is deleted with the app.")
-                Text("Offload App in iPhone Settings keeps Documents & Data. Delete App removes them.")
+                Text(Device.words("Offload App in iPhone Settings keeps Documents & Data. Delete App removes them."))
                     .foregroundStyle(.secondary)
             }
         }

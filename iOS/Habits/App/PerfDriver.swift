@@ -32,6 +32,8 @@ enum PerfAction: Equatable {
     case openRestore
     /// The Plus page's and the 6th-habit sheet's other plan; New's 6th-habit sheet (Current Work 80).
     case nextPlan, openSixthHabit
+    /// The iPad's menu bar: Go to Today (⌘T), also the speed runs' way back to today (Current Work 86).
+    case goToToday
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect

@@ -24,13 +24,13 @@ struct CloudQuestions: ViewModifier {
                 Button("Back Up Again") { Task { await cloud.backUpAgain() } }
                 Button("Not Now", role: .cancel) { Task { await cloud.notNowAfterRemoval() } }
             } message: {
-                Text("This iPhone still has all of them. Back them up to iCloud again?")
+                Text(Device.words("This iPhone still has all of them. Back them up to iCloud again?"))
             }
-            .alert("This iPhone uses a different Apple Account", isPresented: Binding(
+            .alert(Device.words("This iPhone uses a different Apple Account"), isPresented: Binding(
                 get: { if case .asking(.differentAccount) = cloud.phase { !accountSeen && !cloud.working } else { false } },
                 set: { if !$0 { accountSeen = true } })) {
                 Button("Add to This Account's iCloud") { Task { await cloud.addToThisAccount() } }
-                Button("Keep on This iPhone Only", role: .cancel) { Task { await cloud.keepOnThisIPhoneOnly() } }
+                Button(Device.words("Keep on This iPhone Only"), role: .cancel) { Task { await cloud.keepOnThisIPhoneOnly() } }
             } message: {
                 Text(CloudWords.differentAccount(cloud.phase, here: cloud.habitCount()))
             }
@@ -116,6 +116,7 @@ struct SecondDeviceSheet: View {
             .navigationDestination(isPresented: $showPlus) { PlusPage() }
         }
         .presentationDetents([.large])
+        .padFormSheet()
         .presentationDragIndicator(.visible)
         .interactiveDismissDisabled(working)
     }

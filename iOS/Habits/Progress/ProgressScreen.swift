@@ -14,6 +14,10 @@ struct ProgressScreen: View {
     @Environment(MenuModel.self) private var menu
     @Environment(AppRouter.self) private var router
     @Environment(\.dynamicTypeSize) private var typeSize
+    /// The iPad on a regular width (Design Notes §5, Health's Summary): Week · Month · Year at the top centre, as
+    /// Calendar's switcher, and the habit cards two across in the person's order.
+    @Environment(\.horizontalSizeClass) private var sizeClass
+    private var padRegular: Bool { Device.isPad && sizeClass == .regular }
     @AppStorage(ProgressOptions.range) private var rangeRaw = ProgressRange.week.rawValue
     @AppStorage(ProgressOptions.showPercentages) private var showPercentages = true
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
@@ -74,8 +78,11 @@ struct ProgressScreen: View {
             default: break
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(padRegular ? .large : .inline)
         .toolbar {
+            if padRegular {
+                ToolbarItem(placement: .principal) { rangePicker.frame(width: 260) }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     // Menu items with a check, not switches: the app's green switch style (HabitsApp) must not reach
@@ -179,10 +186,12 @@ struct ProgressScreen: View {
         let all = snapshot.cards + snapshot.archivedCards
         return ScrollView {
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
-                rangePicker
-                    .padding(.horizontal, 16)
-                    .padding(.top, WeekSpacing.tight)
-                    .padding(.bottom, WeekSpacing.tight)
+                if !padRegular {
+                    rangePicker
+                        .padding(.horizontal, 16)
+                        .padding(.top, WeekSpacing.tight)
+                        .padding(.bottom, WeekSpacing.tight)
+                }
                 Section {
                     VStack(alignment: .leading, spacing: WeekSpacing.card) {
                         // Groups (report §15): the chips choose which habits' cards show; nothing shows until a group exists.
@@ -204,8 +213,19 @@ struct ProgressScreen: View {
                             .padding(.horizontal, 16)
                             .accessibilityIdentifier("progress-group-empty")
                     }
-                    ForEach(snapshot.cards) { card in
-                        weekCardButton(card, snapshot)
+                    if padRegular {
+                        // Two across, read left to right in the person's order (a scroll view: lazy grids never go in a
+                        // List, S13). The day squares keep their size; a third column would shrink them.
+                        LazyVGrid(columns: [GridItem(.flexible(), spacing: WeekSpacing.card, alignment: .top),
+                                            GridItem(.flexible(), alignment: .top)], spacing: WeekSpacing.card) {
+                            ForEach(snapshot.cards) { card in weekCardButton(card, snapshot, padded: false) }
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, WeekSpacing.card)
+                    } else {
+                        ForEach(snapshot.cards) { card in
+                            weekCardButton(card, snapshot)
+                        }
                     }
                     if !snapshot.archivedCards.isEmpty {
                         Text("Archived")
@@ -231,15 +251,15 @@ struct ProgressScreen: View {
         .background(Color(.systemGroupedBackground))
     }
 
-    private func weekCardButton(_ card: ProgressWeekCard, _ snapshot: ProgressSnapshot) -> some View {
+    private func weekCardButton(_ card: ProgressWeekCard, _ snapshot: ProgressSnapshot, padded: Bool = true) -> some View {
         Button { open(card.habit, snapshot) } label: {
             WeekCardView(card: card, columns: snapshot.columns,
                          month: snapshot.range == .month ? MonthLayout(lead: snapshot.monthLead, letters: snapshot.letters) : nil,
                          year: snapshot.year)
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-        .padding(.bottom, WeekSpacing.card)
+        .padding(.horizontal, padded ? 16 : 0)
+        .padding(.bottom, padded ? WeekSpacing.card : 0)
         .accessibilityIdentifier(card.isQuit ? "progress-quit-\(card.habit.name)" : "progress-row-\(card.habit.name)")
     }
 

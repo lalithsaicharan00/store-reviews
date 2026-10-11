@@ -110,7 +110,7 @@ enum AppLockText {
     static func rowSubtitle(_ ability: AppLock.Ability?, way: LockWay?) -> String {
         switch way {
         case .faceID: "Opens with \(method(ability))"
-        case .iPhonePasscode: "Opens with your iPhone passcode"
+        case .iPhonePasscode: Device.words("Opens with your iPhone passcode")
         case .appPasscode: "Opens with your app passcode"
         case nil: ability?.biometrics == false ? "Lock the app with a passcode" : "Lock the app with \(method(ability)) or a passcode"
         }
@@ -126,20 +126,20 @@ enum AppLockText {
     static func faceIDDetail(_ ability: AppLock.Ability?) -> String {
         let name = method(ability)
         guard let ability else { return "Quickest. If \(name) can't recognise you, your app passcode opens the app." }
-        if !ability.available { return "Needs a passcode on this iPhone." }
+        if !ability.available { return Device.words("Needs a passcode on this iPhone.") }
         if ability.biometricsAllowed { return "Quickest. If \(name) can't recognise you, your app passcode opens the app." }
         if ability.biometrics { return "Can't be used: \(name) is turned off for this app in Settings." }
-        return "Not set up on this iPhone. Set it up in Settings › Face ID & Passcode."
+        return Device.words("Not set up on this iPhone. Set it up in Settings › Face ID & Passcode.")
     }
 
     /// A2–A5's iPhone Passcode line. iOS asks Face ID first whenever the app may use it, so the line says so.
     static func iPhonePasscodeDetail(_ ability: AppLock.Ability?) -> String {
-        guard let ability else { return "As when you unlock your iPhone: Face ID, or your iPhone passcode. Anyone who knows it can open the app." }
-        if !ability.available { return "This iPhone has no passcode." }
+        guard let ability else { return Device.words("As when you unlock your iPhone: Face ID, or your iPhone passcode. Anyone who knows it can open the app.") }
+        if !ability.available { return Device.words("This iPhone has no passcode.") }
         if ability.biometricsAllowed {
-            return "As when you unlock your iPhone: \(method(ability)), or your iPhone passcode. Anyone who knows it can open the app."
+            return Device.words("As when you unlock your iPhone: \(method(ability)), or your iPhone passcode. Anyone who knows it can open the app.")
         }
-        return "Your iPhone passcode opens the app. Anyone who knows it can open the app."
+        return Device.words("Your iPhone passcode opens the app. Anyone who knows it can open the app.")
     }
 
     /// A6–A8: what the app passcode is for in each way.
@@ -147,16 +147,16 @@ enum AppLockText {
         switch way {
         case .faceID:
             ("Now create an app passcode", "It opens the app whenever \(method) can't.", [
-                ("When it's asked", "If \(method) can't recognise you, is turned off for the app, or was changed on your iPhone."),
+                ("When it's asked", Device.words("If \(method) can't recognise you, is turned off for the app, or was changed on your iPhone.")),
                 ("If you forget it", "\(method) sets a new one straight away."),
-                ("If \(method) can't help either", "Your iPhone passcode sets a new one after a 24-hour wait. The wait gives you time to cancel it if it wasn't you.")])
+                ("If \(method) can't help either", Device.words("Your iPhone passcode sets a new one after a 24-hour wait. The wait gives you time to cancel it if it wasn't you."))])
         case .iPhonePasscode:
-            ("Now create an app passcode", "It opens the app if this iPhone's passcode is ever turned off.", [
-                ("When it's asked", "Only if this iPhone has no passcode any more."),
-                ("If you forget it", "Your iPhone passcode sets a new one straight away. With no iPhone passcode, after a 24-hour wait.")])
+            ("Now create an app passcode", Device.words("It opens the app if this iPhone's passcode is ever turned off."), [
+                ("When it's asked", Device.words("Only if this iPhone has no passcode any more.")),
+                ("If you forget it", Device.words("Your iPhone passcode sets a new one straight away. With no iPhone passcode, after a 24-hour wait."))])
         case .appPasscode:
             ("Create your app passcode", "It's the only way into the app.", [
-                ("Every time you open the app", "\(method) and your iPhone passcode won't open it."),
+                ("Every time you open the app", Device.words("\(method) and your iPhone passcode won't open it.")),
                 ("If you forget it", "Ask for a reset. After 24 hours you choose a new app passcode."),
                 ("Why the wait", "It gives you time to notice and cancel it if it wasn't you: entering your app passcode cancels it.")])
         }
@@ -166,7 +166,7 @@ enum AppLockText {
     static func whenNeeded(_ way: LockWay, method: String) -> String {
         switch way {
         case .faceID: "You'll need it when \(method) can't be used."
-        case .iPhonePasscode: "You'll only need it if this iPhone's passcode is turned off."
+        case .iPhonePasscode: Device.words("You'll only need it if this iPhone's passcode is turned off.")
         case .appPasscode: "You'll enter it each time you open the app."
         }
     }
@@ -225,8 +225,8 @@ struct AppLockPage: View {
                             if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
                         }
                     }
-                    wayRow(.iPhonePasscode, "iPhone Passcode",
-                           detail: ability?.available == false ? "This iPhone has no passcode." : nil, id: "unlock-iphone-passcode")
+                    wayRow(.iPhonePasscode, Device.words("iPhone Passcode"),
+                           detail: ability?.available == false ? Device.words("This iPhone has no passcode.") : nil, id: "unlock-iphone-passcode")
                     wayRow(.appPasscode, "App Passcode", detail: nil, id: "unlock-app-passcode")
                 } header: {
                     Text("Open the app with")
@@ -264,7 +264,7 @@ struct AppLockPage: View {
                     .pickerStyle(.menu)
                     .accessibilityIdentifier("privacy-lock-again")
                 } footer: {
-                    Text("After you leave the app. Locking your iPhone always locks the app straight away.")
+                    Text(Device.words("After you leave the app. Locking your iPhone always locks the app straight away."))
                 }
             }
         }
@@ -279,11 +279,13 @@ struct AppLockPage: View {
                 setup = nil
                 if turnedOn { changed() }
             }
+            .padFormSheet()
         }
         .sheet(isPresented: $changingCode) {
             NewCodeSheet(lock: lock, title: "Change App Passcode") { _ in changingCode = false }
+                .padFormSheet()
         }
-        .sheet(item: $lock.codeCheck) { check in CodeCheckSheet(lock: lock, check: check) }
+        .sheet(item: $lock.codeCheck) { check in CodeCheckSheet(lock: lock, check: check).padFormSheet() }
         .onPerfCommand { action in
             switch action {
             case .openLockSetup: setup = .choose
@@ -300,28 +302,28 @@ struct AppLockPage: View {
     /// Why Face ID can't be chosen, or (chosen) why it isn't opening the app now.
     private func faceIDRowDetail(_ way: LockWay, method: String) -> String? {
         guard let ability else { return nil }
-        if !ability.available { return "Needs a passcode on this iPhone." }
+        if !ability.available { return Device.words("Needs a passcode on this iPhone.") }
         if ability.biometrics && !ability.biometricsAllowed { return "Turned off for this app in Settings." }
-        if !ability.biometrics { return "Not set up on this iPhone." }
+        if !ability.biometrics { return Device.words("Not set up on this iPhone.") }
         return nil
     }
 
     private func wayFooter(_ way: LockWay, method: String) -> String {
         switch way {
         case .faceID:
-            if ability?.available == false { return "This iPhone has no passcode now, so \(method) can't be used. Your app passcode opens the app." }
+            if ability?.available == false { return Device.words("This iPhone has no passcode now, so \(method) can't be used. Your app passcode opens the app.") }
             if ability?.biometricsAllowed == false { return "Until \(method) is allowed, your app passcode opens the app." }
-            return "If \(method) can't recognise you, your app passcode opens the app. Your iPhone passcode can't."
+            return Device.words("If \(method) can't recognise you, your app passcode opens the app. Your iPhone passcode can't.")
         case .iPhonePasscode:
             if ability?.available == false {
-                return lock.hasCode ? "This iPhone has no passcode now. Your app passcode opens the app."
-                                    : "This iPhone has no passcode now, so nothing can lock the app. Create an app passcode."
+                return lock.hasCode ? Device.words("This iPhone has no passcode now. Your app passcode opens the app.")
+                                    : Device.words("This iPhone has no passcode now, so nothing can lock the app. Create an app passcode.")
             }
-            let opens = ability?.biometricsAllowed == true ? "\(method) or your iPhone passcode opens the app." : "Your iPhone passcode opens the app."
-            return lock.hasCode ? opens + " Your app passcode is the backup if this iPhone's passcode is turned off."
-                                : opens + " Create an app passcode as a backup, in case this iPhone's passcode is turned off."
+            let opens = ability?.biometricsAllowed == true ? Device.words("\(method) or your iPhone passcode opens the app.") : Device.words("Your iPhone passcode opens the app.")
+            return lock.hasCode ? opens + Device.words(" Your app passcode is the backup if this iPhone's passcode is turned off.")
+                                : opens + Device.words(" Create an app passcode as a backup, in case this iPhone's passcode is turned off.")
         case .appPasscode:
-            return "Only your app passcode opens the app. \(method) and your iPhone passcode can't."
+            return Device.words("Only your app passcode opens the app. \(method) and your iPhone passcode can't.")
         }
     }
 

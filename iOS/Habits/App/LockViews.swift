@@ -152,7 +152,7 @@ private struct LockedScreen: View {
     @ViewBuilder private var resetReadyScreen: some View {
         LockTitle(title: "The 24 hours are up",
                   detail: lock.way == .faceID && lock.passcodeSet
-                      ? "Choose a new app passcode with your iPhone passcode."
+                      ? Device.words("Choose a new app passcode with your iPhone passcode.")
                       : "You can choose a new app passcode now.")
         Button {
             Task { if await lock.chooseNewCodeAfterReset() { lock.coverSheet = .newCode } }
@@ -171,7 +171,7 @@ private struct LockedScreen: View {
             LockTitle(title: "Face ID was changed", detail: "Enter your app passcode to open the app.")
         } else if lock.way != .appPasscode && !lock.passcodeSet {
             // C3: the iPhone passcode (and Face ID with it) was turned off; the backup app passcode opens the app.
-            LockTitle(title: "This iPhone has no passcode now", detail: nil)
+            LockTitle(title: Device.words("This iPhone has no passcode now"), detail: nil)
         } else if lock.faceIDNotAllowed {
             // C2: Face ID was switched off for the app in Settings after it was chosen.
             LockTitle(title: "The app is locked", detail: "Face ID is turned off for the app in Settings.")
@@ -527,12 +527,12 @@ struct AppLockSetupSheet: View {
                 if can?.biometrics == true && !faceIDAllowed {
                     AllowFaceIDRow(method: method) { openSettings() }
                 }
-                option(.iPhonePasscode, "iPhone Passcode", AppLockText.iPhonePasscodeDetail(can), id: "setup-iphone-passcode")
+                option(.iPhonePasscode, Device.words("iPhone Passcode"), AppLockText.iPhonePasscodeDetail(can), id: "setup-iphone-passcode")
                 option(.appPasscode, "App Passcode",
-                       "Six digits, every time. \(method) and your iPhone passcode won't open it. Good if people around you know your iPhone passcode.",
+                       Device.words("Six digits, every time. \(method) and your iPhone passcode won't open it. Good if people around you know your iPhone passcode."),
                        id: "setup-app-passcode")
             } footer: {
-                if !passcodeSet { Text("To use \(method) or your iPhone passcode, set a passcode in Settings › Face ID & Passcode.") }
+                if !passcodeSet { Text(Device.words("To use \(method) or your iPhone passcode, set a passcode in Settings › Face ID & Passcode.")) }
             }
         }
         .contentMargins(.top, 8, for: .scrollContent)
@@ -745,7 +745,7 @@ struct ForgotCodeSheet: View {
                         RecordBottomBar {
                             switch forgot {
                             case .faceID, .iPhonePasscode:
-                                DayButton(forgot == .faceID ? "Use Face ID" : "Use iPhone Passcode", prominent: true,
+                                DayButton(forgot == .faceID ? "Use Face ID" : Device.words("Use iPhone Passcode"), prominent: true,
                                           id: forgot == .faceID ? "lock-forgot-face-id" : "lock-forgot-iphone-passcode") {
                                     Task { if await lock.forgotAtOnce() { choosing = true } }
                                 }
@@ -775,9 +775,9 @@ struct ForgotCodeSheet: View {
     static func lines(_ forgot: AppLock.ForgotWay) -> [String] {
         switch forgot {
         case .faceID: ["Face ID can prove it's you.", "Your habits stay as they are."]
-        case .iPhonePasscode: ["Your iPhone passcode can prove it's you.", "Your habits stay as they are."]
+        case .iPhonePasscode: [Device.words("Your iPhone passcode can prove it's you."), "Your habits stay as they are."]
         case .resetWithPasscode: ["Face ID can't help right now.",
-                                  "Your iPhone passcode can set a new app passcode after a 24-hour wait. The wait gives you time to notice and cancel it if it wasn't you.",
+                                  Device.words("Your iPhone passcode can set a new app passcode after a 24-hour wait. The wait gives you time to notice and cancel it if it wasn't you."),
                                   "Your habits stay as they are."]
         case .resetAlone: ["After a 24-hour wait you can choose a new app passcode.",
                            "Entering your app passcode before then cancels it, so if it wasn't you, nothing changes.",

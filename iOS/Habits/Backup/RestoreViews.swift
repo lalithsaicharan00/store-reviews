@@ -57,7 +57,7 @@ struct RestoreStartView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task { if pickFile { importing = true } }
         .sheet(item: $pending) { pending in
-            NavigationStack { RestorePreviewView(pending: pending) }
+            NavigationStack { RestorePreviewView(pending: pending) }.padFormSheet()
         }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.zip, .data], allowsMultipleSelection: false) { result in
             guard case .success(let urls) = result, let url = urls.first else { return }
@@ -170,7 +170,7 @@ struct ICloudCopiesView: View {
         .navigationTitle("iCloud")
         .navigationBarTitleDisplayMode(.inline)
         .task { await load() }
-        .sheet(item: $pending) { pending in NavigationStack { RestorePreviewView(pending: pending) } }
+        .sheet(item: $pending) { pending in NavigationStack { RestorePreviewView(pending: pending) }.padFormSheet() }
     }
 
     /// This device first, then the others by their newest copy.

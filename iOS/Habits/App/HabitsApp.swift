@@ -84,6 +84,9 @@ struct HabitsApp: App {
             if scenePhase == .background { model.lock.lock() }
             if scenePhase == .active { Task { await model.lock.appeared() } }
         }
+        // The iPad's menu bar: View (as List ⌘1, as Columns ⌘2, Hide Sidebar ⌃⌘S, Go to Today ⌘T, Previous and Next Day
+        // ⌘← ⌘→) and New Habit ⌘N (I11). Every command is off on the iPhone.
+        .commands { PadMenuCommands() }
     }
 
     /// The app's links, from widgets and the Live Activity (Implementation Spec §3): each opens exactly the screen its
@@ -156,8 +159,17 @@ struct HabitsApp: App {
         }
     }
 
+    /// The iPhone: Today with the ≡ menu over it. The iPad: Today in Apple's iPad frame, with the sidebar (`PadRoot`).
+    @ViewBuilder private var appShell: some View {
+        if Device.isPad {
+            PadRoot(menu: model.menu)
+        } else {
+            MenuShell(menu: model.menu) { TodayView() }
+        }
+    }
+
     private var todayView: some View {
-        MenuShell(menu: model.menu) { TodayView() }
+        appShell
             .environment(model.menu)
             .environment(model.store)
             .environment(model.scheduler)
@@ -211,6 +223,7 @@ private struct IncomingBackupSheet: ViewModifier {
         content.sheet(item: $backup.incoming) { pending in
             NavigationStack { RestorePreviewView(pending: pending) }
                 .environment(backup)
+                .padFormSheet()
         }
     }
 }

@@ -65,7 +65,7 @@ done
 # lost whenever a habit's page opened (crash report, 2 Oct 2026). Lazy grids live only in a ScrollView; these files
 # have one there. Anything inside a List or Form uses a plain Grid.
 # Widgets are drawn once by WidgetKit, never inside a List.
-LAZY_OK="Habits/AddHabit/Appearance.swift Habits/Today/DayBar.swift Shared/PhoneWidgets.swift"
+LAZY_OK="Habits/AddHabit/Appearance.swift Habits/Today/DayBar.swift Shared/PhoneWidgets.swift Habits/Progress/ProgressScreen.swift"
 for f in $(grep -lE 'Lazy[VH]Grid *\(' $SWIFT); do
   case " $LAZY_OK " in *" $f "*) ;; *)
     fail "A lazy grid in $f" "Rulebook S13: never put a lazy grid inside a List or Form row (a plain Grid). If it's in a ScrollView, add the file to LAZY_OK";;

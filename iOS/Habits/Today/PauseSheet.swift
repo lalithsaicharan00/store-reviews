@@ -82,6 +82,7 @@ struct PauseSheet: View {
             }
         }
         .presentationDetents([.medium, .large])
+        .padFormSheet()
         .presentationBackground(Color(.systemGroupedBackground))
         .onAppear { backOn = from.adding(days: 7, calendar: calendar).date(calendar: calendar) }
     }

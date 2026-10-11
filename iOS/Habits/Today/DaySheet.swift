@@ -30,6 +30,12 @@ struct DaySheet: View {
     /// The sheet's full height, read when it changes: the gaps and the note's lines follow it (design decisions §3).
     @State private var height: CGFloat = 0
     private enum Destination: String, Identifiable { case add, note, edit, pause; var id: Self { self } }
+    /// The iPad: Add log and Add note open inside Day details (pushed, with ✕), as Calendar's Edit opens inside its event
+    /// popover: never a sheet over a popover (Design Notes §3). In a narrow window too, so resizing never loses typing.
+    @State private var pushed: Destination?
+    /// In an iPad popover: no ✕ (a tap outside closes it; Design Notes §3, approved by the user 11 Oct 2026).
+    @Environment(\.inPadPopover) private var inPopover
+    @Environment(\.padOpenHabit) private var padOpenHabit
 
     init(habit: Habit, day: LocalDay, pageLink: Bool = false) {
         self.habit = habit
@@ -53,8 +59,8 @@ struct DaySheet: View {
                 identity
                     .listSectionSpacing(spacing.gap(24, 32))
                 DayActivity(habit: current, day: day, editable: editable, spacing: spacing,
-                            logManually: { destination = .add }, resume: { store.resume(current) },
-                            addNote: { destination = .note }, openAllLogs: { perfAllLogs = true })
+                            logManually: { open(.add) }, resume: { store.resume(current) },
+                            addNote: { open(.note) }, openAllLogs: { perfAllLogs = true })
                 if isTask {
                     taskSection
                 } else if editable && current.kind != .quit {
@@ -71,6 +77,7 @@ struct DaySheet: View {
             .listSectionSpacing(.compact)
             // Its own id, so tests scroll this list and not Today's behind the sheet (Rulebook T9).
             .accessibilityIdentifier("day-form")
+            .fitsPadPopover("day")
             .onGeometryChange(for: CGFloat.self) { proxy in proxy.size.height.rounded() } action: { _ in
                 // Read the window's height when the sheet's size changes (a rotation, a new sheet), never per row.
                 let window = ScreenRoom.windowHeight()
@@ -80,6 +87,12 @@ struct DaySheet: View {
             .navigationDestination(isPresented: $perfAllLogs) { AllLogsView(habit: current, day: day) }
             .navigationDestination(isPresented: $perfNote) { NoteView(habit: current, day: day) }
             .navigationDestination(isPresented: $showPage) { HabitPageView(id: current.id) }
+            .navigationDestination(item: $pushed) { destination in
+                switch destination {
+                case .note: AddNoteView(habit: current, day: day, picksDay: false, pushed: true)
+                default: AddLogView(habit: current, day: day, source: .manual, pushed: true)
+                }
+            }
             .analyticsScreen(.historyDay)
             // The day, never the habit's name again: the identity row says whose day it is. "Today" only when it is
             // today (U21): a date opened from History is titled by that date.
@@ -89,17 +102,20 @@ struct DaySheet: View {
                 // Edit, Pause, Archive and Delete in one menu, the lasting ones last; Delete asks first and offers
                 // Archive (U14: 79 reviews say deleting is too easy, 63 couldn't find it at all).
                 ToolbarItem(placement: .topBarLeading) { managementMenu }
-                // The sheet saves as it goes (nothing to confirm): the standard Close symbol, named "Close" (U18).
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Close", systemImage: "xmark") { dismiss() }
-                        .accessibilityIdentifier("day-close")
+                // The sheet saves as it goes (nothing to confirm): the standard Close symbol, named "Close" (U18). Not in
+                // an iPad popover, which a tap outside closes, as Calendar's event popover (Design Notes §3).
+                if !inPopover {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Close", systemImage: "xmark") { dismiss() }
+                            .accessibilityIdentifier("day-close")
+                    }
                 }
             }
             .sheet(item: $destination) { destination in
                 switch destination {
                 case .add: AddLogView(habit: current, day: day, source: .manual)
-                case .edit: EditHabitSheet(habit: current)
-                case .pause: PauseSheet(habit: current)
+                case .edit: EditHabitSheet(habit: current).padFormSheet()
+                case .pause: PauseSheet(habit: current).padFormSheet()
                 case .note: AddNoteView(habit: current, day: day, picksDay: false)
                 }
             }
@@ -121,10 +137,10 @@ struct DaySheet: View {
                 switch action {
                 case .closeDay: dismiss()
                 case .openEntry: if destination == nil { perfEntry = store.dayLogs(of: habit, on: day).first { $0.opensRecord(for: ruled) } }
-                case .openLog: destination = .add
+                case .openLog: open(.add)
                 case .openAllLogs: perfAllLogs = true
                 case .openNote:
-                    if store.note(of: current, on: day) == nil { destination = .note } else { perfNote = true }
+                    if store.note(of: current, on: day) == nil { open(.note) } else { perfNote = true }
                 default: break
                 }
             }
@@ -133,12 +149,29 @@ struct DaySheet: View {
         .presentationBackground(Color(.systemGroupedBackground))
     }
 
+    /// Add log and Add note: pushed inside Day details on the iPad, the iPhone's sheet on the iPhone.
+    private func open(_ target: Destination) {
+        if Device.isPad && (target == .add || target == .note) { pushed = target } else { destination = target }
+    }
+
     // MARK: Identity
 
     /// Who: the habit's icon, name and plan, once. From Today the whole row opens the habit page (a task has none).
     @ViewBuilder private var identity: some View {
         Section {
-            if pageLink && !isTask {
+            if pageLink && !isTask, let padOpenHabit {
+                // The iPad: the habit's page beside the Habits list, where moving between habits is one tap.
+                Button { dismiss(); padOpenHabit.open(current) } label: {
+                    HStack {
+                        DayIdentityRow(habit: current, trim: identityTrim)
+                        Spacer(minLength: 8)
+                        Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+                    }
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens the habit page")
+                .accessibilityIdentifier("day-open-page")
+            } else if pageLink && !isTask {
                 NavigationLink { HabitPageView(id: current.id) } label: { DayIdentityRow(habit: current, trim: identityTrim) }
                     .accessibilityHint("Opens the habit page")
                     .accessibilityIdentifier("day-open-page")
@@ -206,7 +239,9 @@ struct DaySheet: View {
         Menu {
             Section {
                 if pageLink && !isTask {
-                    Button("View Habit", systemImage: "chart.bar.doc.horizontal") { showPage = true }
+                    Button("View Habit", systemImage: "chart.bar.doc.horizontal") {
+                        if let padOpenHabit { dismiss(); padOpenHabit.open(current) } else { showPage = true }
+                    }
                 }
                 Button(isTask ? "Edit Task" : "Edit Habit", systemImage: "pencil") { destination = .edit }
                     .accessibilityIdentifier("day-edit-habit")

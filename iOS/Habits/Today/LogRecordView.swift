@@ -39,6 +39,7 @@ struct LogRecordView: View {
         let _ = perfTimed("Entry editor: whole editor drawn") { () }
         if let entry = store.entries(of: habit.id, on: day).first(where: { $0.id == entryID }) {
             content(entry)
+                .fitsPadPopover("log")
         } else {
             // Deleted: nothing to show. Never dismissed from here: the row that opened it has gone too, and SwiftUI
             // takes the screen away with it; a second dismiss closed Day details itself (CI, 7 Oct 2026).
@@ -271,6 +272,7 @@ struct AllLogsView: View {
             }
         }
         .accessibilityIdentifier("all-logs")
+        .fitsPadPopover("all-logs")
         .analyticsScreen(nil)
         .toolbarRole(.editor)
         .navigationTitle(DayLogRow.title(ruled, day: day, store: store))

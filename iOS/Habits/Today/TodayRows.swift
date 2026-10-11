@@ -217,6 +217,8 @@ struct HabitRow: View {
     /// task: the user, 3 Oct 2026).
     private func openDay() {
         guard lineOverride == nil else { return }
+        // The iPad's Day details points at the row tapped (a habit ticked per section has one in each).
+        if Device.isPad { PadAnchor.shared.tapped(habit.id, section: slot) }
         store.dayTarget = .init(habitID: habit.id, day: day)
     }
 
@@ -506,6 +508,8 @@ struct PartHeader: View {
     /// Folded, the name is cut to 8 letters so the icons get the room. Off for "Quit or Cut Down", whose meaning
     /// would go with its last words.
     var foldsTitle = true
+    /// The iPad's Columns view: a column never folds (it has its own room), so no chevron (Design Notes §6).
+    var folds = true
 
     /// The width for the name, Now and the icons, and the width of the name block (the name with Now, or its "Starts
     /// 6 AM" line, whichever is wider).
@@ -602,17 +606,19 @@ struct PartHeader: View {
                 if showsStart, let onStart {
                     StartButton(compact: !isOpen, primary: isNow, title: title, action: onStart)
                 }
-                Button(action: onToggle) {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(.secondary)
-                        .rotationEffect(.degrees(isOpen ? 90 : 0))
-                        .frame(width: 36, height: 44)
-                        .contentShape(Rectangle())
+                if folds {
+                    Button(action: onToggle) {
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(.secondary)
+                            .rotationEffect(.degrees(isOpen ? 90 : 0))
+                            .frame(width: 36, height: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.trailing, -8)
+                    .accessibilityLabel("\(isOpen ? "Fold" : "Open") \(title)")
                 }
-                .buttonStyle(.plain)
-                .padding(.trailing, -8)
-                .accessibilityLabel("\(isOpen ? "Fold" : "Open") \(title)")
             }
             .lineLimit(1)
             // Never squeezed: the name gives way instead.
@@ -693,6 +699,7 @@ struct EditHabitSheet: View {
             HabitForm(editing: store.habits.first { $0.id == habit.id } ?? habit, weekStart: store.settings.weekStart,
                       description: store.description(of: habit) ?? "", group: store.groupOf[habit.id]) { _ in onSaved() }
         }
+        .padFormSheet()
     }
 }
 

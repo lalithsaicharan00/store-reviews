@@ -264,7 +264,9 @@ struct TodayPhoneWidget: Widget {
         }.configurationDisplayName("Today")
             .description("Your habits for today, or one section of your day. Tap to log.")
             .contentMarginsDisabled()
-            .supportedFamilies([.systemMedium, .systemLarge])
+            // Extra Large is the iPad's (Current Work 86, Design Notes §8): the whole day, ten a page in two columns of
+            // Large Today's own rows. The iPhone offers Medium and Large, as before.
+            .supportedFamilies([.systemMedium, .systemLarge, .systemExtraLarge])
     }
 }
 struct TasksPhoneWidget: Widget {
@@ -340,7 +342,8 @@ struct PhoneWidgetView: View {
         case .accessoryRectangular: LockRectangle(entry: entry)
         default:
             switch layout {
-            case .habits, .tasks: ListWidget(entry: entry, tasks: layout == .tasks, large: family == .systemLarge)
+            case .habits, .tasks: ListWidget(entry: entry, tasks: layout == .tasks, large: family == .systemLarge || family == .systemExtraLarge,
+                                             extraLarge: family == .systemExtraLarge)
             case .item: SmallWidget(entry: entry)
             case .week: WeekWidget(entry: entry)
             }
@@ -584,6 +587,11 @@ struct WidgetHeaderPatch {
     let height: CGFloat
     let header: (Int) -> ListHeader
     let done: Int
+    /// Extra Large's two columns of rows (Current Work 86): the header spans both, from the list's leading inset, so
+    /// a row in either column draws the new count over the real one.
+    var columns = 1
+    var columnGap: CGFloat = 0
+    var leading: CGFloat = 0
 }
 
 /// A card or row as one switch (the user, 8 Oct 2026: "when I check it, immediately everything on the card should be
@@ -645,9 +653,11 @@ struct WidgetCardToggleStyle<Content: View>: ToggleStyle {
                     GeometryReader { geometry in
                         let frame = geometry.frame(in: .named("widgetList"))
                         // Only the count is drawn, on the same pill as the real one, so nothing else shows twice.
+                        let columns = CGFloat(headerPatch.columns)
                         headerPatch.header(headerPatch.done + (after.countsDone ? 1 : -1))
-                            .frame(width: frame.width, height: headerPatch.height)
-                            .offset(y: headerPatch.top - frame.minY)
+                            .frame(width: columns > 1 ? frame.width * columns + headerPatch.columnGap * (columns - 1) : frame.width,
+                                   height: headerPatch.height)
+                            .offset(x: columns > 1 ? headerPatch.leading - frame.minX : 0, y: headerPatch.top - frame.minY)
                     }
                     .allowsHitTesting(false)
                     .accessibilityHidden(true)
@@ -752,10 +762,14 @@ struct ListWidget: View {
     let entry: PhoneWidgetEntry
     let tasks: Bool
     let large: Bool
+    /// The iPad's Extra Large (Design Notes §8): two columns of Large's rows, read down then across.
+    var extraLarge = false
     @Environment(\.dynamicTypeSize) private var textSize
 
-    /// Large 5 a page, Medium 2 (the user, 6 Oct 2026); fewer at the largest text sizes, never squeezed.
+    /// Large 5 a page, Medium 2 (the user, 6 Oct 2026); fewer at the largest text sizes, never squeezed. Extra Large
+    /// twice Large: ten a page, paged exactly as Large is.
     private var capacity: Int {
+        if extraLarge { return textSize.isAccessibilitySize ? 6 : 10 }
         if large { return textSize.isAccessibilitySize ? 3 : 5 }
         return textSize >= .xxLarge ? 1 : 2
     }
@@ -777,7 +791,7 @@ struct ListWidget: View {
         // A row's tap redraws this header with the new "N of M done" at once (Current Work 66).
         let patch = WidgetHeaderPatch(top: large ? 16 : 12, height: large ? 44 : 22,
                                       header: { header(counted: counted.count, done: $0, page: page, pages: pages, live: false, covering: done) },
-                                      done: done)
+                                      done: done, columns: extraLarge ? 2 : 1, columnGap: 16, leading: 16)
         VStack(alignment: .leading, spacing: large ? 10 : 12) {
             header(counted: counted.count, done: done, page: page, pages: pages)
             if entry.status != .ready || entry.frame == nil || entry.viewMissing || items.isEmpty {
@@ -787,6 +801,28 @@ struct ListWidget: View {
                 let left = items.filter { !$0.done }.count
                 WidgetMessage(symbol: "checklist", title: left == 0 ? "All done" : left == 1 ? "1 task left" : "\(left) tasks left",
                               subtitle: "Open Often Enough")
+            } else if extraLarge {
+                // Two columns of the same rows: the first fills before the second (five or fewer: one column, as in
+                // the design's own state), each slot the same height on every page.
+                let perColumn = capacity / 2
+                HStack(alignment: .top, spacing: 16) {
+                    ForEach(0..<2, id: \.self) { column in
+                        VStack(spacing: 12) {
+                            ForEach(0..<perColumn, id: \.self) { row in
+                                let slot = column * perColumn + row
+                                if slot < shown.count {
+                                    WidgetListRow(item: shown[slot], day: entry.frame?.day ?? "", date: entry.date,
+                                                  showSection: entry.view == WidgetListSection.today, sample: entry.sample,
+                                                  headerPatch: patch)
+                                } else {
+                                    Color.clear.frame(maxHeight: .infinity)
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+                .frame(maxHeight: .infinity)
             } else {
                 VStack(spacing: 12) {
                     ForEach(0..<slots, id: \.self) { slot in
