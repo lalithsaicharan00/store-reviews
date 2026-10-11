@@ -58,6 +58,7 @@ struct PartSection: View {
                        onToggle: { if !alwaysOpen { layout.setOpen(part, !open, reduceMotion: reduceMotion) } },
                        subtitle: store.section(part).start.map(DaySection.startsText), folds: !alwaysOpen)
                 .id(TodayView.headerKey(part))
+                .padCoveredRow()
                 .contextMenu {
                     Button("Arrange Your Day", systemImage: "arrow.up.arrow.down", action: onArrange)
                     if !alwaysOpen {

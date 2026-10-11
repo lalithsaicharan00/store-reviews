@@ -74,7 +74,7 @@ struct PadRoot: View {
         .onGeometryChange(for: CGSize.self) { $0.size } action: { size = $0 }
         .environment(\.padSidebar, PadSidebarControl(docked: docked, toggle: toggle, regular: sizeClass == .regular,
                                                      columns: layout == PadLayout.columns.rawValue,
-                                                     covered: menu.padPlace != nil, openHabit: { openHabit($0) }))
+                                                     openHabit: { openHabit($0) }))
         .environment(\.padOpenHabit, PadOpenHabit { habit in openHabit(habit) })
         .onAppear {
             // A test starts on Today with the sidebar out, whatever the last test left (Rulebook T8).
@@ -85,7 +85,8 @@ struct PadRoot: View {
         #if DEBUG
         .task { await PadSizeScript.run() }
         #endif
-        .onChange(of: menu.padPlace) {
+        .onChange(of: menu.padPlace, initial: true) {
+            PadAnchor.shared.covered = menu.padPlace != nil
             savedPlace = menu.padPlace?.rawValue ?? ""
             pageMenu.path = NavigationPath()
         }

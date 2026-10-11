@@ -93,16 +93,22 @@ struct PadSidebarControl {
     /// Today to read, nil on the iPhone, so the iPhone's Today does no more work per redraw than before.
     var regular = false
     var columns = false
-    /// A page beside the sidebar covers Today (Today stays alive behind it).
-    var covered = false
     /// Opens a habit's page beside the Habits list (Day details' identity row and View Habit).
     var openHabit: ((Habit) -> Void)?
 }
 
 extension View {
-    /// Hidden from VoiceOver while a page covers Today, on the iPad; nothing at all on the iPhone (U30).
-    @ViewBuilder func padCoveredHidden(_ covered: Bool) -> some View {
-        if Device.isPad { accessibilityHidden(covered) } else { self }
+    /// A Today row or header hidden from VoiceOver while a page beside the sidebar covers Today (kept alive behind it):
+    /// rows are cells UIKit hosts, which a hidden flag on Today, or on the list's content, didn't reach (runs 38149917285,
+    /// 38156983870; U1). Nothing at all on the iPhone (U30).
+    @ViewBuilder func padCoveredRow() -> some View {
+        if Device.isPad { modifier(PadCoveredRow()) } else { self }
+    }
+}
+
+private struct PadCoveredRow: ViewModifier {
+    func body(content: Content) -> some View {
+        content.accessibilityHidden(PadAnchor.shared.covered)
     }
 }
 
@@ -136,6 +142,8 @@ struct PadDayOptions {
     /// The row Day details points at, once chosen, and where it was last seen.
     var key: String?
     var rect: CGRect?
+    /// A page beside the sidebar covers Today: its rows are hidden from VoiceOver (`padCoveredRow`).
+    var covered = false
 
     func tapped(_ habit: UUID, section: String?) {
         if let section { tappedSection[habit] = section } else { tappedSection[habit] = nil }
@@ -165,14 +173,16 @@ struct PadDayAnchorRow: ViewModifier {
     let key: String
 
     func body(content: Content) -> some View {
-        content.background {
-            if PadAnchor.shared.key == key {
-                Color.clear
-                    .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(PadAnchor.space)) } action: { rect in
-                        if PadAnchor.shared.key == key { PadAnchor.shared.rect = rect }
-                    }
+        content
+            .accessibilityHidden(PadAnchor.shared.covered)
+            .background {
+                if PadAnchor.shared.key == key {
+                    Color.clear
+                        .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(PadAnchor.space)) } action: { rect in
+                            if PadAnchor.shared.key == key { PadAnchor.shared.rect = rect }
+                        }
+                }
             }
-        }
     }
 }
 
