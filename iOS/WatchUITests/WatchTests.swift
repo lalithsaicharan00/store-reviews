@@ -57,7 +57,8 @@ final class WatchTodayTests: WatchTestCase {
         requireOnScreen(app.buttons["start-morning"], "Morning's ▶")
         reveal(app.staticTexts["Vitamins"].firstMatch, "Vitamins")
         XCTAssertTrue(app.staticTexts["Every day"].exists, "a single tick's line says how often. On screen: \(labels())")
-        reveal(app.staticTexts["12/20 min"].firstMatch, "Meditate's line")
+        // The iPhone's own words for a time habit's line ("12 min/20 min"; the design drew "12/20 min").
+        reveal(app.staticTexts["12 min/20 min"].firstMatch, "Meditate's line")
         requireOnScreen(app.staticTexts["Vitamins"].firstMatch, "Vitamins")
     }
 
@@ -191,7 +192,8 @@ final class WatchDayDetailsTests: WatchTestCase {
         require(app.buttons["delete"], "the log's Delete")
         app.buttons["delete"].tap()
         require(app.staticTexts["Delete this log?"], "Delete asks first")
-        app.buttons["Delete"].firstMatch.tap()
+        // The dialog's Delete, not the page's own (identifier "delete") still behind it.
+        app.buttons.matching(NSPredicate(format: "label == 'Delete' AND identifier != 'delete'")).firstMatch.tap()
         require(app.staticTexts["2"], "Water at 2 after deleting a log, back on Day details (U27)")
     }
 

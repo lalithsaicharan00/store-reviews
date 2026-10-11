@@ -631,6 +631,7 @@ jobs:
             if [ -f iOS/watch-test.log ]; then
               echo; echo "## Watch UI tests"; echo '```'
               grep -iE "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" iOS/watch-test.log | sed -E 's/^.*Test [Cc]ase/Test case/' | sort -u | head -120
+              echo; echo "Failures:"; grep -E "\.swift:[0-9]+|failed - |XCTAssert" iOS/watch-test.log | sed -E 's|^.*/WatchUITests/||' | sort -u | head -60
               echo '```'
             fi
             if [ -f iOS/watch-shots.log ]; then
