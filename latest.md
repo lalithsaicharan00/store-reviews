@@ -1,7 +1,7 @@
-# claude/drive-sync-ci3 @ cf69cdb
+# claude/drive-sync-main-check @ f3450c8
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38168170690 · 2026-10-11 19:52 UTC
-Commit: Docs: Google Drive sync results with the final runs (420 of 420; 2,000 seeded runs)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38168168209 · 2026-10-11 19:56 UTC
+Commit: Workflow: Google Drive (real) checks, by hand only (on main so it can be dispatched on a branch)
 
 - Core storage and migrations: success
 - Build: success
@@ -13,7 +13,7 @@ Commit: Docs: Google Drive sync results with the final runs (420 of 420; 2,000 s
 
 ## UI tests
 ```
-Test Case '-[HabitsUITests.BackupUITests testErasingEverything]' passed (48.238 seconds).
+Test Case '-[HabitsUITests.BackupUITests testErasingEverything]' passed (31.074 seconds).
 ```
 
 ## Release build
