@@ -1,0 +1,42 @@
+1791690888.131 165.3
+# READY 1791690888.386
+1791690888.309 77.2
+1791690888.387 190.8
+1791690888.582 24.2
+1791690888.671 38.0
+1791690888.733 108.2
+1791690888.842 19.9
+# TIME Widgets: one habit's week|19.34
+1791690889.389 45.2
+# TIME Widgets: one habit's week|1.12
+# TIME Widgets: one habit's week|1.71
+# TIME Widgets: one habit's week|2.11
+# TIME Widgets: one habit's week|2.27
+# TIME Widgets: one habit's week|0.82
+# TIME Widgets: one habit's week|0.58
+# TIME Widgets: one habit's week|4.56
+# TIME Widgets: the snapshot|0.48
+1791690891.618 64.1
+# TIME Widgets: one habit's week|3.84
+# TIME Widgets: one habit's week|0.93
+# TIME Widgets: one habit's week|1.74
+# TIME Widgets: one habit's week|2.41
+# TIME Widgets: one habit's week|2.04
+# TIME Widgets: one habit's week|2.35
+# TIME Widgets: one habit's week|1.71
+# TIME Widgets: one habit's week|1.64
+# TIME Widgets: the snapshot|1.26
+# MEASURING
+1791690897.822 367.9
+# OPEN Routine (open)|1791690897.823|1791690899.394
+1791690899.423 26.8
+1791690900.032 37.8
+1791690900.070 31.8
+1791690903.190 19.7
+1791690907.514 18.5
+1791690909.390 21.2
+1791690909.411 20.2
+# WINDOW Routine: paging with the Crown|1791690899.394|1791690911.898
+# DONE
+1791690912.073 23.4
+1791690912.606 48.5

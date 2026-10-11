@@ -1,18 +1,3 @@
-# Watch: apple-watch-ci3 @ 99d881b
-
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38109083512 · 2026-10-11 04:15 UTC
-Commit: Apple Watch: screenshot review fixes; the iPhone's "Quit or Cut Down"; a limit's button stays neutral
-
-- Core tests: skipped
-- Watch build: success
-- iPhone build with the Watch app: skipped
-- Watch UI tests (none): skipped
-- Screenshots: skipped
-- Speed: failure
-- Paired simulators: skipped
-
-## Speed
-
 | What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms |
 |---|---|---|---|
 | Today: +1 (tap to filled button) | 11.6 | 90 ms | 0 |

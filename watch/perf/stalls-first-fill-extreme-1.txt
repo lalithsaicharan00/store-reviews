@@ -1,0 +1,54 @@
+1791690961.273 72.2
+# READY 1791690961.401
+1791690961.361 40.7
+1791690961.401 75.3
+1791690961.536 20.2
+1791690961.574 48.4
+1791690961.622 26.3
+# TIME Widgets: one habit's week|20.35
+# TIME Widgets: one habit's week|0.81
+# TIME Widgets: one habit's week|1.57
+1791690962.190 39.0
+# TIME Widgets: one habit's week|1.55
+# TIME Widgets: one habit's week|2.71
+# TIME Widgets: one habit's week|0.84
+# TIME Widgets: one habit's week|0.57
+# TIME Widgets: one habit's week|2.06
+# TIME Widgets: the snapshot|0.58
+1791690964.406 37.5
+# TIME Widgets: one habit's week|0.87
+# TIME Widgets: one habit's week|0.63
+# TIME Widgets: one habit's week|0.61
+# TIME Widgets: one habit's week|0.93
+# TIME Widgets: one habit's week|1.43
+# TIME Widgets: one habit's week|0.89
+# TIME Widgets: one habit's week|0.65
+# TIME Widgets: one habit's week|0.55
+# TIME Widgets: the snapshot|0.52
+# MEASURING
+1791690970.743 153.8
+1791690991.386 145.9
+1791691014.802 175.2
+1791691022.391 23.7
+1791691038.366 181.1
+1791691059.400 175.6
+1791691082.391 49.4
+1791691088.998 182.4
+1791691116.443 140.5
+1791691136.753 140.1
+1791691143.398 18.9
+1791691154.557 153.6
+1791691178.958 183.0
+1791691198.550 140.9
+1791691203.745 21.0
+1791691225.622 181.5
+1791691256.988 164.0
+1791691262.393 38.5
+1791691276.087 140.2
+1791691294.743 143.3
+1791691318.837 22.7
+1791691336.879 23.3
+1791691803.599 81.9
+# NOTE first fill on the Watch simulator: 375000 logs (15 years) in 76 parts, biggest 209 KB, 15.3 MB sent; 759.3 s (Today right after 27.0 s; the stand-in iPhone made it in 348.1 s); Watch database 225 MB; reading it all for Today 26.98 s (375000 logs); peak memory 202 MB
+# DONE
+1791692105.143 297.0

@@ -1,0 +1,57 @@
+1791690534.457 80.0
+# READY 1791690534.613
+1791690534.571 42.4
+1791690534.613 111.2
+1791690534.728 24.2
+1791690534.800 19.9
+1791690534.836 79.9
+1791690534.937 17.4
+1791690534.967 32.1
+1791690534.999 63.4
+1791690535.105 17.4
+1791690535.390 53.7
+# TIME Widgets: one habit's week|26.41
+1791690535.606 38.0
+# TIME Widgets: one habit's week|1.51
+# TIME Widgets: one habit's week|0.82
+# TIME Widgets: one habit's week|2.08
+# TIME Widgets: one habit's week|4.43
+# TIME Widgets: one habit's week|0.83
+# TIME Widgets: one habit's week|0.57
+# TIME Widgets: one habit's week|2.55
+# TIME Widgets: the snapshot|1.32
+1791690539.720 98.3
+# TIME Widgets: one habit's week|1.50
+# TIME Widgets: one habit's week|0.96
+# TIME Widgets: one habit's week|0.87
+# TIME Widgets: one habit's week|2.56
+# TIME Widgets: one habit's week|3.10
+# TIME Widgets: one habit's week|2.65
+# TIME Widgets: one habit's week|1.28
+# TIME Widgets: one habit's week|1.02
+# TIME Widgets: the snapshot|0.82
+# MEASURING
+1791690545.848 90.5
+1791690546.276 23.8
+1791690547.522 25.1
+1791690548.783 28.8
+1791690550.872 24.4
+1791690551.298 36.2
+1791690555.468 19.2
+1791690557.549 25.4
+# WINDOW Today: +1 (tap to filled button)|1791690545.848|1791690557.973
+# TIME Widgets: one habit's week|2.05
+# TIME Widgets: the snapshot|0.51
+1791690558.127 17.3
+1791690558.553 19.5
+1791690558.969 31.3
+1791690560.196 26.8
+1791690561.453 46.7
+1791690563.149 21.4
+1791690563.550 25.7
+1791690564.814 26.0
+1791690566.498 39.4
+# WINDOW Today: ✓ and Undo|1791690558.127|1791690570.255
+# TIME Widgets: one habit's week|1.36
+# TIME Widgets: the snapshot|0.62
+# DONE

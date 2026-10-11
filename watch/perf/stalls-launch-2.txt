@@ -1,0 +1,34 @@
+1791690511.919 113.4
+1791690512.034 36.6
+# READY 1791690512.142
+1791690512.079 63.7
+1791690512.142 124.8
+1791690512.316 18.6
+1791690512.396 33.7
+1791690512.440 18.5
+1791690512.465 36.1
+1791690512.501 33.6
+1791690512.540 27.2
+1791690512.585 17.3
+# TIME Widgets: one habit's week|24.48
+1791690513.101 37.3
+# TIME Widgets: one habit's week|1.17
+# TIME Widgets: one habit's week|1.16
+# TIME Widgets: one habit's week|2.44
+# TIME Widgets: one habit's week|2.49
+# TIME Widgets: one habit's week|0.89
+# TIME Widgets: one habit's week|1.39
+# TIME Widgets: one habit's week|3.20
+# TIME Widgets: the snapshot|0.93
+1791690516.800 110.5
+# TIME Widgets: one habit's week|2.99
+# TIME Widgets: one habit's week|2.99
+# TIME Widgets: one habit's week|1.89
+# TIME Widgets: one habit's week|2.13
+# TIME Widgets: one habit's week|0.89
+# TIME Widgets: one habit's week|0.96
+# TIME Widgets: one habit's week|0.76
+# TIME Widgets: one habit's week|1.53
+# TIME Widgets: the snapshot|0.55
+# MEASURING
+# DONE

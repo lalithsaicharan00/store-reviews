@@ -1,0 +1,42 @@
+1791690918.884 65.9
+# READY 1791690919.003
+1791690918.960 42.7
+1791690919.003 66.7
+1791690919.129 33.0
+1791690919.196 27.6
+1791690919.224 30.5
+# TIME Widgets: one habit's week|15.90
+1791690919.821 28.5
+# TIME Widgets: one habit's week|1.43
+# TIME Widgets: one habit's week|1.88
+# TIME Widgets: one habit's week|2.55
+# TIME Widgets: one habit's week|5.54
+# TIME Widgets: one habit's week|0.99
+# TIME Widgets: one habit's week|0.60
+# TIME Widgets: one habit's week|1.86
+# TIME Widgets: the snapshot|0.42
+1791690922.247 32.4
+# TIME Widgets: one habit's week|0.96
+# TIME Widgets: one habit's week|0.59
+# TIME Widgets: one habit's week|0.70
+# TIME Widgets: one habit's week|1.02
+# TIME Widgets: one habit's week|0.81
+# TIME Widgets: one habit's week|0.91
+# TIME Widgets: one habit's week|0.86
+# TIME Widgets: one habit's week|0.52
+# TIME Widgets: the snapshot|0.47
+# MEASURING
+1791690928.588 39.1
+# TIME Widgets: one habit's week|2.34
+# TIME Widgets: one habit's week|0.83
+1791690939.849 139.4
+# TIME Widgets: one habit's week|6.35
+# TIME Widgets: one habit's week|3.83
+# TIME Widgets: one habit's week|12.35
+# TIME Widgets: one habit's week|4.33
+# TIME Widgets: one habit's week|5.72
+# TIME Widgets: one habit's week|30.56
+1791690940.023 30.7
+# TIME Widgets: the snapshot|0.59
+# WINDOW Today: a 5,000-change batch from the iPhone arrives|1791690928.582|1791690942.477
+# DONE
