@@ -84,9 +84,13 @@ final class WatchTodayTests: WatchTestCase {
         require(app.buttons["button-Undo Vitamins"], "Vitamins ticked")
         // Nothing moves under the finger (U4)…
         XCTAssertEqual(app.staticTexts["Vitamins"].frame.minY, before, accuracy: 2, "Vitamins moved during the hold")
-        // …then, after the pause, it sinks below the rest of Morning (U13).
+        // …then, after the pause, it sinks below the rest of Morning (U13). Off the screen a row isn't in the tree, so
+        // scroll to it and check it now comes after Stretch.
         Thread.sleep(forTimeInterval: 2.5)
-        XCTAssertGreaterThan(app.staticTexts["Vitamins"].frame.minY, before + 10, "Vitamins didn't sink. On screen: \(labels())")
+        reveal(app.staticTexts["Vitamins"].firstMatch, "Vitamins after the pause")
+        let stretch = app.staticTexts["Stretch"].firstMatch
+        XCTAssertTrue(stretch.exists && stretch.frame.minY < app.staticTexts["Vitamins"].firstMatch.frame.minY,
+                      "Vitamins didn't sink below Stretch. On screen: \(labels())")
     }
 
     func testFirstLaunchNeverSaysNoHabits() {
@@ -109,15 +113,17 @@ final class WatchTodayTests: WatchTestCase {
         // The time is the system's ("2:00 PM" with a narrow space before PM), so match its start.
         require(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Task · 2:00")).firstMatch, "a task's line")
         launch("skipped-paused")
-        require(app.staticTexts["Skipped today"], "a skipped habit stays, neutral")
+        reveal(app.staticTexts["Skipped today"].firstMatch, "a skipped habit stays, neutral")
         reveal(app.buttons["paused"], "the folded Paused row")
     }
 
     func testAFailedSaveSaysSoAndShowsWhatsSaved() {
         launch("design", ["-fail-entry-writes"])
         reveal(app.buttons["button-Add 1 glass to Water"], "Water's +1")
+        // The fixture's own logs fail to save too, so "what's saved" is whatever Water showed before the tap.
+        let saved = app.staticTexts.matching(NSPredicate(format: "label ENDSWITH '/8 glasses'")).firstMatch.label
         app.buttons["button-Add 1 glass to Water"].tap()
-        require(app.staticTexts["3/8 glasses"], "Water back at what's saved", timeout: 10)
+        require(app.staticTexts[saved], "Water back at what's saved (\(saved))", timeout: 10)
         reveal(app.buttons["save-problem"], "Couldn't save that log")
     }
 }
@@ -260,7 +266,8 @@ final class WatchRoutineTests: WatchTestCase {
         Thread.sleep(forTimeInterval: 0.6)
         app.buttons["routine-main"].tap() // Vitamins done
         XCTAssertTrue(app.waitForLabel(app.buttons["routine-main"], "Next"), "Next after Mark done, not \(app.buttons["routine-main"].label)")
-        app.buttons["routine-close"].tap()
+        // watchOS names the toolbar's ✕ by its symbol ("xmark"); its label is Close.
+        app.buttons.matching(NSPredicate(format: "label == 'Close'")).firstMatch.tap()
         reveal(app.buttons["button-Undo Vitamins"], "Vitamins ticked on Today after the routine")
     }
 
@@ -273,7 +280,8 @@ final class WatchRoutineTests: WatchTestCase {
         require(app.otherElements["routine-page-Meditate"], "Meditate's page")
         Thread.sleep(forTimeInterval: 0.6)
         app.buttons["routine-main"].tap() // start Meditate
-        app.buttons["routine-close"].tap()
+        // watchOS names the toolbar's ✕ by its symbol ("xmark"); its label is Close.
+        app.buttons.matching(NSPredicate(format: "label == 'Close'")).firstMatch.tap()
         reveal(app.buttons["button-Stop Meditate timer"], "the timer still running on Today (C6)")
     }
 

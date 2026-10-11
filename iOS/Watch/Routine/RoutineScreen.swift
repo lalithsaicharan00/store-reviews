@@ -28,6 +28,15 @@ struct RoutineScreen: View {
     @State private var finished = false
 
     private var placeKey: String { "routine.place.\(session.part).\(session.day.key)" }
+    /// A test launch keeps its place in memory only (D8, T8): saved, the place one test left opened the next test's
+    /// routine on its second habit (run 38121219238).
+    private static var testPlaces: [String: Int] = [:]
+    private var savedPlace: Int {
+        get { WatchModel.testLaunch ? Self.testPlaces[placeKey] ?? 0 : UserDefaults.standard.integer(forKey: placeKey) }
+        nonmutating set {
+            if WatchModel.testLaunch { Self.testPlaces[placeKey] = newValue } else { UserDefaults.standard.set(newValue, forKey: placeKey) }
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -65,7 +74,7 @@ struct RoutineScreen: View {
             if let start = session.startAt, let i = session.habits.firstIndex(where: { $0.id == start }) {
                 index = i
             } else {
-                index = min(UserDefaults.standard.integer(forKey: placeKey), session.habits.count - 1)
+                index = min(savedPlace, session.habits.count - 1)
             }
         }
         .onDisappear { TimerPresence.playerOpen = false }
@@ -77,7 +86,7 @@ struct RoutineScreen: View {
             }
             #endif
         }
-        .onChange(of: index) { _, new in UserDefaults.standard.set(new, forKey: placeKey) }
+        .onChange(of: index) { _, new in savedPlace = new }
         .background(Color.black.ignoresSafeArea())
         .accessibilityIdentifier("routine")
     }
