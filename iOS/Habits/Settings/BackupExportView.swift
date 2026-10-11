@@ -102,7 +102,7 @@ struct BackupExportView: View {
                 analyticsResult(operation: "restore", format: "legacy", succeeded: true, ticket: telemetry)
                 message = BackupMessage(title: added.changed ? "Backup Restored" : "Nothing New",
                     text: added.changed
-                        ? "Added \(added.habits) habits or tasks, \(added.entries) logged entries and \(added.settings) notes or settings. Anything already here was kept."
+                        ? "Added \(added.habits) habits or tasks, \(added.entries) check-ins and \(added.settings) notes or settings. Anything already here was kept."
                         : "Everything in this backup is already here. Nothing was changed.")
             } catch {
                 analyticsResult(operation: "restore", format: "legacy", succeeded: false, ticket: telemetry)
