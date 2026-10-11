@@ -44,38 +44,47 @@ final class WatchScreenshotTests: XCTestCase {
         app.staticTexts.allElementsBoundByIndex.prefix(25).map(\.label).joined(separator: " | ")
     }
 
+    /// Scrolls to the element by short drags (`WatchScroll`); a state that can't be reached fails with what was on screen.
+    @discardableResult
+    private func reveal(_ element: XCUIElement, _ what: String) -> Bool {
+        if app.reveal(element) { return true }
+        XCTFail("\(what) not on screen. Showing: \(labels())")
+        return false
+    }
+
     private func openRow(_ name: String) {
-        let row = app.otherElements["row-\(name)"].firstMatch
-        if !row.exists { app.swipeUp() }
-        if wait(app.staticTexts[name].firstMatch, "\(name)'s row") { app.staticTexts[name].firstMatch.tap() }
+        if reveal(app.staticTexts[name].firstMatch, "\(name)'s row") { app.staticTexts[name].firstMatch.tap() }
         wait(app.otherElements["dial"].firstMatch.exists ? app.otherElements["dial"].firstMatch : app.buttons["more"].firstMatch, "Day details")
     }
 
+    /// A little under half a screen each (never a fling, `WatchScroll`).
     private func scrollDown(_ times: Int = 1) {
-        for _ in 0..<times { app.swipeUp() }
+        for _ in 0..<times { app.nudge() }
     }
 
     // MARK: A · Today
 
     func testATodayStates() {
         launch("design")
-        wait(app.staticTexts["Vitamins"], "Today")
+        wait(app.staticTexts["No smoking"], "Today")
         shot("A1-today")
         scrollDown(2)
         shot("A2-whole-list")
-        scrollDown(2)
+        scrollDown(3)
+        shot("A2-whole-list-2")
+        scrollDown(3)
+        shot("A2-whole-list-3")
+        scrollDown(8)
         shot("A2-whole-list-end")
 
         launch("design")
-        wait(app.staticTexts["Water"], "Water")
-        app.swipeUp()
         let add = app.buttons["button-Add 1 glass to Water"]
-        if wait(add, "Water's +1") { add.tap() }
+        if reveal(add, "Water's +1") { add.tap() }
         wait(app.buttons["undo"], "Undo +1 glass")
         shot("A3-after-a-tap")
 
         launch("all-done")
-        wait(app.staticTexts["Vitamins"], "Today")
+        wait(app.staticTexts["No smoking"], "Today")
         Thread.sleep(forTimeInterval: 2)
         shot("A4-all-done")
 
@@ -98,10 +107,9 @@ final class WatchScreenshotTests: XCTestCase {
         launch("design")
         openRow("Water")
         shot("B1-amount")
-        scrollDown()
+        reveal(app.staticTexts["Today's logs"], "Today's logs")
         shot("B2-todays-logs")
-        app.swipeDown(); app.swipeDown()
-        if wait(app.buttons["log-manually"], "Log manually") { app.buttons["log-manually"].tap() }
+        if reveal(app.buttons["log-manually"], "Log manually") { app.buttons["log-manually"].tap() }
         wait(app.otherElements["amount"].firstMatch.exists ? app.otherElements["amount"].firstMatch : app.staticTexts["glasses"], "Log manually")
         shot("B3-log-manually-amount")
         app.staticTexts["1"].firstMatch.tap()
@@ -142,9 +150,8 @@ final class WatchScreenshotTests: XCTestCase {
 
         launch("design")
         openRow("Water")
-        scrollDown()
         let log = app.buttons["log-row"].firstMatch
-        if wait(log, "a log") { log.tap() }
+        if reveal(log, "a log") { log.tap() }
         shot("B11-one-log")
         if wait(app.buttons["delete"], "Delete") { app.buttons["delete"].tap() }
         shot("B12-delete-asks-first")
@@ -167,7 +174,7 @@ final class WatchScreenshotTests: XCTestCase {
 
         launch("logs")
         openRow("Water")
-        scrollDown(2)
+        reveal(app.staticTexts["All 4 logs"], "All 4 logs")
         shot("B2-four-logs")
     }
 
@@ -176,7 +183,7 @@ final class WatchScreenshotTests: XCTestCase {
     func testCRoutine() {
         launch("design")
         let start = app.buttons["start-morning"]
-        if wait(start, "Morning's ▶") { start.tap() }
+        if reveal(start, "Morning's ▶") { start.tap() }
         wait(app.otherElements["routine"].firstMatch.exists ? app.otherElements["routine"].firstMatch : app.buttons["routine-main"], "the routine")
         shot("C1-morning-1")
         app.swipeUp()
@@ -202,7 +209,7 @@ final class WatchScreenshotTests: XCTestCase {
             launch("design", ["-free", "-plus-moment", moment])
             wait(app.otherElements["plus-screen"].firstMatch.exists ? app.otherElements["plus-screen"].firstMatch : app.staticTexts.firstMatch, "the Plus screen")
             shot(name)
-            if moment == "offer" { scrollDown(2); shot("G1-scrolled") }
+            if moment == "offer" { reveal(app.buttons["restore"], "Restore Purchases"); shot("G1-scrolled") }
         }
     }
 
@@ -226,27 +233,24 @@ final class WatchScreenshotTests: XCTestCase {
         shot("H5-tasks")
 
         launch("skipped-paused")
-        wait(app.staticTexts["Stretch"], "Stretch")
-        scrollDown(4)
+        reveal(app.staticTexts["Skipped today"], "Skipped today")
+        shot("H6-skipped")
+        reveal(app.buttons["paused"], "the folded Paused row")
         shot("H6-skipped-and-paused")
 
         launch("milestone")
-        wait(app.staticTexts["Read"], "Read")
-        scrollDown(3)
         let read = app.buttons["button-Mark Read done"]
-        if wait(read, "Read's ✓") { read.tap() }
+        if reveal(read, "Read's ✓") { read.tap() }
         shot("H9-milestone")
         openRow("Read")
-        scrollDown()
+        scrollDown(2)
         shot("H10-streak")
 
         launch("design", ["-fail-entry-writes"])
-        wait(app.staticTexts["Water"], "Water")
-        app.swipeUp()
         let add = app.buttons["button-Add 1 glass to Water"]
-        if wait(add, "Water's +1") { add.tap() }
+        if reveal(add, "Water's +1") { add.tap() }
         _ = app.buttons["save-problem"].waitForExistence(timeout: 5)
-        app.swipeDown(); app.swipeDown(); app.swipeDown()
+        reveal(app.buttons["save-problem"], "Couldn't save that log")
         shot("H18-couldnt-save")
     }
 
@@ -254,13 +258,13 @@ final class WatchScreenshotTests: XCTestCase {
 
     func testHLargerText() {
         launch("design", ["-text-size", "accessibility2"])
-        wait(app.staticTexts["Vitamins"], "Today")
+        wait(app.staticTexts["No smoking"], "Today")
         shot("H20-larger-text-today")
         openRow("Water")
         shot("H20-larger-text-day-details")
         launch("design", ["-text-size", "accessibility2"])
         let start = app.buttons["start-morning"]
-        if wait(start, "Morning's ▶") { start.tap() }
+        if reveal(start, "Morning's ▶") { start.tap() }
         shot("H20-larger-text-routine")
     }
 
