@@ -231,8 +231,9 @@ extension View {
     }
 
     /// Tells an iPad popover how tall this screen's content is, while it's the screen on top. Nothing outside a popover.
-    func fitsPadPopover(_ screen: String) -> some View {
-        modifier(FitsPadPopover(screen: screen))
+    /// Nothing at all on the iPhone: not even an environment read on its Day details screens (U30).
+    @ViewBuilder func fitsPadPopover(_ screen: String) -> some View {
+        if Device.isPad { modifier(FitsPadPopover(screen: screen)) } else { self }
     }
 
     /// A form sheet on the iPad (Design Notes §5: New (+), the habit form, Set Up App Lock, restore, Plus's sheets).
@@ -246,20 +247,15 @@ private struct FitsPadPopover: ViewModifier {
     let screen: String
     @Environment(\.popoverFit) private var fit
 
-    // On the iPad, one shape whether or not a popover is measuring (the window changing width keeps the screen's
-    // state); nothing on the iPhone.
+    // One shape whether or not a popover is measuring: the window changing width keeps the screen's state.
     func body(content: Content) -> some View {
-        if Device.isPad {
-            content
-                .onScrollGeometryChange(for: CGFloat.self) { geometry in
-                    geometry.contentSize.height + geometry.contentInsets.top + geometry.contentInsets.bottom
-                } action: { _, height in
-                    fit?.report(screen, height)
-                }
-                .onAppear { fit?.top = screen }
-        } else {
-            content
-        }
+        content
+            .onScrollGeometryChange(for: CGFloat.self) { geometry in
+                geometry.contentSize.height + geometry.contentInsets.top + geometry.contentInsets.bottom
+            } action: { _, height in
+                fit?.report(screen, height)
+            }
+            .onAppear { fit?.top = screen }
     }
 }
 
@@ -314,8 +310,8 @@ extension View {
 
 extension View {
     /// A screen in an iPad popover that doesn't scroll (Add note): the height it asks for while on top.
-    func padPopoverHeight(_ screen: String, _ height: CGFloat) -> some View {
-        modifier(PadPopoverHeight(screen: screen, height: height))
+    @ViewBuilder func padPopoverHeight(_ screen: String, _ height: CGFloat) -> some View {
+        if Device.isPad { modifier(PadPopoverHeight(screen: screen, height: height)) } else { self }
     }
 }
 
@@ -325,11 +321,7 @@ private struct PadPopoverHeight: ViewModifier {
     @Environment(\.popoverFit) private var fit
 
     func body(content: Content) -> some View {
-        if Device.isPad {
-            content.onAppear { fit?.report(screen, height); fit?.top = screen }
-        } else {
-            content
-        }
+        content.onAppear { fit?.report(screen, height); fit?.top = screen }
     }
 }
 
