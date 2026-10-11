@@ -112,7 +112,8 @@ struct TodayView: View {
             .sheet(item: Binding(get: { Device.isPad ? PadAnchor.shared.fallback : store.dayTarget },
                                  set: { store.dayTarget = $0; if Device.isPad && $0 == nil { PadAnchor.shared.fallback = nil } })) { target in
                 if let habit = store.habits.first(where: { $0.id == target.habitID }) {
-                    DaySheet(habit: habit, day: target.day, pageLink: true)
+                    DaySheet(habit: habit, day: target.day, pageLink: true,
+                             pad: padSidebar.map { PadDayOptions(openHabit: $0.openHabit) })
                         .padFormSheet()
                 }
             }

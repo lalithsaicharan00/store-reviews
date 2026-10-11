@@ -95,6 +95,8 @@ struct PadSidebarControl {
     var columns = false
     /// A page beside the sidebar covers Today (Today stays alive behind it).
     var covered = false
+    /// Opens a habit's page beside the Habits list (Day details' identity row and View Habit).
+    var openHabit: ((Habit) -> Void)?
 }
 
 extension View {
@@ -106,6 +108,12 @@ extension View {
 
 struct PadOpenHabit {
     let open: (Habit) -> Void
+}
+
+/// What Day details does differently on the iPad: no ✕ in a popover, and the habit's page opens beside the Habits list.
+struct PadDayOptions {
+    var inPopover = false
+    var openHabit: ((Habit) -> Void)?
 }
 
 // MARK: - Day details at its row
@@ -198,10 +206,11 @@ struct PadDayDetails: View {
     let habit: Habit
     let day: LocalDay
     let regular: Bool
+    @Environment(\.padOpenHabit) private var padOpenHabit
     @State private var fit = PopoverFit(width: 375)
 
     var body: some View {
-        DaySheet(habit: habit, day: day, pageLink: true)
+        DaySheet(habit: habit, day: day, pageLink: true, pad: PadDayOptions(inPopover: regular, openHabit: padOpenHabit?.open))
             .environment(\.inPadPopover, regular)
             .padPopoverFrame(fit, active: regular)
             .presentationCompactAdaptation(.sheet)

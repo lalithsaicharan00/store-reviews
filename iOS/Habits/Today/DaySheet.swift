@@ -33,14 +33,15 @@ struct DaySheet: View {
     /// The iPad: Add log and Add note open inside Day details (pushed, with ✕), as Calendar's Edit opens inside its event
     /// popover: never a sheet over a popover (Design Notes §3). In a narrow window too, so resizing never loses typing.
     @State private var pushed: Destination?
-    /// In an iPad popover: no ✕ (a tap outside closes it; Design Notes §3, approved by the user 11 Oct 2026).
-    @Environment(\.inPadPopover) private var inPopover
-    @Environment(\.padOpenHabit) private var padOpenHabit
+    /// The iPad's options, handed in by the iPad's own code; nil on the iPhone, which reads nothing more than before
+    /// (U30; run 38146866448).
+    private let pad: PadDayOptions?
 
-    init(habit: Habit, day: LocalDay, pageLink: Bool = false) {
+    init(habit: Habit, day: LocalDay, pageLink: Bool = false, pad: PadDayOptions? = nil) {
         self.habit = habit
         self.pageLink = pageLink
         self.day = day
+        self.pad = pad
     }
 
     private var current: Habit { store.habits.first { $0.id == habit.id } ?? habit }
@@ -104,7 +105,7 @@ struct DaySheet: View {
                 ToolbarItem(placement: .topBarLeading) { managementMenu }
                 // The sheet saves as it goes (nothing to confirm): the standard Close symbol, named "Close" (U18). Not in
                 // an iPad popover, which a tap outside closes, as Calendar's event popover (Design Notes §3).
-                if !inPopover {
+                if pad?.inPopover != true {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Close", systemImage: "xmark") { dismiss() }
                             .accessibilityIdentifier("day-close")
@@ -159,9 +160,9 @@ struct DaySheet: View {
     /// Who: the habit's icon, name and plan, once. From Today the whole row opens the habit page (a task has none).
     @ViewBuilder private var identity: some View {
         Section {
-            if pageLink && !isTask, let padOpenHabit {
+            if pageLink && !isTask, let openHabit = pad?.openHabit {
                 // The iPad: the habit's page beside the Habits list, where moving between habits is one tap.
-                Button { dismiss(); padOpenHabit.open(current) } label: {
+                Button { dismiss(); openHabit(current) } label: {
                     HStack {
                         DayIdentityRow(habit: current, trim: identityTrim)
                         Spacer(minLength: 8)
@@ -240,7 +241,7 @@ struct DaySheet: View {
             Section {
                 if pageLink && !isTask {
                     Button("View Habit", systemImage: "chart.bar.doc.horizontal") {
-                        if let padOpenHabit { dismiss(); padOpenHabit.open(current) } else { showPage = true }
+                        if let openHabit = pad?.openHabit { dismiss(); openHabit(current) } else { showPage = true }
                     }
                 }
                 Button(isTask ? "Edit Task" : "Edit Habit", systemImage: "pencil") { destination = .edit }
