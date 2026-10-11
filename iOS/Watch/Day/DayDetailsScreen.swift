@@ -41,6 +41,7 @@ struct DayDetailsScreen: View {
 
     @ViewBuilder
     private func page(_ habit: Habit) -> some View {
+        let _ = perfTimed("Count: Day details drawn") { 0 }
         let ruled = store.rule(habit, on: day)
         let running = store.timers[habit.id] != nil
         let skipped = store.isSkipped(habit, on: day)
@@ -189,7 +190,7 @@ struct DayDetailsScreen: View {
 
     @ViewBuilder
     private func lower(_ habit: Habit, ruled: Habit) -> some View {
-        let logs = store.dayLogs(of: habit, on: day)
+        let logs = perfTimed("Watch Day details: today's logs") { store.dayLogs(of: habit, on: day) }
         VStack(alignment: .leading, spacing: 8) {
             if ruled.kind == .checklist {
                 // A checklist has no dial: its "Undo Last Step" follows the steps.
@@ -237,7 +238,7 @@ struct DayDial: View {
     @Environment(HabitStore.self) private var store
 
     var body: some View {
-        let status = DayStatus.make(habit, on: day, store: store)
+        let status = perfTimed("Watch Day details: the dial's words") { DayStatus.make(habit, on: day, store: store) }
         let fraction = ringFraction()
         ZStack {
             Circle().stroke(Color.white.opacity(dimmed ? 0.1 : 0.18), lineWidth: 9)
@@ -423,15 +424,17 @@ struct StreakCard: View {
     @Environment(HabitStore.self) private var store
 
     var body: some View {
-        let current = store.streak(of: habit, asOf: day)
+        let current = perfTimed("Watch Day details: streak") { store.streak(of: habit, asOf: day) }
         let unit = store.rule(habit, on: day).frequency.streakUnit
-        if current > 0 {
+        if current > 0 && store.streakIsSure(habit, current: current, on: day) {
             HStack(spacing: 8) {
                 Text("🔥").font(.title3)
                 Text("\(current)").font(.title3.weight(.bold).monospacedDigit())
                 VStack(alignment: .leading, spacing: 0) {
                     Text(unit.inARow(current).replacingOccurrences(of: "\(current) ", with: "")).font(.footnote)
-                    Text("Best \(store.bestStreak(of: habit))").font(.footnote).foregroundStyle(.secondary)
+                    if store.bestIsSure(habit) {
+                        Text("Best \(store.bestStreak(of: habit))").font(.footnote).foregroundStyle(.secondary)
+                    }
                 }
                 Spacer(minLength: 0)
             }

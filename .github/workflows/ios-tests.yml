@@ -432,6 +432,7 @@ jobs:
   #                  Watch UI tests (WATCH_TESTS below, or the classes named after "[watch-tests:" up to "]")
   #   [watch-shots]  that, plus WatchScreenshotTests on 46 mm and 42 mm, exported as PNGs to ci-results/watch/shots
   #   [watch-perf]   the Watch speed runs (Tools/perf/measure_watch_perf.sh)
+  #   [watch-core]   the core's tests alone (paired devices, first fill, migrations; also with [watch-ci])
   #   [watch-pair]   end to end on a paired iPhone and Watch simulator (Tools/ci/watch_pair.sh; also with [watch-ci])
   # Results: git fetch origin ci-results && git show origin/ci-results:watch/latest.md
   watch:
@@ -441,7 +442,8 @@ jobs:
       contains(github.event.head_commit.message, '[watch-ci]') ||
       contains(github.event.head_commit.message, '[watch-shots]') ||
       contains(github.event.head_commit.message, '[watch-perf]') ||
-      contains(github.event.head_commit.message, '[watch-pair]'))
+      contains(github.event.head_commit.message, '[watch-pair]') ||
+      contains(github.event.head_commit.message, '[watch-core]'))
     concurrency:
       group: watch-job-${{ github.ref }}
       cancel-in-progress: false
@@ -460,7 +462,7 @@ jobs:
           tests = re.search(r"\[watch-tests:([^\]]*)\]", m)
           ci = "[watch-ci]" in m
           shots = "[watch-shots]" in m
-          print("WATCH_CORE=" + ("1" if ci else "0"))
+          print("WATCH_CORE=" + ("1" if ci or "[watch-core]" in m else "0"))
           print("WATCH_IPHONE=" + ("0" if "[watch-perf]" in m and not ci else "1"))
           print("WATCH_TESTS=" + (tests.group(1).strip() if tests else ("WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests,WatchRoutineTests,WatchPlusTests,WatchLogManuallyTests" if ci else "none")))
           print("WATCH_SHOTS=" + ("1" if shots else "0"))

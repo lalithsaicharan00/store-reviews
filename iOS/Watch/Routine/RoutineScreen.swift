@@ -115,6 +115,7 @@ struct RoutinePage: View {
     @Environment(\.isLuminanceReduced) private var wristDown
 
     var body: some View {
+        let _ = perfTimed("Count: a routine page drawn") { 0 }
         let live = store.habits.first { $0.id == habit.id } ?? habit
         let ruled = store.rule(live, on: day)
         ZStack {

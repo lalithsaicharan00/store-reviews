@@ -66,6 +66,13 @@ final class MainThreadMeter {
 }
 #endif
 
+/// Records how long something took since `start` (awaited work `perfTimed` can't wrap), in speed runs only.
+func perfNote(_ name: @autoclosure () -> String, since start: CFAbsoluteTime) {
+    #if DEBUG
+    MainThreadMeter.mark(String(format: "# TIME %@|%.2f", name(), (CFAbsoluteTimeGetCurrent() - start) * 1000))
+    #endif
+}
+
 /// Times `work` in speed runs (`MainThreadMeter.time`); in release builds it only runs `work`.
 @inline(__always)
 func perfTimed<T>(_ name: @autoclosure () -> String, _ work: () throws -> T) rethrows -> T {

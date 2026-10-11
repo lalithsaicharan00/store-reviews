@@ -17,6 +17,7 @@ struct WatchRow: View {
     private var habit: Habit { row.habit }
 
     var body: some View {
+        let _ = perfTimed("Count: a Today row drawn") { 0 }
         let ruled = store.rule(habit, on: day)
         let progress = store.dayProgress(of: ruled, on: day)
         let goal = store.dayGoal(of: ruled)
@@ -113,7 +114,8 @@ struct WatchRow: View {
     private var after: some View {
         if let offer = store.undoOffer, offer.habitID == habit.id, offer.day == day {
             VStack(alignment: .leading, spacing: 4) {
-                if let mark = store.milestoneOffer, mark.entry == offer.id {
+                if let mark = store.milestoneOffer, mark.entry == offer.id,
+                   store.streakIsSure(habit, current: store.streak(of: habit, asOf: day), on: day) {
                     Text(mark.text).font(.footnote.weight(.semibold))
                         .accessibilityIdentifier("milestone")
                 }

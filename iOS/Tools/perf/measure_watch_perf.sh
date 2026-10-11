@@ -20,6 +20,7 @@ SCENARIOS="${WATCH_PERF_SCENARIOS:-launch tap-today scroll-today day-details cro
 SUMMARY="$OUT/perf-summary.md"
 OPENS="$OUT/opens.txt"; : > "$OPENS"
 NOTES="$OUT/notes.txt"; : > "$NOTES"
+: > "$OUT/timed.txt"
 
 APP=$(ls -d DerivedData/Build/Products/Debug-watchsimulator/OftenEnoughWatch.app 2>/dev/null | head -1)
 [ -n "$APP" ] || { echo "No OftenEnoughWatch.app in DerivedData" > "$SUMMARY"; exit 1; }
@@ -48,7 +49,10 @@ for S in $SCENARIOS; do
     sleep 1
     rm -f "$REC"
     START=$(python3 -c 'import time; print(f"{time.time():.3f}")')
-    LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-meter -perf-history -perf-drive "$S" -watch-fixture "$(fixture "$S")" -clock-hour 10 2>&1)
+    # A year of history for every scenario but the launch: a test launch's database is in memory, so the year would
+    # be written during the launch it's timing.
+    HISTORY="-perf-history"; [ "$S" = "launch" ] && HISTORY=""
+    LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-meter $HISTORY -perf-drive "$S" -watch-fixture "$(fixture "$S")" -clock-hour 10 2>&1)
     echo "$LAUNCH" > "$OUT/launch-$S-$ROUND.txt"
     LIMIT=200; [ "$S" = "first-fill-extreme" ] && LIMIT=1500
     WAITED=0
@@ -63,6 +67,9 @@ for S in $SCENARIOS; do
     if ! grep -q "^# DONE" "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null || grep -q "^# ERROR" "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null; then FAIL=1; fi
     RESULT=$(python3 "$HERE/analyze_stalls.py" "$OUT/stalls-$S-$ROUND.txt")
     echo "$RESULT" | sed -n 's/^open=/- /p' >> "$OPENS"
+    echo "$RESULT" | grep '^time=' | while IFS='|' read -r NAME COUNT TOTAL LONGEST; do
+      echo "| $S | ${NAME#time=} | $COUNT | $TOTAL ms | $LONGEST ms |" >> "$OUT/timed.txt"
+    done
     echo "$RESULT" | grep '^window=' | while IFS='|' read -r NAME HITCH LONGEST FREEZES; do
       echo "| ${NAME#window=} | $HITCH | $LONGEST ms | $FREEZES |" >> "$SUMMARY"
     done
@@ -81,6 +88,12 @@ done
   echo "Notes (storage and the first fill):"
   echo
   cat "$NOTES"
+  echo
+  echo "Timed work (S2: count, total, longest):"
+  echo
+  echo "| Scenario | What | Count | Total | Longest |"
+  echo "|---|---|---|---|---|"
+  cat "$OUT/timed.txt" 2>/dev/null
 } >> "$SUMMARY"
 cat "$SUMMARY"
 exit "$FAIL"

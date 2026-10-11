@@ -495,4 +495,22 @@ class PeerSyncTest {
         // The first page of logs is the newest: today's state is right after the first parts.
         phone.close(); watch.close()
     }
+
+    /** The Watch reads its last 400 days into memory, and every log of a quit habit or a task; the rest stays stored. */
+    @Test fun theWatchReadsItsWindowAndEveryQuitAndTaskLog() = runBlocking {
+        val repo = HabitRepository.openInMemory { 5_000L }
+        repo.saveHabit(habit("water"), emptyList(), emptyList(), 1_000)
+        repo.saveHabit(habit("smoke", kind = "quit", name = "No smoking"), emptyList(), emptyList(), 1_000)
+        repo.saveHabit(habit("rent", kind = "task", name = "Pay rent"), emptyList(), emptyList(), 1_000)
+        repo.addEntry(entry("old-water", "water", 1, day = "2020-01-01"))
+        repo.addEntry(entry("new-water", "water", 2, day = "2026-10-10"))
+        repo.addEntry(entry("old-slip", "smoke", 3, day = "2019-05-05"))
+        repo.addEntry(entry("old-rent", "rent", 4, day = "2021-02-01"))
+        val window = repo.loadSince("2025-09-06")
+        assertEquals(listOf("new-water", "old-slip", "old-rent").sorted(), window.entries.map { it.id }.sorted())
+        assertEquals(3, window.habits.size)
+        assertEquals(4, repo.load().entries.size, "the database keeps every log")
+        assertEquals(mapOf("water" to "2020-01-01", "smoke" to "2019-05-05", "rent" to "2021-02-01"), repo.oldestLogDays())
+        repo.close()
+    }
 }

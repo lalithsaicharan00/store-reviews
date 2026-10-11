@@ -30,6 +30,15 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     @Throws(Exception::class)
     suspend fun load(): Snapshot = dao.snapshot()
 
+    /** The Apple Watch's load: everything but logs older than [day] (`yyyy-MM-dd`), except a quit habit's or a
+     *  task's, which are all kept. The database keeps every log (Architecture 12); this is what's read into memory. */
+    @Throws(Exception::class)
+    suspend fun loadSince(day: String): Snapshot = dao.snapshotSince(day)
+
+    /** Each habit's oldest log day, as `habit id → yyyy-MM-dd`. */
+    @Throws(Exception::class)
+    suspend fun oldestLogDays(): Map<String, String> = dao.oldestDays().associate { it.habitId to it.day }
+
     // Every write below is one transaction that also records the change for sync (SyncWriter).
 
     @Throws(Exception::class)

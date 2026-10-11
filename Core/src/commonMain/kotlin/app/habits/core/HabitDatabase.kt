@@ -1,5 +1,6 @@
 package app.habits.core
 
+import androidx.room3.ColumnInfo
 import androidx.room3.ConstructedBy
 import androidx.room3.Dao
 import androidx.room3.Database
@@ -24,6 +25,18 @@ interface HabitDao {
 
     @Query("SELECT * FROM entry WHERE deleted_at IS NULL ORDER BY created_at")
     suspend fun entries(): List<EntryRecord>
+
+    /** The Apple Watch's history in memory: logs from [day] on, and every log of a quit habit or a task (their runs
+     *  and repeats read the whole past, and they are few). Older logs stay in the database. */
+    @Query(
+        "SELECT * FROM entry WHERE deleted_at IS NULL AND (day >= :day OR habit_id IN " +
+            "(SELECT id FROM habit WHERE kind IN ('quit', 'task'))) ORDER BY created_at"
+    )
+    suspend fun entriesSince(day: String): List<EntryRecord>
+
+    /** The day of each habit's oldest log, so the Watch knows which habits have history before its window. */
+    @Query("SELECT habit_id, MIN(day) AS day FROM entry WHERE deleted_at IS NULL GROUP BY habit_id")
+    suspend fun oldestDays(): List<HabitOldestDay>
 
     @Query("SELECT * FROM setting")
     suspend fun settings(): List<SettingRecord>
@@ -139,7 +152,13 @@ interface HabitDao {
     @Transaction
     suspend fun snapshot(): Snapshot = Snapshot(habits(), steps(), reminders(), entries(), settings())
 
+    @Transaction
+    suspend fun snapshotSince(day: String): Snapshot = Snapshot(habits(), steps(), reminders(), entriesSince(day), settings())
+
 }
+
+/** A habit's oldest log day (`HabitDao.oldestDays`). */
+data class HabitOldestDay(@ColumnInfo(name = "habit_id") val habitId: String, val day: String)
 
 /** An entry's place in the first fill's newest-first order. */
 data class EntryKey(val id: String, val day: String)

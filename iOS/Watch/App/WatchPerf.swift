@@ -184,12 +184,16 @@ enum WatchPerf {
             let loadStart = Date.now
             let loaded = try await watch.load()
             let loadSeconds = Date.now.timeIntervalSince(loadStart)
+            // What the Watch reads now: its last 400 days, quit habits and tasks whole (HabitStore.historyWindowDays).
+            let windowStart = Date.now
+            let window = try await watch.loadSince(day: today.adding(days: -400, calendar: calendar).key)
+            let windowSeconds = Date.now.timeIntervalSince(windowStart)
             let size = ["watch.db", "watch.db-wal"].reduce(0) { sum, name in
                 sum + ((try? FileManager.default.attributesOfItem(atPath: directory.appendingPathComponent(name).path)[.size] as? Int) ?? 0)
             }
-            note(String(format: "first fill on the Watch simulator: %d logs (%d years) in %d parts, biggest %d KB, %.1f MB sent; %.1f s (Today right after %.1f s; the stand-in iPhone made it in %.1f s); Watch database %.0f MB; reading it all for Today %.2f s (%d logs); peak memory %.0f MB",
+            note(String(format: "first fill on the Watch simulator: %d logs (%d years) in %d parts, biggest %d KB, %.1f MB sent; %.1f s (Today right after %.1f s; the stand-in iPhone made it in %.1f s); Watch database %.0f MB; reading it all %.2f s (%d logs); reading the Watch's 400 days for Today %.2f s (%d logs); peak memory %.0f MB",
                         total, years, parts, biggest / 1024, Double(sent) / 1_048_576, seconds, firstToday ?? seconds, madeSeconds,
-                        Double(size) / 1_048_576, loadSeconds, loaded.entries.count, peak))
+                        Double(size) / 1_048_576, loadSeconds, loaded.entries.count, windowSeconds, window.entries.count, peak))
             if loaded.entries.count != total { MainThreadMeter.mark("# ERROR fill merged \(loaded.entries.count) of \(total) logs") }
             try? phone.close(); try? watch.close()
         } catch {

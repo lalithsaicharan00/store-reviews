@@ -51,6 +51,9 @@ final class WatchModel {
         openFailed = failed
         let opened = repository ?? Persistence.inMemory().repository
         store = HabitStore(repository: opened, databaseOpened: repository != nil)
+        // The last 400 days in memory (a year goal's whole year, with room), quit habits and tasks whole; the database
+        // keeps everything (Architecture 12 §2). An extreme 15-year account read whole took 27 s (run 38109083512).
+        store.historyWindowDays = 400
         link = WatchLink(repository: repository, testLaunch: Self.testLaunch && !Self.pairTest)
         plus = PlusState(testLaunch: Self.testLaunch)
         store.isPlus = true // the Watch app is Plus; `PlusState` decides whether it opens at all (G1)
@@ -156,7 +159,9 @@ final class WatchModel {
     /// Speed runs: a batch as if from the iPhone, merged and shown the way `WatchLink` does.
     func applyPeerBatchForTest(_ batch: String) async throws {
         guard let repository else { return }
+        let started = CFAbsoluteTimeGetCurrent()
         _ = try await repository.acceptPeerBatch(batch: batch)
+        perfNote("Batch: merged into the database", since: started)
         receivedFromPhone()
     }
     #endif

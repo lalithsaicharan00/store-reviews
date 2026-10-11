@@ -50,7 +50,7 @@ struct TodayScreen: View {
             EmptyStateView(symbol: "iphone", title: "No habits yet", detail: "Add one in Often Enough on your iPhone.")
                 .accessibilityIdentifier("no-habits")
         } else {
-            let plan = TodayPlan.make(store)
+            let plan = perfTimed("Watch Today: plan") { TodayPlan.make(store) }
             if plan.isEmpty {
                 EmptyStateView(symbol: "checkmark.circle", title: "Nothing planned for today",
                                detail: "Habits for other days show on their day.")
