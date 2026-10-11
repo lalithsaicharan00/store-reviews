@@ -57,18 +57,36 @@ object PeerFill {
         }
     }
 
+    /** Whole records with every field's stamp, as JSON: the stamp most fields share, and the exceptions. Google Drive's
+     *  year files carry their records the same way (DriveSnapshot). */
+    internal fun encodeRows(rows: List<Row>): ByteArray = JsonArray(rows.map { row ->
+        val base = row.record.clocks.values.groupingBy { it }.eachCount().maxByOrNull { it.value }?.key ?: ""
+        val exceptions = row.record.clocks.filterValues { it != base }
+        JsonObject(buildMap {
+            put("t", JsonPrimitive(row.table))
+            put("r", JsonPrimitive(row.row))
+            put("h", JsonPrimitive(base))
+            if (exceptions.isNotEmpty()) put("x", JsonObject(exceptions.mapValues { JsonPrimitive(it.value) }))
+            put("f", JsonObject(row.record.fields))
+        })
+    }).toString().encodeToByteArray()
+
+    /** [encodeRows]' records back. Any mismatch is a [BackupProblem]. */
+    internal fun decodeRows(list: JsonArray): List<Row> = list.map { element ->
+        val o = element as? JsonObject ?: throw BackupProblem(BackupProblem.DAMAGED)
+        val table = (o["t"] as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED)
+        val row = (o["r"] as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED)
+        val base = (o["h"] as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED)
+        val exceptions = (o["x"] as? JsonObject)?.mapValues { (it.value as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED) } ?: emptyMap()
+        val fields = o["f"] as? JsonObject ?: throw BackupProblem(BackupProblem.DAMAGED)
+        if (!TABLE.matches(table) || row.isEmpty() || row.length > 128) throw BackupProblem(BackupProblem.DAMAGED)
+        val clocks = fields.keys.associateWith { exceptions[it] ?: base }
+        if (clocks.values.any { !Hlc.isValid(it) } || fields.values.any { it !is JsonPrimitive }) throw BackupProblem(BackupProblem.DAMAGED)
+        Row(table, row, SyncRecord(fields, clocks))
+    }
+
     internal fun write(rows: List<Row>, cursor: String?, next: String?, now: Long): PeerFillPart {
-        val records = JsonArray(rows.map { row ->
-            val base = row.record.clocks.values.groupingBy { it }.eachCount().maxByOrNull { it.value }?.key ?: ""
-            val exceptions = row.record.clocks.filterValues { it != base }
-            JsonObject(buildMap {
-                put("t", JsonPrimitive(row.table))
-                put("r", JsonPrimitive(row.row))
-                put("h", JsonPrimitive(base))
-                if (exceptions.isNotEmpty()) put("x", JsonObject(exceptions.mapValues { JsonPrimitive(it.value) }))
-                put("f", JsonObject(row.record.fields))
-            })
-        }).toString().encodeToByteArray()
+        val records = encodeRows(rows)
         val manifest = JsonObject(buildMap {
             put("kind", JsonPrimitive(KIND))
             put("format", JsonPrimitive(FORMAT))
@@ -97,18 +115,7 @@ object PeerFill {
         if ((manifest["sha256"] as? JsonPrimitive)?.content != Sha256.hex(data)) throw BackupProblem(BackupProblem.DAMAGED)
         val list = runCatching { Json.parseToJsonElement(data.decodeToString()).jsonArray }.getOrNull() ?: throw BackupProblem(BackupProblem.DAMAGED)
         if ((manifest["count"] as? JsonPrimitive)?.longOrNull != list.size.toLong()) throw BackupProblem(BackupProblem.DAMAGED)
-        val rows = list.map { element ->
-            val o = element as? JsonObject ?: throw BackupProblem(BackupProblem.DAMAGED)
-            val table = (o["t"] as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED)
-            val row = (o["r"] as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED)
-            val base = (o["h"] as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED)
-            val exceptions = (o["x"] as? JsonObject)?.mapValues { (it.value as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED) } ?: emptyMap()
-            val fields = o["f"] as? JsonObject ?: throw BackupProblem(BackupProblem.DAMAGED)
-            if (!TABLE.matches(table) || row.isEmpty() || row.length > 128) throw BackupProblem(BackupProblem.DAMAGED)
-            val clocks = fields.keys.associateWith { exceptions[it] ?: base }
-            if (clocks.values.any { !Hlc.isValid(it) } || fields.values.any { it !is JsonPrimitive }) throw BackupProblem(BackupProblem.DAMAGED)
-            Row(table, row, SyncRecord(fields, clocks))
-        }
+        val rows = decodeRows(list)
         val cursor = (manifest["cursor"] as? JsonPrimitive)?.content?.takeIf { it.isNotEmpty() }
         val next = (manifest["next"] as? JsonPrimitive)?.content?.takeIf { it.isNotEmpty() }
         return Part(cursor, next, rows)

@@ -4,6 +4,7 @@ import androidx.room3.ColumnInfo
 import androidx.room3.ConstructedBy
 import androidx.room3.Dao
 import androidx.room3.Database
+import androidx.room3.Embedded
 import androidx.room3.Insert
 import androidx.room3.OnConflictStrategy
 import androidx.room3.Query
@@ -169,6 +170,47 @@ interface HabitDao {
     @Query("DELETE FROM local_state WHERE `key` = :key") suspend fun removeState(key: String)
     @Query("DELETE FROM local_state WHERE `key` LIKE :prefix || '%'") suspend fun removeStatesWithPrefix(prefix: String)
 
+    // Google Drive (DriveSync): one file per year of logs, and one for everything else ("base"). A log belongs to the
+    // year of its day; anything else, or a log this device can't build yet, to base. The same rule as DriveStore.chainOf.
+
+    /** The files this device's waiting changes belong to: years ("2026"), and "" for base. */
+    @Query(
+        "SELECT DISTINCT CASE WHEN o.table_name = 'entry' AND e.day GLOB '[0-9][0-9][0-9][0-9]-*' THEN substr(e.day, 1, 4) ELSE '' END " +
+            "FROM outbox o LEFT JOIN entry e ON o.table_name = 'entry' AND e.id = o.row_id WHERE o.problem IS NULL AND o.table_name IS NOT NULL"
+    )
+    suspend fun waitingDriveChains(): List<String>
+
+    /** Every log of one year with its sync stamps, read in one query (an extreme year is 25,000 logs). */
+    @Query(
+        "SELECT e.*, m.hlc AS sync_hlc, m.clocks AS sync_clocks, m.extra AS sync_extra, m.pending AS sync_pending FROM entry e " +
+            "JOIN sync_meta m ON m.table_name = 'entry' AND m.row_id = e.id WHERE e.day >= :from AND e.day < :to AND e.day GLOB '[0-9][0-9][0-9][0-9]-*'"
+    )
+    suspend fun driveYear(from: String, to: String): List<EntryWithSync>
+
+    /** Everything that isn't a log of some year. */
+    @Query("SELECT * FROM sync_meta WHERE table_name != 'entry' OR row_id NOT IN (SELECT id FROM entry WHERE day GLOB '[0-9][0-9][0-9][0-9]-*')")
+    suspend fun driveBaseMeta(): List<SyncMetaRecord>
+
+    /** A saved year file confirmed: its logs' changes queued before it was built (`seq` ≤ `upTo`) leave the outbox. */
+    @Query(
+        "DELETE FROM outbox WHERE seq <= :upTo AND problem IS NULL AND table_name = 'entry' AND row_id IN " +
+            "(SELECT id FROM entry WHERE day >= :from AND day < :to AND day GLOB '[0-9][0-9][0-9][0-9]-*')"
+    )
+    suspend fun confirmDriveYear(upTo: Long, from: String, to: String)
+
+    /** A saved base file confirmed. */
+    @Query(
+        "DELETE FROM outbox WHERE seq <= :upTo AND problem IS NULL AND table_name IS NOT NULL AND " +
+            "(table_name != 'entry' OR row_id NOT IN (SELECT id FROM entry WHERE day GLOB '[0-9][0-9][0-9][0-9]-*'))"
+    )
+    suspend fun confirmDriveBase(upTo: Long)
+
+    /** For tests only: a row's sync stamps vanish (the never-shrink guard's test). */
+    @Query("DELETE FROM sync_meta WHERE table_name = :table AND row_id = :row") suspend fun eraseSyncMetaRow(table: String, row: String)
+
+    /** For tests: the waiting ops after [seq], oldest first. */
+    @Query("SELECT * FROM outbox WHERE seq > :seq ORDER BY seq") suspend fun outboxAfter(seq: Long): List<OutboxRecord>
+
     /** Runs [block] in one transaction with a [SyncWriter]: every change and its op commit together, or not at all. */
     @Transaction
     suspend fun <T> synced(now: Long, block: suspend (SyncWriter) -> T): T {
@@ -189,6 +231,15 @@ interface HabitDao {
 
 /** A habit's oldest log day (`HabitDao.oldestDays`). */
 data class HabitOldestDay(@ColumnInfo(name = "habit_id") val habitId: String, val day: String)
+
+/** A log with its sync stamps (`HabitDao.driveYear`). */
+data class EntryWithSync(
+    @Embedded val entry: EntryRecord,
+    @ColumnInfo(name = "sync_hlc") val hlc: String,
+    @ColumnInfo(name = "sync_clocks") val clocks: String?,
+    @ColumnInfo(name = "sync_extra") val extra: String?,
+    @ColumnInfo(name = "sync_pending") val pending: Boolean,
+)
 
 /** An entry's place in the first fill's newest-first order. */
 data class EntryKey(val id: String, val day: String)

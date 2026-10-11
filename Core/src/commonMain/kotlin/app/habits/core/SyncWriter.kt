@@ -218,11 +218,7 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
 
     private suspend fun current(meta: SyncMetaRecord?, table: String, row: String): SyncRecord? {
         if (meta == null) return null
-        val extra = meta.extra?.let(::decodeObject) ?: emptyMap()
-        val columns = if (meta.pending) emptyMap() else columns(table, row) ?: emptyMap()
-        val fields = columns + extra
-        val clocks = meta.clocks?.let(::decodeObject)?.mapValues { it.value.jsonPrimitive.content } ?: emptyMap()
-        return SyncRecord(fields, fields.keys.associateWith { clocks[it] ?: meta.hlc })
+        return record(meta, if (meta.pending) null else columns(table, row))
     }
 
     private suspend fun columns(table: String, row: String): Map<String, JsonElement>? = when (table) {
@@ -297,6 +293,14 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         private val json = Json
 
         fun decodeObject(text: String): Map<String, JsonElement> = json.parseToJsonElement(text).jsonObject
+
+        /** A row as sync sees it, from its sync_meta and its columns (null when it has none or they can't be built yet). */
+        fun record(meta: SyncMetaRecord, columns: Map<String, JsonElement>?): SyncRecord {
+            val extra = meta.extra?.let(::decodeObject) ?: emptyMap()
+            val fields = (columns ?: emptyMap()) + extra
+            val clocks = meta.clocks?.let(::decodeObject)?.mapValues { it.value.jsonPrimitive.content } ?: emptyMap()
+            return SyncRecord(fields, fields.keys.associateWith { clocks[it] ?: meta.hlc })
+        }
 
         @OptIn(ExperimentalUuidApi::class)
         fun newOpId(): String = Uuid.random().toString()

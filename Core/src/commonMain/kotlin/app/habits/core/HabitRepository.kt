@@ -30,6 +30,9 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     /** Sync with the person's iCloud (Architecture 11): what CloudKit sends and what it brought, each in one transaction. */
     val cloud = CloudStore(dao, clock)
 
+    /** Sync through the person's Google Drive (DriveSync): the same outbox and merge as iCloud, carried differently. */
+    val drive = DriveStore(dao, clock)
+
     @Throws(Exception::class)
     suspend fun load(): Snapshot = dao.snapshot()
 

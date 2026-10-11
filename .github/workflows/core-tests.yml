@@ -1,0 +1,91 @@
+# The shared Kotlin core's own checks (Core/): its JVM tests on Linux, and its iPhone and Apple Watch targets compiled
+# on a Mac, so a change to the core can't break the apps that build it. Runs on any push that changes Core/ (tagged or
+# not: it never touches the iOS job's queue, Rulebook T10), or by hand.
+#
+# Google Drive sync's property test runs DRIVE_SEEDS seeded runs here (thousands); the iOS job's own `jvmTest` runs the
+# default (a few hundred). The extreme-account size test runs 15 years here. Its numbers are printed in the
+# "Drive numbers" step.
+name: Core tests
+
+on:
+  push:
+    branches-ignore: [ci-results]
+    paths: ["Core/**", ".github/workflows/core-tests.yml"]
+  workflow_dispatch:
+    inputs:
+      seeds:
+        description: "Google Drive property test: seeded runs"
+        default: "2000"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: core-tests-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  jvm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-linux-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: gradle-linux-
+      - name: JVM tests
+        working-directory: Core
+        env:
+          DRIVE_SEEDS: ${{ github.event.inputs.seeds || '2000' }}
+          DRIVE_EXTREME_YEARS: "15"
+        run: ./gradlew jvmTest --console=plain
+      - name: Drive numbers
+        if: always()
+        working-directory: Core
+        run: |
+          shopt -s nullglob
+          for f in build/test-results/jvmTest/*.xml; do grep -ho 'drive [^<]*' "$f" || true; done
+          for f in build/test-results/jvmTest/*.xml; do grep -h -o 'testsuite name="[^"]*" tests="[0-9]*" skipped="[0-9]*" failures="[0-9]*" errors="[0-9]*"[^>]*time="[^"]*"' "$f" || true; done
+      - name: Failures
+        if: failure()
+        working-directory: Core
+        run: |
+          shopt -s nullglob
+          for f in build/test-results/jvmTest/*.xml; do grep -h -A3 '<failure' "$f" | head -40 || true; done
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: core-test-reports
+          path: Core/build/reports/tests/
+          retention-days: 7
+
+  apple:
+    runs-on: macos-26
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-core-apple-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: gradle-core-apple-
+      - name: Compile the iPhone and Watch targets
+        working-directory: Core
+        run: >-
+          ./gradlew --console=plain compileKotlinIosArm64 compileKotlinIosSimulatorArm64 compileKotlinWatchosArm64
+          compileKotlinWatchosDeviceArm64 compileKotlinWatchosSimulatorArm64
