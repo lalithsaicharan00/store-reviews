@@ -567,7 +567,7 @@ class DriveSyncTest {
         }
 
         // Back online, no more faults: everyone syncs until settled.
-        ds.forEach { it.client.offline = false; it.client.faults.clear(); it.client.listLag = 0 }
+        ds.forEach { it.client.offline = false; it.client.faults.clear(); it.client.createFaults.clear(); it.client.listLag = 0 }
         drive.tick += 100
         settle(ds)
         assertSame(ds, "seed $seed")
