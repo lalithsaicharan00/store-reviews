@@ -807,6 +807,11 @@ and the Add note keyboard coming up by itself.
     the free itself and they can upgrade from there also … the main ones"). *Done 11 Oct: Add a 6th habit, Make Room,
     Plus is yours, the second-device sheet (form sheets) and Your Plus (beside the sidebar); `iOS/Docs/iPad/Designs/18 ·
     Plus.png`, Design Notes §9.*
+  - [x] **One window** (the user, 11 Oct: "keep it one window itself"): no second window of the app; every window size
+    still works. *Recorded in the README's decisions and the build prompt §4.*
+  - [x] **Every Plus screen covered** (the user, 11 Oct: "in Plus, all of the required screens, have you covered?").
+    *Done 11 Oct: all 26 screens of the iPhone's Plus flows 1–8 (Figma `1021:309`) now have iPad versions, landscape and
+    portrait (Apple's own purchase sheet is the system's): pictures 18–20, Design Notes §9.*
   - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (next; the user will discuss the
     app-level changes first).
 

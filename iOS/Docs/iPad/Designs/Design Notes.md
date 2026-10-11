@@ -256,8 +256,10 @@ is iPhone only.
 The iPhone's Plus screens (Current Work 80, built; Figma section "Plus — every screen", node `1011:309`) come to the
 iPad with the same words, prices and order; only the presentation changes, as everywhere else on the iPad: what is a
 sheet on the iPhone is a **form sheet** in the middle of the screen, and a page from the menu sits **beside the
-sidebar**. Only the main screens are drawn (the user: "we don't need to create everything, the main Plus screens");
-the rest follow the same two patterns.
+sidebar**. First the main screens (the user: "the main Plus screens"), then, on the user's check ("in Plus, all of the required
+screens, have you covered?"), **every screen in the iPhone's Plus flows 1–8** (the retired server screens are not
+built). Alerts are the system's own, centred, as on the iPhone. Free-plan screens show the menu's count beside Plus
+in the sidebar ("5 of 5"), as the iPhone's ≡ Plus row does.
 
 | Screen (iPhone card) | On the iPad |
 |---|---|
@@ -267,8 +269,18 @@ the rest follow the same two patterns.
 | **Plus is yours** (A1/A2, after buying) | A form sheet with Done, after Apple's own purchase sheet |
 | **Use your habits on this iPad?** (E4/D1, the second-device sheet) | **The iPad's own moment:** a free person opening the app on an iPad with habits already in iCloud. A form sheet: Keep both in sync (Plus) · See Plus, or Move to this iPad · Use on This iPad; ✕ keeps this iPad on its own (Architecture 11 §12) |
 | **Your Plus** (Y1, owners) | Beside the sidebar, Plus selected: included, Upgrade to Plus Family, Restore Purchases, Contact Us |
+| **From an idea** (1.2a) and **restoring an archived habit** (1.2b) | The 6th-habit form sheet with its own title ("Add Drink water", "Bring back Read") |
+| **Make Room's delete** (1.3b) | The system's alert over the form sheet: Delete · Archive Instead · Cancel |
+| **Plus Family is yours** (4.3) | A form sheet with Done |
+| **The Plus page's states** (2.2a–d, 2.3a, 5.2a) | Beside the sidebar: Plus Family chosen; prices didn't load (Try Again); purchases turned off on this iPad (Screen Time); waiting for approval; alerts for didn't go through and nothing found |
+| **Restore: Plus found** (5.2), **Upgrade to Plus Family** (5.2b), **shared by your family** (6.1), **on a new iPad** (8.1) | Your Plus beside the sidebar with an alert, a pushed Upgrade page, the family-shared and new-device versions |
+| **Plus has ended** (7.1, 7.1b) | A form sheet: your habits are all here; "Syncing this iPad only"; OK · Get Plus Again |
 
-![Plus on the iPad: the 6th habit, Make Room, Plus is yours, the second-device sheet and Your Plus, landscape and portrait](<18 · Plus.png>)
+![Plus: reaching the limit and buying](<18 · Plus — reaching the limit and buying.png>)
+
+![Plus: the Plus page and its states](<19 · Plus — the Plus page and its states.png>)
+
+![Plus: owners, other devices, when Plus ends](<20 · Plus — owners, other devices, when Plus ends.png>)
 
 ## 10. Still to design
 
