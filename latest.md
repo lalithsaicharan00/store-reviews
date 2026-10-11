@@ -1,65 +1,18 @@
-# claude/pensive-gates-3n4ie8-ci6 @ c5b1da3
+# claude/pensive-gates-3n4ie8-perf3 @ 10460f6 (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38131144606 · 2026-10-11 12:43 UTC
-Commit: Current Work 86/88: Day details' popover hangs on Today, pointing at its row; iPad tests; iPad speed runs; coming back to the iPhone
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38131508291 · 2026-10-11 12:47 UTC
+Commit: Speed bisect: the iPad build against main on the iPhone, side by side, four rounds [ios-perf-bisect] perf-variants: main=bac8a1b5 branch=HEAD~1 perf-scenarios: progress all-habits perf-rounds: 4
 
-- Core storage and migrations: success
-- Build: success
-- Release build: success
-- Same-build speed baseline: skipped
-- UI tests (PlusUITests,ICloudUITests,BackupUITests,PersistenceUITests,OnboardingUITests,TestLaunchIsolationUITests): cancelled
-- Speed tests: skipped
-- Speed tests through XCTest: skipped
+Variants: `main=bac8a1b5 branch=HEAD~1` · scenarios: `progress all-habits` · rounds: 4
 
-## UI tests
-```
-	 Executed 10 tests, with 0 failures (0 unexpected) in 322.186 (322.192) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 132.993 (132.997) seconds
-	 Executed 7 tests, with 0 failures (0 unexpected) in 172.734 (172.739) seconds
-	 Executed 7 tests, with 0 failures (0 unexpected) in 1732.476 (1732.486) seconds
-Test Case '-[HabitsUITests.BackupUITests testBackupFilesInICloud]' passed (72.185 seconds).
-Test Case '-[HabitsUITests.BackupUITests testBackupIntegrityChecks]' passed (10.855 seconds).
-Test Case '-[HabitsUITests.BackupUITests testErasingEverything]' passed (21.280 seconds).
-Test Case '-[HabitsUITests.BackupUITests testExportAndBackupOpenNativeShareSheet]' passed (24.605 seconds).
-Test Case '-[HabitsUITests.BackupUITests testRestoreListsICloudAndAFile]' passed (14.679 seconds).
-Test Case '-[HabitsUITests.BackupUITests testRestoreSaysThisIPhone]' passed (19.677 seconds).
-Test Case '-[HabitsUITests.BackupUITests testTheICloudPageFromAnEmptyToday]' passed (9.453 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testADifferentAppleAccountAsksFirst]' passed (14.311 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testRemovedFromICloudAsksFirst]' passed (15.560 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testSyncAgainstTheFakeICloud]' passed (147.964 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testTheExtremeAccount]' passed (1329.204 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testTheICloudPageInEveryState]' passed (171.719 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testTheSecondDeviceSheet]' passed (24.461 seconds).
-Test Case '-[HabitsUITests.ICloudUITests testTodaysCardWhenICloudNeedsYou]' passed (29.257 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testCreateMyOwnHabitIsTheUsualNewFlow]' passed (51.626 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testDataOnThisDeviceComesFirst]' passed (21.825 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testFirstHabitAfterMidnightBeforeTheDayStartShowsOnToday]' passed (36.218 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testHabitsComeBackFromICloud]' passed (14.852 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testHelpAndTheWelcomeAgain]' passed (59.939 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testLargestTextReachesContinue]' passed (22.524 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testNewPersonToFirstHabit]' passed (51.021 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testNoWelcomeInOtherRuns]' passed (6.340 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testReturningWaysBack]' passed (22.529 seconds).
-Test Case '-[HabitsUITests.OnboardingUITests testSkipSetupLeadsToAHelpfulToday]' passed (35.314 seconds).
-Test Case '-[HabitsUITests.PersistenceUITests testFailedWriteIsTakenBack]' passed (33.734 seconds).
-Test Case '-[HabitsUITests.PersistenceUITests testHabitAndTickSurviveRelaunch]' passed (41.913 seconds).
-Test Case '-[HabitsUITests.PersistenceUITests testQuickTapsSurviveLeavingTheApp]' passed (45.199 seconds).
-Test Case '-[HabitsUITests.PersistenceUITests testUnopenableDatabaseSaysSoAndTakesNoChanges]' passed (12.147 seconds).
-Test Case '-[HabitsUITests.PlusUITests testAskToBuyShowsWaiting]' passed (15.006 seconds).
-Test Case '-[HabitsUITests.PlusUITests testBringingBackAnArchivedHabit]' passed (30.239 seconds).
-Test Case '-[HabitsUITests.PlusUITests testBuyingPlusSavesTheSixthHabit]' passed (76.939 seconds).
-Test Case '-[HabitsUITests.PlusUITests testMakeRoomArchivesOneAndGoesAhead]' passed (67.626 seconds).
-Test Case '-[HabitsUITests.PlusUITests testOwnerUpgradesAndFamilyMemberPage]' passed (40.917 seconds).
-Test Case '-[HabitsUITests.PlusUITests testPlusEndedIsToldOnce]' passed (12.404 seconds).
-Test Case '-[HabitsUITests.PlusUITests testPlusPageAndRestoreWithNothingFound]' passed (15.186 seconds).
-```
+- main: bac8a1b5 Current Work 88: coming back to the iPhone after using the iPad, "Use your habits on this iPhone?" (t
+- branch: 7aca590e Current Work 86: container ids keep their rows' own (T9), the sidebar command names itself, onboardin
 
-## Release build
-```
-** BUILD SUCCEEDED **
-```
+Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
-## Native analytics checks
-```
-Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
-```
+| Window | main | branch |
+|---|---|---|
+| Progress: scrolling | **3.7**<br>10.9 (52, 0), 0 (0, 0), 5.1 (36, 0), 2.3 (35, 0) | **4.1**<br>4.9 (33, 0), 5.6 (37, 0), 3.3 (40, 0), 1.6 (30, 0) |
+| Progress: period ‹ › and range | **106.7**<br>157.2 (163, 9), 68 (107, 1), 133.3 (180, 8), 80.1 (99, 0) | **104.0**<br>177.5 (173, 13), 86.6 (82, 0), 89.6 (147, 3), 118.4 (140, 3) |
+| Progress: key fold and open | **0.7**<br>0.7 (28, 0), 0.2 (19, 0), 1.5 (40, 0), 0.7 (28, 0) | **0.5**<br>2.9 (60, 0), 0 (0, 0), 0 (0, 0), 1 (33, 0) |
+| All Habits: scrolling | **2.5**<br>3.7 (27, 0), 3.2 (34, 0), 1.3 (25, 0), 1.8 (29, 0) | **3.6**<br>3 (30, 0), 4.1 (34, 0), 10.1 (63, 0), 3.1 (41, 0) |
