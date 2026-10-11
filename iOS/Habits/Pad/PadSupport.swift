@@ -222,14 +222,12 @@ struct PadDayDetails: View {
 
 extension View {
     /// Sizes a popover's content to `fit` (on a regular width only: in a narrow window it's a sheet of its own size).
-    @ViewBuilder func padPopoverFrame(_ fit: PopoverFit, active: Bool) -> some View {
-        if active {
-            self.environment(\.popoverFit, fit)
-                .frame(width: fit.width, height: min(max(fit.height, 160), 900))
-                .animation(.snappy(duration: 0.25), value: fit.height)
-        } else {
-            self
-        }
+    /// The same modifiers either way, with values that do nothing in a narrow window: a branch here would give Day
+    /// details a new identity when the window changes width, and lose Add log and its typed amount (run 38131431056).
+    func padPopoverFrame(_ fit: PopoverFit, active: Bool) -> some View {
+        environment(\.popoverFit, active ? fit : nil)
+            .frame(width: active ? fit.width : nil, height: active ? min(max(fit.height, 160), 900) : nil)
+            .animation(.snappy(duration: 0.25), value: fit.height)
     }
 
     /// Tells an iPad popover how tall this screen's content is, while it's the screen on top. Nothing outside a popover.
@@ -248,15 +246,17 @@ private struct FitsPadPopover: ViewModifier {
     let screen: String
     @Environment(\.popoverFit) private var fit
 
+    // On the iPad, one shape whether or not a popover is measuring (the window changing width keeps the screen's
+    // state); nothing on the iPhone.
     func body(content: Content) -> some View {
-        if let fit {
+        if Device.isPad {
             content
                 .onScrollGeometryChange(for: CGFloat.self) { geometry in
                     geometry.contentSize.height + geometry.contentInsets.top + geometry.contentInsets.bottom
                 } action: { _, height in
-                    fit.report(screen, height)
+                    fit?.report(screen, height)
                 }
-                .onAppear { fit.top = screen }
+                .onAppear { fit?.top = screen }
         } else {
             content
         }
@@ -325,8 +325,8 @@ private struct PadPopoverHeight: ViewModifier {
     @Environment(\.popoverFit) private var fit
 
     func body(content: Content) -> some View {
-        if let fit {
-            content.onAppear { fit.report(screen, height); fit.top = screen }
+        if Device.isPad {
+            content.onAppear { fit?.report(screen, height); fit?.top = screen }
         } else {
             content
         }

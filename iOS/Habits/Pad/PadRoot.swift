@@ -306,7 +306,7 @@ struct PadPage: View {
                 PadStack(pageMenu: pageMenu) {
                     switch place {
                     case .progress: ProgressScreen()
-                    case .plus: MenuPage(place: place).padColumn(PadMetrics.plus)
+                    case .plus: MenuPage(place: place).padColumn(PadMetrics.plus, bars: true)
                     default: MenuPage(place: place).padColumn(PadMetrics.column)
                     }
                 }
@@ -353,13 +353,16 @@ struct PadSidebarButton: View {
 extension View {
     /// A page at a readable width, centred in the room it has (Today's column, the settings pages, Plus): the scroll
     /// view still spans the room, so it scrolls from anywhere. Only on a regular width: a narrow window is the iPhone's.
-    @ViewBuilder func padColumn(_ width: CGFloat) -> some View {
-        if Device.isPad { modifier(PadColumn(width: width)) } else { self }
+    /// `bars`: a page whose main button rides at the bottom outside its scroll view (Plus): the column insets the safe
+    /// area, so the button keeps to the column too (run 38131431056: Buy spanned 828 pt beside the sidebar).
+    @ViewBuilder func padColumn(_ width: CGFloat, bars: Bool = false) -> some View {
+        if Device.isPad { modifier(PadColumn(width: width, bars: bars)) } else { self }
     }
 }
 
 private struct PadColumn: ViewModifier {
     let width: CGFloat
+    let bars: Bool
     @Environment(\.horizontalSizeClass) private var sizeClass
     @State private var room: CGFloat = 0
 
@@ -367,7 +370,8 @@ private struct PadColumn: ViewModifier {
         // A grouped list keeps 20 pt of its own on each side of its cards.
         let margin = sizeClass == .regular ? max(0, (room - width) / 2 - 20) : 0
         content
-            .contentMargins(.horizontal, margin, for: .scrollContent)
+            .contentMargins(.horizontal, bars ? 0 : margin, for: .scrollContent)
+            .safeAreaPadding(.horizontal, bars ? margin : 0)
             .onGeometryChange(for: CGFloat.self) { $0.size.width.rounded() } action: { room = $0 }
     }
 }

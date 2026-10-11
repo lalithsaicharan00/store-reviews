@@ -57,6 +57,10 @@ final class WidgetUITests: XCTestCase {
         app.descendants(matching: .any)["widget-render"].descendants(matching: .any)
             .matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch.waitForExistence(timeout: timeout)
     }
+    private func gone(_ app: XCUIApplication, _ text: String, within timeout: TimeInterval = 5) -> Bool {
+        app.descendants(matching: .any)["widget-render"].descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch.waitForNonExistence(timeout: timeout)
+    }
     /// Everything the drawn widget says, on one line: CI's log keeps only a failure's first line.
     private func labels(_ app: XCUIApplication) -> String {
         let all = app.descendants(matching: .any)["widget-render"].descendants(matching: .any).allElementsBoundByIndex
@@ -160,7 +164,8 @@ final class WidgetUITests: XCTestCase {
 
         // Dark.
         let dark = app.switches["widget-dark"]
-        dark.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
+        // The switch's knob, at the row's trailing edge (on the iPad the row is far wider than the iPhone's).
+        dark.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.5)).withOffset(CGVector(dx: -30, dy: 0)).tap()
         expectation(for: NSPredicate(format: "value == '1'"), evaluatedWith: dark); waitForExpectations(timeout: 5)
         shot(app, "widget-dark-large-today")
         app.buttons["layout-week"].tap(); choose(app, family: "systemMedium")
@@ -196,7 +201,8 @@ final class WidgetUITests: XCTestCase {
         shot(app, "widget-extra-large-hidden")
         app.buttons["render-hidden"].tap()
         app.buttons["render-discreet"].tap()
-        XCTAssertTrue(shows(app, "of 5 done") && !shows(app, "Widget ", timeout: 1), labels(app))
+        // Rows drawn afresh as Hidden went off redraw without names a moment later: wait for the names to go.
+        XCTAssertTrue(shows(app, "of 5 done") && gone(app, "Widget "), labels(app))
         shot(app, "widget-extra-large-discreet")
         app.buttons["render-discreet"].tap()
         // Large and Medium unchanged beside it.

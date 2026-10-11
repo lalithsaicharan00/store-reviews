@@ -67,6 +67,13 @@ final class IPadUITests: XCTestCase {
             .prefix(60).joined(separator: " | ")
     }
 
+    /// An assertion that says whether it held, so a test can go on to the next check without the one that failed.
+    @discardableResult
+    private func XCTAssertTrueReturning(_ condition: Bool, _ message: @autoclosure () -> String) -> Bool {
+        XCTAssertTrue(condition, message())
+        return condition
+    }
+
     private func frame(_ element: XCUIElement) -> String {
         let f = element.frame
         return "\(Int(f.minX)),\(Int(f.minY)) \(Int(f.width))×\(Int(f.height))"
@@ -87,7 +94,16 @@ final class IPadUITests: XCTestCase {
     private func place(_ id: String) {
         if !sidebar.exists { any("sidebar-button").tap() }
         XCTAssertTrue(sidebar.waitForExistence(timeout: 5), "Sidebar: \(labels())")
-        app.buttons[id].firstMatch.tap()
+        sidebarRow(id).tap()
+    }
+
+    /// A sidebar row, scrolled into view: on the 11-inch in landscape the sidebar is taller than the screen, so Help and
+    /// About load only once it scrolls (run 38131431056).
+    private func sidebarRow(_ id: String) -> XCUIElement {
+        let row = app.buttons[id].firstMatch
+        for _ in 0..<3 where !(row.exists && row.isHittable) { sidebar.swipeUp() }
+        for _ in 0..<3 where !(row.exists && row.isHittable) { sidebar.swipeDown() }
+        return row
     }
 
     // MARK: Today, the sidebar and the day control
@@ -96,14 +112,17 @@ final class IPadUITests: XCTestCase {
         launch()
         // Landscape: the sidebar beside Today, its rows in the ≡ menu's order, "N left" beside Today.
         XCTAssertTrue(sidebar.waitForExistence(timeout: 5), "Sidebar in landscape: \(labels())")
-        for id in ["menu-today", "menu-progress", "menu-habits", "menu-tasks", "menu-timesOfDay", "menu-dayAndWeek",
-                   "menu-reminders", "menu-appearance", "menu-backup", "menu-privacy", "menu-plus", "menu-help", "menu-about"] {
-            XCTAssertTrue(app.buttons[id].exists, "Sidebar row \(id): \(labels())")
-        }
         XCTAssertTrue(app.buttons["menu-today"].label.contains("left"), "\"N left\" beside Today: \(app.buttons["menu-today"].label)")
-        let order = ["menu-today", "menu-progress", "menu-habits", "menu-tasks", "menu-timesOfDay", "menu-help", "menu-about"]
-            .map { app.buttons[$0].frame.minY }
+        let top = ["menu-today", "menu-progress", "menu-habits", "menu-tasks", "menu-timesOfDay", "menu-dayAndWeek"]
+        for id in top { XCTAssertTrue(app.buttons[id].exists, "Sidebar row \(id): \(labels())") }
+        let order = top.map { app.buttons[$0].frame.minY }
         XCTAssertEqual(order, order.sorted(), "The menu's order")
+        // The rest, in order, once the sidebar scrolls to them.
+        let rest = ["menu-reminders", "menu-appearance", "menu-backup", "menu-privacy", "menu-plus", "menu-help", "menu-about"]
+        for id in rest { XCTAssertTrue(sidebarRow(id).exists, "Sidebar row \(id): \(labels())") }
+        let lower = rest.map { app.buttons[$0].frame.minY }
+        XCTAssertEqual(lower, lower.sorted(), "The menu's order, lower down")
+        _ = sidebarRow("menu-today")
         // No ≡ on the iPad; the day control at the top centre (‹ · Today ⌄ · ›), not in a bottom bar.
         XCTAssertFalse(app.buttons["menu-button"].exists, "No ≡ on the iPad")
         let window = app.windows.firstMatch.frame
@@ -373,22 +392,14 @@ final class IPadUITests: XCTestCase {
 
     func testColumnsViewAndKeyboardCommands() {
         launch()
-        // ⌘2: Columns. Each time of day its own column, side by side.
-        app.typeKey("2", modifierFlags: .command)
-        XCTAssertTrue(any("today-columns").waitForExistence(timeout: 4), "⌘2 shows Columns: \(labels())")
-        let columns = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'today-column-'"))
-        XCTAssertGreaterThanOrEqual(columns.count, 2, labels())
-        if columns.count >= 2 {
-            XCTAssertEqual(columns.element(boundBy: 0).frame.minY, columns.element(boundBy: 1).frame.minY, accuracy: 2, "Side by side")
+        // Each command on its own, so one that doesn't arrive doesn't hide the rest (run 38131431056).
+        // ⌘N: New (the File menu).
+        app.typeKey("n", modifierFlags: .command)
+        if XCTAssertTrueReturning(app.navigationBars["New"].waitForExistence(timeout: 4), "⌘N opens New: \(labels())") {
+            app.navigationBars["New"].buttons.firstMatch.tap()
+            XCTAssertTrue(app.navigationBars["New"].waitForNonExistence(timeout: 4), "New's ✕: \(labels())")
         }
-        shot("16-columns-landscape")
-        // A row in a column opens Day details at itself (Morning's, the first column).
-        openRow("Stretch")
-        tapOutside()
-        // ⌘1: List again.
-        app.typeKey("1", modifierFlags: .command)
-        XCTAssertTrue(any("today-columns").waitForNonExistence(timeout: 4), "⌘1 shows the list: \(labels())")
-        // ⌘← and ⌘→ change the day, ⌘T goes back to today.
+        // ⌘← and ⌘→ change the day, ⌘T goes back to today (the View menu).
         app.typeKey(XCUIKeyboardKey.leftArrow.rawValue, modifierFlags: .command)
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Yesterday'")).firstMatch.waitForExistence(timeout: 3), "⌘←: \(labels())")
         app.typeKey("t", modifierFlags: .command)
@@ -396,20 +407,36 @@ final class IPadUITests: XCTestCase {
         app.typeKey(XCUIKeyboardKey.rightArrow.rawValue, modifierFlags: .command)
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Tomorrow'")).firstMatch.waitForExistence(timeout: 3), "⌘→: \(labels())")
         app.typeKey("t", modifierFlags: .command)
+        if !today.waitForExistence(timeout: 3), app.buttons["back-to-today"].exists { app.buttons["back-to-today"].tap() }
         // ⌃⌘S hides and shows the sidebar.
         app.typeKey("s", modifierFlags: [.control, .command])
         XCTAssertTrue(sidebar.waitForNonExistence(timeout: 3), "⌃⌘S hides the sidebar: \(labels())")
         app.typeKey("s", modifierFlags: [.control, .command])
         XCTAssertTrue(sidebar.waitForExistence(timeout: 3), "⌃⌘S shows it: \(labels())")
-        // ⌘N: New.
-        app.typeKey("n", modifierFlags: .command)
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 4), "⌘N opens New: \(labels())")
-        app.navigationBars["New"].buttons.firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForNonExistence(timeout: 4), "New's ✕: \(labels())")
+        // ⌘2: Columns. Each time of day its own column, side by side.
+        app.typeKey("2", modifierFlags: .command)
+        if XCTAssertTrueReturning(any("today-columns").waitForExistence(timeout: 4), "⌘2 shows Columns: \(labels())") {
+            let columns = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'today-column-'"))
+            XCTAssertGreaterThanOrEqual(columns.count, 2, labels())
+            if columns.count >= 2 {
+                XCTAssertEqual(columns.element(boundBy: 0).frame.minY, columns.element(boundBy: 1).frame.minY, accuracy: 2, "Side by side")
+            }
+            shot("16-columns-landscape")
+            // A row in a column opens Day details at itself (Morning's, the first column).
+            if app.staticTexts["Stretch"].firstMatch.waitForExistence(timeout: 3) {
+                openRow("Stretch")
+                tapOutside()
+            } else {
+                XCTFail("Stretch in Morning's column: \(labels())")
+            }
+            // ⌘1: List again.
+            app.typeKey("1", modifierFlags: .command)
+            XCTAssertTrue(any("today-columns").waitForNonExistence(timeout: 4), "⌘1 shows the list: \(labels())")
+        }
         // Appearance → Layout: Columns, for people without a keyboard.
         place("menu-appearance")
         let picker = app.buttons["appearance-layout"].firstMatch
-        if picker.waitForExistence(timeout: 3) {
+        if XCTAssertTrueReturning(picker.waitForExistence(timeout: 3), "Appearance → Layout on the iPad: \(labels())") {
             picker.tap()
             app.buttons["Columns"].firstMatch.tap()
             place("menu-today")
