@@ -20,7 +20,9 @@ the same words; differences only where a platform forces them.
    the user's "download first, then upload" idea, made safe; what Google Drive can and can't guarantee.
 4. [Sync Status Across Devices — When It Shows, Where, and the Complaints Behind It](<Research/Sync Status Across Devices — When It Shows, Where, and the Complaints Behind It.md>):
    how a device knows another went quiet, the line on Today, the Watch, the 197 sync complaints and what can't be solved.
-5. [Android Plus Evidence](<Research/Android Plus Evidence/>): every script, sample, hand coding, tally and web source.
+5. [Google Drive Sync — Prototype Results](<Research/Google Drive Sync — Prototype Results.md>): what was built, the
+   real-Drive proof, the numbers, and what stages 3 and 4 must still check.
+6. [Android Plus Evidence](<Research/Android Plus Evidence/>): every script, sample, hand coding, tally and web source.
 
 Earlier work this builds on: [Plus, Price and the Server — How We Decided](<../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/README.md>)
 (no server for habits; the first Android and Google Drive reports), [Architecture 11](<../../Architecture/11. iCloud Sync with CloudKit.md>)
@@ -45,6 +47,21 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
 synced" note; the user doubted it and it moved to the end of Today's list, the native place (Mail, Photos).
 
+## Results: Google Drive sync, stages 1–2 (11 October 2026)
+
+**Verdict: Go with changes** ([Prototype Results](<Research/Google Drive Sync — Prototype Results.md>)). Built in the
+shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against a stand-in Drive on every push
+(2,000 seeded runs of 2–4 devices converge), then on the real Google Drive with the test account:
+
+- **A4, the version chain, holds on the real Drive:** separate processes saving under the same reserved ID at the same
+  moment, IDs reserved by either: exactly one save succeeded and every other was refused with 409, **280 of 280**
+  (two and six devices). A half-written upload never blocks the chain or overwrites it.
+- Full rounds with three to six devices on the real Drive ended identical every time (offline, simultaneous saves,
+  cut-off uploads, a reinstall, the brake). An idle round is one call (~0.25 s).
+- Found and fixed: Drive refuses a deleted file's ID with 400, not 409 (now "taken"); the never-shrink guard fired
+  against a damaged version a device couldn't read.
+- **A9:** done. Stage 3 (two Android devices) and stage 4 (iPhone, iPad, Mac) have their lists in the report (§6–7).
+
 ## Still open
 
 - **One purchase working on both stores from Android's launch** (the entitlement record, D16).
@@ -59,9 +76,8 @@ synced" note; the user doubted it and it moved to the end of Today's list, the n
 
 ## What comes next
 
-1. **Google Drive sync in the shared core**: transport, version chain and merge, tested against a stand-in Drive on
-   GitHub; then a real-Drive check that a second device's save under a taken ID is refused. The cloud session's full
-   instructions: [Build Prompt — Google Drive Sync, Stages 1–2](<Build Prompt — Google Drive Sync, Stages 1–2 (Delete When Done).md>).
+1. ~~**Google Drive sync in the shared core**~~ done, 11 Oct 2026: [Prototype Results](<Research/Google Drive Sync — Prototype Results.md>)
+   (Go with changes). Next for it: stage 3 on two Android devices, after the Android designs.
 2. Alongside: the Android research report, and Current Work 91 on the iPhone.
 3. Then the shared rules into the core, the Android designs, and the Android app with Drive sync plugged in.
 

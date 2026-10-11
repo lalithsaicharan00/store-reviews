@@ -871,10 +871,14 @@ and the Add note keyboard coming up by itself.
     edited on two offline devices (keep the other in history, "Use This Instead"); a delete from another device
     ("Archived on Pixel 8", Restore); the same thing logged on two devices ("Keep Both / Remove One"); two devices that
     each created the same habit before joining (combine them); widgets refreshed the moment synced changes arrive.
-  - [ ] **First: Google Drive sync in the shared core** (the user, 11 Oct 2026, decision A9): transport, version chain
+  - [x] **First: Google Drive sync in the shared core** (the user, 11 Oct 2026, decision A9): transport, version chain
     and merge, tested against a stand-in Drive on GitHub, then a real-Drive check that a second device's save under a
-    taken ID is refused. Needs from the user: a Google Cloud project, an OAuth client limited to `drive.appdata`, a test
-    Google account; later two Android devices or emulators.
+    taken ID is refused. **Done 11 Oct 2026, verdict Go with changes**
+    ([Prototype Results](<../../../Android/Docs/Research/Google Drive Sync — Prototype Results.md>)): `DriveSync`,
+    `DriveStore`, `GoogleDrive` in `Core/`; the deciding check held 280 of 280 on the real Drive (runs 38162572860,
+    38163084653); full rounds with 3–6 devices identical; 2,000 seeded stand-in runs converge (Core tests run
+    38164233802, the new `core-tests.yml`; iPhone and Watch targets compile). Still needed later: two Android devices or
+    emulators and an Android OAuth client (stage 3); a new iOS client (stage 4).
   - [ ] Alongside: the Android research report (what Android people want beyond Plus, Google's own rules); then the
     day/schedule/streak/progress rules moved into the shared core; then designs in Figma, small screens first; then
     the build with Drive sync plugged in.
