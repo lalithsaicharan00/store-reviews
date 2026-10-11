@@ -107,6 +107,9 @@ here the same day, with its numbers.
   `38127623686` was a first round, not this branch); History 1.8 / 2.6; tabs 9.6 / 13.7; Progress period ‹ › 109.5 /
   86.9 with the rounds overlapping (62–162 / 56–107), and nothing on its path changed (`RunWords.short` is the same
   words moved into `Words.swift`): spread, not a regression; it stays on the list above.
+  The same build (`f8081ff`) in two runs: Today scrolling 0.0 then 24.4 (one 314 ms freeze), the timer screen's clock
+  0.0 then 26.8 (`38127623686`, `38132905623`): the hosted Mac, with the same code. Day sheet add, edit and undo
+  118–284 against `main`'s 173–216 (`4543c68`); Today's day ‹ › 48–65 against `main`'s 13–77.
 
 **Above the targets on every build, not a regression (8 Oct 2026, Current Work 49; side by side, simulator):** Today's
 day ‹ › 55–160 ms/s depending on the machine (one 40–60 ms stall per switch), habit-form typing at a letter every
