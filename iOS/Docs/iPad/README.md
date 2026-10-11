@@ -172,7 +172,9 @@ What building it settled, and why (each a refinement of a decision above, not a 
 
 **Tested on GitHub's simulators (11 Oct 2026):**
 
-- **The final build, `0176922`: iPad Air 11-inch run 38168398257 and iPad Pro 13-inch run 38169397645, all green** — the 15 `IPadUITests` (sidebar, Today's column and day
+- **Merged with `main` (the Apple Watch app, Google Drive sync), `e67883a`: green again on both iPads (runs 38172261585,
+  38172263469) and on every iPhone class run (Current Work 86).** Before the merge, `0176922`: iPad Air 11-inch run
+  38168398257 and iPad Pro 13-inch run 38169397645, all green — the 15 `IPadUITests` (sidebar, Today's column and day
   control; the Day details popover with Add log, Add note and All logs inside it; a typed amount through rotation, a tap
   outside and the window going narrow and wide; a narrow window as the iPhone's app; Habits list–detail; Progress; every
   settings page and the iPad's words; sheets and popovers; Arrange, the timer and the player; Columns and every keyboard
@@ -181,8 +183,10 @@ What building it settled, and why (each a refinement of a decision above, not a 
   the iPhone's Today, Undo and Timer on the final iPhone code in run 38164207979.
 - **The iPhone, unchanged:** every UI class on the newest iPhone passed on this branch, apart from failures that `main`
   has too (below). Side by side with `main` in one job, six rounds: Today's +1 and day, the habit page, Day details,
-  typing and scrolling at or under `main`'s medians (runs 38146864538, 38154788830, 38154786500), with Day details'
-  add, edit and undo the one median above `main`'s in each of three runs, its rounds overlapping each time.
+  typing and scrolling at or under `main`'s medians (runs 38146864538, 38154788830, 38154786500, and on the merged code
+  38172254885, 38172256877), with Day details' add, edit and undo the one median above `main`'s in each of four runs,
+  its rounds overlapping each time; its draw counts are *below* `main`'s (Day details 155 against 166, Today's rows
+  174 against 191: runs 38177733182, 38177812590), so the iPhone does no more work.
 - **Extra Large on the Home Screen** (`IPadWidgetSystemUITests`): GitHub's hosted iPad simulator's Home Screen stopped
   answering XCUITest in the widget gallery in all three runs (38149917285, 38149953441, 38156987610: timeouts, then a
   hang to the 60-minute limit), so adding it from the gallery and tapping it is a real-iPad check. Its drawing is tested

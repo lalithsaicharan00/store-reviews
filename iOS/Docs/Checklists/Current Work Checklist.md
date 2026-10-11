@@ -842,7 +842,15 @@ and the Add note keyboard coming up by itself.
       Settings", "Your iPhone and Apple Watch"); no Haptics row, no silent-switch or Dynamic Island footers on the iPad.
     - [x] Tests on GitHub, all green on the final commit: iPad 11-inch and 13-inch (`IPadUITests`,
       `IPadWidgetSystemUITests`, Extra Large), the iPhone's full UI set on the newest iPhone and the iPhone SE, the
-      speed comparisons against `main` (S). *Done 11 Oct, final code `0176922`: iPad Air 11-inch run 38168398257 and
+      speed comparisons against `main` (S). *Done 11 Oct. **Merged with `main` `161c177` (the Apple Watch app, Google
+      Drive sync), `e67883a`, and tested again:** iPad Air 11-inch run 38172261585 and iPad Pro 13-inch run 38172263469
+      (all `IPadUITests`, the Extra Large render, the iCloud two-device check); the iPhone: runs 38172265732, 38176813300,
+      38179032673, 38179034608, 38179747065 (Today, Day details, Undo, Timer, Groups, Progress, Plus, Persistence,
+      Widgets, Widgets on the Home Screen, every iCloud test, Arrange, Onboarding, Reminders, Tasks, Habit page, the
+      routine player: all passed; `ArrangeUITests.testAddTimeOfDay` failed once in 38172270422 and passed on `main` and
+      here on rerun); speed against the new `main`, six rounds: runs 38172254885, 38172256877; draw counts against
+      `main`: Day details drawn 155 times against 166, its activity 200 against 214, Today's rows 174 against 191
+      (runs 38177733182, 38177812590). Before the merge, final code `0176922`: iPad Air 11-inch run 38168398257 and
       iPad Pro 13-inch run 38169397645 (15 `IPadUITests` and the Extra Large render each); the iPhone: every UI class
       passed on this branch (runs 38131146101, 38131142188, 38131140603, 38131144606, 38138209575's batch,
       38140558803, 38144971935, 38148837844, 38149307244, 38159794690, 38164207979), apart from the failures `main`
