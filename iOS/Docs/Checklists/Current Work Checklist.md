@@ -68,7 +68,7 @@ Their placement records scope and priority; implementation has not started.
     - [ ] Whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
       the user says.
 
-- [ ] **83. Widgets faster, widget and App Lock issues fixed, and the widget lock opened for speed work** (added 11
+- [x] **83. Widgets faster, widget and App Lock issues fixed, and the widget lock opened for speed work** (added 11
   October 2026, from the user, during item 81: "work on widgets as well, improve performance, but preserve overall
   like switch based widgets, and syncing and all of that, because data should be handled robustly and should never be
   lost; and fix widgets related issues and app lock related issues as well; once these are complete mark them as
@@ -83,9 +83,10 @@ Their placement records scope and priority; implementation has not started.
   - [x] **Widget issues:** items 64, 65 and 66 have only their tests on GitHub left (`WidgetUITests`,
     `WidgetSystemUITests`, `TodayUITests`, `TodayRowLayoutUITests`, `RoutineCalendarUITests`, `TimerUITests`): run
     them, fix what fails. *All passed 11 Oct (runs `38099886275`, `38099889413`); 64–66 ticked.*
-  - [ ] **App Lock issues:** item 58.13 has its tests on GitHub left (`AppLockUITests`, `SmallScreenUITests` on the SE);
+  - [x] **App Lock issues:** item 58.13 has its tests on GitHub left (`AppLockUITests`, `SmallScreenUITests` on the SE);
     `SmallScreenUITests.testPrivacyCodeSheetsAndReminderSaysFit` fails on `main` too (run `38085507312`): find why and
-    fix it.
+    fix it. *Done 11 Oct: the setup sheet makes its third way only as it scrolls in; the test now scrolls the sheet's
+    own list to it (T9). Both classes pass (runs `38099883963`, `38099888008`). Left: the user's real Face ID check.*
   - [x] **The widget lock opened for speed work** (the user's say-so): update
     [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>), Rulebook U28 and the code's
     `LOCKED` notes: agents may improve widget performance and fix bugs, as long as the switch-based instant update, the
@@ -1446,7 +1447,9 @@ and the Add note keyboard coming up by itself.
             switched off in Settings, locking the iPhone, the reset notification.
           - [x] The passcode screens' layout (the user's report): the prompt and dots up, the keypad lower, the spare
             space shared evenly, keys 76 pt; the lock screen the same. Checked in iPhone screenshots.
-          - [ ] Tests on GitHub (AppLockUITests, SmallScreenUITests on the SE).
+          - [x] Tests on GitHub (AppLockUITests, SmallScreenUITests on the SE). *11 Oct 2026: AppLockUITests 21/21
+            (`38099883963`); SmallScreenUITests 12/12 on the SE (`38099888008`), after its App Lock test was made to
+            scroll the setup sheet to App Passcode (it failed on `main` too, `38085507312`).*
           - [x] **The user's iPhone check, 10 Oct 2026: the "set a new passcode" screen** (Enter a six-digit passcode /
             Enter it again): the dots and keypad sit high with a lot of empty space below; the space isn't used, or
             something is too small. Fix the layout (after the test run), on every passcode screen (setup, Change,
