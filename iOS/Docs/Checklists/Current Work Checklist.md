@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 82).
+  still resolve; give new items the next unused number (currently 86; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -590,6 +590,20 @@ and the Add note keyboard coming up by itself.
 
 ## Planned improvements — build later
 
+
+- [ ] **85. Edit Group: padding around the colour swatches, and show only the group's own habits (build later).** Added
+  11 October 2026, from the user: "we need to make some updates later, but not now." The screen is New Group / Edit
+  Group (`GroupForm` in `iOS/Habits/Groups/GroupScreens.swift`).
+  - [ ] **The colour block has no side padding.** The swatches in the Colour section (`ColorGrid`) touch the card's
+    left and right edges and corners. Give them proper padding inside the card, left and right (and check top and
+    bottom), at every text size and on the iPhone SE.
+  - [ ] **Show only the habits in this group.** Today the form lists every habit with a ✓ / ○ beside it, so with many
+    habits Pause These Habits… and Delete Group are pushed to the very bottom. Instead, list just the habits this group
+    has, with a way to add more (for example an "Add Habits" row that opens the full list to choose from) and a way to
+    take one out. Pause These Habits… and Delete Group then stay in easy reach.
+  - Before building: read the Groups section of Design Rules and report 17 (U12); New Group (no habits yet) needs its
+    own empty state; a habit is still in one group at a time. Update `GroupsUITests` that tap the old list (T3), and
+    check on the iPhone (U9).
 
 - [ ] **73. Onboarding, and getting everything back for someone returning (build later).** Added 8 October 2026, from
   the user: "we need to improve the onboarding experience. As well as in the onboarding, who has already the account,
