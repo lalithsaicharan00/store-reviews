@@ -556,7 +556,8 @@ decisions that still hold are kept below; the rest went with the server.*
   Backup** (*Any day of the last week, month or six months*), Undo Last Restore while it can. Google Drive stays exactly
   as built for someone who keeps iCloud off (the user, 10 Oct 2026), off until it works (`BackupFeatures.googleDrive`).
 - **Export and Import**: Save a Backup File, Export a Spreadsheet (CSV), Import a Backup File, always on the page in
-  every state (D10).
+  every state (D10). **Import a Backup File opens Restore From a Backup with its file picker showing**: one `.fileImporter` in the
+  stack, Restore's (a second one on this page froze the main thread 14–46 s when Restore opened, 10 Oct 2026).
 - **Last, in red text:** **Delete My Data From iCloud…** (only while iCloud has something: asks first, offers a backup
   file, says this iPhone keeps everything unless chosen too, D9) and **Erase All My Data…** (turns iCloud sync off here
   first, so the habits don't come back).

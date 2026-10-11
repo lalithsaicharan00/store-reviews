@@ -965,7 +965,7 @@ and the Add note keyboard coming up by itself.
     - [x] Other platforms (the Apple Watch's way in) later: documented, not drawn. *Row C note.*
     - [ ] The user's review of group 1.
 
-- [ ] **81. Move sync and backup from our server to iCloud (CloudKit with `CKSyncEngine`), and simplify the app
+- [x] **81. Move sync and backup from our server to iCloud (CloudKit with `CKSyncEngine`), and simplify the app
   around it** (added 10 October 2026, from the user; Rulebook D16; **to work on later**, when the user says so).
   The user: "first let's set up the overall groundwork like CK sync engine … we have to move it from [Cloudflare] …
   delete the unnecessary code and improvise the application … we have to change the backup and restore page as well
@@ -980,24 +980,24 @@ and the Add note keyboard coming up by itself.
     how `CKSyncEngine` maps onto our sync (records, `SyncRules` merge, tombstones, the outbox), what Apple setup is
     needed (the iCloud container, entitlements, CloudKit schema), migration from today's server and accounts, tests.
     The user will enable whatever is needed in the Apple Developer account and provide any data asked for.
-  - [ ] Can a cloud agent build it? To answer in the report. Known so far: the code and most tests can be written and
+  - [x] Can a cloud agent build it? Yes (10 Oct 2026): everything was built and tested on GitHub against `FakeCloud`; only the device checks below need the user. To answer in the report. Known so far: the code and most tests can be written and
     run on GitHub's simulator with a stand-in for iCloud; GitHub's simulator can't sign in to an Apple Account, so real
     iCloud sync is checked on the user's iPhone and an iPad (or a second iPhone).
-  - [ ] Replace the server's sync and backup with CloudKit; delete the code that's no longer needed (accounts, our
+  - [x] Replace the server's sync and backup with CloudKit; delete the code that's no longer needed (accounts, our
     sync, invites, moving with a code through the server), with D3, D4, D9, D12, D14, D15 and Architecture 02/05
     rewritten as it lands.
-  - [ ] **Redesign the Backup & Restore page and the Account page** for iCloud (no account on Apple); decide what
+  - [x] **Redesign the Backup & Restore page and the Account page** for iCloud (no account on Apple); decide what
     replaces the ≡ menu's Account row.
   - [x] **Decided by the user, 10 Oct 2026:** free keeps **one syncing device at a time** (an iPad works on its own as
     the one device; the same habits on iPhone and iPad is Plus); **the "This week" widget becomes Plus** (Today,
     Tasks, One habit and Lock Screen stay free; the user's say-so for locked widgets, U28; check on the iPhone Home
     Screen when built). Still open: an optional quiet Plus line at a success moment.
-  - [ ] Apple setup, known so far: the iCloud container `iCloud.com.oftenenough.app` already exists (iCloud Drive
+  - [x] Apple setup, known so far: the iCloud container `iCloud.com.oftenenough.app` already exists (iCloud Drive
     backup); the build adds the CloudKit service and push notifications (silent pushes tell a device something
     changed), which automatic signing registers on the first iPhone build. The user, later: two devices on one Apple
     Account for testing, and "Deploy to Production" in the CloudKit Console before release (or a CloudKit management
     token so an agent can do it).
-  - [ ] The research must settle: the CloudKit record layout (per record or batched; Apple's limits for an extreme
+  - [x] The research must settle: the CloudKit record layout (per record or batched; Apple's limits for an extreme
     user's 25,000 records a year), `CKSyncEngine` with `SyncRules` (conflicts, deletes), which device is the free
     plan's one syncing device, data safety (iCloud sync isn't a backup: keep the daily file and "never replace with
     less"), what's deleted with the server, and what GitHub's simulator can test.
@@ -1005,18 +1005,39 @@ and the Add note keyboard coming up by itself.
     Architecture 11, following the Rulebook. Data must never be lost: that comes first. Test against the fake iCloud on
     GitHub, fix any real bugs, and merge into main once tests pass." Steps 1–4 of Architecture 11 §21, on branch
     `claude/lucid-johnson-egrjup`:
-    - [ ] 81.1 Groundwork: `CloudTransport` (the real `CKSyncEngine` behind it, `FakeCloud` for tests),
+    - [x] 81.1 Groundwork: `CloudTransport` (the real `CKSyncEngine` behind it, `FakeCloud` for tests),
       `SyncRules.mergeRecord`, the schema 9 migration (`sync_meta.ck_system`), `CloudSync` (§5–9).
-    - [ ] 81.2 Accounts, zones and the free plan's one syncing device (§10–12).
-    - [ ] 81.3 Safety: the fresh-install wait, the mass-change brake, the dated backup files, the clone check, sending
+    - [x] 81.2 Accounts, zones and the free plan's one syncing device (§10–12).
+    - [x] 81.3 Safety: the fresh-install wait, the mass-change brake, the dated backup files, the clone check, sending
       after changes made outside the app (§13, §15).
-    - [ ] 81.4 The iCloud page (replacing Account and the sync parts of Backup & Export), the ≡ row "iCloud & Backup",
+    - [x] 81.4 The iCloud page (replacing Account and the sync parts of Backup & Export), the ≡ row "iCloud & Backup",
       and removing the server code of §17.
-    - [ ] 81.5 Tests: `FakeCloud` with every error and event, the property test, the extreme account, `jvmTest`
+    - [x] 81.5 Tests: `FakeCloud` with every error and event, the property test, the extreme account, `jvmTest`
       (`mergeRecord`), the migration from every past schema, UI tests of every iCloud page state and the SE, speed
       scenarios; all on GitHub.
-    - [ ] 81.6 Rulebook D3, D4, D9, D12, D14, D15 rewritten for iCloud; "replaced by 11" notes in Architecture 01, 02,
+    - [x] 81.6 Rulebook D3, D4, D9, D12, D14, D15 rewritten for iCloud; "replaced by 11" notes in Architecture 01, 02,
       04, 05, 06; What's Built; Design Rules' iCloud page; merged into `main`; branches marked safe to delete.
+    - **Done and tested on GitHub, 10–11 Oct 2026** (branch `claude/lucid-johnson-egrjup`, final code `052be04`; the
+      runs on `ad48b96` and the fixes after them):
+      - Core: `jvmTest` passes in every run (`CloudStoreTest`: `mergeRecord` ≡ the per-clock ops, confirming by outbox
+        position, the brake both ways, the extreme account 375,000 records up and down; `MigrationTest`: schema 9 from
+        every past schema).
+      - Against the fake iCloud: `ICloudUITests` every guard and error of §3 and §7 and the property test
+        (`testSyncAgainstTheFakeICloud`), the page in every state, Today's card, the two questions, the second-device
+        sheet (runs `38094553071`, `38087945437`); the extreme account (`38094557875`: all checks passed; on the hosted
+        simulator import 618 s, upload 1,087 s in 1,501 requests, fetch 474 s).
+      - Every class it touches: Backup 7/7 (`38096927765`), Onboarding, Today and Plus 28/28 (`38094554630`), Widgets,
+        Timers and Reminders 15/15 (`38094559336`), OnboardingBackupScreenshot (`38094553071`), the iPhone SE 11/12
+        (`38094556445`; the 12th, `testPrivacyCodeSheetsAndReminderSaysFit`, fails the same way on `main`, run
+        `38085507312`: App Lock, not this work).
+      - Speed (`38094560760`): every iCloud page state scrolls at 0–5.3 ms/s with no freeze; Today during a 20,000-log
+        fetch scrolls at 0.0 ms/s and +1 at 15.2 (one 250 ms freeze), the fetch and uploads done in 96 s; Today's own
+        windows unchanged. Found and fixed on the way: `CloudStore` on the main thread (PERFORMANCE-LESSONS L31,
+        Rulebook S16), re-reads per fetched page, two file pickers in one stack (Restore froze 14–46 s), weekly
+        backup copies a day apart after New Year (the backup check). Still open: the iCloud page's first opening is
+        ~700 ms on the hosted simulator (the old Backup & Export page 150–500 ms; measure on the iPhone first), and
+        "Widgets: one habit's week" takes up to 831 ms with 20,000 extra logs (locked widget code, U28: the user's
+        say-so before any change).
     - **Left for the user** (step 5 of §21; a cloud session can't do these):
       - [ ] The device checks of Architecture 11 §19 on the iPhone and an iPad (or a second iPhone) on one Apple
         Account: a change on one shows on the other; Airplane Mode, then back; a full iCloud; signing in to another
