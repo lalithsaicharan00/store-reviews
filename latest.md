@@ -1,18 +1,61 @@
-# claude/pensive-gates-3n4ie8-perf6 @ 462211e (speed bisect)
+# claude/pensive-gates-3n4ie8-ci9 @ fc7ec60
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38138422562 · 2026-10-11 14:17 UTC
-Commit: Speed bisect: Day details' add, edit and undo, the iPad build against main on the iPhone, six rounds [ios-perf-bisect] perf-variants: main=bac8a1b5 branch=HEAD~1 perf-scenarios: day-sheet perf-rounds: 6
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38136627928 · 2026-10-11 14:28 UTC
+Commit: Current Work 86: the calendar popover keeps one height as the month changes
 
-Variants: `main=bac8a1b5 branch=HEAD~1` · scenarios: `day-sheet` · rounds: 6
+- Core storage and migrations: success
+- Build: success
+- Release build: success
+- Same-build speed baseline: skipped
+- UI tests (SmallScreenUITests,TodayUITests,AppLockUITests/testCancellingSetUpAtEachStepChangesNothing,AppLockUITests/testReminderSaysIsSavedWithTheHabit,DayDetailsUITests/testTimeLogAddViewAndEdit,OnboardingUITests/testHelpAndTheWelcomeAgain,PlusUITests/testSecondDeviceSheetOpensThePlusPage): failure
+- Speed tests: skipped
+- Speed tests through XCTest: skipped
 
-- main: bac8a1b5 Current Work 88: coming back to the iPhone after using the iPad, "Use your habits on this iPhone?" (t
-- branch: fc7ec608 Current Work 86: the calendar popover keeps one height as the month changes
+## UI tests
+```
+	 Executed 12 tests, with 0 failures (0 unexpected) in 437.198 (437.209) seconds
+	 Executed 2 tests, with 2 failures (0 unexpected) in 91.482 (91.488) seconds
+	 Executed 25 tests, with 5 failures (0 unexpected) in 944.955 (944.999) seconds
+	 Executed 25 tests, with 5 failures (0 unexpected) in 944.955 (945.001) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 291.968 (291.979) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/AppLockUITests.swift:297: error: -[HabitsUITests.AppLockUITests testCancellingSetUpAtEachStepChangesNothing] : XCTAssertTrue failed
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/AppLockUITests.swift:906: error: -[HabitsUITests.AppLockUITests testReminderSaysIsSavedWithTheHabit] : Failed to tap "Add" Button: No matches found for Elements matching predicate '"New Habit" IN identifiers' from input {(
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/DayDetailsUITests.swift:364: error: -[HabitsUITests.DayDetailsUITests testTimeLogAddViewAndEdit] : XCTAssertTrue failed - The clock row is Finished at
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/OnboardingUITests.swift:388: error: -[HabitsUITests.OnboardingUITests testHelpAndTheWelcomeAgain] : Failed to tap "menu-about" Button: No matches found for Elements matching predicate '"menu-about" IN identifiers' from input {(
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/PlusUITests.swift:269: error: -[HabitsUITests.PlusUITests testSecondDeviceSheetOpensThePlusPage] : XCTAssertTrue failed - Often Enough | Often Enough | Menu | Edit | Edit | Filter | New Habit | Anytime, 5 left | Anytime | 5 left | Start Anytime routine | Play | Start | Fold Anytime | Water Drop | Drink water | Every day | Mark Drink water done | Bookmark | Read | Every day | Mark Read done | Walk | Walk | Every day | Mark Walk done | brain.head.profile | Meditate | Every day | Mark Meditate done | Medicine | Vitamins | Every day | Mark Vitamins done | Note for the Day | Notes | Note for the Day | Vertical scroll bar, 2 pages | Vertical scroll bar, 2 pages | Toolbar | Previous day | Today, 0 of 5 done. Open calendar | Today, 0 of 5 done. Open calendar | Today | Go Down | 0/5 | Next day | Sheet Grabber | Back | Plus | Plus | One payment, yours forever. | 5 of 5 free habits used | 5 of 5 free habits used | Plus · just you, Unlimited habits, your iPad and Apple Watch, sync through your own iCloud, $24.99 | Selected | Plus · just you | Unlimited habits, your iPad and Apple Watch, sync through your own iCloud | $24.99 | Plus Family · you + 5, Everything in Plus for you and up to 5 people in your Apple family, each with their own habits, $59.99
+Test Case '-[HabitsUITests.AppLockUITests testCancellingSetUpAtEachStepChangesNothing]' failed (50.850 seconds).
+Test Case '-[HabitsUITests.AppLockUITests testReminderSaysIsSavedWithTheHabit]' failed (40.632 seconds).
+Test Case '-[HabitsUITests.DayDetailsUITests testTimeLogAddViewAndEdit]' failed (48.038 seconds).
+Test Case '-[HabitsUITests.OnboardingUITests testHelpAndTheWelcomeAgain]' failed (56.820 seconds).
+Test Case '-[HabitsUITests.PlusUITests testSecondDeviceSheetOpensThePlusPage]' failed (19.449 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testAddLogFitsAboveTheKeyboard]' passed (15.530 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testAddTimeFitsAboveTheKeyboard]' passed (13.076 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testAfterLogLineStaysInsideTheRow]' passed (77.048 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testAppLockSetupFitsWithoutScrolling]' passed (25.146 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testDayDetailsKeepsSkipOnScreenWithFourLogsAndANote]' passed (40.508 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testEditLogFitsAboveTheKeyboard]' passed (21.971 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testICloudPageSecondDeviceAndRestoreFit]' passed (47.960 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testLockKeypadFitsAtAccessibilitySizes]' passed (31.903 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testNoteBoxFillsTheRoomAboveSave]' passed (14.105 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testOverallRecordFitsWithoutScrolling]' passed (28.016 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testPlusSheetAndPageFit]' passed (43.966 seconds).
+Test Case '-[HabitsUITests.SmallScreenUITests testPrivacyCodeSheetsAndReminderSaysFit]' passed (77.966 seconds).
+Test Case '-[HabitsUITests.TodayUITests testBackToToday]' passed (18.238 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDayWeekAndAppearance]' passed (44.749 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDoneRowStaysInPlace]' passed (22.099 seconds).
+Test Case '-[HabitsUITests.TodayUITests testDoneRowWaitsForThePause]' passed (28.184 seconds).
+Test Case '-[HabitsUITests.TodayUITests testFoldAndOpen]' passed (14.747 seconds).
+Test Case '-[HabitsUITests.TodayUITests testMenu]' passed (110.176 seconds).
+Test Case '-[HabitsUITests.TodayUITests testSettingsChecks]' passed (18.332 seconds).
+Test Case '-[HabitsUITests.TodayUITests testTodayScreen]' passed (35.444 seconds).
+```
 
-Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
+## Release build
+```
+** BUILD SUCCEEDED **
+```
 
-| Window | main | branch |
-|---|---|---|
-| Day sheet: entry list scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| All logs: scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| Entry editor: typing | **0.6**<br>8.6 (57, 0), 0.6 (23, 0), 3.5 (30, 0), 0.2 (20, 0), 0.6 (23, 0), 0.7 (22, 0) | **2.0**<br>1.7 (30, 0), 2.2 (34, 0), 6.8 (79, 0), 1.9 (34, 0), 4.8 (36, 0), 1.2 (31, 0) |
-| Day sheet: add, edit and exact undo | **197.3**<br>572 (4406, 10), 166.5 (110, 1), 195.1 (86, 0), 199.2 (134, 1), 253.2 (104, 3), 195.4 (136, 2) | **207.2**<br>195.5 (104, 1), 177.4 (107, 1), 235.8 (101, 1), 218.8 (120, 1), 280.2 (108, 2), 184.2 (99, 0) |
+## Native analytics checks
+```
+Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
+```
