@@ -235,6 +235,7 @@ struct RoutineList: View {
                 }
             }
             .listRowBackground(RoundedRectangle(cornerRadius: 18).fill(i == index ? Color.white.opacity(0.24) : WatchPalette.platter))
+            .accessibilityIdentifier("routine-item-\(habit.name)")
         }
         .navigationTitle(session.title)
     }

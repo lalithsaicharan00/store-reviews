@@ -281,9 +281,10 @@ final class WatchRoutineTests: WatchTestCase {
         launch("design")
         reveal(app.buttons["start-morning"], "Morning's ▶")
         app.buttons["start-morning"].tap()
+        require(app.buttons["routine-list"], "the routine's list button")
         app.buttons["routine-list"].tap()
-        require(app.buttons["Stretch"].firstMatch, "Stretch in the list")
-        app.buttons["Stretch"].firstMatch.tap()
+        require(app.buttons["routine-item-Stretch"], "Stretch in the list")
+        app.buttons["routine-item-Stretch"].tap()
         require(app.otherElements["routine-page-Stretch"], "Stretch's page")
     }
 }

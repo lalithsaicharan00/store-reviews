@@ -194,9 +194,9 @@ final class WatchScreenshotTests: XCTestCase {
         app.waitForLabel(app.buttons["routine-main"], "Pause")
         shot("C2-morning-2-running")
         if app.buttons["routine-list"].exists { app.buttons["routine-list"].tap() }
-        wait(app.buttons["Stretch"].firstMatch, "Stretch in the list")
+        wait(app.buttons["routine-item-Stretch"], "Stretch in the list")
         shot("C4-routine-list")
-        if app.buttons["Stretch"].firstMatch.exists { app.buttons["Stretch"].firstMatch.tap() }
+        if app.buttons["routine-item-Stretch"].exists { app.buttons["routine-item-Stretch"].tap() }
         wait(app.otherElements["routine-page-Stretch"], "Stretch's page")
         Thread.sleep(forTimeInterval: 1)
         if wait(app.buttons["routine-main"], "Mark done") { app.buttons["routine-main"].tap() }
