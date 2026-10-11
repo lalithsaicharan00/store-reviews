@@ -35,7 +35,7 @@ class DriveSyncTest {
 
         fun connect() = runBlocking<Unit> { sync.connect("gdrive:test") }
 
-        fun syncNow(allowUpload: Boolean = true): DriveStatus = runBlocking<Unit> { sync.syncNow(allowUpload) }.also { lastStatus = it }
+        fun syncNow(allowUpload: Boolean = true): DriveStatus = runBlocking { sync.syncNow(allowUpload) }.also { lastStatus = it }
 
         /** Every change this device made since the last call, as the ops it queued. */
         fun collect(into: MutableList<Op>) = runBlocking<Unit> {
@@ -45,7 +45,7 @@ class DriveSyncTest {
         }
 
         /** Uninstalled and installed again: an empty database, a new clock node, connected to the same Drive. */
-        fun reinstall(): Set<String> = runBlocking<Unit> {
+        fun reinstall(): Set<String> = runBlocking {
             val unsent = repo.drive.opsAfter(0).map { it.opId }.toSet()
             repo.eraseAllData()
             incarnation++
@@ -57,9 +57,9 @@ class DriveSyncTest {
             unsent
         }
 
-        fun records(): Map<String, SyncRecord> = runBlocking<Unit> { repo.drive.allRecords() }
-        fun live(): Snapshot = runBlocking<Unit> { repo.load() }
-        fun waiting(): Int = runBlocking<Unit> { repo.cloud.counts().waitingOps }
+        fun records(): Map<String, SyncRecord> = runBlocking { repo.drive.allRecords() }
+        fun live(): Snapshot = runBlocking { repo.load() }
+        fun waiting(): Int = runBlocking { repo.cloud.counts().waitingOps }
     }
 
     private var clockNow = 1_790_000_000_000L
@@ -333,7 +333,7 @@ class DriveSyncTest {
         assertEquals(40, liveLogs(tablet, "water").size, "nothing applied while held")
         tablet.repo.addEntry(entry("t", "water", now()))
         assertEquals(DriveState.HELD, tablet.syncNow().state, "and nothing sent")
-        val applied = runBlocking<Unit> { tablet.sync.applyHeldDeletes() }
+        val applied = runBlocking { tablet.sync.applyHeldDeletes() }
         assertEquals(DriveState.SYNCED, applied.state)
         assertEquals(11, liveLogs(tablet, "water").size)
         settle(listOf(phone, tablet))

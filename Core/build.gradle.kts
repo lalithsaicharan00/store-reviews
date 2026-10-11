@@ -43,3 +43,15 @@ dependencies {
         add(it, "androidx.room3:room3-compiler:3.0.3")
     }
 }
+
+// The real-Google-Drive checks (.github/workflows/drive-real.yml) run test code as plain JVM processes, several at once
+// (two "devices" are two processes): this writes the classpath they need.
+tasks.register("writeJvmTestClasspath") {
+    dependsOn("jvmTestClasses")
+    val compilation = kotlin.jvm().compilations.getByName("test")
+    val files = compilation.output.allOutputs + compilation.runtimeDependencyFiles!!
+    val out = layout.buildDirectory.file("jvmTestClasspath.txt")
+    inputs.files(files)
+    outputs.file(out)
+    doLast { out.get().asFile.writeText(files.joinToString(File.pathSeparator) { it.path }) }
+}
