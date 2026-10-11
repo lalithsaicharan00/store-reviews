@@ -1,63 +1,49 @@
-# codex/store-today-capture @ 737f77b
+# claude/pensive-gates-3n4ie8-ci2 @ fee7a39
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38151781373 · 2026-10-11 16:03 UTC
-Commit: Prepare native Today artwork capture with habits and one task
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38149917285 · 2026-10-11 16:07 UTC
+Commit: Current Work 86: as List / as Columns are buttons that fire from the menu bar; a page beside the sidebar is modal to VoiceOver
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (TodayUITests/testStoreTodayCapture): success
-- Speed tests: success
+- UI tests (IPadUITests,WidgetUITests/testExtraLargeTodayOnTheIPad,IPadWidgetSystemUITests): failure
+- Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-Test Case '-[HabitsUITests.TodayUITests testStoreTodayCapture]' passed (64.249 seconds).
+	 Executed 15 tests, with 3 failures (0 unexpected) in 713.536 (713.569) seconds
+	 Executed 17 tests, with 5 failures (0 unexpected) in 1104.626 (1104.673) seconds
+	 Executed 17 tests, with 5 failures (0 unexpected) in 1104.626 (1104.685) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:137: error: -[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl] : XCTAssertLessThanOrEqual failed: ("740.0") is greater than ("720.0") - The column is ≈ 700 pt: header 400,413 526×20, cell 380,386 740×74
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:334: error: -[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar] : Failed to not hittable: Button, {{400.0, 584.5}, {631.0, 37.5}}, label: 'Morning, Starts 6 AM, All done'
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:73: error: -[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands] : XCTAssertTrue failed - ⌘2 shows Columns: Often Enough | pad-sidebar | sidebar-hide | Hide Sidebar | menu-today | Today, 9 left | sun.max | Brightness Higher | Today | sidebar-today-left | 9 left | menu-progress | Progress | chart.bar.xaxis | menu-habits | Habits, 17 | checklist | Habits | 17 | menu-tasks | Tasks, 0 | list.bullet | List | Tasks | 0 | menu-timesOfDay | Times of Day | rectangle.split.3x1 | Column View | menu-dayAndWeek | Day and Week | calendar | Calendar | menu-reminders | Reminders | bell | Notifications | menu-appearance | Appearance | circle.lefthalf.filled | menu-backup | iCloud & Backup | icloud | Icloud | menu-privacy | Privacy & Security | hand.raised | Block | menu-plus | Plus | plus.circle | Add | Vertical scroll bar, 2 pages | _TtGC7SwiftUI32NavigationStackHosting | chevron.left | Previous day | Today, 6 of 15 done. Open calendar | chevron.down | Go Down | 6/15
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadWidgetSystemUITests.swift:61: error: -[HabitsUITests.IPadWidgetSystemUITests testExtraLargeTodayOnTheHomeScreen] : Failed to get list of active applications: Accessibility error kAXErrorIPCTimeout from AXUIElementCopyMultipleAttributeValues for 1102
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WidgetUITests.swift:179: error: -[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad] : Failed to get list of active applications: Accessibility error kAXErrorIPCTimeout from AXUIElementCopyMultipleAttributeValues for 1102
+Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' passed (106.697 seconds).
+Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (22.975 seconds).
+Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' failed (65.184 seconds).
+Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (39.222 seconds).
+Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (32.028 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' passed (26.991 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (83.247 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (16.390 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (31.941 seconds).
+Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (35.465 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (30.063 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' failed (95.016 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (36.794 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' failed (77.733 seconds).
+Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (13.788 seconds).
+Test Case '-[HabitsUITests.IPadWidgetSystemUITests testExtraLargeTodayOnTheHomeScreen]' failed (330.350 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad]' failed (60.740 seconds).
 ```
 
 ## Release build
 ```
 ** BUILD SUCCEEDED **
 ```
-
-## Speed (the app drives itself, no XCTest attached; compare runs, not absolute numbers)
-
-| What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms | Main thread busy | Most time in the app's own code |
-|---|---|---|---|---|---|
-| Today: scrolling | 17.5 | 214 ms | 1 | 6.3 % (separate profile) | 1.0%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>1.0%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.7%  partial apply for closure #1 in static PerfDriver.startIfAsked(store:)<br>0.7%  closure #1 in static PerfDriver.startIfAsked(store:) |
-| Today: +1 and day ‹ › | 101.1 | 118 ms | 1 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
-| Today: +1 alone | 5.1 | 39 ms | 0 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
-| Today: day ‹ › alone | 107.8 | 135 ms | 2 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
-| Today: Day sheet scrolling | 0.0 | 0 ms | 0 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
-| Timer screen: a running clock | 7.3 | 61 ms | 0 | 1.5 % (separate profile) | 0.4%  partial apply for specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  specialized thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)<br>0.4%  partial apply for closure #1 in AppModel.ensureLoaded()<br>0.4%  closure #1 in AppModel.ensureLoaded() |
-
-Timing runs have no profiler attached. Main-thread busy and function names come from separate profiling launches. Command delivery does not invalidate covered screens (30 Sep 2026).
-
-Opening a screen (longest stall in the 1.5 s after the command; under 100 ms feels instant):
-
-- Today: a row's Day sheet (first): longest stall 840 ms
-- Today: a row's Day sheet (again): longest stall 401 ms
-- Today: the note sheet: longest stall 2594 ms
-- Today: the timer screen: longest stall 1901 ms
-
-Timed work on the main thread (MainThreadMeter.time; the slowest first within each scenario):
-
-| Scenario | What | Times | Total | Longest |
-|---|---|---|---|---|
-| scroll-today | Widgets: one habit's week | 17 | 77 ms | 37.9 ms |
-| scroll-today | Widgets: the snapshot | 1 | 4 ms | 3.8 ms |
-| scroll-today | Reminders: plan every alert | 1 | 0 ms | 0.2 ms |
-| scroll-today | Count: Today's list drawn | 7 | 0 ms | 0.2 ms |
-| scroll-today | Count: a Today row drawn | 12 | 0 ms | 0.0 ms |
-| tap-today | Widgets: one habit's week | 33 | 186 ms | 67.2 ms |
-| tap-today | Widgets: the snapshot | 17 | 32 ms | 6.5 ms |
-| tap-today | Change: Siri's habit names | 58 | 8 ms | 1.9 ms |
-| tap-today | Reminders: plan every alert | 58 | 7 ms | 2.6 ms |
-| tap-today | Count: Today's list drawn | 96 | 0 ms | 0.1 ms |
-| tap-today | Count: a Today row drawn | 630 | 0 ms | 0.0 ms |
-| tap-today | Count: the Day sheet drawn | 11 | 0 ms | 0.0 ms |
-| tap-today | Count: the Day sheet's activity drawn | 11 | 0 ms | 0.0 ms |
 
 ## Native analytics checks
 ```
