@@ -1,18 +1,71 @@
-# claude/pensive-gates-3n4ie8-perf3 @ 10460f6 (speed bisect)
+# claude/pensive-gates-3n4ie8-ci5 @ c5b1da3
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38131508291 · 2026-10-11 12:47 UTC
-Commit: Speed bisect: the iPad build against main on the iPhone, side by side, four rounds [ios-perf-bisect] perf-variants: main=bac8a1b5 branch=HEAD~1 perf-scenarios: progress all-habits perf-rounds: 4
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38131142188 · 2026-10-11 12:50 UTC
+Commit: Current Work 86/88: Day details' popover hangs on Today, pointing at its row; iPad tests; iPad speed runs; coming back to the iPhone
 
-Variants: `main=bac8a1b5 branch=HEAD~1` · scenarios: `progress all-habits` · rounds: 4
+- Core storage and migrations: success
+- Build: success
+- Release build: success
+- Same-build speed baseline: skipped
+- UI tests (ArrangeUITests,FocusPlayerUITests,PlacementUITests,ScheduleUITests,SectionHeaderUITests,TodayRowLayoutUITests,TodayRowSheetUITests): success
+- Speed tests: skipped
+- Speed tests through XCTest: skipped
 
-- main: bac8a1b5 Current Work 88: coming back to the iPhone after using the iPad, "Use your habits on this iPhone?" (t
-- branch: 7aca590e Current Work 86: container ids keep their rows' own (T9), the sidebar command names itself, onboardin
+## UI tests
+```
+	 Executed 15 tests, with 0 failures (0 unexpected) in 371.518 (371.526) seconds
+	 Executed 38 tests, with 0 failures (0 unexpected) in 1064.505 (1064.538) seconds
+	 Executed 38 tests, with 0 failures (0 unexpected) in 1064.505 (1064.539) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 79.879 (79.881) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 265.006 (265.011) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 154.052 (154.058) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 161.494 (161.497) seconds
+Test Case '-[HabitsUITests.ArrangeUITests testAddTimeOfDay]' passed (81.457 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testArrangeChecks]' passed (8.048 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testEditArrangesTheDay]' passed (99.414 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testGroupRowBeforeAnyGroup]' passed (41.342 seconds).
+Test Case '-[HabitsUITests.ArrangeUITests testHideCompleted]' passed (34.745 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testBottomRowStaysPutAndOptionsShowEverything]' passed (40.892 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testChecklistPreservesPriorStepsAndQueueCanRevisit]' passed (27.585 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testCompactProgressAcrossPeriodsAndTypes]' passed (47.671 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testCountCheckAndUndoStayOnTheCurrentHabit]' passed (19.823 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testFastNavigationNeverSlidesBack]' passed (32.799 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testLargeTextKeepsActionsAndChecklistReachable]' passed (16.152 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testLimitIsNotInTheRoutineAndWaitsUnderQuitOrCutDown]' passed (23.841 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testManualTimePausesAndTheClockAlwaysShows]' passed (27.534 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testNavigationDoesNotWaitForSlowTimerWrites]' passed (16.276 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testOnlyALimitShowsUnderQuitOrCutDownWithoutStart]' passed (9.582 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testSavedFocusProgressSurvivesTermination]' passed (22.486 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testSwipeMovesOneHabitAtATime]' passed (11.884 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerDayBoundaryAndExactUndoPersistence]' passed (5.611 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerGoalDoesNotAutoAdvanceAndManualLogIsReachable]' passed (39.588 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerPauseBackgroundAndSkipPreserveTime]' passed (29.794 seconds).
+Test Case '-[HabitsUITests.PlacementUITests testPlacementRules]' passed (5.874 seconds).
+Test Case '-[HabitsUITests.ScheduleUITests testCalendarAndPersistenceRules]' passed (5.790 seconds).
+Test Case '-[HabitsUITests.ScheduleUITests testEveryFewDaysAndWeeks]' passed (30.224 seconds).
+Test Case '-[HabitsUITests.ScheduleUITests testLargeTextHowOften]' passed (27.222 seconds).
+Test Case '-[HabitsUITests.ScheduleUITests testMonthDatesAndShortMonths]' passed (31.046 seconds).
+Test Case '-[HabitsUITests.ScheduleUITests testTaskAfterCompletion]' passed (21.946 seconds).
+Test Case '-[HabitsUITests.ScheduleUITests testYearlyDateAndLeapDay]' passed (45.264 seconds).
+Test Case '-[HabitsUITests.SectionHeaderUITests testHeaders]' passed (26.683 seconds).
+Test Case '-[HabitsUITests.TodayRowLayoutUITests testAfterLogButtonsAndNoteSheet]' passed (26.752 seconds).
+Test Case '-[HabitsUITests.TodayRowLayoutUITests testOneLineUnderEveryName]' passed (10.393 seconds).
+Test Case '-[HabitsUITests.TodayRowLayoutUITests testQuitRowSwipeLogsASlip]' passed (15.882 seconds).
+Test Case '-[HabitsUITests.TodayRowLayoutUITests testTaskRowOpensItsSheet]' passed (26.852 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testLongPressMenu]' passed (16.950 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testRowOpensDaySheetForEveryKind]' passed (31.902 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testSheetActionsAndDeleteInTheMenu]' passed (29.819 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testSheetFollowsTheDayShown]' passed (19.686 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testSwipeActions]' passed (26.474 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testTickTogglesAndPlusAdds]' passed (29.221 seconds).
+```
 
-Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
+## Release build
+```
+** BUILD SUCCEEDED **
+```
 
-| Window | main | branch |
-|---|---|---|
-| Progress: scrolling | **3.7**<br>10.9 (52, 0), 0 (0, 0), 5.1 (36, 0), 2.3 (35, 0) | **4.1**<br>4.9 (33, 0), 5.6 (37, 0), 3.3 (40, 0), 1.6 (30, 0) |
-| Progress: period ‹ › and range | **106.7**<br>157.2 (163, 9), 68 (107, 1), 133.3 (180, 8), 80.1 (99, 0) | **104.0**<br>177.5 (173, 13), 86.6 (82, 0), 89.6 (147, 3), 118.4 (140, 3) |
-| Progress: key fold and open | **0.7**<br>0.7 (28, 0), 0.2 (19, 0), 1.5 (40, 0), 0.7 (28, 0) | **0.5**<br>2.9 (60, 0), 0 (0, 0), 0 (0, 0), 1 (33, 0) |
-| All Habits: scrolling | **2.5**<br>3.7 (27, 0), 3.2 (34, 0), 1.3 (25, 0), 1.8 (29, 0) | **3.6**<br>3 (30, 0), 4.1 (34, 0), 10.1 (63, 0), 3.1 (41, 0) |
+## Native analytics checks
+```
+Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
+```
