@@ -1105,15 +1105,14 @@ private struct DayCountButton: View {
 
 /// One column of the iPad's Columns view: a List as tall as its rows (the columns scroll down together), holding its own
 /// height, so a column that grows or shrinks redraws only itself, never Today (Rulebook S6). With the heights on Today,
-/// one day change redrew every column once per column (run 38131557328: 683 ms/s and 37 freezes on +1 and day ‹ ›).
-/// A column grows at once but shrinks only once the taps stop (U4's 1.5 s): resizing a List measures every row again, so
-/// a run of day changes shouldn't resize every column at every step.
+/// one day change redrew every column once per column (run 38131557328: 683 ms/s and 37 freezes on +1 and day ‹ ›; held
+/// per column, 738 → 648 in run 38143097108). Holding the height still through a run of taps changed nothing (run
+/// 38146701137: 598 → 630), so it isn't the resizing: every row of every column is drawn (PERFORMANCE-LESSONS L32).
 private struct PadColumnList<Content: View>: View {
     let card: String
     let estimate: CGFloat
     let content: Content
     @State private var height: CGFloat?
-    @State private var shrink: Task<Void, Never>?
 
     var body: some View {
         List { content }
@@ -1123,25 +1122,11 @@ private struct PadColumnList<Content: View>: View {
             .contentMargins(.top, 4, for: .scrollContent)
             .scrollDisabled(true)
             .onScrollGeometryChange(for: CGFloat.self) { $0.contentSize.height + $0.contentInsets.top + $0.contentInsets.bottom } action: { _, new in
-                measured(new.rounded(.up))
+                let rounded = new.rounded(.up)
+                if abs((height ?? 0) - rounded) >= 1 { height = rounded }
             }
             .frame(width: 320, height: max(height ?? estimate, 120))
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier("today-column-" + card)
-            .onDisappear { shrink?.cancel() }
-    }
-
-    private func measured(_ needed: CGFloat) {
-        shrink?.cancel()
-        shrink = nil
-        let current = height ?? 0
-        if needed > current + 0.5 {
-            height = needed
-        } else if needed < current - 0.5 {
-            shrink = Task {
-                try? await Task.sleep(for: .seconds(1.5))
-                if !Task.isCancelled { height = needed }
-            }
-        }
     }
 }
