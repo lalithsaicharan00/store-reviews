@@ -10,6 +10,8 @@ its rule numbers, and add to it the same day you learn something.
 
 ## Everything else
 
+- `Brand/` — the current Often Enough logo guide, decision history and exported assets. Follow
+  [`Brand/Logo Guide.md`](<Brand/Logo Guide.md>) for reproduction (U29); the research archive preserves rejected directions.
 - `Research/` — all store-review research. Its rules are in [`Research/CLAUDE.md`](Research/CLAUDE.md);
   follow them for any research, report or design-evidence task. Paths in that file are relative to `Research/`.
 - `iOS/` — the iPhone app (SwiftUI, native components only). **Before changing any screen, read

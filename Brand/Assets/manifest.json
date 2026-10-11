@@ -1,0 +1,777 @@
+{
+  "brand": "Often Enough",
+  "revision": "2026-10-11 / user-finalized tilted tonal stack",
+  "figma_file": "Ncccsm1l2O62GJ5xLSInqk",
+  "source_board": "1166:2",
+  "message": "Small actions, repeated often enough, build something lasting.",
+  "rotation_clockwise_degrees": 12,
+  "inner_frame_ratio": {
+    "numerator": 52,
+    "denominator": 60
+  },
+  "gray_channels": {
+    "light": {
+      "background": 1,
+      "base": 0.75,
+      "middle": 0.4,
+      "top": 0.2
+    },
+    "dark": {
+      "background": 0.05,
+      "base": 0.25,
+      "middle": 0.65,
+      "top": 1
+    }
+  },
+  "validation": "PNG decode/dimensions/opacity/transparency; SVG XML/dimensions/three drawing shapes/fills; SHA-256 for every asset. Native/device validation separate.",
+  "assets": [
+    {
+      "file": "Android/Dark Background.png",
+      "figma_node": "1166:68",
+      "provenance": "direct Figma export",
+      "bytes": 12655,
+      "sha256": "c7c4778db37d2caf9fb1b352f3a2bb4d2aa034b8cf352722fdd65d4c11f69a14",
+      "width": 1536,
+      "height": 1536,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "Android/Dark Foreground.png",
+      "figma_node": "1166:58",
+      "provenance": "direct Figma export",
+      "bytes": 25373,
+      "sha256": "8d9192ce0189a7be75aed381e26889c0123c9facaaec11e398715515f3355486",
+      "width": 1536,
+      "height": 1536,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "Android/Dark Foreground.svg",
+      "figma_node": "1166:58",
+      "provenance": "direct Figma export",
+      "bytes": 1768,
+      "sha256": "70d9480779572a7d834fcdc97a2ed8da30a6ad149ff7eaea35975eae019aa2cd",
+      "width": 1536,
+      "height": 1536,
+      "drawing_fills": [
+        "#404040",
+        "#A6A6A6",
+        "white"
+      ]
+    },
+    {
+      "file": "Android/Light Background.png",
+      "figma_node": "1166:37",
+      "provenance": "direct Figma export",
+      "bytes": 12653,
+      "sha256": "c39ef8600c6b777e93047f6388a19ad20c5ada7ae0feb9554cbf7b7e76fab76a",
+      "width": 1536,
+      "height": 1536,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "Android/Light Foreground.png",
+      "figma_node": "1166:27",
+      "provenance": "direct Figma export",
+      "bytes": 27047,
+      "sha256": "43cf5db7a8bb89150533f5d65da00567c03cfe5e002cd32ccb7b69c112953f35",
+      "width": 1536,
+      "height": 1536,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "Android/Light Foreground.svg",
+      "figma_node": "1166:27",
+      "provenance": "direct Figma export",
+      "bytes": 1770,
+      "sha256": "8cc36918d83a84a9a5a5d51921cc51bf0a7b5a4b0b3dc29f7ca4bb5f86a32acc",
+      "width": 1536,
+      "height": 1536,
+      "drawing_fills": [
+        "#BFBFBF",
+        "#666666",
+        "#333333"
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 1024.png",
+      "figma_node": "1166:38",
+      "provenance": "direct Figma export",
+      "bytes": 20739,
+      "sha256": "dbe339b0021fcb55d869f03ec013dfe4ae7f9129e5ec7cfbeb76e3e70d23c5cd",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 120.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 4233,
+      "sha256": "f04df13e244a79c37a053bd40c7e0f387c6f5c669d04c27e93b2f07fcf43d265",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 120,
+      "height": 120,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 152.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 5438,
+      "sha256": "758b130856c767dac35e53253688858540e1cfd37fab7557df6b47eb8da44cd7",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 152,
+      "height": 152,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 16.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 471,
+      "sha256": "6cace1819bac4847e313b8a86d6994795fa67fcaf156828c10e19594c7c1029f",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 16,
+      "height": 16,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 167.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 5921,
+      "sha256": "786cccf15291088d59f8611647a2b22112156dd5cf2afc95cf1112a05eef3b8b",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 167,
+      "height": 167,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 180.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 6486,
+      "sha256": "3c66cce6ab356e7d3e0cb10235f67c7078d44db7749a730b9f331d58a25660db",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 180,
+      "height": 180,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 20.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 609,
+      "sha256": "c36f4d8319b83ae8bbc857fef33df27624893bcadfbf8e624ccc4305a0e0262e",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 20,
+      "height": 20,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 24.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 722,
+      "sha256": "db428d8db1d86d4a449b02a814846dcbc32b420cbb2522069fc037b27a8949bf",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 24,
+      "height": 24,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 29.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 929,
+      "sha256": "c2989c78836f94860b0f7204f4f3b3e1400666b919504bc1d8c7e8da9b939612",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 29,
+      "height": 29,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 32.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1026,
+      "sha256": "b05fff544d83589a6f16d20c91fb5a09313329f1c979b4de34c01b0477d20461",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 32,
+      "height": 32,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 40.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1323,
+      "sha256": "b2c837918131617d75ed99b1b2e797788ad234a8ea891ffc06788c430c1c500b",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 40,
+      "height": 40,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 48.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1587,
+      "sha256": "b4145e87aa44739e842ecd01ee0cc4c8b9c826bf81505e5e23bb274ada00fc7a",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 48,
+      "height": 48,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 58.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1992,
+      "sha256": "07889df2f54510af26c53fdb49f6622bb32d3b17dc23ff6d8ba5d50e3496a0ca",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 58,
+      "height": 58,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 60.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 2049,
+      "sha256": "2335c854365b8e758c1cb32ec9309803c5a359dcab8b5f3d3f126b0aa963f04b",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 60,
+      "height": 60,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 76.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 2622,
+      "sha256": "c8ab3fabf1b48f5a134c10a404701861ad386cd3b41f3a8dc945f48cbb197f5f",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 76,
+      "height": 76,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 80.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 2791,
+      "sha256": "6e43f15f1847e35804f03d28187ea8c0bc54fd2f842bb9cf567eba2731d48ae8",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 80,
+      "height": 80,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Dark/App Icon 87.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 3022,
+      "sha256": "8b2e72d6349e6387a473247bf5f8a21733ce4dcc69b95d16ad92928e140f836c",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 87,
+      "height": 87,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 1024.png",
+      "figma_node": "1166:7",
+      "provenance": "direct Figma export",
+      "bytes": 20160,
+      "sha256": "42f580353ff960d7f5236e1f9bcd9b3738083caba4eab10e34f7b9d2b93fe261",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 120.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 4011,
+      "sha256": "673576107cf5594b409af6700eaef12a6813dfb1958d64fe8ad2b5ebc4e3e142",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 120,
+      "height": 120,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 152.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 5155,
+      "sha256": "a6199211e02caade4955e57bab1823ba993c7d89eb4a3641e5b082181e545c60",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 152,
+      "height": 152,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 16.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 431,
+      "sha256": "9773077fe6ec6e79e5dcd02797c095dfa399391e169cf314053f5532fe6e20b4",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 16,
+      "height": 16,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 167.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 5646,
+      "sha256": "2fbd6cdba531eb189f4b39b12246701a2545650a46f7f1af9cd6535a871058b8",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 167,
+      "height": 167,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 180.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 6139,
+      "sha256": "ebd42df1e4a5d33eebcae64ab4b1b31fc2ca0e32682a15cb40ed4e9c0c55e9c2",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 180,
+      "height": 180,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 20.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 545,
+      "sha256": "0231d826feaa49bcecfd2a45c2ec9d2c3636cb767a005dffa79ecde1fbe2c25b",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 20,
+      "height": 20,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 24.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 687,
+      "sha256": "70370a182f89d38c04e026dcaecac976f9918fdccb08789ade99399572090872",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 24,
+      "height": 24,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 29.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 874,
+      "sha256": "b53ca27e8aae02a31e0c58138b7486bd03734a8fbb83fe2496052f4eaab6017d",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 29,
+      "height": 29,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 32.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 992,
+      "sha256": "9e7c65d73ac48b09acbf662ac550f07d101254a6e91d1d666456c16178106d67",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 32,
+      "height": 32,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 40.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1224,
+      "sha256": "73d5ca19a75d03ef36a6993492a0162f1d661d54216e22bae3ee78c244f471bf",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 40,
+      "height": 40,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 48.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1570,
+      "sha256": "6c9f691cd240cadd088d55424e086eac5e28683be101568b491cee69872e5a0b",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 48,
+      "height": 48,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 58.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1867,
+      "sha256": "7cb747d60185faab34534a09fd7f973beba46441929aaee98473cf8a00831f8d",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 58,
+      "height": 58,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 60.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 1953,
+      "sha256": "47aa6eee7be32ba5a7755711001572b87b8e083a2587f19ff99b21dd95253fed",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 60,
+      "height": 60,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 76.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 2524,
+      "sha256": "3c6a5be820884b29d5417ee6971ad9f3fbf78745604c7358c8ae9a4b08876018",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 76,
+      "height": 76,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 80.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 2658,
+      "sha256": "f1faf6993260ac2cc69a2ae3a34ddcf8d36c3f4cbf2e2be9a4c5af311db6542f",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 80,
+      "height": 80,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "AppIcons/Light/App Icon 87.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 2881,
+      "sha256": "21a1b46992cff371f30e1cd912cd9142a0f8266697d0abbf53cb357e6e3d0d93",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 87,
+      "height": 87,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "BrandMarks/Dark Tonal.png",
+      "figma_node": "1166:48",
+      "provenance": "direct Figma export",
+      "bytes": 19677,
+      "sha256": "9bcdc4edcf9e4f02b69745084ff8d23ffb0d066bc5622c13c115732ab0c46b89",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "BrandMarks/Dark Tonal.svg",
+      "figma_node": "1166:48",
+      "provenance": "direct Figma export",
+      "bytes": 1906,
+      "sha256": "151c096a6a3c345681f7e899c1596cb6a654b97783ce430fc2a8a96b67e0120f",
+      "width": 1024,
+      "height": 1024,
+      "drawing_fills": [
+        "#404040",
+        "#A6A6A6",
+        "white"
+      ]
+    },
+    {
+      "file": "BrandMarks/Light Tonal.png",
+      "figma_node": "1166:17",
+      "provenance": "direct Figma export",
+      "bytes": 21172,
+      "sha256": "3ba7bd1c64f271d5a445b2d9443baf32391ce6190b872419764ef4a468f0e8b6",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "BrandMarks/Light Tonal.svg",
+      "figma_node": "1166:17",
+      "provenance": "direct Figma export",
+      "bytes": 1908,
+      "sha256": "ff1654a1c7bf25510a7f2e53bfb575423e27f65f639a6ac9c9bd0dbbb1742a07",
+      "width": 1024,
+      "height": 1024,
+      "drawing_fills": [
+        "#BFBFBF",
+        "#666666",
+        "#333333"
+      ]
+    },
+    {
+      "file": "GooglePlay/Dark Listing 512.png",
+      "figma_node": "1166:38",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 19760,
+      "sha256": "41b140c66bdb4e795286b5603c594b7a629a969291e282bf326dcd19f06fc93f",
+      "derived_from": "AppIcons/Dark/App Icon 1024.png",
+      "width": 512,
+      "height": 512,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "GooglePlay/Light Listing 512.png",
+      "figma_node": "1166:7",
+      "provenance": "derived PNG, Pillow LANCZOS",
+      "bytes": 18730,
+      "sha256": "46b7f9fb9d9f33918e311fef31924be76aa13b39041c143f0e18009328f39fa8",
+      "derived_from": "AppIcons/Light/App Icon 1024.png",
+      "width": 512,
+      "height": 512,
+      "mode": "RGB",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "History/Blue Tonal 60.png",
+      "figma_node": "1154:597",
+      "provenance": "direct Figma export",
+      "bytes": 1566,
+      "sha256": "2c36a71a3fcaf5cae962ecf85e7e68b53ac704bc0fe6290da57c9d04d8fc1c34",
+      "width": 60,
+      "height": 60,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "History/Building Blocks.png",
+      "figma_node": "1086:15",
+      "provenance": "direct Figma export",
+      "bytes": 710547,
+      "sha256": "7089750af25eb781eb9d92ff3677f37db0c3d48b41ae6555fbd84dd2aaa9e174",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "History/Rising Squares.png",
+      "figma_node": "1113:55",
+      "provenance": "direct Figma export",
+      "bytes": 737168,
+      "sha256": "82461b677dfcdfd02483a4c84d399a6e3636cda9dbfa1f94039fbf8de192faaf",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "Previews/Final Variations.png",
+      "figma_node": "1160:2",
+      "provenance": "direct Figma export",
+      "bytes": 271153,
+      "sha256": "702a9fa2ac85c945cba5ccffadf00f4f447dddafd5fc3fccee214e605102a3d2",
+      "width": 2496,
+      "height": 2796,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "Previews/Logo Guide.png",
+      "figma_node": "1163:2",
+      "provenance": "direct Figma export",
+      "bytes": 376218,
+      "sha256": "ff114bffb6a63e416a8548549ad7ee3177f437a56976a0e4c842b752c20a1970",
+      "width": 1448,
+      "height": 3170,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ]
+    }
+  ]
+}
