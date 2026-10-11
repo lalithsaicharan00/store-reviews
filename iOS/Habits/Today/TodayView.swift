@@ -61,7 +61,6 @@ struct TodayView: View {
     /// window is the iPhone's Today (I2).
     private var padRegular: Bool { padSidebar?.regular == true }
     /// The Columns view's columns, as tall as their cards, so the whole page scrolls down together (Design Notes §6).
-    @State private var columnHeights: [String: CGFloat] = [:]
 
     private var navigation: some View {
         NavigationStack(path: Bindable(menu).path) {
@@ -759,19 +758,7 @@ struct TodayView: View {
 
     /// One column: Today's own grouped list, as tall as its cards (it doesn't scroll on its own).
     private func columnList<Content: View>(_ card: String, count: Int, @ViewBuilder content: () -> Content) -> some View {
-        List { content() }
-            .listStyle(.insetGrouped)
-            .listSectionSpacing(14)
-            .environment(\.defaultMinListRowHeight, 44)
-            .contentMargins(.top, 4, for: .scrollContent)
-            .scrollDisabled(true)
-            .onScrollGeometryChange(for: CGFloat.self) { $0.contentSize.height + $0.contentInsets.top + $0.contentInsets.bottom } action: { _, height in
-                let rounded = height.rounded(.up)
-                if abs((columnHeights[card] ?? 0) - rounded) >= 1 { columnHeights[card] = rounded }
-            }
-            .frame(width: 320, height: max(columnHeights[card] ?? CGFloat(80 + count * 60), 120))
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier("today-column-" + card)
+        PadColumnList(card: card, estimate: CGFloat(80 + count * 60), content: content())
     }
 
     /// Quit or Cut Down folds like the other cards, and starts open. No "N left" and no Start: nothing in it is to do.
@@ -1113,5 +1100,31 @@ private struct DayCountButton: View {
             DayLabel(label: label, done: summary.done, total: summary.total)
         }
         .accessibilityLabel("\(label), \(summary.done) of \(summary.total) done. Open calendar")
+    }
+}
+
+/// One column of the iPad's Columns view: a List as tall as its rows (the columns scroll down together), holding its own
+/// height, so a column that grows or shrinks redraws only itself, never Today (Rulebook S6). With the heights on Today,
+/// one day change redrew every column once per column (run 38131557328: 683 ms/s and 37 freezes on +1 and day ‹ ›).
+private struct PadColumnList<Content: View>: View {
+    let card: String
+    let estimate: CGFloat
+    let content: Content
+    @State private var height: CGFloat?
+
+    var body: some View {
+        List { content }
+            .listStyle(.insetGrouped)
+            .listSectionSpacing(14)
+            .environment(\.defaultMinListRowHeight, 44)
+            .contentMargins(.top, 4, for: .scrollContent)
+            .scrollDisabled(true)
+            .onScrollGeometryChange(for: CGFloat.self) { $0.contentSize.height + $0.contentInsets.top + $0.contentInsets.bottom } action: { _, new in
+                let rounded = new.rounded(.up)
+                if abs((height ?? 0) - rounded) >= 1 { height = rounded }
+            }
+            .frame(width: 320, height: max(height ?? estimate, 120))
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("today-column-" + card)
     }
 }

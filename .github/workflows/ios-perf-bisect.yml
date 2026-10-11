@@ -6,6 +6,8 @@
 #   perf-variants: base=396c40e head=HEAD nosound=HEAD+-perf-switch+no-sound
 #   perf-scenarios: scroll-today tap-today new-habit progress
 #   perf-rounds: 4   (four or more to call a difference: two rounds on one machine have varied 2.5x, L29)
+#   perf-device: iPad Air 11-inch   (optional: the simulator whose name starts with this; the newest iPhone without it.
+#                                     For the iPad's own scenarios, Current Work 86. An iPhone-only build runs scaled.)
 # A variant is name=ref, optionally with extra launch arguments after "+" (PerfSwitches). Keep the builds to three or
 # four: each takes ~4-5 minutes and the job stops at 60. Results: the summary goes to ci-results like ios-tests.yml.
 # Before a tagged push, check the repository's live runs (Rulebook T10).
@@ -41,6 +43,8 @@ jobs:
           echo "VARIANTS=${VARIANTS:-base=HEAD~1 head=HEAD}" >> "$GITHUB_ENV"
           echo "SCENARIOS=${SCENARIOS:-scroll-today tap-today new-habit progress}" >> "$GITHUB_ENV"
           echo "ROUNDS=${ROUNDS:-2}" >> "$GITHUB_ENV"
+          DEVICE=$(printf '%s\n' "$MESSAGE" | sed -n 's/^perf-device: *//p' | head -1)
+          echo "PERF_DEVICE=${DEVICE:-iPhone}" >> "$GITHUB_ENV"
           # The tools come from this commit, whatever the commit being built.
           cp -R iOS/Tools/perf "$RUNNER_TEMP/perf-tools"
 
@@ -90,7 +94,8 @@ jobs:
         run: |
           sudo xcodebuild -runFirstLaunch
           xcrun simctl shutdown all || true
-          ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+          ID=$(xcrun simctl list devices available -j | python3 -c "import json,os,sys; d=json.load(sys.stdin)['devices']; p=os.environ['PERF_DEVICE']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith(p)))")
+          echo "Measuring on: $(xcrun simctl list devices | grep "$ID")"
           echo "SIM=$ID" >> "$GITHUB_ENV"
           xcrun simctl erase "$ID"
           xcrun simctl boot "$ID" || true
