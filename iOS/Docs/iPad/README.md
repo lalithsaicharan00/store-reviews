@@ -147,8 +147,9 @@ steps (Walk) and Touch ID.
 Built by Claude (Claude Code) on 11 October 2026 from the build prompt, on branch `claude/pensive-gates-3n4ie8`. The code
 is in `iOS/Habits/Pad/` (`PadRoot.swift`: the sidebar, the pages beside it, list–detail, the menu bar's commands;
 `PadSupport.swift`: the device's words, the Day details popover and its anchor, popover sizing, form sheets) and, gated on
-the iPad, in the screens it reshapes. **On the iPhone every change is behind `Device.isPad` (false there), so the iPhone
-runs the same views, words and presentations as before.** Test runs and their numbers: Current Work 86 (the checklist).
+the iPad, in the screens it reshapes. **On the iPhone every change is behind `Device.isPad` (false there), and every
+iPad-only modifier returns the view untouched there, so the iPhone runs the same views, words and presentations as before**
+(Rulebook U30; side by side with `main`, below). Test runs and their numbers: Current Work 86 (the checklist).
 
 What building it settled, and why (each a refinement of a decision above, not a new design):
 
@@ -164,6 +165,26 @@ What building it settled, and why (each a refinement of a decision above, not a 
 | **Progress's cards are two across in Week, Month and Year** | The design shows Week; Month and Year use the same cards. |
 | **Return adds on Add log** with a hardware keyboard; the View menu names Hide Sidebar or Show Sidebar as it is | I11. |
 | **The Columns view's columns are 320 pt** (each a grouped list sized to its cards, the page scrolling down together) | 300 pt of card plus the grouped list's own margins. |
+| **as List ⌘1 and as Columns ⌘2 sit in the sidebar's own group of the View menu**, beside Hide Sidebar, with a checkmark on the one in use | Commands placed before that group never reached the iPad's menu bar, as Toggles or as Buttons (runs 38141959437, 38149917285); the group's own commands did. |
+| **A page beside the sidebar covers Today, kept alive behind it, and hides Today's rows from VoiceOver** | Today keeps its day and scroll while you visit a page; its rows are cells UIKit hosts, which a hidden flag on Today didn't reach (run 38149917285, U1). |
+| **Day details takes the iPad's options (no ✕ in a popover, the habit's page beside the list) from the iPad's code** | So the iPhone's Day details reads nothing it didn't before (U30). |
+
+**Tested on GitHub's simulators (11 Oct 2026):**
+
+- **iPad Pro 13-inch, `cb035ab`, run 38156985780: all green** — the 15 `IPadUITests` (sidebar, Today's column and day
+  control; the Day details popover with Add log, Add note and All logs inside it; a typed amount through rotation, a tap
+  outside and the window going narrow and wide; a narrow window as the iPhone's app; Habits list–detail; Progress; every
+  settings page and the iPad's words; sheets and popovers; Arrange, the timer and the player; Columns and every keyboard
+  command; the welcome; Plus, the second-device sheet and Plus ended) and the Extra Large render (ten a page in two
+  columns, paging, hidden and names-hidden states). The iCloud two-device check on the iPad passed in run 38149953441.
+- **The iPhone, unchanged:** every UI class on the newest iPhone passed on this branch, apart from failures that `main`
+  has too (below). Side by side with `main` in one job, six rounds: Today's +1 and day, the habit page, Day details,
+  typing and scrolling at or under `main`'s medians (runs 38146864538, 38154788830, 38154786500), with Day details'
+  add, edit and undo the one median above `main`'s in each of three runs, its rounds overlapping each time.
+- **Failing on `main` too, not from this build:** five tests on the iPhone SE and `LongTextUITests`' two (Current Work
+  86's own item).
+- **Open:** the Columns view's day change, 600–650 ms/s on the simulator (PERFORMANCE-LESSONS L32; each column scrolling
+  on its own would draw less, which changes the design and waits for the user).
 
 **Capabilities to check on a real iPad** (the simulator can't show them; nothing is promised until checked): Live
 Activities for a running timer, AlarmKit alarms, Health steps for a Walk habit, Touch ID / Face ID for App Lock (the words
