@@ -32,6 +32,7 @@ struct PadRoot: View {
     @State private var size = CGSize.zero
     /// The navigation stack of the page beside the sidebar.
     @State private var pageMenu = MenuModel()
+    @AppStorage(Preferences.padLayout) private var layout = PadLayout.list.rawValue
     private let commands = PadCommands.shared
 
     /// The sidebar sits beside the content in a regular-width window wider than it is tall (landscape), as iPadOS's own
@@ -67,7 +68,8 @@ struct PadRoot: View {
         }
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .onGeometryChange(for: CGSize.self) { $0.size } action: { size = $0 }
-        .environment(\.padSidebar, PadSidebarControl(docked: docked, toggle: toggle))
+        .environment(\.padSidebar, PadSidebarControl(docked: docked, toggle: toggle, regular: sizeClass == .regular,
+                                                     columns: layout == PadLayout.columns.rawValue))
         .environment(\.padOpenHabit, PadOpenHabit { habit in openHabit(habit) })
         .onAppear {
             // A test starts on Today with the sidebar out, whatever the last test left (Rulebook T8).
@@ -351,8 +353,8 @@ struct PadSidebarButton: View {
 extension View {
     /// A page at a readable width, centred in the room it has (Today's column, the settings pages, Plus): the scroll
     /// view still spans the room, so it scrolls from anywhere. Only on a regular width: a narrow window is the iPhone's.
-    func padColumn(_ width: CGFloat) -> some View {
-        modifier(PadColumn(width: width))
+    @ViewBuilder func padColumn(_ width: CGFloat) -> some View {
+        if Device.isPad { modifier(PadColumn(width: width)) } else { self }
     }
 }
 
@@ -362,15 +364,11 @@ private struct PadColumn: ViewModifier {
     @State private var room: CGFloat = 0
 
     func body(content: Content) -> some View {
-        if Device.isPad {
-            // A grouped list keeps 20 pt of its own on each side of its cards.
-            let margin = sizeClass == .regular ? max(0, (room - width) / 2 - 20) : 0
-            content
-                .contentMargins(.horizontal, margin, for: .scrollContent)
-                .onGeometryChange(for: CGFloat.self) { $0.size.width.rounded() } action: { room = $0 }
-        } else {
-            content
-        }
+        // A grouped list keeps 20 pt of its own on each side of its cards.
+        let margin = sizeClass == .regular ? max(0, (room - width) / 2 - 20) : 0
+        content
+            .contentMargins(.horizontal, margin, for: .scrollContent)
+            .onGeometryChange(for: CGFloat.self) { $0.size.width.rounded() } action: { room = $0 }
     }
 }
 

@@ -89,6 +89,10 @@ struct PadSidebarControl {
     /// The sidebar is in the window beside the content (landscape, regular width, not put away).
     let docked: Bool
     let toggle: () -> Void
+    /// The window is regular width (a narrow window is the iPhone's Today), and Today shows Columns. One value for
+    /// Today to read, nil on the iPhone, so the iPhone's Today does no more work per redraw than before.
+    var regular = false
+    var columns = false
 }
 
 struct PadOpenHabit {
@@ -164,9 +168,8 @@ struct PadDayPresenter: ViewModifier {
     @Environment(\.horizontalSizeClass) private var sizeClass
 
     func body(content: Content) -> some View {
-        if Device.isPad {
-            let anchor = PadAnchor.shared
-            content
+        let anchor = PadAnchor.shared
+        content
                 .coordinateSpace(.named(PadAnchor.space))
                 .popover(isPresented: Binding(get: { shown }, set: { if !$0 && shown { store.dayTarget = nil } }),
                          attachmentAnchor: .rect(.rect(anchor.rect ?? .zero))) {
@@ -174,9 +177,6 @@ struct PadDayPresenter: ViewModifier {
                         PadDayDetails(habit: habit, day: target.day, regular: sizeClass == .regular)
                     }
                 }
-        } else {
-            content
-        }
     }
 
     private var shown: Bool {
@@ -357,5 +357,12 @@ extension View {
     @ViewBuilder func padNavigationDestination<Item: Hashable, Destination: View>(
         item: Binding<Item?>, @ViewBuilder destination: @escaping (Item) -> Destination) -> some View {
         if Device.isPad { navigationDestination(item: item, destination: destination) } else { self }
+    }
+}
+
+extension View {
+    /// Today's iPad presentations (`PadDayPresenter`); nothing on the iPhone.
+    @ViewBuilder func padDayPresenter() -> some View {
+        if Device.isPad { modifier(PadDayPresenter()) } else { self }
     }
 }

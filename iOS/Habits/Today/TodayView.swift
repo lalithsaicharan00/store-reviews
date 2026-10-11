@@ -57,11 +57,9 @@ struct TodayView: View {
     /// The iPad (Current Work 86): the sidebar's button, the window's width, and List or Columns. On the iPhone these
     /// are nil, compact and List, and Today is exactly the iPhone's.
     @Environment(\.padSidebar) private var padSidebar
-    @Environment(\.horizontalSizeClass) private var sizeClass
-    @AppStorage(Preferences.padLayout) private var padLayout = PadLayout.list.rawValue
     /// A regular-width iPad window: the day control at the top centre, popovers, Today's column at 700 pt. A narrow
     /// window is the iPhone's Today (I2).
-    private var padRegular: Bool { Device.isPad && sizeClass == .regular }
+    private var padRegular: Bool { padSidebar?.regular == true }
     /// The Columns view's columns, as tall as their cards, so the whole page scrolls down together (Design Notes §6).
     @State private var columnHeights: [String: CGFloat] = [:]
 
@@ -83,7 +81,7 @@ struct TodayView: View {
                         .task(id: goalTimes()) { await tick() }
                         .modifier(ClocksPausedUnderMenu(menu: menu))
                         // The iPad's Day details popover, pointing at its row (`PadDayPresenter`).
-                        .modifier(PadDayPresenter())
+                        .padDayPresenter()
                 }
             }
             .toolbar { if !covered { topBar } }
@@ -212,7 +210,7 @@ struct TodayView: View {
             }
         }
         .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
-        .modifier(PadToday(visible: visibleRows, perform: perform))
+        .padToday(visible: visibleRows, perform: perform)
     }
 
     var body: some View {
@@ -560,7 +558,7 @@ struct TodayView: View {
                     .accessibilityIdentifier("empty-help")
             }
             .background(Color(.systemGroupedBackground))
-        } else if padRegular && padLayout == PadLayout.columns.rawValue {
+        } else if padRegular && padSidebar?.columns == true {
             padColumns(rows: rowsBySection(tracked), restraint: restraint, paused: paused, day: shown, isToday: isToday,
                        nowPart: nowPart)
         } else {
@@ -967,7 +965,6 @@ private struct PadToday: ViewModifier {
     @Environment(HabitStore.self) private var store
 
     func body(content: Content) -> some View {
-        if Device.isPad {
             content
                 // Day details opened: point at its row on screen (`PadAnchor`), or, with none, a form sheet.
                 .onChange(of: store.dayTarget?.id, initial: true) {
@@ -987,9 +984,12 @@ private struct PadToday: ViewModifier {
                     PadCommands.shared.todayRequest = nil
                     perform(request.action)
                 }
-        } else {
-            content
-        }
+    }
+}
+
+private extension View {
+    @ViewBuilder func padToday(visible: VisibleRows, perform: @escaping (PerfAction) -> Void) -> some View {
+        if Device.isPad { modifier(PadToday(visible: visible, perform: perform)) } else { self }
     }
 }
 
