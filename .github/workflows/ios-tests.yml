@@ -586,7 +586,7 @@ jobs:
       - name: Paired iPhone and Watch simulators, end to end
         id: pair
         if: ${{ !cancelled() && env.WATCH_PAIR == '1' && steps.iphone.outcome == 'success' }}
-        timeout-minutes: 20
+        timeout-minutes: 25
         working-directory: iOS
         run: Tools/ci/watch_pair.sh watch-pair
 

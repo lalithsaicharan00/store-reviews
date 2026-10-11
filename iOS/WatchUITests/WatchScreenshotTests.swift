@@ -186,18 +186,27 @@ final class WatchScreenshotTests: XCTestCase {
         if reveal(start, "Morning's ▶") { start.tap() }
         wait(app.otherElements["routine"].firstMatch.exists ? app.otherElements["routine"].firstMatch : app.buttons["routine-main"], "the routine")
         shot("C1-morning-1")
-        app.swipeUp()
+        app.page()
+        wait(app.otherElements["routine-page-Meditate"], "Meditate's page")
         shot("C2-morning-2")
+        Thread.sleep(forTimeInterval: 0.6)
         if wait(app.buttons["routine-main"], "Start") { app.buttons["routine-main"].tap() }
+        app.waitForLabel(app.buttons["routine-main"], "Pause")
         shot("C2-morning-2-running")
         if app.buttons["routine-list"].exists { app.buttons["routine-list"].tap() }
+        wait(app.buttons["Stretch"].firstMatch, "Stretch in the list")
         shot("C4-routine-list")
         if app.buttons["Stretch"].firstMatch.exists { app.buttons["Stretch"].firstMatch.tap() }
+        wait(app.otherElements["routine-page-Stretch"], "Stretch's page")
+        Thread.sleep(forTimeInterval: 1)
         if wait(app.buttons["routine-main"], "Mark done") { app.buttons["routine-main"].tap() }
+        app.waitForLabel(app.buttons["routine-main"], "Finish")
         shot("C3-morning-3-done")
         if app.buttons["routine-main"].exists { app.buttons["routine-main"].tap() }
+        wait(app.buttons["routine-done"], "Morning done")
         shot("C5-morning-done")
         if app.buttons["routine-done"].exists { app.buttons["routine-done"].tap() }
+        wait(app.buttons["button-Stop Meditate timer"], "Meditate still running on Today")
         shot("C6-closed-timer-running")
     }
 

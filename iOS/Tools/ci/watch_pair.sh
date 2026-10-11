@@ -20,23 +20,34 @@ runtime() { xcrun simctl list runtimes available -j | python3 -c "import json,sy
 # By name, first one this Xcode has: never a match on part of a name (an old model the runtime can't run).
 devicetype() { xcrun simctl list devicetypes -j | python3 -c "import json,sys; t={x['name']: x['identifier'] for x in json.load(sys.stdin)['devicetypes']}; print(next(t[n] for n in sys.argv[1:] if n in t))" "$@"; }
 
-{
-  PHONE=$(xcrun simctl create "Pair iPhone" "$(devicetype "iPhone 17" "iPhone 16")" "$(runtime iOS)")
-  WATCH=$(xcrun simctl create "Pair Watch" "$(devicetype "Apple Watch Series 10 (46mm)" "Apple Watch Series 11 (46mm)")" "$(runtime watchOS)")
-  PAIR=$(xcrun simctl pair "$WATCH" "$PHONE")
-  echo "iPhone $PHONE, Watch $WATCH, pair $PAIR"
-  xcrun simctl boot "$PHONE"; xcrun simctl boot "$WATCH"
-  xcrun simctl bootstatus "$PHONE" -b; xcrun simctl bootstatus "$WATCH" -b
-  xcrun simctl pair_activate "$PAIR" || true
-  xcrun simctl list pairs
-  xcrun simctl install "$PHONE" "$PHONE_APP"
-  xcrun simctl install "$WATCH" "$WATCH_APP"
-  sleep 15
-  xcrun simctl launch "$PHONE" "$PHONE_BUNDLE" -uitest -empty -pair-test -pair-drive
-  sleep 5
-  xcrun simctl launch "$WATCH" "$WATCH_BUNDLE" -uitest -pair-test -pair-drive
-} > "$OUT/setup.txt" 2>&1
-cat "$OUT/setup.txt"
+# Every step has a time limit and is written to the report as it happens: when a step hangs, the report says which
+# (the whole check twice ran out its 20 minutes with nothing written, runs 38108830332 and 38112417583).
+bounded() { local limit=$1; shift; "$@" & local pid=$!; ( sleep "$limit"; kill "$pid" 2>/dev/null ) & local guard=$!; wait "$pid" 2>/dev/null; local code=$?; kill "$guard" 2>/dev/null; return $code; }
+STARTED=$(date +%s)
+echo "Paired simulators: setting up" > "$OUT/pair.md"
+step() {
+  local limit=$1 name=$2; shift 2
+  if bounded "$limit" "$@" >> "$OUT/setup.txt" 2>&1; then
+    echo "- $(( $(date +%s) - STARTED )) s: $name" >> "$OUT/pair.md"
+  else
+    echo "- $(( $(date +%s) - STARTED )) s: $name FAILED or took over $limit s" >> "$OUT/pair.md"
+  fi
+}
+PHONE=$(xcrun simctl create "Pair iPhone" "$(devicetype "iPhone 17" "iPhone 16")" "$(runtime iOS)")
+WATCH=$(xcrun simctl create "Pair Watch" "$(devicetype "Apple Watch Series 10 (46mm)" "Apple Watch Series 11 (46mm)")" "$(runtime watchOS)")
+PAIR=$(xcrun simctl pair "$WATCH" "$PHONE" 2>>"$OUT/setup.txt")
+echo "- iPhone $PHONE, Watch $WATCH, pair ${PAIR:-none}" >> "$OUT/pair.md"
+step 180 "booted the iPhone" sh -c "xcrun simctl boot '$PHONE'; xcrun simctl bootstatus '$PHONE' -b"
+step 180 "booted the Watch" sh -c "xcrun simctl boot '$WATCH'; xcrun simctl bootstatus '$WATCH' -b"
+step 60 "activated the pair" xcrun simctl pair_activate "$PAIR"
+xcrun simctl list pairs >> "$OUT/setup.txt" 2>&1
+step 180 "installed the iPhone app" xcrun simctl install "$PHONE" "$PHONE_APP"
+step 180 "installed the Watch app" xcrun simctl install "$WATCH" "$WATCH_APP"
+sleep 10
+step 60 "launched the iPhone app" xcrun simctl launch "$PHONE" "$PHONE_BUNDLE" -uitest -empty -pair-test -pair-drive
+sleep 5
+step 60 "launched the Watch app" xcrun simctl launch "$WATCH" "$WATCH_BUNDLE" -uitest -pair-test -pair-drive
+cat "$OUT/pair.md" "$OUT/setup.txt"
 
 PDATA=$(xcrun simctl get_app_container "$PHONE" "$PHONE_BUNDLE" data 2>/dev/null)
 WDATA=$(xcrun simctl get_app_container "$WATCH" "$WATCH_BUNDLE" data 2>/dev/null)
@@ -49,16 +60,16 @@ cp "$WDATA/tmp/pair.txt" "$OUT/watch.txt" 2>/dev/null || echo "(the Watch app wr
 
 OK=0
 grep -q "# PAIR DONE ok" "$OUT/iphone.txt" && grep -q "# PAIR DONE ok" "$OUT/watch.txt" && OK=1
-# Runs a command for at most $1 seconds (macOS has no `timeout`): `log show` over minutes of a simulator's log
-# can take longer than the step's limit (it ran out the 20 minutes, run 38108830332).
-bounded() { local limit=$1; shift; "$@" & local pid=$!; ( sleep "$limit"; kill "$pid" 2>/dev/null ) & local guard=$!; wait "$pid" 2>/dev/null; kill "$guard" 2>/dev/null; }
 if [ $OK = 0 ]; then
   # What WatchConnectivity said, to tell a simulator limitation from our bug.
   bounded 90 sh -c "xcrun simctl spawn '$PHONE' log show --last 6m --style compact --predicate 'process == \"wcd\" OR process == \"Habits\"' 2>/dev/null | grep -iE 'wcsession|transfer|reachab|paired|install|error' | tail -120 > '$OUT/iphone-wc-log.txt'"
   bounded 90 sh -c "xcrun simctl spawn '$WATCH' log show --last 6m --style compact --predicate 'process == \"wcd\" OR process == \"OftenEnoughWatch\"' 2>/dev/null | grep -iE 'wcsession|transfer|reachab|paired|install|error' | tail -120 > '$OUT/watch-wc-log.txt'"
 fi
+STEPS=$(tail -n +2 "$OUT/pair.md")
 {
   echo "Paired simulators: $([ $OK = 1 ] && echo "passed" || echo "FAILED") (waited ${WAITED} s)"
+  echo
+  echo "$STEPS"
   echo
   echo "iPhone:"; echo '```'; cat "$OUT/iphone.txt"; echo '```'
   echo "Watch:"; echo '```'; cat "$OUT/watch.txt"; echo '```'

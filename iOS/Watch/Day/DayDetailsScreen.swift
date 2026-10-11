@@ -23,8 +23,8 @@ struct DayDetailsScreen: View {
 
     private var day: LocalDay { store.today() }
 
-    /// The height between the inline title and the bottom bar: about 150 pt on the 46 mm Watch, 125 on the 42 mm.
-    private var firstScreen: CGFloat { max(110, WKInterfaceDevice.current().screenBounds.height - 96) }
+    /// The height between the clock row and the bottom bar: about 148 pt on the 46 mm Watch, 123 on the 42 mm.
+    private var firstScreen: CGFloat { max(110, WKInterfaceDevice.current().screenBounds.height - 100) }
 
     /// After a log here, its named Undo, one tap away (WA7, U14); a check's Undo is the main action itself (B5).
     @ViewBuilder
@@ -55,7 +55,8 @@ struct DayDetailsScreen: View {
                     // the bottom bar; today's logs, the streak and Skip today are below, reached with the Crown (B1, B2).
                     // Rows that started right under the dial showed through the bottom buttons (run 38097123253).
                     VStack(spacing: 6) {
-                        DayDial(habit: habit, ruled: ruled, day: day, skipped: skipped, paused: paused, dimmed: wristDown)
+                        DayDial(habit: habit, ruled: ruled, day: day, skipped: skipped, paused: paused, dimmed: wristDown,
+                                name: habit.name)
                         if !wristDown { undo(habit, ruled: ruled) }
                     }
                     .frame(maxWidth: .infinity)
@@ -67,7 +68,10 @@ struct DayDetailsScreen: View {
             }
             .padding(.bottom, 8)
         }
-        .navigationTitle(habit.name)
+        // With a dial, the name is inside it under the icon, as on the routine's pages: watchOS 26 gives the title a
+        // row of its own under the clock, and the dial and its Undo didn't fit between it and the bottom bar
+        // (run 38112417583). A checklist keeps the title over its steps.
+        .navigationTitle(ruled.kind == .checklist ? habit.name : "")
         .navigationBarTitleDisplayMode(.inline)
         .background {
             if running && !wristDown {
@@ -380,7 +384,7 @@ struct DayDial: View {
     }
 
     private func small(_ text: String) -> some View {
-        Text(text).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.8)
+        Text(text).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.6)
     }
 }
 

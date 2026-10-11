@@ -251,12 +251,13 @@ final class WatchRoutineTests: WatchTestCase {
         app.buttons["start-morning"].tap()
         require(app.buttons["routine-main"], "the routine")
         XCTAssertEqual(app.buttons["routine-main"].label, "Mark done")
-        app.swipeUp() // move to Meditate: nothing logged
+        app.page() // move to Meditate: nothing logged
         require(app.otherElements["routine-page-Meditate"], "page 2")
-        app.swipeDown()
+        app.page(down: false)
+        require(app.otherElements["routine-page-Vitamins"], "back on page 1")
+        Thread.sleep(forTimeInterval: 0.6)
         app.buttons["routine-main"].tap() // Vitamins done
-        require(app.buttons["routine-main"], "Next")
-        XCTAssertEqual(app.buttons["routine-main"].label, "Next")
+        XCTAssertTrue(app.waitForLabel(app.buttons["routine-main"], "Next"), "Next after Mark done, not \(app.buttons["routine-main"].label)")
         app.buttons["routine-close"].tap()
         reveal(app.buttons["button-Undo Vitamins"], "Vitamins ticked on Today after the routine")
     }
@@ -266,7 +267,9 @@ final class WatchRoutineTests: WatchTestCase {
         reveal(app.buttons["start-morning"], "Morning's ▶")
         app.buttons["start-morning"].tap()
         require(app.buttons["routine-main"], "the routine")
-        app.swipeUp()
+        app.page()
+        require(app.otherElements["routine-page-Meditate"], "Meditate's page")
+        Thread.sleep(forTimeInterval: 0.6)
         app.buttons["routine-main"].tap() // start Meditate
         app.buttons["routine-close"].tap()
         reveal(app.buttons["button-Stop Meditate timer"], "the timer still running on Today (C6)")

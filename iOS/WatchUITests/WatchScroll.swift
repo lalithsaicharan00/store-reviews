@@ -42,6 +42,22 @@ extension XCUIApplication {
         return isShown(element)
     }
 
+    /// The routine's next (or previous) page: a quick flick on the dial, which a vertical pager takes as a page turn
+    /// (`swipeUp()` on the whole screen didn't turn it, run 38112417583).
+    func page(down: Bool = true) {
+        let window = windows.firstMatch
+        let from = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: down ? 0.62 : 0.3))
+        let to = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: down ? 0.2 : 0.72))
+        from.press(forDuration: 0.02, thenDragTo: to)
+    }
+
+    /// Waits until the element's label is `label` (a button whose words change after a tap).
+    @discardableResult
+    func waitForLabel(_ element: XCUIElement, _ label: String, timeout: TimeInterval = 8) -> Bool {
+        let done = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@", label), object: element)
+        return XCTWaiter().wait(for: [done], timeout: timeout) == .completed
+    }
+
     /// Back to the top of the list (the large title).
     func scrollToTop() {
         for _ in 0..<8 { nudge(down: false) }
