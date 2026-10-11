@@ -1370,7 +1370,7 @@ and the Add note keyboard coming up by itself.
       - [ ] Once CloudKit has shipped and passed these checks: tag the server `server-final-2026-10` and remove
         `server/` (the user's decision, 10 Oct 2026; nothing in the app calls it any more).
 
-- [ ] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
+- [x] **82. The Apple Watch app (Plus)** (added 10 October 2026, from the user: "start the Watch app research"; roadmap
   #65; **to build later**, when the user says so, after item 81's iPhone CloudKit work).
   - [x] **Research and design:** *done 10 Oct: [Apple Watch App — What People Want, What Breaks, and How Ours Works](<../Apple Watch/Research/Apple Watch App — What People Want, What Breaks, and How Ours Works.md>).
     All 3,051 App Store reviews naming a watch read and coded; Apple's watchOS limits checked; the core's Room 3 and
@@ -1427,17 +1427,59 @@ and the Add note keyboard coming up by itself.
       Watch's changes on; a timer stopped on both devices logs once (entry ID from the habit and its start). GitHub's
       macOS 26 runner has the watchOS SDKs and Watch simulators, so it builds and tests there; the real Watch is for
       complication transfers, real iCloud, haptics, Double Tap, Always On and the final look (U9).*
-  - [ ] **Build it (11 Oct 2026: handed to a cloud session):** [Build Prompt (Delete When Done)](<../Apple Watch/Build Prompt (Delete When Done).md>),
-    on branch `apple-watch`: every screen, data and sync, complications, notifications, Plus; screenshot review on
-    46 mm and 42 mm; data reliability, sync, storage and speed tests.
-    *Progress, 11 Oct 03:45 UTC: the core passes on GitHub (3,000 seeded three-device runs, the 15-year first fill);
-    the Watch app and the iPhone app with the Watch app inside build; the first screenshot review found and fixed
-    the iPhone's section name, limits, Day details' first screen, a slip's run and the face's text. Still running:
-    the six Watch UI test classes on 46 and 42 mm, the paired-simulator check, the screenshots and the speed runs.*
-  - [ ] Build, in the report's order (§8): the core on watchOS; the app with its own database; WatchConnectivity;
-    `CKSyncEngine` on the Watch; complications; timers, notification buttons and the Plus gate.
-  - [ ] Tests on GitHub's simulator (§7), then the device checks on the user's iPhone and Watch (U9); add WA1–WA13 to
-    the Rulebook once built.
+  - [x] **Build it (10–11 Oct 2026, a cloud session, branch `apple-watch`, merged into `main` the same day):** every
+    screen in the designs (A Today, B Day details for every kind, C the routine, D notifications, E the watch face and
+    Smart Stack, G Plus, H18–H20), data and sync per [Architecture 12](<../Apple Watch/Data and Sync (Architecture 12).md>),
+    Siri on the Watch (H16). Where version 1 differs from the pictures: [Design Notes, "As built"](<../Apple Watch/Designs/Design Notes.md>).
+    Built screens, photographed on CI: [Built Screens](<../Apple Watch/Built Screens/>).
+    - [x] **The core on watchOS** (Room 3, SQLite bundled): the paired-device queue `peer_out` (schema 10, migrated
+      from every past version), the first fill in checked parts carrying every field's sync stamp, the timer-stop log
+      ID, forwarding only what changed something, the 400-day window read into memory (U34). `PeerSyncTest` 20/20:
+      3,000 seeded three-device runs converge, every Architecture 12 §4 case, the extreme first fill (375,000 logs in
+      76 parts, 73 KB at most); `MigrationTest` 16/16, from every past version and from either branch's schema 9
+      (run 38126558505, with `main`'s iCloud work).
+    - [x] **The Watch app** with its own database (opens at once, WA1), the iPhone's model code shared (U32), the
+      iPhone's words; WatchConnectivity both ways, acknowledged, never counted twice; complications and the Smart Stack
+      from the app's snapshot with buttons that log; notification Done / +1; Plus from StoreKit (7 states).
+    - [x] **iCloud on the Watch** (Architecture 12 §3.2, built once item 81 reached `main`): the iPhone's `CloudSync`
+      built for watchOS; only with Plus and after the first fill; the Watch sends only its own changes, to iCloud and
+      the iPhone, and joining iCloud uploads only what its iPhone hasn't acknowledged (U33). `PeerSyncTest` (run 38126558505).
+    - [x] **UI tests** on the 46 mm and 42 mm Watch, all six classes, on the final code: runs 38127575684 (Launch,
+      Today, Day details), 38127577038 (Log manually, Routine, Plus) and 38134018379 (Day details and Today again after
+      the last fixes). The iPhone's touched classes with the Watch app inside it: Today, Timer, Persistence, Plus, test
+      launch isolation, reliability, Undo (38127622227); Backup, Day details, Habit page, iCloud, Widget, Progress
+      (38127636567, 38132386203, 38132384471, 38145611296). `ICloudUITests.testTheICloudPageInEveryState` failed once
+      (its first state's menu didn't open within 5 s) and passed on its re-run (38150216496) and on `main`
+      (38150234198). The iPhone speed run and `main` side by side: nothing slower (PERFORMANCE-LESSONS L32).
+    - [x] **Screenshot review** of every screen on 46 mm, 42 mm and larger text, fixed over four rounds (the iPhone's
+      section name, limits, Day details' first screen, the routine, larger-text rows, the face's text, a permission
+      prompt over the pictures), then a fifth (text under Day details' bottom buttons; a quit run counted to the real
+      time in test launches after 10:30): final pictures, run 38134016683.
+    - [x] **Speed** (Watch simulator, a year of history): Today's taps 0.0–6.1 ms/s, Day details +1 0.6–9.4, the
+      Crown 0.0, Day details opens within
+      a blank page's time, the extreme account's Today in 1.2–1.8 s (27 s before the window). Still over the targets
+      on the simulator: scrolling 30 habits 7.8 ms/s, a 5,000-change batch 6.5–9.7, the routine's opening (+120 ms on
+      a blank cover), Log manually's first opening (+65 ms) (PERFORMANCE-LESSONS L32, "Open").
+    - [x] **Paired simulators, end to end:** not possible on GitHub's runner. Messages from the Watch reach the iPhone,
+      but the iPhone never counts the Watch app as installed (pairing service errors), so it refuses every send
+      (Architecture 12 §6). The proof is the core's paired-device tests, and the check on the user's devices below.
+  - [ ] **Left for the user, on the iPhone and the Apple Watch Series 10 (watchOS 26):**
+    - [ ] Install from Xcode on the Mac: run the iPhone app (the Watch app ships inside it; Xcode installs both).
+    - [ ] Open the Watch app with the iPhone near: "Getting your habits from your iPhone…", then Today in the
+      iPhone's order; log on the Watch, see it on the iPhone, and back; start a timer on one, stop it on the other
+      (one log); run a routine on the Watch while the iPhone app is open (the simulators couldn't do this, §6).
+    - [ ] Architecture 12 §6's real-Watch checks: complication transfers (the face updating promptly after a change on
+      the iPhone), real iCloud on the Watch (a change made on the Watch with the iPhone switched off reaches
+      iCloud and the iPhone once it's back; one made on another device reaches the Watch with the iPhone off), the
+      background refresh saving a face tap within about 15 minutes,
+      haptics (a tap's click, a goal's success), Double Tap pressing the main action, Always On (a running timer in
+      minutes, dimmed), a reminder's Done / +1 and the iPhone's alarm buttons pressed on the wrist, the arm64 build.
+    - [ ] Look at every screen on the real Watch (U9), against [Built Screens](<../Apple Watch/Built Screens/>), and
+      measure speed there (scrolling, a big batch, the routine's opening are the simulator's open items).
+  - [ ] **Next, found while building:** a question iCloud raises (another Apple Account, the app's iCloud data
+    removed) stops iCloud on the Watch, and the person's answer on the iPhone doesn't reach it: the Watch keeps syncing
+    through the iPhone, nothing is deleted, but its own iCloud path stays off until the Watch app is reinstalled. Pass
+    the answer to the Watch over WatchConnectivity (Architecture 12 §3.2).
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."

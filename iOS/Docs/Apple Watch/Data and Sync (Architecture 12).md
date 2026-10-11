@@ -110,8 +110,9 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
   always true while it runs, so it never takes or hands over the free plan's one syncing device) and only after its
   first fill, so its first fetch merges as nothing. Plus ending sends what waits and stops iCloud until the app opens
   again; nothing is deleted. A question iCloud raises (another Apple Account, a removed zone) has no screen on the
-  Watch: iCloud stops there, nothing is deleted, the Watch keeps syncing through its iPhone, and the person answers on
-  the iPhone. Tests: `PeerSyncTest.aWatchOnICloudSendsOnlyItsOwnChanges`,
+  Watch: iCloud stops there, nothing is deleted and the Watch keeps syncing through its iPhone, where the person
+  answers. Version 1 doesn't pass that answer back, so the Watch's own iCloud path stays off until the app is
+  reinstalled (Current Work 82, "Next"). Tests: `PeerSyncTest.aWatchOnICloudSendsOnlyItsOwnChanges`,
   `aWatchJoiningICloudUploadsOnlyWhatItsIPhoneHasntAcknowledged`, and the seeded runs with the Watch on iCloud.
 
 ## 4. Cases that need care
