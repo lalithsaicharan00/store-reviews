@@ -350,3 +350,12 @@ extension View {
         if Device.isPad { keyboardShortcut(.defaultAction) } else { self }
     }
 }
+
+extension View {
+    /// A destination only the iPad pushes (Add log and Add note inside Day details); on the iPhone nothing is registered,
+    /// so its screen does no more work than before.
+    @ViewBuilder func padNavigationDestination<Item: Hashable, Destination: View>(
+        item: Binding<Item?>, @ViewBuilder destination: @escaping (Item) -> Destination) -> some View {
+        if Device.isPad { navigationDestination(item: item, destination: destination) } else { self }
+    }
+}

@@ -87,7 +87,7 @@ struct DaySheet: View {
             .navigationDestination(isPresented: $perfAllLogs) { AllLogsView(habit: current, day: day) }
             .navigationDestination(isPresented: $perfNote) { NoteView(habit: current, day: day) }
             .navigationDestination(isPresented: $showPage) { HabitPageView(id: current.id) }
-            .navigationDestination(item: $pushed) { destination in
+            .padNavigationDestination(item: $pushed) { destination in
                 switch destination {
                 case .note: AddNoteView(habit: current, day: day, picksDay: false, pushed: true)
                 default: AddLogView(habit: current, day: day, source: .manual, pushed: true)
