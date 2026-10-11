@@ -1,136 +1,72 @@
-# TIME Store load: read the database|11.69
-# TIME Store load: into the app (0 logs)|0.40
-1791693721.502 25.7
-1791693721.528 25.7
-# TIME Watch Today: plan|0.27
-# TIME Count: a Today row drawn|0.01
-# READY 1791693721.585
-1791693721.557 28.6
-# TIME Watch Today: plan|0.12
+# TIME Store load: read the database|7.58
+# TIME Store load: into the app (0 logs)|0.30
+1791695793.256 18.6
+1791695793.275 18.3
+# TIME Watch Today: plan|0.18
+# READY 1791695793.319
+1791695793.298 20.9
 # TIME Count: a Today row drawn|0.00
+1791695793.319 46.4
+# TIME Watch Today: plan|0.05
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.06
+# TIME Watch Today: plan|0.07
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791693721.591 80.6
 # TIME Watch Today: plan|0.08
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.10
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.08
 # TIME Count: a Today row drawn|0.00
 # TIME Watch Today: plan|0.09
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
+1791695793.415 21.3
+# TIME Watch Today: plan|0.10
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791693721.698 20.1
 # TIME Watch Today: plan|0.10
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
+1791695793.453 19.6
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.17
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.10
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
+# TIME Store load: read the database|82.17
+# TIME Store load: into the app (1716 logs)|14.15
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.13
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.12
 # TIME Count: a Today row drawn|0.00
-1791693721.738 26.4
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.11
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Widgets: one habit's week|13.83
-1791693722.292 24.4
-# TIME Widgets: one habit's week|0.75
-# TIME Widgets: one habit's week|0.75
-# TIME Widgets: one habit's week|1.89
-# TIME Widgets: one habit's week|2.52
-# TIME Widgets: one habit's week|1.24
-# TIME Widgets: one habit's week|0.68
-# TIME Widgets: one habit's week|2.15
-# TIME Widgets: the snapshot|0.65
-# TIME Store load: read the database|80.56
-# TIME Store load: into the app (1716 logs)|14.86
-# TIME Watch Today: plan|0.84
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.14
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791693723.113 26.3
-# TIME Widgets: one habit's week|0.94
-# TIME Widgets: one habit's week|0.58
-# TIME Widgets: one habit's week|0.56
+1791695794.843 23.3
+# TIME Widgets: one habit's week|8.78
+# TIME Widgets: one habit's week|0.69
+# TIME Widgets: one habit's week|0.78
 # TIME Widgets: one habit's week|1.07
-# TIME Widgets: one habit's week|1.02
-# TIME Widgets: one habit's week|1.52
-# TIME Widgets: one habit's week|0.94
-# TIME Widgets: one habit's week|0.73
-# TIME Widgets: the snapshot|0.62
+# TIME Widgets: one habit's week|1.48
+# TIME Widgets: one habit's week|0.80
+# TIME Widgets: one habit's week|0.63
+# TIME Widgets: one habit's week|1.45
+# TIME Widgets: the snapshot|0.39
+# TIME Widgets: the snapshot|0.40
 # MEASURING
-1791693729.525 130.2
-1791693741.070 99.8
-1791693742.281 17.1
-1791693753.067 98.2
-1791693765.154 105.6
-1791693783.718 18.0
-1791693784.857 141.4
-1791693816.176 147.4
-1791693837.269 115.0
-1791693843.760 18.6
-1791693861.435 125.4
-1791693892.408 148.7
-1791693902.288 27.2
-1791693925.481 175.2
-1791693954.575 163.9
-1791693963.294 24.3
-1791693972.646 121.8
-1791693989.204 123.3
-1791694022.296 41.5
-1791694024.413 145.2
-1791694062.190 176.5
-1791694080.450 42.8
-1791694085.870 24.8
-1791694323.360 27.5
-1791694563.730 19.9
-# NOTE first fill on the Watch simulator: 375000 logs (15 years) in 76 parts, biggest 209 KB, 15.3 MB sent; 770.6 s (Today right after 14.9 s; the stand-in iPhone made it in 351.0 s); Watch database 222 MB; reading it all 33.09 s (375000 logs); reading the Watch's 400 days for Today 2.55 s (27268 logs); peak memory 212 MB
+1791695800.978 116.5
+1791695813.247 100.3
+1791695825.787 102.5
+1791695838.986 114.3
+1791695851.902 112.2
+1791695865.701 115.6
+1791695878.400 112.0
+1791695891.292 101.6
+1791695904.791 113.5
+1791695917.616 111.4
+1791695930.926 120.1
+1791695945.102 107.4
+1791695958.342 104.9
+1791695972.222 105.0
+1791695985.504 106.2
+# NOTE first fill on the Watch simulator: 375000 logs (15 years) in 76 parts, biggest 208 KB, 15.3 MB sent; 428.9 s (Today right after 13.4 s; the stand-in iPhone made it in 198.6 s); Watch database 224 MB; reading it all 18.00 s (375000 logs); reading the Watch's 400 days for Today 1.19 s (27268 logs); peak memory 249 MB
 # DONE
-1791694886.718 241.2
+1791696447.622 164.5
