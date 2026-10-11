@@ -26,6 +26,8 @@ struct DayDetailsScreen: View {
     /// The dial's room between the clock row and the bottom bar, after the scroll view's own top inset: about 130 pt on
     /// the 46 mm Watch, 105 on the 42 mm (measured on the screenshots, run 38123102563).
     private var firstScreen: CGFloat { max(100, WKInterfaceDevice.current().screenBounds.height - 118) }
+    /// The bottom bar's height below the dial's room, on both sizes (the screenshots: 30–32 pt showed under it).
+    static let underTheBar: CGFloat = 36
 
     /// After a log here, its named Undo, one tap away (WA7, U14); a check's Undo is the main action itself (B5).
     @ViewBuilder
@@ -52,9 +54,7 @@ struct DayDetailsScreen: View {
                 if ruled.kind == .checklist {
                     ChecklistSteps(habit: habit, ruled: ruled, day: day, locked: skipped || paused)
                 } else {
-                    // The first screen is the dial and nothing else but its named Undo, centred between the title and
-                    // the bottom bar; today's logs, the streak and Skip today are below, reached with the Crown (B1, B2).
-                    // Rows that started right under the dial showed through the bottom buttons (run 38097123253).
+                    // Today's logs, the streak and Skip today are below the dial, reached with the Crown (B1, B2).
                     // The first screen is the dial alone, as design B1: an Undo there squeezed the dial until its words
                     // were cut, or sat under the bottom buttons (runs 38112417583, 38123102563). The named Undo is the
                     // first thing below it; a check's Undo is the main action itself (B5); Today has the row's Undo.
@@ -64,7 +64,10 @@ struct DayDetailsScreen: View {
                         .frame(height: firstScreen)
                 }
                 if !wristDown {
+                    // Below a dial, a gap the bottom bar's height: what follows starts under the bar on the first
+                    // screen, so none of it shows through the buttons there (the final screenshot review, run 38127579039).
                     lower(habit, ruled: ruled)
+                        .padding(.top, ruled.kind == .checklist ? 0 : Self.underTheBar)
                 }
             }
             .padding(.bottom, 8)
