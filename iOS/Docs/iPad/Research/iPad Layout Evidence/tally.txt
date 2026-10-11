@@ -1,0 +1,23 @@
+App Store candidates read: 2071; coded as about the iPad's layout or use: 996; not layout: 1075
+unknown keys: []; bad codes: {}; duplicate codes in one review: {}; repeated keys in source: []; unknown Today keys: []
+
+code         reviews  apps  mean★   since 2022
+NOIPAD           286    27   4.02   73
+STRETCH          191    31   3.68   80
+LAND-NO          165    24   3.84   47
+BUG              145    29   2.90   76
+ROLE              82    21   4.00   40
+WIDGET            57    23   3.98   38
+GOOD              55    18   4.36   19
+MAIN              47    18   3.91   19
+MORE              29    18   4.17   11
+MULTI             29     8   3.97   13
+KEYS              24    14   3.67   10
+PARITY            20     9   3.65   10
+KIDS              16     7   4.56   13
+LAND-YES          12     7   4.42   1
+TEXT               6     6   3.50   3
+PENCIL             4     3   3.50   2
+FIND               2     2   3.50   2
+NAV                1     1   5.00   0
+NOT-NEEDED         1     1   5.00   0

@@ -685,6 +685,127 @@ and the Add note keyboard coming up by itself.
 ## Planned improvements — build later
 
 
+- [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
+  Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
+  [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:
+  - [x] **Research first; tell the user when it's done**, before any design. Report (now in `iOS/Docs/iPad/Research/`)
+    (W2), the user's words kept word for word beside it. *Done 11 Oct: [The iPad Layout — Familiar Like the iPhone,
+    Native to the iPad](<../iPad/Research/The iPad Layout — Familiar Like the iPhone, Native to the iPad.md>).
+    Every iPad/tablet/landscape/multitasking review read and hand-coded (2,071 habit-app, 455 platform-app, 209 Play
+    Store); Apple's iPadOS 26 guidance. Recommendation: the iPhone's Today cards side by side in iPhone-width columns
+    chosen by window width, the ≡ menu as a sidebar with a count of what's left, the day control in the top bar, every
+    orientation and window size, form sheets, keyboard shortcuts; a compact window is the iPhone layout. Six decisions
+    for the user (its §8), starting with free or Plus.*
+  - [x] **Today's whole point is quick scanning:** the person sees at a glance how much is left for the day. Take into
+    account what the iPhone already does for that (time-of-day sections, a closed section showing how many things it
+    holds, the day bar, the ≡ side menu, the filter) and work out how the iPad's Today should do it with far more room.
+  - [x] **Familiar, not new:** the iPad should feel like the same app as the iPhone ("it's kind of the same"), not
+    something entirely new.
+  - [x] **And native:** at the same time it must feel like an iPad app, intuitive ("oh, this is very intuitive").
+  - [x] **Design for the room the iPad has:** everything laid out for the larger screen, not a stretched iPhone.
+  - [x] **Then the designs, in Figma**, on the page made for the iPad (file `Ncccsm1l2O62GJ5xLSInqk`, node `1078:309`,
+    empty on 11 Oct); one example first for the user's approval, then the rest.
+  - **Decided by the user, 11 Oct 2026 (the report's §8):** (1) **the iPad layout is free** (sync between devices
+    stays Plus); (6) **design the 11-inch iPad first, then think about the 13-inch.**
+  - [x] **The other layout questions are answered by research, not by the user** (the user, 11 Oct: "these questions
+    shouldn't be for me … take inspiration from top apps and top patterns in the iPad"; the user has worked on web, not
+    native iPad apps): how sections sit in two columns, whether Day details is a centered sheet or a panel, three
+    columns on wide windows, where the day control goes. Study how Apple's own iPad apps (Reminders, Notes, Calendar,
+    Mail, Health…) and top third-party apps look in **portrait and landscape**, what people praise and dislike, and
+    the most important iPad navigation patterns and "how the native iPad feels"; reuse what we already have.
+    *Done 11 Oct: report §6 (14 top iPad apps' current App Store screenshots read, HIG popovers/tab bars, platform
+    reviews). Answers: one column of the iPhone's section cards at ≈ 700 pt (Reminders' Today is also Morning /
+    Afternoon / Tonight; Things, TickTick, Habitify one column); a sidebar with a count beside Today; Day details as a
+    popover at the row (Calendar, Reminders); the day control in the top bar's centre (Calendar); a Columns view later
+    as an option (Reminders' Columns).*
+  - [x] Design from that research; ask the user only what research can't settle (the user will say which questions
+    need more research and which they'll answer).
+  - [x] **11-inch landscape Today**: approved by the user, 11 Oct ("I like the overall tablet layout for … landscape").
+  - [x] **11-inch portrait, and how the iPhone's bottom sheet (Day details) works in portrait and landscape**, taken
+    from native apps, not invented (the user, 11 Oct). *Designed 11 Oct, waiting for the user: portrait Today (sidebar
+    put away), the sidebar sliding over, and Day details as a popover pointing at the row in both orientations
+    (regular width in both; Apple's HIG and Calendar's event popover); the iPhone's sheet only in a narrow window.
+    Notes: `iOS/Docs/iPad/Designs/Design Notes.md`.* **Popover in both orientations and no ✕:
+    approved by the user, 11 Oct** ("if the native app itself is not using it, then obviously people don't expect it").
+  - [x] **Is a popover what people expect, and what about many logs?** (the user, 11 Oct). *Answered 11 Oct: iPad
+    Calendar and Reminders users expect details to pop up (`N2#16334`, `N1#7979`); the iPhone's three-log rule keeps the
+    popover's size, and All logs opens inside it with a back button (frames `1114:2`, `1114:301`, `1114:606`).*
+    **Approved by the user, 11 Oct** ("this looks good … everything what you have created till now").
+  - [x] **Add log with the iPad keyboard** (the user, 11 Oct: "go ahead with the add log keyboard one"). *Designed
+    11 Oct, waiting for the user: landscape (`1120:2`, the popover moves up above the keyboard with the SE's short
+    form) and portrait (`1120:355`, still pointing at the row, full form); ✕ stays, outside taps don't close it while
+    something is typed.*
+  - [x] **A narrow window** (the user, 11 Oct: "go ahead with the narrow window one"). *Designed 11 Oct, waiting for
+    the user: beside another app the window is compact width and the app is the iPhone app exactly: the sidebar
+    button after the window controls, Edit · Filter +, the bottom day bar, Day details as the iPhone's sheet with ✕
+    (`1122:2`, `1122:196`).*
+  - [x] **One menu icon, used consistently** (the user, 11 Oct: the sidebar icon in some frames, ≡ in others, "make
+    sure be consistent"). *Done 11 Oct: on the iPad the menu's button is the system's sidebar button (`sidebar.left`) at
+    every width, portrait, landscape and a narrow window, because iPadOS draws that button for every app's sidebar;
+    the iPhone keeps its ≡ (Design Rules, ≡ Menu, final). Also matched the sidebar's icons to the app's code: Habits
+    `checklist`, Day and Week `calendar`.*
+  - [x] **Every other screen on the iPad, not just Today** (the user, 11 Oct: "we have a lot of other screens … complete
+    them"). Each follows the iPad pattern that top apps use for that kind of screen (notes: Design Notes §6):
+    *Designed 11 Oct, waiting for the user (frames and reasons: Design Notes §5; words that change on the iPad: §5's
+    last part):*
+    - [x] Habits and Tasks: the list and a habit's details side by side (list–detail, as in Notes, Mail and Reminders)
+      (`1133:2`; portrait `1172:2`)
+    - [x] Habit details: its tabs in the detail column (inside `1133:2`)
+    - [x] Progress: the habit cards using the room, two across (Health's Summary pattern) (`1134:2`)
+    - [x] The settings pages (Times of Day, Day and Week, Reminders, Appearance, iCloud & Backup, Privacy & Security,
+      Plus, Help & Feedback, About): the page beside the sidebar, as in the iPad's Settings app (`1135:*`, `1168:*`)
+    - [x] New Habit (+): a form sheet in the middle of the screen (`1169:2`)
+    - [x] Today's calendar (Today ⌄) and Filter: popovers from their buttons (`1169:281`, `1169:597`)
+    - [x] Edit (Arrange Your Day) on the iPad (`1171:2`)
+    - [x] The routine player and the timer: full screen, laid out for the iPad (`1171:342`, `1171:377`)
+    - [x] Welcome (onboarding), an empty Today and App Lock's cover (`1171:395`, `1171:419`, `1171:675`)
+    - [ ] Words that name the device read right on the iPad ("iPhone" → "iPad", ≡ → the sidebar, Face ID → Touch ID
+      where the iPad has it, no Haptics row); Live Activities and alarms on the iPad checked on a real iPad
+  - [x] **No day rings in the calendar** (the user, 11 Oct: "in our app, we don't have these rings … remove them"; "fix
+    it in the design rules too"). *Done 11 Oct: the iPad's "Go to a day" popover (`1169:281`) rebuilt from the app's
+    `CalendarSheet` (plain dates, today bold, the open day in a grey circle); Design Rules' "Calendar and Back to Today"
+    no longer says "a filled circle inside its ring".*
+  - [x] **The 13-inch and the Columns view** (the user, 11 Oct: "go ahead with the 13 inch and columns view").
+    *Designed 11 Oct, waiting for the user (Design Notes §6): 13-inch Today in List, landscape and portrait (`1175:2`,
+    `1175:1209`): the same layout with more margin; the Columns view, each time of day its own column in the person's
+    order, scrolling sideways, as in Reminders (`1175:246` 13-inch, `1175:730` 11-inch); switched from the menu bar's
+    View menu, as List ⌘1 / as Columns ⌘2 (`1176:2`), and Appearance → Layout (`1135:873`).*
+  - **The user's decisions and requests, 11 Oct (the loop to finish the iPad hand-over):**
+    - [x] **The Columns switch stays where it is** (the View menu and Appearance): "if it is yes then keep it that way
+      itself, we don't need to add anything extra". No ⋯ on Today's top bar.
+    - [x] **No dark-mode designs**: "we are using native components … it is very easy … to convert it into a dark mode".
+      Light mode only; native colours give dark mode.
+    - [x] **Portrait versions wherever the layout changes in portrait**: "whichever portrait versions are needed,
+      create them". *Done 11 Oct: every landscape-only screen has its portrait beside it (Design Notes §7).*
+    - [x] **The deeper screens, in light mode**: a habit's Notes and Progress tabs, the New Habit form inside its sheet,
+      a help topic, App Lock setup, restore, Edit Group and the rest. *Done 11 Oct (Design Notes §7); Edit Group follows
+      Current Work 85.*
+    - [x] **Widgets on the iPad**, one kind after another, *done 11 Oct (Design Notes §8): the iPhone widgets unchanged,
+      an Extra Large Today (ten a page, two columns of Large Today's rows), the Home Screen and the Lock Screen;* from the iPhone widgets in Figma (nodes `537:2981`, `585:4698`,
+      `622:6436`, `659:5131`, `687:7558`, `695:8747`). The user: widgets were never "locked" as code or UI: what's locked
+      is the principles (a tap shows its result near-instantly, and every tap is saved safely behind it, even many quick
+      taps, even with no internet).
+    - [x] **Everything an agent needs to build the iPad**: "we are going to assign this to an agent". Screenshots from a
+      GitHub simulator run may be used for reference. *Done 11 Oct: `iOS/Docs/iPad/` (README: what it is, every
+      decision, the words that change; `Designs/`: 17 pictures of every screen; `Build Prompt (Delete When Done).md`),
+      listed in the Docs index. No simulator screenshots were needed: the iPhone's own designs and code were the source.*
+    - [x] **Then answer: does the iPad need any architecture or storage design** (as the Watch had its own database
+      research), or only UI? *Answered 11 Oct: no new data design. The iPad is the same app on another device: its own
+      copy of the database, sync through iCloud as Architecture 11 already designs it (the iPad is named there; the
+      free plan's one syncing device, §12), the same backups and App Group. It needs app-level system changes only
+      (device family, orientations, windows and state per window, menu-bar commands, the Extra Large widget family) and
+      real-iPad checks of Live Activities, AlarmKit, Health steps and Touch ID (README, Build Prompt §4).*
+  - [x] **All the iPad designs are complete** (the user, 11 Oct: "design related stuff is completed"): the items marked
+    "waiting for the user" above are approved with it.
+  - [x] **Everything documented in one folder, with the pictures, the research and why each decision was taken** (the
+    user, 11 Oct: "document everything … with images … the research … refer to those wherever you have taken any
+    decisions … keep this data … in one folder"), then pushed to main. *Done 11 Oct: `iOS/Docs/iPad/` (README with a
+    decision → reason → source table; `Designs/Design Notes.md` with all 17 pictures inline; `Research/` with the report,
+    the user's prompts and the evidence scripts, moved from `Research/Research Reports/Home Screen and Visual Design/iPad
+    Layout/`; the build prompt); listed in the Docs index and in the research index under "iPad".*
+  - [ ] **Build the iPad app** from `iOS/Docs/iPad/Build Prompt (Delete When Done).md` (next; the user will discuss the
+    app-level changes first).
+
 - [ ] **85. Edit Group: padding around the colour swatches, and show only the group's own habits (build later).** Added
   11 October 2026, from the user: "we need to make some updates later, but not now." The screen is New Group / Edit
   Group (`GroupForm` in `iOS/Habits/Groups/GroupScreens.swift`).

@@ -181,7 +181,11 @@ Source: [Name, Unit and Time of Day Lengths](<../Research/Research Reports/Habit
 
 Source: [Back to Today — When and Where](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Back to Today — When and Where.md>).
 
-- **Every shape in the calendar is round.** The open day is a filled circle inside its ring, never a square.
+- **The calendar shows plain dates, with no rings** (the user, 2 Oct 2026; confirmed 11 Oct: "in our app, we don't have
+  these rings"). A done-of-planned ring isn't a fact once a habit is weekly, monthly or every few days, so the only ring is
+  Today's own, in the day bar (`DayLabel`). Every shape is still round: today's date is bold, the open day sits in a
+  grey circle (`secondarySystemFill`), never a square, and later days are lighter (`CalendarDate`). *Supersedes "the
+  open day is a filled circle inside its ring".*
 - **"Back to Today" in two places, only while the open day isn't today** (the user, 29 Sep): **primary** (filled) just above the day bar on Today, and **secondary** (bordered) pinned at the bottom of the calendar sheet. **Both keep their space on today** (invisible, not removed), so nothing shifts as ‹ › change the day. No always-on Today button at the top.
 
 ## Full-screen routine player (29 Sep 2026)
