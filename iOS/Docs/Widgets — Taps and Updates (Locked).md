@@ -6,7 +6,8 @@ they don't disturb these things, like the responsiveness of the widgets, updatin
 
 **This is locked.** Every decision below was reached by measuring on the iPhone 16 (iOS 26.6), often after an approach
 that looked right in code failed on the phone. Don't change how a widget responds to a tap, how a tap is saved, how
-the widgets are updated, or what a widget button does, without the user's say-so. If a change is agreed, repeat the
+the widgets are updated, or what a widget button does, without the user's say-so. **Speed work and bug fixes that keep
+all of it are welcome without asking** (the user, 11 Oct 2026): read §8 first. If a change is agreed, repeat the
 Home Screen checks in §6 on the iPhone and let the user try it before calling it done.
 
 The same rules are repeated, shorter, in: [RULEBOOK.md](<../../RULEBOOK.md>) (S17, S18, U26, U28), [Design Rules —
@@ -60,8 +61,8 @@ Tap on a ✓ or + (only the round button takes the touch)
         → HabitStore.logFromWidget (database) → flush
         → taps removed from widget-taps.json only after they're saved
         → widgets republished from the database (`publish(hold: true)`), reminders re-planned
-        → sync: the store's change asks `SyncService.scheduleSoon`, which keeps the app running in the background
-          (`beginBackgroundTask`) until the server has it, 2 s after the last tap (W18)
+        → sync: the store's change asks `CloudSync.scheduleSoon`, which keeps the app running in the background
+          (`beginBackgroundTask`) until iCloud has it, 2 s after the last tap (W18)
 ```
 
 The app also runs `saveWidgetTaps` when it starts (`ensureLoaded`) and every time it comes back to the front
@@ -87,7 +88,7 @@ The app also runs `saveWidgetTaps` when it starts (`ensureLoaded`) and every tim
 | W14 | **A week or month goal fills toward its period** (row and card), as Today's row. | §1; supersedes nothing the user ever said. |
 | W15 | **Check habits keep their ✓** (`.add where item.type == "check"` draws a ✓ that adds one check). | Current Work 64. |
 | W16 | **VoiceOver:** each card's switch is one button named for what it does ("Add 1 to Water", "Mark Meds done") with the card's state as its value; not "switch, off". | The switch would otherwise read as a toggle; tests and VoiceOver look for buttons. |
-| W18 | **A tap reaches the server without the app being opened** (8 Oct 2026, the user's go-ahead; Current Work 67). The change asks for a sync (`SyncService.scheduleSoon`), which holds `beginBackgroundTask` until the server has it: 2 s after the last change in the background (a quick run of taps is one request), 3 s in front, never more than 10 s; no request when nothing is waiting; one sync at a time; no launch pull when iOS starts the app in the background. A failed sync keeps the change in the outbox and asks for a background refresh (~15 min), which syncs. **Nothing here waits in an intent:** the visual side (W1–W17) is untouched. | Measured on the iPhone: before, five widget taps with the app already started were saved but never sent (iOS suspended the app inside the 3 s wait); after, one request with all five ~2 s after the last, the app never in front; the widget still shows each + at 0.3 s (PERFORMANCE-LESSONS L25). |
+| W18 | **A tap reaches iCloud without the app being opened** (8 Oct 2026, the user's go-ahead; Current Work 67; iCloud since 10 Oct 2026, Current Work 81, Rulebook D12). The change asks for a sync (`CloudSync.scheduleSoon`), which holds `beginBackgroundTask` until CloudKit has it: 2 s after the last change in the background (a quick run of taps is one batch), 3 s in front, never more than 10 s; nothing sent when nothing is waiting. A change leaves the outbox only when CloudKit confirms a record built after it; a failed send keeps everything in the outbox and asks for a background refresh, which sends it. **Nothing here waits in an intent:** the visual side (W1–W17) is untouched. | Measured on the iPhone with the server sync (8 Oct): before, five widget taps with the app already started were saved but never sent (iOS suspended the app inside the 3 s wait); after, one request with all five ~2 s after the last, the app never in front; the widget still shows each + at 0.3 s (PERFORMANCE-LESSONS L25). The same timing carried over to CloudKit (Architecture 11 §15). |
 | W17 | **Snapshot writes are coordinated** (`NSFileCoordinator`) in both the app (`WidgetDisk.write`) and the widget (`applyTap`). | Both write the same file within milliseconds of each other. |
 
 ### Known, accepted limits
@@ -155,7 +156,7 @@ launches write their demo habits into the widgets' file (a known D8 gap, tracked
 
 ## 7. Change policy
 
-- Locked: W1–W18. Ask the user before changing any of them, and say which.
+- Locked: W1–W18. Ask the user before changing what any of them does, and say which. Speed work that keeps them: §8.
 - Code that implements them carries a comment starting `LOCKED (widget taps, 8 Oct 2026)` pointing here.
 - Adding a new widget kind or action: follow §2 (switch over the card, `after` from the app, `WidgetTapIntent` →
   `WidgetSaveIntent`, idempotent saving), then run the §6 checks and hand it to the user.
@@ -166,3 +167,38 @@ launches write their demo habits into the widgets' file (a known D8 gap, tracked
   widget files in an App Group folder of its own (`WidgetDisk.directory` → `uitest/`), so a UI test on the iPhone never
   shows its demo habits on the person's Home Screen or saves and removes the person's waiting taps. The widget extension
   and every ordinary launch use the person's folder as before; `-dbname` system tests (WidgetSystemUITests) too.
+
+## 8. Speed work and bug fixes (the user, 11 Oct 2026)
+
+The user: improve widget performance and fix widget issues, "but preserve … switch based widgets, and syncing and all
+of that, because … data should be handled robustly and should never be lost … agents can work on it, but [keep] the
+near-instant switch-based widget UI updating, and … top data robustness and syncing reliability, so no matter what,
+data is never lost."
+
+**Allowed without asking:** making the snapshot, the timelines and the app's side of a tap faster (less work per
+habit, caching, work moved off the main thread), and fixing bugs, **as long as every one of these stays exactly as it
+is:**
+
+1. **The tap shows at once:** the card is one switch (W2) whose "after" is the app's own next state (W3); the tap's
+   intent runs in the widget's process (W1); quick + taps keep moving on (W3); no nested switches (W6), no `Button` for
+   ✓/+, no `invalidatableContent` (W13).
+2. **No tap is ever lost:** every tap is written to `widget-taps.json` before the intent returns (W5); the app saves
+   taps in order, idempotently (a + by its own ID, a ✓ as the state it set, W4), and removes them from the file only
+   after the save succeeded; the app also saves waiting taps on launch and return.
+3. **Synced and backed up without opening the app** (W18, Rulebook D12): the save asks `CloudSync.scheduleSoon` and the
+   backup's `changedOutside`; nothing waits in an intent.
+4. **What each button does and which screen opens** (W7–W9, W14, W15), and the widgets never computing numbers of their
+   own (U26).
+5. **Timelines stay short** (W10, S17) and the app publishes 0.5 s after a change and at once on leaving (W11).
+
+**How to check a speed change:** the widget's own scenarios and the speed runs (`widget-log`, `tap-today`,
+`today-big-fetch`; "Widgets: one habit's week" and "Widgets: the snapshot" in Timed work), `WidgetUITests`,
+`WidgetSystemUITests` and the in-app `-widgetcheck` on GitHub; a change to anything in points 1–3 still needs the §6
+Home Screen checks on the iPhone and the user's try. Record the numbers in PERFORMANCE-LESSONS.
+
+**Done under this section:**
+- 11 Oct 2026 (Current Work 83): a habit's week and month totals are read from the per-day index
+  (`HabitStore.loggedTotal`) instead of walking the habit's whole history on every call. "Widgets: one habit's week"
+  took up to 831 ms with 20,000 extra logs (a week-goal habit's streaks for the coming days walked back week by week,
+  reading every log each week). Nothing a widget shows changed.
+

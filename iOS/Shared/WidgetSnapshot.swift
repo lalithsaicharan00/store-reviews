@@ -60,7 +60,7 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     /// A + whose next tap meets the goal: the switch shows the habit's colour the moment it's touched (Current Work 66).
     /// Optional, so a snapshot written before it existed still reads.
     var completesNext: Bool?
-    // LOCKED (widget taps, 8 Oct 2026): the widget draws the app's own next state, never its own (W3). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    // LOCKED (widget taps, 8 Oct 2026): the widget draws the app's own next state, never its own (W3). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
     /// Today's ✓ or +: this card as it will be after one tap (one element, or nil), worked out by the app. The widget
     /// draws it the moment the button is touched, so the whole card changes at once (Current Work 66).
     var after: [WidgetItem]?
@@ -255,7 +255,7 @@ nonisolated enum WidgetDisk {
         let data = try JSONEncoder().encode(snapshot)
         guard data.count <= maximumBytes else { throw CocoaError(.fileWriteOutOfSpace) }
         try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
-        // LOCKED (widget taps, 8 Oct 2026): coordinated writes (W17). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+        // LOCKED (widget taps, 8 Oct 2026): coordinated writes (W17). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
         // Coordinated with a widget tap's own change to the same file (`applyTap`), so neither half-overwrites the other.
         var failure: Error?
         var coordination: NSError?

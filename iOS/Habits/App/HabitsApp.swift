@@ -51,7 +51,7 @@ struct HabitsApp: App {
                 }
         }
         .onChange(of: scenePhase) {
-            // LOCKED (widget taps, 8 Oct 2026): publish at once when the app starts to leave (W11). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // LOCKED (widget taps, 8 Oct 2026): publish at once when the app starts to leave (W11). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
             // Leaving: the widgets get the latest at once, while the app still counts as in front, so iOS redraws them
             // straight away rather than when it next gets round to it (the user, 8 Oct 2026, Current Work 66).
             if scenePhase == .inactive && model.store.isLoaded { Task { await model.widgets.publish(model.store, immediate: true) } }

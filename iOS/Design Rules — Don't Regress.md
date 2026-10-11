@@ -416,7 +416,8 @@ every visual or layout change on the real iPhone before calling it done.**
 ## Widgets: taps and updates — LOCKED (8 Oct 2026)
 
 The user checked every part on the iPhone and asked for it to be locked. The full record, decision by decision, is
-[Widgets — Taps and Updates (Locked)](<Docs/Widgets — Taps and Updates (Locked).md>) (Rulebook U28). Don't regress:
+[Widgets — Taps and Updates (Locked)](<Docs/Widgets — Taps and Updates (Locked).md>) (Rulebook U28). Speed work and bug
+fixes that keep all of it are allowed (the user, 11 Oct 2026; its §8). Don't regress:
 
 - **A tap changes the whole card at once** (button, number, bar, row fill, the list's "N of M done"), like Reminders: the
   ✓/+ is a switch over the card whose "after" is the app's own next state. Only the round button takes the touch.

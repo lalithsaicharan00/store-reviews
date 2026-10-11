@@ -166,7 +166,7 @@ struct WidgetLogIntent: LiveActivityIntent, SetValueIntent {
     }
 }
 
-// LOCKED (widget taps, 8 Oct 2026): a tap runs here in the widget's process and hands over to the app (W1); never make it an app-process intent. Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+// LOCKED (widget taps, 8 Oct 2026): a tap runs here in the widget's process and hands over to the app (W1); never make it an app-process intent. Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
 /// ✓ or + on a widget (Current Work 66): runs in the widget's own process, so the widget redraws about 0.2 s later;
 /// shows the card after the tap (`WidgetDisk.applyTap`), keeps the tap safe in the shared file (`WidgetTaps`), then
 /// hands over to the app in the background (`WidgetSaveIntent`), which saves it in the database, syncs and backs up.
@@ -219,7 +219,7 @@ struct WidgetSaveIntent: LiveActivityIntent {
     }
 }
 
-// LOCKED (widget taps, 8 Oct 2026): timers start and stop on the widget, never opening the app (W7). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+// LOCKED (widget taps, 8 Oct 2026): timers start and stop on the widget, never opening the app (W7). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
 /// ▶ or ⏸ on a widget: the same timer as Today's row, with its Live Activity and Dynamic Island. ▶ only starts and ⏸
 /// only stops and saves, so a retried callback never undoes itself.
 struct WidgetTimerIntent: LiveActivityIntent {

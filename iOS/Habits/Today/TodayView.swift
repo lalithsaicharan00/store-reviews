@@ -329,7 +329,7 @@ struct TodayView: View {
             || showNewHabit || showIdeas || perfForm
     }
 
-    // LOCKED (widget taps, 8 Oct 2026): a widget link replaces everything that was open, old log sheets included (W9). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    // LOCKED (widget taps, 8 Oct 2026): a widget link replaces everything that was open, old log sheets included (W9). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
     /// A widget link replaces whatever was open with the screen it asked for (the user, 7 Oct 2026, Current Work 66:
     /// with a timer open, a checklist's link left the timer showing, because iOS shows one sheet at a time and the
     /// second was never presented). Everything closes without animation, then the new screen opens once it's gone.

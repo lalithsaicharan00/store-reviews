@@ -372,7 +372,7 @@ final class AppModel {
 
     /// A widget's ✓ or + (`WidgetLogIntent`), run in the app's process: written first, then the widgets show it, with
     /// today's lists held in place for the next tap in a run (U4).
-    // LOCKED (widget taps, 8 Oct 2026): saved in order, removed only after saving, run on hand-over, launch and return (W4, W5). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    // LOCKED (widget taps, 8 Oct 2026): saved in order, removed only after saving, run on hand-over, launch and return (W4, W5). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
     /// Every widget tap waiting in the shared file (`WidgetTaps`), saved in the order it was made, then removed from the
     /// file only once it's in the database (Current Work 66). Run when a widget hands over (`WidgetSaveIntent`), and
     /// whenever the app starts or comes back, so no tap stays only in the file. One run at a time, after any earlier.

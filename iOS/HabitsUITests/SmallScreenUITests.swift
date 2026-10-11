@@ -284,14 +284,16 @@ final class SmallScreenUITests: XCTestCase {
         XCTAssertTrue(lock.waitForExistence(timeout: 5))
         shot("se-app-lock-off")
         lock.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
-        let passcode = app.buttons["setup-app-passcode"]
-        XCTAssertTrue(passcode.waitForExistence(timeout: 5))
+        let passcode = app.buttons["setup-app-passcode"], faceID = app.buttons["setup-face-id"]
+        XCTAssertTrue(faceID.waitForExistence(timeout: 5), frames(["setup-face-id", "setup-continue"]))
         let turnOn = app.buttons["setup-continue"]
         XCTAssertTrue(turnOn.isHittable && turnOn.frame.maxY <= window.maxY, frames(["setup-face-id", "setup-iphone-passcode", "setup-app-passcode", "setup-continue"]))
         shot("se-setup-choose")
-        // At this text size the sheet scrolls: its own list, never Today's behind it (T9).
-        let sheetList = app.collectionViews.containing(.button, identifier: "setup-app-passcode").firstMatch
-        for _ in 0..<5 where passcode.frame.maxY > turnOn.frame.minY { sheetList.swipeUp() }
+        // At this text size the sheet scrolls: its own list, never Today's behind it (T9). The list makes a row only as it
+        // comes near the screen, so App Passcode (the third way, added with the redesign) may not exist until it scrolls.
+        let sheetList = app.collectionViews.containing(.button, identifier: "setup-face-id").firstMatch
+        for _ in 0..<6 where !passcode.exists || passcode.frame.maxY > turnOn.frame.minY { sheetList.swipeUp() }
+        XCTAssertTrue(passcode.exists, "App Passcode is in the sheet: \(frames(["setup-face-id", "setup-iphone-passcode", "setup-continue"]))")
         XCTAssertLessThanOrEqual(passcode.frame.maxY, turnOn.frame.minY, "App Passcode scrolls into view above the button: \(frames(["setup-app-passcode", "setup-continue"]))")
         shot("se-setup-choose-scrolled")
         passcode.tap()

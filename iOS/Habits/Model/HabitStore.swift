@@ -786,9 +786,28 @@ final class HabitStore {
     }
 
     func periodTotal(_ habit: Habit, in range: ClosedRange<LocalDay>, now: Date = .now) -> Double {
-        var total = entries(of: habit.id).lazy.filter { $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
+        var total = loggedTotal(habit, in: range)
         if let start = timers[habit.id], range.contains(today(now: now)) {
             total += max(0, now.timeIntervalSince(start)) / 60
+        }
+        return total
+    }
+
+    /// What was logged in `range` (step ticks aside). A week or a month is read day by day from the per-day index, not by
+    /// walking every entry the habit ever had: a widget asks this for seven days of every habit, and walking a year of
+    /// history each time took up to 831 ms for one habit's week (S5, Current Work 83). A range longer than the habit's
+    /// history reads the history once.
+    func loggedTotal(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
+        let all = entries(of: habit.id)
+        let days = range.lowerBound.days(to: range.upperBound, calendar: calendar) + 1
+        guard days < all.count else {
+            return all.lazy.filter { $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
+        }
+        var total = 0.0
+        var day = range.lowerBound
+        for _ in 0..<days {
+            for entry in entries(of: habit.id, on: day) where entry.stepID == nil { total += entry.value }
+            day = day.adding(days: 1, calendar: calendar)
         }
         return total
     }
@@ -1111,7 +1130,7 @@ final class HabitStore {
     /// Completions in the week or month: ticks for "Do it", met days for everything else.
     func periodCount(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
         if habit.kind == .check, !habit.frequency.isFlexible {
-            return entries(of: habit.id).lazy.filter { $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
+            return loggedTotal(habit, in: range)
         }
         var count = 0.0
         var day = range.lowerBound
@@ -2280,7 +2299,7 @@ final class HabitStore {
             guard !(try await repository.hasEntry(id: event.uuidString)).boolValue else { return }
             let rule = rule(habit, on: day)
             let single = (rule.kind == .check && slots(of: habit).isEmpty && !countsUp(habit, on: day)) || rule.kind == .task
-            // LOCKED (widget taps, 8 Oct 2026): taps are saved as "add" (own ID) or "check"/"uncheck" (absolute), never re-flipped twice (W4). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // LOCKED (widget taps, 8 Oct 2026): taps are saved as "add" (own ID) or "check"/"uncheck" (absolute), never re-flipped twice (W4). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
             // "flip": a widget ✓ switch (Current Work 66). Each tap changes the day from what's saved now, in the order
             // the taps came (they're saved one after another), so two quick taps end unticked, as the switch shows.
             // iOS doesn't reliably hand a switch's new state to the intent on a second quick tap.
