@@ -160,7 +160,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
-            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+            -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
       - name: Build Release with production gate closed
@@ -170,7 +170,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild build -project Habits.xcodeproj -scheme Habits -configuration Release \
-            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee release-build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+            -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee release-build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" release-build.log
 
       - name: Save available core build dependencies
@@ -233,7 +233,7 @@ jobs:
           export TEST_RUNNER_ACTIONS_ID_TOKEN_REQUEST_URL="$ACTIONS_ID_TOKEN_REQUEST_URL"
           export TEST_RUNNER_ACTIONS_ID_TOKEN_REQUEST_TOKEN="$ACTIONS_ID_TOKEN_REQUEST_TOKEN"
           xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits \
-            -sdk iphonesimulator -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
+            -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
             2>&1 | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" test.log
 
