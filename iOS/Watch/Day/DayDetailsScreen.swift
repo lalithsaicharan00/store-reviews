@@ -23,8 +23,9 @@ struct DayDetailsScreen: View {
 
     private var day: LocalDay { store.today() }
 
-    /// The height between the clock row and the bottom bar: about 148 pt on the 46 mm Watch, 123 on the 42 mm.
-    private var firstScreen: CGFloat { max(110, WKInterfaceDevice.current().screenBounds.height - 100) }
+    /// The dial's room between the clock row and the bottom bar, after the scroll view's own top inset: about 130 pt on
+    /// the 46 mm Watch, 105 on the 42 mm (measured on the screenshots, run 38123102563).
+    private var firstScreen: CGFloat { max(100, WKInterfaceDevice.current().screenBounds.height - 118) }
 
     /// After a log here, its named Undo, one tap away (WA7, U14); a check's Undo is the main action itself (B5).
     @ViewBuilder
@@ -54,13 +55,13 @@ struct DayDetailsScreen: View {
                     // The first screen is the dial and nothing else but its named Undo, centred between the title and
                     // the bottom bar; today's logs, the streak and Skip today are below, reached with the Crown (B1, B2).
                     // Rows that started right under the dial showed through the bottom buttons (run 38097123253).
-                    VStack(spacing: 6) {
-                        DayDial(habit: habit, ruled: ruled, day: day, skipped: skipped, paused: paused, dimmed: wristDown,
-                                name: habit.name)
-                        if !wristDown { undo(habit, ruled: ruled) }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: firstScreen)
+                    // The first screen is the dial alone, as design B1: an Undo there squeezed the dial until its words
+                    // were cut, or sat under the bottom buttons (runs 38112417583, 38123102563). The named Undo is the
+                    // first thing below it; a check's Undo is the main action itself (B5); Today has the row's Undo.
+                    DayDial(habit: habit, ruled: ruled, day: day, skipped: skipped, paused: paused, dimmed: wristDown,
+                            name: habit.name)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: firstScreen)
                 }
                 if !wristDown {
                     lower(habit, ruled: ruled)
@@ -196,10 +197,8 @@ struct DayDetailsScreen: View {
     private func lower(_ habit: Habit, ruled: Habit) -> some View {
         let logs = perfTimed("Watch Day details: today's logs") { store.dayLogs(of: habit, on: day) }
         VStack(alignment: .leading, spacing: 8) {
-            if ruled.kind == .checklist {
-                // A checklist has no dial: its "Undo Last Step" follows the steps.
-                undo(habit, ruled: ruled)
-            }
+            // The named Undo first, a short scroll below the dial (a checklist's follows its steps).
+            undo(habit, ruled: ruled)
             if showStreaks, habit.kind != .task, habit.kind != .quit {
                 StreakCard(habit: habit, day: day)
             }

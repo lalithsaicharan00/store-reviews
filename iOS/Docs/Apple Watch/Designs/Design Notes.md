@@ -170,6 +170,10 @@ Built on branch `apple-watch` (Current Work 82). The built screens, photographed
   own views in a gallery screen (`-face-gallery`, test launches only), the same views the face draws.
 - **Continue on iPhone (G1):** watchOS can't put an app on the iPhone's screen, so the page offers Handoff for as long
   as it's open (the app's icon in the iPhone's app switcher opens ≡ › Plus), and the button says where to look.
+- **B, Day details' header:** the habit's name is inside the dial under its icon (as on the routine's pages), not
+  in the header: watchOS 26 puts a screen's title on its own row under the clock, and the dial didn't fit between it
+  and the bottom bar. After a log, the named Undo is the first thing below the dial (a short scroll), and a check's
+  Undo is the main action as drawn (B5); the row's Undo on Today is one tap away (WA7).
 - **H10, the streak in Day details:** a habit with logs older than the Watch's 400 days in memory shows its streak
   only when it certainly falls inside them, and no best; the iPhone has both (Architecture 12, "What's read into
   memory").
