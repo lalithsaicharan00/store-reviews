@@ -843,6 +843,10 @@ and the Add note keyboard coming up by itself.
       `testReminderSaysIsSavedWithTheHabit` (New Habit not found), `DayDetailsUITests.testTimeLogAddViewAndEdit` ("The
       clock row is Finished at": on the SE Date and Time share a row, U22), `OnboardingUITests.testHelpAndTheWelcomeAgain`
       (About below the fold in ≡), `PlusUITests.testSecondDeviceSheetOpensThePlusPage`. To fix as their own item (T2).
+      *Also on the newest iPhone, on `main` too:* `LongTextUITests.testTodayWithLongText` (line 118, the section name's
+      3 s wait for the cut) and `testFormWithLongText` ("Build or maintain" not found; on this branch once the 24-letter
+      cut landed after its 3 s wait): `main` `bac8a1b` run 38154448096, this branch runs 38154445955 and 38149953441's
+      batch; `testTodayWithLongText` failed on `main` on 9 Oct too.
     - [ ] The real iPad and iPhone checks (U9; list in the README): Live Activities, AlarmKit, Health steps, Touch ID /
       Face ID, the popover with the on-screen keyboard, Stage Manager, a hardware keyboard; the iPhone's U9 checks.
 
