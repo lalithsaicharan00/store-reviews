@@ -1,47 +1,20 @@
-# claude/pensive-gates-3n4ie8-ci2 @ 0fcfa8f
+# claude/pensive-gates-3n4ie8-perf5 @ 4aba627 (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38159789736 · 2026-10-11 18:06 UTC
-Commit: Current Work 86: Today's rows and headers hide themselves from VoiceOver while a page covers Today; the iPhone's list is main's again
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38159808960 · 2026-10-11 18:10 UTC
+Commit: Speed bisect: Today's taps and scrolling, the final iPad build against main on the iPhone, six rounds [ios-perf-bisect] perf-variants: main=bac8a1b5 branch=HEAD~1 perf-scenarios: tap-today scroll-today perf-rounds: 6
 
-- Core storage and migrations: success
-- Build: success
-- Release build: success
-- Same-build speed baseline: skipped
-- UI tests (IPadUITests,WidgetUITests/testExtraLargeTodayOnTheIPad): failure
-- Speed tests: skipped
-- Speed tests through XCTest: skipped
+Variants: `main=bac8a1b5 branch=HEAD~1` · scenarios: `tap-today scroll-today` · rounds: 6
 
-## UI tests
-```
-	 Executed 15 tests, with 2 failures (0 unexpected) in 841.378 (841.415) seconds
-	 Executed 16 tests, with 2 failures (0 unexpected) in 879.904 (879.946) seconds
-	 Executed 16 tests, with 2 failures (0 unexpected) in 879.904 (879.948) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:335: error: -[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar] : Failed to not hittable: Button, {{400.0, 584.5}, {631.0, 37.5}}, label: 'Morning, Starts 6 AM, All done'
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:48: error: -[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps] : XCTAssertTrue failed - Today: Often Enough | pad-sidebar | sidebar-hide | Hide Sidebar | menu-today | Today, 9 left | sun.max | Brightness Higher | Today | sidebar-today-left | 9 left | menu-progress | Progress | chart.bar.xaxis | menu-habits | Habits, 17 | checklist | Habits | 17 | menu-tasks | Tasks, 0 | list.bullet | List | Tasks | 0 | menu-timesOfDay | Times of Day | rectangle.split.3x1 | Column View | menu-dayAndWeek | Day and Week | calendar | Calendar | menu-reminders | Reminders | bell | Notifications | menu-appearance | Appearance | circle.lefthalf.filled | menu-backup | iCloud & Backup | icloud | Icloud | menu-privacy | Privacy & Security | hand.raised | Block | menu-plus | Plus | plus.circle | Add | Vertical scroll bar, 2 pages | _TtGC7SwiftUI32NavigationStackHosting | chevron.left | Previous day | Today, 6 of 15 done. Open calendar | chevron.down | Go Down | 6/15
-Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' failed (178.061 seconds).
-Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (35.475 seconds).
-Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' passed (76.402 seconds).
-Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (50.446 seconds).
-Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (45.466 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' passed (35.596 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (85.275 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (18.894 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (36.522 seconds).
-Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (31.610 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (31.239 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' failed (111.601 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (31.587 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' passed (62.944 seconds).
-Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (10.259 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testExtraLargeTodayOnTheIPad]' passed (38.526 seconds).
-```
+- main: bac8a1b5 Current Work 88: coming back to the iPhone after using the iPad, "Use your habits on this iPhone?" (t
+- branch: 0fcfa8fb Current Work 86: Today's rows and headers hide themselves from VoiceOver while a page covers Today; t
 
-## Release build
-```
-** BUILD SUCCEEDED **
-```
+Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
-## Native analytics checks
-```
-Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
-```
+| Window | main | branch |
+|---|---|---|
+| Today: +1 and day ‹ › | **37.5**<br>266.5 (261, 16), 152.3 (104, 1), 46 (71, 0), 22.1 (82, 0), 20 (59, 0), 29.1 (57, 0) | **65.3**<br>165.9 (166, 7), 83.9 (95, 0), 80.9 (100, 1), 49.8 (76, 0), 17.2 (66, 0), 34.8 (57, 0) |
+| Today: +1 alone | **0.9**<br>19.2 (48, 0), 4.8 (46, 0), 1.3 (30, 0), 0 (0, 0), 0.3 (21, 0), 0.6 (25, 0) | **1.4**<br>8.2 (66, 0), 2.3 (39, 0), 6.5 (80, 0), 0.2 (19, 0), 0.1 (18, 0), 0.5 (24, 0) |
+| Today: day ‹ › alone | **67.8**<br>135 (125, 2), 100.4 (100, 1), 80.4 (95, 0), 30.3 (62, 0), 19.8 (41, 0), 55.3 (77, 0) | **39.7**<br>100.9 (97, 0), 96.6 (77, 0), 37.5 (56, 0), 19.7 (47, 0), 12.2 (37, 0), 41.9 (63, 0) |
+| Today: Day sheet scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| Timer screen: a running clock | **0.1**<br>1.3 (22, 0), 0.2 (19, 0), 0.5 (24, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0.2 (20, 0), 0 (0, 0) |
+| Today: scrolling | **13.1**<br>25.4 (180, 2), 14 (95, 0), 12.1 (97, 0), 5.2 (30, 0), 4.4 (30, 0), 18.3 (126, 1) | **11.5**<br>19.8 (154, 2), 13.8 (112, 1), 13 (114, 1), 10 (51, 0), 7.3 (39, 0), 7 (37, 0) |
