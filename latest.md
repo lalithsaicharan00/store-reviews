@@ -1,44 +1,36 @@
-# claude/pensive-gates-3n4ie8-ci12 @ b0991b2
+# claude/drive-sync @ e5a1559
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38164207979 · 2026-10-11 18:59 UTC
-Commit: Current Work 86: Today is hidden from VoiceOver under a page through UIKit's own flag on its navigation container
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38165533575 · 2026-10-11 19:25 UTC
+Commit: Android: Google Drive sync prototype results (draft; final run IDs to come)
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (TodayUITests,UndoUITests,TimerUITests): success
+- UI tests (ICloudUITests/testSyncAgainstTheFakeICloud,ICloudUITests/testTheICloudPageInEveryState,ICloudUITests/testTodaysCardWhenICloudNeedsYou,ICloudUITests/testRemovedFromICloudAsksFirst,ICloudUITests/testADifferentAppleAccountAsksFirst,ICloudUITests/testTheSecondDeviceSheet,BackupUITests): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 21 tests, with 0 failures (0 unexpected) in 781.912 (781.926) seconds
-	 Executed 21 tests, with 0 failures (0 unexpected) in 781.912 (781.928) seconds
-	 Executed 5 tests, with 0 failures (0 unexpected) in 168.418 (168.422) seconds
-	 Executed 8 tests, with 0 failures (0 unexpected) in 246.952 (246.956) seconds
-	 Executed 8 tests, with 0 failures (0 unexpected) in 366.542 (366.546) seconds
-Test Case '-[HabitsUITests.TimerUITests testLiveActivityWhileRunning]' passed (36.366 seconds).
-Test Case '-[HabitsUITests.TimerUITests testPlayOpensTimerScreenThatClosesWithoutStopping]' passed (74.431 seconds).
-Test Case '-[HabitsUITests.TimerUITests testRowTicksBarShowsWhenOutOfSightAndStopKeepsTime]' passed (26.061 seconds).
-Test Case '-[HabitsUITests.TimerUITests testScreenCanBeTurnedOff]' passed (11.537 seconds).
-Test Case '-[HabitsUITests.TimerUITests testTimerScreenPauseKeepsTimeAndResumes]' passed (20.023 seconds).
-Test Case '-[HabitsUITests.TodayUITests testBackToToday]' passed (17.856 seconds).
-Test Case '-[HabitsUITests.TodayUITests testDayWeekAndAppearance]' passed (98.254 seconds).
-Test Case '-[HabitsUITests.TodayUITests testDoneRowStaysInPlace]' passed (16.793 seconds).
-Test Case '-[HabitsUITests.TodayUITests testDoneRowWaitsForThePause]' passed (21.715 seconds).
-Test Case '-[HabitsUITests.TodayUITests testFoldAndOpen]' passed (10.865 seconds).
-Test Case '-[HabitsUITests.TodayUITests testMenu]' passed (135.874 seconds).
-Test Case '-[HabitsUITests.TodayUITests testSettingsChecks]' passed (12.668 seconds).
-Test Case '-[HabitsUITests.TodayUITests testTodayScreen]' passed (52.518 seconds).
-Test Case '-[HabitsUITests.UndoUITests testDayControlsAndCalendarOpeningAreExplicit]' passed (76.489 seconds).
-Test Case '-[HabitsUITests.UndoUITests testEditAndDeleteOneEntryInDaySheet]' passed (44.780 seconds).
-Test Case '-[HabitsUITests.UndoUITests testInlineUndoSurvivesAndIsExact]' passed (27.829 seconds).
-Test Case '-[HabitsUITests.UndoUITests testLogManuallyAddsOneLog]' passed (23.432 seconds).
-Test Case '-[HabitsUITests.UndoUITests testRoutineUndoStaysVisibleAndLeavesEarlierLogsIntact]' passed (18.203 seconds).
-Test Case '-[HabitsUITests.UndoUITests testSkipFromTodayKeepsHistoryOpenAndCanBeUndone]' passed (18.301 seconds).
-Test Case '-[HabitsUITests.UndoUITests testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited]' passed (25.343 seconds).
-Test Case '-[HabitsUITests.UndoUITests testStoreCorrectionsRecalculateAndPersist]' passed (12.575 seconds).
+	 Executed 13 tests, with 1 failure (0 unexpected) in 739.084 (739.104) seconds
+	 Executed 13 tests, with 1 failure (0 unexpected) in 739.084 (739.106) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 556.806 (556.817) seconds
+	 Executed 7 tests, with 1 failure (0 unexpected) in 182.277 (182.285) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/BackupUITests.swift:91: error: -[HabitsUITests.BackupUITests testErasingEverything] : XCTAssertFalse failed - The demo habits are there to start with
+Test Case '-[HabitsUITests.BackupUITests testBackupFilesInICloud]' passed (59.300 seconds).
+Test Case '-[HabitsUITests.BackupUITests testBackupIntegrityChecks]' passed (8.900 seconds).
+Test Case '-[HabitsUITests.BackupUITests testErasingEverything]' failed (21.879 seconds).
+Test Case '-[HabitsUITests.BackupUITests testExportAndBackupOpenNativeShareSheet]' passed (46.676 seconds).
+Test Case '-[HabitsUITests.BackupUITests testRestoreListsICloudAndAFile]' passed (17.479 seconds).
+Test Case '-[HabitsUITests.BackupUITests testRestoreSaysThisIPhone]' passed (18.402 seconds).
+Test Case '-[HabitsUITests.BackupUITests testTheICloudPageFromAnEmptyToday]' passed (9.640 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testADifferentAppleAccountAsksFirst]' passed (13.615 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testRemovedFromICloudAsksFirst]' passed (15.376 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testSyncAgainstTheFakeICloud]' passed (141.546 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testTheICloudPageInEveryState]' passed (321.223 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testTheSecondDeviceSheet]' passed (31.553 seconds).
+Test Case '-[HabitsUITests.ICloudUITests testTodaysCardWhenICloudNeedsYou]' passed (33.493 seconds).
 ```
 
 ## Release build
