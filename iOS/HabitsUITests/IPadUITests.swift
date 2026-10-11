@@ -134,7 +134,8 @@ final class IPadUITests: XCTestCase {
         XCTAssertTrue(header.waitForExistence(timeout: 5), "Anytime's header: \(labels())")
         // Today's own card (the sidebar is a list too): the cell holding Anytime's header.
         let card = app.cells.containing(NSPredicate(format: "label BEGINSWITH 'Anytime'")).firstMatch
-        XCTAssertLessThanOrEqual(card.frame.width, 720, "The column is ≈ 700 pt: header \(frame(header)), cell \(frame(card))")
+        // A cell's frame includes the grouped list's own 20 pt each side of its 700-pt card.
+        XCTAssertLessThanOrEqual(card.frame.width, 760, "The column is ≈ 700 pt: header \(frame(header)), cell \(frame(card))")
         XCTAssertGreaterThanOrEqual(card.frame.width, 600, "…and uses the room: cell \(frame(card))")
         let room = (sidebar.frame.maxX, window.maxX)
         XCTAssertLessThan(abs(card.frame.midX - (room.0 + room.1) / 2), 30, "…centred: cell \(frame(card)), room \(room)")

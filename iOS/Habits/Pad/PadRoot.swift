@@ -73,7 +73,8 @@ struct PadRoot: View {
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .onGeometryChange(for: CGSize.self) { $0.size } action: { size = $0 }
         .environment(\.padSidebar, PadSidebarControl(docked: docked, toggle: toggle, regular: sizeClass == .regular,
-                                                     columns: layout == PadLayout.columns.rawValue))
+                                                     columns: layout == PadLayout.columns.rawValue,
+                                                     covered: menu.padPlace != nil))
         .environment(\.padOpenHabit, PadOpenHabit { habit in openHabit(habit) })
         .onAppear {
             // A test starts on Today with the sidebar out, whatever the last test left (Rulebook T8).
@@ -482,14 +483,12 @@ struct PadMenuCommands: Commands {
                 .keyboardShortcut("n")
                 .disabled(!Device.isPad)
         }
-        CommandGroup(before: .sidebar) {
-            // Buttons, not Toggles: a Toggle's shortcut never fired from the iPad's menu bar (run 38141959437: ⌘2 did
-            // nothing while ⌘N, ⌘T, ⌘← ⌘→ and ⌃⌘S worked). The one in use carries a checkmark, as in Reminders' View menu.
+        // In the sidebar's own group: commands placed *before* it never reached the iPad's menu bar (runs 38141959437,
+        // 38149917285: ⌘1 / ⌘2 did nothing, as Toggles and as Buttons, while this group's ⌃⌘S worked).
+        CommandGroup(replacing: .sidebar) {
             layoutButton(.list, "1")
             layoutButton(.columns, "2")
             Divider()
-        }
-        CommandGroup(replacing: .sidebar) {
             Button(PadCommands.shared.sidebarShown ? "Hide Sidebar" : "Show Sidebar") { PadCommands.shared.sidebarRequests += 1 }
                 .keyboardShortcut("s", modifiers: [.control, .command])
                 .disabled(!Device.isPad)

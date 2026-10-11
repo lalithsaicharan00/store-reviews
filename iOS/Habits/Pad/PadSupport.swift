@@ -93,6 +93,15 @@ struct PadSidebarControl {
     /// Today to read, nil on the iPhone, so the iPhone's Today does no more work per redraw than before.
     var regular = false
     var columns = false
+    /// A page beside the sidebar covers Today (Today stays alive behind it).
+    var covered = false
+}
+
+extension View {
+    /// Hidden from VoiceOver while a page covers Today, on the iPad; nothing at all on the iPhone (U30).
+    @ViewBuilder func padCoveredHidden(_ covered: Bool) -> some View {
+        if Device.isPad { accessibilityHidden(covered) } else { self }
+    }
 }
 
 struct PadOpenHabit {

@@ -564,71 +564,76 @@ struct TodayView: View {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in
             List {
-                if isToday && AppModel.shared.backup != nil { BackupIssueSection() }
-                // Filtered to a group with nothing on this day: say so, with the way back (report 18).
-                if let group, let shownGroup = store.groups.first(where: { $0.id == group }),
-                   tracked.isEmpty && restraint.isEmpty && paused.isEmpty {
-                    Section {
-                        VStack(spacing: 10) {
-                            Text("Nothing from \(shownGroup.name) on this day.")
-                                .foregroundStyle(.secondary)
-                                .accessibilityIdentifier("group-empty-day")
-                            Button("Show All") { withAnimation { groupRaw = "" } }
-                                .buttonStyle(.bordered)
-                                .accessibilityIdentifier("group-show-all")
+                Group {
+                    if isToday && AppModel.shared.backup != nil { BackupIssueSection() }
+                    // Filtered to a group with nothing on this day: say so, with the way back (report 18).
+                    if let group, let shownGroup = store.groups.first(where: { $0.id == group }),
+                       tracked.isEmpty && restraint.isEmpty && paused.isEmpty {
+                        Section {
+                            VStack(spacing: 10) {
+                                Text("Nothing from \(shownGroup.name) on this day.")
+                                    .foregroundStyle(.secondary)
+                                    .accessibilityIdentifier("group-empty-day")
+                                Button("Show All") { withAnimation { groupRaw = "" } }
+                                    .buttonStyle(.bordered)
+                                    .accessibilityIdentifier("group-show-all")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
                     }
-                }
-                // The day's note, when there is one: context for the whole day, above its habits (notes report).
-                if shown <= today, let note = store.dayNote(on: shown) {
-                    Section {
-                        Button { store.noteTarget = .init(habit: nil, day: shown) } label: {
-                            Label { Text(note).foregroundStyle(Color.primary).multilineTextAlignment(.leading) }
-                                icon: { Image(systemName: "note.text").foregroundStyle(.secondary) }
+                    // The day's note, when there is one: context for the whole day, above its habits (notes report).
+                    if shown <= today, let note = store.dayNote(on: shown) {
+                        Section {
+                            Button { store.noteTarget = .init(habit: nil, day: shown) } label: {
+                                Label { Text(note).foregroundStyle(Color.primary).multilineTextAlignment(.leading) }
+                                    icon: { Image(systemName: "note.text").foregroundStyle(.secondary) }
+                            }
+                            .accessibilityHint("Edit the note for the day")
+                            .accessibilityIdentifier("day-note")
                         }
-                        .accessibilityHint("Edit the note for the day")
-                        .accessibilityIdentifier("day-note")
                     }
-                }
-                // Anytime and Quit or Cut Down sit where the person put them; the times of day follow their times.
-                ForEach(store.todayCards, id: \.self) { card in
-                    if card == .quittingCard {
-                        if !restraint.isEmpty { quittingSection(restraint, day: shown, isToday: isToday) }
-                    } else if let items = rows[card], !items.isEmpty {
-                        // Times decide the section; a habit ticked per section shows in each of its sections.
-                        partSection(card, items: items, day: shown, isToday: isToday, isNow: card == nowPart)
+                    // Anytime and Quit or Cut Down sit where the person put them; the times of day follow their times.
+                    ForEach(store.todayCards, id: \.self) { card in
+                        if card == .quittingCard {
+                            if !restraint.isEmpty { quittingSection(restraint, day: shown, isToday: isToday) }
+                        } else if let items = rows[card], !items.isEmpty {
+                            // Times decide the section; a habit ticked per section shows in each of its sections.
+                            partSection(card, items: items, day: shown, isToday: isToday, isNow: card == nowPart)
+                        }
                     }
-                }
-                if !paused.isEmpty {
-                    let open = layout.box(Self.pausedCard).open ?? false
-                    Section {
-                        PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: open, onStart: nil,
-                                   onToggle: { layout.setOpen(Self.pausedCard, !open, reduceMotion: reduceMotion) })
-                            .accessibilityIdentifier("paused-card")
-                        if open {
-                            ForEach(paused) { habit in
-                                PausedRow(habit: habit, day: shown)
-                                    .id(Self.rowKey(Self.pausedCard, habit.id))
+                    if !paused.isEmpty {
+                        let open = layout.box(Self.pausedCard).open ?? false
+                        Section {
+                            PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: open, onStart: nil,
+                                       onToggle: { layout.setOpen(Self.pausedCard, !open, reduceMotion: reduceMotion) })
+                                .accessibilityIdentifier("paused-card")
+                            if open {
+                                ForEach(paused) { habit in
+                                    PausedRow(habit: habit, day: shown)
+                                        .id(Self.rowKey(Self.pausedCard, habit.id))
+                                }
                             }
                         }
                     }
-                }
-                // Only "Note for the Day" stays at the bottom; times of day are arranged in Edit (the user, 3 Oct 2026).
-                if shown <= today && store.dayNote(on: shown) == nil {
-                    Section {
-                        Button { store.noteTarget = .init(habit: nil, day: shown) } label: {
-                            Label("Note for the Day", systemImage: "note.text")
+                    // Only "Note for the Day" stays at the bottom; times of day are arranged in Edit (the user, 3 Oct 2026).
+                    if shown <= today && store.dayNote(on: shown) == nil {
+                        Section {
+                            Button { store.noteTarget = .init(habit: nil, day: shown) } label: {
+                                Label("Note for the Day", systemImage: "note.text")
+                            }
+                            .accessibilityIdentifier("add-day-note")
+                            .buttonStyle(.borderless)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity)
+                            .listRowBackground(Color.clear)
                         }
-                        .accessibilityIdentifier("add-day-note")
-                        .buttonStyle(.borderless)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity)
-                        .listRowBackground(Color.clear)
                     }
                 }
+                // A page beside the sidebar covers Today, kept alive behind it: its rows (cells UIKit hosts, which the
+                // hidden flag on Today doesn't reach) are hidden from VoiceOver too (U1, run 38149917285). The iPad only.
+                .padCoveredHidden(padSidebar?.covered == true)
             }
             .listStyle(.insetGrouped)
             // The iPad: the iPhone's cards in one column at 700 pt, centred (I5); the list still spans the room.
@@ -758,7 +763,7 @@ struct TodayView: View {
 
     /// One column: Today's own grouped list, as tall as its cards (it doesn't scroll on its own).
     private func columnList<Content: View>(_ card: String, count: Int, @ViewBuilder content: () -> Content) -> some View {
-        PadColumnList(card: card, estimate: CGFloat(80 + count * 60), content: content())
+        PadColumnList(card: card, estimate: CGFloat(80 + count * 60), content: content().accessibilityHidden(padSidebar?.covered == true))
     }
 
     /// Quit or Cut Down folds like the other cards, and starts open. No "N left" and no Start: nothing in it is to do.
