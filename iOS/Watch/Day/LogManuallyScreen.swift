@@ -83,7 +83,10 @@ struct AmountEntry: View {
                 Text("Last: " + HabitCopy.amount(last.value, unit) + ", " + DayWords.day(last.day, today: store.today(), calendar: store.calendar))
                     .font(.footnote).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
             }
-            Text("Turn the Digital Crown").font(.footnote).foregroundStyle(.secondary)
+            if !(ruled.asksHowMuch && last != nil) {
+                // Not beside "Last: …": the two ran under the Add button (B17, run 38124093497).
+                Text("Turn the Digital Crown").font(.footnote).foregroundStyle(.secondary)
+            }
         }
         .navigationTitle(habit.name)
         .navigationBarTitleDisplayMode(.inline)
@@ -203,7 +206,10 @@ struct LogScreen: View {
                         Text(origin.replacingOccurrences(of: ".", with: "")).font(.footnote).foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                     }
+                    // Plain red text, never a red fill (U19); the question that follows is the system's own.
                     Button("Delete", role: .destructive) { asking = true }
+                        .buttonStyle(.plain)
+                        .font(.body.weight(.semibold))
                         .foregroundStyle(.red)
                         .padding(.top, 10)
                         .accessibilityIdentifier("delete")
