@@ -612,8 +612,7 @@ class DriveSyncTest {
             val kept = mergeAll(all.filter { it.id !in maybeLost })
             for ((key, record) in kept) {
                 val have = final[key] ?: error("seed $seed: $key lost")
-                for ((field, clock) in record.clocks) assertTrue((have.clocks[field] ?: "") >= clock, "seed $seed: $key.$field went back")
-                if (record.isDeleted) assertTrue(have.isDeleted, "seed $seed: $key undeleted")
+                assertEquals(normal(have), normal(SyncRules.mergeRecord(have, record)), "seed $seed: $key lost a change")
             }
             assertTrue(full.keys.containsAll(final.keys), "seed $seed: a record nobody made")
         }
@@ -637,7 +636,7 @@ class DriveSyncTest {
 
     /**
      * The version chain's safety, from every version ever saved: each was saved after a version its writer had
-     * downloaded or saved itself, and holds every record of the version before it, each at least as new.
+     * downloaded or saved itself, and holds everything the version before it held (merging that one in changes nothing).
      */
     private fun checkChains(drive: FakeDrive, why: String) {
         val known = mutableMapOf<String, MutableSet<String>>()
@@ -661,7 +660,8 @@ class DriveSyncTest {
             val rows = after.rows.associate { "${it.table}:${it.row}" to it.record }
             for (row in earlier.rows) {
                 val now = rows["${row.table}:${row.row}"] ?: error("$why: $id dropped ${row.table}:${row.row} that $prev held")
-                for ((field, clock) in row.record.clocks) assertTrue((now.clocks[field] ?: "") >= clock, "$why: $id has an older ${row.row}.$field than $prev")
+                // Holds it: merging the older version's record changes nothing (a delete can carry an older stamp and still win).
+                assertEquals(now, SyncRules.mergeRecord(now, row.record), "$why: $id lacks part of ${row.row} that $prev held")
             }
         }
     }
