@@ -131,7 +131,18 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
 - **GitHub can build and test it.** GitHub's macOS 26 runner (the one our workflow uses) has the watchOS 26 SDKs and
   Watch simulators installed (Series 11 42/46 mm, SE 3, Ultra 3; runner image readme, read 10 Oct 2026). Unit tests,
   the core on watchOS, XCUITest UI tests on the Watch simulator, and speed runs all run there, the same way as the
-  iPhone app's. A paired iPhone + Watch simulator pair can exchange `sendMessage` and `transferUserInfo`.
+  iPhone app's. ~~A paired iPhone + Watch simulator pair can exchange `sendMessage` and `transferUserInfo`.~~
+  **As found on GitHub's runner, 11 Oct 2026** (`Tools/ci/watch_pair.sh`, `[watch-pair]`, runs 38115225030,
+  38116345106 and the one after): the two simulators pair and boot, and messages from the Watch reach the iPhone app
+  (`sendMessage`, read on the iPhone), but **nothing goes from the iPhone to the Watch**: WatchConnectivity refuses
+  every send with `WCErrorCodeWatchAppNotInstalled`. The iPhone never counts the Watch app as installed: `simctl
+  pair_activate` fails, installing the iPhone app never installs its Watch app on the paired Watch (waited 240 s),
+  a Watch app installed straight onto the Watch isn't recognised, and the iPhone's `wcd` logs "IDS Registration: XPC
+  has informed us that a fatal error has occurred" throughout (the device-pairing service doesn't run there). So the
+  end-to-end check can't pass on hosted runners. **The proof of the sync is the core's paired-device tests**
+  (`PeerSyncTest`: a stand-in link carrying batches both ways, out of order and twice, through restarts; 3,000 seeded
+  three-device runs and every §4 case), and the check on the user's iPhone and Series 10 (U9). The script stays, for a
+  Mac or a runner where pairing works.
 - **What needs the real Watch** (the user's Series 10, watchOS 26): Apple's complication transfers (the Simulator
   doesn't support `transferCurrentComplicationUserInfo`), real iCloud (CI can't sign in), the background refresh
   budget, haptics, Double Tap, Always On, notification buttons pressed on the wrist, and the arm64 build on a Series 9
