@@ -159,6 +159,15 @@ Their placement records scope and priority; implementation has not started.
       D1 `often-enough-directory` and `often-enough-directory-dev`; R2 `often-enough-backups` (empty) and
       `often-enough-backups-dev` (exported). Then `server/` and `server-dev-checks.yml` leave the repository (archive
       branch first) and item 68 closes.
+    - [ ] **The old Google sign-in clients were deleted** (the user, 11 Oct 2026: "we are not using Google Drive right
+      now … later we have to change it"): the Web client `367584981284-i2afctg5…` and the iOS client
+      `367584981284-c8q0v1eq…` in the Google Cloud project. Still referring to them: the website's delete-account page
+      (`website/public/delete-account.js`: its Google sign-in no longer works; remove the page or its Google button with
+      the server's removal) and the old server's settings (`server/wrangler.jsonc`, `worker-configuration.d.ts`: they go
+      with `server/`). The iPhone's Google Drive backup (`iOS/Habits/Backup/BackupFeatures.swift`, the URL scheme in
+      `iOS/Habits-Info.plist`, off behind its flag) needs a **new iOS client** if Google Drive comes to the iPhone
+      (item 77). New client made the same day: Web "Drive sync tests" (only for the Drive tests; GitHub secrets
+      `GDRIVE_TEST_CLIENT_ID`, `GDRIVE_TEST_CLIENT_SECRET`, `GDRIVE_TEST_REFRESH_TOKEN`; item 89).
     - [ ] **Speed on the iPhone:** `iOS/Tools/perf/measure_perf_device.sh` with Today's day ‹ ›, Add log, the note sheet
       and Arrange's Hide Completed (S2: the phone has the final word; the simulator's numbers vary 2–6×).
 
@@ -1127,6 +1136,9 @@ and the Add note keyboard coming up by itself.
     [`Android/Docs/`](<../../../Android/Docs/README.md>)). Proposed the same day: Google Drive **sync** on iPhone, iPad and Mac as an
     alternative to iCloud, using the Android code (for a full or unusable iCloud, and for people with Apple and Android
     devices); iCloud stays the default; one sync place at a time. Waiting for the user's yes.
+  - [ ] **The old iOS Google client was deleted on 11 Oct 2026** (see item 84): turning Google Drive on for the iPhone
+    needs a new iOS client in the Google Cloud project, and its ID in `BackupFeatures.swift` and the URL scheme in
+    `Habits-Info.plist`.
 
 - [ ] **78. Free accounts sync one device at a time (plan, then build).** Added 11 October 2026, from the user, after
   checking Cloudflare's prices: instead of uploading the whole backup file ("backed up as you go"), a free account
