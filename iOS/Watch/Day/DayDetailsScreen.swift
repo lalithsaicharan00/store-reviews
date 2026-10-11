@@ -26,8 +26,9 @@ struct DayDetailsScreen: View {
     /// The dial's room between the clock row and the bottom bar, after the scroll view's own top inset: about 130 pt on
     /// the 46 mm Watch, 105 on the 42 mm (measured on the screenshots, run 38123102563).
     private var firstScreen: CGFloat { max(100, WKInterfaceDevice.current().screenBounds.height - 118) }
-    /// The bottom bar's height below the dial's room, on both sizes (the screenshots: 30–32 pt showed under it).
-    static let underTheBar: CGFloat = 36
+    /// The bottom bar's height below the dial's room, on both sizes: 36 pt still left the top of "Today's logs" at the
+    /// 42 mm Watch's bottom edge (run 38129624206).
+    static let underTheBar: CGFloat = 50
 
     /// After a log here, its named Undo, one tap away (WA7, U14); a check's Undo is the main action itself (B5).
     @ViewBuilder
