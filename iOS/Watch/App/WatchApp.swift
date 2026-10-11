@@ -32,11 +32,15 @@ struct OftenEnoughWatchApp: App {
                 .onOpenURL { navigation.open($0, model: model) }
                 .onChange(of: model.plus.access, initial: true) { model.plusChanged() }
                 .onChange(of: phase) { _, now in
-                    if now == .active { Task { await model.saveWidgetTaps() } }
+                    if now == .active {
+                        Task { await model.saveWidgetTaps() }
+                        model.cloudBecameActive()
+                    }
                     if now == .background {
-                        // Leaving: the face and the iPhone get the latest at once (S16).
+                        // Leaving: the face, the iPhone and iCloud get the latest at once (S16).
                         Task { await model.widgets.publish(model.store, immediate: true) }
                         model.link.sendNow()
+                        model.cloudWentToBackground()
                     }
                 }
         }
@@ -150,6 +154,7 @@ final class WatchDelegate: NSObject, WKApplicationDelegate {
                     await model.saveWidgetTaps()
                     await model.widgets.publish(model.store)
                     model.link.sendNow()
+                    await model.cloudRefresh()
                     model.scheduleRefresh()
                     refresh.setTaskCompletedWithSnapshot(false)
                 }
@@ -157,5 +162,11 @@ final class WatchDelegate: NSObject, WKApplicationDelegate {
                 task.setTaskCompletedWithSnapshot(false)
             }
         }
+    }
+
+    /// iCloud's silent push: another device changed something (Architecture 12 §3.2). Fetched while watchOS gives the time.
+    func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any]) async -> WKBackgroundFetchResult {
+        await WatchModel.shared.cloudRefresh()
+        return .newData
     }
 }

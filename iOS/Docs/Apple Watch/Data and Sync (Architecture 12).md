@@ -100,6 +100,19 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
   arrives as a duplicate that merges as nothing.
 - The Watch fetches when it opens, on a push, and on background refresh (about four times an hour with a complication
   on the face). It never waits for any of these to show anything (WA1).
+- **As built (11 Oct 2026, after item 81 reached `main`):** the Watch compiles the iPhone's `CloudSync`, `CloudTransport`,
+  `CloudKitTransport` and `DeviceIdentity` (Rulebook U32; watchOS has no `beginBackgroundTask`, so an expiring activity
+  holds the app while a change is sent). Only the iPhone passes changes on: the Watch (`peerStartOnWatch`) sends its
+  own changes to iCloud and to the iPhone, never the iPhone's changes to iCloud again, never iCloud's to the iPhone
+  (the iPhone sends and fetches its own), so nothing travels twice. Joining iCloud, the Watch uploads only its changes
+  the iPhone hasn't acknowledged, never its whole copy (an extreme account's 375,000 logs came from the iPhone, which
+  put them in iCloud); a zone made again is filled by the iPhone the same way. It starts only with Plus (`isPlus` is
+  always true while it runs, so it never takes or hands over the free plan's one syncing device) and only after its
+  first fill, so its first fetch merges as nothing. Plus ending sends what waits and stops iCloud until the app opens
+  again; nothing is deleted. A question iCloud raises (another Apple Account, a removed zone) has no screen on the
+  Watch: iCloud stops there, nothing is deleted, the Watch keeps syncing through its iPhone, and the person answers on
+  the iPhone. Tests: `PeerSyncTest.aWatchOnICloudSendsOnlyItsOwnChanges`,
+  `aWatchJoiningICloudUploadsOnlyWhatItsIPhoneHasntAcknowledged`, and the seeded runs with the Watch on iCloud.
 
 ## 4. Cases that need care
 
@@ -123,8 +136,8 @@ Both carry the same thing: the ops the core already makes (`SyncCodec` fields, a
    with duplicates, drops and both stops of one timer (the `LiveSyncTest` pattern).
 2. **iPhone app:** a `WatchLink` (WCSession) that sends `peer_out` batches, the first-fill file and acknowledgements,
    and applies what the Watch sends. Nothing else on the iPhone changes.
-3. **Watch app:** the same `HabitRepository` and store rules, its own `WatchLink`, the widget snapshot, and later the
-   `CloudSync` layer from item 81.
+3. **Watch app:** the same `HabitRepository` and store rules, its own `WatchLink`, the widget snapshot, and the
+   `CloudSync` layer from item 81 (§3.2, as built).
 
 ## 6. Building and testing without and with a real Watch
 

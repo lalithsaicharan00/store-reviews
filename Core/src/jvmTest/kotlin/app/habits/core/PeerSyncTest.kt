@@ -107,7 +107,7 @@ class PeerSyncTest {
         habits.forEach { phone.repo.saveHabit(habit(it), emptyList(), emptyList(), wall) }
         // Some history before the Watch appears; then the Watch asks for its first fill, in small parts.
         repeat(random.nextInt(0, 8)) { phone.repo.addEntry(entry("pre-$seed-$it", habits.random(random), wall)) }
-        watch.repo.peerStart()
+        watch.repo.peerStartOnWatch()
         phone.repo.peerStart()
         var fillCursor: String? = null
         var fillDone = false
@@ -196,7 +196,7 @@ class PeerSyncTest {
     private fun pair(files: Boolean = false, clock: () -> Long): Triple<Device, Device, Link> = runBlocking {
         val phone = Device("phone", FakeServer(), files, clock)
         val watch = Device("watch", null, files, clock)
-        phone.repo.peerStart(); watch.repo.peerStart()
+        phone.repo.peerStart(); watch.repo.peerStartOnWatch()
         Triple(phone, watch, Link())
     }
 
@@ -320,7 +320,7 @@ class PeerSyncTest {
         watch.repo.addEntry(entry("from-watch", "h", wall)) // not yet sent when the Watch is wiped
         watch.close()
         val wiped = Device("watch2", null, false) { wall }
-        wiped.repo.peerStart()
+        wiped.repo.peerStartOnWatch()
         assertEquals(false, wiped.repo.peerStatus().filled, "an empty Watch knows it hasn't heard back (WA2)")
         var cursor: String? = null
         var parts = 0
@@ -404,13 +404,68 @@ class PeerSyncTest {
         val phone = Device("phone", cloud, false) { wall }
         val watch = Device("watch", null, false) { wall }
         ipad.repo.bindAccount("acct"); phone.repo.bindAccount("acct")
-        phone.repo.peerStart(); watch.repo.peerStart()
+        phone.repo.peerStart(); watch.repo.peerStartOnWatch()
         ipad.repo.saveHabit(habit("h"), emptyList(), emptyList(), wall)
         ipad.repo.addEntry(entry("from-ipad", "h", wall))
         ipad.sync(); phone.sync()
         assertNotNull(phone.repo.peerBatch(), "what the iPhone fetched is queued for the Watch")
         drain(phone, watch, Link())
         assertEquals(listOf("from-ipad"), watch.live().entries.map { it.id })
+    }
+
+    @Test fun aWatchOnICloudSendsOnlyItsOwnChanges() = runBlocking {
+        // Architecture 12 §3.2: the Watch syncs with iCloud itself, but passes nothing on, so nothing travels twice.
+        val wall = 5_000L
+        val cloud = FakeServer()
+        val ipad = Device("ipad", cloud, false) { wall }
+        val phone = Device("phone", cloud, false) { wall }
+        val watch = Device("watch", cloud, false) { wall }
+        ipad.repo.bindAccount("acct"); phone.repo.bindAccount("acct")
+        phone.repo.peerStart(); watch.repo.peerStartOnWatch(); watch.repo.bindAccount("acct")
+        val link = Link()
+        phone.repo.saveHabit(habit("h"), emptyList(), emptyList(), wall)
+        drain(phone, watch, link)
+        // The iPhone's change reaches the Watch, which doesn't send it to iCloud again.
+        phone.repo.addEntry(entry("from-phone", "h", wall))
+        phone.repo.ackPeer(watch.repo.acceptPeerBatch(phone.repo.peerBatch()!!))
+        assertEquals(0, watch.repo.syncStatus().waiting, "the iPhone's change isn't queued for iCloud on the Watch")
+        // Another device's change, fetched by the Watch from iCloud, isn't passed back to the iPhone.
+        ipad.repo.addEntry(entry("from-ipad", "h", wall)); ipad.sync()
+        watch.sync()
+        assertTrue(watch.live().entries.any { it.id == "from-ipad" })
+        assertNull(watch.repo.peerBatch(), "what the Watch fetched isn't queued for the iPhone")
+        // The Watch's own change goes both ways: to iCloud and to the iPhone.
+        watch.repo.addEntry(entry("from-watch", "h", wall))
+        assertEquals(1, watch.repo.syncStatus().waiting)
+        assertEquals(1, watch.repo.peerStatus().waiting)
+        drain(phone, watch, link); ipad.sync()
+        assertEquals(phone.state(), watch.state())
+        assertEquals(setOf("from-phone", "from-ipad", "from-watch"), ipad.live().entries.map { it.id }.toSet())
+    }
+
+    @Test fun aWatchJoiningICloudUploadsOnlyWhatItsIPhoneHasntAcknowledged() = runBlocking {
+        val wall = 5_000L
+        val cloud = FakeServer()
+        val phone = Device("phone", cloud, false) { wall }
+        val watch = Device("watch", cloud, false) { wall }
+        phone.repo.bindAccount("acct")
+        phone.repo.peerStart(); watch.repo.peerStartOnWatch()
+        phone.repo.saveHabit(habit("h"), emptyList(), emptyList(), wall)
+        repeat(50) { phone.repo.addEntry(entry("p$it", "h", wall + it)) }
+        phone.sync()
+        // The first fill, whole.
+        var cursor: String? = null
+        do { cursor = watch.repo.acceptPeerFill(phone.repo.peerFillPart(cursor).base64).next } while (cursor != null)
+        // Two changes on the Watch: the iPhone has the first, the second hasn't reached it yet.
+        watch.repo.addEntry(entry("w1", "h", wall + 100))
+        watch.repo.ackPeer(phone.repo.acceptPeerBatch(watch.repo.peerBatch()!!))
+        watch.repo.addEntry(entry("w2", "h", wall + 101))
+        watch.repo.bindAccount("acct")
+        assertEquals(1, watch.repo.syncStatus().waiting, "only w2 goes up from the Watch, never its 51-row copy")
+        watch.sync(); phone.sync()
+        assertTrue(phone.live().entries.any { it.id == "w2" }, "it reaches iCloud even before the iPhone hears of it")
+        drain(phone, watch, Link())
+        assertEquals(phone.state(), watch.state())
     }
 
     // MARK: First fill
@@ -469,7 +524,7 @@ class PeerSyncTest {
             phone.repo.importAll(Snapshot(if (chunk == 0) habits.map { habit(it) } else emptyList(), emptyList(), emptyList(), logs, emptyList()))
         }
         val madeSeconds = (System.nanoTime() - made) / 1e9
-        phone.repo.peerStart(); watch.repo.peerStart()
+        phone.repo.peerStart(); watch.repo.peerStartOnWatch()
         val start = System.nanoTime()
         var cursor: String? = null
         var parts = 0

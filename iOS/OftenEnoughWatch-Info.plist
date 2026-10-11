@@ -3,6 +3,11 @@
 <plist version="1.0">
 <dict>
 	<!-- Merged with the keys Xcode generates (GENERATE_INFOPLIST_FILE). The Apple Watch app (Current Work 82). -->
+	<!-- iCloud's silent pushes wake the app to fetch (Architecture 12 §3.2). -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<!-- A tap on the iPhone's timer Live Activity in the Smart Stack opens the Watch app at that habit (R8). -->
 	<key>WKSupportsLiveActivityLaunchAttributeTypes</key>
 	<array>

@@ -47,6 +47,10 @@
 			membershipExceptions = (
 				"Analytics/AnalyticsContract.swift",
 				"App/MainThreadMeter.swift",
+				"Cloud/CloudKitTransport.swift",
+				"Cloud/CloudSync.swift",
+				"Cloud/CloudTransport.swift",
+				"Cloud/DeviceIdentity.swift",
 				"Intents/HabitIntents.swift",
 				"Model/GoalInput.swift",
 				"Model/Habit.swift",

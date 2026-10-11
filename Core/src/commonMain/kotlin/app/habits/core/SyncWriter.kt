@@ -28,6 +28,9 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
     private var sending = false
     /** True while this device keeps a queue for its paired device (the iPhone for its Apple Watch, and the other way). */
     private var peering = false
+    /** True on the iPhone: it passes changes on between iCloud and its Watch. The Watch sends only its own changes
+     *  both ways (Architecture 12 §3.2), so nothing travels a second time through it. */
+    private var relaying = false
 
     /** Where a change came from: the server (or iCloud), or the paired device (Architecture 12 §3.1). */
     enum class Source { SERVER, PEER, FILL }
@@ -42,7 +45,8 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         val node = state[NODE] ?: newNode().also { dao.setState(LocalStateRecord(NODE, it)) }
         clock = HlcClock(node, state[CLOCK]?.let(Hlc::parse))
         sending = state[ACCOUNT] != null
-        peering = state[PEER] == "1"
+        peering = state[PEER] == "1" || state[PEER] == PEER_WATCH
+        relaying = state[PEER] == "1"
         if (state[STAMPED] == null) stampExistingRows()
     }
 
@@ -85,8 +89,8 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         Hlc.parse(op.hlc)?.let { clock.observe(it, now) }
         if (!apply(op)) return
         when (from) {
-            Source.SERVER -> if (peering) dao.insertPeerOutIfNew(PeerOutRecord(opId = op.id, op = SyncRules.encodeOp(op)))
-            Source.PEER -> if (sending) queue(op, ifNew = true)
+            Source.SERVER -> if (relaying) dao.insertPeerOutIfNew(PeerOutRecord(opId = op.id, op = SyncRules.encodeOp(op)))
+            Source.PEER -> if (sending && relaying) queue(op, ifNew = true)
             Source.FILL -> Unit // a first fill copies what the paired device already has and sends on itself
         }
     }
@@ -123,8 +127,8 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         store(table, row, merged, keep)
         // Another device's change, through iCloud, reaches the paired Watch too (Architecture 12 §3.1 step 3): the
         // whole record, one op per stamp, so the Watch merges it field by field; one it already has changes nothing
-        // there and stops.
-        if (peering) forwardToPeer(table, row, record)
+        // there and stops. The Watch fetches from iCloud itself and passes nothing back (§3.2).
+        if (relaying) forwardToPeer(table, row, record)
         return true
     }
 
@@ -173,6 +177,19 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         dao.setState(LocalStateRecord(FULL_PULL, "1"))
         dao.clearOutbox()
         sending = true
+        if (peering && !relaying) {
+            // The Watch (Architecture 12 §3.2): everything it holds came from its iPhone, which puts it in iCloud. Only
+            // its own changes the iPhone hasn't acknowledged yet go up from here, so a Watch never uploads a whole copy
+            // again (an extreme account's 375,000 logs) and its changes still reach iCloud if the iPhone never does.
+            var after = 0L
+            while (true) {
+                val waiting = dao.peerOutAfter(after, 500)
+                if (waiting.isEmpty()) break
+                waiting.forEach { row -> SyncRules.decodeOp(row.op)?.let { queue(it, ifNew = true) } }
+                after = waiting.last().seq
+            }
+            return
+        }
         for (meta in dao.allSyncMeta()) {
             val record = current(meta.tableName, meta.rowId) ?: continue
             // One op per stamp, so every field keeps the stamp it really has.
@@ -270,8 +287,10 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
         const val FULL_PULL = "sync.fullPull"
         const val STAMPED = "sync.stamped"
         const val LAST_SYNCED = "sync.last_synced"
-        /** "1" while this device keeps `peer_out` for its paired device (Architecture 12 §3.1). */
+        /** "1" while this device keeps `peer_out` for its paired device (Architecture 12 §3.1); [PEER_WATCH] on the Watch. */
         const val PEER = "peer.enabled"
+        /** The Watch's [PEER]: it keeps `peer_out` for its iPhone but passes nothing on (Architecture 12 §3.2). */
+        const val PEER_WATCH = "watch"
         /** "1" on the Apple Watch once the iPhone's first fill has fully arrived (WA2). */
         const val PEER_FILLED = "peer.filled"
 

@@ -130,6 +130,7 @@ interface HabitDao {
     @Insert suspend fun insertPeerOut(op: PeerOutRecord)
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertPeerOutIfNew(op: PeerOutRecord)
     @Query("SELECT * FROM peer_out ORDER BY seq LIMIT :limit") suspend fun peerOut(limit: Int): List<PeerOutRecord>
+    @Query("SELECT * FROM peer_out WHERE seq > :after ORDER BY seq LIMIT :limit") suspend fun peerOutAfter(after: Long, limit: Int): List<PeerOutRecord>
     @Query("SELECT count(*) FROM peer_out") suspend fun peerOutCount(): Int
     @Query("DELETE FROM peer_out WHERE seq <= :seq") suspend fun deletePeerOutThrough(seq: Long)
 

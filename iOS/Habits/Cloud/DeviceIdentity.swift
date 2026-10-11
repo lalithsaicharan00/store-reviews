@@ -1,6 +1,10 @@
 import Foundation
 import Security
+#if os(watchOS)
+import WatchKit
+#else
 import UIKit
+#endif
 
 /// This device's ID (Architecture 01 §3.1, kept for iCloud, Architecture 11 §12): made once and kept in the Keychain on
 /// this device only, never in a backup, so it outlives a reinstall (the Keychain survives deleting the app) and a phone
@@ -34,9 +38,15 @@ final class DeviceIdentity {
         return id
     }
 
+    #if os(watchOS)
+    /// The Apple Watch syncs with iCloud too (Architecture 12 §3.2), compiling this file (Rulebook U32).
+    static var name: String { "Apple Watch" }
+    static var platform: String { "watchos" }
+    #else
     /// "iPhone" or "iPad" (iOS gives apps the model, not the person's own name for it).
     static var name: String { UIDevice.current.model }
     static var platform: String { UIDevice.current.userInterfaceIdiom == .pad ? "ipados" : "ios" }
+    #endif
     static var appVersion: String { Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0" }
 }
 

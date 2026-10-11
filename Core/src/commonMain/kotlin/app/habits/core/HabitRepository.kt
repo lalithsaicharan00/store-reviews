@@ -298,6 +298,14 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     @Throws(Exception::class)
     suspend fun peerStart() = dao.synced(clock()) { dao.setState(LocalStateRecord(SyncWriter.PEER, "1")) }
 
+    /**
+     * The Watch's [peerStart]: it keeps a queue for its iPhone, and with iCloud on (Architecture 12 §3.2) sends its own
+     * changes there too, but passes nothing on: the iPhone already sends its own changes to iCloud and fetches iCloud's
+     * itself, so nothing travels twice. Run at every launch; a Watch that started as the iPhone does becomes the Watch.
+     */
+    @Throws(Exception::class)
+    suspend fun peerStartOnWatch() = dao.synced(clock()) { dao.setState(LocalStateRecord(SyncWriter.PEER, SyncWriter.PEER_WATCH)) }
+
     /** The paired device is gone (unpaired, the Watch app removed): stop queueing and drop what was waiting for it. */
     @Throws(Exception::class)
     suspend fun peerStop() = dao.synced(clock()) {
@@ -383,7 +391,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     suspend fun peerStatus(): PeerStatus {
         val state = dao.states(listOf(SyncWriter.PEER, SyncWriter.PEER_FILLED, PEER_FILL_CURSOR)).associate { it.key to it.value }
         return PeerStatus(
-            enabled = state[SyncWriter.PEER] == "1", filled = state[SyncWriter.PEER_FILLED] == "1",
+            enabled = state[SyncWriter.PEER] == "1" || state[SyncWriter.PEER] == SyncWriter.PEER_WATCH, filled = state[SyncWriter.PEER_FILLED] == "1",
             fillCursor = state[PEER_FILL_CURSOR], waiting = dao.peerOutCount(),
         )
     }

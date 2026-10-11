@@ -7,13 +7,20 @@ import WatchKit
 /// button, a complication's tap or a batch from the iPhone can wake the app without a screen.
 ///
 /// The Watch keeps its own full copy of the data (WA1): it opens from its own database at once and never waits for the
-/// iPhone to show anything. Its changes are saved here first (S7), then go to the iPhone in `peer_out` batches.
+/// iPhone to show anything. Its changes are saved here first (S7), then go to the iPhone in `peer_out` batches, and to
+/// iCloud by the iPhone's own `CloudSync` (Architecture 12 §3.2), so they arrive while the iPhone is away too.
 @Observable
 final class WatchModel {
     static let shared = WatchModel()
 
     let store: HabitStore
     @ObservationIgnored let link: WatchLink
+    /// iCloud on the Watch (Architecture 12 §3.2): only with Plus and after the iPhone's first fill; never for a test
+    /// launch (D8). The Watch sends only its own changes there (core: `peerStartOnWatch`).
+    @ObservationIgnored let cloud: CloudSync?
+    /// Started this launch; stopped when Plus ends, until the app opens again (Architecture 12 §4: nothing is deleted).
+    @ObservationIgnored private(set) var cloudStarted = false
+    @ObservationIgnored private var cloudStopped = false
     @ObservationIgnored let widgets = WidgetPublisher()
     let plus: PlusState
     /// Where the iPhone's first fill stands (WA2): Today says "Getting your habits…" until it has heard back.
@@ -55,12 +62,23 @@ final class WatchModel {
         // keeps everything (Architecture 12 §2). An extreme 15-year account read whole took 27 s (run 38109083512).
         store.historyWindowDays = 400
         link = WatchLink(repository: repository, testLaunch: Self.testLaunch && !Self.pairTest)
+        cloud = Self.testLaunch ? nil : repository.map {
+            CloudSync(repository: $0, transport: CloudKitTransport(), identity: DeviceIdentity(storeName: "watch"))
+        }
         plus = PlusState(testLaunch: Self.testLaunch)
         store.isPlus = true // the Watch app is Plus; `PlusState` decides whether it opens at all (G1)
         store.onChange = { [weak self] in self?.changed() }
         // A tap gives the system's click; a goal met gives success, the completion sound's place (Design Notes, feel).
         store.onLog = { completed in WKInterfaceDevice.current().play(completed ? .success : .click) }
         link.model = self
+        // Started only while Plus is on (`startCloudIfReady`), so the Watch never takes the free plan's one syncing
+        // device (Architecture 11 §12); and only after the fill, so it never sends before it has the iPhone's copy.
+        cloud?.isPlus = { true }
+        cloud?.sendingAllowed = { [weak self] in self?.filled ?? false }
+        cloud?.habitCount = { [store] in store.habits.filter { $0.kind != .task && !$0.archived }.count }
+        // Other devices' changes from iCloud: shown the way the iPhone's are, keeping any tap still being saved (S7).
+        cloud?.onRemoteChanges = { [weak self] in self?.receivedFromPhone() }
+        cloud?.onWaitingAfterFailure = { [weak self] in self?.scheduleRefresh() }
     }
 
     /// Loads once; every caller (the first screen, a notification action, a batch from the iPhone) waits for the same load.
@@ -71,7 +89,7 @@ final class WatchModel {
             if Self.testLaunch && !Self.pairTest {
                 await WatchFixtures.installIfAsked(self)
             } else {
-                try? await repository?.peerStart()
+                try? await repository?.peerStartOnWatch()
                 await refreshPeerStatus()
                 link.activate()
             }
@@ -86,6 +104,30 @@ final class WatchModel {
     func refreshPeerStatus() async {
         guard let repository, !Self.testLaunch || Self.pairTest else { return }
         if let status = try? await repository.peerStatus() { filled = status.filled }
+        startCloudIfReady()
+    }
+
+    /// iCloud starts once the Watch has Plus, its first fill and its data loaded: before the fill, everything it would
+    /// fetch is still on its way from the iPhone. Then the account decides, as on the iPhone (Architecture 11 §10).
+    func startCloudIfReady() {
+        guard let cloud, !cloudStarted, !cloudStopped, filled, plus.access == .plus, store.isLoaded else { return }
+        cloudStarted = true
+        Task {
+            await cloud.start()
+            if WKApplication.shared().applicationState != .background { cloud.appBecameActive() }
+        }
+    }
+
+    /// The app is on screen again, or left it: what waits is retried, other devices' changes fetched (pushes aren't
+    /// guaranteed), and a change waiting for its quiet moment goes now.
+    func cloudBecameActive() { if cloudStarted { cloud?.appBecameActive() } }
+    func cloudWentToBackground() { if cloudStarted { cloud?.appWentToBackground() } }
+
+    /// A background refresh or iCloud's silent push: anything waiting goes, and other devices' changes come in.
+    func cloudRefresh() async {
+        await ensureLoaded()
+        guard cloudStarted, let cloud else { return }
+        await cloud.backgroundRefresh()
     }
 
     /// For test launches: shows the first-launch state until the fixture says the fill has arrived.
@@ -94,6 +136,7 @@ final class WatchModel {
     /// After every saved change: the iPhone hears of it 0.5 s after the last one (S16), and the face is redrawn.
     private func changed() {
         link.scheduleSend()
+        if cloudStarted { cloud?.scheduleSoon() }
         scheduleFace()
         guard !Self.testLaunch else { return }
         let store = store
@@ -159,6 +202,16 @@ final class WatchModel {
     func plusChanged() {
         let plus = self.plus.access != .none
         if store.isPlus != plus { store.isPlus = plus }
+        startCloudIfReady()
+        // Plus ended (G6, Architecture 12 §4): what's waiting goes first, then iCloud stops here; nothing is deleted.
+        if self.plus.access == .none, cloudStarted, let cloud {
+            cloudStarted = false
+            cloudStopped = true
+            Task {
+                await cloud.syncNow()
+                await cloud.stopForErase()
+            }
+        }
     }
 
     #if DEBUG

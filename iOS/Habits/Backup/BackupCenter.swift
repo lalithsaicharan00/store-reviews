@@ -498,7 +498,7 @@ final class BackupCenter {
     /// "your iPad" for a device named by its kind (the app sends the model, "iPhone" or "iPad"); a name as it is.
     nonisolated static func yourDevice(_ name: String) -> String {
         if name.isEmpty { return "another device" }
-        return ["iPhone", "iPad", "iPod touch", "Android", "Mac", "Website"].contains(name) ? "your \(name)" : name
+        return ["iPhone", "iPad", "iPod touch", "Apple Watch", "Android", "Mac", "Website"].contains(name) ? "your \(name)" : name
     }
 
     /// "Erase All My Data" (09 §7): this iPhone's habits and its own copies. Copies in their iCloud and files they

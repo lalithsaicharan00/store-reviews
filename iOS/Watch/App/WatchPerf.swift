@@ -178,7 +178,7 @@ enum WatchPerf {
                 }
                 try await phone.importAll(snapshot: Snapshot(habits: chunk == 0 ? habits : [], steps: [], reminders: [], entries: entries, settings: []))
             }
-            try await phone.peerStart(); try await watch.peerStart()
+            try await phone.peerStart(); try await watch.peerStartOnWatch()
             let madeSeconds = Date.now.timeIntervalSince(made)
             let start = Date.now
             var cursor: String?
