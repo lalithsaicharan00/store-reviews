@@ -1135,7 +1135,8 @@ and the Add note keyboard coming up by itself.
   - [ ] **11 Oct 2026:** the user, on the Mac: "we need to include the Google Drive option" (decision A2 in
     [`Android/Docs/`](<../../../Android/Docs/README.md>)). Proposed the same day: Google Drive **sync** on iPhone, iPad and Mac as an
     alternative to iCloud, using the Android code (for a full or unusable iCloud, and for people with Apple and Android
-    devices); iCloud stays the default; one sync place at a time. Waiting for the user's yes.
+    devices); iCloud stays the default; one sync place at a time. **Decided: yes** (the user, 11 Oct 2026: "we are
+    obviously including it for iOS"; decision A10 in `Android/Docs/`). Built after the Drive prototype passes (stage 4).
   - [ ] **The old iOS Google client was deleted on 11 Oct 2026** (see item 84): turning Google Drive on for the iPhone
     needs a new iOS client in the Google Cloud project, and its ID in `BackupFeatures.swift` and the URL scheme in
     `Habits-Info.plist`.

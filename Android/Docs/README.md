@@ -38,6 +38,7 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A6 | **Offline is said, not hidden:** the app works offline and says so; nobody expects sync without internet | "without internet the app will work but we clearly display that there is no internet and changes might not sync" |
 | A7 | **A quiet sync line at the end of Today's list, only when there's something to say** (changes waiting, another device gone quiet, just caught up), on iPhone, iPad, the Watch's list and Android; never blaming the person (Current Work 91; Design Rules' iCloud page updated) | "we are not blaming the user but we are just telling them the information … show when it is necessary"; "I'll vote for iPhone also … Android, you need to do it" |
 | A8 | **When iCloud or Google Drive can't be used after someone bought Plus: offer a refund** (and another account if they have one) instead of checking before purchase (Current Work 90) | "if it is not working, then we will just refund it … if you have any other iCloud, connect to it; same thing for Google Drive" |
+| A10 | **Google Drive sync is offered on iPhone, iPad and Mac too**, as an alternative to iCloud, with the same code as Android; iCloud stays the default; one sync place at a time; built after the prototype passes (stage 4; a new iOS client is needed: the old one was deleted, Current Work 84) | "we are obviously including it for iOS" |
 | A9 | **Work starts with Google Drive sync in the shared core** (the biggest unknown; it decides Android Plus; built and mostly tested on GitHub's Linux machines with a stand-in Drive), alongside the Android research report | "the decision on working on Google Drive" |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
@@ -46,8 +47,6 @@ synced" note; the user doubted it and it moved to the end of Today's list, the n
 
 ## Still open
 
-- **Google Drive on iPhone, iPad and Mac as an alternative to iCloud** (Current Work 77), using the same code as Android:
-  proposed; iCloud stays the default and one sync place is used at a time. Waiting for the user's yes.
 - **One purchase working on both stores from Android's launch** (the entitlement record, D16).
 - **Plus Family on Android:** Google Play can't share an in-app purchase with a family.
 - **Designs still to make:** the same field edited on two offline devices ("Use This Instead"), a delete arriving from
@@ -61,10 +60,13 @@ synced" note; the user doubted it and it moved to the end of Today's list, the n
 ## What comes next
 
 1. **Google Drive sync in the shared core**: transport, version chain and merge, tested against a stand-in Drive on
-   GitHub; then a real-Drive check that a second device's save under a taken ID is refused.
+   GitHub; then a real-Drive check that a second device's save under a taken ID is refused. The cloud session's full
+   instructions: [Build Prompt — Google Drive Sync, Stages 1–2](<Build Prompt — Google Drive Sync, Stages 1–2 (Delete When Done).md>).
 2. Alongside: the Android research report, and Current Work 91 on the iPhone.
 3. Then the shared rules into the core, the Android designs, and the Android app with Drive sync plugged in.
 
-**Needed from the user for step 1:** a Google Cloud project with the Drive API turned on and an OAuth client limited to
-the hidden app folder (`drive.appdata`); a test Google account (never a personal one); later two Android devices or
-emulators.
+**Done by the user, 11 Oct 2026:** a Web OAuth client "Drive sync tests" (`drive.appdata`; redirect
+`https://developers.google.com/oauthplayground`), a test Google account added as a test user, and three GitHub
+secrets: `GDRIVE_TEST_CLIENT_ID`, `GDRIVE_TEST_CLIENT_SECRET`, `GDRIVE_TEST_REFRESH_TOKEN` (the token can expire after
+about 7 days in Testing mode; renew it in the OAuth Playground). **Still needed later:** an Android OAuth client and
+two Android devices or emulators (stage 3); a new iOS client (stage 4).
