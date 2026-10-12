@@ -1,40 +1,40 @@
-- shared · Log manually: longest stall 279 ms
-- swift · Log manually: longest stall 313 ms
-- shared · Log manually: longest stall 246 ms
-- swift · Log manually: longest stall 338 ms
-- shared · Log manually: longest stall 329 ms
-- swift · Log manually: longest stall 303 ms
-- shared · Log manually: longest stall 384 ms
-- swift · Log manually: longest stall 200 ms
-- shared · Blank page (control, first): longest stall 117 ms
+- shared · Log manually: longest stall 345 ms
+- swift · Log manually: longest stall 223 ms
+- shared · Log manually: longest stall 207 ms
+- swift · Log manually: longest stall 654 ms
+- shared · Log manually: longest stall 263 ms
+- swift · Log manually: longest stall 283 ms
+- shared · Log manually: longest stall 203 ms
+- swift · Log manually: longest stall 325 ms
+- shared · Blank page (control, first): longest stall 94 ms
+- shared · Blank page (control, again): longest stall 55 ms
+- shared · Day details (first): longest stall 242 ms
+- shared · Day details (again): longest stall 146 ms
+- swift · Blank page (control, first): longest stall 91 ms
+- swift · Blank page (control, again): longest stall 35 ms
+- swift · Day details (first): longest stall 191 ms
+- swift · Day details (again): longest stall 95 ms
+- shared · Blank page (control, first): longest stall 152 ms
 - shared · Blank page (control, again): longest stall 36 ms
-- shared · Day details (first): longest stall 86 ms
-- shared · Day details (again): longest stall 53 ms
-- swift · Blank page (control, first): longest stall 186 ms
-- swift · Blank page (control, again): longest stall 40 ms
-- swift · Day details (first): longest stall 180 ms
-- swift · Day details (again): longest stall 54 ms
-- shared · Blank page (control, first): longest stall 176 ms
-- shared · Blank page (control, again): longest stall 31 ms
-- shared · Day details (first): longest stall 133 ms
-- shared · Day details (again): longest stall 47 ms
-- swift · Blank page (control, first): longest stall 107 ms
-- swift · Blank page (control, again): longest stall 32 ms
-- swift · Day details (first): longest stall 75 ms
-- swift · Day details (again): longest stall 65 ms
-- shared · Blank page (control, first): longest stall 218 ms
-- shared · Blank page (control, again): longest stall 33 ms
-- shared · Day details (first): longest stall 322 ms
-- shared · Day details (again): longest stall 51 ms
-- swift · Blank page (control, first): longest stall 80 ms
+- shared · Day details (first): longest stall 139 ms
+- shared · Day details (again): longest stall 170 ms
+- swift · Blank page (control, first): longest stall 106 ms
 - swift · Blank page (control, again): longest stall 30 ms
-- swift · Day details (first): longest stall 68 ms
+- swift · Day details (first): longest stall 80 ms
+- swift · Day details (again): longest stall 58 ms
+- shared · Blank page (control, first): longest stall 176 ms
+- shared · Blank page (control, again): longest stall 70 ms
+- shared · Day details (first): longest stall 180 ms
+- shared · Day details (again): longest stall 104 ms
+- swift · Blank page (control, first): longest stall 106 ms
+- swift · Blank page (control, again): longest stall 29 ms
+- swift · Day details (first): longest stall 76 ms
+- swift · Day details (again): longest stall 78 ms
+- shared · Blank page (control, first): longest stall 138 ms
+- shared · Blank page (control, again): longest stall 34 ms
+- shared · Day details (first): longest stall 156 ms
+- shared · Day details (again): longest stall 51 ms
+- swift · Blank page (control, first): longest stall 71 ms
+- swift · Blank page (control, again): longest stall 27 ms
+- swift · Day details (first): longest stall 93 ms
 - swift · Day details (again): longest stall 60 ms
-- shared · Blank page (control, first): longest stall 68 ms
-- shared · Blank page (control, again): longest stall 29 ms
-- shared · Day details (first): longest stall 68 ms
-- shared · Day details (again): longest stall 50 ms
-- swift · Blank page (control, first): longest stall 63 ms
-- swift · Blank page (control, again): longest stall 26 ms
-- swift · Day details (first): longest stall 62 ms
-- swift · Day details (again): longest stall 51 ms
