@@ -81,7 +81,8 @@ def extreme_case(years=15, per_year=25_000):
     today = dt.date(2026, 10, 12)
     first = today - dt.timedelta(days=365 * years)
     c = Case("extreme account", ["extreme"], tz="Europe/London", now=(today.isoformat(), 12, 0), week_start=2,
-             window=((today - dt.timedelta(days=14)).isoformat(), (today + dt.timedelta(days=3)).isoformat()), watch=True)
+             window=((today - dt.timedelta(days=14)).isoformat(), (today + dt.timedelta(days=3)).isoformat()), watch=True,
+             detail="rules")
     created = (first.isoformat(), 8, 0)
     habits = []
     for i in range(40):

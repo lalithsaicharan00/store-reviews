@@ -14,11 +14,13 @@ permissions:
 
 jobs:
   record:
-    if: contains(github.event.head_commit.message, '[core-fixtures]')
+    if: contains(github.event.head_commit.message, '[core-fixtures]') || contains(github.event.head_commit.message, '[core-fixtures-extreme]')
     concurrency:
       group: core-fixtures-${{ github.ref }}
     runs-on: macos-26
     timeout-minutes: 60
+    env:
+      MESSAGE: ${{ github.event.head_commit.message }}
     steps:
       - uses: actions/checkout@v4
 
@@ -65,10 +67,18 @@ jobs:
           xcrun simctl boot "$ID" || true
           xcrun simctl bootstatus "$ID" -b
 
+      # The extreme account (15 years, 375,090 logs) is recorded in a run of its own, [core-fixtures-extreme]: with the
+      # rest it didn't finish inside the hour (run 38209937406). Its answers go to <branch>-fixtures-extreme.
       - name: Record
         id: record
         working-directory: iOS
-        run: Tools/golden/record.sh "$SIM" ../Core/fixtures/inputs ../golden-out
+        run: |
+          mkdir -p ../golden-in
+          case "$MESSAGE" in
+            *"[core-fixtures-extreme]"*) cp ../Core/fixtures/inputs/zz-extreme.json ../golden-in/; echo "SUFFIX=-fixtures-extreme" >> "$GITHUB_ENV";;
+            *) cp ../Core/fixtures/inputs/*.json ../golden-in/; rm -f ../golden-in/zz-extreme.json; echo "SUFFIX=-fixtures" >> "$GITHUB_ENV";;
+          esac
+          GOLDEN_LIMIT=2400 Tools/golden/record.sh "$SIM" ../golden-in ../golden-out
 
       - name: Push the answers
         if: always() && steps.build.outcome == 'success'
@@ -83,7 +93,7 @@ jobs:
           git checkout -q --orphan fixtures
           git add -A
           git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Golden answers for ${GITHUB_SHA:0:7} (${GITHUB_REF_NAME})"
-          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${GITHUB_REF_NAME}-fixtures"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${GITHUB_REF_NAME}${SUFFIX:--fixtures}"
 
       - uses: actions/upload-artifact@v4
         if: always()

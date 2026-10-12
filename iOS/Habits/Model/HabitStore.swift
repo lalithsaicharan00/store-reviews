@@ -408,9 +408,8 @@ final class HabitStore {
     func dayBounds(_ day: LocalDay, calendar recordingCalendar: Calendar? = nil) -> ClosedRange<Date> {
         let c = recordingCalendar ?? calendar
         // Wall-clock boundaries: a 04:00 day starts at 04:00 even on a DST transition.
-        let start = c.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0, of: day.date(calendar: c))!
-        let end = c.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0,
-                         of: day.adding(days: 1, calendar: c).date(calendar: c))!.addingTimeInterval(-1)
+        let start = clockStart(day, c)
+        let end = clockStart(day.adding(days: 1, calendar: c), c).addingTimeInterval(-1)
         // On a night the clocks change, the calendar can put the next day's start before this one's: New York with a 2 AM
         // day start, around 1 Nov 2026, crashed here (golden run 38207822255; Core/spec/differences.md #6). The shared
         // rules answer for every Gregorian phone; this keeps the Swift rules from crashing.
@@ -989,14 +988,20 @@ final class HabitStore {
         return dayStart(last.adding(days: 1, calendar: calendar))
     }
 
+    /// The moment the clock reads the day's start hour on `day`; on a night the clocks skip that hour, the first moment
+    /// after it (Core/spec/day.md DAY-3). `Calendar.date(bySettingHour:…)` jumped to the next day instead (Lord Howe
+    /// Island, 2 AM day start, 4 Oct 2026: golden case "DAY-3 Australia/Lord_Howe spring day start 2"; differences.md #8).
+    func clockStart(_ day: LocalDay, _ c: Calendar) -> Date {
+        c.date(from: DateComponents(year: day.year, month: day.month, day: day.day, hour: settings.dayEndHour))!
+    }
+
     /// The moment a day begins, honouring the user's day end.
     private func dayStart(_ day: LocalDay) -> Date {
         // On the clock, like `today`: a skipped hour (spring forward) gives the next moment that exists.
         let cal = calendar
         let midnight = cal.startOfDay(for: day.date(calendar: cal))
         guard settings.dayEndHour > 0 else { return midnight }
-        return cal.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0, of: midnight)
-            ?? midnight.addingTimeInterval(Double(settings.dayEndHour) * 3600)
+        return clockStart(day, cal)
     }
 
     // MARK: Day and week (Build Plan #61; research "Ticking Off, Folding and Small Settings", §4)

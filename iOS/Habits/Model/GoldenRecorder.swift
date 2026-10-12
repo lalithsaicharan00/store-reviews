@@ -140,15 +140,26 @@ enum GoldenRecorder {
     }
 
     static func store(_ c: Case, window: Int = 0) async -> (HabitStore, Persistence) {
+        let big = (c.snapshot.entries?.count ?? 0) > 100_000
+        let began = Date()
         let persistence = Persistence.inMemory()
         try? await persistence.repository.importAll(snapshot: snapshot(of: c.snapshot))
+        if big { note("\(c.name): imported in \(Int(Date().timeIntervalSince(began)))s") }
         let store = HabitStore(repository: persistence.repository)
         store.fixedTimeZone = TimeZone(identifier: c.timeZone)
         let now = Date(millis: c.nowMs)
         store.clock = { now }
         store.historyWindowDays = window
         await store.load()
+        if big { note("\(c.name): loaded in \(Int(Date().timeIntervalSince(began)))s") }
         return (store, persistence)
+    }
+
+    /// A line added to `done.txt`, for the steps of a case that takes minutes.
+    static func note(_ line: String) {
+        let done = FileManager.default.temporaryDirectory.appendingPathComponent("golden/done.txt")
+        let old = (try? String(contentsOf: done, encoding: .utf8)) ?? ""
+        try? (old + "… " + line + "\n").write(to: done, atomically: true, encoding: .utf8)
     }
 
     static func record(_ c: Case) async -> [String: Any] {
@@ -209,6 +220,7 @@ enum GoldenRecorder {
                 ] as [String: Any]
             }
             h["days"] = days.map { day -> [Any] in dayRow(s, habit, day, now: now) }
+            if c.snapshot.entries?.count ?? 0 > 100_000 { note("\(c.name): habit \(habits.count + 1) of \(s.habits.count)") }
             habits.append(h)
         }
         out["habits"] = habits
