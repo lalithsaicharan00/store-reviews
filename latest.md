@@ -1,17 +1,11 @@
-# claude/shared-habit-rules-perf13 @ 3c73421
+# claude/shared-habit-rules-perf15 @ cfcf6b8 (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38261783137 · 2026-10-12 16:33 UTC
-Commit: Speed profiles list where the samples land (self time, with the library), not only whole functions
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38278226335 · 2026-10-12 16:53 UTC
+Commit: Current Work 92: final speed side by side with main, strips in one call (scratch, safe to delete) [ios-perf-bisect]
 
-- Core storage and migrations: cancelled
-- Build: skipped
-- Release build: skipped
-- Same-build speed baseline: skipped
-- UI tests (none): skipped
-- Speed tests: skipped
-- Speed tests through XCTest: skipped
+Variants: `main=ad7a898f shared=HEAD` · scenarios: `habit-page progress` · rounds: 4
 
-## Native analytics checks
-```
-Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
-```
+- main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
+- shared: cfcf6b8b Current Work 92: final speed side by side with main, strips in one call (scratch, safe to delete) [io
+
+No results.
