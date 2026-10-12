@@ -122,7 +122,7 @@ final class HabitStore {
     @ObservationIgnored private var entriesByHabit: [UUID: [Entry]]?
     /// The same, by habit and day: the calendar asks about ~30 days × every habit on each month (30 Sep).
     @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
-    var settings = DaySettings() { didSet { cachedCalendar = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
+    var settings = DaySettings() { didSet { cachedCalendar = nil; coreGregorian = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
     /// Running timers for duration habits: habit ID → start time.
     private(set) var timers: [UUID: Date] = [:] {
         didSet {
@@ -263,6 +263,7 @@ final class HabitStore {
 
     private func calendarChanged() {
         cachedCalendar = nil
+        coreGregorian = nil
         coreDirty = true
         cachedWeekdayNames = nil
         startDays = [:]
@@ -283,8 +284,13 @@ final class HabitStore {
     @ObservationIgnored var coreDirty = true
     /// The rows the last load read, so the shared rules read the same logs without converting them again.
     @ObservationIgnored var coreRows: Snapshot?
-    @ObservationIgnored var coreHandles: [UUID: RuleHabit] = [:]
-    @ObservationIgnored var coreDrafts: [Habit: RuleHabit] = [:]
+    /// The rules' habit for each saved habit, with the habit it was made for (compared, not hashed: `==` on unchanged
+    /// storage is a few pointer checks).
+    @ObservationIgnored var coreHandles: [UUID: (habit: Habit, rule: RuleHabit)] = [:]
+    /// The same for habits that aren't saved as they are (a form's draft, a habit judged by an earlier goal), a few per ID.
+    @ObservationIgnored var coreDrafts: [UUID: [(habit: Habit, rule: RuleHabit)]] = [:]
+    /// Whether the calendar is Gregorian (`usesCoreRules`), until the calendar changes.
+    @ObservationIgnored var coreGregorian: Bool?
     /// Every run of a habit (`runs(of:)`), for today: the best streak, the habit page's run list and Over Time all read
     /// it, and walking it again after each saved entry stalled the habit page under the Day sheet (1 Oct).
     @ObservationIgnored private var runLists: [UUID: (today: LocalDay, runs: [Run])] = [:]

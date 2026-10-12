@@ -16,7 +16,13 @@ extension LocalDay {
 
 extension HabitStore {
     /// Whether the shared rules answer for this store (`HabitStore.sharedRules`, and a Gregorian calendar).
-    var usesCoreRules: Bool { HabitStore.sharedRules && calendar.identifier == .gregorian }
+    var usesCoreRules: Bool {
+        guard HabitStore.sharedRules else { return false }
+        if let coreGregorian { return coreGregorian }
+        let gregorian = calendar.identifier == .gregorian
+        coreGregorian = gregorian
+        return gregorian
+    }
 
     /// Off only to measure the store's own Swift rules side by side (`PerfSwitches`, the before/after speed runs).
     nonisolated(unsafe) static var sharedRules = !ProcessInfo.processInfo.arguments.contains("-swift-rules")
@@ -92,16 +98,17 @@ extension HabitStore {
         access(keyPath: \.archivedOn)
         if habit.kind == .task { access(keyPath: \.taskMoves) }
         if logs, habit.kind == .duration { access(keyPath: \.timers) }
-        if isSaved(habit) {
-            if let known = coreHandles[habit.id] { return known }
-            let made = core.habit(id: habit.id.uuidString)
-            coreHandles[habit.id] = made
+        if let known = coreHandles[habit.id], known.habit == habit { return known.rule }
+        if isSaved(habit), let made = core.habit(id: habit.id.uuidString) {
+            coreHandles[habit.id] = (habit, made)
             return made
         }
-        if let known = coreDrafts[habit] { return known }
-        let made = core.draft(record: habit.record(position: 0), steps: habit.stepRecords(), reminders: habit.reminderRecords())
-        if coreDrafts.count > 500 { coreDrafts = [:] }
-        coreDrafts[habit] = made
+        if let known = coreDrafts[habit.id]?.first(where: { $0.habit == habit }) { return known.rule }
+        guard let made = core.draft(record: habit.record(position: 0), steps: habit.stepRecords(), reminders: habit.reminderRecords()) else { return nil }
+        var list = coreDrafts[habit.id] ?? []
+        if list.count >= 8 { list.removeFirst() }
+        list.append((habit, made))
+        coreDrafts[habit.id] = list
         return made
     }
 
@@ -157,10 +164,10 @@ extension HabitStore {
     /// The habit's days in `span` from the shared rules, in one call; nil where the store's own rules answer.
     func coreDays(_ habit: Habit, in span: ClosedRange<LocalDay>, relativeTo reference: LocalDay) -> CoreDays? {
         guard case let (core, h)? = shared(habit) else { return nil }
-        let array = core.days(h: h, first: span.lowerBound.n, last: span.upperBound.n, reference: reference.n, now: clock().millis)
-        let count = Int(array.size)
-        var values = [Double](repeating: 0, count: count)
-        for i in 0..<count { values[i] = array.get(index: Int32(i)) }
+        // One block of bytes: reading the Kotlin array back crossed into the core once per number.
+        let data = core.daysData(h: h, first: span.lowerBound.n, last: span.upperBound.n, reference: reference.n, now: clock().millis)
+        var values = [Double](repeating: 0, count: data.count / MemoryLayout<Double>.size)
+        _ = values.withUnsafeMutableBytes { data.copyBytes(to: $0) }
         return CoreDays(first: span.lowerBound.dayNumber, values: values)
     }
 }
