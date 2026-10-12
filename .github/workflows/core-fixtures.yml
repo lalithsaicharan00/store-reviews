@@ -1,0 +1,95 @@
+# Records the shared habit rules' golden answers from today's iPhone code (Current Work 92; Core/fixtures/README.md):
+# builds the app, makes the inputs (Core/fixtures/tools/generate.py), runs the app on the simulator with
+# `-golden-record`, and pushes the answers, gzipped, to the `<branch>-fixtures` branch, where the session that asked
+# copies them into Core/fixtures/expected/. Runs on a push whose commit message contains [core-fixtures] (a push trigger
+# works from any branch; a hand-run workflow must first exist on main, Rulebook T19).
+name: Core fixtures
+
+on:
+  push:
+    branches-ignore: [ci-results]
+
+permissions:
+  contents: write  # to push the answers to the <branch>-fixtures branch
+
+jobs:
+  record:
+    if: contains(github.event.head_commit.message, '[core-fixtures]')
+    concurrency:
+      group: core-fixtures-${{ github.ref }}
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}-apple-release
+          restore-keys: |
+            gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Make the inputs
+        run: |
+          python3 Core/fixtures/tools/generate.py --hashes | tee Core/fixtures/inputs/inputs.sha256
+
+      - name: Build
+        id: build
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
+            -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee build.log | grep -E "error:|BUILD" || true
+          grep -q "BUILD SUCCEEDED" build.log
+
+      - name: Pick a simulator
+        timeout-minutes: 15
+        run: |
+          sudo xcodebuild -runFirstLaunch
+          xcrun simctl shutdown all || true
+          ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+          echo "SIM=$ID" >> "$GITHUB_ENV"
+          xcrun simctl erase "$ID"
+          xcrun simctl boot "$ID" || true
+          xcrun simctl bootstatus "$ID" -b
+
+      - name: Record
+        id: record
+        working-directory: iOS
+        run: Tools/golden/record.sh "$SIM" ../Core/fixtures/inputs ../golden-out
+
+      - name: Push the answers
+        if: always() && steps.build.outcome == 'success'
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp Core/fixtures/inputs/inputs.sha256 golden-out/ || true
+          echo "${GITHUB_SHA}" > golden-out/commit.txt
+          gzip -9 golden-out/*.json || true
+          DIR="$RUNNER_TEMP/fixtures"; mkdir -p "$DIR"; cp golden-out/* "$DIR/"; cd "$DIR"
+          git init -q
+          git checkout -q --orphan fixtures
+          git add -A
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Golden answers for ${GITHUB_SHA:0:7} (${GITHUB_REF_NAME})"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${GITHUB_REF_NAME}-fixtures"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: golden-logs
+          path: |
+            iOS/build.log
+            golden-out/recorded.txt
+          retention-days: 7

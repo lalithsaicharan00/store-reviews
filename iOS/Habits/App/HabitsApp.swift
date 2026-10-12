@@ -131,7 +131,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-appreliability", "-applockcheck", "-widget-system-verify", "-cloudcheck", "-cloudcheck-extreme"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-appreliability", "-applockcheck", "-widget-system-verify", "-cloudcheck", "-cloudcheck-extreme", "-golden-record"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
@@ -283,6 +283,10 @@ private struct PlacementCheckView: View {
             if !reminderMetric.isEmpty { Text(reminderMetric).accessibilityIdentifier("reminder-planning-metric") }
         }.padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-golden-record") {
+                result = await GoldenRecorder.run()
+                return
+            }
             if arguments.contains("-analyticscheck") {
                 let failures = await AnalyticsCheck.run()
                 result = failures.isEmpty ? "Analytics: all checks passed" : "Analytics failed: " + failures.joined(separator: "; ")

@@ -794,7 +794,8 @@ final class HabitStore {
         }
     }
 
-    func periodTotal(_ habit: Habit, in range: ClosedRange<LocalDay>, now: Date = .now) -> Double {
+    func periodTotal(_ habit: Habit, in range: ClosedRange<LocalDay>, now: Date? = nil) -> Double {
+        let now = now ?? clock()
         var total = loggedTotal(habit, in: range)
         if let start = timers[habit.id], range.contains(today(now: now)) {
             total += max(0, now.timeIntervalSince(start)) / 60
@@ -1040,7 +1041,7 @@ final class HabitStore {
     /// `countingSkips: false` asks whether the day was planned at all, skip or not: Today keeps a skipped habit as a
     /// neutral row saying so, with Undo Skip one swipe away (3 Oct 2026), instead of making it vanish.
     /// `followingMoves: false` asks the task's own schedule, ignoring occurrences moved to other days.
-    func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now, countingSkips: Bool = true, followingMoves: Bool = true) -> Bool {
+    func isDue(_ habit: Habit, on day: LocalDay, now: Date? = nil, countingSkips: Bool = true, followingMoves: Bool = true) -> Bool {
         if (countingSkips && isSkipped(habit, on: day)) || isPaused(habit, on: day) || isArchived(habit, on: day) { return false }
         let habit = rule(habit, on: day)
         let created = startDay(of: habit)
@@ -1058,7 +1059,7 @@ final class HabitStore {
                 break
             }
             if day == due { return true }
-            return due < day && day == today(now: now) && !isDone(habit, on: day)
+            return due < day && day == today(now: now ?? clock()) && !isDone(habit, on: day)
         default: break
         }
         guard day >= created else { return false }
@@ -1102,7 +1103,8 @@ final class HabitStore {
     }
 
     /// What was logged on one day (a checklist counts its ticked items).
-    func dayProgress(of habit: Habit, on day: LocalDay, now: Date = .now) -> Double {
+    func dayProgress(of habit: Habit, on day: LocalDay, now: Date? = nil) -> Double {
+        let now = now ?? clock()
         let habit = rule(habit, on: day)
         if habit.kind == .checklist {
             let ticked = Set(entries(of: habit.id, on: day).compactMap(\.stepID))
@@ -1152,7 +1154,7 @@ final class HabitStore {
 
     /// Shown on the card: daily quantities (including flexible schedules) or aggregate quantities.
     /// Flexible quota progress is shown separately so 15/30 min and 2/4 days cannot be confused.
-    func progress(of habit: Habit, on day: LocalDay, now: Date = .now) -> Double {
+    func progress(of habit: Habit, on day: LocalDay, now: Date? = nil) -> Double {
         let habit = rule(habit, on: day)
         if !habit.frequency.isFlexible, let range = periodRange(habit, containing: day) {
             return isTotal(habit) ? periodTotal(habit, in: range, now: now) : periodCount(habit, in: range)
@@ -1321,7 +1323,8 @@ final class HabitStore {
     }
 
     /// Quit habits: the current run and the best run, from `quitHistory`.
-    func quitRuns(of habit: Habit, now: Date = .now) -> (current: TimeInterval, best: TimeInterval) {
+    func quitRuns(of habit: Habit, now: Date? = nil) -> (current: TimeInterval, best: TimeInterval) {
+        let now = now ?? clock()
         let history = quitHistory(of: habit, now: now)
         let current = history.last.map { $0.endedBy == .ongoing ? $0.length(now: now) : 0 } ?? 0
         return (current, history.map { $0.length(now: now) }.max() ?? 0)
