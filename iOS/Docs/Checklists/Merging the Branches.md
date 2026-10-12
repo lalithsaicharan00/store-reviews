@@ -11,7 +11,7 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 | M3 | Merge the real branches | [x] `progress-page-research`, `sidebar` and `undo-research` merged into `integration`; every conflict resolved keeping both sides' behaviour (below) |
 | M4 | The old feature branch (29–30 Sep) | [x] Not merged whole: its Progress, Settings, backup and Undo bar were rebuilt differently since. Its 12 research reports copied; app lock, the review prompt, Siri and Shortcuts, and milestones rebuilt on the current app; its first run already existed. **The Today widget waits** (below) |
 | M5 | Test before touching `main` | [x] Every class touched by the merge passes on `integration` (results below); `main`'s one new commit (Cloudflare plugin settings) merged in |
-| M6 | Move `main` and delete merged branches | [x] `main` moved to `integration` (fast-forward, 1 Oct, the user's go-ahead). [ ] Deleting the merged branches: this environment can't, list below |
+| M6 | Move `main` and delete merged branches | [x] `main` moved to `integration` (fast-forward, 1 Oct, the user's go-ahead). [x] Every branch below deleted from GitHub on 12 Oct 2026 (the user's request), list below |
 | M7 | Speed: nothing slower after the merge (the user: "performance is the most important thing") | [x] Every regression found is fixed and measured (below). Opening screens and Today's first scroll were slow before the merge too: still to do |
 
 ## Decisions made while merging
@@ -76,6 +76,14 @@ so the branches can go; keep this list current. Plan and progress: [Merge and Ha
 | T4 | Merge `analytics` (finished, the user, 2 Oct) | [x] `5c895cd`: Info.plist, Privacy, `HabitStore.perform`, the workflow and the lessons kept both sides; the backup events now come from the new Backup & Export page. [x] Tests (Analytics, Backup, Persistence, Onboarding, Sync 23/23; Today, Undo, Timer, Groups 23/23; Release build; analytics contract 101 checks), then `main` (`aca91eb`, 2 Oct 05:00 UTC) |
 
 ## Branches to delete (for any agent or person reading this)
+
+**All deleted, 12 October 2026** (the user: "delete the unnecessary branches that are marked as safe to delete").
+GitHub went from 76 branches to 3: `main`, `ci-results` (CI's own, never delete) and `archive/all-2026-10-04` (kept on
+purpose). Before deleting, every branch was checked against `main`: the 71 deleted first held only empty test-trigger
+commits or merges beyond it. Two held their own changes and were deleted after the user looked: `codex/store-today-capture`
+(the store screenshot fixture, "capture-only, do not merge"; the screenshots are in Figma) and
+`app-lock-privacy-security-perf` (speed-bisect test tweaks, 9–10 Oct). Every row below is history. **New branches:**
+add them here when they're done, and delete them once their work is in `main`.
 
 This environment can't delete branches on GitHub; delete them there (GitHub → Branches) or with
 `git push origin --delete <name>` from a machine that can. Every one is in `main` or kept under `archive/…`, and nothing
