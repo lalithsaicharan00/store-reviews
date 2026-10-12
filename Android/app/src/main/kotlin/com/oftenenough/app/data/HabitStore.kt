@@ -823,7 +823,7 @@ class HabitStore(
     }
 
     /** The first day of the week, 1 = Sunday … 7 = Saturday. */
-    fun setWeekStart(day: Int) {
+    fun chooseWeekStart(day: Int) {
         val d = day.coerceIn(1, 7)
         if (d == weekStart && settingRows.containsKey(Keys.WEEK_START)) return
         weekStart = d

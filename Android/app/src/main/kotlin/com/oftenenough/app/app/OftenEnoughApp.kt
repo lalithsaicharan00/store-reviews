@@ -1,11 +1,10 @@
-package com.oftenenough.app
+package com.oftenenough.app.app
 
 import android.app.Application
-import app.habits.core.AndroidCore
 
 class OftenEnoughApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        AndroidCore.context = this
+        AppGraph.init(this)
     }
 }

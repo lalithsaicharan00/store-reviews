@@ -1,3 +1,10 @@
 <resources>
-    <style name="Theme.OftenEnough" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.OftenEnough" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#F0F0F3</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.OftenEnough.App</item>
+    </style>
+    <style name="Theme.OftenEnough.App" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/screen</item>
+    </style>
 </resources>

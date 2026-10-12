@@ -66,7 +66,7 @@ jobs:
         working-directory: Android
         env:
           ANDROID_DEBUG_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_DEBUG_KEYSTORE_PASSWORD }}
-        run: ./gradlew --console=plain --stacktrace :app:assembleDebug :app:testDebugUnitTest :app:lintDebug 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
+        run: ./gradlew --console=plain :app:assembleDebug :app:testDebugUnitTest :app:lintDebug 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
       - name: Errors
         if: failure()
         working-directory: Android
