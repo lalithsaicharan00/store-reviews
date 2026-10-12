@@ -393,6 +393,9 @@ enum PerfDriver {
                     await pause(0.35)
                 }
             }
+        case "rules-calls":
+            // Where a habit rule's time goes, part by part (`RulesBench`, Current Work 92): no screen, only timed work.
+            RulesBench.run(store)
         case "widget-publish":
             // Every habit's seven days worked out again, as after a new day or a setting every widget shows (week start,
             // streaks), then published: the widgets' heaviest moment (Implementation Spec §11, S16).
