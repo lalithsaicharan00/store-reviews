@@ -1,55 +1,19 @@
-# claude/shared-habit-rules-main-check2 @ ad7a898
+# claude/shared-habit-rules-perf4 @ 31e122b (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38236705492 · 2026-10-12 11:50 UTC
-Commit: Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38229397046 · 2026-10-12 12:02 UTC
+Commit: Current Work 92: speed side by side with main, part 4 (scratch, safe to delete) [ios-perf-bisect]
 
-- Core storage and migrations: success
-- Build: success
-- Release build: success
-- Same-build speed baseline: skipped
-- UI tests (WidgetUITests/testEveryFamilyAndLayoutAtIPhoneSizes,WidgetSystemUITests/testLockScreenWidgetPickerAvailability): failure
-- Speed tests: skipped
-- Speed tests through XCTest: skipped
+Variants: `main=ad7a898f shared=HEAD` · scenarios: `widget-publish day-sheet` · rounds: 4
 
-## UI tests
-```
-	 Executed 2 tests, with 1 test skipped and 1 failure (0 unexpected) in 338.022 (338.037) seconds
-	 Executed 2 tests, with 1 test skipped and 1 failure (0 unexpected) in 338.022 (338.038) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WidgetUITests.swift:58: error: -[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes] : Failed to get matching snapshots: Lost connection to the application (pid 64947). (Underlying Error: Couldn’t communicate with a helper application. Try your operation again. If that fails, quit and relaunch the application and try again. connection to service with pid 64947 created from an endpoint)
-Test Case '-[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes]' failed (221.325 seconds).
-```
+- main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
+- shared: 31e122b9 Current Work 92: speed side by side with main, part 4 (scratch, safe to delete) [ios-perf-bisect]
 
-## Release build
-```
-** BUILD SUCCEEDED **
-```
+Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
-## App crashes
-```
-### Habits-2026-10-12-114852.ips
-EXC_CRASH SIGABRT
-Abort trap: 6
-  libsystem_kernel.dylib: __pthread_kill
-  libsystem_pthread.dylib: pthread_kill
-  libsystem_c.dylib: abort
-  libc++abi.dylib: __abort_message
-  libc++abi.dylib: demangling_terminate_handler()
-  libobjc.A.dylib: _objc_terminate()
-  Habits: (anonymous namespace)::TerminateHandler::queuedHandler()::'lambda'()::operator()() const
-  Habits: void (anonymous namespace)::$_0::operator()<(anonymous namespace)::TerminateHandler::queuedHandler()::'lambda'()>((anonymous namespace)::TerminateHandler::queuedHandler()::'lambda'())
-  Habits: (anonymous namespace)::TerminateHandler::queuedHandler()
-  Habits: (anonymous namespace)::TerminateHandler::kotlinHandler()
-  libc++abi.dylib: std::__terminate(void (*)())
-  libc++abi.dylib: __cxa_rethrow
-  libobjc.A.dylib: objc_exception_rethrow
-  XCTAutomationSupport: +[XCTRuntimeIssueContext captureIssuesWithContext:inScope:]
-  XCTAutomationSupport: __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke
-  XCTAutomationSupport: __XCTPerformOnMainRunLoop_block_invoke
-  CoreFoundation: __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__
-  CoreFoundation: __CFRunLoopDoBlocks
-```
-
-## Native analytics checks
-```
-Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
-```
+| Window | main | shared |
+|---|---|---|
+| Widget: full publication, every habit's week | **0.0**<br>10 (161, 1), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **3.8**<br>3.9 (69, 0), 3.7 (72, 0), 5.6 (101, 1), 0 (0, 0) |
+| Day sheet: entry list scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| All logs: scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| Entry editor: typing | **0.9**<br>7 (62, 0), 0.7 (20, 0), 0.7 (23, 0), 1.1 (22, 0) | **1.3**<br>11.9 (90, 0), 0.3 (19, 0), 0.2 (18, 0), 2.4 (22, 0) |
+| Day sheet: add, edit and exact undo | **240.9**<br>245.9 (115, 3), 197.2 (94, 0), 235.8 (95, 0), 279.5 (110, 2) | **502.4**<br>497.4 (158, 35), 765.1 (351, 58), 476.5 (193, 37), 507.4 (188, 37) |
