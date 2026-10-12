@@ -1,47 +1,39 @@
-# claude/shared-habit-rules-bench3 @ 761e951 (speed bisect)
+# claude/shared-habit-rules-perf20 @ cec56c7 (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38292303908 · 2026-10-12 19:53 UTC
-Commit: Current Work 92: where a rule's time goes, every strip in one call (scratch, safe to delete) [ios-perf-bisect]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38292286414 · 2026-10-12 20:07 UTC
+Commit: Current Work 92: speed side by side with main, every strip in one call (scratch, safe to delete) [ios-perf-bisect]
 
-Variants: `swift=HEAD+-swift-rules shared=HEAD` · scenarios: `rules-calls` · rounds: 2
+Variants: `main=ad7a898f shared=HEAD` · scenarios: `scroll-today tap-today` · rounds: 4
 
-- swift: 761e951d Current Work 92: where a rule's time goes, every strip in one call (scratch, safe to delete) [ios-per
-- shared: 761e951d Current Work 92: where a rule's time goes, every strip in one call (scratch, safe to delete) [ios-per
+- main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
+- shared: cec56c7d Current Work 92: speed side by side with main, every strip in one call (scratch, safe to delete) [ios
 
 Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
-| Window | swift | shared |
+| Window | main | shared |
 |---|---|---|
+| Today: scrolling | **20.9**<br>17.5 (119, 1), 24.8 (354, 1), 8.3 (46, 0), 24.3 (285, 1) | **14.4**<br>8.4 (80, 0), 552.3 (8304, 1), 16.2 (96, 0), 12.7 (98, 0) |
+| Today: +1 and day ‹ › | **20.9**<br>25.8 (76, 0), 23.5 (98, 0), 18.3 (83, 0), 15.9 (55, 0) | **25.2**<br>15.5 (76, 0), 132.9 (1698, 2), 31.3 (76, 0), 19.1 (72, 0) |
+| Today: +1 alone | **0.1**<br>0.5 (25, 0), 0.1 (18, 0), 0 (0, 0), 0 (0, 0) | **0.1**<br>0.2 (19, 0), 0 (0, 0), 5.1 (65, 0), 0 (17, 0) |
+| Today: day ‹ › alone | **16.9**<br>18.4 (66, 0), 15.4 (43, 0), 19.4 (48, 0), 10 (36, 0) | **15.0**<br>20.3 (70, 0), 12.7 (40, 0), 16.9 (45, 0), 13.2 (38, 0) |
+| Today: Day sheet scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| Timer screen: a running clock | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **1.3**<br>2.6 (56, 0), 2.8 (36, 0), 0 (0, 0), 0 (0, 0) |
 
 Timed work, all rounds (count · total ms · longest ms):
 
-| What | swift | shared |
+| What | main | shared |
 |---|---|---|
-| Store load: read the database | 4 · 1936 · 941.6 | 4 · 2127 · 958.1 |
-| Widgets: one habit's week | 34 · 173 · 57.2 | 34 · 153 · 45.3 |
-| Rules (in a view): dayMark | 6 · 134 · 23.1 | 6 · 90 · 16.0 |
-| Rules (in a view): isDone | 6 · 113 · 20.9 | 6 · 72 · 13.2 |
-| Store load: into the app (5593 logs) | 2 · 120 · 73.1 | 2 · 96 · 48.8 |
-| Rules (outside a view): isDone | 6 · 66 · 12.4 | 6 · 58 · 11.8 |
-| Rules (outside a view): dayMark | 6 · 65 · 12.6 | 6 · 75 · 14.4 |
-| Rules (in a view): dayProgress | 6 · 57 · 9.8 | 6 · 60 · 11.1 |
-| Rules (in a view): isDue | 6 · 36 · 6.6 | 6 · 47 · 8.1 |
-| Rules (outside a view): dayProgress | 6 · 31 · 5.8 | 6 · 46 · 8.6 |
-| Rules (outside a view): isDue | 6 · 13 · 2.3 | 6 · 50 · 22.3 |
-| Store load: into the app (0 logs) | 2 · 4 · 3.7 | 2 · 0 · 0.3 |
-| Widgets: the snapshot | 2 · 2 · 1.3 | 2 · 4 · 3.1 |
-| Reminders: plan every alert | 2 · 1 · 0.7 | 2 · 1 · 0.9 |
-| Count: Today's list drawn | 15 · 0 · 0.0 | 17 · 0 · 0.0 |
-| Count: a Today row drawn | 40 · 0 · 0.0 | 40 · 0 · 0.0 |
-| Rules (outside a view): Swift reads a year's numbers back | – | 6 · 153 · 49.0 |
-| Rules (in a view): Swift reads a year's numbers back | – | 6 · 141 · 40.6 |
-| Rules (in a view): Kotlin days, a year in one call | – | 6 · 146 · 37.9 |
-| Rules (outside a view): Kotlin days, a year in one call | – | 6 · 153 · 38.0 |
-| Rules (in a view): Kotlin isDone, habit in hand | – | 6 · 52 · 20.6 |
-| Rules (outside a view): Kotlin isDone, habit in hand | – | 6 · 40 · 8.0 |
-| Rules (in a view): the Swift side only (shared) | – | 6 · 31 · 5.7 |
-| Shared rules: built from every log | – | 8 · 28 · 9.1 |
-| Rules (outside a view): the Swift side only (shared) | – | 6 · 16 · 2.9 |
-| Shared rules: habits and settings again | – | 10 · 3 · 1.0 |
-| Rules (outside a view): Kotlin dayGoal, habit in hand (the crossing) | – | 6 · 4 · 0.6 |
-| Rules (in a view): Kotlin dayGoal, habit in hand (the crossing) | – | 6 · 6 · 2.8 |
+| Store load: read the database | 16 · 3835 · 964.4 | 16 · 3593 · 592.4 |
+| Widgets: one habit's week | 201 · 1569 · 858.4 | 201 · 1119 · 250.1 |
+| Store load: into the app (5593 logs) | 8 · 385 · 58.7 | 8 · 361 · 51.7 |
+| Store load: into the app (0 logs) | 8 · 12 · 2.2 | 8 · 13 · 2.8 |
+| Widgets: the snapshot | 73 · 61 · 2.5 | 73 · 105 · 9.0 |
+| Count: Today's list drawn | 403 · 3 · 2.3 | 413 · 1 · 0.5 |
+| Reminders: plan every alert | 238 · 12 · 0.5 | 237 · 16 · 1.1 |
+| Count: a Today row drawn | 3122 · 0 · 0.0 | 3194 · 0 · 0.0 |
+| Shared rules: built from every log | – | 32 · 156 · 22.0 |
+| Shared rules: habits and settings again | – | 48 · 32 · 3.2 |
+| Change: Siri's habit names | 231 · 12 · 0.2 | 230 · 12 · 0.3 |
+| Count: the Day sheet drawn | 57 · 0 · 0.0 | 60 · 0 · 0.0 |
+| Count: the Day sheet's activity drawn | 57 · 0 · 0.0 | 60 · 0 · 0.0 |
+| Shared rules: a log added | – | 226 · 12 · 0.2 |
