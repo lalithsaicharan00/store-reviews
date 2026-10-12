@@ -1,0 +1,8 @@
+started: hand.json, seeded-1.json, seeded-2.json, seeded-3.json, seeded-4.json, year.json
+hand.json: 61 cases in 9s
+seeded-1.json: 500 cases in 208s
+seeded-2.json: 500 cases in 205s
+seeded-3.json: 500 cases in 108s
+seeded-4.json: 500 cases in 124s
+year.json: 1 cases in 10s
+# DONE 2062 cases
