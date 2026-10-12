@@ -176,15 +176,15 @@ extension HabitStore {
         while true {
             let span = period(.month, containing: first)
             if span.upperBound < start { break }
+            // The month's days from the shared rules in one call (`CoreDays`), for its card and its rows.
+            let sharedDays = habit.kind == .quit ? nil : coreDays(habit, in: span, relativeTo: today)
             let card = habit.kind == .quit ? weekQuitCard(habit, in: span, range: .month, today: today, now: now)
-                : weekCard(habit, in: span, range: .month, today: today)
+                : weekCard(habit, in: span, range: .month, today: today, days: sharedDays)
             let count = span.lowerBound.days(to: span.upperBound, calendar: calendar) + 1
             let heat = card.flatMap { $0.days.count == count ? $0.days.map(\.heat) : nil }
             var rows: [HistoryDay] = []
             var day = min(span.upperBound, today)
             let earliest = max(span.lowerBound, start)
-            // The month's days from the shared rules in one call (`CoreDays`).
-            let sharedDays = earliest <= day ? coreDays(habit, in: earliest...day, relativeTo: today) : nil
             while day >= earliest {
                 let entries = self.entries(of: habit.id, on: day)
                 let hasNote = note(of: habit, on: day) != nil

@@ -225,7 +225,9 @@ extension HabitStore {
     /// habit with nothing that week).
     /// Week or Month (the user, 2 Oct 2026: Month the same as Week, for seeing patterns). Month cards carry no values
     /// under the marks; their headlines count the month on the goal's own clock.
-    func weekCard(_ habit: Habit, in span: ClosedRange<LocalDay>, range: ProgressRange = .week, today: LocalDay) -> ProgressWeekCard? {
+    /// `days`: the habit's days over `span` from the shared rules, when the caller has them (the habit page's history).
+    func weekCard(_ habit: Habit, in span: ClosedRange<LocalDay>, range: ProgressRange = .week, today: LocalDay,
+                  days known: CoreDays? = nil) -> ProgressWeekCard? {
         let noun = range.noun
         let start = startDay(of: habit)
         let running = span.contains(today)
@@ -250,7 +252,7 @@ extension HabitStore {
         // A week or month limit: the period's running total, per period start, for the heat map.
         var limitTotals: [LocalDay: (through: LocalDay, total: Double)] = [:]
         // The shared rules answer the whole strip in one call (`CoreDays`); the store's own rules day by day.
-        let sharedDays = dayList.isEmpty ? nil : coreDays(habit, in: dayList[0]...dayList[dayList.count - 1], relativeTo: today)
+        let sharedDays = known ?? (dayList.isEmpty ? nil : coreDays(habit, in: dayList[0]...dayList[dayList.count - 1], relativeTo: today))
         for day in dayList {
             var mark = sharedDays?.mark(day) ?? dayMark(habit, on: day, relativeTo: today)
             let dayRule = self.rule(habit, on: day)

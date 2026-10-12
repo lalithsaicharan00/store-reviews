@@ -63,7 +63,7 @@ final class HabitStore {
         }
     }
 
-    private(set) var habits: [Habit] = [] { didSet { forgetAll() } }
+    private(set) var habits: [Habit] = [] { didSet { if habits != oldValue { coreDirty = true }; forgetAll() } }
     /// Changed only through `insertEntry`, `removeEntry(at:)` and `replaceEntry` (or a full load), which keep the indexes below in
     /// step. Rebuilding them from every entry after each tap cost a full pass over a year of history (30 Sep).
     @ObservationIgnored private var storedEntries: [Entry] = []
@@ -122,14 +122,14 @@ final class HabitStore {
     @ObservationIgnored private var entriesByHabit: [UUID: [Entry]]?
     /// The same, by habit and day: the calendar asks about ~30 days × every habit on each month (30 Sep).
     @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
-    var settings = DaySettings() { didSet { cachedCalendar = nil; coreGregorian = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
+    var settings = DaySettings() { didSet { if settings != oldValue { coreDirty = true }; cachedCalendar = nil; coreGregorian = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
     /// Running timers for duration habits: habit ID → start time.
     private(set) var timers: [UUID: Date] = [:] {
         didSet {
             for id in Set(oldValue.keys).union(timers.keys) where oldValue[id] != timers[id] {
                 widgetProjectionCache[id] = nil
             }
-            coreDirty = true
+            if timers != oldValue { coreDirty = true }
         }
     }
     /// For a timed habit spread over times of day: the part a running timer is for.
@@ -139,15 +139,15 @@ final class HabitStore {
     private(set) var ruleInputs = 0
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
     /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
-    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
+    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { if skips != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
     /// A repeating task's occurrences moved to another day, original day → new day (Day details' Reschedule, 4 Oct
     /// 2026). Saved like skips, one setting per task, so it syncs and is backed up with them.
-    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
+    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { if taskMoves != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
     /// Pauses per habit, oldest first. A paused day is a skipped day, for a whole stretch (pause report, 29 Sep).
-    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
+    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { if pauses != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
     /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
     /// its `until` day, so past days keep the result they had (spec §8.2).
-    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
+    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { if rules != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
     /// Notes (report "Habit Notes and Day Notes", 29 Sep): one per habit per day, one per day, and a standing
     /// description per habit. Optional, never prompted, and they never change progress.
     private(set) var habitNotes: [UUID: [LocalDay: String]] = [:]
@@ -155,7 +155,7 @@ final class HabitStore {
     private(set) var descriptions: [UUID: String] = [:]
     /// The day each archived habit was archived: from that day on it has no days (Build Plan #60c). Kept only while
     /// it's archived; Restore turns the archived stretch into a pause, so those days are never "not done".
-    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
+    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { if archivedOn != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
     /// Goes up by one after every change and every load. Progress keys its numbers on it, so they're worked out once
     /// per change, never while drawing (report §20). Only screens that cache numbers read it.
     private(set) var dataVersion = 0
@@ -316,8 +316,10 @@ final class HabitStore {
         summaries = [:]
     }
 
+    /// The shared rules are marked to be given habits and settings again (`coreDirty`) only where a value they read
+    /// changed: the Watch sets its habits and settings again, unchanged, after every sync with the iPhone, and giving
+    /// them again cost 0.5 ms each time (run 38307052331).
     private func forgetAll() {
-        coreDirty = true
         pastRuns = [:]
         runLists = [:]
         totalLines = [:]
@@ -599,7 +601,7 @@ final class HabitStore {
     // MARK: Day sections
 
     /// The user's day sections: Anytime first, then by start time.
-    private(set) var sections: [DaySection] = DaySection.defaults { didSet { placementCache = [:]; forgetAll() } }
+    private(set) var sections: [DaySection] = DaySection.defaults { didSet { if sections != oldValue { coreDirty = true }; placementCache = [:]; forgetAll() } }
 
     func section(_ id: String) -> DaySection {
         sections.first { $0.id == id } ?? sections[0]
@@ -738,7 +740,7 @@ final class HabitStore {
 
     /// Where Anytime and Quitting sit among the times of day, as last saved (empty: the default, both at the top).
     /// Read through `todayCards`, which puts the timed sections in time order around them.
-    private(set) var cardOrder: [String] = [] { didSet { coreDirty = true } }
+    private(set) var cardOrder: [String] = [] { didSet { if cardOrder != oldValue { coreDirty = true } } }
 
     /// Today's cards from top to bottom: section IDs and `.quittingCard`. Timed sections always follow their times;
     /// only Anytime and Quitting are placed by the person (the user, 3 Oct 2026). A handful of strings, so it's simply
