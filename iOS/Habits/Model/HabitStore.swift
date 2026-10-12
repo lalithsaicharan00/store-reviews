@@ -111,7 +111,7 @@ final class HabitStore {
     @ObservationIgnored private var changedHabits: Set<UUID> = []
 
     /// Reads one habit's mark, so the calling view redraws when that habit's entries change.
-    private func observeEntries(of id: UUID) {
+    func observeEntries(of id: UUID) {
         if let revision = entryRevisions[id] { _ = revision.count; return }
         let revision = EntryRevision()
         entryRevisions[id] = revision

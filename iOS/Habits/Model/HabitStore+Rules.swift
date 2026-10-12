@@ -22,8 +22,16 @@ extension HabitStore {
     nonisolated(unsafe) static var sharedRules = !ProcessInfo.processInfo.arguments.contains("-swift-rules")
 
     /// The shared rules, up to date with the store's data; nil where the store's own rules answer.
+    ///
+    /// The core reads the store's data without SwiftUI seeing it, so this reads what every rule depends on, as the Swift
+    /// rules did: a view showing a rule's answer still redraws when that changes (Arrange's card moves didn't, run
+    /// 38216853635). One habit's own logs are read in `ruleHabit`.
     var core: LiveRules? {
         guard usesCoreRules else { return nil }
+        access(keyPath: \.settings)
+        access(keyPath: \.sections)
+        access(keyPath: \.cardOrder)
+        access(keyPath: \.habits)
         if let coreState {
             if coreDirty { refreshCore(coreState) }
             return coreState
@@ -70,6 +78,13 @@ extension HabitStore {
     /// The rules' habit for one of the store's: the saved one, or (for a form's draft, or a habit judged by an earlier
     /// rule) one made from it and kept until the data changes.
     func ruleHabit(_ habit: Habit, _ core: LiveRules) -> RuleHabit? {
+        observeEntries(of: habit.id)
+        access(keyPath: \.skips)
+        access(keyPath: \.taskMoves)
+        access(keyPath: \.pauses)
+        access(keyPath: \.rules)
+        access(keyPath: \.archivedOn)
+        access(keyPath: \.timers)
         if isSaved(habit) {
             if let known = coreHandles[habit.id] { return known }
             let made = core.habit(id: habit.id.uuidString)
