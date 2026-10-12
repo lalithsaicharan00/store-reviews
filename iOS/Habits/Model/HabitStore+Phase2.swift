@@ -241,13 +241,15 @@ extension HabitStore {
         var done = [Int: Double](), planned = [Int: Int]()
         let averages: Bool = { switch rule.kind { case .amount, .duration: return true; default: return false } }()
         var total = 0
+        // The days from the shared rules in one call (`CoreDays`).
+        let sharedDays = coreDays(habit, in: max(range.lowerBound, start)...min(range.upperBound, today), relativeTo: self.today())
         for day in days(in: max(range.lowerBound, start)...min(range.upperBound, today)) {
-            let mark = dayMark(habit, on: day)
+            let mark = sharedDays?.mark(day) ?? dayMark(habit, on: day)
             guard mark == .done || (day < today && (mark == .some || mark == .missed)) else { continue }
             let weekday = calendar.component(.weekday, from: day.date(calendar: calendar))
             planned[weekday, default: 0] += 1
             total += 1
-            if averages { done[weekday, default: 0] += dayProgress(of: self.rule(habit, on: day), on: day) }
+            if averages { done[weekday, default: 0] += sharedDays?.progress(day) ?? dayProgress(of: self.rule(habit, on: day), on: day) }
             else if mark == .done { done[weekday, default: 0] += 1 }
         }
         guard total >= 28 else { return [] }

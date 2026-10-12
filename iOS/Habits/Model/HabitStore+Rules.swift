@@ -141,20 +141,28 @@ struct CoreDays {
     let first: Int
     let values: [Double]
 
-    private func at(_ day: LocalDay, _ field: Int) -> Double { values[(day.dayNumber - first) * Self.fields + field] }
-    func contains(_ day: LocalDay) -> Bool { day.dayNumber >= first && (day.dayNumber - first) * Self.fields < values.count }
+    /// A day's number; nil for a day outside the strip asked for (the caller asks the store's rules instead).
+    private func at(_ day: LocalDay, _ field: Int) -> Double? {
+        let i = (day.dayNumber - first) * Self.fields + field
+        return day.dayNumber >= first && i < values.count ? values[i] : nil
+    }
     /// As `dayMark(_:on:relativeTo:)`.
-    func mark(_ day: LocalDay) -> HabitStore.DayMark { Self.marks[Int(at(day, 0))] }
+    func mark(_ day: LocalDay) -> HabitStore.DayMark? { at(day, 0).map { Self.marks[Int($0)] } }
     /// As `dayProgress(of: rule(habit, on: day), on: day)`.
-    func progress(_ day: LocalDay) -> Double { at(day, 1) }
+    func progress(_ day: LocalDay) -> Double? { at(day, 1) }
     /// As `isDayMet(rule(habit, on: day), on: day)`.
-    func isMet(_ day: LocalDay) -> Bool { at(day, 2) == 1 }
+    func isMet(_ day: LocalDay) -> Bool? { at(day, 2).map { $0 == 1 } }
     /// As `dayGoal(of: rule(habit, on: day))`.
-    func goal(_ day: LocalDay) -> Double { at(day, 3) }
+    func goal(_ day: LocalDay) -> Double? { at(day, 3) }
+    /// As `dayFraction(habit, on: day)`: the share of the day's goal logged.
+    func fraction(_ day: LocalDay) -> Double? {
+        guard let goal = goal(day), let progress = progress(day) else { return nil }
+        return goal > 0 ? min(1, max(0, progress / goal)) : 0
+    }
     /// As `isDue(habit, on: day)`.
-    func isDue(_ day: LocalDay) -> Bool { at(day, 4) == 1 }
+    func isDue(_ day: LocalDay) -> Bool? { at(day, 4).map { $0 == 1 } }
     /// As `periodKind(rule(habit, on: day))`.
-    func periodKind(_ day: LocalDay) -> GoalPeriod { [.day, .week, .month, .year][Int(at(day, 5))] }
+    func periodKind(_ day: LocalDay) -> GoalPeriod? { at(day, 5).map { [GoalPeriod.day, .week, .month, .year][Int($0)] } }
 }
 
 extension HabitStore {

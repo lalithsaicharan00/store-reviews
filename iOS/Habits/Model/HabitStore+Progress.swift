@@ -514,9 +514,11 @@ extension HabitStore {
         guard start <= period.upperBound else { return nil }
         let last = min(period.upperBound, today)
         let rule = rule(habit, on: max(last, start))
+        // The period's days from the shared rules in one call (`CoreDays`).
+        let sharedDays = coreDays(habit, in: period, relativeTo: self.today())
         let marks = dayList.map { day -> ProgressMark in
-            let mark = dayMark(habit, on: day)
-            let fraction = mark == .done ? 1 : mark == .some ? dayFraction(habit, on: day) : 0
+            let mark = sharedDays?.mark(day) ?? dayMark(habit, on: day)
+            let fraction = mark == .done ? 1 : mark == .some ? (sharedDays?.fraction(day) ?? dayFraction(habit, on: day)) : 0
             return ProgressMark(day: day, mark: mark, fraction: fraction, over: mark == .missed && self.rule(habit, on: day).atMost)
         }
         // Days that count: done any day up to today; part done or not done only once the day is over.
@@ -538,7 +540,7 @@ extension HabitStore {
                 let dayRule = self.rule(habit, on: mark.day)
                 let goal = dayGoal(of: dayRule)
                 planned += goal
-                done += min(dayProgress(of: dayRule, on: mark.day), goal)
+                done += min((sharedDays?.progress(mark.day) ?? dayProgress(of: dayRule, on: mark.day)), goal)
             }
             let unit = HabitCopy.unit(of: rule)
             text = "\(HabitCopy.number(done)) of \(HabitCopy.number(planned)) \(unit.isEmpty ? "times" : unit)\(soFar)"
@@ -550,7 +552,7 @@ extension HabitStore {
             for day in dayList where day >= start && day <= last && !isArchived(habit, on: day) {
                 let dayRule = self.rule(habit, on: day)
                 guard HabitCopy.unit(of: dayRule) == unit, (dayRule.kind == .duration) == (rule.kind == .duration) else { continue }
-                total += dayProgress(of: dayRule, on: day)
+                total += (sharedDays?.progress(day) ?? dayProgress(of: dayRule, on: day))
             }
             hasDays = hasDays || total > 0
             text = "\(progressValue(total, rule)) · \(doneDays) of \(daysWord(counted.count))\(soFar)"
@@ -559,14 +561,14 @@ extension HabitStore {
             for mark in counted {
                 let dayRule = self.rule(habit, on: mark.day)
                 planned += dayGoal(of: dayRule)
-                done += dayProgress(of: dayRule, on: mark.day)
+                done += (sharedDays?.progress(mark.day) ?? dayProgress(of: dayRule, on: mark.day))
             }
             text = "\(HabitCopy.number(done)) of \(HabitCopy.number(planned)) steps\(soFar) · \(doneDays == 1 ? "1 full day" : "\(doneDays) full days")"
             percent = ProgressMath.percent(done, planned)
         case .limitDay:
             // Judged days only: today waits for the day to end (report §11.2).
             let judged = counted.filter { $0.day < today }
-            let total = judged.reduce(0.0) { $0 + dayProgress(of: self.rule(habit, on: $1.day), on: $1.day) }
+            let total = judged.reduce(0.0) { $0 + (sharedDays?.progress($1.day) ?? dayProgress(of: self.rule(habit, on: $1.day), on: $1.day)) }
             if judged.isEmpty {
                 let now = running && today >= start ? dayProgress(of: rule, on: today) : 0
                 text = running ? "\(progressValue(now, rule)) of \(progressValue(rule.goal, rule)) so far today"

@@ -254,9 +254,9 @@ extension HabitStore {
         var day = start
         while day <= today {
             let value: Double
-            if let sharedDays {
-                kinds.insert(sharedDays.periodKind(day))
-                value = sharedDays.progress(day)
+            if let sharedDays, let kind = sharedDays.periodKind(day), let logged = sharedDays.progress(day) {
+                kinds.insert(kind)
+                value = logged
             } else {
                 let rule = rule(habit, on: day)
                 kinds.insert(periodKind(rule))
@@ -517,14 +517,18 @@ extension HabitStore {
         }
         let rule = rule(habit, on: min(thisRange.upperBound, today))
         let shape = progressShape(rule)
+        // Each range's days from the shared rules in one call (`CoreDays`).
+        let reference = self.today()
         func amount(_ range: ClosedRange<LocalDay>) -> Double {
-            days(in: range).reduce(0) { $0 + dayProgress(of: self.rule(habit, on: $1), on: $1) }
+            let shared = coreDays(habit, in: range, relativeTo: reference)
+            return days(in: range).reduce(0) { $0 + (shared?.progress($1) ?? dayProgress(of: self.rule(habit, on: $1), on: $1)) }
         }
         func goalDays(_ range: ClosedRange<LocalDay>) -> (met: Int, planned: Int) {
+            let shared = coreDays(habit, in: range, relativeTo: reference)
             var met = 0, planned = 0
-            for day in days(in: range) where isDue(habit, on: day) {
+            for day in days(in: range) where shared?.isDue(day) ?? isDue(habit, on: day) {
                 planned += 1
-                if isDayMet(habit, on: day) { met += 1 }
+                if shared?.isMet(day) ?? isDayMet(habit, on: day) { met += 1 }
             }
             return (met, planned)
         }
