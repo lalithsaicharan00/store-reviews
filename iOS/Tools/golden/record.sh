@@ -27,15 +27,16 @@ for TRY in $(seq 1 30); do
   sleep 10
 done
 WAITED=0
-LIMIT=${GOLDEN_LIMIT:-2400}
+LIMIT=${GOLDEN_LIMIT:-2100}
+STILL=0
+LAST=""
 until grep -q "^# DONE" "$GOLDEN/done.txt" 2>/dev/null || [ $WAITED -ge "$LIMIT" ]; do
   sleep 10; WAITED=$((WAITED + 10))
-  if [ $((WAITED % 120)) -eq 0 ]; then echo "… ${WAITED}s"; cat "$GOLDEN/done.txt" 2>/dev/null; fi
-  # The app ended before it finished: say so rather than waiting the whole limit.
-  # The simulator's app is a process on this Mac (a launchctl check inside the simulator missed it, run 38202879977).
-  if [ $((WAITED % 60)) -eq 0 ] && ! pgrep -f "Habits.app/Habits" > /dev/null; then
-    echo "The app is no longer running after ${WAITED}s"; sleep 5; break
-  fi
+  NOW=$(cat "$GOLDEN/done.txt" 2>/dev/null | tail -1)
+  if [ "$NOW" = "$LAST" ]; then STILL=$((STILL + 10)); else STILL=0; LAST="$NOW"; echo "… ${WAITED}s: $NOW"; fi
+  # The recorder notes its progress every 10 cases: ten minutes without a note means it stopped (a process check
+  # from the Mac proved unreliable, runs 38202879977 and 38206672161).
+  if [ $STILL -ge 600 ]; then echo "No progress for 10 minutes after ${WAITED}s"; break; fi
 done
 cat "$GOLDEN/done.txt" 2>/dev/null
 tail -50 "$OUT/app-stderr.txt" 2>/dev/null

@@ -90,9 +90,13 @@ enum GoldenRecorder {
                 let cases = try JSONDecoder().decode(InputFile.self, from: Data(contentsOf: file)).cases
                 var results: [Any] = []
                 for c in cases {
+                    // A big case can take minutes: say which one is being worked on, so the script sees progress.
+                    if (c.snapshot.entries?.count ?? 0) > 1000 {
+                        try? (log.joined(separator: "\n") + "\n… working on \(c.name)\n").write(to: done, atomically: true, encoding: .utf8)
+                    }
                     results.append(await record(c))
                     total += 1
-                    if total % 100 == 0 {
+                    if total % 10 == 0 {
                         try? (log.joined(separator: "\n") + "\n… \(total) cases (\(c.name))\n").write(to: done, atomically: true, encoding: .utf8)
                     }
                     await Task.yield()
