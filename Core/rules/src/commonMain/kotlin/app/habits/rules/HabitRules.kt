@@ -65,9 +65,20 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
 
     /** The habit as it was judged on [day]: the first earlier rule whose last day is on or after it, else today's. */
     fun rule(habit: Habit, day: Int): Habit {
-        val list = data.facts(habit).rules ?: return habit
-        val r = list.firstOrNull { day <= it.until } ?: return habit
-        return habit.judgedBy(r.judging)
+        val facts = data.facts(habit)
+        val list = facts.rules ?: return habit
+        var i = 0
+        while (i < list.size && day > list[i].until) i++
+        if (i == list.size) return habit
+        // The judged habit is kept on the habit, one per earlier rule, while this data is current: a week or a year of
+        // days judged by the same rule made a copy each (Current Work 92, checkpoint 2).
+        var judged = habit.judged
+        if (judged == null || habit.judgedOf !== facts) {
+            judged = arrayOfNulls(list.size)
+            habit.judged = judged
+            habit.judgedOf = facts
+        }
+        return judged[i] ?: habit.judgedBy(list[i].judging).also { judged[i] = it }
     }
 
     fun periodKind(habit: Habit): Period = when (val f = habit.frequency) {
