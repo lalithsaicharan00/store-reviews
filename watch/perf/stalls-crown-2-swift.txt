@@ -1,0 +1,67 @@
+# TIME Store load: read the database|19.95
+# TIME Store load: into the app (0 logs)|0.44
+1791845890.397 64.0
+# TIME Watch Today: plan|0.17
+# READY 1791845890.507
+1791845890.474 33.1
+# TIME Count: a Today row drawn|0.00
+1791845890.507 68.9
+# TIME Watch Today: plan|0.12
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.15
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.09
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.18
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.10
+# TIME Count: a Today row drawn|0.00
+1791845890.652 29.8
+# TIME Watch Today: plan|0.23
+1791845890.682 23.1
+# TIME Watch Today: plan|0.22
+# TIME Count: a Today row drawn|0.00
+1791845890.707 38.5
+# TIME Watch Today: plan|0.13
+# TIME Count: a Today row drawn|0.00
+# TIME Store load: read the database|153.94
+# TIME Store load: into the app (1716 logs)|19.28
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.16
+# TIME Count: a Today row drawn|0.00
+1791845892.718 37.2
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Widgets: one habit's week|17.05
+1791845893.272 26.2
+# TIME Widgets: one habit's week|0.59
+# TIME Widgets: one habit's week|0.48
+# TIME Widgets: one habit's week|0.98
+# TIME Widgets: one habit's week|3.77
+# TIME Widgets: one habit's week|1.03
+# TIME Widgets: one habit's week|0.52
+# TIME Widgets: one habit's week|2.29
+# TIME Widgets: the snapshot|0.37
+# TIME Widgets: the snapshot|0.80
+# MEASURING
+# TIME Watch Today: plan|2.91
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.08
+# TIME Watch Day details: the dial's words|0.13
+# TIME Watch Day details: streak|0.16
+1791845899.125 355.5
+# NOTE long stall 355 ms at 1791845899.125; kotlin collection 77: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 6.4 ms
+1791845899.748 71.6
+# OPEN Log manually|1791845899.125|1791845900.682
+1791845903.808 17.7
+1791845904.338 17.6
+1791845905.824 19.0
+1791845907.210 19.0
+1791845908.427 20.0
+1791845912.161 17.1
+1791845912.325 25.1
+1791845912.464 18.1
+# WINDOW Log manually: turning the Crown|1791845900.683|1791845912.731
+# DONE
+# TIME Watch Today: plan|0.46

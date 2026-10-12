@@ -1,0 +1,432 @@
+# TIME Shared rules: habits and settings again|0.91
+# TIME Shared rules: built from every log|8.67
+# TIME Store load: read the database|20.37
+# TIME Shared rules: built from every log, off the main thread|0.35
+# TIME Store load: into the app (0 logs)|0.33
+1791846045.461 55.6
+1791846045.516 35.0
+# TIME Shared rules: habits and settings again|0.30
+# TIME Watch Today: plan|0.80
+# READY 1791846045.592
+1791846045.554 38.5
+# TIME Count: a Today row drawn|0.00
+1791846045.593 122.8
+# TIME Shared rules: habits and settings again|0.50
+# TIME Watch Today: plan|1.16
+# TIME Count: a Today row drawn|0.00
+1791846045.722 17.3
+# TIME Shared rules: habits and settings again|0.80
+# TIME Watch Today: plan|1.08
+# TIME Count: a Today row drawn|0.00
+1791846045.739 21.6
+# TIME Shared rules: habits and settings again|0.32
+# TIME Watch Today: plan|0.63
+# TIME Count: a Today row drawn|0.00
+1791846045.761 27.2
+# TIME Shared rules: habits and settings again|0.29
+# TIME Watch Today: plan|0.60
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.67
+# TIME Watch Today: plan|1.47
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846045.814 54.0
+# TIME Shared rules: habits and settings again|0.38
+# TIME Watch Today: plan|0.78
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846045.869 28.3
+# TIME Shared rules: habits and settings again|0.91
+# TIME Watch Today: plan|1.65
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846045.906 49.6
+# TIME Shared rules: a log added|0.05
+# TIME Shared rules: a log added|0.09
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.08
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.65
+1791846045.956 25.4
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846045.982 27.8
+1791846046.042 19.0
+# TIME Widgets: one habit's week|32.61
+1791846049.168 53.6
+# TIME Widgets: one habit's week|0.94
+# TIME Widgets: one habit's week|1.74
+# TIME Widgets: one habit's week|3.29
+# TIME Widgets: one habit's week|3.84
+# TIME Widgets: one habit's week|3.11
+# TIME Widgets: one habit's week|0.64
+# TIME Widgets: one habit's week|2.45
+# TIME Widgets: the snapshot|0.51
+# TIME Store load: read the database|227.43
+# TIME Shared rules: built from every log, off the main thread|11.34
+# TIME Store load: into the app (1716 logs)|37.96
+# TIME Shared rules: habits and settings again|0.46
+# TIME Watch Today: plan|1.04
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.07
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846049.888 118.5
+# TIME Widgets: one habit's week|3.51
+# TIME Widgets: one habit's week|2.57
+# TIME Widgets: one habit's week|1.07
+# TIME Widgets: one habit's week|3.09
+# TIME Widgets: one habit's week|2.40
+# TIME Widgets: one habit's week|2.25
+# TIME Widgets: one habit's week|1.43
+# TIME Widgets: one habit's week|2.66
+# TIME Widgets: the snapshot|1.52
+# TIME Widgets: the snapshot|0.82
+# MEASURING
+# TIME Watch Today: plan|1.78
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846056.302 226.2
+1791846056.555 17.0
+1791846056.914 49.1
+1791846056.964 30.2
+# OPEN Blank page (control, first)|1791846056.303|1791846057.870
+# TIME Watch Today: plan|1.06
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846057.870 85.5
+1791846058.048 17.4
+# TIME Watch Today: plan|0.74
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846059.119 30.1
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846059.149 66.5
+1791846059.615 22.1
+1791846059.638 35.6
+# OPEN Blank page (control, again)|1791846059.119|1791846060.718
+# TIME Watch Today: plan|0.74
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846060.718 102.7
+# TIME Watch Today: plan|0.87
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.05
+# TIME Watch Day details: the dial's words|0.27
+# TIME Watch Day details: streak|0.10
+1791846061.973 135.2
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791846062.109 162.7
+1791846062.664 26.7
+# OPEN Day details (first)|1791846061.973|1791846063.565
+# TIME Watch Today: plan|0.76
+1791846063.583 70.6
+# TIME Watch Today: plan|0.68
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.14
+# TIME Watch Day details: streak|0.05
+1791846064.806 39.2
+1791846064.846 97.2
+1791846065.348 49.4
+1791846065.681 27.7
+# OPEN Day details (again)|1791846064.806|1791846066.352
+# TIME Shared rules: a log added|0.66
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.04
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Watch Day details: the dial's words|0.24
+# TIME Watch Day details: streak|0.12
+# TIME Watch Today: plan|0.88
+1791846066.352 98.1
+# TIME Shared rules: a log added|0.08
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Watch Day details: the dial's words|0.20
+# TIME Watch Day details: streak|0.04
+# TIME Watch Today: plan|0.81
+1791846066.785 37.4
+# TIME Shared rules: a log added|0.07
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.18
+# TIME Watch Day details: streak|0.11
+# TIME Watch Today: plan|0.38
+1791846067.198 23.0
+# TIME Shared rules: a log added|0.04
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.22
+# TIME Watch Day details: streak|0.07
+# TIME Watch Today: plan|0.29
+# TIME Shared rules: a log added|0.10
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Watch Day details: the dial's words|0.14
+# TIME Watch Day details: streak|0.12
+# TIME Watch Today: plan|0.32
+1791846068.039 59.5
+1791846068.098 21.4
+# TIME Shared rules: a log added|0.05
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Watch Day details: the dial's words|0.03
+# TIME Watch Day details: streak|0.09
+# TIME Watch Today: plan|0.56
+# TIME Shared rules: a log added|0.08
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.13
+# TIME Watch Day details: streak|0.09
+# TIME Watch Today: plan|0.31
+1791846068.869 22.6
+# TIME Shared rules: a log added|0.11
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Watch Day details: the dial's words|0.03
+# TIME Watch Day details: streak|0.08
+# TIME Watch Today: plan|0.67
+# TIME Shared rules: a log added|0.06
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.11
+# TIME Watch Day details: streak|0.04
+# TIME Watch Today: plan|0.64
+1791846069.698 34.9
+# TIME Shared rules: a log added|0.08
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.04
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.01
+# TIME Watch Day details: the dial's words|0.10
+# TIME Watch Day details: streak|0.06
+# TIME Watch Today: plan|0.27
+1791846070.139 18.6
+# TIME Shared rules: a log added|0.13
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Watch Day details: the dial's words|0.05
+# TIME Watch Day details: streak|0.03
+# TIME Watch Today: plan|0.68
+1791846070.538 25.0
+# TIME Shared rules: a log added|0.12
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.04
+# TIME Watch Day details: streak|0.03
+# TIME Watch Today: plan|0.48
+# TIME Shared rules: a log added|0.38
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.06
+# TIME Watch Day details: streak|0.04
+# TIME Watch Today: plan|0.28
+1791846071.364 24.0
+# TIME Shared rules: a log added|0.08
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.04
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.04
+# TIME Watch Day details: streak|0.03
+# TIME Watch Today: plan|0.25
+# TIME Shared rules: a log added|0.11
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.05
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.03
+# TIME Watch Day details: streak|0.03
+# TIME Watch Today: plan|0.28
+# TIME Shared rules: a log added|0.08
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.05
+# TIME Watch Day details: the dial's words|0.16
+# TIME Watch Day details: streak|0.18
+# TIME Watch Today: plan|0.34
+1791846072.598 26.3
+# TIME Shared rules: a log added|0.11
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.06
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.04
+# TIME Watch Day details: streak|0.03
+# TIME Watch Today: plan|0.59
+# TIME Shared rules: a log added|0.05
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Watch Day details: the dial's words|0.03
+# TIME Watch Day details: streak|0.02
+# TIME Watch Today: plan|0.63
+# TIME Shared rules: a log added|0.10
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.05
+# TIME Watch Day details: the dial's words|0.12
+# TIME Watch Day details: streak|0.05
+# TIME Watch Today: plan|0.29
+1791846073.832 17.5
+# TIME Shared rules: a log added|0.16
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.40
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.54
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Watch Day details: the dial's words|0.06
+# TIME Watch Day details: streak|0.06
+1791846074.260 29.7
+# TIME Shared rules: a log added|0.07
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.05
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.07
+# TIME Watch Day details: the dial's words|0.13
+# TIME Watch Day details: streak|0.10
+# TIME Watch Today: plan|0.42
+1791846074.668 32.3
+# TIME Shared rules: a log added|0.04
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.06
+# TIME Watch Day details: the dial's words|0.23
+# TIME Watch Day details: streak|0.06
+# TIME Watch Today: plan|0.25
+1791846075.082 21.4
+# TIME Shared rules: a log added|0.06
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.04
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Watch Day details: the dial's words|0.03
+# TIME Watch Day details: streak|0.03
+# TIME Watch Today: plan|0.22
+# TIME Shared rules: a log added|0.10
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Watch Day details: the dial's words|0.04
+# TIME Watch Day details: streak|0.05
+# TIME Watch Today: plan|0.42
+# TIME Shared rules: a log added|0.10
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.12
+# TIME Count: a Today row drawn|0.00
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Watch Day details: the dial's words|0.13
+# TIME Watch Day details: streak|0.06
+# TIME Watch Today: plan|0.48
+1791846076.335 31.9
+# TIME Shared rules: a log added|0.05
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.57
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.03
+# TIME Watch Day details: the dial's words|0.03
+# TIME Watch Day details: streak|0.03
+# TIME Shared rules: a log added|0.06
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.11
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.62
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.04
+# TIME Watch Day details: the dial's words|0.13
+# TIME Watch Day details: streak|0.08
+# TIME Shared rules: a log added|0.08
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.06
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.21
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.08
+# TIME Watch Day details: the dial's words|0.07
+# TIME Watch Day details: streak|0.06
+1791846077.591 26.7
+# TIME Shared rules: a log added|0.06
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.04
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.20
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.04
+# TIME Watch Day details: the dial's words|0.06
+# TIME Watch Day details: streak|0.05
+# WINDOW Day details: +1|1791846066.353|1791846078.404
+# DONE
+# TIME Watch Today: plan|0.24
+1791846078.565 205.2

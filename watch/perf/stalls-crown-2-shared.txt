@@ -1,0 +1,98 @@
+# TIME Shared rules: habits and settings again|0.12
+# TIME Shared rules: built from every log|3.03
+# TIME Store load: read the database|10.09
+# TIME Shared rules: built from every log, off the main thread|0.15
+# TIME Store load: into the app (0 logs)|0.27
+1791845861.925 33.0
+1791845861.958 26.8
+# TIME Shared rules: habits and settings again|1.09
+# TIME Watch Today: plan|2.51
+# READY 1791845862.029
+1791845861.992 37.0
+# TIME Count: a Today row drawn|0.00
+1791845862.029 86.4
+# TIME Shared rules: habits and settings again|0.62
+# TIME Watch Today: plan|1.42
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.21
+# TIME Watch Today: plan|0.46
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.23
+# TIME Watch Today: plan|0.53
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.37
+# TIME Watch Today: plan|0.66
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.71
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791845862.185 20.6
+# TIME Shared rules: habits and settings again|0.27
+# TIME Watch Today: plan|0.56
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.28
+# TIME Watch Today: plan|0.74
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791845862.228 20.3
+# TIME Shared rules: a log added|0.05
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.19
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Widgets: one habit's week|16.88
+1791845865.301 27.3
+# TIME Widgets: one habit's week|0.70
+# TIME Widgets: one habit's week|0.46
+# TIME Widgets: one habit's week|0.95
+# TIME Widgets: one habit's week|3.52
+# TIME Widgets: one habit's week|1.07
+# TIME Widgets: one habit's week|0.65
+# TIME Widgets: one habit's week|2.80
+# TIME Widgets: the snapshot|0.54
+# TIME Store load: read the database|193.60
+# TIME Shared rules: built from every log, off the main thread|3.63
+# TIME Store load: into the app (1716 logs)|18.32
+# TIME Shared rules: habits and settings again|0.36
+# TIME Watch Today: plan|0.86
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.30
+# TIME Count: a Today row drawn|0.00
+1791845866.129 48.5
+# TIME Widgets: one habit's week|0.93
+# TIME Widgets: one habit's week|0.51
+# TIME Widgets: one habit's week|0.51
+# TIME Widgets: one habit's week|0.94
+# TIME Widgets: one habit's week|1.74
+# TIME Widgets: one habit's week|0.84
+# TIME Widgets: one habit's week|0.50
+# TIME Widgets: one habit's week|0.59
+# TIME Widgets: the snapshot|0.41
+# TIME Widgets: the snapshot|0.76
+# MEASURING
+# TIME Watch Today: plan|0.54
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.72
+# TIME Watch Day details: the dial's words|0.31
+# TIME Watch Day details: streak|0.09
+1791845872.330 346.8
+# NOTE long stall 347 ms at 1791845872.330; kotlin collection 78: stopped 0.1 ms (after waiting 0.0 ms), then 0.0 ms, took 9.1 ms
+1791845872.981 37.0
+# OPEN Log manually|1791845872.331|1791845873.845
+# WINDOW Log manually: turning the Crown|1791845873.845|1791845885.860
+# DONE
+# TIME Watch Today: plan|0.67
+1791845886.016 89.3
