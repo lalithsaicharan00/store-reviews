@@ -1,6 +1,6 @@
-# Watch: claude/shared-habit-rules-wperf8 @ f87c480
+# Watch: claude/shared-habit-rules-wperf9 @ 6ec1a9c
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38278236280 · 2026-10-12 16:39 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38278239335 · 2026-10-12 16:42 UTC
 Commit: Watch speed, final: shared rules against the Swift rules side by side (scratch, safe to delete) [watch-perf]
 
 - Core tests: skipped
@@ -13,5 +13,5 @@ Commit: Watch speed, final: shared rules against the Swift rules side by side (s
 
 ## Errors in watch-build.log
 ```
-Habits/Model/HabitStore+WeekCards.swift:255:46: error: binary operator '??' cannot be applied to operands of type 'DayMark?' and 'HabitStore.DayMark'
+Habits/Model/HabitStore.swift:2098:34: error: cannot convert return expression of type 'DayMark' to return type 'HabitStore.DayMark'
 ```
