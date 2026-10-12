@@ -411,7 +411,10 @@ final class HabitStore {
         let start = c.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0, of: day.date(calendar: c))!
         let end = c.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0,
                          of: day.adding(days: 1, calendar: c).date(calendar: c))!.addingTimeInterval(-1)
-        return start...end
+        // On a night the clocks change, the calendar can put the next day's start before this one's: New York with a 2 AM
+        // day start, around 1 Nov 2026, crashed here (golden run 38207822255; Core/spec/differences.md #6). The shared
+        // rules answer for every Gregorian phone; this keeps the Swift rules from crashing.
+        return start...max(start, end)
     }
 
     /// A saved entry keeps its original tracking day and time zone even after the person travels.
