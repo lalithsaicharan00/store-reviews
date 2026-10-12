@@ -177,6 +177,23 @@ same day (W5). Write `Android/README.md`: how to build, test and run it.
 
 ## 5. When you need the user
 
-Ask only for what you can't decide from the documents: credentials (the OAuth client, Play Console), a product
-decision the documents don't make (Plus Family on Play), or anything irreversible. Otherwise keep going, and keep a
-list of questions in the results file for the next checkpoint report.
+**The user will provide the Google credentials later (13 Oct 2026: "I will provide it in the morning … ask it to wait
+for them").** Don't stop for them, and don't invent or create any yourself:
+
+- **Still to come from the user:** the **Android OAuth client** (package `com.oftenenough.app`, scope `drive.appdata`)
+  and the **Play Console app** (payments profile, the products, license testers). Until they arrive, build everything
+  else. Put Google sign-in and Drive behind interfaces with `Core`'s stand-in Drive for tests and debug builds, and
+  Play Billing behind a `PlusStore`-style interface with a fake store, so every screen, flow and test works without
+  them. Before checkpoint 3's real sign-in and real purchases, **ask the user for them and wait**: keep working on
+  checkpoint 4 (widgets) and 5 (proof) meanwhile.
+- **What you prepare for the user:** a stable **debug signing key** for CI (generate it, keep it only as a GitHub
+  secret, never in the repository, D11) and **its SHA-1**, so they can register the OAuth client; a release build
+  config that reads the upload key from secrets; and, when Billing is wired, a signed `.aab` with the Play Billing
+  Library for them to upload to **Internal testing** (Play only lets them create products after such an upload).
+- **Product IDs, the same as the iPhone's** (`iOS/Habits/Plus/PlusProduct.swift`): `com.oftenenough.app.plus`
+  ($24.99), `com.oftenenough.app.plusfamily` ($59.99), and `com.oftenenough.app.plusfamily.upgrade` (Plus → Plus
+  Family, the difference). Tell the user these exact IDs when you ask.
+
+Otherwise ask only for what you can't decide from the documents: a product decision they don't make (how Play
+delivers Plus Family), or anything irreversible. Keep going, and keep a list of questions in the results file for the
+next checkpoint report.
