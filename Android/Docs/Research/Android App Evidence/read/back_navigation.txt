@@ -1,0 +1,122 @@
+# Play back_navigation: 108 matches (40+ chars), showing 40
+
+[P136#8] 3* 2026 | 136. Life Engine - Habit T
+[PREV] The app is crashing immediately (within 10 seconds) upon opening, and my phone's status bar keeps blinking, making it completely unusable. Could you please look into this and release a fix as soon as possible? Thank you! [AFTER UPDATE] Still crashes after a few seconds as well as the status bar keeps blinking. Please Fix this ASAP
+
+[P126#45981] 5* 2021 | 126. To Do List
+I like the ease of use of this app, but there's one thing I want to be improved. Whenever I click "Notifications" on Add Task and press the back button, it goes back to the main menu and the task I wrote was gone. Hopefully on the next future updates this will be addressed that by pressing the back button the panel of the add task won't close. Overall, it's lovely and usable. It deserves to be paid.
+
+[P126#69256] 4* 2019 | 126. To Do List
+Has been a very useful app, though I too had the alarm in status bar 'bug', so I've uninstalled for the time being. It would be nice to be able to do a text export of a list, but this time I just hand transferred the info to my 4x6" notebook
+
+[P82#47] 3* 2025 | 82. Habit Tracker - To-Do 
+Man best one I have ever used only thing is tht it should have it's settings in as a icon and maintain minimalism the navigation bar musch be fixed for ease and the voice input task must be improved
+
+[P87#73] 4* 2024 | 87. Micro Habits - Self-Im
+The app is great. I love how complete it is include habits, goals, journal and progress to track. This app help me to cope with depression and stress. But a very disappointing thing from this app is no auto save in journaling, or at least when accidentally touch the back button it will have a warning. I was writing a long journal then accidentally touch the back button then the journal i wrote has gone. Hope developer could immediately fix this
+
+[P122#9087] 3* 2025 | 122. Hevy - Gym Log Workou
+unable to upload images .... The tick bar has an intersection with back button on android phones bb
+
+[P4#28225] 1* 2023 | 4. Me+ Lifestyle Routine
+I've set a reminder on my daily tasks and don't get notifications. there is no widget option to add it to my home screen. The help section claims you can change the order of the tasks, but once you go off the page and swipe back, they tasks are back in the original order. As a habit forming app, its pointless. there's no way to remind me or draw me to my new habit and no flexibility. I paid about £20 for the year and its an absolute waste. I am utterly disappointed
+
+[P24#3984] 3* 2020 | 24. Habit Tracker
+Navigation needs work: you can only navigate with the many buttons in the app, the back button closes the app. Feature request: Has weekly and monthly report, would like a daily report to share with an accountability partner Also, would be great to generate report based on category.
+
+[P12#13659] 1* 2024 | 12. Fabulous Daily Routine
+App is super scammy, deducted my money for plans I DID NOT SUBSCRIBE TO. I then went to Reddit and saw multiple other similar stories. There's no easy way to ask for refund either. I got an email saying my money has been refunded but it was not? This is an app that takes advantage of people with ADHD. The navigation in the app is so difficult, there's no back button, not place to properly navigate. I am not even sure how this app has so many good reviews.
+
+[P126#73125] 4* 2019 | 126. To Do List
+Flawless and still one of the best. But the only thing it lacks is a dark/black theme, especially with Android Pie coming out with its night mode option. Using the Pie beta in constant night mode and the WHITE status bar notifications of Splendo stick out like a sore thumb. No response from the developer of when this app will be updated for night mode. Down to 4 stars.
+
+[P126#44237] 3* 2021 | 126. To Do List
+Pretty good But a problem is if i set a task status bar shows an alarm clock icon Why is that? It was so inconvenient for me
+
+[P126#37337] 4* 2022 | 126. To Do List
+Awesome app so far but please please and please make the status bar in dark mode or add the option please cuz my eyes are burning cuz my theme is dark and it's the only thing bright.
+
+[P12#53776] 1* 2020 | 12. Fabulous Daily Routine
+Installed due to seeing a advert on Snapchat, made me put my email in and then proceeded to ask me if I want a free 7 day trail I clicked the back button hoping that it wouldn't sign me up for anything I'm now on hour 2 of trying to see if I can remove my account or if I will be charged even though I didn't agree to sign up to anything I tried emailing them to ask them to remove my account and only got a automated response telling me it's an unmonitored inbox I hope I'm not going to be charged
+
+[P130#134] 2* 2023 | 130. Way of Life - habit t
+Not a bad app, is it worth $11? Not so sure. A few issues with it are: * Feedback button shares to an app of your choice but doesn't actually do anything. * Bug reporting doesn't do anything either. * First day of the week selection ends up being the last day of the week (!?) * Selecting a journal opens it on the next day instead of the current one, leading you to mark tomorrow instead of today
+
+[P5#2878] 4* 2021 | 5. Routine Planner, Habit 
+Very nice overall. But please include an option to not hide status bar, and also to remove the notifications completely. Most of them are written poorly....
+
+[P24#9443] 5* 2018 | 24. Habit Tracker
+Great App! Could do with an alert to ask if I am sure I want to exit the app. Pressing the back button automatically exits app when I am using it.
+
+[P122#2706] 1* 2026 | 122. Hevy - Gym Log Workou
+on pixel phone, the back gesture closes the whole app.
+
+[P9#1325] 3* 2023 | 9. Habit Tracker - HabitKi
+Your privacy policy says that you sell data and then you also put "Your data never leaves your device." What's that about? Also, implement transparent navigation bar. What language is this app built in?
+
+[P49#885] 2* 2024 | 49. RoutineFlow - Routine 
+after the welcome slides, I'm always stuck on a loading page. It goes away when I use the back button. But it's so persistent, like after making a morning routine in the tutorial, if I try creating a new one, it will just show that same stuck loading page and I can no longer proceed. I have installed this on 2 different devices, even tried it multiple times months apart, but still same results. It sucks because I'm interested in exploring the app more and might even consider availing more.
+
+[P126#17825] 2* 2026 | 126. To Do List
+the newest updates made time mandatory for entries. I only needed and used the date picker. I do not like time on events since an event with time displays the alarm icon in my status bar now the app vibrates while scrolling despite having that option ticked off
+
+[P49#3169] 4* 2023 | 49. RoutineFlow - Routine 
+Really like this app. Paid for one year subscription. I have an issue with notifications though. When I am in the middle of a routine,there's a notification at the top of my screen. If I click on the notification, it doesn't take me to the routine in progress. I have to swipe back to get back to my routine. If I accidentally swipe back twice, I lose all of my progress and have to start again, making the time for all my previously completed tasks wrong. Very frustrating.
+
+[P126#18736] 5* 2026 | 126. To Do List
+it is very good as reminder and it have widget in home screen and navigation bar also it remind by voice I like it at all
+
+[P12#57436] 3* 2019 | 12. Fabulous Daily Routine
+The free app is great , so I got a premium but I've not noticed any changes or anything of value in the premium... Also no feedback button. Better to stick with the free app
+
+[P126#29613] 5* 2023 | 126. To Do List
+All things is that I love the interface.and the notification in status bar I loved it...❤️
+
+[P24#5431] 4* 2019 | 24. Habit Tracker
+I've just installed this app and so far, it seems like exactly what I had been looking for! Kudos. I just have one suggestion. The app exits on pressing the back button once. Most apps exit on pressing the back button twice, which works great for the user experience, in my opinion. So, it would be really great if you could incorporate that. Hoping to use this app every day!
+
+[P12#47145] 2* 2020 | 12. Fabulous Daily Routine
+Forced me to answer questions when no options seemed right No back button So I have it away
+
+[P3#1698] 2* 2026 | 3. Loop Habit Tracker
+I'm having a problem when I setup the single item widget the screen to pick which habit it is, it is too high on the screen and impinges on the status bar. the result is that I can't choose the top one or two habits in the list. Pixel 9
+
+[P84#7616] 5* 2026 | 84. Tasks - To Do List & R
+previously i could keep the notifications in the status bar with persistent notification option but now when I clear all notifications tasks notifications are also cleared, any solution for this?
+
+[P12#34403] 3* 2021 | 12. Fabulous Daily Routine
+Not a free-to-use app. You get a free, 7-day trial, which it will only tell you about after sign-up. Kinda off-putting intro... I use swipe-to-text and when I released my swipe on the input box for my name, the flow automatically continued without me pressing "next" or "continue." Which would have been fine if my name hadn't autocorrected to "Laid." Which also would have been fine if there was a back button at any point in the sign-up flow. 😂
+
+[P8#9911] 3* 2016 | 8. Habitica - Gamify Your 
+I accidentally clicked the back button while I was creating my avatar. When I logged back I cannot set up areas (work, creativity, etc.) that I want to improve on. I was hoping for template goals since I dunno where to start. I feel kinda lost right now. I hope there's a way I can change the areas for improvement in the settings.
+
+[P33#1461] 1* 2021 | 33. Productive - Habit tra
+the problem is that when you set a reminder for a certain time and I made sure to enable sounds but when the time comes it only shows a silent notification in the status bar, this is useless if there is no sound notifications and the screen is off
+
+[P8#7895] 2* 2018 | 8. Habitica - Gamify Your 
+Samsung note8 was unable to get past the "what tasks would you like to work  on?" Screen the next screen selection was blocked out no matter was  selected or un selected. However the back button still worked
+
+[P3#14790] 4* 2017 | 3. Loop Habit Tracker
+Love this app, it by far beats tracking in my planner in terms of convenience. The only thing that is stopping me from giving the fifth star is the fact that I can't just scroll back in time on my tracker overview. It's really counter-intuitive to not be able to just scroll/swipe back in time. I get that the information can be found in some other ways, but the whole charm of this tracker is that it's so simple and easy.
+
+[P125#17362] 5* 2020 | 125. 21 Days Challenge
+Love this app! The quotes and messages you guys send in my status bar everyday keep me going <3
+
+[P126#68812] 4* 2019 | 126. To Do List
+Please fix this bug, i used to love this app, but after Oreo upgrade there is a constant alarm icon in my status bar alongside the battery and signal icon. I tried everything, checked that there are no alarms set. Edit: Thanks for response but even after update, alarm sign is still there, even without anything in todo list. It only goes away on force stopping.
+
+[P126#57315] 5* 2020 | 126. To Do List
+Simple and effective. Does everything I need it to do and more. One option I would like to have however is the ability to automatically hide the status bar notification when I don't have any more tasks scheduled for the day.
+
+[P122#18837] 3* 2022 | 122. Hevy - Gym Log Workou
+Strong app is nicer looking but this does the job and is getting updates. Wish the navigation bar was transparent instead of just solid black and it was more material design looking. Functionality wise it is on par with what I've previously used however.
+
+[P122#4202] 3* 2026 | 122. Hevy - Gym Log Workou
+Good app but why does the back button exits the app? Just take me back on step back not all the way out of the app!
+
+[P8#8274] 3* 2017 | 8. Habitica - Gamify Your 
+good idea but there are some improvements to be done, like when i press back button i can't go back to my dashboard and there is no offline mode, you always need internet. in the habits section it would have been better if there was a progress chart.
+
+[P111#2283] 5* 2021 | 111. My Study Life - Schoo
+Cross platform syncing works very well and this feature alone makes this app stand out from other planners. However, I want to suggest some changes like changing from Hamburger menu to bottom navigation bar, and also giving an option to choose default tab on opening.
+

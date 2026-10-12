@@ -22,7 +22,10 @@ the same words; differences only where a platform forces them.
    how a device knows another went quiet, the line on Today, the Watch, the 197 sync complaints and what can't be solved.
 5. [Google Drive Sync — Prototype Results](<Research/Google Drive Sync — Prototype Results.md>): what was built, the
    real-Drive proof, the numbers, and what stages 3 and 4 must still check.
-6. [Android Plus Evidence](<Research/Android Plus Evidence/>): every script, sample, hand coding, tally and web source.
+6. [The Android App — What Android People Want, What Android Expects, and What Carries Over](<Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>): what Android people want beyond Plus (reminders that arrive above all), what
+   Android requires in 2026, what carries over from the iPhone, and **twelve decisions for the user** (§11).
+7. [Android Plus Evidence](<Research/Android Plus Evidence/>) and [Android App Evidence](<Research/Android App Evidence/>):
+   every script, sample, hand coding, tally and web source.
 
 Earlier work this builds on: [Plus, Price and the Server — How We Decided](<../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/README.md>)
 (no server for habits; the first Android and Google Drive reports), [Architecture 11](<../../Architecture/11. iCloud Sync with CloudKit.md>)
@@ -42,6 +45,8 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A8 | **When iCloud or Google Drive can't be used after someone bought Plus: offer a refund** (and another account if they have one) instead of checking before purchase (Current Work 90) | "if it is not working, then we will just refund it … if you have any other iCloud, connect to it; same thing for Google Drive" |
 | A10 | **Google Drive sync is offered on iPhone, iPad and Mac too**, as an alternative to iCloud, with the same code as Android; iCloud stays the default; one sync place at a time; built after the prototype passes (stage 4; a new iOS client is needed: the old one was deleted, Current Work 84) | "we are obviously including it for iOS" |
 | A9 | **Work starts with Google Drive sync in the shared core** (the biggest unknown; it decides Android Plus; built and mostly tested on GitHub's Linux machines with a stand-in Drive), alongside the Android research report | "the decision on working on Google Drive" |
+| A11 | **The Android app report's twelve questions, decided 12 Oct 2026** ([report §11](<Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>)): **as recommended** for D1 (exact reminder times asked for when the first reminder is turned on; otherwise up to 10 minutes late, said on the Reminders page), D2 (the reminder check, and one plain line after a reminder that didn't arrive), D3 (Alarm style rings, no full screen), D4 (a running timer as Android 16's Live Update), D7 (back one step, never loses typing), D8 (long-press shortcuts, no badge), D9 (tablets and foldables at launch, the iPad's layout), D10 (the same free plan, no ads), D12 (a Pixel, a Samsung and a Xiaomi); **D5: no wallpaper colours**; **D6: nothing for the themed icon for now** (the phone tints it for people who chose that look; draw our own only if it looks bad on a real phone) | "reminders problem. Okay. Alarm style. Okay. Running the timer outside … will also work"; "wallpaper colors … it's just a nonsense"; "remaining everything else … we don't need to think about them much" |
+| A12 | **Moving to another phone (D11): a transfer through a small server on Cloudflare's free plan, built last**, once everything else is done. It changes D15 (Export and Import only) when it's built; to keep D16's promise (we never see anyone's habits), the phone encrypts the transfer before it leaves and the server deletes it once picked up or after a short time | "we can keep this … server based because this can be covered under cloudflare free plan … we will do this at last" |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
@@ -69,8 +74,9 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 - **Designs still to make:** the same field edited on two offline devices ("Use This Instead"), a delete arriving from
   another device ("Archived on Pixel 8"), the same thing logged on two devices ("Keep Both / Remove One"), two devices
   that each created the same habit (combine), widgets refreshed the moment synced changes arrive.
-- **Android research report** (what Android people want beyond Plus; Google's own rules), then Figma designs, small
-  screens first.
+- **The twelve decisions in the Android app report** (§11, D1–D12: exact-time reminders, the reminder check, the
+  Alarm style, the timer outside the app, wallpaper colours, the themed icon, back, launcher extras, tablets and
+  foldables, the free plan, moving from an iPhone, test phones); then Figma designs, small screens first.
 - **Moving the day, schedule, streak and progress rules into the shared core** (they're in the iPhone's Swift today), so
   Android shows the same numbers; with speed runs on the iPhone, after the iPad and Watch branches merge.
 
@@ -78,8 +84,11 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 
 1. ~~**Google Drive sync in the shared core**~~ done, 11 Oct 2026: [Prototype Results](<Research/Google Drive Sync — Prototype Results.md>)
    (Go with changes). Next for it: stage 3 on two Android devices, after the Android designs.
-2. Alongside: the Android research report, and Current Work 91 on the iPhone.
-3. Then the shared rules into the core (Current Work 92, a cloud session: [Build Prompt — Shared Habit Rules](<../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>)),
+2. ~~The Android research report~~ done, 12 Oct 2026 ([The Android App — What Android People Want, What Android Expects, and What Carries Over](<Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>)): the user decides §11; and
+   Current Work 91 on the iPhone.
+3. **The Android designs, in Figma** (started 12 Oct 2026: Today, Day details and the log screens): continue from
+   [Android Designs — Handoff](<Android Designs — Handoff.md>), using the built iPhone app as the reference.
+4. Then the shared rules into the core (Current Work 92, a cloud session: [Build Prompt — Shared Habit Rules](<../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>)),
    the Android designs, and the Android app with Drive sync plugged in.
 
 **Done by the user, 11 Oct 2026:** a Web OAuth client "Drive sync tests" (`drive.appdata`; redirect
