@@ -602,7 +602,10 @@ final class HabitStore {
     /// The section a time falls in: the timed section that contains it. Before the first section it
     /// counts as the first; after the last one's end, as the last. With no timed sections, Anytime.
     func section(forMinute minute: Int) -> DaySection {
-        if let core { return section(core.sectionForMinute(minute: Int32(minute))) }
+        if let core {
+            access(keyPath: \.sections)
+            return section(core.sectionForMinute(minute: Int32(minute)))
+        }
         let timed = timedSections
         guard let first = timed.first, let last = timed.last else { return section(.anytime) }
         let m = dayMinute(minute)
@@ -641,7 +644,8 @@ final class HabitStore {
     @ObservationIgnored private var placementCache: [UUID: (inputs: PlacementInputs, placements: [Placement])] = [:]
 
     private func workOutPlacements(of habit: Habit) -> [Placement] {
-        if case let (core, h)? = shared(habit) {
+        if case let (core, h)? = shared(habit, logs: false) {
+            access(keyPath: \.sections)
             // The rules give each row's times as minutes; the habit's own times are matched to them in the same order.
             var pool = habit.reminders.sorted { dayMinute($0.minuteOfDay) < dayMinute($1.minuteOfDay) }
             return zip(core.placementSections(h: h), core.placementTimes(h: h)).map { id, minutes in
@@ -712,7 +716,11 @@ final class HabitStore {
     /// only Anytime and Quitting are placed by the person (the user, 3 Oct 2026). A handful of strings, so it's simply
     /// worked out when asked.
     var todayCards: [String] {
-        if let core { return core.todayCards() }
+        if let core {
+            access(keyPath: \.sections)
+            access(keyPath: \.cardOrder)
+            return core.todayCards()
+        }
         let timed = sections.filter { !$0.isAnytime }.map(\.id)
         let known = Set(timed)
         var slots = cardOrder.filter { $0 == .anytime || $0 == .quittingCard || known.contains($0) }
@@ -837,7 +845,7 @@ final class HabitStore {
     }
 
     func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
-        if case let (core, h)? = shared(habit) { return core.periodRange(h: h, day: day.n)?.dayRange }
+        if case let (core, h)? = shared(habit, logs: false) { return core.periodRange(h: h, day: day.n)?.dayRange }
         return switch habit.frequency {
         case .flexible(let kind, _):
             switch kind { case .week: period(.week, containing: day); case .month: period(.month, containing: day); case .year: period(.year, containing: day); case .day: day...day }
@@ -858,7 +866,7 @@ final class HabitStore {
 
     /// Amounts, minutes and limits on a week or month rule: a total for the whole period.
     func isTotal(_ habit: Habit) -> Bool {
-        if case let (core, h)? = shared(habit) { return core.isTotal(h: h) }
+        if case let (core, h)? = shared(habit, logs: false) { return core.isTotal(h: h) }
         return switch habit.kind {
         case .amount, .duration: !habit.frequency.isDayBased
         default: false
@@ -924,7 +932,7 @@ final class HabitStore {
     /// Skip today can be offered for habits whose days are counted one by one; a weekly or monthly total, or a
     /// limit, has no "day" to set aside.
     func canSkip(_ habit: Habit) -> Bool {
-        if case let (core, h)? = shared(habit) { return core.canSkip(h: h) }
+        if case let (core, h)? = shared(habit, logs: false) { return core.canSkip(h: h) }
         guard !habit.atMost, habit.kind != .quit else { return false }
         switch habit.frequency {
         case .perWeek, .perMonth, .perYear: return false
@@ -1015,7 +1023,7 @@ final class HabitStore {
 
     /// One-time tasks are rescheduled instead; everything else can be paused.
     func canPause(_ habit: Habit) -> Bool {
-        if case let (core, h)? = shared(habit) { return core.canPause(h: h) }
+        if case let (core, h)? = shared(habit, logs: false) { return core.canPause(h: h) }
         return !(habit.kind == .task && habit.dueDay != nil) && !habit.archived
     }
 
@@ -1115,7 +1123,7 @@ final class HabitStore {
 
     /// The first day a habit counts: its start date (past or future), or the day it was made.
     func startDay(of habit: Habit) -> LocalDay {
-        if case let (core, h)? = shared(habit) { return LocalDay(dayNumber: Int(core.startDay(h: h))) }
+        if case let (core, h)? = shared(habit, logs: false) { return LocalDay(dayNumber: Int(core.startDay(h: h))) }
         if let start = habit.startsOn { return start }
         if let known = startDays[habit.id], known.createdAt == habit.createdAt { return known.day }
         let day = LocalDay(habit.createdAt, calendar: calendar)
@@ -1129,7 +1137,7 @@ final class HabitStore {
     /// neutral row saying so, with Undo Skip one swipe away (3 Oct 2026), instead of making it vanish.
     /// `followingMoves: false` asks the task's own schedule, ignoring occurrences moved to other days.
     func isDue(_ habit: Habit, on day: LocalDay, now: Date? = nil, countingSkips: Bool = true, followingMoves: Bool = true) -> Bool {
-        if case let (core, h)? = shared(habit) {
+        if case let (core, h)? = shared(habit, logs: scheduleReadsLogs(habit)) {
             return core.isDue(h: h, day: day.n, now: (now ?? clock()).millis, countingSkips: countingSkips, followingMoves: followingMoves)
         }
         if (countingSkips && isSkipped(habit, on: day)) || isPaused(habit, on: day) || isArchived(habit, on: day) { return false }
@@ -1184,7 +1192,7 @@ final class HabitStore {
 
     /// The day's goal: times, amount, minutes, or the number of checklist items.
     func dayGoal(of habit: Habit) -> Double {
-        if case let (core, h)? = shared(habit) { return core.dayGoal(h: h) }
+        if case let (core, h)? = shared(habit, logs: false) { return core.dayGoal(h: h) }
         return switch habit.kind {
         case .checklist: Double(max(habit.steps.count, 1))
         case .task: 1
@@ -1258,7 +1266,7 @@ final class HabitStore {
     }
 
     func goal(of habit: Habit) -> Double {
-        if case let (core, h)? = shared(habit) { return core.goal(h: h) }
+        if case let (core, h)? = shared(habit, logs: false) { return core.goal(h: h) }
         if isTotal(habit) { return habit.goal }
         return switch habit.frequency {
         case .perWeek(let n), .perMonth(let n), .perYear(let n): Double(n)
@@ -1377,7 +1385,7 @@ final class HabitStore {
     }
 
     func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
-        if case let (core, h)? = shared(habit) { return core.hasPause(h: h, first: range.lowerBound.n, last: range.upperBound.n) }
+        if case let (core, h)? = shared(habit, logs: false) { return core.hasPause(h: h, first: range.lowerBound.n, last: range.upperBound.n) }
         return pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
     }
 
@@ -2320,7 +2328,7 @@ final class HabitStore {
 
     /// The kind of period a habit is judged in: each day, or a week, month or year.
     func periodKind(_ habit: Habit) -> GoalPeriod {
-        if case let (core, h)? = shared(habit) { return [GoalPeriod.day, .week, .month, .year][Int(core.periodKind(h: h))] }
+        if case let (core, h)? = shared(habit, logs: false) { return [GoalPeriod.day, .week, .month, .year][Int(core.periodKind(h: h))] }
         return switch habit.frequency {
         case .perWeek: .week
         case .perMonth: .month
@@ -2349,7 +2357,7 @@ final class HabitStore {
     /// N times a week, month or year (the user, 6 Oct 2026: "they might call two times this day"; the form already
     /// says every ✓ counts, even two on one day), so its button fills only when the goal is met (Current Work 54).
     func countsUp(_ habit: Habit, on day: LocalDay) -> Bool {
-        if case let (core, h)? = shared(habit) { return core.countsUp(h: h, day: day.n) }
+        if case let (core, h)? = shared(habit, logs: false) { return core.countsUp(h: h, day: day.n) }
         let rule = rule(habit, on: day)
         guard rule.kind == .check else { return false }
         return !rule.frequency.isDayBased || dayGoal(of: rule) > 1

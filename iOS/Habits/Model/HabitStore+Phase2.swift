@@ -108,7 +108,7 @@ extension HabitStore {
 
     /// The first day a quit habit counts from: when it was made, or an earlier "Started".
     func quitStartDay(of habit: Habit) -> LocalDay {
-        if case let (core, h)? = shared(habit) { return LocalDay(dayNumber: Int(core.quitStartDay(h: h))) }
+        if case let (core, h)? = shared(habit, logs: false) { return LocalDay(dayNumber: Int(core.quitStartDay(h: h))) }
         return today(now: min(habit.createdAt, habit.quitSince ?? habit.createdAt))
     }
 

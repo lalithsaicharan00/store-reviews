@@ -23,15 +23,14 @@ extension HabitStore {
 
     /// The shared rules, up to date with the store's data; nil where the store's own rules answer.
     ///
-    /// The core reads the store's data without SwiftUI seeing it, so this reads what every rule depends on, as the Swift
-    /// rules did: a view showing a rule's answer still redraws when that changes (Arrange's card moves didn't, run
-    /// 38216853635). One habit's own logs are read in `ruleHabit`.
+    /// The core reads the store's data without SwiftUI seeing it, so each rule reads what it depends on, as the Swift
+    /// rules did, and no more: a view showing a rule's answer still redraws when that changes (Arrange's card moves
+    /// didn't, run 38216853635), and only then (reading every habit's logs for "is it due" redrew Today's list on every
+    /// log: 69 draws became 287, run 38247029430). Every rule reads the settings here; one habit's data in `ruleHabit`;
+    /// the times of day and Today's cards where they're used.
     var core: LiveRules? {
         guard usesCoreRules else { return nil }
         access(keyPath: \.settings)
-        access(keyPath: \.sections)
-        access(keyPath: \.cardOrder)
-        access(keyPath: \.habits)
         if let coreState {
             if coreDirty { refreshCore(coreState) }
             return coreState
@@ -82,15 +81,17 @@ extension HabitStore {
     }
 
     /// The rules' habit for one of the store's: the saved one, or (for a form's draft, or a habit judged by an earlier
-    /// rule) one made from it and kept until the data changes.
-    func ruleHabit(_ habit: Habit, _ core: LiveRules) -> RuleHabit? {
-        observeEntries(of: habit.id)
+    /// rule) one made from it and kept until the data changes. `logs`: whether the rule reads the habit's logs (only
+    /// then does a view showing it redraw when one is added); a task's moved days and a time habit's running timer
+    /// likewise only for those.
+    func ruleHabit(_ habit: Habit, _ core: LiveRules, logs: Bool = true) -> RuleHabit? {
+        if logs { observeEntries(of: habit.id) }
         access(keyPath: \.skips)
-        access(keyPath: \.taskMoves)
         access(keyPath: \.pauses)
         access(keyPath: \.rules)
         access(keyPath: \.archivedOn)
-        access(keyPath: \.timers)
+        if habit.kind == .task { access(keyPath: \.taskMoves) }
+        if logs, habit.kind == .duration { access(keyPath: \.timers) }
         if isSaved(habit) {
             if let known = coreHandles[habit.id] { return known }
             let made = core.habit(id: habit.id.uuidString)
@@ -104,10 +105,19 @@ extension HabitStore {
         return made
     }
 
-    /// The core and the rules' habit, when the shared rules answer.
-    func shared(_ habit: Habit) -> (LiveRules, RuleHabit)? {
-        guard let core, let h = ruleHabit(habit, core) else { return nil }
+    /// The core and the rules' habit, when the shared rules answer. `logs: false` for a rule that never reads the
+    /// habit's logs (its goal, its first day, whether a day is one of its days).
+    func shared(_ habit: Habit, logs: Bool = true) -> (LiveRules, RuleHabit)? {
+        guard let core, let h = ruleHabit(habit, core, logs: logs) else { return nil }
         return (core, h)
+    }
+
+    /// Whether "is it one of its days" reads the habit's logs: a task (done or still to do) and a schedule counted
+    /// from the last time it was done, now or in its goal history (as the Swift `isDue`).
+    func scheduleReadsLogs(_ habit: Habit) -> Bool {
+        func fromLastDone(_ f: Frequency) -> Bool { if case .afterCompletion = f { true } else { false } }
+        return habit.kind == .task || fromLastDone(habit.frequency)
+            || (rules[habit.id]?.contains { $0.kind == .task || fromLastDone($0.frequency) } ?? false)
     }
 }
 
