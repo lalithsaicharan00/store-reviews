@@ -43,8 +43,7 @@ extension HabitStore {
         }
         return perfTimed("Shared rules: built from every log") {
             let rows = coreRows ?? Snapshot(habits: [], steps: [], reminders: [], entries: entries.map(\.record), settings: [])
-            let made = LiveRules(snapshot: rows, settings: coreSettings(), timeZone: calendar.timeZone.identifier,
-                                 clock: { [weak self] in KotlinLong(value: (self?.clock() ?? .now).millis) })
+            let made = LiveRules(snapshot: rows, settings: coreSettings(), timeZone: calendar.timeZone.identifier, clock: coreClock())
             coreState = made
             refreshCore(made)
             return made
@@ -109,6 +108,25 @@ extension HabitStore {
         return made
     }
 
+    /// The clock the shared rules read: the store's own, as it is when asked (checks set it as they go).
+    func coreClock() -> () -> KotlinLong {
+        { [weak self] in MainActor.assumeIsolated { KotlinLong(value: (self?.clock() ?? .now).millis) } }
+    }
+
+    /// The shared rules over `rows`' logs, made on a background thread (`load`): converting every log is the costly
+    /// part, and the habits and settings are given on first use (`coreDirty`). Nil where the store's own rules answer.
+    func buildCoreOffMain(_ rows: Snapshot) async -> LiveRules? {
+        guard usesCoreRules else { return nil }
+        let input = CoreInput(rows: rows, zone: calendar.timeZone.identifier, clock: coreClock())
+        let built = await Task.detached(priority: .userInitiated) {
+            let started = CFAbsoluteTimeGetCurrent()
+            let rules = LiveRules(snapshot: input.rows, settings: [:], timeZone: input.zone, clock: input.clock)
+            return CoreBuilt(rules: rules, seconds: CFAbsoluteTimeGetCurrent() - started)
+        }.value
+        perfNote("Shared rules: built from every log, off the main thread", since: CFAbsoluteTimeGetCurrent() - built.seconds)
+        return built.rules
+    }
+
     /// The core and the rules' habit, when the shared rules answer. `logs: false` for a rule that never reads the
     /// habit's logs (its goal, its first day, whether a day is one of its days).
     func shared(_ habit: Habit, logs: Bool = true) -> (LiveRules, RuleHabit)? {
@@ -123,6 +141,17 @@ extension HabitStore {
         return habit.kind == .task || fromLastDone(habit.frequency)
             || (rules[habit.id]?.contains { $0.kind == .task || fromLastDone($0.frequency) } ?? false)
     }
+}
+
+/// What `buildCoreOffMain` hands to its background thread and back: Kotlin objects, used on one thread at a time.
+nonisolated struct CoreInput: @unchecked Sendable {
+    let rows: Snapshot
+    let zone: String
+    let clock: () -> KotlinLong
+}
+nonisolated struct CoreBuilt: @unchecked Sendable {
+    let rules: LiveRules
+    let seconds: Double
 }
 
 extension KotlinIntArray {

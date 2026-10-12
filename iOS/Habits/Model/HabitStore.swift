@@ -1633,6 +1633,9 @@ final class HabitStore {
                 snapshot = try await repository.load()
             }
             perfNote("Store load: read the database", since: readStarted)
+            // The shared rules' copy of every log, made off the main thread while nothing on screen has changed yet
+            // (S16): made on first use, it cost 45–80 ms of the main thread after every load (Current Work 92).
+            let builtCore = await buildCoreOffMain(snapshot)
             let mapStarted = CFAbsoluteTimeGetCurrent()
             defer { perfNote("Store load: into the app (\(snapshot.entries.count) logs)", since: mapStarted) }
             let steps = Dictionary(grouping: snapshot.steps, by: \.habitId)
@@ -1645,6 +1648,10 @@ final class HabitStore {
             }
             entriesReplaced()
             coreRows = snapshot
+            if let builtCore {
+                coreState = builtCore
+                coreDirty = true // its habits and settings are given on first use, once the load has set them
+            }
             clearLogOffer()
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
