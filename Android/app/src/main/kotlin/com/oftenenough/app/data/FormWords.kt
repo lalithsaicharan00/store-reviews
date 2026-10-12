@@ -3,7 +3,7 @@ package com.oftenenough.app.data
 // MOVE TO CORE: the New Habit form's live sentences, ported from the iPhone's Outcome.swift. They say what will happen
 // before Add, built from the draft habit with the same rules Today and the reminders use.
 
-object Outcome {
+object FormOutcome {
     /** Most "remind again" follow-ups for one reminder (the iPhone's `ReminderScheduler.maxFollowUps`). */
     const val MAX_FOLLOW_UPS = 3
 

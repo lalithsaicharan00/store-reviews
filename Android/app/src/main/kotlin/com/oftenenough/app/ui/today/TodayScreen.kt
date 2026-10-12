@@ -164,7 +164,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
                     }
                     Column(Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                         if (!isToday) {
-                            TonalButton("Back to today", { shownDay = null }, Modifier.padding(bottom = 8.dp))
+                            TonalButton("Back to today", { shownDay = null }, Modifier.padding(bottom = 8.dp).semantics { testTag = "back-to-today" })
                         }
                         DayBar(store, day, today, onPrevious = { shownDay = day - 1 }, onNext = { shownDay = day + 1 }, onPick = { calendar = true })
                     }

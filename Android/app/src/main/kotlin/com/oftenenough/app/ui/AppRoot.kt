@@ -75,15 +75,17 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     }
     LaunchedEffect(store.problem) { store.problem?.let { snackbar.showSnackbar(it); store.problem = null } }
     if (!store.isLoaded) { Box(Modifier.fillMaxSize().background(appColors.screen)); return }
+    // A page the welcome hands over to opens once Today's navigation exists (navigating before it is set up throws).
+    var handOver by rememberSaveable { mutableStateOf<String?>(null) }
     if (!prefs.onboarded) {
         // Someone with habits already (Android's own Auto Backup brought them back) never sees the welcome.
         if (store.habits.isNotEmpty()) { prefs.onboarded = true; return }
         OnboardingFlow(store, object : OnboardingNav {
             override fun finished() { prefs.onboarded = true }
-            override fun newHabit(idea: HabitIdea?) { prefs.onboarded = true; nav.navigate(Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: "")) }
-            override fun signIn() { prefs.onboarded = true; nav.navigate(Routes.page("Google Drive & Backup")) }
-            override fun restore() { prefs.onboarded = true; nav.navigate(Routes.page("Restore from a backup")) }
-            override fun privacy() { prefs.onboarded = true; nav.navigate(Routes.page("Privacy & Security")) }
+            override fun newHabit(idea: HabitIdea?) { handOver = Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: ""); prefs.onboarded = true }
+            override fun signIn() { handOver = Routes.page("Google Drive & Backup"); prefs.onboarded = true }
+            override fun restore() { handOver = Routes.page("Restore from a backup"); prefs.onboarded = true }
+            override fun privacy() { handOver = Routes.page("Privacy & Security"); prefs.onboarded = true }
         })
         return
     }
@@ -142,6 +144,7 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             SectionEditorScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }) { nav.popBackStack() }
         }
     }
+    LaunchedEffect(handOver) { handOver?.let { route -> handOver = null; nav.navigate(route) } }
 }
 
 object Routes {

@@ -92,7 +92,7 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.HowOften
 import com.oftenenough.app.data.OftenDraft
 import com.oftenenough.app.data.OftenDraft.Choice
-import com.oftenenough.app.data.Outcome
+import com.oftenenough.app.data.FormOutcome
 import com.oftenenough.app.data.Step
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.data.newId
@@ -570,14 +570,14 @@ fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
         val timed = store.sections.filter { !it.isAnytime }
         SegmentedList {
             timed.forEachIndexed { i, s ->
-                CheckRow(s.name, s.id in form.timesOfDay, i, timed.size, "part-${s.id}", detail = Outcome.hours(s, store)) { form.choose(s.id) }
+                CheckRow(s.name, s.id in form.timesOfDay, i, timed.size, "part-${s.id}", detail = FormOutcome.hours(s, store)) { form.choose(s.id) }
             }
         }
         GroupTitle("Or")
         SegmentedList { RadioRow("Anytime", form.timesOfDay == listOf(DaySection.ANYTIME), 0, 1, "part-anytime", detail = "No set time") { form.choose(DaySection.ANYTIME) } }
         Spacer(Modifier.height(16.dp))
         SegmentedList { AddRow("New time of day", 0, 1, "new-time-of-day") { adding = true } }
-        Note(Outcome.timeOfDay(form.previewHabit(), store))
+        Note(FormOutcome.timeOfDay(form.previewHabit(), store))
     }
     if (adding) NewSectionDialog(store, { adding = false }) { id -> form.choose(id) }
 }
@@ -705,7 +705,7 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
                         }
                     }
                 }
-                Note(Outcome.reminders(form.previewHabit(), store, alarmsAvailable = false))
+                Note(FormOutcome.reminders(form.previewHabit(), store, alarmsAvailable = false))
                 Spacer(Modifier.height(8.dp))
                 SegmentedList {
                     Segment(0, 1) {

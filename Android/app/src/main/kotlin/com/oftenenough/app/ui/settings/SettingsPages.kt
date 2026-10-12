@@ -71,7 +71,7 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.SectionPlan
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.data.newId
-import com.oftenenough.app.data.Outcome
+import com.oftenenough.app.data.FormOutcome
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
@@ -187,7 +187,7 @@ fun TimesOfDayPage(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> U
                     Segment(i + 1, count, Modifier.semantics { testTag = "section-${s.name}" }, onClick = { onEdit(s.id) }) {
                         Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
                             Text(s.name, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                            Text(Outcome.hours(s, store) ?: "", style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+                            Text(FormOutcome.hours(s, store) ?: "", style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
                         }
                         Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
                     }
