@@ -36,15 +36,21 @@ extension HabitStore {
             if coreDirty { refreshCore(coreState) }
             return coreState
         }
-        let rows = coreRows ?? Snapshot(habits: [], steps: [], reminders: [], entries: entries.map(\.record), settings: [])
-        let made = LiveRules(snapshot: rows, settings: coreSettings(), timeZone: calendar.timeZone.identifier,
-                             clock: { [weak self] in KotlinLong(value: (self?.clock() ?? .now).millis) })
-        coreState = made
-        refreshCore(made)
-        return made
+        return perfTimed("Shared rules: built from every log") {
+            let rows = coreRows ?? Snapshot(habits: [], steps: [], reminders: [], entries: entries.map(\.record), settings: [])
+            let made = LiveRules(snapshot: rows, settings: coreSettings(), timeZone: calendar.timeZone.identifier,
+                                 clock: { [weak self] in KotlinLong(value: (self?.clock() ?? .now).millis) })
+            coreState = made
+            refreshCore(made)
+            return made
+        }
     }
 
     private func refreshCore(_ core: LiveRules) {
+        perfTimed("Shared rules: habits and settings again") { refreshCoreNow(core) }
+    }
+
+    private func refreshCoreNow(_ core: LiveRules) {
         var steps: [StepRecord] = []
         var reminders: [ReminderRecord] = []
         let records = habits.enumerated().map { i, habit -> HabitRecord in
