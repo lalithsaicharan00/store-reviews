@@ -96,5 +96,5 @@ Each widget problem users reported, and the check that covers it (`WidgetCheck`,
 | Streak on the widget | C023 | "🔥 12" on the weekly widget; hidden when streaks are hidden |
 | Accidental taps record a day | C040 (report 46), C090 | A done ✓ unchecks that day; retried callbacks never log twice; Record a slip only opens its sheet |
 | Destructive reset on a widget | C090 | No reset or delete on any widget; a slip is never logged by a tap |
-| Widgets paywalled | C009 | No Plus checks on any widget (the user, 6 Oct 2026) |
+| Widgets paywalled | C009 | No Plus checks on any widget (the user, 6 Oct 2026); superseded 12 Oct 2026: Today and This week become Plus (Current Work 93) |
 | Widget lag | C040 | `widget-publish` and `widget-log` speed scenarios (S2) |

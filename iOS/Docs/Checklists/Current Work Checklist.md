@@ -82,7 +82,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 93; 83 and 84 are on `claude/lucid-johnson-egrjup`).
+  still resolve; give new items the next unused number (currently 94; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -884,6 +884,48 @@ and the Add note keyboard coming up by itself.
     - [ ] The real iPad and iPhone checks (U9; list in the README): Live Activities, AlarmKit, Health steps, Touch ID /
       Face ID, the popover with the on-screen keyboard, Stage Manager, a hardware keyboard; the iPhone's U9 checks.
 
+- [ ] **93. Which widgets are free and which are Plus, on iPhone, iPad and Android** (added 12 October 2026, from the
+  user; to work on next). The user: "the small widgets variants that we have, it will be free for habits … tasks, it
+  will be free … the today medium widget, today large, as well as the weekly widget … these three variants will be
+  paid … tasks medium as well as large, these are free … lock screen widgets are also free".
+  - **Decided (the user, 12 Oct 2026), the same on every platform:**
+
+    | Widget (today's kind) | Free | Plus |
+    |---|---|---|
+    | One habit, Small (`ItemPhoneWidget`; one per habit, as many as wanted) | ✓ | |
+    | Tasks, Medium and Large (`TasksPhoneWidget`) | ✓ | |
+    | Every Lock Screen widget (one habit, Today, the line above the clock) | ✓ | |
+    | Today, Medium and Large (`TodayPhoneWidget`; the iPad's Extra Large is the same widget) | | ✓ |
+    | This week, Medium (`WeekPhoneWidget`; decided Plus 10 Oct, item 81, not built yet) | | ✓ |
+
+    Recorded in [Architecture 02 §3.1](<../../../Architecture/02. Billing and Entitlements.md>) (replaces 29 Sep's
+    "interactive home-screen widgets are free"), Architecture 07, the Backlog and Android decision A13. The iPad's Extra
+    Large Today counts as Today (it is the same widget at a bigger size); confirm with the user if that's wrong.
+  - **Why it's safe (the reviews, 12 Oct 2026 chat):** the anger in reviews is at having *no* free widget or not being
+    able to tick from one (25 reviews, 1.72★; `P44#49`, `P2#5998`, `A3#2165`). A free person (5 habits) still ticks every
+    habit from a small widget. People do pay for bigger and history widgets (`A62#15`: "bought the paid version … because
+    I wanted to use the larger widget"; `A1#54069`). Reviews can't measure the gain in purchases: the only before/after
+    (Days Since gating all its widgets) saw 1★ go from 1.9% to 5.0% while "I paid" rose only 0.75% → 1.25%.
+  - [ ] **Set before launch, never moved later:** no free widget becomes Plus once people have it (Architecture 02).
+  - [ ] **Widgets are LOCKED (U28):** this is the user's say-so to add Plus to the Today and This week widgets only.
+    Read [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>) first; the instant card
+    switch, writing every tap before the intent returns, and saving in order stay exactly as they are; the free widgets
+    don't change at all. Check on the iPhone Home Screen when built (`WidgetLatencyDeviceTests`), then let the user try it.
+  - [ ] **What a free person sees on a Plus widget:** iOS shows every widget in the gallery to everyone, so Today and
+    This week can be added without Plus. Design it in Figma first: never a blank card (paid-and-broken widgets average
+    1.62★) and never a paywall on a logging tap; a useful free fallback (for example the day's count, opening Today)
+    with one quiet "With Plus" line. The same when Plus ends or is refunded (D10): the widget falls back, keeps its chosen
+    habit or section, and comes back when Plus does. The widget reads Plus from `WidgetSnapshot` (`plus` is already in it).
+  - [ ] **Words that say which widgets are free** (never an unqualified "widgets included": a free plan that promised
+    "widgets" and gave less felt misleading, `P2#2464`): the onboarding "What's included" row (`OnboardingPages.swift`,
+    "Widgets included"), Help's "Which widgets are there?" (`HelpView.swift`), the Plus screen's list, the App Store and
+    Play listings (Architecture 02's store description) and the Widgets guide (Included / With Plus).
+  - [ ] **Android:** the same split when its widgets are built (A3, A13): small one-habit, Tasks and Lock Screen-style
+    glance widgets free; Today and This week Plus.
+  - [ ] Tests: a free launch adds and ticks One habit, Tasks and Lock Screen widgets with nothing asking for Plus; a free
+    Today / This week shows the fallback; Plus unlocks them at once and they fall back when Plus ends (WidgetUITests,
+    WidgetSystemUITests, PlusUITests); a speed run if `HabitStore+Widgets.swift` changes (S2).
+
 - [ ] **88. Coming back to the iPhone after using the iPad: "Use your habits on this iPhone?"** (added 11 October 2026,
   from the user; to do next). The iPad shows "Use your habits on this iPad?" when the free plan's syncing device is the
   iPhone (design `iOS/Docs/iPad/Designs/20 · Plus — owners, other devices, when Plus ends.png`; iPhone design Figma
@@ -1500,7 +1542,7 @@ and the Add note keyboard coming up by itself.
     replaces the ≡ menu's Account row.
   - [x] **Decided by the user, 10 Oct 2026:** free keeps **one syncing device at a time** (an iPad works on its own as
     the one device; the same habits on iPhone and iPad is Plus); **the "This week" widget becomes Plus** (Today,
-    Tasks, One habit and Lock Screen stay free; the user's say-so for locked widgets, U28; check on the iPhone Home
+    Tasks, One habit and Lock Screen stay free; Today became Plus too on 12 Oct, item 93; the user's say-so for locked widgets, U28; check on the iPhone Home
     Screen when built). Still open: an optional quiet Plus line at a success moment.
   - [x] Apple setup, known so far: the iCloud container `iCloud.com.oftenenough.app` already exists (iCloud Drive
     backup); the build adds the CloudKit service and push notifications (silent pushes tell a device something

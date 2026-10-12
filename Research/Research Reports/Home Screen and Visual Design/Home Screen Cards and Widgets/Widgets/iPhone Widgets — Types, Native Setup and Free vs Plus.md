@@ -163,6 +163,8 @@ Follow the [accepted Progress rules](<../../../../../iOS/Design Rules — Don't 
 
 ## 7. Proposed free and Plus boundary
 
+*Decision since this proposal (the user, 12 Oct 2026): free are the small one-habit, Tasks and Lock Screen widgets; the Today list (Medium, Large) and This week are Plus. See [Architecture 02 §3.1](<../../../../../Architecture/02. Billing and Entitlements.md>) and Current Work 93.*
+
 This retains the current free functionality rather than taking it away. The exact purchase price and billing term are outside this request; no price optimization can be inferred from these reviews.
 
 | Capability | Free | Plus | Why |

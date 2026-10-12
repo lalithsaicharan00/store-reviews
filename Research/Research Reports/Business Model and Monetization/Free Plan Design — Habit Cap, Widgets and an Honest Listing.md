@@ -204,6 +204,8 @@ Across the corpus, apps whose reviewers name a clear cap mostly stop at **3** (1
 
 ## 6. Widgets
 
+*Decision since this study (the user, 12 Oct 2026): free are the small one-habit, Tasks and Lock Screen widgets; Today (Medium, Large) and This week are Plus. See [Architecture 02 §3.1](<../../../Architecture/02. Billing and Entitlements.md>) and Current Work 93. The evidence below is unchanged.*
+
 | What users say | Reviews | Apps | Mean ★ | 1★ |
 |---|---|---|---|---|
 | **Paid for the widget and it's broken or missing** | 29 | 15 | **1.62** | 66% |
