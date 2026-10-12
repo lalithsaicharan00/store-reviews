@@ -1,42 +1,45 @@
-# claude/shared-habit-rules-ci23 @ 7087be7
+# claude/shared-habit-rules-ci22 @ 7087be7
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38261610678 · 2026-10-12 15:53 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38261607158 · 2026-10-12 15:57 UTC
 Commit: Merge remote-tracking branch 'origin/main' into claude/shared-habit-rules-switch
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (UndoUITests,TasksUITests,CompletionFeedbackUITests,RoutineCalendarUITests): success
+- UI tests (WeekCardsUITests,TodayRowSheetUITests,RemindersUITests,SectionHeaderUITests): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 19 tests, with 0 failures (0 unexpected) in 764.930 (764.957) seconds
-	 Executed 19 tests, with 0 failures (0 unexpected) in 764.930 (764.959) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 152.777 (152.782) seconds
-	 Executed 7 tests, with 0 failures (0 unexpected) in 326.341 (326.349) seconds
-	 Executed 8 tests, with 0 failures (0 unexpected) in 255.580 (255.588) seconds
-Test Case '-[HabitsUITests.CompletionFeedbackUITests testCompletionPlaysOnceWhenAHabitBecomesCompleteAndNeverForQuitOrLimits]' passed (30.231 seconds).
-Test Case '-[HabitsUITests.RoutineCalendarUITests testCalendarSixWeekMonthAtLargeTextSize]' passed (28.449 seconds).
-Test Case '-[HabitsUITests.RoutineCalendarUITests testCalendarTotalsAndDaysWithoutHabits]' passed (56.983 seconds).
-Test Case '-[HabitsUITests.RoutineCalendarUITests testCalendarUpdatesAfterLoggingAndPastNavigation]' passed (31.087 seconds).
-Test Case '-[HabitsUITests.RoutineCalendarUITests testChecklistRoutineUsesExistingEntries]' passed (31.295 seconds).
-Test Case '-[HabitsUITests.RoutineCalendarUITests testNonTimedRoutineAndSkipDoNotFalselyComplete]' passed (88.320 seconds).
-Test Case '-[HabitsUITests.RoutineCalendarUITests testPlayFollowsHeaderRules]' passed (33.629 seconds).
-Test Case '-[HabitsUITests.RoutineCalendarUITests testSingleHabitFullCompletionAndUndo]' passed (56.578 seconds).
-Test Case '-[HabitsUITests.TasksUITests testCreateTaskFromTasksAndEditSurvivesRelaunch]' passed (59.400 seconds).
-Test Case '-[HabitsUITests.TasksUITests testEveryTaskAppearsAndCanOpenEdit]' passed (85.022 seconds).
-Test Case '-[HabitsUITests.TasksUITests testTaskModelAndPersistence]' passed (8.356 seconds).
-Test Case '-[HabitsUITests.UndoUITests testDayControlsAndCalendarOpeningAreExplicit]' passed (39.233 seconds).
-Test Case '-[HabitsUITests.UndoUITests testEditAndDeleteOneEntryInDaySheet]' passed (53.544 seconds).
-Test Case '-[HabitsUITests.UndoUITests testInlineUndoSurvivesAndIsExact]' passed (33.772 seconds).
-Test Case '-[HabitsUITests.UndoUITests testLogManuallyAddsOneLog]' passed (35.297 seconds).
-Test Case '-[HabitsUITests.UndoUITests testRoutineUndoStaysVisibleAndLeavesEarlierLogsIntact]' passed (22.394 seconds).
-Test Case '-[HabitsUITests.UndoUITests testSkipFromTodayKeepsHistoryOpenAndCanBeUndone]' passed (22.333 seconds).
-Test Case '-[HabitsUITests.UndoUITests testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited]' passed (34.289 seconds).
-Test Case '-[HabitsUITests.UndoUITests testStoreCorrectionsRecalculateAndPersist]' passed (14.718 seconds).
+	 Executed 10 tests, with 0 failures (0 unexpected) in 497.147 (497.157) seconds
+	 Executed 21 tests, with 1 failure (0 unexpected) in 992.280 (992.309) seconds
+	 Executed 21 tests, with 1 failure (0 unexpected) in 992.280 (992.312) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 221.494 (221.500) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 239.120 (239.128) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RemindersUITests.swift:14: error: -[HabitsUITests.RemindersUITests testPlanningActionsPermissionsFailuresAndClockChanges] : XCTAssertTrue failed - The reminder checks did not finish
+Test Case '-[HabitsUITests.RemindersUITests testDeniedPermissionOffersSettingsAndEmptyState]' passed (27.542 seconds).
+Test Case '-[HabitsUITests.RemindersUITests testPlanningActionsPermissionsFailuresAndClockChanges]' failed (121.773 seconds).
+Test Case '-[HabitsUITests.RemindersUITests testRealEmptyPageHasNoUnexpectedAlarmErrorOrPermissionPrompt]' passed (51.739 seconds).
+Test Case '-[HabitsUITests.RemindersUITests testSavedRemindersOpenEditableTaskWithoutPermissionPrompt]' passed (20.441 seconds).
+Test Case '-[HabitsUITests.SectionHeaderUITests testHeaders]' passed (34.518 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testLongPressMenu]' passed (31.158 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testRowOpensDaySheetForEveryKind]' passed (46.969 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testSheetActionsAndDeleteInTheMenu]' passed (47.373 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testSheetFollowsTheDayShown]' passed (28.411 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testSwipeActions]' passed (42.496 seconds).
+Test Case '-[HabitsUITests.TodayRowSheetUITests testTickTogglesAndPlusAdds]' passed (42.714 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testHabitPageDark]' passed (48.729 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testMonthCards]' passed (44.254 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testMonthCardsDark]' passed (27.252 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testSquaresKeyFoldedOnceIsFoldedEverywhere]' passed (47.472 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsDark]' passed (66.455 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsLight]' passed (74.115 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsWithGroups]' passed (25.102 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testYearCards]' passed (72.362 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testYearCardsDark]' passed (35.003 seconds).
+Test Case '-[HabitsUITests.WeekCardsUITests testYearScrollAndHabitPage]' passed (56.403 seconds).
 ```
 
 ## Release build
