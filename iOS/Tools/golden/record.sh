@@ -21,7 +21,7 @@ xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
 # A freshly booted simulator can refuse a launch while its home screen is still starting ("denied by service
 # delegate (SBMainWorkspace)", run 38203920942): try again for up to five minutes.
 for TRY in $(seq 1 30); do
-  if xcrun simctl launch --stdout="$OUT/app-stdout.txt" --stderr="$OUT/app-stderr.txt" "$SIM" "$BUNDLE" -uitest -golden-record; then
+  if xcrun simctl launch --stdout="$OUT/app-stdout.txt" --stderr="$OUT/app-stderr.txt" "$SIM" "$BUNDLE" -uitest -golden-record ${GOLDEN_ARGS:-}; then
     echo "Launched (try $TRY)"; break
   fi
   sleep 10

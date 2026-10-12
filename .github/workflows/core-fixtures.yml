@@ -14,7 +14,10 @@ permissions:
 
 jobs:
   record:
-    if: contains(github.event.head_commit.message, '[core-fixtures]') || contains(github.event.head_commit.message, '[core-fixtures-extreme]')
+    if: >-
+      contains(github.event.head_commit.message, '[core-fixtures]') ||
+      contains(github.event.head_commit.message, '[core-fixtures-extreme]') ||
+      contains(github.event.head_commit.message, '[core-fixtures-shared]')
     concurrency:
       group: core-fixtures-${{ github.ref }}
     runs-on: macos-26
@@ -74,6 +77,8 @@ jobs:
         working-directory: iOS
         run: |
           mkdir -p ../golden-in
+          # [core-fixtures-shared]: the same cases answered through the shared rules (checkpoint 2), to <branch>-fixtures-shared.
+          case "$MESSAGE" in *"[core-fixtures-shared]"*) export GOLDEN_ARGS="-golden-shared"; echo "SHARED=-shared" >> "$GITHUB_ENV";; esac
           case "$MESSAGE" in
             *"[core-fixtures-extreme]"*) cp ../Core/fixtures/inputs/zz-extreme.json ../golden-in/; echo "SUFFIX=-fixtures-extreme" >> "$GITHUB_ENV";;
             *) cp ../Core/fixtures/inputs/*.json ../golden-in/; rm -f ../golden-in/zz-extreme.json; echo "SUFFIX=-fixtures" >> "$GITHUB_ENV";;
@@ -93,7 +98,7 @@ jobs:
           git checkout -q --orphan fixtures
           git add -A
           git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -q -m "Golden answers for ${GITHUB_SHA:0:7} (${GITHUB_REF_NAME})"
-          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${GITHUB_REF_NAME}${SUFFIX:--fixtures}"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${GITHUB_REF_NAME}${SUFFIX:--fixtures}${SHARED:-}"
 
       - uses: actions/upload-artifact@v4
         if: always()
