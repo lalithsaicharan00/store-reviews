@@ -474,6 +474,10 @@ jobs:
           print("WATCH_TESTS=" + (tests if tests else ("WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests,WatchRoutineTests,WatchPlusTests,WatchLogManuallyTests" if ci else "none")))
           print("WATCH_SHOTS=" + ("1" if shots else "0"))
           print("WATCH_PERF=" + ("1" if "[watch-perf]" in m else "0"))
+          # Side by side in one job (measure_watch_perf.sh): "watch-perf-variants: shared= swift=-swift-rules" and so on.
+          for key in ("variants", "scenarios", "rounds"):
+              found = re.findall(r"^watch-perf-" + key + r": *([A-Za-z0-9_=+ .-]+)$", m, re.M)
+              if found: print("WATCH_PERF_" + key.upper() + "=" + found[-1].strip())
           print("WATCH_PAIR=" + ("1" if ("[watch-pair]" in m or ci) else "0"))
           PY
           cat "$GITHUB_ENV"
