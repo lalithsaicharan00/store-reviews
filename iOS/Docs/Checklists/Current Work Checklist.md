@@ -82,7 +82,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 94; 83 and 84 are on `claude/lucid-johnson-egrjup`).
+  still resolve; give new items the next unused number (currently 108; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -691,6 +691,221 @@ and the Add note keyboard coming up by itself.
   - [x] Tests on GitHub: the core and server tests run with `[ios-ci] [ios-sync]` (Core storage and migrations,
     SyncUITests): both passed in run 37784250768 (`27ce48c`); server tests 139/139 locally.
 
+- [ ] **104. Edit note showed both a back chevron ‹ and ✕ in its top bar (seen once; bug or not, find out).** Added 12
+  October 2026, from the user, after it showed in the simulator during the Android design work: "in one particular
+  scenario I observed two buttons like a back chevron as well as a cross icon. I don't know whether that is a bug or is
+  this happened only for one time … note down this in the checklist so that later we can work on it and fix it."
+  - **Seen:** iPhone 17 simulator, iOS 26.5, Debug build of `main` at `1d8e5579`, launched with `-open-day Water`. Day
+    details → Add a note… → typed a note → Save → tapped the note (Note view) → Delete note → Cancel → Edit. Edit note's
+    top bar showed ‹ and ✕ side by side, before its title. Screenshot (local, not in git):
+    `Research/Temp/android-design-shots/notes-06-edit-note.png`.
+  - **Expected (U19):** edit mode has only ✕ (it leaves edit mode, asking first if anything changed); "Back is one
+    chevron, always the editor's own". `NoteDetailView` already hides the back button while editing
+    (`navigationBarBackButtonHidden(editing || startsEditing)` in `Today/NoteSheet.swift`), so the ‹ shouldn't be there.
+  - **Not a one-off (Claude, 12 Oct):** **Edit slip** shows the same ‹ and ✕ every time, with no Delete → Cancel first
+    (`-uitest -day-details-fixture -open-day Smoking` → Record a slip → Add → the slip → Edit; screenshot
+    `Research/Temp/android-design-shots/slip-04-edit-slip.png`). So it looks like every record editor pushed from Day
+    details (note, slip, likely log). Still to check: whether it shows on the iPhone too. Reproduce first (with and without the Delete → Cancel
+    step, from Day details and from the Notes tab), then fix, and add a UI test that Edit note's top bar has ✕ and no
+    back button.
+
+- [ ] **94. Skipping a day while its timer runs leaves "Stop and save" on.** Added 12 October 2026, from the user ("note
+  down those bugs … even I have seen them"), found by Claude in the simulator during the Android design work.
+  - **Seen:** `-uitest -day-details-fixture -open-day Read` → Start timer → Skip today. Day details then read "Skipped ·
+    5 min saved · Doesn't count toward your streak", **Stop and save still on** and Log manually off, the timer still
+    running. Screenshot (local): `Research/Temp/android-design-shots/dd-18-skipped.png`.
+  - **Expected (U15):** a skipped day keeps its usual logging controls in place, turned off. Every other Day details
+    action passes `enabled: !skipped`; "Stop and save" doesn't (`Today/DayActivity.swift:168`).
+  - **To decide before fixing:** what happens to a running timer when its day is skipped: stop and save it first, ask, or
+    keep it running and only turn the button off. The time mustn't be lost (D-rules); then a UI test for Start timer →
+    Skip today.
+
+- [ ] **95. Habit details still says "entries", and its title is the habit's name.** Added 12 October 2026, from the
+  user ("note down those bugs"), seen by Claude in the simulator.
+  - **"entries":** the History tab's day rows read "8/8 glasses · 8 entries" (`Model/HabitStore+HabitPage.swift:227–228`).
+    Rule U21 and the words rules say **log** everywhere; item 84 thought "entry" was gone from every screen. Expected:
+    "8/8 glasses · 8 logs" (and "1 log"); update the UI tests that read it (T3).
+  - **"check-ins" too (Claude, 12 Oct):** Restore's backup rows and preview say "12 habits, 840 check-ins" and "N
+    check-ins added / removed" (`Backup/RestoreViews.swift`, `RestoreStartView.counts`, `describe`), and the import
+    result says "check-ins" (`Settings/BackupExportView.swift:105`). Say "logs" there as well.
+  - **Title:** the page is titled with the habit's name ("Water", `AllHabits/HabitPageView.swift:87`) while the same name
+    is shown large just below it. U20: "The page title names **Habit details**". Check Design Rules' Habit details section
+    for a later decision before changing it. Screenshot (local): `Research/Temp/android-design-shots/habit-details-water.png`.
+
+- [ ] **96. Progress: remove the ⋯ view-options menu.** Added 12 October 2026, from the user, while designing Android's
+  Progress: "even in the iPhone I don't think that three dot option menu … is necessary … overall, we don't need these
+  options. If we really do need them, we will see later. We will get to know from users."
+  - **What goes:** the ⋯ menu on Progress (`Progress/ProgressScreen.swift`, "View Options"): Show Percentages, Show
+    Streaks and Full Day (All Done / 80% / 60%). Progress keeps its defaults: percentages shown beside their fractions,
+    a full day = everything planned done. Remove `ProgressOptions` reads that only served the menu, and the tests that
+    use it (e.g. `testHidePercentages`), in the same change (T3).
+  - **Checked against the research first (Claude, 12 Oct):** Full Day is ledger C201 (Strong, 4 apps, planned for a later
+    phase); hiding percentages had one direct ask (report "The Progress Page", §7.6). Hiding streaks is part of C157
+    "Every guilt mechanic must be optional" (Certain, 21 apps) and C207 (Certain, 9 apps); Show Streaks today also hides
+    streaks on Today's rows (`TodayRows.swift`). With the menu gone, streaks can't be hidden anywhere: if reviews ask
+    for it, add one "Show streaks" switch to Appearance (Today is where streaks show).
+  - Android already follows this (its Progress has no ⋮; `Android/Docs/Android Designs — Handoff.md`).
+
+- [ ] **97. Edit Time of Day opens with the wrong end time.** Added 12 October 2026, found by Claude in the simulator
+  while designing Android's Times of Day.
+  - **Seen:** ≡ → Times of Day → Morning (6:00 AM–12:00 PM). The editor shows **Ends 7:00 AM**, while "Your day" below
+    still says Morning 6:00 AM–12:00 PM, "No change". Screenshot (local): `Research/Temp/android-design-shots/set-tod-02-morning.png`.
+  - **Cause:** `Today/DaySections.swift:77` sets the end of an *existing* time of day to its start + 60 minutes
+    (`existing.map { _ in startMinute + 60 }`) instead of its real end. Saving without touching Ends could shorten
+    Morning to 6–7 AM and hand the rest to the next time of day. It also reads `Calendar.current` and `.now` (D7 asks
+    for the store's calendar).
+  - **Expected:** Ends opens at the time of day's own end (when the next one starts); a test that opening and saving an
+    unchanged time of day changes nothing.
+
+- [ ] **98. A new time of day must not start at a random time that splits another one.** Added 12 October 2026, from
+  the user, while reviewing Android's Times of Day: "the default timings should be … taken care of. We just can't add …
+  randomly new timings."
+  - **Now:** New Time of Day opens at the next whole hour, for two hours (`Today/DaySections.swift:74–76`), whatever the
+    day already holds. At 6:30 PM it proposes 7–9 PM and splits Evening (Evening becomes 6–7 PM, and 9 PM–12 AM is left
+    to no time of day) before the person has chosen anything.
+  - **Rule (proposed by Claude, for the user to confirm):** a new time of day opens in time **no other one covers**, so
+    nothing is split by default: the free stretch just before the first time of day (2 hours ending when it starts; with
+    the standard set, **4:00–6:00 AM**, which fits the "Before work" example), else the free stretch after the last one,
+    else, when the whole day is covered, it opens with no times chosen and asks for them. A split happens only when the
+    person picks overlapping times, and Your day shows it (Changed / Was …).
+  - **Shared logic:** Android uses the same rule (`Android/Docs/Android Designs — Handoff.md`); it belongs with the habit
+    rules moving into the shared core (Current Work 92). Test: opening New Time of Day on the standard set proposes 4–6
+    AM and Your day shows no change.
+
+- [ ] **99. Day and Week: say "12:00 AM", never "Midnight"; Week starts on Sunday, with no "Automatic".** Added 12 October
+  2026, from the user (told to another agent before; it never reached this checklist): "not use the word midnight.
+  Instead, use the exact time … user has to click on it, see what is midnight … remove the word automatic … default
+  value should be Sunday."
+  - **Now:** ≡ → Day and Week shows **New Day Starts At · Midnight** and **Week Starts On · Automatic (Sunday)**
+    (`Settings/DayAndWeekView.swift`: `hourName(0)` and the `Automatic (…)` tag 0). Screenshot (local):
+    `Research/Temp/android-design-shots/set-dw-01.png`.
+  - **Expected:** the day start is always an exact time: **12:00 AM**, 1:00 AM … 12:00 PM, in the phone's 12/24-hour
+    format, in the setting, its menu, its footer ("Your day starts at 12:00 AM …") and anywhere else the day start is
+    named. Week starts on lists the seven weekdays only; **the default is Sunday** for everyone (no region-following
+    "Automatic"); a person who chose Automatic before keeps the weekday it gave them. The footer drops "Automatic follows
+    your iPhone's region." Update the UI tests that read these labels (T3).
+  - Android follows the same rule (`Android/Docs/Android Designs — Handoff.md`).
+
+- [ ] **100. iCloud & Backup: make the page clear (status, Devices, Restore, Export), as on Android.** Added 12 October
+  2026, from the user, reviewing Android's Google Drive & Backup: "what is this backup files only on this phone? … why
+  you're mixing backup and restore, export and import? It is very … confusing … we need to update the same thing for
+  iPhone … note down this in checklist."
+  - **Now (iPhone, `main`):** one card "iCloud is off … Open Settings"; then **Backups**: "Backup files: only on this
+    iPhone · Its own daily copies" and Restore From a Backup; then **Export and Import**: Save a Backup File, Export a
+    Spreadsheet (CSV), Import a Backup File. Screenshot (local): `Research/Temp/android-design-shots/set-bk-01.png`.
+  - **Make it:** the page answers three questions in order. (1) **Is my data safe?** One status card: Not backed up /
+    Backed up · when · iCloud / Synced · when / waiting to sync, with its one action (Back Up Now, Sync Now, Open
+    Settings). (2) **Devices**: this iPhone and the others with when each last synced (on free: this iPhone plus "Use on
+    more devices … with Plus"). (3) **Restore**: one row, Restore From a Backup, which asks *where is your backup?*:
+    iCloud (any day of the last week, month or six months) or a backup file you saved (**importing lives here**; drop the
+    separate Import row). (4) **Export**: Save a Backup File, Export a Spreadsheet (CSV). Remove "Backup files: only on
+    this iPhone" (it says nothing a person can act on). Move to Another Device stays removed.
+  - **Design:** Android's version (Figma "Settings: Google Drive & Backup", `1461:2`; `Android/Docs/Android Designs —
+    Handoff.md`), built on the researched Backup & Export mockups (Figma `950:309`). Keep D4, D5 and D16's rules; update
+    the UI tests that tap these rows (T3).
+  - **The user, 12 Oct, adding:** "we have to update it in the iPhone as well … in iOS, we will be having like iCloud,
+    Google Drive, both. Not just one … and we need to create these flows."
+    - **Both places on the iPhone** (A10): the status card names where it backs up (iCloud, or Google Drive once that
+      client is back, Current Work 77), with one way to switch; one backup place at a time (D4).
+    - **The restore flow, as Android's** (Figma "Restore from a backup: the flow", `1472:2`): *Where is your backup?*
+      **iCloud**, **Google Drive** and **A backup file**; iCloud and Google Drive list the backups **by device and day**
+      in our own UI (Drive's app-data folder is hidden from Google's apps); Google Drive asks for the account first
+      (Google's sign-in and permission screens, only when no account is connected); a backup file opens the system
+      Files picker; every route ends on the same **preview** (what's in the backup, what's on this iPhone now, Replace /
+      Merge with what each changes, undo for 30 days) and a "Restored · Undo" result with **Undo Last Restore** on the
+      page.
+    - **Keep the red group at the end:** "Delete My Data From iCloud…" (and from Google Drive when that's the place) and
+      "Erase All My Data…", each asking first and offering "Save a Backup File First" (Android has the same; it's the
+      only way to clear the app's hidden copy in Drive, which uninstalling leaves behind).
+
+- [ ] **101. Privacy & Security still promises an account.** Added 12 October 2026, found by Claude in the simulator while
+  designing Android's Privacy & Security.
+  - **Seen:** the page's footer ends "No ads. An account is optional; without one, your habits stay on this phone unless
+    you share them." (`Menu/PrivacyView.swift:54`), and the usage note says "…and account details are never sent".
+    Screenshot (local): `Research/Temp/android-design-shots/set-priv-01.png`.
+  - **Why it's wrong:** D16 (the user, 10 Oct 2026): no server of ours holds anyone's habits and there are no accounts;
+    habits live on the person's devices and in their own iCloud (or Google Drive).
+  - **Expected:** "No ads. No account. Your habits stay on your devices and in your own iCloud; we never see them." and
+    drop "account details" from the usage note (Android's version says the same with Google Drive).
+
+- [ ] **102. Help & Feedback's answers still name screens and words that are gone.** Added 12 October 2026, found by
+  Claude while designing Android's Help & Feedback.
+  - **Seen** (`Help/HelpView.swift`, the Logging and Habits topics): "choose **Undo Last Entry**", "choose **Edit Today's
+    Progress…**" (twice: change a log, skip a day), "use **Habit options** to skip or log by hand" (the player's middle
+    item is now Day details, U23), "each **entry** can be changed", "**Log a Slip…**". Some may still exist under these
+    names; check each against the built app.
+  - **Expected:** every answer names today's controls and says "log" (U11, U21): e.g. Undo a wrong tap → "Right after you
+    log, Undo shows under the habit's name … For an amount or a time, tap the row to open Day details, where each log
+    has its own Undo." Android's Help uses the corrected answers (`Android/Docs/Android Designs — Handoff.md`).
+
+- [ ] **103. Plus: Restore Purchases only where you buy, the app icon, and a clear family upgrade.** Added 12 October
+  2026, from the user, reviewing Android's Plus: "when the Plus is already yours, why do we need a restore purchase
+  there? … restore purchase should be when there is a buy option"; the logo: "let's use this logo itself … since we are
+  in the light mode" (a gold logo and a gold tile were tried first and dropped).
+  - **Restore Purchases:** remove it from "Plus is yours" (`Plus/PlusScreens.swift:229`); on the buy screen make it a
+    full-width secondary button under Get Plus, and keep it wherever Plus is offered (the sixth-habit sheet).
+  - **Remove "One-time, no subscription"** under the buy button: each plan row already says one-time.
+  - **The app icon on the Plus screens** (buy and owned) in place of the plus-circle / checkmark-circle symbols: the
+    light icon (Figma `1160:161`, tonal mark on white). Plan rows without an outline: the chosen one on the neutral
+    tone with a filled mark (U2).
+  - **The price first, what Plus adds second** (the user, 12 Oct: "what is the price, that is the most important thing,
+    and what it unlocks is the second"): a left-aligned header (icon beside "Plus"), the free-habits card ("3 of 5 free
+    habits used · 2 left"), the plans, then **What you get with Plus, one list** (the user: "let's combine everything
+    together"): Unlimited habits, More widgets (Today's list and This week, item 93), and the iPhone's own devices
+    (iPad, Apple Watch, the Mac later; the Windows app if iPhone people get it through Google Drive sync, A10: confirm
+    with the user), each a two-line row; "synced through iCloud" (or Google Drive), never "your own". Android's
+    version: decision A14.
+  - **Upgrading to Plus Family says what it costs:** a card with the sum (Plus Family $59.99 · You paid for Plus
+    −$24.99 · You pay $35.00) and the button "Upgrade for $35.00".
+  - Design: Android's Plus (Figma "Settings: Plus", `1476:2`; `Android/Docs/Android Designs — Handoff.md`). Android keeps
+    **Plus Family** too (the user, 12 Oct), so how Google Play delivers it is a build question (Android — Start Here,
+    "Still open").
+
+- [ ] **105. Onboarding: the user's changes (12 Oct 2026), and changing where habits sync (later).** Added 12 October
+  2026, from the user, handing over the onboarding wireframes ([Onboarding — Current wireframes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=835-503))
+  for Android's design: "we do need some changes in the onboarding since we have removed some things."
+  - [ ] **Remove "What's included" (the free plan, up to 5 habits) from the onboarding** (wireframe 02;
+    `IncludedPage`, `Onboarding/OnboardingPages.swift`): "let's remove that screen". I'm new here goes straight to the
+    three pages (Your habit. Your goal. · Quit or cut down. · Tasks, once or on repeat.), Your days and weeks, Your
+    first habit. Item 93's onboarding sub-point (listing the free widgets in "What's included") goes with it.
+  - [ ] **The welcome shows our app logo** in place of the grey square (the light app icon, `Brand/`).
+  - [ ] **Your days and weeks** says 12:00 AM and Sunday, never "Midnight" or "Automatic" (item 99).
+  - **Coming back keeps:** Sign in to your account (iPhone: iCloud, by itself; Android: Google Drive) and Restore a
+    backup. **Move from another device is gone** (D15/A12: a transfer is built last, if at all).
+  - [ ] **Later, on both platforms: changing where habits sync.** "On iOS changing from iCloud to Google Drive, on
+    Android changing … to Google Drive; we need to work on this later." On the iPhone: from iCloud to Google Drive and
+    back (A10, one sync place at a time); on Android: someone coming from an iPhone's iCloud to Google Drive.
+  - [ ] **Check (the user's question): once someone allows Google Drive on their phone, does it work on Windows and
+    the Wear OS watch?** Claude's first answer, to be proven when those apps are designed: Windows signs in to the same
+    Google account once (Google's own sign-in in the browser) and reads the same app folder, because Drive's app
+    folder belongs to our app's Google Cloud project, not to one device; the watch gets its habits from the phone, as
+    the Apple Watch does from the iPhone (Architecture 12), so it needs no sign-in of its own.
+  - Design: Android's Onboarding section (`Android/Docs/Android Designs — Handoff.md`).
+
+- [ ] **106. Today says nothing on a day with nothing planned.** Added 12 October 2026, found by Claude in the code
+  while designing Android's empty Today (the user: "the empty today screen … when it is actually empty"). With habits
+  that are all planned for other days, `TodayView` shows an empty list (the "No habits yet" view is only for no habits
+  at all, and the only other message is for a group filter). Check it in the simulator, then show what Android's
+  design shows: "Nothing planned today", "Your habits are planned for other days. Each one shows on its own days.", and
+  New Habit; neutral words only (U3). Design: Android's Today section, `1551:195` (`Android/Docs/Android Designs — Handoff.md`).
+
+- [ ] **107. The Android app, built in a cloud session (start to end).** Added 13 October 2026, from the user: "create the
+  app … take care of the UI, wiring, everything, all of that, widgets, start to end … if it has any doubts, it has to
+  look at the iOS … performance … data reliability, storage … Google Drive connection, syncing … widgets should be
+  interactive … up to date." Also dark mode ("ask it to create the dark mode"; an old dark design, colours only).
+  - Prompt: [Build Prompt — Android App (Delete When Done)](<../../../Android/Docs/Build Prompt — Android App (Delete When Done).md>);
+    branch `claude/android-app` from `main`. Builds on `Core/rules` from `main`; never touches
+    `claude/shared-habit-rules-switch` (another agent's checkpoint 2, still running): every rules call goes through one
+    Android-side adapter, so the switch landing changes only that.
+  - Designs: [Android Designs — Every Screen](<../../../Android/Docs/Designs/README.md>) (162 frames as images, no Figma
+    needed) and the [handoff](<../../../Android/Docs/Android Designs — Handoff.md>).
+  - [ ] Checkpoint 1: skeleton, Core on Android, database, CI, onboarding, Today, logging and undo.
+  - [ ] Checkpoint 2: every screen wired; dark mode.
+  - [ ] Checkpoint 3: backup, restore, Google Drive sync (two emulators), Plus (Play Billing), App lock, reminders.
+  - [ ] Checkpoint 4: widgets (every kind and state, setup and change, interactive, up to date).
+  - [ ] Checkpoint 5: speed, data, sync and widget tests green with numbers; tablets and foldables.
+  - [ ] The user's checks on real phones (Pixel, Samsung, Xiaomi; U9/T5), noted separately.
+
 ## Planned improvements — build later
 
 
@@ -911,6 +1126,8 @@ and the Add note keyboard coming up by itself.
     Read [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>) first; the instant card
     switch, writing every tap before the intent returns, and saving in order stay exactly as they are; the free widgets
     don't change at all. Check on the iPhone Home Screen when built (`WidgetLatencyDeviceTests`), then let the user try it.
+  - Android's proposal for this, 12 Oct 2026 (Figma `1560:645` and `1558:550`, "without Plus"): the setup screen says
+    what Plus adds and adds it either way; the widget shows the day's count, "Tick habits off here with Plus", Open Today.
   - [ ] **What a free person sees on a Plus widget:** iOS shows every widget in the gallery to everyone, so Today and
     This week can be added without Plus. Design it in Figma first: never a blank card (paid-and-broken widgets average
     1.62★) and never a paywall on a logging tap; a useful free fallback (for example the day's count, opening Today)

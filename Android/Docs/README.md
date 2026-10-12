@@ -37,7 +37,7 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 |---|---|---|
 | A1 | **Order of platforms:** the Watch and iPad are in progress; Android next; the Mac last, designed from the iPad (only the Mac's own parts: menu-bar item, shortcuts, menus, windows) | "the only thing that is left is creating an app for mac"; then "let's go to the Android" |
 | A2 | **The Mac includes the Google Drive option** | "in the Mac also we need to include the Google Drive option … we do need to include it" |
-| A3 | **Android Plus = iPhone Plus, at the same price, minus the Watch**; one shared design for both platforms | "the same thing what we have for iPhone should also work for Android" |
+| A3 | **Android Plus = iPhone Plus, at the same price, ~~minus the Watch~~ (A14: Wear OS too)**; one shared design for both platforms | "the same thing what we have for iPhone should also work for Android" |
 | A4 | **Android sync through the person's Google Drive by download → merge → upload** (never replace), with the shared merge rules, one file per year, and the version chain so no device can overwrite another; proven by a two-device prototype first | The user's idea: "it downloads the backup, then it changes and then it uploads it back"; "what if we build that protection ourselves?" |
 | A5 | **No relay server** for faster Android-to-Android sync: sync on open, about once a minute while the app is on screen, and in the background | "let's not use relay server. It's not necessary cost and unnecessary relay" |
 | A6 | **Offline is said, not hidden:** the app works offline and says so; nobody expects sync without internet | "without internet the app will work but we clearly display that there is no internet and changes might not sync" |
@@ -48,6 +48,7 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A11 | **The Android app report's twelve questions, decided 12 Oct 2026** ([report §11](<Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>)): **as recommended** for D1 (exact reminder times asked for when the first reminder is turned on; otherwise up to 10 minutes late, said on the Reminders page), D2 (the reminder check, and one plain line after a reminder that didn't arrive), D3 (Alarm style rings, no full screen), D4 (a running timer as Android 16's Live Update), D7 (back one step, never loses typing), D8 (long-press shortcuts, no badge), D9 (tablets and foldables at launch, the iPad's layout), D10 (the same free plan, no ads), D12 (a Pixel, a Samsung and a Xiaomi); **D5: no wallpaper colours**; **D6: nothing for the themed icon for now** (the phone tints it for people who chose that look; draw our own only if it looks bad on a real phone) | "reminders problem. Okay. Alarm style. Okay. Running the timer outside … will also work"; "wallpaper colors … it's just a nonsense"; "remaining everything else … we don't need to think about them much" |
 | A12 | **Moving to another phone (D11): a transfer through a small server on Cloudflare's free plan, built last**, once everything else is done. It changes D15 (Export and Import only) when it's built; to keep D16's promise (we never see anyone's habits), the phone encrypts the transfer before it leaves and the server deletes it once picked up or after a short time | "we can keep this … server based because this can be covered under cloudflare free plan … we will do this at last" |
 | A13 | **Which widgets are free, the same as on iPhone and iPad** (12 Oct 2026): free are the small one-habit widgets, the Tasks widgets (Medium, Large) and the Lock Screen-style glance widgets; Plus are the Today list widget (Medium, Large) and This week ([Architecture 02 §3.1](<../../Architecture/02. Billing and Entitlements.md>), Current Work 93) | "the small widgets variants that we have, it will be free for habits … the today medium widget, today large, as well as the weekly widget … these three variants will be paid" |
+| A14 | **Android Plus adds a Wear OS watch and a Windows app** (12 Oct 2026; replaces A3's "minus the Watch" and the Plus report's §6 advice to leave Wear OS out). Plus unlocks: unlimited habits, more widgets (A13), a tablet, a Wear OS watch and a Windows app, all synced through Google Drive. Both apps are still to be researched and built; the Plus screen names them (Figma "Settings: Plus") | "plus will unlock … unlimited habits, you can use it on desktop, Windows app, clearly mentioned there … and Wear OS support, watch, and more widgets"; "syncing through Google Drive, that's it" |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
@@ -71,7 +72,8 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 ## Still open
 
 - **One purchase working on both stores from Android's launch** (the entitlement record, D16).
-- **Plus Family on Android:** Google Play can't share an in-app purchase with a family.
+- **Plus Family on Android:** Google Play can't share an in-app purchase with a family. **The user, 12 Oct: Android has
+  Plus Family too** ("we have family plans as well in the Android"); how Play delivers it is the open build question.
 - **Designs still to make:** the same field edited on two offline devices ("Use This Instead"), a delete arriving from
   another device ("Archived on Pixel 8"), the same thing logged on two devices ("Keep Both / Remove One"), two devices
   that each created the same habit (combine), widgets refreshed the moment synced changes arrive.
@@ -96,6 +98,12 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
    `HabitRules` (from `Rows.load`, or `RulesInput` / `LiveRules` over the database's records). The iPhone's words and
    screens built on these rules (Progress, the habit page, widgets) stay Swift; Android writes its own.
    Then the Android designs, and the Android app with Drive sync plugged in.
+5. ~~**The Android designs**~~ done, 12–13 Oct 2026: every screen as an image in
+   [Android Designs — Every Screen](<Designs/README.md>) (162 frames, onboarding to widgets), the reasons in the
+   [handoff](<Android Designs — Handoff.md>).
+6. **Build the Android app** (Current Work 107): a cloud session with
+   [Build Prompt — Android App (Delete When Done)](<Build Prompt — Android App (Delete When Done).md>), on
+   `claude/android-app`.
 
 **Done by the user, 11 Oct 2026:** a Web OAuth client "Drive sync tests" (`drive.appdata`; redirect
 `https://developers.google.com/oauthplayground`), a test Google account added as a test user, and three GitHub
