@@ -920,6 +920,13 @@ and the Add note keyboard coming up by itself.
     "widgets" and gave less felt misleading, `P2#2464`): the onboarding "What's included" row (`OnboardingPages.swift`,
     "Widgets included"), Help's "Which widgets are there?" (`HelpView.swift`), the Plus screen's list, the App Store and
     Play listings (Architecture 02's store description) and the Widgets guide (Included / With Plus).
+  - [ ] **Set the expectation everywhere people decide, before they install or reach a widget** (the user, 12 Oct
+    2026: "in the Play Store screenshots, in the website, even in the onboarding of the app, we need to set the
+    expectations very clearly … show which widgets they are getting for free and which are paid"). Show the free widgets
+    by name and picture (small one-habit, Tasks, Lock Screen), and name Today and This week as Plus:
+    - [ ] App Store and Play Store screenshots (the widget screenshot marks Free and Plus) and the listing text;
+    - [ ] the website;
+    - [ ] the app's onboarding ("What's included": the free widgets listed, Today and This week shown as Plus).
   - [ ] **Android:** the same split when its widgets are built (A3, A13): small one-habit, Tasks and Lock Screen-style
     glance widgets free; Today and This week Plus.
   - [ ] Tests: a free launch adds and ticks One habit, Tasks and Lock Screen widgets with nothing asking for Plus; a free
