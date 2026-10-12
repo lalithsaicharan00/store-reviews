@@ -1,0 +1,37 @@
+# Temporary (claude/android-app): prints the latest versions on Google's Maven and the runner's Android SDK, because the
+# cloud session can't reach dl.google.com. Deleted once the Android build files are written.
+name: Android probe
+on:
+  push:
+    branches: [claude/android-app]
+    paths: [".github/workflows/android-probe.yml"]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Versions
+        run: |
+          v() { curl -sSL "https://dl.google.com/dl/android/maven2/$1/maven-metadata.xml" | grep -o '<version>[^<]*</version>' | sed 's/<[^>]*>//g' | tail -n ${2:-6} | tr '\n' ' '; echo " <- $1"; }
+          for a in com/android/tools/build/gradle com/android/kotlin/multiplatform/library/com.android.kotlin.multiplatform.library.gradle.plugin \
+            com/android/application/com.android.application.gradle.plugin \
+            androidx/compose/compose-bom androidx/compose/material3/material3 androidx/compose/ui/ui androidx/compose/material/material-icons-extended \
+            androidx/glance/glance-appwidget androidx/room3/room3-runtime androidx/room3/room3-runtime-android androidx/room3/room3-compiler androidx/sqlite/sqlite-bundled androidx/sqlite/sqlite-bundled-android \
+            androidx/activity/activity-compose androidx/navigation/navigation-compose androidx/lifecycle/lifecycle-viewmodel-compose androidx/lifecycle/lifecycle-runtime-compose \
+            androidx/work/work-runtime-ktx androidx/biometric/biometric androidx/core/core-ktx androidx/core/core-splashscreen androidx/appcompat/appcompat \
+            com/android/billingclient/billing-ktx androidx/credentials/credentials androidx/credentials/credentials-play-services-auth \
+            com/google/android/libraries/identity/googleid/googleid com/google/android/gms/play-services-auth \
+            androidx/benchmark/benchmark-macro-junit4 androidx/profileinstaller/profileinstaller androidx/baselineprofile/androidx.baselineprofile.gradle.plugin \
+            androidx/test/ext/junit androidx/test/runner androidx/test/uiautomator/uiautomator androidx/compose/ui/ui-test-junit4 androidx/metrics/metrics-performance \
+            androidx/test/core androidx/test/rules androidx/test/orchestrator androidx/datastore/datastore-preferences androidx/security/security-crypto \
+            androidx/compose/material3/adaptive/adaptive androidx/window/window com/android/test/com.android.test.gradle.plugin androidx/graphics/graphics-shapes \
+            com/google/android/gms/play-services-base androidx/core/core-remoteviews androidx/navigation3/navigation3-runtime org/robolectric/robolectric ; do v $a; done
+          for a in org/robolectric/robolectric org/jetbrains/kotlin/kotlin-gradle-plugin com/google/devtools/ksp/com.google.devtools.ksp.gradle.plugin org/jetbrains/kotlinx/kotlinx-coroutines-android io/mockk/mockk; do
+            curl -sSL "https://repo1.maven.org/maven2/$a/maven-metadata.xml" | grep -o '<version>[^<]*</version>' | sed 's/<[^>]*>//g' | tail -n 6 | tr '\n' ' '; echo " <- $a"; done
+      - name: SDK
+        run: |
+          echo ANDROID_HOME=$ANDROID_HOME; ls $ANDROID_HOME; ls $ANDROID_HOME/platforms; ls $ANDROID_HOME/build-tools; ls $ANDROID_HOME/system-images 2>/dev/null || true
+          ls $ANDROID_HOME/cmdline-tools; $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --list 2>/dev/null | grep -E "platforms;android-|system-images;android-3[4-9];google_apis;x86_64|emulator" | head -40
+          java -version 2>&1; nproc; free -g; df -h / | tail -1; ls -l /dev/kvm || true
