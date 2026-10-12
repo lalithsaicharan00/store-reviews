@@ -45,7 +45,10 @@ object Day {
 
     /** "2026-09-27". */
     fun key(n: Int): String {
-        val (y, m, d) = ymd(n).let { Triple(it[0], it[1], it[2]) }
+        val ymd = ymd(n)
+        val y = ymd[0]
+        val m = ymd[1]
+        val d = ymd[2]
         return y.toString().padStart(4, '0') + "-" + m.toString().padStart(2, '0') + "-" + d.toString().padStart(2, '0')
     }
 
@@ -77,7 +80,10 @@ object Day {
 
     /** The same date `months` later, on the month's last day when it is shorter (as `Calendar` adds months). */
     fun addMonths(n: Int, months: Int): Int {
-        val (y, m, d) = ymd(n).let { Triple(it[0], it[1], it[2]) }
+        val ymd = ymd(n)
+        val y = ymd[0]
+        val m = ymd[1]
+        val d = ymd[2]
         val total = y * 12 + (m - 1) + months
         val ny = floorDiv(total, 12)
         val nm = total - ny * 12 + 1

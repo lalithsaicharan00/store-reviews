@@ -184,8 +184,8 @@ class HabitRules(val data: HabitData, val settings: DaySettings, reuse: Zone? = 
     fun matches(rule: CalendarSchedule, date: Int, start: Int): Boolean {
         if (date < start) return false
         val n = max(1, rule.interval)
-        val (y, m, d) = Day.ymd(date).let { Triple(it[0], it[1], it[2]) }
-        val last = Day.daysInMonth(y, m)
+        // The day as a date only where the rule needs it (asked for every day of a year, each day of the week was
+        // turned into a date and its parts boxed; Current Work 92).
         return when (rule.unit) {
             Period.DAY -> (date - start) % n == 0
             Period.WEEK -> {
@@ -194,6 +194,11 @@ class HabitRules(val data: HabitData, val settings: DaySettings, reuse: Zone? = 
                 (gap / 7) % n == 0 && rule.weekdays.contains(Day.weekday(date))
             }
             Period.MONTH -> {
+                val ymd = Day.ymd(date)
+                val y = ymd[0]
+                val m = ymd[1]
+                val d = ymd[2]
+                val last = Day.daysInMonth(y, m)
                 val s = Day.ymd(start)
                 val gap = (y - s[0]) * 12 + m - s[1]
                 if (gap % n != 0) return false
@@ -207,6 +212,11 @@ class HabitRules(val data: HabitData, val settings: DaySettings, reuse: Zone? = 
                 }
             }
             Period.YEAR -> {
+                val ymd = Day.ymd(date)
+                val y = ymd[0]
+                val m = ymd[1]
+                val d = ymd[2]
+                val last = Day.daysInMonth(y, m)
                 val s = Day.ymd(start)
                 if ((y - s[0]) % n != 0 || m != rule.month) return false
                 d == (if (rule.useLastDay) min(rule.day, last) else rule.day)

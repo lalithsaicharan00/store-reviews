@@ -45,7 +45,10 @@ class Zone(val id: String) {
         val key = day * 32 + hour
         val slot = (key * 0x9E3779B1.toInt()) ushr (32 - CACHE_BITS)
         if (seenAtKey[slot] == key) return seenAt[slot]
-        val (y, m, d) = Day.ymd(day).let { Triple(it[0], it[1], it[2]) }
+        val ymd = Day.ymd(day)
+        val y = ymd[0]
+        val m = ymd[1]
+        val d = ymd[2]
         val ms = LocalDateTime(y, m, d, hour, 0).toInstant(zone).toEpochMilliseconds()
         seenAtKey[slot] = key
         seenAt[slot] = ms
