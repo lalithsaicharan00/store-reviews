@@ -286,10 +286,13 @@ private fun LazyListScope.section(
     }
     val count = if (open) pieces.size + 1 else 1
     val section = store.section(card)
+    val start: (() -> Unit)? = if (isToday && left > 0) {
+        { nav.startRoutine(card, day, items.filter { content.done[it.habit.id] != true }.map { it.habit }) }
+    } else null
     item(key = "header-$card") {
         PartHeader(section.name, startsText(section), items.map { it.habit }, left, isNow, open,
             if (open) segmentShape(0, count) else RoundedCornerShape(24.dp),
-            onStart = if (isToday && left > 0) ({ nav.startRoutine(card, day, items.filter { content.done[it.habit.id] != true }.map { it.habit }) }) else null,
+            onStart = start,
             onToggle = { layout.setOpen(card, !open) })
     }
     if (open) pieces.forEachIndexed { i, (item, stepId) ->

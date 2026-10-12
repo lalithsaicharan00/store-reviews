@@ -84,6 +84,8 @@ class HabitStore(
     fun entries(habitId: String): List<Entry> = byHabit[habitId] ?: emptyList()
     fun entries(habitId: String, day: Int): List<Entry> = byDay[habitId]?.get(day) ?: emptyList()
     val entryCount: Int get() = entries.size
+    /** One log by its ID (worked out on a tap, never while drawing a list). */
+    fun entry(id: String): Entry? = entries.firstOrNull { it.id == id }
 
     private fun indexAdd(e: Entry) {
         byHabit.getOrPut(e.habitId) { ArrayList() }.add(e)

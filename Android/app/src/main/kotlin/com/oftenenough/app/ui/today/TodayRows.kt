@@ -237,7 +237,7 @@ private fun AfterLog(habit: Habit, day: Int, store: HabitStore, layout: TodayLay
 private fun RowMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, day: Int, store: HabitStore, layout: TodayLayout, actions: TodayActions) {
     DropdownMenu(open, onDismiss) {
         val today = store.today()
-        fun item(text: String, action: () -> Unit) = DropdownMenuItem(text = { Text(text) }, onClick = { onDismiss(); action() })
+        @Composable fun item(text: String, action: () -> Unit) = DropdownMenuItem(text = { Text(text) }, onClick = { onDismiss(); action() })
         if (habit.kind != HabitKind.Task) item("Open habit page") { actions.openHabitPage(habit) }
         item(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit") { actions.editHabit(habit) }
         if (day <= today) {

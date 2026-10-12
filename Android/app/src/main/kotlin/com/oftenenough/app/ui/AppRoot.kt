@@ -18,7 +18,18 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import com.oftenenough.app.data.Entry
+import com.oftenenough.app.ui.day.DayDetailsSheet
+import com.oftenenough.app.ui.day.DayNav
+import com.oftenenough.app.ui.record.AddLogScreen
+import com.oftenenough.app.ui.record.AllLogsScreen
+import com.oftenenough.app.ui.record.LogScreen
+import com.oftenenough.app.ui.record.NoteScreen
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
@@ -62,9 +73,33 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
         })
         return
     }
+    // Day details over Today: kept while a page it opened is on top, so going back returns to it.
+    var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
+    val dayNav = object : DayNav {
+        override fun habitPage(habit: Habit) { dayTarget = null; nav.navigate(Routes.page("Habit details")) }
+        override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
+        override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
+        override fun log(habit: Habit, entry: Entry) = nav.navigate(Routes.log(entry.id))
+        override fun allLogs(habit: Habit, day: Int) = nav.navigate(Routes.allLogs(habit.id, day))
+        override fun edit(habit: Habit) = nav.navigate(Routes.page("Edit habit"))
+        override fun pause(habit: Habit) = nav.navigate(Routes.page("Pause"))
+    }
     NavHost(nav, startDestination = Routes.TODAY, modifier = Modifier.fillMaxSize().background(appColors.screen)) {
         composable(Routes.TODAY) {
-            TodayScreen(store, prefs, todayNav(nav), todayActions(nav, view), snackbar)
+            TodayScreen(store, prefs, todayNav(nav), todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar)
+            dayTarget?.split("|")?.let { (id, d) ->
+                DayDetailsSheet(id, d.toInt(), store, dayNav) { dayTarget = null }
+            }
+        }
+        composable("add/{habit}/{day}") { e ->
+            AddLogScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
+        }
+        composable("log/{id}") { e -> LogScreen(e.arguments!!.getString("id")!!, store) { nav.popBackStack() } }
+        composable("alllogs/{habit}/{day}") { e ->
+            AllLogsScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, { nav.navigate(Routes.log(it.id)) }) { nav.popBackStack() }
+        }
+        composable("note/{habit}/{day}") { e ->
+            NoteScreen(e.arguments!!.getString("habit")!!.takeIf { it != "day" }, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
         }
         composable(Routes.NEW + "?idea={idea}") { entry -> NextPage(nav, "New") }
         composable("page/{title}") { entry -> NextPage(nav, entry.arguments?.getString("title") ?: "") }
@@ -75,6 +110,10 @@ object Routes {
     const val TODAY = "today"
     const val NEW = "new"
     fun page(title: String) = "page/" + android.net.Uri.encode(title)
+    fun add(habit: String, day: Int) = "add/$habit/$day"
+    fun log(id: String) = "log/$id"
+    fun allLogs(habit: String, day: Int) = "alllogs/$habit/$day"
+    fun note(habit: String?, day: Int) = "note/${habit ?: "day"}/$day"
 }
 
 private fun todayNav(nav: NavHostController) = object : TodayNav {
@@ -88,10 +127,10 @@ private fun todayNav(nav: NavHostController) = object : TodayNav {
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.page("Routine"))
 }
 
-private fun todayActions(nav: NavHostController, view: android.view.View) = object : TodayActions {
-    override fun openDay(habit: Habit, day: Int) = nav.navigate(Routes.page("Day details"))
-    override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.page("Add log"))
-    override fun writeNote(habit: Habit?, day: Int) = nav.navigate(Routes.page("Add note"))
+private fun todayActions(nav: NavHostController, view: android.view.View, openDay: (Habit, Int) -> Unit) = object : TodayActions {
+    override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
+    override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
+    override fun writeNote(habit: Habit?, day: Int) = nav.navigate(Routes.note(habit?.id, day))
     override fun openTimer(habit: Habit) {}
     override fun editHabit(habit: Habit) = nav.navigate(Routes.page("Edit habit"))
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.page("Habit details"))
