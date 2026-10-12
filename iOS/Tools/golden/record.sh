@@ -5,6 +5,9 @@
 # Needs a build from `xcodebuild build-for-testing ... -derivedDataPath DerivedData`.
 set -u
 SIM="$1"; IN="$2"; OUT="$3"; mkdir -p "$OUT"
+# simctl's --stdout and --stderr need absolute paths: a relative one made every launch "denied by service delegate"
+# (runs 38203920942, 38205203490).
+OUT="$(cd "$OUT" && pwd)"
 BUNDLE=com.oftenenough.app
 APP=$(ls -d DerivedData/Build/Products/Debug-iphonesimulator/Habits.app 2>/dev/null | head -1)
 [ -n "$APP" ] || { echo "No Habits.app in DerivedData"; exit 1; }
@@ -29,7 +32,8 @@ until grep -q "^# DONE" "$GOLDEN/done.txt" 2>/dev/null || [ $WAITED -ge "$LIMIT"
   sleep 10; WAITED=$((WAITED + 10))
   if [ $((WAITED % 120)) -eq 0 ]; then echo "… ${WAITED}s"; cat "$GOLDEN/done.txt" 2>/dev/null; fi
   # The app ended before it finished: say so rather than waiting the whole limit.
-  if [ $((WAITED % 60)) -eq 0 ] && ! xcrun simctl spawn "$SIM" launchctl list 2>/dev/null | grep -q "UIKitApplication:$BUNDLE"; then
+  # The simulator's app is a process on this Mac (a launchctl check inside the simulator missed it, run 38202879977).
+  if [ $((WAITED % 60)) -eq 0 ] && ! pgrep -f "Habits.app/Habits" > /dev/null; then
     echo "The app is no longer running after ${WAITED}s"; sleep 5; break
   fi
 done
