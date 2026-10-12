@@ -1,40 +1,40 @@
-- shared · Log manually: longest stall 395 ms
-- swift · Log manually: longest stall 244 ms
-- shared · Log manually: longest stall 347 ms
-- swift · Log manually: longest stall 356 ms
-- shared · Log manually: longest stall 362 ms
-- swift · Log manually: longest stall 315 ms
-- shared · Log manually: longest stall 277 ms
-- swift · Log manually: longest stall 249 ms
-- shared · Blank page (control, first): longest stall 226 ms
-- shared · Blank page (control, again): longest stall 66 ms
-- shared · Day details (first): longest stall 163 ms
-- shared · Day details (again): longest stall 97 ms
-- swift · Blank page (control, first): longest stall 84 ms
-- swift · Blank page (control, again): longest stall 36 ms
-- swift · Day details (first): longest stall 119 ms
-- swift · Day details (again): longest stall 109 ms
-- shared · Blank page (control, first): longest stall 91 ms
-- shared · Blank page (control, again): longest stall 47 ms
-- shared · Day details (first): longest stall 66 ms
-- shared · Day details (again): longest stall 76 ms
-- swift · Blank page (control, first): longest stall 76 ms
-- swift · Blank page (control, again): longest stall 44 ms
-- swift · Day details (first): longest stall 64 ms
-- swift · Day details (again): longest stall 78 ms
-- shared · Blank page (control, first): longest stall 78 ms
-- shared · Blank page (control, again): longest stall 24 ms
-- shared · Day details (first): longest stall 88 ms
-- shared · Day details (again): longest stall 63 ms
-- swift · Blank page (control, first): longest stall 82 ms
-- swift · Blank page (control, again): longest stall 19 ms
-- swift · Day details (first): longest stall 70 ms
-- swift · Day details (again): longest stall 41 ms
-- shared · Blank page (control, first): longest stall 101 ms
-- shared · Blank page (control, again): longest stall 48 ms
-- shared · Day details (first): longest stall 216 ms
-- shared · Day details (again): longest stall 59 ms
-- swift · Blank page (control, first): longest stall 74 ms
-- swift · Blank page (control, again): longest stall 24 ms
-- swift · Day details (first): longest stall 64 ms
-- swift · Day details (again): longest stall 45 ms
+- shared · Blank cover (control, first): longest stall 137 ms
+- shared · Blank cover (control, again): longest stall 37 ms
+- shared · Routine (open): longest stall 188 ms
+- swift · Blank cover (control, first): longest stall 98 ms
+- swift · Blank cover (control, again): longest stall 26 ms
+- swift · Routine (open): longest stall 195 ms
+- shared · Blank cover (control, first): longest stall 59 ms
+- shared · Blank cover (control, again): longest stall 25 ms
+- shared · Routine (open): longest stall 168 ms
+- swift · Blank cover (control, first): longest stall 65 ms
+- swift · Blank cover (control, again): longest stall 32 ms
+- swift · Routine (open): longest stall 174 ms
+- shared · Blank cover (control, first): longest stall 66 ms
+- shared · Blank cover (control, again): longest stall 37 ms
+- shared · Routine (open): longest stall 171 ms
+- swift · Blank cover (control, first): longest stall 71 ms
+- swift · Blank cover (control, again): longest stall 28 ms
+- swift · Routine (open): longest stall 193 ms
+- shared · Blank cover (control, first): longest stall 76 ms
+- shared · Blank cover (control, again): longest stall 49 ms
+- shared · Routine (open): longest stall 224 ms
+- swift · Blank cover (control, first): longest stall 83 ms
+- swift · Blank cover (control, again): longest stall 38 ms
+- swift · Routine (open): longest stall 232 ms
+- shared · Launch to a usable Today (round 1 , cold): 697 ms
+- swift · Launch to a usable Today (round 1 , cold): 683 ms
+- shared · Launch to a usable Today (round 2, warm): 642 ms
+- swift · Launch to a usable Today (round 2, warm): 690 ms
+- shared · Launch to a usable Today (round 3, warm): 705 ms
+- swift · Launch to a usable Today (round 3, warm): 645 ms
+- shared · Launch to a usable Today (round 4, warm): 695 ms
+- swift · Launch to a usable Today (round 4, warm): 660 ms
+- shared · Launch to a usable Today (round 5, warm): 622 ms
+- swift · Launch to a usable Today (round 5, warm): 973 ms
+- shared · Launch to a usable Today (round 6, warm): 594 ms
+- swift · Launch to a usable Today (round 6, warm): 656 ms
+- shared · Launch to a usable Today (round 7, warm): 911 ms
+- swift · Launch to a usable Today (round 7, warm): 603 ms
+- shared · Launch to a usable Today (round 8, warm): 635 ms
+- swift · Launch to a usable Today (round 8, warm): 611 ms

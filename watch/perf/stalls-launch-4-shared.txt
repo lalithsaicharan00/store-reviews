@@ -1,0 +1,55 @@
+# TIME Shared rules: habits and settings again|0.09
+# TIME Shared rules: built from every log|2.86
+# TIME Store load: read the database|20.14
+# TIME Shared rules: built from every log, off the main thread|0.11
+# TIME Store load: into the app (0 logs)|0.23
+1791848332.696 32.3
+# TIME Shared rules: habits and settings again|0.20
+# TIME Watch Today: plan|0.60
+# READY 1791848332.754
+1791848332.734 20.7
+# TIME Count: a Today row drawn|0.00
+1791848332.755 49.1
+# TIME Shared rules: habits and settings again|0.18
+# TIME Watch Today: plan|0.41
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.19
+# TIME Watch Today: plan|0.42
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.33
+# TIME Watch Today: plan|0.58
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.25
+# TIME Watch Today: plan|0.56
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.56
+# TIME Count: a Today row drawn|0.00
+1791848332.846 22.1
+# TIME Shared rules: habits and settings again|0.21
+# TIME Watch Today: plan|0.52
+# TIME Shared rules: habits and settings again|0.30
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.05
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Watch Today: plan|0.31
+# TIME Count: a Today row drawn|0.00
+1791848332.881 27.8
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.21
+# TIME Widgets: one habit's week|12.18
+# TIME Widgets: one habit's week|0.62
+# TIME Widgets: one habit's week|0.52
+# TIME Widgets: one habit's week|1.88
+# TIME Widgets: one habit's week|2.45
+# TIME Widgets: one habit's week|0.86
+# TIME Widgets: one habit's week|0.87
+# TIME Widgets: one habit's week|2.09
+# TIME Widgets: the snapshot|0.48
+# TIME Widgets: the snapshot|0.46
+# MEASURING
+# DONE

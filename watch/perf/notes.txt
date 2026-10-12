@@ -1,6 +1,0 @@
-- long stall 395 ms at 1791845817.390; kotlin collection 79: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 1.8 ms
-- long stall 347 ms at 1791845872.330; kotlin collection 78: stopped 0.1 ms (after waiting 0.0 ms), then 0.0 ms, took 9.1 ms
-- long stall 355 ms at 1791845899.125; kotlin collection 77: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 6.4 ms
-- long stall 362 ms at 1791845929.301; kotlin collection 79: stopped 0.1 ms (after waiting 10.2 ms), then 0.0 ms, took 35.4 ms
-- long stall 315 ms at 1791845958.304; kotlin collection 78: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 14.0 ms
-- long stall 277 ms at 1791845992.963; kotlin collection 80: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 5.7 ms
