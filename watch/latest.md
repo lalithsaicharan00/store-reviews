@@ -1,129 +1,116 @@
-# Watch: claude/shared-habit-rules-main-check @ 5668e33
+# Watch: claude/shared-habit-rules-ci13 @ c8ce841
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38236475658 · 2026-10-12 11:44 UTC
-Commit: Current Work 92: Watch speed on main, to compare (scratch, safe to delete) [watch-perf]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38236469621 · 2026-10-12 11:46 UTC
+Commit: Current Work 92: paired iPhone and Watch end to end on the shared rules (scratch, safe to delete) [watch-pair]
 
 - Core tests: skipped
 - Watch build: success
-- iPhone build with the Watch app: skipped
+- iPhone build with the Watch app: success
 - Watch UI tests (none): skipped
 - Screenshots: skipped
-- Speed: success
-- Paired simulators: skipped
+- Speed: skipped
+- Paired simulators: failure
 
-## Speed
+Embedded in the iPhone app: OftenEnoughWatch.app 
 
-| What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms |
-|---|---|---|---|
-| Today: +1 (tap to filled button) | 2.7 | 42 ms | 0 |
-| Today: ✓ and Undo | 1.7 | 26 ms | 0 |
-| Today: scrolling 30 habits | 5.2 | 56 ms | 0 |
-| Day details: +1 | 27.1 | 58 ms | 0 |
-| Log manually: turning the Crown | 2.9 | 25 ms | 0 |
-| Routine: paging with the Crown | 6.2 | 38 ms | 0 |
-| Today: a 5,000-change batch from the iPhone arrives | 9.2 | 216 ms | 1 |
-| Writing the complication snapshot (10 times) | 0.0 | 0 ms | 0 |
+## Paired simulators
 
-Targets (Rulebook S): hitch time under 5 ms/s, no freeze of 100 ms or more. Simulator numbers; the Watch has the final word.
+Paired simulators: FAILED (waited 266 s)
 
-Openings (longest stall in the 1.5 s after the command) and launches:
+- iPhone 988E3014-CF08-448D-A9BC-635F45668EB5, Watch 4F35E3E6-3BF2-4822-9BCE-5FB705AC547A, pair 41188766-CA19-4A9B-826F-780F75798B9C
+- 149 s: booted the iPhone
+- 315 s: booted the Watch
+- 332 s: activated the pair FAILED or took over 60 s
+- 359 s: installed the iPhone app
+- 788 s: the Watch app never arrived from the iPhone in 240 s; installing it directly (the iPhone may refuse to send)
+- 797 s: installed the Watch app directly
+- 817 s: launched the iPhone app
+- 829 s: launched the Watch app
 
-- Launch to a usable Today (round 1 , cold): 2400 ms
-- Launch to a usable Today (round 2, warm): 2961 ms
-- Blank page (control, first): longest stall 382 ms
-- Blank page (control, again): longest stall 66 ms
-- Day details (first): longest stall 181 ms
-- Day details (again): longest stall 104 ms
-- Log manually: longest stall 306 ms
-- Blank cover (control, first): longest stall 169 ms
-- Blank cover (control, again): longest stall 66 ms
-- Routine (open): longest stall 383 ms
-
-Notes (storage and the first fill):
-
-- first fill on the Watch simulator: 375000 logs (15 years) in 76 parts, biggest 209 KB, 15.3 MB sent; 958.3 s (Today right after 22.6 s; the stand-in iPhone made it in 495.0 s); Watch database 226 MB; reading it all 30.14 s (375000 logs); reading the Watch's 400 days for Today 2.24 s (27268 logs); peak memory 152 MB
-
-Timed work (S2: count, total, longest):
-
-| Scenario | What | Count | Total | Longest |
-|---|---|---|---|---|
-| launch | Widgets: one habit's week | 8 | 59 ms | 40.5 ms |
-| launch | Store load: read the database | 1 | 56 ms | 55.7 ms |
-| launch | Watch Today: plan | 9 | 5 ms | 3.5 ms |
-| launch | Store load: into the app (0 logs) | 1 | 3 ms | 3.1 ms |
-| launch | Widgets: the snapshot | 2 | 1 ms | 0.8 ms |
-| launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
-| launch | Widgets: one habit's week | 8 | 34 ms | 17.9 ms |
-| launch | Store load: read the database | 1 | 7 ms | 7.0 ms |
-| launch | Widgets: the snapshot | 2 | 2 ms | 1.1 ms |
-| launch | Watch Today: plan | 9 | 2 ms | 0.6 ms |
-| launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.5 ms |
-| launch | Count: a Today row drawn | 15 | 0 ms | 0.0 ms |
-| tap-today | Store load: read the database | 2 | 256 ms | 225.1 ms |
-| tap-today | Widgets: one habit's week | 8 | 32 ms | 23.5 ms |
-| tap-today | Store load: into the app (1716 logs) | 1 | 25 ms | 25.1 ms |
-| tap-today | Watch Today: plan | 69 | 12 ms | 0.9 ms |
-| tap-today | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
-| tap-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
-| tap-today | Count: a Today row drawn | 227 | 0 ms | 0.0 ms |
-| scroll-today | Store load: read the database | 2 | 876 ms | 858.0 ms |
-| scroll-today | Store load: into the app (7320 logs) | 1 | 83 ms | 83.4 ms |
-| scroll-today | Widgets: one habit's week | 60 | 79 ms | 33.5 ms |
-| scroll-today | Watch Today: plan | 32 | 18 ms | 7.7 ms |
-| scroll-today | Widgets: the snapshot | 3 | 3 ms | 1.0 ms |
-| scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
-| scroll-today | Count: a Today row drawn | 158 | 0 ms | 0.0 ms |
-| day-details | Store load: read the database | 2 | 432 ms | 418.0 ms |
-| day-details | Widgets: one habit's week | 16 | 39 ms | 15.0 ms |
-| day-details | Store load: into the app (1716 logs) | 1 | 21 ms | 20.7 ms |
-| day-details | Watch Today: plan | 48 | 9 ms | 0.5 ms |
-| day-details | Watch Day details: the dial's words | 60 | 4 ms | 0.8 ms |
-| day-details | Watch Day details: streak | 60 | 3 ms | 0.2 ms |
-| day-details | Watch Day details: today's logs | 60 | 2 ms | 0.1 ms |
-| day-details | Widgets: the snapshot | 3 | 1 ms | 0.7 ms |
-| day-details | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
-| day-details | Count: Day details drawn | 60 | 0 ms | 0.0 ms |
-| day-details | Count: a Today row drawn | 197 | 0 ms | 0.0 ms |
-| crown | Store load: read the database | 2 | 527 ms | 492.4 ms |
-| crown | Widgets: one habit's week | 16 | 39 ms | 16.5 ms |
-| crown | Store load: into the app (1716 logs) | 1 | 22 ms | 22.2 ms |
-| crown | Watch Today: plan | 13 | 4 ms | 0.9 ms |
-| crown | Store load: into the app (0 logs) | 1 | 2 ms | 2.2 ms |
-| crown | Widgets: the snapshot | 3 | 1 ms | 0.8 ms |
-| crown | Watch Day details: the dial's words | 1 | 0 ms | 0.2 ms |
-| crown | Watch Day details: streak | 1 | 0 ms | 0.1 ms |
-| crown | Watch Day details: today's logs | 1 | 0 ms | 0.1 ms |
-| crown | Count: a Today row drawn | 31 | 0 ms | 0.0 ms |
-| crown | Count: Day details drawn | 1 | 0 ms | 0.0 ms |
-| routine | Store load: read the database | 2 | 243 ms | 228.7 ms |
-| routine | Widgets: one habit's week | 16 | 54 ms | 33.4 ms |
-| routine | Store load: into the app (1716 logs) | 1 | 22 ms | 22.2 ms |
-| routine | Watch Day details: the dial's words | 61 | 8 ms | 2.0 ms |
-| routine | Watch Today: plan | 17 | 4 ms | 1.9 ms |
-| routine | Widgets: the snapshot | 3 | 1 ms | 0.8 ms |
-| routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
-| routine | Count: a Today row drawn | 52 | 0 ms | 0.0 ms |
-| routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
-| incoming-batch | Batch: merged into the database | 1 | 4326 ms | 4326.1 ms |
-| incoming-batch | Store load: read the database | 3 | 1401 ms | 1025.6 ms |
-| incoming-batch | Store load: into the app (6716 logs) | 1 | 129 ms | 129.2 ms |
-| incoming-batch | Widgets: one habit's week | 16 | 65 ms | 25.3 ms |
-| incoming-batch | Store load: into the app (1716 logs) | 1 | 17 ms | 17.2 ms |
-| incoming-batch | Watch Today: plan | 13 | 6 ms | 2.9 ms |
-| incoming-batch | Widgets: the snapshot | 3 | 2 ms | 1.0 ms |
-| incoming-batch | Store load: into the app (0 logs) | 1 | 1 ms | 1.0 ms |
-| incoming-batch | Count: a Today row drawn | 30 | 0 ms | 0.0 ms |
-| complication | Store load: read the database | 2 | 361 ms | 354.1 ms |
-| complication | Widgets: one habit's week | 16 | 29 ms | 13.2 ms |
-| complication | Store load: into the app (1716 logs) | 1 | 27 ms | 26.8 ms |
-| complication | Widgets: the snapshot | 13 | 5 ms | 0.7 ms |
-| complication | Watch Today: plan | 11 | 4 ms | 2.1 ms |
-| complication | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
-| complication | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
-| first-fill-extreme | Store load: read the database | 2 | 368 ms | 360.5 ms |
-| first-fill-extreme | Widgets: one habit's week | 16 | 38 ms | 20.6 ms |
-| first-fill-extreme | Store load: into the app (1716 logs) | 1 | 28 ms | 27.7 ms |
-| first-fill-extreme | Watch Today: plan | 11 | 3 ms | 1.2 ms |
-| first-fill-extreme | Widgets: the snapshot | 3 | 1 ms | 0.8 ms |
-| first-fill-extreme | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
-| first-fill-extreme | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
+iPhone:
+```
+   -0.0 s  phone: added Pair water and Pair timer, +1 glass
+  300.2 s  never saw the Watch's two +1s (3 glasses) in 300 s
+  300.2 s  # PAIR DONE failed
+```
+Watch:
+```
+   -0.0 s  watch: waiting for the first fill
+  300.1 s  never saw the first fill (Pair water at 1 glass, Pair timer) in 300 s
+  300.1 s  # PAIR DONE failed
+```
+WatchConnectivity on the iPhone (last lines):
+```
+2026-10-12 11:40:36.428 Df Habits[47527:203ff] [com.apple.foundation.filecoordination:presenter] Adding presenter 0E8686B5-3E16-4266-B03F-CD388843AEE7 for URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/UserInfoTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/
+2026-10-12 11:40:36.433 Df Habits[47527:203ff] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/UserInfoTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 0E8686B5-3E16-4266-B03F-CD388843AEE7 -- claimID: C1E0A609-3509-4493-BECF-55891AEE9039
+2026-10-12 11:40:36.537 Df Habits[47527:203f5] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 -- claimID: ED94C84A-B0DD-48B6-BF22-6D873454A7B3
+2026-10-12 11:40:36.549 Df Habits[47527:20400] [com.apple.foundation.filecoordination:presenter] Adding presenter 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 for URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/
+2026-10-12 11:40:36.625 Df Habits[47527:20400] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 -- claimID: 4032157F-A8F1-4FD9-AC81-1173DF5E046A
+2026-10-12 11:40:36.933 Df Habits[47527:20401] [com.apple.xpc:connection] [0x1146bfac0] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
+2026-10-12 11:40:36.951 Df Habits[47527:20401] [com.apple.xpc:connection] [0x1161b5540] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
+2026-10-12 11:40:36.957 Df Habits[47527:203ff] [com.apple.xpc:connection] [0x1161b48c0] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
+2026-10-12 11:40:37.094 Df Habits[47527:20406] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 -- claimID: F63C14CA-7624-465B-A770-8C4B73F93FE4
+2026-10-12 11:40:37.132 Df Habits[47527:20400] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/UserInfoTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 0E8686B5-3E16-4266-B03F-CD388843AEE7 -- claimID: 7515695D-BBB4-4F00-B693-3CB4D8D20264
+2026-10-12 11:40:37.185 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession onqueue_dequeueContent]_block_invoke_2 hasContentPending: NO
+2026-10-12 11:40:37.185 E  Habits[47527:203f5] [com.apple.wcd:WC] WCSession counterpart app not installed
+2026-10-12 11:40:37.185 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession didSessionStateChange:withChangeHandler:] no change
+2026-10-12 11:40:37.186 E  Habits[47527:203f5] [com.apple.wcd:WC] WCSession counterpart app not installed
+2026-10-12 11:40:37.186 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession didSessionStateChange:withChangeHandler:] no change
+2026-10-12 11:40:37.186 E  Habits[47527:203f5] [com.apple.wcd:WC] WCSession counterpart app not installed
+2026-10-12 11:40:37.186 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession didSessionStateChange:withChangeHandler:] no change
+2026-10-12 11:41:04.472 Df Habits[47527:20404] [com.apple.wcd:WC] -[WCSession onqueue_completeSwitchTask:withSessionState:]_block_invoke_4 cleaning up directories for state: <WCSessionState: 0x1160e0d80, reachable: NO, paired: YES, appInstalled: NO, complicationEnabled: NO(50), pairingID: 4F35E3E6-3BF2-4822-9BCE-5FB705AC547A, pairedDevicesPairingIDs: {("4F35E3E6-3BF2-4822-9BCE-5FB705AC547A")}, appInstallationID: (null)>
+2026-10-12 11:41:52.928 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:52.930 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:52.936 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:54.223 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:54.738 Df wcd[28810:1571f] [com.apple.Transport:_IDSService] !setState destination=__IDS_DEFAULT_PAIRED_DEVICE__
+2026-10-12 11:41:54.741 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:54.746 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:55.464 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:55.465 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:58.833 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:58.836 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:41:59.523 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:01.802 Df wcd[28810:1571f] [com.apple.Transport:_IDSService] !setState destination=__IDS_DEFAULT_PAIRED_DEVICE__
+2026-10-12 11:42:01.803 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:43.397 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:48.655 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:48.655 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:49.804 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:50.033 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:50.396 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:50.397 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+2026-10-12 11:42:50.398 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
+```
+WatchConnectivity on the Watch (last lines):
+```
+2026-10-12 11:40:26.068 Df wcd[31172:1571a] [com.apple.wcd:WC] <WCDFirstUnlockManager: 0x10310b920> of systemObserverPairedListChanged
+2026-10-12 11:40:48.303 Df OftenEnoughWatch[47891:20792] [com.apple.BoardServices:XPCErrors] [C:1] Alloc com.apple.frontboard.systemappservices
+2026-10-12 11:40:48.600 Df OftenEnoughWatch[47891:2077e] [com.apple.BoardServices:XPCErrors] [C:2] Alloc com.apple.backboard.hid-services.xpc
+2026-10-12 11:40:48.602 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUIPrimaryGestureNegativeInteraction: 0x105121090>) installed: NO -> YES
+2026-10-12 11:40:48.603 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUICrownPressDismissGestureInteraction: 0x10840d340>) installed: NO -> YES
+2026-10-12 11:40:49.178 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUIPrimaryGestureViewInteraction: 0x105078780>) installed: NO -> YES
+2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession _init] WCSession initialized
+2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession setDelegate:] delegateSupportsAsyncActivate: YES, delegateSupportsActiveDeviceSwitch: NO
+2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession activateSession]_block_invoke
+2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession activateSession]_block_invoke informing daemon ready for session state
+2026-10-12 11:40:49.328 Df wcd[31172:1571a] (libMobileGestalt.dylib) Failed to get battery level with error E00002D8
+Paired Device Information: Production: iPhone18,3 (iPhone18,3), iPhone OS 26.5 (23F77), "Pair iPhone"
+        companionAppInstalled = NO;
+        companionAppInstalled = YES;
+        companionAppInstalled = NO;
+        companionAppInstalled = NO;
+        companionAppInstalled = NO;
+        companionAppInstalled = NO;
+        companionAppInstalled = NO;
+        companionAppInstalled = YES;
+        companionAppInstalled = NO;
+        companionAppInstalled = NO;
+        companionAppInstalled = YES;
+Pending Paired Sync Complications Started Identifier: NULL
+    Reachable: NO
+2026-10-12 11:40:49.352 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUIPrimaryGestureViewInteraction: 0x10508af80>) installed: NO -> YES
+2026-10-12 11:40:49.375 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller((null)) installed: YES -> NO
+2026-10-12 11:40:49.376 E  wcd[31172:1571a] [com.apple.wcd:WC] failed isPrivileged check. error: NanoTimeKit.WatchConnectivityMultiplexer.MultiplexierError:1
+2026-10-12 11:40:59.431 Df wcd[31172:1571a] [com.apple.wcd:WC] <WatchConnectivityDaemon: 0x10307ce60> of systemObserverInstalledApplicationsChanged
+```
