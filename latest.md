@@ -1,39 +1,42 @@
-# claude/shared-habit-rules-perf14 @ a339042 (speed bisect)
+# claude/shared-habit-rules-perf17 @ d1862b0 (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38282617709 · 2026-10-12 18:01 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38282626370 · 2026-10-12 18:13 UTC
 Commit: Current Work 92: final speed side by side with main, strips in one call (scratch, safe to delete) [ios-perf-bisect]
 
-Variants: `main=ad7a898f shared=HEAD` · scenarios: `scroll-today tap-today` · rounds: 4
+Variants: `main=ad7a898f shared=HEAD` · scenarios: `day-sheet widget-publish` · rounds: 4
 
 - main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
-- shared: a3390428 Current Work 92: final speed side by side with main, strips in one call (scratch, safe to delete) [io
+- shared: d1862b07 Current Work 92: final speed side by side with main, strips in one call (scratch, safe to delete) [io
 
 Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
 | Window | main | shared |
 |---|---|---|
-| Today: scrolling | **29.0**<br>43.3 (197, 4), 14.8 (149, 1), 80.9 (115, 1), 4.5 (46, 0) | **15.8**<br>18.9 (152, 2), 17.8 (111, 1), 13.8 (100, 0), 9.5 (92, 0) |
-| Today: +1 and day ‹ › | **46.6**<br>66.6 (64, 0), 78.7 (80, 0), 26.6 (60, 0), 19.7 (59, 0) | **54.4**<br>60 (77, 0), 74.8 (108, 1), 48.7 (54, 0), 21.7 (40, 0) |
-| Today: +1 alone | **0.1**<br>1.2 (33, 0), 0 (0, 0), 0.1 (18, 0), 0.1 (18, 0) | **1.4**<br>2.2 (40, 0), 2.2 (49, 0), 0.6 (26, 0), 0.4 (23, 0) |
-| Today: day ‹ › alone | **49.4**<br>88 (123, 1), 54.3 (68, 0), 44.5 (60, 0), 17.1 (50, 0) | **48.4**<br>82.6 (87, 0), 52.7 (79, 0), 44.1 (64, 0), 29.9 (42, 0) |
-| Today: Day sheet scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| Timer screen: a running clock | **1.6**<br>5.4 (45, 0), 1.4 (38, 0), 0 (0, 0), 1.8 (43, 0) | **0.0**<br>0.2 (20, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| Day sheet: entry list scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| All logs: scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| Entry editor: typing | **5.2**<br>6.7 (36, 0), 23 (104, 1), 2.6 (28, 0), 3.6 (26, 0) | **1.8**<br>2.1 (25, 0), 1.4 (23, 0), 2.7 (23, 0), 1.2 (29, 0) |
+| Day sheet: add, edit and exact undo | **257.7**<br>255.6 (114, 2), 259.8 (117, 3), 251.9 (126, 3), 263.1 (114, 2) | **283.2**<br>300.9 (117, 4), 269.5 (111, 4), 265.1 (111, 5), 296.9 (144, 6) |
+| Widget: full publication, every habit's week | **0.0**<br>0 (0, 0), 0 (0, 0), 4.8 (91, 0), 0 (0, 0) | **4.5**<br>3.2 (64, 0), 5.8 (106, 1), 0 (0, 0), 8.2 (143, 1) |
 
 Timed work, all rounds (count · total ms · longest ms):
 
 | What | main | shared |
 |---|---|---|
-| Store load: read the database | 16 · 7409 · 1656.8 | 16 · 7464 · 1547.0 |
-| Widgets: one habit's week | 203 · 857 · 78.1 | 202 · 1076 · 89.9 |
-| Store load: into the app (5593 logs) | 8 · 453 · 73.2 | 8 · 440 · 74.2 |
-| Widgets: the snapshot | 75 · 87 · 4.2 | 74 · 102 · 6.1 |
-| Store load: into the app (0 logs) | 8 · 26 · 14.9 | 8 · 11 · 3.1 |
-| Count: Today's list drawn | 404 · 1 · 0.7 | 413 · 1 · 0.6 |
-| Reminders: plan every alert | 239 · 15 · 0.8 | 239 · 17 · 1.1 |
-| Count: a Today row drawn | 2642 · 0 · 0.1 | 2529 · 0 · 0.0 |
-| Shared rules: built from every log | – | 32 · 213 · 33.3 |
-| Shared rules: habits and settings again | – | 48 · 27 · 3.7 |
-| Change: Siri's habit names | 232 · 16 · 0.4 | 232 · 18 · 2.5 |
-| Count: the Day sheet drawn | 50 · 0 · 0.0 | 41 · 0 · 0.0 |
-| Count: the Day sheet's activity drawn | 50 · 0 · 0.0 | 41 · 0 · 0.0 |
-| Shared rules: a log added | – | 228 · 14 · 1.1 |
+| Store load: read the database | 16 · 6623 · 1258.0 | 16 · 6176 · 1338.1 |
+| Habit page: history | 583 · 3436 · 13.9 | 580 · 6654 · 39.6 |
+| Widgets: one habit's week | 1720 · 2542 · 101.9 | 1703 · 3579 · 127.2 |
+| Store load: into the app (5593 logs) | 8 · 520 · 86.5 | 8 · 529 · 85.0 |
+| Change: Siri's habit names | 579 · 49 · 1.4 | 576 · 46 · 2.1 |
+| Widgets: the snapshot | 104 · 100 · 5.9 | 103 · 135 · 5.3 |
+| Store load: into the app (0 logs) | 8 · 19 · 3.0 | 8 · 8 · 2.2 |
+| Reminders: plan every alert | 12 · 9 · 1.7 | 12 · 0 · 0.2 |
+| Count: Today's list drawn | 74 · 1 · 0.6 | 78 · 5 · 1.2 |
+| Count: the Day sheet drawn | 641 · 0 · 0.1 | 651 · 0 · 0.0 |
+| Count: the Day sheet's activity drawn | 834 · 0 · 0.0 | 843 · 0 · 0.0 |
+| Count: a Today row drawn | 902 · 0 · 0.0 | 819 · 0 · 0.0 |
+| Entry editor: whole editor drawn | 804 · 0 · 0.0 | 796 · 0 · 0.0 |
+| Shared rules: built from every log | – | 32 · 248 · 31.2 |
+| Shared rules: a log changed | – | 192 · 23 · 0.5 |
+| Shared rules: a log removed | – | 192 · 19 · 1.7 |
+| Shared rules: habits and settings again | – | 40 · 21 · 2.9 |
+| Shared rules: a log added | – | 192 · 13 · 0.4 |
