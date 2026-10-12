@@ -1,45 +1,17 @@
-# claude/shared-habit-rules-ci10 @ b122a95
+# claude/shared-habit-rules-perf3 @ ce6edf2 (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38225691543 · 2026-10-12 11:10 UTC
-Commit: Current Work 92 (checkpoint 2): a log made before the shared rules' copy is built isn't lost
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38229393346 · 2026-10-12 11:42 UTC
+Commit: Current Work 92: speed side by side with main, part 3 (scratch, safe to delete) [ios-perf-bisect]
 
-- Core storage and migrations: success
-- Build: success
-- Release build: success
-- Same-build speed baseline: skipped
-- UI tests (IPadUITests): failure
-- Speed tests: skipped
-- Speed tests through XCTest: skipped
+Variants: `main=ad7a898f shared=HEAD` · scenarios: `progress-year calendar` · rounds: 4
 
-## UI tests
-```
-	 Executed 15 tests, with 1 failure (0 unexpected) in 732.503 (732.525) seconds
-	 Executed 15 tests, with 1 failure (0 unexpected) in 732.503 (732.527) seconds
-	 Executed 15 tests, with 1 failure (0 unexpected) in 732.503 (732.528) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:213: error: -[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps] : XCTAssertTrue failed - Add log keeps ✕: Often Enough | pad-sidebar | sidebar-hide | Hide Sidebar | menu-today | Today, 9 left | sun.max | Brightness Higher | Today | sidebar-today-left | 9 left | menu-progress | Progress | chart.bar.xaxis | menu-habits | Habits, 17 | checklist | Habits | 17 | menu-tasks | Tasks, 0 | list.bullet | List | Tasks | 0 | menu-timesOfDay | Times of Day | rectangle.split.3x1 | Column View | Vertical scroll bar, 3 pages | _TtGC7SwiftUI29PresentationHosting | chevron.left | Previous day | Today, 6 of 15 done. Open calendar | chevron.down | Go Down | 6/15 | chevron.right | Next day | arrange-button | Edit | filter-button | Filter | New Habit |   | Quit or Cut Down, 2 habits | Quit or Cut Down | Fold Quit or Cut Down | nosign | Stop | Smoking | habit-line | Best 45 days | 12d 11:23:30 | wineglass | Alcohol | Best 47 days | 47d 00:00:30 | Anytime, 2 left | Anytime
-Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' failed (100.676 seconds).
-Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (31.865 seconds).
-Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' passed (67.512 seconds).
-Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (47.196 seconds).
-Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (37.926 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' passed (38.122 seconds).
-Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (86.100 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (21.021 seconds).
-Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (33.425 seconds).
-Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (28.001 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (24.334 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' passed (95.006 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (33.528 seconds).
-Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' passed (74.264 seconds).
-Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (13.526 seconds).
-```
+- main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
+- shared: ce6edf29 Current Work 92: speed side by side with main, part 3 (scratch, safe to delete) [ios-perf-bisect]
 
-## Release build
-```
-** BUILD SUCCEEDED **
-```
+Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
-## Native analytics checks
-```
-Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
-```
+| Window | main | shared |
+|---|---|---|
+| Progress Year: sideways | **0.0**<br>0 (0, 0), 0.3 (21, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 4.6 (86, 0), 0 (0, 0), 0 (0, 0) |
+| Progress Year: scrolling | **11.1**<br>27.2 (72, 0), 9.5 (43, 0), 2.8 (28, 0), 12.7 (72, 0) | **11.4**<br>0 (0, 0), 27.8 (162, 1), 3.1 (32, 0), 19.7 (112, 1) |
+| Calendar: month ‹ › | **9.7**<br>22 (84, 0), 12.9 (56, 0), 6.5 (31, 0), 3.4 (29, 0) | **3.3**<br>32.7 (130, 1), 4.1 (27, 0), 0.6 (23, 0), 2.5 (31, 0) |
