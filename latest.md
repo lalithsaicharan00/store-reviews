@@ -1,17 +1,55 @@
-# claude/shared-habit-rules-perf3 @ ce6edf2 (speed bisect)
+# claude/shared-habit-rules-main-check2 @ ad7a898
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38229393346 · 2026-10-12 11:42 UTC
-Commit: Current Work 92: speed side by side with main, part 3 (scratch, safe to delete) [ios-perf-bisect]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38236705492 · 2026-10-12 11:50 UTC
+Commit: Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
 
-Variants: `main=ad7a898f shared=HEAD` · scenarios: `progress-year calendar` · rounds: 4
+- Core storage and migrations: success
+- Build: success
+- Release build: success
+- Same-build speed baseline: skipped
+- UI tests (WidgetUITests/testEveryFamilyAndLayoutAtIPhoneSizes,WidgetSystemUITests/testLockScreenWidgetPickerAvailability): failure
+- Speed tests: skipped
+- Speed tests through XCTest: skipped
 
-- main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
-- shared: ce6edf29 Current Work 92: speed side by side with main, part 3 (scratch, safe to delete) [ios-perf-bisect]
+## UI tests
+```
+	 Executed 2 tests, with 1 test skipped and 1 failure (0 unexpected) in 338.022 (338.037) seconds
+	 Executed 2 tests, with 1 test skipped and 1 failure (0 unexpected) in 338.022 (338.038) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WidgetUITests.swift:58: error: -[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes] : Failed to get matching snapshots: Lost connection to the application (pid 64947). (Underlying Error: Couldn’t communicate with a helper application. Try your operation again. If that fails, quit and relaunch the application and try again. connection to service with pid 64947 created from an endpoint)
+Test Case '-[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes]' failed (221.325 seconds).
+```
 
-Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
+## Release build
+```
+** BUILD SUCCEEDED **
+```
 
-| Window | main | shared |
-|---|---|---|
-| Progress Year: sideways | **0.0**<br>0 (0, 0), 0.3 (21, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 4.6 (86, 0), 0 (0, 0), 0 (0, 0) |
-| Progress Year: scrolling | **11.1**<br>27.2 (72, 0), 9.5 (43, 0), 2.8 (28, 0), 12.7 (72, 0) | **11.4**<br>0 (0, 0), 27.8 (162, 1), 3.1 (32, 0), 19.7 (112, 1) |
-| Calendar: month ‹ › | **9.7**<br>22 (84, 0), 12.9 (56, 0), 6.5 (31, 0), 3.4 (29, 0) | **3.3**<br>32.7 (130, 1), 4.1 (27, 0), 0.6 (23, 0), 2.5 (31, 0) |
+## App crashes
+```
+### Habits-2026-10-12-114852.ips
+EXC_CRASH SIGABRT
+Abort trap: 6
+  libsystem_kernel.dylib: __pthread_kill
+  libsystem_pthread.dylib: pthread_kill
+  libsystem_c.dylib: abort
+  libc++abi.dylib: __abort_message
+  libc++abi.dylib: demangling_terminate_handler()
+  libobjc.A.dylib: _objc_terminate()
+  Habits: (anonymous namespace)::TerminateHandler::queuedHandler()::'lambda'()::operator()() const
+  Habits: void (anonymous namespace)::$_0::operator()<(anonymous namespace)::TerminateHandler::queuedHandler()::'lambda'()>((anonymous namespace)::TerminateHandler::queuedHandler()::'lambda'())
+  Habits: (anonymous namespace)::TerminateHandler::queuedHandler()
+  Habits: (anonymous namespace)::TerminateHandler::kotlinHandler()
+  libc++abi.dylib: std::__terminate(void (*)())
+  libc++abi.dylib: __cxa_rethrow
+  libobjc.A.dylib: objc_exception_rethrow
+  XCTAutomationSupport: +[XCTRuntimeIssueContext captureIssuesWithContext:inScope:]
+  XCTAutomationSupport: __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke
+  XCTAutomationSupport: __XCTPerformOnMainRunLoop_block_invoke
+  CoreFoundation: __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__
+  CoreFoundation: __CFRunLoopDoBlocks
+```
+
+## Native analytics checks
+```
+Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
+```
