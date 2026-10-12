@@ -137,8 +137,8 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
      * One habit's days [first]…[last] in one call, for a strip of days (the habit page's history, Progress's cards):
      * crossing into the core once per day and rule cost more than the rules themselves (Current Work 92, checkpoint 2).
      * Five numbers a day: the mark ([dayMark] against [reference]); then, judged by that day's goal ([HabitRules.rule]),
-     * what was logged at [now] ([dayProgress]), 1 when its goal was met ([isDayMet]) and the day's goal ([dayGoal]); and
-     * 1 when it was one of its days ([isDue], skips counted).
+     * what was logged at [now] ([dayProgress]), 1 when its goal was met ([isDayMet]) and the day's goal ([dayGoal]); 1 when
+     * it was one of its days ([isDue], skips counted); and the kind of period that day's goal is judged in ([periodKind]).
      */
     fun days(h: RuleHabit, first: Int, last: Int, reference: Int, now: Long): DoubleArray {
         val count = maxOf(0, last - first + 1)
@@ -152,6 +152,7 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
             out[at + 2] = if (rules.isDayMet(judged, day)) 1.0 else 0.0
             out[at + 3] = rules.dayGoal(judged)
             out[at + 4] = if (rules.isDue(h.habit, day, now, countingSkips = true, followingMoves = true)) 1.0 else 0.0
+            out[at + 5] = rules.periodKind(judged).ordinal.toDouble()
         }
         return out
     }
@@ -198,6 +199,6 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
 
     companion object {
         /** Numbers per day in [days]. */
-        const val DAY_FIELDS = 5
+        const val DAY_FIELDS = 6
     }
 }

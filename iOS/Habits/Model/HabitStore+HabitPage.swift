@@ -183,11 +183,13 @@ extension HabitStore {
             var rows: [HistoryDay] = []
             var day = min(span.upperBound, today)
             let earliest = max(span.lowerBound, start)
+            // The month's days from the shared rules in one call (`CoreDays`).
+            let sharedDays = earliest <= day ? coreDays(habit, in: earliest...day, relativeTo: today) : nil
             while day >= earliest {
                 let entries = self.entries(of: habit.id, on: day)
                 let hasNote = note(of: habit, on: day) != nil
                 let skipped = isSkipped(habit, on: day)
-                let due = habit.kind != .quit && rule(habit, on: day).frequency.isDayBased && isDue(habit, on: day)
+                let due = habit.kind != .quit && rule(habit, on: day).frequency.isDayBased && (sharedDays?.isDue(day) ?? isDue(habit, on: day))
                 if due || !entries.isEmpty || hasNote || skipped {
                     let index = span.lowerBound.days(to: day, calendar: calendar)
                     rows.append(HistoryDay(
@@ -247,18 +249,26 @@ extension HabitStore {
         var bestValue = 0.0, bestDay: LocalDay?
         var doneDays = 0
         var kinds: Set<GoalPeriod> = []
+        // Every day since it began: the shared rules answer them in one call (`CoreDays`).
+        let sharedDays = coreDays(habit, in: start...today, relativeTo: today)
         var day = start
         while day <= today {
-            let rule = rule(habit, on: day)
-            kinds.insert(periodKind(rule))
-            let value = dayProgress(of: rule, on: day)
+            let value: Double
+            if let sharedDays {
+                kinds.insert(sharedDays.periodKind(day))
+                value = sharedDays.progress(day)
+            } else {
+                let rule = rule(habit, on: day)
+                kinds.insert(periodKind(rule))
+                value = dayProgress(of: rule, on: day)
+            }
             total += value
             if value > bestValue { bestValue = value; bestDay = day }
             if value > 0 { doneDays += 1 }
             day = day.adding(days: 1, calendar: calendar)
         }
         // Goals met count only periods of today's kind (E2), each dated the day its goal was reached (E3).
-        let tally = goalTally(of: habit, kind: kind, today: today, best: kind != .day && !now.atMost)
+        let tally = goalTally(of: habit, kind: kind, today: today, best: kind != .day && !now.atMost, days: sharedDays)
 
         var lead = "", value = "", trail = ""
         switch shape {
@@ -357,15 +367,18 @@ extension HabitStore {
         var bestRange: ClosedRange<LocalDay>?
     }
 
-    func goalTally(of habit: Habit, kind: GoalPeriod, today: LocalDay, best: Bool = false) -> GoalTally {
+    /// `days`: the habit's days from its start to `today` from the shared rules (`CoreDays`), when the caller has them.
+    func goalTally(of habit: Habit, kind: GoalPeriod, today: LocalDay, best: Bool = false, days: CoreDays? = nil) -> GoalTally {
         var tally = GoalTally()
         let start = startDay(of: habit)
         var day = start
+        // Every day since it began, in one call to the shared rules (`CoreDays`).
+        let sharedDays = start > today ? nil : days ?? coreDays(habit, in: start...today, relativeTo: today)
         if kind == .day {
             while day <= today {
-                let rule = rule(habit, on: day)
-                if periodKind(rule) == .day && !isPaused(habit, on: day) && !isSkipped(habit, on: day) && isDue(habit, on: day) {
-                    let isMet = isDayMet(habit, on: day)
+                let dayKind = sharedDays?.periodKind(day) ?? periodKind(rule(habit, on: day))
+                if dayKind == .day && !isPaused(habit, on: day) && !isSkipped(habit, on: day) && (sharedDays?.isDue(day) ?? isDue(habit, on: day)) {
+                    let isMet = sharedDays?.isMet(day) ?? isDayMet(habit, on: day)
                     if day < today || isMet {
                         tally.eligible += 1
                         if isMet { tally.met += 1; tally.dates.append(day) }
@@ -391,7 +404,7 @@ extension HabitStore {
                 var value = 0.0
                 var d = max(range.lowerBound, start)
                 while d <= min(range.upperBound, today) {
-                    value += dayProgress(of: self.rule(habit, on: d), on: d)
+                    value += sharedDays?.progress(d) ?? dayProgress(of: self.rule(habit, on: d), on: d)
                     d = d.adding(days: 1, calendar: calendar)
                 }
                 if value > tally.bestValue { tally.bestValue = value; tally.bestRange = range }

@@ -149,6 +149,8 @@ struct CoreDays {
     func goal(_ day: LocalDay) -> Double { at(day, 3) }
     /// As `isDue(habit, on: day)`.
     func isDue(_ day: LocalDay) -> Bool { at(day, 4) == 1 }
+    /// As `periodKind(rule(habit, on: day))`.
+    func periodKind(_ day: LocalDay) -> GoalPeriod { [.day, .week, .month, .year][Int(at(day, 5))] }
 }
 
 extension HabitStore {
