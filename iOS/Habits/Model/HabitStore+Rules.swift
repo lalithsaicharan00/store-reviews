@@ -92,11 +92,8 @@ extension HabitStore {
     /// likewise only for those.
     func ruleHabit(_ habit: Habit, _ core: LiveRules, logs: Bool = true) -> RuleHabit? {
         if logs { observeEntries(of: habit.id) }
-        access(keyPath: \.skips)
-        access(keyPath: \.pauses)
-        access(keyPath: \.rules)
-        access(keyPath: \.archivedOn)
-        if habit.kind == .task { access(keyPath: \.taskMoves) }
+        // Skips, moved task days, pauses, goal history and archive days, in one read (`ruleInputs`).
+        access(keyPath: \.ruleInputs)
         if logs, habit.kind == .duration { access(keyPath: \.timers) }
         if let known = coreHandles[habit.id], known.habit == habit { return known.rule }
         if isSaved(habit), let made = core.habit(id: habit.id.uuidString) {

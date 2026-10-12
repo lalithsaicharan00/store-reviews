@@ -134,17 +134,20 @@ final class HabitStore {
     }
     /// For a timed habit spread over times of day: the part a running timer is for.
     private(set) var timerSlots: [UUID: String] = [:]
+    /// Changes whenever skips, moved task days, pauses, goal history or archive days do: the shared rules read all five
+    /// for a habit, and one read of this tells SwiftUI so where five reads did (`HabitStore+Rules.swift`, S19).
+    private(set) var ruleInputs = 0
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
     /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
-    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { forgetAll() } }
+    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
     /// A repeating task's occurrences moved to another day, original day → new day (Day details' Reschedule, 4 Oct
     /// 2026). Saved like skips, one setting per task, so it syncs and is backed up with them.
-    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { forgetAll() } }
+    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
     /// Pauses per habit, oldest first. A paused day is a skipped day, for a whole stretch (pause report, 29 Sep).
-    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { forgetAll() } }
+    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
     /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
     /// its `until` day, so past days keep the result they had (spec §8.2).
-    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { forgetAll() } }
+    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
     /// Notes (report "Habit Notes and Day Notes", 29 Sep): one per habit per day, one per day, and a standing
     /// description per habit. Optional, never prompted, and they never change progress.
     private(set) var habitNotes: [UUID: [LocalDay: String]] = [:]
@@ -152,7 +155,7 @@ final class HabitStore {
     private(set) var descriptions: [UUID: String] = [:]
     /// The day each archived habit was archived: from that day on it has no days (Build Plan #60c). Kept only while
     /// it's archived; Restore turns the archived stretch into a pause, so those days are never "not done".
-    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { forgetAll() } }
+    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { ruleInputs &+= 1; forgetAll() } }
     /// Goes up by one after every change and every load. Progress keys its numbers on it, so they're worked out once
     /// per change, never while drawing (report §20). Only screens that cache numbers read it.
     private(set) var dataVersion = 0
