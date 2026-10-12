@@ -13,6 +13,12 @@ enum WidgetFixture {
     /// database that a plain launch (a widget's cold save) fills with samples (run 37769869356, 8 Oct 2026).
     static func install(in store: HabitStore) async {
         await store.skipEveryTypeToAnytime()
+        #if targetEnvironment(simulator)
+        if ProcessInfo.processInfo.arguments.contains("-website-widget-fixture") {
+            await installWebsite(in: store)
+            return
+        }
+        #endif
         let start = store.today().adding(days: -40, calendar: store.calendar)
         let longLabels = ProcessInfo.processInfo.arguments.contains("-widget-long-labels")
         let items = [
@@ -38,6 +44,56 @@ enum WidgetFixture {
         for item in items + tasks where !present.contains(item.name) { store.add(item) }
         await store.flush()
     }
+    // Website capture only, erased hosted simulators. Native widget rendering and actions are unchanged (U28/D8).
+    #if targetEnvironment(simulator)
+    private static func installWebsite(in store: HabitStore) async {
+        let day = store.today()
+        let start = day.adding(days: -40, calendar: store.calendar)
+        let items = [
+            Habit(name: "Water", symbol: "drop.fill", color: .blue,
+                  kind: .amount(unit: "glasses", increment: 1), parts: [.anytime], goal: 8, startsOn: start),
+            Habit(name: "Smoke-free", symbol: "hand.raised.fill", color: .green, kind: .quit, startsOn: start,
+                  quitSince: Date.now.addingTimeInterval(-(12 * 86400 + 4 * 3600))),
+            Habit(name: "Coffee", symbol: "cup.and.saucer.fill", color: .brown,
+                  kind: .amount(unit: "cups", increment: 1), goal: 3, atMost: true, startsOn: start),
+            Habit(name: "Stretch", symbol: "figure.flexibility", color: .orange, kind: .check,
+                  parts: [.morning], startsOn: start),
+            Habit(name: "Meditate", symbol: "timer", color: .purple, kind: .duration,
+                  parts: [.morning], goal: 10, startsOn: start),
+            Habit(name: "Walk", symbol: "figure.walk", color: .green,
+                  kind: .amount(unit: "steps", increment: 0), parts: [.morning], goal: 8000, startsOn: start),
+            Habit(name: "Kitchen", symbol: "fork.knife", color: .indigo, kind: .checklist,
+                  parts: [.morning], steps: [Step(name: "Dishes"), Step(name: "Sink"), Step(name: "Floor")], startsOn: start),
+            Habit(name: "Read", symbol: "book.fill", color: .orange,
+                  kind: .amount(unit: "books", increment: 1), parts: [.morning], goal: 2, frequency: .perMonth(2), startsOn: start)
+        ]
+        for item in items where !store.habits.contains(where: { $0.name == item.name }) { store.add(item) }
+        await store.flush()
+        // Relaunch can finish an interrupted fixture without duplicate logs (T14).
+        func habit(_ name: String) -> Habit { store.habits.first { $0.name == name }! }
+        func seed(_ name: String, _ amount: Double, _ on: LocalDay) {
+            let item = habit(name)
+            if !store.entries.contains(where: { $0.habitID == item.id && $0.day == on }) {
+                store.addProgress(item, value: amount, on: on)
+            }
+        }
+        seed("Water", 3, day)
+        seed("Stretch", 1, day)
+        seed("Meditate", 4, day)
+        seed("Walk", 4200, day)
+        seed("Read", 1, day)
+        let kitchen = habit("Kitchen")
+        if !store.entries.contains(where: { $0.habitID == kitchen.id && $0.day == day }) {
+            store.toggleStep(kitchen.steps[0], of: kitchen, on: day)
+        }
+        for offset in 0..<7 {
+            seed("Coffee", Double([1, 2, 1, 2, 3, 1, 2][offset]), day.adding(days: -offset, calendar: store.calendar))
+        }
+        await store.flush()
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+    #endif
+
 }
 
 /// The widgets' checks (Implementation Spec §12, and every widget problem users reported: Feature Ledger C040 blank,
