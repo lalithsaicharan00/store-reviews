@@ -18,7 +18,7 @@ private const val ASK = Long.MIN_VALUE
 /** Numbers per day in [HabitRules.strip]. */
 const val STRIP_FIELDS = 6
 
-class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -> Long, reuse: Zone? = null) {
+class HabitRules(val data: HabitData, val settings: DaySettings, reuse: Zone? = null, val clock: () -> Long) {
     /** The zone's clock ([reuse]: the last rules' own, when they read the same zone, so what it has read stays). */
     val zone = reuse?.takeIf { it.id == settings.timeZone } ?: Zone(settings.timeZone)
     private val dayEnd = settings.dayEndHour.coerceIn(0, 12)

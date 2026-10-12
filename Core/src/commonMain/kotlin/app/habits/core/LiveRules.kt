@@ -46,7 +46,7 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
         val data = HabitData(d.habits, logs, d.skips, d.moves, d.pauses, d.rules, d.archivedOn, d.timers, d.sections, d.cardOrder)
         handles = HashMap()
         // The zone, with what it has read, carries over (habits and settings come again after many a change).
-        return HabitRules(data, loaded.settings, clock, if (::rules.isInitialized) rules.zone else null)
+        return HabitRules(data, loaded.settings, if (::rules.isInitialized) rules.zone else null, clock)
     }
 
     /** Habits or settings changed. [settings] are the setting rows the rules read, exactly as saved (spec/README.md),
