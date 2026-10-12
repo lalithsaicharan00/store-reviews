@@ -72,6 +72,10 @@ enum GoldenRecorder {
     struct SettingRow: Decodable { let key: String; let value: String }
 
     static func run() async -> String {
+        // The iPhone's own Swift rules answer, so the fixtures are what people saw before the switch; with
+        // `-golden-shared` the shared rules answer through the same store, to prove the switch changes nothing (Current
+        // Work 92, checkpoint 2).
+        HabitStore.sharedRules = ProcessInfo.processInfo.arguments.contains("-golden-shared")
         let fm = FileManager.default
         let base = fm.temporaryDirectory.appendingPathComponent("golden", isDirectory: true)
         let input = base.appendingPathComponent("in", isDirectory: true)

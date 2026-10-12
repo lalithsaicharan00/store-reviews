@@ -62,6 +62,7 @@
 				"Model/HabitStore+OverTime.swift",
 				"Model/HabitStore+Phase2.swift",
 				"Model/HabitStore+Progress.swift",
+				"Model/HabitStore+Rules.swift",
 				"Model/HabitStore+Shortcuts.swift",
 				"Model/HabitStore+WeekCards.swift",
 				"Model/HabitStore+Widgets.swift",
