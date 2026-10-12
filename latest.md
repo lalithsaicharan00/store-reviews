@@ -1,86 +1,91 @@
-# claude/shared-habit-rules-perf24 @ a6444ff (speed bisect)
+# claude/shared-habit-rules-perf25 @ 3835b5d (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38307045881 · 2026-10-12 21:48 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38307049012 · 2026-10-12 21:49 UTC
 Commit: Current Work 92: speed side by side with main, all optimisations (scratch, safe to delete) [ios-perf-bisect]
 
-Variants: `main=ad7a898f shared=HEAD` · scenarios: `scroll-today tap-today` · rounds: 6
+Variants: `main=ad7a898f shared=HEAD` · scenarios: `progress-year calendar` · rounds: 6
 
 - main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
-- shared: a6444ff3 Current Work 92: speed side by side with main, all optimisations (scratch, safe to delete) [ios-perf-
+- shared: 3835b5d0 Current Work 92: speed side by side with main, all optimisations (scratch, safe to delete) [ios-perf-
 
 Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
 | Window | main | shared |
 |---|---|---|
-| Today: scrolling | **16.3**<br>35.6 (142, 1), 12.9 (52, 0), 12.2 (53, 0), 19.7 (167, 1), 19.9 (235, 1), 10.7 (58, 0) | **14.7**<br>17.7 (177, 1), 15 (166, 1), 13.1 (89, 0), 16.5 (99, 0), 14.3 (77, 0), 12.9 (41, 0) |
-| Today: +1 and day ‹ › | **46.5**<br>31.1 (96, 0), 68.4 (76, 0), 31 (48, 0), 64.8 (96, 0), 61.6 (140, 1), 31.3 (50, 0) | **50.9**<br>54.3 (75, 0), 52.1 (125, 1), 68.5 (88, 0), 49.7 (59, 0), 31.5 (80, 0), 36.3 (62, 0) |
-| Today: +1 alone | **0.9**<br>2 (34, 0), 0.4 (21, 0), 0.3 (20, 0), 0.9 (30, 0), 0.9 (27, 0), 1.3 (33, 0) | **0.8**<br>1.9 (29, 0), 6.9 (53, 0), 0.7 (26, 0), 0.7 (27, 0), 0.8 (24, 0), 0.4 (19, 0) |
-| Today: day ‹ › alone | **46.7**<br>91.2 (87, 0), 49.1 (65, 0), 44.2 (48, 0), 34.9 (54, 0), 61.7 (109, 1), 32.4 (42, 0) | **31.6**<br>17 (39, 0), 44.2 (143, 1), 59.6 (62, 0), 30.7 (55, 0), 30.6 (59, 0), 32.6 (53, 0) |
-| Today: Day sheet scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| Timer screen: a running clock | **0.1**<br>32.2 (232, 2), 0 (0, 0), 0.1 (18, 0), 1.1 (27, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0.2 (20, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0), 1.5 (32, 0), 0 (0, 0) |
+| Progress Year: sideways | **0.0**<br>0 (0, 0), 12.4 (78, 0), 0.3 (21, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.2**<br>74.4 (718, 2), 0 (0, 0), 0 (0, 0), 0.5 (25, 0), 0 (0, 0), 0.6 (26, 0) |
+| Progress Year: scrolling | **17.5**<br>17.1 (83, 0), 26.2 (60, 0), 23.9 (72, 0), 13.8 (77, 0), 17.9 (62, 0), 11.7 (69, 0) | **22.6**<br>58.3 (124, 1), 17 (59, 0), 41.1 (77, 0), 24.6 (70, 0), 20.6 (50, 0), 13.9 (61, 0) |
+| Calendar: month ‹ › | **18.1**<br>7.1 (30, 0), 13.9 (96, 0), 43.3 (118, 1), 22.7 (46, 0), 22.2 (38, 0), 9 (32, 0) | **12.2**<br>32.5 (60, 0), 29.2 (68, 0), 13 (62, 0), 9.9 (98, 0), 11.3 (37, 0), 9.2 (40, 0) |
 
 Timed work, all rounds (count · total ms · longest ms):
 
 | What | main | shared |
 |---|---|---|
-| Store load: read the database | 24 · 9763 · 2220.0 | 24 · 8923 · 1387.7 |
-| Widgets: one habit's week | 303 · 1498 · 79.1 | 302 · 1483 · 68.4 |
-| Store load: into the app (5593 logs) | 12 · 700 · 75.8 | 12 · 738 · 75.2 |
-| Widgets: the snapshot | 111 · 133 · 3.8 | 110 · 175 · 7.0 |
-| Store load: into the app (0 logs) | 12 · 27 · 4.5 | 12 · 10 · 1.5 |
-| Reminders: plan every alert | 356 · 27 · 1.7 | 354 · 41 · 7.7 |
-| Count: Today's list drawn | 612 · 1 · 0.7 | 610 · 4 · 0.7 |
-| Count: a Today row drawn | 4744 · 0 · 0.0 | 4557 · 0 · 0.0 |
-| Shared rules: built from every log, off the main thread | – | 24 · 165 · 17.6 |
-| Shared rules: built from every log | – | 24 · 88 · 11.7 |
-| Shared rules: habits and settings again | – | 72 · 60 · 3.0 |
-| Change: Siri's habit names | 346 · 24 · 0.4 | 344 · 25 · 0.3 |
-| Count: the Day sheet drawn | 78 · 0 · 0.0 | 70 · 0 · 0.0 |
-| Count: the Day sheet's activity drawn | 78 · 0 · 0.0 | 70 · 0 · 0.0 |
-| Shared rules: a log added | – | 339 · 26 · 1.2 |
+| Store load: read the database | 24 · 10238 · 1914.1 | 24 · 11041 · 1990.5 |
+| Widgets: one habit's week | 204 · 1205 · 87.2 | 204 · 1352 · 97.5 |
+| Store load: into the app (5593 logs) | 12 · 748 · 75.9 | 12 · 881 · 181.3 |
+| Progress year: whole snapshot | 6 · 217 · 43.6 | 6 · 194 · 40.9 |
+| Progress year: cards | 6 · 212 · 43.0 | 6 · 191 · 40.1 |
+| Progress year: one card | 90 · 200 · 14.2 | 90 · 179 · 14.3 |
+| Store load: into the app (0 logs) | 12 · 35 · 7.7 | 12 · 15 · 3.1 |
+| Progress week: whole snapshot | 6 · 11 · 2.6 | 6 · 25 · 11.0 |
+| Widgets: the snapshot | 12 · 22 · 3.0 | 12 · 32 · 9.0 |
+| Progress week: cards | 6 · 10 · 1.9 | 6 · 22 · 8.9 |
+| Progress week: one card | 90 · 6 · 0.3 | 90 · 13 · 2.3 |
+| Reminders: plan every alert | 12 · 5 · 1.6 | 12 · 5 · 1.3 |
+| Progress year: one quit card | 12 · 5 · 0.7 | 12 · 4 · 0.8 |
+| Progress week: one quit card | 12 · 1 · 0.5 | 12 · 5 · 2.6 |
+| Count: Today's list drawn | 150 · 4 · 1.3 | 152 · 7 · 2.0 |
+| Count: a Today row drawn | 867 · 0 · 0.0 | 781 · 0 · 0.0 |
+| Shared rules: built from every log, off the main thread | – | 24 · 165 · 22.8 |
+| Shared rules: built from every log | – | 24 · 167 · 29.3 |
+| Shared rules: habits and settings again | – | 60 · 63 · 6.0 |
 
 Long stalls (250 ms or more), with what the Kotlin collector last did:
 
-- shared, scroll-today round 1: long stall 935 ms at 1791839914.278; kotlin collection 232: stopped 0.0 ms (after waiting 10.2 ms), then 0.1 ms, took 25.5 ms
-- shared, tap-today round 1: long stall 275 ms at 1791840080.051; kotlin collection 232: stopped 4.5 ms (after waiting 14.4 ms), then 1.2 ms, took 46.4 ms
-- shared, tap-today round 1: long stall 514 ms at 1791840080.326; kotlin collection 232: stopped 4.5 ms (after waiting 14.4 ms), then 1.2 ms, took 46.4 ms
-- shared, tap-today round 1: long stall 534 ms at 1791840135.977; kotlin collection 238: stopped 0.0 ms (after waiting 0.0 ms), then 0.4 ms, took 4.5 ms
-- shared, tap-today round 1: long stall 302 ms at 1791840141.403; kotlin collection 238: stopped 0.0 ms (after waiting 0.0 ms), then 0.4 ms, took 4.5 ms
-- shared, tap-today round 1: long stall 1999 ms at 1791840142.207; kotlin collection 238: stopped 0.0 ms (after waiting 0.0 ms), then 0.4 ms, took 4.5 ms
-- shared, tap-today round 1: long stall 625 ms at 1791840144.307; kotlin collection 238: stopped 0.0 ms (after waiting 0.0 ms), then 0.4 ms, took 4.5 ms
-- shared, scroll-today round 2: long stall 263 ms at 1791840187.211; kotlin collection 263: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 30.8 ms
-- shared, scroll-today round 2: long stall 583 ms at 1791840187.474; kotlin collection 263: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 30.8 ms
-- shared, tap-today round 2: long stall 952 ms at 1791840364.672; kotlin collection 234: stopped 0.0 ms (after waiting 10.0 ms), then 0.0 ms, took 47.3 ms
-- shared, tap-today round 2: long stall 779 ms at 1791840420.787; kotlin collection 240: stopped 0.2 ms (after waiting 0.0 ms), then 0.7 ms, took 27.0 ms
-- shared, tap-today round 2: long stall 766 ms at 1791840427.090; kotlin collection 240: stopped 0.2 ms (after waiting 0.0 ms), then 0.7 ms, took 27.0 ms
-- shared, tap-today round 2: long stall 308 ms at 1791840428.925; kotlin collection 240: stopped 0.2 ms (after waiting 0.0 ms), then 0.7 ms, took 27.0 ms
-- shared, scroll-today round 3: long stall 670 ms at 1791840637.373; kotlin collection 230: stopped 0.3 ms (after waiting 11.4 ms), then 0.4 ms, took 49.4 ms
-- shared, tap-today round 3: long stall 841 ms at 1791840782.000; kotlin collection 233: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 16.7 ms
-- shared, tap-today round 3: long stall 749 ms at 1791840838.083; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.3 ms, took 4.8 ms
-- shared, tap-today round 3: long stall 305 ms at 1791840840.847; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.3 ms, took 4.8 ms
-- shared, tap-today round 3: long stall 319 ms at 1791840843.597; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.3 ms, took 4.8 ms
-- shared, tap-today round 3: long stall 1333 ms at 1791840844.424; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.3 ms, took 4.8 ms
-- shared, tap-today round 3: long stall 265 ms at 1791840845.757; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.3 ms, took 4.8 ms
-- shared, tap-today round 3: long stall 577 ms at 1791840846.568; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.3 ms, took 4.8 ms
-- shared, scroll-today round 4: long stall 268 ms at 1791840872.040; kotlin collection 2: stopped 21.2 ms (after waiting 10.6 ms), then 0.7 ms, took 57.8 ms
-- shared, scroll-today round 4: long stall 756 ms at 1791840879.599; kotlin collection 272: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 6.5 ms
-- shared, tap-today round 4: long stall 805 ms at 1791840966.674; kotlin collection 270: stopped 0.0 ms (after waiting 0.4 ms), then 0.0 ms, took 28.1 ms
-- shared, tap-today round 4: long stall 477 ms at 1791841021.920; kotlin collection 275: stopped 0.0 ms (after waiting 0.0 ms), then 0.2 ms, took 7.3 ms
-- shared, tap-today round 4: long stall 251 ms at 1791841027.366; kotlin collection 276: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 12.4 ms
-- shared, tap-today round 4: long stall 705 ms at 1791841028.124; kotlin collection 276: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 12.4 ms
-- shared, tap-today round 4: long stall 364 ms at 1791841030.015; kotlin collection 276: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 12.4 ms
-- shared, scroll-today round 5: long stall 701 ms at 1791841213.220; kotlin collection 235: stopped 0.2 ms (after waiting 10.3 ms), then 0.0 ms, took 15.8 ms
-- shared, tap-today round 5: long stall 883 ms at 1791841360.737; kotlin collection 233: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 9.6 ms
-- shared, tap-today round 5: long stall 508 ms at 1791841416.061; kotlin collection 238: stopped 0.0 ms (after waiting 0.0 ms), then 0.2 ms, took 8.5 ms
-- shared, tap-today round 5: long stall 269 ms at 1791841421.562; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 3.6 ms, took 6.6 ms
-- shared, tap-today round 5: long stall 674 ms at 1791841422.357; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 3.6 ms, took 6.6 ms
-- shared, tap-today round 5: long stall 406 ms at 1791841423.037; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 3.6 ms, took 6.6 ms
-- shared, tap-today round 5: long stall 330 ms at 1791841424.288; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 3.6 ms, took 6.6 ms
-- shared, scroll-today round 6: long stall 645 ms at 1791841454.173; kotlin collection 300: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 4.0 ms
-- shared, tap-today round 6: long stall 676 ms at 1791841539.276; kotlin collection 268: stopped 0.1 ms (after waiting 0.0 ms), then 0.0 ms, took 11.3 ms
-- shared, tap-today round 6: long stall 526 ms at 1791841594.846; kotlin collection 273: stopped 0.0 ms (after waiting 0.0 ms), then 0.1 ms, took 9.2 ms
-- shared, tap-today round 6: long stall 287 ms at 1791841597.544; kotlin collection 274: stopped 0.0 ms (after waiting 0.0 ms), then 1.1 ms, took 12.2 ms
-- shared, tap-today round 6: long stall 265 ms at 1791841600.366; kotlin collection 274: stopped 0.0 ms (after waiting 0.0 ms), then 1.1 ms, took 12.2 ms
-- shared, tap-today round 6: long stall 678 ms at 1791841601.140; kotlin collection 274: stopped 0.0 ms (after waiting 0.0 ms), then 1.1 ms, took 12.2 ms
-- shared, tap-today round 6: long stall 611 ms at 1791841601.821; kotlin collection 274: stopped 0.0 ms (after waiting 0.0 ms), then 1.1 ms, took 12.2 ms
-- shared, tap-today round 6: long stall 298 ms at 1791841603.163; kotlin collection 274: stopped 0.0 ms (after waiting 0.0 ms), then 1.1 ms, took 12.2 ms
+- shared, progress-year round 1: long stall 1523 ms at 1791840351.648; kotlin collection 237: stopped 0.0 ms (after waiting 10.0 ms), then 0.1 ms, took 470.6 ms
+- shared, progress-year round 1: long stall 1221 ms at 1791840362.187; kotlin collection 238: stopped 0.1 ms (after waiting 0.0 ms), then 0.6 ms, took 18.0 ms
+- shared, progress-year round 1: long stall 431 ms at 1791840363.721; kotlin collection 238: stopped 0.1 ms (after waiting 0.0 ms), then 0.6 ms, took 18.0 ms
+- shared, progress-year round 1: long stall 283 ms at 1791840364.152; kotlin collection 238: stopped 0.1 ms (after waiting 0.0 ms), then 0.6 ms, took 18.0 ms
+- shared, progress-year round 1: long stall 523 ms at 1791840364.898; kotlin collection 238: stopped 0.1 ms (after waiting 0.0 ms), then 0.6 ms, took 18.0 ms
+- shared, progress-year round 1: long stall 295 ms at 1791840380.533; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.4 ms, took 10.2 ms
+- shared, progress-year round 1: long stall 718 ms at 1791840381.002; kotlin collection 239: stopped 0.0 ms (after waiting 0.0 ms), then 0.4 ms, took 10.2 ms
+- shared, progress-year round 1: long stall 1437 ms at 1791840397.115; kotlin collection 241: stopped 0.0 ms (after waiting 0.0 ms), then 0.2 ms, took 56.5 ms
+- shared, progress-year round 1: long stall 345 ms at 1791840399.479; kotlin collection 241: stopped 0.0 ms (after waiting 0.0 ms), then 0.2 ms, took 56.5 ms
+- shared, calendar round 1: long stall 886 ms at 1791840537.702; kotlin collection 241: stopped 0.1 ms (after waiting 0.0 ms), then 0.0 ms, took 36.6 ms
+- shared, calendar round 1: long stall 446 ms at 1791840547.412; kotlin collection 242: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 19.3 ms
+- shared, calendar round 1: long stall 330 ms at 1791840550.181; kotlin collection 242: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 19.3 ms
+- shared, progress-year round 2: long stall 647 ms at 1791840590.064; kotlin collection 235: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 43.6 ms
+- shared, progress-year round 2: long stall 1047 ms at 1791840599.501; kotlin collection 236: stopped 0.1 ms (after waiting 0.0 ms), then 0.1 ms, took 10.7 ms
+- shared, progress-year round 2: long stall 486 ms at 1791840600.972; kotlin collection 236: stopped 0.1 ms (after waiting 0.0 ms), then 0.1 ms, took 10.7 ms
+- shared, progress-year round 2: long stall 424 ms at 1791840602.345; kotlin collection 236: stopped 0.1 ms (after waiting 0.0 ms), then 0.1 ms, took 10.7 ms
+- shared, progress-year round 2: long stall 314 ms at 1791840634.326; kotlin collection 239: stopped 0.2 ms (after waiting 0.0 ms), then 0.6 ms, took 57.0 ms
+- shared, calendar round 2: long stall 273 ms at 1791840718.752; kotlin no collection yet
+- shared, calendar round 2: long stall 1077 ms at 1791840737.061; kotlin collection 237: stopped 10.6 ms (after waiting 11.9 ms), then 0.0 ms, took 71.9 ms
+- shared, calendar round 2: long stall 667 ms at 1791840746.911; kotlin collection 238: stopped 0.1 ms (after waiting 0.0 ms), then 1.7 ms, took 20.2 ms
+- shared, calendar round 2: long stall 441 ms at 1791840749.703; kotlin collection 238: stopped 0.1 ms (after waiting 0.0 ms), then 1.7 ms, took 20.2 ms
+- shared, progress-year round 3: long stall 649 ms at 1791840931.513; kotlin collection 238: stopped 1.1 ms (after waiting 10.3 ms), then 0.0 ms, took 34.5 ms
+- shared, progress-year round 3: long stall 446 ms at 1791840940.607; kotlin collection 238: stopped 1.1 ms (after waiting 10.3 ms), then 0.0 ms, took 34.5 ms
+- shared, progress-year round 3: long stall 648 ms at 1791840975.319; kotlin collection 242: stopped 0.2 ms (after waiting 0.0 ms), then 0.2 ms, took 27.8 ms
+- shared, calendar round 3: long stall 1131 ms at 1791841062.924; kotlin collection 233: stopped 0.1 ms (after waiting 10.7 ms), then 0.5 ms, took 49.2 ms
+- shared, calendar round 3: long stall 658 ms at 1791841072.970; kotlin collection 234: stopped 0.5 ms (after waiting 0.0 ms), then 0.9 ms, took 27.1 ms
+- shared, calendar round 3: long stall 367 ms at 1791841075.830; kotlin collection 234: stopped 0.5 ms (after waiting 0.0 ms), then 0.9 ms, took 27.1 ms
+- shared, progress-year round 4: long stall 679 ms at 1791841107.429; kotlin collection 281: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 3.7 ms
+- shared, progress-year round 4: long stall 824 ms at 1791841116.615; kotlin collection 281: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 3.7 ms
+- shared, progress-year round 4: long stall 286 ms at 1791841118.127; kotlin collection 282: stopped 0.6 ms (after waiting 0.0 ms), then 4.4 ms, took 42.4 ms
+- shared, progress-year round 4: long stall 343 ms at 1791841151.236; kotlin collection 285: stopped 0.1 ms (after waiting 0.0 ms), then 0.1 ms, took 21.7 ms
+- shared, calendar round 4: long stall 661 ms at 1791841235.821; kotlin collection 275: stopped 0.0 ms (after waiting 0.0 ms), then 0.1 ms, took 5.4 ms
+- shared, calendar round 4: long stall 444 ms at 1791841245.272; kotlin collection 275: stopped 0.0 ms (after waiting 0.0 ms), then 0.1 ms, took 5.4 ms
+- shared, calendar round 4: long stall 260 ms at 1791841248.087; kotlin collection 276: stopped 0.0 ms (after waiting 0.0 ms), then 0.6 ms, took 17.8 ms
+- shared, progress-year round 5: long stall 262 ms at 1791841390.531; kotlin no collection yet
+- shared, progress-year round 5: long stall 727 ms at 1791841403.287; kotlin collection 237: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 5.2 ms
+- shared, progress-year round 5: long stall 437 ms at 1791841412.545; kotlin collection 237: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 5.2 ms
+- shared, progress-year round 5: long stall 271 ms at 1791841412.982; kotlin collection 237: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 5.2 ms
+- shared, progress-year round 5: long stall 250 ms at 1791841415.515; kotlin collection 238: stopped 0.1 ms (after waiting 0.0 ms), then 0.9 ms, took 15.1 ms
+- shared, calendar round 5: long stall 814 ms at 1791841521.925; kotlin collection 246: stopped 0.0 ms (after waiting 10.4 ms), then 0.0 ms, took 26.9 ms
+- shared, calendar round 5: long stall 561 ms at 1791841531.269; kotlin collection 246: stopped 0.0 ms (after waiting 10.4 ms), then 0.0 ms, took 26.9 ms
+- shared, calendar round 5: long stall 349 ms at 1791841534.146; kotlin collection 247: stopped 0.1 ms (after waiting 0.0 ms), then 1.2 ms, took 36.7 ms
+- shared, progress-year round 6: long stall 380 ms at 1791841563.694; kotlin collection 288: stopped 0.0 ms (after waiting 3.8 ms), then 0.0 ms, took 11.5 ms
+- shared, progress-year round 6: long stall 616 ms at 1791841572.483; kotlin collection 288: stopped 0.0 ms (after waiting 3.8 ms), then 0.0 ms, took 11.5 ms
+- shared, progress-year round 6: long stall 318 ms at 1791841574.072; kotlin collection 289: stopped 0.0 ms (after waiting 0.0 ms), then 0.4 ms, took 14.2 ms
+- shared, calendar round 6: long stall 927 ms at 1791841688.206; kotlin collection 265: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 4.1 ms
+- shared, calendar round 6: long stall 474 ms at 1791841697.685; kotlin collection 265: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 4.1 ms
