@@ -82,7 +82,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 92; 83 and 84 are on `claude/lucid-johnson-egrjup`).
+  still resolve; give new items the next unused number (currently 93; 83 and 84 are on `claude/lucid-johnson-egrjup`).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -953,6 +953,19 @@ and the Add note keyboard coming up by itself.
   - [ ] Alongside: the Android research report (what Android people want beyond Plus, Google's own rules); then the
     day/schedule/streak/progress rules moved into the shared core; then designs in Figma, small screens first; then
     the build with Drive sync plugged in.
+
+- [ ] **92. The habit rules in the shared core, so every app shows the same numbers** (added 12 October 2026, from the
+  user: "all of the work we can assign it to the agent and can do it completely … ask the agent to have a meaningful
+  branch name"). Which day a log belongs to, schedules, goals, streaks and progress move from the iPhone's Swift
+  (`iOS/Habits/Model/`) into `Core/`, so Android uses the same copy (Architecture: Shared Core Decision; Android A3).
+  One cloud session, branch `claude/shared-habit-rules`, full instructions:
+  [Build Prompt — Shared Habit Rules](<../../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>).
+  - [ ] `Core/spec/`: every rule written down with examples.
+  - [ ] **Checkpoint 1:** golden cases recorded from today's iPhone code (`Core/fixtures/`, hand-written edge cases and
+    seeded thousands, a year and the 15-year account); the Kotlin rules match every one; merged into `main`.
+  - [ ] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed
+    side by side with `main` (S2); anything slower kept on Swift with the reason; merged into `main`.
+  - [ ] The user's real-iPhone speed check (`measure_perf_device.sh`), noted here when done (U9, S2).
 
 - [ ] **90. When iCloud or Google Drive can't be used after someone bought Plus: offer a refund** (added 11 October
   2026, from the user: "we can't check beforehand … if it is not working, then we will just refund it … if you have any
