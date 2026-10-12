@@ -19,6 +19,12 @@ import kotlinx.serialization.json.jsonPrimitive
  * skips, moved task days, archive days and timers; Swift's JSON for pauses, goal history, times of day and Today's order.
  */
 object Rows {
+    /** What [load] read: the data and how days and weeks are counted. */
+    class Loaded(val data: HabitData, val settings: DaySettings) {
+        operator fun component1() = data
+        operator fun component2() = settings
+    }
+
     class HabitRow(
         val id: String, val kind: String, val unit: String?, val increment: Double, val part: String, val goal: Double,
         val frequency: String, val dueDay: String?, val atMost: Boolean, val quitSince: Long?, val position: Int,
@@ -42,7 +48,7 @@ object Rows {
     fun load(
         habits: List<HabitRow>, steps: List<StepRow>, reminders: List<ReminderRow>, entries: List<EntryRow>,
         settings: Map<String, String>, timeZone: String, defaultWeekStart: Int,
-    ): Pair<HabitData, DaySettings> {
+    ): Loaded {
         val liveSteps = steps.filter { it.deletedAt == null }.sortedBy { it.position }.groupBy { it.habitId }
         val liveTimes = reminders.filter { it.deletedAt == null }.sortedWith(compareBy({ it.hour }, { it.minute })).groupBy { it.habitId }
         val list = habits.filter { it.deletedAt == null }.sortedWith(compareBy({ it.position }, { it.createdAt }))
@@ -96,7 +102,7 @@ object Rows {
         }
         val archivedOn = archived.filterKeys { id -> list.any { it.id == id && it.archived } }
         val data = HabitData(list, logs, skips, moves, pauses, rules, archivedOn, timers, sections, cardOrder)
-        return data to DaySettings(dayEnd, weekStart.coerceIn(1, 7), timeZone)
+        return Loaded(data, DaySettings(dayEnd, weekStart.coerceIn(1, 7), timeZone))
     }
 
     /** One habit row, or null for one this version can't read (an unknown kind or schedule). */
