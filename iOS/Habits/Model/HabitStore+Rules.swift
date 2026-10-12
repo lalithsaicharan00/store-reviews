@@ -131,7 +131,7 @@ extension KotlinIntArray {
 /// (Current Work 92, checkpoint 2: Progress's year cards took 441 ms against the Swift rules' 160, run 38261431401).
 struct CoreDays {
     /// `LiveRules.dayMark`'s order.
-    static let marks: [DayMark] = [.done, .some, .missed, .open, .skipped, .paused, .notItsDay, .upcoming, .before]
+    static let marks: [HabitStore.DayMark] = [.done, .some, .missed, .open, .skipped, .paused, .notItsDay, .upcoming, .before]
     /// Numbers per day (read once: each read of a Kotlin constant crosses into the core).
     static let fields = Int(LiveRules.companion.DAY_FIELDS)
     let first: Int
@@ -140,7 +140,7 @@ struct CoreDays {
     private func at(_ day: LocalDay, _ field: Int) -> Double { values[(day.dayNumber - first) * Self.fields + field] }
     func contains(_ day: LocalDay) -> Bool { day.dayNumber >= first && (day.dayNumber - first) * Self.fields < values.count }
     /// As `dayMark(_:on:relativeTo:)`.
-    func mark(_ day: LocalDay) -> DayMark { Self.marks[Int(at(day, 0))] }
+    func mark(_ day: LocalDay) -> HabitStore.DayMark { Self.marks[Int(at(day, 0))] }
     /// As `dayProgress(of: rule(habit, on: day), on: day)`.
     func progress(_ day: LocalDay) -> Double { at(day, 1) }
     /// As `isDayMet(rule(habit, on: day), on: day)`.
