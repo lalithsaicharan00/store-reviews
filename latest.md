@@ -1,42 +1,45 @@
-# claude/shared-habit-rules-perf12 @ f5a302e (speed bisect)
+# claude/shared-habit-rules-ci24 @ 7087be7
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38261437768 · 2026-10-12 16:26 UTC
-Commit: Current Work 92: final speed side by side with main (scratch, safe to delete) [ios-perf-bisect]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38261613607 · 2026-10-12 16:30 UTC
+Commit: Merge remote-tracking branch 'origin/main' into claude/shared-habit-rules-switch
 
-Variants: `main=ad7a898f shared=HEAD` · scenarios: `day-sheet widget-publish` · rounds: 4
+- Core storage and migrations: success
+- Build: success
+- Release build: success
+- Same-build speed baseline: skipped
+- UI tests (WidgetUITests,WidgetSystemUITests,TimerUITests): failure
+- Speed tests: skipped
+- Speed tests through XCTest: skipped
 
-- main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
-- shared: f5a302e4 Current Work 92: final speed side by side with main (scratch, safe to delete) [ios-perf-bisect]
+## UI tests
+```
+	 Executed 14 tests, with 1 test skipped and 1 failure (0 unexpected) in 647.609 (647.627) seconds
+	 Executed 14 tests, with 1 test skipped and 1 failure (0 unexpected) in 647.609 (647.629) seconds
+	 Executed 2 tests, with 1 failure (0 unexpected) in 200.199 (200.204) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 166.800 (166.805) seconds
+	 Executed 7 tests, with 1 test skipped and 0 failures (0 unexpected) in 280.609 (280.614) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WidgetSystemUITests.swift:186: error: -[HabitsUITests.WidgetSystemUITests testLockScreenWidgetPickerAvailability] : Failed to get matching snapshots: Lost connection to the application (pid 67340). (Underlying Error: Couldn’t communicate with a helper application. Try your operation again. If that fails, quit and relaunch the application and try again. The connection to service created from an endpoint was invalidated: Failed to check-in, peer may have been unloaded: mach_error=10000003.)
+Test Case '-[HabitsUITests.TimerUITests testLiveActivityWhileRunning]' passed (63.286 seconds).
+Test Case '-[HabitsUITests.TimerUITests testPlayOpensTimerScreenThatClosesWithoutStopping]' passed (35.316 seconds).
+Test Case '-[HabitsUITests.TimerUITests testRowTicksBarShowsWhenOutOfSightAndStopKeepsTime]' passed (31.049 seconds).
+Test Case '-[HabitsUITests.TimerUITests testScreenCanBeTurnedOff]' passed (14.915 seconds).
+Test Case '-[HabitsUITests.TimerUITests testTimerScreenPauseKeepsTimeAndResumes]' passed (22.234 seconds).
+Test Case '-[HabitsUITests.WidgetSystemUITests testHomeScreenInstallTapAndColdPersistence]' passed (129.124 seconds).
+Test Case '-[HabitsUITests.WidgetSystemUITests testLockScreenWidgetPickerAvailability]' failed (71.076 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes]' passed (176.248 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testGuideAndPrivacyAreFree]' passed (38.704 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testLargerTextCountersAndCutDownAreReadable]' passed (27.915 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testLongNamesAndUnitsKeepQuickActionVisible]' passed (15.077 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testReliabilityUnderBurstsRetriesAndRollover]' passed (12.793 seconds).
+Test Case '-[HabitsUITests.WidgetUITests testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks]' passed (9.659 seconds).
+```
 
-Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
+## Release build
+```
+** BUILD SUCCEEDED **
+```
 
-| Window | main | shared |
-|---|---|---|
-| Day sheet: entry list scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| All logs: scrolling | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
-| Entry editor: typing | **1.4**<br>12.1 (87, 0), 2.4 (28, 0), 0.1 (18, 0), 0.4 (21, 0) | **1.1**<br>1.4 (27, 0), 0.3 (21, 0), 1 (21, 0), 1.2 (28, 0) |
-| Day sheet: add, edit and exact undo | **178.1**<br>268.6 (166, 5), 165.2 (119, 1), 170.5 (112, 1), 185.6 (98, 0) | **237.6**<br>273.7 (136, 5), 237.4 (105, 2), 157.2 (91, 0), 237.8 (101, 1) |
-| Widget: full publication, every habit's week | **0.0**<br>0 (0, 0), 6.4 (114, 1), 0 (17, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 2.8 (58, 0), 0 (0, 0), 0 (0, 0) |
-
-Timed work, all rounds (count · total ms · longest ms):
-
-| What | main | shared |
-|---|---|---|
-| Store load: read the database | 16 · 6248 · 1236.5 | 16 · 7015 · 1343.1 |
-| Habit page: history | 577 · 2997 · 17.6 | 583 · 6566 · 37.8 |
-| Widgets: one habit's week | 1721 · 2434 · 81.6 | 1703 · 3523 · 85.3 |
-| Store load: into the app (5593 logs) | 8 · 613 · 144.4 | 8 · 501 · 81.3 |
-| Change: Siri's habit names | 573 · 47 · 0.5 | 579 · 39 · 0.3 |
-| Widgets: the snapshot | 105 · 98 · 4.3 | 103 · 125 · 5.6 |
-| Reminders: plan every alert | 15 · 3 · 1.8 | 12 · 8 · 5.2 |
-| Store load: into the app (0 logs) | 8 · 20 · 8.3 | 8 · 7 · 1.6 |
-| Count: Today's list drawn | 67 · 1 · 0.7 | 83 · 2 · 0.8 |
-| Count: the Day sheet drawn | 619 · 0 · 0.0 | 659 · 0 · 0.0 |
-| Count: a Today row drawn | 733 · 0 · 0.0 | 807 · 0 · 0.0 |
-| Count: the Day sheet's activity drawn | 812 · 0 · 0.0 | 852 · 0 · 0.0 |
-| Entry editor: whole editor drawn | 767 · 0 · 0.0 | 805 · 0 · 0.0 |
-| Shared rules: built from every log | – | 32 · 254 · 44.0 |
-| Shared rules: a log changed | – | 193 · 19 · 0.5 |
-| Shared rules: habits and settings again | – | 40 · 25 · 4.1 |
-| Shared rules: a log removed | – | 193 · 15 · 0.2 |
-| Shared rules: a log added | – | 193 · 13 · 0.9 |
+## Native analytics checks
+```
+Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
+```
