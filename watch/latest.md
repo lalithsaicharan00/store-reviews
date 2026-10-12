@@ -1,97 +1,129 @@
-# Watch: claude/shared-habit-rules-ci6 @ c556f19
+# Watch: claude/shared-habit-rules-ci14 @ 7c36494
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38225714613 · 2026-10-12 10:23 UTC
-Commit: Current Work 92: the Watch on the shared rules, final round (scratch, safe to delete) [watch-ci]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38236472525 · 2026-10-12 11:15 UTC
+Commit: Current Work 92: Watch speed on the shared rules (scratch, safe to delete) [watch-perf]
 
-- Core tests: success
+- Core tests: skipped
 - Watch build: success
-- iPhone build with the Watch app: success
-- Watch UI tests (WatchLaunchTests,WatchTodayTests,WatchDayDetailsTests,WatchRoutineTests,WatchPlusTests,WatchLogManuallyTests): success
+- iPhone build with the Watch app: skipped
+- Watch UI tests (none): skipped
 - Screenshots: skipped
-- Speed: skipped
-- Paired simulators: cancelled
+- Speed: success
+- Paired simulators: skipped
 
-Embedded in the iPhone app: OftenEnoughWatch.app 
+## Speed
 
-## Core tests
-```
-BackupTest: 20 tests, 0 failures, 0 errors, 7.555 s
-CloudStoreTest: 16 tests, 0 failures, 0 errors, 186.575 s
-DriveScaleTest: 1 tests, 0 failures, 0 errors, 10.749 s
-DriveSyncTest: 22 tests, 0 failures, 0 errors, 33.68 s
-DurabilityTest: 11 tests, 0 failures, 0 errors, 21.624 s
-GoogleDriveTest: 6 tests, 0 failures, 0 errors, 0.056 s
-HabitRepositoryTest: 13 tests, 0 failures, 0 errors, 0.197 s
-LiveSyncTest: 1 tests, 0 failures, 0 errors, 0.193 s
-MigrationTest: 16 tests, 0 failures, 0 errors, 1.056 s
-PeerSyncTest: 20 tests, 0 failures, 0 errors, 186.972 s
-  peer property test: 3000 seeded runs converged
-  first fill: 375000 logs (15 years) in 76 parts, biggest part 73 KB, total 5 MB, 37.3 s (made in 21.7 s); Watch database 118 MB; peak heap 89 MB
-SyncTest: 13 tests, 0 failures, 0 errors, 4.216 s
-  random sync: {entries=25, undone=13, deletedHabits=2, names=3, fieldClocks=16}
-```
+| What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms |
+|---|---|---|---|
+| Today: +1 (tap to filled button) | 11.6 | 91 ms | 0 |
+| Today: ✓ and Undo | 11.1 | 51 ms | 0 |
+| Today: scrolling 30 habits | 10.5 | 48 ms | 0 |
+| Day details: +1 | 38.4 | 65 ms | 0 |
+| Log manually: turning the Crown | 16.0 | 186 ms | 1 |
+| Routine: paging with the Crown | 10.0 | 50 ms | 0 |
+| Today: a 5,000-change batch from the iPhone arrives | 6.8 | 145 ms | 1 |
+| Writing the complication snapshot (10 times) | 0.0 | 0 ms | 0 |
 
-## Watch UI tests
-```
-Test case 'WatchDayDetailsTests.testAmountDialMainActionAndLogs()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (35.442 seconds)
-Test case 'WatchDayDetailsTests.testAmountDialMainActionAndLogs()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (33.792 seconds)
-Test case 'WatchDayDetailsTests.testChecklistStepsTick()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (53.499 seconds)
-Test case 'WatchDayDetailsTests.testChecklistStepsTick()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (48.225 seconds)
-Test case 'WatchDayDetailsTests.testCheckMarkDoneThenUndo()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (41.241 seconds)
-Test case 'WatchDayDetailsTests.testCheckMarkDoneThenUndo()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (47.171 seconds)
-Test case 'WatchDayDetailsTests.testDeleteALogAsksFirstAndGoesBackFirst()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (29.880 seconds)
-Test case 'WatchDayDetailsTests.testDeleteALogAsksFirstAndGoesBackFirst()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (28.391 seconds)
-Test case 'WatchDayDetailsTests.testLimitAndWeekGoal()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (31.911 seconds)
-Test case 'WatchDayDetailsTests.testLimitAndWeekGoal()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (34.072 seconds)
-Test case 'WatchDayDetailsTests.testQuitSlipAsksFirst()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (21.655 seconds)
-Test case 'WatchDayDetailsTests.testQuitSlipAsksFirst()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (23.711 seconds)
-Test case 'WatchDayDetailsTests.testSkipAndUndoSkip()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (34.819 seconds)
-Test case 'WatchDayDetailsTests.testSkipAndUndoSkip()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (31.822 seconds)
-Test case 'WatchDayDetailsTests.testTimerStartsAndPauses()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (41.761 seconds)
-Test case 'WatchDayDetailsTests.testTimerStartsAndPauses()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (38.951 seconds)
-Test case 'WatchLaunchTests.testOpensToToday()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (7.220 seconds)
-Test case 'WatchLaunchTests.testOpensToToday()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (7.300 seconds)
-Test case 'WatchLogManuallyTests.testAmountWithPlusAndMinus()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (40.766 seconds)
-Test case 'WatchLogManuallyTests.testAmountWithPlusAndMinus()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (41.670 seconds)
-Test case 'WatchLogManuallyTests.testAnAmountThatAsksStartsAtTheLastValue()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (42.342 seconds)
-Test case 'WatchLogManuallyTests.testAnAmountThatAsksStartsAtTheLastValue()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (42.813 seconds)
-Test case 'WatchLogManuallyTests.testTimeWheels()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (45.485 seconds)
-Test case 'WatchLogManuallyTests.testTimeWheels()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (43.698 seconds)
-Test case 'WatchPlusTests.testEveryMoment()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (27.971 seconds)
-Test case 'WatchPlusTests.testEveryMoment()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (33.150 seconds)
-Test case 'WatchPlusTests.testWithoutPlusTheOfferShowsAndRestoreIsThere()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (14.297 seconds)
-Test case 'WatchPlusTests.testWithoutPlusTheOfferShowsAndRestoreIsThere()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (12.355 seconds)
-Test case 'WatchPlusTests.testWithPlusTodayOpens()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (20.855 seconds)
-Test case 'WatchPlusTests.testWithPlusTodayOpens()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (18.161 seconds)
-Test case 'WatchRoutineTests.testClosingKeepsTheTimerRunning()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (65.985 seconds)
-Test case 'WatchRoutineTests.testClosingKeepsTheTimerRunning()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (57.493 seconds)
-Test case 'WatchRoutineTests.testPagesNeverLogAndTheFinishSummarises()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (51.410 seconds)
-Test case 'WatchRoutineTests.testPagesNeverLogAndTheFinishSummarises()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (49.506 seconds)
-Test case 'WatchRoutineTests.testTheListJumpsWithoutLogging()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (33.348 seconds)
-Test case 'WatchRoutineTests.testTheListJumpsWithoutLogging()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (31.648 seconds)
-Test case 'WatchTodayTests.testACheckTogglesAndDoneRowsSinkAfterThePause()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (33.223 seconds)
-Test case 'WatchTodayTests.testACheckTogglesAndDoneRowsSinkAfterThePause()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (37.288 seconds)
-Test case 'WatchTodayTests.testAFailedSaveSaysSoAndShowsWhatsSaved()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (69.644 seconds)
-Test case 'WatchTodayTests.testAFailedSaveSaysSoAndShowsWhatsSaved()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (63.522 seconds)
-Test case 'WatchTodayTests.testAPlusOneLogsAtOnceAndUndoNamesIt()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (18.454 seconds)
-Test case 'WatchTodayTests.testAPlusOneLogsAtOnceAndUndoNamesIt()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (17.483 seconds)
-Test case 'WatchTodayTests.testEmptyAndNothingPlanned()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (13.767 seconds)
-Test case 'WatchTodayTests.testEmptyAndNothingPlanned()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (12.393 seconds)
-Test case 'WatchTodayTests.testFirstLaunchNeverSaysNoHabits()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (6.067 seconds)
-Test case 'WatchTodayTests.testFirstLaunchNeverSaysNoHabits()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (6.050 seconds)
-Test case 'WatchTodayTests.testLimitsTasksSkippedAndPaused()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (74.183 seconds)
-Test case 'WatchTodayTests.testLimitsTasksSkippedAndPaused()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (60.304 seconds)
-Test case 'WatchTodayTests.testOpensWithTheIPhonesSectionsAndWords()' passed on 'Watch 42 - OftenEnoughWatchUITests-Runner (45373)' (45.188 seconds)
-Test case 'WatchTodayTests.testOpensWithTheIPhonesSectionsAndWords()' passed on 'Watch 46 - OftenEnoughWatchUITests-Runner (45372)' (63.639 seconds)
+Targets (Rulebook S): hitch time under 5 ms/s, no freeze of 100 ms or more. Simulator numbers; the Watch has the final word.
 
-Failures:
-```
+Openings (longest stall in the 1.5 s after the command) and launches:
 
-## Paired simulators
+- Launch to a usable Today (round 1 , cold): 2920 ms
+- Launch to a usable Today (round 2, warm): 3441 ms
+- Blank page (control, first): longest stall 264 ms
+- Blank page (control, again): longest stall 82 ms
+- Day details (first): longest stall 170 ms
+- Day details (again): longest stall 84 ms
+- Log manually: longest stall 266 ms
+- Blank cover (control, first): longest stall 203 ms
+- Blank cover (control, again): longest stall 42 ms
+- Routine (open): longest stall 273 ms
 
-Paired simulators: setting up
-- iPhone F66D5A74-12C9-4241-88D0-80B31F980F7B, Watch 45653D77-DA50-4A4B-8334-AC632D8A861A, pair 8F50BA47-37EB-4014-B2E3-55576CCA0DE6
-- 205 s: booted the iPhone FAILED or took over 180 s
-- 516 s: booted the Watch FAILED or took over 300 s
-- 599 s: activated the pair FAILED or took over 60 s
-- 706 s: installed the iPhone app
+Notes (storage and the first fill):
+
+- first fill on the Watch simulator: 375000 logs (15 years) in 76 parts, biggest 210 KB, 15.3 MB sent; 1135.3 s (Today right after 22.9 s; the stand-in iPhone made it in 547.2 s); Watch database 224 MB; reading it all 27.47 s (375000 logs); reading the Watch's 400 days for Today 2.25 s (27268 logs); peak memory 180 MB
+
+Timed work (S2: count, total, longest):
+
+| Scenario | What | Count | Total | Longest |
+|---|---|---|---|---|
+| launch | Widgets: one habit's week | 8 | 198 ms | 150.2 ms |
+| launch | Store load: read the database | 1 | 89 ms | 89.2 ms |
+| launch | Watch Today: plan | 9 | 12 ms | 6.5 ms |
+| launch | Store load: into the app (0 logs) | 1 | 3 ms | 3.3 ms |
+| launch | Widgets: the snapshot | 2 | 3 ms | 2.0 ms |
+| launch | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
+| launch | Widgets: one habit's week | 8 | 67 ms | 46.2 ms |
+| launch | Store load: read the database | 1 | 30 ms | 30.0 ms |
+| launch | Watch Today: plan | 9 | 9 ms | 3.1 ms |
+| launch | Widgets: the snapshot | 2 | 2 ms | 1.0 ms |
+| launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| launch | Count: a Today row drawn | 24 | 0 ms | 0.0 ms |
+| tap-today | Store load: read the database | 2 | 525 ms | 509.1 ms |
+| tap-today | Widgets: one habit's week | 16 | 172 ms | 91.1 ms |
+| tap-today | Watch Today: plan | 70 | 58 ms | 10.1 ms |
+| tap-today | Store load: into the app (1716 logs) | 1 | 36 ms | 36.5 ms |
+| tap-today | Widgets: the snapshot | 3 | 6 ms | 4.6 ms |
+| tap-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| tap-today | Count: a Today row drawn | 233 | 0 ms | 0.0 ms |
+| scroll-today | Store load: read the database | 2 | 1075 ms | 1055.2 ms |
+| scroll-today | Widgets: one habit's week | 60 | 164 ms | 18.4 ms |
+| scroll-today | Store load: into the app (7320 logs) | 1 | 67 ms | 67.5 ms |
+| scroll-today | Watch Today: plan | 32 | 35 ms | 2.1 ms |
+| scroll-today | Widgets: the snapshot | 3 | 5 ms | 2.5 ms |
+| scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| scroll-today | Count: a Today row drawn | 195 | 0 ms | 0.1 ms |
+| day-details | Store load: read the database | 2 | 765 ms | 744.7 ms |
+| day-details | Widgets: one habit's week | 16 | 141 ms | 58.5 ms |
+| day-details | Watch Today: plan | 48 | 49 ms | 20.2 ms |
+| day-details | Store load: into the app (1716 logs) | 1 | 33 ms | 32.9 ms |
+| day-details | Watch Day details: the dial's words | 60 | 5 ms | 0.2 ms |
+| day-details | Watch Day details: streak | 60 | 5 ms | 0.4 ms |
+| day-details | Watch Day details: today's logs | 60 | 2 ms | 0.4 ms |
+| day-details | Widgets: the snapshot | 3 | 2 ms | 1.1 ms |
+| day-details | Store load: into the app (0 logs) | 1 | 1 ms | 0.8 ms |
+| day-details | Count: Day details drawn | 60 | 0 ms | 0.0 ms |
+| day-details | Count: a Today row drawn | 190 | 0 ms | 0.0 ms |
+| crown | Store load: read the database | 2 | 306 ms | 288.5 ms |
+| crown | Widgets: one habit's week | 16 | 73 ms | 28.5 ms |
+| crown | Store load: into the app (1716 logs) | 1 | 21 ms | 21.3 ms |
+| crown | Watch Today: plan | 13 | 12 ms | 3.4 ms |
+| crown | Widgets: the snapshot | 3 | 5 ms | 2.9 ms |
+| crown | Watch Day details: today's logs | 2 | 1 ms | 1.1 ms |
+| crown | Watch Day details: the dial's words | 2 | 1 ms | 0.5 ms |
+| crown | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| crown | Watch Day details: streak | 2 | 0 ms | 0.1 ms |
+| crown | Count: Day details drawn | 2 | 0 ms | 0.1 ms |
+| crown | Count: a Today row drawn | 39 | 0 ms | 0.0 ms |
+| routine | Store load: read the database | 2 | 265 ms | 249.5 ms |
+| routine | Widgets: one habit's week | 16 | 56 ms | 23.6 ms |
+| routine | Store load: into the app (1716 logs) | 1 | 24 ms | 23.9 ms |
+| routine | Watch Day details: the dial's words | 61 | 14 ms | 3.9 ms |
+| routine | Watch Today: plan | 17 | 10 ms | 1.3 ms |
+| routine | Widgets: the snapshot | 3 | 3 ms | 1.7 ms |
+| routine | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| routine | Count: a Today row drawn | 27 | 0 ms | 0.0 ms |
+| routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
+| incoming-batch | Batch: merged into the database | 1 | 5732 ms | 5731.9 ms |
+| incoming-batch | Store load: read the database | 3 | 1180 ms | 765.4 ms |
+| incoming-batch | Widgets: one habit's week | 24 | 113 ms | 50.9 ms |
+| incoming-batch | Store load: into the app (6716 logs) | 1 | 65 ms | 65.1 ms |
+| incoming-batch | Store load: into the app (1716 logs) | 1 | 26 ms | 25.7 ms |
+| incoming-batch | Watch Today: plan | 12 | 10 ms | 2.4 ms |
+| incoming-batch | Widgets: the snapshot | 4 | 2 ms | 0.8 ms |
+| incoming-batch | Store load: into the app (0 logs) | 1 | 1 ms | 0.8 ms |
+| incoming-batch | Count: a Today row drawn | 35 | 0 ms | 0.0 ms |
+| complication | Store load: read the database | 2 | 308 ms | 292.3 ms |
+| complication | Widgets: one habit's week | 10 | 40 ms | 18.8 ms |
+| complication | Store load: into the app (1716 logs) | 1 | 23 ms | 23.4 ms |
+| complication | Widgets: the snapshot | 12 | 10 ms | 1.2 ms |
+| complication | Watch Today: plan | 11 | 9 ms | 2.4 ms |
+| complication | Store load: into the app (0 logs) | 1 | 0 ms | 0.2 ms |
+| complication | Count: a Today row drawn | 27 | 0 ms | 0.0 ms |
+| first-fill-extreme | Store load: read the database | 2 | 419 ms | 404.0 ms |
+| first-fill-extreme | Widgets: one habit's week | 16 | 93 ms | 39.6 ms |
+| first-fill-extreme | Store load: into the app (1716 logs) | 1 | 52 ms | 52.1 ms |
+| first-fill-extreme | Watch Today: plan | 11 | 9 ms | 2.1 ms |
+| first-fill-extreme | Widgets: the snapshot | 3 | 3 ms | 1.3 ms |
+| first-fill-extreme | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| first-fill-extreme | Count: a Today row drawn | 28 | 0 ms | 0.0 ms |
