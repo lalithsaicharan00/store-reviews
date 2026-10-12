@@ -11,7 +11,7 @@ import app.habits.rules.Rows
 import app.habits.rules.Zone
 
 // THE ADAPTER (Android build prompt §0): every call into the shared habit rules (Core/rules, `app.habits.rules`, and the
-// core's `RulesInput` / `Rows`) goes through this one file. Screens, view models and the store never import the rules;
+// core's `RulesInput` / `Rows`) goes through this file and its extensions beside it (`RulesGateway+*.kt`), and only them. Screens, view models and the store never import the rules;
 // when the other agent's `claude/shared-habit-rules-switch` lands on main and changes the rules' API (`LiveRules`,
 // `RulesInput`, `Rows`), only this file changes.
 
@@ -45,7 +45,8 @@ enum class PeriodKind { WEEK, MONTH, YEAR }
 
 class RulesGateway(private val clock: () -> Long) {
     private val logs = EntryIndex()
-    private var rules = HabitRules(HabitData(emptyList(), logs), DaySettings(), clock)
+    /** The shared rules. Only the adapter's files (`RulesGateway*.kt`) read it. */
+    internal var rules = HabitRules(HabitData(emptyList(), logs), DaySettings(), clock); private set
     /** The rules' copy of each saved habit, with the app's habit it was made from (a changed habit is made again). */
     private var known = HashMap<String, Pair<Habit, app.habits.rules.Habit>>()
 
@@ -78,14 +79,14 @@ class RulesGateway(private val clock: () -> Long) {
     private fun rulesEntry(e: Entry) = RulesInput.entry(e.record)
 
     /** The rules' habit for [habit]: the saved one, or a draft made from it (a form's preview, an edit not saved yet). */
-    private fun r(habit: Habit): app.habits.rules.Habit {
+    internal fun r(habit: Habit): app.habits.rules.Habit {
         known[habit.id]?.let { (app, rule) -> if (app === habit || app == habit) return rule }
         return RulesInput.habit(habit.record(0, habit.createdAt), habit.stepRecords(), habit.reminderRecords())
             ?: RulesInput.habit(habit.copy(frequency = Frequency.Daily).record(0, habit.createdAt), habit.stepRecords(), habit.reminderRecords())!!
     }
 
-    private fun range(r: DayRange) = r.first..r.last
-    private fun range(r: IntRange) = DayRange(r.first, r.last)
+    internal fun range(r: DayRange) = r.first..r.last
+    internal fun range(r: IntRange) = DayRange(r.first, r.last)
 
     // ------------------------------------------------------------------ The day (spec/day.md)
 
