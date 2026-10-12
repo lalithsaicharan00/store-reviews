@@ -1,99 +1,110 @@
-# TIME Store load: read the database|59.27
-# TIME Store load: into the app (0 logs)|2.54
-1791810935.329 112.6
-# TIME Watch Today: plan|6.04
-# READY 1791810935.542
-1791810935.458 84.2
+# TIME Store load: read the database|90.53
+# TIME Store load: into the app (0 logs)|21.45
+1791811048.578 166.0
+# TIME Watch Today: plan|6.36
+# READY 1791811048.856
 # TIME Count: a Today row drawn|0.00
-1791810935.542 178.2
+1791811048.770 267.0
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.52
+# TIME Watch Today: plan|0.20
 # TIME Count: a Today row drawn|0.00
-1791810935.726 31.2
+1791811049.043 39.7
+# TIME Watch Today: plan|0.47
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.39
+1791811049.094 21.3
+# TIME Watch Today: plan|0.54
 # TIME Count: a Today row drawn|0.00
-1791810935.765 19.0
+# TIME Watch Today: plan|0.49
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.80
-# TIME Count: a Today row drawn|0.00
-1791810935.785 25.0
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.42
-# TIME Count: a Today row drawn|0.00
-1791810935.810 33.2
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.05
+# TIME Watch Today: plan|0.27
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-1791810935.871 38.1
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.85
+1791811049.186 38.5
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-1791810935.913 25.7
+# TIME Watch Today: plan|0.33
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.99
+1791811049.243 25.8
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.76
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.58
-# TIME Count: a Today row drawn|0.00
-1791810935.946 84.1
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Widgets: one habit's week|97.78
-1791810939.199 135.4
-# TIME Widgets: one habit's week|3.61
-# TIME Widgets: one habit's week|4.10
-# TIME Widgets: one habit's week|7.63
-# TIME Widgets: one habit's week|5.91
-# TIME Widgets: one habit's week|1.79
-# TIME Widgets: one habit's week|5.02
-# TIME Widgets: one habit's week|18.61
-1791810939.365 18.9
-# TIME Widgets: the snapshot|1.88
-# TIME Store load: read the database|1023.52
-# TIME Store load: into the app (1716 logs)|31.64
-# TIME Watch Today: plan|0.91
+1791811049.277 102.2
+# TIME Watch Today: plan|0.34
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.43
+1791811049.379 26.2
+1791811049.446 18.3
+# TIME Widgets: one habit's week|34.06
+1791811052.491 41.1
+# TIME Widgets: one habit's week|0.94
+# TIME Widgets: one habit's week|0.88
+# TIME Widgets: one habit's week|1.53
+# TIME Widgets: one habit's week|2.26
+# TIME Widgets: one habit's week|1.24
+# TIME Widgets: one habit's week|0.99
+# TIME Widgets: one habit's week|12.79
+# TIME Widgets: the snapshot|0.55
+# TIME Store load: read the database|274.68
+# TIME Store load: into the app (1716 logs)|25.23
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.89
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-1791810948.856 181.2
-# TIME Widgets: one habit's week|2.02
-# TIME Widgets: one habit's week|1.17
-# TIME Widgets: one habit's week|1.19
-# TIME Widgets: one habit's week|1.63
-# TIME Widgets: one habit's week|3.97
-# TIME Widgets: one habit's week|1.66
-# TIME Widgets: one habit's week|3.25
-# TIME Widgets: one habit's week|2.51
+# TIME Watch Today: plan|0.34
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791811053.376 77.0
+# TIME Widgets: one habit's week|1.64
+# TIME Widgets: one habit's week|5.72
+# TIME Widgets: one habit's week|1.80
+# TIME Widgets: one habit's week|1.67
+# TIME Widgets: one habit's week|4.18
+# TIME Widgets: one habit's week|7.10
+# TIME Widgets: one habit's week|3.71
+# TIME Widgets: one habit's week|1.51
+# TIME Widgets: the snapshot|1.24
 # TIME Widgets: the snapshot|0.58
-# TIME Widgets: the snapshot|0.99
 # MEASURING
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.38
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791810955.145 87.7
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.17
+# TIME Count: a Today row drawn|0.01
+# TIME Watch Today: plan|0.37
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
+1791811059.586 69.6
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.40
+# TIME Watch Today: plan|0.29
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.75
+# TIME Watch Today: plan|0.32
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.36
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.32
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.34
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.01
+# TIME Watch Today: plan|0.92
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
@@ -103,7 +114,12 @@
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.56
+# TIME Watch Today: plan|0.31
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.30
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
@@ -113,110 +129,58 @@
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.87
-# TIME Count: a Today row drawn|0.00
-1791810958.057 19.6
+# TIME Watch Today: plan|0.28
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.33
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.47
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-1791810958.486 26.5
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.38
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791810958.896 36.7
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.32
-# TIME Count: a Today row drawn|0.00
-1791810959.323 19.9
+# TIME Watch Today: plan|0.42
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.91
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.31
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.84
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791811065.859 43.9
 # TIME Count: a Today row drawn|0.00
 # TIME Watch Today: plan|0.35
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.01
-# TIME Watch Today: plan|0.38
 # TIME Count: a Today row drawn|0.00
-1791810960.561 17.6
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.40
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791810960.988 39.2
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.87
+# TIME Watch Today: plan|0.62
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.40
+# TIME Watch Today: plan|0.31
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.35
+# TIME Watch Today: plan|0.39
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-1791810962.236 19.7
 # TIME Count: a Today row drawn|0.00
 # TIME Watch Today: plan|0.46
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.72
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.72
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.70
-# TIME Count: a Today row drawn|0.00
-1791810963.912 28.2
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.12
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.37
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.40
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.02
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.90
+# TIME Watch Today: plan|0.77
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
@@ -226,18 +190,28 @@
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.04
-# TIME Count: a Today row drawn|0.00
-1791810966.836 21.4
+# TIME Watch Today: plan|0.27
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# WINDOW Today: +1 (tap to filled button)|1791810955.145|1791810967.261
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.30
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.34
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.31
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
 # TIME Watch Today: plan|0.38
 # TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791810967.413 37.3
-# TIME Watch Today: plan|0.36
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
@@ -245,43 +219,74 @@
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.94
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
+# WINDOW Today: +1 (tap to filled button)|1791811059.586|1791811071.720
 # TIME Watch Today: plan|0.35
+1791811071.884 34.4
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.34
+1791811071.919 18.0
+# TIME Watch Today: plan|0.33
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.68
+# TIME Watch Today: plan|0.37
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.41
+# TIME Watch Today: plan|0.30
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.34
+# TIME Watch Today: plan|0.27
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|9.98
+# TIME Watch Today: plan|0.36
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.39
+# TIME Watch Today: plan|0.83
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.34
+# TIME Watch Today: plan|0.31
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.46
+# TIME Watch Today: plan|0.28
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.25
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.28
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.67
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.32
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.27
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.29
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.83
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.85
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
@@ -293,15 +298,11 @@
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.43
+# TIME Watch Today: plan|0.78
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Watch Today: plan|0.34
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.81
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
@@ -309,11 +310,11 @@
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.67
+# TIME Watch Today: plan|0.38
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.56
+# TIME Watch Today: plan|0.33
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
@@ -321,33 +322,21 @@
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.81
+# TIME Watch Today: plan|0.35
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.96
+# TIME Watch Today: plan|0.27
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.32
+# TIME Watch Today: plan|0.28
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.86
+# TIME Watch Today: plan|0.31
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.34
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.86
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|1.71
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-# WINDOW Today: ✓ and Undo|1791810967.412|1791810979.589
+# WINDOW Today: ✓ and Undo|1791811071.880|1791811084.028
 # DONE
