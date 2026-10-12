@@ -107,7 +107,6 @@ extension HabitStore {
 
     /// The first day a quit habit counts from: when it was made, or an earlier "Started".
     func quitStartDay(of habit: Habit) -> LocalDay {
-        if case let (core, h)? = shared(habit) { return LocalDay(dayNumber: Int(core.quitStartDay(h: h))) }
         today(now: min(habit.createdAt, habit.quitSince ?? habit.createdAt))
     }
 
@@ -148,7 +147,6 @@ extension HabitStore {
 
     /// The moment a day begins, honouring the day end (the same as `dayStart`, which is private to the store file).
     func dayStartMoment(_ day: LocalDay) -> Date {
-        if let core { return Date(millis: core.dayStartMoment(day: day.n)) }
         calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
     }
 
