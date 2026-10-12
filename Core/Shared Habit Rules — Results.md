@@ -50,7 +50,25 @@ shape (it remembers what it worked out, S5) and the Swift rules stay as the fall
   Time, weekday chart and quit statistics, and the widgets' whole snapshot): **2,062 cases, 0 differences**
   (`fixtures/tools/compare.py`).
 
-*(UI tests, iPad, Watch and speed: filled in as the runs finish.)*
+### Making it as fast as the Swift rules
+
+The first switch gave the same answers but was slower, side by side with `main` (one job, four rounds): the Day sheet's
+add, edit and undo 241 → 502 ms/s with 35–58 freezes, Today's +1 8.5 → 33.4, the calendar's month change 9.7 → 27.5,
+Progress's year cards 2.7× the work (runs 38229397046, 38229387771, 38229393346). The Kotlin rules themselves were never
+the cost (a profile put them at 0.1 % of the main thread); measuring part by part (`RulesBench`, the `rules-calls` speed
+scenario) found where it went, and each fix kept every answer (GoldenTest, StripTest, LiveRulesTest, the shared
+recording):
+
+| What cost the time | Fix |
+|---|---|
+| Every shared rule told SwiftUI it read the habit's logs, so "is it due" redrew Today's list on every log (69 draws became 287) | Each rule reads for SwiftUI exactly what the Swift rule read (Rulebook S19); one counter for skips, moves, pauses, goal history and archive days |
+| A strip of days (Progress's cards, the habit page's record, history, Progress tab and comparison, Over Time, the weekday chart, the calendar's day scores) crossed into Kotlin once per day and rule | One call per habit and range (`LiveRules.days` → `HabitRules.strip`, read back as one block of bytes); a fortnight of day scores at a time |
+| The Swift side's bookkeeping around each call: 2.2 µs (crossing itself 0.2 µs) | One handle lookup, the calendar's kind remembered: 0.6 µs |
+| Kotlin looked a habit's data up by its ID string (hashed again on every lookup on Apple platforms), boxed every day number, read the zone's clock again for the same moments, made a judged copy of a habit per day, and asked the app's clock back across the bridge | Each habit's data found once and kept on it (`HabitFacts`), logs indexed by day number (`DayBuckets`), tables of moments read, judged copies kept per goal, the clock read only when a timer or an overdue task needs it, no boxed dates in schedules |
+| Habits and settings given again unchanged (the Watch, after each sync) threw away everything worked out | Skipped when nothing changed; the zone carries over a real change |
+| The copy of every log rebuilt on the main thread after every load (45–80 ms) | Made off the main thread while the load reads |
+
+*(Final side-by-side numbers, UI tests, iPad and Watch: filled in as the last runs finish.)*
 
 ## What stays in Swift, and why
 
