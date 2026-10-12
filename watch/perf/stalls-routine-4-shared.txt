@@ -1,0 +1,261 @@
+# TIME Shared rules: habits and settings again|0.23
+# TIME Shared rules: built from every log|5.56
+# TIME Store load: read the database|26.37
+# TIME Store load: into the app (0 logs)|0.22
+1791828991.202 47.1
+# TIME Shared rules: habits and settings again|0.70
+# TIME Shared rules: built from every log|0.94
+# TIME Watch Today: plan|1.35
+# READY 1791828991.276
+1791828991.255 21.2
+# TIME Count: a Today row drawn|0.00
+1791828991.276 49.9
+# TIME Shared rules: habits and settings again|0.18
+# TIME Watch Today: plan|0.42
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.20
+# TIME Watch Today: plan|0.44
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.19
+# TIME Watch Today: plan|0.48
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.23
+# TIME Watch Today: plan|0.54
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.27
+# TIME Watch Today: plan|0.61
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791828991.386 26.7
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.59
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.41
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.01
+# TIME Watch Today: plan|0.22
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791828991.438 29.2
+# TIME Watch Today: plan|0.20
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Widgets: one habit's week|16.12
+1791828994.620 26.9
+# TIME Widgets: one habit's week|0.99
+# TIME Widgets: one habit's week|1.13
+# TIME Widgets: one habit's week|1.37
+# TIME Widgets: one habit's week|2.56
+# TIME Widgets: one habit's week|1.01
+# TIME Widgets: one habit's week|1.79
+# TIME Widgets: one habit's week|1.88
+# TIME Widgets: the snapshot|0.45
+# TIME Store load: read the database|359.45
+# TIME Store load: into the app (1716 logs)|20.27
+# TIME Shared rules: habits and settings again|0.23
+# TIME Shared rules: built from every log|3.92
+# TIME Watch Today: plan|4.35
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.36
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791828995.798 51.0
+# TIME Widgets: one habit's week|1.59
+# TIME Widgets: one habit's week|1.29
+# TIME Widgets: one habit's week|1.44
+# TIME Widgets: one habit's week|1.90
+# TIME Widgets: one habit's week|3.00
+# TIME Widgets: one habit's week|1.63
+# TIME Widgets: one habit's week|1.24
+# TIME Widgets: one habit's week|1.22
+# TIME Widgets: the snapshot|0.64
+# TIME Widgets: the snapshot|0.54
+# MEASURING
+# TIME Watch Today: plan|0.34
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791829002.236 244.5
+# OPEN Blank cover (control, first)|1791829002.237|1791829003.839
+# TIME Watch Today: plan|0.50
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.30
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791829005.052 67.1
+# OPEN Blank cover (control, again)|1791829005.052|1791829006.578
+# TIME Watch Today: plan|0.35
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791829006.578 22.8
+# TIME Watch Today: plan|0.27
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.16
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791829007.838 257.3
+# OPEN Routine (open)|1791829007.838|1791829009.349
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.15
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.08
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|1.45
+1791829009.365 34.5
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.14
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.11
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.08
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.17
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.19
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.14
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.20
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.12
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.25
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.19
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+1791829011.882 24.6
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.08
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.07
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.08
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.08
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.12
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.25
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.17
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.08
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.19
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.12
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.12
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.18
+1791829017.523 23.0
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.13
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.11
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.24
+1791829018.770 19.6
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.16
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.10
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.11
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.62
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.08
+1791829020.002 19.4
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.20
+1791829020.022 39.9
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.21
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.09
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.15
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.11
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.28
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.11
+1791829021.270 24.3
+# WINDOW Routine: paging with the Crown|1791829009.349|1791829021.895
+# DONE
+# TIME Watch Today: plan|0.40
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791829022.081 29.8
+1791829022.623 49.8
