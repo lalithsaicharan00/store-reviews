@@ -966,7 +966,8 @@ and the Add note keyboard coming up by itself.
   (`iOS/Habits/Model/`) into `Core/`, so Android uses the same copy (Architecture: Shared Core Decision; Android A3).
   One cloud session, branch `claude/shared-habit-rules`, full instructions:
   [Build Prompt — Shared Habit Rules](<../../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>).
-  - [ ] `Core/spec/`: every rule written down with examples.
+  - [x] `Core/spec/`: every rule written down with examples (12 Oct 2026: day, schedules, goals, streaks, progress, and
+    the differences found, `Core/spec/differences.md`).
   - [ ] **Checkpoint 1:** golden cases recorded from today's iPhone code (`Core/fixtures/`, hand-written edge cases and
     seeded thousands, a year and the 15-year account); the Kotlin rules match every one; merged into `main`.
   - [ ] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed

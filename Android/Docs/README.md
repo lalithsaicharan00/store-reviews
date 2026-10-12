@@ -88,8 +88,13 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
    Current Work 91 on the iPhone.
 3. **The Android designs, in Figma** (started 12 Oct 2026: Today, Day details and the log screens): continue from
    [Android Designs — Handoff](<Android Designs — Handoff.md>), using the built iPhone app as the reference.
-4. Then the shared rules into the core (Current Work 92, a cloud session: [Build Prompt — Shared Habit Rules](<../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>)),
-   the Android designs, and the Android app with Drive sync plugged in.
+4. ~~The shared rules into the core~~ checkpoint 1 done, 12 Oct 2026 (Current Work 92): which day a log belongs to,
+   schedules, goals, streaks, quit runs, a day across habits and where habits show on Today are in `Core/rules`
+   (`app.habits.rules`), written down in [`Core/spec/`](<../../Core/spec/README.md>) and proven against the iPhone's own
+   answers (2,063 golden cases, 8.3 million answers, `Core/fixtures/`). **Android is unblocked:** build the app on
+   `HabitRules` (from `Rows.load`, or `RulesInput` / `LiveRules` over the database's records). The iPhone's words and
+   screens built on these rules (Progress, the habit page, widgets) stay Swift; Android writes its own.
+   Then the Android designs, and the Android app with Drive sync plugged in.
 
 **Done by the user, 11 Oct 2026:** a Web OAuth client "Drive sync tests" (`drive.appdata`; redirect
 `https://developers.google.com/oauthplayground`), a test Google account added as a test user, and three GitHub
