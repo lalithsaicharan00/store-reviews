@@ -52,11 +52,25 @@ object Day {
     /** A day key, or null when it isn't a real date (as the iPhone's `LocalDay(key:)`). */
     fun parse(key: String?): Int? {
         if (key == null) return null
-        val parts = key.split("-")
-        if (parts.size != 3 || parts.any { p -> p.isEmpty() || p.any { it !in '0'..'9' } }) return null
-        val y = parts[0].toIntOrNull() ?: return null
-        val m = parts[1].toIntOrNull() ?: return null
-        val d = parts[2].toIntOrNull() ?: return null
+        // Read in one pass, with no strings split off: a load parses every log's day (Current Work 92, checkpoint 2).
+        // Three parts of ASCII digits split by "-", none empty; a part too large for any valid date is out of range.
+        val n = intArrayOf(0, 0, 0)
+        var part = 0
+        var digits = 0
+        for (c in key) {
+            if (c == '-') {
+                if (digits == 0 || part == 2) return null
+                part++
+                digits = 0
+            } else if (c in '0'..'9') {
+                digits++
+                n[part] = minOf(n[part] * 10 + (c - '0'), 1_000_000)
+            } else {
+                return null
+            }
+        }
+        if (part != 2 || digits == 0) return null
+        val (y, m, d) = n
         if (y !in 1..9999 || m !in 1..12 || d !in 1..daysInMonth(y, m)) return null
         return of(y, m, d)
     }
