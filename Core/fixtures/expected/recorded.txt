@@ -1,8 +1,8 @@
-started: hand.json, seeded-1.json, seeded-2.json, seeded-3.json, seeded-4.json, year.json, zz-extreme.json
-hand.json: 61 cases in 14s
-seeded-1.json: 500 cases in 286s
-seeded-2.json: 500 cases in 218s
-seeded-3.json: 500 cases in 134s
-seeded-4.json: 500 cases in 143s
-year.json: 1 cases in 16s
-… working on extreme account
+started: hand.json, seeded-1.json, seeded-2.json, seeded-3.json, seeded-4.json, year.json
+hand.json: 61 cases in 13s
+seeded-1.json: 500 cases in 204s
+seeded-2.json: 500 cases in 184s
+seeded-3.json: 500 cases in 145s
+seeded-4.json: 500 cases in 142s
+year.json: 1 cases in 12s
+# DONE 2062 cases
