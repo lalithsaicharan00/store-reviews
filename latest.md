@@ -1,38 +1,43 @@
-# claude/shared-habit-rules-ci9 @ b122a95
+# claude/shared-habit-rules-ci5 @ b122a95
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38225688872 · 2026-10-12 10:26 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38225682613 · 2026-10-12 11:02 UTC
 Commit: Current Work 92 (checkpoint 2): a log made before the shared rules' copy is built isn't lost
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (WidgetUITests,WidgetSystemUITests,TimerUITests): failure
+- UI tests (UndoUITests,CompletionFeedbackUITests,RoutineCalendarUITests,TasksUITests): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 14 tests, with 1 test skipped and 2 failures (0 unexpected) in 786.128 (786.233) seconds
-	 Executed 14 tests, with 1 test skipped and 2 failures (0 unexpected) in 786.128 (786.235) seconds
-	 Executed 2 tests, with 1 failure (0 unexpected) in 348.147 (348.217) seconds
-	 Executed 5 tests, with 0 failures (0 unexpected) in 235.122 (235.135) seconds
-	 Executed 7 tests, with 1 test skipped and 1 failure (0 unexpected) in 202.858 (202.873) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WidgetSystemUITests.swift:186: error: -[HabitsUITests.WidgetSystemUITests testLockScreenWidgetPickerAvailability] : Failed to get matching snapshots: Lost connection to the application (pid 64963). (Underlying Error: Couldn’t communicate with a helper application. Try your operation again. If that fails, quit and relaunch the application and try again. connection to service created from an endpoint)
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WidgetUITests.swift:35: error: -[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes] : Failed to terminate com.oftenenough.app:64639: Failed to terminate com.oftenenough.app:0
-Test Case '-[HabitsUITests.TimerUITests testLiveActivityWhileRunning]' passed (52.603 seconds).
-Test Case '-[HabitsUITests.TimerUITests testPlayOpensTimerScreenThatClosesWithoutStopping]' passed (35.661 seconds).
-Test Case '-[HabitsUITests.TimerUITests testRowTicksBarShowsWhenOutOfSightAndStopKeepsTime]' passed (30.584 seconds).
-Test Case '-[HabitsUITests.TimerUITests testScreenCanBeTurnedOff]' passed (35.544 seconds).
-Test Case '-[HabitsUITests.TimerUITests testTimerScreenPauseKeepsTimeAndResumes]' passed (80.730 seconds).
-Test Case '-[HabitsUITests.WidgetSystemUITests testHomeScreenInstallTapAndColdPersistence]' passed (160.853 seconds).
-Test Case '-[HabitsUITests.WidgetSystemUITests testLockScreenWidgetPickerAvailability]' failed (187.294 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testEveryFamilyAndLayoutAtIPhoneSizes]' failed (69.349 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testGuideAndPrivacyAreFree]' passed (42.813 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testLargerTextCountersAndCutDownAreReadable]' passed (34.965 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testLongNamesAndUnitsKeepQuickActionVisible]' passed (16.742 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testReliabilityUnderBurstsRetriesAndRollover]' passed (21.375 seconds).
-Test Case '-[HabitsUITests.WidgetUITests testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks]' passed (12.627 seconds).
+	 Executed 19 tests, with 1 failure (0 unexpected) in 739.359 (739.389) seconds
+	 Executed 19 tests, with 1 failure (0 unexpected) in 739.359 (739.391) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 131.207 (131.211) seconds
+	 Executed 7 tests, with 1 failure (0 unexpected) in 330.560 (330.571) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 257.161 (257.169) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RoutineCalendarUITests.swift:19: error: -[HabitsUITests.RoutineCalendarUITests testCalendarUpdatesAfterLoggingAndPastNavigation] : XCTAssertTrue failed
+Test Case '-[HabitsUITests.CompletionFeedbackUITests testCompletionPlaysOnceWhenAHabitBecomesCompleteAndNeverForQuitOrLimits]' passed (20.431 seconds).
+Test Case '-[HabitsUITests.RoutineCalendarUITests testCalendarSixWeekMonthAtLargeTextSize]' passed (27.745 seconds).
+Test Case '-[HabitsUITests.RoutineCalendarUITests testCalendarTotalsAndDaysWithoutHabits]' passed (41.078 seconds).
+Test Case '-[HabitsUITests.RoutineCalendarUITests testCalendarUpdatesAfterLoggingAndPastNavigation]' failed (63.554 seconds).
+Test Case '-[HabitsUITests.RoutineCalendarUITests testChecklistRoutineUsesExistingEntries]' passed (66.819 seconds).
+Test Case '-[HabitsUITests.RoutineCalendarUITests testNonTimedRoutineAndSkipDoNotFalselyComplete]' passed (59.825 seconds).
+Test Case '-[HabitsUITests.RoutineCalendarUITests testPlayFollowsHeaderRules]' passed (23.023 seconds).
+Test Case '-[HabitsUITests.RoutineCalendarUITests testSingleHabitFullCompletionAndUndo]' passed (48.516 seconds).
+Test Case '-[HabitsUITests.TasksUITests testCreateTaskFromTasksAndEditSurvivesRelaunch]' passed (49.543 seconds).
+Test Case '-[HabitsUITests.TasksUITests testEveryTaskAppearsAndCanOpenEdit]' passed (74.483 seconds).
+Test Case '-[HabitsUITests.TasksUITests testTaskModelAndPersistence]' passed (7.181 seconds).
+Test Case '-[HabitsUITests.UndoUITests testDayControlsAndCalendarOpeningAreExplicit]' passed (36.405 seconds).
+Test Case '-[HabitsUITests.UndoUITests testEditAndDeleteOneEntryInDaySheet]' passed (53.787 seconds).
+Test Case '-[HabitsUITests.UndoUITests testInlineUndoSurvivesAndIsExact]' passed (59.997 seconds).
+Test Case '-[HabitsUITests.UndoUITests testLogManuallyAddsOneLog]' passed (28.242 seconds).
+Test Case '-[HabitsUITests.UndoUITests testRoutineUndoStaysVisibleAndLeavesEarlierLogsIntact]' passed (20.467 seconds).
+Test Case '-[HabitsUITests.UndoUITests testSkipFromTodayKeepsHistoryOpenAndCanBeUndone]' passed (16.287 seconds).
+Test Case '-[HabitsUITests.UndoUITests testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited]' passed (28.287 seconds).
+Test Case '-[HabitsUITests.UndoUITests testStoreCorrectionsRecalculateAndPersist]' passed (13.689 seconds).
 ```
 
 ## Release build
