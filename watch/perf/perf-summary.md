@@ -1,114 +1,295 @@
-| What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms |
+| Variant · What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms |
 |---|---|---|---|
-| Today: +1 (tap to filled button) | 2.7 | 42 ms | 0 |
-| Today: ✓ and Undo | 1.7 | 26 ms | 0 |
-| Today: scrolling 30 habits | 5.2 | 56 ms | 0 |
-| Day details: +1 | 27.1 | 58 ms | 0 |
-| Log manually: turning the Crown | 2.9 | 25 ms | 0 |
-| Routine: paging with the Crown | 6.2 | 38 ms | 0 |
-| Today: a 5,000-change batch from the iPhone arrives | 9.2 | 216 ms | 1 |
-| Writing the complication snapshot (10 times) | 0.0 | 0 ms | 0 |
+| shared · Today: scrolling 30 habits | 5.3 | 37 ms | 0 |
+| swift · Today: scrolling 30 habits | 8.6 | 48 ms | 0 |
+| shared · Today: scrolling 30 habits | 13.0 | 94 ms | 0 |
+| swift · Today: scrolling 30 habits | 5.2 | 48 ms | 0 |
+| shared · Today: scrolling 30 habits | 4.0 | 42 ms | 0 |
+| swift · Today: scrolling 30 habits | 0.0 | 0 ms | 0 |
+| shared · Today: scrolling 30 habits | 5.1 | 64 ms | 0 |
+| swift · Today: scrolling 30 habits | 2.3 | 44 ms | 0 |
+| shared · Routine: paging with the Crown | 4.5 | 40 ms | 0 |
+| swift · Routine: paging with the Crown | 0.0 | 0 ms | 0 |
+| shared · Routine: paging with the Crown | 21.2 | 61 ms | 0 |
+| swift · Routine: paging with the Crown | 5.5 | 37 ms | 0 |
+| shared · Routine: paging with the Crown | 12.6 | 37 ms | 0 |
+| swift · Routine: paging with the Crown | 4.4 | 33 ms | 0 |
+| shared · Routine: paging with the Crown | 1.9 | 26 ms | 0 |
+| swift · Routine: paging with the Crown | 4.1 | 42 ms | 0 |
 
 Targets (Rulebook S): hitch time under 5 ms/s, no freeze of 100 ms or more. Simulator numbers; the Watch has the final word.
 
 Openings (longest stall in the 1.5 s after the command) and launches:
 
-- Launch to a usable Today (round 1 , cold): 2400 ms
-- Launch to a usable Today (round 2, warm): 2961 ms
-- Blank page (control, first): longest stall 382 ms
-- Blank page (control, again): longest stall 66 ms
-- Day details (first): longest stall 181 ms
-- Day details (again): longest stall 104 ms
-- Log manually: longest stall 306 ms
-- Blank cover (control, first): longest stall 169 ms
-- Blank cover (control, again): longest stall 66 ms
-- Routine (open): longest stall 383 ms
+- shared · Launch to a usable Today (round 1 , cold): 2548 ms
+- swift · Launch to a usable Today (round 1 , cold): 2136 ms
+- shared · Launch to a usable Today (round 2, warm): 1778 ms
+- swift · Launch to a usable Today (round 2, warm): 1352 ms
+- shared · Launch to a usable Today (round 3, warm): 1286 ms
+- swift · Launch to a usable Today (round 3, warm): 1883 ms
+- shared · Launch to a usable Today (round 4, warm): 1250 ms
+- swift · Launch to a usable Today (round 4, warm): 1100 ms
+- shared · Launch to a usable Today (round 5, warm): 1261 ms
+- swift · Launch to a usable Today (round 5, warm): 942 ms
+- shared · Launch to a usable Today (round 6, warm): 1278 ms
+- swift · Launch to a usable Today (round 6, warm): 1929 ms
+- shared · Launch to a usable Today (round 7, warm): 1598 ms
+- swift · Launch to a usable Today (round 7, warm): 2435 ms
+- shared · Launch to a usable Today (round 8, warm): 1430 ms
+- swift · Launch to a usable Today (round 8, warm): 3620 ms
+- shared · Blank cover (control, first): longest stall 217 ms
+- shared · Blank cover (control, again): longest stall 60 ms
+- shared · Routine (open): longest stall 378 ms
+- swift · Blank cover (control, first): longest stall 184 ms
+- swift · Blank cover (control, again): longest stall 61 ms
+- swift · Routine (open): longest stall 237 ms
+- shared · Blank cover (control, first): longest stall 188 ms
+- shared · Blank cover (control, again): longest stall 89 ms
+- shared · Routine (open): longest stall 514 ms
+- swift · Blank cover (control, first): longest stall 205 ms
+- swift · Blank cover (control, again): longest stall 48 ms
+- swift · Routine (open): longest stall 363 ms
+- shared · Blank cover (control, first): longest stall 106 ms
+- shared · Blank cover (control, again): longest stall 68 ms
+- shared · Routine (open): longest stall 256 ms
+- swift · Blank cover (control, first): longest stall 173 ms
+- swift · Blank cover (control, again): longest stall 70 ms
+- swift · Routine (open): longest stall 254 ms
+- shared · Blank cover (control, first): longest stall 169 ms
+- shared · Blank cover (control, again): longest stall 49 ms
+- shared · Routine (open): longest stall 250 ms
+- swift · Blank cover (control, first): longest stall 101 ms
+- swift · Blank cover (control, again): longest stall 50 ms
+- swift · Routine (open): longest stall 250 ms
 
 Notes (storage and the first fill):
 
-- first fill on the Watch simulator: 375000 logs (15 years) in 76 parts, biggest 209 KB, 15.3 MB sent; 958.3 s (Today right after 22.6 s; the stand-in iPhone made it in 495.0 s); Watch database 226 MB; reading it all 30.14 s (375000 logs); reading the Watch's 400 days for Today 2.24 s (27268 logs); peak memory 152 MB
 
 Timed work (S2: count, total, longest):
 
 | Scenario | What | Count | Total | Longest |
 |---|---|---|---|---|
-| launch | Widgets: one habit's week | 8 | 59 ms | 40.5 ms |
-| launch | Store load: read the database | 1 | 56 ms | 55.7 ms |
-| launch | Watch Today: plan | 9 | 5 ms | 3.5 ms |
-| launch | Store load: into the app (0 logs) | 1 | 3 ms | 3.1 ms |
-| launch | Widgets: the snapshot | 2 | 1 ms | 0.8 ms |
-| launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
-| launch | Widgets: one habit's week | 8 | 34 ms | 17.9 ms |
-| launch | Store load: read the database | 1 | 7 ms | 7.0 ms |
-| launch | Widgets: the snapshot | 2 | 2 ms | 1.1 ms |
-| launch | Watch Today: plan | 9 | 2 ms | 0.6 ms |
-| launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.5 ms |
-| launch | Count: a Today row drawn | 15 | 0 ms | 0.0 ms |
-| tap-today | Store load: read the database | 2 | 256 ms | 225.1 ms |
-| tap-today | Widgets: one habit's week | 8 | 32 ms | 23.5 ms |
-| tap-today | Store load: into the app (1716 logs) | 1 | 25 ms | 25.1 ms |
-| tap-today | Watch Today: plan | 69 | 12 ms | 0.9 ms |
-| tap-today | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
-| tap-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
-| tap-today | Count: a Today row drawn | 227 | 0 ms | 0.0 ms |
-| scroll-today | Store load: read the database | 2 | 876 ms | 858.0 ms |
-| scroll-today | Store load: into the app (7320 logs) | 1 | 83 ms | 83.4 ms |
-| scroll-today | Widgets: one habit's week | 60 | 79 ms | 33.5 ms |
-| scroll-today | Watch Today: plan | 32 | 18 ms | 7.7 ms |
-| scroll-today | Widgets: the snapshot | 3 | 3 ms | 1.0 ms |
-| scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
-| scroll-today | Count: a Today row drawn | 158 | 0 ms | 0.0 ms |
-| day-details | Store load: read the database | 2 | 432 ms | 418.0 ms |
-| day-details | Widgets: one habit's week | 16 | 39 ms | 15.0 ms |
-| day-details | Store load: into the app (1716 logs) | 1 | 21 ms | 20.7 ms |
-| day-details | Watch Today: plan | 48 | 9 ms | 0.5 ms |
-| day-details | Watch Day details: the dial's words | 60 | 4 ms | 0.8 ms |
-| day-details | Watch Day details: streak | 60 | 3 ms | 0.2 ms |
-| day-details | Watch Day details: today's logs | 60 | 2 ms | 0.1 ms |
-| day-details | Widgets: the snapshot | 3 | 1 ms | 0.7 ms |
-| day-details | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
-| day-details | Count: Day details drawn | 60 | 0 ms | 0.0 ms |
-| day-details | Count: a Today row drawn | 197 | 0 ms | 0.0 ms |
-| crown | Store load: read the database | 2 | 527 ms | 492.4 ms |
-| crown | Widgets: one habit's week | 16 | 39 ms | 16.5 ms |
-| crown | Store load: into the app (1716 logs) | 1 | 22 ms | 22.2 ms |
-| crown | Watch Today: plan | 13 | 4 ms | 0.9 ms |
-| crown | Store load: into the app (0 logs) | 1 | 2 ms | 2.2 ms |
-| crown | Widgets: the snapshot | 3 | 1 ms | 0.8 ms |
-| crown | Watch Day details: the dial's words | 1 | 0 ms | 0.2 ms |
-| crown | Watch Day details: streak | 1 | 0 ms | 0.1 ms |
-| crown | Watch Day details: today's logs | 1 | 0 ms | 0.1 ms |
-| crown | Count: a Today row drawn | 31 | 0 ms | 0.0 ms |
-| crown | Count: Day details drawn | 1 | 0 ms | 0.0 ms |
-| routine | Store load: read the database | 2 | 243 ms | 228.7 ms |
-| routine | Widgets: one habit's week | 16 | 54 ms | 33.4 ms |
-| routine | Store load: into the app (1716 logs) | 1 | 22 ms | 22.2 ms |
-| routine | Watch Day details: the dial's words | 61 | 8 ms | 2.0 ms |
-| routine | Watch Today: plan | 17 | 4 ms | 1.9 ms |
-| routine | Widgets: the snapshot | 3 | 1 ms | 0.8 ms |
-| routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
-| routine | Count: a Today row drawn | 52 | 0 ms | 0.0 ms |
-| routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
-| incoming-batch | Batch: merged into the database | 1 | 4326 ms | 4326.1 ms |
-| incoming-batch | Store load: read the database | 3 | 1401 ms | 1025.6 ms |
-| incoming-batch | Store load: into the app (6716 logs) | 1 | 129 ms | 129.2 ms |
-| incoming-batch | Widgets: one habit's week | 16 | 65 ms | 25.3 ms |
-| incoming-batch | Store load: into the app (1716 logs) | 1 | 17 ms | 17.2 ms |
-| incoming-batch | Watch Today: plan | 13 | 6 ms | 2.9 ms |
-| incoming-batch | Widgets: the snapshot | 3 | 2 ms | 1.0 ms |
-| incoming-batch | Store load: into the app (0 logs) | 1 | 1 ms | 1.0 ms |
-| incoming-batch | Count: a Today row drawn | 30 | 0 ms | 0.0 ms |
-| complication | Store load: read the database | 2 | 361 ms | 354.1 ms |
-| complication | Widgets: one habit's week | 16 | 29 ms | 13.2 ms |
-| complication | Store load: into the app (1716 logs) | 1 | 27 ms | 26.8 ms |
-| complication | Widgets: the snapshot | 13 | 5 ms | 0.7 ms |
-| complication | Watch Today: plan | 11 | 4 ms | 2.1 ms |
-| complication | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
-| complication | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
-| first-fill-extreme | Store load: read the database | 2 | 368 ms | 360.5 ms |
-| first-fill-extreme | Widgets: one habit's week | 16 | 38 ms | 20.6 ms |
-| first-fill-extreme | Store load: into the app (1716 logs) | 1 | 28 ms | 27.7 ms |
-| first-fill-extreme | Watch Today: plan | 11 | 3 ms | 1.2 ms |
-| first-fill-extreme | Widgets: the snapshot | 3 | 1 ms | 0.8 ms |
-| first-fill-extreme | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
-| first-fill-extreme | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
+| shared · launch | Store load: read the database | 1 | 74 ms | 74.4 ms |
+| shared · launch | Widgets: one habit's week | 8 | 44 ms | 21.0 ms |
+| shared · launch | Watch Today: plan | 9 | 10 ms | 3.5 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 2 ms | 1.8 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 31 ms | 20.1 ms |
+| swift · launch | Store load: read the database | 1 | 17 ms | 16.8 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.4 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · launch | Count: a Today row drawn | 15 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 35 ms | 19.5 ms |
+| shared · launch | Store load: read the database | 1 | 11 ms | 11.4 ms |
+| shared · launch | Watch Today: plan | 9 | 4 ms | 1.7 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.7 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.2 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 32 ms | 19.0 ms |
+| swift · launch | Store load: read the database | 1 | 12 ms | 12.1 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.8 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.3 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 31 ms | 12.3 ms |
+| shared · launch | Store load: read the database | 1 | 13 ms | 13.2 ms |
+| shared · launch | Watch Today: plan | 9 | 4 ms | 0.8 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.7 ms |
+| shared · launch | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 43 ms | 33.4 ms |
+| swift · launch | Store load: read the database | 1 | 7 ms | 7.0 ms |
+| swift · launch | Watch Today: plan | 9 | 1 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 34 ms | 12.9 ms |
+| shared · launch | Store load: read the database | 1 | 18 ms | 18.3 ms |
+| shared · launch | Watch Today: plan | 9 | 7 ms | 3.8 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · launch | Count: a Today row drawn | 23 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 35 ms | 20.9 ms |
+| swift · launch | Store load: read the database | 1 | 7 ms | 6.7 ms |
+| swift · launch | Watch Today: plan | 9 | 1 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 36 ms | 18.2 ms |
+| shared · launch | Store load: read the database | 1 | 7 ms | 6.9 ms |
+| shared · launch | Watch Today: plan | 9 | 5 ms | 1.0 ms |
+| shared · launch | Widgets: the snapshot | 2 | 2 ms | 1.4 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 45 ms | 35.2 ms |
+| swift · launch | Store load: read the database | 1 | 13 ms | 13.5 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.4 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 36 ms | 18.1 ms |
+| shared · launch | Store load: read the database | 1 | 11 ms | 11.0 ms |
+| shared · launch | Watch Today: plan | 9 | 5 ms | 1.1 ms |
+| shared · launch | Widgets: the snapshot | 2 | 2 ms | 1.2 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.6 ms |
+| shared · launch | Count: a Today row drawn | 24 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 43 ms | 25.4 ms |
+| swift · launch | Store load: read the database | 1 | 12 ms | 11.9 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.5 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 1.0 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 29 ms | 15.2 ms |
+| shared · launch | Store load: read the database | 1 | 11 ms | 11.3 ms |
+| shared · launch | Watch Today: plan | 9 | 4 ms | 1.2 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 35 ms | 19.2 ms |
+| swift · launch | Store load: read the database | 1 | 5 ms | 5.4 ms |
+| swift · launch | Watch Today: plan | 9 | 1 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.9 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.8 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 51 ms | 27.6 ms |
+| shared · launch | Store load: read the database | 1 | 13 ms | 12.8 ms |
+| shared · launch | Watch Today: plan | 9 | 7 ms | 1.9 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · launch | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 24 ms | 15.5 ms |
+| swift · launch | Store load: read the database | 1 | 21 ms | 20.7 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.7 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.8 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · launch | Count: a Today row drawn | 15 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 1207 ms | 1176.6 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 335 ms | 165.6 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 99 ms | 59.9 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 87 ms | 86.7 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 6 ms | 2.8 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · scroll-today | Count: a Today row drawn | 191 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 838 ms | 817.8 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 109 ms | 108.6 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 71 ms | 28.4 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 17 ms | 7.3 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 4 ms | 2.1 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 0.5 ms |
+| swift · scroll-today | Count: a Today row drawn | 157 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 937 ms | 898.0 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 249 ms | 30.2 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 117 ms | 74.8 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 106 ms | 105.8 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 7 ms | 3.4 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 1.4 ms |
+| shared · scroll-today | Count: a Today row drawn | 186 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 527 ms | 511.6 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 86 ms | 24.2 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 73 ms | 73.2 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 16 ms | 5.4 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 6 ms | 3.2 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 1.4 ms |
+| swift · scroll-today | Count: a Today row drawn | 156 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 942 ms | 916.0 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 188 ms | 27.1 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 105 ms | 105.4 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 40 ms | 5.1 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 6 ms | 2.5 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 0.8 ms |
+| shared · scroll-today | Count: a Today row drawn | 189 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 494 ms | 485.0 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 66 ms | 65.8 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 62 ms | 20.8 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 13 ms | 5.4 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 5 ms | 1.9 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · scroll-today | Count: a Today row drawn | 158 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 375 ms | 345.8 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 112 ms | 17.4 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 87 ms | 87.3 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 33 ms | 5.2 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 6 ms | 2.7 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · scroll-today | Count: a Today row drawn | 181 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 638 ms | 624.3 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 85 ms | 84.9 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 59 ms | 11.3 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 13 ms | 4.0 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 4 ms | 2.4 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 1.1 ms |
+| swift · scroll-today | Count: a Today row drawn | 100 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 104 ms | 91.6 ms |
+| shared · routine | Widgets: one habit's week | 8 | 38 ms | 16.9 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 16 ms | 16.1 ms |
+| shared · routine | Watch Today: plan | 17 | 10 ms | 1.4 ms |
+| shared · routine | Watch Day details: the dial's words | 2 | 6 ms | 5.0 ms |
+| shared · routine | Widgets: the snapshot | 2 | 1 ms | 1.0 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
+| shared · routine | Count: a Today row drawn | 23 | 0 ms | 0.0 ms |
+| shared · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 318 ms | 307.3 ms |
+| swift · routine | Widgets: one habit's week | 16 | 38 ms | 20.4 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 24 ms | 23.9 ms |
+| swift · routine | Watch Day details: the dial's words | 61 | 6 ms | 1.5 ms |
+| swift · routine | Watch Today: plan | 17 | 5 ms | 2.0 ms |
+| swift · routine | Widgets: the snapshot | 3 | 2 ms | 0.9 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · routine | Count: a Today row drawn | 50 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 197 ms | 185.9 ms |
+| shared · routine | Widgets: one habit's week | 8 | 40 ms | 22.4 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 33 ms | 33.1 ms |
+| shared · routine | Watch Today: plan | 17 | 15 ms | 1.7 ms |
+| shared · routine | Watch Day details: the dial's words | 2 | 12 ms | 12.2 ms |
+| shared · routine | Widgets: the snapshot | 2 | 2 ms | 1.2 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.7 ms |
+| shared · routine | Count: a Today row drawn | 30 | 0 ms | 0.0 ms |
+| shared · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 172 ms | 160.3 ms |
+| swift · routine | Widgets: one habit's week | 8 | 45 ms | 31.9 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 20 ms | 20.0 ms |
+| swift · routine | Watch Day details: the dial's words | 61 | 9 ms | 1.5 ms |
+| swift · routine | Watch Today: plan | 16 | 4 ms | 0.5 ms |
+| swift · routine | Widgets: the snapshot | 2 | 2 ms | 1.1 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
+| swift · routine | Count: a Today row drawn | 21 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 474 ms | 453.9 ms |
+| shared · routine | Widgets: one habit's week | 16 | 64 ms | 15.4 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 34 ms | 34.0 ms |
+| shared · routine | Watch Day details: the dial's words | 61 | 12 ms | 2.1 ms |
+| shared · routine | Watch Today: plan | 16 | 10 ms | 2.1 ms |
+| shared · routine | Widgets: the snapshot | 3 | 2 ms | 0.8 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
+| shared · routine | Count: a Today row drawn | 53 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 504 ms | 492.2 ms |
+| swift · routine | Widgets: one habit's week | 16 | 39 ms | 21.0 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 19 ms | 18.9 ms |
+| swift · routine | Watch Day details: the dial's words | 34 | 5 ms | 1.2 ms |
+| swift · routine | Watch Today: plan | 17 | 4 ms | 1.0 ms |
+| swift · routine | Widgets: the snapshot | 3 | 1 ms | 0.7 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.5 ms |
+| swift · routine | Count: a Today row drawn | 46 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 37 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 144 ms | 126.8 ms |
+| shared · routine | Widgets: one habit's week | 8 | 58 ms | 24.9 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 26 ms | 25.9 ms |
+| shared · routine | Watch Today: plan | 17 | 11 ms | 1.2 ms |
+| shared · routine | Watch Day details: the dial's words | 2 | 3 ms | 2.9 ms |
+| shared · routine | Widgets: the snapshot | 2 | 2 ms | 1.4 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.6 ms |
+| shared · routine | Count: a Today row drawn | 28 | 0 ms | 0.0 ms |
+| shared · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 148 ms | 142.6 ms |
+| swift · routine | Widgets: one habit's week | 8 | 28 ms | 18.4 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 19 ms | 19.2 ms |
+| swift · routine | Watch Today: plan | 17 | 4 ms | 1.1 ms |
+| swift · routine | Watch Day details: the dial's words | 2 | 2 ms | 2.3 ms |
+| swift · routine | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| swift · routine | Count: a Today row drawn | 9 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |

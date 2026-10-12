@@ -1,10 +1,40 @@
-- Launch to a usable Today (round 1 , cold): 2400 ms
-- Launch to a usable Today (round 2, warm): 2961 ms
-- Blank page (control, first): longest stall 382 ms
-- Blank page (control, again): longest stall 66 ms
-- Day details (first): longest stall 181 ms
-- Day details (again): longest stall 104 ms
-- Log manually: longest stall 306 ms
-- Blank cover (control, first): longest stall 169 ms
-- Blank cover (control, again): longest stall 66 ms
-- Routine (open): longest stall 383 ms
+- shared · Launch to a usable Today (round 1 , cold): 2548 ms
+- swift · Launch to a usable Today (round 1 , cold): 2136 ms
+- shared · Launch to a usable Today (round 2, warm): 1778 ms
+- swift · Launch to a usable Today (round 2, warm): 1352 ms
+- shared · Launch to a usable Today (round 3, warm): 1286 ms
+- swift · Launch to a usable Today (round 3, warm): 1883 ms
+- shared · Launch to a usable Today (round 4, warm): 1250 ms
+- swift · Launch to a usable Today (round 4, warm): 1100 ms
+- shared · Launch to a usable Today (round 5, warm): 1261 ms
+- swift · Launch to a usable Today (round 5, warm): 942 ms
+- shared · Launch to a usable Today (round 6, warm): 1278 ms
+- swift · Launch to a usable Today (round 6, warm): 1929 ms
+- shared · Launch to a usable Today (round 7, warm): 1598 ms
+- swift · Launch to a usable Today (round 7, warm): 2435 ms
+- shared · Launch to a usable Today (round 8, warm): 1430 ms
+- swift · Launch to a usable Today (round 8, warm): 3620 ms
+- shared · Blank cover (control, first): longest stall 217 ms
+- shared · Blank cover (control, again): longest stall 60 ms
+- shared · Routine (open): longest stall 378 ms
+- swift · Blank cover (control, first): longest stall 184 ms
+- swift · Blank cover (control, again): longest stall 61 ms
+- swift · Routine (open): longest stall 237 ms
+- shared · Blank cover (control, first): longest stall 188 ms
+- shared · Blank cover (control, again): longest stall 89 ms
+- shared · Routine (open): longest stall 514 ms
+- swift · Blank cover (control, first): longest stall 205 ms
+- swift · Blank cover (control, again): longest stall 48 ms
+- swift · Routine (open): longest stall 363 ms
+- shared · Blank cover (control, first): longest stall 106 ms
+- shared · Blank cover (control, again): longest stall 68 ms
+- shared · Routine (open): longest stall 256 ms
+- swift · Blank cover (control, first): longest stall 173 ms
+- swift · Blank cover (control, again): longest stall 70 ms
+- swift · Routine (open): longest stall 254 ms
+- shared · Blank cover (control, first): longest stall 169 ms
+- shared · Blank cover (control, again): longest stall 49 ms
+- shared · Routine (open): longest stall 250 ms
+- swift · Blank cover (control, first): longest stall 101 ms
+- swift · Blank cover (control, again): longest stall 50 ms
+- swift · Routine (open): longest stall 250 ms

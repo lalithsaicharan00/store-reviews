@@ -1,0 +1,327 @@
+# TIME Store load: read the database|30.65
+# TIME Store load: into the app (0 logs)|0.32
+1791806817.589 27.1
+1791806817.616 32.4
+# TIME Watch Today: plan|9.59
+# READY 1791806817.724
+1791806817.657 66.8
+# TIME Count: a Today row drawn|0.00
+1791806817.724 120.2
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.65
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.43
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.60
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806817.892 27.6
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.27
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.26
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806817.934 25.8
+# TIME Watch Today: plan|1.62
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806817.960 37.0
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.82
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.009 30.3
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.41
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.055 30.0
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.52
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.085 37.2
+# TIME Watch Today: plan|1.55
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.125 17.2
+# TIME Watch Today: plan|0.90
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.45
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.80
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.50
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.49
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.52
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.283 17.9
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.64
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.324 19.8
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.53
+# TIME Count: a Today row drawn|0.00
+1791806818.385 18.9
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.23
+# TIME Count: a Today row drawn|0.00
+1791806818.404 20.6
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.31
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.424 31.9
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.60
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.11
+# TIME Count: a Today row drawn|0.00
+1791806818.483 25.4
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|2.08
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806818.509 30.1
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.69
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.74
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|2.25
+# TIME Count: a Today row drawn|0.00
+1791806818.603 18.7
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.58
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.49
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|2.40
+# TIME Count: a Today row drawn|0.00
+1791806818.697 25.3
+# TIME Count: a Today row drawn|0.00
+1791806818.722 97.5
+# TIME Widgets: one habit's week|34.23
+1791806821.735 50.9
+# TIME Widgets: one habit's week|4.21
+# TIME Widgets: one habit's week|1.60
+# TIME Widgets: one habit's week|3.78
+# TIME Widgets: one habit's week|6.25
+# TIME Widgets: one habit's week|1.65
+# TIME Widgets: one habit's week|1.12
+# TIME Widgets: one habit's week|1.20
+# TIME Widgets: one habit's week|3.19
+# TIME Widgets: one habit's week|2.23
+# TIME Widgets: one habit's week|3.71
+# TIME Widgets: one habit's week|2.74
+# TIME Widgets: one habit's week|165.58
+1791806821.829 165.9
+# TIME Widgets: one habit's week|3.84
+# TIME Widgets: one habit's week|1.91
+# TIME Widgets: one habit's week|2.13
+# TIME Widgets: one habit's week|2.95
+# TIME Widgets: one habit's week|1.03
+# TIME Widgets: one habit's week|0.97
+# TIME Widgets: one habit's week|1.18
+# TIME Widgets: one habit's week|3.50
+# TIME Widgets: one habit's week|1.07
+# TIME Widgets: one habit's week|1.23
+# TIME Widgets: one habit's week|2.56
+# TIME Widgets: one habit's week|2.96
+# TIME Widgets: one habit's week|2.33
+# TIME Widgets: one habit's week|0.94
+# TIME Widgets: one habit's week|3.08
+# TIME Widgets: one habit's week|3.74
+# TIME Widgets: one habit's week|3.74
+# TIME Widgets: the snapshot|1.49
+# TIME Store load: read the database|1176.63
+# TIME Store load: into the app (7320 logs)|86.72
+# TIME Watch Today: plan|59.94
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.92
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806834.005 211.5
+# TIME Widgets: one habit's week|1.43
+# TIME Widgets: one habit's week|1.73
+# TIME Widgets: one habit's week|3.22
+# TIME Widgets: one habit's week|2.97
+# TIME Widgets: one habit's week|1.62
+# TIME Widgets: one habit's week|2.12
+# TIME Widgets: one habit's week|1.28
+# TIME Widgets: one habit's week|1.58
+# TIME Widgets: one habit's week|1.08
+# TIME Widgets: one habit's week|1.50
+# TIME Widgets: one habit's week|4.11
+# TIME Widgets: one habit's week|2.13
+# TIME Widgets: one habit's week|4.51
+# TIME Widgets: one habit's week|4.12
+# TIME Widgets: one habit's week|3.87
+# TIME Widgets: one habit's week|4.00
+# TIME Widgets: one habit's week|5.17
+# TIME Widgets: one habit's week|1.74
+# TIME Widgets: one habit's week|1.12
+# TIME Widgets: one habit's week|1.34
+# TIME Widgets: one habit's week|1.03
+# TIME Widgets: one habit's week|1.16
+# TIME Widgets: one habit's week|2.91
+# TIME Widgets: one habit's week|1.07
+# TIME Widgets: one habit's week|1.25
+# TIME Widgets: one habit's week|1.34
+# TIME Widgets: one habit's week|1.09
+# TIME Widgets: one habit's week|1.26
+# TIME Widgets: one habit's week|1.56
+# TIME Widgets: one habit's week|1.15
+# TIME Widgets: the snapshot|1.25
+# TIME Widgets: the snapshot|2.78
+# MEASURING
+1791806840.426 20.7
+# TIME Count: a Today row drawn|0.00
+1791806840.459 37.4
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806840.542 27.3
+# TIME Count: a Today row drawn|0.00
+1791806840.709 23.8
+# TIME Count: a Today row drawn|0.00
+1791806840.759 22.1
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806842.259 21.8
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806843.259 22.3
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806846.426 20.6
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791806849.426 18.3
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# WINDOW Today: scrolling 30 habits|1791806840.407|1791806852.498
+# TIME Count: a Today row drawn|0.00
+# DONE

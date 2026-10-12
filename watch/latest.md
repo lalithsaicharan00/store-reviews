@@ -1,116 +1,310 @@
-# Watch: claude/shared-habit-rules-ci13 @ c8ce841
+# Watch: claude/shared-habit-rules-wperf2 @ 147c257
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38236469621 · 2026-10-12 11:46 UTC
-Commit: Current Work 92: paired iPhone and Watch end to end on the shared rules (scratch, safe to delete) [watch-pair]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38245304902 · 2026-10-12 12:17 UTC
+Commit: Watch speed, shared rules against the Swift rules, side by side (part 2) [watch-perf]
 
 - Core tests: skipped
 - Watch build: success
-- iPhone build with the Watch app: success
+- iPhone build with the Watch app: skipped
 - Watch UI tests (none): skipped
 - Screenshots: skipped
-- Speed: skipped
-- Paired simulators: failure
+- Speed: success
+- Paired simulators: skipped
 
-Embedded in the iPhone app: OftenEnoughWatch.app 
+## Speed
 
-## Paired simulators
+| Variant · What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms |
+|---|---|---|---|
+| shared · Today: scrolling 30 habits | 5.3 | 37 ms | 0 |
+| swift · Today: scrolling 30 habits | 8.6 | 48 ms | 0 |
+| shared · Today: scrolling 30 habits | 13.0 | 94 ms | 0 |
+| swift · Today: scrolling 30 habits | 5.2 | 48 ms | 0 |
+| shared · Today: scrolling 30 habits | 4.0 | 42 ms | 0 |
+| swift · Today: scrolling 30 habits | 0.0 | 0 ms | 0 |
+| shared · Today: scrolling 30 habits | 5.1 | 64 ms | 0 |
+| swift · Today: scrolling 30 habits | 2.3 | 44 ms | 0 |
+| shared · Routine: paging with the Crown | 4.5 | 40 ms | 0 |
+| swift · Routine: paging with the Crown | 0.0 | 0 ms | 0 |
+| shared · Routine: paging with the Crown | 21.2 | 61 ms | 0 |
+| swift · Routine: paging with the Crown | 5.5 | 37 ms | 0 |
+| shared · Routine: paging with the Crown | 12.6 | 37 ms | 0 |
+| swift · Routine: paging with the Crown | 4.4 | 33 ms | 0 |
+| shared · Routine: paging with the Crown | 1.9 | 26 ms | 0 |
+| swift · Routine: paging with the Crown | 4.1 | 42 ms | 0 |
 
-Paired simulators: FAILED (waited 266 s)
+Targets (Rulebook S): hitch time under 5 ms/s, no freeze of 100 ms or more. Simulator numbers; the Watch has the final word.
 
-- iPhone 988E3014-CF08-448D-A9BC-635F45668EB5, Watch 4F35E3E6-3BF2-4822-9BCE-5FB705AC547A, pair 41188766-CA19-4A9B-826F-780F75798B9C
-- 149 s: booted the iPhone
-- 315 s: booted the Watch
-- 332 s: activated the pair FAILED or took over 60 s
-- 359 s: installed the iPhone app
-- 788 s: the Watch app never arrived from the iPhone in 240 s; installing it directly (the iPhone may refuse to send)
-- 797 s: installed the Watch app directly
-- 817 s: launched the iPhone app
-- 829 s: launched the Watch app
+Openings (longest stall in the 1.5 s after the command) and launches:
 
-iPhone:
-```
-   -0.0 s  phone: added Pair water and Pair timer, +1 glass
-  300.2 s  never saw the Watch's two +1s (3 glasses) in 300 s
-  300.2 s  # PAIR DONE failed
-```
-Watch:
-```
-   -0.0 s  watch: waiting for the first fill
-  300.1 s  never saw the first fill (Pair water at 1 glass, Pair timer) in 300 s
-  300.1 s  # PAIR DONE failed
-```
-WatchConnectivity on the iPhone (last lines):
-```
-2026-10-12 11:40:36.428 Df Habits[47527:203ff] [com.apple.foundation.filecoordination:presenter] Adding presenter 0E8686B5-3E16-4266-B03F-CD388843AEE7 for URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/UserInfoTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/
-2026-10-12 11:40:36.433 Df Habits[47527:203ff] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/UserInfoTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 0E8686B5-3E16-4266-B03F-CD388843AEE7 -- claimID: C1E0A609-3509-4493-BECF-55891AEE9039
-2026-10-12 11:40:36.537 Df Habits[47527:203f5] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 -- claimID: ED94C84A-B0DD-48B6-BF22-6D873454A7B3
-2026-10-12 11:40:36.549 Df Habits[47527:20400] [com.apple.foundation.filecoordination:presenter] Adding presenter 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 for URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/
-2026-10-12 11:40:36.625 Df Habits[47527:20400] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 -- claimID: 4032157F-A8F1-4FD9-AC81-1173DF5E046A
-2026-10-12 11:40:36.933 Df Habits[47527:20401] [com.apple.xpc:connection] [0x1146bfac0] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
-2026-10-12 11:40:36.951 Df Habits[47527:20401] [com.apple.xpc:connection] [0x1161b5540] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
-2026-10-12 11:40:36.957 Df Habits[47527:203ff] [com.apple.xpc:connection] [0x1161b48c0] Re-initialization successful; calling out to event handler with XPC_ERROR_CONNECTION_INTERRUPTED
-2026-10-12 11:40:37.094 Df Habits[47527:20406] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/FileTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 53C60AE5-3226-4DA5-91D8-EAF9A394C2A9 -- claimID: F63C14CA-7624-465B-A770-8C4B73F93FE4
-2026-10-12 11:40:37.132 Df Habits[47527:20400] [com.apple.foundation.filecoordination:claims] Read options: 1 -- URL: Library/Application%20Support/com.apple.watchconnectivity/4F35E3E6-3BF2-4822-9BCE-5FB705AC547A/UserInfoTransfers/contents.index -- file:///Users/runner/Library/Developer/CoreSimulator/Devices/988E3014-CF08-448D-A9BC-635F45668EB5/data/Containers/Data/Application/8AA805C2-DC7E-46CD-BDAF-3D0BA52F4797/ -- purposeID: 0E8686B5-3E16-4266-B03F-CD388843AEE7 -- claimID: 7515695D-BBB4-4F00-B693-3CB4D8D20264
-2026-10-12 11:40:37.185 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession onqueue_dequeueContent]_block_invoke_2 hasContentPending: NO
-2026-10-12 11:40:37.185 E  Habits[47527:203f5] [com.apple.wcd:WC] WCSession counterpart app not installed
-2026-10-12 11:40:37.185 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession didSessionStateChange:withChangeHandler:] no change
-2026-10-12 11:40:37.186 E  Habits[47527:203f5] [com.apple.wcd:WC] WCSession counterpart app not installed
-2026-10-12 11:40:37.186 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession didSessionStateChange:withChangeHandler:] no change
-2026-10-12 11:40:37.186 E  Habits[47527:203f5] [com.apple.wcd:WC] WCSession counterpart app not installed
-2026-10-12 11:40:37.186 Df Habits[47527:203f5] [com.apple.wcd:WC] -[WCSession didSessionStateChange:withChangeHandler:] no change
-2026-10-12 11:41:04.472 Df Habits[47527:20404] [com.apple.wcd:WC] -[WCSession onqueue_completeSwitchTask:withSessionState:]_block_invoke_4 cleaning up directories for state: <WCSessionState: 0x1160e0d80, reachable: NO, paired: YES, appInstalled: NO, complicationEnabled: NO(50), pairingID: 4F35E3E6-3BF2-4822-9BCE-5FB705AC547A, pairedDevicesPairingIDs: {("4F35E3E6-3BF2-4822-9BCE-5FB705AC547A")}, appInstallationID: (null)>
-2026-10-12 11:41:52.928 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:52.930 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:52.936 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:54.223 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:54.738 Df wcd[28810:1571f] [com.apple.Transport:_IDSService] !setState destination=__IDS_DEFAULT_PAIRED_DEVICE__
-2026-10-12 11:41:54.741 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:54.746 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:55.464 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:55.465 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:58.833 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:58.836 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:41:59.523 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:01.802 Df wcd[28810:1571f] [com.apple.Transport:_IDSService] !setState destination=__IDS_DEFAULT_PAIRED_DEVICE__
-2026-10-12 11:42:01.803 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:43.397 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:48.655 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:48.655 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:49.804 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:50.033 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:50.396 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:50.397 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-2026-10-12 11:42:50.398 Df wcd[28810:1571f] [com.apple.IDS:Registration] XPC has informed us that a fatal error has occured, we will not be attempting to reconnect any further
-```
-WatchConnectivity on the Watch (last lines):
-```
-2026-10-12 11:40:26.068 Df wcd[31172:1571a] [com.apple.wcd:WC] <WCDFirstUnlockManager: 0x10310b920> of systemObserverPairedListChanged
-2026-10-12 11:40:48.303 Df OftenEnoughWatch[47891:20792] [com.apple.BoardServices:XPCErrors] [C:1] Alloc com.apple.frontboard.systemappservices
-2026-10-12 11:40:48.600 Df OftenEnoughWatch[47891:2077e] [com.apple.BoardServices:XPCErrors] [C:2] Alloc com.apple.backboard.hid-services.xpc
-2026-10-12 11:40:48.602 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUIPrimaryGestureNegativeInteraction: 0x105121090>) installed: NO -> YES
-2026-10-12 11:40:48.603 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUICrownPressDismissGestureInteraction: 0x10840d340>) installed: NO -> YES
-2026-10-12 11:40:49.178 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUIPrimaryGestureViewInteraction: 0x105078780>) installed: NO -> YES
-2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession _init] WCSession initialized
-2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession setDelegate:] delegateSupportsAsyncActivate: YES, delegateSupportsActiveDeviceSwitch: NO
-2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession activateSession]_block_invoke
-2026-10-12 11:40:49.304 Df OftenEnoughWatch[47891:2077e] [com.apple.wcd:WC] -[WCSession activateSession]_block_invoke informing daemon ready for session state
-2026-10-12 11:40:49.328 Df wcd[31172:1571a] (libMobileGestalt.dylib) Failed to get battery level with error E00002D8
-Paired Device Information: Production: iPhone18,3 (iPhone18,3), iPhone OS 26.5 (23F77), "Pair iPhone"
-        companionAppInstalled = NO;
-        companionAppInstalled = YES;
-        companionAppInstalled = NO;
-        companionAppInstalled = NO;
-        companionAppInstalled = NO;
-        companionAppInstalled = NO;
-        companionAppInstalled = NO;
-        companionAppInstalled = YES;
-        companionAppInstalled = NO;
-        companionAppInstalled = NO;
-        companionAppInstalled = YES;
-Pending Paired Sync Complications Started Identifier: NULL
-    Reachable: NO
-2026-10-12 11:40:49.352 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller(<WAGUIPrimaryGestureViewInteraction: 0x10508af80>) installed: NO -> YES
-2026-10-12 11:40:49.375 Df OftenEnoughWatch[47891:2077e] [com.apple.WatchGestures:ui] WAGUIGestureRecognizerInstaller((null)) installed: YES -> NO
-2026-10-12 11:40:49.376 E  wcd[31172:1571a] [com.apple.wcd:WC] failed isPrivileged check. error: NanoTimeKit.WatchConnectivityMultiplexer.MultiplexierError:1
-2026-10-12 11:40:59.431 Df wcd[31172:1571a] [com.apple.wcd:WC] <WatchConnectivityDaemon: 0x10307ce60> of systemObserverInstalledApplicationsChanged
-```
+- shared · Launch to a usable Today (round 1 , cold): 2548 ms
+- swift · Launch to a usable Today (round 1 , cold): 2136 ms
+- shared · Launch to a usable Today (round 2, warm): 1778 ms
+- swift · Launch to a usable Today (round 2, warm): 1352 ms
+- shared · Launch to a usable Today (round 3, warm): 1286 ms
+- swift · Launch to a usable Today (round 3, warm): 1883 ms
+- shared · Launch to a usable Today (round 4, warm): 1250 ms
+- swift · Launch to a usable Today (round 4, warm): 1100 ms
+- shared · Launch to a usable Today (round 5, warm): 1261 ms
+- swift · Launch to a usable Today (round 5, warm): 942 ms
+- shared · Launch to a usable Today (round 6, warm): 1278 ms
+- swift · Launch to a usable Today (round 6, warm): 1929 ms
+- shared · Launch to a usable Today (round 7, warm): 1598 ms
+- swift · Launch to a usable Today (round 7, warm): 2435 ms
+- shared · Launch to a usable Today (round 8, warm): 1430 ms
+- swift · Launch to a usable Today (round 8, warm): 3620 ms
+- shared · Blank cover (control, first): longest stall 217 ms
+- shared · Blank cover (control, again): longest stall 60 ms
+- shared · Routine (open): longest stall 378 ms
+- swift · Blank cover (control, first): longest stall 184 ms
+- swift · Blank cover (control, again): longest stall 61 ms
+- swift · Routine (open): longest stall 237 ms
+- shared · Blank cover (control, first): longest stall 188 ms
+- shared · Blank cover (control, again): longest stall 89 ms
+- shared · Routine (open): longest stall 514 ms
+- swift · Blank cover (control, first): longest stall 205 ms
+- swift · Blank cover (control, again): longest stall 48 ms
+- swift · Routine (open): longest stall 363 ms
+- shared · Blank cover (control, first): longest stall 106 ms
+- shared · Blank cover (control, again): longest stall 68 ms
+- shared · Routine (open): longest stall 256 ms
+- swift · Blank cover (control, first): longest stall 173 ms
+- swift · Blank cover (control, again): longest stall 70 ms
+- swift · Routine (open): longest stall 254 ms
+- shared · Blank cover (control, first): longest stall 169 ms
+- shared · Blank cover (control, again): longest stall 49 ms
+- shared · Routine (open): longest stall 250 ms
+- swift · Blank cover (control, first): longest stall 101 ms
+- swift · Blank cover (control, again): longest stall 50 ms
+- swift · Routine (open): longest stall 250 ms
+
+Notes (storage and the first fill):
+
+
+Timed work (S2: count, total, longest):
+
+| Scenario | What | Count | Total | Longest |
+|---|---|---|---|---|
+| shared · launch | Store load: read the database | 1 | 74 ms | 74.4 ms |
+| shared · launch | Widgets: one habit's week | 8 | 44 ms | 21.0 ms |
+| shared · launch | Watch Today: plan | 9 | 10 ms | 3.5 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 2 ms | 1.8 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 31 ms | 20.1 ms |
+| swift · launch | Store load: read the database | 1 | 17 ms | 16.8 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.4 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · launch | Count: a Today row drawn | 15 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 35 ms | 19.5 ms |
+| shared · launch | Store load: read the database | 1 | 11 ms | 11.4 ms |
+| shared · launch | Watch Today: plan | 9 | 4 ms | 1.7 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.7 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.2 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 32 ms | 19.0 ms |
+| swift · launch | Store load: read the database | 1 | 12 ms | 12.1 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.8 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.3 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 31 ms | 12.3 ms |
+| shared · launch | Store load: read the database | 1 | 13 ms | 13.2 ms |
+| shared · launch | Watch Today: plan | 9 | 4 ms | 0.8 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.7 ms |
+| shared · launch | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 43 ms | 33.4 ms |
+| swift · launch | Store load: read the database | 1 | 7 ms | 7.0 ms |
+| swift · launch | Watch Today: plan | 9 | 1 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 34 ms | 12.9 ms |
+| shared · launch | Store load: read the database | 1 | 18 ms | 18.3 ms |
+| shared · launch | Watch Today: plan | 9 | 7 ms | 3.8 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · launch | Count: a Today row drawn | 23 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 35 ms | 20.9 ms |
+| swift · launch | Store load: read the database | 1 | 7 ms | 6.7 ms |
+| swift · launch | Watch Today: plan | 9 | 1 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 36 ms | 18.2 ms |
+| shared · launch | Store load: read the database | 1 | 7 ms | 6.9 ms |
+| shared · launch | Watch Today: plan | 9 | 5 ms | 1.0 ms |
+| shared · launch | Widgets: the snapshot | 2 | 2 ms | 1.4 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 45 ms | 35.2 ms |
+| swift · launch | Store load: read the database | 1 | 13 ms | 13.5 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.4 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 36 ms | 18.1 ms |
+| shared · launch | Store load: read the database | 1 | 11 ms | 11.0 ms |
+| shared · launch | Watch Today: plan | 9 | 5 ms | 1.1 ms |
+| shared · launch | Widgets: the snapshot | 2 | 2 ms | 1.2 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.6 ms |
+| shared · launch | Count: a Today row drawn | 24 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 43 ms | 25.4 ms |
+| swift · launch | Store load: read the database | 1 | 12 ms | 11.9 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.5 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 1.0 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 29 ms | 15.2 ms |
+| shared · launch | Store load: read the database | 1 | 11 ms | 11.3 ms |
+| shared · launch | Watch Today: plan | 9 | 4 ms | 1.2 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.6 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · launch | Count: a Today row drawn | 20 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 35 ms | 19.2 ms |
+| swift · launch | Store load: read the database | 1 | 5 ms | 5.4 ms |
+| swift · launch | Watch Today: plan | 9 | 1 ms | 0.3 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.9 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 1 ms | 0.8 ms |
+| swift · launch | Count: a Today row drawn | 16 | 0 ms | 0.0 ms |
+| shared · launch | Widgets: one habit's week | 8 | 51 ms | 27.6 ms |
+| shared · launch | Store load: read the database | 1 | 13 ms | 12.8 ms |
+| shared · launch | Watch Today: plan | 9 | 7 ms | 1.9 ms |
+| shared · launch | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
+| shared · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · launch | Count: a Today row drawn | 22 | 0 ms | 0.0 ms |
+| swift · launch | Widgets: one habit's week | 8 | 24 ms | 15.5 ms |
+| swift · launch | Store load: read the database | 1 | 21 ms | 20.7 ms |
+| swift · launch | Watch Today: plan | 9 | 2 ms | 0.7 ms |
+| swift · launch | Widgets: the snapshot | 2 | 1 ms | 0.8 ms |
+| swift · launch | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · launch | Count: a Today row drawn | 15 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 1207 ms | 1176.6 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 335 ms | 165.6 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 99 ms | 59.9 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 87 ms | 86.7 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 6 ms | 2.8 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · scroll-today | Count: a Today row drawn | 191 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 838 ms | 817.8 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 109 ms | 108.6 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 71 ms | 28.4 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 17 ms | 7.3 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 4 ms | 2.1 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 0.5 ms |
+| swift · scroll-today | Count: a Today row drawn | 157 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 937 ms | 898.0 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 249 ms | 30.2 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 117 ms | 74.8 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 106 ms | 105.8 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 7 ms | 3.4 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 1.4 ms |
+| shared · scroll-today | Count: a Today row drawn | 186 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 527 ms | 511.6 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 86 ms | 24.2 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 73 ms | 73.2 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 16 ms | 5.4 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 6 ms | 3.2 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 1.4 ms |
+| swift · scroll-today | Count: a Today row drawn | 156 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 942 ms | 916.0 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 188 ms | 27.1 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 105 ms | 105.4 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 40 ms | 5.1 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 6 ms | 2.5 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 0.8 ms |
+| shared · scroll-today | Count: a Today row drawn | 189 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 494 ms | 485.0 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 66 ms | 65.8 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 62 ms | 20.8 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 13 ms | 5.4 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 5 ms | 1.9 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.5 ms |
+| swift · scroll-today | Count: a Today row drawn | 158 | 0 ms | 0.0 ms |
+| shared · scroll-today | Store load: read the database | 2 | 375 ms | 345.8 ms |
+| shared · scroll-today | Widgets: one habit's week | 60 | 112 ms | 17.4 ms |
+| shared · scroll-today | Store load: into the app (7320 logs) | 1 | 87 ms | 87.3 ms |
+| shared · scroll-today | Watch Today: plan | 32 | 33 ms | 5.2 ms |
+| shared · scroll-today | Widgets: the snapshot | 3 | 6 ms | 2.7 ms |
+| shared · scroll-today | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · scroll-today | Count: a Today row drawn | 181 | 0 ms | 0.0 ms |
+| swift · scroll-today | Store load: read the database | 2 | 638 ms | 624.3 ms |
+| swift · scroll-today | Store load: into the app (7320 logs) | 1 | 85 ms | 84.9 ms |
+| swift · scroll-today | Widgets: one habit's week | 60 | 59 ms | 11.3 ms |
+| swift · scroll-today | Watch Today: plan | 32 | 13 ms | 4.0 ms |
+| swift · scroll-today | Widgets: the snapshot | 3 | 4 ms | 2.4 ms |
+| swift · scroll-today | Store load: into the app (0 logs) | 1 | 1 ms | 1.1 ms |
+| swift · scroll-today | Count: a Today row drawn | 100 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 104 ms | 91.6 ms |
+| shared · routine | Widgets: one habit's week | 8 | 38 ms | 16.9 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 16 ms | 16.1 ms |
+| shared · routine | Watch Today: plan | 17 | 10 ms | 1.4 ms |
+| shared · routine | Watch Day details: the dial's words | 2 | 6 ms | 5.0 ms |
+| shared · routine | Widgets: the snapshot | 2 | 1 ms | 1.0 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
+| shared · routine | Count: a Today row drawn | 23 | 0 ms | 0.0 ms |
+| shared · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 318 ms | 307.3 ms |
+| swift · routine | Widgets: one habit's week | 16 | 38 ms | 20.4 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 24 ms | 23.9 ms |
+| swift · routine | Watch Day details: the dial's words | 61 | 6 ms | 1.5 ms |
+| swift · routine | Watch Today: plan | 17 | 5 ms | 2.0 ms |
+| swift · routine | Widgets: the snapshot | 3 | 2 ms | 0.9 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 0 ms | 0.4 ms |
+| swift · routine | Count: a Today row drawn | 50 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 197 ms | 185.9 ms |
+| shared · routine | Widgets: one habit's week | 8 | 40 ms | 22.4 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 33 ms | 33.1 ms |
+| shared · routine | Watch Today: plan | 17 | 15 ms | 1.7 ms |
+| shared · routine | Watch Day details: the dial's words | 2 | 12 ms | 12.2 ms |
+| shared · routine | Widgets: the snapshot | 2 | 2 ms | 1.2 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.7 ms |
+| shared · routine | Count: a Today row drawn | 30 | 0 ms | 0.0 ms |
+| shared · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 172 ms | 160.3 ms |
+| swift · routine | Widgets: one habit's week | 8 | 45 ms | 31.9 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 20 ms | 20.0 ms |
+| swift · routine | Watch Day details: the dial's words | 61 | 9 ms | 1.5 ms |
+| swift · routine | Watch Today: plan | 16 | 4 ms | 0.5 ms |
+| swift · routine | Widgets: the snapshot | 2 | 2 ms | 1.1 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.9 ms |
+| swift · routine | Count: a Today row drawn | 21 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 474 ms | 453.9 ms |
+| shared · routine | Widgets: one habit's week | 16 | 64 ms | 15.4 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 34 ms | 34.0 ms |
+| shared · routine | Watch Day details: the dial's words | 61 | 12 ms | 2.1 ms |
+| shared · routine | Watch Today: plan | 16 | 10 ms | 2.1 ms |
+| shared · routine | Widgets: the snapshot | 3 | 2 ms | 0.8 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| shared · routine | Count: a routine page drawn | 61 | 0 ms | 0.0 ms |
+| shared · routine | Count: a Today row drawn | 53 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 504 ms | 492.2 ms |
+| swift · routine | Widgets: one habit's week | 16 | 39 ms | 21.0 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 19 ms | 18.9 ms |
+| swift · routine | Watch Day details: the dial's words | 34 | 5 ms | 1.2 ms |
+| swift · routine | Watch Today: plan | 17 | 4 ms | 1.0 ms |
+| swift · routine | Widgets: the snapshot | 3 | 1 ms | 0.7 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.5 ms |
+| swift · routine | Count: a Today row drawn | 46 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 37 | 0 ms | 0.0 ms |
+| shared · routine | Store load: read the database | 2 | 144 ms | 126.8 ms |
+| shared · routine | Widgets: one habit's week | 8 | 58 ms | 24.9 ms |
+| shared · routine | Store load: into the app (1716 logs) | 1 | 26 ms | 25.9 ms |
+| shared · routine | Watch Today: plan | 17 | 11 ms | 1.2 ms |
+| shared · routine | Watch Day details: the dial's words | 2 | 3 ms | 2.9 ms |
+| shared · routine | Widgets: the snapshot | 2 | 2 ms | 1.4 ms |
+| shared · routine | Store load: into the app (0 logs) | 1 | 1 ms | 0.6 ms |
+| shared · routine | Count: a Today row drawn | 28 | 0 ms | 0.0 ms |
+| shared · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |
+| swift · routine | Store load: read the database | 2 | 148 ms | 142.6 ms |
+| swift · routine | Widgets: one habit's week | 8 | 28 ms | 18.4 ms |
+| swift · routine | Store load: into the app (1716 logs) | 1 | 19 ms | 19.2 ms |
+| swift · routine | Watch Today: plan | 17 | 4 ms | 1.1 ms |
+| swift · routine | Watch Day details: the dial's words | 2 | 2 ms | 2.3 ms |
+| swift · routine | Widgets: the snapshot | 2 | 1 ms | 0.5 ms |
+| swift · routine | Store load: into the app (0 logs) | 1 | 0 ms | 0.3 ms |
+| swift · routine | Count: a Today row drawn | 9 | 0 ms | 0.0 ms |
+| swift · routine | Count: a routine page drawn | 2 | 0 ms | 0.0 ms |
