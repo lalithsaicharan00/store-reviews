@@ -1,0 +1,71 @@
+# TIME Store load: read the database|23.28
+# TIME Store load: into the app (0 logs)|0.93
+1791813494.712 47.0
+# TIME Watch Today: plan|0.22
+# READY 1791813494.784
+1791813494.765 18.7
+# TIME Count: a Today row drawn|0.00
+1791813494.784 56.2
+# TIME Watch Today: plan|0.07
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.07
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.10
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.10
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.10
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791813494.913 17.2
+# TIME Watch Today: plan|0.14
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.12
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791813494.947 41.2
+# TIME Watch Today: plan|0.11
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Store load: read the database|169.95
+# TIME Store load: into the app (1716 logs)|19.50
+# TIME Watch Today: plan|0.99
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.27
+# TIME Count: a Today row drawn|0.00
+1791813497.007 43.8
+# TIME Widgets: one habit's week|13.24
+1791813497.554 18.7
+# TIME Widgets: one habit's week|0.63
+# TIME Widgets: one habit's week|0.54
+# TIME Widgets: one habit's week|0.97
+# TIME Widgets: one habit's week|2.11
+# TIME Widgets: one habit's week|0.79
+# TIME Widgets: one habit's week|0.63
+# TIME Widgets: one habit's week|1.68
+# TIME Widgets: the snapshot|0.36
+# TIME Widgets: the snapshot|0.39
+# MEASURING
+# TIME Watch Today: plan|0.50
+# TIME Count: Day details drawn|0.02
+# TIME Watch Day details: today's logs|0.04
+# TIME Watch Day details: the dial's words|0.11
+# TIME Watch Day details: streak|0.06
+1791813503.075 302.8
+1791813503.647 72.0
+# OPEN Log manually|1791813503.076|1791813504.648
+1791813505.714 20.2
+1791813512.398 28.8
+1791813512.820 22.3
+1791813514.151 19.4
+1791813514.685 17.8
+1791813515.890 20.3
+# WINDOW Log manually: turning the Crown|1791813504.648|1791813516.690
+# DONE
+# TIME Watch Today: plan|0.50
+1791813516.850 119.1
