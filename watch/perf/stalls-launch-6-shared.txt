@@ -1,66 +1,66 @@
-# TIME Shared rules: habits and settings again|0.11
-# TIME Shared rules: built from every log|2.25
-# TIME Store load: read the database|6.57
-# TIME Store load: into the app (0 logs)|0.15
-1791829190.342 19.2
-1791829190.361 20.3
-# TIME Shared rules: habits and settings again|0.11
-# TIME Shared rules: built from every log|0.37
-# TIME Watch Today: plan|0.71
-# READY 1791829190.420
-1791829190.398 22.3
+# TIME Shared rules: habits and settings again|0.22
+# TIME Shared rules: built from every log|4.67
+# TIME Store load: read the database|23.48
+# TIME Store load: into the app (0 logs)|0.26
+1791833104.705 31.1
+1791833104.736 29.1
+# TIME Shared rules: habits and settings again|0.17
+# TIME Shared rules: built from every log|0.42
+# TIME Watch Today: plan|0.81
+# READY 1791833104.798
+1791833104.770 28.3
 # TIME Count: a Today row drawn|0.00
-1791829190.420 48.4
-# TIME Shared rules: habits and settings again|0.16
-# TIME Watch Today: plan|0.39
-# TIME Count: a Today row drawn|0.00
-# TIME Shared rules: habits and settings again|0.27
-# TIME Watch Today: plan|0.53
-# TIME Count: a Today row drawn|0.00
+1791833104.798 85.2
 # TIME Shared rules: habits and settings again|0.23
+# TIME Watch Today: plan|0.49
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.22
 # TIME Watch Today: plan|0.47
 # TIME Count: a Today row drawn|0.00
-# TIME Shared rules: habits and settings again|0.20
-# TIME Watch Today: plan|0.47
-# TIME Count: a Today row drawn|0.00
-# TIME Shared rules: habits and settings again|0.41
-# TIME Watch Today: plan|0.80
-# TIME Count: a Today row drawn|0.00
-# TIME Count: a Today row drawn|0.00
-1791829190.515 18.8
 # TIME Shared rules: habits and settings again|0.24
-# TIME Watch Today: plan|0.56
+# TIME Watch Today: plan|0.51
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.25
+# TIME Watch Today: plan|0.55
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.36
+# TIME Watch Today: plan|0.66
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Shared rules: habits and settings again|0.24
-# TIME Watch Today: plan|0.57
+1791833104.956 22.4
+# TIME Shared rules: habits and settings again|0.25
+# TIME Watch Today: plan|0.59
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791833104.985 18.4
+# TIME Shared rules: habits and settings again|0.32
+# TIME Watch Today: plan|0.66
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-1791829190.544 17.3
+# TIME Shared rules: a log added|0.09
+# TIME Shared rules: a log added|0.11
 # TIME Shared rules: a log added|0.03
 # TIME Shared rules: a log added|0.03
 # TIME Shared rules: a log added|0.02
 # TIME Shared rules: a log added|0.02
-# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.06
 # TIME Shared rules: a log added|0.02
-# TIME Shared rules: a log added|0.02
-# TIME Shared rules: a log added|0.01
+# TIME Watch Today: plan|0.45
 # TIME Count: a Today row drawn|0.00
-# TIME Watch Today: plan|0.24
-# TIME Count: a Today row drawn|0.00
+1791833105.013 50.6
 # TIME Count: a Today row drawn|0.00
 # TIME Count: a Today row drawn|0.00
-# TIME Widgets: one habit's week|11.54
-1791829191.133 17.2
-# TIME Widgets: one habit's week|0.89
-# TIME Widgets: one habit's week|1.17
-# TIME Widgets: one habit's week|1.76
-# TIME Widgets: one habit's week|2.33
-# TIME Widgets: one habit's week|1.00
-# TIME Widgets: one habit's week|0.84
-# TIME Widgets: one habit's week|1.64
-# TIME Widgets: the snapshot|0.48
-# TIME Widgets: the snapshot|0.43
+# TIME Widgets: one habit's week|14.91
+1791833105.605 24.1
+# TIME Widgets: one habit's week|0.72
+# TIME Widgets: one habit's week|0.64
+# TIME Widgets: one habit's week|1.58
+# TIME Widgets: one habit's week|3.64
+# TIME Widgets: one habit's week|1.90
+# TIME Widgets: one habit's week|2.05
+# TIME Widgets: one habit's week|3.56
+# TIME Widgets: the snapshot|0.55
+# TIME Widgets: the snapshot|1.47
 # MEASURING
 # DONE
