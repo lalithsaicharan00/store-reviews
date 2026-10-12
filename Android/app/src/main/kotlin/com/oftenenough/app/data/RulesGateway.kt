@@ -39,7 +39,7 @@ data class QuitRun(val start: Long, val end: Long?, val ending: Ending) {
 }
 
 /** Where a habit shows on Today: a time of day and the times that belong to that row, earliest first on the person's day. */
-data class Placement(val section: String, val times: List<ReminderTime>)
+data class Placement(val section: String, val slot: String?, val times: List<ReminderTime>)
 
 enum class PeriodKind { WEEK, MONTH, YEAR }
 
@@ -169,7 +169,7 @@ class RulesGateway(private val clock: () -> Long) {
     fun dayMinute(minute: Int) = rules.dayMinute(minute)
     fun sectionForMinute(minute: Int): String = rules.sectionForMinute(minute).id
     fun placements(habit: Habit): List<Placement> = rules.placements(r(habit)).map { p ->
-        Placement(p.section, p.times.mapNotNull { m -> habit.reminders.firstOrNull { it.minuteOfDay == m } })
+        Placement(p.section, p.slot, p.times.mapNotNull { m -> habit.reminders.firstOrNull { it.minuteOfDay == m } })
     }
     fun todayCards(): List<String> = rules.todayCards()
     /** Every habit and task each card holds, whatever the day, in the person's order: card → habit IDs. */

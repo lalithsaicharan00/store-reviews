@@ -60,7 +60,9 @@ class WordsTest {
         assertEquals("twice a day", HabitCopy.plan(habit(HabitKind.Check, 2.0), 1))
         assertEquals("3 times a week", HabitCopy.plan(habit(HabitKind.Check, 1.0, Frequency.PerWeek(3)), 1))
         assertEquals("5 km on 3 days a week", HabitCopy.plan(habit(HabitKind.Amount("km", 5.0), 5.0, Frequency.Flexible(GoalPeriod.WEEK, 3)), 1))
-        assertEquals("Coffee: at most 3 coffees a day", HabitCopy.sentence(habit(HabitKind.Amount("coffees", 1.0), 3.0, atMost = true, name = "Coffee"), 1))
+        // A name that only repeats the unit is left out, as on the iPhone (HabitCopy.namesUnit).
+        assertEquals("At most 3 coffees a day", HabitCopy.sentence(habit(HabitKind.Amount("coffees", 1.0), 3.0, atMost = true, name = "Coffee"), 1))
+        assertEquals("Afternoon coffee: at most 3 coffees a day", HabitCopy.sentence(habit(HabitKind.Amount("coffees", 1.0), 3.0, atMost = true, name = "Afternoon coffee"), 1))
         assertEquals("100 push-ups a day", HabitCopy.sentence(habit(HabitKind.Amount("push-ups", 10.0), 100.0, name = "Push-ups"), 1).replaceFirstChar { it.lowercase() })
     }
 

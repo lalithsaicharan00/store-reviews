@@ -302,7 +302,7 @@ private fun LazyListScope.section(
             val shape = segmentShape(i + 1, count)
             if (stepId == null) {
                 val stepsKey = "steps-${habit.id}"
-                HabitRow(habit, day, content.today, item.placement.let { null }, item.placement.times.firstOrNull(), shape, store, layout, actions,
+                HabitRow(habit, day, content.today, item.placement.slot, item.placement.times.firstOrNull(), shape, store, layout, actions,
                     stepsOpen = layout.choice(stepsKey) == true, onToggleSteps = { layout.setOpen(stepsKey, layout.choice(stepsKey) != true) })
             } else {
                 habit.steps.firstOrNull { it.id == stepId }?.let { StepRow(it, habit, day, shape, store, layout) }
