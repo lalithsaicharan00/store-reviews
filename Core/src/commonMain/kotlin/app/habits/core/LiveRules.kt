@@ -162,9 +162,12 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
             val judged = rules.rule(h.habit, day)
             val at = i * DAY_FIELDS
             out[at] = rules.dayMark(h.habit, day, reference).ordinal.toDouble()
-            out[at + 1] = rules.dayProgress(judged, day, now)
-            out[at + 2] = if (rules.isDayMet(judged, day)) 1.0 else 0.0
-            out[at + 3] = rules.dayGoal(judged)
+            val logged = rules.dayProgress(judged, day, now)
+            val goal = rules.dayGoal(judged)
+            out[at + 1] = logged
+            // G-3 ([HabitRules.isDayMet]) from what was just worked out, rather than working it out again.
+            out[at + 2] = if (if (judged.atMost) logged <= goal else logged >= goal) 1.0 else 0.0
+            out[at + 3] = goal
             out[at + 4] = if (rules.isDue(h.habit, day, now, countingSkips = true, followingMoves = true)) 1.0 else 0.0
             out[at + 5] = rules.periodKind(judged).ordinal.toDouble()
         }
