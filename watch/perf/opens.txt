@@ -1,10 +1,10 @@
-- Launch to a usable Today (round 1 , cold): 2920 ms
-- Launch to a usable Today (round 2, warm): 3441 ms
-- Blank page (control, first): longest stall 264 ms
-- Blank page (control, again): longest stall 82 ms
-- Day details (first): longest stall 170 ms
-- Day details (again): longest stall 84 ms
-- Log manually: longest stall 266 ms
-- Blank cover (control, first): longest stall 203 ms
-- Blank cover (control, again): longest stall 42 ms
-- Routine (open): longest stall 273 ms
+- Launch to a usable Today (round 1 , cold): 2400 ms
+- Launch to a usable Today (round 2, warm): 2961 ms
+- Blank page (control, first): longest stall 382 ms
+- Blank page (control, again): longest stall 66 ms
+- Day details (first): longest stall 181 ms
+- Day details (again): longest stall 104 ms
+- Log manually: longest stall 306 ms
+- Blank cover (control, first): longest stall 169 ms
+- Blank cover (control, again): longest stall 66 ms
+- Routine (open): longest stall 383 ms
