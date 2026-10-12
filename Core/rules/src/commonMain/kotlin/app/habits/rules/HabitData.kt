@@ -7,7 +7,7 @@ package app.habits.rules
  */
 class EntryIndex(entries: List<Entry> = emptyList()) {
     private val byHabit = HashMap<String, MutableList<Entry>>()
-    private val byDay = HashMap<String, HashMap<Int, MutableList<Entry>>>()
+    private val byDay = HashMap<String, DayBuckets>()
 
     init {
         for (e in entries) add(e)
@@ -21,14 +21,14 @@ class EntryIndex(entries: List<Entry> = emptyList()) {
 
     fun add(e: Entry) {
         byHabit.getOrPut(e.habitId) { ArrayList() }.add(e)
-        byDay.getOrPut(e.habitId) { HashMap() }.getOrPut(e.day) { ArrayList() }.add(e)
+        byDay.getOrPut(e.habitId) { DayBuckets() }.getOrPut(e.day).add(e)
     }
 
     /** Puts a log at [position] among its habit's logs (an undone delete goes back where it was). */
     fun insert(e: Entry, position: Int) {
         val list = byHabit.getOrPut(e.habitId) { ArrayList() }
         list.add(position.coerceIn(0, list.size), e)
-        val day = byDay.getOrPut(e.habitId) { HashMap() }.getOrPut(e.day) { ArrayList() }
+        val day = byDay.getOrPut(e.habitId) { DayBuckets() }.getOrPut(e.day)
         // The day's logs keep the habit's order.
         val before = list.indexOf(e)
         val at = day.indexOfFirst { list.indexOf(it) > before }.let { if (it < 0) day.size else it }
@@ -51,12 +51,12 @@ class EntryIndex(entries: List<Entry> = emptyList()) {
         if (i < 0) return add(e)
         val old = list[i]
         list[i] = e
-        val days = byDay.getOrPut(e.habitId) { HashMap() }
+        val days = byDay.getOrPut(e.habitId) { DayBuckets() }
         if (old.day == e.day) {
             days[e.day]?.let { day -> day.indexOfFirst { it.id == e.id }.takeIf { it >= 0 }?.let { day[it] = e } }
         } else {
             days[old.day]?.removeAll { it.id == e.id }
-            val day = days.getOrPut(e.day) { ArrayList() }
+            val day = days.getOrPut(e.day)
             val at = day.indexOfFirst { list.indexOf(it) > i }.let { if (it < 0) day.size else it }
             day.add(at, e)
         }
@@ -65,6 +65,58 @@ class EntryIndex(entries: List<Entry> = emptyList()) {
     fun clear() {
         byHabit.clear()
         byDay.clear()
+    }
+}
+
+/**
+ * One habit's logs by day, in a list indexed by the day number: reading a day neither hashes nor boxes it, and the
+ * rules read a habit's days one at a time across weeks and years (Current Work 92, checkpoint 2: on the iPhone and the
+ * Watch each boxed day was an allocation). The list covers the days logged so far and grows to take a new one; a day
+ * that would stretch it past [MAX_SPAN] days (a log dated centuries away) is kept in a map beside it.
+ */
+internal class DayBuckets {
+    private var first = 0
+    private var slots: Array<MutableList<Entry>?> = arrayOfNulls(0)
+    private var far: HashMap<Int, MutableList<Entry>>? = null
+
+    operator fun get(day: Int): MutableList<Entry>? {
+        val i = day - first
+        return if (i >= 0 && i < slots.size) slots[i] else far?.get(day)
+    }
+
+    fun getOrPut(day: Int): MutableList<Entry> {
+        get(day)?.let { return it }
+        if (!cover(day)) return far().getOrPut(day) { ArrayList() }
+        val made = ArrayList<Entry>()
+        slots[day - first] = made
+        return made
+    }
+
+    private fun far(): HashMap<Int, MutableList<Entry>> = far ?: HashMap<Int, MutableList<Entry>>().also { far = it }
+
+    /** Grows the list to include [day] (with room to spare either side); false when that would be too long. */
+    private fun cover(day: Int): Boolean {
+        if (slots.isEmpty()) {
+            first = day - SPARE
+            slots = arrayOfNulls(2 * SPARE + 1)
+            return true
+        }
+        val last = first + slots.size - 1
+        if (day in first..last) return true
+        val newFirst = if (day < first) day - maxOf(SPARE, slots.size / 2) else first
+        val newLast = if (day > last) day + maxOf(SPARE, slots.size / 2) else last
+        if (newLast - newFirst + 1 > MAX_SPAN) return false
+        val grown = arrayOfNulls<MutableList<Entry>>(newLast - newFirst + 1)
+        slots.copyInto(grown, destinationOffset = first - newFirst)
+        first = newFirst
+        slots = grown
+        return true
+    }
+
+    private companion object {
+        const val SPARE = 32
+        /** About 120 years of days. */
+        const val MAX_SPAN = 44_000
     }
 }
 
