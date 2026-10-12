@@ -1,47 +1,40 @@
-# claude/shared-habit-rules-bench2 @ d882807 (speed bisect)
+# claude/shared-habit-rules-perf16 @ 5ff7f54 (speed bisect)
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38290557325 · 2026-10-12 18:44 UTC
-Commit: Current Work 92: where a rule's time goes, after the optimisations (scratch, safe to delete) [ios-perf-bisect]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38290566254 · 2026-10-12 18:59 UTC
+Commit: Current Work 92: speed side by side with main, optimised (scratch, safe to delete) [ios-perf-bisect]
 
-Variants: `swift=HEAD+-swift-rules shared=HEAD` · scenarios: `rules-calls` · rounds: 2
+Variants: `main=ad7a898f shared=HEAD` · scenarios: `progress-year calendar` · rounds: 4
 
-- swift: d882807a Current Work 92: where a rule's time goes, after the optimisations (scratch, safe to delete) [ios-per
-- shared: d882807a Current Work 92: where a rule's time goes, after the optimisations (scratch, safe to delete) [ios-per
+- main: ad7a898f Current Work 92: checkpoint 1 ticked (runs 38213677372, 38213679929, 38224578250, 38216734746)
+- shared: 5ff7f54e Current Work 92: speed side by side with main, optimised (scratch, safe to delete) [ios-perf-bisect]
 
 Hitch ms/s per round (longest stall ms, freezes ≥100 ms), then the median hitch. Same machine, same job.
 
-| Window | swift | shared |
+| Window | main | shared |
 |---|---|---|
+| Progress Year: sideways | **0.0**<br>48.8 (294, 4), 0 (0, 0), 0 (0, 0), 0 (0, 0) | **0.0**<br>0 (0, 0), 0 (0, 0), 0 (0, 0), 0 (0, 0) |
+| Progress Year: scrolling | **14.3**<br>106.9 (577, 4), 9.4 (56, 0), 16.4 (51, 0), 12.2 (46, 0) | **18.9**<br>56.6 (336, 2), 11.9 (82, 0), 10.1 (58, 0), 25.9 (159, 1) |
+| Calendar: month ‹ › | **5.6**<br>10.2 (93, 0), 5.7 (27, 0), 1.4 (22, 0), 5.5 (31, 0) | **4.3**<br>0 (17, 0), 2.1 (32, 0), 6.5 (59, 0), 19.1 (157, 1) |
 
 Timed work, all rounds (count · total ms · longest ms):
 
-| What | swift | shared |
+| What | main | shared |
 |---|---|---|
-| Store load: read the database | 4 · 4187 · 2591.5 | 4 · 3754 · 1894.9 |
-| Widgets: one habit's week | 34 · 243 · 111.2 | 34 · 329 · 116.0 |
-| Store load: into the app (5593 logs) | 2 · 192 · 100.9 | 2 · 138 · 84.8 |
-| Rules (in a view): isDone | 6 · 146 · 30.1 | 6 · 108 · 28.7 |
-| Rules (in a view): dayMark | 6 · 142 · 29.1 | 6 · 121 · 22.4 |
-| Rules (outside a view): isDone | 6 · 103 · 22.8 | 6 · 73 · 17.6 |
-| Rules (outside a view): dayMark | 6 · 94 · 19.5 | 6 · 101 · 19.1 |
-| Rules (in a view): dayProgress | 6 · 82 · 21.5 | 6 · 107 · 28.4 |
-| Rules (outside a view): dayProgress | 6 · 47 · 11.8 | 6 · 66 · 17.9 |
-| Rules (in a view): isDue | 6 · 38 · 9.1 | 6 · 88 · 22.6 |
-| Rules (outside a view): isDue | 6 · 21 · 4.4 | 6 · 43 · 9.9 |
-| Store load: into the app (0 logs) | 2 · 11 · 5.7 | 2 · 2 · 0.7 |
-| Widgets: the snapshot | 2 · 6 · 4.6 | 2 · 4 · 2.3 |
-| Count: Today's list drawn | 14 · 0 · 0.4 | 18 · 0 · 0.0 |
-| Reminders: plan every alert | 2 · 0 · 0.2 | 2 · 0 · 0.3 |
-| Count: a Today row drawn | 32 · 0 · 0.0 | 32 · 0 · 0.0 |
-| Rules (outside a view): Swift reads a year's numbers back | – | 6 · 289 · 93.7 |
-| Rules (in a view): Swift reads a year's numbers back | – | 6 · 224 · 57.2 |
-| Rules (in a view): Kotlin days, a year in one call | – | 6 · 179 · 52.5 |
-| Rules (outside a view): Kotlin days, a year in one call | – | 6 · 180 · 45.8 |
-| Rules (in a view): the Swift side only (shared) | – | 6 · 63 · 18.1 |
-| Rules (outside a view): Kotlin isDone, habit in hand | – | 6 · 59 · 16.4 |
-| Shared rules: built from every log | – | 8 · 52 · 26.1 |
-| Rules (in a view): Kotlin isDone, habit in hand | – | 6 · 38 · 7.6 |
-| Rules (outside a view): the Swift side only (shared) | – | 6 · 31 · 9.8 |
-| Shared rules: habits and settings again | – | 10 · 7 · 2.8 |
-| Rules (outside a view): Kotlin dayGoal, habit in hand (the crossing) | – | 6 · 6 · 2.0 |
-| Rules (in a view): Kotlin dayGoal, habit in hand (the crossing) | – | 6 · 4 · 0.7 |
+| Store load: read the database | 16 · 9907 · 2026.8 | 16 · 3757 · 667.9 |
+| Widgets: one habit's week | 136 · 954 · 156.2 | 136 · 860 · 86.5 |
+| Store load: into the app (5593 logs) | 8 · 505 · 85.4 | 8 · 383 · 53.0 |
+| Progress year: whole snapshot | 4 · 130 · 38.6 | 4 · 188 · 54.5 |
+| Progress year: cards | 4 · 129 · 38.1 | 4 · 188 · 54.1 |
+| Progress year: one card | 60 · 121 · 9.8 | 60 · 179 · 15.1 |
+| Progress week: whole snapshot | 4 · 9 · 4.1 | 4 · 13 · 3.9 |
+| Progress week: cards | 4 · 6 · 3.2 | 4 · 13 · 3.7 |
+| Store load: into the app (0 logs) | 8 · 20 · 5.8 | 8 · 16 · 9.8 |
+| Progress week: one card | 60 · 5 · 0.8 | 60 · 8 · 1.8 |
+| Widgets: the snapshot | 8 · 19 · 5.3 | 8 · 27 · 7.6 |
+| Progress week: one quit card | 8 · 1 · 0.7 | 8 · 0 · 0.3 |
+| Progress year: one quit card | 8 · 1 · 0.4 | 8 · 4 · 0.7 |
+| Reminders: plan every alert | 8 · 5 · 1.7 | 8 · 2 · 1.1 |
+| Count: Today's list drawn | 98 · 3 · 0.6 | 110 · 0 · 0.1 |
+| Count: a Today row drawn | 563 · 0 · 0.0 | 662 · 1 · 0.6 |
+| Shared rules: built from every log | – | 32 · 182 · 28.0 |
+| Shared rules: habits and settings again | – | 40 · 27 · 9.4 |
