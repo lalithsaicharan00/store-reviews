@@ -130,6 +130,20 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     var lastPart = 0.0
         private set
 
+    /** P-3 for every day [first]…[last] in one call (a month of the calendar): done, planned, part count each. */
+    fun dayScores(first: Int, last: Int, habits: List<RuleHabit>, today: Int): IntArray {
+        val list = habits.map { it.habit }
+        val count = maxOf(0, last - first + 1)
+        val out = IntArray(count * 3)
+        for (i in 0 until count) {
+            val s = rules.dayScore(first + i, list, today)
+            out[i * 3] = s.done
+            out[i * 3 + 1] = s.planned
+            out[i * 3 + 2] = s.partCount
+        }
+        return out
+    }
+
     /** G-9: the index of the mark in done, some, missed, open, skipped, paused, not its day, upcoming, before. */
     fun dayMark(h: RuleHabit, day: Int, reference: Int): Int = rules.dayMark(h.habit, day, reference).ordinal
 

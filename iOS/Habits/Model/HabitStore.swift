@@ -468,8 +468,25 @@ final class HabitStore {
     /// definition shared with the calendar sheet and Progress. A multi-section habit counts once.
     func daySummary(on day: LocalDay) -> (done: Int, total: Int) {
         // Past days are remembered; today and later can change with a running timer or the time of day.
-        let past = day < today()
+        let today = today()
+        let past = day < today
         if past, let known = summaries[day] { readInputs(); return known }
+        // The shared rules: the week either side of the day (within its month, up to yesterday) in one call, remembered
+        // day by day; the calendar and the day bar ask one day at a time, and each ask crossed into the core.
+        if past, let core {
+            let list = habits.filter { !$0.archived }
+            let handles = list.compactMap { ruleHabit($0, core) }
+            let month = period(.month, containing: day)
+            let first = max(month.lowerBound, day.adding(days: -7, calendar: calendar))
+            let last = min(month.upperBound, day.adding(days: 7, calendar: calendar), today.adding(days: -1, calendar: calendar))
+            if handles.count == list.count, first <= last {
+                let scores = core.dayScores(first: first.n, last: last.n, habits: handles, today: today.n)
+                for i in 0..<Int(scores.size / 3) where summaries[LocalDay(dayNumber: first.dayNumber + i)] == nil {
+                    summaries[LocalDay(dayNumber: first.dayNumber + i)] = (Int(scores.get(index: Int32(i * 3))), Int(scores.get(index: Int32(i * 3 + 1))))
+                }
+                if let known = summaries[day] { return known }
+            }
+        }
         let score = todayScore(on: day)
         let summary = (done: score.done, total: score.planned)
         if past { summaries[day] = summary }
