@@ -125,3 +125,40 @@ extension KotlinIntArray {
     /// Two numbers as days (`LiveRules.period`, `periodRange`).
     var dayRange: ClosedRange<LocalDay> { LocalDay(dayNumber: Int(get(index: 0)))...LocalDay(dayNumber: Int(get(index: 1))) }
 }
+
+/// One habit's run of days from the shared rules, asked in one call (`LiveRules.days`): a strip of days (Progress's cards,
+/// the habit page's history) crossed into the core once per day and rule, and the crossings cost more than the rules
+/// (Current Work 92, checkpoint 2: Progress's year cards took 441 ms against the Swift rules' 160, run 38261431401).
+struct CoreDays {
+    /// `LiveRules.dayMark`'s order.
+    static let marks: [DayMark] = [.done, .some, .missed, .open, .skipped, .paused, .notItsDay, .upcoming, .before]
+    /// Numbers per day (read once: each read of a Kotlin constant crosses into the core).
+    static let fields = Int(LiveRules.companion.DAY_FIELDS)
+    let first: Int
+    let values: [Double]
+
+    private func at(_ day: LocalDay, _ field: Int) -> Double { values[(day.dayNumber - first) * Self.fields + field] }
+    func contains(_ day: LocalDay) -> Bool { day.dayNumber >= first && (day.dayNumber - first) * Self.fields < values.count }
+    /// As `dayMark(_:on:relativeTo:)`.
+    func mark(_ day: LocalDay) -> DayMark { Self.marks[Int(at(day, 0))] }
+    /// As `dayProgress(of: rule(habit, on: day), on: day)`.
+    func progress(_ day: LocalDay) -> Double { at(day, 1) }
+    /// As `isDayMet(rule(habit, on: day), on: day)`.
+    func isMet(_ day: LocalDay) -> Bool { at(day, 2) == 1 }
+    /// As `dayGoal(of: rule(habit, on: day))`.
+    func goal(_ day: LocalDay) -> Double { at(day, 3) }
+    /// As `isDue(habit, on: day)`.
+    func isDue(_ day: LocalDay) -> Bool { at(day, 4) == 1 }
+}
+
+extension HabitStore {
+    /// The habit's days in `span` from the shared rules, in one call; nil where the store's own rules answer.
+    func coreDays(_ habit: Habit, in span: ClosedRange<LocalDay>, relativeTo reference: LocalDay) -> CoreDays? {
+        guard case let (core, h)? = shared(habit) else { return nil }
+        let array = core.days(h: h, first: span.lowerBound.n, last: span.upperBound.n, reference: reference.n, now: clock().millis)
+        let count = Int(array.size)
+        var values = [Double](repeating: 0, count: count)
+        for i in 0..<count { values[i] = array.get(index: Int32(i)) }
+        return CoreDays(first: span.lowerBound.dayNumber, values: values)
+    }
+}

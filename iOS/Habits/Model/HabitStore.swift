@@ -2095,8 +2095,7 @@ final class HabitStore {
 
     func dayMark(_ habit: Habit, on day: LocalDay, relativeTo reference: LocalDay? = nil) -> DayMark {
         if case let (core, h)? = shared(habit) {
-            let marks: [DayMark] = [.done, .some, .missed, .open, .skipped, .paused, .notItsDay, .upcoming, .before]
-            return marks[Int(core.dayMark(h: h, day: day.n, reference: (reference ?? self.today()).n))]
+            return CoreDays.marks[Int(core.dayMark(h: h, day: day.n, reference: (reference ?? self.today()).n))]
         }
         let today = reference ?? self.today()
         if day < startDay(of: habit) { return .before }

@@ -12,11 +12,19 @@ import kotlin.math.min
  * iPhone's `HabitStore` function of the same name did on 12 October 2026 (Core/fixtures/ proves it). Nothing here
  * remembers anything: the caller works a number out once per change and keeps it (Rulebook S5).
  */
+/** "Now" not given ([HabitRules.dayProgress] and the like): the clock is read only if the answer needs it. */
+private const val ASK = Long.MIN_VALUE
+
 class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -> Long) {
     val zone = Zone(settings.timeZone)
     private val dayEnd = settings.dayEndHour.coerceIn(0, 12)
 
     // ------------------------------------------------------------------ The day (spec/day.md)
+
+    /** "Now" not given: read [clock] only if the answer needs it (a running timer, an overdue task). Asking the clock
+     *  crosses back into the app on the iPhone and the Watch, once per day of a week or a year otherwise (Current Work
+     *  92, checkpoint 2). */
+    private fun at(now: Long): Long = if (now == ASK) clock() else now
 
     /** DAY-1, DAY-2: the person's day at a moment: its calendar date, or the day before while the clock is before the
      *  day's start hour. On the wall clock, never by subtracting hours (DAY-3). */
@@ -104,7 +112,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
 
     /** S-1…S-5: whether [day] is one of the habit's days. [countingSkips] false asks whether it was planned at all;
      *  [followingMoves] false asks a repeating task's own schedule. */
-    fun isDue(habit: Habit, day: Int, now: Long = clock(), countingSkips: Boolean = true, followingMoves: Boolean = true): Boolean {
+    fun isDue(habit: Habit, day: Int, now: Long = ASK, countingSkips: Boolean = true, followingMoves: Boolean = true): Boolean {
         if ((countingSkips && isSkipped(habit, day)) || isPaused(habit, day) || isArchived(habit, day)) return false
         val h = rule(habit, day)
         val created = startDay(h)
@@ -121,7 +129,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
                     }
                 } else {
                     if (day == due) return true
-                    return due < day && day == today(now) && !isDone(h, day)
+                    return due < day && day == today(at(now)) && !isDone(h, day)
                 }
             }
             else -> {}
@@ -204,7 +212,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
     }
 
     /** G-2: what was logged on a day (a checklist counts its ticked steps; a running timer counts up to now). */
-    fun dayProgress(habit: Habit, day: Int, now: Long = clock()): Double {
+    fun dayProgress(habit: Habit, day: Int, now: Long = ASK): Double {
         val h = rule(habit, day)
         if (h.kind == Kind.CHECKLIST) {
             val ticked = data.entries(h.id, day).mapNotNullTo(HashSet()) { it.stepId }
@@ -216,8 +224,9 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
         }
         var total = 0.0
         for (e in data.entries(h.id, day)) if (e.stepId == null) total += e.value
-        val start = data.timers[h.id]
-        if (start != null && day == today(now)) total += max(0L, now - start) / 1000.0 / 60
+        val start = data.timers[h.id] ?: return total
+        val t = at(now)
+        if (day == today(t)) total += max(0L, t - start) / 1000.0 / 60
         return total
     }
 
@@ -245,10 +254,11 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
         return total
     }
 
-    fun periodTotal(habit: Habit, range: DayRange, now: Long = clock()): Double {
+    fun periodTotal(habit: Habit, range: DayRange, now: Long = ASK): Double {
         var total = loggedTotal(habit, range)
-        val start = data.timers[habit.id]
-        if (start != null && today(now) in range) total += max(0L, now - start) / 1000.0 / 60
+        val start = data.timers[habit.id] ?: return total
+        val t = at(now)
+        if (today(t) in range) total += max(0L, t - start) / 1000.0 / 60
         return total
     }
 
@@ -265,7 +275,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
     }
 
     /** G-6: what a row shows: the day's amount, a period's total, or a period's count. */
-    fun progress(habit: Habit, day: Int, now: Long = clock()): Double {
+    fun progress(habit: Habit, day: Int, now: Long = ASK): Double {
         val h = rule(habit, day)
         val range = periodRange(h, day)
         if (!h.frequency.isFlexible && range != null) return if (isTotal(h)) periodTotal(h, range, now) else periodCount(h, range)

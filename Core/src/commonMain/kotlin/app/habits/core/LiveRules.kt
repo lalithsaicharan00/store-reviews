@@ -133,6 +133,29 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     /** G-9: the index of the mark in done, some, missed, open, skipped, paused, not its day, upcoming, before. */
     fun dayMark(h: RuleHabit, day: Int, reference: Int): Int = rules.dayMark(h.habit, day, reference).ordinal
 
+    /**
+     * One habit's days [first]…[last] in one call, for a strip of days (the habit page's history, Progress's cards):
+     * crossing into the core once per day and rule cost more than the rules themselves (Current Work 92, checkpoint 2).
+     * Five numbers a day: the mark ([dayMark] against [reference]); then, judged by that day's goal ([HabitRules.rule]),
+     * what was logged at [now] ([dayProgress]), 1 when its goal was met ([isDayMet]) and the day's goal ([dayGoal]); and
+     * 1 when it was one of its days ([isDue], skips counted).
+     */
+    fun days(h: RuleHabit, first: Int, last: Int, reference: Int, now: Long): DoubleArray {
+        val count = maxOf(0, last - first + 1)
+        val out = DoubleArray(count * DAY_FIELDS)
+        for (i in 0 until count) {
+            val day = first + i
+            val judged = rules.rule(h.habit, day)
+            val at = i * DAY_FIELDS
+            out[at] = rules.dayMark(h.habit, day, reference).ordinal.toDouble()
+            out[at + 1] = rules.dayProgress(judged, day, now)
+            out[at + 2] = if (rules.isDayMet(judged, day)) 1.0 else 0.0
+            out[at + 3] = rules.dayGoal(judged)
+            out[at + 4] = if (rules.isDue(h.habit, day, now, countingSkips = true, followingMoves = true)) 1.0 else 0.0
+        }
+        return out
+    }
+
     // Streaks (spec/streaks.md)
     fun streak(h: RuleHabit, day: Int) = rules.streak(h.habit, day)
     fun runBefore(day: Int, h: RuleHabit) = rules.runBefore(day, h.habit)
@@ -172,4 +195,9 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     fun sectionIds(): List<String> = rules.data.sections.map(DaySection::id)
 
     internal val current: HabitRules get() = rules
+
+    companion object {
+        /** Numbers per day in [days]. */
+        const val DAY_FIELDS = 5
+    }
 }
