@@ -15,7 +15,14 @@ rm -rf "$GOLDEN"; mkdir -p "$GOLDEN/in" "$GOLDEN/out"
 cp "$IN"/*.json "$GOLDEN/in/"
 ls -la "$GOLDEN/in"
 xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
-xcrun simctl launch --stdout="$OUT/app-stdout.txt" --stderr="$OUT/app-stderr.txt" "$SIM" "$BUNDLE" -uitest -golden-record
+# A freshly booted simulator can refuse a launch while its home screen is still starting ("denied by service
+# delegate (SBMainWorkspace)", run 38203920942): try again for up to five minutes.
+for TRY in $(seq 1 30); do
+  if xcrun simctl launch --stdout="$OUT/app-stdout.txt" --stderr="$OUT/app-stderr.txt" "$SIM" "$BUNDLE" -uitest -golden-record; then
+    echo "Launched (try $TRY)"; break
+  fi
+  sleep 10
+done
 WAITED=0
 LIMIT=${GOLDEN_LIMIT:-2400}
 until grep -q "^# DONE" "$GOLDEN/done.txt" 2>/dev/null || [ $WAITED -ge "$LIMIT" ]; do
