@@ -30,7 +30,9 @@ def main(path, top=8):
     total = int(re.search(r"(\d+) Thread_", main_lines[0]).group(1))
     idle = sum(int(m.group(1)) for l in main_lines if (m := re.search(r"(\d+) mach_msg2_trap", l)))
 
-    shares, kotlin, stack, redraw, harness, gc = {}, {}, [], 0, 0, 0  # stack: (depth, name) of the frames above the current line
+    shares, kotlin, stack, redraw, harness, gc = {}, {}, [], 0, 0, 0
+    selfs = {}  # where the samples land: each frame's own count less its callees', by name and library
+    parents = []  # (depth, key) of the frames above, for the self counts  # stack: (depth, name) of the frames above the current line
     for line in main_lines[1:]:
         m = FRAME.match(line)
         if not m:
@@ -38,6 +40,14 @@ def main(path, top=8):
         depth, count, rest = len(m.group(1)), int(m.group(2)), m.group(3)
         while stack and stack[-1][0] >= depth:
             stack.pop()
+        while parents and parents[-1][0] >= depth:
+            parents.pop()
+        lib = re.search(r"\(in ([^)]+)\)", rest)
+        key = re.sub(r"\s+\+ \d+.*", "", re.sub(r"\s+\(in .*", "", rest).strip())[:90] + (f"  [{lib.group(1)}]" if lib else "")
+        if parents:
+            selfs[parents[-1][1]] = selfs.get(parents[-1][1], 0) - count
+        selfs[key] = selfs.get(key, 0) + count
+        parents.append((depth, key))
         name = re.sub(r"\s+\(in .*", "", rest).strip()
         name = re.sub(r"\s+\+ \d+.*", "", name)
         first = not any(n == name for _, n in stack)
@@ -68,6 +78,9 @@ def main(path, top=8):
         print(f"{100 * gc / max(total, 1):5.1f}%  kotlin-gc (main thread stopped for the Kotlin collector)")
     for name, count in sorted(kotlin.items(), key=lambda kv: -kv[1])[:top + 4]:
         print(f"{100 * count / max(total, 1):5.1f}%  kotlin {name[:100]}")
+    busy_self = [(k, v) for k, v in selfs.items() if "mach_msg2_trap" not in k and v > 0]
+    for name, count in sorted(busy_self, key=lambda kv: -kv[1])[:top + 8]:
+        print(f"{100 * count / max(total, 1):5.1f}%  self {name}")
 
 
 if __name__ == "__main__":
