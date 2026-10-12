@@ -219,7 +219,7 @@ class TodayContent(
             val done = HashMap<String, Boolean>()
             for (h in tracked) done[h.id] = store.isSkipped(h, day) || rules.isSatisfied(h, day)
             val cards = store.todayCards().mapNotNull { card ->
-                if (card == DaySection.QUITTING) card to emptyList() else rows[card]?.takeIf { it.isNotEmpty() }?.let { card to it }
+                if (card == DaySection.QUITTING) card to emptyList<TodayItem>() else rows[card]?.takeIf { it.isNotEmpty() }?.let { card to it }
             }.filter { (card, items) -> card == DaySection.QUITTING && restraint.isNotEmpty() || items.isNotEmpty() }
             return TodayContent(cards, restraint, paused, if (isToday) store.nowSection(now)?.id else null, day, today,
                 if (day <= today) store.dayNote(day) else null, done)
