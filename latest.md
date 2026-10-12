@@ -1,45 +1,39 @@
-# claude/shared-habit-rules-ci22 @ 7087be7
+# claude/shared-habit-rules-ci25 @ 7087be7
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38261607158 · 2026-10-12 15:57 UTC
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38261616733 · 2026-10-12 16:13 UTC
 Commit: Merge remote-tracking branch 'origin/main' into claude/shared-habit-rules-switch
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (WeekCardsUITests,TodayRowSheetUITests,RemindersUITests,SectionHeaderUITests): failure
+- UI tests (IPadUITests): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 10 tests, with 0 failures (0 unexpected) in 497.147 (497.157) seconds
-	 Executed 21 tests, with 1 failure (0 unexpected) in 992.280 (992.309) seconds
-	 Executed 21 tests, with 1 failure (0 unexpected) in 992.280 (992.312) seconds
-	 Executed 4 tests, with 1 failure (0 unexpected) in 221.494 (221.500) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 239.120 (239.128) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RemindersUITests.swift:14: error: -[HabitsUITests.RemindersUITests testPlanningActionsPermissionsFailuresAndClockChanges] : XCTAssertTrue failed - The reminder checks did not finish
-Test Case '-[HabitsUITests.RemindersUITests testDeniedPermissionOffersSettingsAndEmptyState]' passed (27.542 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testPlanningActionsPermissionsFailuresAndClockChanges]' failed (121.773 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testRealEmptyPageHasNoUnexpectedAlarmErrorOrPermissionPrompt]' passed (51.739 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testSavedRemindersOpenEditableTaskWithoutPermissionPrompt]' passed (20.441 seconds).
-Test Case '-[HabitsUITests.SectionHeaderUITests testHeaders]' passed (34.518 seconds).
-Test Case '-[HabitsUITests.TodayRowSheetUITests testLongPressMenu]' passed (31.158 seconds).
-Test Case '-[HabitsUITests.TodayRowSheetUITests testRowOpensDaySheetForEveryKind]' passed (46.969 seconds).
-Test Case '-[HabitsUITests.TodayRowSheetUITests testSheetActionsAndDeleteInTheMenu]' passed (47.373 seconds).
-Test Case '-[HabitsUITests.TodayRowSheetUITests testSheetFollowsTheDayShown]' passed (28.411 seconds).
-Test Case '-[HabitsUITests.TodayRowSheetUITests testSwipeActions]' passed (42.496 seconds).
-Test Case '-[HabitsUITests.TodayRowSheetUITests testTickTogglesAndPlusAdds]' passed (42.714 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testHabitPageDark]' passed (48.729 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testMonthCards]' passed (44.254 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testMonthCardsDark]' passed (27.252 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testSquaresKeyFoldedOnceIsFoldedEverywhere]' passed (47.472 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsDark]' passed (66.455 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsLight]' passed (74.115 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testWeekCardsWithGroups]' passed (25.102 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testYearCards]' passed (72.362 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testYearCardsDark]' passed (35.003 seconds).
-Test Case '-[HabitsUITests.WeekCardsUITests testYearScrollAndHabitPage]' passed (56.403 seconds).
+	 Executed 15 tests, with 3 failures (0 unexpected) in 988.349 (988.382) seconds
+	 Executed 15 tests, with 3 failures (0 unexpected) in 988.349 (988.384) seconds
+	 Executed 15 tests, with 3 failures (0 unexpected) in 988.349 (988.390) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:262: error: -[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp] : XCTAssertTrue failed - Narrow: the iPhone's sheet with ✕: Often Enough | _TtGC7SwiftUI32NavigationStackHosting | sidebar-button | Show Sidebar | arrange-button | Edit | filter-button | Filter | New Habit | AdditionalDimmingOverlay | Quit or Cut Down, 2 habits | Quit or Cut Down | chevron.right | Fold Quit or Cut Down | nosign | Stop | Smoking | habit-line | Best 45 days | 12d 11:25:04 | wineglass | Alcohol | Best 47 days | 47d 00:02:04 | Anytime, 2 left | Anytime | 2 left | start-Anytime | Start Anytime routine | play.fill | Play | Start | Fold Anytime | book.fill | Bookmark | Read | 12 min/20 min | Streak: Done 6 days in a row | 🔥 | 6 | Start Read timer | phone.fill | Call | Call family | 1/3 this week | Streak: Goal met 4 weeks in a row | 4 wk | checkmark | Add 1 to Call family | drop.fill | Water Drop | Water | 8/8 glasses | Streak: Done 23 days in a row | 23 | Add 1 glass to Water | Morning, Starts 6 AM, All done | Morning | Starts 6 AM | figure.flexibility
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:264: error: -[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp] : Failed to tap "day-close" Button: No matches found for Elements matching predicate '"day-close" IN identifiers' from input {(
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/IPadUITests.swift:87: error: -[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp] : XCTAssertTrue failed - Water opens Day details: Often Enough | _TtGC7SwiftUI32NavigationStackHosting | sidebar-button | Show Sidebar | arrange-button | Edit | filter-button | Filter | New Habit | AdditionalDimmingOverlay | Quit or Cut Down, 2 habits | Quit or Cut Down | chevron.right | Fold Quit or Cut Down | nosign | Stop | Smoking | habit-line | Best 45 days | 12d 11:24:58 | wineglass | Alcohol | Best 47 days | 47d 00:01:58 | Anytime, 2 left | Anytime | 2 left | start-Anytime | Start Anytime routine | play.fill | Play | Start | Fold Anytime | book.fill | Bookmark | Read | 12 min/20 min | Streak: Done 6 days in a row | 🔥 | 6 | Start Read timer | phone.fill | Call | Call family | 1/3 this week | Streak: Goal met 4 weeks in a row | 4 wk | checkmark | Add 1 to Call family | drop.fill | Water Drop | Water | 8/8 glasses | Streak: Done 23 days in a row | 23 | Add 1 glass to Water | Morning, Starts 6 AM, All done | Morning | Starts 6 AM | figure.flexibility
+Test Case '-[HabitsUITests.IPadUITests testAddLogInsidePopoverSurvivesRotationAndOutsideTaps]' passed (134.395 seconds).
+Test Case '-[HabitsUITests.IPadUITests testArrangeTimerAndPlayerFullScreen]' passed (47.508 seconds).
+Test Case '-[HabitsUITests.IPadUITests testColumnsViewAndKeyboardCommands]' passed (85.839 seconds).
+Test Case '-[HabitsUITests.IPadUITests testDayDetailsPopoverLogsAndAllLogs]' passed (77.344 seconds).
+Test Case '-[HabitsUITests.IPadUITests testHabitsListAndPageSideBySide]' passed (58.213 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowIsTheIPhoneApp]' failed (143.011 seconds).
+Test Case '-[HabitsUITests.IPadUITests testNarrowWindowMidEditKeepsTheTypedAmount]' passed (85.940 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusEndedIsAFormSheet]' passed (17.657 seconds).
+Test Case '-[HabitsUITests.IPadUITests testPlusOnTheIPad]' passed (39.682 seconds).
+Test Case '-[HabitsUITests.IPadUITests testProgressTwoAcrossWithRangeAtTheTop]' passed (30.249 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSecondDeviceSheetOnTheIPad]' passed (39.543 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSettingsPagesBesideTheSidebar]' passed (109.086 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSheetsAndPopovers]' passed (31.730 seconds).
+Test Case '-[HabitsUITests.IPadUITests testSidebarTodayColumnAndDayControl]' passed (73.987 seconds).
+Test Case '-[HabitsUITests.IPadUITests testWelcomeAndEmptyToday]' passed (14.165 seconds).
 ```
 
 ## Release build
