@@ -954,7 +954,10 @@ and the Add note keyboard coming up by itself.
     reminders that don't arrive are Android's one outsized complaint (5.9× the App Store's rate; 36 of 40 read were real
     failures); widgets, dark mode, no ads and simplicity as on the iPhone; Google's 2026 rules (API 36, exact alarms,
     full-screen alarms, edge-to-edge, predictive back); what carries over from the iPhone.
-  - [ ] Decide the report's twelve questions (§11, D1–D12), then the day/schedule/streak/progress rules in the shared
+  - [x] Decide the report's twelve questions (§11, D1–D12): decided 12 Oct 2026 (Android README A11–A12): as
+    recommended, no wallpaper colours, nothing for the themed icon yet; moving phones through a Cloudflare free-plan
+    transfer, built last.
+  - [ ] Then the day/schedule/streak/progress rules in the shared
     core (item 92); then designs in Figma, small screens first; then the build with Drive sync plugged in.
 
 - [ ] **92. The habit rules in the shared core, so every app shows the same numbers** (added 12 October 2026, from the

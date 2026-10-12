@@ -237,7 +237,9 @@ best-rated Android apps are loved for; Android people will notice it.
 
 ## 11. Decisions for the user
 
-Each one is a recommendation; nothing is decided until the user says so.
+**Decided by the user, 12 Oct 2026** ([Android README](<../README.md>) A11–A12): every recommendation below as written,
+except **D11**, which becomes a transfer through a small server on Cloudflare's free plan, built last (encrypted on the
+phone, deleted once picked up).
 
 | # | Question | Recommendation | Why |
 |---|---|---|---|
