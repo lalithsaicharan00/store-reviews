@@ -1,0 +1,48 @@
+# TIME Store load: read the database|10.26
+# TIME Store load: into the app (0 logs)|0.45
+1791816102.474 77.3
+# TIME Watch Today: plan|0.22
+# READY 1791816102.608
+1791816102.558 50.5
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.06
+# TIME Count: a Today row drawn|0.00
+1791816102.608 112.6
+# TIME Watch Today: plan|0.07
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.11
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.09
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.20
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791816102.754 36.2
+# TIME Watch Today: plan|0.12
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791816102.791 27.8
+# TIME Watch Today: plan|0.33
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791816102.821 31.2
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.27
+1791816102.852 20.5
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Widgets: one habit's week|20.22
+1791816103.446 27.3
+# TIME Widgets: one habit's week|1.12
+# TIME Widgets: one habit's week|1.59
+# TIME Widgets: one habit's week|2.42
+# TIME Widgets: one habit's week|3.40
+# TIME Widgets: one habit's week|1.89
+# TIME Widgets: one habit's week|1.48
+# TIME Widgets: one habit's week|2.99
+# TIME Widgets: the snapshot|0.76
+# TIME Widgets: the snapshot|0.63
+# MEASURING
+# DONE

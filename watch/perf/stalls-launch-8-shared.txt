@@ -1,0 +1,56 @@
+# TIME Shared rules: habits and settings again|0.13
+# TIME Shared rules: built from every log|3.08
+# TIME Store load: read the database|11.58
+# TIME Store load: into the app (0 logs)|0.31
+1791816255.337 20.3
+1791816255.357 20.9
+# TIME Shared rules: habits and settings again|0.63
+# TIME Shared rules: built from every log|1.23
+# TIME Watch Today: plan|2.66
+# READY 1791816255.419
+1791816255.389 29.9
+# TIME Shared rules: habits and settings again|0.21
+# TIME Watch Today: plan|0.55
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.57
+1791816255.426 111.5
+# TIME Shared rules: habits and settings again|0.63
+# TIME Watch Today: plan|1.37
+# TIME Shared rules: habits and settings again|0.73
+# TIME Watch Today: plan|1.52
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.61
+# TIME Count: a Today row drawn|0.00
+1791816255.582 33.0
+# TIME Shared rules: habits and settings again|0.26
+# TIME Watch Today: plan|0.67
+# TIME Shared rules: habits and settings again|0.52
+# TIME Watch Today: plan|1.68
+# TIME Count: a Today row drawn|0.00
+1791816255.639 26.7
+# TIME Shared rules: a log added|0.06
+# TIME Shared rules: a log added|0.11
+# TIME Shared rules: a log added|0.03
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.37
+# TIME Widgets: one habit's week|15.21
+1791816256.260 18.4
+# TIME Widgets: one habit's week|2.69
+# TIME Widgets: one habit's week|2.22
+# TIME Widgets: one habit's week|1.50
+# TIME Widgets: one habit's week|2.71
+# TIME Widgets: one habit's week|2.79
+# TIME Widgets: one habit's week|1.07
+# TIME Widgets: one habit's week|1.89
+# TIME Widgets: the snapshot|1.21
+# TIME Widgets: the snapshot|0.59
+# MEASURING
+# DONE

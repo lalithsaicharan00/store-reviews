@@ -1,0 +1,67 @@
+# TIME Shared rules: habits and settings again|0.34
+# TIME Shared rules: built from every log|7.38
+# TIME Store load: read the database|14.13
+# TIME Store load: into the app (0 logs)|0.21
+1791816116.289 32.6
+1791816116.321 20.6
+# TIME Shared rules: habits and settings again|0.15
+# TIME Shared rules: built from every log|0.40
+# TIME Watch Today: plan|1.17
+# READY 1791816116.390
+1791816116.347 43.2
+# TIME Count: a Today row drawn|0.00
+1791816116.390 63.9
+# TIME Shared rules: habits and settings again|0.20
+# TIME Watch Today: plan|0.52
+# TIME Count: a Today row drawn|0.00
+1791816116.464 18.0
+# TIME Shared rules: habits and settings again|0.19
+# TIME Watch Today: plan|0.44
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.81
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.25
+# TIME Watch Today: plan|0.56
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.62
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791816116.527 26.7
+# TIME Shared rules: habits and settings again|0.26
+# TIME Watch Today: plan|0.64
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.26
+# TIME Watch Today: plan|0.63
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791816116.570 25.9
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.47
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Widgets: one habit's week|17.23
+1791816117.193 23.1
+# TIME Widgets: one habit's week|2.14
+# TIME Widgets: one habit's week|2.45
+# TIME Widgets: one habit's week|2.87
+# TIME Widgets: one habit's week|3.37
+# TIME Widgets: one habit's week|3.16
+# TIME Widgets: one habit's week|1.49
+# TIME Widgets: one habit's week|1.65
+# TIME Widgets: the snapshot|1.18
+# TIME Widgets: the snapshot|0.50
+# MEASURING
+# DONE
