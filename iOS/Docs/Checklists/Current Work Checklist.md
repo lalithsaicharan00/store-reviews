@@ -968,8 +968,14 @@ and the Add note keyboard coming up by itself.
   [Build Prompt — Shared Habit Rules](<../../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>).
   - [x] `Core/spec/`: every rule written down with examples (12 Oct 2026: day, schedules, goals, streaks, progress, and
     the differences found, `Core/spec/differences.md`).
-  - [ ] **Checkpoint 1:** golden cases recorded from today's iPhone code (`Core/fixtures/`, hand-written edge cases and
+  - [x] **Checkpoint 1:** golden cases recorded from today's iPhone code (`Core/fixtures/`, hand-written edge cases and
     seeded thousands, a year and the 15-year account); the Kotlin rules match every one; merged into `main`.
+    *Done 12 Oct 2026:* `Core/rules` (`app.habits.rules`); 2,063 cases recorded by running the iPhone's own code
+    (61 hand-written, 2,000 seeded, a year with the Watch's 400 days: run 38213677372; the 15-year account, 375,090
+    logs: run 38213679929); the Kotlin rules give the same 8,267,003 answers (`GoldenTest`, core-tests run
+    38224578250, which also compiles the iPhone and Watch targets; the iPhone app built in 38213677372, the Watch app
+    in 38216734746). The recorder found two iPhone bugs on clock-change nights, fixed in both (Core/spec/differences.md
+    #6, #8); five behaviours that look wrong wait for the user (#2, #3, #4, #5, #7). Merged into `main` 12 Oct 2026.
   - [ ] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed
     side by side with `main` (S2); anything slower kept on Swift with the reason; merged into `main`.
   - [ ] The user's real-iPhone speed check (`measure_perf_device.sh`), noted here when done (U9, S2).
