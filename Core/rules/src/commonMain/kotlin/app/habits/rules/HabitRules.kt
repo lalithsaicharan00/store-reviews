@@ -15,6 +15,9 @@ import kotlin.math.min
 /** "Now" not given ([HabitRules.dayProgress] and the like): the clock is read only if the answer needs it. */
 private const val ASK = Long.MIN_VALUE
 
+/** Numbers per day in [HabitRules.strip]. */
+const val STRIP_FIELDS = 6
+
 class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -> Long) {
     val zone = Zone(settings.timeZone)
     private val dayEnd = settings.dayEndHour.coerceIn(0, 12)
@@ -427,6 +430,55 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
         if (isDayMet(r, day)) return DayMark.DONE
         if (dayProgress(r, day) > 0) return DayMark.SOME
         return if (day == today) DayMark.OPEN else DayMark.MISSED
+    }
+
+    /**
+     * A habit's days [first]…[last] at once, for a strip of days (Progress's cards, the habit page): per day, six numbers
+     * — the mark ([dayMark] against [reference]); judged by that day's goal ([rule]), what was logged at [now]
+     * ([dayProgress]), 1 when the goal was met ([isDayMet]) and the goal ([dayGoal]); 1 when it was one of its days
+     * ([isDue], skips counted); and the kind of period that day's goal is judged in ([periodKind]). Each day's facts are
+     * worked out once and the mark is read from them by [dayMark]'s own steps (StripTest checks every golden case):
+     * asked one by one, the same day's logs and schedule were worked out three or four times (Current Work 92).
+     */
+    fun strip(habit: Habit, first: Int, last: Int, reference: Int, now: Long): DoubleArray {
+        val count = max(0, last - first + 1)
+        val out = DoubleArray(count * STRIP_FIELDS)
+        val start = startDay(habit)
+        for (i in 0 until count) {
+            val day = first + i
+            val judged = rule(habit, day)
+            val logged = dayProgress(judged, day, now)
+            val goal = dayGoal(judged)
+            val met = if (judged.atMost) logged <= goal else logged >= goal
+            val due = isDue(habit, day, now)
+            val f = judged.frequency
+            val mark = when {
+                day < start -> DayMark.BEFORE
+                isPaused(habit, day) -> DayMark.PAUSED
+                isSkipped(habit, day) -> DayMark.SKIPPED
+                day > reference -> if (due) DayMark.UPCOMING else DayMark.NOT_ITS_DAY
+                !f.isDayBased || f.isFlexible -> when {
+                    logged > 0 -> if (judged.atMost) DayMark.SOME else if (met || !f.isFlexible) DayMark.DONE else DayMark.SOME
+                    day == reference && due -> DayMark.OPEN
+                    else -> DayMark.NOT_ITS_DAY
+                }
+                !due -> DayMark.NOT_ITS_DAY
+                judged.atMost -> if (day == reference) (if (logged > 0) DayMark.SOME else DayMark.OPEN)
+                    else if (met) DayMark.DONE else DayMark.MISSED
+                met -> DayMark.DONE
+                logged > 0 -> DayMark.SOME
+                day == reference -> DayMark.OPEN
+                else -> DayMark.MISSED
+            }
+            val at = i * STRIP_FIELDS
+            out[at] = mark.ordinal.toDouble()
+            out[at + 1] = logged
+            out[at + 2] = if (met) 1.0 else 0.0
+            out[at + 3] = goal
+            out[at + 4] = if (due) 1.0 else 0.0
+            out[at + 5] = periodKind(judged).ordinal.toDouble()
+        }
+        return out
     }
 
     // ------------------------------------------------------------------ Streaks (spec/streaks.md)

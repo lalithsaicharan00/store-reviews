@@ -150,29 +150,10 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     /**
      * One habit's days [first]…[last] in one call, for a strip of days (the habit page's history, Progress's cards):
      * crossing into the core once per day and rule cost more than the rules themselves (Current Work 92, checkpoint 2).
-     * Five numbers a day: the mark ([dayMark] against [reference]); then, judged by that day's goal ([HabitRules.rule]),
-     * what was logged at [now] ([dayProgress]), 1 when its goal was met ([isDayMet]) and the day's goal ([dayGoal]); 1 when
-     * it was one of its days ([isDue], skips counted); and the kind of period that day's goal is judged in ([periodKind]).
+     * [DAY_FIELDS] numbers a day, as [HabitRules.strip] gives them.
      */
-    fun days(h: RuleHabit, first: Int, last: Int, reference: Int, now: Long): DoubleArray {
-        val count = maxOf(0, last - first + 1)
-        val out = DoubleArray(count * DAY_FIELDS)
-        for (i in 0 until count) {
-            val day = first + i
-            val judged = rules.rule(h.habit, day)
-            val at = i * DAY_FIELDS
-            out[at] = rules.dayMark(h.habit, day, reference).ordinal.toDouble()
-            val logged = rules.dayProgress(judged, day, now)
-            val goal = rules.dayGoal(judged)
-            out[at + 1] = logged
-            // G-3 ([HabitRules.isDayMet]) from what was just worked out, rather than working it out again.
-            out[at + 2] = if (if (judged.atMost) logged <= goal else logged >= goal) 1.0 else 0.0
-            out[at + 3] = goal
-            out[at + 4] = if (rules.isDue(h.habit, day, now, countingSkips = true, followingMoves = true)) 1.0 else 0.0
-            out[at + 5] = rules.periodKind(judged).ordinal.toDouble()
-        }
-        return out
-    }
+    fun days(h: RuleHabit, first: Int, last: Int, reference: Int, now: Long): DoubleArray =
+        rules.strip(h.habit, first, last, reference, now)
 
     // Streaks (spec/streaks.md)
     fun streak(h: RuleHabit, day: Int) = rules.streak(h.habit, day)
@@ -216,6 +197,6 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
 
     companion object {
         /** Numbers per day in [days]. */
-        const val DAY_FIELDS = 6
+        const val DAY_FIELDS = app.habits.rules.STRIP_FIELDS
     }
 }
