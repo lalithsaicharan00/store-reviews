@@ -1,3 +1,4 @@
+import Core
 import Foundation
 
 // Progress, Phase 2 (Build Plan #60f; report §7.2 Year, §8.4–§8.6, §10, §16.6, §16.8).
@@ -108,7 +109,7 @@ extension HabitStore {
     /// The first day a quit habit counts from: when it was made, or an earlier "Started".
     func quitStartDay(of habit: Habit) -> LocalDay {
         if case let (core, h)? = shared(habit) { return LocalDay(dayNumber: Int(core.quitStartDay(h: h))) }
-        today(now: min(habit.createdAt, habit.quitSince ?? habit.createdAt))
+        return today(now: min(habit.createdAt, habit.quitSince ?? habit.createdAt))
     }
 
     /// Slips, clean days and runs in a range (report §10.3, §16.8). A clean day is a day from the start up to today
@@ -149,7 +150,7 @@ extension HabitStore {
     /// The moment a day begins, honouring the day end (the same as `dayStart`, which is private to the store file).
     func dayStartMoment(_ day: LocalDay) -> Date {
         if let core { return Date(millis: core.dayStartMoment(day: day.n)) }
-        calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
+        return calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
     }
 
     /// Milestones for a quit run (report §10.3, with the user's 11 Oct 2026 additions: spec "Habit Progress" §4.1):

@@ -590,7 +590,7 @@ final class HabitStore {
     /// come after midnight (1:00 AM with the day ending at 3 is 25:00).
     func dayMinute(_ minute: Int) -> Int {
         if let core { return Int(core.dayMinute(minute: Int32(minute))) }
-        minute < settings.dayEndHour * 60 ? minute + 24 * 60 : minute
+        return minute < settings.dayEndHour * 60 ? minute + 24 * 60 : minute
     }
 
     /// The section a time falls in: the timed section that contains it. Before the first section it
@@ -832,7 +832,7 @@ final class HabitStore {
 
     func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
         if case let (core, h)? = shared(habit) { return core.periodRange(h: h, day: day.n)?.dayRange }
-        switch habit.frequency {
+        return switch habit.frequency {
         case .flexible(let kind, _):
             switch kind { case .week: period(.week, containing: day); case .month: period(.month, containing: day); case .year: period(.year, containing: day); case .day: day...day }
         case .perWeek: period(.week, containing: day)
@@ -853,7 +853,7 @@ final class HabitStore {
     /// Amounts, minutes and limits on a week or month rule: a total for the whole period.
     func isTotal(_ habit: Habit) -> Bool {
         if case let (core, h)? = shared(habit) { return core.isTotal(h: h) }
-        switch habit.kind {
+        return switch habit.kind {
         case .amount, .duration: !habit.frequency.isDayBased
         default: false
         }
@@ -1179,7 +1179,7 @@ final class HabitStore {
     /// The day's goal: times, amount, minutes, or the number of checklist items.
     func dayGoal(of habit: Habit) -> Double {
         if case let (core, h)? = shared(habit) { return core.dayGoal(h: h) }
-        switch habit.kind {
+        return switch habit.kind {
         case .checklist: Double(max(habit.steps.count, 1))
         case .task: 1
         case .check where !slots(of: habit).isEmpty: Double(slots(of: habit).count)
@@ -1287,7 +1287,7 @@ final class HabitStore {
     /// after a flexible quota is met; the routine player's main button moves on.
     func isComplete(_ habit: Habit, on day: LocalDay) -> Bool {
         if case let (core, h)? = shared(habit) { return core.isComplete(h: h, day: day.n) }
-        isDone(habit, on: day) || (habit.frequency.isFlexible && isPeriodMet(habit, on: day))
+        return isDone(habit, on: day) || (habit.frequency.isFlexible && isPeriodMet(habit, on: day))
     }
 
     /// Done for the day: Today's "N left" and ✓, reminders, and the player's segments. A week, month or year goal
@@ -1372,7 +1372,7 @@ final class HabitStore {
 
     func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
         if case let (core, h)? = shared(habit) { return core.hasPause(h: h, first: range.lowerBound.n, last: range.upperBound.n) }
-        pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
+        return pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
     }
 
     /// One run of a quit habit: from a start (its first day, a slip, or turning it back on) to the slip or pause that
@@ -2140,12 +2140,18 @@ final class HabitStore {
     /// (spec "Habit Progress" E1).
     func walkRuns(of habit: Habit, today: LocalDay, kind wanted: GoalPeriod? = nil) -> [Run] {
         if case let (core, h)? = shared(habit) {
-            let kind: Int32 = switch wanted { case nil: -1; case .day: 0; case .week: 1; case .month: 2; case .year: 3 }
+            var kind: Int32 = -1
+            if let wanted { kind = [GoalPeriod.day, .week, .month, .year].firstIndex(of: wanted).map(Int32.init) ?? -1 }
             let list = core.runs(h: h, today: today.n, kind: kind)
-            return stride(from: 0, to: Int(list.size), by: 4).map { i in
-                Run(start: LocalDay(dayNumber: Int(list.get(index: Int32(i)))), end: LocalDay(dayNumber: Int(list.get(index: Int32(i + 1)))),
-                    length: Int(list.get(index: Int32(i + 2))), isCurrent: list.get(index: Int32(i + 3)) == 1)
+            var found: [Run] = []
+            var i: Int32 = 0
+            while i + 3 < list.size {
+                let start = LocalDay(dayNumber: Int(list.get(index: i)))
+                let end = LocalDay(dayNumber: Int(list.get(index: i + 1)))
+                found.append(Run(start: start, end: end, length: Int(list.get(index: i + 2)), isCurrent: list.get(index: i + 3) == 1))
+                i += 4
             }
+            return found
         }
         let kind = wanted ?? periodKind(rule(habit, on: today))
         var runs: [Run] = []
@@ -2309,7 +2315,7 @@ final class HabitStore {
     /// The kind of period a habit is judged in: each day, or a week, month or year.
     func periodKind(_ habit: Habit) -> GoalPeriod {
         if case let (core, h)? = shared(habit) { return [GoalPeriod.day, .week, .month, .year][Int(core.periodKind(h: h))] }
-        switch habit.frequency {
+        return switch habit.frequency {
         case .perWeek: .week
         case .perMonth: .month
         case .perYear: .year
