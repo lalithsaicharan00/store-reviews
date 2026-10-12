@@ -27,7 +27,7 @@ class RuleHabit internal constructor(internal val habit: Habit) {
  */
 class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: String, private val clock: () -> Long) {
     private val logs = EntryIndex()
-    private var rules: HabitRules
+    private lateinit var rules: HabitRules
     private var handles = HashMap<String, RuleHabit>()
 
     init {
@@ -45,7 +45,8 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
         val d = loaded.data
         val data = HabitData(d.habits, logs, d.skips, d.moves, d.pauses, d.rules, d.archivedOn, d.timers, d.sections, d.cardOrder)
         handles = HashMap()
-        return HabitRules(data, loaded.settings, clock)
+        // The zone, with what it has read, carries over (habits and settings come again after many a change).
+        return HabitRules(data, loaded.settings, clock, if (::rules.isInitialized) rules.zone else null)
     }
 
     /** Habits or settings changed. [settings] are the setting rows the rules read, exactly as saved (spec/README.md),

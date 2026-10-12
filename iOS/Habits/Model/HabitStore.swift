@@ -294,6 +294,8 @@ final class HabitStore {
     @ObservationIgnored var coreDrafts: [UUID: [(habit: Habit, rule: RuleHabit)]] = [:]
     /// Whether the calendar is Gregorian (`usesCoreRules`), until the calendar changes.
     @ObservationIgnored var coreGregorian: Bool?
+    /// What the shared rules were last given (`refreshCore`): the same again changes nothing.
+    @ObservationIgnored var coreGiven: (core: LiveRules, habits: [Habit], settings: [String: String], zone: String)?
     /// Every run of a habit (`runs(of:)`), for today: the best streak, the habit page's run list and Over Time all read
     /// it, and walking it again after each saved entry stalled the habit page under the Day sheet (1 Oct).
     @ObservationIgnored private var runLists: [UUID: (today: LocalDay, runs: [Run])] = [:]

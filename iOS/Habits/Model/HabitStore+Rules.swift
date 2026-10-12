@@ -55,6 +55,14 @@ extension HabitStore {
     }
 
     private func refreshCoreNow(_ core: LiveRules) {
+        // Often nothing they read has changed (the Watch sets its habits again after each sync with the iPhone): then
+        // the rules keep what they've worked out (each habit's facts, the zone's clock).
+        let settings = coreSettings()
+        let zone = calendar.timeZone.identifier
+        if let given = coreGiven, given.core === core, given.zone == zone, given.settings == settings, given.habits == habits {
+            coreDirty = false
+            return
+        }
         var steps: [StepRecord] = []
         var reminders: [ReminderRecord] = []
         let records = habits.enumerated().map { i, habit -> HabitRecord in
@@ -62,7 +70,8 @@ extension HabitStore {
             reminders += habit.reminderRecords()
             return habit.record(position: i)
         }
-        core.update(habits: records, steps: steps, reminders: reminders, settings: coreSettings(), timeZone: calendar.timeZone.identifier)
+        core.update(habits: records, steps: steps, reminders: reminders, settings: settings, timeZone: zone)
+        coreGiven = (core, habits, settings, zone)
         coreDirty = false
         coreHandles = [:]
         coreDrafts = [:]
