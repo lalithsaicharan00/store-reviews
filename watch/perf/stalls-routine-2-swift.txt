@@ -1,0 +1,96 @@
+# TIME Store load: read the database|9.38
+# TIME Store load: into the app (0 logs)|0.48
+1791842861.452 49.3
+1791842861.501 44.8
+# TIME Watch Today: plan|0.21
+# READY 1791842861.582
+1791842861.553 29.3
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.24
+# TIME Count: a Today row drawn|0.00
+1791842861.582 77.0
+# TIME Watch Today: plan|0.08
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.08
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.08
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.13
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791842861.696 23.9
+# TIME Watch Today: plan|0.13
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.17
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791842861.737 47.1
+# TIME Watch Today: plan|0.12
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Widgets: one habit's week|24.64
+1791842864.857 31.7
+# TIME Widgets: one habit's week|1.19
+# TIME Widgets: one habit's week|1.17
+# TIME Widgets: one habit's week|2.62
+# TIME Widgets: one habit's week|4.95
+# TIME Widgets: one habit's week|1.89
+# TIME Widgets: one habit's week|1.34
+# TIME Widgets: one habit's week|3.24
+# TIME Widgets: the snapshot|0.83
+# TIME Store load: read the database|409.43
+# TIME Store load: into the app (1716 logs)|30.24
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.16
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|0.23
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+# TIME Count: a Today row drawn|0.00
+1791842865.243 79.3
+# TIME Widgets: one habit's week|2.02
+# TIME Widgets: one habit's week|0.94
+# TIME Widgets: one habit's week|1.66
+# TIME Widgets: one habit's week|2.56
+# TIME Widgets: one habit's week|0.94
+# TIME Widgets: one habit's week|0.98
+# TIME Widgets: one habit's week|0.74
+# TIME Widgets: one habit's week|0.66
+# TIME Widgets: the snapshot|0.45
+# TIME Widgets: the snapshot|0.70
+# MEASURING
+# TIME Watch Today: plan|0.16
+1791842871.344 143.7
+# OPEN Blank cover (control, first)|1791842871.345|1791842872.920
+# TIME Watch Today: plan|0.22
+1791842872.937 17.4
+# TIME Watch Today: plan|0.40
+1791842874.147 48.9
+# OPEN Blank cover (control, again)|1791842874.147|1791842875.725
+# TIME Watch Today: plan|0.17
+# TIME Watch Today: plan|0.14
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.12
+1791842876.931 276.7
+# NOTE long stall 277 ms at 1791842876.931; kotlin collection 80: stopped 0.1 ms (after waiting 0.0 ms), then 0.2 ms, took 7.8 ms
+# OPEN Routine (open)|1791842876.931|1791842878.456
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|2.05
+1791842878.470 28.0
+1791842880.004 44.1
+1791842882.221 32.7
+1791842884.697 27.4
+1791842886.591 18.8
+1791842886.610 22.1
+1791842887.204 20.7
+1791842889.712 17.0
+# WINDOW Routine: paging with the Crown|1791842878.456|1791842890.970
+# DONE
+# TIME Watch Today: plan|0.64
+1791842891.153 19.2
+1791842891.672 56.3

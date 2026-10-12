@@ -1,0 +1,56 @@
+# TIME Shared rules: habits and settings again|0.16
+# TIME Shared rules: built from every log|6.18
+# TIME Store load: read the database|23.17
+# TIME Shared rules: built from every log, off the main thread|0.27
+# TIME Store load: into the app (0 logs)|0.73
+1791843156.050 27.1
+1791843156.077 29.2
+# TIME Shared rules: habits and settings again|0.32
+# TIME Watch Today: plan|0.88
+# READY 1791843156.165
+1791843156.118 47.9
+# TIME Count: a Today row drawn|0.00
+1791843156.166 79.3
+# TIME Shared rules: habits and settings again|0.48
+# TIME Watch Today: plan|0.91
+# TIME Count: a Today row drawn|0.00
+# TIME Shared rules: habits and settings again|0.17
+# TIME Watch Today: plan|0.42
+# TIME Shared rules: habits and settings again|0.25
+# TIME Watch Today: plan|0.59
+# TIME Shared rules: habits and settings again|0.24
+# TIME Watch Today: plan|0.52
+# TIME Shared rules: habits and settings again|0.52
+# TIME Watch Today: plan|0.95
+# TIME Count: a Today row drawn|0.00
+1791843156.320 26.8
+# TIME Shared rules: habits and settings again|0.23
+# TIME Watch Today: plan|0.55
+# TIME Shared rules: habits and settings again|0.28
+# TIME Watch Today: plan|0.57
+# TIME Count: a Today row drawn|0.00
+1791843156.364 24.1
+# TIME Shared rules: a log added|0.05
+# TIME Shared rules: a log added|0.06
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.07
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.02
+# TIME Shared rules: a log added|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: plan|1.78
+1791843156.389 32.7
+# TIME Widgets: one habit's week|15.19
+1791843156.983 18.6
+# TIME Widgets: one habit's week|0.70
+# TIME Widgets: one habit's week|1.75
+# TIME Widgets: one habit's week|2.85
+# TIME Widgets: one habit's week|3.12
+# TIME Widgets: one habit's week|0.86
+# TIME Widgets: one habit's week|2.00
+# TIME Widgets: one habit's week|2.06
+# TIME Widgets: the snapshot|0.88
+# TIME Widgets: the snapshot|0.52
+# MEASURING
+# DONE
