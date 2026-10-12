@@ -358,12 +358,16 @@ final class HabitStore {
         forget(entry.habitID)
         if let coreState {
             if let habitIndex { coreState.insertEntry(r: entry.record, position: Int32(habitIndex)) } else { coreState.addEntry(r: entry.record) }
+        } else {
+            // Not built yet: the load's rows no longer hold every log, so it's built from the store's own (the Watch's
+            // test fixtures logged before any rule was asked, run 38216889043).
+            coreRows = nil
         }
     }
 
     private func removeEntry(at index: Int) {
         let entry = entries.remove(at: index)
-        coreState?.removeEntry(id: entry.id.uuidString, habitId: entry.habitID.uuidString)
+        if let coreState { coreState.removeEntry(id: entry.id.uuidString, habitId: entry.habitID.uuidString) } else { coreRows = nil }
         entriesByHabit?[entry.habitID]?.removeAll { $0.id == entry.id }
         entriesByDay?[entry.habitID]?[entry.day]?.removeAll { $0.id == entry.id }
         changedHabits.insert(entry.habitID)
@@ -374,7 +378,7 @@ final class HabitStore {
     /// An edit keeps the same row, indexes and position, with one value replacement.
     private func replaceEntry(_ entry: Entry, at index: Int) {
         entries[index] = entry
-        coreState?.replaceEntry(r: entry.record)
+        if let coreState { coreState.replaceEntry(r: entry.record) } else { coreRows = nil }
         if let i = entriesByHabit?[entry.habitID]?.firstIndex(where: { $0.id == entry.id }) {
             entriesByHabit?[entry.habitID]?[i] = entry
         }
