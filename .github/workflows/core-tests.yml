@@ -46,25 +46,31 @@ jobs:
         env:
           DRIVE_SEEDS: ${{ github.event.inputs.seeds || '2000' }}
           DRIVE_EXTREME_YEARS: "15"
-        run: ./gradlew jvmTest --console=plain
+        run: |
+          python3 fixtures/tools/generate.py  # the golden cases' large inputs (Core/fixtures/README.md)
+          ./gradlew jvmTest --console=plain
       - name: Drive numbers
         if: always()
         working-directory: Core
         run: |
           shopt -s nullglob
-          for f in build/test-results/jvmTest/*.xml; do grep -ho 'drive [^<]*' "$f" || true; done
-          for f in build/test-results/jvmTest/*.xml; do grep -h -o 'testsuite name="[^"]*" tests="[0-9]*" skipped="[0-9]*" failures="[0-9]*" errors="[0-9]*"[^>]*time="[^"]*"' "$f" || true; done
+          for f in build/test-results/jvmTest/*.xml rules/build/test-results/jvmTest/*.xml; do grep -ho 'drive [^<]*\|golden [^<]*' "$f" || true; done
+          for f in build/test-results/jvmTest/*.xml rules/build/test-results/jvmTest/*.xml; do grep -h -o 'testsuite name="[^"]*" tests="[0-9]*" skipped="[0-9]*" failures="[0-9]*" errors="[0-9]*"[^>]*time="[^"]*"' "$f" || true; done
       - name: Failures
         if: failure()
         working-directory: Core
         run: |
           shopt -s nullglob
-          for f in build/test-results/jvmTest/*.xml; do grep -h -A3 '<failure' "$f" | head -40 || true; done
+          for f in build/test-results/jvmTest/*.xml rules/build/test-results/jvmTest/*.xml; do grep -h -A3 '<failure' "$f" | head -40 || true; done
+          head -c 20000 rules/build/golden-differences.txt || true
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: core-test-reports
-          path: Core/build/reports/tests/
+          path: |
+            Core/build/reports/tests/
+            Core/rules/build/reports/tests/
+            Core/rules/build/golden-differences.txt
           retention-days: 7
 
   apple:

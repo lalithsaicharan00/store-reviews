@@ -92,4 +92,6 @@ jobs:
           path: |
             iOS/build.log
             golden-out/recorded.txt
+            golden-out/*.txt
+            golden-out/*.ips
           retention-days: 7

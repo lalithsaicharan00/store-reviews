@@ -377,4 +377,13 @@ def cases():
     c.habit(kind="quit", created=(d(1), 9))
     out.append(c)
 
+    c = Case("ST-7 milestones", ["ST-7"], detail="rules")
+    c.habit(freq=("weekdays", [1, 2, 3, 4, 5, 6, 7]), created=(d(1), 9))
+    c.habit(freq=("weekdays", [2]), created=(d(1), 9))
+    for f in [("every", 2), ("weeks", 1), ("dates", [3]), ("week", 2), ("month", 2), ("year", 2), ("flexible", "week", 2),
+              ("flexible", "month", 2), ("flexible", "year", 2), ("flexible", "day", 1), ("after", 1, "week"),
+              ("calendar", {"unit": "day", "interval": 2})]:
+        c.habit(freq=f, created=(d(1), 9))
+    out.append(c)
+
     return out

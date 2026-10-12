@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Core"
 include(":sync")
+include(":rules")

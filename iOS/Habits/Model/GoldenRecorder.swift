@@ -82,6 +82,8 @@ enum GoldenRecorder {
         let files = ((try? fm.contentsOfDirectory(at: input, includingPropertiesForKeys: nil)) ?? [])
             .filter { $0.pathExtension == "json" }.sorted { $0.lastPathComponent < $1.lastPathComponent }
         var total = 0
+        log.append("started: \(files.map(\.lastPathComponent).joined(separator: ", "))")
+        try? (log.joined(separator: "\n") + "\n").write(to: done, atomically: true, encoding: .utf8)
         for file in files {
             let began = Date()
             do {
@@ -90,6 +92,9 @@ enum GoldenRecorder {
                 for c in cases {
                     results.append(await record(c))
                     total += 1
+                    if total % 100 == 0 {
+                        try? (log.joined(separator: "\n") + "\n… \(total) cases (\(c.name))\n").write(to: done, atomically: true, encoding: .utf8)
+                    }
                     await Task.yield()
                 }
                 let data = try JSONSerialization.data(withJSONObject: ["cases": finite(results)], options: [.sortedKeys])
@@ -187,6 +192,7 @@ enum GoldenRecorder {
             h["canPause"] = s.canPause(habit)
             h["runs"] = s.runs(of: habit).map { r -> [Any] in [r.start.key, r.end.key, r.length, r.isCurrent] }
             h["best"] = s.bestStreak(of: habit)
+            h["streakUnit"] = "\(habit.frequency.streakUnit)"
             if habit.kind == .quit {
                 let runs = s.quitRuns(of: habit, now: now)
                 h["quit"] = [
@@ -208,6 +214,17 @@ enum GoldenRecorder {
             return [day.key, score.done, score.part, score.partCount, score.planned, summary.done, summary.total]
         }
 
+        if c.name.hasPrefix("ST-7") {
+            var ladders: [String: Any] = [:]
+            for unit in [StreakUnit.days, .times, .weeks, .months, .years] {
+                ladders["\(unit)"] = [
+                    "milestones": unit.milestones(upTo: 3000),
+                    "next": [0, 1, 2, 3, 29, 30, 104, 105, 365, 730, 731, 1094, 1095].map { unit.nextMilestone(after: $0) },
+                ]
+            }
+            for period in GoalPeriod.allCases { ladders["total." + period.rawValue] = TotalMilestones.ladder(for: period) }
+            out["milestones"] = ladders
+        }
         if c.detail == "full" {
             out["full"] = full(s, today: today, now: now)
         }

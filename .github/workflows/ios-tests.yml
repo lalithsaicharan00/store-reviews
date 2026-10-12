@@ -152,7 +152,9 @@ jobs:
       - name: Core storage and migration tests
         id: core
         working-directory: Core
-        run: ./gradlew jvmTest
+        run: |
+          python3 fixtures/tools/generate.py  # the golden cases' large inputs (Core/fixtures/README.md)
+          ./gradlew jvmTest
 
       - name: Build
         id: build
@@ -506,7 +508,9 @@ jobs:
         env:
           PEER_SEEDS: "3000"
           PEER_EXTREME: "1"
-        run: ./gradlew jvmTest
+        run: |
+          python3 fixtures/tools/generate.py  # the golden cases' large inputs (Core/fixtures/README.md)
+          ./gradlew jvmTest
 
       - name: Build the Watch app
         id: build
