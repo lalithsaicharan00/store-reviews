@@ -86,7 +86,9 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
    (Go with changes). Next for it: stage 3 on two Android devices, after the Android designs.
 2. ~~The Android research report~~ done, 12 Oct 2026 ([The Android App — What Android People Want, What Android Expects, and What Carries Over](<Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>)): the user decides §11; and
    Current Work 91 on the iPhone.
-3. Then the shared rules into the core (Current Work 92, a cloud session: [Build Prompt — Shared Habit Rules](<../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>)),
+3. **The Android designs, in Figma** (started 12 Oct 2026: Today, Day details and the log screens): continue from
+   [Android Designs — Handoff](<Android Designs — Handoff.md>), using the built iPhone app as the reference.
+4. Then the shared rules into the core (Current Work 92, a cloud session: [Build Prompt — Shared Habit Rules](<../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>)),
    the Android designs, and the Android app with Drive sync plugged in.
 
 **Done by the user, 11 Oct 2026:** a Web OAuth client "Drive sync tests" (`drive.appdata`; redirect
