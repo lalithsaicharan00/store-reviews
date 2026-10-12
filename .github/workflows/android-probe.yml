@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Versions
         run: |
-          v() { curl -sSL "https://dl.google.com/dl/android/maven2/$1/maven-metadata.xml" | grep -o '<version>[^<]*</version>' | sed 's/<[^>]*>//g' | tail -n ${2:-6} | tr '\n' ' '; echo " <- $1"; }
+          v() { curl -sSL "https://dl.google.com/dl/android/maven2/$1/maven-metadata.xml" | grep -o '<version>[^<]*</version>' | sed 's/<[^>]*>//g' | grep -v -E 'alpha|beta|rc|RC|dev' | tail -n 3 | tr '\n' ' '; echo " <- $1"; }
           for a in com/android/tools/build/gradle com/android/kotlin/multiplatform/library/com.android.kotlin.multiplatform.library.gradle.plugin \
             com/android/application/com.android.application.gradle.plugin \
             androidx/compose/compose-bom androidx/compose/material3/material3 androidx/compose/ui/ui androidx/compose/material/material-icons-extended \
@@ -30,6 +30,8 @@ jobs:
             com/google/android/gms/play-services-base androidx/core/core-remoteviews androidx/navigation3/navigation3-runtime org/robolectric/robolectric ; do v $a; done
           for a in org/robolectric/robolectric org/jetbrains/kotlin/kotlin-gradle-plugin com/google/devtools/ksp/com.google.devtools.ksp.gradle.plugin org/jetbrains/kotlinx/kotlinx-coroutines-android io/mockk/mockk; do
             curl -sSL "https://repo1.maven.org/maven2/$a/maven-metadata.xml" | grep -o '<version>[^<]*</version>' | sed 's/<[^>]*>//g' | tail -n 6 | tr '\n' ' '; echo " <- $a"; done
+      - name: BOM
+        run: curl -sSL https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2026.09.00/compose-bom-2026.09.00.pom | grep -A1 -E 'material3</artifactId>|<artifactId>ui</artifactId>|material-icons-extended|foundation</artifactId>' | grep -E 'artifactId|version'
       - name: SDK
         run: |
           echo ANDROID_HOME=$ANDROID_HOME; ls $ANDROID_HOME; ls $ANDROID_HOME/platforms; ls $ANDROID_HOME/build-tools; ls $ANDROID_HOME/system-images 2>/dev/null || true
