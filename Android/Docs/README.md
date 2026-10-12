@@ -22,7 +22,10 @@ the same words; differences only where a platform forces them.
    how a device knows another went quiet, the line on Today, the Watch, the 197 sync complaints and what can't be solved.
 5. [Google Drive Sync — Prototype Results](<Research/Google Drive Sync — Prototype Results.md>): what was built, the
    real-Drive proof, the numbers, and what stages 3 and 4 must still check.
-6. [Android Plus Evidence](<Research/Android Plus Evidence/>): every script, sample, hand coding, tally and web source.
+6. [The Android App — What Android People Want, What Android Expects, and What Carries Over](<Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>): what Android people want beyond Plus (reminders that arrive above all), what
+   Android requires in 2026, what carries over from the iPhone, and **twelve decisions for the user** (§11).
+7. [Android Plus Evidence](<Research/Android Plus Evidence/>) and [Android App Evidence](<Research/Android App Evidence/>):
+   every script, sample, hand coding, tally and web source.
 
 Earlier work this builds on: [Plus, Price and the Server — How We Decided](<../../Research/Research Reports/Business Model and Monetization/Plus, Price and the Server — How We Decided/README.md>)
 (no server for habits; the first Android and Google Drive reports), [Architecture 11](<../../Architecture/11. iCloud Sync with CloudKit.md>)
@@ -69,8 +72,9 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 - **Designs still to make:** the same field edited on two offline devices ("Use This Instead"), a delete arriving from
   another device ("Archived on Pixel 8"), the same thing logged on two devices ("Keep Both / Remove One"), two devices
   that each created the same habit (combine), widgets refreshed the moment synced changes arrive.
-- **Android research report** (what Android people want beyond Plus; Google's own rules), then Figma designs, small
-  screens first.
+- **The twelve decisions in the Android app report** (§11, D1–D12: exact-time reminders, the reminder check, the
+  Alarm style, the timer outside the app, wallpaper colours, the themed icon, back, launcher extras, tablets and
+  foldables, the free plan, moving from an iPhone, test phones); then Figma designs, small screens first.
 - **Moving the day, schedule, streak and progress rules into the shared core** (they're in the iPhone's Swift today), so
   Android shows the same numbers; with speed runs on the iPhone, after the iPad and Watch branches merge.
 
@@ -78,7 +82,8 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 
 1. ~~**Google Drive sync in the shared core**~~ done, 11 Oct 2026: [Prototype Results](<Research/Google Drive Sync — Prototype Results.md>)
    (Go with changes). Next for it: stage 3 on two Android devices, after the Android designs.
-2. Alongside: the Android research report, and Current Work 91 on the iPhone.
+2. ~~The Android research report~~ done, 12 Oct 2026 ([The Android App — What Android People Want, What Android Expects, and What Carries Over](<Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>)): the user decides §11; and
+   Current Work 91 on the iPhone.
 3. Then the shared rules into the core (Current Work 92, a cloud session: [Build Prompt — Shared Habit Rules](<../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>)),
    the Android designs, and the Android app with Drive sync plugged in.
 

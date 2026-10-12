@@ -950,9 +950,12 @@ and the Add note keyboard coming up by itself.
     38163084653, 38165537627); full rounds with 3–6 devices identical; 2,000 seeded stand-in runs converge (Core tests run
     38164233802, the new `core-tests.yml`; iPhone and Watch targets compile). Still needed later: two Android devices or
     emulators and an Android OAuth client (stage 3); a new iOS client (stage 4).
-  - [ ] Alongside: the Android research report (what Android people want beyond Plus, Google's own rules); then the
-    day/schedule/streak/progress rules moved into the shared core; then designs in Figma, small screens first; then
-    the build with Drive sync plugged in.
+  - [x] **The Android research report** (done 12 Oct 2026: [The Android App — What Android People Want, What Android Expects, and What Carries Over](<../../../Android/Docs/Research/The Android App — What Android People Want, What Android Expects, and What Carries Over.md>)):
+    reminders that don't arrive are Android's one outsized complaint (5.9× the App Store's rate; 36 of 40 read were real
+    failures); widgets, dark mode, no ads and simplicity as on the iPhone; Google's 2026 rules (API 36, exact alarms,
+    full-screen alarms, edge-to-edge, predictive back); what carries over from the iPhone.
+  - [ ] Decide the report's twelve questions (§11, D1–D12), then the day/schedule/streak/progress rules in the shared
+    core (item 92); then designs in Figma, small screens first; then the build with Drive sync plugged in.
 
 - [ ] **92. The habit rules in the shared core, so every app shows the same numbers** (added 12 October 2026, from the
   user: "all of the work we can assign it to the agent and can do it completely … ask the agent to have a meaningful
