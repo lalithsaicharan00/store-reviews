@@ -28,6 +28,7 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
         app.terminate()
         app.launchArguments = ["-empty", "-widget-fixture", "-website-widget-fixture", "-dbname", "habits"]
         app.launch()
+        for _ in 0..<4 where !app.staticTexts["Kitchen"].exists { app.swipeUp() }
         XCTAssertTrue(app.staticTexts["Kitchen"].waitForExistence(timeout: 30), "Capture fixture finished")
         XCUIDevice.shared.press(.home)
         Thread.sleep(forTimeInterval: 3)
@@ -38,6 +39,7 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
     }
     private func beginEdit() {
         sb.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.72)).press(forDuration: 2)
+        if sb.buttons["Edit Home Screen"].waitForExistence(timeout: 2) { sb.buttons["Edit Home Screen"].tap() }
         if sb.buttons["Edit"].waitForExistence(timeout: 3) { sb.buttons["Edit"].tap() }
     }
     private func install(page: Int, name: String, size: String) {
