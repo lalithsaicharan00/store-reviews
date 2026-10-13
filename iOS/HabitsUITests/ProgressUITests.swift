@@ -135,6 +135,10 @@ final class ProgressUITests: XCTestCase {
 
     /// Show Percentages off hides the habit page's percentages; on brings them back. Progress's cards state counts and
     /// have no percentages (Week, Month and Year, 2 Oct 2026), so the check opens a check-off habit from its card.
+    func testRepeatHide1() { testHidePercentages() }
+    func testRepeatHide2() { testHidePercentages() }
+    func testRepeatHide3() { testHidePercentages() }
+    func testRepeatHide4() { testHidePercentages() }
     func testHidePercentages() {
         launch()
         openProgress()
