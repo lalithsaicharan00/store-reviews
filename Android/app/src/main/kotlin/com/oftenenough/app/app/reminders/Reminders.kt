@@ -144,7 +144,7 @@ object Reminders {
             ACTION_DONE -> when {
                 slot != null -> if (!store.isSlotDone(habit, slot, day)) store.toggleSlot(habit, slot, day, EntrySource.REMINDER)
                 habit.kind == HabitKind.Task -> if (!store.isTicked(habit, day)) store.toggleCheck(habit, day, EntrySource.REMINDER)
-                store.rules.countsUp(habit) -> store.addProgress(habit, 1.0, day, source = EntrySource.REMINDER)
+                store.rules.countsUp(habit, day) -> store.addProgress(habit, 1.0, day, source = EntrySource.REMINDER)
                 else -> if (!store.isTicked(habit, day)) store.toggleCheck(habit, day, EntrySource.REMINDER)
             }
             ACTION_ADD -> store.increment(habit, day, EntrySource.REMINDER)
