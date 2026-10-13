@@ -70,6 +70,8 @@ class HabitStore(
 
     /** Called after every saved change (widgets, reminders and sync follow it, debounced by their owners: S16). */
     var onChange: (() -> Unit)? = null
+    /** True while the change being reported is sync's own reload: sync mustn't send it straight back (no loop). */
+    var changeIsFromSync = false; private set
     /** A person's own log: true when it makes the habit complete (the completion sound and vibration). */
     var onLog: ((Boolean) -> Unit)? = null
 
@@ -354,9 +356,11 @@ class HabitStore(
                     dataVersion++
                     onChange?.invoke()
                 } catch (e: Exception) {
+                    changeIsFromSync = false
                     problem = "That change couldn't be saved, so it was undone. Please try again."
                     reloadWhenWritten = true
                 }
+                changeIsFromSync = false
                 pendingWrites--
                 if (reloadWhenWritten && pendingWrites == 0) {
                     reloadWhenWritten = false
@@ -373,6 +377,8 @@ class HabitStore(
 
     /** Re-reads everything after sync merged other devices' changes, behind local changes, so none is lost or shown twice. */
     fun reloadAfterSync() = perform {
+        // Reported as sync's own until the queue has told everyone (perform's onChange right after this job).
+        changeIsFromSync = true
         load()
         if (pendingWrites > 1) reloadWhenWritten = true
     }

@@ -84,8 +84,14 @@ object AppGraph {
             s.onChange = {
                 com.oftenenough.app.app.reminders.Reminders.replanSoon(context.applicationContext, s)
                 com.oftenenough.app.app.reminders.TimerNotice.sync(context.applicationContext, s)
+                // Every change made here reaches Google Drive soon, the app open or not (D12); sync's own reload doesn't.
+                if (!s.changeIsFromSync && com.oftenenough.app.app.backup.SyncSchedule.mayRun()) com.oftenenough.app.app.backup.SyncSchedule.soon(context.applicationContext)
             }
-            scope.launch { s.load(); com.oftenenough.app.app.reminders.Reminders.replan(context.applicationContext, s) }
+            scope.launch {
+                s.load()
+                com.oftenenough.app.app.reminders.Reminders.replan(context.applicationContext, s)
+                com.oftenenough.app.app.backup.SyncSchedule.start(context.applicationContext)
+            }
         }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
         plusInstance = if (BuildConfig.DEBUG) FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)) else NoPlusStore

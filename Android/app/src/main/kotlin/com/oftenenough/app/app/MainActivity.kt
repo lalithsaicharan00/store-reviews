@@ -21,6 +21,12 @@ import com.oftenenough.app.data.DemoData
 import com.oftenenough.app.ui.AppRoot
 import com.oftenenough.app.ui.theme.OftenEnoughTheme
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.oftenenough.app.app.backup.SyncSchedule
 
 /**
  * The one activity. A test launch passes extras (`uitest`, `clockHour`, `demo`, `onboarding`) and gets its own in-memory
@@ -43,6 +49,18 @@ class MainActivity : FragmentActivity() {
         if (AppGraph.isOpen) AppGraph.lock.left()
     }
 
+    /** On screen: a Drive round on open and about once a minute after (D16, A7). Stops when the app leaves the screen. */
+    private fun syncWhileOnScreen() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    if (AppGraph.isOpen && AppGraph.store.isLoaded && SyncSchedule.mayRun()) runCatching { AppGraph.backup.syncNow() }
+                    delay(60_000)
+                }
+            }
+        }
+    }
+
     override fun onNewIntent(intent: android.content.Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
@@ -62,6 +80,7 @@ class MainActivity : FragmentActivity() {
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         val demo = intent.getStringExtra(TestLaunch.DEMO)
+        syncWhileOnScreen()
         setContent {
             if (demo != null && (test || BuildConfig.DEBUG)) LaunchedEffect(Unit) {
                 snapshotFlow { store.isLoaded }.first { it }
