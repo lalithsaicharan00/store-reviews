@@ -1675,7 +1675,7 @@ final class HabitStore {
                 return entry
             }
             entriesReplaced()
-            coreRows = builtCore == nil ? nil : snapshot // kept only for the shared rules (the Watch keeps its Swift ones)
+            coreRows = builtCore == nil ? nil : snapshot // kept only for the shared rules
             if let builtCore {
                 coreState = builtCore
                 coreDirty = true // its habits and settings are given on first use, once the load has set them

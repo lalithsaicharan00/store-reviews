@@ -24,24 +24,14 @@ extension HabitStore {
         return gregorian
     }
 
-    /// Off on the iPhone and iPad only to measure the store's own Swift rules side by side (`-swift-rules`, the
-    /// before/after speed runs).
+    /// Off only to measure the store's own Swift rules side by side (`-swift-rules`, the before/after speed runs).
     ///
-    /// The Apple Watch keeps the store's own Swift rules (Current Work 92, checkpoint 2), and `-shared-rules` turns the
-    /// shared ones on there to measure them. Their answers are the same (every golden case, `Core/fixtures/`), but on the
-    /// Watch they weren't as fast, side by side in one build (run 38317944724): Today's scrolling 12.5 ms/s of hitches
-    /// against 1.9, Day details' +1 10.9 against 4.2, and Today's plan 2–3 times the work. Each answer crosses into
-    /// Kotlin on its own, and a Today row asks about ten; the Watch's slower processor pays that crossing several times
-    /// over, where the iPhone hides it. Moving the Watch needs a row's answers in one call ("Shared Habit Rules —
-    /// Results", what comes next).
-    nonisolated(unsafe) static var sharedRules: Bool = {
-        let arguments = ProcessInfo.processInfo.arguments
-        #if os(watchOS)
-        return arguments.contains("-shared-rules")
-        #else
-        return !arguments.contains("-swift-rules")
-        #endif
-    }()
+    /// The Apple Watch asks the shared rules too (Current Work 92). It was first left on its Swift rules: side by side in
+    /// one build (run 38317944724) Today's scrolling had 12.5 ms/s of hitches against 1.9, Day details' +1 10.9 against
+    /// 4.2. Most of that was views redrawing for inputs the rules' refresh read (`ruleState`, S19), and the rest a Today
+    /// row asking about ten rules, each its own crossing into Kotlin; with the refresh read untracked and a row's numbers
+    /// in one call (`coreRow`), the Watch is as fast as on its Swift rules (runs 38342508127, 38342507816).
+    nonisolated(unsafe) static var sharedRules = !ProcessInfo.processInfo.arguments.contains("-swift-rules")
 
     /// The shared rules, up to date with the store's data; nil where the store's own rules answer.
     ///
