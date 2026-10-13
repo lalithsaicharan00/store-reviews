@@ -116,6 +116,76 @@ stands, the parked work in `Android/WIP/` and what's next: [Android App — Hand
   nothing, so a switch would promise something that doesn't exist.
 - **The Habits list** has no drag to reorder (Arrange your day does that) and no swipe actions (U14).
 
+## Checkpoint 3 — Data out of the phone (the parts that don't need the user's Google set-up, 13 October 2026)
+
+- **Google Drive rounds on a schedule** (`SyncSchedule`, WorkManager): a change anywhere (the app, a reminder's Done, a
+  widget) sends one round 3 s after changes stop, the app open or not (D12); a round every 6 hours in the background;
+  on open and about once a minute while on screen. Only with Drive connected and the welcome finished (D14); never for
+  a test launch (D8). Sync's own reload is marked, so it never schedules another round.
+- **App lock, Plus behind its store seam, reminders' check:** built in checkpoint 2 (above).
+- **Still waiting on the user:** the OAuth client (real Drive sign-in and the two-emulator sync test), the Play Console
+  app (real purchases). Not built yet: the reminder's Alarm style and the "Get reminders on time" sheet (design §15).
+
+## Checkpoint 4 — Widgets (13 October 2026)
+
+### Built
+
+- **Six Glance widgets**, fixed sizes (design §23): One habit 2×2, Today 4×2 and 4×4, This week 4×2, Tasks 4×2 and
+  4×4, each drawing only the app's snapshot (`WidgetItems`, the store's own functions, U26) and its own choice.
+- **Every state** (§25): choose a habit, habit removed, no habits yet, nothing planned, section unavailable, open to
+  update, without Plus (Today and This week are Plus; they never block or go blank), Large pages (5 rows, ‹ 1/2 ›),
+  names hidden (icons and numbers stay).
+- **The setup screen** (§24): choose a habit, or all of today or one time of day; a Plus widget without Plus says what
+  it does and can be added either way. Android's Reconfigure opens the same screen.
+- **The tap (the iPhone's locked rules W1–W18, on Android):** a widget's action runs in the app's own process, so the
+  iPhone's hand-over is one step: the tap is written to a durable queue first, the card becomes its app-made "after"
+  and every widget redraws, the store saves it idempotently (a + by its own ID, a ✓ as the state it set, a timer as the
+  state it set), it leaves the queue only once saved, and the widgets are republished holding their order. The save's
+  change asks for a Drive round and reminders like any other (D12). Waiting taps are saved on launch and on every
+  return. ▶/⏸ start and stop on the widget; a checklist, a slip, a typed number and the rest of a row open their
+  screen, replacing what was open (W8, W9).
+- **Up to date:** published 0.5 s after the last change and at once when the app leaves the screen (W11); one alarm
+  redraws at the day's start (the snapshot holds seven days), and at the moments a quit run's clock passes an hour or a
+  day. Live counts (a running timer, a quit run) tick with Android's own chronometer, so nothing redraws each second.
+- **D8:** a test launch never publishes, and never saves or removes the person's waiting taps.
+
+### Measured on the Pixel 10 emulator (API 36), from screen recordings decoded straight through (T11)
+
+| What | Result |
+|---|---|
+| A +1 on the Today 4×4 widget, the touch's first frame to the row's new count and fill | 373, 383 and 466 ms (three taps); it was ~900 ms before the decoded snapshot was kept in memory |
+| Inside the tap (log lines): the queue and the card's "after" written | 69 ms; the redraw asked 36 ms; saved in the store and republished 530 ms later, behind the visible change |
+| Five +1 in a row, then three 0.25 s apart | 3 → 8, then 8 → 11 on the widget and in the app; the queue empty after each |
+| A ✓ on a task, then again | the whole card and "1 of 1 done" change, then go back; saved as not done |
+| ▶ then ⏸ on Read | the timer starts and stops on the widget; the launcher stays in front; the clock ticks |
+| ↗ on a quit habit | opens Add slip directly |
+
+### Tested
+
+`WidgetDataTest` (8, on the emulator against a real store): the snapshot agrees with Today; a + card carries five taps
+ahead; a check card its flipped day; a + is saved once however often it's sent; a check as the state it set; a timer
+as the state it set; a quit habit's best counts the run going on; names left out when hidden.
+
+### Found and fixed on the way
+
+- **The fifth row of a Large widget was missing:** a Glance container holds at most 10 children; the rows have their
+  own column now.
+- **A quit run read "47d 01:22":** Android's chronometer leaves out the hour under an hour and can't turn a day. An
+  "0:" is drawn until then and one alarm redraws at those moments.
+- **A quit habit's best run disagreed with Today** (12 days against 47): the widget counted finished runs only.
+- **Each redraw parsed the snapshot file three times** (17–52 ms each): it's kept decoded in memory.
+
+### Different from the iPhone, by the Android design (to confirm)
+
+- A week or month goal's row says "2 of 3 this week" (the iPhone's widget: "0 today · 3 a week").
+- A task with nothing else to say says how often it comes ("Once", "Every month"); the iPhone's line is empty.
+
+### Still to do for widgets
+
+- Home-screen tests that tap the placed widget on CI (UI Automator): today the taps were driven by hand on the PC's
+  emulator. The launcher's own preview shows Glance's loading card until the widget is placed.
+- Real phones (Pixel, Samsung, Xiaomi): how fast a tap shows there, and each maker's launcher.
+
 ## Ported outside the core for now (`// MOVE TO CORE`)
 
 Each is ported from the Swift with tests, and should move into `Core` when the shared rules grow to cover it:
@@ -127,6 +197,9 @@ Each is ported from the Swift with tests, and should move into `Core` when the s
 | `data/HowOften.kt` | `HowOften.swift`, `HabitDefaults` | The form's How often choices, what each saves, the step + adds when the person doesn't say |
 | `data/FormWords.kt` | `Outcome.swift` | The form's live sentences under Time of Day and Reminders |
 | `data/SectionPlan.kt` | `SectionPlan.swift` | Adding or editing a time of day: each ends where the next begins, overlaps split |
+| `data/HabitPageWords.kt`, `ProgressWords.kt`, `PlayerWords.kt` | `HabitPageView` and friends, `ProgressScreen`, `RoutinePlayer` | Habit details', Progress's and the player's numbers and words |
+| `data/widgets/WidgetItems.kt`, `WidgetSnapshot.kt` | `HabitStore+Widgets.swift`, `WidgetSnapshot.swift` | The widgets' snapshot: seven days of cards, Today's lists, each ✓ and + card's "after" |
+| `ui/habit/PauseScreen.kt` (`pauseSummary`), `ui/settings/RemindersSettings.kt` (`reminderLine`) | `PauseSheet.swift`, `RemindersView.swift` | Pause's sentence; a habit's reminders in one line |
 
 ## What needs the user
 
