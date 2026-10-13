@@ -76,6 +76,9 @@ class TodayTest {
 
     private fun tap(m: SemanticsMatcher, what: String) {
         waitFor(m, what)
+        // A row composed just past the list's edge (steps shown under the last row) takes no touch: bring it on screen.
+        runCatching { compose.onNodeWithTag("today-list").performScrollToNode(m) }
+        compose.waitForIdle()
         compose.onAllNodes(m, useUnmergedTree = true)[0].performClick()
     }
 
