@@ -1,0 +1,114 @@
+# TIME Store load: read the database|25.84
+# TIME Store load: into the app (0 logs)|0.50
+1791869820.923 48.4
+1791869820.972 40.6
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Watch Today: plan|0.28
+# READY 1791869821.089
+1791869821.038 51.6
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.04
+1791869821.089 104.4
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Watch Today: plan|0.17
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+1791869821.196 25.0
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Watch Today: plan|0.08
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+1791869821.221 20.4
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Watch Today: plan|0.11
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.03
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Watch Today: plan|0.11
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+1791869821.281 22.1
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Watch Today: plan|0.14
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.04
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.04
+1791869821.313 35.6
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Watch Today: plan|0.13
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Watch Today: plan|0.47
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+1791869821.407 23.5
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.01
+# TIME Watch Today: plan|0.11
+1791869821.431 25.4
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.01
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.01
+1791869821.465 18.5
+# TIME Store load: read the database|150.29
+# TIME Store load: into the app (1716 logs)|16.25
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.76
+# TIME Watch Today: plan|0.15
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.01
+# TIME Watch Today: plan|0.11
+1791869823.790 33.9
+# TIME Widgets: one habit's week|22.72
+1791869824.350 30.3
+# TIME Widgets: one habit's week|0.63
+# TIME Widgets: one habit's week|0.60
+# TIME Widgets: one habit's week|2.47
+# TIME Widgets: one habit's week|5.90
+# TIME Widgets: one habit's week|0.90
+# TIME Widgets: one habit's week|0.55
+# TIME Widgets: one habit's week|4.01
+# TIME Widgets: the snapshot|0.46
+# TIME Widgets: the snapshot|0.44
+# MEASURING
+# TIME Watch Today: plan|0.12
+1791869830.147 112.0
+# OPEN Blank cover (control, first)|1791869830.148|1791869831.669
+# TIME Watch Today: plan|0.23
+# TIME Watch Today: plan|0.14
+1791869832.886 52.6
+# OPEN Blank cover (control, again)|1791869832.886|1791869834.451
+# TIME Watch Today: plan|0.20
+# TIME Watch Today: plan|0.28
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|0.14
+1791869835.670 257.8
+# NOTE long stall 258 ms at 1791869835.670; kotlin collection 77: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 5.3 ms
+# OPEN Routine (open)|1791869835.670|1791869837.267
+# TIME Count: a routine page drawn|0.00
+# TIME Watch Day details: the dial's words|1.41
+1791869837.281 22.4
+1791869837.581 18.7
+1791869846.601 22.8
+1791869847.215 40.1
+1791869848.458 23.0
+# WINDOW Routine: paging with the Crown|1791869837.267|1791869849.694
+# DONE
+# TIME Watch Today: plan|0.61
+1791869849.881 25.4
+1791869850.415 57.4

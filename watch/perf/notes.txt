@@ -1,1 +1,17 @@
-- long stall 250 ms at 1791866973.477; kotlin collection 79: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 12.1 ms
+- long stall 724 ms at 1791868613.562; kotlin collection 246: stopped 0.0 ms (after waiting 10.0 ms), then 1.8 ms, took 57.9 ms
+- long stall 821 ms at 1791868620.676; kotlin collection 246: stopped 0.0 ms (after waiting 10.0 ms), then 1.8 ms, took 57.9 ms
+- long stall 262 ms at 1791868665.641; kotlin no collection yet
+- long stall 440 ms at 1791868665.932; kotlin no collection yet
+- long stall 284 ms at 1791868721.789; kotlin collection 2: stopped 0.0 ms (after waiting 0.0 ms), then 3.7 ms, took 28.9 ms
+- long stall 296 ms at 1791868722.801; kotlin collection 8: stopped 0.2 ms (after waiting 10.8 ms), then 0.2 ms, took 35.5 ms
+- long stall 330 ms at 1791869002.974; kotlin collection 80: stopped 0.2 ms (after waiting 10.0 ms), then 0.0 ms, took 16.4 ms
+- long stall 270 ms at 1791869008.522; kotlin collection 81: stopped 0.1 ms (after waiting 0.0 ms), then 0.2 ms, took 13.9 ms
+- long stall 259 ms at 1791869041.768; kotlin collection 77: stopped 0.0 ms (after waiting 0.0 ms), then 0.0 ms, took 12.8 ms
+- long stall 351 ms at 1791869652.972; kotlin collection 80: stopped 0.0 ms (after waiting 10.0 ms), then 0.0 ms, took 34.1 ms
+- long stall 628 ms at 1791869658.622; kotlin collection 81: stopped 0.0 ms (after waiting 0.0 ms), then 0.2 ms, took 22.9 ms
+- long stall 398 ms at 1791869695.632; kotlin collection 78: stopped 0.8 ms (after waiting 0.0 ms), then 1.1 ms, took 10.2 ms
+- long stall 259 ms at 1791869765.769; kotlin collection 78: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 2.9 ms
+- long stall 378 ms at 1791869801.466; kotlin collection 80: stopped 0.1 ms (after waiting 0.0 ms), then 0.1 ms, took 13.2 ms
+- long stall 258 ms at 1791869835.670; kotlin collection 77: stopped 0.1 ms (after waiting 0.0 ms), then 0.3 ms, took 5.3 ms
+- long stall 267 ms at 1791869870.824; kotlin collection 79: stopped 0.1 ms (after waiting 0.0 ms), then 1.0 ms, took 13.7 ms
+- long stall 279 ms at 1791869903.433; kotlin collection 78: stopped 0.1 ms (after waiting 0.0 ms), then 0.1 ms, took 3.9 ms
