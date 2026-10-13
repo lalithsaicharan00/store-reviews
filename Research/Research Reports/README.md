@@ -14,6 +14,14 @@ Standalone research and decision documents, grouped by topic.
 
 ---
 
+## Marketing
+
+Reusable marketing examples are saved in the root Marketing folder.
+
+| Document | Author | Date | Scope |
+|---|---|---|---|
+| [Marketing and How We Can Market It](<../../Marketing/Marketing and How We Can Market It.md>) | Codex | 13 Oct 2026 | Historical Habit Tracker Reddit challenge, original post and participant download statement, proposed Often Enough adaptation, current community rules and limits on aggregate impact. |
+
 ## Individual Habit Details
 
 Information architecture, History/logs, Notes and per-habit statistics are collected in one package. Start with its version map; revised History and revised visible-content Progress are the current directions. All visuals are schematic and need final polish.

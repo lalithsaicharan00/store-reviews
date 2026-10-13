@@ -15,6 +15,13 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## Reddit marketing example — current request
+
+**The user, 13 October 2026:** save the Habit Tracker Reddit challenge as a reusable marketing example in a new root Marketing folder and push the documentation to main. Preserve the app identity, discovery path, original post and participant download statement; distinguish a reported individual acquisition from an unverified download spike. Include a proposed Often Enough challenge draft and the original community's current promotion restriction.
+
+- [Marketing and How We Can Market It](<../../../Marketing/Marketing and How We Can Market It.md>)
+- [Publication checklist](<Reddit Marketing Example — Publish to Main.md>) — documentation only; publication authorized by the user. Earlier research and unrelated workspace edits stay outside this package.
+
 ## App logo exploration — current feedback
 
 - [x] **87. Often Enough app logo: research, finalized design and Figma variations.** Added and completed as a design task 11 October 2026, from the user. Native asset integration and device validation are separate pending work.
