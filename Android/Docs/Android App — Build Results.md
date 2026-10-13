@@ -74,6 +74,47 @@ stands, the parked work in `Android/WIP/` and what's next: [Android App — Hand
   **About** (the tonal mark, version, the name, privacy, acknowledgements, Open source licences). Help's answers are the
   iPhone's, rewritten to name Android's own controls and to say "log" (Current Work 102); two iPhone topics are left
   out because Android has no such option (Progress's View Options: Full Day, Show Streaks).
+- **Pause** (one habit or several; the iPhone's PauseSheet as a page, its words tested), **the Habits and Tasks lists**
+  (tap for the page; a long press chooses several for Pause, Archive or Delete, which asks first and offers Archive:
+  never on a swipe, U14), **New straight to a task** from ≡ › Tasks' +.
+- **Reminders** (design §15): the reminder check (notifications, exact times, battery, each with its fix), a reminder
+  that didn't arrive (the reminder code now keeps the alarm it planned and notes one that fired over 10 minutes late or
+  never; the reason names the phone's maker), habits with and without reminders.
+- **Privacy & Security and App lock** (design §19): `MainActivity` is a `FragmentActivity` for Android's prompt; the
+  phone's lock or a six-digit app passcode (a salted PBKDF2 hash only); wrong codes wait as on the iPhone (1, 5, 15
+  minutes, then an hour, after 5 in a row); Forgot app passcode? through the phone's lock, or a 24-hour reset when the
+  phone has none; Lock again; locking the phone locks the app. While locked the app is hidden from TalkBack and from
+  the recents screenshot, and names are hidden outside the app. App lock, the reminder alarm's state and test launches'
+  files are left out of Android's backup (`res/xml`), so after moving phones App lock is off and the habits are there.
+- **Plus** (design §20): buy (the free habits line, the two plans, what Plus adds, Get Plus and Restore purchases
+  pinned) and Plus is yours (the family upgrade for the difference), behind `PlusStore`: `FakePlusStore` in debug
+  builds and tests, `NoPlusStore` in a release build until Play Billing is connected (checkpoint 3).
+- **Today's Filter and groups**: all habits or one group (each with how many it shows on the day open), New group, Edit
+  groups, hide completed habits and tasks; the group form (name, colour, its habits, Pause these habits, Delete group).
+- **Arrange your day**: every habit in each time of day; drag the handle (TalkBack: Move up, Move down); each card's ⋮
+  renames, retimes, sorts or deletes a time of day and moves Anytime and Quit or cut down.
+- **Dark mode:** every screen toured on the Pixel 10 emulator with the system in dark (Material 3's dark roles). All
+  readable; nothing missing.
+- **Tests:** unit tests 48, all green (new: `PauseWordsTest`, `ReminderWordsTest`, `AppLockTest`, `ArrangeTest`);
+  `ScreensTest` (10: Habit details and its tabs, Progress, a routine, Pause, archiving from Habits, a group filtering
+  Today, Arrange's Move up, Help's search, Plus with the stand-in store, App lock with a passcode) 10 of 10 on the Pixel
+  10 emulator (API 36, 47 s) and with `TodayTest` on CI's emulator (API 35, run 38381027895, `85b8cb5`); lint green.
+
+### Found and fixed on the way (checkpoint 2)
+
+- **Back with the menu open left the app.** Back now closes the drawer first.
+- **A drag in Arrange your day did nothing:** the drag's end handler kept the drop position from the composition it was
+  made in (always −1). It's now worked out from the live drag when the finger lifts.
+- **UI Automator couldn't see a sheet's controls:** a bottom sheet is its own window, so the root's
+  `testTagsAsResourceId` doesn't reach it; Day details and Filter set it too (Macrobenchmark needs this).
+- **Messages from pages other than Today never showed** (their snackbar host was Today's): every other page now shows
+  them at the bottom.
+
+### Decisions to confirm with the user
+
+- **Share usage** shows "Not available yet" like crash diagnostics, not the design's switch: the Android app sends
+  nothing, so a switch would promise something that doesn't exist.
+- **The Habits list** has no drag to reorder (Arrange your day does that) and no swipe actions (U14).
 
 ## Ported outside the core for now (`// MOVE TO CORE`)
 

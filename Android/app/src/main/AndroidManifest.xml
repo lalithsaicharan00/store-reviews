@@ -34,5 +34,40 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".app.reminders.TimerStopReceiver" android:exported="false" />
+        <!-- The widgets (Current Work 107, checkpoint 4): six fixed sizes, each with its setup screen. -->
+        <receiver android:name=".app.widgets.OneHabitWidgetReceiver" android:exported="false" android:label="One habit">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_one_habit" />
+        </receiver>
+        <receiver android:name=".app.widgets.TodayWidgetReceiver" android:exported="false" android:label="Today">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_today" />
+        </receiver>
+        <receiver android:name=".app.widgets.TodayLargeWidgetReceiver" android:exported="false" android:label="Today">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_today_large" />
+        </receiver>
+        <receiver android:name=".app.widgets.WeekWidgetReceiver" android:exported="false" android:label="This week">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_week" />
+        </receiver>
+        <receiver android:name=".app.widgets.TasksWidgetReceiver" android:exported="false" android:label="Tasks">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_tasks" />
+        </receiver>
+        <receiver android:name=".app.widgets.TasksLargeWidgetReceiver" android:exported="false" android:label="Tasks">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_tasks_large" />
+        </receiver>
+        <activity
+            android:name=".app.widgets.WidgetSetupActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.OftenEnough">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" /></intent-filter>
+        </activity>
+        <!-- The day's start moves every widget on, without the app. -->
+        <receiver android:name=".app.widgets.WidgetDayReceiver" android:exported="false" />
     </application>
 </manifest>

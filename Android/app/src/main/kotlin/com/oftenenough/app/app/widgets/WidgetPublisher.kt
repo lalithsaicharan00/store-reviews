@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.graphics.vector.VectorGroup
 import androidx.compose.ui.graphics.vector.VectorNode
 import androidx.compose.ui.graphics.vector.VectorPath
-import androidx.glance.appwidget.updateAll
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.widgets.WidgetItems
@@ -51,27 +50,43 @@ object WidgetPublisher {
         pending?.cancel()
         store.flush()
         if (!store.isLoaded || store.problem != null) return
+        // D8: a test launch never writes or redraws the person's widgets.
+        if (AppGraph.isTest) return
         val prefs = AppGraph.prefs
         val now = store.clock()
         val previous = if (hold) withContext(Dispatchers.IO) { WidgetDisk.read(context) } else null
         var snapshot = WidgetItems.snapshot(store, now, sinkDone = prefs.doneOrder != "stay", timerOpensScreen = prefs.timerScreen,
             previous = previous, hold = if (hold) now + 1_500 else null)
-        if (prefs.hideNames) snapshot = snapshot.withoutNames()
+        if (AppGraph.hidesNames) snapshot = snapshot.withoutNames()
         withContext(Dispatchers.IO) { WidgetDisk.write(context, snapshot) }
         updateAll(context)
         if (hold) scope.launch { delay(1_600); publish(context, store) }
     }
 
-    /** Every placed widget redraws from the snapshot. */
+    private val widgets: List<androidx.glance.appwidget.GlanceAppWidget> =
+        listOf(OneHabitWidget(), TodayWidget(), TodayLargeWidget(), WeekWidget(), TasksWidget(), TasksLargeWidget())
+
+    /** Every placed widget redraws from the snapshot (its state's version moves, so its composition reads the file again). */
     suspend fun updateAll(context: Context) {
-        runCatching {
-            OneHabitWidget().updateAll(context)
-            TodayWidget().updateAll(context)
-            TodayLargeWidget().updateAll(context)
-            WeekWidget().updateAll(context)
-            TasksWidget().updateAll(context)
-            TasksLargeWidget().updateAll(context)
+        val manager = androidx.glance.appwidget.GlanceAppWidgetManager(context)
+        val version = System.nanoTime()
+        for (widget in widgets) runCatching {
+            for (id in manager.getGlanceIds(widget.javaClass)) {
+                androidx.glance.appwidget.state.updateAppWidgetState(context, id) { it[VERSION_KEY] = version }
+                widget.update(context, id)
+            }
         }
+        WidgetDayReceiver.plan(context, store = if (AppGraph.isOpen) AppGraph.store else null)
+    }
+
+    /** One widget redraws (a page turned). */
+    suspend fun updateOne(context: Context, id: androidx.glance.GlanceId) {
+        val manager = androidx.glance.appwidget.GlanceAppWidgetManager(context)
+        val appWidgetId = manager.getAppWidgetId(id)
+        val provider = android.appwidget.AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId)?.provider?.className ?: return
+        val widget = widgets.firstOrNull { provider.endsWith(it.javaClass.simpleName + "Receiver") } ?: return
+        androidx.glance.appwidget.state.updateAppWidgetState(context, id) { it[VERSION_KEY] = System.nanoTime() }
+        widget.update(context, id)
     }
 }
 

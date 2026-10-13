@@ -121,6 +121,21 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
+    // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
+    LaunchedEffect(AppGraph.widgetRoute) {
+        val (route, d) = AppGraph.widgetRoute?.split("|")?.let { it[0] to (it.getOrNull(1)?.toIntOrNull() ?: -1) } ?: return@LaunchedEffect
+        AppGraph.widgetRoute = null
+        nav.popBackStack(Routes.TODAY, inclusive = false)
+        dayTarget = null
+        val day = if (d >= 0) d else store.today()
+        val id = route.substringAfter("/", "")
+        when (route.substringBefore("/")) {
+            "item" -> if (store.habit(id) != null) dayTarget = "$id|$day"
+            "log", "slip" -> if (store.habit(id) != null) nav.navigate(Routes.add(id, day))
+            "timer" -> if (store.habit(id) != null) nav.navigate(Routes.timer(id))
+            "plus" -> nav.navigate(Routes.menu(MenuItem.PLUS))
+        }
+    }
     // A reminder's tap opens that habit's Day details over Today.
     LaunchedEffect(AppGraph.dayToOpen) {
         AppGraph.dayToOpen?.let { target -> AppGraph.dayToOpen = null; nav.popBackStack(Routes.TODAY, inclusive = false); dayTarget = target }

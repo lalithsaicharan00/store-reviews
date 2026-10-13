@@ -572,6 +572,38 @@ class HabitStore(
         else addLogged(Entry(habitId = habit.id, stepId = step.id, day = day, value = 1.0, createdAt = stamp(time, day), source = source))
     }
 
+    /**
+     * LOCKED (widget taps, 8 Oct 2026; Android): saves one widget tap, idempotently, so a tap saved twice counts once
+     * (W4). A ✓ is saved as the state it set ([kind] "check" or "uncheck"), never a flip; a + by the tap's own ID; ▶/⏸
+     * as the state it set.
+     */
+    fun saveWidgetTap(habitId: String, day: Int, kind: String, id: String, at: Long) {
+        val habit = habit(habitId)?.takeIf { !it.archived } ?: return
+        if (day > today()) return
+        val source = EntrySource.WIDGET
+        when (kind) {
+            "check" -> if (!isTicked(habit, day)) {
+                if (habit.kind == HabitKind.Task || rule(habit, day).frequency.isDayBased)
+                    addLogged(Entry(id = id, habitId = habit.id, day = day, value = 1.0, createdAt = stamp(at, day), source = source))
+            }
+            "uncheck" -> if (isTicked(habit, day)) {
+                if (habit.kind == HabitKind.Task) toggleTask(habit, day, source) else undoLast(habit, day)
+            }
+            "add" -> if (entries(habit.id).none { it.id == id }) {
+                val slots = rules.placements(habit).mapNotNull { it.slot }
+                val open = slots.firstOrNull { !isSlotDone(habit, it, day) }
+                val value = if (habit.kind == HabitKind.Check) 1.0 else habit.quickIncrement ?: return
+                if (slots.isNotEmpty() && habit.kind == HabitKind.Check) {
+                    if (open != null) addLogged(Entry(id = id, habitId = habit.id, day = day, value = 1.0, slot = open, createdAt = stamp(at, day), source = source))
+                } else if (value.isFinite() && value > 0) {
+                    addLogged(Entry(id = id, habitId = habit.id, day = day, value = value, createdAt = stamp(at, day), source = source))
+                }
+            }
+            "start" -> if (!timers.containsKey(habit.id)) toggleTimer(habit)
+            "stop" -> if (timers.containsKey(habit.id)) stopTimer(habit, today(), source = source)
+        }
+    }
+
     fun isStepDone(step: Step, habit: Habit, day: Int) = entries(habit.id, day).any { it.stepId == step.id }
     fun isSlotDone(habit: Habit, slot: String, day: Int) = entries(habit.id, day).any { it.slot == slot }
 

@@ -27,6 +27,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.oftenenough.app.app.backup.SyncSchedule
+import com.oftenenough.app.app.widgets.WidgetPublisher
+import com.oftenenough.app.app.widgets.WidgetTapSaver
 
 /**
  * The one activity. A test launch passes extras (`uitest`, `clockHour`, `demo`, `onboarding`) and gets its own in-memory
@@ -37,16 +39,26 @@ class MainActivity : FragmentActivity() {
         /** A reminder's tap: open this habit's Day details for this day. */
         const val OPEN_HABIT = "openHabit"
         const val OPEN_DAY = "openDay"
+        /** A widget's link: "item/<id>" (Day details), "log/<id>", "slip/<id>", "timer/<id>", "plus", "today". */
+        const val WIDGET_ROUTE = "widgetRoute"
     }
 
     override fun onStart() {
         super.onStart()
-        if (AppGraph.isOpen) AppGraph.lock.returned()
+        if (AppGraph.isOpen) {
+            AppGraph.lock.returned()
+            // LOCKED (widget taps): waiting taps are saved on every return (W5).
+            if (AppGraph.store.isLoaded) lifecycleScope.launch { WidgetTapSaver.saveWaiting(applicationContext) }
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        if (AppGraph.isOpen) AppGraph.lock.left()
+        if (AppGraph.isOpen) {
+            AppGraph.lock.left()
+            // LOCKED (widget taps): leaving the screen publishes at once, so the Home Screen shows what was just logged (W11).
+            if (AppGraph.store.isLoaded) AppGraph.scope.launch { WidgetPublisher.publish(applicationContext, AppGraph.store) }
+        }
     }
 
     /** On screen: a Drive round on open and about once a minute after (D16, A7). Stops when the app leaves the screen. */

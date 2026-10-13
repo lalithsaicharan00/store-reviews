@@ -39,7 +39,14 @@ object AppGraph {
     /** "habitId|day" a reminder asked to open (Day details), read once by Today. */
     var dayToOpen by androidx.compose.runtime.mutableStateOf<String?>(null)
 
+    /** A widget's link, read once by the app's navigation (W9: it replaces whatever was open). */
+    var widgetRoute by androidx.compose.runtime.mutableStateOf<String?>(null)
+
     fun openTarget(intent: android.content.Intent?) {
+        intent?.getStringExtra(MainActivity.WIDGET_ROUTE)?.let { route ->
+            widgetRoute = route + "|" + intent.getIntExtra(MainActivity.OPEN_DAY, -1)
+            intent.removeExtra(MainActivity.WIDGET_ROUTE)
+        }
         val habit = intent?.getStringExtra(MainActivity.OPEN_HABIT) ?: return
         val day = intent.getIntExtra(MainActivity.OPEN_DAY, -1)
         if (day >= 0) dayToOpen = "$habit|$day"
@@ -84,6 +91,8 @@ object AppGraph {
             s.onChange = {
                 com.oftenenough.app.app.reminders.Reminders.replanSoon(context.applicationContext, s)
                 com.oftenenough.app.app.reminders.TimerNotice.sync(context.applicationContext, s)
+                // LOCKED (widget taps): widgets publish 0.5 s after the last change (W11).
+                com.oftenenough.app.app.widgets.WidgetPublisher.schedule(context.applicationContext, s)
                 // Every change made here reaches Google Drive soon, the app open or not (D12); sync's own reload doesn't.
                 if (!s.changeIsFromSync && com.oftenenough.app.app.backup.SyncSchedule.mayRun()) com.oftenenough.app.app.backup.SyncSchedule.soon(context.applicationContext)
             }
@@ -91,6 +100,8 @@ object AppGraph {
                 s.load()
                 com.oftenenough.app.app.reminders.Reminders.replan(context.applicationContext, s)
                 com.oftenenough.app.app.backup.SyncSchedule.start(context.applicationContext)
+                // Taps made on a widget while the app wasn't running are saved first (W5).
+                com.oftenenough.app.app.widgets.WidgetTapSaver.saveWaiting(context.applicationContext)
             }
         }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)

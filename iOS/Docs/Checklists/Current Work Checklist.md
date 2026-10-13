@@ -909,7 +909,10 @@ and the Add note keyboard coming up by itself.
   - [x] Checkpoint 1: skeleton, Core on Android, database, CI, onboarding, Today, logging and undo. *Done 13 Oct:
     `TodayTest` 11 of 11 on the Pixel 10 emulator (API 36, 31.8 s) and on CI's API 35 emulator (run 38373182612,
     `c7e281a`); unit tests and lint green.*
-  - [ ] Checkpoint 2: every screen wired; dark mode.
+  - [x] Checkpoint 2: every screen wired; dark mode. *Built 13 Oct: Habit details, Progress, the player and timer
+    (from Android/WIP), Pause, the Habits and Tasks lists, Reminders, Privacy & Security and App lock, Plus (stand-in
+    store), Filter and groups, Arrange your day, Help & Feedback, About; dark checked on every screen. Unit tests 48
+    green, `ScreensTest` 10 of 10 and `TodayTest` 11 of 11 on the Pixel 10 emulator and on CI (API 35, run 38381027895).*
   - [ ] Checkpoint 3: backup, restore, Google Drive sync (two emulators), Plus (Play Billing), App lock, reminders.
   - [ ] Checkpoint 4: widgets (every kind and state, setup and change, interactive, up to date).
   - [ ] Checkpoint 5: speed, data, sync and widget tests green with numbers; tablets and foldables.
