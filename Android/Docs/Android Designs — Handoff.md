@@ -12,7 +12,7 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 
 | Section (id) | Frames (id) | State |
 |---|---|---|
-| **Onboarding: new to the app** (`1548:2`) | Splash, Android's own, light (`1610:2`) and dark (`1610:22`): the adaptive icon's foreground with no icon background (288 dp, inside Android's 192 dp circle) centred on `#FFFFFF` / `#0D0D0D`, the Logo Guide's backgrounds; no title, no branding image (added 13 Oct); Welcome (`1548:3`); 1 of 3 · Your habit. Your goal. (`1548:46`); 2 of 3 · Quit or cut down. (`1548:177`); 3 of 3 · Tasks, once or on repeat. (`1548:296`); Your days and weeks (`1548:420`), with New day starts at open (`1550:2`, 12:00 AM to 11:00 AM, as in Day and Week) and Week starts on open (`1550:71`, Sunday to Saturday); Your first habit (`1548:456`; an idea opens the New Habit form, `1302:2`) | Built 12 Oct from the user's wireframes (`835:503`) and the built iPhone app; "What's included" removed |
+| **Onboarding: new to the app** (`1548:2`) | Splash, Android's own, light (`1610:2`) and dark (`1610:22`): the adaptive icon's foreground with no icon background (288 dp, inside Android's 192 dp circle) centred on `#FFFFFF` / `#0D0D0D`, the Logo Guide's backgrounds; no title, no branding image (added 13 Oct); Welcome (`1548:3`); 1 of 3 · Your habit. Your goal. (`1548:46`); 2 of 3 · Quit or cut down. (`1548:177`); 3 of 3 · Tasks, once or on repeat. (`1548:296`); Your days and weeks (`1548:420`), with New day starts at open (`1550:2`, 12:00 AM to 11:00 AM, as in Day and Week) and Week starts on open (`1550:71`, Sunday to Saturday); Your first habit (`1548:456`; an idea opens the New Habit form, `1302:2`). Frames numbered 01–07 in order (13 Oct) | Built 12 Oct from the user's wireframes (`835:503`) and the built iPhone app; "What's included" removed. **01–05 redesigned 13 Oct and built in the app to match** (below, "Onboarding, 13 Oct 2026"); 06–07 not yet |
 | **Onboarding: coming back** (`1549:2`) | Welcome back (`1549:3`); Sign in with Google: Android's account chooser over Welcome back (`1549:38`), Google's permission screen (`1549:97`); Getting your habits (`1549:128`); Restore a backup (`1549:154`; then the restore flow, `1472:2`) | Built 12 Oct; Move from another device removed |
 | **Today** (`1260:2`) | Today, light, 360 × 800 (`1350:2`, the Expressive version, which replaced `1246:2`); the day bar in four day states (`1256:6`); empty: No habits yet, the first time (`1551:3`), and Nothing planned today (`1551:195`; new: the iPhone shows a blank list, Current Work 106) | Approved 12 Oct ("let's go with this one"); the drawer and every Day details sheet show it behind them |
 | **Day details** (`1260:3`) | Water, an amount (`1362:2`, replaced `1258:2`); then every other kind, left to right: Read, a time habit (`1280:3`); Read, timer running (`1294:2`); Take vitamins, a check, not done (`1294:220`) and done (`1294:432`); Stretch breaks, several a day (`1294:644`); Call family, a week goal (`1294:866`); Deep clean, a month goal (`1294:1083`); Gym, N days a week (`1294:1300`); Tidy desk, a checklist (`1294:1512`); Smoking, quit with no slips (`1296:2`) and a slip (`1296:214`); Coffee, a limit (`1296:430`); Social media, a time limit (`1296:644`); a task, not done with Reschedule (`1296:858`) and done (`1296:1080`); Read, skipped (`1296:1292`); Meditate, paused (`1296:1510`); Water, an earlier day ("Yesterday", `1296:1722`) | Water approved; the rest built 12 Oct from the built app, the user: "I already approved it … just complete them" |
@@ -64,6 +64,41 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   custom design … we are using native things"). **The app still needs dark mode** (the user, 13 Oct 2026): built from
   Material 3's dark roles, with an old dark design (`194:10`) as colour inspiration only ([every screen](<Designs/README.md>)).
 - **The font is Google Sans Flex, Regular and Medium only** (the user, 13 Oct 2026, after Roboto and Google Sans Flex side by side on Welcome; "don't use semi-bold unless I say"). The app bundles it (Android's own font is Roboto) and uses the design's sizes as drawn, with no size or letter-spacing overrides of its own. Welcome (`1548:3`, now named "02 · Welcome · the first screen after downloading"; the section's frames are numbered 01 Splash to 07 Your first habit): Often Enough 32/40 Medium, letter spacing −0.5; the line under it 16/24 Regular, grey; the question 16/24 Medium; choice names 16/24 Medium; their descriptions 14/20 Regular, grey. The logo, name and line are centred in the space above the question; 24 from the logo to the name, 8 from the name to the line (3 : 1). **Text has a measure, never hand-typed breaks** (the user, 13 Oct 2026): it fills a narrow screen and stops at a set width on a wide one, so it breaks at a natural pause (the line 254, "…repetition. / You choose…"; the choices' descriptions 212, "…keep track of / your tasks."); measure the words in Figma and set the width mid-window. Built in the app the same day to match Figma exactly, with vector logos from Figma's SVG export and the splash on `#FFFFFF` / `#0D0D0D` (`claude/android-app` `5afdacff`; the rules are written in `Onboarding.kt`'s Welcome header). The other screens move to it next.
+- **Onboarding, 13 Oct 2026: the user's points, in order** (Figma `1548:2`, screens 01–05; built in the app on
+  `claude/android-app`, where each rule is also written in the code: `Onboarding.kt`'s Welcome and intro headers,
+  `Fonts.kt`, `Motion.kt`, the logo drawables, `MainActivity`):
+  - **Design = app.** "Whatever exactly we have in the Figma, the same way it should look in the developed version."
+    The app uses Figma's numbers as drawn: no sp sizes or letter spacing of its own. Check on the real phone at its own
+    size, never a resized emulator ("build it … whatever the original size is").
+  - **Hierarchy from size and two weights:** Google Sans Flex, Regular and Medium only; never SemiBold unless the user
+    says. Welcome: the name 32 Medium (−0.5), its line 16 Regular, the question 16 Medium, choice names 16 Medium over
+    14 Regular. Intro pages: heading 28 Medium (−0.25), line 16 Regular, section title 16 Medium over 12 Regular, habit
+    names 16 **Medium** over details 14 Regular.
+  - **Spacing:** Welcome's logo, name and line are centred in the space above the question; 24 from the logo to the
+    name, 8 from the name to its line (3 : 1; 16 : 8 was tried first). The choices: 16 padding, 2 between name and
+    description, 16 before the chevron. On the intro pages, 20 between a streak and the row's round button (was 12,
+    "very close").
+  - **Text has a measure, never hand-typed breaks:** "if the space is smaller it should try to fill the space, but if
+    the space is large then it should split." Measure the words in Figma, set the width mid-window, use it in both.
+    Welcome's line 254, its choices' descriptions 212; the intro lines 296 / 228 / 296; headings break balanced.
+  - **The welcome asks one thing:** Privacy & optional usage sharing removed (Design Rules, Onboarding).
+  - **Logos are vectors from Figma's SVG export**, converted with Android Studio's converter, for Welcome and the splash
+    ("use SVG … whichever is better in the long term"); the PNGs looked soft on a large screen.
+  - **The splash** is Android's own, on `#FFFFFF` / `#0D0D0D`, at its normal speed (a 5-second hold was only for a look).
+  - **The navigation bar takes the screen's colour** (no white strip behind three-button navigation).
+  - **Motion:** moving between onboarding steps, and from the welcome into the app, uses Material's shared axis X,
+    300 ms ("snappy … but very boring" without it; "very performance efficient"). Keep it this short.
+  - **Intro pages (03–05):** the card starts at the same place on all three (the heading space is the tallest of the
+    three, measured), with any space left below it ("let it be"). The page dots stay, 20 above Continue, still while
+    the pages slide; the current one a 24 dp ink pill, the others ink at 30 % (tonal `#E6E6EA` couldn't be seen,
+    outline `#79747E` was "too dark … competing with the active state").
+  - **Streaks are 🔥 with the number** on Android too ("in iOS already we have that rule"); done on 03–04 so far, Today
+    and the rest not yet. In Figma, set the emoji in Google Sans Flex: Figma can't draw the Noto Color Emoji font.
+  - **Habit icons on 03–05 are circles.** Elsewhere the app mixes circles and Expressive "cookie" shapes; the user is
+    deciding, screen by screen. The tasks on 05 have their own colours (brown, indigo, green), not one orange; 05 no
+    longer shows "Unlimited tasks · Included in the free plan".
+  - **How to work:** change only the screen the user names, never every screen or the whole file without asking (a
+    page-wide 🔥 swap had to be undone); no text styles or other reusable pieces in Figma until the user approves them.
 - **Small screen first:** 360 × 800 (status bar 36, gesture navigation 24 at the bottom, a camera hole).
 - **Today's top app bar: ≡ · Edit (pencil) · Filter · +**, no title. + is in the top bar, **not a floating action
   button** (the FAB beside the day bar was rejected: "not looking good").
