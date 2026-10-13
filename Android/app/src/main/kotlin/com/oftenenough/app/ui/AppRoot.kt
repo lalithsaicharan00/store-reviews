@@ -89,6 +89,7 @@ import com.oftenenough.app.ui.today.TodayNav
 import com.oftenenough.app.ui.today.TodayScreen
 import com.oftenenough.app.ui.today.GroupFormScreen
 import com.oftenenough.app.ui.today.GroupsScreen
+import com.oftenenough.app.ui.today.ArrangeDayScreen
 
 /** The app: the welcome until it's finished, then Today and every page pushed over it (back returns one step, D7). */
 @Composable
@@ -177,6 +178,7 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                 MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 MenuItem.PLUS.title -> PlusPage(store, AppGraph.plus, snackbar, { nav.navigate(Routes.menu(MenuItem.HELP)) }) { nav.popBackStack() }
+                "Arrange your day" -> ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
                 "Open source licences" -> LicencesPage { nav.popBackStack() }
