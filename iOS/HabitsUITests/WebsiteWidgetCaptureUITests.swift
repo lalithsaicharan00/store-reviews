@@ -28,6 +28,8 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
         app.terminate()
         app.launchArguments = ["-empty", "-widget-fixture", "-website-widget-fixture", "-dbname", "habits"]
         app.launch()
+        let openMorning = app.buttons["Open Morning"]
+        if openMorning.waitForExistence(timeout: 5) { openMorning.tap() }
         for _ in 0..<4 where !app.staticTexts["Kitchen"].exists { app.swipeUp() }
         XCTAssertTrue(app.staticTexts["Kitchen"].waitForExistence(timeout: 30), "Capture fixture finished")
         XCUIDevice.shared.press(.home)
@@ -77,7 +79,7 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
         let choose = sb.buttons["Choose"].firstMatch
         if choose.waitForExistence(timeout: 2) { choose.tap() }
         else {
-            let current = sb.buttons[parameter].firstMatch
+            let current = sb.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@", parameter, parameter + ",")).firstMatch
             if current.exists { current.tap() }
             else {
                 let field = sb.staticTexts[parameter].firstMatch
@@ -95,7 +97,7 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
     }
     private func unconfiguredSmall() -> XCUIElement {
         let candidates = widgets().filter { $0.frame.width < 230 && $0.frame.height < 240 }
-        return candidates.first { $0.staticTexts["Choose a habit"].exists } ?? candidates.first!
+        return candidates.first { $0.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "Choose a habit")).firstMatch.exists } ?? candidates.first!
     }
     func testHomeScreenCaptures() throws {
         try seed(reset: true)
@@ -107,7 +109,7 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
         install(page: 3, name: "Today", size: "Large")
         let large = widgets().first { $0.frame.height > 260 }
         XCTAssertNotNil(large, "Actual Large widget installed")
-        configure(large!, parameter: "Today", value: "Morning")
+        configure(large!, parameter: "Show", value: "Morning")
         install(page: 1, name: "One habit", size: "Small")
         configure(unconfiguredSmall(), parameter: "Habit", value: "Water")
         install(page: 1, name: "One habit", size: "Small")
@@ -130,9 +132,10 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
         try seed(reset: false)
         let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
         settings.launch()
-        for _ in 0..<5 where !settings.buttons["Wallpaper"].isHittable { settings.swipeUp() }
-        if settings.buttons["Wallpaper"].isHittable {
-            settings.buttons["Wallpaper"].tap()
+        let wallpaper = settings.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Wallpaper")).firstMatch
+        for _ in 0..<5 where !wallpaper.isHittable { settings.swipeUp() }
+        if wallpaper.isHittable {
+            wallpaper.tap()
         } else {
             XCUIDevice.shared.press(.home)
             sb.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.01))
@@ -167,7 +170,7 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
         circle.tap(); circle.tap()
         if picker.buttons["Close"].exists { picker.buttons["Close"].tap() }
         save("lock-configure-circles")
-        // Capture the real editor tree before configuring: system identifiers vary across iOS runtimes.
+        // Native system identifiers can vary across iOS runtimes; retain editor evidence for diagnosis.
         // A final capture is accepted only after configured circles and summary are verified, never from this editor.
         let choices = picker.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Choose")).allElementsBoundByIndex
         for (index, target) in ["Water", "Stretch"].enumerated() where index < choices.count {
