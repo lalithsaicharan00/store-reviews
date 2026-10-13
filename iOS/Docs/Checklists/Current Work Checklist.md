@@ -926,7 +926,8 @@ and the Add note keyboard coming up by itself.
     (`SpeedTest`: no frame of 100 ms with 30 habits and two years of history; a 709 ms freeze on Progress → Year found
     and fixed), data (`DataSafetyTest`), widgets (`WidgetDataTest`, taps measured at 373–466 ms), tablets
     (`TabletTest`: a sidebar and a centred column from 840 dp). **Still to do:** the sync tests (need the OAuth client),
-    home-screen widget taps on CI, Macrobenchmark and a Baseline Profile, the iPad's wider layouts.*
+    home-screen widget taps on CI, Macrobenchmark and a Baseline Profile, the iPad's wider layouts. **All 41 emulator
+    tests, 52 unit tests and lint green on GitHub (API 35), run 38399799226, and on the PC's Pixel 10 emulator (API 36).***
   - [ ] The user's checks on real phones (Pixel, Samsung, Xiaomi; U9/T5), noted separately.
 
 ## Planned improvements — build later

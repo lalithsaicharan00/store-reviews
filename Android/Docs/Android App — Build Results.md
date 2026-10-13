@@ -251,7 +251,19 @@ U3). Each opens its screen directly, as a widget's link does. Tested in `Screens
 ### Everything, together
 
 Unit tests 52, lint, and 41 emulator tests (`TodayTest` 11, `ScreensTest` 13, `WidgetDataTest` 8, `DataSafetyTest` 5,
-`TabletTest` 3, `SpeedTest` 1): green on the Pixel 10 emulator (API 36). CI (API 35): the first 29 are green (run 38386003188); the full set is being run (below).
+`TabletTest` 3, `SpeedTest` 1): green on the Pixel 10 emulator (API 36). **CI (GitHub's API 35 emulator): all 41 green, run 38399799226**
+(commit `31d0f7e2`).
+
+Getting there took three CI runs, and each failure was read, not rerun (T2):
+
+- **Run 38390489090, 6 failures:** the back key and everything UI Automator did (`SpeedTest`, `TabletTest`) failed,
+  because something of the system's had the focus instead of the app. Tests that need the front window now close system
+  dialogs first (`TestDevice.clear`), and a failure names the window that had the focus and what was showing (T14).
+- **Run 38396646458, 2 failures, both real:** (1) a crash in Today, `ConcurrentModificationException`: the demo's reload
+  resumed on the database's thread and rebuilt the logs while Today was reading them. `HabitStore.load` now always runs
+  on the store's own dispatcher, whoever calls it. (2) In the group form on CI's shorter screen the habit row was below
+  the fold, so the tap missed it and an empty group was saved: the test brings a row on screen before tapping, and
+  checks it's chosen before saving.
 
 ## What's left
 
