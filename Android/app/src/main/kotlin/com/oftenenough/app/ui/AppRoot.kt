@@ -2,6 +2,9 @@ package com.oftenenough.app.ui
 
 import com.oftenenough.app.ui.newhabit.EditHabitScreen
 import com.oftenenough.app.ui.menu.MenuDrawer
+import com.oftenenough.app.ui.menu.MenuSidebar
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.widthIn
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.ui.backup.BackupScreen
 import com.oftenenough.app.ui.backup.RestoreScreen
@@ -142,15 +145,30 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     }
     val dayNav = dayNav(nav) { dayTarget = null }
     // Today places its own messages above the day bar; every other page shows them here, at the bottom.
-    val route = nav.currentBackStackEntryAsState().value?.destination?.route
-    Box(Modifier.fillMaxSize()) {
+    val entry = nav.currentBackStackEntryAsState().value
+    val route = entry?.destination?.route
+    // The sidebar marks the page open beside it (Today, or a menu page).
+    val menuItem = when (route) {
+        Routes.TODAY -> MenuItem.TODAY
+        "page/{title}" -> entry?.arguments?.getString("title")?.let { t -> MenuItem.entries.firstOrNull { it.title == t } }
+        else -> null
+    }
+    Box(Modifier.fillMaxSize().background(appColors.screen)) {
+    AdaptiveFrame(store, menuItem, onPick = { item ->
+        // A sidebar choice replaces the page beside it; it never piles pages up.
+        nav.popBackStack(Routes.TODAY, inclusive = false)
+        if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
+    }) {
     NavHost(nav, startDestination = Routes.TODAY, modifier = Modifier.fillMaxSize().background(appColors.screen)) {
         composable(Routes.TODAY) {
             val drawer = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
             // Back closes the open menu first; it used to leave the app.
             androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
-            ModalNavigationDrawer(drawerContent = {
+            // With the sidebar (tablets, unfolded foldables) there's no drawer to open; the phone is untouched.
+            if (LocalSidebar.current) {
+                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar)
+            } else ModalNavigationDrawer(drawerContent = {
                 MenuDrawer(store, MenuItem.TODAY) { item ->
                     scope.launch { drawer.close() }
                     if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
@@ -269,9 +287,41 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             SectionEditorScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }) { nav.popBackStack() }
         }
     }
+    }
     if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 96.dp))
     }
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
+}
+
+/** True where the menu is a sidebar beside the page (840 dp and wider), so pages don't show a menu button. */
+val LocalSidebar = androidx.compose.runtime.staticCompositionLocalOf { false }
+
+/** The window's width, in dp, as the app lays itself out by it. */
+object WindowWidth {
+    /** From here the menu is a sidebar and the page a centred column. */
+    const val EXPANDED = 840
+    /** At most this wide: the phone's own column, centred (the iPad's ~700 pt, I5). */
+    const val COLUMN = 720
+}
+
+/**
+ * Tablets and foldables (A11 D9; the iPad's decisions, U35): the same app in a wider frame, and **the phone never
+ * changes for it**. Under 840 dp (phones, a folded foldable, a narrow window, a small tablet in portrait) this adds
+ * nothing: it is the phone's app, exactly. From 840 dp the menu is a sidebar that stays, and the page beside it is one
+ * centred column at most 720 dp wide: the phone's cards at their own size, never stretched.
+ */
+@Composable
+private fun AdaptiveFrame(store: HabitStore, current: MenuItem?, onPick: (MenuItem) -> Unit, content: @Composable () -> Unit) {
+    val width = androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp
+    if (width < WindowWidth.EXPANDED) { content(); return }
+    androidx.compose.runtime.CompositionLocalProvider(LocalSidebar provides true) {
+        androidx.compose.foundation.layout.Row(Modifier.fillMaxSize()) {
+            MenuSidebar(store, current, onPick)
+            Box(Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.TopCenter) {
+                Box(Modifier.widthIn(max = WindowWidth.COLUMN.dp).fillMaxHeight()) { content() }
+            }
+        }
+    }
 }
 
 object Routes {

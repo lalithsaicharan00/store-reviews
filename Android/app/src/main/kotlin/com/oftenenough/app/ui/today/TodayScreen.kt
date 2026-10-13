@@ -138,7 +138,8 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
         topBar = {
             TopAppBar(
                 title = {},
-                navigationIcon = { IconButton(nav::openMenu, Modifier.semantics { testTag = "menu-button" }) { Icon(Icons.Rounded.Menu, "Menu") } },
+                // Beside a sidebar (tablets) there's no menu to open.
+                navigationIcon = { if (!com.oftenenough.app.ui.LocalSidebar.current) IconButton(nav::openMenu, Modifier.semantics { testTag = "menu-button" }) { Icon(Icons.Rounded.Menu, "Menu") } },
                 actions = {
                     if (hasHabits) {
                         IconButton(nav::arrange) { Icon(Icons.Outlined.Edit, "Arrange your day") }
