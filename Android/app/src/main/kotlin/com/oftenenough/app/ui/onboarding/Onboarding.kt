@@ -2,6 +2,23 @@ package com.oftenenough.app.ui.onboarding
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.runtime.remember
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.style.LineBreak
+import com.oftenenough.app.ui.theme.sharedAxisX
+import com.oftenenough.app.ui.theme.sharedAxisSlidePx
+import androidx.compose.animation.AnimatedContent
 import com.oftenenough.app.ui.theme.googleSansFlex
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.TextStyle
@@ -31,7 +48,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AllInclusive
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Check
@@ -73,7 +89,6 @@ import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.ListRow
 import com.oftenenough.app.ui.components.PlainButton
 import com.oftenenough.app.ui.components.SegmentedList
-import com.oftenenough.app.ui.components.StreakLabel
 import com.oftenenough.app.ui.components.progressFill
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.settings.DayAndWeekRows
@@ -118,11 +133,18 @@ fun OnboardingFlow(store: HabitStore, nav: OnboardingNav, replay: Boolean = fals
         page = if (page == "back") "welcome" else pages.getOrElse(pages.indexOf(page) - 1) { "welcome" }
     }
     BackHandler(page != "welcome") { back() }
+    // Each step slides in with Material's shared axis (Motion.kt; the user, 13 Oct 2026: the steps jumped with no
+    // motion). Forward when the next step is further along, back when it's earlier: the way back is a side step of
+    // the welcome, so it counts as one step forward from it.
+    val slide = sharedAxisSlidePx()
+    fun step(p: String) = if (p == "back") 1 else pages.indexOf(p)
     Box(Modifier.fillMaxSize().background(appColors.screen).statusBarsPadding().navigationBarsPadding()) {
-        when (page) {
+    AnimatedContent(page, Modifier.fillMaxSize(),
+        transitionSpec = { sharedAxisX(forward = step(targetState) > step(initialState), slidePx = slide) }, label = "onboarding") { shown ->
+        when (shown) {
             "welcome" -> Welcome(onNew = { page = "habit" }, onBack = { page = "back" })
             "back" -> WelcomeBack(::back, nav)
-            "habit", "quit", "tasks" -> IntroPage(page, ::back, onSkip = nav::finished, onContinue = { page = pages[pages.indexOf(page) + 1] })
+            "habit", "quit", "tasks" -> IntroPage(shown, ::back, onSkip = nav::finished, onContinue = { page = pages[pages.indexOf(shown) + 1] })
             "days" -> Page("Your days and weeks.", null, ::back, nav::finished, "Continue", { page = "first" }) {
                 DayAndWeekRows(store)
                 Text("You can change these later in ≡ › Day and Week.", Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -142,6 +164,13 @@ fun OnboardingFlow(store: HabitStore, nav: OnboardingNav, replay: Boolean = fals
                     style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
             }
         }
+    }
+    // The intro pages' dots (rule 4 above `IntroPage`): drawn once, over the pages, so they stay put while a page
+    // slides and the current dot grows into the pill; they fade in and out with the three intro pages.
+    val introIndex = introPages.indexOf(page)
+    AnimatedVisibility(introIndex >= 0, Modifier.align(Alignment.BottomCenter).padding(bottom = IntroDotsAboveBottom), enter = fadeIn(), exit = fadeOut()) {
+        PageDots(introIndex.coerceAtLeast(0), introPages.size)
+    }
     }
 }
 
@@ -282,11 +311,11 @@ private fun Heading(title: String, subtitle: String?) {
     }
 }
 
-/** A page with ← and Skip setup at the top, a heading, its content, the page dots and the main button at the bottom. */
+/** A page with ← and Skip setup at the top, a heading, its content and the main button at the bottom. */
 @Composable
 private fun Page(
     title: String, subtitle: String?, onBack: () -> Unit, onSkip: () -> Unit, button: String, onButton: () -> Unit,
-    dots: Int? = null, content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -298,79 +327,186 @@ private fun Page(
             Heading(title, subtitle)
             content()
         }
-        if (dots != null) Row(Modifier.fillMaxWidth().padding(vertical = 16.dp), horizontalArrangement = Arrangement.Center) {
-            repeat(3) { i ->
-                Box(Modifier.padding(horizontal = 4.dp).height(8.dp).width(if (i == dots) 24.dp else 8.dp).clip(CircleShape)
-                    .background(if (i == dots) appColors.ink else appColors.tonal))
-            }
-        }
         InkButton(button, onButton, Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).semantics { testTag = "onboarding-continue" })
     }
 }
 
-/** The three pages, each showing Today's real rows. */
+/*
+ * The three intro pages: "03 · Intro 1 of 3 · Your habit. Your goal." (Figma 1548:46), "04 · … Quit or cut down."
+ * (1548:177) and "05 · … Tasks, once or on repeat." (1548:296), in the section "Onboarding: new to the app". Rebuilt
+ * 13 Oct 2026 to match Figma exactly, with the same rules as Welcome (its header above, rules 1, 2 and 7):
+ *
+ * 1. **Figma's numbers, Google Sans Flex, Regular and Medium only.** The heading 28/36 Medium (−0.25); the line under
+ *    it 16/24 Regular, grey; the section title 16/24 Medium over 12/16 Regular; each habit's name 16/24 Medium over
+ *    its detail 14/20 Regular, grey. The names are Medium so a row reads name first, detail second.
+ * 2. **The line under the heading has a measure** (`IntroPageSpec.measure`, measured in Figma): "…follow steps. /
+ *    You choose the goal." (296), "Quit completely, or set a limit / on how much or how long." (228), "…repeating
+ *    tasks. / Keep them alongside your habits." (296). The heading itself breaks balanced (`LineBreak.Heading`):
+ *    "Tasks, once or on repeat." is one line where it fits and "Tasks, once or / on repeat." on a 360 dp phone,
+ *    never a lone "repeat.".
+ * 3. **The card starts at the same place on all three pages** (the user, 13 Oct 2026): the heading and its line get
+ *    the same space on each, the tallest of the three at this width and font size (`introHeadingHeight`, measured),
+ *    then 24 dp, then the card. Any space left is below the card ("let's have that empty space, let it be"); never
+ *    centre the card, or it jumps between pages. With very large text the page scrolls.
+ * 4. **The page dots stay** (the user, 13 Oct 2026, after trying the pages without them): 20 dp above Continue, the
+ *    current page a 24 dp pill. They're drawn once by the flow (`PageDots`), so they stay still while the pages slide
+ *    and only the pill moves, with Compose's default spring.
+ * 5. **Streaks are 🔥 with the number** (the iPhone's rule; the user, 13 Oct 2026), 20 dp from the row's round button
+ *    (it was 12, "very close"). These pages draw their own (`IntroStreak`): Today's `StreakLabel` keeps its icon
+ *    until Today is redesigned, and these pages must not change Today.
+ * 6. **Habit icons are circles**, as everywhere on these pages; the tasks have their own colours (brown, indigo,
+ *    green), not one orange for all.
+ * 7. **No "Unlimited tasks · Included in the free plan"** on the tasks page (the user, 13 Oct 2026).
+ *
+ * The cards are samples: not saved, not tappable. They are drawn here, not from Today's rows, so Today can change
+ * on its own schedule; when Today moves to Google Sans Flex, keep the two looking alike.
+ */
 @Composable
 private fun IntroPage(page: String, onBack: () -> Unit, onSkip: () -> Unit, onContinue: () -> Unit) {
-    when (page) {
-        "habit" -> Page("Your habit. Your goal.", "Count, check off, time or follow steps. You choose the goal.", onBack, onSkip, "Continue", onContinue, 0) {
-            SampleCard("Morning", "Starts 6 AM", listOf(
-                Sample("Water", "3/8 glasses", "drop.fill", HabitColor.BLUE, 3f / 8, 3, "+"),
-                Sample("Take vitamins", "Every day", "pills.fill", HabitColor.GREEN, 0f, 2, "✓"),
-                Sample("Read", "6/10 min", "book.fill", HabitColor.ORANGE, 0.6f, 4, "▶"),
-                Sample("Tidy desk", "0/3 steps", "checklist", HabitColor.PURPLE, 0f, 2, "⌄"),
-            ))
+    val spec = introSpec(page)
+    Column(Modifier.fillMaxSize()) {
+        // Figma's top app bar: 64 dp, ← at 4 dp from the edge, Skip setup 12 dp from the other.
+        Row(Modifier.fillMaxWidth().height(64.dp).padding(start = 4.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = appColors.ink) }
+            Spacer(Modifier.weight(1f))
+            PlainButton("Skip setup", onSkip, Modifier.semantics { testTag = "skip-setup" }, textStyle = IntroType.button)
         }
-        "quit" -> Page("Quit or cut down.", "Quit completely, or set a limit on how much or how long.", onBack, onSkip, "Continue", onContinue, 1) {
-            SampleCard("Quit or cut down", "Stop, or do less", listOf(
-                Sample("Smoking", "Best 45 days", "smoke.fill", HabitColor.GRAY, 0f, 0, "19d 12:32:45"),
-                Sample("Coffee", "0/2 cups max", "cup.and.saucer.fill", HabitColor.BROWN, 0f, 0, "+"),
-                Sample("Social media", "0/30 min max", "iphone.slash", HabitColor.PINK, 0f, 7, "▶"),
-            ))
-        }
-        else -> Page("Tasks, once or on repeat.", "Plan one-off jobs and repeating tasks. Keep them alongside your habits.", onBack, onSkip, "Continue", onContinue, 2) {
-            SampleCard("Anytime", "Once or on repeat", listOf(
-                Sample("Pick up parcel", "Task · Once", "shippingbox.fill", HabitColor.ORANGE, 0f, 0, "✓"),
-                Sample("Pay rent", "Task · Every month", "banknote.fill", HabitColor.ORANGE, 0f, 0, "✓"),
-                Sample("Water plants", "Task · 7 days after done", "leaf.fill", HabitColor.ORANGE, 0f, 0, "✓"),
-            ))
+        // fillMaxSize before verticalScroll keeps the space's height as the minimum, so the two weighted gaps centre
+        // the card; with very large text they shrink to 24 dp and the page scrolls.
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 8.dp)) {
+            Column(Modifier.padding(horizontal = 8.dp).heightIn(min = introHeadingHeight()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(spec.title, style = IntroType.heading, color = appColors.ink)
+                Text(spec.line, Modifier.widthIn(max = spec.measure), style = IntroType.line, color = appColors.secondary)
+            }
             Spacer(Modifier.height(24.dp))
-            SegmentedList { ListRow("Unlimited tasks", 0, 1, "Included in the free plan", Icons.Rounded.AllInclusive, iconDisc = true) }
+            SampleCard(spec.section)
+            Spacer(Modifier.height(24.dp))
+        }
+        // Figma's bottom bar: 12 dp, the dots (8), 20 dp, the 56 dp button, 12 dp. The dots are drawn by the flow
+        // (`PageDots`), so here there's only their room.
+        Spacer(Modifier.height(IntroDotsRoom))
+        InkButton("Continue", onContinue, Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp).semantics { testTag = "onboarding-continue" },
+            textStyle = IntroType.continueLabel)
+    }
+}
+
+/** The three intro pages in order: the dots and the shared heading space use all three. */
+private val introPages = listOf("habit", "quit", "tasks")
+
+private fun introSpec(page: String): IntroPageSpec = when (page) {
+    "habit" -> IntroPageSpec("Your habit. Your goal.", "Count, check off, time or follow steps. You choose the goal.", 296.dp,
+        SampleSection("Morning", "Starts 6 AM", listOf(
+            Sample("Water", "3/8 glasses", "drop.fill", HabitColor.BLUE, 3f / 8, 3, "+"),
+            Sample("Take vitamins", "Every day", "pills.fill", HabitColor.GREEN, 0f, 2, "✓"),
+            Sample("Read", "6/10 min", "book.fill", HabitColor.ORANGE, 0.6f, 4, "▶"),
+            Sample("Tidy desk", "0/3 steps", "checklist", HabitColor.PURPLE, 0f, 2, "⌄"),
+        )))
+    "quit" -> IntroPageSpec("Quit or cut down.", "Quit completely, or set a limit on how much or how long.", 228.dp,
+        SampleSection("Quit or cut down", "Stop, or do less", listOf(
+            Sample("Smoking", "Best 45 days", "smoke.fill", HabitColor.GRAY, 0f, 0, "19d 12:32:45"),
+            Sample("Coffee", "0/2 cups max", "cup.and.saucer.fill", HabitColor.BROWN, 0f, 0, "+"),
+            Sample("Social media", "0/30 min max", "iphone.slash", HabitColor.PINK, 0f, 7, "▶"),
+        )))
+    else -> IntroPageSpec("Tasks, once or on repeat.", "Plan one-off jobs and repeating tasks. Keep them alongside your habits.", 296.dp,
+        SampleSection("Anytime", "Once or on repeat", listOf(
+            Sample("Pick up parcel", "Task · Once", "shippingbox.fill", HabitColor.BROWN, 0f, 0, "✓"),
+            Sample("Pay rent", "Task · Every month", "banknote.fill", HabitColor.INDIGO, 0f, 0, "✓"),
+            Sample("Water plants", "Task · 7 days after done", "leaf.fill", HabitColor.GREEN, 0f, 0, "✓"),
+        )))
+}
+
+/**
+ * Rule 3: the space the heading and its line take on every intro page, so each card starts at the same place (the
+ * user, 13 Oct 2026: "the card should be starting at the same space in every page"). It's the tallest of the three at
+ * this screen's width and font size, measured, never a guess: "Tasks, once or / on repeat." takes two lines on a
+ * 360 dp phone and one on a wider one.
+ */
+@Composable
+private fun introHeadingHeight(): Dp {
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    // The heading column's width: the screen less 16 dp and 8 dp on each side.
+    val width = with(density) { (LocalConfiguration.current.screenWidthDp.dp - 48.dp).roundToPx() }
+    return remember(width, density.fontScale) {
+        introPages.maxOf { p ->
+            val s = introSpec(p)
+            val head = measurer.measure(s.title, IntroType.heading, constraints = Constraints(maxWidth = width)).size.height
+            val line = measurer.measure(s.line, IntroType.line, constraints = Constraints(maxWidth = minOf(width, with(density) { s.measure.roundToPx() }))).size.height
+            with(density) { (head + line).toDp() + 8.dp }
         }
     }
 }
 
+/** Figma: 12 dp below the cards' space, the 8 dp dots, 20 dp, then the button (whose own 12 dp top is in `InkButton`'s padding). */
+private val IntroDotsRoom = 28.dp
+/** Where the dots sit: 12 + 56 + 20 dp above the bottom of the flow (the button's 12 dp bottom, the button, the gap). */
+private val IntroDotsAboveBottom = 88.dp
+
+/**
+ * The page dots: the current page a 24 × 8 dp pill in ink, the others 8 × 8 dp in ink at 30 % (≈ #B0B0B3 on the
+ * light screen, about 2 : 1), 8 dp apart (Figma). The user, 13 Oct 2026, tried both neighbours: the tonal grey
+ * (#E6E6EA) couldn't be seen on the #F0F0F3 screen, and the outline grey (#79747E) was "too dark … competing with
+ * the active state". Ink at 30 % follows light and dark by itself.
+ * A change of page grows the new pill and shrinks the old one with Compose's default spring, Android's own short,
+ * settle-in motion; nothing else moves. TalkBack reads "Page 2 of 3".
+ */
+@Composable
+private fun PageDots(current: Int, count: Int) {
+    Row(Modifier.semantics { contentDescription = "Page ${current + 1} of $count" }, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        repeat(count) { i ->
+            val width by animateDpAsState(if (i == current) 24.dp else 8.dp, label = "dot width")
+            val colour by animateColorAsState(if (i == current) appColors.ink else appColors.ink.copy(alpha = 0.3f), label = "dot colour")
+            Box(Modifier.height(8.dp).width(width).clip(CircleShape).background(colour))
+        }
+    }
+}
+
+private class IntroPageSpec(val title: String, val line: String, val measure: Dp, val section: SampleSection)
+private class SampleSection(val title: String, val subtitle: String, val rows: List<Sample>)
 private data class Sample(val name: String, val line: String, val symbol: String, val color: HabitColor, val fill: Float, val streak: Int, val button: String)
 
-/** Today's real rows, drawn for the welcome (not saved, not tappable). */
+/** A section of Today as Figma draws it on the intro pages (rule 1): its header, then each row as its own piece. */
 @Composable
-private fun SampleCard(title: String, subtitle: String, rows: List<Sample>) {
+private fun SampleCard(section: SampleSection) {
     val c = appColors
-    val count = rows.size + 1
+    val count = section.rows.size + 1
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        Row(Modifier.fillMaxWidth().clip(segmentShape(0, count)).background(c.surface).padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+        // Header: 12 dp above and below, 16 dp at the start, 8 dp at the end, the ⌃ in a 40 dp button.
+        Row(Modifier.fillMaxWidth().clip(segmentShape(0, count)).background(c.surface).padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 8.dp),
+            verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleMedium, color = c.ink)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = c.secondary)
+                Text(section.title, style = IntroType.sectionTitle, color = c.ink)
+                Text(section.subtitle, style = IntroType.sectionLine, color = c.secondary)
             }
-            Icon(Icons.Rounded.ExpandLess, null, tint = c.ink)
+            Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Icons.Rounded.ExpandLess, null, tint = c.ink, modifier = Modifier.size(24.dp)) }
         }
-        rows.forEachIndexed { i, s ->
+        section.rows.forEachIndexed { i, s ->
+            // A row: 72 dp, 16 dp at the start, 12 at the end; icon · 16 · name and detail · streak · 20 · button.
             Row(Modifier.fillMaxWidth().clip(segmentShape(i + 1, count)).background(c.surface).progressFill(s.fill, c.fill(s.color))
-                .heightIn(min = 72.dp).padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                .heightIn(min = 72.dp).padding(start = 16.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 HabitIcon(s.symbol, s.color)
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(s.name, style = MaterialTheme.typography.bodyLarge, color = c.ink, maxLines = 1)
-                    Text(s.line, style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1)
+                    Text(s.name, style = IntroType.rowName, color = c.ink, maxLines = 1)
+                    Text(s.line, style = IntroType.rowLine, color = c.secondary, maxLines = 1)
                 }
-                if (s.streak > 0) StreakLabel(s.streak, StreakUnit.DAYS)
-                Spacer(Modifier.width(4.dp))
-                if (s.button.length > 2) Text(s.button, Modifier.padding(end = 8.dp), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold), color = c.ink)
-                else Box(Modifier.padding(4.dp).size(40.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-                    Icon(sampleIcon(s.button), null, tint = c.ink, modifier = Modifier.size(22.dp))
+                if (s.streak > 0) { IntroStreak(s.streak); Spacer(Modifier.width(20.dp)) }
+                if (s.button.length > 2) Text(s.button, style = IntroType.clock, color = c.ink, maxLines = 1)
+                else Box(Modifier.size(40.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
+                    Icon(sampleIcon(s.button), null, tint = c.ink, modifier = Modifier.size(24.dp))
                 }
             }
         }
+    }
+}
+
+/** "🔥 3": the emoji in an 18 dp place, 2 dp from the number (rule 5). TalkBack reads it in words, as Today's does. */
+@Composable
+private fun IntroStreak(count: Int) {
+    Row(Modifier.semantics(mergeDescendants = true) { contentDescription = StreakUnit.DAYS.explained(count) }, verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.defaultMinSize(18.dp, 18.dp), contentAlignment = Alignment.Center) { Text("🔥", fontSize = 12.sp) }
+        Spacer(Modifier.width(2.dp))
+        Text(StreakUnit.DAYS.short(count), style = IntroType.streak, color = appColors.ink, maxLines = 1)
     }
 }
 
@@ -379,6 +515,25 @@ private fun sampleIcon(b: String): ImageVector = when (b) {
     "✓" -> Icons.Rounded.Check
     "▶" -> Icons.Rounded.PlayArrow
     else -> Icons.Rounded.ExpandMore
+}
+
+/** The intro pages' type, exactly as Figma (rule 1); text centred in each line as Figma draws it. */
+private object IntroType {
+    private val lines = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
+    private fun style(size: Int, lineHeight: Int, weight: FontWeight, letterSpacing: Float = 0f) = TextStyle(
+        fontFamily = googleSansFlex(size), fontWeight = weight, fontSize = size.sp, lineHeight = lineHeight.sp,
+        letterSpacing = letterSpacing.sp, lineHeightStyle = lines,
+    )
+    val heading = style(28, 36, FontWeight.Medium, letterSpacing = -0.25f).copy(lineBreak = LineBreak.Heading)
+    val line = style(16, 24, FontWeight.Normal)
+    val sectionTitle = style(16, 24, FontWeight.Medium)
+    val sectionLine = style(12, 16, FontWeight.Normal)
+    val rowName = style(16, 24, FontWeight.Medium)
+    val rowLine = style(14, 20, FontWeight.Normal)
+    val streak = style(14, 20, FontWeight.Medium)
+    val clock = style(16, 24, FontWeight.Medium)
+    val button = style(14, 20, FontWeight.Medium)
+    val continueLabel = style(16, 24, FontWeight.Medium)
 }
 
 @Suppress("unused") private val unusedIcons = listOf(Icons.Rounded.WbTwilight, Icons.Rounded.CalendarMonth, Icons.Rounded.FolderOpen, Icons.Rounded.AddToDrive)

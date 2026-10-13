@@ -1,5 +1,11 @@
 package com.oftenenough.app.ui
 
+import com.oftenenough.app.ui.theme.sharedAxisX
+import com.oftenenough.app.ui.theme.sharedAxisSlidePx
+import android.view.View
+import kotlinx.coroutines.CoroutineScope
+import androidx.compose.runtime.MutableState
+import androidx.compose.animation.AnimatedContent
 import com.oftenenough.app.ui.newhabit.EditHabitScreen
 import com.oftenenough.app.ui.menu.MenuDrawer
 import com.oftenenough.app.ui.menu.MenuSidebar
@@ -109,18 +115,32 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     LaunchedEffect(store.problem) { store.problem?.let { snackbar.showSnackbar(it); store.problem = null } }
     if (!store.isLoaded) { Box(Modifier.fillMaxSize().background(appColors.screen)); return }
     // A page the welcome hands over to opens once Today's navigation exists (navigating before it is set up throws).
-    var handOver by rememberSaveable { mutableStateOf<String?>(null) }
-    if (!prefs.onboarded) {
-        // Someone with habits already (Android's own Auto Backup brought them back) never sees the welcome.
-        if (store.habits.isNotEmpty()) { prefs.onboarded = true; return }
-        OnboardingFlow(store, object : OnboardingNav {
+    // Held here, above the welcome → app motion: the two sides are separate compositions while it runs.
+    val handOverState = rememberSaveable { mutableStateOf<String?>(null) }
+    var handOver by handOverState
+    // Someone with habits already (Android's own Auto Backup brought them back) never sees the welcome.
+    if (!prefs.onboarded && store.habits.isNotEmpty()) { prefs.onboarded = true; return }
+    // The welcome hands over to the app with the same forward motion as its own steps (Motion.kt; the user, 13 Oct
+    // 2026). An app that opens already onboarded shows no motion: AnimatedContent animates only a change.
+    val slide = sharedAxisSlidePx()
+    AnimatedContent(prefs.onboarded, Modifier.fillMaxSize().background(appColors.screen),
+        transitionSpec = { sharedAxisX(forward = targetState, slidePx = slide) }, label = "welcome") { onboarded ->
+        if (!onboarded) OnboardingFlow(store, object : OnboardingNav {
             override fun finished() { prefs.onboarded = true }
             override fun newHabit(idea: HabitIdea?) { handOver = Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: ""); prefs.onboarded = true }
             override fun signIn() { handOver = Routes.page("Google Drive & Backup"); prefs.onboarded = true }
             override fun restore() { handOver = Routes.page("Restore from a backup"); prefs.onboarded = true }
-        })
-        return
+        }) else AppMain(store, prefs, nav, snackbar, rootScope, view, handOverState)
     }
+}
+
+/** Today and every page pushed over it, once the welcome is finished. */
+@Composable
+private fun AppMain(
+    store: HabitStore, prefs: Prefs, nav: NavHostController, snackbar: SnackbarHostState, rootScope: CoroutineScope,
+    view: View, handOverState: MutableState<String?>,
+) {
+    var handOver by handOverState
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).

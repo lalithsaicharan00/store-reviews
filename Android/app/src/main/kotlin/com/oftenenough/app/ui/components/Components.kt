@@ -45,6 +45,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -156,14 +157,18 @@ fun ListRow(
 
 /** The filled ink main action (56 high, fully rounded). */
 @Composable
-fun InkButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, icon: ImageVector? = null, height: Dp = 56.dp) {
+fun InkButton(
+    text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, icon: ImageVector? = null, height: Dp = 56.dp,
+    /** A screen moved to Figma's type (Google Sans Flex) passes its own; every other screen keeps the default. */
+    textStyle: TextStyle? = null,
+) {
     Button(onClick, modifier.heightIn(min = height), enabled = enabled,
         // Off, it stays solid (it floats over lists): tonal grey with quiet text, never see-through.
         colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk,
             disabledContainerColor = appColors.tonal, disabledContentColor = appColors.secondary),
         contentPadding = PaddingValues(horizontal = 24.dp)) {
         if (icon != null) { Icon(icon, null, Modifier.size(20.dp)); Spacer(Modifier.width(8.dp)) }
-        Text(text, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(text, style = textStyle ?: MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -179,9 +184,13 @@ fun TonalButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier
 }
 
 @Composable
-fun PlainButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, color: Color? = null, enabled: Boolean = true) {
+fun PlainButton(
+    text: String, onClick: () -> Unit, modifier: Modifier = Modifier, color: Color? = null, enabled: Boolean = true,
+    /** A screen moved to Figma's type (Google Sans Flex) passes its own; every other screen keeps the default. */
+    textStyle: TextStyle? = null,
+) {
     TextButton(onClick, modifier, enabled = enabled) {
-        Text(text, style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = color ?: appColors.ink)
+        Text(text, style = textStyle ?: MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = color ?: appColors.ink)
     }
 }
 
