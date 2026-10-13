@@ -52,7 +52,7 @@ class TodayTest {
         nodes.mapNotNull { n ->
             (n.config.getOrNull(SemanticsProperties.Text)?.joinToString(" ") { it.text }
                 ?: n.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString(" "))?.takeIf { it.isNotBlank() }
-        }.distinct().joinToString(" | ").take(1500)
+        }.distinct().joinToString(" | ").take(4000)
     }
 
     private fun androidx.compose.ui.test.junit4.ComposeTestRule.onAllNodesWith(m: SemanticsMatcher) =
@@ -60,7 +60,12 @@ class TodayTest {
 
     private fun waitFor(m: SemanticsMatcher, what: String, timeout: Long = 15_000) {
         try {
-            compose.waitUntil(timeout) { compose.onAllNodes(m, useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty() }
+            compose.waitUntil(timeout) {
+                // A row the list pushed past its edge isn't composed (a step under the after-log line): bring it on screen.
+                if (compose.onAllNodes(hasTestTag("today-list")).fetchSemanticsNodes().isNotEmpty())
+                    runCatching { compose.onNodeWithTag("today-list").performScrollToNode(m) }
+                compose.onAllNodes(m, useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty()
+            }
         } catch (e: Throwable) {
             throw AssertionError("Waited for $what; on screen: ${screen()}")
         }
