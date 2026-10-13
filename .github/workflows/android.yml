@@ -132,7 +132,7 @@ jobs:
           script: >-
             ./gradlew --console=plain :app:connectedDebugAndroidTest
             ${{ github.event.inputs.classes != '' && format('-Pandroid.testInstrumentationRunnerArguments.class={0}', github.event.inputs.classes) || '' }}
-            2>&1 | tee connected.log; exit ${PIPESTATUS[0]}
+            > connected.log 2>&1; s=$?; tail -n 150 connected.log; exit $s
       - name: Failures
         if: failure()
         working-directory: Android

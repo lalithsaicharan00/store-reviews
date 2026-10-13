@@ -131,6 +131,9 @@ class TodayTest {
     @Test fun aCheckTicksAndUndoes() {
         launch(demo = "today")
         showRow("Meds")
+        // The demo has Meds ticked today: its ✓ takes it back first (U14: ✓ toggles a once-a-day tick).
+        tapLabel("Undo Meds")
+        waitFor(hasContentDescription("Mark Meds done"), "Meds unticked by its ✓")
         tapLabel("Mark Meds done")
         waitFor(hasContentDescription("Undo Meds"), "Meds ticked")
         tapTag("undo-Meds")
@@ -166,12 +169,13 @@ class TodayTest {
         launch(demo = "today")
         showRow("Skincare")
         tapLabel("Show Skincare steps")
-        tapLabel("Mark Cleanser done")
-        waitFor(hasContentDescription("Undo Cleanser"), "Cleanser ticked")
-        tapLabel("Undo Cleanser")
-        waitFor(hasContentDescription("Mark Cleanser done"), "Cleanser unticked")
+        // The demo has Cleanser ticked today; Serum isn't.
+        tapLabel("Mark Serum done")
+        waitFor(hasContentDescription("Undo Serum"), "Serum ticked")
+        tapLabel("Undo Serum")
+        waitFor(hasContentDescription("Mark Serum done"), "Serum unticked")
         tapLabel("Hide Skincare steps")
-        waitGone(hasContentDescription("Mark Cleanser done"), "the steps")
+        waitGone(hasContentDescription("Mark Serum done"), "the steps")
     }
 
     @Test fun aTimerStartsAndStops() {
