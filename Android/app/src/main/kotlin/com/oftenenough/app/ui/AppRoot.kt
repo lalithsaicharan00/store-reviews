@@ -9,6 +9,7 @@ import com.oftenenough.app.ui.settings.AboutPage
 import com.oftenenough.app.ui.settings.AppearancePage
 import com.oftenenough.app.ui.settings.HelpPage
 import com.oftenenough.app.ui.settings.LicencesPage
+import com.oftenenough.app.ui.settings.RemindersSettingsPage
 import com.oftenenough.app.ui.settings.DayAndWeekPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
 import com.oftenenough.app.ui.settings.TimesOfDayPage
@@ -159,6 +160,7 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                     override fun pause(habits: List<Habit>) { if (habits.isNotEmpty()) nav.navigate(Routes.pause(habits.map { it.id })) }
                     override fun addTask() = nav.navigate(Routes.NEW_TASK)
                 }) { nav.popBackStack() }
+                MenuItem.REMINDERS.title -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
                 "Open source licences" -> LicencesPage { nav.popBackStack() }

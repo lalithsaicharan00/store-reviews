@@ -44,6 +44,12 @@ object Reminders {
     private const val EXTRA_NOTIFICATION = "notification"
     private const val PREFS = "reminders"
     private const val LAST = "lastFired"
+    /** The alarm last set: when it should fire, and the habit and time it was for ("ms|habitId|minute"). */
+    private const val PLANNED = "planned"
+    /** A reminder that arrived more than [LATE_MS] late, or never: "ms|habitId|minute" (Reminders shows it until dismissed). */
+    private const val MISSED = "missed"
+    private const val DISMISSED = "missedDismissed"
+    const val LATE_MS = 10 * 60_000L
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var pending: Job? = null
@@ -77,7 +83,11 @@ object Reminders {
         val alarms = context.getSystemService(AlarmManager::class.java) ?: return
         val intent = PendingIntent.getBroadcast(context, 0, Intent(context, ReminderReceiver::class.java).setAction(ACTION_ALARM),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        if (next == null) { alarms.cancel(intent); return }
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (next == null) { alarms.cancel(intent); prefs.edit().remove(PLANNED).apply(); return }
+        // An alarm planned earlier that never fired (the phone put the app to sleep) is kept before it's replaced.
+        noteNeverFired(context, store.clock())
+        prefs.edit().putString(PLANNED, "${next.fire}|${next.habit.id}|${next.fire.minuteOfDay()}").apply()
         if (canBeExact(context)) alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.fire, intent)
         else alarms.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.fire, intent)
     }
@@ -90,6 +100,9 @@ object Reminders {
         val yesterday = now - 24 * 3_600_000L
         val due = ReminderPlan.plan(store, yesterday, days = 3).filter { it.fire in (since + 1)..(now + 30_000) }
         prefs.edit().putLong(LAST, now + 30_000).apply()
+        due.minByOrNull { it.fire }?.let { first ->
+            if (now - first.fire > LATE_MS) prefs.edit().putString(MISSED, "${first.fire}|${first.habit.id}|${first.fire.minuteOfDay()}").apply()
+        }
         if (canPost(context)) post(context, store, due)
         replan(context, store)
     }
@@ -153,6 +166,40 @@ object Reminders {
     }
 
     fun isAlarm(intent: Intent) = intent.action == ACTION_ALARM
+
+    /** A planned alarm whose time is more than [LATE_MS] gone and that never fired is a reminder that didn't arrive. */
+    fun noteNeverFired(context: Context, now: Long) {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val planned = prefs.getString(PLANNED, null) ?: return
+        val at = planned.substringBefore("|").toLongOrNull() ?: return
+        if (now - at > LATE_MS && prefs.getLong(LAST, 0L) < at) prefs.edit().putString(MISSED, planned).apply()
+    }
+
+    /** The reminder that didn't arrive on time, if any and not dismissed: its habit ID, its time (minute of day) and when. */
+    data class Missed(val at: Long, val habitId: String, val minute: Int)
+
+    fun missed(context: Context, now: Long): Missed? {
+        noteNeverFired(context, now)
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val raw = prefs.getString(MISSED, null) ?: return null
+        if (raw == prefs.getString(DISMISSED, null)) return null
+        val parts = raw.split("|")
+        val at = parts.getOrNull(0)?.toLongOrNull() ?: return null
+        // Only a recent one is worth saying: older than two days, it's history.
+        if (now - at > 2 * 24 * 3_600_000L) return null
+        return Missed(at, parts.getOrNull(1) ?: return null, parts.getOrNull(2)?.toIntOrNull() ?: return null)
+    }
+
+    fun dismissMissed(context: Context) {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        prefs.edit().putString(DISMISSED, prefs.getString(MISSED, null)).apply()
+    }
+
+    private fun Long.minuteOfDay(): Int = java.time.Instant.ofEpochMilli(this).atZone(java.time.ZoneId.systemDefault()).let { it.hour * 60 + it.minute }
+
+    /** Whether the phone may stop the app in the background to save battery (Android's "optimised" battery use). */
+    fun batteryRestricted(context: Context): Boolean =
+        context.getSystemService(android.os.PowerManager::class.java)?.isIgnoringBatteryOptimizations(context.packageName) != true
 }
 
 /** The reminder alarm, a reminder's buttons, and the phone restarting or changing its clock. */
