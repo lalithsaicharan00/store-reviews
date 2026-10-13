@@ -90,9 +90,7 @@ abstract class OftenEnoughWidget(private val kind: WidgetKind) : GlanceAppWidget
             val state = currentState<Preferences>()
             state[VERSION_KEY] // read, so a publish redraws
             val page = state[PAGE_KEY] ?: 0
-            val t = android.os.SystemClock.uptimeMillis()
             val snapshot = WidgetDisk.read(context)
-            if (com.oftenenough.app.BuildConfig.DEBUG) android.util.Log.d("WidgetTiming", "${kind.name} composed, snapshot read ${android.os.SystemClock.uptimeMillis() - t} ms")
             WidgetBody(kind, snapshot, WidgetDisk.choice(context, widgetId), page, widgetId)
         }
     }

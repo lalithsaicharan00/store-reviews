@@ -108,7 +108,7 @@ fun FormPage(
             actions = { actions() },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = appColors.screen, titleContentColor = appColors.ink, navigationIconContentColor = appColors.ink),
         )
-        val body = Modifier.fillMaxWidth().let { if (scrolls) it.verticalScroll(rememberScrollState()) else it.weight(1f) }
+        val body = Modifier.fillMaxWidth().semantics { testTag = "page-body" }.let { if (scrolls) it.verticalScroll(rememberScrollState()) else it.weight(1f) }
         Column(body.padding(horizontal = 16.dp).navigationBarsPadding()) {
             if (chip != null) SentenceChip(chip)
             content()

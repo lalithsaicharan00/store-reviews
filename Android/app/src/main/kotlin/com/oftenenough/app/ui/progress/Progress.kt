@@ -45,6 +45,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -75,7 +76,7 @@ import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.data.ProgressRange
 import com.oftenenough.app.data.ProgressSnapshot
 import com.oftenenough.app.data.ProgressWeekCard
-import com.oftenenough.app.data.progressSnapshot
+import com.oftenenough.app.data.progressBuilder
 import com.oftenenough.app.data.title
 import com.oftenenough.app.ui.components.Card
 import com.oftenenough.app.ui.components.CookieIcon
@@ -122,7 +123,19 @@ fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: ()
     }
     val groupId = prefs.progressGroup
     val key = SnapshotKey(range, anchor, store.dataVersion, groupId, today, store.weekStart, System.identityHashCode(store))
-    val snap = remember(key) { ProgressCache.get(key) { store.progressSnapshot(range, anchor ?: today, today, groupId) } }
+    // The page's numbers: kept ones at once; otherwise the period and its first cards now (one frame's worth) and the
+    // rest a few per frame, so even a year of many habits never holds a frame (S5, S16).
+    val builder = remember(key) { if (ProgressCache.peek(key) != null) null else store.progressBuilder(range, anchor ?: today, today, groupId) }
+    var snap by remember(key) { mutableStateOf(ProgressCache.peek(key) ?: builder!!.also { it.step(FIRST_BUDGET) }.snapshot()) }
+    LaunchedEffect(key) {
+        val b = builder ?: return@LaunchedEffect
+        while (!b.isDone) {
+            withFrameNanos { }
+            b.step(FRAME_BUDGET)
+            snap = b.snapshot()
+        }
+        ProgressCache.put(key, snap)
+    }
     val move: (Int) -> Unit = { step ->
         val day = if (step < 0) snap.first - 1 else snap.last + 1
         anchor = if (today in store.rules.period(range.kind, day)) null else day
@@ -163,7 +176,7 @@ fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: ()
                     item(key = "key", contentType = "key") {
                         HeatKeyCard(visit.isOpen, { visit.toggle() }, Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp))
                     }
-                    if (snap.group != null && snap.cards.isEmpty() && snap.archivedCards.isEmpty()) {
+                    if (snap.complete && snap.group != null && snap.cards.isEmpty() && snap.archivedCards.isEmpty()) {
                         item(key = "group-empty", contentType = "note") {
                             Text("No habits in this group yet. Add them in Filter on Today, or in a habit's Group.",
                                 Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 8.dp).semantics { testTag = "progress-group-empty" },
@@ -194,6 +207,10 @@ fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: ()
     }
 }
 
+/** The first frame's share of the cards' work, and each later frame's (a Year card is ~23 ms: one a frame). */
+private const val FIRST_BUDGET = 20_000_000L
+private const val FRAME_BUDGET = 6_000_000L
+
 /** One snapshot per range, period, data version, group, day and week start (and store, for a test's own). */
 private data class SnapshotKey(
     val range: ProgressRange, val anchor: Int?, val version: Int, val group: String, val today: Int, val weekStart: Int, val store: Int,
@@ -205,6 +222,14 @@ private data class SnapshotKey(
  */
 private object ProgressCache {
     private val made = HashMap<SnapshotKey, ProgressSnapshot>()
+
+    fun peek(key: SnapshotKey): ProgressSnapshot? = made[key]
+
+    fun put(key: SnapshotKey, snapshot: ProgressSnapshot) {
+        made.keys.removeAll { it.version != key.version || it.store != key.store || it.today != key.today }
+        if (made.size > 80) made.clear()
+        made[key] = snapshot
+    }
 
     fun get(key: SnapshotKey, work: () -> ProgressSnapshot): ProgressSnapshot {
         made[key]?.let { return it }
