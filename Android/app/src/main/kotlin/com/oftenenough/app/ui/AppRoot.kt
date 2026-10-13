@@ -133,6 +133,8 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
         composable(Routes.TODAY) {
             val drawer = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
+            // Back closes the open menu first; it used to leave the app.
+            androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
             ModalNavigationDrawer(drawerContent = {
                 MenuDrawer(store, MenuItem.TODAY) { item ->
                     scope.launch { drawer.close() }
@@ -194,7 +196,8 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                     nav.popBackStack(); nav.navigate(Routes.NEW + "?idea=" + android.net.Uri.encode(idea.name))
                 }
                 MenuItem.TIMES_OF_DAY.title -> TimesOfDayPage(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
-                else -> NextPage(nav, title)
+                // A page that doesn't exist (an old link): straight back.
+                else -> LaunchedEffect(title) { nav.popBackStack() }
             }
         }
         composable("habit/{id}") { e ->
@@ -324,15 +327,4 @@ private fun todayActions(nav: NavHostController, view: android.view.View, openDa
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.habit(habit.id))
     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
     override fun feedback(done: Boolean) { view.performHapticFeedback(HapticFeedbackConstants.CONFIRM) }
-}
-
-/** A page built at the next checkpoint (Day details, the form, settings …): back returns to Today. */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun NextPage(nav: NavHostController, title: String) {
-    Column(Modifier.fillMaxSize().background(appColors.screen)) {
-        TopAppBar(title = { Text(title) }, navigationIcon = { IconButton({ nav.popBackStack() }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = appColors.screen))
-        Text("Coming in the next checkpoint.", Modifier.padding(24.dp), style = MaterialTheme.typography.bodyLarge, color = appColors.secondary)
-    }
 }

@@ -110,7 +110,7 @@ fun PlusPage(store: HabitStore, plus: PlusStore, snackbar: SnackbarHostState, on
                 val used = store.activeHabitCount
                 Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(20.dp).semantics(mergeDescendants = true) { testTag = "plus-used" }) {
                     Row {
-                        Text("${minOf(used, HabitStore.FREE_HABIT_LIMIT)} of ${HabitStore.FREE_HABIT_LIMIT} free habits used", Modifier.weight(1f),
+                        Text("$used of ${HabitStore.FREE_HABIT_LIMIT} free habits used", Modifier.weight(1f),
                             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium), color = c.ink)
                         Text(maxOf(0, HabitStore.FREE_HABIT_LIMIT - used).let { if (it == 0) "None left" else "$it left" }, style = MaterialTheme.typography.bodyLarge, color = c.secondary)
                     }
