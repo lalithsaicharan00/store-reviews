@@ -87,6 +87,8 @@ import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.TodayActions
 import com.oftenenough.app.ui.today.TodayNav
 import com.oftenenough.app.ui.today.TodayScreen
+import com.oftenenough.app.ui.today.GroupFormScreen
+import com.oftenenough.app.ui.today.GroupsScreen
 
 /** The app: the welcome until it's finished, then Today and every page pushed over it (back returns one step, D7). */
 @Composable
@@ -228,6 +230,10 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
         composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
         composable(Routes.LOCK_SETUP) { AppLockSetup(AppGraph.lock, passcodeOnly = false) { nav.popBackStack() } }
         composable(Routes.LOCK_PASSCODE) { AppLockSetup(AppGraph.lock, passcodeOnly = true) { nav.popBackStack() } }
+        composable(Routes.GROUPS) { GroupsScreen(store, { id -> nav.navigate(Routes.group(id)) }) { nav.popBackStack() } }
+        composable("group/{id}") { e ->
+            GroupFormScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }, { hs -> nav.navigate(Routes.pause(hs.map { it.id })) }) { nav.popBackStack() }
+        }
         composable(Routes.NEW_TASK) {
             NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { nav.navigate(Routes.menu(MenuItem.PLUS)) }, task = true)
         }
@@ -253,6 +259,8 @@ object Routes {
     const val NEW = "new"
     const val WELCOME = "welcome"
     const val NEW_TASK = "newtask"
+    const val GROUPS = "groups"
+    fun group(id: String?) = "group/" + (id ?: "new")
     const val LOCK_SETUP = "applock/setup"
     const val LOCK_PASSCODE = "applock/passcode"
     fun page(title: String) = "page/" + android.net.Uri.encode(title)
@@ -300,7 +308,8 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun restore() = nav.navigate(Routes.page("Restore from a backup"))
     override fun help() = nav.navigate(Routes.page("Help & Feedback"))
     override fun arrange() = nav.navigate(Routes.page("Arrange your day"))
-    override fun filter() = nav.navigate(Routes.page("Filter"))
+    override fun newGroup() = nav.navigate(Routes.group(null))
+    override fun editGroups() = nav.navigate(Routes.GROUPS)
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))
 }
 

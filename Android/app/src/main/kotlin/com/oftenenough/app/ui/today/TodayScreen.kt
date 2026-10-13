@@ -92,7 +92,8 @@ interface TodayNav {
     fun restore()
     fun help()
     fun arrange()
-    fun filter()
+    fun newGroup()
+    fun editGroups()
     fun startRoutine(part: String, day: Int, habits: List<Habit>)
 }
 
@@ -126,9 +127,11 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
     val scope = rememberCoroutineScope()
     val layout = remember { TodayLayout(scope) }
     var calendar by remember { mutableStateOf(false) }
+    var filtering by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(day) { layout.reset(); store.undoOffer = null }
 
     val hasHabits = store.habits.isNotEmpty()
+    if (filtering) FilterSheet(store, prefs, day, { filtering = false; nav.newGroup() }, { filtering = false; nav.editGroups() }) { filtering = false }
     Scaffold(
         containerColor = c.screen,
         snackbarHost = { SnackbarHost(snackbar) },
@@ -139,7 +142,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
                 actions = {
                     if (hasHabits) {
                         IconButton(nav::arrange) { Icon(Icons.Outlined.Edit, "Arrange your day") }
-                        IconButton(nav::filter) { Icon(Icons.Rounded.FilterList, if (prefs.hideDoneHabits || prefs.hideDoneTasks || prefs.todayGroup.isNotEmpty()) "Filter, on" else "Filter") }
+                        IconButton({ filtering = true }, Modifier.semantics { testTag = "filter-button" }) { Icon(Icons.Rounded.FilterList, if (prefs.hideDoneHabits || prefs.hideDoneTasks || prefs.todayGroup.isNotEmpty()) "Filter, on" else "Filter") }
                     }
                     IconButton(nav::newHabit, Modifier.semantics { testTag = "new-habit" }) { Icon(Icons.Rounded.Add, "New habit") }
                 },

@@ -57,6 +57,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -115,7 +116,8 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
     val habit = store.habit(habitId) ?: run { onDismiss(); return }
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(onDismiss, sheetState = state, containerColor = appColors.screen, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
-        DayDetailsContent(habit, day, store, nav, onDismiss)
+        // A sheet is its own window: its tags reach UI Automator only if it says so too.
+        Box(Modifier.semantics { testTagsAsResourceId = true }) { DayDetailsContent(habit, day, store, nav, onDismiss) }
     }
 }
 
