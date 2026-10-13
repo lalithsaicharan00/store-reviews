@@ -64,7 +64,7 @@
             android:exported="true"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.OftenEnough">
+            android:theme="@style/Theme.OftenEnough.App">
             <intent-filter><action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" /></intent-filter>
         </activity>
         <!-- The day's start moves every widget on, without the app. -->

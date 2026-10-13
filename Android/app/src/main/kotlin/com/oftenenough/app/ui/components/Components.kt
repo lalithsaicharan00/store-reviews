@@ -158,7 +158,9 @@ fun ListRow(
 @Composable
 fun InkButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, icon: ImageVector? = null, height: Dp = 56.dp) {
     Button(onClick, modifier.heightIn(min = height), enabled = enabled,
-        colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk),
+        // Off, it stays solid (it floats over lists): tonal grey with quiet text, never see-through.
+        colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk,
+            disabledContainerColor = appColors.tonal, disabledContentColor = appColors.secondary),
         contentPadding = PaddingValues(horizontal = 24.dp)) {
         if (icon != null) { Icon(icon, null, Modifier.size(20.dp)); Spacer(Modifier.width(8.dp)) }
         Text(text, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)

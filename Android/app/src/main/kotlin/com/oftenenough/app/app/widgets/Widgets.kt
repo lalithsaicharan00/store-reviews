@@ -55,6 +55,7 @@ import androidx.glance.semantics.semantics
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
+import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.oftenenough.app.R
 import com.oftenenough.app.app.MainActivity
@@ -165,8 +166,8 @@ private fun Message(kind: WidgetKind, title: String, line: String, glyph: Int?, 
         Spacer(GlanceModifier.defaultWeight())
         if (glyph != null) Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Ink))
         Spacer(GlanceModifier.height(6.dp))
-        Text(title, style = style(if (kind == WidgetKind.ONE_HABIT) 16.sp else 17.sp, weight = FontWeight.Medium), maxLines = 2)
-        Text(line, style = style(12.sp, Secondary, FontWeight.Medium), maxLines = 2)
+        Text(title, style = style(if (kind == WidgetKind.ONE_HABIT) 16.sp else 17.sp, weight = FontWeight.Medium).copy(textAlign = TextAlign.Center), maxLines = 2)
+        Text(line, style = style(12.sp, Secondary, FontWeight.Medium).copy(textAlign = TextAlign.Center), maxLines = 2)
         Spacer(GlanceModifier.defaultWeight())
     }
 }
@@ -465,7 +466,8 @@ private fun TimerClock(item: WidgetItem, size: TextUnit, color: ColorProvider) {
     val clock = item.timerClock ?: return
     Row(verticalAlignment = Alignment.CenterVertically) {
         Chronometer(SystemClock.elapsedRealtime() - (System.currentTimeMillis() - clock), size, color)
-        item.timerGoal?.let { Text(" of $it", style = style(size, color), maxLines = 1) }
+        // The goal's words come whole from the app ("of 20 min").
+        item.timerGoal?.let { Text(" " + it.trim(), style = style(size, color), maxLines = 1) }
     }
 }
 

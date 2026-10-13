@@ -61,6 +61,15 @@ class MainActivity : FragmentActivity() {
         }
     }
 
+    /** Debug builds only: ask the launcher to add a widget (its own "Add to home screen" sheet), for checking widgets. */
+    private fun pinWidget(intent: android.content.Intent) {
+        if (!BuildConfig.DEBUG) return
+        val name = intent.getStringExtra(TestLaunch.PIN_WIDGET) ?: return
+        intent.removeExtra(TestLaunch.PIN_WIDGET)
+        val receiver = android.content.ComponentName(this, "com.oftenenough.app.app.widgets.${name}WidgetReceiver")
+        android.appwidget.AppWidgetManager.getInstance(this).requestPinAppWidget(receiver, null, null)
+    }
+
     /** On screen: a Drive round on open and about once a minute after (D16, A7). Stops when the app leaves the screen. */
     private fun syncWhileOnScreen() {
         lifecycleScope.launch {
@@ -77,6 +86,7 @@ class MainActivity : FragmentActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         AppGraph.openTarget(intent)
+        pinWidget(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,11 +101,7 @@ class MainActivity : FragmentActivity() {
         val store = AppGraph.store
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
-        // Debug builds only: ask the launcher to add a widget (its own "Add to home screen" sheet), for checking widgets.
-        if (BuildConfig.DEBUG) intent.getStringExtra(TestLaunch.PIN_WIDGET)?.let { name ->
-            val receiver = android.content.ComponentName(this, "com.oftenenough.app.app.widgets.${name}WidgetReceiver")
-            android.appwidget.AppWidgetManager.getInstance(this).requestPinAppWidget(receiver, null, null)
-        }
+        pinWidget(intent)
         val demo = intent.getStringExtra(TestLaunch.DEMO)
         syncWhileOnScreen()
         setContent {
