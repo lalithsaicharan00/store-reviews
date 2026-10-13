@@ -1,23 +1,30 @@
-# codex/website-widgets-capture @ e1772a0
+# claude/shared-habit-rules-main-check7 @ 6c6bcf0
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38342664113 · 2026-10-13 04:52 UTC
-Commit: Capture configured native widgets after opening Morning [ios-ci] [website-widget-capture]
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38342602049 · 2026-10-13 05:05 UTC
+Commit: Android build prompt: wait for the user's OAuth client and Play Console app; build everything else meanwhile
 
-- Core storage and migrations: skipped
+- Core storage and migrations: success
 - Build: success
-- Release build: skipped
+- Release build: success
 - Same-build speed baseline: skipped
-- UI tests (WebsiteWidgetCaptureUITests): failure
+- UI tests (FocusPlayerUITests/testSwipeMovesOneHabitAtATime,NewHabitUITests/testLimitCanBeAWeeklyTotal): success
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 2 tests, with 2 failures (0 unexpected) in 176.124 (176.129) seconds
-	 Executed 2 tests, with 2 failures (0 unexpected) in 176.124 (176.137) seconds
-	 Executed 2 tests, with 2 failures (0 unexpected) in 176.124 (176.139) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WebsiteWidgetCaptureUITests.swift:165: error: -[HabitsUITests.WebsiteWidgetCaptureUITests testLockScreenCapture] : failed - Native Lock Screen gallery does not expose Often Enough
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/WebsiteWidgetCaptureUITests.swift:53: error: -[HabitsUITests.WebsiteWidgetCaptureUITests testHomeScreenCaptures] : XCTAssertTrue failed - Home Screen Add Widget available
-Test Case '-[HabitsUITests.WebsiteWidgetCaptureUITests testHomeScreenCaptures]' failed (89.263 seconds).
-Test Case '-[HabitsUITests.WebsiteWidgetCaptureUITests testLockScreenCapture]' failed (86.862 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 157.719 (157.724) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 157.719 (157.725) seconds
+Test Case '-[HabitsUITests.FocusPlayerUITests testSwipeMovesOneHabitAtATime]' passed (27.803 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testLimitCanBeAWeeklyTotal]' passed (129.916 seconds).
+```
+
+## Release build
+```
+** BUILD SUCCEEDED **
+```
+
+## Native analytics checks
+```
+Analytics contract: 101 checks passed; inspected 3 outgoing envelopes. No network requests.
 ```
