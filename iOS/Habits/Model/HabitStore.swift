@@ -63,7 +63,7 @@ final class HabitStore {
         }
     }
 
-    private(set) var habits: [Habit] = [] { didSet { if habits != oldValue { rulesInputChanged("habits") }; forgetAll() } }
+    private(set) var habits: [Habit] = [] { didSet { _ = perfTimed("Count: habits set") { 0 }; if habits != oldValue { rulesInputChanged("habits") }; forgetAll() } }
     /// Changed only through `insertEntry`, `removeEntry(at:)` and `replaceEntry` (or a full load), which keep the indexes below in
     /// step. Rebuilding them from every entry after each tap cost a full pass over a year of history (30 Sep).
     @ObservationIgnored private var storedEntries: [Entry] = []
@@ -88,6 +88,7 @@ final class HabitStore {
         Task { @MainActor [weak self] in
             guard let self else { return }
             entryChangePending = false
+            _ = perfTimed("Count: logs changed, announced") { 0 }
             withMutation(keyPath: \.entries) {}
             // Then each changed habit's own mark. A change that didn't say which habit (a reload, the demo data) marks
             // every habit, so no view can miss one.
@@ -96,6 +97,7 @@ final class HabitStore {
             let all = replacedAllEntries
             replacedAllEntries = false
             if all || changed.isEmpty {
+                _ = perfTimed("Count: logs changed, every habit marked") { 0 }
                 for revision in entryRevisions.values { revision.count &+= 1 }
             } else {
                 for id in changed { entryRevisions[id]?.count &+= 1 }
@@ -122,10 +124,11 @@ final class HabitStore {
     @ObservationIgnored private var entriesByHabit: [UUID: [Entry]]?
     /// The same, by habit and day: the calendar asks about ~30 days × every habit on each month (30 Sep).
     @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
-    var settings = DaySettings() { didSet { if settings != oldValue { rulesInputChanged("settings") }; cachedCalendar = nil; coreGregorian = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
+    var settings = DaySettings() { didSet { _ = perfTimed("Count: settings set") { 0 }; if settings != oldValue { rulesInputChanged("settings") }; cachedCalendar = nil; coreGregorian = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
     /// Running timers for duration habits: habit ID → start time.
     private(set) var timers: [UUID: Date] = [:] {
         didSet {
+            _ = perfTimed("Count: timers set") { 0 }
             for id in Set(oldValue.keys).union(timers.keys) where oldValue[id] != timers[id] {
                 widgetProjectionCache[id] = nil
             }
