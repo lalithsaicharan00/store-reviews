@@ -1,0 +1,103 @@
+# TIME Count: shared rules given habits and settings again, changed|0.01
+# TIME Shared rules: habits and settings again|1.66
+# TIME Shared rules: built from every log|3.27
+# TIME Store load: read the database|8.62
+# TIME Shared rules: built from every log, off the main thread|0.15
+# TIME Store load: into the app (0 logs)|0.37
+1791867042.367 28.6
+1791867042.395 25.9
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.27
+# TIME Watch Today: plan|0.71
+# READY 1791867042.479
+1791867042.444 35.3
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.06
+1791867042.479 64.8
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.25
+# TIME Watch Today: plan|0.48
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.23
+# TIME Watch Today: plan|0.41
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.53
+# TIME Watch Today: plan|0.79
+# TIME Count: shared rules' inputs changed: habits|0.01
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.32
+# TIME Watch Today: plan|0.59
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.30
+# TIME Watch Today: plan|0.62
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.04
+1791867042.608 23.7
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.28
+# TIME Watch Today: plan|0.55
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.34
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.08
+# TIME Shared rules: a log added|0.04
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Shared rules: a log added|0.01
+# TIME Watch Today: plan|0.24
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.05
+1791867042.654 40.7
+# TIME Watch Today: plan|0.20
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.01
+# TIME Store load: read the database|123.20
+# TIME Shared rules: built from every log, off the main thread|2.82
+# TIME Count: shared rules' inputs changed: habits|0.00
+# TIME Store load: into the app (1716 logs)|17.60
+# TIME Count: shared rules given habits and settings again, changed|0.00
+# TIME Shared rules: habits and settings again|0.39
+# TIME Watch Today: plan|0.81
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.03
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.02
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.01
+# TIME Watch Today: plan|0.17
+# TIME Count: a Today row drawn|0.00
+# TIME Watch Today: a row's numbers|0.01
+1791867044.541 30.0
+# TIME Widgets: one habit's week|23.17
+1791867045.081 30.6
+# TIME Widgets: one habit's week|0.59
+# TIME Widgets: one habit's week|0.54
+# TIME Widgets: one habit's week|1.07
+# TIME Widgets: one habit's week|2.97
+# TIME Widgets: one habit's week|0.73
+# TIME Widgets: one habit's week|0.52
+# TIME Widgets: one habit's week|4.33
+# TIME Widgets: the snapshot|1.01
+# TIME Widgets: the snapshot|0.47
+# MEASURING
+# TIME Watch Today: plan|0.33
+# TIME Count: Day details drawn|0.00
+# TIME Watch Day details: today's logs|0.18
+# TIME Watch Day details: the dial's words|0.10
+# TIME Watch Day details: streak|0.06
+1791867050.581 206.3
+1791867051.136 17.8
+# OPEN Log manually|1791867050.581|1791867052.165
+# WINDOW Log manually: turning the Crown|1791867052.165|1791867064.176
+# DONE
+# TIME Watch Today: plan|1.20
+1791867064.327 65.2
