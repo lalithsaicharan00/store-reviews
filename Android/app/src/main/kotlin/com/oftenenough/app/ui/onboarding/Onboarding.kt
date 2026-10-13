@@ -140,8 +140,9 @@ fun OnboardingFlow(store: HabitStore, nav: OnboardingNav) {
 private fun Welcome(onNew: () -> Unit, onBack: () -> Unit, onPrivacy: () -> Unit) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(96.dp))
-        Box(Modifier.size(96.dp).clip(RoundedCornerShape(24.dp)).background(Color.White), contentAlignment = Alignment.Center) {
-            Image(painterResource(R.drawable.mark_light), "Often Enough", Modifier.size(72.dp))
+        // The tonal mark on its own background: the light set on white, the dark set on dark (Brand/Logo Guide.md, U29).
+        Box(Modifier.size(96.dp).clip(RoundedCornerShape(24.dp)).background(appColors.surface), contentAlignment = Alignment.Center) {
+            Image(painterResource(if (appColors.dark) R.drawable.mark_dark else R.drawable.mark_light), "Often Enough", Modifier.size(72.dp))
         }
         Spacer(Modifier.height(24.dp))
         Text("Often Enough", style = MaterialTheme.typography.displaySmall.copy(fontSize = 34.sp), color = appColors.ink)
