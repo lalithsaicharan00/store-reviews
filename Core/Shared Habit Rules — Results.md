@@ -115,7 +115,7 @@ routine 3.5 against 3.5, launch even (run 38349267677); Day details +1 53.3 agai
 
 ### Tests on GitHub
 
-- **Answers:** every golden case through the shared rules again on the final code: recorded again on the final code (run 38363493132; result pending).
+- **Answers:** every golden case through the shared rules again on the final code: 2,062 cases recorded again on the final code, 0 differences beyond the Lord Howe fix (#8), whose Swift recording predates it (run 38363493132).
 - **iPhone UI** (`41045ec5`): Today, TodayRowLayout and Progress (38329428557); Arrange, Groups, Placement and Schedule
   (38329431161); HabitPage, both halves (38329435488, 38329450617); DayDetails (38329437499, 38338945612, 38345185625);
   FocusPlayer and NewHabit (38329439841); WeekCards, TodayRowSheet, Reminders and SectionHeader (38329441779); Undo,

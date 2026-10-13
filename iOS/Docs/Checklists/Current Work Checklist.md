@@ -1029,7 +1029,7 @@ and the Add note keyboard coming up by itself.
     side by side with `main` (S2); anything slower kept on Swift with the reason; merged into `main`.
     *Done 13 Oct 2026:* every rule in `HabitStore` asks the shared core (`LiveRules`); only a phone set to a
     non-Gregorian calendar keeps the Swift rules (`Core/spec/differences.md` #5). The same answers: every golden case
-    recorded again through the shared rules, 0 differences beyond the Lord Howe fix (#8) (run 38363493132, result pending). Speed side by
+    recorded again through the shared rules, 0 differences beyond the Lord Howe fix (#8) (run 38363493132). Speed side by
     side with `main`: even or faster on every screen (Progress Year scrolling 7.4 against 20.4 ms/s, the Day sheet's
     add, edit and undo 163.2 against 163.4; runs 38329425418, 38329426726, 38329425137, 38329426542), and on the Apple
     Watch even with its Swift rules (Today scrolling 2.0 against 8.5, Day details +1 1.5 against 1.2; runs 38342508127,
