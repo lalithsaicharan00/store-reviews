@@ -1,20 +1,29 @@
-# claude/shared-habit-rules-diag-main @ 2d34870
+# claude/shared-habit-rules-ci48 @ 41045ec
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38328968932 · 2026-10-13 02:13 UTC
-Commit: Scratch (safe to delete): time each phase of the Reminders self-check
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38329450617 · 2026-10-13 02:25 UTC
+Commit: Current Work 92 (checkpoint 2): the shared rules are given their inputs without SwiftUI seeing it; the Watch keeps its Swift rules
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (RemindersUITests/testPlanningActionsPermissionsFailuresAndClockChanges): failure
+- UI tests (HabitPageUITests/testYearInPixels,HabitPageUITests/testStreaksOnTheProgressTab,HabitPageUITests/testOverallRecordBoxes,HabitPageUITests/testMilestonesNoneOneMany,HabitPageUITests/testWeeklyGoalProgress,HabitPageUITests/testProgressRedesignPictures,HabitPageUITests/testPeriodCardSpacing,HabitPageUITests/testYearInPixelsDayNumbers): success
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RemindersUITests.swift:17: error: -[HabitsUITests.RemindersUITests testPlanningActionsPermissionsFailuresAndClockChanges] : failed - DIAG waited 89 s; Reminders: all checks passed | 100 rules / 38094 entries: plan median 160.2 ms, cold 183.2 ms, content 71.3 ms | basic 2471 ms; actions 258 ms; races 139 ms; seed 86126 ms; performance 86707 ms; calendar 167 ms; clock 26 ms; 
-Test Case '-[HabitsUITests.RemindersUITests testPlanningActionsPermissionsFailuresAndClockChanges]' failed (111.605 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 889.970 (889.976) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 889.970 (889.977) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 889.970 (889.980) seconds
+Test Case '-[HabitsUITests.HabitPageUITests testMilestonesNoneOneMany]' passed (136.480 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testOverallRecordBoxes]' passed (22.663 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testPeriodCardSpacing]' passed (171.660 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testProgressRedesignPictures]' passed (297.137 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testStreaksOnTheProgressTab]' passed (68.231 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testWeeklyGoalProgress]' passed (33.391 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testYearInPixels]' passed (35.039 seconds).
+Test Case '-[HabitsUITests.HabitPageUITests testYearInPixelsDayNumbers]' passed (125.369 seconds).
 ```
 
 ## Release build
