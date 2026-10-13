@@ -1,25 +1,30 @@
-# claude/shared-habit-rules-rep @ dce5ae6
+# claude/shared-habit-rules-ci50 @ 07ae7bd
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38368643132 · 2026-10-13 08:59 UTC
-Commit: Scratch (safe to delete): what is on screen when testHidePercentages' habit page doesn't open
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38373457016 · 2026-10-13 09:42 UTC
+Commit: Current Work 92: the golden cases through the shared rules on the final code, 0 differences beyond the Lord Howe fix (run 38363493132)
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (ProgressUITests/testSeeHide1,ProgressUITests/testSeeHide2,ProgressUITests/testSeeHide3,ProgressUITests/testSeeHide4): success
+- UI tests (ProgressUITests): success
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 4 tests, with 0 failures (0 unexpected) in 294.726 (294.732) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 294.726 (294.734) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 294.726 (294.736) seconds
-Test Case '-[HabitsUITests.ProgressUITests testSeeHide1]' passed (90.434 seconds).
-Test Case '-[HabitsUITests.ProgressUITests testSeeHide2]' passed (72.776 seconds).
-Test Case '-[HabitsUITests.ProgressUITests testSeeHide3]' passed (66.396 seconds).
-Test Case '-[HabitsUITests.ProgressUITests testSeeHide4]' passed (65.120 seconds).
+	 Executed 9 tests, with 0 failures (0 unexpected) in 349.149 (349.159) seconds
+	 Executed 9 tests, with 0 failures (0 unexpected) in 349.149 (349.161) seconds
+	 Executed 9 tests, with 0 failures (0 unexpected) in 349.149 (349.163) seconds
+Test Case '-[HabitsUITests.ProgressUITests testEmptyState]' passed (44.892 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testHabitPageYearAndMilestones]' passed (37.125 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testHidePercentages]' passed (80.652 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testLogSlipAndUndo]' passed (72.215 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testOpenSwitchAndBack]' passed (27.280 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testPreviousStopsAtFirstPeriod]' passed (22.291 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testProgressChecks]' passed (12.338 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testRowOpensHabitPageAtProgress]' passed (29.476 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testYearAndMonthTap]' passed (22.879 seconds).
 ```
 
 ## Release build
