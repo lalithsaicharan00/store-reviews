@@ -17,3 +17,10 @@ fun LiveRules.daysData(h: RuleHabit, first: Int, last: Int, reference: Int, now:
     if (values.isEmpty()) return NSData()
     return values.usePinned { NSData.dataWithBytes(it.addressOf(0), (values.size * 8).convert()) }
 }
+
+/** [LiveRules.row] as one block of bytes, read by Swift in one go like [daysData]. */
+@OptIn(ExperimentalForeignApi::class)
+fun LiveRules.rowData(h: RuleHabit, day: Int, now: Long): NSData {
+    val values = row(h, day, now)
+    return values.usePinned { NSData.dataWithBytes(it.addressOf(0), (values.size * 8).convert()) }
+}

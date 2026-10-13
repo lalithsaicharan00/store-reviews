@@ -21,12 +21,16 @@ struct WatchRow: View, Equatable {
 
     var body: some View {
         let _ = perfTimed("Count: a Today row drawn") { 0 }
-        let ruled = store.rule(habit, on: day)
-        let progress = store.dayProgress(of: ruled, on: day)
-        let goal = store.dayGoal(of: ruled)
+        // The row's numbers in one call to the shared rules (`coreRow`); nil where the store's own rules answer.
+        let (ruled, numbers, progress, goal, done, fraction) = perfTimed("Watch Today: a row's numbers") {
+            let ruled = store.rule(habit, on: day)
+            let numbers = store.coreRow(habit, on: day)
+            let progress = numbers?.progress ?? store.dayProgress(of: ruled, on: day)
+            let goal = numbers?.dayGoal ?? store.dayGoal(of: ruled)
+            let done = TodayPlan.isDone(row, on: day, store: store, numbers: numbers) && !store.isSkipped(habit, on: day)
+            return (ruled, numbers, progress, goal, done, fillFraction(ruled, progress: progress, goal: goal, done: done, numbers: numbers))
+        }
         let running = store.timers[habit.id] != nil
-        let done = TodayPlan.isDone(row, on: day, store: store) && !store.isSkipped(habit, on: day)
-        let fraction = fillFraction(ruled, progress: progress, goal: goal, done: done)
         VStack(alignment: .leading, spacing: 6) {
             if textSize.isAccessibilitySize {
                 // Larger text (H20): the icon and the round button share the top line and the name and its line get
@@ -34,7 +38,7 @@ struct WatchRow: View, Equatable {
                 HStack(spacing: 8) {
                     icon
                     Spacer(minLength: 4)
-                    button(ruled, done: done, running: running)
+                    button(ruled, done: done, running: running, numbers: numbers)
                 }
                 words(progress: progress, goal: goal, running: running, lines: nil)
             } else {
@@ -42,7 +46,7 @@ struct WatchRow: View, Equatable {
                     icon
                     words(progress: progress, goal: goal, running: running, lines: 2)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    button(ruled, done: done, running: running)
+                    button(ruled, done: done, running: running, numbers: numbers)
                 }
             }
             after
@@ -89,11 +93,12 @@ struct WatchRow: View, Equatable {
     }
 
     /// The share of the row filled: today's goal, or the period's for a week or month goal (U25); nothing for a quit habit.
-    private func fillFraction(_ ruled: Habit, progress: Double, goal: Double, done: Bool) -> Double {
+    private func fillFraction(_ ruled: Habit, progress: Double, goal: Double, done: Bool, numbers: CoreRow?) -> Double {
         if habit.kind == .quit || store.isSkipped(habit, on: day) { return 0 }
         if done { return 1 }
         if !ruled.frequency.isDayBased {
-            let period = store.progress(of: habit, on: day), whole = store.goal(of: habit)
+            let period = numbers?.periodProgress ?? store.progress(of: habit, on: day)
+            let whole = numbers?.goal ?? store.goal(of: habit)
             return whole > 0 ? min(1, period / whole) : 0
         }
         return goal > 0 ? min(1, progress / goal) : 0
@@ -120,18 +125,18 @@ struct WatchRow: View, Equatable {
     // MARK: The round button
 
     @ViewBuilder
-    private func button(_ ruled: Habit, done reached: Bool, running: Bool) -> some View {
+    private func button(_ ruled: Habit, done reached: Bool, running: Bool, numbers: CoreRow?) -> some View {
         // A limit's button never takes the completed treatment: staying under a limit isn't an action to reward, and
         // a filled button would invite the next +1 (U2, U25, H1).
         let done = reached && !ruled.isQuitOrLimit
         switch ruled.kind {
-        case .check where row.placement?.slot == nil && store.countsUp(habit, on: day):
+        case .check where row.placement?.slot == nil && (numbers?.countsUp ?? store.countsUp(habit, on: day)):
             RoundButton(symbol: "checkmark", done: done, color: habit.color, label: "Add 1 to \(habit.name)") {
                 log { store.addProgress(habit, value: 1, on: day, source: .watch) }
             }
         case .check, .task:
             let ticked = row.placement?.slot.map { store.isSlotDone(habit, slot: $0, on: day) }
-                ?? (habit.kind == .task ? done : store.isTicked(habit, on: day))
+                ?? (habit.kind == .task ? done : numbers?.isDone ?? store.isTicked(habit, on: day))
             RoundButton(symbol: "checkmark", done: ticked, color: habit.color,
                         label: ticked ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
                 log {

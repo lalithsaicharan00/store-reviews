@@ -18,6 +18,9 @@ private const val ASK = Long.MIN_VALUE
 /** Numbers per day in [HabitRules.strip]. */
 const val STRIP_FIELDS = 6
 
+/** The numbers [HabitRules.row] gives for one habit on one day. */
+const val ROW_FIELDS = 10
+
 class HabitRules(val data: HabitData, val settings: DaySettings, reuse: Zone? = null, val clock: () -> Long) {
     /** The zone's clock ([reuse]: the last rules' own, when they read the same zone, so what it has read stays). */
     val zone = reuse?.takeIf { it.id == settings.timeZone } ?: Zone(settings.timeZone)
@@ -490,6 +493,30 @@ class HabitRules(val data: HabitData, val settings: DaySettings, reuse: Zone? = 
             out[at + 5] = periodKind(judged).ordinal.toDouble()
         }
         return out
+    }
+
+    /**
+     * What a Today row shows for one habit on one day, at once (Current Work 92: the Watch's Today asked about ten rules a
+     * row, each its own call): judged by that day's goal ([rule]), what was logged at [now] ([dayProgress]) and the day's
+     * goal ([dayGoal]); 1 when the day is one of its days, a skip or not ([isDue] with `countingSkips` false); 1 when
+     * [isSatisfied]; 1 when the check [countsUp]; the period's progress at [now] and its goal ([progress], [goal]); the
+     * habit's first day ([startDay]); 1 when [isDone]; and [flexibleProgress], or -1 when the goal isn't flexible.
+     * RowTest checks each against the rule asked on its own, for every habit and day of every golden case.
+     */
+    fun row(habit: Habit, day: Int, now: Long): DoubleArray {
+        val judged = rule(habit, day)
+        return doubleArrayOf(
+            dayProgress(judged, day, now),
+            dayGoal(judged),
+            if (isDue(habit, day, now, countingSkips = false)) 1.0 else 0.0,
+            if (isSatisfied(habit, day)) 1.0 else 0.0,
+            if (countsUp(habit, day)) 1.0 else 0.0,
+            progress(habit, day, now),
+            goal(habit),
+            startDay(habit).toDouble(),
+            if (isDone(habit, day)) 1.0 else 0.0,
+            (flexibleProgress(habit, day) ?: -1).toDouble(),
+        )
     }
 
     // ------------------------------------------------------------------ Streaks (spec/streaks.md)

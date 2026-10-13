@@ -10,7 +10,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
 
 /**
- * [HabitRules.strip] works each day's facts out once and reads the mark from them; it must answer exactly as the rules
+ * [HabitRules.row] (a Today row's numbers) and [HabitRules.strip] work each day's facts out once and reads the mark from them; it must answer exactly as the rules
  * asked one by one ([HabitRules.dayMark], [HabitRules.dayProgress], [HabitRules.isDayMet], [HabitRules.dayGoal],
  * [HabitRules.isDue], [HabitRules.periodKind]) for every habit, every day of every golden case's window.
  */
@@ -35,6 +35,18 @@ class StripTest {
                 for (h in data.habits) {
                     val strip = r.strip(h, window[0], window[1], reference, now)
                     for (d in window[0]..window[1]) {
+                        // A Today row's numbers in one call (`row`), against each rule asked on its own.
+                        val row = r.row(h, d, now)
+                        val rowJudged = r.rule(h, d)
+                        val rowWant = doubleArrayOf(
+                            r.dayProgress(rowJudged, d, now), r.dayGoal(rowJudged),
+                            if (r.isDue(h, d, now, countingSkips = false)) 1.0 else 0.0, if (r.isSatisfied(h, d)) 1.0 else 0.0,
+                            if (r.countsUp(h, d)) 1.0 else 0.0, r.progress(h, d, now), r.goal(h), r.startDay(h).toDouble(),
+                            if (r.isDone(h, d)) 1.0 else 0.0, (r.flexibleProgress(h, d) ?: -1).toDouble(),
+                        )
+                        for (f in 0 until ROW_FIELDS) if (row[f] != rowWant[f]) {
+                            problems.add("row: ${c["name"]!!.jsonPrimitive.content} ${h.id} ${Day.key(d)} field $f: ${row[f]} vs ${rowWant[f]}")
+                        }
                         val at = (d - window[0]) * STRIP_FIELDS
                         val judged = r.rule(h, d)
                         val want = doubleArrayOf(
@@ -50,7 +62,7 @@ class StripTest {
                 }
             }
         }
-        println("strip: $days habit-days compared, ${problems.size} differ")
+        println("strip and row: $days habit-days compared, ${problems.size} differ")
         if (problems.isNotEmpty()) fail("${problems.size} differ:\n" + problems.take(30).joinToString("\n"))
     }
 }

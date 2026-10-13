@@ -156,6 +156,12 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     fun days(h: RuleHabit, first: Int, last: Int, reference: Int, now: Long): DoubleArray =
         rules.strip(h.habit, first, last, reference, now)
 
+    /**
+     * What a Today row shows for one habit on one day, in one call ([ROW_FIELDS] numbers, as [HabitRules.row] gives them):
+     * a row asked about ten rules, each its own crossing, and the Watch's slower processor felt it (Current Work 92).
+     */
+    fun row(h: RuleHabit, day: Int, now: Long): DoubleArray = rules.row(h.habit, day, now)
+
     // Streaks (spec/streaks.md)
     fun streak(h: RuleHabit, day: Int) = rules.streak(h.habit, day)
     fun runBefore(day: Int, h: RuleHabit) = rules.runBefore(day, h.habit)
@@ -199,5 +205,6 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     companion object {
         /** Numbers per day in [days]. */
         const val DAY_FIELDS = app.habits.rules.STRIP_FIELDS
+        const val ROW_FIELDS = app.habits.rules.ROW_FIELDS
     }
 }

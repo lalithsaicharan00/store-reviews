@@ -77,9 +77,11 @@ extension HabitStore {
         let settings = coreSettings(state)
         let zone = calendar.timeZone.identifier
         if let given = coreGiven, given.core === core, given.zone == zone, given.settings == settings, given.habits == state.habits {
+            _ = perfTimed("Count: shared rules given habits and settings again, unchanged") { 0 }
             coreDirty = false
             return
         }
+        _ = perfTimed("Count: shared rules given habits and settings again, changed") { 0 }
         var steps: [StepRecord] = []
         var reminders: [ReminderRecord] = []
         let records = state.habits.enumerated().map { i, habit -> HabitRecord in
@@ -229,5 +231,49 @@ extension HabitStore {
         var values = [Double](repeating: 0, count: data.count / MemoryLayout<Double>.size)
         _ = values.withUnsafeMutableBytes { data.copyBytes(to: $0) }
         return CoreDays(first: span.lowerBound.dayNumber, values: values)
+    }
+}
+
+/// What a Today row shows for one habit on one day, from the shared rules in one call (`LiveRules.row`): a row asked
+/// about ten rules, each its own crossing into Kotlin, and the Watch's slower processor felt every one (Current Work 92).
+/// Each number is the rule named beside it, asked on its own (StripTest checks every golden case).
+struct CoreRow {
+    /// Numbers per row (read once: each read of a Kotlin constant crosses into the core).
+    static let fields = Int(LiveRules.companion.ROW_FIELDS)
+    let values: [Double]
+    /// As `dayProgress(of: rule(habit, on: day), on: day)`.
+    var progress: Double { values[0] }
+    /// As `dayGoal(of: rule(habit, on: day))`.
+    var dayGoal: Double { values[1] }
+    /// As `isDue(habit, on: day, countingSkips: false)`: one of its days, skipped or not.
+    var isPlanned: Bool { values[2] == 1 }
+    /// As `isSatisfied(habit, on: day)`.
+    var isSatisfied: Bool { values[3] == 1 }
+    /// As `countsUp(habit, on: day)`.
+    var countsUp: Bool { values[4] == 1 }
+    /// As `progress(of: habit, on: day)`.
+    var periodProgress: Double { values[5] }
+    /// As `goal(of: habit)`.
+    var goal: Double { values[6] }
+    /// As `startDay(of: habit)`.
+    var startDay: LocalDay { LocalDay(dayNumber: Int(values[7])) }
+    /// As `isDone(habit, on: day)` (`isTicked`).
+    var isDone: Bool { values[8] == 1 }
+    /// As `flexibleProgress(habit, on: day)`.
+    var flexibleProgress: Int? { values[9] < 0 ? nil : Int(values[9]) }
+}
+
+extension HabitStore {
+    /// Off only to measure the rules asked one by one side by side (`-no-row-batch`).
+    nonisolated(unsafe) static var rowBatch = !ProcessInfo.processInfo.arguments.contains("-no-row-batch")
+
+    /// A Today row's numbers for `habit` on `day` from the shared rules, in one call; nil where the store's own rules
+    /// answer. It reads for SwiftUI what the row's rules read together: the habit's logs and its other inputs (S19).
+    func coreRow(_ habit: Habit, on day: LocalDay, now: Date? = nil) -> CoreRow? {
+        guard HabitStore.rowBatch, case let (core, h)? = shared(habit) else { return nil }
+        let data = core.rowData(h: h, day: day.n, now: (now ?? clock()).millis)
+        var values = [Double](repeating: 0, count: data.count / MemoryLayout<Double>.size)
+        _ = values.withUnsafeMutableBytes { data.copyBytes(to: $0) }
+        return values.count == CoreRow.fields ? CoreRow(values: values) : nil
     }
 }
