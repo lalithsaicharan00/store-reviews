@@ -1,32 +1,26 @@
-# claude/shared-habit-rules-main-check8 @ 6c6bcf0
+# claude/shared-habit-rules-rep @ b56dccc
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38348373467 · 2026-10-13 05:42 UTC
-Commit: Android build prompt: wait for the user's OAuth client and Play Console app; build everything else meanwhile
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38350206922 · 2026-10-13 05:48 UTC
+Commit: Scratch (safe to delete): testHidePercentages four times in one job
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (GroupsUITests): failure
+- UI tests (ProgressUITests/testRepeatHide1,ProgressUITests/testRepeatHide2,ProgressUITests/testRepeatHide3,ProgressUITests/testRepeatHide4): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 10 tests, with 1 failure (0 unexpected) in 635.297 (635.313) seconds
-	 Executed 10 tests, with 1 failure (0 unexpected) in 635.297 (635.322) seconds
-	 Executed 10 tests, with 1 failure (0 unexpected) in 635.297 (635.327) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/GroupsUITests.swift:44: error: -[HabitsUITests.GroupsUITests testGroupDragDropsReliably] : XCTAssertTrue failed
-Test Case '-[HabitsUITests.GroupsUITests testChipsAndEmptyGroup]' passed (59.737 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testDeletingAGroupKeepsItsHabits]' passed (134.366 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testEditRenameDeleteAndEmptyDay]' passed (85.099 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testFirstGroupFromFilter]' passed (50.463 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testGroupDragDropsReliably]' failed (16.262 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testGroupInHabitForm]' passed (70.602 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testGroupOrderIsThePersonsOwn]' passed (43.261 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testNamesAreUniqueAndAGroupCanPause]' passed (103.496 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testProgressAndHabitsByGroup]' passed (34.879 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testTodayAndProgressKeepTheirOwnChoiceAndStartPlaysWhatsShown]' passed (37.134 seconds).
+	 Executed 4 tests, with 1 failure (0 unexpected) in 320.676 (320.681) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 320.676 (320.683) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 320.676 (320.686) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/ProgressUITests.swift:39: error: -[HabitsUITests.ProgressUITests testRepeatHide1] : XCTAssertTrue failed
+Test Case '-[HabitsUITests.ProgressUITests testRepeatHide1]' failed (92.273 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testRepeatHide2]' passed (80.528 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testRepeatHide3]' passed (69.789 seconds).
+Test Case '-[HabitsUITests.ProgressUITests testRepeatHide4]' passed (78.086 seconds).
 ```
 
 ## Release build
