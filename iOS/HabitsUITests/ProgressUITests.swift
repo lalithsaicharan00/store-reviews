@@ -135,6 +135,43 @@ final class ProgressUITests: XCTestCase {
 
     /// Show Percentages off hides the habit page's percentages; on brings them back. Progress's cards state counts and
     /// have no percentages (Week, Month and Year, 2 Oct 2026), so the check opens a check-off habit from its card.
+    func testSeeHide1() { seeHide() }
+    func testSeeHide2() { seeHide() }
+    func testSeeHide3() { seeHide() }
+    func testSeeHide4() { seeHide() }
+    /// Scratch: testHidePercentages, saying what was on screen when the habit page didn't open (T14).
+    private func seeHide() {
+        launch()
+        openProgress()
+        XCTAssertTrue(app.segmentedControls["progress-range"].waitForExistence(timeout: 10), "Week | Month | Year")
+        func openFloss(_ step: String) {
+            let card = app.buttons["progress-row-Floss"]
+            var swipes = 0
+            for _ in 0..<12 where !(card.exists && card.isHittable) { app.swipeUp(velocity: .slow); swipes += 1 }
+            let before = "card exists \(card.exists) hittable \(card.isHittable) frame \(card.exists ? NSCoder.string(for: card.frame) : "-") after \(swipes) swipes"
+            let tapped = Date()
+            card.tap()
+            if !app.navigationBars["Floss"].waitForExistence(timeout: 5) {
+                let bars = app.navigationBars.allElementsBoundByIndex.map(\.identifier).joined(separator: ",")
+                let late = app.navigationBars["Floss"].waitForExistence(timeout: 25)
+                XCTFail("DIAG \(step): no page 5 s after the tap; \(before); bars [\(bars)]; card now exists \(card.exists) hittable \(card.exists && card.isHittable); page after 25 s more \(late) (\(Int(Date().timeIntervalSince(tapped))) s)")
+                return
+            }
+            XCTAssertTrue(app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 5), "On Progress")
+        }
+        func toggle() {
+            app.buttons["progress-options"].tap()
+            let item = app.descendants(matching: .any).matching(NSPredicate(format: "label == 'Show Percentages'")).firstMatch
+            XCTAssertTrue(item.waitForExistence(timeout: 3))
+            item.tap()
+        }
+        openFloss("first"); back()
+        XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
+        toggle(); openFloss("second"); back()
+        XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
+        toggle(); openFloss("third")
+    }
+
     func testHidePercentages() {
         launch()
         openProgress()
