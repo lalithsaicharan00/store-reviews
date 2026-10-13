@@ -95,6 +95,15 @@ class ScreensTest {
         waitGone(hasText("Overall record"), "the record")
     }
 
+    @Test fun aLongPressOnARowOpensItsMenu() {
+        launch()
+        compose.onNodeWithTag("row-Water", useUnmergedTree = true).performTouchInput { longClick() }
+        waitFor(hasText("Edit habit"), "the row's menu")
+        waitFor(hasText("Open habit page"), "Open habit page")
+        tapText("Open habit page")
+        waitFor(hasTestTag("habit-details"), "Habit details")
+    }
+
     @Test fun progressShowsTheWeek() {
         launch()
         menu("progress")

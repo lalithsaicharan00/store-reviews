@@ -35,6 +35,8 @@ import kotlinx.coroutines.launch
  */
 object Reminders {
     const val CHANNEL = "reminders"
+    /** Alarm style (A11 D3): rings on the phone's alarm sound, again and again until answered; never a full screen. */
+    const val ALARM_CHANNEL = "alarms"
     private const val ACTION_ALARM = "com.oftenenough.app.REMINDER_ALARM"
     const val ACTION_DONE = "com.oftenenough.app.REMINDER_DONE"
     const val ACTION_ADD = "com.oftenenough.app.REMINDER_ADD"
@@ -58,6 +60,13 @@ object Reminders {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
         manager.createNotificationChannel(NotificationChannel(CHANNEL, "Reminders", NotificationManager.IMPORTANCE_HIGH).apply {
             description = "Your habits' reminders, at the times you chose."
+        })
+        manager.createNotificationChannel(NotificationChannel(ALARM_CHANNEL, "Alarms", NotificationManager.IMPORTANCE_HIGH).apply {
+            description = "Reminders you set to ring as an alarm."
+            setSound(android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_ALARM),
+                android.media.AudioAttributes.Builder().setUsage(android.media.AudioAttributes.USAGE_ALARM)
+                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION).build())
+            enableVibration(true)
         })
     }
 
@@ -88,7 +97,11 @@ object Reminders {
         // An alarm planned earlier that never fired (the phone put the app to sleep) is kept before it's replaced.
         noteNeverFired(context, store.clock())
         prefs.edit().putString(PLANNED, "${next.fire}|${next.habit.id}|${next.fire.minuteOfDay()}").apply()
-        if (canBeExact(context)) alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.fire, intent)
+        // An alarm is set as Android's alarm clock (it shows in the status bar and fires through Doze, D3).
+        if (canBeExact(context) && next.habit.alert == "alarm") {
+            val show = PendingIntent.getActivity(context, 1, Intent(context, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            alarms.setAlarmClock(AlarmManager.AlarmClockInfo(next.fire, show), intent)
+        } else if (canBeExact(context)) alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.fire, intent)
         else alarms.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.fire, intent)
     }
 
@@ -115,12 +128,16 @@ object Reminders {
         for (alert in singles) {
             val (title, body) = ReminderPlan.words(alert, store, hide)
             val id = alert.id.hashCode()
-            val builder = base(context, title, body, alert.habit.id, alert.day, alert.section.id)
+            val alarm = alert.habit.alert == "alarm"
+            val builder = base(context, title, body, alert.habit.id, alert.day, alert.section.id, alarm)
             ReminderPlan.action(alert.habit, hide)?.let { label ->
                 val action = if (alert.habit.kind is HabitKind.Amount) ACTION_ADD else ACTION_DONE
                 builder.addAction(0, label, actionIntent(context, action, alert.habit.id, alert.day, alert.placement.slot, id))
             }
-            try { manager.notify(id, builder.build()) } catch (_: SecurityException) {}
+            val notification = builder.build()
+            // An alarm keeps ringing until it's answered (Done, +1, a tap or a swipe).
+            if (alarm) notification.flags = notification.flags or android.app.Notification.FLAG_INSISTENT
+            try { manager.notify(id, notification) } catch (_: SecurityException) {}
         }
         for (bucket in groups) {
             val (title, body) = ReminderPlan.groupWords(bucket, hide)
@@ -129,13 +146,14 @@ object Reminders {
         }
     }
 
-    private fun base(context: Context, title: String, body: String, habit: String?, day: Int, section: String): NotificationCompat.Builder {
+    private fun base(context: Context, title: String, body: String, habit: String?, day: Int, section: String, alarm: Boolean = false): NotificationCompat.Builder {
         val open = Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             .putExtra(MainActivity.OPEN_HABIT, habit).putExtra(MainActivity.OPEN_DAY, day)
         val content = PendingIntent.getActivity(context, (habit ?: section).hashCode() + day, open, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        return NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_notification).setContentTitle(title)
+        return NotificationCompat.Builder(context, if (alarm) ALARM_CHANNEL else CHANNEL).setSmallIcon(R.drawable.ic_notification).setContentTitle(title)
             .apply { if (body.isNotEmpty()) setContentText(body) }
-            .setContentIntent(content).setAutoCancel(true).setGroup(section).setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setContentIntent(content).setAutoCancel(true).setGroup(section)
+            .setCategory(if (alarm) NotificationCompat.CATEGORY_ALARM else NotificationCompat.CATEGORY_REMINDER)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
     }
 

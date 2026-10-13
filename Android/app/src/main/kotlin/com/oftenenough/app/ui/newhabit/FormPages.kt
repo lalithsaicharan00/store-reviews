@@ -27,6 +27,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Remove
@@ -637,6 +638,33 @@ fun GroupPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     if (adding) NewGroupDialog(store, { adding = false }) { form.groupId = it }
 }
 
+/** "Get reminders on time" (design §15): why exact times matter, then Android's own Alarms & reminders page. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
+    val c = appColors
+    ModalBottomSheet(onDismiss, containerColor = c.screen) {
+        Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp).padding(bottom = 24.dp).semantics { testTag = "exact-times-sheet" },
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(Modifier.size(64.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
+                Icon(Icons.Outlined.Alarm, null, tint = c.ink)
+            }
+            Spacer(Modifier.height(24.dp))
+            Text("Get reminders on time", style = MaterialTheme.typography.headlineSmall, color = c.ink, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(16.dp))
+            Text("Android holds reminders back unless an app may use exact times. Without it, a reminder can come up to 10 minutes late.",
+                style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(12.dp))
+            Text("Next, Android opens Alarms & reminders: switch it on for Often Enough, then come back.",
+                style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(24.dp))
+            com.oftenenough.app.ui.components.InkButton("Allow exact times", onAllow, Modifier.fillMaxWidth().semantics { testTag = "exact-times-allow" })
+            Spacer(Modifier.height(8.dp))
+            TextButton(onDismiss, Modifier.semantics { testTag = "exact-times-not-now" }) { Text("Not now", color = c.ink) }
+        }
+    }
+}
+
 /** "New group": put habits together, then filter Today and Progress by group. */
 @Composable
 fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -> Unit) {
@@ -673,11 +701,27 @@ fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -
 @Composable
 fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     var editing by remember { mutableStateOf<String?>(null) }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    // Reminders turned on: Android's own question for notifications first, then exact times (A11 D1). Never in a test
+    // launch: a system question stays over every later launch on that emulator (T18).
+    var askExact by remember { mutableStateOf(false) }
+    val askNotifications = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
+        askExact = !com.oftenenough.app.app.reminders.Reminders.canBeExact(context)
+    }
+    val turnedOn: () -> Unit = {
+        if (!com.oftenenough.app.app.AppGraph.isTest) {
+            if (android.os.Build.VERSION.SDK_INT >= 33 && !com.oftenenough.app.app.reminders.Reminders.canPost(context))
+                askNotifications.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            else askExact = !com.oftenenough.app.app.reminders.Reminders.canBeExact(context)
+        }
+    }
     FormPage("Reminders", chip = if (form.type == ItemType.QUIT) null else form.chipText(), onBack = onBack) {
         SegmentedList {
             SwitchRow("Remind me", form.remindOn, 0, 1, "remind-me") { on ->
                 form.remindOn = on
                 if (on && (form.times.isEmpty() || !form.remindersEdited)) form.syncReminders(force = true)
+                if (on) turnedOn()
             }
         }
         if (!form.remindOn) Note("No reminders. You'll see it on Today.")
@@ -697,17 +741,22 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
                 AddRow(if (form.times.isEmpty()) "Add reminder" else "Add another reminder", form.times.size, count, "add-reminder") { form.addReminder() }
             }
             if (form.times.isNotEmpty()) {
-                if (form.type != ItemType.CUT_DOWN) {
-                    Spacer(Modifier.height(16.dp))
-                    SegmentedList {
-                        Segment(0, 1) {
-                            Text("If not done, remind again", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                            val options = listOf(null, 15, 30, 60)
-                            MenuPill(followWords(form.followUp), options.map { followWords(it) }, "follow-up") { form.followUp = options[it] }
-                        }
+                Spacer(Modifier.height(16.dp))
+                SegmentedList {
+                    val rows = if (form.type != ItemType.CUT_DOWN) 2 else 1
+                    // An alarm rings on Android's alarm sound until it's answered; never a full screen (A11 D3).
+                    Segment(0, rows) {
+                        Text("Remind me with", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+                        val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
+                        MenuPill(styles.first { it.first == form.alert }.second, styles.map { it.second }, "remind-with") { form.alert = styles[it].first }
+                    }
+                    if (form.type != ItemType.CUT_DOWN) Segment(1, rows) {
+                        Text("If not done, remind again", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+                        val options = listOf(null, 15, 30, 60)
+                        MenuPill(followWords(form.followUp), options.map { followWords(it) }, "follow-up") { form.followUp = options[it] }
                     }
                 }
-                Note(FormOutcome.reminders(form.previewHabit(), store, alarmsAvailable = false))
+                Note(FormOutcome.reminders(form.previewHabit(), store, alarmsAvailable = true))
                 Spacer(Modifier.height(8.dp))
                 SegmentedList {
                     Segment(0, 1) {
@@ -725,6 +774,13 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
             }
         }
     }
+    if (askExact) ExactTimesSheet(onAllow = {
+        askExact = false
+        if (android.os.Build.VERSION.SDK_INT >= 31) runCatching {
+            context.startActivity(android.content.Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                android.net.Uri.parse("package:" + context.packageName)).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
+        }
+    }) { askExact = false }
     editing?.let { id ->
         val t = form.times.firstOrNull { it.id == id }
         if (t == null) editing = null
