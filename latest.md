@@ -1,29 +1,59 @@
-# claude/shared-habit-rules-diag3 @ 99cac3d
+# claude/shared-habit-rules-ci43 @ 41045ec
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38338710982 · 2026-10-13 03:28 UTC
-Commit: Scratch (safe to delete): the Reminders check's seeding, shared and Swift rules in turns
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38329439841 · 2026-10-13 03:31 UTC
+Commit: Current Work 92 (checkpoint 2): the shared rules are given their inputs without SwiftUI seeing it; the Watch keeps its Swift rules
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (RemindersUITests/testDiag1Shared,RemindersUITests/testDiag2Swift,RemindersUITests/testDiag3Shared,RemindersUITests/testDiag4Swift): failure
+- UI tests (FocusPlayerUITests,NewHabitUITests): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 4 tests, with 4 failures (0 unexpected) in 231.879 (231.884) seconds
-	 Executed 4 tests, with 4 failures (0 unexpected) in 231.879 (231.885) seconds
-	 Executed 4 tests, with 4 failures (0 unexpected) in 231.879 (231.886) seconds
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RemindersUITests.swift:21: error: -[HabitsUITests.RemindersUITests testDiag1Shared] : failed - DIAG waited 59 s; Reminders: all checks passed | 100 rules / 38094 entries: plan median 131.7 ms, cold 131.7 ms, content 27.0 ms | basic 1482 ms; actions 151 ms; races 102 ms; seed 57297 ms; performance 57706 ms; calendar 102 ms; clock 19 ms;  | seeds: build 177; snapshot 188; import 52287; load 4638;  SHARED
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RemindersUITests.swift:21: error: -[HabitsUITests.RemindersUITests testDiag2Swift] : failed - DIAG waited 52 s; Reminders: all checks passed | 100 rules / 38094 entries: plan median 129.7 ms, cold 129.7 ms, content 35.8 ms | basic 1548 ms; actions 231 ms; races 71 ms; seed 50289 ms; performance 50729 ms; calendar 60 ms; clock 10 ms;  | seeds: build 157; snapshot 227; import 46777; load 3120;  SWIFT
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RemindersUITests.swift:21: error: -[HabitsUITests.RemindersUITests testDiag3Shared] : failed - DIAG waited 42 s; Reminders: all checks passed | 100 rules / 38094 entries: plan median 105.4 ms, cold 130.2 ms, content 26.2 ms | basic 1416 ms; actions 112 ms; races 86 ms; seed 40699 ms; performance 41068 ms; calendar 45 ms; clock 16 ms;  | seeds: build 135; snapshot 239; import 37228; load 3092;  SHARED
-/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/RemindersUITests.swift:21: error: -[HabitsUITests.RemindersUITests testDiag4Swift] : failed - DIAG waited 47 s; Reminders: all checks passed | 100 rules / 38094 entries: plan median 108.1 ms, cold 119.7 ms, content 34.9 ms | basic 1346 ms; actions 119 ms; races 66 ms; seed 46278 ms; performance 46658 ms; calendar 34 ms; clock 9 ms;  | seeds: build 132; snapshot 156; import 43391; load 2581;  SWIFT
-Test Case '-[HabitsUITests.RemindersUITests testDiag1Shared]' failed (73.290 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testDiag2Swift]' failed (58.607 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testDiag3Shared]' failed (47.643 seconds).
-Test Case '-[HabitsUITests.RemindersUITests testDiag4Swift]' failed (52.339 seconds).
+	 Executed 15 tests, with 1 failure (0 unexpected) in 459.221 (459.233) seconds
+	 Executed 20 tests, with 1 failure (0 unexpected) in 1017.506 (1017.518) seconds
+	 Executed 35 tests, with 2 failures (0 unexpected) in 1476.727 (1476.753) seconds
+	 Executed 35 tests, with 2 failures (0 unexpected) in 1476.727 (1476.755) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/FocusPlayerUITests.swift:410: error: -[HabitsUITests.FocusPlayerUITests testSwipeMovesOneHabitAtATime] : failed - Expected the page for Drink water alone; found ["Stretch"]
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/NewHabitUITests.swift:322: error: -[HabitsUITests.NewHabitUITests testLimitCanBeAWeeklyTotal] : XCTAssertEqual failed: ("Optional("2")") is not equal to ("Optional("20")")
+Test Case '-[HabitsUITests.FocusPlayerUITests testBottomRowStaysPutAndOptionsShowEverything]' passed (54.929 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testChecklistPreservesPriorStepsAndQueueCanRevisit]' passed (23.478 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testCompactProgressAcrossPeriodsAndTypes]' passed (64.747 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testCountCheckAndUndoStayOnTheCurrentHabit]' passed (20.015 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testFastNavigationNeverSlidesBack]' passed (37.536 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testLargeTextKeepsActionsAndChecklistReachable]' passed (17.712 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testLimitIsNotInTheRoutineAndWaitsUnderQuitOrCutDown]' passed (23.428 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testManualTimePausesAndTheClockAlwaysShows]' passed (38.688 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testNavigationDoesNotWaitForSlowTimerWrites]' passed (21.095 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testOnlyALimitShowsUnderQuitOrCutDownWithoutStart]' passed (12.982 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testSavedFocusProgressSurvivesTermination]' passed (32.217 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testSwipeMovesOneHabitAtATime]' failed (20.011 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerDayBoundaryAndExactUndoPersistence]' passed (8.087 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerGoalDoesNotAutoAdvanceAndManualLogIsReachable]' passed (46.552 seconds).
+Test Case '-[HabitsUITests.FocusPlayerUITests testTimerPauseBackgroundAndSkipPreserveTime]' passed (37.745 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testAmountWithReminderRemoved]' passed (98.992 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testAnytimeNeverCombines]' passed (47.050 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testCertainDaysReadAsARange]' passed (51.449 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testChecklist]' passed (48.231 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testCheckOffInTwoTimesOfDay]' passed (84.679 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testCheckOffThreeTimesAWeek]' passed (44.504 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testCopyChecks]' passed (16.916 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testCustomUnit]' passed (49.109 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testDatesOfTheMonth]' passed (47.093 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testIconSheetClosesOnPick]' passed (36.688 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testLimitCanBeAWeeklyTotal]' failed (31.512 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testLimitCanBeTimeAndStaysEditable]' passed (79.056 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testNewTimeOfDayFromTheForm]' passed (52.119 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testOneTimeTask]' passed (30.032 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testQuitDiscard]' passed (30.968 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testReadTwoChaptersAWeek]' passed (65.700 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testRemindMeOffHidesTheRest]' passed (43.972 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testRunFiveMilesAndWalkTenThousandSteps]' passed (86.117 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testTimeUnit]' passed (42.170 seconds).
+Test Case '-[HabitsUITests.NewHabitUITests testTwoCertainDays]' passed (31.149 seconds).
 ```
 
 ## Release build
