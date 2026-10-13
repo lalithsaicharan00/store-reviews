@@ -1027,7 +1027,18 @@ and the Add note keyboard coming up by itself.
     #6, #8); five behaviours that look wrong wait for the user (#2, #3, #4, #5, #7). Merged into `main` 12 Oct 2026.
   - [ ] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed
     side by side with `main` (S2); anything slower kept on Swift with the reason; merged into `main`.
-  - [ ] The user's real-iPhone speed check (`measure_perf_device.sh`), noted here when done (U9, S2).
+    *Done 13 Oct 2026:* every rule in `HabitStore` asks the shared core (`LiveRules`); only a phone set to a
+    non-Gregorian calendar keeps the Swift rules (`Core/spec/differences.md` #5). The same answers: every golden case
+    recorded again through the shared rules, 0 differences beyond the Lord Howe fix (#8) (run 38363493132, result pending). Speed side by
+    side with `main`: even or faster on every screen (Progress Year scrolling 7.4 against 20.4 ms/s, the Day sheet's
+    add, edit and undo 163.2 against 163.4; runs 38329425418, 38329426726, 38329425137, 38329426542), and on the Apple
+    Watch even with its Swift rules (Today scrolling 2.0 against 8.5, Day details +1 1.5 against 1.2; runs 38342508127,
+    38342507816, 38349267677, 38355351760). Every touched UI class passed, each failure read and rerun on the branch and
+    on `main` (T2); iPad 15/15 (38329447799); Watch UI on both sizes (38349268502). Numbers, run IDs and what it took:
+    [Shared Habit Rules — Results](<../../../Core/Shared Habit Rules — Results.md>). Waiting on the last two runs
+    before merging into `main`.
+  - [ ] The user's real-iPhone speed check (`measure_perf_device.sh`), noted here when done (U9, S2), and the Apple Watch
+    on the wrist.
 
 - [ ] **90. When iCloud or Google Drive can't be used after someone bought Plus: offer a refund** (added 11 October
   2026, from the user: "we can't check beforehand … if it is not working, then we will just refund it … if you have any

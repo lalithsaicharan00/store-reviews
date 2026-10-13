@@ -95,6 +95,10 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
    answers (2,063 golden cases, 8.3 million answers, `Core/fixtures/`). **Android is unblocked:** build the app on
    `HabitRules` (from `Rows.load`, or `RulesInput` / `LiveRules` over the database's records). The iPhone's words and
    screens built on these rules (Progress, the habit page, widgets) stay Swift; Android writes its own.
+   Checkpoint 2 done, 13 Oct 2026: the iPhone, iPad and Apple Watch ask these same rules (`LiveRules`), with the same
+   answers and as fast as their Swift rules ([Shared Habit Rules — Results](<../../Core/Shared Habit Rules — Results.md>)).
+   **For Android, use the calls the apps use:** one call per strip of days (`LiveRules.days`) and per Today row
+   (`LiveRules.row`), never one call per day and rule (Rulebook S20).
    Then the Android designs, and the Android app with Drive sync plugged in.
 
 **Done by the user, 11 Oct 2026:** a Web OAuth client "Drive sync tests" (`drive.appdata`; redirect
