@@ -252,15 +252,18 @@ private fun WeekCard(item: WidgetItem, frame: WidgetFrame, snapshot: WidgetSnaps
 /** One day's square, in Progress Week's language (never a harsh mark, U3). */
 @Composable
 private fun Square(cell: Int, color: String, today: Boolean) {
-    val base = GlanceModifier.size(24.dp).cornerRadius(6.dp)
     val level = cell.coerceAtLeast(-5)
-    Box(base.background(when {
+    val back = when {
         level >= 4 -> habit(color)
         level in 1..3 -> fill(color)
         else -> Tonal
-    }).let { if (today) it.padding(2.dp) else it }, contentAlignment = Alignment.Center) {
-        if (level >= 4) Image(ImageProvider(R.drawable.ic_w_check), null, GlanceModifier.size(14.dp), colorFilter = ColorFilter.tint(White))
-        else if (cell == WidgetCell.SKIPPED || cell == WidgetCell.PAUSED) Text(if (cell == WidgetCell.SKIPPED) "»" else "‖", style = style(11.sp, Secondary))
+    }
+    // Today's square has an outline (Glance has no border: a slightly larger square behind it).
+    Box(GlanceModifier.size(24.dp).cornerRadius(6.dp).background(if (today) Secondary else back), contentAlignment = Alignment.Center) {
+        Box(GlanceModifier.size(if (today) 20.dp else 24.dp).cornerRadius(if (today) 4.dp else 6.dp).background(back), contentAlignment = Alignment.Center) {
+            if (level >= 4) Image(ImageProvider(R.drawable.ic_w_check), null, GlanceModifier.size(14.dp), colorFilter = ColorFilter.tint(White))
+            else if (cell == WidgetCell.SKIPPED || cell == WidgetCell.PAUSED) Text(if (cell == WidgetCell.SKIPPED) "»" else "‖", style = style(11.sp, Secondary))
+        }
     }
 }
 

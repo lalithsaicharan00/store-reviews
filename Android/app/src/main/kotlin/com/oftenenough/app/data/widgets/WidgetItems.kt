@@ -230,6 +230,9 @@ object WidgetItems {
         val parts = ArrayList<String>()
         habit.dueDay?.let { if (it < day) parts += "From " + DayWords.short(it) }
         habit.dueMinute?.let { parts += DayWords.clockMinute(it) }
+        // The Android widget design: a task with nothing else to say says how often it comes ("Once", "Every month").
+        if (parts.isEmpty()) parts += if (habit.dueDay != null) "Once"
+            else HabitCopy.rhythm(habit.frequency, store.weekStart).replaceFirstChar { it.uppercase() }
         w.line = parts.joinToString(" · ")
         w.value = if (done) "Done" else "For today"
         w.big = if (done) "Done" else "Not yet"
