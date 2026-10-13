@@ -1,40 +1,60 @@
-- shared · Blank cover (control, first): longest stall 137 ms
-- shared · Blank cover (control, again): longest stall 37 ms
-- shared · Routine (open): longest stall 188 ms
-- swift · Blank cover (control, first): longest stall 98 ms
-- swift · Blank cover (control, again): longest stall 26 ms
-- swift · Routine (open): longest stall 195 ms
-- shared · Blank cover (control, first): longest stall 59 ms
-- shared · Blank cover (control, again): longest stall 25 ms
-- shared · Routine (open): longest stall 168 ms
-- swift · Blank cover (control, first): longest stall 65 ms
-- swift · Blank cover (control, again): longest stall 32 ms
-- swift · Routine (open): longest stall 174 ms
-- shared · Blank cover (control, first): longest stall 66 ms
-- shared · Blank cover (control, again): longest stall 37 ms
-- shared · Routine (open): longest stall 171 ms
-- swift · Blank cover (control, first): longest stall 71 ms
-- swift · Blank cover (control, again): longest stall 28 ms
-- swift · Routine (open): longest stall 193 ms
-- shared · Blank cover (control, first): longest stall 76 ms
-- shared · Blank cover (control, again): longest stall 49 ms
-- shared · Routine (open): longest stall 224 ms
-- swift · Blank cover (control, first): longest stall 83 ms
-- swift · Blank cover (control, again): longest stall 38 ms
-- swift · Routine (open): longest stall 232 ms
-- shared · Launch to a usable Today (round 1 , cold): 697 ms
-- swift · Launch to a usable Today (round 1 , cold): 683 ms
-- shared · Launch to a usable Today (round 2, warm): 642 ms
-- swift · Launch to a usable Today (round 2, warm): 690 ms
-- shared · Launch to a usable Today (round 3, warm): 705 ms
-- swift · Launch to a usable Today (round 3, warm): 645 ms
-- shared · Launch to a usable Today (round 4, warm): 695 ms
-- swift · Launch to a usable Today (round 4, warm): 660 ms
-- shared · Launch to a usable Today (round 5, warm): 622 ms
-- swift · Launch to a usable Today (round 5, warm): 973 ms
-- shared · Launch to a usable Today (round 6, warm): 594 ms
-- swift · Launch to a usable Today (round 6, warm): 656 ms
-- shared · Launch to a usable Today (round 7, warm): 911 ms
-- swift · Launch to a usable Today (round 7, warm): 603 ms
-- shared · Launch to a usable Today (round 8, warm): 635 ms
-- swift · Launch to a usable Today (round 8, warm): 611 ms
+- swift · Blank cover (control, first): longest stall 196 ms
+- swift · Blank cover (control, again): longest stall 61 ms
+- swift · Routine (open): longest stall 356 ms
+- one · Blank cover (control, first): longest stall 176 ms
+- one · Blank cover (control, again): longest stall 56 ms
+- one · Routine (open): longest stall 299 ms
+- batch · Blank cover (control, first): longest stall 172 ms
+- batch · Blank cover (control, again): longest stall 94 ms
+- batch · Routine (open): longest stall 354 ms
+- swift · Blank cover (control, first): longest stall 181 ms
+- swift · Blank cover (control, again): longest stall 43 ms
+- swift · Routine (open): longest stall 360 ms
+- one · Blank cover (control, first): longest stall 167 ms
+- one · Blank cover (control, again): longest stall 63 ms
+- one · Routine (open): longest stall 306 ms
+- batch · Blank cover (control, first): longest stall 86 ms
+- batch · Blank cover (control, again): longest stall 31 ms
+- batch · Routine (open): longest stall 192 ms
+- swift · Blank cover (control, first): longest stall 75 ms
+- swift · Blank cover (control, again): longest stall 34 ms
+- swift · Routine (open): longest stall 187 ms
+- one · Blank cover (control, first): longest stall 73 ms
+- one · Blank cover (control, again): longest stall 34 ms
+- one · Routine (open): longest stall 185 ms
+- batch · Blank cover (control, first): longest stall 75 ms
+- batch · Blank cover (control, again): longest stall 32 ms
+- batch · Routine (open): longest stall 213 ms
+- swift · Blank cover (control, first): longest stall 76 ms
+- swift · Blank cover (control, again): longest stall 35 ms
+- swift · Routine (open): longest stall 194 ms
+- one · Blank cover (control, first): longest stall 116 ms
+- one · Blank cover (control, again): longest stall 49 ms
+- one · Routine (open): longest stall 240 ms
+- batch · Blank cover (control, first): longest stall 101 ms
+- batch · Blank cover (control, again): longest stall 60 ms
+- batch · Routine (open): longest stall 186 ms
+- swift · Launch to a usable Today (round 1 , cold): 1279 ms
+- one · Launch to a usable Today (round 1 , cold): 672 ms
+- batch · Launch to a usable Today (round 1 , cold): 986 ms
+- swift · Launch to a usable Today (round 2, warm): 1007 ms
+- one · Launch to a usable Today (round 2, warm): 1020 ms
+- batch · Launch to a usable Today (round 2, warm): 1058 ms
+- swift · Launch to a usable Today (round 3, warm): 1426 ms
+- one · Launch to a usable Today (round 3, warm): 1094 ms
+- batch · Launch to a usable Today (round 3, warm): 922 ms
+- swift · Launch to a usable Today (round 4, warm): 1433 ms
+- one · Launch to a usable Today (round 4, warm): 1060 ms
+- batch · Launch to a usable Today (round 4, warm): 941 ms
+- swift · Launch to a usable Today (round 5, warm): 1098 ms
+- one · Launch to a usable Today (round 5, warm): 1092 ms
+- batch · Launch to a usable Today (round 5, warm): 747 ms
+- swift · Launch to a usable Today (round 6, warm): 1003 ms
+- one · Launch to a usable Today (round 6, warm): 1071 ms
+- batch · Launch to a usable Today (round 6, warm): 615 ms
+- swift · Launch to a usable Today (round 7, warm): 789 ms
+- one · Launch to a usable Today (round 7, warm): 1007 ms
+- batch · Launch to a usable Today (round 7, warm): 769 ms
+- swift · Launch to a usable Today (round 8, warm): 796 ms
+- one · Launch to a usable Today (round 8, warm): 718 ms
+- batch · Launch to a usable Today (round 8, warm): 1024 ms
