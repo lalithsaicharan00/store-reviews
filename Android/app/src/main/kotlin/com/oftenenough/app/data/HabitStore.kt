@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Holds habits and logs and applies every change: the iPhone's `HabitStore` (iOS/Habits/Model/HabitStore.swift), the same
@@ -224,8 +225,14 @@ class HabitStore(
 
     // ------------------------------------------------------------------ Loading
 
-    /** Reads everything from the database. Rows this version can't read are skipped, never deleted. */
-    suspend fun load() {
+    /**
+     * Reads everything from the database. Rows this version can't read are skipped, never deleted. Always on the store's
+     * own dispatcher (the main thread), whoever calls it: a caller resumed on the database's thread once rebuilt the
+     * logs while Today was reading them (run 38396646458).
+     */
+    suspend fun load() = withContext(scope.coroutineContext.minusKey(Job)) { loadHere() }
+
+    private suspend fun loadHere() {
         try {
             val snapshot = repository.load()
             val steps = snapshot.steps.groupBy { it.habitId }

@@ -12,6 +12,8 @@ import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performCustomAccessibilityActionWithLabel
+import androidx.compose.ui.test.isSelected
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
@@ -82,6 +84,9 @@ class ScreensTest {
 
     private fun tap(m: SemanticsMatcher, what: String) {
         waitFor(m, what)
+        compose.waitForIdle()
+        // A row below the fold of a scrolling page is in the tree but takes no touch: bring it on screen first.
+        runCatching { compose.onAllNodes(m, useUnmergedTree = true)[0].performScrollTo() }
         compose.waitForIdle()
         compose.onAllNodes(m, useUnmergedTree = true)[0].performClick()
     }
@@ -173,6 +178,7 @@ class ScreensTest {
         tapTag("group-new")
         compose.onNodeWithTag("group-name-field", useUnmergedTree = true).performTextInput("Health")
         tapTag("group-habit-Water")
+        waitFor(hasTestTag("group-habit-Water") and isSelected(), "Water chosen for the group")
         tapTag("group-save")
         waitFor(hasTestTag("today-list"), "Today")
         tapTag("filter-button")
