@@ -31,6 +31,10 @@ final class WebsiteWidgetCaptureUITests: XCTestCase {
         let openMorning = app.buttons["Open Morning"]
         if openMorning.waitForExistence(timeout: 5) { openMorning.tap() }
         for _ in 0..<4 where !app.staticTexts["Kitchen"].exists { app.swipeUp() }
+        let fixtureShot = XCTAttachment(screenshot: app.screenshot())
+        fixtureShot.name = "website-fixture-app"; fixtureShot.lifetime = .keepAlways; add(fixtureShot)
+        let fixtureTree = XCTAttachment(string: app.debugDescription)
+        fixtureTree.name = "website-fixture-app-tree"; fixtureTree.lifetime = .keepAlways; add(fixtureTree)
         XCTAssertTrue(app.staticTexts["Kitchen"].waitForExistence(timeout: 30), "Capture fixture finished")
         XCUIDevice.shared.press(.home)
         Thread.sleep(forTimeInterval: 3)
