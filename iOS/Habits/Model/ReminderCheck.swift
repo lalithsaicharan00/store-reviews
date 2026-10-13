@@ -58,7 +58,10 @@ enum ReminderFixture {
 
 enum ReminderCheck {
     static var planningSummary = ""
+    static var phases = ""
     static func run() async -> [String] {
+        let phaseClock = ContinuousClock(); var phaseStart = phaseClock.now
+        func lap(_ name: String) { let t = phaseClock.now; phases += "\(name) \(Int((t - phaseStart) / .milliseconds(1))) ms; "; phaseStart = t }
         var failures: [String] = []
         func expect(_ value: Bool, _ name: String) { if !value { failures.append(name) } }
         var utc = Calendar(identifier: .gregorian); utc.timeZone = TimeZone(secondsFromGMT: 0)!
@@ -220,11 +223,13 @@ enum ReminderCheck {
             expect(!record.isCurrent(in: store, now: now), "turning reminders off stops a ringing alarm")
         }
 
-        failures += await actionChecks(calendar: utc)
-        failures += await raceChecks(calendar: utc)
-        failures += await performanceChecks()
-        failures += await calendarChecks()
-        failures += await clockChecks()
+        lap("basic")
+        failures += await actionChecks(calendar: utc); lap("actions")
+        failures += await raceChecks(calendar: utc); lap("races")
+        failures += await performanceChecks(); lap("performance")
+        failures += await calendarChecks(); lap("calendar")
+        failures += await clockChecks(); lap("clock")
+        planningSummary += " | " + phases
         return failures
     }
 
@@ -344,7 +349,9 @@ enum ReminderCheck {
     }
 
     private static func performanceChecks() async -> [String] {
+        let seedClock = ContinuousClock(), seedStart = seedClock.now
         let store = HabitStore(repository: Persistence.inMemory().repository); await store.load(); await store.seedDemo()
+        phases += "seed \(Int((seedClock.now - seedStart) / .milliseconds(1))) ms; "
         guard store.habits.filter({ $0.remind }).count >= 100, store.entries.count > 30_000 else {
             return ["performance fixture must contain 100 reminder rules and a year of history"]
         }
