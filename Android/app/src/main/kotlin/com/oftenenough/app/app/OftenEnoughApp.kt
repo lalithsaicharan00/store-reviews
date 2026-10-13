@@ -6,5 +6,6 @@ class OftenEnoughApp : Application() {
     override fun onCreate() {
         super.onCreate()
         AppGraph.init(this)
+        com.oftenenough.app.app.reminders.Reminders.channel(this)
     }
 }

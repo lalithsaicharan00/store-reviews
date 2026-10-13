@@ -96,6 +96,10 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
+    // A reminder's tap opens that habit's Day details over Today.
+    LaunchedEffect(AppGraph.dayToOpen) {
+        AppGraph.dayToOpen?.let { target -> AppGraph.dayToOpen = null; nav.popBackStack(Routes.TODAY, inclusive = false); dayTarget = target }
+    }
     val dayNav = object : DayNav {
         override fun habitPage(habit: Habit) { dayTarget = null; nav.navigate(Routes.page("Habit details")) }
         override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))

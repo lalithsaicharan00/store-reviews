@@ -19,6 +19,18 @@ import kotlinx.coroutines.flow.first
  * database and preferences (D8); an ordinary launch opens the person's own.
  */
 class MainActivity : ComponentActivity() {
+    companion object {
+        /** A reminder's tap: open this habit's Day details for this day. */
+        const val OPEN_HABIT = "openHabit"
+        const val OPEN_DAY = "openDay"
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        AppGraph.openTarget(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -29,6 +41,7 @@ class MainActivity : ComponentActivity() {
             if (!intent.getBooleanExtra(TestLaunch.ONBOARDING, false)) AppGraph.prefs.onboarded = true
         } else AppGraph.open(this)
         val store = AppGraph.store
+        AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         val demo = intent.getStringExtra(TestLaunch.DEMO)
         setContent {

@@ -3,6 +3,8 @@ package com.oftenenough.app.app
 import com.oftenenough.app.BuildConfig
 
 import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import android.text.format.DateFormat
 import app.habits.core.AndroidCore
 import app.habits.core.HabitRepository
@@ -33,6 +35,16 @@ object AppGraph {
     val backup: com.oftenenough.app.app.backup.BackupCenter get() = backupInstance ?: error("AppGraph.open first")
 
     val store: HabitStore get() = storeInstance ?: error("AppGraph.open first")
+
+    /** "habitId|day" a reminder asked to open (Day details), read once by Today. */
+    var dayToOpen by androidx.compose.runtime.mutableStateOf<String?>(null)
+
+    fun openTarget(intent: android.content.Intent?) {
+        val habit = intent?.getStringExtra(MainActivity.OPEN_HABIT) ?: return
+        val day = intent.getIntExtra(MainActivity.OPEN_DAY, -1)
+        if (day >= 0) dayToOpen = "$habit|$day"
+        intent.removeExtra(MainActivity.OPEN_HABIT)
+    }
     val prefs: Prefs get() = prefsInstance ?: error("AppGraph.open first")
     val isOpen: Boolean get() = storeInstance != null
 
@@ -42,7 +54,11 @@ object AppGraph {
         init(context)
         val path = context.getDatabasePath("habits.db").also { it.parentFile?.mkdirs() }.path
         prefsInstance = Prefs.of(context)
-        storeInstance = HabitStore(HabitRepository.open(path), scope).also { s -> scope.launchLoad(s) }
+        storeInstance = HabitStore(HabitRepository.open(path), scope).also { s ->
+            // Every saved change plans reminders again once the changes stop (S16).
+            s.onChange = { com.oftenenough.app.app.reminders.Reminders.replanSoon(context.applicationContext, s) }
+            scope.launch { s.load(); com.oftenenough.app.app.reminders.Reminders.replan(context.applicationContext, s) }
+        }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
     }
 

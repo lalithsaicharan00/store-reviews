@@ -173,6 +173,13 @@ fun HabitForm(type: ItemType, original: Habit?, store: HabitStore, idea: HabitId
         form.description = describing.text
         if (form.hasChanges) discard = true else onClose()
     }
+    // Reminders on: Android asks for notifications when the habit is saved, never before (as the iPhone asks).
+    val askNotifications = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { }
+    fun askIfReminding(habit: Habit) {
+        if (habit.remind && habit.reminders.isNotEmpty() && android.os.Build.VERSION.SDK_INT >= 33)
+            runCatching { askNotifications.launch(android.Manifest.permission.POST_NOTIFICATIONS) }
+    }
     fun save() {
         form.name = typed.text
         form.description = describing.text
@@ -181,6 +188,7 @@ fun HabitForm(type: ItemType, original: Habit?, store: HabitStore, idea: HabitId
         val o = form.original
         if (o != null) {
             val habit = form.edited(form.trimmedName) ?: return
+            askIfReminding(habit)
             store.update(habit)
             store.setDescription(description, habit.id)
             if (form.groupId != form.originalGroupId) store.setGroup(form.groupId, habit.id)
@@ -189,6 +197,7 @@ fun HabitForm(type: ItemType, original: Habit?, store: HabitStore, idea: HabitId
         }
         if (type.isHabit && !store.canAddHabit) { sixth = true; return }
         val habit = form.makeHabit(form.trimmedName)
+        askIfReminding(habit)
         store.add(habit)
         store.setDescription(description, habit.id)
         form.groupId?.let { g -> if (store.groups.any { it.id == g }) store.setGroup(g, habit.id) }
