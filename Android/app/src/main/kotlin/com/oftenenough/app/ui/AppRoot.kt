@@ -21,6 +21,9 @@ import kotlinx.coroutines.launch
 import com.oftenenough.app.ui.newhabit.NewHabitFlow
 import com.oftenenough.app.ui.habit.HabitDetailsNav
 import com.oftenenough.app.ui.habit.HabitDetailsScreen
+import com.oftenenough.app.ui.habit.PauseScreen
+import com.oftenenough.app.ui.habit.AllHabitsNav
+import com.oftenenough.app.ui.habit.AllHabitsScreen
 import com.oftenenough.app.ui.player.PlayerNav
 import com.oftenenough.app.ui.player.RoutinePlayer
 import com.oftenenough.app.ui.player.TimerScreen
@@ -151,6 +154,11 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                         override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                     }) { nav.popBackStack() }
                 }
+                MenuItem.HABITS.title, MenuItem.TASKS.title -> AllHabitsScreen(title == MenuItem.TASKS.title, store, object : AllHabitsNav {
+                    override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                    override fun pause(habits: List<Habit>) { if (habits.isNotEmpty()) nav.navigate(Routes.pause(habits.map { it.id })) }
+                    override fun addTask() = nav.navigate(Routes.NEW_TASK)
+                }) { nav.popBackStack() }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
                 "Open source licences" -> LicencesPage { nav.popBackStack() }
@@ -201,7 +209,10 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                 override fun privacy() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.PRIVACY)) }
             }, replay = true)
         }
-        composable("pause/{id}") { NextPage(nav, "Pause") }
+        composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
+        composable(Routes.NEW_TASK) {
+            NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { nav.navigate(Routes.menu(MenuItem.PLUS)) }, task = true)
+        }
         composable("timer/{id}") { e ->
             val id = e.arguments!!.getString("id")!!
             WithDay(store, nav) { openDay ->
@@ -221,6 +232,7 @@ object Routes {
     const val TODAY = "today"
     const val NEW = "new"
     const val WELCOME = "welcome"
+    const val NEW_TASK = "newtask"
     fun page(title: String) = "page/" + android.net.Uri.encode(title)
     fun add(habit: String, day: Int) = "add/$habit/$day"
     fun log(id: String) = "log/$id"
@@ -231,6 +243,7 @@ object Routes {
     fun habit(id: String) = "habit/$id"
     fun timer(id: String) = "timer/$id"
     fun pause(id: String) = "pause/$id"
+    fun pause(ids: List<String>) = "pause/" + ids.joinToString(",")
     fun routine(part: String, day: Int, ids: List<String>) = "routine/" + android.net.Uri.encode(part) + "/$day/" + ids.joinToString(",")
 }
 

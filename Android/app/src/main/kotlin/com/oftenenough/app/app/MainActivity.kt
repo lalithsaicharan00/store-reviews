@@ -4,7 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -49,7 +54,10 @@ class MainActivity : ComponentActivity() {
                 snapshotFlow { store.isLoaded }.first { it }
                 DemoData.seed(store, year = demo == "year", many = demo == "many")
             }
-            OftenEnoughTheme(AppGraph.prefs.theme) { AppRoot(store, AppGraph.prefs) }
+            // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
+            OftenEnoughTheme(AppGraph.prefs.theme) {
+                Box(Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) { AppRoot(store, AppGraph.prefs) }
+            }
         }
     }
 }

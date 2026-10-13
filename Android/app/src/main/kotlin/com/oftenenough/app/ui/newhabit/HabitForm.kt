@@ -112,9 +112,10 @@ private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, GROUP, REMI
  * form straight away with the idea's name and how often (nothing else is filled in: the amount depends on the person).
  */
 @Composable
-fun NewHabitFlow(store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit) {
+fun NewHabitFlow(store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit, task: Boolean = false) {
     val ideaType = idea?.let { when (it.type) { "amount" -> ItemType.AMOUNT; "time" -> ItemType.TIME; "quit" -> ItemType.QUIT; "cutDown" -> ItemType.CUT_DOWN; else -> ItemType.CHECK } }
-    var step by rememberSaveable { mutableStateOf(ideaType?.let { "form:${it.name}" } ?: "choose") }
+    // ≡ › Tasks' + opens the task form straight away.
+    var step by rememberSaveable { mutableStateOf(if (task) "form:${ItemType.TASK.name}" else ideaType?.let { "form:${it.name}" } ?: "choose") }
     when {
         step == "choose" -> {
             BackHandler(onBack = onClose)
