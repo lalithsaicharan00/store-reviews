@@ -139,15 +139,15 @@ final class HabitStore {
     private(set) var ruleInputs = 0
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
     /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
-    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { if skips != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
+    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { if skips != oldValue { coreDirty = true; ruleInputs &+= 1 }; forgetAll() } }
     /// A repeating task's occurrences moved to another day, original day → new day (Day details' Reschedule, 4 Oct
     /// 2026). Saved like skips, one setting per task, so it syncs and is backed up with them.
-    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { if taskMoves != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
+    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { if taskMoves != oldValue { coreDirty = true; ruleInputs &+= 1 }; forgetAll() } }
     /// Pauses per habit, oldest first. A paused day is a skipped day, for a whole stretch (pause report, 29 Sep).
-    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { if pauses != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
+    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { if pauses != oldValue { coreDirty = true; ruleInputs &+= 1 }; forgetAll() } }
     /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
     /// its `until` day, so past days keep the result they had (spec §8.2).
-    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { if rules != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
+    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { if rules != oldValue { coreDirty = true; ruleInputs &+= 1 }; forgetAll() } }
     /// Notes (report "Habit Notes and Day Notes", 29 Sep): one per habit per day, one per day, and a standing
     /// description per habit. Optional, never prompted, and they never change progress.
     private(set) var habitNotes: [UUID: [LocalDay: String]] = [:]
@@ -155,7 +155,7 @@ final class HabitStore {
     private(set) var descriptions: [UUID: String] = [:]
     /// The day each archived habit was archived: from that day on it has no days (Build Plan #60c). Kept only while
     /// it's archived; Restore turns the archived stretch into a pause, so those days are never "not done".
-    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { if archivedOn != oldValue { coreDirty = true }; ruleInputs &+= 1; forgetAll() } }
+    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { if archivedOn != oldValue { coreDirty = true; ruleInputs &+= 1 }; forgetAll() } }
     /// Goes up by one after every change and every load. Progress keys its numbers on it, so they're worked out once
     /// per change, never while drawing (report §20). Only screens that cache numbers read it.
     private(set) var dataVersion = 0
@@ -332,8 +332,24 @@ final class HabitStore {
 
     /// Only a saved habit's numbers are remembered, never a form's draft (which shares its ID while being edited).
     func isSaved(_ habit: Habit) -> Bool {
-        if savedHabits == nil { savedHabits = Dictionary(habits.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first }) }
+        // `_habits`: every shared rule asks this, and the view that happened to ask first after a change must not then
+        // redraw for every habit's change (the Swift rules never read `habits`; S19).
+        if savedHabits == nil { savedHabits = Dictionary(_habits.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first }) }
         return savedHabits?[habit.id] == habit
+    }
+
+    /// Everything the shared rules are given besides the logs and the day settings (`refreshCoreNow`), read without
+    /// SwiftUI seeing it. They're given it by whichever view asks a rule first after a change, and that view read all
+    /// of it: it then redrew for every habit, skip, pause, timer and section change (the Day sheet drew 641 times where
+    /// the Swift rules drew it 451, run 38317935766, Current Work 92). A view showing a rule's answer still
+    /// redraws when the answer can change: each rule reads what it depends on (`ruleHabit`, S19).
+    typealias RuleState = (habits: [Habit], skips: [UUID: Set<LocalDay>], taskMoves: [UUID: [LocalDay: LocalDay]],
+                           pauses: [UUID: [HabitPause]], rules: [UUID: [HabitRule]], archivedOn: [UUID: LocalDay],
+                           timers: [UUID: Date], sections: [DaySection], cardOrder: [String])
+    /// Every log, read the same way when the shared rules' copy is made on first use.
+    var ruleEntries: [Entry] { storedEntries }
+    var ruleState: RuleState {
+        (_habits, _skips, _taskMoves, _pauses, _rules, _archivedOn, _timers, _sections, _cardOrder)
     }
 
     /// A remembered number is read without working it out, so this reads what it depends on: a view showing it
@@ -1651,7 +1667,7 @@ final class HabitStore {
                 return entry
             }
             entriesReplaced()
-            coreRows = snapshot
+            coreRows = builtCore == nil ? nil : snapshot // kept only for the shared rules (the Watch keeps its Swift ones)
             if let builtCore {
                 coreState = builtCore
                 coreDirty = true // its habits and settings are given on first use, once the load has set them

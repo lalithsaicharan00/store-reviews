@@ -24,8 +24,24 @@ extension HabitStore {
         return gregorian
     }
 
-    /// Off only to measure the store's own Swift rules side by side (`PerfSwitches`, the before/after speed runs).
-    nonisolated(unsafe) static var sharedRules = !ProcessInfo.processInfo.arguments.contains("-swift-rules")
+    /// Off on the iPhone and iPad only to measure the store's own Swift rules side by side (`-swift-rules`, the
+    /// before/after speed runs).
+    ///
+    /// The Apple Watch keeps the store's own Swift rules (Current Work 92, checkpoint 2), and `-shared-rules` turns the
+    /// shared ones on there to measure them. Their answers are the same (every golden case, `Core/fixtures/`), but on the
+    /// Watch they weren't as fast, side by side in one build (run 38317944724): Today's scrolling 12.5 ms/s of hitches
+    /// against 1.9, Day details' +1 10.9 against 4.2, and Today's plan 2–3 times the work. Each answer crosses into
+    /// Kotlin on its own, and a Today row asks about ten; the Watch's slower processor pays that crossing several times
+    /// over, where the iPhone hides it. Moving the Watch needs a row's answers in one call ("Shared Habit Rules —
+    /// Results", what comes next).
+    nonisolated(unsafe) static var sharedRules: Bool = {
+        let arguments = ProcessInfo.processInfo.arguments
+        #if os(watchOS)
+        return arguments.contains("-shared-rules")
+        #else
+        return !arguments.contains("-swift-rules")
+        #endif
+    }()
 
     /// The shared rules, up to date with the store's data; nil where the store's own rules answer.
     ///
@@ -42,8 +58,8 @@ extension HabitStore {
             return coreState
         }
         return perfTimed("Shared rules: built from every log") {
-            let rows = coreRows ?? Snapshot(habits: [], steps: [], reminders: [], entries: entries.map(\.record), settings: [])
-            let made = LiveRules(snapshot: rows, settings: coreSettings(), timeZone: calendar.timeZone.identifier, clock: coreClock())
+            let rows = coreRows ?? Snapshot(habits: [], steps: [], reminders: [], entries: ruleEntries.map(\.record), settings: [])
+            let made = LiveRules(snapshot: rows, settings: coreSettings(ruleState), timeZone: calendar.timeZone.identifier, clock: coreClock())
             coreState = made
             refreshCore(made)
             return made
@@ -57,21 +73,22 @@ extension HabitStore {
     private func refreshCoreNow(_ core: LiveRules) {
         // Often nothing they read has changed (the Watch sets its habits again after each sync with the iPhone): then
         // the rules keep what they've worked out (each habit's facts, the zone's clock).
-        let settings = coreSettings()
+        let state = ruleState
+        let settings = coreSettings(state)
         let zone = calendar.timeZone.identifier
-        if let given = coreGiven, given.core === core, given.zone == zone, given.settings == settings, given.habits == habits {
+        if let given = coreGiven, given.core === core, given.zone == zone, given.settings == settings, given.habits == state.habits {
             coreDirty = false
             return
         }
         var steps: [StepRecord] = []
         var reminders: [ReminderRecord] = []
-        let records = habits.enumerated().map { i, habit -> HabitRecord in
+        let records = state.habits.enumerated().map { i, habit -> HabitRecord in
             steps += habit.stepRecords()
             reminders += habit.reminderRecords()
             return habit.record(position: i)
         }
         core.update(habits: records, steps: steps, reminders: reminders, settings: settings, timeZone: zone)
-        coreGiven = (core, habits, settings, zone)
+        coreGiven = (core, state.habits, settings, zone)
         coreDirty = false
         coreHandles = [:]
         coreDrafts = [:]
@@ -79,18 +96,18 @@ extension HabitStore {
 
     /// The settings the rules read, exactly as the store saves them (Core/spec/README.md "Reading saved data"), with the
     /// day start and week start as the store counts them and every archived habit's archive day.
-    private func coreSettings() -> [String: String] {
+    private func coreSettings(_ state: RuleState) -> [String: String] {
         var out: [String: String] = ["day_end_hour": String(settings.dayEndHour), "week_start": String(settings.weekStart)]
         let encoder = JSONEncoder()
         func json<T: Encodable>(_ value: T) -> String? { (try? encoder.encode(value)).map { String(decoding: $0, as: UTF8.self) } }
-        for (id, days) in skips { out["skip." + id.uuidString] = days.map(\.key).sorted().joined(separator: ",") }
-        for (id, moves) in taskMoves { out["move." + id.uuidString] = moves.map { $0.key.key + ">" + $0.value.key }.sorted().joined(separator: ",") }
-        for (id, list) in pauses { out["pause." + id.uuidString] = json(list) }
-        for (id, list) in rules { out["rules." + id.uuidString] = json(list) }
-        for (id, day) in archivedOn { out["archived." + id.uuidString] = day.key }
-        for (id, start) in timers { out["timer." + id.uuidString] = String(start.millis) }
-        out["day_sections"] = json(sections)
-        out["today_order"] = json(cardOrder)
+        for (id, days) in state.skips { out["skip." + id.uuidString] = days.map(\.key).sorted().joined(separator: ",") }
+        for (id, moves) in state.taskMoves { out["move." + id.uuidString] = moves.map { $0.key.key + ">" + $0.value.key }.sorted().joined(separator: ",") }
+        for (id, list) in state.pauses { out["pause." + id.uuidString] = json(list) }
+        for (id, list) in state.rules { out["rules." + id.uuidString] = json(list) }
+        for (id, day) in state.archivedOn { out["archived." + id.uuidString] = day.key }
+        for (id, start) in state.timers { out["timer." + id.uuidString] = String(start.millis) }
+        out["day_sections"] = json(state.sections)
+        out["today_order"] = json(state.cardOrder)
         return out
     }
 

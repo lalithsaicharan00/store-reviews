@@ -12,7 +12,7 @@
 #   complication         writing the complication snapshot
 #   first-fill-extreme   the first fill of an extreme account (25,000 logs a year for 15 years) on the Watch simulator
 # Usage (from iOS/): Tools/perf/measure_watch_perf.sh <watch simulator id> <out dir>. On CI: [watch-perf].
-# Side by side in one job (Rulebook S, "Finding a slow spot"): WATCH_PERF_VARIANTS="shared= swift=-swift-rules" runs every
+# Side by side in one job (Rulebook S, "Finding a slow spot"): WATCH_PERF_VARIANTS="shared=-shared-rules swift=" runs every
 # round of every scenario once per variant, in turns, the variant's launch arguments added (PerfSwitches); with
 # WATCH_PERF_ROUNDS rounds each (the launch twice that). On CI: lines "watch-perf-variants:", "watch-perf-scenarios:" and
 # "watch-perf-rounds:" in the commit message.
