@@ -12,6 +12,7 @@ import com.oftenenough.app.ui.settings.LicencesPage
 import com.oftenenough.app.ui.settings.AppLockPage
 import com.oftenenough.app.ui.settings.AppLockSetup
 import com.oftenenough.app.ui.settings.PrivacyPage
+import com.oftenenough.app.ui.settings.PlusPage
 import com.oftenenough.app.ui.settings.RemindersSettingsPage
 import com.oftenenough.app.ui.settings.DayAndWeekPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
@@ -71,6 +72,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.navigationBarsPadding
 import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
@@ -118,6 +123,9 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
         AppGraph.dayToOpen?.let { target -> AppGraph.dayToOpen = null; nav.popBackStack(Routes.TODAY, inclusive = false); dayTarget = target }
     }
     val dayNav = dayNav(nav) { dayTarget = null }
+    // Today places its own messages above the day bar; every other page shows them here, at the bottom.
+    val route = nav.currentBackStackEntryAsState().value?.destination?.route
+    Box(Modifier.fillMaxSize()) {
     NavHost(nav, startDestination = Routes.TODAY, modifier = Modifier.fillMaxSize().background(appColors.screen)) {
         composable(Routes.TODAY) {
             val drawer = rememberDrawerState(DrawerValue.Closed)
@@ -166,6 +174,7 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                 MenuItem.REMINDERS.title -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
+                MenuItem.PLUS.title -> PlusPage(store, AppGraph.plus, snackbar, { nav.navigate(Routes.menu(MenuItem.HELP)) }) { nav.popBackStack() }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
                 "Open source licences" -> LicencesPage { nav.popBackStack() }
@@ -234,7 +243,9 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             SectionEditorScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }) { nav.popBackStack() }
         }
     }
-    LaunchedEffect(handOver) { handOver?.let { route -> handOver = null; nav.navigate(route) } }
+    if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 96.dp))
+    }
+    LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
 }
 
 object Routes {

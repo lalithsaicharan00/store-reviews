@@ -51,6 +51,15 @@ object AppGraph {
     /** Names are hidden outside the app when the person asked, and always while App lock is on. */
     val hidesNames: Boolean get() = prefs.hideNames || lock.isOn
     private var screenOffWatched = false
+    private var plusInstance: PlusStore? = null
+    /** Where Plus comes from: the fake store in debug builds and tests until Play Billing is connected (build prompt §5). */
+    val plus: PlusStore get() = plusInstance ?: error("AppGraph.open first")
+
+    /** The store's free-plan limit follows what the account owns. */
+    private fun followPlus(store: HabitStore, plus: PlusStore) {
+        store.isPlus = plus.owned != PlusOwned.NONE
+        scope.launch { androidx.compose.runtime.snapshotFlow { plus.owned }.collect { store.isPlus = it != PlusOwned.NONE } }
+    }
 
     /** Locking the phone locks the app at once (whatever Lock again says). */
     private fun watchScreenOff(context: Context) {
@@ -79,6 +88,8 @@ object AppGraph {
             scope.launch { s.load(); com.oftenenough.app.app.reminders.Reminders.replan(context.applicationContext, s) }
         }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
+        plusInstance = if (BuildConfig.DEBUG) FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)) else NoPlusStore
+        followPlus(store, plus)
     }
 
     /** Google Drive: the stand-in on this phone in debug builds until the user's OAuth client exists (build prompt §5). */
@@ -107,6 +118,9 @@ object AppGraph {
         val drivePrefs = context.getSharedPreferences("uitest-drive", Context.MODE_PRIVATE).also { it.edit().clear().commit() }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store,
             com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs), test = true)
+        // Its own purchases, none each launch unless the launch asks for Plus (TestLaunch.PLUS).
+        plusInstance = FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
+        followPlus(store, plus)
     }
 
     private fun CoroutineScope.launchLoad(store: HabitStore) {
