@@ -1226,12 +1226,12 @@ and the Add note keyboard coming up by itself.
   - [ ] Then the day/schedule/streak/progress rules in the shared
     core (item 92); then designs in Figma, small screens first; then the build with Drive sync plugged in.
 
-- [ ] **92. The habit rules in the shared core, so every app shows the same numbers** (added 12 October 2026, from the
+- [x] **92. The habit rules in the shared core, so every app shows the same numbers** (added 12 October 2026, from the
   user: "all of the work we can assign it to the agent and can do it completely … ask the agent to have a meaningful
   branch name"). Which day a log belongs to, schedules, goals, streaks and progress move from the iPhone's Swift
   (`iOS/Habits/Model/`) into `Core/`, so Android uses the same copy (Architecture: Shared Core Decision; Android A3).
-  One cloud session, branch `claude/shared-habit-rules`, full instructions:
-  [Build Prompt — Shared Habit Rules](<../../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>).
+  One cloud session, branch `claude/shared-habit-rules` (its build prompt was deleted when done, 13 Oct 2026; what was
+  built: [Shared Habit Rules — Results](<../../../Core/Shared Habit Rules — Results.md>)).
   - [x] `Core/spec/`: every rule written down with examples (12 Oct 2026: day, schedules, goals, streaks, progress, and
     the differences found, `Core/spec/differences.md`).
   - [x] **Checkpoint 1:** golden cases recorded from today's iPhone code (`Core/fixtures/`, hand-written edge cases and
@@ -1242,7 +1242,7 @@ and the Add note keyboard coming up by itself.
     38224578250, which also compiles the iPhone and Watch targets; the iPhone app built in 38213677372, the Watch app
     in 38216734746). The recorder found two iPhone bugs on clock-change nights, fixed in both (Core/spec/differences.md
     #6, #8); five behaviours that look wrong wait for the user (#2, #3, #4, #5, #7). Merged into `main` 12 Oct 2026.
-  - [ ] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed
+  - [x] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed
     side by side with `main` (S2); anything slower kept on Swift with the reason; merged into `main`.
     *Done 13 Oct 2026:* every rule in `HabitStore` asks the shared core (`LiveRules`); only a phone set to a
     non-Gregorian calendar keeps the Swift rules (`Core/spec/differences.md` #5). The same answers: every golden case
@@ -1252,8 +1252,9 @@ and the Add note keyboard coming up by itself.
     Watch even with its Swift rules (Today scrolling 2.0 against 8.5, Day details +1 1.5 against 1.2; runs 38342508127,
     38342507816, 38349267677, 38355351760). Every touched UI class passed, each failure read and rerun on the branch and
     on `main` (T2); iPad 15/15 (38329447799); Watch UI on both sizes (38349268502). Numbers, run IDs and what it took:
-    [Shared Habit Rules — Results](<../../../Core/Shared Habit Rules — Results.md>). Waiting on the last two runs
-    before merging into `main`.
+    [Shared Habit Rules — Results](<../../../Core/Shared Habit Rules — Results.md>). Merged into `main` 13 Oct 2026.
+    Open: ProgressUITests now and then runs out of a 3-5 s wait (the ≡ menu, the habit page); every measurement of
+    those screens is even or faster, and no cause in the shared rules was found (the results note says where to start).
   - [ ] The user's real-iPhone speed check (`measure_perf_device.sh`), noted here when done (U9, S2), and the Apple Watch
     on the wrist.
 

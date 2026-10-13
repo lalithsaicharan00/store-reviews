@@ -123,7 +123,15 @@ routine 3.5 against 3.5, launch even (run 38349267677); Day details +1 53.3 agai
   Failures, each read and rerun (T2): FocusPlayer's swipe and NewHabit's typed limit passed again here and on `main`
   (38342599243, 38342602049); Groups' Filter sheet failed the same way on `main` (38348370810 here, 38348373467 on `main`);
   DayDetails' `testTickSteps` was XCTest failing to stop the app, and passed again; DayDetails no longer fits one run
-  and was split (Rulebook T1). ProgressUITests.testHidePercentages: failed three times here (38329428557, 38345185625, 38350206922) and passed 8 of 8 on `main` (38350211791, 38350214291); being measured (launch, run 38363372540).
+  and was split (Rulebook T1). **Left open: a short wait in ProgressUITests now and then.** The class passed on the merged
+  code (38373457016); in its other run (38373452976) and three earlier ones one wait ran out: the ≡ menu's rows within
+  3 s (twice) or the habit page within 5 s of a tap (twice). Targeted repeats of `testHidePercentages`: 15 of 16
+  passed here, 8 of 8 on `main` (38350206922, 38350209461, 38368643132, 38368647443; 38350211791, 38350214291). Every
+  measurement of what it waits for is even or faster: the launch against the Swift rules in one build (47.8 against
+  44.8 ms/s, 38363372540), the menu against `main` (45.2 against 45.6) and Progress (period ‹ › 82.3 against 114.0,
+  38379219482), and each step of the test timed, shared against Swift (38338893815). The same kind of 3-second wait
+  failed on `main` (GroupsUITests, 38348373467). No cause in the shared rules was found; if it shows up again, start
+  from the step it failed at (T14's one-line timings).
 - **Reminders' self-check** (90 s): the shared and Swift rules take the same time in one job (59, 42 s against 52, 47 s:
   run 38338710982); nearly all of it is importing a year of history, and `main` took 89 s (run 38328968932).
 - **iPad** (iPad Air 11-inch): IPadUITests 15/15 (38329447799); the one failure the run before passed again here and on
