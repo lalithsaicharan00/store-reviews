@@ -1,1 +1,1 @@
-com.oftenenough.app.watchkitapp: 57791
+com.oftenenough.app.watchkitapp: 31480
