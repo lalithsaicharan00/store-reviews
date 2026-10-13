@@ -2816,9 +2816,13 @@ final class HabitStore {
     #if DEBUG
     /// Debug builds only: saves the habits from the design, with some history for streaks,
     /// into an empty database.
+    nonisolated(unsafe) static var diagSeed = ""
     func seedDemo(now: Date = .now) async {
         guard habits.isEmpty else { return }
+        let diagClock = ContinuousClock(); var diagStart = diagClock.now
+        func diagLap(_ name: String) { let t = diagClock.now; HabitStore.diagSeed += "\(name) \(Int((t - diagStart) / .milliseconds(1))); "; diagStart = t }
         buildDemo(now: now)
+        diagLap("build")
         let snapshot = Snapshot(
             habits: habits.enumerated().map { $1.record(position: $0) },
             steps: habits.flatMap { $0.stepRecords() },
@@ -2831,8 +2835,11 @@ final class HabitStore {
         habits = []
         entries = []
         entriesReplaced()
+        diagLap("snapshot")
         do { try await repository.importAll(snapshot: snapshot) } catch { problem = "Demo data couldn't be saved." }
+        diagLap("import")
         await load()
+        diagLap("load")
         let arguments = ProcessInfo.processInfo.arguments
         if arguments.contains("-groups-demo") {
             // Groups to test and measure with (groups spec §5): three areas, one empty group, and habits with none.

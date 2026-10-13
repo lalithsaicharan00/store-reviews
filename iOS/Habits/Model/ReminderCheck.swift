@@ -229,7 +229,7 @@ enum ReminderCheck {
         failures += await performanceChecks(); lap("performance")
         failures += await calendarChecks(); lap("calendar")
         failures += await clockChecks(); lap("clock")
-        planningSummary += " | " + phases
+        planningSummary += " | " + phases + " | seeds: " + HabitStore.diagSeed + (HabitStore.sharedRules ? " SHARED" : " SWIFT")
         return failures
     }
 

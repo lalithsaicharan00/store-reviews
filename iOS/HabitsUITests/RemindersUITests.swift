@@ -7,8 +7,12 @@ final class RemindersUITests: XCTestCase {
         app.buttons["menu-button"].tap(); app.buttons["menu-reminders"].tap()
         XCTAssertTrue(app.navigationBars["Reminders"].waitForExistence(timeout: 5))
     }
-    func testPlanningActionsPermissionsFailuresAndClockChanges() {
-        let app = XCUIApplication(); app.launchArguments = ["-uitest", "-remindercheck", "-perf-reminders", "-perf-history"]
+    func testDiag1Shared() { diag([]) }
+    func testDiag2Swift() { diag(["-swift-rules"]) }
+    func testDiag3Shared() { diag([]) }
+    func testDiag4Swift() { diag(["-swift-rules"]) }
+    private func diag(_ extra: [String]) {
+        let app = XCUIApplication(); app.launchArguments = ["-uitest", "-remindercheck", "-perf-reminders", "-perf-history"] + extra
         app.launch()
         let result = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Reminders")).firstMatch
         let started = Date()
