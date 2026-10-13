@@ -161,7 +161,7 @@ private fun Unavailable(icon: androidx.compose.ui.graphics.vector.ImageVector, t
 fun AppLockPage(lock: AppLock, onSetUp: () -> Unit, onNewPasscode: () -> Unit, onBack: () -> Unit) {
     val c = appColors
     val context = LocalContext.current
-    val activity = context as? FragmentActivity
+    val activity = androidx.activity.compose.LocalActivity.current as? FragmentActivity
     var confirmOff by remember { mutableStateOf(false) }
     var problem by remember { mutableStateOf<String?>(null) }
     FormPage("App lock", chip = null, onBack = onBack) {
@@ -239,7 +239,7 @@ fun AppLockPage(lock: AppLock, onSetUp: () -> Unit, onNewPasscode: () -> Unit, o
 @Composable
 fun AppLockSetup(lock: AppLock, passcodeOnly: Boolean, onDone: () -> Unit) {
     val context = LocalContext.current
-    val activity = context as? FragmentActivity
+    val activity = androidx.activity.compose.LocalActivity.current as? FragmentActivity
     val secure = AppLock.phoneIsSecure(context)
     var step by rememberSaveable { mutableStateOf(if (passcodeOnly) "create" else "choose") }
     var choice by rememberSaveable { mutableStateOf(if (secure) "phone" else "passcode") }
@@ -357,7 +357,7 @@ fun Keypad(heading: String, line: String?, lineIsProblem: Boolean, shake: Int, e
 fun LockScreen(lock: AppLock) {
     val c = appColors
     val context = LocalContext.current
-    val activity = context as? FragmentActivity
+    val activity = androidx.activity.compose.LocalActivity.current as? FragmentActivity
     val scope = rememberCoroutineScope()
     var message by remember { mutableStateOf<String?>(null) }
     var forgot by remember { mutableStateOf(false) }

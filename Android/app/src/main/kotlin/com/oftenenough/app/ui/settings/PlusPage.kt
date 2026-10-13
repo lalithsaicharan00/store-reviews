@@ -86,7 +86,7 @@ private val plusGives: List<Triple<ImageVector, String, String>> = listOf(
 @Composable
 fun PlusPage(store: HabitStore, plus: PlusStore, snackbar: SnackbarHostState, onContact: () -> Unit, onBack: () -> Unit) {
     val c = appColors
-    val activity = LocalContext.current as? Activity
+    val activity = androidx.activity.compose.LocalActivity.current
     val scope = rememberCoroutineScope()
     var chosen by rememberSaveable { mutableStateOf(PlusProduct.PLUS) }
     val say: (String) -> Unit = { m -> scope.launch { snackbar.showSnackbar(m) } }
