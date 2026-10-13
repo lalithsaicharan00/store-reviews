@@ -245,7 +245,9 @@ object WidgetItems {
         val current = if (planned) history.lastOrNull()?.takeIf { it.ending == QuitRun.Ending.ONGOING }?.start else null
         val earlier = history.filter { it.ending != QuitRun.Ending.ONGOING }.maxOfOrNull { it.seconds(now) }
         w.quitStart = current
-        w.quitBest = earlier?.takeIf { it > 0 }
+        // The best run counts the one going on, as Today's row does (U26: a widget never disagrees with Today).
+        val ongoing = history.lastOrNull()?.takeIf { it.ending == QuitRun.Ending.ONGOING }?.seconds(now)
+        w.quitBest = listOfNotNull(earlier, ongoing).maxOrNull()?.takeIf { it > 0 }
         w.quitBestText = w.quitBest?.let { "Best " + runText(it) }
         if (current != null) {
             val sameDay = rules.today(current) == rules.today(now)
@@ -317,7 +319,8 @@ object WidgetItems {
                     w.big = w.value
                 } else if (period != GoalPeriod.DAY) {
                     w.value = "${Format.amount(progress)} of ${Format.amount(goal)} $unit"
-                    w.line = "${Format.amount(todayAmount)} today · ${Format.amount(goal)} $periodWord"
+                    // The Android widget design: the period's count, as Today's row says it ("1 of 3 this week").
+                    w.line = "${Format.amount(progress)} of ${Format.amount(goal)}$thisPeriod"
                     w.big = Format.amount(progress); w.goal = "of ${Format.amount(goal)}$thisPeriod"
                 } else {
                     w.value = "${Format.amount(progress)} of ${Format.amount(goal)} ${if (unit == "times") "checks" else unit}"
@@ -330,7 +333,7 @@ object WidgetItems {
                 val maxWord = if (rule.atMost) " max" else ""
                 w.value = "${Format.amount(progress)} of ${Format.amount(goal)}$named$maxWord"
                 w.big = Format.amount(progress); w.goal = "of ${Format.amount(goal)}$named$thisPeriod"
-                w.line = if (period != GoalPeriod.DAY && !rule.atMost) "${Format.amount(todayAmount)}$named today · ${Format.amount(goal)}$named $periodWord"
+                w.line = if (period != GoalPeriod.DAY && !rule.atMost) "${Format.amount(progress)} of ${Format.amount(goal)}$named$thisPeriod"
                     else "${Format.amount(progress)} of ${Format.amount(goal)}$named"
             }
             HabitKind.Duration -> {
@@ -338,7 +341,7 @@ object WidgetItems {
                 val (doneText, of) = minutes(progress, goal)
                 w.value = "$doneText of $of$maxWord"
                 w.big = doneText; w.goal = "of $of" + when (period) { GoalPeriod.WEEK -> " a week"; GoalPeriod.MONTH -> " a month"; else -> "" }
-                w.line = if (period != GoalPeriod.DAY && !rule.atMost) "${Format.minutes(todayAmount)} today · $of $periodWord" else "$doneText of $of"
+                w.line = if (period != GoalPeriod.DAY && !rule.atMost) "$doneText of $of$thisPeriod" else "$doneText of $of"
                 if (running) {
                     val clock = now - (progress * 60_000).toLong()
                     w.timerClock = clock

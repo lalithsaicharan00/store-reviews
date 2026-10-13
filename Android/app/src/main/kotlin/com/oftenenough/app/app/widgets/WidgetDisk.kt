@@ -32,13 +32,22 @@ object WidgetDisk {
     private fun snapshotFile(context: Context) = File(folder(context), "snapshot.json")
     private fun tapsFile(context: Context) = File(folder(context), "taps.json")
 
+    /** The snapshot as last written or read, kept decoded: widgets run in the app's process, so a redraw needn't parse
+     *  the file again (it cost 17–52 ms each time, three times a redraw). The file stays the truth for a new process. */
+    private var cached: Pair<Long, WidgetSnapshot>? = null
+
     fun read(context: Context): WidgetSnapshot? = synchronized(lock) {
         val f = snapshotFile(context)
-        if (!f.exists()) null else runCatching { json.decodeFromString(WidgetSnapshot.serializer(), f.readText()) }.getOrNull()
+        if (!f.exists()) return@synchronized null
+        val stamp = f.lastModified()
+        cached?.let { (at, s) -> if (at == stamp) return@synchronized s }
+        runCatching { json.decodeFromString(WidgetSnapshot.serializer(), f.readText()) }.getOrNull()?.also { cached = stamp to it }
     }
 
     fun write(context: Context, snapshot: WidgetSnapshot) = synchronized(lock) {
-        atomic(snapshotFile(context), json.encodeToString(WidgetSnapshot.serializer(), snapshot))
+        val f = snapshotFile(context)
+        atomic(f, json.encodeToString(WidgetSnapshot.serializer(), snapshot))
+        cached = f.lastModified() to snapshot
     }
 
     /** A tap's card becomes its "after" in the snapshot (the app's own next state, W3), so the widget redraws at once. */
@@ -50,7 +59,12 @@ object WidgetDisk {
                 if (item.id == itemId && item.token == token) item.after?.firstOrNull()?.also { applied = it } ?: item else item
             })
         }
-        if (applied != null) atomic(snapshotFile(context), json.encodeToString(WidgetSnapshot.serializer(), snapshot.copy(frames = frames)))
+        if (applied != null) {
+            val changed = snapshot.copy(frames = frames)
+            val f = snapshotFile(context)
+            atomic(f, json.encodeToString(WidgetSnapshot.serializer(), changed))
+            cached = f.lastModified() to changed
+        }
         applied
     }
 

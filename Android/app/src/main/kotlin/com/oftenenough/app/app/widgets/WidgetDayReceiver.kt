@@ -28,10 +28,20 @@ class WidgetDayReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        /** Sets the one alarm for the next day's start (from the store, or the snapshot's next frame). */
+        /**
+         * Sets the one alarm: the next day's start (from the store, or the snapshot's next frame), or sooner when a quit
+         * run's clock passes an hour or a whole day (Android's chronometer can't show either change on its own).
+         */
         fun plan(context: Context, store: HabitStore?) {
-            val next = store?.takeIf { it.isLoaded }?.let { it.rules.dayBounds(it.today()).last + 1 }
-                ?: WidgetDisk.read(context)?.frames?.firstOrNull { it.end > System.currentTimeMillis() }?.end ?: return
+            val now = System.currentTimeMillis()
+            val snapshot = WidgetDisk.read(context)
+            val dayStart = store?.takeIf { it.isLoaded }?.let { it.rules.dayBounds(it.today()).last + 1 }
+                ?: snapshot?.frames?.firstOrNull { it.end > now }?.end
+            val quitTurn = snapshot?.frame(now)?.items?.mapNotNull { it.quitStart?.takeIf { s -> s <= now } }?.minOfOrNull { start ->
+                val inDay = (now - start) % 86_400_000L
+                now + if (inDay < 3_600_000L) 3_600_000L - inDay else 86_400_000L - inDay
+            }
+            val next = listOfNotNull(dayStart, quitTurn).minOrNull() ?: return
             val alarms = context.getSystemService(AlarmManager::class.java) ?: return
             val pending = PendingIntent.getBroadcast(context, 7, Intent(context, WidgetDayReceiver::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)

@@ -48,13 +48,17 @@ class WidgetTapAction : ActionCallback {
         val kind = parameters[TapKeys.KIND] ?: return
         val day = parameters[TapKeys.DAY] ?: return
         val app = context.applicationContext
+        val t0 = android.os.SystemClock.uptimeMillis()
         val tap = WidgetTap(newId(), item, day, kind, System.currentTimeMillis())
         withContext(Dispatchers.IO) {
             WidgetDisk.appendTap(app, tap)
             if (kind == "check" || kind == "uncheck" || kind == "add") WidgetDisk.applyTap(app, item, token)
         }
+        val t1 = android.os.SystemClock.uptimeMillis()
         WidgetPublisher.updateAll(app)
+        val t2 = android.os.SystemClock.uptimeMillis()
         WidgetTapSaver.saveWaiting(app)
+        if (com.oftenenough.app.BuildConfig.DEBUG) android.util.Log.d("WidgetTiming", "tap files ${t1 - t0} ms, redraw asked ${t2 - t1} ms, saved ${android.os.SystemClock.uptimeMillis() - t2} ms")
     }
 }
 

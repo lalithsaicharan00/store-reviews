@@ -89,7 +89,9 @@ abstract class OftenEnoughWidget(private val kind: WidgetKind) : GlanceAppWidget
             val state = currentState<Preferences>()
             state[VERSION_KEY] // read, so a publish redraws
             val page = state[PAGE_KEY] ?: 0
+            val t = android.os.SystemClock.uptimeMillis()
             val snapshot = WidgetDisk.read(context)
+            if (com.oftenenough.app.BuildConfig.DEBUG) android.util.Log.d("WidgetTiming", "${kind.name} composed, snapshot read ${android.os.SystemClock.uptimeMillis() - t} ms")
             WidgetBody(kind, snapshot, WidgetDisk.choice(context, widgetId), page, widgetId)
         }
     }
@@ -287,9 +289,12 @@ private fun ListWidget(kind: WidgetKind, snapshot: WidgetSnapshot, frame: Widget
     Column(GlanceModifier.fillMaxSize()) {
         Header(kind, title, doneText, shown, pages)
         Spacer(GlanceModifier.height(if (kind.large) 8.dp else 6.dp))
-        rows.drop(shown * perPage).take(perPage).forEachIndexed { i, item ->
-            if (i > 0) Spacer(GlanceModifier.height(4.dp))
-            ListRow(item, frame, showPlace = section == null && !kind.tasks)
+        // The rows in a column of their own: a Glance container holds at most 10 children (five rows and their gaps
+        // beside the header and its gap were 11, and the fifth row was dropped).
+        Column(GlanceModifier.fillMaxWidth()) {
+            rows.drop(shown * perPage).take(perPage).forEachIndexed { i, item ->
+                ListRow(item, frame, showPlace = section == null && !kind.tasks, top = if (i > 0) 4.dp else 0.dp)
+            }
         }
     }
 }
@@ -344,10 +349,11 @@ private fun PlusMessage(title: String, done: String?) {
 
 /** One row: the fill toward its goal behind it, the icon, name and line, the streak, and its button. */
 @Composable
-private fun ListRow(item: WidgetItem, frame: WidgetFrame, showPlace: Boolean) {
+private fun ListRow(item: WidgetItem, frame: WidgetFrame, showPlace: Boolean, top: Dp = 0.dp) {
     val width = LocalSize.current.width - 24.dp
     val share = (item.fraction ?: 0.0).coerceIn(0.0, 1.0)
     val dayClick = actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to item.routeOrDay, TapKeys.DAY to frame.day))
+    Box(GlanceModifier.fillMaxWidth().padding(top = top)) {
     Box(GlanceModifier.fillMaxWidth().height(64.dp).cornerRadius(16.dp).background(Surface)) {
         // The fill: the share reached, in a light tint of the habit's colour (a limit's stays neutral, U2).
         if (share > 0) Box(GlanceModifier.width(width * share.toFloat()).fillMaxHeight().background(if (item.limitFill) Tonal2 else fill(item.color))) {}
@@ -366,6 +372,7 @@ private fun ListRow(item: WidgetItem, frame: WidgetFrame, showPlace: Boolean) {
             item.streak?.let { Streak(it); Spacer(GlanceModifier.width(8.dp)) }
             RoundButton(item, frame)
         }
+    }
     }
 }
 
@@ -443,9 +450,12 @@ private fun QuitClock(item: WidgetItem, size: TextUnit, color: ColorProvider) {
     if (until != null && until <= now) return Text(item.value, style = style(size, color), maxLines = 1)
     val elapsed = now - start
     val days = elapsed / 86_400_000L
+    val inDay = elapsed - days * 86_400_000L
+    // Android's chronometer leaves out the hour under an hour ("01:22"): the "0:" is drawn until then, and the widget is
+    // redrawn an hour in and at each new day of the run (WidgetDayReceiver), so it always reads "12d 0:01:22".
     Row(verticalAlignment = Alignment.CenterVertically) {
-        if (days > 0) Text("${days}d ", style = style(size, color))
-        Chronometer(SystemClock.elapsedRealtime() - (elapsed - days * 86_400_000L), size, color)
+        Text((if (days > 0) "${days}d " else "") + (if (inDay < 3_600_000L) "0:" else ""), style = style(size, color))
+        Chronometer(SystemClock.elapsedRealtime() - inDay, size, color)
     }
 }
 

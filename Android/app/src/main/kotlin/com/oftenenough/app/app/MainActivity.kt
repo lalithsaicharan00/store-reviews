@@ -91,6 +91,11 @@ class MainActivity : FragmentActivity() {
         val store = AppGraph.store
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
+        // Debug builds only: ask the launcher to add a widget (its own "Add to home screen" sheet), for checking widgets.
+        if (BuildConfig.DEBUG) intent.getStringExtra(TestLaunch.PIN_WIDGET)?.let { name ->
+            val receiver = android.content.ComponentName(this, "com.oftenenough.app.app.widgets.${name}WidgetReceiver")
+            android.appwidget.AppWidgetManager.getInstance(this).requestPinAppWidget(receiver, null, null)
+        }
         val demo = intent.getStringExtra(TestLaunch.DEMO)
         syncWhileOnScreen()
         setContent {
@@ -116,6 +121,8 @@ class MainActivity : FragmentActivity() {
 /** The extras a test launch passes (Rulebook D8, T8, T11). */
 object TestLaunch {
     const val UITEST = "uitest"
+    /** Debug builds: "OneHabit", "Today", "TodayLarge", "Week", "Tasks", "TasksLarge" asks the launcher to add that widget. */
+    const val PIN_WIDGET = "pinWidget"
     /** The store's clock runs from this hour, :30 (T11). */
     const val CLOCK_HOUR = "clockHour"
     /** "today" (the design's habits), "year" (a year of history), "many" (30 habits, two years). */
