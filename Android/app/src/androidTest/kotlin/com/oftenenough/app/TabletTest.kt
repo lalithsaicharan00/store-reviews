@@ -15,6 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,9 +35,10 @@ class TabletTest {
         device.executeShellCommand("wm size 2560x1600")
         device.executeShellCommand("wm density 320")
         Thread.sleep(2_000)
+        TestDevice.clear()
         scenario = ActivityScenario.launch(Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, 10).putExtra(TestLaunch.DEMO, "today"))
-        assertTrue("the demo on Today; on screen: ${screen()}", device.wait(Until.hasObject(By.res("row-Read")), 30_000))
+        if (!device.wait(Until.hasObject(By.res("row-Read")), 30_000)) fail("the demo on Today; ${TestDevice.state()}")
     }
 
     @After fun phoneDisplay() {

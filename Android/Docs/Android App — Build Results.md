@@ -5,8 +5,10 @@ Written by Claude (Claude Code), 13 October 2026, building the Android app on `c
 was measured, what's ported outside the core for now, and what needs the user. How to build and run it:
 [`Android/README.md`](<../README.md>).
 
-**Handed over 13 October 2026:** the user stopped this session for another agent to continue. Where everything
-stands, the parked work in `Android/WIP/` and what's next: [Android App — Handoff for the Next Agent](<Android App — Handoff for the Next Agent.md>).
+**Continued 13 October 2026** by a second session on the user's Windows PC (its own Android SDK and the Pixel 10
+emulator first, GitHub second). The first session's [handoff](<Android App — Handoff for the Next Agent.md>) is history
+now: everything it parked in `Android/WIP/` is built. **Where it stands is this page**; what's left is in
+"What's left" at the end.
 
 ## Checkpoint 1 — Skeleton (13 October 2026)
 
@@ -123,8 +125,12 @@ stands, the parked work in `Android/WIP/` and what's next: [Android App — Hand
   on open and about once a minute while on screen. Only with Drive connected and the welcome finished (D14); never for
   a test launch (D8). Sync's own reload is marked, so it never schedules another round.
 - **App lock, Plus behind its store seam, reminders' check:** built in checkpoint 2 (above).
+- **Reminders, the rest of design §15:** "Remind me with" a notification or an alarm (A11 D3: set as Android's alarm
+  clock, on its own channel with the phone's alarm sound, ringing until answered; never a full screen), and **Get
+  reminders on time**: turning reminders on asks Android's own notification question, then our sheet when exact times
+  aren't allowed yet (never in a test launch, T18). Seen on the Pixel 10 emulator.
 - **Still waiting on the user:** the OAuth client (real Drive sign-in and the two-emulator sync test), the Play Console
-  app (real purchases). Not built yet: the reminder's Alarm style and the "Get reminders on time" sheet (design §15).
+  app (real purchases).
 
 ## Checkpoint 4 — Widgets (13 October 2026)
 
@@ -185,6 +191,84 @@ as the state it set; a quit habit's best counts the run going on; names left out
 - Home-screen tests that tap the placed widget on CI (UI Automator): today the taps were driven by hand on the PC's
   emulator. The launcher's own preview shows Glance's loading card until the widget is placed.
 - Real phones (Pixel, Samsung, Xiaomi): how fast a tap shows there, and each maker's launcher.
+
+## Checkpoint 5 — Proof (13 October 2026)
+
+### Speed (`SpeedTest`; Pixel 10 emulator, API 36, a debug build; 30 habits, 21,477 logs over two years)
+
+The frames Android itself drew (JankStats and FrameMetrics) under real system touches (UI Automator), beside a control
+in the same run. Three runs; the last:
+
+| Scenario | Frames | p50 | p95 | Worst frame | Frames ≥ 32 ms | ≥ 100 ms |
+|---|---|---|---|---|---|---|
+| Control: Help scrolled (a static page) | 125 | 6.3 ms | 8.2 ms | 16.3 ms | 0 | 0 |
+| Today scrolled | 188 | 2.4 ms | 7.0 ms | 12.2 ms | 0 | 0 |
+| Day details opened | 46 | 4.7 ms | 18.1 ms | 89.2 ms | 1 | 0 |
+| Progress Week scrolled | 127 | 4.7 ms | 11.1 ms | 16.6 ms | 0 | 0 |
+| Progress: Week → Year | 61 | 4.7 ms | 36.0 ms | 93.2 ms | 10 | 0 |
+| Progress Year scrolled | 119 | 4.8 ms | 15.4 ms | 34.1 ms | 2 | 0 |
+| Habits list scrolled | 197 | 4.6 ms | 8.2 ms | 11.2 ms | 0 | 0 |
+| Habit details opened | 45 | 4.3 ms | 4.8 ms | 28.7 ms | 0 | 0 |
+| Habit History scrolled | 131 | 5.3 ms | 8.4 ms | 11.0 ms | 0 | 0 |
+| Habit Progress scrolled | 150 | 3.6 ms | 7.9 ms | 19.5 ms | 0 | 0 |
+
+- **No frame of 100 ms in any scenario.** Every scroll's worst frame is within twice the control's.
+- **Found and fixed by it:** switching Progress to Year worked out all 30 habits' years in one go, **709 ms on the main
+  thread** (a frozen tap). The cards are now built a few per frame (`ProgressBuilder`): the period and the first cards
+  show at once and the rest follow; the worst frame is ~92 ms.
+- **Still open:** Day details' first frame (~88 ms) and Week → Year's (~92 ms) are over the 50 ms target for opening a
+  screen; both are one frame in a debug build on an emulator. Judge them on a phone with a release build (T5).
+- **A lesson the iPhone had already paid for (S2):** the first version of this test drove the app through the Compose
+  test rule and read 5–7 frames of 100–250 ms on Progress and History. Those frames had 0 ms of layout and ~10 ms of
+  draw: the rest was the test's own clock. With real touches the same screens are the numbers above. One reading was
+  repeated before it was believed: a 322 ms frame on opening Habit details appeared once in four runs (28–30 ms in the
+  others).
+- **Not done:** Macrobenchmark and a Baseline Profile (they need a separate benchmark module and a release-like build;
+  `androidx.baselineprofile` is in the build files but unused), startup time, typing in a form.
+
+### Data safety (`DataSafetyTest`, 5, on the emulator against the real database code)
+
+A backup file comes back whole (every habit, log and note) and its restore undoes; Merge of the same data changes
+nothing and adds nothing twice; an empty file is never passed off as a restore (D5); a file that isn't a backup is
+refused and changes nothing; 40 quick taps all show before any write finishes and are all saved, in order (S7).
+Migrations from every past schema are the core's own tests (`core-tests.yml`).
+
+### Tablets and unfolded foldables (A11 D9; the iPad's decisions, U35)
+
+From 840 dp wide the menu is a sidebar that stays, with how many are left beside Today, and the page beside it is one
+centred column at most 720 dp wide: the phone's cards at their own size, never stretched. A sidebar choice replaces
+the page and never piles pages up. Below 840 dp (a phone, a folded foldable, a small tablet in portrait) the app is
+the phone's, exactly: nothing changes for it. `TabletTest` (3) sets the emulator to 1280 × 800 dp for its own run and
+puts it back. **Not built from the iPad's set:** a list beside a habit's page, Progress two cards across, popovers,
+keyboard shortcuts.
+
+### Also built: the app icon's shortcuts (A11 D8)
+
+Long-press the app icon: **Today**, **Start routine** (the time of day that is now if it has anything left, else the
+next card down Today that does) and **New habit**; no badge count on the icon (a count of what's left reads as "due",
+U3). Each opens its screen directly, as a widget's link does. Tested in `ScreensTest`.
+
+### Everything, together
+
+Unit tests 52, lint, and 41 emulator tests (`TodayTest` 11, `ScreensTest` 13, `WidgetDataTest` 8, `DataSafetyTest` 5,
+`TabletTest` 3, `SpeedTest` 1): green on the Pixel 10 emulator (API 36). CI (API 35): the first 29 are green (run 38386003188); the full set is being run (below).
+
+## What's left
+
+| What | Why it isn't done |
+|---|---|
+| Real Google Drive sign-in, the two-emulator sync test, the real-Drive check | Needs the user's Android OAuth client |
+| Play Billing for real, and how Plus Family reaches a family | Needs the user's Play Console app, and a decision |
+| A stable debug key in CI's secrets | The user's to add (below) |
+| Home-screen tests that tap a placed widget on CI | The widget taps were driven by hand on the PC's emulator and measured from screen recordings |
+| Macrobenchmark, a Baseline Profile, startup time, typing speed | Not built |
+| The iPad's wider layouts (list beside page, two cards across, popovers, shortcuts) | Only the sidebar and the centred column are built |
+| The running timer as Android 16's Live Update | An ongoing notification with Stop and save exists; the Live Update API isn't used yet |
+| Usage sharing; a Quick Settings tile (D8, "later") | Not built |
+| Real phones: a Pixel, a Samsung, a Xiaomi (U9, T5) | The user's check |
+
+**For the owner of `Core/`:** the core's database is at version 10, but `Core/schemas` holds files only up to 9. Every
+build exports `10.json`; it was never committed (this work may not touch `Core/schemas`, so it's left untracked).
 
 ## Ported outside the core for now (`// MOVE TO CORE`)
 

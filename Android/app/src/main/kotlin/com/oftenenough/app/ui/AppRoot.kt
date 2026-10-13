@@ -137,6 +137,9 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             "log", "slip" -> if (store.habit(id) != null) nav.navigate(Routes.add(id, day))
             "timer" -> if (store.habit(id) != null) nav.navigate(Routes.timer(id))
             "plus" -> nav.navigate(Routes.menu(MenuItem.PLUS))
+            // The app icon's long-press shortcuts (A11 D8).
+            "new" -> nav.navigate(Routes.NEW)
+            "routine" -> nextRoutine(store)?.let { (part, habits) -> nav.navigate(Routes.routine(part, store.today(), habits)) }
         }
     }
     // A reminder's tap opens that habit's Day details over Today.
@@ -291,6 +294,26 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 96.dp))
     }
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
+}
+
+/**
+ * The routine "Start the next routine" opens: the time of day that is now if it has anything left, else the next card
+ * down Today that does (then from the top). Null when everything planned today is done: Today opens and says so.
+ */
+fun nextRoutine(store: HabitStore): Pair<String, List<String>>? {
+    val today = store.today()
+    val members = store.rules.cardMembers()
+    val cards = store.todayCards().filter { it != com.oftenenough.app.data.DaySection.QUITTING }
+    val start = store.nowSection()?.id?.let { cards.indexOf(it) }?.takeIf { it >= 0 } ?: 0
+    for (i in cards.indices) {
+        val card = cards[(start + i) % cards.size]
+        val left = (members[card] ?: emptyList()).mapNotNull { store.habit(it) }.filter { h ->
+            !h.archived && !h.isQuitOrLimit && store.rules.isDue(h, today) && !store.rules.isSatisfied(h, today) &&
+                !store.isSkipped(h, today) && !store.isPaused(h, today)
+        }
+        if (left.isNotEmpty()) return card to left.map { it.id }
+    }
+    return null
 }
 
 /** True where the menu is a sidebar beside the page (840 dp and wider), so pages don't show a menu button. */

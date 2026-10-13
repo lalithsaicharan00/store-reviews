@@ -1,5 +1,11 @@
 # Android App — Handoff for the Next Agent
 
+> **History (13 October 2026).** A second session took this over the same day and built what it lists: the parked
+> screens and widgets from `Android/WIP/` (that folder is gone), every remaining screen, and checkpoints 1 to 5 as far
+> as they can go without the user's Google set-up. **The current state is in
+> [Android App — Build Results](<Android App — Build Results.md>)**, with what's left at its end. Read this page only
+> for how the first session reasoned.
+
 Written by Claude (Claude Code), 13 October 2026, when the user stopped this session and asked for everything to be
 written down so another agent can continue on `claude/android-app` (Current Work 107). Read this first, then the
 [build prompt](<Build Prompt — Android App (Delete When Done).md>) (the task, its five checkpoints and its rules), the

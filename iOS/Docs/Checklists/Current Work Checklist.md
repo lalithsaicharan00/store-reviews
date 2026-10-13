@@ -914,11 +914,19 @@ and the Add note keyboard coming up by itself.
     store), Filter and groups, Arrange your day, Help & Feedback, About; dark checked on every screen. Unit tests 48
     green, `ScreensTest` 10 of 10 and `TodayTest` 11 of 11 on the Pixel 10 emulator and on CI (API 35, run 38381027895).*
   - [ ] Checkpoint 3: backup, restore, Google Drive sync (two emulators), Plus (Play Billing), App lock, reminders.
+    *Built 13 Oct without the user's Google set-up: backup files and restore with undo (`DataSafetyTest`), Drive rounds
+    on a schedule (`SyncSchedule`), Plus behind a store seam with a stand-in store, App lock, reminders (the check, the
+    alarm style, Get reminders on time). **Waiting on the user:** the Android OAuth client (real sign-in, the
+    two-emulator sync test) and the Play Console app (real purchases).*
   - [x] Checkpoint 4: widgets (every kind and state, setup and change, interactive, up to date). *Built 13 Oct: six
     Glance widgets from the app's snapshot, the setup screen, the tap (queued first, the card's "after" at once, saved
     idempotently, removed once saved). On the Pixel 10 emulator a +1 shows in 373–466 ms and every tap is saved;
     `WidgetDataTest` 8 of 8. Still to do: home-screen tap tests on CI, real phones.*
-  - [ ] Checkpoint 5: speed, data, sync and widget tests green with numbers; tablets and foldables.
+  - [ ] Checkpoint 5: speed, data, sync and widget tests green with numbers; tablets and foldables. *13 Oct: speed
+    (`SpeedTest`: no frame of 100 ms with 30 habits and two years of history; a 709 ms freeze on Progress → Year found
+    and fixed), data (`DataSafetyTest`), widgets (`WidgetDataTest`, taps measured at 373–466 ms), tablets
+    (`TabletTest`: a sidebar and a centred column from 840 dp). **Still to do:** the sync tests (need the OAuth client),
+    home-screen widget taps on CI, Macrobenchmark and a Baseline Profile, the iPad's wider layouts.*
   - [ ] The user's checks on real phones (Pixel, Samsung, Xiaomi; U9/T5), noted separately.
 
 ## Planned improvements — build later

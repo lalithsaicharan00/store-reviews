@@ -20,6 +20,7 @@ import com.oftenenough.app.app.TestLaunch
 import java.io.File
 import org.junit.After
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -45,7 +46,7 @@ class SpeedTest {
     @After fun close() { scenario?.close() }
 
     private fun waitFor(tag: String, timeout: Long = 90_000) {
-        assertTrue("Waited for $tag", device.wait(Until.hasObject(By.res(tag)), timeout))
+        if (!device.wait(Until.hasObject(By.res(tag)), timeout)) fail("Waited for $tag; ${TestDevice.state()}")
     }
 
     private fun tap(tag: String) { waitFor(tag); device.findObject(By.res(tag)).click() }
@@ -83,6 +84,7 @@ class SpeedTest {
     }
 
     @Test fun twoYearsOfHistoryStaySmooth() {
+        TestDevice.clear()
         scenario = ActivityScenario.launch(Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, 10).putExtra(TestLaunch.DEMO, "many"))
         scenario!!.onActivity { activity ->

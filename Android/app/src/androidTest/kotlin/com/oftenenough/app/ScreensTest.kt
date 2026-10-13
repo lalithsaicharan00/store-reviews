@@ -46,8 +46,16 @@ class ScreensTest {
     private fun launch() {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, 10).putExtra(TestLaunch.DEMO, "today")
+        TestDevice.clear()
         scenario = ActivityScenario.launch(intent)
         waitFor(hasTestTag("row-Read"), "the demo on Today")
+    }
+
+    /** The real back key. It goes to the focused window, so a failure names the window that had the focus (T14). */
+    private fun back() {
+        try { Espresso.pressBack() } catch (e: Throwable) {
+            throw AssertionError("Back didn't reach the app (${e.javaClass.simpleName}); ${TestDevice.state()}", e)
+        }
     }
 
     private fun screen(): String = compose.onAllNodes(SemanticsMatcher("anything") { true }, useUnmergedTree = true).fetchSemanticsNodes().mapNotNull { n ->
@@ -104,6 +112,21 @@ class ScreensTest {
         waitFor(hasTestTag("habit-details"), "Habit details")
     }
 
+    @Test fun theIconsShortcutStartsTheNextRoutine() {
+        launch()
+        // At 10:30 the time of day that is now is Morning, with two habits left.
+        val next = com.oftenenough.app.ui.nextRoutine(AppGraph.store)
+        assertEquals("morning", next?.first)
+        onMain { AppGraph.widgetRoute = "routine|-1" }
+        waitFor(hasText("Habit 1 of ${next!!.second.size}"), "the player on Morning")
+    }
+
+    @Test fun theIconsShortcutOpensNewHabit() {
+        launch()
+        onMain { AppGraph.widgetRoute = "new|-1" }
+        waitFor(hasText("What do you want to do?"), "New")
+    }
+
     @Test fun progressShowsTheWeek() {
         launch()
         menu("progress")
@@ -116,7 +139,7 @@ class ScreensTest {
         launch()
         tap(hasContentDescription("Start Morning"), "Morning's Start")
         waitFor(hasText("Habit 1 of 2"), "the player's first habit")
-        Espresso.pressBack()
+        back()
         waitFor(hasTestTag("today-list"), "Today again")
     }
 
@@ -154,7 +177,7 @@ class ScreensTest {
         waitFor(hasTestTag("today-list"), "Today")
         tapTag("filter-button")
         tapTag("group-chip-Health")
-        Espresso.pressBack()
+        back()
         waitGone(hasTestTag("row-Read"), "Read (not in Health)")
         waitFor(hasTestTag("row-Water"), "Water (in Health)")
     }
