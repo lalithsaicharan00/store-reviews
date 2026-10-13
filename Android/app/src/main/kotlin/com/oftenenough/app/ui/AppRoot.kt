@@ -2,6 +2,9 @@ package com.oftenenough.app.ui
 
 import com.oftenenough.app.ui.newhabit.EditHabitScreen
 import com.oftenenough.app.ui.menu.MenuDrawer
+import com.oftenenough.app.app.AppGraph
+import com.oftenenough.app.ui.backup.BackupScreen
+import com.oftenenough.app.ui.backup.RestoreScreen
 import com.oftenenough.app.ui.settings.AppearancePage
 import com.oftenenough.app.ui.settings.DayAndWeekPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
@@ -55,6 +58,7 @@ import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.onboarding.HabitIdea
+import com.oftenenough.app.ui.onboarding.IdeasScreen
 import com.oftenenough.app.ui.onboarding.OnboardingFlow
 import com.oftenenough.app.ui.onboarding.OnboardingNav
 import com.oftenenough.app.ui.theme.appColors
@@ -67,6 +71,7 @@ import com.oftenenough.app.ui.today.TodayScreen
 fun AppRoot(store: HabitStore, prefs: Prefs) {
     val nav = rememberNavController()
     val snackbar = remember { SnackbarHostState() }
+    val rootScope = rememberCoroutineScope()
     val view = LocalView.current
     LaunchedEffect(store) {
         store.onLog = { done ->
@@ -136,6 +141,15 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             when (val title = entry.arguments?.getString("title") ?: "") {
                 MenuItem.DAY_AND_WEEK.title -> DayAndWeekPage(store) { nav.popBackStack() }
                 MenuItem.APPEARANCE.title -> AppearancePage(prefs) { nav.popBackStack() }
+                MenuItem.BACKUP.title -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.page("Restore from a backup")) },
+                    { nav.navigate(Routes.menu(MenuItem.PLUS)) }, { nav.popBackStack() }, snackbar)
+                "Restore from a backup" -> RestoreScreen(AppGraph.backup, store, { nav.popBackStack() }) { message ->
+                    nav.popBackStack()
+                    rootScope.launch { snackbar.showSnackbar(message) }
+                }
+                "Start from an idea" -> IdeasScreen({ nav.popBackStack() }) { idea ->
+                    nav.popBackStack(); nav.navigate(Routes.NEW + "?idea=" + android.net.Uri.encode(idea.name))
+                }
                 MenuItem.TIMES_OF_DAY.title -> TimesOfDayPage(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
                 else -> NextPage(nav, title)
             }

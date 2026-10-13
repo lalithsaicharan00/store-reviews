@@ -1,5 +1,7 @@
 package com.oftenenough.app.app
 
+import com.oftenenough.app.BuildConfig
+
 import android.content.Context
 import android.text.format.DateFormat
 import app.habits.core.AndroidCore
@@ -27,6 +29,9 @@ object AppGraph {
         DayWords.is24Hour = DateFormat.is24HourFormat(context)
     }
 
+    private var backupInstance: com.oftenenough.app.app.backup.BackupCenter? = null
+    val backup: com.oftenenough.app.app.backup.BackupCenter get() = backupInstance ?: error("AppGraph.open first")
+
     val store: HabitStore get() = storeInstance ?: error("AppGraph.open first")
     val prefs: Prefs get() = prefsInstance ?: error("AppGraph.open first")
     val isOpen: Boolean get() = storeInstance != null
@@ -38,7 +43,13 @@ object AppGraph {
         val path = context.getDatabasePath("habits.db").also { it.parentFile?.mkdirs() }.path
         prefsInstance = Prefs.of(context)
         storeInstance = HabitStore(HabitRepository.open(path), scope).also { s -> scope.launchLoad(s) }
+        backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
     }
+
+    /** Google Drive: the stand-in on this phone in debug builds until the user's OAuth client exists (build prompt §5). */
+    private fun driveLink(context: Context, folder: String, prefs: android.content.SharedPreferences): com.oftenenough.app.app.backup.DriveLink =
+        if (BuildConfig.DEBUG) com.oftenenough.app.app.backup.StandInLink(java.io.File(context.noBackupFilesDir, folder), prefs)
+        else com.oftenenough.app.app.backup.NoDriveLink
 
     /** A test launch: an in-memory database, its own preferences, and (optionally) a clock that starts at [clockHour]:30. */
     fun openForTest(context: Context, clockHour: Int?) {
@@ -53,6 +64,11 @@ object AppGraph {
         prefsInstance = Prefs.of(context, "uitest")
         storeInstance?.repo?.close()
         storeInstance = HabitStore(HabitRepository.openInMemory(), scope) { System.currentTimeMillis() + offset }.also { s -> scope.launchLoad(s) }
+        // Its own stand-in Drive, emptied each test launch (D8: never the person's).
+        val driveFolder = java.io.File(context.noBackupFilesDir, "uitest-standin-drive").also { it.deleteRecursively() }
+        val drivePrefs = context.getSharedPreferences("uitest-drive", Context.MODE_PRIVATE).also { it.edit().clear().commit() }
+        backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store,
+            com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs), test = true)
     }
 
     private fun CoroutineScope.launchLoad(store: HabitStore) {

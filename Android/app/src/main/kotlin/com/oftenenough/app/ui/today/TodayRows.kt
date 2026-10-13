@@ -27,6 +27,8 @@ import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Replay
+import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.DropdownMenu
@@ -136,7 +138,10 @@ fun HabitRow(
     val model = remember(habit, day, today, rev, running, slot) { rowModel(store, habit, day, slot, time, store.clock()) }
     val fillColor = c.fill(habit.color)
     var menu by remember { mutableStateOf(false) }
+    val past = day <= today
 
+    SwipeRow(start = if (past) undoActions(habit, day, store, layout) else emptyList(),
+        end = if (past) dayActions(habit, day, today, store, actions) else emptyList(), shape = shape) {
     Column(
         Modifier.fillMaxWidth().clip(shape).background(c.surface)
             .drawBehind {
@@ -166,6 +171,27 @@ fun HabitRow(
         AfterLog(habit, day, store, layout, actions)
         RowMenu(menu, { menu = false }, habit, day, store, layout, actions)
     }
+    }
+}
+
+/** Swipe right: Undo, naming what it takes back, when the day has a log (U14). */
+private fun undoActions(habit: Habit, day: Int, store: HabitStore, layout: TodayLayout): List<SwipeAction> {
+    val last = store.entries(habit.id, day).lastOrNull() ?: return emptyList()
+    return listOf(SwipeAction(last.undoLabel(store.rule(habit, day)), Icons.AutoMirrored.Rounded.Undo, "row-swipe-undo") {
+        layout.hold(); store.undoEntry(last.id)
+    })
+}
+
+/** Swipe left: Skip (or Undo skip) at the edge, then Note (U14). */
+private fun dayActions(habit: Habit, day: Int, today: Int, store: HabitStore, actions: TodayActions): List<SwipeAction> {
+    val list = ArrayList<SwipeAction>(2)
+    if (habit.kind != HabitKind.Task) {
+        if (store.isSkipped(habit, day)) list += SwipeAction("Undo skip", Icons.AutoMirrored.Rounded.Undo, "row-swipe-skip") { store.setSkipped(habit, day, false) }
+        else if (store.rules.canSkip(store.rule(habit, day)) && !store.isPaused(habit, day))
+            list += SwipeAction(if (day == today) "Skip" else "Skip this day", Icons.Rounded.SkipNext, "row-swipe-skip") { store.setSkipped(habit, day, true) }
+    }
+    list += SwipeAction(if (store.note(habit, day) == null) "Note" else "Edit note", Icons.Rounded.EditNote, "row-swipe-note") { actions.writeNote(habit, day) }
+    return list
 }
 
 @Composable
@@ -295,6 +321,11 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
     val pastBest = history.dropLast(if (ongoing == null) 0 else 1).maxOfOrNull { it.seconds(store.clock()) } ?: 0.0
     val tick = rememberTicker(ongoing != null, store.clock)
     var menu by remember { mutableStateOf(false) }
+    val paused = store.isPaused(habit, today)
+    SwipeRow(start = emptyList(), end = listOfNotNull(
+        if (!paused) SwipeAction("Log slip", Icons.Rounded.Replay, "row-swipe-slip") { actions.addLog(habit, today) } else null,
+        SwipeAction(if (store.note(habit, today) == null) "Note" else "Edit note", Icons.Rounded.EditNote, "row-swipe-note") { actions.writeNote(habit, today) },
+    ), shape = shape) {
     Column(Modifier.fillMaxWidth().clip(shape).background(c.surface)
         .combinedClickable(onClick = { actions.openDay(habit, today) }, onLongClick = { menu = true })
         .semantics { testTag = "row-${habit.name}" }
@@ -312,6 +343,7 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold, fontFeatureSettings = "tnum"), color = c.ink, maxLines = 1)
         }
         RowMenu(menu, { menu = false }, habit, today, store, layout, actions)
+    }
     }
 }
 
