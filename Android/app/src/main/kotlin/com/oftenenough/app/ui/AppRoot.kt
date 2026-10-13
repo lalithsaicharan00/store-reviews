@@ -5,7 +5,10 @@ import com.oftenenough.app.ui.menu.MenuDrawer
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.ui.backup.BackupScreen
 import com.oftenenough.app.ui.backup.RestoreScreen
+import com.oftenenough.app.ui.settings.AboutPage
 import com.oftenenough.app.ui.settings.AppearancePage
+import com.oftenenough.app.ui.settings.HelpPage
+import com.oftenenough.app.ui.settings.LicencesPage
 import com.oftenenough.app.ui.settings.DayAndWeekPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
 import com.oftenenough.app.ui.settings.TimesOfDayPage
@@ -148,6 +151,9 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                         override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                     }) { nav.popBackStack() }
                 }
+                MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
+                MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
+                "Open source licences" -> LicencesPage { nav.popBackStack() }
                 MenuItem.DAY_AND_WEEK.title -> DayAndWeekPage(store) { nav.popBackStack() }
                 MenuItem.APPEARANCE.title -> AppearancePage(prefs) { nav.popBackStack() }
                 MenuItem.BACKUP.title -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.page("Restore from a backup")) },
@@ -186,6 +192,15 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                     }) { nav.popBackStack() }
             }
         }
+        composable(Routes.WELCOME) {
+            OnboardingFlow(store, object : OnboardingNav {
+                override fun finished() { nav.popBackStack() }
+                override fun newHabit(idea: HabitIdea?) { nav.popBackStack(Routes.TODAY, inclusive = false); nav.navigate(Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: "")) }
+                override fun signIn() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.BACKUP)) }
+                override fun restore() { nav.popBackStack(); nav.navigate(Routes.page("Restore from a backup")) }
+                override fun privacy() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.PRIVACY)) }
+            }, replay = true)
+        }
         composable("pause/{id}") { NextPage(nav, "Pause") }
         composable("timer/{id}") { e ->
             val id = e.arguments!!.getString("id")!!
@@ -205,6 +220,7 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
 object Routes {
     const val TODAY = "today"
     const val NEW = "new"
+    const val WELCOME = "welcome"
     fun page(title: String) = "page/" + android.net.Uri.encode(title)
     fun add(habit: String, day: Int) = "add/$habit/$day"
     fun log(id: String) = "log/$id"

@@ -43,7 +43,16 @@ stands, the parked work in `Android/WIP/` and what's next: [Android App — Hand
   check, an amount, a week count, a checklist step, a timer, a quit habit and a task, and the day bar.
   Run 38342494305: 9 of 11 (the tests assumed habits the demo already shows done; fixed). Run 38343622250 (`451d8b1`):
   10 of 11; `aChecklistTicksAStep` tapped a step row composed past the list's edge. `be1b22e` scrolls to it first;
-  its run (38369953627) was cancelled by the handoff push before the emulator ran. *Final result: still to record.*
+  its run (38369953627) was cancelled by the handoff push before the emulator ran. **Final result (13 Oct, `c7e281a`):
+  11 of 11**, on the user's PC (Pixel 10 emulator, Android 16 / API 36, 31.8 s) and on CI's emulator (API 35, run
+  38373182612). Two fixes were needed first, both in the tests:
+  - **Android 16:** every test failed before its first tap (`NoSuchMethodException: InputManager.getInstance`): Compose's
+    test rule brought an older Espresso that calls a method API 36 removed. `espresso-core:3.7.0` is now pinned for the
+    instrumented tests. CI's API 35 emulator never showed it.
+  - **The checklist test** (`aChecklistTicksAStep`): the tap worked (Skincare read "2/4 steps" with "Undo Last Step"),
+    but the after-log line that appears under the row pushed Serum's step past the list's edge, so the check found no
+    "Undo Serum". `be1b22e`'s scroll before the tap wasn't enough; a test's wait now scrolls the list to what it waits
+    for.
 
 ### Found and fixed on the way
 
@@ -54,6 +63,17 @@ stands, the parked work in `Android/WIP/` and what's next: [Android App — Hand
 - My first test of the sentence copied the iPhone's doc comment ("Coffee: at most 3 coffees a day"); the iPhone's code
   leaves out a name that only repeats the unit ("At most 3 coffees a day"). The Android code already matched the
   code; the test was corrected to the code, with the named case added.
+
+## Checkpoint 2 — Every screen (in progress, 13 October 2026)
+
+- **Habit details, Progress, the routine player and the timer** (parked in `Android/WIP/`): compiled as written; their
+  word tests pass (`PlayerWordsTest` 6, `ProgressWordsTest` 7); routed (`habit/{id}`, ≡ › Progress, `routine/…`,
+  `timer/{id}`). Each page that opens Day details holds its own sheet, so going back to it returns to the open sheet.
+  Checked on the Pixel 10 emulator with the demo: History, Progress tab, Progress Week, the player on Morning.
+- **Help & Feedback** (search at the top, Contact us, Show the welcome again, every topic opened in place) and
+  **About** (the tonal mark, version, the name, privacy, acknowledgements, Open source licences). Help's answers are the
+  iPhone's, rewritten to name Android's own controls and to say "log" (Current Work 102); two iPhone topics are left
+  out because Android has no such option (Progress's View Options: Full Day, Show Streaks).
 
 ## Ported outside the core for now (`// MOVE TO CORE`)
 

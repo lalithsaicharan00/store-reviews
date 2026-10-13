@@ -904,7 +904,11 @@ and the Add note keyboard coming up by itself.
     Checkpoint 1 is built and its unit tests are green; the emulator's `TodayTest` was 10 of 11 with a fix pushed
     (`be1b22e`), not yet confirmed. Parts of checkpoints 2–4 are built (form, settings pages, backup, reminders) or
     parked uncompiled in `Android/WIP/` (Habit details, Progress, player, widgets).
-  - [ ] Checkpoint 1: skeleton, Core on Android, database, CI, onboarding, Today, logging and undo.
+  - **Continued 13 Oct 2026** by the next session, building and testing on the user's PC (its Android SDK and the
+    Pixel 10 emulator, API 36) first and on GitHub second (the user: "mostly try to use here").
+  - [x] Checkpoint 1: skeleton, Core on Android, database, CI, onboarding, Today, logging and undo. *Done 13 Oct:
+    `TodayTest` 11 of 11 on the Pixel 10 emulator (API 36, 31.8 s) and on CI's API 35 emulator (run 38373182612,
+    `c7e281a`); unit tests and lint green.*
   - [ ] Checkpoint 2: every screen wired; dark mode.
   - [ ] Checkpoint 3: backup, restore, Google Drive sync (two emulators), Plus (Play Billing), App lock, reminders.
   - [ ] Checkpoint 4: widgets (every kind and state, setup and change, interactive, up to date).

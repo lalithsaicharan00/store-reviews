@@ -104,10 +104,14 @@ interface OnboardingNav {
  * purchase, and there's no account to make.
  */
 @Composable
-fun OnboardingFlow(store: HabitStore, nav: OnboardingNav) {
-    var page by rememberSaveable { mutableStateOf("welcome") }
+fun OnboardingFlow(store: HabitStore, nav: OnboardingNav, replay: Boolean = false) {
+    // Help's Show the welcome again starts at what the app can do; going back from there closes it.
+    var page by rememberSaveable { mutableStateOf(if (replay) "habit" else "welcome") }
     val pages = listOf("welcome", "habit", "quit", "tasks", "days", "first")
-    fun back() { page = if (page == "back") "welcome" else pages.getOrElse(pages.indexOf(page) - 1) { "welcome" } }
+    fun back() {
+        if (replay && page == "habit") return nav.finished()
+        page = if (page == "back") "welcome" else pages.getOrElse(pages.indexOf(page) - 1) { "welcome" }
+    }
     BackHandler(page != "welcome") { back() }
     Box(Modifier.fillMaxSize().background(appColors.screen).statusBarsPadding().navigationBarsPadding()) {
         when (page) {
