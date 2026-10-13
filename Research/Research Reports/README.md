@@ -20,7 +20,7 @@ Reusable marketing examples are saved in the root Marketing folder.
 
 | Document | Author | Date | Scope |
 |---|---|---|---|
-| [Marketing and How We Can Market It](<../../Marketing/Marketing and How We Can Market It.md>) | Codex | 13 Oct 2026 | Historical Habit Tracker Reddit challenge, original post and participant download statement, proposed Often Enough adaptation, current community rules and limits on aggregate impact. |
+| [Marketing and How We Can Market It](<../../Marketing/Marketing and How We Can Market It.md>) | Codex | 13 Oct 2026 | User-selected examples: Habit Tracker Reddit challenge and bondavi app/store localization. Original sources, discovery, exact app identities, reusable approaches and limits; localization reports gradual overseas growth, not a measured surge. User-data/content-coverage tactic excluded. |
 
 ## Individual Habit Details
 

@@ -17,6 +17,8 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 
 ## Reddit marketing example — current request
 
+**Localization example, the user, 13 October 2026:** add bondavi's July 2023 app/store localization to [Marketing and How We Can Market It](<../../../Marketing/Marketing and How We Can Market It.md>), including original sources, discovery and gradual overseas growth with no quantified surge. Exclude the separate user-data/content-coverage tactic as not useful for our plan. Commit this scoped package to main, verify publication, then continue with Me+ Lifestyle Routine. Progress: [publication and continuation checklist](<Localization Marketing Example — Publish and Continue.md>) (W1/W2/W4).
+
 **The user, 13 October 2026:** save the Habit Tracker Reddit challenge as a reusable marketing example in a new root Marketing folder and push the documentation to main. Preserve the app identity, discovery path, original post and participant download statement; distinguish a reported individual acquisition from an unverified download spike. Include a proposed Often Enough challenge draft and the original community's current promotion restriction.
 
 - [Marketing and How We Can Market It](<../../../Marketing/Marketing and How We Can Market It.md>)

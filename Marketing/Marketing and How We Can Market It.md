@@ -1,6 +1,6 @@
 # Marketing and How We Can Market It
 
-Written by Codex, 13 October 2026. Saved at the user's request as a reusable Reddit marketing example for Often Enough.
+Written by Codex, 13 October 2026. Saved at the user's request as reusable marketing examples for Often Enough. Example 1 covers a Reddit challenge; Example 2 covers app and App Store localization.
 
 ## Example 1: a community habit challenge brings a new user
 
@@ -92,3 +92,62 @@ Keep the post URL and date, the challenge's participant count, attributable link
 There is no conversion rate, total acquired-user count, campaign spend, country breakdown or verified aggregate download lift for the historical example. The post appears user-led and discusses paying for the app; developer sponsorship was not asserted or independently audited. The in-app “ref code” is used for connecting participants in the thread, with no verified reward program in this case.
 
 **Keep as a marketing example:** community participation supplied a reason to try the app, and a matched-app reply reports a download. It supports testing the idea; it does not prove that this approach will produce meaningful download volume for us.
+
+## Example 2: app and App Store localization expands overseas reach
+
+**User-selected tactic, 13 October 2026:** retain bondavi's localization example as useful for Often Enough. The user rejected the separate tactic of analyzing users' behavioral data to generate press coverage; that tactic is not part of this marketing plan.
+
+**The result in one sentence:** after releasing a 32-language update, the developer reported that overseas users were beginning to appear and downloads were gradually increasing. **A sudden surge, exact additional installs or a percentage lift was not disclosed.**
+
+### Which app was it?
+
+| Field | Details |
+|---|---|
+| English App Store name | **Habit: Goal & Streak Tracker** |
+| Japanese app name in the original announcement | **継続する技術** |
+| Developer / seller | **bondavi Inc. / bondavi株式会社**, led by Daisuke Toda (戸田大介) |
+| Platform covered by this example | **iOS / Apple App Store** |
+| Stable Apple ID | **1120239484** |
+| Bundle ID | **info.todice.habit** |
+| First release | **18 June 2016 UTC / 19 June in Japan**, `2016-06-18T22:52:44Z` |
+| Store / identity sources | [App Store](https://apps.apple.com/us/app/habit-goal-streak-tracker/id1120239484), [Japanese Apple lookup](https://itunes.apple.com/lookup?id=1120239484&country=jp) |
+
+The US and Japanese Apple lookups were checked on 13 October 2026 and matched the same ID, bundle and seller. This establishes that the Japanese announcement concerns the app in our iOS research list.
+
+### Original sources and timeline
+
+- **July 2023 — app update:** the company says 継続する技術 released its update supporting **32 languages** in July. It does not give an exact launch day.
+- **9 August 2023 — public announcement:** [original company announcement on PR TIMES](https://prtimes.jp/main/html/rd/p/000000054.000066061.html), also published as [bondavi's original four-page PDF](https://bondavi.jp/news/2308_global.pdf). It describes the localization work and reports gradual overseas download growth.
+- **1 November 2023 — staff account:** [bondavi PR's account of the localization project](https://note.com/bondavi/n/n3cd1e79fe4a4). It adds that English and Chinese were localized by a native-speaking contributor and again reports gradual growth. This account discusses the company's apps together and says completion was in August; retain the app-specific July update date from the earlier release rather than inventing one exact rollout day.
+
+The company states that it did not use paid promotion. This is a historical company assertion, not an independent audit of its advertising activity. Staff and translation work still required resources.
+
+### What did they actually localize?
+
+They translated the **app**, prepared **App Store screenshots in the supported languages**, adjusted layouts for different text lengths, and handled right-to-left languages such as Arabic and Hebrew. They also adapted the app's distinctive encouragement messages to different cultures rather than translating every phrase literally.
+
+The later staff account specifically describes native English/Chinese localization. It does not establish that every one of the 32 languages received the same native review process.
+
+This is **localized product and store presentation**. We did not find evidence in these sources that multilingual website landing pages drove this result. Keep that separate from the user's earlier, still-unverified “App Stick” website-page example.
+
+### What happened to downloads?
+
+The August announcement reports that overseas users had begun appearing and downloads were increasing **gradually**. It supplies no before/after download counts, growth percentage, country breakdown, download chart or tracked-install attribution.
+
+That supports recording a **developer-reported overseas growth trend after localization**. It cannot establish the size of the effect, the strongest language, an exact peak, or how much growth was caused by localization alone.
+
+**Do not attach the earlier 51% figure to this example.** The company's separate [10 December 2020 release](https://prtimes.jp/main/html/rd/p/000000007.000066061.html) reports a 51% download increase in April–May 2020 versus February–March 2020 and discusses pandemic demand. That event happened about three years before this localization rollout.
+
+### How did we find this example?
+
+We moved from the English store name to the Japanese identity using the stable Apple ID, then searched the company and Japanese app name for original growth accounts. We read bondavi's dated localization announcement and the later company PR account, matching the app-specific rollout and outcome instead of relying only on search snippets or portfolio totals.
+
+### How we can use the idea for Often Enough
+
+**Proposed experiment, not a tested outcome for our app:** make the app and its App Store presentation understandable in a small set of additional languages where there is evidence of demand. Translate the app and listing copy, produce matching store screenshots, and have fluent readers check wording and layout, including right-to-left behavior where relevant.
+
+The plausible mechanism is that a person can understand both the store's explanation and the product after installing. The historical sources do not isolate which part of the localization contributed most. There is no evidence that we must launch 32 languages at once.
+
+Record each language's rollout date and compare storefront impressions, product-page conversion and first-time downloads before and after the change, preserving platform and country. Note simultaneous campaigns, features and seasonal changes so that a rise is not automatically attributed to translation.
+
+**Keep as a marketing example:** localized app plus localized store presentation, followed by reported gradual overseas growth. Exact download lift remains unknown; user-data research for press coverage is excluded from our selected tactics.
