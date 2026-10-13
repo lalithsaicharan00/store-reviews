@@ -118,7 +118,6 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             override fun newHabit(idea: HabitIdea?) { handOver = Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: ""); prefs.onboarded = true }
             override fun signIn() { handOver = Routes.page("Google Drive & Backup"); prefs.onboarded = true }
             override fun restore() { handOver = Routes.page("Restore from a backup"); prefs.onboarded = true }
-            override fun privacy() { handOver = Routes.page("Privacy & Security"); prefs.onboarded = true }
         })
         return
     }
@@ -265,7 +264,6 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                 override fun newHabit(idea: HabitIdea?) { nav.popBackStack(Routes.TODAY, inclusive = false); nav.navigate(Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: "")) }
                 override fun signIn() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.BACKUP)) }
                 override fun restore() { nav.popBackStack(); nav.navigate(Routes.page("Restore from a backup")) }
-                override fun privacy() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.PRIVACY)) }
             }, replay = true)
         }
         composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }

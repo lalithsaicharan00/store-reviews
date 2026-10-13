@@ -101,7 +101,13 @@ private fun scheme(c: AppColors): ColorScheme {
     )
 }
 
-/** Roboto (the system font). Screen questions 28 Regular, titles 22, row names 16, supporting 14, labels 12–14 Medium. */
+/**
+ * Roboto (the system font). Screen questions 28 Regular, titles 22, row names 16, supporting 14, labels 12–14 Medium.
+ *
+ * Moving to Google Sans Flex (the user, 13 Oct 2026; `Fonts.kt`): the Welcome screen uses it already, with its own
+ * `WelcomeType`. As each screen moves, use Figma's sizes exactly (no sp or letter-spacing changes of the app's own),
+ * Regular and Medium only, and then these styles become the one shared list every screen refers to.
+ */
 private val typography = Typography().let { t ->
     t.copy(
         displaySmall = t.displaySmall.copy(fontSize = 36.sp, lineHeight = 44.sp),

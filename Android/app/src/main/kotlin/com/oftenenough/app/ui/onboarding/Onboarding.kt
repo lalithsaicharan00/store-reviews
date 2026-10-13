@@ -2,6 +2,11 @@ package com.oftenenough.app.ui.onboarding
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import com.oftenenough.app.ui.theme.googleSansFlex
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -95,7 +101,6 @@ interface OnboardingNav {
     fun newHabit(idea: HabitIdea?)
     fun signIn()
     fun restore()
-    fun privacy()
 }
 
 /**
@@ -115,7 +120,7 @@ fun OnboardingFlow(store: HabitStore, nav: OnboardingNav, replay: Boolean = fals
     BackHandler(page != "welcome") { back() }
     Box(Modifier.fillMaxSize().background(appColors.screen).statusBarsPadding().navigationBarsPadding()) {
         when (page) {
-            "welcome" -> Welcome(onNew = { page = "habit" }, onBack = { page = "back" }, onPrivacy = nav::privacy)
+            "welcome" -> Welcome(onNew = { page = "habit" }, onBack = { page = "back" })
             "back" -> WelcomeBack(::back, nav)
             "habit", "quit", "tasks" -> IntroPage(page, ::back, onSkip = nav::finished, onContinue = { page = pages[pages.indexOf(page) + 1] })
             "days" -> Page("Your days and weeks.", null, ::back, nav::finished, "Continue", { page = "first" }) {
@@ -140,34 +145,114 @@ fun OnboardingFlow(store: HabitStore, nav: OnboardingNav, replay: Boolean = fals
     }
 }
 
+/*
+ * The Welcome screen: the first screen after downloading (Figma "02 · Welcome", node 1548:3, Android Designs, section
+ * "Onboarding: new to the app"). Rebuilt 13 Oct 2026 to match Figma exactly, at the user's request ("whatever exactly
+ * we have in the Figma, the same way it should look in the developed version"). Rules for anyone changing it:
+ *
+ * 1. **Figma's numbers, as drawn.** Every size, gap and padding below is the Figma frame's; never round, "improve" or
+ *    reuse a nearby shared style that is a little different (the old screen used 34/17/15 sp and letter spacing the
+ *    design never had, and looked heavier and more crowded than the design).
+ * 2. **Google Sans Flex, Regular and Medium only** (`googleSansFlex`); never SemiBold or Bold unless the user asks.
+ *    Letter spacing 0, except the app name's −0.5. Hierarchy: the name 32 Medium › the question 16 Medium › each
+ *    choice's name 16 Medium › its description 14 Regular, grey.
+ * 3. **The logo, the name and the line under it are centred in the space above the question**, on every screen
+ *    height: two equal flexible gaps, never a fixed top gap (the old 96 dp stuck them to the top on tall phones and
+ *    left a hole below). The question and the choices sit at the bottom, 24 dp above the gesture bar.
+ *    Inside the group: 24 dp from the logo to the name, 8 dp from the name to the line under it (3 : 1, the user,
+ *    13 Oct 2026, after trying 16 : 8): the name belongs with its line, not with the logo, so it sits nearer the line.
+ * 4. **The choices breathe** (the user: "they have good amount of spacing"): 16 dp above and below the text, 2 dp
+ *    between a choice's name and its description, 16 dp between the text and the chevron, 12 dp after the chevron.
+ *    The text wraps to two lines before it ever reaches the chevron; don't use the shared `ListRow` here (its 12 dp
+ *    padding and missing chevron gap squeezed "Build habits and keep track of your tasks." onto one line).
+ * 5. **The logo fills its tile, and it's a vector:** `mark_light`/`mark_dark` (res/drawable: Figma's SVG export,
+ *    converted with Android Studio's SVG converter) are the whole 1024 logo canvas, padding included, so they're drawn at the tile's full
+ *    96 dp (Brand/Logo Guide.md, the 52:60 inset), never smaller. Never a PNG: the 288 px one looked soft on large
+ *    screens (the user, 13 Oct 2026, "use SVG ... whichever is better in the long term").
+ * 6. **One question, two answers, nothing else.** Privacy & optional usage sharing was removed on 13 Oct 2026 (the
+ *    user: "yes remove it from the welcome screen"); Privacy is in ≡ › Privacy & Security (Design Rules, Onboarding).
+ * 7. **Text has a measure, not hand-made breaks** (`WelcomeType.taglineMeasure`, `choiceMeasure`): it fills a narrow
+ *    screen and stops at that width on a wide one, so the line under the name and each choice's description break
+ *    at a natural pause on every phone.
+ */
 @Composable
-private fun Welcome(onNew: () -> Unit, onBack: () -> Unit, onPrivacy: () -> Unit) {
+private fun Welcome(onNew: () -> Unit, onBack: () -> Unit) {
+    // fillMaxSize before verticalScroll keeps the screen's height as the column's minimum, so the two weighted gaps
+    // share the spare height; with very large text the gaps shrink to 24 dp and the page scrolls instead.
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.height(96.dp))
+        Spacer(Modifier.weight(1f).heightIn(min = 24.dp))
         // The tonal mark on its own background: the light set on white, the dark set on dark (Brand/Logo Guide.md, U29).
-        Box(Modifier.size(96.dp).clip(RoundedCornerShape(24.dp)).background(appColors.surface), contentAlignment = Alignment.Center) {
-            Image(painterResource(if (appColors.dark) R.drawable.mark_dark else R.drawable.mark_light), "Often Enough", Modifier.size(72.dp))
+        Box(Modifier.size(96.dp).clip(RoundedCornerShape(25.85.dp)).background(appColors.surface), contentAlignment = Alignment.Center) {
+            Image(painterResource(if (appColors.dark) R.drawable.mark_dark else R.drawable.mark_light), "Often Enough", Modifier.size(96.dp))
         }
         Spacer(Modifier.height(24.dp))
-        Text("Often Enough", style = MaterialTheme.typography.displaySmall.copy(fontSize = 34.sp), color = appColors.ink)
-        Spacer(Modifier.height(12.dp))
-        Text("Habits grow through repetition. You choose how often is enough.", Modifier.padding(horizontal = 24.dp),
-            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 17.sp), color = appColors.secondary, textAlign = TextAlign.Center)
-        Spacer(Modifier.weight(1f).heightIn(min = 48.dp))
-        Text("Have you used Often Enough before?", style = MaterialTheme.typography.titleMedium.copy(fontSize = 17.sp), color = appColors.ink)
-        Spacer(Modifier.height(16.dp))
-        SegmentedList {
-            Box(Modifier.semantics { testTag = "onboarding-new" }) {
-                ListRow("I'm new here", 0, 2, "Build habits and keep track of your tasks.", Icons.Rounded.AutoAwesome, iconDisc = true, onClick = onNew)
-            }
-            Box(Modifier.semantics { testTag = "onboarding-returning" }) {
-                ListRow("I've used it before", 1, 2, "Get your habits back from Google Drive or a backup file.", Icons.Rounded.History, iconDisc = true, onClick = onBack)
-            }
-        }
-        Spacer(Modifier.height(16.dp))
-        PlainButton("Privacy & optional usage sharing", onPrivacy, color = appColors.secondary)
+        Text("Often Enough", style = WelcomeType.name, color = appColors.ink)
         Spacer(Modifier.height(8.dp))
+        Text("Habits grow through repetition. You choose how often is enough.", Modifier.widthIn(max = WelcomeType.taglineMeasure),
+            style = WelcomeType.tagline, color = appColors.secondary, textAlign = TextAlign.Center)
+        Spacer(Modifier.weight(1f).heightIn(min = 24.dp))
+        Text("Have you used Often Enough before?", style = WelcomeType.question, color = appColors.ink, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(12.dp))
+        SegmentedList {
+            WelcomeChoice("I’m new here", "Build habits and keep track of your tasks.", Icons.Rounded.AutoAwesome, 0, "onboarding-new", onNew)
+            WelcomeChoice("I’ve used it before", "Get your habits back from Google Drive or a backup file.", Icons.Rounded.History, 1, "onboarding-returning", onBack)
+        }
+        Spacer(Modifier.height(24.dp))
     }
+}
+
+/** One answer on Welcome, drawn to Figma's "Choice" rows (rule 4 above): 16 · disc 40 · 16 · text · 16 · › 24 · 12. */
+@Composable
+private fun WelcomeChoice(title: String, supporting: String, icon: ImageVector, index: Int, tag: String, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clip(segmentShape(index, 2)).background(appColors.surface)
+            .clickable(onClick = onClick).semantics { testTag = tag }
+            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(Modifier.size(40.dp).clip(CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
+            Icon(icon, null, tint = appColors.ink, modifier = Modifier.size(24.dp))
+        }
+        Spacer(Modifier.width(16.dp))
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(title, style = WelcomeType.choice, color = appColors.ink)
+            Text(supporting, Modifier.widthIn(max = WelcomeType.choiceMeasure), style = WelcomeType.choiceSupporting, color = appColors.secondary)
+        }
+        Spacer(Modifier.width(16.dp))
+        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary, modifier = Modifier.size(24.dp))
+    }
+}
+
+/**
+ * Welcome's type, exactly as Figma (rule 2). Line heights are Figma's, with the text centred in each line as Figma
+ * draws it (`LineHeightStyle` Center, nothing trimmed). Kept here until the other screens move to Google Sans Flex;
+ * then these become the app's shared `Typography`, set once, and screens only refer to it.
+ */
+private object WelcomeType {
+    private val lines = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
+    private fun style(size: Int, lineHeight: Int, weight: FontWeight, letterSpacing: Float = 0f) = TextStyle(
+        fontFamily = googleSansFlex(size), fontWeight = weight, fontSize = size.sp, lineHeight = lineHeight.sp,
+        letterSpacing = letterSpacing.sp, lineHeightStyle = lines,
+    )
+    val name = style(32, 40, FontWeight.Medium, letterSpacing = -0.5f)
+    val tagline = style(16, 24, FontWeight.Normal)
+    val question = style(16, 24, FontWeight.Medium)
+    val choice = style(16, 24, FontWeight.Medium)
+    val choiceSupporting = style(14, 20, FontWeight.Normal)
+
+    /*
+     * Rule 7, the measure: how long a line may get. Never a hand-typed line break, and never a line that runs across
+     * a wide screen: on a narrow screen the text fills the space it has; on a wide one it stops at this width, so it
+     * breaks where a reader pauses (the user, 13 Oct 2026: "if the space is smaller it should try to fill the space,
+     * but if the space is large then it should split"). Measured in Figma in Google Sans Flex, with the window each
+     * break needs, and set mid-window so small rendering differences can't move a word:
+     *  - taglineMeasure 254: "Habits grow through repetition. / You choose how often is enough." (244–263 work).
+     *  - choiceMeasure 212: "Build habits and keep track of / your tasks." and "Get your habits back from / Google
+     *    Drive or a backup file." (197–226 work). Figma's 360-wide frame gives these descriptions 204, the same breaks.
+     * Changing the words? Measure again and keep the value inside the new window.
+     */
+    val taglineMeasure = 254.dp
+    val choiceMeasure = 212.dp
 }
 
 @Composable
