@@ -7,5 +7,6 @@ class OftenEnoughApp : Application() {
         super.onCreate()
         AppGraph.init(this)
         com.oftenenough.app.app.reminders.Reminders.channel(this)
+        com.oftenenough.app.app.reminders.TimerNotice.channel(this)
     }
 }

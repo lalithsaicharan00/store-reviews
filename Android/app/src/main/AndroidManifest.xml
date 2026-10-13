@@ -31,5 +31,6 @@
                 <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".app.reminders.TimerStopReceiver" android:exported="false" />
     </application>
 </manifest>

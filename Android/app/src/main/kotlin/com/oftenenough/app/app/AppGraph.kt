@@ -56,7 +56,10 @@ object AppGraph {
         prefsInstance = Prefs.of(context)
         storeInstance = HabitStore(HabitRepository.open(path), scope).also { s ->
             // Every saved change plans reminders again once the changes stop (S16).
-            s.onChange = { com.oftenenough.app.app.reminders.Reminders.replanSoon(context.applicationContext, s) }
+            s.onChange = {
+                com.oftenenough.app.app.reminders.Reminders.replanSoon(context.applicationContext, s)
+                com.oftenenough.app.app.reminders.TimerNotice.sync(context.applicationContext, s)
+            }
             scope.launch { s.load(); com.oftenenough.app.app.reminders.Reminders.replan(context.applicationContext, s) }
         }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
