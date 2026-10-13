@@ -11,9 +11,10 @@ final class RemindersUITests: XCTestCase {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-remindercheck", "-perf-reminders", "-perf-history"]
         app.launch()
         let result = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Reminders")).firstMatch
-        XCTAssertTrue(result.waitForExistence(timeout: 90), "The reminder checks did not finish")
-        XCTAssertEqual(result.label, "Reminders: all checks passed")
-        print("REMINDER-PLANNING " + app.staticTexts["reminder-planning-metric"].label)
+        let started = Date()
+        XCTAssertTrue(result.waitForExistence(timeout: 400), "The reminder checks did not finish")
+        let waited = Int(Date().timeIntervalSince(started))
+        XCTFail("DIAG waited \(waited) s; " + String(result.label.prefix(80)) + " | " + app.staticTexts["reminder-planning-metric"].label)
     }
     func testSavedRemindersOpenEditableTaskWithoutPermissionPrompt() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-reminder-fixture", "-reminder-fake"]
