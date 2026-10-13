@@ -48,7 +48,7 @@ object TimerNotice {
             if (id in shown) continue
             val habit = store.habit(id) ?: continue
             val goal = store.rules.dayGoal(store.rule(habit, store.today()))
-            val title = if (AppGraph.prefs.hideNames) "Timer" else habit.name
+            val title = if (AppGraph.hidesNames) "Timer" else habit.name
             val open = PendingIntent.getActivity(context, id.hashCode(),
                 Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     .putExtra(MainActivity.OPEN_HABIT, id).putExtra(MainActivity.OPEN_DAY, store.today()),

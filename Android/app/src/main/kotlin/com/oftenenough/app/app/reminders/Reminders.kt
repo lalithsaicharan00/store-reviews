@@ -108,7 +108,7 @@ object Reminders {
     }
 
     private fun post(context: Context, store: HabitStore, due: List<ReminderPlan.Alert>) {
-        val hide = AppGraph.prefs.hideNames
+        val hide = AppGraph.hidesNames
         val manager = NotificationManagerCompat.from(context)
         val singles = due.filter { it.followUp > 0 } + due.filter { it.followUp == 0 }.groupBy { it.fire }.values.filter { it.size == 1 }.map { it[0] }
         val groups = due.filter { it.followUp == 0 }.groupBy { it.fire }.values.filter { it.size > 1 }

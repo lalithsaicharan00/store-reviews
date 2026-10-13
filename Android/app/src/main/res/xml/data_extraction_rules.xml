@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android's own backup (A4, D16) and moving to a new phone: the habits and the person's settings go; what belongs to
+     this phone stays (App lock and its passcode, the reminder alarm's state, test launches' own files, D8). -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="applock.xml" />
+        <exclude domain="sharedpref" path="reminders.xml" />
+        <exclude domain="sharedpref" path="uitest.xml" />
+        <exclude domain="sharedpref" path="uitest-applock.xml" />
+        <exclude domain="sharedpref" path="uitest-drive.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="applock.xml" />
+        <exclude domain="sharedpref" path="reminders.xml" />
+        <exclude domain="sharedpref" path="uitest.xml" />
+        <exclude domain="sharedpref" path="uitest-applock.xml" />
+        <exclude domain="sharedpref" path="uitest-drive.xml" />
+    </device-transfer>
+</data-extraction-rules>

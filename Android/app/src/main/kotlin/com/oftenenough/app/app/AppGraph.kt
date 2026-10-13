@@ -46,6 +46,20 @@ object AppGraph {
         intent.removeExtra(MainActivity.OPEN_HABIT)
     }
     val prefs: Prefs get() = prefsInstance ?: error("AppGraph.open first")
+    private var lockInstance: AppLock? = null
+    val lock: AppLock get() = lockInstance ?: error("AppGraph.open first")
+    /** Names are hidden outside the app when the person asked, and always while App lock is on. */
+    val hidesNames: Boolean get() = prefs.hideNames || lock.isOn
+    private var screenOffWatched = false
+
+    /** Locking the phone locks the app at once (whatever Lock again says). */
+    private fun watchScreenOff(context: Context) {
+        if (screenOffWatched) return
+        screenOffWatched = true
+        context.applicationContext.registerReceiver(object : android.content.BroadcastReceiver() {
+            override fun onReceive(c: Context, i: android.content.Intent) { lockInstance?.phoneLocked() }
+        }, android.content.IntentFilter(android.content.Intent.ACTION_SCREEN_OFF))
+    }
     val isOpen: Boolean get() = storeInstance != null
 
     /** Opens the person's own database (the app, widgets, notifications). */
@@ -54,6 +68,8 @@ object AppGraph {
         init(context)
         val path = context.getDatabasePath("habits.db").also { it.parentFile?.mkdirs() }.path
         prefsInstance = Prefs.of(context)
+        lockInstance = AppLock(context.getSharedPreferences(AppLock.FILE, Context.MODE_PRIVATE))
+        watchScreenOff(context)
         storeInstance = HabitStore(HabitRepository.open(path), scope).also { s ->
             // Every saved change plans reminders again once the changes stop (S16).
             s.onChange = {
@@ -81,6 +97,9 @@ object AppGraph {
         // Every test launch starts from the defaults (T8): nothing a test changes reaches the next.
         context.getSharedPreferences("uitest", Context.MODE_PRIVATE).edit().clear().commit()
         prefsInstance = Prefs.of(context, "uitest")
+        // Its own App lock, off each launch (D8, T8): a test never locks or unlocks the person's app.
+        lockInstance = AppLock(context.getSharedPreferences("uitest-applock", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
+        watchScreenOff(context)
         storeInstance?.repo?.close()
         storeInstance = HabitStore(HabitRepository.openInMemory(), scope) { System.currentTimeMillis() + offset }.also { s -> scope.launchLoad(s) }
         // Its own stand-in Drive, emptied each test launch (D8: never the person's).

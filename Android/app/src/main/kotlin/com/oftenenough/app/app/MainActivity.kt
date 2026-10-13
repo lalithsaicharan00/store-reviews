@@ -1,14 +1,17 @@
 package com.oftenenough.app.app
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
+import android.os.Build
+import com.oftenenough.app.ui.settings.LockScreen
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
@@ -23,11 +26,21 @@ import kotlinx.coroutines.flow.first
  * The one activity. A test launch passes extras (`uitest`, `clockHour`, `demo`, `onboarding`) and gets its own in-memory
  * database and preferences (D8); an ordinary launch opens the person's own.
  */
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     companion object {
         /** A reminder's tap: open this habit's Day details for this day. */
         const val OPEN_HABIT = "openHabit"
         const val OPEN_DAY = "openDay"
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (AppGraph.isOpen) AppGraph.lock.returned()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (AppGraph.isOpen) AppGraph.lock.left()
     }
 
     override fun onNewIntent(intent: android.content.Intent) {
@@ -56,7 +69,14 @@ class MainActivity : ComponentActivity() {
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
-                Box(Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) { AppRoot(store, AppGraph.prefs) }
+                val lock = AppGraph.lock
+                Box(Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
+                    // While locked, the app stays as it was underneath, hidden from the screen and from TalkBack.
+                    Box(Modifier.fillMaxSize().then(if (lock.isLocked) Modifier.clearAndSetSemantics {} else Modifier)) { AppRoot(store, AppGraph.prefs) }
+                    if (lock.isLocked) LockScreen(lock)
+                }
+                // The recents screenshot shows nothing while App lock is on.
+                LaunchedEffect(lock.isOn) { if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(!lock.isOn) }
             }
         }
     }

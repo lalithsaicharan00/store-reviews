@@ -9,6 +9,9 @@ import com.oftenenough.app.ui.settings.AboutPage
 import com.oftenenough.app.ui.settings.AppearancePage
 import com.oftenenough.app.ui.settings.HelpPage
 import com.oftenenough.app.ui.settings.LicencesPage
+import com.oftenenough.app.ui.settings.AppLockPage
+import com.oftenenough.app.ui.settings.AppLockSetup
+import com.oftenenough.app.ui.settings.PrivacyPage
 import com.oftenenough.app.ui.settings.RemindersSettingsPage
 import com.oftenenough.app.ui.settings.DayAndWeekPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
@@ -161,6 +164,8 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                     override fun addTask() = nav.navigate(Routes.NEW_TASK)
                 }) { nav.popBackStack() }
                 MenuItem.REMINDERS.title -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
+                MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
+                "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
                 "Open source licences" -> LicencesPage { nav.popBackStack() }
@@ -212,6 +217,8 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             }, replay = true)
         }
         composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
+        composable(Routes.LOCK_SETUP) { AppLockSetup(AppGraph.lock, passcodeOnly = false) { nav.popBackStack() } }
+        composable(Routes.LOCK_PASSCODE) { AppLockSetup(AppGraph.lock, passcodeOnly = true) { nav.popBackStack() } }
         composable(Routes.NEW_TASK) {
             NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { nav.navigate(Routes.menu(MenuItem.PLUS)) }, task = true)
         }
@@ -235,6 +242,8 @@ object Routes {
     const val NEW = "new"
     const val WELCOME = "welcome"
     const val NEW_TASK = "newtask"
+    const val LOCK_SETUP = "applock/setup"
+    const val LOCK_PASSCODE = "applock/passcode"
     fun page(title: String) = "page/" + android.net.Uri.encode(title)
     fun add(habit: String, day: Int) = "add/$habit/$day"
     fun log(id: String) = "log/$id"
