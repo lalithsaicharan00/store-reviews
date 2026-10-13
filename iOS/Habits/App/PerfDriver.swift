@@ -145,6 +145,9 @@ enum PerfDriver {
         let scenario = arguments[flag + 1]
         Task { @MainActor in
             await pause(8) // launch settles, and the script's sampler finishes attaching (it pauses the app)
+            // The launch itself: from finishing launching, through the first load and Today, to here (Current Work 92: UI
+            // tests waiting 3-5 s for the first screen failed more often on the shared rules; compare with -swift-rules).
+            if scenario == "launch" { MainThreadMeter.mark("# WINDOW Launch: the first 8 seconds|\(MainThreadMeter.startedAt)|\(now)") }
             MainThreadMeter.mark("# MEASURING") // the script samples from here, so first opens are covered too
             await run(scenario, store: store)
             MainThreadMeter.mark("# DONE")
@@ -156,6 +159,8 @@ enum PerfDriver {
 
     private static func run(_ scenario: String, store: HabitStore) async {
         switch scenario {
+        case "launch":
+            break // measured from the launch itself (`startIfAsked`)
         case "scroll-today":
             await measure("Today: scrolling") { await scroll() }
         case "tap-today":

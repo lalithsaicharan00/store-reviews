@@ -18,8 +18,11 @@ final class MainThreadMeter {
 
     static func startIfAsked() {
         guard shared == nil, ProcessInfo.processInfo.arguments.contains("-perf-meter") else { return }
+        startedAt = String(format: "%.3f", Date.now.timeIntervalSince1970)
         shared = MainThreadMeter()
     }
+    /// When the meter started (the app finished launching), for the `launch` scenario's window.
+    private(set) static var startedAt = ""
 
     private init() {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("perf-stalls.txt")
