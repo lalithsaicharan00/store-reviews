@@ -223,8 +223,10 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     val limit = form.type == ItemType.CUT_DOWN
     var creating by remember { mutableStateOf(false) }
     var custom by remember { mutableStateOf("") }
-    val metric = Locale.getDefault().country !in setOf("US", "LR", "MM")
-    val own = runCatching { Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault()) }.getOrNull()?.takeIf { it.length <= 3 } ?: "$"
+    // The phone's own locale, read so the list follows a change of language or region.
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
+    val metric = locale.country !in setOf("US", "LR", "MM")
+    val own = runCatching { Currency.getInstance(locale).getSymbol(locale) }.getOrNull()?.takeIf { it.length <= 3 } ?: "$"
     val money = listOf(own) + listOf("$", "€", "£", "₹").filter { it != own }
     val volume = if (metric) listOf("ml", "litres", "oz") else listOf("oz", "ml", "litres")
     val distance = if (metric) listOf("km", "miles") else listOf("miles", "km")

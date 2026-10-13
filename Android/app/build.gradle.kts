@@ -64,12 +64,6 @@ android {
         unitTests.isReturnDefaultValues = true
     }
 
-    lint {
-        // Lint's findings in CI's log, not only in the HTML report.
-        textReport = true
-        textOutput = file("stdout")
-    }
-
     packaging {
         resources.excludes += setOf("/META-INF/{AL2.0,LGPL2.1}", "/META-INF/versions/9/previous-compilation-data.bin")
     }
