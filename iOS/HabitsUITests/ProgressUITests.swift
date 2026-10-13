@@ -170,6 +170,41 @@ final class ProgressUITests: XCTestCase {
         XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 5), "They come back")
     }
 
+    func testDiagPercent1Shared() { diagPercent([]) }
+    func testDiagPercent2Swift() { diagPercent(["-swift-rules"]) }
+    func testDiagPercent3Shared() { diagPercent([]) }
+    func testDiagPercent4Swift() { diagPercent(["-swift-rules"]) }
+    /// Scratch: where testHidePercentages spends its time (each step's seconds, one line, T14).
+    private func diagPercent(_ extra: [String]) {
+        var log: [String] = []
+        var mark = Date()
+        func lap(_ name: String) { log.append("\(name) \(String(format: "%.1f", Date().timeIntervalSince(mark)))"); mark = Date() }
+        launch(extra); lap("launch")
+        openProgress(); lap("open")
+        _ = app.segmentedControls["progress-range"].waitForExistence(timeout: 10); lap("range")
+        func openFloss(_ tag: String) {
+            let card = app.buttons["progress-row-Floss"]
+            var swipes = 0
+            for _ in 0..<12 where !(card.exists && card.isHittable) { app.swipeUp(velocity: .slow); swipes += 1 }
+            lap("\(tag)-swipes\(swipes)")
+            card.tap(); lap("\(tag)-tap")
+            let page = app.navigationBars["Floss"].waitForExistence(timeout: 30); lap("\(tag)-page\(page)")
+            _ = app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 30); lap("\(tag)-record")
+        }
+        func toggle(_ tag: String) {
+            app.buttons["progress-options"].tap(); lap("\(tag)-menu")
+            let item = app.descendants(matching: .any).matching(NSPredicate(format: "label == 'Show Percentages'")).firstMatch
+            _ = item.waitForExistence(timeout: 3)
+            item.tap(); lap("\(tag)-toggle")
+        }
+        openFloss("f1"); back(); _ = app.navigationBars["Progress"].waitForExistence(timeout: 30); lap("b1")
+        toggle("t1")
+        openFloss("f2"); back(); _ = app.navigationBars["Progress"].waitForExistence(timeout: 30); lap("b2")
+        toggle("t2")
+        openFloss("f3")
+        XCTFail("DIAG " + (extra.isEmpty ? "shared" : "swift") + ": " + log.joined(separator: ", "))
+    }
+
     // MARK: Phase 2
 
     /// Year: a card per habit with its year as a heat map (the user, 2 Oct 2026); the year's number on top, "This
