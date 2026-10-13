@@ -1,31 +1,32 @@
-# claude/shared-habit-rules-ci40 @ f9baf63
+# claude/shared-habit-rules-main-check8 @ 6c6bcf0
 
-Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38348370810 · 2026-10-13 05:24 UTC
-Commit: Current Work 92 (checkpoint 2): a Today row's numbers in one call to the shared rules (HabitRules.row, coreRow)
+Run: https://github.com/lalithsaicharan00/store-reviews/actions/runs/38348373467 · 2026-10-13 05:42 UTC
+Commit: Android build prompt: wait for the user's OAuth client and Play Console app; build everything else meanwhile
 
 - Core storage and migrations: success
 - Build: success
 - Release build: success
 - Same-build speed baseline: skipped
-- UI tests (GroupsUITests): success
+- UI tests (GroupsUITests): failure
 - Speed tests: skipped
 - Speed tests through XCTest: skipped
 
 ## UI tests
 ```
-	 Executed 10 tests, with 0 failures (0 unexpected) in 561.949 (561.962) seconds
-	 Executed 10 tests, with 0 failures (0 unexpected) in 561.949 (561.964) seconds
-	 Executed 10 tests, with 0 failures (0 unexpected) in 561.949 (561.965) seconds
-Test Case '-[HabitsUITests.GroupsUITests testChipsAndEmptyGroup]' passed (36.218 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testDeletingAGroupKeepsItsHabits]' passed (39.130 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testEditRenameDeleteAndEmptyDay]' passed (79.128 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testFirstGroupFromFilter]' passed (66.341 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testGroupDragDropsReliably]' passed (124.066 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testGroupInHabitForm]' passed (69.504 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testGroupOrderIsThePersonsOwn]' passed (40.275 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testNamesAreUniqueAndAGroupCanPause]' passed (44.169 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testProgressAndHabitsByGroup]' passed (30.587 seconds).
-Test Case '-[HabitsUITests.GroupsUITests testTodayAndProgressKeepTheirOwnChoiceAndStartPlaysWhatsShown]' passed (32.532 seconds).
+	 Executed 10 tests, with 1 failure (0 unexpected) in 635.297 (635.313) seconds
+	 Executed 10 tests, with 1 failure (0 unexpected) in 635.297 (635.322) seconds
+	 Executed 10 tests, with 1 failure (0 unexpected) in 635.297 (635.327) seconds
+/Users/runner/work/store-reviews/store-reviews/iOS/HabitsUITests/GroupsUITests.swift:44: error: -[HabitsUITests.GroupsUITests testGroupDragDropsReliably] : XCTAssertTrue failed
+Test Case '-[HabitsUITests.GroupsUITests testChipsAndEmptyGroup]' passed (59.737 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testDeletingAGroupKeepsItsHabits]' passed (134.366 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testEditRenameDeleteAndEmptyDay]' passed (85.099 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testFirstGroupFromFilter]' passed (50.463 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testGroupDragDropsReliably]' failed (16.262 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testGroupInHabitForm]' passed (70.602 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testGroupOrderIsThePersonsOwn]' passed (43.261 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testNamesAreUniqueAndAGroupCanPause]' passed (103.496 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testProgressAndHabitsByGroup]' passed (34.879 seconds).
+Test Case '-[HabitsUITests.GroupsUITests testTodayAndProgressKeepTheirOwnChoiceAndStartPlaysWhatsShown]' passed (37.134 seconds).
 ```
 
 ## Release build
