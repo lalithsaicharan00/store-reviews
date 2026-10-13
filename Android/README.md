@@ -4,6 +4,10 @@ Written by Claude (Claude Code), 13 October 2026, while building the app (Curren
 and designs are in [`Docs/`](<Docs/README.md>); what's built and measured so far is in
 [Android App — Build Results](<Docs/Android App — Build Results.md>).
 
+**Continuing this work? Start at [Android App — Handoff for the Next Agent](<Docs/Android App — Handoff for the Next Agent.md>).**
+`Android/WIP/` holds written but never-compiled screens and the widget code, outside the source set so the app keeps
+building; move a file back to the same path under `app/` to use it.
+
 ## What it is
 
 Often Enough for Android: Jetpack Compose, Material 3 (Expressive, as on Android 16), one activity, `com.oftenenough.app`,

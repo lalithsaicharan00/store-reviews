@@ -10,6 +10,9 @@ lives in the [Current Work Checklist](<../../iOS/Docs/Checklists/Current Work Ch
 whatever we are designing for Android should work for iPhone as well, the same way." One shared core, the same Plus,
 the same words; differences only where a platform forces them.
 
+**Building the app (Current Work 107):** the task is the [build prompt](<Build Prompt — Android App (Delete When Done).md>);
+the work so far is on `claude/android-app`, handed over 13 Oct 2026: start at [Android App — Handoff for the Next Agent](<Android App — Handoff for the Next Agent.md>).
+
 ## Read in this order
 
 1. [Android Plus — What Android People Pay For, and Keeping Both Apps the Same](<Research/Android Plus — What Android People Pay For, and Keeping Both Apps the Same.md>):

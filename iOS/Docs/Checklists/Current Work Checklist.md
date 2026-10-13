@@ -899,6 +899,11 @@ and the Add note keyboard coming up by itself.
     Android-side adapter, so the switch landing changes only that.
   - Designs: [Android Designs — Every Screen](<../../../Android/Docs/Designs/README.md>) (162 frames as images, no Figma
     needed) and the [handoff](<../../../Android/Docs/Android Designs — Handoff.md>).
+  - **Handed over 13 Oct 2026** (the user stopped the first session for another agent): where it stands, the parked
+    work and what's next are in [Android App — Handoff for the Next Agent](<../../../Android/Docs/Android App — Handoff for the Next Agent.md>).
+    Checkpoint 1 is built and its unit tests are green; the emulator's `TodayTest` was 10 of 11 with a fix pushed
+    (`be1b22e`), not yet confirmed. Parts of checkpoints 2–4 are built (form, settings pages, backup, reminders) or
+    parked uncompiled in `Android/WIP/` (Habit details, Progress, player, widgets).
   - [ ] Checkpoint 1: skeleton, Core on Android, database, CI, onboarding, Today, logging and undo.
   - [ ] Checkpoint 2: every screen wired; dark mode.
   - [ ] Checkpoint 3: backup, restore, Google Drive sync (two emulators), Plus (Play Billing), App lock, reminders.

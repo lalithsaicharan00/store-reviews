@@ -5,6 +5,9 @@ Written by Claude (Claude Code), 13 October 2026, building the Android app on `c
 was measured, what's ported outside the core for now, and what needs the user. How to build and run it:
 [`Android/README.md`](<../README.md>).
 
+**Handed over 13 October 2026:** the user stopped this session for another agent to continue. Where everything
+stands, the parked work in `Android/WIP/` and what's next: [Android App — Handoff for the Next Agent](<Android App — Handoff for the Next Agent.md>).
+
 ## Checkpoint 1 — Skeleton (13 October 2026)
 
 ### Built
@@ -38,7 +41,9 @@ was measured, what's ported outside the core for now, and what needs the user. H
   rules (`FormRulesTest`). Green: run 38319381690 (build, unit tests, lint).
 - UI tests on the emulator (`TodayTest`): the welcome both ways, an idea opening the form, logging and undo for a
   check, an amount, a week count, a checklist step, a timer, a quit habit and a task, and the day bar.
-  *Result: see below.*
+  Run 38342494305: 9 of 11 (the tests assumed habits the demo already shows done; fixed). Run 38343622250 (`451d8b1`):
+  10 of 11; `aChecklistTicksAStep` tapped a step row composed past the list's edge. `be1b22e` scrolls to it first;
+  its run (38369953627) was cancelled by the handoff push before the emulator ran. *Final result: still to record.*
 
 ### Found and fixed on the way
 
