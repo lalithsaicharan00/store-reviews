@@ -1,0 +1,63 @@
+P49#326|X_DATA_LOST|So all my routines and data will be lost, as well as the premium version I bought!
+P49#1900|X_PAID|want to transfer it to my Samsung phone but I can't
+N5#7153|OFF|
+N5#15073|OFF|
+N5#15568|OFF|
+A5#2270|OFF|
+A5#3244|X_WANT|I rarely download apps that are not cross platform
+P54#21|X_PAID|the Android version indicated I had to PAY for Pro
+A55#91|X_NOSYNC|Android tablet does not receive all the data
+A55#1243|X_NOSYNC|synchronization still does not work. Tested on both iOS and Android
+P56#37|X_NOSYNC|data is not syncing bw ios and Android properly
+N6#307|X_DATA_OK|it works and sync between my iPad and my Galaxy A40
+N6#5562|OFF|
+N7#6446|X_DATA_OK|I get to sync my notes across android and iOS devices
+N7#6868|X_DATA_OK|I change four phones in those years and linking it with my email accounts is so seamless
+N7#9790|OFF|
+N7#10154|X_NOSYNC|reminders set in web/android app are not synced to iOS App
+N7#10247|OFF|
+N7#10284|OFF|
+N7#10357|OFF|
+N7#10797|OFF|
+N7#10966|OFF|
+N7#11009|OFF|
+N7#11203|OFF|
+N7#11441|OFF|
+N7#11523|X_DATA_OK|Since I have a gmail account all my notes were carried over when placing it on my iPhone
+N7#11535|OFF|
+N7#11622|OFF|
+N7#11729|X_NOSYNC|Now on Apple, my notes don’t sync properly
+N7#11917|OFF|
+N7#12051|X_DATA_OK|It synchronizes between all devices in seconds
+N7#12154|OFF|
+N7#12313|OFF|
+N8#9144|X_NOSYNC|I cannot sync this calendar between my Ipad, and Samsung Galaxy Neo mobile phone
+N8#17759|OFF|
+N8#19878|OFF|
+N8#20090|OFF|
+N8#22829|X_NOSYNC|Completely Unreliably cross sync between IOS and android
+N8#22874|OFF|
+N8#24057|X_DATA_OK|Best cal app out across android and iPhone
+N8#25013|OFF|
+N8#26804|OFF|
+N8#27863|OFF|
+N8#27923|OFF|
+N8#29832|OFF|
+N8#30011|X_DATA_OK|Stay connected on android and apple devices, simultaneously
+N8#30319|OFF|
+N8#30903|X_DATA_OK|we can syncing our calendars on both of our phones
+N8#31634|OFF|
+A85#1978|OFF|
+A85#2394|WRONG_ACCT|I deleted an even older account I accidentally logged into
+A89#241|OFF|
+N9#15024|OFF|
+N9#38171|X_NOSYNC|Spreadsheets not syncing between my iPad and Android phone
+N9#38364|OFF|
+N9#40093|X_DATA_OK|access the same data on a continual basis from my Android device
+N9#41684|OFF|
+N9#43152|OFF|
+N9#43689|OFF|
+N9#44013|OFF|
+P9#191|X_WANT|an account. so that it can be tracked in both android and iphones
+P9#257|X_PAID|tried to message the developer if they could transfer my purchase over and they did
+P9#627|OFF|

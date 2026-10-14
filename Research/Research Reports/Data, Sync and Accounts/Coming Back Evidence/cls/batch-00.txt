@@ -1,0 +1,70 @@
+P1#119|DRIVE_WANT|auto back option with Google drive
+A1#54314|X_WANT|Pls create android version and support google drive back up on all devices
+P106#86|DRIVE_PRAISE|Google Drive Backup & Restore for Free
+P110#3123|DRIVE_WANT|Please include online Google drive back up
+P110#3245|DRIVE_FAIL|I could not restore the same task list on Google drive from another Android phone
+P12#47115|OFF|
+P126#10193|DRIVE_PRAISE|Über Google Drive automatisches Synchronisieren mit anderem Gerät
+P126#28027|DRIVE_PRAISE|especially on the backup with Google drive
+P126#34558|DRIVE_FAIL|My task is not backup in my google drive
+P126#49521|DRIVE_WANT|Backup to google drive for recovery would be nice
+P126#62159|DRIVE_PRAISE|Loved the Google drive back up option
+P130#151|MANUAL_HASSLE|you need to download a file every time
+P2#3917|DRIVE_WANT|Add backup to Google Drive instead of an obscure third-party location
+P2#11727|DRIVE_WANT|The only thing missing is Google drive sync
+P2#12076|DRIVE_WANT|when backups to Google Drive / OneDrive / Dropbox are possible
+P2#13093|DRIVE_WANT|not requiring to register to another online service
+P2#28083|DRIVE_WANT|Falta backup no Google drive
+A23#5456|MANUAL_HASSLE|you have to rely on the manual export import option
+P3#506|MANUAL_HASSLE|data exportovat a importovat manuálně
+P3#720|DRIVE_WANT|Backup über Googledrive wäre noch gut
+P3#2038|DRIVE_WANT|still waiting for Google drive backup
+P3#2596|DRIVE_WANT|automatic daily backups to Google Drive, like Truecaller and WhatsApp
+P3#2767|DRIVE_WANT|an auto backup of the data to google Drive
+P3#2852|DRIVE_WANT|integration with Google drive will also work
+P3#4272|LOST_NO_BACKUP|Learned the hard way after losing my phone
+P3#4852|DRIVE_WANT|add Google drive sync function
+P3#5480|DRIVE_WANT|Needs a Google drive back up thing
+P3#6661|DRIVE_WANT|Can we please have Google drive auto sync?
+P3#7538|LOST_NO_BACKUP|I lost all my progress when I lost my phone
+P3#9143|DRIVE_WANT|backup my tracks in my own cloud
+P3#10442|DRIVE_WANT|store our data into cloud; at least in Google drive
+P3#10611|DRIVE_WANT|maybe google drive backup sync
+P3#11068|MANUAL_HASSLE|I manually export/import to Google Drive so I can sync between two devices
+P3#11183|MANUAL_HASSLE|there's a manual backup option to Google Drive, which is a start
+P3#11614|DRIVE_WANT|I hope you would add a daily "Google Drive backup" option
+P3#11744|DRIVE_WANT|automatic backup to Google Drive (more convenient)
+P3#11745|DRIVE_OK|But exporting to Google Drive worked!
+P3#12387|MANUAL_HASSLE|we have to backup the progress if we switch phones
+P3#12899|DRIVE_WANT|auto-backup to google drive
+P3#13351|DRIVE_FAIL|I am unable to import the saved data which I uploaded to Google drive
+P3#13386|DRIVE_WANT|Please provide Google login for easy data backup to Google drive
+P3#13406|DRIVE_WANT|back up my data to Google drive like WhatsApp
+P3#13646|DRIVE_WANT|once (and if) Google drive sync is implemented
+P3#14001|DRIVE_WANT|cloud backup using google drive
+P3#14335|DRIVE_WANT|connect to Google drive and automatically backup daily
+P3#14565|MANUAL_HASSLE|I use autosync to backup the save file to Google Drive
+P3#14754|DRIVE_WANT|Google Drive (for sync and profile)
+P3#15366|DRIVE_WANT|if Google drive is linked with this to keep backups
+P3#15875|DRIVE_WANT|add support for Google drive to sync over all my devices
+P3#15952|DRIVE_WANT|There should be a Google drive online backup
+P3#16177|DRIVE_WANT|synchronized with my Google Drive account
+P3#17726|DRIVE_WANT|pongan el backup automático
+P3#18064|DRIVE_WANT|automatic backup with email or google drive
+P3#18660|DRIVE_WANT|google drive backup
+P3#18716|DRIVE_WANT|tolong buat fitur backup via google drive
+P3#18721|DRIVE_PRAISE|fitur backup di google drive yang memudahkan kalo pake lebih dari 1 device
+P3#18855|LOST_NO_BACKUP|I forget to backup when i change my phone and lost all of my history
+P3#19102|DRIVE_WANT|Backup automatico su Google Drive?
+P3#19194|DRIVE_WANT|manca il backup automatico
+P3#21413|LOST_NO_BACKUP|Meu smartphone antigo estragou e perdi meus dados
+P3#21645|DRIVE_WANT|would be perfect if we could backup in Google Drive
+P3#21750|DRIVE_WANT|Falta backup automático para o google drive
+P3#24287|DRIVE_WANT|implement Google drive sync
+P3#24635|DRIVE_WANT|Need every day auto backup to google drive
+P3#25236|DRIVE_WANT|backup my data to Google Drive/Dropbox
+P33#4344|DRIVE_WANT|add google drive backup
+P35#25|DRIVE_WANT|Eine Google Drive Sync würde mir ebenfalls gefallen
+P36#373|DRIVE_FAIL|I got 403 error
+P49#3936|DRIVE_WANT|back up option to Google drive
+P65#2552|DRIVE_FAIL|I could not import data from a back up file to new android 14 phone

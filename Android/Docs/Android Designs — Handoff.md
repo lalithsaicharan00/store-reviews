@@ -12,7 +12,7 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 
 | Section (id) | Frames (id) | State |
 |---|---|---|
-| **Onboarding: new to the app** (`1548:2`) | Splash, Android's own, light (`1610:2`) and dark (`1610:22`): the adaptive icon's foreground with no icon background (288 dp, inside Android's 192 dp circle) centred on `#FFFFFF` / `#0D0D0D`, the Logo Guide's backgrounds; no title, no branding image (added 13 Oct); Welcome (`1548:3`); 1 of 3 · Your habit. Your goal. (`1548:46`); 2 of 3 · Quit or cut down. (`1548:177`); 3 of 3 · Tasks, once or on repeat. (`1548:296`); Your days and weeks (`1548:420`), with New day starts at open (`1550:2`, 12:00 AM to 11:00 AM, as in Day and Week) and Week starts on open (`1550:71`, Sunday to Saturday); Your first habit (`1548:456`; an idea opens the New Habit form, `1302:2`). Frames numbered 01–07 in order (13 Oct) | Built 12 Oct from the user's wireframes (`835:503`) and the built iPhone app; "What's included" removed. **01–06 redesigned 13 Oct and built in the app to match** (below, "Onboarding, 13 Oct 2026"); 07 redesigned in Figma, not built yet. The 06 before its redesign is kept beside the section for comparison (`1650:20585`, labelled BEFORE; not a screen) |
+| **Onboarding: new to the app** (`1548:2`) | Splash, Android's own, light (`1610:2`; the dark frame `1610:22` was removed 14 Oct: **the designs are light mode only**, the app keeps its dark mode): the adaptive icon's foreground with no icon background (288 dp, inside Android's 192 dp circle) centred on `#FFFFFF` / `#0D0D0D`, the Logo Guide's backgrounds; no title, no branding image (added 13 Oct); Welcome (`1548:3`); 1 of 3 · Your habit. Your goal. (`1548:46`); 2 of 3 · Quit or cut down. (`1548:177`); 3 of 3 · Tasks, once or on repeat. (`1548:296`); Your days and weeks (`1548:420`), with New day starts at open (`1550:2`, 12:00 AM to 11:00 AM, as in Day and Week) and Week starts on open (`1550:71`, Sunday to Saturday); Your first habit (`1548:456`; an idea opens the New Habit form, `1302:2`). Frames numbered 01–07 in order (13 Oct) | Built 12 Oct from the user's wireframes (`835:503`) and the built iPhone app; "What's included" removed. **01–06 redesigned 13 Oct and built in the app to match** (below, "Onboarding, 13 Oct 2026"); 07 redesigned in Figma, not built yet. The 06 before its redesign is kept beside the section for comparison (`1650:20585`, labelled BEFORE; not a screen) |
 | **Onboarding: coming back** (`1549:2`) | Welcome back (`1549:3`); Sign in with Google: Android's account chooser over Welcome back (`1549:38`), Google's permission screen (`1549:97`); Getting your habits (`1549:128`); Restore a backup (`1549:154`; then the restore flow, `1472:2`) | Built 12 Oct; Move from another device removed |
 | **Today** (`1260:2`) | Today, light, 360 × 800 (`1350:2`, the Expressive version, which replaced `1246:2`); the day bar in four day states (`1256:6`); empty: No habits yet, the first time (`1551:3`), and Nothing planned today (`1551:195`; new: the iPhone shows a blank list, Current Work 106) | Approved 12 Oct ("let's go with this one"); the drawer and every Day details sheet show it behind them |
 | **Day details** (`1260:3`) | Water, an amount (`1362:2`, replaced `1258:2`); then every other kind, left to right: Read, a time habit (`1280:3`); Read, timer running (`1294:2`); Take vitamins, a check, not done (`1294:220`) and done (`1294:432`); Stretch breaks, several a day (`1294:644`); Call family, a week goal (`1294:866`); Deep clean, a month goal (`1294:1083`); Gym, N days a week (`1294:1300`); Tidy desk, a checklist (`1294:1512`); Smoking, quit with no slips (`1296:2`) and a slip (`1296:214`); Coffee, a limit (`1296:430`); Social media, a time limit (`1296:644`); a task, not done with Reschedule (`1296:858`) and done (`1296:1080`); Read, skipped (`1296:1292`); Meditate, paused (`1296:1510`); Water, an earlier day ("Yesterday", `1296:1722`) | Water approved; the rest built 12 Oct from the built app, the user: "I already approved it … just complete them" |
@@ -376,6 +376,168 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   is getting added"). The section (`1437:2`) is in Google Sans Flex, its frames named without "Android ·". **A new time of day opens in free
   time and splits nothing** (the user: no "randomly new timings"): with the standard set, 4:00–6:00 AM, just before
   Morning; the rule, shared with the iPhone, is Current Work 98.
+- **Onboarding: coming back, 14 Oct 2026** (section `1549:2`, above "new to the app"; research: [Coming Back — Every Way
+  to Get Your Habits Back](<../../Research/Research Reports/Data, Sync and Accounts/Coming Back — Every Way to Get Your Habits Back.md>)).
+  The user found the first layout confusing (iCloud appeared under Google) and approved a simpler one: **one question,
+  "where are your habits?", four answers**, each a row: 2 Google account (choose, allow Drive, look; found → habits
+  back → Today, wrong account → shows which one, nothing found → try another way; Start fresh? dialog), 3 Apple account
+  (found in Drive → connect it; **in iCloud → use a code from the iPhone**, the only place iCloud appears; no account),
+  4 Old phone (enter its code, and the old phone's side), 5 Backup file. A free person's "Move here" is a question
+  inside "habits back", not its own outcome. Empty frames are named for their job, to design one by one.
+  - **1 · Welcome back** (`1549:3`, designed 14 Oct, **redesigned the same day around signing in**). The user: "if they
+    have an account, this is how they think … signing in is what is intuitive", and "the whole purpose of the account
+    is recognizing the place". A person with an account signs in and the account knows where the habits are (which
+    Google Drive or iCloud, by its private ID), so the app goes there by itself; the "where are your habits?" question
+    only helps someone without one. So: onboarding's top bar and heading, **"Welcome back."** and **"Sign in to get your
+    habits back."**; two sign-in buttons the same size (Google's and Apple's own rules), **Continue with Google** (white,
+    grey outline, the four-colour G) and **Continue with Apple** (black, the Apple logo), 56 tall, 16 Medium; then
+    **Other ways** (14 Medium, grey) and a two-row card: **Your old phone** · Move them with a code, **A backup file** · A
+    file you saved. Continue with Google also serves someone with no account: it looks in that Google account's Drive,
+    where free backups go. Every text uses the Android styles. (The first version, four equal rows under "Where are
+    your habits?", and its "Not sure?" note are gone.)
+  - **2 · Google account: choose one** (`1549:38`) and **2.1 · Allow Google Drive** (`1549:97`) are **Google's own
+    screens** (Google Play services draws them), so they're drawn in Google's font, Google Sans (our Google Sans Flex,
+    with the Android styles at Google's sizes), Google's blue buttons and the real four-colour G; screen 1 sits behind
+    the sheet. **2.1 shows only the first time a Google account gives Often Enough Drive access** (the user asked
+    whether it shows on every new phone): Google keeps the permission in the account, so a new phone signed in to the
+    same account gets access with no screen ("in subsequent sessions, and as long as the granted permissions are not
+    removed by the user … without any user interaction", Android's AuthorizationClient guide). It comes back only if
+    the person removes the access in their Google Account. A device with one Google account and a default set may skip
+    the chooser too.
+  - **2.2 · Looking in Google Drive** (`1549:128`, designed 14 Oct): centred, Material 3 Expressive's **contained
+    loading indicator** (a 64 grey circle, an ink shape) over "Looking for your habits" (22 Medium) and "In
+    sam@gmail.com’s Google Drive" (14, grey: says which account, from the wrong-account evidence), Cancel at the bottom.
+    **Animated in Figma** (4.55 s loop): the shape steps through Material's seven loading shapes (soft burst, 9-sided
+    cookie, pentagon, pill, sunny, 4-sided cookie, oval) every 0.65 s, each settling from 86 % as it arrives, while the
+    group turns two full turns. Figma can't morph one shape into another, so each crossfades into the next; the app
+    uses Compose's `ContainedLoadingIndicator`, which morphs for real. Checked frame by frame from a render.
+  - **Row 2 rearranged (the user: "it's a one-time thing … it should be like an if condition"):** 2 goes straight to
+    2.2; 2.1 (Allow Google Drive) sits under 2 on a dashed arrow, "only if this account hasn't allowed it before", and
+    joins 2.2; the outcomes moved one column left.
+  - **2.3 · Habits back: what was found** (`1789:2`): onboarding's top bar and heading ("Welcome back." and "Your
+    habits are in sam@gmail.com’s Google Drive." — which account, from the wrong-account evidence); **one card for the
+    copy found, described as Settings' Restore preview describes a backup**: a history icon, "31 habits, 929 logs" (20
+    Medium) and "From a Pixel 9 · today, 9:14 AM" (14, grey: when and from where, from the old-copy evidence); "Plus
+    comes back too." under it when it does. At the bottom one filled **Bring them back** and a text button **Start
+    fresh instead** (never deletes anything: the copy stays in Drive). No merge or replace choice: a new phone has
+    nothing to merge with. A free person whose habits sync on another phone gets one more line here (Move here).
+  - **2.3.1 · Bringing them back** (`1789:3`): 2.2's centred layout and its animated indicator, "Bringing back your
+    habits" and "18 of 31 habits"; no Cancel (a restore isn't stopped halfway).
+  - **2.3.2 · Today** (`1789:4`): Today as designed, with a snackbar above the day bar, "Your habits are back: 31
+    habits, 929 logs" (no Undo: there was nothing on the phone to go back to).
+  - **The flow follows the sign-in screen (14 Oct):** rows named for the buttons (2 · Continue with Google, 3 · Continue
+    with Apple); 2.3's heading became **"We found your habits."** (screen 1 is now "Welcome back."); 3.2 offers one tap,
+    Continue with Google (the app checks the account's private ID after the pick; no email shown), then 2.2; a new **2.5 · In
+    iCloud: use a code from your iPhone** for someone who signs in with Google but whose habits are in an iPhone's
+    iCloud; rows 3–5 moved down to make room.
+  - **The wrong-account screen was removed (14 Oct).** The user: "how you're knowing … this is a wrong account …
+    this might also be like security issue like revealing the other person's account name". Right on both counts: when
+    someone picks a different Google account than last time, the app only learns about the one just picked, so it
+    can't name the other; and naming accounts isn't needed. **The app never names another account** (D16 corrected).
+    A Drive backed up to a different Google account still works (its permission belongs to that Drive's account): the
+    person chooses it, and the app compares the account's private ID after the pick.
+  - **2.4 · No habits found** (`1789:6`): **"No habits found."** and "Nothing in sam@gmail.com’s Drive."; **Choose
+    another Google account** as the filled button at the bottom (the likely fix), Start fresh under it (straight to setup, no
+    dialog: nothing to leave behind); **Other ways** in the middle: Continue with Apple, Your old phone, A backup file.
+  - **2.3.3 · Start fresh?** (`1789:7`, over 2.3, from its "Start fresh instead"): Material 3's basic dialog, "Start
+    fresh?", "Your habits stay where they are, so you can bring them back later." (true for Drive and iCloud alike;
+    it first said "in your Google Drive", wrong from 3.3), Cancel and Start fresh. No email.
+  - **2.4's button is "Choose another Google account"; no separate "Google Drive account" choice** (the user asked
+    for research on it): no review separates the sign-in account from the backup account, so one choice looks for both.
+  - **2.6 · In another Google account** (`1803:2`): for the one case the app *knows* (the person's own record says the
+    backups are in a different Google account, e.g. changed in Google Drive & Backup): **"One more step."** "Your habits
+    are backed up to a different Google account. Choose it to bring them back." **Choose that Google account** (Google's
+    chooser; the app compares the account's private ID after the pick; the wrong one shows this screen again) and Start
+    fresh instead (the dialog). **No account is named.** The Apple row's 3.2 is the same screen.
+  - **Row 2 now:** 2 → (2.1 first time only) → 2.2 → 2.3 found (→ 2.3.1 → 2.3.2 Today; → 2.3.3 Start fresh?), 2.4 no
+    habits found, 2.5 in iCloud, 2.6 in another Google account.
+  - **Screen 1's Continue with Google has no outline** (the user: "that much thick visible border … not looking good"):
+    white on the grey page, the G and 16 Medium text; Google's own button rules allow this borderless (neutral) form.
+    Screen 2's sheet now sits over the current screen 1.
+  - **The Apple row (14 Oct).** **3 · Continue with Apple** (`1789:8`) is **Apple's own sign-in page in a browser tab**:
+    on Android, Sign in with Apple is Apple's web page, not a phone sheet, so it's drawn as Chrome shows it (Chrome's tab
+    bar: ✕, "Sign in with Apple", 🔒 appleid.apple.com, ⋮) with Apple's page in **SF Pro** (the Apple logo, "Sign in with
+    Apple" 28 Semibold, "Use your Apple Account to sign in to Often Enough." 17, the Email or Phone Number field with its
+    → , "Forgot password?" in Apple's blue); Apple's password, code and Share/Hide My Email steps follow on its own
+    pages. **3.1 · Looking for your habits** (`1789:9`): 2.2's animated screen, "Signed in with Apple". **3.2**
+    (`1789:10`): the same screen as 2.6, One more step. **3.3 · They're on your iPhone** (`1789:11`): "Android can't
+    open iCloud, so move them across with a code."; three numbered steps (1 Open the app on your iPhone · Or on your
+    iPad; 2 Choose Move to a new phone · In ≡ › iCloud & Backup; 3 Type its code on this phone · It works for 24 hours);
+    **Enter the code** (→ 4) and Start fresh instead. **3.4 · No account found** (`1789:12`): "No Often Enough account
+    uses this Apple Account." (the one just used, never another); Other ways: Another Apple Account, Your old phone, A
+    backup file; **Continue with Google** (screen 1's white button) as the main action, the usual reason an Apple
+    sign-in finds nothing; Start fresh. Never creates an account by itself (D3).
+  - **Screen 1, third version (14 Oct, after the user's decision that free people have no account at all; D16).**
+    "Welcome back." and "Choose how to bring your habits back."; **With your Plus account**: Continue with Google,
+    Continue with Apple; **Without an account**: **Google Drive** · Your backups there (the Drive logo: a free person's
+    backup, which can be a different Google account from a Plus sign-in, so it's its own row), Your old phone, A backup
+    file. Nobody has to wonder whether they "have an account": only Plus people made one, on purpose. The flow below
+    screen 1 still follows the previous version; its changes are listed for the user.
+  - **The flow restructured into six rows to match screen 1 (14 Oct, the user: "update whatever the screens that we need
+    to update in the remaining flow").** **2 · Continue with Google** and **3 · Continue with Apple** are for Plus
+    accounts and **always bring Plus back**; each goes 2/3 → Looking (signed in with Google / Apple) → **Found** ("We
+    found your habits." "Plus is on, and your habits are in your Google Drive."), **In iCloud** ("They're on your
+    iPhone." "Plus is on. Android can't open iCloud, so move your habits across with a code.", the three steps, "No
+    iPhone? Any iPhone or iPad on your Apple Account can make the code.", Enter the code → 5) or **No account found**
+    ("No Plus account uses sam@gmail.com." / "…this Apple Account."; Without an account: Google Drive, Your old phone, A
+    backup file; the other sign-in as the main button; Start fresh). **4 · Google Drive** is a free person's backup:
+    Google's sheet ("the account you back up to"), Allow Google Drive (dashed, first time only), Looking in Google
+    Drive, Found (no Plus line) → Bringing back → Today, Start fresh? (the one dialog, used from every Found and In
+    iCloud screen), and **No habits found** (Choose another Google account; Your old phone, A backup file; Start fresh).
+    **5 · Old phone** (the code, which carries Plus too) and **6 · Backup file** are still empty frames. "One more step"
+    (2.6, 3.2) is gone: an account goes to its own backups by itself, **assuming the account keeps the backup account's
+    email privately, never shown (proposed; waiting for the user's yes)**. Screen 2's sheet shows the current screen 1.
+  - **14 Oct, the user's review of the six rows.** The Google row is right as built: Found when the Plus account's
+    backups are in Google Drive, They're on your iPhone when they're in iCloud, No account found otherwise; the Apple
+    row's Found only when its backups are in Google Drive (allowed before, so it opens by itself). **Words: signing in is
+    a Google account (or Apple Account), backups are a Google Drive.** **No account found (2.4, 3.4)** now lists **Try
+    another account** (2.4: Another Google account · Choose a different one, Continue with Apple · If you made it with
+    Apple; 3.4: Another Apple Account, Continue with Google) above Without an account, with only Start fresh at the
+    bottom: one button would have had people guessing which of two things it meant. **No habits found (4.4)**: **Try
+    another Google Drive**. Google's own sheets (4, 4.1) keep "Sign in with Google": Google's wording, not ours. **To
+    revisit:** the iCloud steps' words (2.3, 3.3) once the account and iCloud & Backup pages are redesigned (Current
+    Work 110).
+  - ~~5 · Old phone, a 12-character code (14 Oct, replaced the same day by the QR / 6-digit row below).~~ **5 · Old phone, the new phone's side only (14 Oct).** The user: "we don't need to design the old phone … generating
+    the code … belongs to the move it to another phone page where we have in the navigation". The old phone's screen was
+    removed from this section. **5 · Enter the code** (`1789:13`): "Enter the code." "Type the code your old phone
+    shows."; Material's outlined text field (focused, the file's style) labelled Code with "7K4M-92QX-HB3T"; "On your old
+    phone, open Move to a new phone." (12, grey; revisit with the iCloud steps); **Continue** riding above Gboard's
+    letters keyboard. **5.1.1 · This code didn't work** (`1789:17`): the same screen, the code kept as typed, and in ink
+    (never red) with an error icon: "That code didn't work. Check it, or get a new one on your old phone." **5.1 ·
+    Getting your habits** (`1789:14`): the animated indicator, "From your old phone". **5.2 · Your habits are here**
+    (`1789:15`): "Everything your old phone sent."; the card (31 habits, 929 logs · From a Pixel 9 · today, 9:14 AM);
+    "Plus came too." when it did; **Bring them back** (no Start fresh: they asked for this move). **5.3 · Today**
+    (`1789:16`), with the snackbar. **To check:** the drawer has no Move to a new phone page today (Google Drive &
+    Backup's "Move to another device" was removed on 12 Oct, before the code move came back, D15): it needs a place.
+  - **Row 5 redesigned: scan a QR code, or type 6 digits (14 Oct; Rulebook D15).** The user rejected the 12-character
+    field and asked for both ways. **5 · From your old phone** (`1815:2`): "Keep the app open on both phones." (it first said "…and close by"; the user: the relay works however far apart they are, and typing the 6 digits needs no camera); two
+    steps (Open Move to a new phone · On your old phone; Scan the code it shows · Or type its 6 digits); **Scan the
+    code** and Type the code instead. **5.1 · Google's code scanner** (`1815:3`, Android's own: dark camera view, a
+    guide frame, ✕ and torch, "Point your camera at a QR code"). **5.2 · Type the code** (`1789:13`): "Type the code."
+    "The 6 digits on your old phone."; **six boxes** (48 × 56, white, the focused one with an ink outline), Gboard's
+    **number keypad**, "It checks itself when all 6 are in." and **no button** (nothing greyed out). **5.2.1** (`1789:17`):
+    empty boxes and "That code didn't work. Your old phone now shows a new one." (one guess per code: **the server ends the code
+    on the wrong try and at once tells the old phone, through the relay, to show a new QR and 6 digits**, D15; the Move to a
+    new phone page must show that change live). **5.3 · Getting
+    your habits** (`1789:14`): "Keep both phones open". **5.4 · Your habits are here** (`1789:15`), **5.5 · Today**
+    (`1789:16`). The old phone's QR and digits belong on Move to a new phone in the menu (not designed yet).
+  - **Row 6 · Backup file (14 Oct).** **6 · Choose the file** (Android's own file picker, the same as Settings' Restore,
+    `1472:155`, in Google Sans: Recent / Downloads / Drive, "Often Enough backup 2026-10-12 0914.zip", shortened in the
+    middle to one line as Android's picker draws long names). **One backup file on every device** (the user, 14 Oct 2026:
+    "the backup file created on iOS as well as Android should be the same everywhere"): the shared core's checked zip,
+    named `Often Enough backup YYYY-MM-DD HHmm.zip`, never `.db` or `.oftenenough` (Rulebook D5; why: `Core/Backup File
+    Format.md`, "One file on every device"). **6.1 · Your backup file**: "Your backup file." with the file's whole name
+    under it, on one line (it fills the width: a name isn't prose); the card (a document icon, "31 habits, 929 logs",
+    "From a Pixel 9 · 12 Oct, 9:14 AM": when and from where, as everywhere); **Bring them back** and Choose another file
+    (no merge or replace: a new phone has nothing to merge). **6.2 · Bringing them back** (the animated indicator), **6.3
+    · Today** (the snackbar). **6.1.1 · That isn't a backup**: "Choose a file whose name starts with “Often Enough
+    backup”." and **Choose another file**. A file carries habits, not Plus: a Plus person signs in to bring Plus.
+  - **The iPhone, for later:** an iPhone or iPad on the same Apple Account shows **no screen at all**: iCloud asks no
+    permission, so the habits come back when the app opens (D14). The iPhone's version of this flow starts from that
+    case; "Welcome back" there is for a different Apple Account, Google Drive, the old phone or a file.
+- **The Android designs are light mode only (the user, 14 Oct 2026):** "for the sake of simplicity we will only keeping
+  light mode". Draw no dark frames; the dark splash was removed from onboarding. **The app keeps its dark mode** (already
+  built): every screen built from a light design still follows the phone's dark theme, so the app's colours stay tokens.
 - **Appearance became General, 14 Oct 2026** (Figma `1458:3`, menu open `1458:85`, the drawer `1326:3`/`1326:231`;
   **not built**). The user: the page "is more than appearance … choose the proper name", "System" not "System
   default", "the same width for each option", "checkmark is definitely not a good thing" for System, and "can we
@@ -714,6 +876,218 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   just the same." with **Archive instead** (filled), Delete, Cancel, stacked at the end (three don't fit in a row).
   The Android app has only a "Make room instead: archive a habit" text button today, with no page behind it.
 - [ ] Still not drawn: the form's Reminders page, 3.1's Started pickers, Task's Date and Time pickers.
+
+## Settings: Backup & Sync, 14 Oct 2026 (Figma `1461:2`; the old Restore section `1472:2` folded in and removed)
+
+The user's points: the menu row is **Backup & Sync** on every platform (Android is designed first; the iPhone follows);
+arrange the section like "New: choices and habit form" and "Onboarding: coming back"; add the missing restore screens with
+our own UI; simplify the dialogs ("too many options … a high chance of misclick"); the finished pages' text styles.
+
+- **Layout:** 1 · Backup & Sync on the left with its other states under it (1.1 not backed up, 1.2 synced (Plus), 1.3 no
+  internet); one row per flow to the right, elbow arrows, no crossings: **2** Use another Google Drive (Google's own sheet →
+  2.1 Allow Google Drive, dashed: first time for that account only → 2.2 Switch Google Drive?), **3** Move to a new phone
+  (→ 3.1 Sending your habits → 3.2 Your habits are on your new phone; 3.3 A new code, after a wrong try), **4** Restore from
+  a backup (4.1 Choose a backup → 4.1.1 Restore this backup? → 4.1.2 Restoring → 4.1.3 Restored, with Undo; 4.2 Android's
+  file picker → 4.2.1 Restore this file?; 4.3 Your old phone → 4.3.1 Getting your habits → 4.3.2 Restore what it sent?; all
+  three join at 4.1.2), **5** Delete your Google Drive backup?, **6** Erase all your data?.
+- **Text styles, as on the finished settings pages:** page title Title Large Emphasized; row title Title Medium, its line
+  Body Medium; section label Label Large (muted); footers Body Small; row icons in a 40 × 40 tonal circle; dialog title
+  Headline Small, body Body Medium, buttons Label Large; flow screens as coming back (Headline Medium Emphasized heading,
+  Body Large lead, a card with Title 20 Emphasized, a 56 filled button and one text button).
+- **The card says where the habits are:** "Your habits are in your own Google Drive. Only Often Enough can open them, and we
+  never see them." with "Today 9:14 AM · sam@gmail.com". Devices only with Plus. **Move and restore** holds Move to a new
+  phone and Restore from a backup (Google Drive, A file you saved, Your old phone).
+- **Restore this backup?** shows what's in it and what this phone has now, then one choice, **Add what's missing**
+  (selected) or **Replace this phone**, and one **Restore** button: the old screen's two big buttons (Replace, Merge) were
+  easy to mis-tap. "You can undo it for 30 days."
+- **Dialogs: two choices only,** Cancel and the one action, side by side, the action in red: Delete your Google Drive backup?
+  ("Your habits are removed from sam@gmail.com's Google Drive. This phone keeps everything.") and Erase all your data? ("…
+  Your Google Drive backup stays, so you can bring them back."). Gone: "Save a backup file first" and "Delete from Drive and
+  this phone" (erasing this phone is its own row).
+- Words that changed to fit without a word alone or running past the edge: "Delete Google Drive backup…", "To restore
+  later, on any phone", "A file you saved", "Switch Google Drive?".
+- **Second round, the same day (the user's review):**
+  - **Restore replaces, stated as information** (4.1.1, 4.2.1, 4.3.2): the choice between Add what's missing and Replace is
+    gone; a "How it works"-style fact says "This replaces what's on this phone · The 10 habits and 812 logs on this phone now
+    are replaced with the backup. You can undo it for 30 days." (evidence: the account pages report §6).
+  - **4.1 · Choose a backup shows every backup kept** (D4): device chips (this phone, the tablet), then **Every day this
+    week** (7), **Every week this month** (4), **Every month, back to April** (6), and a footer saying exactly what's kept.
+    The Restore row's Google Drive line is "From today back to six months ago" (not "last week", which read as only the
+    last week).
+  - **Bottom text buttons are full-width and 56 high, Title Medium** (M3 Expressive's medium size), 8 under the filled
+    button: the small Label Large one was "very smaller" and too close. Done here and in Onboarding: coming back (21
+    screens).
+  - **A loading block is centred in the space left** between the status bar (or top app bar) and the Bottom area (the
+    user centred 3.1 by hand): done on all ten such screens here and in coming back.
+  - **"Scan QR code" and "Type instead"** (4.3 and coming back's 5); the step reads "Scan the QR code it shows".
+  - 3.3's note wraps inside the card on small screens: "Someone typed a wrong code. Here’s a new one."
+
+## Cancel on waiting screens, 14 Oct 2026 (the user)
+
+- **Cancel goes back to the screen before** (the user: "if we click on cancel we should be able to go back to the previous
+  thing"), and is centred in its Bottom area like every other bottom button.
+- **Which waiting screens have Cancel:** those waiting on something outside the phone (Looking in Google Drive, Looking
+  for your habits, Getting your habits from the old phone, Sending your habits). **None** on those writing habits into the
+  phone (Restoring, Bringing them back): stopping halfway could leave half a restore, it takes seconds, and Undo is offered
+  after.
+
+## Settings: Privacy & Security, App lock, 14 Oct 2026 (Figma `1474:2`)
+
+The user: "update the font and overall font hierarchy. Use our text styles … arrange the screen properly like how we made
+it for setting backup and sync … so that we know the flow."
+
+- **Layout:** 1 · Privacy & Security, with 1.1 (signed in with a Plus account) under it; then App lock as a flow: 2 App lock ·
+  off → 2.1 How do you want to unlock? → 2.2 Confirm it's you (Android's own prompt) or 2.3 Create an app passcode → 2.3.1
+  Enter it again → 2.4 App lock · on; then, dashed, **later, opening the app**: 3 with your phone's lock (Android's prompt),
+  3.1 with the app passcode.
+- **Text styles as the finished pages** (title Title Large Emphasized, rows Title Medium + Body Medium, labels Label
+  Large, footers Body Small, row icons in 40 × 40 tonal circles); the setup question is Headline Medium Emphasized; the
+  passcode headings Headline Small Emphasized; the keys Headline Medium; Android's own prompt keeps its own look.
+- **Where your data is** comes first (the account pages decision): *Your habits · On your phones and in your own Google
+  Drive. We never see them.* and *Your account · None. An account is only for Plus.* (with Plus: *sam@gmail.com. Only for
+  Plus: your purchase and your family, never your habits.* ›, to Plus › Your account). The footer was "No ads. No
+  account. …", wrong for Plus people; now *No ads, and nothing is ever sold.*
+- Words changed to fit: App lock's line *Your fingerprint, face or a passcode*; *Share crash reports*; the passcode choice
+  *Six digits, just for this app. Good if others know your phone's PIN.*
+
+## App lock: the missing screens, 14 Oct 2026 (Figma `1474:2`), and the account page (Figma `1476:2`)
+
+The user: "some things are missing … the 24-hour delay … during that delay, they should be able to cancel it … when
+changing the passcode, they should enter … whatever the phone screen confirmation" and "from your account … where that
+leads to, we don't have anything right now".
+
+- **Second round, same day (the user: "confirm it's you … whatever we have, it should ask for that"; research: the App
+  Lock reports, WhatsApp's lock asking for the fingerprint to turn it off).** Every change to App lock asks **"Confirm it's
+  you"** by the way in use, never a separate "are you sure" dialog:
+  - **Turn off:** with the phone's lock, **2.6** Android's own prompt (fingerprint, face, PIN or pattern: Android
+    chooses); with an app passcode, **2.7** the keypad ("Confirm it's you · Your app passcode turns App lock off.").
+  - **Change app passcode** (only with an app passcode; its row: *Enter your current one first*): **4** the keypad,
+    "Enter your current app passcode." → 4.1 Choose a new app passcode → 4.2 Enter it again → 4.3 "App passcode changed".
+  - **Every keypad that asks for the app passcode has Forgot app passcode?**, except the one cancelling a running reset.
+- **The lock screen:** 3.2 Wrong app passcode ("That's not your app passcode.", the dots cleared; after five in a row the
+  waits).
+- **Forgot app passcode: the 24-hour reset, started at once and cancellable** (the user: "once they start reset … it
+  should just start a reset"; the report: with an app passcode, "the wait alone"). **5** *Forgot app passcode? · After 24
+  hours you can choose a new app passcode. Until then, your app passcode cancels the reset.* (Cancel · Start reset) → **5.1
+  Reset in progress**, the lock screen until it ends: a **countdown** (23:59:41), *Ready tomorrow at 10:14 AM. If it
+  wasn't you, cancel it.*, and **Cancel reset** → **5.2** Confirm it's you (the app passcode; no Forgot here) → **5.2.1**
+  the app opens, "The reset was cancelled." **5.1.1 · the notification** it sends at once (*App passcode reset asked for ·
+  Ready tomorrow at 10:14 AM. If it wasn't you, open the app and cancel it.*), so the owner notices: the reset can't stop
+  someone who has the phone for a day unseen, it makes sure the owner sees it first; and without it a forgotten passcode
+  would lock people out of their own habits. After 24 hours, **5.3** *The 24 hours are up* (Choose a new app passcode · I
+  remember it) → 5.4 → 5.5, and the app opens. No "Confirm it's you" anywhere in the reset.
+- **This differs from the Android code today** (`PrivacyLock.kt`, `AppLock.kt`): there, Forgot on a phone with a screen
+  lock sets a new passcode at once through Android's prompt, and the 24-hour wait runs only on a phone with no screen
+  lock; changing the passcode and turning off follow the way in use already. To build: Forgot always starts the wait at
+  once, the countdown screen with Cancel reset, the notification.
+- **3 · Plus · with an account** (from ≡ › Plus, and Privacy & Security › Your account): Plus is yours (Plus Family ·
+  yours forever); **Your account** (Signed in with Google · sam@gmail.com; What your account holds · *Your Plus, your
+  family, and where your habits are backed up. Never your habits.*); **Your habits** (In your own Google Drive ›, to Backup
+  & Sync); **Your family** (You · Owner, Lee · Joined 12 Oct, Invite sent · Ends 21 Oct ›, Add a person · 3 places free ›;
+  *Each person has their own habits. Nobody sees anyone else's.*); **Sign out** (*Plus stays on this phone through Google
+  Play*) and **Delete my account…** (red). 3.1 Invite someone (a sheet: the code, the link, Share invite, Copy code), 3.2
+  Sign out?, 3.3 Delete your account?. The rest of the Plus section (buying, no account) is still the 12 Oct design.
+
+## Settings: Plus & Account, 14 Oct 2026 (Figma `1476:2`; the 12 Oct Plus frames replaced)
+
+The user: rename Plus ("people think plus is the tab where … upgrade selling is there"); important things first; free
+has no account, and why; a small reminding nudge; where people restore their purchase; say what the account holds
+positively; our app icon; the Get Plus and Restore flows. The structure is in [The Menu](<The Menu — Every Page, Its Name and What It Holds.md>), "Plus & Account".
+
+*The first round is below as it was; its account copy, 2.2 and the single long page were replaced the same day ("Plus & Account, second round").*
+
+- **Menu row and page title: Plus & Account** (drawer `1326:3`, `1326:231`).
+- **The page, down the left, in four states:** **1 Free** (our app icon · *3 of 5 free habits used*; **Where your habits
+  are** · In your own Google Drive ›, *We never see your habits.*; **Your account** · *No account on Free · You don't need
+  one. An account comes with Plus: it keeps your purchase and syncs your habits between your devices.*; a calm **Plus**
+  card with a tonal **See Plus**, never the filled bottom spot; **Already have Plus?** · Sign in, Restore from Google Play,
+  Join a family), **1.1 Plus, no account yet** (*Plus works only on this phone …* · Create an account; Upgrade to Plus
+  Family), **1.2 Plus with an account** (Signed in with Google; *What your account holds · Your Plus purchase and your
+  family, so you can sign in on any device. We never see your habits: they're stored in your own Google Drive.*; Your
+  family; Sign out; Delete my account…), **1.3 Plus from a family** (Leave Lee's family).
+- **The flows, one row each, from the rows that start them:** **2 Get Plus** (its own page: plans, what you get, Get Plus ·
+  $24.99, *I already have Plus*) → 2.1 Google Play's own purchase sheet → 2.2 *Plus is yours. Keep it on all your
+  devices?* (Continue with Google · Continue with Apple · Not now; *Without an account, Plus works only on this device.
+  You can create one later.*) → 2.3 Google's account sheet → 1.2; 2.1.1 Payment pending; 2.1.2 Payment not completed.
+  **3 Sign in** → Google's sheet → Looking for your Plus → Plus is back (→ 1.2), or 3.4 No account found (Another Google
+  account, Continue with Apple, Get Plus). **4 Restore from Google Play** → Plus is back (→ 1.1), or 4.2 No Plus found
+  (Sign in instead). **5 Join a family** (the code, Gboard) → Sign in to join → Join Lee's family? (→ 1.3). **6 Create an
+  account** (from 1.1). **7 Invite someone, 7.1 Sign out?, 7.2 Delete your account?**
+- Research behind the order: [Plus Scope and Account at Purchase](<../../Research/Research Reports/Business Model and Monetization/Plus Scope and Account at Purchase.md>) §7 (buy first, then one optional
+  step; Plus Family needs the account), [Where the Plus Button Goes](<../../Research/Research Reports/Business Model and Monetization/Where the Plus Button Goes — Accidental Taps and Pushy Placement.md>) (a calm card, never
+  the bottom filled spot: 48 accidental-tap reviews, 1.60★), and the account pages report (lost purchases are the top
+  complaint).
+
+### Plus & Account, second round, 14 Oct 2026 (the user's review of `1866:154`)
+
+*Its copy, 2.2 and the Apple decision stand; its sub-pages were undone in the third round below.*
+
+The user: "You don't need one. An account comes with Plus" could offend and was wrong. The account doesn't sync the
+habits ("syncs your habits between your devices … they might think … it might read it"): **habits sync through the
+person's own Google Drive; the account is for signing in and keeping the purchase**, so Plus and the way back to the
+habits reach every device. And privacy can't be the reason Free has no account, or Plus people would think they have
+less of it. Every line now says what the person gets, never what they're refused.
+
+- **Copy, by state.** **1 Free:** *Your account* · **No sign-in needed** · *Free works without an account. Your habits
+  back up to your own Google Drive.* The Plus card: *Unlimited habits, and the same habits on all your devices, synced
+  through your own Google Drive. One payment, yours forever.* · See Plus. **1.1 Plus, no account yet:** **No account yet**
+  · *An account keeps Plus on all your devices. Your habits sync through your own Google Drive.* · Create an account.
+  **1.2 Plus with an account:** **What your account holds** · *Your Plus purchase and your family, so you can sign in on
+  your other devices. Your habits aren't in it: they sync through your own Google Drive, and we never see them.*
+- **Sub-pages, not tabs.** The long page is split into two pages opened from rows: **1.4 Already have Plus?** (`1872:830`;
+  Sign in, Restore from Google Play, Join a family; footer *Plus bought on this Google account also comes back by itself
+  when you open the app.*), opened from the Free page's one row *Already have Plus? · Sign in, restore it from Google Play,
+  or join a family*; and **1.5 Your family** (`1872:998`; each person, Invite someone), opened from 1.2's row *Your family ·
+  You, Lee and an invite · 3 places free*. Why not tabs: Material tabs switch between views of the same kind of content,
+  and a Family tab would be empty for everyone on Free and on Plus for one; a row that opens a page is how Android's own
+  Settings nests a group (reasoned from first principles). Tabs remain an option if the user prefers them.
+- **2.2 Plus is yours (`1871:2`), redesigned:** the cookie-shaped icon (workspace_premium) centred, **Plus is yours.**
+  and *Thank you. Keep it on all your devices with an account.*, then one card of three points with icons: **Plus on all
+  your devices** · *Sign in on your other devices*; **Your habits sync through your Google Drive** · *They stay in your
+  own Drive. We never see them.*; **Your purchase stays safe** · *Even if you lose this phone.* At the bottom: *Without an
+  account, Plus works only on this device. You can create one later.*, **Continue with Google** (filled), **Not now**.
+- **Continue with Apple removed from 2.2 and 6 Create an account (`1871:49`; now *Keep Plus everywhere.* / *An account
+  takes Plus to every device.*).** Reasoned from first principles: someone who has just paid through Google Play on an
+  Android phone is already signed in to Google there, and every extra button on the step after paying is one more thing
+  to choose. The research doesn't settle it either way: [Plus Scope and Account at Purchase](<../../Research/Research Reports/Business Model and Monetization/Plus Scope and Account at Purchase.md>)
+  §7 shows Apple and Google side by side, but it was written for the iPhone, where Apple's rules apply; it has no reviews
+  about which providers to offer after paying on Android. (The iPhone keeps Sign in with Apple when it offers Google.)
+  **Apple stays on the sign-in screens** (3 Sign in, 3.4 No account found, 5.1 Sign in to
+  join), where someone coming from an iPhone may have made their account with Apple.
+- Re-laid out with the sub-pages: 23 arrows, no overlaps; every line checked for a word alone on its last line and for
+  text past its card.
+
+### Plus & Account, third round, 14 Oct 2026 (the user's review of `1872:2`)
+
+The user: keep the options up front ("what we earlier had is better than this one"), and "the mental model for everyone
+should almost stay same … consistent and predictable"; Create an account belongs inside the Your account card as its
+primary action; and two views were missing: Google Drive not connected, and the person who manages a family. **The
+second round's sub-pages (Already have Plus?, Your family) are gone;** everything is on the page.
+
+**One structure in every state, top to bottom** (only what's inside each part changes):
+
+| Place | 1 Free | 1.1 Free, Drive not connected | 1.2 Plus, no account | 1.3 Plus with an account | 1.4 Plus Family, you manage it | 1.5 Plus from a family |
+|---|---|---|---|---|---|---|
+| Plan card | Free · *3 of 5 free habits used* | the same | Plus is yours · *Yours forever, on this phone* | Plus is yours · *Yours forever, every device* | Plus is yours · *Plus Family · yours forever* | Plus is yours · *From Lee's family* |
+| Where your habits are | In your own Google Drive ›; *We never see your habits.* | **Only on this phone** · *Not backed up yet* · **Back up to Google Drive** (filled, inside the card; opens Backup & Sync's own flow) | as 1 | as 1 | as 1 | as 1 |
+| Your account | **No sign-in needed** · *Free works without an account. Your habits back up to your own Google Drive.* | *Free works without an account.* | **No account yet** · *An account keeps Plus …* · **Create an account** (filled, inside the card) | Signed in with Google · What your account holds · **Sign out** | the same, holding *your Plus purchase and your family* | the same, holding *your place in Lee's family* |
+| Your family | Join a family › | Join a family › | Upgrade to Plus Family › | Upgrade to Plus Family › | **You · Owner; Lee ›; Invite sent ›; Add a person ›**; *Plus Family · up to 6 people …* | Lee · Owner; You; **Leave Lee's family** |
+| Then | the Plus card (See Plus); **Already have Plus?** Sign in ›, Restore from Google Play › | the same | — | Delete my account… | Delete my account… | Delete my account… |
+
+- **An action lives inside the card it belongs to:** Back up to Google Drive in Where your habits are (the same filled
+  button and words as Backup & Sync's not-backed-up state), Create an account and Sign out in Your account, Join, Upgrade,
+  Add a person and Leave in Your family. Only Delete my account… stands alone, last.
+- **New screens:** 1.1 (Drive not connected), 1.4 (the manager), **7.3 Remove Lee?** (from Lee › on 1.4: *Lee keeps their
+  habits. Plus stops on their devices, and their place opens for someone else.* Cancel · Remove) and **7.4 Leave Lee's
+  family?** (*Your habits stay on this phone and in your Google Drive. Plus stops until you get it again.* Cancel ·
+  Leave). Invite sent › opens the same Invite sheet (7) as Add a person.
+- **Renumbered:** the old 1.1 Plus no account is 1.2, 1.2 with an account is 1.3 (now Plus for one; Plus Family is 1.4),
+  1.3 from a family is 1.5. The flows that end on a state name the new numbers (2.2 Not now → 1.2; 2.3, 3.3 → 1.3; 4.1 →
+  1.2; 5.2 → 1.5). Overlays 4.2, 7, 7.1 and 7.2 are rebuilt over the new pages.
+- **Layout:** the six states down the left; to their right, rows in the page's order (Join a family, Get Plus, Sign in,
+  Restore, then Create an account, Sign out, Delete, Remove, Invite, Leave), so every arrow from a state runs to a row
+  lower than the one before and no two cross (checked: no crossings, no overlaps, no arrow through a frame). Every line
+  checked for a word alone on its last line.
 
 ## How we work on these (the user's standing preferences)
 

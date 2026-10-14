@@ -11,7 +11,8 @@ of each, and a test reads it on every run.
 ## The file
 
 A zip, **stored (not compressed)**, so any unzip tool opens it and no app needs a decompressor. Named
-`Often Enough YYYY-MM-DD HHmm.zip` by the apps.
+**`Often Enough backup YYYY-MM-DD HHmm.zip`** by every app (from 14 Oct 2026; it was `Often Enough YYYY-MM-DD HHmm.zip`):
+see [One file on every device](#one-file-on-every-device-14-oct-2026) for why.
 
 | Entry | What |
 |---|---|
@@ -87,6 +88,65 @@ about 43 MB a month to about 6 MB**, under the report's 11 MB target.
 Files made for a person stay **format 1** (Save a Backup File, Move to Another Device, a restore's undo file), which
 every app version opens. An app older than 10 Oct 2026 shown a format 2 file says "Update the app" (`newer_version`)
 and changes nothing. DEFLATE is in common Kotlin (`Deflate.kt`, checked against the JVM's zlib both ways).
+
+## One file on every device (14 Oct 2026)
+
+The user, 14 Oct 2026: "the backup file should be the same everywhere. The backup file created on iOS as well as Android
+should be the same everywhere so that they can share it on different devices and use it on different devices." They then
+asked whether zip, a database file or something else is best, and chose the zip and the name below.
+
+**The rule.** Every backup file made for a person, on iPhone, iPad and Android alike (Save a backup file, Save a backup
+file first before an erase or a delete), is this format 1 zip, named **`Often Enough backup YYYY-MM-DD HHmm.zip`**: the local
+date and 24-hour time it was made (`Often Enough backup 2026-10-12 0914.zip`), type `application/zip`. Every app opens a
+file from any other: Restore › A backup file in Settings, and **A backup file** when coming back (Android onboarding, row
+6). Nothing in the file depends on the platform that made it: `platform` and `deviceName` in the manifest are only shown
+("From a Pixel 9 · 12 Oct, 9:14 AM").
+
+**Why a zip of our own JSON, and not the app's database file (`.db`):**
+
+- **The database is the app's private storage; the backup file is a promise.** The database's layout changes with app
+  updates (its `schema`), so a database copied from a newer app can't be opened by an older one: the iPhone's check
+  refuses it as "newer version". `data.json` is the same fields sync uses, readers skip fields they don't know and fill
+  missing ones with sync's defaults, so a phone on an older version still reads a newer phone's file whenever the format
+  is the same.
+- **It's checked before anything changes.** The manifest carries the SHA-256 and the counts, and the zip carries a CRC-32
+  per entry: a damaged, cut-off or repacked file is refused with a reason (below). A copied SQLite file can also leave
+  its most recent changes behind in a separate `-wal` file, and nothing in it says so.
+- **It's readable without us (Rulebook D10).** Any unzip tool opens it, and `csv/` opens in Excel or Numbers.
+
+**Why not the alternatives:**
+
+- **Plain `.json`:** it works everywhere too, but has no room for the spreadsheet copies or for a checksum kept
+  apart from the data. The zip holds all three in one file.
+- **An ending of our own** (`.oftenenough`, drawn in the Android designs until 14 Oct, never built): it would only be a renamed zip.
+  On the iPhone a registered type would let a tap in Files open the app. **Android doesn't know endings it hasn't been
+  told about:** the file arrives as `application/octet-stream`, Files says it can't open it, and Gmail and Drive don't offer
+  our app. One file that behaves the same everywhere wins. The cost is small: on the iPhone, tapping a `.zip` in Files
+  unzips it into a folder beside it; a restore always starts inside the app, from its file picker, so the person chooses
+  the zip there.
+
+**Why this name:**
+
+- **It starts with "Often Enough backup"**, the words the person looks for in a folder of downloads, and the words the
+  app uses when a chosen file isn't one ("Choose a file whose name starts with “Often Enough backup”", Android 6.1.1).
+- **Year-month-day** sorts in order in any folder and reads the same in every language and region.
+- **The time** keeps two files saved the same day apart (the iPhone's Files would otherwise ask to replace the first;
+  Android's picker would add "(1)").
+- **No device name or account in the name** (the manifest has the device, the name never does).
+- **Long names in Android's own file picker** are shortened to one line in the middle ("Often Enough back…6-10-12
+  0914.zip"). That's Android's drawing; the app's own screen (6.1 · Your backup file) shows the whole name.
+
+**Code to change** (not built yet; Current Work 111):
+
+- **The name, both apps:** add "backup" to `Often Enough YYYY-MM-DD HHmm.zip`: the iPhone's `BackupCenter.writeFile`
+  (`iOS/Habits/Backup/BackupCenter.swift`, today `"Often Enough \(stamp).zip"`) and Android's `BackupCenter.fileName()`
+  (`Android/.../app/backup/BackupCenter.kt`, today `"Often Enough " + yyyy-MM-dd HHmm + ".zip"`). The format itself is
+  already shared: both write it through `HabitRepository.backupFile`.
+- **The iPhone's last `.db`:** the older Backup & Export page (`BackupExportView`), shown only when the database
+  couldn't be opened, still saves a copy of the database itself (`HabitStore.backupFile`, `Often Enough Backup
+  YYYY-MM-DD.db`). Make it save the shared zip, or remove its Save button. The iPhone's Restore can keep reading an older
+  `.db` (`BackupCenter.isOlderBackupFile`, adding only what's missing) until release; nothing outside our own test
+  phones has one, as the app isn't out yet.
 
 ## Checks before anything changes
 

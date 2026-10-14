@@ -964,9 +964,12 @@ and the Add note keyboard coming up by itself.
     device at a time (phone or tablet), Plus every device.
   - [ ] **The account remembers where the habits live** ("add those things like the account cloud ID … about each cloud
     ID"): the cloud (iCloud or Google Drive); its private account ID (CloudKit user record ID; Google's fixed account ID);
-    for Google a hint like `l•••••@gmail.com`, never the full email; last sync time and device kind. A new device on a
-    different cloud account **stops before syncing** and says where the habits are (iCloud: "a different Apple Account",
-    check Settings › your name). The user's worry: "they might be selecting one iCloud account or Google Drive account and
+    last sync time and device kind; **no email, not even masked** (14 Oct: "revealing the other person's account name").
+    A new device on a different cloud account **stops before syncing** and never names the other account: Google says
+    "Your habits are backed up to a different Google account. Choose it"; iCloud says "a different Apple Account" (check
+    Settings › your name). With no record to compare (no account, an empty Drive): "No habits found" with Choose another
+    Google account, the other ways and Start fresh; never a separate "Drive account" choice (the user, 14 Oct: "do some
+    research about … the ability to choose a different Google Drive account"; no review tells the two apart). The user's worry: "they might be selecting one iCloud account or Google Drive account and
     the other device they will be selecting different one and then they will be like oh … the data is gone."
   - [ ] **Without an account:** "Have you used Often Enough before?" says when this device's cloud is empty ("We didn't
     find habits in this iPhone's iCloud") and offers every way back: another Google account, the Apple Account in
@@ -986,7 +989,144 @@ and the Add note keyboard coming up by itself.
     Your account only knows you have Plus (and who's in your family; never your habits) · Moving phones? (a move code
     sends your habits once, locked, deleted as soon as they arrive).
   - [ ] **Delete my account** in Privacy (App Store 5.1.1(v)): removes only the Plus record and family membership.
+  - [ ] **Free people have no account at all, on any platform; the account is for Plus** (the user, 14 Oct 2026, later
+    the same day, replacing "free users should have an account if they want to"): "free users will not have account at
+    all … it will make everything complicated". **Plus offers an account right after buying, optionally**: "this account
+    will link your purchase to that email … so that you can use it in other devices to log in and get back your habits
+    but still your data will be only stored in your cloud storage iCloud or Google Drive"; skipping it says "if you don't
+    create an account, you won't be able to use the Plus features in other device. You can also link it later."
+  - [ ] **Continue with Google (the account) and Google Drive (a free person's backup) are different things** and can be
+    different Google accounts: "for free users only, we allow a selected Drive". Screen 1 of coming back offers both.
+  - [ ] Open: does free still sync one device at a time without an account (D4), or only back up? The user: "even
+    earlier we thought we will be having like one device sync at a time it will make everything complicated".
+  - [ ] **Moving with a code: scan a QR code or type 6 digits, both phones online** (the user, 14 Oct 2026: "this is what
+    we are going to use … even including the tool name"; Rulebook D15): Google code scanner (Android) / VisionKit
+    `DataScannerViewController` (iPhone); **SPAKE2** through a Cloudflare Worker relay (Durable Object), as Magic
+    Wormhole; one guess per code, 10 minutes; **on a wrong try the server ends that code and immediately tells the old
+    phone (through the relay) to show a new QR and 6 digits, with no tap** (the user: "it should immediately change the
+    code on the old phone … so that while building that feature, we get this"); the old phone's side lives on **Move to a new
+    phone** in the menu, never in onboarding ("generating the code … belongs to the move it to another phone page").
+    Android's menu has no such page yet (Google Drive & Backup's Move to another device was removed 12 Oct): give it one.
+  - [ ] **Later: check the iCloud steps' words on coming back** (Android 2.3, 3.3: "Choose Move to a new phone · In ≡ ›
+    iCloud & Backup"; the user, 14 Oct: "we need to update the copy when we have completed the design of the account pages
+    and all of that with the new changes"). Once the iPhone's account and iCloud & Backup pages are redesigned for the
+    Plus-only account, make the steps name the real place and words.
+  - [ ] **Words: signing in is a Google account (or Apple Account); backups are a Google Drive** (the user, 14 Oct:
+    "choose a different Google account … it should be like Google Drive account"). Coming back: "Try another Google Drive"
+    when no habits are found; "Try another account" (Another Google account / Continue with Apple) when no Plus account
+    is found. Google's own sheets keep their own "Sign in with Google": an app can't change Google's screens.
   - [ ] Still to check before building: the iPhone and Android apps see the same Drive app folder for one Google account.
+- [ ] **111. One backup file on every device** (added 14 October 2026, from the user, iPhone, iPad and Android alike;
+  Rulebook D5; why: [Backup File Format](<../../../Core/Backup File Format.md#one-file-on-every-device-14-oct-2026>)). The
+  user: "the backup file should be the same everywhere. The backup file created on iOS as well as Android should be the
+  same everywhere so that they can share it on different devices and use it on different devices." Asked "zip or DB? Or
+  … any other better file format?", they chose the shared zip and the name.
+  - [x] **The format: the shared core's checked zip** (`manifest.json`, `data.json`, `csv/`; `HabitRepository.backupFile`),
+    which both apps already write; never a copy of the database (`.db`) and never an ending of our own (`.oftenenough`:
+    Android can't open endings it doesn't know). *Decided and written down 14 Oct.*
+  - [x] **The name: `Often Enough backup YYYY-MM-DD HHmm.zip`** (local date, 24-hour time), the same on every device.
+    *Android designs updated 14 Oct: the file pickers (onboarding 6 `1789:19`, Settings' Restore `1472:155`) and 6.1's
+    file name (`1789:20`, whole on one line); `.oftenenough` gone from the file.*
+  - [ ] **Code, both apps:** add "backup" to the name (iPhone `BackupCenter.writeFile`, Android `BackupCenter.fileName()`;
+    both say `Often Enough YYYY-MM-DD HHmm.zip` today).
+  - [ ] **Code, iPhone:** the older Backup & Export page (`BackupExportView`, shown only when the database can't be opened)
+    still saves a `.db` (`HabitStore.backupFile`): make it save the shared zip, or remove its Save button. Reading an older
+    `.db` in Restore can stay until release.
+  - [ ] **Check once built:** a file saved on the iPhone restores on Android and one saved on Android restores on the
+    iPhone (a round-trip test across both, D5).
+- [x] **113. Plus & Account: one page for Plus and the account, with every scenario and flow** (added 14 October 2026,
+  from the user, Android first; follows 112). Their points:
+  - [x] **Rename the menu row Plus → Plus & Account** ("people think plus is the tab where purchase … upgrade selling is
+    there … right now plus is not anymore about just upgrade").
+  - [x] **Important things first, secondary second.** Say where the habits are (their chosen cloud: Google Drive, or
+    iCloud on iPhone) and what the account is for (it stores the Plus purchase and makes sync across devices work).
+  - [x] **Free: no account, and why** ("syncing is only in Plus"), plus a small, reminding nudge to upgrade; it's also
+    where people come to **restore their purchase**.
+  - [x] **The upgrade page can be separate**, opened from a button.
+  - [x] **Plus: what the account holds, said clearly and positively**: not "never your habits" but "we don't see your
+    habits; they're stored in your chosen Google Drive or iCloud".
+  - [x] **Our app icon** on the Plus card, not a glyph in a black circle.
+  - [x] **The missing flows: Get Plus and Restore purchase**, and every scenario, researched and arranged properly.
+  *Designed 14 Oct 2026 in Figma `1476:2`; see the Android handoff, "Settings: Plus & Account".*
+  - [x] **Second round (the user's review of `1866:154`): no copy that could offend.** Not "You don't need one. An
+    account comes with Plus"; never privacy as the reason Free has no account (Plus people would think they have less).
+  - [x] **The account doesn't sync the habits**: they sync through the person's own Google Drive; the account is for
+    signing in and keeping the purchase, and helps get the habits back quickly through Drive on other devices.
+  - [x] **2.2 Plus is yours made beautiful**: the cookie-shaped icon centred, icons on its points, not a dull screen.
+  - [x] **Continue with Apple on 2.2 only if the research supports it**: it doesn't, for Android; removed from 2.2 and
+    Create an account, kept on the sign-in screens.
+  - [x] **Split the long page** ("tabs … family and restore from Google Play"): two sub-pages opened from rows,
+    Already have Plus? and Your family (tabs considered and why not, in the handoff).
+  *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, second round".*
+  - [x] **Third round (the user, 14 Oct 2026, on `1872:2`): keep the options up front, not tucked into sub-pages**
+    ("what we earlier had is better than this one"): Sign in, Restore from Google Play, Join a family, and the family,
+    on the page itself.
+  - [x] **One structure in every state** ("the mental model for everyone should almost stay same … consistent and
+    predictable"): the same sections in the same places on Free and Plus; only their contents change.
+  - [x] **Where your habits are when Google Drive isn't connected**: a state of its own.
+  - [x] **Create an account inside the Your account card, as its primary action**, not outside it.
+  - [x] **The view for the person who manages the family** (the Plus Family buyer).
+  *Done 14 Oct 2026, `1476:2` (states 1–1.5, dialogs 7.3 and 7.4); handoff "Plus & Account, third round".*
+- [ ] **112. The account and backup pages in the menu: research, then a new design section** (added 14 October 2026, from
+  the user, Android first, iPhone and iPad alike; Rulebook D16; follows 110). Their points:
+  - [ ] **Free people have no account at all, on any device, iPad included**: "Free users don't even have an account at all,
+    no matter what … as simple as that." **One device at a time is dropped**: "Earlier, we thought one device at a time,
+    but we have discarded that plan." Free has backup to the person's own cloud, Move with a code and a backup file.
+  - [ ] **A page in the menu (or whatever is best)** that says very clearly: **your habits are stored in your own cloud**,
+    on Android "your own Google Drive", and the person **can choose or change to a different Google account**.
+  - [ ] **The account only holds whether you have Plus**, and Plus Family: "Apart from that, none of the data will be
+    stored in the account." It **helps you sign in on other devices and get your habits back**.
+  - [ ] Today's pages to rethink: Google Drive & Backup and Plus ("right now the screen is like account backup and
+    account").
+  - [ ] **Research first** ("Let's do some research and figure out how it should be overall"), then the pages **in a new
+    section, for now** ("temporarily"); the current sections stay untouched until the user chooses.
+  - [x] **Research first.** *Done 14 Oct: [The Account and Backup Pages](<../../../Research/Research Reports/Data, Sync and Accounts/The Account and Backup Pages — Your Google Drive, and an Account Only for Plus.md>).*
+  - [x] **The information architecture before the screens** (the user: "Take care of this first, and then build the designs"):
+    the menu, each page's name and what's on it. *[The Menu — Every Page, Its Name and What It Holds](<../../../Android/Docs/The Menu — Every Page, Its Name and What It Holds.md>).*
+  - [x] **Menu names are the same on every platform** ("If we have complete different names, people will easily get confused"):
+    **Backup & Sync** replaces Google Drive & Backup (Android) and iCloud & Backup (iPhone); an iPhone person may back up to
+    Google Drive. **No Account row**: an Account page would suggest we store their data; the account lives in Plus.
+    *Android drawer renamed 14 Oct (`1326:3`, `1326:231`).* Still different: iPhone "Appearance", Android "General" (asked).
+  - [x] **Plus without an account is never forced; the line stays simple**: "if they don't want to create an account, then
+    let it be … your Plus only stays on this device. As simple as that."
+  - [x] **Backup & Sync section (`1461:2`)**: renamed with its frames; Roboto → Google Sans Flex with the Android styles;
+    every state kept (not backed up, backed up, synced, no internet); Devices only with Plus; **Move to a new phone** added
+    (row and its page, 8); Restore gains **Your old phone**; the card says "your own Google Drive … we never see them".
+    *Done 14 Oct.*
+  - [ ] **The iPhone's screens keep this structure** with their own native components ("whatever screens that we are going
+    to create for iPhone, they should have this familiarity"), because people switch devices.
+  - [x] **Backup & Sync arranged like coming back, with the missing screens** (the user: "arrange it properly … create the
+    missing screens … we need our own UI"): flows 2 Use another Google Drive, 3 Move to a new phone, 4 Restore from a backup
+    (Google Drive, a file, your old phone, each with Restore this …? and one choice), 5 and 6 the dialogs; the old Restore
+    section folded in. **The finished pages' text styles** (the user: "you are not using our text styles … check the other
+    designs"). **Dialogs cut to two choices** ("too many options … a high chance of misclick"). *Done 14 Oct; see the Android
+    handoff, "Settings: Backup & Sync".*
+  - [x] **Second review of Backup & Sync** (14 Oct): restore **replaces, said as information** ("make it as an information
+    rather than option"); **every kept backup** listed with device chips; "From today back to six months ago"; **bigger
+    text buttons** with more room; **loading blocks centred in the space left** (also coming back); "Scan QR code" /
+    "Type instead"; 3.3's note fits small screens. *Done.*
+  - [x] **Cancel centred, and kept only where waiting on something outside the phone**; Cancel goes back to the screen
+    before (the user: "just note it down"). *Done 14 Oct, Backup & Sync and coming back.*
+  - [x] **Privacy & Security arranged as a flow, with our text styles and the "Where your data is" card.** *Done 14 Oct.*
+  - [ ] **Bug (Android app): the passcode's sixth digit looks as if it's never typed** (the user: "we are only able to type
+    up to five digits … sixth one is never typed … visually at least"). Found: `Keypad` in `PrivacyLock.kt` handed the
+    code over and cleared it in the same tap, so the sixth dot was never drawn filled (the code itself was accepted). The
+    iPhone fills all six first. **Fixed in the `claude/android-app` working copy, not committed:** the sixth dot is drawn,
+    then after 150 ms the code is handed over; keys stop taking taps once six are in. Still to do: run `ScreensTest`'s
+    App lock test on an emulator, then commit when the user asks.
+  - [x] **App lock's missing screens** (the user, 14 Oct): change the app passcode (the phone's lock first), turn off,
+    wrong passcode, and Forgot with the **24-hour reset that entering the app passcode cancels**. *Designed 14 Oct.*
+  - [x] **Second round** (the user, 14 Oct): every change asks "Confirm it's you" by the way in use (turn off: the
+    phone's lock or the app passcode; change the passcode: the current one); Forgot on every passcode keypad; **Start
+    reset starts at once**, with a countdown screen, Cancel reset (the app passcode, then the app opens) and a
+    notification. *Designed 14 Oct.*
+  - [ ] **Android code to match** (not built): Forgot always starts the 24-hour wait at once, never a new passcode
+    through the phone's lock; the countdown screen and Cancel reset; the notification when a reset starts.
+  - [x] **Where Your account leads**: 3 · Plus · with an account, with Invite someone, Sign out? and Delete your account?.
+    *Designed 14 Oct.*
+  - [ ] Open (asked 14 Oct, no decision yet): confirm the phone's lock once when an app passcode is first set up, on
+    both apps, so no one else can set one and lock the owner out.
+  - [ ] Next: the Create an account screen.
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:
