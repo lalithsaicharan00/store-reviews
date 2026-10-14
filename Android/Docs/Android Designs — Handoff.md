@@ -1072,7 +1072,7 @@ second round's sub-pages (Already have Plus?, Your family) are gone;** everythin
 | Where your habits are | In your own Google Drive ›; *We never see your habits.* | **Only on this phone** · *Not backed up yet* · **Back up to Google Drive** (filled, inside the card; opens Backup & Sync's own flow) | as 1 | as 1 | as 1 | as 1 |
 | Your account | **No sign-in needed** · *Free works without an account. Your habits back up to your own Google Drive.* | *Free works without an account.* | **No account yet** · *An account keeps Plus …* · **Create an account** (filled, inside the card) | Signed in with Google · What your account holds · **Sign out** | the same, holding *your Plus purchase and your family* | the same, holding *your place in Lee's family* |
 | Your family | Join a family › | Join a family › | Upgrade to Plus Family › | Upgrade to Plus Family › | **You · Owner; Lee ›; Invite sent ›; Add a person ›**; *Plus Family · up to 6 people …* | Lee · Owner; You; **Leave Lee's family** |
-| Then | the Plus card (See Plus); **Already have Plus?** Sign in ›, Restore from Google Play › | the same | — | Delete my account… | Delete my account… | Delete my account… |
+| Then | **Already have Plus?** (Upgrade to Plus is in the plan card since the fourth round); Sign in ›, Restore from Google Play › | the same | — | Delete my account… | Delete my account… | Delete my account… |
 
 - **An action lives inside the card it belongs to:** Back up to Google Drive in Where your habits are (the same filled
   button and words as Backup & Sync's not-backed-up state), Create an account and Sign out in Your account, Join, Upgrade,
@@ -1084,13 +1084,202 @@ second round's sub-pages (Already have Plus?, Your family) are gone;** everythin
 - **Renumbered:** the old 1.1 Plus no account is 1.2, 1.2 with an account is 1.3 (now Plus for one; Plus Family is 1.4),
   1.3 from a family is 1.5. The flows that end on a state name the new numbers (2.2 Not now → 1.2; 2.3, 3.3 → 1.3; 4.1 →
   1.2; 5.2 → 1.5). Overlays 4.2, 7, 7.1 and 7.2 are rebuilt over the new pages.
-- **Layout:** the six states down the left; to their right, rows in the page's order (Join a family, Get Plus, Sign in,
+- **Layout:** the six states down the left; to their right, rows in the page's order (Get Plus, Join a family, Sign in,
   Restore, then Create an account, Sign out, Delete, Remove, Invite, Leave), so every arrow from a state runs to a row
   lower than the one before and no two cross (checked: no crossings, no overlaps, no arrow through a frame). Every line
   checked for a word alone on its last line.
 
+### Plus & Account, fourth round, 14 Oct 2026 (the user, on `1872:2`): Upgrade to Plus inside the Free card
+
+The user: move the Plus card into the Free card, "because upgrade to plus is … the action that we are aiming for in the
+first hand", and free the space the separate card took; "make sure it looks clean, neat". This replaces the first
+round's calm card with a tonal **See Plus** at the bottom of the page.
+
+- **The Free card** (states **1**, **1.1** and the page behind dialog **4.2**): our app icon · **Free** · *3 of 5 free
+  habits used*; a 1 px divider; *Unlimited habits, and the same habits on all your devices, synced through your own
+  Google Drive. One payment, yours forever.* (the approved line, unchanged); **Upgrade to Plus** (the same filled,
+  in-card button as Create an account and Back up to Google Drive, with `workspace_premium`). It opens **2 · Get Plus**.
+- **The separate Plus card is gone;** after Your family, Free shows only **Already have Plus?** (Sign in, Restore from
+  Google Play). Each Free page is 67 px shorter.
+- **Layout:** the states are restacked with the usual 160 px gaps. The Get Plus row now comes first on the right and
+  Join a family second, so the rows still follow the page's order. The arrows were redrawn: none cross, none pass
+  through a frame and no frames overlap.
+
+### Plus & Account, fifth round, 14 Oct 2026 (the user, on `1872:16`, `1877:203`, `1877:222`)
+
+- **The Free card has the habits bar from Get Plus** (`1544:32`): *3 of 5 free habits used* · *2 left* over the same
+  linear progress bar, under the app icon and **Free** (the old subtitle went into the bar). States 1, 1.1, 4.2.
+- **Where your habits are + Your account → one section, Backup & account** ("both are related to the account itself.
+  Account and backup … merge it in a clear way"): one grouped list (24 px outer corners, 4 px between, 2 px gaps, as
+  elsewhere): the habits' place first (In your own Google Drive ›, or Only on this phone), then the account rows; the
+  footer *We never see your habits.* closes it. In every state, 1–1.5, and the page copies behind 4.2, 7, 7.1–7.4.
+- **Back up to Google Drive and Create an account are tonal, not filled** (the user: "it should be a secondary
+  button"). Android's own guidance: a filled button is "for primary actions"; tonal and outlined are for actions that
+  are "important but not primary" ([Compose buttons](https://developer.android.com/develop/ui/compose/components/button)).
+  On Free, the primary action is Upgrade to Plus, so one filled button per page. Backup & Sync's own not-backed-up page
+  keeps its filled Back up to Google Drive: there it is the page's main action.
+- **No "Free works without an account."** (the user: people take a sentence like this as a promise forever, "they
+  don't even think about how technically it works"): **No sign-in needed** stands alone.
+- **What your account holds** no longer repeats the footer: *… they sync through your own Google Drive.*
+- **Tapping In your own Google Drive ›** opens **Backup & Sync** (Settings), the same page as the menu row.
+- **Layout:** states restacked with 160 px gaps; arrows redrawn from their rows (no crossings, no overlaps, none
+  through a frame).
+
+### Plus & Account, sixth round, 14 Oct 2026 (the user, on `1877:222`, `1877:458`, `1872:410`): the account goes into the plan card
+
+The user: say *why* there's no sign-in on Free; "In your own Google Drive" makes no sense without a heading, it should
+say backup, Google Drive and the email; "Plus is yours. That is enough" (no *Yours forever, every device*); move What
+your account holds and Sign out into the Plus card; keep it consistent, clean and small.
+
+**Why this layout** ([The Account and Backup Pages](<../../Research/Research Reports/Data, Sync and Accounts/The Account and Backup Pages — Your Google Drive, and an Account Only for Plus.md>)):
+the account lives inside Plus (§1.1), and Plus and the habits are always shown as two separate things, because 51
+reviewers got one back without the other (§2.3). So every state has the same two cards: **the plan card holds the plan
+and its account; Backup holds only where the habits are.** Free's "no sign-in" sits in the same place as Plus's account,
+so the structure doesn't change between states.
+
+| | Free | Plus, no account | Plus with an account (1.3, 1.4, 1.5) |
+|---|---|---|---|
+| Plan card title · subtitle | Free · *No sign-in needed* | Plus is yours · *No account yet* | Plus is yours · *Signed in as sam@gmail.com* |
+| Its line | *An account holds only a Plus purchase, so there's nothing to sign in to on Free.* | *An account keeps Plus on all your devices. It holds only your purchase: your habits stay in your own Google Drive.* | *Your account holds only your Plus purchase* (1.4: *and your family*; 1.5: *your place in Lee's family*)*, so you can sign in on your other devices. Your habits sync through your own Google Drive.* |
+| Its button | (the habits bar, then Upgrade to Plus, filled) | Create an account (tonal) | Sign out (tonal) |
+| Backup | **Backed up to Google Drive** · email › (Backup & Sync), or **Not backed up** · *Only on this phone for now* · Back up to Google Drive (tonal); *We never see your habits.* | the same | the same |
+
+- **Sign out appears only where there's an account** (1.3–1.5); 7.1 opens from 1.3. Its old line "Lee keeps Plus." was
+  left over from when 1.3 included the family owner; now *Plus stays on this phone through Google Play. Your habits stay
+  here and in your Google Drive.* **7.2** likewise: *Your account is deleted. Your purchase stays with Google Play. Your
+  habits stay on this phone and in your Google Drive.*
+- 1.5's Backup row shows priya@gmail.com (it showed sam's). Overlay pages 7–7.4 rebuilt; states restacked; arrows
+  redrawn from Create an account and Sign out in the cards (no crossings, overlaps or arrows through frames); no word
+  alone on a last line.
+
+### Plus & Account, seventh round, 14 Oct 2026 (the user, on `1872:16`, `1889:8`, `1877:71`, `1868:508`, `1868:620`, `1868:656`, `1868:2`, `1868:42`, `1868:194`)
+
+- **The Free card, rearranged** ("very heavy"; the 3 of 5 bar "out of nowhere"): app icon · **Free** · *No sign-in
+  needed*; *An account only keeps a Plus purchase and signs you in on your other devices. Free has nothing to keep, so
+  you don't need one.*; then one grey **Plus box** (`#f0f0f3`, 20 px corners) that holds the habits bar, *Plus gives you
+  unlimited habits, the same on all your devices. One payment, yours forever.* and the filled button. The bar now sits
+  with the offer it explains.
+- **The button says Get unlimited habits** (icon `all_inclusive`), not Upgrade to Plus. No controlled test of upgrade
+  wording was found; paywall vendors and practitioner guides recommend a specific, benefit-led label over a bare
+  "Upgrade" ([Funnelfox](https://blog.funnelfox.com/effective-paywall-screen-designs-mobile-apps/),
+  [Apphud](https://apphud.com/blog/design-high-converting-subscription-app-paywalls)), and our own research has the
+  habit cap as the moment people decide (Free Plan Design: *"You're tracking 5 habits. Plus unlocks unlimited habits …"*).
+  It sits under the bar, so the two read as one thought. **Get Plus** stays the buy button on Get Plus (2), so this
+  button never sounds like it charges.
+- **Long emails are cut in the middle, keeping the domain** (*Signed in as alexa…@gmail.com*; the Backup row
+  *alexandra.mont…@gmail.com*), shown on 1.4 and its overlays 7 and 7.3; the rule is in The Menu.
+- **5 · Join a family** is the Move to a new phone code screen: *Join a family.* · *The 6 digits from your invite.*, six
+  boxes, the number keypad, *It checks itself when all 6 are in.* No letters, no Continue button. The invite sheet (7)
+  shows the same kind of code (*482 019*) and its link; the link opens the app straight at 5.1 or 5.2. **To decide for
+  the Worker:** a 6-digit invite code lives 7 days, so it needs a limit on wrong tries per device, as the move code has.
+- **5.1 Sign in to join, 5.2 Join Lee's family?, 3 Sign in and 3.3 Plus is back** now look like 2.2 Plus is yours: the
+  cookie icon (`group_add`, `group`, `login`, `workspace_premium`), a centred title and line, and a white card of points
+  with icons. 3.3 has no back arrow (Done), and says *Plus*, not Plus Family (it leads to 1.3). 3.1's background is the
+  new 3.
+- **Continue with Apple stays on 5.1 and 3, but no longer as the loudest button.** The invite works the same whatever
+  phone Lee has: the person joining signs in with *their own* account. Apple is there for one case: someone whose
+  account was made on an iPhone with Apple (the research's reason for keeping it on the sign-in screens). The footnote
+  says so: *Made your account on an iPhone? Sign in the same way you did there.* Both buttons are now white and the
+  same size, Google first (Apple's guidelines allow the white style and ask for equal size).
+
+### Plus & Account, eighth round, 14 Oct 2026 (the user; the logo boards `1160:2`, `1166:2`; invite sheet `1873:2`)
+
+- **Our logo wherever Plus is the subject** (the user: "wherever we use the plus word, we should use our app logo, but
+  in an enhanced way"). Heroes of **2.2 Plus is yours**, **2.3** (its background), **6 Create an account**, **3.3 and
+  4.1 Plus is back**: the approved **light app icon** (white tile, the transparent tonal mark `1166:17` at its 52:60
+  inset, 80 px, 30% corners as the guide's rounded-square preview) on a **soft cookie halo** (`#e3e3e8`, 112 px), with
+  a light shadow on the tile only. Within the [Logo Guide](<../../Brand/Logo Guide.md>): tones, order, tilt and inset
+  untouched; no outline, gradient or heavy shadow on the mark. Small Plus slots use the transparent mark itself: 24 px
+  in points (*Plus comes back*, *Plus on all your devices*), 40 px in 3.4's Get Plus choice.
+- **4.1 Plus is back** now matches 3.3: *Bought with this Google account.*; Plus on your Android devices · *With this
+  Google account.*; Want it on an iPhone or iPad too? · *Create one in Plus & Account.*; Done.
+- **The Free card's Plus box, in order of importance:** *Plus gives you unlimited habits, sync across all your devices
+  and more widgets. One payment, yours forever.* Order from [Free Plan Design](<../../Research/Research Reports/Business Model and Monetization/Free Plan Design — Habit Cap, Widgets and an Honest Listing.md>):
+  the habit cap is the main reason people buy; devices and sync next; widget designs and sizes are Plus (18 reviewers
+  bought Plus *for* widgets). **Button: See what's in Plus →** (it opens Get Plus, which lists everything).
+- **Invites: a single-use link, never a typed code.** A 6-digit code living 7 days can be guessed; the move code gets
+  away with it only because both phones are online together and one wrong try ends it. Production family plans use
+  links: Google's family groups give each invitation a unique sign-up link that works once and expires after 2 weeks,
+  and a waiting invitation holds a place ([Google](https://support.google.com/families/answer/6317858?hl=en)); Spotify's
+  manager copies an invite link and the invitee signs in with their own account
+  ([Spotify](https://support.spotify.com/sz/article/invite-remove-family-member/)). So:
+  - **7 Invite someone:** *They join with their own account. Their habits stay their own.*; the invite's **QR code**
+    (*With them? They scan it with their camera.*); **Share invite link** (Android's share sheet); *Works once, for
+    7 days. Cancel it in Your family.* The link is needed: most family members aren't in the room.
+  - **7.5 Invite sent** (from Invite sent ›): *Ends 21 Oct. Nobody has used it yet.*, the same QR, **Share again**,
+    **Cancel invite** → **7.6 Cancel this invite?** (*The link and the QR code stop working, and the place is free
+    again.* Keep it · Cancel invite).
+  - **5 Join a family** (from the menu): *Got a link? Tap it on this phone. It opens here.* / *With them? Scan the code
+    on their phone.* · **Scan QR code** (Google's code scanner, as Move to a new phone). The link opens the app straight
+    at 5.1 or 5.2. The row on the page: *Have an invite? Open it or scan it*.
+  - The server: an unguessable token per invite, single use, 7 days, cancellable; the manager sees who joined and can
+    remove them (7.3).
+- **Layout:** 7.5 between 7.3 and 7, 7.6 to its right; the section grew 880 px and the sections under it moved down
+  by the same. Arrows redrawn: no crossings, overlaps or arrows through frames.
+- **Not changed, for the user:** 2.2 still says *Without an account, Plus works only on this device*; the account
+  research (§1.6) found that wrong on Android (Play restores Plus on the same Google account) and proposed *Without an
+  account, Plus stays with your Google Play account, on Android only. You can create one later.*
+
+### Plus & Account, ninth round, 14 Oct 2026 (the user, on `1871:2`, `1896:15`, `1544:3`)
+
+- **The logo has no cookie halo anywhere:** our light app-icon tile with its soft shadow only (2.2, 2.3, 6, 3.3, 4.1;
+  48 px in Get Plus). Other cookie heroes (Sign in, Join a family, 5.1, 5.2) keep the cookie with a Material icon, as
+  the Android cookie rule says; only the logo lost it.
+- **2.2's line is corrected** (also in 2.3): *Without an account, Plus stays with your Google Play account, on Android
+  only. You can create one later.* The old *Plus works only on this device* was wrong on Android: Google Play brings
+  Plus back on any Android device signed in to the same Google account (Architecture 02 §3.4; account report §1.6).
+  What an account adds is the iPhone and iPad, Plus Family, and finding the habits again.
+- **2.2 keeps Google only** (the user asked whether Continue with Apple should come back): the person has just paid
+  through Google Play, so they're using a Google account at that moment; Apple sign-in stays on Sign in (3) and Sign
+  in to join (5.1) for someone whose account was made on an iPhone.
+- **2 · Get Plus leads with what you get** (the user: "we should lead with the feature list"; "intentionally long";
+  Plus or Plus Family is "the same level decision"). RevenueCat's paywall guide puts value first (spell out what the
+  purchase gives, highlight key features), and feature checklists outnumber benefit carousels about 2:1 in a paywall
+  corpus ([RevenueCat](https://www.revenuecat.com/docs/playbooks/guides/hard-paywall),
+  [Lazyweb](https://labs.lazyweb.com/research/category/paywall-anatomy-and-plan-structure-benchmarks.md)); no source
+  tests feature-first against plan-first, so this is reasoned, not measured. The page:
+  - our logo (48) · **Plus** · *One payment, yours forever.*;
+  - one white card, seven features with icons and one line each: Unlimited habits · *Free has 5. Plus has no limit.*;
+    Sync across all your devices · *Through your own Google Drive.*; More widgets · *Today's list and This week.*;
+    Your tablet too; Wear OS watch; iPhone and iPad too · *The same habits, with an account.*; Windows app;
+  - fixed at the bottom: **Plus** and **Plus Family** as two equal tiles side by side (name, radio, price, *Just you* /
+    *You + 5 people*), then **Get Plus · $24.99** and **I already have Plus**. The 3-of-5 bar left this page (the Free
+    card and the 6th-habit sheet show it). On a 360 × 800 phone all seven features show without scrolling.
+
+### Plus & Account, tenth round, 15 Oct 2026 (the user, on `1544:3`, `1867:2`): Get Plus, less to read
+
+The user: "very cluttered"; *Unlimited habits* and *More widgets* explain themselves; only *Sync across all your devices
+· through Google Drive* needs its line; fewer icons; "as compact as possible … so that focus goes on the decision"; still
+feel like a lot: every device (Wear OS, Apple Watch, iPhone, iPad, tablet, Windows, Mac).
+
+- **One white card:** three checked lines (one `check` icon each, no circles): **Unlimited habits**, **Sync across all
+  your devices** · *Through your own Google Drive.*, **More widgets**; a divider; **Works on** and eight small outlined
+  labels: Android phone, Tablet, Wear OS watch, iPhone, iPad, Apple Watch, Windows, Mac. People scan rather than read,
+  read the first words of a line, and skip lists that are long or repetitive (NN/g's findings, as summarised by
+  [UX Planet](https://uxplanet.org/how-people-read-on-the-web-influences-content-design-41a812ea236c) and
+  [Yoast](https://yoast.com/the-psychology-of-scannable-content-and-bullet-points/)): short checked lines lead with the
+  word that matters, and the devices read as one glance that still feels like a lot.
+- The card ends 46 px above the plans on a 360 × 800 phone.
+- **2.1, 2.1.1 and 2.1.2 now show the new page behind them.** 2.1.1 keeps its own parts on it: *Waiting for your
+  payment · Plus turns on as soon as Google Play confirms it. You can close this.* and the greyed **Waiting for payment**
+  button (they were lost for a moment when the page was swapped, and restored from the first build).
+
+### Plus & Account, eleventh round, 15 Oct 2026 (the user, on `1544:98`, `1901:161`, `1867:351`)
+
+- **Get Plus's bottom area:** no top line, no white behind the plans (the user removed it on 2; now the same on 2.1,
+  2.1.1's old copy and 2.1.2); the two plan tiles 12 apart, 20 between the tiles and **Get Plus**, 8 to *I already have
+  Plus*.
+- **Works on, in pairs:** two columns, others on the left and Apple on the right, so each row is one kind of device:
+  Android phone · iPhone, Tablet · iPad, Wear OS watch · Apple Watch, Windows · Mac. Labels 28 high, 6 apart; the card
+  ends 17 px above the plans.
+- **2.1.1 Payment pending is its own screen**, not a card on Get Plus: the same centred block as *Looking for your
+  Plus* (the Material 3 Expressive loading indicator, *Waiting for your payment*, *Plus turns on as soon as Google Play
+  confirms it.*, 280 wide), centred between the status bar and the bottom area, and a **Close** text button. Plus turns
+  on by itself when Google Play confirms.
+
 ## How we work on these (the user's standing preferences)
 
+- **Before swapping the page behind a sheet or dialog for a newer copy, list what that frame adds on the page itself** (a card, a disabled button) and put it back: 2.1.1's waiting card went with the old page once (15 Oct 2026).
 - Design **one** screen, show it, get approval, then the variants (one example first).
 - Every screen goes into its own named section on the page; nothing loose on the canvas, no explanatory labels on it.
 - Settle layout questions from the native platform's own patterns (Google's apps, Material docs, the Compose

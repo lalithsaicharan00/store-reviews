@@ -136,31 +136,25 @@ same parts in the same places, top to bottom; only what's inside them changes, a
 
 | Place | Free | Plus, no account yet | Plus with an account | Plus Family, you manage it | Plus from a family |
 |---|---|---|---|---|---|
-| 1 · Plan card | **Free** (our app icon) · *3 of 5 free habits used* | **Plus is yours** · *Yours forever, on this phone* | **Plus is yours** · *Yours forever, every device* | **Plus is yours** · *Plus Family · yours forever* | **Plus is yours** · *From Lee's family* |
-| 2 · Where your habits are | **In your own Google Drive** · sam@gmail.com › (Backup & Sync). *We never see your habits.* Not connected: **Only on this phone** · *Not backed up yet* · **Back up to Google Drive** | the same | the same | the same | the same |
-| 3 · Your account | **No sign-in needed** · *Free works without an account. Your habits back up to your own Google Drive.* | **No account yet** · *An account keeps Plus on all your devices. Your habits sync through your own Google Drive.* · **Create an account** | **Signed in with Google**; **What your account holds** · *Your Plus purchase, so you can sign in on your other devices. Your habits aren't in it: they sync through your own Google Drive, and we never see them.*; **Sign out** | the same; it holds *your Plus purchase and your family* | the same; it holds *your place in Lee's family* |
-| 4 · Your family | **Join a family** · *Have an invite? Type its code* | **Upgrade to Plus Family** · *$35.00, the difference* | the same | **You** · Owner; **Lee** › (Remove); **Invite sent** ›; **Add a person** · *3 places free* › | **Lee** · Owner; **You**; **Leave Lee's family** |
-| 5 | The **Plus** card · *Unlimited habits, and the same habits on all your devices, synced through your own Google Drive. One payment, yours forever.* · **See Plus**; **Already have Plus?** · Sign in, Restore from Google Play | — | **Delete my account…** | **Delete my account…** | **Delete my account…** |
+| 1 · Plan card: the plan and its account | **Free** · *No sign-in needed* (our app icon); *An account only keeps a Plus purchase and signs you in on your other devices. Free has nothing to keep, so you don't need one.*; then a grey **Plus box**: the habits bar (*3 of 5 free habits used* · *2 left*), *Plus gives you unlimited habits, sync across all your devices and more widgets. One payment, yours forever.*, **See what's in Plus →** (filled) | **Plus is yours** · *No account yet*; *An account keeps Plus on all your devices. It holds only your purchase: your habits stay in your own Google Drive.* · **Create an account** (tonal) | **Plus is yours** · *Signed in as sam@gmail.com*; *Your account holds only your Plus purchase, so you can sign in on your other devices. Your habits sync through your own Google Drive.* · **Sign out** (tonal) | the same; it holds *your Plus purchase and your family* | the same, *Signed in as priya@gmail.com*; it holds *your place in Lee's family* |
+| 2 · Backup (one row) | **Backed up to Google Drive** · sam@gmail.com › (opens Backup & Sync). Not connected: **Not backed up** · *Only on this phone for now* · **Back up to Google Drive** (tonal). Footer: *We never see your habits.* | the same | the same | the same | the same (priya@gmail.com) |
+| 3 · Your family | **Join a family** · *Have an invite? Open it or scan it* | **Upgrade to Plus Family** · *$35.00, the difference* | the same | **You** · Owner; **Lee** › (Remove); **Invite sent** ›; **Add a person** · *3 places free* › | **Lee** · Owner; **You**; **Leave Lee's family** |
+| 4 | **Already have Plus?** · Sign in, Restore from Google Play | — | **Delete my account…** | **Delete my account…** | **Delete my account…** |
 
 The options are on the page, never on a sub-page (the user, 14 Oct 2026: "instead of tucking them away … keep it up
 front").
 
 ### The flows (Figma `1476:2`, laid out as rows with arrows)
 
-- **Get Plus** (its own page, from See Plus and from the 6th-habit sheet): Plus · Just you / Plus Family, what you get,
-  **Get Plus · $24.99** → **Google Play's own purchase sheet** → **Plus is yours.** (the cookie icon; *Thank you. Keep it
-  on all your devices with an account.*; three points: Plus on all your devices, Your habits sync through your Google
-  Drive, Your purchase stays safe) → **Continue with Google** or **Not now** (*Without an account, Plus works only on this
-  device. You can create one later.*) → the page, with or without an account. No Continue with Apple here: on Android the
-  person has just paid with their Google account. Plus Family asks for the account (to add people), with no Not now.
-  Also: **Payment pending** (Google Play's pending payments) and **Payment not completed**.
+- **Get Plus** (its own page, from See what's in Plus and from the 6th-habit sheet): our logo · **Plus** · *One payment, yours forever.*; then **what you get, first**, one card: ✓ Unlimited habits, ✓ Sync across all your devices (*Through your own Google Drive.*), ✓ More widgets; **Works on**: small outlined labels in pairs, others left and Apple right: Android phone · iPhone, Tablet · iPad, Wear OS watch · Apple Watch, Windows · Mac; fixed at the bottom, **Plus** ($24.99 · Just you) and **Plus Family** ($59.99 · You + 5 people) side by side as equal choices, **Get Plus · $24.99** (or *Get Plus Family · $59.99*) and **I already have Plus** → **Google Play's own purchase sheet** → **Plus is yours.** (our app icon; *Thank you. Keep it on all your devices with an account.*; three points) → **Continue with Google** or **Not now** (*Without an account, Plus stays with your Google Play account, on Android only. You can create one later.*) → the page, with or without an account. No Continue with Apple here: on Android the person has just paid with their Google account. Plus Family asks for the account (to add people), with no Not now.
+  Also: **Payment pending**, its own screen (the loading indicator, *Waiting for your payment · Plus turns on as soon as Google Play confirms it.*, Close) and **Payment not completed** (a dialog over Get Plus).
 - **Restore from Google Play:** looking → **Plus is back** (bought on this Google account) or **No Plus found** (Sign in
   instead, if it was bought on an iPhone or with an account).
 - **Sign in** (Google or Apple: an account made on an iPhone may be Apple's): Google's own account sheet → looking →
-  **Plus is back** (signed in) or **No account found** (Another Google account · Continue with Apple · Get Plus).
-- **Join a family:** type the code → sign in (Google or Apple) → **Join Lee's family?** → Plus from a family.
+  **Plus is back** (signed in; our logo and two points, Done) or **No account found** (Another Google account · Continue with Apple · Get Plus).
+- **Join a family:** an invite is a **single-use link** (7 days). Tapping it opens the app straight at **Sign in to join** (signed out) or **Join Lee's family?**. From the menu, **Join a family** says *Got a link? Tap it on this phone* and *With them? Scan the code on their phone*, with **Scan QR code** (Google's code scanner). No typed code.
 - **Create an account** (Plus, no account yet): *Keep Plus everywhere.* → Continue with Google → the page with an account.
-- **Your family:** Invite someone (from Add a person or Invite sent), **Remove Lee?** (the manager), **Leave Lee's family?** (a member).
+- **Your family:** **Invite someone** (from Add a person: the invite's QR code for someone next to you, **Share invite link** for everyone else; *Works once, for 7 days*); **Invite sent** (from Invite sent › · *Ends 21 Oct*: the same QR, **Share again**, **Cancel invite** → *Cancel this invite?* · Keep it / Cancel invite); **Remove Lee?** (the manager), **Leave Lee's family?** (a member). A waiting invite holds a place.
 - **The account:** Sign out?, Delete your account? (designed 14 Oct).
 
 ## Privacy & Security, About, Help
@@ -193,3 +187,8 @@ front").
 3. **Plus Family needs an account** to add people. Buying it asks the buyer to create one; single Plus stays optional.
 4. **The skip line (decided by the user, 14 Oct 2026):** "Without an account, Plus works only on this device. You can create one later." Never forced: "if they don't want to create an account, then let it be." Kept simple on purpose, though Google Play and the App Store can bring Plus back on the same store account.
 5. **Use another Google Drive with Plus on several devices:** the account remembers the place, so every device follows.
+
+### Emails that don't fit
+
+A long email is cut **in the middle, keeping the start and the whole domain**, on one line: *Signed in as alexa…@gmail.com*,
+*alexandra.mont…@gmail.com* (Figma 1.4). The same rule everywhere an email is shown (Compose: `TextOverflow.MiddleEllipsis`, `maxLines = 1`).

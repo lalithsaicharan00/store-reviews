@@ -1067,6 +1067,38 @@ and the Add note keyboard coming up by itself.
   - [x] **Create an account inside the Your account card, as its primary action**, not outside it.
   - [x] **The view for the person who manages the family** (the Plus Family buyer).
   *Done 14 Oct 2026, `1476:2` (states 1–1.5, dialogs 7.3 and 7.4); handoff "Plus & Account, third round".*
+  - [x] **Fourth round (the user, 14 Oct 2026, on `1872:2`): the Plus card goes inside the Free card**, "because
+    upgrade to plus is … the action that we are aiming for in the first hand", freeing the space; "clean, neat".
+    *Done 14 Oct 2026: Upgrade to Plus is the Free card's filled button in 1, 1.1 and 4.2; handoff "Plus & Account,
+    fourth round".*
+  - [x] **Fifth round (the user, 14 Oct 2026):** the Get Plus habits bar in the Free card; **Where your habits are and
+    Your account merged into one section, Backup & account** ("merge it in a clear way"); **Back up to Google Drive and
+    Create an account as secondary (tonal) buttons**; **never say "Free works without an account"** (people take it as
+    a promise). *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, fifth round".*
+  - [x] **Sixth round (the user, 14 Oct 2026):** explain why Free has no sign-in; the Drive row says backup, Google
+    Drive and the email (Backed up to Google Drive / Not backed up); "Plus is yours" without *Yours forever …*; the
+    account (what it holds, Create an account, Sign out) moved into the plan card, consistently in every state, small
+    and clean; 7.1's "Lee keeps Plus." removed. *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, sixth round".*
+  - [x] **Seventh round (the user, 14 Oct 2026):** the Free card arranged so it isn't heavy (the 3 of 5 bar with the
+    offer it explains); the account line in plain English ("holds Plus purchase and helps you to sign in … on free plan,
+    there is nothing to sign in"); a researched button label (Get unlimited habits); long emails cut in the middle like
+    Google Play, everywhere, with a design; Join a family with six code boxes, not typing; 5.1, 5.2, 3, 3.1 and 3.3
+    presented like 2.2; Continue with Apple on Android researched (kept, made secondary).
+    *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, seventh round".*
+  - [x] **Eighth round (the user, 14 Oct 2026):** our logo, enhanced within the Logo Guide, wherever Plus is the subject
+    (2.2, 3.3, 4.1 matched to 3.3, and the small Plus slots); the Plus box in order of importance (unlimited habits, sync
+    across devices, more widgets) with **See what's in Plus**; invites researched: a single-use link and its QR code
+    instead of a guessable code, **Invite sent** with Share again and **Cancel invite**, and Join a family by link or
+    QR. *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, eighth round".*
+  - [x] **Ninth round (the user, 14 Oct 2026):** no cookie behind the logo anywhere (white tile and shadow only); 2.2's
+    wrong line fixed; Continue with Apple on 2.2 answered (not needed); **Get Plus leads with a long, compact feature
+    list**, with Plus and Plus Family as equal choices. *Done 14 Oct 2026, `1544:3`; handoff "Plus & Account, ninth round".*
+  - [x] **Tenth round (the user, 15 Oct 2026):** Get Plus uncluttered: one-liners, only the sync line explained, fewer
+    icons, every device listed at a glance (Works on …); 2.1's background updated. *Done 15 Oct 2026, `1544:3`, `1867:2`;
+    handoff "Plus & Account, tenth round".*
+  - [x] **Eleventh round (the user, 15 Oct 2026):** Get Plus's bottom spaced out, its line and white removed (also on
+    2.1 and 2.1.2); devices paired (others | Apple); Payment pending as its own waiting screen. *Done 15 Oct 2026;
+    handoff "Plus & Account, eleventh round".*
 - [ ] **112. The account and backup pages in the menu: research, then a new design section** (added 14 October 2026, from
   the user, Android first, iPhone and iPad alike; Rulebook D16; follows 110). Their points:
   - [ ] **Free people have no account at all, on any device, iPad included**: "Free users don't even have an account at all,
