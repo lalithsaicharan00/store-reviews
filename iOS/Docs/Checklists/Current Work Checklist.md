@@ -915,9 +915,78 @@ and the Add note keyboard coming up by itself.
   - [ ] Checkpoint 5: speed, data, sync and widget tests green with numbers; tablets and foldables.
   - [ ] The user's checks on real phones (Pixel, Samsung, Xiaomi; U9/T5), noted separately.
 
+- [ ] **108. A new time of day asks only when it starts; its end is worked out and shown** (added 14 October 2026,
+  from the user: "note this down … we need to update this"; decided with the user the same day). The shared model
+  keeps only each time of day's start, and each one ends where the next begins (the latest at the day's end, set by
+  New day starts at; `Core/spec/progress.md`). The iPhone's New Time of Day asks Starts **and Ends**, but the end is
+  mostly ignored: one added between two others runs on until the next starts (`SectionPlan.make`: "the new section
+  runs on until the next one starts"), so "Before work, 7–9 AM" inside Morning and Afternoon runs to noon. To change:
+  - [ ] **iPhone** (`iOS/Habits/Today/DaySections.swift`, `SectionEditor`; `iOS/Habits/Model/SectionPlan.swift`): drop
+    the Ends picker and the problems that only it causes ("That covers all of …", "at least 15 minutes", "longer than
+    a day"); keep Starts, "Another time of day starts then", and the "Your day" list, which shows every time of day's
+    range before and after, so the end is still seen, not asked for.
+  - [ ] **Android** (changed 14 Oct: the dialog was deleted, the user preferring the full page that shows the whole
+    day): one full page from both Settings and the habit form (Figma `1440:69`, `1746:71`): one Starts tile with an
+    edit pencil, the end as plain grey text under it ("Ends 6:00 AM, when Morning starts"; the last: "when your new day
+    starts"), and Your day with a **+ New** / **✎ Editing** chip on its own row, "Was …" under rows that change, and
+    nothing on rows that don't ("No change" is gone; the iPhone's `PlanRow` says it too: drop it there as well).
+    Replaces the app's `NewSectionDialog`. Asked again 14 Oct whether people need to set an end: rereading the 28
+    section-time reviews, no (report 25's evidence).
+  - [ ] Both: the same words and the same result for the same start, from the shared core's rule; test a start between
+    two times of day, before the first, after the last, and equal to an existing start.
+
+- [ ] **109. Edit log and Edit slip can move a record to another day** (added 14 October 2026, from the user: "if users
+  need an ability to change the date as well then let's just keep it … otherwise we would get unnecessary complaints").
+  Rulebook U19 now allows it (it said the day never changes). Logged on the wrong day (after midnight, backfilling,
+  the wrong day in the day bar) is a real mistake, and delete-then-add loses the log's note and source. The Android
+  design shows Date with › on Edit log and Edit slip (Figma `1261:213`, `1297:257`).
+  - [ ] Shared core / both apps: one atomic move: same record ID, new timestamp inside the new day, day indexes and the
+    day's buckets moved, streaks and Progress recounted, a slip's quit run recalculated; never later than now, never
+    before the habit starts (D6, D7); sync sends it as one change (D12).
+  - [ ] iPhone: `HabitStore.editEntry` (today it refuses another day) and `EntryEditView`'s Date row.
+  - [ ] Android: Edit log / Edit slip's Date piece opens the date picker.
+  - [ ] Tests: a move across a day start, across midnight, to a paused or skipped day, and a slip moved before the
+    last slip.
+
 ## Planned improvements — build later
 
 
+- [ ] **110. The Plus account (Google or Apple sign-in) and the move code, through one Cloudflare Worker** (added 14
+  October 2026, from the user, iPhone, iPad and Android alike; Rulebook D15, D16; Android A15). Their points:
+  - [ ] **Free:** habits back up to the person's own Google Drive (or iCloud on iPhone and iPad); **one device syncs at a
+    time**, phone or tablet, as now ("we do need to maintain that one device sync at a time … same thing in the Android").
+  - [ ] **Plus:** sync on every device and platform through the person's own Drive or iCloud; an **account only to verify
+    Plus**: "we don't store any data of the plus user. In our database, we only store … whether they have purchased plus
+    or not. We verify it with Google or Apple."
+  - [ ] **Sign in with Google and Apple only:** "No email, nothing else." **Free people may make an account too, never
+    have to** ("free users should have an account if they want to create it … same thing in the Android. But the only
+    difference is the syncing will be done one device at a time"): offered, never required; free with an account syncs one
+    device at a time (phone or tablet), Plus every device.
+  - [ ] **The account remembers where the habits live** ("add those things like the account cloud ID … about each cloud
+    ID"): the cloud (iCloud or Google Drive); its private account ID (CloudKit user record ID; Google's fixed account ID);
+    for Google a hint like `l•••••@gmail.com`, never the full email; last sync time and device kind. A new device on a
+    different cloud account **stops before syncing** and says where the habits are (iCloud: "a different Apple Account",
+    check Settings › your name). The user's worry: "they might be selecting one iCloud account or Google Drive account and
+    the other device they will be selecting different one and then they will be like oh … the data is gone."
+  - [ ] **Without an account:** "Have you used Often Enough before?" says when this device's cloud is empty ("We didn't
+    find habits in this iPhone's iCloud") and offers every way back: another Google account, the Apple Account in
+    Settings, a move code, a backup file.
+  - [ ] Check before building: Google returns the account's email and fixed ID with `drive.appdata` (about.get accepts that
+    scope); CloudKit's user record ID is the same on two devices with one Apple Account.
+  - [ ] **Plus Family through our accounts**, the buyer and 5 people, on any platform: "instead of … Apple … we will be
+    providing it from our end."
+    **Six people in total** (the buyer and 5 more; the 10 Oct "5 in total" was sized for the server we no longer run): "apart
+    from the main user it will be like additional five users so total six". Never Apple's Family Sharing (not yet published, so
+    nothing to undo in App Store Connect).
+  - [ ] **Move to another phone with a code**, built on Cloudflare: "it's an encrypted temporary hold" in **R2** (never
+    D1, which holds only Plus accounts); deleted on pickup or after 24 hours.
+  - [ ] **Say it plainly** at sign-in, on the account page and in Privacy: "only the purchase record … will only be stored
+    in your account. Your data will be only stored on your own Google Drive or iCloud, whichever option they choose."
+    Draft: *Keep Plus on every phone* · Your habits stay yours (on your phone and in your own Google Drive or iCloud) ·
+    Your account only knows you have Plus (and who's in your family; never your habits) · Moving phones? (a move code
+    sends your habits once, locked, deleted as soon as they arrive).
+  - [ ] **Delete my account** in Privacy (App Store 5.1.1(v)): removes only the Plus record and family membership.
+  - [ ] Still to check before building: the iPhone and Android apps see the same Drive app folder for one Google account.
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:

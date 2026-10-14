@@ -638,8 +638,10 @@ every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the
   backup; "More habits with optional Plus.", no buy button) → Your habit. Your goal. → Quit or cut down. → Tasks, once
   or on repeat. → Your days and weeks. → Your first habit. **Skip setup** (top right) on every one of them ends on Today.
   The example cards are drawn from Today's own parts (`HabitIcon`, `StreakLabel`, `RoundActionButton`, `ProgressFill`),
-  can't be tapped, and are saved nowhere. Days and weeks: "You can change these later in ≡ › Day and Week." (the
-  wireframe's "Settings" is ≡ › Day and Week in this app).
+  can't be tapped, and are saved nowhere. Days and weeks: ~~"You can change these later in ≡ › Day and Week."~~
+  **"Choose when your day and week start." under the heading and "You can change these later." under the settings
+  (the user, 13 Oct 2026, on Android: plain words, read in one go; the menu shows Day and Week, so the path isn't
+  spelled out).** Built on Android; the iPhone's `OnboardingPages.swift` still shows the old note until it's built.
 - **What the 9 Oct wireframes replaced (U5):** the name page (its week picture and "streaks count your goal", "skipped
   and paused days never count against you"), "No ads", "one payment, not a subscription" and "Restore from a Backup
   File" on the first page. The user's own screens took their place; the ways back now live behind I've used it before.
