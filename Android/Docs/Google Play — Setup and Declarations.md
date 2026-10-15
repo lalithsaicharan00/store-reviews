@@ -36,7 +36,10 @@ The consent screen is in Testing: only listed test users can sign in until it is
 - Google identity verification (PAN) and BillDesk PA-CB KYC (RBI rules; needed for buyers outside India): submitted
   15 Oct 2026, in review. Website given: `www.oftenenough.com`; app: the Play store link.
 - 15% service fee: account group = this developer account only (not the employer's account the user works on), enrolled.
-- Still to do: bank account for payouts, US tax form (W-8BEN).
+- Bank account for payouts: added, set as the primary payment method (15 Oct 2026).
+- US tax form W-8BEN: submitted 15 Oct 2026 (individual, India; Foreign TIN = PAN; treaty: Other Copyright
+  Royalties Article 12 ¶2(a)(ii) at 15%, Services/business income Article 7 ¶1 at 0%, no permanent establishment;
+  no activities in the US; paperless delivery; no unchanged-status affidavit). Google reviews it.
 
 ## Declarations (App content), as answered
 
@@ -74,14 +77,16 @@ use the in-app review code, testers are license testers); they're for giveaways 
 ## Testing tracks
 
 - **Internal testing:** an email list with the user's four real devices.
-- **Closed testing – Alpha:** all 177 countries, the same list; release `2 (1.0)` sent for review 15 Oct 2026. For a new
+- **Closed testing – Alpha:** all 177 countries, the same list; release `2 (1.0)` published 15 Oct 2026; release
+  `3 (1.0)` (real Play Billing) sent for review the same evening. For a new
   personal account, Production unlocks only after **12+ real testers stay opted in for 14 days**; own accounts on
   emulators don't count and risk the account. More testers go into the same list without a new release.
 
 ## Still open
 
 1. The privacy policy's "Your optional account" section (handed to Codex, who owns the verification website).
-2. License testers (Settings › License testing: the four devices' accounts), then version 3 to Closed testing to try a
-   real test purchase.
+2. ~~License testers~~ (done: Settings › License testing, the "Family & me" list of 4, RESPOND_NORMALLY). Version 3
+   is in review; once it's out, try a test purchase of each product on a tester's phone (Play's test card), then
+   Restore on a second phone.
 3. 12+ closed testers for 14 days, then **Apply for production** (needs Android screenshots, a random review code, and
    the Worker for accounts).
