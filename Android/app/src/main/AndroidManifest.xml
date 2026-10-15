@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Reminders (Current Work 107): notifications, exact times, and planning again after a restart. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- No advertising ID, ever (no ads, no tracking; Play's advertising ID declaration says No). Removed here so a
+         Google library can never add it without us noticing. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
     <application
         android:name=".app.OftenEnoughApp"
         android:allowBackup="true"
