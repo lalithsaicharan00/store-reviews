@@ -633,13 +633,15 @@ every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the
 - **The first screen asks one thing, and its words are the user's, final:** Often Enough · "Habits grow through
   repetition. You choose how often is enough." · "Have you used Often Enough before?" · **I'm new here** / **I've used it
   before**. One tap moves on: no Continue, no Skip, no Back. The icon's place is a grey 84-pt rounded square until the
-  app icon exists. Privacy & Optional Usage Sharing stays as a small link under the cards (kept from 1 Oct, U5).
+  app icon exists. ~~Privacy & Optional Usage Sharing stays as a small link under the cards (kept from 1 Oct, U5).~~ **Removed from the welcome, 13 Oct 2026 (the user: "yes remove it from the welcome screen"), on iPhone and Android alike.** What it showed (U5): a link to the Privacy page, the only place to turn on usage sharing before using the app. Where that lives now: ≡ › Privacy & Security. Why: the first screen asks one thing; usage sharing is off until turned on, so nothing is lost by not offering it first; on Android, Share usage isn't available yet, so the link led to a switch that couldn't be turned on. Cost accepted: fewer people turn on usage sharing, and onboarding steps are counted for fewer people. The iPhone's code (`OnboardingPages.swift`) still shows the link until it's built.
 - **I'm new here:** What's included (free plan: up to 5 habits, unlimited tasks, widgets; no account needed; iCloud
   backup; "More habits with optional Plus.", no buy button) → Your habit. Your goal. → Quit or cut down. → Tasks, once
   or on repeat. → Your days and weeks. → Your first habit. **Skip setup** (top right) on every one of them ends on Today.
   The example cards are drawn from Today's own parts (`HabitIcon`, `StreakLabel`, `RoundActionButton`, `ProgressFill`),
-  can't be tapped, and are saved nowhere. Days and weeks: "You can change these later in ≡ › Day and Week." (the
-  wireframe's "Settings" is ≡ › Day and Week in this app).
+  can't be tapped, and are saved nowhere. Days and weeks: ~~"You can change these later in ≡ › Day and Week."~~
+  **"Choose when your day and week start." under the heading and "You can change these later." under the settings
+  (the user, 13 Oct 2026, on Android: plain words, read in one go; the menu shows Day and Week, so the path isn't
+  spelled out).** Built on Android; the iPhone's `OnboardingPages.swift` still shows the old note until it's built.
 - **What the 9 Oct wireframes replaced (U5):** the name page (its week picture and "streaks count your goal", "skipped
   and paused days never count against you"), "No ads", "one payment, not a subscription" and "Restore from a Backup
   File" on the first page. The user's own screens took their place; the ways back now live behind I've used it before.

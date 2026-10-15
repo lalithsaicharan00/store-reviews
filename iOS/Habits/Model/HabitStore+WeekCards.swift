@@ -225,7 +225,9 @@ extension HabitStore {
     /// habit with nothing that week).
     /// Week or Month (the user, 2 Oct 2026: Month the same as Week, for seeing patterns). Month cards carry no values
     /// under the marks; their headlines count the month on the goal's own clock.
-    func weekCard(_ habit: Habit, in span: ClosedRange<LocalDay>, range: ProgressRange = .week, today: LocalDay) -> ProgressWeekCard? {
+    /// `days`: the habit's days over `span` from the shared rules, when the caller has them (the habit page's history).
+    func weekCard(_ habit: Habit, in span: ClosedRange<LocalDay>, range: ProgressRange = .week, today: LocalDay,
+                  days known: CoreDays? = nil) -> ProgressWeekCard? {
         let noun = range.noun
         let start = startDay(of: habit)
         let running = span.contains(today)
@@ -249,19 +251,21 @@ extension HabitStore {
         var amounts: [LocalDay: Double] = [:]
         // A week or month limit: the period's running total, per period start, for the heat map.
         var limitTotals: [LocalDay: (through: LocalDay, total: Double)] = [:]
+        // The shared rules answer the whole strip in one call (`CoreDays`); the store's own rules day by day.
+        let sharedDays = known ?? (dayList.isEmpty ? nil : coreDays(habit, in: dayList[0]...dayList[dayList.count - 1], relativeTo: today))
         for day in dayList {
-            var mark = dayMark(habit, on: day, relativeTo: today)
+            var mark = sharedDays?.mark(day) ?? dayMark(habit, on: day, relativeTo: today)
             let dayRule = self.rule(habit, on: day)
-            let amount = day >= start && day <= today ? dayProgress(of: dayRule, on: day) : 0
+            let amount = day >= start && day <= today ? (sharedDays?.progress(day) ?? dayProgress(of: dayRule, on: day)) : 0
             amounts[day] = amount
             // A week, month or year goal names no day, so a day still to come isn't "coming up": nothing is asked of it.
             if mark == .upcoming && (!dayRule.frequency.isDayBased || dayRule.frequency.isFlexible) { mark = .notItsDay }
             var extra = false
             if mark == .notItsDay && amount > 0 && dayRule.frequency.isDayBased && !dayRule.frequency.isFlexible && !dayRule.atMost {
                 extra = true
-                mark = isDayMet(dayRule, on: day) ? .done : .some
+                mark = (sharedDays?.isMet(day) ?? isDayMet(dayRule, on: day)) ? .done : .some
             }
-            let goal = dayGoal(of: dayRule)
+            let goal = sharedDays?.goal(day) ?? dayGoal(of: dayRule)
             let fraction = mark == .done ? 1 : mark == .some ? min(1, amount / max(goal, 1)) : 0
             // More than a day goal asks: counted day goals only, never a limit or a checklist.
             let more = mark == .done && !dayRule.atMost && dayRule.kind != .checklist

@@ -14,6 +14,14 @@ Standalone research and decision documents, grouped by topic.
 
 ---
 
+## Marketing
+
+Reusable marketing examples are saved in the root Marketing folder.
+
+| Document | Author | Date | Scope |
+|---|---|---|---|
+| [Marketing and How We Can Market It](<../../Marketing/Marketing and How We Can Market It.md>) | Codex | 13 Oct 2026 | User-selected examples: Habit Tracker Reddit challenge and bondavi app/store localization. Original sources, discovery, exact app identities, reusable approaches and limits; localization reports gradual overseas growth, not a measured surge. User-data/content-coverage tactic excluded. |
+
 ## Individual Habit Details
 
 Information architecture, History/logs, Notes and per-habit statistics are collected in one package. Start with its version map; revised History and revised visible-content Progress are the current directions. All visuals are schematic and need final polish.

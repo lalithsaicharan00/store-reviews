@@ -27,7 +27,7 @@ class RuleHabit internal constructor(internal val habit: Habit) {
  */
 class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: String, private val clock: () -> Long) {
     private val logs = EntryIndex()
-    private var rules: HabitRules
+    private lateinit var rules: HabitRules
     private var handles = HashMap<String, RuleHabit>()
 
     init {
@@ -45,7 +45,8 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
         val d = loaded.data
         val data = HabitData(d.habits, logs, d.skips, d.moves, d.pauses, d.rules, d.archivedOn, d.timers, d.sections, d.cardOrder)
         handles = HashMap()
-        return HabitRules(data, loaded.settings, clock)
+        // The zone, with what it has read, carries over (habits and settings come again after many a change).
+        return HabitRules(data, loaded.settings, if (::rules.isInitialized) rules.zone else null, clock)
     }
 
     /** Habits or settings changed. [settings] are the setting rows the rules read, exactly as saved (spec/README.md),
@@ -130,8 +131,36 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     var lastPart = 0.0
         private set
 
+    /** P-3 for every day [first]…[last] in one call (a month of the calendar): done, planned, part count each. */
+    fun dayScores(first: Int, last: Int, habits: List<RuleHabit>, today: Int): IntArray {
+        val list = habits.map { it.habit }
+        val count = maxOf(0, last - first + 1)
+        val out = IntArray(count * 3)
+        for (i in 0 until count) {
+            val s = rules.dayScore(first + i, list, today)
+            out[i * 3] = s.done
+            out[i * 3 + 1] = s.planned
+            out[i * 3 + 2] = s.partCount
+        }
+        return out
+    }
+
     /** G-9: the index of the mark in done, some, missed, open, skipped, paused, not its day, upcoming, before. */
     fun dayMark(h: RuleHabit, day: Int, reference: Int): Int = rules.dayMark(h.habit, day, reference).ordinal
+
+    /**
+     * One habit's days [first]…[last] in one call, for a strip of days (the habit page's history, Progress's cards):
+     * crossing into the core once per day and rule cost more than the rules themselves (Current Work 92, checkpoint 2).
+     * [DAY_FIELDS] numbers a day, as [HabitRules.strip] gives them.
+     */
+    fun days(h: RuleHabit, first: Int, last: Int, reference: Int, now: Long): DoubleArray =
+        rules.strip(h.habit, first, last, reference, now)
+
+    /**
+     * What a Today row shows for one habit on one day, in one call ([ROW_FIELDS] numbers, as [HabitRules.row] gives them):
+     * a row asked about ten rules, each its own crossing, and the Watch's slower processor felt it (Current Work 92).
+     */
+    fun row(h: RuleHabit, day: Int, now: Long): DoubleArray = rules.row(h.habit, day, now)
 
     // Streaks (spec/streaks.md)
     fun streak(h: RuleHabit, day: Int) = rules.streak(h.habit, day)
@@ -172,4 +201,10 @@ class LiveRules(snapshot: Snapshot, settings: Map<String, String>, timeZone: Str
     fun sectionIds(): List<String> = rules.data.sections.map(DaySection::id)
 
     internal val current: HabitRules get() = rules
+
+    companion object {
+        /** Numbers per day in [days]. */
+        const val DAY_FIELDS = app.habits.rules.STRIP_FIELDS
+        const val ROW_FIELDS = app.habits.rules.ROW_FIELDS
+    }
 }

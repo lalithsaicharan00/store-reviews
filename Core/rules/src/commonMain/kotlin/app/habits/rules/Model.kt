@@ -99,9 +99,21 @@ class Habit(
     val steps get() = judging.steps
     val isQuitOrLimit get() = kind == Kind.QUIT || (atMost && kind != Kind.TASK)
 
-    /** This habit judged by [other] (an earlier rule): everything else stays. */
-    fun judgedBy(other: Judging) = if (other == judging) this else
-        Habit(id, other, atMost, parts, times, dueDay, startsOn, endsOn, quitSince, createdAt, archived, position)
+    /** Its part of the data the rules last found for it ([HabitData.facts]), and which data that was. */
+    internal var facts: HabitFacts? = null
+    internal var factsOf: HabitData? = null
+    /** It judged by each of its earlier rules ([HabitRules.rule]), for the [HabitFacts] they were found in. */
+    internal var judged: Array<Habit?>? = null
+    internal var judgedOf: HabitFacts? = null
+
+    /** This habit judged by [other] (an earlier rule): everything else stays, its part of the data too. */
+    fun judgedBy(other: Judging): Habit {
+        if (other == judging) return this
+        val judged = Habit(id, other, atMost, parts, times, dueDay, startsOn, endsOn, quitSince, createdAt, archived, position)
+        judged.facts = facts
+        judged.factsOf = factsOf
+        return judged
+    }
 }
 
 /** An earlier rule: [judging] applied up to and including [until]. */

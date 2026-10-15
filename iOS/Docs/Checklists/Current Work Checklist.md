@@ -15,6 +15,15 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## Reddit marketing example — current request
+
+**Localization example, the user, 13 October 2026:** add bondavi's July 2023 app/store localization to [Marketing and How We Can Market It](<../../../Marketing/Marketing and How We Can Market It.md>), including original sources, discovery and gradual overseas growth with no quantified surge. Exclude the separate user-data/content-coverage tactic as not useful for our plan. Commit this scoped package to main, verify publication, then continue with Me+ Lifestyle Routine. Progress: [publication and continuation checklist](<Localization Marketing Example — Publish and Continue.md>) (W1/W2/W4).
+
+**The user, 13 October 2026:** save the Habit Tracker Reddit challenge as a reusable marketing example in a new root Marketing folder and push the documentation to main. Preserve the app identity, discovery path, original post and participant download statement; distinguish a reported individual acquisition from an unverified download spike. Include a proposed Often Enough challenge draft and the original community's current promotion restriction.
+
+- [Marketing and How We Can Market It](<../../../Marketing/Marketing and How We Can Market It.md>)
+- [Publication checklist](<Reddit Marketing Example — Publish to Main.md>) — documentation only; publication authorized by the user. Earlier research and unrelated workspace edits stay outside this package.
+
 ## App logo exploration — current feedback
 
 - [x] **87. Often Enough app logo: research, finalized design and Figma variations.** Added and completed as a design task 11 October 2026, from the user. Native asset integration and device validation are separate pending work.
@@ -930,9 +939,78 @@ and the Add note keyboard coming up by itself.
     tests, 52 unit tests and lint green on GitHub (API 35), run 38399799226, and on the PC's Pixel 10 emulator (API 36).***
   - [ ] The user's checks on real phones (Pixel, Samsung, Xiaomi; U9/T5), noted separately.
 
+- [ ] **108. A new time of day asks only when it starts; its end is worked out and shown** (added 14 October 2026,
+  from the user: "note this down … we need to update this"; decided with the user the same day). The shared model
+  keeps only each time of day's start, and each one ends where the next begins (the latest at the day's end, set by
+  New day starts at; `Core/spec/progress.md`). The iPhone's New Time of Day asks Starts **and Ends**, but the end is
+  mostly ignored: one added between two others runs on until the next starts (`SectionPlan.make`: "the new section
+  runs on until the next one starts"), so "Before work, 7–9 AM" inside Morning and Afternoon runs to noon. To change:
+  - [ ] **iPhone** (`iOS/Habits/Today/DaySections.swift`, `SectionEditor`; `iOS/Habits/Model/SectionPlan.swift`): drop
+    the Ends picker and the problems that only it causes ("That covers all of …", "at least 15 minutes", "longer than
+    a day"); keep Starts, "Another time of day starts then", and the "Your day" list, which shows every time of day's
+    range before and after, so the end is still seen, not asked for.
+  - [ ] **Android** (changed 14 Oct: the dialog was deleted, the user preferring the full page that shows the whole
+    day): one full page from both Settings and the habit form (Figma `1440:69`, `1746:71`): one Starts tile with an
+    edit pencil, the end as plain grey text under it ("Ends 6:00 AM, when Morning starts"; the last: "when your new day
+    starts"), and Your day with a **+ New** / **✎ Editing** chip on its own row, "Was …" under rows that change, and
+    nothing on rows that don't ("No change" is gone; the iPhone's `PlanRow` says it too: drop it there as well).
+    Replaces the app's `NewSectionDialog`. Asked again 14 Oct whether people need to set an end: rereading the 28
+    section-time reviews, no (report 25's evidence).
+  - [ ] Both: the same words and the same result for the same start, from the shared core's rule; test a start between
+    two times of day, before the first, after the last, and equal to an existing start.
+
+- [ ] **109. Edit log and Edit slip can move a record to another day** (added 14 October 2026, from the user: "if users
+  need an ability to change the date as well then let's just keep it … otherwise we would get unnecessary complaints").
+  Rulebook U19 now allows it (it said the day never changes). Logged on the wrong day (after midnight, backfilling,
+  the wrong day in the day bar) is a real mistake, and delete-then-add loses the log's note and source. The Android
+  design shows Date with › on Edit log and Edit slip (Figma `1261:213`, `1297:257`).
+  - [ ] Shared core / both apps: one atomic move: same record ID, new timestamp inside the new day, day indexes and the
+    day's buckets moved, streaks and Progress recounted, a slip's quit run recalculated; never later than now, never
+    before the habit starts (D6, D7); sync sends it as one change (D12).
+  - [ ] iPhone: `HabitStore.editEntry` (today it refuses another day) and `EntryEditView`'s Date row.
+  - [ ] Android: Edit log / Edit slip's Date piece opens the date picker.
+  - [ ] Tests: a move across a day start, across midnight, to a paused or skipped day, and a slip moved before the
+    last slip.
+
 ## Planned improvements — build later
 
 
+- [ ] **110. The Plus account (Google or Apple sign-in) and the move code, through one Cloudflare Worker** (added 14
+  October 2026, from the user, iPhone, iPad and Android alike; Rulebook D15, D16; Android A15). Their points:
+  - [ ] **Free:** habits back up to the person's own Google Drive (or iCloud on iPhone and iPad); **one device syncs at a
+    time**, phone or tablet, as now ("we do need to maintain that one device sync at a time … same thing in the Android").
+  - [ ] **Plus:** sync on every device and platform through the person's own Drive or iCloud; an **account only to verify
+    Plus**: "we don't store any data of the plus user. In our database, we only store … whether they have purchased plus
+    or not. We verify it with Google or Apple."
+  - [ ] **Sign in with Google and Apple only:** "No email, nothing else." **Free people may make an account too, never
+    have to** ("free users should have an account if they want to create it … same thing in the Android. But the only
+    difference is the syncing will be done one device at a time"): offered, never required; free with an account syncs one
+    device at a time (phone or tablet), Plus every device.
+  - [ ] **The account remembers where the habits live** ("add those things like the account cloud ID … about each cloud
+    ID"): the cloud (iCloud or Google Drive); its private account ID (CloudKit user record ID; Google's fixed account ID);
+    for Google a hint like `l•••••@gmail.com`, never the full email; last sync time and device kind. A new device on a
+    different cloud account **stops before syncing** and says where the habits are (iCloud: "a different Apple Account",
+    check Settings › your name). The user's worry: "they might be selecting one iCloud account or Google Drive account and
+    the other device they will be selecting different one and then they will be like oh … the data is gone."
+  - [ ] **Without an account:** "Have you used Often Enough before?" says when this device's cloud is empty ("We didn't
+    find habits in this iPhone's iCloud") and offers every way back: another Google account, the Apple Account in
+    Settings, a move code, a backup file.
+  - [ ] Check before building: Google returns the account's email and fixed ID with `drive.appdata` (about.get accepts that
+    scope); CloudKit's user record ID is the same on two devices with one Apple Account.
+  - [ ] **Plus Family through our accounts**, the buyer and 5 people, on any platform: "instead of … Apple … we will be
+    providing it from our end."
+    **Six people in total** (the buyer and 5 more; the 10 Oct "5 in total" was sized for the server we no longer run): "apart
+    from the main user it will be like additional five users so total six". Never Apple's Family Sharing (not yet published, so
+    nothing to undo in App Store Connect).
+  - [ ] **Move to another phone with a code**, built on Cloudflare: "it's an encrypted temporary hold" in **R2** (never
+    D1, which holds only Plus accounts); deleted on pickup or after 24 hours.
+  - [ ] **Say it plainly** at sign-in, on the account page and in Privacy: "only the purchase record … will only be stored
+    in your account. Your data will be only stored on your own Google Drive or iCloud, whichever option they choose."
+    Draft: *Keep Plus on every phone* · Your habits stay yours (on your phone and in your own Google Drive or iCloud) ·
+    Your account only knows you have Plus (and who's in your family; never your habits) · Moving phones? (a move code
+    sends your habits once, locked, deleted as soon as they arrive).
+  - [ ] **Delete my account** in Privacy (App Store 5.1.1(v)): removes only the Plus record and family membership.
+  - [ ] Still to check before building: the iPhone and Android apps see the same Drive app folder for one Google account.
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:
@@ -1250,12 +1328,12 @@ and the Add note keyboard coming up by itself.
   - [ ] Then the day/schedule/streak/progress rules in the shared
     core (item 92); then designs in Figma, small screens first; then the build with Drive sync plugged in.
 
-- [ ] **92. The habit rules in the shared core, so every app shows the same numbers** (added 12 October 2026, from the
+- [x] **92. The habit rules in the shared core, so every app shows the same numbers** (added 12 October 2026, from the
   user: "all of the work we can assign it to the agent and can do it completely … ask the agent to have a meaningful
   branch name"). Which day a log belongs to, schedules, goals, streaks and progress move from the iPhone's Swift
   (`iOS/Habits/Model/`) into `Core/`, so Android uses the same copy (Architecture: Shared Core Decision; Android A3).
-  One cloud session, branch `claude/shared-habit-rules`, full instructions:
-  [Build Prompt — Shared Habit Rules](<../../../Core/Build Prompt — Shared Habit Rules (Delete When Done).md>).
+  One cloud session, branch `claude/shared-habit-rules` (its build prompt was deleted when done, 13 Oct 2026; what was
+  built: [Shared Habit Rules — Results](<../../../Core/Shared Habit Rules — Results.md>)).
   - [x] `Core/spec/`: every rule written down with examples (12 Oct 2026: day, schedules, goals, streaks, progress, and
     the differences found, `Core/spec/differences.md`).
   - [x] **Checkpoint 1:** golden cases recorded from today's iPhone code (`Core/fixtures/`, hand-written edge cases and
@@ -1266,9 +1344,21 @@ and the Add note keyboard coming up by itself.
     38224578250, which also compiles the iPhone and Watch targets; the iPhone app built in 38213677372, the Watch app
     in 38216734746). The recorder found two iPhone bugs on clock-change nights, fixed in both (Core/spec/differences.md
     #6, #8); five behaviours that look wrong wait for the user (#2, #3, #4, #5, #7). Merged into `main` 12 Oct 2026.
-  - [ ] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed
+  - [x] **Checkpoint 2:** iPhone, iPad and Watch use the shared rules; the same answers, every touched UI class, speed
     side by side with `main` (S2); anything slower kept on Swift with the reason; merged into `main`.
-  - [ ] The user's real-iPhone speed check (`measure_perf_device.sh`), noted here when done (U9, S2).
+    *Done 13 Oct 2026:* every rule in `HabitStore` asks the shared core (`LiveRules`); only a phone set to a
+    non-Gregorian calendar keeps the Swift rules (`Core/spec/differences.md` #5). The same answers: every golden case
+    recorded again through the shared rules, 0 differences beyond the Lord Howe fix (#8) (run 38363493132). Speed side by
+    side with `main`: even or faster on every screen (Progress Year scrolling 7.4 against 20.4 ms/s, the Day sheet's
+    add, edit and undo 163.2 against 163.4; runs 38329425418, 38329426726, 38329425137, 38329426542), and on the Apple
+    Watch even with its Swift rules (Today scrolling 2.0 against 8.5, Day details +1 1.5 against 1.2; runs 38342508127,
+    38342507816, 38349267677, 38355351760). Every touched UI class passed, each failure read and rerun on the branch and
+    on `main` (T2); iPad 15/15 (38329447799); Watch UI on both sizes (38349268502). Numbers, run IDs and what it took:
+    [Shared Habit Rules — Results](<../../../Core/Shared Habit Rules — Results.md>). Merged into `main` 13 Oct 2026.
+    Open: ProgressUITests now and then runs out of a 3-5 s wait (the ≡ menu, the habit page); every measurement of
+    those screens is even or faster, and no cause in the shared rules was found (the results note says where to start).
+  - [ ] The user's real-iPhone speed check (`measure_perf_device.sh`), noted here when done (U9, S2), and the Apple Watch
+    on the wrist.
 
 - [ ] **90. When iCloud or Google Drive can't be used after someone bought Plus: offer a refund** (added 11 October
   2026, from the user: "we can't check beforehand … if it is not working, then we will just refund it … if you have any

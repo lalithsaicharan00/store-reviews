@@ -176,8 +176,10 @@ extension HabitStore {
         while true {
             let span = period(.month, containing: first)
             if span.upperBound < start { break }
+            // The month's days from the shared rules in one call (`CoreDays`), for its card and its rows.
+            let sharedDays = habit.kind == .quit ? nil : coreDays(habit, in: span, relativeTo: today)
             let card = habit.kind == .quit ? weekQuitCard(habit, in: span, range: .month, today: today, now: now)
-                : weekCard(habit, in: span, range: .month, today: today)
+                : weekCard(habit, in: span, range: .month, today: today, days: sharedDays)
             let count = span.lowerBound.days(to: span.upperBound, calendar: calendar) + 1
             let heat = card.flatMap { $0.days.count == count ? $0.days.map(\.heat) : nil }
             var rows: [HistoryDay] = []
@@ -187,7 +189,7 @@ extension HabitStore {
                 let entries = self.entries(of: habit.id, on: day)
                 let hasNote = note(of: habit, on: day) != nil
                 let skipped = isSkipped(habit, on: day)
-                let due = habit.kind != .quit && rule(habit, on: day).frequency.isDayBased && isDue(habit, on: day)
+                let due = habit.kind != .quit && rule(habit, on: day).frequency.isDayBased && (sharedDays?.isDue(day) ?? isDue(habit, on: day))
                 if due || !entries.isEmpty || hasNote || skipped {
                     let index = span.lowerBound.days(to: day, calendar: calendar)
                     rows.append(HistoryDay(
@@ -247,18 +249,26 @@ extension HabitStore {
         var bestValue = 0.0, bestDay: LocalDay?
         var doneDays = 0
         var kinds: Set<GoalPeriod> = []
+        // Every day since it began: the shared rules answer them in one call (`CoreDays`).
+        let sharedDays = coreDays(habit, in: start...today, relativeTo: today)
         var day = start
         while day <= today {
-            let rule = rule(habit, on: day)
-            kinds.insert(periodKind(rule))
-            let value = dayProgress(of: rule, on: day)
+            let value: Double
+            if let sharedDays, let kind = sharedDays.periodKind(day), let logged = sharedDays.progress(day) {
+                kinds.insert(kind)
+                value = logged
+            } else {
+                let rule = rule(habit, on: day)
+                kinds.insert(periodKind(rule))
+                value = dayProgress(of: rule, on: day)
+            }
             total += value
             if value > bestValue { bestValue = value; bestDay = day }
             if value > 0 { doneDays += 1 }
             day = day.adding(days: 1, calendar: calendar)
         }
         // Goals met count only periods of today's kind (E2), each dated the day its goal was reached (E3).
-        let tally = goalTally(of: habit, kind: kind, today: today, best: kind != .day && !now.atMost)
+        let tally = goalTally(of: habit, kind: kind, today: today, best: kind != .day && !now.atMost, days: sharedDays)
 
         var lead = "", value = "", trail = ""
         switch shape {
@@ -357,15 +367,18 @@ extension HabitStore {
         var bestRange: ClosedRange<LocalDay>?
     }
 
-    func goalTally(of habit: Habit, kind: GoalPeriod, today: LocalDay, best: Bool = false) -> GoalTally {
+    /// `days`: the habit's days from its start to `today` from the shared rules (`CoreDays`), when the caller has them.
+    func goalTally(of habit: Habit, kind: GoalPeriod, today: LocalDay, best: Bool = false, days: CoreDays? = nil) -> GoalTally {
         var tally = GoalTally()
         let start = startDay(of: habit)
         var day = start
+        // Every day since it began, in one call to the shared rules (`CoreDays`).
+        let sharedDays = start > today ? nil : days ?? coreDays(habit, in: start...today, relativeTo: today)
         if kind == .day {
             while day <= today {
-                let rule = rule(habit, on: day)
-                if periodKind(rule) == .day && !isPaused(habit, on: day) && !isSkipped(habit, on: day) && isDue(habit, on: day) {
-                    let isMet = isDayMet(habit, on: day)
+                let dayKind = sharedDays?.periodKind(day) ?? periodKind(rule(habit, on: day))
+                if dayKind == .day && !isPaused(habit, on: day) && !isSkipped(habit, on: day) && (sharedDays?.isDue(day) ?? isDue(habit, on: day)) {
+                    let isMet = sharedDays?.isMet(day) ?? isDayMet(habit, on: day)
                     if day < today || isMet {
                         tally.eligible += 1
                         if isMet { tally.met += 1; tally.dates.append(day) }
@@ -391,7 +404,7 @@ extension HabitStore {
                 var value = 0.0
                 var d = max(range.lowerBound, start)
                 while d <= min(range.upperBound, today) {
-                    value += dayProgress(of: self.rule(habit, on: d), on: d)
+                    value += sharedDays?.progress(d) ?? dayProgress(of: self.rule(habit, on: d), on: d)
                     d = d.adding(days: 1, calendar: calendar)
                 }
                 if value > tally.bestValue { tally.bestValue = value; tally.bestRange = range }
@@ -504,14 +517,18 @@ extension HabitStore {
         }
         let rule = rule(habit, on: min(thisRange.upperBound, today))
         let shape = progressShape(rule)
+        // Each range's days from the shared rules in one call (`CoreDays`).
+        let reference = self.today()
         func amount(_ range: ClosedRange<LocalDay>) -> Double {
-            days(in: range).reduce(0) { $0 + dayProgress(of: self.rule(habit, on: $1), on: $1) }
+            let shared = coreDays(habit, in: range, relativeTo: reference)
+            return days(in: range).reduce(0) { $0 + (shared?.progress($1) ?? dayProgress(of: self.rule(habit, on: $1), on: $1)) }
         }
         func goalDays(_ range: ClosedRange<LocalDay>) -> (met: Int, planned: Int) {
+            let shared = coreDays(habit, in: range, relativeTo: reference)
             var met = 0, planned = 0
-            for day in days(in: range) where isDue(habit, on: day) {
+            for day in days(in: range) where shared?.isDue(day) ?? isDue(habit, on: day) {
                 planned += 1
-                if isDayMet(habit, on: day) { met += 1 }
+                if shared?.isMet(day) ?? isDayMet(habit, on: day) { met += 1 }
             }
             return (met, planned)
         }

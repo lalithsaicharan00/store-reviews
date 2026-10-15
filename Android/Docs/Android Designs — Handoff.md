@@ -12,19 +12,19 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 
 | Section (id) | Frames (id) | State |
 |---|---|---|
-| **Onboarding: new to the app** (`1548:2`) | Welcome (`1548:3`); 1 of 3 · Your habit. Your goal. (`1548:46`); 2 of 3 · Quit or cut down. (`1548:177`); 3 of 3 · Tasks, once or on repeat. (`1548:296`); Your days and weeks (`1548:420`), with New day starts at open (`1550:2`, 12:00 AM to 11:00 AM, as in Day and Week) and Week starts on open (`1550:71`, Sunday to Saturday); Your first habit (`1548:456`; an idea opens the New Habit form, `1302:2`) | Built 12 Oct from the user's wireframes (`835:503`) and the built iPhone app; "What's included" removed |
+| **Onboarding: new to the app** (`1548:2`) | Splash, Android's own, light (`1610:2`) and dark (`1610:22`): the adaptive icon's foreground with no icon background (288 dp, inside Android's 192 dp circle) centred on `#FFFFFF` / `#0D0D0D`, the Logo Guide's backgrounds; no title, no branding image (added 13 Oct); Welcome (`1548:3`); 1 of 3 · Your habit. Your goal. (`1548:46`); 2 of 3 · Quit or cut down. (`1548:177`); 3 of 3 · Tasks, once or on repeat. (`1548:296`); Your days and weeks (`1548:420`), with New day starts at open (`1550:2`, 12:00 AM to 11:00 AM, as in Day and Week) and Week starts on open (`1550:71`, Sunday to Saturday); Your first habit (`1548:456`; an idea opens the New Habit form, `1302:2`). Frames numbered 01–07 in order (13 Oct) | Built 12 Oct from the user's wireframes (`835:503`) and the built iPhone app; "What's included" removed. **01–06 redesigned 13 Oct and built in the app to match** (below, "Onboarding, 13 Oct 2026"); 07 redesigned in Figma, not built yet. The 06 before its redesign is kept beside the section for comparison (`1650:20585`, labelled BEFORE; not a screen) |
 | **Onboarding: coming back** (`1549:2`) | Welcome back (`1549:3`); Sign in with Google: Android's account chooser over Welcome back (`1549:38`), Google's permission screen (`1549:97`); Getting your habits (`1549:128`); Restore a backup (`1549:154`; then the restore flow, `1472:2`) | Built 12 Oct; Move from another device removed |
 | **Today** (`1260:2`) | Today, light, 360 × 800 (`1350:2`, the Expressive version, which replaced `1246:2`); the day bar in four day states (`1256:6`); empty: No habits yet, the first time (`1551:3`), and Nothing planned today (`1551:195`; new: the iPhone shows a blank list, Current Work 106) | Approved 12 Oct ("let's go with this one"); the drawer and every Day details sheet show it behind them |
 | **Day details** (`1260:3`) | Water, an amount (`1362:2`, replaced `1258:2`); then every other kind, left to right: Read, a time habit (`1280:3`); Read, timer running (`1294:2`); Take vitamins, a check, not done (`1294:220`) and done (`1294:432`); Stretch breaks, several a day (`1294:644`); Call family, a week goal (`1294:866`); Deep clean, a month goal (`1294:1083`); Gym, N days a week (`1294:1300`); Tidy desk, a checklist (`1294:1512`); Smoking, quit with no slips (`1296:2`) and a slip (`1296:214`); Coffee, a limit (`1296:430`); Social media, a time limit (`1296:644`); a task, not done with Reschedule (`1296:858`) and done (`1296:1080`); Read, skipped (`1296:1292`); Meditate, paused (`1296:1510`); Water, an earlier day ("Yesterday", `1296:1722`) | Water approved; the rest built 12 Oct from the built app, the user: "I already approved it … just complete them" |
 | **Logs and slips: add, all, view, delete, edit** (`1261:290`) | Add log (`1261:2`), All logs (`1261:83`), Log (`1261:120`), Delete confirmation (`1261:162`), Edit log (`1261:213`); Add slip (`1297:83`), Slip (`1297:164`), Delete this slip? (`1297:209`), Edit slip (`1297:257`) | Logs built, not yet reviewed by the user; slips built 12 Oct |
 | **New: choices and habit form** (`1302:2`) | New · What do you want to do? (`1566:2`); Build or maintain · How do you want to track it? (`1566:44`); New Habit forms, full length: Check it off (`1321:2`), Track an amount (`1321:125`), Time it (`1321:272`), Checklist (`1321:400`); Quit or cut down · What do you want to do? (`1566:106`); Quit (`1321:529`); Cut down (`1321:614`); Task (`1321:738`) | Built 12 Oct from the built app; forms redone in the second style (the user: "this new one is looking good"), Icon | Colour in one row; question headings stay Regular |
-| **New: the form's pages** (`1563:535`) | How much (`1567:2`), Unit, full length (`1563:33`), How long (`1567:60`), Limit (`1567:31`), Steps (`1563:286`), How often, full length (`1563:328`), Time of Day (`1563:438`), Group (`1563:494`) and New group (`1567:106`), Starts (`1564:58`), Ends (`1564:322`), Colour (`1564:454`), Icon (`1564:607`), Add a 6th habit: on the phone, bottom pinned (`1569:104`), whole page (`1569:2`); Reminders is the existing `1456:91` | Built 13 Oct from the built iPhone app |
+| ~~**New: the form's pages** (`1563:535`)~~ | **Merged into "New: choices and habit form" (`1302:2`), 13 Oct 2026, and the section removed.** Each form's pages sit one column to the right of it, below its row, with an arrow from the row that opens each (arrows fan out sideways; pages stacked under their own form always made arrows cross). Shared pages once, from 2.1: 2.1.1 Icon (`1564:607`), 2.1.2 Colour (`1564:454`), 2.1.3 How often (`1563:328`), 2.1.4 Time of Day (`1563:438`), 2.1.5 Group (`1563:494`) and 2.1.5.1 New group (`1567:106`), 2.1.6 Starts (`1564:58`), 2.1.7 Ends (`1564:322`); own pages: 2.2.1 How much (`1567:2`) and 2.2.1.1 Unit (`1563:33`), 2.3.1 How long (`1567:60`), 2.4.1 Steps (`1563:286`), 3.2.1 Limit (`1567:31`). **1.1 Add a 6th habit (Plus)** (`1569:104`, whole sheet `1569:2`) under screen 1, dashed arrows from Build or maintain and Quit or cut down only (the user: it shows only when it's meaningful, never for a task, never abruptly at Add). **Not drawn yet:** the form's Reminders page, 3.1's Started pickers, Task's Repeat, Date and Time pages | The app still shows the Plus sheet at Add (`HabitForm.kt`); move it to choosing Build or maintain / Quit or cut down when building |
 | **Menu: navigation drawer** (`1326:2`) | Drawer open over Today (`1326:3`); the same, scrolled to the end (`1326:231`) | Built 12 Oct from the built app |
 | **Routine player and timer** (`1328:2`) | Player pages, one per kind and state: a check (`1344:2`); a check, done, with the Saved snackbar (`1344:57`); several a day (`1344:117`); a checklist (`1344:173`); an amount, one tap (`1333:2`); a timer running (`1344:241`); a timer, not started (`1344:297`); an amount typed each time (`1344:352`); a limit (`1344:407`); a task (`1344:463`); skipped, with its snackbar (`1344:518`); the last habit, done (`1344:582`); ⋮ menu (`1345:2`); Your routine (`1345:70`); End of the routine (`1345:183`); Timer, running (`1345:219`) | Expressive version approved 12 Oct ("this is looking good"); the first version was rejected |
-| **Habit details: Progress, History, Notes** (`1373:2`) | Water · History (`1375:2`), Notes (`1375:732`), Progress (`1373:3`, the user: "looking really amazing"), ⋮ menu (`1375:1275`); History and Progress drawn full length | Built 12 Oct |
+| **Habit details: Progress, History, Notes** (`1373:2`) | Water · History (`1375:2`), Notes (`1375:732`), Progress (`1373:3`, the user: "looking really amazing"), All milestones (`1735:4`, 14 Oct), ⋮ menu (`1375:1275`); History and Progress drawn full length | Built 12 Oct |
 | **Progress: Week, Month, Year** (`1376:2`) | Week (`1376:3`), Month (`1376:226`), Year (`1376:496`), all full length | Built 12 Oct from the built app; **no ⋮ menu** (removed the same day, below) |
 | **Settings: Times of Day** (`1437:2`) | Times of Day (`1440:2`); New time of day, defaulting to free time 4–6 AM (`1440:69`); Edit time of day · Morning (`1440:152`) | Built 12 Oct from the simulator, then made Expressive at the user's request (the terminal session's version was deleted) |
-| **Settings: Day and Week** (`1449:2`) | Day and Week (`1449:3`); New day starts at, its menu open (`1449:51`) | Built 12 Oct from the built app |
+| **Settings: Day and Week** (`1449:2`) | Day and Week (`1449:3`); New day starts at, menu open (`1449:51`); Week starts on, menu open (`1768:100`) | Built 12 Oct from the built app; **redesigned 14 Oct** in Figma, not built (below, "Day and Week, 14 Oct 2026") |
 | **Settings: Reminders** (`1456:2`) | Reminders with the reminder check (`1456:3`); a habit's reminders, on (`1456:91`); Get reminders on time, the exact-times sheet (`1456:164`); a reminder that didn't arrive (`1456:206`) | Built 12 Oct from the built app and decisions A11 D1–D3 |
 | **Settings: Appearance** (`1458:2`) | Appearance (`1458:3`); Done habits, its menu open (`1458:85`) | Built 12 Oct from the built app |
 | **Settings: Google Drive & Backup** (`1461:2`) | Not backed up (`1465:2`); backed up, free (`1465:54`); synced, Plus (`1465:123`); offline, changes waiting (`1465:192`); Delete your data from Google Drive?, the dialog (`1475:2`); Erase everything on this phone?, the dialog (`1473:27`); Restore from a backup (`1465:258`) | Rebuilt 12 Oct after the user's review ("what is this backup files only on this phone … why you're mixing backup and restore, export and import"), on the structure of the researched Backup & Export mockups (`950:309`) |
@@ -63,6 +63,70 @@ Screenshots go in `Research/Temp/android-design-shots/`.
 - **Light only in Figma.** No dark versions were drawn: native components make dark mode automatic ("it's not a
   custom design … we are using native things"). **The app still needs dark mode** (the user, 13 Oct 2026): built from
   Material 3's dark roles, with an old dark design (`194:10`) as colour inspiration only ([every screen](<Designs/README.md>)).
+- **The font is Google Sans Flex, Regular and Medium only** (the user, 13 Oct 2026, after Roboto and Google Sans Flex side by side on Welcome; "don't use semi-bold unless I say"). The app bundles it (Android's own font is Roboto) and uses the design's sizes as drawn, with no size or letter-spacing overrides of its own. Welcome (`1548:3`, now named "02 · Welcome · the first screen after downloading"; the section's frames are numbered 01 Splash to 07 Your first habit): Often Enough 32/40 Medium, letter spacing −0.5; the line under it 16/24 Regular, grey; the question 16/24 Medium; choice names 16/24 Medium; their descriptions 14/20 Regular, grey. The logo, name and line are centred in the space above the question; 24 from the logo to the name, 8 from the name to the line (3 : 1). **Text has a measure, never hand-typed breaks** (the user, 13 Oct 2026): it fills a narrow screen and stops at a set width on a wide one, so it breaks at a natural pause (the line 254, "…repetition. / You choose…"; the choices' descriptions 212, "…keep track of / your tasks."); measure the words in Figma and set the width mid-window. Built in the app the same day to match Figma exactly, with vector logos from Figma's SVG export and the splash on `#FFFFFF` / `#0D0D0D` (`claude/android-app` `5afdacff`; the rules are written in `Onboarding.kt`'s Welcome header). The other screens move to it next.
+- **Onboarding, 13 Oct 2026: the user's points, in order** (Figma `1548:2`, screens 01–05; built in the app on
+  `claude/android-app`, where each rule is also written in the code: `Onboarding.kt`'s Welcome and intro headers,
+  `Fonts.kt`, `Motion.kt`, the logo drawables, `MainActivity`):
+  - **Design = app.** "Whatever exactly we have in the Figma, the same way it should look in the developed version."
+    The app uses Figma's numbers as drawn: no sp sizes or letter spacing of its own. Check on the real phone at its own
+    size, never a resized emulator ("build it … whatever the original size is").
+  - **Hierarchy from size and two weights:** Google Sans Flex, Regular and Medium only; never SemiBold unless the user
+    says. Welcome: the name 32 Medium (−0.5), its line 16 Regular, the question 16 Medium, choice names 16 Medium over
+    14 Regular. Intro pages: heading 28 Medium (−0.25), line 16 Regular, section title 16 Medium over 12 Regular, habit
+    names 16 **Medium** over details 14 Regular.
+  - **Spacing:** Welcome's logo, name and line are centred in the space above the question; 24 from the logo to the
+    name, 8 from the name to its line (3 : 1; 16 : 8 was tried first). The choices: 16 padding, 2 between name and
+    description, 16 before the chevron. On the intro pages, 20 between a streak and the row's round button (was 12,
+    "very close").
+  - **Text has a measure, never hand-typed breaks:** "if the space is smaller it should try to fill the space, but if
+    the space is large then it should split." Measure the words in Figma, set the width mid-window, use it in both.
+    Welcome's line 254, its choices' descriptions 212; the intro lines 296 / 228 / 296; headings break balanced.
+  - **The welcome asks one thing:** Privacy & optional usage sharing removed (Design Rules, Onboarding).
+  - **Logos are vectors from Figma's SVG export**, converted with Android Studio's converter, for Welcome and the splash
+    ("use SVG … whichever is better in the long term"); the PNGs looked soft on a large screen.
+  - **The splash** is Android's own, on `#FFFFFF` / `#0D0D0D`, at its normal speed (a 5-second hold was only for a look).
+  - **The navigation bar takes the screen's colour** (no white strip behind three-button navigation).
+  - **Motion:** moving between onboarding steps, and from the welcome into the app, uses Material's shared axis X,
+    300 ms ("snappy … but very boring" without it; "very performance efficient"). Keep it this short.
+  - **Intro pages (03–05):** the card starts at the same place on all three (the heading space is the tallest of the
+    three, measured), with any space left below it ("let it be"). The page dots stay, 20 above Continue, still while
+    the pages slide; the current one a 24 dp ink pill, the others ink at 30 % (tonal `#E6E6EA` couldn't be seen,
+    outline `#79747E` was "too dark … competing with the active state").
+  - **Streaks are 🔥 with the number** on Android too ("in iOS already we have that rule"); done on 03–04 so far, Today
+    and the rest not yet. In Figma, set the emoji in Google Sans Flex: Figma can't draw the Noto Color Emoji font.
+  - **Habit icons on 03–05 are circles.** Elsewhere the app mixes circles and Expressive "cookie" shapes; the user is
+    deciding, screen by screen. The tasks on 05 have their own colours (brown, indigo, green), not one orange; 05 no
+    longer shows "Unlimited tasks · Included in the free plan".
+  - **How to work:** change only the screen the user names, never every screen or the whole file without asking (a
+    page-wide 🔥 swap had to be undone); no text styles or other reusable pieces in Figma until the user approves them.
+  - **06 · Your days and weeks** (`1548:420`, menus open `1550:2`, `1550:71`; built in `Onboarding.kt`'s `DaysPage`,
+    rules 1–4 there): the intro pages' type and top bar; **plain words** ("plain English … users should get it in one
+    read"): "Choose when your day and week start." under the heading, one line (measure 296), and "You can change these
+    later." under the card, 12/16, never the path to the setting ("they click on hamburger menu … we don't need to
+    explain it"). An earlier proposal, "Up late? Check-ins after midnight can count for the day before.", was replaced
+    as too specific. **The two settings are one card of Welcome's rows** (round grey icons, 16 Medium over 14
+    Regular). **A setting's menu always opens 4 under its row, right edges together, on every phone** ("don't place it
+    like an absolute position … in any phone it should work that way"): Material's dropdown opened at the left, then
+    moved the 13 hours to the top of the screen when it decided they didn't fit; the app now places its own popup
+    under the row and makes it as tall as that phone's room (to 24 above the navigation bar, as Figma), scrolling the
+    rest. ≡ › Day and Week keeps its own rows for now (change only the named screen). **Not built yet: a scroll bar
+    on the open menu** ("it indicates that this is scrollable"), as Figma `1550:2` draws it (4 wide, ink at 25 %, at
+    the menu's right edge).
+  - **07 · Your first habit** (`1548:456`; the old version kept beside the section, `1655:20573`): redesigned in
+    Figma 13 Oct, **not built yet**. The intro pages' type and top bar; one plain line, **"Pick a habit below, or
+    create your own."** (284 of the 296 measure; the user: "it's not an idea, it's a habit"), in place of "Choose an
+    idea to get started. You can edit it before adding it." ("Pick an idea, then make it your own." came between);
+    the eight as Welcome's rows (16 above and below, 16 Medium over 14 Regular) with **coloured habit icons**, as
+    habits are shown everywhere in the app (the user: "that's how we represent them in the app"): the intro pages'
+    filled white icons (Material Icons Round 22) on Drink water blue `#4285F4`, Exercise pink `#E52592`, Read orange
+    `#FA7B17`, Meditate purple `#A142F4`, Walk green `#34A853`, Go to bed on time indigo `#5856D6`, Stop smoking grey
+    `#80868B`, Less coffee brown `#A1887F`. When built, each idea opens its form with that colour, so the habit added
+    looks as it did here. The app's note under the list ("An idea only fills in the form…") isn't in the design.
+    **Built 13 Oct**, with the scroll bar above. **Back from a picked habit's form** (the user, 13 Oct 2026): it
+    returns to Your first habit as it was, because the welcome ends only when the habit is added (the form opens over
+    it); it asks Discard / Keep editing only when something differs from what the pick filled in ("showing that
+    pop-up only makes sense when we are in a dirty state"); Back and Discard used to close the app (a crash: the form
+    set its step to "" while sliding away). Same from Help's Show the welcome again.
 - **Small screen first:** 360 × 800 (status bar 36, gesture navigation 24 at the bottom, a camera hole).
 - **Today's top app bar: ≡ · Edit (pencil) · Filter · +**, no title. + is in the top bar, **not a floating action
   button** (the FAB beside the day bar was rejected: "not looking good").
@@ -81,6 +145,64 @@ Screenshots go in `Research/Temp/android-design-shots/`.
 - **Rows:** 72 high (Material's two-line item); a round 40 habit icon in the habit's colour (round, not the iPhone's
   rounded square); name 16 / line 14; streak with a filled flame; a 40 round button (tonal grey, or filled in the
   habit's colour when the goal is met); the progress fill in a light tint of the habit's colour.
+- **Today · light (`1350:2`), 14 Oct 2026** (the user: "nothing much to improve … improve the fonts … take inspiration from" intro 1 of 3): Google Sans Flex with the intro pages' hierarchy: section names 16 Medium over "Starts 6 AM" 12 Regular, **habit names 16 Medium** over details 14 Regular, streak numbers, badges, Start and the day bar Medium; **20 from a streak to the round button** (was 12; the intro pages' gap). **Streaks are the 🔥 emoji**, as on the intro pages (the user: "streaks still using the fire icon rather than emoji"; Material's `local_fire_department` icon replaced, drawn as intro 1's: Google Sans Flex, an 18 place, 2 from the number). This frame only; Today's other frames (empty states, day bar states) not yet.
+- **The Expressive "cookie" shape is for large icons and empty screens** (the user, 14 Oct 2026: "wherever we have large icons, let's use cookie shape. In empty screens, anyway, we are using it"): the routine player's hero icon, big headers and empty states; **small habit icons are circles** (Today, the intro pages, ideas, forms); choice rows use plain rounded squares. Circles everywhere was tried on the player the same day and reverted ("cookie shape was looking good"). The cookie: 9 points, inner radius 0.86, corners a tenth of its width.
+- **Today · empty · no habits yet (first time) (`1551:3`), 14 Oct 2026:** **New habit** (filled) and **Start from an idea** (tonal) only. *Start from an idea* stays: it opens the same 8 habits as onboarding's Your first habit (`IdeasScreen`), and the research found an empty screen with nowhere to start among the worst-rated moments (208 reviews, 2.75★) while ideas helped (103). **Removed:** *Restore from a backup* (the welcome has just asked "Have you used Often Enough before?", and Restore stays in ≡ › Google Drive & Backup) and *How it works* (it opened Help & Feedback, not a tutorial; the intro pages have just explained the app; Help stays in ≡) (the user: "do we need it?"). Material's empty state: a picture, a title, a line, one main action and at most one more. Google Sans Flex: "No habits yet" 24 Medium, the line 16 Regular at a 268 measure ("…to do / often enough, or start from an idea."), the group centred. **The iPhone's empty Today still offers all four** (Design Rules, Onboarding; the research report's §4): drop the same two there if the user agrees. The day bar states (`1256:6`) are in Google Sans Flex.
+- **Today · empty · nothing planned today (`1551:195`), 14 Oct:** Google Sans Flex, the title 24 Medium. **New habit stays tonal here and filled on the first-time screen, on purpose:** with no habits, adding one is the only thing to do (filled); on a day with nothing due the person has habits and nothing is wrong, so adding is offered quietly (tonal; U3, nothing counts against anyone; Material: emphasis follows importance). **Today · Start from an idea (full length) (`1710:2`)**, new, after the first-time screen with an arrow from its Start from an idea: the app's `IdeasScreen`, drawn as onboarding's Your first habit (the 8 habits in their own colours, names 16 Medium over 14 Regular, ›), titled "Start from an idea", with "An idea only fills in the form. Nothing is added until you tap Add." under the list. **The app's `IdeasScreen` still shows grey icons (`ListRow`): build it with `IdeaRow`.**
+- **Day details (`1260:3`), 14 Oct 2026:** all 19 frames in Google Sans Flex (weights as they were), the habit's 48 header icon a **circle** (was a cookie; small icons are circles), frames named without "Android ·".
+- **Logs and slips (`1261:290`), 14 Oct 2026** (the user: "similarly … like the quit started date and time … make it look like a native"): every frame in Google Sans Flex and named without "Android ·"; the habit as its 40 circle icon and name (fixed, no ›, no "Habit" label); **Date and time are two controls, never a chain** (the user asked whether date-then-time was intuitive, then: "do some research … how Android handles it natively"): Android's Settings keeps **separate "date" and "time" preferences** (AOSP `date_time_prefs.xml`), Material 3 for Compose has **no combined date-and-time picker** (`DatePicker`/`DatePickerDialog`, `TimePicker`/`TimePickerDialog`; a combined one exists only on iOS), and Google Calendar's event editor puts the date and the time side by side, each its own tap. So every date-and-time is **one row of two pieces, Date | Time**, each opening only its own picker (the date takes the spare width): Add log / Add slip both with ›; Log / Slip and their delete confirmations neither; Edit log / Edit slip both with › (since 14 Oct the date too: U19 now lets a record move to another day, Current Work 109); 3.1 Quit **"Started" | "At"**. The chain (date, then time) was drawn first and replaced: the common fix is the time alone, a second dialog appearing is a surprise, and Cancel on the second is ambiguous. The iPhone keeps separate Date and Time rows (U22). **A slip's time zone** (the user: "should we allow the user to change the time zone or should we show it at all?"): never changeable (a slip is a moment; Design Rules: no time-zone setting); **hidden when it's the phone's own**; shown only when the slip was recorded elsewhere, as a line of its own under the Date | Time pair, "Recorded in India Standard Time" (Google Calendar shows an event's time zone only when it differs). Drawn: "Slip · Smoking · recorded in another time zone" (`1718:69`). The iPhone shows the time zone on every slip (`LogRecordView`).
+- **3.1.1 · Started: date picker** (`1721:2`, Material's date picker over Quit, "Started", Mon 12 Oct) and **3.1.2 · Started: time picker** (`1721:315`, Material 3's dial picker: "Select time", 1 : 12, AM / PM, the hour dial, the keyboard icon to type it, Cancel / OK), in the New section under row 3, with an arrow from Started to the date picker and from At to the time picker (the user: "how the screen will look when they click on date and time … add it in the quit screen"). Rows 4–5 moved down 880.
+- **Dates and times, everywhere (14 Oct 2026; the user: "update it everywhere, wherever we have used it"):** no grey capsules anywhere (they were the iPhone's compact picker). **In a form:** a date with a time is one row of two pieces, **Date | Time**, each opening only its own Material picker (Logs and slips, 3.1 Quit's Started | At); a date alone is an ordinary row with › (Task's Date). **In a compact header with the keyboard up:** Material's **assist chip** with a calendar icon ("Today, 12 Oct"), as Google Tasks shows a date: all four Add note frames; a saved note's day stays plain text. **A list of times** (a habit's Reminders): each time a row, the time 16 Medium over its label ("8:00 AM" / "Reminder 1"), remove at the start, › opening the time picker. Task's Time stays a switch.
+- **Where a record came from, plain (14 Oct 2026; the user could not understand "Recorded with Record a slip."):** something added by hand now reads **"Logged by hand."** / **"Recorded by hand."** (it named the button used: "Logged with Log manually."); the others were already plain ("Logged from a widget.", "from a reminder.", "with the timer."). Kept, since it explains a record nobody remembers adding. **The words are shared: change both apps** (`iOS/Habits/Model/Words.swift` `originLine`, Android `data/StoreWords.kt`). The Notes section (`1274:2`) is in Google Sans Flex, frames named without "Android ·"; its date is Material's assist chip.
+- **Habit details (`1373:2`), 14 Oct 2026:** History, Notes, Progress and the ⋮ menu in Google Sans Flex, the
+  header's habit icon a **circle** (small icons are circles); the day squares in History stay the app's own (the user:
+  "these check marks are not usual check marks"). **Progress's hierarchy** (the user: "we have to have proper
+  hierarchy here"): the record number 45 Regular, card titles 16 Medium, figures 24 Medium over 12 Regular labels,
+  the type scale's steps only (45 · 28 · 24 · 16 · 14 · 12). **The current streak is the 🔥 emoji**, as on Today.
+  **Milestones keep the cookie, made a medal** (the user: "milestone should feel special … if you think cookie shape
+  better then keep it"): an award is the one place a shape of its own is earned, so the cookie stays for reached
+  milestones only, given a gradient of the habit's colour, a white inner ring at 82 % and a soft shadow in the
+  habit's colour, while **the next milestone is Material's circular progress indicator** (not reached yet, so no
+  medal). Applied to Progress (`1373:3`) and the ⋮ menu frame behind it (`1375:1275`). **All milestones (`1735:4`),
+  new**, after Progress with an arrow from "See all 5": ← "All milestones", "Water · 5 reached", then one segmented
+  list per track, **In a row** and **In total**, each starting with its next milestone (the ring, "30 days in a row /
+  Next · 7 to go · now 23") and then every one reached, newest first, as a medal with "Reached 3 Oct"; under them
+  "Each track shows its next milestone. Reached ones stay, even if a streak ends." (a medal is never taken back: U3).
+- **The type scale and text styles (14 Oct 2026; the user: "create the text styles … do some research … follow
+  some principles … that creates the best possible hierarchy").** 22 local styles named **Android / …** in the Figma
+  file, Google Sans Flex, letter spacing 0, each with a description of where it's used. **Sizes are Material 3's**
+  (Compose `TypeScaleTokens`: 57, 45, 36, 32, 28, 24, 22, 16, 14, 12, 11), **Emphasized = Medium** (Material 3
+  Expressive's emphasized styles are the same sizes, heavier), **plus one step of our own, 20** (Regular and Medium).
+  **The principle is a modular scale:** within one screen, neighbouring levels of the hierarchy differ by at least
+  **1.25×** (a major third); two levels that must share a size differ by weight or colour. Material's own steps are
+  finer (1.09–1.37), so a screen skips steps rather than using neighbours together. **20 is kept** because Material
+  has nothing between 16 and 22 (its largest gap, 1.375×) and 16 → 20 is exactly 1.25: it's for a one-line key
+  sentence ("Reached on 12 of 12 days so far": 22 wraps in a 360 card), a large typed name (the user: "below the title
+  size"), a plan's price, the drawer's name and the routine player's 96-high button labels (Material's 24 for a Large
+  button doesn't fit their 130 of room). **18 is not used** (the user asked whether we need it): Material has no 18,
+  and 16 → 18 is 1.125×, too small a step to read as a level; every 18 was a unit beside a big figure (now Body Large
+  16, as Water's already was), a plan name or a list name (now Title Medium 16). **44 became 45** (Display Medium),
+  **64 became 57** (Display Large), **40 became 36** (Display Small). **By job:** top app bar and sheet titles Title
+  Large Emphasized 22; a habit's large title, a screen's question or status Headline Medium (Emphasized) 28; the
+  player's habit name Headline Large Emphasized 32; the one big figure on a screen Display Medium 45 (an amount being
+  typed: Emphasized), clocks and the player's count Display Large 57 (Display Medium 45 for a checklist's count, so it
+  stays 1.4× the 32 name); dialog and sheet headlines Headline Small 24; tile figures Headline Small Emphasized 24;
+  list item and card names Title Medium 16 (Medium wherever a name sits over supporting text, the habit form's Icon and
+  Colour rows included); body and a unit beside a figure Body Large 16; supporting text Body Medium 14; buttons, tabs,
+  chips, section labels and **menu items** Label Large 14 (Material's menu token); badges Label Medium 12; footers and
+  notes under a group Body Small 12 (How much, How long and Limit's notes moved from 14); weekday letters and chart
+  axes 11. **Not styled on purpose:** the status bar and the keyboard (Android's own), icon glyphs, and the 🔥 (an
+  icon, 18, as on Today). **Applied to every frame of this session's sections** (onboarding, Today, Day details, Logs
+  and slips, Notes, the habit form, the menu, the routine player, Habit details, Progress, Times of Day, Reminders):
+  3,000+ texts, every one styled, none overflowing; the menu's Today and Reminders moved off Roboto, Reminders' small
+  icons became circles. Checked frame by frame; fixed on the way: the checklist player's count (36 beside a 32 name),
+  the timer's two buttons (equal widths), Day details' titles (Regular), clipped supporting lines (now end in "…").
+- **Progress: Week, Month, Year (`1376:2`), 14 Oct 2026:** Google Sans Flex at the sizes and weights it had (the
+  summary "Reached on 2 of 2 days so far" stays 20 Medium, as on Habit details' Progress), the status bar Android's
+  own; each habit's 44 icon a **circle** (small icons are circles); frames named without "Android ·". **Week · Month
+  · Year stays Material 3 Expressive's connected button group** (the user: "if they are native … keep it"): it's
+  Material's control for switching views of the same content (tabs move between different pages), and it's drawn to
+  the spec, 2 apart, inner corners 8, the selected one fully round with a check.
 - **Section headers:** name 16 Medium, "Starts 6 AM" 12; **"N left" as a grey badge** (12 Medium, corners 12); ▶ Start
   (filled ink for the Now section, tonal grey otherwise); ⌃/⌄. Folded: **the habit icons as an overlapping stack** (28,
   a white ring, 6 overlapping) ending in a "+N" disc. **Outer corners 24, 16 between sections** (Expressive version,
@@ -137,6 +259,34 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   "When you tap +" as radio rows, "Each tap adds" in a small filled field. Icons: `event_repeat` How often, `tag` How
   much, `timer` How long, `checklist` Steps, `speed` Limit, `history` Started, `repeat` Repeat, `calendar_today` Date,
   `schedule` Time / Time of Day, `folder` Group, `notifications` Reminders, `event` Starts, `event_busy` Ends.
+  **Third version, 13 Oct 2026 (2.1 Check it off `1321:2`, then 2.2 Track an amount `1321:125`, 2.3 Time it
+  `1321:272`, 2.4 Checklist `1321:400`, 3.1 Quit `1321:529`, 3.2 Cut down `1321:614`, 4 Task `1321:738` (its Date
+  an ordinary row like Started, its Time keeping Material's switch); not built; the
+  BEFORE copies were deleted at the user's request). **Quit's Started is an ordinary row** (the user chose it, 13 Oct
+  2026, over Google Calendar's date and time as plain text to tap): "Started" over "12 Oct 2026, 1:12 PM" and ›,
+  opening Material's date picker and then its time picker. The grey date and time capsules were the iPhone's compact
+  date picker, which Material doesn't have. How much, How long and Steps are ordinary two-line rows;
+  "When you tap +" keeps its radio rows and the small "1" field, in the same type and corners:** the user: "it is not looking good … font size hierarchy … maybe we are using excessive
+  icons"; "don't try to copy the iOS design"; "don't use those ugly input fields". Google Sans Flex: the title
+  **"New Habit" 22 Medium** in the small top app bar (Material's default is 22 Regular; a large bar was offered and
+  turned down: "New Habit is not the most important thing" on this screen), the name field **20 Regular** so it sits
+  below the title, setting names **16 Medium over their values 14 Regular**, left-aligned. **No leading icons on the
+  settings rows** (only the habit's own icon and colour remain); **the grey › stays** on every row that opens a page,
+  Icon and Colour included (the user: without it "user experience is very confusing"; Settings has none, but this
+  form mixes typed fields with rows, and many first see it during the welcome; NN/g's weak-signifier study). Same
+  words, groups and order as before.
+  **The three choice screens, 13 Oct 2026** (1 What do you want to do? `1566:2`, 2 How do you want to track it?
+  `1566:44`, 3 Quit or cut down `1566:106`, descriptions there at a 180 measure so "much." isn't alone; not built): Google Sans Flex, the heading 28 Medium (−0.25) with a measure so it breaks evenly ("What
+  do you want / to do?" 246, "How do you want / to track it?" 236), names 16 Medium over 14 Regular, 2 apart,
+  descriptions on 01 with a 189 measure (184–194 break naturally); segmented pieces 2 apart, corners 24 / 4; **plain
+  40 rounded squares (corners 12, `#E6E6EA`) with the icon in ink**, in place of the Expressive "cookie" shapes (the
+  user: "don't use the curly … just use direct square"). "Add a task" now reads **"Something to get done, once or on
+  repeat."** (two lines, like the others; "No habit progress, streaks or stats." dropped so the three rows match; the
+  user preferred fixing the words to moving the icons, which stay centred as in Settings). **The section is laid out
+  as a flow** (the user, 13 Oct 2026): "1 · What do you want to do?" at the top left; one row per choice, each
+  reached by an arrow from that choice: 2 · Build or maintain, 2.1 Check it off, 2.2 Track an amount, 2.3 Time it,
+  2.4 Checklist; 3 · Quit or cut down, 3.1 Quit, 3.2 Cut down; 4 · Task. Frame names are just the number and the
+  screen ("2.1 · Check it off"), no "Android ·" or "New Habit ·". The sections below moved down 3,308.
 - **The ≡ menu is Material 3's modal navigation drawer** (12 Oct, the iPhone's items and groups): a sheet 304 wide
   (the screen less 56, so Today shows at the edge), end corners 16, over a 32 % scrim; the app's name as the small
   headline; items 56 high with pill-shaped selection (Today selected, its icon filled), Material Symbols, 14 Medium
@@ -144,6 +294,19 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   "Google Drive & Backup" on Android**; Privacy & Security uses `shield` (Android's own Security icon) instead of the
   iPhone's hand. Thirteen items at Material's 56 don't fit 800, so the drawer scrolls (both ends drawn); its content
   stays below the status bar, as Compose's `ModalDrawerSheet` pads for the system bars.
+  **14 Oct 2026 (the user: "with the current font, they are not at all looking good … should we use a logo?"):** the
+  frames are "1 · Menu · open" (`1326:3`) and "1.1 · Menu · scrolled to the end" (`1326:231`). **The drawer opens
+  with our logo and name**, as Google's own apps do (Gmail, Calendar, Keep and Drive open their drawers with the
+  product's logo and name; Material 3's drawer has an optional headline there): the transparent tonal mark (Logo
+  Guide `1166:17`; 36 frame, inside the guide's 24+ for compact use), 12, "Often Enough" 20 Medium, lined up with the
+  items' icons. Items in Google Sans Flex 14 Medium, the counts in grey; groups, dividers, 56-high items and the
+  pill on Today unchanged. Today behind the scrim stays as it is (the user: leave Today for now).
+  **Icons, 14 Oct:** every unselected item's icon **outlined at weight 300** (Material Symbols Rounded Light), **20**
+  (the user asked for 20 after seeing 24; the gap to the label is 16, so labels stay at 52); only the selected one
+  filled (Material's drawer rule); Appearance uses `palette` (Android Settings' theme icon) and Progress
+  `monitoring` (an outline chart), since `contrast` and `bar_chart` stay solid even outlined (the user: the icons
+  were "popping up too much"). **Building it:** the app's `Icons.Rounded/Outlined` (the older Compose library) have one weight, 400; the
+  drawer needs Material Symbols vectors exported at weight 300, fill 0 (filled for the selected one).
 - **Routine player and timer, Material 3 Expressive version** (12 Oct; the user rejected the first, a ring with a
   "‹ Day details ›" toolbar: "not looking good … the day details … creating very ugly thing"). The iPhone's words,
   order and one main action per kind; the look from Expressive's tactics (Google Design's research: containment, bold
@@ -196,12 +359,58 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   as supporting text and ›; **no icons** (a time of day has no icon to choose) and **no coloured day timeline** (tried
   and removed the same day, the user: "user can't set a coloring here … make it clean and simple"). **Add time of day
   is an extended FAB** (ink, corners 16, bottom right; Clock adds alarms this way), not the iPhone's last row. New /
-  Edit: ✕, the large borderless name, **Starts | Ends as two big time tiles** (36, like Clock) that open the time
-  picker, the iPhone's footer, then the iPhone's **Your day rows** with plain **New / Changed / No change** badges ("Was
-  6:00 PM – 12:00 AM" on its own line when a split happens); Edit ends with Delete time of day (red on grey, 56) and
-  shows the time of day's real end (the iPhone shows start + 1 h: Current Work 97). **A new time of day opens in free
+  Edit: ✕, the large borderless name, then **one Starts tile** (36, like Clock; an `edit` pencil at its top right; it
+  opens the time picker) with **the end worked out under it as plain grey text**, "Ends 6:00 AM, when Morning starts"
+  (the last one: "…, when your new day starts"), the iPhone's footer, then **Your day**. **14 Oct 2026 (the user: "end
+  is looking the same as start … the user can easily mistake … it can also be editable"):** the Ends tile is gone,
+  because the end isn't asked for (Current Work 108). Rereading the Day Structure study's 28 reviews about section
+  times showed people set when parts of their day *start*; none asks for a gap or an end before the next start, one
+  asks for the others to "adjust automatically", and the few "end" requests are about getting past midnight, which
+  New day starts at covers (report 25). **Your day marks the row the page is about with a chip** (**+ New**, or
+  **✎ Editing**; the user: "no change chip feels … weird … indicate like this is the current section"), its name
+  Medium; **a row whose times change** shows its new range in ink and "Was 6:00 AM – 12:00 PM" under it; **an
+  unchanged row has no badge** and its range stays grey, so "No change" is gone. Drawn: Edit · Afternoon · start
+  moved (`1746:10`). Edit ends with Delete time of day (red on grey, 56) and shows the time of day's real end (the
+  iPhone shows start + 1 h: Current Work 97). **The same full page opens from the habit form** (2.1.4.1, `1746:71`):
+  the dialog was deleted (the user, 14 Oct: the page "is clearly showing … your entire day and where the new section
+  is getting added"). The section (`1437:2`) is in Google Sans Flex, its frames named without "Android ·". **A new time of day opens in free
   time and splits nothing** (the user: no "randomly new timings"): with the standard set, 4:00–6:00 AM, just before
   Morning; the rule, shared with the iPhone, is Current Work 98.
+- **Appearance became General, 14 Oct 2026** (Figma `1458:3`, menu open `1458:85`, the drawer `1326:3`/`1326:231`;
+  **not built**). The user: the page "is more than appearance … choose the proper name", "System" not "System
+  default", "the same width for each option", "checkmark is definitely not a good thing" for System, and "can we
+  improve the theme selection". **General** is what Google's own Android apps (Gmail, Calendar) call this mix of
+  look and behaviour; the drawer's row is General with the `tune` icon. On the page:
+  - **Theme: three equal tiles**, each a small preview of the app in that theme (three rows with a habit-colour dot),
+    with a radio and its name under it: Light, Dark, **System** (the preview half light, half dark). The chosen tile
+    has a 2-wide ink outline and a filled radio; the others a 1-wide outline. "System follows your phone's dark theme."
+  - **Rows as Day and Week's** (round grey icons, 16 Medium over 14 Regular); **each switch's explanation is its own
+    one-line supporting text** in place of the 12-pt paragraphs: Vibration · A light buzz as you log; Sound when done
+    · Follows your sound mode; Open timer full screen · Swipe down to hide it; Show in notifications · Even on the
+    lock screen. Done habits keeps one footer: "They move once you stop ticking, never mid-tap."
+  - The Done habits menu opens 4 under its row, right edges together (onboarding's menu).
+- **Day and Week, 14 Oct 2026** (Figma `1449:3`, `1449:51`, `1768:100`; **not built yet**). The user: change the font,
+  "it needs to match onboarding" (the menus), "in general improve the screen", "use our text styles", and the Clock
+  group "feels like … a configuration section rather than information … if it is information then present it well".
+  **Android first, never the iPhone's layout or words** (the user, 14 Oct: "just because in the iPhone we have it some
+  way, don't do it that way … everything should feel native").
+  - **The two settings are onboarding 06's card**: two rows 2 apart (outer corners 24, inner 4), round grey icons, 16
+    Medium over 14 Regular, ▾. Top bar as Times of Day (22 Medium).
+  - **Information sits on the page, not in a card.** A white card says "tap me"; the old Clock rows looked like settings.
+    Android's own Settings puts a page's explanation on the page itself (`SettingsLib` `FooterPreference`: no
+    container, secondary colour, an optional link). A first version as an ⓘ and four sentences was "too much text"
+    (the user, 14 Oct: "present it in a better way … easy to read and understand"), so it's **a Material list with no
+    container**, under a "How it works" subheader (14 Medium, grey): each fact a leading icon (24, grey, no circle, in
+    line with the setting icons above), a **short headline to skim** (14 Medium, ink) and one short supporting line
+    (14 Regular, grey), 16 apart: 🌙 bedtime **Late nights** "Logs before your new day starts count for the day
+    before." · calendar_view_week **Weekly goals and streaks** "Use the week you choose above." · flight **Travel and
+    clock changes** "Your logs keep their day." · schedule **12 or 24-hour time** "Follows your phone's setting." with
+    **Date & time settings** (14 Medium, ink, underlined) under it, opening Android's own Date & time page
+    (`Settings.ACTION_DATE_SETTINGS`) in place of spelling out the path. The per-row footers and the "Clock" header
+    are gone.
+  - **Both menus have a frame** ("day and week should have these both"), and open as onboarding's: 4 under their own
+    row, right edges together; New day starts at runs 12:00 AM to 12:00 PM and stops 24 above the navigation bar,
+    scrolling (scroll bar as onboarding); Week starts on shows all seven days.
 - **Day and Week** (12 Oct, from the built app): two **dropdown rows** (Material's exposed dropdown menu: leading icon,
   title, the value as supporting text, ▾; it opens a menu with ✓ on the chosen value, scrolling when long): **New day
   starts at** as exact times (**12:00 AM**, 1:00 AM … 12:00 PM; **never "Midnight"**, the user: "user has to click on
@@ -209,6 +418,44 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   the iPhone's footer, minus "Automatic follows your region" (Current Work 99, the same fix on the iPhone). The **Clock** group keeps its two notes as quiet rows (14, grey, an icon each): "Times follow your
   phone's 24-hour time setting, in Settings › System › Date & time" (Android's path, not General › Date & Time) and the
   daylight-saving note. Sentence case: "New day starts at", "Week starts on".
+- **Keep reminders coming, 14 Oct 2026** (Figma `1775:2`, after "a reminder that didn't arrive", arrow from Show me
+  how; **not built**). The user: "when they click on show me how, where does it take them? … we should showcase some in
+  app screen … I think that screen is missing." The app's Show me how (and the reminder check's Battery **Fix**) opened
+  Android's battery-optimisation list straight away (`ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS`): every app on the
+  phone, with no word on what to change. The research had said to show **the phone maker's own steps** (Android app
+  report §4 point 5; Play forbids asking for the exemption directly). The new page, titled **Keep reminders coming**:
+  one plain line on why ("Samsung puts apps to sleep to save battery, which can stop reminders."), then the steps as
+  onboarding's two-row card, a number where the icon goes, each step's **action as its headline in the maker's own
+  words** and where it is as the line under it, and its own **Open**: 1 Set battery to Unrestricted · App info ›
+  Battery (opens the app's own App info, `ACTION_APPLICATION_DETAILS_SETTINGS`); 2 Add it to Never sleeping apps ·
+  Battery › Background usage limits (opens Battery). Then "Good to know" as the information list: Only for Often
+  Enough / Other apps keep saving battery · Open takes you there / Then come back here. **Per maker** (same page,
+  `missedReason`'s three cases): Xiaomi's steps are Autostart on and Battery saver › No restrictions; every other phone
+  one step, App battery usage › Unrestricted. The menu names on each maker's current version still need checking on
+  real phones (D12: a Samsung and a Xiaomi). **Battery Fix opens this same page** (the user, 14 Oct: "keep the same
+  page itself"; arrow `1776:2`): one place explains the phone's battery steps, whichever way in.
+- **A habit's Reminders moved into the form's flow, 14 Oct 2026** (the user: "these two screens … should be in this
+  section … they don't belong here"). "Habit · Reminders · on" and its "Get reminders on time" sheet left Settings:
+  Reminders for **New: choices and habit form** (`1302:2`) as **2.1.6 · Reminders** (`1456:91`, under Group, as the
+  form's rows run: Group, Reminders, Starts) and **2.1.6.1 · Get reminders on time (sheet)** (`1456:164`, to its right,
+  with an arrow from Remind me). Starts and Ends became **2.1.7** and **2.1.8**; everything from Starts down, and every
+  section below on the page, moved down 938 to keep the gaps; the form's arrows step in a lane (Group 1548, Reminders
+  1536, Starts 1524, Ends 1512). Settings: Reminders keeps the page and "a reminder that didn't arrive".
+- **Reminders, 14 Oct 2026** (Figma `1456:3` only; **not built yet**; the other three frames in the section still say
+  "Exact times"). The user asked why Android has no alarm permission like the iPhone. **It has one:** the row called
+  "Exact times" *is* Android's alarm permission, which Android itself names **Alarms & reminders** (Settings › Apps ›
+  Special app access), so the row now uses Android's name and "Off: up to 10 min late" (D1). The Alarm style itself
+  is built (D3): `setAlarmClock`, the alarm sound on the alarm stream, ringing until stopped (`FLAG_INSISTENT`).
+  What Android doesn't give us is a full-screen alarm: since Android 14, Google Play keeps full-screen intents for
+  alarm-clock and calling apps. Other changes, to the user's "improve it further":
+  - **The check leads with its state:** "Fix 1 thing so reminders come on time." (all fine: say so), not a description
+    of the check.
+  - **A habit row's times and its style are two lines** ("8:00 AM · 2:00 PM" / "Notification"; "8:00 AM" / "Alarm ·
+    again every 15 min"), not one sentence wrapping at a random word.
+  - **The 12-pt footer under With reminders became a "How it works" list at the page's end**, Day and Week's
+    pattern (no container; icon, 14 Medium headline, 14 Regular line): Only on planned days / Days off stay quiet ·
+    Stops when done / No more reminders that day · Alarm or notification / An alarm rings until you stop it ·
+    Paused or archived / Reminders are kept but stay quiet. The frame is the page at full length (1246).
 - **Reminders** (12 Oct; the iPhone's page plus decisions A11 D1–D3): the iPhone's "On This iPhone" group becomes a
   **Reminder check** card (D2): Notifications, **Exact times** and **Battery**, each with its state in words and either a
   ✓ or one ink button that opens that setting ("Allow", "Fix"); exact times off says "reminders may come up to 10
@@ -300,7 +547,7 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   "we do need some changes in the onboarding since we have removed some things"). Two sections above Today, in the
   order a person meets them. **New:** the Welcome (**our light app icon**, the user: "in the first screen use our app
   logo"; Often Enough; "Habits grow through repetition. You choose how often is enough."; "Have you used Often Enough
-  before?" with two rows, I'm new here / I've used it before, and Privacy & optional usage sharing); **"What's included"
+  before?" with two rows, I'm new here / I've used it before; Privacy & optional usage sharing was removed on 13 Oct, see Design Rules' Onboarding); **"What's included"
   (the free plan) is gone** (the user: "let's remove that screen"); the three pages with a page indicator, Skip setup
   and Continue, each showing Today's real rows, one card with Today's corners (round top on the header, round bottom on the last
   row only) (an amount, a check, a timer, steps; Smoking's run, Coffee's limit,
@@ -408,6 +655,66 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   `#ECECEF`/`#E6E6EA`, error red `#B3261E`. Chrome stays black, white and grey; colour is for habits (U2, decision A11's
   D5: no wallpaper colours).
 
+## Routine player: the header, 14 Oct 2026 (Figma `1328:2`, "Routine player · a check" `1344:2` first)
+
+- The user: "the way in the header, like Anytime and Habit 1 of 12 is there, it is very weird … how would Material
+  or Material Expressive handle that". The header said the position twice (the subtitle "Habit 1 of 12" and twelve
+  bars, filled up to the current habit; they never showed done or skipped) and stacked a subtitle under a title
+  that drops down.
+- Now: **one-line title "Anytime ▾", 22 Medium** (a title that drops down is Google's own pattern, Calendar's
+  "October ▾"; it still opens Your routine), and under the bar **one Material 3 Expressive linear progress
+  indicator** (track 4, a 4 gap, a stop dot) with **"1 of 12"** (12 Medium, grey) at its end: Material has no
+  stepper, and its linear indicator still works with 25 habits, where 25 bars don't. Google Sans Flex throughout; the
+  habit's name 32 Medium. **Applied to the whole section** (the user: "update the remaining in this section"): every player frame has the one-line title and the indicator with its own "N of 12" (the last habit and the end of the routine show it full, "12 of 12"; the end's "12 of 12 covered" subtitle went the same way); every frame in Google Sans Flex and named without "Android ·". Timer · running has no routine header and only changed font.
+
+## The form's pages: the user's points, 13 Oct 2026 (Figma, New section `1302:2`)
+
+- [x] 2.1.1 Icon: Google Sans Flex; 12 between a group's name and its icons, 24 between groups; Done 40 high.
+- [x] 2.2.1 How much (and 3.2.1 Limit, the same page in the app): **one number box the card's full width (296 × 80,
+  45 Regular), wide enough for the longest amount the app takes, 9,999,999.99 ("0000000.00" measures 268), from the
+  start**, the unit chip centred under it, **the number keypad open on arrival**. **No − and +** (the user: "if they
+  are around the input field then only they make sense"; around a box that wide they'd need 30-size digits;
+  Material 3 has no stepper and amounts run to millions, so typing is the way, as U22 says for the iPhone). A
+  connected − | + under the field was tried first and rejected.
+- [x] 2.3.1 How long: **Material's time input**: two 96 × 72 boxes, **two digits each** (Android's Clock timer stops
+  at 99 hours; minutes to 59), "Hours" / "Minutes" under them; **the quick picks leave the card** for their own group
+  ("Quick picks", Material filter chips, ✓ on the chosen one). The app's boxes take 3 digits today: change to 2.
+- [x] 2.4.1 Steps, 2.1.5 Group, 2.1.5.1 New group, 2.1.6 Starts, 2.1.7 Ends, 3.2.1 Limit, 2.1.2 Colour, 1.1 Add a 6th
+  habit (both): Google Sans Flex, titles 22 Medium. Starts, Ends and Colour now sit over the redesigned 2.2 form;
+  Ends' menu opens from the new Ends row (above it, Material's rule, when there's no room below).
+- [x] 2.2.1.1 Unit: **a Material 3 search bar ("Search units")** at the top: 28 units in 6 groups run to about three
+  screens, and Android's own long pick-one lists (Settings' languages, time zones) open with one. Everything else
+  kept, Create your own unit included.
+- [x] 2.1.3 How often: drawn as the **Check it off** version (Daily · A number of times · Days of the week · Every
+  few days, weeks or months · On a date), since 2.1 opens it; the summary chip at the top dropped (the chosen row
+  says it, and the form shows the sentence); grouped radio rows (the chosen label Medium), the chosen option's
+  settings open in its card: Weekdays / Weekends as suggestion chips, the seven days as 40 circles across the card.
+- [x] 2.1.4 Time of Day: **radio buttons for the kind, checkboxes only for the times**: Anytime ("No set time") or
+  At set times of day ("Pick one or more"); only under the second, indented, Morning / Afternoon / Evening as
+  checkboxes and + New time of day. The "Or" heading is gone. (The app shows the times first, then "Or", Anytime.)
+- [x] 4.1 Repeat (menu) drawn: Never ✓ / On a schedule, 200 wide, 4 under the Repeat row, right edges together.
+- [x] Every screen in the section in Google Sans Flex (the status bars' 9:41 stays as on every screen).
+- [x] 2.1.3 How often, spacing (14 Oct): the chosen option and its settings are **one white piece** (the row, then
+  the chips and day circles 16 in, 16 between them, 16 under), not two pieces 2 apart.
+- [x] **2.1.4.1 New time of day**: first drawn as a dialog (13 Oct); **replaced 14 Oct by the full page from
+  Settings → Times of Day** (`1746:71`), so a time of day is added the same way from everywhere. The app's
+  `NewSectionDialog` becomes that page.
+- [x] **4.2 Task, repeating** (after "On a schedule"): no Date row; "It comes back on the days you pick below. Tasks
+  don't have progress or stats."; a **How often** card ("Every day"); Starts and Ends at the end; the preview reads
+  "Every day". **4.2.1 Repeat**: the task's own How often: Daily (Every day), Days of the week, Every few days, weeks
+  or months, On a date, **After it's done** (no "Several times a day", no "A number of times"). Arrows 4.1 → 4.2 → 4.2.1.
+- [x] **Add a 6th habit is row 5** (14 Oct; the user: "it's the same level as build or maintain, quit or cut down,
+  add task … a replacement for them when they reach five habits"): 5 · Add a 6th habit (`1569:104`, the whole sheet
+  `1569:2` under it), reached by the dashed arrows from Build or maintain and Quit or cut down; its heading 28 Medium
+  (−0.25), as the onboarding headings. **5.1 · Make room** (`1691:2`, from "Make room instead"; the iPhone's
+  `MakeRoomView`): "Archive or delete one of your 5 habits to add a new one.", each habit with its icon, its name on
+  one line, an outlined **Archive** and **⋮** (Delete…), and "Archived habits keep all their progress, and you can
+  bring them back any time."; once there's room, the habit being added goes ahead. **5.1.1 · Delete (dialog)**
+  (`1691:88`): "Delete Take vitamins?" / "Its history and notes are deleted too. Archiving keeps them and makes room
+  just the same." with **Archive instead** (filled), Delete, Cancel, stacked at the end (three don't fit in a row).
+  The Android app has only a "Make room instead: archive a habit" text button today, with no page behind it.
+- [ ] Still not drawn: the form's Reminders page, 3.1's Started pickers, Task's Date and Time pickers.
+
 ## How we work on these (the user's standing preferences)
 
 - Design **one** screen, show it, get approval, then the variants (one example first).
@@ -429,7 +736,7 @@ Screenshots go in `Research/Temp/android-design-shots/`.
 4. ~~**The ≡ menu** as Material's navigation drawer.~~ Built 12 Oct.
 5. ~~**The routine player and the timer.**~~ Built 12 Oct. Still to draw: the running timer as Android 16's Live
    Update notification (A11 D4) and Today's timer bar.
-6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct. Not drawn: Milestones' See all page, Go to
+6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct; All milestones drawn 14 Oct. Not drawn: Go to
    date, a habit with no history yet, and the other kinds' Progress (time, checks, quit, checklist).
 7. ~~**Progress.**~~ Built 12 Oct (Week, Month, Year; no ⋮). Not drawn: the legend expanded.
 8. ~~**Settings pages:**~~ Built 12 Oct (Times of Day, Day and Week, Reminders, Appearance, Google Drive & Backup and

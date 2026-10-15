@@ -22,10 +22,10 @@ checkpoints below, and report at each.
   - `claude/shared-habit-rules` is **fully in `main`**: `Core/rules` (`app.habits.rules`: which day a log belongs to,
     schedules, goals, streaks, quit runs, a day across habits, where habits show on Today), `Core/spec/`,
     `Core/fixtures/` (2,063 golden cases proven against the iPhone). **Build on it.**
-  - `claude/shared-habit-rules-switch` is that agent's **checkpoint 2** (moving the iPhone onto the shared rules), 27
-    commits ahead of `main` and still moving; its `-ci*`, `-perf*`, `-wperf*`, `-bench*`, `-fixtures*` branches are its
-    test runs. **Never check it out to build on, merge it, push to it, or rerun or cancel its runs.** It may still
-    change `Core/rules`' API (`LiveRules`, `RulesInput`, `Rows`) when it lands on `main`.
+  - `claude/shared-habit-rules-switch` (checkpoint 2: the iPhone, iPad and Apple Watch on the shared rules) **is in
+    `main` too** (13 Oct 2026). `RulesInput` and `Rows` didn't change; `LiveRules` gained calls the apps use for speed:
+    `days` (a strip of days in one call), `row` (a Today row's numbers in one call) and `dayScores` (Rulebook S20).
+    Its `-ci*`, `-perf*`, `-wperf*`, `-bench*`, `-fixtures*` branches are old test runs, safe to delete.
   - So **every call into the rules goes through one Android-side adapter** (for example `RulesGateway` in
     `Android/app/.../data/`): screens and view models never import `app.habits.rules` directly. When the switch branch
     merges, you (or the next agent) rebase `claude/android-app` on `main` and change only the adapter. Check

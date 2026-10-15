@@ -12,11 +12,26 @@ import kotlin.math.min
  * iPhone's `HabitStore` function of the same name did on 12 October 2026 (Core/fixtures/ proves it). Nothing here
  * remembers anything: the caller works a number out once per change and keeps it (Rulebook S5).
  */
-class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -> Long) {
-    val zone = Zone(settings.timeZone)
+/** "Now" not given ([HabitRules.dayProgress] and the like): the clock is read only if the answer needs it. */
+private const val ASK = Long.MIN_VALUE
+
+/** Numbers per day in [HabitRules.strip]. */
+const val STRIP_FIELDS = 6
+
+/** The numbers [HabitRules.row] gives for one habit on one day. */
+const val ROW_FIELDS = 10
+
+class HabitRules(val data: HabitData, val settings: DaySettings, reuse: Zone? = null, val clock: () -> Long) {
+    /** The zone's clock ([reuse]: the last rules' own, when they read the same zone, so what it has read stays). */
+    val zone = reuse?.takeIf { it.id == settings.timeZone } ?: Zone(settings.timeZone)
     private val dayEnd = settings.dayEndHour.coerceIn(0, 12)
 
     // ------------------------------------------------------------------ The day (spec/day.md)
+
+    /** "Now" not given: read [clock] only if the answer needs it (a running timer, an overdue task). Asking the clock
+     *  crosses back into the app on the iPhone and the Watch, once per day of a week or a year otherwise (Current Work
+     *  92, checkpoint 2). */
+    private fun at(now: Long): Long = if (now == ASK) clock() else now
 
     /** DAY-1, DAY-2: the person's day at a moment: its calendar date, or the day before while the clock is before the
      *  day's start hour. On the wall clock, never by subtracting hours (DAY-3). */
@@ -57,9 +72,20 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
 
     /** The habit as it was judged on [day]: the first earlier rule whose last day is on or after it, else today's. */
     fun rule(habit: Habit, day: Int): Habit {
-        val list = data.rules[habit.id] ?: return habit
-        val r = list.firstOrNull { day <= it.until } ?: return habit
-        return habit.judgedBy(r.judging)
+        val facts = data.facts(habit)
+        val list = facts.rules ?: return habit
+        var i = 0
+        while (i < list.size && day > list[i].until) i++
+        if (i == list.size) return habit
+        // The judged habit is kept on the habit, one per earlier rule, while this data is current: a week or a year of
+        // days judged by the same rule made a copy each (Current Work 92, checkpoint 2).
+        var judged = habit.judged
+        if (judged == null || habit.judgedOf !== facts) {
+            judged = arrayOfNulls(list.size)
+            habit.judged = judged
+            habit.judgedOf = facts
+        }
+        return judged[i] ?: habit.judgedBy(list[i].judging).also { judged[i] = it }
     }
 
     fun periodKind(habit: Habit): Period = when (val f = habit.frequency) {
@@ -80,16 +106,16 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
 
     // ------------------------------------------------------------------ Days off (spec/schedules.md S-7)
 
-    fun isSkipped(habit: Habit, day: Int) = data.skips[habit.id]?.contains(day) == true
-    fun isPaused(habit: Habit, day: Int) = data.pauses[habit.id]?.any { day in it } == true
+    fun isSkipped(habit: Habit, day: Int) = data.facts(habit).isSkipped(day)
+    fun isPaused(habit: Habit, day: Int) = data.facts(habit).pauses?.any { day in it } == true
     fun isArchived(habit: Habit, day: Int): Boolean {
         if (!habit.archived) return false
-        val from = data.archivedOn[habit.id] ?: return false
+        val from = data.facts(habit).archivedOn ?: return false
         return day >= from
     }
 
     /** Whether any pause touches [range] (a week or month with a paused day can't end a streak). */
-    fun hasPause(habit: Habit, range: DayRange): Boolean = data.pauses[habit.id]?.any { p ->
+    fun hasPause(habit: Habit, range: DayRange): Boolean = data.facts(habit).pauses?.any { p ->
         p.from <= range.last && (p.through == null || p.through >= range.first) && (p.through ?: p.from) >= p.from
     } == true
 
@@ -104,7 +130,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
 
     /** S-1…S-5: whether [day] is one of the habit's days. [countingSkips] false asks whether it was planned at all;
      *  [followingMoves] false asks a repeating task's own schedule. */
-    fun isDue(habit: Habit, day: Int, now: Long = clock(), countingSkips: Boolean = true, followingMoves: Boolean = true): Boolean {
+    fun isDue(habit: Habit, day: Int, now: Long = ASK, countingSkips: Boolean = true, followingMoves: Boolean = true): Boolean {
         if ((countingSkips && isSkipped(habit, day)) || isPaused(habit, day) || isArchived(habit, day)) return false
         val h = rule(habit, day)
         val created = startDay(h)
@@ -114,14 +140,14 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
             Kind.TASK -> {
                 val due = h.dueDay
                 if (due == null) {
-                    val moves = data.moves[h.id]
+                    val moves = data.facts(h).moves
                     if (followingMoves && moves != null) {
                         if (moves.values.contains(day)) return true
                         if (moves.containsKey(day)) return false
                     }
                 } else {
                     if (day == due) return true
-                    return due < day && day == today(now) && !isDone(h, day)
+                    return due < day && day == today(at(now)) && !isDone(h, day)
                 }
             }
             else -> {}
@@ -130,7 +156,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
         return when (val f = h.frequency) {
             is Frequency.Calendar -> matches(f.rule, day, created)
             is Frequency.AfterCompletion -> {
-                val completions = data.entries(h.id).filter { it.day <= day }
+                val completions = data.facts(h).logs.filter { it.day <= day }
                 if (completions.any { it.day == day }) return true
                 val last = completions.maxOfOrNull { it.day }
                 val next = if (last != null) add(last, f.n, f.unit) else created
@@ -161,8 +187,8 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
     fun matches(rule: CalendarSchedule, date: Int, start: Int): Boolean {
         if (date < start) return false
         val n = max(1, rule.interval)
-        val (y, m, d) = Day.ymd(date).let { Triple(it[0], it[1], it[2]) }
-        val last = Day.daysInMonth(y, m)
+        // The day as a date only where the rule needs it (asked for every day of a year, each day of the week was
+        // turned into a date and its parts boxed; Current Work 92).
         return when (rule.unit) {
             Period.DAY -> (date - start) % n == 0
             Period.WEEK -> {
@@ -171,6 +197,11 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
                 (gap / 7) % n == 0 && rule.weekdays.contains(Day.weekday(date))
             }
             Period.MONTH -> {
+                val ymd = Day.ymd(date)
+                val y = ymd[0]
+                val m = ymd[1]
+                val d = ymd[2]
+                val last = Day.daysInMonth(y, m)
                 val s = Day.ymd(start)
                 val gap = (y - s[0]) * 12 + m - s[1]
                 if (gap % n != 0) return false
@@ -184,6 +215,11 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
                 }
             }
             Period.YEAR -> {
+                val ymd = Day.ymd(date)
+                val y = ymd[0]
+                val m = ymd[1]
+                val d = ymd[2]
+                val last = Day.daysInMonth(y, m)
                 val s = Day.ymd(start)
                 if ((y - s[0]) % n != 0 || m != rule.month) return false
                 d == (if (rule.useLastDay) min(rule.day, last) else rule.day)
@@ -204,20 +240,22 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
     }
 
     /** G-2: what was logged on a day (a checklist counts its ticked steps; a running timer counts up to now). */
-    fun dayProgress(habit: Habit, day: Int, now: Long = clock()): Double {
+    fun dayProgress(habit: Habit, day: Int, now: Long = ASK): Double {
         val h = rule(habit, day)
         if (h.kind == Kind.CHECKLIST) {
-            val ticked = data.entries(h.id, day).mapNotNullTo(HashSet()) { it.stepId }
+            val ticked = data.facts(h).entries(day).mapNotNullTo(HashSet()) { it.stepId }
             return h.steps.count { it in ticked }.toDouble()
         }
         if (h.kind == Kind.TASK) {
-            if (h.dueDay == null) return if (data.entries(h.id, day).isNotEmpty()) 1.0 else 0.0
-            return if (data.entries(h.id).isNotEmpty()) 1.0 else 0.0
+            if (h.dueDay == null) return if (data.facts(h).entries(day).isNotEmpty()) 1.0 else 0.0
+            return if (data.facts(h).logs.isNotEmpty()) 1.0 else 0.0
         }
         var total = 0.0
-        for (e in data.entries(h.id, day)) if (e.stepId == null) total += e.value
-        val start = data.timers[h.id]
-        if (start != null && day == today(now)) total += max(0L, now - start) / 1000.0 / 60
+        val facts = data.facts(h)
+        for (e in facts.entries(day)) if (e.stepId == null) total += e.value
+        val start = facts.timer ?: return total
+        val t = at(now)
+        if (day == today(t)) total += max(0L, t - start) / 1000.0 / 60
         return total
     }
 
@@ -233,22 +271,24 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
 
     /** G-5: what was logged in a range, step ticks aside. */
     fun loggedTotal(habit: Habit, range: DayRange): Double {
-        val all = data.entries(habit.id)
+        val facts = data.facts(habit)
+        val all = facts.logs
         var total = 0.0
         // A week or month is read day by day from the per-day index, not by walking every log the habit ever had (as the
         // iPhone does: a widget asks this for seven days of every habit, S5); a range longer than the history walks it once.
         if (range.last - range.first + 1 < all.size) {
-            for (day in range.first..range.last) for (e in data.entries(habit.id, day)) if (e.stepId == null) total += e.value
+            for (day in range.first..range.last) for (e in facts.entries(day)) if (e.stepId == null) total += e.value
             return total
         }
         for (e in all) if (e.stepId == null && e.day in range) total += e.value
         return total
     }
 
-    fun periodTotal(habit: Habit, range: DayRange, now: Long = clock()): Double {
+    fun periodTotal(habit: Habit, range: DayRange, now: Long = ASK): Double {
         var total = loggedTotal(habit, range)
-        val start = data.timers[habit.id]
-        if (start != null && today(now) in range) total += max(0L, now - start) / 1000.0 / 60
+        val start = data.facts(habit).timer ?: return total
+        val t = at(now)
+        if (today(t) in range) total += max(0L, t - start) / 1000.0 / 60
         return total
     }
 
@@ -265,7 +305,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
     }
 
     /** G-6: what a row shows: the day's amount, a period's total, or a period's count. */
-    fun progress(habit: Habit, day: Int, now: Long = clock()): Double {
+    fun progress(habit: Habit, day: Int, now: Long = ASK): Double {
         val h = rule(habit, day)
         val range = periodRange(h, day)
         if (!h.frequency.isFlexible && range != null) return if (isTotal(h)) periodTotal(h, range, now) else periodCount(h, range)
@@ -330,8 +370,8 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
         return !r.frequency.isDayBased || dayGoal(r) > 1
     }
 
-    fun isStepDone(step: String, habit: Habit, day: Int) = data.entries(habit.id, day).any { it.stepId == step }
-    fun isSlotDone(habit: Habit, slot: String, day: Int) = data.entries(habit.id, day).any { it.slot == slot }
+    fun isStepDone(step: String, habit: Habit, day: Int) = data.facts(habit).entries(day).any { it.stepId == step }
+    fun isSlotDone(habit: Habit, slot: String, day: Int) = data.facts(habit).entries(day).any { it.slot == slot }
 
     /** G-9: the share of the day's goal reached, 0…1. */
     fun dayFraction(habit: Habit, day: Int): Double {
@@ -404,6 +444,79 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
         if (isDayMet(r, day)) return DayMark.DONE
         if (dayProgress(r, day) > 0) return DayMark.SOME
         return if (day == today) DayMark.OPEN else DayMark.MISSED
+    }
+
+    /**
+     * A habit's days [first]…[last] at once, for a strip of days (Progress's cards, the habit page): per day, six numbers
+     * — the mark ([dayMark] against [reference]); judged by that day's goal ([rule]), what was logged at [now]
+     * ([dayProgress]), 1 when the goal was met ([isDayMet]) and the goal ([dayGoal]); 1 when it was one of its days
+     * ([isDue], skips counted); and the kind of period that day's goal is judged in ([periodKind]). Each day's facts are
+     * worked out once and the mark is read from them by [dayMark]'s own steps (StripTest checks every golden case):
+     * asked one by one, the same day's logs and schedule were worked out three or four times (Current Work 92).
+     */
+    fun strip(habit: Habit, first: Int, last: Int, reference: Int, now: Long): DoubleArray {
+        val count = max(0, last - first + 1)
+        val out = DoubleArray(count * STRIP_FIELDS)
+        val start = startDay(habit)
+        for (i in 0 until count) {
+            val day = first + i
+            val judged = rule(habit, day)
+            val logged = dayProgress(judged, day, now)
+            val goal = dayGoal(judged)
+            val met = if (judged.atMost) logged <= goal else logged >= goal
+            val due = isDue(habit, day, now)
+            val f = judged.frequency
+            val mark = when {
+                day < start -> DayMark.BEFORE
+                isPaused(habit, day) -> DayMark.PAUSED
+                isSkipped(habit, day) -> DayMark.SKIPPED
+                day > reference -> if (due) DayMark.UPCOMING else DayMark.NOT_ITS_DAY
+                !f.isDayBased || f.isFlexible -> when {
+                    logged > 0 -> if (judged.atMost) DayMark.SOME else if (met || !f.isFlexible) DayMark.DONE else DayMark.SOME
+                    day == reference && due -> DayMark.OPEN
+                    else -> DayMark.NOT_ITS_DAY
+                }
+                !due -> DayMark.NOT_ITS_DAY
+                judged.atMost -> if (day == reference) (if (logged > 0) DayMark.SOME else DayMark.OPEN)
+                    else if (met) DayMark.DONE else DayMark.MISSED
+                met -> DayMark.DONE
+                logged > 0 -> DayMark.SOME
+                day == reference -> DayMark.OPEN
+                else -> DayMark.MISSED
+            }
+            val at = i * STRIP_FIELDS
+            out[at] = mark.ordinal.toDouble()
+            out[at + 1] = logged
+            out[at + 2] = if (met) 1.0 else 0.0
+            out[at + 3] = goal
+            out[at + 4] = if (due) 1.0 else 0.0
+            out[at + 5] = periodKind(judged).ordinal.toDouble()
+        }
+        return out
+    }
+
+    /**
+     * What a Today row shows for one habit on one day, at once (Current Work 92: the Watch's Today asked about ten rules a
+     * row, each its own call): judged by that day's goal ([rule]), what was logged at [now] ([dayProgress]) and the day's
+     * goal ([dayGoal]); 1 when the day is one of its days, a skip or not ([isDue] with `countingSkips` false); 1 when
+     * [isSatisfied]; 1 when the check [countsUp]; the period's progress at [now] and its goal ([progress], [goal]); the
+     * habit's first day ([startDay]); 1 when [isDone]; and [flexibleProgress], or -1 when the goal isn't flexible.
+     * RowTest checks each against the rule asked on its own, for every habit and day of every golden case.
+     */
+    fun row(habit: Habit, day: Int, now: Long): DoubleArray {
+        val judged = rule(habit, day)
+        return doubleArrayOf(
+            dayProgress(judged, day, now),
+            dayGoal(judged),
+            if (isDue(habit, day, now, countingSkips = false)) 1.0 else 0.0,
+            if (isSatisfied(habit, day)) 1.0 else 0.0,
+            if (countsUp(habit, day)) 1.0 else 0.0,
+            progress(habit, day, now),
+            goal(habit),
+            startDay(habit).toDouble(),
+            if (isDone(habit, day)) 1.0 else 0.0,
+            (flexibleProgress(habit, day) ?: -1).toDouble(),
+        )
     }
 
     // ------------------------------------------------------------------ Streaks (spec/streaks.md)
@@ -498,7 +611,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
     /** A quit habit's slips, oldest first: each log's moment, and a later "Started" counted as one more. */
     fun slips(habit: Habit, now: Long = clock()): List<Long> {
         val start = habit.quitSince ?: habit.createdAt
-        val slips = data.entries(habit.id).map { it.createdAt }.filter { it <= now }.toMutableList()
+        val slips = data.facts(habit).logs.map { it.createdAt }.filter { it <= now }.toMutableList()
         if (start > habit.createdAt && !slips.contains(start)) slips.add(start)
         return slips.sorted()
     }
@@ -509,7 +622,7 @@ class HabitRules(val data: HabitData, val settings: DaySettings, val clock: () -
         class Edge(val at: Long, val starts: Boolean, val ending: QuitRun.Ending)
         val edges = slips(habit, now).map { Edge(it, true, QuitRun.Ending.SLIP) }.toMutableList()
         var pausedNow = false
-        for (p in data.pauses[habit.id] ?: emptyList()) {
+        for (p in data.facts(habit).pauses ?: emptyList()) {
             if (p.pausedAt > now) continue
             edges.add(Edge(p.pausedAt, false, QuitRun.Ending.PAUSE))
             val back = resumeMoment(p)

@@ -33,9 +33,11 @@ struct TodayPlan {
 
     /// A habit ticked per section is done here once this section's tick is; a skipped day counts as finished here
     /// (the iPhone's `PartSection.isDone`).
-    static func isDone(_ row: Row, on day: LocalDay, store: HabitStore) -> Bool {
+    /// `numbers`: the row's numbers from the shared rules (`HabitStore.coreRow`), when it has them.
+    static func isDone(_ row: Row, on day: LocalDay, store: HabitStore, numbers: CoreRow? = nil) -> Bool {
         if store.isSkipped(row.habit, on: day) { return true }
-        return row.placement?.slot.map { store.isSlotDone(row.habit, slot: $0, on: day) } ?? store.isSatisfied(row.habit, on: day)
+        return row.placement?.slot.map { store.isSlotDone(row.habit, slot: $0, on: day) }
+            ?? numbers?.isSatisfied ?? store.isSatisfied(row.habit, on: day)
     }
 
     @MainActor
@@ -43,13 +45,23 @@ struct TodayPlan {
         // The store's clock (D7): the same moment the store counts "today" and "Now" from.
         let now = now ?? store.clock()
         let today = store.today(now: now)
-        let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= today }
+        // Each habit's numbers in one call to the shared rules (`coreRow`): asked one by one, a plan crossed into Kotlin
+        // three or four times a habit (Current Work 92). Today already reads every habit's logs (its "left" counts and
+        // the day's summary), so reading them here makes it redraw for nothing new.
+        var numbers: [UUID: CoreRow] = [:]
+        for habit in store.habits where !habit.archived && habit.kind != .quit {
+            if let row = store.coreRow(habit, on: today, now: now) { numbers[habit.id] = row }
+        }
+        func planned(_ habit: Habit) -> Bool {
+            numbers[habit.id]?.isPlanned ?? store.isDue(habit, on: today, countingSkips: false)
+        }
+        let active = store.habits.filter { !$0.archived && (numbers[$0.id]?.startDay ?? store.startDay(of: $0)) <= today }
         let restraint = active.filter { habit in
             habit.kind == .quit ? !store.isPaused(habit, on: today)
-                : habit.isQuitOrLimit && store.isDue(habit, on: today, countingSkips: false)
+                : habit.isQuitOrLimit && planned(habit)
         }
         let paused = active.filter { store.isPaused($0, on: today) }
-        let tracked = active.filter { !$0.isQuitOrLimit && store.isDue($0, on: today, countingSkips: false) && !store.isPaused($0, on: today) }
+        let tracked = active.filter { !$0.isQuitOrLimit && planned($0) && !store.isPaused($0, on: today) }
         var bySection: [String: [Row]] = [:]
         for habit in tracked {
             for placement in store.placements(of: habit) {
@@ -65,7 +77,7 @@ struct TodayPlan {
                 continue
             }
             guard let rows = bySection[card], !rows.isEmpty else { continue }
-            let left = rows.filter { !isDone($0, on: today, store: store) }.count
+            let left = rows.filter { !isDone($0, on: today, store: store, numbers: numbers[$0.habit.id]) }.count
             sections.append(Section(id: card, title: store.section(card).name, isNow: card == nowID, rows: rows, left: left))
         }
         let summary = store.daySummary(on: today)

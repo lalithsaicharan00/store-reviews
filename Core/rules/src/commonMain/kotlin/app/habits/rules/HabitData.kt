@@ -7,7 +7,7 @@ package app.habits.rules
  */
 class EntryIndex(entries: List<Entry> = emptyList()) {
     private val byHabit = HashMap<String, MutableList<Entry>>()
-    private val byDay = HashMap<String, HashMap<Int, MutableList<Entry>>>()
+    private val byDay = HashMap<String, DayBuckets>()
 
     init {
         for (e in entries) add(e)
@@ -21,14 +21,14 @@ class EntryIndex(entries: List<Entry> = emptyList()) {
 
     fun add(e: Entry) {
         byHabit.getOrPut(e.habitId) { ArrayList() }.add(e)
-        byDay.getOrPut(e.habitId) { HashMap() }.getOrPut(e.day) { ArrayList() }.add(e)
+        byDay.getOrPut(e.habitId) { DayBuckets() }.getOrPut(e.day).add(e)
     }
 
     /** Puts a log at [position] among its habit's logs (an undone delete goes back where it was). */
     fun insert(e: Entry, position: Int) {
         val list = byHabit.getOrPut(e.habitId) { ArrayList() }
         list.add(position.coerceIn(0, list.size), e)
-        val day = byDay.getOrPut(e.habitId) { HashMap() }.getOrPut(e.day) { ArrayList() }
+        val day = byDay.getOrPut(e.habitId) { DayBuckets() }.getOrPut(e.day)
         // The day's logs keep the habit's order.
         val before = list.indexOf(e)
         val at = day.indexOfFirst { list.indexOf(it) > before }.let { if (it < 0) day.size else it }
@@ -51,20 +51,82 @@ class EntryIndex(entries: List<Entry> = emptyList()) {
         if (i < 0) return add(e)
         val old = list[i]
         list[i] = e
-        val days = byDay.getOrPut(e.habitId) { HashMap() }
+        val days = byDay.getOrPut(e.habitId) { DayBuckets() }
         if (old.day == e.day) {
             days[e.day]?.let { day -> day.indexOfFirst { it.id == e.id }.takeIf { it >= 0 }?.let { day[it] = e } }
         } else {
             days[old.day]?.removeAll { it.id == e.id }
-            val day = days.getOrPut(e.day) { ArrayList() }
+            val day = days.getOrPut(e.day)
             val at = day.indexOfFirst { list.indexOf(it) > i }.let { if (it < 0) day.size else it }
             day.add(at, e)
         }
     }
 
+    /** One habit's logs, as the list kept here (made empty if it has none yet): [HabitFacts] holds it. */
+    internal fun listOf(habit: String): MutableList<Entry> = byHabit.getOrPut(habit) { ArrayList() }
+    internal fun bucketsOf(habit: String): DayBuckets = byDay.getOrPut(habit) { DayBuckets() }
+
+    /** Every log gone; the lists stay, as [HabitFacts] may hold them. */
     fun clear() {
-        byHabit.clear()
-        byDay.clear()
+        for (list in byHabit.values) list.clear()
+        for (days in byDay.values) days.clear()
+    }
+}
+
+/**
+ * One habit's logs by day, in a list indexed by the day number: reading a day neither hashes nor boxes it, and the
+ * rules read a habit's days one at a time across weeks and years (Current Work 92, checkpoint 2: on the iPhone and the
+ * Watch each boxed day was an allocation). The list covers the days logged so far and grows to take a new one; a day
+ * that would stretch it past [MAX_SPAN] days (a log dated centuries away) is kept in a map beside it.
+ */
+internal class DayBuckets {
+    private var first = 0
+    private var slots: Array<MutableList<Entry>?> = arrayOfNulls(0)
+    private var far: HashMap<Int, MutableList<Entry>>? = null
+
+    operator fun get(day: Int): MutableList<Entry>? {
+        val i = day - first
+        return if (i >= 0 && i < slots.size) slots[i] else far?.get(day)
+    }
+
+    fun getOrPut(day: Int): MutableList<Entry> {
+        get(day)?.let { return it }
+        if (!cover(day)) return far().getOrPut(day) { ArrayList() }
+        val made = ArrayList<Entry>()
+        slots[day - first] = made
+        return made
+    }
+
+    private fun far(): HashMap<Int, MutableList<Entry>> = far ?: HashMap<Int, MutableList<Entry>>().also { far = it }
+
+    fun clear() {
+        slots.fill(null)
+        far = null
+    }
+
+    /** Grows the list to include [day] (with room to spare either side); false when that would be too long. */
+    private fun cover(day: Int): Boolean {
+        if (slots.isEmpty()) {
+            first = day - SPARE
+            slots = arrayOfNulls(2 * SPARE + 1)
+            return true
+        }
+        val last = first + slots.size - 1
+        if (day in first..last) return true
+        val newFirst = if (day < first) day - maxOf(SPARE, slots.size / 2) else first
+        val newLast = if (day > last) day + maxOf(SPARE, slots.size / 2) else last
+        if (newLast - newFirst + 1 > MAX_SPAN) return false
+        val grown = arrayOfNulls<MutableList<Entry>>(newLast - newFirst + 1)
+        slots.copyInto(grown, destinationOffset = first - newFirst)
+        first = newFirst
+        slots = grown
+        return true
+    }
+
+    private companion object {
+        const val SPARE = 32
+        /** About 120 years of days. */
+        const val MAX_SPAN = 44_000
     }
 }
 
@@ -94,9 +156,56 @@ class HabitData(
 
     val habitById: Map<String, Habit> = habits.associateBy { it.id }
 
+    /** A habit's part of the data, found by its ID once and kept on the habit (and on its copies judged by an earlier
+     *  goal) while this data is current: a rule asks for it several times a day of a week or a year, and on the iPhone
+     *  and the Watch each lookup by ID hashed the whole ID again (Current Work 92, checkpoint 2). */
+    fun facts(habit: Habit): HabitFacts {
+        val known = habit.facts
+        if (known != null && habit.factsOf === this) return known
+        val id = habit.id
+        val skipDays = skips[id]?.toIntArray()?.also { it.sort() } ?: NO_DAYS
+        val made = HabitFacts(logs.listOf(id), logs.bucketsOf(id), skipDays, moves[id], pauses[id], rules[id], archivedOn[id], timers[id])
+        habit.facts = made
+        habit.factsOf = this
+        return made
+    }
+
+    private companion object {
+        val NO_DAYS = IntArray(0)
+    }
+
     /** One habit's logs, in the order they were made. */
     fun entries(habit: String): List<Entry> = logs.of(habit)
 
     /** One habit's logs on one day, in the order they were made. */
     fun entries(habit: String, day: Int): List<Entry> = logs.of(habit, day)
+}
+
+/** One habit's part of [HabitData] ([HabitData.facts]): its logs, skipped days, moved task days, pauses, earlier goals,
+ *  archive day and running timer. */
+class HabitFacts internal constructor(
+    /** Its logs, in the order they were made. */
+    val logs: List<Entry>,
+    private val days: DayBuckets,
+    /** Skipped days, sorted. */
+    private val skipDays: IntArray,
+    val moves: Map<Int, Int>?,
+    val pauses: List<Pause>?,
+    val rules: List<PastRule>?,
+    val archivedOn: Int?,
+    val timer: Long?,
+) {
+    /** Its logs on one day, in the order they were made. */
+    fun entries(day: Int): List<Entry> = days[day] ?: emptyList()
+
+    fun isSkipped(day: Int): Boolean {
+        var low = 0
+        var high = skipDays.size - 1
+        while (low <= high) {
+            val mid = (low + high) ushr 1
+            val d = skipDays[mid]
+            if (d < day) low = mid + 1 else if (d > day) high = mid - 1 else return true
+        }
+        return false
+    }
 }

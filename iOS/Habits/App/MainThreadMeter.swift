@@ -1,6 +1,7 @@
 import Foundation
 
 #if DEBUG
+import Core
 
 /// Speed tests only (launched with `-perf-meter`, 30 Sep 2026): records every stretch of 17 ms or more that the main
 /// thread worked without a break, from waking up to going back to sleep. Each one is at least one dropped frame; one
@@ -17,8 +18,11 @@ final class MainThreadMeter {
 
     static func startIfAsked() {
         guard shared == nil, ProcessInfo.processInfo.arguments.contains("-perf-meter") else { return }
+        startedAt = String(format: "%.3f", Date.now.timeIntervalSince1970)
         shared = MainThreadMeter()
     }
+    /// When the meter started (the app finished launching), for the `launch` scenario's window.
+    private(set) static var startedAt = ""
 
     private init() {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("perf-stalls.txt")
@@ -63,6 +67,12 @@ final class MainThreadMeter {
         guard ms >= 17 else { return }
         let line = String(format: "%.3f %.1f\n", start + kCFAbsoluteTimeIntervalSince1970, ms)
         try? file?.write(contentsOf: Data(line.utf8))
+        // A long stall: what the Kotlin collector last did, to tell its pauses apart (Current Work 92).
+        if ms >= 250 {
+            let note = String(format: "# NOTE long stall %.0f ms at %.3f; kotlin %@\n", ms, start + kCFAbsoluteTimeIntervalSince1970,
+                              RuntimeStats.shared.lastCollection())
+            try? file?.write(contentsOf: Data(note.utf8))
+        }
     }
 }
 #endif

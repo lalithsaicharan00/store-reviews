@@ -1,3 +1,4 @@
+import Core
 import Foundation
 
 // Progress, Phase 2 (Build Plan #60f; report §7.2 Year, §8.4–§8.6, §10, §16.6, §16.8).
@@ -107,7 +108,8 @@ extension HabitStore {
 
     /// The first day a quit habit counts from: when it was made, or an earlier "Started".
     func quitStartDay(of habit: Habit) -> LocalDay {
-        today(now: min(habit.createdAt, habit.quitSince ?? habit.createdAt))
+        if case let (core, h)? = shared(habit, logs: false) { return LocalDay(dayNumber: Int(core.quitStartDay(h: h))) }
+        return today(now: min(habit.createdAt, habit.quitSince ?? habit.createdAt))
     }
 
     /// Slips, clean days and runs in a range (report §10.3, §16.8). A clean day is a day from the start up to today
@@ -147,7 +149,8 @@ extension HabitStore {
 
     /// The moment a day begins, honouring the day end (the same as `dayStart`, which is private to the store file).
     func dayStartMoment(_ day: LocalDay) -> Date {
-        calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
+        if let core { return Date(millis: core.dayStartMoment(day: day.n)) }
+        return calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
     }
 
     /// Milestones for a quit run (report §10.3, with the user's 11 Oct 2026 additions: spec "Habit Progress" §4.1):
@@ -238,13 +241,15 @@ extension HabitStore {
         var done = [Int: Double](), planned = [Int: Int]()
         let averages: Bool = { switch rule.kind { case .amount, .duration: return true; default: return false } }()
         var total = 0
+        // The days from the shared rules in one call (`CoreDays`).
+        let sharedDays = coreDays(habit, in: max(range.lowerBound, start)...min(range.upperBound, today), relativeTo: self.today())
         for day in days(in: max(range.lowerBound, start)...min(range.upperBound, today)) {
-            let mark = dayMark(habit, on: day)
+            let mark = sharedDays?.mark(day) ?? dayMark(habit, on: day)
             guard mark == .done || (day < today && (mark == .some || mark == .missed)) else { continue }
             let weekday = calendar.component(.weekday, from: day.date(calendar: calendar))
             planned[weekday, default: 0] += 1
             total += 1
-            if averages { done[weekday, default: 0] += dayProgress(of: self.rule(habit, on: day), on: day) }
+            if averages { done[weekday, default: 0] += sharedDays?.progress(day) ?? dayProgress(of: self.rule(habit, on: day), on: day) }
             else if mark == .done { done[weekday, default: 0] += 1 }
         }
         guard total >= 28 else { return [] }

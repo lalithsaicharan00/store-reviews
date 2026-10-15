@@ -63,7 +63,7 @@ final class HabitStore {
         }
     }
 
-    private(set) var habits: [Habit] = [] { didSet { forgetAll() } }
+    private(set) var habits: [Habit] = [] { didSet { _ = perfTimed("Count: habits set") { 0 }; if habits != oldValue { rulesInputChanged("habits") }; forgetAll() } }
     /// Changed only through `insertEntry`, `removeEntry(at:)` and `replaceEntry` (or a full load), which keep the indexes below in
     /// step. Rebuilding them from every entry after each tap cost a full pass over a year of history (30 Sep).
     @ObservationIgnored private var storedEntries: [Entry] = []
@@ -88,6 +88,7 @@ final class HabitStore {
         Task { @MainActor [weak self] in
             guard let self else { return }
             entryChangePending = false
+            _ = perfTimed("Count: logs changed, announced") { 0 }
             withMutation(keyPath: \.entries) {}
             // Then each changed habit's own mark. A change that didn't say which habit (a reload, the demo data) marks
             // every habit, so no view can miss one.
@@ -96,6 +97,7 @@ final class HabitStore {
             let all = replacedAllEntries
             replacedAllEntries = false
             if all || changed.isEmpty {
+                _ = perfTimed("Count: logs changed, every habit marked") { 0 }
                 for revision in entryRevisions.values { revision.count &+= 1 }
             } else {
                 for id in changed { entryRevisions[id]?.count &+= 1 }
@@ -111,7 +113,7 @@ final class HabitStore {
     @ObservationIgnored private var changedHabits: Set<UUID> = []
 
     /// Reads one habit's mark, so the calling view redraws when that habit's entries change.
-    private func observeEntries(of id: UUID) {
+    func observeEntries(of id: UUID) {
         if let revision = entryRevisions[id] { _ = revision.count; return }
         let revision = EntryRevision()
         entryRevisions[id] = revision
@@ -122,28 +124,33 @@ final class HabitStore {
     @ObservationIgnored private var entriesByHabit: [UUID: [Entry]]?
     /// The same, by habit and day: the calendar asks about ~30 days × every habit on each month (30 Sep).
     @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
-    var settings = DaySettings() { didSet { cachedCalendar = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
+    var settings = DaySettings() { didSet { _ = perfTimed("Count: settings set") { 0 }; if settings != oldValue { rulesInputChanged("settings") }; cachedCalendar = nil; coreGregorian = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
     /// Running timers for duration habits: habit ID → start time.
     private(set) var timers: [UUID: Date] = [:] {
         didSet {
+            _ = perfTimed("Count: timers set") { 0 }
             for id in Set(oldValue.keys).union(timers.keys) where oldValue[id] != timers[id] {
                 widgetProjectionCache[id] = nil
             }
+            if timers != oldValue { rulesInputChanged("timers") }
         }
     }
     /// For a timed habit spread over times of day: the part a running timer is for.
     private(set) var timerSlots: [UUID: String] = [:]
+    /// Changes whenever skips, moved task days, pauses, goal history or archive days do: the shared rules read all five
+    /// for a habit, and one read of this tells SwiftUI so where five reads did (`HabitStore+Rules.swift`, S19).
+    private(set) var ruleInputs = 0
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
     /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
-    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { forgetAll() } }
+    private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { if skips != oldValue { rulesInputChanged("skips"); ruleInputs &+= 1 }; forgetAll() } }
     /// A repeating task's occurrences moved to another day, original day → new day (Day details' Reschedule, 4 Oct
     /// 2026). Saved like skips, one setting per task, so it syncs and is backed up with them.
-    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { forgetAll() } }
+    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { if taskMoves != oldValue { rulesInputChanged("taskMoves"); ruleInputs &+= 1 }; forgetAll() } }
     /// Pauses per habit, oldest first. A paused day is a skipped day, for a whole stretch (pause report, 29 Sep).
-    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { forgetAll() } }
+    private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { if pauses != oldValue { rulesInputChanged("pauses"); ruleInputs &+= 1 }; forgetAll() } }
     /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
     /// its `until` day, so past days keep the result they had (spec §8.2).
-    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { forgetAll() } }
+    private(set) var rules: [UUID: [HabitRule]] = [:] { didSet { if rules != oldValue { rulesInputChanged("rules"); ruleInputs &+= 1 }; forgetAll() } }
     /// Notes (report "Habit Notes and Day Notes", 29 Sep): one per habit per day, one per day, and a standing
     /// description per habit. Optional, never prompted, and they never change progress.
     private(set) var habitNotes: [UUID: [LocalDay: String]] = [:]
@@ -151,7 +158,7 @@ final class HabitStore {
     private(set) var descriptions: [UUID: String] = [:]
     /// The day each archived habit was archived: from that day on it has no days (Build Plan #60c). Kept only while
     /// it's archived; Restore turns the archived stretch into a pause, so those days are never "not done".
-    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { forgetAll() } }
+    private(set) var archivedOn: [UUID: LocalDay] = [:] { didSet { if archivedOn != oldValue { rulesInputChanged("archivedOn"); ruleInputs &+= 1 }; forgetAll() } }
     /// Goes up by one after every change and every load. Progress keys its numbers on it, so they're worked out once
     /// per change, never while drawing (report §20). Only screens that cache numbers read it.
     private(set) var dataVersion = 0
@@ -262,6 +269,8 @@ final class HabitStore {
 
     private func calendarChanged() {
         cachedCalendar = nil
+        coreGregorian = nil
+        rulesInputChanged("calendar")
         cachedWeekdayNames = nil
         startDays = [:]
         forgetAll()
@@ -274,6 +283,22 @@ final class HabitStore {
     // redraw, one tap on Today recalculated every row's streak (30 Sep). They're remembered until something they
     // depend on changes: an entry of that habit, or any habit, skip, pause, goal history or setting.
     @ObservationIgnored private var pastRuns: [UUID: [LocalDay: Int]] = [:]
+    /// The shared habit rules over this store's data (Core/spec/, Current Work 92; `HabitStore+Rules.swift`): built on
+    /// first use after a load, given each log as it's added or removed, and given habits and settings again when they
+    /// change (`coreDirty`).
+    @ObservationIgnored var coreState: LiveRules?
+    @ObservationIgnored var coreDirty = true
+    /// The rows the last load read, so the shared rules read the same logs without converting them again.
+    @ObservationIgnored var coreRows: Snapshot?
+    /// The rules' habit for each saved habit, with the habit it was made for (compared, not hashed: `==` on unchanged
+    /// storage is a few pointer checks).
+    @ObservationIgnored var coreHandles: [UUID: (habit: Habit, rule: RuleHabit)] = [:]
+    /// The same for habits that aren't saved as they are (a form's draft, a habit judged by an earlier goal), a few per ID.
+    @ObservationIgnored var coreDrafts: [UUID: [(habit: Habit, rule: RuleHabit)]] = [:]
+    /// Whether the calendar is Gregorian (`usesCoreRules`), until the calendar changes.
+    @ObservationIgnored var coreGregorian: Bool?
+    /// What the shared rules were last given (`refreshCore`): the same again changes nothing.
+    @ObservationIgnored var coreGiven: (core: LiveRules, habits: [Habit], settings: [String: String], zone: String)?
     /// Every run of a habit (`runs(of:)`), for today: the best streak, the habit page's run list and Over Time all read
     /// it, and walking it again after each saved entry stalled the habit page under the Day sheet (1 Oct).
     @ObservationIgnored private var runLists: [UUID: (today: LocalDay, runs: [Run])] = [:]
@@ -294,6 +319,9 @@ final class HabitStore {
         summaries = [:]
     }
 
+    /// The shared rules are marked to be given habits and settings again (`coreDirty`) only where a value they read
+    /// changed: the Watch sets its habits and settings again, unchanged, after every sync with the iPhone, and giving
+    /// them again cost 0.5 ms each time (run 38307052331).
     private func forgetAll() {
         pastRuns = [:]
         runLists = [:]
@@ -305,10 +333,34 @@ final class HabitStore {
         widgetProjectionContext = nil
     }
 
+    /// Something the shared rules read changed: they're given it again before their next answer (`refreshCore`). Counted
+    /// by what changed in speed runs (`perfTimed`'s counts), to catch a refresh that happens more often than the data
+    /// changes: each real one makes the rules work every habit's facts out again (Current Work 92, the Watch).
+    private func rulesInputChanged(_ what: StaticString) {
+        coreDirty = true
+        _ = perfTimed("Count: shared rules' inputs changed: \(what)") { 0 }
+    }
+
     /// Only a saved habit's numbers are remembered, never a form's draft (which shares its ID while being edited).
-    private func isSaved(_ habit: Habit) -> Bool {
-        if savedHabits == nil { savedHabits = Dictionary(habits.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first }) }
+    func isSaved(_ habit: Habit) -> Bool {
+        // `_habits`: every shared rule asks this, and the view that happened to ask first after a change must not then
+        // redraw for every habit's change (the Swift rules never read `habits`; S19).
+        if savedHabits == nil { savedHabits = Dictionary(_habits.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first }) }
         return savedHabits?[habit.id] == habit
+    }
+
+    /// Everything the shared rules are given besides the logs and the day settings (`refreshCoreNow`), read without
+    /// SwiftUI seeing it. They're given it by whichever view asks a rule first after a change, and that view read all
+    /// of it: it then redrew for every habit, skip, pause, timer and section change (the Day sheet drew 641 times where
+    /// the Swift rules drew it 451, run 38317935766, Current Work 92). A view showing a rule's answer still
+    /// redraws when the answer can change: each rule reads what it depends on (`ruleHabit`, S19).
+    typealias RuleState = (habits: [Habit], skips: [UUID: Set<LocalDay>], taskMoves: [UUID: [LocalDay: LocalDay]],
+                           pauses: [UUID: [HabitPause]], rules: [UUID: [HabitRule]], archivedOn: [UUID: LocalDay],
+                           timers: [UUID: Date], sections: [DaySection], cardOrder: [String])
+    /// Every log, read the same way when the shared rules' copy is made on first use.
+    var ruleEntries: [Entry] { storedEntries }
+    var ruleState: RuleState {
+        (_habits, _skips, _taskMoves, _pauses, _rules, _archivedOn, _timers, _sections, _cardOrder)
     }
 
     /// A remembered number is read without working it out, so this reads what it depends on: a view showing it
@@ -344,10 +396,20 @@ final class HabitStore {
         }
         changedHabits.insert(entry.habitID)
         forget(entry.habitID)
+        if let coreState {
+            perfTimed("Shared rules: a log added") {
+                if let habitIndex { coreState.insertEntry(r: entry.record, position: Int32(habitIndex)) } else { coreState.addEntry(r: entry.record) }
+            }
+        } else {
+            // Not built yet: the load's rows no longer hold every log, so it's built from the store's own (the Watch's
+            // test fixtures logged before any rule was asked, run 38216889043).
+            coreRows = nil
+        }
     }
 
     private func removeEntry(at index: Int) {
         let entry = entries.remove(at: index)
+        if let coreState { perfTimed("Shared rules: a log removed") { coreState.removeEntry(id: entry.id.uuidString, habitId: entry.habitID.uuidString) } } else { coreRows = nil }
         entriesByHabit?[entry.habitID]?.removeAll { $0.id == entry.id }
         entriesByDay?[entry.habitID]?[entry.day]?.removeAll { $0.id == entry.id }
         changedHabits.insert(entry.habitID)
@@ -358,6 +420,7 @@ final class HabitStore {
     /// An edit keeps the same row, indexes and position, with one value replacement.
     private func replaceEntry(_ entry: Entry, at index: Int) {
         entries[index] = entry
+        if let coreState { perfTimed("Shared rules: a log changed") { coreState.replaceEntry(r: entry.record) } } else { coreRows = nil }
         if let i = entriesByHabit?[entry.habitID]?.firstIndex(where: { $0.id == entry.id }) {
             entriesByHabit?[entry.habitID]?[i] = entry
         }
@@ -371,6 +434,9 @@ final class HabitStore {
 
     /// After `entries` is replaced as a whole.
     private func entriesReplaced() {
+        // The shared rules read every log again (from the load's own rows when there are some, `coreRows`).
+        coreState = nil
+        coreRows = nil
         entriesByHabit = nil
         entriesByDay = nil
         // Every habit may have changed: an empty set marks them all when the change is published.
@@ -396,6 +462,7 @@ final class HabitStore {
     /// is three hours after midnight on the clock but two or four in real time, and the new day must still start
     /// when the clock says 3:00 (Build Plan #61; the old subtraction was an hour off twice a year).
     func today(now: Date? = nil) -> LocalDay {
+        if let core { return LocalDay(dayNumber: Int(core.today(now: (now ?? clock()).millis))) }
         let now = now ?? clock()
         let cal = calendar
         let day = LocalDay(now, calendar: cal)
@@ -406,6 +473,10 @@ final class HabitStore {
     /// Calendar-time bounds are computed from both midnights, then shifted by the day end.
     /// Adding one calendar day to a shifted start is wrong when daylight saving changes overnight.
     func dayBounds(_ day: LocalDay, calendar recordingCalendar: Calendar? = nil) -> ClosedRange<Date> {
+        if let core {
+            let b = core.dayBounds(day: day.n, zone: recordingCalendar?.timeZone.identifier)
+            return Date(millis: b.get(index: 0))...Date(millis: b.get(index: 1))
+        }
         let c = recordingCalendar ?? calendar
         // Wall-clock boundaries: a 04:00 day starts at 04:00 even on a DST transition.
         let start = clockStart(day, c)
@@ -431,8 +502,25 @@ final class HabitStore {
     /// definition shared with the calendar sheet and Progress. A multi-section habit counts once.
     func daySummary(on day: LocalDay) -> (done: Int, total: Int) {
         // Past days are remembered; today and later can change with a running timer or the time of day.
-        let past = day < today()
+        let today = today()
+        let past = day < today
         if past, let known = summaries[day] { readInputs(); return known }
+        // The shared rules: the week either side of the day (within its month, up to yesterday) in one call, remembered
+        // day by day; the calendar and the day bar ask one day at a time, and each ask crossed into the core.
+        if past, let core {
+            let list = habits.filter { !$0.archived }
+            let handles = list.compactMap { ruleHabit($0, core) }
+            let month = period(.month, containing: day)
+            let first = max(month.lowerBound, day.adding(days: -7, calendar: calendar))
+            let last = min(month.upperBound, day.adding(days: 7, calendar: calendar), today.adding(days: -1, calendar: calendar))
+            if handles.count == list.count, first <= last {
+                let scores = core.dayScores(first: first.n, last: last.n, habits: handles, today: today.n)
+                for i in 0..<Int(scores.size / 3) where summaries[LocalDay(dayNumber: first.dayNumber + i)] == nil {
+                    summaries[LocalDay(dayNumber: first.dayNumber + i)] = (Int(scores.get(index: Int32(i * 3))), Int(scores.get(index: Int32(i * 3 + 1))))
+                }
+                if let known = summaries[day] { return known }
+            }
+        }
         let score = todayScore(on: day)
         let summary = (done: score.done, total: score.planned)
         if past { summaries[day] = summary }
@@ -474,6 +562,13 @@ final class HabitStore {
     }
 
     func dayScore(on day: LocalDay, habits list: [Habit], today: LocalDay? = nil) -> DayScore {
+        if let core {
+            let handles = list.compactMap { ruleHabit($0, core) }
+            if handles.count == list.count {
+                let r = core.dayScore(day: day.n, habits: handles, today: (today ?? self.today()).n)
+                return DayScore(done: Int(r.get(index: 0)), part: core.lastPart, partCount: Int(r.get(index: 2)), planned: Int(r.get(index: 1)))
+            }
+        }
         let today = today ?? self.today()
         var score = DayScore()
         for habit in list {
@@ -488,6 +583,15 @@ final class HabitStore {
     }
 
     func outcome(_ habit: Habit, on day: LocalDay, today: LocalDay? = nil) -> DayOutcome {
+        if case let (core, h)? = shared(habit) {
+            switch core.outcome(h: h, day: day.n, today: (today ?? self.today()).n) {
+            case 0: return .done
+            case 1: return .part(core.lastShare)
+            case 2: return .notDone
+            case 3: return .open
+            default: return .neutral
+            }
+        }
         guard habit.kind != .quit, day >= startDay(of: habit), isDue(habit, on: day) else { return .neutral }
         let today = today ?? self.today()
         let rule = rule(habit, on: day)
@@ -515,6 +619,7 @@ final class HabitStore {
 
     /// The share of the day's goal reached, 0...1.
     func dayFraction(_ habit: Habit, on day: LocalDay) -> Double {
+        if case let (core, h)? = shared(habit) { return core.dayFraction(h: h, day: day.n) }
         let rule = rule(habit, on: day)
         let goal = dayGoal(of: rule)
         return goal > 0 ? min(1, max(0, dayProgress(of: rule, on: day) / goal)) : 0
@@ -523,7 +628,7 @@ final class HabitStore {
     // MARK: Day sections
 
     /// The user's day sections: Anytime first, then by start time.
-    private(set) var sections: [DaySection] = DaySection.defaults { didSet { placementCache = [:]; forgetAll() } }
+    private(set) var sections: [DaySection] = DaySection.defaults { didSet { if sections != oldValue { rulesInputChanged("sections") }; placementCache = [:]; forgetAll() } }
 
     func section(_ id: String) -> DaySection {
         sections.first { $0.id == id } ?? sections[0]
@@ -547,12 +652,17 @@ final class HabitStore {
     /// A clock minute on the user's day: times before the day's end belong to the night before, so they
     /// come after midnight (1:00 AM with the day ending at 3 is 25:00).
     func dayMinute(_ minute: Int) -> Int {
-        minute < settings.dayEndHour * 60 ? minute + 24 * 60 : minute
+        if let core { return Int(core.dayMinute(minute: Int32(minute))) }
+        return minute < settings.dayEndHour * 60 ? minute + 24 * 60 : minute
     }
 
     /// The section a time falls in: the timed section that contains it. Before the first section it
     /// counts as the first; after the last one's end, as the last. With no timed sections, Anytime.
     func section(forMinute minute: Int) -> DaySection {
+        if let core {
+            access(keyPath: \.sections)
+            return section(core.sectionForMinute(minute: Int32(minute)))
+        }
         let timed = timedSections
         guard let first = timed.first, let last = timed.last else { return section(.anytime) }
         let m = dayMinute(minute)
@@ -591,6 +701,19 @@ final class HabitStore {
     @ObservationIgnored private var placementCache: [UUID: (inputs: PlacementInputs, placements: [Placement])] = [:]
 
     private func workOutPlacements(of habit: Habit) -> [Placement] {
+        if case let (core, h)? = shared(habit, logs: false) {
+            access(keyPath: \.sections)
+            // The rules give each row's times as minutes; the habit's own times are matched to them in the same order.
+            var pool = habit.reminders.sorted { dayMinute($0.minuteOfDay) < dayMinute($1.minuteOfDay) }
+            return zip(core.placementSections(h: h), core.placementTimes(h: h)).map { id, minutes in
+                var row: [ReminderTime] = []
+                for i in 0..<Int(minutes.size) {
+                    let m = Int(minutes.get(index: Int32(i)))
+                    if let k = pool.firstIndex(where: { $0.minuteOfDay == m }) { row.append(pool.remove(at: k)) }
+                }
+                return Placement(section: id, slot: nil, times: row)
+            }
+        }
         guard habit.kind != .quit else { return [] }
         let times = habit.reminders.sorted { dayMinute($0.minuteOfDay) < dayMinute($1.minuteOfDay) }
         var seen = Set<String>()
@@ -644,12 +767,17 @@ final class HabitStore {
 
     /// Where Anytime and Quitting sit among the times of day, as last saved (empty: the default, both at the top).
     /// Read through `todayCards`, which puts the timed sections in time order around them.
-    private(set) var cardOrder: [String] = []
+    private(set) var cardOrder: [String] = [] { didSet { if cardOrder != oldValue { rulesInputChanged("cardOrder") } } }
 
     /// Today's cards from top to bottom: section IDs and `.quittingCard`. Timed sections always follow their times;
     /// only Anytime and Quitting are placed by the person (the user, 3 Oct 2026). A handful of strings, so it's simply
     /// worked out when asked.
     var todayCards: [String] {
+        if let core {
+            access(keyPath: \.sections)
+            access(keyPath: \.cardOrder)
+            return core.todayCards()
+        }
         let timed = sections.filter { !$0.isAnytime }.map(\.id)
         let known = Set(timed)
         var slots = cardOrder.filter { $0 == .anytime || $0 == .quittingCard || known.contains($0) }
@@ -758,6 +886,10 @@ final class HabitStore {
 
     /// The week, month or year that contains `day`, honouring the user's week start.
     func period(_ kind: PeriodKind, containing day: LocalDay) -> ClosedRange<LocalDay> {
+        if let core {
+            let index: Int32 = switch kind { case .week: 1; case .month: 2; case .year: 3 }
+            return core.period(kind: index, day: day.n).dayRange
+        }
         let component: Calendar.Component = switch kind {
         case .week: .weekOfYear
         case .month: .month
@@ -770,7 +902,8 @@ final class HabitStore {
     }
 
     func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
-        switch habit.frequency {
+        if case let (core, h)? = shared(habit, logs: false) { return core.periodRange(h: h, day: day.n)?.dayRange }
+        return switch habit.frequency {
         case .flexible(let kind, _):
             switch kind { case .week: period(.week, containing: day); case .month: period(.month, containing: day); case .year: period(.year, containing: day); case .day: day...day }
         case .perWeek: period(.week, containing: day)
@@ -790,13 +923,17 @@ final class HabitStore {
 
     /// Amounts, minutes and limits on a week or month rule: a total for the whole period.
     func isTotal(_ habit: Habit) -> Bool {
-        switch habit.kind {
+        if case let (core, h)? = shared(habit, logs: false) { return core.isTotal(h: h) }
+        return switch habit.kind {
         case .amount, .duration: !habit.frequency.isDayBased
         default: false
         }
     }
 
     func periodTotal(_ habit: Habit, in range: ClosedRange<LocalDay>, now: Date? = nil) -> Double {
+        if case let (core, h)? = shared(habit) {
+            return core.periodTotal(h: h, first: range.lowerBound.n, last: range.upperBound.n, now: (now ?? clock()).millis)
+        }
         let now = now ?? clock()
         var total = loggedTotal(habit, in: range)
         if let start = timers[habit.id], range.contains(today(now: now)) {
@@ -810,6 +947,7 @@ final class HabitStore {
     /// history each time took up to 831 ms for one habit's week (S5, Current Work 83). A range longer than the habit's
     /// history reads the history once.
     func loggedTotal(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
+        if case let (core, h)? = shared(habit) { return core.loggedTotal(h: h, first: range.lowerBound.n, last: range.upperBound.n) }
         let all = entries(of: habit.id)
         let days = range.lowerBound.days(to: range.upperBound, calendar: calendar) + 1
         guard days < all.count else {
@@ -851,6 +989,7 @@ final class HabitStore {
     /// Skip today can be offered for habits whose days are counted one by one; a weekly or monthly total, or a
     /// limit, has no "day" to set aside.
     func canSkip(_ habit: Habit) -> Bool {
+        if case let (core, h)? = shared(habit, logs: false) { return core.canSkip(h: h) }
         guard !habit.atMost, habit.kind != .quit else { return false }
         switch habit.frequency {
         case .perWeek, .perMonth, .perYear: return false
@@ -940,7 +1079,10 @@ final class HabitStore {
     }
 
     /// One-time tasks are rescheduled instead; everything else can be paused.
-    func canPause(_ habit: Habit) -> Bool { !(habit.kind == .task && habit.dueDay != nil) && !habit.archived }
+    func canPause(_ habit: Habit) -> Bool {
+        if case let (core, h)? = shared(habit, logs: false) { return core.canPause(h: h) }
+        return !(habit.kind == .task && habit.dueDay != nil) && !habit.archived
+    }
 
     /// Pauses the habit from `from` through `through` (nil: until turned back on). A quit habit pauses now: its
     /// current run ends and is kept. Any pause still to come is replaced.
@@ -997,6 +1139,7 @@ final class HabitStore {
 
     /// The moment a day begins, honouring the user's day end.
     private func dayStart(_ day: LocalDay) -> Date {
+        if let core { return Date(millis: core.dayStart(day: day.n)) }
         // On the clock, like `today`: a skipped hour (spring forward) gives the next moment that exists.
         let cal = calendar
         let midnight = cal.startOfDay(for: day.date(calendar: cal))
@@ -1037,6 +1180,7 @@ final class HabitStore {
 
     /// The first day a habit counts: its start date (past or future), or the day it was made.
     func startDay(of habit: Habit) -> LocalDay {
+        if case let (core, h)? = shared(habit, logs: false) { return LocalDay(dayNumber: Int(core.startDay(h: h))) }
         if let start = habit.startsOn { return start }
         if let known = startDays[habit.id], known.createdAt == habit.createdAt { return known.day }
         let day = LocalDay(habit.createdAt, calendar: calendar)
@@ -1050,6 +1194,9 @@ final class HabitStore {
     /// neutral row saying so, with Undo Skip one swipe away (3 Oct 2026), instead of making it vanish.
     /// `followingMoves: false` asks the task's own schedule, ignoring occurrences moved to other days.
     func isDue(_ habit: Habit, on day: LocalDay, now: Date? = nil, countingSkips: Bool = true, followingMoves: Bool = true) -> Bool {
+        if case let (core, h)? = shared(habit, logs: scheduleReadsLogs(habit)) {
+            return core.isDue(h: h, day: day.n, now: (now ?? clock()).millis, countingSkips: countingSkips, followingMoves: followingMoves)
+        }
         if (countingSkips && isSkipped(habit, on: day)) || isPaused(habit, on: day) || isArchived(habit, on: day) { return false }
         let habit = rule(habit, on: day)
         let created = startDay(of: habit)
@@ -1102,7 +1249,8 @@ final class HabitStore {
 
     /// The day's goal: times, amount, minutes, or the number of checklist items.
     func dayGoal(of habit: Habit) -> Double {
-        switch habit.kind {
+        if case let (core, h)? = shared(habit, logs: false) { return core.dayGoal(h: h) }
+        return switch habit.kind {
         case .checklist: Double(max(habit.steps.count, 1))
         case .task: 1
         case .check where !slots(of: habit).isEmpty: Double(slots(of: habit).count)
@@ -1112,6 +1260,7 @@ final class HabitStore {
 
     /// What was logged on one day (a checklist counts its ticked items).
     func dayProgress(of habit: Habit, on day: LocalDay, now: Date? = nil) -> Double {
+        if case let (core, h)? = shared(habit) { return core.dayProgress(h: h, day: day.n, now: (now ?? clock()).millis) }
         let now = now ?? clock()
         let habit = rule(habit, on: day)
         if habit.kind == .checklist {
@@ -1141,6 +1290,7 @@ final class HabitStore {
     }
 
     func isDayMet(_ habit: Habit, on day: LocalDay) -> Bool {
+        if case let (core, h)? = shared(habit) { return core.isDayMet(h: h, day: day.n) }
         let habit = rule(habit, on: day)
         let p = dayProgress(of: habit, on: day)
         return habit.atMost ? p <= dayGoal(of: habit) : p >= dayGoal(of: habit)
@@ -1148,6 +1298,7 @@ final class HabitStore {
 
     /// Completions in the week or month: ticks for "Do it", met days for everything else.
     func periodCount(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
+        if case let (core, h)? = shared(habit) { return core.periodCount(h: h, first: range.lowerBound.n, last: range.upperBound.n) }
         if habit.kind == .check, !habit.frequency.isFlexible {
             return loggedTotal(habit, in: range)
         }
@@ -1163,6 +1314,7 @@ final class HabitStore {
     /// Shown on the card: daily quantities (including flexible schedules) or aggregate quantities.
     /// Flexible quota progress is shown separately so 15/30 min and 2/4 days cannot be confused.
     func progress(of habit: Habit, on day: LocalDay, now: Date? = nil) -> Double {
+        if case let (core, h)? = shared(habit) { return core.progress(h: h, day: day.n, now: (now ?? clock()).millis) }
         let habit = rule(habit, on: day)
         if !habit.frequency.isFlexible, let range = periodRange(habit, containing: day) {
             return isTotal(habit) ? periodTotal(habit, in: range, now: now) : periodCount(habit, in: range)
@@ -1171,6 +1323,7 @@ final class HabitStore {
     }
 
     func goal(of habit: Habit) -> Double {
+        if case let (core, h)? = shared(habit, logs: false) { return core.goal(h: h) }
         if isTotal(habit) { return habit.goal }
         return switch habit.frequency {
         case .perWeek(let n), .perMonth(let n), .perYear(let n): Double(n)
@@ -1179,6 +1332,7 @@ final class HabitStore {
     }
 
     func isDone(_ habit: Habit, on day: LocalDay) -> Bool {
+        if case let (core, h)? = shared(habit) { return core.isDone(h: h, day: day.n) }
         let habit = rule(habit, on: day)
         switch habit.kind {
         case .quit: return false
@@ -1194,6 +1348,7 @@ final class HabitStore {
     }
 
     func flexibleProgress(_ habit: Habit, on day: LocalDay) -> Int? {
+        if case let (core, h)? = shared(habit) { let n = core.flexibleProgress(h: h, day: day.n); return n < 0 ? nil : Int(n) }
         let habit = rule(habit, on: day)
         guard habit.frequency.isFlexible, let range = periodRange(habit, containing: day) else { return nil }
         return Int(periodCount(habit, in: range))
@@ -1202,7 +1357,8 @@ final class HabitStore {
     /// Nothing more is asked for the goal: it's met, or a flexible quota is. The daily action can remain available
     /// after a flexible quota is met; the routine player's main button moves on.
     func isComplete(_ habit: Habit, on day: LocalDay) -> Bool {
-        isDone(habit, on: day) || (habit.frequency.isFlexible && isPeriodMet(habit, on: day))
+        if case let (core, h)? = shared(habit) { return core.isComplete(h: h, day: day.n) }
+        return isDone(habit, on: day) || (habit.frequency.isFlexible && isPeriodMet(habit, on: day))
     }
 
     /// Done for the day: Today's "N left" and ✓, reminders, and the player's segments. A week, month or year goal
@@ -1210,12 +1366,14 @@ final class HabitStore {
     /// still adds one more each tap (Build Plan #60a). Reminders and the section's remaining count must not imply
     /// that extra days are required.
     func isSatisfied(_ habit: Habit, on day: LocalDay) -> Bool {
+        if case let (core, h)? = shared(habit) { return core.isSatisfied(h: h, day: day.n) }
         if isComplete(habit, on: day) { return true }
         let rule = rule(habit, on: day)
         return !rule.frequency.isDayBased && !rule.atMost && dayProgress(of: rule, on: day) > 0
     }
 
     func isPeriodMet(_ habit: Habit, on day: LocalDay) -> Bool {
+        if case let (core, h)? = shared(habit) { return core.isPeriodMet(h: h, day: day.n) }
         let habit = rule(habit, on: day)
         if case .flexible(_, let needed) = habit.frequency {
             return (flexibleProgress(habit, on: day) ?? 0) >= needed
@@ -1255,6 +1413,7 @@ final class HabitStore {
 
     /// The days (or weeks, months) met in a row before the one containing `day`, as `streak` counts them.
     private func runBefore(_ day: LocalDay, of habit: Habit) -> Int {
+        if case let (core, h)? = shared(habit) { return Int(core.runBefore(day: day.n, h: h)) }
         let created = startDay(of: habit)
         // A change to the kind of period (day, week, month, year) starts the streak again (spec §8.3).
         let kind = periodKind(habit)
@@ -1283,7 +1442,8 @@ final class HabitStore {
     }
 
     func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
-        pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
+        if case let (core, h)? = shared(habit, logs: false) { return core.hasPause(h: h, first: range.lowerBound.n, last: range.upperBound.n) }
+        return pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
     }
 
     /// One run of a quit habit: from a start (its first day, a slip, or turning it back on) to the slip or pause that
@@ -1299,6 +1459,10 @@ final class HabitStore {
     /// The slips of a quit habit, oldest first: each logged slip's own moment (Build Plan #60d), and a later "Started"
     /// date counted as one more, as before.
     func slips(of habit: Habit, now: Date? = nil) -> [Date] {
+        if case let (core, h)? = shared(habit) {
+            let list = core.slips(h: h, now: (now ?? clock()).millis)
+            return (0..<Int(list.size)).map { Date(millis: list.get(index: Int32($0))) }
+        }
         let now = now ?? clock()
         let start = habit.quitSince ?? habit.createdAt
         var slips = entries(of: habit.id).map(\.createdAt).filter { $0 <= now }
@@ -1309,6 +1473,14 @@ final class HabitStore {
     /// Every run of a quit habit, oldest first (report §16.8). A pause ends the run it interrupts (kept as a run, not
     /// a slip), and turning it back on starts a new one. While paused, there's no current run.
     func quitHistory(of habit: Habit, now: Date? = nil) -> [QuitRun] {
+        if case let (core, h)? = shared(habit) {
+            let list = core.quitHistory(h: h, now: (now ?? clock()).millis)
+            return stride(from: 0, to: Int(list.size), by: 3).map { i in
+                let end = list.get(index: Int32(i + 1))
+                let ending: QuitRun.Ending = switch list.get(index: Int32(i + 2)) { case 0: .slip; case 1: .pause; default: .ongoing }
+                return QuitRun(start: Date(millis: list.get(index: Int32(i))), end: end < 0 ? nil : Date(millis: end), endedBy: ending)
+            }
+        }
         let now = now ?? clock()
         let start = habit.quitSince ?? habit.createdAt
         // Each boundary ends the run going on (if any) and may start the next.
@@ -1332,6 +1504,10 @@ final class HabitStore {
 
     /// Quit habits: the current run and the best run, from `quitHistory`.
     func quitRuns(of habit: Habit, now: Date? = nil) -> (current: TimeInterval, best: TimeInterval) {
+        if case let (core, h)? = shared(habit) {
+            let r = core.quitRuns(h: h, now: (now ?? clock()).millis)
+            return (r.get(index: 0), r.get(index: 1))
+        }
         let now = now ?? clock()
         let history = quitHistory(of: habit, now: now)
         let current = history.last.map { $0.endedBy == .ongoing ? $0.length(now: now) : 0 } ?? 0
@@ -1488,6 +1664,9 @@ final class HabitStore {
                 snapshot = try await repository.load()
             }
             perfNote("Store load: read the database", since: readStarted)
+            // The shared rules' copy of every log, made off the main thread while nothing on screen has changed yet
+            // (S16): made on first use, it cost 45–80 ms of the main thread after every load (Current Work 92).
+            let builtCore = await buildCoreOffMain(snapshot)
             let mapStarted = CFAbsoluteTimeGetCurrent()
             defer { perfNote("Store load: into the app (\(snapshot.entries.count) logs)", since: mapStarted) }
             let steps = Dictionary(grouping: snapshot.steps, by: \.habitId)
@@ -1499,6 +1678,11 @@ final class HabitStore {
                 return entry
             }
             entriesReplaced()
+            coreRows = builtCore == nil ? nil : snapshot // kept only for the shared rules
+            if let builtCore {
+                coreState = builtCore
+                coreDirty = true // its habits and settings are given on first use, once the load has set them
+            }
             clearLogOffer()
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
@@ -1974,6 +2158,9 @@ final class HabitStore {
     enum DayMark { case done, some, missed, open, skipped, paused, notItsDay, upcoming, before }
 
     func dayMark(_ habit: Habit, on day: LocalDay, relativeTo reference: LocalDay? = nil) -> DayMark {
+        if case let (core, h)? = shared(habit) {
+            return CoreDays.marks[Int(core.dayMark(h: h, day: day.n, reference: (reference ?? self.today()).n))]
+        }
         let today = reference ?? self.today()
         if day < startDay(of: habit) { return .before }
         if isPaused(habit, on: day) { return .paused }
@@ -2029,6 +2216,20 @@ final class HabitStore {
     /// run. The habit page also asks for an earlier goal's kind, so a goal change never takes away what was reached in it
     /// (spec "Habit Progress" E1).
     func walkRuns(of habit: Habit, today: LocalDay, kind wanted: GoalPeriod? = nil) -> [Run] {
+        if case let (core, h)? = shared(habit) {
+            var kind: Int32 = -1
+            if let wanted { kind = [GoalPeriod.day, .week, .month, .year].firstIndex(of: wanted).map(Int32.init) ?? -1 }
+            let list = core.runs(h: h, today: today.n, kind: kind)
+            var found: [Run] = []
+            var i: Int32 = 0
+            while i + 3 < list.size {
+                let start = LocalDay(dayNumber: Int(list.get(index: i)))
+                let end = LocalDay(dayNumber: Int(list.get(index: i + 1)))
+                found.append(Run(start: start, end: end, length: Int(list.get(index: i + 2)), isCurrent: list.get(index: i + 3) == 1))
+                i += 4
+            }
+            return found
+        }
         let kind = wanted ?? periodKind(rule(habit, on: today))
         var runs: [Run] = []
         var start: LocalDay?, end: LocalDay?, length = 0
@@ -2190,7 +2391,8 @@ final class HabitStore {
 
     /// The kind of period a habit is judged in: each day, or a week, month or year.
     func periodKind(_ habit: Habit) -> GoalPeriod {
-        switch habit.frequency {
+        if case let (core, h)? = shared(habit, logs: false) { return [GoalPeriod.day, .week, .month, .year][Int(core.periodKind(h: h))] }
+        return switch habit.frequency {
         case .perWeek: .week
         case .perMonth: .month
         case .perYear: .year
@@ -2218,6 +2420,7 @@ final class HabitStore {
     /// N times a week, month or year (the user, 6 Oct 2026: "they might call two times this day"; the form already
     /// says every ✓ counts, even two on one day), so its button fills only when the goal is met (Current Work 54).
     func countsUp(_ habit: Habit, on day: LocalDay) -> Bool {
+        if case let (core, h)? = shared(habit, logs: false) { return core.countsUp(h: h, day: day.n) }
         let rule = rule(habit, on: day)
         guard rule.kind == .check else { return false }
         return !rule.frequency.isDayBased || dayGoal(of: rule) > 1

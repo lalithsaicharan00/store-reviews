@@ -126,10 +126,12 @@ extension HabitStore {
             // Every entry in the current unit (report §18: a unit change starts a new total).
             let unit = HabitCopy.unit(of: rule)
             var total = 0.0
+            // Every day's amount from the shared rules in one call (`CoreDays`).
+            let sharedDays = start <= today ? coreDays(habit, in: start...today, relativeTo: self.today()) : nil
             for day in days(in: start...today) where !isArchived(habit, on: day) {
                 let dayRule = self.rule(habit, on: day)
                 guard HabitCopy.unit(of: dayRule) == unit else { continue }
-                total += dayProgress(of: dayRule, on: day)
+                total += sharedDays?.progress(day) ?? dayProgress(of: dayRule, on: day)
             }
             return "\(progressValue(total, rule)) in all\(since)"
         default:
@@ -154,10 +156,13 @@ extension HabitStore {
         struct Day { let day: LocalDay; let mark: DayMark; let value: Double; let goal: Double; let rule: Habit }
         var list: [Day] = []
         if start <= last {
+            // The days from the shared rules in one call (`CoreDays`).
+            let sharedDays = coreDays(habit, in: max(span.lowerBound, start)...last, relativeTo: self.today())
             for day in days(in: max(span.lowerBound, start)...last) {
                 let dayRule = self.rule(habit, on: day)
-                list.append(Day(day: day, mark: dayMark(habit, on: day), value: dayProgress(of: dayRule, on: day),
-                                goal: dayGoal(of: dayRule), rule: dayRule))
+                list.append(Day(day: day, mark: sharedDays?.mark(day) ?? dayMark(habit, on: day),
+                                value: sharedDays?.progress(day) ?? dayProgress(of: dayRule, on: day),
+                                goal: sharedDays?.goal(day) ?? dayGoal(of: dayRule), rule: dayRule))
             }
         }
         let counted = list.filter { $0.mark == .done || ($0.day < today && ($0.mark == .some || $0.mark == .missed)) }

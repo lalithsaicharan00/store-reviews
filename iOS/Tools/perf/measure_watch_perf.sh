@@ -12,6 +12,10 @@
 #   complication         writing the complication snapshot
 #   first-fill-extreme   the first fill of an extreme account (25,000 logs a year for 15 years) on the Watch simulator
 # Usage (from iOS/): Tools/perf/measure_watch_perf.sh <watch simulator id> <out dir>. On CI: [watch-perf].
+# Side by side in one job (Rulebook S, "Finding a slow spot"): WATCH_PERF_VARIANTS="shared= swift=-swift-rules" runs every
+# round of every scenario once per variant, in turns, the variant's launch arguments added (PerfSwitches); with
+# WATCH_PERF_ROUNDS rounds each (the launch twice that). On CI: lines "watch-perf-variants:", "watch-perf-scenarios:" and
+# "watch-perf-rounds:" in the commit message.
 set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -41,10 +45,15 @@ fixture() {
   esac
 }
 
+VARIANTS="${WATCH_PERF_VARIANTS:-}"
+[ -n "$VARIANTS" ] && sed -i '' 's/^| What |/| Variant · What |/' "$SUMMARY"
 FAIL=0
 for S in $SCENARIOS; do
-  ROUNDS=1; [ "$S" = "launch" ] && ROUNDS=2
+  ROUNDS=${WATCH_PERF_ROUNDS:-1}; [ "$S" = "launch" ] && ROUNDS=$((ROUNDS * 2))
   for ROUND in $(seq 1 $ROUNDS); do
+  for VARIANT in ${VARIANTS:-=}; do
+    VNAME="${VARIANT%%=*}"; VARGS="${VARIANT#*=}"; VARGS="${VARGS//+/ }"
+    TAG="$S-$ROUND${VNAME:+-$VNAME}"; LABEL="${VNAME:+$VNAME · }"
     xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
     sleep 1
     rm -f "$REC"
@@ -52,29 +61,30 @@ for S in $SCENARIOS; do
     # A year of history for every scenario but the launch: a test launch's database is in memory, so the year would
     # be written during the launch it's timing.
     HISTORY="-perf-history"; [ "$S" = "launch" ] && HISTORY=""
-    LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-meter $HISTORY -perf-drive "$S" -watch-fixture "$(fixture "$S")" -clock-hour 10 2>&1)
-    echo "$LAUNCH" > "$OUT/launch-$S-$ROUND.txt"
+    LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-meter $HISTORY -perf-drive "$S" -watch-fixture "$(fixture "$S")" -clock-hour 10 $VARGS 2>&1)
+    echo "$LAUNCH" > "$OUT/launch-$TAG.txt"
     # The extreme first fill took ~1,100 s on one hosted Mac (making the account ~330 s, the fill ~730 s) and passed
     # 1,500 s on a slower one (run 38128109360): 2,100 s still leaves the job inside its 60 minutes.
     LIMIT=200; [ "$S" = "first-fill-extreme" ] && LIMIT=2100
     WAITED=0
     until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge $LIMIT ]; do sleep 1; WAITED=$((WAITED + 1)); done
-    cp "$REC" "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null
-    READY=$(sed -n 's/^# READY //p' "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null | head -1)
+    cp "$REC" "$OUT/stalls-$TAG.txt" 2>/dev/null
+    READY=$(sed -n 's/^# READY //p' "$OUT/stalls-$TAG.txt" 2>/dev/null | head -1)
     if [ "$S" = "launch" ] && [ -n "$READY" ]; then
-      python3 -c "print(f'- Launch to a usable Today (round $ROUND{\" , cold\" if $ROUND == 1 else \", warm\"}): {($READY - $START) * 1000:.0f} ms')" >> "$OPENS"
+      python3 -c "print(f'- ${LABEL}Launch to a usable Today (round $ROUND{\" , cold\" if $ROUND == 1 else \", warm\"}): {($READY - $START) * 1000:.0f} ms')" >> "$OPENS"
     fi
-    grep '^# NOTE ' "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null | sed 's/^# NOTE /- /' >> "$NOTES"
-    grep '^# ERROR ' "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null | sed 's/^# ERROR /- ERROR: /' >> "$NOTES"
-    if ! grep -q "^# DONE" "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null || grep -q "^# ERROR" "$OUT/stalls-$S-$ROUND.txt" 2>/dev/null; then FAIL=1; fi
-    RESULT=$(python3 "$HERE/analyze_stalls.py" "$OUT/stalls-$S-$ROUND.txt")
-    echo "$RESULT" | sed -n 's/^open=/- /p' >> "$OPENS"
+    grep '^# NOTE ' "$OUT/stalls-$TAG.txt" 2>/dev/null | sed 's/^# NOTE /- /' >> "$NOTES"
+    grep '^# ERROR ' "$OUT/stalls-$TAG.txt" 2>/dev/null | sed 's/^# ERROR /- ERROR: /' >> "$NOTES"
+    if ! grep -q "^# DONE" "$OUT/stalls-$TAG.txt" 2>/dev/null || grep -q "^# ERROR" "$OUT/stalls-$TAG.txt" 2>/dev/null; then FAIL=1; fi
+    RESULT=$(python3 "$HERE/analyze_stalls.py" "$OUT/stalls-$TAG.txt")
+    echo "$RESULT" | sed -n "s/^open=/- $LABEL/p" >> "$OPENS"
     echo "$RESULT" | grep '^time=' | while IFS='|' read -r NAME COUNT TOTAL LONGEST; do
-      echo "| $S | ${NAME#time=} | $COUNT | $TOTAL ms | $LONGEST ms |" >> "$OUT/timed.txt"
+      echo "| $LABEL$S | ${NAME#time=} | $COUNT | $TOTAL ms | $LONGEST ms |" >> "$OUT/timed.txt"
     done
     echo "$RESULT" | grep '^window=' | while IFS='|' read -r NAME HITCH LONGEST FREEZES; do
-      echo "| ${NAME#window=} | $HITCH | $LONGEST ms | $FREEZES |" >> "$SUMMARY"
+      echo "| $LABEL${NAME#window=} | $HITCH | $LONGEST ms | $FREEZES |" >> "$SUMMARY"
     done
+  done
   done
   xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
 done
