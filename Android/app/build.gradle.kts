@@ -13,7 +13,7 @@ android {
         // Android 8.0: adaptive icons and notification channels; about 98 % of active Android phones (Build Results).
         minSdk = 26
         targetSdk = 37
-        versionCode = 3
+        versionCode = 4
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Sign in with Google (Plus & Account): the Web OAuth client ID the Worker checks ID tokens against. Public, not

@@ -146,7 +146,11 @@ class PlusCodes(private val sp: SharedPreferences, private val valid: Set<String
         private const val KEY = "redeemed"
         /** The fingerprints of the codes that unlock Plus (SHA-256 of the normalized code, lowercase hex). */
         val VALID: Set<String> = setOf(
-            // Google Play's reviewers (Sign in details, 15 Oct 2026). The code is in Play Console only.
+            // Google Play's reviewers (Sign in details). The codes are in Play Console and the user's password manager only.
+            // The random code (15 Oct 2026), for Production:
+            "8eaa5ce9c8252991256157e21204146ab6ae23c4eff0732214eb4028531086bb",
+            // The first, guessable code: kept only until Sign in details has the random one and a version with it is
+            // live; then remove it (Google Play — Setup and Declarations, "Still open").
             "aa51aff518a8db3d72a25d5ababccbec9d8713c5ecf66139b8a43ac28767cb0d",
         )
 

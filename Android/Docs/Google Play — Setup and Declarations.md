@@ -11,7 +11,7 @@ Everything that was configured, every answer given to Google, and what is still 
 | App | **Often Enough**, `com.oftenenough.app`, Play Console app created 15 Oct 2026 (Free, English (US), App) |
 | Store name | `Often Enough: Habit Tracker` |
 | Upload key | `C:\Users\lalit\Keys\often-enough-upload.jks` on the user's PC (alias `upload`, RSA 4096, PKCS12, valid to 2054), password only in the user's password manager. Upload key SHA-1 `6F:EE:0F:BE:E0:A9:53:51:3A:76:9B:54:02:45:1A:97:AD:8E:33:46` |
-| Play app signing key | Google-generated. SHA-1 `92:20:69:D3:CA:B6:41:B1:F2:1B:A2:1A:04:E8:3C:E0:B5:B2:B6:FB` |
+| Play app signing key | Google-generated. SHA-1 `92:20:69:D3:CA:B6:41:B1:F2:1B:A2:1A:04:E8:3C:E0:B5:B2:B6:FB`; SHA-256 `18:52:5B:FA:DB:66:C9:E6:7A:3B:74:B3:36:25:1B:89:FC:4D:54:E3:B0:B0:B3:DB:66:F3:9F:B7:D3:25:48:9E` (for `/.well-known/assetlinks.json`, so `oftenenough.com/join/…` opens the app) |
 | This PC's debug key | SHA-1 `DA:6D:3F:E8:4C:8C:DB:90:BA:4A:91:81:91:F2:65:BF:50:4F:AC:41` |
 
 **Building a signed release** (the user's own PowerShell, so the password never leaves it): `Android/README.md` has the
@@ -28,7 +28,17 @@ needs a higher `versionCode` (1 was the first internal upload, 2 the first close
 | Often Enough Android (debug, this PC) | Android | `com.oftenenough.app` + the debug SHA-1 |
 | Often Enough Android (Google Play) | Android | `com.oftenenough.app` + the Play app signing SHA-1 |
 
-The consent screen is in Testing: only listed test users can sign in until it is published.
+**Checking Play purchases from the Worker:** the Google Play Android Developer API is enabled, and the service account
+`play-purchases@often-enough.iam.gserviceaccount.com` (no Cloud roles) is invited in Play Console › Users and
+permissions for Often Enough only, with View app information (read-only), View financial data, and Manage orders and
+subscriptions (15 Oct 2026). Its JSON key is made only when the Worker is deployed, and goes straight into
+`wrangler secret put` by the user, then the downloaded file is deleted (D11).
+
+The consent screen is **In production** (published 15 Oct 2026; External). Branding: app name Often Enough, home page
+`https://oftenenough.com`, privacy `/privacy`, terms `/terms`, authorized domain `oftenenough.com`, **no logo** (a logo
+needs Google's brand verification first). Only basic scopes (name, email, account ID), so no verification was needed.
+
+Cloudflare: Wrangler is logged in on the user's PC (OAuth, saved outside the repository) for the Plus account Worker.
 
 ## Payments (all entered by the user)
 
@@ -47,7 +57,7 @@ The consent screen is in Testing: only listed test users can sign in until it is
 |---|---|
 | Privacy policy | `https://oftenenough.com/privacy` (needs the optional-account section, below) |
 | Ads / Advertising ID | No ads · advertising ID **No** (the manifest removes `AD_ID`) |
-| Sign in details | Yes (payments, optional Google sign-in, QR codes, biometric App lock, actions on another device). Instructions: free plan needs no sign-in; Plus via **Plus & Account › Redeem a code** with the review code (`PlusCodes`; only its SHA-256 is in the app). "Full access including paid content" ticked. **Replace the code with a random one before Production** |
+| Sign in details | Yes (payments, optional Google sign-in, QR codes, biometric App lock, actions on another device). Instructions: free plan needs no sign-in; Plus via **Plus & Account › Redeem a code** with the review code (`PlusCodes`; only its SHA-256 is in the app). "Full access including paid content" ticked. A random 12-character code was made on the user's PC on 15 Oct 2026 (kept in their password manager as "Often Enough review code"); its fingerprint is in the app from version 4. **Once version 4 is live, put the random code in Sign in details, then remove the first code's fingerprint** |
 | Content rating | All other app types; everything No except digital purchases Yes |
 | Target audience | 13–15, 16–17, 18+ (not under 13, so not the Families policy; 18+ alone can restrict availability) |
 | Data safety | Collected, not shared, optional, encrypted in transit, deletable: Email address, User IDs (account management), Purchase history (account management, app functionality). Habits are not "collected": they go only to the person's own Google Drive (Google's FAQ exemption). Account creation: OAuth. Delete URL `https://oftenenough.com/delete-account` |
