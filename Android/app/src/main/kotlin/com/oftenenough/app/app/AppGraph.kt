@@ -140,7 +140,9 @@ object AppGraph {
             }
         }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
-        plusInstance = if (BuildConfig.DEBUG) FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)).also { it.latencyMs = 900 } else NoPlusStore
+        // Google Play Billing in release builds (and debug builds made with -PrealBilling); the stand-in store otherwise.
+        plusInstance = if (!BuildConfig.DEBUG || BuildConfig.REAL_BILLING) PlayPlusStore(context, scope, context.getSharedPreferences("plus-play", Context.MODE_PRIVATE))
+            else FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)).also { it.latencyMs = 900 }
         openAccounts(context, com.oftenenough.app.app.account.AccountCenter.FILE, test = false)
         codesInstance = PlusCodes(context.getSharedPreferences("plus-codes", Context.MODE_PRIVATE))
         followPlus(store)

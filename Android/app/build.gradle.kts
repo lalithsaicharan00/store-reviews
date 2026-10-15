@@ -13,7 +13,7 @@ android {
         // Android 8.0: adaptive icons and notification channels; about 98 % of active Android phones (Build Results).
         minSdk = 26
         targetSdk = 37
-        versionCode = 2
+        versionCode = 3
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Sign in with Google (Plus & Account): the Web OAuth client ID the Worker checks ID tokens against. Public, not
@@ -22,6 +22,8 @@ android {
         // Empty, debug builds use the stand-in sign-in and a release build offers none.
         val webClientId = (project.findProperty("googleWebClientId") as String?) ?: System.getenv("GOOGLE_WEB_CLIENT_ID") ?: ""
         buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"" + webClientId + "\"")
+        // Debug builds use the stand-in Plus store unless built with -PrealBilling (to test real purchases as a license tester).
+        buildConfigField("boolean", "REAL_BILLING", (project.findProperty("realBilling") != null).toString())
     }
 
     // Debug builds on CI use a stable key kept only as GitHub secrets (D11), so the Google OAuth client can trust its

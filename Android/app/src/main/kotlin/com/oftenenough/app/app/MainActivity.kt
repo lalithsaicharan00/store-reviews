@@ -49,6 +49,8 @@ class MainActivity : FragmentActivity() {
             AppGraph.lock.returned()
             // LOCKED (widget taps): waiting taps are saved on every return (W5).
             if (AppGraph.store.isLoaded) lifecycleScope.launch { WidgetTapSaver.saveWaiting(applicationContext) }
+            // Plus is asked of Google Play on every return (a pending payment finished, a refund), then reaches the account.
+            (AppGraph.plus as? PlayPlusStore)?.let { play -> lifecycleScope.launch { if (play.refresh()) AppGraph.accounts.syncPurchase(play.purchase()) } }
         }
     }
 
