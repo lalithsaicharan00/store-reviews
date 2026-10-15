@@ -1121,6 +1121,23 @@ and the Add note keyboard coming up by itself.
   - [x] **A notification to the manager when someone joins** (the user, 15 Oct 2026: "small notification to the manager
     when someone joins their family"; no email). *Designed 15 Oct 2026 as 5.2.1 and approved by the user ("The notification looks good");
     handoff "sixteenth round".*
+- [ ] **118. The website, before release** (added 15 October 2026, from the user: "note down that website is pending
+  … we will work on it … before releasing"). Not started. What the app already points to:
+  - [ ] **oftenenough.com** itself (the domain and a simple home page).
+  - [ ] **The privacy policy page** at a stable address: About's Privacy policy row opens it, and Google Play and the App
+    Store both ask for its link.
+  - [ ] **Invite links** (`oftenenough.com/join/…`): open the app at Join (App Links on Android, Universal Links on the
+    iPhone), and send someone without the app to the store.
+  - [ ] **A page to ask for account deletion** from outside the app (Google Play asks for this web link for apps with
+    accounts; Delete my account in Plus & Account is the in-app way).
+  - [ ] **support@oftenenough.com**, created and answered (Build Plan #72; Help & Feedback's two rows send there).
+- [x] **117. About: only what's required, and looking good** (added 15 October 2026, from the user, Android first).
+  Their points:
+  - [x] **Remove everything not necessary or compulsory:** kept the name and version, Privacy policy (Google Play
+    requires it in the app) and Open-source licences (the libraries' notices must be shown); removed the name's
+    paragraph, the privacy paragraph and the per-library rows.
+  - [x] **Improve the overall design:** our app icon, text styles and grouped rows; Google's licences screen designed.
+  *Designed 15 Oct 2026, Figma `1476:264`; handoff "About, 15 Oct 2026". Before release: publish the privacy policy.*
 - [x] **116. Help & Feedback: only what's necessary, finished** (added 15 October 2026, from the user, Android first;
   115 is taken on another branch). Their points:
   - [x] **Keep only what's absolutely necessary; nothing half finished** ("instead of shipping something that is half

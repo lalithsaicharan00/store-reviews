@@ -1413,6 +1413,25 @@ free plan; Intercom $29–132 a seat a month) and hold people's messages.
 - Arrows from both rows to 1.1, and from either row to 1.2. Before release, the mailbox must exist and be answered
   (Build Plan #72). The iPhone's Help is cut to the same two rows when it's updated to match.
 
+### About, 15 Oct 2026 (the user, on `1476:264`)
+
+The user: "remove all of the unnecessary things … keep only things that are necessary, compulsory … make it look good".
+
+- **What's compulsory:** a privacy policy inside the app (Google Play's User Data policy: "a privacy policy link or text
+  within the app itself", [Google Play](https://support.google.com/googleplay/android-developer/answer/10144311)) and the
+  open-source notices ("As a developer, you are responsible for displaying open source library notices used in your
+  app", [Google](https://developers.google.com/android/guides/opensource)). The version stays: people need it when they
+  write to us.
+- **1 · About:** our app icon (the white tile with its soft shadow, 80), **Often Enough** (Headline Medium Emphasized),
+  *Version 1.0 (1)*, centred with room above; then one grouped list (Help & Feedback's rows): **Privacy policy** ·
+  *Opens in your browser* with `open_in_new`, and **Open-source licences** · *The libraries we use* ›.
+- **1.1 · Open-source licences:** Google's own screen (`play-services-oss-licenses`, `OssLicensesMenuActivity`, title
+  set to "Open-source licences"), listing the app's libraries (AndroidX Activity … kotlinx.serialization, from the app's
+  build file); each opens its licence. The plugin builds the list itself.
+- **Removed:** the name's paragraph, the privacy paragraph (Privacy & Security and the policy say it), the
+  library-by-library rows and the old Roboto frame. Before release the privacy policy page must be published at a
+  stable address.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.

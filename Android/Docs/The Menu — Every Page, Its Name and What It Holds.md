@@ -165,7 +165,11 @@ front").
     Drive; we never see them. An account, only with Plus, holds your purchase and your family.*
   - With an account, one more row: **Your account** · *What it holds, and deleting it* → Plus & Account › Your account. Apple asks
     for Delete in "the app's account settings"; people looking in Privacy find the way there.
-- **About:** the same change to its Privacy paragraph.
+- **About** (redesigned 15 Oct 2026, Figma `1476:264`): only what's required. Our app icon, **Often Enough**, *Version
+  1.0 (1)*; then **Privacy policy** · *Opens in your browser* ↗ (Google Play asks for "a privacy policy link or text
+  within the app itself") and **Open-source licences** · *The libraries we use* › (Google's own licences screen; the
+  developer "is responsible for displaying open source library notices"). The name's paragraph, the privacy paragraph
+  (Privacy & Security says it) and the library-by-library rows are gone.
 - **Help & Feedback** (redesigned 15 Oct 2026, Figma `1476:110`; the name kept, as on the iPhone): **for writing to us,
   nothing else** (the user: "just launch with email").
   - **Write to us** · **Report a problem** · *Something isn't working* › and **Suggest an idea** · *A feature you'd like
