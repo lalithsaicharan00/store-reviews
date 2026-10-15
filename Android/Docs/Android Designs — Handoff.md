@@ -1454,6 +1454,19 @@ The user: "remove all of the unnecessary things … keep only things that are ne
   Don't allow: **2.1.6.4** *Remind me* back off, *Notifications are off for Often Enough, so reminders can't come…* with
   **Open settings** (Android stops asking after two refusals).
 
+### Reminder times, the Android way, 15 Oct 2026 (the user, on `1456:118`)
+
+The user: is adding several reminders intuitive and native? It wasn't: a leading ⊖ is the iPhone's edit-mode delete,
+"Reminder 1 / 2" said nothing the time didn't, and › promised a new page where a time picker opens. Android's own pattern
+is Google Calendar's event notifications: a list of rows, a trailing ✕ to remove one, an add row last, the whole row
+opening the picker in place.
+
+- **2.1.6.2 · Remind me at:** each time is a row with a leading `schedule` icon, the time (Title Medium) and a trailing
+  ✕ icon button (48, *Remove this time*); tapping the row opens the time picker at that time. Last: **+ Add a time**,
+  its words lined up with the times. The footer still says them back (*You get a notification at 8:00 AM and 2:00 PM …*).
+- **2.1.6.2.1 · Add a time:** Android's Material 3 time picker (the dial, as in 3.1.2), starting at the current time;
+  OK adds it, Cancel adds nothing.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.

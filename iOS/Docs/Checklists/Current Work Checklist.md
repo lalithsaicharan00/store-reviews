@@ -1128,6 +1128,9 @@ and the Add note keyboard coming up by itself.
   - [x] **The ideas: the most common habits, as people say them, every day** (researched from 4,407 habit statements).
   - [x] **Notifications are asked only when a reminder is turned on**; allowed keeps it on, not allowed turns it off
     (Rulebook U36); designed in the habit form's Reminders (2.1.6–2.1.6.4).
+  - [x] **Several reminder times, native and clear** (the user: "is this like intuitive … a native Android pattern?"): rows
+    with a clock icon, the time and a trailing ✕, + Add a time, Android's time picker (handoff "Reminder times, the
+    Android way").
   *Designed 15 Oct 2026, Figma `1548:2`, `1302:2`; handoff "Onboarding: new to the app, and the notifications
   permission". The iPhone's welcome and reminders follow U36 when updated.*
 - [ ] **118. The website, before release** (added 15 October 2026, from the user: "note down that website is pending
