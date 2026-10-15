@@ -1118,6 +1118,9 @@ and the Add note keyboard coming up by itself.
     connected buttons, chosen white and the other grey, never black; everywhere the page appears. *Done 15 Oct 2026.*
   - [x] **Fifteenth round (the user, 15 Oct 2026):** the choice redone the native way, radio rows in a plain white card
     (no border, no shadow), so only Get Plus draws the eye. *Done 15 Oct 2026; handoff "fifteenth round".*
+  - [x] **A notification to the manager when someone joins** (the user, 15 Oct 2026: "small notification to the manager
+    when someone joins their family"; no email). *Designed 15 Oct 2026 as 5.2.1 and approved by the user ("The notification looks good");
+    handoff "sixteenth round".*
 - [ ] **112. The account and backup pages in the menu: research, then a new design section** (added 14 October 2026, from
   the user, Android first, iPhone and iPad alike; Rulebook D16; follows 110). Their points:
   - [ ] **Free people have no account at all, on any device, iPad included**: "Free users don't even have an account at all,

@@ -206,6 +206,7 @@ front").
   cancelled this invite.*, *Lee's family is full.* (Done); *You already have Plus.* (Done · Join anyway); *You're in
   Sam's family.* (Leave and join Lee's · Not now).
 - **Couldn't connect** while looking for Plus or restoring: *Couldn't connect* · Try again · Cancel.
+- **When someone joins:** the manager gets a notification, *Priya joined your family* · *Priya has Plus now. 3 places left in your family.*; tapping it opens Plus & Account (Your family).
 
 ### Emails that don't fit
 

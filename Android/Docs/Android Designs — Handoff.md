@@ -1340,6 +1340,19 @@ plain **white card** (24 corners, no border or shadow) with two rows: ◉ **Just
 small. The line under the old buttons is gone (each row says who it's for). On 2, 2.4 and the pages behind 2.1, 2.1.2, 2.5.
 This replaces the fourteenth round's connected buttons.
 
+### Plus & Account, sixteenth round, 15 Oct 2026: the manager hears when someone joins
+
+The user: "small notification to the manager when someone joins their family" (no email: we have no email service).
+**5.2.1 · On Lee's phone**, after Join family on 5.2: a notification, in the same style as App lock's (5.1.1):
+`group_add` · *Often Enough · now* · **Priya joined your family** · *Priya has Plus now. 3 places left in your family.*
+Tapping it opens Plus & Account, where Priya is in Your family. Spotify does the same for its family plan's manager
+([Spotify](https://support.spotify.com/sz/article/invite-remove-family-member/)).
+
+- **How it reaches Lee's phone (to build):** the Worker sends it through Firebase Cloud Messaging when an invite is
+  accepted; the app shows it on a **Family** notification channel. If notifications are off, nothing is lost: Your
+  family shows Priya the next time Lee opens the page. The message carries no habits, only the joiner's first name.
+- The arrows to the invite problems (5.3–5.8) now leave from 5.2's bottom edge, so 5.2 → 5.2.1 runs straight.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
