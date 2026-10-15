@@ -1277,8 +1277,72 @@ feel like a lot: every device (Wear OS, Apple Watch, iPhone, iPad, tablet, Windo
   confirms it.*, 280 wide), centred between the status bar and the bottom area, and a **Close** text button. Plus turns
   on by itself when Google Play confirms.
 
+### Plus & Account, twelfth round, 15 Oct 2026: the missing screens, designed and linked
+
+The user: "create those screens. And also connect those arrows properly. So that I can see how it links." All 22 screens
+that were placeholders are designed, from the section's own patterns (wording in The Menu, "The flows added on 15 Oct"):
+2.4–2.7 Plus Family from Get Plus; 8–8.3 Upgrade to Plus Family; 7.7–7.10 Sign out and Delete for the manager and a
+member (over 1.4 and 1.5); 7.2.1 Confirm it's you and 7.2.2 Account deleted; 5.3–5.8 invites that don't work and the two
+joining cases (the hero centred between the top bar and the buttons; 5.7 uses our logo); 3.5 and 4.3 Couldn't connect
+(the Looking for your Plus block with a `wifi_off` icon).
+
+- **Layout (rearranged the same day; the user: "they're just vertically … arrange them properly"):** one row per state
+  for what it opens, so the section reads across, not down (3640 × 10640, was 3120 × 17680; the sections below moved up
+  7040). Rows: Get Plus (2 → 2.3, with 2.1.1 / 2.1.2 and the Plus Family purchase 2.4 → 2.7 under it); Join a family
+  (5 → 5.2); Sign in (3 → 3.3, 3.4, 3.5); Restore (4 → 4.1, 4.2, 4.3); **1.2:** Create an account (6) and Upgrade to Plus
+  Family (8 → 8.3); **1.3:** Sign out? (7.1) and Delete (7.2 → 7.2.1 → 7.2.2); **1.4, the manager:** Sign out? (7.7),
+  Remove Lee? (7.3), Invite sent (7.5 → 7.6), Invite someone (7), Delete (7.9); **1.5, a member:** Sign out? (7.8),
+  Leave (7.4), Delete (7.10). The invite problems (5.3–5.8) stack in the last column, fed from opening the invite.
+  The first screen in a row takes its arrow from the left; the others take theirs from the gap under their row, in the
+  same left-to-right order as the rows that open them, so they don't cross.
+- **Arrows:** 48. **One crossing is unavoidable**: on 1.3, Sign out (in the plan card) sits above Upgrade to Plus
+  Family, while on 1.2 Upgrade sits below Create an account, so the two arrows into 8 can't both keep order; 1.3's
+  Upgrade arrow crosses its Sign out arrow once. No overlaps, no arrow through a frame. 7.9 and 7.10 continue to 7.2.1
+  (said in their names; an arrow there would cross the Invite sent row).
+- No word alone on a last line.
+
+### Plus & Account, thirteenth round, 15 Oct 2026 (the user, on `1902:3`): Get Plus with room, and the choice first
+
+The user: "too compact … doesn't have breathing space"; on a short phone it will scroll; "maybe we can split the decision
+itself, like choosing only Plus or family beforehand … do research and come up with the best possible design".
+
+- **The choice comes first**, right under the title: a two-part single-select **Just you | Family**, each showing its
+  price ($24.99, $59.99), with ✓ on the chosen one. Android's own guidance: a segmented button is "to let users choose
+  from a set of options, side-by-side" ([Compose](https://developer.android.com/develop/ui/compose/components/segmented-button));
+  paywall guidance on tiers that differ by who they're for suggests choosing the tier first, and keeping every option's
+  price visible rather than hiding one behind a switch ([Adapty](https://adapty.io/docs/paywall-with-tabs.md),
+  [Adapty on toggle paywalls](https://adapty.io/blog/your-toggle-paywall-is-about-to-get-rejected/)). One line under it
+  says who it's for: *Just for you, on all your devices.* / *For you + 5 people, each with their own habits.*
+- **More room:** 20 between parts, the card padded 20 with 16 between lines, device labels 32 high and 8 apart. On a
+  360 × 800 phone the last row of devices scrolls under the fixed bottom (a soft shadow marks it); shorter phones scroll
+  more. **The bottom holds only Get Plus · $24.99 (Get Plus Family · $59.99 on 2.4) and I already have Plus.**
+- 2.4 is the same page with Family chosen; 2.1, 2.1.2 and 2.5 show the new page behind them; the upgrade page (8, 8.1)
+  has the same card spacing. In 2.4 and 8 the bottom area had slipped under the page; it is on top again.
+
+### Plus & Account, fourteenth round, 15 Oct 2026 (the user, on `1902:3`, `1918:2`, pointing at Progress's `1376:18`)
+
+- **The choice is a connected button group, like Progress's Week · Month · Year** (Material 3 Expressive): two
+  buttons 2 apart, rounded on the outside, 8 on the inside; **the chosen one is a white pill** (1 px `#d4d4d9` edge,
+  a soft shadow, ✓) and the other is grey `#e2e2e7`. Not black: the buy button under it already is (the user).
+- **Works on labels have room:** 40 high (10 above and below, 14 at the sides), 12 corners, 10 apart. The list scrolls
+  further under the fixed bottom on a 360 × 800 phone, which is expected.
+- Applied to 2, 2.4, the pages behind 2.1, 2.1.2 and 2.5, and the labels on 8 and 8.1.
+
+### Plus & Account, fifteenth round, 15 Oct 2026 (the user, on `1918:2`): the choice as radio rows
+
+The user rejected the connected buttons ("not even looking like something you can select and tap"; no border, no
+shadow; only Get Plus should draw the eye) and asked what native Material would do. **Android's answer for picking one of
+a set is the radio button** ("lets a user select an option from a set of options … when only one item can be selected"),
+in 56 dp rows where the whole row is the target (`Modifier.selectable`, `Role.RadioButton`, `selectableGroup()`)
+([Compose radio button](https://developer.android.com/develop/ui/compose/components/radio-button)). So the choice is one
+plain **white card** (24 corners, no border or shadow) with two rows: ◉ **Just you** · *On all your devices* · **$24.99**,
+○ **Family** · *You + 5 people* · **$59.99**, a hairline between them. The selected radio is the only dark mark, and it's
+small. The line under the old buttons is gone (each row says who it's for). On 2, 2.4 and the pages behind 2.1, 2.1.2, 2.5.
+This replaces the fourteenth round's connected buttons.
+
 ## How we work on these (the user's standing preferences)
 
+- **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
 - **Before swapping the page behind a sheet or dialog for a newer copy, list what that frame adds on the page itself** (a card, a disabled button) and put it back: 2.1.1's waiting card went with the old page once (15 Oct 2026).
 - Design **one** screen, show it, get approval, then the variants (one example first).
 - Every screen goes into its own named section on the page; nothing loose on the canvas, no explanatory labels on it.

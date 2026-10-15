@@ -146,7 +146,7 @@ front").
 
 ### The flows (Figma `1476:2`, laid out as rows with arrows)
 
-- **Get Plus** (its own page, from See what's in Plus and from the 6th-habit sheet): our logo · **Plus** · *One payment, yours forever.*; then **what you get, first**, one card: ✓ Unlimited habits, ✓ Sync across all your devices (*Through your own Google Drive.*), ✓ More widgets; **Works on**: small outlined labels in pairs, others left and Apple right: Android phone · iPhone, Tablet · iPad, Wear OS watch · Apple Watch, Windows · Mac; fixed at the bottom, **Plus** ($24.99 · Just you) and **Plus Family** ($59.99 · You + 5 people) side by side as equal choices, **Get Plus · $24.99** (or *Get Plus Family · $59.99*) and **I already have Plus** → **Google Play's own purchase sheet** → **Plus is yours.** (our app icon; *Thank you. Keep it on all your devices with an account.*; three points) → **Continue with Google** or **Not now** (*Without an account, Plus stays with your Google Play account, on Android only. You can create one later.*) → the page, with or without an account. No Continue with Apple here: on Android the person has just paid with their Google account. Plus Family asks for the account (to add people), with no Not now.
+- **Get Plus** (its own page, from See what's in Plus and from the 6th-habit sheet): our logo · **Plus** · *One payment, yours forever.*; **the choice first**, one white card of two radio rows: ◉ **Just you** · *On all your devices* · $24.99 / ○ **Family** · *You + 5 people* · $59.99; then **what you get**: ✓ Unlimited habits, ✓ Sync across all your devices (*Through your own Google Drive.*), ✓ More widgets; **Works on** in pairs (Android phone · iPhone, Tablet · iPad, Wear OS watch · Apple Watch, Windows · Mac), scrolling on short phones; fixed at the bottom only **Get Plus · $24.99** (or *Get Plus Family · $59.99*) and **I already have Plus** → **Google Play's own purchase sheet** → **Plus is yours.** (our app icon; *Thank you. Keep it on all your devices with an account.*; three points) → **Continue with Google** or **Not now** (*Without an account, Plus stays with your Google Play account, on Android only. You can create one later.*) → the page, with or without an account. No Continue with Apple here: on Android the person has just paid with their Google account. Plus Family asks for the account (to add people), with no Not now.
   Also: **Payment pending**, its own screen (the loading indicator, *Waiting for your payment · Plus turns on as soon as Google Play confirms it.*, Close) and **Payment not completed** (a dialog over Get Plus).
 - **Restore from Google Play:** looking → **Plus is back** (bought on this Google account) or **No Plus found** (Sign in
   instead, if it was bought on an iPhone or with an account).
@@ -187,6 +187,25 @@ front").
 3. **Plus Family needs an account** to add people. Buying it asks the buyer to create one; single Plus stays optional.
 4. **The skip line (decided by the user, 14 Oct 2026):** "Without an account, Plus works only on this device. You can create one later." Never forced: "if they don't want to create an account, then let it be." Kept simple on purpose, though Google Play and the App Store can bring Plus back on the same store account.
 5. **Use another Google Drive with Plus on several devices:** the account remembers the place, so every device follows.
+
+### The flows added on 15 Oct 2026
+
+- **Plus Family from Get Plus:** tap the Plus Family tile → **Get Plus Family · $59.99** → Google Play's sheet →
+  **Plus Family is yours.** (*Thank you. Sign in to invite your family.*; Invite up to 5 people, Everyone's habits stay
+  their own, Your habits sync through your Google Drive; *Your account holds your purchase and your family, never your
+  habits.*) → **Continue with Google** (no Not now) → Google's account sheet → the page as the family's manager.
+- **Upgrade to Plus Family** (from 1.2 and 1.3): **Plus Family** · *You have Plus. Pay only the difference.*; Plus for up
+  to 5 more people, Everyone's habits stay their own, Invite with a link or a QR code; Works on …; **Get Plus Family ·
+  $35.00** → Google Play's sheet → Plus Family is yours (with an account: Done) → Continue with Google → the manager's page.
+- **Families: Sign out? and Delete your account?** for the manager (*… your family keeps Plus.* / *Your account and your
+  family are deleted, so Lee loses Plus …*) and for a member (*Plus from Lee's family stops on this phone until you sign
+  in again …* / *… you leave Lee's family, so Plus stops on this phone …*).
+- **Delete, after the dialog:** Google's own sign-in confirms it's you → the page without an account, with a snackbar
+  *Your account was deleted*.
+- **Invites that don't work** (opening the link): *This invite has ended.*, *This invite was already used.*, *Lee
+  cancelled this invite.*, *Lee's family is full.* (Done); *You already have Plus.* (Done · Join anyway); *You're in
+  Sam's family.* (Leave and join Lee's · Not now).
+- **Couldn't connect** while looking for Plus or restoring: *Couldn't connect* · Try again · Cancel.
 
 ### Emails that don't fit
 

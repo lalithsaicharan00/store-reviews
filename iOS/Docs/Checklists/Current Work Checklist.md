@@ -1099,6 +1099,25 @@ and the Add note keyboard coming up by itself.
   - [x] **Eleventh round (the user, 15 Oct 2026):** Get Plus's bottom spaced out, its line and white removed (also on
     2.1 and 2.1.2); devices paired (others | Apple); Payment pending as its own waiting screen. *Done 15 Oct 2026;
     handoff "Plus & Account, eleventh round".*
+  - [x] **The missing screens (the user, 15 Oct 2026: "create those empty screens … wherever they fit … then I will
+    tell you what to create next").** Placed as empty frames, then designed and linked the same day ("create those screens. And also connect those arrows"):
+    - [x] Upgrade to Plus Family: 8 · the upgrade ($35.00), 8.1 · Google Play's sheet, 8.2 · Plus Family is yours,
+      8.3 · Continue with Google.
+    - [x] Plus Family from Get Plus: 2.4 · Plus Family chosen, 2.5 · Google Play's sheet, 2.6 · sign in to invite (no
+      Not now), 2.7 · Continue with Google.
+    - [x] Families: 7.7 / 7.8 Sign out? (manager / member), 7.9 / 7.10 Delete your account? (manager / member).
+    - [x] Invite links that don't work: 5.3 ended, 5.4 already used, 5.5 cancelled, 5.6 family full.
+    - [x] Smaller: 5.7 you already have Plus, 5.8 you're already in a family, 3.5 / 4.3 couldn't connect, 7.2.1
+      confirm it's you before Delete, 7.2.2 account deleted.
+    - [x] Arrows from the page states and within each flow (48; one unavoidable crossing).
+    *Done 15 Oct 2026, `1476:2`; handoff "Plus & Account, twelfth round".*
+  - [x] **Thirteenth round (the user, 15 Oct 2026):** Get Plus given breathing space, scrolling on short phones, with the
+    choice (Just you | Family) researched and placed first. *Done 15 Oct 2026, `1544:3`, `1906:82`; handoff "Plus & Account,
+    thirteenth round".*
+  - [x] **Fourteenth round (the user, 15 Oct 2026):** Works on labels given room; the choice restyled like Progress's
+    connected buttons, chosen white and the other grey, never black; everywhere the page appears. *Done 15 Oct 2026.*
+  - [x] **Fifteenth round (the user, 15 Oct 2026):** the choice redone the native way, radio rows in a plain white card
+    (no border, no shadow), so only Get Plus draws the eye. *Done 15 Oct 2026; handoff "fifteenth round".*
 - [ ] **112. The account and backup pages in the menu: research, then a new design section** (added 14 October 2026, from
   the user, Android first, iPhone and iPad alike; Rulebook D16; follows 110). Their points:
   - [ ] **Free people have no account at all, on any device, iPad included**: "Free users don't even have an account at all,
