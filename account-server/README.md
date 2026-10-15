@@ -11,7 +11,7 @@ checked with Google Play**, and their Plus Family. **Never a habit**, never a wh
 | | |
 |---|---|
 | Dev | `https://api-dev.oftenenough.com`: Worker `often-enough-account-dev`, D1 `often-enough-accounts-dev`. Debug builds of the app with the Google client (this PC) |
-| Production | `https://api.oftenenough.com`: Worker `often-enough-account`, D1 `often-enough-accounts`. Release builds |
+| Production | `https://api.oftenenough.com`: Worker `often-enough-account`, D1 `often-enough-accounts`. Release builds. **Released 16 Oct 2026** (the user's go-ahead); its live checks pass; the Play service account's key is still to be put in |
 
 ## What it does
 
@@ -69,8 +69,9 @@ ACCOUNT_TEST_SECRET=... npm run live:dev   # the basics, then a whole family end
 
 ## Production (T6: only with the user's go-ahead)
 
-First time only: `npx wrangler d1 create often-enough-accounts`, its `database_id` into `env.production` in
-`wrangler.jsonc`, then `npm run migrate:production`.
+Done once on 16 Oct 2026: the database made (`often-enough-accounts`), migrated, and the first release deployed whole.
+A new custom domain takes a few minutes to resolve on this PC (it remembered the old one as missing): the release
+script's checks wait and try again.
 
 The Google Play service account's key (`play-purchases@often-enough.iam.gserviceaccount.com`, Android/Docs/"Google Play —
 Setup and Declarations"): made in Google Cloud Console › IAM › Service accounts › Keys › Add key › JSON, put straight

@@ -76,7 +76,7 @@ real QR code, and every dialog (sign out, delete, remove, leave, cancel an invit
 
   | Piece | Today | Needs |
   |---|---|---|
-  | The account server (D1 accounts, families, invites) | **The Worker** (`account-server/`, built 16 Oct 2026): `HttpAccountServer`. Debug builds with the Google client talk to dev (live), release builds to production (not deployed yet: the user's go-ahead, T6). The UI tests and builds without the client use `StandInAccountServer`, with the same rules (`PlusAccountTest`). `-PaccountServer=standin\|dev\|production` overrides | Production's first release |
+  | The account server (D1 accounts, families, invites) | **The Worker** (`account-server/`, built 16 Oct 2026): `HttpAccountServer`. Debug builds with the Google client talk to dev, release builds to production (both live; production released 16 Oct 2026). The UI tests and builds without the client use `StandInAccountServer`, with the same rules (`PlusAccountTest`). `-PaccountServer=standin\|dev\|production` overrides | Production's first release |
   | Sign in with Google | Real (`GoogleSignInProvider`, Credential Manager, a fresh nonce per sign-in), when the build has the client ID (`googleWebClientId`); the Worker checks Google's token | Checking once on a real phone with a real Google account |
   | Checking purchases with Google Play | The Worker asks the Play Developer API as the service account | The service account's JSON key in production (`account-server/README.md`) |
   | Sign in with Apple | Stand-in only | The Worker's web sign-in page (Apple's sign-in on Android is a web flow) |

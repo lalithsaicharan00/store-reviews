@@ -1053,8 +1053,33 @@ and the Add note keyboard coming up by itself.
       ScreensTest 13). Found and fixed on the way: Android throws on a 401 without `WWW-Authenticate`; under Compose
       tests a call came back on the network's thread (`AccountCenter` now hops back, T22); a deleted owner's invites
       kept their name (now deleted with the account).
-    - [ ] **Production: the user's go-ahead** (T6), its D1 database, and the Play service account's key put in by the
-      user (`account-server/README.md`, "Production").
+    - [x] **Production released, 16 Oct 2026** (the user: "yes, release it"): `api.oftenenough.com`, its own D1
+      (`often-enough-accounts`), migrated; live checks pass (health, sessions, forged Google and Apple tokens refused,
+      dev's test sign-in refused even with the real secret); no accounts yet.
+    - [ ] **To do and test together in the morning** (the user, 16 Oct 2026: "all of the testing, all of the real things
+      we will do it in the morning"). Everything so far was tested with stand-ins for Google, Apple and Play, and
+      against dev with the test sign-in; these are the real things:
+      - [ ] **The Play service account's key into the Worker** (the user, never in chat or the repository, D11): Google
+        Cloud Console › IAM › Service accounts › `play-purchases@…` › Keys › Add key › JSON, then
+        `npx wrangler secret put GOOGLE_PLAY_SERVICE_ACCOUNT --env production < key.json` (and without `--env` for dev),
+        then delete the file. Until then, adding a purchase answers "try again later".
+      - [ ] **Real Google sign-in on the phone** (the debug build talks to dev): sign in, make the account, sign out, sign
+        in again; the same account on a second device (the emulator); "Signed in as" shows the right email.
+      - [ ] **A real purchase as a license tester** (a `-PrealBilling` debug build, or a Play test build of this code):
+        Plus on the account, on both devices; then a refund in Play Console takes Plus away within a day.
+      - [ ] **Plus Family with two real Google accounts:** buy it, Add a person, share the link and show the QR code;
+        the other phone joins through Join a family › Scan QR code; Lee sees Priya; remove; leave; cancel an invite.
+        (Tapping the link opens the browser until `assetlinks.json` is on the website: expected for now.)
+      - [ ] **Delete my account on the phone** (Google's sign-in confirms it): Plus stays through Play, the account is
+        gone from the database (check D1).
+      - [ ] **A release build against production:** a Play test build (versionCode 5) with this code signs in to
+        `api.oftenenough.com`.
+      - [ ] **Delete the old `server/` folder** (the retired habit-sync server; its Cloudflare resources are already
+        gone): the user wants it deleted, together in the morning ("we will do it in the moment"). Deleting it from
+        this session was blocked by the permission settings. Update the links to `server/README.md` (Rulebook D11's
+        evidence line, older Architecture notes) at the same time.
+      - [ ] **Then, one at a time:** `assetlinks.json` on oftenenough.com (invite links open the app), Sign in with Apple
+        on Android (the Worker's web page), the "Priya joined your family" notification (5.2.1).
     - [ ] **Parked, waiting on the user:** the Cloudflare Worker (accounts, families, invites, purchase checks with Google
       and Apple); the Web OAuth client ID; Sign in with Apple's web page (on the Worker); the Play Console products (real
       buying); `assetlinks.json` on oftenenough.com (invite links opening the app); push for "Priya joined your family"

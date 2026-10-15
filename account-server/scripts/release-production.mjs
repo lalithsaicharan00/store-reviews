@@ -18,13 +18,17 @@ const wrangler = (...a) => run("npx", ["wrangler", ...a, "--env", "production"])
 const say = (text) => console.log(`[${new Date().toISOString().slice(11, 19)}] ${text}`);
 const sleep = (minutes) => new Promise((r) => setTimeout(r, minutes * 60_000));
 
-function checksPass() {
-  try {
-    run("node", ["scripts/live-check.mjs", "https://api.oftenenough.com"]);
-    return true;
-  } catch (error) {
-    say(`checks failed:\n${error.stdout ?? error.message}`);
-    return false;
+/** The live checks; tried up to 3 times a minute apart (a new address takes a few minutes to resolve everywhere). */
+async function checksPass() {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      run("node", ["scripts/live-check.mjs", "https://api.oftenenough.com"]);
+      return true;
+    } catch (error) {
+      say(`checks failed (try ${attempt}):\n${error.stdout || error.stderr || error.message}`);
+      if (attempt === 3) return false;
+      await sleep(1);
+    }
   }
 }
 
@@ -45,7 +49,7 @@ if (!previous) {
   if (current?.versions?.length) throw new Error(`A release is already part-way (${JSON.stringify(current.versions)}). Finish or roll it back first.`);
   say(`first release of ${commit}: deploying whole`);
   run("npx", ["wrangler", "deploy", "--env", "production"], { stdio: "inherit" });
-  if (!checksPass()) {
+  if (!(await checksPass())) {
     say("the first release fails its checks: take it down with `npx wrangler delete --env production` and look");
     process.exit(1);
   }
@@ -67,7 +71,7 @@ for (const share of [5, 25, 100]) {
     say(`watching for ${stepMinutes} minutes`);
     await sleep(stepMinutes);
   }
-  if (!checksPass() || (args.includes("--drill-rollback") && share === 25)) {
+  if (!(await checksPass()) || (args.includes("--drill-rollback") && share === 25)) {
     wrangler("versions", "deploy", `${previous}@100%`, "--yes", "--message", `rollback of ${commit}`);
     say(`rolled back to ${previous}`);
     process.exit(1);
