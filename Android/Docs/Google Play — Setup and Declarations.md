@@ -98,5 +98,17 @@ use the in-app review code, testers are license testers); they're for giveaways 
 2. ~~License testers~~ (done: Settings › License testing, the "Family & me" list of 4, RESPOND_NORMALLY). Version 3
    is in review; once it's out, try a test purchase of each product on a tester's phone (Play's test card), then
    Restore on a second phone.
-3. 12+ closed testers for 14 days, then **Apply for production** (needs Android screenshots, a random review code, and
-   the Worker for accounts).
+3. 12+ closed testers for 14 days, then **Apply for production** (needs Android screenshots, the random review code in
+   Sign in details, and the Worker for accounts).
+
+### Store polish: once the app is finished and thoroughly tested (the user, 15 Oct 2026: "let's add them later")
+
+Not before; set none of these until the user starts this step.
+
+- **Tags** (Store settings › Tags › Manage tags): **Productivity**, then **Self-help**, only if those exact names are in
+  the picker; two, not five ([evidence](<../../Research/Research Reports/Store Listing and ASO/Google Play Listing Tags — Evidence and Launch Shortlist.md>)).
+  No "Habit tracker" tag exists; don't add half-fitting ones.
+- **Store listing**: rework the text, the feature graphic and the screenshots (Android screenshots replace the iPhone
+  ones).
+- **Regional pricing**: per-country prices for Plus, Plus Family and the upgrade (the US$ base prices stay as set; today
+  Google converts them per country).
