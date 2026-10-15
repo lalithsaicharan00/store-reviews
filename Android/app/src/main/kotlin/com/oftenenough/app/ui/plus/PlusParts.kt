@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -26,9 +27,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -68,11 +66,15 @@ import com.oftenenough.app.ui.theme.appColors
  * styles (AppType); rows and buttons have minimum heights, never fixed ones, so a larger font grows them.
  */
 
-/** The app icon on its tile (the light tile in light mode, as approved; Brand/Logo Guide.md). */
+/**
+ * The app icon on its tile (the light tile in light mode, as approved; Brand/Logo Guide.md). Lifted by a soft shadow
+ * on a flow's hero and Get Plus (Figma 2, 2.2); [flat] in Plus & Account's white card, where it sits on white (Figma 1).
+ */
 @Composable
-fun AppIconTile(size: Dp) {
+fun AppIconTile(size: Dp, flat: Boolean = false) {
     val c = appColors
-    Box(Modifier.size(size).shadow(size * 0.05f, RoundedCornerShape(size * 0.3f)).clip(RoundedCornerShape(size * 0.3f)).background(c.surface)) {
+    val shape = RoundedCornerShape(size * (if (flat) 0.27f else 0.3f))
+    Box(Modifier.size(size).let { if (flat) it else it.shadow(size * 0.05f, shape) }.clip(shape).background(c.surface)) {
         Image(painterResource(if (c.dark) R.drawable.mark_dark else R.drawable.mark_light), null, Modifier.size(size))
     }
 }
@@ -115,7 +117,7 @@ fun PointsCard(points: List<Point>) {
         for (p in points) Row(Modifier.fillMaxWidth().padding(start = 24.dp, end = 16.dp).semantics(mergeDescendants = true) {}) {
             if (p.icon != null) Icon(p.icon, null, Modifier.size(24.dp), tint = c.secondary) else MarkIcon()
             Spacer(Modifier.width(24.dp))
-            Column(Modifier.weight(1f)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(p.title, style = AppType.labelLarge, color = c.ink)
                 Text(p.line, style = AppType.bodyMedium, color = c.secondary)
             }
@@ -125,23 +127,30 @@ fun PointsCard(points: List<Point>) {
 
 /**
  * A step of a flow: an optional back arrow, the content (scrolls when the font is large), and its buttons pinned at the
- * bottom. Back (the system's too) does what the arrow does.
+ * bottom. The content sits in the middle of the space between the top and the buttons, as every flow frame draws it;
+ * [top] keeps it under the bar instead (Figma 3.4, a list). Back (the system's too) does what the arrow does.
  */
 @Composable
 fun FlowScreen(
-    onBack: (() -> Unit)?, tag: String, showBack: Boolean = true, bottom: @Composable ColumnScope.() -> Unit = {}, content: @Composable ColumnScope.() -> Unit,
+    onBack: (() -> Unit)?, tag: String, showBack: Boolean = true, top: Boolean = false,
+    bottom: @Composable ColumnScope.() -> Unit = {}, content: @Composable ColumnScope.() -> Unit,
 ) {
     val c = appColors
     if (onBack != null) BackHandler(onBack = onBack)
     Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding().semantics { testTag = tag }) {
         if (onBack != null && showBack) Box(Modifier.heightIn(min = 64.dp).padding(start = 4.dp), contentAlignment = Alignment.CenterStart) {
-            IconButton(onBack, Modifier.semantics { testTag = "flow-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
+            IconButton(onBack, Modifier.semantics { testTag = "flow-back" }) { Icon(Symbols.ArrowBack, "Back", tint = c.ink) }
         }
-        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            Spacer(Modifier.height(if (onBack != null && showBack) 40.dp else 48.dp))
-            content()
-            Spacer(Modifier.height(24.dp))
+        BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
+            val room = maxHeight
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
+                Column(Modifier.fillMaxWidth().heightIn(min = room), horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = if (top) Arrangement.Top else Arrangement.Center) {
+                    Spacer(Modifier.height(if (top) 8.dp else 24.dp))
+                    content()
+                    Spacer(Modifier.height(24.dp))
+                }
+            }
         }
         Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally, content = bottom)
@@ -151,25 +160,29 @@ fun FlowScreen(
 /** The small note above a flow's buttons ("Made your account on an iPhone? …"). */
 @Composable
 fun BottomNote(text: String) =
-    Text(text, Modifier.fillMaxWidth().padding(horizontal = 8.dp), style = AppType.bodySmall, color = appColors.secondary, textAlign = TextAlign.Center)
+    Text(text, Modifier.fillMaxWidth(), style = AppType.bodySmall, color = appColors.secondary, textAlign = TextAlign.Center)
 
-/** A flow's main button: ink, full width, 56 high at least. */
+/** A flow's main button: ink, full width, 56 high at least; its icon 18 (20 for Scan QR code, Figma 5). */
 @Composable
-fun MainButton(text: String, tag: String, icon: ImageVector? = null, enabled: Boolean = true, onClick: () -> Unit) {
+fun MainButton(text: String, tag: String, icon: ImageVector? = null, enabled: Boolean = true, iconSize: Dp = 18.dp, onClick: () -> Unit) {
     val c = appColors
     Button(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { testTag = tag }, enabled = enabled,
         colors = ButtonDefaults.buttonColors(containerColor = c.ink, contentColor = c.onInk, disabledContainerColor = c.tonal, disabledContentColor = c.secondary),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)) {
-        if (icon != null) { Icon(icon, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp)) }
+        if (icon != null) { Icon(icon, null, Modifier.size(iconSize)); Spacer(Modifier.width(8.dp)) }
         Text(text, style = AppType.titleMedium, textAlign = TextAlign.Center)
     }
 }
 
-/** A flow's quiet button ("Not now", "Cancel", "Close", "I already have Plus"): text only, 56 high at least. */
+/**
+ * A flow's quiet button ("Not now", "Cancel", "Close"): text only, 56 high at least. "I already have Plus" is 40 high
+ * under Get Plus (Figma 2: [height]); "Cancel invite" in the invite sheet is Label Large (Figma 7.5: [small]).
+ */
 @Composable
-fun QuietButton(text: String, tag: String, onClick: () -> Unit) {
-    TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { testTag = tag }) {
-        Text(text, style = AppType.titleMedium, color = appColors.ink, textAlign = TextAlign.Center)
+fun QuietButton(text: String, tag: String, height: Dp = 56.dp, small: Boolean = false, onClick: () -> Unit) {
+    TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = height).semantics { testTag = tag },
+        shape = if (small) RoundedCornerShape(20.dp) else ButtonDefaults.textShape) {
+        Text(text, style = if (small) AppType.labelLarge else AppType.titleMedium, color = appColors.ink, textAlign = TextAlign.Center)
     }
 }
 
@@ -205,7 +218,7 @@ fun CenterScreen(
             Spacer(Modifier.height(24.dp))
             if (icon == null) com.oftenenough.app.ui.components.ExpressiveLoadingIndicator(c.tonal, c.ink, Modifier.semantics { testTag = "$tag-loading" })
             else Box(Modifier.size(64.dp).clip(androidx.compose.foundation.shape.CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-                Icon(icon, null, Modifier.size(28.dp), tint = c.ink)
+                Icon(icon, null, Modifier.size(32.dp), tint = c.ink)
             }
             Spacer(Modifier.height(24.dp))
             Text(title, style = AppType.titleLargeEmphasized, color = c.ink, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading() })
@@ -215,29 +228,63 @@ fun CenterScreen(
         }
         Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (main != null) MainButton(main, "$tag-main", onClick = onMain)
-            QuietButton(quiet, "$tag-quiet", onQuiet)
+            QuietButton(quiet, "$tag-quiet", onClick = onQuiet)
         }
     }
 }
 
-/** A dialog (Figma 7.x): an icon, a headline, the words, and two actions; [destructive] draws the confirm in red. */
+/**
+ * A dialog (Figma 7.x): an icon, a headline, the words, and two actions, all in ink; [destructive] draws the icon and the
+ * confirm in red, which only deleting the account does (7.2, 7.9, 7.10: removing, leaving and cancelling stay ink).
+ */
 @Composable
 fun PlusDialog(
     icon: ImageVector, title: String, text: String, confirm: String, onConfirm: () -> Unit, onDismiss: () -> Unit,
     dismiss: String = "Cancel", destructive: Boolean = false, tag: String,
 ) {
     val c = appColors
-    AlertDialog(onDismiss,
-        modifier = Modifier.semantics { testTag = tag },
-        icon = { Icon(icon, null, tint = if (destructive) c.error else c.secondary) },
-        title = { Text(title, style = AppType.headlineSmall, color = c.ink, textAlign = TextAlign.Start, modifier = Modifier.fillMaxWidth()) },
-        text = { Text(text, style = AppType.bodyMedium, color = c.secondary) },
-        confirmButton = {
-            TextButton(onConfirm, Modifier.semantics { testTag = "$tag-confirm" }) { Text(confirm, style = AppType.labelLarge, color = if (destructive) c.error else c.ink) }
-        },
-        dismissButton = if (dismiss.isEmpty()) null else ({ TextButton(onDismiss, Modifier.semantics { testTag = "$tag-dismiss" }) { Text(dismiss, style = AppType.labelLarge, color = c.ink) } }),
-        containerColor = if (c.dark) c.surface else Color(0xFFF4F4F6),
-    )
+    PlusDialogFrame(icon, title, tag, onDismiss, iconTint = if (destructive) c.error else c.ink, actions = {
+        if (dismiss.isNotEmpty()) DialogButton(dismiss, "$tag-dismiss", onClick = onDismiss)
+        DialogButton(confirm, "$tag-confirm", color = if (destructive) c.error else c.ink, onClick = onConfirm)
+    }) {
+        Text(text, style = AppType.bodyMedium, color = c.secondary)
+    }
+}
+
+/**
+ * Figma 7.x's dialog: 312 wide, 24 in (20 under the actions), its icon at the start above the headline, everything 16
+ * apart and the actions at the end, 8 under the words' gap. Material's AlertDialog centres the icon, so it's drawn here.
+ */
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@Composable
+fun PlusDialogFrame(
+    icon: ImageVector, title: String, tag: String, onDismiss: () -> Unit, iconTint: Color = appColors.ink,
+    actions: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit, content: @Composable ColumnScope.() -> Unit,
+) {
+    val c = appColors
+    androidx.compose.material3.BasicAlertDialog(onDismiss, Modifier.widthIn(max = 312.dp).semantics { testTag = tag }) {
+        // Scrolls when larger text makes it taller than the screen; the actions wrap to a second line rather than break a
+        // button's words ("Cancel invite" at 200 %).
+        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(if (c.dark) c.surface else Color(0xFFF4F4F6))
+            .verticalScroll(rememberScrollState())
+            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Icon(icon, null, Modifier.size(24.dp), tint = iconTint)
+            Text(title, Modifier.semantics { heading() }, style = AppType.headlineSmall, color = c.ink)
+            content()
+            androidx.compose.foundation.layout.FlowRow(Modifier.fillMaxWidth().padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End), verticalArrangement = Arrangement.spacedBy(8.dp),
+                itemVerticalAlignment = Alignment.CenterVertically, content = actions)
+        }
+    }
+}
+
+/** A dialog's text button: Label Large, 40 high at least, 12 at its sides. */
+@Composable
+fun DialogButton(text: String, tag: String, color: Color = appColors.ink, enabled: Boolean = true, onClick: () -> Unit) {
+    TextButton(onClick, Modifier.heightIn(min = 40.dp).semantics { testTag = tag }, enabled = enabled,
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp)) {
+        Text(text, style = AppType.labelLarge, color = if (enabled) color else color.copy(alpha = 0.38f))
+    }
 }
 
 /** A feature with a check (Get Plus, Plus Family): the name and, under it, an optional line. */
@@ -245,9 +292,9 @@ fun PlusDialog(
 fun CheckLine(title: String, line: String? = null) {
     val c = appColors
     Row(Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}) {
-        Icon(Icons.Rounded.Check, null, Modifier.padding(top = 2.dp).size(20.dp), tint = c.ink)
+        Icon(Symbols.Check, null, Modifier.padding(top = 2.dp).size(20.dp), tint = c.ink)
         Spacer(Modifier.width(12.dp))
-        Column(Modifier.weight(1f)) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(title, style = AppType.titleMedium, color = c.ink)
             if (line != null) Text(line, style = AppType.bodyMedium, color = c.secondary)
         }
@@ -262,7 +309,7 @@ fun WorksOn() {
     val pairs = listOf("Android phone" to "iPhone", "Tablet" to "iPad", "Wear OS watch" to "Apple Watch", "Windows" to "Mac")
     Column(Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         for ((a, b) in pairs) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            for (name in listOf(a, b)) Box(Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).border(1.dp, c.outline.copy(alpha = 0.45f), RoundedCornerShape(12.dp))
+            for (name in listOf(a, b)) Box(Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).border(1.dp, if (c.dark) c.outline.copy(alpha = 0.45f) else Color(0xFFC9C9CE), RoundedCornerShape(12.dp))
                 .heightIn(min = 40.dp).padding(horizontal = 14.dp, vertical = 10.dp), contentAlignment = Alignment.CenterStart) {
                 Text(name, style = AppType.labelLarge, color = c.ink)
             }
@@ -274,6 +321,50 @@ fun WorksOn() {
 @Composable
 fun WhiteCard(modifier: Modifier = Modifier, padding: Dp = 20.dp, gap: Dp = 16.dp, content: @Composable ColumnScope.() -> Unit) =
     Column(modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(appColors.surface).padding(padding), verticalArrangement = Arrangement.spacedBy(gap), content = content)
+
+/**
+ * A row of Plus & Account (Figma 1–1.5's "Row · …"): a 24 icon in a 40 tonal disc, a name and an optional line, and a
+ * chevron when it opens something. At least 72 high, 16 around (12 at the chevron's side), so larger text grows it.
+ */
+@Composable
+fun PlusRow(
+    title: String, index: Int, count: Int, line: String? = null, icon: ImageVector, onClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier, red: Boolean = false, chevron: Boolean = onClick != null,
+) {
+    val c = appColors
+    val tint = if (red) c.error else c.ink
+    Row(modifier.fillMaxWidth().clip(com.oftenenough.app.ui.components.segmentShape(index, count)).background(c.surface)
+        .let { if (onClick != null) it.clickable(onClick = onClick) else it }
+        .heightIn(min = 72.dp).padding(start = 16.dp, end = if (chevron) 12.dp else 16.dp, top = 16.dp, bottom = 16.dp),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        IconDisc(icon, tint)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(title, style = AppType.titleMedium, color = tint)
+            if (line != null) Text(line, style = AppType.bodyMedium, color = c.secondary)
+        }
+        if (chevron) Icon(Symbols.ChevronRight, null, Modifier.size(24.dp), tint = c.secondary)
+    }
+}
+
+/** A row's icon: 24, in a 40 tonal disc. */
+@Composable
+fun IconDisc(icon: ImageVector, tint: Color = appColors.ink) =
+    Box(Modifier.size(40.dp).clip(androidx.compose.foundation.shape.CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
+        Icon(icon, null, Modifier.size(24.dp), tint = tint)
+    }
+
+/** Plus & Account's tonal button (Sign out, Create an account, Back up to Google Drive): 40 high, as wide as its words. */
+@Composable
+fun PlusTonalButton(text: String, icon: ImageVector, tag: String, onClick: () -> Unit) {
+    val c = appColors
+    Button(onClick, Modifier.heightIn(min = 40.dp).semantics { testTag = tag },
+        colors = ButtonDefaults.buttonColors(containerColor = c.tonal, contentColor = c.ink),
+        contentPadding = PaddingValues(start = 16.dp, end = 24.dp, top = 10.dp, bottom = 10.dp)) {
+        Icon(icon, null, Modifier.size(18.dp))
+        Spacer(Modifier.width(8.dp))
+        Text(text, style = AppType.labelLarge)
+    }
+}
 
 /** The invite's QR code: drawn on the phone from the link, black on white in both themes (cameras read that best). */
 @Composable

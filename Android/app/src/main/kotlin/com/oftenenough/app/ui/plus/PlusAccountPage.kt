@@ -14,25 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material.icons.automirrored.outlined.Login
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.AddToDrive
-import androidx.compose.material.icons.outlined.CloudOff
-import androidx.compose.material.icons.outlined.DeleteForever
-import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.GroupAdd
-import androidx.compose.material.icons.outlined.GroupRemove
-import androidx.compose.material.icons.outlined.LinkOff
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.PersonAdd
-import androidx.compose.material.icons.outlined.PersonRemove
-import androidx.compose.material.icons.outlined.ScheduleSend
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Redeem
-import androidx.compose.material.icons.outlined.Shop
-import androidx.compose.material.icons.outlined.SearchOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -73,9 +54,7 @@ import com.oftenenough.app.app.account.SignInProvider
 import com.oftenenough.app.app.backup.BackupCenter
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.ui.components.ListRow
 import com.oftenenough.app.ui.components.SegmentedList
-import com.oftenenough.app.ui.components.TonalButton
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
@@ -141,16 +120,16 @@ fun PlusAccountPage(
         Spacer(Modifier.height(24.dp))
         when (state) {
             PlusState.FREE, PlusState.FREE_SIGNED_IN -> Section("Your family") {
-                SegmentedList { ListRow("Join a family", 0, 1, "Have an invite? Open it or scan it", Icons.Outlined.GroupAdd, iconDisc = true,
+                SegmentedList { PlusRow("Join a family", 0, 1, "Have an invite? Open it or scan it", Symbols.GroupAdd,
                     onClick = nav::joinFamily, modifier = Modifier.semantics { testTag = "plus-join-family" }) }
             }
             PlusState.PLUS_NO_ACCOUNT, PlusState.PLUS -> Section("Your family") {
                 if (plus.owned == PlusOwned.FAMILY && account == null) SegmentedList {
-                    ListRow("Invite your family", 0, 1, "Create an account first, then invite up to 5 people", Icons.Outlined.GroupAdd, iconDisc = true,
+                    PlusRow("Invite your family", 0, 1, "Create an account first, then invite up to 5 people", Symbols.GroupAdd,
                         onClick = nav::createAccount, modifier = Modifier.semantics { testTag = "plus-invite-needs-account" })
                 } else SegmentedList {
-                    ListRow("Upgrade to Plus Family", 0, 1, "Add up to 5 people for ${plus.price(PlusProduct.FAMILY_UPGRADE) ?: "the difference"}, the difference",
-                        Icons.Outlined.Group, iconDisc = true, onClick = nav::upgradeToFamily, modifier = Modifier.semantics { testTag = "plus-upgrade-family" })
+                    PlusRow("Upgrade to Plus Family", 0, 1, "Add up to 5 people for ${plus.price(PlusProduct.FAMILY_UPGRADE) ?: "the difference"}, the difference",
+                        Symbols.Group, onClick = nav::upgradeToFamily, modifier = Modifier.semantics { testTag = "plus-upgrade-family" })
                 }
             }
             PlusState.FAMILY_OWNER -> account?.family?.let { family ->
@@ -174,11 +153,11 @@ fun PlusAccountPage(
             Spacer(Modifier.height(24.dp))
             Section("Already have Plus?", footer = "Plus bought on this Google account also comes back by itself when you open the app.") {
                 SegmentedList {
-                    ListRow("Sign in", 0, 3, "Bought on an iPhone, or have an account", Icons.AutoMirrored.Outlined.Login, iconDisc = true,
+                    PlusRow("Sign in", 0, 3, "Bought on an iPhone, or have an account", Symbols.Login,
                         onClick = nav::signIn, modifier = Modifier.semantics { testTag = "plus-sign-in" })
-                    ListRow("Restore from Google Play", 1, 3, "From this Google account", Icons.Outlined.Shop, iconDisc = true,
+                    PlusRow("Restore from Google Play", 1, 3, "From this Google account", Symbols.Shop,
                         onClick = nav::restore, modifier = Modifier.semantics { testTag = "plus-restore" })
-                    ListRow("Redeem a code", 2, 3, "If you were given one", Icons.Outlined.Redeem, iconDisc = true,
+                    PlusRow("Redeem a code", 2, 3, "If you were given one", Symbols.Redeem,
                         onClick = { dialog = "code" }, modifier = Modifier.semantics { testTag = "plus-redeem" })
                 }
             }
@@ -187,9 +166,9 @@ fun PlusAccountPage(
             Spacer(Modifier.height(24.dp))
             Section("Already have Plus?", footer = "Plus bought on this Google account also comes back by itself when you open the app.") {
                 SegmentedList {
-                    ListRow("Restore from Google Play", 0, 2, "From this Google account", Icons.Outlined.Shop, iconDisc = true,
+                    PlusRow("Restore from Google Play", 0, 2, "From this Google account", Symbols.Shop,
                         onClick = nav::restore, modifier = Modifier.semantics { testTag = "plus-restore" })
-                    ListRow("Redeem a code", 1, 2, "If you were given one", Icons.Outlined.Redeem, iconDisc = true,
+                    PlusRow("Redeem a code", 1, 2, "If you were given one", Symbols.Redeem,
                         onClick = { dialog = "code" }, modifier = Modifier.semantics { testTag = "plus-redeem" })
                 }
             }
@@ -197,7 +176,7 @@ fun PlusAccountPage(
         if (account != null) {
             Spacer(Modifier.height(24.dp))
             SegmentedList {
-                ListRow("Delete my account…", 0, 1, null, Icons.Outlined.DeleteForever, iconDisc = true, titleColor = c.error, iconTint = c.error, strong = true,
+                PlusRow("Delete my account…", 0, 1, null, Symbols.DeleteForever, red = true,
                     onClick = { dialog = "delete" }, chevron = false, modifier = Modifier.semantics { testTag = "plus-delete-account" })
             }
         }
@@ -207,13 +186,13 @@ fun PlusAccountPage(
     // ---------------------------------------------------------------- Dialogs (Figma 7.1–7.10, 4.2)
     val owner = account?.family?.ownerName ?: ""
     when (dialog) {
-        "sign-out" -> PlusDialog(Icons.AutoMirrored.Outlined.Logout, "Sign out?", when (state) {
+        "sign-out" -> PlusDialog(Symbols.Logout, "Sign out?", when (state) {
             PlusState.FAMILY_OWNER -> "Plus stays on this phone through Google Play, and your family keeps Plus. Your habits stay here and in your Google Drive."
             PlusState.FAMILY_MEMBER -> "Plus from $owner’s family stops on this phone until you sign in again. Your habits stay on this phone and in your Google Drive."
             PlusState.FREE_SIGNED_IN -> "Your habits stay on this phone and in your Google Drive."
             else -> "Plus stays on this phone through Google Play. Your habits stay here and in your Google Drive."
         }, "Sign out", { dialog = null; accounts.signOut(); say("Signed out") }, { dialog = null }, tag = "dialog-sign-out")
-        "delete" -> PlusDialog(Icons.Outlined.DeleteForever, "Delete your account?", when (state) {
+        "delete" -> PlusDialog(Symbols.DeleteForever, "Delete your account?", when (state) {
             PlusState.FAMILY_OWNER -> "Your account and your family are deleted, so " + familyNames(account?.family) + " Your purchase stays with Google Play, and your habits stay here and in your Google Drive."
             PlusState.FAMILY_MEMBER -> "Your account is deleted and you leave $owner’s family, so Plus stops on this phone. Your habits stay here and in your Google Drive."
             else -> "Your account is deleted. Your purchase stays with Google Play. Your habits stay on this phone and in your Google Drive."
@@ -231,24 +210,24 @@ fun PlusAccountPage(
             }
         }, { dialog = null }, destructive = true, tag = "dialog-delete-account")
         "remove" -> account?.family?.people?.firstOrNull { it.id == removing }?.let { p ->
-            PlusDialog(Icons.Outlined.PersonRemove, "Remove ${p.name}?",
+            PlusDialog(Symbols.PersonRemove, "Remove ${p.name}?",
                 "${p.name} keeps their habits. Plus stops on their devices, and their place opens for someone else.", "Remove", {
                     dialog = null
                     scope.launch { if (accounts.remove(p.id) == Answer.Offline) say(offline) }
-                }, { dialog = null }, destructive = true, tag = "dialog-remove")
+                }, { dialog = null }, tag = "dialog-remove")
         }
-        "leave" -> PlusDialog(Icons.Outlined.GroupRemove, "Leave $owner’s family?",
+        "leave" -> PlusDialog(Symbols.GroupRemove, "Leave $owner’s family?",
             "Your habits stay on this phone and in your Google Drive. Plus stops until you get it again.", "Leave", {
                 dialog = null
                 scope.launch { if (accounts.leave() == Answer.Offline) say(offline) }
-            }, { dialog = null }, destructive = true, tag = "dialog-leave")
-        "cancel-invite" -> PlusDialog(Icons.Outlined.LinkOff, "Cancel this invite?",
+            }, { dialog = null }, tag = "dialog-leave")
+        "cancel-invite" -> PlusDialog(Symbols.LinkOff, "Cancel this invite?",
             "The link and the QR code stop working, and the place is free again.", "Cancel invite", {
                 dialog = null; sheet = null
                 scope.launch { if (accounts.cancelInvite() == Answer.Offline) say(offline) }
-            }, { dialog = null }, dismiss = "Keep it", destructive = true, tag = "dialog-cancel-invite")
+            }, { dialog = null }, dismiss = "Keep it", tag = "dialog-cancel-invite")
         "code" -> RedeemCodeDialog({ code -> codes?.redeem(code) == true }, onDone = { dialog = null; say("Plus is on. Thank you.") }) { dialog = null }
-        "no-plus" -> PlusDialog(Icons.Outlined.SearchOff, "No Plus found", "If you bought it on an iPhone, or have an account, sign in instead.",
+        "no-plus" -> PlusDialog(Symbols.SearchOff, "No Plus found", "If you bought it on an iPhone, or have an account, sign in instead.",
             "Sign in", { dialog = null; nav.signIn() }, { dialog = null }, tag = "dialog-no-plus")
     }
 
@@ -258,9 +237,11 @@ fun PlusAccountPage(
         val context = LocalContext.current
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         ModalBottomSheet({ sheet = null }, sheetState = sheetState, containerColor = if (c.dark) c.surface else androidx.compose.ui.graphics.Color(0xFFFCFCFD),
-            modifier = Modifier.semantics { testTag = "sheet-" + sheet }) {
+            modifier = Modifier.semantics { testTag = "sheet-" + sheet },
+            // Figma 7, 7.5: the handle 12 from the top, the heading 16 under it.
+            dragHandle = { Box(Modifier.padding(top = 12.dp, bottom = 16.dp).size(32.dp, 4.dp).clip(RoundedCornerShape(2.dp)).background(c.outline)) }) {
             val sent = sheet == "invite-sent"
-            Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(16.dp),
+            Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally) {
                 Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(if (sent) "Invite sent" else "Invite someone", Modifier.semantics { heading() }, style = AppType.headlineSmallEmphasized, color = c.ink)
@@ -272,8 +253,11 @@ fun PlusAccountPage(
                     InviteQr(invite.link)
                     Text("With them? They scan it with their camera.", style = AppType.bodySmall, color = c.secondary, textAlign = TextAlign.Center)
                 }
-                MainButton(if (sent) "Share again" else "Share invite link", "invite-share", Icons.Outlined.Share) { shareInvite(context, invite.link) }
-                if (sent) QuietButton("Cancel invite", "invite-cancel") { dialog = "cancel-invite" }
+                Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MainButton(if (sent) "Share again" else "Share invite link", "invite-share", Symbols.Share) { shareInvite(context, invite.link) }
+                    // Figma 7.5 → 7.6: the sheet closes and the question is asked over the page.
+                    if (sent) QuietButton("Cancel invite", "invite-cancel", small = true) { sheet = null; dialog = "cancel-invite" }
+                }
                 Text(if (sent) "It works once. They join with their own account." else "Works once, for 7 days. Cancel it in Your family.",
                     style = AppType.bodySmall, color = c.secondary, textAlign = TextAlign.Center)
             }
@@ -304,15 +288,19 @@ private fun StateCard(state: PlusState, account: Account?, store: HabitStore, on
     val owner = account?.family?.ownerName ?: ""
     WhiteCard(Modifier.semantics { testTag = "plus-state-" + state.name.lowercase() }) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            AppIconTile(56.dp)
+            AppIconTile(56.dp, flat = true)
             Spacer(Modifier.width(16.dp))
-            Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }) {
+            Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }, verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(if (state == PlusState.FREE || state == PlusState.FREE_SIGNED_IN) "Free" else "Plus is yours", style = AppType.title20Emphasized, color = c.ink)
+                // A long email is shortened in its middle on one line (Figma 1.4: "alexa…@gmail.com"); with larger text the
+                // whole line wraps instead, so "Signed in as" is never cut (U36).
+                val oneLine = account != null && androidx.compose.ui.platform.LocalDensity.current.fontScale <= 1.3f
                 Text(when {
                     account != null -> "Signed in as " + account.email
                     state == PlusState.FREE -> "No sign-in needed"
                     else -> "No account yet"
-                }, style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.MiddleEllipsis)
+                }, style = AppType.bodyMedium, color = c.secondary, maxLines = if (oneLine) 1 else Int.MAX_VALUE,
+                    overflow = if (oneLine) TextOverflow.MiddleEllipsis else TextOverflow.Clip)
             }
         }
         Text(when (state) {
@@ -326,10 +314,10 @@ private fun StateCard(state: PlusState, account: Account?, store: HabitStore, on
         when (state) {
             PlusState.FREE, PlusState.FREE_SIGNED_IN -> {
                 FreeBox(store, onSeePlus)
-                if (state == PlusState.FREE_SIGNED_IN) TonalButton("Sign out", onSignOut, Modifier.semantics { testTag = "plus-sign-out" }, icon = Icons.AutoMirrored.Outlined.Logout, height = 40.dp)
+                if (state == PlusState.FREE_SIGNED_IN) PlusTonalButton("Sign out", Symbols.Logout, "plus-sign-out", onSignOut)
             }
-            PlusState.PLUS_NO_ACCOUNT -> TonalButton("Create an account", onCreate, Modifier.semantics { testTag = "plus-create-account" }, icon = Icons.Outlined.PersonAdd, height = 40.dp)
-            else -> TonalButton("Sign out", onSignOut, Modifier.semantics { testTag = "plus-sign-out" }, icon = Icons.AutoMirrored.Outlined.Logout, height = 40.dp)
+            PlusState.PLUS_NO_ACCOUNT -> PlusTonalButton("Create an account", Symbols.PersonAdd, "plus-create-account", onCreate)
+            else -> PlusTonalButton("Sign out", Symbols.Logout, "plus-sign-out", onSignOut)
         }
     }
 }
@@ -356,31 +344,30 @@ private fun FreeBox(store: HabitStore, onSeePlus: () -> Unit) {
             contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 24.dp, end = 16.dp, top = 10.dp, bottom = 10.dp)) {
             Text("See what’s in Plus", style = AppType.labelLarge)
             Spacer(Modifier.width(8.dp))
-            Icon(Icons.AutoMirrored.Rounded.ArrowForward, null, Modifier.size(18.dp))
+            Icon(Symbols.ArrowForward, null, Modifier.size(18.dp))
         }
     }
 }
 
-/** The Backup row: where the habits are kept, or that they aren't yet (the button opens Backup & Sync's own flow). */
+/**
+ * The Backup row: where the habits are kept, or that they aren't yet (Figma 1.1: the button, under the words, opens
+ * Backup & Sync's own flow).
+ */
 @Composable
 private fun BackupRow(backup: BackupCenter, onOpen: () -> Unit) {
     val c = appColors
     val email = backup.link.accountName?.let { n -> Regex("\\((.+)\\)").find(n)?.groupValues?.get(1) ?: n }
     if (email != null) SegmentedList {
-        ListRow("Backed up to Google Drive", 0, 1, email, Icons.Outlined.AddToDrive, iconDisc = true, onClick = onOpen,
+        PlusRow("Backed up to Google Drive", 0, 1, email, Symbols.AddToDrive, onClick = onOpen,
             modifier = Modifier.semantics { testTag = "plus-backup" })
-    } else WhiteCard(Modifier.semantics { testTag = "plus-not-backed-up" }, padding = 16.dp, gap = 12.dp) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(40.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-                Icon(Icons.Outlined.CloudOff, null, Modifier.size(22.dp), tint = c.ink)
-            }
-            Spacer(Modifier.width(16.dp))
-            Column(Modifier.weight(1f)) {
-                Text("Not backed up", style = AppType.titleMedium, color = c.ink)
-                Text("Only on this phone for now", style = AppType.bodyMedium, color = c.secondary)
-            }
+    } else Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).heightIn(min = 72.dp).padding(16.dp)
+        .semantics { testTag = "plus-not-backed-up" }, verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        IconDisc(Symbols.CloudOff)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text("Not backed up", style = AppType.titleMedium, color = c.ink)
+            Text("Only on this phone for now", style = AppType.bodyMedium, color = c.secondary)
+            Box(Modifier.padding(top = 12.dp)) { PlusTonalButton("Back up to Google Drive", Symbols.AddToDrive, "plus-back-up", onOpen) }
         }
-        TonalButton("Back up to Google Drive", onOpen, Modifier.fillMaxWidth().padding(start = 56.dp), icon = Icons.Outlined.AddToDrive, height = 40.dp)
     }
 }
 
@@ -403,16 +390,16 @@ private fun OwnerRows(family: Family, onPerson: (FamilyPerson) -> Unit, onInvite
     SegmentedList(Modifier.semantics { testTag = "plus-family" }) {
         for (p in family.people) {
             val index = i++
-            if (p.you) ListRow("You", index, rows, "Owner", Icons.Outlined.Person, iconDisc = true)
-            else ListRow(p.name, index, rows, joined(p), Icons.Outlined.Person, iconDisc = true, onClick = { onPerson(p) },
+            if (p.you) PlusRow("You", index, rows, "Owner", Symbols.Person)
+            else PlusRow(p.name, index, rows, joined(p), Symbols.Person, onClick = { onPerson(p) },
                 modifier = Modifier.semantics { testTag = "family-person-" + p.name })
         }
         family.invite?.let { inv ->
-            ListRow("Invite sent", i++, rows, "Ends " + DayWords.dayMonth(inv.endsDay.toInt()), Icons.Outlined.ScheduleSend, iconDisc = true,
+            PlusRow("Invite sent", i++, rows, "Ends " + DayWords.dayMonth(inv.endsDay.toInt()), Symbols.ScheduleSend,
                 onClick = onInviteSent, modifier = Modifier.semantics { testTag = "family-invite-sent" })
         }
-        if (family.placesFree > 0) ListRow("Add a person", i, rows, "${family.placesFree} " + (if (family.placesFree == 1) "place" else "places") + " free",
-            Icons.Outlined.PersonAdd, iconDisc = true, onClick = onAdd, modifier = Modifier.semantics { testTag = "family-add" })
+        if (family.placesFree > 0) PlusRow("Add a person", i, rows, "${family.placesFree} " + (if (family.placesFree == 1) "place" else "places") + " free",
+            Symbols.PersonAdd, onClick = onAdd, modifier = Modifier.semantics { testTag = "family-add" })
     }
 }
 
@@ -422,9 +409,9 @@ private fun MemberRows(family: Family, onLeave: () -> Unit) {
     val rows = family.people.size + 1
     SegmentedList(Modifier.semantics { testTag = "plus-family" }) {
         family.people.forEachIndexed { i, p ->
-            ListRow(if (p.you) "You" else p.name, i, rows, if (p.owner) "Owner" else joined(p), Icons.Outlined.Person, iconDisc = true)
+            PlusRow(if (p.you) "You" else p.name, i, rows, if (p.owner) "Owner" else joined(p), Symbols.Person)
         }
-        ListRow("Leave ${family.ownerName}’s family", family.people.size, rows, "Your habits stay; only Plus stops", Icons.Outlined.GroupRemove, iconDisc = true,
+        PlusRow("Leave ${family.ownerName}’s family", family.people.size, rows, "Your habits stay; only Plus stops", Symbols.GroupRemove,
             onClick = onLeave, chevron = false, modifier = Modifier.semantics { testTag = "family-leave" })
     }
 }
@@ -438,27 +425,17 @@ private fun RedeemCodeDialog(redeem: (String) -> Boolean, onDone: () -> Unit, on
     var code by rememberSaveable { mutableStateOf("") }
     var wrong by rememberSaveable { mutableStateOf(false) }
     val submit = { if (redeem(code)) onDone() else wrong = true }
-    androidx.compose.material3.AlertDialog(onDismiss,
-        modifier = Modifier.semantics { testTag = "dialog-code" },
-        icon = { Icon(Icons.Outlined.Redeem, null, tint = c.secondary) },
-        title = { Text("Redeem a code", style = AppType.headlineSmall, color = c.ink, modifier = Modifier.fillMaxWidth()) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("A code turns on Plus on this phone.", style = AppType.bodyMedium, color = c.secondary)
-                androidx.compose.material3.OutlinedTextField(code, { code = it.take(40); wrong = false }, Modifier.fillMaxWidth().semantics { testTag = "code-field" },
-                    textStyle = AppType.bodyLarge, singleLine = true, label = { Text("Code", style = AppType.bodySmall) },
-                    isError = wrong, supportingText = if (wrong) ({ Text("That code doesn’t work. Check it and try again.", style = AppType.bodySmall) }) else null,
-                    keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Characters,
-                        autoCorrectEnabled = false, imeAction = androidx.compose.ui.text.input.ImeAction.Done),
-                    keyboardActions = androidx.compose.foundation.text.KeyboardActions(onDone = { if (code.isNotBlank()) submit() }))
-            }
-        },
-        confirmButton = {
-            androidx.compose.material3.TextButton(submit, Modifier.semantics { testTag = "dialog-code-confirm" }, enabled = code.isNotBlank()) {
-                Text("Redeem", style = AppType.labelLarge, color = c.ink)
-            }
-        },
-        dismissButton = { androidx.compose.material3.TextButton(onDismiss) { Text("Cancel", style = AppType.labelLarge, color = c.ink) } },
-        containerColor = if (c.dark) c.surface else androidx.compose.ui.graphics.Color(0xFFF4F4F6),
-    )
+    // Not in Figma 1476:2 (added for Play's reviewers, 15 Oct 2026): drawn as its dialogs are (7.x).
+    PlusDialogFrame(Symbols.Redeem, "Redeem a code", "dialog-code", onDismiss, actions = {
+        DialogButton("Cancel", "dialog-code-dismiss", onClick = onDismiss)
+        DialogButton("Redeem", "dialog-code-confirm", enabled = code.isNotBlank(), onClick = submit)
+    }) {
+        Text("A code turns on Plus on this phone.", style = AppType.bodyMedium, color = c.secondary)
+        androidx.compose.material3.OutlinedTextField(code, { code = it.take(40); wrong = false }, Modifier.fillMaxWidth().semantics { testTag = "code-field" },
+            textStyle = AppType.bodyLarge, singleLine = true, label = { Text("Code", style = AppType.bodySmall) },
+            isError = wrong, supportingText = if (wrong) ({ Text("That code doesn’t work. Check it and try again.", style = AppType.bodySmall) }) else null,
+            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Characters,
+                autoCorrectEnabled = false, imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+            keyboardActions = androidx.compose.foundation.text.KeyboardActions(onDone = { if (code.isNotBlank()) submit() }))
+    }
 }

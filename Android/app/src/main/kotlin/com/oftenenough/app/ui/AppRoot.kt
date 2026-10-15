@@ -322,7 +322,10 @@ private fun AppMain(
         }
     }
     }
-    if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 96.dp))
+    // Plus & Account has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
+    // snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
+    if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
+        .let { if (menuItem == MenuItem.PLUS) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
     }
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
     // A family invite opened from a link (Figma 5): its own screen, over whatever was open.

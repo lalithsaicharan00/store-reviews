@@ -64,6 +64,10 @@ account, Sign in (looking, Plus is back, no account found, couldn't connect), Re
 account, Join a family (link or QR code via Google's code scanner) and every invite state, the invite sheets with a
 real QR code, and every dialog (sign out, delete, remove, leave, cancel an invite). Code: `ui/plus/`, `app/account/`.
 
+- **Icons are Figma's own:** Material Symbols Rounded, outlined (`ui/plus/Symbols.kt`, the Symbols' outlines; the older
+  Material Icons draw some of them filled), and Material Icons Round in the hero cookies, as Figma sets them. Dialogs
+  are drawn as Figma's (`PlusDialogFrame`: the icon at the start, only deleting the account in red). Checked against
+  every frame on 15 Oct 2026 (Current Work 110).
 - **The loading animation** (`ui/components/LoadingIndicator.kt`): Material 3 Expressive's contained loading
   indicator, drawn with `graphics-shapes`, the library Material's own uses (seven shapes morphing every 650 ms, two turns
   in 4.55 s, as Figma animates it). Material's `ContainedLoadingIndicator` isn't public in the stable Material 3 (1.4.0);
@@ -110,8 +114,9 @@ Scratch files, logs and screenshots go in `Research/Temp/` (ignored by git), nev
 |---|---|---|
 | JVM (`testDebugUnitTest`, 52) | `WordsTest`, `SwiftJsonTest`, `FormRulesTest`, `DataExportTest`, `ReminderPlanTest`, `LocalDriveTest`, `PlayerWordsTest`, `ProgressWordsTest`, `PauseWordsTest`, `ReminderWordsTest`, `AppLockTest`, `ArrangeTest` | The iPhone's words and rules, the stored formats, the stand-in Drive, App lock's rules |
 | Emulator | `TodayTest` (11) | The welcome, an empty Today, logging and undo for every kind |
-| JVM | `PlusAccountTest` (9) | The account's rules on the server's stand-in: one account each, six in a family, an invite once for 7 days, leaving, deleting, offline, the account file |
+| JVM | `PlusAccountTest` (10) | The account's rules on the server's stand-in: one account each, six in a family, an invite once for 7 days, leaving, deleting, offline, the account file |
 | Emulator | `PlusAccountScreensTest` (10) | Plus & Account: buying Plus and Plus Family, pending and failed payments, restore, sign in (found, none, offline), an invite link joining and leaving, ended and used invites, deleting the account |
+| Emulator | `PlusAccountFramesTest` (6) | Every frame of Figma `1476:2`, reached through its own flow, its words checked and a picture saved as the frame's number (`files/plus-shots/<shots argument>/`), for the side-by-side check against Figma; run it in light, dark and at 200 % text (`-Pandroid.testInstrumentationRunnerArguments.shots=dark`, and keep the pictures with `-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true`) |
 | Emulator | `ScreensTest` (13) | Habit details, Progress, a routine, Pause, the Habits list, groups and Filter, Arrange, Help, Plus, App lock, a row's menu, the icon's shortcuts |
 | Emulator | `WidgetDataTest` (8) | The widgets' snapshot, the "after" cards, a tap saved once |
 | Emulator | `DataSafetyTest` (5) | Backup and restore round trip, undo, Merge, an empty or broken file, taps saved in order |

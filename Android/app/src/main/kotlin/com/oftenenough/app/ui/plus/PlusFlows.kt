@@ -19,26 +19,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.outlined.Login
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.AddToDrive
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.GroupAdd
-import androidx.compose.material.icons.outlined.Groups
-import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material.icons.outlined.LinkOff
-import androidx.compose.material.icons.outlined.PersonAdd
-import androidx.compose.material.icons.outlined.QrCodeScanner
-import androidx.compose.material.icons.outlined.TimerOff
-import androidx.compose.material.icons.outlined.VerifiedUser
-import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
@@ -54,7 +34,23 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.LinkOff
+import androidx.compose.material.icons.rounded.TimerOff
+import androidx.compose.material.icons.rounded.Group
+import androidx.compose.material.icons.rounded.GroupAdd
+import androidx.compose.material.icons.rounded.Groups
+import androidx.compose.material.icons.automirrored.rounded.Login
+import androidx.compose.material.icons.rounded.QrCodeScanner
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import com.oftenenough.app.ui.components.segmentShape
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
@@ -164,7 +160,7 @@ fun GetPlusScreen(plus: PlusStore, accounts: AccountCenter, signIn: SignInProvid
                     Row(Modifier.padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                         AppIconTile(48.dp)
                         Spacer(Modifier.width(16.dp))
-                        Column(Modifier.semantics(mergeDescendants = true) { heading() }) {
+                        Column(Modifier.semantics(mergeDescendants = true) { heading() }, verticalArrangement = Arrangement.spacedBy(2.dp)) {
                             Text(if (upgrade) "Plus Family" else "Plus", style = AppType.titleLargeEmphasized, color = c.ink)
                             Text(if (upgrade) "You have Plus. Pay only the difference." else "One payment, yours forever.", style = AppType.bodyMedium, color = c.secondary)
                         }
@@ -186,16 +182,24 @@ fun GetPlusScreen(plus: PlusStore, accounts: AccountCenter, signIn: SignInProvid
                 }
                 Spacer(Modifier.height(with(LocalDensity.current) { bottomHeight.toDp() }))
             }
-            Column(Modifier.align(Alignment.BottomCenter).fillMaxWidth().background(c.screen).navigationBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 12.dp).onSizeChanged { bottomHeight = it.height }, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(Modifier.align(Alignment.BottomCenter).fillMaxWidth()
+                // Figma 2: a soft shadow cast upward over the content scrolling under it (0, -4, blur 12, black 6 %).
+                .let { if (upgrade) it else it.drawBehind {
+                    val h = 16.dp.toPx()
+                    drawRect(Brush.verticalGradient(listOf(Color.Transparent, Color.Black.copy(alpha = 0.06f)), startY = -h, endY = 0f),
+                        topLeft = Offset(0f, -h), size = Size(size.width, h))
+                } }
+                .background(c.screen).navigationBarsPadding()
+                .padding(start = 16.dp, end = 16.dp, top = if (upgrade) 16.dp else 12.dp, bottom = 8.dp).onSizeChanged { bottomHeight = it.height },
+                verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 val price = plus.price(product)
                 MainButton((if (product == PlusProduct.PLUS) "Get Plus" else "Get Plus Family") + (price?.let { " · $it" } ?: ""), "plus-buy",
                     enabled = plus.canBuy && !buying) { buy() }
-                if (!upgrade) QuietButton("I already have Plus", "plus-already") { nav.signIn() }
+                if (!upgrade) QuietButton("I already have Plus", "plus-already", height = 40.dp) { nav.signIn() }
             }
         }
     }
-    if (notCompleted) PlusDialog(Icons.Outlined.ErrorOutline, "Payment not completed",
+    if (notCompleted) PlusDialog(Symbols.Error, "Payment not completed",
         "Nothing was charged. Check your payment method in Google Play, then try again.", "Try again",
         { notCompleted = false; buy() }, { notCompleted = false }, tag = "dialog-payment")
 }
@@ -224,9 +228,9 @@ private fun PlanChoice(plus: PlusStore, family: Boolean, onFamily: (Boolean) -> 
 }
 
 private val accountPoints = listOf(
-    Point(Icons.Outlined.Devices, "Plus on all your devices", "Sign in on your other devices."),
-    Point(Icons.Outlined.AddToDrive, "Your habits sync through your Google Drive", "They stay in your own Drive. We never see them."),
-    Point(Icons.Outlined.VerifiedUser, "Your purchase stays safe", "Even if you lose this phone."),
+    Point(Symbols.Devices, "Plus on all your devices", "Sign in on your other devices."),
+    Point(Symbols.AddToDrive, "Your habits sync through your Google Drive", "They stay in your own Drive. We never see them."),
+    Point(Symbols.VerifiedUser, "Your purchase stays safe", "Even if you lose this phone."),
 )
 
 /**
@@ -263,7 +267,7 @@ private fun ThanksPlus(accounts: AccountCenter, signIn: SignInProvider, plus: Pl
         Spacer(Modifier.height(28.dp))
         PointsCard(accountPoints)
     }
-    if (offline) PlusDialog(Icons.Outlined.WifiOff, "Couldn’t connect", "We couldn’t reach Google. Check your internet connection, then try again.",
+    if (offline) PlusDialog(Symbols.WifiOff, "Couldn’t connect", "We couldn’t reach Google. Check your internet connection, then try again.",
         "OK", { offline = false }, { offline = false }, dismiss = "", tag = "dialog-offline")
 }
 
@@ -291,12 +295,12 @@ private fun ThanksFamily(accounts: AccountCenter, signIn: SignInProvider, plus: 
         Hero(HeroArt.AppIcon, "Plus Family is yours.", if (signedIn) "Thank you. Invite people from Your family." else "Thank you. Sign in to invite people to your family.")
         Spacer(Modifier.height(28.dp))
         PointsCard(listOf(
-            Point(Icons.Outlined.GroupAdd, "Invite up to 5 people", "With a link or a QR code."),
-            Point(Icons.Outlined.VisibilityOff, "Everyone’s habits stay their own", "Nobody sees anyone else’s."),
-            Point(Icons.Outlined.AddToDrive, "Your habits sync through your Google Drive", "We never see them."),
+            Point(Symbols.GroupAdd, "Invite up to 5 people", "With a link or a QR code."),
+            Point(Symbols.VisibilityOff, "Everyone’s habits stay their own", "Nobody sees anyone else’s."),
+            Point(Symbols.AddToDrive, "Your habits sync through your Google Drive", "We never see them."),
         ))
     }
-    if (offline) PlusDialog(Icons.Outlined.WifiOff, "Couldn’t connect", "We couldn’t reach Google. Check your internet connection, then try again.",
+    if (offline) PlusDialog(Symbols.WifiOff, "Couldn’t connect", "We couldn’t reach Google. Check your internet connection, then try again.",
         "OK", { offline = false }, { offline = false }, dismiss = "", tag = "dialog-offline")
 }
 
@@ -320,7 +324,7 @@ fun CreateAccountScreen(accounts: AccountCenter, signIn: SignInProvider, plus: P
         Spacer(Modifier.height(28.dp))
         PointsCard(accountPoints)
     }
-    if (offline) PlusDialog(Icons.Outlined.WifiOff, "Couldn’t connect", "We couldn’t reach Google. Check your internet connection, then try again.",
+    if (offline) PlusDialog(Symbols.WifiOff, "Couldn’t connect", "We couldn’t reach Google. Check your internet connection, then try again.",
         "OK", { offline = false }, { offline = false }, dismiss = "", tag = "dialog-offline")
 }
 
@@ -367,15 +371,15 @@ fun SignInFlow(
         "looking" -> CenterScreen("Looking for your Plus", "Signed in with " + (if (with == SignInWith.GOOGLE) "Google" else "Apple"), "Cancel", "signin-looking",
             { job?.cancel(); step = "start" })
         "offline" -> CenterScreen("Couldn’t connect", "We couldn’t reach " + (if (with == SignInWith.GOOGLE) "Google" else "Apple") + ". Check your internet connection, then try again.",
-            "Cancel", "signin-offline", { step = "start" }, icon = Icons.Outlined.WifiOff, main = "Try again", onMain = { lastProof?.let(::look) ?: run { step = "start" } })
+            "Cancel", "signin-offline", { step = "start" }, icon = Symbols.WifiOff, main = "Try again", onMain = { lastProof?.let(::look) ?: run { step = "start" } })
         "found" -> {
             val account = accounts.account
             FlowScreen(onBack = { nav.toPage() }, tag = "signin-found", showBack = false, bottom = { MainButton("Done", "signin-done") { nav.toPage() } }) {
                 Hero(HeroArt.AppIcon, if (account?.givesPlus == true) "Plus is back." else "You’re signed in.", "Signed in as $email.")
                 Spacer(Modifier.height(28.dp))
                 PointsCard(listOf(
-                    Point(Icons.Outlined.Devices, "Plus on all your devices", "Sign in on each one the same way."),
-                    Point(Icons.Outlined.AddToDrive, "Your habits sync through Drive", "We never see them."),
+                    Point(Symbols.Devices, "Plus on all your devices", "Sign in on each one the same way."),
+                    Point(Symbols.AddToDrive, "Your habits sync through Drive", "We never see them."),
                 ))
             }
         }
@@ -386,20 +390,20 @@ fun SignInFlow(
             ContinueWith(google = false, tag = "signin-apple") { choose(false) }
         }) {
             if (join != null) {
-                Hero(HeroArt.Cookie(Icons.Outlined.GroupAdd), "Sign in to join.", "$join’s family shares Plus with you.")
+                Hero(HeroArt.Cookie(Icons.Rounded.GroupAdd), "Sign in to join.", "$join’s family shares Plus with you.")
                 Spacer(Modifier.height(28.dp))
                 PointsCard(listOf(
                     Point(null, "Plus on all your devices", "At no cost to you."),
-                    Point(Icons.Outlined.AccountCircle, "Your account keeps your place", "Sign in anywhere and Plus is there."),
-                    Point(Icons.Outlined.VisibilityOff, "Your habits stay your own", "$join never sees them."),
+                    Point(Symbols.AccountCircle, "Your account keeps your place", "Sign in anywhere and Plus is there."),
+                    Point(Symbols.VisibilityOff, "Your habits stay your own", "$join never sees them."),
                 ))
             } else {
-                Hero(HeroArt.Cookie(Icons.AutoMirrored.Outlined.Login), "Sign in.", "Bring Plus back from your account.")
+                Hero(HeroArt.Cookie(Icons.AutoMirrored.Rounded.Login), "Sign in.", "Bring Plus back from your account.")
                 Spacer(Modifier.height(28.dp))
                 PointsCard(listOf(
                     Point(null, "Plus comes back", "On this phone and your others."),
-                    Point(Icons.Outlined.Group, "Your family too", "If you’re in a Plus Family."),
-                    Point(Icons.Outlined.AddToDrive, "Your habits stay in your Drive", "Your account never holds them."),
+                    Point(Symbols.Group, "Your family too", "If you’re in a Plus Family."),
+                    Point(Symbols.AddToDrive, "Your habits stay in your Drive", "Your account never holds them."),
                 ))
             }
         }
@@ -410,36 +414,39 @@ fun SignInFlow(
 @Composable
 private fun NoAccountFound(email: String, onBack: () -> Unit, onGoogle: () -> Unit, onApple: () -> Unit, onGetPlus: () -> Unit) {
     val c = appColors
-    FlowScreen(onBack = onBack, tag = "signin-none") {
-        Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp).padding(top = 0.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    FlowScreen(onBack = onBack, tag = "signin-none", top = true) {
+        Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("No account found.", Modifier.semantics { heading() }, style = AppType.headlineMediumEmphasized, color = c.ink)
             Text("No Plus account uses $email.", style = AppType.bodyLarge, color = c.secondary)
         }
         Spacer(Modifier.height(24.dp))
-        Text("Try another account", Modifier.fillMaxWidth().padding(start = 16.dp, bottom = 8.dp), style = AppType.labelLarge, color = c.secondary)
-        SegmentedList {
-            LogoRow(0, 2, "Another Google account", "Choose a different one", "none-google", onGoogle) { Image(painterResource(R.drawable.ic_google_logo), null, Modifier.size(20.dp)) }
-            LogoRow(1, 2, "Continue with Apple", "If you made it with Apple", "none-apple", onApple) {
-                Image(painterResource(R.drawable.ic_apple_logo), null, Modifier.size(width = 15.dp, height = 18.dp), colorFilter = ColorFilter.tint(c.ink))
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text("Try another account", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = c.secondary)
+            SegmentedList {
+                LogoRow(0, 2, "Another Google account", "Choose a different one", "none-google", onGoogle) { Image(painterResource(R.drawable.ic_google_logo), null, Modifier.size(20.dp)) }
+                LogoRow(1, 2, "Continue with Apple", "If you made it with Apple", "none-apple", onApple) {
+                    Image(painterResource(R.drawable.ic_apple_logo), null, Modifier.size(width = 17.dp, height = 21.dp), colorFilter = ColorFilter.tint(c.ink))
+                }
             }
+            Text("Don’t have Plus?", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = c.secondary)
+            SegmentedList { LogoRow(0, 1, "Get Plus", "One payment, yours forever", "none-get-plus", onGetPlus, disc = false) { MarkIcon(40.dp) } }
         }
-        Spacer(Modifier.height(16.dp))
-        Text("Don’t have Plus?", Modifier.fillMaxWidth().padding(start = 16.dp, bottom = 8.dp), style = AppType.labelLarge, color = c.secondary)
-        SegmentedList { LogoRow(0, 1, "Get Plus", "One payment, yours forever", "none-get-plus", onGetPlus, disc = false) { MarkIcon(32.dp) } }
     }
 }
 
 @Composable
 private fun LogoRow(index: Int, count: Int, title: String, line: String, tag: String, onClick: () -> Unit, disc: Boolean = true, logo: @Composable () -> Unit) {
     val c = appColors
-    Segment(index, count, Modifier.semantics(mergeDescendants = true) { testTag = tag }, onClick = onClick) {
+    // Figma 3.4's "Choice · …": 16 around, 12 at the chevron's side, as Plus & Account's rows.
+    Row(Modifier.fillMaxWidth().clip(segmentShape(index, count)).background(c.surface).clickable(onClick = onClick)
+        .padding(start = 16.dp, end = 12.dp, top = 16.dp, bottom = 16.dp).semantics(mergeDescendants = true) { testTag = tag },
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Box(Modifier.size(40.dp).clip(CircleShape).background(if (disc) c.tonal else androidx.compose.ui.graphics.Color.Transparent), contentAlignment = Alignment.Center) { logo() }
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(title, style = AppType.titleMedium, color = c.ink)
             Text(line, style = AppType.bodyMedium, color = c.secondary)
         }
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+        Icon(Symbols.ChevronRight, null, Modifier.size(24.dp), tint = c.secondary)
     }
 }
 
@@ -463,12 +470,12 @@ fun RestoreFlow(plus: PlusStore, accounts: AccountCenter, nav: PlusFlowNav) {
             Hero(HeroArt.AppIcon, "Plus is back.", "Bought with this Google account.")
             Spacer(Modifier.height(28.dp))
             PointsCard(listOf(
-                Point(Icons.Outlined.Devices, "Plus on your Android devices", "With this Google account."),
-                Point(Icons.Outlined.PersonAdd, "Want it on an iPhone or iPad too?", "Create one in Plus & Account."),
+                Point(Symbols.Devices, "Plus on your Android devices", "With this Google account."),
+                Point(Symbols.PersonAdd, "Want it on an iPhone or iPad too?", "Create one in Plus & Account."),
             ))
         }
         "offline" -> CenterScreen("Couldn’t connect", "We couldn’t reach Google Play. Check your internet connection, then try again.", "Cancel", "restore-offline",
-            { nav.toPage() }, icon = Icons.Outlined.WifiOff, main = "Try again", onMain = { step = "looking"; attempt++ })
+            { nav.toPage() }, icon = Symbols.WifiOff, main = "Try again", onMain = { step = "looking"; attempt++ })
         else -> CenterScreen("Looking for your purchase", "On this Google account", "Cancel", "restore-looking", { nav.toPage() })
     }
 }
@@ -481,7 +488,7 @@ fun JoinFamilyScreen(onScanned: (String) -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     var notOurs by rememberSaveable { mutableStateOf(false) }
     FlowScreen(onBack = onBack, tag = "join-family", bottom = {
-        MainButton("Scan QR code", "join-scan", Icons.Outlined.QrCodeScanner) {
+        MainButton("Scan QR code", "join-scan", Symbols.QrCodeScanner, iconSize = 20.dp) {
             // Google's code scanner: its own camera screen, no camera permission for the app.
             com.google.mlkit.vision.codescanner.GmsBarcodeScanning.getClient(context,
                 com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions.Builder()
@@ -490,15 +497,14 @@ fun JoinFamilyScreen(onScanned: (String) -> Unit, onBack: () -> Unit) {
                 .addOnSuccessListener { code -> InviteLink.token(code.rawValue)?.let(onScanned) ?: run { notOurs = true } }
         }
     }) {
-        Spacer(Modifier.height(40.dp))
-        Hero(HeroArt.Cookie(Icons.Outlined.QrCodeScanner), "Join a family.", "Use the invite you were sent.")
+        Hero(HeroArt.Cookie(Icons.Rounded.QrCodeScanner), "Join a family.", "Use the invite you were sent.")
         Spacer(Modifier.height(28.dp))
         PointsCard(listOf(
-            Point(Icons.Outlined.Link, "Got a link?", "Tap it on this phone. It opens here."),
-            Point(Icons.Outlined.QrCodeScanner, "With them?", "Scan the code on their phone."),
+            Point(Symbols.Link, "Got a link?", "Tap it on this phone. It opens here."),
+            Point(Symbols.QrCodeScanner, "With them?", "Scan the code on their phone."),
         ))
     }
-    if (notOurs) PlusDialog(Icons.Outlined.LinkOff, "Not an invite", "That code isn’t an Often Enough invite. Ask for the code in their Plus & Account.",
+    if (notOurs) PlusDialog(Symbols.LinkOff, "Not an invite", "That code isn’t an Often Enough invite. Ask for the code in their Plus & Account.",
         "OK", { notOurs = false }, { notOurs = false }, dismiss = "", tag = "dialog-not-invite")
 }
 
@@ -539,37 +545,36 @@ fun InviteFlow(token: String, plus: PlusStore, accounts: AccountCenter, signIn: 
     when {
         state == "looking" -> CenterScreen("Opening the invite", "Checking it with your family’s account", "Cancel", "invite-looking", { nav.toPage() })
         state == "offline" -> CenterScreen("Couldn’t connect", "We couldn’t open the invite. Check your internet connection, then try again.", "Cancel", "invite-offline",
-            { nav.toPage() }, icon = Icons.Outlined.WifiOff, main = "Try again", onMain = { attempt++ })
-        state == "unknown" -> Ended(Icons.Outlined.LinkOff, "This invite doesn’t work.", "Check the link, or ask for a new one.", "invite-unknown", nav)
-        look is InviteLook.Ended -> Ended(Icons.Outlined.TimerOff, "This invite has ended.", "Invites work for 7 days. Ask $owner for a new one.", "invite-ended", nav)
-        look is InviteLook.Used -> Ended(Icons.Outlined.LinkOff, "This invite was already used.", "Each invite works once. Ask $owner for a new one.", "invite-used", nav)
-        look is InviteLook.Cancelled -> Ended(Icons.Outlined.Cancel, "Invite cancelled.", "$owner cancelled it. To join, ask $owner for a new one.", "invite-cancelled", nav)
-        look is InviteLook.Full -> Ended(Icons.Outlined.Group, "$owner’s family is full.", "It already has 6 people. $owner can make room in Plus & Account.", "invite-full", nav)
+            { nav.toPage() }, icon = Symbols.WifiOff, main = "Try again", onMain = { attempt++ })
+        state == "unknown" -> Ended(Icons.Rounded.LinkOff, "This invite doesn’t work.", "Check the link, or ask for a new one.", "invite-unknown", nav)
+        look is InviteLook.Ended -> Ended(Icons.Rounded.TimerOff, "This invite has ended.", "Invites work for 7 days. Ask $owner for a new one.", "invite-ended", nav)
+        look is InviteLook.Used -> Ended(Icons.Rounded.LinkOff, "This invite was already used.", "Each invite works once. Ask $owner for a new one.", "invite-used", nav)
+        look is InviteLook.Cancelled -> Ended(Icons.Rounded.Cancel, "Invite cancelled.", "$owner cancelled it. To join, ask $owner for a new one.", "invite-cancelled", nav)
+        look is InviteLook.Full -> Ended(Icons.Rounded.Group, "$owner’s family is full.", "It already has 6 people. $owner can make room in Plus & Account.", "invite-full", nav)
         account == null -> SignInFlow(accounts, signIn, plus, nav, onBack = { nav.toPage() }, join = owner, onSignedIn = { attempt++ })
         account.plus == AccountPlus.FAMILY_MEMBER && account.family?.ownerName != owner -> FlowScreen(onBack = { nav.toPage() }, tag = "invite-in-family", bottom = {
             MainButton("Leave and join $owner’s", "invite-leave-join", enabled = !joining) { join() }
             QuietButton("Not now", "invite-not-now") { nav.toPage() }
         }) {
-            Hero(HeroArt.Cookie(Icons.Outlined.Groups), "Already in a family.", "You’re in ${account.family?.ownerName}’s family. Leave it to join $owner’s. Your habits stay with you.")
+            Hero(HeroArt.Cookie(Icons.Rounded.Groups), "Already in a family.", "You’re in ${account.family?.ownerName}’s family. Leave it to join $owner’s. Your habits stay with you.")
         }
         (account.plus == AccountPlus.PLUS || account.plus == AccountPlus.FAMILY_OWNER || plus.owned != PlusOwned.NONE) && !joinAnyway
             && account.plus != AccountPlus.FAMILY_MEMBER -> FlowScreen(onBack = { nav.toPage() }, tag = "invite-have-plus", bottom = {
             MainButton("Done", "invite-done") { nav.toPage() }
             if (account.plus != AccountPlus.FAMILY_OWNER) QuietButton("Join anyway", "invite-join-anyway") { joinAnyway = true }
         }) {
-            Spacer(Modifier.height(80.dp))
             Hero(HeroArt.AppIcon, "You have Plus.", "You don’t need $owner’s family for it. Keep the place for someone else?")
         }
         else -> FlowScreen(onBack = { nav.toPage() }, tag = "invite-join", bottom = {
             MainButton("Join family", "invite-join-family", enabled = !joining) { join() }
             QuietButton("Not now", "invite-not-now") { nav.toPage() }
         }) {
-            Hero(HeroArt.Cookie(Icons.Outlined.Group), "Join $owner’s family?", "$owner invited you to share Plus.")
+            Hero(HeroArt.Cookie(Icons.Rounded.Group), "Join $owner’s family?", "$owner invited you to share Plus.")
             Spacer(Modifier.height(28.dp))
             PointsCard(listOf(
                 Point(null, "Plus on all your devices", "Unlimited habits, at no cost to you."),
-                Point(Icons.Outlined.VisibilityOff, "Your habits stay private", "Neither of you sees the other’s."),
-                Point(Icons.AutoMirrored.Outlined.Logout, "Leave whenever you like", "Your habits stay with you."),
+                Point(Symbols.VisibilityOff, "Your habits stay private", "Neither of you sees the other’s."),
+                Point(Symbols.Logout, "Leave whenever you like", "Your habits stay with you."),
             ))
         }
     }
@@ -579,7 +584,6 @@ fun InviteFlow(token: String, plus: PlusStore, accounts: AccountCenter, signIn: 
 @Composable
 private fun Ended(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, line: String, tag: String, nav: PlusFlowNav) {
     FlowScreen(onBack = { nav.toPage() }, tag = tag, bottom = { MainButton("Done", "$tag-done") { nav.toPage() } }) {
-        Spacer(Modifier.height(80.dp))
         Hero(HeroArt.Cookie(icon), title, line)
     }
 }

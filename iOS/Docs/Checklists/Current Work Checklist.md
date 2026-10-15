@@ -1027,6 +1027,20 @@ and the Add note keyboard coming up by itself.
     PC's Pixel 10 Pro emulator (API 36).
     - [x] UI and wiring for every frame, against stand-ins with the Worker's rules (`StandInAccountServer`, `FakePlusStore`).
     - [x] Sign in with Google through Credential Manager (real code; switched on by a Web OAuth client ID at build time).
+    - [x] **Checked against Figma `1476:2`, frame by frame, and every difference fixed** (15 Oct 2026, the user: "check
+      everything, all of the screens from here and test everything properly"). Figma read live (texts, styles, spacing,
+      effects, icon fonts) and each of the 54 frames pictured beside the app at 360 × 800 dp. Fixed: the icons are
+      Figma's Material Symbols outlines (`ui/plus/Symbols.kt`; the cookies' are Material Icons Round, as Figma sets them);
+      dialogs drawn as Figma's (icon at the start, only Delete red); Plus & Account's rows, tonal buttons, the "Not backed
+      up" row, the flat icon tile; flow screens centred as drawn, 3.4 under its bar; Get Plus's bottom bar and its upward
+      shadow; the invite sheets' spacing, and 7.6 asked over the page; the snackbar's place (7.2.2); 2 dp between every
+      name and its line. At 200 % text the card's second line wraps instead of "No sign…needed", and dialog buttons wrap.
+      Per-frame table: `Research/Temp/plus-account/check.md`. Kept beyond Figma: Redeem a code (Play's reviewers), free
+      with an account, "Invite your family" without an account. **Tests, all green on this PC:** JVM 62 (`PlusAccountTest`
+      10) and lint; new `PlusAccountFramesTest` (6 walk-throughs reaching every frame and arrow, checking its words and
+      saving a picture) on the Pixel 10 Pro (API 36) in light, dark and 200 % text at 360 × 800 dp and at the phone's own
+      size, and on API 30; `PlusAccountScreensTest` 10 (API 36 and 30); `ScreensTest` 13. Outside this job:
+      `ScreensTest.aLongPressOnARowOpensItsMenu` fails on a 360 × 800 dp screen, the same on untouched `main`.
     - [ ] **Parked, waiting on the user:** the Cloudflare Worker (accounts, families, invites, purchase checks with Google
       and Apple); the Web OAuth client ID; Sign in with Apple's web page (on the Worker); the Play Console products (real
       buying); `assetlinks.json` on oftenenough.com (invite links opening the app); push for "Priya joined your family"
