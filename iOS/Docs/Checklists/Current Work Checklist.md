@@ -162,7 +162,11 @@ Their placement records scope and priority; implementation has not started.
     - [ ] Deploy the CloudKit schema to Production before TestFlight (item 81).
     - [ ] Whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
       the user says.
-    - [ ] **Cloudflare deletion:** allow it (this session's permission rules) or do it in the dashboard: Workers
+    - [x] **Cloudflare deletion** *(done 15 Oct 2026 by the user in the dashboard, checked through the API: no
+      Workers but `oftenenough-site`, no D1, no R2. The website is the Pages project `oftenenough`, kept. By mistake
+      the analytics buckets `oftenenough-events-dev` and `-prod` were deleted too; nothing in the repository used them,
+      their contents are unknown and can't be brought back. The new Plus account Worker (D16) is built fresh from
+      `server/`'s sign-in and purchase checks.)* Was: allow it (this session's permission rules) or do it in the dashboard: Workers
       `often-enough-api` (production, `api.oftenenough.com`; nothing in it) now, `often-enough-api-dev`
       (`api-dev.oftenenough.com`) once the `apple-watch` branch has merged `main` and the iPhone runs the iCloud build;
       D1 `often-enough-directory` and `often-enough-directory-dev`; R2 `often-enough-backups` (empty) and
