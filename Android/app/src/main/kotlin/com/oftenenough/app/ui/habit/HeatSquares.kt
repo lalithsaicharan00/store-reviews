@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -269,8 +271,8 @@ fun HeatYearPixels(
     val label = appColors.secondary
     val ink = appColors.ink
     val measurer = rememberTextMeasurer()
-    val monthStyle = TextStyle(fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
-    val dayStyle = TextStyle(fontSize = 11.sp)
+    val monthStyle = AppType.labelSmall
+    val dayStyle = AppType.labelSmall.copy(fontWeight = FontWeight.Normal)
     val monthLabels = remember(measurer, monthNames) { monthNames.map { measurer.measure(it, monthStyle) } }
     val dayLabels = remember(measurer) { (1..31).map { measurer.measure("$it", dayStyle) } }
     val gutter = 20.dp

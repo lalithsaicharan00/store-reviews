@@ -21,7 +21,6 @@ import com.oftenenough.app.ui.settings.LicencesPage
 import com.oftenenough.app.ui.settings.AppLockPage
 import com.oftenenough.app.ui.settings.AppLockSetup
 import com.oftenenough.app.ui.settings.PrivacyPage
-import com.oftenenough.app.ui.settings.PlusPage
 import com.oftenenough.app.ui.settings.RemindersSettingsPage
 import com.oftenenough.app.ui.settings.DayAndWeekPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
@@ -143,6 +142,8 @@ private fun AppMain(
     var handOver by handOverState
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
+    // Restore from Google Play found nothing: Plus & Account shows "No Plus found" over itself (Figma 4.2).
+    var noPlusFound by rememberSaveable { mutableStateOf(false) }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
     LaunchedEffect(AppGraph.widgetRoute) {
         val (route, d) = AppGraph.widgetRoute?.split("|")?.let { it[0] to (it.getOrNull(1)?.toIntOrNull() ?: -1) } ?: return@LaunchedEffect
@@ -155,7 +156,7 @@ private fun AppMain(
             "item" -> if (store.habit(id) != null) dayTarget = "$id|$day"
             "log", "slip" -> if (store.habit(id) != null) nav.navigate(Routes.add(id, day))
             "timer" -> if (store.habit(id) != null) nav.navigate(Routes.timer(id))
-            "plus" -> nav.navigate(Routes.menu(MenuItem.PLUS))
+            "plus" -> nav.navigate(Routes.GET_PLUS)
             // The app icon's long-press shortcuts (A11 D8).
             "new" -> nav.navigate(Routes.NEW)
             "routine" -> nextRoutine(store)?.let { (part, habits) -> nav.navigate(Routes.routine(part, store.today(), habits)) }
@@ -215,7 +216,7 @@ private fun AppMain(
         composable(Routes.NEW + "?idea={idea}") { entry ->
             val idea = entry.arguments?.getString("idea")?.let { name -> HabitIdea.all.firstOrNull { it.name == name } }
             NewHabitFlow(store, idea, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack(Routes.TODAY, inclusive = false) },
-                onPlus = { nav.navigate(Routes.page("Plus")) })
+                onPlus = { nav.navigate(Routes.GET_PLUS) })
         }
         composable("edit/{id}") { e -> EditHabitScreen(e.arguments!!.getString("id")!!, store) { nav.popBackStack() } }
         composable("page/{title}") { entry ->
@@ -234,7 +235,8 @@ private fun AppMain(
                 MenuItem.REMINDERS.title -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
-                MenuItem.PLUS.title -> PlusPage(store, AppGraph.plus, snackbar, { nav.navigate(Routes.menu(MenuItem.HELP)) }) { nav.popBackStack() }
+                MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusAccountPage(store, AppGraph.plus, AppGraph.accounts, AppGraph.signIn, AppGraph.backup,
+                    snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false })
                 "Arrange your day" -> ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
@@ -294,7 +296,7 @@ private fun AppMain(
             GroupFormScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }, { hs -> nav.navigate(Routes.pause(hs.map { it.id })) }) { nav.popBackStack() }
         }
         composable(Routes.NEW_TASK) {
-            NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { nav.navigate(Routes.menu(MenuItem.PLUS)) }, task = true)
+            NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { nav.navigate(Routes.GET_PLUS) }, task = true)
         }
         composable("timer/{id}") { e ->
             val id = e.arguments!!.getString("id")!!
@@ -307,12 +309,52 @@ private fun AppMain(
         composable("section/{id}") { e ->
             SectionEditorScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }) { nav.popBackStack() }
         }
+        // Plus & Account's flows (Figma 1476:2): each finishes back on Plus & Account.
+        val flowNav = plusFlowNav(nav, rootScope, snackbar) { noPlusFound = true }
+        composable(Routes.GET_PLUS) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, AppGraph.accounts, AppGraph.signIn, upgrade = false, flowNav) { nav.popBackStack() } }
+        composable(Routes.UPGRADE) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, AppGraph.accounts, AppGraph.signIn, upgrade = true, flowNav) { nav.popBackStack() } }
+        composable(Routes.SIGN_IN) { com.oftenenough.app.ui.plus.SignInFlow(AppGraph.accounts, AppGraph.signIn, AppGraph.plus, flowNav, onBack = { nav.popBackStack() }) }
+        composable(Routes.CREATE_ACCOUNT) { com.oftenenough.app.ui.plus.CreateAccountScreen(AppGraph.accounts, AppGraph.signIn, AppGraph.plus, flowNav) { nav.popBackStack() } }
+        composable(Routes.RESTORE_PLUS) { com.oftenenough.app.ui.plus.RestoreFlow(AppGraph.plus, AppGraph.accounts, flowNav) }
+        composable(Routes.JOIN_FAMILY) { com.oftenenough.app.ui.plus.JoinFamilyScreen({ token -> nav.navigate(Routes.invite(token)) }) { nav.popBackStack() } }
+        composable("family/invite/{token}") { e ->
+            com.oftenenough.app.ui.plus.InviteFlow(e.arguments!!.getString("token")!!, AppGraph.plus, AppGraph.accounts, AppGraph.signIn, flowNav)
+        }
     }
     }
     if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 96.dp))
     }
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
+    // A family invite opened from a link (Figma 5): its own screen, over whatever was open.
+    LaunchedEffect(AppGraph.inviteToOpen) { AppGraph.inviteToOpen?.let { token -> AppGraph.inviteToOpen = null; nav.navigate(Routes.invite(token)) } }
 }
+
+/** Plus & Account's rows. */
+private fun plusNav(nav: NavHostController) = object : com.oftenenough.app.ui.plus.PlusNav {
+    override fun seePlus() = nav.navigate(Routes.GET_PLUS)
+    override fun upgradeToFamily() = nav.navigate(Routes.UPGRADE)
+    override fun signIn() = nav.navigate(Routes.SIGN_IN)
+    override fun restore() = nav.navigate(Routes.RESTORE_PLUS)
+    override fun joinFamily() = nav.navigate(Routes.JOIN_FAMILY)
+    override fun createAccount() = nav.navigate(Routes.CREATE_ACCOUNT)
+    override fun backup() = nav.navigate(Routes.menu(MenuItem.BACKUP))
+    override fun back() { nav.popBackStack() }
+}
+
+/** Where a Plus & Account flow ends: back on Plus & Account (opened if the flow began elsewhere, as an invite link does). */
+private fun plusFlowNav(nav: NavHostController, scope: CoroutineScope, snackbar: SnackbarHostState, onNoPlusFound: () -> Unit) =
+    object : com.oftenenough.app.ui.plus.PlusFlowNav {
+        override fun toPage(message: String?) {
+            if (!nav.popBackStack(Routes.menu(MenuItem.PLUS), inclusive = false)) {
+                nav.popBackStack(Routes.TODAY, inclusive = false)
+                nav.navigate(Routes.menu(MenuItem.PLUS))
+            }
+            message?.let { scope.launch { snackbar.showSnackbar(it) } }
+        }
+        override fun toPageNoPlusFound() { onNoPlusFound(); toPage() }
+        override fun getPlus() = nav.navigate(Routes.GET_PLUS)
+        override fun signIn() = nav.navigate(Routes.SIGN_IN)
+    }
 
 /**
  * The routine "Start the next routine" opens: the time of day that is now if it has anything left, else the next card
@@ -371,6 +413,13 @@ object Routes {
     const val WELCOME = "welcome"
     const val NEW_TASK = "newtask"
     const val GROUPS = "groups"
+    const val GET_PLUS = "plus/get"
+    const val UPGRADE = "plus/upgrade"
+    const val SIGN_IN = "account/signin"
+    const val CREATE_ACCOUNT = "account/create"
+    const val RESTORE_PLUS = "account/restore"
+    const val JOIN_FAMILY = "family/join"
+    fun invite(token: String) = "family/invite/$token"
     fun group(id: String?) = "group/" + (id ?: "new")
     const val LOCK_SETUP = "applock/setup"
     const val LOCK_PASSCODE = "applock/passcode"

@@ -211,8 +211,9 @@ class ScreensTest {
         launch()
         menu("plus")
         waitFor(hasText("free habits used", substring = true), "the free habits line")
+        tapTag("plus-see")
         tapTag("plus-buy")
-        waitFor(hasText("Plus is yours"), "Plus is yours")
+        waitFor(hasText("Plus is yours."), "Plus is yours.")
         assertTrue("the store's free limit is lifted", AppGraph.store.isPlus)
     }
 

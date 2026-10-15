@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.onboarding
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.ui.unit.Constraints
@@ -253,21 +255,14 @@ private fun WelcomeChoice(title: String, supporting: String, icon: ImageVector, 
 }
 
 /**
- * Welcome's type, exactly as Figma (rule 2). Line heights are Figma's, with the text centred in each line as Figma
- * draws it (`LineHeightStyle` Center, nothing trimmed). Kept here until the other screens move to Google Sans Flex;
- * then these become the app's shared `Typography`, set once, and screens only refer to it.
+ * Welcome's type: the shared styles (`AppType`, the Figma file's Android / … styles), named for their jobs here.
  */
 private object WelcomeType {
-    private val lines = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
-    private fun style(size: Int, lineHeight: Int, weight: FontWeight, letterSpacing: Float = 0f) = TextStyle(
-        fontFamily = googleSansFlex(size), fontWeight = weight, fontSize = size.sp, lineHeight = lineHeight.sp,
-        letterSpacing = letterSpacing.sp, lineHeightStyle = lines,
-    )
-    val name = style(32, 40, FontWeight.Medium, letterSpacing = -0.5f)
-    val tagline = style(16, 24, FontWeight.Normal)
-    val question = style(16, 24, FontWeight.Medium)
-    val choice = style(16, 24, FontWeight.Medium)
-    val choiceSupporting = style(14, 20, FontWeight.Normal)
+    val name = AppType.headlineLargeEmphasized
+    val tagline = AppType.bodyLarge
+    val question = AppType.titleMedium
+    val choice = AppType.titleMedium
+    val choiceSupporting = AppType.bodyMedium
 
     /*
      * Rule 7, the measure: how long a line may get. Never a hand-typed line break, and never a line that runs across
@@ -303,10 +298,10 @@ private fun WelcomeBack(onBack: () -> Unit, nav: OnboardingNav) {
 @Composable
 private fun Heading(title: String, subtitle: String?) {
     Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 24.dp)) {
-        Text(title, style = MaterialTheme.typography.displaySmall.copy(fontSize = 36.sp), color = appColors.ink)
+        Text(title, style = AppType.displaySmall, color = appColors.ink)
         if (subtitle != null) {
             Spacer(Modifier.height(12.dp))
-            Text(subtitle, style = MaterialTheme.typography.bodyLarge.copy(fontSize = 17.sp, lineHeight = 24.sp), color = appColors.secondary)
+            Text(subtitle, style = AppType.bodyLarge, color = appColors.secondary)
         }
     }
 }
@@ -517,23 +512,18 @@ private fun sampleIcon(b: String): ImageVector = when (b) {
     else -> Icons.Rounded.ExpandMore
 }
 
-/** The intro pages' type, exactly as Figma (rule 1); text centred in each line as Figma draws it. */
+/** The intro pages' type: the shared styles (`AppType`), named for their jobs here. */
 private object IntroType {
-    private val lines = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
-    private fun style(size: Int, lineHeight: Int, weight: FontWeight, letterSpacing: Float = 0f) = TextStyle(
-        fontFamily = googleSansFlex(size), fontWeight = weight, fontSize = size.sp, lineHeight = lineHeight.sp,
-        letterSpacing = letterSpacing.sp, lineHeightStyle = lines,
-    )
-    val heading = style(28, 36, FontWeight.Medium, letterSpacing = -0.25f).copy(lineBreak = LineBreak.Heading)
-    val line = style(16, 24, FontWeight.Normal)
-    val sectionTitle = style(16, 24, FontWeight.Medium)
-    val sectionLine = style(12, 16, FontWeight.Normal)
-    val rowName = style(16, 24, FontWeight.Medium)
-    val rowLine = style(14, 20, FontWeight.Normal)
-    val streak = style(14, 20, FontWeight.Medium)
-    val clock = style(16, 24, FontWeight.Medium)
-    val button = style(14, 20, FontWeight.Medium)
-    val continueLabel = style(16, 24, FontWeight.Medium)
+    val heading = AppType.headlineMediumEmphasized.copy(lineBreak = LineBreak.Heading)
+    val line = AppType.bodyLarge
+    val sectionTitle = AppType.titleMedium
+    val sectionLine = AppType.bodySmall
+    val rowName = AppType.titleMedium
+    val rowLine = AppType.bodyMedium
+    val streak = AppType.labelLarge
+    val clock = AppType.titleMedium
+    val button = AppType.labelLarge
+    val continueLabel = AppType.titleMedium
 }
 
 @Suppress("unused") private val unusedIcons = listOf(Icons.Rounded.WbTwilight, Icons.Rounded.CalendarMonth, Icons.Rounded.FolderOpen, Icons.Rounded.AddToDrive)

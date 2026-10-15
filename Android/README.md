@@ -30,9 +30,55 @@ minSdk 26, target 37. It runs on the shared core in [`../Core`](<../Core/>), the
     `ui/theme` (light and dark), `ui/components` (segmented lists, the cookie shape, the wavy progress).
     `ui/AppRoot.kt` is the navigation, and the frame for tablets (a sidebar from 840 dp; the phone never changes).
   - `app/`: `AppGraph` (one store per process), `AppLock`, `Plus` (the store seam: a fake store until Play Billing),
+    `app/account/` (the Plus account and Plus Family: `AccountCenter`, the server seam `AccountServer` with its
+    stand-in, Sign in with Google through Credential Manager; see "Plus & Account" below),
     `app/backup/` (backup files, restore, Drive, `SyncSchedule`), `app/reminders/`, and `app/widgets/` (the six Glance
     widgets, the tap, the setup screen). Code marked `LOCKED (widget taps …)` follows
     [the iPhone's locked page](<../iOS/Docs/Widgets — Taps and Updates (Locked).md>): read it before changing a widget.
+
+## Text: one set of styles, Google Sans Flex, always in sp
+
+The user, 15 Oct 2026: "create the shared text styles for Android … so that nothing stays inconsistent … they should
+not be absolute units … if someone has an increased font size they should reflect here." Rulebook **U36**.
+
+- **Every piece of text uses a style from [`ui/theme/Type.kt`](<app/src/main/kotlin/com/oftenenough/app/ui/theme/Type.kt>)**
+  (`AppType`): the Figma file's **Android / …** styles, Material 3's sizes (57, 45, 36, 32, 28, 24, 22, 16, 14, 12, 11)
+  plus our 20, Regular and Medium ("Emphasized") only, line heights Material's, letter spacing 0. Material's own
+  components get the same styles through `MaterialTheme.typography` (`AppType.material`). **Never** `fontSize = …`,
+  `TextStyle(fontSize = …)` or `.copy(fontSize = …)` in a screen: pick the style for the job (each one's job is written
+  above it). A truly new size goes into Figma first, then `Type.kt`.
+- **Google Sans Flex everywhere** (`Fonts.kt`: bundled, never downloaded, optical size following the text size). Roboto
+  is gone from the app's own screens. Not styled: the status bar, the keyboard, icon glyphs, the 🔥, and the home-screen
+  widgets (Glance draws with the launcher's system font; their sizes follow the widget designs).
+- **Always sp, never dp or px, for text.** sp follows the phone's Font size and Display size (Android 14+ also scales
+  large text less than small, by itself). So a text's container never has a fixed height: rows and buttons take a
+  minimum (`heightIn(min = …)`), and pages scroll, so 200 % text grows them instead of clipping. The one exception is
+  a number drawn inside a fixed graphic (a milestone medal), which is sized to its shape.
+
+## Plus & Account (Figma `1476:2`, built 15 Oct 2026)
+
+≡ › **Plus & Account**: the page in its five states (Free; Plus, no account yet; Plus with an account; Plus Family, you
+manage it; Plus from a family; and free with an account) and every flow from the Figma section: Get Plus and the Plus
+Family upgrade, the purchase outcomes (bought, waiting for payment, not completed), the thank-you screens that offer the
+account, Sign in (looking, Plus is back, no account found, couldn't connect), Restore from Google Play, Create an
+account, Join a family (link or QR code via Google's code scanner) and every invite state, the invite sheets with a
+real QR code, and every dialog (sign out, delete, remove, leave, cancel an invite). Code: `ui/plus/`, `app/account/`.
+
+- **The loading animation** (`ui/components/LoadingIndicator.kt`): Material 3 Expressive's contained loading
+  indicator, drawn with `graphics-shapes`, the library Material's own uses (seven shapes morphing every 650 ms, two turns
+  in 4.55 s, as Figma animates it). Material's `ContainedLoadingIndicator` isn't public in the stable Material 3 (1.4.0);
+  swap to it when it is.
+- **What's real and what's a stand-in until the user's set-up exists** (Current Work 110):
+
+  | Piece | Today | Needs |
+  |---|---|---|
+  | The account server (D1 accounts, families, invites) | `StandInAccountServer` on the phone, debug builds and tests only, with the Worker's rules (`PlusAccountTest`); a release build has none and says so | The Cloudflare Worker, behind `AccountServer` |
+  | Sign in with Google | Real code (`GoogleSignInProvider`, Credential Manager), used when the build has a client ID (`-PgoogleWebClientId=…`); otherwise the stand-in | A **Web OAuth client ID** for the Worker to check ID tokens |
+  | Sign in with Apple | Stand-in only | The Worker's web sign-in page (Apple's sign-in on Android is a web flow) |
+  | Buying, restoring | `FakePlusStore` (debug, tests) | The Play Console app and its three products; then `PlusStore` over Play Billing |
+  | Invite links opening the app | The intent filter for `https://oftenenough.com/join/…` | `/.well-known/assetlinks.json` on the website with the app's signing SHA-256 |
+  | "Priya joined your family" on the owner's phone (Figma 5.2.1) | Not built: the owner sees it in Your family on the next open | Push (Firebase Cloud Messaging) from the Worker |
+  | A new device on a different cloud account stops before syncing (D16) | Not built | The Worker's record of the cloud account |
 
 ## Build
 
@@ -55,7 +101,7 @@ artifact from any green run of the **Android** workflow.
 **On that PC (Git Bash), three things cost time once** (Rulebook T22): Gradle's Java needs
 `JAVA_TOOL_OPTIONS=-Djava.net.preferIPv4Stack=true` (its downloads timed out while curl worked); `local.properties`
 is `sdk.dir=C\:/Users/<you>/AppData/Local/Android/Sdk` (forward slashes); and `adb shell` paths need
-`MSYS_NO_PATHCONV=1`, which must **not** be set for Gradle. Java is Android Studio's own (`…/Android Studio/jbr`).
+`MSYS_NO_PATHCONV=1`, which must **not** be set for Gradle. Java is Android Studio's own (`…/Android Studio/jbr`); on 15 Oct 2026 that folder was incomplete, and the JDK in `C:/Program Files/Java/jdk-26.0.1` built everything (`JAVA_HOME`).
 Scratch files, logs and screenshots go in `Research/Temp/` (ignored by git), never the system's temp folder.
 
 ## Tests
@@ -64,6 +110,8 @@ Scratch files, logs and screenshots go in `Research/Temp/` (ignored by git), nev
 |---|---|---|
 | JVM (`testDebugUnitTest`, 52) | `WordsTest`, `SwiftJsonTest`, `FormRulesTest`, `DataExportTest`, `ReminderPlanTest`, `LocalDriveTest`, `PlayerWordsTest`, `ProgressWordsTest`, `PauseWordsTest`, `ReminderWordsTest`, `AppLockTest`, `ArrangeTest` | The iPhone's words and rules, the stored formats, the stand-in Drive, App lock's rules |
 | Emulator | `TodayTest` (11) | The welcome, an empty Today, logging and undo for every kind |
+| JVM | `PlusAccountTest` (9) | The account's rules on the server's stand-in: one account each, six in a family, an invite once for 7 days, leaving, deleting, offline, the account file |
+| Emulator | `PlusAccountScreensTest` (10) | Plus & Account: buying Plus and Plus Family, pending and failed payments, restore, sign in (found, none, offline), an invite link joining and leaving, ended and used invites, deleting the account |
 | Emulator | `ScreensTest` (13) | Habit details, Progress, a routine, Pause, the Habits list, groups and Filter, Arrange, Help, Plus, App lock, a row's menu, the icon's shortcuts |
 | Emulator | `WidgetDataTest` (8) | The widgets' snapshot, the "after" cards, a tap saved once |
 | Emulator | `DataSafetyTest` (5) | Backup and restore round trip, undo, Merge, an empty or broken file, taps saved in order |

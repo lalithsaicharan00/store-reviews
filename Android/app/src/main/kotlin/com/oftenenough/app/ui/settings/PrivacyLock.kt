@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -256,7 +258,7 @@ fun AppLockSetup(lock: AppLock, passcodeOnly: Boolean, onDone: () -> Unit) {
         "choose" -> Box(Modifier.fillMaxSize().background(appColors.screen)) {
             FormPage("Set up app lock", chip = null, onBack = onDone, close = true) {
                 Text("How do you want to unlock Often Enough?", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
-                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = appColors.ink)
+                    style = AppType.headlineMedium, color = appColors.ink)
                 SegmentedList {
                     RadioRow("Your phone's lock", choice == "phone", 0, 2, "setup-phone",
                         if (secure) "Fingerprint, face, PIN or pattern: whatever unlocks this phone. Android chooses which to show."
@@ -309,7 +311,7 @@ fun Keypad(heading: String, line: String?, lineIsProblem: Boolean, shake: Int, e
             Icon(Icons.Rounded.Lock, null, tint = c.onInk, modifier = Modifier.size(32.dp))
         }
         Spacer(Modifier.height(24.dp))
-        Text(heading, style = MaterialTheme.typography.headlineSmall.copy(fontSize = 26.sp), color = c.ink, textAlign = TextAlign.Center)
+        Text(heading, style = AppType.headlineSmall, color = c.ink, textAlign = TextAlign.Center)
         if (line != null) {
             Spacer(Modifier.height(12.dp))
             Text(line, Modifier.padding(horizontal = 24.dp).semantics { testTag = "keypad-line" }, style = MaterialTheme.typography.bodyMedium,

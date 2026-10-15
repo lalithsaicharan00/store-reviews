@@ -3,7 +3,6 @@ package com.oftenenough.app.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -12,9 +11,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import com.oftenenough.app.data.HabitColor
 
 /**
@@ -101,26 +97,8 @@ private fun scheme(c: AppColors): ColorScheme {
     )
 }
 
-/**
- * Roboto (the system font). Screen questions 28 Regular, titles 22, row names 16, supporting 14, labels 12–14 Medium.
- *
- * Moving to Google Sans Flex (the user, 13 Oct 2026; `Fonts.kt`): the Welcome screen uses it already, with its own
- * `WelcomeType`. As each screen moves, use Figma's sizes exactly (no sp or letter-spacing changes of the app's own),
- * Regular and Medium only, and then these styles become the one shared list every screen refers to.
- */
-private val typography = Typography().let { t ->
-    t.copy(
-        displaySmall = t.displaySmall.copy(fontSize = 36.sp, lineHeight = 44.sp),
-        headlineMedium = TextStyle(fontSize = 28.sp, lineHeight = 36.sp, fontWeight = FontWeight.Normal),
-        headlineSmall = TextStyle(fontSize = 24.sp, lineHeight = 32.sp, fontWeight = FontWeight.Normal),
-        titleLarge = TextStyle(fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Normal),
-        titleMedium = TextStyle(fontSize = 16.sp, lineHeight = 24.sp, fontWeight = FontWeight.Medium, letterSpacing = 0.15.sp),
-        bodyLarge = TextStyle(fontSize = 16.sp, lineHeight = 24.sp, fontWeight = FontWeight.Normal, letterSpacing = 0.25.sp),
-        bodyMedium = TextStyle(fontSize = 14.sp, lineHeight = 20.sp, fontWeight = FontWeight.Normal, letterSpacing = 0.25.sp),
-        labelLarge = TextStyle(fontSize = 14.sp, lineHeight = 20.sp, fontWeight = FontWeight.Medium, letterSpacing = 0.1.sp),
-        labelMedium = TextStyle(fontSize = 12.sp, lineHeight = 16.sp, fontWeight = FontWeight.Medium, letterSpacing = 0.5.sp),
-    )
-}
+/** Google Sans Flex in the Figma file's styles, everywhere (`Type.kt`; the user, 15 Oct 2026: no Roboto left). */
+private val typography = AppType.material
 
 /** "light", "dark" or "system" (Appearance → Theme). */
 @Composable

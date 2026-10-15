@@ -1011,6 +1011,32 @@ and the Add note keyboard coming up by itself.
     sends your habits once, locked, deleted as soon as they arrive).
   - [ ] **Delete my account** in Privacy (App Store 5.1.1(v)): removes only the Plus record and family membership.
   - [ ] Still to check before building: the iPhone and Android apps see the same Drive app folder for one Google account.
+  - **Android, built 15 Oct 2026 (the user: "work on this plus account and these screens … the designs are finalized …
+    for sharing the link, inviting … we need a server … park them later"):** every frame of Figma `1476:2` ("Settings: Plus
+    & Account") is built and wired on `main`: the page's states (1, 1.1–1.5, and free with an account), Get Plus and the
+    Plus Family upgrade (2, 2.4, 8), the purchase outcomes (2.1.1 pending, 2.1.2 not completed), the thank-you screens that
+    offer the account (2.2, 2.6, 8.2), Sign in (3, 3.2–3.5), Restore from Google Play (4, 4.1–4.3), Create an account (6),
+    Join a family with Google's QR scanner (5) and every invite state (5.1–5.8), the invite sheets with a real QR code (7,
+    7.5) and every dialog (7.1–7.10). The loading animation is Material 3 Expressive's loading indicator (Android README,
+    "Plus & Account"). Tests: `PlusAccountTest` (9, the account's rules) and `PlusAccountScreensTest` (10) green on the
+    PC's Pixel 10 Pro emulator (API 36).
+    - [x] UI and wiring for every frame, against stand-ins with the Worker's rules (`StandInAccountServer`, `FakePlusStore`).
+    - [x] Sign in with Google through Credential Manager (real code; switched on by a Web OAuth client ID at build time).
+    - [ ] **Parked, waiting on the user:** the Cloudflare Worker (accounts, families, invites, purchase checks with Google
+      and Apple); the Web OAuth client ID; Sign in with Apple's web page (on the Worker); the Play Console products (real
+      buying); `assetlinks.json` on oftenenough.com (invite links opening the app); push for "Priya joined your family"
+      (5.2.1); the different-cloud-account stop (D16). The table of what's real and what's a stand-in is in
+      `Android/README.md`.
+    - [ ] The iPhone's matching screens (same words, same account, Sign in with Apple native).
+    - [ ] Real-phone checks (U9), noted separately.
+- [x] **111. Android text: shared styles, Google Sans Flex everywhere, always in sp** (added 15 October 2026, from the
+  user: "create the shared text styles for Android app … so that nothing stays inconsistent … they should not be
+  absolute units … if someone has a increased font size they should reflect here … document this"). *Done 15 Oct:*
+  `ui/theme/Type.kt` (`AppType`) holds the Figma file's 22 **Android / …** styles and is the app's `MaterialTheme`
+  typography (Roboto gone); about 80 sizes made per screen (15, 17, 18, 26, 44, 48, 72 sp …) now use the style for their
+  job; SemiBold and Bold became Medium (the font is Regular and Medium only); top app bar titles are Title Large
+  Emphasized and a row's name over supporting text Title Medium, as in Figma. Rulebook **U36**; `Android/README.md`,
+  "Text". The emulator suite was run after the change (results in the commit). Widgets keep the launcher's font (Glance).
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:

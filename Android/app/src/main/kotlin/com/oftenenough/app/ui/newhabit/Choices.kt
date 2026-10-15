@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -114,7 +116,7 @@ fun ChoicePage(question: String, close: Boolean, onBack: () -> Unit, footer: Str
             if (close) Icon(Icons.Rounded.Close, "Close", tint = appColors.ink) else Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = appColors.ink)
         }
         Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
-            Text(question, Modifier.padding(start = 8.dp, top = 8.dp, bottom = 24.dp), style = MaterialTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = appColors.ink)
+            Text(question, Modifier.padding(start = 8.dp, top = 8.dp, bottom = 24.dp), style = AppType.headlineMedium, color = appColors.ink)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) { content() }
             if (footer != null) Text(footer, Modifier.padding(16.dp), style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
         }

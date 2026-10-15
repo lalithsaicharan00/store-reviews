@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.theme.AppType
+
 import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.Intent
@@ -287,7 +289,7 @@ private fun TopicRow(topic: HelpTopic, index: Int, count: Int, open: Boolean, on
             Text(topic.question, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = if (open) FontWeight.Medium else FontWeight.Normal), color = c.ink)
             if (open) {
                 Spacer(Modifier.height(8.dp))
-                Text(topic.answer, style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp), color = c.secondary)
+                Text(topic.answer, style = AppType.bodyMedium, color = c.secondary)
             }
         }
         Spacer(Modifier.width(8.dp))

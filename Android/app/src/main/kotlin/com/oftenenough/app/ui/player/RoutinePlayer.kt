@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.player
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -549,7 +551,7 @@ private fun PlayerTopBar(
                     .semantics(mergeDescendants = true) { contentDescription = spoken; testTag = "routine-queue" },
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(title, Modifier.weight(1f, fill = false), style = MaterialTheme.typography.headlineSmall.copy(fontSize = 26.sp),
+                    Text(title, Modifier.weight(1f, fill = false), style = AppType.headlineSmall,
                         color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Icon(Icons.Rounded.ArrowDropDown, null, tint = c.ink)
                 }
@@ -650,13 +652,13 @@ internal fun HeroCard(
                     HabitIcon(habit.symbol, habit.color, size = 64.dp, shape = CookieShape())
                     Spacer(Modifier.width(16.dp))
                     Column(Modifier.weight(1f)) {
-                        HabitName(habit.name, 28.sp, TextAlign.Start, maxLines = 1)
+                        HabitName(habit.name, AppType.headlineMediumEmphasized, TextAlign.Start, maxLines = 1)
                         Spacer(Modifier.height(8.dp))
                         DayChip(dayText, onDay)
                     }
                 }
                 Spacer(Modifier.height(16.dp))
-                CountLine(habit, ruled, day, store, goal, rev, tick, running, center = false, baseSize = 48.sp, onTap = onCountTap)
+                CountLine(habit, ruled, day, store, goal, rev, tick, running, center = false, baseStyle = AppType.displayMedium, onTap = onCountTap)
                 Spacer(Modifier.height(8.dp))
                 if (skipped) SkippedLine(center = false) else ProgressLine(habit, day, store, goal, rev, tick, running)
                 Spacer(Modifier.height(16.dp))
@@ -680,11 +682,11 @@ internal fun HeroCard(
                 ) {
                     HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 136.dp, shape = CookieShape())
                     Spacer(Modifier.height(if (checklist) 16.dp else 32.dp))
-                    HabitName(habit.name, 32.sp, TextAlign.Center, maxLines = 2)
+                    HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 2)
                     Spacer(Modifier.height(12.dp))
                     DayChip(dayText, onDay)
                     Spacer(Modifier.height(if (checklist) 16.dp else 32.dp))
-                    CountLine(habit, ruled, day, store, goal, rev, tick, running, center = true, baseSize = if (checklist) 56.sp else 72.sp, onTap = onCountTap)
+                    CountLine(habit, ruled, day, store, goal, rev, tick, running, center = true, baseStyle = if (checklist) AppType.displayMedium else AppType.displayLarge, onTap = onCountTap)
                     Spacer(Modifier.height(if (checklist) 8.dp else 24.dp))
                     if (skipped) SkippedLine(center = true) else ProgressLine(habit, day, store, goal, rev, tick, running)
                     if (checklist) {
@@ -698,9 +700,9 @@ internal fun HeroCard(
 }
 
 @Composable
-private fun HabitName(name: String, size: TextUnit, align: TextAlign, maxLines: Int) {
+private fun HabitName(name: String, style: TextStyle, align: TextAlign, maxLines: Int) {
     Text(
-        name, style = MaterialTheme.typography.headlineMedium.copy(fontSize = size, lineHeight = size * 1.25f, fontWeight = FontWeight.Normal),
+        name, style = style,
         color = appColors.ink, textAlign = align, maxLines = maxLines, overflow = TextOverflow.Ellipsis,
         modifier = Modifier.semantics { heading(); testTag = "player-name" },
     )
@@ -719,7 +721,7 @@ internal fun DayChip(text: String, onClick: (() -> Unit)?) {
     ) {
         Icon(Icons.Rounded.CalendarToday, null, Modifier.size(20.dp), tint = c.ink)
         Spacer(Modifier.width(10.dp))
-        Text(text, style = MaterialTheme.typography.titleMedium.copy(fontSize = 17.sp), color = c.ink, maxLines = 1)
+        Text(text, style = AppType.titleMedium, color = c.ink, maxLines = 1)
         if (onClick != null) {
             Spacer(Modifier.width(4.dp))
             Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(20.dp), tint = c.secondary)
@@ -731,13 +733,14 @@ internal fun DayChip(text: String, onClick: (() -> Unit)?) {
 @Composable
 private fun CountLine(
     habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>, running: Boolean,
-    center: Boolean, baseSize: TextUnit, onTap: (() -> Unit)?,
+    center: Boolean, baseStyle: TextStyle, onTap: (() -> Unit)?,
 ) {
     val c = appColors
     val progress = if (running) store.rules.progress(habit, day, tick.value) else remember(habit, rev) { store.rules.progress(habit, day) }
     val value = PlayerWords.value(ruled, progress)
     val target = PlayerWords.target(ruled, goal)
-    val size = if (value.length > 5) baseSize * 0.78f else baseSize
+    // A long clock ("1:23:45") steps down one style rather than shrinking to a size of its own.
+    val style = if (value.length > 5) (if (baseStyle == AppType.displayLarge) AppType.displayMedium else AppType.displaySmall) else baseStyle
     Row(
         Modifier.fillMaxWidth()
             .let { if (onTap != null) it.clip(RoundedCornerShape(16.dp)).clickable(onClickLabel = "Log time manually", role = Role.Button, onClick = onTap) else it }
@@ -745,10 +748,10 @@ private fun CountLine(
         horizontalArrangement = if (center) Arrangement.Center else Arrangement.Start,
         verticalAlignment = Alignment.Bottom,
     ) {
-        Text(value, Modifier.alignByBaseline(), style = TextStyle(fontSize = size, lineHeight = size * 1.1f, fontWeight = FontWeight.Normal, fontFeatureSettings = "tnum"),
+        Text(value, Modifier.alignByBaseline(), style = style.copy(fontFeatureSettings = "tnum"),
             color = c.ink, maxLines = 1)
         Spacer(Modifier.width(12.dp))
-        Text(target, Modifier.alignByBaseline().weight(1f, fill = false), style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp),
+        Text(target, Modifier.alignByBaseline().weight(1f, fill = false), style = AppType.titleLarge,
             color = c.secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
 }
@@ -771,7 +774,7 @@ private fun SkippedLine(center: Boolean) {
         horizontalArrangement = if (center) Arrangement.Center else Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
         Icon(Icons.Rounded.FastForward, null, Modifier.size(20.dp), tint = c.secondary)
         Spacer(Modifier.width(8.dp))
-        Text(PlayerWords.SKIPPED, style = MaterialTheme.typography.bodyLarge.copy(fontSize = 17.sp), color = c.secondary)
+        Text(PlayerWords.SKIPPED, style = AppType.bodyLarge, color = c.secondary)
     }
 }
 
@@ -794,7 +797,7 @@ private fun StepRows(habit: Habit, ruled: Habit, day: Int, store: HabitStore, re
                 Checkbox(checked = done, onCheckedChange = null, enabled = enabled,
                     colors = CheckboxDefaults.colors(checkedColor = color, uncheckedColor = c.ink, checkmarkColor = Color.White))
                 Spacer(Modifier.width(12.dp))
-                Text(step.name, style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp), color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(step.name, style = AppType.bodyLarge, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         }
     }
@@ -901,7 +904,7 @@ internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: 
             Icon(icon, null, Modifier.size(28.dp))
             Spacer(Modifier.width(12.dp))
         }
-        Text(label, Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
+        Text(label, Modifier.weight(1f, fill = false), style = AppType.title20,
             maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
@@ -919,7 +922,7 @@ internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modi
             Icon(icon, null, Modifier.size(24.dp))
             Spacer(Modifier.width(12.dp))
         }
-        Text(label, Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
+        Text(label, Modifier.weight(1f, fill = false), style = AppType.title20,
             maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
@@ -956,10 +959,10 @@ private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () ->
                 // Not a pause symbol: it read as a media button (found by hand on the iPhone, 29 Sep).
                 CookieIcon(if (remaining == 0) Icons.Rounded.Check else Icons.Rounded.History, size = 112.dp, container = c.ink, tint = c.onInk)
                 Spacer(Modifier.height(24.dp))
-                Text(PlayerWords.endTitle(remaining), style = MaterialTheme.typography.headlineMedium.copy(fontSize = 32.sp, lineHeight = 40.sp),
+                Text(PlayerWords.endTitle(remaining), style = AppType.headlineLarge,
                     color = c.ink, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
                 Spacer(Modifier.height(12.dp))
-                Text(PlayerWords.endText(remaining, reviewed), style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
+                Text(PlayerWords.endText(remaining, reviewed), style = AppType.bodyLarge,
                     color = c.secondary, textAlign = TextAlign.Center)
                 PlayerWords.skippedLine(skipped)?.let {
                     Spacer(Modifier.height(16.dp))
@@ -973,7 +976,7 @@ private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () ->
                 TextButton(onReview, Modifier.semantics { testTag = "player-review" }) {
                     Icon(Icons.AutoMirrored.Rounded.List, null, Modifier.size(22.dp), tint = c.ink)
                     Spacer(Modifier.width(12.dp))
-                    Text("Review routine", style = MaterialTheme.typography.titleMedium.copy(fontSize = 17.sp), color = c.ink)
+                    Text("Review routine", style = AppType.titleMedium, color = c.ink)
                 }
             }
         }
@@ -1046,8 +1049,8 @@ private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, onJump:
                             HabitIcon(habit.symbol, habit.color, size = 40.dp)
                             Spacer(Modifier.width(16.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(habit.name, style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp), color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                Text(status, style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp), color = c.secondary, maxLines = 1)
+                                Text(habit.name, style = AppType.bodyLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(status, style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
                             }
                             if (editing) {
                                 IconButton({ session.move(i, i - 1) }, enabled = i > 0) {

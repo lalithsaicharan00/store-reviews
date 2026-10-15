@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -340,7 +342,7 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
                     style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1)
             }
             Text(Format.elapsed(ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0),
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold, fontFeatureSettings = "tnum"), color = c.ink, maxLines = 1)
+                style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = c.ink, maxLines = 1)
         }
         RowMenu(menu, { menu = false }, habit, today, store, layout, actions)
     }
@@ -362,7 +364,7 @@ fun PartHeader(
     ) {
         Column(Modifier.weight(1f, fill = isOpen)) {
             Text(title, style = MaterialTheme.typography.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp), color = c.secondary, maxLines = 1)
+            if (subtitle != null) Text(subtitle, style = AppType.bodySmall, color = c.secondary, maxLines = 1)
         }
         if (!isOpen) {
             Spacer(Modifier.width(12.dp))
@@ -379,7 +381,7 @@ fun PartHeader(
             androidx.compose.material3.Button(onStart, colors = colors, contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 12.dp, end = 16.dp),
                 modifier = Modifier.heightIn(min = 40.dp).semantics { contentDescription = "Start $title" }) {
                 Icon(Icons.Rounded.PlayArrow, null, Modifier.size(20.dp))
-                if (isOpen) { Spacer(Modifier.width(4.dp)); Text("Start", style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp)) }
+                if (isOpen) { Spacer(Modifier.width(4.dp)); Text("Start", style = AppType.labelLarge) }
             }
         }
         IconButton(onToggle) {

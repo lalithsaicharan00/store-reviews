@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -134,7 +136,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
     Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).navigationBarsPadding().semantics { testTag = "day-details" }) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onDismiss, Modifier.semantics { testTag = "day-close" }) { Icon(Icons.Rounded.Close, "Close", tint = c.ink) }
-            Text(DayWords.day(day, today), Modifier.weight(1f).padding(start = 8.dp), style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp), color = c.ink)
+            Text(DayWords.day(day, today), Modifier.weight(1f).padding(start = 8.dp), style = AppType.headlineSmall, color = c.ink)
             Box {
                 IconButton({ menu = true }, Modifier.semantics { testTag = "day-more" }) { Icon(Icons.Rounded.MoreVert, if (isTask) "Task actions" else "Habit actions", tint = c.ink) }
                 DropdownMenu(menu, { menu = false }) {
@@ -159,7 +161,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             HabitIcon(habit.symbol, habit.color, size = 48.dp, shape = CookieShape())
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
-                Text(habit.name, style = MaterialTheme.typography.titleMedium.copy(fontSize = 17.sp), color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(planLine(habit, store), style = MaterialTheme.typography.bodyMedium, color = c.secondary)
             }
             if (!isTask) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
@@ -299,7 +301,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, rev: Int, sto
     }
     if (logs.isNotEmpty()) {
         Spacer(Modifier.height(20.dp))
-        Text(logsTitle(ruled, day, today), Modifier.padding(start = 16.dp, bottom = 8.dp), style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = c.secondary)
+        Text(logsTitle(ruled, day, today), Modifier.padding(start = 16.dp, bottom = 8.dp), style = AppType.labelLarge, color = c.secondary)
         val shown = if (logs.size <= 3) logs else logs.take(2)
         val rows = shown.size + if (logs.size > 3) 1 else 0
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -323,7 +325,7 @@ private fun StatusLine(status: DayStatus, running: Boolean, now: Long) {
     val short = detail != null && detail.length <= 22
     if (match != null) {
         Row(verticalAlignment = Alignment.Bottom) {
-            Text(match.groupValues[1], style = MaterialTheme.typography.displaySmall.copy(fontSize = 44.sp, fontWeight = FontWeight.Normal), color = c.ink,
+            Text(match.groupValues[1], style = AppType.displayMedium, color = c.ink,
                 modifier = Modifier.alignByBaseline().semantics { testTag = "day-result" })
             Spacer(Modifier.width(8.dp))
             Text(match.groupValues[2], Modifier.alignByBaseline().weight(1f), style = MaterialTheme.typography.titleLarge, color = c.ink, maxLines = 2)

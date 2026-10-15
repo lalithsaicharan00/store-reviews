@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -204,7 +206,7 @@ fun Footer(text: String, modifier: Modifier = Modifier) =
 /** The section heading above a card ("Amount", "How long"). */
 @Composable
 fun SectionTitle(text: String) =
-    Text(text, Modifier.padding(start = 16.dp, top = 20.dp, bottom = 8.dp), style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = appColors.secondary)
+    Text(text, Modifier.padding(start = 16.dp, top = 20.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
 
 /** The one filled main action, full width at the bottom, riding above the keyboard (U18). */
 @Composable

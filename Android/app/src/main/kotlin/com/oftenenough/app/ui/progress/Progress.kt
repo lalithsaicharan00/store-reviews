@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.progress
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -189,7 +191,7 @@ fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: ()
                     if (snap.archivedCards.isNotEmpty()) {
                         item(key = "archived-title", contentType = "note") {
                             Text("Archived", Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 4.dp).semantics { heading() },
-                                style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = c.secondary)
+                                style = AppType.labelLarge, color = c.secondary)
                         }
                         items(snap.archivedCards, key = { "archived-" + it.habit.id }, contentType = { "card" }) { card ->
                             HabitCard(card, snap, store, nav, Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
@@ -270,7 +272,7 @@ private fun RangePicker(selected: ProgressRange, onPick: (ProgressRange) -> Unit
                     Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.onInk)
                     Spacer(Modifier.width(8.dp))
                 }
-                Text(r.title, style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp), color = if (on) c.onInk else c.ink, maxLines = 1)
+                Text(r.title, style = AppType.labelLarge, color = if (on) c.onInk else c.ink, maxLines = 1)
             }
         }
     }
@@ -315,7 +317,7 @@ private fun GroupChips(groups: List<HabitGroup>, selected: String?, onPick: (Str
 
 private fun tagName(name: String): String = name.trim().lowercase().replace(Regex("\\s+"), "-")
 
-private val headlineStyle = TextStyle(fontSize = 20.sp, lineHeight = 26.sp, fontWeight = FontWeight.Medium)
+private val headlineStyle = AppType.title20Emphasized
 
 /**
  * One habit's card: icon, name on one line, the goal; the headline and at most one more fact; the period's squares.
@@ -346,7 +348,7 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
                 Column(Modifier.weight(1f)) {
                     // One line: a long name ends in "…".
                     Text(habit.name, maxLines = 1, overflow = TextOverflow.Ellipsis, color = c.ink,
-                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp, fontWeight = FontWeight.Normal))
+                        style = AppType.bodyLarge)
                     Text(card.goal, maxLines = 1, overflow = TextOverflow.Ellipsis, color = c.secondary, style = MaterialTheme.typography.bodyMedium)
                 }
                 Spacer(Modifier.width(8.dp))
@@ -398,8 +400,8 @@ private fun QuitRunClock(start: Long, clock: () -> Long) {
     }
     Text(
         buildAnnotatedString {
-            withStyle(SpanStyle(fontSize = 20.sp, fontWeight = FontWeight.Medium, color = c.ink)) { append(Format.run((now - start) / 1000.0)) }
-            withStyle(SpanStyle(fontSize = 14.sp, color = c.secondary)) { append(" current run") }
+            withStyle(AppType.title20Emphasized.toSpanStyle().copy(color = c.ink)) { append(Format.run((now - start) / 1000.0)) }
+            withStyle(AppType.bodyMedium.toSpanStyle().copy(color = c.secondary)) { append(" current run") }
         },
         style = headlineStyle.copy(fontFeatureSettings = "tnum"),
     )

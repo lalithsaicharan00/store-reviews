@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.charts
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Spacer
@@ -50,7 +52,7 @@ fun LightBarChart(
 ) {
     val c = appColors
     val measurer = rememberTextMeasurer()
-    val labelStyle = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp, color = c.secondary)
+    val labelStyle = AppType.labelSmall.copy(color = c.secondary)
     val gridColor = c.secondary.copy(alpha = 0.25f)
     val goalColor = c.secondary
     Spacer(

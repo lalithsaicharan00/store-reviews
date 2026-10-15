@@ -43,6 +43,7 @@ object AppGraph {
     var widgetRoute by androidx.compose.runtime.mutableStateOf<String?>(null)
 
     fun openTarget(intent: android.content.Intent?) {
+        com.oftenenough.app.app.account.InviteLink.token(intent?.dataString)?.let { inviteToOpen = it; intent?.data = null }
         intent?.getStringExtra(MainActivity.WIDGET_ROUTE)?.let { route ->
             widgetRoute = route + "|" + intent.getIntExtra(MainActivity.OPEN_DAY, -1)
             intent.removeExtra(MainActivity.WIDGET_ROUTE)
@@ -62,11 +63,40 @@ object AppGraph {
     /** Where Plus comes from: the fake store in debug builds and tests until Play Billing is connected (build prompt §5). */
     val plus: PlusStore get() = plusInstance ?: error("AppGraph.open first")
 
-    /** The store's free-plan limit follows what the account owns. */
-    private fun followPlus(store: HabitStore, plus: PlusStore) {
-        store.isPlus = plus.owned != PlusOwned.NONE
-        scope.launch { androidx.compose.runtime.snapshotFlow { plus.owned }.collect { store.isPlus = it != PlusOwned.NONE } }
+    private var accountsInstance: com.oftenenough.app.app.account.AccountCenter? = null
+    /** The Plus account (Plus & Account): optional, holds only the purchase and the family (D16). */
+    val accounts: com.oftenenough.app.app.account.AccountCenter get() = accountsInstance ?: error("AppGraph.open first")
+    private var signInInstance: com.oftenenough.app.app.account.SignInProvider? = null
+    val signIn: com.oftenenough.app.app.account.SignInProvider get() = signInInstance ?: error("AppGraph.open first")
+
+    /** Plus from either place: bought through Google Play on this account, or held by the Plus account (an iPhone purchase, a family). */
+    val hasPlus: Boolean get() = plus.owned != PlusOwned.NONE || accounts.account?.givesPlus == true
+
+    /** The store's free-plan limit follows Plus, from Play or the account. */
+    private fun followPlus(store: HabitStore) {
+        store.isPlus = hasPlus
+        scope.launch { androidx.compose.runtime.snapshotFlow { hasPlus }.collect { store.isPlus = it } }
     }
+
+    /** The account's server and sign-in: the stand-ins in debug builds until the Worker and the OAuth client exist. */
+    private fun openAccounts(context: Context, file: String, test: Boolean) {
+        val prefs = context.getSharedPreferences(file, Context.MODE_PRIVATE)
+        val standInPrefs = context.getSharedPreferences("$file-standin", Context.MODE_PRIVATE)
+        if (test) { prefs.edit().clear().commit(); standInPrefs.edit().clear().commit() }
+        val today = { java.time.LocalDate.now().toEpochDay() }
+        val server = if (BuildConfig.DEBUG || test) com.oftenenough.app.app.account.StandInAccountServer(standInPrefs, today).also { if (!test) it.latencyMs = 900 }
+            else com.oftenenough.app.app.account.NoAccountServer
+        accountsInstance = com.oftenenough.app.app.account.AccountCenter(prefs, server)
+        signInInstance = when {
+            test -> com.oftenenough.app.app.account.StandInSignIn()
+            BuildConfig.GOOGLE_WEB_CLIENT_ID.isNotEmpty() -> com.oftenenough.app.app.account.GoogleSignInProvider(BuildConfig.GOOGLE_WEB_CLIENT_ID)
+            BuildConfig.DEBUG -> com.oftenenough.app.app.account.StandInSignIn()
+            else -> com.oftenenough.app.app.account.NoSignIn
+        }
+    }
+
+    /** An invite link opened from outside the app (Figma 5): read once by the app's navigation. */
+    var inviteToOpen by androidx.compose.runtime.mutableStateOf<String?>(null)
 
     /** Locking the phone locks the app at once (whatever Lock again says). */
     private fun watchScreenOff(context: Context) {
@@ -105,8 +135,11 @@ object AppGraph {
             }
         }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
-        plusInstance = if (BuildConfig.DEBUG) FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)) else NoPlusStore
-        followPlus(store, plus)
+        plusInstance = if (BuildConfig.DEBUG) FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)).also { it.latencyMs = 900 } else NoPlusStore
+        openAccounts(context, com.oftenenough.app.app.account.AccountCenter.FILE, test = false)
+        followPlus(store)
+        // The account is asked again on each launch (a family change, a refund); kept as it was when offline.
+        scope.launch { accounts.refresh(); accounts.syncPurchase(plus.purchase()) }
     }
 
     /** Google Drive: the stand-in on this phone in debug builds until the user's OAuth client exists (build prompt §5). */
@@ -137,7 +170,9 @@ object AppGraph {
             com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs), test = true)
         // Its own purchases, none each launch unless the launch asks for Plus (TestLaunch.PLUS).
         plusInstance = FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
-        followPlus(store, plus)
+        // Its own account and stand-in server, emptied each launch (D8).
+        openAccounts(context, "uitest-account", test = true)
+        followPlus(store)
     }
 
     private fun CoroutineScope.launchLoad(store: HabitStore) {

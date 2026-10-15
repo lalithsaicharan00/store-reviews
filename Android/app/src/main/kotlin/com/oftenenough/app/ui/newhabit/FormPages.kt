@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -118,7 +120,7 @@ fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
         LaunchedEffect(Unit) { if (form.amountText.isEmpty()) runCatching { focus.requestFocus() } }
         Card(Modifier.fillMaxWidth().padding(top = 8.dp)) {
             Column(Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(oftenHeader(form), style = MaterialTheme.typography.titleSmall.copy(fontSize = 16.sp), color = appColors.secondary)
+                Text(oftenHeader(form), style = AppType.titleMedium, color = appColors.secondary)
                 Spacer(Modifier.height(20.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val value = GoalNumber.parse(form.amountText)
@@ -130,12 +132,12 @@ fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
                         form.amountText, { form.amountText = it.filter { c -> c.isDigit() || c == '.' || c == ',' }.take(12) },
                         Modifier.width(120.dp).clip(RoundedCornerShape(20.dp)).background(appColors.tonal).heightIn(min = 88.dp)
                             .focusRequester(focus).semantics { testTag = "much-number"; contentDescription = if (limit) "Limit" else "Amount" },
-                        textStyle = TextStyle(fontSize = 57.sp, color = appColors.ink, textAlign = TextAlign.Center),
+                        textStyle = AppType.displayMediumEmphasized.copy(color = appColors.ink, textAlign = TextAlign.Center),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
                         singleLine = true, cursorBrush = SolidColor(appColors.ink),
                         decorationBox = { inner ->
                             Box(Modifier.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
-                                if (form.amountText.isEmpty()) Text(if (limit) "2" else "8", style = TextStyle(fontSize = 57.sp, color = appColors.secondary.copy(alpha = 0.45f)))
+                                if (form.amountText.isEmpty()) Text(if (limit) "2" else "8", style = AppType.displayMediumEmphasized.copy(color = appColors.secondary.copy(alpha = 0.45f)))
                                 inner()
                             }
                         },
@@ -148,7 +150,7 @@ fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
                 Spacer(Modifier.height(16.dp))
                 Row(Modifier.clip(RoundedCornerShape(8.dp)).border(1.dp, appColors.outline, RoundedCornerShape(8.dp)).clickable(onClick = onUnit)
                     .semantics { testTag = "much-unit" }.heightIn(min = 40.dp).padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(form.unit.ifEmpty { "No unit" }, style = MaterialTheme.typography.titleSmall.copy(fontSize = 16.sp), color = appColors.ink)
+                    Text(form.unit.ifEmpty { "No unit" }, style = AppType.titleMedium, color = appColors.ink)
                     Icon(Icons.Rounded.ArrowDropDown, null, tint = appColors.ink)
                 }
             }
@@ -173,11 +175,11 @@ fun HowLongPage(form: FormState, onBack: () -> Unit) {
     FormPage("How long", chip = null, onBack = onBack) {
         Card(Modifier.fillMaxWidth().padding(top = 8.dp)) {
             Column(Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(oftenHeader(form), style = MaterialTheme.typography.titleSmall.copy(fontSize = 16.sp), color = appColors.secondary)
+                Text(oftenHeader(form), style = AppType.titleMedium, color = appColors.secondary)
                 Spacer(Modifier.height(20.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     TimeBox(form.hours, "hours", "how-long-hours") { form.hours = it }
-                    Text(":", Modifier.padding(horizontal = 12.dp).padding(bottom = 28.dp), style = TextStyle(fontSize = 45.sp, color = appColors.ink))
+                    Text(":", Modifier.padding(horizontal = 12.dp).padding(bottom = 28.dp), style = AppType.displayMedium.copy(color = appColors.ink))
                     TimeBox(form.minutes, "minutes", "how-long-minutes") { form.minutes = it }
                 }
                 Spacer(Modifier.height(16.dp))
@@ -208,7 +210,7 @@ private fun TimeBox(value: String, label: String, tag: String, onChange: (String
             Modifier.width(120.dp).clip(RoundedCornerShape(20.dp)).background(appColors.tonal)
                 .border(if (focused) 3.dp else 0.dp, if (focused) appColors.ink else Color.Transparent, RoundedCornerShape(20.dp))
                 .heightIn(min = 88.dp).onFocusChanged { focused = it.isFocused }.semantics { testTag = tag; contentDescription = label },
-            textStyle = TextStyle(fontSize = 57.sp, color = appColors.ink, textAlign = TextAlign.Center),
+            textStyle = AppType.displayMediumEmphasized.copy(color = appColors.ink, textAlign = TextAlign.Center),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(appColors.ink),
             decorationBox = { inner -> Box(Modifier.padding(vertical = 8.dp), contentAlignment = Alignment.Center) { inner() } },
         )

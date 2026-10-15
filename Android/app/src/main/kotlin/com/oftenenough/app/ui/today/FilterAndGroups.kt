@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -158,7 +160,7 @@ private fun Chip(title: String, color: HabitColor?, selected: Boolean, count: In
         .heightIn(min = 40.dp).padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
         if (selected) { Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.onInk); Spacer(Modifier.width(6.dp)) }
         else if (color != null) { Box(Modifier.size(10.dp).clip(CircleShape).background(c.habit(color))); Spacer(Modifier.width(8.dp)) }
-        Text(title, style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = if (selected) c.onInk else c.ink, maxLines = 1)
+        Text(title, style = AppType.labelLarge, color = if (selected) c.onInk else c.ink, maxLines = 1)
         if (count != null) { Spacer(Modifier.width(8.dp)); Text("$count", style = MaterialTheme.typography.labelLarge, color = if (selected) c.onInk else c.secondary) }
     }
 }

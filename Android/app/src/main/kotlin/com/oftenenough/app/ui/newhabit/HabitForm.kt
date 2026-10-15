@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -238,7 +240,7 @@ private fun FormBody(
                 Button(save, Modifier.padding(end = 8.dp).semantics { testTag = "form-add" }, enabled = form.canAdd,
                     colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk,
                         disabledContainerColor = appColors.tonal, disabledContentColor = appColors.secondary)) {
-                    Text(if (form.editing) "Save" else "Add", style = MaterialTheme.typography.titleSmall.copy(fontSize = 16.sp))
+                    Text(if (form.editing) "Save" else "Add", style = AppType.titleMedium)
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = appColors.screen, titleContentColor = appColors.ink, navigationIconContentColor = appColors.ink),
@@ -335,7 +337,7 @@ private fun Preview(form: FormState, store: HabitStore) {
     }
     Text(if (named) form.sentence() else if (form.type == ItemType.TASK) "Enter a task name to see the preview." else "Enter a habit name to see the preview.",
         Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp).semantics { testTag = "habit-sentence" },
-        style = if (named) MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold) else MaterialTheme.typography.bodyMedium,
+        style = if (named) AppType.titleMedium else AppType.bodyMedium,
         color = if (named) appColors.ink else appColors.secondary)
     @Suppress("UNUSED_VARIABLE") val unused = store
 }
@@ -373,9 +375,9 @@ private fun NameField(typed: TypedText, placeholder: String, autoFocus: Boolean)
         .padding(horizontal = 16.dp, vertical = 14.dp), contentAlignment = Alignment.CenterStart) {
         BasicTextField(typed.text, { typed.text = it.replace("\n", "").take(TextLimit.NAME) },
             Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "name-field"; contentDescription = "Name" },
-            textStyle = TextStyle(fontSize = 28.sp, color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
+            textStyle = AppType.headlineMedium.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-            decorationBox = { inner -> Box { if (typed.text.isEmpty()) Text(placeholder, style = TextStyle(fontSize = 28.sp, color = appColors.secondary)); inner() } })
+            decorationBox = { inner -> Box { if (typed.text.isEmpty()) Text(placeholder, style = AppType.headlineMedium.copy(color = appColors.secondary)); inner() } })
     }
     TextLimit.note(typed.text, TextLimit.NAME)?.let { Text(it, Modifier.padding(start = 16.dp, top = 4.dp), style = MaterialTheme.typography.bodySmall, color = appColors.secondary) }
 }

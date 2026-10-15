@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.components
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -82,7 +84,7 @@ fun RoundActionButton(
         contentAlignment = Alignment.Center,
     ) {
         Box(Modifier.size(size).clip(CircleShape).background(if (enabled) background else background.copy(alpha = 0.5f)), contentAlignment = Alignment.Center) {
-            if (text != null) Text(text, color = content, fontSize = if (text.length > 3) 12.sp else 14.sp, fontWeight = FontWeight.Medium, maxLines = 1)
+            if (text != null) Text(text, color = content, style = if (text.length > 3) AppType.labelMedium else AppType.labelLarge, maxLines = 1)
             else Icon(icon, null, tint = if (enabled) content else content.copy(alpha = 0.5f), modifier = Modifier.size(22.dp))
         }
     }
@@ -138,16 +140,18 @@ fun SegmentedList(modifier: Modifier = Modifier, content: @Composable ColumnScop
 fun ListRow(
     title: String, index: Int, count: Int, supporting: String? = null, icon: ImageVector? = null, iconDisc: Boolean = false,
     onClick: (() -> Unit)? = null, chevron: Boolean = onClick != null, titleColor: Color? = null, trailing: (@Composable () -> Unit)? = null,
+    modifier: Modifier = Modifier, iconTint: Color? = null, strong: Boolean = false,
 ) {
-    Segment(index, count, onClick = onClick) {
+    Segment(index, count, modifier, onClick = onClick) {
         if (icon != null) {
             if (iconDisc) Box(Modifier.size(40.dp).clip(CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
-                Icon(icon, null, tint = appColors.ink, modifier = Modifier.size(22.dp))
-            } else Icon(icon, null, tint = appColors.ink, modifier = Modifier.size(24.dp))
+                Icon(icon, null, tint = iconTint ?: appColors.ink, modifier = Modifier.size(22.dp))
+            } else Icon(icon, null, tint = iconTint ?: appColors.ink, modifier = Modifier.size(24.dp))
             Spacer(Modifier.width(16.dp))
         }
         Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, color = titleColor ?: appColors.ink)
+            // A name over supporting text is Title Medium; a name alone is Body Large (the type scale, Type.kt).
+            Text(title, style = if (supporting != null || strong) AppType.titleMedium else AppType.bodyLarge, color = titleColor ?: appColors.ink)
             if (supporting != null) Text(supporting, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
         }
         if (trailing != null) { Spacer(Modifier.width(8.dp)); trailing() }
@@ -179,7 +183,7 @@ fun TonalButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier
         colors = ButtonDefaults.filledTonalButtonColors(containerColor = appColors.tonal, contentColor = appColors.ink),
         contentPadding = PaddingValues(horizontal = 20.dp)) {
         if (icon != null) { Icon(icon, null, Modifier.size(20.dp)); Spacer(Modifier.width(8.dp)) }
-        Text(text, style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(text, style = AppType.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -190,7 +194,7 @@ fun PlainButton(
     textStyle: TextStyle? = null,
 ) {
     TextButton(onClick, modifier, enabled = enabled) {
-        Text(text, style = textStyle ?: MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = color ?: appColors.ink)
+        Text(text, style = textStyle ?: AppType.labelLarge, color = color ?: appColors.ink)
     }
 }
 
@@ -206,7 +210,7 @@ fun CookieIcon(icon: ImageVector, size: Dp = 56.dp, container: Color? = null, ti
 @Composable
 fun Badge(text: String) {
     Surface(shape = RoundedCornerShape(12.dp), color = appColors.tonal) {
-        Text(text, Modifier.padding(horizontal = 10.dp, vertical = 4.dp), style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp), color = appColors.ink, maxLines = 1)
+        Text(text, Modifier.padding(horizontal = 10.dp, vertical = 4.dp), style = AppType.labelMedium, color = appColors.ink, maxLines = 1)
     }
 }
 

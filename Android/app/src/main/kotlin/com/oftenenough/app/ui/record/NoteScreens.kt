@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -88,12 +90,12 @@ fun NoteScreen(habitId: String?, day: Int, store: HabitStore, onDone: () -> Unit
         Box(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(16.dp)) {
             if (editing) {
                 BasicTextField(text, { text = it.take(TextLimit.NOTE) },
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = c.ink, lineHeight = 24.sp),
+                    textStyle = AppType.bodyLarge.copy(color = c.ink),
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                     cursorBrush = SolidColor(c.ink),
                     modifier = Modifier.fillMaxSize().focusRequester(focus).semantics { testTag = "note-field" },
                     decorationBox = { inner -> Box { if (text.isEmpty()) Text("Write a note", style = MaterialTheme.typography.bodyLarge, color = c.secondary); inner() } })
-            } else Text(saved ?: "", Modifier.verticalScroll(rememberScrollState()), style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 24.sp), color = c.ink)
+            } else Text(saved ?: "", Modifier.verticalScroll(rememberScrollState()), style = AppType.bodyLarge, color = c.ink)
         }
         TextLimit.note(text, TextLimit.NOTE)?.takeIf { editing }?.let { Footer(it) }
         if (editing) BottomAction("Save", text.isNotBlank() && changed, tag = "note-save") {

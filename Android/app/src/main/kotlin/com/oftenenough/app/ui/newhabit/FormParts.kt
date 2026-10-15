@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -99,7 +101,7 @@ fun FormPage(
     BackHandler(onBack = onBack)
     Column(Modifier.fillMaxSize().background(appColors.screen).imePadding()) {
         TopAppBar(
-            title = { Text(title, maxLines = 1) },
+            title = { Text(title, style = AppType.titleLargeEmphasized, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) },
             navigationIcon = {
                 IconButton(onBack, Modifier.semantics { testTag = "page-back" }) {
                     if (close) Icon(Icons.Rounded.Close, "Close") else Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back")
@@ -124,7 +126,7 @@ fun SentenceChip(text: String) {
         Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Outlined.Flag, null, Modifier.size(18.dp), tint = appColors.ink)
             Spacer(Modifier.width(8.dp))
-            Text(text, style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = appColors.ink)
+            Text(text, style = AppType.labelLarge, color = appColors.ink)
         }
     }
 }
@@ -132,7 +134,7 @@ fun SentenceChip(text: String) {
 /** A grey heading over a group of rows ("In total", "Pick one or more"). */
 @Composable
 fun GroupTitle(text: String) =
-    Text(text, Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp), style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = appColors.secondary)
+    Text(text, Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
 
 @Composable
 fun Note(text: String) =
@@ -217,7 +219,7 @@ fun NumberRow(title: String, value: Int, range: IntRange, index: Int, count: Int
         BasicTextField(
             value.toString(), { text -> text.filter { it.isDigit() }.take(5).toIntOrNull()?.let { onChange(it.coerceIn(range)) } },
             Modifier.widthIn(min = 40.dp, max = 64.dp).semantics { contentDescription = title },
-            textStyle = MaterialTheme.typography.titleMedium.copy(color = appColors.ink, textAlign = TextAlign.Center, fontWeight = FontWeight.SemiBold),
+            textStyle = AppType.titleMedium.copy(color = appColors.ink, textAlign = TextAlign.Center),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(appColors.ink),
         )
         StepButton(Icons.Rounded.Add, "More", value < range.last) { onChange(minOf(range.last, value + 1)) }
@@ -276,7 +278,7 @@ fun ChoicePill(text: String, selected: Boolean = false, tag: String? = null, onC
         .border(1.dp, if (selected) c.ink else c.outline, RoundedCornerShape(10.dp)).clickable(onClick = onClick)
         .let { m -> tag?.let { t -> m.semantics { testTag = t } } ?: m }
         .heightIn(min = 40.dp).padding(horizontal = 16.dp, vertical = 8.dp), contentAlignment = Alignment.Center) {
-        Text((if (selected) "✓  " else "") + text, style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp), color = if (selected) c.onInk else c.ink)
+        Text((if (selected) "✓  " else "") + text, style = AppType.labelLarge, color = if (selected) c.onInk else c.ink)
     }
 }
 

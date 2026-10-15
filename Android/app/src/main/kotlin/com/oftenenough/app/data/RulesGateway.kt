@@ -46,7 +46,7 @@ enum class PeriodKind { WEEK, MONTH, YEAR }
 class RulesGateway(private val clock: () -> Long) {
     private val logs = EntryIndex()
     /** The shared rules. Only the adapter's files (`RulesGateway*.kt`) read it. */
-    internal var rules = HabitRules(HabitData(emptyList(), logs), DaySettings(), clock); private set
+    internal var rules = HabitRules(HabitData(emptyList(), logs), DaySettings(), clock = clock); private set
     /** The rules' copy of each saved habit, with the app's habit it was made from (a changed habit is made again). */
     private var known = HashMap<String, Pair<Habit, app.habits.rules.Habit>>()
 
@@ -60,7 +60,7 @@ class RulesGateway(private val clock: () -> Long) {
             emptyList(), settings, timeZone, defaultWeekStart,
         )
         val d = loaded.data
-        rules = HabitRules(HabitData(d.habits, logs, d.skips, d.moves, d.pauses, d.rules, d.archivedOn, d.timers, d.sections, d.cardOrder), loaded.settings, clock)
+        rules = HabitRules(HabitData(d.habits, logs, d.skips, d.moves, d.pauses, d.rules, d.archivedOn, d.timers, d.sections, d.cardOrder), loaded.settings, reuse = rules.zone, clock = clock)
         known = HashMap()
         for (h in habits) d.habitById[h.id]?.let { known[h.id] = h to it }
     }

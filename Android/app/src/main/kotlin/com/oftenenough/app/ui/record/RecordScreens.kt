@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -107,15 +109,15 @@ fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly
     val currency = unit.trim().takeIf { it in HabitCopy.currencies }
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(vertical = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            if (currency != null) Text(currency, style = MaterialTheme.typography.displaySmall.copy(fontSize = 48.sp), color = c.secondary)
+            if (currency != null) Text(currency, style = AppType.displayMedium, color = c.secondary)
             BasicTextField(draft.amount, { draft.amount = it.take(16) }, readOnly = readOnly,
-                textStyle = TextStyle(fontSize = 57.sp, fontWeight = FontWeight.Normal, color = c.ink, textAlign = TextAlign.Center),
+                textStyle = AppType.displayMediumEmphasized.copy(color = c.ink, textAlign = TextAlign.Center),
                 keyboardOptions = KeyboardOptions(keyboardType = if (draft.kind == HabitKind.Check) KeyboardType.Number else KeyboardType.Decimal),
                 singleLine = true, cursorBrush = SolidColor(c.ink),
                 modifier = Modifier.widthIn(min = 48.dp).width(IntrinsicWidthFor(draft.amount)).let { m -> focus?.let { m.focusRequester(it) } ?: m }
                     .semantics { testTag = "record-amount"; contentDescription = if (unit.isBlank() || currency != null) "Amount" else "Amount, in $unit" },
                 decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
-                    if (draft.amount.isEmpty()) Text("0", style = TextStyle(fontSize = 57.sp, color = c.tonal), textAlign = TextAlign.Center)
+                    if (draft.amount.isEmpty()) Text("0", style = AppType.displayMediumEmphasized.copy(color = c.tonal), textAlign = TextAlign.Center)
                     inner()
                 } })
         }
@@ -138,13 +140,13 @@ fun DurationCard(draft: ValueDraft, focus: FocusRequester?, readOnly: Boolean = 
             Triple("sec", draft.seconds, { v: String -> draft.seconds = v })).forEachIndexed { i, (label, value, set) ->
             Column(Modifier.weight(1f).clip(RoundedCornerShape(16.dp)).background(c.tonal2).padding(vertical = 12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 BasicTextField(value, { set(it.take(5)) }, readOnly = readOnly,
-                    textStyle = TextStyle(fontSize = 40.sp, color = c.ink, textAlign = TextAlign.Center),
+                    textStyle = AppType.displaySmall.copy(color = c.ink, textAlign = TextAlign.Center),
                     keyboardOptions = KeyboardOptions(keyboardType = if (i == 2) KeyboardType.Decimal else KeyboardType.Number, imeAction = ImeAction.Next),
                     singleLine = true, cursorBrush = SolidColor(c.ink),
                     modifier = Modifier.fillMaxWidth().let { m -> if (i == 1 && focus != null) m.focusRequester(focus) else m }
                         .semantics { testTag = "record-$label"; contentDescription = when (i) { 0 -> "Hours"; 1 -> "Minutes"; else -> "Seconds" } },
                     decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
-                        if (value.isEmpty()) Text("0", style = TextStyle(fontSize = 40.sp, color = c.secondary.copy(alpha = 0.4f)))
+                        if (value.isEmpty()) Text("0", style = AppType.displaySmall.copy(color = c.secondary.copy(alpha = 0.4f)))
                         inner()
                     } })
                 Text(label, style = MaterialTheme.typography.bodyMedium, color = c.secondary)

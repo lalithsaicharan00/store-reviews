@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -132,7 +134,7 @@ fun AppearancePage(prefs: Prefs, onBack: () -> Unit) {
                         val shown = if (on) Icons.Rounded.Check else icon
                         if (shown != null) Icon(shown, null, tint = if (on) appColors.onInk else appColors.ink)
                         Spacer(Modifier.height(6.dp))
-                        Text(title, style = MaterialTheme.typography.titleSmall.copy(fontSize = 16.sp), color = if (on) appColors.onInk else appColors.ink, maxLines = 1)
+                        Text(title, style = AppType.titleMedium, color = if (on) appColors.onInk else appColors.ink, maxLines = 1)
                     }
                 }
         }
@@ -240,9 +242,9 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         Box(Modifier.fillMaxWidth().padding(top = 8.dp).clip(RoundedCornerShape(24.dp)).background(appColors.surface).heightIn(min = 68.dp).padding(16.dp),
             contentAlignment = Alignment.CenterStart) {
             BasicTextField(name, { name = it.replace("\n", "").take(TextLimit.SECTION) }, Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "section-name-field"; contentDescription = "Name" },
-                textStyle = TextStyle(fontSize = 28.sp, color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
+                textStyle = AppType.headlineMedium.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                decorationBox = { inner -> Box { if (name.isEmpty()) Text("e.g. Before work", style = TextStyle(fontSize = 28.sp, color = appColors.secondary)); inner() } })
+                decorationBox = { inner -> Box { if (name.isEmpty()) Text("e.g. Before work", style = AppType.headlineMedium.copy(color = appColors.secondary)); inner() } })
         }
         TextLimit.note(name, TextLimit.SECTION)?.let { Note(it) }
         Spacer(Modifier.height(16.dp))
@@ -258,7 +260,7 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
             plan.rows.forEachIndexed { i, row ->
                 Segment(i, plan.rows.size, Modifier.semantics(mergeDescendants = true) { testTag = "plan-row-${row.name}" }) {
                     Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                        Text(row.name, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = if (row.isSubject) FontWeight.SemiBold else FontWeight.Normal), color = appColors.ink, maxLines = 1)
+                        Text(row.name, style = if (row.isSubject) AppType.titleMedium else AppType.bodyLarge, color = appColors.ink, maxLines = 1)
                         Text(row.range, style = MaterialTheme.typography.bodyMedium, color = if (row.isSubject || row.changed) appColors.ink else appColors.secondary)
                         if (!row.isSubject && row.changed) row.oldRange?.let { Text("Was $it", style = MaterialTheme.typography.bodySmall, color = appColors.secondary) }
                     }
@@ -311,10 +313,10 @@ private fun ClockTile(title: String, icon: ImageVector, minute: Int, shape: Roun
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(icon, null, Modifier.size(20.dp), tint = appColors.secondary)
             Spacer(Modifier.width(8.dp))
-            Text(title, style = MaterialTheme.typography.titleSmall.copy(fontSize = 16.sp), color = appColors.secondary)
+            Text(title, style = AppType.titleMedium, color = appColors.secondary)
         }
         Row(verticalAlignment = Alignment.Bottom) {
-            Text(main, style = TextStyle(fontSize = 45.sp, color = appColors.ink))
+            Text(main, style = AppType.displayMedium.copy(color = appColors.ink))
             if (suffix.isNotEmpty()) Text(" $suffix", Modifier.padding(bottom = 8.dp), style = MaterialTheme.typography.titleMedium, color = appColors.ink)
         }
     }

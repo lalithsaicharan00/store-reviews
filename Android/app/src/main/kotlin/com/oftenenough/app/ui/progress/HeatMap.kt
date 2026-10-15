@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.progress
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
@@ -176,7 +178,7 @@ internal fun HeatYear(layout: YearLayout, cells: List<HeatCell>, color: HabitCol
                 val isToday = row == layout.todayRow
                 Box(Modifier.size(16.dp, square), contentAlignment = Alignment.CenterStart) {
                     Text(layout.letters.getOrElse(row) { "" }, maxLines = 1,
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = if (isToday) FontWeight.Bold else FontWeight.Medium),
+                        style = if (isToday) AppType.labelMedium else AppType.labelMedium.copy(fontWeight = FontWeight.Normal),
                         color = if (isToday) c.ink else c.secondary)
                 }
             }

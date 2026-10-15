@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.theme.AppType
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -173,9 +175,9 @@ private fun RecordCard(record: HabitOverall, color: HabitColor, showStreaks: Boo
         }
         val headline = remember(record, c) {
             buildAnnotatedString {
-                if (record.lead.isNotEmpty()) { withStyle(SpanStyle(fontSize = 18.sp, color = c.secondary)) { append(record.lead + " ") } }
-                withStyle(SpanStyle(fontSize = 48.sp, color = c.ink)) { append(record.value) }
-                if (record.trail.isNotEmpty()) { withStyle(SpanStyle(fontSize = 22.sp, color = c.secondary)) { append(" " + record.trail) } }
+                if (record.lead.isNotEmpty()) { withStyle(AppType.bodyLarge.toSpanStyle().copy(color = c.secondary)) { append(record.lead + " ") } }
+                withStyle(AppType.displayMedium.toSpanStyle().copy(color = c.ink)) { append(record.value) }
+                if (record.trail.isNotEmpty()) { withStyle(AppType.bodyLarge.toSpanStyle().copy(color = c.secondary)) { append(" " + record.trail) } }
             }
         }
         Text(headline, Modifier.clearAndSetSemantics { contentDescription = record.headline; testTag = "habit-record-headline" })
@@ -225,8 +227,8 @@ private fun RecordBox(box: RecordBoxData, color: HabitColor, modifier: Modifier)
             }
             Text(
                 buildAnnotatedString {
-                    withStyle(SpanStyle(fontSize = 28.sp, color = c.ink)) { append(box.fact.number) }
-                    if (box.fact.unit.isNotEmpty()) withStyle(SpanStyle(fontSize = 16.sp, color = c.ink)) { append(" " + box.fact.unit) }
+                    withStyle(AppType.headlineSmallEmphasized.toSpanStyle().copy(color = c.ink)) { append(box.fact.number) }
+                    if (box.fact.unit.isNotEmpty()) withStyle(AppType.bodyLarge.toSpanStyle().copy(color = c.ink)) { append(" " + box.fact.unit) }
                 },
             )
         }
@@ -358,7 +360,7 @@ private fun MilestoneMedal(number: String, size: Dp, color: HabitColor) {
     val share = if (number.length >= 4) 0.26f else if (number.length == 3) 0.32f else 0.4f
     val fontSize = with(LocalDensity.current) { (size * share).toSp() }
     Box(Modifier.size(size).clip(CookieShape()).background(appColors.habit(color)), contentAlignment = Alignment.Center) {
-        Text(number, color = Color.White, fontSize = fontSize, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(number, color = Color.White, fontSize = fontSize, fontWeight = FontWeight.Medium, fontFamily = AppType.labelLarge.fontFamily, maxLines = 1)
     }
 }
 
@@ -379,7 +381,7 @@ private fun MilestoneNextRow(next: MilestoneNext, color: HabitColor, onPage: Boo
                 if (next.fraction > 0) drawArc(ring, -90f, 360f * next.fraction.toFloat(), false, Offset(inset, inset), arc, style = Stroke(w, cap = StrokeCap.Round))
             }
             if (next.target == null) Icon(Icons.Rounded.Check, null, tint = c.ink)
-            else Text(next.number, color = c.ink, fontSize = if (next.number.length >= 3) 13.sp else 16.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+            else Text(next.number, color = c.ink, style = if (next.number.length >= 3) AppType.labelMedium else AppType.titleMedium, maxLines = 1)
         }
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
@@ -540,7 +542,7 @@ private fun DayNames(names: List<String>, todayColumn: Int?) {
         names.forEachIndexed { i, name ->
             val isToday = i == todayColumn
             Text(name, Modifier.weight(1f), style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
+                fontWeight = if (isToday) FontWeight.Medium else FontWeight.Normal,
                 textDecoration = if (isToday) TextDecoration.Underline else null,
             ), color = if (isToday) appColors.ink else appColors.secondary, textAlign = TextAlign.Center, maxLines = 1)
         }

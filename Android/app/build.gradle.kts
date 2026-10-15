@@ -16,6 +16,10 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Sign in with Google (Plus & Account): the Web OAuth client ID the Worker checks ID tokens against. Public, not
+        // a secret, but given at build time (`-PgoogleWebClientId=…` or gradle.properties) until the user creates it;
+        // empty, debug builds use the stand-in sign-in and a release build offers none.
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"" + (project.findProperty("googleWebClientId") as String? ?: "") + "\"")
     }
 
     // Debug builds on CI use a stable key kept only as GitHub secrets (D11), so the Google OAuth client can trust its
@@ -96,12 +100,23 @@ dependencies {
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
     implementation("androidx.metrics:metrics-performance:1.0.0")
     implementation("com.android.billingclient:billing-ktx:9.1.0")
+    // Plus & Account: Sign in with Google through Android's Credential Manager (Google's own account sheet), the family
+    // invite's QR code (drawn on the phone, ZXing's encoder only) and Google's code scanner (no camera permission).
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation("com.google.zxing:core:3.5.3")
+    // Material 3 Expressive's loading indicator, drawn with the library Material's own uses (LoadingIndicator.kt).
+    implementation("androidx.graphics:graphics-shapes:1.1.0")
+    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     testImplementation("junit:junit:4.13.2")
+    // The real org.json for JVM tests (Android's own is a stub there): the account file is JSON.
+    testImplementation("org.json:json:20240303")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 
     androidTestImplementation(composeBom)
