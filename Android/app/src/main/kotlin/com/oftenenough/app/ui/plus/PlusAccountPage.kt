@@ -30,6 +30,7 @@ import androidx.compose.material.icons.outlined.PersonAdd
 import androidx.compose.material.icons.outlined.PersonRemove
 import androidx.compose.material.icons.outlined.ScheduleSend
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Redeem
 import androidx.compose.material.icons.outlined.Shop
 import androidx.compose.material.icons.outlined.SearchOff
 import androidx.compose.material3.Button
@@ -95,13 +96,13 @@ interface PlusNav {
 /** Which of the page's states it's in (Figma 1, 1.1–1.5), from Play and the account. */
 enum class PlusState { FREE, PLUS_NO_ACCOUNT, PLUS, FAMILY_OWNER, FAMILY_MEMBER, FREE_SIGNED_IN }
 
-fun plusState(plus: PlusStore, account: Account?): PlusState = when {
+fun plusState(plus: PlusStore, account: Account?, fromCode: Boolean = false): PlusState = when {
     account?.plus == AccountPlus.FAMILY_OWNER -> PlusState.FAMILY_OWNER
     account?.plus == AccountPlus.FAMILY_MEMBER -> PlusState.FAMILY_MEMBER
     account?.plus == AccountPlus.PLUS -> PlusState.PLUS
-    account != null && plus.owned != PlusOwned.NONE -> PlusState.PLUS
+    account != null && (plus.owned != PlusOwned.NONE || fromCode) -> PlusState.PLUS
     account != null -> PlusState.FREE_SIGNED_IN
-    plus.owned != PlusOwned.NONE -> PlusState.PLUS_NO_ACCOUNT
+    plus.owned != PlusOwned.NONE || fromCode -> PlusState.PLUS_NO_ACCOUNT
     else -> PlusState.FREE
 }
 
@@ -116,12 +117,13 @@ fun plusState(plus: PlusStore, account: Account?): PlusState = when {
 fun PlusAccountPage(
     store: HabitStore, plus: PlusStore, accounts: AccountCenter, signIn: SignInProvider, backup: BackupCenter,
     snackbar: SnackbarHostState, nav: PlusNav, restoreFoundNothing: Boolean = false, onRestoreDialogSeen: () -> Unit = {},
+    codes: com.oftenenough.app.app.PlusCodes? = null,
 ) {
     val c = appColors
     val scope = rememberCoroutineScope()
     val activity = androidx.activity.compose.LocalActivity.current
     val account = accounts.account
-    val state = plusState(plus, account)
+    val state = plusState(plus, account, codes?.redeemed == true)
     var dialog by rememberSaveable { mutableStateOf<String?>(null) }
     var sheet by rememberSaveable { mutableStateOf<String?>(null) }
     var removing by rememberSaveable { mutableStateOf<String?>(null) }
@@ -172,10 +174,12 @@ fun PlusAccountPage(
             Spacer(Modifier.height(24.dp))
             Section("Already have Plus?", footer = "Plus bought on this Google account also comes back by itself when you open the app.") {
                 SegmentedList {
-                    ListRow("Sign in", 0, 2, "Bought on an iPhone, or have an account", Icons.AutoMirrored.Outlined.Login, iconDisc = true,
+                    ListRow("Sign in", 0, 3, "Bought on an iPhone, or have an account", Icons.AutoMirrored.Outlined.Login, iconDisc = true,
                         onClick = nav::signIn, modifier = Modifier.semantics { testTag = "plus-sign-in" })
-                    ListRow("Restore from Google Play", 1, 2, "From this Google account", Icons.Outlined.Shop, iconDisc = true,
+                    ListRow("Restore from Google Play", 1, 3, "From this Google account", Icons.Outlined.Shop, iconDisc = true,
                         onClick = nav::restore, modifier = Modifier.semantics { testTag = "plus-restore" })
+                    ListRow("Redeem a code", 2, 3, "If you were given one", Icons.Outlined.Redeem, iconDisc = true,
+                        onClick = { dialog = "code" }, modifier = Modifier.semantics { testTag = "plus-redeem" })
                 }
             }
         }
@@ -183,8 +187,10 @@ fun PlusAccountPage(
             Spacer(Modifier.height(24.dp))
             Section("Already have Plus?", footer = "Plus bought on this Google account also comes back by itself when you open the app.") {
                 SegmentedList {
-                    ListRow("Restore from Google Play", 0, 1, "From this Google account", Icons.Outlined.Shop, iconDisc = true,
+                    ListRow("Restore from Google Play", 0, 2, "From this Google account", Icons.Outlined.Shop, iconDisc = true,
                         onClick = nav::restore, modifier = Modifier.semantics { testTag = "plus-restore" })
+                    ListRow("Redeem a code", 1, 2, "If you were given one", Icons.Outlined.Redeem, iconDisc = true,
+                        onClick = { dialog = "code" }, modifier = Modifier.semantics { testTag = "plus-redeem" })
                 }
             }
         }
@@ -241,6 +247,7 @@ fun PlusAccountPage(
                 dialog = null; sheet = null
                 scope.launch { if (accounts.cancelInvite() == Answer.Offline) say(offline) }
             }, { dialog = null }, dismiss = "Keep it", destructive = true, tag = "dialog-cancel-invite")
+        "code" -> RedeemCodeDialog({ code -> codes?.redeem(code) == true }, onDone = { dialog = null; say("Plus is on. Thank you.") }) { dialog = null }
         "no-plus" -> PlusDialog(Icons.Outlined.SearchOff, "No Plus found", "If you bought it on an iPhone, or have an account, sign in instead.",
             "Sign in", { dialog = null; nav.signIn() }, { dialog = null }, tag = "dialog-no-plus")
     }
@@ -423,3 +430,35 @@ private fun MemberRows(family: Family, onLeave: () -> Unit) {
 }
 
 private fun joined(p: FamilyPerson) = p.joinedDay?.let { "Joined " + DayWords.dayMonth(it.toInt()) } ?: ""
+
+/** Redeem a code: type it, and Plus turns on when it's one of ours; a wrong code says so and keeps what was typed. */
+@Composable
+private fun RedeemCodeDialog(redeem: (String) -> Boolean, onDone: () -> Unit, onDismiss: () -> Unit) {
+    val c = appColors
+    var code by rememberSaveable { mutableStateOf("") }
+    var wrong by rememberSaveable { mutableStateOf(false) }
+    val submit = { if (redeem(code)) onDone() else wrong = true }
+    androidx.compose.material3.AlertDialog(onDismiss,
+        modifier = Modifier.semantics { testTag = "dialog-code" },
+        icon = { Icon(Icons.Outlined.Redeem, null, tint = c.secondary) },
+        title = { Text("Redeem a code", style = AppType.headlineSmall, color = c.ink, modifier = Modifier.fillMaxWidth()) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("A code turns on Plus on this phone.", style = AppType.bodyMedium, color = c.secondary)
+                androidx.compose.material3.OutlinedTextField(code, { code = it.take(40); wrong = false }, Modifier.fillMaxWidth().semantics { testTag = "code-field" },
+                    textStyle = AppType.bodyLarge, singleLine = true, label = { Text("Code", style = AppType.bodySmall) },
+                    isError = wrong, supportingText = if (wrong) ({ Text("That code doesn’t work. Check it and try again.", style = AppType.bodySmall) }) else null,
+                    keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Characters,
+                        autoCorrectEnabled = false, imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+                    keyboardActions = androidx.compose.foundation.text.KeyboardActions(onDone = { if (code.isNotBlank()) submit() }))
+            }
+        },
+        confirmButton = {
+            androidx.compose.material3.TextButton(submit, Modifier.semantics { testTag = "dialog-code-confirm" }, enabled = code.isNotBlank()) {
+                Text("Redeem", style = AppType.labelLarge, color = c.ink)
+            }
+        },
+        dismissButton = { androidx.compose.material3.TextButton(onDismiss) { Text("Cancel", style = AppType.labelLarge, color = c.ink) } },
+        containerColor = if (c.dark) c.surface else androidx.compose.ui.graphics.Color(0xFFF4F4F6),
+    )
+}

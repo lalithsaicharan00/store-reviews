@@ -236,7 +236,7 @@ private fun AppMain(
                 MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusAccountPage(store, AppGraph.plus, AppGraph.accounts, AppGraph.signIn, AppGraph.backup,
-                    snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false })
+                    snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false }, codes = AppGraph.plusCodes)
                 "Arrange your day" -> ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }

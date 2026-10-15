@@ -69,8 +69,13 @@ object AppGraph {
     private var signInInstance: com.oftenenough.app.app.account.SignInProvider? = null
     val signIn: com.oftenenough.app.app.account.SignInProvider get() = signInInstance ?: error("AppGraph.open first")
 
-    /** Plus from either place: bought through Google Play on this account, or held by the Plus account (an iPhone purchase, a family). */
-    val hasPlus: Boolean get() = plus.owned != PlusOwned.NONE || accounts.account?.givesPlus == true
+    private var codesInstance: PlusCodes? = null
+    /** Plus from a code (reviewers, testing): Plus & Account › Redeem a code. */
+    val plusCodes: PlusCodes get() = codesInstance ?: error("AppGraph.open first")
+
+    /** Plus from any place: bought through Google Play on this account, held by the Plus account (an iPhone purchase, a
+     *  family), or unlocked with a code. */
+    val hasPlus: Boolean get() = plus.owned != PlusOwned.NONE || accounts.account?.givesPlus == true || plusCodes.redeemed
 
     /** The store's free-plan limit follows Plus, from Play or the account. */
     private fun followPlus(store: HabitStore) {
@@ -137,6 +142,7 @@ object AppGraph {
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, driveLink(context, "standin-drive", context.getSharedPreferences("drive", Context.MODE_PRIVATE)), test = false)
         plusInstance = if (BuildConfig.DEBUG) FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)).also { it.latencyMs = 900 } else NoPlusStore
         openAccounts(context, com.oftenenough.app.app.account.AccountCenter.FILE, test = false)
+        codesInstance = PlusCodes(context.getSharedPreferences("plus-codes", Context.MODE_PRIVATE))
         followPlus(store)
         // The account is asked again on each launch (a family change, a refund); kept as it was when offline.
         scope.launch { accounts.refresh(); accounts.syncPurchase(plus.purchase()) }
@@ -172,6 +178,7 @@ object AppGraph {
         plusInstance = FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
         // Its own account and stand-in server, emptied each launch (D8).
         openAccounts(context, "uitest-account", test = true)
+        codesInstance = PlusCodes(context.getSharedPreferences("uitest-plus-codes", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
         followPlus(store)
     }
 

@@ -157,4 +157,16 @@ class PlusAccountTest {
         assertEquals("alexa…@gmail.com", EmailWords.short("alexandra.montgomery@gmail.com"))
         assertEquals("sam@gmail.com", EmailWords.short("sam@gmail.com"))
     }
+
+    @Test fun aCodeUnlocksPlusWhateverItsCaseOrDashes_andAWrongOneDoesNot() {
+        val good = com.oftenenough.app.app.PlusCodes.fingerprint("K7QF2M9XTR4B")
+        val prefs = MemoryPrefs()
+        val codes = com.oftenenough.app.app.PlusCodes(prefs, setOf(good))
+        assertFalse(codes.redeem("K7QF2M9XTR4C"))
+        assertFalse(codes.redeemed)
+        assertTrue("case, spaces and dashes don't matter", codes.redeem(" k7qf-2m9x-tr4b "))
+        assertTrue(codes.redeemed)
+        assertTrue("kept after a restart", com.oftenenough.app.app.PlusCodes(prefs, setOf(good)).redeemed)
+        assertFalse("a retired code turns it off", com.oftenenough.app.app.PlusCodes(prefs, emptySet()).redeemed)
+    }
 }
