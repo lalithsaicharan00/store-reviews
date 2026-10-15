@@ -40,6 +40,11 @@ concurrency:
   group: android-${{ github.ref }}
   cancel-in-progress: true
 
+# Sign in with Google (Plus & Account): the Web OAuth client ID, a repository variable (public, not a secret: Google
+# puts it in every copy of the app). Without it the build uses the stand-in sign-in.
+env:
+  GOOGLE_WEB_CLIENT_ID: ${{ vars.GOOGLE_WEB_CLIENT_ID }}
+
 jobs:
   build:
     runs-on: ubuntu-latest

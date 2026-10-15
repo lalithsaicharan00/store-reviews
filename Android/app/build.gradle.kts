@@ -17,9 +17,11 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Sign in with Google (Plus & Account): the Web OAuth client ID the Worker checks ID tokens against. Public, not
-        // a secret, but given at build time (`-PgoogleWebClientId=…` or gradle.properties) until the user creates it;
-        // empty, debug builds use the stand-in sign-in and a release build offers none.
-        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"" + (project.findProperty("googleWebClientId") as String? ?: "") + "\"")
+        // a secret (Google puts it in every copy of the app), but kept out of the repository: on a PC it's
+        // `googleWebClientId` in ~/.gradle/gradle.properties, on CI the repository variable GOOGLE_WEB_CLIENT_ID.
+        // Empty, debug builds use the stand-in sign-in and a release build offers none.
+        val webClientId = (project.findProperty("googleWebClientId") as String?) ?: System.getenv("GOOGLE_WEB_CLIENT_ID") ?: ""
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"" + webClientId + "\"")
     }
 
     // Debug builds on CI use a stable key kept only as GitHub secrets (D11), so the Google OAuth client can trust its
