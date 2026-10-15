@@ -83,15 +83,26 @@ object AppGraph {
         scope.launch { androidx.compose.runtime.snapshotFlow { hasPlus }.collect { store.isPlus = it } }
     }
 
-    /** The account's server and sign-in: the stand-ins in debug builds until the Worker and the OAuth client exist. */
-    private fun openAccounts(context: Context, file: String, test: Boolean) {
+    /**
+     * The account's server and sign-in (BuildConfig.ACCOUNT_SERVER, app/build.gradle.kts): the Worker's dev or production
+     * ([com.oftenenough.app.app.account.HttpAccountServer]), or the on-phone stand-in with the same rules. A test launch
+     * uses the stand-in unless it asks for dev ([TestLaunch.ACCOUNT_SERVER], the end-to-end tests).
+     */
+    private fun openAccounts(context: Context, file: String, test: Boolean, testServer: String? = null) {
         val prefs = context.getSharedPreferences(file, Context.MODE_PRIVATE)
         val standInPrefs = context.getSharedPreferences("$file-standin", Context.MODE_PRIVATE)
         if (test) { prefs.edit().clear().commit(); standInPrefs.edit().clear().commit() }
         val today = { java.time.LocalDate.now().toEpochDay() }
-        val server = if (BuildConfig.DEBUG || test) com.oftenenough.app.app.account.StandInAccountServer(standInPrefs, today).also { if (!test) it.latencyMs = 900 }
-            else com.oftenenough.app.app.account.NoAccountServer
-        accountsInstance = com.oftenenough.app.app.account.AccountCenter(prefs, server)
+        val standIn = { com.oftenenough.app.app.account.StandInAccountServer(standInPrefs, today).also { if (!test) it.latencyMs = 900 } }
+        val server = when {
+            test && testServer == "dev" -> com.oftenenough.app.app.account.HttpAccountServer(com.oftenenough.app.app.account.HttpAccountServer.DEV)
+            test -> standIn()
+            BuildConfig.ACCOUNT_SERVER == "dev" -> com.oftenenough.app.app.account.HttpAccountServer(com.oftenenough.app.app.account.HttpAccountServer.DEV)
+            BuildConfig.ACCOUNT_SERVER == "production" -> com.oftenenough.app.app.account.HttpAccountServer(com.oftenenough.app.app.account.HttpAccountServer.PRODUCTION)
+            BuildConfig.ACCOUNT_SERVER == "standin" -> standIn()
+            else -> com.oftenenough.app.app.account.NoAccountServer
+        }
+        accountsInstance = com.oftenenough.app.app.account.AccountCenter(prefs, server, kotlinx.coroutines.Dispatchers.Main.immediate)
         signInInstance = when {
             test -> com.oftenenough.app.app.account.StandInSignIn()
             BuildConfig.GOOGLE_WEB_CLIENT_ID.isNotEmpty() -> com.oftenenough.app.app.account.GoogleSignInProvider(BuildConfig.GOOGLE_WEB_CLIENT_ID)
@@ -156,7 +167,7 @@ object AppGraph {
         else com.oftenenough.app.app.backup.NoDriveLink
 
     /** A test launch: an in-memory database, its own preferences, and (optionally) a clock that starts at [clockHour]:30. */
-    fun openForTest(context: Context, clockHour: Int?) {
+    fun openForTest(context: Context, clockHour: Int?, accountServer: String? = null) {
         init(context)
         isTest = true
         val offset = clockHour?.let {
@@ -179,7 +190,7 @@ object AppGraph {
         // Its own purchases, none each launch unless the launch asks for Plus (TestLaunch.PLUS).
         plusInstance = FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
         // Its own account and stand-in server, emptied each launch (D8).
-        openAccounts(context, "uitest-account", test = true)
+        openAccounts(context, "uitest-account", test = true, testServer = accountServer)
         codesInstance = PlusCodes(context.getSharedPreferences("uitest-plus-codes", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
         followPlus(store)
     }

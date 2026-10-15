@@ -1,0 +1,65 @@
+// The Plus account's Worker (account-server/README.md; Rulebook D16; Current Work 110).
+// Top level = dev (api-dev.oftenenough.com, debug builds of the apps). `env.production` = real people
+// (api.oftenenough.com, release builds): every command for it takes `--env production`.
+// Secrets, never in this file (D11): GOOGLE_PLAY_SERVICE_ACCOUNT, the Play service account's JSON key
+// (`npx wrangler secret put GOOGLE_PLAY_SERVICE_ACCOUNT [--env production]`).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "often-enough-account-dev",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "api-dev.oftenenough.com", "custom_domain": true }],
+  "observability": { "enabled": true },
+  "vars": {
+    "ENVIRONMENT": "dev",
+    // Google's OAuth web client "Often Enough sign-in" (project often-enough): the Android app asks for ID tokens for
+    // it. Public; its secret is never used, the Worker only checks Google's signature.
+    "GOOGLE_AUDIENCES": "367584981284-kihul3a8cfoftn4d0crtsf2utld84kgf.apps.googleusercontent.com",
+    // Sign in with Apple on the iPhone: the app's bundle ID is the token's audience.
+    "APPLE_AUDIENCES": "com.oftenenough.app",
+    // The Android app on Google Play, whose purchases this Worker checks.
+    "PLAY_PACKAGE": "com.oftenenough.app",
+    // Dev only: the debug app's stand-in purchases (token "stand-in…") count as bought, so families can be tested end
+    // to end without Google Play. Never in production (test/production.test.ts checks it).
+    "ACCEPT_STAND_IN_PURCHASES": "true"
+  },
+  // Daily tidying (src/accounts.ts, tidy): old invites and long-unused sessions.
+  "triggers": { "crons": ["0 5 * * *"] },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "often-enough-accounts-dev", "database_id": "d705fc33-e79d-4446-a3f0-45c7a8a75520", "migrations_dir": "migrations" }
+  ],
+  // Per Cloudflare location, per minute. IDs are unique within the Cloudflare account.
+  "ratelimits": [
+    // Per IP: sign-in, making an account, deleting one (each needs a fresh Google or Apple token anyway).
+    { "name": "AUTH_LIMIT", "namespace_id": "3001", "simple": { "limit": 30, "period": 60 } },
+    // Per IP: opening and joining invites (tokens are 128-bit; this only stops anyone trying them in bulk).
+    { "name": "INVITE_LIMIT", "namespace_id": "3002", "simple": { "limit": 30, "period": 60 } },
+    // Per account: everything else.
+    { "name": "CALL_LIMIT", "namespace_id": "3003", "simple": { "limit": 120, "period": 60 } }
+  ],
+  // Real people only. Bindings and vars aren't inherited from the top level, so each is repeated here.
+  "env": {
+    "production": {
+      "name": "often-enough-account",
+      "routes": [{ "pattern": "api.oftenenough.com", "custom_domain": true }],
+      "vars": {
+        "ENVIRONMENT": "production",
+        "GOOGLE_AUDIENCES": "367584981284-kihul3a8cfoftn4d0crtsf2utld84kgf.apps.googleusercontent.com",
+        "APPLE_AUDIENCES": "com.oftenenough.app",
+        "PLAY_PACKAGE": "com.oftenenough.app"
+      },
+      "triggers": { "crons": ["0 5 * * *"] },
+      // Made at the first production release (account-server/README.md, "Production").
+      "d1_databases": [
+        { "binding": "DB", "database_name": "often-enough-accounts", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }
+      ],
+      "ratelimits": [
+        { "name": "AUTH_LIMIT", "namespace_id": "4001", "simple": { "limit": 30, "period": 60 } },
+        { "name": "INVITE_LIMIT", "namespace_id": "4002", "simple": { "limit": 30, "period": 60 } },
+        { "name": "CALL_LIMIT", "namespace_id": "4003", "simple": { "limit": 120, "period": 60 } }
+      ]
+    }
+  }
+}

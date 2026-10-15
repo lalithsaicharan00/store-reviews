@@ -20,7 +20,7 @@ android {
         // a secret (Google puts it in every copy of the app), but kept out of the repository: on a PC it's
         // `googleWebClientId` in ~/.gradle/gradle.properties, on CI the repository variable GOOGLE_WEB_CLIENT_ID.
         // Empty, debug builds use the stand-in sign-in and a release build offers none.
-        val webClientId = (project.findProperty("googleWebClientId") as String?) ?: System.getenv("GOOGLE_WEB_CLIENT_ID") ?: ""
+        val webClientId = webClientIdFor(project)
         buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"" + webClientId + "\"")
         // Debug builds use the stand-in Plus store unless built with -PrealBilling (to test real purchases as a license tester).
         buildConfigField("boolean", "REAL_BILLING", (project.findProperty("realBilling") != null).toString())
@@ -49,8 +49,22 @@ android {
         }
     }
 
+    // The account server (account-server/): debug builds talk to dev, release builds to production, once the build has
+    // the Google client above (the Worker only takes real Google sign-ins). Without it: the on-phone stand-in in debug,
+    // none in release. `-PaccountServer=standin|dev|production` overrides.
+    val accountServer = { debug: Boolean ->
+        (project.findProperty("accountServer") as String?) ?: when {
+            webClientIdFor(project).isEmpty() -> if (debug) "standin" else "none"
+            debug -> "dev"
+            else -> "production"
+        }
+    }
     buildTypes {
+        debug {
+            buildConfigField("String", "ACCOUNT_SERVER", "\"" + accountServer(true) + "\"")
+        }
         release {
+            buildConfigField("String", "ACCOUNT_SERVER", "\"" + accountServer(false) + "\"")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -134,3 +148,7 @@ dependencies {
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.4.0")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 }
+
+/** The Google sign-in client's ID (public): `googleWebClientId` in ~/.gradle/gradle.properties, or GOOGLE_WEB_CLIENT_ID on CI. */
+fun webClientIdFor(project: Project): String =
+    (project.findProperty("googleWebClientId") as String?) ?: System.getenv("GOOGLE_WEB_CLIENT_ID") ?: ""

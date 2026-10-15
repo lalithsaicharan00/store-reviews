@@ -101,14 +101,20 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
 
     override fun purchase() = when (owned) {
         PlusOwned.NONE -> null
-        PlusOwned.PLUS -> com.oftenenough.app.app.account.PlayPurchase(PlusProduct.PLUS.id, "stand-in")
-        PlusOwned.FAMILY -> com.oftenenough.app.app.account.PlayPurchase(PlusProduct.FAMILY.id, "stand-in")
+        PlusOwned.PLUS -> com.oftenenough.app.app.account.PlayPurchase(PlusProduct.PLUS.id, token())
+        PlusOwned.FAMILY -> com.oftenenough.app.app.account.PlayPurchase(PlusProduct.FAMILY.id, token())
     }
+
+    /**
+     * This install's stand-in purchase token, "stand-in-<random>": the dev Worker counts it as bought, and gives one
+     * purchase to one account, as Google's real tokens are; production never counts it.
+     */
+    private fun token(): String = sp.getString(TOKEN, null) ?: ("stand-in-" + java.util.UUID.randomUUID()).also { sp.edit().putString(TOKEN, it).apply() }
 
     /** Back to the free plan (tests). */
     fun reset() { sp.edit().remove(KEY).apply(); owned = PlusOwned.NONE; pending = null }
 
-    companion object { private const val KEY = "owned" }
+    companion object { private const val KEY = "owned"; private const val TOKEN = "token" }
 }
 
 /** A release build before Play Billing is connected: nothing can be bought yet, and nothing is ever taken away. */

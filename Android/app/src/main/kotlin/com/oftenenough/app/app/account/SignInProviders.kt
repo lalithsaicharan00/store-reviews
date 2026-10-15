@@ -27,12 +27,15 @@ class GoogleSignInProvider(private val webClientId: String) : SignInProvider {
     override val canSignIn = true
 
     override suspend fun google(activity: Activity): SignIn? {
-        val request = GetCredentialRequest.Builder().addCredentialOption(GetSignInWithGoogleOption.Builder(webClientId).build()).build()
+        // A fresh random nonce for each sign-in: Google puts its SHA-256 in the token, the Worker checks it against this.
+        val nonce = Nonce.make()
+        val option = GetSignInWithGoogleOption.Builder(webClientId).setNonce(Nonce.hash(nonce)).build()
+        val request = GetCredentialRequest.Builder().addCredentialOption(option).build()
         return try {
             val credential = CredentialManager.create(activity).getCredential(activity, request).credential
             if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                 val google = GoogleIdTokenCredential.createFrom(credential.data)
-                SignIn(SignInWith.GOOGLE, google.idToken, google.id, google.displayName ?: google.id.substringBefore('@'))
+                SignIn(SignInWith.GOOGLE, google.idToken, google.id, google.givenName ?: google.displayName ?: google.id.substringBefore('@'), nonce)
             } else null
         } catch (_: GetCredentialCancellationException) { null
         } catch (_: NoCredentialException) { null
@@ -40,6 +43,16 @@ class GoogleSignInProvider(private val webClientId: String) : SignInProvider {
     }
 
     override suspend fun apple(activity: Activity): SignIn? = null
+}
+
+/** The sign-in nonce: 32 random bytes, and the SHA-256 (lowercase hex) that Google or Apple puts in the token. */
+object Nonce {
+    fun make(): String {
+        val bytes = ByteArray(32).also { java.security.SecureRandom().nextBytes(it) }
+        return java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(bytes)
+    }
+    fun hash(nonce: String): String =
+        java.security.MessageDigest.getInstance("SHA-256").digest(nonce.toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
 }
 
 /**

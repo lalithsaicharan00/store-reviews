@@ -1041,6 +1041,20 @@ and the Add note keyboard coming up by itself.
       saving a picture) on the Pixel 10 Pro (API 36) in light, dark and 200 % text at 360 × 800 dp and at the phone's own
       size, and on API 30; `PlusAccountScreensTest` 10 (API 36 and 30); `ScreensTest` 13. Outside this job:
       `ScreensTest.aLongPressOnARowOpensItsMenu` fails on a 360 × 800 dp screen, the same on untouched `main`.
+    - [x] **The account Worker, built 16 Oct 2026** (the user: "implement it correctly … test it thoroughly … it should work
+      like a production"): `account-server/` (README there). Accounts (Google's or Apple's ID token checked, with a
+      nonce; a session per device), purchases checked with Google Play as the service account (refunds reach the account
+      within a day), Plus Family (six at most; one single-use 7-day invite at a time; claiming it and joining in one
+      transaction), remove, leave, sign out, delete (a fresh sign-in as the same person; nothing of the person left, the
+      family's invites too), daily tidying, rate limits. **Dev is live** (`api-dev.oftenenough.com`). Tests: the Worker's
+      45 (real Workers runtime and D1; Google, Apple and Play as stand-ins), its live check on dev (a whole family end to
+      end, test accounts deleted), the app's `HttpAccountServerTest` (11) and `AccountServerLiveTest` (2, the app and its
+      screens against dev); the rest of the app's suites green after (JVM 73, PlusAccountScreensTest 10, frames 6,
+      ScreensTest 13). Found and fixed on the way: Android throws on a 401 without `WWW-Authenticate`; under Compose
+      tests a call came back on the network's thread (`AccountCenter` now hops back, T22); a deleted owner's invites
+      kept their name (now deleted with the account).
+    - [ ] **Production: the user's go-ahead** (T6), its D1 database, and the Play service account's key put in by the
+      user (`account-server/README.md`, "Production").
     - [ ] **Parked, waiting on the user:** the Cloudflare Worker (accounts, families, invites, purchase checks with Google
       and Apple); the Web OAuth client ID; Sign in with Apple's web page (on the Worker); the Play Console products (real
       buying); `assetlinks.json` on oftenenough.com (invite links opening the app); push for "Priya joined your family"

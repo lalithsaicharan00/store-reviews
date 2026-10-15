@@ -76,8 +76,9 @@ real QR code, and every dialog (sign out, delete, remove, leave, cancel an invit
 
   | Piece | Today | Needs |
   |---|---|---|
-  | The account server (D1 accounts, families, invites) | `StandInAccountServer` on the phone, debug builds and tests only, with the Worker's rules (`PlusAccountTest`); a release build has none and says so | The Cloudflare Worker, behind `AccountServer` |
-  | Sign in with Google | Real code (`GoogleSignInProvider`, Credential Manager), used when the build has a client ID (`-PgoogleWebClientId=…`); otherwise the stand-in | A **Web OAuth client ID** for the Worker to check ID tokens |
+  | The account server (D1 accounts, families, invites) | **The Worker** (`account-server/`, built 16 Oct 2026): `HttpAccountServer`. Debug builds with the Google client talk to dev (live), release builds to production (not deployed yet: the user's go-ahead, T6). The UI tests and builds without the client use `StandInAccountServer`, with the same rules (`PlusAccountTest`). `-PaccountServer=standin\|dev\|production` overrides | Production's first release |
+  | Sign in with Google | Real (`GoogleSignInProvider`, Credential Manager, a fresh nonce per sign-in), when the build has the client ID (`googleWebClientId`); the Worker checks Google's token | Checking once on a real phone with a real Google account |
+  | Checking purchases with Google Play | The Worker asks the Play Developer API as the service account | The service account's JSON key in production (`account-server/README.md`) |
   | Sign in with Apple | Stand-in only | The Worker's web sign-in page (Apple's sign-in on Android is a web flow) |
   | Buying, restoring | `FakePlusStore` (debug, tests) | The Play Console app and its three products; then `PlusStore` over Play Billing |
   | Invite links opening the app | The intent filter for `https://oftenenough.com/join/…` | `/.well-known/assetlinks.json` on the website with the app's signing SHA-256 |
@@ -114,6 +115,8 @@ Scratch files, logs and screenshots go in `Research/Temp/` (ignored by git), nev
 |---|---|---|
 | JVM (`testDebugUnitTest`, 52) | `WordsTest`, `SwiftJsonTest`, `FormRulesTest`, `DataExportTest`, `ReminderPlanTest`, `LocalDriveTest`, `PlayerWordsTest`, `ProgressWordsTest`, `PauseWordsTest`, `ReminderWordsTest`, `AppLockTest`, `ArrangeTest` | The iPhone's words and rules, the stored formats, the stand-in Drive, App lock's rules |
 | Emulator | `TodayTest` (11) | The welcome, an empty Today, logging and undo for every kind |
+| JVM | `HttpAccountServerTest` (11) | The app's client for the account Worker against a local stand-in: what it sends (the session, the nonce, the purchase), and how it reads every answer, failures included |
+| Emulator | `AccountServerLiveTest` (2) | The app against the live dev Worker: its client through a whole family, and the screens (buy Plus Family, sign in, invite, someone joins, remove, delete). Needs dev's test secret (`account-server/README.md`) |
 | JVM | `PlusAccountTest` (10) | The account's rules on the server's stand-in: one account each, six in a family, an invite once for 7 days, leaving, deleting, offline, the account file |
 | Emulator | `PlusAccountScreensTest` (10) | Plus & Account: buying Plus and Plus Family, pending and failed payments, restore, sign in (found, none, offline), an invite link joining and leaving, ended and used invites, deleting the account |
 | Emulator | `PlusAccountFramesTest` (6) | Every frame of Figma `1476:2`, reached through its own flow, its words checked and a picture saved as the frame's number (`files/plus-shots/<shots argument>/`), for the side-by-side check against Figma; run it in light, dark and at 200 % text (`-Pandroid.testInstrumentationRunnerArguments.shots=dark`, and keep the pictures with `-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true`) |

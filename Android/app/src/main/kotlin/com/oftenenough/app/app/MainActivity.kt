@@ -102,7 +102,7 @@ class MainActivity : FragmentActivity() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) window.isNavigationBarContrastEnforced = false
         val test = intent.getBooleanExtra(TestLaunch.UITEST, false)
         if (test) {
-            AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 })
+            AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 }, intent.getStringExtra(TestLaunch.ACCOUNT_SERVER))
             if (!intent.getBooleanExtra(TestLaunch.ONBOARDING, false)) AppGraph.prefs.onboarded = true
         } else AppGraph.open(this)
         val store = AppGraph.store
@@ -142,4 +142,6 @@ object TestLaunch {
     const val DEMO = "demo"
     /** Show the welcome (test launches skip it otherwise). */
     const val ONBOARDING = "onboarding"
+    /** "dev": the account Worker's dev instead of the stand-in (the end-to-end tests, `AccountServerLiveTest`). */
+    const val ACCOUNT_SERVER = "accountServer"
 }
