@@ -1121,6 +1121,19 @@ and the Add note keyboard coming up by itself.
   - [x] **A notification to the manager when someone joins** (the user, 15 Oct 2026: "small notification to the manager
     when someone joins their family"; no email). *Designed 15 Oct 2026 as 5.2.1 and approved by the user ("The notification looks good");
     handoff "sixteenth round".*
+- [x] **116. Help & Feedback: only what's necessary, finished** (added 15 October 2026, from the user, Android first;
+  115 is taken on another branch). Their points:
+  - [x] **Keep only what's absolutely necessary; nothing half finished** ("instead of shipping something that is half
+    finished, not shipping at all would be good"). First cut to eight questions; then, at the user's question, **the
+    questions dropped**: each answer already lives where the problem happens.
+  - [x] **In-app support researched** (cost, how it works): free to run on our own Worker, but not for launch (the
+    user: "just launch with email").
+  - [x] **The page: Report a problem and Suggest an idea, both by email**, with the email draft and the no-email-app
+    dialog designed.
+  - [x] **Fonts and hierarchy with our text styles.**
+  - [x] **The name may change:** researched and kept (Help & Feedback, as Google's apps and our iPhone).
+  *Designed 15 Oct 2026, Figma `1476:110`; handoff "Help & Feedback: email only". The iPhone's Help (about 50 topics)
+  is cut to the same two rows when the iPhone is updated to match.*
 - [ ] **112. The account and backup pages in the menu: research, then a new design section** (added 14 October 2026, from
   the user, Android first, iPhone and iPad alike; Rulebook D16; follows 110). Their points:
   - [ ] **Free people have no account at all, on any device, iPad included**: "Free users don't even have an account at all,

@@ -1353,6 +1353,66 @@ Tapping it opens Plus & Account, where Priya is in Your family. Spotify does the
   family shows Priya the next time Lee opens the page. The message carries no habits, only the joiner's first name.
 - The arrows to the invite problems (5.3–5.8) now leave from 5.2's bottom edge, so 5.2 → 5.2.1 runs straight.
 
+### Help & Feedback, 15 Oct 2026 (the user, on `1476:110`)
+
+*Replaced the same day by "Help & Feedback: email only" below; the eight answers are kept here in case a FAQ is written later.*
+
+The user: keep only what's absolutely necessary, "instead of shipping something that is half finished, not shipping at
+all would be good"; fix the fonts and hierarchy; the name may change; research it.
+
+- **What people come for** (W6): an answer, or a way to reach us. Our research has missing help and instructions in
+  482 reviews at 2.69★ (Settings — What People Need There) and the questions people can't answer: undo, filling in a
+  day, skip and pause, deleting, where the data is, moving phones (Onboarding report §5). So help stays, short and
+  complete, rather than going.
+- **Name: Help & Feedback, unchanged:** the name Google's own apps give this row, and the same on the iPhone.
+- **The page** (`1 · Help & Feedback`, and `1.1` with a question open): our text styles throughout (title Title Large
+  Emphasized, section labels Label Large, rows Title Medium, answers Body Medium, the footer Body Small), Plus &
+  Account's grouped rows (24 outer corners, 4 inside, 2 apart). **Contact us** · Email us ›; **Using the app** (5);
+  **Your habits and Plus** (3). A question opens in place (`expand_more` / `expand_less`); one open at a time.
+- **Removed:** the search field, Show the welcome again, and every topic beyond these eight. The old frames (Roboto, no
+  text styles) are deleted.
+- **The answers, final** (each checked at its real width, no word alone on a line):
+  1. **Undo a wrong tap:** Right after you log, Undo shows under the habit's name: tap it. A ✓ can also be tapped again
+     to take it back. For an earlier log, tap the habit to open Day details, tap the log, then Delete.
+  2. **Fill in a day I forgot:** Go back a day with ‹ in the bar at the bottom of Today, then log as usual. For an
+     older day, open the habit and use Go to date in History.
+  3. **Skip a day, or pause a habit:** To skip one day, tap the habit to open Day details, then Skip today. For a
+     stretch of days, open the habit and choose ⋮ › Pause…. Skipped and paused days never break a streak.
+  4. **Archive or delete a habit:** Open the habit and choose ⋮ › Archive or Delete. Archive keeps its history and
+     frees its place on the free plan. Delete removes the habit and its history for good, and asks first.
+  5. **A reminder didn't come:** Some phones put apps to sleep to save battery. In ≡ › Reminders, Show me how gives your
+     phone's own steps to keep reminders coming. If notifications are off, Reminders says so and can turn them on.
+  6. **Where my habits are kept:** On this phone, and in your own Google Drive: they back up as you go, and we never
+     see them. ≡ › Backup & Sync shows when the last backup was.
+  7. **Move to a new phone:** On your old phone, open ≡ › Backup & Sync › Move to a new phone. On the new one, install
+     Often Enough, say you've used it before, then scan the code or type its 6 digits. Both phones need the internet.
+  8. **Get Plus back:** Plus bought with this Google account comes back by itself. Otherwise, in ≡ › Plus & Account,
+     Sign in, or tap Restore from Google Play.
+- **Before release:** support@oftenenough.com must exist and be answered (Build Plan #72). An answer that names a
+  button changes with that button.
+
+### Help & Feedback: email only, 15 Oct 2026 (the user, after the questions were designed)
+
+The user asked whether to keep the questions at all. Every answer already lives where the problem happens (Undo under the
+habit, Skip in Day details, Pause in the habit's ⋮, the ‹ day bar, Keep reminders coming, Backup & Sync, Move to a new
+phone, Already have Plus?); a FAQ repeats them where people have to look, and goes stale each time a button changes.
+In-app support chat was researched and set aside for launch (the user: "just launch with email"): our own on the
+Cloudflare Worker would cost nothing to run (Workers' free plan, Firebase Cloud Messaging free, Email Routing free) but
+needs building and someone answering quickly; hosted services cost money as we grow (Crisp from $45 a month after its
+free plan; Intercom $29–132 a seat a month) and hold people's messages.
+
+- **1 · Help & Feedback:** **Write to us** · **Report a problem** (`bug_report`, *Something isn't working*) and
+  **Suggest an idea** (`lightbulb`, *A feature you'd like to see*), Plus & Account's grouped rows; the footer *Both open
+  your email app, to support@oftenenough.com. We read every message. Your app and Android versions are added for you;
+  your habits never are.*
+- **1.1 · the email app's new message** (its own screen, shown for what we fill in): To support@oftenenough.com,
+  Subject *Often Enough: a problem* (*… an idea* from Suggest), the cursor at the top, and our last line *Often Enough
+  1.0 (free) · Android 16 · Pixel 9*. Built with `ACTION_SENDTO` and a `mailto:` address, so only email apps answer.
+- **1.2 · No email app** (dialog over the page, from either row): *Write to us at support@oftenenough.com from any email
+  you use.* · Close · Copy address (Android shows its own "Copied" notice).
+- Arrows from both rows to 1.1, and from either row to 1.2. Before release, the mailbox must exist and be answered
+  (Build Plan #72). The iPhone's Help is cut to the same two rows when it's updated to match.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
