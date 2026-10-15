@@ -1121,6 +1121,15 @@ and the Add note keyboard coming up by itself.
   - [x] **A notification to the manager when someone joins** (the user, 15 Oct 2026: "small notification to the manager
     when someone joins their family"; no email). *Designed 15 Oct 2026 as 5.2.1 and approved by the user ("The notification looks good");
     handoff "sixteenth round".*
+- [x] **119. Onboarding: new to the app, checked, and the notifications permission** (added 15 October 2026, from the
+  user, Android first; the same on the iPhone). Their points:
+  - [x] **Missing screens:** an idea opens its own form filled in (07.1), and the end of onboarding, Today with the
+    first habit (07.2); arrows and the two menu states under 06.
+  - [x] **The ideas: the most common habits, as people say them, every day** (researched from 4,407 habit statements).
+  - [x] **Notifications are asked only when a reminder is turned on**; allowed keeps it on, not allowed turns it off
+    (Rulebook U36); designed in the habit form's Reminders (2.1.6–2.1.6.4).
+  *Designed 15 Oct 2026, Figma `1548:2`, `1302:2`; handoff "Onboarding: new to the app, and the notifications
+  permission". The iPhone's welcome and reminders follow U36 when updated.*
 - [ ] **118. The website, before release** (added 15 October 2026, from the user: "note down that website is pending
   … we will work on it … before releasing"). Not started. What the app already points to:
   - [ ] **oftenenough.com** itself (the domain and a simple home page).

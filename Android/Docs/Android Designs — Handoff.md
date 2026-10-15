@@ -1432,6 +1432,28 @@ The user: "remove all of the unnecessary things … keep only things that are ne
   library-by-library rows and the old Roboto frame. Before release the privacy policy page must be published at a
   stable address.
 
+### Onboarding: new to the app, and the notifications permission, 15 Oct 2026
+
+- **07 · Your first habit, the ideas:** the user: the most generic habits, written as people say them ("drink eight
+  glasses of water"), all every day for now. From the 4,407 habit statements in our reviews (How People Describe a Habit),
+  counted by activity: water 823, exercise 744, reading 333, walking 307, medication or vitamins 295, flossing or brushing
+  291, sleep 193, meditating 188; the amounts people name most: 8 glasses (65), 30 minutes of exercise (32) and of reading
+  (35), 10,000 steps (17), 10 minutes of meditating (15). So: **Drink 8 glasses of water · Exercise for 30 minutes · Read
+  for 30 minutes · Walk 10,000 steps · Take vitamins · Floss · Go to bed on time · Meditate for 10 minutes**, each *Every
+  day*, icons in Material Symbols (the quit and cut-down ideas left the list). Today's *Start from an idea* has the same eight.
+- **07.1 · Drink water, filled in:** an idea opens straight into its own form (Drink water → Track an amount), everything
+  filled in: name, icon, 8 glasses, every day, each tap adds 1 glass; **Add** enabled. Back returns to 07.
+- **07.2 · Today, with the first habit:** Anytime · 1 left · Drink water 0/8 glasses with its +; the day bar 0/1. The end
+  of onboarding.
+- **Layout:** 01 → 07.2 in one row with arrows; 06.1 and 06.2 (the two menus open) under 06. Cross-section links are in
+  the frame names: 02's *I've used it before* → Onboarding: coming back; 07's *Create my own habit* → New: 1; *Skip setup*
+  → the empty Today.
+- **The notifications permission (Rulebook U36):** never at install or in onboarding. In the habit form's Reminders:
+  **2.1.6** off as every habit starts → turning on *Remind me* → **2.1.6.1** Android's own *Allow Often Enough to send you
+  notifications?* → Allow: **2.1.6.2** (on, times) → **2.1.6.3** the exact-times sheet only if Android holds them back;
+  Don't allow: **2.1.6.4** *Remind me* back off, *Notifications are off for Often Enough, so reminders can't come…* with
+  **Open settings** (Android stops asking after two refusals).
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
