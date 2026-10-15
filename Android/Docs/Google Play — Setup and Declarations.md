@@ -58,6 +58,19 @@ Assets in `Research/Temp/play-listing/` (not in git): the 512 icon from `Brand/A
 graphic, and 8 phone screenshots from the App Store set (Figma `1206:2`, widened to Play's 2:1). **They show an iPhone:
 replace them with Android screenshots before Production.**
 
+## Plus products (created and active, 15 Oct 2026)
+
+| Product ID | Name | Price | Purchase option |
+|---|---|---|---|
+| `com.oftenenough.app.plus` | Plus | US$24.99, converted by Google per country | `buy` (Buy) |
+| `com.oftenenough.app.plusfamily` | Plus Family | US$59.99 | `buy` |
+| `com.oftenenough.app.plusfamily.upgrade` | Plus Family upgrade | US$35.00 | `buy` |
+
+All Digital content, tax category Digital app sales, one per purchase, every country. Google doesn't check that an
+upgrade buyer owns Plus: the app offers the upgrade only to people who do. Real Play Billing is in the app from
+version 3 (`PlayPlusStore`); version 2 still uses the stand-in store. Play promo codes are not needed yet (reviewers
+use the in-app review code, testers are license testers); they're for giveaways and press after launch.
+
 ## Testing tracks
 
 - **Internal testing:** an email list with the user's four real devices.
@@ -68,7 +81,7 @@ replace them with Android screenshots before Production.**
 ## Still open
 
 1. The privacy policy's "Your optional account" section (handed to Codex, who owns the verification website).
-2. The three one-time products (`com.oftenenough.app.plus` $24.99, `.plusfamily` $59.99, `.plusfamily.upgrade` $35.00),
-   license testers, then real Play Billing in the app (it still uses the stand-in store).
+2. License testers (Settings › License testing: the four devices' accounts), then version 3 to Closed testing to try a
+   real test purchase.
 3. 12+ closed testers for 14 days, then **Apply for production** (needs Android screenshots, a random review code, and
    the Worker for accounts).
