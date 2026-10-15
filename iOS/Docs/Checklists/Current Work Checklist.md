@@ -160,7 +160,8 @@ Their placement records scope and priority; implementation has not started.
   - **Needs the user** (everything else here is done without them):
     - [ ] The iPhone checks listed in items 81 (§19 device checks), 83, 58.13 (real Face ID) and 71.
     - [ ] Deploy the CloudKit schema to Production before TestFlight (item 81).
-    - [ ] Whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
+    - [x] *(15 Oct 2026, the user: the analytics buckets were PostHog's; they're deleted, and analytics is set up again
+      only at the very end, once the whole app is done.)* Was: whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
       the user says.
     - [x] **Cloudflare deletion** *(done 15 Oct 2026 by the user in the dashboard, checked through the API: no
       Workers but `oftenenough-site`, no D1, no R2. The website is the Pages project `oftenenough`, kept. By mistake
