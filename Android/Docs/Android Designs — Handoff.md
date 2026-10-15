@@ -1467,6 +1467,60 @@ opening the picker in place.
 - **2.1.6.2.1 · Add a time:** Android's Material 3 time picker (the dial, as in 3.1.2), starting at the current time;
   OK adds it, Cancel adds nothing.
 
+### Google Drive on a new phone: what's remembered, and what's chosen (15 Oct 2026)
+
+The user's question while checking Onboarding: coming back. From Android's AuthorizationClient guide
+([developer.android.com/identity/authorization](https://developer.android.com/identity/authorization)) and Google's
+OAuth overview ([developers.google.com/identity/protocols/oauth2](https://developers.google.com/identity/protocols/oauth2)):
+
+- **The permission is given once, per Google account, and is remembered everywhere** (the user is right). Our server
+  records a Drive only after the person chose it and allowed access, so a recorded Drive means access was allowed. On
+  any later phone, tablet or the web, asking again "obtain[s] an access token … without any user interaction", unless the
+  person removed the access in their Google Account (then the Allow screen comes back once).
+- **What the phone still has to know is *which* Google account to ask for.** Authorization runs for the phone's
+  *default* account: "a subsequent authorization request uses the account as the default and skips the account
+  selection step", and the default is the account the person signed in to the app with. So:
+  - **Signed in with Google, backed up to that same account** (most people): straight through, no screen.
+  - **Signed in with one Google account, backed up to another** (allowed, D16), **or signed in with Apple** (Apple can't
+    open a Google Drive): the app shows Google's own account chooser once, *Your habits are backed up to a different
+    Google account. Choose it to bring them back.* No Allow screen (already given); the account must be on the phone or
+    added from the chooser. We can't preselect it: the request takes no account hint, and we keep no email (D16).
+  - After choosing, the app checks the chosen account's ID against the one on record before reading anything.
+- **Could the app ask for that exact account without the chooser?** Yes, technically: Google's `AuthorizationRequest.Builder`
+  has `setAccount(Account)`, "Specifies an account on the device that should be used." Two conditions: the app must know
+  the account's **email address** (Android names accounts by email; the private ID on record isn't enough), and the
+  account must **already be on the phone** (otherwise the person adds it from Google's chooser anyway). D16 keeps no
+  email, so today the chooser stays: one tap, only in this case. Keeping the backup account's email privately would
+  remove that tap; it's the open proposal in D16, for the user to decide.
+- **Why our server doesn't open the Drive itself:** it could, only by keeping a long-lived refresh token for the
+  person's Google account, and then our server could read their habits. D16 rules that out, so only the person's own
+  devices ever hold access to their Drive.
+
+### Onboarding: coming back, the missing screens, 15 Oct 2026 (the user, on `1549:2`)
+
+Built after the user's questions (see "Google Drive on a new phone"). Each from the section's own screens:
+
+- **2.5 · Plus is back.** *Your Plus is on the account you signed in with. Your habits are in a different Google Drive
+  account: choose the one that holds them.* · **Choose the Drive account** (the user: say clearly which account holds Plus
+  and which holds the habits, both being Google accounts; the other account is never named) · **Choose the account** · Start fresh instead → **2.5.1**,
+  Google's own chooser over it, then Looking in Google Drive and 2.2. Only when the person signed in with one Google
+  account and backs up to another; signed in with the backup account, it goes straight through.
+- **3.2 reworked · Plus is back.** *Your habits are in Google Drive. Choose the Google account that holds them.* · **Choose the Drive account** (an Apple
+  sign-in can't open a Google Drive, so this step is always there on the Apple path; the old "We found your habits" card
+  went, since nothing can be counted before the Drive is opened) → **3.2.1**, Google's chooser, then 4.2 and 4.3.
+- **2.6 · Plus is back** (the *No habits found* layout): *We didn't find your habits in sam@gmail.com's Google Drive.
+  Bring them another way:* Your old phone (the move code) · A backup file; Try another Google Drive; Start fresh. Rare (the
+  Drive copy deleted, or the first backup never finished); also after an Apple sign-in.
+- **4.2.1 · Couldn't connect** (`1949:277`, under 4.2), the one screen for every looking step (2.1, 3.1, 4.2): Try again · Cancel.
+- **5.3.1 · The move stopped.** *Nothing changed on either phone. Keep the app open on both, then try again.* (`sync_problem`)
+  · Try again (to 5) · Cancel.
+- **6.1.2 · From a newer version.** *This backup is from a newer Often Enough. Update the app to bring it back; nothing has
+  changed yet.* · **Update Often Enough** (Google Play). The whole file is refused, never half brought in (D2, D5).
+- **8 · Start fresh:** every Start fresh goes to **Your days and weeks** (as New to the app's 06, without Skip setup), so
+  the day's start and the week's first day are right from the start, then **8.1, the empty Today** (Today's first-time
+  empty state).
+- Arrows for each, with no crossings and none through a frame; the section grew 880 and the sections below moved down.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.

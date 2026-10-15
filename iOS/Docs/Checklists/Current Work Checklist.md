@@ -1133,6 +1133,17 @@ and the Add note keyboard coming up by itself.
     Android way").
   *Designed 15 Oct 2026, Figma `1548:2`, `1302:2`; handoff "Onboarding: new to the app, and the notifications
   permission". The iPhone's welcome and reminders follow U36 when updated.*
+- [x] **120. Onboarding: coming back, checked and completed** (added 15 October 2026, from the user, Android first).
+  Their points:
+  - [x] **Is anything missing?** Six screens added: choose the account the habits are in (a different Google account,
+    and always after an Apple sign-in), Plus back but no habits, Couldn't connect, the move stopped, a backup from a newer
+    version, and Start fresh through Your days and weeks to the empty Today.
+  - [x] **How Drive access works on a new phone, answered and documented** (the permission is remembered per Google
+    account; the phone still has to know which account): handoff "Google Drive on a new phone".
+  - [x] **2.5's words say which account is which** (the user: "your Plus is linked to … a different account and your
+    Google Drive is in a different account"): *Your Plus is on the account you signed in with. Your habits are in a
+    different Google Drive account: choose the one that holds them.* · Choose the Drive account.
+  *Designed 15 Oct 2026, Figma `1549:2`; handoff "Onboarding: coming back, the missing screens".*
 - [ ] **118. The website, before release** (added 15 October 2026, from the user: "note down that website is pending
   … we will work on it … before releasing"). Not started. What the app already points to:
   - [ ] **oftenenough.com** itself (the domain and a simple home page).
