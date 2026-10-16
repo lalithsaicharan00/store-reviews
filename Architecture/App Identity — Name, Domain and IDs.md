@@ -6,7 +6,7 @@ Apple and Google ask for.
 
 > **When you merge any branch:** the IDs below win. Before `main` moves, run
 > `git grep -n 'lalithsaicharan\.habits'`. It must find nothing outside `Research/` and old checklists. The GitHub repo
-> name `lalithsaicharan00/store-reviews` (for example `CI_REPOSITORY` in `server/wrangler.jsonc`) is the repository,
+> name `lalithsaicharan00/store-reviews` (for example the old server's `CI_REPOSITORY`, tag `server-final-2026-10`) is the repository,
 > not an app ID: keep it.
 
 ## Why this matters
@@ -26,8 +26,8 @@ a deleted product ID can't be used again. So these are set once, here, before an
 | App Group (widgets read the app's data) | `group.com.oftenenough.app` | `Habits.entitlements`, `HabitsLiveActivity.entitlements`, `WidgetSnapshot.group` |
 | Background refresh task | `com.oftenenough.app.refresh` | `Habits-Info.plist` (`BGTaskSchedulerPermittedIdentifiers`), `AppModel.refreshTaskID` |
 | In-app purchases | `com.oftenenough.app.plus`, `com.oftenenough.app.plusfamily`, `com.oftenenough.app.plusfamily.upgrade` | `iOS/OftenEnough.storekit`, then App Store Connect and Play Console (same IDs on both) |
-| Sign in with Apple audience | `com.oftenenough.app` | `server/wrangler.jsonc` → `APPLE_AUDIENCES`, `APPLE_BUNDLE_ID` |
-| API | `api.oftenenough.com` (dev: `api-dev.oftenenough.com`) | `server/wrangler.jsonc`, the app's server address |
+| Sign in with Apple audience | `com.oftenenough.app` | `account-server/wrangler.jsonc` → `APPLE_AUDIENCES` |
+| API | `api.oftenenough.com` (dev: `api-dev.oftenenough.com`) | `account-server/wrangler.jsonc`, `HttpAccountServer` (Android) |
 | Android `applicationId` (later) | `com.oftenenough.app` | the same as iPhone, as most apps on both stores do |
 | Apple Watch app (later) | `com.oftenenough.app.watchkitapp` | Apple's naming for a companion Watch app |
 | Sign in with Apple on the web (later) | Services ID `com.oftenenough.web` | Apple Developer account, only when the web app is built |

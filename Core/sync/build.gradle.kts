@@ -19,7 +19,7 @@ if ((providers.systemProperty("core.android").orNull ?: providers.gradleProperty
 kotlin {
     jvm()
     js {
-        // The Cloudflare Worker imports this as an ES module (server/core/).
+        // An ES module for JavaScript (the retired server imported it; tag server-final-2026-10).
         nodejs()
         binaries.library()
         useEsModules()

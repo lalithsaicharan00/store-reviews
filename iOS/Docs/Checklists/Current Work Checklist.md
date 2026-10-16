@@ -1074,10 +1074,11 @@ and the Add note keyboard coming up by itself.
         gone from the database (check D1).
       - [ ] **A release build against production:** a Play test build (versionCode 5) with this code signs in to
         `api.oftenenough.com`.
-      - [ ] **Delete the old `server/` folder** (the retired habit-sync server; its Cloudflare resources are already
-        gone): the user wants it deleted, together in the morning ("we will do it in the moment"). Deleting it from
-        this session was blocked by the permission settings. Update the links to `server/README.md` (Rulebook D11's
-        evidence line, older Architecture notes) at the same time.
+      - [x] **Delete the old `server/` folder** (the retired habit-sync server; its Cloudflare resources were already
+        gone). *Done 16 Oct 2026 (the user: "delete the old server thing"):* tagged `server-final-2026-10` first
+        (Architecture 11's decision), then `server/` and `.github/workflows/server-dev-checks.yml` removed from `main`;
+        the Rulebook's links, Architecture 11, App Identity, the Backlog and the core's comment now point at
+        `account-server/`. Older Architecture notes that describe the old server stay as history.
       - [ ] **Then, one at a time:** `assetlinks.json` on oftenenough.com (invite links open the app), Sign in with Apple
         on Android (the Worker's web page), the "Priya joined your family" notification (5.2.1).
     - [ ] **Parked, waiting on the user:** the Cloudflare Worker (accounts, families, invites, purchase checks with Google
