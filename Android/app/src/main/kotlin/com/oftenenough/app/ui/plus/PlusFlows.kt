@@ -67,15 +67,15 @@ import com.oftenenough.app.app.PlusOwned
 import com.oftenenough.app.app.PlusProduct
 import com.oftenenough.app.app.PlusStore
 import com.oftenenough.app.app.RestoreResult
-import com.oftenenough.app.app.account.AccountCenter
-import com.oftenenough.app.app.account.AccountPlus
-import com.oftenenough.app.app.account.Answer
-import com.oftenenough.app.app.account.InviteLink
-import com.oftenenough.app.app.account.InviteLook
-import com.oftenenough.app.app.account.SignIn
+import app.habits.account.AccountCenter
+import app.habits.account.AccountPlus
+import app.habits.account.Answer
+import app.habits.account.InviteLink
+import app.habits.account.InviteLook
+import app.habits.account.SignIn
 import com.oftenenough.app.app.account.SignInProvider
-import com.oftenenough.app.app.account.SignInReply
-import com.oftenenough.app.app.account.SignInWith
+import app.habits.account.SignInReply
+import app.habits.account.SignInWith
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
@@ -124,7 +124,7 @@ fun GetPlusScreen(plus: PlusStore, accounts: AccountCenter, signIn: SignInProvid
             buying = false
             when (result) {
                 BuyResult.BOUGHT -> {
-                    accounts.syncPurchase(plus.purchase())
+                    accounts.syncPurchases(plus.purchases())
                     val account = accounts.account
                     step = when {
                         product == PlusProduct.PLUS && account == null -> "thanks-plus"
@@ -143,7 +143,7 @@ fun GetPlusScreen(plus: PlusStore, accounts: AccountCenter, signIn: SignInProvid
     // A pending payment Play confirms while this screen is open turns into the thanks by itself (2.1.1: "Plus turns on by itself").
     LaunchedEffect(step, plus.owned) {
         if (step == "pending" && plus.owned != PlusOwned.NONE) {
-            accounts.syncPurchase(plus.purchase())
+            accounts.syncPurchases(plus.purchases())
             step = if (plus.owned == PlusOwned.PLUS) (if (accounts.account == null) "thanks-plus" else "done.page") else "thanks-family"
             if (step == "done.page") nav.toPage("Plus is yours. Thank you.")
         }
@@ -241,8 +241,8 @@ private suspend fun signInAndKeep(proof: SignIn, accounts: AccountCenter, plus: 
     return when (val reply = accounts.signIn(proof)) {
         Answer.Offline -> Answer.Offline
         is Answer.Ok -> when (reply.value) {
-            is SignInReply.Found -> { accounts.syncPurchase(plus.purchase()); Answer.Ok(Unit) }
-            SignInReply.NoAccount -> if (accounts.create(proof, plus.purchase()) is Answer.Ok) Answer.Ok(Unit) else Answer.Offline
+            is SignInReply.Found -> { accounts.syncPurchases(plus.purchases()); Answer.Ok(Unit) }
+            SignInReply.NoAccount -> if (accounts.create(proof, plus.purchases()) is Answer.Ok) Answer.Ok(Unit) else Answer.Offline
         }
     }
 }
@@ -353,10 +353,10 @@ fun SignInFlow(
             when (val reply = accounts.signIn(proof)) {
                 Answer.Offline -> step = "offline"
                 is Answer.Ok -> when (reply.value) {
-                    is SignInReply.Found -> { accounts.syncPurchase(plus.purchase()); if (onSignedIn != null) onSignedIn() else step = "found" }
+                    is SignInReply.Found -> { accounts.syncPurchases(plus.purchases()); if (onSignedIn != null) onSignedIn() else step = "found" }
                     // Joining a family needs only an account: a free one is made for them (5.1 → 5.2).
                     SignInReply.NoAccount -> if (onSignedIn != null) {
-                        if (accounts.create(proof, plus.purchase()) is Answer.Ok) onSignedIn() else step = "offline"
+                        if (accounts.create(proof, plus.purchases()) is Answer.Ok) onSignedIn() else step = "offline"
                     } else step = "none"
                 }
             }
@@ -460,7 +460,7 @@ fun RestoreFlow(plus: PlusStore, accounts: AccountCenter, nav: PlusFlowNav) {
     LaunchedEffect(attempt) {
         if (step != "looking") return@LaunchedEffect
         when (plus.restore()) {
-            RestoreResult.FOUND -> { accounts.syncPurchase(plus.purchase()); step = "found" }
+            RestoreResult.FOUND -> { accounts.syncPurchases(plus.purchases()); step = "found" }
             RestoreResult.NONE -> nav.toPageNoPlusFound()
             RestoreResult.COULD_NOT_CONNECT -> step = "offline"
         }

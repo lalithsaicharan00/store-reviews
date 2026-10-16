@@ -30,8 +30,10 @@ minSdk 26, target 37. It runs on the shared core in [`../Core`](<../Core/>), the
     `ui/theme` (light and dark), `ui/components` (segmented lists, the cookie shape, the wavy progress).
     `ui/AppRoot.kt` is the navigation, and the frame for tablets (a sidebar from 840 dp; the phone never changes).
   - `app/`: `AppGraph` (one store per process), `AppLock`, `Plus` (the store seam: a fake store until Play Billing),
-    `app/account/` (the Plus account and Plus Family: `AccountCenter`, the server seam `AccountServer` with its
-    stand-in, Sign in with Google through Credential Manager; see "Plus & Account" below),
+    `app/account/` (Android's side of the Plus account: Sign in with Google through Credential Manager, and
+    `AndroidAccounts.kt`, which saves the account in SharedPreferences, redraws Compose and sends the Worker's HTTP; the
+    account itself, Plus Family, the Worker's protocol and the stand-in are in the shared core, `Core/` package
+    `app.habits.account`, since 16 Oct 2026; see "Plus & Account" below),
     `app/backup/` (backup files, restore, Drive, `SyncSchedule`), `app/reminders/`, and `app/widgets/` (the six Glance
     widgets, the tap, the setup screen). Code marked `LOCKED (widget taps …)` follows
     [the iPhone's locked page](<../iOS/Docs/Widgets — Taps and Updates (Locked).md>): read it before changing a widget.

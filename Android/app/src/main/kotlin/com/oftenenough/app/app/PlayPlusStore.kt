@@ -19,7 +19,7 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
-import com.oftenenough.app.app.account.PlayPurchase
+import app.habits.account.StorePurchase
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -112,11 +112,18 @@ class PlayPlusStore(context: Context, private val scope: CoroutineScope, private
         runCatching { client.acknowledgePurchase(AcknowledgePurchaseParams.newBuilder().setPurchaseToken(p.purchaseToken).build()) }
     }
 
-    override fun purchase(): PlayPurchase? {
+    override fun purchases(): List<StorePurchase> {
+        val rank = listOf(PlusProduct.PLUS.id, PlusProduct.FAMILY.id, PlusProduct.FAMILY_UPGRADE.id)
+        return purchases.filter { it.purchaseState == Purchase.PurchaseState.PURCHASED }
+            .flatMap { p -> p.products.filter { it in rank }.map { StorePurchase(it, p.purchaseToken) } }
+            .sortedBy { rank.indexOf(it.product) }
+    }
+
+    override fun purchase(): StorePurchase? {
         val bought = purchases.filter { it.purchaseState == Purchase.PurchaseState.PURCHASED }
         val best = bought.firstOrNull { p -> p.products.any { it == PlusProduct.FAMILY.id || it == PlusProduct.FAMILY_UPGRADE.id } }
             ?: bought.firstOrNull { PlusProduct.PLUS.id in it.products } ?: return null
-        return PlayPurchase(best.products.first(), best.purchaseToken)
+        return StorePurchase(best.products.first(), best.purchaseToken)
     }
 
     // ------------------------------------------------------------------ Buying

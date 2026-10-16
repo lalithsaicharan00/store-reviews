@@ -78,6 +78,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -329,7 +330,16 @@ private fun AppMain(
     }
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
     // A family invite opened from a link (Figma 5): its own screen, over whatever was open.
-    LaunchedEffect(AppGraph.inviteToOpen) { AppGraph.inviteToOpen?.let { token -> AppGraph.inviteToOpen = null; nav.navigate(Routes.invite(token)) } }
+    // Only the screen in front (resumed) takes it: a link tapped in another app can start a second copy of this screen on top,
+    // and the copy underneath (paused before the new one starts) must not open the invite where nobody sees it (16 Oct 2026).
+    val lifecycle = androidx.lifecycle.compose.LocalLifecycleOwner.current.lifecycle
+    LaunchedEffect(lifecycle) {
+        lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.RESUMED) {
+            androidx.compose.runtime.snapshotFlow { AppGraph.inviteToOpen }.collect { token ->
+                if (token != null) { AppGraph.inviteToOpen = null; nav.navigate(Routes.invite(token)) }
+            }
+        }
+    }
 }
 
 /** Plus & Account's rows. */

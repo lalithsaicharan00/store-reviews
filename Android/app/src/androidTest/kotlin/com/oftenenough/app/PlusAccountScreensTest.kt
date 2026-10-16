@@ -20,10 +20,10 @@ import com.oftenenough.app.app.MainActivity
 import com.oftenenough.app.app.PlusOwned
 import com.oftenenough.app.app.RestoreResult
 import com.oftenenough.app.app.TestLaunch
-import com.oftenenough.app.app.account.AccountPlus
-import com.oftenenough.app.app.account.SignIn
-import com.oftenenough.app.app.account.SignInWith
-import com.oftenenough.app.app.account.StandInAccountServer
+import app.habits.account.AccountPlus
+import app.habits.account.SignIn
+import app.habits.account.SignInWith
+import app.habits.account.StandInAccountServer
 import com.oftenenough.app.app.account.StandInSignIn
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -158,7 +158,7 @@ class PlusAccountScreensTest {
         launch()
         onMain {
             // Bought on an iPhone: the account has Plus, this phone's Play account has nothing.
-            kotlinx.coroutines.runBlocking { server.create(SignIn(SignInWith.APPLE, "stand-in", "sam@privaterelay.appleid.com", "Sam"), com.oftenenough.app.app.account.PlayPurchase("com.oftenenough.app.plus", "x")) }
+            kotlinx.coroutines.runBlocking { server.create(SignIn(SignInWith.APPLE, "stand-in", "sam@privaterelay.appleid.com", "Sam"), app.habits.account.StorePurchase("com.oftenenough.app.plus", "x")) }
         }
         openPage()
         tapTag("plus-sign-in")

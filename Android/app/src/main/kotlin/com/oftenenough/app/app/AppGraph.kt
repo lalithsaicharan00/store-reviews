@@ -43,7 +43,7 @@ object AppGraph {
     var widgetRoute by androidx.compose.runtime.mutableStateOf<String?>(null)
 
     fun openTarget(intent: android.content.Intent?) {
-        com.oftenenough.app.app.account.InviteLink.token(intent?.dataString)?.let { inviteToOpen = it; intent?.data = null }
+        app.habits.account.InviteLink.token(intent?.dataString)?.let { inviteToOpen = it; intent?.data = null }
         intent?.getStringExtra(MainActivity.WIDGET_ROUTE)?.let { route ->
             widgetRoute = route + "|" + intent.getIntExtra(MainActivity.OPEN_DAY, -1)
             intent.removeExtra(MainActivity.WIDGET_ROUTE)
@@ -63,9 +63,9 @@ object AppGraph {
     /** Where Plus comes from: the fake store in debug builds and tests until Play Billing is connected (build prompt §5). */
     val plus: PlusStore get() = plusInstance ?: error("AppGraph.open first")
 
-    private var accountsInstance: com.oftenenough.app.app.account.AccountCenter? = null
+    private var accountsInstance: app.habits.account.AccountCenter? = null
     /** The Plus account (Plus & Account): optional, holds only the purchase and the family (D16). */
-    val accounts: com.oftenenough.app.app.account.AccountCenter get() = accountsInstance ?: error("AppGraph.open first")
+    val accounts: app.habits.account.AccountCenter get() = accountsInstance ?: error("AppGraph.open first")
     private var signInInstance: com.oftenenough.app.app.account.SignInProvider? = null
     val signIn: com.oftenenough.app.app.account.SignInProvider get() = signInInstance ?: error("AppGraph.open first")
 
@@ -85,7 +85,7 @@ object AppGraph {
 
     /**
      * The account's server and sign-in (BuildConfig.ACCOUNT_SERVER, app/build.gradle.kts): the Worker's dev or production
-     * ([com.oftenenough.app.app.account.HttpAccountServer]), or the on-phone stand-in with the same rules. A test launch
+     * ([app.habits.account.HttpAccountServer]), or the on-phone stand-in with the same rules. A test launch
      * uses the stand-in unless it asks for dev ([TestLaunch.ACCOUNT_SERVER], the end-to-end tests).
      */
     private fun openAccounts(context: Context, file: String, test: Boolean, testServer: String? = null) {
@@ -93,16 +93,16 @@ object AppGraph {
         val standInPrefs = context.getSharedPreferences("$file-standin", Context.MODE_PRIVATE)
         if (test) { prefs.edit().clear().commit(); standInPrefs.edit().clear().commit() }
         val today = { java.time.LocalDate.now().toEpochDay() }
-        val standIn = { com.oftenenough.app.app.account.StandInAccountServer(standInPrefs, today).also { if (!test) it.latencyMs = 900 } }
+        val standIn = { com.oftenenough.app.app.account.androidStandInServer(standInPrefs, today).also { if (!test) it.latencyMs = 900 } }
         val server = when {
-            test && testServer == "dev" -> com.oftenenough.app.app.account.HttpAccountServer(com.oftenenough.app.app.account.HttpAccountServer.DEV)
+            test && testServer == "dev" -> com.oftenenough.app.app.account.androidAccountServer(app.habits.account.HttpAccountServer.DEV)
             test -> standIn()
-            BuildConfig.ACCOUNT_SERVER == "dev" -> com.oftenenough.app.app.account.HttpAccountServer(com.oftenenough.app.app.account.HttpAccountServer.DEV)
-            BuildConfig.ACCOUNT_SERVER == "production" -> com.oftenenough.app.app.account.HttpAccountServer(com.oftenenough.app.app.account.HttpAccountServer.PRODUCTION)
+            BuildConfig.ACCOUNT_SERVER == "dev" -> com.oftenenough.app.app.account.androidAccountServer(app.habits.account.HttpAccountServer.DEV)
+            BuildConfig.ACCOUNT_SERVER == "production" -> com.oftenenough.app.app.account.androidAccountServer(app.habits.account.HttpAccountServer.PRODUCTION)
             BuildConfig.ACCOUNT_SERVER == "standin" -> standIn()
-            else -> com.oftenenough.app.app.account.NoAccountServer
+            else -> app.habits.account.NoAccountServer
         }
-        accountsInstance = com.oftenenough.app.app.account.AccountCenter(prefs, server, kotlinx.coroutines.Dispatchers.Main.immediate)
+        accountsInstance = com.oftenenough.app.app.account.androidAccountCenter(prefs, server, kotlinx.coroutines.Dispatchers.Main.immediate)
         signInInstance = when {
             test -> com.oftenenough.app.app.account.StandInSignIn()
             BuildConfig.GOOGLE_WEB_CLIENT_ID.isNotEmpty() -> com.oftenenough.app.app.account.GoogleSignInProvider(BuildConfig.GOOGLE_WEB_CLIENT_ID)
@@ -154,11 +154,11 @@ object AppGraph {
         // Google Play Billing in release builds (and debug builds made with -PrealBilling); the stand-in store otherwise.
         plusInstance = if (!BuildConfig.DEBUG || BuildConfig.REAL_BILLING) PlayPlusStore(context, scope, context.getSharedPreferences("plus-play", Context.MODE_PRIVATE))
             else FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)).also { it.latencyMs = 900 }
-        openAccounts(context, com.oftenenough.app.app.account.AccountCenter.FILE, test = false)
+        openAccounts(context, app.habits.account.AccountCenter.FILE, test = false)
         codesInstance = PlusCodes(context.getSharedPreferences("plus-codes", Context.MODE_PRIVATE))
         followPlus(store)
         // The account is asked again on each launch (a family change, a refund); kept as it was when offline.
-        scope.launch { accounts.refresh(); accounts.syncPurchase(plus.purchase()) }
+        scope.launch { accounts.refresh(); accounts.syncPurchases(plus.purchases()) }
     }
 
     /** Google Drive: the stand-in on this phone in debug builds until the user's OAuth client exists (build prompt §5). */

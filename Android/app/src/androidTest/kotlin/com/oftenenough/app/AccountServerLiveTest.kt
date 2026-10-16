@@ -16,15 +16,15 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.app.MainActivity
 import com.oftenenough.app.app.TestLaunch
-import com.oftenenough.app.app.account.Account
-import com.oftenenough.app.app.account.AccountPlus
-import com.oftenenough.app.app.account.Answer
-import com.oftenenough.app.app.account.HttpAccountServer
-import com.oftenenough.app.app.account.InviteLook
-import com.oftenenough.app.app.account.PlayPurchase
-import com.oftenenough.app.app.account.SignIn
-import com.oftenenough.app.app.account.SignInReply
-import com.oftenenough.app.app.account.SignInWith
+import app.habits.account.Account
+import app.habits.account.AccountPlus
+import app.habits.account.Answer
+import app.habits.account.HttpAccountServer
+import app.habits.account.InviteLook
+import app.habits.account.StorePurchase
+import app.habits.account.SignIn
+import app.habits.account.SignInReply
+import app.habits.account.SignInWith
 import com.oftenenough.app.app.account.StandInSignIn
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -50,7 +50,7 @@ import org.junit.runner.RunWith
 class AccountServerLiveTest {
     @get:Rule val compose = createEmptyComposeRule()
     private var scenario: ActivityScenario<MainActivity>? = null
-    private val server = HttpAccountServer(HttpAccountServer.DEV)
+    private val server = com.oftenenough.app.app.account.androidAccountServer(HttpAccountServer.DEV)
     private val secret: String = InstrumentationRegistry.getArguments().getString("accountTestSecret").orEmpty()
     private val run = "android-${System.currentTimeMillis()}"
     /** Every account made here, with the proof that deletes it. */
@@ -74,7 +74,7 @@ class AccountServerLiveTest {
     private fun proof(name: String) = SignIn(SignInWith.GOOGLE, HttpAccountServer.TEST_PREFIX + secret, "$run-$name", name)
     private fun <T> Answer<T>.ok(): T = (this as? Answer.Ok ?: throw AssertionError("Couldn't reach dev's Worker")).value
 
-    private suspend fun account(name: String, purchase: PlayPurchase? = null): Account {
+    private suspend fun account(name: String, purchase: StorePurchase? = null): Account {
         val p = proof(name)
         val a = server.create(p, purchase).ok()
         var latest: Account? = a
@@ -85,7 +85,7 @@ class AccountServerLiveTest {
     // ---------------------------------------------------------------- The app's client against dev
 
     @Test fun theClientRunsAWholeFamilyOnDev() = runBlocking {
-        val lee = account("Lee", PlayPurchase("com.oftenenough.app.plusfamily", "stand-in-$run-lee"))
+        val lee = account("Lee", StorePurchase("com.oftenenough.app.plusfamily", "stand-in-$run-lee"))
         assertEquals(AccountPlus.FAMILY_OWNER, lee.plus)
         assertEquals("Lee", lee.family!!.ownerName)
         val invited = server.invite(lee).ok()
@@ -191,7 +191,7 @@ class AccountServerLiveTest {
         assertEquals(AccountPlus.NONE, runBlocking { server.refresh(priya).ok() }!!.plus)
 
         // Opening an invite link on this phone reads dev's answer (5.7: an owner keeps their family).
-        val other = runBlocking { account("Sam", PlayPurchase("com.oftenenough.app.plusfamily", "stand-in-$run-sam")) }
+        val other = runBlocking { account("Sam", StorePurchase("com.oftenenough.app.plusfamily", "stand-in-$run-sam")) }
         val samToken = runBlocking { server.invite(other).ok() }.family!!.invite!!.token
         onMain { AppGraph.inviteToOpen = samToken }
         waitFor(hasTestTag("invite-have-plus"), "5.7 You have Plus.")

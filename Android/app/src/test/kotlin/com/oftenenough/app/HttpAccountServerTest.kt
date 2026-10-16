@@ -1,15 +1,16 @@
 package com.oftenenough.app
 
-import com.oftenenough.app.app.account.Account
-import com.oftenenough.app.app.account.AccountPlus
-import com.oftenenough.app.app.account.Answer
-import com.oftenenough.app.app.account.HttpAccountServer
-import com.oftenenough.app.app.account.InviteLook
+import app.habits.account.Account
+import app.habits.account.AccountPlus
+import app.habits.account.Answer
+import app.habits.account.HttpAccountServer
+import app.habits.account.InviteLook
 import com.oftenenough.app.app.account.Nonce
-import com.oftenenough.app.app.account.PlayPurchase
-import com.oftenenough.app.app.account.SignIn
-import com.oftenenough.app.app.account.SignInReply
-import com.oftenenough.app.app.account.SignInWith
+import com.oftenenough.app.app.account.androidAccountServer
+import app.habits.account.StorePurchase
+import app.habits.account.SignIn
+import app.habits.account.SignInReply
+import app.habits.account.SignInWith
 import com.sun.net.httpserver.HttpServer
 import kotlinx.coroutines.test.runTest
 import org.json.JSONObject
@@ -47,7 +48,7 @@ class HttpAccountServerTest {
             if (bytes.isNotEmpty()) ex.responseBody.use { it.write(bytes) } else ex.close()
         }
         http.start()
-        client = HttpAccountServer("http://127.0.0.1:${http.address.port}", timeoutMs = 2_000)
+        client = androidAccountServer("http://127.0.0.1:${http.address.port}", timeoutMs = 2_000)
     }
 
     @After fun stop() = http.stop(0)
@@ -82,7 +83,7 @@ class HttpAccountServerTest {
 
     @Test fun makingAnAccountSendsThePurchase() = runTest {
         answers["POST /v1/accounts"] = 200 to """{"session":"s-0123456789abcdefghij","account":{"id":"acc-1","plus":"PLUS","family":null}}"""
-        val made = (client.create(sam, PlayPurchase("com.oftenenough.app.plus", "play-token")) as Answer.Ok).value
+        val made = (client.create(sam, StorePurchase("com.oftenenough.app.plus", "play-token")) as Answer.Ok).value
         assertEquals(AccountPlus.PLUS, made.plus)
         val sent = seen.last().third!!.getJSONObject("purchase")
         assertEquals("com.oftenenough.app.plus", sent.getString("product"))
@@ -117,7 +118,7 @@ class HttpAccountServerTest {
             assertEquals("HTTP $status", Answer.Offline, client.refresh(a))
         }
         // Nothing listening at all.
-        val nowhere = HttpAccountServer("http://127.0.0.1:9", timeoutMs = 1_000)
+        val nowhere = androidAccountServer("http://127.0.0.1:9", timeoutMs = 1_000)
         assertEquals(Answer.Offline, nowhere.signIn(sam))
         assertEquals(Answer.Offline, nowhere.refresh(a))
         // An answer that isn't the Worker's.
@@ -182,10 +183,10 @@ class HttpAccountServerTest {
 
     @Test fun theAccountFileKeepsTheSession() {
         val a = signedIn().copy(session = "kept-session-token-0123456789")
-        val back = com.oftenenough.app.app.account.AccountFile.decode(com.oftenenough.app.app.account.AccountFile.encode(a))
+        val back = app.habits.account.AccountFile.decode(app.habits.account.AccountFile.encode(a))
         assertEquals(a, back)
         // An account file from before sessions reads as no session.
-        val old = JSONObject("""{"id":"acc-1","with":"GOOGLE","email":"sam@gmail.com","plus":"PLUS"}""")
-        assertEquals("", com.oftenenough.app.app.account.AccountFile.decode(old).session)
+        val old = """{"id":"acc-1","with":"GOOGLE","email":"sam@gmail.com","plus":"PLUS"}"""
+        assertEquals("", app.habits.account.AccountFile.decode(old)!!.session)
     }
 }

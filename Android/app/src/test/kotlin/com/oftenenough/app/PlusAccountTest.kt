@@ -1,17 +1,19 @@
 package com.oftenenough.app
 
-import com.oftenenough.app.app.account.AccountCenter
-import com.oftenenough.app.app.account.AccountFile
-import com.oftenenough.app.app.account.AccountPlus
-import com.oftenenough.app.app.account.Answer
-import com.oftenenough.app.app.account.EmailWords
-import com.oftenenough.app.app.account.InviteLink
-import com.oftenenough.app.app.account.InviteLook
-import com.oftenenough.app.app.account.PlayPurchase
-import com.oftenenough.app.app.account.SignIn
-import com.oftenenough.app.app.account.SignInReply
-import com.oftenenough.app.app.account.SignInWith
-import com.oftenenough.app.app.account.StandInAccountServer
+import app.habits.account.AccountCenter
+import app.habits.account.AccountFile
+import app.habits.account.AccountPlus
+import app.habits.account.Answer
+import app.habits.account.EmailWords
+import app.habits.account.InviteLink
+import app.habits.account.InviteLook
+import app.habits.account.StorePurchase
+import app.habits.account.SignIn
+import app.habits.account.SignInReply
+import app.habits.account.SignInWith
+import com.oftenenough.app.app.account.PrefsStorage
+import com.oftenenough.app.app.account.androidAccountCenter
+import com.oftenenough.app.app.account.androidStandInServer
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -28,11 +30,11 @@ import org.junit.Test
 class PlusAccountTest {
     private var today = 20_000L
     private val serverPrefs = MemoryPrefs()
-    private val server = StandInAccountServer(serverPrefs) { today }
-    private fun center() = AccountCenter(MemoryPrefs(), server)
+    private val server = androidStandInServer(serverPrefs) { today }
+    private fun center() = androidAccountCenter(MemoryPrefs(), server)
     private fun google(email: String, name: String) = SignIn(SignInWith.GOOGLE, "stand-in", email, name)
-    private val family = PlayPurchase("com.oftenenough.app.plusfamily", "t")
-    private val plus = PlayPurchase("com.oftenenough.app.plus", "t")
+    private val family = StorePurchase("com.oftenenough.app.plusfamily", "t")
+    private val plus = StorePurchase("com.oftenenough.app.plus", "t")
 
     private fun <T> Answer<T>.ok(): T = (this as Answer.Ok<T>).value
 
@@ -137,6 +139,18 @@ class PlusAccountTest {
         assertEquals("one family", 1, c.account!!.family!!.people.size)
     }
 
+    @Test fun theUpgradeCountsOnlyBesidePlus_andEveryPurchaseIsSentPlusFirst() = runTest {
+        val upgrade = StorePurchase("com.oftenenough.app.plusfamily.upgrade", "u")
+        val alone = center().also { it.create(google("ana@gmail.com", "Ana"), upgrade) }
+        assertEquals("the upgrade alone gives nothing", AccountPlus.NONE, alone.account!!.plus)
+        val both = center()
+        both.create(google("bo@gmail.com", "Bo"), listOf(plus, upgrade))
+        assertEquals("Plus, then the upgrade: a family", AccountPlus.FAMILY_OWNER, both.account!!.plus)
+        val later = center().also { it.create(google("cy@gmail.com", "Cy"), null) }
+        later.syncPurchases(listOf(plus, upgrade))
+        assertEquals(AccountPlus.FAMILY_OWNER, later.account!!.plus)
+    }
+
     @Test fun theAccountFileRoundTrips() = runTest {
         val c = center()
         c.create(google("lee@gmail.com", "Lee"), family)
@@ -144,8 +158,8 @@ class PlusAccountTest {
         val a = c.account!!
         assertEquals(a, AccountFile.decode(AccountFile.encode(a)))
         val prefs = MemoryPrefs()
-        AccountFile.write(prefs, a)
-        assertEquals(a, AccountFile.read(prefs))
+        PrefsStorage(prefs, AccountCenter.FILE).write(AccountFile.encode(a))
+        assertEquals(a, AccountFile.decode(PrefsStorage(prefs, AccountCenter.FILE).read()))
     }
 
     @Test fun inviteLinksAndEmails() {

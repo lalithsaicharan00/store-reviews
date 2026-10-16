@@ -1,31 +1,38 @@
-package com.oftenenough.app.app.account
+package app.habits.account
 
-import android.content.SharedPreferences
-import org.json.JSONArray
-import org.json.JSONObject
-import java.security.SecureRandom
-import java.util.Base64
+import kotlinx.coroutines.delay
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
+import kotlin.random.Random
 
 /**
- * The Worker's stand-in, on this phone (debug builds and tests only, like the stand-in Drive and the fake Play store):
- * the same rules the Worker will keep (Architecture 02, Current Work 110), in its own file, so every screen and state
- * of Plus & Account can be used and tested before the server exists. A test launch gets its own, emptied (D8).
+ * The Worker's stand-in, on the device (debug builds and tests only, like the stand-in Drive and the fake store): the
+ * same rules the Worker keeps (Architecture 02, Current Work 110), in its own [storage], so every screen and state of
+ * Plus & Account can be used and tested without the server. A test launch gets its own, emptied (D8).
  *
  * Rules kept here and on the Worker: one account per Google or Apple account; a family is its owner and up to 5 more;
  * one waiting invite per family, used once, for [INVITE_DAYS] days; joining another family leaves the first; deleting an
- * owner's account ends the family; nothing here ever holds a habit.
+ * owner's account ends the family; the upgrade makes a family only beside Plus; nothing here ever holds a habit.
  */
-class StandInAccountServer(private val sp: SharedPreferences, private val today: () -> Long) : AccountServer {
+class StandInAccountServer(private val storage: AccountStorage, private val today: () -> Long, private val random: Random = Random.Default) : AccountServer {
     override val available = true
     /** A test (or a debug menu) turns this on to see "Couldn't connect". */
     var offline = false
     /** How long the stand-in "talks to the server" (ms), so the waiting screens show as they will; 0 in tests. */
     var latencyMs = 0L
 
-    private val random = SecureRandom()
-    private fun newId(bytes: Int = 16) = Base64.getUrlEncoder().withoutPadding().encodeToString(ByteArray(bytes).also(random::nextBytes))
+    private fun newId(bytes: Int = 16): String {
+        val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+        return (0 until (bytes * 4 + 2) / 3).map { alphabet[random.nextInt(64)] }.joinToString("")
+    }
 
-    // ------------------------------------------------------------------ The stored state, one JSON file
+    // ------------------------------------------------------------------ The stored state, one JSON text
 
     private class Person(val key: String, val id: String, val with: SignInWith, val email: String, val name: String, var plus: AccountPlus, var family: String?, var joined: Long?)
     private class Fam(val id: String, val owner: String, val members: MutableList<String>, var invite: String?)
@@ -38,29 +45,39 @@ class StandInAccountServer(private val sp: SharedPreferences, private val today:
     init { load() }
 
     private fun load() = runCatching {
-        val o = JSONObject(sp.getString("state", null) ?: return@runCatching)
-        o.getJSONArray("people").forEach { p ->
-            people[p.getString("key")] = Person(p.getString("key"), p.getString("id"), SignInWith.valueOf(p.getString("with")), p.getString("email"),
-                p.getString("name"), AccountPlus.valueOf(p.getString("plus")), p.optString("family").ifEmpty { null }, p.getLong("joined").takeIf { it >= 0 })
+        val o = Json.parseToJsonElement(storage.read() ?: return@runCatching).jsonObject
+        (o["people"] as JsonArray).map { it.jsonObject }.forEach { p ->
+            people[p.stringAt("key")!!] = Person(p.stringAt("key")!!, p.stringAt("id")!!, SignInWith.valueOf(p.stringAt("with")!!), p.stringAt("email")!!,
+                p.stringAt("name")!!, AccountPlus.valueOf(p.stringAt("plus")!!), p.stringAt("family")?.ifEmpty { null }, p.longAt("joined")?.takeIf { it >= 0 })
         }
-        o.getJSONArray("families").forEach { f ->
-            val m = f.getJSONArray("members")
-            families[f.getString("id")] = Fam(f.getString("id"), f.getString("owner"), (0 until m.length()).map { m.getString(it) }.toMutableList(), f.optString("invite").ifEmpty { null })
+        (o["families"] as JsonArray).map { it.jsonObject }.forEach { f ->
+            families[f.stringAt("id")!!] = Fam(f.stringAt("id")!!, f.stringAt("owner")!!,
+                (f["members"] as JsonArray).map { it.jsonPrimitive.content }.toMutableList(), f.stringAt("invite")?.ifEmpty { null })
         }
-        o.getJSONArray("invites").forEach { i -> invites[i.getString("token")] = Inv(i.getString("token"), i.getString("family"), i.getLong("ends"), i.getString("state")) }
+        (o["invites"] as JsonArray).map { it.jsonObject }.forEach { i ->
+            invites[i.stringAt("token")!!] = Inv(i.stringAt("token")!!, i.stringAt("family")!!, i.longAt("ends")!!, i.stringAt("state")!!)
+        }
     }
 
     private fun save() {
-        val o = JSONObject()
-            .put("people", JSONArray().also { a -> people.values.forEach { p -> a.put(JSONObject().put("key", p.key).put("id", p.id).put("with", p.with.name)
-                .put("email", p.email).put("name", p.name).put("plus", p.plus.name).put("family", p.family ?: "").put("joined", p.joined ?: -1)) } })
-            .put("families", JSONArray().also { a -> families.values.forEach { f -> a.put(JSONObject().put("id", f.id).put("owner", f.owner)
-                .put("members", JSONArray(f.members)).put("invite", f.invite ?: "")) } })
-            .put("invites", JSONArray().also { a -> invites.values.forEach { i -> a.put(JSONObject().put("token", i.token).put("family", i.family).put("ends", i.ends).put("state", i.state)) } })
-        sp.edit().putString("state", o.toString()).commit()
+        val o = buildJsonObject {
+            put("people", buildJsonArray {
+                people.values.forEach { p -> add(buildJsonObject {
+                    put("key", p.key); put("id", p.id); put("with", p.with.name); put("email", p.email); put("name", p.name)
+                    put("plus", p.plus.name); put("family", p.family ?: ""); put("joined", p.joined ?: -1)
+                }) }
+            })
+            put("families", buildJsonArray {
+                families.values.forEach { f -> add(buildJsonObject {
+                    put("id", f.id); put("owner", f.owner); put("members", JsonArray(f.members.map(::JsonPrimitive))); put("invite", f.invite ?: "")
+                }) }
+            })
+            put("invites", buildJsonArray {
+                invites.values.forEach { i -> add(buildJsonObject { put("token", i.token); put("family", i.family); put("ends", i.ends); put("state", i.state) }) }
+            })
+        }
+        storage.write(o.toString())
     }
-
-    private inline fun JSONArray.forEach(f: (JSONObject) -> Unit) { for (i in 0 until length()) f(getJSONObject(i)) }
 
     private fun key(proof: SignIn) = proof.with.name + ":" + proof.email.lowercase()
 
@@ -79,7 +96,7 @@ class StandInAccountServer(private val sp: SharedPreferences, private val today:
     private fun byId(id: String) = people.values.firstOrNull { it.id == id }
 
     private suspend inline fun <T> answer(block: () -> T): Answer<T> {
-        kotlinx.coroutines.delay(latencyMs)
+        delay(latencyMs)
         return if (offline) Answer.Offline else Answer.Ok(block().also { save() })
     }
 
@@ -89,23 +106,28 @@ class StandInAccountServer(private val sp: SharedPreferences, private val today:
         people[key(proof)]?.let { SignInReply.Found(view(it)) } ?: SignInReply.NoAccount
     }
 
-    override suspend fun create(proof: SignIn, purchase: PlayPurchase?): Answer<Account> = answer {
+    override suspend fun create(proof: SignIn, purchase: StorePurchase?): Answer<Account> = answer {
         val p = people.getOrPut(key(proof)) { Person(key(proof), newId(), proof.with, proof.email, proof.name, AccountPlus.NONE, null, null) }
         purchase?.let { add(p, it) }
         view(p)
     }
 
-    override suspend fun addPurchase(account: Account, purchase: PlayPurchase): Answer<Account> = answer {
+    override suspend fun addPurchase(account: Account, purchase: StorePurchase): Answer<Account> = answer {
         val p = byId(account.id) ?: error("No account")
         add(p, purchase)
         view(p)
     }
 
-    /** A checked purchase on the account (the Worker checks the token with Google first). Plus over a family place: their own. */
-    private fun add(p: Person, purchase: PlayPurchase) {
+    /**
+     * A checked purchase on the account (the Worker checks the token with the store first). Plus over a family place:
+     * their own. The upgrade is only the difference, so it makes a family only beside Plus, as the Worker's `paidFor`
+     * (the apps send Plus first).
+     */
+    private fun add(p: Person, purchase: StorePurchase) {
         when (purchase.product) {
-            "com.oftenenough.app.plusfamily", "com.oftenenough.app.plusfamily.upgrade" -> ownFamily(p)
-            "com.oftenenough.app.plus" -> if (p.plus == AccountPlus.NONE || p.plus == AccountPlus.FAMILY_MEMBER) p.plus = AccountPlus.PLUS
+            PlusProducts.FAMILY -> ownFamily(p)
+            PlusProducts.FAMILY_UPGRADE -> if (p.plus == AccountPlus.PLUS) ownFamily(p)
+            PlusProducts.PLUS -> if (p.plus == AccountPlus.NONE || p.plus == AccountPlus.FAMILY_MEMBER) p.plus = AccountPlus.PLUS
         }
     }
 

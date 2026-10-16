@@ -38,18 +38,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.app.PlusOwned
 import com.oftenenough.app.app.PlusProduct
 import com.oftenenough.app.app.PlusStore
-import com.oftenenough.app.app.account.Account
-import com.oftenenough.app.app.account.AccountCenter
-import com.oftenenough.app.app.account.AccountPlus
-import com.oftenenough.app.app.account.Answer
-import com.oftenenough.app.app.account.Family
-import com.oftenenough.app.app.account.FamilyPerson
+import app.habits.account.Account
+import app.habits.account.AccountCenter
+import app.habits.account.AccountPlus
+import app.habits.account.Answer
+import app.habits.account.Family
+import app.habits.account.FamilyPerson
 import com.oftenenough.app.app.account.SignInProvider
 import com.oftenenough.app.app.backup.BackupCenter
 import com.oftenenough.app.data.DayWords
@@ -201,7 +202,7 @@ fun PlusAccountPage(
             // Google's (or Apple's) own sign-in confirms it's them first (Figma 7.2.1); then the account goes (7.2.2).
             scope.launch {
                 val a = accounts.account ?: return@launch
-                val proof = activity?.let { if (a.with == com.oftenenough.app.app.account.SignInWith.GOOGLE) signIn.google(it) else signIn.apple(it) } ?: return@launch
+                val proof = activity?.let { if (a.with == app.habits.account.SignInWith.GOOGLE) signIn.google(it) else signIn.apple(it) } ?: return@launch
                 if (!proof.email.equals(a.email, ignoreCase = true)) { say("That’s a different account. Choose ${a.email} to delete it."); return@launch }
                 when (val r = accounts.delete(proof)) {
                     is Answer.Ok -> if (r.value) say("Your account was deleted") else say("Your account couldn’t be deleted. Try again.")
@@ -237,7 +238,8 @@ fun PlusAccountPage(
         val context = LocalContext.current
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         ModalBottomSheet({ sheet = null }, sheetState = sheetState, containerColor = if (c.dark) c.surface else androidx.compose.ui.graphics.Color(0xFFFCFCFD),
-            modifier = Modifier.semantics { testTag = "sheet-" + sheet },
+            // Its own window: its own test-tags-as-IDs for UI Automator (Rulebook T22).
+            modifier = Modifier.semantics { testTag = "sheet-" + sheet; testTagsAsResourceId = true },
             // Figma 7, 7.5: the handle 12 from the top, the heading 16 under it.
             dragHandle = { Box(Modifier.padding(top = 12.dp, bottom = 16.dp).size(32.dp, 4.dp).clip(RoundedCornerShape(2.dp)).background(c.outline)) }) {
             val sent = sheet == "invite-sent"

@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-/** Plus and Plus Family, one-time purchases with the iPhone's own product IDs (iOS/Habits/Plus/PlusProduct.swift). */
+/** Plus and Plus Family, one-time purchases with the iPhone's own product IDs (the shared core's [app.habits.account.PlusProducts]). */
 enum class PlusProduct(val id: String, val title: String, val who: String) {
-    PLUS("com.oftenenough.app.plus", "Plus", "Just you"),
-    FAMILY("com.oftenenough.app.plusfamily", "Plus Family", "You + 5 people, each with their own habits"),
+    PLUS(app.habits.account.PlusProducts.PLUS, "Plus", "Just you"),
+    FAMILY(app.habits.account.PlusProducts.FAMILY, "Plus Family", "You + 5 people, each with their own habits"),
     /** Plus → Plus Family, for the difference. */
-    FAMILY_UPGRADE("com.oftenenough.app.plusfamily.upgrade", "Plus Family upgrade", "Upgrade from Plus"),
+    FAMILY_UPGRADE(app.habits.account.PlusProducts.FAMILY_UPGRADE, "Plus Family upgrade", "Upgrade from Plus"),
 }
 
 /** What this phone's Google Play account owns: nothing, Plus, or Plus Family. */
@@ -53,7 +53,12 @@ interface PlusStore {
     /** Whether buying works on this build at all. */
     val canBuy: Boolean
     /** What this Google account bought, with Play's token, for the account's server to check with Google (D16). */
-    fun purchase(): com.oftenenough.app.app.account.PlayPurchase?
+    fun purchase(): app.habits.account.StorePurchase?
+    /**
+     * Every purchase this Google account owns, Plus first: the Plus Family upgrade counts on the account only beside Plus
+     * (account-server, `paidFor`), so the account is sent all of them, not just the best one.
+     */
+    fun purchases(): List<app.habits.account.StorePurchase> = listOfNotNull(purchase())
 }
 
 /**
@@ -101,8 +106,8 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
 
     override fun purchase() = when (owned) {
         PlusOwned.NONE -> null
-        PlusOwned.PLUS -> com.oftenenough.app.app.account.PlayPurchase(PlusProduct.PLUS.id, token())
-        PlusOwned.FAMILY -> com.oftenenough.app.app.account.PlayPurchase(PlusProduct.FAMILY.id, token())
+        PlusOwned.PLUS -> app.habits.account.StorePurchase(PlusProduct.PLUS.id, token())
+        PlusOwned.FAMILY -> app.habits.account.StorePurchase(PlusProduct.FAMILY.id, token())
     }
 
     /**
@@ -125,7 +130,7 @@ object NoPlusStore : PlusStore {
     override fun price(product: PlusProduct): String? = null
     override suspend fun buy(activity: Activity, product: PlusProduct) = BuyResult.UNAVAILABLE
     override suspend fun restore() = RestoreResult.COULD_NOT_CONNECT
-    override fun purchase(): com.oftenenough.app.app.account.PlayPurchase? = null
+    override fun purchase(): app.habits.account.StorePurchase? = null
 }
 
 /**

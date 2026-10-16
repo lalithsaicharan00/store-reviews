@@ -20,11 +20,11 @@ import com.oftenenough.app.app.FakePlusStore
 import com.oftenenough.app.app.MainActivity
 import com.oftenenough.app.app.RestoreResult
 import com.oftenenough.app.app.TestLaunch
-import com.oftenenough.app.app.account.Answer
-import com.oftenenough.app.app.account.PlayPurchase
-import com.oftenenough.app.app.account.SignIn
-import com.oftenenough.app.app.account.SignInWith
-import com.oftenenough.app.app.account.StandInAccountServer
+import app.habits.account.Answer
+import app.habits.account.StorePurchase
+import app.habits.account.SignIn
+import app.habits.account.SignInWith
+import app.habits.account.StandInAccountServer
 import com.oftenenough.app.app.account.StandInSignIn
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -167,7 +167,7 @@ class PlusAccountFramesTest {
         tapTag("signin-offline-quiet")
         waitFor(hasTestTag("signin-start"), "back to 3")
         // 3 → 3.3 (an account made on an iPhone) → Done → 1.3
-        runBlocking { server.create(SignIn(SignInWith.APPLE, "stand-in", "sam@privaterelay.appleid.com", "Sam"), PlayPurchase("com.oftenenough.app.plus", "x")) }
+        runBlocking { server.create(SignIn(SignInWith.APPLE, "stand-in", "sam@privaterelay.appleid.com", "Sam"), StorePurchase("com.oftenenough.app.plus", "x")) }
         tapTag("signin-apple")
         waitFor(hasTestTag("signin-found"), "3.3")
         text("Plus is back.", "Signed in as sam@privaterelay.appleid.com.", "Your habits sync through Drive")

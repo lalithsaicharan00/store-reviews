@@ -49,6 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -262,7 +263,8 @@ fun PlusDialogFrame(
     actions: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit, content: @Composable ColumnScope.() -> Unit,
 ) {
     val c = appColors
-    androidx.compose.material3.BasicAlertDialog(onDismiss, Modifier.widthIn(max = 312.dp).semantics { testTag = tag }) {
+    // A dialog is its own window: it needs its own test-tags-as-IDs for UI Automator (Rulebook T22).
+    androidx.compose.material3.BasicAlertDialog(onDismiss, Modifier.widthIn(max = 312.dp).semantics { testTag = tag; testTagsAsResourceId = true }) {
         // Scrolls when larger text makes it taller than the screen; the actions wrap to a second line rather than break a
         // button's words ("Cancel invite" at 200 %).
         Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(if (c.dark) c.surface else Color(0xFFF4F4F6))
