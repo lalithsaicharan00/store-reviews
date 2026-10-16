@@ -1063,10 +1063,11 @@ and the Add note keyboard coming up by itself.
         advice not to download keys): the Worker signs in to Google through Workload Identity Federation with its own
         key, made straight into Cloudflare for dev and production (`scripts/make-wif-key.mjs`); its public half is
         `account-server/google/jwks.json`. Built, tested (47 Worker tests), on dev and released to production.
-      - [ ] **The user's Google Cloud Console steps** (`account-server/README.md`, "Google Play, keyless"): four APIs on;
+      - [x] **The user's Google Cloud Console steps** (`account-server/README.md`, "Google Play, keyless"): four APIs on;
         the pool `cloudflare-workers` and its OIDC provider `often-enough-account` with `jwks.json` uploaded; Workload
         Identity User on `play-purchases@…` for both subjects; and Play Console's permission trimmed to reading.
-        Then `GET /v1/health/play` says `ready` on dev and production (Claude checks).
+        *Done 16 Oct 2026:* `GET /v1/health/play` says `ready` on dev and production, and a made-up purchase sent
+        through dev reached Google Play and came back "not bought" (Google answered; the probe account was deleted).
       - [ ] **Real Google sign-in on the phone** (the debug build talks to dev): sign in, make the account, sign out, sign
         in again; the same account on a second device (the emulator); "Signed in as" shows the right email.
       - [ ] **A real purchase as a license tester** (a `-PrealBilling` debug build, or a Play test build of this code):
