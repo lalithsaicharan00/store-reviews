@@ -28,13 +28,26 @@ export const keyFetches: Record<string, number> = { [GOOGLE_KEYS]: 0, [APPLE_KEY
 export interface PlayPurchase { product: string; purchaseState: number; orderId: string; purchaseType?: number }
 export const play = {
   purchases: new Map<string, PlayPurchase>(),
-  /** "ok", or Google failing: "down" (500) or "refused" (403, a service account without access). */
-  mode: "ok" as "ok" | "down" | "refused",
+  /**
+   * "ok", or Google failing: "down" (500 everywhere), "refused" (Play answers 403: the service account lacks access),
+   * "sts-refused" (the pool or provider isn't set up: 400), "iam-refused" (no Workload Identity User: 403).
+   */
+  mode: "ok" as "ok" | "down" | "refused" | "sts-refused" | "iam-refused",
+  /** Federated sign-ins (one per access token, which is reused for its hour). */
   tokenRequests: 0,
   purchaseRequests: 0,
 };
 
 const PLAY_ACCESS = "play-access-token-for-tests";
+const FEDERATED = "federated-token-for-tests";
+/** What dev's wrangler.jsonc says (the tests run as dev). */
+export const WIF = {
+  provider: "//iam.googleapis.com/projects/367584981284/locations/global/workloadIdentityPools/cloudflare-workers/providers/often-enough-account",
+  issuer: "https://api.oftenenough.com",
+  subject: "often-enough-account-dev",
+  keyId: "account-dev-1",
+  serviceAccount: "play-purchases@often-enough.iam.gserviceaccount.com",
+};
 
 export function mockGoogle() {
   const realFetch = globalThis.fetch;
@@ -45,18 +58,35 @@ export function mockGoogle() {
       keyFetches[url] = (keyFetches[url] ?? 0) + 1;
       return Response.json({ keys: published[url]!.map((k) => k.jwk) });
     }
-    if (url === "https://oauth2.googleapis.com/token") {
+    if (url === "https://sts.googleapis.com/v1/token") {
+      // Google's Security Token Service, as Workload Identity Federation's OIDC provider checks a token: our uploaded
+      // public key (by key ID), the provider's issuer and default audience, and a lifetime of at most 24 hours.
       play.tokenRequests++;
       if (play.mode === "down") return new Response("unavailable", { status: 500 });
-      // The Worker's assertion must be signed with the service account's key, for Google's token URL and the Play scope.
-      const form = new URLSearchParams(new TextDecoder().decode(await request.arrayBuffer()));
-      if (form.get("grant_type") !== "urn:ietf:params:oauth:grant-type:jwt-bearer") return Response.json({ error: "unsupported_grant_type" }, { status: 400 });
-      const key = await importSPKI(env.PLAY_TEST_PUBLIC_KEY, "RS256");
-      const { payload } = await jwtVerify(form.get("assertion") ?? "", key, { audience: "https://oauth2.googleapis.com/token" });
-      if (payload.iss !== "play-purchases@test.iam.gserviceaccount.com" || payload.scope !== "https://www.googleapis.com/auth/androidpublisher") {
+      if (play.mode === "sts-refused") return Response.json({ error: "invalid_target" }, { status: 400 });
+      const body = JSON.parse(new TextDecoder().decode(await request.arrayBuffer())) as Record<string, string>;
+      if (body.grantType !== "urn:ietf:params:oauth:grant-type:token-exchange" || body.audience !== WIF.provider
+        || body.requestedTokenType !== "urn:ietf:params:oauth:token-type:access_token" || body.subjectTokenType !== "urn:ietf:params:oauth:token-type:jwt") {
+        return Response.json({ error: "invalid_request" }, { status: 400 });
+      }
+      try {
+        const key = await importSPKI(env.PLAY_TEST_PUBLIC_KEY, "RS256");
+        const { payload, protectedHeader } = await jwtVerify(body.subjectToken ?? "", key, { issuer: WIF.issuer, audience: "https:" + WIF.provider });
+        const lifetime = (payload.exp ?? 0) - (payload.iat ?? 0);
+        if (protectedHeader.kid !== WIF.keyId || payload.sub !== WIF.subject || lifetime <= 0 || lifetime > 24 * 3600) throw new Error("claims");
+      } catch {
         return Response.json({ error: "invalid_grant" }, { status: 400 });
       }
-      return Response.json({ access_token: PLAY_ACCESS, expires_in: 3600, token_type: "Bearer" });
+      return Response.json({ access_token: FEDERATED, issued_token_type: "urn:ietf:params:oauth:token-type:access_token", token_type: "Bearer", expires_in: 3600 });
+    }
+    if (url === `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${encodeURIComponent(WIF.serviceAccount)}:generateAccessToken`) {
+      // IAM Credentials: the federated identity, given "Workload Identity User" on the service account, gets its token.
+      if (play.mode === "down") return new Response("unavailable", { status: 500 });
+      if (play.mode === "iam-refused") return Response.json({ error: { code: 403, status: "PERMISSION_DENIED" } }, { status: 403 });
+      if (request.headers.get("authorization") !== `Bearer ${FEDERATED}`) return Response.json({ error: { code: 401 } }, { status: 401 });
+      const body = JSON.parse(new TextDecoder().decode(await request.arrayBuffer())) as { scope?: string[] };
+      if (!body.scope?.includes("https://www.googleapis.com/auth/androidpublisher")) return Response.json({ error: { code: 400 } }, { status: 400 });
+      return Response.json({ accessToken: PLAY_ACCESS, expireTime: new Date(Date.now() + 3600_000).toISOString() });
     }
     const match = /^https:\/\/androidpublisher\.googleapis\.com\/androidpublisher\/v3\/applications\/([^/]+)\/purchases\/products\/([^/]+)\/tokens\/([^/]+)$/.exec(url);
     if (match) {

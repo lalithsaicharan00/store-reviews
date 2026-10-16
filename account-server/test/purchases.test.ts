@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { clearKeyCache } from "../src/identity";
-import { checkPlayPurchase, clearPlayToken } from "../src/play";
+import { checkPlayPurchase, clearPlayToken, googleAccess } from "../src/play";
 import { APPLE_KEYS, GOOGLE_KEYS, bought, call, createAccount, eventually, joinFamily, mockGoogle, newKey, person, play, published, sha256Hex, signIn } from "./helpers";
 
 beforeAll(async () => {
@@ -24,7 +24,7 @@ async function age(token: string, days: number) {
 }
 
 describe("purchases are checked with Google Play", () => {
-  it("gives Plus for a purchase Google says was bought, signing in to Google as the service account", async () => {
+  it("gives Plus for a purchase Google says was bought, signing in to Google keyless (Workload Identity Federation)", async () => {
     const made = await createAccount(person("Sam"), bought(PLUS));
     expect(made.account.plus).toBe("PLUS");
     expect(play.tokenRequests).toBe(1);
@@ -65,10 +65,42 @@ describe("purchases are checked with Google Play", () => {
     expect(reply.body.error).toBe("store_unavailable");
   });
 
-  it("says the store isn't set up when the service account's key is missing or broken", async () => {
-    await expect(checkPlayPurchase(undefined, "com.oftenenough.app", PLUS, "t")).rejects.toMatchObject({ status: 503, code: "purchases_not_configured" });
-    await expect(checkPlayPurchase("{}", "com.oftenenough.app", PLUS, "t")).rejects.toMatchObject({ status: 503, code: "purchases_not_configured" });
-    await expect(checkPlayPurchase(env.GOOGLE_PLAY_SERVICE_ACCOUNT, "com.oftenenough.app", "com.other.thing", "t")).resolves.toMatchObject({ state: "unknown" });
+  it("says purchases aren't set up when the signing key is missing or broken, or Google's side isn't set up yet", async () => {
+    const google = googleAccess(env);
+    await expect(checkPlayPurchase({ ...google, signingKey: undefined }, "com.oftenenough.app", PLUS, "t")).rejects.toMatchObject({ status: 503, code: "purchases_not_configured" });
+    await expect(checkPlayPurchase({ ...google, signingKey: "not a key" }, "com.oftenenough.app", PLUS, "t")).rejects.toMatchObject({ status: 503, code: "purchases_not_configured" });
+    await expect(checkPlayPurchase(google, "com.oftenenough.app", "com.other.thing", "t")).resolves.toMatchObject({ state: "unknown" });
+    // Google refuses our token (the pool or provider isn't made, or the public key isn't uploaded) …
+    play.mode = "sts-refused";
+    await expect(checkPlayPurchase(google, "com.oftenenough.app", PLUS, bought(PLUS).token)).rejects.toMatchObject({ status: 503, code: "purchases_not_configured" });
+    // … or the pool's subject may not act as the service account.
+    play.mode = "iam-refused";
+    clearPlayToken();
+    await expect(checkPlayPurchase(google, "com.oftenenough.app", PLUS, bought(PLUS).token)).rejects.toMatchObject({ status: 503, code: "purchases_not_configured" });
+  });
+
+  it("says whether keyless Google sign-in works, without showing a token", async () => {
+    clearPlayToken();
+    expect((await call("GET", "/v1/health/play")).body).toEqual({ play: "ready" });
+    clearPlayToken();
+    play.mode = "sts-refused";
+    const refused = await call("GET", "/v1/health/play");
+    expect(refused.status).toBe(503);
+    expect(refused.body).toEqual({ play: "not_set_up" });
+    clearPlayToken();
+    play.mode = "down";
+    expect((await call("GET", "/v1/health/play")).body).toEqual({ play: "unavailable" });
+  });
+
+  it("signs a token Google accepts only for this provider: another subject, key ID or audience is refused", async () => {
+    const google = googleAccess(env);
+    for (const wrong of [{ subject: "someone-else" }, { keyId: "another-key" }, { pool: "another-pool" }, { issuer: "https://evil.example" }]) {
+      clearPlayToken();
+      await expect(checkPlayPurchase({ ...google, ...wrong }, "com.oftenenough.app", PLUS, bought(PLUS).token), JSON.stringify(wrong))
+        .rejects.toMatchObject({ code: "purchases_not_configured" });
+    }
+    clearPlayToken();
+    await expect(checkPlayPurchase(google, "com.oftenenough.app", PLUS, bought(PLUS).token)).resolves.toMatchObject({ state: "purchased" });
   });
 
   it("refuses a product that isn't ours", async () => {

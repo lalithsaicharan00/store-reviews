@@ -1,7 +1,7 @@
 import { Accounts } from "./accounts";
 import { HttpError, errorResponse, json, optionalString, readJson, requireString } from "./http";
 import { type Person, type Provider, audiences, verifyIdToken } from "./identity";
-import { PRODUCTS, type PlayCheck, checkPlayPurchase } from "./play";
+import { PRODUCTS, type PlayCheck, checkPlayPurchase, googleAccess, playReady } from "./play";
 
 /*
  * The Plus account's Worker (Rulebook D15, D16; Android A15; Current Work 110). It holds only who someone is (Google's
@@ -19,6 +19,7 @@ import { PRODUCTS, type PlayCheck, checkPlayPurchase } from "./play";
  *   GET  /v1/invites/<token>                                                       → { state, owner }
  *   POST /v1/invites/<token>/join                                                  → { account }
  *   GET  /v1/health                                                                → { ok, environment }
+ *   GET  /v1/health/play                                                           → { play: ready | not_set_up | unavailable }
  */
 
 const INVITE_TOKEN = /^[A-Za-z0-9_-]{8,64}$/;
@@ -52,6 +53,12 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
   const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
 
   if (path === "/v1/health" && method === "GET") return json({ ok: true, environment: env.ENVIRONMENT });
+  // Whether keyless Google sign-in for the Play checks works (no token is shown). Rate-limited: it may ask Google.
+  if (path === "/v1/health/play" && method === "GET") {
+    await limit(env.INVITE_LIMIT, ip);
+    const play = await playReady(googleAccess(env));
+    return json({ play }, play === "ready" ? 200 : 503);
+  }
 
   // ---------------------------------------------------------------- Signing in (no session yet)
   if (path === "/v1/sign-in" && method === "POST") {
@@ -217,7 +224,7 @@ async function check(env: Env, product: string, token: string): Promise<PlayChec
   if (env.ENVIRONMENT === "dev" && env.ACCEPT_STAND_IN_PURCHASES === "true" && token.startsWith("stand-in")) {
     return { state: "purchased", orderId: null, test: true };
   }
-  return checkPlayPurchase(env.GOOGLE_PLAY_SERVICE_ACCOUNT, env.PLAY_PACKAGE, product, token);
+  return checkPlayPurchase(googleAccess(env), env.PLAY_PACKAGE, product, token);
 }
 
 function readPurchase(value: unknown, optional: boolean): { product: string; token: string } | null {

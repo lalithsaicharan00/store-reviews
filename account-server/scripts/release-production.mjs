@@ -13,7 +13,9 @@ const args = process.argv.slice(2);
 const stepAt = args.indexOf("--step-minutes");
 const stepMinutes = stepAt >= 0 ? Number(args[stepAt + 1]) : 10;
 const shell = process.platform === "win32";
-const run = (cmd, cmdArgs, opts = {}) => execFileSync(cmd, cmdArgs, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], shell, ...opts });
+// On Windows npx runs through the shell, so an argument with spaces ("release 1dcb651f") is quoted, or it splits.
+const quote = (a) => (shell && /\s/.test(a) ? `"${a}"` : a);
+const run = (cmd, cmdArgs, opts = {}) => execFileSync(cmd, cmdArgs.map(quote), { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], shell, ...opts });
 const wrangler = (...a) => run("npx", ["wrangler", ...a, "--env", "production"]);
 const say = (text) => console.log(`[${new Date().toISOString().slice(11, 19)}] ${text}`);
 const sleep = (minutes) => new Promise((r) => setTimeout(r, minutes * 60_000));

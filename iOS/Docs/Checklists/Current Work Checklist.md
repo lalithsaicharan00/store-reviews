@@ -1059,10 +1059,14 @@ and the Add note keyboard coming up by itself.
     - [ ] **To do and test together in the morning** (the user, 16 Oct 2026: "all of the testing, all of the real things
       we will do it in the morning"). Everything so far was tested with stand-ins for Google, Apple and Play, and
       against dev with the test sign-in; these are the real things:
-      - [ ] **The Play service account's key into the Worker** (the user, never in chat or the repository, D11): Google
-        Cloud Console › IAM › Service accounts › `play-purchases@…` › Keys › Add key › JSON, then
-        `npx wrangler secret put GOOGLE_PLAY_SERVICE_ACCOUNT --env production < key.json` (and without `--env` for dev),
-        then delete the file. Until then, adding a purchase answers "try again later".
+      - [x] ~~The Play service account's key into the Worker~~ **Keyless instead** (the user, 16 Oct 2026, after Google's
+        advice not to download keys): the Worker signs in to Google through Workload Identity Federation with its own
+        key, made straight into Cloudflare for dev and production (`scripts/make-wif-key.mjs`); its public half is
+        `account-server/google/jwks.json`. Built, tested (47 Worker tests), on dev and released to production.
+      - [ ] **The user's Google Cloud Console steps** (`account-server/README.md`, "Google Play, keyless"): four APIs on;
+        the pool `cloudflare-workers` and its OIDC provider `often-enough-account` with `jwks.json` uploaded; Workload
+        Identity User on `play-purchases@…` for both subjects; and Play Console's permission trimmed to reading.
+        Then `GET /v1/health/play` says `ready` on dev and production (Claude checks).
       - [ ] **Real Google sign-in on the phone** (the debug build talks to dev): sign in, make the account, sign out, sign
         in again; the same account on a second device (the emulator); "Signed in as" shows the right email.
       - [ ] **A real purchase as a license tester** (a `-PrealBilling` debug build, or a Play test build of this code):

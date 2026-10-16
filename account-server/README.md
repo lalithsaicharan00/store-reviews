@@ -73,19 +73,46 @@ Done once on 16 Oct 2026: the database made (`often-enough-accounts`), migrated,
 A new custom domain takes a few minutes to resolve on this PC (it remembered the old one as missing): the release
 script's checks wait and try again.
 
-The Google Play service account's key (`play-purchases@often-enough.iam.gserviceaccount.com`, Android/Docs/"Google Play —
-Setup and Declarations"): made in Google Cloud Console › IAM › Service accounts › Keys › Add key › JSON, put straight
-into the Worker by the user, and the downloaded file deleted (D11):
-
-```sh
-npx wrangler secret put GOOGLE_PLAY_SERVICE_ACCOUNT --env production < key.json
-```
-
-Until it's set, purchases can't be checked: adding one answers 503 and the app tries again later; signing in, accounts
-and families already in place still work.
-
 ```sh
 npm run migrate:production     # only when migrations/ changed (a change must work with the old version too)
 npm run release:production     # tests, then 5% → 25% → 100% with live checks, rolling back on a failure
 npm run live:production        # the basics, no secret
 ```
+
+## Google Play, keyless (Workload Identity Federation)
+
+The user, 16 Oct 2026, after Google's own advice ([why](https://cloud.google.com/blog/products/identity-security/how-to-authenticate-service-accounts-to-help-keep-applications-secure)):
+**no service account key is ever downloaded.** The Worker signs in to Google as `play-purchases@often-enough.iam.gserviceaccount.com`
+through [Workload Identity Federation](https://docs.cloud.google.com/iam/docs/workload-identity-federation), as its own
+small identity provider (`src/play.ts`):
+
+1. It signs a 5-minute token (RS256) with its own key, the secret `GOOGLE_WIF_SIGNING_KEY`: issuer
+   `https://api.oftenenough.com`, subject `often-enough-account` (production) or `often-enough-account-dev` (dev),
+   audience the provider's address, key ID `account-production-1` or `account-dev-1`.
+2. Google's Security Token Service checks it against the public keys uploaded to the pool's provider (`google/jwks.json`)
+   and gives a federated token.
+3. IAM Credentials `generateAccessToken` gives a one-hour token as the service account, which Play Console lets read
+   purchases. It's cached for its hour.
+
+`scripts/make-wif-key.mjs dev|production` makes a key straight into Cloudflare (never on disk, never printed) and writes
+its public half to `google/jwks.json`. Done for both on 16 Oct 2026. To change a key: bump its ID in `wrangler.jsonc`,
+run the script, upload the new `jwks.json` in the provider (an upload replaces every key), deploy.
+`GET /v1/health/play` says `ready`, `not_set_up` or `unavailable` (no token is shown); `REQUIRE_PLAY=1 npm run
+live:production` fails unless it's ready.
+
+**Google Cloud Console, project "Often Enough" (number 367584981284), done once by the user:**
+
+1. **APIs & Services › Library:** enable *IAM Service Account Credentials API*, *Security Token Service API*,
+   *Identity and Access Management (IAM) API* and *Cloud Resource Manager API* (the Google Play Android Developer API is
+   already on).
+2. **IAM & Admin › Workload Identity Federation › Create pool:** name *Cloudflare Workers*, pool ID `cloudflare-workers`.
+   Add a provider: **OpenID Connect (OIDC)**, name *Often Enough account*, provider ID `often-enough-account`, issuer URL
+   `https://api.oftenenough.com`, **JWK file**: upload `account-server/google/jwks.json`, audiences: *Default
+   audience*. Attribute mapping: `google.subject` = `assertion.sub`. Attribute condition:
+   `assertion.sub in ["often-enough-account", "often-enough-account-dev"]`. Save.
+3. **IAM & Admin › Service accounts › `play-purchases@…` › Principals with access › Grant access:** principal
+   `principal://iam.googleapis.com/projects/367584981284/locations/global/workloadIdentityPools/cloudflare-workers/subject/often-enough-account`,
+   role **Workload Identity User**; again for `…/subject/often-enough-account-dev`. Its **Keys** tab stays empty.
+4. **Play Console › Users and permissions › `play-purchases@…`:** keep *View app information* and *View financial
+   data*; untick *Manage orders and subscriptions* (the Worker only reads purchases).
+

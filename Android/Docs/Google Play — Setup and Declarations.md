@@ -31,8 +31,7 @@ needs a higher `versionCode` (1 was the first internal upload, 2 the first close
 **Checking Play purchases from the Worker:** the Google Play Android Developer API is enabled, and the service account
 `play-purchases@often-enough.iam.gserviceaccount.com` (no Cloud roles) is invited in Play Console › Users and
 permissions for Often Enough only, with View app information (read-only), View financial data, and Manage orders and
-subscriptions (15 Oct 2026). Its JSON key is made only when the Worker is deployed, and goes straight into
-`wrangler secret put` by the user, then the downloaded file is deleted (D11).
+subscriptions (15 Oct 2026). **No key is made** (the user, 16 Oct 2026): the Worker acts as it keyless, through Workload Identity Federation (`account-server/README.md`, "Google Play, keyless").
 
 The consent screen is **In production** (published 15 Oct 2026; External). Branding: app name Often Enough, home page
 `https://oftenenough.com`, privacy `/privacy`, terms `/terms`, authorized domain `oftenenough.com`, **no logo** (a logo

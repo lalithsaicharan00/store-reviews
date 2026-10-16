@@ -35,6 +35,10 @@ const forged = await call("POST", "/v1/sign-in", { body: { provider: "google", i
 say(forged.status === 401 && forged.body?.error === "invalid_token", "a forged Google token is refused", String(forged.status));
 const apple = await call("POST", "/v1/sign-in", { body: { provider: "apple", idToken: "eyJhbGciOiJSUzI1NiJ9.e30.x", nonce: "n" } });
 say(apple.status === 401, "a forged Apple token is refused", String(apple.status));
+const play = await call("GET", "/v1/health/play");
+// Keyless Google sign-in for the Play checks: "ready" once Google Cloud's side is set up (README, "Google Play, keyless").
+if (process.env.REQUIRE_PLAY) say(play.body?.play === "ready", "keyless Google sign-in for Play checks", play.body?.play);
+else console.log(`info keyless Google sign-in for Play checks: ${play.body?.play ?? play.status}`);
 const test = await call("POST", "/v1/sign-in", { body: { provider: "test", secret: "guess", subject: "x" } });
 say(test.status === 400, "the test sign-in refuses a wrong secret", String(test.status));
 

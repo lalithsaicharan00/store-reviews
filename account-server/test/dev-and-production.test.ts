@@ -64,5 +64,12 @@ describe("dev's test doors", () => {
     expect(production.d1_databases[0].database_id).not.toBe(config.d1_databases[0].database_id);
     expect(production.vars.GOOGLE_AUDIENCES).toBe(config.vars.GOOGLE_AUDIENCES);
     expect(production.ratelimits.map((r: { name: string }) => r.name).sort()).toEqual(["AUTH_LIMIT", "CALL_LIMIT", "INVITE_LIMIT"]);
+    // Keyless Google sign-in: production signs in as its own subject with its own key, in the same pool and provider.
+    expect(production.vars.GOOGLE_WIF_SUBJECT).toBe("often-enough-account");
+    expect(config.vars.GOOGLE_WIF_SUBJECT).toBe("often-enough-account-dev");
+    expect(production.vars.GOOGLE_WIF_KEY_ID).not.toBe(config.vars.GOOGLE_WIF_KEY_ID);
+    for (const name of ["GOOGLE_PROJECT_NUMBER", "GOOGLE_WIF_POOL", "GOOGLE_WIF_PROVIDER", "GOOGLE_WIF_ISSUER", "GOOGLE_PLAY_SERVICE_ACCOUNT_EMAIL"]) {
+      expect(production.vars[name], name).toBe(config.vars[name]);
+    }
   });
 });
