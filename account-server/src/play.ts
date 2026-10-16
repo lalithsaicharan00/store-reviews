@@ -13,12 +13,22 @@ import { HttpError } from "./http";
  * `generateAccessToken`), which Play Console lets read purchases. No Google key exists anywhere.
  */
 
-/** Our one-time products, and what each gives. The upgrade is sold only to someone who has Plus. */
-export const PRODUCTS: Record<string, "plus" | "family"> = {
-  "com.oftenenough.app.plus": "plus",
-  "com.oftenenough.app.plusfamily": "family",
-  "com.oftenenough.app.plusfamily.upgrade": "family",
-};
+/** Our one-time products. The upgrade is Plus → Plus Family for the difference, so it counts only beside Plus (`paidFor`). */
+export const PLUS = "com.oftenenough.app.plus";
+export const FAMILY = "com.oftenenough.app.plusfamily";
+export const UPGRADE = "com.oftenenough.app.plusfamily.upgrade";
+export const PRODUCTS: Record<string, "plus" | "family" | "upgrade"> = { [PLUS]: "plus", [FAMILY]: "family", [UPGRADE]: "upgrade" };
+
+/**
+ * What an account's active purchases pay for. Plus Family is paid by Plus Family itself, or by the upgrade **together
+ * with** Plus (the upgrade is only the difference: bought alone, by a modified app, it gives nothing). Whichever of the
+ * two reaches the Worker first, the family starts when both are there, and a refund of either ends it.
+ */
+export function paidFor(products: string[]): { plus: boolean; family: boolean } {
+  const has = new Set(products);
+  const family = has.has(FAMILY) || (has.has(UPGRADE) && has.has(PLUS));
+  return { plus: family || has.has(PLUS), family };
+}
 
 export interface PlayCheck {
   /** Bought and paid; cancelled (refunded, revoked); pending (not paid yet); unknown (not a purchase of ours). */
@@ -172,4 +182,42 @@ export async function checkPlayPurchase(google: GoogleAccess, packageName: strin
   if (!body) throw new HttpError(503, "store_unavailable", "Couldn't reach Google Play. Please try again.");
   const state = body.purchaseState === 0 ? "purchased" : body.purchaseState === 1 ? "cancelled" : body.purchaseState === 2 ? "pending" : "unknown";
   return { state, orderId: typeof body.orderId === "string" ? body.orderId : null, test: body.purchaseType === 0 };
+}
+
+/** One voided purchase, as the Voided Purchases API lists it (only what the Worker uses). */
+export interface VoidedPurchase {
+  purchaseToken: string;
+  /** Present only for a quantity-based partial refund; ours are bought one at a time, so it's never set for them. */
+  voidedQuantity?: number;
+}
+
+/**
+ * One page of the Voided Purchases API (`purchases.voidedpurchases.list`): one-time purchases Google voided (refunded,
+ * revoked or charged back) that it first saw as voided between [startTime] and [endTime] (milliseconds; at most 30 days
+ * back). Needs Play Console's "View financial data" for the service account. Quota: 6,000 a day, 30 per 30 seconds.
+ */
+export async function listVoidedPurchases(google: GoogleAccess, packageName: string, startTime: number, endTime: number, pageToken?: string):
+  Promise<{ voided: VoidedPurchase[]; nextPageToken: string | null }> {
+  const access = await accessToken(google);
+  const query = new URLSearchParams({ startTime: String(startTime), endTime: String(endTime), maxResults: "1000", type: "0" });
+  if (pageToken) query.set("token", pageToken);
+  const url = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${encodeURIComponent(packageName)}/purchases/voidedpurchases?${query}`;
+  const response = await fetch(url, { headers: { authorization: `Bearer ${access}`, accept: "application/json" } }).catch(() => null);
+  if (!response) throw unavailable();
+  if (response.status === 401) cachedAccess = null;
+  if (!response.ok) {
+    // 403: the service account can't view financial data in Play Console (README, "Refunds").
+    console.error(`play: voided purchases refused (${response.status})`);
+    throw unavailable();
+  }
+  const body = (await response.json().catch(() => null)) as {
+    voidedPurchases?: { purchaseToken?: unknown; voidedQuantity?: unknown }[];
+    tokenPagination?: { nextPageToken?: unknown };
+  } | null;
+  if (!body) throw unavailable();
+  const voided = (body.voidedPurchases ?? [])
+    .filter((v) => typeof v.purchaseToken === "string" && v.purchaseToken.length > 0)
+    .map((v) => ({ purchaseToken: v.purchaseToken as string, ...(typeof v.voidedQuantity === "number" ? { voidedQuantity: v.voidedQuantity } : {}) }));
+  const next = body.tokenPagination?.nextPageToken;
+  return { voided, nextPageToken: typeof next === "string" && next.length > 0 ? next : null };
 }

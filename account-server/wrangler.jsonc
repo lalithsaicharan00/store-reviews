@@ -30,11 +30,16 @@
     "GOOGLE_WIF_SUBJECT": "often-enough-account-dev",
     "GOOGLE_WIF_KEY_ID": "account-dev-1",
     "GOOGLE_PLAY_SERVICE_ACCOUNT_EMAIL": "play-purchases@often-enough.iam.gserviceaccount.com",
+    // Google Play's Real-time developer notifications (src/refunds.ts; README, "Refunds"): Pub/Sub pushes each one with
+    // an OIDC token for this audience (its own subscription's), as this service account (no keys, no roles). Public.
+    "GOOGLE_PUBSUB_AUDIENCE": "https://api-dev.oftenenough.com/v1/google/notifications",
+    "GOOGLE_PUBSUB_SERVICE_ACCOUNT": "play-notifications-push@often-enough.iam.gserviceaccount.com",
     // Dev only: the debug app's stand-in purchases (token "stand-in…") count as bought, so families can be tested end
     // to end without Google Play. Never in production (test/production.test.ts checks it).
     "ACCEPT_STAND_IN_PURCHASES": "true"
   },
-  // Daily tidying (src/accounts.ts, tidy): old invites and long-unused sessions.
+  // Daily, one job (src/worker.ts, DAILY): tidying (src/accounts.ts, tidy) and Google Play's voided purchases since the
+  // day before, the backstop for its notifications (src/refunds.ts, sweepVoided).
   "triggers": { "crons": ["0 5 * * *"] },
   "d1_databases": [
     { "binding": "DB", "database_name": "often-enough-accounts-dev", "database_id": "d705fc33-e79d-4446-a3f0-45c7a8a75520", "migrations_dir": "migrations" }
@@ -64,7 +69,9 @@
         "GOOGLE_WIF_ISSUER": "https://api.oftenenough.com",
         "GOOGLE_WIF_SUBJECT": "often-enough-account",
         "GOOGLE_WIF_KEY_ID": "account-production-1",
-        "GOOGLE_PLAY_SERVICE_ACCOUNT_EMAIL": "play-purchases@often-enough.iam.gserviceaccount.com"
+        "GOOGLE_PLAY_SERVICE_ACCOUNT_EMAIL": "play-purchases@often-enough.iam.gserviceaccount.com",
+        "GOOGLE_PUBSUB_AUDIENCE": "https://api.oftenenough.com/v1/google/notifications",
+        "GOOGLE_PUBSUB_SERVICE_ACCOUNT": "play-notifications-push@often-enough.iam.gserviceaccount.com"
       },
       "triggers": { "crons": ["0 5 * * *"] },
       // Made 16 Oct 2026 at the first production release.

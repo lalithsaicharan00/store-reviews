@@ -145,6 +145,36 @@ describe("Plus Family", () => {
     expect(families?.n).toBe(1);
   });
 
+  it("the upgrade alone gives nothing: it's only the difference, so it needs Plus beside it", async () => {
+    const sneaky = await createAccount(person("Sam"), bought(UPGRADE));
+    expect(sneaky.account).toMatchObject({ plus: "NONE", family: null });
+    // Plus arriving after it (the app sends every purchase, in any order) completes the family.
+    const both = await call("POST", "/v1/account/purchases", { session: sneaky.session, body: bought(PLUS) });
+    expect(both.body.account.plus).toBe("FAMILY_OWNER");
+  });
+
+  it("refunding Plus under an upgrade ends the family; refunding the upgrade keeps Plus", async () => {
+    const plus = bought(PLUS);
+    const upgrade = bought(UPGRADE);
+    const a = await createAccount(person("Ana"), plus);
+    expect((await call("POST", "/v1/account/purchases", { session: a.session, body: upgrade })).body.account.plus).toBe("FAMILY_OWNER");
+    const { member } = await joinFamily(a.session, "Priya");
+    play.purchases.get(upgrade.token)!.purchaseState = 1; // the upgrade refunded
+    await age(upgrade.token, 2);
+    await call("GET", "/v1/account", { session: a.session });
+    await eventually(async () => (await call("GET", "/v1/account", { session: a.session })).body.account.plus === "PLUS");
+    expect((await call("GET", "/v1/account", { session: member.session })).body.account).toMatchObject({ plus: "NONE", family: null });
+
+    const plus2 = bought(PLUS);
+    const upgrade2 = bought(UPGRADE);
+    const b = await createAccount(person("Bo"), plus2);
+    await call("POST", "/v1/account/purchases", { session: b.session, body: upgrade2 });
+    play.purchases.get(plus2.token)!.purchaseState = 1; // Plus refunded: the upgrade alone pays for nothing
+    await age(plus2.token, 2);
+    await call("GET", "/v1/account", { session: b.session });
+    await eventually(async () => (await call("GET", "/v1/account", { session: b.session })).body.account.plus === "NONE");
+  });
+
   it("someone in a family who buys Plus Family leaves it and owns their own", async () => {
     const lee = await createAccount(person("Lee"), bought(FAMILY));
     const { member } = await joinFamily(lee.session, "Priya");

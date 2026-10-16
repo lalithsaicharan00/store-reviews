@@ -102,6 +102,39 @@ function invalid() {
   return new HttpError(401, "invalid_token", "The sign-in couldn't be checked. Please try again.");
 }
 
+/**
+ * A Google service account's OIDC token, as Pub/Sub sends with each push (`Authorization: Bearer …`): signed by Google
+ * (the same keys as Google sign-in), issued by accounts.google.com, for exactly [audience] (the subscription's), and
+ * for exactly the service account [email] the subscription pushes as, verified. Pub/Sub's tokens may be up to an hour
+ * old, so only `exp` limits them. Any failure is a 401 without saying why.
+ */
+export async function verifyGoogleServiceToken(token: string, audience: string, email: string): Promise<void> {
+  const refused = () => new HttpError(401, "unauthorized", "Not allowed.");
+  if (!audience || !email) throw refused();
+  const verify = async (force: boolean) =>
+    (await jwtVerify(token, createLocalJWKSet(await providerKeys(PROVIDERS.google.jwksUrl, force)), {
+      issuer: PROVIDERS.google.issuers,
+      audience,
+      algorithms: ["RS256"],
+      clockTolerance: 60,
+    })).payload;
+  let payload;
+  try {
+    payload = await verify(false);
+  } catch (error) {
+    if (error instanceof HttpError) throw error; // Google's keys couldn't be fetched: 503, and Pub/Sub tries again
+    if (!(error instanceof errors.JWKSNoMatchingKey)) throw refused();
+    try {
+      payload = await verify(true);
+    } catch (again) {
+      if (again instanceof HttpError) throw again;
+      throw refused();
+    }
+  }
+  const verified = payload.email_verified === true || payload.email_verified === "true";
+  if (payload.email !== email || !verified) throw refused();
+}
+
 /** "lalith@gmail.com" → "l•••••@gmail.com" (D16: a hint to point someone back to the right account, never the address). */
 export function emailHint(email: string | null): string | null {
   if (!email) return null;

@@ -1,6 +1,6 @@
 import { HttpError, randomToken, sha256Hex } from "./http";
 import { type Person, cleanName, emailHint } from "./identity";
-import { PRODUCTS, type PlayCheck } from "./play";
+import { type PlayCheck, paidFor } from "./play";
 
 /*
  * The account's rules (Current Work 110, Figma 1476:2), the same as the app's stand-in (`StandInAccountServer`), on D1.
@@ -30,6 +30,9 @@ export interface AccountView {
 export type InviteLook = { state: "open" | "ended" | "used" | "cancelled" | "full"; owner: string };
 
 interface AccountRow { id: string; provider: string; subject: string; name: string }
+
+/** How we learned Google voided a purchase: its notification, the Voided Purchases API, or a check that said cancelled. */
+export type VoidSource = "notification" | "voided_api" | "check";
 
 const day = (ms: number) => Math.floor(ms / DAY_MS);
 
@@ -104,7 +107,7 @@ export class Accounts {
       this.db.prepare("SELECT family_id, joined_at FROM members WHERE account_id = ?").bind(accountId).first<{ family_id: string; joined_at: number }>(),
       this.db.prepare("SELECT product FROM purchases WHERE account_id = ? AND active = 1").bind(accountId).all<{ product: string }>(),
     ]);
-    const ownPlus = purchases.results.some((p) => p.product in PRODUCTS);
+    const ownPlus = paidFor(purchases.results.map((p) => p.product)).plus;
     const plus: PlusKind = owned ? "FAMILY_OWNER" : ownPlus ? "PLUS" : membership ? "FAMILY_MEMBER" : "NONE";
     const familyId = owned?.id ?? membership?.family_id ?? null;
     if (!familyId) return { id: accountId, plus, family: null };
@@ -144,22 +147,23 @@ export class Accounts {
   /**
    * Records what Google said about a purchase this account sent. Bought: the account has it (and Plus Family makes the
    * buyer a family of their own, leaving one they were in). Refunded: it no longer counts, and a family it paid for ends.
-   * A purchase another account holds is left with that account.
+   * A purchase another account holds is left with that account. A purchase Google has voided never counts again, whatever
+   * a later check says (`voided_purchases`).
    */
   async recordPurchase(accountId: string, product: string, token: string, check: PlayCheck): Promise<"added" | "in_use" | "not_bought"> {
     const hash = await sha256Hex(token);
     const holder = await this.purchaseHolder(token);
     if (holder && holder.account_id !== accountId) return "in_use";
     const now = this.now();
-    if (check.state === "purchased") {
+    if (check.state === "purchased" && !(await this.isVoided(hash))) {
       await this.db.prepare(
         "INSERT INTO purchases (token_hash, token, account_id, store, product, order_id, active, test, checked_at) VALUES (?, ?, ?, 'google', ?, ?, 1, ?, ?) "
         + "ON CONFLICT (token_hash) DO UPDATE SET active = 1, order_id = excluded.order_id, test = excluded.test, checked_at = excluded.checked_at WHERE purchases.account_id = excluded.account_id",
       ).bind(hash, token, accountId, product, check.orderId, check.test ? 1 : 0, now).run();
-      if (PRODUCTS[product] === "family") await this.ownFamily(accountId);
+      if ((await this.paid(accountId)).family) await this.ownFamily(accountId);
       return "added";
     }
-    if (holder && check.state === "cancelled") await this.markRefunded(hash, accountId);
+    if (holder && check.state === "cancelled") await this.markRefunded(hash, accountId, "check");
     return "not_bought";
   }
 
@@ -176,15 +180,103 @@ export class Accounts {
    */
   async recheck(accountId: string, token: string, check: PlayCheck) {
     const hash = await sha256Hex(token);
-    if (check.state === "cancelled") await this.markRefunded(hash, accountId);
+    if (check.state === "cancelled") await this.markRefunded(hash, accountId, "check");
     else await this.db.prepare("UPDATE purchases SET checked_at = ? WHERE token_hash = ?").bind(this.now(), hash).run();
   }
 
-  private async markRefunded(hash: string, accountId: string) {
-    await this.db.prepare("UPDATE purchases SET active = 0, checked_at = ? WHERE token_hash = ? AND account_id = ?").bind(this.now(), hash, accountId).run();
-    const stillFamily = await this.db.prepare("SELECT 1 AS x FROM purchases WHERE account_id = ? AND active = 1 AND product IN ('com.oftenenough.app.plusfamily', 'com.oftenenough.app.plusfamily.upgrade')")
-      .bind(accountId).first();
-    if (!stillFamily) await this.endFamily(accountId);
+  /**
+   * Google says this purchase was voided (refunded, revoked or charged back), through a Real-time developer notification
+   * or the Voided Purchases API. It's remembered for good, and the account holding it, if any, loses what it paid for at
+   * once (a family it paid for ends, exactly as on any refund). Safe to repeat. Returns whether an account held it.
+   */
+  async voidPurchase(token: string, source: VoidSource): Promise<boolean> {
+    const hash = await sha256Hex(token);
+    const holder = await this.db.prepare("SELECT account_id FROM purchases WHERE token_hash = ?").bind(hash).first<{ account_id: string }>();
+    if (!holder) {
+      await this.rememberVoid(hash, source).run();
+      return false;
+    }
+    await this.markRefunded(hash, holder.account_id, source);
+    return true;
+  }
+
+  /**
+   * A page of voids at once (the Voided Purchases API, up to 1,000), within the free plan's 1,000 database calls a run:
+   * which of them an account still holds is read 90 at a time, every one is remembered in one batch, and only the held
+   * ones (few) are ended one by one, at most [maxHeld]. Safe to repeat: a held purchase ended here is no longer active,
+   * so a run that stopped at [maxHeld] carries on where it left off. Returns how many it ended and whether that was all.
+   */
+  async voidMany(tokens: string[], source: VoidSource, maxHeld: number): Promise<{ held: number; done: boolean }> {
+    const hashes = [...new Set(await Promise.all(tokens.map((t) => sha256Hex(t))))];
+    const held: { token_hash: string; account_id: string }[] = [];
+    for (let i = 0; i < hashes.length; i += 90) {
+      const chunk = hashes.slice(i, i + 90);
+      const rows = await this.db.prepare(`SELECT token_hash, account_id FROM purchases WHERE active = 1 AND token_hash IN (${chunk.map(() => "?").join(", ")})`)
+        .bind(...chunk).all<{ token_hash: string; account_id: string }>();
+      held.push(...rows.results);
+    }
+    const now = this.now();
+    const inserts = [];
+    for (let i = 0; i < hashes.length; i += 30) {
+      const chunk = hashes.slice(i, i + 30);
+      inserts.push(this.db.prepare(`INSERT INTO voided_purchases (token_hash, voided_at, source) VALUES ${chunk.map(() => "(?, ?, ?)").join(", ")} ON CONFLICT (token_hash) DO NOTHING`)
+        .bind(...chunk.flatMap((h) => [h, now, source])));
+    }
+    if (inserts.length > 0) await this.db.batch(inserts);
+    const ending = held.slice(0, maxHeld);
+    for (const h of ending) await this.markRefunded(h.token_hash, h.account_id, source);
+    return { held: ending.length, done: ending.length === held.length };
+  }
+
+  /** The account holding a purchase and its product, or null: what a one-time product's notification needs to check it. */
+  async heldPurchase(token: string): Promise<{ accountId: string; product: string } | null> {
+    const row = await this.purchaseHolder(token);
+    return row ? { accountId: row.account_id, product: row.product } : null;
+  }
+
+  private async isVoided(hash: string): Promise<boolean> {
+    return !!(await this.db.prepare("SELECT 1 AS x FROM voided_purchases WHERE token_hash = ?").bind(hash).first());
+  }
+
+  private rememberVoid(hash: string, source: VoidSource) {
+    return this.db.prepare("INSERT INTO voided_purchases (token_hash, voided_at, source) VALUES (?, ?, ?) ON CONFLICT (token_hash) DO NOTHING")
+      .bind(hash, this.now(), source);
+  }
+
+  /** A held purchase stops counting, for good: Google cancelled, refunded, revoked or charged it back. */
+  private async markRefunded(hash: string, accountId: string, source: VoidSource) {
+    await this.db.batch([
+      this.rememberVoid(hash, source),
+      this.db.prepare("UPDATE purchases SET active = 0, checked_at = ? WHERE token_hash = ? AND account_id = ?").bind(this.now(), hash, accountId),
+    ]);
+    if (!(await this.paid(accountId)).family) await this.endFamily(accountId);
+  }
+
+  // ---------------------------------------------------------------- Google Play's notifications, and the Worker's own state
+
+  /** Whether this Pub/Sub message was handled already (Pub/Sub delivers at least once; Google: check `messageId`). */
+  async notificationSeen(messageId: string): Promise<boolean> {
+    return !!(await this.db.prepare("SELECT 1 AS x FROM play_notifications WHERE message_id = ?").bind(messageId).first());
+  }
+
+  /** Notes a Pub/Sub message as handled, once it fully is: one that failed is delivered again by Pub/Sub. */
+  async notificationHandled(messageId: string) {
+    await this.db.prepare("INSERT INTO play_notifications (message_id, received_at) VALUES (?, ?) ON CONFLICT (message_id) DO NOTHING")
+      .bind(messageId, this.now()).run();
+  }
+
+  async state(key: string): Promise<string | null> {
+    return (await this.db.prepare("SELECT value FROM worker_state WHERE key = ?").bind(key).first<{ value: string }>())?.value ?? null;
+  }
+
+  async setState(key: string, value: string) {
+    await this.db.prepare("INSERT INTO worker_state (key, value) VALUES (?, ?) ON CONFLICT (key) DO UPDATE SET value = excluded.value").bind(key, value).run();
+  }
+
+  /** What this account's active purchases pay for (`paidFor`). */
+  private async paid(accountId: string) {
+    const rows = await this.db.prepare("SELECT product FROM purchases WHERE account_id = ? AND active = 1").bind(accountId).all<{ product: string }>();
+    return paidFor(rows.results.map((r) => r.product));
   }
 
   private async ownFamily(accountId: string) {
@@ -314,7 +406,8 @@ export class Accounts {
 
   /**
    * Daily: what's no longer needed goes. Invites 30 days after they ended (used, cancelled or not: a link that old reads
-   * "doesn't work"), ended invites of families that ended, and sessions unused for 400 days.
+   * "doesn't work"), ended invites of families that ended, sessions unused for 400 days, and handled Pub/Sub message IDs
+   * after 30 days (Pub/Sub keeps a message for 7 at most). Voided purchases stay: a void is final.
    */
   async tidy(): Promise<{ invites: number; sessions: number }> {
     const now = this.now();
@@ -322,6 +415,7 @@ export class Accounts {
       this.db.prepare("DELETE FROM invites WHERE ends_at < ?").bind(now - 30 * DAY_MS),
       this.db.prepare("DELETE FROM invites WHERE family_id IS NULL AND ends_at < ?").bind(now),
       this.db.prepare("DELETE FROM sessions WHERE used_at < ?").bind(now - 400 * DAY_MS),
+      this.db.prepare("DELETE FROM play_notifications WHERE received_at < ?").bind(now - 30 * DAY_MS),
     ]);
     return { invites: (invites?.meta.changes ?? 0) + (orphans?.meta.changes ?? 0), sessions: sessions?.meta.changes ?? 0 };
   }

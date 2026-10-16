@@ -68,8 +68,14 @@ describe("dev's test doors", () => {
     expect(production.vars.GOOGLE_WIF_SUBJECT).toBe("often-enough-account");
     expect(config.vars.GOOGLE_WIF_SUBJECT).toBe("often-enough-account-dev");
     expect(production.vars.GOOGLE_WIF_KEY_ID).not.toBe(config.vars.GOOGLE_WIF_KEY_ID);
-    for (const name of ["GOOGLE_PROJECT_NUMBER", "GOOGLE_WIF_POOL", "GOOGLE_WIF_PROVIDER", "GOOGLE_WIF_ISSUER", "GOOGLE_PLAY_SERVICE_ACCOUNT_EMAIL"]) {
+    for (const name of ["GOOGLE_PROJECT_NUMBER", "GOOGLE_WIF_POOL", "GOOGLE_WIF_PROVIDER", "GOOGLE_WIF_ISSUER", "GOOGLE_PLAY_SERVICE_ACCOUNT_EMAIL", "GOOGLE_PUBSUB_SERVICE_ACCOUNT"]) {
       expect(production.vars[name], name).toBe(config.vars[name]);
     }
+    // Google Play's notifications: each environment's Pub/Sub subscription pushes to its own address, with that as the
+    // token's audience, so a token for one is refused by the other. Both sweep voided purchases once a day, in their one daily job.
+    expect(production.vars.GOOGLE_PUBSUB_AUDIENCE).toBe("https://api.oftenenough.com/v1/google/notifications");
+    expect(config.vars.GOOGLE_PUBSUB_AUDIENCE).toBe("https://api-dev.oftenenough.com/v1/google/notifications");
+    expect(production.triggers.crons).toEqual(config.triggers.crons);
+    expect(production.triggers.crons).toEqual(["0 5 * * *"]);
   });
 });

@@ -2,6 +2,7 @@ import { Accounts } from "./accounts";
 import { HttpError, errorResponse, json, optionalString, readJson, requireString } from "./http";
 import { type Person, type Provider, audiences, verifyIdToken } from "./identity";
 import { PRODUCTS, type PlayCheck, checkPlayPurchase, googleAccess, playReady } from "./play";
+import { playNotification, sweepVoided } from "./refunds";
 
 /*
  * The Plus account's Worker (Rulebook D15, D16; Android A15; Current Work 110). It holds only who someone is (Google's
@@ -20,9 +21,12 @@ import { PRODUCTS, type PlayCheck, checkPlayPurchase, googleAccess, playReady } 
  *   POST /v1/invites/<token>/join                                                  → { account }
  *   GET  /v1/health                                                                → { ok, environment }
  *   GET  /v1/health/play                                                           → { play: ready | not_set_up | unavailable }
+ *   POST /v1/google/notifications    Pub/Sub push of Google Play's notifications    → 204 (src/refunds.ts)
  */
 
 const INVITE_TOKEN = /^[A-Za-z0-9_-]{8,64}$/;
+/** wrangler.jsonc's one trigger: daily. One job, so the account's five Cron Triggers (Workers Free) go further. */
+export const DAILY = "0 5 * * *";
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -36,11 +40,26 @@ export default {
     }
   },
 
-  /** Daily at 05:00 UTC: tidying (Accounts.tidy). */
+  /**
+   * Daily at 05:00 UTC: tidying, then Google Play's voided purchases since yesterday (the backstop for its notifications;
+   * the user, 16 Oct 2026: a day is fine for a one-time purchase, "it wastes the resources" to check every hour).
+   */
   async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext) {
+    const accounts = new Accounts(env.DB);
     ctx.waitUntil((async () => {
-      const gone = await new Accounts(env.DB).tidy();
-      console.log(`tidy: ${gone.invites} invites, ${gone.sessions} sessions`);
+      try {
+        const gone = await accounts.tidy();
+        console.log(`tidy: ${gone.invites} invites, ${gone.sessions} sessions`);
+      } catch (error) {
+        console.error(`tidy failed: ${error instanceof Error ? error.message : String(error)}`);
+      }
+      try {
+        const swept = await sweepVoided(env, accounts);
+        console.log(`voided sweep: ${swept.voided} voided, ${swept.held} held by an account${swept.done ? "" : " (more tomorrow)"}`);
+      } catch (error) {
+        // Google can't be asked now, or the Play side isn't set up: the cursor stays, and tomorrow's run tries again.
+        console.error(`voided sweep failed: ${error instanceof HttpError ? error.code : error instanceof Error ? error.message : String(error)}`);
+      }
     })());
   },
 } satisfies ExportedHandler<Env>;
@@ -59,6 +78,9 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
     const play = await playReady(googleAccess(env));
     return json({ play }, play === "ready" ? 200 : 503);
   }
+
+  // Google Play's Real-time developer notifications, pushed by Pub/Sub with its own OIDC token (src/refunds.ts).
+  if (path === "/v1/google/notifications" && method === "POST") return playNotification(request, env, accounts, (product, token) => check(env, product, token));
 
   // ---------------------------------------------------------------- Signing in (no session yet)
   if (path === "/v1/sign-in" && method === "POST") {

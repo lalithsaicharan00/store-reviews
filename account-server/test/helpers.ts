@@ -36,6 +36,10 @@ export const play = {
   /** Federated sign-ins (one per access token, which is reused for its hour). */
   tokenRequests: 0,
   purchaseRequests: 0,
+  /** The Voided Purchases API: what it knows (`seenAt`: when it first saw each as voided), its page size, the windows asked. */
+  voided: [] as { purchaseToken: string; seenAt: number; voidedQuantity?: number }[],
+  voidedPageSize: 1000,
+  voidedQueries: [] as { startTime: number; endTime: number; token: string | null }[],
 };
 
 const PLAY_ACCESS = "play-access-token-for-tests";
@@ -100,6 +104,32 @@ export function mockGoogle() {
         return Response.json({ error: { code: 400, message: "Invalid Value" } }, { status: 400 });
       }
       return Response.json({ kind: "androidpublisher#productPurchase", purchaseState: p.purchaseState, orderId: p.orderId, purchaseType: p.purchaseType, consumptionState: 0, acknowledgementState: 1 });
+    }
+    const voided = /^https:\/\/androidpublisher\.googleapis\.com\/androidpublisher\/v3\/applications\/com\.oftenenough\.app\/purchases\/voidedpurchases\?(.*)$/.exec(url);
+    if (voided) {
+      // The Voided Purchases API, as Google documents it: oldest first, by when it first saw each void, 30 days at most.
+      if (play.mode === "down") return new Response("unavailable", { status: 500 });
+      if (play.mode === "refused") return Response.json({ error: { code: 403 } }, { status: 403 });
+      if (request.headers.get("authorization") !== `Bearer ${PLAY_ACCESS}`) return Response.json({ error: { code: 401 } }, { status: 401 });
+      const q = new URLSearchParams(voided[1]);
+      const startTime = Number(q.get("startTime"));
+      const endTime = Number(q.get("endTime"));
+      play.voidedQueries.push({ startTime, endTime, token: q.get("token") });
+      if (q.get("type") !== "0" || startTime < Date.now() - 30 * 86_400_000 || startTime > endTime) {
+        return Response.json({ error: { code: 400, message: "Invalid Value" } }, { status: 400 });
+      }
+      const all = play.voided.filter((v) => v.seenAt >= startTime && v.seenAt <= endTime).sort((a, b) => a.seenAt - b.seenAt);
+      const from = Number(q.get("token") ?? "0");
+      const page = all.slice(from, from + play.voidedPageSize);
+      const next = from + play.voidedPageSize < all.length ? { tokenPagination: { nextPageToken: String(from + play.voidedPageSize) } } : {};
+      return Response.json({
+        ...next,
+        voidedPurchases: page.map((v, i) => ({
+          kind: "androidpublisher#voidedPurchase", purchaseToken: v.purchaseToken, purchaseTimeMillis: String(v.seenAt - 86_400_000),
+          voidedTimeMillis: String(v.seenAt), orderId: `GPA.void-${from + i}`, voidedSource: 0, voidedReason: 1,
+          ...(v.voidedQuantity !== undefined ? { voidedQuantity: v.voidedQuantity } : {}),
+        })),
+      });
     }
     return realFetch(input, init);
   });
@@ -218,3 +248,59 @@ export async function eventually(check: () => Promise<boolean>) {
   }
   throw new Error("never happened");
 }
+
+/** The push service account and audience in dev's wrangler.jsonc (the tests run as dev). */
+export const PUBSUB = {
+  email: "play-notifications-push@often-enough.iam.gserviceaccount.com",
+  audience: "https://api-dev.oftenenough.com/v1/google/notifications",
+};
+
+/** The OIDC token Pub/Sub sends with a push: signed by Google, for the subscription's audience, as its service account. */
+export async function pubsubToken(o: { key?: SigningKey; audience?: string; email?: string; issuer?: string; emailVerified?: boolean; expiresIn?: number } = {}) {
+  const key = o.key ?? published[GOOGLE_KEYS]![0]!;
+  const now = Math.floor(Date.now() / 1000);
+  return new SignJWT({ email: o.email ?? PUBSUB.email, email_verified: o.emailVerified ?? true, azp: "112233445566778899000" })
+    .setProtectedHeader({ alg: "RS256", kid: key.kid, typ: "JWT" })
+    .setIssuer(o.issuer ?? "https://accounts.google.com")
+    .setAudience(o.audience ?? PUBSUB.audience)
+    .setSubject("112233445566778899000")
+    .setIssuedAt(now - 30)
+    .setExpirationTime(now + (o.expiresIn ?? 3570))
+    .sign(key.privateKey);
+}
+
+let messageCounter = 0;
+/**
+ * One Pub/Sub push of Google Play's [notification] (a DeveloperNotification, or a raw base64 `data`), as Pub/Sub sends
+ * it: the wrapped message, `Authorization: Bearer <OIDC token>`. [messageId] repeats a delivery.
+ */
+export async function pushNotification(notification: Record<string, unknown> | { raw: string }, o: { token?: string | null; messageId?: string } = {}) {
+  const data = "raw" in notification ? notification.raw as string : btoa(JSON.stringify(notification));
+  const messageId = o.messageId ?? `${++messageCounter}${Date.now()}`;
+  const token = o.token === undefined ? await pubsubToken() : o.token;
+  const headers: Record<string, string> = { "content-type": "application/json" };
+  if (token) headers.authorization = `Bearer ${token}`;
+  const response = await exports.default.fetch(new Request("https://api.test/v1/google/notifications", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      message: { data, messageId, message_id: messageId, publishTime: new Date().toISOString(), publish_time: new Date().toISOString(), attributes: {} },
+      subscription: "projects/often-enough/subscriptions/play-notifications-dev",
+    }),
+  }));
+  const text = await response.text();
+  return { status: response.status, body: text ? JSON.parse(text) : null, messageId };
+}
+
+/** Google Play's notifications, as Google documents them (rtdn-reference). */
+export const rtdn = {
+  voided: (purchaseToken: string, refundType = 1, productType = 2) => ({
+    version: "1.0", packageName: "com.oftenenough.app", eventTimeMillis: String(Date.now()),
+    voidedPurchaseNotification: { purchaseToken, orderId: "GPA.3300-0000-0000-00000", productType, refundType },
+  }),
+  oneTime: (purchaseToken: string, notificationType: 1 | 2, sku = "com.oftenenough.app.plus") => ({
+    version: "1.0", packageName: "com.oftenenough.app", eventTimeMillis: String(Date.now()),
+    oneTimeProductNotification: { version: "1.0", notificationType, purchaseToken, sku },
+  }),
+  test: () => ({ version: "1.0", packageName: "com.oftenenough.app", eventTimeMillis: String(Date.now()), testNotification: { version: "1.0" } }),
+};

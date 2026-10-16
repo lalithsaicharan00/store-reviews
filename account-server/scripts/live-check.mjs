@@ -41,6 +41,14 @@ if (process.env.REQUIRE_PLAY) say(play.body?.play === "ready", "keyless Google s
 else console.log(`info keyless Google sign-in for Play checks: ${play.body?.play ?? play.status}`);
 const test = await call("POST", "/v1/sign-in", { body: { provider: "test", secret: "guess", subject: "x" } });
 say(test.status === 400, "the test sign-in refuses a wrong secret", String(test.status));
+// Google Play's notifications come only from Pub/Sub, with its OIDC token (README, "Refunds").
+const pushBody = { message: { data: btoa(JSON.stringify({ packageName: "com.oftenenough.app", testNotification: { version: "1.0" } })), messageId: "live-check" } };
+const unsigned = await call("POST", "/v1/google/notifications", { body: pushBody });
+say(unsigned.status === 401, "a push without Pub/Sub's token is refused", String(unsigned.status));
+const forgedPush = await fetch(base + "/v1/google/notifications", {
+  method: "POST", headers: { "content-type": "application/json", authorization: "Bearer eyJhbGciOiJSUzI1NiJ9.e30.xxxxxxxxxxxxxxxx" }, body: JSON.stringify(pushBody),
+});
+say(forgedPush.status === 401, "a push with a forged token is refused", String(forgedPush.status));
 
 // ---------------------------------------------------------------- A whole family (dev, with the test secret)
 if (secret && health.body?.environment === "dev") {

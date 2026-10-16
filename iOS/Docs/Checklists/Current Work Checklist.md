@@ -991,6 +991,58 @@ and the Add note keyboard coming up by itself.
     have to** ("free users should have an account if they want to create it … same thing in the Android. But the only
     difference is the syncing will be done one device at a time"): offered, never required; free with an account syncs one
     device at a time (phone or tablet), Plus every device.
+    **Replaced 16 Oct 2026 (the user): free users "never have an account and they never should have an account"**, and
+    free doesn't sync at all ("it shouldn't be like a one device per at a time"). Only Plus has an account and syncs.
+    Free keeps automatic backup to the iCloud or Google Drive the person connects, and export; nothing about a free user
+    is kept by us, not even which Google Drive holds the backup ("for Android we will be missing that, but it's fine").
+    Rulebook D4, D10, D16 updated. The app's account screens and free sync need changing to match.
+    **16 Oct 2026, the user, after comparing RevenueCat, Firebase, WorkOS and the iPhone-only Apple Family Sharing:**
+    keep our own **Plus Family on both platforms** and build it all on **Cloudflare Workers** ("let's build in that … if
+    we ever hit the limits or about to hit the limits, we will upgrade in the Cloudflare itself. Let's keep the family
+    plan"). No sign-in or billing service in between. Move to Workers Paid ($5/month) before the free plan's limits are
+    reached (100,000 requests a day for the whole account; past it, every Worker stops until midnight UTC).
+  - [ ] **Refund policy (the user, 16 Oct 2026; proposed, to confirm, then design and build).** "Within 30 days, you can
+    get 100% full refund if you don't like the product … users will feel safe … they will try it out." Proposed rules:
+    - **30 days, full refund, no questions**, counted from each order's own date. Google lets people refund within 48
+      hours by themselves; after that the developer decides (no limit set by Google). On iPhone **Apple decides every
+      refund** (reportaproblem.apple.com, or `beginRefundRequest` in the app): we can't grant or promise one there.
+    - **Plus refunded while the upgrade is held: refund both** ("from the user's perspective, it's not a different
+      thing"). The server already ends the family (the upgrade alone pays for nothing, `paidFor`); the upgrade's money
+      is refunded by hand in Play Console (or automatically later, which needs the service account's "Manage orders").
+    - **The upgrade refunded alone:** the family ends, Plus stays. **Plus Family refunded:** the whole family ends.
+    - **One refund per person per product** (Google's own rule too); an accidental second purchase is always refunded.
+    - **Every refund in Play Console ticks "Remove entitlement"**, or Plus isn't ended (Rulebook D18).
+  - [ ] **App text for the refund policy (design first, then build):** the Plus page and the Plus Family upgrade page
+    say it plainly, Android: "Not for you? Full refund within 30 days." iPhone: Apple decides refunds, so never a
+    promise; something like "Not for you? Ask Apple for a refund from the app" (`beginRefundRequest`). The website's
+    Terms and the Play listing state the same policy.
+  - [ ] **Refund flows in the app (the user, 16 Oct 2026: "we need to add these refund flows"; design first, then
+    build on both platforms).** Today the app has no refund option at all: only Help & Feedback › Contact us (an email
+    to support@oftenenough.com) and Google Play's own 48-hour refund, which the app never mentions. Proposed: a
+    **"Request a refund"** row on **Plus & Account**, shown only to someone who bought Plus, Plus Family or the upgrade,
+    with the 30-day policy in one line under it.
+    - **Android:** opens an email to support that already carries what's needed to find the order (the product, the
+      purchase date, the Google Play order ID), never a token. The refund is made in Play Console with **"Remove
+      entitlement" ticked** (Rulebook D18); refunding Plus also refunds the upgrade.
+    - **iPhone:** opens Apple's own refund request inside the app (StoreKit `beginRefundRequest`); Apple decides.
+    - **After a refund:** the app shows plainly what changed (Plus ended; family members lose Plus from the family;
+      habits stay, D10), and a family member sees why their Plus ended.
+  - [ ] **Refunds: test every case properly before launch (the user, 16 Oct 2026: "we have to test everything").** Proven
+    on dev with real Google Play: Google's notifications reach the Worker (test message; signed only); a Play Console
+    refund **with "Remove entitlement"** ended the upgrade within seconds and kept Plus (`GPA.3300-8440-7215-88090`); a
+    refund **without** it keeps Plus (Google keeps the purchase); a void is final; the account page's re-check and the
+    daily Voided Purchases sweep (production, 15:07 UTC) both work. Still to test, one by one:
+    - [ ] **A refund on production** of a purchase a production account holds (release build, a license tester).
+    - [ ] **Refunding Plus itself** with "Remove entitlement" on a real device: Plus ends; with the upgrade held, the
+      family ends too, and the upgrade's money is refunded by hand (the manual step below).
+    - [ ] **A customer's own refund through Google Play** (within 48 hours, from the Play Store app): Google voids it;
+      Plus ends within seconds.
+    - [ ] **A chargeback** (if Play lets it be tested; otherwise noted as untested).
+    - [ ] **What the app shows right after a refund**, on the buyer's phone and a family member's (the phone's own
+      Google Play copy can lag the account).
+    - [ ] **The manual steps:** refunding the upgrade's money when Plus is refunded; every refund with "Remove
+      entitlement"; later possibly automatic (needs the service account's "Manage orders").
+    - [ ] **iPhone refunds:** built and tested separately, later (Apple's notifications; Apple decides refunds).
   - [ ] **The account remembers where the habits live** ("add those things like the account cloud ID … about each cloud
     ID"): the cloud (iCloud or Google Drive); its private account ID (CloudKit user record ID; Google's fixed account ID);
     for Google a hint like `l•••••@gmail.com`, never the full email; last sync time and device kind. A new device on a
@@ -1712,7 +1764,8 @@ and the Add note keyboard coming up by itself.
     needs a new iOS client in the Google Cloud project, and its ID in `BackupFeatures.swift` and the URL scheme in
     `Habits-Info.plist`.
 
-- [ ] **78. Free accounts sync one device at a time (plan, then build).** Added 11 October 2026, from the user, after
+- [ ] ~~**78. Free accounts sync one device at a time (plan, then build).**~~ **Dropped 16 Oct 2026 (the user): free has
+  no account and no syncing; only Plus syncs (Rulebook D16).** Added 11 October 2026, from the user, after
   checking Cloudflare's prices: instead of uploading the whole backup file ("backed up as you go"), a free account
   syncs like Plus, but with one active device; signing in on another device moves the habits there. Plus syncs across
   devices.
