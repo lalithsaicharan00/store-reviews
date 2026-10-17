@@ -1808,6 +1808,24 @@ with a bar or pop-up doesn't**.
   more today*.
 - **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
 
+### The milestone bar without ✕, and the band after it, 17 Oct 2026 (the user)
+
+- **The bar has no ✕.** It goes:
+  - after 5 s;
+  - on any other touch;
+  - on a sideways swipe;
+  - or when the next milestone's bar comes.
+
+  **See** sits at the far end of the bar with 12 dp padding. All V3 bars and the V3.6 board are updated.
+- **When the bar goes, by any of these, the band appears in that habit's row at the same moment** and stays for the
+  rest of the day. It comes quietly: the row grows 32 dp and the band fades and rises in, with no burst, sparkle or
+  sheen, because the bar already carried the moment.
+- **While a bar is showing,** the row keeps its own line, with no milestone words.
+- Drawn in V3.4 (static) and animated in V3.7: Meds' band at 2.95 s as Stretch's tap sends Meds' bar away, and
+  Stretch's band at 8.35 s when its bar times out.
+- **Single-line rows** (a check with no Undo · Note, a timer, quit, cut down) grow their bottom padding with their
+  height, so the content never jumps.
+
 ### The milestone band (ML.B), decided 17 Oct 2026, and every row animation rebuilt with it
 
 **The user chose ML.B:** a band of the habit's colour along the bottom of the row, with the medal and *60 days in a row
