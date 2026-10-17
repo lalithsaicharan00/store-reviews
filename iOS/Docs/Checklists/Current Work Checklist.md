@@ -1149,6 +1149,9 @@ and the Add note keyboard coming up by itself.
   filter sheet with and without groups, a filtered Today, the calendar, another day); the section laid out in four rows
   with arrows from Today's buttons. *Designed 15 Oct 2026, Figma `1260:2`; handoff "Today: every screen it needs".*
 - [ ] **123. How was today: mood and the day's note** (added 16 October 2026, from the user's brainstorm; Android first).
+  **Future work, not in the first release** (the user, 17 Oct 2026; Android decision A22): it waits until the core
+  habit tracking is stable, with more research first. Its Figma section is kept as it is, and its widgets and its
+  screens from Today and Habits were moved into it; every other screen no longer shows it.
   Research: [Mood and a Note for the Day — Should a Habit Tracker Have Them](<../../../Research/Research Reports/Day Structure and Organization/Mood and a Note for the Day — Should a Habit Tracker Have Them.md>).
   Designed in Figma, section *How was today: mood and the day's note* (`2037:2`), waiting for the user's review:
   - [x] Today's card (M.1–M.1.7): five faces with words, one tap; Add a note; mood and note saved; the note's page; a note without a mood; ⋮ Clear mood / Hide from Today; hidden, with Undo.
@@ -2772,6 +2775,10 @@ and the Add note keyboard coming up by itself.
   weakly in habit apps (24, mostly diary sections):
   [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>) §6, point 5.
   Revisit if diaries or the Daily Reflection (item 12) arrive.
+
+- [ ] **How was today: mood and the day's note** (item 123; moved here by the user, 17 Oct 2026): not in the first
+  release. Picked up once the core habit tracking is stable and good enough, after more research. Everything
+  designed so far is in the Figma section *How was today: mood and the day's note*.
 
 ## Completed
 

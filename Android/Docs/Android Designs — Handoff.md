@@ -1792,6 +1792,26 @@ Two new rows under row 1 (everything below moved down 1920) and two more frames 
 - Not drawn, by choice: Google Play's own in-app review sheet (its UI, asked once after a week of use at a finished
   day, never ours first).
 
+### How was today: future work, out of the first release (17 Oct 2026, decision A22)
+
+The user: "during the launch, we won't be launching with this. This is for future work." How was today waits until
+the core habit tracking is stable and good enough.
+
+- **Its section is unchanged:** *How was today: mood and the day's note* (`2037:2`) keeps all its designs.
+- **Moved into that section, under a label at its end:**
+  - its widgets: the home screen, the Note → Add note frame and the every-state board;
+  - its screens from Today: 1.1.1 opened, 1.1.2 logged, and the icon options;
+  - Habits 1.1, hidden from Today.
+- **Removed everywhere else:**
+  - the How was today row at the top of Today, in Today's frames (including the empty states and other days) and in
+    every milestone frame;
+  - its row and its line in the six Arrange Today frames;
+  - its row and the *Comes with the app* and *Your habits* labels on the Habits page;
+  - the arrow from 1.1 to 1.1.1.
+- **Renamed:** frames whose names mentioned it (Today 1.1, 5 and 6; Habits 1).
+- **Every other section** now has no How was today: Today, Habits, Milestones and the widget sections.
+- **Code:** neither app has it yet, so there's nothing to take out.
+
 ### The milestone system, decided 17 Oct 2026 (decision A21)
 
 The user adopted the deep-research report [Milestone System — Rewarding Every Habit Without Flooding the Day](<../../Research/Research Reports/Day Structure and Organization/Milestone System — Rewarding Every Habit Without Flooding the Day.md>),
