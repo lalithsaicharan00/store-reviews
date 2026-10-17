@@ -101,10 +101,19 @@ when the row is first seen, and a pop-up's band has See.
 **Never on the same day:** in a row and in total share no number. Someone who never misses gets them in turn: 3, 7,
 10, 14, 25, 30, 50, 60, 90, 100 days.
 
+## 5. The milestone notification (quit and cut down only)
+
+- **It's off by default.** A switch, *Tell me at milestones*, on a quit or cut-down habit's form turns it on. Android
+  asks for permission the first time.
+- **It comes for the pop-up milestones only:** 30 days, 180 days, a year and each year after.
+- **Quit:** on the day, around midday.
+- **Cut down:** the day after the day closed, around midday.
+- **It's never at night.**
+- **Tapping it** opens Today with that milestone's pop-up.
+
 ## Still to do
 
-- **The habit page still shows the earlier numbers:** the Milestones card on Progress (`1373:3`) and All milestones
-  (`1735:4`), with 10 days in a row and 10 times in total. The drafts MP.0–MP.11 and boards v1–v3 were removed.
-- **The widget and Today frames use example milestones** (30, 14 days, "12 weeks of goals") that mostly still fit.
+- **The designs match this rule** (18 Oct 2026): bars, pop-ups, the routine player, row animations, the habit page and
+  the widget examples.
 - **The shared rules' code** (`Core/rules/…/Milestones.kt`) changes to this when milestones are built: the spec, the
   Kotlin and the golden answers together (Rulebook T21).

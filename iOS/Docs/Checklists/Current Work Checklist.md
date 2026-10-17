@@ -1238,9 +1238,28 @@ and the Add note keyboard coming up by itself.
     anniversaries and the first milestone in the app; bars for every other first time and every total; the row for a
     number reached before), three limits that override it (1 pop-up, 2 bars, 2 big moments a day), and shown at once,
     first come first served. Card 4 of *Milestones: one simple rule*.
-  - [ ] Redraw the habit page's Milestones card (Progress) and All milestones to the decided numbers.
-  - [ ] Redraw V3.1, V3.4 and V3.8–V3.10 to "shown at once, first come first served" (no pause).
-  - [ ] Re-run the frequency check with the new ladders and budget (`simulate_pileups.py`).
+  - [x] Redraw the habit page's Milestones card (Progress) and All milestones to the decided numbers (18 Oct).
+  - [x] Designs brought in line with the decided rule (18 Oct): V3.8–V3.10 and P.3, P.7, P.8, P.9, P.12 removed; V3.2
+    and V3.7 current again; P.1, P.2, P.4, P.11, P.13, P.16, RP.3, R.3, R.5, V3.6 and the widget examples fixed.
+  - [x] Milestone notification for quit and cut-down habits (the user, 18 Oct: off by default, opt-in), approved:
+    N.1–N.6 in the milestones section. The switch is on the habit's form; Android asks once; a notification at 30 days,
+    180 days, a year and each year after (cut down: the day after the day closed); tapping it opens the pop-up.
+  - [x] Monthly look-back card: not wanted (the user, 18 Oct); its frames were deleted.
+  - [ ] **The frequency check: last, just before release** (the user, 18 Oct). It's a simulation, not a design.
+    - **What it is:** run the final milestone rule (the four buckets, in a row, in total, anniversaries; pop-up, bar or
+      row, shown at once with the day's limit) for a year, for a range of people:
+      - a new user with 3–5 habits;
+      - someone with 8–10 habits;
+      - someone who misses about one day in five;
+      - a quit-only user;
+      - someone who logs mostly from widgets.
+    - **What it counts:** for each, how many pop-ups, bars and row-only milestones they'd see per week and per month.
+    - **What it answers:**
+      - Too much? Does anyone hit the day's limit often, or see a pop-up most weeks?
+      - Too little? Does anyone go a month or more with no bar or pop-up?
+    - **What comes out:** a table per kind of person, and a yes or no on whether any number needs changing.
+    - **The script:** `Milestones on Today Evidence/simulate_pileups.py` and `simulate_one_rule_v2.py` are the starting
+      point; update them to the final rule first.
   - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol
     and caffeine timelines.
 - [ ] **126. Milestones on Today: when, how much, and coming back** (added 17 October 2026, from the user, Android

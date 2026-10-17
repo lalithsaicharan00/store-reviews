@@ -1792,6 +1792,25 @@ Two new rows under row 1 (everything below moved down 1920) and two more frames 
 - Not drawn, by choice: Google Play's own in-app review sheet (its UI, asked once after a week of use at a finished
   day, never ours first).
 
+### Milestone notification for quit and cut-down habits, decided (18 Oct 2026, the user)
+
+The user: "Tell me at milestones … we should have this for quit as well as cut down." It's off by default and opt-in.
+**There's no monthly look-back card** (the user: "I don't think we need monthly look back cards"); its frames were
+deleted.
+
+The frames are N.1–N.6, in the milestones section, to the right of its other blocks:
+- **N.1, the switch:** *Tell me at milestones*, on a quit or cut-down habit's form, off until turned on. The line
+  under it: a notification when you reach 30 days, 180 days, a year and each year after.
+- **N.2, the first time it's turned on:** Android's own permission dialog, as for reminders (U36).
+- **N.3, allowed:** the switch stays on, and the line says when the next one is.
+- **N.4, not allowed:** the switch goes back off, with Open settings when Android won't ask again.
+- **N.5, the notification:**
+  - **Quit:** on the day, around midday (*30 days clean · Smoking · since 12 Oct*).
+  - **Cut down:** the day after the day closed, around midday (*30 days within the limit · Coffee*).
+  - **Never at night.** With Hide names outside the app on: *A milestone reached*.
+- **N.6, tapping it:** opens Today with that milestone's pop-up, which counts as the day's pop-up.
+- **Only the pop-up milestones:** 30 days, 180 days, a year, each year after.
+
 ### The milestone numbers: one simple rule, decided (17 Oct 2026, the user: "The two-question rule is clear. Let's keep this version")
 
 **Board:** *Milestones: one simple rule* (`2266:2`), in *Habit details*. It replaces boards v1–v3, which stay on the
@@ -1816,7 +1835,16 @@ share no number. The full numbers are in
 4. how big each one is;
 5. eight habits worked out.
 
-**Cleaned up (the user, 17 Oct 2026):** only this board is left in *Habit details*, beside the habit page frames. Boards v1–v3 and the MP.0–MP.11 drafts were removed from Figma; their sections below are history. **When it shows (card 4 C, decided 17 Oct):** at once, the moment a habit is done, first come first served through the day, within the limits (1 pop-up, 2 bars, 2 big moments a day; over the limit it steps down to the row). There's no pause and no "best of the visit": V3.8–V3.10 (several in one visit) and the bars in V3.1 and V3.4 follow the older rule and wait to be redrawn. **Not yet updated to it:** the habit page's Milestones card (Progress, `1373:3`) and All milestones (`1735:4`), which still show the earlier numbers.
+**Cleaned up (the user, 17 Oct 2026):** only this board is left in *Habit details*, beside the habit page frames. Boards v1–v3 and the MP.0–MP.11 drafts were removed from Figma; their sections below are history. **When it shows (card 4 C, decided 17 Oct):** at once, the moment a habit is done, first come first served through the day, within the limits (1 pop-up, 2 bars, 2 big moments a day; over the limit it steps down to the row).
+
+**Designs brought in line (18 Oct 2026, the user: "whatever the inconsistencies that we have in design, fix it"):**
+- **Bars:** V3.8–V3.10 (a pause, one bar for the best) removed. V3.2 and V3.7 (each milestone its own bar, at its tap) are current again. V3.1 and V3.4 were already right. V3.6's example 10 days → 60 days.
+- **Pop-ups:** P.3 (100 days), P.7 (66 in total), P.8 (500 in total), P.9 (a unit total) and P.12 (several in one visit) removed; the rest repacked. P.1 loses *and 4 more today*. P.2's and P.13's next milestone is 60, and P.4's is 730. P.11 is 30 days clean (next 60), opened from its band's See. P.13 and P.16 open from the band's See.
+- **The routine player:** RP.3's next milestone is 60.
+- **Row animations:** R.3 and R.5 reach 60 days (59 → 60), not 50.
+- **The habit page:** the Milestones card on Progress and its copy behind the ⋮ menu drop *10 in a row*. Water's total counts glasses: 80 reached, next 200 (16 to go). They show *See all 4*. All milestones matches.
+- **Widgets:** WD.6 is 180 in a row (was 100). WD.10 and WW.5 are *13 weeks of goals* (was 12).
+
 
 ### Every milestone, real habits (v2), and one total per habit (17 Oct 2026, the user: "go through a lot of scenarios … real habits … if totals … are going to be a problem then just remove the totals and make things simple")
 
