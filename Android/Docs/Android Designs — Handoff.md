@@ -1808,6 +1808,36 @@ with a bar or pop-up doesn't**.
   more today*.
 - **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
 
+### Milestones on the Today 4×2 widget: WM, option B, decided 17 Oct 2026 (the user)
+
+**The problem:** on a list widget a done habit sinks after the pause, to leave room for what's still to do (U13, the
+locked widget rules). So a milestone shown on its row would leave the screen with it.
+
+**Should the widget show it at all?** A fresh scan of every review, read by hand:
+- About 25 reviews want done items hidden or moved down on a list widget, against 3 who want them kept in view. So the
+  sinking stays.
+- None ask for milestones on a list widget. The widget praise about milestones is about single counters (the quit
+  apps' day count).
+- Reasoned from first principles: the moment that matters is the tap, when the person is looking at that row. The
+  milestone is never lost (the app's row band, the habit's 2×2 widget, the habit page).
+
+**The design (board WM, `2225:2`, after WD):**
+- **WM.1, before:** Read on 29 days in a row.
+- **WM.2, the tap:** the row is done at once, as every tap is. Its icon becomes the medal with 30, a glow and
+  sparkles (WD's medal, scaled to the 32 dp icon slot). Its line says *30 days in a row* (Medium, the habit's dark
+  shade). The row stays 56 dp tall, so nothing moves.
+- **A milestone row holds still for 5 seconds** (the bar's time), longer than the usual 1.5 s pause.
+- **WM.3, after 5 s:** it sinks with the other done habits, and the next one comes up.
+- **WM.4, the rest of the day:** whenever the row is on the widget again (everything done, or Done habits: Stay in
+  place), it keeps the medal and its line until the day ends.
+- **The same on the Today 4×4 widget and on iPhone** (one model). On iPhone this changes the locked widgets (U28), so
+  it waits for the user's say-so.
+- **No medal:** with names or content hidden, or on a skipped or paused day. The header's count is unchanged.
+- **Done habits with a milestone come first among the done ones** (the user, 17 Oct 2026). When done habits show on a
+  Today widget (once the ones still to do are listed, or everything is done), any that reached a milestone today
+  come first. Several keep the app's own order among themselves, and the other done habits follow in the app's
+  order. It lasts for the milestone day; nothing else is reordered.
+
 ### Milestones on the small 2×2 widget: WD, decided 17 Oct 2026 (the user)
 
 > **Decided (the user, 17 Oct 2026):** WD is how the small widget shows a milestone, on Android and on iPhone alike.

@@ -1201,6 +1201,12 @@ and the Add note keyboard coming up by itself.
     - [ ] When building the small widget (Android, then the iPhone's small square widget): **reserve the bottom slot
       at the band's height (20 dp) in every widget**, even when it holds the 12 dp bar, so the habit's name and its
       line sit at the same height in every card. Never grow the slot when the band appears.
+    - [x] The Today 4×2 widget, option B (the user, 17 Oct): the tapped row shows the medal and *30 days in a row*,
+      holds 5 seconds, then sinks; it keeps the medal for the day whenever it's on the widget again. Drawn as board
+      WM (WM.1–WM.4).
+    - [x] The user's review of WM: approved (17 Oct), with one rule added. On a Today widget, done habits that
+      reached a milestone today come first among the done ones (several in the app's order), then the other done
+      habits in the app's order.
     - [ ] The user's review of the second pass.
   - [ ] Re-run the frequency check with the new ladders and budget (`simulate_pileups.py`).
   - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol
