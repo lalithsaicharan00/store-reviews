@@ -1521,6 +1521,625 @@ Built after the user's questions (see "Google Drive on a new phone"). Each from 
   empty state).
 - Arrows for each, with no crossings and none through a frame; the section grew 880 and the sections below moved down.
 
+### Today: every screen it needs, and the section arranged, 15 Oct 2026 (the user, on `1260:2`)
+
+The user: "create all of the screens that Today needs … and also arrange everything properly". Twelve screens added, all
+from Today's own parts, and the section laid out in four rows with arrows from Today's own buttons (no crossings, none
+through a frame):
+
+- **Row 1, Today and its states:** **1 · Today**; **1.1** full length (tasks in Anytime, the **Quitting** card with its
+  live counter and limits, the folded **Paused** card, *Meditate · back on 20 Oct*); **1.2** just after a tap (*Undo
+  done* · *Add note* under the habit; on Android since 16 Oct just ↶ Undo · + Note, the full name for TalkBack; the line goes after the pause, U4); **1.3** a
+  timer running in its row (*4:12 of 10 min · running*, ⏸; only that row ticks, S3); **1.3.1** the timer bar when the row
+  has scrolled away (*Stretch · 4:12*, ⏸, above the day bar); **1.4** touch and hold a row: a menu with **Edit habit,
+  Pause…, Add note, Skip today** (a quit row has Log a slip; Day details still holds everything); **1.5** *Couldn't save
+  that tap. It's undone.* (S7: reload and say so).
+- **Row 2, the top bar:** **2 · Arrange Today** (✏): ✕ · *Arrange Today* · **Done**; each time of day's habits with a ☰
+  drag handle; *Habits move within their time of day; the times follow their start times. Quitting keeps its own order.*
+  (U13); **Times of Day ›**. **3 · Filter**: a sheet, *Show on Today*, filter chips (All ✓ · Health · 5 · Mind · 2 · Home
+  · 3), Edit groups, New group; **3.1** Today showing one group (an input chip *Health ✕* at the top; the filter button
+  filled; the day bar counts that group); **3.2** no groups yet: *Group your habits*, New group, Not now.
+- **Row 3, the day bar:** **4** its four days; **4.1** the calendar from *Today ▾* (*Go to a day*, Cancel · Go); **4.2**
+  another day (yesterday): log as usual, a **Back to today** button above the day bar.
+- **Row 4, empty states:** **5** no habits yet (first time), **5.1** Start from an idea, **6** nothing planned today.
+- The section grew; the sections below moved down to match.
+
+### Today, worked out from scratch, 16 Oct 2026 (the user, on `1260:2`: "What's the right thing to do?"; Current Work 122)
+
+From the research [Today — Where Things Go, Other Days and Arranging](<../../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Today — Where Things Go, Other Days and Arranging.md>),
+then "directly change in the designs". The section now has five rows (16 arrows, none crossing, none through a frame):
+
+- **Row 1:** **1.4**'s menu gains **Arrange…**; **1.6** a habit just added: at the end of its time of day, lit briefly,
+  snackbar *Added to the end of Morning* · **Move** (Move opens Arrange Today with it lifted).
+- **Row 2, Arrange Today:** **2** ← *Arrange Today*, no Done (each change saves at once); every time of day shows its
+  range (*Morning · 6 AM – 12 PM*) and a ⋮; every habit (not only today's; *Mon, Wed, Fri* under one that isn't daily)
+  with ≡; **Anytime** and **Quitting** carry a handle to move as a whole; **Paused · always last**; the footer says what
+  can move; **Times of Day ›**. **2.1** dragging (Refill water lifted into Evening, which makes room); **2.1.1** dropped:
+  *Refill water moved to Evening* · Undo; **2.2** tap a habit: *Move up, Move down, Move to…* (everything a drag does,
+  for anyone who can't drag); **2.3** *Move Study to* (radio rows; it goes to the end of that time of day; reminders
+  unchanged); **2.4** a time of day's ⋮: *Sort by reminder time, Sort A to Z* (once), *Edit time of day*; **2.5** Times
+  of Day, the same page as Settings › Times of Day (each time ends where the next starts).
+- **Row 3, groups:** **3** and **3.1** lose the colour dots (groups have no colour); **3.3 New group**: ✕ · New group ·
+  Save, the name with suggestion chips (*Health, Mind, Home, Work, Fitness*: they only type the word), then every habit
+  under its time of day with a checkbox; one in another group says so (*In Mind*). The habit form's own New group
+  dialog (`1567:106`) stays a name only, since the habit is already chosen there.
+- **Row 4, other days:** **4.2**'s Back to today is centred above the day bar, and **secondary**: the day bar's own white
+  surface, outline and shadow with ink text (the user, 16 Oct: "it's a secondary one … not a primary thing that users
+  will do"; it was filled ink for a day); **4.3** tomorrow: *Planned
+  for Wed, 14 Oct. Habits are logged on their day.*, times of day folded with *N planned*, no Start, no log buttons, a
+  task with **Done today**; **4.3.1** its Day details: *8 glasses planned*, *You can log this on the day.*, a note,
+  Skip this day.
+
+### Today, first review round, 16 Oct 2026 (the user, on `1958:242`, `1958:420`, `1958:593`, `1990:2`)
+
+- **1.2 after a tap** (the user, twice: "the UI is not at all looking good in this card"; then "design it like a native
+  Android thing"). Why it's there (research: Undo After Logging, Undo and Fixing Progress, Habit Notes): **Undo is a
+  visible button at the row just tapped that never times out**, and **Add note is one tap away right after logging**. A
+  snackbar can't carry both natively (Material allows one action) and an action snackbar covers the list. So, the
+  Android way, as Google Clock's timer cards hold their *+1:00 / Reset* pills: **the row grows and its progress fill
+  covers the whole row, buttons included** (a band with a white strip under it looked half filled, the user, 16 Oct),
+  with a button group of two extra-small white pill buttons, lined up with the name: **↶ Undo done** and **Add note**
+  (the note icon Day details uses). 32 high with 48-dp touch areas, 12 above. Gone after the pause like before (U4); Undo names what it takes back (U14). Rejected: underlined links (cut
+  off, web-like) and white square chips on the coloured band (first round).
+- **One timer, the same every time** (the user: "one time … clicking timer, it's just starting the timer, and the other
+  time … in the bottom bar … it is not predictable"). **▶ always opens the full-screen timer and starts it (1.3)**: the
+  routine player's own timer card and buttons (*Log manually | Pause*, ⌄ to hide), nothing in the player changed.
+  **⌄, swipe down or Back returns to Today (1.3.1)**: the row keeps a ticking clock, *2:42 of 10 min* (the word
+  "running" went: it was cut off, and a ticking clock with ⏸ already says so), ⏸ pauses there, a tap on the row opens
+  the timer again. **The black timer bar is gone**: outside the app the running timer is the Live Update in the status
+  bar and notifications (A11 D4). With Appearance › *Open timer full screen* off, ▶ starts it in the row (1.3.1) instead.
+- **1.6:** the new habit's row was grey; grey means nothing in this app (even paused habits aren't grey). Now white,
+  like every row; the snackbar *Added to the end of Morning · Move* says where it went.
+
+### Today: groups, made and filled in two steps, 16 Oct 2026 (the user, on `1960:303` and `1989:2`)
+
+The user: there was no page for **Edit groups**, and 3.3's New group was "weird": making the group and choosing its
+habits on one screen. Now two steps, each with one job, on a new row of the Today section (rows 4 and 5 and the
+sections below moved down 960):
+
+- **3.3 Groups** (Filter › Edit groups): ← *Groups*, a card of groups, each with its count (*Health · 5 habits*) and ›,
+  in the person's order (touch and hold to move one); an extended FAB **New group**, as Times of Day's *Add time of day*.
+- **3.3.1 New group**: the same name-only dialog as the habit form's (`1567:106`), *Cancel · Create*; from Groups, the
+  Filter sheet (3) and the no-groups sheet (3.2). No colour.
+- **3.3.2** the new group, empty: ← *Family* ⋮, centred: *No habits in Family yet*, *Add the habits that belong
+  together. A habit can be in one group at a time.*, **Add habits**.
+- **3.3.3 Add to Family**: ✕ · *Add to Family* · **Add**; every habit under its time of day with a checkbox; one already
+  in another group says so (*In Mind*) and moves here when ticked.
+- **3.3.4 Family**: **+ Add habits** first, then *3 habits*, each row with ✕ (takes it out of the group only; it stays
+  on Today); **✏ Rename and 🗑 Delete in the top bar**, never behind ⋮ (the user, 16 Oct: "if it is only delete just
+  keep it up front"; there are only two, so both show). Tapping a group in 3.3 opens this page. **3.3.6 Rename group**:
+  the New group dialog with the name filled in, *Cancel · Save*.
+- **3.3.5 Delete Family?**: *Walk, Journal and Call family stay on Today and in your history, without a group.* Cancel ·
+  Delete.
+- A habit's own form still puts it in a group (its Group row); both ways change the same group.
+- **One way of talking about groups everywhere** (the user, on `1563:494` and `1567:106`: "the mental model should be
+  same everywhere"): making a group is always **New group** → a name → **Create** (the habit form's dialog said *Add*);
+  the line under a group list is always *A habit can be in one group at a time. Groups change only what Today and
+  Progress show.* (the form), *Groups change only what Today and Progress show.* (Filter) or *Touch and hold a group to
+  move it.* plus that (Groups); the no-groups sheet says the dialog's *Put habits together, then filter Today and
+  Progress by group.*; the example groups are the same three in the same (the person's) order everywhere: Health, Home,
+  Mind.
+
+### Today: a done habit's round button, one rule for every kind, 16 Oct 2026 (the user: "whatever it is, it needs to be consistent everywhere")
+
+Research: [Once a Habit Is Done — One Rule for the Round Button](<../../Research/Research Reports/Day Structure and Organization/Once a Habit Is Done — One Rule for the Round Button.md>).
+
+**The fill says done; the symbol says what a tap does.**
+- Not done: the symbol in ink on a grey circle.
+- Done: the same symbol in white on the habit's colour, for every kind:
+  - ✓ (untick);
+  - + (one more);
+  - ▶ (another session), or ⏸ while it runs on past the goal;
+  - ⌄ (open the steps).
+
+The full row fill and the count (*8/8 glasses*) say done too. A ✓ on every done row was considered and not chosen:
+18 reviews want to keep logging past the goal, and a ✓ that adds would do something its symbol doesn't say.
+
+Fixed in 9 rows across 8 frames, where a done row still had a grey button: Stretch ▶ in 4.2, 4.3, 4.3.1, 1.8, 7.24,
+M.2 and M.2.1, and Skincare ⌄ in 1.7.2 and 1.7.3.
+
+### Today: three states that were missing, 16 Oct 2026 (in the row with 1.7.1–1.7.3)
+
+- **1.11, past the goal:** each + still adds (*10/8 glasses*). The row stays full and the + stays filled, so logging
+  more is one tap (18 reviews ask to log past the goal: "Once a Habit Is Done").
+- **1.12, a cut-down habit at its limit:** *Limit reached · 2/2 cups*. The fill stays neutral and full, and the + stays
+  plain: a limit isn't a goal, so it never gets the done colour.
+- **1.12.1, over the limit:** *Over the limit · 3/2 cups*. Still logged and said plainly, with nothing red and no
+  warning (U3).
+- **1.13, the longest name (24 characters, *Stretch hamstrings daily*):** the name wraps to two lines and the row grows
+  (72 → 96 dp), its fill with it. The subtitle stays one line (… if needed), and nothing runs under the streak or the
+  button. At the largest font sizes a name can need a third line; it ends with … after two.
+
+### Today laid out by number, 16 Oct 2026 (the user: "keep all of the one series number at one place … in a correct order")
+
+All 91 Today frames are now in number order, the way the onboarding sections are laid out:
+- **One block per series** (1, 2, 3 … 7), top to bottom, with the series' own frame (*1 · Today*, *2 · Arrange Today*, …)
+  at the far left.
+- **Each family on its own row:** 1.2 with 1.2.1–1.2.11, 1.9 with its notices, 3.3 with 3.3.1–3.3.6, and so on.
+  Single frames that follow one another share a row, eight at most. The swipes fill three rows of eight: 7.1–7.8,
+  7.9–7.16, 7.17–7.24.
+- **All 38 arrows redrawn for the new places:**
+  - side by side for the next frame;
+  - down the left-hand column from a series' first frame to its families;
+  - under the row for a frame further along it.
+
+The section is now 6,760 × 25,524, and the page's sections are stacked again with nothing overlapping.
+
+### The page re-stacked, 16 Oct 2026
+
+Today had grown into *How was today*. Every section now sits under the one before it, 240 apart, with *How was today*
+right after Today, and nothing overlaps between or inside sections.
+
+### Today: the buttons after a log, short words, 16 Oct 2026 (the user: "Add note getting cut off … we need to go with a simpler version … Undo, with an icon, and plus note")
+
+**Every after-log line is now two short buttons:** **↶ Undo** and **+ Note**, or **✎ Note** (`edit_note`) when the day
+already has a note. That's all 18 lines: 1.2, 1.2.1–1.2.11, 1.7–1.7.3, 7.10 and 7.13.
+- They need 243 dp of the row's 300, so nothing is cut off. Before this, 12 lines ran past the row by up to 60 dp
+  (*Undo +2,000 steps · Add note* needed 360).
+- Each is a white pill with a 1 dp light outline, so it reads on the fill and on the unfilled white part alike (7.10 and
+  7.13's grey pills now match the rest).
+- **TalkBack keeps the full name:** *Undo +1 glass*, *Undo +2,000 steps*, *Undo 5 min*, *Undo last step*, *Undo skip*,
+  *Undo slip*, *Add note* / *Edit note*. The screen doesn't need it, because the row right above shows what changed (*4/8
+  glasses*).
+- **Why the names could go:** the named Undo came from the 3 Oct research for the swipe and the long-press menu, where
+  nothing on screen says what changed. It was reasoned from Apple's guidance, not from reviews. The 30 Sep research
+  already found plain "Undo" clear for checks. On the row just logged, the row is the context.
+- Also fixed: Walk's + button was Water's blue in 1.2.2 and 7.5. It's now Walk's green. No other row has a button in
+  another habit's colour (checked across the page).
+- **A milestone goes in the row's subtitle** (the user, 16 Oct), for the rest of the day, in words: *60 days in a row* in
+  place of *Every day · 8:00 AM* (1.2.9; the streak beside it reads 60 too). It no longer sits beside Undo, so the
+  buttons stay the same on every row.
+
+### Today: a checklist's steps, 16 Oct 2026 (the user: "filling like this whole card … feels a little bit weird … checked or completed states should be a little bit different")
+
+Research: [Checklist Steps on a Today Row — Fill, Ticked Steps and Long Lists](<../../Research/Research Reports/Day Structure and Organization/Checklist Steps on a Today Row — Fill, Ticked Steps and Long Lists.md>).
+A new row under row 1 (everything below moved down 960):
+
+- **1.7 revised: two blocks** (the user, pointing at 1.2: the buttons "are part of the card itself … the remaining things
+  should be like a separate block"):
+  - The habit's block is its line, plus *Undo · + Note* after a tick (1.2.5's white pills). The fill covers
+    the whole block, filling to *steps done / steps*.
+  - The steps open in a separate white block under it, 2 dp apart with 4 dp corners, like the rows of a card.
+  - Each step is a full-width, 48 dp target (the first step had been only as wide as its name).
+  - A ticked step stays in its place: Material's checkbox filled in the habit's colour with a white ✓, and its words in
+    secondary grey, crossed out.
+- **1.7.1, a long checklist (7 steps):** every step shown, 48 dp each; ⌃ folds it at any time, and the fold is
+  remembered for that day.
+- **1.7.2, the last step ticked:** the line fills completely, and the list stays open through the pause (U4).
+- **1.7.3, after the pause:** the steps' block folds away. The habit's block keeps *Undo · + Note* until the
+  next log. ⌄ opens the steps again, where any step can be unticked.
+- *Open, the user's call:*
+  - ~~Whether Day details' and the routine player's checklists follow~~: they do (the user, 16 Oct). Ticked steps are
+    grey and crossed out in *Day details · Tidy desk · checklist*, *Routine player · a checklist* and *… many steps*.
+
+### Today: swipes and the missing states, 16 Oct 2026 (the user: "list out all of the missing screens … then work on the swipe options")
+
+Two new rows under row 1 (everything below moved down 1920) and two more frames in the Filter row:
+
+- **Swipe on a row** (research: [Swipe on a Today Row — the Android Way](<../../Research/Research Reports/Day Structure and Organization/Swipe on a Today Row — the Android Way.md>)),
+  **the last three rows of the section** (the user: "swipes should be at the very last … each and every scenario"):
+  one action a side, the Android way: drag and the action shows behind the row in grey; past halfway it fills ink and
+  the phone ticks; let go and it happens. **Right, on every row: Add note** (Edit note if the day has one). **Left:**
+  **Skip today** on every kind that has a day to skip (7.1–7.8: every day, weekdays, every few days, + step, typed
+  amount, several a day, time, checklist), then **7.9** past halfway, **7.10** *Skipped today* with *Undo · + Note* on the row (no snackbar),
+  **7.11** Undo skip; **7.12** quit: **Log a slip** (opens Add slip), **7.13** after a slip: *Undo · + Note* on
+  the row (a second left swipe logs another slip); **nothing** on a week or month goal (7.14), a cut-down habit, a goal
+  already met or a running timer (7.15), a task (7.16): the row gives a little and springs back; **7.17–7.23** Add note
+  on each kind; **7.24** a later day: **Skip this day** (the user's wording). Never Done, Delete or Pause on a swipe; no swipe from the screen's
+  edges. **This differs from the iPhone's U14 (swipes reveal buttons and never act): the user's decision (A16).** Days change
+  on the day bar (‹ ›, a swipe along it, Today ▾), never by paging the list (4).
+  **Act on release, researched 16 Oct** ([Swipe on a Row — Act When You Let Go, or Show Buttons](<../../Research/Research Reports/Day Structure and Organization/Swipe on a Row — Act When You Let Go, or Show Buttons.md>)):
+  with one action a side, the swipe acts when let go past halfway; a revealed button would only add a tap. Guards: it
+  starts only once the finger moves clearly more sideways than up or down; dragging back under halfway before lifting
+  cancels. **Confirmed by the user (16 Oct, decision A16),** and 7.10 redrawn: Undo skip and Add note on the row,
+  no snackbar. *Still the user's call:* the same swipe on the iPhone (changes U14).
+  **TalkBack (16 Oct, the user's go-ahead):** with TalkBack on, a swipe is TalkBack's own gesture, so each row offers
+  its swipe actions as **TalkBack actions** (`AccessibilityAction`, in TalkBack's Actions menu), named exactly as on the
+  swipe: **Skip today** (*Undo skip* once skipped, *Skip this day* on a later day, *Log a slip* on a quit row) and
+  **Add note** (*Edit note* if the day has one). A side with nothing on it offers nothing, and the round button keeps
+  its own label. A Skip done this way changes the row the same way (*Skipped today*, with Undo · + Note under it)
+  and TalkBack reads *Take vitamins skipped for today*. The long-press menu (1.4) lists the same actions for
+  everyone else.
+  **A short word before halfway, the full words once it fills (the user, 16 Oct):** an icon alone was rejected ("no one
+  knows what that icon means unless they see the text … even if it is smaller, like four letters, that's fine … longer
+  text after more than half"). Before halfway the action shows its icon and a short word: **Skip**, **Undo** (on a
+  skipped row), **Slip** (on a quit row, ⊕), **Note** (`note_add`; `edit_note` when the day has one). 16 dp padding, so
+  the row moves only 89–101 dp and most of the habit's name stays readable (a short name loses a letter or two). Past
+  halfway the colour fills, the phone ticks and the full words show: **Skip today** (*Skip this day* on a later day),
+  **Undo skip**, **Log a slip**, **Add note** / **Edit note** (7.9). TalkBack always uses the full words. Drawn on
+  7.1–7.8, 7.11, 7.12 and 7.17–7.24.
+- **Native checkboxes** (the user: "it looks very dummy … like a wireframe"): a checklist's steps (1.7) and the habit
+  picker (3.3.3) use Material's checkbox: 18-dp box, filled with a white tick when checked (the habit's colour in its
+  row, ink in the picker), a 2-dp outline when not, in a 40-dp touch area.
+- **The missing states:** **1.7** a checklist's steps open in its row (⌄); **1.2.1** after the pause: the buttons go,
+  done rows sink below the rest in their order; **1.3.2** the timer reaches its goal: the row fills, one chime, it keeps
+  counting until ⏸ (a paused timer needs no screen of its own: it's logged time with ▶, like Read's 12/20 min); **1.4.1**
+  touch and hold a quit row: the same menu with *Log a slip* in Skip today's place; **1.8** everything done: each time of
+  day folds with *✓ Done*, *All done for today.*, the day bar full, nothing celebrates; **1.9** backup can't run: a card
+  heads Today, *Backup is paused · Your Google Drive is full. Your habits are safe on this phone, but new changes aren't
+  backed up.*, *Not now* · *Open Backup & Sync* (D4); **3** the Filter sheet gains *Hide done habits* and *Hide done
+  tasks*; **3.4** done habits hidden, with a *Done hidden ✕* chip; **3.5** a group with nothing on the day: *Nothing
+  from Mind today*, *Show all*.
+
+### Today: after a log, notices, the day's note, 16 Oct 2026 (the user: stay or go? "do research … don't blindly copy")
+
+- **Undo and Add note stay** (research: [After a Log — Should Undo and Add Note Stay or Go](<../../Research/Research Reports/Day Structure and Organization/After a Log — Should Undo and Add Note Stay or Go.md>)):
+  inline on the row logged last, after **every** log, not only at the goal; no timer; they move to the next row
+  logged, and leave with another day, leaving Today or starting a routine. A slip the same. New row under row 1b:
+  **1.2.1** + on an amount (*Undo +1 glass*), **1.2.2** a typed amount (*Undo +2,000 steps*), **1.2.3** a check several
+  times a day (*Undo +1*), **1.2.4** a stopped timer (*Undo 5 min*), **1.2.5** a checklist step (*Undo last step*),
+  **1.2.6** a week goal, **1.2.7** a cut-down + (*Undo +1 cup*, neutral fill), **1.2.8** a task; in row 1b **1.2.9** a
+  milestone in the subtitle (*60 days in a row*, in words; 16 Oct, no longer beside Undo), **1.2.10** *Edit note* when there is one, **1.2.11** the next log takes
+  them to its row (the wrong "after the pause the buttons go" frame was removed).
+- **Notices on Today, their own row** (the user: "not attached to anything … a separate row"): one card at a time, the
+  most important first (data at risk, then backup, then reminders, then a Plus payment), only on today, above the first time of
+  day; *Not now* hides one for 7 days. **1.9** Drive full (*Manage storage*), **1.9.1** Drive can't be reached
+  (*Reconnect*), **1.9.2** the backup was removed (*Back up again*, D3), **1.9.3** deleted on another device, held
+  (*Review*, D17), **1.9.4** *Habits moved to another Drive* (*Choose account*): **only** for Plus on several
+  devices, when the Google account was switched on another device and this one would go on backing up apart (the
+  user, 16 Oct: "it only happens if the user manually selects a different Google Drive, right?" Yes: the account
+  never changes by itself. A switch on this phone is the person's own choice, confirmed in *Switch Google Drive?*, and
+  needs no notice; a removed account or revoked access is 1.9.1; a new phone with another account is onboarding's
+  *One more step*). The other account is never named (D16), **1.9.5** a reminder didn't arrive
+  (*Show me how*, once, A11 D2), **1.9.6** notifications off while reminders are on (*Turn on*), **1.9.7** Plus
+  bought with a payment Google Play hasn't finished (a pending purchase): *Plus is waiting for your payment*, it turns
+  on by itself (*Open Google Play*). **Plus is one purchase and never renews** (the user, 16 Oct: "there is no renew
+  for Plus"), so there's no renewal notice. From the iPhone's code: its Today shows the backup issue
+  card and the day's note; Android had neither.
+- ~~**The day's note** (**1.10**): a card heading Today once written; **Note for the day** is the last row of the list (1.1).~~ Replaced by *How was today?*, which holds the day's mood and note; 1.10 was deleted, and the *Note for the day* row taken off the end of 1.1 (the user, 16 Oct).
+- **2.0 the Arrange tip**: once, after Today has been opened on three days and a time of day holds two habits; a
+  Material rich tooltip under ✏, *Got it*.
+- Not drawn, by choice: Google Play's own in-app review sheet (its UI, asked once after a week of use at a finished
+  day, never ours first).
+
+### The milestone system, decided 17 Oct 2026 (decision A21)
+
+The user adopted the deep-research report [Milestone System — Rewarding Every Habit Without Flooding the Day](<../../Research/Research Reports/Day Structure and Organization/Milestone System — Rewarding Every Habit Without Flooding the Day.md>),
+with one change: **a milestone shown in the row alone plays the row animation below (R.1, R.2), and a milestone shown
+with a bar or pop-up doesn't**.
+
+- **Tiers:**
+  - a pop-up for landmarks;
+  - the habit-coloured bar for first-time lengths and comebacks;
+  - the row for every live milestone;
+  - the habit page alone for backfills and imports.
+- **Budget:** at most 2 bars or pop-ups a day, at most 1 pop-up a day and 2 in 7 days.
+- **Several milestones in one visit:** the row at each tap, then one moment at the pause for the best one, with *and N
+  more today*.
+- **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
+
+### A milestone that stays in the row: R.1 animation, 17 Oct 2026 (approved)
+
+The user's rule: the row animation plays whenever a milestone is shown in the row alone. It doesn't play when a bar or
+a pop-up is shown. The Figma frame **R.1** is animated with Figma Motion (2.2 s):
+
+| Time | What happens |
+|---|---|
+| 0.10 s | The ✓ presses (0.86×) |
+| 0.18 s | It fills grey → the habit's colour, with the confirm vibration; the glyph turns white and draws in (ease out back); the row's fill sweeps in from the left |
+| 0.40–0.62 s | The ✓ pops to 1.12× and settles |
+| 0.30–0.80 s | A ring expands and fades around the ✓, and eight dots burst outward and fade |
+| 0.30–0.46 s | The old line (*Every day · 8:00 AM*) slips up and out |
+| 0.42–0.76 s | The medal pops in (0 → 1.25 → 1) with a small turn |
+| 0.46–0.70 s | *60 days in a row* rises in |
+| 0.62–1.0 s | Two small sparkles twinkle beside the medal |
+| 0.34–0.60 s | The count rolls 59 → 60, one number after the other |
+| 0.62–0.92 s | The row opens and Undo · Note fade in, as after any log |
+
+### Milestones on Today, version 3, 17 Oct 2026 (the milestone bar, the user's direction)
+
+Added below version 2; nothing was removed.
+
+- **The bar (V3.1):**
+  - the habit's own colour as a gradient;
+  - a white medal with sparkles;
+  - the words, **See** and ✕ **Dismiss**;
+  - a time-left line.
+
+  Motion: it rises, the medal pops, the sparkles twinkle and a sheen sweeps once, then it's still.
+- **One bar per milestone (V3.2):** the next habit's milestone sends the first bar up and out, and its own bar rises.
+  There's no count and no grouped pop-up.
+- **See (V3.3)** opens that habit's pop-up.
+- **It goes (V3.4)** after 5 s, on any other touch, on a swipe or ✕, or when the next bar comes.
+- **A length reached again (V3.5):** the same bar, *7 days in a row again*.
+- **The board (V3.6)** shows the anatomy, every habit's colour (a light colour takes dark text), the motion step by
+  step, and the rules.
+- **Which milestones get what, and how often, is Current Work 127**, to be solved separately.
+- **72 dp tall (the user, 17 Oct):** the time-left line now sits 6 dp above the bar's bottom edge instead of running
+  along it. The content keeps 8 dp of padding below it.
+- **V3.7, the bar in motion** (Figma Motion; press play on the frame). The 9 s timeline:
+
+  | Time | What happens |
+  |---|---|
+  | 0.1 s | A tap on Meds' ✓ (a ripple, shown for the demo) |
+  | 0.3–0.55 s | Meds' bar rises 24 dp and fades in (emphasized decelerate, cubic 0.05, 0.7, 0.1, 1) |
+  | 0.55–0.85 s | The medal pops 0.6 → 1 (ease out back) |
+  | 0.6–1.2 s | The three sparkles twinkle, 60 ms apart |
+  | 0.85–1.45 s | The sheen sweeps across |
+  | from 0.55 s | The time line starts to shrink over 5 s |
+  | 2.85 s | A tap on Stretch |
+  | 2.95–3.15 s | Meds' bar leaves up 20 dp and fades (emphasized accelerate, cubic 0.3, 0, 0.8, 0.15) |
+  | 3.1 s | Stretch's bar arrives the same way |
+  | 8.35–8.55 s | 5 s after it arrived, Stretch's bar leaves down 16 dp |
+
+  The rows stay still in this frame; only the bars carry the motion.
+
+ (the user: "the whole point of the milestone is to showcase that milestone, not to hide it")
+
+Added below version 1 in the same section; nothing of version 1 was removed, so the two can be compared. The research
+is in [Milestones on Today, Version 2 — Shown Up Front, Never Worn Out](<../../Research/Research Reports/Day Structure and Organization/Milestones on Today, Version 2 — Shown Up Front, Never Worn Out.md>).
+**Proposed, waiting for the user's final choice between the versions.**
+
+- **Every tap (V2.1):**
+  - the ✓ fills;
+  - one *confirm* vibration;
+  - the medal pops into the subtitle with *60 days in a row*.
+
+  Version 1's burst is dropped.
+- **The pop-up, for new heights only** (the first time a habit reaches a length, and every *in total* milestone):
+  - It rises by itself once the taps stop: either the last habit on today's list is done, or 2–3 s pass with no touch.
+  - There's one per visit, and never one when the app opens (V2.2).
+- **Several coming in** (V2.3–V2.5):
+  - The app knows when the day starts which habits are one log from a milestone.
+  - The **milestone bar** rises at the first milestone, sized like a snackbar and placed just above the day bar.
+  - It counts up in place (*2 milestones today*) and then grows into one pop-up, with the same length on several
+    habits as one line: *All 5 habits · 3 days in a row*.
+- **The bar alone:**
+  - for a length reached again after a break, *7 days in a row again* (V2.6);
+  - for a new height after the visit's pop-up (V2.7).
+- **V2.8** is the rules board.
+
+ "a little bit celebration … but not too much celebration … when user comes back how we should present")
+
+A new Figma section, **Milestones on Today**, sits right after How was today. The logic is the same on the iPhone; only
+the look is Android's. The research is in [Milestones on Today — When, How and What Not to Do](<../../Research/Research Reports/Day Structure and Organization/Milestones on Today — When, How and What Not to Do.md>).
+**Proposed, waiting for the user's review.**
+
+- **MS.1, the tap that reaches it:**
+  - the row fills as any log does;
+  - a short burst comes from the round button (0.6 s, in the habit's colour) with one success haptic, and no sound
+    unless sounds are on;
+  - the subtitle shows a small medal and *60 days in a row*;
+  - Undo · Note appear as usual. There's nothing to dismiss, and the next tap is never blocked.
+- **MS.1.1, the rest of the day:** the medal and the words stay in the subtitle; the burst is gone.
+- **MS.2, tap the milestone words:** a bottom sheet with:
+  - the habit's medal at 96 dp, which scales in once;
+  - *Meds · reached today at 8:02 AM*;
+  - the next milestone with its ring (*75 days · 15 to go*);
+  - anything else reached in the same tap (*100 times in total*);
+  - Close · All milestones.
+- **MS.3, Undo:** the log and the milestone go together, and the subtitle returns to the schedule. Nothing says a
+  milestone was lost.
+- **MS.4, coming back:** one card above How was today?, under any notice, styled like a notice card. It has the medal,
+  *30 days without a slip*, *Smoking · reached Tuesday, while you were away*, and **Dismiss · See**. It is for a quit
+  habit's days without a slip, or for logs made on the widget, the watch or a notification. It's shown once and goes
+  on Dismiss, on closing its sheet, or at the end of the next day it was seen.
+- **MS.4.1, several while away:** still one card, *While you were away*, listing up to three (newest first) and then
+  *and 2 more*, with **Dismiss · See all 5**.
+- **MS.4.2 / MS.4.3:** the sheet for one milestone, and the list of all five. Each row in the list opens its habit's
+  milestones.
+- **MS.5, a past day logged late:** the milestone shows the same way on that day's row. Today doesn't repeat it.
+- **MS.6, the rules board:** when it shows, how much, and never. **Never:**
+  - pop-ups, full screens or confetti;
+  - anything that blocks the next tap;
+  - a notification by default;
+  - the same milestone twice in one run;
+  - a celebration for restored, imported, moved or synced data;
+  - guilt on coming back;
+  - exclamation marks.
+
+  Two more rules on the board: a milestone reached more than 7 days ago while away gets no card, only the habit's page;
+  and *Show streaks* off hides streak milestones.
+- **Several at once (the user, 17 Oct: "showing the celebration for each would also be very annoying"):** there is
+  **one burst per visit**, for the first milestone after Today opens. Every later one in that visit is quiet: the medal
+  and the words, with no burst and no extra haptic (MS.1.2, Stretch after Meds).
+  - The same milestone on several habits is one line while away, with their medals side by side (MS.4.4).
+  - A routine bursts on no step; its end lists *Reached in this routine* (MS.7).
+  - Everything done for today stays the day bar's, with no burst (1.8).
+- **Open, for the user:** an opt-in *Tell me at milestones* notification for quit habits. Quit apps' users ask for it,
+  and it's off by default either way.
+
+### How was today as one row on Today, 17 Oct 2026 (approved and rolled out)
+
+The full card took 37% of Today all day (most people log in the evening), against the Today research: habits should be
+visible without scrolling, and things used once a day shouldn't take permanent space. Proposal, drawn only in 1.1 so
+far (the user: "first only let's only change 1.1"):
+
+- **1.1, not logged:** one row the height of a habit (72 dp), in a one-row card on top. The row has:
+  - an icon: **add_reaction** (P, chosen from 23 options on the board beside 1.1.2) in the subtitle grey on the neutral
+    circle. It isn't one of the five faces, so it can't be mistaken for an answer;
+  - *How was today?* · *Tap to choose a face*;
+  - **⌄**.
+- **1.1.1, opened** (the row or ⌄): the five faces with their words open in a block under the row, like a
+  checklist's steps, with *Add a note* under them.
+- **1.1.2, logged:** the faces fold after the pause. The row shows today's emoji in place of the icon, *Good* (and the
+  note's first line if there is one), and ⌄, which reopens the faces to change it or add a note. It's a white row,
+  with no grey fill.
+- **Rolled out (the user, 17 Oct)** to every screen that had the card:
+  - **Not logged:** 1, 4.3, M.1, M.2.1 and M.2.2.
+  - **Yesterday** (*How was yesterday?*): 4.2 and M.2.
+  - **First time:** 5, with the subtitle *New · tap to choose a face*.
+  - **Nothing planned today:** 6.
+  - **Logged:** 1.8 (*Good*), and M.1.3 and M.1.6 (*Good · Slept badly…*).
+  - **A note without a mood:** M.1.5 keeps add_reaction and shows the note's first line.
+  - **Opened, with Good chosen:** M.1.1.
+
+  In 5 and 6 the empty state is centred again under the row.
+- **The card's ⋮ items move to touch-and-hold on the row**, as on any habit row: *See all days*, *Clear mood*, *Hide
+  from Today*. M.1.6 shows the menu under the row. The title link (*How was today? ›*) went with the card; its details
+  page opens from that menu, from Habits and from the Progress card.
+- The icon options board (23 options, P chosen) sits at the right end of Today's top row.
+
+### How was today on Today's own screens, 16 Oct 2026 (the user: "add how was today to those screens")
+
+- **The card now heads Today in the Today section too:**
+  - 1 · Today and 1.1 (full length): fresh.
+  - 1.8 (all done): Good chosen.
+  - 4.2 (yesterday): *How was yesterday?*
+  - 4.3 (a later day): the user's M.2.1 card.
+- **Empty Today** (research above, in *Hiding How Was Today*):
+  - 5 · No habits yet has the card on top with a one-line introduction until the first mood: *New: one tap to note
+    how your day felt. Only you see it, and you can hide it anytime.*
+  - 6 · Nothing planned today has the card on top.
+  - In both, the empty state stays centred below.
+- **To its details page from Today:** the card's title is a link (*How was today? ›*), on all 15 cards, and its ⋮
+  starts with *See all days* (M.1.6). The link is a 48 dp tall target, with 12 dp between it and the faces, so it
+  isn't tapped by mistake (the user, 17 Oct). The arrow M.1 → M.4 runs down the left margin.
+- **Habits › 1.1:** while hidden, its row says *Hidden from Today*, with a faded emoji and grey name. Tapping it still
+  opens its details page, whose ⋮ has *Show on Today*.
+- M.2.2 (with a notice) is kept on purpose: it shows the card under a notice (the user).
+
+### The How was today? widget, 16 Oct 2026 (decision A20)
+
+Research: [How Was Today Widget — What a Mood Widget Should Do](<../../Research/Research Reports/Day Structure and Organization/How Was Today Widget — What a 2×2 Mood Widget Should Do.md>).
+
+- **Its own widget, medium (4×2, 328 × 176), the only size at launch** (the user: "to keep things simplified"). It's
+  added straight from the widget list, with no habit to choose, and isn't part of the one-habit board.
+- **Why not small:** an iPhone small widget is a 155–170 pt square. Five faces plus Note would mean six targets under
+  44 pt, too close together (the user's feedback, confirmed by the research).
+- **Fits the shorter iPhone medium too:** the content stays within 146 dp of height (iPhone's medium is 155–170 pt
+  high).
+- **One layout in every state** (16 Oct, second pass, after the user found the first states hard to follow). The board
+  is laid out as the day's flow, with captions and arrows: *Widgets: every state › Android · Widgets · How was today?
+  (4×2, medium)*:
+  1. **① Nothing logged today** (every day starts here): *How was today?*, the date (*Thursday, 16 October*), **+ Note**
+     at the top right, and five faces with their words, centred.
+  2. **② A face tapped** (*tap a face*): it's marked where it was tapped (outlined in ink, its word in ink) and the
+     others step back. Nothing moves. Tapping another face changes it, so there's no separate change state.
+  3. **③ A note saved** (*+ Note* opens Add note in the app; write; Save): the date line reads *Thu, 16 Oct · Slept
+     badly, but the walk…* and the button becomes **✎ Note**, which opens the note.
+  - **Also:** a note with no mood yet (the faces wait, unchosen; ✎ Note), *Content hidden* and *Couldn't save*.
+  - The earlier panel layouts (today's emoji in a panel beside the week, or beside the note) were removed. One tap
+    changed the whole widget, and the week row didn't fit.
+- **Rules:**
+  - A new day starts it over.
+  - Hiding the card from Today doesn't affect it.
+  - There are no colours and no reminders.
+  - TalkBack names each face.
+- **Widgets section:** *Android · Home screen · How was today? (4×2, medium)* shows it under Water and Meditate. An arrow
+  leads from Note to *Add note* for today, which opens directly. It isn't in *Widgets: adding and changing*, because
+  there's nothing to choose.
+
+### Habits: a section and its first page, 16 Oct 2026 (the user: "create the section for habits … including the how was your day as a first habit")
+
+There was no Habits page: the menu's *Habits 15* row led nowhere. The new section **Habits** (before Habit details)
+holds **1 · Habits**:
+- Top bar: ☰ menu, *Habits*, +.
+- **Comes with the app** (a label, like the time-of-day labels), then 🙂 *How was today?* · *Every day · on Today* ›.
+  This wording replaces *Built in* everywhere (the user: "built-in word feels a little bit weird"). Its details page and
+  Progress card say *Every day · comes with the app*.
+- **Your habits**, by time of day as on Today (Morning, Afternoon, Evening, Anytime), then Quitting, then Paused. Each
+  row has its icon, name and › to its details.
+- **Archived** › last.
+
+*A first pass, to be improved later (the user).* Not drawn yet: a habit while *How was today?* is hidden (its
+subtitle would read *Hidden from Today*), search, and sorting.
+
+### How was today: third round, 16 Oct 2026
+
+- **By the user:** M.2.2 (with a notice) deleted; M.2.1 updated. A paused day, or anything paused, changes nothing on
+  the card.
+- **How often (all M.4 frames):** each row fills the card. Face 28 and word 48 are fixed, the count is a 64 dp
+  right-aligned column, and the bar takes what's left (120 dp on a 360 dp phone) with its proportions kept. *109 days*
+  no longer runs off the edge.
+- ***Beside your habits* removed** from every frame.
+- **M.4.3's Year in Pixels** sized from the width like the others (20 dp cells).
+- **Arrange Today:** M.5 applied to Today's 2–2.4 (above).
+
+### How was today: second round, 16 Oct 2026
+
+- **Add note / the note (M.1.2, M.1.4):** the mood is the emoji itself at 24 dp, with no circle or ring.
+- **Progress week and month (M.3, M.3.1):** a day with a mood shows only its emoji, filling the cell (31 dp), with no
+  grey tile behind it. Days without a mood keep the empty tile; today keeps its outline. The year card (M.3.2) still
+  has tiles.
+- **Year in Pixels (M.4, M.4.1, M.4.5, M.4.6):** cells are sized from the width (decision A19).
+  *(296 − 18 − 12 × 3) ÷ 12 = 20 dp* on a 360 dp phone, emoji 16 dp. The grid fills the card, with no empty band on the
+  right.
+- **For development:** compute cell sizes from the measured width at layout time, in Compose and SwiftUI alike, and
+  never hard-code 16 or 20. A tablet or a wide phone gets bigger cells, not more empty space.
+
+### How was today as a built-in habit, redrawn 16 Oct 2026 (decision A18)
+
+The section *How was today: mood and the day's note* now runs in five rows:
+- **M.1 Today's card:** emoji everywhere. The chosen face is outlined in ink, with no colour fill. M.1.6's ⋮ has *Clear mood · Hide
+  from Today*. M.1.7's snackbar reads *Hidden from Today. Show it again in Arrange Today.* · *Undo*.
+- **M.2 other days:** M.2.4 and M.2.5 (Settings › General › How was today?) and M.2.3 (the evening reminder
+  notification) are **deleted**. There's no reminder for this habit for now. A paused day shows the same card.
+- **M.3 Progress (week, month, year):** the mood habit is a card like every habit's, a copy of Water's (header, summary,
+  day tiles), with **an emoji on a neutral tile** where other habits have a coloured ✓.
+  - Nothing is squished, and there are no mood colours.
+  - A day without a mood is a plain tile, never ✕.
+  - The summary reads *Logged on 17 of 30 days so far · Mostly 🙂 Good this year*.
+  - Its › opens the details page.
+- **M.4 its details page** (from its Habits row or the Progress card): header 🙂 *How was today?* · *Every day · comes with the app*.
+  Two tabs:
+  - **Year in Pixels**, with an *Emoji | Colours* switch (M.4 emoji, M.4.1 colours), the year navigator and *How often*.
+    (*Beside your habits* was removed, the user, 16 Oct.)
+  - **Notes** (M.4.2): the habit Notes tab with each day's emoji at the start of its row.
+
+  More frames in this row:
+  - M.4.3: its ⋮, with only *Hide from Today* (*Show on Today* while hidden). There is no Edit, Pause, Archive or Delete,
+    because it's built in, and no reminder (M.4.4, the reminder dialog, is deleted).
+  - M.4.5: early on (nine days logged; *How often* counts the days so far).
+  - M.4.6: a tapped day's sheet.
+- **The colour scale** (Colours view only; checked with the dataviz validator):
+
+  | Mood | Colour |
+  |---|---|
+  | 😫 Awful | purple `#6A3FA0` |
+  | 🙁 Bad | blue `#3A7BC8` |
+  | 😐 Okay | warm grey `#B9B3A8` |
+  | 🙂 Good | green `#2E9E68` |
+  | 😄 Great | amber `#E8A317` |
+
+  - Validator results: lightness band, colour-blind and normal-vision separation pass (worst adjacent ΔE 10.9 deutan,
+    16.0 normal).
+  - Okay is a deliberately neutral grey, the scale's midpoint.
+  - Okay and Great are below 3:1 against white, so the key always pairs each colour with its emoji and word.
+  - There is no red (U3).
+- **M.5, Arrange Today with a *How was today?* row on top:** its *Show on Today* switch and a line under it. It can't
+  be moved. M.5.1 shows it switched off. **Approved 16 Oct and applied to Today's 2, 2.1, 2.1.1, 2.2, 2.3 and 2.4.**
+  Their menus moved down with the list, so they still open under their row.
+- **The Habits page** now has its own section (*Habits*, before Habit details; next section).
+
+### How was today: emoji, not icons, 16 Oct 2026 (decision A17)
+
+The user compared M.1 / M.1.1 (Material face icons, the chosen one filled in a colour) with M.1e / M.1.1e (emoji) and
+chose **emoji**:
+- 😫 Awful · 🙁 Bad · 😐 Okay · 🙂 Good · 😄 Great, on neutral circles, never a colour fill.
+- The chosen one is outlined in ink with its word in ink; the others step back.
+
+**Always the platform's own emoji:** Apple's on iPhone and iPad, Android's (Noto Color Emoji) on Android, drawn by
+the system as text. Never ported, downloaded or bundled as images. In Figma, emoji are set in Roboto and shown as
+Figma's colour emoji.
+
+*Applied to every How was today frame, 16 Oct (next section).*
+
+### How was today: mood and the day's note, 16 Oct 2026 (the user: "design it … all of the different states"; Current Work 123)
+
+From the research [Mood and a Note for the Day](<../../Research/Research Reports/Day Structure and Organization/Mood and a Note for the Day — Should a Habit Tracker Have Them.md>):
+a day-level check-in, **not a habit** (no count in the day bar, no streak, no swipe), always possible to hide. Its own
+section under Today, three rows:
+
+- **On Today:** **M.1** a *How was today?* card above the times of day: five faces with words (*Awful, Bad, Okay, Good,
+  Great*, Material's `sentiment_*` icons in 48-dp circles), one tap; *Add a note* under them. **M.1.1** a face chosen:
+  it fills in its colour, the others step back; any time that day it can change. **M.1.2** *Add note*: the same sheet as
+  a habit's note, the day's mood where the habit would be. **M.1.3** saved: the face and the note's first two lines.
+  **M.1.4** the note's page (*Delete note* | *Edit*). **M.1.5** a note without a mood. **M.1.6** ⋮: *Clear mood* (the
+  note stays), *Hide from Today*. **M.1.7** hidden, with Undo; everything kept; Settings › General brings it back.
+- **Other days and settings:** **M.2** *How was yesterday?* on a past day; **M.2.1** a later day: no faces (a day not
+  lived has no mood), only a note; **M.2.2** under a notice (the notice first); **M.2.3** the evening reminder, a plain
+  notification, only if turned on and only if today has no mood yet; **M.2.4–M.2.5** Settings › General › *How was
+  today?*: *Show on Today* (on), *Evening reminder* (off at first; then *Every day at 9:00 PM*).
+- **Progress:** a *How your days felt* card first in each range: **M.3** Week (a face a day, Sunday first, today
+  outlined, later days dashed), **M.3.1** Month (a square a day), **M.3.2** Year (the Year in Pixels, a month a row);
+  tap → **M.3.3** the Mood page: the Year in Pixels (a month a column, a square a day), *How often* (days per mood),
+  *Beside your habits* in plain words ("Days you walked: mostly Good"), with *These show what happened together, not
+  what caused what.*; **M.3.4** early on (it waits for 14 days with a mood); **M.3.5** tap a square: that day's mood and
+  note, *Open this day*.
+- **Mood colours** (one ordered scale, never red, U3): Awful `#5B6577`, Bad `#8E9AAF`, Okay `#C9BE93`, Good `#7DC48A`,
+  Great `#2F9A5C`; no mood logged: light grey; days to come: dashed.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
@@ -1543,7 +2162,7 @@ Built after the user's questions (see "Google Drive on a new phone"). Each from 
    data over five habits, the iPhone's Quit or cut down opened a blank sheet (check).
 4. ~~**The ≡ menu** as Material's navigation drawer.~~ Built 12 Oct.
 5. ~~**The routine player and the timer.**~~ Built 12 Oct. Still to draw: the running timer as Android 16's Live
-   Update notification (A11 D4) and Today's timer bar.
+   Update notification (A11 D4). (Today's timer bar was dropped 16 Oct: the row keeps the clock.)
 6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct; All milestones drawn 14 Oct. Not drawn: Go to
    date, a habit with no history yet, and the other kinds' Progress (time, checks, quit, checklist).
 7. ~~**Progress.**~~ Built 12 Oct (Week, Month, Year; no ⋮). Not drawn: the legend expanded.
