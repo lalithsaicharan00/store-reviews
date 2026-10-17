@@ -1808,6 +1808,24 @@ with a bar or pop-up doesn't**.
   more today*.
 - **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
 
+### Milestones on the Today 4×4 widget: WL, decided 17 Oct 2026 (the user)
+
+**The same model as the 4×2 (WM).** The tapped row shows the medal and *30 days in a row* at once, holds still for 5
+seconds, then joins the done habits. It keeps the medal whenever it's on the widget that day. Board WL (`2230:2`,
+under WD):
+- **WL.1–WL.3, a few still to do:** Read is tapped and reaches 30. After 5 seconds it comes first among the done
+  habits, ahead of Take vitamins (earlier in the app's order, no milestone), so it stays on page 1 with its medal.
+- **WL.4, more still to do:** page 1 is full of habits to do, so Read goes to page 2, first among the done habits
+  there.
+- **WL.5, everything done:** the habits with a milestone today come first, in the app's order (Water 14, then Read 30),
+  then the rest in the app's order.
+
+**What the larger size changes:**
+- With five rows a page, the rule that milestone habits come first among the done ones often keeps the medal row in
+  view after it sinks.
+- The page shown doesn't change by itself.
+- The header's count and pager are unchanged.
+
 ### Milestones on the Today 4×2 widget: WM, option B, decided 17 Oct 2026 (the user)
 
 **The problem:** on a list widget a done habit sinks after the pause, to leave room for what's still to do (U13, the

@@ -1207,6 +1207,9 @@ and the Add note keyboard coming up by itself.
     - [x] The user's review of WM: approved (17 Oct), with one rule added. On a Today widget, done habits that
       reached a milestone today come first among the done ones (several in the app's order), then the other done
       habits in the app's order.
+    - [x] The Today 4×4 widget: the same model as the 4×2, drawn as board WL (WL.1–WL.5: a few still to do, page 2
+      when page 1 is full, everything done with two milestones).
+    - [x] The user's review of WL: approved (17 Oct).
     - [ ] The user's review of the second pass.
   - [ ] Re-run the frequency check with the new ladders and budget (`simulate_pileups.py`).
   - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol
