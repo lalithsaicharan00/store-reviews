@@ -1184,7 +1184,7 @@ and the Add note keyboard coming up by itself.
   - [x] Decided (the user, 17 Oct, Android decision A21): adopted. The one change: the row milestone animation (R.1, R.2)
     plays only when the milestone shows in the row alone, never with a bar or pop-up. The report's open decisions take
     its recommendations.
-  - [ ] Redraw the milestone frames to the adopted system (one moment at the pause, landmarks-only pop-ups, *and N
+  - [x] Redraw the milestone frames to the adopted system (one moment at the pause, landmarks-only pop-ups, *and N
     more today*).
     - [x] Section cleaned up: final row (R.1–R.10), final bar (V3), pop-ups, earlier drafts (17 Oct).
     - [x] Several milestones in one visit, redrawn to the report (17 Oct): V3.8 (taps get the row band only), V3.9 (one bar
@@ -1219,10 +1219,10 @@ and the Add note keyboard coming up by itself.
       drawn as board WW (WW.1–WW.5: none, a build habit, quit, cut down, a week goal).
     - [x] The user's review of WW (17 Oct): the week's days centred in their block, bigger, with today's ring visible.
       Every widget's streak now uses the 🔥 emoji, and all the widget boards are in *Widgets: every state*.
-    - [ ] The user's review of the second pass.
+    - [x] The user's review of the second pass: replaced by the decided rule and the 18 Oct design fixes.
   - [x] The habit page's milestones by habit type (the user, 17 Oct: revealed, never all at once): MP.0–MP.11 in
     *Habit details*. Each track shows only its next milestone; anniversaries appear once reached.
-  - [ ] The user's review of MP.0–MP.11.
+  - [x] The user's review of MP.0–MP.11: the drafts were removed (17 Oct); the habit page itself was updated (18 Oct).
   - [x] Every milestone for every habit type, as one list (the user, 17 Oct): [Milestones — Every Habit Type and Every
     Milestone](<../../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>).
   - [x] In Figma, with real habits (the user, 17 Oct): board *Every milestone, real habits (v2)*, 30 habits of every type
@@ -1260,7 +1260,7 @@ and the Add note keyboard coming up by itself.
     - **What comes out:** a table per kind of person, and a yes or no on whether any number needs changing.
     - **The script:** `Milestones on Today Evidence/simulate_pileups.py` and `simulate_one_rule_v2.py` are the starting
       point; update them to the final rule first.
-  - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol
+  - [x] ~~Verify what the report couldn't before shipping:~~ dropped (the user, 18 Oct): the facts were only for the research cards, which are not shown at all; nothing to verify. the Duolingo figure; Material and WCAG specifics; the alcohol
     and caffeine timelines.
 - [ ] **126. Milestones on Today: when, how much, and coming back** (added 17 October 2026, from the user, Android
   first, the same logic on the iPhone: "milestone is a big thing so we need little bit celebration, but … not too much
@@ -1298,15 +1298,15 @@ and the Add note keyboard coming up by itself.
     show full numbers: 1.2.2 and 7.5.
   - [ ] The iPhone: the same rules once Android is final (today its milestone is a line beside Undo, never kept for
     the day or shown on coming back).
-- [ ] **125. Today: a done habit's round button, the same for every kind** (added 16 October 2026, from the user,
+- [x] **125. Today: a done habit's round button, the same for every kind** (added 16 October 2026, from the user,
   Android first: "the mental model overall, it needs to be same for everything").
   - [x] Researched: report "Once a Habit Is Done — One Rule for the Round Button" (300 reviews read, 25 quotes verified).
   - [x] Decided and drawn: the fill says done, the symbol says what a tap does (✓ / + / ▶ / ⌄ in the habit's colour);
     9 done rows that were still grey fixed (Stretch ▶, Skincare ⌄).
-  - [ ] The user's review (they had floated a ✓ everywhere; the report says why not).
+  - [x] The user's review: approved (18 Oct): every habit keeps its action symbol, and the fill says done, as the report says.
   - [x] Today checked for gaps: 1.11 past the goal (10/8 glasses), 1.12 / 1.12.1 a cut-down habit at and over its limit
     (neutral, never red), 1.13 a 24-character name (two lines, the row grows). Nine stale frame names fixed (16 Oct).
-- [ ] **124. Today: a checklist's steps, the fill and ticked steps** (added 16 October 2026, from the user, Android first:
+- [x] **124. Today: a checklist's steps, the fill and ticked steps** (added 16 October 2026, from the user, Android first:
   "filling like this whole card … feels a little bit weird … what if we have six or seven … checked or completed states
   should be a little bit different … maybe just filling that row").
   - [x] Researched: report "Checklist Steps on a Today Row — Fill, Ticked Steps and Long Lists" (311 reviews read, 35
@@ -1320,11 +1320,11 @@ and the Add note keyboard coming up by itself.
   - [x] The Android page re-stacked: every section 240 apart, How was today right after Today, no overlaps.
   - [x] Today laid out by number (the user, 16 Oct): one block per series, each family on its own row, all 38 arrows
     redrawn.
-  - [ ] The user's review of the new row.
+  - [x] The user's review of the new row: approved (18 Oct).
   - [x] After-log buttons shortened everywhere to ↶ Undo · + Note (✎ Note with a note), white pills with a 1 dp outline;
     all 18 lines fit (243/300 dp); TalkBack keeps the full names. Walk's + fixed to green in 1.2.2 and 7.5 (the user,
     16 Oct). 1.2.9's milestone now in the row's subtitle for the rest of the day ("60 days in a row", the user, 16 Oct).
-- [ ] **122. Today, worked out from scratch: where things go, other days, arranging** (added 16 October 2026, from the
+- [x] **122. Today, worked out from scratch: where things go, other days, arranging** (added 16 October 2026, from the
   user: "it's not about what iPhone has … What's the right thing to do?"; then "directly change in the designs").
   Research: [Today — Where Things Go, Other Days and Arranging](<../../../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Today — Where Things Go, Other Days and Arranging.md>).
   Designed in Figma `1260:2`, waiting for the user's review:
@@ -1335,7 +1335,7 @@ and the Add note keyboard coming up by itself.
   - [x] Future days: a preview, no logging; a task can be *Done today*; Day details offers a note and Skip this day (4.3, 4.3.1).
   - [x] Arrange Today: every habit, one order every day, a handle or hold to drag (also into another time of day), Move up / Move down / Move to… by tapping, a time of day's ⋮ (sort once, edit), Anytime and Quitting movable, Paused last, saves as it goes (2, 2.1–2.4); Arrange… in a row's menu (1.4).
   - [x] Times of Day › opens the same page as Settings › Times of Day (2.5).
-  - [ ] The user's review. **First round, 16 Oct 2026 (the user):** fixed the same day:
+  - [x] The user's review: approved (18 Oct). **First round, 16 Oct 2026 (the user):** fixed the same day:
     - [x] 1.2: *Undo done* and *Add note* were cramped underlined links cut off inside the text. Second try (the user: "still not looking good … design it like a native Android thing"): two extra-small white pill buttons (a Material 3 button group) on their own line, lined up with the name, and the row's progress fill covers the whole row (a band with a white strip under it was "half filled and half white", the user).
     - [x] One predictable timer: ▶ always opens the full-screen timer (1.3, the routine player's own timer card, unchanged); ⌄, swipe down or Back returns to Today, where the row keeps the clock (*2:42 of 10 min*, no "· running", which was cut off) and ⏸ (1.3.1); the black timer bar is gone. Outside the app it's the Live Update (A11 D4).
     - [x] 1.6: the new habit's row is white like every row (grey meant nothing); the snackbar says where it went.
@@ -1348,7 +1348,7 @@ and the Add note keyboard coming up by itself.
     - [x] Notices on Today in their own row (1.9–1.9.7: backup, data held, an account switched on another device (Plus only; never for a switch on this phone, the person's own choice), reminders, a pending Plus payment; no renewal notice, since Plus is one purchase, the user), the day's note (1.10) and Note for the day (1.1), the Arrange tip (2.0).
     - [x] On a later day the swipe says Skip this day (the user's wording, 7.24).
     - [x] The user's decision: Android swipes act on release (vs U14), confirmed 16 Oct (Android decision A16).
-    - [ ] The user's decision: let people choose each side's action (Gmail's Swipe actions), not drawn.
+    - [x] The user's decision (18 Oct): people can't change the swipe actions, at least in the first version.
       - [x] Act on release or show a button: researched 16 Oct (report "Swipe on a Row — Act When You Let Go, or Show Buttons"; 922 swipe reviews read, 145 quotes verified). With one action a side, act on release past halfway; a guard for each failure people describe. Confirmed by the user, 16 Oct.
       - [x] TalkBack: each row's swipe actions offered as TalkBack actions with the same names (handoff, 16 Oct).
       - [x] 7.24 had shown a blank band (Water's name slid off). Fixed by the short words below (16 Oct).
