@@ -1194,6 +1194,13 @@ and the Add note keyboard coming up by itself.
     - [x] No "While you were away" card (the user, 17 Oct; report "While You Were Away — A Card on Today, or the
       Habit's Own Row"): away milestones show as the band in their row, animated once when first seen, with See on a
       landmark's band and a medal on a folded section's icon. The card frames were removed; A.1 and A.2 were drawn.
+    - [x] The small 2×2 widget, decided (the user, 17 Oct): WD, the same on Android and iPhone. On a milestone the
+      icon's slot becomes the medal with its number, a glow and sparkles, and the bar's slot becomes the tinted band
+      (*30 days in a row*); the name and today's line stay. Static: the tap swaps the card, no animation. Checked
+      possible on both phones. Variations A, B and WC were removed from Figma.
+    - [ ] When building the small widget (Android, then the iPhone's small square widget): **reserve the bottom slot
+      at the band's height (20 dp) in every widget**, even when it holds the 12 dp bar, so the habit's name and its
+      line sit at the same height in every card. Never grow the slot when the band appears.
     - [ ] The user's review of the second pass.
   - [ ] Re-run the frequency check with the new ladders and budget (`simulate_pileups.py`).
   - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol

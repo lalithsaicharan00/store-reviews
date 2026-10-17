@@ -1808,6 +1808,52 @@ with a bar or pop-up doesn't**.
   more today*.
 - **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
 
+### Milestones on the small 2×2 widget: WD, decided 17 Oct 2026 (the user)
+
+> **Decided (the user, 17 Oct 2026):** WD is how the small widget shows a milestone, on Android and on iPhone alike.
+> The earlier passes (band-only variation A, medal-only variation B, the celebration face WC, and the band-over-the-bar
+> model W.1–W.12) are removed from Figma and from this page.
+
+**What the widget shows.** One design for every milestone, whatever its tier in the app (a landmark looks the same):
+- **The icon's 40 dp slot becomes the medal** in the habit's colour, with its number, a soft glow around it (72 dp)
+  and three sparkles.
+- **The bar's slot becomes the tinted band**: the habit's colour at 20%, a small medal and *30 days in a row*.
+- The habit's name, today's line and the ✓ / + / ⏸ button stay exactly as they are; the button keeps working.
+
+**The bottom slot is always 20 dp tall (the band's height), in every widget, with or without a milestone.** The bar is
+only 12 dp, but the slot it sits in is built 20 dp tall from the start, never grown when the band appears. So the
+habit's name and its line sit at exactly the same height in every card, and a row of widgets lines up. This applies to
+the iPhone's small square widget too, with the iPhone's own heights (reserve the band's height; the bar sits inside it).
+
+**It's static: the tap swaps the card, with no animation.** Possible on both phones (checked against Apple's and
+Android's widget docs, 17 Oct 2026):
+- **The swap:** both apps already show a widget tap by switching to a card the app prepared in advance (iPhone:
+  `WidgetTapCard` with `WidgetItem.after`, built and measured at about 0.2 s; Android: `WidgetDisk.applyTap`, the
+  same "after" chain, W3). When the tap reaches a milestone, the prepared card is the WD card, so it arrives in the
+  same redraw as the ✓, with no extra step.
+- **Drawing it:**
+  - iPhone: `ZStack`, `Circle`, `RadialGradient` (the glow), SF Symbols (`sparkle`) and text, all supported in
+    widgets.
+  - Android (Glance): `Box` layering and `ColorFilter.tint`. Widgets have no blur, so the glow is an image: a radial
+    gradient drawable tinted in the habit's colour, or a bitmap the app draws once (as `HabitIconBitmaps` does for
+    icons). The sparkles are vector drawables.
+- **To do when building:**
+  - A plain version for the iPhone's tinted and clear Home Screen modes, where colour and glow turn one tint
+    (`widgetRenderingMode`).
+  - A check on several Android launchers.
+  - The Android tap → visible time, measured (Checkpoint 4, step 6).
+  - On iPhone, it changes the locked widgets (U28), so it's built only with the user's say-so, after the Android
+    revamp.
+
+**When it shows, and for how long** (no polling, no extra updates):
+- **A log** reaching a milestone: the redraw the tap already causes. Shows until the day ends.
+- **A quit run:** one update scheduled for the minute it's reached (an `AlarmManager` or WorkManager job on Android, a
+  timeline entry on iPhone; the live clock is a Chronometer or `Text(timerInterval:)`). Shows from then through the
+  next day, because it's often reached overnight.
+- **Cut down:** the new day's own update shows yesterday's result, for that day.
+- **Never:** when content is hidden (privacy), on a skipped or paused day, or as a looping animation.
+- The widget never shows a bar or a pop-up. The app's row still gets its band the next time Today is seen (A21).
+
 ### No "While you were away" card: away milestones live in the row (decided 17 Oct 2026)
 
 The research: away milestones are frequent (12–15 days a year for quit users; up to half of all milestones for people
