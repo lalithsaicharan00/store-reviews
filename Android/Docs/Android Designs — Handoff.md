@@ -1808,6 +1808,73 @@ with a bar or pop-up doesn't**.
   more today*.
 - **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
 
+### The milestone band (ML.B), decided 17 Oct 2026, and every row animation rebuilt with it
+
+**The user chose ML.B:** a band of the habit's colour along the bottom of the row, with the medal and *60 days in a row
+· reached today*. It stays for the rest of the day, and the habit's own line above it stays and updates (*Every day ·
+8:00 AM*, *8/8 glasses*, *10:00 of 10 min*, *Best 45 days*).
+
+**R.1–R.10 were rebuilt in place, with the same names:**
+
+| Time | What happens |
+|---|---|
+| 0.10 s | The ✓ presses |
+| 0.18 s | It fills, with the confirm vibration |
+| 0.30–0.80 s | The burst rings the ✓ |
+| 0.30–0.56 s | The line and the streak roll to the new values |
+| 0.42–0.80 s | The row grows 32 dp for the band (plus Undo · Note when they open) |
+| 0.46–0.70 s | Undo · Note fade in |
+| 0.46–0.74 s | The band fades and rises in; its medal pops (0 → 1.3 → 1) with a turn; its words slide in |
+| 0.88–1.48 s | A sheen sweeps across the band once |
+| 0.82 s | Two sparkles twinkle by the band's medal |
+
+**Quit and cut down** (R.9, R.10): no tap. The next day, the first time the row is on screen, the band rises once and
+the burst rings its medal (*30 days clean · reached yesterday*, *30 days within the limit · yesterday*).
+
+**Layout:** in context (R.2), the rows below move down 80 dp as the band and Undo · Note open together. The band's 32
+dp stays for the day.
+
+### The milestone line, kept all day: ML.A–ML.C, 17 Oct 2026 (ML.B chosen)
+
+**The problem:** the milestone words must stay for the rest of the day ("that line is what makes them notice"), but the
+habit's own line (its schedule, count or clock) matters too. In R.3–R.10 the words gave way to the count after 2.5 s.
+
+**Three static options for keeping both** (the animation isn't updated yet):
+
+| Option | What it is | Row height |
+|---|---|---|
+| **ML.A, a pill under the line (recommended)** | A pill in the habit's colour, with a white medal and the words in white, under the habit's own line | Grows 28 dp for the day; works with any name length |
+| **ML.B, a band along the bottom** | A stronger strip of the habit's colour, with *60 days in a row · reached today* | Grows 32 dp; the most noticeable, and the heaviest |
+| **ML.C, beside the name** | A small pill next to the name (*60 days*) | Doesn't grow, but a long name (24 characters) leaves no room |
+
+**Quit and cut-down (the user, 17 Oct):** their milestones are reached by time, so they show **the next day**, and only
+when the person actually sees that habit's row. R.9 and R.10 are renamed to match.
+
+**Numbers from 1,000 use k**, at most one decimal (*6.2k/10k steps*, *11.2k/10k steps*), as the app already does
+(`Format.amount`). R.5 is fixed. The Add log field still shows what was typed (*5,000*).
+
+### The row milestone animation for every kind: R.3–R.10, 17 Oct 2026 (proposed, waiting for the user's review)
+
+Each frame below is animated in Figma Motion (4 s). It's the R.1 moment adapted to each kind, for a milestone shown in
+the row only.
+
+| Frame | Kind | What triggers it | What plays |
+|---|---|---|---|
+| **R.3** | Check, several times a day | Only the tap that meets the day's goal (5/5); earlier taps don't | The R.1 moment |
+| **R.4** | Amount | The + that reaches the goal (7 → 8/8 glasses); a + past the goal never plays it again that day | The R.1 moment |
+| **R.5** | Amount typed in Add log, past the goal (6,200 + 5,000 → 11,200/10,000 steps) | Add log closes (0–0.3 s) | Then the row plays it on Today; typing more on a day already met plays nothing |
+| **R.6** | A running timer reaching its goal | No tap: the clock crosses 10:00 | The ⏸ fills in the habit's colour with the chime |
+| **R.7** | Time typed in Add log, past the goal (17 + 10 → 27/20 min) | Add log closes | As R.5 |
+| **R.8** | Checklist | The last step ticked | The row's ⌄ fills and the burst rings it while the steps stay open |
+| **R.9** | Quit | No tap: the clock passed 30 days | The moment plays **once, the first time the row is on screen** after that. The burst rings the medal, since there's no button. Words: *30 days clean* (short enough to clear the clock) |
+| **R.10** | Cut down | No tap: yesterday closed within the limit | It plays once, the first time the row is seen today, with the burst around the medal |
+
+**Counted kinds** (amount, time, checklist, several times a day, cut down) show the words for about 2.5 s. Then the
+count comes back (*8/8 glasses*, *10:02 of 10 min*) with the medal kept beside it for the rest of the day. A check
+keeps the words, as in R.1.
+
+**Quit and cut down never play anything when something is logged:** a slip or a cup is never a milestone.
+
 ### A milestone that stays in the row: R.1 animation, 17 Oct 2026 (approved)
 
 The user's rule: the row animation plays whenever a milestone is shown in the row alone. It doesn't play when a bar or

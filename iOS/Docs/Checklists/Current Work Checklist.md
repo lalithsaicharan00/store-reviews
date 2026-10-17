@@ -1212,6 +1212,14 @@ and the Add note keyboard coming up by itself.
     really good".
   - [x] The opt-in notification for quit habits: opt-in, landmarks only (7, 30, 90, 365), per the adopted report
     (A21).
+  - [x] The milestone line kept all day (the user, 17 Oct). Three options drawn (ML.A pill, ML.B band, ML.C beside the
+    name); **ML.B, the band, chosen**. R.1–R.10 were rebuilt with it, one per kind: check, several times a day, amount
+    +, amount typed past the goal, a timer reaching its goal, time typed, checklist, quit, cut down. Checked from
+    exported video.
+  - [x] Quit and cut-down milestones show the next day, once, when the row is first on screen; logging never
+    triggers one.
+  - [x] Amounts from 1,000 in rows use k (*6.2k/10k steps*), as `Format.amount` already does. Two older frames still
+    show full numbers: 1.2.2 and 7.5.
   - [ ] The iPhone: the same rules once Android is final (today its milestone is a line beside Undo, never kept for
     the day or shown on coming back).
 - [ ] **125. Today: a done habit's round button, the same for every kind** (added 16 October 2026, from the user,
