@@ -1184,6 +1184,8 @@ and the Add note keyboard coming up by itself.
   - [ ] Redraw the milestone frames to the adopted system (one moment at the pause, landmarks-only pop-ups, *and N
     more today*).
     - [x] Section cleaned up: final row (R.1–R.10), final bar (V3), pop-ups, earlier drafts (17 Oct).
+    - [x] Several milestones in one visit, redrawn to the report (17 Oct): V3.8 (taps get the row band only), V3.9 (one bar
+      at the pause for the best, *and 1 more today*), V3.10 (the motion). V3.2 and V3.7 are marked as replaced.
     - [x] Pop-ups for every landmark, P.1–P.12, each animated in Figma Motion (17 Oct).
     - [x] Second pass (the user's review, 17 Oct): spacing, centred ring numbers, every fact checked (Singh's wording
       fixed; P.11 made quit-generic), and four missing cases added (P.13–P.16).

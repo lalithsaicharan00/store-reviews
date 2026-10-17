@@ -1806,7 +1806,7 @@ with a bar or pop-up doesn't**.
 - **Budget:** at most 2 bars or pop-ups a day, at most 1 pop-up a day and 2 in 7 days.
 - **Several milestones in one visit:** the row at each tap, then one moment at the pause for the best one, with *and N
   more today*.
-- **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
+- **Redrawn to A21 (17 Oct):** V3.8–V3.10 replace V3.2 and V3.7, which stay on the canvas marked as replaced. V2.2 and V2.5 were removed in the 17 Oct cleanup.
 
 ### Widgets in one place, and 🔥 on every widget (17 Oct 2026, the user)
 
@@ -1901,6 +1901,26 @@ locked widget rules). So a milestone shown on its row would leave the screen wit
   Today widget (once the ones still to do are listed, or everything is done), any that reached a milestone today
   come first. Several keep the app's own order among themselves, and the other done habits follow in the app's
   order. It lasts for the milestone day; nothing else is reordered.
+
+### Several milestones in one visit: V3.8–V3.10, following the report (17 Oct 2026, the user: "we have to go through according to the research report")
+
+These replace V3.2 and V3.7, where each milestone had its own bar, the next pushing the last away. The rule is the
+report's (A21).
+- **V3.8, the taps:** Meds' ✓ reaches 7 days, then Stretch's timer reaches 3 days. Each tap gets the ✓ fill, the
+  vibration and its row's band (*7 days in a row · reached today*), and nothing more. There's no bar during the taps,
+  and no row burst, because a bar is coming.
+- **V3.9, the pause:** after 2.5 s with no touch, or when the list is done, **one** bar rises for the **best** milestone,
+  not the last. Meds' 7 days outranks Stretch's 3 days (the deeper rung), so it shows *7 days in a row* and *Meds · and
+  1 more today*. See opens Meds' pop-up. The bar goes after 5 s, and the bands stay all day.
+- **V3.10, the motion:**
+  - Meds' ✓ at 0.1 s, and its band rises.
+  - Stretch's tap at 1.2 s, and its band rises.
+  - Meds' bar at 3.7 s (medal pop, sparkles, sheen, 5 s time line), gone at 9.0 s.
+  - Checked frame by frame from the exported video.
+- **If the best one is a landmark** and the day's pop-up is unused, the pause brings its pop-up instead, with *and N
+  more today*.
+- **Unchanged:** only one candidate on the list means the bar comes at its tap (V3.1). The day's budget still applies:
+  at most 2 bars or pop-ups.
 
 ### Milestones on the small 2×2 widget: WD, decided 17 Oct 2026 (the user)
 
