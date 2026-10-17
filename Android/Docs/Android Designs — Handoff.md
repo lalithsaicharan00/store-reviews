@@ -1792,6 +1792,116 @@ Two new rows under row 1 (everything below moved down 1920) and two more frames 
 - Not drawn, by choice: Google Play's own in-app review sheet (its UI, asked once after a week of use at a finished
   day, never ours first).
 
+### The milestone numbers: one simple rule, decided (17 Oct 2026, the user: "The two-question rule is clear. Let's keep this version")
+
+**Board:** *Milestones: one simple rule* (`2266:2`), in *Habit details*. It replaces boards v1–v3, which stay on the
+canvas marked as replaced. Every habit gets **in a row**, **in total** and **anniversaries**.
+
+**The bucket comes from two questions:**
+1. Is the goal for a week, month or year? Then that bucket.
+2. Otherwise, how far apart are its set days?
+   - under 7 days → **Days**;
+   - 7–27 days → **Weeks**;
+   - 28 days to a year → **Months**;
+   - a year → **Years** (anniversaries only).
+
+**Each bucket has one list for in a row and one for in total.** The total is the goal × the number, and the two lists
+share no number. The full numbers are in
+[Milestones — Every Habit Type and Every Milestone](<Milestones — Every Habit Type and Every Milestone.md>).
+
+**The board's five cards:**
+1. the habit's settings;
+2. the four buckets and the rule;
+3. anniversaries;
+4. how big each one is;
+5. eight habits worked out.
+
+**Cleaned up (the user, 17 Oct 2026):** only this board is left in *Habit details*, beside the habit page frames. Boards v1–v3 and the MP.0–MP.11 drafts were removed from Figma; their sections below are history. **When it shows (card 4 C, decided 17 Oct):** at once, the moment a habit is done, first come first served through the day, within the limits (1 pop-up, 2 bars, 2 big moments a day; over the limit it steps down to the row). There's no pause and no "best of the visit": V3.8–V3.10 (several in one visit) and the bars in V3.1 and V3.4 follow the older rule and wait to be redrawn. **Not yet updated to it:** the habit page's Milestones card (Progress, `1373:3`) and All milestones (`1735:4`), which still show the earlier numbers.
+
+### Every milestone, real habits (v2), and one total per habit (17 Oct 2026, the user: "go through a lot of scenarios … real habits … if totals … are going to be a problem then just remove the totals and make things simple")
+
+**Board v2:** *Every milestone, real habits (v2)* (`2262:2`), to the right of v1 in *Habit details*. v1 stays, marked
+replaced. It has **30 real habits in seven groups**, each with every medal of its tracks:
+- checks and checklists (Stretch, Meds 3 a day, Study Mon/Wed/Fri, plants every 3 days, the fridge on the 1st, Morning
+  routine);
+- times a period (Gym, Call family, Dentist);
+- quantities every day (Water in glasses and in ml, Steps 10,000, Push-ups, Pages, $5 saved);
+- over a week or month (Run 20 km, $200 a month, Study 5 h a week);
+- time every day (Meditate 10 min, Guitar, Deep work 4 h, a 2-minute floss timer);
+- cut down by quantity, weight, time and count, daily and weekly (Coffee, Sugar, Social media, Drinks, Gaming,
+  Takeout);
+- quit (Smoking, Alcohol), and the extras.
+
+**The simplification:** every habit has one run, one total and its anniversaries.
+- **Quantity and time habits lose the days total** and keep their unit total. A year's simulation
+  (`simulate_real_habits.py`) put the two within 3 days of each other in most cases (Steps 5 of 5).
+- **The unit total starts at 10 × the period's goal,** uses the bigger unit (ml → L, min → h, at least 1 h) and k or
+  M.
+- **Cut-down habits count days or weeks within the limit,** never what was had.
+- Every habit now gets 5–11 milestones in its first year.
+
+**Matched to it:**
+- MP.1, MP.2 and MP.7 lost their In total track;
+- MP.0's card lost *10 in total* and *25 times in total* (now *See all 4*).
+
+### Every milestone, every habit type: the board (17 Oct 2026, the user: "I need it in Figma … I want to see everything")
+
+A reference board in *Habit details* (`1373:2`), to the right of its frames: **Every milestone, every habit type**
+(`2260:2`).
+- **One card per kind of habit, 16 in all:**
+  - check every day, several times a day, some weekdays, every few days or set dates;
+  - quantity every day, over a week or month;
+  - time every day, over a week;
+  - a checklist;
+  - times a week, a month, a year;
+  - cut down with a daily or a weekly limit;
+  - quit;
+  - the extras on every habit with a run.
+- **Each card lists its tracks:** in a row, in total, the unit total, weeks, months or years of goals met, days within
+  the limit, since a slip, clean days in total, anniversaries.
+- **Each track shows every milestone in order as a medal,** marked under it Pop-up, Bar or Row (the most it gets the
+  first time), then a "then every …" pill.
+- It's a design reference, not a screen: in the app the habit page still shows only each track's next one.
+- The same list in words: [Milestones — Every Habit Type and Every Milestone](<Milestones — Every Habit Type and Every Milestone.md>).
+
+### Milestones on the habit page, by habit type: MP.0–MP.11 (17 Oct 2026, drawn, waiting for the user's review)
+
+**Milestones are revealed, never listed ahead** (the user, 17 Oct: "we shouldn't show all of the milestones at once.
+Then there will be no surprise at all"). This is the rule the habit page already had ("never draw milestones not yet
+reached beyond each track's next one"), now on A21's tracks and numbers:
+- **Each track shows only its next milestone,** as a ring (current ÷ target). The one after it appears only when this
+  one is reached.
+- **Anniversaries appear only once the first is reached;** the next one is never shown ahead.
+- **A newly reached milestone is tinted** the first time the page is seen, as the Progress card's Latest is.
+- **Reached ones stay for good,** even after a slip or a goal change (U3).
+- This is a reveal, not random rewards or unlocks (A21's "never"): what's shown is always true and earned.
+
+**The pages** (section *Habit details*, `1373:2`, a block under the existing frames). Each is the All milestones page
+with a habit type's own tracks and words:
+
+| Frame | Habit type | Tracks (the words) |
+|---|---|---|
+| MP.0 | Water's Progress tab | The Milestones card: 100 glasses replaces 10 in a row; one Next row per track (three) |
+| MP.1 | An amount, every day (Water) | In a row · In total · **Glasses in total** (from 100, ten times the daily goal) |
+| MP.2 | The reveal (Water reaches 30) | 30 joins the reached ones, tinted; only now does **50** appear as next |
+| MP.3 | A check, every day (Stretch) | In a row · In total, with **66 times in total** (daily habits only) |
+| MP.4 | A year on (Stretch) | **Anniversaries** appears with *One year of Stretch*; every reached one listed, newest first |
+| MP.5 | Some weekdays (Study, Mon/Wed/Fri) | *times* in a row (never days) · In total without 66 |
+| MP.6 | Times a week (Gym, 3 a week) | **Weeks of goals met** · In total (each day done) |
+| MP.7 | Time (Read, 20 min a day) | In a row · In total · **Hours in total** (from 5 hours) |
+| MP.8 | A checklist (Morning routine) | In a row · In total (a day counts once its last step is ticked) |
+| MP.9 | Cut down (Coffee, at most 2 cups) | **Days within the limit** · In total (judged when the day ends; no 66) |
+| MP.10 | Quit (Smoking) | **Since a slip** (the live clock: 1, 3, 7, 14, 30, 60, 90…) · **Clean days in total** (from 100; a slip never takes them away) |
+| MP.11 | Quit, after a slip and a comeback | The run starts at 0; regaining the best run says *Your best run again: 45 days*; rungs already reached aren't repeated |
+
+**Not drawn:**
+- an amount over a week or month: weeks of goals met plus the unit total, as MP.6 and MP.1;
+- several checks a day: counts days the goal is met, as MP.3;
+- tasks: no milestones.
+
+**Note:** the Android page now spans −66,000 to +64,300, close to the canvas limit. The next large addition needs
+another column.
+
 ### How was today: future work, out of the first release (17 Oct 2026, decision A22)
 
 The user: "during the launch, we won't be launching with this. This is for future work." How was today waits until

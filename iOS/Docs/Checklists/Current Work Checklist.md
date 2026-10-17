@@ -1220,6 +1220,26 @@ and the Add note keyboard coming up by itself.
     - [x] The user's review of WW (17 Oct): the week's days centred in their block, bigger, with today's ring visible.
       Every widget's streak now uses the 🔥 emoji, and all the widget boards are in *Widgets: every state*.
     - [ ] The user's review of the second pass.
+  - [x] The habit page's milestones by habit type (the user, 17 Oct: revealed, never all at once): MP.0–MP.11 in
+    *Habit details*. Each track shows only its next milestone; anniversaries appear once reached.
+  - [ ] The user's review of MP.0–MP.11.
+  - [x] Every milestone for every habit type, as one list (the user, 17 Oct): [Milestones — Every Habit Type and Every
+    Milestone](<../../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>).
+  - [x] In Figma, with real habits (the user, 17 Oct): board *Every milestone, real habits (v2)*, 30 habits of every type
+    and scale. Simplified to one total per habit (quantity and time: their unit total only; cut down: days within the
+    limit), from a year's simulation (`simulate_real_habits.py`).
+  - [x] The user's review of board v2: not predictable enough. Reworked the same day (v3, v4), and decided: one
+    simple rule (the user, 17 Oct: "The two-question rule is clear"). Four buckets (Days, Weeks, Months, Years) picked
+    by two questions; one in-a-row list and one in-total list each (the total = the goal × the number); anniversaries.
+    Figma *Milestones: one simple rule*; [the list](<../../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>).
+  - [x] Figma cleaned up (the user, 17 Oct): only the decided board is left in *Habit details*; boards v1–v3 and the
+    MP.0–MP.11 drafts were removed.
+  - [x] Pop-up, bar or row decided (the user, 17 Oct): the normal rule (pop-ups at a month, six months, each year,
+    anniversaries and the first milestone in the app; bars for every other first time and every total; the row for a
+    number reached before), three limits that override it (1 pop-up, 2 bars, 2 big moments a day), and shown at once,
+    first come first served. Card 4 of *Milestones: one simple rule*.
+  - [ ] Redraw the habit page's Milestones card (Progress) and All milestones to the decided numbers.
+  - [ ] Redraw V3.1, V3.4 and V3.8–V3.10 to "shown at once, first come first served" (no pause).
   - [ ] Re-run the frequency check with the new ladders and budget (`simulate_pileups.py`).
   - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol
     and caffeine timelines.
