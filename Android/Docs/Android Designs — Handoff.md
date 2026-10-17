@@ -1808,7 +1808,142 @@ with a bar or pop-up doesn't**.
   more today*.
 - **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
 
-### The milestone bar without ✕, and the band after it, 17 Oct 2026 (the user)
+### No "While you were away" card: away milestones live in the row (decided 17 Oct 2026)
+
+The research: away milestones are frequent (12–15 days a year for quit users; up to half of all milestones for people
+who log on the widget). But nobody asks for an away summary, and things at the top of Today or shown on opening are
+disliked. The user: "those cards are not adding any value … row is best".
+
+- **Any milestone reached away from Today shows as the band in its own row.** "Away" means: the widget, the watch, a
+  notification, another device, a quit clock, a cut-down day end, or a pop-up that was still waiting when the person
+  left.
+- **The band's animation plays once, the first time the row is on screen.** The burst rings the band's medal. The band
+  then stays for the rest of that day. It waits up to 7 days to be seen; after that, the milestone is on the habit's
+  page only.
+- **A landmark's band adds See**, which opens its pop-up. Nothing opens by itself.
+- **A folded section** shows a small medal on the habit's icon in its header; opening the section plays the band.
+- **Removed:** MS.4, MS.4.1, MS.4.3 and MS.4.4. **Drawn instead:** A.1 (a landmark's band with See) and A.2 (a folded
+  section with the medal).
+
+### Milestones in the routine player: RP.1–RP.3, 17 Oct 2026 (decided by the user)
+
+**Decided: in the routine player, a milestone that would get the row animation or the bar on Today gets the ribbon at
+the top of the hero card instead.** Everything else follows Today's rules: what counts, the tiers, the budget, repeats
+staying quiet, and the band on Today's rows afterwards. A landmark's pop-up waits for the end of the routine.
+
+**The rule: the moment comes on the step as it happens; the pop-up waits for the end of the routine.** The routine is
+one task, and its end is the natural break.
+
+- **RP.1, a step reaches a milestone** (animated):
+  - Mark done presses;
+  - the count rolls 0 → 1 and the wave fills;
+  - the habit's cookie pops with the ring and burst;
+  - **a ribbon slides into the top of the hero card** (*30 days in a row · reached today*, the habit's colour, with
+    the medal pop and a sheen) and stays on that habit's page;
+  - *Saved · Undo · Add note* follows as usual.
+
+  It sits at the top because the Saved snackbar covers the card's bottom. **No bar and no pop-up inside the player,
+  whatever the milestone's tier.** The player already shows that one habit.
+- **RP.2, the end of the routine:** *Reached in this routine* lists every milestone from the steps, once. Back on
+  Today, those rows show the band for the rest of the day, without the row animation.
+- **RP.3, a landmark reached in the routine:** its pop-up rises over the end screen, with *and 1 more in this
+  routine*. It counts as the visit's pop-up (budget, A21).
+- Every kind behaves the same on its step. An amount or a timer reaches it on the log or clock that meets the goal,
+  and only the button's words differ.
+- MS.7 (the old routine end) is now RP.2.
+
+### No research cards at launch (the user, 17 Oct 2026)
+
+**The first version ships without the *From research* cards in any pop-up:** "they are not looking good". They're
+removed from P.2, P.3, P.7, P.11 and P.14–P.16. Each pop-up now has the medal, the title and its line, *and N more
+today* where it applies, the next milestone, and Close · All milestones. The checked facts below stay on record for a
+later version.
+
+### Milestone pop-ups, second pass: P.1–P.16, spacing, centred rings, facts checked (17 Oct 2026, the user's review)
+
+**Layout:**
+- The medal sits 8 dp below the handle and the glow is smaller (150 dp), so the handle never touches it.
+- Under the medal: the title (24/30), 6 dp, then the line.
+- **Research card:** 18 dp sides, 16 dp top and bottom, 15/22 body, a divider, and the 12/17 source.
+- Buttons are 48 dp tall. The next-milestone ring's number is centred in the ring.
+
+**Every fact was checked against its source:**
+
+| Pop-up | Fact | Check |
+|---|---|---|
+| P.2, 30 in a row | UCL: people took 18–254 days for a new daily habit to feel automatic | Verified (Lally 2010, among the 39 participants whose curves fitted) |
+| P.7, 66 in total | UCL: a median of 66 days | Verified |
+| P.3, 100 in a row | 2024 review: a median of about two months, 4–335 days between people | Verified (Singh 2024: medians 59–66 days). The earlier "two to five months" line couldn't be found in the paper, so it's removed |
+| P.15, a comeback | UCL: missing one day didn't meaningfully set back automaticity | Verified, though the paper had few missed days, so it's suggestive |
+| P.14, from a bar's See | Repeating the same action in the same situation makes it automatic | Verified (Gardner, Lally & Wardle 2012) |
+| P.16, quit again | Strict dieters who were kind to themselves after eating off-plan ate less afterwards | Verified (Adams & Leary 2007) |
+| P.11, 90 days clean | Lapse vs relapse: one slip doesn't have to become a relapse | Marlatt & Gordon's relapse-prevention model. It fits any quit habit; the NHS smoking fact is removed, since there's no built-in smoking tracker |
+
+**Not used,** because they couldn't be verified: Hunt 1971's relapse curve, and a corrected gym figure from Buyalskaya
+2023.
+
+**New cases:**
+- **P.13:** cut down, from the card's See.
+- **P.14:** a bar-tier milestone opened from the bar's See.
+- **P.15:** a comeback, *again*.
+- **P.16:** quit *again* after a slip.
+
+**Same layout as an existing frame, so not drawn separately:**
+- 500, 730, 1,000 in a row and each later year (as P.4);
+- 52 weeks and 12 months (as P.5 and P.6);
+- 1,000 in total (as P.8);
+- 1,000 km (as P.9);
+- a pop-up promoted by the 45-day floor (as any landmark).
+
+### Milestone pop-ups: P.1–P.12, animated, 17 Oct 2026 (in progress), and the section cleaned up
+
+**The section now has four blocks:**
+
+1. **Row milestone · final:** R.1–R.10.
+2. **Milestone bar · final:** V3.1, V3.2, V3.4, V3.5, V3.7, and the V3.6 board.
+3. **Pop-ups · landmarks:** P.1–P.12.
+4. **Not yet revised:** the "While you were away" card (MS.4, MS.4.1, MS.4.4), its list (MS.4.3) and a routine's
+   end (MS.7). The old pop-up drafts (MS.2, V2.2, V2.5, V3.3, MS.4.2) were removed on 17 Oct, replaced by P.1–P.16.
+
+The superseded row and bar designs were removed at the user's request: MS.1–MS.6, MS.1.2, V2.1, V2.3, V2.4, V2.6–V2.8
+and ML.A–ML.C. **Undo · Note move to the most recent log**, as before (1.2.11); they never stay on an earlier row.
+
+**One pop-up for each landmark in the adopted report (A21).** Each is a bottom sheet with:
+
+- the medal at 112 dp in the habit's colour, over a soft glow;
+- the title and a plain line under it;
+- an optional *and N more today* chip;
+- at most one insight, with its source;
+- the next milestone;
+- Close · All milestones.
+
+| Frame | Landmark | Insight |
+|---|---|---|
+| P.1 | The first milestone in the app (*Your first milestone*, *and 4 more today*) | None |
+| P.2 | First time reaching 30 in a row | Lally's 18–254 days |
+| P.3 | 100 in a row | Singh 2024, two to five months |
+| P.4 | 365 in a row (a major) | None |
+| P.5 | 26 weeks of goals met | None |
+| P.6 | 6 months of goals met | None |
+| P.7 | 66 in total, daily habits only | Lally's median of 66 days |
+| P.8 | 500 in total | None |
+| P.9 | 100 hours of reading (a unit total) | None |
+| P.10 | One year of a habit (an anniversary, with *See the year*) | None |
+| P.11 | Quit, 90 days clean, opened from the card | NHS circulation fact, Stop smoking template only |
+| P.12 | Several in one visit: the best one, *and 2 more today* | None |
+
+**Motion (2.4 s):**
+
+| Time | What happens |
+|---|---|
+| 0–0.38 s | The sheet rises; the scrim fades in |
+| 0.20–0.75 s | The glow swells |
+| 0.25–0.82 s | The medal pops 0.3 → 1.12 → 1 with a turn |
+| 0.45–1.05 s | A ring and twelve dots burst |
+| 0.8 s on | Four sparkles twinkle |
+| 0.55 s on | The title, line, chip, insight, next milestone and buttons follow, about 80 ms apart |
+
+
 
 - **The bar has no ✕.** It goes:
   - after 5 s;

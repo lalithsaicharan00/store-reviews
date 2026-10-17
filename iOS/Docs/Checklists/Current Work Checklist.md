@@ -1183,6 +1183,18 @@ and the Add note keyboard coming up by itself.
     its recommendations.
   - [ ] Redraw the milestone frames to the adopted system (one moment at the pause, landmarks-only pop-ups, *and N
     more today*).
+    - [x] Section cleaned up: final row (R.1–R.10), final bar (V3), pop-ups, earlier drafts (17 Oct).
+    - [x] Pop-ups for every landmark, P.1–P.12, each animated in Figma Motion (17 Oct).
+    - [x] Second pass (the user's review, 17 Oct): spacing, centred ring numbers, every fact checked (Singh's wording
+      fixed; P.11 made quit-generic), and four missing cases added (P.13–P.16).
+    - [x] No research cards at launch (the user, 17 Oct): removed from every pop-up; the checked facts stay on record.
+    - [x] Routine player (the user, 17 Oct): a row-tier or bar-tier milestone gets the ribbon at the top of the hero
+      card instead; a landmark's pop-up waits for the end of the routine. Drawn as RP.1 (animated), RP.2 and RP.3
+      (animated).
+    - [x] No "While you were away" card (the user, 17 Oct; report "While You Were Away — A Card on Today, or the
+      Habit's Own Row"): away milestones show as the band in their row, animated once when first seen, with See on a
+      landmark's band and a medal on a folded section's icon. The card frames were removed; A.1 and A.2 were drawn.
+    - [ ] The user's review of the second pass.
   - [ ] Re-run the frequency check with the new ladders and budget (`simulate_pileups.py`).
   - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol
     and caffeine timelines.

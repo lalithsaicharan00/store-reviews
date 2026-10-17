@@ -42,6 +42,10 @@ report, the only thing that we are changing is the row will have this animation"
   - opt-in notifications for quit landmarks (7, 30, 90, 365);
   - a "Pop-ups for big milestones" switch;
   - a synced presentation log.
+- **No research insights at launch** (the user, later on 17 October 2026): the pop-ups ship without the insight library
+  below. It stays on record for a later version. When checked against their sources, two of its wordings needed
+  correcting: Singh 2024's "two to five months" isn't in the paper, and the NHS smoking facts don't fit, since there's
+  no built-in smoking habit. See the Android designs handoff.
 - **Before shipping,** the report's unverified points need checking: the Duolingo +1.7%, the Material and WCAG
   specifics, and the alcohol and caffeine timelines (no health facts for those templates until then). Its "after"
   frequencies are estimates: re-run them with `Milestones on Today Evidence/simulate_pileups.py`.
