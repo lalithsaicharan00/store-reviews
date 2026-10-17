@@ -1808,11 +1808,57 @@ with a bar or pop-up doesn't**.
   more today*.
 - **Still to redraw:** frames V2.2, V3.2 and V2.5 follow the older rules.
 
+### Widgets in one place, and 🔥 on every widget (17 Oct 2026, the user)
+
+**All the widget designs are in one place** (the user: "if all of the widgets are kept at one place, that would be
+easier"):
+- **The milestone boards moved:** WD, WM, WL and WW, with their label, are now in **Widgets: every state**, under its
+  older boards. They're no longer in the milestones section.
+- **The widget sections have their own column:** *Widgets*, *Widgets: adding and changing* and *Widgets: every state*
+  sit one under another, to the right of *Settings: Plus & Account*, *Help & Feedback* and *About*, ending level with
+  About.
+- **Why the column:** stacked under About, the page ran to about 135,000 tall, past the roughly 131,000 that Figma's
+  canvas scrolls to. It now spans −66,000 to +59,600.
+
+**Every widget's streak uses the 🔥 emoji, as Today does:** Google Sans Flex 12 in an 18 box, 2 from the number,
+replacing Material's fire icon. That's 55 places across the three widget sections and the four milestone boards.
+
+### Milestones on the This week 4×2 widget: WW (17 Oct 2026, drawn, waiting for the user's review)
+
+**WD's model on the week widget** (board WW, `2234:2`):
+- **The icon becomes the medal:** in the habit's colour, with its number, a glow and sparkles. The 44 dp icon in the
+  left panel gives way to the medal at the same size.
+- **The bar's slot becomes the band** (*14 days in a row*), across the right side.
+- **The rest stays:** the name, the streak, today's value, the button and the week's seven days are unchanged.
+- **Nothing moves:** the space between today's row and the week is already 24 dp (8 gap, 8 bar, 8 gap), so the 20 dp
+  band fits in it, and the bar keeps its place underneath.
+
+**The cases:**
+- **WW.1:** without a milestone, as it is today.
+- **WW.2, a build habit:** the + that reaches 8 of 8 (14 days in a row).
+- **WW.3, quit:** the clock passes 30 days (*30 days clean*). One update is scheduled for that minute, and it shows
+  through the next day.
+- **WW.4, cut down:** 14 days within the limit, shown the day after the day closed, with today's count back at 0.
+- **WW.5, a week goal:** met (*12 weeks of goals*).
+
+**The rules are WD's:**
+- It's static: the tap swaps the card.
+- It lasts the milestone day.
+- No medal with names or content hidden, or on a skipped or paused day.
+- The same on iPhone (locked widgets, U28: built only with the user's say-so).
+
+**The week's seven days, tidied (the user's review, 17 Oct 2026):**
+- **Centred in their block:** the days and their letters sit in the middle of the grey block (80 dp), no longer at its
+  top with empty space below.
+- **Bigger days:** 22 dp, corners 6, with the ✓ (16) exactly centred. The letters are centred under them.
+- **Today's ring stays visible:** it's a separate ring (28 dp, 1.5 dp, ink) with a small gap around today's day. It
+  was a border that the row clipped.
+- Done on WW's five widgets. The older This week frames in *Widgets: every state* still show the old strip.
+
 ### Milestones on the Today 4×4 widget: WL, decided 17 Oct 2026 (the user)
 
 **The same model as the 4×2 (WM).** The tapped row shows the medal and *30 days in a row* at once, holds still for 5
-seconds, then joins the done habits. It keeps the medal whenever it's on the widget that day. Board WL (`2230:2`,
-under WD):
+seconds, then joins the done habits. It keeps the medal whenever it's on the widget that day. Board WL (`2230:2`):
 - **WL.1–WL.3, a few still to do:** Read is tapped and reaches 30. After 5 seconds it comes first among the done
   habits, ahead of Take vitamins (earlier in the app's order, no milestone), so it stays on page 1 with its medal.
 - **WL.4, more still to do:** page 1 is full of habits to do, so Read goes to page 2, first among the done habits
@@ -1839,7 +1885,7 @@ locked widget rules). So a milestone shown on its row would leave the screen wit
 - Reasoned from first principles: the moment that matters is the tap, when the person is looking at that row. The
   milestone is never lost (the app's row band, the habit's 2×2 widget, the habit page).
 
-**The design (board WM, `2225:2`, after WD):**
+**The design (board WM, `2225:2`):**
 - **WM.1, before:** Read on 29 days in a row.
 - **WM.2, the tap:** the row is done at once, as every tap is. Its icon becomes the medal with 30, a glow and
   sparkles (WD's medal, scaled to the 32 dp icon slot). Its line says *30 days in a row* (Medium, the habit's dark

@@ -1210,6 +1210,10 @@ and the Add note keyboard coming up by itself.
     - [x] The Today 4×4 widget: the same model as the 4×2, drawn as board WL (WL.1–WL.5: a few still to do, page 2
       when page 1 is full, everything done with two milestones).
     - [x] The user's review of WL: approved (17 Oct).
+    - [x] The This week 4×2 widget: WD's model (the icon becomes the medal, the bar's slot the band; nothing moves),
+      drawn as board WW (WW.1–WW.5: none, a build habit, quit, cut down, a week goal).
+    - [x] The user's review of WW (17 Oct): the week's days centred in their block, bigger, with today's ring visible.
+      Every widget's streak now uses the 🔥 emoji, and all the widget boards are in *Widgets: every state*.
     - [ ] The user's review of the second pass.
   - [ ] Re-run the frequency check with the new ladders and budget (`simulate_pileups.py`).
   - [ ] Verify what the report couldn't before shipping: the Duolingo figure; Material and WCAG specifics; the alcohol
