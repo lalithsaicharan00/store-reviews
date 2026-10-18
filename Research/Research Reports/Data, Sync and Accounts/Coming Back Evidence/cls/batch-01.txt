@@ -1,0 +1,70 @@
+P65#2822|DRIVE_PRAISE|Has automatic Google Drive backups
+P65#3501|DRIVE_WANT|I wish it could backup to Google drive
+P65#3652|DRIVE_WANT|Provide backup to google drive
+P65#4054|DRIVE_WANT|so that when we change our phone , we can restore the data
+P65#4379|DRIVE_WANT|Please add google drive backup and restore
+P65#4547|DRIVE_WANT|Google drive sync option
+P65#4728|DRIVE_WANT|An option for google drive backup will be great
+P65#4877|DRIVE_WANT|Since android devices are all backed up basically to Google drive
+P65#6226|DRIVE_WANT|Backup to google drive should be added
+P65#9015|DRIVE_WANT|Backup with google drive or dropbox will add more value
+P65#9042|DRIVE_FAIL|still i cannot recover from the backup stored on Google drive
+P65#14090|DRIVE_PRAISE|Backup opslaan ook mogelijk in Google Drive of Dropbox
+N7#3111|OFF|
+P70#917|OFF|
+A76#996|DRIVE_PRAISE|the ability to backup on google drive
+P84#189|DRIVE_WANT|Cloud backup to google drive automatically
+P84#5241|DRIVE_WANT|backup via Google Drive would be desirable
+P84#18060|DRIVE_WANT|Hope there will be Google Drive sync
+P84#20095|OFF|
+P84#26171|DRIVE_WANT|I´m affraid that if I loose my phone all my lists and tasks will be gone
+P84#27276|DRIVE_WANT|autobackup to google drive
+P84#28071|DRIVE_WANT|so if one looses his device, he won't loose the data
+P84#28440|DRIVE_WANT|a way to backup to Google drive option
+P84#29196|DRIVE_WANT|automatic online backup/sync to google drive
+P84#29771|DRIVE_WANT|auto backup at specific location in phone or preferably in google drive
+P84#30756|DRIVE_WANT|I won't prefer to rely on an app without a backup in place
+P84#30782|DRIVE_WANT|Maybe make it optional, in case somebody does not trust putting his/her tasks in the cloud
+P84#31514|DRIVE_WANT|Provide database backup option with Google Drive and Dropbox
+P84#41087|WHICH_BACKUP|if you loose your phone or something like that you could get back an old backup
+P84#43602|DRIVE_WANT|backup function on cloud (google Drive or Dropbox)
+P84#43623|DRIVE_WANT|Bisogna aggiungere il backup automatico su cloud
+P84#50180|DRIVE_WANT|Única coisa que gostoria de mudar é um backup no google drive
+N9#4934|OFF|
+N9#5808|OFF|
+N9#6144|OFF|
+N9#10742|OFF|
+N9#12867|OFF|
+N9#13196|OFF|
+N9#15214|OFF|
+N9#24165|OFF|
+N9#24804|OFF|
+N9#37683|WRONG_ACCT|If I have multiple google accounts on my device and try to log into one, it ends up opening the other account
+N9#37890|OFF|
+N9#40325|OFF|
+N9#44183|OFF|
+N9#46721|OFF|
+N9#46968|OFF|
+N9#47135|OFF|
+N9#49319|OFF|
+N9#49354|OFF|
+N9#49678|OFF|
+N9#49966|LOST_NO_BACKUP|lack of effort to inform users they would lose everything unless it was backed up to GoogleDrive
+N9#50402|OFF|
+N9#50945|OFF|
+N9#51408|OFF|
+N9#51422|OFF|
+N9#51803|OFF|
+N9#52025|OFF|
+P9#713|MANUAL_HASSLE|Sadly import/export was just a JSON dump to the phone file system
+P9#1092|DRIVE_WANT|let the user connect the app to Google Drive somehow and sync on start
+P9#1118|DRIVE_WANT|Please allow daily auto backup to Google drive
+P97#9332|DRIVE_WANT|no hay ni backup ni restore con Google Drive
+A1#46779|WRONG_ACCT|I purchased the app on iPhone which has different iCloud Id
+N1#2922|OFF|
+N1#8696|OFF|
+N1#11113|OFF|
+N1#16839|WRONG_ACCT|It’s unclear how to organize my notes on iCloud and other accounts
+N1#22304|OFF|
+N10#10273|WRONG_ACCT|all my info was in the old iCloud email account
+P105#356|WRONG_ACCT|i get a popup to add a payment method to my second Gmail account on the phone

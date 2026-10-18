@@ -1045,9 +1045,12 @@ and the Add note keyboard coming up by itself.
     - [ ] **iPhone refunds:** built and tested separately, later (Apple's notifications; Apple decides refunds).
   - [ ] **The account remembers where the habits live** ("add those things like the account cloud ID … about each cloud
     ID"): the cloud (iCloud or Google Drive); its private account ID (CloudKit user record ID; Google's fixed account ID);
-    for Google a hint like `l•••••@gmail.com`, never the full email; last sync time and device kind. A new device on a
-    different cloud account **stops before syncing** and says where the habits are (iCloud: "a different Apple Account",
-    check Settings › your name). The user's worry: "they might be selecting one iCloud account or Google Drive account and
+    last sync time and device kind; **no email, not even masked** (14 Oct: "revealing the other person's account name").
+    A new device on a different cloud account **stops before syncing** and never names the other account: Google says
+    "Your habits are backed up to a different Google account. Choose it"; iCloud says "a different Apple Account" (check
+    Settings › your name). With no record to compare (no account, an empty Drive): "No habits found" with Choose another
+    Google account, the other ways and Start fresh; never a separate "Drive account" choice (the user, 14 Oct: "do some
+    research about … the ability to choose a different Google Drive account"; no review tells the two apart). The user's worry: "they might be selecting one iCloud account or Google Drive account and
     the other device they will be selecting different one and then they will be like oh … the data is gone."
   - [ ] **Without an account:** "Have you used Often Enough before?" says when this device's cloud is empty ("We didn't
     find habits in this iPhone's iCloud") and offers every way back: another Google account, the Apple Account in
@@ -1067,7 +1070,476 @@ and the Add note keyboard coming up by itself.
     Your account only knows you have Plus (and who's in your family; never your habits) · Moving phones? (a move code
     sends your habits once, locked, deleted as soon as they arrive).
   - [ ] **Delete my account** in Privacy (App Store 5.1.1(v)): removes only the Plus record and family membership.
+  - [ ] **Free people have no account at all, on any platform; the account is for Plus** (the user, 14 Oct 2026, later
+    the same day, replacing "free users should have an account if they want to"): "free users will not have account at
+    all … it will make everything complicated". **Plus offers an account right after buying, optionally**: "this account
+    will link your purchase to that email … so that you can use it in other devices to log in and get back your habits
+    but still your data will be only stored in your cloud storage iCloud or Google Drive"; skipping it says "if you don't
+    create an account, you won't be able to use the Plus features in other device. You can also link it later."
+  - [ ] **Continue with Google (the account) and Google Drive (a free person's backup) are different things** and can be
+    different Google accounts: "for free users only, we allow a selected Drive". Screen 1 of coming back offers both.
+  - [ ] Open: does free still sync one device at a time without an account (D4), or only back up? The user: "even
+    earlier we thought we will be having like one device sync at a time it will make everything complicated".
+  - [ ] **Moving with a code: scan a QR code or type 6 digits, both phones online** (the user, 14 Oct 2026: "this is what
+    we are going to use … even including the tool name"; Rulebook D15): Google code scanner (Android) / VisionKit
+    `DataScannerViewController` (iPhone); **SPAKE2** through a Cloudflare Worker relay (Durable Object), as Magic
+    Wormhole; one guess per code, 10 minutes; **on a wrong try the server ends that code and immediately tells the old
+    phone (through the relay) to show a new QR and 6 digits, with no tap** (the user: "it should immediately change the
+    code on the old phone … so that while building that feature, we get this"); the old phone's side lives on **Move to a new
+    phone** in the menu, never in onboarding ("generating the code … belongs to the move it to another phone page").
+    Android's menu has no such page yet (Google Drive & Backup's Move to another device was removed 12 Oct): give it one.
+  - [ ] **Later: check the iCloud steps' words on coming back** (Android 2.3, 3.3: "Choose Move to a new phone · In ≡ ›
+    iCloud & Backup"; the user, 14 Oct: "we need to update the copy when we have completed the design of the account pages
+    and all of that with the new changes"). Once the iPhone's account and iCloud & Backup pages are redesigned for the
+    Plus-only account, make the steps name the real place and words.
+  - [ ] **Words: signing in is a Google account (or Apple Account); backups are a Google Drive** (the user, 14 Oct:
+    "choose a different Google account … it should be like Google Drive account"). Coming back: "Try another Google Drive"
+    when no habits are found; "Try another account" (Another Google account / Continue with Apple) when no Plus account
+    is found. Google's own sheets keep their own "Sign in with Google": an app can't change Google's screens.
   - [ ] Still to check before building: the iPhone and Android apps see the same Drive app folder for one Google account.
+- [ ] **111. One backup file on every device** (added 14 October 2026, from the user, iPhone, iPad and Android alike;
+  Rulebook D5; why: [Backup File Format](<../../../Core/Backup File Format.md#one-file-on-every-device-14-oct-2026>)). The
+  user: "the backup file should be the same everywhere. The backup file created on iOS as well as Android should be the
+  same everywhere so that they can share it on different devices and use it on different devices." Asked "zip or DB? Or
+  … any other better file format?", they chose the shared zip and the name.
+  - [x] **The format: the shared core's checked zip** (`manifest.json`, `data.json`, `csv/`; `HabitRepository.backupFile`),
+    which both apps already write; never a copy of the database (`.db`) and never an ending of our own (`.oftenenough`:
+    Android can't open endings it doesn't know). *Decided and written down 14 Oct.*
+  - [x] **The name: `Often Enough backup YYYY-MM-DD HHmm.zip`** (local date, 24-hour time), the same on every device.
+    *Android designs updated 14 Oct: the file pickers (onboarding 6 `1789:19`, Settings' Restore `1472:155`) and 6.1's
+    file name (`1789:20`, whole on one line); `.oftenenough` gone from the file.*
+  - [ ] **Code, both apps:** add "backup" to the name (iPhone `BackupCenter.writeFile`, Android `BackupCenter.fileName()`;
+    both say `Often Enough YYYY-MM-DD HHmm.zip` today).
+  - [ ] **Code, iPhone:** the older Backup & Export page (`BackupExportView`, shown only when the database can't be opened)
+    still saves a `.db` (`HabitStore.backupFile`): make it save the shared zip, or remove its Save button. Reading an older
+    `.db` in Restore can stay until release.
+  - [ ] **Check once built:** a file saved on the iPhone restores on Android and one saved on Android restores on the
+    iPhone (a round-trip test across both, D5).
+- [x] **113. Plus & Account: one page for Plus and the account, with every scenario and flow** (added 14 October 2026,
+  from the user, Android first; follows 112). Their points:
+  - [x] **Rename the menu row Plus → Plus & Account** ("people think plus is the tab where purchase … upgrade selling is
+    there … right now plus is not anymore about just upgrade").
+  - [x] **Important things first, secondary second.** Say where the habits are (their chosen cloud: Google Drive, or
+    iCloud on iPhone) and what the account is for (it stores the Plus purchase and makes sync across devices work).
+  - [x] **Free: no account, and why** ("syncing is only in Plus"), plus a small, reminding nudge to upgrade; it's also
+    where people come to **restore their purchase**.
+  - [x] **The upgrade page can be separate**, opened from a button.
+  - [x] **Plus: what the account holds, said clearly and positively**: not "never your habits" but "we don't see your
+    habits; they're stored in your chosen Google Drive or iCloud".
+  - [x] **Our app icon** on the Plus card, not a glyph in a black circle.
+  - [x] **The missing flows: Get Plus and Restore purchase**, and every scenario, researched and arranged properly.
+  *Designed 14 Oct 2026 in Figma `1476:2`; see the Android handoff, "Settings: Plus & Account".*
+  - [x] **Second round (the user's review of `1866:154`): no copy that could offend.** Not "You don't need one. An
+    account comes with Plus"; never privacy as the reason Free has no account (Plus people would think they have less).
+  - [x] **The account doesn't sync the habits**: they sync through the person's own Google Drive; the account is for
+    signing in and keeping the purchase, and helps get the habits back quickly through Drive on other devices.
+  - [x] **2.2 Plus is yours made beautiful**: the cookie-shaped icon centred, icons on its points, not a dull screen.
+  - [x] **Continue with Apple on 2.2 only if the research supports it**: it doesn't, for Android; removed from 2.2 and
+    Create an account, kept on the sign-in screens.
+  - [x] **Split the long page** ("tabs … family and restore from Google Play"): two sub-pages opened from rows,
+    Already have Plus? and Your family (tabs considered and why not, in the handoff).
+  *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, second round".*
+  - [x] **Third round (the user, 14 Oct 2026, on `1872:2`): keep the options up front, not tucked into sub-pages**
+    ("what we earlier had is better than this one"): Sign in, Restore from Google Play, Join a family, and the family,
+    on the page itself.
+  - [x] **One structure in every state** ("the mental model for everyone should almost stay same … consistent and
+    predictable"): the same sections in the same places on Free and Plus; only their contents change.
+  - [x] **Where your habits are when Google Drive isn't connected**: a state of its own.
+  - [x] **Create an account inside the Your account card, as its primary action**, not outside it.
+  - [x] **The view for the person who manages the family** (the Plus Family buyer).
+  *Done 14 Oct 2026, `1476:2` (states 1–1.5, dialogs 7.3 and 7.4); handoff "Plus & Account, third round".*
+  - [x] **Fourth round (the user, 14 Oct 2026, on `1872:2`): the Plus card goes inside the Free card**, "because
+    upgrade to plus is … the action that we are aiming for in the first hand", freeing the space; "clean, neat".
+    *Done 14 Oct 2026: Upgrade to Plus is the Free card's filled button in 1, 1.1 and 4.2; handoff "Plus & Account,
+    fourth round".*
+  - [x] **Fifth round (the user, 14 Oct 2026):** the Get Plus habits bar in the Free card; **Where your habits are and
+    Your account merged into one section, Backup & account** ("merge it in a clear way"); **Back up to Google Drive and
+    Create an account as secondary (tonal) buttons**; **never say "Free works without an account"** (people take it as
+    a promise). *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, fifth round".*
+  - [x] **Sixth round (the user, 14 Oct 2026):** explain why Free has no sign-in; the Drive row says backup, Google
+    Drive and the email (Backed up to Google Drive / Not backed up); "Plus is yours" without *Yours forever …*; the
+    account (what it holds, Create an account, Sign out) moved into the plan card, consistently in every state, small
+    and clean; 7.1's "Lee keeps Plus." removed. *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, sixth round".*
+  - [x] **Seventh round (the user, 14 Oct 2026):** the Free card arranged so it isn't heavy (the 3 of 5 bar with the
+    offer it explains); the account line in plain English ("holds Plus purchase and helps you to sign in … on free plan,
+    there is nothing to sign in"); a researched button label (Get unlimited habits); long emails cut in the middle like
+    Google Play, everywhere, with a design; Join a family with six code boxes, not typing; 5.1, 5.2, 3, 3.1 and 3.3
+    presented like 2.2; Continue with Apple on Android researched (kept, made secondary).
+    *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, seventh round".*
+  - [x] **Eighth round (the user, 14 Oct 2026):** our logo, enhanced within the Logo Guide, wherever Plus is the subject
+    (2.2, 3.3, 4.1 matched to 3.3, and the small Plus slots); the Plus box in order of importance (unlimited habits, sync
+    across devices, more widgets) with **See what's in Plus**; invites researched: a single-use link and its QR code
+    instead of a guessable code, **Invite sent** with Share again and **Cancel invite**, and Join a family by link or
+    QR. *Done 14 Oct 2026, `1476:2`; handoff "Plus & Account, eighth round".*
+  - [x] **Ninth round (the user, 14 Oct 2026):** no cookie behind the logo anywhere (white tile and shadow only); 2.2's
+    wrong line fixed; Continue with Apple on 2.2 answered (not needed); **Get Plus leads with a long, compact feature
+    list**, with Plus and Plus Family as equal choices. *Done 14 Oct 2026, `1544:3`; handoff "Plus & Account, ninth round".*
+  - [x] **Tenth round (the user, 15 Oct 2026):** Get Plus uncluttered: one-liners, only the sync line explained, fewer
+    icons, every device listed at a glance (Works on …); 2.1's background updated. *Done 15 Oct 2026, `1544:3`, `1867:2`;
+    handoff "Plus & Account, tenth round".*
+  - [x] **Eleventh round (the user, 15 Oct 2026):** Get Plus's bottom spaced out, its line and white removed (also on
+    2.1 and 2.1.2); devices paired (others | Apple); Payment pending as its own waiting screen. *Done 15 Oct 2026;
+    handoff "Plus & Account, eleventh round".*
+  - [x] **The missing screens (the user, 15 Oct 2026: "create those empty screens … wherever they fit … then I will
+    tell you what to create next").** Placed as empty frames, then designed and linked the same day ("create those screens. And also connect those arrows"):
+    - [x] Upgrade to Plus Family: 8 · the upgrade ($35.00), 8.1 · Google Play's sheet, 8.2 · Plus Family is yours,
+      8.3 · Continue with Google.
+    - [x] Plus Family from Get Plus: 2.4 · Plus Family chosen, 2.5 · Google Play's sheet, 2.6 · sign in to invite (no
+      Not now), 2.7 · Continue with Google.
+    - [x] Families: 7.7 / 7.8 Sign out? (manager / member), 7.9 / 7.10 Delete your account? (manager / member).
+    - [x] Invite links that don't work: 5.3 ended, 5.4 already used, 5.5 cancelled, 5.6 family full.
+    - [x] Smaller: 5.7 you already have Plus, 5.8 you're already in a family, 3.5 / 4.3 couldn't connect, 7.2.1
+      confirm it's you before Delete, 7.2.2 account deleted.
+    - [x] Arrows from the page states and within each flow (48; one unavoidable crossing).
+    *Done 15 Oct 2026, `1476:2`; handoff "Plus & Account, twelfth round".*
+  - [x] **Thirteenth round (the user, 15 Oct 2026):** Get Plus given breathing space, scrolling on short phones, with the
+    choice (Just you | Family) researched and placed first. *Done 15 Oct 2026, `1544:3`, `1906:82`; handoff "Plus & Account,
+    thirteenth round".*
+  - [x] **Fourteenth round (the user, 15 Oct 2026):** Works on labels given room; the choice restyled like Progress's
+    connected buttons, chosen white and the other grey, never black; everywhere the page appears. *Done 15 Oct 2026.*
+  - [x] **Fifteenth round (the user, 15 Oct 2026):** the choice redone the native way, radio rows in a plain white card
+    (no border, no shadow), so only Get Plus draws the eye. *Done 15 Oct 2026; handoff "fifteenth round".*
+  - [x] **A notification to the manager when someone joins** (the user, 15 Oct 2026: "small notification to the manager
+    when someone joins their family"; no email). *Designed 15 Oct 2026 as 5.2.1 and approved by the user ("The notification looks good");
+    handoff "sixteenth round".*
+- [x] **119. Onboarding: new to the app, checked, and the notifications permission** (added 15 October 2026, from the
+  user, Android first; the same on the iPhone). Their points:
+  - [x] **Missing screens:** an idea opens its own form filled in (07.1), and the end of onboarding, Today with the
+    first habit (07.2); arrows and the two menu states under 06.
+  - [x] **The ideas: the most common habits, as people say them, every day** (researched from 4,407 habit statements).
+  - [x] **Notifications are asked only when a reminder is turned on**; allowed keeps it on, not allowed turns it off
+    (Rulebook U37); designed in the habit form's Reminders (2.1.6–2.1.6.4).
+  - [x] **Several reminder times, native and clear** (the user: "is this like intuitive … a native Android pattern?"): rows
+    with a clock icon, the time and a trailing ✕, + Add a time, Android's time picker (handoff "Reminder times, the
+    Android way").
+  *Designed 15 Oct 2026, Figma `1548:2`, `1302:2`; handoff "Onboarding: new to the app, and the notifications
+  permission". The iPhone's welcome and reminders follow U37 when updated.*
+- [x] **120. Onboarding: coming back, checked and completed** (added 15 October 2026, from the user, Android first).
+  Their points:
+  - [x] **Is anything missing?** Six screens added: choose the account the habits are in (a different Google account,
+    and always after an Apple sign-in), Plus back but no habits, Couldn't connect, the move stopped, a backup from a newer
+    version, and Start fresh through Your days and weeks to the empty Today.
+  - [x] **How Drive access works on a new phone, answered and documented** (the permission is remembered per Google
+    account; the phone still has to know which account): handoff "Google Drive on a new phone".
+  - [x] **2.5's words say which account is which** (the user: "your Plus is linked to … a different account and your
+    Google Drive is in a different account"): *Your Plus is on the account you signed in with. Your habits are in a
+    different Google Drive account: choose the one that holds them.* · Choose the Drive account.
+  *Designed 15 Oct 2026, Figma `1549:2`; handoff "Onboarding: coming back, the missing screens".*
+- [x] **121. Today: every screen it needs, arranged** (added 15 October 2026, from the user, Android first). Twelve screens
+  added (full length, after a tap, a running timer and its bar, the long-press menu, Couldn't save, Arrange Today, the
+  filter sheet with and without groups, a filtered Today, the calendar, another day); the section laid out in four rows
+  with arrows from Today's buttons. *Designed 15 Oct 2026, Figma `1260:2`; handoff "Today: every screen it needs".*
+- [ ] **123. How was today: mood and the day's note** (added 16 October 2026, from the user's brainstorm; Android first).
+  **Future work, not in the first release** (the user, 17 Oct 2026; Android decision A22): it waits until the core
+  habit tracking is stable, with more research first. Its Figma section is kept as it is, and its widgets and its
+  screens from Today and Habits were moved into it; every other screen no longer shows it.
+  Research: [Mood and a Note for the Day — Should a Habit Tracker Have Them](<../../../Research/Research Reports/Day Structure and Organization/Mood and a Note for the Day — Should a Habit Tracker Have Them.md>).
+  Designed in Figma, section *How was today: mood and the day's note* (`2037:2`), waiting for the user's review:
+  - [x] Today's card (M.1–M.1.7): five faces with words, one tap; Add a note; mood and note saved; the note's page; a note without a mood; ⋮ Clear mood / Hide from Today; hidden, with Undo.
+  - [x] Other days and settings (M.2–M.2.5): yesterday, a later day (note only), under a notice, the evening reminder (off at first), Settings › General › How was today?.
+  - [x] Progress (M.3–M.3.5): the card in Week, Month and Year (Year in Pixels), the Mood page (pixels, how often, beside your habits), early on, a tapped day.
+  - [ ] The user's review.
+  - [x] Emoji chosen over icons (A17: always the platform's own emoji, never downloaded); applied to every mood frame.
+  - [x] A built-in habit (A18): Progress cards like any habit's, emoji on neutral tiles (M.3–M.3.2); its details page
+    with Year in Pixels (Emoji | Colours, a validated no-red scale) and Notes tabs, ⋮, reminder, early state and tapped
+    day (M.4–M.4.6); Settings › General's mood pages deleted; snackbar points to Arrange Today.
+  - [x] Second round (16 Oct): emoji alone at 24 dp in Add note; no reminder or notification (M.2.3, M.4.4 deleted);
+    Progress week and month emoji without grey tiles; Year in Pixels sized from the width (A19); a paused day changes
+    nothing.
+  - [x] M.5 approved and applied to Today's Arrange Today (2–2.4); How often fixed to fit; Beside your habits removed (16 Oct).
+  - [x] One row the height of a habit (17 Oct): add_reaction icon (chosen from 23), ⌄ opens the faces under the row, logged shows today's emoji and word; touch and hold for See all days, Clear mood, Hide from Today; rolled out to all 14 screens with the card (1, 1.1–1.1.2, 1.8, 4.2, 4.3, 5, 6, M.1–M.2.2).
+  - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
+  - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
+  - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **128. Logging a time by hand: easy, and each platform's native way** (added 18 October 2026, from the user, while
+  reviewing Android's Add log for a time: "think about the UX … they have to type … hour, then minute and then second …
+  first thing it should be very easy to log, second thing it should feel very native … add the note in the
+  documentation so that in iOS it does how it happens natively in the iPhone").
+  - [x] **Android, designed** (18 Oct): **Hours** and **Minutes** boxes as Android's own time picker types a time
+    (Material 3 `TimeInput`), the cursor already in Minutes; Seconds only on a timer's log. Why, with the reviews and
+    the Clock app's keypad compared: [Android Designs — Handoff](<../../../Android/Docs/Android Designs — Handoff.md>),
+    "How long: the native Android way". Rulebook U22.
+  - [ ] **Android, built:** `DurationCard` changed to match (two boxes; minutes over 59 carried into hours).
+  - [ ] **The iPhone, the iPhone's way** (after the Android revamp; the iPhone is frozen until then): Apple's own control
+    for a duration is the **countdown-timer picker** (`UIDatePicker` `.countDownTimer` / SwiftUI wheel: hours and
+    minutes, as Clock's Timer, [Apple's Pickers guidance](https://developer.apple.com/design/human-interface-guidelines/pickers)).
+    Decide then between that wheel and typed boxes, weighing the reviews above (people want to type), and keep Seconds
+    only for a timer's log. Today the iPhone shows hours, minutes and a separate Seconds field.
+- [ ] **127. Which milestones appear, and how often, for each kind of habit** (added 17 October 2026, from the user:
+  "we will solve this problem separately"). A pop-up, or even a bar, for every milestone would be a lot. The simulation
+  in the milestones evidence found:
+  - an early user with 5 habits would see something on 58 of their first 90 days;
+  - an established user with 8 habits, on about 225 days a year (counting only new bests: about 43).
+
+  Decide across the whole app, kind by kind (daily, week and month goals, amounts, timers, checklists, quit habits,
+  *in total*), which milestones get a pop-up, which get the bar, and which stay on the row.
+  - [x] Researched: a deep-research report from Claude's prompt, "Milestone System — Rewarding Every Habit Without
+    Flooding the Day" (17 Oct). It proposes four tiers, a daily budget, ranking, per-kind ladders, insights and a
+    monthly floor.
+  - [x] Decided (the user, 17 Oct, Android decision A21): adopted. The one change: the row milestone animation (R.1, R.2)
+    plays only when the milestone shows in the row alone, never with a bar or pop-up. The report's open decisions take
+    its recommendations.
+  - [x] Redraw the milestone frames to the adopted system (one moment at the pause, landmarks-only pop-ups, *and N
+    more today*).
+    - [x] Section cleaned up: final row (R.1–R.10), final bar (V3), pop-ups, earlier drafts (17 Oct).
+    - [x] Several milestones in one visit, redrawn to the report (17 Oct): V3.8 (taps get the row band only), V3.9 (one bar
+      at the pause for the best, *and 1 more today*), V3.10 (the motion). V3.2 and V3.7 are marked as replaced.
+    - [x] Pop-ups for every landmark, P.1–P.12, each animated in Figma Motion (17 Oct).
+    - [x] Second pass (the user's review, 17 Oct): spacing, centred ring numbers, every fact checked (Singh's wording
+      fixed; P.11 made quit-generic), and four missing cases added (P.13–P.16).
+    - [x] No research cards at launch (the user, 17 Oct): removed from every pop-up; the checked facts stay on record.
+    - [x] Routine player (the user, 17 Oct): a row-tier or bar-tier milestone gets the ribbon at the top of the hero
+      card instead; a landmark's pop-up waits for the end of the routine. Drawn as RP.1 (animated), RP.2 and RP.3
+      (animated).
+    - [x] No "While you were away" card (the user, 17 Oct; report "While You Were Away — A Card on Today, or the
+      Habit's Own Row"): away milestones show as the band in their row, animated once when first seen, with See on a
+      landmark's band and a medal on a folded section's icon. The card frames were removed; A.1 and A.2 were drawn.
+    - [x] The small 2×2 widget, decided (the user, 17 Oct): WD, the same on Android and iPhone. On a milestone the
+      icon's slot becomes the medal with its number, a glow and sparkles, and the bar's slot becomes the tinted band
+      (*30 days in a row*); the name and today's line stay. Static: the tap swaps the card, no animation. Checked
+      possible on both phones. Variations A, B and WC were removed from Figma.
+    - [ ] When building the small widget (Android, then the iPhone's small square widget): **reserve the bottom slot
+      at the band's height (20 dp) in every widget**, even when it holds the 12 dp bar, so the habit's name and its
+      line sit at the same height in every card. Never grow the slot when the band appears.
+    - [x] The Today 4×2 widget, option B (the user, 17 Oct): the tapped row shows the medal and *30 days in a row*,
+      holds 5 seconds, then sinks; it keeps the medal for the day whenever it's on the widget again. Drawn as board
+      WM (WM.1–WM.4).
+    - [x] The user's review of WM: approved (17 Oct), with one rule added. On a Today widget, done habits that
+      reached a milestone today come first among the done ones (several in the app's order), then the other done
+      habits in the app's order.
+    - [x] The Today 4×4 widget: the same model as the 4×2, drawn as board WL (WL.1–WL.5: a few still to do, page 2
+      when page 1 is full, everything done with two milestones).
+    - [x] The user's review of WL: approved (17 Oct).
+    - [x] The This week 4×2 widget: WD's model (the icon becomes the medal, the bar's slot the band; nothing moves),
+      drawn as board WW (WW.1–WW.5: none, a build habit, quit, cut down, a week goal).
+    - [x] The user's review of WW (17 Oct): the week's days centred in their block, bigger, with today's ring visible.
+      Every widget's streak now uses the 🔥 emoji, and all the widget boards are in *Widgets: every state*.
+    - [x] The user's review of the second pass: replaced by the decided rule and the 18 Oct design fixes.
+  - [x] The habit page's milestones by habit type (the user, 17 Oct: revealed, never all at once): MP.0–MP.11 in
+    *Habit details*. Each track shows only its next milestone; anniversaries appear once reached.
+  - [x] The user's review of MP.0–MP.11: the drafts were removed (17 Oct); the habit page itself was updated (18 Oct).
+  - [x] Every milestone for every habit type, as one list (the user, 17 Oct): [Milestones — Every Habit Type and Every
+    Milestone](<../../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>).
+  - [x] In Figma, with real habits (the user, 17 Oct): board *Every milestone, real habits (v2)*, 30 habits of every type
+    and scale. Simplified to one total per habit (quantity and time: their unit total only; cut down: days within the
+    limit), from a year's simulation (`simulate_real_habits.py`).
+  - [x] The user's review of board v2: not predictable enough. Reworked the same day (v3, v4), and decided: one
+    simple rule (the user, 17 Oct: "The two-question rule is clear"). Four buckets (Days, Weeks, Months, Years) picked
+    by two questions; one in-a-row list and one in-total list each (the total = the goal × the number); anniversaries.
+    Figma *Milestones: one simple rule*; [the list](<../../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>).
+  - [x] Figma cleaned up (the user, 17 Oct): only the decided board is left in *Habit details*; boards v1–v3 and the
+    MP.0–MP.11 drafts were removed.
+  - [x] Pop-up, bar or row decided (the user, 17 Oct): the normal rule (pop-ups at a month, six months, each year,
+    anniversaries and the first milestone in the app; bars for every other first time and every total; the row for a
+    number reached before), three limits that override it (1 pop-up, 2 bars, 2 big moments a day), and shown at once,
+    first come first served. Card 4 of *Milestones: one simple rule*.
+  - [x] Redraw the habit page's Milestones card (Progress) and All milestones to the decided numbers (18 Oct).
+  - [x] Designs brought in line with the decided rule (18 Oct): V3.8–V3.10 and P.3, P.7, P.8, P.9, P.12 removed; V3.2
+    and V3.7 current again; P.1, P.2, P.4, P.11, P.13, P.16, RP.3, R.3, R.5, V3.6 and the widget examples fixed.
+  - [x] Milestone notification for quit and cut-down habits (the user, 18 Oct: off by default, opt-in), approved:
+    N.1–N.6 in the milestones section. The switch is on the habit's form; Android asks once; a notification at 30 days,
+    180 days, a year and each year after (cut down: the day after the day closed); tapping it opens the pop-up.
+  - [x] Monthly look-back card: not wanted (the user, 18 Oct); its frames were deleted.
+  - [ ] **The frequency check: last, just before release** (the user, 18 Oct). It's a simulation, not a design.
+    - **What it is:** run the final milestone rule (the four buckets, in a row, in total, anniversaries; pop-up, bar or
+      row, shown at once with the day's limit) for a year, for a range of people:
+      - a new user with 3–5 habits;
+      - someone with 8–10 habits;
+      - someone who misses about one day in five;
+      - a quit-only user;
+      - someone who logs mostly from widgets.
+    - **What it counts:** for each, how many pop-ups, bars and row-only milestones they'd see per week and per month.
+    - **What it answers:**
+      - Too much? Does anyone hit the day's limit often, or see a pop-up most weeks?
+      - Too little? Does anyone go a month or more with no bar or pop-up?
+    - **What comes out:** a table per kind of person, and a yes or no on whether any number needs changing.
+    - **The script:** `Milestones on Today Evidence/simulate_pileups.py` and `simulate_one_rule_v2.py` are the starting
+      point; update them to the final rule first.
+  - [x] ~~Verify what the report couldn't before shipping:~~ dropped (the user, 18 Oct): the facts were only for the research cards, which are not shown at all; nothing to verify. the Duolingo figure; Material and WCAG specifics; the alcohol
+    and caffeine timelines.
+- [ ] **126. Milestones on Today: when, how much, and coming back** (added 17 October 2026, from the user, Android
+  first, the same logic on the iPhone: "milestone is a big thing so we need little bit celebration, but … not too much
+  … when user comes back how we should present … when we should not present it").
+  - [x] Researched: report "Milestones on Today — When, How and What Not to Do" (233 + 934 matches scanned, 11 quotes
+    verified; builds on the 30 Sep and 11 Oct milestone reports).
+  - [x] Drawn: a new Figma section, Milestones on Today: MS.1 the tap (burst, haptic, medal in the subtitle), MS.1.1 the
+    rest of the day, MS.2 the sheet, MS.3 Undo, MS.4 / MS.4.1 coming back (one card, up to three), MS.4.2 / MS.4.3
+    their sheets, MS.5 a past day logged late, MS.6 the rules board (17 Oct).
+  - [x] Several at once (the user, 17 Oct): one burst per visit, the rest quiet (MS.1.2); the same milestone on
+    several habits as one line (MS.4.4); a routine lists its milestones at the end (MS.7); report section added (9 more
+    quotes verified).
+  - [x] Version 2 (the user, 17 Oct: "showcase that milestone, not hide it"; a pop-up for one, something snackbar-sized
+    for several): report "Milestones on Today, Version 2 — Shown Up Front, Never Worn Out"; frames V2.1–V2.8 added
+    below version 1, nothing removed.
+  - [x] Version 3, the milestone bar (the user, 17 Oct), drawn as V3.1–V3.6 below version 2:
+    - The bar takes the habit's own colour, as a gradient, and something moves inside it so it feels special.
+    - It stays about 5 seconds. It goes as soon as the person touches anything else, or when the next milestone's bar
+      comes. It can be dismissed.
+    - **One bar per milestone:** a second habit's milestone replaces the first habit's bar. No "2 milestones today",
+      and no grouped pop-up at the end.
+    - **See** opens that habit's pop-up. A pop-up appears by itself only when one milestone comes alone.
+  - [x] The row milestone animation, R.1 (the row alone) and R.2 (in a full Today, the layout below moving 48 dp as
+    Undo · Note open), in Figma Motion, checked frame by frame from exported video (17 Oct). Approved: "it's looking
+    really good".
+  - [x] The opt-in notification for quit habits: opt-in, landmarks only (7, 30, 90, 365), per the adopted report
+    (A21).
+  - [x] The milestone line kept all day (the user, 17 Oct). Three options drawn (ML.A pill, ML.B band, ML.C beside the
+    name); **ML.B, the band, chosen**. R.1–R.10 were rebuilt with it, one per kind: check, several times a day, amount
+    +, amount typed past the goal, a timer reaching its goal, time typed, checklist, quit, cut down. Checked from
+    exported video.
+  - [x] Quit and cut-down milestones show the next day, once, when the row is first on screen; logging never
+    triggers one.
+  - [x] Amounts from 1,000 in rows use k (*6.2k/10k steps*), as `Format.amount` already does. Two older frames still
+    show full numbers: 1.2.2 and 7.5.
+  - [ ] The iPhone: the same rules once Android is final (today its milestone is a line beside Undo, never kept for
+    the day or shown on coming back).
+- [x] **125. Today: a done habit's round button, the same for every kind** (added 16 October 2026, from the user,
+  Android first: "the mental model overall, it needs to be same for everything").
+  - [x] Researched: report "Once a Habit Is Done — One Rule for the Round Button" (300 reviews read, 25 quotes verified).
+  - [x] Decided and drawn: the fill says done, the symbol says what a tap does (✓ / + / ▶ / ⌄ in the habit's colour);
+    9 done rows that were still grey fixed (Stretch ▶, Skincare ⌄).
+  - [x] The user's review: approved (18 Oct): every habit keeps its action symbol, and the fill says done, as the report says.
+  - [x] Today checked for gaps: 1.11 past the goal (10/8 glasses), 1.12 / 1.12.1 a cut-down habit at and over its limit
+    (neutral, never red), 1.13 a 24-character name (two lines, the row grows). Nine stale frame names fixed (16 Oct).
+- [x] **124. Today: a checklist's steps, the fill and ticked steps** (added 16 October 2026, from the user, Android first:
+  "filling like this whole card … feels a little bit weird … what if we have six or seven … checked or completed states
+  should be a little bit different … maybe just filling that row").
+  - [x] Researched: report "Checklist Steps on a Today Row — Fill, Ticked Steps and Long Lists" (311 reviews read, 35
+    quotes verified).
+  - [x] Drawn: 1.7 revised; 1.7.1 (seven steps), 1.7.2 (last step ticked), 1.7.3 (folded after the pause, with Undo last
+    step · Add note), in a new row under row 1 (everything below moved down 960).
+  - [x] Two blocks (the user, 16 Oct, pointing at 1.2): the habit's block (its line + Undo · + Note) is
+    filled; the steps are a separate white block under it.
+  - [x] Day details' and the routine player's checklists follow (the user, 16 Oct): ticked steps grey and crossed out
+    in all three frames.
+  - [x] The Android page re-stacked: every section 240 apart, How was today right after Today, no overlaps.
+  - [x] Today laid out by number (the user, 16 Oct): one block per series, each family on its own row, all 38 arrows
+    redrawn.
+  - [x] The user's review of the new row: approved (18 Oct).
+  - [x] After-log buttons shortened everywhere to ↶ Undo · + Note (✎ Note with a note), white pills with a 1 dp outline;
+    all 18 lines fit (243/300 dp); TalkBack keeps the full names. Walk's + fixed to green in 1.2.2 and 7.5 (the user,
+    16 Oct). 1.2.9's milestone now in the row's subtitle for the rest of the day ("60 days in a row", the user, 16 Oct).
+- [x] **122. Today, worked out from scratch: where things go, other days, arranging** (added 16 October 2026, from the
+  user: "it's not about what iPhone has … What's the right thing to do?"; then "directly change in the designs").
+  Research: [Today — Where Things Go, Other Days and Arranging](<../../../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Today — Where Things Go, Other Days and Arranging.md>).
+  Designed in Figma `1260:2`, waiting for the user's review:
+  - [x] Anytime and Quitting below the timed sections by default; each can be moved in Arrange Today; nothing moves them by itself.
+  - [x] A new habit goes to the end of its time of day, in the order created; Today shows it lit, *Added to the end of Morning · Move* (1.6).
+  - [x] New group: a name (suggestion chips) and its habits; no colour (3.3); the colour dots removed from the group chips (3, 3.1).
+  - [x] Back to today above the day bar, on past and future days (4.2, 4.3); Back returns to today first. Secondary, the day bar's white surface (the user, 16 Oct: "not a primary thing that users will do"), not filled ink.
+  - [x] Future days: a preview, no logging; a task can be *Done today*; Day details offers a note and Skip this day (4.3, 4.3.1).
+  - [x] Arrange Today: every habit, one order every day, a handle or hold to drag (also into another time of day), Move up / Move down / Move to… by tapping, a time of day's ⋮ (sort once, edit), Anytime and Quitting movable, Paused last, saves as it goes (2, 2.1–2.4); Arrange… in a row's menu (1.4).
+  - [x] Times of Day › opens the same page as Settings › Times of Day (2.5).
+  - [x] The user's review: approved (18 Oct). **First round, 16 Oct 2026 (the user):** fixed the same day:
+    - [x] 1.2: *Undo done* and *Add note* were cramped underlined links cut off inside the text. Second try (the user: "still not looking good … design it like a native Android thing"): two extra-small white pill buttons (a Material 3 button group) on their own line, lined up with the name, and the row's progress fill covers the whole row (a band with a white strip under it was "half filled and half white", the user).
+    - [x] One predictable timer: ▶ always opens the full-screen timer (1.3, the routine player's own timer card, unchanged); ⌄, swipe down or Back returns to Today, where the row keeps the clock (*2:42 of 10 min*, no "· running", which was cut off) and ⏸ (1.3.1); the black timer bar is gone. Outside the app it's the Live Update (A11 D4).
+    - [x] 1.6: the new habit's row is white like every row (grey meant nothing); the snackbar says where it went.
+    - [x] Groups (the user: no Edit groups page; New group "weird", naming and choosing habits at once): two steps. Groups page (3.3), New group as a name-only dialog (3.3.1), the empty group with Add habits (3.3.2), the habit picker (3.3.3), the group with its habits, ✕, and ✏ Rename and 🗑 Delete up front in the top bar instead of a ⋮ (3.3.4; the user: "keep it up front"), Delete group (3.3.5), Rename group (3.3.6). The old one-screen New group is gone.
+    - [x] The habit form's Group page and New group dialog (`1563:494`, `1567:106`) now say what the groups flow says: Create (not Add), the same footer lines, the same groups in the same order (Health, Home, Mind); Filter and the no-groups sheet too.
+    - [x] Swipes, researched for Android (report "Swipe on a Today Row — the Android Way"), moved to the end of the section and drawn for every kind (7.1–7.24): right is Add note on every row (Edit note if there is one); left is Skip today where a day can be skipped, Undo skip once skipped, Log a slip on a quit row (after a slip: Undo · + Note on the row), nothing on week/month goals, cut-down habits, tasks, a met goal or a running timer; Skip that day on a later day. Acting on release differs from U14 (iPhone: reveal only): **the user's decision**.
+    - [x] Checklist steps and the habit picker use native Material checkboxes (the user: "looks very dummy").
+    - [x] The missing Today states: checklist steps in the row (1.7), done rows settled (1.2.1), timer at its goal (1.3.2), quit row menu (1.4.1), all done (1.8), backup paused card (1.9), Hide done habits/tasks in Filter (3) with the chip (3.4), a group with nothing today (3.5).
+    - [x] Undo and Add note after a log: researched (report "After a Log — Should Undo and Add Note Stay or Go"): they come after every log and stay on the last-logged row until the next log, another day or leaving Today, never on a timer; drawn for every kind (1.2.1–1.2.11).
+    - [x] Notices on Today in their own row (1.9–1.9.7: backup, data held, an account switched on another device (Plus only; never for a switch on this phone, the person's own choice), reminders, a pending Plus payment; no renewal notice, since Plus is one purchase, the user), the day's note (1.10) and Note for the day (1.1), the Arrange tip (2.0).
+    - [x] On a later day the swipe says Skip this day (the user's wording, 7.24).
+    - [x] The user's decision: Android swipes act on release (vs U14), confirmed 16 Oct (Android decision A16).
+    - [x] The user's decision (18 Oct): people can't change the swipe actions, at least in the first version.
+      - [x] Act on release or show a button: researched 16 Oct (report "Swipe on a Row — Act When You Let Go, or Show Buttons"; 922 swipe reviews read, 145 quotes verified). With one action a side, act on release past halfway; a guard for each failure people describe. Confirmed by the user, 16 Oct.
+      - [x] TalkBack: each row's swipe actions offered as TalkBack actions with the same names (handoff, 16 Oct).
+      - [x] 7.24 had shown a blank band (Water's name slid off). Fixed by the short words below (16 Oct).
+      - [x] Before halfway, an icon and a short word (Skip, Undo, Slip, Note); past halfway, the full words (the user, 16 Oct: icon-only rejected). Drawn on 7.1–7.8, 7.11, 7.12 and 7.17–7.24.
+      - [x] Undo skip on the row instead of 7.10's snackbar (matches the after-log decision): the user's go-ahead 16 Oct; 7.10 redrawn with Undo · + Note on the row, no snackbar left in 7.x.
+      - [ ] Proposed: the same swipe on the iPhone (left Skip, right Add note, act on release); changes U14, the user's say-so.
+- [ ] **118. The website, before release** (added 15 October 2026, from the user: "note down that website is pending
+  … we will work on it … before releasing"). Not started. What the app already points to:
+  - [ ] **oftenenough.com** itself (the domain and a simple home page).
+  - [ ] **The privacy policy page** at a stable address: About's Privacy policy row opens it, and Google Play and the App
+    Store both ask for its link.
+  - [ ] **Invite links** (`oftenenough.com/join/…`): open the app at Join (App Links on Android, Universal Links on the
+    iPhone), and send someone without the app to the store.
+  - [ ] **A page to ask for account deletion** from outside the app (Google Play asks for this web link for apps with
+    accounts; Delete my account in Plus & Account is the in-app way).
+  - [ ] **support@oftenenough.com**, created and answered (Build Plan #72; Help & Feedback's two rows send there).
+- [x] **117. About: only what's required, and looking good** (added 15 October 2026, from the user, Android first).
+  Their points:
+  - [x] **Remove everything not necessary or compulsory:** kept the name and version, Privacy policy (Google Play
+    requires it in the app) and Open-source licences (the libraries' notices must be shown); removed the name's
+    paragraph, the privacy paragraph and the per-library rows.
+  - [x] **Improve the overall design:** our app icon, text styles and grouped rows; Google's licences screen designed.
+  *Designed 15 Oct 2026, Figma `1476:264`; handoff "About, 15 Oct 2026". Before release: publish the privacy policy.*
+- [x] **116. Help & Feedback: only what's necessary, finished** (added 15 October 2026, from the user, Android first;
+  115 is taken on another branch). Their points:
+  - [x] **Keep only what's absolutely necessary; nothing half finished** ("instead of shipping something that is half
+    finished, not shipping at all would be good"). First cut to eight questions; then, at the user's question, **the
+    questions dropped**: each answer already lives where the problem happens.
+  - [x] **In-app support researched** (cost, how it works): free to run on our own Worker, but not for launch (the
+    user: "just launch with email").
+  - [x] **The page: Report a problem and Suggest an idea, both by email**, with the email draft and the no-email-app
+    dialog designed.
+  - [x] **Fonts and hierarchy with our text styles.**
+  - [x] **The name may change:** researched and kept (Help & Feedback, as Google's apps and our iPhone).
+  *Designed 15 Oct 2026, Figma `1476:110`; handoff "Help & Feedback: email only". The iPhone's Help (about 50 topics)
+  is cut to the same two rows when the iPhone is updated to match.*
+- [ ] **112. The account and backup pages in the menu: research, then a new design section** (added 14 October 2026, from
+  the user, Android first, iPhone and iPad alike; Rulebook D16; follows 110). Their points:
+  - [ ] **Free people have no account at all, on any device, iPad included**: "Free users don't even have an account at all,
+    no matter what … as simple as that." **One device at a time is dropped**: "Earlier, we thought one device at a time,
+    but we have discarded that plan." Free has backup to the person's own cloud, Move with a code and a backup file.
+  - [ ] **A page in the menu (or whatever is best)** that says very clearly: **your habits are stored in your own cloud**,
+    on Android "your own Google Drive", and the person **can choose or change to a different Google account**.
+  - [ ] **The account only holds whether you have Plus**, and Plus Family: "Apart from that, none of the data will be
+    stored in the account." It **helps you sign in on other devices and get your habits back**.
+  - [ ] Today's pages to rethink: Google Drive & Backup and Plus ("right now the screen is like account backup and
+    account").
+  - [ ] **Research first** ("Let's do some research and figure out how it should be overall"), then the pages **in a new
+    section, for now** ("temporarily"); the current sections stay untouched until the user chooses.
+  - [x] **Research first.** *Done 14 Oct: [The Account and Backup Pages](<../../../Research/Research Reports/Data, Sync and Accounts/The Account and Backup Pages — Your Google Drive, and an Account Only for Plus.md>).*
+  - [x] **The information architecture before the screens** (the user: "Take care of this first, and then build the designs"):
+    the menu, each page's name and what's on it. *[The Menu — Every Page, Its Name and What It Holds](<../../../Android/Docs/The Menu — Every Page, Its Name and What It Holds.md>).*
+  - [x] **Menu names are the same on every platform** ("If we have complete different names, people will easily get confused"):
+    **Backup & Sync** replaces Google Drive & Backup (Android) and iCloud & Backup (iPhone); an iPhone person may back up to
+    Google Drive. **No Account row**: an Account page would suggest we store their data; the account lives in Plus.
+    *Android drawer renamed 14 Oct (`1326:3`, `1326:231`).* Still different: iPhone "Appearance", Android "General" (asked).
+  - [x] **Plus without an account is never forced; the line stays simple**: "if they don't want to create an account, then
+    let it be … your Plus only stays on this device. As simple as that."
+  - [x] **Backup & Sync section (`1461:2`)**: renamed with its frames; Roboto → Google Sans Flex with the Android styles;
+    every state kept (not backed up, backed up, synced, no internet); Devices only with Plus; **Move to a new phone** added
+    (row and its page, 8); Restore gains **Your old phone**; the card says "your own Google Drive … we never see them".
+    *Done 14 Oct.*
+  - [ ] **The iPhone's screens keep this structure** with their own native components ("whatever screens that we are going
+    to create for iPhone, they should have this familiarity"), because people switch devices.
+  - [x] **Backup & Sync arranged like coming back, with the missing screens** (the user: "arrange it properly … create the
+    missing screens … we need our own UI"): flows 2 Use another Google Drive, 3 Move to a new phone, 4 Restore from a backup
+    (Google Drive, a file, your old phone, each with Restore this …? and one choice), 5 and 6 the dialogs; the old Restore
+    section folded in. **The finished pages' text styles** (the user: "you are not using our text styles … check the other
+    designs"). **Dialogs cut to two choices** ("too many options … a high chance of misclick"). *Done 14 Oct; see the Android
+    handoff, "Settings: Backup & Sync".*
+  - [x] **Second review of Backup & Sync** (14 Oct): restore **replaces, said as information** ("make it as an information
+    rather than option"); **every kept backup** listed with device chips; "From today back to six months ago"; **bigger
+    text buttons** with more room; **loading blocks centred in the space left** (also coming back); "Scan QR code" /
+    "Type instead"; 3.3's note fits small screens. *Done.*
+  - [x] **Cancel centred, and kept only where waiting on something outside the phone**; Cancel goes back to the screen
+    before (the user: "just note it down"). *Done 14 Oct, Backup & Sync and coming back.*
+  - [x] **Privacy & Security arranged as a flow, with our text styles and the "Where your data is" card.** *Done 14 Oct.*
+  - [ ] **Bug (Android app): the passcode's sixth digit looks as if it's never typed** (the user: "we are only able to type
+    up to five digits … sixth one is never typed … visually at least"). Found: `Keypad` in `PrivacyLock.kt` handed the
+    code over and cleared it in the same tap, so the sixth dot was never drawn filled (the code itself was accepted). The
+    iPhone fills all six first. **Fixed in the `claude/android-app` working copy, not committed:** the sixth dot is drawn,
+    then after 150 ms the code is handed over; keys stop taking taps once six are in. Still to do: run `ScreensTest`'s
+    App lock test on an emulator, then commit when the user asks.
+  - [x] **App lock's missing screens** (the user, 14 Oct): change the app passcode (the phone's lock first), turn off,
+    wrong passcode, and Forgot with the **24-hour reset that entering the app passcode cancels**. *Designed 14 Oct.*
+  - [x] **Second round** (the user, 14 Oct): every change asks "Confirm it's you" by the way in use (turn off: the
+    phone's lock or the app passcode; change the passcode: the current one); Forgot on every passcode keypad; **Start
+    reset starts at once**, with a countdown screen, Cancel reset (the app passcode, then the app opens) and a
+    notification. *Designed 14 Oct.*
+  - [ ] **Android code to match** (not built): Forgot always starts the 24-hour wait at once, never a new passcode
+    through the phone's lock; the countdown screen and Cancel reset; the notification when a reset starts.
+  - [x] **Where Your account leads**: 3 · Plus · with an account, with Invite someone, Sign out? and Delete your account?.
+    *Designed 14 Oct.*
+  - [ ] Open (asked 14 Oct, no decision yet): confirm the phone's lock once when an app passcode is first set up, on
+    both apps, so no one else can set one and lock the owner out.
+  - [ ] Next: the Create an account screen.
   - **Android, built 15 Oct 2026 (the user: "work on this plus account and these screens … the designs are finalized …
     for sharing the link, inviting … we need a server … park them later"):** every frame of Figma `1476:2` ("Settings: Plus
     & Account") is built and wired on `main`: the page's states (1, 1.1–1.5, and free with an account), Get Plus and the
@@ -1145,7 +1617,8 @@ and the Add note keyboard coming up by itself.
       `Android/README.md`.
     - [ ] The iPhone's matching screens (same words, same account, Sign in with Apple native).
     - [ ] Real-phone checks (U9), noted separately.
-- [x] **111. Android text: shared styles, Google Sans Flex everywhere, always in sp** (added 15 October 2026, from the
+- [x] **111. Android text: shared styles, Google Sans Flex everywhere, always in sp** (numbered 111 on another branch
+  at the same time as "One backup file on every device"; both keep their number, W1) (added 15 October 2026, from the
   user: "create the shared text styles for Android app … so that nothing stays inconsistent … they should not be
   absolute units … if someone has a increased font size they should reflect here … document this"). *Done 15 Oct:*
   `ui/theme/Type.kt` (`AppType`) holds the Figma file's 22 **Android / …** styles and is the app's `MaterialTheme`
@@ -2543,6 +3016,10 @@ and the Add note keyboard coming up by itself.
   weakly in habit apps (24, mostly diary sections):
   [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>) §6, point 5.
   Revisit if diaries or the Daily Reflection (item 12) arrive.
+
+- [ ] **How was today: mood and the day's note** (item 123; moved here by the user, 17 Oct 2026): not in the first
+  release. Picked up once the core habit tracking is stable and good enough, after more research. Everything
+  designed so far is in the Figma section *How was today: mood and the day's note*.
 
 ## Completed
 

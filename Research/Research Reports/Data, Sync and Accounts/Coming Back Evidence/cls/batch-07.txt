@@ -1,0 +1,70 @@
+N11#6152|X_DATA_LOST|it is absolutely ridiculous how none of the data syncs between iOS and Android
+N11#6189|OFF|
+N11#6193|OFF|
+N11#6214|OFF|
+N11#6222|OFF|
+N11#6226|OFF|
+N11#6228|X_DATA_LOST|All my friends and other data is no longer available and I had to start from nothing
+N11#6239|OFF|
+N11#6241|OFF|
+N11#6254|OFF|
+N11#6299|OFF|
+N11#6304|OFF|
+N11#6306|OFF|
+N11#6323|OFF|
+N11#6326|OFF|
+N11#6336|OFF|
+N11#6338|OFF|
+N11#6371|OFF|
+N11#6399|OFF|
+N11#6428|OFF|
+N11#6475|OFF|
+N11#6484|OFF|
+N11#6489|OFF|
+N11#6490|OFF|
+N11#6516|OFF|
+N11#6611|OFF|
+N11#6633|OFF|
+N11#6653|OFF|
+N11#6660|OFF|
+N11#6664|OFF|
+N11#6687|OFF|
+N11#6701|OFF|
+P115#16|X_WANT|i wish i will able to connect my ios account on android
+P12#10986|X_PAID|does expect me to pay again on the very same account for the same user
+P12#13390|X_NOSYNC|I can't use it on both my ipad and my and Android devices
+P12#17718|X_PAID|it won't allow me to access my account and is acting like I'm a new user when I have a subscription
+P12#22997|OFF|
+P12#24872|X_DATA_LOST|I've moved from an apple to Samsung device and none of my progress is backed up
+P12#26699|X_DATA_LOST|I'm unable to transfer my progress
+P12#30020|X_PAID|if you buy premium on one device, you only have access to premium features on that one device
+P12#35786|X_PAID|bought a year-long subscription through android that they won't honor/transfer to iOS
+P12#42289|X_PAID|Non transfer able from apple to android too
+P12#46315|X_DATA_LOST|has to pay for the app again on iOS only to find out that the progress doesn't back up
+P12#52019|X_PAID|my paid subscription did not transfer with the app when I signed into the account
+P12#57482|X_PAID|I broke my iPhone and downloaded the app on Android have to repay
+P12#64834|X_PAID|I can't restore my subscription from my Android phone
+P12#66741|X_PAID|the account cannot be transferred from one OS to another yet
+P12#67558|X_PAID|You'll be charged twice if you switch phones
+P12#118823|OFF|
+P122#8230|OFF|
+P122#10979|OFF|
+P122#19152|OFF|
+P122#32609|OFF|
+A13#12339|X_PAID|accounts and purchases are not connected or synced in any way
+A13#12911|X_NOSYNC|you would assume you can use this app between Android and iOS devices
+A13#13494|OFF|
+A13#13593|X_NOSYNC|it doesn’t seem to sync with my Android phone
+P130#267|OFF|
+P130#341|X_DATA_LOST|I paid for it twice too
+P130#354|X_DATA_LOST|I can't even get my backup from the IOS version to restore on the Android version
+P130#366|OFF|
+P142#3|X_NOSYNC|I signed up on my phone and tried to use my iPad but the habits don't sync
+P142#11|X_PAID|i want to sync it with my android phone too, is it possible
+P19#424|OFF|
+N2#9264|OFF|
+N2#16575|OFF|
+N2#17077|OFF|
+N2#21724|OFF|
+N2#22779|OFF|
+N2#23022|OFF|

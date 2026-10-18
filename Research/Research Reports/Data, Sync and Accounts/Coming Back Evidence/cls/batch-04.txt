@@ -1,0 +1,70 @@
+N5#7728|OFF|
+N5#9341|OFF|
+N5#15663|OFF|
+N5#16267|OFF|
+A59#2034|OFF|
+N6#825|OFF|
+N6#3832|OFF|
+N7#3063|OFF|
+N7#10269|OFF|
+N7#10802|OFF|
+N7#11911|OFF|
+N7#11928|OFF|
+N7#11978|OFF|
+N7#12022|OFF|
+N7#12663|OFF|
+N8#9549|OFF|
+N8#24765|OFF|
+N8#26846|OFF|
+N8#29362|OFF|
+N8#32652|OFF|
+N8#34928|OFF|
+N8#34937|OFF|
+P8#1166|OFF|
+P8#6904|OFF|
+P8#8186|OFF|
+P8#8442|OFF|
+P84#4942|OFF|
+P84#6660|OFF|
+P84#15635|OFF|
+P84#24190|OFF|
+P84#54350|MERGE_MESS|Tasks from both devices got mixed up, and a mess started
+N9#35940|OFF|
+N1#21878|WHICH_BACKUP|I had to restore my latest back up
+A10#19614|OFF|
+A10#24045|OFF|
+A10#30089|LOST_NO_BACKUP|I had no recent backups
+A10#30295|OFF|
+A10#38579|OFF|
+N10#22254|OFF|
+P12#36800|OFF|
+N2#16495|WHICH_BACKUP|LEAVING ME NEEDING TO RESTORE OLD BACKUPS
+A23#397|WHICH_BACKUP|had to restore my streaks from a back up from 12 days ago
+A23#2054|WHICH_BACKUP|the latest back up was a month ago
+A23#4150|WHICH_BACKUP|try to import an old backup from a day or two ago
+A24#27585|WHICH_BACKUP|it restored a two day old backup resulting in my chains being broken
+A24#40926|OFF|
+N3#19055|WHICH_BACKUP|I do have an older backup on iTunes, but this means I need to restore my phone to how it was many months ago
+N5#14351|OFF|
+A1#46205|OFF|
+A1#46778|X_PAID|my subscription may go to waste since the Habit Tracker app is not available on Android
+A1#54664|OFF|
+A1#55195|OFF|
+N1#19520|X_WANT|It would also be nice to share with android users
+N1#21093|X_WANT|When you want to share a list with someone on Android
+N1#24492|OFF|
+A10#20322|X_DATA_LOST|it didn’t save any of my progress and I had almost 2 years streak
+N10#1875|OFF|
+N10#18136|OFF|
+N10#19704|OFF|
+N10#19990|OFF|
+N10#20529|X_NOSYNC|I have app on android and on iPhone. on android works fine but not on iPhone
+N10#21025|OFF|
+N10#22694|OFF|
+N11#6|OFF|
+N11#38|OFF|
+N11#169|OFF|
+N11#173|OFF|
+N11#176|OFF|
+N11#186|OFF|
+N11#205|OFF|

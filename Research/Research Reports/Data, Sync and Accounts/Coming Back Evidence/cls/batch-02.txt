@@ -1,0 +1,70 @@
+N11#5564|X_NOSYNC|Please fix the cross-platform cloud sync between iPhone and Android users
+P111#5561|OFF|
+P12#14758|DRIVE_FAIL|The restore functionality doesn't work
+P126#72327|PAID_LOST|I cant transfer my paid subscriptiont to a different Google account
+P129#268|PAID_LOST|the app refuses to detect paid version on my ipad
+N2#17146|OFF|
+A24#25714|OFF|
+P24#1946|WRONG_ACCT|Transferring to a new Google account meant that I lost all my previous data (2yrs)
+P24#2370|PAID_LOST|I had purchased Habitbull 2 years back with a different Google account
+P24#21321|WRONG_ACCT|apparently your app has a problem with multiple google accounts
+P3#10560|OFF|
+N3#805|OFF|
+N3#24131|WRONG_ACCT|I thought all my notes were gone when I opened the app today
+A31#4846|PAID_LOST|when i recently lost my old apple id i also lost the premium membership
+P4#25885|WRONG_ACCT|it keeps trying to log me in to a different Gmail account
+N6#167|OFF|
+N6#766|OFF|
+N6#1891|OFF|
+N6#2118|OFF|
+N6#2331|OFF|
+N6#5475|OFF|
+N6#6343|OFF|
+N6#7038|OFF|
+N7#3574|WRONG_ACCT|I can’t seem to log into my other google account
+N8#9635|OFF|
+N8#9813|OFF|
+N8#20888|WRONG_ACCT|Was shocked when google synced it to my other google account
+N8#22775|OFF|
+N8#23259|OFF|
+N8#24557|WRONG_ACCT|I try to load a calendar from my other google account and it just doesn’t show any of my events
+N8#25049|OFF|
+N8#25592|OFF|
+N8#25752|OFF|
+N8#30711|OFF|
+N8#34369|OFF|
+N8#35530|OFF|
+N8#36164|WRONG_ACCT|I find myself signing up for a new Google account and yet I have an existing account
+P8#2444|OFF|
+P84#10981|OFF|
+P84#12687|WRONG_ACCT|Locked to my old Google Account
+N9#11525|OFF|
+N9#12166|WRONG_ACCT|I was trying to open a document on a different gmail account and it won’t switch
+N9#17052|OFF|
+N9#44625|OFF|
+A1#47041|PAID_LOST|how to regain access of my lifetime premium feature as i purchased premium
+A10#298|LOST_OK|luckly I found it in time
+A10#22168|WRONG_ACCT|I sorta had 2 separate accounts and I wanted to merge them
+A10#22524|LOST_NO_BACKUP|I broke my phone and lost my streak
+A10#60712|LOST_NO_BACKUP|since I lost my phone I’m on my iPad because I lost all my data
+P10#11216|LOST_NO_BACKUP|I dropped my phone and lost my progress
+P12#9351|OFF|
+P12#62790|OFF|
+A13#2470|LOST_NO_BACKUP|i lost my phone without a backup, so I lost all my lists
+P2#10704|MANUAL_HASSLE|I had to pay 60$ at a phone repair shop to get the screen on my broken phone fixed so that I can export the app's data
+A20#1287|LOST_NO_BACKUP|my old phone broke and I couldn’t get back my progress and it really demotivated me
+P24#4331|LOST_NO_BACKUP|Had to switch phones when my old phone died and can't get my old data back
+P3#6031|LOST_NO_BACKUP|when my old phone died I lost all my data
+P3#7894|DRIVE_WANT|so when someone changes devices, the data in the previous phone will not be lost
+P3#11416|LOST_NO_BACKUP|I lost my phone and I lost track of over a year of habits
+P3#12259|LOST_NO_BACKUP|My old phone broke and I lost my data
+N3#25855|OFF|
+N3#29076|LOST_OK|Even when I lost my phones my data is kept safe and protected
+P33#5815|DRIVE_WANT|If I lost my phone , I will lose all my habits stats and history?
+N5#7549|LOST_NO_BACKUP|once I got my new iPhone 14 Pro there is no trace whatsoever of all the training sessions
+A76#6995|LOST_NO_BACKUP|lost my phone and months of data
+P84#7416|LOST_NO_BACKUP|I had to replace my previous phone,and lost all my stored tasks
+P84#17063|LOST_NO_BACKUP|when I lost my phone, I lost all my data and records
+P84#18981|MANUAL_HASSLE|I am sending a backups via email weekly
+P84#29454|LOST_OK|The backup feature came in handy when my old phone broke!
+A1#2082|OFF|

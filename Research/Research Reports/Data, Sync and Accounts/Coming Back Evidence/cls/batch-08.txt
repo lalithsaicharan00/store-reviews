@@ -1,0 +1,70 @@
+N2#23090|OFF|
+P2#1875|OFF|
+P2#3206|X_WANT|I have two devices iphone and Android
+P2#5465|X_WANT|So if we switch from Android to iOS, what would be the use of backup?
+P2#8415|X_WANT|so you can have it on hand with Android phone and devices sync with the same list
+P2#11304|X_WANT|feature to sync over device like between ios and android
+A20#3625|OFF|
+A20#3854|OFF|
+P22#342|OFF|
+A24#19350|X_PAID|there is no way you can transfer your account, you have to do the purchase again and then expect a refund
+A24#21003|X_DATA_OK|the team helped me transfer my Fabulous Sphere account
+A24#25528|X_PAID|I paid for a yearly membership in November 2024 and then was charged again when setting up on my iPhone
+A24#26066|X_NOSYNC|I can’t integrate and auto synchronize the app across devices
+A24#27287|OFF|
+A24#30518|X_PAID|I’m unable to log back in through my gmail act
+A24#34618|X_DATA_LOST|it is sending me in circles on how to login to your previous journey
+A24#35009|X_PAID|I have not been able to restore my premium (one year) purchase
+A24#37153|X_PAID|Wouldn’t let me restore my purchase
+A24#37673|X_PAID|I was charged twice for this app because they don’t have a way to transfer from Android to iPhone
+A24#39219|X_PAID|my paid subscription did not transfer with the app when I signed into the account
+A24#40556|X_DATA_LOST|not mentioning all my past data were all gone
+A24#41186|OFF|
+A24#41821|X_PAID|they apparently don’t have the resources to transfer between the two systems
+P24#1335|OFF|
+P24#6336|X_PAID|asking to transfer my premium account I had on iphone to my samsung phone but got no reply
+P24#7476|X_NOSYNC|when I tried logging onto my son's phone it didn't recognize the account
+P24#8290|X_NOSYNC|between android and ios devices
+P24#8948|MERGE_MESS|It overwrite all my tracking
+P24#16207|OFF|
+P24#20103|OFF|
+A3#9614|OFF|
+A3#9762|X_WANT|hopefully an android release that can sync my days since
+P3#2338|X_WANT|when the users to switch android to ios they easily use the account
+P3#2472|X_WANT|could you please make it awalable for use in android and iphone too
+P3#6258|OFF|
+P3#8455|OFF|
+P3#9127|X_WANT|I hold out hope for the app's mult-platform implementation
+N3#23493|OFF|
+N3#23621|OFF|
+N3#26759|OFF|
+A33#3155|X_DATA_OK|cross platform (Android, Windows, and IOS!)
+P33#983|X_PAID|they refused to honor my apple purchase
+P33#1069|X_PAID|I'm unable to transfer my subscription from android to ios
+P33#1295|X_PAID|I don't remember the web login they are asking me now
+P33#1468|OFF|
+P33#1830|OFF|
+P33#1896|X_NOSYNC|habits don't sync between Android and iOS
+P33#2254|X_PAID|I asked support to switch over my subscription when I changed from iOS to android and they refused
+P33#2310|X_DATA_LOST|I can't seem to transfer this data across the two phones?
+P33#2565|X_PAID|I only wish I didn't have to pay a full year again when I had switched to andriod
+P33#6183|X_NOSYNC|I paid via apple, signed with google, tried to use with Android, all the same e-mail, but can't sync
+P33#6333|X_NOSYNC|I can't make ios and android update for the habit track
+P37#308|X_DATA_OK|The only one app I've found to be well made for both iOS and Android
+P37#576|X_DATA_OK|I purchased lifetime subscription works on both
+P37#597|OFF|
+P37#600|OFF|
+P37#717|X_NOSYNC|The app does not sync well if used across iOS and Android
+P37#831|OFF|
+P37#885|OFF|
+P37#1115|OFF|
+P37#1144|X_DATA_OK|syncs across iOS and Android really well
+N4#4039|OFF|
+N4#4385|OFF|
+N4#8900|OFF|
+N4#9705|OFF|
+N4#9850|OFF|
+A4#12668|X_PAID|It will not switch my account over
+A4#17532|X_PAID|I bought the app on android trying to restore purchase on Apple
+A46#2100|X_DATA_OK|I was able to move from Android to iOS seemlessly
+A48#2755|OFF|
