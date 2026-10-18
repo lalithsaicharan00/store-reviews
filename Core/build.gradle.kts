@@ -2,6 +2,20 @@ plugins {
     kotlin("multiplatform") version "2.4.20"
     id("com.google.devtools.ksp") version "2.3.12"
     id("androidx.room3") version "3.0.3"
+    id("com.android.kotlin.multiplatform.library") version "9.4.1" apply false
+}
+
+// Android (Android/, Current Work 107): only when the Android app builds the core (`core.android`, set by
+// Android/gradle.properties), so the iPhone's, the Watch's and the server's builds never need an Android SDK.
+val withAndroid = (providers.systemProperty("core.android").orNull ?: providers.gradleProperty("core.android").orNull) == "true"
+if (withAndroid) {
+    apply(plugin = "com.android.kotlin.multiplatform.library")
+    val targets = (kotlin as ExtensionAware).extensions
+    (targets.findByName("android") ?: targets.getByName("androidLibrary")).withGroovyBuilder {
+        "setNamespace"("app.habits.core")
+        "setCompileSdk"(37)
+        "setMinSdk"(26)
+    }
 }
 
 kotlin {
@@ -44,6 +58,7 @@ dependencies {
     listOf("kspJvm", "kspIosArm64", "kspIosSimulatorArm64", "kspWatchosArm64", "kspWatchosDeviceArm64", "kspWatchosSimulatorArm64").forEach {
         add(it, "androidx.room3:room3-compiler:3.0.3")
     }
+    if (withAndroid) add("kspAndroid", "androidx.room3:room3-compiler:3.0.3")
 }
 
 // The real-Google-Drive checks (.github/workflows/drive-real.yml) run test code as plain JVM processes, several at once

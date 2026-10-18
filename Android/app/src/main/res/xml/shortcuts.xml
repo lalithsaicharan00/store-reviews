@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Long-press the app icon (A11 D8): New habit, Start the next routine, Today. No badge count on the icon: a count of
+     what's left reads as "due" (U3). Each opens its screen directly, replacing whatever was open (as a widget link). -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="today"
+        android:enabled="true"
+        android:icon="@drawable/ic_w_check"
+        android:shortcutShortLabel="@string/shortcut_today">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.oftenenough.app"
+            android:targetClass="com.oftenenough.app.app.MainActivity">
+            <extra android:name="widgetRoute" android:value="today" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="routine"
+        android:enabled="true"
+        android:icon="@drawable/ic_w_play"
+        android:shortcutShortLabel="@string/shortcut_routine"
+        android:shortcutLongLabel="@string/shortcut_routine_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.oftenenough.app"
+            android:targetClass="com.oftenenough.app.app.MainActivity">
+            <extra android:name="widgetRoute" android:value="routine" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="new"
+        android:enabled="true"
+        android:icon="@drawable/ic_w_plus"
+        android:shortcutShortLabel="@string/shortcut_new">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.oftenenough.app"
+            android:targetClass="com.oftenenough.app.app.MainActivity">
+            <extra android:name="widgetRoute" android:value="new" />
+        </intent>
+    </shortcut>
+</shortcuts>

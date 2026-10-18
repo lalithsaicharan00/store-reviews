@@ -160,9 +160,14 @@ Their placement records scope and priority; implementation has not started.
   - **Needs the user** (everything else here is done without them):
     - [ ] The iPhone checks listed in items 81 (§19 device checks), 83, 58.13 (real Face ID) and 71.
     - [ ] Deploy the CloudKit schema to Production before TestFlight (item 81).
-    - [ ] Whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
+    - [x] *(15 Oct 2026, the user: the analytics buckets were PostHog's; they're deleted, and analytics is set up again
+      only at the very end, once the whole app is done.)* Was: whether to keep the website on Cloudflare (`oftenenough-site`) and the analytics buckets; they're kept until
       the user says.
-    - [ ] **Cloudflare deletion:** allow it (this session's permission rules) or do it in the dashboard: Workers
+    - [x] **Cloudflare deletion** *(done 15 Oct 2026 by the user in the dashboard, checked through the API: no
+      Workers but `oftenenough-site`, no D1, no R2. The website is the Pages project `oftenenough`, kept. By mistake
+      the analytics buckets `oftenenough-events-dev` and `-prod` were deleted too; nothing in the repository used them,
+      their contents are unknown and can't be brought back. The new Plus account Worker (D16) is built fresh from
+      `server/`'s sign-in and purchase checks.)* Was: allow it (this session's permission rules) or do it in the dashboard: Workers
       `often-enough-api` (production, `api.oftenenough.com`; nothing in it) now, `often-enough-api-dev`
       (`api-dev.oftenenough.com`) once the `apple-watch` branch has merged `main` and the iPhone runs the iCloud build;
       D1 `often-enough-directory` and `often-enough-directory-dev`; R2 `often-enough-backups` (empty) and
@@ -908,11 +913,35 @@ and the Add note keyboard coming up by itself.
     Android-side adapter, so the switch landing changes only that.
   - Designs: [Android Designs — Every Screen](<../../../Android/Docs/Designs/README.md>) (162 frames as images, no Figma
     needed) and the [handoff](<../../../Android/Docs/Android Designs — Handoff.md>).
-  - [ ] Checkpoint 1: skeleton, Core on Android, database, CI, onboarding, Today, logging and undo.
-  - [ ] Checkpoint 2: every screen wired; dark mode.
+  - **Handed over 13 Oct 2026** (the user stopped the first session for another agent): where it stands, the parked
+    work and what's next are in [Android App — Handoff for the Next Agent](<../../../Android/Docs/Android App — Handoff for the Next Agent.md>).
+    Checkpoint 1 is built and its unit tests are green; the emulator's `TodayTest` was 10 of 11 with a fix pushed
+    (`be1b22e`), not yet confirmed. Parts of checkpoints 2–4 are built (form, settings pages, backup, reminders) or
+    parked uncompiled in `Android/WIP/` (Habit details, Progress, player, widgets).
+  - **Continued 13 Oct 2026** by the next session, building and testing on the user's PC (its Android SDK and the
+    Pixel 10 emulator, API 36) first and on GitHub second (the user: "mostly try to use here").
+  - [x] Checkpoint 1: skeleton, Core on Android, database, CI, onboarding, Today, logging and undo. *Done 13 Oct:
+    `TodayTest` 11 of 11 on the Pixel 10 emulator (API 36, 31.8 s) and on CI's API 35 emulator (run 38373182612,
+    `c7e281a`); unit tests and lint green.*
+  - [x] Checkpoint 2: every screen wired; dark mode. *Built 13 Oct: Habit details, Progress, the player and timer
+    (from Android/WIP), Pause, the Habits and Tasks lists, Reminders, Privacy & Security and App lock, Plus (stand-in
+    store), Filter and groups, Arrange your day, Help & Feedback, About; dark checked on every screen. Unit tests 48
+    green, `ScreensTest` 10 of 10 and `TodayTest` 11 of 11 on the Pixel 10 emulator and on CI (API 35, run 38381027895).*
   - [ ] Checkpoint 3: backup, restore, Google Drive sync (two emulators), Plus (Play Billing), App lock, reminders.
-  - [ ] Checkpoint 4: widgets (every kind and state, setup and change, interactive, up to date).
-  - [ ] Checkpoint 5: speed, data, sync and widget tests green with numbers; tablets and foldables.
+    *Built 13 Oct without the user's Google set-up: backup files and restore with undo (`DataSafetyTest`), Drive rounds
+    on a schedule (`SyncSchedule`), Plus behind a store seam with a stand-in store, App lock, reminders (the check, the
+    alarm style, Get reminders on time). **Waiting on the user:** the Android OAuth client (real sign-in, the
+    two-emulator sync test) and the Play Console app (real purchases).*
+  - [x] Checkpoint 4: widgets (every kind and state, setup and change, interactive, up to date). *Built 13 Oct: six
+    Glance widgets from the app's snapshot, the setup screen, the tap (queued first, the card's "after" at once, saved
+    idempotently, removed once saved). On the Pixel 10 emulator a +1 shows in 373–466 ms and every tap is saved;
+    `WidgetDataTest` 8 of 8. Still to do: home-screen tap tests on CI, real phones.*
+  - [ ] Checkpoint 5: speed, data, sync and widget tests green with numbers; tablets and foldables. *13 Oct: speed
+    (`SpeedTest`: no frame of 100 ms with 30 habits and two years of history; a 709 ms freeze on Progress → Year found
+    and fixed), data (`DataSafetyTest`), widgets (`WidgetDataTest`, taps measured at 373–466 ms), tablets
+    (`TabletTest`: a sidebar and a centred column from 840 dp). **Still to do:** the sync tests (need the OAuth client),
+    home-screen widget taps on CI, Macrobenchmark and a Baseline Profile, the iPad's wider layouts. **All 41 emulator
+    tests, 52 unit tests and lint green on GitHub (API 35), run 38399799226, and on the PC's Pixel 10 emulator (API 36).***
   - [ ] The user's checks on real phones (Pixel, Samsung, Xiaomi; U9/T5), noted separately.
 
 - [ ] **108. A new time of day asks only when it starts; its end is worked out and shown** (added 14 October 2026,
@@ -962,6 +991,58 @@ and the Add note keyboard coming up by itself.
     have to** ("free users should have an account if they want to create it … same thing in the Android. But the only
     difference is the syncing will be done one device at a time"): offered, never required; free with an account syncs one
     device at a time (phone or tablet), Plus every device.
+    **Replaced 16 Oct 2026 (the user): free users "never have an account and they never should have an account"**, and
+    free doesn't sync at all ("it shouldn't be like a one device per at a time"). Only Plus has an account and syncs.
+    Free keeps automatic backup to the iCloud or Google Drive the person connects, and export; nothing about a free user
+    is kept by us, not even which Google Drive holds the backup ("for Android we will be missing that, but it's fine").
+    Rulebook D4, D10, D16 updated. The app's account screens and free sync need changing to match.
+    **16 Oct 2026, the user, after comparing RevenueCat, Firebase, WorkOS and the iPhone-only Apple Family Sharing:**
+    keep our own **Plus Family on both platforms** and build it all on **Cloudflare Workers** ("let's build in that … if
+    we ever hit the limits or about to hit the limits, we will upgrade in the Cloudflare itself. Let's keep the family
+    plan"). No sign-in or billing service in between. Move to Workers Paid ($5/month) before the free plan's limits are
+    reached (100,000 requests a day for the whole account; past it, every Worker stops until midnight UTC).
+  - [ ] **Refund policy (the user, 16 Oct 2026; proposed, to confirm, then design and build).** "Within 30 days, you can
+    get 100% full refund if you don't like the product … users will feel safe … they will try it out." Proposed rules:
+    - **30 days, full refund, no questions**, counted from each order's own date. Google lets people refund within 48
+      hours by themselves; after that the developer decides (no limit set by Google). On iPhone **Apple decides every
+      refund** (reportaproblem.apple.com, or `beginRefundRequest` in the app): we can't grant or promise one there.
+    - **Plus refunded while the upgrade is held: refund both** ("from the user's perspective, it's not a different
+      thing"). The server already ends the family (the upgrade alone pays for nothing, `paidFor`); the upgrade's money
+      is refunded by hand in Play Console (or automatically later, which needs the service account's "Manage orders").
+    - **The upgrade refunded alone:** the family ends, Plus stays. **Plus Family refunded:** the whole family ends.
+    - **One refund per person per product** (Google's own rule too); an accidental second purchase is always refunded.
+    - **Every refund in Play Console ticks "Remove entitlement"**, or Plus isn't ended (Rulebook D18).
+  - [ ] **App text for the refund policy (design first, then build):** the Plus page and the Plus Family upgrade page
+    say it plainly, Android: "Not for you? Full refund within 30 days." iPhone: Apple decides refunds, so never a
+    promise; something like "Not for you? Ask Apple for a refund from the app" (`beginRefundRequest`). The website's
+    Terms and the Play listing state the same policy.
+  - [ ] **Refund flows in the app (the user, 16 Oct 2026: "we need to add these refund flows"; design first, then
+    build on both platforms).** Today the app has no refund option at all: only Help & Feedback › Contact us (an email
+    to support@oftenenough.com) and Google Play's own 48-hour refund, which the app never mentions. Proposed: a
+    **"Request a refund"** row on **Plus & Account**, shown only to someone who bought Plus, Plus Family or the upgrade,
+    with the 30-day policy in one line under it.
+    - **Android:** opens an email to support that already carries what's needed to find the order (the product, the
+      purchase date, the Google Play order ID), never a token. The refund is made in Play Console with **"Remove
+      entitlement" ticked** (Rulebook D18); refunding Plus also refunds the upgrade.
+    - **iPhone:** opens Apple's own refund request inside the app (StoreKit `beginRefundRequest`); Apple decides.
+    - **After a refund:** the app shows plainly what changed (Plus ended; family members lose Plus from the family;
+      habits stay, D10), and a family member sees why their Plus ended.
+  - [ ] **Refunds: test every case properly before launch (the user, 16 Oct 2026: "we have to test everything").** Proven
+    on dev with real Google Play: Google's notifications reach the Worker (test message; signed only); a Play Console
+    refund **with "Remove entitlement"** ended the upgrade within seconds and kept Plus (`GPA.3300-8440-7215-88090`); a
+    refund **without** it keeps Plus (Google keeps the purchase); a void is final; the account page's re-check and the
+    daily Voided Purchases sweep (production, 15:07 UTC) both work. Still to test, one by one:
+    - [ ] **A refund on production** of a purchase a production account holds (release build, a license tester).
+    - [ ] **Refunding Plus itself** with "Remove entitlement" on a real device: Plus ends; with the upgrade held, the
+      family ends too, and the upgrade's money is refunded by hand (the manual step below).
+    - [ ] **A customer's own refund through Google Play** (within 48 hours, from the Play Store app): Google voids it;
+      Plus ends within seconds.
+    - [ ] **A chargeback** (if Play lets it be tested; otherwise noted as untested).
+    - [ ] **What the app shows right after a refund**, on the buyer's phone and a family member's (the phone's own
+      Google Play copy can lag the account).
+    - [ ] **The manual steps:** refunding the upgrade's money when Plus is refunded; every refund with "Remove
+      entitlement"; later possibly automatic (needs the service account's "Manage orders").
+    - [ ] **iPhone refunds:** built and tested separately, later (Apple's notifications; Apple decides refunds).
   - [ ] **The account remembers where the habits live** ("add those things like the account cloud ID … about each cloud
     ID"): the cloud (iCloud or Google Drive); its private account ID (CloudKit user record ID; Google's fixed account ID);
     last sync time and device kind; **no email, not even masked** (14 Oct: "revealing the other person's account name").
@@ -1127,12 +1208,12 @@ and the Add note keyboard coming up by itself.
     first habit (07.2); arrows and the two menu states under 06.
   - [x] **The ideas: the most common habits, as people say them, every day** (researched from 4,407 habit statements).
   - [x] **Notifications are asked only when a reminder is turned on**; allowed keeps it on, not allowed turns it off
-    (Rulebook U36); designed in the habit form's Reminders (2.1.6–2.1.6.4).
+    (Rulebook U37); designed in the habit form's Reminders (2.1.6–2.1.6.4).
   - [x] **Several reminder times, native and clear** (the user: "is this like intuitive … a native Android pattern?"): rows
     with a clock icon, the time and a trailing ✕, + Add a time, Android's time picker (handoff "Reminder times, the
     Android way").
   *Designed 15 Oct 2026, Figma `1548:2`, `1302:2`; handoff "Onboarding: new to the app, and the notifications
-  permission". The iPhone's welcome and reminders follow U36 when updated.*
+  permission". The iPhone's welcome and reminders follow U37 when updated.*
 - [x] **120. Onboarding: coming back, checked and completed** (added 15 October 2026, from the user, Android first).
   Their points:
   - [x] **Is anything missing?** Six screens added: choose the account the habits are in (a different Google account,
@@ -1445,6 +1526,92 @@ and the Add note keyboard coming up by itself.
   - [ ] Open (asked 14 Oct, no decision yet): confirm the phone's lock once when an app passcode is first set up, on
     both apps, so no one else can set one and lock the owner out.
   - [ ] Next: the Create an account screen.
+  - **Android, built 15 Oct 2026 (the user: "work on this plus account and these screens … the designs are finalized …
+    for sharing the link, inviting … we need a server … park them later"):** every frame of Figma `1476:2` ("Settings: Plus
+    & Account") is built and wired on `main`: the page's states (1, 1.1–1.5, and free with an account), Get Plus and the
+    Plus Family upgrade (2, 2.4, 8), the purchase outcomes (2.1.1 pending, 2.1.2 not completed), the thank-you screens that
+    offer the account (2.2, 2.6, 8.2), Sign in (3, 3.2–3.5), Restore from Google Play (4, 4.1–4.3), Create an account (6),
+    Join a family with Google's QR scanner (5) and every invite state (5.1–5.8), the invite sheets with a real QR code (7,
+    7.5) and every dialog (7.1–7.10). The loading animation is Material 3 Expressive's loading indicator (Android README,
+    "Plus & Account"). Tests: `PlusAccountTest` (9, the account's rules) and `PlusAccountScreensTest` (10) green on the
+    PC's Pixel 10 Pro emulator (API 36).
+    - [x] UI and wiring for every frame, against stand-ins with the Worker's rules (`StandInAccountServer`, `FakePlusStore`).
+    - [x] Sign in with Google through Credential Manager (real code; switched on by a Web OAuth client ID at build time).
+    - [x] **Checked against Figma `1476:2`, frame by frame, and every difference fixed** (15 Oct 2026, the user: "check
+      everything, all of the screens from here and test everything properly"). Figma read live (texts, styles, spacing,
+      effects, icon fonts) and each of the 54 frames pictured beside the app at 360 × 800 dp. Fixed: the icons are
+      Figma's Material Symbols outlines (`ui/plus/Symbols.kt`; the cookies' are Material Icons Round, as Figma sets them);
+      dialogs drawn as Figma's (icon at the start, only Delete red); Plus & Account's rows, tonal buttons, the "Not backed
+      up" row, the flat icon tile; flow screens centred as drawn, 3.4 under its bar; Get Plus's bottom bar and its upward
+      shadow; the invite sheets' spacing, and 7.6 asked over the page; the snackbar's place (7.2.2); 2 dp between every
+      name and its line. At 200 % text the card's second line wraps instead of "No sign…needed", and dialog buttons wrap.
+      Per-frame table: `Research/Temp/plus-account/check.md`. Kept beyond Figma: Redeem a code (Play's reviewers), free
+      with an account, "Invite your family" without an account. **Tests, all green on this PC:** JVM 62 (`PlusAccountTest`
+      10) and lint; new `PlusAccountFramesTest` (6 walk-throughs reaching every frame and arrow, checking its words and
+      saving a picture) on the Pixel 10 Pro (API 36) in light, dark and 200 % text at 360 × 800 dp and at the phone's own
+      size, and on API 30; `PlusAccountScreensTest` 10 (API 36 and 30); `ScreensTest` 13. Outside this job:
+      `ScreensTest.aLongPressOnARowOpensItsMenu` fails on a 360 × 800 dp screen, the same on untouched `main`.
+    - [x] **The account Worker, built 16 Oct 2026** (the user: "implement it correctly … test it thoroughly … it should work
+      like a production"): `account-server/` (README there). Accounts (Google's or Apple's ID token checked, with a
+      nonce; a session per device), purchases checked with Google Play as the service account (refunds reach the account
+      within a day), Plus Family (six at most; one single-use 7-day invite at a time; claiming it and joining in one
+      transaction), remove, leave, sign out, delete (a fresh sign-in as the same person; nothing of the person left, the
+      family's invites too), daily tidying, rate limits. **Dev is live** (`api-dev.oftenenough.com`). Tests: the Worker's
+      45 (real Workers runtime and D1; Google, Apple and Play as stand-ins), its live check on dev (a whole family end to
+      end, test accounts deleted), the app's `HttpAccountServerTest` (11) and `AccountServerLiveTest` (2, the app and its
+      screens against dev); the rest of the app's suites green after (JVM 73, PlusAccountScreensTest 10, frames 6,
+      ScreensTest 13). Found and fixed on the way: Android throws on a 401 without `WWW-Authenticate`; under Compose
+      tests a call came back on the network's thread (`AccountCenter` now hops back, T22); a deleted owner's invites
+      kept their name (now deleted with the account).
+    - [x] **Production released, 16 Oct 2026** (the user: "yes, release it"): `api.oftenenough.com`, its own D1
+      (`often-enough-accounts`), migrated; live checks pass (health, sessions, forged Google and Apple tokens refused,
+      dev's test sign-in refused even with the real secret); no accounts yet.
+    - [ ] **To do and test together in the morning** (the user, 16 Oct 2026: "all of the testing, all of the real things
+      we will do it in the morning"). Everything so far was tested with stand-ins for Google, Apple and Play, and
+      against dev with the test sign-in; these are the real things:
+      - [x] ~~The Play service account's key into the Worker~~ **Keyless instead** (the user, 16 Oct 2026, after Google's
+        advice not to download keys): the Worker signs in to Google through Workload Identity Federation with its own
+        key, made straight into Cloudflare for dev and production (`scripts/make-wif-key.mjs`); its public half is
+        `account-server/google/jwks.json`. Built, tested (47 Worker tests), on dev and released to production.
+      - [x] **The user's Google Cloud Console steps** (`account-server/README.md`, "Google Play, keyless"): four APIs on;
+        the pool `cloudflare-workers` and its OIDC provider `often-enough-account` with `jwks.json` uploaded; Workload
+        Identity User on `play-purchases@…` for both subjects; and Play Console's permission trimmed to reading.
+        *Done 16 Oct 2026:* `GET /v1/health/play` says `ready` on dev and production, and a made-up purchase sent
+        through dev reached Google Play and came back "not bought" (Google answered; the probe account was deleted).
+      - [ ] **Real Google sign-in on the phone** (the debug build talks to dev): sign in, make the account, sign out, sign
+        in again; the same account on a second device (the emulator); "Signed in as" shows the right email.
+      - [ ] **A real purchase as a license tester** (a `-PrealBilling` debug build, or a Play test build of this code):
+        Plus on the account, on both devices; then a refund in Play Console takes Plus away within a day.
+      - [ ] **Plus Family with two real Google accounts:** buy it, Add a person, share the link and show the QR code;
+        the other phone joins through Join a family › Scan QR code; Lee sees Priya; remove; leave; cancel an invite.
+        (Tapping the link opens the browser until `assetlinks.json` is on the website: expected for now.)
+      - [ ] **Delete my account on the phone** (Google's sign-in confirms it): Plus stays through Play, the account is
+        gone from the database (check D1).
+      - [ ] **A release build against production:** a Play test build (versionCode 5) with this code signs in to
+        `api.oftenenough.com`.
+      - [x] **Delete the old `server/` folder** (the retired habit-sync server; its Cloudflare resources were already
+        gone). *Done 16 Oct 2026 (the user: "delete the old server thing"):* tagged `server-final-2026-10` first
+        (Architecture 11's decision), then `server/` and `.github/workflows/server-dev-checks.yml` removed from `main`;
+        the Rulebook's links, Architecture 11, App Identity, the Backlog and the core's comment now point at
+        `account-server/`. Older Architecture notes that describe the old server stay as history.
+      - [ ] **Then, one at a time:** `assetlinks.json` on oftenenough.com (invite links open the app), Sign in with Apple
+        on Android (the Worker's web page), the "Priya joined your family" notification (5.2.1).
+    - [ ] **Parked, waiting on the user:** the Cloudflare Worker (accounts, families, invites, purchase checks with Google
+      and Apple); the Web OAuth client ID; Sign in with Apple's web page (on the Worker); the Play Console products (real
+      buying); `assetlinks.json` on oftenenough.com (invite links opening the app); push for "Priya joined your family"
+      (5.2.1); the different-cloud-account stop (D16). The table of what's real and what's a stand-in is in
+      `Android/README.md`.
+    - [ ] The iPhone's matching screens (same words, same account, Sign in with Apple native).
+    - [ ] Real-phone checks (U9), noted separately.
+- [x] **111. Android text: shared styles, Google Sans Flex everywhere, always in sp** (numbered 111 on another branch
+  at the same time as "One backup file on every device"; both keep their number, W1) (added 15 October 2026, from the
+  user: "create the shared text styles for Android app … so that nothing stays inconsistent … they should not be
+  absolute units … if someone has a increased font size they should reflect here … document this"). *Done 15 Oct:*
+  `ui/theme/Type.kt` (`AppType`) holds the Figma file's 22 **Android / …** styles and is the app's `MaterialTheme`
+  typography (Roboto gone); about 80 sizes made per screen (15, 17, 18, 26, 44, 48, 72 sp …) now use the style for their
+  job; SemiBold and Bold became Medium (the font is Regular and Medium only); top app bar titles are Title Large
+  Emphasized and a row's name over supporting text Title Medium, as in Figma. Rulebook **U36**; `Android/README.md`,
+  "Text". The emulator suite was run after the change (results in the commit). Widgets keep the launcher's font (Glance).
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:
@@ -2056,7 +2223,8 @@ and the Add note keyboard coming up by itself.
     needs a new iOS client in the Google Cloud project, and its ID in `BackupFeatures.swift` and the URL scheme in
     `Habits-Info.plist`.
 
-- [ ] **78. Free accounts sync one device at a time (plan, then build).** Added 11 October 2026, from the user, after
+- [ ] ~~**78. Free accounts sync one device at a time (plan, then build).**~~ **Dropped 16 Oct 2026 (the user): free has
+  no account and no syncing; only Plus syncs (Rulebook D16).** Added 11 October 2026, from the user, after
   checking Cloudflare's prices: instead of uploading the whole backup file ("backed up as you go"), a free account
   syncs like Plus, but with one active device; signing in on another device moves the habits there. Plus syncs across
   devices.

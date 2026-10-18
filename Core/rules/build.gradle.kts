@@ -2,6 +2,18 @@ plugins {
     kotlin("multiplatform")
 }
 
+// Android (Android/, Current Work 107): only when the Android app builds the core (`core.android`, set by
+// Android/gradle.properties), so the iPhone's, the Watch's and the server's builds never need an Android SDK.
+if ((providers.systemProperty("core.android").orNull ?: providers.gradleProperty("core.android").orNull) == "true") {
+    apply(plugin = "com.android.kotlin.multiplatform.library")
+    val targets = (kotlin as ExtensionAware).extensions
+    (targets.findByName("android") ?: targets.getByName("androidLibrary")).withGroovyBuilder {
+        "setNamespace"("app.habits.rules")
+        "setCompileSdk"(37)
+        "setMinSdk"(26)
+    }
+}
+
 // The habit rules (Core/spec/): days, schedules, goals, streaks and progress, one copy for every platform. Pure: no
 // database, no clock, no platform calls; the time zone and "now" are inputs. Proven against the iPhone's own answers by
 // the golden cases (Core/fixtures/, GoldenTest).

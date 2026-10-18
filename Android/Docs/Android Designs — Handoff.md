@@ -1448,7 +1448,7 @@ The user: "remove all of the unnecessary things … keep only things that are ne
 - **Layout:** 01 → 07.2 in one row with arrows; 06.1 and 06.2 (the two menus open) under 06. Cross-section links are in
   the frame names: 02's *I've used it before* → Onboarding: coming back; 07's *Create my own habit* → New: 1; *Skip setup*
   → the empty Today.
-- **The notifications permission (Rulebook U36):** never at install or in onboarding. In the habit form's Reminders:
+- **The notifications permission (Rulebook U37):** never at install or in onboarding. In the habit form's Reminders:
   **2.1.6** off as every habit starts → turning on *Remind me* → **2.1.6.1** Android's own *Allow Often Enough to send you
   notifications?* → Allow: **2.1.6.2** (on, times) → **2.1.6.3** the exact-times sheet only if Android holds them back;
   Don't allow: **2.1.6.4** *Remind me* back off, *Notifications are off for Often Enough, so reminders can't come…* with
@@ -1801,7 +1801,7 @@ deleted.
 The frames are N.1–N.6, in the milestones section, to the right of its other blocks:
 - **N.1, the switch:** *Tell me at milestones*, on a quit or cut-down habit's form, off until turned on. The line
   under it: a notification when you reach 30 days, 180 days, a year and each year after.
-- **N.2, the first time it's turned on:** Android's own permission dialog, as for reminders (U36).
+- **N.2, the first time it's turned on:** Android's own permission dialog, as for reminders (U37).
 - **N.3, allowed:** the switch stays on, and the line says when the next one is.
 - **N.4, not allowed:** the switch goes back off, with Open settings when Android won't ask again.
 - **N.5, the notification:**
