@@ -6,6 +6,25 @@ A1–A14), then this page. **Every frame as an image (no Figma needed):** [Andro
 
 ## Where the designs are
 
+**The page's order, 18 Oct 2026 (the user: "arrange everything properly … according to the navigation and menu"):**
+sections sit in rows, top to bottom, each row left to right, 240 apart:
+1. Onboarding: new to the app · Onboarding: coming back
+2. Menu: navigation drawer
+3. Today · Day details, logs, slips and notes · Milestones on Today · New: choices and habit form · Routine player and timer
+   (everything opened from Today)
+4. Habits · Habit details
+5. Progress
+6. Tasks (`2373:2`, all 64 frames designed with arrows, 18 Oct)
+7. Settings: Times of Day · Day and Week · Reminders · General
+8. Settings: Backup & Sync · Privacy & Security, App lock
+9. Settings: Plus & Account
+10. Settings: Help & Feedback · About
+11. Widgets · Widgets: adding and changing · Widgets: every state (they belong to no menu row)
+12. (Archived) future phases: How was today
+
+A new section goes into the row its menu row or parent screen belongs to. The page spans y −66,000 to 25,379 and x 0 to
+29,280, inside Figma's canvas limit.
+
 Figma file `Ncccsm1l2O62GJ5xLSInqk` ("Design"), page **Andriod mobile** (`1241:2`):
 <https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=1241-2>. Each screen lives in a **named section**,
 left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange everything properly in a section").
@@ -26,6 +45,7 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 | **Settings: Times of Day** (`1437:2`) | Times of Day (`1440:2`); New time of day, defaulting to free time 4–6 AM (`1440:69`); Edit time of day · Morning (`1440:152`) | Built 12 Oct from the simulator, then made Expressive at the user's request (the terminal session's version was deleted) |
 | **Settings: Day and Week** (`1449:2`) | Day and Week (`1449:3`); New day starts at, menu open (`1449:51`); Week starts on, menu open (`1768:100`) | Built 12 Oct from the built app; **redesigned 14 Oct** in Figma, not built (below, "Day and Week, 14 Oct 2026") |
 | **Settings: Reminders** (`1456:2`) | Reminders with the reminder check (`1456:3`); a habit's reminders, on (`1456:91`); Get reminders on time, the exact-times sheet (`1456:164`); a reminder that didn't arrive (`1456:206`) | Built 12 Oct from the built app and decisions A11 D1–D3 |
+| **Habits** (`2106:2`, redone 18 Oct 2026: the first pass `2106:3` deleted; Current Work 129) | **56 placeholders**, numbered and arranged in rows with arrows: **1** the page and its states (1.1–1.9: many, one, none, all archived, 200 % text, back from details, every kind of row, every status, + at five); **2** a row's ⋮ and what each item does (2.1–2.7, results 2.2.1–2.6.1); **3** selecting several (3–3.7); **4** search (4–4.3); **5** the top bar's ⋮: Show by, Arrange, groups (5–5.5.3); **6** Archived habits (6–6.9); **7** the ways in (7–7.2) | All placeholders; designs next |
 | **Settings: Appearance** (`1458:2`) | Appearance (`1458:3`); Done habits, its menu open (`1458:85`) | Built 12 Oct from the built app |
 | **Settings: Google Drive & Backup** (`1461:2`) | Not backed up (`1465:2`); backed up, free (`1465:54`); synced, Plus (`1465:123`); offline, changes waiting (`1465:192`); Delete your data from Google Drive?, the dialog (`1475:2`); Erase everything on this phone?, the dialog (`1473:27`); Restore from a backup (`1465:258`) | Rebuilt 12 Oct after the user's review ("what is this backup files only on this phone … why you're mixing backup and restore, export and import"), on the structure of the researched Backup & Export mockups (`950:309`) |
 | **Restore from a backup: the flow** (`1472:2`) | Google account chooser, Android's own (`1472:3`); Google's permission screen (`1472:62`); Choose a backup, ours (`1472:93`); the system file picker, Android's own (`1472:155`); Restore, the preview and confirm, ours (`1472:207`); restored, with Undo (`1472:247`) | Built 12 Oct at the user's request ("will it be the app UI or any native UI?") |
@@ -873,7 +893,8 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   one line, an outlined **Archive** and **⋮** (Delete…), and "Archived habits keep all their progress, and you can
   bring them back any time."; once there's room, the habit being added goes ahead. **5.1.1 · Delete (dialog)**
   (`1691:88`): "Delete Take vitamins?" / "Its history and notes are deleted too. Archiving keeps them and makes room
-  just the same." with **Archive instead** (filled), Delete, Cancel, stacked at the end (three don't fit in a row).
+  just the same." with **Cancel | Delete** (red) side by side at the end; ~~Archive instead, Delete, Cancel,
+  stacked~~ (changed 18 Oct 2026: two choices only, Rulebook D9).
   The Android app has only a "Make room instead: archive a habit" text button today, with no page behind it.
 - [ ] Still not drawn: the form's Reminders page, 3.1's Started pickers, Task's Date and Time pickers.
 
@@ -2897,6 +2918,156 @@ section under Today, three rows:
 - **Mood colours** (one ordered scale, never red, U3): Awful `#5B6577`, Bad `#8E9AAF`, Okay `#C9BE93`, Good `#7DC48A`,
   Great `#2F9A5C`; no mood logged: light grey; days to come: dashed.
 
+### Tasks: placeholders, 18 Oct 2026 (Current Work 130; the user: "let's create the empty frames in … tasks")
+
+The Tasks section (`2373:2`, 5,720 × 10,560) holds **64 numbered placeholders** for the page the research decided
+([The Tasks Page — Why People Open It and What It Should Do](<../../Research/Research Reports/Day Structure and Organization/The Tasks Page — Why People Open It and What It Should Do.md>),
+§7–§8), laid out like Habits: frame 1 first, each flow in its own row from column 1, arrows from what's tapped (50).
+Everything below the Tasks row moved down 9,600 to make room.
+
+**Rows:**
+- **1** the page by when and its states (1.1–1.10: many, today only, empty, all done today, 200 % text, back from
+  details, every kind of row, carried over, + Add task, drag within a day);
+- **2** a task done on Today, as the Tasks page shows it (2: struck at the end of Today; 2.1 a repeating task; 2.2 a
+  carried repeating task; 2.3 the day ends). Until 18 Oct this row was ticking from the Tasks page (Undo, early tick,
+  untick); those four frames were removed when the user decided the Tasks page never completes tasks (Rulebook U38);
+- **3** a row's ⋮ (Edit, Move to another day, Duplicate, Skip this time, Archive, Delete…; the repeating and no-date
+  menus), with their results under them (3.2.1–3.6.1);
+- **4** selection;
+- **5** search;
+- **6** No date (Do today, a task with No date);
+- **7** Repeating tasks;
+- **8** Completed (by day; Mark as not done from ⋮, select all, delete, empty);
+- **9** Archived tasks;
+- **10** task details and the way in from the menu.
+
+**All 64 designed, 18 Oct 2026** (the user: "complete the designs"), in the Habits page's list style (section labels
+Medium 14 grey, white rows 24/4 corners 2 apart, name Medium 16 and one line Regular 14, ⋮ in a 48 dp button):
+- **The row (changed 18 Oct 2026, Rulebook U38: no checkbox):** the task's icon, a 40 dp circle in its colour with a
+  white Material icon, as on the Habits page (16 dp in, 16 dp to the text); a task done on Today has its name struck
+  and grey and the line "Done 9:12 AM"; the name, one line (time or time of day, then the rhythm; the day only where the heading doesn't
+  say it; a carried task says "Planned for Thu 16 Oct"), ⋮.
+- **The page (1):** ☰ · *Tasks* · search · +. Sections *Today*, *Tomorrow*, the next days by name, *Later in October*,
+  then a heading per month, *No date*; then *Repeating · 5*, *Completed · 128*, *Archived · 3* as rows with ›.
+- **Choices made while drawing** (differences from the report's §8.6):
+  - **+ is in the top bar, not a FAB**, the same as Habits (the same mental model). ~~No top-bar ⋮~~: **since 18 Oct
+    the top bar has ⋮ with *Select*** (4.6, 4.7), as on Habits, so selecting several isn't only behind a long press.
+  - **Reordering is touch, hold and move** (as Keep): moving before letting go drags within the day; letting go
+    without moving starts selection (4). No drag handles.
+  - **In selection, a marked row turns grey and its icon becomes an ink circle with ✓**, as on Habits; unmarked rows
+    keep their icon; the bottom bar holds Move, Archive and Delete (Completed: Delete only).
+  - Archived tasks in search results show an archive icon in place of their own.
+  - Task details' History rows show a tonal circle: ✓ done, a clock for waiting, ⏭ skipped.
+  - **Every delete question is Cancel | Delete only** (3.6, 4.4, 8.4; the Habits page's 2.6 and 3.6 and 5.1.1 too).
+- **Shared screens reused:** the task form (`1321:738`) for + Add task with its Date menu (Today, Tomorrow, Pick a
+  date…, No date), Edit task, Duplicate and a No-date task; Android's date picker (`2338:433`); the Habits search
+  view; the empty state; Habit details (`2367:1429`) as task details with History and Notes only; the menu drawer.
+
+### Habits: redone as placeholders, 18 Oct 2026 (Current Work 129; the user: "create all of the empty placeholders … don't miss even single view or state")
+
+The first pass (*Habits: a section and its first page*, above) was deleted from Figma: the user called it outdated. The
+section now holds **56 placeholders** for the page the research found
+([The Habits Page — Why People Open It and What It Should Do](<../../Research/Research Reports/Day Structure and Organization/The Habits Page — Why People Open It and What It Should Do.md>)),
+laid out like the habit form: frame 1 first, each flow in its own row starting one column to the right, with arrows from
+what's tapped.
+
+**Decided (the user, 18 Oct 2026):**
+- **By time of day by default,** in the person's own order, as on Today; once a group exists, **Show by: Time of day ·
+  Group** in the top bar's ⋮. *Group* shows headed sections for the whole list, never a filter.
+- **Tap a row: Habit details. Its ⋮: Edit, Duplicate, Pause (Resume), Archive, Delete…** No *View details* in the menu:
+  the tap does that. Long press selects several.
+- **Search is always in the top bar**, the same however long the list ("the same mental model").
+- **Duplicate** is added.
+- **No times beside section names**, and **no free-plan count** on the page; the free-five line lives only on Archived
+  habits (archived habits don't count toward the five).
+
+**Row 1 designed, 18 Oct 2026** (the list in the Reminders page's style: section labels Medium 14 grey, grouped white
+rows with 24/4 corners and 2 apart, 40 dp habit circles, name Medium 16 and its line Regular 14, ⋮ in a 48 dp button):
+- **1** (`2355:2`, full length): ☰ · *Habits* · search · + · ⋮; Morning, Afternoon, Evening, Anytime, Quitting, Paused;
+  *Archived · 3 habits* › last. The line under each name is the goal, then How often, then the first reminder time
+  ("8 glasses · Every day", "Every day · 8:00 AM", "1 hour · Mon, Wed, Fri"); quit says *Quit*, cut down its limit
+  ("At most 2 cups a day"), paused "Back on 20 Oct".
+- **1.1** scrolled with many habits: the bar takes the surface-container colour while the list moves under it.
+  **1.2** one habit. **1.3** no habits yet (Today's empty state, "Every habit you make lives here."). **1.4** every
+  habit archived: "No habits right now" over the Archived row. **1.5** Font size 200 %: text grows, icons don't, rows
+  grow. **1.6** back from Habit details: the same scroll position, Water's row still pressed.
+- **1.7** a board of every kind of row and **1.8** of every status (paused with and without a date, starts later,
+  ends, ended, a long name and line). **1.9** + with five habits: the 5 · Add a 6th habit page, unchanged.
+
+**Row 2 designed, 18 Oct 2026** (a row's ⋮ and what each item does; Water unless said):
+- **2** the menu under the row's ⋮, Today's touch-and-hold menu style: *Edit habit*, *Duplicate*, *Pause…*, a divider,
+  *Archive*, *Delete habit…* (red), the same words as Habit details' ⋮. **2.4** a paused habit's menu has *Resume* in
+  place of *Pause…*; near the end of the list, the list moves up so the menu still opens under its row.
+- **2.1** Edit: the form's 6 · Edit habit, unchanged. **2.2** Duplicate: *New habit* filled in as "Water (copy)", no
+  Type row, *Add* (it goes right after the original; no history). **2.2.1** at five habits: the 6th-habit page first.
+- **2.3** *Pause Water* (new on Android, from the iPhone's pause rules): a bottom sheet with *1 week* (Back on Sun,
+  25 Oct), *2 weeks*, *Until a date…*, *Until I resume it*; "While Water is paused, it's off Today and sends no
+  reminders. Paused days never break a streak."; Cancel | **Pause**. **2.7** the same sheet for a quit habit says first
+  that the current run (45 days) ends, stays in its history, and a new run starts on resume. **2.3.2** *Until a
+  date…* (added 18 Oct, the user: "until a date that should be able to pick a date"): Android's date picker over the
+  sheet, tomorrow and later only; OK puts the day in the sheet. **2.3.3** the sheet with it chosen, *Back on Thu,
+  30 Oct*; Pause.
+- Results, each with a snackbar and *Undo*: **2.3.1** Water in Paused, "Back on 25 Oct"; **2.4.1** Meditate back in
+  Morning after Meds (Paused goes when empty); **2.5** archived, no dialog, *Archived · 4 habits*; **2.6.1** deleted.
+  The list lifts so the Archived row clears the snackbar.
+- **2.6** *Delete Water?* "Its history and notes are deleted too. Archiving keeps them, and you can bring it back any
+  time." → since 18 Oct: "Its history and notes are deleted too. To keep them, archive it instead." with **Cancel |
+  Delete** (red) only (the user: three buttons gave "a high chance of misclick"; Rulebook D9).
+
+**Row 3 designed, 18 Oct 2026** (selecting several):
+- **Added after the user's review, 18 Oct 2026:** a long press can't be seen, so it's found two more ways. **3.8, a
+  coach mark on the first visit** (two habits or more): Material's rich tooltip, dark (as the snackbar) so it stands
+  out, under the first row: *Select several at once* / "Touch and hold a habit to group, pause, archive or delete
+  several together. Or use Select in the menu at the top right." / *Got it*. Got it, or the first long press, puts
+  it away for good. **Select in the top bar's ⋮** (5, 5.3, first in the menu) opens **5.6**: selection with nothing
+  marked, titled *Select habits*, the bottom bar greyed until a habit is marked. The same on Tasks (4.5–4.7).
+- **Delete is red everywhere** (18 Oct): in every menu, dialog and selection bar, the word and its icon; Cancel stays
+  ink. Fixed where it was ink: Today 3.3.5 and Habits 5.5.2 (*Delete Family?*), Plus & Account 7.3 (*Remove Lee?*),
+  Tasks' selection bars (4–4.3, Completed 8.2–8.3), Completed 8.4 and Archived 9.3. No dialog has three buttons (D9).
+- **Long press starts selection** (3): the top bar becomes ✕ · *1 selected* · **Select all** (surface-container colour);
+  a marked row turns grey with a ✓ in place of its icon; every ⋮ hides and a tap now marks or unmarks. **The actions sit
+  in a bottom bar, each icon with its word** (actions always carry text): **Pause · Archive · Group · Delete** (red).
+  A top bar can't hold four labelled actions on a 360 dp phone; the bottom bar can, as Google Photos does.
+- **3.1** several (Walk, Refill water, Journal). **3.2** *Select all* marks every habit and turns into *Deselect all*;
+  the Archived row isn't a habit and can't be marked. **3.7** with paused and active habits marked together, **Pause**
+  and **Resume** both show, each acting only on the habits it fits; each shows only when it would act on something.
+- **3.3** *Put 3 habits in a group*: No group, Health, Home, Mind, + New group; Cancel | Move. **3.4** the pause sheet
+  for the three. **3.5** archived: no dialog, the selection ends, snackbar *3 habits archived* · Undo. **3.6** *Delete
+  3 habits?* names them; **Cancel | Delete** (red) only, the body pointing to Archive (18 Oct 2026, D9).
+
+**Row 4 designed, 18 Oct 2026** (search, Android's full search view):
+- **4** the top bar's search opens a full-screen search: ← · *Search habits* with the cursor, the Gboard keyboard up
+  (its enter key a search key), nothing listed until you type. The header is surface-container grey with a divider.
+- **4.1** typing "wa": matching habits under **Habits** (Walk, Refill water, Water), then archived ones under
+  **Archived** (Water plants · *Archived 3 Sep*); each row has the same line as on Habits and its ⋮; ✕ clears.
+- **4.2** no match: *No habits called "yoga"* · "Check the spelling, or add it as a new habit." · **New habit
+  "yoga"** (tonal; the form opens with the name in). **4.3** back from a result: the same search and matches, the
+  keyboard down; ← again returns to Habits.
+
+**Rows 5–7 designed, 18 Oct 2026; the section is complete (56 frames, no placeholders):**
+- **5** the top bar's ⋮ (groups exist): *Show by…*, *Arrange…*, *Edit groups*. **5.1** *Show habits by*: a simple
+  dialog, Time of day ("Morning, Afternoon, Evening, Anytime, as on Today") or Group; a tap chooses and is remembered.
+  **5.2** by group: Health, Home, Mind, then No group, Paused, Archived; Smoking sits in Health, its line *Quit*.
+  **5.3** no groups yet: *Arrange…* and *New group* only. **5.4–5.5.3** are Today's own screens (Arrange Today, Groups,
+  a group, Delete group, New group): one editor however you get there.
+- **6** *Archived habits*: ← · title; a note ("Archived habits keep all their history and send no reminders. They
+  don't count toward your five free habits."; **6.1** with Plus, without the last sentence); newest first, each
+  *Archived 2 Oct* with its ⋮. **6.2** ⋮: *Restore*, divider, *Delete habit…* (red). **6.3** restored: snackbar
+  *Water plants restored* · View (opens Habits at it). **6.4** restore at five (free): *Restore a 6th habit*, the
+  6th-habit page. **6.5** *Delete Water plants?* "Its history and notes are deleted too." Cancel | Delete (two
+  buttons). **6.6** an archived habit's details: a card under the title, *Archived 3 Sep* · "It keeps all its history.
+  Restore it to log again." · **Restore** (tonal); the tabs to look at, nothing to log. **6.7** after a type change:
+  the old Water says *Started over as Time it*. **6.8** the last one restored: *Nothing archived* ("Habits you archive
+  keep their history here, and you can restore them any time."). **6.9** selecting archived habits: *Restore* ·
+  *Delete* in the bottom bar.
+- **7** the ways in, as drawn elsewhere: the menu's *Habits* row, the type change's snackbar *View*, and Habit details.
+
+**The rows:** 1 the page and its states · 2 a row's ⋮ (results on the row below) · 3 selecting several · 4 search ·
+5 the top bar's ⋮ (Show by, Arrange, Edit groups) · 6 Archived habits · 7 the ways in (the menu, a type change's View,
+tapping a row). Frames 2.1, 5.4, 7, 7.1 and 7.2 point to screens drawn in other sections, so the flow is complete.
+The section grew to 5,720 × 7,680; every section below it moved down 5,983 (the page's lowest point is now 66,594,
+inside the +67,000 limit).
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
@@ -2930,4 +3101,6 @@ section under Today, three rows:
    Drive & Backup (the sync line and status, A7), Privacy & Security and App Lock, Plus, Help & Feedback, About.
 9. ~~**Welcome**~~ (the onboarding) built 12 Oct. ~~An empty Today~~ built 12 Oct. Still to draw: "We found data on this device".
 10. ~~**Widgets**~~ built 12 Oct: every kind, every state, adding and changing. Paused: lock-screen widgets (the user, 12 Oct).
+12. ~~**Habits** (`2106:2`): 56 placeholders to design~~ **designed 18 Oct**, all 56 frames. Next: the app's Habits page
+    to match (the built app has no row ⋮, Duplicate, search, selection, Show by, pause sheet or Archived page yet).
 11. Then the larger phone (412 wide) for the screens that need it, and the tablet layout (A11 D9).

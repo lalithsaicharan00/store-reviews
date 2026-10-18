@@ -1097,6 +1097,24 @@ and the Add note keyboard coming up by itself.
     when no habits are found; "Try another account" (Another Google account / Continue with Apple) when no Plus account
     is found. Google's own sheets keep their own "Sign in with Google": an app can't change Google's screens.
   - [ ] Still to check before building: the iPhone and Android apps see the same Drive app folder for one Google account.
+  - [ ] **Bug (Android app), and design missing: Create an account after buying Plus does nothing** (found by the user,
+    18 Oct 2026: "when I click on Google button, it is showing the pop-up. When I select the account, nothing is
+    happening … it should create the account … once the account is created, at least some feedback should be there").
+    From Plus & Account, buy Plus → 2.2 *Plus is yours* → Continue with Google → Google's sheet → an account chosen →
+    the screen stays as it was, with no account made and nothing said.
+    - **Design missing** (Figma `1476:2`): 2.3 Google's sheet goes straight to 1.3 *Plus with an account*. There is no
+      *Creating your account…* state while the Worker makes it (the Sign in flow has 3.2 *Looking for your Plus*), no
+      feedback once it's made (a snackbar or the 3.3 *Plus is back* kind of screen: *Account created · Signed in as
+      sam@gmail.com*), and no failure screen for Create an account (Sign in has 3.5 *Couldn't connect*). The same gap
+      on 2.6/2.7 (Plus Family) and 6 *Create an account*.
+    - **Code** (`Android/app/…/ui/plus/PlusFlows.kt` `ThanksPlus`, `ThanksFamily`, `CreateAccountScreen`;
+      `app/account/SignInProviders.kt`): after the sheet nothing shows while the account is checked and made; on
+      success it only goes back to the page; and `GoogleSignInProvider.google` turns every `GetCredentialException`
+      into `null`, which the screen treats as "they backed out" (`?: return@launch`), so a failed sign-in after an
+      account is picked (for example a web client ID or signing SHA-1 that Google doesn't match) says nothing at all;
+      a server failure would show *Couldn't connect*, which the user didn't see.
+      Root cause not confirmed yet: read the device log (`adb logcat`) for the Credential Manager error while
+      repeating it, then design the three states, show them, and stop swallowing the error.
 - [ ] **111. One backup file on every device** (added 14 October 2026, from the user, iPhone, iPad and Android alike;
   Rulebook D5; why: [Backup File Format](<../../../Core/Backup File Format.md#one-file-on-every-device-14-oct-2026>)). The
   user: "the backup file should be the same everywhere. The backup file created on iOS as well as Android should be the
@@ -1251,6 +1269,77 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **130. The Tasks page: why people open it, then redesign it** (added 18 October 2026, from the user, after the
+  Habits page: "do the research on tasks … Why do they come to the task page? What do they want to do it more
+  frequently? What are the very frequent actions? What are the jobs that a task page has? What it needs to satisfy? …
+  report the research to me. And then we will do the same process"). Figma's Tasks section `2373:2` is empty.
+  - [x] **Research** (18 Oct): [The Tasks Page — Why People Open It and What It Should Do](<../../../Research/Research Reports/Day Structure and Organization/The Tasks Page — Why People Open It and What It Should Do.md>):
+    2,040 reviews read by hand, 1,152 on topic; eight jobs; the most frequent actions; what our app does today; native
+    Android; eight decisions for the user (§7).
+  - [x] **The user's decisions** on §7 (18 Oct): no-date tasks allowed (default Today); no lists or categories for now;
+    search always in the top bar; long press to select several; completed tasks kept as history; the rest left to the
+    research. The user also noted that Today keeps showing dated tasks in their time of day, and that the iPhone's task
+    screens were made on the fly: the Android designs are the final ones.
+  - [x] **Follow-up research** (18 Oct, report §8): 1,925 more reviews read, 890 on topic. Group by when (Today,
+    Tomorrow, five named days, Later by month, No date); a checkbox on every row, guarded (ticked tasks stay struck
+    through until the day ends, Undo, no confirmation; **replaced the same day by the user: no checkbox**, below); Completed kept by day, newest first, never deleted by the app;
+    repeating tasks under their next date plus a Repeating list; one-time tasks roll over, a repeating task carries
+    only until its next occurrence and never doubles; Skip this time for repeating tasks.
+  - [ ] **The shared rule change** for a missed repeating occurrence (carry until the next is due): the core's spec,
+    golden cases and both apps together (Rulebook T21), when the build starts.
+  - [x] **Placeholders** (18 Oct): 64 numbered frames with 50 arrows in Figma `2373:2`, ten rows (the page and its
+    states, ticking, a row's ⋮ and results, selection, search, No date, Repeating, Completed, Archived, details and
+    the way in); the sections below moved down 9,600.
+  - [x] **The designs** (18 Oct): all 64 frames in Figma `2373:2` (rows 1–10: the page and its states, ticking, a row's
+    ⋮ and results, selection, search, No date, Repeating, Completed, Archived, details and the menu). Choices made while
+    drawing: + in the top bar as on Habits (no FAB, no top-bar ⋮); touch, hold and move to reorder (letting go without
+    moving selects); selection marks replace checkboxes while selecting. Written in the Android handoff.
+  - [x] **No checkbox on the Tasks page; every delete question has two buttons** (18 Oct, the user: "remove the
+    checkbox from the … tasks page … it's just a list of displaying things. And the three-dot menu, that's it"; "delete
+    water … three options … high chance of misclick … just show two options very clearly"). Figma: every task row now
+    shows the task's icon in its colour, as on Habits (530 rows); selection marks a row with an ink ✓ in place of its
+    icon; History rows in task details show ✓, clock or ⏭; Completed brings a task back from ⋮ › *Mark as not done*.
+    Row 2 now shows a task done on Today as the Tasks page sees it (2, 2.1 repeating, 2.2 carried, 2.3 the day ends);
+    the four tick-only frames (tick and Undo, early tick, untick) were removed and the arrows redrawn. The five delete
+    dialogs (Tasks 3.6 and 4.4, Habits 2.6 and 3.6, New: choices 5.1.1) are now Cancel | Delete, the body pointing to
+    Archive. Rulebook U38 (new), D9 and U14; report §7 and §8.2; Android handoff. Not yet: the iPhone (frozen until
+    Android is done) and the build.
+  - [x] **The user's review, as for Habits** (18 Oct): a ⋮ with *Select* on every Tasks top bar (40 frames), 4.6 the
+    menu, 4.7 Select with nothing marked, 4.5 the first-visit coach mark; Delete red in the selection bars, 8.4 and 9.3.
+  - [ ] **Build** the Android Tasks page to match (Android first; the iPhone is frozen until the Android revamp is done).
+- [ ] **129. The Habits page: why people open it, then redesign it** (added 18 October 2026, from the user, about the
+  Android Habits page `2106:2`: "this design is outdated … we have archived habits as well … we have groups as well. So
+  does the habits … should be displayed as per groups or as per time of the day sections? … figure out why do they come
+  here … UX should be top-notch … UI should be top-notch and most importantly it should be native … do the research
+  … then I will tell you whether to implement it or not").
+  - [x] **Research** (18 Oct): [The Habits Page — Why People Open It and What It Should Do](<../../../Research/Research Reports/Day Structure and Organization/The Habits Page — Why People Open It and What It Should Do.md>):
+    2,700 reviews read by hand, 1,193 on topic; five jobs; time of day by default with a switch to group; what the
+    current design keeps and misses; native Android conventions; six decisions for the user (§7).
+  - [x] **The user's decisions** on §7. Decided 18 Oct: (1) time of day by default, a *Show by: Group* switch once
+    groups exist; (3) search is always there, the same however long the list ("it should be the same mental model");
+    (4) add Duplicate; (5) and (6) left to the research: no times beside section names, no free count on the page.
+    (2) tap a row for Habit details; its ⋮ holds Edit, Duplicate, Pause, Archive, Delete… ("if this is intuitive and good
+    UX, then go with that").
+  - [x] **Placeholders** (18 Oct): the old Habits frame deleted; 56 numbered placeholders with arrows in Figma `2106:2`
+    (the page and its states, a row's ⋮, selecting several, search, Show by and groups, Archived habits, the ways in).
+  - [x] **Row 1 designed** (18 Oct): 1–1.9, the page and its states, in the Reminders page's list style.
+  - [x] **Row 2 designed** (18 Oct): a row's ⋮, Edit, Duplicate, Pause (a new sheet, and the quit version), Resume,
+    Archive, Delete and their results.
+  - [x] **Row 3 designed** (18 Oct): selecting several, with the actions in a labelled bottom bar (Pause, Archive,
+    Group, Delete; Resume when a paused habit is marked), Select all, Group, Pause, Archive and Delete for several.
+  - [x] **Row 4 designed** (18 Oct): search (Android's full search view), matches with archived ones apart, no match
+    with New habit "yoga", back from a result.
+  - [x] **Rows 5–7 designed** (18 Oct): the top bar's ⋮, Show by, by group, no groups yet, the shared Arrange and Groups
+    screens; Archived habits with its menu, restore, delete, details, a type change, empty and selection; the ways in.
+    All 56 frames designed, no placeholders left.
+  - [x] **The user's review** (18 Oct: "in 2.3 … until a date … should be able to pick a date"; 2.6 and 3.6 "three
+    options … high chance of misclick"; "a coach mark … that you can long press"; "in the fifth one … add the select
+    option"; "somewhere you are using a white and somewhere red … use it everywhere"): 2.3.2 date picker and 2.3.3 the
+    sheet with the day; 2.6 and 3.6 are Cancel | Delete only (done earlier the same day); 3.8 first-visit coach mark;
+    Select first in the top bar's ⋮ (5, 5.3) and 5.6 Select with nothing marked; Delete made red in every dialog,
+    menu and selection bar on the Android page (seven places were ink). The same for Tasks (130). Rulebook D9, U39.
+  - [ ] **Build** the Android Habits page to match (row ⋮, Duplicate, search, selection, Show by, pause sheet, Archived). (Android first; the iPhone is frozen until the
+    Android revamp is done).
 - [ ] **128. Logging a time by hand: easy, and each platform's native way** (added 18 October 2026, from the user, while
   reviewing Android's Add log for a time: "think about the UX … they have to type … hour, then minute and then second …
   first thing it should be very easy to log, second thing it should feel very native … add the note in the
