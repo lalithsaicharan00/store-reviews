@@ -111,10 +111,11 @@ class ScreensTest {
     @Test fun aLongPressOnARowOpensItsMenu() {
         launch()
         compose.onNodeWithTag("row-Water", useUnmergedTree = true).performTouchInput { longClick() }
+        // Figma 1.4: Edit habit, Arrange…, Pause…, Add note, Skip today.
         waitFor(hasText("Edit habit"), "the row's menu")
-        waitFor(hasText("Open habit page"), "Open habit page")
-        tapText("Open habit page")
-        waitFor(hasTestTag("habit-details"), "Habit details")
+        waitFor(hasText("Arrange…"), "Arrange…")
+        tapText("Pause…")
+        waitFor(hasText("Pause Water"), "the Pause page")
     }
 
     @Test fun theIconsShortcutStartsTheNextRoutine() {

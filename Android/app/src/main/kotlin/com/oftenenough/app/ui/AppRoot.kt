@@ -141,6 +141,8 @@ private fun AppMain(
     view: View, handOverState: MutableState<String?>,
 ) {
     var handOver by handOverState
+    // Today's folds and held order, kept while pages open over Today and come back.
+    val todayLayout = remember { com.oftenenough.app.ui.today.TodayLayout(rootScope) }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
     // Restore from Google Play found nothing: Plus & Account shows "No Plus found" over itself (Figma 4.2).
@@ -171,6 +173,7 @@ private fun AppMain(
     // Today places its own messages above the day bar; every other page shows them here, at the bottom.
     val entry = nav.currentBackStackEntryAsState().value
     val route = entry?.destination?.route
+    LaunchedEffect(route) { if (route != null && route != Routes.TODAY && route !in pagesOverToday) store.afterLog = null }
     // The sidebar marks the page open beside it (Today, or a menu page).
     val menuItem = when (route) {
         Routes.TODAY -> MenuItem.TODAY
@@ -191,14 +194,14 @@ private fun AppMain(
             androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
             // With the sidebar (tablets, unfolded foldables) there's no drawer to open; the phone is untouched.
             if (LocalSidebar.current) {
-                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar)
+                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             } else ModalNavigationDrawer(drawerContent = {
                 MenuDrawer(store, MenuItem.TODAY) { item ->
                     scope.launch { drawer.close() }
                     if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
                 }
             }, drawerState = drawer) {
-                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar)
+                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             }
             dayTarget?.split("|")?.let { (id, d) ->
                 DayDetailsSheet(id, d.toInt(), store, dayNav) { dayTarget = null }
@@ -238,7 +241,11 @@ private fun AppMain(
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusAccountPage(store, AppGraph.plus, AppGraph.accounts, AppGraph.signIn, AppGraph.backup,
                     snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false }, codes = AppGraph.plusCodes)
-                "Arrange your day" -> ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
+                "Arrange your day" -> {
+                    // The habit Arrange… or Move asked for, lifted once (Figma 1.4, 1.6).
+                    val lifted = remember { ArrangeLift.habit.also { ArrangeLift.habit = null } }
+                    ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, { nav.navigate(Routes.menu(MenuItem.TIMES_OF_DAY)) }, lifted) { nav.popBackStack() }
+                }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
                 "Open source licences" -> LicencesPage { nav.popBackStack() }
@@ -453,6 +460,7 @@ object Routes {
 /** Day details' way out to the pages it opens; [close] closes the sheet first where a page replaces it. */
 private fun dayNav(nav: NavHostController, close: () -> Unit) = object : DayNav {
     override fun habitPage(habit: Habit) { close(); nav.navigate(Routes.habit(habit.id)) }
+    override fun allMilestones(habit: Habit) { com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id; habitPage(habit) }
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
     override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
     override fun log(habit: Habit, entry: Entry) = nav.navigate(Routes.log(entry.id))
@@ -484,6 +492,8 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun newGroup() = nav.navigate(Routes.group(null))
     override fun editGroups() = nav.navigate(Routes.GROUPS)
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))
+    override fun backup() = nav.navigate(Routes.menu(MenuItem.BACKUP))
+    override fun reminders() = nav.navigate(Routes.menu(MenuItem.REMINDERS))
 }
 
 private fun todayActions(nav: NavHostController, view: android.view.View, openDay: (Habit, Int) -> Unit) = object : TodayActions {
@@ -495,4 +505,14 @@ private fun todayActions(nav: NavHostController, view: android.view.View, openDa
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.habit(habit.id))
     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
     override fun feedback(done: Boolean) { view.performHapticFeedback(HapticFeedbackConstants.CONFIRM) }
+    override fun arrange(habit: Habit?) { ArrangeLift.habit = habit?.id; nav.navigate(Routes.page("Arrange your day")) }
 }
+
+/** The habit Arrange Today opens with lifted (a row's Arrange…, the new habit's Move; Figma 1.4, 1.6). */
+object ArrangeLift { var habit: String? = null }
+
+/**
+ * Today's pages: Undo · Note under the last log stay while one of these is open over Today (the note, Add log, the
+ * timer, a log, Day details' pages) and go when the person leaves Today for anything else (Figma 1.2).
+ */
+private val pagesOverToday = setOf("note/{habit}/{day}", "add/{habit}/{day}", "timer/{id}", "log/{id}", "alllogs/{habit}/{day}")

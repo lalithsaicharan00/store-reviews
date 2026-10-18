@@ -4,6 +4,8 @@ import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -23,14 +26,16 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CalendarToday
+import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,12 +49,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TextLimit
@@ -57,63 +62,102 @@ import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.theme.appColors
 
 /**
- * A note for one habit's day ([habitId]), or the day's own note (null): Add note when there's none, the Note view when
- * there is (Delete note | Edit), and Edit note (✕ only, never ‹ and ✕ together: Current Work 104). Save is off until
- * something is typed; closing with something typed asks first (D7).
+ * A note for one habit's day ([habitId]), or the day's own note (null) (Figma 15–15.4.3): Add note when there's none,
+ * the Note view when there is (Delete note | Edit), and Edit note (✕ only, never ‹ and ✕ together: Current Work 104).
+ * A new note's date is an assist chip that opens the date picker (today and earlier); a day that already has a note says
+ * so and opens it for changing. Save is off until something is typed; closing with something typed asks first (D7).
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteScreen(habitId: String?, day: Int, store: HabitStore, onDone: () -> Unit) {
+fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () -> Unit) {
     val c = appColors
     val habit = habitId?.let { store.habit(it) }
-    val saved = if (habit != null) store.note(habit, day) else store.dayNote(day)
-    var editing by rememberSaveable { mutableStateOf(saved == null) }
+    val today = store.today()
+    var day by rememberSaveable { mutableStateOf(startDay) }
+    fun noteOf(d: Int) = if (habit != null) store.note(habit, d) else store.dayNote(d)
+    val opened = remember { noteOf(startDay) }
+    val saved = noteOf(day)
+    var editing by rememberSaveable { mutableStateOf(opened == null) }
+    // A new note whose day already has one (chosen with the chip): that note is changed (Figma 15.3).
+    val adding = opened == null
     var text by rememberSaveable(editing) { mutableStateOf(saved ?: "") }
+    // Another day chosen: its note, if it has one, is the one being written (Figma 15.3); otherwise the typing stays.
+    var shownDay by rememberSaveable { mutableStateOf(startDay) }
+    if (shownDay != day) { shownDay = day; noteOf(day)?.let { text = it } }
     var discard by remember { mutableStateOf(false) }
     var confirmDelete by remember { mutableStateOf(false) }
+    var pickDay by remember { mutableStateOf(false) }
+    // Saved and leaving: the screen keeps what it showed while it slides away.
+    var leaving by remember { mutableStateOf(false) }
     val focus = remember { FocusRequester() }
     val changed = text.trim() != (saved ?: "").trim()
-    fun close() { if (editing && changed && text.isNotBlank()) discard = true else if (editing && saved != null) editing = false else onDone() }
+    fun close() { if (editing && changed && text.isNotBlank()) discard = true else if (editing && !adding) editing = false else onDone() }
     fun save(value: String) { if (habit != null) store.setNote(value, habit, day) else store.setDayNote(value, day) }
     BackHandler { close() }
-    LaunchedEffect(editing) { if (editing) runCatching { focus.requestFocus() } }
+    LaunchedEffect(editing, day) { if (editing) runCatching { focus.requestFocus() } }
 
-    val title = when { !editing -> "Note"; saved == null -> "Add note"; else -> "Edit note" }
+    val title = when { !editing -> "Note"; adding -> "Add note"; else -> "Edit note" }
+    val shortDay = DayWords.short(day).replace(",", "")
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(title, close = editing, onClose = ::close)
-        Row(Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, top = 8.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
-            else Icon(Icons.Rounded.CalendarToday, null, tint = c.secondary, modifier = Modifier.size(24.dp))
-            Spacer(Modifier.width(8.dp))
-            Text(habit?.name ?: "This day", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, color = c.ink, maxLines = 1)
-            Text(DayWords.withDate(day, store.today()), style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-        }
-        Box(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(16.dp)) {
+        Column(Modifier.weight(1f).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            // The habit and the day (Figma: 40 high, 16 in): its icon in a 24 circle, the name, then the date.
+            Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
+                else Icon(Icons.Outlined.CalendarToday, null, tint = c.secondary, modifier = Modifier.size(24.dp))
+                Text(habit?.name ?: "This day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (editing && adding) {
+                    Row(Modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).border(1.dp, c.outline, RoundedCornerShape(8.dp))
+                        .clickable(role = Role.Button) { pickDay = true }.padding(start = 8.dp, end = 16.dp).semantics { testTag = "note-date" },
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Outlined.CalendarToday, null, Modifier.size(18.dp), tint = c.ink)
+                        Spacer(Modifier.width(8.dp))
+                        Text(DayWords.withDate(day, today), style = AppType.labelLarge, color = c.ink, maxLines = 1)
+                    }
+                } else Text(DayWords.withDate(day, today), style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
+            }
+            if (editing && adding && saved != null && !leaving) {
+                Text("$shortDay already has a note; you're changing it.", Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = c.secondary)
+            }
             if (editing) {
-                BasicTextField(text, { text = it.take(TextLimit.NOTE) },
-                    textStyle = AppType.bodyLarge.copy(color = c.ink),
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                    cursorBrush = SolidColor(c.ink),
-                    modifier = Modifier.fillMaxSize().focusRequester(focus).semantics { testTag = "note-field" },
-                    decorationBox = { inner -> Box { if (text.isEmpty()) Text("Write a note", style = MaterialTheme.typography.bodyLarge, color = c.secondary); inner() } })
-            } else Text(saved ?: "", Modifier.verticalScroll(rememberScrollState()), style = AppType.bodyLarge, color = c.ink)
+                Box(Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(16.dp)) {
+                    BasicTextField(text, { text = it.take(TextLimit.NOTE) },
+                        textStyle = AppType.bodyLarge.copy(color = c.ink),
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+                        cursorBrush = SolidColor(c.ink),
+                        modifier = Modifier.fillMaxSize().focusRequester(focus).semantics { testTag = "note-field" },
+                        decorationBox = { inner -> Box { if (text.isEmpty()) Text("Write a note", style = AppType.bodyLarge, color = c.secondary); inner() } })
+                }
+            } else {
+                Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(16.dp)) {
+                    Text(saved ?: "", Modifier.verticalScroll(rememberScrollState()).semantics { testTag = "note-text" }, style = AppType.bodyLarge, color = c.ink)
+                }
+            }
+            TextLimit.note(text, TextLimit.NOTE)?.takeIf { editing }?.let { Footer(it) }
         }
-        TextLimit.note(text, TextLimit.NOTE)?.takeIf { editing }?.let { Footer(it) }
-        if (editing) BottomAction("Save", text.isNotBlank() && changed, tag = "note-save") {
+        if (editing) BottomAction("Save", leaving || (text.isNotBlank() && changed), tag = "note-save") {
+            if (leaving) return@BottomAction
+            if (adding) leaving = true
             save(text)
-            if (saved == null) onDone() else editing = false
-        } else Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ confirmDelete = true }, Modifier.weight(1f).heightIn(min = 56.dp).semantics { testTag = "note-delete" },
-                colors = ButtonDefaults.buttonColors(containerColor = c.tonal, contentColor = c.error)) { Text("Delete note", style = MaterialTheme.typography.titleMedium) }
-            Button({ editing = true }, Modifier.weight(1f).heightIn(min = 56.dp).semantics { testTag = "note-edit" },
-                colors = ButtonDefaults.buttonColors(containerColor = c.ink, contentColor = c.onInk)) { Text("Edit", style = MaterialTheme.typography.titleMedium) }
-        }
+            if (adding) onDone() else editing = false
+        } else DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
     }
-    if (discard) DiscardDialog(if (saved == null) "Discard this note?" else "Discard your changes to this note?", { discard = false }) {
+    if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes to this note?", { discard = false }, {
         discard = false
-        if (saved == null) onDone() else { editing = false }
-    }
+        if (adding) onDone() else editing = false
+    }, keepLabel = if (adding) "Keep writing" else "Keep editing")
     if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this note?") },
-        text = { Text("The note for ${DayWords.short(day)} is deleted. Nothing else changes.") },
-        confirmButton = { TextButton({ confirmDelete = false; save(""); onDone() }) { Text("Delete note", color = c.error, fontWeight = FontWeight.Medium) } },
+        text = { Text("Only the note for $shortDay is removed. That day's progress stays.") },
+        confirmButton = { TextButton({ confirmDelete = false; save(""); onDone() }, Modifier.semantics { testTag = "note-delete-confirm" }) { Text("Delete note", color = c.error) } },
         dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } })
+    if (pickDay) {
+        val first = habit?.let { store.rules.startDay(it) } ?: Int.MIN_VALUE
+        val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long) = utcMsToDay(utcTimeMillis).let { it <= today && it >= first }
+        })
+        DatePickerDialog({ pickDay = false }, confirmButton = {
+            TextButton({ state.selectedDateMillis?.let { day = utcMsToDay(it) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }) { Text("OK", color = c.ink) }
+        }, dismissButton = { TextButton({ pickDay = false }) { Text("Cancel", color = c.ink) } }) { DatePicker(state) }
+    }
 }

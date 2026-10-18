@@ -4,6 +4,7 @@ import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,8 +16,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -26,20 +31,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,20 +50,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Entry
 import com.oftenenough.app.data.EntrySource
+import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.HabitCopy
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
@@ -75,46 +74,49 @@ import com.oftenenough.app.data.opensRecord
 import com.oftenenough.app.data.originLine
 import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.segmentShape
+import com.oftenenough.app.ui.day.StepCheck
 import com.oftenenough.app.ui.day.logCount
+import com.oftenenough.app.ui.day.logsTitle
 import com.oftenenough.app.ui.theme.appColors
+import java.time.ZoneId
 
-/** ✕ (or ←) and a one-line title (U18). */
-@OptIn(ExperimentalMaterial3Api::class)
+/** ✕ (or ←) and a one-line title (U18; Figma: 64 high, Title Large Emphasized). */
 @Composable
 fun RecordTopBar(title: String, close: Boolean = true, onClose: () -> Unit, actions: @Composable () -> Unit = {}) {
-    TopAppBar(
-        title = { Text(title, maxLines = 1) },
-        navigationIcon = {
-            IconButton(onClose, Modifier.semantics { testTag = "record-close" }) {
-                if (close) Icon(Icons.Rounded.Close, "Cancel") else Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back")
-            }
-        },
-        actions = { actions() },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = appColors.screen),
-    )
+    Row(Modifier.fillMaxWidth().statusBarsPadding().height(64.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClose, Modifier.semantics { testTag = "record-close" }) {
+            if (close) Icon(Icons.Rounded.Close, "Cancel", tint = appColors.ink) else Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = appColors.ink)
+        }
+        Spacer(Modifier.width(4.dp))
+        Text(title, Modifier.weight(1f), style = AppType.titleLargeEmphasized, color = appColors.ink, maxLines = 1)
+        actions()
+    }
 }
 
 /** Keep editing / Discard changes: asked before closing anything typed (D7: back never loses typing). */
 @Composable
-fun DiscardDialog(title: String, onKeep: () -> Unit, onDiscard: () -> Unit) {
+fun DiscardDialog(title: String, onKeep: () -> Unit, onDiscard: () -> Unit, keepLabel: String = "Keep editing") {
     AlertDialog(onKeep, title = { Text(title) },
         confirmButton = { TextButton(onDiscard, Modifier.semantics { testTag = "discard" }) { Text("Discard changes", color = appColors.error) } },
-        dismissButton = { TextButton(onKeep) { Text("Keep editing", color = appColors.ink) } })
+        dismissButton = { TextButton(onKeep, Modifier.semantics { testTag = "keep-editing" }) { Text(keepLabel, color = appColors.ink) } })
 }
 
-/** The amount: one large typed number, the unit under it, the decimal pad up. */
+/** The amount (Figma 1.6: 112 high, corners 20): one large typed number (45 Medium), the unit under it, the decimal pad up. */
 @Composable
 fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly: Boolean = false) {
     val c = appColors
     val currency = unit.trim().takeIf { it in HabitCopy.currencies }
-    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(vertical = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.fillMaxWidth().heightIn(min = 112.dp).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(vertical = 18.dp),
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            if (currency != null) Text(currency, style = AppType.displayMedium, color = c.secondary)
-            BasicTextField(draft.amount, { draft.amount = it.take(16) }, readOnly = readOnly,
+            if (currency != null) Text(currency, style = AppType.displayMediumEmphasized, color = c.secondary)
+            var field by remember { mutableStateOf(TextFieldValue(draft.amount, TextRange(draft.amount.length))) }
+            if (field.text != draft.amount) field = TextFieldValue(draft.amount, TextRange(draft.amount.length))
+            BasicTextField(field, { field = it.copy(text = it.text.take(16)); draft.amount = field.text }, readOnly = readOnly,
                 textStyle = AppType.displayMediumEmphasized.copy(color = c.ink, textAlign = TextAlign.Center),
                 keyboardOptions = KeyboardOptions(keyboardType = if (draft.kind == HabitKind.Check) KeyboardType.Number else KeyboardType.Decimal),
                 singleLine = true, cursorBrush = SolidColor(c.ink),
-                modifier = Modifier.widthIn(min = 48.dp).width(IntrinsicWidthFor(draft.amount)).let { m -> focus?.let { m.focusRequester(it) } ?: m }
+                modifier = Modifier.widthIn(min = 32.dp).width(widthFor(draft.amount)).let { m -> focus?.let { m.focusRequester(it) } ?: m }
                     .semantics { testTag = "record-amount"; contentDescription = if (unit.isBlank() || currency != null) "Amount" else "Amount, in $unit" },
                 decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
                     if (draft.amount.isEmpty()) Text("0", style = AppType.displayMediumEmphasized.copy(color = c.tonal), textAlign = TextAlign.Center)
@@ -123,33 +125,52 @@ fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly
         }
         if (currency == null && unit.isNotBlank()) {
             val one = draft.value == 1.0
-            Text(if (one) HabitCopy.unitWord(1.0, unit) else unit, style = MaterialTheme.typography.titleLarge, color = c.secondary)
+            Text(if (one) HabitCopy.unitWord(1.0, unit) else unit, style = AppType.bodyLarge, color = c.secondary)
         }
     }
 }
 
-/** Width that fits the typed number (a few characters at 57 sp), so the cursor sits beside it, centred. */
-private fun IntrinsicWidthFor(text: String) = (maxOf(1, text.length) * 34 + 8).dp
+/** Width that fits the typed number (about 26 dp a character at 45 sp), so the cursor sits beside it, centred. */
+private fun widthFor(text: String) = (maxOf(1, text.length) * 27 + 6).dp
 
-/** How long: hours, minutes and seconds in three boxes. */
+/**
+ * How long (Figma 2.4–2.6: corners 28): Hours and Minutes in boxes 80 high (Minutes focused first), a timer's log keeps
+ * its Seconds too. The focused box is outlined in ink.
+ */
 @Composable
-fun DurationCard(draft: ValueDraft, focus: FocusRequester?, readOnly: Boolean = false) {
+fun DurationCard(draft: ValueDraft, focus: FocusRequester?, readOnly: Boolean = false, withSeconds: Boolean = false) {
     val c = appColors
-    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        listOf(Triple("h", draft.hours, { v: String -> draft.hours = v }), Triple("min", draft.minutes, { v: String -> draft.minutes = v }),
-            Triple("sec", draft.seconds, { v: String -> draft.seconds = v })).forEachIndexed { i, (label, value, set) ->
-            Column(Modifier.weight(1f).clip(RoundedCornerShape(16.dp)).background(c.tonal2).padding(vertical = 12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                BasicTextField(value, { set(it.take(5)) }, readOnly = readOnly,
-                    textStyle = AppType.displaySmall.copy(color = c.ink, textAlign = TextAlign.Center),
-                    keyboardOptions = KeyboardOptions(keyboardType = if (i == 2) KeyboardType.Decimal else KeyboardType.Number, imeAction = ImeAction.Next),
-                    singleLine = true, cursorBrush = SolidColor(c.ink),
-                    modifier = Modifier.fillMaxWidth().let { m -> if (i == 1 && focus != null) m.focusRequester(focus) else m }
-                        .semantics { testTag = "record-$label"; contentDescription = when (i) { 0 -> "Hours"; 1 -> "Minutes"; else -> "Seconds" } },
-                    decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
-                        if (value.isEmpty()) Text("0", style = AppType.displaySmall.copy(color = c.secondary.copy(alpha = 0.4f)))
-                        inner()
-                    } })
-                Text(label, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+    val fields = listOfNotNull(
+        Triple("Hours", draft.hours, { v: String -> draft.hours = v }),
+        Triple("Minutes", draft.minutes, { v: String -> draft.minutes = v }),
+        if (withSeconds) Triple("Seconds", draft.seconds, { v: String -> draft.seconds = v }) else null,
+    )
+    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(horizontal = 16.dp, vertical = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        fields.forEachIndexed { i, (label, value, set) ->
+            var focused by remember { mutableStateOf(false) }
+            Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Box(Modifier.fillMaxWidth().height(80.dp).clip(RoundedCornerShape(12.dp)).background(if (focused && !readOnly) c.tonal else c.tonal2)
+                    .let { if (focused && !readOnly) it.border(2.dp, c.ink, RoundedCornerShape(12.dp)) else it }, contentAlignment = Alignment.Center) {
+                    var field by remember { mutableStateOf(TextFieldValue(value, TextRange(value.length))) }
+                    if (field.text != value) field = TextFieldValue(value, TextRange(value.length))
+                    BasicTextField(field, { v ->
+                        val clean = v.text.filter { ch -> ch.isDigit() || ch == '.' || ch == ',' }.take(5)
+                        field = v.copy(text = clean, selection = TextRange(minOf(v.selection.end, clean.length))); set(clean)
+                    }, readOnly = readOnly,
+                        textStyle = AppType.displayMediumEmphasized.copy(color = c.ink, textAlign = TextAlign.Center),
+                        keyboardOptions = KeyboardOptions(keyboardType = if (label == "Seconds") KeyboardType.Decimal else KeyboardType.Number,
+                            imeAction = if (i < fields.lastIndex) ImeAction.Next else ImeAction.Done),
+                        singleLine = true, cursorBrush = SolidColor(c.ink),
+                        modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused }
+                            .let { m -> if (i == 1 && focus != null) m.focusRequester(focus) else m }
+                            .semantics { testTag = "record-${label.lowercase()}"; contentDescription = label },
+                        decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
+                            if (value.isEmpty()) Text("0", style = AppType.displayMediumEmphasized.copy(color = c.secondary, textAlign = TextAlign.Center))
+                            inner()
+                        } })
+                }
+                Text(label, style = AppType.bodyMedium, color = c.secondary)
             }
         }
     }
@@ -157,8 +178,9 @@ fun DurationCard(draft: ValueDraft, focus: FocusRequester?, readOnly: Boolean = 
 
 /**
  * One Add screen for every kind (U22): Day details' Log manually, a Today row, History's Add, the timer and the player.
- * ✕ and a one-line title; Habit, Date and Time; the main thing for the kind; a footer that says exactly what will happen;
- * the filled button at the bottom.
+ * ✕ and a one-line title; the habit, then Date | Time; the main thing for the kind; a footer that says exactly what will
+ * happen; the filled button at the bottom. Add stays on: with nothing (or 0) typed, the footer says what's wrong
+ * (Figma 1.6.4); a time later than now stays at now, and says so (1.6.5).
  */
 @Composable
 fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: EntrySource = EntrySource.MANUAL, onDone: () -> Unit) {
@@ -167,6 +189,8 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     val today = store.today()
     var day by rememberSaveable { mutableStateOf(startDay) }
     var time by rememberSaveable { mutableStateOf(store.stamp(null, startDay)) }
+    var later by rememberSaveable { mutableStateOf(false) }
+    var tried by rememberSaveable { mutableStateOf(false) }
     val kind = RecordKind.of(habit, day, store)
     val ruled = store.rule(habit, day)
     val draft = remember(kind) { ValueDraft(ruled.kind) }
@@ -184,8 +208,9 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     LaunchedEffect(kind) { if (kind == RecordKind.AMOUNT || kind == RecordKind.TIME) runCatching { focus.requestFocus() } }
 
     val (value, problem) = draft.check()
+    val typed = kind == RecordKind.AMOUNT || kind == RecordKind.TIME
     val canAdd = day <= today && when (kind) {
-        RecordKind.AMOUNT, RecordKind.TIME -> value != null
+        RecordKind.AMOUNT, RecordKind.TIME -> true
         RecordKind.CHECK -> true
         RecordKind.DAY_DONE -> !store.rules.isDayMet(ruled, day)
         RecordKind.STEPS -> ticked?.let { it != doneSteps } ?: false
@@ -193,6 +218,7 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     }
     fun add() {
         if (!canAdd) return
+        if (typed && value == null) { tried = true; return }
         val at = store.logTime(time, day)
         when (kind) {
             RecordKind.AMOUNT, RecordKind.TIME -> store.addProgress(habit, value!!, day, at, source)
@@ -206,37 +232,45 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
         }
         onDone()
     }
-    val footer = footerText(kind, ruled, day, today, store.logTime(time, day), store, slipLower <= slipUpper)
+    // What the footer says: a problem (red) once Add was tried, a time kept at now, or what will happen.
+    val shownProblem = problem ?: if (tried && typed && value == null) (if (kind == RecordKind.TIME) "Enter how long, more than zero." else "Enter more than zero.") else null
+    val footer = when {
+        shownProblem != null -> shownProblem
+        later -> "That’s later than now, so the time stays ${DayWords.clock(store.logTime(time, day))}."
+        else -> footerText(kind, ruled, day, today, store.logTime(time, day), store, slipLower <= slipUpper)
+    }
+    val scroll = rememberScrollState()
+    // What's wrong comes into view: with the keyboard up the footer can sit under the button (Figma 1.6.4).
+    LaunchedEffect(shownProblem, later) { if (shownProblem != null || later) scroll.animateScrollTo(scroll.maxValue) }
+    // The keyboard coming up keeps the footer whole above the button, never cut in half under it.
+    val keyboard = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+    LaunchedEffect(keyboard, scroll.maxValue) { if (keyboard) scroll.scrollTo(scroll.maxValue) }
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(kind.addTitle, onClose = ::close)
-        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
-            Spacer(Modifier.height(8.dp))
+        Column(Modifier.weight(1f).verticalScroll(scroll).padding(start = 16.dp, end = 16.dp, top = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                HabitFact(habit, 0, 3)
-                DateTimeRows(day, today, range, time, if (kind == RecordKind.TIME) "Finished at" else "Time", 1, 3,
-                    onDay = { d -> time = store.sameClockTime(time, d); day = d }, onTime = { t -> time = store.logTime(t, day) })
+                HabitFact(habit, 0, 2)
+                DateTimeRows(day, today, range, store.logTime(time, day), if (kind == RecordKind.TIME) "Finished at" else "Time",
+                    onDay = { d -> time = store.sameClockTime(time, d); day = d; later = false },
+                    onTime = { t -> later = t > store.clock() && day == today; time = store.logTime(t, day) })
             }
             when (kind) {
-                RecordKind.AMOUNT -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit, focus); Footer(problem ?: footer) }
-                RecordKind.TIME -> { SectionTitle("How long"); DurationCard(draft, focus); Footer(problem ?: footer) }
+                RecordKind.AMOUNT -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit, focus) }
+                RecordKind.TIME -> { SectionTitle("How long"); DurationCard(draft, focus) }
                 RecordKind.STEPS -> {
                     SectionTitle("Steps")
                     val chosen = ticked ?: doneSteps
-                    Column(Modifier.clip(RoundedCornerShape(28.dp)).background(c.surface).padding(vertical = 8.dp)) {
+                    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(horizontal = 20.dp, vertical = 8.dp)) {
                         ruled.steps.forEachIndexed { i, s ->
                             val on = s.id in chosen
-                            Row(Modifier.fillMaxWidth().clickable { ticked = if (on) chosen - s.id else chosen + s.id }.heightIn(min = 48.dp).padding(horizontal = 8.dp)
-                                .semantics { testTag = "record-step-$i" }, verticalAlignment = Alignment.CenterVertically) {
-                                Checkbox(on, { ticked = if (on) chosen - s.id else chosen + s.id },
-                                    colors = CheckboxDefaults.colors(checkedColor = c.habit(habit.color), uncheckedColor = c.secondary))
-                                Text(s.name, style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                            }
+                            StepCheck(s.name, on, habit, true, "record-step-$i", strike = false) { ticked = if (on) chosen - s.id else chosen + s.id }
                         }
                     }
-                    Footer(footer)
                 }
-                else -> Footer(footer)
+                else -> {}
             }
+            Footer(footer, problem = shownProblem != null)
         }
         BottomAction(kind.addButton, canAdd, onClick = ::add)
     }
@@ -245,7 +279,7 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
 
 /** Exactly what will happen, then a paused or skipped day's note (the iPhone's footers). */
 private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, day: Int, today: Int, at: Long, store: HabitStore, slipOk: Boolean): String {
-    val date = DayWords.short(day).replace(",", "")
+    val date = DayWords.short(day)
     val clock = DayWords.clock(at)
     var text = when (kind) {
         RecordKind.AMOUNT -> if (ruled.atMost) "Records what happened. Your limit stays the same." else "Adds a new log. Other logs stay as they are."
@@ -270,9 +304,17 @@ private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, 
     return text
 }
 
+/** "India Standard Time": a zone's own name, for a record made somewhere else (Figma 9.3.4). */
+private fun zoneName(zone: String): String? = runCatching {
+    val z = ZoneId.of(zone)
+    if (z.normalized() == ZoneId.systemDefault().normalized()) null
+    else java.util.TimeZone.getTimeZone(z).getDisplayName(false, java.util.TimeZone.LONG, java.util.Locale.ENGLISH)
+}.getOrNull()
+
 /**
- * One saved record: view first (Log, Slip), with Delete | Edit at the bottom; Edit opens edit mode (Edit log, Edit slip)
- * with the value focused and Save always on (U19). The day itself never changes; the time stays inside it.
+ * One saved record (U19; Figma 1.8, 2.5, 9.3): the Log or Slip view (the habit, Date | Time, the amount or how long,
+ * where it came from) with Delete | Edit at the bottom; Edit opens Edit log / Edit slip with the value focused and Save
+ * always on. The day itself never changes; the time stays inside it.
  */
 @Composable
 fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
@@ -290,31 +332,38 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
     var time by remember(editing) { mutableStateOf(entry.createdAt) }
     val focus = remember { FocusRequester() }
     val today = store.today()
+    // A timer's log keeps its seconds (Figma 2.5); one typed by hand has whole minutes.
+    val withSeconds = ruled.kind == HabitKind.Duration && Math.abs(entry.value - Math.rint(entry.value)) > 1e-6
+    val zone = zoneName(entry.timeZone)
     fun leaveEdit() { if (draft.differs || time != entry.createdAt) discard = true else editing = false }
     BackHandler(editing) { leaveEdit() }
     LaunchedEffect(editing) { if (editing && !slip) runCatching { focus.requestFocus() } }
 
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(if (editing) "Edit $noun" else noun.replaceFirstChar { it.uppercase() }, close = editing, onClose = { if (editing) leaveEdit() else onBack() })
-        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
-            Spacer(Modifier.height(8.dp))
+        val scroll = rememberScrollState()
+        val keyboard = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+        LaunchedEffect(keyboard, scroll.maxValue) { if (keyboard) scroll.scrollTo(scroll.maxValue) }
+        Column(Modifier.weight(1f).verticalScroll(scroll).padding(start = 16.dp, end = 16.dp, top = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                HabitFact(habit, 0, 3)
-                if (editing) {
-                    DateTimeRows(entry.day, today, entry.day..entry.day, time, if (ruled.kind == HabitKind.Duration) "Finished at" else "Time", 1, 3,
-                        onDay = {}, onTime = { t -> time = store.logTime(t, entry.day, entry.timeZone) }, editableDay = false)
-                } else {
-                    FactRow("Date", 1, 3) { Text(DayWords.withDate(entry.day, today), style = MaterialTheme.typography.bodyLarge, color = c.secondary) }
-                    FactRow("Time", 2, 3) { Text(clockText(entry), style = MaterialTheme.typography.bodyLarge, color = c.secondary) }
+                HabitFact(habit, 0, 2)
+                DateTimeRows(entry.day, today, entry.day..entry.day, time, if (ruled.kind == HabitKind.Duration) "Finished at" else "Time",
+                    onDay = {}, onTime = { t -> time = store.logTime(t, entry.day, entry.timeZone) },
+                    editableDay = false, editableTime = editing, last = zone == null,
+                    timeText = if (editing) DayWords.clock(time) else clockText(entry).removeSuffix(" " + entry.timeZone))
+                if (zone != null) Row(Modifier.fillMaxWidth().clip(segmentShape(1, 2)).background(c.surface).padding(horizontal = 16.dp, vertical = 12.dp)) {
+                    Text("Recorded in $zone", style = AppType.bodyMedium, color = c.secondary)
                 }
             }
             when (ruled.kind) {
                 is HabitKind.Amount, HabitKind.Check -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit.ifEmpty { if (ruled.kind == HabitKind.Check) "checks" else "" }, focus, readOnly = !editing) }
-                HabitKind.Duration -> { SectionTitle("How long"); DurationCard(draft, focus, readOnly = !editing) }
+                HabitKind.Duration -> { SectionTitle("How long"); DurationCard(draft, focus, readOnly = !editing, withSeconds = withSeconds) }
                 else -> {}
             }
             val problem = draft.check().second
-            Footer(if (editing) (problem ?: "Changes this $noun only. Its day stays ${DayWords.short(entry.day)}.") else (entry.originLine(slip) ?: ""))
+            val footer = if (editing) (problem ?: if (slip) "Changing the time updates your quit run." else null) else entry.originLine(slip)
+            footer?.let { Footer(it, problem = editing && problem != null) }
         }
         if (editing) {
             BottomAction("Save", true, tag = "record-save") {
@@ -322,22 +371,19 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
                 store.editEntry(entry.id, v, time)
                 editing = false
             }
-        } else Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ confirmDelete = true }, Modifier.weight(1f).heightIn(min = 56.dp).semantics { testTag = "record-delete" },
-                colors = ButtonDefaults.buttonColors(containerColor = c.tonal, contentColor = c.error)) { Text("Delete $noun", style = MaterialTheme.typography.titleMedium) }
-            Button({ editing = true }, Modifier.weight(1f).heightIn(min = 56.dp).semantics { testTag = "record-edit" },
-                colors = ButtonDefaults.buttonColors(containerColor = c.ink, contentColor = c.onInk)) { Text("Edit", style = MaterialTheme.typography.titleMedium) }
-        }
+        } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
     if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this $noun?") },
-        text = { Text("${entry.description(ruled)} at ${clockText(entry)} on ${DayWords.short(entry.day)} is removed from your history.") },
+        text = {
+            Text(if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
+                else "${entry.description(ruled)} at ${clockText(entry)} is removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.")
+        },
         confirmButton = { TextButton({ confirmDelete = false; onBack(); store.undoEntry(entry.id) }, Modifier.semantics { testTag = "confirm-delete" }) { Text("Delete $noun", color = c.error) } },
         dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } })
     if (discard) DiscardDialog("Discard your changes to this $noun?", { discard = false }, { discard = false; editing = false })
 }
 
-
-/** All of a day's logs, newest first (from "All N logs ›"). */
+/** All of a day's logs, newest first (Figma 1.7: from "All N logs ›"), titled as Day details titles them. */
 @Composable
 fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -> Unit, onBack: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onBack() }; return }
@@ -345,21 +391,32 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
     val rev = store.revision(habitId)
     val ruled = store.rule(habit, day)
     val logs = remember(rev, day) { store.dayLogs(habit, day) }
+    val total = logs.sumOf { it.value }
+    val all = when (val k = ruled.kind) {
+        is HabitKind.Amount -> HabitCopy.amount(total, k.unit) + " in all. Tap a log to change or delete it."
+        HabitKind.Duration -> Format.minutes(total) + " in all. Tap a log to change or delete it."
+        HabitKind.Quit -> "Tap a slip to change or delete it."
+        else -> "Undo takes one back."
+    }
     Column(Modifier.fillMaxSize().background(c.screen).navigationBarsPadding()) {
-        RecordTopBar("All logs", close = false, onClose = onBack)
-        Text(logCount(logs.size, ruled) + " · " + DayWords.withDate(day, store.today()), Modifier.padding(start = 32.dp, bottom = 8.dp),
-            style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-        Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            logs.forEachIndexed { i, e ->
-                val opens = e.opensRecord(ruled)
-                Row(Modifier.fillMaxWidth().clip(segmentShape(i, logs.size)).background(c.surface).let { if (opens) it.clickable { onLog(e) } else it }
-                    .heightIn(min = 56.dp).padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(e.description(ruled), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                    Text(clockText(e), style = MaterialTheme.typography.bodyLarge, color = c.secondary)
-                    if (!opens) TextButton({ store.undoEntry(e.id) }, Modifier.semantics { contentDescription = e.undoLabel(ruled) }) { Text("Undo", color = c.ink) }
-                    else Spacer(Modifier.width(12.dp))
+        RecordTopBar(logsTitle(ruled, day, store.today()), close = false, onClose = onBack)
+        Column(Modifier.verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            SectionTitle(habit.name + " · " + logCount(logs.size, ruled))
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                logs.forEachIndexed { i, e ->
+                    val opens = e.opensRecord(ruled)
+                    Row(Modifier.fillMaxWidth().clip(segmentShape(i, logs.size, outer = 20.dp)).background(c.surface).let { if (opens) it.clickable { onLog(e) } else it }
+                        .heightIn(min = 56.dp).padding(start = 16.dp, end = if (opens) 12.dp else 4.dp).semantics { testTag = "all-log-$i" },
+                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(e.description(ruled), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink, maxLines = 1)
+                        Text(clockText(e), style = AppType.bodyMedium, color = c.secondary)
+                        if (opens) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+                        else TextButton({ store.undoEntry(e.id) }, Modifier.semantics { contentDescription = e.undoLabel(ruled) }) { Text("Undo", style = AppType.labelLarge, color = c.ink) }
+                    }
                 }
             }
+            Footer(all)
+            Spacer(Modifier.height(16.dp))
         }
     }
 }

@@ -184,7 +184,8 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     var confirmDelete by remember { mutableStateOf(false) }
     var noRoom by remember { mutableStateOf(false) }
     var goToDate by remember { mutableStateOf(false) }
-    var allMilestones by rememberSaveable(habitId) { mutableStateOf(false) }
+    // Opened at All milestones by a landmark's pop-up (Figma 14.1).
+    var allMilestones by rememberSaveable(habitId) { mutableStateOf(HabitPageOpen.milestones == habitId.also { HabitPageOpen.milestones = null }) }
     // This visit's "What the squares mean": History and Progress share it.
     var keyShown by rememberSaveable(habitId) { mutableStateOf<Boolean?>(null) }
     val keyOpen = keyShown ?: (store.setting(HEAT_KEY_FOLDED) != "true")
@@ -424,3 +425,6 @@ private fun HabitMenu(
         )
     }
 }
+
+/** Asks the next habit page to open at All milestones (the landmark pop-up's button). */
+object HabitPageOpen { var milestones: String? = null }

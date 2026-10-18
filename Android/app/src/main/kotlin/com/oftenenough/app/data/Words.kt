@@ -62,7 +62,7 @@ object Format {
     /** "12d 11:23:07" */
     fun elapsed(seconds: Double): String {
         val s = seconds.toLong()
-        return "%dd %02d:%02d:%02d".format(s / 86400, s % 86400 / 3600, s % 3600 / 60, s % 60)
+        return "%dd %d:%02d:%02d".format(s / 86400, s % 86400 / 3600, s % 3600 / 60, s % 60)
     }
 
     fun days(seconds: Double): String {
@@ -334,10 +334,13 @@ fun goalLine(habit: Habit, progress: Double, goal: Double, running: Boolean = fa
     val max = if (habit.atMost) " max" else ""
     return when (val k = habit.kind) {
         HabitKind.Duration -> {
-            val done = if (running) Format.clock(progress) else Format.minutes(floor(progress))
+            // Under an hour the minutes are a number before the goal: "4/10 min" (Figma 1350:2); "2:42/10 min" running.
+            val done = if (running) Format.clock(progress) else if (goal < 60 && progress < 60) Format.amount(floor(progress)) else Format.minutes(floor(progress))
             "$done/${Format.minutes(goal)}$max$period"
         }
-        is HabitKind.Amount -> "${Format.amount(progress)}/${Format.amount(goal)}${if (k.unit.isEmpty()) "" else " " + k.unit}$max$period"
+        // Money's sign goes before each number ("$250/$500 this month", U22).
+        is HabitKind.Amount -> if (k.unit in HabitCopy.currencies) "${k.unit}${Format.amount(progress)}/${k.unit}${Format.amount(goal)}$max$period"
+            else "${Format.amount(progress)}/${Format.amount(goal)}${if (k.unit.isEmpty()) "" else " " + k.unit}$max$period"
         HabitKind.Checklist -> "${Format.amount(progress)}/${Format.amount(goal)} steps$period"
         HabitKind.Check -> if (habit.checkUnit != null) "${Format.amount(progress)}/${Format.amount(goal)} ${habit.checkUnit}$period"
             else "${Format.amount(progress)}/${Format.amount(goal)}${if (habit.frequency.isDayBased) " times" else ""}$max$period"
@@ -392,10 +395,12 @@ object DayWords {
 }
 
 /** A task's line always says it's a task, then its time, or where it came from if it moved forward. */
-fun taskLine(habit: Habit, shownOn: Int): String {
+fun taskLine(habit: Habit, shownOn: Int, weekStart: Int = 1): String {
     val parts = mutableListOf("Task")
     habit.dueDay?.let { if (it < shownOn) parts.add("From " + DayWords.short(it)) }
     habit.dueMinute?.let { parts.add(DayWords.clockMinute(it)) }
+    // Nothing else to say: how often it comes ("Task · Once", "Task · Every month"; Figma 1350:2, as the widgets say).
+    if (parts.size == 1) parts.add(if (habit.dueDay != null) "Once" else HabitCopy.capitalized(HabitCopy.rhythm(habit.frequency, weekStart)))
     return parts.joinToString(" · ")
 }
 

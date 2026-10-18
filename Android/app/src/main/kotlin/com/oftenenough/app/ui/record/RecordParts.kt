@@ -3,6 +3,15 @@ package com.oftenenough.app.ui.record
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material3.Icon
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -145,43 +154,55 @@ fun Pill(text: String, enabled: Boolean = true, tag: String? = null, onClick: ()
 fun FactRow(label: String, index: Int, count: Int, content: @Composable () -> Unit) {
     Row(Modifier.fillMaxWidth().clip(segmentShape(index, count)).background(appColors.surface).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+        Text(label, Modifier.weight(1f), style = AppType.bodyLarge, color = appColors.ink)
         content()
     }
 }
 
-/** Habit · [icon] name. */
+/** The habit a record belongs to (Figma 1.6: 64 high, its icon in a 40 circle, the name). The first piece of the fields. */
 @Composable
-fun HabitFact(habit: Habit, index: Int, count: Int) = FactRow("Habit", index, count) {
-    HabitIcon(habit.symbol, habit.color, size = 24.dp)
-    Spacer(Modifier.width(8.dp))
-    Text(habit.name, style = MaterialTheme.typography.bodyLarge, color = appColors.secondary, maxLines = 1)
+fun HabitFact(habit: Habit, index: Int, count: Int) {
+    Row(Modifier.fillMaxWidth().clip(segmentShape(index, count)).background(appColors.surface).heightIn(min = 64.dp)
+        .padding(start = 16.dp, end = 12.dp).semantics { testTag = "record-habit" }, verticalAlignment = Alignment.CenterVertically) {
+        HabitIcon(habit.symbol, habit.color)
+        Spacer(Modifier.width(16.dp))
+        Text(habit.name, style = AppType.titleMedium, color = appColors.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+    }
 }
 
+private val yearFormat = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH)
+
+/** "Today, 12 Oct 2026", "Sat, 10 Oct 2026" (a form's date, with its year); "Today, 12 Oct" in a view. */
+fun recordDate(day: Int, today: Int, year: Boolean): String =
+    DayWords.withDate(day, today) + if (year) " " + LocalDate.ofEpochDay(day.toLong()).format(yearFormat) else ""
+
 /**
- * Date ("Today" + a pill opening Android's date picker, any day in [range]) and Time (a pill opening the time picker,
- * kept inside the day by the caller). [onTime] gets the chosen clock time on [day].
+ * Date | Time (Figma 1.6): one row of two pieces, each its title over its value, › when it opens its own picker
+ * (Android's date picker for any day in [range], the time picker inside the day). [last]: this row ends the fields.
+ * [onTime] gets the chosen clock time on [day].
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateTimeRows(
-    day: Int, today: Int, range: IntRange, time: Long, timeTitle: String, startIndex: Int, count: Int,
-    onDay: (Int) -> Unit, onTime: (Long) -> Unit, editableDay: Boolean = true,
+    day: Int, today: Int, range: IntRange, time: Long, timeTitle: String,
+    onDay: (Int) -> Unit, onTime: (Long) -> Unit, editableDay: Boolean = true, editableTime: Boolean = true, last: Boolean = true,
+    timeText: String = DayWords.clock(time),
 ) {
     var pickDay by remember { mutableStateOf(false) }
     var pickTime by remember { mutableStateOf(false) }
-    FactRow("Date", startIndex, count) {
-        DayWords.relative(day, today)?.let { Text(it, Modifier.padding(end = 12.dp), style = MaterialTheme.typography.bodyLarge, color = appColors.secondary) }
-        if (editableDay) Pill(LocalDate.ofEpochDay(day.toLong()).format(dateFormat), tag = "record-date") { pickDay = true }
-        else Text(DayWords.withDate(day, today), style = MaterialTheme.typography.bodyLarge, color = appColors.secondary)
+    val bottom = if (last) 24.dp else 4.dp
+    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        DatePiece("Date", recordDate(day, today, year = editableDay), editableDay,
+            RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = 4.dp, bottomStart = bottom), "record-date", Modifier.weight(1f), grow = true) { pickDay = true }
+        DatePiece(timeTitle, timeText, editableTime,
+            RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = bottom, bottomStart = 4.dp), "record-time", Modifier) { pickTime = true }
     }
-    FactRow(timeTitle, startIndex + 1, count) { Pill(DayWords.clock(time), tag = "record-time") { pickTime = true } }
     if (pickDay) {
         val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long) = utcMsToDay(utcTimeMillis) in range
         })
         DatePickerDialog({ pickDay = false }, confirmButton = {
-            TextButton({ state.selectedDateMillis?.let { onDay(utcMsToDay(it)) }; pickDay = false }) { Text("OK", color = appColors.ink) }
+            TextButton({ state.selectedDateMillis?.let { onDay(utcMsToDay(it)) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }) { Text("OK", color = appColors.ink) }
         }, dismissButton = { TextButton({ pickDay = false }) { Text("Cancel", color = appColors.ink) } }) { DatePicker(state) }
     }
     if (pickTime) {
@@ -192,29 +213,66 @@ fun DateTimeRows(
             TextButton({
                 onTime(local.withHour(state.hour).withMinute(state.minute).withSecond(0).toInstant().toEpochMilli())
                 pickTime = false
-            }) { Text("OK", color = appColors.ink) }
+            }, Modifier.semantics { testTag = "picker-ok" }) { Text("OK", color = appColors.ink) }
         }, dismissButton = { TextButton({ pickTime = false }) { Text("Cancel", color = appColors.ink) } },
+            title = { Text("Select time", style = AppType.labelLarge, color = appColors.secondary) },
             text = { Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { TimePicker(state) } })
     }
 }
 
-/** A footer line under a card. */
 @Composable
-fun Footer(text: String, modifier: Modifier = Modifier) =
-    Text(text, modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp), style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+private fun DatePiece(title: String, value: String, opens: Boolean, shape: RoundedCornerShape, tag: String, modifier: Modifier, grow: Boolean = false, onClick: () -> Unit) {
+    val c = appColors
+    Row(modifier.fillMaxHeight().clip(shape).background(c.surface).let { if (opens) it.clickable(onClick = onClick) else it }
+        .heightIn(min = 72.dp).padding(start = 16.dp, end = if (opens) 8.dp else 16.dp, top = 14.dp, bottom = 14.dp).semantics { testTag = tag },
+        verticalAlignment = Alignment.CenterVertically) {
+        // Only Date grows; Time is as wide as its words (Figma: Date fills, Time hugs).
+        Column(if (grow) Modifier.weight(1f) else Modifier) {
+            Text(title, style = AppType.titleMedium, color = c.ink, maxLines = 1)
+            Text(value, style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
+        }
+        if (opens) {
+            Spacer(Modifier.width(8.dp))
+            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+        }
+    }
+}
 
-/** The section heading above a card ("Amount", "How long"). */
+/** A line under the fields (Figma: Body Small, grey, 16 in); a problem with what was typed is red. */
+@Composable
+fun Footer(text: String, modifier: Modifier = Modifier, problem: Boolean = false) =
+    Text(text, modifier.fillMaxWidth().padding(horizontal = 16.dp).semantics { testTag = "record-footer" }, style = AppType.bodySmall,
+        color = if (problem) appColors.error else appColors.secondary)
+
+/** The label above a card ("Amount", "How long": Label Large, grey, 16 in, 8 above). */
 @Composable
 fun SectionTitle(text: String) =
-    Text(text, Modifier.padding(start = 16.dp, top = 20.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
+    Text(text, Modifier.padding(start = 16.dp, top = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
 
-/** The one filled main action, full width at the bottom, riding above the keyboard (U18). */
+/** The one filled main action, full width at the bottom (48 high), 12 above the keyboard (U18; Figma 1.6). */
 @Composable
 fun BottomAction(text: String, enabled: Boolean, tag: String = "record-add", onClick: () -> Unit) {
-    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.Bottom) {
-        Button(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { testTag = tag }, enabled = enabled,
-            colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk)) {
-            Text(text, style = MaterialTheme.typography.titleMedium)
+    val c = appColors
+    Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+        Box(Modifier.fillMaxWidth().height(48.dp).clip(RoundedCornerShape(24.dp)).background(if (enabled) c.ink else c.ink.copy(alpha = 0.12f))
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick).semantics { testTag = tag }, contentAlignment = Alignment.Center) {
+            Text(text, style = AppType.titleMedium, color = if (enabled) c.onInk else c.ink.copy(alpha = 0.38f))
+        }
+    }
+}
+
+/** A saved record's two actions (Figma 1.8: 48 high): Delete in red on the tonal grey, Edit in ink. */
+@Composable
+fun DeleteEditBar(noun: String, deleteTag: String, editTag: String, onDelete: () -> Unit, onEdit: () -> Unit) {
+    val c = appColors
+    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Box(Modifier.weight(1f).height(48.dp).clip(RoundedCornerShape(24.dp)).background(c.tonal).clickable(role = Role.Button, onClick = onDelete)
+            .semantics { testTag = deleteTag }, contentAlignment = Alignment.Center) {
+            Text("Delete $noun", style = AppType.titleMedium, color = c.error)
+        }
+        Box(Modifier.weight(1f).height(48.dp).clip(RoundedCornerShape(24.dp)).background(c.ink).clickable(role = Role.Button, onClick = onEdit)
+            .semantics { testTag = editTag }, contentAlignment = Alignment.Center) {
+            Text("Edit", style = AppType.titleMedium, color = c.onInk)
         }
     }
 }

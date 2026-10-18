@@ -104,17 +104,20 @@ class MainActivity : FragmentActivity() {
         if (test) {
             AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 }, intent.getStringExtra(TestLaunch.ACCOUNT_SERVER))
             if (!intent.getBooleanExtra(TestLaunch.ONBOARDING, false)) AppGraph.prefs.onboarded = true
+            // Today has been opened on this many earlier days (the ✏ tip waits for three, Figma 2.0).
+            intent.getIntExtra(TestLaunch.DAYS_SEEN, 0).takeIf { it > 0 }?.let { n -> AppGraph.prefs.todayDaysSeen = (1..n).joinToString(",") { "-$it" } }
         } else AppGraph.open(this)
         val store = AppGraph.store
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         pinWidget(intent)
         val demo = intent.getStringExtra(TestLaunch.DEMO)
+        if (test || BuildConfig.DEBUG) com.oftenenough.app.ui.today.TodayNotices.forced = intent.getStringExtra(TestLaunch.NOTICE)
         syncWhileOnScreen()
         setContent {
             if (demo != null && (test || BuildConfig.DEBUG)) LaunchedEffect(Unit) {
                 snapshotFlow { store.isLoaded }.first { it }
-                DemoData.seed(store, year = demo == "year", many = demo == "many")
+                DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days")
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
@@ -138,8 +141,12 @@ object TestLaunch {
     const val PIN_WIDGET = "pinWidget"
     /** The store's clock runs from this hour, :30 (T11). */
     const val CLOCK_HOUR = "clockHour"
-    /** "today" (the design's habits), "year" (a year of history), "many" (30 habits, two years). */
+    /** "today" (the design's habits), "design" (Today exactly as Figma 1958:2), "year" (a year of history), "many" (30 habits, two years). */
     const val DEMO = "demo"
+    /** A Today notice to show whatever the phone's state ("full", "off", "held", "missed", "notifications", "pending"). */
+    const val NOTICE = "notice"
+    /** How many earlier days Today counts as opened (the ✏ tip, Figma 2.0). */
+    const val DAYS_SEEN = "daysSeen"
     /** Show the welcome (test launches skip it otherwise). */
     const val ONBOARDING = "onboarding"
     /** "dev": the account Worker's dev instead of the stand-in (the end-to-end tests, `AccountServerLiveTest`). */

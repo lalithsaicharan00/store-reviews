@@ -6,6 +6,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -66,8 +67,8 @@ fun HabitIcon(symbol: String, color: HabitColor, size: Dp = 40.dp, shape: Shape 
 }
 
 /**
- * A row's round button (40 dp, a 48 dp target): tonal grey before the goal is met, filled in the habit's colour with white
- * once it is (U2, U14). [text] replaces the icon ("+1", "+250").
+ * A row's round button (40 dp, a 48 dp target; Figma 1350:2): the soft grey (#ECECEF) with an ink glyph before the goal
+ * is met, filled in the habit's colour with a white glyph once it is (U2, U14). [text] replaces the icon ("+250").
  */
 @Composable
 fun RoundActionButton(
@@ -75,7 +76,7 @@ fun RoundActionButton(
     text: String? = null, enabled: Boolean = true, size: Dp = 40.dp,
 ) {
     val c = appColors
-    val background by animateColorAsState(if (done) c.habit(color) else c.tonal, tween(220), label = "round")
+    val background by animateColorAsState(if (done) c.habit(color) else c.soft, tween(220), label = "round")
     val content = if (done) Color.White else c.ink
     Box(
         Modifier.size(48.dp).clip(CircleShape)
@@ -85,7 +86,7 @@ fun RoundActionButton(
     ) {
         Box(Modifier.size(size).clip(CircleShape).background(if (enabled) background else background.copy(alpha = 0.5f)), contentAlignment = Alignment.Center) {
             if (text != null) Text(text, color = content, style = if (text.length > 3) AppType.labelMedium else AppType.labelLarge, maxLines = 1)
-            else Icon(icon, null, tint = if (enabled) content else content.copy(alpha = 0.5f), modifier = Modifier.size(22.dp))
+            else Icon(icon, null, tint = if (enabled) content else content.copy(alpha = 0.5f), modifier = Modifier.size(if (size >= 40.dp) 24.dp else 20.dp))
         }
     }
 }
@@ -102,13 +103,35 @@ fun animatedProgress(target: Float): Float {
     return v
 }
 
-/** 🔥 6, "3 wk": a streak beside the flame. */
+/**
+ * "🔥 6", "🔥 4 wk": the emoji in an 18 dp place, 2 dp from the number in Label Large (Figma 1350:2; the iPhone's rule,
+ * the user, 13 Oct 2026). TalkBack reads it in words.
+ */
 @Composable
 fun StreakLabel(count: Int, unit: StreakUnit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.semantics(mergeDescendants = true) { contentDescription = unit.explained(count) }) {
-        Icon(Icons.Rounded.LocalFireDepartment, null, tint = appColors.flame, modifier = Modifier.size(20.dp))
-        Spacer(Modifier.width(4.dp))
-        Text(unit.short(count), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal), color = appColors.ink, maxLines = 1)
+        Box(Modifier.size(18.dp), contentAlignment = Alignment.Center) { Text("🔥", fontSize = 12.sp, lineHeight = 18.sp) }
+        Spacer(Modifier.width(2.dp))
+        Text(unit.short(count), style = AppType.labelLarge, color = appColors.ink, maxLines = 1)
+    }
+}
+
+/**
+ * Undo and Note under a row just logged (Figma 1.2, "After-log buttons (button group, XS)"): 36 dp, outlined (#C9C6CF)
+ * on the card's own white, an 18 dp icon 6 dp from the label, 12 dp before and 16 dp after.
+ */
+@Composable
+fun OutlinedPill(text: String, icon: ImageVector, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val c = appColors
+    Row(
+        modifier.heightIn(min = 36.dp).clip(RoundedCornerShape(18.dp)).background(c.surface)
+            .border(1.dp, c.line, RoundedCornerShape(18.dp)).clickable(role = Role.Button, onClick = onClick)
+            .padding(start = 12.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(icon, null, Modifier.size(18.dp), tint = c.ink)
+        Spacer(Modifier.width(6.dp))
+        Text(text, style = AppType.labelLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -206,11 +229,12 @@ fun CookieIcon(icon: ImageVector, size: Dp = 56.dp, container: Color? = null, ti
     }
 }
 
-/** A grey badge: "2 left". */
+/** A grey badge: "2 left", "✓ Done", "3 planned" (Figma: 24 dp, 10 dp each side, Label Medium on #ECECEF). */
 @Composable
 fun Badge(text: String) {
-    Surface(shape = RoundedCornerShape(12.dp), color = appColors.tonal) {
-        Text(text, Modifier.padding(horizontal = 10.dp, vertical = 4.dp), style = AppType.labelMedium, color = appColors.ink, maxLines = 1)
+    Box(Modifier.heightIn(min = 24.dp).clip(RoundedCornerShape(12.dp)).background(appColors.soft).padding(horizontal = 10.dp, vertical = 4.dp),
+        contentAlignment = Alignment.Center) {
+        Text(text, style = AppType.labelMedium, color = appColors.ink, maxLines = 1)
     }
 }
 

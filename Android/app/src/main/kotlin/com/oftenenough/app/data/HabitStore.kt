@@ -60,8 +60,11 @@ class HabitStore(
     var costs by mutableStateOf<Map<String, HabitCost>>(emptyMap()); private set
     var groups by mutableStateOf<List<HabitGroup>>(emptyList()); private set
     var groupsManual by mutableStateOf(false); private set
-    /** The log just made from Today, offered for Undo and a note ("Saved · Undo · Add note"). */
-    var undoOffer by mutableStateOf<Entry?>(null)
+    /**
+     * Undo · Note under the row of the last thing done from Today (a log, a step, a timer's time, a slip or a skip;
+     * Figma 1.2). It stays until the next one (which takes it), another day or leaving Today, never forever.
+     */
+    var afterLog by mutableStateOf<AfterLog?>(null)
     /** Bumped on every change: whole-history readers (the day bar, Progress) read it to redraw. */
     var dataVersion by mutableIntStateOf(0); private set
 
@@ -251,7 +254,13 @@ class HabitStore(
             readSettings()
             rules.setEntries(entries)
             rulesChanged()
-            undoOffer = null
+            // A reload (a sync, a restore) keeps Undo · Note only while what it offers is still there.
+            afterLog = afterLog?.takeIf { o ->
+                when (o) {
+                    is AfterLog.Log -> entries.any { it.id == o.entry.id }
+                    is AfterLog.Skip -> skips[o.habitId]?.contains(o.day) == true
+                }
+            }
             isLoaded = true
             onChange?.invoke()
         } catch (e: Exception) {
@@ -343,28 +352,29 @@ class HabitStore(
 
     // ------------------------------------------------------------------ The write queue
 
-    private val queue = Channel<suspend () -> Unit>(Channel.UNLIMITED)
+    private val queue = Channel<Pair<Boolean, suspend () -> Unit>>(Channel.UNLIMITED)
     private var pendingWrites = 0
     private var reloadWhenWritten = false
     private var worker: Job? = null
 
-    /** Runs database writes one at a time, in the order they were made. */
-    fun perform(change: suspend () -> Unit) {
+    /** Runs database writes one at a time, in the order they were made. [tap]: a log from a tap (its own words if it fails). */
+    fun perform(tap: Boolean = false, change: suspend () -> Unit) {
         if (!isLoaded) {
             problem = "Your habits haven't loaded, so that change wasn't saved. Please restart the app."
             return
         }
         pendingWrites++
-        queue.trySend(change)
+        queue.trySend(tap to change)
         if (worker == null) worker = scope.launch {
-            for (job in queue) {
+            for ((isTap, job) in queue) {
                 try {
                     job()
                     dataVersion++
                     onChange?.invoke()
                 } catch (e: Exception) {
                     changeIsFromSync = false
-                    problem = "That change couldn't be saved, so it was undone. Please try again."
+                    // Figma 1.5: Today reloads and says so in a snackbar above the day bar (S7).
+                    problem = if (isTap) "Couldn’t save that tap. It’s undone." else "That change couldn't be saved, so it was undone. Please try again."
                     reloadWhenWritten = true
                 }
                 changeIsFromSync = false
@@ -407,11 +417,15 @@ class HabitStore(
 
     // ------------------------------------------------------------------ Habits
 
+    /** The habit just added and when: Today says where it went and lights it briefly (Figma 1.6). */
+    var justAdded by mutableStateOf<Pair<String, Long>?>(null)
+
     fun add(habit: Habit) = perform {
         if (habits.any { it.id == habit.id }) return@perform
         saveHabitRecord(habit, habits.size)
         habits = habits + habit
         rulesChanged()
+        justAdded = habit.id to clock()
     }
 
     /** Saves an edited habit. If what judges a day changed, the rule it had is kept for every day before today. */
@@ -429,7 +443,9 @@ class HabitStore(
             saveSetting(Keys.RULES + habit.id, SwiftJson.rules(list))
             goalRules = goalRules + (habit.id to list)
         }
-        habits = habits.toMutableList().also { it[i] = habit }
+        // By ID, never the index found before the write: the order can change while the write waits (a reorder in
+        // between put another habit at [i], and it was overwritten; found 18 Oct 2026 moving a habit in Arrange Today).
+        habits = habits.map { if (it.id == habit.id) habit else it }
         rulesChanged()
     }
 
@@ -445,7 +461,7 @@ class HabitStore(
                 saveSetting(Keys.ARCHIVED + archived.id, dayKey(day))
                 saveHabitRecord(archived, i)
                 archivedOn = archivedOn + (archived.id to day)
-                habits = habits.toMutableList().also { it[i] = archived }
+                habits = habits.map { if (it.id == archived.id) archived else it }
             }
             rulesChanged()
         }
@@ -471,7 +487,7 @@ class HabitStore(
             saveHabitRecord(h, i)
             archivedOn = archivedOn - h.id
             pauses = if (list.isEmpty()) pauses - h.id else pauses + (h.id to list)
-            habits = habits.toMutableList().also { it[i] = h }
+            habits = habits.map { if (it.id == h.id) h else it }
             rulesChanged()
         }
         return true
@@ -485,14 +501,14 @@ class HabitStore(
                 val i = habits.indexOfFirst { it.id == h.id }
                 if (i < 0) continue
                 saveHabitRecord(habits[i], i, deleted = true)
-                habits = habits.toMutableList().also { it.removeAt(i) }
+                habits = habits.filter { it.id != h.id }
                 for (e in entries(h.id).toList()) removeEntry(e.id)
                 habitNotes = habitNotes - h.id
                 descriptions = descriptions - h.id
                 goalRules = goalRules - h.id
                 pauses = pauses - h.id
                 skips = skips - h.id
-                if (undoOffer?.habitId == h.id) undoOffer = null
+                if (afterLog?.habitId == h.id) afterLog = null
             }
             rulesChanged()
         }
@@ -522,19 +538,33 @@ class HabitStore(
         insertEntry(entry)
         offerUndo(entry)
         if (habit != null) logFeedback(habit, entry.day, wasComplete)
-        perform { repository.addEntry(entry.record) }
+        perform(tap = true) { repository.addEntry(entry.record) }
     }
 
     /** Undoing a tap: gone from the screen now, the removal written next in the queue. */
     private fun removeLogged(id: String) {
         removeEntry(id) ?: return
-        if (undoOffer?.id == id) undoOffer = null
+        if ((afterLog as? AfterLog.Log)?.entry?.id == id) afterLog = null
         val at = clock()
-        perform { repository.removeEntry(id, at) }
+        perform(tap = true) { repository.removeEntry(id, at) }
     }
 
+    /** A log from Today (a tap, Add log, the timer) takes Undo · Note; one made elsewhere by the person ends it. */
     private fun offerUndo(entry: Entry) {
-        if (entry.source == EntrySource.TODAY || entry.source == EntrySource.MANUAL || entry.source == EntrySource.TIMER) undoOffer = entry
+        when (entry.source) {
+            EntrySource.TODAY, EntrySource.MANUAL, EntrySource.TIMER -> afterLog = AfterLog.Log(entry)
+            EntrySource.DAY_SHEET, EntrySource.ROUTINE -> afterLog = null
+            else -> {}
+        }
+    }
+
+    /** Takes back what Undo · Note offers: the log, or the skip. */
+    fun undo(offer: AfterLog) {
+        when (offer) {
+            is AfterLog.Log -> undoEntry(offer.entry.id)
+            is AfterLog.Skip -> habit(offer.habitId)?.let { setSkipped(it, offer.day, false) }
+        }
+        if (afterLog == offer) afterLog = null
     }
 
     private fun logFeedback(habit: Habit, day: Int, wasComplete: Boolean, celebrated: Boolean = false) {
@@ -707,6 +737,8 @@ class HabitStore(
         val now = clock()
         if (timers.containsKey(habit.id)) return stopTimer(habit, today(now), now)
         timers = timers + (habit.id to now)
+        // ▶ is the next thing done: the buttons under the last log go (a timer's own come when it stops, Figma 1.2).
+        afterLog = null
         timerSlots = if (slot != null) timerSlots + (habit.id to slot) else timerSlots - habit.id
         settingRows[Keys.TIMER + habit.id] = now.toString() + (slot?.let { "|$it" } ?: "")
         rulesChanged()
@@ -738,13 +770,16 @@ class HabitStore(
     fun isSkipped(habit: Habit, day: Int) = skips[habit.id]?.contains(day) == true
     fun isPaused(habit: Habit, day: Int) = pauses[habit.id]?.any { day in it } == true
 
-    fun setSkipped(habit: Habit, day: Int, skipped: Boolean) {
-        if (day > today() || (skipped && !rules.canSkip(rule(habit, day)))) return
+    /** [offer]: skipped from Today (a swipe or the row's menu), so the row offers Undo · Note (Figma 7.10). */
+    fun setSkipped(habit: Habit, day: Int, skipped: Boolean, offer: Boolean = false) {
+        if (skipped && !rules.canSkip(rule(habit, day))) return
         val days = (skips[habit.id] ?: emptySet()).toMutableSet()
         if (skipped) days.add(day) else days.remove(day)
         // A running timer's day skipped: the timer is stopped and saved first (Current Work 94: "Stop and save" stayed on).
         if (skipped && timers.containsKey(habit.id) && day == today()) stopTimer(habit, day)
         skips = if (days.isEmpty()) skips - habit.id else skips + (habit.id to days)
+        if (skipped && offer) afterLog = AfterLog.Skip(habit.id, day)
+        else if (!skipped && (afterLog as? AfterLog.Skip)?.let { it.habitId == habit.id && it.day == day } == true) afterLog = null
         val value = days.map(::dayKey).sorted().joinToString(",")
         settingRows[Keys.SKIP + habit.id] = value
         rulesChanged()
@@ -809,16 +844,30 @@ class HabitStore(
     fun reschedule(habit: Habit, shownOn: Int, target: Int) {
         val range = rescheduleRange(habit, shownOn) ?: return
         if (target !in range) return
-        if (habit.dueDay != null) return update(habit.copy(dueDay = target))
-        val moves = (taskMoves[habit.id] ?: emptyMap()).toMutableMap()
+        if (habit.dueDay != null) {
+            update(habit.copy(dueDay = target))
+            justMoved = Moved(habit.id, target, clock()) { update(habit) }
+            return
+        }
+        val before = taskMoves[habit.id] ?: emptyMap()
+        val moves = before.toMutableMap()
         val original = moves.entries.firstOrNull { it.value == shownOn }?.key ?: shownOn
         if (original == target) moves.remove(original) else moves[original] = target
-        taskMoves = if (moves.isEmpty()) taskMoves - habit.id else taskMoves + (habit.id to moves)
-        val value = moves.map { dayKey(it.key) + ">" + dayKey(it.value) }.sorted().joinToString(",")
-        settingRows[Keys.MOVE + habit.id] = value
-        rulesChanged()
-        perform { saveSetting(Keys.MOVE + habit.id, value) }
+        setMoves(habit.id, moves)
+        justMoved = Moved(habit.id, target, clock()) { setMoves(habit.id, before) }
     }
+
+    private fun setMoves(habitId: String, moves: Map<Int, Int>) {
+        taskMoves = if (moves.isEmpty()) taskMoves - habitId else taskMoves + (habitId to moves)
+        val value = moves.map { dayKey(it.key) + ">" + dayKey(it.value) }.sorted().joinToString(",")
+        settingRows[Keys.MOVE + habitId] = value
+        rulesChanged()
+        perform { saveSetting(Keys.MOVE + habitId, value) }
+    }
+
+    /** A task just moved to another day from Day details: Today says where it went, with Undo (as Arrange's "moved to"). */
+    class Moved(val habitId: String, val to: Int, val at: Long, val undo: () -> Unit)
+    var justMoved by mutableStateOf<Moved?>(null)
 
     // ------------------------------------------------------------------ Notes
 
@@ -1000,4 +1049,17 @@ class HabitStore(
         /** The phone's own week start, used nowhere by default (Sunday is the default: Current Work 99). */
         fun regionWeekStart(): Int = WeekFields.of(Locale.getDefault()).firstDayOfWeek.value % 7 + 1
     }
+}
+
+/** What Undo · Note on Today offers (Figma 1.2, 7.10): the last log made from Today, or a skip. */
+sealed class AfterLog {
+    abstract val habitId: String
+    abstract val day: Int
+
+    data class Log(val entry: Entry) : AfterLog() {
+        override val habitId: String get() = entry.habitId
+        override val day: Int get() = entry.day
+    }
+
+    data class Skip(override val habitId: String, override val day: Int) : AfterLog()
 }

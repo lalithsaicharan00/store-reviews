@@ -1,6 +1,50 @@
 package com.oftenenough.app.ui.today
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.scrollBy
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.rounded.ArrowDownward
+import androidx.compose.material.icons.rounded.ArrowUpward
+import androidx.compose.material.icons.rounded.DragIndicator
+import androidx.compose.material.icons.rounded.SortByAlpha
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.semantics.contentDescription
+import com.oftenenough.app.data.DayWords
+import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.HabitIcons
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -80,162 +124,412 @@ fun <T> List<T>.moved(from: Int, to: Int): List<T> {
 }
 
 /**
- * Edit on Today: Arrange your day (the iPhone's ArrangeDayView; the user, 3 Oct 2026, U13). Every habit in each time of
- * day, not only today's, in the person's order: drag ≡ to change it (TalkBack: Move up / Move down). Each card's ⋮
- * renames, retimes, sorts or deletes a time of day, and moves Anytime and Quit or cut down. Timed cards follow their
- * times. Nothing here logs.
+ * Arrange Today (Figma 2–2.5; from ✏ on Today, Arrange… in a row's menu, or a new habit's Move). Every habit in each time
+ * of day, not only today's, in the person's order (U13). Drag ≡ (or hold a row) to change the order, or into another time
+ * of day: the row follows the finger and the others make room; it's saved when the finger lifts (S7), and a move to
+ * another time of day says where it went, with Undo. Tap a habit for Move up, Move down and Move to…. Each time of day's ⋮
+ * sorts it (once; dragging carries on) or edits it; Anytime and Quitting move as a whole (their ⠿, or ⋮). Paused habits
+ * are always last. Moving a habit to another time of day changes only where Today shows it: its reminders don't change.
+ * Nothing here logs.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack: () -> Unit) {
+fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTimesOfDay: () -> Unit, lifted: String? = null, onBack: () -> Unit) {
+    val c = appColors
+    val today = store.today()
     val cards = store.todayCards()
-    val members = androidx.compose.runtime.remember(store.dataVersion, store.habits, store.sections, store.cardOrder) {
-        store.rules.cardMembers().mapValues { (_, ids) -> ids.mapNotNull { store.habit(it) } }
+    val members = remember(store.dataVersion, store.habits, store.sections, store.cardOrder) {
+        store.rules.cardMembers().mapValues { (_, ids) -> ids.mapNotNull { store.habit(it) }.filter { !store.isPaused(it, today) } }
     }
-    var renaming by remember { mutableStateOf<DaySection?>(null) }
-    var deleting by remember { mutableStateOf<DaySection?>(null) }
-    FormPage("Arrange your day", chip = null, onBack = onBack) {
-        Note("All your habits, not only today's. Drag ≡ to change their order in a time of day. Use ⋮ to rename, retime, sort or delete a time of day, or to move Anytime and Quit or cut down up or down.")
+    val paused = remember(store.dataVersion, store.habits) { store.habits.filter { !it.archived && store.isPaused(it, today) } }
+    val snackbar = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val scroll = rememberScrollState()
+    val density = LocalDensity.current
+
+    // The list as drawn: each card's header, then its rows. While a row is dragged this local copy changes, so the rows
+    // make room as it passes; the store changes only when it's dropped.
+    val entries = remember { mutableStateListOf<ArrangeEntry>() }
+    var drag by remember { mutableStateOf<ArrangeEntry.Row?>(null) }
+    var dragFrom by remember { mutableStateOf<String?>(null) }
+    fun rebuild() {
+        entries.clear()
         for (card in cards) {
-            val habits = members[card] ?: emptyList()
-            if (card == DaySection.QUITTING && habits.isEmpty()) continue
-            ArrangeCard(card, habits, cards, store, onRename = { renaming = it }, onRetime = { onEditSection(it.id) }, onDelete = { deleting = it })
-            Spacer(Modifier.height(16.dp))
+            val list = members[card] ?: emptyList()
+            if (card == DaySection.QUITTING && list.isEmpty()) continue
+            entries.add(ArrangeEntry.Header(card))
+            list.forEach { entries.add(ArrangeEntry.Row(it.id, card)) }
         }
-        Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(appColors.surface)
-            .let { it }.heightIn(min = 56.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            TextButton({ onEditSection(null) }, Modifier.semantics { testTag = "arrange-add-section" }) {
-                Icon(Icons.Rounded.Add, null, tint = appColors.ink); Spacer(Modifier.width(12.dp))
-                Text("Add time of day", style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+    }
+    LaunchedEffect(members, cards) { if (drag == null) rebuild() }
+    if (entries.isEmpty() && members.isNotEmpty()) rebuild()
+
+    /** The card the item at [index] is in: the header above it. */
+    fun cardAt(index: Int): String? = (index downTo 0).firstNotNullOfOrNull { (entries.getOrNull(it) as? ArrangeEntry.Header)?.card }
+    /** A card's rows, in the list's order. */
+    fun rowsOf(card: String): List<ArrangeEntry.Row> {
+        val from = entries.indexOfFirst { it is ArrangeEntry.Header && it.card == card }
+        if (from < 0) return emptyList()
+        return entries.drop(from + 1).takeWhile { it is ArrangeEntry.Row }.map { it as ArrangeEntry.Row }
+    }
+    val tops = remember { mutableStateMapOf<String, Float>() }
+    val heights = remember { mutableStateMapOf<String, Float>() }
+    var dragTop by remember { mutableFloatStateOf(0f) }
+    var viewport by remember { mutableIntStateOf(0) }
+    var menuFor by remember { mutableStateOf<String?>(null) }
+    var moving by remember { mutableStateOf<Habit?>(null) }
+    var liftedNow by remember { mutableStateOf(lifted) }
+
+    // Where a habit may go: a quit habit or a limit stays in Quitting, every other one stays out of it.
+    fun accepts(card: String, habitId: String): Boolean {
+        val h = store.habit(habitId) ?: return false
+        return (card == DaySection.QUITTING) == h.isQuitOrLimit
+    }
+
+    /** Moves the dragged row past its neighbour once its middle crosses the neighbour's middle; into the next card too. */
+    fun follow() {
+        val d = drag ?: return
+        while (true) {
+            val i = entries.indexOf(d).takeIf { it >= 0 } ?: return
+            val h = heights[d.key] ?: return
+            val mid = dragTop + h / 2
+            val next = entries.getOrNull(i + 1)
+            val prev = entries.getOrNull(i - 1)
+            fun crossed(e: ArrangeEntry, down: Boolean): Boolean {
+                val t = tops[e.key] ?: return false
+                val m = t + (heights[e.key] ?: 0f) / 2
+                return if (down) mid > m else mid < m
+            }
+            fun taken(card: String) = rowsOf(card).any { it != d && it.habitId == d.habitId }
+            if (next != null && crossed(next, down = true)) {
+                if (next is ArrangeEntry.Header && (!accepts(next.card, d.habitId) || taken(next.card))) return
+                // Past a row: swap. Past the next card's header: first in that card.
+                entries.removeAt(i); entries.add(i + 1, d); continue
+            }
+            if (prev != null && crossed(prev, down = false)) {
+                if (prev is ArrangeEntry.Header) {
+                    // Into the end of the card above, when there is one that takes it.
+                    val above = cardAt(i - 2) ?: return
+                    if (!accepts(above, d.habitId) || taken(above)) return
+                }
+                entries.removeAt(i); entries.add(i - 1, d); continue
+            }
+            return
+        }
+    }
+
+    /** Saves what the list shows: each card's order, and the dragged habit's new time of day (its reminders stay). */
+    fun commit(row: ArrangeEntry.Row, fromCard: String) {
+        val before = store.habits.map { it.id }
+        val old = store.habit(row.habitId) ?: return
+        val toCard = cardAt(entries.indexOf(row)) ?: return
+        if (fromCard != toCard) {
+            val parts = (old.parts.filter { it != fromCard } + toCard).distinct()
+            store.update(old.copy(parts = parts))
+        }
+        store.reorder(rowsOf(toCard).map { it.habitId })
+        if (fromCard != toCard) {
+            val where = if (toCard == DaySection.QUITTING) "Quitting" else store.section(toCard).name
+            scope.launch {
+                val r = snackbar.showSnackbar("${old.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+                if (r == SnackbarResult.ActionPerformed) { store.update(old); store.reorder(before) }
             }
         }
-        Note("A new time of day that overlaps others splits them; you'll see how first.")
-        Spacer(Modifier.height(24.dp))
     }
-    renaming?.let { section ->
-        var name by remember(section.id) { mutableStateOf(section.name) }
-        AlertDialog({ renaming = null }, title = { Text("Rename ${section.name}") },
-            text = {
-                OutlinedTextField(name, { name = it.take(TextLimit.SECTION) }, singleLine = true, label = { Text("Name") },
-                    supportingText = { Text("Up to ${TextLimit.SECTION} letters.") },
-                    modifier = Modifier.semantics { testTag = "arrange-rename-field" },
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = appColors.ink, focusedLabelColor = appColors.ink, cursorColor = appColors.ink))
-            },
-            confirmButton = { TextButton({
-                renaming = null
-                val clean = TextLimit.clean(name, TextLimit.SECTION)
-                if (clean.isNotEmpty() && clean != section.name) store.saveSections(store.sections.map { if (it.id == section.id) it.copy(name = clean) else it })
-            }, Modifier.semantics { testTag = "arrange-rename" }) { Text("Rename", color = appColors.ink) } },
-            dismissButton = { TextButton({ renaming = null }) { Text("Cancel", color = appColors.ink) } })
+
+    // Near the top or bottom of the screen a dragged row scrolls the page.
+    LaunchedEffect(drag != null) {
+        while (drag != null) {
+            val finger = dragTop - scroll.value
+            val edge = with(density) { 72.dp.toPx() }
+            val speed = when {
+                finger < edge -> -((edge - finger) / edge * 24f)
+                finger + (heights[drag!!.key] ?: 0f) > viewport - edge -> ((finger + (heights[drag!!.key] ?: 0f) - viewport + edge) / edge * 24f)
+                else -> 0f
+            }
+            if (speed != 0f) { val used = scroll.scrollBy(speed); dragTop += used; follow() }
+            withFrameNanos { }
+        }
     }
-    deleting?.let { section ->
-        AlertDialog({ deleting = null }, title = { Text("Delete ${section.name}?") }, text = { Text("Its habits move to Anytime. Nothing else changes.") },
-            confirmButton = { TextButton({ deleting = null; store.saveSections(store.sections.filter { it.id != section.id }) }) { Text("Delete time of day", color = appColors.error) } },
-            dismissButton = { TextButton({ deleting = null }) { Text("Cancel", color = appColors.ink) } })
+    // Arrange… on a row: that habit is brought into view, lifted.
+    LaunchedEffect(lifted, tops.size) {
+        val id = lifted ?: return@LaunchedEffect
+        val key = entries.firstOrNull { it is ArrangeEntry.Row && it.habitId == id }?.key ?: return@LaunchedEffect
+        val top = tops[key] ?: return@LaunchedEffect
+        scroll.animateScrollTo(maxOf(0, (top - viewport / 3).roundToInt()))
+        delay(1500); liftedNow = null
     }
+
+    Scaffold(
+        containerColor = c.screen,
+        topBar = {
+            Row(Modifier.fillMaxWidth().statusBarsPadding().height(64.dp).padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onBack, Modifier.semantics { testTag = "arrange-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
+                Spacer(Modifier.width(4.dp))
+                Text("Arrange Today", style = AppType.titleLargeEmphasized, color = c.ink, modifier = Modifier.semantics { heading() })
+            }
+        },
+        snackbarHost = { SnackbarHost(snackbar) { Snackbar(it, shape = RoundedCornerShape(4.dp)) } },
+    ) { padding ->
+        Column(
+            Modifier.fillMaxSize().padding(padding).onSizeChanged { viewport = it.height }.verticalScroll(scroll, enabled = drag == null)
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
+        ) {
+            entries.forEachIndexed { i, e ->
+                // Keyed: as a dragged row moves, its composition (and its gesture) moves with it.
+                key(e.key) { when (e) {
+                    is ArrangeEntry.Header -> {
+                        if (i > 0) Spacer(Modifier.height(16.dp))
+                        ArrangeHeader(e, cards, store, Modifier.measured(e.key, tops, heights), onEdit = onEditSection, members = members[e.card] ?: emptyList()) { words, ids ->
+                            // A sort replaces the person's own order (U13), so it can be taken back.
+                            val before = store.habits.map { it.id }
+                            store.reorder(ids)
+                            scope.launch {
+                                val r = snackbar.showSnackbar(words, actionLabel = "Undo", duration = SnackbarDuration.Short)
+                                if (r == SnackbarResult.ActionPerformed) store.reorder(before)
+                            }
+                        }
+                        Spacer(Modifier.height(8.dp))
+                    }
+                    is ArrangeEntry.Row -> {
+                        val cardRows = cardAt(i)?.let { rowsOf(it) } ?: listOf(e)
+                        val at = cardRows.indexOf(e)
+                        val dragged = drag?.key == e.key
+                        val h = store.habit(e.habitId) ?: return@forEachIndexed
+                        if (at > 0) Spacer(Modifier.height(2.dp))
+                        ArrangeRow(
+                            habit = h, shape = segmentShape(at, cardRows.size, outer = 20.dp), subtitle = arrangeSubtitle(h, store),
+                            lifted = dragged || liftedNow == h.id,
+                            modifier = Modifier.measured(e.key, tops, heights).zIndex(if (dragged) 1f else 0f)
+                                .graphicsLayer { if (dragged) translationY = dragTop - (tops[e.key] ?: dragTop) },
+                            onDragStart = { drag = e; dragFrom = cardAt(entries.indexOf(e)); dragTop = tops[e.key] ?: 0f; liftedNow = null; menuFor = null },
+                            onDrag = { dy -> dragTop += dy; follow() },
+                            onDragEnd = { val d = drag; val from = dragFrom; drag = null; dragFrom = null; if (d != null && from != null) commit(d, from) },
+                            onTap = { menuFor = e.key },
+                            menuOpen = menuFor == e.key, onMenuDismiss = { menuFor = null },
+                            canUp = at > 0, canDown = at < cardRows.size - 1,
+                            onUp = { menuFor = null; store.reorder(cardRows.map { it.habitId }.moved(at, at - 1)) },
+                            onDown = { menuFor = null; store.reorder(cardRows.map { it.habitId }.moved(at, at + 1)) },
+                            onMoveTo = if (h.isQuitOrLimit) null else ({ menuFor = null; moving = h }),
+                        )
+                    }
+                } }
+            }
+            if (paused.isNotEmpty()) {
+                Spacer(Modifier.height(16.dp))
+                Text("Paused · always last", Modifier.padding(start = 16.dp).heightIn(min = 20.dp), style = AppType.labelLarge, color = c.secondary)
+                Spacer(Modifier.height(8.dp))
+                paused.forEachIndexed { i, h ->
+                    if (i > 0) Spacer(Modifier.height(2.dp))
+                    val back = store.pause(h, today)?.through?.let { "Back on " + DayWords.dayMonth(it + 1) } ?: "Until you resume"
+                    ArrangeRow(h, segmentShape(i, paused.size, outer = 20.dp), back, lifted = false, modifier = Modifier,
+                        onDragStart = null, onDrag = {}, onDragEnd = {}, onTap = null, menuOpen = false, onMenuDismiss = {},
+                        canUp = false, canDown = false, onUp = {}, onDown = {}, onMoveTo = null)
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+            Text("Drag a habit to change its order, or into another time of day. Anytime and Quitting move as a whole; the others follow their times. Changes save as you go.",
+                Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = c.secondary)
+            Spacer(Modifier.height(16.dp))
+            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).clickable(onClick = onTimesOfDay)
+                .heightIn(min = 56.dp).padding(horizontal = 16.dp).semantics { testTag = "arrange-times-of-day" },
+                verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Outlined.Schedule, null, tint = c.ink)
+                Spacer(Modifier.width(16.dp))
+                Text("Times of Day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink)
+                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+            }
+        }
+    }
+    moving?.let { h -> MoveToDialog(h, cards.filter { it != DaySection.QUITTING }, store, onDismiss = { moving = null }) { to ->
+        moving = null
+        val from = store.placements(h).firstOrNull()?.section ?: DaySection.ANYTIME
+        if (to == from) return@MoveToDialog
+        val before = store.habits.map { it.id }
+        store.update(h.copy(parts = (h.parts.filter { it != from } + to).distinct()))
+        // It goes to the end of that time of day (Figma 2.3).
+        store.reorder((members[to] ?: emptyList()).map { it.id } + h.id)
+        val where = store.section(to).name
+        scope.launch {
+            val r = snackbar.showSnackbar("${h.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+            if (r == SnackbarResult.ActionPerformed) { store.update(h); store.reorder(before) }
+        }
+    } }
 }
 
+/** One item of Arrange Today's list: a card's header, or a habit in a card. */
+sealed class ArrangeEntry {
+    abstract val key: String
+    data class Header(val card: String) : ArrangeEntry() { override val key get() = "h-$card" }
+    /** [home]: the card it was in when the list was built (part of its key, so a habit in two cards has two keys). */
+    data class Row(val habitId: String, val home: String) : ArrangeEntry() { override val key get() = "r-$habitId-$home" }
+}
+
+/** Remembers where an item sits in the list (its layout, before any drag offset). */
+private fun Modifier.measured(key: String, tops: MutableMap<String, Float>, heights: MutableMap<String, Float>): Modifier =
+    onGloballyPositioned { tops[key] = it.positionInParent().y; heights[key] = it.size.height.toFloat() }
+
+/** "Mon, Wed, Fri": how often, under the name, only when it isn't every day (Figma 2). */
+private fun arrangeSubtitle(h: Habit, store: HabitStore): String? =
+    if (h.kind == com.oftenenough.app.data.HabitKind.Task || h.frequency == com.oftenenough.app.data.Frequency.Daily) null
+    else com.oftenenough.app.data.HabitCopy.capitalized(com.oftenenough.app.data.HabitCopy.rhythm(h.frequency, store.weekStart, short = true))
+
+/**
+ * A time of day's label (Figma 2): "Morning · 6 AM – 12 PM" in Label Large, grey, and its ⋮ (sort, or edit the time of
+ * day). Anytime and Quitting also have ⠿, and their ⋮ moves them.
+ */
 @Composable
-private fun ArrangeCard(
-    card: String, habits: List<Habit>, cards: List<String>, store: HabitStore,
-    onRename: (DaySection) -> Unit, onRetime: (DaySection) -> Unit, onDelete: (DaySection) -> Unit,
+private fun ArrangeHeader(
+    e: ArrangeEntry.Header, cards: List<String>, store: HabitStore, modifier: Modifier, onEdit: (String?) -> Unit, members: List<Habit>,
+    onSort: (words: String, ids: List<String>) -> Unit,
 ) {
     val c = appColors
+    val card = e.card
     val section = if (card == DaySection.QUITTING) null else store.section(card)
-    val title = section?.name ?: "Quit or cut down"
-    val count = habits.size + 1
+    val title = when {
+        card == DaySection.QUITTING -> "Quitting"
+        section == null || section.isAnytime -> section?.name ?: "Anytime"
+        else -> {
+            val end = store.timedSections().firstOrNull { it.first.id == card }?.second
+            section.name + " · " + DayWords.hourShort(section.start ?: 0) + (end?.let { " – " + DayWords.hourShort(it % (24 * 60)) } ?: "")
+        }
+    }
+    val movable = card == DaySection.ANYTIME || card == DaySection.QUITTING
     var menu by remember { mutableStateOf(false) }
-    Column(Modifier.fillMaxWidth().semantics { testTag = "arrange-card-$title" }, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        Row(Modifier.fillMaxWidth().clip(segmentShape(0, count)).background(c.surface).heightIn(min = 64.dp).padding(start = 20.dp, end = 4.dp),
-            verticalAlignment = Alignment.CenterVertically) {
-            Text(title, Modifier.weight(1f).semantics { heading() }, style = MaterialTheme.typography.titleLarge, color = c.ink)
-            Box {
-                IconButton({ menu = true }, Modifier.semantics { testTag = "arrange-menu-$title" }) { Icon(Icons.Rounded.MoreVert, "$title options", tint = c.ink) }
-                DropdownMenu(menu, { menu = false }, containerColor = c.surface) {
-                    @Composable fun item(text: String, tag: String, action: () -> Unit) =
-                        DropdownMenuItem({ Text(text, color = c.ink) }, { menu = false; action() }, Modifier.semantics { testTag = tag })
-                    if (section != null && !section.isAnytime) {
-                        item("Rename", "arrange-rename-$title") { onRename(section) }
-                        item("Change time", "arrange-retime-$title") { onRetime(section) }
-                    }
-                    if (habits.size > 1) {
-                        if (habits.any { h -> store.placements(h).any { it.section == card && it.times.isNotEmpty() } })
-                            item("Sort by reminder time", "arrange-sort-time-$title") { store.reorder(sortedByReminder(habits, card, store).map { it.id }) }
-                        item("Sort A to Z", "arrange-sort-az-$title") { store.reorder(sortedByName(habits).map { it.id }) }
-                    }
-                    if (card == DaySection.ANYTIME || card == DaySection.QUITTING) {
-                        val i = cards.indexOf(card)
-                        if (i > 0) {
-                            item("Move to top", "arrange-top-$title") { store.moveCard(card, HabitStore.CardMove.TOP) }
-                            item("Move up", "arrange-up-$title") { store.moveCard(card, HabitStore.CardMove.UP) }
-                        }
-                        if (i < cards.size - 1) {
-                            item("Move down", "arrange-down-$title") { store.moveCard(card, HabitStore.CardMove.DOWN) }
-                            item("Move to bottom", "arrange-bottom-$title") { store.moveCard(card, HabitStore.CardMove.BOTTOM) }
-                        }
-                    }
-                    if (section != null && !section.isAnytime) {
-                        HorizontalDivider(color = c.tonal)
-                        DropdownMenuItem({ Text("Delete", color = c.error) }, { menu = false; onDelete(section) },
-                            leadingIcon = { Icon(Icons.Outlined.Delete, null, tint = c.error) })
-                    }
+    Row(modifier.fillMaxWidth().heightIn(min = if (movable) 48.dp else 40.dp).padding(start = 16.dp, end = 4.dp)
+        .semantics { testTag = "arrange-card-$title" }, verticalAlignment = Alignment.CenterVertically) {
+        Text(title, Modifier.weight(1f).semantics { heading() }, style = AppType.labelLarge, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Box {
+            Box(Modifier.size(40.dp).clip(CircleShape).background(if (menu) c.behind else Color.Transparent).clickable { menu = true }
+                .semantics { testTag = "arrange-menu-$title"; contentDescription = "$title options" }, contentAlignment = Alignment.Center) {
+                Icon(Icons.Rounded.MoreVert, null, tint = c.secondary)
+            }
+            DropdownMenu(menu, { menu = false }, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp) {
+                @Composable fun item(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, action: () -> Unit) =
+                    DropdownMenuItem({ Text(text, style = AppType.bodyLarge, color = c.ink) }, { menu = false; action() },
+                        leadingIcon = { Icon(icon, null, tint = c.secondary) }, modifier = Modifier.semantics { testTag = tag })
+                if (members.size > 1) {
+                    if (members.any { h -> store.placements(h).any { it.section == card && it.times.isNotEmpty() } })
+                        item("Sort by reminder time", Icons.Outlined.Schedule, "arrange-sort-time-$title") { onSort("${section?.name ?: title} sorted by reminder time", sortedByReminder(members, card, store).map { it.id }) }
+                    item("Sort A to Z", Icons.Rounded.SortByAlpha, "arrange-sort-az-$title") { onSort("${section?.name ?: title} sorted A to Z", sortedByName(members).map { it.id }) }
+                }
+                if (section != null && !section.isAnytime) item("Edit time of day", Icons.Outlined.Edit, "arrange-edit-$title") { onEdit(section.id) }
+                if (movable) {
+                    val i = cards.indexOf(card)
+                    if (i > 0) item("Move up", Icons.Rounded.ArrowUpward, "arrange-up-$title") { store.moveCard(card, HabitStore.CardMove.UP) }
+                    if (i < cards.size - 1) item("Move down", Icons.Rounded.ArrowDownward, "arrange-down-$title") { store.moveCard(card, HabitStore.CardMove.DOWN) }
                 }
             }
         }
-        if (habits.isEmpty()) {
-            Box(Modifier.fillMaxWidth().clip(segmentShape(1, 2)).background(c.surface).padding(20.dp)) {
-                Text("No habits here yet.", style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+        if (movable) {
+            // ⠿ moves the whole card: one place up or down per row's height dragged.
+            var dy by remember { mutableFloatStateOf(0f) }
+            val step = with(LocalDensity.current) { 64.dp.toPx() }
+            Box(Modifier.size(48.dp).pointerInput(card) {
+                detectVerticalDragGestures(onDragEnd = { dy = 0f }, onDragCancel = { dy = 0f }) { change, amount ->
+                    change.consume(); dy += amount
+                    if (dy <= -step) { store.moveCard(card, HabitStore.CardMove.UP); dy = 0f }
+                    if (dy >= step) { store.moveCard(card, HabitStore.CardMove.DOWN); dy = 0f }
+                }
+            }.semantics { testTag = "arrange-card-handle-$title"; contentDescription = "Move $title" }, contentAlignment = Alignment.Center) {
+                Icon(Icons.Rounded.DragIndicator, null, tint = c.secondary)
             }
-        } else DraggableRows(habits, store) { from, to -> store.reorder(habits.moved(from, to).map { it.id }) }
+        }
     }
 }
 
 /**
- * The card's rows, dragged by their ≡ handle. The row follows the finger; the others make room; the new order is saved
- * once, when the finger lifts (S7: the screen first, the write after).
+ * A habit in Arrange Today (Figma 2): a 32 dp grey disc with its icon, the name (Body Large) over how often (Body Small),
+ * ≡ at the end. Drag ≡ or hold the row to move it; tap it for Move up, Move down and Move to…. Lifted: a shadow.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun DraggableRows(habits: List<Habit>, store: HabitStore, onMove: (Int, Int) -> Unit) {
+private fun ArrangeRow(
+    habit: Habit, shape: androidx.compose.ui.graphics.Shape, subtitle: String?, lifted: Boolean, modifier: Modifier,
+    onDragStart: (() -> Unit)?, onDrag: (Float) -> Unit, onDragEnd: () -> Unit, onTap: (() -> Unit)?,
+    menuOpen: Boolean, onMenuDismiss: () -> Unit, canUp: Boolean, canDown: Boolean, onUp: () -> Unit, onDown: () -> Unit,
+    onMoveTo: (() -> Unit)?,
+) {
     val c = appColors
-    val rowPx = with(LocalDensity.current) { (ROW_HEIGHT + 2.dp).toPx() }
-    var dragging by remember { mutableIntStateOf(-1) }
-    var dy by remember { mutableFloatStateOf(0f) }
-    // Worked out from the live drag, never captured: the gesture's handlers outlive the composition they were made in.
-    fun targetOf(from: Int, offset: Float) = if (from < 0) -1 else (from + (offset / rowPx).roundToInt()).coerceIn(0, habits.lastIndex)
-    val target = targetOf(dragging, dy)
-    habits.forEachIndexed { i, h ->
-        // Where each row sits while one is dragged: the dragged one under the finger, the rest shifted one place.
-        val shift = when {
-            dragging < 0 || i == dragging -> 0f
-            i in (dragging + 1)..target -> -rowPx
-            i in target until dragging -> rowPx
-            else -> 0f
-        }
-        val y = if (i == dragging) dy else shift
-        Row(Modifier.zIndex(if (i == dragging) 1f else 0f).offset { IntOffset(0, y.roundToInt()) }
-            .let { if (i == dragging) it.shadow(6.dp, segmentShape(i + 1, habits.size + 1)) else it }
-            .fillMaxWidth().clip(segmentShape(i + 1, habits.size + 1)).background(c.surface).height(ROW_HEIGHT).padding(start = 16.dp, end = 4.dp)
-            .semantics(mergeDescendants = true) {
-                testTag = "arrange-row-${h.name}"
-                customActions = listOfNotNull(
-                    if (i > 0) CustomAccessibilityAction("Move up") { onMove(i, i - 1); true } else null,
-                    if (i < habits.lastIndex) CustomAccessibilityAction("Move down") { onMove(i, i + 1); true } else null,
-                )
-            },
-            verticalAlignment = Alignment.CenterVertically) {
-            HabitIcon(h.symbol, h.color)
-            Spacer(Modifier.width(16.dp))
-            Text(h.name, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Box(Modifier.size(48.dp).semantics { testTag = "arrange-handle-${h.name}" }.pointerInput(h.id, i, habits.size) {
-                detectDragGestures(
-                    onDragStart = { dragging = i; dy = 0f },
-                    onDragEnd = { val from = dragging; val to = targetOf(from, dy); dragging = -1; dy = 0f; if (from >= 0 && to != from) onMove(from, to) },
-                    onDragCancel = { dragging = -1; dy = 0f },
-                ) { change, amount -> change.consume(); dy += amount.y }
-            }, contentAlignment = Alignment.Center) {
-                Icon(Icons.Rounded.DragHandle, "Drag to reorder", tint = c.secondary)
+    val drag = Modifier.pointerInput(habit.id, onDragStart != null) {
+        if (onDragStart == null) return@pointerInput
+        detectDragGestures(onDragStart = { onDragStart() }, onDragEnd = onDragEnd, onDragCancel = onDragEnd) { change, amount -> change.consume(); onDrag(amount.y) }
+    }
+    val hold = Modifier.pointerInput(habit.id, onDragStart != null) {
+        if (onDragStart == null) return@pointerInput
+        detectDragGesturesAfterLongPress(onDragStart = { onDragStart() }, onDragEnd = onDragEnd, onDragCancel = onDragEnd) { change, amount -> change.consume(); onDrag(amount.y) }
+    }
+    Box(modifier) {
+        Row(
+            Modifier.fillMaxWidth().let { if (lifted) it.shadow(8.dp, RoundedCornerShape(20.dp)) else it }
+                .clip(if (lifted) RoundedCornerShape(20.dp) else shape).background(if (menuOpen) c.behind else c.surface)
+                .then(hold).let { if (onTap != null) it.clickable(onClick = onTap) else it }
+                .heightIn(min = 56.dp).padding(start = 16.dp, end = if (onDragStart != null) 4.dp else 16.dp, top = 4.dp, bottom = 4.dp)
+                .semantics(mergeDescendants = true) {
+                    testTag = "arrange-row-${habit.name}"
+                    customActions = listOfNotNull(
+                        if (canUp) CustomAccessibilityAction("Move up") { onUp(); true } else null,
+                        if (canDown) CustomAccessibilityAction("Move down") { onDown(); true } else null,
+                        onMoveTo?.let { CustomAccessibilityAction("Move to…") { it(); true } },
+                    )
+                },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(Modifier.size(32.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
+                Icon(HabitIcons.icon(habit.symbol), null, Modifier.size(18.dp), tint = c.ink)
             }
+            Spacer(Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                Text(habit.name, style = AppType.bodyLarge, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                if (subtitle != null) Text(subtitle, style = AppType.bodySmall, color = c.secondary, maxLines = 1)
+            }
+            if (onDragStart != null) Box(Modifier.size(48.dp).then(drag).semantics { testTag = "arrange-handle-${habit.name}"; contentDescription = "Drag to move" },
+                contentAlignment = Alignment.Center) {
+                Icon(Icons.Rounded.DragHandle, null, tint = if (lifted) c.ink else c.secondary)
+            }
+        }
+        DropdownMenu(menuOpen, onMenuDismiss, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp,
+            offset = androidx.compose.ui.unit.DpOffset(120.dp, 0.dp)) {
+            @Composable fun item(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, enabled: Boolean = true, action: () -> Unit) =
+                DropdownMenuItem({ Text(text, style = AppType.bodyLarge, color = if (enabled) c.ink else c.secondary) }, action, enabled = enabled,
+                    leadingIcon = { Icon(icon, null, tint = c.secondary) }, modifier = Modifier.semantics { testTag = tag })
+            item("Move up", Icons.Rounded.ArrowUpward, "arrange-move-up", canUp, onUp)
+            item("Move down", Icons.Rounded.ArrowDownward, "arrange-move-down", canDown, onDown)
+            if (onMoveTo != null) item("Move to…", Icons.Outlined.Schedule, "arrange-move-to") { onMoveTo() }
         }
     }
 }
 
-private val ROW_HEIGHT = 64.dp
+/** Move to… (Figma 2.3): the times of day as radio rows, the one it's in now said so; Move puts it at that one's end. */
+@Composable
+private fun MoveToDialog(habit: Habit, cards: List<String>, store: HabitStore, onDismiss: () -> Unit, onMove: (String) -> Unit) {
+    val c = appColors
+    val now = store.placements(habit).firstOrNull()?.section ?: DaySection.ANYTIME
+    var chosen by remember { mutableStateOf(now) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Column(Modifier.fillMaxWidth()) {
+                Icon(Icons.Outlined.Schedule, null, tint = c.ink)
+                Spacer(Modifier.height(16.dp))
+                Text("Move ${habit.name} to", style = AppType.headlineSmall, color = c.ink)
+            }
+        },
+        text = {
+            Column {
+                for (card in cards) {
+                    val name = store.section(card).name
+                    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(8.dp)).clickable { chosen = card }
+                        .semantics(mergeDescendants = true) { testTag = "move-to-$name" }, verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(chosen == card, { chosen = card }, colors = RadioButtonDefaults.colors(selectedColor = c.ink, unselectedColor = c.secondary))
+                        Spacer(Modifier.width(8.dp))
+                        Text(if (card == now) "$name (where it is now)" else name, style = AppType.bodyLarge, color = c.ink)
+                    }
+                }
+            }
+        },
+        confirmButton = { TextButton({ onMove(chosen) }, Modifier.semantics { testTag = "move-to-confirm" }) { Text("Move", style = AppType.labelLarge, color = c.ink) } },
+        dismissButton = { TextButton(onDismiss) { Text("Cancel", style = AppType.labelLarge, color = c.ink) } },
+        containerColor = c.menu,
+    )
+}

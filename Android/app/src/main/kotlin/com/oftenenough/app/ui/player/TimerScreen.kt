@@ -144,7 +144,8 @@ fun TimerScreen(
                     )
                 }
                 Spacer(Modifier.height(16.dp))
-                // One main button, always in the same place: Pause while it runs, Resume (or Start) when it doesn't.
+                // One main button, always in the same place: Pause while it runs, Resume (or Start) when it doesn't. The two
+                // are equal (Figma 1.3), so "Log manually" is never cut short on a 360 dp phone.
                 val started = remember(habit, rev, running) { store.rules.progress(habit, day) > 0 }
                 val action = PlayerWords.mainAction(ruled, store.rules.goal(ruled), done = false, skipped = false, isLast = false, running = running, started = started)
                 Row(Modifier.fillMaxWidth().height(96.dp).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -153,7 +154,7 @@ fun TimerScreen(
                     }
                     MainButton(
                         if (action.action == PlayerAction.PAUSE) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
-                        action.label, action.spoken, "timer-screen-primary", Modifier.weight(if (onLogManually != null) 1.2f else 1f),
+                        action.label, action.spoken, "timer-screen-primary", Modifier.weight(1f),
                     ) {
                         if (store.timers.containsKey(habit.id)) store.toggleTimer(habit) else store.toggleTimer(habit, slot)
                     }

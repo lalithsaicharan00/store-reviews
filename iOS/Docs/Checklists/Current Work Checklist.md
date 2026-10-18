@@ -1171,6 +1171,26 @@ and the Add note keyboard coming up by itself.
     something entirely new.
   - [x] **And native:** at the same time it must feel like an iPad app, intuitive ("oh, this is very intuitive").
   - [x] **Design for the room the iPad has:** everything laid out for the larger screen, not a stretched iPhone.
+- [ ] **129. Android Today and Day details, as close to Figma as native Android allows** (added 18 October 2026, from
+  the user: "as closely as uh, match the designs … test everything thoroughly … if you find … any of the designs … is
+  missing … let me know"; then Day details, Figma `2308:2`: "thoroughly cross-check everything … thoroughly test it").
+  Built and checked on the dummy Xiaomi at Figma's 360 dp width, light and dark; committed to main 18 Oct.
+  - [x] Today (Figma `1260:2`): folded headers' icons ringed, not overlapped, and the grey "+1" a circle (`1350:56`);
+    Undo · Note only after a log, until the next action, moving to the newest row; the long-press menu; swipe actions
+    (reveal, never act); snackbars; step habits; the notices (backup paused, off, removed, deleted and the rest);
+    Show on Today, Group your habits, Arrange (sorts now have Undo).
+  - [x] Day details (Figma `2308:2`): every state from 1 to 18 (amount, time, check, several a day, week and month
+    goals, flexible, set days and a day it isn't planned, checklist, quit and slips, limits, task and Reschedule,
+    paused, earlier and later days), the milestone ribbon and the landmark pop-up, Add log / Log / Edit / Delete,
+    All logs, notes. A moved task now says where it went, with Undo.
+  - [x] Fixed on the way: Arrange duplicated a habit (`HabitStore.update` replaced by a stale index; now by ID);
+    wording against Figma ("Mon, Wed, Fri", "$250/$500", floored minutes, bare totals, "Tomorrow").
+  - [x] Tests on this PC, 18 Oct: JVM 74/74 and lint pass; on the Pixel 10 Pro emulator (Android 16) Today 11/11,
+    Screens 13/13, DataSafety 5/5, WidgetData 8/8, Tablet 3/3. Three tests were updated to the new words (T3); the
+    default demo had no calls this week on the week's first day (WidgetData failed on Sundays), fixed. Not run: Speed,
+    the Plus suites, GitHub's emulators.
+  - [x] Committed to main when the user said (18 Oct); not pushed.
+  - [ ] Designs missing or decided without one: listed in the report to the user, 18 Oct.
   - [x] **Then the designs, in Figma**, on the page made for the iPad (file `Ncccsm1l2O62GJ5xLSInqk`, node `1078:309`,
     empty on 11 Oct); one example first for the user's approval, then the rest.
   - **Decided by the user, 11 Oct 2026 (the report's §8):** (1) **the iPad layout is free** (sync between devices

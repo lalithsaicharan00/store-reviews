@@ -176,6 +176,7 @@ object AppGraph {
         } ?: 0L
         // Every test launch starts from the defaults (T8): nothing a test changes reaches the next.
         context.getSharedPreferences("uitest", Context.MODE_PRIVATE).edit().clear().commit()
+        context.getSharedPreferences("uitest-today-notices", Context.MODE_PRIVATE).edit().clear().commit()
         prefsInstance = Prefs.of(context, "uitest")
         // Its own App lock, off each launch (D8, T8): a test never locks or unlocks the person's app.
         lockInstance = AppLock(context.getSharedPreferences("uitest-applock", Context.MODE_PRIVATE).also { it.edit().clear().commit() })

@@ -154,7 +154,8 @@ class TodayTest {
         val before = line("Water")
         tapLabel("Add 1 glass to Water")
         waitFor(hasTestTag("undo-Water"), "Water's Undo")
-        waitFor(hasText("Undo +1 glass", substring = true), "Undo naming the glass")
+        // The chip reads "Undo" (Figma 1350:2); TalkBack hears what it takes back (U14).
+        waitFor(hasContentDescription("Undo +1 glass"), "Undo naming the glass")
         assertNotEquals("Water's line after +1; on screen: ${screen()}", before, line("Water"))
         tapTag("undo-Water")
         waitGone(hasTestTag("undo-Water"), "Water's Undo")
@@ -178,12 +179,15 @@ class TodayTest {
         showRow("Skincare")
         tapLabel("Show Skincare steps")
         // The demo has Cleanser ticked today; Serum isn't.
-        tapLabel("Mark Serum done")
-        waitFor(hasContentDescription("Undo Serum"), "Serum ticked")
-        tapLabel("Undo Serum")
-        waitFor(hasContentDescription("Mark Serum done"), "Serum unticked")
+        // Each step is a checkbox named by the step, Done or Not done.
+        fun serum(state: String) = hasTestTag("step-Serum") and SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, state)
+        waitFor(serum("Not done"), "Serum not done")
+        tapTag("step-Serum")
+        waitFor(serum("Done"), "Serum ticked")
+        tapTag("step-Serum")
+        waitFor(serum("Not done"), "Serum unticked")
         tapLabel("Hide Skincare steps")
-        waitGone(hasContentDescription("Mark Serum done"), "the steps")
+        waitGone(hasTestTag("step-Serum"), "the steps")
     }
 
     @Test fun aTimerStartsAndStops() {
