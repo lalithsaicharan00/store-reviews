@@ -15,8 +15,8 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 | **Onboarding: new to the app** (`1548:2`) | Splash, Android's own, light (`1610:2`; the dark frame `1610:22` was removed 14 Oct: **the designs are light mode only**, the app keeps its dark mode): the adaptive icon's foreground with no icon background (288 dp, inside Android's 192 dp circle) centred on `#FFFFFF` / `#0D0D0D`, the Logo Guide's backgrounds; no title, no branding image (added 13 Oct); Welcome (`1548:3`); 1 of 3 · Your habit. Your goal. (`1548:46`); 2 of 3 · Quit or cut down. (`1548:177`); 3 of 3 · Tasks, once or on repeat. (`1548:296`); Your days and weeks (`1548:420`), with New day starts at open (`1550:2`, 12:00 AM to 11:00 AM, as in Day and Week) and Week starts on open (`1550:71`, Sunday to Saturday); Your first habit (`1548:456`; an idea opens the New Habit form, `1302:2`). Frames numbered 01–07 in order (13 Oct) | Built 12 Oct from the user's wireframes (`835:503`) and the built iPhone app; "What's included" removed. **01–06 redesigned 13 Oct and built in the app to match** (below, "Onboarding, 13 Oct 2026"); 07 redesigned in Figma, not built yet. The 06 before its redesign is kept beside the section for comparison (`1650:20585`, labelled BEFORE; not a screen) |
 | **Onboarding: coming back** (`1549:2`) | Welcome back (`1549:3`); Sign in with Google: Android's account chooser over Welcome back (`1549:38`), Google's permission screen (`1549:97`); Getting your habits (`1549:128`); Restore a backup (`1549:154`; then the restore flow, `1472:2`) | Built 12 Oct; Move from another device removed |
 | **Today** (`1260:2`) | Today, light, 360 × 800 (`1350:2`, the Expressive version, which replaced `1246:2`); the day bar in four day states (`1256:6`); empty: No habits yet, the first time (`1551:3`), and Nothing planned today (`1551:195`; new: the iPhone shows a blank list, Current Work 106) | Approved 12 Oct ("let's go with this one"); the drawer and every Day details sheet show it behind them |
-| **Day details** (`1260:3`) | Water, an amount (`1362:2`, replaced `1258:2`); then every other kind, left to right: Read, a time habit (`1280:3`); Read, timer running (`1294:2`); Take vitamins, a check, not done (`1294:220`) and done (`1294:432`); Stretch breaks, several a day (`1294:644`); Call family, a week goal (`1294:866`); Deep clean, a month goal (`1294:1083`); Gym, N days a week (`1294:1300`); Tidy desk, a checklist (`1294:1512`); Smoking, quit with no slips (`1296:2`) and a slip (`1296:214`); Coffee, a limit (`1296:430`); Social media, a time limit (`1296:644`); a task, not done with Reschedule (`1296:858`) and done (`1296:1080`); Read, skipped (`1296:1292`); Meditate, paused (`1296:1510`); Water, an earlier day ("Yesterday", `1296:1722`) | Water approved; the rest built 12 Oct from the built app, the user: "I already approved it … just complete them" |
-| **Logs and slips: add, all, view, delete, edit** (`1261:290`) | Add log (`1261:2`), All logs (`1261:83`), Log (`1261:120`), Delete confirmation (`1261:162`), Edit log (`1261:213`); Add slip (`1297:83`), Slip (`1297:164`), Delete this slip? (`1297:209`), Edit slip (`1297:257`) | Logs built, not yet reviewed by the user; slips built 12 Oct |
+| **Day details, logs, slips and notes** (`2308:2`, 18 Oct 2026: the three sections below merged into one; it sits beside Today at x 7,520, because one more 24,000-high section in the column would pass the canvas limit) | One row per kind, numbered 1–15, each kind's sheet first, then its states, then the screens it opens, with arrows: **1** Water, an amount (`1362:2`), its Add log (1.6, `1261:2`), All logs (1.7), Log (1.8), Delete (1.8.1), Edit log (1.8.2), an earlier day (1.3); **2** Read, time (`1280:3`, running 2.1, skipped 2.3); **3** a check; **4** several a day; **5** week goal; **6** month goal; **7** N days a week; **8** checklist; **9** quit, with Add slip (9.2), Slip (9.3), Delete (9.3.1), Edit slip (9.3.2), another time zone (9.3.4); **10** cut down, count; **11** cut down, time; **12** a task; **13** paused; **14** a milestone reached here; **15** notes (Add note 15–15.3, Note 15.4–15.4.3); **16–18** amount and time habits with a week or month goal (added 18 Oct). **32 placeholders** (dashed, "Placeholder · not designed yet") mark the missing screens (below, "Day details: merged, with placeholders") | 37 designed frames kept as they were; 32 placeholders to design |
+| ~~**Logs and slips: add, all, view, delete, edit**~~ | **Merged into "Day details, logs, slips and notes" (`2308:2`), 18 Oct 2026, and the section removed.** | — |
 | **New: choices and habit form** (`1302:2`) | New · What do you want to do? (`1566:2`); Build or maintain · How do you want to track it? (`1566:44`); New Habit forms, full length: Check it off (`1321:2`), Track an amount (`1321:125`), Time it (`1321:272`), Checklist (`1321:400`); Quit or cut down · What do you want to do? (`1566:106`); Quit (`1321:529`); Cut down (`1321:614`); Task (`1321:738`) | Built 12 Oct from the built app; forms redone in the second style (the user: "this new one is looking good"), Icon | Colour in one row; question headings stay Regular |
 | ~~**New: the form's pages** (`1563:535`)~~ | **Merged into "New: choices and habit form" (`1302:2`), 13 Oct 2026, and the section removed.** Each form's pages sit one column to the right of it, below its row, with an arrow from the row that opens each (arrows fan out sideways; pages stacked under their own form always made arrows cross). Shared pages once, from 2.1: 2.1.1 Icon (`1564:607`), 2.1.2 Colour (`1564:454`), 2.1.3 How often (`1563:328`), 2.1.4 Time of Day (`1563:438`), 2.1.5 Group (`1563:494`) and 2.1.5.1 New group (`1567:106`), 2.1.6 Starts (`1564:58`), 2.1.7 Ends (`1564:322`); own pages: 2.2.1 How much (`1567:2`) and 2.2.1.1 Unit (`1563:33`), 2.3.1 How long (`1567:60`), 2.4.1 Steps (`1563:286`), 3.2.1 Limit (`1567:31`). **1.1 Add a 6th habit (Plus)** (`1569:104`, whole sheet `1569:2`) under screen 1, dashed arrows from Build or maintain and Quit or cut down only (the user: it shows only when it's meaningful, never for a task, never abruptly at Add). **Not drawn yet:** the form's Reminders page, 3.1's Started pickers, Task's Repeat, Date and Time pages | The app still shows the Plus sheet at Add (`HabitForm.kt`); move it to choosing Build or maintain / Quit or cut down when building |
 | **Menu: navigation drawer** (`1326:2`) | Drawer open over Today (`1326:3`); the same, scrolled to the end (`1326:231`) | Built 12 Oct from the built app |
@@ -36,7 +36,7 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 | **Widgets** (`1555:2`) | On home screens: One habit 2×2 (Water +1, Meditate ▶) and Today 4×2 for a section (`1555:3`); Today 4×4 with pages (`1555:92`); This week 4×2 and Tasks 4×2 (`1555:197`); Tasks 4×4 (`1555:290`) | Built 12 Oct from the built iPhone widgets (`iOS/Shared/PhoneWidgets.swift`) and the iPhone boards (`537:2981` …); one state each, the other states to follow |
 | **Widgets: adding and changing** (`1559:2`) | Android's own: touch and hold the home screen (`1559:3`), Widgets searched for "often", full length (`1559:102`), a widget tapped: Add (`1559:416`); ours: One habit, choose a habit (`1560:2`); on the home screen (`1560:89`); Android's own: touch and hold the widget, Reconfigure (`1560:178`); ours: change the habit (`1560:270`); Today, the day or one section (`1560:357`); Tasks, all or one section (`1560:459`); This week, choose a habit (`1560:533`); Today without Plus (`1560:645`) | Built 12 Oct |
 | **Widgets: every state** (`1557:402`) | One habit, 30 states (`1557:2`); Today, Tasks and This week, 24 states (`1558:550`) | Built 12 Oct from the built iPhone widgets |
-| **Notes: add, view, delete, edit** (`1274:2`) | Add note, empty (`1274:3`); Add note, typed (`1277:2`); Add note on a day that already has a note, from the Notes tab with the date pill (`1279:2`); Discard this note? (`1277:121`); Note (`1277:235`); Delete this note? (`1277:288`); Edit note (`1277:325`); Discard your changes to this note? (`1279:111`) | Approved, 12 Oct ("looks good"); the two variants (`1279:2`, `1279:111`) follow it |
+| ~~**Notes: add, view, delete, edit**~~ | **Merged into "Day details, logs, slips and notes" (`2308:2`), 18 Oct 2026, and the section removed.** | — |
 
 ## The reference is the built iPhone app, not Figma
 
@@ -1792,6 +1792,225 @@ Two new rows under row 1 (everything below moved down 1920) and two more frames 
 - Not drawn, by choice: Google Play's own in-app review sheet (its UI, asked once after a week of use at a finished
   day, never ours first).
 
+### Day details: amount and time habits with a week or month goal, 18 Oct 2026 (the last kind missing)
+
+Three new rows at the end of *Day details, logs, slips and notes* (`2308:2`, now 26,880 high, still clear of everything
+beside Today). These goals count an **amount** over a week or month, unlike Call family and Deep clean (5, 6), which
+count **times**; the words are the app's (`StoreWords`: today's amount as the title, the period's total as the line).
+- **16 Push-ups, 300 a week, +20** (`2344:2`): **40** push-ups today; "150 of 300 this week" on its own line under it;
+  the bar fills toward the week (U25); **+20 | Log manually**; today's logs; no Skip (week and month goals have none).
+  **16.1** (`2344:245`): "300 of 300 this week · Goal reached", the bar full, +20 still adds.
+- **17 Savings, $500 a month, typed each time** (`2344:485`): **$50** today; "$250 of $500 this month"; one button, **Log
+  amount** (no step to add). **17.1** (`2344:724`): "$500 of $500 this month · Goal reached".
+- **18 Piano, 3 hours a week, timer** (`2344:964`): **30** min today; "1 h 30 min of 3 h this week"; **Start timer | Log
+  manually**. **18.1** (`2344:1203`): "3 h of 3 h this week · Goal reached".
+- The period's line sits on its own row (as Coffee's limit line) so a long total never runs into "push-ups today".
+
+### The habit form: quit ↔ cut down drawn too, 18 Oct 2026 (the user: "if you think the developer might miss this, then you can create for that as well")
+
+A new bottom row (the section grew by 960; the sections below moved down; the page ends at 60,611):
+- **6.4 Edit habit, a quit habit** (`2342:2`): Smoking's form, titled Edit habit, Save; a **Type** row, "Quit".
+- **6.4.1 Change the type** (`2342:63`): a quit or cut-down habit chooses between **Quit** and **Cut down** only (the
+  current one outlined, "Current type"); the build kinds stay with 6.3.
+- **6.4.2 Start Smoking over as Cut down?** (`2342:100`): the form already showing Cut down (Limit, How often); "Changing
+  Smoking to Cut down starts it over from today. Your old Smoking, with its quit run and slips, is kept in Archived
+  habits." **Cancel | Start over**. Cut down → Quit is the same, the other way round.
+
+### The habit form: the missing screens designed, 18 Oct 2026 (the user: "let's create all of the placeholder screens for habit form, and let's complete it")
+
+All ten placeholders are screens now; the words are the built form's own (`HabitForm.kt`: "Discard this habit?",
+"Discard this task?", "Discard your changes?", Keep editing | Discard changes; "Edit habit" and Save).
+- **2.1.9 Discard this habit?** (`2338:174`): Back after typing (the form's ← is Back, not ✕); a task says "Discard this
+  task?".
+- **2.1.10 Add with no name** (`2338:263`): Add keeps its quiet look until there's a name but still answers a tap: Name
+  takes the focus with an error outline and "Give it a name to add it." (so nothing is a dead, greyed button, U19).
+  *Code:* today `form-add` is `enabled = form.canAdd`; make it tappable and show this instead.
+- **4.3 / 4.4 the task's pickers** (`2338:347`, `2338:572`): Android's date picker (today and later; earlier days
+  dimmed) and, with Time on, the dial time picker at 9:00 AM; the same pickers as Day details' 1.6.2 and 1.6.3.
+- **6 Edit habit** (`2339:2`): Water's form filled in, titled **Edit habit**, **Save** on; a **Type** row ("Track an
+  amount") opens 6.3. Edit task is the same form.
+- **6.1 A goal or How often changed** (`2339:115`): no extra step: the form says it under the rows, "The new goal starts
+  today. Days before today keep 8 glasses a day." (D6), and Save saves.
+- **6.2 Discard your changes?** (`2339:230`).
+- **6.3 Change the type** (`2339:351`): the same four choices as New habit; the current one is outlined and says
+  "Current type".
+- **6.3.1 Start Water over as Time it?** (`2339:408`): the form already showing Time it (How long, 10 min); the dialog:
+  "Changing Water to Time it starts it over from today. Your old Water and its history are kept in Archived habits."
+  **Cancel | Start over**.
+- **6.3.2 Started over** (`2339:530`): Today with the new Water as a time habit (0/10 min, ▶, no streak yet) in the old
+  one's place, and the snackbar "Old Water is in Archived habits" with **View** (opens Archived habits).
+
+### The habit form: placeholders for the missing screens, 18 Oct 2026 (the user: "first let's add whatever the missing screens as an empty placeholder in the habit form")
+
+Seven dashed placeholders in *New: choices and habit form* (`1302:2`), with arrows; the section grew by 1,040 and every
+section below moved down by the same (nothing overlaps; the page ends at 59,651):
+- **2.1.9 ✕ after typing: Discard this habit?** (`2329:2`) and **2.1.10 Add with no name** (`2329:6`), under 2.1; they
+  stand for every kind and the task.
+- **4.3 Date: the date picker** (`2329:10`) and **4.4 Time: the time picker** (`2329:14`), beside the task row; their
+  arrows run through the gap above it.
+- **6 Edit habit** (`2329:18`), **6.1 A goal or schedule changed: from when** (`2329:22`, D6: the days before keep their
+  old goal) and **6.2 ✕ with changes: Discard your changes?** (`2329:26`), a new bottom row. Edit task is the same form.
+- **Changing the type, decided the same day** (the user: "a goal or schedule change, that is fine. But if the habit type
+  itself is changing, then it should say so that it will reset. Very clearly. If they agree, then only we should
+  change it"): **6.3 Change the type** (`2331:2`), **6.3.1 A new type starts over: say so, agree first** (`2331:6`:
+  before saving, plainly, what starts again; Cancel keeps the habit exactly as it was) and **6.3.2 Changed: it starts
+  again today** (`2331:10`), in the same row with arrows. A goal or How often change goes through 6.1 and never resets
+  anything. Rulebook D6.
+- **What happens to the old progress, decided the same day** (the user: "we don't want to overcomplicate things … let's
+  go with this way"): **the old habit is archived with everything it had and a new habit starts today** with the new
+  type and the same name, icon, colour, time of day, group, reminders and place on Today. The dialog (6.3.1): "Changing
+  Water to Time it starts it over from today. Your old Water and its history are kept in Archived habits." **Cancel |
+  Start over.** Why this way: old logs can't be converted (glasses aren't minutes), deleting them breaks D1/D6, and
+  archiving already exists, so there's no new history model, a mistake is undone with Restore, a new ID keeps sync
+  safe, and archived habits don't count toward the free five. Widgets and reminders follow the new habit.
+
+### Day details, the rest designed (4–14): no placeholders left, 18 Oct 2026 (the user: "complete the remaining … all of the screens … one after the other")
+
+The section now has 70 frames and no placeholders. Words are the app's own (`StoreWords.kt`, `RecordScreens.kt`) and
+Today's (1.12, 1.12.1); parts are copies of frames already on the page.
+- **4.1 Goal met, several a day** (`2324:2`): **3** of 3 times, **Goal reached**, the bar full; Add a check stays filled
+  (each ✓ adds one and never takes back, U14); three checks listed, each with Undo.
+- **4.2 Add a check, a past day** (`2324:891`): habit, Date, Time, nothing to type; "Adds one check to Sat, 10 Oct at
+  8:00 AM. Checks already there stay."; Add.
+- **5.1 Week goal met** (`2324:235`) and **6.1 Month goal met** (`2324:458`): today's count stays ("1 time today"); the
+  line reads **Week goal reached** / **Month goal reached** and the bar is full: it fills toward the period, never
+  today (U25).
+- **7.1 Done today, N days a week** (`2324:681`): **Done**, "1 of 3 days this week"; **Undo done** tonal.
+- **8.1 No steps ticked** (`2325:2`): **0** of 3 steps done, "3 steps left", the bar empty. **8.2 Every step ticked**
+  (`2325:243`): **3** of 3, "All steps done", ticked steps grey and crossed out, the bar full.
+- **8.3 Tick steps, a past day** (`2325:488`): habit, Date, Time, a **Steps** card with Material checkboxes in the
+  habit's colour (plain text here, not crossed out: it's a form); "Saves these steps for Sat, 10 Oct at 8:00 AM."; Save.
+- **9.3.3 Discard your changes to this slip?** (`2325:543`): Edit slip with changes; Keep editing | Discard changes.
+- **10.1 / 10.2 Coffee at and over its limit** (`2325:588`, `2325:822`): **2** / **3** cups today; "Limit 2 cups ·
+  **Limit reached**" / "· **Over the limit**", in words and never red (U3, U25), as on Today; the logs listed (all
+  three when there are three); +1 and Log manually stay tonal; no Skip (limits have none).
+- **11.1 Social media, timer running** (`2325:1060`): **12** min today; "Timer running · 0:03 · Limit 30 min" on its
+  own line; **Stop and save** tonal. **11.2 / 11.3** (`2325:1290`, `2325:1524`): **30** / **42** min, "Limit 30 min ·
+  Limit reached" / "· Over the limit". The limit line now sits on its own row under the count (as Coffee's), so long
+  lines never run into "min today".
+- **14 A milestone reached from Day details** (`2325:22320`): Day details is one habit's page, like the routine player,
+  so it follows **RP.1**: a milestone that would get the bar or the row animation on Today comes as the **ribbon at the
+  top of This day** (here *14 days in a row · reached today*, in the habit's colour); Today's row keeps the band after.
+- **14.1 A landmark reached from Day details** (`2325:22558`, new): its **pop-up rises over the sheet at once** (shown
+  at once, A21; no routine to wait for), here Take vitamins' first 30 days in a row; Close returns to Day details. It
+  counts as the day's pop-up (the limits in "Milestones — Every Habit Type").
+
+### Day details, the 3-series (a check) designed, and "a day it isn't planned" for every kind, 18 Oct 2026
+
+- **3.2 Skipped** (`2322:423`): **Skipped**, "Doesn't count toward your streak"; **Mark done** stays where it was,
+  switched off (U15, as Read's skipped day); **Undo skip** where Skip today was.
+- **3.3 A day it isn't planned** (`2322:635`): Run (Mon, Wed, Fri) opened on **Tue, 6 Oct**: **Not planned**, "Run is
+  planned on Mon, Wed and Fri. You can still log it."; **Mark done tonal** (allowed, not invited, U16); the note; **no
+  Skip** (there's nothing to skip). No progress bar.
+- **3.4 Mark a day done** (`2322:845`): from History's Add on a past day: Take vitamins, **Date** (Sat, 10 Oct 2026) and
+  **Time** (8:00 AM), nothing to type; "Marks Sat, 10 Oct as done at 8:00 AM." (the app's words); **Mark done** at the
+  bottom.
+
+**A day it isn't planned: the rule for every kind** (the user asked whether the developer would know it applies beyond
+the check; it does, and here is exactly where).
+- **Why it's needed:** Today never opens it (Today shows only planned habits), but four paths do, all in the app's code:
+  History's **Go to date** (any day from the start to today); Habit details › Progress › the **year grid's Open day**
+  (any past square); a **History row** for a day with a log, note or skip on a day off (an extra run added with
+  History's Add, whose date can be any day); and a **note's link** to its day. The built app shows that day as a planned
+  one ("Not done", Skip this day), which reads as missed (U3) and offers to skip nothing.
+- **Which habits can have one:** any habit on **set days**: chosen weekdays, every few days, every few weeks, dates in the
+  month, a calendar rule, or a set time after it was last done (`DayMark.NOT_ITS_DAY` in `Core/rules`). That covers
+  **checks, several a day, amounts, time habits, checklists, and a cut-down habit on set days**.
+- **Which never do:** an every-day habit; a goal for a week, month or year, and "N days a week" (any day counts, so Day
+  details shows the period's progress); a quit habit (every day); a task (Day details opens only on its own date).
+- **What every kind shows on such a day** (one shape, 3.3 is the example):
+  - The status is **Not planned**, 28 Medium, no progress bar; the line under it: "*Name* is planned on *days*. You can
+    still log it." (*days* as the plan reads, "Mon, Wed and Fri", "every 3 days", "on the 1st and 15th").
+  - **Logging stays, tonal** (allowed, not invited): Mark done; +1 / Log manually; Add a check; Log time; a checklist's
+    steps tick as usual.
+  - **Something already logged that day** shows as a count with no goal ("3 glasses", "12 min", "2 of 3 steps"), and its
+    logs list as on any day ("Logs for Tue 6 Oct").
+  - **It counts** toward totals and milestones in total; it never breaks or extends a streak (streaks read planned days).
+  - **No Skip** button. The note works as on any day. The ⋮ menu is the same.
+- **Code to change:** `StoreWords.status` returns "Not planned" (with the line above) when `dayMark` is `NOT_ITS_DAY`;
+  `DayDetails` hides Skip and makes its logging buttons tonal for that day. The iPhone's Day sheet needs the same, when
+  the iPhone is worked on again (the shared rules already know the day).
+
+### Day details, the 2-series (Read, a time habit) designed, 18 Oct 2026 (the user: "let's work on the two series, all of the missing screens")
+
+- **2.2 Goal met** (`2318:246`): **20** of 20 min, **Goal reached**, the bar full and flat in Read's orange; Start timer
+  stays filled (more time still counts, as +1 does for Water); Today's logs shows both sessions (8 min 1:30 PM, 12 min
+  7:40 AM), no "All" row with only two.
+- **2.4 Add log for a time** (`2318:2`), **redrawn the same day as the native way to type a duration** (the user: "is it how
+  native Android does it … it should be very easy to log … it should feel very native"; below): Read's orange icon; Date
+  and **Finished at**; **How long** as two boxes, **Hours** and **Minutes**, the cursor already in Minutes with the
+  number keyboard up, so most logs are one or two digits and Add. "Adds one session. Other logs stay as they are."
+- **2.5 Log, a time** (`2318:97`): a timer's log keeps its seconds, so it shows **Hours · Minutes · Seconds** (0 · 12 ·
+  34), read only; **"Logged with the timer."**; Delete log | Edit.
+- **2.6 Edit log, a time** (`2318:153`): the same three boxes, editable, Minutes focused (15); Date and Finished at open
+  their pickers (1.6.2, 1.6.3); Save above the keyboard. A log typed by hand has no seconds, so its Edit shows two boxes.
+
+**How long: the native Android way to type a duration (decided 18 Oct 2026).**
+- **Material 3 has no duration picker.** The nearest native parts are Android's own time picker in its keyboard mode
+  (Compose `TimeInput`: two large boxes, the one being typed in outlined, a label under each) and the Clock app's timer
+  keypad. The boxes follow `TimeInput` exactly in look and behaviour (the same boxes as 1.6.3's header): **Hours** and
+  **Minutes**, labels under the boxes, the focused box outlined in ink, 45 Medium digits; Android's number keyboard.
+- **Why not the Clock app's timer keypad,** though it's native too: its digits fill from the right (typing 5, 0, 0 gives
+  5 minutes; AOSP `TimerSetupView`), because a timer needs seconds. A log is nearly always whole minutes, so 8 min would
+  take three digits and 1 hour five, on a keypad of the app's own instead of the phone's keyboard.
+- **Why not wheels or + / − steppers:** Material 3 has no wheel, and reviews show people want to type a duration:
+  *"you have to scroll to the number you want"* (My Study Life #2286), *"Can I PLEASE type in the duration … The selector
+  tool for hrs/ min/ seconds is dumb"* (Hevy #7821), *"when you hold down the up or down button it shoots 250"* (Habit
+  Tracker #14210). And they want hours with minutes, not *"390 minutes for 6.5 hours"* (HabitMinder #503).
+- **Seconds only where they exist.** Nobody times a session to the second by hand; a timer does, so a timer's log shows
+  and keeps its seconds (decimal seconds too).
+- **Forgiving:** minutes over 59 are accepted and become hours on Add (90 → 1 h 30 min); an empty Hours box counts as 0.
+- **Code to change** (`RecordScreens.kt` `DurationCard`): two boxes (three for a log with seconds), labels under, the
+  focused one outlined, minutes over 59 carried into hours. Rulebook U22 updated.
+- **The iPhone does it the iPhone's way** (Current Work 128): Apple's own duration control is the countdown-timer picker
+  (hours and minutes wheels, as in Clock's Timer); decided when the iPhone is worked on again.
+- Leaving and deleting a time log use the same dialogs as Water's (1.6.1, 1.8.1, 1.8.3), so they aren't drawn again.
+
+### Day details, the 1-series (Water) designed, 18 Oct 2026 (the user: "work on that and complete the one series empty screens")
+
+Every 1-series placeholder is now a screen, built from parts already on the page and the app's own words
+(`DayDetails.kt`, `StoreWords.kt`, `RecordScreens.kt`):
+- **1.1 Goal met** (`2315:2`): **8** of 8 glasses, **Goal reached** where "4 glasses to go" was; the bar full and flat
+  (Material's wavy bar flattens at the end); +1 stays filled, as on Today (1.11: logging more stays one tap); 6 logs,
+  the two newest shown, "All 6 logs".
+- **1.2 Past the goal** (`2315:237`): **10** of 8, still "Goal reached", the bar stays full; 7 logs.
+- **1.4 A later day** (`2315:472`): a copy of Today's 4.3.1, which already matched (logs hidden, "You can log this on
+  the day."); only its date follows this section (tomorrow is Tue 13 Oct here; Today's section keeps Wed 14 Oct).
+- **1.5 The menu at the top** (`2315:724`): Android's menu under ⋮, as the app builds it: View habit, Edit habit,
+  Pause…, a divider, Archive, Delete habit… (red, asks first). Leading icons, as Today's touch-and-hold menu.
+- **1.6.1 Discard this log?** (`2316:2`): ✕ after typing; Keep editing | Discard changes (the notes' dialog).
+- **1.6.2 Date** (`2316:91`): Android's date picker (the quit form's), "Select date"; days after today dimmed and
+  can't be picked.
+- **1.6.3 Time** (`2316:312`): Android's dial time picker at 2:15 PM.
+- **1.6.4 Add with 0** (`2316:433`): the line under the amount says "Enter more than zero." in the error colour; Add stays
+  on (U19). *Open:* with nothing typed, the built app greys Add out; U19 says never greyed, so it should say what's
+  missing the same way.
+- **1.6.5 A time later than now** (`2316:514`): the time stays at now, and the line says so ("That's later than now, so
+  the time stays 2:15 PM.").
+- **1.8.3 Discard your changes to this log?** (`2316:595`): ✕ in Edit log with changes.
+- **Dates made consistent:** Add log, Log, Delete and Edit log said "Today, 7 Oct"; the rest of the section is Mon 12
+  Oct, so they now say 12 Oct.
+
+### Day details: merged, with placeholders, 18 Oct 2026 (the user: "merge all of these three sections and arrange it properly … put the placeholders there. Don't create the designs")
+
+- **One section, `2308:2`,** "Day details, logs, slips and notes", replaces *Day details* (`1260:3`), *Logs and slips*
+  (`1261:290`) and *Notes* (`1274:2`). Laid out like Today: each kind's sheet in the first column, its states to the
+  right, the screens it opens in the rows below, with elbow arrows from the sheet and straight arrows along a flow.
+  Frames keep their IDs and designs; only names (numbered) and places changed.
+- **Placed beside Today** (x 7,520, y −50,560 to −26,560), not in the column: in the column the page would have passed
+  Figma's canvas limit (about 131,000). The sections below the old three moved up 3,600; nothing overlaps; the page now
+  spans −66,000 to 58,611.
+- **Placeholders, not designs (32):**
+  - finished states: 1.1, 1.2, 2.2, 4.1, 5.1, 6.1, 7.1, 8.2;
+  - cut down: 10.1, 10.2, 11.1–11.3;
+  - not planned that day: 3.3; a later day: 1.4 (drawn in Today as 4.3.1); the menu at the top: 1.5;
+  - other states: 3.2 (a check, skipped), 8.1 (no steps ticked), 14 (a milestone reached here);
+  - Add screens: 2.4 (time), 3.4 (Mark a day done), 4.2 (Add a check), 8.3 (Tick steps);
+  - a time log: 2.5, 2.6;
+  - leaving and checking: 1.6.1 (Discard this log?), 1.6.2–1.6.3 (pickers), 1.6.4–1.6.5 (what Add says when the
+    input is wrong), 1.8.3 and 9.3.3 (Discard your changes?).
+- **Next:** the user picks what to design first.
+
 ### Milestone notification for quit and cut-down habits, decided (18 Oct 2026, the user)
 
 The user: "Tell me at milestones … we should have this for quit as well as cut down." It's off by default and opt-in.
@@ -2692,12 +2911,14 @@ section under Today, three rows:
 ## What's left, in order
 
 1. ~~**Notes:** Add note, Note (view, Delete note | Edit), Edit note, and their variants.~~ Done 12 Oct.
-2. ~~**Day details for every other kind**~~ done 12 Oct (the Day details section, and slips in Logs and slips). Not
-   drawn: Tick steps (the checklist's Add screen for a past day) and the amount-per-week / per-month kinds (Push-ups
-   "+20" with "0 of 300 this week", Savings "Log amount"); they use the same parts.
+2. ~~**Day details for every other kind**~~ done 12 Oct; **merged with logs, slips and notes and completed 18 Oct**
+   (`2308:2`, Tick steps included); **amount and time habits with a week or month goal added the same day** (16–18).
+   Nothing left in Day details.
 3. ~~**New (+):** the choices, then the habit form.~~ Built 12 Oct. ~~The pages each row opens and the sixth-habit
-   sheet~~ built 13 Oct. Not drawn yet: Make room's list, a task's Repeat, a quit habit's Started picker; with test
-   data over five habits, the iPhone's Quit or cut down opened a blank sheet (check).
+   sheet~~ built 13 Oct. ~~Make room's list, a task's Repeat, a quit habit's Started picker~~ drawn. **Completed 18 Oct:**
+   leaving and Add with no name (2.1.9, 2.1.10), the task's pickers (4.3, 4.4), Edit habit with goal changes and
+   changing the type (6–6.3.2), and quit ↔ cut down (6.4–6.4.2). Still to check on the iPhone: with test data over five
+   habits, its Quit or cut down opened a blank sheet.
 4. ~~**The ≡ menu** as Material's navigation drawer.~~ Built 12 Oct.
 5. ~~**The routine player and the timer.**~~ Built 12 Oct. Still to draw: the running timer as Android 16's Live
    Update notification (A11 D4). (Today's timer bar was dropped 16 Oct: the row keeps the clock.)

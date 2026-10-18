@@ -1251,6 +1251,20 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **128. Logging a time by hand: easy, and each platform's native way** (added 18 October 2026, from the user, while
+  reviewing Android's Add log for a time: "think about the UX … they have to type … hour, then minute and then second …
+  first thing it should be very easy to log, second thing it should feel very native … add the note in the
+  documentation so that in iOS it does how it happens natively in the iPhone").
+  - [x] **Android, designed** (18 Oct): **Hours** and **Minutes** boxes as Android's own time picker types a time
+    (Material 3 `TimeInput`), the cursor already in Minutes; Seconds only on a timer's log. Why, with the reviews and
+    the Clock app's keypad compared: [Android Designs — Handoff](<../../../Android/Docs/Android Designs — Handoff.md>),
+    "How long: the native Android way". Rulebook U22.
+  - [ ] **Android, built:** `DurationCard` changed to match (two boxes; minutes over 59 carried into hours).
+  - [ ] **The iPhone, the iPhone's way** (after the Android revamp; the iPhone is frozen until then): Apple's own control
+    for a duration is the **countdown-timer picker** (`UIDatePicker` `.countDownTimer` / SwiftUI wheel: hours and
+    minutes, as Clock's Timer, [Apple's Pickers guidance](https://developer.apple.com/design/human-interface-guidelines/pickers)).
+    Decide then between that wheel and typed boxes, weighing the reviews above (people want to type), and keep Seconds
+    only for a timer's log. Today the iPhone shows hours, minutes and a separate Seconds field.
 - [ ] **127. Which milestones appear, and how often, for each kind of habit** (added 17 October 2026, from the user:
   "we will solve this problem separately"). A pop-up, or even a bar, for every milestone would be a lot. The simulation
   in the milestones evidence found:
