@@ -16,6 +16,20 @@ export const INVITE_LINK = "https://oftenenough.com/join/";
 
 export type PlusKind = "NONE" | "PLUS" | "FAMILY_OWNER" | "FAMILY_MEMBER";
 
+/** Where the habits live (D16): a Google Drive or an iCloud, by that cloud account's private ID, never an email. */
+export type CloudKind = "google_drive" | "icloud";
+export type CloudDevice = "android" | "iphone" | "ipad";
+export interface CloudRecord {
+  kind: CloudKind;
+  /** The cloud account's private ID, as the device's sync binds to it ("gdrive:…", "icloud:…"). */
+  key: string;
+  /** The kind of device that last synced there, and when (milliseconds). */
+  device: CloudDevice;
+  syncedAt: number;
+  /** A Google Drive of the same Google account this account signs in with: a new phone goes straight there. */
+  signInAccount: boolean;
+}
+
 export interface AccountView {
   id: string;
   plus: PlusKind;
@@ -25,11 +39,26 @@ export interface AccountView {
     /** The open invite: only its owner sees it. */
     invite: { token: string; link: string; endsDay: number } | null;
   } | null;
+  /** Where the habits live, or null before any device has said. Only the account's own devices see it. */
+  cloud: CloudRecord | null;
 }
 
 export type InviteLook = { state: "open" | "ended" | "used" | "cancelled" | "full"; owner: string };
 
-interface AccountRow { id: string; provider: string; subject: string; name: string }
+interface AccountRow {
+  id: string; provider: string; subject: string; name: string;
+  cloud: CloudKind | null; cloud_key: string | null; cloud_device: CloudDevice | null; cloud_at: number | null;
+}
+const ROW = "id, provider, subject, name, cloud, cloud_key, cloud_device, cloud_at";
+
+/**
+ * The key a device's sync gives a Google Drive: "gdrive:" and the SHA-256 of "google:" and Google's fixed account ID
+ * (`sub`), the same on every device (Core's `CloudKeys.googleDrive`). Lets the account tell whether its own Google
+ * account holds the habits without keeping anything more.
+ */
+export async function googleDriveKey(subject: string): Promise<string> {
+  return "gdrive:" + (await sha256Hex("google:" + subject));
+}
 
 /** How we learned Google voided a purchase: its notification, the Voided Purchases API, or a check that said cancelled. */
 export type VoidSource = "notification" | "voided_api" | "check";
@@ -42,12 +71,33 @@ export class Accounts {
   // ---------------------------------------------------------------- Who
 
   async find(person: Person): Promise<AccountRow | null> {
-    return this.db.prepare("SELECT id, provider, subject, name FROM accounts WHERE provider = ? AND subject = ?")
+    return this.db.prepare(`SELECT ${ROW} FROM accounts WHERE provider = ? AND subject = ?`)
       .bind(person.provider, person.subject).first<AccountRow>();
   }
 
   async byId(id: string): Promise<AccountRow | null> {
-    return this.db.prepare("SELECT id, provider, subject, name FROM accounts WHERE id = ?").bind(id).first<AccountRow>();
+    return this.db.prepare(`SELECT ${ROW} FROM accounts WHERE id = ?`).bind(id).first<AccountRow>();
+  }
+
+  // ---------------------------------------------------------------- Where the habits live (D16)
+
+  /**
+   * A device synced or backed up to [cloud] (null: the habits there were deleted, so there's nowhere to point). The
+   * latest device to say wins; safe to repeat. Only the account's own sessions reach this.
+   */
+  async setCloud(accountId: string, cloud: { kind: CloudKind; key: string; device: CloudDevice } | null) {
+    if (!cloud) {
+      await this.db.prepare("UPDATE accounts SET cloud = NULL, cloud_key = NULL, cloud_device = NULL, cloud_at = NULL WHERE id = ?").bind(accountId).run();
+      return;
+    }
+    await this.db.prepare("UPDATE accounts SET cloud = ?, cloud_key = ?, cloud_device = ?, cloud_at = ? WHERE id = ?")
+      .bind(cloud.kind, cloud.key, cloud.device, this.now(), accountId).run();
+  }
+
+  private async cloudOf(row: AccountRow): Promise<CloudRecord | null> {
+    if (!row.cloud || !row.cloud_key || !row.cloud_device || row.cloud_at === null) return null;
+    const signInAccount = row.cloud === "google_drive" && row.provider === "google" && row.cloud_key === (await googleDriveKey(row.subject));
+    return { kind: row.cloud, key: row.cloud_key, device: row.cloud_device, syncedAt: row.cloud_at, signInAccount };
   }
 
   /** Makes the account, or finds the one this Google or Apple account already has (two at once still make one). */
@@ -109,12 +159,13 @@ export class Accounts {
     ]);
     const ownPlus = paidFor(purchases.results.map((p) => p.product)).plus;
     const plus: PlusKind = owned ? "FAMILY_OWNER" : ownPlus ? "PLUS" : membership ? "FAMILY_MEMBER" : "NONE";
+    const cloud = await this.cloudOf(me);
     const familyId = owned?.id ?? membership?.family_id ?? null;
-    if (!familyId) return { id: accountId, plus, family: null };
+    if (!familyId) return { id: accountId, plus, family: null, cloud };
 
     const family = await this.db.prepare("SELECT f.id, f.owner_id, a.name AS owner_name FROM families f JOIN accounts a ON a.id = f.owner_id WHERE f.id = ?")
       .bind(familyId).first<{ id: string; owner_id: string; owner_name: string }>();
-    if (!family) return { id: accountId, plus, family: null };
+    if (!family) return { id: accountId, plus, family: null, cloud };
     const members = await this.db.prepare(
       "SELECT m.account_id, m.joined_at, a.name FROM members m JOIN accounts a ON a.id = m.account_id WHERE m.family_id = ? ORDER BY m.joined_at, m.account_id",
     ).bind(familyId).all<{ account_id: string; joined_at: number; name: string }>();
@@ -133,6 +184,7 @@ export class Accounts {
         ],
         invite: invite ? { token: invite.token, link: INVITE_LINK + invite.token, endsDay: day(invite.ends_at) } : null,
       },
+      cloud,
     };
   }
 
@@ -393,7 +445,7 @@ export class Accounts {
   // ---------------------------------------------------------------- Deleting
 
   /**
-   * Deletes the account: its sessions, its purchase records (the purchases stay with Google, so signing in again brings
+   * Deletes the account (where the habits live goes with its row): its sessions, its purchase records (the purchases stay with Google, so signing in again brings
    * Plus back), its place in a family, and a family it owns (everyone in it loses Plus; nobody loses habits).
    */
   async delete(accountId: string) {

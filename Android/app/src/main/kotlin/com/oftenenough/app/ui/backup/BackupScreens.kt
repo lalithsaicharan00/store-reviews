@@ -1,6 +1,7 @@
 package com.oftenenough.app.ui.backup
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -16,29 +17,37 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.rounded.Undo
-import androidx.compose.material.icons.outlined.CloudOff
+import androidx.compose.material.icons.outlined.AddToDrive
 import androidx.compose.material.icons.outlined.CloudDone
+import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.CloudUpload
 import androidx.compose.material.icons.outlined.DeleteForever
+import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.DriveFolderUpload
+import androidx.compose.material.icons.outlined.MobileScreenShare
 import androidx.compose.material.icons.outlined.PhoneAndroid
+import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Sync
+import androidx.compose.material.icons.outlined.SwapVert
 import androidx.compose.material.icons.outlined.TableChart
-import androidx.compose.material.icons.rounded.AddToDrive
-import androidx.compose.material.icons.rounded.Devices
-import androidx.compose.material.icons.rounded.Restore
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material.icons.outlined.TabletAndroid
+import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,9 +61,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.habits.core.BackupProblem
 import app.habits.core.DriveState
 import app.habits.core.RestoreChanges
@@ -62,15 +70,23 @@ import app.habits.core.RestoreMode
 import com.oftenenough.app.app.backup.BackupCenter
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.ui.components.Card
+import com.oftenenough.app.ui.components.ExpressiveLoadingIndicator
 import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.TonalButton
-import com.oftenenough.app.ui.newhabit.FormPage
-import com.oftenenough.app.ui.newhabit.GroupTitle
-import com.oftenenough.app.ui.newhabit.Note
-import com.oftenenough.app.ui.newhabit.OpenRow
+import com.oftenenough.app.ui.move.CountCard
+import com.oftenenough.app.ui.move.FactRow
+import com.oftenenough.app.ui.move.FromOldPhoneFlow
+import com.oftenenough.app.ui.move.MoveEntry
+import com.oftenenough.app.ui.move.RestoreWhatItSent
+import com.oftenenough.app.ui.move.StepHeading
+import com.oftenenough.app.ui.move.fromLine
+import com.oftenenough.app.ui.plus.FlowScreen
+import com.oftenenough.app.ui.plus.MainButton
+import com.oftenenough.app.ui.plus.PlusDialog
+import com.oftenenough.app.ui.plus.QuietButton
+import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
 
@@ -88,12 +104,52 @@ private fun whenText(ms: Long?, store: HabitStore): String {
 /** "12 habits, 840 logs". */
 fun countText(habits: Int, logs: Int) = "$habits ${if (habits == 1) "habit" else "habits"}, $logs ${if (logs == 1) "log" else "logs"}"
 
+/** "sam@gmail.com" from the link's "Google Drive (sam@gmail.com)"; null for the stand-in. */
+fun driveEmail(center: BackupCenter): String? = center.link.accountName?.let { Regex("\\(([^)]+@[^)]+)\\)").find(it)?.groupValues?.get(1) }
+
+/** A page with ← and its title in the top bar (Backup & Sync's own pages). */
+@Composable
+private fun TitledPage(title: String, onBack: () -> Unit, tag: String, content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) {
+    val c = appColors
+    BackHandler(onBack = onBack)
+    Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().semantics { testTag = tag }) {
+        Row(Modifier.heightIn(min = 64.dp).padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onBack, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
+            Text(title, style = AppType.titleLargeEmphasized, color = c.ink)
+        }
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).navigationBarsPadding(), content = content)
+    }
+}
+
+@Composable
+private fun SectionLabel(text: String) =
+    Text(text, Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
+
+/** A settings row: a 40 tonal circle, a title over its line, ›. */
+@Composable
+private fun PageRow(icon: ImageVector, title: String, line: String?, index: Int, count: Int, tag: String, danger: Boolean = false, chevron: Boolean = true, onClick: (() -> Unit)?) {
+    val c = appColors
+    Segment(index, count, Modifier.semantics { testTag = tag }, onClick = onClick) {
+        Box(Modifier.size(40.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
+            Icon(icon, null, Modifier.size(22.dp), tint = if (danger) c.error else c.ink)
+        }
+        Spacer(Modifier.width(16.dp))
+        Column(Modifier.weight(1f).padding(vertical = 6.dp)) {
+            Text(title, style = AppType.titleMedium, color = if (danger) c.error else c.ink)
+            if (line != null) Text(line, style = AppType.bodyMedium, color = c.secondary)
+        }
+        if (onClick != null && chevron && !danger) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+    }
+}
+
 /**
- * ≡ › Google Drive & Backup: the state first (backed up or synced, when, where; or only on this phone), then devices,
- * restore, export, and the two deliberate deletions (Rulebook D4, D9, D10: backup and export are free and visible).
+ * ≡ › Backup & Sync (Figma `1461:2`, 1–1.3): where the habits are first (backed up, synced with Plus, not backed up, no
+ * internet), devices with Plus, then Move and restore, Export, and the two deliberate deletions, each asking with two
+ * buttons only (5, 6; D9). Rulebook D4, D10: backup and export are free and visible.
  */
 @Composable
-fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onPlus: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
+fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onMove: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
+    val c = appColors
     val scope = rememberCoroutineScope()
     val snack = snackbar ?: remember { SnackbarHostState() }
     var confirm by remember { mutableStateOf<String?>(null) }
@@ -106,204 +162,217 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
     LaunchedEffect(center) { center.refreshStatus() }
     val status = center.status
     val connected = center.link.accountName != null
+    val email = driveEmail(center)
+    val offline = connected && status?.state == DriveState.OFFLINE
     Box(Modifier.fillMaxSize()) {
-        FormPage("Google Drive & Backup", chip = null, onBack = onBack) {
+        TitledPage("Backup & Sync", onBack, "backup-page") {
             Spacer(Modifier.height(8.dp))
-            Card(Modifier.fillMaxWidth().semantics { testTag = "backup-state" }) {
-                Column(Modifier.padding(20.dp)) {
-                    val (icon, title, line) = when {
-                        !connected -> Triple(Icons.Outlined.CloudOff, "Not backed up", "Your habits are only on this phone")
-                        status?.state == DriveState.OFFLINE -> Triple(Icons.Outlined.CloudUpload, "Waiting to back up", "${status?.waiting ?: 0} changes waiting · offline")
-                        status?.state == DriveState.FULL -> Triple(Icons.Outlined.CloudOff, "Google Drive is full", "Nothing is lost; it backs up when there's room")
-                        status?.state == DriveState.NOT_CONNECTED -> Triple(Icons.Outlined.CloudOff, "Google Drive isn't connected", "Your habits are safe on this phone")
-                        store.isPlus -> Triple(Icons.Outlined.CloudSync, "Synced", whenText(status?.lastSynced, store) + " · Google Drive (" + center.link.accountName + ")")
-                        else -> Triple(Icons.Outlined.CloudDone, "Backed up", whenText(status?.lastSent, store) + " · Google Drive (" + center.link.accountName + ")")
+            // 1–1.3: the state, said plainly (D4: always the truth).
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(20.dp).semantics { testTag = "backup-state" }) {
+                data class S(val icon: ImageVector, val filled: Boolean, val title: String, val line: String, val text: String)
+                val who = email?.let { " · $it" } ?: ""
+                val s = when {
+                    !connected -> S(Icons.Outlined.CloudOff, false, "Not backed up", "Only on this phone for now",
+                        "Back up to your own Google Drive as you go. Only Often Enough can open it, and we never see your habits.")
+                    offline -> S(Icons.Outlined.WifiOff, false, "No internet", "${status?.waiting ?: 0} ${if (status?.waiting == 1) "change" else "changes"} waiting to sync",
+                        "Everything works offline and is saved on this phone. Your changes sync as soon as you’re back online.")
+                    status?.state == DriveState.FULL -> S(Icons.Outlined.CloudOff, false, "Google Drive is full", "Nothing is lost; it backs up when there’s room",
+                        "Your habits are safe on this phone. Make room in your Google Drive, and it carries on by itself.")
+                    status?.state == DriveState.NOT_CONNECTED -> S(Icons.Outlined.CloudOff, false, "Google Drive isn’t connected", "Your habits are safe on this phone",
+                        "Connect it again to keep backing up.")
+                    store.isPlus -> S(Icons.Outlined.CloudSync, true, "Synced", whenText(status?.lastSynced, store) + who,
+                        "Your habits sync through your own Google Drive. Only Often Enough can open them, and we never see them.")
+                    else -> S(Icons.Outlined.CloudDone, true, "Backed up", whenText(status?.lastSent, store) + who,
+                        "Your habits are in your own Google Drive. Only Often Enough can open them, and we never see them. It backs up as you go, at least daily.")
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(56.dp).clip(CircleShape).background(if (s.filled) c.ink else c.tonal), contentAlignment = Alignment.Center) {
+                        Icon(s.icon, null, Modifier.size(28.dp), tint = if (s.filled) c.onInk else c.ink)
                     }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(56.dp).clip(CircleShape).background(if (connected) appColors.ink else appColors.tonal), contentAlignment = Alignment.Center) {
-                            Icon(icon, null, tint = if (connected) appColors.onInk else appColors.ink)
-                        }
-                        Spacer(Modifier.width(16.dp))
-                        Column {
-                            Text(title, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Medium), color = appColors.ink)
-                            Text(line, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-                        }
+                    Spacer(Modifier.width(16.dp))
+                    Column {
+                        Text(s.title, style = AppType.titleLarge, color = c.ink)
+                        Text(s.line, style = AppType.bodyMedium, color = c.secondary)
                     }
-                    Spacer(Modifier.height(12.dp))
-                    if (!connected) {
-                        Text("Back up to your own Google Drive, automatically, as you go. Only Often Enough can read its backup there; we never see your habits.",
-                            style = MaterialTheme.typography.bodyLarge, color = appColors.secondary)
-                        Spacer(Modifier.height(16.dp))
-                        InkButton("Back up to Google Drive", { scope.launch { center.connectDrive() } }, Modifier.semantics { testTag = "drive-connect" },
-                            icon = Icons.Rounded.AddToDrive, height = 48.dp)
-                    } else {
-                        if (!store.isPlus) Text("Backs up as you go: when you leave the app, after a widget or notification log, and at least daily.",
-                            style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-                        Spacer(Modifier.height(12.dp))
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            TonalButton(if (store.isPlus) "Sync now" else "Back up now", { scope.launch { center.syncNow() } },
-                                Modifier.semantics { testTag = "drive-now" }, enabled = !center.working)
-                            TonalButton("Change account", { scope.launch { center.disconnectDrive(); center.connectDrive() } })
-                        }
+                }
+                Spacer(Modifier.height(12.dp))
+                Text(s.text, style = AppType.bodyMedium, color = c.secondary)
+                Spacer(Modifier.height(16.dp))
+                when {
+                    !connected -> InkButton("Back up to Google Drive", { scope.launch { center.connectDrive() } }, Modifier.semantics { testTag = "drive-connect" },
+                        icon = Icons.Outlined.AddToDrive, height = 48.dp, textStyle = AppType.labelLarge)
+                    offline -> TonalButton("Try again", { scope.launch { center.syncNow() } }, Modifier.semantics { testTag = "drive-now" }, icon = Icons.Outlined.Sync)
+                    else -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        TonalButton(if (store.isPlus) "Sync now" else "Back up now", { scope.launch { center.syncNow() } }, Modifier.semantics { testTag = "drive-now" },
+                            enabled = !center.working, icon = if (store.isPlus) Icons.Outlined.Sync else Icons.Outlined.CloudUpload)
+                        TonalButton("Change account", { confirm = "switch" }, Modifier.semantics { testTag = "drive-change" })
                     }
                 }
             }
-            if (connected) {
-                GroupTitle("Devices")
+            // Devices: with Plus, every device on this Google Drive (1.2).
+            if (connected && store.isPlus) {
+                SectionLabel("Devices")
                 SegmentedList {
-                    val devices = status?.devices.orEmpty()
-                    val count = maxOf(1, devices.size) + if (store.isPlus) 0 else 1
-                    if (devices.isEmpty()) InfoRow(Icons.Outlined.PhoneAndroid, "This phone", center.info.deviceName, 0, count)
-                    devices.forEachIndexed { i, d ->
-                        InfoRow(Icons.Outlined.PhoneAndroid, if (d.thisDevice) "This phone" else d.name,
-                            (if (d.thisDevice) d.name + " · " else "") + "synced " + whenText(d.lastCheckIn, store).replaceFirstChar { it.lowercase() }, i, count)
+                    val devices = status?.devices.orEmpty().ifEmpty { null }
+                    if (devices == null) PageRow(Icons.Outlined.PhoneAndroid, "This phone", center.info.deviceName, 0, 1, "device-this", onClick = null)
+                    else devices.forEachIndexed { i, d ->
+                        PageRow(if (d.platform == "android" && d.name.contains("Tablet", true)) Icons.Outlined.TabletAndroid else Icons.Outlined.PhoneAndroid,
+                            if (d.thisDevice) "This phone" else d.name,
+                            if (d.thisDevice) d.name + " · " + (if (offline) "${status?.waiting ?: 0} changes not sent yet" else "synced " + whenText(d.lastCheckIn, store).replaceFirstChar { it.lowercase() })
+                            else "Last synced at " + DayWords.clock(d.lastCheckIn), i, devices.size, "device-$i", onClick = null)
                     }
-                    if (!store.isPlus) OpenRow("Use on more devices", "Keep a tablet or a second phone the same, with Plus", Icons.Rounded.Devices, count - 1, count, "more-devices", onPlus)
                 }
-                if (store.isPlus) Note("Anything logged on a device shows on the others once it next syncs.")
+                Text("Anything logged on a device shows on the others once it next syncs.", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                    style = AppType.bodySmall, color = c.secondary)
             }
-            GroupTitle("Restore")
+            SectionLabel("Move and restore")
             SegmentedList {
-                val count = if (center.undoAvailable) 2 else 1
-                OpenRow("Restore from a backup", "From Google Drive or a backup file you saved", Icons.Rounded.Restore, 0, count, "restore-row", onRestore)
-                if (center.undoAvailable) OpenRow("Undo last restore", "Back to how this phone was just before", Icons.AutoMirrored.Rounded.Undo, 1, count, "undo-restore") {
+                val count = if (center.undoAvailable) 3 else 2
+                PageRow(Icons.Outlined.MobileScreenShare, "Move to a new phone", "Show a code to scan on your new phone", 0, count, "move-row", onClick = onMove)
+                PageRow(Icons.Outlined.Restore, "Restore from a backup", "From Google Drive, a backup file or your old phone", 1, count, "restore-row", onClick = onRestore)
+                if (center.undoAvailable) PageRow(Icons.AutoMirrored.Rounded.Undo, "Undo last restore", "Back to how this phone was just before", 2, count, "undo-restore", chevron = false) {
                     scope.launch { if (center.undoRestore()) snack.showSnackbar("This phone is back to how it was before the restore.") }
                 }
             }
-            GroupTitle("Export")
+            SectionLabel("Export")
             SegmentedList {
-                OpenRow("Save a backup file", "To restore later, here or on another device", Icons.Outlined.DriveFolderUpload, 0, 2, "save-file") { save.launch(center.fileName()) }
-                OpenRow("Export a spreadsheet (CSV)", "To open in Google Sheets or Excel", Icons.Outlined.TableChart, 1, 2, "export-csv") { csv.launch(center.csvName()) }
+                PageRow(Icons.Outlined.DriveFolderUpload, "Save a backup file", "To restore later, on any phone", 0, 2, "save-file") { save.launch(center.fileName()) }
+                PageRow(Icons.Outlined.TableChart, "Export a spreadsheet (CSV)", "To open in Google Sheets or Excel", 1, 2, "export-csv") { csv.launch(center.csvName()) }
             }
             Spacer(Modifier.height(24.dp))
             SegmentedList {
                 val count = if (connected) 2 else 1
-                if (connected) DangerRow("Delete my data from Google Drive…", Icons.Outlined.CloudOff, 0, count, "delete-drive") { confirm = "drive" }
-                DangerRow("Erase all my data…", Icons.Outlined.DeleteForever, count - 1, count, "erase-all") { confirm = "erase" }
+                if (connected) PageRow(Icons.Outlined.CloudOff, "Delete Google Drive backup…", null, 0, count, "delete-drive", danger = true) { confirm = "drive" }
+                PageRow(Icons.Outlined.DeleteForever, "Erase all my data…", null, count - 1, count, "erase-all", danger = true) { confirm = "erase" }
             }
             Spacer(Modifier.height(72.dp))
         }
         SnackbarHost(snack, Modifier.align(Alignment.BottomCenter).navigationBarsPadding())
     }
+    val who = email?.let { "$it’s" } ?: "your"
     when (confirm) {
-        "drive" -> AlertDialog({ confirm = null }, title = { Text("Delete your data from Google Drive?") },
-            text = { Text("Everything Often Enough keeps in your Google Drive is deleted, for every device. This phone keeps everything, and nothing goes to Google Drive until you turn it on again.") },
-            confirmButton = { TextButton({ confirm = null; scope.launch { center.deleteFromDrive(); snack.showSnackbar("Deleted from Google Drive. This phone keeps everything.") } },
-                Modifier.semantics { testTag = "delete-drive-confirm" }) { Text("Delete from Google Drive", color = appColors.error) } },
-            dismissButton = { TextButton({ confirm = null }) { Text("Cancel", color = appColors.ink) } })
-        "erase" -> AlertDialog({ confirm = null }, title = { Text("Erase everything?") },
-            text = { Text("Every habit, log and note on this phone is erased, and Google Drive backup is turned off first so they don't come back. This can't be undone; save a backup file first if you might want them.") },
-            confirmButton = { TextButton({ confirm = null; scope.launch { center.eraseThisPhone(); snack.showSnackbar("Everything on this phone is erased. You're starting fresh.") } },
-                Modifier.semantics { testTag = "erase-confirm" }) { Text("Erase everything", color = appColors.error) } },
-            dismissButton = { TextButton({ confirm = null }) { Text("Cancel", color = appColors.ink) } })
+        // 5 · Delete your Google Drive backup? (two buttons only, D9)
+        "drive" -> PlusDialog(Icons.Outlined.CloudOff, "Delete your Google Drive backup?",
+            "Your habits are removed from $who Google Drive. This phone keeps everything.", "Delete",
+            { confirm = null; scope.launch { center.deleteFromDrive(); snack.showSnackbar("Deleted from Google Drive. This phone keeps everything.") } },
+            { confirm = null }, destructive = true, tag = "delete-drive-dialog")
+        // 6 · Erase all your data?
+        "erase" -> PlusDialog(Icons.Outlined.DeleteForever, "Erase all your data?",
+            if (connected) "Your habits, logs and notes are removed from this phone. Your Google Drive backup stays, so you can bring them back."
+            else "Your habits, logs and notes are removed from this phone. This can’t be undone; save a backup file first if you might want them.",
+            "Erase", { confirm = null; scope.launch { center.eraseThisPhone(); snack.showSnackbar("Everything on this phone is erased. You’re starting fresh.") } },
+            { confirm = null }, destructive = true, tag = "erase-dialog")
+        // 2.2 · Switch Google Drive? (after Google's own chooser on a real Drive; here before it)
+        "switch" -> PlusDialog(Icons.Outlined.SwapVert, "Switch Google Drive?",
+            "Your habits are copied to the Google Drive you choose and backed up there from now on. The copy in $who Drive stays until you delete it.",
+            "Choose account", { confirm = null; scope.launch { center.disconnectDrive(); center.connectDrive() } }, { confirm = null }, tag = "switch-dialog")
     }
 }
 
+/** A waiting moment with no way out (Restoring, Bringing them back): writing habits isn't stopped halfway. */
 @Composable
-private fun InfoRow(icon: ImageVector, title: String, line: String, index: Int, count: Int) {
-    Segment(index, count) {
-        Icon(icon, null, tint = appColors.secondary)
-        Spacer(Modifier.width(24.dp))
-        Column(Modifier.padding(vertical = 6.dp)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Text(line, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+fun WaitScreen(title: String, line: String, tag: String) {
+    val c = appColors
+    BackHandler { }
+    Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding().padding(horizontal = 40.dp).semantics { testTag = tag },
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        ExpressiveLoadingIndicator(c.tonal, c.ink)
+        Spacer(Modifier.height(24.dp))
+        Text(title, style = AppType.titleLargeEmphasized, color = c.ink, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(8.dp))
+        Text(line, style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
+    }
+}
+
+/** A backup file that can't be brought in (coming back 6.1.1, 6.1.2; Restore 4.2): why, and what to do. */
+@Composable
+fun FileProblem(problem: String, onChoose: () -> Unit, onBack: () -> Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    if (problem == BackupProblem.NEWER_VERSION) FlowScreen(onBack = onBack, tag = "file-newer", top = true, bottom = {
+        MainButton("Update Often Enough", "file-update") {
+            runCatching { context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse("market://details?id=com.oftenenough.app"))) }
         }
-    }
-}
-
-@Composable
-private fun DangerRow(title: String, icon: ImageVector, index: Int, count: Int, tag: String, onClick: () -> Unit) {
-    Segment(index, count, Modifier.semantics { testTag = tag }, onClick = onClick) {
-        Icon(icon, null, tint = appColors.error)
-        Spacer(Modifier.width(24.dp))
-        Text(title, style = MaterialTheme.typography.bodyLarge, color = appColors.error)
+    }) {
+        StepHeading("From a newer version.", "This backup is from a newer Often Enough. Update the app to bring it back; nothing has changed yet.")
+    } else FlowScreen(onBack = onBack, tag = "file-not-backup", top = true, bottom = { MainButton("Choose another file", "file-choose", onClick = onChoose) }) {
+        StepHeading("That isn’t a backup.", when (problem) {
+            BackupProblem.REPACKED -> "This file was unzipped and zipped again by another app. Choose the original file, whose name starts with “Often Enough backup”."
+            BackupProblem.DAMAGED -> "Something in this file doesn’t match, so it may be damaged. Choose another copy, whose name starts with “Often Enough backup”."
+            else -> "Choose a file whose name starts with “Often Enough backup”."
+        })
     }
 }
 
 /**
- * Restore from a backup: where it is (Google Drive, or a backup file through Android's own picker), then what's in it
- * against what's here, and Replace or Merge. Nothing changes until the person chooses; a restore can be undone for 30
- * days (D5); a file with nothing in it is never shown as restored.
+ * Restore from a backup (Figma 4–4.3.2): Google Drive, a backup file (Android's own picker, then Restore this file?) or
+ * your old phone (the move code, then Restore what it sent?). Each says it replaces this phone's habits and that it can
+ * be undone for 30 days; then Restoring, and back to Backup & Sync with "Restored …" and Undo (4.1.3). A backup with
+ * nothing in it is never shown as restored (D5).
  */
 @Composable
-fun RestoreScreen(center: BackupCenter, store: HabitStore, onBack: () -> Unit, onRestored: (String) -> Unit) {
+fun RestoreScreen(center: BackupCenter, store: HabitStore, onBack: () -> Unit, onRestored: (String, Boolean) -> Unit) {
     val scope = rememberCoroutineScope()
+    var step by remember { mutableStateOf("where") }
     var pending by remember { mutableStateOf<BackupCenter.Pending?>(null) }
+    var fileName by remember { mutableStateOf("") }
     var problem by remember { mutableStateOf<String?>(null) }
+    val context = androidx.compose.ui.platform.LocalContext.current
     val open = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
         if (uri != null) scope.launch {
+            fileName = runCatching {
+                context.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)?.use { if (it.moveToFirst()) it.getString(0) else null }
+            }.getOrNull() ?: "Your backup file"
             val p = center.check(uri)
             when {
-                p == null -> problem = "Couldn't open that file."
-                p.check.problem != null -> problem = problemText(p.check.problem!!)
-                else -> pending = p
+                p == null -> { problem = BackupProblem.NOT_A_BACKUP; step = "problem" }
+                p.check.problem != null -> { problem = p.check.problem; step = "problem" }
+                else -> { pending = p; step = "file" }
             }
         }
     }
-    val p = pending
-    val preview = p?.check?.preview
-    if (preview == null) {
-        FormPage("Restore from a backup", chip = null, onBack = onBack) {
-            GroupTitle("Where is your backup?")
+    fun pick() = open.launch(arrayOf("application/zip", "application/octet-stream", "*/*"))
+    fun restore(p: BackupCenter.Pending) {
+        val preview = p.check.preview ?: return
+        if (preview.fileHabits == 0 && preview.fileEntries == 0) { onRestored("That backup has no habits in it, so nothing changed.", false); return }
+        step = "restoring"
+        scope.launch {
+            val changes = center.restore(p, RestoreMode.REPLACE)
+            onRestored(if (changes.changesNothing) "Everything in it is already here." else "Restored " + countText(preview.fileHabits, preview.fileEntries), !changes.changesNothing)
+        }
+    }
+    when (step) {
+        "restoring" -> WaitScreen("Restoring your habits", "This takes a moment", "restoring")
+        "problem" -> FileProblem(problem ?: BackupProblem.NOT_A_BACKUP, onChoose = { pick() }, onBack = { step = "where" })
+        "phone" -> FromOldPhoneFlow(center, MoveEntry.RESTORE, onBack = { step = "where" }) { p -> pending = p; step = "sent" }
+        "sent" -> pending?.let { p -> RestoreWhatItSent(p, store, onRestore = { restore(p) }, onCancel = { step = "where" }) }
+        "file" -> pending?.check?.preview?.let { preview ->
+            // 4.2.1 · Restore this file?
+            FlowScreen(onBack = { step = "where" }, tag = "restore-file-preview", top = true, bottom = {
+                MainButton("Restore", "restore-confirm") { restore(pending!!) }
+                QuietButton("Choose another file", "restore-choose") { pick() }
+            }) {
+                StepHeading("Restore this file?", fileName)
+                CountCard(preview.fileHabits, preview.fileEntries, fromLine(preview.deviceName, preview.createdAt, store), Icons.Outlined.Description, tag = "restore-preview")
+                FactRow(Icons.Outlined.SwapVert, "This replaces what’s on this phone",
+                    "The ${countText(preview.phoneHabits, preview.phoneEntries)} on this phone now are replaced with the file. You can undo it for 30 days.")
+            }
+        }
+        else -> TitledPage("Restore from a backup", onBack, "restore-page") {
+            SectionLabel("Where is your backup?")
             SegmentedList {
-                OpenRow("Google Drive", if (center.link.accountName != null) "Your habits come back from Google Drive as it syncs" else "Connect Google Drive, and what's there comes back",
-                    Icons.Rounded.AddToDrive, 0, 2, "restore-drive") {
+                PageRow(Icons.Outlined.AddToDrive, "Google Drive", if (center.link.accountName != null) "Your newest copy there" else "Connect it, and what’s there comes back",
+                    0, 3, "restore-drive") {
                     scope.launch {
                         val ok = if (center.link.accountName == null) center.connectDrive() else center.syncNow() != null
-                        if (ok) onRestored("Your habits from Google Drive are here.")
+                        if (ok) onRestored("Your habits from Google Drive are here.", false)
                     }
                 }
-                OpenRow("A backup file", "Open a backup file you've saved", Icons.Outlined.DriveFolderUpload, 1, 2, "restore-file") {
-                    open.launch(arrayOf("application/zip", "application/octet-stream", "*/*"))
-                }
+                PageRow(Icons.Outlined.DriveFolderUpload, "A backup file", "A file you saved", 1, 3, "restore-file") { pick() }
+                PageRow(Icons.Outlined.MobileScreenShare, "Your old phone", "Scan or type the code it shows", 2, 3, "restore-phone") { step = "phone" }
             }
-            Note("Restoring replaces the habits on this phone. You can undo it for 30 days.")
+            Text("Restoring replaces the habits on this phone. You can undo it for 30 days.", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                style = AppType.bodySmall, color = appColors.secondary)
         }
-    } else {
-        FormPage("Restore", chip = null, onBack = { pending = null }) {
-            Spacer(Modifier.height(8.dp))
-            Card(Modifier.fillMaxWidth().semantics { testTag = "restore-preview" }) {
-                Column(Modifier.padding(20.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(56.dp).clip(CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
-                            Icon(Icons.Rounded.Restore, null, tint = appColors.ink)
-                        }
-                        Spacer(Modifier.width(16.dp))
-                        Column {
-                            Text(countText(preview.fileHabits, preview.fileEntries), style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Medium), color = appColors.ink)
-                            Text("From “${preview.deviceName}”, " + DayWords.short(store.rules.calendarDayOf(preview.createdAt)) + ", " + DayWords.clock(preview.createdAt),
-                                style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-                        }
-                    }
-                    Spacer(Modifier.height(16.dp))
-                    Row {
-                        Text("On this phone now", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.secondary)
-                        Text(countText(preview.phoneHabits, preview.phoneEntries), style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium), color = appColors.ink)
-                    }
-                }
-            }
-            Spacer(Modifier.height(24.dp))
-            if (preview.fileHabits == 0 && preview.fileEntries == 0) {
-                // A backup with nothing in it is never shown as restored (D5).
-                Note("This backup has no habits in it, so there's nothing to restore. Your habits on this phone are unchanged.")
-            } else {
-                fun go(mode: RestoreMode) = scope.launch {
-                    val changes = center.restore(p!!, mode)
-                    onRestored(if (changes.changesNothing) "Everything in it is already here." else "Restored: " + countText(preview.fileHabits, preview.fileEntries))
-                }
-                InkButton("Replace what's on this phone", { go(RestoreMode.REPLACE) }, Modifier.fillMaxWidth().semantics { testTag = "restore-replace" }, enabled = !center.working)
-                Note("This phone becomes exactly the backup. " + changesText(preview.replace))
-                Spacer(Modifier.height(16.dp))
-                TonalButton("Merge", { go(RestoreMode.MERGE) }, Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { testTag = "restore-merge" }, enabled = !center.working)
-                Note("Adds what's missing and keeps everything here. " + changesText(preview.merge))
-                Spacer(Modifier.height(8.dp))
-                Note("You can undo a restore for 30 days in Google Drive & Backup.")
-            }
-        }
-    }
-    problem?.let { text ->
-        AlertDialog({ problem = null }, title = { Text("Can't restore this file") }, text = { Text(text) },
-            confirmButton = { TextButton({ problem = null }) { Text("OK", color = appColors.ink) } })
     }
 }
 
@@ -321,13 +390,3 @@ fun changesText(c: RestoreChanges): String {
     return parts.joinToString(", ").replaceFirstChar { it.uppercase() } + "."
 }
 
-private fun problemText(reason: String) = when (reason) {
-    BackupProblem.NOT_A_BACKUP -> "This isn't an Often Enough backup file. Choose the .zip file you saved from Often Enough."
-    BackupProblem.REPACKED -> "This file was unzipped and zipped again by another app. Use the original file."
-    BackupProblem.DAMAGED -> "This file is damaged: something in it doesn't match. Try another copy."
-    BackupProblem.NEWER_VERSION -> "This backup was made by a newer version of Often Enough. Update the app, then restore it."
-    else -> "This file can't be restored."
-}
-
-@Suppress("unused") private val keepSp = 1.sp
-@Suppress("unused") private val keepResult = SnackbarResult.Dismissed

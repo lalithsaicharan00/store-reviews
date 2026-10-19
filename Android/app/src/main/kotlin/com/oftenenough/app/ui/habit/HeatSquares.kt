@@ -93,7 +93,8 @@ object HeatPalette {
     /** ✕, ⏩, ⏸. */
     fun sign(dark: Boolean): Color = if (dark) hex(0x98989F) else hex(0x6C6C70)
     fun dash(dark: Boolean): Color = if (dark) hex(0x7C7C80) else hex(0x8E8E93)
-    fun today(@Suppress("UNUSED_PARAMETER") dark: Boolean): Color = hex(0x8E8E93)
+    /** Today's outline: the ink, as Figma draws it (1373:2, 3.3). */
+    fun today(dark: Boolean): Color = if (dark) hex(0xF2F2F5) else hex(0x1C1B1F)
     /** The ✓, the same on the goal step and the "more" step: white in light mode, a deep shade of the habit's colour in dark. */
     fun check(habit: HabitColor, dark: Boolean): Color = if (!dark) Color.White else hex(darkChecks[habit] ?: 0x0C2611)
 
@@ -133,10 +134,25 @@ class HeatDraw(private val square: Float, private val unit: Float) {
     private val signs = Path()
     private val checks = Path()
     private val today = Path()
+    /** Note marks (Figma 3.3, 3.6): a dot under a month's square; in a year's, a dot in the corner, white on colour. */
+    private val notesInk = Path()
+    private val notesWhite = Path()
     private val radius = square * 0.22f
     private val dashWidth = maxOf(1.2f * unit, square * 0.045f)
 
     private fun fill(n: Int): Path = fills[n] ?: Path().also { fills[n] = it }
+
+    /** A dot [below] the square at [left], [top] (a month), or in its corner (a year): the day has a note. */
+    fun note(cell: HeatCell, left: Float, top: Float, below: Boolean) {
+        val r = (if (below) 2f else 1.6f) * unit
+        if (below) {
+            notesInk.addOval(Rect(Offset(left + square / 2, top + square + 5f * unit), r))
+        } else {
+            val onColour = cell is HeatCell.Level && cell.n > 0
+            val at = Offset(left + square - 3.5f * unit, top + 3.5f * unit)
+            (if (onColour) notesWhite else notesInk).addOval(Rect(at, r))
+        }
+    }
 
     fun add(cell: HeatCell, left: Float, top: Float, isToday: Boolean = false) {
         val rect = Rect(left, top, left + square, top + square)
@@ -170,7 +186,9 @@ class HeatDraw(private val square: Float, private val unit: Float) {
         drawPath(crosses, HeatPalette.sign(dark), style = Stroke(2f * unit, cap = StrokeCap.Round, join = StrokeJoin.Round))
         drawPath(signs, HeatPalette.sign(dark))
         drawPath(checks, HeatPalette.check(color, dark), style = Stroke(2.4f * unit, cap = StrokeCap.Round, join = StrokeJoin.Round))
-        drawPath(today, HeatPalette.today(dark), style = Stroke(1.5f * unit))
+        drawPath(today, HeatPalette.today(dark), style = Stroke(2f * unit))
+        drawPath(notesInk, HeatPalette.today(dark))
+        drawPath(notesWhite, if (dark) HeatPalette.today(false) else Color.White)
     }
 
     /** A point in a sign's box of [side] dp, centred on the square. */
@@ -238,20 +256,68 @@ fun HeatStrip(cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, size: 
     }
 }
 
-/** A month of squares in rows of seven, each centred in its weekday's column (the Month card). One Canvas. */
+/**
+ * A month of squares in rows of seven, each centred in its weekday's column (the Month card, Figma 3.3–3.5): the day's
+ * number above each square (today's in Medium), a dot under a day with a note, the amount under each day when [below]
+ * is given, and a Week column when [weekLabels] is (one per row: "Met", "1 of 3"). A tap on a day up to today opens it
+ * ([onTap]); it never changes the day. One Canvas, its labels measured once per month.
+ */
 @Composable
-fun HeatMonthGrid(lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, size: Dp = HeatSize.month, rowGap: Dp = 8.dp) {
+fun HeatMonthGrid(
+    lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, size: Dp = HeatSize.month, rowGap: Dp = 8.dp,
+    notes: Set<Int> = emptySet(), below: List<String>? = null, weekLabels: List<String>? = null, onTap: ((Int) -> Unit)? = null,
+) {
     val dark = appColors.dark
+    val label = appColors.secondary
+    val ink = appColors.ink
     val rows = (lead + cells.size + 6) / 7
-    Canvas(Modifier.fillMaxWidth().height(size * rows + rowGap * maxOf(rows - 1, 0) + HeatSize.outline * 2)) {
+    val columns = if (weekLabels != null) 8 else 7
+    val measurer = rememberTextMeasurer()
+    val numberStyle = AppType.labelMedium.copy(fontWeight = FontWeight.Normal)
+    val numbers = remember(measurer, cells.size, todayIndex) {
+        cells.indices.map { i -> measurer.measure("${i + 1}", if (i == todayIndex) numberStyle.copy(fontWeight = FontWeight.Medium) else numberStyle) }
+    }
+    val belowTexts = remember(measurer, below) { below?.map { measurer.measure(it, numberStyle) } }
+    val weekTexts = remember(measurer, weekLabels) { weekLabels?.map { measurer.measure(it, AppType.labelMedium) } }
+    val numberRoom = 18.dp
+    val belowRoom = if (below != null) 18.dp else if (notes.isNotEmpty()) 8.dp else 0.dp
+    val rowHeight = numberRoom + size + belowRoom
+    Canvas(
+        Modifier.fillMaxWidth().height(rowHeight * rows + rowGap * maxOf(rows - 1, 0) + HeatSize.outline * 2)
+            .let { m ->
+                if (onTap == null) m else m.pointerInput(lead, cells.size, columns, onTap) {
+                    detectTapGestures { at ->
+                        val column = floor(at.x / (this.size.width.toFloat() / columns)).toInt()
+                        val row = floor(at.y / (rowHeight.toPx() + rowGap.toPx())).toInt()
+                        if (column !in 0..6) return@detectTapGestures
+                        val i = row * 7 + column - lead
+                        if (i in cells.indices && cells[i] != HeatCell.Upcoming && cells[i] != HeatCell.Blank) onTap(i)
+                    }
+                }
+            }
+            .clearAndSetSemantics { testTag = "month-grid" },
+    ) {
         val pad = HeatSize.outline.toPx()
         val s = size.toPx()
         val gap = rowGap.toPx()
-        val column = this.size.width / 7
+        val pitch = rowHeight.toPx() + gap
+        val column = this.size.width / columns
         val draw = HeatDraw(s, 1.dp.toPx())
         cells.forEachIndexed { i, cell ->
             val place = lead + i
-            draw.add(cell, column * (place % 7 + 0.5f) - s / 2, pad + (place / 7) * (s + gap), i == todayIndex)
+            val cx = column * (place % 7 + 0.5f)
+            val top = pad + (place / 7) * pitch + numberRoom.toPx()
+            val n = numbers[i]
+            drawText(n, color = if (i == todayIndex) ink else label, topLeft = Offset(cx - n.size.width / 2f, top - numberRoom.toPx() + 1.dp.toPx()))
+            draw.add(cell, cx - s / 2, top, i == todayIndex)
+            if (i in notes) draw.note(cell, cx - s / 2, top, below = true)
+            belowTexts?.getOrNull(i)?.let { t ->
+                if (t.size.width > 0) drawText(t, color = label, topLeft = Offset(cx - t.size.width / 2f, top + s + (if (i in notes) 9 else 3).dp.toPx()))
+            }
+        }
+        weekTexts?.forEachIndexed { r, t ->
+            val top = pad + r * pitch + numberRoom.toPx() + s / 2 - t.size.height / 2f
+            drawText(t, color = ink, topLeft = Offset(column * 7.5f - t.size.width / 2f, top))
         }
         draw.draw(this, color, dark)
     }
@@ -265,7 +331,7 @@ fun HeatMonthGrid(lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: Hab
 @Composable
 fun HeatYearPixels(
     cells: List<HeatCell>, monthStarts: List<Int>, monthLengths: List<Int>, monthNames: List<String>, todayIndex: Int?,
-    selected: Int?, color: HabitColor, onSelect: (Int) -> Unit,
+    selected: Int?, color: HabitColor, notes: Set<Int> = emptySet(), onSelect: (Int) -> Unit,
 ) {
     val dark = appColors.dark
     val label = appColors.secondary
@@ -321,6 +387,7 @@ fun HeatYearPixels(
                 val left = g + m * pitchX
                 val top = h + d * pitchY
                 draw.add(cells[i], left, top, i == todayIndex)
+                if (i in notes) draw.note(cells[i], left, top, below = false)
                 if (i == selected) picked = Rect(left, top, left + s, top + s)
             }
         }
@@ -339,7 +406,64 @@ fun HeatYearPixels(
 const val HEAT_KEY_FOLDED = "heatKey.folded"
 
 /**
- * "What the squares mean": a folding card, open until the person folds it once anywhere in the app. [open] and
+ * Habit details' "What the squares mean" (Figma 1373:2, 3.7): a folding card, open until the person folds it once anywhere in the app; every
+ * state in the habit's [color], the note mark, and the days before the habit started. [open] and [onToggle] belong to the
+ * page's visit.
+ */
+@Composable
+fun HabitKeyCard(open: Boolean, onToggle: () -> Unit, color: HabitColor, modifier: Modifier = Modifier) {
+    val c = appColors
+    Column(modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).animateContentSize()) {
+        Row(
+            Modifier.fillMaxWidth().clickable(onClick = onToggle).heightIn(min = 56.dp).padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)
+                .semantics(mergeDescendants = true) {
+                    stateDescription = if (open) "Shown" else "Hidden"
+                    testTag = "heat-key-toggle"
+                },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("What the squares mean", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink)
+            Icon(if (open) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, null, tint = c.ink)
+        }
+        if (open) {
+            Column(Modifier.fillMaxWidth().padding(start = 20.dp, end = 16.dp, bottom = 16.dp).semantics { testTag = "progress-key" }) {
+                for ((cell, title) in keyRows) KeyRow(cell, title, color)
+                KeyRow(HeatCell.Upcoming, "Today", color, isToday = true)
+                KeyRow(HeatCell.level(4), "Has a note", color, note = true)
+                KeyRow(HeatCell.Blank, "Before the habit started", color)
+            }
+        }
+    }
+}
+
+private val keyRows: List<Pair<HeatCell, String>> = listOf(
+    HeatCell.level(4) to "Goal met",
+    HeatCell.level(2) to "Part done: some, not all",
+    HeatCell.level(0) to "Not done",
+    HeatCell.skipped to "Skipped: doesn't count against you",
+    HeatCell.paused to "Paused",
+    HeatCell.notScheduled to "Not planned for that day",
+    HeatCell.Upcoming to "Still to come",
+)
+
+@Composable
+private fun KeyRow(cell: HeatCell, title: String, color: HabitColor, isToday: Boolean = false, note: Boolean = false) {
+    val dark = appColors.dark
+    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).semantics(mergeDescendants = true) { }, verticalAlignment = Alignment.CenterVertically) {
+        Canvas(Modifier.size(HeatSize.smallest + HeatSize.outline * 2, HeatSize.smallest + HeatSize.outline * 2 + (if (note) 8.dp else 0.dp))) {
+            val pad = HeatSize.outline.toPx()
+            val draw = HeatDraw(HeatSize.smallest.toPx(), 1.dp.toPx())
+            draw.add(cell, pad, pad, isToday)
+            if (note) draw.note(cell, pad, pad, below = true)
+            draw.draw(this, color, dark)
+        }
+        Spacer(Modifier.width(16.dp))
+        Text(title, style = AppType.bodyLarge, color = appColors.ink)
+    }
+}
+
+/**
+ * The Progress page's "What the squares mean" (every habit at once, so the steps of colour): a folding card, open until the person folds it once anywhere in the app. [open] and
  * [onToggle] belong to the page's visit, so History and Progress share it.
  */
 @OptIn(ExperimentalLayoutApi::class)

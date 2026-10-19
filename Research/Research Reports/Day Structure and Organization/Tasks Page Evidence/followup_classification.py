@@ -1,4 +1,4 @@
-"""Tasks page follow-up (Current Work 130, the user's open questions, 18 Oct 2026), hand codes. Written by Claude
+"""Tasks page follow-up (Current Work 142, the user's open questions, 18 Oct 2026), hand codes. Written by Claude
 (Claude Code). followup_scan.py found 1,925 matches not read in the first pass; all were read, 890 on topic.
 Run from Research/ to check citations, codes and quotes:
   python3 -I "Research Reports/Day Structure and Organization/Tasks Page Evidence/followup_classification.py"

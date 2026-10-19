@@ -1,11 +1,11 @@
 # The Habit Details Page — Why People Open It and What It Should Do
 
-> **Written by Claude (Claude Code)**, 19 October 2026, at the user's request (Current Work 133). Authorship of every
+> **Written by Claude (Claude Code)**, 19 October 2026, at the user's request (Current Work 143). Authorship of every
 > report is listed in the [Research Reports index](<../README.md>).
 
 **The question (the user's words, tidied).** "I still think we need a lot of research about why people open the habit
 details page." Do the research, work it out, and report back. The milestone rule (board `2266:2`) and Google Sans Flex
-were checked first (Current Work 133); this report is about the page itself.
+were checked first (Current Work 143); this report is about the page itself.
 
 ---
 
@@ -246,8 +246,8 @@ The two studies' codes and counts are separate. Neither re-verifies the other's 
 - **The start date can be set to any day**: earlier is always allowed; later stops at the first log, so no log is hidden.
 - **The description shows on the habit's page only**, never on the Today row. "Steps" (§2.5) means the same
   description: what the habit involves. The habit form already has *Description (optional)*.
-- **Logging straight from a reminder** is noted for later (Current Work 133).
-- Recorded in Current Work 133, with placeholders for every screen and state before the designs.
+- **Logging straight from a reminder** is noted for later (Current Work 143).
+- Recorded in Current Work 143, with placeholders for every screen and state before the designs.
 
 ## 9. The user's review of the designs (19 October 2026), and the evidence behind each change
 

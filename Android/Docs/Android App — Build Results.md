@@ -265,6 +265,120 @@ Getting there took three CI runs, and each failure was read, not rerun (T2):
   the fold, so the tap missed it and an empty group was saved: the test brings a row on screen before tapping, and
   checks it's chosen before saving.
 
+## The habit form, as Figma `1302:2` (18 October 2026)
+
+New habit and Edit habit were rebuilt to the Figma section, frame by frame (Current Work 131): the choices, the four
+build forms, Quit, Cut down and Task, and every page they open; Edit habit's Type row, the start-over question and
+Today's snackbar (D6); Add a 6th habit and Make room. **A time of day is set by its start alone** (Current Work 108, 98):
+`SectionPlan.fromStart` works out its end (the next one's start, or the day's end) and `SectionPlan.freeStart` opens a
+new one in time nothing covers (4:00 AM with the standard set). The same page opens from Settings › Times of Day.
+
+How it was checked: every frame beside the emulator at 360 × 800 dp (`Research/Temp/habitform/walk.sh`, which uses
+only the app's own back buttons); Android's notification question on a normal launch, allowed, refused once and twice;
+`HabitFormTest` (6) for the flows that change data. One thing found and left for a decision: without exact alarms,
+Android gives a reminder a one-hour window, while Get reminders on time says "up to 10 minutes" (Current Work 131).
+
+## The Habits page, as Figma `2106:2` (19 October 2026)
+
+≡ › Habits was rebuilt to the Figma section (Current Work 132): rows by time of day as on Today (or by group), each with
+the line under its name worked out in `HabitListWords.kt` (goal · How often · first reminder, or its status), a ⋮ per
+row, selection with its bottom bar, search, Show by, and Archived habits as a page of its own. Every change says so in a
+snackbar with Undo; **a delete waits until its Undo has gone** (the rows hide meanwhile, and leaving the page deletes
+them), so nothing is lost to a mis-tap (D6). Duplicate is the habit form filled in from the habit (`FormState`'s
+`template`) and lands right after it (`HabitStore.placeAfter`, queued behind the add). The page has its own ☰ drawer
+(`WithMenu` in `AppRoot`), as a top-level page should; with the sidebar there's none.
+
+Test launches can now start with the design's habits (`demo habits`) and with Plus (`plus`), so the page can be put
+beside Figma at 360 × 800 dp. `HabitsPageTest` (11) covers every flow that changes data.
+
+## The Tasks page, as Figma `2373:2` (19 October 2026)
+
+≡ › Tasks was rebuilt to the Figma section (Current Work 133), replacing the old shared list (`AllHabits.kt`, removed).
+Two tabs: **One-time** lists every one-time task by when (Today with the ones carried from earlier days first, saying
+"Planned for Thu 16 Oct", and the ones done today struck at its end; Tomorrow; the next days by name; later by month;
+**No date** last), then the Archived row; **Repeating** lists each repeating task once, grouped by how often it comes,
+with three lines: its rhythm, its day ("Waiting since", "Today" or "Next"), and when it was last done or skipped. A
+row's ⋮ edits, moves (Tomorrow, Pick a day…, No date; a repeating task moves only this time, before its next one),
+duplicates, skips this time (repeating), archives or deletes; a No date row has Do today and Pick a day…; every change
+says so with Undo and a delete waits for its Undo (D6). A long press selects (the bar: Move, Archive, Delete); within a
+day it lifts the row to drag it. Search lists open tasks, Completed and Archived; the top ⋮ holds Select, **Completed
+tasks** (every finish by the day it was done, Mark as not done with Undo, completed one-time tasks deleted with Undo)
+and **Archived tasks** (the Archived habits page for tasks). A task's details have its History as events (Waiting, Done
+or Skipped, Task created), the archived card with Restore, and a ⋮ of Edit task, Move to another day…, Mark as not done,
+Archive, Delete task…. The task form's Date is a menu (Today, Tomorrow, Pick a date…, No date). The menu's Tasks count
+is the tasks still open today.
+
+**No date is stored as the last day there is (9999-12-31, `NO_DATE_DAY`)**, so the core's rules (and the iPhone's)
+answer "not due" without a change, and the record syncs as an ordinary date. The words for it are in `TaskWords.kt`
+(`// MOVE TO CORE`). **The iPhone doesn't know this rule yet:** a No date task synced to it would never show on Today
+(right), but its Day details, habit page and widgets would say "Planned for" 31 Dec 9999 until it learns it.
+
+The Habits page's top ⋮ now ends with **Archived habits** (Figma `2106:2`), beside the list's last row.
+
+Test launches can start with the design's tasks (`demo tasks`). `TasksPageTest` (12) covers every flow that changes
+data; `HabitsPageTest` gained the ⋮ › Archived habits check. Checked on the Pixel 10 Pro emulator at 360 × 800 dp
+beside the frames.
+
+## Onboarding, coming back, Backup & Sync and the move, as Figma `1548:2`, `1549:2`, `1461:2` (19 October 2026)
+
+**Someone new (Current Work 134).** Every page of `1548:2` checked against the app on the emulator at 360 × 800 dp. Your
+first habit lists eight ideas as rows (icon, "Drink 8 glasses of water", "Every day", ›); each opens **its own New Habit
+form, filled in** (name, icon, colour, type, goal, every day) inside the welcome, so **Add works straight away** and
+Back returns to the ideas, never out of the app. Back from an untouched idea asks nothing; after a change it asks
+"Discard this habit?" (the form compares what it shows with what it opened with, `FormState.markPristine`). Create my own
+habit opens "What do you want to do?" and returns the same way.
+
+**Someone coming back (135).** Every row of `1549:2`: Continue with Google or Apple (Plus comes back from the account,
+then the habits from its Google Drive: Looking, We found your habits, Plus is back, No account found with the other
+ways), Google Drive without an account (Looking, We found your habits with Bring them back or Start fresh instead and
+its question, No habits found, Couldn't connect with Try again), your old phone (the move, below: Your habits are here),
+a backup file (Your backup file, That isn't a backup, From a newer version with Update), and Start fresh (Your days and
+weeks, then an empty Today). Bringing habits back ends on Today saying "Your habits are back: 18 habits, 222 logs".
+Sign-in runs on the stand-in until the Android OAuth client exists; **Continue with Apple shows only where Apple sign-in
+is available** (the stand-in; a release build hides it until Apple's web sign-in is built).
+
+**Where the habits live (138, 19 October 2026).** The Plus account now remembers which cloud holds the habits (D16): the
+Worker keeps the cloud, its account's private ID (the key the device's sync binds to), the kind of device and when
+(`account-server/README.md`, "Where the habits live"; migration 0003), and the app tells it after each Google Drive round
+that synced, only when the place changed or once a day, and forgets it when the Drive copy is deleted. Coming back reads
+it after signing in: **2.3 They're on your iPhone** (signed in with Google, the habits in iCloud: three steps and Enter the
+code), **2.5 Plus is back** (backed up to a different Google account: Choose the Drive account; the chosen account's key is
+compared before anything is read, and the wrong one asks again, with nothing read), **3.3** (the same iPhone screen after
+Apple), and the sign-in account's own Drive opens with no chooser. Step 3's line says "Keep the app open on both" where
+Figma said "It works for 24 hours": the move as built needs both phones online at once (D15). Tests: the Worker 83
+(`test/cloud.test.ts`, 7 new), Core's `AccountTest` 17 (5 new), `OnboardingTest` 14 (4 new) on the Pixel 10 Pro
+emulator, with `DataSafetyTest` 5, `PlusAccountScreensTest` 10, `PlusAccountFramesTest` 6 and `TodayTest` 12 again;
+2.3 and 2.5 pictured beside Figma at 360 × 800 dp. On dev (version e4d66a69): `npm run live:dev` and
+`AccountServerLiveTest` (3/3) pass; production waits for the user's go-ahead. Not yet: the iPhone writing its iCloud record (the iPhone app doesn't
+use the shared account yet), and the iPhone's own Move to a new phone, which 2.3's steps point to.
+
+**Backup & Sync (137).** The menu row is now **Backup & Sync** (it was Google Drive & Backup; Help's answers follow). The
+page says where the habits are first (Backed up · when · the account; Synced with Plus, with its devices; Not backed up,
+with Back up to Google Drive; No internet, with the changes waiting and Try again; Drive full; not connected), then Move
+and restore (Move to a new phone, Restore from a backup, Undo last restore), Export (a backup file, a spreadsheet) and the
+two red rows, each asking with two buttons (D9). Restore from a backup offers Google Drive, a backup file (Restore this
+file? with what's in it and what it replaces) and your old phone (Restore what it sent?); a restore ends with
+"Restored …" and Undo. Not built: 4.1, the dated list of Drive backups (the Android Drive sync keeps one copy per year,
+not dated copies).
+
+**Moving to a new phone (136).** Built end to end as Rulebook D15: the old phone's page shows a QR code and 6 digits and
+waits (screen kept on); the new phone scans it with Google's code scanner or types it in six boxes on the number keypad
+(it checks itself on the sixth). SPAKE2 (`data/move/Spake2.kt`, checked against RFC 9382's test vectors) gives both
+phones one key through the relay (`account-server/src/move.ts`); the habits go as the checked backup file (D5),
+encrypted, and the new phone shows what came before anything changes. **A wrong code ends that code for both; the old
+phone shows a new one at once**, saying "Someone typed a wrong code. Here's a new one.", and the new phone says "That
+code didn't work. Your old phone now shows a new one." Checked on two emulators at once (a Pixel 10 Pro on Android 16
+and an API 30 phone, the relay under `wrangler dev` on this PC): 18 habits and 222 logs moved and were brought back;
+a wrong code, then the new code, moved everything. That run found a crash on Android 11 (`BigInteger.TWO`, Java 9 only),
+fixed, and a failure in the move now ends the move, never the app. **The relay is on dev** (19 Oct 2026; the debug
+app uses it by default): `MoveLiveTest` passes against it; production waits for the user's go-ahead. Plus doesn't
+travel with the move yet.
+
+Tests: `OnboardingTest` (10, new: ideas add straight away, Back asks only after a change, Create my own, every way back,
+an empty Drive and Start fresh, a Google account without Plus, the code screen when the relay can't be reached, Backup &
+Sync and Restore's rows, Erase's question, Move when it can't connect), `TodayTest`'s welcome tests updated,
+`Spake2Test` (3), `MoveLiveTest` (3, against the relay when `MOVE_SERVER` is set), the Worker's `move.test.ts` (9).
+
 ## What's left
 
 | What | Why it isn't done |
@@ -295,6 +409,7 @@ Each is ported from the Swift with tests, and should move into `Core` when the s
 | `data/SectionPlan.kt` | `SectionPlan.swift` | Adding or editing a time of day: each ends where the next begins, overlaps split |
 | `data/HabitPageWords.kt`, `ProgressWords.kt`, `PlayerWords.kt` | `HabitPageView` and friends, `ProgressScreen`, `RoutinePlayer` | Habit details', Progress's and the player's numbers and words |
 | `data/widgets/WidgetItems.kt`, `WidgetSnapshot.kt` | `HabitStore+Widgets.swift`, `WidgetSnapshot.swift` | The widgets' snapshot: seven days of cards, Today's lists, each ✓ and + card's "after" |
+| `data/TaskWords.kt` | None yet: the iPhone has no Tasks page of this design | The Tasks page's days, lines, rhythm groups, next day and History; No date |
 | `ui/habit/PauseScreen.kt` (`pauseSummary`), `ui/settings/RemindersSettings.kt` (`reminderLine`) | `PauseSheet.swift`, `RemindersView.swift` | Pause's sentence; a habit's reminders in one line |
 
 ## What needs the user
@@ -312,6 +427,7 @@ Each is ported from the Swift with tests, and should move into `Core` when the s
 - **The Play Console app** for Play Billing: the products `com.oftenenough.app.plus` ($24.99),
   `com.oftenenough.app.plusfamily` ($59.99) and `com.oftenenough.app.plusfamily.upgrade` (the difference), and
   license testers. Until then Plus runs on a fake store.
+- **The move relay in production:** it's on dev; production only with your go-ahead (T6).
 - **Real phones** (Pixel, Samsung, Xiaomi; U9, T5): noted separately at the end.
 
 ## Questions for the next report

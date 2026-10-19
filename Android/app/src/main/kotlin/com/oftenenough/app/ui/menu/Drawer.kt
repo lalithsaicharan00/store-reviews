@@ -48,7 +48,7 @@ enum class MenuItem(val title: String, val icon: ImageVector) {
     DAY_AND_WEEK("Day and Week", Icons.Rounded.CalendarMonth),
     REMINDERS("Reminders", Icons.Outlined.Notifications),
     APPEARANCE("Appearance", Icons.Rounded.Contrast),
-    BACKUP("Google Drive & Backup", Icons.Outlined.Cloud),
+    BACKUP("Backup & Sync", Icons.Outlined.Cloud),
     PRIVACY("Privacy & Security", Icons.Outlined.Shield),
     PLUS("Plus & Account", Icons.Rounded.AddCircleOutline),
     HELP("Help & Feedback", Icons.AutoMirrored.Rounded.HelpOutline),
@@ -82,7 +82,9 @@ fun MenuSidebar(store: HabitStore, current: MenuItem?, onPick: (MenuItem) -> Uni
 @Composable
 private fun MenuItems(store: HabitStore, current: MenuItem?, onPick: (MenuItem) -> Unit, todayLeft: String?) {
     val habits = store.habits.count { !it.archived && it.kind != HabitKind.Task }
-    val tasks = store.habits.count { !it.archived && it.kind == HabitKind.Task }
+    // Tasks still open today (Tasks, Figma 10.1): due today or carried to it, and not done.
+    val today = store.today()
+    val tasks = store.habits.count { !it.archived && it.kind == HabitKind.Task && store.rules.isDue(it, today) && !store.rules.isDone(it, today) }
     androidx.compose.foundation.layout.Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
         Text("Often Enough", Modifier.padding(start = 16.dp, top = 24.dp, bottom = 16.dp), style = MaterialTheme.typography.titleSmall, color = appColors.secondary)
         val groups = listOf(

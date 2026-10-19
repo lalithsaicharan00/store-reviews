@@ -1,4 +1,4 @@
-"""Tasks page research (Current Work 130), hand codes. Written by Claude (Claude Code), 18 Oct 2026.
+"""Tasks page research (Current Work 142), hand codes. Written by Claude (Claude Code), 18 Oct 2026.
 
 CODES maps each on-topic review (citation P/A/N<folder>#<line from 0>) to its codes; every other review read was
 off topic. JOBS groups codes into the page's jobs. QUOTES are the quotes the report uses. Run from Research/:

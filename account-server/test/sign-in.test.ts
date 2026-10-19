@@ -20,7 +20,7 @@ describe("signing in and making an account", () => {
     expect((await signIn(sam)).body).toEqual({ found: false });
     const made = await createAccount(sam);
     expect(made.session).toMatch(/^[A-Za-z0-9_-]{43}$/);
-    expect(made.account).toEqual({ id: made.account.id, plus: "NONE", family: null });
+    expect(made.account).toEqual({ id: made.account.id, plus: "NONE", family: null, cloud: null });
     const again = await signIn(sam);
     expect(again.status).toBe(200);
     expect(again.body.found).toBe(true);

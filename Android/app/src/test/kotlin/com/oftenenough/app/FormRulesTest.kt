@@ -99,6 +99,34 @@ class FormRulesTest {
         assertEquals("Give it at least 15 minutes.", SectionPlan.make(DaySection.defaults, subject, 600, 610).problem)
     }
 
+    @Test fun aTimeOfDayIsSetByItsStartAlone() {
+        val subject = DaySection("work", "Before work", null, null)
+        val row = { p: SectionPlan -> p.rows.joinToString { "${it.name} ${it.start}-${it.end}" } }
+        // Before the first: runs until Morning starts, and nothing changes.
+        val early = SectionPlan.fromStart(DaySection.defaults, subject, 4 * 60)
+        assertEquals("Before work 240-360, Morning 360-720, Afternoon 720-1080, Evening 1080-1440", row(early))
+        assertEquals(emptyList<String>(), early.split.map { it.name })
+        // Between two: splits the one it starts in and runs until the next.
+        val mid = SectionPlan.fromStart(DaySection.defaults, subject, 8 * 60)
+        assertEquals("Morning 360-480, Before work 480-720, Afternoon 720-1080, Evening 1080-1440", row(mid))
+        // After the last: takes the day's end.
+        assertEquals("Morning 360-720, Afternoon 720-1080, Evening 1080-1320, Before work 1320-1440",
+            row(SectionPlan.fromStart(DaySection.defaults, subject, 22 * 60)))
+        // On an existing start.
+        assertEquals("Another time of day starts then.", SectionPlan.fromStart(DaySection.defaults, subject, 12 * 60).problem)
+        // After midnight with a 3 AM day start: the end of the day.
+        assertEquals("Morning 360-720, Afternoon 720-1080, Evening 1080-1500, Before work 1500-1620",
+            row(SectionPlan.fromStart(DaySection.defaults, subject, 60, 27 * 60)))
+    }
+
+    @Test fun aNewTimeOfDayOpensInFreeTime() {
+        assertEquals(4 * 60, SectionPlan.freeStart(DaySection.defaults))
+        val all = DaySection.defaults.mapIndexed { i, s -> if (i == 3) s.copy(end = 6 * 60 + 24 * 60) else s }
+        assertNull(SectionPlan.freeStart(all))
+        val late = DaySection.defaults.mapIndexed { i, s -> if (i == 3) s.copy(end = 5 * 60 + 24 * 60) else s }
+        assertEquals(5 * 60, SectionPlan.freeStart(late))
+    }
+
     private object LocalDateDay {
         fun of(y: Int, m: Int, d: Int): Int = java.time.LocalDate.of(y, m, d).toEpochDay().toInt()
     }

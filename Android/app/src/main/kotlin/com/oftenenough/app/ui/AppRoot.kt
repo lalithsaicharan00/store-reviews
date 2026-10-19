@@ -35,8 +35,10 @@ import com.oftenenough.app.ui.newhabit.NewHabitFlow
 import com.oftenenough.app.ui.habit.HabitDetailsNav
 import com.oftenenough.app.ui.habit.HabitDetailsScreen
 import com.oftenenough.app.ui.habit.PauseScreen
-import com.oftenenough.app.ui.habit.AllHabitsNav
-import com.oftenenough.app.ui.habit.AllHabitsScreen
+import com.oftenenough.app.ui.habit.ArchivedNav
+import com.oftenenough.app.ui.habit.ArchivedHabitsScreen
+import com.oftenenough.app.ui.habit.HabitsNav
+import com.oftenenough.app.ui.habit.HabitsPage
 import com.oftenenough.app.ui.player.PlayerNav
 import com.oftenenough.app.ui.player.RoutinePlayer
 import com.oftenenough.app.ui.player.TimerScreen
@@ -126,9 +128,11 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     AnimatedContent(prefs.onboarded, Modifier.fillMaxSize().background(appColors.screen),
         transitionSpec = { sharedAxisX(forward = targetState, slidePx = slide) }, label = "welcome") { onboarded ->
         if (!onboarded) OnboardingFlow(store, object : OnboardingNav {
-            override fun finished() { prefs.onboarded = true }
-            override fun newHabit(idea: HabitIdea?) { handOver = Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: ""); prefs.onboarded = true }
-            override fun signIn() { handOver = Routes.page("Google Drive & Backup"); prefs.onboarded = true }
+            override fun finished(message: String?) {
+                prefs.onboarded = true
+                message?.let { rootScope.launch { snackbar.showSnackbar(it, duration = androidx.compose.material3.SnackbarDuration.Long) } }
+            }
+            override fun signIn() { handOver = Routes.menu(MenuItem.BACKUP); prefs.onboarded = true }
             override fun restore() { handOver = Routes.page("Restore from a backup"); prefs.onboarded = true }
         }) else AppMain(store, prefs, nav, snackbar, rootScope, view, handOverState)
     }
@@ -141,6 +145,8 @@ private fun AppMain(
     view: View, handOverState: MutableState<String?>,
 ) {
     var handOver by handOverState
+    // Today's folds and held order, kept while pages open over Today and come back.
+    val todayLayout = remember { com.oftenenough.app.ui.today.TodayLayout(rootScope) }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
     // Restore from Google Play found nothing: Plus & Account shows "No Plus found" over itself (Figma 4.2).
@@ -171,6 +177,7 @@ private fun AppMain(
     // Today places its own messages above the day bar; every other page shows them here, at the bottom.
     val entry = nav.currentBackStackEntryAsState().value
     val route = entry?.destination?.route
+    LaunchedEffect(route) { if (route != null && route != Routes.TODAY && route !in pagesOverToday) store.afterLog = null }
     // The sidebar marks the page open beside it (Today, or a menu page).
     val menuItem = when (route) {
         Routes.TODAY -> MenuItem.TODAY
@@ -191,14 +198,14 @@ private fun AppMain(
             androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
             // With the sidebar (tablets, unfolded foldables) there's no drawer to open; the phone is untouched.
             if (LocalSidebar.current) {
-                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar)
+                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             } else ModalNavigationDrawer(drawerContent = {
                 MenuDrawer(store, MenuItem.TODAY) { item ->
                     scope.launch { drawer.close() }
                     if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
                 }
             }, drawerState = drawer) {
-                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar)
+                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             }
             dayTarget?.split("|")?.let { (id, d) ->
                 DayDetailsSheet(id, d.toInt(), store, dayNav) { dayTarget = null }
@@ -214,12 +221,53 @@ private fun AppMain(
         composable("note/{habit}/{day}") { e ->
             NoteScreen(e.arguments!!.getString("habit")!!.takeIf { it != "day" }, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
         }
-        composable(Routes.NEW + "?idea={idea}") { entry ->
-            val idea = entry.arguments?.getString("idea")?.let { name -> HabitIdea.all.firstOrNull { it.name == name } }
-            NewHabitFlow(store, idea, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack(Routes.TODAY, inclusive = false) },
-                onPlus = { nav.navigate(Routes.GET_PLUS) })
+        composable(Routes.NEW + "?idea={idea}&name={name}&copy={copy}&from={from}") { entry ->
+            val a = entry.arguments
+            val idea = a?.getString("idea")?.let { name -> HabitIdea.all.firstOrNull { it.name == name } }
+            val copyOf = a?.getString("copy")?.let { store.habit(it) }
+            // From the Habits page (+, Duplicate, search's New habit): back there once added, with the 6th-habit page first.
+            // From the Tasks page (Duplicate, search's New task): back there once added.
+            val fromTasks = a?.getString("from") == "tasks"
+            val fromHabits = a?.getString("from") == "habits"
+            NewHabitFlow(store, idea, onClose = { nav.popBackStack() }, onSaved = { habit ->
+                copyOf?.let { store.placeAfter(habit.id, it.id) }
+                if (fromHabits || fromTasks) nav.popBackStack() else nav.popBackStack(Routes.TODAY, inclusive = false)
+            }, onPlus = { nav.navigate(Routes.GET_PLUS) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits, task = fromTasks && copyOf == null)
         }
-        composable("edit/{id}") { e -> EditHabitScreen(e.arguments!!.getString("id")!!, store) { nav.popBackStack() } }
+        composable(Routes.ARCHIVED) {
+            ArchivedHabitsScreen(store, object : ArchivedNav {
+                override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                override fun restoreNoRoom(habit: Habit) = nav.navigate(Routes.restoreRoom(habit.id))
+                override fun back() { nav.popBackStack() }
+            })
+        }
+        composable(Routes.ARCHIVED_TASKS) {
+            ArchivedHabitsScreen(store, object : ArchivedNav {
+                override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                override fun restoreNoRoom(habit: Habit) {}
+                override fun back() { nav.popBackStack() }
+            }, tasks = true)
+        }
+        composable(Routes.COMPLETED_TASKS) {
+            com.oftenenough.app.ui.habit.CompletedTasksScreen(store, object : com.oftenenough.app.ui.habit.CompletedNav {
+                override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
+                override fun back() { nav.popBackStack() }
+            })
+        }
+        composable("restoreroom/{id}") { e ->
+            // Restore a 6th habit (Habits, Figma 6.4): Plus, or make room; then the habit comes back.
+            val habit = store.habit(e.arguments!!.getString("id")!!)
+            var making by rememberSaveable { mutableStateOf(false) }
+            val done = { habit?.let { store.restore(it) }; nav.popBackStack(); Unit }
+            if (habit == null) LaunchedEffect(Unit) { nav.popBackStack() }
+            else if (making) com.oftenenough.app.ui.newhabit.MakeRoomPage(store, { making = false }, done)
+            else com.oftenenough.app.ui.newhabit.SixthHabitPage(store, { nav.popBackStack() }, { making = true }, { nav.navigate(Routes.GET_PLUS) }, done,
+                title = "Restore a 6th habit")
+        }
+        composable("edit/{id}") { e ->
+            // A new type starts the habit over (Figma 6.3.2): back to Today, which says where the old one went.
+            EditHabitScreen(e.arguments!!.getString("id")!!, store, { nav.popBackStack() }) { nav.popBackStack(Routes.TODAY, inclusive = false) }
+        }
         composable("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {
                 MenuItem.PROGRESS.title -> WithDay(store, nav) { openDay ->
@@ -228,27 +276,57 @@ private fun AppMain(
                         override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                     }) { nav.popBackStack() }
                 }
-                MenuItem.HABITS.title, MenuItem.TASKS.title -> AllHabitsScreen(title == MenuItem.TASKS.title, store, object : AllHabitsNav {
-                    override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
-                    override fun pause(habits: List<Habit>) { if (habits.isNotEmpty()) nav.navigate(Routes.pause(habits.map { it.id })) }
-                    override fun addTask() = nav.navigate(Routes.NEW_TASK)
-                }) { nav.popBackStack() }
+                MenuItem.HABITS.title -> WithMenu(store, MenuItem.HABITS, nav) { openMenu ->
+                    HabitsPage(store, object : HabitsNav {
+                        override val openMenu = openMenu
+                        override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                        override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
+                        override fun duplicate(habit: Habit) = nav.navigate(Routes.NEW + "?copy=${habit.id}&from=habits")
+                        override fun newHabit(name: String?) = nav.navigate(Routes.NEW + "?from=habits" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
+                        override fun ideas() = nav.navigate(Routes.page("Start from an idea"))
+                        override fun archived() = nav.navigate(Routes.ARCHIVED)
+                        override fun arrange() = nav.navigate(Routes.page("Arrange your day"))
+                        override fun editGroups() = nav.navigate(Routes.GROUPS)
+                        override fun openGroup(id: String) = nav.navigate(Routes.group(id))
+                    })
+                }
+                MenuItem.TASKS.title -> WithMenu(store, MenuItem.TASKS, nav) { openMenu ->
+                    com.oftenenough.app.ui.habit.TasksPage(store, object : com.oftenenough.app.ui.habit.TasksNav {
+                        override val openMenu = openMenu
+                        override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
+                        override fun edit(task: Habit) = nav.navigate(Routes.edit(task.id))
+                        override fun duplicate(task: Habit) = nav.navigate(Routes.NEW + "?copy=${task.id}&from=tasks")
+                        override fun newTask(name: String?) = nav.navigate(Routes.NEW + "?from=tasks" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
+                        override fun completed() = nav.navigate(Routes.COMPLETED_TASKS)
+                        override fun archived() = nav.navigate(Routes.ARCHIVED_TASKS)
+                    })
+                }
                 MenuItem.REMINDERS.title -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusAccountPage(store, AppGraph.plus, AppGraph.accounts, AppGraph.signIn, AppGraph.backup,
                     snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false }, codes = AppGraph.plusCodes)
-                "Arrange your day" -> ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
+                "Arrange your day" -> {
+                    // The habit Arrange… or Move asked for, lifted once (Figma 1.4, 1.6).
+                    val lifted = remember { ArrangeLift.habit.also { ArrangeLift.habit = null } }
+                    ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, { nav.navigate(Routes.menu(MenuItem.TIMES_OF_DAY)) }, lifted) { nav.popBackStack() }
+                }
                 MenuItem.HELP.title -> HelpPage({ nav.navigate(Routes.WELCOME) }) { nav.popBackStack() }
                 MenuItem.ABOUT.title -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
                 "Open source licences" -> LicencesPage { nav.popBackStack() }
                 MenuItem.DAY_AND_WEEK.title -> DayAndWeekPage(store) { nav.popBackStack() }
                 MenuItem.APPEARANCE.title -> AppearancePage(prefs) { nav.popBackStack() }
                 MenuItem.BACKUP.title -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.page("Restore from a backup")) },
-                    { nav.navigate(Routes.menu(MenuItem.PLUS)) }, { nav.popBackStack() }, snackbar)
-                "Restore from a backup" -> RestoreScreen(AppGraph.backup, store, { nav.popBackStack() }) { message ->
+                    { nav.navigate(Routes.page("Move to a new phone")) }, { nav.popBackStack() }, snackbar)
+                // Backup & Sync › Move to a new phone (Figma 1461:2, 3–3.3): this phone shows the code.
+                "Move to a new phone" -> com.oftenenough.app.ui.move.MoveToNewPhoneScreen(AppGraph.backup) { nav.popBackStack() }
+                "Restore from a backup" -> RestoreScreen(AppGraph.backup, store, { nav.popBackStack() }) { message, undoable ->
                     nav.popBackStack()
-                    rootScope.launch { snackbar.showSnackbar(message) }
+                    // 4.1.3 · Restored, with Undo (D5: the undo file is kept 30 days; Undo here takes it straight back).
+                    rootScope.launch {
+                        val result = snackbar.showSnackbar(message, if (undoable) "Undo" else null, duration = androidx.compose.material3.SnackbarDuration.Long)
+                        if (result == androidx.compose.material3.SnackbarResult.ActionPerformed) AppGraph.backup.undoRestore()
+                    }
                 }
                 "Start from an idea" -> IdeasScreen({ nav.popBackStack() }) { idea ->
                     nav.popBackStack(); nav.navigate(Routes.NEW + "?idea=" + android.net.Uri.encode(idea.name))
@@ -267,6 +345,7 @@ private fun AppMain(
                     override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
                     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
                     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+                    override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                 }) { nav.popBackStack() }
             }
         }
@@ -278,13 +357,16 @@ private fun AppMain(
                         override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                         override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
                         override fun openTimer(habit: Habit) = nav.navigate(Routes.timer(habit.id))
+                        override fun habitPage(habit: Habit, milestones: Boolean) {
+                            if (milestones) com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id
+                            nav.navigate(Routes.habit(habit.id))
+                        }
                     }) { nav.popBackStack() }
             }
         }
         composable(Routes.WELCOME) {
             OnboardingFlow(store, object : OnboardingNav {
-                override fun finished() { nav.popBackStack() }
-                override fun newHabit(idea: HabitIdea?) { nav.popBackStack(Routes.TODAY, inclusive = false); nav.navigate(Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: "")) }
+                override fun finished(message: String?) { nav.popBackStack() }
                 override fun signIn() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.BACKUP)) }
                 override fun restore() { nav.popBackStack(); nav.navigate(Routes.page("Restore from a backup")) }
             }, replay = true)
@@ -426,6 +508,10 @@ object Routes {
     const val WELCOME = "welcome"
     const val NEW_TASK = "newtask"
     const val GROUPS = "groups"
+    const val ARCHIVED = "archived"
+    const val ARCHIVED_TASKS = "archived/tasks"
+    const val COMPLETED_TASKS = "tasks/completed"
+    fun restoreRoom(id: String) = "restoreroom/$id"
     const val GET_PLUS = "plus/get"
     const val UPGRADE = "plus/upgrade"
     const val SIGN_IN = "account/signin"
@@ -450,9 +536,31 @@ object Routes {
     fun routine(part: String, day: Int, ids: List<String>) = "routine/" + android.net.Uri.encode(part) + "/$day/" + ids.joinToString(",")
 }
 
+/**
+ * A top-level page with its own ☰ (Habits, Figma 2106:2): Material's navigation drawer over it on a phone; with the
+ * sidebar beside the page there's no drawer and no ☰ (null).
+ */
+@Composable
+private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostController, content: @Composable (openMenu: (() -> Unit)?) -> Unit) {
+    if (LocalSidebar.current) { content(null); return }
+    val drawer = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
+    ModalNavigationDrawer(drawerContent = {
+        MenuDrawer(store, current) { item ->
+            scope.launch { drawer.close() }
+            if (item != current) {
+                nav.popBackStack(Routes.TODAY, inclusive = false)
+                if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
+            }
+        }
+    }, drawerState = drawer) { content { scope.launch { drawer.open() } } }
+}
+
 /** Day details' way out to the pages it opens; [close] closes the sheet first where a page replaces it. */
 private fun dayNav(nav: NavHostController, close: () -> Unit) = object : DayNav {
     override fun habitPage(habit: Habit) { close(); nav.navigate(Routes.habit(habit.id)) }
+    override fun allMilestones(habit: Habit) { com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id; habitPage(habit) }
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
     override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
     override fun log(habit: Habit, entry: Entry) = nav.navigate(Routes.log(entry.id))
@@ -481,9 +589,12 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun restore() = nav.navigate(Routes.page("Restore from a backup"))
     override fun help() = nav.navigate(Routes.page("Help & Feedback"))
     override fun arrange() = nav.navigate(Routes.page("Arrange your day"))
+    override fun archivedHabits() = nav.navigate(Routes.ARCHIVED)
     override fun newGroup() = nav.navigate(Routes.group(null))
     override fun editGroups() = nav.navigate(Routes.GROUPS)
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))
+    override fun backup() = nav.navigate(Routes.menu(MenuItem.BACKUP))
+    override fun reminders() = nav.navigate(Routes.menu(MenuItem.REMINDERS))
 }
 
 private fun todayActions(nav: NavHostController, view: android.view.View, openDay: (Habit, Int) -> Unit) = object : TodayActions {
@@ -495,4 +606,14 @@ private fun todayActions(nav: NavHostController, view: android.view.View, openDa
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.habit(habit.id))
     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
     override fun feedback(done: Boolean) { view.performHapticFeedback(HapticFeedbackConstants.CONFIRM) }
+    override fun arrange(habit: Habit?) { ArrangeLift.habit = habit?.id; nav.navigate(Routes.page("Arrange your day")) }
 }
+
+/** The habit Arrange Today opens with lifted (a row's Arrange…, the new habit's Move; Figma 1.4, 1.6). */
+object ArrangeLift { var habit: String? = null }
+
+/**
+ * Today's pages: Undo · Note under the last log stay while one of these is open over Today (the note, Add log, the
+ * timer, a log, Day details' pages) and go when the person leaves Today for anything else (Figma 1.2).
+ */
+private val pagesOverToday = setOf("note/{habit}/{day}", "add/{habit}/{day}", "timer/{id}", "log/{id}", "alllogs/{habit}/{day}")

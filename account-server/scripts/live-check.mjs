@@ -89,6 +89,16 @@ if (secret && health.body?.environment === "dev") {
     const out = await call("POST", "/v1/sign-out", { session: ana.session });
     say(out.status === 204 && (await call("GET", "/v1/account", { session: ana.session })).status === 401, "signing out ends the session");
     made.find((m) => m.name === "Ana").session = (await call("POST", "/v1/sign-in", { body: { provider: "test", secret, subject: `${run}-Ana` } })).body.session;
+    // Where the habits live (D16): Lee's own Google Drive is recorded, and a new phone signing in is told it's Lee's.
+    const leeDrive = "gdrive:" + [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`google:test:${run}-Lee`)))]
+      .map((b) => b.toString(16).padStart(2, "0")).join("");
+    const saved = await call("POST", "/v1/account/cloud", { session: lee.session, body: { cloud: "google_drive", key: leeDrive, device: "android" } });
+    say(saved.body?.account?.cloud?.kind === "google_drive", "Lee's habits are recorded in Google Drive");
+    const newPhone = await call("POST", "/v1/sign-in", { body: { provider: "test", secret, subject: `${run}-Lee` } });
+    say(newPhone.body?.account?.cloud?.signInAccount === true, "a new phone is told it's Lee's own Google Drive");
+    const icloud = await call("POST", "/v1/account/cloud", { session: lee.session, body: { cloud: "icloud", key: "icloud:_live", device: "iphone" } });
+    say(icloud.body?.account?.cloud?.kind === "icloud" && icloud.body.account.cloud.signInAccount === false, "then in an iPhone's iCloud");
+    say((await call("POST", "/v1/account/cloud", { session: lee.session, body: { cloud: "google_drive", key: "gdrive:x@y", device: "android" } })).status === 400, "an email is never taken as a key");
   } catch (error) {
     say(false, "end to end", error.message);
   } finally {

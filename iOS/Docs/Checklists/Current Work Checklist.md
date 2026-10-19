@@ -954,7 +954,7 @@ and the Add note keyboard coming up by itself.
     the Ends picker and the problems that only it causes ("That covers all of …", "at least 15 minutes", "longer than
     a day"); keep Starts, "Another time of day starts then", and the "Your day" list, which shows every time of day's
     range before and after, so the end is still seen, not asked for.
-  - [ ] **Android** (changed 14 Oct: the dialog was deleted, the user preferring the full page that shows the whole
+  - [x] **Android** (built 18 Oct 2026, item 131; changed 14 Oct: the dialog was deleted, the user preferring the full page that shows the whole
     day): one full page from both Settings and the habit form (Figma `1440:69`, `1746:71`): one Starts tile with an
     edit pencil, the end as plain grey text under it ("Ends 6:00 AM, when Morning starts"; the last: "when your new day
     starts"), and Your day with a **+ New** / **✎ Editing** chip on its own row, "Was …" under rows that change, and
@@ -1303,11 +1303,12 @@ and the Add note keyboard coming up by itself.
   - [x] Checked by the user (19 Oct): "+1" / "+2.5" only on habits logged by a step (Water, Run); a habit typed each
     time (Savings) shows **Log**, the word alone with no pencil icon, not Log amount (the user: "it's a redundant word just use log"; 3.3, 3.5).
   - [ ] Then the app (Android first, on `claude/android-app`).
-- [ ] **133. Habit details: Year in Pixels fills the width, then the rest of the page** (added 19 October 2026, from the
+- [ ] **143. Habit details: Year in Pixels fills the width, then the rest of the page** (added 19 October 2026, from the
   user, Figma `1373:2`: "the blocks … should be occupying the space dynamically … rather than leaving out some empty
   space on the right … the same thing [as] the mood section … each cell should follow the meaning of … what the squares
-  mean … we have also updated the milestones design … if we need to update anything, then update"). Numbered 133:
-  131 and 132 are taken on another branch.
+  mean … we have also updated the milestones design … if we need to update anything, then update"). Numbered 143 on
+  19 Oct (it was 133; the Android build on GitHub's main had taken 129–139, so this side's 129, 130 and 133 became 141,
+  142 and 143 when the two were merged).
   - [x] **Year in Pixels, all four copies** (Habit details Progress `1373:3` and ⋮ `1375:1275`; Habits 6.6 and 7.2):
     rebuilt like the mood example, 12 months × 31 days in auto layout, each cell (card width − day labels − 12 gaps) ÷ 12
     (19.5 dp on a 360 dp phone, Android decision A19); every day keeps its meaning from the squares key (`HeatKey`):
@@ -1445,7 +1446,7 @@ and the Add note keyboard coming up by itself.
     3.07★): every number on the page agrees with Today and Progress, and an archived habit keeps its page. What comes
     first matters: the page leads with the record and the numbers, settings stay in ⋮.
   - [ ] The rest of the page: the user's call on what to do next (the list given on 19 Oct).
-- [ ] **130. The Tasks page: why people open it, then redesign it** (added 18 October 2026, from the user, after the
+- [ ] **142. The Tasks page: why people open it, then redesign it** (added 18 October 2026, from the user, after the
   Habits page: "do the research on tasks … Why do they come to the task page? What do they want to do it more
   frequently? What are the very frequent actions? What are the jobs that a task page has? What it needs to satisfy? …
   report the research to me. And then we will do the same process"). Figma's Tasks section `2373:2` is empty.
@@ -1500,12 +1501,12 @@ and the Add note keyboard coming up by itself.
     row 7 is the Repeating tab (7 the list, 7.1 the long cycles, 7.2 empty); 4.6's ⋮ holds Select, Completed tasks and
     Archived tasks; rows 8 and 9 open from ⋮. V2 kept, labelled replaced.
   - [x] **Clean-up and the user's follow-ups** (19 Oct): V2 and V3 rows deleted ("remove the version 2 and version 3");
-    Archived both ways on Tasks (last row of One-time + ⋮) and on Habits (row kept + ⋮ › Archived habits, item 129);
+    Archived both ways on Tasks (last row of One-time + ⋮) and on Habits (row kept + ⋮ › Archived habits, item 141);
     No date kept on the evidence (22 habit-app reviews want undated tasks, none complain) and said plainly in the form
     and under the No date heading; task details' History in plain words (Planned for … · Task created …) in 10, 8.6
     and 9.4; 10.2 the Notes tab.
   - [ ] **Build** the Android Tasks page to match (Android first; the iPhone is frozen until the Android revamp is done).
-- [ ] **129. The Habits page: why people open it, then redesign it** (added 18 October 2026, from the user, about the
+- [ ] **141. The Habits page: why people open it, then redesign it** (added 18 October 2026, from the user, about the
   Android Habits page `2106:2`: "this design is outdated … we have archived habits as well … we have groups as well. So
   does the habits … should be displayed as per groups or as per time of the day sections? … figure out why do they come
   here … UX should be top-notch … UI should be top-notch and most importantly it should be native … do the research
@@ -1535,7 +1536,7 @@ and the Add note keyboard coming up by itself.
     option"; "somewhere you are using a white and somewhere red … use it everywhere"): 2.3.2 date picker and 2.3.3 the
     sheet with the day; 2.6 and 3.6 are Cancel | Delete only (done earlier the same day); 3.8 first-visit coach mark;
     Select first in the top bar's ⋮ (5, 5.3) and 5.6 Select with nothing marked; Delete made red in every dialog,
-    menu and selection bar on the Android page (seven places were ink). The same for Tasks (130). Rulebook D9, U39.
+    menu and selection bar on the Android page (seven places were ink). The same for Tasks (142). Rulebook D9, U39.
   - [x] **Archived habits in the ⋮ too** (19 Oct, the user: "from three dots menu they can access archived habits but also
     even from the bottom"): frames 5 and 5.3 list Archived habits last; the Archived row at the end of the list stays.
   - [ ] **Build** the Android Habits page to match (row ⋮, Duplicate, search, selection, Show by, pause sheet, Archived). (Android first; the iPhone is frozen until the
@@ -1915,6 +1916,223 @@ and the Add note keyboard coming up by itself.
   job; SemiBold and Bold became Medium (the font is Regular and Medium only); top app bar titles are Title Large
   Emphasized and a row's name over supporting text Title Medium, as in Figma. Rulebook **U36**; `Android/README.md`,
   "Text". The emulator suite was run after the change (results in the commit). Widgets keep the launcher's font (Glance).
+- [ ] **129. Android Today and Day details, as close to Figma as native Android allows** (added 18 October 2026, from
+  the user: "as closely as uh, match the designs … test everything thoroughly … if you find … any of the designs … is
+  missing … let me know"; then Day details, Figma `2308:2`: "thoroughly cross-check everything … thoroughly test it").
+  Built and checked on the dummy Xiaomi at Figma's 360 dp width, light and dark; committed to main 18 Oct.
+  - [x] Today (Figma `1260:2`): folded headers' icons ringed, not overlapped, and the grey "+1" a circle (`1350:56`);
+    Undo · Note only after a log, until the next action, moving to the newest row; the long-press menu; swipe actions
+    (reveal, never act); snackbars; step habits; the notices (backup paused, off, removed, deleted and the rest);
+    Show on Today, Group your habits, Arrange (sorts now have Undo).
+  - [x] Day details (Figma `2308:2`): every state from 1 to 18 (amount, time, check, several a day, week and month
+    goals, flexible, set days and a day it isn't planned, checklist, quit and slips, limits, task and Reschedule,
+    paused, earlier and later days), the milestone ribbon and the landmark pop-up, Add log / Log / Edit / Delete,
+    All logs, notes. A moved task now says where it went, with Undo.
+  - [x] Fixed on the way: Arrange duplicated a habit (`HabitStore.update` replaced by a stale index; now by ID);
+    wording against Figma ("Mon, Wed, Fri", "$250/$500", floored minutes, bare totals, "Tomorrow").
+  - [x] Tests on this PC, 18 Oct: JVM 74/74 and lint pass; on the Pixel 10 Pro emulator (Android 16) Today 11/11,
+    Screens 13/13, DataSafety 5/5, WidgetData 8/8, Tablet 3/3. Three tests were updated to the new words (T3); the
+    default demo had no calls this week on the week's first day (WidgetData failed on Sundays), fixed. Not run: Speed,
+    the Plus suites, GitHub's emulators.
+  - [x] Committed to main when the user said (18 Oct); not pushed.
+  - [ ] Designs missing or decided without one: listed in the report to the user, 18 Oct.
+- [ ] **130. Android milestones on Today and in the routine player, built to the decided rule** (added 18 October 2026,
+  from the user: "implement the milestone rules … in today page, routine player and all of that … make sure uh, you
+  have that animation properly … don't work on the habit details page"; Figma `2143:2`, rules `2266:2`, Current Work
+  126 and 127, [the list](<../../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>)).
+  - [x] The rule in the shared core (`MilestoneRule`, spec ST-8, 6 tests); ST-7 and its golden answers kept until the
+    iPhone and the habit page move (T21).
+  - [x] Found at the log that reaches one, shown at once, first come first served, within the day's limits; one a habit a
+    day; undo and redo never twice; away (widget, reminder) and the day's end (quit, cut down) as the row's band.
+  - [x] Today: the band and R.1's moment, the bar (V3), the pop-ups, See, a folded card's medal (A.2). Day details:
+    pop-up or ribbon. The routine player: RP.1–RP.3. The notification: N.1–N.6.
+  - [x] Checked on the emulator at 360 dp, light and dark: the bands on opening, Floss's pop-up, the bar and a touch
+    sending it away, Water's row moment (frames), the anniversary pop-up in Day details, the player's ribbon, list and
+    end pop-up, undo and redo, the form's switch and Android's dialog, the notification's tap. The phone locked itself
+    with a PIN while the code was written, so these checks moved to the emulator.
+  - [x] Tests, 18 Oct: the core's `MilestoneRuleTest` 6/6; JVM 74/74 and lint; on the Pixel 10 Pro emulator Today
+    12/12 (a new test: the pop-up, the bar, the row, undo and redo), Screens 13/13, DataSafety 5/5, WidgetData 8/8,
+    Tablet 3/3. The core's GoldenTest can't run on this Windows checkout (its fixtures have CRLF line endings and the
+    large inputs are generated on CI): GitHub's core workflow runs it after the push.
+  - [ ] Not built: the habit page (asked to leave), the widgets' medal and band (WD, WM, WL, WW), the frequency check.
+  - [x] Committed to main, 19 Oct 2026.
+- [ ] **131. Android: the New habit and Edit habit forms and their whole flow, as Figma `1302:2`** (added 18 October
+  2026, from the user: "fix the habit uh, creation forms and overall flow. Uh, we have updated it … Test it
+  thoroughly").
+  - [x] The choices (1–3), the four build forms, Quit, Cut down and Task (2.1–4) and every page they open: Icon (outlined
+    glyphs in 48 dp tiles, the chosen one a circle in the habit's colour), Colour, How often, Time of Day, Group and New
+    group, Starts and Ends, Reminders (off, on, refused, Get reminders on time), How much and Limit (one wide number
+    field, no − / +), How long (Material's time boxes, the cursor in Minutes, Quick picks as filter chips), Unit, Steps,
+    Repeat and the task's How often; Add with no name (2.1.10) and Discard (2.1.9).
+  - [x] Edit habit (6–6.4.2): the Type row and page, "Start X over as Y?" (Cancel keeps it; Start over archives the old
+    one and starts a new one today, D6), Today's "Old X is in Archived habits · View", the goal note (6.1), Discard your
+    changes. Add a 6th habit (5) and Make room (5.1, 5.1.1): archiving or deleting one adds the habit.
+  - [x] Item 108 on Android: New time of day asks only when it starts; the end is worked out and shown ("Ends 6:00 AM,
+    when Morning starts"), **+ New** / **✎ Editing** on its row, no "No change", and it opens in free time (item 98:
+    4:00 AM with the standard set). `SectionPlan.fromStart`, `freeStart` (2 new JVM tests); Settings › Times of Day
+    uses the same page.
+  - [x] Fixed while checking: the date picker's note was drawn over its title; a task's Time turned on even when its
+    picker was cancelled; How long opened at 0:00 with its "1 h" chip broken over two lines; Get reminders on time
+    opened half-way with its buttons under the gesture bar; after one refusal the page offered Open settings while
+    Android would still ask (now: "Turn on Remind me to be asked again"; Open settings once Android stops asking, U37);
+    the quit habit's Started picker read the phone's date, not the store's (D7); the form's sheets now name their
+    controls to UI Automator (T22).
+  - [x] Checked on the Pixel 10 Pro emulator at 360 × 800 dp against every frame, and on a normal launch: Android's
+    notification question allowed, refused once and refused twice, then the reminder set for 9:00 AM.
+  - [x] Tests: `HabitFormTest` (6, new): type change asks then starts over, Cancel and Discard keep it, the goal note,
+    the 6th habit and Make room, a new time of day by its start, quick picks and a task's Time.
+  - [ ] Found, not changed: without exact alarms Android gives a reminder a one-hour window (`setAndAllowWhileIdle`),
+    while Get reminders on time says "up to 10 minutes late" (A11 D1 planned a 10-minute window). Decide: a
+    10-minute `setWindow` (held in Doze) or say "up to an hour".
+  - [x] Committed to main, 19 Oct 2026.
+- [ ] **132. Android: the Habits page, as Figma `2106:2`** (added 19 October 2026, from the user: "implement everything
+  we have related to habits page and test it in the emulator").
+  - [x] 1–1.9: every habit by time of day in the person's order (as on Today), then Quitting, Paused and the Archived
+    row; the line under each name (goal · How often · first reminder; Back on, Paused until you resume, Starts, Ends,
+    Ended; never red); ☰ opens the menu (a drawer of its own; none beside the sidebar); the bar takes the surface colour
+    as the list scrolls; No habits yet and No habits right now; + at the free five opens Add a 6th habit first.
+  - [x] 2–2.7: each row's ⋮ (Edit habit, Duplicate, Pause… or Resume, Archive, Delete habit…). Pause is a sheet (1 week,
+    2 weeks, Until a date… with Android's date picker, Until I resume it; a quit habit's says its run ends and is kept).
+    Snackbars with Undo for Pause, Resume, Archive and Delete; **a delete happens only once its Undo has gone** (D6).
+    Duplicate opens the form as "Water (copy)" and adds it right after Water, with no history.
+  - [x] 3–3.8: long press or ⋮ › Select; "N selected", Select all / Deselect all; the bottom bar's Pause, Resume (each
+    only when it would act), Archive, Group (Put N habits in a group, New group), Delete (Cancel | Delete). The first
+    visit's coach mark under the first row, put away for good by Got it or the first long press.
+  - [x] 4–4.3: search (Habits, then Archived matches; "No habits called …" with New habit "…", the form's name filled
+    in); the search is kept after a result's Habit details.
+  - [x] 5–5.6: the top ⋮ (Select, Show by… while groups exist, Arrange…, Edit groups or New group); Show by Time of day
+    or Group, remembered; by group: each group, No group, Paused.
+  - [x] 6–6.9, 7–7.2: Archived habits (newest first, "Archived 3 Sep" or "Started over as Time it", free or Plus note,
+    ⋮ Restore / Delete habit…, selection, Nothing archived; Restore a 6th habit at the free five); an archived habit's
+    details say when it was archived with Restore, nothing to log; Today's "Old Water is in Archived habits · View" opens
+    Archived habits.
+  - [x] Checked on the Pixel 10 Pro emulator at 360 × 800 dp beside every frame (`demo habits`, the design's own habits;
+    `plus` for a test launch with Plus).
+  - [x] Tests: `HabitsPageTest` (11, new), `HabitListWordsTest` (new).
+  - [ ] Not built: Figma 1.5 (200 % text) checked only by reading the layout (rows have no fixed height).
+  - [x] Committed to main, 19 Oct 2026.
+  - [x] **Added later the same day (the user: "in Habits page we have added a new option to easily get into the
+    archived habits so update that in the code"):** the top ⋮ ends with Archived habits; `HabitsPageTest`
+    `theTopMenuOpensArchivedHabits`.
+- [ ] **133. Android: the Tasks page, as Figma `2373:2`** (added 19 October 2026, from the user: "implement and test the
+  tasks page … once everything is completed Even including with the testing then commit it and push everything").
+  - [x] 1–1.10: two pinned tabs. One-time: Today (carried tasks first, "Planned for Thu 16 Oct", never red; done today
+    struck at the end, "Done 9:12 AM"), Tomorrow, the next days by name, later by month, No date with its note, the
+    Archived row. Touch and hold within a day lifts a row to move it in the day; let go without moving selects.
+  - [x] 2–2.3: ticking stays on Today; done one-time tasks leave the list when their day ends (Completed keeps them).
+  - [x] 3–3.8: each row's ⋮ (Edit task, Move to another day… with Tomorrow / Pick a day… / No date, Duplicate, Skip this
+    time for repeating, Archive, Delete task…; a No date row's Do today and Pick a day…). Snackbars with Undo for every
+    one; **a delete happens only once its Undo has gone** (D6). A repeating task moves only this time, before its next.
+  - [x] 4–4.7: long press or ⋮ › Select; "Select tasks" with nothing marked; the bar's Move (Tomorrow, Pick a day…, No
+    date), Archive, Delete (Cancel | Delete); the coach mark under the first row; the top ⋮ (Select, Completed tasks,
+    Archived tasks).
+  - [x] 5–5.3: search (Tasks with their day, Completed, Archived; "No tasks called …" with New task "…").
+  - [x] 6–6.2: No date (stored as 9999-12-31, so it's never due; the form's Date menu, the Time row gone, both notes).
+  - [x] 7–7.3: the Repeating tab by how often (rhythm, Waiting since / Today / Next, Last done or Skipped); a task's
+    History as events.
+  - [x] 8–8.6: Completed (by the day done, "for 15 Oct" when another day; Mark as not done with Undo; selection deletes
+    completed one-time tasks with Undo; a repeating task's done times stay with it; Nothing completed yet).
+  - [x] 9–9.4: Archived tasks (Restore with Undo, "is back in Today"; Delete task…); an archived task's card and Restore.
+  - [x] 10–10.2: task details (header line, History, Notes, ⋮); ☰ › Tasks counts the tasks still open today.
+  - [x] Checked on the Pixel 10 Pro emulator at 360 × 800 dp beside every frame (`demo tasks`).
+  - [x] Tests: `TasksPageTest` (12, new).
+  - [ ] Not built: Figma 1.5 (200 % text) checked only by reading the layout; the iPhone doesn't know No date yet.
+  - [x] Committed to main, 19 Oct 2026.
+- [x] **134. Android: onboarding for someone new, checked against Figma `1548:2`, and its first habit made seamless**
+  (added 19 October 2026, from the user: "check is everything implemented properly or not").
+  - [x] Every screen of `1548:2` checked against the app, and anything missing or different fixed (the days page's
+    lines, the ideas as rows, a heading that fits, the page dots above the system bar).
+  - [x] Your first habit: an idea opens **its own habit form with everything filled in**, and **Add works straight away**
+    with those values ("the add button was disabled … with those they should be able to continue forward and directly
+    add it"); changing anything stays possible.
+  - [x] **Back from that form goes back to Your first habit, never out of the app** ("it is actually going back … exiting
+    the app completely").
+  - [x] The form is the updated habit form (Current Work 131). No navigation bugs anywhere in onboarding; tested
+    thoroughly (`OnboardingTest`, `TodayTest`).
+  - [x] **Back from an untouched idea asks nothing; only a change asks "Discard this habit?"** (the user, 19 Oct 2026:
+    "it should only show when something has changed").
+- [x] **135. Android: onboarding for someone coming back, every screen of Figma `1549:2`** (added 19 October 2026, from the
+  user: "update the all of the UI … work on the all of the screens"). Google sign-in built if the app's Google client
+  allows it (otherwise say so: "If it is not there, that's fine. I will provide later").
+  - [x] Every row built: Google and Apple (Plus), Google Drive, the old phone, a backup file, Start fresh, and their
+    found, not-found and offline screens; Today says "Your habits are back: …".
+  - [ ] Google sign-in for real: waits for the Android OAuth client; the stand-in is used until then.
+  - [ ] Not built: 2.3, 2.5, 3.3 (they need the account to record where the habits live, D16's proposal).
+- [x] **136. Move to a new phone, end to end: a QR code or 6 digits** (added 19 October 2026, from the user: "implement it
+  properly end-to-end … test in that properly if you want you can start two emulators"). As Rulebook D15: a Cloudflare
+  Worker relay (a new Worker if it needs one), SPAKE2 as Magic Wormhole uses it, the old phone's page showing the QR and
+  6 digits, **a new code at once after any wrong try**, scanning with Google's code scanner or typing six boxes; tested on
+  two emulators, then on real phones by the user.
+  - [x] Built and tested on two emulators (Android 16 and Android 11) against the relay under `wrangler dev`: the move,
+    a wrong code, the new code. `Spake2Test`, `MoveLiveTest`, the Worker's `move.test.ts`.
+  - [x] The relay deployed to dev (19 Oct 2026, the user's own Cloudflare login); `MoveLiveTest` and `live:dev` pass
+    against it.
+  - [ ] The relay in production: only with the user's go-ahead.
+  - [ ] Real phones: the user's check. Plus travelling with the move: not built yet.
+- [x] **137. Android: Backup & Sync updated to Figma `1461:2`** (added 19 October 2026, from the user: "if you feel like uh,
+  we need to work on it then implement … update the UI to the latest … implement it completely end to end"). Only the
+  screens that are ready; the section is still changing.
+  - [x] The page (1–1.3), Move to a new phone, Restore from a backup (Google Drive, a file, the old phone), the two
+    deletion questions; the menu row renamed Backup & Sync. Not built: 4.1, the dated list of Drive backups.
+- [x] Items 133–137 committed to main and pushed once everything is tested ("When everything is completed and tested
+  thoroughly, then commit it and push it").
+- [ ] **138. The Plus account remembers where the habits live, and coming back uses it (2.3, 2.5, 3.3)** (added 19
+  October 2026, from the user: "the account has to store like what is the backup we are using and even including the
+  ID … if you dig through you will understand … that's what we need to implement … if you need any tests then perform
+  it … complete that"). Rulebook D16: which cloud (Google Drive or iCloud), that cloud account's private ID, when and
+  from which kind of device it last synced; no email.
+  - [x] The Worker keeps it with the account and gives it back to the account's own devices; deleting the account
+    deletes it (migration 0003, `POST /v1/account/cloud`). 83 tests pass, 7 new (`test/cloud.test.ts`).
+  - [x] On dev (the user's go-ahead, 19 Oct): migration 0003 applied, version e4d66a69; `npm run live:dev` all passed
+    (4 new checks), `AccountServerLiveTest` 3/3 on the emulator (1 new). Production: only with the user's go-ahead.
+  - [x] The shared core: the record in the account (`CloudRecord`, `CloudKeys`), the call that saves it, the stand-in
+    server the same. `AccountTest` 17 pass, 5 new.
+  - [x] The app saves it after a backup to Google Drive (only when it changed, or once a day), and clears it when the
+    Drive copy is deleted (`BackupCenter.onCloud`, `AccountCenter.noteCloud`).
+  - [x] Coming back: 2.3 They're on your iPhone, 2.5 Plus is back with a different Google Drive account, 3.3 They're on
+    your iPhone after Apple; the chosen Drive checked against the record before anything is read. Step 3 says "Keep the
+    app open on both" (Figma: "It works for 24 hours", no longer true of the move, D15).
+  - [x] Tested on the Pixel 10 Pro emulator: `OnboardingTest` 14 (4 new), `DataSafetyTest` 5, `PlusAccountScreensTest`
+    10, `PlusAccountFramesTest` 6, `TodayTest` 12; 2.3 and 2.5 pictured beside Figma at 360 × 800 dp.
+  - [ ] Not yet: the iPhone writing its iCloud record (it doesn't use the shared account yet) and its own Move to a new
+    phone, which 2.3's steps point to.
+  - [x] Committed and pushed to main (the user: "OK go ahead").
+- [x] **139. Android: Habit details as Figma `1373:2` (19 Oct 2026 frames)** (added 19 October 2026, from the user: "next
+  let's work on this and implement this and Tested thoroughly and once everything is done commit it and push it").
+  - [x] 1 · The page and its header: opens on Progress; two tabs, Progress and History (Notes folds into History); the
+    description cut at two lines with More / Less; on scroll the name moves into a small top bar and the tabs stay; ⋮.
+  - [x] 2 · History: each day's logs and its note together, every day from the start (Not done, Skipped); months fold;
+    Search notes (results with the match in bold, "No notes with …"); All / With notes / Go to date; Add asks "Add to
+    which day?" then opens that day; nothing yet; the note's view (Delete note | Edit) and Add note for any day.
+  - [x] 3 · Progress: the record with See all streaks (Streaks page; a quit habit's See all runs); calendars and Year in
+    Pixels mark a day with a note; a week goal's Week column; an amount under each day; What the squares mean with Has a
+    note and Before the habit started; a new habit's small numbers.
+  - [x] 4 · Fix a past day: a calendar day opens Day details for it; +1 says what it added, with Undo; Add a note….
+  - [x] 5 · The start date: Edit habit's Started says what it means, and can't go past the first log.
+  - [x] 6 · Other states: paused and archived cards on Progress; after a type change, links between the two Waters; a
+    task's details (years, Done N times); 200 % text; loading shapes.
+  - [x] **Milestones as Figma `2475:75` and `1735:4`** (the user, 19 Oct 2026: "it is kind of a gradient and within that
+    we have a cookie shaped line … that gradient needs to adapt to its colors … it has some slight shadow … give
+    attention to details"; "for remaining colors … come up with the best possible design … check in the dark mode").
+    One medal (`ui/habit/Medals.kt`): Figma's own nine-point star, a vertical gradient from the habit's colour (Figma's
+    blue steps: top 28 % toward white, bottom 88 %), the same star at 82 % as a white line at 55 %, a shadow 2 dp down
+    in a dark shade of the colour (on dark, a plain dark one), the number in white. A light colour (yellow, mint) is
+    deepened until white reads on it (3:1). Every colour checked in light and dark on the emulator. The Latest plate is
+    the colour at 14 % (20 % on dark); Next rings 52 dp, the colour at 20 %. All milestones is Figma's list: "Floss · 6
+    reached", In a row / Times in total (the habit's own unit: "Glasses in total") / Anniversaries, Next first.
+  - [x] The page's milestones follow the decided rule (17 Oct 2026, the pop-ups' own): in a row by the habit's bucket,
+    in total as everything logged × one period's goal ("200 glasses in total"), and anniversaries. Before, the page
+    counted goals met ("25 times in total") and had no anniversaries, so it disagreed with the pop-ups.
+  - [x] **The same medal everywhere** (the user, 19 Oct 2026: "make sure the milestones are consistent everywhere
+    wherever they are shown in the app"): the pop-up (with its glow, burst ring and sparkles, Figma `2143:2` P.*), the
+    row's band and Day details' ribbon, the routine's "Reached in this routine", All milestones; the bar's medal is the
+    same star in white with the number in the colour (V3.6); a folded section's small medal is the star. The pop-up's
+    Next ring matches the page's.
+  - [ ] **Later, with the widgets:** a milestone shown on a widget uses the same medal (star, gradient, inner line,
+    shadow; every colour, light and dark). The user, 19 Oct 2026: "widgets as of now you can keep them aside but … when
+    we work on widgets we will also make sure".
+  - [x] Tested on the Pixel 10 Pro emulator: `HabitDetailsTest` 12 (1 new, milestones), `TodayTest` 12 (pop-up, bar,
+    band), `ScreensTest` 13, JVM tests; light and dark pictured at 360 × 800 dp. Committed and pushed.
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:

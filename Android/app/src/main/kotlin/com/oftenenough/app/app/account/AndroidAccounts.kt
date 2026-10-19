@@ -43,7 +43,8 @@ fun androidAccountCenter(sp: SharedPreferences, server: AccountServer, ui: Corou
     AccountCenter(PrefsStorage(sp, AccountCenter.FILE), server, ComposeAccountHolder(), ui)
 
 /** The Worker's stand-in on this phone, its state in [sp] (debug builds and tests only; D8). */
-fun androidStandInServer(sp: SharedPreferences, today: () -> Long) = app.habits.account.StandInAccountServer(PrefsStorage(sp, "state"), today)
+fun androidStandInServer(sp: SharedPreferences, today: () -> Long) =
+    app.habits.account.StandInAccountServer(PrefsStorage(sp, "state"), today, nowMs = System::currentTimeMillis)
 
 /** The real Worker at [base] (`HttpAccountServer.DEV` or `.PRODUCTION`), reached with [AndroidAccountHttp]. */
 fun androidAccountServer(base: String, timeoutMs: Int = 15_000) = app.habits.account.HttpAccountServer(base, AndroidAccountHttp(timeoutMs))

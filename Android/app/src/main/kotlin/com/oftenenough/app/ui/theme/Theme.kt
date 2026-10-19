@@ -40,39 +40,52 @@ data class AppColors(
     val scrim: Color,
     /** The streak flame. */
     val flame: Color,
+    /** Today's badges, round buttons and "+N" (Figma #ECECEF). */
+    val soft: Color,
+    /** What a swipe uncovers, a notice's icon disc, "Done today" and input chips (Figma #E2E2E7). */
+    val behind: Color,
+    /** The outline of Undo · Note (Figma #C9C6CF). */
+    val line: Color,
+    /** A menu's surface (Figma #F5F5F8). */
+    val menu: Color,
 ) {
     /** A habit's own colour, as the iPhone's system colours, light or dark. */
     fun habit(c: HabitColor): Color = if (dark) habitDark.getValue(c) else habitLight.getValue(c)
 
-    /** The progress fill behind a row: a light tint of the habit's colour on the card. */
-    fun fill(c: HabitColor): Color = habit(c).copy(alpha = if (dark) 0.34f else 0.18f).compositeOver(surface)
+    /** The progress fill behind a row: a light tint of the habit's colour on the card (Figma: 16 %, 18 % once full). */
+    fun fill(c: HabitColor, full: Boolean = true): Color =
+        habit(c).copy(alpha = if (dark) (if (full) 0.28f else 0.24f) else (if (full) 0.18f else 0.16f)).compositeOver(surface)
+
+    /** A limit's fill: neutral, never the habit's colour (U3; Figma 1.12, #808085 at 12 %). */
+    val neutralFill: Color get() = Color(0xFF808085).copy(alpha = if (dark) 0.24f else 0.12f).compositeOver(surface)
 
     companion object {
         val light = AppColors(
             dark = false, screen = Color(0xFFF0F0F3), surface = Color.White, ink = Color(0xFF1C1B1F), onInk = Color.White,
             secondary = Color(0xFF5E5E62), tonal = Color(0xFFE6E6EA), tonal2 = Color(0xFFECECEF), outline = Color(0xFF79747E),
             error = Color(0xFFB3261E), scrim = Color(0x52000000), flame = Color(0xFFF57C00),
+            soft = Color(0xFFECECEF), behind = Color(0xFFE2E2E7), line = Color(0xFFC9C6CF), menu = Color(0xFFF5F5F8),
         )
         val dark = AppColors(
             dark = true, screen = Color(0xFF0F0F10), surface = Color(0xFF1E1E20), ink = Color(0xFFF2F2F5), onInk = Color(0xFF1C1B1F),
             secondary = Color(0xFFA3A3A8), tonal = Color(0xFF303033), tonal2 = Color(0xFF29292C), outline = Color(0xFF938F99),
             error = Color(0xFFF2B8B5), scrim = Color(0x99000000), flame = Color(0xFFFF9F0A),
+            soft = Color(0xFF2E2E31), behind = Color(0xFF3A3A3D), line = Color(0xFF4A484E), menu = Color(0xFF2A2A2D),
         )
 
+        /**
+         * The 13 habit colours as Figma's colour sheet draws them (2.1.2, Google's palette; the user, 18 Oct 2026: match
+         * the designs closely). Dark keeps the same colours: they're mid tones that carry a white glyph on either
+         * background; only the row fills grow stronger (see [fill]).
+         */
         private val habitLight = mapOf(
-            HabitColor.RED to Color(0xFFFF3B30), HabitColor.ORANGE to Color(0xFFFF9500), HabitColor.YELLOW to Color(0xFFFFCC00),
-            HabitColor.GREEN to Color(0xFF34C759), HabitColor.MINT to Color(0xFF00C7BE), HabitColor.TEAL to Color(0xFF30B0C7),
-            HabitColor.CYAN to Color(0xFF32ADE6), HabitColor.BLUE to Color(0xFF007AFF), HabitColor.INDIGO to Color(0xFF5856D6),
-            HabitColor.PURPLE to Color(0xFFAF52DE), HabitColor.PINK to Color(0xFFFF2D55), HabitColor.BROWN to Color(0xFFA2845E),
-            HabitColor.GRAY to Color(0xFF8E8E93),
+            HabitColor.RED to Color(0xFFEA4335), HabitColor.ORANGE to Color(0xFFFA7B17), HabitColor.YELLOW to Color(0xFFF9AB00),
+            HabitColor.GREEN to Color(0xFF34A853), HabitColor.MINT to Color(0xFF00A39A), HabitColor.TEAL to Color(0xFF12B5CB),
+            HabitColor.CYAN to Color(0xFF24C1E0), HabitColor.BLUE to Color(0xFF4285F4), HabitColor.INDIGO to Color(0xFF5C6BC0),
+            HabitColor.PURPLE to Color(0xFFA142F4), HabitColor.PINK to Color(0xFFE52592), HabitColor.BROWN to Color(0xFFA1887F),
+            HabitColor.GRAY to Color(0xFF80868B),
         )
-        private val habitDark = mapOf(
-            HabitColor.RED to Color(0xFFFF453A), HabitColor.ORANGE to Color(0xFFFF9F0A), HabitColor.YELLOW to Color(0xFFFFD60A),
-            HabitColor.GREEN to Color(0xFF30D158), HabitColor.MINT to Color(0xFF63E6E2), HabitColor.TEAL to Color(0xFF40C8E0),
-            HabitColor.CYAN to Color(0xFF64D2FF), HabitColor.BLUE to Color(0xFF0A84FF), HabitColor.INDIGO to Color(0xFF5E5CE6),
-            HabitColor.PURPLE to Color(0xFFBF5AF2), HabitColor.PINK to Color(0xFFFF375F), HabitColor.BROWN to Color(0xFFAC8E68),
-            HabitColor.GRAY to Color(0xFF8E8E93),
-        )
+        private val habitDark = habitLight
     }
 }
 

@@ -22,7 +22,7 @@ fun IdeasScreen(onBack: () -> Unit, onPick: (HabitIdea) -> Unit) {
         SegmentedList {
             HabitIdea.all.forEachIndexed { i, idea ->
                 Box(Modifier.semantics { testTag = "idea-${idea.name}" }) {
-                    ListRow(idea.name, i, HabitIdea.all.size, idea.line, HabitIcons.icon(idea.symbol), iconDisc = true, onClick = { onPick(idea) })
+                    IdeaRow(idea, i, HabitIdea.all.size) { onPick(idea) }
                 }
             }
         }

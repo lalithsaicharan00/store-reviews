@@ -101,20 +101,21 @@ class ScreensTest {
         tapTag("row-Read")
         tapTag("day-identity")
         waitFor(hasTestTag("habit-details"), "Habit details")
-        waitFor(hasText("History"), "the History tab")
-        tapTag("habit-tab-progress")
+        // It opens on Progress; History is the other tab (Figma 1373:2, 1.1).
         waitFor(hasText("Overall record"), "the Progress tab's record")
-        tapTag("habit-tab-notes")
+        tapTag("habit-tab-history")
         waitGone(hasText("Overall record"), "the record")
+        waitFor(hasTestTag("history-search"), "History's Search notes")
     }
 
     @Test fun aLongPressOnARowOpensItsMenu() {
         launch()
         compose.onNodeWithTag("row-Water", useUnmergedTree = true).performTouchInput { longClick() }
+        // Figma 1.4: Edit habit, Arrange…, Pause…, Add note, Skip today.
         waitFor(hasText("Edit habit"), "the row's menu")
-        waitFor(hasText("Open habit page"), "Open habit page")
-        tapText("Open habit page")
-        waitFor(hasTestTag("habit-details"), "Habit details")
+        waitFor(hasText("Arrange…"), "Arrange…")
+        tapText("Pause…")
+        waitFor(hasText("Pause Water"), "the Pause page")
     }
 
     @Test fun theIconsShortcutStartsTheNextRoutine() {
@@ -166,7 +167,7 @@ class ScreensTest {
         menu("habits")
         waitFor(hasTestTag("habits-row-Water"), "Water in Habits")
         compose.onNodeWithTag("habits-row-Water", useUnmergedTree = true).performTouchInput { longClick() }
-        waitFor(hasText("1 chosen"), "one chosen")
+        waitFor(hasText("1 selected"), "one selected")
         tapTag("habits-archive")
         waitFor(hasText("Archived"), "the Archived group")
         assertTrue("Water archived", AppGraph.store.habits.first { it.name == "Water" }.archived)

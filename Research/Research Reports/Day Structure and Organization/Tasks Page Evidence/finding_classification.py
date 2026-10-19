@@ -1,4 +1,4 @@
-"""Tasks page, third pass (Current Work 130, 19 Oct 2026): habit apps only. Written by Claude (Claude Code).
+"""Tasks page, third pass (Current Work 142, 19 Oct 2026): habit apps only. Written by Claude (Claude Code).
 The user asked whether the first two passes looked at a habit app's task page or a to-do app's home page, and raised two
 problems with grouping by when: a repeating task on some days, or a task far ahead, is hard to find; and Repeating,
 Completed and Archived sit at the very bottom. finding_scan.py screened every habit-app review for finding and reaching

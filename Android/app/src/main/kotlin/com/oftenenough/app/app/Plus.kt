@@ -92,6 +92,9 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
         return result
     }
 
+    /** A test launch that asks for Plus (TestLaunch.PLUS): owned from the start, as if bought. */
+    fun ownForTest() = own(PlusProduct.PLUS)
+
     /** Play confirmed a pending payment (what the real store hears from Play's purchase updates). */
     fun confirmPending() { pending?.let { own(it); pending = null } }
 

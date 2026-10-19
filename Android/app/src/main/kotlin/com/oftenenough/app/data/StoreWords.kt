@@ -7,7 +7,7 @@ import java.time.ZoneId
 
 /** The line under a row's name: what today asks of this habit, then its time. */
 fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime?, progress: Double, goal: Double, running: Boolean): String {
-    if (habit.kind == HabitKind.Task) return taskLine(habit, day)
+    if (habit.kind == HabitKind.Task) return taskLine(habit, day, weekStart)
     val t = time?.let { " · " + DayWords.clockMinute(it.minuteOfDay) } ?: ""
     if (isSkipped(habit, day)) return (if (day == today()) "Skipped today" else "Skipped") + t
     val f = habit.frequency
@@ -21,10 +21,28 @@ fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime
     if (habit.kind == HabitKind.Check && f.isDayBased && (slot != null || goal <= 1)) {
         return HabitCopy.capitalized(HabitCopy.rhythm(f, weekStart, short = true)) + t
     }
+    // A limit says where it stands in words, never in red (Figma 1.12, 1.12.1; U3).
+    if (habit.atMost && goal > 0 && progress >= goal) {
+        val counted = goalLine(habit, progress, goal, running).replace(" max", "")
+        return (if (progress > goal) "Over the limit · " else "Limit reached · ") + counted + t
+    }
     return goalLine(habit, progress, goal, running) + t
 }
 
 /** One day's result, never a weekly total labelled Today. */
+/** How a day went, under a note's title (Habit details, Figma 2.9): "Not done · 0 of 8 glasses", "Goal met · 8 of 8 glasses". */
+fun HabitStore.noteDayLine(habit: Habit, day: Int): String {
+    val result = dayResult(habit, day).replace("/", " of ")
+    val state = when {
+        isPaused(habit, day) || isSkipped(habit, day) || day < rules.startDay(habit) -> return result
+        habit.kind == HabitKind.Quit -> return result
+        rules.isDayMet(habit, day) -> "Goal met"
+        entries(habit.id, day).isEmpty() -> if (day == today()) "Nothing logged yet" else "Not done"
+        else -> "Part done"
+    }
+    return if (result.isBlank() || result == state) state else "$state · $result"
+}
+
 fun HabitStore.dayResult(habit: Habit, day: Int): String {
     if (isPaused(habit, day)) return "Paused"
     if (isSkipped(habit, day)) return "Skipped"
@@ -57,7 +75,7 @@ fun Entry.description(habit: Habit): String {
     if (stepId != null) return habit.steps.firstOrNull { it.id == stepId }?.name ?: "Checklist step"
     return when (val k = habit.kind) {
         is HabitKind.Amount -> HabitCopy.amount(value, k.unit)
-        HabitKind.Duration -> if (value < 1) "${HabitCopy.number(value * 60)} sec" else Format.minutes(value)
+        HabitKind.Duration -> if (value < 1) "${HabitCopy.number(kotlin.math.floor(value * 60))} sec" else Format.minutes(kotlin.math.floor(value))
         HabitKind.Quit -> "Slip"
         HabitKind.Check -> if (value == 1.0) "Check" else HabitCopy.amount(value, habit.checkUnit ?: "checks")
         HabitKind.Task -> "Done"
@@ -94,7 +112,8 @@ fun Entry.originLine(slip: Boolean): String? {
     val s = source ?: return null
     val verb = if (slip) "Recorded" else "Logged"
     return when (s) {
-        EntrySource.MANUAL -> if (slip) "Recorded with Record a slip." else "Logged with Log manually."
+        // Figma 1.8, 9.3: "Logged by hand.", "Recorded by hand."
+        EntrySource.MANUAL -> if (slip) "Recorded by hand." else "Logged by hand."
         EntrySource.TODAY -> "$verb from Today."
         EntrySource.ROUTINE -> "$verb in the routine player."
         EntrySource.REMINDER -> "$verb from a reminder."
@@ -138,13 +157,33 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                 val total = entries.sumOf { it.value }
                 val saved = if (entries.isEmpty()) null else when (val k = r.kind) {
                     is HabitKind.Amount -> HabitCopy.amount(total, k.unit) + " saved"
-                    HabitKind.Duration -> Format.minutes(total) + " saved"
+                    HabitKind.Duration -> Format.minutes(kotlin.math.floor(total)) + " saved"
                     HabitKind.Check -> if (rules.countsUp(habit, day)) HabitCopy.amount(total, r.checkUnit ?: "checks") + " saved" else null
                     else -> null
                 }
                 return DayStatus("Skipped", (saved?.let { "$it · " } ?: "") + "Doesn't count toward your streak")
             }
             if (day < rules.startDay(habit)) return DayStatus("Before it started")
+            // A later day plans (Figma 1.4): what the day asks, "For Tue, 13 Oct"; logging waits for the day.
+            if (day > store.today()) {
+                val goal = rules.dayGoal(r)
+                val planned = when (val k = r.kind) {
+                    is HabitKind.Amount -> if (r.frequency.isDayBased && !r.atMost) HabitCopy.amount(goal, k.unit) + " planned" else "Planned"
+                    HabitKind.Duration -> if (r.frequency.isDayBased && !r.atMost) Format.minutes(goal) + " planned" else "Planned"
+                    HabitKind.Checklist -> "${r.steps.size} ${if (r.steps.size == 1) "step" else "steps"} planned"
+                    HabitKind.Check -> if (rules.countsUp(habit, day)) HabitCopy.amount(goal, r.checkUnit ?: "times") + " planned" else "Planned"
+                    else -> "Planned"
+                }
+                return DayStatus(planned, "For $shortDay")
+            }
+            // A day it isn't planned (Figma 3.3): said plainly, and it can still be logged.
+            if (r.kind != HabitKind.Task && r.kind != HabitKind.Quit && r.frequency.isDayBased && !r.frequency.isFlexible &&
+                !rules.isDue(habit, day, countingSkips = false)) {
+                // Figma: "Run is planned on Mon, Wed and Fri."; "every day except Sun" and "on weekdays" stay as they are.
+                val days = HabitCopy.rhythm(r.frequency, store.weekStart, short = true)
+                val on = if (days.startsWith("every ") && !days.startsWith("every day")) "on " + days.removePrefix("every ") else days
+                return DayStatus("Not planned", "${habit.name} is planned $on. You can still log it.")
+            }
             when (r.kind) {
                 HabitKind.Quit -> {
                     val n = entries.size
@@ -169,8 +208,11 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     if (!r.frequency.isDayBased) {
                         val period = rules.progress(habit, day)
                         val goal = rules.goal(habit)
-                        return DayStatus(if (progress > 0) HabitCopy.amount(progress, unit) + " " + dayWord else "Not checked $dayWord",
-                            "${HabitCopy.number(period)} of ${HabitCopy.amount(goal, unit)}" + periodWord(r.frequency))
+                        // Met: the week's or month's goal is reached, in words (Figma 5.1, 6.1).
+                        val periodName = periodWord(r.frequency).trim().removePrefix("this ").replaceFirstChar { it.uppercase() }
+                        return DayStatus(HabitCopy.amount(progress, unit) + " " + dayWord,
+                            if (period >= goal && periodName.isNotEmpty()) "$periodName goal reached"
+                            else "${HabitCopy.number(period)} of ${HabitCopy.amount(goal, unit)}" + periodWord(r.frequency))
                     }
                     if (rules.countsUp(habit, day)) {
                         val goal = rules.dayGoal(r)
@@ -192,21 +234,29 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     val timed = r.kind == HabitKind.Duration
                     val unit = r.unit
                     fun text(v: Double) = if (timed) Format.minutes(kotlin.math.floor(v)) else HabitCopy.amount(v, unit)
+                    // A period's total says its numbers only ("150 of 300 this week"; money keeps its sign; Figma 16–18).
+                    fun bare(v: Double) = if (timed) Format.minutes(kotlin.math.floor(v)) else if (unit.trim() in HabitCopy.currencies) HabitCopy.amount(v, unit) else HabitCopy.number(v)
+                    // Today's time, in minutes, so the big number reads "90 min today" (Figma 18).
+                    fun today(v: Double) = if (timed) "${kotlin.math.floor(v).toLong()} min" else HabitCopy.amount(v, unit)
                     val saved = entries.sumOf { it.value }
                     val running = if (timed && isToday) store.timers[habit.id] else null
                     val goal = rules.dayGoal(r)
                     if (rules.isTotal(r)) {
                         val total = rules.progress(habit, day)
                         val period = periodWord(r.frequency)
-                        return DayStatus("${text(saved)} $dayWord",
-                            if (r.atMost) "${text(total)}$period · limit ${text(goal)}" else "${text(total)} of ${text(goal)}$period", running)
+                        return DayStatus("${today(saved)} $dayWord",
+                            if (r.atMost) "${text(total)}$period · limit ${text(goal)}"
+                            else "${bare(total)} of ${bare(goal)}$period" + (if (total >= goal) " · Goal reached" else ""), running)
                     }
-                    if (r.atMost) return DayStatus("${text(saved)} $dayWord", "Limit ${text(goal)}" + (if (saved <= goal) " · within limit" else ""), running)
+                    // A limit says where it stands in words, never in red (Figma 10–11.3, U3).
+                    if (r.atMost) return DayStatus("${today(saved)} $dayWord", "Limit ${text(goal)} · " + when {
+                        saved > goal -> "Over the limit"; saved >= goal -> "Limit reached"; else -> "within max"
+                    }, running)
                     val title = if (timed) {
                         if (goal < 60 && saved < 60) "${kotlin.math.floor(saved).toInt()} of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"
                     } else if (unit.trim() in HabitCopy.currencies) "${HabitCopy.amount(saved, unit)} of ${HabitCopy.amount(goal, unit)}"
                     else "${HabitCopy.number(saved)} of ${HabitCopy.amount(goal, unit)}"
-                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (isToday) "${text(goal - saved)} to go" else "For $shortDay"
+                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (isToday) "${text(goal - (if (timed) kotlin.math.floor(saved) else saved))} to go" else "For $shortDay"
                     val f = r.frequency
                     if (f is Frequency.Flexible) {
                         val count = rules.flexibleProgress(habit, day)

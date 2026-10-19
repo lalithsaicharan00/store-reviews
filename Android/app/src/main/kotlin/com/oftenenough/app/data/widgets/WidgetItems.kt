@@ -148,7 +148,7 @@ object WidgetItems {
             !due -> {
                 w.state = "notPlanned"
                 val dueDay = habit.dueDay
-                w.value = if (habit.kind == HabitKind.Task && dueDay != null && dueDay > day) "Planned for " + DayWords.short(dueDay) else "Not planned today"
+                w.value = if (habit.kind == HabitKind.Task && dueDay != null && dueDay > day && dueDay != com.oftenenough.app.data.NO_DATE_DAY) "Planned for " + DayWords.short(dueDay) else "Not planned today"
                 w.line = w.value; w.big = "Not planned"
                 // A set schedule says its days ("Mon, Wed and Fri") so a habit missing today isn't a surprise.
                 w.caption = if (habit.kind != HabitKind.Task) HabitCopy.capitalized(HabitCopy.rhythm(habit.frequency, store.weekStart, short = true)) else "Not planned"

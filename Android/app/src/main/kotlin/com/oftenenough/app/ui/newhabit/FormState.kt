@@ -28,49 +28,58 @@ data class DraftTime(val id: String = newId(), val minute: Int, val part: String
  * Everything the New Habit form holds while it's open (the iPhone's `HabitForm` state), surviving its pages. [makeHabit]
  * is the one place the habit is built, so the preview, the sentence and what's saved always agree.
  */
-class FormState(val type: ItemType, val original: Habit?, private val store: HabitStore) {
+class FormState(initialType: ItemType, val original: Habit?, private val store: HabitStore, template: Habit? = null) {
+    /** Where the form's values come from: the habit being edited, or the one being duplicated (Habits, Figma 2.2). */
+    private val from: Habit? = original ?: template
+    /** The kind of habit. Edit can change it (Figma 6.3): saving then starts the habit over, after asking. */
+    var type by mutableStateOf(initialType)
     /** The name as the previews show it: it catches up when typing pauses (S11); saving reads the live field. */
-    var name by mutableStateOf(original?.name ?: "")
+    var name by mutableStateOf(original?.name ?: template?.let { TextLimit.clean("${it.name} (copy)", TextLimit.NAME) } ?: "")
     /** Whether the live field has a name: changes only when it becomes empty or not, so Add follows at once. */
     var nameFilled by mutableStateOf(name.isNotBlank())
-    var description by mutableStateOf(original?.let { store.descriptions[it.id] } ?: "")
-    var reminderWords by mutableStateOf(original?.reminderText ?: "")
-    var symbol by mutableStateOf(original?.symbol ?: when (type) { ItemType.QUIT -> "nosign"; ItemType.TASK -> "calendar"; else -> "star.fill" })
-    var pickedSymbol by mutableStateOf(original != null)
-    var color by mutableStateOf(original?.color ?: store.suggestedColor())
+    var description by mutableStateOf(from?.let { store.descriptions[it.id] } ?: "")
+    var reminderWords by mutableStateOf(from?.reminderText ?: "")
+    /** Tell me at milestones (quit and cut down; Figma N.1): off until the person turns it on. */
+    var milestoneAlerts by mutableStateOf(from?.let { store.setting(com.oftenenough.app.app.reminders.MilestoneAlerts.key(it.id)) == "true" } ?: false)
+    private val originalAlerts = milestoneAlerts
+    var symbol by mutableStateOf(from?.symbol ?: when (initialType) { ItemType.QUIT -> "nosign"; ItemType.TASK -> "calendar"; else -> "star.fill" })
+    var pickedSymbol by mutableStateOf(from != null)
+    var color by mutableStateOf(from?.color ?: store.suggestedColor())
     var amountText by mutableStateOf("")
     var unit by mutableStateOf("")
-    var hours by mutableStateOf("0")
-    var minutes by mutableStateOf("0")
+    var hours by mutableStateOf("")
+    var minutes by mutableStateOf("")
     var step by mutableStateOf<Double?>(null)
     var asks by mutableStateOf(false)
     var often by mutableStateOf(OftenDraft())
     var taskRepeats by mutableStateOf(false)
-    var items by mutableStateOf<List<Step>>(original?.steps ?: emptyList())
-    var quitSince by mutableStateOf(original?.quitSince ?: original?.createdAt ?: store.clock())
+    var items by mutableStateOf<List<Step>>(from?.steps ?: emptyList())
+    var quitSince by mutableStateOf(original?.let { it.quitSince ?: it.createdAt } ?: store.clock())
     var taskDate by mutableStateOf(store.today())
+    /** No date (Tasks, Figma 6.2): it stays on the Tasks page and never shows on Today until it has a day. */
+    val taskHasNoDate: Boolean get() = type == ItemType.TASK && !taskRepeats && taskDate == com.oftenenough.app.data.NO_DATE_DAY
     var taskHasTime by mutableStateOf(false)
     var taskMinute by mutableStateOf(9 * 60)
-    var timesOfDay by mutableStateOf(original?.parts?.ifEmpty { listOf(DaySection.ANYTIME) } ?: listOf(DaySection.ANYTIME))
-    var remindOn by mutableStateOf(original?.let { it.remind && it.reminders.isNotEmpty() } ?: false)
-    var times by mutableStateOf<List<DraftTime>>(original?.reminders?.map { DraftTime(it.id, it.minuteOfDay, null) } ?: emptyList())
-    var remindersEdited by mutableStateOf(original != null)
+    var timesOfDay by mutableStateOf(from?.parts?.ifEmpty { listOf(DaySection.ANYTIME) } ?: listOf(DaySection.ANYTIME))
+    var remindOn by mutableStateOf(from?.let { it.remind && it.reminders.isNotEmpty() } ?: false)
+    var times by mutableStateOf<List<DraftTime>>(from?.reminders?.map { DraftTime(if (original != null) it.id else newId(), it.minuteOfDay, null) } ?: emptyList())
+    var remindersEdited by mutableStateOf(from != null)
     var startDate by mutableStateOf(original?.let { it.startsOn ?: store.rules.calendarDayOf(it.createdAt) } ?: store.today())
     var hasEnd by mutableStateOf(original?.endsOn != null)
     var endDate by mutableStateOf(original?.endsOn ?: store.today())
-    var alert by mutableStateOf(original?.alert ?: "notification")
-    var followUp by mutableStateOf(original?.followUpMinutes)
-    var groupId by mutableStateOf(original?.let { store.groupOf(it.id)?.id })
+    var alert by mutableStateOf(from?.alert ?: "notification")
+    var followUp by mutableStateOf(from?.followUpMinutes)
+    var groupId by mutableStateOf(from?.let { store.groupOf(it.id)?.id })
     private val originalGroup = groupId
     private val originalDescription = description
 
     init {
-        val o = original
+        val o = from
         if (o != null) {
             when (val k = o.kind) {
                 is HabitKind.Amount -> { amountText = GoalNumber.text(o.goal); unit = k.unit; step = k.increment.takeIf { it > 0 }; asks = k.increment <= 0 }
                 HabitKind.Duration -> if (o.atMost) { amountText = GoalNumber.text(o.goal); unit = HabitPlan.TIME_UNIT }
-                    else { hours = (o.goal.toInt() / 60).toString(); minutes = (o.goal.toInt() % 60).toString() }
+                    else { hours = (o.goal.toInt() / 60).takeIf { it > 0 }?.toString() ?: ""; minutes = (o.goal.toInt() % 60).toString().padStart(2, '0') }
                 else -> {}
             }
             often = OftenDraft().seed(startDate, store.weekStart).choose(HowOften.of(o))
@@ -80,18 +89,35 @@ class FormState(val type: ItemType, val original: Habit?, private val store: Hab
             times = times.map { it.copy(part = partFor(it.minute)) }
         } else {
             often = OftenDraft().seed(store.today(), store.weekStart)
-            if (type != ItemType.QUIT) syncReminders(force = true)
+            if (initialType != ItemType.QUIT) syncReminders(force = true)
         }
     }
 
+    /** An idea fills in everything it says (Onboarding 07.1), so Add works at once; anything can still be changed. */
     fun applyIdea(idea: HabitIdea) {
         name = idea.name
         nameFilled = true
-        symbol = HabitIcons.suggest(idea.name) ?: idea.symbol
-        often = when (idea.name) { "Exercise" -> often.choose(HowOften.Times(GoalPeriod.WEEK, 3)); else -> often.choose(HowOften.EveryDay) }
+        symbol = idea.symbol
+        color = idea.color
+        often = often.choose(HowOften.EveryDay)
+        when (idea.type) {
+            "amount" -> { amountText = GoalNumber.text(idea.goal); unit = idea.unit; step = idea.step; asks = false }
+            "time" -> { hours = (idea.minutes / 60).takeIf { it > 0 }?.toString() ?: ""; minutes = (idea.minutes % 60).toString().padStart(2, '0') }
+        }
     }
 
     val editing: Boolean get() = original != null
+    /** Edit chose another kind: saving starts the habit over (Figma 6.3.1, 6.4.2). */
+    val typeChanged: Boolean get() = original != null && type != ItemType.of(original)
+
+    /** Another kind chosen in Edit: what the new kind needs starts from a sensible place (Time it: 10 min, Figma 6.3.1). */
+    fun changeType(to: ItemType) {
+        if (to == type) return
+        type = to
+        if (to == ItemType.TIME && (hours.toIntOrNull() ?: 0) == 0 && (minutes.toIntOrNull() ?: 0) == 0) { hours = ""; minutes = "10" }
+        if (to == ItemType.AMOUNT || to == ItemType.CUT_DOWN) { if (GoalNumber.parse(amountText) == null) amountText = "" }
+        if (to == ItemType.CUT_DOWN && timesOfDay != listOf(DaySection.ANYTIME)) timesOfDay = listOf(DaySection.ANYTIME)
+    }
     val weekStart: Int get() = store.weekStart
     val originalGroupId: String? get() = originalGroup
     val isHabit: Boolean get() = type.isBuild || type == ItemType.CUT_DOWN
@@ -135,12 +161,23 @@ class FormState(val type: ItemType, val original: Habit?, private val store: Hab
         return true
     }
 
-    val hasChanges: Boolean get() = if (editing) editChanged else trimmedName.isNotEmpty() || filledItems.isNotEmpty()
+    val hasChanges: Boolean get() = when {
+        editing -> editChanged
+        // Filled in by an idea: only what the person changed counts, so an idea left as it was closes without asking.
+        pristine != null -> signature() != pristine
+        else -> trimmedName.isNotEmpty() || filledItems.isNotEmpty()
+    }
+
+    private var pristine: String? = null
+    /** The form as an idea (or a search's name) filled it in: [hasChanges] compares with it from now on. */
+    fun markPristine() { pristine = signature() }
+    private fun signature(): String = makeHabit(trimmedName).copy(id = "", createdAt = 0L).toString() + "|" + description + "|" + groupId
 
     val editChanged: Boolean get() {
         val o = original ?: return false
         return edited(o.name) != o || trimmedName != o.name || TextLimit.clean(reminderWords, TextLimit.REMINDER_TEXT) != (o.reminderText ?: "") ||
-            TextLimit.clean(description, TextLimit.DESCRIPTION) != originalDescription || groupId != originalGroup
+            TextLimit.clean(description, TextLimit.DESCRIPTION) != originalDescription || groupId != originalGroup ||
+            milestoneAlerts != originalAlerts || typeChanged
     }
 
     fun edited(name: String): Habit? {
@@ -161,7 +198,7 @@ class FormState(val type: ItemType, val original: Habit?, private val store: Hab
             ItemType.TASK -> {
                 h = h.copy(kind = HabitKind.Task, dueDay = if (taskRepeats) null else taskDate)
                 if (taskRepeats) h = h.copy(frequency = often.often(false).frequency(false, false))
-                if (taskHasTime) h = h.copy(dueMinute = taskMinute)
+                if (taskHasTime && !taskHasNoDate) h = h.copy(dueMinute = taskMinute)
             }
             else -> {
                 h = plan.apply(h)
@@ -189,6 +226,7 @@ class FormState(val type: ItemType, val original: Habit?, private val store: Hab
 
     /** The whole habit in one sentence: name, how much, how often and the parts of the day. */
     fun sentence(): String {
+        if (type == ItemType.TASK && !taskRepeats && taskDate == com.oftenenough.app.data.NO_DATE_DAY) return trimmedName
         if (type == ItemType.TASK && !taskRepeats) {
             val day = when (taskDate) { store.today() -> "today"; store.today() + 1 -> "tomorrow"; else -> null }
             return trimmedName + (day?.let { " $it" } ?: (" on " + com.oftenenough.app.data.DayWords.short(taskDate))) +
@@ -243,6 +281,12 @@ class FormState(val type: ItemType, val original: Habit?, private val store: Hab
         val part = parts.minByOrNull { p -> times.count { it.part == p } }
         val last = times.lastOrNull { it.part == part }?.minute
         times = times + DraftTime(minute = ((last?.plus(60)) ?: defaultMinute(part ?: DaySection.ANYTIME)) % (24 * 60), part = part)
+    }
+
+    /** Add a time (Figma 2.1.6.2.1): the minute picked, in whichever time of day it falls. */
+    fun addReminderAt(minute: Int) {
+        remindersEdited = true
+        if (times.none { it.minute == minute }) times = (times + DraftTime(minute = minute, part = partFor(minute))).sortedBy { store.rules.dayMinute(it.minute) }
     }
 
     fun partFor(minute: Int): String? {

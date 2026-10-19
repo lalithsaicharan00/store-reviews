@@ -1,6 +1,7 @@
 package com.oftenenough.app.ui.theme
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -58,13 +59,57 @@ object HabitIcons {
         "flame.fill" to Icons.Rounded.LocalFireDepartment, "bolt.fill" to Icons.Rounded.Bolt, "target" to Icons.Rounded.TrackChanges,
         "flag.fill" to Icons.Rounded.Flag, "gift.fill" to Icons.Rounded.CardGiftcard, "camera.fill" to Icons.Rounded.PhotoCamera,
         "globe" to Icons.Rounded.Public, "airplane" to Icons.Rounded.Flight, "car.fill" to Icons.Rounded.DirectionsCar, "tree.fill" to Icons.Rounded.Park,
-        "plus.forwardslash.minus" to Icons.Rounded.Calculate, "timer" to Icons.Rounded.Timer,
+        "plus.forwardslash.minus" to Icons.Rounded.Calculate, "timer" to Icons.Rounded.Timer, "trophy.fill" to Icons.Rounded.EmojiEvents,
         // Symbols the iPhone's ideas and tasks use outside the picker.
         "shippingbox.fill" to Icons.Rounded.Inventory2, "creditcard.fill" to Icons.Rounded.CreditCard, "banknote.fill" to Icons.Rounded.Payments,
         "checkmark.circle.fill" to Icons.Rounded.CheckCircle, "list.bullet" to Icons.Rounded.Checklist, "figure.cooldown" to Icons.Rounded.SportsGymnastics,
         "sun.horizon.fill" to Icons.Rounded.WbTwilight, "moon.fill" to Icons.Rounded.Bedtime, "drop" to Icons.Rounded.WaterDrop,
         "phone.down.fill" to Icons.Rounded.PhoneDisabled, "wind" to Icons.Rounded.Air, "flower" to Icons.Rounded.LocalFlorist,
         "camera.macro" to Icons.Rounded.LocalFlorist, "repeat" to Icons.Rounded.Repeat, "square.and.pencil" to Icons.Rounded.EditNote,
+    )
+
+    /** The same icons outlined, as the picker draws them (Figma 2.1.1: Material Symbols, fill 0); a habit's own circle stays filled. */
+    private val outlinedMap: Map<String, ImageVector> = mapOf(
+        "heart.fill" to Icons.Outlined.FavoriteBorder, "pills.fill" to Icons.Outlined.Medication, "cross.case.fill" to Icons.Outlined.MedicalServices,
+        "drop.fill" to Icons.Outlined.WaterDrop, "lungs.fill" to Icons.Outlined.Air, "brain.head.profile" to Icons.Outlined.Psychology,
+        "bandage.fill" to Icons.Outlined.Healing, "mouth.fill" to Icons.Outlined.Mood, "eye.fill" to Icons.Outlined.Visibility,
+        "bed.double.fill" to Icons.Outlined.Bed, "allergens" to Icons.Outlined.Grass, "stethoscope" to Icons.Outlined.LocalHospital,
+        "figure.walk" to Icons.Outlined.DirectionsWalk, "figure.run" to Icons.Outlined.DirectionsRun,
+        "figure.flexibility" to Icons.Outlined.SportsGymnastics, "figure.strengthtraining.traditional" to Icons.Outlined.FitnessCenter,
+        "figure.yoga" to Icons.Outlined.SelfImprovement, "figure.pool.swim" to Icons.Outlined.Pool, "bicycle" to Icons.Outlined.DirectionsBike,
+        "dumbbell.fill" to Icons.Outlined.FitnessCenter, "figure.hiking" to Icons.Outlined.Hiking, "sportscourt.fill" to Icons.Outlined.SportsTennis,
+        "stopwatch.fill" to Icons.Outlined.Timer, "shoeprints.fill" to Icons.Outlined.NordicWalking,
+        "figure.mind.and.body" to Icons.Outlined.SelfImprovement, "book.fill" to Icons.Outlined.MenuBook, "brain" to Icons.Outlined.Psychology,
+        "pencil" to Icons.Outlined.Edit, "text.book.closed.fill" to Icons.Outlined.Book, "lightbulb.fill" to Icons.Outlined.Lightbulb,
+        "music.note" to Icons.Outlined.MusicNote, "paintpalette.fill" to Icons.Outlined.Palette, "guitars.fill" to Icons.Outlined.Piano,
+        "headphones" to Icons.Outlined.Headphones, "character.book.closed.fill" to Icons.Outlined.Translate, "sparkles" to Icons.Outlined.AutoAwesome,
+        "house.fill" to Icons.Outlined.Home, "washer.fill" to Icons.Outlined.LocalLaundryService, "dishwasher.fill" to Icons.Outlined.Countertops,
+        "sink.fill" to Icons.Outlined.Wash, "refrigerator.fill" to Icons.Outlined.Kitchen, "trash.fill" to Icons.Outlined.Delete,
+        "leaf.fill" to Icons.Outlined.Eco, "pawprint.fill" to Icons.Outlined.Pets, "cart.fill" to Icons.Outlined.ShoppingCart,
+        "tshirt.fill" to Icons.Outlined.Checkroom, "shower.fill" to Icons.Outlined.Shower,
+        "laptopcomputer" to Icons.Outlined.Laptop, "briefcase.fill" to Icons.Outlined.Work, "envelope.fill" to Icons.Outlined.Email,
+        "phone.fill" to Icons.Outlined.Phone, "calendar" to Icons.Outlined.CalendarMonth, "checklist" to Icons.Outlined.Checklist,
+        "clock.fill" to Icons.Outlined.Schedule, "chart.bar.fill" to Icons.Outlined.BarChart, "graduationcap.fill" to Icons.Outlined.School,
+        "dollarsign.circle.fill" to Icons.Outlined.MonetizationOn, "person.2.fill" to Icons.Outlined.People, "bubble.left.fill" to Icons.Outlined.ChatBubble,
+        "hands.and.sparkles.fill" to Icons.Outlined.VolunteerActivism, "book.closed.fill" to Icons.Outlined.AutoStories,
+        "moon.stars.fill" to Icons.Outlined.Bedtime, "sun.max.fill" to Icons.Outlined.WbSunny, "sunrise.fill" to Icons.Outlined.WbTwilight,
+        "building.columns.fill" to Icons.Outlined.AccountBalance, "heart.text.square.fill" to Icons.Outlined.Loyalty, "star.fill" to Icons.Outlined.StarOutline,
+        "fork.knife" to Icons.Outlined.Restaurant, "cup.and.saucer.fill" to Icons.Outlined.Coffee, "carrot.fill" to Icons.Outlined.Agriculture,
+        "fish.fill" to Icons.Outlined.SetMeal, "takeoutbag.and.cup.and.straw.fill" to Icons.Outlined.Fastfood, "birthday.cake.fill" to Icons.Outlined.Cake,
+        "mug.fill" to Icons.Outlined.EmojiFoodBeverage, "wineglass" to Icons.Outlined.WineBar,
+        "nosign" to Icons.Outlined.Block, "smoke.fill" to Icons.Outlined.SmokeFree, "iphone.slash" to Icons.Outlined.Smartphone,
+        "gamecontroller.fill" to Icons.Outlined.SportsEsports, "tv.fill" to Icons.Outlined.Tv, "cart.badge.minus" to Icons.Outlined.RemoveShoppingCart,
+        "hand.raised.fill" to Icons.Outlined.PanTool, "bolt.slash.fill" to Icons.Outlined.FlashOff,
+        "flame.fill" to Icons.Outlined.LocalFireDepartment, "bolt.fill" to Icons.Outlined.Bolt, "target" to Icons.Outlined.TrackChanges,
+        "flag.fill" to Icons.Outlined.Flag, "gift.fill" to Icons.Outlined.CardGiftcard, "camera.fill" to Icons.Outlined.PhotoCamera,
+        "globe" to Icons.Outlined.Public, "airplane" to Icons.Outlined.Flight, "car.fill" to Icons.Outlined.DirectionsCar, "tree.fill" to Icons.Outlined.Park,
+        "plus.forwardslash.minus" to Icons.Outlined.Calculate, "timer" to Icons.Outlined.Timer, "trophy.fill" to Icons.Outlined.EmojiEvents,
+        // Symbols the iPhone's ideas and tasks use outside the picker.
+        "shippingbox.fill" to Icons.Outlined.Inventory2, "creditcard.fill" to Icons.Outlined.CreditCard, "banknote.fill" to Icons.Outlined.Payments,
+        "checkmark.circle.fill" to Icons.Outlined.CheckCircle, "list.bullet" to Icons.Outlined.Checklist, "figure.cooldown" to Icons.Outlined.SportsGymnastics,
+        "sun.horizon.fill" to Icons.Outlined.WbTwilight, "moon.fill" to Icons.Outlined.Bedtime, "drop" to Icons.Outlined.WaterDrop,
+        "phone.down.fill" to Icons.Outlined.PhoneDisabled, "wind" to Icons.Outlined.Air, "flower" to Icons.Outlined.LocalFlorist,
+        "camera.macro" to Icons.Outlined.LocalFlorist, "repeat" to Icons.Outlined.Repeat, "square.and.pencil" to Icons.Outlined.EditNote,
     )
 
     /** Extra words for search (the iPhone's `IconLibrary.keywords`). */
@@ -95,6 +140,8 @@ object HabitIcons {
     )
 
     fun icon(symbol: String): ImageVector = map[symbol] ?: Icons.Rounded.Star
+
+    fun outlined(symbol: String): ImageVector = outlinedMap[symbol] ?: Icons.Outlined.StarOutline
 
     /** TalkBack's name for an icon. */
     fun spokenName(symbol: String): String = keywords[symbol]?.firstOrNull() ?: symbol.replace(".fill", "").replace(".", " ")

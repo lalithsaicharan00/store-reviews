@@ -127,6 +127,8 @@ dependencies {
     // Material 3 Expressive's loading indicator, drawn with the library Material's own uses (LoadingIndicator.kt).
     implementation("androidx.graphics:graphics-shapes:1.1.0")
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
+    // Moving to a new phone (data/move): the relay is a WebSocket (account-server/src/move.ts).
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     debugImplementation("androidx.compose.ui:ui-tooling")

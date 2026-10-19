@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tasks page, third pass (19 Oct 2026, Current Work 130): habit apps only. How people find their tasks on a habit
+"""Tasks page, third pass (19 Oct 2026, Current Work 142): habit apps only. How people find their tasks on a habit
 app's task list (a repeating task on some days, a task far ahead, done and archived ones), and how they reach them.
 Reviews already coded in the first two passes are left out, so the counts can be added. Run from Research/:
   python3 -I "Research Reports/Day Structure and Organization/Tasks Page Evidence/finding_scan.py"

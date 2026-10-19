@@ -63,7 +63,9 @@ describe("dev's test doors", () => {
     expect(production.d1_databases[0].database_name).toBe("often-enough-accounts");
     expect(production.d1_databases[0].database_id).not.toBe(config.d1_databases[0].database_id);
     expect(production.vars.GOOGLE_AUDIENCES).toBe(config.vars.GOOGLE_AUDIENCES);
-    expect(production.ratelimits.map((r: { name: string }) => r.name).sort()).toEqual(["AUTH_LIMIT", "CALL_LIMIT", "INVITE_LIMIT"]);
+    expect(production.ratelimits.map((r: { name: string }) => r.name).sort()).toEqual(["AUTH_LIMIT", "CALL_LIMIT", "INVITE_LIMIT", "MOVE_LIMIT"]);
+    // Bindings aren't inherited: production declares the move relay's Durable Objects itself (the migration is shared).
+    expect(production.durable_objects.bindings).toEqual(config.durable_objects.bindings);
     // Keyless Google sign-in: production signs in as its own subject with its own key, in the same pool and provider.
     expect(production.vars.GOOGLE_WIF_SUBJECT).toBe("often-enough-account");
     expect(config.vars.GOOGLE_WIF_SUBJECT).toBe("often-enough-account-dev");

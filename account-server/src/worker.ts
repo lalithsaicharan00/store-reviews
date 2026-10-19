@@ -1,18 +1,23 @@
-import { Accounts } from "./accounts";
+import { Accounts, type CloudDevice, type CloudKind } from "./accounts";
 import { HttpError, errorResponse, json, optionalString, readJson, requireString } from "./http";
 import { type Person, type Provider, audiences, verifyIdToken } from "./identity";
 import { PRODUCTS, type PlayCheck, checkPlayPurchase, googleAccess, playReady } from "./play";
+import { moveRoute } from "./move";
 import { playNotification, sweepVoided } from "./refunds";
+
+export { MoveRegistry, MoveRelay } from "./move";
 
 /*
  * The Plus account's Worker (Rulebook D15, D16; Android A15; Current Work 110). It holds only who someone is (Google's
- * or Apple's fixed ID, a first name and a masked email hint), their purchases as checked with the store, and their
- * family. Never a habit. Every call but sign-in and opening an invite needs the session token sign-in gave the device.
+ * or Apple's fixed ID, a first name and a masked email hint), their purchases as checked with the store, their family,
+ * and where their habits live (which cloud, by its private ID). Never a habit. Every call but sign-in and opening an
+ * invite needs the session token sign-in gave the device.
  *
  *   POST /v1/sign-in                 { provider, idToken, nonce }                  → { found, session?, account? }
  *   POST /v1/accounts                { provider, idToken, nonce, name?, purchase? } → { session, account }
  *   GET  /v1/account                                                               → { account }
  *   POST /v1/account/purchases       { product, token }                            → { account, purchase }
+ *   POST /v1/account/cloud           { cloud, key, device } or { cloud: null }      → { account }
  *   POST /v1/account/delete          { provider, idToken, nonce }                  → { deleted }
  *   POST /v1/sign-out                                                              → 204
  *   POST /v1/family/invite | /v1/family/invite/cancel | /v1/family/leave           → { account }
@@ -22,11 +27,17 @@ import { playNotification, sweepVoided } from "./refunds";
  *   GET  /v1/health                                                                → { ok, environment }
  *   GET  /v1/health/play                                                           → { play: ready | not_set_up | unavailable }
  *   POST /v1/google/notifications    Pub/Sub push of Google Play's notifications    → 204 (src/refunds.ts)
+ *   /v1/move/…                       moving to a new phone with a code, no account  (src/move.ts)
  */
 
 const INVITE_TOKEN = /^[A-Za-z0-9_-]{8,64}$/;
-/** wrangler.jsonc's one trigger: daily. One job, so the account's five Cron Triggers (Workers Free) go further. */
-export const DAILY = "0 5 * * *";
+/**
+ * wrangler.jsonc's one trigger: daily. One job, so the account's five Cron Triggers (Workers Free) go further. Not
+ * exported: every named export of this module must be an entry point (the Durable Object classes), or the runtime
+ * refuses to start (found 19 Oct 2026 under `wrangler dev`; test/move.test.ts checks it).
+ */
+const DAILY = "0 5 * * *";
+void DAILY;
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -81,6 +92,10 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
 
   // Google Play's Real-time developer notifications, pushed by Pub/Sub with its own OIDC token (src/refunds.ts).
   if (path === "/v1/google/notifications" && method === "POST") return playNotification(request, env, accounts, (product, token) => check(env, product, token));
+
+  // ---------------------------------------------------------------- Moving to a new phone (no account: anyone can move)
+  const moved = await moveRoute(request, env, path, () => limit(env.MOVE_LIMIT, ip));
+  if (moved) return moved;
 
   // ---------------------------------------------------------------- Signing in (no session yet)
   if (path === "/v1/sign-in" && method === "POST") {
@@ -167,6 +182,9 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
       if (!view) throw new HttpError(401, "signed_out", "Please sign in again.");
       return json({ account: view, purchase: result });
     }
+    case "/v1/account/cloud":
+      await accounts.setCloud(accountId, readCloud(await readJson(request)));
+      return reply();
     case "/v1/account/delete": {
       await limit(env.AUTH_LIMIT, ip);
       // Deleting needs Google's or Apple's own sign-in again, as the same person (Figma 7.2.1).
@@ -255,6 +273,21 @@ function readPurchase(value: unknown, optional: boolean): { product: string; tok
   const product = requireString(p.product, "product", 100);
   if (!(product in PRODUCTS)) throw new HttpError(400, "bad_request", "\"product\" isn't one of ours.");
   return { product, token: requireString(p.token, "token", 2048) };
+}
+
+const CLOUD_KEY: Record<CloudKind, RegExp> = { google_drive: /^gdrive:[A-Za-z0-9_-]{1,128}$/, icloud: /^icloud:[A-Za-z0-9_.-]{1,128}$/ };
+const DEVICES: CloudDevice[] = ["android", "iphone", "ipad"];
+
+/** Where the habits live, as a device says it: a cloud and its key (which must be that cloud's), or null for nowhere. */
+function readCloud(body: Record<string, unknown>): { kind: CloudKind; key: string; device: CloudDevice } | null {
+  if (body.cloud === null) return null;
+  const kind = body.cloud;
+  if (kind !== "google_drive" && kind !== "icloud") throw new HttpError(400, "bad_request", "\"cloud\" is missing or invalid.");
+  const key = requireString(body.key, "key", 140);
+  if (!CLOUD_KEY[kind].test(key)) throw new HttpError(400, "bad_request", "\"key\" is missing or invalid.");
+  const device = body.device;
+  if (typeof device !== "string" || !DEVICES.includes(device as CloudDevice)) throw new HttpError(400, "bad_request", "\"device\" is missing or invalid.");
+  return { kind, key, device: device as CloudDevice };
 }
 
 async function limit(binding: RateLimit | undefined, key: string) {

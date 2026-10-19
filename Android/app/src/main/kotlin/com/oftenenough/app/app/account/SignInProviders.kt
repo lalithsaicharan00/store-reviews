@@ -18,6 +18,8 @@ interface SignInProvider {
     suspend fun apple(activity: Activity): SignIn?
     /** False where this build can't reach Google's sign-in yet (no OAuth client): the screens say so. */
     val canSignIn: Boolean
+    /** Sign in with Apple, which on Android is Apple's web page the Worker hosts: not there yet (Current Work 110). */
+    val canSignInWithApple: Boolean get() = false
 }
 
 /**
@@ -63,6 +65,7 @@ object Nonce {
  */
 class StandInSignIn : SignInProvider {
     override val canSignIn = true
+    override val canSignInWithApple = true
     var nextGoogle: SignIn? = SignIn(SignInWith.GOOGLE, "stand-in", "sam@gmail.com", "Sam Kim")
     var nextApple: SignIn? = SignIn(SignInWith.APPLE, "stand-in", "sam@privaterelay.appleid.com", "Sam Kim")
     override suspend fun google(activity: Activity) = nextGoogle

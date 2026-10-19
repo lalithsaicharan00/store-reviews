@@ -19,6 +19,10 @@ import com.oftenenough.app.app.TestLaunch
 import app.habits.account.Account
 import app.habits.account.AccountPlus
 import app.habits.account.Answer
+import app.habits.account.CloudDevice
+import app.habits.account.CloudKeys
+import app.habits.account.CloudKind
+import app.habits.account.CloudPlace
 import app.habits.account.HttpAccountServer
 import app.habits.account.InviteLook
 import app.habits.account.StorePurchase
@@ -123,6 +127,23 @@ class AccountServerLiveTest {
         assertEquals(AccountPlus.FAMILY_OWNER, back.plus)
         made.removeAll { it.first.email == "$run-Lee" }
         made += proof("Lee") to { back }
+    }
+
+    /** Where the habits live (D16, Current Work 138): dev keeps it with the account and a new phone signing in is told. */
+    @Test fun theAccountRemembersWhereTheHabitsLiveOnDev() = runBlocking {
+        val sam = account("Sam")
+        // Dev's test sign-in is Google's, with the subject "test:" and the one sent: that account's own Drive.
+        val own = CloudPlace(CloudKind.GOOGLE_DRIVE, CloudKeys.googleDrive("test:$run-Sam"), CloudDevice.ANDROID)
+        val saved = server.setCloud(sam, own).ok()
+        assertEquals(own, saved.cloud!!.place)
+        assertTrue("Sam's own Google account", saved.cloud!!.signInAccount)
+        val newPhone = (server.signIn(proof("Sam")).ok() as SignInReply.Found).account
+        assertEquals(own, newPhone.cloud!!.place)
+        val iphone = CloudPlace(CloudKind.ICLOUD, "icloud:_$run", CloudDevice.IPHONE)
+        val moved = server.setCloud(newPhone, iphone).ok()
+        assertEquals(iphone, moved.cloud!!.place)
+        assertTrue("iCloud is never the sign-in's Drive", !moved.cloud!!.signInAccount)
+        assertNull(server.setCloud(newPhone, null).ok().cloud)
     }
 
     // ---------------------------------------------------------------- The screens against dev

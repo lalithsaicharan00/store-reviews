@@ -27,7 +27,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.PauseCircle
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
@@ -94,74 +96,97 @@ fun groupCount(store: HabitStore, groupId: String?, day: Int): Int? {
 }
 
 /**
- * Today's Filter (the button beside +; the iPhone's FilterSheet): Show all habits or one group (each with how many it
- * shows on the day open), New group and Edit groups, then Hide completed habits and Hide completed tasks. Only "show
- * less" lives here; arranging the day is Today's Edit.
+ * Today's Filter (Figma 3, "Show on Today"): All or one group as filter chips ("Health · 5": how many it shows on the day
+ * open), Edit groups and New group, then Hide done habits and Hide done tasks. With no groups yet (Figma 3.2) the top says
+ * what groups are, with New group and Not now; the two switches stay below it, so hiding done rows never needs a group.
+ * Only "show less" lives here; arranging the day is Today's ✏.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun FilterSheet(store: HabitStore, prefs: Prefs, day: Int, onNewGroup: () -> Unit, onEditGroups: () -> Unit, onDismiss: () -> Unit) {
     val c = appColors
-    val state = rememberModalBottomSheetState()
-    val today = store.today()
-    val dayText = if (day == today) "today" else DayWords.short(day)
+    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     // Worked out only while the sheet is open.
-    val counts = remember(store.dataVersion, day) { (listOf<String?>(null) + store.groups.map { it.id }).associateWith { groupCount(store, it, day) } }
+    val counts = remember(store.dataVersion, day) { store.groups.associate { it.id to groupCount(store, it.id, day) } }
     val current = prefs.todayGroup.takeIf { id -> store.groups.any { it.id == id } }
-    ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.screen) {
-        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).padding(bottom = 24.dp).semantics { testTag = "filter-sheet"; testTagsAsResourceId = true }) {
-            Text("Filter", Modifier.padding(start = 8.dp, bottom = 8.dp), style = MaterialTheme.typography.headlineSmall, color = c.ink)
-            GroupTitle("Show")
+    ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.surface, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 40.dp)
+            .semantics { testTag = "filter-sheet"; testTagsAsResourceId = true },
+            verticalArrangement = Arrangement.spacedBy(16.dp)) {
             if (store.groups.isEmpty()) {
-                Chip("All habits", null, true, null, "group-chip-all") {}
-                Note("Group habits by area, like Health or Work, then filter by them here.")
-            } else {
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Chip("All habits", null, current == null, counts[null], "group-chip-all") { prefs.todayGroup = "" }
-                    for (g in store.groups) {
-                        Chip(g.name, g.color, current == g.id, counts[g.id], "group-chip-${g.name}") { prefs.todayGroup = g.id }
+                // Figma 3.2: what groups are, and New group.
+                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Icon(Icons.Outlined.Category, null, Modifier.size(32.dp), tint = c.ink)
+                    Text("Group your habits", style = AppType.titleLarge, color = c.ink)
+                    Text("Put habits together, then filter Today and Progress by group.", style = AppType.bodyMedium, color = c.secondary,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                    Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).clip(RoundedCornerShape(28.dp)).background(c.ink).clickable(onClick = onNewGroup)
+                        .semantics { testTag = "group-new" }, contentAlignment = Alignment.Center) {
+                        Text("New group", style = AppType.titleMedium, color = c.onInk)
+                    }
+                    Box(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(24.dp)).clickable(onClick = onDismiss)
+                        .semantics { testTag = "groups-not-now" }, contentAlignment = Alignment.Center) {
+                        Text("Not now", style = AppType.titleMedium, color = c.ink)
                     }
                 }
-                Note("Numbers show habits on $dayText.")
+            } else {
+                Text("Show on Today", style = AppType.titleLarge, color = c.ink)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Chip("All", current == null, "group-chip-all") { prefs.todayGroup = "" }
+                    for (g in store.groups) {
+                        val n = counts[g.id]
+                        Chip(if (n != null) "${g.name} · $n" else g.name, current == g.id, "group-chip-${g.name}") { prefs.todayGroup = g.id }
+                    }
+                }
+                Column {
+                    SheetRow(Icons.Outlined.Edit, "Edit groups", "groups-edit", onEditGroups)
+                    SheetRow(Icons.Rounded.Add, "New group", "group-new", onNewGroup)
+                }
+                Text("Groups change only what Today and Progress show.", style = AppType.bodySmall, color = c.secondary)
             }
-            GroupTitle("Groups")
-            SegmentedList {
-                val n = if (store.groups.isEmpty()) 1 else 2
-                Segment(0, n, Modifier.semantics { testTag = "group-new" }, onClick = onNewGroup) {
-                    Icon(Icons.Rounded.Add, null, tint = c.ink); Spacer(Modifier.width(24.dp))
-                    Text("New group", style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                }
-                if (store.groups.isNotEmpty()) Segment(1, n, Modifier.semantics { testTag = "groups-edit" }, onClick = onEditGroups) {
-                    Icon(Icons.Rounded.Edit, null, tint = c.ink); Spacer(Modifier.width(24.dp))
-                    Text("Edit groups", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                    Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-                }
+            Box(Modifier.fillMaxWidth().height(1.dp).background(c.line))
+            Column {
+                SwitchRow("Hide done habits", prefs.hideDoneHabits, "hide-done-habits") { prefs.hideDoneHabits = it }
+                SwitchRow("Hide done tasks", prefs.hideDoneTasks, "hide-done-tasks") { prefs.hideDoneTasks = it }
             }
-            Spacer(Modifier.height(16.dp))
-            SegmentedList {
-                Segment(0, 2, Modifier.semantics { testTag = "hide-done-habits" }, onClick = { prefs.hideDoneHabits = !prefs.hideDoneHabits }) {
-                    Text("Hide completed habits", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink); InkSwitch(prefs.hideDoneHabits)
-                }
-                Segment(1, 2, Modifier.semantics { testTag = "hide-done-tasks" }, onClick = { prefs.hideDoneTasks = !prefs.hideDoneTasks }) {
-                    Text("Hide completed tasks", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink); InkSwitch(prefs.hideDoneTasks)
-                }
-            }
-            Note("Completed ones leave Today a moment after the last tick, and come back when these are off.")
         }
     }
 }
 
-/** A filter chip: chosen ones are ink with a ✓; a group's colour dot; its count. */
+/** A filter chip (Figma 3): the chosen one tonal with a ✓, the others outlined; corners 8. */
 @Composable
-private fun Chip(title: String, color: HabitColor?, selected: Boolean, count: Int?, tag: String, onClick: () -> Unit) {
+private fun Chip(title: String, selected: Boolean, tag: String, onClick: () -> Unit) {
     val c = appColors
-    Row(Modifier.clip(RoundedCornerShape(12.dp)).background(if (selected) c.ink else c.surface).clickable(onClick = onClick)
+    Row(Modifier.clip(RoundedCornerShape(8.dp)).background(if (selected) c.behind else Color.Transparent)
+        .let { if (selected) it else it.border(1.dp, c.line, RoundedCornerShape(8.dp)) }
+        .clickable(onClick = onClick)
         .semantics(mergeDescendants = true) { testTag = tag; this.selected = selected }
-        .heightIn(min = 40.dp).padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-        if (selected) { Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.onInk); Spacer(Modifier.width(6.dp)) }
-        else if (color != null) { Box(Modifier.size(10.dp).clip(CircleShape).background(c.habit(color))); Spacer(Modifier.width(8.dp)) }
-        Text(title, style = AppType.labelLarge, color = if (selected) c.onInk else c.ink, maxLines = 1)
-        if (count != null) { Spacer(Modifier.width(8.dp)); Text("$count", style = MaterialTheme.typography.labelLarge, color = if (selected) c.onInk else c.secondary) }
+        .heightIn(min = 32.dp).padding(start = if (selected) 8.dp else 12.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+        if (selected) { Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.ink); Spacer(Modifier.width(8.dp)) }
+        Text(title, style = AppType.labelLarge, color = c.ink, maxLines = 1)
+    }
+}
+
+/** A row in a sheet: a grey 24 dp icon, 16 dp, the words (Body Large). */
+@Composable
+private fun SheetRow(icon: androidx.compose.ui.graphics.vector.ImageVector, text: String, tag: String, onClick: () -> Unit) {
+    val c = appColors
+    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(12.dp)).clickable(onClick = onClick).semantics { testTag = tag }
+        .padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Icon(icon, null, tint = c.secondary)
+        Spacer(Modifier.width(16.dp))
+        Text(text, style = AppType.bodyLarge, color = c.ink)
+    }
+}
+
+@Composable
+private fun SwitchRow(text: String, on: Boolean, tag: String, onChange: (Boolean) -> Unit) {
+    val c = appColors
+    Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable { onChange(!on) }.semantics { testTag = tag },
+        verticalAlignment = Alignment.CenterVertically) {
+        Text(text, Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink)
+        InkSwitch(on)
     }
 }
 

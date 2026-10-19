@@ -58,3 +58,20 @@ Lengths worth marking, from the streak (never stored): days and times 3, 7, 10, 
 365, 500, 730, 1,000, then every 365 after 730; weeks 2, 3, 4, 6, 8, 10, 12, 16, 20, 26, 39, 52, 78, 104, then every
 52; months 2, 3, 4, 5, 6, 9, 12, 15, 18, 24, 30, 36, then every 12; years every year. Goals met in total: 10, 25, 50, 100,
 250, 500, 1,000, 2,500, 5,000 (month goals add 3 and 6 first, year goals 2 and 5). Code: `Milestones`.
+
+## ST-8 — Milestones, the decided rule (17 Oct 2026)
+
+Replaces ST-7's lists once the iPhone and the habit page use it; until then ST-7 and its golden answers stay. The user's
+decision, Figma *Milestones: one simple rule* (`2266:2`), [Android/Docs/Milestones](<../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>).
+Code: `MilestoneRule` (tests: `MilestoneRuleTest`).
+
+- **The bucket, by two questions.** A goal for a week, a month or a year (3 times a week, Flexible) is that bucket. Set days
+  go by the longest gap between them: under 7 days Days, 7–27 Weeks, 28 days up to a year Months, a year Years (a month
+  counts 30 days).
+- **In a row** (the streak, ST-1, in its own unit): Days 3, 7, 14, 30, 60, 90, 180, 365, then every 365; Weeks 2, 4, 8,
+  13, 26, 52, then every 52; Months 2, 3, 6, 9, 12, then every 12; Years none.
+- **Pop-up lengths** (landmarks): Days 30, 180, 365 and each year; Weeks 4, 26, 52 and each year; Months 6, 12 and each year.
+- **In total**, as times the goal for one period (set days: one day's goal): Days 10, 25, 50, 100, 250, 500, 1,000, then
+  every 500; Weeks 10, 25, 50, 100, 250; Months 5, 10, 25, 50, 100. Everything logged counts, met or not; a fall (undo)
+  crosses nothing; when one log crosses two, the higher one.
+- **Anniversaries:** each year on the date of the first log (quit: the quit), 29 February on 28 February in other years.

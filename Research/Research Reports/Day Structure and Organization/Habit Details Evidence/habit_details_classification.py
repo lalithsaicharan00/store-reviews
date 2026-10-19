@@ -1,4 +1,4 @@
-"""Habit details page: why people open one habit's own page (Current Work 133, 19 Oct 2026). Habit apps only.
+"""Habit details page: why people open one habit's own page (Current Work 143, 19 Oct 2026). Habit apps only.
 Written by Claude (Claude Code). habit_details_scan.py screened 932,330 reviews in the App Store and Play Store corpora
 (to-do apps left out) and matched 2,018 habit-app reviews about a habit's own page, its history, calendar, stats,
 streaks, milestones, notes, editing past days or its settings. All 2,018 were read by hand; 1,647 are on topic (below).

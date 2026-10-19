@@ -88,6 +88,8 @@ object Reminders {
     /** Sets the one alarm for the next reminder time (none when nothing is wanted). */
     fun replan(context: Context, store: HabitStore) {
         if (!store.isLoaded || AppGraph.isTest) return
+        // The milestone notifications (quit and cut down, when asked) follow every change too.
+        MilestoneAlerts.replan(context, store)
         val next = ReminderPlan.plan(store, store.clock(), days = 3).firstOrNull()
         val alarms = context.getSystemService(AlarmManager::class.java) ?: return
         val intent = PendingIntent.getBroadcast(context, 0, Intent(context, ReminderReceiver::class.java).setAction(ACTION_ALARM),
@@ -237,7 +239,11 @@ class ReminderReceiver : BroadcastReceiver() {
                         store.flush()
                         Reminders.replan(context, store)
                     }
-                    else -> if (Reminders.isAlarm(intent)) Reminders.fire(context, store) else Reminders.replan(context, store)
+                    else -> when {
+                        Reminders.isAlarm(intent) -> Reminders.fire(context, store)
+                        MilestoneAlerts.isAlarm(intent) -> MilestoneAlerts.fire(context, store)
+                        else -> Reminders.replan(context, store)
+                    }
                 }
             } finally {
                 result.finish()

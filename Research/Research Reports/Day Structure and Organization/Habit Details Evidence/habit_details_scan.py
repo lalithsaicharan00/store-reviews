@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Habit details page research (Current Work 133, 19 Oct 2026): habit apps only. Why people open one habit's own page
+"""Habit details page research (Current Work 143, 19 Oct 2026): habit apps only. Why people open one habit's own page
 (its details: history, calendar, stats, streaks, milestones, notes, editing past days, settings) and what they do there.
 To-do apps (Reminders, Google Tasks, Microsoft To Do and the Play Store's to-do apps) are left out. Run from Research/:
   python3 -I "Research Reports/Day Structure and Organization/Habit Details Evidence/habit_details_scan.py"

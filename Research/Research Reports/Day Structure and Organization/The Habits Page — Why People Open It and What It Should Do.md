@@ -1,6 +1,6 @@
 # The Habits Page — Why People Open It and What It Should Do
 
-> **Written by Claude (Claude Code)**, 18 October 2026, at the user's request (Current Work 129). Authorship of every
+> **Written by Claude (Claude Code)**, 18 October 2026, at the user's request (Current Work 141). Authorship of every
 > report is listed in the [Research Reports index](<../README.md>).
 
 **The question (the user's words, tidied).** The Android Habits page in Figma (`2106:2`) is out of date. It's where
@@ -378,7 +378,7 @@ that people want it; where the reviews above agree, that's said.
 > 5. no times beside section names;
 > 6. no free-plan count on the page (the line about the free five sits on Archived habits only).
 >
-> Placeholders for every screen and state are in Figma `2106:2` (Current Work 129).
+> Placeholders for every screen and state are in Figma `2106:2` (Current Work 141).
 
 1. **Default view:** time of day, with a *Show by: Group* switch once groups exist (recommended); or group sections
    always when groups exist (the iPhone spec as written); or time of day only.

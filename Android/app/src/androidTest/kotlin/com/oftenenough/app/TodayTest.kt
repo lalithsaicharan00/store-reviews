@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.test.core.app.ActivityScenario
@@ -99,6 +100,44 @@ class TodayTest {
     private fun line(name: String): String = compose.onAllNodes(hasTestTag("line-$name"), useUnmergedTree = true).fetchSemanticsNodes()
         .firstOrNull()?.config?.getOrNull(SemanticsProperties.Text)?.joinToString(" ") { it.text } ?: ""
 
+    /**
+     * Milestones (Android/Docs/Milestones): first come, first served, within the day's limits. The days demo has Floss
+     * at 29 days, Take vitamins at 13, Water at its 200th glass in total today, and Smoking 30 days clean since yesterday.
+     */
+    @Test fun milestonesTakeThePopUpThenTheBarThenTheRow() {
+        launch(demo = "days")
+        // Judged at the day's end: the band, never a pop-up when the app opens (R.9).
+        waitFor(hasText("30 days clean · yesterday"), "Smoking's band")
+        // A landmark, the day's first: its pop-up at once; closed, its band stays in the row (P.2, R.1).
+        tapLabel("Mark Floss done")
+        waitFor(hasTestTag("landmark-popup"), "Floss's pop-up")
+        tapTag("landmark-close")
+        waitGone(hasTestTag("landmark-popup"), "Floss's pop-up")
+        waitFor(hasText("30 days in a row · reached today"), "Floss's band")
+        // Another first: the bar (V3.1). The test's clock runs the bar's 5 s at once, so its record is checked.
+        // The sheet's window goes a moment after it's closed; a touch before then is the sheet's.
+        Thread.sleep(1_000)
+        tapLabel("Mark Take vitamins done")
+        val vitamins = AppGraph.store.habits.first { it.name == "Take vitamins" }
+        try {
+            compose.waitUntil(15_000) { AppGraph.store.milestones.shown(vitamins.id)?.tier == com.oftenenough.app.data.MilestoneTier.BAR }
+        } catch (e: Throwable) {
+            throw AssertionError("Take vitamins' bar: ${AppGraph.store.milestones.shown(vitamins.id)}; streak ${AppGraph.store.streak(vitamins, AppGraph.store.today())}; on screen: ${screen()}")
+        }
+        // Two big moments used: Water's 200th glass is just the row (card 4 B).
+        repeat(4) { tapLabel("Add 1 glass to Water") }
+        waitFor(hasText("200 glasses in total · reached today"), "Water's band")
+        // Undo takes it back; done again, it's back without a second moment. The row can sit behind the floating day bar
+        // once done rows settle below, so Undo is pressed through its click action, as TalkBack presses it.
+        waitFor(hasTestTag("undo-Water"), "Water's Undo")
+        compose.onAllNodes(hasTestTag("undo-Water"), useUnmergedTree = true)[0]
+            .performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick)
+        waitGone(hasText("200 glasses in total · reached today"), "Water's band")
+        tapLabel("Add 1 glass to Water")
+        waitFor(hasText("200 glasses in total · reached today"), "Water's band again")
+        waitGone(hasTestTag("landmark-popup"), "a second pop-up")
+    }
+
     @Test fun aNewPersonGoesThroughTheWelcomeToAnEmptyToday() {
         launch(onboarding = true)
         tapTag("onboarding-new")
@@ -121,7 +160,9 @@ class TodayTest {
         launch(onboarding = true)
         tapTag("onboarding-returning")
         waitFor(hasText("Welcome back."), "Welcome back")
-        tapTag("start-without-restoring")
+        tapTag("back-drive")
+        tapTag("start-fresh")
+        tapTag("onboarding-continue")
         waitFor(hasText("No habits yet"), "an empty Today")
     }
 
@@ -131,7 +172,9 @@ class TodayTest {
         repeat(4) { tapTag("onboarding-continue") }
         tapTag("idea-Exercise")
         waitFor(hasTestTag("name-field"), "the New Habit form")
-        waitFor(hasText("Exercise 3 times a week, anytime"), "the idea's sentence")
+        // The preview says it (Figma 1302:2: the sentence footer is gone).
+        waitFor(hasText("Exercise"), "the idea's name in the preview")
+        waitFor(hasText("30 min"), "the idea's goal")
         tapTag("form-add")
         waitFor(hasTestTag("row-Exercise"), "Exercise on Today")
     }
@@ -154,7 +197,8 @@ class TodayTest {
         val before = line("Water")
         tapLabel("Add 1 glass to Water")
         waitFor(hasTestTag("undo-Water"), "Water's Undo")
-        waitFor(hasText("Undo +1 glass", substring = true), "Undo naming the glass")
+        // The chip reads "Undo" (Figma 1350:2); TalkBack hears what it takes back (U14).
+        waitFor(hasContentDescription("Undo +1 glass"), "Undo naming the glass")
         assertNotEquals("Water's line after +1; on screen: ${screen()}", before, line("Water"))
         tapTag("undo-Water")
         waitGone(hasTestTag("undo-Water"), "Water's Undo")
@@ -178,12 +222,15 @@ class TodayTest {
         showRow("Skincare")
         tapLabel("Show Skincare steps")
         // The demo has Cleanser ticked today; Serum isn't.
-        tapLabel("Mark Serum done")
-        waitFor(hasContentDescription("Undo Serum"), "Serum ticked")
-        tapLabel("Undo Serum")
-        waitFor(hasContentDescription("Mark Serum done"), "Serum unticked")
+        // Each step is a checkbox named by the step, Done or Not done.
+        fun serum(state: String) = hasTestTag("step-Serum") and SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, state)
+        waitFor(serum("Not done"), "Serum not done")
+        tapTag("step-Serum")
+        waitFor(serum("Done"), "Serum ticked")
+        tapTag("step-Serum")
+        waitFor(serum("Not done"), "Serum unticked")
         tapLabel("Hide Skincare steps")
-        waitGone(hasContentDescription("Mark Serum done"), "the steps")
+        waitGone(hasTestTag("step-Serum"), "the steps")
     }
 
     @Test fun aTimerStartsAndStops() {

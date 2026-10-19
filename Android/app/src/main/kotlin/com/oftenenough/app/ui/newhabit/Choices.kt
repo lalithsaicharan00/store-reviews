@@ -1,5 +1,19 @@
 package com.oftenenough.app.ui.newhabit
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.automirrored.outlined.TrendingDown
+import androidx.compose.material.icons.automirrored.outlined.TrendingUp
+import androidx.compose.material.icons.outlined.EventAvailable
+import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.Speed
+import androidx.compose.material.icons.outlined.Checklist
+import androidx.compose.material.icons.outlined.Timer
+import androidx.compose.material.icons.outlined.Tag
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.ui.semantics.heading
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.border
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
@@ -77,60 +91,69 @@ enum class ItemType(val title: String, val summary: String, val example: String,
 }
 
 fun icon(type: ItemType): ImageVector = when (type) {
-    ItemType.CHECK -> Icons.Rounded.CheckCircle
-    ItemType.AMOUNT -> Icons.Rounded.Tag
-    ItemType.TIME -> Icons.Rounded.Timer
-    ItemType.CHECKLIST -> Icons.Rounded.Checklist
-    ItemType.CUT_DOWN -> Icons.Rounded.Speed
-    ItemType.QUIT -> Icons.Rounded.Block
-    ItemType.TASK -> Icons.Rounded.EventAvailable
+    ItemType.CHECK -> Icons.Outlined.CheckCircle
+    ItemType.AMOUNT -> Icons.Outlined.Tag
+    ItemType.TIME -> Icons.Outlined.Timer
+    ItemType.CHECKLIST -> Icons.Outlined.Checklist
+    ItemType.CUT_DOWN -> Icons.Outlined.Speed
+    ItemType.QUIT -> Icons.Outlined.Block
+    ItemType.TASK -> Icons.Outlined.EventAvailable
 }
 
-/** A choice card: the cookie icon, the name (16 Regular), one line, an example chip, ›. */
+/**
+ * A choice card (Figma 1–3, 6.3): the icon outlined in a 40 dp rounded tile, the name (Title Medium), one line, an
+ * example chip, ›. [outlined]: the one chosen now (Edit's "Current type").
+ */
 @Composable
-fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?, index: Int, count: Int, tag: String, onClick: () -> Unit) {
+fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?, index: Int, count: Int, tag: String, outlined: Boolean = false, onClick: () -> Unit) {
     val c = appColors
-    Row(Modifier.fillMaxWidth().clip(segmentShape(index, count)).background(c.surface).clickable(onClick = onClick)
-        .semantics { testTag = tag }.padding(16.dp).heightIn(min = 72.dp), verticalAlignment = Alignment.CenterVertically) {
-        CookieIcon(icon)
+    val shape = segmentShape(index, count)
+    Row(Modifier.fillMaxWidth().clip(shape).background(c.surface).then(if (outlined) Modifier.border(2.dp, c.ink, shape) else Modifier)
+        .clickable(onClick = onClick).semantics { testTag = tag }.padding(start = 16.dp, end = 12.dp, top = 16.dp, bottom = 16.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(40.dp).clip(RoundedCornerShape(12.dp)).background(c.behind), contentAlignment = Alignment.Center) {
+            Icon(icon, null, Modifier.size(24.dp), tint = c.ink)
+        }
         Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, color = c.ink)
-            Text(line, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(title, style = AppType.titleMedium, color = c.ink)
+            Text(line, style = AppType.bodyMedium, color = c.secondary)
             if (example != null) {
-                Spacer(Modifier.height(6.dp))
-                Surface(shape = RoundedCornerShape(8.dp), color = c.tonal) {
-                    Text(example, Modifier.padding(horizontal = 8.dp, vertical = 3.dp), style = MaterialTheme.typography.labelLarge, color = c.secondary)
+                Spacer(Modifier.height(4.dp))
+                Box(Modifier.clip(RoundedCornerShape(8.dp)).background(c.behind).padding(horizontal = 8.dp, vertical = 3.dp)) {
+                    Text(example, style = AppType.labelMedium, color = c.secondary)
                 }
             }
         }
+        Spacer(Modifier.width(16.dp))
         Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
     }
 }
 
-/** A choice page: ✕ or ← and no title; the question (28 sp) is the page's only heading. */
+/** A choice page (Figma 1, 2, 3): ✕ or ← and no title; the question (Headline Medium Emphasized) is its only heading. */
 @Composable
-fun ChoicePage(question: String, close: Boolean, onBack: () -> Unit, footer: String? = null, content: @Composable () -> Unit) {
+fun ChoicePage(question: String, close: Boolean, onBack: () -> Unit, content: @Composable () -> Unit) {
     Column(Modifier.fillMaxSize().background(appColors.screen).statusBarsPadding().navigationBarsPadding()) {
-        IconButton(onBack, Modifier.padding(8.dp)) {
-            if (close) Icon(Icons.Rounded.Close, "Close", tint = appColors.ink) else Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = appColors.ink)
+        Box(Modifier.height(64.dp).padding(start = 4.dp), contentAlignment = Alignment.CenterStart) {
+            IconButton(onBack, Modifier.semantics { testTag = "page-back" }) {
+                if (close) Icon(Icons.Rounded.Close, "Close", tint = appColors.ink) else Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = appColors.ink)
+            }
         }
-        Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
-            Text(question, Modifier.padding(start = 8.dp, top = 8.dp, bottom = 24.dp), style = AppType.headlineMedium, color = appColors.ink)
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) { content() }
-            if (footer != null) Text(footer, Modifier.padding(16.dp), style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+        Column(Modifier.verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Text(question, Modifier.padding(horizontal = 8.dp).widthIn(max = 236.dp).semantics { heading() }, style = AppType.headlineMediumEmphasized, color = appColors.ink)
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) { content() }
         }
     }
 }
 
-/** New: What do you want to do? */
+/** New (Figma 1): What do you want to do? */
 @Composable
 fun NewChoices(store: HabitStore, onClose: () -> Unit, onBuild: () -> Unit, onQuit: () -> Unit, onTask: () -> Unit) {
-    ChoicePage("What do you want to do?", close = true, onBack = onClose,
-        footer = if (!store.isPlus) "${store.activeHabitCount} of ${HabitStore.FREE_HABIT_LIMIT} free habits used. Tasks are always free." else null) {
-        ChoiceCard(Icons.AutoMirrored.Rounded.TrendingUp, "Build or maintain", "A habit you want to start or keep doing.", null, 0, 3, "new-build", onBuild)
-        ChoiceCard(Icons.AutoMirrored.Rounded.TrendingDown, "Quit or cut down", "A habit you want to stop or do less.", null, 1, 3, "new-quit", onQuit)
-        ChoiceCard(icon(ItemType.TASK), "Add a task", "Something to get done, once or on repeat. No habit progress, streaks or stats.", null, 2, 3, "new-task", onTask)
+    @Suppress("UNUSED_VARIABLE") val unused = store
+    ChoicePage("What do you want to do?", close = true, onBack = onClose) {
+        ChoiceCard(Icons.AutoMirrored.Outlined.TrendingUp, "Build or maintain", "A habit you want to start or keep doing.", null, 0, 3, "new-build", onClick = onBuild)
+        ChoiceCard(Icons.AutoMirrored.Outlined.TrendingDown, "Quit or cut down", "A habit you want to stop or do less.", null, 1, 3, "new-quit", onClick = onQuit)
+        ChoiceCard(icon(ItemType.TASK), "Add a task", "Something to get done, once or on repeat.", null, 2, 3, "new-task", onClick = onTask)
     }
 }
 

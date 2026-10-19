@@ -5,7 +5,8 @@ Written by Claude (Claude Code), 16 October 2026. Rulebook **D16** (what an acco
 
 One Cloudflare Worker on the free plan, with one D1 database. It holds **only** who someone is (Google's or Apple's fixed
 account ID, a first name the family sees, a masked email hint like `l•••••@gmail.com`), their store purchases **as
-checked with Google Play**, and their Plus Family. **Never a habit**, never a whole email address. It replaces the old
+checked with Google Play**, their Plus Family, and **where their habits live** (which cloud, by that cloud account's
+private ID). **Never a habit**, never a whole email address. It replaces the old
 `server/` (the habit-sync server D16 retired; its Cloudflare resources were deleted on 15 Oct 2026).
 
 | | |
@@ -19,14 +20,16 @@ checked with Google Play**, and their Plus Family. **Never a habit**, never a wh
 |---|---|
 | `POST /v1/sign-in` `{provider, idToken, nonce}` | Google's or Apple's ID token, checked (signature against the provider's keys, issuer, audience = our OAuth client, expiry, and the nonce: the app makes a random value, Google signs its SHA-256, so a copied token can't be replayed). Finds the account (`found`, a new `session` for this device) or says there's none (Figma 3.4) |
 | `POST /v1/accounts` `{…, name?, purchase?}` | Makes the account (once, however often or at once it's asked) and checks the purchase sent with it |
-| `GET /v1/account` | The account: `plus` (`NONE`, `PLUS`, `FAMILY_OWNER`, `FAMILY_MEMBER`) and the family. Purchases not checked for a day are checked again after the answer, so a refund reaches the account |
+| `GET /v1/account` | The account: `plus` (`NONE`, `PLUS`, `FAMILY_OWNER`, `FAMILY_MEMBER`), the family and `cloud` ([Where the habits live](#where-the-habits-live)). Purchases not checked for a day are checked again after the answer, so a refund reaches the account |
 | `POST /v1/account/purchases` `{product, token}` | A Google Play purchase, checked with Google; one purchase belongs to one account |
+| `POST /v1/account/cloud` `{cloud, key, device}` or `{cloud: null}` | Where the habits live now, from a device that just synced there; `null` once the habits there were deleted ([Where the habits live](#where-the-habits-live)) |
 | `POST /v1/account/delete` `{provider, idToken, nonce}` | Needs a fresh sign-in as the same person (Figma 7.2.1). Removes the account, its sessions, its purchase records (the purchases stay with Google, so signing in again brings Plus back), its place in a family, and a family it owns with that family's invites (everyone in it loses Plus, nobody loses habits) |
 | `POST /v1/sign-out` | Ends this device's session |
 | `POST /v1/family/invite`, `/invite/cancel`, `/remove {person}`, `/leave` | Plus Family: the owner and up to 5 more; one single-use invite at a time, for 7 days (`https://oftenenough.com/join/<token>`, 128 random bits) |
 | `GET /v1/invites/<token>`, `POST /v1/invites/<token>/join` | Opening an invite (open, ended, used, cancelled, full; the owner's first name) and joining it. Claiming the invite and taking the place are one transaction, so a family never passes six |
 | `GET /v1/health` | `{ok, environment}` |
 | `POST /v1/google/notifications` | Google Play's Real-time developer notifications, pushed by Pub/Sub with its OIDC token; nobody else. A refund ends Plus here, within seconds ([Refunds](#refunds-within-seconds)) |
+| `POST /v1/move/codes`, `GET /v1/move/send`, `GET /v1/move/receive` | Moving to a new phone with a code: a relay between two online phones, holding nothing ([Moving to a new phone](#moving-to-a-new-phone-with-a-code)) |
 
 Every call but sign-in, opening an invite and Pub/Sub's push needs `Authorization: Bearer <session>` (32 random bytes;
 the database keeps only its SHA-256; forgotten after 400 days unused). Every call is safe to repeat. Rate limits per
@@ -45,7 +48,7 @@ neither.
 ```sh
 cd account-server
 npm install
-npm test               # 66 tests in the Workers runtime (Miniflare) with a real D1; Google, Apple and Play are stand-ins
+npm test               # 83 tests in the Workers runtime (Miniflare) with a real D1; Google, Apple and Play are stand-ins
 npm run typecheck
 ```
 
@@ -61,7 +64,61 @@ cd Android
   "-Pandroid.testInstrumentationRunnerArguments.accountTestSecret=$(grep '^accountTestSecret=' ~/.gradle/gradle.properties | cut -d= -f2-)"
 ```
 
+## Where the habits live
+
+Rulebook D16; Current Work 138, built 19 Oct 2026 (migration `0003_where_the_habits_live.sql`; on dev the same day,
+version `e4d66a69`, live checks passing; production waits for the user's go-ahead). The account remembers
+which cloud holds the habits, so a new phone signing in goes there by itself, or says plainly where they are:
+
+| Field | |
+|---|---|
+| `kind` | `google_drive` or `icloud` |
+| `key` | The cloud account's private ID, exactly as the device's sync binds to it: `gdrive:` and the SHA-256 (hex) of `google:` and Google's fixed account ID (`sub`), or `icloud:` and CloudKit's user record name for our container (no other app sees it). Checked against its kind; an email is refused |
+| `device` | `android`, `iphone` or `ipad`: the kind of device that last synced there |
+| `syncedAt` | When (ms) |
+| `signInAccount` | Worked out on each read, never stored: a Google Drive of the very Google account this account signs in with (`googleDriveKey(subject)`), so a new phone opens it with no chooser |
+
+Only the account's own sessions read or write it (a family member never sees it), and it's deleted with the account.
+The app tells it after a Google Drive round that synced, only when the place changed or once a day (Core's
+`AccountCenter.noteCloud`), and `null` after Delete my data from Google Drive. On a new phone, coming back (Figma
+`1549:2`) reads it: the sign-in account's own Drive (straight there), a different Google account's Drive (2.5: the person
+chooses it, and the chosen account's key is compared before anything is read), or an iPhone's iCloud (2.3, 3.3: the
+move code). No other account is ever named.
+
+## Moving to a new phone with a code
+
+Added 19 October 2026 (Rulebook **D15**, Current Work **136**, Figma `1461:2` 3–3.3 and `1549:2` 5–5.4). Two Durable
+Objects on the free plan (SQLite-backed, `new_sqlite_classes`): **`MoveRegistry`**, one for the Worker, which hands out
+channels `00`–`99`, each for 10 minutes; and **`MoveRelay`**, one per move, holding the two phones' WebSockets
+(hibernating, so an idle wait costs nothing). The whole protocol is in the header of `src/move.ts`.
+
+- **The code is 6 digits:** 2 for the channel (which old phone to reach, the only part the Worker sees) and 4 made on
+  the old phone, which never leave it. The QR code is `oftenenough://move/NNNNNN`.
+- **SPAKE2** (RFC 9382, P256-SHA256-HKDF-HMAC, as Magic Wormhole uses a password-authenticated key exchange) turns the
+  code into a strong key on both phones; the Worker passes their messages without being able to read them, and never
+  has the code or the key. The habits then go as AES-256-GCM frames of 48 KB **straight through the relay**: nothing is
+  stored, so there is no R2 copy to delete (D15 allowed R2 for a large copy; streaming made it unnecessary).
+- **One guess per code.** A channel takes one new phone ever. A wrong code shows only as confirmations that don't match:
+  the old phone says `wrong`, the relay closes both (4001), and the old phone shows a new code at once. A new phone that
+  leaves before pairing also ends the code (4002). So a stranger's chance is 1 in 10,000 per try, and every try costs
+  them a new code; the `MOVE_LIMIT` rate limit (20 calls a minute per IP) slows anyone trying many.
+- The old phone's token is sent as `Authorization: Bearer`, never in the URL (dev logs URLs; D11).
+
+Tests: `test/move.test.ts` (9: a right code moves bytes both ways, a wrong code ends it for both, a code is single-use,
+expiry, busy channels, and that every named export of the entry module is an entry point; a stray export broke
+`wrangler dev`). The app's side against the real Workers runtime: run `npx wrangler dev --port 8787 --ip 0.0.0.0` here,
+then `MOVE_SERVER=http://127.0.0.1:8787 ./gradlew :app:testDebugUnitTest --tests '*MoveLiveTest'` in `Android/` (a whole
+move, a wrong code, the code after it); two emulators reach it at `http://10.0.2.2:8787` with the debug app's
+`--es moveServer`. **On dev since 19 Oct 2026** (version `2bcaf388`): `npm run live:dev` and `MoveLiveTest` with
+`MOVE_SERVER=https://api-dev.oftenenough.com` pass against it. **Production waits for the user's go-ahead (T6).**
+
 ## Deploy dev
+
+**On the user's Windows PC, wrangler's default login belongs to another Cloudflare account.** The user's own login is
+kept apart, in the git-ignored `Research/Temp/wrangler-home` (signed in there on 19 Oct 2026), so every wrangler command
+for this Worker sets it first (PowerShell: `$env:XDG_CONFIG_HOME="C:\Users\lalit\Desktop\store-reviews\Research\Temp\wrangler-home"`). Check with `npx wrangler whoami` (account `fd5d7e49…`)
+before deploying; if the login has expired, start `npx wrangler login` with the same setting and the user approves it in
+the browser.
 
 ```sh
 npm run migrate:dev    # only when migrations/ changed

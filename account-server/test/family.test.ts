@@ -140,7 +140,7 @@ describe("joining and leaving (Figma 5.7, 5.8, 7.3, 7.4)", () => {
     expect((await me(priya.session)).family.owner).toBe("Lee");
     expect((await me(sam.session)).family.people).toHaveLength(1); // Sam's family no longer lists her
     const left = (await call("POST", "/v1/family/leave", { session: priya.session })).body.account;
-    expect(left).toEqual({ id: priya.account.id, plus: "NONE", family: null });
+    expect(left).toEqual({ id: priya.account.id, plus: "NONE", family: null, cloud: null });
     expect((await me(lee.session)).family.people).toHaveLength(1);
   });
 
@@ -168,7 +168,7 @@ describe("joining and leaving (Figma 5.7, 5.8, 7.3, 7.4)", () => {
     const { member } = await joinFamily(lee.session, "Priya");
     const after = (await call("POST", "/v1/family/remove", { session: lee.session, body: { person: member.account.id } })).body.account;
     expect(after.family.people).toHaveLength(1);
-    expect(await me(member.session)).toEqual({ id: member.account.id, plus: "NONE", family: null });
+    expect(await me(member.session)).toEqual({ id: member.account.id, plus: "NONE", family: null, cloud: null });
     // Removing nobody, or yourself, changes nothing.
     await call("POST", "/v1/family/remove", { session: lee.session, body: { person: lee.account.id } });
     expect((await me(lee.session)).plus).toBe("FAMILY_OWNER");
@@ -192,7 +192,7 @@ describe("deleting the account (Figma 7.2, 7.9, 7.10)", () => {
     const proof = await idToken(leeWho);
     expect((await call("POST", "/v1/account/delete", { session: lee.session, body: { provider: "google", ...proof } })).body).toEqual({ deleted: true });
     expect((await call("GET", "/v1/account", { session: lee.session })).status).toBe(401); // signed out everywhere
-    expect(await me(member.session)).toEqual({ id: member.account.id, plus: "NONE", family: null });
+    expect(await me(member.session)).toEqual({ id: member.account.id, plus: "NONE", family: null, cloud: null });
     // The invites went with the account (they held Lee's name): old links now read "doesn't work".
     expect((await call("GET", `/v1/invites/${waiting}`)).status).toBe(404);
     expect((await call("GET", `/v1/invites/${token}`)).status).toBe(404);
