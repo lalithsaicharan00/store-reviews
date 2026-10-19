@@ -1269,6 +1269,52 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **144. Android: Progress, every screen** (added 19 October 2026, from the user: "next what's left is the progress
+  page … figure out what are the screens that are missing … let's start on creating the empty placeholders"). Figma
+  `1376:2`.
+  - [x] Reviewed the three 12 Oct frames (Week, Month, Year) against Design Rules, the iPhone Progress spec and the
+    Android design notes; listed the missing kinds, states and flows (19 Oct).
+  - [x] **Decided by the user (19 Oct), on my recommendation:**
+    - **A tap on a square opens that habit's Day details for that day**, the same sheet as Today's row and Habit
+      details' calendar. Nothing changes on the tap itself (the complaint in the research is a tap that marks a day,
+      e.g. "unknowingly mark the habit undone"); asks for a day's detail: 181 reviews in 50 apps. This replaces the
+      iPhone's "Progress only reads" for Android; the iPhone is frozen until Android is final, so it changes later.
+    - **Progress gets the group filter, a filter only**: the filter button, Today's Filter sheet, *Health ✕*. No group
+      numbers or Groups card (the user, 2 Oct). Progress keeps its own choice, apart from Today's. Why: the app already
+      says *"Groups change only what Today and Progress show"*; filtering stats to one group is the top group ask.
+    - How was today stays future work, out of this section.
+  - [x] **Placeholders, numbered, in 6 rows with arrows (19 Oct):** the 3 frames renumbered (1 Week, 1.1 Month, 1.2
+    Year) and 34 placeholders: 1.3 the key open, 1.4 Year scrolled, 1.5 many habits, 1.6 200 % text, 1.7 a long name;
+    2–2.3 other periods; 3–3.9 every kind as a card (a check, several a day, a month goal, N days a week, more than the
+    goal, part days, skipped and paused, quit, cut down by count and by time); 4–4.4 a habit started this week,
+    paused, archived, no habits, nothing in this period; 5–5.4 tap a square (Day details, fixed, a day to come, a
+    card); 6–6.4 the group filter. Everything below Progress moved down 5,426 to make room.
+  - [x] **Every placeholder designed (19 Oct)**, 37 frames, each built from the approved Week, Month and Year pages
+    and their cards, so the cards, squares and type match. What they show:
+    - **The key, open (1.3):** goal met, more than the goal, part (three steps), not done once the day is over,
+      skipped, paused, still to come, nothing planned (dashed), today (outline), no square before the start; "Each
+      habit's squares take its own colour."
+    - **Other periods (2–2.3):** last week, last month (September, blank before the start on 9 Sep) and last year
+      (opens on its last weeks); › on in the past; ‹ off in the first week; past tense ("that week").
+    - **Every kind as a Week card (3–3.9)**, with today on Thursday so the week has days to show: a check; several a
+      day (a part day is a lighter step); a month goal (the days it was done, the rest dashed; the headline on the
+      month's clock); N days a week (days without it dashed, never ✕); more than the goal (the darkest step); part
+      days; skipped and paused (grey with their signs); quit (clean ✓, a slip grey ✕);
+      cut down by count and by time (kept ✓, over grey ✕, *Within the limit on 3 of 4 days*). The quit headline is
+      *Clean for 2 days*, then *Best 30 days · 1 slip this week*.
+    - **States (4–4.4):** started this week (blank before, *Started Wed 14 Oct*); paused (*Paused until 20 Oct*);
+      archived (*Archived on Wed 7 Oct*, its days stop there); no habits yet (Today's empty block: *No habits yet ·
+      Add a habit, and Progress shows how each day went.*, New habit, Start from an idea); nothing in a period (*Nothing
+      to show for July · Every habit was paused this month. Paused days don't count.*).
+    - **Tap a square (5–5.4):** the press, Day details for Read today over Progress, the square ✓ after Log manually, a
+      day still to come (Day details on a later day), a card → Habit details.
+    - **The group filter (6–6.4):** the filter button, *Show on Progress* (Today's sheet without the Hide done
+      switches), *Health ✕* with only Health's cards, no groups yet (*Group your habits*), and Month still on Health.
+  - [x] **The quit card (3.7), the user's call (19 Oct: "whichever is best, based on the reviews"):** the headline is
+    the current run, *Clean for 2 days*, and the line under it *Best 30 days · 1 slip this week*. Why: quit stats are
+    praised in 708 reviews in 26 apps, 614 of them for the days-since count, and people ask for the best run beside it
+    (Progress report §10.1–10.2). A habit's streaks stay off Progress; a quit habit's run is its main number.
+  - [ ] The user's review, then the app (Android first, on `claude/android-app`).
 - [ ] **140. Android: the routine player and the timer, every screen** (added 19 October 2026, from the user: "first
   let's complete the routine player and … timer … what designs are left? … add … the empty screens placeholders first
   … with the numbering"). Figma `1328:2`. Numbered 140: 134–139 are taken on other branches.

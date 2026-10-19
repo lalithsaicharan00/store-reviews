@@ -22,7 +22,7 @@ sections sit in rows, top to bottom, each row left to right, 240 apart:
 11. Widgets · Widgets: adding and changing · Widgets: every state (they belong to no menu row)
 12. (Archived) future phases: How was today
 
-A new section goes into the row its menu row or parent screen belongs to. The page spans y −66,000 to 25,379 and x 0 to
+A new section goes into the row its menu row or parent screen belongs to. The page spans y −66,000 to 40,405 (19 Oct, after Progress grew) and x 0 to
 29,280, inside Figma's canvas limit.
 
 Figma file `Ncccsm1l2O62GJ5xLSInqk` ("Design"), page **Andriod mobile** (`1241:2`):
@@ -41,7 +41,7 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 | **Menu: navigation drawer** (`1326:2`) | Drawer open over Today (`1326:3`); the same, scrolled to the end (`1326:231`) | Built 12 Oct from the built app |
 | **Routine player and timer** (`1328:2`) | **Placeholders added 19 Oct 2026 (Current Work 140):** 11 numbered rows with arrows, the 18 frames of 12 Oct renumbered into them, 35 placeholders, and *a limit* set aside (below, "Routine player and timer: placeholders, 19 Oct 2026"). The 12 Oct frames: a check (`1344:2`), done with the Saved snackbar (`1344:57`), several a day (`1344:117`), a checklist (`1344:173`) and many steps (`1347:57`), an amount, one tap (`1333:2`), a week goal with a long label (`1347:2`), typed each time (`1344:352`), a timer running (`1344:241`) and not started (`1344:297`), a task (`1344:463`), skipped (`1344:518`), the last habit, done (`1344:582`), ⋮ menu (`1345:2`), Your routine (`1345:70`), the end (`1345:183`), Timer · running (`1345:219`) | Expressive version approved 12 Oct; **all 35 placeholders designed 19 Oct** (below), waiting for the user's review |
 | **Habit details: Progress and History** (`1373:2`) | **The final design (19 Oct 2026, Current Work 143), cleaned up the same day at the user's word:** top, the milestones rule board (`2266:2`) and All milestones (`1735:4`); then six rows: 1 the page and its header (opens on Progress; tabs Progress · History; the description; collapsed; ⋮), 2 History with logs and notes together (Search notes; All · With notes · Go to date; one **Add** button), the Add flow 2.11–2.17 with arrows (Add → a date dialog “Add to which day?” → that day's Day details → +1 / Log manually / Add a note → History), 3 Progress (the record with See all streaks, dated Month calendar, note marks, week-goal, amount, new and quit habits), 4 fixing a past day, 5 the start date, 6 other states (paused, archived, type change, a task, 200 % text, loading) | The old frames (the 12 Oct History, Notes, Progress and ⋮ menu) and the three replaced Add versions were removed on the user's word ("clean up the old designs, but keep the milestones overall info"). How it got here: the research ([The Habit Details Page — Why People Open It](<../../Research/Research Reports/Day Structure and Organization/The Habit Details Page — Why People Open It and What It Should Do.md>)), then the user's decisions and reviews, all in Current Work 143 |
-| **Progress: Week, Month, Year** (`1376:2`) | Week (`1376:3`), Month (`1376:226`), Year (`1376:496`), all full length | Built 12 Oct from the built app; **no ⋮ menu** (removed the same day, below) |
+| **Progress: Week, Month, Year** (`1376:2`) | **Placeholders added 19 Oct 2026 (Current Work 144):** 6 numbered rows with arrows, the three 12 Oct frames renumbered (1 Week `1376:3`, 1.1 Month `1376:226`, 1.2 Year `1376:496`) and 34 placeholders (below, "Progress: placeholders, 19 Oct 2026") | Built 12 Oct from the built app; **no ⋮ menu**; **all 34 placeholders designed 19 Oct** (below), waiting for the user's review |
 | **Settings: Times of Day** (`1437:2`) | Times of Day (`1440:2`); New time of day, defaulting to free time 4–6 AM (`1440:69`); Edit time of day · Morning (`1440:152`) | Built 12 Oct from the simulator, then made Expressive at the user's request (the terminal session's version was deleted) |
 | **Settings: Day and Week** (`1449:2`) | Day and Week (`1449:3`); New day starts at, menu open (`1449:51`); Week starts on, menu open (`1768:100`) | Built 12 Oct from the built app; **redesigned 14 Oct** in Figma, not built (below, "Day and Week, 14 Oct 2026") |
 | **Settings: Reminders** (`1456:2`) | Reminders with the reminder check (`1456:3`); a habit's reminders, on (`1456:91`); Get reminders on time, the exact-times sheet (`1456:164`); a reminder that didn't arrive (`1456:206`) | Built 12 Oct from the built app and decisions A11 D1–D3 |
@@ -3144,6 +3144,36 @@ button is "+1" / "+2.5" (U16; no unit, no cut-off label); a single check or task
 the shade (header *Often Enough · Timer*, title, *5:24 of 20 min*, a progress bar, one action) and the same card on the
 lock screen. 5.2 has no snackbar: it would cover the step just ticked, and a ticked step unticks with a tap.
 
+### Progress: placeholders, 19 Oct 2026 (Current Work 144; the user: "let's start on creating the empty placeholders")
+
+**Two decisions first (the user, 19 Oct, on the recommendation):** a tap on a square opens **that habit's Day details
+for that day**, as Today's row and Habit details' calendar do (one rule: a habit's day opens its Day details; nothing
+changes on the tap); and Progress gets **the group filter, a filter only** (Today's filter button and sheet, *Health ✕*,
+its own choice apart from Today's; no group numbers, as decided 2 Oct). How was today stays future work.
+
+The section (`1376:2`, now 5,200 × 7,160) has six rows: **1** the page (1 Week, 1.1 Month, 1.2 Year, then the key open,
+Year scrolled, many habits, 200 % text, a long name); **2** other periods (last week, month, year; the first period
+with ‹ off); **3** every kind as a card (3–3.9); **4** habit states and empty pages (4–4.4); **5** tap a square (5–5.4);
+**6** the group filter (6–6.4). **Everything below Progress moved down 5,426** (Tasks, Settings, Widgets with *Widgets:
+every state*, and the archived How was today); the page now spans y −66,000 to 40,405, and no sections overlap. The
+skip and pause signs are written in words in the placeholders (⏩ and ⏸ draw as emoji in Google Sans Flex).
+
+### Progress: every screen designed, 19 Oct 2026 (Current Work 144; the user: "let's work on it and create the designs")
+
+All 34 placeholders in `1376:2` are designed (37 frames, no placeholder left), each cloned from the Week, Month or Year
+page and their cards; squares follow the one rule (Design Rules, "Progress Week"): goal met in the habit's colour with
+✓, more than the goal the darkest step with the same ✓, part days three lighter steps with no sign, not done grey ✕
+once the day is over, skipped and paused grey with their signs, still to come plain grey, nothing planned dashed,
+today an outline, nothing before the start. **Row 3's cards set today on Thursday** so a week has days to show; the
+rest keep the base frames' Monday. **The key, open (1.3)** lists every square in words with 24 dp samples. **Past
+periods** say *that week / that month / that year*, › on; the first week has ‹ off. **Year** opens on the latest
+weeks; 1.4 shows it scrolled back to January (weekday letters fixed). **Empty pages** reuse Today's empty block.
+**Tapping a square** opens the same Day details as Today; **the filter** reuses Today's sheet, titled *Show on
+Progress*, without the Hide done switches, and *Health ✕* under Week · Month · Year. **The quit card (3.7), the user's call
+("whichever is best, based on the reviews"):** the headline is the current run, *Clean for 2 days*, with *Best 30
+days · 1 slip this week* under it: the days-since count is 614 of the 708 reviews praising quit stats, and the best run
+is asked for beside it (Progress report §10). A habit's streaks stay off Progress; a quit habit's run is its number.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
@@ -3171,7 +3201,8 @@ lock screen. 5.2 has no snackbar: it would cover the step just ticked, and a tic
    the Live Update (A11 D4) among them. Next: the user's review. (Today's timer bar was dropped 16 Oct: the row keeps the clock.)
 6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct; All milestones drawn 14 Oct. Not drawn: Go to
    date, a habit with no history yet, and the other kinds' Progress (time, checks, quit, checklist).
-7. ~~**Progress.**~~ Built 12 Oct (Week, Month, Year; no ⋮). Not drawn: the legend expanded.
+7. **Progress:** built 12 Oct (Week, Month, Year; no ⋮); **34 placeholders added and designed 19 Oct** (Current Work
+   144), the legend expanded among them. Next: the user's review.
 8. ~~**Settings pages:**~~ Built 12 Oct (Times of Day, Day and Week, Reminders, Appearance, Google Drive & Backup and
    the restore flow, Privacy & Security and App lock, Plus, Help & Feedback, About). Was: Times of Day, Day and Week, Reminders (with the reminder check, A11 D1–D2), Appearance, Google
    Drive & Backup (the sync line and status, A7), Privacy & Security and App Lock, Plus, Help & Feedback, About.
