@@ -49,7 +49,7 @@ So "3 times a week" is **Weeks** (question 1), and Mon/Wed/Fri is **Days** (its 
 - Clean the fridge on the 1st: 5, 10, 25 times.
 
 **The other kinds of habit:**
-- **Cut down** counts days (or weeks) within the limit, never what was had.
+- **Cut down** counts days (or weeks) within max ("30 days within max", A23), never what was had.
 - **Quit** counts days since a slip (plus 1 day at the start) and clean days in total.
 - **A checklist** counts a day once all its steps are done.
 - **A task** has none.
@@ -131,7 +131,7 @@ when the row is first seen, and a pop-up's band has See.
 - **The habit page follows this rule** (`habitMilestones` in `HabitPageWords.kt`): Progress's Milestones card (Figma
   `2475:75`) and All milestones (`1735:4`) list in a row by the bucket, in total in the habit's own unit, and
   anniversaries, with the pop-ups' words (`milestoneTotalWords`, `milestonePeriodGoal`, shared with `MilestoneCenter`).
-  A cut-down habit keeps days within the limit; quit keeps days since a slip.
+  A cut-down habit keeps days within max; quit keeps days since a slip ("30 days clean").
 - **One medal, everywhere it's shown** (the user, 19 Oct 2026: "make sure the milestones are consistent everywhere"):
   `MilestoneMedal` (`ui/habit/Medals.kt`) draws Figma's nine-point star in a vertical gradient of the habit's colour,
   the same star at 82 % as a white line at 55 %, a soft shadow in a dark shade of the colour, and the number in white.

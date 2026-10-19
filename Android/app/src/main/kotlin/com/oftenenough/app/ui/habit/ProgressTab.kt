@@ -308,13 +308,13 @@ private fun QuitClockText(start: Long, clock: () -> Long) {
             delay((60_000 - (now - start) % 60_000).coerceIn(50, 60_000))
         }
     }
-    // "12 days 6 h slip-free" (Figma 3.9): the days large, the hours after them; it moves on by itself each minute.
+    // "12 days 6 h clean" (Figma 3.9, "smoke-free": one word for every quit habit, the user, 19 Oct 2026): the days large, the hours after them; it moves on by itself each minute.
     val seconds = (now - start) / 1000
     val days = seconds / 86400
     val hours = seconds % 86400 / 3600
     val text = buildAnnotatedString {
         withStyle(AppType.displayMedium.toSpanStyle().copy(color = appColors.ink)) { append(com.oftenenough.app.data.HabitCopy.number(days.toDouble())) }
-        withStyle(AppType.bodyLarge.toSpanStyle().copy(color = appColors.secondary)) { append(" " + (if (days == 1L) "day" else "days") + " $hours h slip-free") }
+        withStyle(AppType.bodyLarge.toSpanStyle().copy(color = appColors.secondary)) { append(" " + (if (days == 1L) "day" else "days") + " $hours h clean") }
     }
     Text(text, Modifier.semantics { contentDescription = "$days ${if (days == 1L) "day" else "days"} $hours hours without a slip"; testTag = "quit-clock" }, maxLines = 2)
 }

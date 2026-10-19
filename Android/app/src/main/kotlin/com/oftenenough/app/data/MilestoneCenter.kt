@@ -412,12 +412,12 @@ class MilestoneCenter(private val store: HabitStore) {
         val bucket = if (quit) MilestoneBucket.DAYS else store.rules.milestoneBucket(ruled)
         fun rowTitle(k: Int) = when {
             quit -> "$k ${if (k == 1) "day" else "days"} clean"
-            limit -> "$k ${unit.word(k)} within the limit"
+            limit -> "$k ${unit.word(k)} within max"
             else -> milestoneRowTitle(k, unit)
         }
         fun totalTitle(v: Double): String = when {
             quit -> "${Format.amount(v)} clean days in total"
-            limit -> "${Format.amount(v)} ${if (v == 1.0) "day" else "days"} within the limit in total"
+            limit -> "${Format.amount(v)} ${if (v == 1.0) "day" else "days"} within max in total"
             else -> milestoneTotalWords(ruled, v)
         }
         val number: String

@@ -250,7 +250,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     }
                     // A limit says where it stands in words, never in red (Figma 10–11.3, U3).
                     if (r.atMost) return DayStatus("${today(saved)} $dayWord", "Limit ${text(goal)} · " + when {
-                        saved > goal -> "Over the limit"; saved >= goal -> "Limit reached"; else -> "within limit"
+                        saved > goal -> "Over the limit"; saved >= goal -> "Limit reached"; else -> "within max"
                     }, running)
                     val title = if (timed) {
                         if (goal < 60 && saved < 60) "${kotlin.math.floor(saved).toInt()} of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"

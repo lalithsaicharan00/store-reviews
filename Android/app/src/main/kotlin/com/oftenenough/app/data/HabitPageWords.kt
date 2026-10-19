@@ -372,7 +372,7 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
             headline = if (judged.isEmpty()) {
                 val now = amounts[today] ?: 0.0
                 if (running) "${progressValue(now, rule)} of ${progressValue(rule.goal, rule)} so far today" else "Nothing judged that $noun"
-            } else "Within limit on $within of ${dayCount(judged.size)}"
+            } else "Within max on $within of ${dayCount(judged.size)}"
             detail = if (total > 0 && judged.isNotEmpty()) progressValue(total, rule) + " " + whenText else null
         }
         else -> {
@@ -570,7 +570,7 @@ private fun HabitStore.periodText(
         val judged = results.count { it.met != null }
         fun periods(n: Int) = if (kind == GoalPeriod.WEEK) (if (n == 1) "week" else "weeks") else (if (n == 1) "month" else "months")
         val open = results.lastOrNull()?.takeIf { it.met == null && today in it.period }
-        val head = if (shape == ProgressShape.LIMIT_PERIOD) "Within the limit $met of $judged ${periods(judged)}"
+        val head = if (shape == ProgressShape.LIMIT_PERIOD) "Within max $met of $judged ${periods(judged)}"
         else if (judged == 0 && open != null) {
             (if (shape == ProgressShape.PERIOD_TOTAL) "${pv(open.value)} of ${pv(open.goal)}"
             else "${count(min(open.value, open.goal))} of ${count(open.goal)}") + " this ${periods(1)}"
@@ -1059,7 +1059,7 @@ fun HabitStore.habitRecord(habit: Habit, today: Int): HabitOverall {
         GoalPeriod.MONTH -> if (n == 1) "month" else "months"
         GoalPeriod.YEAR -> if (n == 1) "year" else "years"
     }
-    val goalTitle = if (shape == ProgressShape.CHECKLIST) "Every step" else if (now.atMost) "Within the limit" else "Goal met"
+    val goalTitle = if (shape == ProgressShape.CHECKLIST) "Every step" else if (now.atMost) "Within max" else "Goal met"
     val goalMet = if (tally.eligible > 0) RecordFact(goalTitle, HabitCopy.number(tally.met.toDouble()),
         "of ${tally.eligible} ${periods(tally.eligible)}", null, "$goalTitle, ${tally.met} of ${tally.eligible} ${periods(tally.eligible)}") else null
     // "58% of days" (Figma 1373:2, 1.1): the days counted are the planned ones, as "of 40 days" above it says.
@@ -1243,10 +1243,10 @@ fun milestonePeriodWord(n: Int, kind: GoalPeriod, atMost: Boolean): String = whe
     GoalPeriod.YEAR -> if (n == 1) "year" else "years"
 }
 
-/** "10 times in total", "10 weeks of goals met", "10 days within the limit". */
+/** "10 times in total", "10 weeks of goals met", "10 days within max". */
 fun milestoneTotalTitle(n: Int, kind: GoalPeriod, atMost: Boolean): String {
     val word = milestonePeriodWord(n, kind, atMost)
-    if (atMost) return "$n $word within the limit"
+    if (atMost) return "$n $word within max"
     return if (kind == GoalPeriod.DAY) "$n $word in total" else "$n $word of goals met"
 }
 
@@ -1297,7 +1297,7 @@ fun HabitStore.habitMilestones(habit: Habit, record: HabitOverall, today: Int): 
     if (habit.kind == HabitKind.Task || rules.startDay(habit) > today) return HabitMilestones.none
     val now = rule(habit, today)
     // The decided rule (Milestones, 17 Oct 2026; Figma 1373:2, 1735:4), the pop-ups' own: in a row and in total by the
-    // habit's bucket, plus anniversaries. A cut-down habit keeps counting days within the limit, below.
+    // habit's bucket, plus anniversaries. A cut-down habit keeps counting days within max, below.
     if (!now.atMost) return decidedMilestones(habit, now, today)
     val kind = pagePeriodKind(now)
     val unit = now.frequency.streakUnit
@@ -1351,7 +1351,7 @@ private fun HabitStore.totalMilestones(dates: List<Int>, kind: GoalPeriod, atMos
         val word = milestonePeriodWord(n, kind, atMost)
         pageMilestone(Milestone.Track.IN_TOTAL, n, kind.key + (if (atMost) "-limit" else ""), "$n", milestoneTotalTitle(n, kind, atMost),
             if (kind == GoalPeriod.DAY) "$n in total" else "$n $word",
-            if (kind == GoalPeriod.DAY) null else if (atMost) "within limit" else "goals met", "$n $word", dates[n - 1], today)
+            if (kind == GoalPeriod.DAY) null else if (atMost) "within max" else "goals met", "$n $word", dates[n - 1], today)
     }
 
 /** The day a run reached each of [values] counted days (or weeks, months), in one walk from its start. */

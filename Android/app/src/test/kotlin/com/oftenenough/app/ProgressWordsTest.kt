@@ -102,7 +102,7 @@ class ProgressWordsTest {
     }
 
     @Test fun spokenCards() {
-        assertEquals("Within the limit", ProgressWords.markWords(DayMark.DONE, atMost = true))
+        assertEquals("Within max", ProgressWords.markWords(DayMark.DONE, atMost = true))
         assertEquals("Not scheduled", ProgressWords.markWords(DayMark.NOT_ITS_DAY))
         val days = listOf(
             cardDay(day(2026, 10, 10), DayMark.BEFORE),

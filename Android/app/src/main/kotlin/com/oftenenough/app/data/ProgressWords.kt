@@ -155,7 +155,7 @@ object ProgressWords {
 
     /** The mark's name, as TalkBack says it; a limit's marks say what they mean for a limit. */
     fun markWords(mark: DayMark, atMost: Boolean = false): String = when (mark) {
-        DayMark.DONE -> if (atMost) "Within the limit" else "Done"
+        DayMark.DONE -> if (atMost) "Within max" else "Done"
         DayMark.SOME -> if (atMost) "Logged" else "Partial"
         DayMark.MISSED -> if (atMost) "Over the limit" else "Not done"
         DayMark.OPEN -> "Today, still open"
