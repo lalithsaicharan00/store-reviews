@@ -54,6 +54,10 @@ import androidx.compose.material.icons.rounded.Tag
 import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.EditCalendar
+import androidx.compose.material.icons.outlined.EventBusy
+import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -82,6 +86,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -330,8 +335,11 @@ private fun FormBody(
                 ItemType.TASK -> {
                     Column {
                         TaskRows(form, store)
-                        Note((if (form.taskRepeats) "It comes back on the days you pick below." else "If it isn't done, it moves forward to today until it is.") +
-                            " Tasks don't have progress or stats.")
+                        Note(when {
+                            form.taskRepeats -> "It comes back on the days you pick below."
+                            form.taskHasNoDate -> "Saved without a date, it stays on the Tasks page, under No date. It won't show on Today until you give it a day."
+                            else -> "If it isn't done, it moves forward to today until it is."
+                        } + " Tasks don't have progress or stats.")
                     }
                     if (form.taskRepeats) SegmentedList {
                         OpenRow("How often", form.often.often(false).label(false, weekStart = form.weekStart), null, 0, 1, "how-often-row") { open(Page.OFTEN) }
@@ -424,6 +432,14 @@ fun OpenSettingsButton(context: android.content.Context) {
     }
 }
 
+/** A one-time task's day on the form (Figma 1.9, 6.2): "Today · Sat 18 Oct", "Tomorrow · Sun 19 Oct", "Thu 23 Oct", "No date". */
+private fun taskDateWords(day: Int, today: Int): String = when (day) {
+    com.oftenenough.app.data.NO_DATE_DAY -> "No date"
+    today -> "Today · " + com.oftenenough.app.data.taskDay(day)
+    today + 1 -> "Tomorrow · " + com.oftenenough.app.data.taskDay(day)
+    else -> if (java.time.LocalDate.ofEpochDay(day.toLong()).year == java.time.LocalDate.ofEpochDay(today.toLong()).year) com.oftenenough.app.data.taskDay(day) else pillDate(day)
+}
+
 private fun formTitle(form: FormState): String = when {
     form.editing -> if (form.type == ItemType.TASK) "Edit task" else "Edit habit"
     form.type == ItemType.TASK -> "Task"
@@ -469,6 +485,8 @@ private fun Preview(form: FormState) {
             }
             RoundActionButton(icon, done = false, color = habit.color, label = "", onClick = {}, text = text, enabled = true)
         }
+        if (named && form.taskHasNoDate) Text("It shows on the Tasks page under No date, not on Today.",
+            Modifier.padding(horizontal = 16.dp).semantics { testTag = "habit-sentence" }, style = AppType.bodySmall, color = appColors.secondary)
         if (!named) Text(if (form.type == ItemType.TASK) "Enter a task name to see the preview." else "Enter a habit name to see the preview.",
             Modifier.padding(horizontal = 16.dp).semantics { testTag = "habit-sentence" }, style = AppType.bodySmall, color = appColors.secondary)
     }
@@ -693,10 +711,11 @@ private fun HalfValue(title: String, value: String, tag: String, shape: RoundedC
 private fun TaskRows(form: FormState, store: HabitStore) {
     var repeatMenu by remember { mutableStateOf(false) }
     var picking by remember { mutableStateOf<String?>(null) }
+    var dateMenu by remember { mutableStateOf(false) }
     val today = store.today()
-    val earliest = form.original?.dueDay?.let { minOf(today, it) } ?: today
+    val earliest = form.original?.dueDay?.takeIf { it != com.oftenenough.app.data.NO_DATE_DAY }?.let { minOf(today, it) } ?: today
     SegmentedList {
-        val count = 2 + (if (!form.taskRepeats) 1 else 0)
+        val count = (if (form.taskHasNoDate) 1 else 2) + (if (!form.taskRepeats) 1 else 0)
         var i = 0
         Box {
             OpenRow("Repeat", if (form.taskRepeats) "On a schedule" else "Never", null, i++, count, "repeat-row") { repeatMenu = true }
@@ -708,8 +727,22 @@ private fun TaskRows(form: FormState, store: HabitStore) {
                     leadingIcon = { if (form.taskRepeats) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
             }
         }
-        if (!form.taskRepeats) OpenRow("Date", pillDate(form.taskDate), null, i++, count, "task-date") { picking = "date" }
-        Segment(i, count, Modifier.heightIn(min = 72.dp).semantics { testTag = "task-time" }, onClick = { picking = "time" }) {
+        // Date (Tasks, Figma 1.9): Today, Tomorrow, Pick a date… or No date, from a menu under the row.
+        if (!form.taskRepeats) Box {
+            OpenRow("Date", taskDateWords(form.taskDate, today), null, i++, count, "task-date") { dateMenu = true }
+            DropdownMenu(dateMenu, { dateMenu = false }, Modifier.width(240.dp).semantics { testTagsAsResourceId = true },
+                offset = androidx.compose.ui.unit.DpOffset(88.dp, 0.dp), containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
+                val item = @Composable { text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, pick: () -> Unit ->
+                    DropdownMenuItem({ Text(text, style = AppType.bodyLarge) }, { dateMenu = false; pick() }, Modifier.semantics { testTag = tag },
+                        leadingIcon = { Icon(icon, null) })
+                }
+                item("Today", Icons.Outlined.Today, "task-date-today") { form.taskDate = today }
+                item("Tomorrow · " + com.oftenenough.app.data.taskDay(today + 1), Icons.Outlined.CalendarMonth, "task-date-tomorrow") { form.taskDate = today + 1 }
+                item("Pick a date…", Icons.Outlined.EditCalendar, "task-date-pick") { picking = "date" }
+                item("No date", Icons.Outlined.EventBusy, "task-date-none") { form.taskDate = com.oftenenough.app.data.NO_DATE_DAY }
+            }
+        }
+        if (!form.taskHasNoDate) Segment(i, count, Modifier.heightIn(min = 72.dp).semantics { testTag = "task-time" }, onClick = { picking = "time" }) {
             Column(Modifier.weight(1f)) {
                 Text("Time", style = AppType.titleMedium, color = appColors.ink)
                 if (form.taskHasTime) Text(DayWords.clockMinute(form.taskMinute), Modifier.semantics { testTag = "task-time-pill" }, style = AppType.bodyMedium, color = appColors.secondary)
@@ -718,7 +751,7 @@ private fun TaskRows(form: FormState, store: HabitStore) {
         }
     }
     when (picking) {
-        "date" -> DayDialog(form.taskDate, { it >= earliest }, { picking = null }) { form.taskDate = it }
+        "date" -> DayDialog(if (form.taskHasNoDate) today else form.taskDate, { it >= earliest }, { picking = null }) { form.taskDate = it }
         // Turning Time on waits for OK: Cancel leaves it off (Figma 4.4).
         "time" -> MinuteDialog(form.taskMinute, { picking = null }) { form.taskMinute = it; form.taskHasTime = true; form.syncReminders() }
     }

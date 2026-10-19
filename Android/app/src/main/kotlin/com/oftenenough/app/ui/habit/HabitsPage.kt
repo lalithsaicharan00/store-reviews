@@ -249,6 +249,8 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                                 MenuItem("Arrange…", Icons.Outlined.SwapVert, "habits-arrange") { topMenu = false; nav.arrange() }
                                 if (store.groups.isNotEmpty()) MenuItem("Edit groups", Icons.Outlined.Folder, "habits-edit-groups") { topMenu = false; nav.editGroups() }
                                 else MenuItem("New group", Icons.Outlined.CreateNewFolder, "habits-new-group") { topMenu = false; newGroup = true }
+                                // Figma 5, 5.3 (19 Oct 2026): Archived habits from the menu too; the list's last row stays.
+                                MenuItem("Archived habits", Icons.Outlined.Archive, "habits-menu-archived") { topMenu = false; nav.archived() }
                             }
                         }
                     },
@@ -308,6 +310,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
         val list = deleting
         val one = list.size == 1
         AlertDialog({ deleting = emptyList() },
+            modifier = Modifier.semantics { testTagsAsResourceId = true },
             title = { Text(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} habits?") },
             text = { Text(if (one) "Its history and notes are deleted too. To keep them, archive it instead." else "Their history and notes are deleted too. To keep them, archive them instead.") },
             confirmButton = { TextButton({ deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
@@ -350,7 +353,7 @@ private fun habitSections(store: HabitStore, active: List<Habit>, paused: List<H
 }
 
 @Composable
-private fun SectionTitle(text: String, first: Boolean) =
+internal fun SectionTitle(text: String, first: Boolean) =
     Text(text, Modifier.padding(start = 16.dp, top = if (first) 8.dp else 24.dp, bottom = 8.dp).semantics { testTag = "habits-section-$text" },
         style = AppType.bodyMedium, color = appColors.secondary)
 
@@ -434,7 +437,7 @@ fun MenuItem(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector
 
 /** The Archived row (Figma 1): its count; it opens Archived habits. */
 @Composable
-private fun ArchivedRow(count: Int, enabled: Boolean, onClick: () -> Unit) {
+internal fun ArchivedRow(count: Int, enabled: Boolean, noun: String = "habit", onClick: () -> Unit) {
     val c = appColors
     Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).clickable(enabled = enabled, onClick = onClick)
         .semantics(mergeDescendants = true) { testTag = "habits-archived" }.heightIn(min = 72.dp).padding(start = 16.dp, end = 16.dp),
@@ -445,7 +448,7 @@ private fun ArchivedRow(count: Int, enabled: Boolean, onClick: () -> Unit) {
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
             Text("Archived", style = AppType.bodyLarge, color = c.ink)
-            Text(if (count == 1) "1 habit" else "$count habits", style = AppType.bodyMedium, color = c.secondary)
+            Text(if (count == 1) "1 $noun" else "$count ${noun}s", style = AppType.bodyMedium, color = c.secondary)
         }
         Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.ink)
     }
@@ -487,7 +490,7 @@ fun BarAction(text: String, icon: androidx.compose.ui.graphics.vector.ImageVecto
 
 /** Android's full-screen search (Figma 4): ←, the field with the keyboard up, ✕ to clear. */
 @Composable
-private fun SearchBar(query: String, onChange: (String) -> Unit, onBack: () -> Unit) {
+internal fun SearchBar(query: String, onChange: (String) -> Unit, onBack: () -> Unit, placeholder: String = "Search habits") {
     val c = appColors
     val focus = remember { FocusRequester() }
     LaunchedEffect(Unit) { if (query.isEmpty()) runCatching { focus.requestFocus() } }
@@ -495,9 +498,9 @@ private fun SearchBar(query: String, onChange: (String) -> Unit, onBack: () -> U
         Row(Modifier.fillMaxWidth().heightIn(min = 72.dp).padding(start = 4.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onBack, Modifier.semantics { testTag = "habits-search-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
             Spacer(Modifier.width(8.dp))
-            BasicTextField(query, { onChange(it.take(40)) }, Modifier.weight(1f).focusRequester(focus).semantics { testTag = "habits-search-field"; contentDescription = "Search habits" },
+            BasicTextField(query, { onChange(it.take(40)) }, Modifier.weight(1f).focusRequester(focus).semantics { testTag = "habits-search-field"; contentDescription = placeholder },
                 textStyle = AppType.bodyLarge.copy(color = c.ink), singleLine = true, cursorBrush = SolidColor(c.ink),
-                decorationBox = { inner -> Box { if (query.isEmpty()) Text("Search habits", style = AppType.bodyLarge, color = c.secondary); inner() } })
+                decorationBox = { inner -> Box { if (query.isEmpty()) Text(placeholder, style = AppType.bodyLarge, color = c.secondary); inner() } })
             if (query.isNotEmpty()) IconButton({ onChange("") }, Modifier.semantics { testTag = "habits-search-clear" }) { Icon(Icons.Rounded.Close, "Clear", tint = c.ink) }
         }
     }

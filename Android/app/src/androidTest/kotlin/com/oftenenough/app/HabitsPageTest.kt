@@ -211,6 +211,16 @@ class HabitsPageTest {
         assertEquals("group", store.setting("habits.show_by"))
     }
 
+    /** The top ⋮'s way into Archived habits (Figma 2106:2, added 19 Oct 2026), beside the list's last row. */
+    @Test fun theTopMenuOpensArchivedHabits() {
+        launch()
+        tapTag("habits-more")
+        waitHere(hasTestTag("habits-menu-archived"), "Archived habits in the menu")
+        compose.onAllNodes(hasTestTag("habits-menu-archived"), useUnmergedTree = true)[0].performClick()
+        waitHere(hasTestTag("archived-list"), "Archived habits")
+        waitFor(hasTestTag("habits-row-Gym"), "an archived habit")
+    }
+
     @Test fun archivedHabitsRestoreOne() {
         launch()
         tapTag("habits-archived")

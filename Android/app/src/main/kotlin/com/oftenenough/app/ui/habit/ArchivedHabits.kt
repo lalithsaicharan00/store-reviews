@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.Habit
@@ -69,7 +70,7 @@ interface ArchivedNav {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav) {
+fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = false) {
     val c = appColors
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
@@ -78,15 +79,24 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav) {
     var deleting by remember { mutableStateOf<List<Habit>>(emptyList()) }
     val selecting = chosen.isNotEmpty()
     BackHandler { if (selecting) chosen = emptySet() else nav.back() }
-    val archived = store.habits.filter { it.archived && it.kind != HabitKind.Task && it.id !in hidden }
+    // Archived tasks (Tasks, Figma 9–9.4) are the same page for tasks.
+    val archived = store.habits.filter { it.archived && (it.kind == HabitKind.Task) == tasks && it.id !in hidden }
         .sortedByDescending { store.archivedOn[it.id] ?: Int.MIN_VALUE }
     val marked = archived.filter { it.id in chosen }
-    fun named(list: List<Habit>) = if (list.size == 1) list[0].name else "${list.size} habits"
+    val noun = if (tasks) "task" else "habit"
+    fun named(list: List<Habit>) = if (list.size == 1) list[0].name else "${list.size} ${noun}s"
     fun restore(list: List<Habit>) {
         val back = mutableListOf<Habit>()
         for (h in list) if (store.restore(h)) back += h
         val missed = list - back.toSet()
-        if (back.isNotEmpty()) scope.launch {
+        // A task goes back under its day, or Today when its day has passed (Figma 9.2); Undo archives it again.
+        if (tasks && back.isNotEmpty()) scope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            val today = store.today()
+            val where = if (back.size == 1 && back[0].dueDay != null && back[0].dueDay!! > today) "back in Tasks" else "back in Today"
+            val text = if (back.size == 1) "${back[0].name} is $where" else "${back.size} tasks are back"
+            if (snackbar.showSnackbar(text, "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) store.archive(back)
+        } else if (back.isNotEmpty()) scope.launch {
             snackbar.currentSnackbarData?.dismiss()
             if (snackbar.showSnackbar("${named(back)} restored", "View", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) nav.back()
         }
@@ -120,7 +130,7 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav) {
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = c.tonal, titleContentColor = c.ink, navigationIconContentColor = c.ink),
             ) else TopAppBar(
-                title = { Text("Archived habits") },
+                title = { Text(if (tasks) "Archived tasks" else "Archived habits") },
                 navigationIcon = { IconButton(nav::back, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, titleContentColor = c.ink, navigationIconContentColor = c.ink),
             )
@@ -131,13 +141,15 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav) {
                     Spacer(Modifier.height(24.dp))
                     Text("Nothing archived", style = AppType.titleLarge, color = c.ink)
                     Spacer(Modifier.height(12.dp))
-                    Text("Habits you archive keep their history here, and you can restore them any time.", style = AppType.bodyLarge,
+                    Text(if (tasks) "Tasks you archive keep their history here, and you can restore them any time."
+                        else "Habits you archive keep their history here, and you can restore them any time.", style = AppType.bodyLarge,
                         color = c.secondary, textAlign = TextAlign.Center)
                     Spacer(Modifier.height(96.dp))
                 }
             } else LazyColumn(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp).semantics { testTag = "archived-list" }) {
                 item(key = "note") {
-                    Text("Archived habits keep all their history and send no reminders." +
+                    Text(if (tasks) "Archived tasks keep their history and stay off Today and Tasks. Restore one to bring it back."
+                        else "Archived habits keep all their history and send no reminders." +
                         if (store.isPlus) "" else " They don't count toward your five free habits.",
                         Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp), style = AppType.bodyMedium, color = c.secondary)
                 }
@@ -149,7 +161,7 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav) {
                             menu = if (selecting) null else { habit, dismiss ->
                                 MenuItem("Restore", Icons.Outlined.Unarchive, "archived-menu-restore") { dismiss(); restore(listOf(habit)) }
                                 HorizontalDivider(color = c.tonal)
-                                MenuItem("Delete habit…", Icons.Outlined.Delete, "archived-menu-delete", danger = true) { dismiss(); deleting = listOf(habit) }
+                                MenuItem(if (tasks) "Delete task…" else "Delete habit…", Icons.Outlined.Delete, "archived-menu-delete", danger = true) { dismiss(); deleting = listOf(habit) }
                             })
                     }
                 }
@@ -167,7 +179,8 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav) {
     if (deleting.isNotEmpty()) {
         val list = deleting
         AlertDialog({ deleting = emptyList() },
-            title = { Text(if (list.size == 1) "Delete ${list[0].name}?" else "Delete ${list.size} habits?") },
+            modifier = Modifier.semantics { testTagsAsResourceId = true },
+            title = { Text(if (list.size == 1) "Delete ${list[0].name}?" else "Delete ${list.size} ${noun}s?") },
             text = { Text(if (list.size == 1) "Its history and notes are deleted too." else "Their history and notes are deleted too.") },
             confirmButton = { TextButton({ deleting = emptyList(); chosen = emptySet(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
             dismissButton = { TextButton({ deleting = emptyList() }) { Text("Cancel", color = c.ink) } },

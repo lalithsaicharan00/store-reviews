@@ -124,7 +124,7 @@ interface DayNav {
 /** "8 glasses a day · Anytime", "Quitting since 19 Sep 2026", "Task · Planned for Sat, 4 Oct" (the iPhone's DayIdentityRow). */
 fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     HabitKind.Quit -> "Quitting since " + DayWords.long(store.rules.calendarDayOf(habit.quitSince ?: habit.createdAt))
-    HabitKind.Task -> habit.dueDay?.let { "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
+    HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
     else -> shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) } + " · " +
         (if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name })))
 }

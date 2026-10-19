@@ -56,6 +56,8 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     var items by mutableStateOf<List<Step>>(from?.steps ?: emptyList())
     var quitSince by mutableStateOf(original?.let { it.quitSince ?: it.createdAt } ?: store.clock())
     var taskDate by mutableStateOf(store.today())
+    /** No date (Tasks, Figma 6.2): it stays on the Tasks page and never shows on Today until it has a day. */
+    val taskHasNoDate: Boolean get() = type == ItemType.TASK && !taskRepeats && taskDate == com.oftenenough.app.data.NO_DATE_DAY
     var taskHasTime by mutableStateOf(false)
     var taskMinute by mutableStateOf(9 * 60)
     var timesOfDay by mutableStateOf(from?.parts?.ifEmpty { listOf(DaySection.ANYTIME) } ?: listOf(DaySection.ANYTIME))
@@ -180,7 +182,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
             ItemType.TASK -> {
                 h = h.copy(kind = HabitKind.Task, dueDay = if (taskRepeats) null else taskDate)
                 if (taskRepeats) h = h.copy(frequency = often.often(false).frequency(false, false))
-                if (taskHasTime) h = h.copy(dueMinute = taskMinute)
+                if (taskHasTime && !taskHasNoDate) h = h.copy(dueMinute = taskMinute)
             }
             else -> {
                 h = plan.apply(h)
@@ -208,6 +210,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
 
     /** The whole habit in one sentence: name, how much, how often and the parts of the day. */
     fun sentence(): String {
+        if (type == ItemType.TASK && !taskRepeats && taskDate == com.oftenenough.app.data.NO_DATE_DAY) return trimmedName
         if (type == ItemType.TASK && !taskRepeats) {
             val day = when (taskDate) { store.today() -> "today"; store.today() + 1 -> "tomorrow"; else -> null }
             return trimmedName + (day?.let { " $it" } ?: (" on " + com.oftenenough.app.data.DayWords.short(taskDate))) +

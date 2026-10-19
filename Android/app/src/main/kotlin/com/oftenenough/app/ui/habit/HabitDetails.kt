@@ -69,6 +69,14 @@ import com.oftenenough.app.data.matchingNotes
 import com.oftenenough.app.data.noteMonths
 import com.oftenenough.app.data.pageSentence
 import com.oftenenough.app.data.archivedLine
+import com.oftenenough.app.data.doneEntry
+import com.oftenenough.app.data.isOneTimeTask
+import com.oftenenough.app.data.isTask
+import com.oftenenough.app.data.taskDetailsLine
+import com.oftenenough.app.data.taskMoveRange
+import com.oftenenough.app.data.taskOpenDay
+import androidx.compose.material.icons.automirrored.outlined.Undo
+import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material.icons.rounded.Inventory2
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.HabitIcon
@@ -202,7 +210,10 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     var query by remember(habitId) { mutableStateOf("") }
     val showStreaks = store.setting(SHOW_STREAKS) != "false"
     val showPercentages = store.setting(SHOW_PERCENTAGES) != "false"
-    val sentence = remember(habit, store.sections, store.weekStart) { store.pageSentence(habit) }
+    val sentence = remember(habit, store.sections, store.weekStart, today, revision, store.taskMoves) {
+        if (habit.isTask) store.taskDetailsLine(habit, today) else store.pageSentence(habit)
+    }
+    var moving by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val progress = if (shown == HabitTab.PROGRESS || allMilestones) model.progress(store, habit, revision, today) else null
@@ -218,7 +229,9 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             actions = {
                 Box {
                     IconButton({ menuOpen = true }, Modifier.semantics { testTag = "habit-menu" }) { Icon(Icons.Rounded.MoreVert, "More") }
-                    HabitMenu(habit, store, today, menuOpen, onDismiss = { menuOpen = false }, nav = nav,
+                    if (habit.isTask) TaskMenu(habit, store, menuOpen, onDismiss = { menuOpen = false }, onEdit = { nav.edit(habit) },
+                        onMove = { moving = true }, onDelete = { confirmDelete = true }, onArchive = { store.archive(listOf(habit)); onBack() })
+                    else HabitMenu(habit, store, today, menuOpen, onDismiss = { menuOpen = false }, nav = nav,
                         onDelete = { confirmDelete = true }, onArchive = { store.archive(listOf(habit)); onBack() },
                         onNoRoom = { noRoom = true })
                 }
@@ -247,7 +260,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                 }
             }
             when (shown) {
-                HabitTab.HISTORY -> {
+                HabitTab.HISTORY -> if (habit.isTask) taskHistoryItems(store, habit, today) { day -> nav.openDay(habit, day) } else {
                     val months = model.history(store, habit, revision, today)
                     historyItems(
                         color = habit.color, months = months, addLabel = if (habit.archived) "" else addTitle(habit, store, today), toggled = historyToggled,
@@ -288,7 +301,8 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         AlertDialog(
             onDismissRequest = { confirmDelete = false },
             title = { Text("Delete ${habit.name}?") },
-            text = { Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.") },
+            text = { Text(if (habit.isTask) "Its history and notes are deleted too. To keep them, archive it instead."
+                else "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.") },
             confirmButton = {
                 TextButton({
                     confirmDelete = false
@@ -299,7 +313,8 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             },
             dismissButton = {
                 Row {
-                    if (!habit.archived) {
+                    // A task asks with two buttons only (Tasks, Figma 3.6).
+                    if (!habit.archived && !habit.isTask) {
                         TextButton({
                             confirmDelete = false
                             store.archive(listOf(habit))
@@ -313,6 +328,15 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             titleContentColor = c.ink,
             textContentColor = c.secondary,
         )
+    }
+    if (moving) {
+        // Another day for a task (Figma 10): a one-time task any day from today; a repeating one's open day before its next.
+        val range = store.taskMoveRange(habit, today) ?: (today..today)
+        val from = store.taskOpenDay(habit, today)
+        DayDialog(minOf(range.last, today + 1), { it in range && it != from }, onDismiss = { moving = false }) { day ->
+            moving = false
+            if (habit.isOneTimeTask) store.moveTask(habit, day) else if (from != null) store.moveOccurrence(habit, from, day)
+        }
     }
     if (noRoom) {
         AlertDialog(
@@ -346,7 +370,7 @@ private fun Header(habit: Habit, sentence: String, store: HabitStore, today: Int
             Text(description, style = MaterialTheme.typography.bodyLarge, color = c.ink)
         }
         // Archived (Habits, Figma 6.6): when, that it keeps its history, and Restore; the page is to look at, not to log.
-        if (habit.archived) {
+        if (habit.archived && !habit.isTask) {
             Spacer(Modifier.height(12.dp))
             Row(
                 Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(16.dp).semantics { testTag = "habit-archived" },
@@ -445,6 +469,35 @@ private fun HabitMenu(
             leadingIcon = { Icon(Icons.Outlined.Delete, null, tint = c.error) },
             modifier = Modifier.semantics { testTag = "habit-menu-delete" },
         )
+    }
+}
+
+/**
+ * A task's ⋮ (Tasks, Figma 10, 8.6, 9.4): Edit task, Move to another day…, Mark as not done once a one-time task is done,
+ * Archive, Delete task…; archived: Restore and Delete task….
+ */
+@Composable
+private fun TaskMenu(
+    task: Habit, store: HabitStore, expanded: Boolean, onDismiss: () -> Unit, onEdit: () -> Unit, onMove: () -> Unit,
+    onDelete: () -> Unit, onArchive: () -> Unit,
+) {
+    val c = appColors
+    val done = if (task.isOneTimeTask) store.doneEntry(task) else null
+    @Composable
+    fun item(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, danger: Boolean = false, act: () -> Unit) =
+        DropdownMenuItem(text = { Text(text, color = if (danger) c.error else c.ink) }, onClick = { onDismiss(); act() },
+            leadingIcon = { Icon(icon, null, tint = if (danger) c.error else c.ink) }, modifier = Modifier.semantics { testTag = tag })
+    DropdownMenu(expanded, onDismiss, containerColor = c.surface) {
+        if (task.archived) item("Restore", Icons.Outlined.Unarchive, "habit-menu-restore") { store.restore(task) }
+        else {
+            item("Edit task", Icons.Outlined.Edit, "habit-menu-edit", act = onEdit)
+            if (done != null) item("Mark as not done", Icons.AutoMirrored.Outlined.Undo, "habit-menu-not-done") { store.undoEntry(done.id) }
+            else if (store.taskMoveRange(task, store.today()) != null)
+                item("Move to another day…", Icons.Outlined.EditCalendar, "habit-menu-move", act = onMove)
+            item("Archive", Icons.Outlined.Archive, "habit-menu-archive", act = onArchive)
+        }
+        HorizontalDivider(color = c.tonal)
+        item("Delete task…", Icons.Outlined.Delete, "habit-menu-delete", danger = true, act = onDelete)
     }
 }
 

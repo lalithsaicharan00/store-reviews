@@ -238,6 +238,7 @@ fun partsPhrase(names: List<String>): String {
  *  2026"; "Call the bank on Mon, 13 Oct". [quitSince] is the calendar day a quit habit counts from. */
 fun pageSentenceOf(habit: Habit, weekStart: Int, partNames: List<String>, quitSince: Int): String {
     if (habit.kind == HabitKind.Quit) return "Quitting since " + DayWords.long(quitSince)
+    if (habit.kind == HabitKind.Task && habit.dueDay == NO_DATE_DAY) return habit.name + ", no date yet"
     if (habit.kind == HabitKind.Task && habit.dueDay != null) return habit.name + " on " + DayWords.short(habit.dueDay)
     val parts = if (habit.parts == listOf(DaySection.ANYTIME)) "anytime" else partsPhrase(partNames)
     return HabitCopy.sentence(habit, weekStart) + ", " + parts

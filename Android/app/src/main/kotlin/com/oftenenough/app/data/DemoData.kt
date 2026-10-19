@@ -262,10 +262,75 @@ object DemoData {
         return Snapshot(positioned, habits.flatMap { it.stepRecords() }, habits.flatMap { it.reminderRecords() }, entries.map { it.record }, settings)
     }
 
+    /**
+     * The Tasks page's tasks (Figma `2373:2`, frames 1 and 7): a test launch's `demo tasks` (D8: never the person's). One-time
+     * tasks on every kind of day (one carried from two days ago, one done today, the next days, next month, No date), three
+     * archived, a few finished on earlier days (Completed), and repeating tasks every day, every 3 days (waiting since two
+     * days ago), weekly, monthly and yearly.
+     */
+    fun tasksPage(store: HabitStore, now: Long): Snapshot {
+        val today = store.today(now)
+        val dayMs = 86_400_000L
+        fun weekday(day: Int) = java.time.LocalDate.ofEpochDay(day.toLong()).dayOfWeek.value % 7 + 1
+        fun t(name: String, symbol: String, color: HabitColor, due: Int?, part: String = DaySection.ANYTIME, minute: Int? = null,
+              frequency: Frequency = Frequency.Daily, archived: Boolean = false, created: Int = 30) =
+            Habit(name = name, symbol = symbol, color = color, kind = HabitKind.Task, parts = listOf(part), dueDay = due, dueMinute = minute,
+                frequency = frequency, archived = archived, remind = false, createdAt = store.rules.dayStart(today - created) + 19 * 3_600_000L + 40 * 60_000L,
+                startsOn = if (due == null) today - created else null)
+        val tasks = listOf(
+            t("Call the dentist", "phone.fill", HabitColor.BLUE, today - 2),
+            t("Pay electricity bill", "bolt.fill", HabitColor.ORANGE, today, DaySection.MORNING, created = 5),
+            t("Pick up dry cleaning", "tshirt.fill", HabitColor.PURPLE, today, DaySection.EVENING, 17 * 60),
+            t("Book flights", "airplane", HabitColor.BLUE, today, created = 5),
+            t("Clean the fridge", "refrigerator.fill", HabitColor.TEAL, today + 1),
+            t("Renew passport", "globe", HabitColor.TEAL, today + 2, DaySection.MORNING),
+            t("Return library books", "book.closed.fill", HabitColor.ORANGE, today + 6),
+            t("Car service", "car.fill", HabitColor.BLUE, today + 17, DaySection.MORNING),
+            t("Dentist check-up", "cross.case.fill", HabitColor.PINK, today + 30, minute = 10 * 60 + 30),
+            t("Fix the bike light", "bicycle", HabitColor.TEAL, NO_DATE_DAY),
+            t("Sort old photos", "camera.fill", HabitColor.PURPLE, NO_DATE_DAY),
+            t("Send the parcel", "shippingbox.fill", HabitColor.ORANGE, today - 3),
+            t("Buy printer ink", "cart.fill", HabitColor.INDIGO, today - 1),
+            t("Call the bank", "building.columns.fill", HabitColor.GREEN, today - 2),
+            t("Gym membership forms", "dumbbell.fill", HabitColor.TEAL, today - 46, archived = true, created = 60),
+            t("Find a new dentist", "cross.case.fill", HabitColor.PINK, today - 68, archived = true, created = 80),
+            t("Plan the garage sale", "house.fill", HabitColor.BLUE, today - 84, archived = true, created = 96),
+            t("Feed the fish", "fish.fill", HabitColor.TEAL, null, created = 60),
+            t("Water plants", "leaf.fill", HabitColor.GREEN, null, frequency = Frequency.EveryNDays(3), created = 14),
+            t("Call Mum", "heart.fill", HabitColor.PINK, null, DaySection.EVENING, 18 * 60, Frequency.Weekdays(setOf(weekday(today + 1))), created = 60),
+            t("Take out recycling", "trash.fill", HabitColor.GREEN, null, frequency = Frequency.Weekdays(setOf(weekday(today + 4))), created = 60),
+            t("Change water filter", "drop.fill", HabitColor.BLUE, null, frequency = Frequency.AfterCompletion(2, GoalPeriod.MONTH), created = 120),
+            t("Boiler service", "flame.fill", HabitColor.ORANGE, null, frequency = Frequency.Calendar(CalendarRule(GoalPeriod.YEAR, 1,
+                pattern = "Dates", month = java.time.LocalDate.ofEpochDay(today + 40L).monthValue, day = java.time.LocalDate.ofEpochDay(today + 40L).dayOfMonth)), created = 400),
+        )
+        fun id(name: String) = tasks.first { it.name == name }.id
+        fun at(day: Int, hour: Int, minute: Int) = (store.rules.dayStart(day) + (hour * 60 + minute) * 60_000L).coerceAtMost(now)
+        val entries = ArrayList<Entry>()
+        fun done(name: String, day: Int, forDay: Int, hour: Int, minute: Int) =
+            entries.add(Entry(habitId = id(name), day = forDay, value = 1.0, createdAt = at(day, hour, minute), source = EntrySource.TODAY))
+        done("Book flights", today, today, 9, 12)
+        done("Send the parcel", today - 1, today - 1, 11, 20)
+        done("Buy printer ink", today - 1, today - 1, 18, 40)
+        done("Call the bank", today - 2, today - 2, 14, 15)
+        done("Feed the fish", today, today, 8, 10)
+        for (d in 1..20) done("Feed the fish", today - d, today - d, 8, 5)
+        for (d in listOf(5, 8, 14)) done("Water plants", today - d, today - d, 8, 5)
+        done("Call Mum", today - 6, today - 6, 18, 20)
+        done("Take out recycling", today - 3, today - 3, 19, 30)
+        done("Change water filter", today - 20, today - 20, 10, 0)
+        done("Boiler service", today - 325, today - 325, 11, 0)
+        val archivedDays = mapOf("Gym membership forms" to 45, "Find a new dentist" to 67, "Plan the garage sale" to 82)
+        val settings = archivedDays.map { (name, ago) -> app.habits.core.SettingRecord(HabitStore.Keys.ARCHIVED + id(name), dayKey(today - ago)) } +
+            app.habits.core.SettingRecord(HabitStore.Keys.SKIP + id("Water plants"), dayKey(today - 11))
+        val positioned = tasks.mapIndexed { i, hb -> hb.record(i, now) }
+        return Snapshot(positioned, emptyList(), emptyList(), entries.map { it.record }, settings)
+    }
+
     /** Saves the demo habits into an empty test database, then reads them back. */
-    suspend fun seed(store: HabitStore, year: Boolean = false, many: Boolean = false, design: Boolean = false, days: Boolean = false, habitsPage: Boolean = false) {
+    suspend fun seed(store: HabitStore, year: Boolean = false, many: Boolean = false, design: Boolean = false, days: Boolean = false, habitsPage: Boolean = false, tasks: Boolean = false) {
         if (store.habits.isNotEmpty()) return
         store.repo.importAll(when {
+            tasks -> tasksPage(store, store.clock())
             habitsPage -> habitsPage(store, store.clock())
             days -> days(store, store.clock())
             design -> design(store, store.clock())

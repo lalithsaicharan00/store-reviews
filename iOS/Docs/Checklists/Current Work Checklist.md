@@ -1719,9 +1719,58 @@ and the Add note keyboard coming up by itself.
   - [x] Checked on the Pixel 10 Pro emulator at 360 × 800 dp beside every frame (`demo habits`, the design's own habits;
     `plus` for a test launch with Plus).
   - [x] Tests: `HabitsPageTest` (11, new), `HabitListWordsTest` (new).
-  - [ ] Not built: Figma 1.5 (200 % text) checked only by reading the layout (rows have no fixed height); Tasks keeps its
-    old page.
+  - [ ] Not built: Figma 1.5 (200 % text) checked only by reading the layout (rows have no fixed height).
   - [x] Committed to main, 19 Oct 2026.
+  - [x] **Added later the same day (the user: "in Habits page we have added a new option to easily get into the
+    archived habits so update that in the code"):** the top ⋮ ends with Archived habits; `HabitsPageTest`
+    `theTopMenuOpensArchivedHabits`.
+- [ ] **133. Android: the Tasks page, as Figma `2373:2`** (added 19 October 2026, from the user: "implement and test the
+  tasks page … once everything is completed Even including with the testing then commit it and push everything").
+  - [x] 1–1.10: two pinned tabs. One-time: Today (carried tasks first, "Planned for Thu 16 Oct", never red; done today
+    struck at the end, "Done 9:12 AM"), Tomorrow, the next days by name, later by month, No date with its note, the
+    Archived row. Touch and hold within a day lifts a row to move it in the day; let go without moving selects.
+  - [x] 2–2.3: ticking stays on Today; done one-time tasks leave the list when their day ends (Completed keeps them).
+  - [x] 3–3.8: each row's ⋮ (Edit task, Move to another day… with Tomorrow / Pick a day… / No date, Duplicate, Skip this
+    time for repeating, Archive, Delete task…; a No date row's Do today and Pick a day…). Snackbars with Undo for every
+    one; **a delete happens only once its Undo has gone** (D6). A repeating task moves only this time, before its next.
+  - [x] 4–4.7: long press or ⋮ › Select; "Select tasks" with nothing marked; the bar's Move (Tomorrow, Pick a day…, No
+    date), Archive, Delete (Cancel | Delete); the coach mark under the first row; the top ⋮ (Select, Completed tasks,
+    Archived tasks).
+  - [x] 5–5.3: search (Tasks with their day, Completed, Archived; "No tasks called …" with New task "…").
+  - [x] 6–6.2: No date (stored as 9999-12-31, so it's never due; the form's Date menu, the Time row gone, both notes).
+  - [x] 7–7.3: the Repeating tab by how often (rhythm, Waiting since / Today / Next, Last done or Skipped); a task's
+    History as events.
+  - [x] 8–8.6: Completed (by the day done, "for 15 Oct" when another day; Mark as not done with Undo; selection deletes
+    completed one-time tasks with Undo; a repeating task's done times stay with it; Nothing completed yet).
+  - [x] 9–9.4: Archived tasks (Restore with Undo, "is back in Today"; Delete task…); an archived task's card and Restore.
+  - [x] 10–10.2: task details (header line, History, Notes, ⋮); ☰ › Tasks counts the tasks still open today.
+  - [x] Checked on the Pixel 10 Pro emulator at 360 × 800 dp beside every frame (`demo tasks`).
+  - [x] Tests: `TasksPageTest` (12, new).
+  - [ ] Not built: Figma 1.5 (200 % text) checked only by reading the layout; the iPhone doesn't know No date yet.
+  - [x] Committed to main, 19 Oct 2026.
+- [ ] **134. Android: onboarding for someone new, checked against Figma `1548:2`, and its first habit made seamless**
+  (added 19 October 2026, from the user: "check is everything implemented properly or not").
+  - [ ] Every screen of `1548:2` checked against the app, and anything missing or different fixed.
+  - [ ] Your first habit: an idea opens **its own habit form with everything filled in**, and **Add works straight away**
+    with those values ("the add button was disabled … with those they should be able to continue forward and directly
+    add it"); changing anything stays possible.
+  - [ ] **Back from that form goes back to Your first habit, never out of the app** ("it is actually going back … exiting
+    the app completely").
+  - [ ] The form is the updated habit form (Current Work 131). No navigation bugs anywhere in onboarding; tested
+    thoroughly.
+- [ ] **135. Android: onboarding for someone coming back, every screen of Figma `1549:2`** (added 19 October 2026, from the
+  user: "update the all of the UI … work on the all of the screens"). Google sign-in built if the app's Google client
+  allows it (otherwise say so: "If it is not there, that's fine. I will provide later").
+- [ ] **136. Move to a new phone, end to end: a QR code or 6 digits** (added 19 October 2026, from the user: "implement it
+  properly end-to-end … test in that properly if you want you can start two emulators"). As Rulebook D15: a Cloudflare
+  Worker relay (a new Worker if it needs one), SPAKE2 as Magic Wormhole uses it, the old phone's page showing the QR and
+  6 digits, **a new code at once after any wrong try**, scanning with Google's code scanner or typing six boxes; tested on
+  two emulators, then on real phones by the user.
+- [ ] **137. Android: Backup & Sync updated to Figma `1461:2`** (added 19 October 2026, from the user: "if you feel like uh,
+  we need to work on it then implement … update the UI to the latest … implement it completely end to end"). Only the
+  screens that are ready; the section is still changing.
+- [ ] Items 133–137 committed to main and pushed once everything is tested ("When everything is completed and tested
+  thoroughly, then commit it and push it").
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:

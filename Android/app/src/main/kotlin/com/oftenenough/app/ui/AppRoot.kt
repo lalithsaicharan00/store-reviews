@@ -35,8 +35,6 @@ import com.oftenenough.app.ui.newhabit.NewHabitFlow
 import com.oftenenough.app.ui.habit.HabitDetailsNav
 import com.oftenenough.app.ui.habit.HabitDetailsScreen
 import com.oftenenough.app.ui.habit.PauseScreen
-import com.oftenenough.app.ui.habit.AllHabitsNav
-import com.oftenenough.app.ui.habit.AllHabitsScreen
 import com.oftenenough.app.ui.habit.ArchivedNav
 import com.oftenenough.app.ui.habit.ArchivedHabitsScreen
 import com.oftenenough.app.ui.habit.HabitsNav
@@ -226,16 +224,31 @@ private fun AppMain(
             val idea = a?.getString("idea")?.let { name -> HabitIdea.all.firstOrNull { it.name == name } }
             val copyOf = a?.getString("copy")?.let { store.habit(it) }
             // From the Habits page (+, Duplicate, search's New habit): back there once added, with the 6th-habit page first.
+            // From the Tasks page (Duplicate, search's New task): back there once added.
+            val fromTasks = a?.getString("from") == "tasks"
             val fromHabits = a?.getString("from") == "habits"
             NewHabitFlow(store, idea, onClose = { nav.popBackStack() }, onSaved = { habit ->
                 copyOf?.let { store.placeAfter(habit.id, it.id) }
-                if (fromHabits) nav.popBackStack() else nav.popBackStack(Routes.TODAY, inclusive = false)
-            }, onPlus = { nav.navigate(Routes.GET_PLUS) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits)
+                if (fromHabits || fromTasks) nav.popBackStack() else nav.popBackStack(Routes.TODAY, inclusive = false)
+            }, onPlus = { nav.navigate(Routes.GET_PLUS) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits, task = fromTasks && copyOf == null)
         }
         composable(Routes.ARCHIVED) {
             ArchivedHabitsScreen(store, object : ArchivedNav {
                 override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                 override fun restoreNoRoom(habit: Habit) = nav.navigate(Routes.restoreRoom(habit.id))
+                override fun back() { nav.popBackStack() }
+            })
+        }
+        composable(Routes.ARCHIVED_TASKS) {
+            ArchivedHabitsScreen(store, object : ArchivedNav {
+                override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                override fun restoreNoRoom(habit: Habit) {}
+                override fun back() { nav.popBackStack() }
+            }, tasks = true)
+        }
+        composable(Routes.COMPLETED_TASKS) {
+            com.oftenenough.app.ui.habit.CompletedTasksScreen(store, object : com.oftenenough.app.ui.habit.CompletedNav {
+                override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
                 override fun back() { nav.popBackStack() }
             })
         }
@@ -275,11 +288,17 @@ private fun AppMain(
                         override fun openGroup(id: String) = nav.navigate(Routes.group(id))
                     })
                 }
-                MenuItem.TASKS.title -> AllHabitsScreen(true, store, object : AllHabitsNav {
-                    override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
-                    override fun pause(habits: List<Habit>) { if (habits.isNotEmpty()) nav.navigate(Routes.pause(habits.map { it.id })) }
-                    override fun addTask() = nav.navigate(Routes.NEW_TASK)
-                }) { nav.popBackStack() }
+                MenuItem.TASKS.title -> WithMenu(store, MenuItem.TASKS, nav) { openMenu ->
+                    com.oftenenough.app.ui.habit.TasksPage(store, object : com.oftenenough.app.ui.habit.TasksNav {
+                        override val openMenu = openMenu
+                        override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
+                        override fun edit(task: Habit) = nav.navigate(Routes.edit(task.id))
+                        override fun duplicate(task: Habit) = nav.navigate(Routes.NEW + "?copy=${task.id}&from=tasks")
+                        override fun newTask(name: String?) = nav.navigate(Routes.NEW + "?from=tasks" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
+                        override fun completed() = nav.navigate(Routes.COMPLETED_TASKS)
+                        override fun archived() = nav.navigate(Routes.ARCHIVED_TASKS)
+                    })
+                }
                 MenuItem.REMINDERS.title -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
@@ -482,6 +501,8 @@ object Routes {
     const val NEW_TASK = "newtask"
     const val GROUPS = "groups"
     const val ARCHIVED = "archived"
+    const val ARCHIVED_TASKS = "archived/tasks"
+    const val COMPLETED_TASKS = "tasks/completed"
     fun restoreRoom(id: String) = "restoreroom/$id"
     const val GET_PLUS = "plus/get"
     const val UPGRADE = "plus/upgrade"

@@ -917,6 +917,29 @@ class HabitStore(
         justMoved = Moved(habit.id, target, clock()) { setMoves(habit.id, before) }
     }
 
+    // ------------------------------------------------------------------ The Tasks page (Figma 2373:2)
+
+    /** A one-time task to another day, or to No date ([day] null). The task keeps its ID and history; Undo is [update] with the old one. */
+    fun moveTask(task: Habit, day: Int?) {
+        if (!task.isOneTimeTask) return
+        update(task.copy(dueDay = day ?: NO_DATE_DAY))
+    }
+
+    /** One occurrence of a repeating task, from [from] to [to] (before its next one); the schedule stays as it is. */
+    fun moveOccurrence(task: Habit, from: Int, to: Int) {
+        if (!task.isRepeatingTask) return
+        val moves = (taskMoves[task.id] ?: emptyMap()).toMutableMap()
+        val original = moves.entries.firstOrNull { it.value == from }?.key ?: from
+        if (original == to) moves.remove(original) else moves[original] = to
+        setMoves(task.id, moves)
+    }
+
+    /** Puts a repeating task's moved days back as they were (the Undo of [moveOccurrence]). */
+    fun setTaskMoves(task: Habit, moves: Map<Int, Int>) = setMoves(task.id, moves)
+
+    /** A log taken back on the Tasks page (Mark as not done) put back by its Undo, as a new log with the same day, time and value. */
+    fun putBack(entry: Entry) = addLogged(entry.copy(id = newId(), source = EntrySource.DAY_SHEET))
+
     private fun setMoves(habitId: String, moves: Map<Int, Int>) {
         taskMoves = if (moves.isEmpty()) taskMoves - habitId else taskMoves + (habitId to moves)
         val value = moves.map { dayKey(it.key) + ">" + dayKey(it.value) }.sorted().joinToString(",")

@@ -291,6 +291,34 @@ them), so nothing is lost to a mis-tap (D6). Duplicate is the habit form filled 
 Test launches can now start with the design's habits (`demo habits`) and with Plus (`plus`), so the page can be put
 beside Figma at 360 × 800 dp. `HabitsPageTest` (11) covers every flow that changes data.
 
+## The Tasks page, as Figma `2373:2` (19 October 2026)
+
+≡ › Tasks was rebuilt to the Figma section (Current Work 133), replacing the old shared list (`AllHabits.kt`, removed).
+Two tabs: **One-time** lists every one-time task by when (Today with the ones carried from earlier days first, saying
+"Planned for Thu 16 Oct", and the ones done today struck at its end; Tomorrow; the next days by name; later by month;
+**No date** last), then the Archived row; **Repeating** lists each repeating task once, grouped by how often it comes,
+with three lines: its rhythm, its day ("Waiting since", "Today" or "Next"), and when it was last done or skipped. A
+row's ⋮ edits, moves (Tomorrow, Pick a day…, No date; a repeating task moves only this time, before its next one),
+duplicates, skips this time (repeating), archives or deletes; a No date row has Do today and Pick a day…; every change
+says so with Undo and a delete waits for its Undo (D6). A long press selects (the bar: Move, Archive, Delete); within a
+day it lifts the row to drag it. Search lists open tasks, Completed and Archived; the top ⋮ holds Select, **Completed
+tasks** (every finish by the day it was done, Mark as not done with Undo, completed one-time tasks deleted with Undo)
+and **Archived tasks** (the Archived habits page for tasks). A task's details have its History as events (Waiting, Done
+or Skipped, Task created), the archived card with Restore, and a ⋮ of Edit task, Move to another day…, Mark as not done,
+Archive, Delete task…. The task form's Date is a menu (Today, Tomorrow, Pick a date…, No date). The menu's Tasks count
+is the tasks still open today.
+
+**No date is stored as the last day there is (9999-12-31, `NO_DATE_DAY`)**, so the core's rules (and the iPhone's)
+answer "not due" without a change, and the record syncs as an ordinary date. The words for it are in `TaskWords.kt`
+(`// MOVE TO CORE`). **The iPhone doesn't know this rule yet:** a No date task synced to it would never show on Today
+(right), but its Day details, habit page and widgets would say "Planned for" 31 Dec 9999 until it learns it.
+
+The Habits page's top ⋮ now ends with **Archived habits** (Figma `2106:2`), beside the list's last row.
+
+Test launches can start with the design's tasks (`demo tasks`). `TasksPageTest` (12) covers every flow that changes
+data; `HabitsPageTest` gained the ⋮ › Archived habits check. Checked on the Pixel 10 Pro emulator at 360 × 800 dp
+beside the frames.
+
 ## What's left
 
 | What | Why it isn't done |
@@ -321,6 +349,7 @@ Each is ported from the Swift with tests, and should move into `Core` when the s
 | `data/SectionPlan.kt` | `SectionPlan.swift` | Adding or editing a time of day: each ends where the next begins, overlaps split |
 | `data/HabitPageWords.kt`, `ProgressWords.kt`, `PlayerWords.kt` | `HabitPageView` and friends, `ProgressScreen`, `RoutinePlayer` | Habit details', Progress's and the player's numbers and words |
 | `data/widgets/WidgetItems.kt`, `WidgetSnapshot.kt` | `HabitStore+Widgets.swift`, `WidgetSnapshot.swift` | The widgets' snapshot: seven days of cards, Today's lists, each ✓ and + card's "after" |
+| `data/TaskWords.kt` | None yet: the iPhone has no Tasks page of this design | The Tasks page's days, lines, rhythm groups, next day and History; No date |
 | `ui/habit/PauseScreen.kt` (`pauseSummary`), `ui/settings/RemindersSettings.kt` (`reminderLine`) | `PauseSheet.swift`, `RemindersView.swift` | Pause's sentence; a habit's reminders in one line |
 
 ## What needs the user

@@ -120,7 +120,7 @@ class MainActivity : FragmentActivity() {
         setContent {
             if (demo != null && (test || BuildConfig.DEBUG)) LaunchedEffect(Unit) {
                 snapshotFlow { store.isLoaded }.first { it }
-                DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits")
+                DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits", tasks = demo == "tasks")
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
