@@ -1269,6 +1269,182 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **140. Android: the routine player and the timer, every screen** (added 19 October 2026, from the user: "first
+  let's complete the routine player and … timer … what designs are left? … add … the empty screens placeholders first
+  … with the numbering"). Figma `1328:2`. Numbered 140: 134–139 are taken on other branches.
+  - [x] Reviewed the 18 frames from 12 Oct against the player's decisions (Design Rules, the iPhone player spec, the
+    Android design notes) and listed what's missing and what to improve (19 Oct).
+  - [x] **Placeholders, numbered, in 11 rows with arrows (19 Oct):** the 18 frames renumbered and moved into the rows,
+    plus 35 placeholders: 1 starting (1.1 Start on Today, 1.2 partly done, 1.3 all done, 1.4 another day, 1.5 200 %
+    text, 1.6 the description); 2 checks and tasks (2.2, 2.3, 2.4, 2.6); 3 amounts (3.1 goal met, 3.4 Add log over
+    the player, 3.5); 4 time (4.2 paused, 4.3 goal reached, 4.4 N days a week, 4.5 a week total); 5.2 every step
+    ticked; 6 Day details over the player, 6.2 Add note; 7.2 Your routine · Edit, 7.3 Go to first unfinished; 8.2 the
+    end, all done, 8.3 End routine, 8.4 ✕ with a timer running; 9.1–9.4 the timer on its own; 10–10.5 the Live
+    Update (A11 D4). The milestone moments stay in Milestones on Today (RP.1–RP.3).
+  - [x] **Set aside, not deleted:** *a limit (Coffee)*: limits are never in a routine (Design Rules, 5 Oct 2026).
+  - [x] **Every placeholder designed (19 Oct)**, 53 frames, each built from the approved player pages so they match.
+    Choices made while designing, for the user's review (they were "To decide"):
+    - **1.3** Start on a section that's all done opens the end page (*Anytime is done · All 12 done today*, Review
+      routine, Done); **8.2** is the same page at the end of a run.
+    - **1.6** the description sits under the name, 14 grey, two lines at most, then ….
+    - **4.3** at the goal the clock keeps counting, *✓ Goal met* shows under it and the wave fills; Pause stays, and
+      Next comes once paused (nothing moves on by itself).
+    - **8.3** End routine (⋮) goes to the end page with what's left; ✕ leaves at once.
+    - **10.1** the notification has one action, Pause (Resume when paused); a tap opens the timer or the player.
+  - [x] **Improvements applied (19 Oct):** the quick amount button is + and the step, "+1" and "+2.5" (U16), centred,
+    no cut-off label; a single check or task says *Not done yet* / *Done* instead of "0 of 1" (1, 2, 2.5, 2.6, 8);
+    ⋮ is Go to first unfinished, Change order, End routine (Day details is the chip, Your routine the title ▾);
+    Practice guitar's name now 32 Medium like every other page, its chip and clock in line.
+  - [x] Also designed: week goals fill toward the week with *✓ Done for today* (2.4, U25); a week total of time shows
+    today's time big and the week under it (4.5, as Day details 18); paused (4.2, 9.1); over the limit, neutral, in
+    words (9.2, U3, U25); Day details over the player, Add log, Add note and Log manually (3.4, 6, 6.2, 9.3, U22);
+    Your routine · Edit with drag handles (7.2); 200 % text (1.5); the Live Update (10–10.4): status bar chip, the
+    notification running, paused and at the goal, and the lock screen.
+  - [x] Checked by the user (19 Oct): "+1" / "+2.5" only on habits logged by a step (Water, Run); a habit typed each
+    time (Savings) shows **Log**, the word alone with no pencil icon, not Log amount (the user: "it's a redundant word just use log"; 3.3, 3.5).
+  - [ ] Then the app (Android first, on `claude/android-app`).
+- [ ] **133. Habit details: Year in Pixels fills the width, then the rest of the page** (added 19 October 2026, from the
+  user, Figma `1373:2`: "the blocks … should be occupying the space dynamically … rather than leaving out some empty
+  space on the right … the same thing [as] the mood section … each cell should follow the meaning of … what the squares
+  mean … we have also updated the milestones design … if we need to update anything, then update"). Numbered 133:
+  131 and 132 are taken on another branch.
+  - [x] **Year in Pixels, all four copies** (Habit details Progress `1373:3` and ⋮ `1375:1275`; Habits 6.6 and 7.2):
+    rebuilt like the mood example, 12 months × 31 days in auto layout, each cell (card width − day labels − 12 gaps) ÷ 12
+    (19.5 dp on a 360 dp phone, Android decision A19); every day keeps its meaning from the squares key (`HeatKey`):
+    goal met in the habit's colour with ✓, not done grey with ✕, still to come plain grey, today outlined; days before
+    the habit started and dates that don't exist are blank.
+  - [x] **Milestones checked against the 17 Oct rule:** in a row (3, 7, 14, 30) and in total (80 = 10 × 8, 200 = 25 × 8)
+    were right; **All milestones lacked the Anniversaries track**: added (1 year, next 2 Sep 2027).
+  - [x] **Fonts checked** (19 Oct): Google Sans Flex everywhere on the page; Roboto only for the status bar's 9:41
+    and emoji (as on every frame).
+  - [x] **Research: why people open a habit's page** (19 Oct, the user: "we need a lot of research about why do people
+    open habit details page … once the research is done … report it to me"):
+    [The Habit Details Page — Why People Open It and What It Should Do](<../../../Research/Research Reports/Day Structure and Organization/The Habit Details Page — Why People Open It and What It Should Do.md>).
+    Habit apps only; 2,018 read by hand, 1,647 on topic (103 apps); six jobs (see the record, the numbers, notes, fix a
+    past day, change the habit, milestones); five gaps and five decisions for the user (§4–§5).
+  - [x] **The user's decisions on the report** (19 Oct 2026):
+    - **Correction:** the Month card in Progress already is a month calendar (one square per date in weekday columns,
+      ✓ on done days). The report's "no month calendar" was wrong (it went by the handoff's note, not the frame). What's
+      left of that point is small: day numbers on the squares, a tap opens that day, a mark on days with a note.
+    - **History and Notes become one tab** (the user: Notes alone "feels … a redundant tab … if they want to see both,
+      there is no way"). Each day shows its logs and its note together; reading only the notes stays possible.
+    - **Best streaks as a list**, since the evidence supports it (40 reviews).
+    - **The start date can be set to any day** (the user: "user should be able to set whatever the start date they
+      want"; left to Claude). Earlier is always allowed and those days can then be logged. Later stops at the first
+      log, so no log is ever hidden (D6).
+    - **The description shows on the habit's page only**, under the goal, when it's filled in. Never on the Today row
+      ("today's screen will become cluttered"). The form already has *Description (optional)*. "Steps" in the report
+      means the same description (what the habit involves), not checklist steps.
+    - **Changing a habit never wipes its past**: already so (D6). Nothing to design.
+    - **Milestones**: already done (17 Oct rule, Anniversaries added). Nothing to design.
+  - [ ] **Fix where the page falls short** (designs, Android first):
+    - [ ] See the record: day numbers on the Month calendar, a tap opens Day details, a note mark (Month and year grid)
+    - [ ] Check the numbers: a Best streaks list under the record tiles
+    - [ ] Write and read notes: one History with logs and notes; a note on any day, missed and skipped days too;
+      notes read without editing; all notes of the habit findable (search, notes only)
+    - [ ] Fix a past day: from the calendar or History, two deliberate steps and an Undo, never a one-tap toggle;
+      days before the start loggable once the start is moved earlier
+    - [ ] The description under the goal in the header
+    - [ ] The page's other states: paused, archived (read-only), a type change's earlier habit, a task, a new habit
+      with nothing yet, larger text
+  - [x] **Placeholders first** (the user, 19 Oct): empty frames for every screen, view and state in the Habit details
+    section, then the designs. **Done:** 38 placeholders (360 × 800, dashed, each naming what goes there) in six rows
+    under the current frames, labelled *Version 2*: 1 the page and header (1.1–1.5), 2 History with logs and notes
+    together (2.1–2.10), 3 Progress (3.1–3.9), 4 fixing a past day (4.1–4.4), 5 the start date (5.1–5.3), 6 other
+    states (6.1–6.7). The section grew to 10,560 high (to y −13,760). The current frames stay as they are.
+  - [x] **The page opens on Progress, then History** (the user, 19 Oct 2026: "Open Habit details on Progress (the
+    record and the numbers), History second"). Tabs: Progress · History.
+  - [x] **Row 1, the page and its header, designed** (19 Oct 2026): 1.1 opens on Progress (tabs Progress · History,
+    the squares key moved down to just above Week, the first card with squares; the goal line no longer repeats the
+    name, "8 glasses a day, anytime"); 1.2 a description under the goal (Body Medium, ink, full width); 1.3 a long one cut
+    at two lines with **More**; 1.4 the same, open, with **Less** (added: the open state needed its own frame); 1.5
+    collapsed on scroll (small top app bar with the name, the status bar, bar and tabs in the scrolled-under colour);
+    1.6 the ⋮ menu (Edit habit, Pause…, Archive, Delete in red).
+  - [x] **Row 2, History with logs and notes together, designed** (19 Oct 2026). The top of History: **Search notes**,
+    then **Add log · Add note** side by side, then chips **All · With notes** and **Go to date**. *What the squares
+    mean* left History: each row already says its state in words, and the key stays on Progress. Each day: its square,
+    the date, its logs, then its note (a note icon and the text, in ink). 2.1 the list (September now runs to 2 Sep,
+    when Water started, so "11 of 29 days" adds up); 2.2 a day that wasn't done, with a note; 2.3 a skipped day
+    (grey square with `fast_forward`, "Skipped", the month reads "11 of 11 days": a skip doesn't count against it);
+    2.4 With notes (only days with a note, "3 notes" / "2 notes"); 2.5 search ("glass", matches in Medium, the
+    keyboard up); 2.6 nothing found; 2.7 Go to date (Android's date picker, today and earlier); 2.8 nothing yet (the
+    cookie empty state, Add log and Add note above it); 2.9 read a note, with its day under it (opens Day details);
+    2.10 Add note on a day that wasn't done.
+  - [x] **Rows 3–6 designed** (19 Oct 2026); all 39 frames of Version 2 are drawn, no placeholders left.
+    - **Numbers kept true across every frame:** the skipped example moved from Wed 7 Oct to **Thu 17 Sep** (a skip in
+      October would have changed the streak, the milestones and the year), so Progress now counts 40 planned days:
+      Goal met 23 of 40 (58%), Year "23 of 40 days", September "11 of 28 days".
+    - **Every Progress frame (1.1–1.6 and row 3) gains:** a **Best streaks** card after the record (each run's length,
+      dates and a bar; the current one "· now"); **dates above each square** of the Month calendar and **a dot under a day
+      with a note**; a dot in the corner of a year-grid day with a note; 17 Sep shown skipped.
+    - **Row 3, Progress:** 3.1 record and Best streaks (Water has one run: "Earlier runs show here too, once a run
+      ends"); 3.2 All best streaks (Read: 10 runs, longest first); 3.3 the dated Month calendar; 3.4 a week goal (Gym:
+      no ✕ on single days, each week ends with Met or "1 of 3"); 3.5 an amount habit (Read: the amount under each day,
+      part days lighter without ✓); 3.6 the year grid's note marks; 3.7 What the squares mean, open (every state and
+      the note mark); 3.8 a habit made two days ago (small true numbers, "None yet. The first comes at 3 days in a
+      row."); 3.9 a quit habit (Smoking: smoke-free time, current and longest run, slips, Longest runs).
+    - **Row 4, fixing a past day:** 4.1 September's calendar with 19 Sep pressed (a tap opens the day, never changes it);
+      4.2 Day details for Sat 19 Sep; 4.3 after +1, the log and a snackbar "Added 1 glass to Sat 19 Sep · Undo"; 4.4 a day
+      without a note, Add a note… pressed.
+    - **Row 5, the start date:** 5.1 Edit habit, Started moved to 25 Aug, with the line under it ("Days from 25 Aug can
+      be logged now. A day with no log counts as not done. Started can be any day up to 20 Sep, the first log."; the form's
+      Starts row reads Started for an existing habit); 5.2 History with 1 Sep and the August days in range, one copied
+      from an old app; 5.3 the picker, 21–30 Sep greyed, "Up to 20 Sep, the first log, so no log is hidden."
+    - **Row 6, other states:** 6.1 paused (a card: "Paused until Mon 19 Oct", Resume); 6.2 archived (a card with
+      Restore; the streak reads "Streak when archived"); 6.3 after a type change (the new Water's History, empty, with
+      "Open earlier Water"); 6.4 the earlier Water, archived, with "Open the new Water"; 6.5 a task's details (Car
+      service: History only, no tabs, years as groups, Add note only); 6.6 text at 200 % (everything wraps, chips and
+      buttons go to a second line, nothing clips); 6.7 loading (the header at once, the cards' shapes).
+  - [x] **The user's review of Version 2** (19 Oct 2026; "the designs are okay, but we have some problems"):
+    - [x] Alignment: every tile now has three lines (label, value, one line under it; Current streak gained "Since 20
+      Sep", Goal met's "58% of planned days" became "58% of days"), the same height (at least 100), values on their
+      baseline with the 🔥; the card headers and the total on baselines. In every Progress frame.
+    - [x] History's top is "very chaotic": no Add log and Add note; **one Add**, which opens Day details for a chosen
+      day (pick the date, then the day's details; log or add a note there). Search, All · With notes and Go to date stay.
+      **Done:** Android's extended floating button **Add** (bottom right, as for New group) on every History frame; the
+      list leaves room under it; 2.11 the date picker "Add to a day"; 2.12 that day's Day details.
+    - [x] History rows: **the square (and ›) always line up with the date and the line under it**, as in a row with no
+      note, however tall the row grows; **a note shows at most two lines, then …**. Research it, then fix it.
+      **Done** in every row (299 rows): the square and › sit in a slot as tall as the first two lines. Evidence: report §9.
+    - [x] Improve 2.9 (the note's own screen): the day as a heading ("Saturday, 19 September"), then the habit and how
+      the day went ("Water · Not done · 0 of 8 glasses"), then the whole note in a larger text; the extra day row is gone
+      (it's reached from Day details, so ← goes back to the day).
+    - [x] Best streaks: 3.1 had no way to reach 3.2. All streaks go on their own page; Progress keeps the important
+      things up front; the same for Smoking's Longest runs (it was up front there, inconsistent). **Done:** the cards
+      are gone from every Progress frame; the Overall record ends with **See all streaks ›** (**See all runs ›** for a
+      quit habit), as Milestones' See all; 3.2 is titled **Streaks**.
+    - [x] 3.3–3.5: today's black outline is cut off. Fixed in every calendar (the day cells no longer clip it).
+  - [x] **The Add flow, step by step** (19 Oct 2026, the user: "when you click on add button, what happens … how exactly
+    you add it, that is missing"). Its own row right under History (rows 3–6 moved down), drawn as a flow with arrows
+    and a label on each step: **2.11** tap Add → **2.12** pick the day (the date picker "Add to a day"; ‹ to September,
+    Fri 18; Cancel goes back to History, nothing added) → **2.13** Fri 18 Sep's details, the three ways to add → **2.14**
+    +1 (the count, bar and log change at once; "Added 1 glass to Fri 18 Sep · Undo"), or **2.15** Log manually (Add log
+    already dated Fri 18 Sep; Add returns to the day), or **2.16** Add a note… (Add note for Fri 18 Sep; Save returns to
+    the day) → ✕ → **2.17** back in History, Fri 18 part done (1/8 glasses) with its note, the list where it was.
+  - [x] **Add opens a plain date picker; Day details stays as it was** (19 Oct 2026, settled after three tries the same
+    day; the user, last: "the UX is very ugly … it's a simple date … it should be as simple as that … a simple date pop
+    up"). Every Day details sheet is back to ✕, the day as its title, ⋮ (50 sheets). History's **Add** opens **a date dialog
+    over the dimmed page with a proper hierarchy** (the user: the picker's big date "is like the most important … the whole
+    point is … which day you want to add the log … heading and subheading … proper hierarchy"): the heading **“Add to
+    which day?”**, a supporting line that says only what the dialog is for ("Choose a day to log Water or add a note."; the user: "simply
+    explain like what they are doing in this modal"),
+    the month (today first; later days and days before the start off), then **Cancel | Open Fri 18 Sep** (the button
+    names the day picked; no big date headline, no divider, no keyboard-entry pencil). Open opens that day's Day details;
+    Cancel adds nothing. Flow 2.11–2.17 under History. **Kept beside it,
+    labelled replaced:** (1) the same picker titled only "Select date" (no proper heading); (2) Day details' title as a
+    date dropdown with ‹ ›; (3) a "which day?" sheet with Today, Yesterday and the month's squares ("very ugly").
+  - [x] **Habit details designs done; old designs cleaned up** (19 Oct 2026, the user: "everything is done right in the
+    habits detail page … clean up the old designs, but keep the milestones overall info"). Removed from Figma: the 12 Oct
+    History, Notes, Progress and ⋮ menu frames, and the three replaced Add versions. Kept: the milestones rule board and
+    All milestones, moved to the section's top. The section is renamed *Habit details: Progress and History*.
+  - [ ] Then the app (Android first, on `claude/android-app`).
+  - [ ] **Later: logging straight from a reminder.** A reminder opens where logging is; a page reached from a reminder
+    offers Add log (11 reviews: a tap on the reminder opened the habit's page and logging wasn't there).
+  - **Noted for every screen that shows a habit's numbers (the user, 19 Oct: "note down … the biggest pain is trust …
+    what comes first matters"):** the biggest pain is trust, a wrong streak or calendar or lost history (218 reviews,
+    3.07★): every number on the page agrees with Today and Progress, and an archived habit keeps its page. What comes
+    first matters: the page leads with the record and the numbers, settings stay in ⋮.
+  - [ ] The rest of the page: the user's call on what to do next (the list given on 19 Oct).
 - [ ] **130. The Tasks page: why people open it, then redesign it** (added 18 October 2026, from the user, after the
   Habits page: "do the research on tasks … Why do they come to the task page? What do they want to do it more
   frequently? What are the very frequent actions? What are the jobs that a task page has? What it needs to satisfy? …

@@ -39,8 +39,8 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 | **New: choices and habit form** (`1302:2`) | New · What do you want to do? (`1566:2`); Build or maintain · How do you want to track it? (`1566:44`); New Habit forms, full length: Check it off (`1321:2`), Track an amount (`1321:125`), Time it (`1321:272`), Checklist (`1321:400`); Quit or cut down · What do you want to do? (`1566:106`); Quit (`1321:529`); Cut down (`1321:614`); Task (`1321:738`) | Built 12 Oct from the built app; forms redone in the second style (the user: "this new one is looking good"), Icon | Colour in one row; question headings stay Regular |
 | ~~**New: the form's pages** (`1563:535`)~~ | **Merged into "New: choices and habit form" (`1302:2`), 13 Oct 2026, and the section removed.** Each form's pages sit one column to the right of it, below its row, with an arrow from the row that opens each (arrows fan out sideways; pages stacked under their own form always made arrows cross). Shared pages once, from 2.1: 2.1.1 Icon (`1564:607`), 2.1.2 Colour (`1564:454`), 2.1.3 How often (`1563:328`), 2.1.4 Time of Day (`1563:438`), 2.1.5 Group (`1563:494`) and 2.1.5.1 New group (`1567:106`), 2.1.6 Starts (`1564:58`), 2.1.7 Ends (`1564:322`); own pages: 2.2.1 How much (`1567:2`) and 2.2.1.1 Unit (`1563:33`), 2.3.1 How long (`1567:60`), 2.4.1 Steps (`1563:286`), 3.2.1 Limit (`1567:31`). **1.1 Add a 6th habit (Plus)** (`1569:104`, whole sheet `1569:2`) under screen 1, dashed arrows from Build or maintain and Quit or cut down only (the user: it shows only when it's meaningful, never for a task, never abruptly at Add). **Not drawn yet:** the form's Reminders page, 3.1's Started pickers, Task's Repeat, Date and Time pages | The app still shows the Plus sheet at Add (`HabitForm.kt`); move it to choosing Build or maintain / Quit or cut down when building |
 | **Menu: navigation drawer** (`1326:2`) | Drawer open over Today (`1326:3`); the same, scrolled to the end (`1326:231`) | Built 12 Oct from the built app |
-| **Routine player and timer** (`1328:2`) | Player pages, one per kind and state: a check (`1344:2`); a check, done, with the Saved snackbar (`1344:57`); several a day (`1344:117`); a checklist (`1344:173`); an amount, one tap (`1333:2`); a timer running (`1344:241`); a timer, not started (`1344:297`); an amount typed each time (`1344:352`); a limit (`1344:407`); a task (`1344:463`); skipped, with its snackbar (`1344:518`); the last habit, done (`1344:582`); ⋮ menu (`1345:2`); Your routine (`1345:70`); End of the routine (`1345:183`); Timer, running (`1345:219`) | Expressive version approved 12 Oct ("this is looking good"); the first version was rejected |
-| **Habit details: Progress, History, Notes** (`1373:2`) | Water · History (`1375:2`), Notes (`1375:732`), Progress (`1373:3`, the user: "looking really amazing"), All milestones (`1735:4`, 14 Oct), ⋮ menu (`1375:1275`); History and Progress drawn full length | Built 12 Oct |
+| **Routine player and timer** (`1328:2`) | **Placeholders added 19 Oct 2026 (Current Work 140):** 11 numbered rows with arrows, the 18 frames of 12 Oct renumbered into them, 35 placeholders, and *a limit* set aside (below, "Routine player and timer: placeholders, 19 Oct 2026"). The 12 Oct frames: a check (`1344:2`), done with the Saved snackbar (`1344:57`), several a day (`1344:117`), a checklist (`1344:173`) and many steps (`1347:57`), an amount, one tap (`1333:2`), a week goal with a long label (`1347:2`), typed each time (`1344:352`), a timer running (`1344:241`) and not started (`1344:297`), a task (`1344:463`), skipped (`1344:518`), the last habit, done (`1344:582`), ⋮ menu (`1345:2`), Your routine (`1345:70`), the end (`1345:183`), Timer · running (`1345:219`) | Expressive version approved 12 Oct; **all 35 placeholders designed 19 Oct** (below), waiting for the user's review |
+| **Habit details: Progress and History** (`1373:2`) | **The final design (19 Oct 2026, Current Work 133), cleaned up the same day at the user's word:** top, the milestones rule board (`2266:2`) and All milestones (`1735:4`); then six rows: 1 the page and its header (opens on Progress; tabs Progress · History; the description; collapsed; ⋮), 2 History with logs and notes together (Search notes; All · With notes · Go to date; one **Add** button), the Add flow 2.11–2.17 with arrows (Add → a date dialog “Add to which day?” → that day's Day details → +1 / Log manually / Add a note → History), 3 Progress (the record with See all streaks, dated Month calendar, note marks, week-goal, amount, new and quit habits), 4 fixing a past day, 5 the start date, 6 other states (paused, archived, type change, a task, 200 % text, loading) | The old frames (the 12 Oct History, Notes, Progress and ⋮ menu) and the three replaced Add versions were removed on the user's word ("clean up the old designs, but keep the milestones overall info"). How it got here: the research ([The Habit Details Page — Why People Open It](<../../Research/Research Reports/Day Structure and Organization/The Habit Details Page — Why People Open It and What It Should Do.md>)), then the user's decisions and reviews, all in Current Work 133 |
 | **Progress: Week, Month, Year** (`1376:2`) | Week (`1376:3`), Month (`1376:226`), Year (`1376:496`), all full length | Built 12 Oct from the built app; **no ⋮ menu** (removed the same day, below) |
 | **Settings: Times of Day** (`1437:2`) | Times of Day (`1440:2`); New time of day, defaulting to free time 4–6 AM (`1440:69`); Edit time of day · Morning (`1440:152`) | Built 12 Oct from the simulator, then made Expressive at the user's request (the terminal session's version was deleted) |
 | **Settings: Day and Week** (`1449:2`) | Day and Week (`1449:3`); New day starts at, menu open (`1449:51`); Week starts on, menu open (`1768:100`) | Built 12 Oct from the built app; **redesigned 14 Oct** in Figma, not built (below, "Day and Week, 14 Oct 2026") |
@@ -336,7 +336,7 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   Today ›" chip that opens Day details** (also first in ⋮), a display-size count ("2 of 8 glasses") and Expressive's
   **wavy progress bar** in the habit's colour; at the bottom **a button group, 96 high: ‹ (tonal) · the main action
   (ink) · › (tonal)**, like media controls. **No "Day details" toolbar.** Main action per kind, as the iPhone: Mark
-  done (a check, a task), Log one (several a day), Log 1 glass (one tap), Log amount (typed each time), Start / Pause
+  done (a check, a task), Log one (several a day), Log 1 glass (one tap; **+1 since 19 Oct**), **Log** (typed each time; it said Log amount until 19 Oct, the user: "it's a redundant word just use log"), Start / Pause
   (time), Log 1 cup (a limit), none for a checklist (its steps sit in the card and ‹ › share the row), Next / Finish
   routine once done or skipped. **The iPhone's "Saved · Undo · Add Note" banner is Material's snackbar** (dark, corners
   4, Undo and Add note as its actions). ⋮: Day details, View routine, Go to first unfinished, End routine. Your routine
@@ -3113,6 +3113,37 @@ tapping a row). Frames 2.1, 5.4, 7, 7.1 and 7.2 point to screens drawn in other 
 The section grew to 5,720 × 7,680; every section below it moved down 5,983 (the page's lowest point is now 66,594,
 inside the +67,000 limit).
 
+### Routine player and timer: placeholders, 19 Oct 2026 (Current Work 140; the user: "add … the empty screens placeholders first … with the numbering")
+
+The section (`1328:2`, now 3,640 × 13,280; nothing sits below it on the right of the page) is laid out like Habits and
+Habit details: one row per job, its first frame in column 1, arrows from what's tapped. **Rows:** **1** starting a
+routine, and the page (1 a check; 1.1 Start on Today, 1.2 partly done, 1.3 all done, 1.4 another day, 1.5 200 % text,
+1.6 the description); **2** a check, several a day, a task (2–2.6); **3** an amount (3–3.5, with Add log over the
+player); **4** a time habit (4–4.5: paused, the goal reached, N days a week, a week total); **5** a checklist (5–5.2);
+**6** Day details over the player, skipping, Add note (6–6.2); **7** Your routine and ⋮ (7–7.3); **8** the end (8–8.4,
+with everything done, End routine and ✕ with a timer running); **9** the timer on its own (9–9.4); **10** the Live
+Update outside the app (10–10.5, A11 D4); and **Set aside**: *a limit (Coffee)*, kept but not used, because limits are
+never in a routine (Design Rules, 5 Oct 2026). The milestone moments stay in Milestones on Today (RP.1–RP.3). Each
+placeholder says what it shows, and "To decide" where a choice is the user's. The ▶ sign drew as a blue emoji in
+Google Sans Flex, so the placeholders say "Start" and "play button" in words.
+
+### Routine player and timer: every screen designed, 19 Oct 2026 (Current Work 140; the user: "let's create those designs")
+
+All 35 placeholders in `1328:2` are designed, each cloned from the approved player pages (same card, chip, wave, button
+group and snackbar), so the section holds 53 frames and no placeholder. **Choices made while designing, for review**
+(they were marked "To decide"): 1.3 Start on an all-done section opens the end page, and 8.2 is that page at the end of
+a run (*Anytime is done · All 12 done today*, Review routine, Done only); 1.6 the description goes under the name, 14
+grey, two lines then …; 4.3 at the goal the clock keeps counting with *✓ Goal met* and a full wave, Pause stays, Next
+comes once paused; 8.3 End routine goes to the end page with what's left (✕ leaves at once); 10.1 the Live Update has
+one action, Pause / Resume, and a tap opens the timer or the player. **A habit typed each time shows Log, the word alone, no pencil** (it said Log amount with a pencil; the user, 19 Oct: "a redundant word"), and only a habit with a step shows + and the step. **Applied from the review:** the quick amount
+button is "+1" / "+2.5" (U16; no unit, no cut-off label); a single check or task says *Not done yet* / *Done*, not
+"0 of 1"; ⋮ is Go to first unfinished, Change order, End routine (Day details is the Today chip, Your routine the title
+▾); Practice guitar's name is 32 Medium like the rest. **Status lines** under the count (*✓ Done for today*, *Paused*,
+*✓ Goal met*, *Over the limit*, *1 of 3 days this week*) reuse *Skipped for today*'s style. **The Live Update**
+(10–10.4) is drawn as Android 16 shows it: a status bar chip in the habit's colour with its clock, the notification in
+the shade (header *Often Enough · Timer*, title, *5:24 of 20 min*, a progress bar, one action) and the same card on the
+lock screen. 5.2 has no snackbar: it would cover the step just ticked, and a ticked step unticks with a tap.
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
@@ -3136,8 +3167,8 @@ inside the +67,000 limit).
    changing the type (6–6.3.2), and quit ↔ cut down (6.4–6.4.2). Still to check on the iPhone: with test data over five
    habits, its Quit or cut down opened a blank sheet.
 4. ~~**The ≡ menu** as Material's navigation drawer.~~ Built 12 Oct.
-5. ~~**The routine player and the timer.**~~ Built 12 Oct. Still to draw: the running timer as Android 16's Live
-   Update notification (A11 D4). (Today's timer bar was dropped 16 Oct: the row keeps the clock.)
+5. **The routine player and the timer:** built 12 Oct; **35 placeholders added and designed 19 Oct** (Current Work 140),
+   the Live Update (A11 D4) among them. Next: the user's review. (Today's timer bar was dropped 16 Oct: the row keeps the clock.)
 6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct; All milestones drawn 14 Oct. Not drawn: Go to
    date, a habit with no history yet, and the other kinds' Progress (time, checks, quit, checklist).
 7. ~~**Progress.**~~ Built 12 Oct (Week, Month, Year; no ⋮). Not drawn: the legend expanded.
