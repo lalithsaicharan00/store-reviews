@@ -35,8 +35,12 @@ interface DriveLink {
     val accountKey: String?
     /** The Drive calls, while connected. */
     fun api(): DriveApi?
-    /** Signs in (Android's own account chooser and Google's permission screen); false when the person backs out. */
-    suspend fun connect(context: Context): Boolean
+    /**
+     * Signs in (Android's own account chooser and Google's permission screen); false when the person backs out. With
+     * [account] (the email this phone just signed in to Plus with, D16: "signed in with Google, backed up to that same
+     * account"), that account is asked for at once, with no chooser; the email stays on this phone.
+     */
+    suspend fun connect(context: Context, account: String? = null): Boolean
     suspend fun disconnect()
     /** Deletes everything the app keeps in the person's Drive (its hidden folder only). */
     suspend fun deleteAll()
@@ -55,6 +59,11 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
 
     var status by mutableStateOf<DriveStatus?>(null); private set
     var working by mutableStateOf(false); private set
+    /**
+     * Where the habits live now, for the Plus account (D16): this Drive's key after a round that synced, null once the
+     * Drive copy is deleted. Set by AppGraph; the account decides whether it needs telling (`AccountCenter.noteCloud`).
+     */
+    var onCloud: (suspend (key: String?) -> Unit)? = null
     /** The last restore's undo file, kept 30 days (D5). */
     var undoAvailable by mutableStateOf(latestUndo() != null); private set
 
@@ -193,27 +202,36 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
     }
 
     /** One round: download, merge, upload (never replace). The phone's own data stays the truth (D1). */
-    suspend fun syncNow(): DriveStatus? = mutex.withLock {
-        val s = sync() ?: return null
-        working = true
-        try {
-            store.flush()
-            val result = s.syncNow(allowUpload = true)
-            status = result
-            if (result.state != DriveState.OFF) store.reloadAfterSync()
-            result
-        } finally {
-            working = false
+    suspend fun syncNow(): DriveStatus? {
+        val result = mutex.withLock {
+            val s = sync() ?: return null
+            working = true
+            try {
+                store.flush()
+                val result = s.syncNow(allowUpload = true)
+                status = result
+                if (result.state != DriveState.OFF) store.reloadAfterSync()
+                result
+            } finally {
+                working = false
+            }
         }
+        // Outside the lock: the account's server never holds up the next round.
+        if (result.state == DriveState.SYNCED) link.accountKey?.let { key -> runCatching { onCloud?.invoke(key) } }
+        return result
     }
 
     suspend fun refreshStatus() { status = sync()?.status() }
 
     /** Delete my data from Google Drive: only there, deliberately; this phone keeps everything (D9). */
-    suspend fun deleteFromDrive() = mutex.withLock {
-        link.deleteAll()
-        link.disconnect()
-        status = null
+    suspend fun deleteFromDrive() {
+        mutex.withLock {
+            link.deleteAll()
+            link.disconnect()
+            status = null
+        }
+        // Nothing is there now: the account stops pointing at it.
+        runCatching { onCloud?.invoke(null) }
     }
 
     suspend fun disconnectDrive() = mutex.withLock { link.disconnect(); status = null }

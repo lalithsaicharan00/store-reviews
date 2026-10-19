@@ -13,9 +13,26 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import app.habits.account.Answer
+import app.habits.account.CloudDevice
+import app.habits.account.CloudKind
+import app.habits.account.CloudPlace
+import app.habits.account.PlusProducts
+import app.habits.account.SignIn
+import app.habits.account.SignInWith
+import app.habits.account.StandInAccountServer
+import app.habits.account.StorePurchase
+import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.app.MainActivity
 import com.oftenenough.app.app.TestLaunch
+import com.oftenenough.app.app.backup.StandInLink
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,6 +87,18 @@ class OnboardingTest {
         Thread.sleep(500)
         if (has(m)) throw AssertionError("Didn't expect $what; on screen: ${screen()}")
     }
+
+    private fun onMain(block: () -> Unit) = InstrumentationRegistry.getInstrumentation().runOnMainSync(block)
+
+    /** A Plus account made on another phone (the stand-in server), and where it says the habits live. */
+    private fun plusAccount(with: SignInWith, email: String, place: CloudPlace?) = runBlocking(Dispatchers.Main) {
+        val server = AppGraph.accounts.server as StandInAccountServer
+        val made = server.create(SignIn(with, "stand-in", email, "Sam Kim"), StorePurchase(PlusProducts.PLUS, "stand-in-plus")) as Answer.Ok
+        if (place != null) server.setCloud(made.value, place)
+    }
+
+    /** The Google account the stand-in Drive's chooser gives next. */
+    private fun chooserGives(email: String) = onMain { (AppGraph.backup.link as StandInLink).nextAccount = email }
 
     private fun toTheIdeas() {
         tapTag("onboarding-new")
@@ -176,6 +205,76 @@ class OnboardingTest {
         waitFor(hasText("The move stopped"), "The move stopped", timeout = 30_000)
         tapTag("move-stopped-main")
         waitFor(hasText("From your old phone."), "From your old phone again")
+    }
+
+    // ------------------------------------------------------------------ Where the account says the habits live (D16, 138)
+
+    @Test fun habitsInAnIphonesICloudAreMovedAcrossWithACode() {
+        launch()
+        plusAccount(SignInWith.GOOGLE, "sam@gmail.com", CloudPlace(CloudKind.ICLOUD, "icloud:_sam", CloudDevice.IPHONE))
+        plusAccount(SignInWith.APPLE, "sam@privaterelay.appleid.com", CloudPlace(CloudKind.ICLOUD, "icloud:_sam", CloudDevice.IPAD))
+        tapTag("onboarding-returning")
+        // 2.3: signed in with Google.
+        tapTag("back-google")
+        waitFor(hasText("They’re on your iPhone."), "2.3 They're on your iPhone")
+        for (t in listOf("Open the app on your iPhone", "Choose Move to a new phone", "Type its code on this phone")) waitFor(hasText(t), t)
+        tapTag("enter-code")
+        waitFor(hasText("From your old phone."), "the move code")
+        // Back returns to the screen that offered the code, never further.
+        tapTag("flow-back")
+        waitFor(hasTestTag("on-your-iphone"), "2.3 again")
+        tapTag("flow-back")
+        // 3.3: signed in with Apple, the same screen.
+        tapTag("back-apple")
+        waitFor(hasTestTag("on-your-iphone"), "3.3 They're on your iPhone")
+        // Start fresh asks first, and leaves the habits where they are.
+        tapTag("start-fresh")
+        waitFor(hasText("Your habits stay where they are, so you can bring them back later."), "Start fresh?")
+        tapTag("start-fresh-dialog-confirm")
+        waitFor(hasText("Your days and weeks."), "Your days and weeks")
+    }
+
+    @Test fun aDifferentGoogleAccountIsChosenAndCheckedBeforeAnythingIsRead() {
+        launch()
+        plusAccount(SignInWith.GOOGLE, "sam@gmail.com", CloudPlace(CloudKind.GOOGLE_DRIVE, StandInAccountServer.driveKey("work@gmail.com"), CloudDevice.ANDROID))
+        tapTag("onboarding-returning")
+        tapTag("back-google")
+        waitFor(hasText("Your habits are in a different Google Drive account", substring = true), "2.5 Plus is back")
+        assertNone(hasText("work@gmail.com", substring = true), "the other account named")
+        // The wrong account: nothing is read from it, and 2.5 asks again.
+        chooserGives("other@gmail.com")
+        tapTag("choose-drive")
+        assertNone(hasText("Looking for your habits"), "looking in the wrong Drive")
+        waitFor(hasTestTag("plus-other-drive"), "2.5 again")
+        assertNull("the wrong Drive is let go", AppGraph.backup.link.accountKey)
+        // The right one: looked in at once.
+        chooserGives("work@gmail.com")
+        tapTag("choose-drive")
+        waitFor(hasText("We didn’t find your habits in work@gmail.com’s Google Drive", substring = true), "the Drive on record, looked in")
+    }
+
+    @Test fun theSignInAccountsOwnDriveIsOpenedWithNoChooser() {
+        launch()
+        plusAccount(SignInWith.GOOGLE, "sam@gmail.com", CloudPlace(CloudKind.GOOGLE_DRIVE, StandInAccountServer.driveKey("sam@gmail.com"), CloudDevice.ANDROID))
+        chooserGives("other@gmail.com") // a chooser would give another account: none is shown
+        tapTag("onboarding-returning")
+        tapTag("back-google")
+        waitFor(hasText("We didn’t find your habits in sam@gmail.com’s Google Drive", substring = true), "Sam's own Drive")
+    }
+
+    @Test fun aPlusAccountRemembersTheGoogleDriveItBacksUpTo() {
+        launch(onboarding = false, demo = "today")
+        runBlocking(Dispatchers.Main) { AppGraph.accounts.create(SignIn(SignInWith.GOOGLE, "stand-in", "sam@gmail.com", "Sam Kim"), StorePurchase(PlusProducts.PLUS, "stand-in-plus")) }
+        assertNull("nothing until a device has synced", AppGraph.accounts.account!!.cloud)
+        chooserGives("sam@gmail.com")
+        runBlocking(Dispatchers.Main) { AppGraph.backup.connectDrive() }
+        compose.waitUntil(10_000) { AppGraph.accounts.account?.cloud != null }
+        val cloud = AppGraph.accounts.account!!.cloud!!
+        assertEquals(CloudPlace(CloudKind.GOOGLE_DRIVE, StandInAccountServer.driveKey("sam@gmail.com"), CloudDevice.ANDROID), cloud.place)
+        assertTrue("Sam's own Google account", cloud.signInAccount)
+        // Deleting the Drive copy: the account no longer points at it.
+        runBlocking(Dispatchers.Main) { AppGraph.backup.deleteFromDrive() }
+        compose.waitUntil(10_000) { AppGraph.accounts.account?.cloud == null }
     }
 
     // ------------------------------------------------------------------ Backup & Sync (1461:2)

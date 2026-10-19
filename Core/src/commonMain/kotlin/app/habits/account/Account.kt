@@ -32,12 +32,45 @@ data class Family(val ownerName: String, val people: List<FamilyPerson>, val inv
     val placesFree: Int get() = (FAMILY_SIZE - people.size - (if (invite != null) 1 else 0)).coerceAtLeast(0)
 }
 
+/** Which cloud holds the habits (D16): a Google Drive, or an iCloud (which only an iPhone, iPad or Mac can open). */
+enum class CloudKind { GOOGLE_DRIVE, ICLOUD }
+
+/** The kind of device that last synced there ("from an iPhone"). */
+enum class CloudDevice { ANDROID, IPHONE, IPAD }
+
+/**
+ * Where a device keeps the habits: the cloud and its account's private ID, exactly as the device's sync binds to it
+ * ([key]: "gdrive:" and [CloudKeys.googleDrive], or "icloud:" and CloudKit's user record name). Never an email.
+ */
+data class CloudPlace(val kind: CloudKind, val key: String, val device: CloudDevice)
+
+/**
+ * Where the account says the habits live (D16, Current Work 138), as the last device to sync there said: the place,
+ * when ([syncedAt], epoch ms), and whether it's a Google Drive of the very Google account the account signs in with
+ * ([signInAccount]: a new phone signed in with that account goes straight there, with no chooser).
+ */
+data class CloudRecord(val place: CloudPlace, val syncedAt: Long, val signInAccount: Boolean)
+
+/**
+ * The private ID a device's sync gives a cloud account. Google Drive: "gdrive:" and the SHA-256 (hex) of "google:" and
+ * Google's fixed account ID (`sub`), the same on every device and on the Worker (`googleDriveKey`), so the account can
+ * tell its own Google account's Drive without keeping anything more. An email is never a key.
+ */
+object CloudKeys {
+    fun googleDrive(googleId: String): String = "gdrive:" + app.habits.core.Sha256.digest(("google:$googleId").encodeToByteArray())
+        .joinToString("") { (it.toInt() and 0xff).toString(16).padStart(2, '0') }
+}
+
 /**
  * The signed-in account, as this device keeps it. [email] is shown on this device only ("Signed in as …"); the server
  * keeps Google's or Apple's fixed account ID and a masked hint, never the full email (D16). [session] is this device's
- * sign-in with the Worker, sent with every call (empty with the stand-in).
+ * sign-in with the Worker, sent with every call (empty with the stand-in). [cloud]: where the habits live, null before
+ * any device has said.
  */
-data class Account(val id: String, val with: SignInWith, val email: String, val plus: AccountPlus, val family: Family?, val session: String = "") {
+data class Account(
+    val id: String, val with: SignInWith, val email: String, val plus: AccountPlus, val family: Family?, val session: String = "",
+    val cloud: CloudRecord? = null,
+) {
     val givesPlus: Boolean get() = plus != AccountPlus.NONE
 }
 

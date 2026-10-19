@@ -20,7 +20,13 @@ import kotlin.random.Random
  * one waiting invite per family, used once, for [INVITE_DAYS] days; joining another family leaves the first; deleting an
  * owner's account ends the family; the upgrade makes a family only beside Plus; nothing here ever holds a habit.
  */
-class StandInAccountServer(private val storage: AccountStorage, private val today: () -> Long, private val random: Random = Random.Default) : AccountServer {
+class StandInAccountServer(
+    private val storage: AccountStorage,
+    private val today: () -> Long,
+    private val random: Random = Random.Default,
+    /** The time where the habits were last synced is kept (epoch ms); the day's start is near enough for tests. */
+    private val nowMs: () -> Long = { today() * 86_400_000L },
+) : AccountServer {
     override val available = true
     /** A test (or a debug menu) turns this on to see "Couldn't connect". */
     var offline = false
@@ -34,7 +40,11 @@ class StandInAccountServer(private val storage: AccountStorage, private val toda
 
     // ------------------------------------------------------------------ The stored state, one JSON text
 
-    private class Person(val key: String, val id: String, val with: SignInWith, val email: String, val name: String, var plus: AccountPlus, var family: String?, var joined: Long?)
+    private class Person(val key: String, val id: String, val with: SignInWith, val email: String, val name: String, var plus: AccountPlus, var family: String?, var joined: Long?) {
+        /** Where the habits live (D16), as the last device said; never an email. */
+        var cloud: CloudPlace? = null
+        var cloudAt: Long = 0
+    }
     private class Fam(val id: String, val owner: String, val members: MutableList<String>, var invite: String?)
     private class Inv(val token: String, val family: String, val ends: Long, var state: String)
 
@@ -48,7 +58,12 @@ class StandInAccountServer(private val storage: AccountStorage, private val toda
         val o = Json.parseToJsonElement(storage.read() ?: return@runCatching).jsonObject
         (o["people"] as JsonArray).map { it.jsonObject }.forEach { p ->
             people[p.stringAt("key")!!] = Person(p.stringAt("key")!!, p.stringAt("id")!!, SignInWith.valueOf(p.stringAt("with")!!), p.stringAt("email")!!,
-                p.stringAt("name")!!, AccountPlus.valueOf(p.stringAt("plus")!!), p.stringAt("family")?.ifEmpty { null }, p.longAt("joined")?.takeIf { it >= 0 })
+                p.stringAt("name")!!, AccountPlus.valueOf(p.stringAt("plus")!!), p.stringAt("family")?.ifEmpty { null }, p.longAt("joined")?.takeIf { it >= 0 }).also { q ->
+                p.objectAt("cloud")?.let { c ->
+                    q.cloud = runCatching { CloudPlace(CloudKind.valueOf(c.stringAt("kind")!!), c.stringAt("key")!!, CloudDevice.valueOf(c.stringAt("device")!!)) }.getOrNull()
+                    q.cloudAt = c.longAt("at") ?: 0
+                }
+            }
         }
         (o["families"] as JsonArray).map { it.jsonObject }.forEach { f ->
             families[f.stringAt("id")!!] = Fam(f.stringAt("id")!!, f.stringAt("owner")!!,
@@ -65,6 +80,7 @@ class StandInAccountServer(private val storage: AccountStorage, private val toda
                 people.values.forEach { p -> add(buildJsonObject {
                     put("key", p.key); put("id", p.id); put("with", p.with.name); put("email", p.email); put("name", p.name)
                     put("plus", p.plus.name); put("family", p.family ?: ""); put("joined", p.joined ?: -1)
+                    p.cloud?.let { c -> put("cloud", buildJsonObject { put("kind", c.kind.name); put("key", c.key); put("device", c.device.name); put("at", p.cloudAt) }) }
                 }) }
             })
             put("families", buildJsonArray {
@@ -84,7 +100,10 @@ class StandInAccountServer(private val storage: AccountStorage, private val toda
     /** The account as [p] sees it: their family with "You" marked. */
     private fun view(p: Person): Account {
         val fam = p.family?.let { families[it] }
-        return Account(p.id, p.with, p.email, p.plus, fam?.let { f ->
+        val cloud = p.cloud?.let { c ->
+            CloudRecord(c, p.cloudAt, p.with == SignInWith.GOOGLE && c.kind == CloudKind.GOOGLE_DRIVE && c.key == driveKey(p.email))
+        }
+        return Account(p.id, p.with, p.email, p.plus, cloud = cloud, family = fam?.let { f ->
             val owner = people[f.owner]
             Family(owner?.name ?: "", (listOf(f.owner) + f.members).mapNotNull { k -> people[k] }.map { q ->
                 FamilyPerson(q.id, q.name, q.key == f.owner, q.key == p.key, if (q.key == f.owner) null else q.joined)
@@ -149,6 +168,13 @@ class StandInAccountServer(private val storage: AccountStorage, private val toda
     }
 
     override suspend fun refresh(account: Account): Answer<Account?> = answer { byId(account.id)?.let(::view) }
+
+    override suspend fun setCloud(account: Account, place: CloudPlace?): Answer<Account> = answer {
+        val p = byId(account.id) ?: error("No account")
+        p.cloud = place
+        p.cloudAt = if (place == null) 0 else nowMs()
+        view(p)
+    }
 
     override suspend fun delete(account: Account, proof: SignIn): Answer<Boolean> = answer {
         val p = byId(account.id)
@@ -252,6 +278,12 @@ class StandInAccountServer(private val storage: AccountStorage, private val toda
     }
 
     companion object {
+        /**
+         * The stand-in's Google Drive key for [email]: the stand-in has no Google ID, so the email stands in for it on
+         * the phone only (the stand-in Drive's chooser, `StandInLink`). The real Drive uses Google's fixed ID ([CloudKeys]).
+         */
+        fun driveKey(email: String) = CloudKeys.googleDrive("stand-in:" + email.lowercase())
+
         const val OPEN = "open"
         const val USED = "used"
         const val CANCELLED = "cancelled"

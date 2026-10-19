@@ -25,6 +25,8 @@ interface AccountServer {
     suspend fun addPurchase(account: Account, purchase: StorePurchase): Answer<Account>
     /** Deletes the account and, for an owner, the family; purchases stay with Google and Apple (D16, Current Work 110). */
     suspend fun delete(account: Account, proof: SignIn): Answer<Boolean>
+    /** Where the habits live now (D16): after a sync to [place], or null once the habits there were deleted. */
+    suspend fun setCloud(account: Account, place: CloudPlace?): Answer<Account>
     suspend fun invite(account: Account): Answer<Account>
     suspend fun cancelInvite(account: Account): Answer<Account>
     suspend fun remove(account: Account, personId: String): Answer<Account>
@@ -43,6 +45,7 @@ object NoAccountServer : AccountServer {
     override suspend fun refresh(account: Account) = Answer.Offline
     override suspend fun addPurchase(account: Account, purchase: StorePurchase) = Answer.Offline
     override suspend fun delete(account: Account, proof: SignIn) = Answer.Offline
+    override suspend fun setCloud(account: Account, place: CloudPlace?) = Answer.Offline
     override suspend fun invite(account: Account) = Answer.Offline
     override suspend fun cancelInvite(account: Account) = Answer.Offline
     override suspend fun remove(account: Account, personId: String) = Answer.Offline
@@ -142,6 +145,15 @@ class HttpAccountServer(private val base: String, private val http: AccountHttp)
         }
     }
 
+    override suspend fun setCloud(account: Account, place: CloudPlace?): Answer<Account> =
+        changed(call("POST", "/v1/account/cloud", account.session, buildJsonObject {
+            if (place == null) put("cloud", JsonNull) else {
+                put("cloud", if (place.kind == CloudKind.ICLOUD) "icloud" else "google_drive")
+                put("key", place.key)
+                put("device", place.device.name.lowercase())
+            }
+        }), account)
+
     override suspend fun signOut(account: Account) {
         call("POST", "/v1/sign-out", account.session)
     }
@@ -199,7 +211,15 @@ class HttpAccountServer(private val base: String, private val http: AccountHttp)
                 )
             }
             val plus = runCatching { AccountPlus.valueOf(o.stringAt("plus")!!) }.getOrDefault(AccountPlus.NONE)
-            return Account(o.stringAt("id")!!, with, email, plus, family, session)
+            return Account(o.stringAt("id")!!, with, email, plus, family, session, o.objectAt("cloud")?.let(::cloud))
+        }
+
+        /** The Worker's `cloud`: null for anything this version doesn't know (a newer kind of cloud or device). */
+        fun cloud(c: JsonObject): CloudRecord? {
+            val kind = when (c.stringAt("kind")) { "google_drive" -> CloudKind.GOOGLE_DRIVE; "icloud" -> CloudKind.ICLOUD; else -> return null }
+            val device = CloudDevice.entries.firstOrNull { it.name.lowercase() == c.stringAt("device") } ?: return null
+            val key = c.stringAt("key") ?: return null
+            return CloudRecord(CloudPlace(kind, key, device), c.longAt("syncedAt") ?: 0L, c.boolAt("signInAccount"))
         }
     }
 }

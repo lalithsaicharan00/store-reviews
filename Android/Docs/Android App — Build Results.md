@@ -335,9 +335,22 @@ its question, No habits found, Couldn't connect with Try again), your old phone 
 a backup file (Your backup file, That isn't a backup, From a newer version with Update), and Start fresh (Your days and
 weeks, then an empty Today). Bringing habits back ends on Today saying "Your habits are back: 18 habits, 222 logs".
 Sign-in runs on the stand-in until the Android OAuth client exists; **Continue with Apple shows only where Apple sign-in
-is available** (the stand-in; a release build hides it until Apple's web sign-in is built). Not built, because the
-account doesn't yet record where the habits live (D16's proposal): 2.3 "They're in iCloud", 2.5 "a different Google
-account", 3.3 "They're on your iPhone".
+is available** (the stand-in; a release build hides it until Apple's web sign-in is built).
+
+**Where the habits live (138, 19 October 2026).** The Plus account now remembers which cloud holds the habits (D16): the
+Worker keeps the cloud, its account's private ID (the key the device's sync binds to), the kind of device and when
+(`account-server/README.md`, "Where the habits live"; migration 0003), and the app tells it after each Google Drive round
+that synced, only when the place changed or once a day, and forgets it when the Drive copy is deleted. Coming back reads
+it after signing in: **2.3 They're on your iPhone** (signed in with Google, the habits in iCloud: three steps and Enter the
+code), **2.5 Plus is back** (backed up to a different Google account: Choose the Drive account; the chosen account's key is
+compared before anything is read, and the wrong one asks again, with nothing read), **3.3** (the same iPhone screen after
+Apple), and the sign-in account's own Drive opens with no chooser. Step 3's line says "Keep the app open on both" where
+Figma said "It works for 24 hours": the move as built needs both phones online at once (D15). Tests: the Worker 83
+(`test/cloud.test.ts`, 7 new), Core's `AccountTest` 17 (5 new), `OnboardingTest` 14 (4 new) on the Pixel 10 Pro
+emulator, with `DataSafetyTest` 5, `PlusAccountScreensTest` 10, `PlusAccountFramesTest` 6 and `TodayTest` 12 again;
+2.3 and 2.5 pictured beside Figma at 360 × 800 dp. On dev (version e4d66a69): `npm run live:dev` and
+`AccountServerLiveTest` (3/3) pass; production waits for the user's go-ahead. Not yet: the iPhone writing its iCloud record (the iPhone app doesn't
+use the shared account yet), and the iPhone's own Move to a new phone, which 2.3's steps point to.
 
 **Backup & Sync (137).** The menu row is now **Backup & Sync** (it was Google Drive & Backup; Help's answers follow). The
 page says where the habits are first (Backed up · when · the account; Synced with Plus, with its devices; Not backed up,

@@ -1786,6 +1786,27 @@ and the Add note keyboard coming up by itself.
     deletion questions; the menu row renamed Backup & Sync. Not built: 4.1, the dated list of Drive backups.
 - [x] Items 133–137 committed to main and pushed once everything is tested ("When everything is completed and tested
   thoroughly, then commit it and push it").
+- [ ] **138. The Plus account remembers where the habits live, and coming back uses it (2.3, 2.5, 3.3)** (added 19
+  October 2026, from the user: "the account has to store like what is the backup we are using and even including the
+  ID … if you dig through you will understand … that's what we need to implement … if you need any tests then perform
+  it … complete that"). Rulebook D16: which cloud (Google Drive or iCloud), that cloud account's private ID, when and
+  from which kind of device it last synced; no email.
+  - [x] The Worker keeps it with the account and gives it back to the account's own devices; deleting the account
+    deletes it (migration 0003, `POST /v1/account/cloud`). 83 tests pass, 7 new (`test/cloud.test.ts`).
+  - [x] On dev (the user's go-ahead, 19 Oct): migration 0003 applied, version e4d66a69; `npm run live:dev` all passed
+    (4 new checks), `AccountServerLiveTest` 3/3 on the emulator (1 new). Production: only with the user's go-ahead.
+  - [x] The shared core: the record in the account (`CloudRecord`, `CloudKeys`), the call that saves it, the stand-in
+    server the same. `AccountTest` 17 pass, 5 new.
+  - [x] The app saves it after a backup to Google Drive (only when it changed, or once a day), and clears it when the
+    Drive copy is deleted (`BackupCenter.onCloud`, `AccountCenter.noteCloud`).
+  - [x] Coming back: 2.3 They're on your iPhone, 2.5 Plus is back with a different Google Drive account, 3.3 They're on
+    your iPhone after Apple; the chosen Drive checked against the record before anything is read. Step 3 says "Keep the
+    app open on both" (Figma: "It works for 24 hours", no longer true of the move, D15).
+  - [x] Tested on the Pixel 10 Pro emulator: `OnboardingTest` 14 (4 new), `DataSafetyTest` 5, `PlusAccountScreensTest`
+    10, `PlusAccountFramesTest` 6, `TodayTest` 12; 2.3 and 2.5 pictured beside Figma at 360 × 800 dp.
+  - [ ] Not yet: the iPhone writing its iCloud record (it doesn't use the shared account yet) and its own Move to a new
+    phone, which 2.3's steps point to.
+  - [x] Committed and pushed to main (the user: "OK go ahead").
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:

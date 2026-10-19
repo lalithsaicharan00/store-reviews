@@ -5,7 +5,8 @@ Written by Claude (Claude Code), 16 October 2026. Rulebook **D16** (what an acco
 
 One Cloudflare Worker on the free plan, with one D1 database. It holds **only** who someone is (Google's or Apple's fixed
 account ID, a first name the family sees, a masked email hint like `l•••••@gmail.com`), their store purchases **as
-checked with Google Play**, and their Plus Family. **Never a habit**, never a whole email address. It replaces the old
+checked with Google Play**, their Plus Family, and **where their habits live** (which cloud, by that cloud account's
+private ID). **Never a habit**, never a whole email address. It replaces the old
 `server/` (the habit-sync server D16 retired; its Cloudflare resources were deleted on 15 Oct 2026).
 
 | | |
@@ -19,8 +20,9 @@ checked with Google Play**, and their Plus Family. **Never a habit**, never a wh
 |---|---|
 | `POST /v1/sign-in` `{provider, idToken, nonce}` | Google's or Apple's ID token, checked (signature against the provider's keys, issuer, audience = our OAuth client, expiry, and the nonce: the app makes a random value, Google signs its SHA-256, so a copied token can't be replayed). Finds the account (`found`, a new `session` for this device) or says there's none (Figma 3.4) |
 | `POST /v1/accounts` `{…, name?, purchase?}` | Makes the account (once, however often or at once it's asked) and checks the purchase sent with it |
-| `GET /v1/account` | The account: `plus` (`NONE`, `PLUS`, `FAMILY_OWNER`, `FAMILY_MEMBER`) and the family. Purchases not checked for a day are checked again after the answer, so a refund reaches the account |
+| `GET /v1/account` | The account: `plus` (`NONE`, `PLUS`, `FAMILY_OWNER`, `FAMILY_MEMBER`), the family and `cloud` ([Where the habits live](#where-the-habits-live)). Purchases not checked for a day are checked again after the answer, so a refund reaches the account |
 | `POST /v1/account/purchases` `{product, token}` | A Google Play purchase, checked with Google; one purchase belongs to one account |
+| `POST /v1/account/cloud` `{cloud, key, device}` or `{cloud: null}` | Where the habits live now, from a device that just synced there; `null` once the habits there were deleted ([Where the habits live](#where-the-habits-live)) |
 | `POST /v1/account/delete` `{provider, idToken, nonce}` | Needs a fresh sign-in as the same person (Figma 7.2.1). Removes the account, its sessions, its purchase records (the purchases stay with Google, so signing in again brings Plus back), its place in a family, and a family it owns with that family's invites (everyone in it loses Plus, nobody loses habits) |
 | `POST /v1/sign-out` | Ends this device's session |
 | `POST /v1/family/invite`, `/invite/cancel`, `/remove {person}`, `/leave` | Plus Family: the owner and up to 5 more; one single-use invite at a time, for 7 days (`https://oftenenough.com/join/<token>`, 128 random bits) |
@@ -46,7 +48,7 @@ neither.
 ```sh
 cd account-server
 npm install
-npm test               # 76 tests in the Workers runtime (Miniflare) with a real D1; Google, Apple and Play are stand-ins
+npm test               # 83 tests in the Workers runtime (Miniflare) with a real D1; Google, Apple and Play are stand-ins
 npm run typecheck
 ```
 
@@ -61,6 +63,27 @@ cd Android
 ./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.oftenenough.app.AccountServerLiveTest \
   "-Pandroid.testInstrumentationRunnerArguments.accountTestSecret=$(grep '^accountTestSecret=' ~/.gradle/gradle.properties | cut -d= -f2-)"
 ```
+
+## Where the habits live
+
+Rulebook D16; Current Work 138, built 19 Oct 2026 (migration `0003_where_the_habits_live.sql`; on dev the same day,
+version `e4d66a69`, live checks passing; production waits for the user's go-ahead). The account remembers
+which cloud holds the habits, so a new phone signing in goes there by itself, or says plainly where they are:
+
+| Field | |
+|---|---|
+| `kind` | `google_drive` or `icloud` |
+| `key` | The cloud account's private ID, exactly as the device's sync binds to it: `gdrive:` and the SHA-256 (hex) of `google:` and Google's fixed account ID (`sub`), or `icloud:` and CloudKit's user record name for our container (no other app sees it). Checked against its kind; an email is refused |
+| `device` | `android`, `iphone` or `ipad`: the kind of device that last synced there |
+| `syncedAt` | When (ms) |
+| `signInAccount` | Worked out on each read, never stored: a Google Drive of the very Google account this account signs in with (`googleDriveKey(subject)`), so a new phone opens it with no chooser |
+
+Only the account's own sessions read or write it (a family member never sees it), and it's deleted with the account.
+The app tells it after a Google Drive round that synced, only when the place changed or once a day (Core's
+`AccountCenter.noteCloud`), and `null` after Delete my data from Google Drive. On a new phone, coming back (Figma
+`1549:2`) reads it: the sign-in account's own Drive (straight there), a different Google account's Drive (2.5: the person
+chooses it, and the chosen account's key is compared before anything is read), or an iPhone's iCloud (2.3, 3.3: the
+move code). No other account is ever named.
 
 ## Moving to a new phone with a code
 

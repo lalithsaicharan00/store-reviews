@@ -167,10 +167,21 @@ object AppGraph {
         plusInstance = if (!BuildConfig.DEBUG || BuildConfig.REAL_BILLING) PlayPlusStore(context, scope, context.getSharedPreferences("plus-play", Context.MODE_PRIVATE))
             else FakePlusStore(context.getSharedPreferences("plus-fake", Context.MODE_PRIVATE)).also { it.latencyMs = 900 }
         openAccounts(context, app.habits.account.AccountCenter.FILE, test = false)
+        tellAccountWhereTheHabitsAre()
         codesInstance = PlusCodes(context.getSharedPreferences("plus-codes", Context.MODE_PRIVATE))
         followPlus(store)
         // The account is asked again on each launch (a family change, a refund); kept as it was when offline.
         scope.launch { accounts.refresh(); accounts.syncPurchases(plus.purchases()) }
+    }
+
+    /**
+     * A Plus account remembers where the habits live (D16, Current Work 138): each Google Drive round that synced tells
+     * it (only when the place changed, or once a day), and deleting the Drive copy makes it forget. No account, nothing.
+     */
+    private fun tellAccountWhereTheHabitsAre() {
+        backup.onCloud = { key ->
+            accounts.noteCloud(key?.let { app.habits.account.CloudPlace(app.habits.account.CloudKind.GOOGLE_DRIVE, it, app.habits.account.CloudDevice.ANDROID) }, System.currentTimeMillis())
+        }
     }
 
     /** Google Drive: the stand-in on this phone in debug builds until the user's OAuth client exists (build prompt §5). */
@@ -208,6 +219,7 @@ object AppGraph {
             .also { if (plus) it.ownForTest() }
         // Its own account and stand-in server, emptied each launch (D8).
         openAccounts(context, "uitest-account", test = true, testServer = accountServer)
+        tellAccountWhereTheHabitsAre()
         codesInstance = PlusCodes(context.getSharedPreferences("uitest-plus-codes", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
         followPlus(store)
     }

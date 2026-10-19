@@ -50,6 +50,12 @@ object AccountFile {
                 f.invite?.let { put("invite", buildJsonObject { put("token", it.token); put("link", it.link); put("ends", it.endsDay) }) }
             })
         }
+        a.cloud?.let { c ->
+            put("cloud", buildJsonObject {
+                put("kind", c.place.kind.name); put("key", c.place.key); put("device", c.place.device.name)
+                put("at", c.syncedAt); put("signInAccount", c.signInAccount)
+            })
+        }
     }.toString()
 
     /** Null for no text, or text that isn't an account (never a crash on a damaged file). */
@@ -67,6 +73,12 @@ object AccountFile {
                 )
             },
             o.stringAt("session") ?: "",
+            o.objectAt("cloud")?.let { c ->
+                runCatching {
+                    CloudRecord(CloudPlace(CloudKind.valueOf(c.stringAt("kind")!!), c.stringAt("key")!!, CloudDevice.valueOf(c.stringAt("device")!!)),
+                        c.longAt("at") ?: 0L, c.boolAt("signInAccount"))
+                }.getOrNull()
+            },
         )
     }.getOrNull()
 }
@@ -134,6 +146,19 @@ class AccountCenter(
 
     suspend fun addPurchase(purchase: StorePurchase) = change { server.addPurchase(it, purchase) }
 
+    /**
+     * This device just synced to [place] (or the habits there were deleted: null), so the account points there (D16).
+     * Told only when it changed or once a day ([nowMs] against the record's time), never on every sync; offline, the
+     * next sync tells it. Nothing without an account: free people have none, and nothing about them is kept.
+     */
+    suspend fun noteCloud(place: CloudPlace?, nowMs: Long) {
+        val a = account ?: return
+        val was = a.cloud
+        val same = if (place == null) was == null else was?.place == place && nowMs - was.syncedAt in 0 until CLOUD_EVERY_MS
+        if (same) return
+        change { server.setCloud(it, place) }
+    }
+
     /** Every purchase on this device's store account, in order (Plus first: the upgrade counts only beside it). */
     suspend fun syncPurchases(purchases: List<StorePurchase>) { for (p in purchases) syncPurchase(p) }
 
@@ -154,5 +179,9 @@ class AccountCenter(
     suspend fun join(token: String) = change { server.join(it, token) }
     suspend fun lookInvite(token: String) = onUi { server.lookInvite(token) }
 
-    companion object { const val FILE = "account" }
+    companion object {
+        const val FILE = "account"
+        /** How often a device that keeps syncing to the same place tells the account so ("last synced today"). */
+        const val CLOUD_EVERY_MS = 24L * 60 * 60 * 1000
+    }
 }

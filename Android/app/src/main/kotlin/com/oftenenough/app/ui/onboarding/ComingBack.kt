@@ -44,6 +44,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import app.habits.account.Answer
+import app.habits.account.CloudKind
 import app.habits.account.SignIn
 import app.habits.account.SignInReply
 import app.habits.core.BackupProblem
@@ -62,6 +63,7 @@ import com.oftenenough.app.ui.move.CountCard
 import com.oftenenough.app.ui.move.FromOldPhoneFlow
 import com.oftenenough.app.ui.move.MoveEntry
 import com.oftenenough.app.ui.move.StepHeading
+import com.oftenenough.app.ui.move.StepsCard
 import com.oftenenough.app.ui.move.fromLine
 import com.oftenenough.app.ui.plus.CenterScreen
 import com.oftenenough.app.ui.plus.ContinueWith
@@ -80,6 +82,11 @@ import kotlinx.coroutines.launch
  * Google Drive), or **without an account** (Google Drive, your old phone with the move code, a backup file). Every
  * "Start fresh" goes to Your days and weeks (8), then the empty Today; nothing here deletes a copy anywhere (the Drive
  * copy stays, D3). Nothing found is said plainly, never a blank Today that looks like loss (D16).
+ *
+ * The account says where the habits live (D16, Current Work 138): its own Google account's Drive (straight there, no
+ * chooser), a different Google account's Drive (2.5: the person chooses it), or an iPhone's iCloud (2.3, 3.3: moved
+ * across with a code, as Android can't open iCloud). A Drive chosen is checked against the one on record before
+ * anything is read; the wrong one asks again. Another account is never named.
  */
 @Composable
 fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) -> Unit) {
@@ -94,6 +101,11 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
     var fileName by remember { mutableStateOf("") }
     var problem by remember { mutableStateOf<String?>(null) }
     var askFresh by remember { mutableStateOf(false) }
+    // The Drive the account has on record (its private ID), and the screen that asks for it again after a wrong pick.
+    var recordKey by rememberSaveable { mutableStateOf<String?>(null) }
+    var driveAgain by rememberSaveable { mutableStateOf("plus-other-drive") }
+    // Where Back from the move code returns: the screen that offered it.
+    var phoneFrom by rememberSaveable { mutableStateOf("start") }
     val back = { step = "start" }
 
     fun backMessage(h: Int, e: Int) = "Your habits are back: " + countText(h, e)
@@ -111,11 +123,23 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
         }
     }
 
-    /** 4 · Google Drive: Android's own account chooser, Google's permission screen the first time, then looking. */
-    fun chooseDrive(plus: Boolean, another: Boolean = false) {
+    /**
+     * 4 · Google Drive: Android's own account chooser, Google's permission screen the first time, then looking. [account]:
+     * the Google account just signed in with, asked for with no chooser. With Plus, a Drive on record is checked first
+     * ([check]: off for "Try another Google Drive" after the one on record was empty, 2.6).
+     */
+    fun chooseDrive(plus: Boolean, another: Boolean = false, account: String? = null, check: Boolean = true) {
         scope.launch {
-            if (another) center.disconnectDrive()
-            if (center.link.accountName == null && !center.link.connect(context)) return@launch
+            val want = if (plus && check) recordKey else null
+            val connected = center.link.accountKey
+            if (another || (want != null && connected != null && connected != want)) center.disconnectDrive()
+            if (center.link.accountName == null && !center.link.connect(context, account)) return@launch
+            if (want != null && center.link.accountKey != want) {
+                // Not the account the habits are in: nothing is read from it, and the screen asks again.
+                center.disconnectDrive()
+                step = driveAgain
+                return@launch
+            }
             email = driveEmail(center) ?: email
             lookInDrive(plus)
         }
@@ -130,11 +154,24 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
             step = if (google) "google-looking" else "apple-looking"
             when (val reply = AppGraph.accounts.signIn(proof)) {
                 Answer.Offline -> { retry = if (google) "google" else "apple"; step = "offline" }
-                is Answer.Ok -> when (reply.value) {
+                is Answer.Ok -> when (val found = reply.value) {
                     SignInReply.NoAccount -> step = if (google) "google-none" else "apple-none"
-                    // Signed in with Google: that account's own Google Drive first (2.2). Signed in with Apple: an Apple
-                    // sign-in can't open a Google Drive, so the person chooses the account that holds them (3.2).
-                    is SignInReply.Found -> if (google) chooseDrive(plus = true) else step = "apple-found"
+                    is SignInReply.Found -> {
+                        val cloud = found.account.cloud
+                        recordKey = cloud?.place?.takeIf { it.kind == CloudKind.GOOGLE_DRIVE }?.key
+                        driveAgain = if (google) "plus-other-drive" else "apple-found"
+                        when {
+                            // In an iPhone's iCloud: Android can't open it, so the code (2.3, 3.3).
+                            cloud?.place?.kind == CloudKind.ICLOUD -> step = if (google) "plus-icloud" else "apple-icloud"
+                            // Signed in with Apple: an Apple sign-in can't open a Google Drive, so the person chooses
+                            // the account that holds them (3.2).
+                            !google -> step = "apple-found"
+                            // That Google account's own Drive, or nothing on record yet: straight there (2.1, 2.2).
+                            cloud == null || cloud.signInAccount -> chooseDrive(plus = true, account = proof.email)
+                            // Backed up to a different Google account (2.5).
+                            else -> step = "plus-other-drive"
+                        }
+                    }
                 }
             }
         }
@@ -178,7 +215,7 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
         rows.forEachIndexed { i, r ->
             when (r) {
                 "drive" -> WayRow({ Image(painterResource(R.drawable.ic_drive_logo), null, Modifier.size(22.dp)) }, "Google Drive", "Your backups there", i, rows.size, "back-drive") { chooseDrive(plus = false) }
-                "phone" -> WayRow({ Icon(Icons.Outlined.MobileScreenShare, null, Modifier.size(22.dp), tint = appColors.ink) }, "Your old phone", "Move them with a code", i, rows.size, "back-phone") { step = "phone" }
+                "phone" -> WayRow({ Icon(Icons.Outlined.MobileScreenShare, null, Modifier.size(22.dp), tint = appColors.ink) }, "Your old phone", "Move them with a code", i, rows.size, "back-phone") { phoneFrom = step; step = "phone" }
                 else -> WayRow({ Icon(Icons.Outlined.Description, null, Modifier.size(22.dp), tint = appColors.ink) }, "A backup file", "A file you saved", i, rows.size, "back-file") { chooseFile() }
             }
         }
@@ -206,12 +243,34 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
             CountCard(counts.first, counts.second, driveLine(center, store))
         }
         "plus-empty" -> FlowScreen(onBack = back, tag = "plus-empty", top = true, bottom = {
-            MainButton("Try another Google Drive", "try-drive") { chooseDrive(plus = true, another = true) }
+            MainButton("Try another Google Drive", "try-drive") { chooseDrive(plus = true, another = true, check = false) }
             QuietButton("Start fresh", "start-fresh") { step = "fresh" }
         }) {
             StepHeading("Plus is back.", "We didn’t find your habits in ${owner(email)} Google Drive. Bring them another way:")
             Label("Other ways")
             WithoutAccount(drive = false)
+        }
+        // 2.5 · Plus is back, the habits in a different Google account: chosen in Google's chooser (2.5.1), then checked.
+        "plus-other-drive" -> FlowScreen(onBack = back, tag = "plus-other-drive", top = true, bottom = {
+            MainButton("Choose the Drive account", "choose-drive") { chooseDrive(plus = true, another = true) }
+            QuietButton("Start fresh instead", "start-fresh") { askFresh = true }
+        }) {
+            StepHeading("Plus is back.", "Your Plus is on the account you signed in with. Your habits are in a different Google Drive account: choose the one that holds them.")
+        }
+        // 2.3, 3.3 · They're on your iPhone: Android can't open iCloud, so the move code (then 5).
+        "plus-icloud", "apple-icloud" -> FlowScreen(onBack = back, tag = "on-your-iphone", top = true, bottom = {
+            MainButton("Enter the code", "enter-code") { phoneFrom = step; step = "phone" }
+            QuietButton("Start fresh instead", "start-fresh") { askFresh = true }
+        }) {
+            StepHeading("They’re on your iPhone.", "Plus is on. Android can’t open iCloud, so move your habits across with a code.")
+            StepsCard(listOf(
+                "Open the app on your iPhone" to "Or on your iPad",
+                "Choose Move to a new phone" to "In ≡ › iCloud & Backup",
+                // Figma said "It works for 24 hours"; the move as built needs both phones online at once (D15).
+                "Type its code on this phone" to "Keep the app open on both",
+            ))
+            Text("No iPhone? Any iPhone or iPad on your Apple Account can make the code.",
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), style = AppType.bodySmall, color = appColors.secondary)
         }
         "google-none" -> NoAccount("No Plus account uses $email.", other = {
             WayRow({ Image(painterResource(R.drawable.ic_google_logo), null, Modifier.size(20.dp)) }, "Another Google account", "Choose a different one", 0, 2, "another-google") { signIn(true) }
@@ -254,7 +313,7 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
                 when (retry) { "google" -> signIn(true); "apple" -> signIn(false); else -> chooseDrive(plus = false) }
             })
         // ------------------------------------------------------------ 5 · Your old phone
-        "phone" -> FromOldPhoneFlow(center, MoveEntry.WELCOME, onBack = back) { p -> pending = p; step = "phone-here" }
+        "phone" -> FromOldPhoneFlow(center, MoveEntry.WELCOME, onBack = { step = phoneFrom }) { p -> pending = p; step = "phone-here" }
         "phone-here" -> pending?.check?.preview?.let { p ->
             FlowScreen(onBack = back, tag = "phone-here", top = true, bottom = { MainButton("Bring them back", "bring-back") { restore(pending!!) } }) {
                 StepHeading("Your habits are here.", "Everything your old phone sent.")

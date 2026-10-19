@@ -161,6 +161,82 @@ class AccountTest {
         assertTrue(StandInAccountServer(storage, today = { 20000 }).let { it.lookInvite(token) } is Answer.Ok)
     }
 
+    // ------------------------------------------------------------------ Where the habits live (D16, Current Work 138)
+
+    @Test fun googleDrivesPrivateIdIsTheSameAsTheWorkers() {
+        // The Worker's googleDriveKey: "gdrive:" + SHA-256("google:" + sub), hex. Never an email.
+        val sha = java.security.MessageDigest.getInstance("SHA-256").digest("google:1098765432101234567890".toByteArray())
+        assertEquals("gdrive:" + sha.joinToString("") { "%02x".format(it) }, CloudKeys.googleDrive("1098765432101234567890"))
+        assertTrue(CloudKeys.googleDrive("x").matches(Regex("gdrive:[0-9a-f]{64}")))
+    }
+
+    @Test fun theWorkerIsToldWhereTheHabitsAreAndItsAnswerIsRead() = runTest {
+        val cloudJson = """{"id":"a1","plus":"PLUS","family":null,"cloud":{"kind":"icloud","key":"icloud:_abc","device":"iphone","syncedAt":1760000000000,"signInAccount":false}}"""
+        val http = FakeHttp(ok("""{"account":$cloudJson}"""), ok("""{"account":$accountJson}"""))
+        val server = HttpAccountServer("https://api.test", http)
+        val me = Account("a1", SignInWith.GOOGLE, "sam@gmail.com", AccountPlus.PLUS, null, "s1")
+        val drive = CloudPlace(CloudKind.GOOGLE_DRIVE, CloudKeys.googleDrive("g1"), CloudDevice.ANDROID)
+        val told = (server.setCloud(me, drive) as Answer.Ok).value
+        assertEquals(CloudRecord(CloudPlace(CloudKind.ICLOUD, "icloud:_abc", CloudDevice.IPHONE), 1760000000000, false), told.cloud)
+        val sent = Json.parseToJsonElement(http.sent[0].body!!).jsonObject
+        assertEquals("/v1/account/cloud", http.sent[0].url.removePrefix("https://api.test"))
+        assertEquals("s1", http.sent[0].session)
+        assertEquals(mapOf("cloud" to "google_drive", "key" to drive.key, "device" to "android"), sent.mapValues { it.value.jsonPrimitive.content })
+        assertNull((server.setCloud(me, null) as Answer.Ok).value.cloud)
+        assertEquals("null", Json.parseToJsonElement(http.sent[1].body!!).jsonObject["cloud"].toString())
+        // A kind of cloud or device this version doesn't know reads as nothing, never a crash.
+        assertNull(HttpAccountServer.cloud(Json.parseToJsonElement("""{"kind":"dropbox","key":"d:1","device":"android","syncedAt":1}""").jsonObject))
+        assertNull(HttpAccountServer.cloud(Json.parseToJsonElement("""{"kind":"icloud","key":"icloud:1","device":"mac","syncedAt":1}""").jsonObject))
+    }
+
+    @Test fun theRecordIsKeptOnTheDeviceWithTheAccount() {
+        val a = Account("a1", SignInWith.APPLE, "x@privaterelay.appleid.com", AccountPlus.PLUS, null, "s1",
+            CloudRecord(CloudPlace(CloudKind.ICLOUD, "icloud:_abc", CloudDevice.IPAD), 1760000000000, false))
+        assertEquals(a, AccountFile.decode(AccountFile.encode(a)))
+        val none = a.copy(cloud = null)
+        assertEquals(none, AccountFile.decode(AccountFile.encode(none)))
+    }
+
+    @Test fun aDeviceTellsTheAccountOnlyWhenThePlaceChangesOrOnceADay() = runTest {
+        val http = FakeHttp(*Array(6) { ok("""{"account":{"id":"a1","plus":"PLUS","family":null,"cloud":{"kind":"google_drive","key":"${CloudKeys.googleDrive("g1")}","device":"android","syncedAt":1000,"signInAccount":true}}}""") })
+        val storage = Memory(AccountFile.encode(Account("a1", SignInWith.GOOGLE, "sam@gmail.com", AccountPlus.PLUS, null, "s1")))
+        val center = AccountCenter(storage, HttpAccountServer("https://api.test", http))
+        val drive = CloudPlace(CloudKind.GOOGLE_DRIVE, CloudKeys.googleDrive("g1"), CloudDevice.ANDROID)
+        center.noteCloud(drive, nowMs = 1000)
+        assertEquals(1, http.sent.size)
+        assertTrue(center.account!!.cloud!!.signInAccount)
+        center.noteCloud(drive, nowMs = 1000 + 60_000)
+        center.noteCloud(drive, nowMs = 1000 + AccountCenter.CLOUD_EVERY_MS - 1)
+        assertEquals(1, http.sent.size, "the same place within a day isn't sent again")
+        center.noteCloud(drive, nowMs = 1000 + AccountCenter.CLOUD_EVERY_MS)
+        assertEquals(2, http.sent.size, "once a day, so the account says when it last synced")
+        center.noteCloud(drive.copy(key = CloudKeys.googleDrive("g2")), nowMs = 2000)
+        assertEquals(3, http.sent.size, "another Google account is sent at once")
+        center.noteCloud(null, nowMs = 3000)
+        assertEquals(4, http.sent.size, "the Drive copy deleted: the account forgets it")
+        // No account (free): nothing is ever sent.
+        val free = AccountCenter(Memory(), HttpAccountServer("https://api.test", http))
+        free.noteCloud(drive, nowMs = 1000)
+        assertEquals(4, http.sent.size)
+    }
+
+    @Test fun theStandInKnowsItsOwnGoogleAccountsDriveAndNeverAnAppleOnes() = runTest {
+        val standIn = StandInAccountServer(Memory(), today = { 20000 }, nowMs = { 1_728_000_000_000 })
+        val sam = (standIn.create(google, null) as Answer.Ok).value
+        assertNull(sam.cloud)
+        val own = (standIn.setCloud(sam, CloudPlace(CloudKind.GOOGLE_DRIVE, StandInAccountServer.driveKey("Sam@gmail.com"), CloudDevice.ANDROID)) as Answer.Ok).value
+        assertTrue(own.cloud!!.signInAccount)
+        assertEquals(1_728_000_000_000, own.cloud!!.syncedAt)
+        val other = (standIn.setCloud(sam, CloudPlace(CloudKind.GOOGLE_DRIVE, StandInAccountServer.driveKey("work@gmail.com"), CloudDevice.ANDROID)) as Answer.Ok).value
+        assertFalse(other.cloud!!.signInAccount)
+        // A new phone signing in is told where they are.
+        val found = (standIn.signIn(google) as Answer.Ok).value as SignInReply.Found
+        assertEquals(other.cloud, found.account.cloud)
+        val apple = (standIn.create(SignIn(SignInWith.APPLE, "t", "sam@gmail.com", "Sam"), null) as Answer.Ok).value
+        assertFalse((standIn.setCloud(apple, CloudPlace(CloudKind.GOOGLE_DRIVE, StandInAccountServer.driveKey("sam@gmail.com"), CloudDevice.ANDROID)) as Answer.Ok).value.cloud!!.signInAccount)
+        assertNull((standIn.setCloud(apple, null) as Answer.Ok).value.cloud)
+    }
+
     @Test fun inviteLinksAreReadFromALinkAQrCodeOrATypedCode() {
         assertEquals("abcdefgh12", InviteLink.token("https://oftenenough.com/join/abcdefgh12?x=1"))
         assertEquals("abcdefgh12", InviteLink.token(" oftenenough.com/join/abcdefgh12 "))
