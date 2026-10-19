@@ -52,6 +52,11 @@ section (`2373:2`) is empty for now.
   - completed tasks kept as history, never deleted by the app;
   - repeating tasks under their next date;
   - one-time tasks roll over, but a repeating task never doubles.
+- **Third pass, 19 Oct 2026 (§9), habit apps only, after the user asked whether this was a habit app's task page or a
+  to-do app's home page:** 792 more reviews read, 164 on topic. A list only by when hides repeating tasks and tasks
+  far ahead (27 reviews), and what sits at the bottom gets missed (15). So, after the user's review, the page has
+  two tabs by how a task is planned, **One-time · Repeating** (No date last in One-time; Repeating grouped by how
+  often), and *Completed tasks* and *Archived tasks* move to the top bar's ⋮.
 - **What the page must satisfy:**
   - every task in one place, grouped by **when**;
   - nothing lost or piling up unseen;
@@ -716,6 +721,9 @@ with no trace" complaint. Rule 2 needs the shared core's spec, its golden cases 
 
 ### 8.6 The page, as decided (replaces §6)
 
+> **Changed by §9 (19 Oct 2026):** two tabs at the top, One-time and Repeating; the rows at the end go; *Completed tasks*
+> and *Archived tasks* move to the top bar's ⋮. The rest of this section stands.
+
 **Top bar:** ☰ · *Tasks* · search · + (*Add task*; the form's date defaults to Today, with *Tomorrow*, *Pick a date*
 and *No date*). No FAB, no top-bar ⋮ (as drawn, 18 Oct).
 
@@ -760,7 +768,143 @@ and *No date*). No FAB, no top-bar ⋮ (as drawn, 18 Oct).
 
 ---
 
-## 9. Limits
+## 9. A habit app's task page: finding every task (third pass, 19 Oct 2026)
+
+**The user's question (19 Oct 2026, after approving the designs):** was this research about a dedicated tasks page
+inside a habit tracker, or about the home page of a to-do app? "Both are really different … our job, the main task
+page, is actually helping the users to see what are the tasks they have." And two problems with the page as designed:
+- grouped by when, **a repeating task that comes only on some days, or a task planned far ahead, is hard to find**;
+- **Repeating, Completed and Archived sit at the very bottom**, so with a long list they're hard to reach.
+
+**The honest answer: both.** The first pass read 652 habit-app reviews and 500 from to-do apps; the follow-up read 111
+habit-app and 779 to-do-app reviews. §8.1's "group by when" leaned on the to-do apps: its follow-up row (30 reviews)
+had 28 from them, and all four of its quotes are from to-do apps. The habit-app half of the first pass did ask to
+see later days in date order (*see later days in one place* 67 habit-app reviews, *sorted by date* 56), but it also
+asked for *one place showing all tasks* (37). So this third pass reads habit apps only.
+
+**Method.** [`Tasks Page Evidence/finding_scan.py`](<Tasks Page Evidence/finding_scan.py>) screened all **932,330**
+habit-app reviews (App Store and Play Store, to-do apps left out) that mention a task or to-do, for: can't find or
+see a task; tasks only shown on their day; a list of all, future or repeating tasks; tabs and filters; tasks far
+ahead or on long cycles; long scrolling; where done or archived tasks are; tasks apart from habits. Reviews already
+coded in §1–§8 were left out, so the counts can be added. **792 matched; all were read by hand; 164 are on topic**
+(codes, codebook and quotes in [`finding_classification.py`](<Tasks Page Evidence/finding_classification.py>); all 18
+quotes checked). Me+ (121 matched), Habitica (149), Finch, HabitNow, Streaks and Productive give most of them.
+
+| Finding (habit apps only) | Reviews | Apps | Mean ★ |
+|---|---:|---:|---:|
+| **Can't see every task, only day by day**; a task on another day, or far ahead, is out of sight | **27** | 11 | **3.26** |
+| A quick way to narrow the list (status, due, type, today) | 23 | 11 | 4.09 |
+| **Tasks on long cycles**: monthly, every few months, yearly | 22 | 11 | 4.05 |
+| **By how often, or by kind**: dailies, weeklies, monthlies; one-time apart from repeating | 21 | 9 | **4.29** |
+| **What they need is at the bottom, or tucked in a menu**, so they scroll or miss it | **15** | 11 | 3.40 |
+| Plan by day: tomorrow, later days, a month calendar | 14 | 8 | 3.57 |
+| Tasks kept apart from habits (we already do this) | 13 | 10 | 3.92 |
+| Done tasks kept and findable, out of the way | 11 | 7 | 3.18 |
+| **A filter, tab or fold hid something they needed** | 5 | 4 | **2.60** |
+
+**Users show:**
+- **Day by day hides tasks.** "i want to see all my rountine tasks but there is no screen for it … i cannot know when
+  is the cleanning bathroom day. i need to tap on all day on calendar to search for it" (Me+, 2★, `A4#20315`).
+  "I'm having issues finding tasks that i created that I don't use everyday." (Me+, 3★, `A4#17502`). "after the clicked
+  save i couldn't find where the task went" (a task repeating on Sundays; Me+, 4★, `P4#12363`).
+- **Far ahead is real in habit apps.** "Most of my important tasks that I need to track are once a year gardening
+  tasks" (Me+, 2★, `P4#12225`); "I forget to change my electric toothbrush head every 3 months OR remember to get my
+  flu shot every October" (Productive, 5★, `A13#15567`). Hiding them until close is resented: "unless a task is due in
+  3 days it doesn't show up on the schedule at all" (My Study Life, 4★, `P111#1808`).
+- **One list of everything.** "create a tab that lists all tasks" (Streaks, 4★, `A23#122`); "I really just need to see
+  all tasks with all statuses" (Streaks, 3★, `A23#4544`).
+- **By how often, and by kind.** "I would like to also be able to view what habits i have daily, weekly and monthly
+  quickly" (Habit Tracker, 4★, `A1#51180`). HabitNow's split is praised: "I can separate my one-time tasks and
+  recurring tasks and habits" (5★, `P2#4160`); Habitica's too: "the separate tabs for habits/daily tasks/one-off to-dos
+  is so much easier to navigate than other apps that throw them all together in one list" (4★, `A85#321`).
+- **The bottom of a long list is where things get missed.** "I have to scroll all the way down to see my one active
+  long-term goal that doesn't have a due date" (Habit Slayer, 4★, `P66#16`); "if I'm working on the ones at the bottom
+  of the list, it can be very inconvenient!" (Loop, 4★, `P3#12774`); the add button at "the end of the list … it's not
+  as convenient if the list is long" (Finch, 5★, `A10#18725`); pages "tucked away in a menu" (Streaks, 5★, `A23#2028`).
+- **But a view must never hide things silently.** "if I filter due tasks only, I miss it" (Habitica, 2★, `P8#121`);
+  "The different tabs for types of task is a bit complex and easy to lose things" (Habitica, 3★, `P8#1731`).
+
+**What it means for this page.**
+1. **The user is right about both problems.** A list only by when makes people know a task's date to find it, and
+   puts the rest at the end of the scroll. Habit-app reviews ask for every task in one place (27) and by how often
+   (21) about as often as for later days by date (14 here, 67 in the first pass).
+2. **Keep the by-when list as the main view** (people still plan tomorrow and the week), **but never as the only way
+   in.** A repeating task is found by how often it repeats; any task, any date, by search (already in the top bar).
+3. **The other views go at the top, always in reach**, not as rows at the end.
+4. **The main view shows every open task**, so a view never hides something silently; the others are plainly named
+   parts of it, and the chosen one is always marked (the 5 reviews at 2.60★).
+
+**Revised the same day, after the user's review of version 2 (19 Oct 2026):** "it is mixing different kind of
+things like a no date is a state kind of thing. Done is a completed state … repeating, it's a schedule related state.
+So mixing everything together, it feels weird … and we only have very small space there." Four buttons for three
+different questions (how it's planned, whether it has a day, whether it's finished) were wrong. **The views answer one
+question only: how is the task planned?** Reasoned from first principles, with the review support above for one-time
+apart from repeating (*by kind*, praised at 4.91★ for HabitNow and Habitica).
+
+**Decision (version 3, approved by the user on 19 Oct 2026: "I liked the latest version … Version 3. So yeah, update it
+accordingly everything"; applied to every frame of Figma's Tasks section):**
+- **Two Material 3 primary tabs under the top bar, pinned while the list scrolls: One-time · Repeating.**
+- **One-time**: every one-time task by when, as §8.6: Today (with carried-over ones), Tomorrow, the next days, later
+  months, and **No date last**: a task without a day is still a one-time task, so it isn't a view of its own.
+- **Repeating**: every repeating task once, **by how often**: *Every day*, *Every few days*, *Every week*, *Every
+  month*, *Every few months or longer*; each row gives its rhythm, next day and last done (a yearly boiler service is
+  here today, not only in the far months). A repeating task due today shows on Today and in this tab, never twice on
+  Tasks.
+- **Finished and archived are states, not kinds of task**, so they leave the page's views: the top bar's ⋮ holds
+  **Select, Completed tasks, Archived tasks**, one tap from anywhere on the page, never at the end of a long list.
+  *Completed tasks* is §8.3's page (one-time and repeating together, by the day done).
+- **Nothing is hidden silently** (point 4 above): both tabs are always on screen and named, and between them they hold
+  every open task.
+- **Search** stays in the top bar and searches every task, with archived ones apart.
+- **Archived, both ways (the user, 19 Oct 2026, after asking whether Habits should do the same):** *Archived tasks* is
+  in the top bar's ⋮ (reach from anywhere) **and** a quiet last row of the One-time tab, *Archived · 3 tasks*, shown only
+  when something is archived (found at the end without looking, with its count). The Habits page does the same: its
+  last row stays and *Archived habits* joins its ⋮. *Completed tasks* stays in the ⋮ only: it's history, not something
+  looked for at the end of a list, and three rows at the bottom were what felt buried.
+
+**Tasks with no date: kept, said plainly (19 Oct 2026).** The user asked whether a task saved without a date makes
+sense at all, since it never shows on Today: keep it only if there's real demand. There is, in habit apps alone: 17
+habit-app reviews in the first pass ask for undated tasks and 5 in the third for a backlog to pick from, several of
+them as the reason not to buy: "There's only one reason that holds me back... can't add tasks with no date" (HabitNow,
+`P2#922`); "It would be great if the app supported tasks without a particular date, just like backlog/brain dump tasks
+that do not show up daily unless you check the backlog." (HabitNow, 5★, `P2#6656`). No habit-app review complains
+about them; the 6 that do (a new task defaulting to no date and getting lost) are to-do apps, and our new task
+defaults to Today. So No date stays, and **the app says what it means**: the task form's note under Date, "Saved
+without a date, it stays on the Tasks page, under No date. It won't show on Today until you give it a day."; the
+preview's "It shows on the Tasks page under No date, not on Today."; and under the *No date* heading, "They stay here
+and don't show on Today until you give them a day."
+
+**Task details' History, in plain words (19 Oct 2026; the user: "Added Monday 13th October is like very confusing").**
+A one-time task's History reads *Planned for Sat 18 Oct · Morning · not done yet* (or *Done Sat 18 Oct, 9:12 AM*), then
+*Task created · Mon 13 Oct, 7:40 PM*; no "This task" heading. Its Notes tab is a habit's Notes (search, Add note, notes
+by month), drawn as frame 10.2.
+
+<details><summary>Version 2, replaced (its Figma frames were removed at the user's request once V3 was applied)</summary>
+
+**Decision (19 Oct 2026, designed in Figma's Tasks section as version 2; the user's call on it is pending).**
+- **Material 3 segmented buttons under the top bar, pinned while the list scrolls: All · Repeating · No date ·
+  Done.** One is always chosen; *All* on opening. Material's segmented buttons are for switching views, and four fit
+  side by side on a 360 dp phone, so none is ever off the screen (a row of chips would scroll and hide *Done*); the
+  chosen one is filled, without a check mark, which wouldn't fit beside *Repeating*. Not tabs: tabs are separate pages
+  (Habitica's are praised, and also "easy to lose things"), while these are views of one list with *All* first. This
+  choice is reasoned, not settled by reviews.
+- **All**: every open task, by when, exactly as §8.6 (Today with carried-over ones, Tomorrow, the next days, later
+  months, No date last). The *Repeating*, *Completed* and *Archived* rows at the end go.
+- **Repeating**: every repeating task once, **by how often**: *Every day*, *Every few days*, *Every week*, *Every
+  month*, *Every few months or longer*; each row's line gives its next day and rhythm ("Next: Sun 19 Oct · Every 3
+  days"), and a yearly task is there today, not only in the far months of *All*.
+- **No date**: only the tasks without a day, with *Do today* in their ⋮.
+- **Done**: what *Completed* was (§8.3): by the day done, newest first, select and delete.
+- **Archived** is rare: in the top bar's ⋮ (*Select*, *Archived tasks*) and in search results.
+- **Search** stays in the top bar and searches every task, with archived ones apart (the Habits page's model).
+- The Habits page also keeps *Archived* as its last row; the same reach problem applies there with many habits. It
+  isn't changed here (only the Tasks page was named).
+
+</details>
+
+---
+
+## 10. Limits
 
 - **What the counts measure.** Reviews mention what's missing and what goes wrong more than what works. Counts show
   strength relative to each other, not shares of users.
@@ -774,3 +918,6 @@ and *No date*). No FAB, no top-bar ⋮ (as drawn, 18 Oct).
 - **Frequencies are reasoned.** §3 rests on what people describe, not on measured use. Analytics after release will
   tell.
 - **Native Android** is the platform's conventions, reasoned, not tested with people.
+- **The third pass (§9) is habit apps only, and small:** 164 on topic. Me+ and Habitica give many of them, and a few come
+  from planners that sit among the habit apps (My Study Life). Its counts show which problems recur, not how many
+  people have them.

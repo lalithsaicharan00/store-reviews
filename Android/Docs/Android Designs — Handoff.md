@@ -14,7 +14,7 @@ sections sit in rows, top to bottom, each row left to right, 240 apart:
    (everything opened from Today)
 4. Habits · Habit details
 5. Progress
-6. Tasks (`2373:2`, all 64 frames designed with arrows, 18 Oct)
+6. Tasks (`2373:2`, rows 1–10, version 3 applied; the V2 and V3 rows were removed at the user's request, 19 Oct)
 7. Settings: Times of Day · Day and Week · Reminders · General
 8. Settings: Backup & Sync · Privacy & Security, App lock
 9. Settings: Plus & Account
@@ -2962,6 +2962,51 @@ Medium 14 grey, white rows 24/4 corners 2 apart, name Medium 16 and one line Reg
 - **Shared screens reused:** the task form (`1321:738`) for + Add task with its Date menu (Today, Tomorrow, Pick a
   date…, No date), Edit task, Duplicate and a No-date task; Android's date picker (`2338:433`); the Habits search
   view; the empty state; Habit details (`2367:1429`) as task details with History and Notes only; the menu drawer.
+
+
+### Tasks, version 2: views at the top, 19 Oct 2026 (the user's review; the old frames stay above for comparison)
+
+The user, approving the page on 18 Oct, then found two problems: grouped only by when, "if a user wants to find a
+recurring task, it is only scheduled on some particular days, then they won't be able to find it easily … and if
+something is scheduled very, very far away"; and "repeating tasks as well as completed archived tasks … are at the very
+bottom … it would be very, very hard for them to reach those options." A third research pass, habit apps only
+([Tasks report §9](<../../Research/Research Reports/Day Structure and Organization/The Tasks Page — Why People Open It and What It Should Do.md>)),
+agreed on both. Version 2 is in the section's bottom rows (y 10,640), frames named **V2 · …**, with arrows:
+- **V2 · 1 · All** (full length): under the top bar, **Material 3 segmented buttons: All · Repeating · No date · Done**,
+  pinned while the list scrolls; the chosen one is filled (no check mark: it wouldn't fit beside *Repeating*). *All*
+  is the by-when list as before, every open task, **with no Repeating, Completed or Archived rows at the end**.
+- **V2 · 1.1** All scrolled to the later months: the top bar and the views stay pinned in the scrolled colour.
+- **V2 · 2 · Repeating**: every repeating task once, **by how often**: Every day, Every few days, Every week, Every
+  month, Every few months or longer; each with its rhythm, next day and last done (a yearly boiler service is here).
+- **V2 · 3 · No date**: only the tasks without a day.
+- **V2 · 4 · Done**: what Completed was, by the day done.
+- **V2 · 5** the top bar's ⋮: **Select, Archived tasks**; **V2 · 5.1** Archived tasks (the same page as 9).
+- Unchanged: rows (icon, name, line, ⋮; no checkbox), search in the top bar, selection, the row's ⋮ and its results,
+  task details. The Habits page still ends with its Archived row; not changed (only Tasks was named).
+
+**19 Oct, later (the user):** the V2 and V3 rows are deleted ("remove the version 2 and version 3"); the section is
+10,560 high again. **Archived both ways:** a quiet last row of the One-time tab, *Archived · 3 tasks*, and *Archived
+tasks* in ⋮ (Habits the same: its last row stays, *Archived habits* joins its ⋮, frames 5 and 5.3). **No date kept and
+said plainly:** under the *No date* heading "They stay here and don't show on Today until you give them a day."; the
+form's note under Date (6.2) "Saved without a date, it stays on the Tasks page, under No date. It won't show on Today
+until you give it a day." **Task details:** History reads *Planned for Sat 18 Oct · Morning · not done yet*, then *Task
+created · Mon 13 Oct, 7:40 PM* (no "Added", no "This task" heading; also 8.6 and 9.4); **10.2** draws the Notes tab.
+
+**Version 3, approved and applied to rows 1–10 the same day** ("I liked the latest version … update it accordingly
+everything"): every list frame has the tabs and no end rows, repeating tasks are only in the Repeating tab (2.1, 2.2,
+3.7, 3.4 and 3.4.1 show it), row 7 is the Repeating tab (7.1 scrolled to the long cycles, 7.2 empty), 4.6's ⋮ holds
+Select, Completed tasks and Archived tasks, and rows 8 and 9 open from it. The V3 rows stay as the approved reference;
+V2's are labelled replaced.
+
+**Version 3, the same day (the user rejected V2's segmented buttons: they mixed "a schedule related state", "no date"
+and "a completed state", in "very small space").** Frames **V3 · …** in the rows below V2 (y 12,560), with arrows:
+- **V3 · 1 · One-time** (full length): **two Material 3 primary tabs, One-time · Repeating**, pinned under the top bar
+  (ink label and indicator, grey for the other tab, a divider under them). One-time is the by-when list of one-time
+  tasks, **No date last**; no rows at the end.
+- **V3 · 1.1** scrolled to November and No date, tabs pinned in the scrolled colour.
+- **V3 · 2 · Repeating tab**: V2 · 2's list, by how often.
+- **V3 · 3** the top bar's ⋮: **Select, Completed tasks, Archived tasks**; **V3 · 3.1** Completed tasks (frame 8's
+  page); **V3 · 3.2** Archived tasks (frame 9's page).
 
 ### Habits: redone as placeholders, 18 Oct 2026 (Current Work 129; the user: "create all of the empty placeholders … don't miss even single view or state")
 

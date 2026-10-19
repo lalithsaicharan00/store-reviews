@@ -1306,6 +1306,28 @@ and the Add note keyboard coming up by itself.
     Android is done) and the build.
   - [x] **The user's review, as for Habits** (18 Oct): a ⋮ with *Select* on every Tasks top bar (40 frames), 4.6 the
     menu, 4.7 Select with nothing marked, 4.5 the first-visit coach mark; Delete red in the selection bars, 8.4 and 9.3.
+  - [x] **Views at the top, version 2** (19 Oct, the user: "if a user wants to find a recurring task, it is only scheduled
+    on some particular days, then they won't be able to find it easily … if something is scheduled very, very far away
+    … repeating tasks as well as completed archived tasks … are at the very bottom … do research and fix these
+    issues"). Answered: the first two passes mixed habit apps with to-do apps (§8.1 leaned on the to-do apps). Third
+    pass, habit apps only (report §9): 792 read, 164 on topic. Designed as **V2** in Figma `2373:2` (old frames kept):
+    segmented buttons All · Repeating · No date · Done pinned under the top bar; Repeating by how often; no rows at
+    the end; Archived in the top bar's ⋮. Rulebook U38.
+  - [x] **Version 3** (19 Oct, the user on V2: "it is mixing different kind of things … no date is a state kind of thing.
+    Done is a completed state … repeating, it's a schedule related state … the segmentation tab is not at all looking
+    good"). Two tabs by how a task is planned, **One-time · Repeating** (No date last in One-time; Repeating by how
+    often); **Completed tasks** and **Archived tasks** in the top bar's ⋮ beside Select. Figma **V3 · 1–3.2** (V2 kept).
+    Report §9, handoff, Rulebook U38.
+  - [x] **V3 approved and applied to the whole Tasks section** (19 Oct, the user: "I liked the latest version … Version
+    3 … update it accordingly everything"): every list frame has the One-time · Repeating tabs and no end rows;
+    repeating tasks left the One-time lists; the repeating frames (2.1, 2.2, 3.7, 3.4, 3.4.1) show the Repeating tab;
+    row 7 is the Repeating tab (7 the list, 7.1 the long cycles, 7.2 empty); 4.6's ⋮ holds Select, Completed tasks and
+    Archived tasks; rows 8 and 9 open from ⋮. V2 kept, labelled replaced.
+  - [x] **Clean-up and the user's follow-ups** (19 Oct): V2 and V3 rows deleted ("remove the version 2 and version 3");
+    Archived both ways on Tasks (last row of One-time + ⋮) and on Habits (row kept + ⋮ › Archived habits, item 129);
+    No date kept on the evidence (22 habit-app reviews want undated tasks, none complain) and said plainly in the form
+    and under the No date heading; task details' History in plain words (Planned for … · Task created …) in 10, 8.6
+    and 9.4; 10.2 the Notes tab.
   - [ ] **Build** the Android Tasks page to match (Android first; the iPhone is frozen until the Android revamp is done).
 - [ ] **129. The Habits page: why people open it, then redesign it** (added 18 October 2026, from the user, about the
   Android Habits page `2106:2`: "this design is outdated … we have archived habits as well … we have groups as well. So
@@ -1338,6 +1360,8 @@ and the Add note keyboard coming up by itself.
     sheet with the day; 2.6 and 3.6 are Cancel | Delete only (done earlier the same day); 3.8 first-visit coach mark;
     Select first in the top bar's ⋮ (5, 5.3) and 5.6 Select with nothing marked; Delete made red in every dialog,
     menu and selection bar on the Android page (seven places were ink). The same for Tasks (130). Rulebook D9, U39.
+  - [x] **Archived habits in the ⋮ too** (19 Oct, the user: "from three dots menu they can access archived habits but also
+    even from the bottom"): frames 5 and 5.3 list Archived habits last; the Archived row at the end of the list stays.
   - [ ] **Build** the Android Habits page to match (row ⋮, Duplicate, search, selection, Show by, pause sheet, Archived). (Android first; the iPhone is frozen until the
     Android revamp is done).
 - [ ] **128. Logging a time by hand: easy, and each platform's native way** (added 18 October 2026, from the user, while
