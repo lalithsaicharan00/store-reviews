@@ -357,8 +357,9 @@ phone shows a new one at once**, saying "Someone typed a wrong code. Here's a ne
 code didn't work. Your old phone now shows a new one." Checked on two emulators at once (a Pixel 10 Pro on Android 16
 and an API 30 phone, the relay under `wrangler dev` on this PC): 18 habits and 222 logs moved and were brought back;
 a wrong code, then the new code, moved everything. That run found a crash on Android 11 (`BigInteger.TWO`, Java 9 only),
-fixed, and a failure in the move now ends the move, never the app. **Not deployed:** the relay needs the user's own
-Cloudflare login on this PC (below). Plus doesn't travel with the move yet.
+fixed, and a failure in the move now ends the move, never the app. **The relay is on dev** (19 Oct 2026; the debug
+app uses it by default): `MoveLiveTest` passes against it; production waits for the user's go-ahead. Plus doesn't
+travel with the move yet.
 
 Tests: `OnboardingTest` (10, new: ideas add straight away, Back asks only after a change, Create my own, every way back,
 an empty Drive and Start fresh, a Google account without Plus, the code screen when the relay can't be reached, Backup &
@@ -413,8 +414,7 @@ Each is ported from the Swift with tests, and should move into `Core` when the s
 - **The Play Console app** for Play Billing: the products `com.oftenenough.app.plus` ($24.99),
   `com.oftenenough.app.plusfamily` ($59.99) and `com.oftenenough.app.plusfamily.upgrade` (the difference), and
   license testers. Until then Plus runs on a fake store.
-- **The move relay's deploy:** wrangler on this PC is signed in to another Cloudflare account. Sign in with your own
-  (`cd account-server && npx wrangler login`), then `npm run deploy:dev`; production with your go-ahead (T6).
+- **The move relay in production:** it's on dev; production only with your go-ahead (T6).
 - **Real phones** (Pixel, Samsung, Xiaomi; U9, T5): noted separately at the end.
 
 ## Questions for the next report

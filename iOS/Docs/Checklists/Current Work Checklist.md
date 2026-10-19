@@ -1775,7 +1775,9 @@ and the Add note keyboard coming up by itself.
   two emulators, then on real phones by the user.
   - [x] Built and tested on two emulators (Android 16 and Android 11) against the relay under `wrangler dev`: the move,
     a wrong code, the new code. `Spake2Test`, `MoveLiveTest`, the Worker's `move.test.ts`.
-  - [ ] The relay deployed to dev (needs the user's own `wrangler login` on this PC), production with their go-ahead.
+  - [x] The relay deployed to dev (19 Oct 2026, the user's own Cloudflare login); `MoveLiveTest` and `live:dev` pass
+    against it.
+  - [ ] The relay in production: only with the user's go-ahead.
   - [ ] Real phones: the user's check. Plus travelling with the move: not built yet.
 - [x] **137. Android: Backup & Sync updated to Figma `1461:2`** (added 19 October 2026, from the user: "if you feel like uh,
   we need to work on it then implement … update the UI to the latest … implement it completely end to end"). Only the

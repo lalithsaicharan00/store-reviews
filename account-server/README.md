@@ -86,10 +86,16 @@ expiry, busy channels, and that every named export of the entry module is an ent
 `wrangler dev`). The app's side against the real Workers runtime: run `npx wrangler dev --port 8787 --ip 0.0.0.0` here,
 then `MOVE_SERVER=http://127.0.0.1:8787 ./gradlew :app:testDebugUnitTest --tests '*MoveLiveTest'` in `Android/` (a whole
 move, a wrong code, the code after it); two emulators reach it at `http://10.0.2.2:8787` with the debug app's
-`--es moveServer`. **Not deployed yet:** dev and production need `npm run deploy:dev` from the user's own Cloudflare login
-(this PC's wrangler was signed in to another account on 19 Oct 2026), and production the user's go-ahead (T6).
+`--es moveServer`. **On dev since 19 Oct 2026** (version `2bcaf388`): `npm run live:dev` and `MoveLiveTest` with
+`MOVE_SERVER=https://api-dev.oftenenough.com` pass against it. **Production waits for the user's go-ahead (T6).**
 
 ## Deploy dev
+
+**On the user's Windows PC, wrangler's default login belongs to another Cloudflare account.** The user's own login is
+kept apart, in the git-ignored `Research/Temp/wrangler-home` (signed in there on 19 Oct 2026), so every wrangler command
+for this Worker sets it first (PowerShell: `$env:XDG_CONFIG_HOME="C:\Users\lalit\Desktop\store-reviews\Research\Temp\wrangler-home"`). Check with `npx wrangler whoami` (account `fd5d7e49…`)
+before deploying; if the login has expired, start `npx wrangler login` with the same setting and the user approves it in
+the browser.
 
 ```sh
 npm run migrate:dev    # only when migrations/ changed
