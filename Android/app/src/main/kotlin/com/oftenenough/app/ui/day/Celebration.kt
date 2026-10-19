@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -94,10 +96,11 @@ private val Pop = CubicBezierEasing(0.45f, 1.45f, 0.8f, 1f)
  * the phone (Developer options, or Remove animations), everything is at its resting place at once.
  */
 @Composable
-private fun rememberTimeline(key: Any): Animatable<Float, *> {
+private fun rememberTimeline(key: Any, play: Boolean = true): Animatable<Float, *> {
     val context = LocalContext.current
-    val t = remember(key) { Animatable(0f) }
-    LaunchedEffect(key) {
+    val t = remember(key) { Animatable(if (play) 0f else 1f) }
+    LaunchedEffect(key, play) {
+        if (!play || t.value >= 1f) return@LaunchedEffect
         val scale = runCatching { Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) }.getOrDefault(1f)
         if (scale == 0f) t.snapTo(1f) else t.animateTo(1f, tween(2000, easing = LinearEasing))
     }
@@ -132,11 +135,11 @@ fun CelebrationMedal(number: String?, size: Dp, color: HabitColor, modifier: Mod
  * and a sheen passes over it once; it stays for the rest of the day.
  */
 @Composable
-fun MilestoneRibbon(text: String, color: HabitColor, key: Any) {
+fun MilestoneRibbon(text: String, color: HabitColor, key: Any, play: Boolean = true, strip: Boolean = false) {
     val c = appColors
     val base = c.habit(color)
     val ink = if (c.dark) Color.White.copy(alpha = 0.72f).compositeOver(base) else Color.Black.copy(alpha = 0.5f).compositeOver(base)
-    val tl = rememberTimeline(key)
+    val tl = rememberTimeline(key, play)
     val t = tl.value
     val density = LocalDensity.current
     val dropY = track(t, Key(0f, -20f), Key(0.25f, -20f, Arrive), Key(0.40f, 0f))
@@ -144,7 +147,7 @@ fun MilestoneRibbon(text: String, color: HabitColor, key: Any) {
     Row(
         Modifier.fillMaxWidth().height(40.dp)
             .graphicsLayer { translationY = dropY * density.density; this.alpha = alpha }
-            .clip(RoundedCornerShape(12.dp)).background(base.copy(alpha = 0.24f).compositeOver(c.surface))
+            .clip(RoundedCornerShape(if (strip) 0.dp else 12.dp)).background(base.copy(alpha = 0.24f).compositeOver(c.surface))
             .drawWithContent {
                 drawContent()
                 // The sheen: once, left to right.
@@ -154,7 +157,8 @@ fun MilestoneRibbon(text: String, color: HabitColor, key: Any) {
             }
             .padding(horizontal = 12.dp).semantics(mergeDescendants = true) { testTag = "day-ribbon" },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        // In the routine player it's a strip across the hero card's top, its words centred (Figma RP.1).
+        horizontalArrangement = if (strip) Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally) else Arrangement.spacedBy(8.dp),
     ) {
         val rot = track(t, Key(0f, 35f), Key(0.31f, 35f, EaseOut), Key(0.47f, 0f))
         val sc = track(t, Key(0f, 0.01f), Key(0.31f, 0.01f, EaseOut), Key(0.40f, 1.3f, EaseInOut), Key(0.47f, 1f))
@@ -176,7 +180,11 @@ fun MilestoneRibbon(text: String, color: HabitColor, key: Any) {
 @Composable
 fun LandmarkPopup(
     number: String, title: String, subtitle: String, color: HabitColor,
-    next: Triple<String, String, Float>?, onClose: () -> Unit, onAll: () -> Unit,
+    next: com.oftenenough.app.data.MilestoneAhead?, onClose: () -> Unit, onAll: () -> Unit,
+    /** "All milestones", or "See the year" for an anniversary (Figma P.10). */
+    second: String = "All milestones",
+    /** "and 1 more in this routine" (Figma RP.3): a chip under the words. */
+    more: String? = null,
 ) {
     val c = appColors
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -251,9 +259,19 @@ fun LandmarkPopup(
             Text(title, Modifier.fillMaxWidth().arrive(0.275f, 12f), style = AppType.headlineSmallEmphasized, color = c.ink, textAlign = TextAlign.Center)
             Spacer(Modifier.height(6.dp))
             Text(subtitle, Modifier.fillMaxWidth().arrive(0.315f, 12f), style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
+            if (more != null) {
+                Spacer(Modifier.height(12.dp))
+                Row(Modifier.arrive(0.40f, 8f).clip(RoundedCornerShape(16.dp)).background(c.surface).clickable(onClick = onClose)
+                    .padding(start = 14.dp, end = 8.dp, top = 6.dp, bottom = 6.dp).semantics { testTag = "landmark-more" },
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Text(more, style = AppType.labelLarge, color = c.ink)
+                    androidx.compose.material3.Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(18.dp), tint = c.ink)
+                }
+            }
             if (next != null) {
                 Spacer(Modifier.height(20.dp))
-                val (target, detail, fraction) = next
+                val target = next.number
+                val fraction = next.fraction
                 Row(Modifier.fillMaxWidth().arrive(0.45f, 12f).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(horizontal = 18.dp, vertical = 14.dp)
                     .heightIn(min = 76.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(52.dp), contentAlignment = Alignment.Center) {
@@ -263,12 +281,12 @@ fun LandmarkPopup(
                             drawArc(base.copy(alpha = 0.18f), 0f, 360f, false, Offset(w / 2, w / 2), arc, style = Stroke(w))
                             drawArc(base, -90f, 360f * fraction, false, Offset(w / 2, w / 2), arc, style = Stroke(w, cap = StrokeCap.Round))
                         }
-                        Text(target, style = AppType.titleMedium, color = c.ink, maxLines = 1)
+                        Text(target, style = if (target.length > 3) AppType.labelMedium else AppType.titleMedium, color = c.ink, maxLines = 1)
                     }
                     Spacer(Modifier.width(16.dp))
                     Column {
-                        Text("$target ${title.substringAfter(' ')}", style = AppType.titleMedium, color = c.ink)
-                        Text(detail, style = AppType.bodyMedium, color = c.secondary)
+                        Text(next.title, style = AppType.titleMedium, color = c.ink)
+                        Text(next.detail, style = AppType.bodyMedium, color = c.secondary)
                     }
                 }
             }
@@ -280,7 +298,7 @@ fun LandmarkPopup(
                 }
                 Box(Modifier.weight(1f).height(48.dp).clip(RoundedCornerShape(24.dp)).background(c.ink)
                     .clickable(onClick = onAll).semantics { testTag = "landmark-all" }, contentAlignment = Alignment.Center) {
-                    Text("All milestones", style = AppType.labelLarge, color = c.onInk)
+                    Text(second, style = AppType.labelLarge, color = c.onInk)
                 }
             }
         }

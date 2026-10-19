@@ -265,6 +265,32 @@ Getting there took three CI runs, and each failure was read, not rerun (T2):
   the fold, so the tap missed it and an empty group was saved: the test brings a row on screen before tapping, and
   checks it's chosen before saving.
 
+## The habit form, as Figma `1302:2` (18 October 2026)
+
+New habit and Edit habit were rebuilt to the Figma section, frame by frame (Current Work 131): the choices, the four
+build forms, Quit, Cut down and Task, and every page they open; Edit habit's Type row, the start-over question and
+Today's snackbar (D6); Add a 6th habit and Make room. **A time of day is set by its start alone** (Current Work 108, 98):
+`SectionPlan.fromStart` works out its end (the next one's start, or the day's end) and `SectionPlan.freeStart` opens a
+new one in time nothing covers (4:00 AM with the standard set). The same page opens from Settings › Times of Day.
+
+How it was checked: every frame beside the emulator at 360 × 800 dp (`Research/Temp/habitform/walk.sh`, which uses
+only the app's own back buttons); Android's notification question on a normal launch, allowed, refused once and twice;
+`HabitFormTest` (6) for the flows that change data. One thing found and left for a decision: without exact alarms,
+Android gives a reminder a one-hour window, while Get reminders on time says "up to 10 minutes" (Current Work 131).
+
+## The Habits page, as Figma `2106:2` (19 October 2026)
+
+≡ › Habits was rebuilt to the Figma section (Current Work 132): rows by time of day as on Today (or by group), each with
+the line under its name worked out in `HabitListWords.kt` (goal · How often · first reminder, or its status), a ⋮ per
+row, selection with its bottom bar, search, Show by, and Archived habits as a page of its own. Every change says so in a
+snackbar with Undo; **a delete waits until its Undo has gone** (the rows hide meanwhile, and leaving the page deletes
+them), so nothing is lost to a mis-tap (D6). Duplicate is the habit form filled in from the habit (`FormState`'s
+`template`) and lands right after it (`HabitStore.placeAfter`, queued behind the add). The page has its own ☰ drawer
+(`WithMenu` in `AppRoot`), as a top-level page should; with the sidebar there's none.
+
+Test launches can now start with the design's habits (`demo habits`) and with Plus (`plus`), so the page can be put
+beside Figma at 360 × 800 dp. `HabitsPageTest` (11) covers every flow that changes data.
+
 ## What's left
 
 | What | Why it isn't done |

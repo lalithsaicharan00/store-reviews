@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -101,6 +102,8 @@ interface TodayActions {
     fun feedback(done: Boolean)
     /** Arrange Today, with [habit] lifted (a row's menu, Figma 1.4; the new habit's Move, 1.6). */
     fun arrange(habit: Habit?)
+    /** A milestone's band tapped, or its See: that milestone's pop-up, asked for (Figma R.1, A.1). */
+    fun seeMilestone(habit: Habit) {}
 }
 
 /**
@@ -143,10 +146,7 @@ private fun rowModel(store: HabitStore, habit: Habit, day: Int, slot: String?, t
     var line = store.rowLine(habit, day, slot, time, progress, goal, running)
     // A later day plans, so its line is the goal alone: "8 glasses", "20 min" (Figma 4.3).
     if (day > today) line = line.replace(Regex("^[0-9][0-9,.:]*/"), "")
-    // A log that reaches a milestone says so for the rest of the day, in words (Figma 1.2.9): "60 days in a row".
-    if (streaks && day == today && done && streak >= 3 && habit.kind != HabitKind.Task &&
-        rules.milestonesUpTo(store.rule(habit, day).frequency.streakUnit, streak).lastOrNull() == streak
-    ) line = milestoneRowTitle(streak, store.rule(habit, day).frequency.streakUnit)
+    // A milestone keeps the row's own line; its band says it, below (Figma R.1, decided 17 Oct 2026).
     // A day with a note says so (Figma 7.18).
     if (day <= today && store.note(habit, day) != null) line += " · Note"
     val ticked = slot?.let { store.isSlotDone(habit, it, day) } ?: (if (habit.kind == HabitKind.Task) done else store.isTicked(habit, day))
@@ -182,6 +182,7 @@ fun HabitRow(
     var menu by remember { mutableStateOf(false) }
     val litColor by animateColorAsState(if (lit) c.ink.copy(alpha = 0.08f) else Color.Transparent, tween(600), label = "lit")
     val held by animateColorAsState(if (menu) c.ink.copy(alpha = 0.08f) else Color.Transparent, tween(150), label = "held")
+    val moment = rememberRowMilestone(habit, isToday, rev, store)
 
     SwipeRow(left = skipAction(habit, day, today, model, running, store, layout), right = noteAction(habit, day, today, store, actions), shape = shape, haptics = haptics) {
         Column(
@@ -199,9 +200,9 @@ fun HabitRow(
                     if (held.alpha > 0f) drawRect(held)
                 }
                 .combinedClickable(onClick = { actions.openDay(habit, day) }, onLongClick = { menu = true })
-                .semantics { testTag = "row-${habit.name}" }
-                .padding(start = RowStart, end = RowEnd, top = 14.dp, bottom = 14.dp),
+                .semantics { testTag = "row-${habit.name}" },
         ) {
+          Column(Modifier.padding(start = RowStart, end = RowEnd, top = 14.dp, bottom = 14.dp)) {
             Row(Modifier.heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
                 HabitIcon(habit.symbol, habit.color)
                 Spacer(Modifier.width(16.dp))
@@ -214,14 +215,18 @@ fun HabitRow(
                 val trailing = rowButton(habit, day, isToday, future, slot, model, running)
                 if (streaks && model.streak > 0 && !future) {
                     Spacer(Modifier.width(16.dp))
-                    StreakLabel(model.streak, store.rule(habit, day).frequency.streakUnit)
+                    StreakLabel(model.streak, store.rule(habit, day).frequency.streakUnit, roll = moment.rolling)
                     Spacer(Modifier.width(if (trailing) 16.dp else 4.dp))
                 } else if (trailing) Spacer(Modifier.width(12.dp))
-                if (trailing) RowButton(habit, day, isToday, slot, model, store, layout, actions, stepsOpen, onToggleSteps, running)
+                if (trailing) Box(if (moment.full) Modifier.milestoneBurst(moment.t, c.habit(habit.color)) else Modifier) {
+                    RowButton(habit, day, isToday, slot, model, store, layout, actions, stepsOpen, onToggleSteps, running)
+                }
                 else if (future && habit.kind == HabitKind.Task) DoneTodayButton(habit, store, layout)
             }
             if (offer != null) AfterLogButtons(offer, habit, day, store, layout, actions, note)
             RowMenu(menu, { menu = false }, habit, day, store, actions, layout)
+          }
+            moment.band?.let { b -> MilestoneBand(moment.text, habit.color, b.see, moment.t, early = !moment.full) { actions.seeMilestone(habit) } }
         }
     }
 }
@@ -447,11 +452,13 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
     val note = store.note(habit, today) != null
     val held by animateColorAsState(if (menu) c.ink.copy(alpha = 0.08f) else Color.Transparent, tween(150), label = "held")
     val slip = if (!paused) SwipeAction("Slip", "Log a slip", Icons.Outlined.AddCircleOutline, "row-swipe-slip") { actions.addLog(habit, today) } else null
+    // A run that passed a length yesterday: the band, once, when the row is first seen (Figma R.9, A.1).
+    val moment = rememberRowMilestone(habit, true, rev, store)
     SwipeRow(left = slip, right = noteAction(habit, today, today, store, actions), shape = shape, haptics = haptics) {
         Column(Modifier.fillMaxWidth().clip(shape).background(c.surface).drawBehind { if (held.alpha > 0f) drawRect(held) }
             .combinedClickable(onClick = { actions.openDay(habit, today) }, onLongClick = { menu = true })
-            .semantics { testTag = "row-${habit.name}" }
-            .padding(start = RowStart, end = 12.dp, top = 14.dp, bottom = 14.dp)) {
+            .semantics { testTag = "row-${habit.name}" }) {
+          Column(Modifier.padding(start = RowStart, end = 12.dp, top = 14.dp, bottom = 14.dp)) {
             Row(Modifier.heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
                 HabitIcon(habit.symbol, habit.color)
                 Spacer(Modifier.width(16.dp))
@@ -473,6 +480,8 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
             }
             if (offer != null) AfterLogButtons(offer, habit, today, store, layout, actions, note)
             RowMenu(menu, { menu = false }, habit, today, store, actions, layout)
+          }
+            moment.band?.let { b -> MilestoneBand(moment.text, habit.color, b.see, moment.t, early = true) { actions.seeMilestone(habit) } }
         }
     }
 }
@@ -485,7 +494,10 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
 @Composable
 fun PartHeader(
     title: String, subtitle: String?, habits: List<Habit>, badge: String?, isNow: Boolean, isOpen: Boolean, shape: Shape,
-    onStart: (() -> Unit)?, onToggle: () -> Unit,
+    onStart: (() -> Unit)?,
+    /** Habits with a milestone not yet seen: a small medal on their icon while the card is folded (Figma A.2). */
+    marked: Set<String> = emptySet(),
+    onToggle: () -> Unit,
 ) {
     val c = appColors
     Row(
@@ -499,7 +511,7 @@ fun PartHeader(
             Text(title, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (subtitle != null) Text(subtitle, style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        if (!isOpen && habits.isNotEmpty()) FoldedIcons(habits, Modifier.weight(1f)) else Spacer(Modifier.weight(1f))
+        if (!isOpen && habits.isNotEmpty()) FoldedIcons(habits, marked, Modifier.weight(1f)) else Spacer(Modifier.weight(1f))
         if (badge != null) com.oftenenough.app.ui.components.Badge(badge)
         if (onStart != null && isOpen) StartButton(title, isNow, onStart)
         Box(Modifier.size(40.dp).clip(CircleShape).clickable(onClick = onToggle).semantics { contentDescription = if (isOpen) "Fold $title" else "Open $title" },
@@ -530,17 +542,21 @@ private fun StartButton(title: String, isNow: Boolean, onStart: () -> Unit) {
  * of the card's own white, each overlapping the one before by 6 dp; after three, a "+N" circle in the same shape.
  */
 @Composable
-private fun FoldedIcons(habits: List<Habit>, modifier: Modifier = Modifier) {
+private fun FoldedIcons(habits: List<Habit>, marked: Set<String>, modifier: Modifier = Modifier) {
     val c = appColors
-    val shown = habits.take(3)
+    // A habit with a milestone not yet seen comes first among the icons, so its medal shows (Figma A.2).
+    val shown = (habits.filter { it.id in marked } + habits.filter { it.id !in marked }).take(3)
     val more = habits.size - shown.size
     // The ring is the card's white behind a 24 dp disc, never a stroke over the disc: a stroke leaves a fringe of colour.
     fun Modifier.ringed(fill: Color) = size(28.dp).clip(CircleShape).background(c.surface).padding(2.dp).clip(CircleShape).background(fill)
-    Row(modifier.semantics(mergeDescendants = true) { contentDescription = habits.joinToString(", ") { it.name } },
+    Row(modifier.semantics(mergeDescendants = true) { contentDescription = habits.joinToString(", ") { it.name + if (it.id in marked) ", a milestone" else "" } },
         horizontalArrangement = Arrangement.spacedBy((-6).dp), verticalAlignment = Alignment.CenterVertically) {
         shown.forEach { h ->
-            Box(Modifier.ringed(c.habit(h.color)), contentAlignment = Alignment.Center) {
-                Icon(com.oftenenough.app.ui.theme.HabitIcons.icon(h.symbol), null, Modifier.size(16.dp), tint = Color.White)
+            Box {
+                Box(Modifier.ringed(c.habit(h.color)), contentAlignment = Alignment.Center) {
+                    Icon(com.oftenenough.app.ui.theme.HabitIcons.icon(h.symbol), null, Modifier.size(16.dp), tint = Color.White)
+                }
+                if (h.id in marked) MiniMedal(h.color, Modifier.align(Alignment.TopEnd).offset(x = 4.dp, y = (-3).dp))
             }
         }
         if (more > 0) {

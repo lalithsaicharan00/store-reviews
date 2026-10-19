@@ -167,7 +167,7 @@ class ScreensTest {
         menu("habits")
         waitFor(hasTestTag("habits-row-Water"), "Water in Habits")
         compose.onNodeWithTag("habits-row-Water", useUnmergedTree = true).performTouchInput { longClick() }
-        waitFor(hasText("1 chosen"), "one chosen")
+        waitFor(hasText("1 selected"), "one selected")
         tapTag("habits-archive")
         waitFor(hasText("Archived"), "the Archived group")
         assertTrue("Water archived", AppGraph.store.habits.first { it.name == "Water" }.archived)

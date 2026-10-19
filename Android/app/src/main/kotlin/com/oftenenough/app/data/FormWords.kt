@@ -39,7 +39,8 @@ object FormOutcome {
             habit.atMost -> "$word $at on each of its days."
             habit.kind == HabitKind.Task -> "$word $at on the day. None once it's done."
             else -> periodRule(habit, forReminders = true)?.let { "$word $at each day until $it." }
-                ?: ("$word $at on its days. " + if (placements.any { it.slot != null }) "None for a part of the day you've already finished." else "None once it's done for the day.")
+                ?: if (placements.any { it.slot != null }) "$word $at on its days. None for a part of the day you've already finished."
+                else "You get ${word.replaceFirstChar { it.lowercase() }} $at on planned days, unless ${habit.name} is already done."
         }
         if (alarm) sentence += " It rings even on silent, until you stop it. Stopping it doesn't tick the habit; its Done button does."
         val every = habit.followUpMinutes

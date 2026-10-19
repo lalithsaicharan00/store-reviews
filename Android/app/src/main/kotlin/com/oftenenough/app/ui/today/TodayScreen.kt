@@ -91,6 +91,17 @@ import com.oftenenough.app.ui.theme.appColors
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
+import com.oftenenough.app.data.MilestoneCenter
+import com.oftenenough.app.data.MilestoneShown
+import com.oftenenough.app.data.MilestoneTier
+import com.oftenenough.app.data.MilestoneTrack
+import com.oftenenough.app.ui.day.LandmarkPopup
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -105,6 +116,8 @@ interface TodayNav : NoticeNav {
     fun newGroup()
     fun editGroups()
     fun startRoutine(part: String, day: Int, habits: List<Habit>)
+    /** The Habits page, where archived habits are (the start-over snackbar's View, Figma 6.3.2). */
+    fun archivedHabits() {}
 }
 
 /** "Starts 6 AM". */
@@ -130,8 +143,15 @@ private fun rememberNow(store: HabitStore): Long {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayActions, snackbar: SnackbarHostState, kept: TodayLayout? = null) {
+fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: TodayActions, snackbar: SnackbarHostState, kept: TodayLayout? = null) {
     val c = appColors
+    // A milestone's pop-up, asked for from its band or its bar's See (never counted against the day's limits).
+    var popup by remember { mutableStateOf<MilestoneShown?>(null) }
+    val actions = remember(appActions) {
+        object : TodayActions by appActions {
+            override fun seeMilestone(habit: Habit) { popup = store.milestones.shown(habit.id) }
+        }
+    }
     val now = rememberNow(store)
     val today = store.today(now)
     var shownDay by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -189,6 +209,54 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
         }
     }
 
+    // A habit started over with a new type (Figma 6.3.2): the snackbar says where the old one went; View opens it.
+    LaunchedEffect(store.startedOver) {
+        val name = store.startedOver ?: return@LaunchedEffect
+        store.startedOver = null
+        scope.launch {
+            val r = snackbar.showSnackbar("Old $name is in Archived habits", actionLabel = "View", duration = SnackbarDuration.Short)
+            if (r == SnackbarResult.ActionPerformed) nav.archivedHabits()
+        }
+    }
+
+    // Milestones (Android/Docs/Milestones, decided 17 Oct 2026): quit and cut-down habits judged once a day; the others
+    // shown at once as they're reached here, first come first served: a pop-up, the bar, or the row (MilestoneCenter).
+    val center = store.milestones
+    // Again when the habits change (a load, a restore, a new habit), never per log.
+    LaunchedEffect(store.isLoaded, today, store.habits) { if (store.isLoaded) center.dayCheck() }
+    var bar by remember { mutableStateOf<MilestoneShown?>(null) }
+    var barLeaving by remember { mutableStateOf(false) }
+    var barBox by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
+    var todayBox by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
+    fun barGone() { if (bar != null) barLeaving = true }
+    LaunchedEffect(barLeaving) {
+        if (!barLeaving) return@LaunchedEffect
+        delay(200)
+        bar = null
+        center.barHabit = null
+        barLeaving = false
+    }
+    // A milestone notification tapped: its pop-up (Figma N.6).
+    LaunchedEffect(com.oftenenough.app.app.AppGraph.milestoneToOpen, store.isLoaded) {
+        val asked = com.oftenenough.app.app.AppGraph.milestoneToOpen ?: return@LaunchedEffect
+        if (!store.isLoaded) return@LaunchedEffect
+        com.oftenenough.app.app.AppGraph.milestoneToOpen = null
+        val (id, value) = asked.split("|").let { it[0] to (it.getOrNull(1)?.toIntOrNull() ?: return@LaunchedEffect) }
+        shownDay = null
+        center.opened(id, value)?.let { popup = it }
+    }
+    val waiting = if (isToday) center.next(MilestoneCenter.Surface.TODAY) else null
+    LaunchedEffect(waiting) {
+        val hit = waiting ?: return@LaunchedEffect
+        val shown = center.claim(hit, MilestoneCenter.Surface.TODAY) ?: return@LaunchedEffect
+        when (shown.tier) {
+            MilestoneTier.POPUP -> { bar = null; center.barHabit = null; popup = shown }
+            // One bar at a time: the next one takes the place of the last (V3.2), whose band then shows in its row.
+            MilestoneTier.BAR -> { barLeaving = false; bar = shown; center.barHabit = shown.habitId }
+            MilestoneTier.ROW -> {}
+        }
+    }
+
     val hasHabits = store.habits.isNotEmpty()
     val group = prefs.todayGroup.takeIf { id -> store.groups.any { it.id == id } }
     val filterOn = group != null || prefs.hideDoneHabits || prefs.hideDoneTasks
@@ -212,7 +280,17 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
             )
         },
     ) { padding ->
-        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())) {
+        Box(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding())
+            .onGloballyPositioned { todayBox = it.boundsInRoot() }
+            // Any other touch sends the bar away (V3.4); it never blocks the touch.
+            .pointerInput(Unit) {
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                    val box = barBox
+                    val origin = todayBox
+                    if (bar != null && box != null && origin != null && !box.contains(down.position + origin.topLeft)) barGone()
+                }
+            }) {
             when {
                 !store.isLoaded -> {}
                 !hasHabits -> NoHabitsYet(nav)
@@ -254,6 +332,14 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
                     }
                     BottomFade(Modifier.align(Alignment.BottomCenter))
                     Column(Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        bar?.let { shown ->
+                            store.habit(shown.habitId)?.let { h ->
+                                val w = remember(shown) { center.words(shown, h) }
+                                MilestoneBar(w.number, w.title, h.name, h.color, key = "${shown.habitId}|${shown.value}", leaving = barLeaving,
+                                    onSee = { popup = shown; barGone() }, onGone = { barGone() },
+                                    modifier = Modifier.padding(bottom = 8.dp).onGloballyPositioned { barBox = it.boundsInRoot() })
+                            }
+                        }
                         TodaySnackbars(snackbar)
                         if (!isToday) BackToToday { shownDay = null }
                         DayBar(store, day, today, onPrevious = { shownDay = (day - 1).takeIf { it != today } }, onNext = { shownDay = (day + 1).takeIf { it != today } }, onPick = { calendar = true })
@@ -262,6 +348,20 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, actions: TodayAc
             }
             if (tipShows && hasHabits) ArrangeTip(Modifier.align(Alignment.TopEnd)) { prefs.arrangeTipDone = true }
             if (!hasHabits) Box(Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 16.dp)) { TodaySnackbars(snackbar) }
+        }
+    }
+    popup?.let { shown ->
+        val h = store.habit(shown.habitId)
+        if (h == null) popup = null
+        else {
+            val w = remember(shown) { center.words(shown, h) }
+            LandmarkPopup(w.number, w.popupTitle, w.popupSubtitle, h.color, w.next, second = w.second,
+                onClose = { popup = null },
+                onAll = {
+                    popup = null
+                    if (shown.track != MilestoneTrack.ANNIVERSARY) com.oftenenough.app.ui.habit.HabitPageOpen.milestones = h.id
+                    actions.openHabitPage(h)
+                })
         }
     }
     // Back on another day returns to today first (Figma 4.2).
@@ -515,7 +615,8 @@ private fun LazyListScope.section(
         PartHeader(section.name, startsText(section), items.map { it.habit }, badge, isNow, open,
             if (open) segmentShape(0, count) else RoundedCornerShape(24.dp),
             onStart = start,
-            onToggle = { layout.setOpen(card, !open) })
+            onToggle = { layout.setOpen(card, !open) },
+            marked = if (!open && day == content.today) store.milestones.unplayed(items.map { it.habit.id }) else emptySet())
     }
     if (open) pieces.forEachIndexed { i, (item, steps) ->
         val habit = item.habit
@@ -537,9 +638,9 @@ private fun LazyListScope.quitting(habits: List<Habit>, store: HabitStore, layou
     val open = layout.choice(DaySection.QUITTING) ?: true
     val count = if (open) habits.size + 1 else 1
     indexed(ix, "header-quitting") {
-        PartHeader("Quitting", "Stop, or do less", habits, null, false, open, if (open) segmentShape(0, count) else RoundedCornerShape(24.dp), null) {
-            layout.setOpen(DaySection.QUITTING, !open)
-        }
+        PartHeader("Quitting", "Stop, or do less", habits, null, false, open, if (open) segmentShape(0, count) else RoundedCornerShape(24.dp), null,
+            onToggle = { layout.setOpen(DaySection.QUITTING, !open) },
+            marked = if (!open && day == today) store.milestones.unplayed(habits.map { it.id }) else emptySet())
     }
     if (open) habits.forEachIndexed { i, h ->
         indexed(ix, "quit-${h.id}") {

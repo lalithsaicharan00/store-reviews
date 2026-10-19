@@ -114,7 +114,8 @@ internal fun LazyListScope.historyItems(
 ) {
     item(key = "history-actions") {
         Row(Modifier.pageItem(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TonalButton(addLabel, onAdd, Modifier.semantics { testTag = "history-add-log" }, icon = Icons.Rounded.Add)
+            // An archived habit has nothing to log (Habits, Figma 6.6): no Add.
+            if (addLabel.isNotEmpty()) TonalButton(addLabel, onAdd, Modifier.semantics { testTag = "history-add-log" }, icon = Icons.Rounded.Add)
             TonalButton("Go to date", onGoToDate, Modifier.semantics { testTag = "history-go-to-date" }, icon = Icons.Outlined.CalendarMonth)
         }
     }

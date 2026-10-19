@@ -53,6 +53,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -91,7 +92,10 @@ import com.oftenenough.app.data.StreakUnit
 import com.oftenenough.app.data.clockText
 import com.oftenenough.app.data.description
 import com.oftenenough.app.data.milestoneRowTitle
-import com.oftenenough.app.data.milestonesUpTo
+import com.oftenenough.app.data.MilestoneCenter
+import com.oftenenough.app.data.MilestoneFront
+import com.oftenenough.app.data.MilestoneShown
+import com.oftenenough.app.data.MilestoneTier
 import com.oftenenough.app.data.opensRecord
 import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.HabitIcon
@@ -145,6 +149,13 @@ private val SkipLineLight = Color(0xFFC7C7CC)
 @Composable
 fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, onDismiss: () -> Unit) {
     val habit = store.habit(habitId) ?: run { onDismiss(); return }
+    // While it's open, milestones logged here are this sheet's, not Today's underneath.
+    DisposableEffect(habitId) {
+        val mine = MilestoneFront.Sheet(habitId)
+        val before = store.milestones.front
+        store.milestones.front = mine
+        onDispose { if (store.milestones.front == mine) store.milestones.front = before }
+    }
     val c = appColors
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.screen, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
@@ -284,29 +295,6 @@ private fun SkipButton(text: String, onClick: () -> Unit) {
 
 private class DayAction(val title: String, val prominent: Boolean = false, val enabled: Boolean = true, val spoken: String? = null, val tag: String, val run: () -> Unit)
 
-/** A milestone this habit reached today, and whether it's a landmark (its pop-up), else the ribbon (Figma 14, 14.1). */
-private class Reached(val value: Int, val unit: StreakUnit, val landmark: Boolean, val next: Int?)
-
-private fun reachedToday(habit: Habit, day: Int, store: HabitStore): Reached? {
-    if (day != store.today() || habit.kind == HabitKind.Task || habit.kind == HabitKind.Quit || !store.showsStreaks()) return null
-    val ruled = store.rule(habit, day)
-    if (!store.rules.isDone(habit, day) || ruled.atMost) return null
-    val streak = store.streak(habit, day)
-    val unit = ruled.frequency.streakUnit
-    val ladder = store.rules.milestonesUpTo(unit, streak * 4 + 400)
-    if (streak < 3 || streak !in ladder) return null
-    // A landmark: a month of days or more in a row (Figma 14.1, "the first 30 days in a row"); smaller ones are the ribbon.
-    val landmark = (unit == StreakUnit.DAYS || unit == StreakUnit.TIMES) && streak >= 30
-    return Reached(streak, unit, landmark, ladder.firstOrNull { it > streak })
-}
-
-/** Each landmark's pop-up shows once (per habit, value and day), kept on this phone. */
-private fun landmarkSeen(context: Context, key: String, mark: Boolean = false): Boolean {
-    val prefs = context.getSharedPreferences(if (AppGraph.isOpen && AppGraph.isTest) "uitest-landmarks" else "landmarks", Context.MODE_PRIVATE)
-    if (mark) prefs.edit().putBoolean(key, true).apply()
-    return prefs.getBoolean(key, false)
-}
-
 /**
  * This day (Figma: white, corners 28): the ribbon on a milestone day; "This day"; the count (Display Medium) with its
  * words, or the state (28 Medium); the wavy bar toward the goal; the logging buttons (52 high) or a checklist's steps;
@@ -315,7 +303,6 @@ private fun landmarkSeen(context: Context, key: String, mark: Boolean = false): 
 @Composable
 private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Boolean, rev: Int, store: HabitStore, nav: DayNav) {
     val c = appColors
-    val context = LocalContext.current
     val today = store.today()
     val ruled = store.rule(habit, day)
     val running = day == today && store.timers.containsKey(habit.id)
@@ -330,18 +317,22 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     val showsBar = started && !skipped && !paused && planned && !ruled.atMost && ruled.kind != HabitKind.Quit && ruled.kind != HabitKind.Task &&
         !(ruled.kind == HabitKind.Check && !store.rules.countsUp(habit, day) && ruled.frequency.isDayBased) &&
         !(ruled.kind == HabitKind.Check && ruled.frequency.isFlexible)
-    val reached = remember(rev, day) { reachedToday(habit, day, store) }
-    var popup by remember { mutableStateOf<Reached?>(null) }
-    // A landmark reached here: its pop-up rises at once, once (Figma 14.1).
-    LaunchedEffect(reached?.value) {
-        val r = reached ?: return@LaunchedEffect
-        val key = "${habit.id}|${r.value}|$day"
-        if (r.landmark && !landmarkSeen(context, key)) { landmarkSeen(context, key, mark = true); popup = r }
+    // A milestone reached here is this sheet's (Android/Docs/Milestones): its pop-up at once when it's a landmark and the
+    // day still has room (Figma 14.1), else the ribbon (14); it stays for the rest of the day.
+    val center = store.milestones
+    val milestone = remember(rev, day, center.shown(habit.id)) { if (day == today) center.visible(habit) else null }
+    var popup by remember { mutableStateOf<MilestoneShown?>(null) }
+    var playRibbon by remember { mutableStateOf(false) }
+    val waiting = center.next(MilestoneCenter.Surface.SHEET)
+    LaunchedEffect(waiting) {
+        val hit = waiting?.takeIf { it.habitId == habit.id } ?: return@LaunchedEffect
+        val s = center.claim(hit, MilestoneCenter.Surface.SHEET) ?: return@LaunchedEffect
+        if (s.tier == MilestoneTier.POPUP) popup = s else playRibbon = true
     }
 
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(start = 20.dp, end = 20.dp, top = 18.dp, bottom = 4.dp)) {
-        if (reached != null) {
-            MilestoneRibbon(milestoneRowTitle(reached.value, reached.unit) + " · reached today", habit.color, "${habit.id}|${reached.value}")
+        if (milestone != null) {
+            MilestoneRibbon(remember(milestone) { center.words(milestone, habit).band }, habit.color, "${habit.id}|${milestone.value}", play = playRibbon)
             Spacer(Modifier.height(12.dp))
         }
         Text("This day", style = AppType.labelMedium, color = c.secondary)
@@ -404,9 +395,9 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             }
         }
     }
-    popup?.let { r ->
-        val next = r.next?.let { n -> Triple("$n", "Next · ${n - r.value} to go · now ${r.value}", r.value.toFloat() / n) }
-        LandmarkPopup("${r.value}", milestoneRowTitle(r.value, r.unit), "${habit.name} · reached today", habit.color, next,
+    popup?.let { s ->
+        val w = remember(s) { center.words(s, habit) }
+        LandmarkPopup(w.number, w.popupTitle, w.popupSubtitle, habit.color, w.next, second = w.second,
             onClose = { popup = null }, onAll = { popup = null; nav.allMilestones(habit) })
     }
 }

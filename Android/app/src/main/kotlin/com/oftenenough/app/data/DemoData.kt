@@ -172,8 +172,11 @@ object DemoData {
         val gym = h("Gym", "dumbbell.fill", HabitColor.RED, HabitKind.Check, 1.0, Frequency.Flexible(GoalPeriod.WEEK, 3))
         val run = h("Run", "figure.run", HabitColor.TEAL, HabitKind.Check, 1.0, Frequency.Weekdays(setOf(2, 4, 6)), DaySection.MORNING)
         val desk = h("Tidy desk", "sparkles", HabitColor.TEAL, HabitKind.Checklist, steps = listOf("Clear papers", "Wipe the surface", "Put pens away").map { Step(name = it) })
-        val smoking = h("Smoking", "nosign", HabitColor.GRAY, HabitKind.Quit, quitSince = now - 21 * dayMs)
+        // Milestones (2143:2): Smoking passed 30 days clean yesterday and Coffee's 30th day within its limit closed
+        // yesterday, so both show their band with See when Today opens (R.9, R.10, A.1).
+        val smoking = h("Smoking", "nosign", HabitColor.GRAY, HabitKind.Quit, quitSince = store.rules.dayStart(today - 30) - 3 * 3_600_000L)
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), 2.0, atMost = true)
+            .copy(createdAt = store.rules.dayStart(today - 30) + 3_600_000L)
         val social = h("Social media", "iphone", HabitColor.PINK, HabitKind.Duration, 30.0, atMost = true)
         val bill = h("Pay the phone bill", "calendar", HabitColor.BLUE, HabitKind.Task, dueDay = today)
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, 10.0)
@@ -187,8 +190,11 @@ object DemoData {
             entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = time, source = source))
         for (d in 1..13) log(vitamins, today - d, 1.0)
         for (d in 1..29) log(floss, today - d, 1.0)
-        for (d in 1..20) log(water, today - d, 8.0)
+        // 24 days of 8 glasses and 4 today: the 200th glass is today's 8th (in total, 25 × 8).
+        for (d in 1..24) log(water, today - d, 8.0)
         for (d in 1..6) log(read, today - d, 20.0)
+        // Read's first log, a year ago today: its anniversary (P.10).
+        log(read, java.time.LocalDate.ofEpochDay(today.toLong()).minusYears(1).toEpochDay().toInt(), 20.0)
         for ((hh, mm) in listOf(7 to 45, 9 to 10)) log(water, today, 1.0, at(today, hh, mm))
         log(water, today, 1.0, at(today, 9, 20), source = EntrySource.MANUAL)
         log(water, today, 1.0, at(today, 9, 25))
@@ -205,21 +211,75 @@ object DemoData {
         log(savings, today, 50.0, at(today, 9, 20), source = EntrySource.MANUAL)
         log(piano, maxOf(week, today - 1), 60.0, source = EntrySource.TIMER)
         log(piano, today, 30.0, at(today, 8, 0), source = EntrySource.TIMER)
-        log(smoking, today - 21, 1.0, now - 21 * dayMs)
+        log(smoking, today - 31, 1.0, store.rules.dayStart(today - 30) - 3 * 3_600_000L)
         val positioned = habits.mapIndexed { i, hb -> hb.record(i, now) }
         return Snapshot(positioned, habits.flatMap { it.stepRecords() }, emptyList(), entries.map { it.record }, emptyList())
     }
 
+    /**
+     * The Habits page exactly as Figma draws it (`2106:2`, frame 1): sixteen habits by time of day, Meditate paused, three
+     * archived (30-day challenge, Water plants, Gym), and the groups Health, Home and Mind (5.2). A test launch's
+     * `demo habits` (D8).
+     */
+    fun habitsPage(store: HabitStore, now: Long): Snapshot {
+        val today = store.today(now)
+        val dayMs = 86_400_000L
+        fun h(name: String, symbol: String, color: HabitColor, kind: HabitKind, part: String = DaySection.ANYTIME, goal: Double = 1.0,
+              frequency: Frequency = Frequency.Daily, steps: List<String> = emptyList(), atMost: Boolean = false, reminder: Int? = null,
+              quitSince: Long? = null, archived: Boolean = false) =
+            Habit(name = name, symbol = symbol, color = color, kind = kind, parts = listOf(part), goal = goal, frequency = frequency,
+                steps = steps.map { Step(name = it) }, atMost = atMost, reminders = listOfNotNull(reminder?.let { ReminderTime(hour = it / 60, minute = it % 60) }),
+                remind = reminder != null, quitSince = quitSince, archived = archived, createdAt = now - 200 * dayMs)
+        val habits = listOf(
+            h("Stretch", "figure.flexibility", HabitColor.TEAL, HabitKind.Duration, DaySection.MORNING, 10.0),
+            h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, DaySection.MORNING, steps = listOf("Cleanser", "Serum", "Moisturiser", "Sunscreen")),
+            h("Meds", "pills.fill", HabitColor.RED, HabitKind.Check, DaySection.MORNING, reminder = 8 * 60),
+            h("Meditate", "figure.mind.and.body", HabitColor.PURPLE, HabitKind.Duration, DaySection.MORNING, 15.0),
+            h("Walk", "figure.walk", HabitColor.GREEN, HabitKind.Duration, DaySection.AFTERNOON, 30.0),
+            h("Study", "book.fill", HabitColor.ORANGE, HabitKind.Duration, DaySection.AFTERNOON, 60.0, Frequency.Weekdays(setOf(2, 4, 6))),
+            h("Refill water", "drop.fill", HabitColor.BLUE, HabitKind.Check, DaySection.AFTERNOON, frequency = Frequency.EveryNDays(3)),
+            h("Bed on time", "moon.fill", HabitColor.INDIGO, HabitKind.Check, DaySection.EVENING, reminder = 22 * 60 + 30),
+            h("Skincare (night)", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, DaySection.EVENING, steps = listOf("Cleanser", "Retinol", "Moisturiser")),
+            h("Journal", "pencil", HabitColor.ORANGE, HabitKind.Check, DaySection.EVENING, 3.0, Frequency.PerWeek(3)),
+            h("Read", "book.fill", HabitColor.ORANGE, HabitKind.Duration, goal = 20.0),
+            h("Call family", "phone.fill", HabitColor.GREEN, HabitKind.Check, goal = 3.0, frequency = Frequency.PerWeek(3)),
+            h("Water", "drop.fill", HabitColor.BLUE, HabitKind.Amount("glasses", 1.0), goal = 8.0),
+            h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = now - 45 * dayMs),
+            h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true),
+            h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true),
+            h("30-day challenge", "trophy.fill", HabitColor.CYAN, HabitKind.Check, archived = true),
+            h("Water plants", "leaf.fill", HabitColor.GREEN, HabitKind.Check, frequency = Frequency.EveryNDays(3), archived = true),
+            h("Gym", "dumbbell.fill", HabitColor.ORANGE, HabitKind.Check, goal = 3.0, frequency = Frequency.PerWeek(3), archived = true),
+        )
+        val entries = ArrayList<Entry>()
+        for (hb in habits.filter { !it.archived && it.kind != HabitKind.Quit && !it.atMost }) for (d in 1..20)
+            entries.add(Entry(habitId = hb.id, day = today - d, value = hb.goal, createdAt = store.rules.dayStart(today - d) + 12 * 3_600_000L))
+        val archivedDays = mapOf("30-day challenge" to 17, "Water plants" to 46, "Gym" to 68)
+        val settings = habits.filter { it.archived }.map { app.habits.core.SettingRecord(HabitStore.Keys.ARCHIVED + it.id, dayKey(today - archivedDays.getValue(it.name))) } +
+            app.habits.core.SettingRecord(HabitStore.Keys.CARD_ORDER, SwiftJson.strings(listOf(DaySection.MORNING, DaySection.AFTERNOON,
+                DaySection.EVENING, DaySection.ANYTIME, DaySection.QUITTING)))
+        val positioned = habits.mapIndexed { i, hb -> hb.record(i, now) }
+        return Snapshot(positioned, habits.flatMap { it.stepRecords() }, habits.flatMap { it.reminderRecords() }, entries.map { it.record }, settings)
+    }
+
     /** Saves the demo habits into an empty test database, then reads them back. */
-    suspend fun seed(store: HabitStore, year: Boolean = false, many: Boolean = false, design: Boolean = false, days: Boolean = false) {
+    suspend fun seed(store: HabitStore, year: Boolean = false, many: Boolean = false, design: Boolean = false, days: Boolean = false, habitsPage: Boolean = false) {
         if (store.habits.isNotEmpty()) return
         store.repo.importAll(when {
+            habitsPage -> habitsPage(store, store.clock())
             days -> days(store, store.clock())
             design -> design(store, store.clock())
             else -> snapshot(store, store.clock(), year, many)
         })
         store.load()
         if (days) store.habits.firstOrNull { it.name == "Meditate" }?.let { store.pause(it, store.today(), store.today() + 6) }
+        if (habitsPage) {
+            fun id(name: String) = store.habits.first { it.name == name }.id
+            store.habits.firstOrNull { it.name == "Meditate" }?.let { store.pause(it, store.today() - 3, store.today()) }
+            for ((name, members) in listOf("Health" to listOf("Stretch", "Meds", "Walk", "Water", "Smoking"),
+                "Home" to listOf("Refill water", "Skincare", "Skincare (night)"), "Mind" to listOf("Read", "Journal")))
+                store.saveGroup(HabitGroup(name = name, color = HabitColor.BLUE, habits = members.map(::id)))
+        }
         if (design) {
             store.habits.firstOrNull { it.name == "Meditate" }?.let { store.pause(it, store.today(), store.today() + 6) }
         }

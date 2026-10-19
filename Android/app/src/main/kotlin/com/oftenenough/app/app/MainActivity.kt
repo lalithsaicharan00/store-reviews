@@ -38,6 +38,8 @@ class MainActivity : FragmentActivity() {
     companion object {
         /** A reminder's tap: open this habit's Day details for this day. */
         const val OPEN_HABIT = "openHabit"
+        /** A milestone notification's tap: "habitId|length", its pop-up on Today (Figma N.6). */
+        const val OPEN_MILESTONE = "openMilestone"
         const val OPEN_DAY = "openDay"
         /** A widget's link: "item/<id>" (Day details), "log/<id>", "slip/<id>", "timer/<id>", "plus", "today". */
         const val WIDGET_ROUTE = "widgetRoute"
@@ -102,7 +104,8 @@ class MainActivity : FragmentActivity() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) window.isNavigationBarContrastEnforced = false
         val test = intent.getBooleanExtra(TestLaunch.UITEST, false)
         if (test) {
-            AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 }, intent.getStringExtra(TestLaunch.ACCOUNT_SERVER))
+            AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 }, intent.getStringExtra(TestLaunch.ACCOUNT_SERVER),
+                plus = intent.getBooleanExtra(TestLaunch.PLUS, false))
             if (!intent.getBooleanExtra(TestLaunch.ONBOARDING, false)) AppGraph.prefs.onboarded = true
             // Today has been opened on this many earlier days (the ✏ tip waits for three, Figma 2.0).
             intent.getIntExtra(TestLaunch.DAYS_SEEN, 0).takeIf { it > 0 }?.let { n -> AppGraph.prefs.todayDaysSeen = (1..n).joinToString(",") { "-$it" } }
@@ -117,7 +120,7 @@ class MainActivity : FragmentActivity() {
         setContent {
             if (demo != null && (test || BuildConfig.DEBUG)) LaunchedEffect(Unit) {
                 snapshotFlow { store.isLoaded }.first { it }
-                DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days")
+                DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits")
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
@@ -151,4 +154,6 @@ object TestLaunch {
     const val ONBOARDING = "onboarding"
     /** "dev": the account Worker's dev instead of the stand-in (the end-to-end tests, `AccountServerLiveTest`). */
     const val ACCOUNT_SERVER = "accountServer"
+    /** Plus owned from the start (the stand-in store, as if bought). */
+    const val PLUS = "plus"
 }

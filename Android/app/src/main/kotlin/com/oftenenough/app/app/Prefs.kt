@@ -34,6 +34,11 @@ class Prefs(private val sp: SharedPreferences) {
     var todayDaysSeen by str("today.daysSeen", "")
     /** The ✏ tip was shown and ended (Got it, or ✏ itself). */
     var arrangeTipDone by bool("today.arrangeTipDone", false)
+    /**
+     * Today's milestones as shown, and the counts the day's limits read (MilestoneCenter): presentation on this phone,
+     * never habit data (the milestones themselves are worked out from the logs, D6).
+     */
+    var milestones by str("milestones.shown", "")
 
     class BoolPref(private val sp: SharedPreferences, private val key: String, default: Boolean) {
         private val state = mutableStateOf(sp.getBoolean(key, default))

@@ -68,6 +68,8 @@ import com.oftenenough.app.data.history
 import com.oftenenough.app.data.matchingNotes
 import com.oftenenough.app.data.noteMonths
 import com.oftenenough.app.data.pageSentence
+import com.oftenenough.app.data.archivedLine
+import androidx.compose.material.icons.rounded.Inventory2
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.TonalButton
@@ -224,7 +226,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, navigationIconContentColor = c.ink, actionIconContentColor = c.ink),
         )
         LazyColumn(Modifier.fillMaxWidth().weight(1f).semantics { testTag = "habit-details-list" }, state = listState) {
-            item(key = "header") { Header(habit, sentence, store, today) }
+            item(key = "header") { Header(habit, sentence, store, today) { if (!store.restore(habit)) noRoom = true } }
             item(key = "tabs") {
                 PrimaryTabRow(
                     selectedTabIndex = tabs.indexOf(shown),
@@ -248,7 +250,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                 HabitTab.HISTORY -> {
                     val months = model.history(store, habit, revision, today)
                     historyItems(
-                        color = habit.color, months = months, addLabel = addTitle(habit, store, today), toggled = historyToggled,
+                        color = habit.color, months = months, addLabel = if (habit.archived) "" else addTitle(habit, store, today), toggled = historyToggled,
                         keyOpen = keyOpen, onToggleKey = toggleKey,
                         onToggleMonth = { first -> historyToggled = if (first in historyToggled) historyToggled - first else historyToggled + first },
                         onAdd = { nav.addLog(habit, today) }, onGoToDate = { goToDate = true }, onOpenDay = { day -> nav.openDay(habit, day) },
@@ -328,7 +330,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
 /** What the habit is, in a glance: its icon, name and goal in words, its description, and a paused banner while paused.
  *  No numbers: they belong to Progress. */
 @Composable
-private fun Header(habit: Habit, sentence: String, store: HabitStore, today: Int) {
+private fun Header(habit: Habit, sentence: String, store: HabitStore, today: Int, onRestore: () -> Unit) {
     val c = appColors
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(top = 4.dp, bottom = 16.dp).semantics { testTag = "habit-header" }) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -343,8 +345,27 @@ private fun Header(habit: Habit, sentence: String, store: HabitStore, today: Int
             Spacer(Modifier.height(12.dp))
             Text(description, style = MaterialTheme.typography.bodyLarge, color = c.ink)
         }
+        // Archived (Habits, Figma 6.6): when, that it keeps its history, and Restore; the page is to look at, not to log.
+        if (habit.archived) {
+            Spacer(Modifier.height(12.dp))
+            Row(
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(16.dp).semantics { testTag = "habit-archived" },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(Modifier.size(40.dp).clip(androidx.compose.foundation.shape.CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Rounded.Inventory2, null, Modifier.size(20.dp), tint = c.ink)
+                }
+                Spacer(Modifier.width(16.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(store.archivedLine(habit), style = com.oftenenough.app.ui.theme.AppType.titleMedium, color = c.ink)
+                    Text("It keeps all its history. Restore it to log again.", style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+                }
+                Spacer(Modifier.width(8.dp))
+                TonalButton("Restore", onRestore, Modifier.semantics { testTag = "habit-restore" }, height = 40.dp)
+            }
+        }
         val pause = store.pause(habit, today)
-        if (pause != null && today in pause) {
+        if (!habit.archived && pause != null && today in pause) {
             Spacer(Modifier.height(12.dp))
             Row(
                 Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
@@ -371,13 +392,14 @@ private fun HabitMenu(
     val c = appColors
     val pause = store.pause(habit, today)
     DropdownMenu(expanded, onDismiss, containerColor = c.surface) {
-        DropdownMenuItem(
+        // An archived habit's ⋮ holds Restore and Delete habit… only (Habits, Figma 6.6).
+        if (!habit.archived) DropdownMenuItem(
             text = { Text(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", color = c.ink) },
             onClick = { onDismiss(); nav.edit(habit) },
             leadingIcon = { Icon(Icons.Outlined.Edit, null, tint = c.ink) },
             modifier = Modifier.semantics { testTag = "habit-menu-edit" },
         )
-        if (store.rules.canPause(habit) || pause != null) {
+        if (!habit.archived && (store.rules.canPause(habit) || pause != null)) {
             if (pause != null && today in pause) {
                 DropdownMenuItem(
                     text = { Text("Resume", color = c.ink) },

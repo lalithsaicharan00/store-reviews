@@ -67,6 +67,40 @@ class SectionPlan(val rows: List<Row>, val problem: String?, val sections: List<
             return SectionPlan(rows, problem, list)
         }
 
+        /**
+         * A time of day set by its start alone (Current Work 108): it runs until the next one starts, or until the day ends
+         * (where the latest one ends now). [dayEnd] is the day's end in minutes from the day's midnight (24 * 60 + New day
+         * starts at). A start before the day starts belongs to the end of the day.
+         */
+        fun fromStart(sections: List<DaySection>, subject: DaySection, start: Int, dayEnd: Int = 24 * 60): SectionPlan {
+            val timed = sections.filter { !it.isAnytime }.sortedBy { it.start }
+            val s = if (start < dayEnd - 24 * 60) start + 24 * 60 else start
+            val lastEnd = ranges(timed, dayEnd).lastOrNull()?.end ?: dayEnd
+            val rest = timed.filter { it.id != subject.id }
+            val end = rest.mapNotNull { it.start }.filter { it > s }.minOrNull() ?: if (s >= lastEnd) dayEnd else lastEnd
+            val plan = make(sections, subject, s, end, dayEnd)
+            val clash = rest.any { it.start == s % (24 * 60) }
+            return SectionPlan(plan.rows, if (clash) "Another time of day starts then." else null, plan.sections)
+        }
+
+        /**
+         * Where a new time of day opens (Current Work 98): in time no other one covers, so nothing is split. The two hours
+         * before the first one when they're free (4:00 AM with the standard set), else the start of the free time before it,
+         * else null: the whole day is covered, and the person picks a start.
+         */
+        fun freeStart(sections: List<DaySection>, dayEnd: Int = 24 * 60): Int? {
+            val timed = sections.filter { !it.isAnytime }.sortedBy { it.start }
+            if (timed.isEmpty()) return 6 * 60
+            val first = timed.first().start!!
+            val lastEnd = ranges(timed, dayEnd).last().end - 24 * 60
+            val gap = first - lastEnd
+            return when {
+                gap >= 120 -> first - 120
+                gap > 0 -> lastEnd.mod(24 * 60)
+                else -> null
+            }
+        }
+
         private fun ranges(timed: List<DaySection>, defaultEnd: Int): List<Range> = timed.mapIndexed { i, s ->
             Range(s, s.start!!, if (i + 1 < timed.size) timed[i + 1].start!! else (s.end ?: defaultEnd))
         }

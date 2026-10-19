@@ -1,0 +1,269 @@
+package com.oftenenough.app.ui.newhabit
+
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.Devices
+import androidx.compose.material.icons.outlined.Sync
+import androidx.compose.material.icons.outlined.TabletAndroid
+import androidx.compose.material.icons.outlined.Watch
+import androidx.compose.material.icons.outlined.Widgets
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.AllInclusive
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.oftenenough.app.app.AppGraph
+import com.oftenenough.app.app.BuyResult
+import com.oftenenough.app.app.PlusProduct
+import com.oftenenough.app.data.Habit
+import com.oftenenough.app.data.HabitKind
+import com.oftenenough.app.data.HabitStore
+import com.oftenenough.app.ui.components.HabitIcon
+import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.appColors
+import kotlinx.coroutines.launch
+
+// ------------------------------------------------------------------ 6.3 · Change the type
+
+/**
+ * Change the type (Figma 6.3, 6.4.1), from Edit: the same choices as New habit, the current one outlined and saying
+ * "Current type". A build habit chooses among the four ways to track; a quit or cut-down habit between Quit and Cut down.
+ * Choosing another returns to the form, already showing it; saving then asks before starting over (6.3.1).
+ */
+@Composable
+fun TypePage(form: FormState, onBack: () -> Unit) {
+    val current = form.original?.let { ItemType.of(it) } ?: form.type
+    val types = if (current == ItemType.QUIT || current == ItemType.CUT_DOWN) listOf(ItemType.QUIT, ItemType.CUT_DOWN)
+        else listOf(ItemType.CHECK, ItemType.AMOUNT, ItemType.TIME, ItemType.CHECKLIST)
+    BackHandler(onBack = onBack)
+    ChoicePage("Change the type", close = false, onBack = onBack) {
+        types.forEachIndexed { i, t ->
+            ChoiceCard(icon(t), t.title, if (t == current) "Current type" else t.summary, t.example, i, types.size, "type-${t.name.lowercase()}",
+                outlined = t == form.type) { form.changeType(t); onBack() }
+        }
+    }
+}
+
+// ------------------------------------------------------------------ 5 · Add a 6th habit
+
+/**
+ * Add a 6th habit (Figma 5): the free plan's five habits at once are used. Plus makes room for as many as you like (the
+ * plan, what you get, Get Plus with its price), or Make room instead (5.1). Once there's room, the habit goes ahead.
+ */
+@Composable
+fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit, onPlus: () -> Unit, onBought: () -> Unit, title: String = "Add a 6th habit") {
+    val c = appColors
+    val plus = AppGraph.plus
+    val activity = LocalActivity.current
+    val scope = rememberCoroutineScope()
+    var family by remember { mutableStateOf(false) }
+    var buying by remember { mutableStateOf(false) }
+    var said by remember { mutableStateOf<String?>(null) }
+    val product = if (family) PlusProduct.FAMILY else PlusProduct.PLUS
+    BackHandler(onBack = onBack)
+    // Plus on (bought here, or a pending payment confirmed): the habit goes ahead.
+    LaunchedEffect(store.canAddHabit) { if (store.canAddHabit) onBought() }
+    val habits = store.habits.filter { !it.archived && it.kind != HabitKind.Task }
+    Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding()) {
+        IconButton(onBack, Modifier.padding(start = 4.dp, top = 4.dp).semantics { testTag = "sixth-close" }) { Icon(Icons.Rounded.Close, "Close", tint = c.ink) }
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).semantics { testTag = "sixth-habit" },
+            verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(title, Modifier.semantics { heading() }, style = AppType.headlineMedium, color = c.ink)
+                Text("You're using all ${HabitStore.FREE_HABIT_LIMIT} free habits. Plus makes room for as many as you like.", style = AppType.bodyLarge, color = c.secondary)
+            }
+            // The five, and the + that has no room yet.
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    habits.take(HabitStore.FREE_HABIT_LIMIT).forEach { HabitIcon(it.symbol, it.color, 40.dp) }
+                    Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) { Icon(Icons.Rounded.Add, null, tint = c.onInk) }
+                }
+                Row {
+                    Text("${habits.size} of ${HabitStore.FREE_HABIT_LIMIT} free habits used", Modifier.weight(1f), style = AppType.labelLarge, color = c.ink)
+                    Text("Plus: no limit", style = AppType.bodyMedium, color = c.secondary)
+                }
+                Box(Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)).background(c.ink))
+            }
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface)) {
+                for ((i, p) in listOf(PlusProduct.PLUS, PlusProduct.FAMILY).withIndex()) {
+                    if (i == 1) HorizontalDivider(color = c.screen)
+                    val on = (p == PlusProduct.FAMILY) == family
+                    Row(Modifier.fillMaxWidth().background(if (on) c.soft else Color.Transparent).selectable(on, role = Role.RadioButton) { family = p == PlusProduct.FAMILY }
+                        .padding(start = 16.dp, end = 20.dp, top = 14.dp, bottom = 14.dp).semantics { testTag = "sixth-" + p.name.lowercase() },
+                        verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(on, null, colors = RadioButtonDefaults.colors(selectedColor = c.ink, unselectedColor = c.secondary))
+                        Spacer(Modifier.width(16.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(p.title, style = AppType.titleMedium, color = c.ink)
+                            Text(p.who, style = AppType.bodyMedium, color = c.secondary)
+                        }
+                        Column(horizontalAlignment = Alignment.End) {
+                            Text(plus.price(p) ?: "", style = AppType.titleLarge, color = c.ink)
+                            Text("one-time", style = AppType.bodySmall, color = c.secondary)
+                        }
+                    }
+                }
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("What you get with Plus", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = c.secondary)
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    val rows = listOf(
+                        Triple(Icons.Rounded.AllInclusive, "Unlimited habits", "Free has ${HabitStore.FREE_HABIT_LIMIT}. Add as many as you like."),
+                        Triple(Icons.Outlined.Widgets, "More widgets", "Today’s list and This week"),
+                        Triple(Icons.Outlined.TabletAndroid, "Tablet", "The whole app on your Android tablet"),
+                        Triple(Icons.Outlined.Watch, "Wear OS watch", "Tick off habits from your wrist"),
+                        Triple(Icons.Outlined.Devices, "Windows app", "Your habits on your PC"),
+                        Triple(Icons.Outlined.Sync, "Synced through Google Drive", "A change on one shows on all of them"),
+                    )
+                    rows.forEachIndexed { i, (icon, title, line) -> GetRow(icon, title, line, i, rows.size) }
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+        }
+        Column(Modifier.fillMaxWidth().background(c.screen).padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            said?.let { Text(it, Modifier.fillMaxWidth().padding(horizontal = 8.dp), style = AppType.bodySmall, color = c.secondary) }
+            val price = plus.price(product)
+            Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).clip(RoundedCornerShape(28.dp)).background(if (plus.canBuy && !buying) c.ink else c.ink.copy(alpha = 0.12f))
+                .clickable(enabled = plus.canBuy && !buying, role = Role.Button) {
+                    val a = activity ?: return@clickable
+                    scope.launch {
+                        buying = true
+                        val result = plus.buy(a, product)
+                        buying = false
+                        said = when (result) {
+                            BuyResult.BOUGHT -> { AppGraph.accounts.syncPurchases(plus.purchases()); null }
+                            BuyResult.PENDING -> "Waiting for your payment. Plus turns on as soon as Google Play confirms it."
+                            BuyResult.NOT_COMPLETED -> "Payment not completed. Nothing was charged."
+                            BuyResult.CANCELLED -> null
+                            BuyResult.UNAVAILABLE -> { onPlus(); null }
+                        }
+                    }
+                }.semantics { testTag = "sixth-plus" }, contentAlignment = Alignment.Center) {
+                Text((if (family) "Get Plus Family" else "Get Plus") + (price?.let { " · $it" } ?: ""), style = AppType.titleMedium, color = if (plus.canBuy && !buying) c.onInk else c.ink.copy(alpha = 0.38f))
+            }
+            Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(24.dp)).background(c.soft).clickable(role = Role.Button, onClick = onMakeRoom)
+                .semantics { testTag = "sixth-make-room" }, horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Outlined.Archive, null, Modifier.size(18.dp), tint = c.ink)
+                Spacer(Modifier.width(8.dp))
+                Text("Make room instead", style = AppType.labelLarge, color = c.ink)
+            }
+            Text("Archive a habit (it keeps its progress) or delete one.", Modifier.fillMaxWidth(), style = AppType.bodySmall, color = c.secondary,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        }
+    }
+}
+
+@Composable
+private fun GetRow(icon: ImageVector, title: String, line: String, index: Int, count: Int) {
+    val c = appColors
+    Row(Modifier.fillMaxWidth().clip(com.oftenenough.app.ui.components.segmentShape(index, count)).background(c.surface).heightIn(min = 72.dp)
+        .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(40.dp).clip(CircleShape).background(c.soft), contentAlignment = Alignment.Center) { Icon(icon, null, Modifier.size(22.dp), tint = c.ink) }
+        Spacer(Modifier.width(16.dp))
+        Column {
+            Text(title, style = AppType.titleMedium, color = c.ink)
+            Text(line, style = AppType.bodyMedium, color = c.secondary)
+        }
+    }
+}
+
+// ------------------------------------------------------------------ 5.1 · Make room
+
+/**
+ * Make room (Figma 5.1, the iPhone's `MakeRoomView`): archive or delete one of the five; once there's room, the habit
+ * being added goes ahead. Delete asks first (5.1.1) and says archiving makes room just the same.
+ */
+@Composable
+fun MakeRoomPage(store: HabitStore, onBack: () -> Unit, onRoom: () -> Unit) {
+    val c = appColors
+    var deleting by remember { mutableStateOf<Habit?>(null) }
+    BackHandler(onBack = onBack)
+    // An archive or a delete leaves room: the new habit goes ahead.
+    LaunchedEffect(store.canAddHabit) { if (store.canAddHabit) onRoom() }
+    val habits = store.habits.filter { !it.archived && it.kind != HabitKind.Task }
+    FormPage("Make room", chip = null, onBack = onBack) {
+        Text("Archive or delete one of your ${habits.size} habits to add a new one.", Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
+            style = AppType.bodyLarge, color = c.secondary)
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            habits.forEachIndexed { i, h ->
+                var menu by remember { mutableStateOf(false) }
+                Row(Modifier.fillMaxWidth().clip(com.oftenenough.app.ui.components.segmentShape(i, habits.size)).background(c.surface).heightIn(min = 72.dp)
+                    .padding(start = 16.dp, end = 4.dp).semantics { testTag = "room-${h.name}" }, verticalAlignment = Alignment.CenterVertically) {
+                    HabitIcon(h.symbol, h.color, 40.dp)
+                    Spacer(Modifier.width(16.dp))
+                    Text(h.name, Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Box(Modifier.heightIn(min = 40.dp).clip(RoundedCornerShape(20.dp)).border(1.dp, c.outline, RoundedCornerShape(20.dp))
+                        .clickable(role = Role.Button) { store.archive(listOf(h)) }.padding(horizontal = 16.dp, vertical = 10.dp)
+                        .semantics { testTag = "room-archive-${h.name}" }, contentAlignment = Alignment.Center) {
+                        Text("Archive", style = AppType.labelLarge, color = c.ink)
+                    }
+                    Box {
+                        IconButton({ menu = true }, Modifier.semantics { testTag = "room-more-${h.name}" }) { Icon(Icons.Rounded.MoreVert, "More for ${h.name}", tint = c.secondary) }
+                        DropdownMenu(menu, { menu = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp)) {
+                            DropdownMenuItem({ Text("Delete…", style = AppType.bodyLarge, color = c.error) }, { menu = false; deleting = h })
+                        }
+                    }
+                }
+            }
+        }
+        Note("Archived habits keep all their progress, and you can bring them back any time.")
+    }
+    deleting?.let { h ->
+        AlertDialog({ deleting = null }, title = { Text("Delete ${h.name}?") },
+            text = { Text("Its history and notes are deleted too. Archiving keeps them and makes room just the same.") },
+            confirmButton = { TextButton({ deleting = null; store.delete(listOf(h)) }, Modifier.semantics { testTag = "room-delete" }) { Text("Delete", color = c.error) } },
+            dismissButton = { TextButton({ deleting = null }) { Text("Cancel", color = c.ink) } })
+    }
+}
+

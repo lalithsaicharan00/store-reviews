@@ -4,6 +4,13 @@ import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.ui.semantics.Role
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +39,7 @@ import androidx.compose.material.icons.automirrored.rounded.Notes
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Checklist
@@ -107,17 +115,35 @@ import java.time.ZoneId
 /** Text being typed, read only by its own field, so typing redraws only the field (S11). */
 class TypedText(initial: String) { var text by mutableStateOf(initial) }
 
-private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, GROUP, REMINDERS, ICON }
+private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, GROUP, REMINDERS, ICON, TYPE, SIXTH, MAKE_ROOM }
 
 /**
  * New: what do you want to do → (build: how to track it | quit: quit or cut down) → the form. From an idea it opens the
  * form straight away with the idea's name and how often (nothing else is filled in: the amount depends on the person).
  */
 @Composable
-fun NewHabitFlow(store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit, task: Boolean = false) {
+fun NewHabitFlow(
+    store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit, task: Boolean = false,
+    /** Duplicate (Habits, Figma 2.2): the form filled in from this habit as "Name (copy)", its type already chosen. */
+    copyOf: Habit? = null,
+    /** The name typed in Habits' search (Figma 4.2: New habit "yoga"). */
+    name: String? = null,
+    /** At the free plan's five habits, Add a 6th habit comes first (Habits' + and Duplicate, Figma 1.9, 2.2.1). */
+    roomFirst: Boolean = false,
+) {
     val ideaType = idea?.let { when (it.type) { "amount" -> ItemType.AMOUNT; "time" -> ItemType.TIME; "quit" -> ItemType.QUIT; "cutDown" -> ItemType.CUT_DOWN; else -> ItemType.CHECK } }
+    val copyType = copyOf?.let { ItemType.of(it) }
     // ≡ › Tasks' + opens the task form straight away.
-    var step by rememberSaveable { mutableStateOf(if (task) "form:${ItemType.TASK.name}" else ideaType?.let { "form:${it.name}" } ?: "choose") }
+    var step by rememberSaveable { mutableStateOf(if (task) "form:${ItemType.TASK.name}" else (copyType ?: ideaType)?.let { "form:${it.name}" } ?: "choose") }
+    var room by rememberSaveable { mutableStateOf(if (roomFirst && !store.canAddHabit && copyType != ItemType.TASK) "sixth" else "") }
+    if (room == "sixth") {
+        SixthHabitPage(store, onClose, onMakeRoom = { room = "make" }, onPlus = onPlus, onBought = { room = "" })
+        return
+    }
+    if (room == "make") {
+        MakeRoomPage(store, { room = "sixth" }) { room = "" }
+        return
+    }
     when {
         step == "choose" -> {
             BackHandler(onBack = onClose)
@@ -134,36 +160,48 @@ fun NewHabitFlow(store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSav
         else -> {
             val type = ItemType.valueOf(step.removePrefix("form:"))
             val back = {
-                step = when { idea != null -> ""; type == ItemType.TASK -> "choose"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
+                step = when { idea != null || copyOf != null -> ""; type == ItemType.TASK -> "choose"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
                 if (step.isEmpty()) onClose()
             }
-            HabitForm(type, null, store, idea.takeIf { ideaType == type }, back, onSaved, onPlus)
+            HabitForm(type, null, store, idea.takeIf { ideaType == type }, back, onSaved, onPlus, template = copyOf, prefillName = name)
         }
     }
 }
 
-/** Edit habit: the same form on a saved habit, every row as it is now. */
+/** Edit habit: the same form on a saved habit, every row as it is now. [onStartedOver]: a new type started it over. */
 @Composable
-fun EditHabitScreen(habitId: String, store: HabitStore, onClose: () -> Unit) {
+fun EditHabitScreen(habitId: String, store: HabitStore, onClose: () -> Unit, onStartedOver: () -> Unit = onClose) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onClose() }; return }
-    HabitForm(ItemType.of(habit), habit, store, null, onClose, { onClose() }, {})
+    HabitForm(ItemType.of(habit), habit, store, null, onClose, { onClose() }, {}, onStartedOver)
 }
 
 /** The New Habit (or Edit) form: the preview, the name, then the rows each type needs, each opening its own page. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HabitForm(type: ItemType, original: Habit?, store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit) {
-    val form = remember { FormState(type, original, store).also { f -> idea?.let { f.applyIdea(it) } } }
+fun HabitForm(
+    type: ItemType, original: Habit?, store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit,
+    onStartedOver: () -> Unit = {}, template: Habit? = null, prefillName: String? = null,
+) {
+    val form = remember {
+        FormState(type, original, store, template).also { f ->
+            idea?.let { f.applyIdea(it) }
+            prefillName?.let { n -> f.name = TextLimit.clean(n, TextLimit.NAME); f.nameFilled = f.name.isNotBlank() }
+        }
+    }
     val typed = remember { TypedText(form.name) }
     val describing = remember { TypedText(form.description) }
     var pages by remember { mutableStateOf(listOf<Page>()) }
     val scroll = rememberScrollState()
     var discard by remember { mutableStateOf(false) }
-    var sixth by remember { mutableStateOf(false) }
+    var startOver by remember { mutableStateOf(false) }
+    // Add with no name (Figma 2.1.10): Name takes the focus, outlined, and says what's missing.
+    var nameMissing by remember { mutableStateOf(false) }
+    val nameFocus = remember { FocusRequester() }
     // The previews catch up when typing pauses (0.3 s); Add follows at once (S11).
     LaunchedEffect(typed) {
         snapshotFlow { typed.text }.collectLatest { text ->
             form.nameFilled = text.isNotBlank()
+            if (text.isNotBlank()) nameMissing = false
             delay(300)
             form.name = text
             form.suggestIcon()
@@ -176,35 +214,56 @@ fun HabitForm(type: ItemType, original: Habit?, store: HabitStore, idea: HabitId
         form.description = describing.text
         if (form.hasChanges) discard = true else onClose()
     }
-    // Reminders on: Android asks for notifications when the habit is saved, never before (as the iPhone asks).
-    val askNotifications = androidx.activity.compose.rememberLauncherForActivityResult(
-        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { }
-    fun askIfReminding(habit: Habit) {
-        if (habit.remind && habit.reminders.isNotEmpty() && android.os.Build.VERSION.SDK_INT >= 33)
-            runCatching { askNotifications.launch(android.Manifest.permission.POST_NOTIFICATIONS) }
+    /** Tell me at milestones: kept with the habit's settings, only for quit and cut down. */
+    fun saveAlerts(habit: Habit) {
+        val on = form.milestoneAlerts && (form.type == ItemType.QUIT || form.type == ItemType.CUT_DOWN)
+        val key = com.oftenenough.app.app.reminders.MilestoneAlerts.key(habit.id)
+        if (on != (store.setting(key) == "true")) store.saveAppSetting(key, if (on) "true" else null)
+    }
+    /** What's still needed before Add: its page opens (a name says so where it's typed). */
+    fun missingPage(): Page? = when {
+        form.hasAmount && form.amountValue == null -> Page.HOW_MUCH
+        form.type == ItemType.CHECKLIST && form.filledItems.isEmpty() -> Page.STEPS
+        !form.canAdd -> Page.OFTEN
+        else -> null
+    }
+    fun add() {
+        val habit = form.makeHabit(form.trimmedName)
+        store.add(habit)
+        store.setDescription(TextLimit.clean(describing.text, TextLimit.DESCRIPTION), habit.id)
+        saveAlerts(habit)
+        form.groupId?.let { g -> if (store.groups.any { it.id == g }) store.setGroup(g, habit.id) }
+        onSaved(habit)
     }
     fun save() {
         form.name = typed.text
         form.description = describing.text
-        if (!form.canAdd) return
-        val description = TextLimit.clean(describing.text, TextLimit.DESCRIPTION)
+        if (!form.nameFilled) { nameMissing = true; runCatching { nameFocus.requestFocus() }; return }
+        missingPage()?.let { open(it); return }
         val o = form.original
         if (o != null) {
+            if (form.typeChanged) { startOver = true; return }
             val habit = form.edited(form.trimmedName) ?: return
-            askIfReminding(habit)
             store.update(habit)
-            store.setDescription(description, habit.id)
+            store.setDescription(TextLimit.clean(describing.text, TextLimit.DESCRIPTION), habit.id)
+            saveAlerts(habit)
             if (form.groupId != form.originalGroupId) store.setGroup(form.groupId, habit.id)
             onSaved(habit)
             return
         }
-        if (type.isHabit && !store.canAddHabit) { sixth = true; return }
-        val habit = form.makeHabit(form.trimmedName)
-        askIfReminding(habit)
-        store.add(habit)
-        store.setDescription(description, habit.id)
-        form.groupId?.let { g -> if (store.groups.any { it.id == g }) store.setGroup(g, habit.id) }
-        onSaved(habit)
+        // The free plan's five habits at once (Figma 5): Plus, or make room.
+        if (form.type.isHabit && !store.canAddHabit) { open(Page.SIXTH); return }
+        add()
+    }
+    /** A new type, agreed (Figma 6.3.1): the old habit archived with all it had, a new one in its place from today. */
+    fun startOverNow() {
+        val o = form.original ?: return
+        val fresh = form.makeHabit(form.trimmedName)
+        store.startOver(o, fresh, form.type.title)
+        store.setDescription(TextLimit.clean(describing.text, TextLimit.DESCRIPTION), fresh.id)
+        saveAlerts(fresh)
+        form.groupId?.let { g -> if (store.groups.any { it.id == g }) store.setGroup(g, fresh.id) }
+        onStartedOver()
     }
 
     when (pages.lastOrNull()) {
@@ -212,221 +271,304 @@ fun HabitForm(type: ItemType, original: Habit?, store: HabitStore, idea: HabitId
         Page.UNIT -> UnitPage(form, store, ::back)
         Page.STEPS -> StepsPage(form, ::back)
         Page.OFTEN -> HowOftenPage(form, ::back)
-        Page.TIME_OF_DAY -> TimeOfDayPage(form, store, ::back)
+        Page.TIME_OF_DAY -> TimeOfDayPage(form, store, ::back) { open(Page.NEW_PART) }
+        Page.NEW_PART -> com.oftenenough.app.ui.settings.SectionEditorScreen(store, null) { id -> back(); id?.let { form.choose(it) } }
         Page.GROUP -> GroupPage(form, store, ::back)
         Page.REMINDERS -> RemindersPage(form, store, ::back)
         Page.ICON -> IconPage(form, ::back)
-        null -> FormBody(form, store, typed, describing, scroll, ::open, ::close, ::save)
+        Page.TYPE -> TypePage(form, ::back)
+        Page.SIXTH -> SixthHabitPage(store, ::back, onMakeRoom = { open(Page.MAKE_ROOM) }, onPlus = onPlus, onBought = { pages = emptyList(); add() })
+        Page.MAKE_ROOM -> MakeRoomPage(store, ::back) { pages = emptyList(); add() }
+        null -> FormBody(form, store, typed, describing, scroll, nameFocus, nameMissing, ::open, ::close, ::save)
     }
-    if (discard) DiscardDialog(if (form.editing) "Discard your changes?" else if (type == ItemType.TASK) "Discard this task?" else "Discard this habit?",
-        onKeep = { discard = false }, onDiscard = { discard = false; onClose() })
-    if (sixth) SixthHabitSheet(store, form.trimmedName, { sixth = false }, onPlus)
+    if (discard) DiscardDialog(if (form.editing) "Discard your changes?" else if (form.type == ItemType.TASK) "Discard this task?" else "Discard this habit?",
+        onKeep = { discard = false }, onDiscard = { discard = false; onClose() }, keepLabel = "Keep editing")
+    if (startOver) {
+        val o = form.original
+        val name = o?.name ?: form.trimmedName
+        val kind = form.type.title
+        AlertDialog({ startOver = false }, title = { Text("Start $name over as $kind?") },
+            text = {
+                Text(if (o?.kind == HabitKind.Quit) "Changing $name to $kind starts it over from today. Your old $name, with its quit run and slips, is kept in Archived habits."
+                    else "Changing $name to $kind starts it over from today. Your old $name and its history are kept in Archived habits.")
+            },
+            confirmButton = { TextButton({ startOver = false; startOverNow() }, Modifier.semantics { testTag = "start-over" }) { Text("Start over", color = appColors.ink) } },
+            dismissButton = { TextButton({ startOver = false }) { Text("Cancel", color = appColors.ink) } })
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FormBody(
     form: FormState, store: HabitStore, typed: TypedText, describing: TypedText, scroll: androidx.compose.foundation.ScrollState,
-    open: (Page) -> Unit, close: () -> Unit, save: () -> Unit,
+    nameFocus: FocusRequester, nameMissing: Boolean, open: (Page) -> Unit, close: () -> Unit, save: () -> Unit,
 ) {
     val type = form.type
     var colours by remember { mutableStateOf(false) }
     BackHandler(onBack = close)
     Column(Modifier.fillMaxSize().background(appColors.screen).imePadding()) {
         TopAppBar(
-            title = { Text(formTitle(form), maxLines = 1) },
+            title = { Text(formTitle(form), style = AppType.titleLargeEmphasized, maxLines = 1) },
             navigationIcon = { IconButton(close, Modifier.semantics { testTag = "form-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
-            actions = {
-                Button(save, Modifier.padding(end = 8.dp).semantics { testTag = "form-add" }, enabled = form.canAdd,
-                    colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk,
-                        disabledContainerColor = appColors.tonal, disabledContentColor = appColors.secondary)) {
-                    Text(if (form.editing) "Save" else "Add", style = AppType.titleMedium)
-                }
-            },
+            actions = { AddButton(if (form.editing) "Save" else "Add", ready = form.canAdd, onClick = save) },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = appColors.screen, titleContentColor = appColors.ink, navigationIconContentColor = appColors.ink),
         )
-        Column(Modifier.fillMaxWidth().verticalScroll(scroll).padding(horizontal = 16.dp).navigationBarsPadding()) {
-            if (type != ItemType.QUIT) Preview(form, store)
-            NameGroup(form, typed, describing, onIcon = { open(Page.ICON) }, onColour = { colours = true })
-            Spacer(Modifier.height(24.dp))
+        Column(Modifier.fillMaxWidth().verticalScroll(scroll).padding(horizontal = 16.dp).padding(top = 8.dp, bottom = 24.dp).navigationBarsPadding(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            if (type != ItemType.QUIT) Preview(form)
+            NameGroup(form, typed, describing, nameFocus, nameMissing, onIcon = { open(Page.ICON) }, onColour = { colours = true })
             when (type) {
                 ItemType.QUIT -> {
-                    QuitStarted(form, store)
-                    Note("The counter runs from here. It shows on Today under Quit or Cut Down, counting up.")
-                    Spacer(Modifier.height(16.dp))
-                    SegmentedList { OpenRow("Group", groupName(form, store), Icons.Outlined.Folder, 0, 1, "group-row") { open(Page.GROUP) } }
+                    if (form.editing) SegmentedList { OpenRow("Type", type.title, null, 0, 1, "type-row") { open(Page.TYPE) } }
+                    Column {
+                        QuitStarted(form, store)
+                        Note("The counter runs from here. It shows on Today under Quit or Cut Down, counting up.")
+                    }
+                    SegmentedList { OpenRow("Group", groupName(form, store), null, 0, 1, "group-row") { open(Page.GROUP) } }
+                    MilestoneSwitch(form, store)
                 }
                 ItemType.TASK -> {
-                    TaskRows(form, store)
-                    Note((if (form.taskRepeats) "It comes back on the days you pick below." else "If it isn't done, it moves forward to today until it is.") +
-                        " Tasks don't have progress or stats.")
-                    Spacer(Modifier.height(16.dp))
-                    if (form.taskRepeats) {
-                        SegmentedList { OpenRow("How often", form.often.often(false).label(false, weekStart = form.weekStart), Icons.Rounded.EditCalendar, 0, 1, "how-often-row") { open(Page.OFTEN) } }
-                        Spacer(Modifier.height(16.dp))
+                    Column {
+                        TaskRows(form, store)
+                        Note((if (form.taskRepeats) "It comes back on the days you pick below." else "If it isn't done, it moves forward to today until it is.") +
+                            " Tasks don't have progress or stats.")
+                    }
+                    if (form.taskRepeats) SegmentedList {
+                        OpenRow("How often", form.often.often(false).label(false, weekStart = form.weekStart), null, 0, 1, "how-often-row") { open(Page.OFTEN) }
                     }
                     PlaceRows(form, store, open, withTime = true)
-                    if (form.taskRepeats) { Spacer(Modifier.height(24.dp)); StartEndRows(form, store) }
+                    if (form.taskRepeats) StartEndRows(form, store)
                 }
-                else -> {
-                    PlanRows(form, open)
-                    if (type == ItemType.AMOUNT) TapRows(form)
-                    Spacer(Modifier.height(24.dp))
-                    if (type == ItemType.CUT_DOWN) {
+                ItemType.CUT_DOWN -> {
+                    Column { PlanRows(form, open); goalNote(form, store)?.let { Note(it) } }
+                    Column {
                         PlaceRows(form, store, open, withTime = false)
                         Note("It shows on Today under Quit or Cut Down. Log it only when it happens.")
-                    } else PlaceRows(form, store, open, withTime = true)
-                    Spacer(Modifier.height(24.dp))
+                    }
+                    StartEndRows(form, store)
+                    MilestoneSwitch(form, store)
+                }
+                else -> {
+                    Column { PlanRows(form, open); goalNote(form, store)?.let { Note(it) } }
+                    if (type == ItemType.AMOUNT) TapRows(form)
+                    PlaceRows(form, store, open, withTime = true)
                     StartEndRows(form, store)
                 }
             }
-            editOutcome(form, store)?.let { Note(it) }
-            Spacer(Modifier.height(32.dp))
         }
     }
     if (colours) ColourSheet(form) { colours = false }
 }
 
+/**
+ * Add (or Save) in the top bar (Figma 2.1, 2.1.10): ink once everything's there; before that it looks quiet (ink at 12 %,
+ * its word at 38 %) but still answers, saying what's missing.
+ */
+@Composable
+private fun AddButton(text: String, ready: Boolean, onClick: () -> Unit) {
+    val c = appColors
+    Box(Modifier.padding(end = 12.dp).height(40.dp).clip(RoundedCornerShape(20.dp)).background(if (ready) c.ink else c.ink.copy(alpha = 0.12f))
+        .clickable(role = Role.Button, onClick = onClick).padding(horizontal = 16.dp).semantics { testTag = "form-add" }, contentAlignment = Alignment.Center) {
+        Text(text, style = AppType.labelLarge, color = if (ready) c.onInk else c.ink.copy(alpha = 0.38f))
+    }
+}
+
+/**
+ * Tell me at milestones (Figma N.1–N.4): off until it's turned on. The first time, Android's own dialog asks for
+ * notifications (as for reminders); allowed, it stays on and says when the next one is; not allowed, it goes back off,
+ * with Open settings once Android won't ask again.
+ */
+@Composable
+private fun MilestoneSwitch(form: FormState, store: HabitStore) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var refused by remember { mutableStateOf(false) }
+    val ask = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) form.milestoneAlerts = true else { form.milestoneAlerts = false; refused = true }
+    }
+    Column {
+        SegmentedList {
+            SwitchRow("Tell me at milestones", form.milestoneAlerts, 0, 1, "milestone-alerts") { on ->
+                when {
+                    !on -> form.milestoneAlerts = false
+                    com.oftenenough.app.app.reminders.Reminders.canPost(context) -> { form.milestoneAlerts = true; refused = false }
+                    android.os.Build.VERSION.SDK_INT >= 33 && !refused -> runCatching { ask.launch(android.Manifest.permission.POST_NOTIFICATIONS) }
+                    else -> refused = true
+                }
+            }
+        }
+        if (refused && !form.milestoneAlerts) {
+            Note("Notifications are off for the app, so milestone notifications can't come. To get them, allow notifications in Android's settings.")
+            OpenSettingsButton(context)
+        } else {
+            val next = if (form.milestoneAlerts) form.original?.let { com.oftenenough.app.app.reminders.MilestoneAlerts.nextText(store, it) } else null
+            Note("A notification when you reach 30 days, 180 days, a year and each year after. " +
+                (next ?: if (form.milestoneAlerts) "" else "Off unless you turn it on."))
+        }
+    }
+}
+
+/** "⚙ Open settings": Android's notification settings for the app (Figma N.4, 2.1.6.4). */
+@Composable
+fun OpenSettingsButton(context: android.content.Context) {
+    androidx.compose.material3.FilledTonalButton({
+        runCatching {
+            context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName))
+        }
+    }, Modifier.padding(start = 16.dp, top = 4.dp).semantics { testTag = "open-settings" },
+        colors = androidx.compose.material3.ButtonDefaults.filledTonalButtonColors(containerColor = appColors.soft, contentColor = appColors.ink)) {
+        Icon(Icons.Outlined.Settings, null, Modifier.size(18.dp))
+        Spacer(Modifier.width(8.dp))
+        Text("Open settings", style = AppType.labelLarge)
+    }
+}
+
 private fun formTitle(form: FormState): String = when {
     form.editing -> if (form.type == ItemType.TASK) "Edit task" else "Edit habit"
-    form.isHabit && form.type != ItemType.CUT_DOWN -> "New Habit"
-    else -> form.type.title.let { if (it == "Quit") "Quit" else it }
+    form.type == ItemType.TASK -> "Task"
+    form.type == ItemType.QUIT -> "Quit"
+    form.type == ItemType.CUT_DOWN -> "Cut down"
+    else -> "New Habit"
 }
 
-/** What saving an edit does, in one line, before Save. */
-private fun editOutcome(form: FormState, store: HabitStore): String? {
+/**
+ * A goal or How often changed in Edit (Figma 6.1): it applies from today, said under the rows; the days before keep their
+ * goal (D6). No extra step.
+ */
+private fun goalNote(form: FormState, store: HabitStore): String? {
     val o = form.original ?: return null
-    if (form.type == ItemType.QUIT) return null
-    if (form.type == ItemType.TASK) return "Changes apply from today."
-    val edited = form.edited(o.name) ?: return null
-    return if (periodOf(o) != periodOf(edited) && store.streak(o, store.today()) > 0) "Your streak restarts. Your history stays."
-    else "Changes apply from today. Your history stays as it was."
-}
-
-/** The kind of period a habit is judged in: each day, or a week, month or year. */
-private fun periodOf(h: Habit): GoalPeriod = when (val f = h.frequency) {
-    is Frequency.PerWeek -> GoalPeriod.WEEK
-    is Frequency.PerMonth -> GoalPeriod.MONTH
-    is Frequency.PerYear -> GoalPeriod.YEAR
-    is Frequency.Flexible -> f.period
-    else -> GoalPeriod.DAY
+    if (form.typeChanged) return null
+    val e = form.edited(o.name) ?: return null
+    if (e.goal == o.goal && e.frequency == o.frequency && e.kind == o.kind) return null
+    return "The new goal starts today. Days before today keep ${HabitCopy.plan(o, store.weekStart)}."
 }
 
 // ------------------------------------------------------------------ Preview and name
 
-/** The habit as Today would show it: its icon, name, a line, and its round button; then the whole habit in a sentence. */
+/** Figma 2.1's "Preview": the habit as Today would show it; until it's named, a line saying so. */
 @Composable
-private fun Preview(form: FormState, store: HabitStore) {
+private fun Preview(form: FormState) {
     val habit = form.previewHabit()
     val named = form.trimmedName.isNotEmpty()
-    GroupTitle("Preview")
-    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(appColors.surface).heightIn(min = 72.dp).padding(horizontal = 16.dp, vertical = 12.dp)
-        .semantics(mergeDescendants = true) { contentDescription = "Preview on Today"; testTag = "today-preview" }, verticalAlignment = Alignment.CenterVertically) {
-        HabitIcon(habit.symbol, habit.color, 40.dp)
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Text(habit.name, style = MaterialTheme.typography.bodyLarge, color = appColors.ink, maxLines = 1)
-            previewLine(form, habit)?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary, maxLines = 1) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("Preview", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = appColors.secondary)
+        Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(appColors.surface).height(72.dp).padding(start = 16.dp, end = 12.dp)
+            .semantics(mergeDescendants = true) { contentDescription = "Preview on Today"; testTag = "today-preview" }, verticalAlignment = Alignment.CenterVertically) {
+            HabitIcon(habit.symbol, habit.color, 40.dp)
+            Spacer(Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                Text(habit.name, style = AppType.titleMedium, color = appColors.ink, maxLines = 1)
+                previewLine(form, habit)?.let { Text(it, style = AppType.bodyMedium, color = appColors.secondary, maxLines = 1) }
+            }
+            val (icon, text) = when {
+                habit.kind == HabitKind.Duration -> Icons.Rounded.PlayArrow to null
+                habit.kind is HabitKind.Amount -> Icons.Rounded.Check to ("+" + (habit.quickIncrement?.let { GoalNumber.text(it) } ?: ""))
+                habit.kind == HabitKind.Checklist -> Icons.Rounded.ExpandMore to null
+                else -> Icons.Rounded.Check to null
+            }
+            RoundActionButton(icon, done = false, color = habit.color, label = "", onClick = {}, text = text, enabled = true)
         }
-        val (icon, text) = when {
-            habit.kind == HabitKind.Duration -> Icons.Rounded.PlayArrow to null
-            habit.kind is HabitKind.Amount -> Icons.Rounded.Check to ("+" + (habit.quickIncrement?.let { GoalNumber.text(it) } ?: ""))
-            else -> Icons.Rounded.Check to null
-        }
-        RoundActionButton(icon, done = false, color = habit.color, label = "", onClick = {}, text = text, enabled = true)
+        if (!named) Text(if (form.type == ItemType.TASK) "Enter a task name to see the preview." else "Enter a habit name to see the preview.",
+            Modifier.padding(horizontal = 16.dp).semantics { testTag = "habit-sentence" }, style = AppType.bodySmall, color = appColors.secondary)
     }
-    Text(if (named) form.sentence() else if (form.type == ItemType.TASK) "Enter a task name to see the preview." else "Enter a habit name to see the preview.",
-        Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp).semantics { testTag = "habit-sentence" },
-        style = if (named) AppType.titleMedium else AppType.bodyMedium,
-        color = if (named) appColors.ink else appColors.secondary)
-    @Suppress("UNUSED_VARIABLE") val unused = store
 }
 
 private fun previewLine(form: FormState, habit: Habit): String? = when {
     form.type == ItemType.TASK -> if (form.taskRepeats) HabitCopy.capitalized(HabitCopy.rhythm(habit.frequency, form.weekStart, short = true)) else "Task"
+    form.type == ItemType.CHECKLIST -> "0/${maxOf(1, form.filledItems.size)} steps"
     form.hasAmount && form.amountValue == null -> null
+    habit.kind is HabitKind.Amount -> null
     else -> HabitCopy.capitalized(HabitCopy.plan(habit, form.weekStart, short = true))
 }
 
-/** The name (big), the description, and Icon | Colour, as one group. */
+/** The name, the description, and Icon | Colour, as one group (Figma 2.1's "Card · Name"). */
 @Composable
-private fun NameGroup(form: FormState, typed: TypedText, describing: TypedText, onIcon: () -> Unit, onColour: () -> Unit) {
+private fun NameGroup(form: FormState, typed: TypedText, describing: TypedText, focus: FocusRequester, missing: Boolean, onIcon: () -> Unit, onColour: () -> Unit) {
     val describes = form.type != ItemType.QUIT
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        NameField(typed, form.type.namePlaceholder, autoFocus = !form.editing && typed.text.isEmpty())
+        NameField(typed, form.type.namePlaceholder, focus, missing, autoFocus = !form.editing && typed.text.isEmpty())
         if (describes) DescriptionField(describing)
         Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
             HalfRow("Icon", "icon-row", RoundedCornerShape(4.dp, 4.dp, 4.dp, 24.dp), Modifier.weight(1f), onIcon) {
-                HabitIcon(form.symbol, form.color, 28.dp)
+                HabitIcon(form.symbol, form.color, 32.dp)
             }
             HalfRow("Colour", "colour-row", RoundedCornerShape(4.dp, 4.dp, 24.dp, 4.dp), Modifier.weight(1f), onColour) {
-                Box(Modifier.size(28.dp).clip(CircleShape).background(appColors.habit(form.color)))
+                Box(Modifier.size(32.dp).clip(CircleShape).background(appColors.habit(form.color)))
             }
         }
     }
 }
 
-/** The name field on its own, so typing redraws only it (S11). A name is at most 24 letters, and shows only what's kept (U6). */
+/**
+ * The name field on its own, so typing redraws only it (S11). A name is at most 24 letters, and shows only what's kept
+ * (U6). With nothing typed, Add outlines it in red and says so (Figma 2.1.10).
+ */
 @Composable
-private fun NameField(typed: TypedText, placeholder: String, autoFocus: Boolean) {
-    val focus = remember { FocusRequester() }
+private fun NameField(typed: TypedText, placeholder: String, focus: FocusRequester, missing: Boolean, autoFocus: Boolean) {
+    val c = appColors
     LaunchedEffect(Unit) { if (autoFocus) runCatching { focus.requestFocus() } }
-    Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp, 24.dp, 4.dp, 4.dp)).background(appColors.surface).heightIn(min = 68.dp)
-        .padding(horizontal = 16.dp, vertical = 14.dp), contentAlignment = Alignment.CenterStart) {
-        BasicTextField(typed.text, { typed.text = it.replace("\n", "").take(TextLimit.NAME) },
-            Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "name-field"; contentDescription = "Name" },
-            textStyle = AppType.headlineMedium.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-            decorationBox = { inner -> Box { if (typed.text.isEmpty()) Text(placeholder, style = AppType.headlineMedium.copy(color = appColors.secondary)); inner() } })
+    val shape = RoundedCornerShape(24.dp, 24.dp, 4.dp, 4.dp)
+    Column(Modifier.clip(shape).background(c.surface)) {
+        Box(Modifier.fillMaxWidth().clip(shape).then(if (missing) Modifier.border(2.dp, c.error, shape) else Modifier)
+            .heightIn(min = 72.dp).padding(horizontal = 16.dp, vertical = 22.dp), contentAlignment = Alignment.CenterStart) {
+            BasicTextField(typed.text, { typed.text = it.replace("\n", "").take(TextLimit.NAME) },
+                Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "name-field"; contentDescription = "Name" },
+                textStyle = AppType.title20.copy(color = c.ink), singleLine = true, cursorBrush = SolidColor(c.ink),
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+                decorationBox = { inner -> Box { if (typed.text.isEmpty()) Text(placeholder, style = AppType.title20.copy(color = c.secondary)); inner() } })
+        }
+        if (missing) Text("Give it a name to add it.", Modifier.padding(start = 16.dp, top = 4.dp, bottom = 8.dp).semantics { testTag = "name-missing" },
+            style = AppType.bodySmall, color = c.error)
     }
-    TextLimit.note(typed.text, TextLimit.NAME)?.let { Text(it, Modifier.padding(start = 16.dp, top = 4.dp), style = MaterialTheme.typography.bodySmall, color = appColors.secondary) }
+    TextLimit.note(typed.text, TextLimit.NAME)?.let { Text(it, Modifier.padding(start = 16.dp, top = 4.dp), style = AppType.bodySmall, color = c.secondary) }
 }
 
 @Composable
 private fun DescriptionField(describing: TypedText) {
-    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp)).background(appColors.surface).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        Icon(Icons.AutoMirrored.Rounded.Notes, null, tint = appColors.secondary)
-        Spacer(Modifier.width(24.dp))
+    Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp)).background(appColors.surface).heightIn(min = 56.dp).padding(16.dp),
+        contentAlignment = Alignment.CenterStart) {
         BasicTextField(describing.text, { describing.text = it.take(TextLimit.DESCRIPTION) },
-            Modifier.weight(1f).semantics { testTag = "description-field"; contentDescription = "Description" },
-            textStyle = MaterialTheme.typography.bodyLarge.copy(color = appColors.ink), maxLines = 4, cursorBrush = SolidColor(appColors.ink),
+            Modifier.fillMaxWidth().semantics { testTag = "description-field"; contentDescription = "Description" },
+            textStyle = AppType.bodyLarge.copy(color = appColors.ink), maxLines = 4, cursorBrush = SolidColor(appColors.ink),
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-            decorationBox = { inner -> Box { if (describing.text.isEmpty()) Text("Description (optional)", style = MaterialTheme.typography.bodyLarge, color = appColors.secondary); inner() } })
+            decorationBox = { inner -> Box { if (describing.text.isEmpty()) Text("Description (optional)", style = AppType.bodyLarge, color = appColors.secondary); inner() } })
     }
 }
 
 @Composable
 private fun HalfRow(title: String, tag: String, shape: RoundedCornerShape, modifier: Modifier, onClick: () -> Unit, lead: @Composable () -> Unit) {
-    Row(modifier.clip(shape).background(appColors.surface).clickable(onClick = onClick).semantics { testTag = tag }.heightIn(min = 56.dp).padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier.clip(shape).background(appColors.surface).clickable(onClick = onClick).semantics { testTag = tag }.heightIn(min = 56.dp)
+        .padding(start = 16.dp, end = 12.dp, top = 12.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
         lead()
         Spacer(Modifier.width(12.dp))
-        Text(title, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+        Text(title, Modifier.weight(1f), style = AppType.titleMedium, color = appColors.ink)
         Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
     }
 }
 
 // ------------------------------------------------------------------ Rows by type
 
-/** How much / Limit / How long / Steps, then How often. */
+/** (Edit: Type,) How much / Limit / How long / Steps, then How often. */
 @Composable
 private fun PlanRows(form: FormState, open: (Page) -> Unit) {
     val type = form.type
     val plan = form.plan
     SegmentedList {
-        val count = if (type == ItemType.CHECK) 1 else 2
+        val typed = if (form.editing) 1 else 0
+        val count = typed + (if (type == ItemType.CHECK) 1 else 2)
+        if (form.editing) OpenRow("Type", type.title, null, 0, count, "type-row") { open(Page.TYPE) }
         when (type) {
-            ItemType.AMOUNT -> OpenRow("How much", if (form.amountValue == null) "Set" else plan.howMuchLabel, Icons.Rounded.Tag, 0, 2, "how-much-row") { open(Page.HOW_MUCH) }
-            ItemType.CUT_DOWN -> OpenRow("Limit", if (form.amountValue == null) "Set" else plan.howMuchLabel, Icons.Rounded.Speed, 0, 2, "how-much-row") { open(Page.HOW_MUCH) }
-            ItemType.TIME -> OpenRow("How long", if (form.amountValue == null) "Set" else plan.howMuchLabel, Icons.Rounded.Timer, 0, 2, "how-much-row") { open(Page.HOW_MUCH) }
+            ItemType.AMOUNT -> OpenRow("How much", if (form.amountValue == null) "Set" else plan.howMuchLabel, null, typed, count, "how-much-row") { open(Page.HOW_MUCH) }
+            ItemType.CUT_DOWN -> OpenRow("Limit", if (form.amountValue == null) "Set" else plan.howMuchLabel, null, typed, count, "how-much-row") { open(Page.HOW_MUCH) }
+            ItemType.TIME -> OpenRow("How long", if (form.amountValue == null) "Set" else plan.howMuchLabel, null, typed, count, "how-much-row") { open(Page.HOW_MUCH) }
             ItemType.CHECKLIST -> {
                 val n = form.filledItems.size
-                OpenRow("Steps", if (n == 0) "Add" else if (n == 1) "1 step" else "$n steps", Icons.Rounded.Checklist, 0, 2, "steps-row") { open(Page.STEPS) }
+                OpenRow("Steps", if (n == 0) "Add" else if (n == 1) "1 step" else "$n steps", null, typed, count, "steps-row") { open(Page.STEPS) }
             }
             else -> {}
         }
-        OpenRow("How often", plan.often.label(plan.hasAmount || form.hasAmount, plan.checklist, form.weekStart), Icons.Rounded.EditCalendar, count - 1, count, "how-often-row") { open(Page.OFTEN) }
+        OpenRow("How often", plan.often.label(plan.hasAmount || form.hasAmount, plan.checklist, form.weekStart), null, count - 1, count, "how-often-row") { open(Page.OFTEN) }
     }
 }
 
@@ -434,23 +576,25 @@ private fun PlanRows(form: FormState, open: (Page) -> Unit) {
 @Composable
 private fun TapRows(form: FormState) {
     val plan = form.plan
-    GroupTitle("When you tap +")
-    SegmentedList {
-        val count = if (form.asks) 2 else 3
-        RadioRow("Add a set amount", !form.asks, 0, count, "tap-adds-step") { form.asks = false }
-        if (!form.asks) Segment(1, count) {
-            Text("Each tap adds", Modifier.weight(1f).padding(start = 40.dp), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            var text by remember { mutableStateOf(form.step?.let { GoalNumber.text(it) } ?: "") }
-            BasicTextField(text, { t -> text = t.filter { it.isDigit() || it == '.' || it == ',' }.take(10); form.step = GoalNumber.parse(text)?.takeIf { it > 0 } },
-                Modifier.width(108.dp).clip(RoundedCornerShape(8.dp)).background(appColors.tonal).heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 12.dp)
-                    .semantics { testTag = "tap-step"; contentDescription = "Each tap adds" },
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = appColors.ink, textAlign = TextAlign.End), singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), cursorBrush = SolidColor(appColors.ink),
-                decorationBox = { inner -> Box(contentAlignment = Alignment.CenterEnd) { if (text.isEmpty()) Text(HabitCopy.number(plan.stepValue), style = MaterialTheme.typography.bodyLarge, color = appColors.ink); inner() } })
+    Column {
+        Text("When you tap +", Modifier.padding(start = 16.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
+        SegmentedList {
+            val count = if (form.asks) 2 else 3
+            RadioRow("Add a set amount", !form.asks, 0, count, "tap-adds-step") { form.asks = false }
+            if (!form.asks) Segment(1, count) {
+                Text("Each tap adds", Modifier.weight(1f).padding(start = 40.dp), style = AppType.bodyLarge, color = appColors.ink)
+                var text by remember { mutableStateOf(form.step?.let { GoalNumber.text(it) } ?: "") }
+                BasicTextField(text, { t -> text = t.filter { it.isDigit() || it == '.' || it == ',' }.take(10); form.step = GoalNumber.parse(text)?.takeIf { it > 0 } },
+                    Modifier.width(72.dp).clip(RoundedCornerShape(8.dp)).background(appColors.tonal).heightIn(min = 40.dp).padding(horizontal = 12.dp, vertical = 8.dp)
+                        .semantics { testTag = "tap-step"; contentDescription = "Each tap adds" },
+                    textStyle = AppType.bodyLarge.copy(color = appColors.ink, textAlign = TextAlign.End), singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), cursorBrush = SolidColor(appColors.ink),
+                    decorationBox = { inner -> Box(contentAlignment = Alignment.CenterEnd) { if (text.isEmpty()) Text(HabitCopy.number(plan.stepValue), style = AppType.bodyLarge, color = appColors.ink); inner() } })
+            }
+            RadioRow("Type the amount each time", form.asks, count - 1, count, "tap-asks") { form.asks = true }
         }
-        RadioRow("Type the amount each time", form.asks, count - 1, count, "tap-asks") { form.asks = true }
+        Note(if (form.asks) "Tap + to type how much you did." else "Each tap on + adds ${HabitCopy.amount(plan.stepValue, plan.unit)}.")
     }
-    Note(if (form.asks) "Tap + to type how much you did." else "Each tap on + adds ${HabitCopy.amount(plan.stepValue, plan.unit)}.")
 }
 
 /** Time of Day, Group and Reminders (a limit has no time of day: it shows under Quit or Cut Down). */
@@ -459,10 +603,9 @@ private fun PlaceRows(form: FormState, store: HabitStore, open: (Page) -> Unit, 
     SegmentedList {
         val count = if (withTime) 3 else 2
         var i = 0
-        if (withTime) OpenRow("Time of Day", HabitCopy.join(form.timesOfDay.map { store.section(it).name }),
-            if (form.type == ItemType.TASK) Icons.Outlined.WbSunny else Icons.Outlined.Schedule, i++, count, "time-of-day-row") { open(Page.TIME_OF_DAY) }
-        OpenRow("Group", groupName(form, store), Icons.Outlined.Folder, i++, count, "group-row") { open(Page.GROUP) }
-        OpenRow("Reminders", form.remindersSummary(), Icons.Outlined.Notifications, i, count, "reminders-row") { open(Page.REMINDERS) }
+        if (withTime) OpenRow("Time of Day", HabitCopy.join(form.timesOfDay.map { store.section(it).name }), null, i++, count, "time-of-day-row") { open(Page.TIME_OF_DAY) }
+        OpenRow("Group", groupName(form, store), null, i++, count, "group-row") { open(Page.GROUP) }
+        OpenRow("Reminders", form.remindersSummary(), null, i, count, "reminders-row") { open(Page.REMINDERS) }
     }
 }
 
@@ -479,48 +622,49 @@ private fun StartEndRows(form: FormState, store: HabitStore) {
     val today = store.today()
     var picking by remember { mutableStateOf<String?>(null) }
     var endsMenu by remember { mutableStateOf(false) }
-    SegmentedList {
-        OpenRow(if (form.startDate < today) "Started" else "Starts", dayWords(form.startDate, today), Icons.Rounded.Event, 0, 2, "starts-row") { picking = "start" }
-        Box {
-            OpenRow("Ends", if (form.hasEnd) dayWords(form.endDate, today) else "Never", Icons.Rounded.EventBusy, 1, 2, "ends-row") { endsMenu = true }
-            DropdownMenu(endsMenu, { endsMenu = false }, Modifier.semantics { testTag = "ends-menu" }, containerColor = appColors.surface) {
-                DropdownMenuItem({ Text("Never") }, { form.hasEnd = false; endsMenu = false },
-                    leadingIcon = { if (!form.hasEnd) Icon(Icons.Rounded.Check, null) })
-                DropdownMenuItem({ Text("On a date…") }, {
-                    endsMenu = false
-                    if (!form.hasEnd && form.endDate <= form.startDate) form.endDate = form.startDate + 30
-                    picking = "end"
-                }, leadingIcon = { if (form.hasEnd) Icon(Icons.Rounded.Check, null) })
+    Column {
+        SegmentedList {
+            OpenRow(if (form.startDate < today) "Started" else "Starts", dayWords(form.startDate, today), null, 0, 2, "starts-row") { picking = "start" }
+            Box {
+                OpenRow("Ends", if (form.hasEnd) dayWords(form.endDate, today) else "Never", null, 1, 2, "ends-row") { endsMenu = true }
+                DropdownMenu(endsMenu, { endsMenu = false }, Modifier.width(200.dp).semantics { testTag = "ends-menu" }, offset = androidx.compose.ui.unit.DpOffset(130.dp, 0.dp),
+                    containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
+                    DropdownMenuItem({ Text("Never", style = AppType.bodyLarge) }, { form.hasEnd = false; endsMenu = false },
+                        leadingIcon = { if (!form.hasEnd) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
+                    DropdownMenuItem({ Text("On a date…", style = AppType.bodyLarge) }, {
+                        endsMenu = false
+                        if (!form.hasEnd && form.endDate <= form.startDate) form.endDate = form.startDate + 30
+                        picking = "end"
+                    }, leadingIcon = { if (form.hasEnd) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
+                }
             }
         }
+        if (form.hasEnd) Note("After ${DayWords.dayMonth(form.endDate)}, it leaves Today. Its history stays.")
+        else if (form.startDate < today) Note("A start date in the past lets you tick the days since then.")
     }
-    if (form.hasEnd) Note("After ${DayWords.dayMonth(form.endDate)}, it leaves Today. Its history stays.")
-    else if (form.startDate < today) Note("A start date in the past lets you tick the days since then.")
     when (picking) {
-        "start" -> DayDialog(form.startDate, { true }, { picking = null }) { form.startDate = it; if (form.hasEnd && form.endDate < it) form.endDate = it }
-        "end" -> DayDialog(maxOf(form.endDate, form.startDate), { it >= form.startDate }, { picking = null }) { form.endDate = it; form.hasEnd = true }
+        "start" -> DayDialog(form.startDate, { true }, { picking = null }, title = if (form.startDate < today) "Started" else "Starts",
+            note = "A start date in the past lets you tick the days since then.") { form.startDate = it; if (form.hasEnd && form.endDate < it) form.endDate = it }
+        "end" -> DayDialog(maxOf(form.endDate, form.startDate), { it >= form.startDate }, { picking = null }, title = "Ends",
+            note = "After it, the habit leaves Today. Its history stays.") { form.endDate = it; form.hasEnd = true }
     }
 }
 
-/** Quit: when it started, as a date and a time, never later than now. */
+/** Quit (Figma 3.1): Started (the date) | At (the time), never later than now; each opens Android's own picker. */
 @Composable
 private fun QuitStarted(form: FormState, store: HabitStore) {
     val zone = ZoneId.systemDefault()
     val at = Instant.ofEpochMilli(form.quitSince).atZone(zone)
     var picking by remember { mutableStateOf<String?>(null) }
-    SegmentedList {
-        Segment(0, 1, Modifier.semantics { testTag = "quit-started" }) {
-            Icon(Icons.Rounded.History, null, tint = appColors.secondary)
-            Spacer(Modifier.width(16.dp))
-            Text("Started", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Pill(pillDate(at.toLocalDate().toEpochDay().toInt()), tag = "quit-date") { picking = "date" }
-            Spacer(Modifier.width(8.dp))
-            Pill(DayWords.clock(form.quitSince), tag = "quit-time") { picking = "time" }
-        }
+    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min).semantics { testTag = "quit-started" }, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        HalfValue("Started", pillDate(at.toLocalDate().toEpochDay().toInt()), "quit-date", RoundedCornerShape(24.dp, 4.dp, 4.dp, 24.dp), Modifier.weight(1f)) { picking = "date" }
+        HalfValue("At", DayWords.clock(form.quitSince), "quit-time", RoundedCornerShape(4.dp, 24.dp, 24.dp, 4.dp), Modifier) { picking = "time" }
     }
     val now = store.clock()
+    val lastDay = Instant.ofEpochMilli(now).atZone(zone).toLocalDate().toEpochDay()
     when (picking) {
-        "date" -> DayDialog(at.toLocalDate().toEpochDay().toInt(), { it <= LocalDate.now(zone).toEpochDay() }, { picking = null }) { day ->
+        "date" -> DayDialog(at.toLocalDate().toEpochDay().toInt(), { it <= lastDay }, { picking = null },
+            title = "Started", note = "The counter runs from here.") { day ->
             form.quitSince = minOf(now, LocalDate.ofEpochDay(day.toLong()).atTime(at.toLocalTime()).atZone(zone).toInstant().toEpochMilli())
         }
         "time" -> MinuteDialog(at.hour * 60 + at.minute, { picking = null }) { m ->
@@ -529,7 +673,22 @@ private fun QuitStarted(form: FormState, store: HabitStore) {
     }
 }
 
-/** A task: once on a date (with an optional time), or on repeat. */
+/** One half of a pair of rows: its title over its value, then › (Figma 3.1's Started | At). */
+@Composable
+private fun HalfValue(title: String, value: String, tag: String, shape: RoundedCornerShape, modifier: Modifier, onClick: () -> Unit) {
+    Row(modifier.fillMaxHeight().clip(shape).background(appColors.surface).clickable(onClick = onClick)
+        .semantics(mergeDescendants = true) { testTag = tag; contentDescription = "$title, $value" }
+        .heightIn(min = 72.dp).padding(start = 16.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f, fill = false)) {
+            Text(title, style = AppType.titleMedium, color = appColors.ink, maxLines = 1)
+            Text(value, style = AppType.bodyMedium, color = appColors.secondary, maxLines = 1)
+        }
+        Spacer(Modifier.width(8.dp))
+        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
+    }
+}
+
+/** A task (Figma 4, 4.2): Repeat (Never | On a schedule), its Date when it's once, and Time; each opens Android's own picker. */
 @Composable
 private fun TaskRows(form: FormState, store: HabitStore) {
     var repeatMenu by remember { mutableStateOf(false) }
@@ -537,62 +696,30 @@ private fun TaskRows(form: FormState, store: HabitStore) {
     val today = store.today()
     val earliest = form.original?.dueDay?.let { minOf(today, it) } ?: today
     SegmentedList {
-        val count = 1 + (if (!form.taskRepeats) 1 else 0) + 1 + (if (form.taskHasTime) 1 else 0)
+        val count = 2 + (if (!form.taskRepeats) 1 else 0)
         var i = 0
         Box {
-            OpenRow("Repeat", if (form.taskRepeats) "On a schedule" else "Never", Icons.Rounded.Repeat, i++, count, "repeat-row") { repeatMenu = true }
-            DropdownMenu(repeatMenu, { repeatMenu = false }, containerColor = appColors.surface) {
-                DropdownMenuItem({ Text("Never") }, { form.taskRepeats = false; repeatMenu = false }, leadingIcon = { if (!form.taskRepeats) Icon(Icons.Rounded.Check, null) })
-                DropdownMenuItem({ Text("On a schedule") }, { form.taskRepeats = true; repeatMenu = false }, leadingIcon = { if (form.taskRepeats) Icon(Icons.Rounded.Check, null) })
+            OpenRow("Repeat", if (form.taskRepeats) "On a schedule" else "Never", null, i++, count, "repeat-row") { repeatMenu = true }
+            DropdownMenu(repeatMenu, { repeatMenu = false }, Modifier.width(200.dp), offset = androidx.compose.ui.unit.DpOffset(130.dp, 0.dp),
+                containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
+                DropdownMenuItem({ Text("Never", style = AppType.bodyLarge) }, { form.taskRepeats = false; repeatMenu = false },
+                    leadingIcon = { if (!form.taskRepeats) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
+                DropdownMenuItem({ Text("On a schedule", style = AppType.bodyLarge) }, { form.taskRepeats = true; repeatMenu = false },
+                    leadingIcon = { if (form.taskRepeats) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
             }
         }
-        if (!form.taskRepeats) Segment(i++, count, Modifier.semantics { testTag = "task-date" }) {
-            Icon(Icons.Rounded.Event, null, tint = appColors.secondary)
-            Spacer(Modifier.width(24.dp))
-            Text("Date", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Pill(pillDate(form.taskDate), tag = "task-date-pill") { picking = "date" }
-        }
-        SwitchRow("Time", form.taskHasTime, i++, count, "task-time", Icons.Outlined.Schedule) { form.taskHasTime = it; form.syncReminders() }
-        if (form.taskHasTime) Segment(i, count) {
-            Text("At", Modifier.weight(1f).padding(start = 48.dp), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Pill(DayWords.clockMinute(form.taskMinute), tag = "task-time-pill") { picking = "time" }
+        if (!form.taskRepeats) OpenRow("Date", pillDate(form.taskDate), null, i++, count, "task-date") { picking = "date" }
+        Segment(i, count, Modifier.heightIn(min = 72.dp).semantics { testTag = "task-time" }, onClick = { picking = "time" }) {
+            Column(Modifier.weight(1f)) {
+                Text("Time", style = AppType.titleMedium, color = appColors.ink)
+                if (form.taskHasTime) Text(DayWords.clockMinute(form.taskMinute), Modifier.semantics { testTag = "task-time-pill" }, style = AppType.bodyMedium, color = appColors.secondary)
+            }
+            InkSwitch(form.taskHasTime) { on -> if (on) picking = "time" else { form.taskHasTime = false; form.syncReminders() } }
         }
     }
     when (picking) {
         "date" -> DayDialog(form.taskDate, { it >= earliest }, { picking = null }) { form.taskDate = it }
-        "time" -> MinuteDialog(form.taskMinute, { picking = null }) { form.taskMinute = it; form.syncReminders() }
+        // Turning Time on waits for OK: Cancel leaves it off (Figma 4.4).
+        "time" -> MinuteDialog(form.taskMinute, { picking = null }) { form.taskMinute = it; form.taskHasTime = true; form.syncReminders() }
     }
 }
-
-// ------------------------------------------------------------------ A sixth habit on the free plan
-
-/** The free plan keeps five habits at once: Plus has no limit, or make room by archiving one. Tasks are always free. */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SixthHabitSheet(store: HabitStore, name: String, onDismiss: () -> Unit, onPlus: () -> Unit) {
-    ModalBottomSheet(onDismiss, containerColor = appColors.surface) {
-        Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 32.dp).semantics { testTag = "sixth-habit" }) {
-            Text("Add a 6th habit", style = MaterialTheme.typography.headlineSmall, color = appColors.ink)
-            Spacer(Modifier.height(12.dp))
-            Text("The free plan keeps ${HabitStore.FREE_HABIT_LIMIT} habits at once. Plus has no limit, so ${name.ifEmpty { "this habit" }} can join them. Tasks are always free.",
-                style = MaterialTheme.typography.bodyLarge, color = appColors.secondary)
-            Spacer(Modifier.height(16.dp))
-            store.habits.filter { !it.archived && it.kind != HabitKind.Task }.forEach { h ->
-                Row(Modifier.padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                    HabitIcon(h.symbol, h.color, 32.dp)
-                    Spacer(Modifier.width(12.dp))
-                    Text(h.name, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                }
-            }
-            Spacer(Modifier.height(20.dp))
-            Button({ onDismiss(); onPlus() }, Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { testTag = "sixth-plus" },
-                colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk)) { Text("See Plus") }
-            Spacer(Modifier.height(8.dp))
-            androidx.compose.material3.TextButton(onDismiss, Modifier.fillMaxWidth()) {
-                Text("Make room instead: archive a habit", color = appColors.ink)
-            }
-        }
-    }
-}
-
-@Suppress("unused") private fun unusedIcon(): ImageVector = Icons.Rounded.Tag

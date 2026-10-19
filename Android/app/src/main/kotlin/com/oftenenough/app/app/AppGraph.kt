@@ -39,6 +39,9 @@ object AppGraph {
     /** "habitId|day" a reminder asked to open (Day details), read once by Today. */
     var dayToOpen by androidx.compose.runtime.mutableStateOf<String?>(null)
 
+    /** A milestone notification tapped: "habitId|length", read once by Today, which shows its pop-up (Figma N.6). */
+    var milestoneToOpen by androidx.compose.runtime.mutableStateOf<String?>(null)
+
     /** A widget's link, read once by the app's navigation (W9: it replaces whatever was open). */
     var widgetRoute by androidx.compose.runtime.mutableStateOf<String?>(null)
 
@@ -48,6 +51,7 @@ object AppGraph {
             widgetRoute = route + "|" + intent.getIntExtra(MainActivity.OPEN_DAY, -1)
             intent.removeExtra(MainActivity.WIDGET_ROUTE)
         }
+        intent?.getStringExtra(MainActivity.OPEN_MILESTONE)?.let { milestoneToOpen = it; intent.removeExtra(MainActivity.OPEN_MILESTONE) }
         val habit = intent?.getStringExtra(MainActivity.OPEN_HABIT) ?: return
         val day = intent.getIntExtra(MainActivity.OPEN_DAY, -1)
         if (day >= 0) dayToOpen = "$habit|$day"
@@ -133,6 +137,7 @@ object AppGraph {
         lockInstance = AppLock(context.getSharedPreferences(AppLock.FILE, Context.MODE_PRIVATE))
         watchScreenOff(context)
         storeInstance = HabitStore(HabitRepository.open(path), scope).also { s ->
+            s.milestones.memory = milestoneMemory()
             // Every saved change plans reminders again once the changes stop (S16).
             s.onChange = {
                 com.oftenenough.app.app.reminders.Reminders.replanSoon(context.applicationContext, s)
@@ -167,7 +172,7 @@ object AppGraph {
         else com.oftenenough.app.app.backup.NoDriveLink
 
     /** A test launch: an in-memory database, its own preferences, and (optionally) a clock that starts at [clockHour]:30. */
-    fun openForTest(context: Context, clockHour: Int?, accountServer: String? = null) {
+    fun openForTest(context: Context, clockHour: Int?, accountServer: String? = null, plus: Boolean = false) {
         init(context)
         isTest = true
         val offset = clockHour?.let {
@@ -182,7 +187,10 @@ object AppGraph {
         lockInstance = AppLock(context.getSharedPreferences("uitest-applock", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
         watchScreenOff(context)
         storeInstance?.repo?.close()
-        storeInstance = HabitStore(HabitRepository.openInMemory(), scope) { System.currentTimeMillis() + offset }.also { s -> scope.launchLoad(s) }
+        storeInstance = HabitStore(HabitRepository.openInMemory(), scope) { System.currentTimeMillis() + offset }.also { s ->
+            s.milestones.memory = milestoneMemory()
+            scope.launchLoad(s)
+        }
         // Its own stand-in Drive, emptied each test launch (D8: never the person's).
         val driveFolder = java.io.File(context.noBackupFilesDir, "uitest-standin-drive").also { it.deleteRecursively() }
         val drivePrefs = context.getSharedPreferences("uitest-drive", Context.MODE_PRIVATE).also { it.edit().clear().commit() }
@@ -190,10 +198,17 @@ object AppGraph {
             com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs), test = true)
         // Its own purchases, none each launch unless the launch asks for Plus (TestLaunch.PLUS).
         plusInstance = FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
+            .also { if (plus) it.ownForTest() }
         // Its own account and stand-in server, emptied each launch (D8).
         openAccounts(context, "uitest-account", test = true, testServer = accountServer)
         codesInstance = PlusCodes(context.getSharedPreferences("uitest-plus-codes", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
         followPlus(store)
+    }
+
+    /** Today's shown milestones live in this launch's own preferences (the person's, or a test launch's, D8). */
+    private fun milestoneMemory() = object : com.oftenenough.app.data.MilestoneCenter.Memory {
+        override fun read(): String = prefs.milestones
+        override fun write(text: String) { prefs.milestones = text }
     }
 
     private fun CoroutineScope.launchLoad(store: HabitStore) {

@@ -126,6 +126,13 @@ import com.oftenenough.app.ui.components.WavyProgress
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.rememberTicker
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.graphicsLayer
+import com.oftenenough.app.data.MilestoneCenter
+import com.oftenenough.app.data.MilestoneFront
+import com.oftenenough.app.data.MilestoneTier
+import com.oftenenough.app.data.MilestoneTrack
+import com.oftenenough.app.ui.day.LandmarkPopup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -141,6 +148,8 @@ interface PlayerNav {
     fun openTimer(habit: Habit)
     /** The save message's Add note. By default Day details, which holds the day's note; a host can open the note directly. */
     fun writeNote(habit: Habit, day: Int) = openDay(habit, day)
+    /** A milestone pop-up's All milestones (or See the year): the habit's page. */
+    fun habitPage(habit: Habit, milestones: Boolean) {}
 }
 
 /**
@@ -171,6 +180,27 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
     }
     val view = LocalView.current
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+    // Milestones reached here are the player's (Figma RP.1–RP.3): the ribbon on the hero card, never a bar; a landmark's
+    // pop-up waits for the end. Kept through Add log and Day details (and a rotation) as saveable text.
+    val center = store.milestones
+    val reachedText = rememberSaveable { mutableStateOf("") }
+    val endPopupText = rememberSaveable { mutableStateOf("") }
+    var endPopupDone by rememberSaveable { mutableStateOf(false) }
+    var ribbonFor by remember { mutableStateOf<String?>(null) }
+    DisposableEffect(orderText.value) {
+        val mine = MilestoneFront.Player(splitIds(orderText.value).toSet())
+        val before = center.front
+        center.front = mine
+        onDispose { if (center.front == mine) center.front = before }
+    }
+    val waiting = center.next(MilestoneCenter.Surface.PLAYER)
+    LaunchedEffect(waiting) {
+        val hit = waiting ?: return@LaunchedEffect
+        val shown = center.claim(hit, MilestoneCenter.Surface.PLAYER) ?: return@LaunchedEffect
+        reachedText.value = joinIds(splitIds(reachedText.value).filter { it != shown.habitId } + shown.habitId)
+        if (shown.tier == MilestoneTier.POPUP && endPopupText.value.isEmpty()) endPopupText.value = shown.habitId
+        ribbonFor = shown.habitId
+    }
 
     // On first opening only: the first habit's clock starts if it's timed (P1).
     LaunchedEffect(session) {
@@ -259,12 +289,16 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
                     pageSpacing = 8.dp,
                 ) { page ->
                     val id = order.getOrNull(page)
-                    if (id != null) HabitPage(id, session, nav)
+                    if (id != null) HabitPage(id, session, nav, playRibbon = ribbonFor == id)
                     else EndPage(
                         remaining = covered.count { !it },
                         skipped = order.count { habitId -> store.habit(habitId)?.let { session.skipped(it) } == true },
                         reviewed = reviewed.size,
                         onReview = { showQueue = true },
+                        reached = splitIds(reachedText.value).mapNotNull { hid ->
+                            val h = store.habit(hid) ?: return@mapNotNull null
+                            center.visible(h)?.let { h to center.words(it, h) }
+                        },
                     )
                 }
                 if (feedback != null) {
@@ -290,6 +324,20 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
     }
     if (showQueue && !expired) {
         RoutineSheet(session, covered, onJump = { position -> showQueue = false; session.navigate(position) }, onDismiss = { showQueue = false })
+    }
+    // A landmark reached in the routine: its pop-up rises over the end screen, once (Figma RP.3).
+    if (!endPopupDone && index >= order.size && endPopupText.value.isNotEmpty() && pager.currentPage >= order.size) {
+        val h = store.habit(endPopupText.value)
+        val shown = h?.let { center.visible(it) }
+        if (h == null || shown == null) endPopupDone = true
+        else {
+            val w = remember(shown) { center.words(shown, h) }
+            val others = splitIds(reachedText.value).count { it != h.id && store.habit(it)?.let { o -> center.visible(o) } != null }
+            LandmarkPopup(w.number, w.popupTitle, w.popupSubtitle.replace("reached today", "reached in this routine"), h.color, w.next,
+                second = w.second, more = if (others > 0) "and $others more in this routine" else null,
+                onClose = { endPopupDone = true },
+                onAll = { endPopupDone = true; nav.habitPage(h, milestones = shown.track != MilestoneTrack.ANNIVERSARY) })
+        }
     }
 }
 
@@ -601,7 +649,7 @@ private fun RoutineSegments(covered: List<Boolean>, index: Int, spoken: String) 
 // ---------------------------------------------------------------------------------------------- A habit's page
 
 @Composable
-private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav) {
+private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav, playRibbon: Boolean = false) {
     val store = session.store
     val day = session.day
     val habit = store.habit(id)
@@ -614,8 +662,12 @@ private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav) {
     val skipped = session.skipped(habit)
     val ruled = remember(habit, rev) { store.rule(habit, day) }
     val timed = ruled.kind == HabitKind.Duration
+    // A milestone reached today: a ribbon slides into the top of the hero card and stays on this habit's page (RP.1).
+    val shown = store.milestones.shown(habit.id)
+    val milestone = remember(rev, shown) { if (day == store.today()) store.milestones.visible(habit) else null }
     HeroCard(
         habit = habit, ruled = ruled, day = day, store = store, rev = rev, skipped = skipped,
+        milestone = milestone?.let { remember(it) { store.milestones.words(it, habit).band } }, playMilestone = playRibbon,
         onDay = { nav.openDay(habit, day) },
         // A tap on the clock types time (the iPhone's FocusClock).
         onCountTap = if (timed && live && !skipped) ({ session.openLog(habit, nav) }) else null,
@@ -636,6 +688,8 @@ private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav) {
 internal fun HeroCard(
     habit: Habit, ruled: Habit, day: Int, store: HabitStore, rev: Int, skipped: Boolean,
     onDay: (() -> Unit)?, onCountTap: (() -> Unit)?, onStep: ((Step, Boolean) -> Unit)?, modifier: Modifier = Modifier,
+    /** "30 days in a row · reached today": the ribbon across the card's top (RP.1); [playMilestone]: it was just reached. */
+    milestone: String? = null, playMilestone: Boolean = false,
 ) {
     val c = appColors
     val running = ruled.kind == HabitKind.Duration && day == store.today() && store.timers.containsKey(habit.id)
@@ -644,12 +698,22 @@ internal fun HeroCard(
     val dayText = DayWords.day(day, store.today())
     val checklist = ruled.kind == HabitKind.Checklist
     val compact = checklist && ruled.steps.size > COMPACT_STEPS
+    // Just reached: the cookie pops with a burst of twelve dots as Mark done fills it (RP.1, 0.18–1.0 s of 2.4 s).
+    val pop = com.oftenenough.app.ui.today.rememberPlay(if (playMilestone && milestone != null) "pop-${habit.id}" else null, playMilestone && milestone != null, 2400)
+    val cookie = Modifier.graphicsLayer {
+        val sc = com.oftenenough.app.ui.day.track(pop, com.oftenenough.app.ui.day.Key(0f, 1f), com.oftenenough.app.ui.day.Key(0.075f, 1f, PopEaseOut),
+            com.oftenenough.app.ui.day.Key(0.167f, 1.12f, PopEaseInOut), com.oftenenough.app.ui.day.Key(0.258f, 1f))
+        scaleX = sc; scaleY = sc
+    }.cookieBurst(pop, c.habit(habit.color))
     Card(modifier.fillMaxSize().semantics { testTag = "player-hero" }, shape = RoundedCornerShape(32.dp)) {
+      Column(Modifier.fillMaxSize()) {
+        if (milestone != null) com.oftenenough.app.ui.day.MilestoneRibbon(milestone, habit.color, "ribbon-${habit.id}-$milestone", play = playMilestone, strip = true)
+      Box(Modifier.weight(1f).fillMaxWidth()) {
         if (compact) {
             // Many steps (design 05): a compact header, then the steps scroll inside the card with a fade at the end.
             Column(Modifier.fillMaxSize().padding(start = 24.dp, end = 24.dp, top = 24.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    HabitIcon(habit.symbol, habit.color, size = 64.dp, shape = CookieShape())
+                    HabitIcon(habit.symbol, habit.color, size = 64.dp, shape = CookieShape(), modifier = cookie)
                     Spacer(Modifier.width(16.dp))
                     Column(Modifier.weight(1f)) {
                         HabitName(habit.name, AppType.headlineMediumEmphasized, TextAlign.Start, maxLines = 1)
@@ -680,7 +744,7 @@ internal fun HeroCard(
                     Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight).padding(24.dp),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 136.dp, shape = CookieShape())
+                    HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 136.dp, shape = CookieShape(), modifier = cookie)
                     Spacer(Modifier.height(if (checklist) 16.dp else 32.dp))
                     HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 2)
                     Spacer(Modifier.height(12.dp))
@@ -696,6 +760,36 @@ internal fun HeroCard(
                 }
             }
         }
+      }
+      }
+    }
+}
+
+private val PopEaseOut = androidx.compose.animation.core.CubicBezierEasing(0f, 0f, 0.58f, 1f)
+private val PopEaseInOut = androidx.compose.animation.core.CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
+private val PopEaseIn = androidx.compose.animation.core.CubicBezierEasing(0.42f, 0f, 1f, 1f)
+
+/** RP.1's burst round the cookie: a ring growing 0.8 → 1.3 and twelve dots flying out 24 dp, each a little later. */
+private fun Modifier.cookieBurst(t: Float, color: Color): Modifier = drawWithContent {
+    drawContent()
+    if (t <= 0.125f || t >= 0.43f) return@drawWithContent
+    val centre = androidx.compose.ui.geometry.Offset(size.width / 2, size.height / 2)
+    val radius = size.minDimension / 2
+    val ra = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(0.125f, 0f, PopEaseOut),
+        com.oftenenough.app.ui.day.Key(0.146f, 0.6f, PopEaseOut), com.oftenenough.app.ui.day.Key(0.354f, 0f))
+    val rs = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0.8f), com.oftenenough.app.ui.day.Key(0.125f, 0.8f, PopEaseOut), com.oftenenough.app.ui.day.Key(0.354f, 1.3f))
+    if (ra > 0f) drawCircle(color.copy(alpha = ra), radius * rs, centre, style = androidx.compose.ui.graphics.drawscope.Stroke(2.dp.toPx()))
+    for (i in 0 until 12) {
+        val start = 0.125f + 0.0042f * i
+        val a = Math.toRadians(15.0 + 30.0 * i)
+        val da = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(start, 0f, PopEaseOut),
+            com.oftenenough.app.ui.day.Key(start + 0.033f, 1f, PopEaseIn), com.oftenenough.app.ui.day.Key(start + 0.25f, 0f))
+        val ds = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0.6f), com.oftenenough.app.ui.day.Key(start, 0.6f, PopEaseOut),
+            com.oftenenough.app.ui.day.Key(start + 0.0625f, 1f, PopEaseIn), com.oftenenough.app.ui.day.Key(start + 0.25f, 0.3f))
+        val r = radius + com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(start, 0f, PopEaseOut),
+            com.oftenenough.app.ui.day.Key(start + 0.167f, 24f)) * density
+        if (da > 0f) drawCircle(color.copy(alpha = da), (if (i % 2 == 0) 3.5f else 2.5f) * density * ds,
+            androidx.compose.ui.geometry.Offset(centre.x + (kotlin.math.cos(a) * r).toFloat(), centre.y + (kotlin.math.sin(a) * r).toFloat()))
     }
 }
 
@@ -951,7 +1045,8 @@ private fun FeedbackBar(f: Feedback, onUndo: () -> Unit, onNote: () -> Unit, mod
 // ---------------------------------------------------------------------------------------------- The end
 
 @Composable
-private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () -> Unit) {
+private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () -> Unit,
+    reached: List<Pair<Habit, com.oftenenough.app.data.MilestoneWords>> = emptyList()) {
     val c = appColors
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Card(Modifier.fillMaxWidth().semantics { testTag = "player-end" }, shape = RoundedCornerShape(32.dp)) {
@@ -971,6 +1066,24 @@ private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () ->
                 PlayerWords.limitsLine(reviewed)?.let {
                     Spacer(Modifier.height(8.dp))
                     Text(it, style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
+                }
+                // Every milestone the routine's steps reached, once (Figma RP.2).
+                if (reached.isNotEmpty()) {
+                    Spacer(Modifier.height(20.dp))
+                    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.screen).padding(16.dp)
+                        .semantics { testTag = "player-reached" }, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text("Reached in this routine", style = AppType.titleMedium, color = c.ink)
+                        for ((h, w) in reached) Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(28.dp).clip(CookieShape()).background(c.habit(h.color)), contentAlignment = Alignment.Center) {
+                                Text(w.number, style = AppType.labelSmall, color = Color.White, maxLines = 1)
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            Column {
+                                Text(w.title, style = AppType.bodyLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(h.name, style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            }
+                        }
+                    }
                 }
                 Spacer(Modifier.height(12.dp))
                 TextButton(onReview, Modifier.semantics { testTag = "player-review" }) {

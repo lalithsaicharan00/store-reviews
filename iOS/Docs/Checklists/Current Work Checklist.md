@@ -954,7 +954,7 @@ and the Add note keyboard coming up by itself.
     the Ends picker and the problems that only it causes ("That covers all of …", "at least 15 minutes", "longer than
     a day"); keep Starts, "Another time of day starts then", and the "Your day" list, which shows every time of day's
     range before and after, so the end is still seen, not asked for.
-  - [ ] **Android** (changed 14 Oct: the dialog was deleted, the user preferring the full page that shows the whole
+  - [x] **Android** (built 18 Oct 2026, item 131; changed 14 Oct: the dialog was deleted, the user preferring the full page that shows the whole
     day): one full page from both Settings and the habit form (Figma `1440:69`, `1746:71`): one Starts tile with an
     edit pencil, the end as plain grey text under it ("Ends 6:00 AM, when Morning starts"; the last: "when your new day
     starts"), and Your day with a **+ New** / **✎ Editing** chip on its own row, "Was …" under rows that change, and
@@ -1626,24 +1626,6 @@ and the Add note keyboard coming up by itself.
   job; SemiBold and Bold became Medium (the font is Regular and Medium only); top app bar titles are Title Large
   Emphasized and a row's name over supporting text Title Medium, as in Figma. Rulebook **U36**; `Android/README.md`,
   "Text". The emulator suite was run after the change (results in the commit). Widgets keep the launcher's font (Glance).
-- [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
-  Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
-  [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:
-  - [x] **Research first; tell the user when it's done**, before any design. Report (now in `iOS/Docs/iPad/Research/`)
-    (W2), the user's words kept word for word beside it. *Done 11 Oct: [The iPad Layout — Familiar Like the iPhone,
-    Native to the iPad](<../iPad/Research/The iPad Layout — Familiar Like the iPhone, Native to the iPad.md>).
-    Every iPad/tablet/landscape/multitasking review read and hand-coded (2,071 habit-app, 455 platform-app, 209 Play
-    Store); Apple's iPadOS 26 guidance. Recommendation: the iPhone's Today cards side by side in iPhone-width columns
-    chosen by window width, the ≡ menu as a sidebar with a count of what's left, the day control in the top bar, every
-    orientation and window size, form sheets, keyboard shortcuts; a compact window is the iPhone layout. Six decisions
-    for the user (its §8), starting with free or Plus.*
-  - [x] **Today's whole point is quick scanning:** the person sees at a glance how much is left for the day. Take into
-    account what the iPhone already does for that (time-of-day sections, a closed section showing how many things it
-    holds, the day bar, the ≡ side menu, the filter) and work out how the iPad's Today should do it with far more room.
-  - [x] **Familiar, not new:** the iPad should feel like the same app as the iPhone ("it's kind of the same"), not
-    something entirely new.
-  - [x] **And native:** at the same time it must feel like an iPad app, intuitive ("oh, this is very intuitive").
-  - [x] **Design for the room the iPad has:** everything laid out for the larger screen, not a stretched iPhone.
 - [ ] **129. Android Today and Day details, as close to Figma as native Android allows** (added 18 October 2026, from
   the user: "as closely as uh, match the designs … test everything thoroughly … if you find … any of the designs … is
   missing … let me know"; then Day details, Figma `2308:2`: "thoroughly cross-check everything … thoroughly test it").
@@ -1664,6 +1646,100 @@ and the Add note keyboard coming up by itself.
     the Plus suites, GitHub's emulators.
   - [x] Committed to main when the user said (18 Oct); not pushed.
   - [ ] Designs missing or decided without one: listed in the report to the user, 18 Oct.
+- [ ] **130. Android milestones on Today and in the routine player, built to the decided rule** (added 18 October 2026,
+  from the user: "implement the milestone rules … in today page, routine player and all of that … make sure uh, you
+  have that animation properly … don't work on the habit details page"; Figma `2143:2`, rules `2266:2`, Current Work
+  126 and 127, [the list](<../../../Android/Docs/Milestones — Every Habit Type and Every Milestone.md>)).
+  - [x] The rule in the shared core (`MilestoneRule`, spec ST-8, 6 tests); ST-7 and its golden answers kept until the
+    iPhone and the habit page move (T21).
+  - [x] Found at the log that reaches one, shown at once, first come first served, within the day's limits; one a habit a
+    day; undo and redo never twice; away (widget, reminder) and the day's end (quit, cut down) as the row's band.
+  - [x] Today: the band and R.1's moment, the bar (V3), the pop-ups, See, a folded card's medal (A.2). Day details:
+    pop-up or ribbon. The routine player: RP.1–RP.3. The notification: N.1–N.6.
+  - [x] Checked on the emulator at 360 dp, light and dark: the bands on opening, Floss's pop-up, the bar and a touch
+    sending it away, Water's row moment (frames), the anniversary pop-up in Day details, the player's ribbon, list and
+    end pop-up, undo and redo, the form's switch and Android's dialog, the notification's tap. The phone locked itself
+    with a PIN while the code was written, so these checks moved to the emulator.
+  - [x] Tests, 18 Oct: the core's `MilestoneRuleTest` 6/6; JVM 74/74 and lint; on the Pixel 10 Pro emulator Today
+    12/12 (a new test: the pop-up, the bar, the row, undo and redo), Screens 13/13, DataSafety 5/5, WidgetData 8/8,
+    Tablet 3/3. The core's GoldenTest can't run on this Windows checkout (its fixtures have CRLF line endings and the
+    large inputs are generated on CI): GitHub's core workflow runs it after the push.
+  - [ ] Not built: the habit page (asked to leave), the widgets' medal and band (WD, WM, WL, WW), the frequency check.
+  - [x] Committed to main, 19 Oct 2026.
+- [ ] **131. Android: the New habit and Edit habit forms and their whole flow, as Figma `1302:2`** (added 18 October
+  2026, from the user: "fix the habit uh, creation forms and overall flow. Uh, we have updated it … Test it
+  thoroughly").
+  - [x] The choices (1–3), the four build forms, Quit, Cut down and Task (2.1–4) and every page they open: Icon (outlined
+    glyphs in 48 dp tiles, the chosen one a circle in the habit's colour), Colour, How often, Time of Day, Group and New
+    group, Starts and Ends, Reminders (off, on, refused, Get reminders on time), How much and Limit (one wide number
+    field, no − / +), How long (Material's time boxes, the cursor in Minutes, Quick picks as filter chips), Unit, Steps,
+    Repeat and the task's How often; Add with no name (2.1.10) and Discard (2.1.9).
+  - [x] Edit habit (6–6.4.2): the Type row and page, "Start X over as Y?" (Cancel keeps it; Start over archives the old
+    one and starts a new one today, D6), Today's "Old X is in Archived habits · View", the goal note (6.1), Discard your
+    changes. Add a 6th habit (5) and Make room (5.1, 5.1.1): archiving or deleting one adds the habit.
+  - [x] Item 108 on Android: New time of day asks only when it starts; the end is worked out and shown ("Ends 6:00 AM,
+    when Morning starts"), **+ New** / **✎ Editing** on its row, no "No change", and it opens in free time (item 98:
+    4:00 AM with the standard set). `SectionPlan.fromStart`, `freeStart` (2 new JVM tests); Settings › Times of Day
+    uses the same page.
+  - [x] Fixed while checking: the date picker's note was drawn over its title; a task's Time turned on even when its
+    picker was cancelled; How long opened at 0:00 with its "1 h" chip broken over two lines; Get reminders on time
+    opened half-way with its buttons under the gesture bar; after one refusal the page offered Open settings while
+    Android would still ask (now: "Turn on Remind me to be asked again"; Open settings once Android stops asking, U37);
+    the quit habit's Started picker read the phone's date, not the store's (D7); the form's sheets now name their
+    controls to UI Automator (T22).
+  - [x] Checked on the Pixel 10 Pro emulator at 360 × 800 dp against every frame, and on a normal launch: Android's
+    notification question allowed, refused once and refused twice, then the reminder set for 9:00 AM.
+  - [x] Tests: `HabitFormTest` (6, new): type change asks then starts over, Cancel and Discard keep it, the goal note,
+    the 6th habit and Make room, a new time of day by its start, quick picks and a task's Time.
+  - [ ] Found, not changed: without exact alarms Android gives a reminder a one-hour window (`setAndAllowWhileIdle`),
+    while Get reminders on time says "up to 10 minutes late" (A11 D1 planned a 10-minute window). Decide: a
+    10-minute `setWindow` (held in Doze) or say "up to an hour".
+  - [x] Committed to main, 19 Oct 2026.
+- [ ] **132. Android: the Habits page, as Figma `2106:2`** (added 19 October 2026, from the user: "implement everything
+  we have related to habits page and test it in the emulator").
+  - [x] 1–1.9: every habit by time of day in the person's order (as on Today), then Quitting, Paused and the Archived
+    row; the line under each name (goal · How often · first reminder; Back on, Paused until you resume, Starts, Ends,
+    Ended; never red); ☰ opens the menu (a drawer of its own; none beside the sidebar); the bar takes the surface colour
+    as the list scrolls; No habits yet and No habits right now; + at the free five opens Add a 6th habit first.
+  - [x] 2–2.7: each row's ⋮ (Edit habit, Duplicate, Pause… or Resume, Archive, Delete habit…). Pause is a sheet (1 week,
+    2 weeks, Until a date… with Android's date picker, Until I resume it; a quit habit's says its run ends and is kept).
+    Snackbars with Undo for Pause, Resume, Archive and Delete; **a delete happens only once its Undo has gone** (D6).
+    Duplicate opens the form as "Water (copy)" and adds it right after Water, with no history.
+  - [x] 3–3.8: long press or ⋮ › Select; "N selected", Select all / Deselect all; the bottom bar's Pause, Resume (each
+    only when it would act), Archive, Group (Put N habits in a group, New group), Delete (Cancel | Delete). The first
+    visit's coach mark under the first row, put away for good by Got it or the first long press.
+  - [x] 4–4.3: search (Habits, then Archived matches; "No habits called …" with New habit "…", the form's name filled
+    in); the search is kept after a result's Habit details.
+  - [x] 5–5.6: the top ⋮ (Select, Show by… while groups exist, Arrange…, Edit groups or New group); Show by Time of day
+    or Group, remembered; by group: each group, No group, Paused.
+  - [x] 6–6.9, 7–7.2: Archived habits (newest first, "Archived 3 Sep" or "Started over as Time it", free or Plus note,
+    ⋮ Restore / Delete habit…, selection, Nothing archived; Restore a 6th habit at the free five); an archived habit's
+    details say when it was archived with Restore, nothing to log; Today's "Old Water is in Archived habits · View" opens
+    Archived habits.
+  - [x] Checked on the Pixel 10 Pro emulator at 360 × 800 dp beside every frame (`demo habits`, the design's own habits;
+    `plus` for a test launch with Plus).
+  - [x] Tests: `HabitsPageTest` (11, new), `HabitListWordsTest` (new).
+  - [ ] Not built: Figma 1.5 (200 % text) checked only by reading the layout (rows have no fixed height); Tasks keeps its
+    old page.
+  - [x] Committed to main, 19 Oct 2026.
+- [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
+  Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
+  [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:
+  - [x] **Research first; tell the user when it's done**, before any design. Report (now in `iOS/Docs/iPad/Research/`)
+    (W2), the user's words kept word for word beside it. *Done 11 Oct: [The iPad Layout — Familiar Like the iPhone,
+    Native to the iPad](<../iPad/Research/The iPad Layout — Familiar Like the iPhone, Native to the iPad.md>).
+    Every iPad/tablet/landscape/multitasking review read and hand-coded (2,071 habit-app, 455 platform-app, 209 Play
+    Store); Apple's iPadOS 26 guidance. Recommendation: the iPhone's Today cards side by side in iPhone-width columns
+    chosen by window width, the ≡ menu as a sidebar with a count of what's left, the day control in the top bar, every
+    orientation and window size, form sheets, keyboard shortcuts; a compact window is the iPhone layout. Six decisions
+    for the user (its §8), starting with free or Plus.*
+  - [x] **Today's whole point is quick scanning:** the person sees at a glance how much is left for the day. Take into
+    account what the iPhone already does for that (time-of-day sections, a closed section showing how many things it
+    holds, the day bar, the ≡ side menu, the filter) and work out how the iPad's Today should do it with far more room.
+  - [x] **Familiar, not new:** the iPad should feel like the same app as the iPhone ("it's kind of the same"), not
+    something entirely new.
+  - [x] **And native:** at the same time it must feel like an iPad app, intuitive ("oh, this is very intuitive").
+  - [x] **Design for the room the iPad has:** everything laid out for the larger screen, not a stretched iPhone.
   - [x] **Then the designs, in Figma**, on the page made for the iPad (file `Ncccsm1l2O62GJ5xLSInqk`, node `1078:309`,
     empty on 11 Oct); one example first for the user's approval, then the rest.
   - **Decided by the user, 11 Oct 2026 (the report's §8):** (1) **the iPad layout is free** (sync between devices

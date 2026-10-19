@@ -111,9 +111,24 @@ when the row is first seen, and a pop-up's band has See.
 - **It's never at night.**
 - **Tapping it** opens Today with that milestone's pop-up.
 
+## Built on Android (18 Oct 2026)
+
+- **The rule, in the shared core:** `Core/rules/…/MilestoneRule.kt` (spec `Core/spec/streaks.md` ST-8, tests
+  `MilestoneRuleTest`): the buckets, both lists, the pop-up lengths, totals and anniversaries. ST-7's older lists
+  (`Milestones`) stay, with their golden answers, until the iPhone and the habit page move to the new rule (T21).
+- **Found at the log that reaches one, shown at once** (`MilestoneCenter`): a log made today in the app (a tap, Add log, a
+  timer, Day details, the routine player) or away (a widget, a reminder); quit and cut down at the day's end; one a habit a
+  day; the day's limits; kept on the phone for the day, so an undo and redo never shows it twice.
+- **Today:** the row's band and R.1's moment (burst, count roll, band, sheen); the bar (V3); the pop-up (P.1–P.16's
+  words); the band's See and tap; a folded card's medal (A.2).
+- **Day details:** its pop-up within the day's limits, else its ribbon. **The routine player:** the ribbon on the hero
+  card with the cookie's burst (RP.1), *Reached in this routine* (RP.2), a landmark's pop-up at the end (RP.3).
+- **The notification** (N.1–N.6): *Tell me at milestones* on a quit or cut-down habit's form, Android's dialog the
+  first time, the next one named; around midday, never at night; tapping it opens the pop-up.
+
 ## Still to do
 
-- **The designs match this rule** (18 Oct 2026): bars, pop-ups, the routine player, row animations, the habit page and
-  the widget examples.
-- **The shared rules' code** (`Core/rules/…/Milestones.kt`) changes to this when milestones are built: the spec, the
-  Kotlin and the golden answers together (Rulebook T21).
+- **The habit page** (Progress's Milestones card, All milestones) still lists ST-7's lengths: it moves to this rule
+  with the page's own work. **The iPhone** follows once Android is final.
+- **The widgets** (WD, WM, WL, WW: the medal and band on a widget) are not built yet.
+- **The frequency check** before release (Current Work 127).

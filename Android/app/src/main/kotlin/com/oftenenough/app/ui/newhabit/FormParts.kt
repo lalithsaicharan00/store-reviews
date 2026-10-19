@@ -138,7 +138,7 @@ fun GroupTitle(text: String) =
 
 @Composable
 fun Note(text: String) =
-    Text(text, Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp), style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+    Text(text, Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp), style = AppType.bodySmall, color = appColors.secondary)
 
 /** One choice of several: a radio button, its words, and a line under them. */
 @Composable
@@ -155,8 +155,9 @@ fun RadioRow(title: String, selected: Boolean, index: Int, count: Int, tag: Stri
 
 /** One of any number: a checkbox, its words, and a line under them. */
 @Composable
-fun CheckRow(title: String, checked: Boolean, index: Int, count: Int, tag: String, detail: String? = null, onClick: () -> Unit) {
+fun CheckRow(title: String, checked: Boolean, index: Int, count: Int, tag: String, detail: String? = null, indent: Boolean = false, onClick: () -> Unit) {
     Segment(index, count, Modifier.semantics { testTag = tag }, onClick = onClick) {
+        if (indent) Spacer(Modifier.width(36.dp))
         Checkbox(checked, onCheckedChange = null, colors = CheckboxDefaults.colors(checkedColor = appColors.ink, checkmarkColor = appColors.onInk, uncheckedColor = appColors.secondary))
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
@@ -168,23 +169,27 @@ fun CheckRow(title: String, checked: Boolean, index: Int, count: Int, tag: Strin
 
 /** "+ New group", "+ Add step". */
 @Composable
-fun AddRow(title: String, index: Int, count: Int, tag: String, onClick: () -> Unit) {
+fun AddRow(title: String, index: Int, count: Int, tag: String, indent: Boolean = false, onClick: () -> Unit) {
     Segment(index, count, Modifier.semantics { testTag = tag }, onClick = onClick) {
+        if (indent) Spacer(Modifier.width(36.dp))
         Icon(Icons.Rounded.Add, null, tint = appColors.ink)
         Spacer(Modifier.width(24.dp))
         Text(title, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
     }
 }
 
-/** A form row that opens a page: its icon, the setting, what's chosen under it, ›. */
+/**
+ * A row that opens a page: the setting, what's chosen under it, ›. The habit form's rows have no icon (Figma 2.1: 72 dp,
+ * Title Medium over Body Medium); a settings row keeps its icon.
+ */
 @Composable
-fun OpenRow(title: String, value: String, icon: ImageVector, index: Int, count: Int, tag: String, onClick: () -> Unit) {
-    Segment(index, count, Modifier.semantics(mergeDescendants = true) { testTag = tag; contentDescription = "$title, $value" }, onClick = onClick) {
-        Icon(icon, null, tint = appColors.secondary)
-        Spacer(Modifier.width(24.dp))
-        Column(Modifier.weight(1f).padding(vertical = 6.dp)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Text(value, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+fun OpenRow(title: String, value: String, icon: ImageVector?, index: Int, count: Int, tag: String, onClick: () -> Unit) {
+    Segment(index, count, Modifier.heightIn(min = if (icon == null) 72.dp else 56.dp)
+        .semantics(mergeDescendants = true) { testTag = tag; contentDescription = "$title, $value" }, onClick = onClick) {
+        if (icon != null) { Icon(icon, null, tint = appColors.secondary); Spacer(Modifier.width(24.dp)) }
+        Column(Modifier.weight(1f).padding(vertical = if (icon == null) 0.dp else 6.dp)) {
+            Text(title, style = if (icon == null) AppType.titleMedium else MaterialTheme.typography.bodyLarge, color = appColors.ink)
+            Text(value, style = AppType.bodyMedium, color = appColors.secondary)
         }
         Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
     }
@@ -282,16 +287,31 @@ fun ChoicePill(text: String, selected: Boolean = false, tag: String? = null, onC
     }
 }
 
-/** Android's date picker in its dialog; [allowed] limits the days. */
+/**
+ * Android's date picker in its dialog; [allowed] limits the days. Figma 2.1.7, 3.1.1, 4.3: its title says what's being
+ * chosen ("Starts", "Started", "Select date"), the day reads "Tue, 13 Oct", and a [note] under the month says what it does.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, onPick: (Int) -> Unit) {
+fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title: String = "Select date", note: String? = null, onPick: (Int) -> Unit) {
     val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long) = allowed(utcMsToDay(utcTimeMillis))
     })
     DatePickerDialog(onDismiss, confirmButton = {
         TextButton({ state.selectedDateMillis?.let { onPick(utcMsToDay(it)) }; onDismiss() }, Modifier.semantics { testTag = "date-ok" }) { Text("OK", color = appColors.ink) }
-    }, dismissButton = { TextButton(onDismiss) { Text("Cancel", color = appColors.ink) } }) { DatePicker(state) }
+    }, dismissButton = { TextButton(onDismiss) { Text("Cancel", color = appColors.ink) } }) {
+        DatePicker(state,
+            title = { Text(title, Modifier.padding(start = 24.dp, end = 12.dp, top = 16.dp), style = AppType.labelLarge) },
+            headline = {
+                val picked = state.selectedDateMillis?.let { utcMsToDay(it) }
+                Column(Modifier.padding(start = 24.dp, end = 12.dp, bottom = 12.dp)) {
+                    Text(picked?.let { LocalDate.ofEpochDay(it.toLong()).format(DateTimeFormatter.ofPattern("EEE, d MMM", Locale.getDefault())) } ?: "",
+                        style = AppType.headlineLarge, maxLines = 1)
+                    // The note sits under the day: below the picker it was drawn over the title (a DatePicker takes the dialog's height).
+                    if (note != null) Text(note, Modifier.padding(top = 4.dp), style = AppType.bodySmall, color = appColors.secondary)
+                }
+            })
+    }
 }
 
 /** Android's time picker in a dialog: minutes of the day in and out. */
@@ -302,5 +322,6 @@ fun MinuteDialog(minute: Int, onDismiss: () -> Unit, onPick: (Int) -> Unit) {
     AlertDialog(onDismiss, confirmButton = {
         TextButton({ onPick(state.hour * 60 + state.minute); onDismiss() }, Modifier.semantics { testTag = "time-ok" }) { Text("OK", color = appColors.ink) }
     }, dismissButton = { TextButton(onDismiss) { Text("Cancel", color = appColors.ink) } },
+        title = { Text("Select time", style = AppType.labelLarge, color = appColors.secondary) },
         text = { Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { TimePicker(state) } })
 }

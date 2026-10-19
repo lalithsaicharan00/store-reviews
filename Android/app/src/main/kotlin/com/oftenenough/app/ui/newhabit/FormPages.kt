@@ -1,10 +1,14 @@
 package com.oftenenough.app.ui.newhabit
 
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.CreateNewFolder
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -75,6 +79,12 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.selected
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -111,54 +121,54 @@ import java.util.Locale
 
 // ------------------------------------------------------------------ How much, Limit and How long
 
-/** The big number between − and +, with the unit chip under it; tap the number to type it. */
+/** Figma 2.2.1 / 3.2.1: one wide number field (the number keypad comes up), with the unit chip under it. */
 @Composable
 fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
     val limit = form.type == ItemType.CUT_DOWN
     FormPage(if (limit) "Limit" else "How much", chip = null, onBack = onBack) {
         val focus = remember { FocusRequester() }
+        var focused by remember { mutableStateOf(false) }
         LaunchedEffect(Unit) { if (form.amountText.isEmpty()) runCatching { focus.requestFocus() } }
-        Card(Modifier.fillMaxWidth().padding(top = 8.dp)) {
-            Column(Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(oftenHeader(form), style = AppType.titleMedium, color = appColors.secondary)
-                Spacer(Modifier.height(20.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val value = GoalNumber.parse(form.amountText)
-                    StepButton(Icons.Rounded.Remove, "Less", (value ?: 0.0) > 1, size = 56) {
-                        form.amountText = GoalNumber.text(maxOf(1.0, (value ?: 1.0) - 1))
+        GoalCard(oftenHeader(form)) {
+            BasicTextField(
+                form.amountText, { form.amountText = it.filter { c -> c.isDigit() || c == '.' || c == ',' }.take(12) },
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(appColors.tonal)
+                    .border(if (focused) 2.dp else 0.dp, if (focused) appColors.ink else Color.Transparent, RoundedCornerShape(16.dp))
+                    .heightIn(min = 80.dp).focusRequester(focus).onFocusChanged { focused = it.isFocused }
+                    .semantics { testTag = "much-number"; contentDescription = if (limit) "Limit" else "Amount" },
+                textStyle = AppType.displayMedium.copy(color = appColors.ink, textAlign = TextAlign.Center),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+                singleLine = true, cursorBrush = SolidColor(appColors.ink),
+                decorationBox = { inner ->
+                    Box(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), contentAlignment = Alignment.Center) {
+                        if (form.amountText.isEmpty() && !focused) Text(if (limit) "2" else "8", style = AppType.displayMedium.copy(color = appColors.secondary.copy(alpha = 0.45f)))
+                        inner()
                     }
-                    Spacer(Modifier.width(12.dp))
-                    BasicTextField(
-                        form.amountText, { form.amountText = it.filter { c -> c.isDigit() || c == '.' || c == ',' }.take(12) },
-                        Modifier.width(120.dp).clip(RoundedCornerShape(20.dp)).background(appColors.tonal).heightIn(min = 88.dp)
-                            .focusRequester(focus).semantics { testTag = "much-number"; contentDescription = if (limit) "Limit" else "Amount" },
-                        textStyle = AppType.displayMediumEmphasized.copy(color = appColors.ink, textAlign = TextAlign.Center),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
-                        singleLine = true, cursorBrush = SolidColor(appColors.ink),
-                        decorationBox = { inner ->
-                            Box(Modifier.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
-                                if (form.amountText.isEmpty()) Text(if (limit) "2" else "8", style = AppType.displayMediumEmphasized.copy(color = appColors.secondary.copy(alpha = 0.45f)))
-                                inner()
-                            }
-                        },
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    StepButton(Icons.Rounded.Add, "More", (value ?: 0.0) < 9_999_999, size = 56) {
-                        form.amountText = GoalNumber.text(if (value == null) 1.0 else value + 1)
-                    }
-                }
-                Spacer(Modifier.height(16.dp))
-                Row(Modifier.clip(RoundedCornerShape(8.dp)).border(1.dp, appColors.outline, RoundedCornerShape(8.dp)).clickable(onClick = onUnit)
-                    .semantics { testTag = "much-unit" }.heightIn(min = 40.dp).padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(form.unit.ifEmpty { "No unit" }, style = AppType.titleMedium, color = appColors.ink)
-                    Icon(Icons.Rounded.ArrowDropDown, null, tint = appColors.ink)
-                }
+                },
+            )
+            Row(Modifier.clip(RoundedCornerShape(8.dp)).border(1.dp, appColors.outline, RoundedCornerShape(8.dp)).clickable(onClick = onUnit)
+                .semantics { testTag = "much-unit" }.heightIn(min = 40.dp).padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(form.unit.ifEmpty { "No unit" }, style = AppType.labelLarge, color = appColors.ink)
+                Icon(Icons.Rounded.ArrowDropDown, null, Modifier.size(18.dp), tint = appColors.ink)
             }
         }
         val text = form.amountText.trim()
         val error = if (text.isNotEmpty() && (GoalNumber.parse(text)?.let { it > 0 } != true)) "Enter a number above 0, with up to 2 decimal places." else null
         Note(error ?: if (limit) "Log it only when it happens. Staying at or under the limit counts as a good day."
             else "Tap the number to type it, up to 2 decimal places. The unit is optional.")
+    }
+}
+
+/** The white goal card: the rhythm on top ("Every day"), then what's typed. */
+@Composable
+private fun GoalCard(header: String, content: @Composable ColumnScope.() -> Unit) {
+    Card(Modifier.fillMaxWidth().padding(top = 8.dp)) {
+        Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text(header, style = AppType.labelLarge, color = appColors.secondary)
+            content()
+        }
     }
 }
 
@@ -169,28 +179,28 @@ private fun oftenHeader(form: FormState): String {
     return if (form.type == ItemType.CUT_DOWN) "At most, $phrase" else HabitCopy.capitalized(phrase)
 }
 
-/** Hours : minutes, with quick picks. */
+/** Figma 2.3.1: Material's time-input boxes (Hours : Minutes, the cursor in Minutes), then Quick picks as filter chips. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HowLongPage(form: FormState, onBack: () -> Unit) {
     FormPage("How long", chip = null, onBack = onBack) {
-        Card(Modifier.fillMaxWidth().padding(top = 8.dp)) {
-            Column(Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(oftenHeader(form), style = AppType.titleMedium, color = appColors.secondary)
-                Spacer(Modifier.height(20.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    TimeBox(form.hours, "hours", "how-long-hours") { form.hours = it }
-                    Text(":", Modifier.padding(horizontal = 12.dp).padding(bottom = 28.dp), style = AppType.displayMedium.copy(color = appColors.ink))
-                    TimeBox(form.minutes, "minutes", "how-long-minutes") { form.minutes = it }
+        val minutesFocus = remember { FocusRequester() }
+        LaunchedEffect(Unit) { if (form.amountValue == null) runCatching { minutesFocus.requestFocus() } }
+        GoalCard(oftenHeader(form)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                TimeBox(form.hours, "Hours", "how-long-hours", Modifier) { form.hours = it }
+                Box(Modifier.width(24.dp).height(72.dp), contentAlignment = Alignment.Center) {
+                    Text(":", style = AppType.displayMedium.copy(color = appColors.ink))
                 }
-                Spacer(Modifier.height(16.dp))
-                val total = (form.hours.toIntOrNull() ?: 0) * 60 + (form.minutes.toIntOrNull() ?: 0)
-                val picks = listOf(5, 10, 15, 20, 30, 45, 60)
-                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    for (row in listOf(picks.take(3), picks.drop(3))) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        for (m in row) ChoicePill(if (m == 60) "1 h" else "$m min", selected = total == m, tag = "pick-$m") {
-                            form.hours = (m / 60).toString(); form.minutes = (m % 60).toString()
-                        }
-                    }
+                TimeBox(form.minutes, "Minutes", "how-long-minutes", Modifier.focusRequester(minutesFocus)) { form.minutes = it }
+            }
+        }
+        val total = form.amountValue?.toInt()
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Quick picks", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = appColors.secondary)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                for (m in listOf(5, 10, 15, 20, 30, 45, 60)) FilterPill(if (m == 60) "1 h" else "$m min", total == m, "pick-$m") {
+                    form.hours = if (m >= 60) (m / 60).toString() else ""; form.minutes = (m % 60).toString().padStart(2, '0')
                 }
             }
         }
@@ -201,20 +211,38 @@ fun HowLongPage(form: FormState, onBack: () -> Unit) {
     }
 }
 
+/** Material's filter chip, drawn as Figma has it: outlined, or tonal with a check when chosen. */
 @Composable
-private fun TimeBox(value: String, label: String, tag: String, onChange: (String) -> Unit) {
+private fun FilterPill(text: String, chosen: Boolean, tag: String, onClick: () -> Unit) {
+    val c = appColors
+    val shape = RoundedCornerShape(8.dp)
+    Row(Modifier.clip(shape).background(if (chosen) c.tonal else c.surface).border(if (chosen) 0.dp else 1.dp, if (chosen) Color.Transparent else c.outline, shape)
+        .clickable(onClick = onClick).semantics { testTag = tag; selected = chosen }.heightIn(min = 32.dp)
+        .padding(start = if (chosen) 8.dp else 16.dp, end = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+        if (chosen) { Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.ink); Spacer(Modifier.width(8.dp)) }
+        Text(text, style = AppType.labelLarge, color = c.ink)
+    }
+}
+
+@Composable
+private fun TimeBox(value: String, label: String, tag: String, modifier: Modifier, onChange: (String) -> Unit) {
     var focused by remember { mutableStateOf(false) }
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         BasicTextField(
             value, { onChange(it.filter { c -> c.isDigit() }.take(3)) },
-            Modifier.width(120.dp).clip(RoundedCornerShape(20.dp)).background(appColors.tonal)
-                .border(if (focused) 3.dp else 0.dp, if (focused) appColors.ink else Color.Transparent, RoundedCornerShape(20.dp))
-                .heightIn(min = 88.dp).onFocusChanged { focused = it.isFocused }.semantics { testTag = tag; contentDescription = label },
-            textStyle = AppType.displayMediumEmphasized.copy(color = appColors.ink, textAlign = TextAlign.Center),
+            modifier.width(96.dp).clip(RoundedCornerShape(16.dp)).background(appColors.tonal)
+                .border(if (focused) 2.dp else 0.dp, if (focused) appColors.ink else Color.Transparent, RoundedCornerShape(16.dp))
+                .heightIn(min = 72.dp).onFocusChanged { focused = it.isFocused }.semantics { testTag = tag; contentDescription = label },
+            textStyle = AppType.displayMedium.copy(color = appColors.ink, textAlign = TextAlign.Center),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-            decorationBox = { inner -> Box(Modifier.padding(vertical = 8.dp), contentAlignment = Alignment.Center) { inner() } },
+            decorationBox = { inner ->
+                Box(Modifier.padding(vertical = 10.dp), contentAlignment = Alignment.Center) {
+                    if (value.isEmpty() && !focused) Text("00", style = AppType.displayMedium.copy(color = appColors.secondary.copy(alpha = 0.45f)))
+                    inner()
+                }
+            },
         )
-        Text(label, Modifier.padding(top = 6.dp), style = MaterialTheme.typography.bodyLarge, color = appColors.secondary)
+        Text(label, style = AppType.bodySmall, color = appColors.secondary)
     }
 }
 
@@ -288,7 +316,7 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
         list.add(to, list.removeAt(from))
         form.items = list
     }
-    FormPage("Steps", chip = form.chipText(), onBack = onBack) {
+    FormPage("Steps", chip = null, onBack = onBack) {
         SegmentedList {
             val items = form.items
             val count = items.size + 1
@@ -376,7 +404,7 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
         NumberRow(if (days) "Days" else "Times", d.count, 1..d.countMaximum(days), index + 1, count, "often-count") { set(d.copy(count = it)) }
     }
 
-    FormPage(if (task) "Repeat" else "How often", chip = if (task || form.trimmedName.isNotEmpty() || !hasAmount) form.chipText() else words(form.plan.often), onBack = onBack) {
+    FormPage(if (task) "Repeat" else "How often", chip = null, onBack = onBack) {
         if (limit) {
             SegmentedList {
                 RadioRow(words(HowOften.EveryDay), d.choice == Choice.EVERY_DAY, 0, 3, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) }
@@ -566,25 +594,31 @@ fun MenuPill(text: String, options: List<String>, tag: String, onPick: (Int) -> 
 
 // ------------------------------------------------------------------ Time of Day
 
-/** The parts of the day, any number of them; then "Or", Anytime; then a new time of day. */
+/**
+ * Time of Day (Figma 2.1.4): Anytime ("No set time") or At set times of day ("Pick one or more"); only under the second,
+ * indented, the times of day as checkboxes and + New time of day, which opens the same page as Settings › Times of Day.
+ */
 @Composable
-fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
-    var adding by remember { mutableStateOf(false) }
-    FormPage("Time of Day", chip = form.chipText(), onBack = onBack) {
-        GroupTitle("Pick one or more")
+fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew: () -> Unit) {
+    val anytime = form.timesOfDay == listOf(DaySection.ANYTIME)
+    // At set times of day, chosen before any time is ticked: the times show, waiting for one.
+    var setTimes by remember { mutableStateOf(!anytime) }
+    FormPage("Time of Day", chip = null, onBack = onBack) {
         val timed = store.sections.filter { !it.isAnytime }
+        val showTimes = setTimes || !anytime
         SegmentedList {
-            timed.forEachIndexed { i, s ->
-                CheckRow(s.name, s.id in form.timesOfDay, i, timed.size, "part-${s.id}", detail = FormOutcome.hours(s, store)) { form.choose(s.id) }
+            val count = 2 + if (showTimes) timed.size + 1 else 0
+            RadioRow("Anytime", !showTimes, 0, count, "part-anytime", detail = "No set time") { setTimes = false; form.choose(DaySection.ANYTIME) }
+            RadioRow("At set times of day", showTimes, 1, count, "part-set", detail = "Pick one or more") { setTimes = true }
+            if (showTimes) {
+                timed.forEachIndexed { i, s ->
+                    CheckRow(s.name, s.id in form.timesOfDay, i + 2, count, "part-${s.id}", detail = FormOutcome.hours(s, store), indent = true) { form.choose(s.id) }
+                }
+                AddRow("New time of day", count - 1, count, "new-time-of-day", indent = true, onClick = onNew)
             }
         }
-        GroupTitle("Or")
-        SegmentedList { RadioRow("Anytime", form.timesOfDay == listOf(DaySection.ANYTIME), 0, 1, "part-anytime", detail = "No set time") { form.choose(DaySection.ANYTIME) } }
-        Spacer(Modifier.height(16.dp))
-        SegmentedList { AddRow("New time of day", 0, 1, "new-time-of-day") { adding = true } }
         Note(FormOutcome.timeOfDay(form.previewHabit(), store))
     }
-    if (adding) NewSectionDialog(store, { adding = false }) { id -> form.choose(id) }
 }
 
 /** A new time of day: its name and when it starts; it ends where the next one begins. */
@@ -633,8 +667,8 @@ fun GroupPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
             RadioRow("None", form.groupId == null, 0, count, "group-none") { form.groupId = null }
             groups.forEachIndexed { i, g -> RadioRow(g.name, form.groupId == g.id, i + 1, count, "group-${g.name}") { form.groupId = g.id } }
         }
-        Note("A habit is in one group at a time. Filter Today and Progress by group.")
-        Spacer(Modifier.height(8.dp))
+        Note("A habit can be in one group at a time. Groups change only what Today and Progress show.")
+        Spacer(Modifier.height(16.dp))
         SegmentedList { AddRow("New group", 0, 1, "new-group") { adding = true } }
     }
     if (adding) NewGroupDialog(store, { adding = false }) { form.groupId = it }
@@ -645,8 +679,10 @@ fun GroupPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
 @Composable
 fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
     val c = appColors
-    ModalBottomSheet(onDismiss, containerColor = c.screen) {
-        Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp).padding(bottom = 24.dp).semantics { testTag = "exact-times-sheet" },
+    // Opened whole, and scrolling: half-open, its buttons were under the gesture bar and below the screen (360 x 800 dp).
+    ModalBottomSheet(onDismiss, sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = c.screen) {
+        Column(Modifier.fillMaxWidth().verticalScroll(androidx.compose.foundation.rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 24.dp)
+            .semantics { testTag = "exact-times-sheet"; testTagsAsResourceId = true },
             horizontalAlignment = Alignment.CenterHorizontally) {
             Box(Modifier.size(64.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
                 Icon(Icons.Outlined.Alarm, null, tint = c.ink)
@@ -673,7 +709,7 @@ fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -
     var name by remember { mutableStateOf("") }
     val clean = TextLimit.clean(name, TextLimit.GROUP)
     val exists = store.groups.any { it.name.equals(clean, ignoreCase = true) }
-    AlertDialog(onDismiss, icon = { Icon(Icons.Rounded.CreateNewFolder, null) }, title = { Text("New group") },
+    AlertDialog(onDismiss, icon = { Icon(Icons.Outlined.CreateNewFolder, null) }, title = { Text("New group") }, containerColor = appColors.menu,
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Put habits together, then filter Today and Progress by group.", textAlign = TextAlign.Center, color = appColors.secondary)
@@ -692,24 +728,37 @@ fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -
                 onAdded(g.id)
                 onDismiss()
             }, enabled = clean.isNotEmpty() && !exists, colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk),
-                modifier = Modifier.semantics { testTag = "group-add" }) { Text("Add") }
+                modifier = Modifier.semantics { testTag = "group-add" }) { Text("Create") }
         },
         dismissButton = { TextButton(onDismiss) { Text("Cancel", color = appColors.ink) } })
 }
 
 // ------------------------------------------------------------------ Reminders
 
-/** Reminders: one per chosen time of day by default, any number more; then how, and the reminder's own words. */
+/**
+ * Reminders (Figma 2.1.6–2.1.6.4): the habit in a sentence; Remind me, off as every habit starts. Turning it on asks
+ * Android for notifications the first time (its own dialog); not allowed, it goes back off and says how to allow them.
+ * On: Remind me at (each time, ✕ to remove; Add a time opens the time picker at now), How (with what, and again if not
+ * done), what will happen, and what the reminder says.
+ */
 @Composable
 fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     var editing by remember { mutableStateOf<String?>(null) }
+    var adding by remember { mutableStateOf(false) }
+    var refused by remember { mutableStateOf(false) }
+    var canAskAgain by remember { mutableStateOf(false) }
     val context = androidx.compose.ui.platform.LocalContext.current
     // Reminders turned on: Android's own question for notifications first, then exact times (A11 D1). Never in a test
     // launch: a system question stays over every later launch on that emulator (T18).
     var askExact by remember { mutableStateOf(false) }
     val askNotifications = androidx.activity.compose.rememberLauncherForActivityResult(
-        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) {
-        askExact = !com.oftenenough.app.app.reminders.Reminders.canBeExact(context)
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted ->
+        if (!granted) {
+            form.remindOn = false; refused = true
+            // Android asks again after a first refusal; only once it won't (after two) is Settings the way (U37).
+            canAskAgain = (context as? android.app.Activity)?.shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS) == true
+        }
+        else askExact = !com.oftenenough.app.app.reminders.Reminders.canBeExact(context)
     }
     val turnedOn: () -> Unit = {
         if (!com.oftenenough.app.app.AppGraph.isTest) {
@@ -718,57 +767,66 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
             else askExact = !com.oftenenough.app.app.reminders.Reminders.canBeExact(context)
         }
     }
-    FormPage("Reminders", chip = if (form.type == ItemType.QUIT) null else form.chipText(), onBack = onBack) {
+    FormPage("Reminders", chip = null, onBack = onBack) {
+        val habit = form.previewHabit()
+        Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            com.oftenenough.app.ui.components.HabitIcon(habit.symbol, habit.color, 40.dp)
+            Spacer(Modifier.width(12.dp))
+            Text(if (form.trimmedName.isNotEmpty()) form.sentence() else form.chipText(), Modifier.semantics { testTag = "screen-sentence" },
+                style = AppType.titleMedium, color = appColors.ink)
+        }
         SegmentedList {
             SwitchRow("Remind me", form.remindOn, 0, 1, "remind-me") { on ->
                 form.remindOn = on
+                if (on) refused = false
                 if (on && (form.times.isEmpty() || !form.remindersEdited)) form.syncReminders(force = true)
                 if (on) turnedOn()
             }
         }
-        if (!form.remindOn) Note("No reminders. You'll see it on Today.")
-        else {
-            Spacer(Modifier.height(16.dp))
+        if (!form.remindOn) {
+            if (refused && canAskAgain) Note("Notifications are off for the app, so reminders can't come. Turn on Remind me to be asked again.")
+            else if (refused) {
+                Note("Notifications are off for the app, so reminders can't come. To get them, allow notifications in Settings.")
+                OpenSettingsButton(context)
+            } else Note("Reminders are off. Turn on Remind me to choose times; Android asks once if the app may send notifications.")
+        } else {
+            Text("Remind me at", Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
             SegmentedList {
                 val count = form.times.size + 1
                 form.times.forEachIndexed { i, t ->
-                    Segment(i, count, Modifier.semantics { testTag = "reminder-$i" }) {
+                    Segment(i, count, Modifier.semantics { testTag = "reminder-$i" }, onClick = { editing = t.id }) {
+                        Icon(Icons.Outlined.Schedule, null, tint = appColors.secondary)
+                        Spacer(Modifier.width(16.dp))
+                        Text(DayWords.clockMinute(t.minute), Modifier.weight(1f).semantics { testTag = "reminder-time-$i" }, style = AppType.bodyLarge, color = appColors.ink)
                         IconButton({ form.remindersEdited = true; form.times = form.times.filter { it.id != t.id } }) {
-                            Icon(Icons.Rounded.Close, "Remove reminder", tint = appColors.secondary)
+                            Icon(Icons.Rounded.Close, "Remove the ${DayWords.clockMinute(t.minute)} reminder", tint = appColors.secondary)
                         }
-                        Text(t.part?.let { "${store.section(it).name} reminder" } ?: "Reminder", Modifier.weight(1f).padding(start = 8.dp), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                        com.oftenenough.app.ui.record.Pill(DayWords.clockMinute(t.minute), tag = "reminder-time-$i") { editing = t.id }
                     }
                 }
-                AddRow(if (form.times.isEmpty()) "Add reminder" else "Add another reminder", form.times.size, count, "add-reminder") { form.addReminder() }
+                AddRow("Add a time", form.times.size, count, "add-reminder") { adding = true }
             }
             if (form.times.isNotEmpty()) {
-                Spacer(Modifier.height(16.dp))
+                Text("How", Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
                 SegmentedList {
                     val rows = if (form.type != ItemType.CUT_DOWN) 2 else 1
                     // An alarm rings on Android's alarm sound until it's answered; never a full screen (A11 D3).
-                    Segment(0, rows) {
-                        Text("Remind me with", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                        val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
-                        MenuPill(styles.first { it.first == form.alert }.second, styles.map { it.second }, "remind-with") { form.alert = styles[it].first }
-                    }
-                    if (form.type != ItemType.CUT_DOWN) Segment(1, rows) {
-                        Text("If not done, remind again", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+                    val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
+                    MenuRow("Remind me with", styles.first { it.first == form.alert }.second, styles.map { it.second }, 0, rows, "remind-with") { form.alert = styles[it].first }
+                    if (form.type != ItemType.CUT_DOWN) {
                         val options = listOf(null, 15, 30, 60)
-                        MenuPill(followWords(form.followUp), options.map { followWords(it) }, "follow-up") { form.followUp = options[it] }
+                        MenuRow("If not done, remind again", followWords(form.followUp), options.map { followWords(it) }, 1, rows, "follow-up") { form.followUp = options[it] }
                     }
                 }
                 Note(FormOutcome.reminders(form.previewHabit(), store, alarmsAvailable = true))
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(16.dp))
                 SegmentedList {
                     Segment(0, 1) {
-                        Text("Reminder says", style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+                        Icon(Icons.Outlined.ChatBubbleOutline, null, tint = appColors.secondary)
                         Spacer(Modifier.width(16.dp))
                         BasicTextField(form.reminderWords, { form.reminderWords = it.take(TextLimit.REMINDER_TEXT) },
                             Modifier.weight(1f).semantics { testTag = "reminder-says"; contentDescription = "Reminder says" },
-                            textStyle = MaterialTheme.typography.bodyLarge.copy(color = appColors.ink, textAlign = TextAlign.End), singleLine = true,
-                            cursorBrush = SolidColor(appColors.ink),
-                            decorationBox = { inner -> Box(contentAlignment = Alignment.CenterEnd) { if (form.reminderWords.isEmpty()) Text("Optional", style = MaterialTheme.typography.bodyLarge, color = appColors.secondary); inner() } })
+                            textStyle = AppType.bodyLarge.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
+                            decorationBox = { inner -> Box { if (form.reminderWords.isEmpty()) Text("Reminder says (optional)", style = AppType.bodyLarge, color = appColors.secondary); inner() } })
                     }
                 }
                 Note(TextLimit.note(form.reminderWords, TextLimit.REMINDER_TEXT)
@@ -790,6 +848,29 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
             form.remindersEdited = true
             val minute = t.part?.let { clampToPart(it, picked, store) } ?: picked
             form.times = form.times.map { if (it.id == id) it.copy(minute = minute) else it }
+        }
+    }
+    // Add a time (Figma 2.1.6.2.1): Android's time picker, starting at now; OK adds it.
+    if (adding) {
+        val now = java.time.LocalTime.now()
+        MinuteDialog(now.hour * 60 + now.minute, { adding = false }) { picked -> form.addReminderAt(picked) }
+    }
+}
+
+/** A row whose value opens a menu (Figma 2.1.6.2's "How"): its title over the value, then ▾. */
+@Composable
+private fun MenuRow(title: String, value: String, options: List<String>, index: Int, count: Int, tag: String, onPick: (Int) -> Unit) {
+    var open by remember { mutableStateOf(false) }
+    Box {
+        Segment(index, count, Modifier.heightIn(min = 72.dp).semantics(mergeDescendants = true) { testTag = tag; contentDescription = "$title, $value" }, onClick = { open = true }) {
+            Column(Modifier.weight(1f)) {
+                Text(title, style = AppType.titleMedium, color = appColors.ink)
+                Text(value, style = AppType.bodyMedium, color = appColors.secondary)
+            }
+            Icon(Icons.Rounded.ArrowDropDown, null, tint = appColors.secondary)
+        }
+        DropdownMenu(open, { open = false }, offset = androidx.compose.ui.unit.DpOffset(140.dp, 0.dp), containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
+            options.forEachIndexed { i, o -> DropdownMenuItem({ Text(o, style = AppType.bodyLarge) }, { onPick(i); open = false }) }
         }
     }
 }
@@ -840,7 +921,7 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
                     Box(Modifier.aspectRatio(1f).clip(if (on) CircleShape else RoundedCornerShape(16.dp)).background(if (on) appColors.habit(form.color) else appColors.surface)
                         .clickable { chosen = s }.semantics { contentDescription = HabitIcons.spokenName(s) + if (on) ", chosen" else ""; testTag = "icon-$s" },
                         contentAlignment = Alignment.Center) {
-                        Icon(HabitIcons.icon(s), null, Modifier.size(28.dp), tint = if (on) Color.White else appColors.ink)
+                        Icon(HabitIcons.outlined(s), null, Modifier.size(24.dp), tint = if (on) Color.White else appColors.ink)
                     }
                 }
             }
@@ -853,7 +934,7 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
 @Composable
 fun ColourSheet(form: FormState, onDismiss: () -> Unit) {
     ModalBottomSheet(onDismiss, containerColor = appColors.surface) {
-        Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 32.dp)) {
+        Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 32.dp).semantics { testTagsAsResourceId = true }) {
             Text("Colour", style = MaterialTheme.typography.headlineSmall, color = appColors.ink)
             Spacer(Modifier.height(20.dp))
             for (row in HabitColor.entries.chunked(7)) {

@@ -39,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
@@ -60,8 +61,8 @@ import com.oftenenough.app.ui.theme.appColors
 
 /** A habit's icon: a filled circle in its colour with a white glyph (in the app and on widgets). */
 @Composable
-fun HabitIcon(symbol: String, color: HabitColor, size: Dp = 40.dp, shape: Shape = CircleShape) {
-    Box(Modifier.size(size).clip(shape).background(appColors.habit(color)), contentAlignment = Alignment.Center) {
+fun HabitIcon(symbol: String, color: HabitColor, size: Dp = 40.dp, shape: Shape = CircleShape, modifier: Modifier = Modifier) {
+    Box(modifier.size(size).clip(shape).background(appColors.habit(color)), contentAlignment = Alignment.Center) {
         Icon(HabitIcons.icon(symbol), contentDescription = null, tint = Color.White, modifier = Modifier.size(size * 0.55f))
     }
 }
@@ -108,11 +109,25 @@ fun animatedProgress(target: Float): Float {
  * the user, 13 Oct 2026). TalkBack reads it in words.
  */
 @Composable
-fun StreakLabel(count: Int, unit: StreakUnit) {
+fun StreakLabel(count: Int, unit: StreakUnit, roll: Float = 1f) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.semantics(mergeDescendants = true) { contentDescription = unit.explained(count) }) {
         Box(Modifier.size(18.dp), contentAlignment = Alignment.Center) { Text("🔥", fontSize = 12.sp, lineHeight = 18.sp) }
         Spacer(Modifier.width(2.dp))
-        Text(unit.short(count), style = AppType.labelLarge, color = appColors.ink, maxLines = 1)
+        if (roll >= 0.24f || count < 1) Text(unit.short(count), style = AppType.labelLarge, color = appColors.ink, maxLines = 1)
+        else {
+            // A milestone shown in the row alone rolls the count (Figma R.1: 59 slips up and out, 60 pops up in).
+            val density = androidx.compose.ui.platform.LocalDensity.current.density
+            val ease = androidx.compose.animation.core.CubicBezierEasing(0.3f, 0f, 0.8f, 0.15f)
+            val pop = androidx.compose.animation.core.CubicBezierEasing(0.45f, 1.45f, 0.8f, 1f)
+            val oldA = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 1f), com.oftenenough.app.ui.day.Key(0.131f, 1f, ease), com.oftenenough.app.ui.day.Key(0.169f, 0f))
+            val oldY = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(0.131f, 0f, ease), com.oftenenough.app.ui.day.Key(0.169f, -10f))
+            val newA = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(0.169f, 0f), com.oftenenough.app.ui.day.Key(0.208f, 1f))
+            val newY = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 10f), com.oftenenough.app.ui.day.Key(0.169f, 10f, pop), com.oftenenough.app.ui.day.Key(0.231f, 0f))
+            Box {
+                Text(unit.short(count - 1), Modifier.graphicsLayer { alpha = oldA; translationY = oldY * density }, style = AppType.labelLarge, color = appColors.ink, maxLines = 1)
+                Text(unit.short(count), Modifier.graphicsLayer { alpha = newA; translationY = newY * density }, style = AppType.labelLarge, color = appColors.ink, maxLines = 1)
+            }
+        }
     }
 }
 

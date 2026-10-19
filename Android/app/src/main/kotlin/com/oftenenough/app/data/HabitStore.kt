@@ -65,6 +65,8 @@ class HabitStore(
      * Figma 1.2). It stays until the next one (which takes it), another day or leaving Today, never forever.
      */
     var afterLog by mutableStateOf<AfterLog?>(null)
+    /** Milestones reached by today's logs, and what each was shown as (Android/Docs/Milestones, decided 17 Oct 2026). */
+    val milestones = MilestoneCenter(this)
     /** Bumped on every change: whole-history readers (the day bar, Progress) read it to redraw. */
     var dataVersion by mutableIntStateOf(0); private set
 
@@ -467,6 +469,35 @@ class HabitStore(
         }
     }
 
+    /** The name of a habit just started over with a new type (Figma 6.3.2): Today says where the old one went. */
+    var startedOver by mutableStateOf<String?>(null)
+
+    /**
+     * A habit whose type changed starts over (Figma 6.3.1, 6.4.2; the user, 18 Oct 2026): the old one is archived with
+     * everything it had, and [fresh] (a new ID, so sync never merges the two) takes its place on Today from today. Old
+     * logs can't be converted (glasses aren't minutes), so nothing is rewritten (D6); Restore brings the old one back.
+     */
+    fun startOver(old: Habit, fresh: Habit, asWhat: String? = null) {
+        if (timers.containsKey(old.id)) stopTimer(old, today())
+        // Archived habits says why this one is there: "Started over as Time it" (Habits, Figma 6.7).
+        asWhat?.let { saveAppSetting(Keys.STARTED_OVER + old.id, it) }
+        perform {
+            val i = habits.indexOfFirst { it.id == old.id }
+            if (i < 0 || habits.any { it.id == fresh.id }) return@perform
+            val day = today()
+            val archived = habits[i].copy(archived = true)
+            saveSetting(Keys.ARCHIVED + archived.id, dayKey(day))
+            archivedOn = archivedOn + (archived.id to day)
+            val list = habits.toMutableList()
+            list[i] = fresh
+            list.add(archived)
+            for (k in i until list.size) saveHabitRecord(list[k], k)
+            habits = list
+            rulesChanged()
+            startedOver = old.name
+        }
+    }
+
     /** Brings an archived habit back if there's a free slot (or Plus). The archived stretch becomes a pause. */
     fun restore(habit: Habit): Boolean {
         if (habit.kind != HabitKind.Task && !canAddHabit) return false
@@ -514,6 +545,19 @@ class HabitStore(
         }
     }
 
+    /** Moves habit [id] to just after [afterId] in the person's order: a duplicate sits right after its habit (Habits, Figma 2.2). */
+    fun placeAfter(id: String, afterId: String) = perform {
+        // Queued behind the add that made [id]: until that write runs, the habit isn't in the list yet.
+        val ids = habits.map { it.id }.filter { it != id }.toMutableList()
+        val at = ids.indexOf(afterId)
+        if (at < 0 || habits.none { it.id == id }) return@perform
+        ids.add(at + 1, id)
+        reorder(ids)
+    }
+
+    /** What an archived habit started over as, if a type change archived it ("Time it"). */
+    fun startedOverAs(habitId: String): String? = setting(Keys.STARTED_OVER + habitId)
+
     /** Puts [ids] (one card on Today, or one group) in this order, keeping every other habit where it is. */
     fun reorder(ids: List<String>) {
         val wanted = ids.toSet()
@@ -535,9 +579,16 @@ class HabitStore(
     private fun addLogged(entry: Entry) {
         val habit = habit(entry.habitId)
         val wasComplete = habit?.let { rules.isComplete(it, entry.day) } ?: false
+        val before = habit?.let { milestones.before(it, entry.day) }
+        val wasMet = before != null && entry.stepId != null && rules.isDayMet(habit!!, entry.day)
         insertEntry(entry)
         offerUndo(entry)
-        if (habit != null) logFeedback(habit, entry.day, wasComplete)
+        if (habit != null) {
+            // A step adds to a checklist's total only by finishing its day.
+            val added = if (entry.stepId == null) entry.value else if (!wasMet && rules.isDayMet(habit, entry.day)) 1.0 else 0.0
+            milestones.after(before, habit, entry.source ?: EntrySource.TODAY, added)
+            logFeedback(habit, entry.day, wasComplete)
+        }
         perform(tap = true) { repository.addEntry(entry.record) }
     }
 
@@ -688,6 +739,7 @@ class HabitStore(
         if (entry.day > today() || entry.stepId != null || kind == HabitKind.Task) return
         if (kind == HabitKind.Check && Math.rint(value) != value) return
         val wasComplete = rules.isComplete(habit, entry.day)
+        val before = milestones.before(habit, entry.day)
         var updated = entry.copy(value = value)
         if (at != null && at != entry.createdAt) {
             if (at !in rules.dayBounds(entry.day, entry.timeZone) || at > maxOf(clock(), entry.createdAt)) return
@@ -695,6 +747,7 @@ class HabitStore(
             updated = updated.copy(createdAt = at)
         }
         replaceEntry(updated)
+        milestones.after(before, habit, EntrySource.MANUAL, value - entry.value)
         logFeedback(habit, entry.day, wasComplete)
         perform { repository.editEntry(updated.id, updated.value, updated.createdAt) }
     }
@@ -736,6 +789,7 @@ class HabitStore(
     fun toggleTimer(habit: Habit, slot: String? = null) {
         val now = clock()
         if (timers.containsKey(habit.id)) return stopTimer(habit, today(now), now)
+        milestones.timerStarted(habit)
         timers = timers + (habit.id to now)
         // ▶ is the next thing done: the buttons under the last log go (a timer's own come when it stops, Figma 1.2).
         afterLog = null
@@ -750,6 +804,7 @@ class HabitStore(
     fun stopTimer(habit: Habit, day: Int, end: Long = clock(), source: EntrySource = EntrySource.TIMER) {
         val start = timers[habit.id] ?: return
         val minutes = maxOf(0L, end - start) / 60_000.0
+        val before = milestones.before(habit, day)
         val entry = if (minutes >= 1.0 / 60) Entry(
             id = TimerStop.entryId(habit.id, start), habitId = habit.id, day = day, value = minutes,
             slot = timerSlots[habit.id], source = source,
@@ -760,6 +815,8 @@ class HabitStore(
         rulesChanged()
         val wasComplete = rules.isComplete(habit, day)
         if (entry != null) { insertEntry(entry); offerUndo(entry) }
+        milestones.after(before, habit, source, entry?.value ?: 0.0)
+        milestones.timerStopped(habit.id)
         logFeedback(habit, day, wasComplete)
         val key = Keys.TIMER + habit.id
         perform { repository.finishTimer(entry?.record, key) }
@@ -812,6 +869,9 @@ class HabitStore(
         }.filterNot { p -> habit.kind != HabitKind.Quit && p.through != null && p.through < p.from }
         savePauses(list, habit)
     }
+
+    /** Puts a habit's pauses back exactly as they were: the Undo of a pause or a resume (Habits, Figma 2.3.1, 2.4.1). */
+    fun setPauses(habit: Habit, list: List<HabitPause>) = savePauses(list, habit)
 
     private fun savePauses(list: List<HabitPause>, habit: Habit) = perform {
         if (list.isEmpty()) removeSetting(Keys.PAUSE + habit.id) else saveSetting(Keys.PAUSE + habit.id, SwiftJson.pauses(list))
@@ -1030,6 +1090,7 @@ class HabitStore(
         const val SKIP = "skip."
         const val MOVE = "move."
         const val PAUSE = "pause."
+        const val STARTED_OVER = "startedover."
         const val RULES = "rules."
         const val NOTE = "note."
         const val DAY_NOTE = "daynote."
