@@ -85,6 +85,37 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
         }
     }
 
+    /** What Move to a new phone sends (D15): the same checked file as Save a backup file, made the moment it's sent. */
+    suspend fun moveFile(): com.oftenenough.app.data.move.MoveFile = mutex.withLock {
+        store.flush()
+        val file = store.repo.backupFile(info)
+        com.oftenenough.app.data.move.MoveFile(Base64.getDecoder().decode(file.base64), file.habits, file.entries)
+    }
+
+    /**
+     * Coming back with Google Drive (Onboarding: coming back, 4.2): connects the chosen account and brings Drive's copy
+     * down, sending nothing up (a fresh install's welcome isn't finished, D14). The habits found, or null when Drive
+     * couldn't be reached. Start fresh erases what came down ([eraseThisPhone]); the copy in Drive stays.
+     */
+    suspend fun lookInDrive(): Pair<Int, Int>? {
+        val key = link.accountKey ?: return null
+        val s = sync() ?: return null
+        mutex.withLock {
+            working = true
+            try {
+                s.connect(key)
+                val result = s.syncNow(allowUpload = false)
+                status = result
+                if (result.state == DriveState.OFFLINE || result.state == DriveState.NOT_CONNECTED || result.state == DriveState.PROBLEM || result.state == DriveState.BUSY) return null
+                store.reloadAfterSync()
+                store.flush()
+            } finally {
+                working = false
+            }
+        }
+        return store.habits.count { !it.archived } to store.entryCount
+    }
+
     // ------------------------------------------------------------------ Restore
 
     /** A file chosen to restore, checked: what it holds and what each way would change. Nothing changes yet. */

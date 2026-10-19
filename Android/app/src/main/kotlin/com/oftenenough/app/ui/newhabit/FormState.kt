@@ -93,11 +93,17 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
         }
     }
 
+    /** An idea fills in everything it says (Onboarding 07.1), so Add works at once; anything can still be changed. */
     fun applyIdea(idea: HabitIdea) {
         name = idea.name
         nameFilled = true
-        symbol = HabitIcons.suggest(idea.name) ?: idea.symbol
-        often = when (idea.name) { "Exercise" -> often.choose(HowOften.Times(GoalPeriod.WEEK, 3)); else -> often.choose(HowOften.EveryDay) }
+        symbol = idea.symbol
+        color = idea.color
+        often = often.choose(HowOften.EveryDay)
+        when (idea.type) {
+            "amount" -> { amountText = GoalNumber.text(idea.goal); unit = idea.unit; step = idea.step; asks = false }
+            "time" -> { hours = (idea.minutes / 60).takeIf { it > 0 }?.toString() ?: ""; minutes = (idea.minutes % 60).toString().padStart(2, '0') }
+        }
     }
 
     val editing: Boolean get() = original != null
@@ -155,7 +161,17 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
         return true
     }
 
-    val hasChanges: Boolean get() = if (editing) editChanged else trimmedName.isNotEmpty() || filledItems.isNotEmpty()
+    val hasChanges: Boolean get() = when {
+        editing -> editChanged
+        // Filled in by an idea: only what the person changed counts, so an idea left as it was closes without asking.
+        pristine != null -> signature() != pristine
+        else -> trimmedName.isNotEmpty() || filledItems.isNotEmpty()
+    }
+
+    private var pristine: String? = null
+    /** The form as an idea (or a search's name) filled it in: [hasChanges] compares with it from now on. */
+    fun markPristine() { pristine = signature() }
+    private fun signature(): String = makeHabit(trimmedName).copy(id = "", createdAt = 0L).toString() + "|" + description + "|" + groupId
 
     val editChanged: Boolean get() {
         val o = original ?: return false

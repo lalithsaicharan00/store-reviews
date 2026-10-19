@@ -51,8 +51,19 @@
     // Per IP: opening and joining invites (tokens are 128-bit; this only stops anyone trying them in bulk).
     { "name": "INVITE_LIMIT", "namespace_id": "3002", "simple": { "limit": 30, "period": 60 } },
     // Per account: everything else.
-    { "name": "CALL_LIMIT", "namespace_id": "3003", "simple": { "limit": 120, "period": 60 } }
+    { "name": "CALL_LIMIT", "namespace_id": "3003", "simple": { "limit": 120, "period": 60 } },
+    // Per IP: moving to a new phone (src/move.ts): making codes and trying them.
+    { "name": "MOVE_LIMIT", "namespace_id": "3004", "simple": { "limit": 20, "period": 60 } }
   ],
+  // Moving to a new phone with a code (src/move.ts; Rulebook D15): which channel is whose, and one relay per move.
+  // SQLite-backed, as Workers Free requires.
+  "durable_objects": {
+    "bindings": [
+      { "name": "MOVE_REGISTRY", "class_name": "MoveRegistry" },
+      { "name": "MOVE_RELAY", "class_name": "MoveRelay" }
+    ]
+  },
+  "migrations": [{ "tag": "move-v1", "new_sqlite_classes": ["MoveRegistry", "MoveRelay"] }],
   // Real people only. Bindings and vars aren't inherited from the top level, so each is repeated here.
   "env": {
     "production": {
@@ -81,8 +92,15 @@
       "ratelimits": [
         { "name": "AUTH_LIMIT", "namespace_id": "4001", "simple": { "limit": 30, "period": 60 } },
         { "name": "INVITE_LIMIT", "namespace_id": "4002", "simple": { "limit": 30, "period": 60 } },
-        { "name": "CALL_LIMIT", "namespace_id": "4003", "simple": { "limit": 120, "period": 60 } }
-      ]
+        { "name": "CALL_LIMIT", "namespace_id": "4003", "simple": { "limit": 120, "period": 60 } },
+        { "name": "MOVE_LIMIT", "namespace_id": "4004", "simple": { "limit": 20, "period": 60 } }
+      ],
+      "durable_objects": {
+        "bindings": [
+          { "name": "MOVE_REGISTRY", "class_name": "MoveRegistry" },
+          { "name": "MOVE_RELAY", "class_name": "MoveRelay" }
+        ]
+      }
     }
   }
 }

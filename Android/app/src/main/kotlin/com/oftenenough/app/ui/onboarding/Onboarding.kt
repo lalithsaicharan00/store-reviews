@@ -93,29 +93,39 @@ import com.oftenenough.app.ui.components.PlainButton
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.progressFill
 import com.oftenenough.app.ui.components.segmentShape
+import com.oftenenough.app.ui.newhabit.NewHabitFlow
 import com.oftenenough.app.ui.settings.DayAndWeekRows
 import com.oftenenough.app.ui.theme.appColors
 
-/** One idea on "Your first habit": it only fills in the New Habit form; nothing is saved until Add (the iPhone's `HabitIdea`). */
-data class HabitIdea(val name: String, val type: String, val line: String, val symbol: String) {
+/**
+ * One idea on "Your first habit" (Figma `1548:456`, 07): [title] is the row ("Drink 8 glasses of water"), [name] the
+ * habit it makes ("Drink water"), and the rest **fills in the whole form** (07.1), so Add works straight away and adds
+ * it as it is (the user, 19 Oct 2026: "whatever the defaults values that has been set with those they should be able
+ * to continue forward and directly add it"). Nothing is saved until Add. [minutes] for a time habit, [goal] and [unit]
+ * (with the + step [step]) for an amount.
+ */
+data class HabitIdea(
+    val title: String, val name: String, val type: String, val symbol: String, val color: HabitColor,
+    val goal: Double = 1.0, val unit: String = "", val step: Double = 1.0, val minutes: Int = 0, val line: String = "Every day",
+) {
     companion object {
         val all = listOf(
-            HabitIdea("Drink water", "amount", "Track an amount · every day", "drop.fill"),
-            HabitIdea("Exercise", "check", "Check it off · 3 times a week", "figure.run"),
-            HabitIdea("Read", "time", "Time it · every day", "book.fill"),
-            HabitIdea("Meditate", "time", "Time it · every day", "figure.mind.and.body"),
-            HabitIdea("Walk", "amount", "Track an amount · every day", "figure.walk"),
-            HabitIdea("Go to bed on time", "check", "Check it off · every day", "moon.stars.fill"),
-            HabitIdea("Stop smoking", "quit", "Quit · time since you stopped", "nosign"),
-            HabitIdea("Less coffee", "cutDown", "Cut down · a daily limit", "cup.and.saucer.fill"),
+            HabitIdea("Drink 8 glasses of water", "Drink water", "amount", "drop.fill", HabitColor.BLUE, goal = 8.0, unit = "glasses"),
+            HabitIdea("Exercise for 30 minutes", "Exercise", "time", "dumbbell.fill", HabitColor.PINK, minutes = 30),
+            HabitIdea("Read for 30 minutes", "Read", "time", "book.fill", HabitColor.ORANGE, minutes = 30),
+            HabitIdea("Walk 10,000 steps", "Walk", "amount", "figure.walk", HabitColor.PURPLE, goal = 10_000.0, unit = "steps", step = 1_000.0),
+            HabitIdea("Take vitamins", "Take vitamins", "check", "pills.fill", HabitColor.GREEN),
+            HabitIdea("Floss", "Floss", "check", "mouth.fill", HabitColor.INDIGO),
+            HabitIdea("Go to bed on time", "Go to bed on time", "check", "moon.fill", HabitColor.GRAY),
+            HabitIdea("Meditate for 10 minutes", "Meditate", "time", "figure.mind.and.body", HabitColor.BROWN, minutes = 10),
         )
     }
 }
 
-/** Where the welcome hands over: Today, the New Habit form (from an idea or empty), or a way back (sign in, restore). */
+/** Where the welcome hands over: Today (finished, with or without a first habit), or a way back (sign in, restore). */
 interface OnboardingNav {
-    fun finished()
-    fun newHabit(idea: HabitIdea?)
+    /** The welcome is over; [message] is said on Today ("Your habits are back: 31 habits, 929 logs"). */
+    fun finished(message: String? = null)
     fun signIn()
     fun restore()
 }
@@ -129,50 +139,77 @@ interface OnboardingNav {
 fun OnboardingFlow(store: HabitStore, nav: OnboardingNav, replay: Boolean = false) {
     // Help's Show the welcome again starts at what the app can do; going back from there closes it.
     var page by rememberSaveable { mutableStateOf(if (replay) "habit" else "welcome") }
-    val pages = listOf("welcome", "habit", "quit", "tasks", "days", "first")
+    // The idea Your first habit opened (its name), or "" for Create my own habit: the form is a step of the welcome, so
+    // Back returns to Your first habit and the welcome ends only when the habit is added (07.1; the user, 19 Oct 2026:
+    // Back from the form left the app).
+    var idea by rememberSaveable { mutableStateOf("") }
+    val pages = listOf("welcome", "habit", "quit", "tasks", "days", "first", "form")
     fun back() {
         if (replay && page == "habit") return nav.finished()
         page = if (page == "back") "welcome" else pages.getOrElse(pages.indexOf(page) - 1) { "welcome" }
     }
-    BackHandler(page != "welcome") { back() }
+    BackHandler(page != "welcome" && page != "form") { back() }
     // Each step slides in with Material's shared axis (Motion.kt; the user, 13 Oct 2026: the steps jumped with no
     // motion). Forward when the next step is further along, back when it's earlier: the way back is a side step of
     // the welcome, so it counts as one step forward from it.
     val slide = sharedAxisSlidePx()
     fun step(p: String) = if (p == "back") 1 else pages.indexOf(p)
-    Box(Modifier.fillMaxSize().background(appColors.screen).statusBarsPadding().navigationBarsPadding()) {
+    Box(Modifier.fillMaxSize().background(appColors.screen)) {
     AnimatedContent(page, Modifier.fillMaxSize(),
         transitionSpec = { sharedAxisX(forward = step(targetState) > step(initialState), slidePx = slide) }, label = "onboarding") { shown ->
+        // The form draws its own bars (its top app bar takes the status bar's room); every other step is padded here.
+        if (shown == "form") {
+            NewHabitFlow(store, HabitIdea.all.firstOrNull { it.name == idea }, onClose = { page = "first" }, onSaved = { nav.finished() }, onPlus = {})
+            return@AnimatedContent
+        }
+        // Coming back (Figma 1549:2): its own screens, each drawing its own bars.
+        if (shown == "back") {
+            ComingBackFlow(store, onBack = { page = "welcome" }) { message -> nav.finished(message) }
+            return@AnimatedContent
+        }
+        Box(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
         when (shown) {
             "welcome" -> Welcome(onNew = { page = "habit" }, onBack = { page = "back" })
-            "back" -> WelcomeBack(::back, nav)
             "habit", "quit", "tasks" -> IntroPage(shown, ::back, onSkip = nav::finished, onContinue = { page = pages[pages.indexOf(shown) + 1] })
-            "days" -> Page("Your days and weeks.", null, ::back, nav::finished, "Continue", { page = "first" }) {
+            // 06 (Figma 1548:420).
+            "days" -> Page("Your days and weeks.", "Choose when your day and week start.", ::back, nav::finished, "Continue", { page = "first" }) {
                 DayAndWeekRows(store)
-                Text("You can change these later in ≡ › Day and Week.", Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                    style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+                Text("You can change these later.", Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    style = AppType.bodySmall, color = appColors.secondary)
             }
-            "first" -> Page("Your first habit.", "Choose an idea to get started. You can edit it before adding it.", ::back, nav::finished,
-                "Create my own habit", { nav.newHabit(null) }) {
+            // 07 (Figma 1548:456): each idea opens its form filled in (07.1); Create my own habit opens New.
+            "first" -> Page("Your first habit.", "Pick a habit below, or create your own.", ::back, nav::finished,
+                "Create my own habit", { idea = ""; page = "form" }) {
                 SegmentedList {
-                    HabitIdea.all.forEachIndexed { i, idea ->
-                        Box(Modifier.semantics { testTag = "idea-${idea.name}" }) {
-                            ListRow(idea.name, i, HabitIdea.all.size, idea.line, com.oftenenough.app.ui.theme.HabitIcons.icon(idea.symbol), iconDisc = true,
-                                onClick = { nav.newHabit(idea) })
-                        }
+                    HabitIdea.all.forEachIndexed { i, it ->
+                        IdeaRow(it, i, HabitIdea.all.size) { idea = it.name; page = "form" }
                     }
                 }
-                Text("An idea only fills in the form. Nothing is added until you tap Add.", Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
+                Spacer(Modifier.height(16.dp))
             }
+        }
         }
     }
     // The intro pages' dots (rule 4 above `IntroPage`): drawn once, over the pages, so they stay put while a page
     // slides and the current dot grows into the pill; they fade in and out with the three intro pages.
     val introIndex = introPages.indexOf(page)
-    AnimatedVisibility(introIndex >= 0, Modifier.align(Alignment.BottomCenter).padding(bottom = IntroDotsAboveBottom), enter = fadeIn(), exit = fadeOut()) {
+    AnimatedVisibility(introIndex >= 0, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = IntroDotsAboveBottom), enter = fadeIn(), exit = fadeOut()) {
         PageDots(introIndex.coerceAtLeast(0), introPages.size)
     }
+    }
+}
+
+/** One idea (07): the habit's own icon and colour, what it is ("Drink 8 glasses of water") and how often, and ›. */
+@Composable
+fun IdeaRow(idea: HabitIdea, index: Int, count: Int, onClick: () -> Unit) {
+    com.oftenenough.app.ui.components.Segment(index, count, Modifier.semantics { testTag = "idea-${idea.name}" }, onClick = onClick) {
+        com.oftenenough.app.ui.components.HabitIcon(idea.symbol, idea.color)
+        Spacer(Modifier.width(16.dp))
+        Column(Modifier.weight(1f)) {
+            Text(idea.title, style = AppType.titleMedium, color = appColors.ink)
+            Text(idea.line, style = AppType.bodyMedium, color = appColors.secondary)
+        }
+        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
     }
 }
 
@@ -280,27 +317,12 @@ private object WelcomeType {
 }
 
 @Composable
-private fun WelcomeBack(onBack: () -> Unit, nav: OnboardingNav) {
-    Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
-        IconButton(onBack, Modifier.padding(top = 8.dp)) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = appColors.ink) }
-        Heading("Welcome back.", "Get your habits, tasks and history back.")
-        SegmentedList {
-            ListRow("Sign in with Google", 0, 2, "Your habits come back from Google Drive.", Icons.Rounded.AccountCircle, iconDisc = true, onClick = nav::signIn)
-            ListRow("Restore a backup", 1, 2, "A day's copy from Google Drive, or a backup file.", Icons.Rounded.History, iconDisc = true, onClick = nav::restore)
-        }
-        Spacer(Modifier.height(24.dp))
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            PlainButton("Start without restoring", nav::finished, Modifier.semantics { testTag = "start-without-restoring" })
-        }
-    }
-}
-
-@Composable
 private fun Heading(title: String, subtitle: String?) {
-    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 24.dp)) {
-        Text(title, style = AppType.displaySmall, color = appColors.ink)
+    // Figma 06, 07 and coming back: Headline Medium Emphasized over a Body Large line, 8 apart.
+    Column(Modifier.padding(start = 8.dp, end = 8.dp, top = 12.dp, bottom = 24.dp)) {
+        Text(title, style = AppType.headlineMediumEmphasized, color = appColors.ink)
         if (subtitle != null) {
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(8.dp))
             Text(subtitle, style = AppType.bodyLarge, color = appColors.secondary)
         }
     }

@@ -110,6 +110,7 @@ class MainActivity : FragmentActivity() {
             // Today has been opened on this many earlier days (the ✏ tip waits for three, Figma 2.0).
             intent.getIntExtra(TestLaunch.DAYS_SEEN, 0).takeIf { it > 0 }?.let { n -> AppGraph.prefs.todayDaysSeen = (1..n).joinToString(",") { "-$it" } }
         } else AppGraph.open(this)
+        if (test || BuildConfig.DEBUG) intent.getStringExtra(TestLaunch.MOVE_SERVER)?.let { AppGraph.moveServer = it }
         val store = AppGraph.store
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
@@ -154,6 +155,8 @@ object TestLaunch {
     const val ONBOARDING = "onboarding"
     /** "dev": the account Worker's dev instead of the stand-in (the end-to-end tests, `AccountServerLiveTest`). */
     const val ACCOUNT_SERVER = "accountServer"
+    /** Move to a new phone's relay, for a debug or test launch (AppGraph.moveServer). */
+    const val MOVE_SERVER = "moveServer"
     /** Plus owned from the start (the stand-in store, as if bought). */
     const val PLUS = "plus"
 }

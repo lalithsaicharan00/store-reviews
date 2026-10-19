@@ -2,7 +2,10 @@ import { Accounts } from "./accounts";
 import { HttpError, errorResponse, json, optionalString, readJson, requireString } from "./http";
 import { type Person, type Provider, audiences, verifyIdToken } from "./identity";
 import { PRODUCTS, type PlayCheck, checkPlayPurchase, googleAccess, playReady } from "./play";
+import { moveRoute } from "./move";
 import { playNotification, sweepVoided } from "./refunds";
+
+export { MoveRegistry, MoveRelay } from "./move";
 
 /*
  * The Plus account's Worker (Rulebook D15, D16; Android A15; Current Work 110). It holds only who someone is (Google's
@@ -22,11 +25,17 @@ import { playNotification, sweepVoided } from "./refunds";
  *   GET  /v1/health                                                                → { ok, environment }
  *   GET  /v1/health/play                                                           → { play: ready | not_set_up | unavailable }
  *   POST /v1/google/notifications    Pub/Sub push of Google Play's notifications    → 204 (src/refunds.ts)
+ *   /v1/move/…                       moving to a new phone with a code, no account  (src/move.ts)
  */
 
 const INVITE_TOKEN = /^[A-Za-z0-9_-]{8,64}$/;
-/** wrangler.jsonc's one trigger: daily. One job, so the account's five Cron Triggers (Workers Free) go further. */
-export const DAILY = "0 5 * * *";
+/**
+ * wrangler.jsonc's one trigger: daily. One job, so the account's five Cron Triggers (Workers Free) go further. Not
+ * exported: every named export of this module must be an entry point (the Durable Object classes), or the runtime
+ * refuses to start (found 19 Oct 2026 under `wrangler dev`; test/move.test.ts checks it).
+ */
+const DAILY = "0 5 * * *";
+void DAILY;
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -81,6 +90,10 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
 
   // Google Play's Real-time developer notifications, pushed by Pub/Sub with its own OIDC token (src/refunds.ts).
   if (path === "/v1/google/notifications" && method === "POST") return playNotification(request, env, accounts, (product, token) => check(env, product, token));
+
+  // ---------------------------------------------------------------- Moving to a new phone (no account: anyone can move)
+  const moved = await moveRoute(request, env, path, () => limit(env.MOVE_LIMIT, ip));
+  if (moved) return moved;
 
   // ---------------------------------------------------------------- Signing in (no session yet)
   if (path === "/v1/sign-in" && method === "POST") {

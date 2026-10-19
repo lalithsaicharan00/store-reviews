@@ -160,7 +160,9 @@ class TodayTest {
         launch(onboarding = true)
         tapTag("onboarding-returning")
         waitFor(hasText("Welcome back."), "Welcome back")
-        tapTag("start-without-restoring")
+        tapTag("back-drive")
+        tapTag("start-fresh")
+        tapTag("onboarding-continue")
         waitFor(hasText("No habits yet"), "an empty Today")
     }
 
@@ -172,7 +174,7 @@ class TodayTest {
         waitFor(hasTestTag("name-field"), "the New Habit form")
         // The preview says it (Figma 1302:2: the sentence footer is gone).
         waitFor(hasText("Exercise"), "the idea's name in the preview")
-        waitFor(hasText("3 times a week"), "the idea's How often")
+        waitFor(hasText("30 min"), "the idea's goal")
         tapTag("form-add")
         waitFor(hasTestTag("row-Exercise"), "Exercise on Today")
     }

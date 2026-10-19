@@ -48,7 +48,7 @@ enum class MenuItem(val title: String, val icon: ImageVector) {
     DAY_AND_WEEK("Day and Week", Icons.Rounded.CalendarMonth),
     REMINDERS("Reminders", Icons.Outlined.Notifications),
     APPEARANCE("Appearance", Icons.Rounded.Contrast),
-    BACKUP("Google Drive & Backup", Icons.Outlined.Cloud),
+    BACKUP("Backup & Sync", Icons.Outlined.Cloud),
     PRIVACY("Privacy & Security", Icons.Outlined.Shield),
     PLUS("Plus & Account", Icons.Rounded.AddCircleOutline),
     HELP("Help & Feedback", Icons.AutoMirrored.Rounded.HelpOutline),

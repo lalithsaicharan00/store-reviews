@@ -124,7 +124,8 @@ private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, G
 
 /**
  * New: what do you want to do → (build: how to track it | quit: quit or cut down) → the form. From an idea it opens the
- * form straight away with the idea's name and how often (nothing else is filled in: the amount depends on the person).
+ * form straight away with everything the idea says filled in, so Add works at once (Onboarding 07.1, the user, 19 Oct
+ * 2026).
  */
 @Composable
 fun NewHabitFlow(
@@ -164,9 +165,11 @@ fun NewHabitFlow(
         }
         else -> {
             val type = ItemType.valueOf(step.removePrefix("form:"))
+            // From an idea or a copy, back closes the flow; the step itself never goes blank, since this screen can be drawn
+            // once more while it leaves (an empty step made `ItemType.valueOf("")` throw).
             val back = {
-                step = when { idea != null || copyOf != null -> ""; type == ItemType.TASK -> "choose"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
-                if (step.isEmpty()) onClose()
+                if (idea != null || copyOf != null) onClose()
+                else step = when { type == ItemType.TASK -> "choose"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
             }
             HabitForm(type, null, store, idea.takeIf { ideaType == type }, back, onSaved, onPlus, template = copyOf, prefillName = name)
         }
@@ -191,6 +194,7 @@ fun HabitForm(
         FormState(type, original, store, template).also { f ->
             idea?.let { f.applyIdea(it) }
             prefillName?.let { n -> f.name = TextLimit.clean(n, TextLimit.NAME); f.nameFilled = f.name.isNotBlank() }
+            if (idea != null) f.markPristine()
         }
     }
     val typed = remember { TypedText(form.name) }

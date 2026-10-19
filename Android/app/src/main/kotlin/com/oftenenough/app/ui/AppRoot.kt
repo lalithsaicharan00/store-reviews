@@ -128,9 +128,11 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     AnimatedContent(prefs.onboarded, Modifier.fillMaxSize().background(appColors.screen),
         transitionSpec = { sharedAxisX(forward = targetState, slidePx = slide) }, label = "welcome") { onboarded ->
         if (!onboarded) OnboardingFlow(store, object : OnboardingNav {
-            override fun finished() { prefs.onboarded = true }
-            override fun newHabit(idea: HabitIdea?) { handOver = Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: ""); prefs.onboarded = true }
-            override fun signIn() { handOver = Routes.page("Google Drive & Backup"); prefs.onboarded = true }
+            override fun finished(message: String?) {
+                prefs.onboarded = true
+                message?.let { rootScope.launch { snackbar.showSnackbar(it, duration = androidx.compose.material3.SnackbarDuration.Long) } }
+            }
+            override fun signIn() { handOver = Routes.menu(MenuItem.BACKUP); prefs.onboarded = true }
             override fun restore() { handOver = Routes.page("Restore from a backup"); prefs.onboarded = true }
         }) else AppMain(store, prefs, nav, snackbar, rootScope, view, handOverState)
     }
@@ -315,10 +317,16 @@ private fun AppMain(
                 MenuItem.DAY_AND_WEEK.title -> DayAndWeekPage(store) { nav.popBackStack() }
                 MenuItem.APPEARANCE.title -> AppearancePage(prefs) { nav.popBackStack() }
                 MenuItem.BACKUP.title -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.page("Restore from a backup")) },
-                    { nav.navigate(Routes.menu(MenuItem.PLUS)) }, { nav.popBackStack() }, snackbar)
-                "Restore from a backup" -> RestoreScreen(AppGraph.backup, store, { nav.popBackStack() }) { message ->
+                    { nav.navigate(Routes.page("Move to a new phone")) }, { nav.popBackStack() }, snackbar)
+                // Backup & Sync › Move to a new phone (Figma 1461:2, 3–3.3): this phone shows the code.
+                "Move to a new phone" -> com.oftenenough.app.ui.move.MoveToNewPhoneScreen(AppGraph.backup) { nav.popBackStack() }
+                "Restore from a backup" -> RestoreScreen(AppGraph.backup, store, { nav.popBackStack() }) { message, undoable ->
                     nav.popBackStack()
-                    rootScope.launch { snackbar.showSnackbar(message) }
+                    // 4.1.3 · Restored, with Undo (D5: the undo file is kept 30 days; Undo here takes it straight back).
+                    rootScope.launch {
+                        val result = snackbar.showSnackbar(message, if (undoable) "Undo" else null, duration = androidx.compose.material3.SnackbarDuration.Long)
+                        if (result == androidx.compose.material3.SnackbarResult.ActionPerformed) AppGraph.backup.undoRestore()
+                    }
                 }
                 "Start from an idea" -> IdeasScreen({ nav.popBackStack() }) { idea ->
                     nav.popBackStack(); nav.navigate(Routes.NEW + "?idea=" + android.net.Uri.encode(idea.name))
@@ -357,8 +365,7 @@ private fun AppMain(
         }
         composable(Routes.WELCOME) {
             OnboardingFlow(store, object : OnboardingNav {
-                override fun finished() { nav.popBackStack() }
-                override fun newHabit(idea: HabitIdea?) { nav.popBackStack(Routes.TODAY, inclusive = false); nav.navigate(Routes.NEW + (idea?.let { "?idea=" + android.net.Uri.encode(it.name) } ?: "")) }
+                override fun finished(message: String?) { nav.popBackStack() }
                 override fun signIn() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.BACKUP)) }
                 override fun restore() { nav.popBackStack(); nav.navigate(Routes.page("Restore from a backup")) }
             }, replay = true)

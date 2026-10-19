@@ -1748,28 +1748,41 @@ and the Add note keyboard coming up by itself.
   - [x] Tests: `TasksPageTest` (12, new).
   - [ ] Not built: Figma 1.5 (200 % text) checked only by reading the layout; the iPhone doesn't know No date yet.
   - [x] Committed to main, 19 Oct 2026.
-- [ ] **134. Android: onboarding for someone new, checked against Figma `1548:2`, and its first habit made seamless**
+- [x] **134. Android: onboarding for someone new, checked against Figma `1548:2`, and its first habit made seamless**
   (added 19 October 2026, from the user: "check is everything implemented properly or not").
-  - [ ] Every screen of `1548:2` checked against the app, and anything missing or different fixed.
-  - [ ] Your first habit: an idea opens **its own habit form with everything filled in**, and **Add works straight away**
+  - [x] Every screen of `1548:2` checked against the app, and anything missing or different fixed (the days page's
+    lines, the ideas as rows, a heading that fits, the page dots above the system bar).
+  - [x] Your first habit: an idea opens **its own habit form with everything filled in**, and **Add works straight away**
     with those values ("the add button was disabled … with those they should be able to continue forward and directly
     add it"); changing anything stays possible.
-  - [ ] **Back from that form goes back to Your first habit, never out of the app** ("it is actually going back … exiting
+  - [x] **Back from that form goes back to Your first habit, never out of the app** ("it is actually going back … exiting
     the app completely").
-  - [ ] The form is the updated habit form (Current Work 131). No navigation bugs anywhere in onboarding; tested
-    thoroughly.
-- [ ] **135. Android: onboarding for someone coming back, every screen of Figma `1549:2`** (added 19 October 2026, from the
+  - [x] The form is the updated habit form (Current Work 131). No navigation bugs anywhere in onboarding; tested
+    thoroughly (`OnboardingTest`, `TodayTest`).
+  - [x] **Back from an untouched idea asks nothing; only a change asks "Discard this habit?"** (the user, 19 Oct 2026:
+    "it should only show when something has changed").
+- [x] **135. Android: onboarding for someone coming back, every screen of Figma `1549:2`** (added 19 October 2026, from the
   user: "update the all of the UI … work on the all of the screens"). Google sign-in built if the app's Google client
   allows it (otherwise say so: "If it is not there, that's fine. I will provide later").
-- [ ] **136. Move to a new phone, end to end: a QR code or 6 digits** (added 19 October 2026, from the user: "implement it
+  - [x] Every row built: Google and Apple (Plus), Google Drive, the old phone, a backup file, Start fresh, and their
+    found, not-found and offline screens; Today says "Your habits are back: …".
+  - [ ] Google sign-in for real: waits for the Android OAuth client; the stand-in is used until then.
+  - [ ] Not built: 2.3, 2.5, 3.3 (they need the account to record where the habits live, D16's proposal).
+- [x] **136. Move to a new phone, end to end: a QR code or 6 digits** (added 19 October 2026, from the user: "implement it
   properly end-to-end … test in that properly if you want you can start two emulators"). As Rulebook D15: a Cloudflare
   Worker relay (a new Worker if it needs one), SPAKE2 as Magic Wormhole uses it, the old phone's page showing the QR and
   6 digits, **a new code at once after any wrong try**, scanning with Google's code scanner or typing six boxes; tested on
   two emulators, then on real phones by the user.
-- [ ] **137. Android: Backup & Sync updated to Figma `1461:2`** (added 19 October 2026, from the user: "if you feel like uh,
+  - [x] Built and tested on two emulators (Android 16 and Android 11) against the relay under `wrangler dev`: the move,
+    a wrong code, the new code. `Spake2Test`, `MoveLiveTest`, the Worker's `move.test.ts`.
+  - [ ] The relay deployed to dev (needs the user's own `wrangler login` on this PC), production with their go-ahead.
+  - [ ] Real phones: the user's check. Plus travelling with the move: not built yet.
+- [x] **137. Android: Backup & Sync updated to Figma `1461:2`** (added 19 October 2026, from the user: "if you feel like uh,
   we need to work on it then implement … update the UI to the latest … implement it completely end to end"). Only the
   screens that are ready; the section is still changing.
-- [ ] Items 133–137 committed to main and pushed once everything is tested ("When everything is completed and tested
+  - [x] The page (1–1.3), Move to a new phone, Restore from a backup (Google Drive, a file, the old phone), the two
+    deletion questions; the menu row renamed Backup & Sync. Not built: 4.1, the dated list of Drive backups.
+- [x] Items 133–137 committed to main and pushed once everything is tested ("When everything is completed and tested
   thoroughly, then commit it and push it").
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in

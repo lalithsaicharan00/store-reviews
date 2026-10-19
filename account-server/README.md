@@ -27,6 +27,7 @@ checked with Google Play**, and their Plus Family. **Never a habit**, never a wh
 | `GET /v1/invites/<token>`, `POST /v1/invites/<token>/join` | Opening an invite (open, ended, used, cancelled, full; the owner's first name) and joining it. Claiming the invite and taking the place are one transaction, so a family never passes six |
 | `GET /v1/health` | `{ok, environment}` |
 | `POST /v1/google/notifications` | Google Play's Real-time developer notifications, pushed by Pub/Sub with its OIDC token; nobody else. A refund ends Plus here, within seconds ([Refunds](#refunds-within-seconds)) |
+| `POST /v1/move/codes`, `GET /v1/move/send`, `GET /v1/move/receive` | Moving to a new phone with a code: a relay between two online phones, holding nothing ([Moving to a new phone](#moving-to-a-new-phone-with-a-code)) |
 
 Every call but sign-in, opening an invite and Pub/Sub's push needs `Authorization: Bearer <session>` (32 random bytes;
 the database keeps only its SHA-256; forgotten after 400 days unused). Every call is safe to repeat. Rate limits per
@@ -45,7 +46,7 @@ neither.
 ```sh
 cd account-server
 npm install
-npm test               # 66 tests in the Workers runtime (Miniflare) with a real D1; Google, Apple and Play are stand-ins
+npm test               # 76 tests in the Workers runtime (Miniflare) with a real D1; Google, Apple and Play are stand-ins
 npm run typecheck
 ```
 
@@ -60,6 +61,33 @@ cd Android
 ./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.oftenenough.app.AccountServerLiveTest \
   "-Pandroid.testInstrumentationRunnerArguments.accountTestSecret=$(grep '^accountTestSecret=' ~/.gradle/gradle.properties | cut -d= -f2-)"
 ```
+
+## Moving to a new phone with a code
+
+Added 19 October 2026 (Rulebook **D15**, Current Work **136**, Figma `1461:2` 3–3.3 and `1549:2` 5–5.4). Two Durable
+Objects on the free plan (SQLite-backed, `new_sqlite_classes`): **`MoveRegistry`**, one for the Worker, which hands out
+channels `00`–`99`, each for 10 minutes; and **`MoveRelay`**, one per move, holding the two phones' WebSockets
+(hibernating, so an idle wait costs nothing). The whole protocol is in the header of `src/move.ts`.
+
+- **The code is 6 digits:** 2 for the channel (which old phone to reach, the only part the Worker sees) and 4 made on
+  the old phone, which never leave it. The QR code is `oftenenough://move/NNNNNN`.
+- **SPAKE2** (RFC 9382, P256-SHA256-HKDF-HMAC, as Magic Wormhole uses a password-authenticated key exchange) turns the
+  code into a strong key on both phones; the Worker passes their messages without being able to read them, and never
+  has the code or the key. The habits then go as AES-256-GCM frames of 48 KB **straight through the relay**: nothing is
+  stored, so there is no R2 copy to delete (D15 allowed R2 for a large copy; streaming made it unnecessary).
+- **One guess per code.** A channel takes one new phone ever. A wrong code shows only as confirmations that don't match:
+  the old phone says `wrong`, the relay closes both (4001), and the old phone shows a new code at once. A new phone that
+  leaves before pairing also ends the code (4002). So a stranger's chance is 1 in 10,000 per try, and every try costs
+  them a new code; the `MOVE_LIMIT` rate limit (20 calls a minute per IP) slows anyone trying many.
+- The old phone's token is sent as `Authorization: Bearer`, never in the URL (dev logs URLs; D11).
+
+Tests: `test/move.test.ts` (9: a right code moves bytes both ways, a wrong code ends it for both, a code is single-use,
+expiry, busy channels, and that every named export of the entry module is an entry point; a stray export broke
+`wrangler dev`). The app's side against the real Workers runtime: run `npx wrangler dev --port 8787 --ip 0.0.0.0` here,
+then `MOVE_SERVER=http://127.0.0.1:8787 ./gradlew :app:testDebugUnitTest --tests '*MoveLiveTest'` in `Android/` (a whole
+move, a wrong code, the code after it); two emulators reach it at `http://10.0.2.2:8787` with the debug app's
+`--es moveServer`. **Not deployed yet:** dev and production need `npm run deploy:dev` from the user's own Cloudflare login
+(this PC's wrangler was signed in to another account on 19 Oct 2026), and production the user's go-ahead (T6).
 
 ## Deploy dev
 

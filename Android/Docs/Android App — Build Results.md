@@ -319,6 +319,52 @@ Test launches can start with the design's tasks (`demo tasks`). `TasksPageTest` 
 data; `HabitsPageTest` gained the ⋮ › Archived habits check. Checked on the Pixel 10 Pro emulator at 360 × 800 dp
 beside the frames.
 
+## Onboarding, coming back, Backup & Sync and the move, as Figma `1548:2`, `1549:2`, `1461:2` (19 October 2026)
+
+**Someone new (Current Work 134).** Every page of `1548:2` checked against the app on the emulator at 360 × 800 dp. Your
+first habit lists eight ideas as rows (icon, "Drink 8 glasses of water", "Every day", ›); each opens **its own New Habit
+form, filled in** (name, icon, colour, type, goal, every day) inside the welcome, so **Add works straight away** and
+Back returns to the ideas, never out of the app. Back from an untouched idea asks nothing; after a change it asks
+"Discard this habit?" (the form compares what it shows with what it opened with, `FormState.markPristine`). Create my own
+habit opens "What do you want to do?" and returns the same way.
+
+**Someone coming back (135).** Every row of `1549:2`: Continue with Google or Apple (Plus comes back from the account,
+then the habits from its Google Drive: Looking, We found your habits, Plus is back, No account found with the other
+ways), Google Drive without an account (Looking, We found your habits with Bring them back or Start fresh instead and
+its question, No habits found, Couldn't connect with Try again), your old phone (the move, below: Your habits are here),
+a backup file (Your backup file, That isn't a backup, From a newer version with Update), and Start fresh (Your days and
+weeks, then an empty Today). Bringing habits back ends on Today saying "Your habits are back: 18 habits, 222 logs".
+Sign-in runs on the stand-in until the Android OAuth client exists; **Continue with Apple shows only where Apple sign-in
+is available** (the stand-in; a release build hides it until Apple's web sign-in is built). Not built, because the
+account doesn't yet record where the habits live (D16's proposal): 2.3 "They're in iCloud", 2.5 "a different Google
+account", 3.3 "They're on your iPhone".
+
+**Backup & Sync (137).** The menu row is now **Backup & Sync** (it was Google Drive & Backup; Help's answers follow). The
+page says where the habits are first (Backed up · when · the account; Synced with Plus, with its devices; Not backed up,
+with Back up to Google Drive; No internet, with the changes waiting and Try again; Drive full; not connected), then Move
+and restore (Move to a new phone, Restore from a backup, Undo last restore), Export (a backup file, a spreadsheet) and the
+two red rows, each asking with two buttons (D9). Restore from a backup offers Google Drive, a backup file (Restore this
+file? with what's in it and what it replaces) and your old phone (Restore what it sent?); a restore ends with
+"Restored …" and Undo. Not built: 4.1, the dated list of Drive backups (the Android Drive sync keeps one copy per year,
+not dated copies).
+
+**Moving to a new phone (136).** Built end to end as Rulebook D15: the old phone's page shows a QR code and 6 digits and
+waits (screen kept on); the new phone scans it with Google's code scanner or types it in six boxes on the number keypad
+(it checks itself on the sixth). SPAKE2 (`data/move/Spake2.kt`, checked against RFC 9382's test vectors) gives both
+phones one key through the relay (`account-server/src/move.ts`); the habits go as the checked backup file (D5),
+encrypted, and the new phone shows what came before anything changes. **A wrong code ends that code for both; the old
+phone shows a new one at once**, saying "Someone typed a wrong code. Here's a new one.", and the new phone says "That
+code didn't work. Your old phone now shows a new one." Checked on two emulators at once (a Pixel 10 Pro on Android 16
+and an API 30 phone, the relay under `wrangler dev` on this PC): 18 habits and 222 logs moved and were brought back;
+a wrong code, then the new code, moved everything. That run found a crash on Android 11 (`BigInteger.TWO`, Java 9 only),
+fixed, and a failure in the move now ends the move, never the app. **Not deployed:** the relay needs the user's own
+Cloudflare login on this PC (below). Plus doesn't travel with the move yet.
+
+Tests: `OnboardingTest` (10, new: ideas add straight away, Back asks only after a change, Create my own, every way back,
+an empty Drive and Start fresh, a Google account without Plus, the code screen when the relay can't be reached, Backup &
+Sync and Restore's rows, Erase's question, Move when it can't connect), `TodayTest`'s welcome tests updated,
+`Spake2Test` (3), `MoveLiveTest` (3, against the relay when `MOVE_SERVER` is set), the Worker's `move.test.ts` (9).
+
 ## What's left
 
 | What | Why it isn't done |
@@ -367,6 +413,8 @@ Each is ported from the Swift with tests, and should move into `Core` when the s
 - **The Play Console app** for Play Billing: the products `com.oftenenough.app.plus` ($24.99),
   `com.oftenenough.app.plusfamily` ($59.99) and `com.oftenenough.app.plusfamily.upgrade` (the difference), and
   license testers. Until then Plus runs on a fake store.
+- **The move relay's deploy:** wrangler on this PC is signed in to another Cloudflare account. Sign in with your own
+  (`cd account-server && npx wrangler login`), then `npm run deploy:dev`; production with your go-ahead (T6).
 - **Real phones** (Pixel, Samsung, Xiaomi; U9, T5): noted separately at the end.
 
 ## Questions for the next report
