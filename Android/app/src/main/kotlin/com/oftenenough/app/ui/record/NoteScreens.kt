@@ -59,6 +59,7 @@ import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.ui.components.HabitIcon
+import com.oftenenough.app.data.noteDayLine
 import com.oftenenough.app.ui.theme.appColors
 
 /**
@@ -101,6 +102,18 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(title, close = editing, onClose = ::close)
         Column(Modifier.weight(1f).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            // A habit's note, read (Habit details, Figma 1373:2, 2.9): the day as its title, then the habit and how the day went.
+            if (!editing && habit != null) {
+                Column(Modifier.padding(horizontal = 4.dp).padding(bottom = 8.dp)) {
+                    Text(DayWords.date(day).format(java.time.format.DateTimeFormatter.ofPattern("EEEE, d MMMM", java.util.Locale.ENGLISH)),
+                        Modifier.semantics { testTag = "note-day" }, style = AppType.headlineSmall, color = c.ink)
+                    Spacer(Modifier.height(8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        HabitIcon(habit.symbol, habit.color, size = 20.dp)
+                        Text(habit.name + " · " + store.noteDayLine(habit, day), style = AppType.bodyMedium, color = c.secondary)
+                    }
+                }
+            } else
             // The habit and the day (Figma: 40 high, 16 in): its icon in a 24 circle, the name, then the date.
             Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)) {

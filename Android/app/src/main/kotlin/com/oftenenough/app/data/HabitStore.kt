@@ -487,6 +487,8 @@ class HabitStore(
             val day = today()
             val archived = habits[i].copy(archived = true)
             saveSetting(Keys.ARCHIVED + archived.id, dayKey(day))
+            // The two pages link to each other (Habit details, Figma 6.3, 6.4).
+            saveSetting(Keys.REPLACED_BY + archived.id, fresh.id)
             archivedOn = archivedOn + (archived.id to day)
             val list = habits.toMutableList()
             list[i] = fresh
@@ -554,6 +556,12 @@ class HabitStore(
         ids.add(at + 1, id)
         reorder(ids)
     }
+
+    /** The habit that took [habitId]'s place when its type changed (Figma 6.4: Open the new Water), if it's still here. */
+    fun replacedBy(habitId: String): Habit? = setting(Keys.REPLACED_BY + habitId)?.let { id -> habits.firstOrNull { it.id == id } }
+
+    /** The archived habit [habitId] replaced when the type changed (Figma 6.3: Open earlier Water). */
+    fun earlierOf(habitId: String): Habit? = habits.firstOrNull { it.archived && setting(Keys.REPLACED_BY + it.id) == habitId }
 
     /** What an archived habit started over as, if a type change archived it ("Time it"). */
     fun startedOverAs(habitId: String): String? = setting(Keys.STARTED_OVER + habitId)
@@ -1114,6 +1122,7 @@ class HabitStore(
         const val MOVE = "move."
         const val PAUSE = "pause."
         const val STARTED_OVER = "startedover."
+        const val REPLACED_BY = "replacedby."
         const val RULES = "rules."
         const val NOTE = "note."
         const val DAY_NOTE = "daynote."

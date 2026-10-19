@@ -345,6 +345,7 @@ private fun AppMain(
                     override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
                     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
                     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+                    override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                 }) { nav.popBackStack() }
             }
         }

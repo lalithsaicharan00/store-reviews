@@ -101,11 +101,11 @@ class ScreensTest {
         tapTag("row-Read")
         tapTag("day-identity")
         waitFor(hasTestTag("habit-details"), "Habit details")
-        waitFor(hasText("History"), "the History tab")
-        tapTag("habit-tab-progress")
+        // It opens on Progress; History is the other tab (Figma 1373:2, 1.1).
         waitFor(hasText("Overall record"), "the Progress tab's record")
-        tapTag("habit-tab-notes")
+        tapTag("habit-tab-history")
         waitGone(hasText("Overall record"), "the record")
+        waitFor(hasTestTag("history-search"), "History's Search notes")
     }
 
     @Test fun aLongPressOnARowOpensItsMenu() {

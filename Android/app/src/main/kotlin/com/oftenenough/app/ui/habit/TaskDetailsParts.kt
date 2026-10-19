@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.habit
 
+import androidx.compose.material.icons.automirrored.outlined.StickyNote2
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -55,7 +56,9 @@ fun LazyListScope.taskHistoryItems(store: HabitStore, task: Habit, today: Int, o
         }
         events.forEachIndexed { i, e ->
             item(key = "task-history-$g-$i") {
-                TaskEventRow(e, i, events.size, if (e.day != null && e.kind != TaskEvent.Kind.CREATED && !task.archived) ({ onOpenDay(e.day) }) else null)
+                // Each time with its note (Habit details, Figma 1373:2, 6.5).
+                val note = if (e.kind != TaskEvent.Kind.CREATED) e.day?.let { store.note(task, it) }?.takeIf { it.isNotBlank() } else null
+                TaskEventRow(e, i, events.size, note, if (e.day != null && e.kind != TaskEvent.Kind.CREATED && !task.archived) ({ onOpenDay(e.day) }) else null)
             }
         }
         if (title == null && g < groups.size - 1) item(key = "task-history-gap-$g") { Spacer(Modifier.height(16.dp)) }
@@ -63,7 +66,7 @@ fun LazyListScope.taskHistoryItems(store: HabitStore, task: Habit, today: Int, o
 }
 
 @Composable
-private fun TaskEventRow(e: TaskEvent, index: Int, count: Int, onClick: (() -> Unit)?) {
+private fun TaskEventRow(e: TaskEvent, index: Int, count: Int, note: String?, onClick: (() -> Unit)?) {
     val c = appColors
     val icon = when (e.kind) {
         TaskEvent.Kind.WAITING -> Icons.Outlined.Schedule
@@ -86,6 +89,11 @@ private fun TaskEventRow(e: TaskEvent, index: Int, count: Int, onClick: (() -> U
         Column(Modifier.weight(1f)) {
             Text(e.title, style = AppType.bodyLarge, color = c.ink)
             Text(e.line, style = AppType.bodyMedium, color = c.secondary)
+            if (note != null) Row(Modifier.padding(top = 4.dp)) {
+                Icon(Icons.AutoMirrored.Outlined.StickyNote2, null, Modifier.padding(top = 2.dp).size(16.dp), tint = c.secondary)
+                Spacer(Modifier.width(6.dp))
+                Text(note, style = AppType.bodyMedium, color = c.ink, maxLines = 2, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+            }
         }
     }
 }

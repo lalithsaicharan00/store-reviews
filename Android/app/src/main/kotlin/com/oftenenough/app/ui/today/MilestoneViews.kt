@@ -157,7 +157,7 @@ fun MilestoneBand(text: String, color: HabitColor, see: Boolean, raw: Float, ear
     ) {
         val rot = track(t, Key(0f, 35f), Key(0.223f, 35f, EaseOut), Key(0.346f, 0f))
         val sc = track(t, Key(0f, 0.01f), Key(0.223f, 0.01f, EaseOut), Key(0.292f, 1.3f, EaseInOut), Key(0.346f, 1f))
-        Box(Modifier.size(16.dp).graphicsLayer { rotationZ = rot; scaleX = sc; scaleY = sc }.clip(CookieShape()).background(base))
+        com.oftenenough.app.ui.habit.MilestoneMedal(null, 16.dp, color, Modifier.graphicsLayer { rotationZ = rot; scaleX = sc; scaleY = sc })
         val tx = track(t, Key(0f, -8f), Key(0.246f, -8f, Arrive), Key(0.331f, 0f))
         val ta = track(t, Key(0f, 0f), Key(0.246f, 0f, Arrive), Key(0.331f, 1f))
         Text(text, Modifier.weight(1f).graphicsLayer { translationX = tx * density.density; alpha = ta },
@@ -258,9 +258,7 @@ fun MilestoneBar(
     ) {
         Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) {
             val ms = track(t, Key(0f, 0.6f), Key(0.208f, 0.6f, Pop), Key(0.458f, 1f))
-            Box(Modifier.size(38.dp).graphicsLayer { scaleX = ms; scaleY = ms }.clip(CookieShape()).background(Color.White), contentAlignment = Alignment.Center) {
-                Text(number, style = if (number.length > 2) AppType.labelMedium else AppType.labelLarge, color = base, maxLines = 1)
-            }
+            com.oftenenough.app.ui.habit.WhiteMedal(number, 38.dp, color, Modifier.graphicsLayer { scaleX = ms; scaleY = ms })
             androidx.compose.foundation.Canvas(Modifier.matchParentSizeCompat()) {
                 listOf(Offset(36f, 4f) to 7f, Offset(6f, 34f) to 5f, Offset(40f, 38f) to 5f).forEachIndexed { i, (p, s) ->
                     val start = 0.208f + 0.06f * i
@@ -292,7 +290,8 @@ private fun Modifier.matchParentSizeCompat(): Modifier = this.then(Modifier.size
 @Composable
 fun MiniMedal(color: HabitColor, modifier: Modifier = Modifier) {
     val c = appColors
-    Box(modifier.size(14.dp).clip(CookieShape()).background(c.surface).padding(1.5.dp).clip(CookieShape()).background(c.habit(color)))
+    val shape = com.oftenenough.app.ui.habit.MedalShape
+    Box(modifier.size(14.dp).clip(shape).background(c.surface).padding(1.5.dp).clip(shape).background(c.habit(color)))
 }
 
 // ------------------------------------------------------------------ A row's milestone today

@@ -642,6 +642,8 @@ private fun dayWords(day: Int, today: Int): String = when (day) {
 @Composable
 private fun StartEndRows(form: FormState, store: HabitStore) {
     val today = store.today()
+    // A habit with logs can't start after its first one: no log is ever hidden (Habit details, Figma 1373:2, 5.1, 5.3).
+    val firstLog = remember(form.original) { form.original?.let { h -> store.entries(h.id).minOfOrNull { it.day } } }
     var picking by remember { mutableStateOf<String?>(null) }
     var endsMenu by remember { mutableStateOf(false) }
     Column {
@@ -662,11 +664,14 @@ private fun StartEndRows(form: FormState, store: HabitStore) {
             }
         }
         if (form.hasEnd) Note("After ${DayWords.dayMonth(form.endDate)}, it leaves Today. Its history stays.")
-        else if (form.startDate < today) Note("A start date in the past lets you tick the days since then.")
+        else if (form.startDate < today) Note(
+            if (form.original == null) "A start date in the past lets you tick the days since then."
+            else "Days from ${DayWords.dayMonth(form.startDate)} can be logged now. A day with no log counts as not done." +
+                (firstLog?.let { " Started can be any day up to ${DayWords.dayMonth(it)}, the first log." } ?: ""))
     }
     when (picking) {
-        "start" -> DayDialog(form.startDate, { true }, { picking = null }, title = if (form.startDate < today) "Started" else "Starts",
-            note = "A start date in the past lets you tick the days since then.") { form.startDate = it; if (form.hasEnd && form.endDate < it) form.endDate = it }
+        "start" -> DayDialog(form.startDate, { firstLog == null || it <= firstLog }, { picking = null }, title = if (form.startDate < today) "Started" else "Starts",
+            note = firstLog?.let { "Up to ${DayWords.dayMonth(it)}, the first log, so no log is hidden." } ?: "A start date in the past lets you tick the days since then.") { form.startDate = it; if (form.hasEnd && form.endDate < it) form.endDate = it }
         "end" -> DayDialog(maxOf(form.endDate, form.startDate), { it >= form.startDate }, { picking = null }, title = "Ends",
             note = "After it, the habit leaves Today. Its history stays.") { form.endDate = it; form.hasEnd = true }
     }

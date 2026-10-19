@@ -235,16 +235,7 @@ class MilestoneCenter(private val store: HabitStore) {
     }
 
     /** The goal for one period: a day's for set days, a week's or month's for a goal over one (ST-8). */
-    private fun periodGoal(ruled: Habit): Double {
-        val day = if (ruled.kind == HabitKind.Checklist) 1.0 else store.rules.dayGoal(ruled)
-        return when (val f = ruled.frequency) {
-            is Frequency.Flexible -> f.n * day
-            is Frequency.PerWeek, is Frequency.PerMonth, is Frequency.PerYear ->
-                if (ruled.kind == HabitKind.Checklist) (f as? Frequency.PerWeek)?.n?.toDouble() ?: (f as? Frequency.PerMonth)?.n?.toDouble() ?: 1.0
-                else store.rules.goal(ruled)
-            else -> day
-        }
-    }
+    private fun periodGoal(ruled: Habit): Double = store.milestonePeriodGoal(ruled)
 
     /** Whole years since the first log, today being that date, when the goal was met in the last 30 days. */
     private fun anniversary(habit: Habit, day: Int): Int? {
@@ -427,10 +418,7 @@ class MilestoneCenter(private val store: HabitStore) {
         fun totalTitle(v: Double): String = when {
             quit -> "${Format.amount(v)} clean days in total"
             limit -> "${Format.amount(v)} ${if (v == 1.0) "day" else "days"} within the limit in total"
-            ruled.kind is HabitKind.Amount -> HabitCopy.amount(v, (ruled.kind as HabitKind.Amount).unit) + " in total"
-            ruled.kind == HabitKind.Duration -> if (v >= 600 && v % 60 == 0.0) "${Format.amount(v / 60)} hours in total" else "${Format.amount(v)} minutes in total"
-            ruled.kind == HabitKind.Check && ruled.checkUnit != null -> "${Format.amount(v)} ${ruled.checkUnit} in total"
-            else -> "${Format.amount(v)} times in total"
+            else -> milestoneTotalWords(ruled, v)
         }
         val number: String
         val title: String

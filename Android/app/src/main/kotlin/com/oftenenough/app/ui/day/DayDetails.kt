@@ -1,5 +1,13 @@
 package com.oftenenough.app.ui.day
 
+import kotlinx.coroutines.launch
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import com.oftenenough.app.ui.theme.AppType
 
 import android.content.Context
@@ -163,12 +171,27 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
             Box(Modifier.padding(top = 16.dp, bottom = 4.dp).size(32.dp, 4.dp).clip(RoundedCornerShape(2.dp)).background(Color(0x8079797E)))
         }) {
         // A sheet is its own window: its tags reach UI Automator only if it says so too.
-        Box(Modifier.semantics { testTagsAsResourceId = true }) { DayDetailsContent(habit, day, store, nav, onDismiss) }
+        val snackbar = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
+        Box(Modifier.fillMaxHeight().semantics { testTagsAsResourceId = true }) {
+            DayDetailsContent(habit, day, store, nav, onDismiss) { words ->
+                // A log added to a past day says what it added and where, with Undo (Habit details, Figma 1373:2, 4.3).
+                scope.launch {
+                    snackbar.currentSnackbarData?.dismiss()
+                    if (snackbar.showSnackbar(words, actionLabel = "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) {
+                        store.entries(habit.id, day).filter { it.stepId == null }.maxByOrNull { it.createdAt }?.let { store.undoEntry(it.id) }
+                    }
+                }
+            }
+            SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(16.dp)) { data ->
+                Snackbar(data, containerColor = appColors.ink, contentColor = appColors.onInk, actionColor = appColors.onInk)
+            }
+        }
     }
 }
 
 @Composable
-fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, onDismiss: () -> Unit) {
+fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, onDismiss: () -> Unit, onAdded: ((String) -> Unit)? = null) {
     val c = appColors
     val today = store.today()
     val rev = store.revision(habit.id)
@@ -191,7 +214,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
         }
         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             IdentityCard(habit, store, nav)
-            DayActivity(habit, day, editable, started, rev, store, nav)
+            DayActivity(habit, day, editable, started, rev, store, nav, onAdded)
             if (isTask && store.canReschedule(habit, day)) {
                 SectionList("Reschedule") {
                     RowAction("Do tomorrow", Icons.AutoMirrored.Rounded.Redo, segmentShape(0, 2), "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
@@ -301,7 +324,7 @@ private class DayAction(val title: String, val prominent: Boolean = false, val e
  * the note behind a divider. The day's logs follow below the card.
  */
 @Composable
-private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Boolean, rev: Int, store: HabitStore, nav: DayNav) {
+private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Boolean, rev: Int, store: HabitStore, nav: DayNav, onAdded: ((String) -> Unit)? = null) {
     val c = appColors
     val today = store.today()
     val ruled = store.rule(habit, day)
@@ -309,7 +332,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     val tick = rememberTicker(running, store.clock)
     val status = remember(rev, day, store.timers, store.skips, store.pauses) { DayStatus.make(habit, day, store) }
     val logs = remember(rev, day) { if (showsLogs(ruled, habit, day, store)) store.dayLogs(habit, day) else emptyList() }
-    val actions = dayActions(habit, ruled, day, editable, logs.isNotEmpty(), store, nav)
+    val actions = dayActions(habit, ruled, day, editable, logs.isNotEmpty(), store, nav, onAdded)
     val skipped = store.isSkipped(habit, day)
     val paused = store.isPaused(habit, day)
     val future = day > today
@@ -506,9 +529,12 @@ private fun showsLogs(ruled: Habit, habit: Habit, day: Int, store: HabitStore): 
 }
 
 /** The habit's own buttons for this day, one rule per kind (U16: prominent only for what a positive goal asks). */
-private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, hasLogs: Boolean, store: HabitStore, nav: DayNav): List<DayAction> {
+private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, hasLogs: Boolean, store: HabitStore, nav: DayNav,
+                       onAdded: ((String) -> Unit)? = null): List<DayAction> {
     if (!editable) return emptyList()
     val today = store.today()
+    // On a past day, a quick add says so: "Added 1 glass to Sat 19 Sep" (Figma 4.3); today's shows on the screen itself.
+    val said = { what: String -> if (day != today) onAdded?.invoke("Added $what to " + com.oftenenough.app.data.pageDayDate(day)) }
     val skipped = store.isSkipped(habit, day)
     val src = EntrySource.DAY_SHEET
     val manual = { nav.addLog(habit, day) }
@@ -525,7 +551,7 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
             listOf(DayAction(if (done) "Undo done" else "Mark done", !done, tag = "day-done") { store.toggleCheck(habit, day, src) })
         }
         HabitKind.Check -> if (store.rules.countsUp(habit, day)) {
-            listOf(DayAction("Add a check", ask, !skipped, tag = "day-add-one") { store.addProgress(habit, 1.0, day, source = src) })
+            listOf(DayAction("Add a check", ask, !skipped, tag = "day-add-one") { store.addProgress(habit, 1.0, day, source = src); said("a check") })
         } else {
             val done = store.rules.isDayMet(ruled, day)
             listOf(DayAction(if (done) "Undo done" else "Mark done", !done && ask, !skipped, tag = "day-done") { store.setDayDone(!done, habit, day) })
@@ -535,7 +561,10 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
             val step = ruled.quickIncrement
             if (step == null) listOf(DayAction("Log amount", ask, !skipped, tag = "day-add-entry", run = manual))
             else listOf(
-                DayAction("+" + Format.amount(step), ask, !skipped, "Add " + HabitCopy.amount(step, k.unit), "day-add-step") { store.increment(habit, day, src) },
+                DayAction("+" + Format.amount(step), ask, !skipped, "Add " + HabitCopy.amount(step, k.unit), "day-add-step") {
+                    store.increment(habit, day, src)
+                    said(HabitCopy.amount(step, k.unit))
+                },
                 DayAction("Log manually", enabled = !skipped, tag = "day-add-entry", run = manual),
             )
         }

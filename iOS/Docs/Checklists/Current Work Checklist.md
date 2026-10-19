@@ -1807,6 +1807,42 @@ and the Add note keyboard coming up by itself.
   - [ ] Not yet: the iPhone writing its iCloud record (it doesn't use the shared account yet) and its own Move to a new
     phone, which 2.3's steps point to.
   - [x] Committed and pushed to main (the user: "OK go ahead").
+- [x] **139. Android: Habit details as Figma `1373:2` (19 Oct 2026 frames)** (added 19 October 2026, from the user: "next
+  let's work on this and implement this and Tested thoroughly and once everything is done commit it and push it").
+  - [x] 1 · The page and its header: opens on Progress; two tabs, Progress and History (Notes folds into History); the
+    description cut at two lines with More / Less; on scroll the name moves into a small top bar and the tabs stay; ⋮.
+  - [x] 2 · History: each day's logs and its note together, every day from the start (Not done, Skipped); months fold;
+    Search notes (results with the match in bold, "No notes with …"); All / With notes / Go to date; Add asks "Add to
+    which day?" then opens that day; nothing yet; the note's view (Delete note | Edit) and Add note for any day.
+  - [x] 3 · Progress: the record with See all streaks (Streaks page; a quit habit's See all runs); calendars and Year in
+    Pixels mark a day with a note; a week goal's Week column; an amount under each day; What the squares mean with Has a
+    note and Before the habit started; a new habit's small numbers.
+  - [x] 4 · Fix a past day: a calendar day opens Day details for it; +1 says what it added, with Undo; Add a note….
+  - [x] 5 · The start date: Edit habit's Started says what it means, and can't go past the first log.
+  - [x] 6 · Other states: paused and archived cards on Progress; after a type change, links between the two Waters; a
+    task's details (years, Done N times); 200 % text; loading shapes.
+  - [x] **Milestones as Figma `2475:75` and `1735:4`** (the user, 19 Oct 2026: "it is kind of a gradient and within that
+    we have a cookie shaped line … that gradient needs to adapt to its colors … it has some slight shadow … give
+    attention to details"; "for remaining colors … come up with the best possible design … check in the dark mode").
+    One medal (`ui/habit/Medals.kt`): Figma's own nine-point star, a vertical gradient from the habit's colour (Figma's
+    blue steps: top 28 % toward white, bottom 88 %), the same star at 82 % as a white line at 55 %, a shadow 2 dp down
+    in a dark shade of the colour (on dark, a plain dark one), the number in white. A light colour (yellow, mint) is
+    deepened until white reads on it (3:1). Every colour checked in light and dark on the emulator. The Latest plate is
+    the colour at 14 % (20 % on dark); Next rings 52 dp, the colour at 20 %. All milestones is Figma's list: "Floss · 6
+    reached", In a row / Times in total (the habit's own unit: "Glasses in total") / Anniversaries, Next first.
+  - [x] The page's milestones follow the decided rule (17 Oct 2026, the pop-ups' own): in a row by the habit's bucket,
+    in total as everything logged × one period's goal ("200 glasses in total"), and anniversaries. Before, the page
+    counted goals met ("25 times in total") and had no anniversaries, so it disagreed with the pop-ups.
+  - [x] **The same medal everywhere** (the user, 19 Oct 2026: "make sure the milestones are consistent everywhere
+    wherever they are shown in the app"): the pop-up (with its glow, burst ring and sparkles, Figma `2143:2` P.*), the
+    row's band and Day details' ribbon, the routine's "Reached in this routine", All milestones; the bar's medal is the
+    same star in white with the number in the colour (V3.6); a folded section's small medal is the star. The pop-up's
+    Next ring matches the page's.
+  - [ ] **Later, with the widgets:** a milestone shown on a widget uses the same medal (star, gradient, inner line,
+    shadow; every colour, light and dark). The user, 19 Oct 2026: "widgets as of now you can keep them aside but … when
+    we work on widgets we will also make sure".
+  - [x] Tested on the Pixel 10 Pro emulator: `HabitDetailsTest` 12 (1 new, milestones), `TodayTest` 12 (pop-up, bar,
+    band), `ScreensTest` 13, JVM tests; light and dark pictured at 360 × 800 dp. Committed and pushed.
 - [ ] **86. The iPad layout: research first, then designs in Figma** (added 11 October 2026, from the user; Product
   Roadmap 66; started the same day). **Designed and documented 11 Oct 2026; building is next:** everything is in
   [`iOS/Docs/iPad/`](<../iPad/README.md>), with the build prompt. The user's points:

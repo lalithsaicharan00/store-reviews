@@ -30,6 +30,19 @@ fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime
 }
 
 /** One day's result, never a weekly total labelled Today. */
+/** How a day went, under a note's title (Habit details, Figma 2.9): "Not done · 0 of 8 glasses", "Goal met · 8 of 8 glasses". */
+fun HabitStore.noteDayLine(habit: Habit, day: Int): String {
+    val result = dayResult(habit, day).replace("/", " of ")
+    val state = when {
+        isPaused(habit, day) || isSkipped(habit, day) || day < rules.startDay(habit) -> return result
+        habit.kind == HabitKind.Quit -> return result
+        rules.isDayMet(habit, day) -> "Goal met"
+        entries(habit.id, day).isEmpty() -> if (day == today()) "Nothing logged yet" else "Not done"
+        else -> "Part done"
+    }
+    return if (result.isBlank() || result == state) state else "$state · $result"
+}
+
 fun HabitStore.dayResult(habit: Habit, day: Int): String {
     if (isPaused(habit, day)) return "Paused"
     if (isSkipped(habit, day)) return "Skipped"

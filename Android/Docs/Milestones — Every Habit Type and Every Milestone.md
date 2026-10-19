@@ -126,9 +126,24 @@ when the row is first seen, and a pop-up's band has See.
 - **The notification** (N.1–N.6): *Tell me at milestones* on a quit or cut-down habit's form, Android's dialog the
   first time, the next one named; around midday, never at night; tapping it opens the pop-up.
 
+## The habit page and the one medal (19 Oct 2026, Current Work 139)
+
+- **The habit page follows this rule** (`habitMilestones` in `HabitPageWords.kt`): Progress's Milestones card (Figma
+  `2475:75`) and All milestones (`1735:4`) list in a row by the bucket, in total in the habit's own unit, and
+  anniversaries, with the pop-ups' words (`milestoneTotalWords`, `milestonePeriodGoal`, shared with `MilestoneCenter`).
+  A cut-down habit keeps days within the limit; quit keeps days since a slip.
+- **One medal, everywhere it's shown** (the user, 19 Oct 2026: "make sure the milestones are consistent everywhere"):
+  `MilestoneMedal` (`ui/habit/Medals.kt`) draws Figma's nine-point star in a vertical gradient of the habit's colour,
+  the same star at 82 % as a white line at 55 %, a soft shadow in a dark shade of the colour, and the number in white.
+  The steps are Figma's own for blue (top 28 % toward white, bottom 88 %, shadow 55 % at 35 %); a light colour is
+  deepened until white reads on it (3:1), and on dark the shadow is a plain dark one. Used by the habit page, All
+  milestones, the pop-up (over its glow, burst ring and sparkles), the row's band, Day details' ribbon and the routine;
+  the bar's `WhiteMedal` is the same star in white with the number in the deepened colour; a folded card's small medal
+  is the star (`MedalShape`).
+
 ## Still to do
 
-- **The habit page** (Progress's Milestones card, All milestones) still lists ST-7's lengths: it moves to this rule
-  with the page's own work. **The iPhone** follows once Android is final.
-- **The widgets** (WD, WM, WL, WW: the medal and band on a widget) are not built yet.
+- **The iPhone** follows once Android is final.
+- **The widgets** (WD, WM, WL, WW: the medal and band on a widget) are not built yet; when they are, they draw the
+  same medal (star, gradient, inner line, shadow; every colour, light and dark), as the user asked on 19 Oct 2026.
 - **The frequency check** before release (Current Work 127).

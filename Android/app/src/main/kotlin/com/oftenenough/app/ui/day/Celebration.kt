@@ -109,23 +109,10 @@ private fun rememberTimeline(key: Any, play: Boolean = true): Animatable<Float, 
 
 // ------------------------------------------------------------------ The medal
 
-/** A milestone's medal (the habit page's, made special): the cookie in a gradient of the habit's colour, a white inner ring. */
+/** A milestone's medal: the one medal the whole app draws (`MilestoneMedal`: Figma's star, gradient, inner line, shadow). */
 @Composable
-fun CelebrationMedal(number: String?, size: Dp, color: HabitColor, modifier: Modifier = Modifier) {
-    val c = appColors
-    val base = c.habit(color)
-    val light = Color.White.copy(alpha = 0.28f).compositeOver(base)
-    val dark = Color.Black.copy(alpha = 0.12f).compositeOver(base)
-    Box(modifier.size(size), contentAlignment = Alignment.Center) {
-        Box(Modifier.size(size).clip(CookieShape()).background(Brush.verticalGradient(listOf(light, dark))))
-        Box(Modifier.size(size * 0.82f).border(maxOf(0.5.dp, size * 0.0036f * 4), Color.White.copy(alpha = 0.55f), CookieShape()))
-        if (number != null) {
-            val share = if (number.length >= 4) 0.24f else if (number.length == 3) 0.28f else 0.333f
-            val sp = with(LocalDensity.current) { (size * share).toSp() }
-            Text(number, color = Color.White, fontSize = sp, style = AppType.titleMedium.copy(fontSize = sp, lineHeight = sp), maxLines = 1)
-        }
-    }
-}
+fun CelebrationMedal(number: String?, size: Dp, color: HabitColor, modifier: Modifier = Modifier) =
+    com.oftenenough.app.ui.habit.MilestoneMedal(number, size, color, modifier)
 
 // ------------------------------------------------------------------ The ribbon (Figma 14)
 
@@ -276,9 +263,10 @@ fun LandmarkPopup(
                     .heightIn(min = 76.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(52.dp), contentAlignment = Alignment.Center) {
                         Canvas(Modifier.size(52.dp)) {
-                            val w = 4.dp.toPx()
+                            // The same ring as the habit page's Next (Figma: a 3.9 band, the colour at 20 %).
+                            val w = 3.9.dp.toPx()
                             val arc = Size(size.width - w, size.height - w)
-                            drawArc(base.copy(alpha = 0.18f), 0f, 360f, false, Offset(w / 2, w / 2), arc, style = Stroke(w))
+                            drawArc(base.copy(alpha = if (c.dark) 0.28f else 0.2f), 0f, 360f, false, Offset(w / 2, w / 2), arc, style = Stroke(w))
                             drawArc(base, -90f, 360f * fraction, false, Offset(w / 2, w / 2), arc, style = Stroke(w, cap = StrokeCap.Round))
                         }
                         Text(target, style = if (target.length > 3) AppType.labelMedium else AppType.titleMedium, color = c.ink, maxLines = 1)

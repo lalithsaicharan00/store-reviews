@@ -1074,9 +1074,8 @@ private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () ->
                         .semantics { testTag = "player-reached" }, verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Text("Reached in this routine", style = AppType.titleMedium, color = c.ink)
                         for ((h, w) in reached) Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.size(28.dp).clip(CookieShape()).background(c.habit(h.color)), contentAlignment = Alignment.Center) {
-                                Text(w.number, style = AppType.labelSmall, color = Color.White, maxLines = 1)
-                            }
+                            // The same medal as everywhere (Figma RP.2: 32).
+                            com.oftenenough.app.ui.habit.MilestoneMedal(w.number, 32.dp, h.color)
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text(w.title, style = AppType.bodyLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
