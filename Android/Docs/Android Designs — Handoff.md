@@ -22,7 +22,7 @@ sections sit in rows, top to bottom, each row left to right, 240 apart:
 11. Widgets · Widgets: adding and changing · Widgets: every state (they belong to no menu row)
 12. (Archived) future phases: How was today
 
-A new section goes into the row its menu row or parent screen belongs to. The page spans y −66,000 to 40,405 (19 Oct, after Progress grew) and x 0 to
+A new section goes into the row its menu row or parent screen belongs to. The page spans y −66,000 to 43,639 (19 Oct, after Progress and the Settings row grew) and x 0 to
 29,280, inside Figma's canvas limit.
 
 Figma file `Ncccsm1l2O62GJ5xLSInqk` ("Design"), page **Andriod mobile** (`1241:2`):
@@ -42,9 +42,9 @@ left to right in the order a person reaches it (the user, 12 Oct 2026: "arrange 
 | **Routine player and timer** (`1328:2`) | **Placeholders added 19 Oct 2026 (Current Work 140):** 11 numbered rows with arrows, the 18 frames of 12 Oct renumbered into them, 35 placeholders, and *a limit* set aside (below, "Routine player and timer: placeholders, 19 Oct 2026"). The 12 Oct frames: a check (`1344:2`), done with the Saved snackbar (`1344:57`), several a day (`1344:117`), a checklist (`1344:173`) and many steps (`1347:57`), an amount, one tap (`1333:2`), a week goal with a long label (`1347:2`), typed each time (`1344:352`), a timer running (`1344:241`) and not started (`1344:297`), a task (`1344:463`), skipped (`1344:518`), the last habit, done (`1344:582`), ⋮ menu (`1345:2`), Your routine (`1345:70`), the end (`1345:183`), Timer · running (`1345:219`) | Expressive version approved 12 Oct; **all 35 placeholders designed 19 Oct** (below), waiting for the user's review |
 | **Habit details: Progress and History** (`1373:2`) | **The final design (19 Oct 2026, Current Work 143), cleaned up the same day at the user's word:** top, the milestones rule board (`2266:2`) and All milestones (`1735:4`); then six rows: 1 the page and its header (opens on Progress; tabs Progress · History; the description; collapsed; ⋮), 2 History with logs and notes together (Search notes; All · With notes · Go to date; one **Add** button), the Add flow 2.11–2.17 with arrows (Add → a date dialog “Add to which day?” → that day's Day details → +1 / Log manually / Add a note → History), 3 Progress (the record with See all streaks, dated Month calendar, note marks, week-goal, amount, new and quit habits), 4 fixing a past day, 5 the start date, 6 other states (paused, archived, type change, a task, 200 % text, loading) | The old frames (the 12 Oct History, Notes, Progress and ⋮ menu) and the three replaced Add versions were removed on the user's word ("clean up the old designs, but keep the milestones overall info"). How it got here: the research ([The Habit Details Page — Why People Open It](<../../Research/Research Reports/Day Structure and Organization/The Habit Details Page — Why People Open It and What It Should Do.md>)), then the user's decisions and reviews, all in Current Work 143 |
 | **Progress: Week, Month, Year** (`1376:2`) | **Placeholders added 19 Oct 2026 (Current Work 144):** 6 numbered rows with arrows, the three 12 Oct frames renumbered (1 Week `1376:3`, 1.1 Month `1376:226`, 1.2 Year `1376:496`) and 34 placeholders (below, "Progress: placeholders, 19 Oct 2026") | Built 12 Oct from the built app; **no ⋮ menu**; **all 34 placeholders designed 19 Oct** (below), waiting for the user's review |
-| **Settings: Times of Day** (`1437:2`) | Times of Day (`1440:2`); New time of day, defaulting to free time 4–6 AM (`1440:69`); Edit time of day · Morning (`1440:152`) | Built 12 Oct from the simulator, then made Expressive at the user's request (the terminal session's version was deleted) |
+| **Settings: Times of Day** (`1437:2`) | Times of Day (`1440:2`); New time of day, defaulting to free time 4–6 AM (`1440:69`); Edit time of day · Morning (`1440:152`) **19 Oct 2026 (Current Work 145):** renumbered 1–1.3 and placeholders 1.4–1.8 (time picker, a clashing start, ✕ with changes, Delete, deleted). | Built 12 Oct from the simulator, then made Expressive at the user's request (the terminal session's version was deleted) |
 | **Settings: Day and Week** (`1449:2`) | Day and Week (`1449:3`); New day starts at, menu open (`1449:51`); Week starts on, menu open (`1768:100`) | Built 12 Oct from the built app; **redesigned 14 Oct** in Figma, not built (below, "Day and Week, 14 Oct 2026") |
-| **Settings: Reminders** (`1456:2`) | Reminders with the reminder check (`1456:3`); a habit's reminders, on (`1456:91`); Get reminders on time, the exact-times sheet (`1456:164`); a reminder that didn't arrive (`1456:206`) | Built 12 Oct from the built app and decisions A11 D1–D3 |
+| **Settings: Reminders** (`1456:2`) | Reminders with the reminder check (`1456:3`); a habit's reminders, on (`1456:91`); Get reminders on time, the exact-times sheet (`1456:164`); a reminder that didn't arrive (`1456:206`) **19 Oct 2026 (Current Work 145):** four numbered rows, 22 placeholders (other phones' steps, every state of the reminder check, the reminder itself per kind, the alarm style). | Built 12 Oct from the built app and decisions A11 D1–D3 |
 | **Habits** (`2106:2`, redone 18 Oct 2026: the first pass `2106:3` deleted; Current Work 141) | **56 placeholders**, numbered and arranged in rows with arrows: **1** the page and its states (1.1–1.9: many, one, none, all archived, 200 % text, back from details, every kind of row, every status, + at five); **2** a row's ⋮ and what each item does (2.1–2.7, results 2.2.1–2.6.1); **3** selecting several (3–3.7); **4** search (4–4.3); **5** the top bar's ⋮: Show by, Arrange, groups (5–5.5.3); **6** Archived habits (6–6.9); **7** the ways in (7–7.2) | All placeholders; designs next |
 | **Settings: Appearance** (`1458:2`) | Appearance (`1458:3`); Done habits, its menu open (`1458:85`) | Built 12 Oct from the built app |
 | **Settings: Google Drive & Backup** (`1461:2`) | Not backed up (`1465:2`); backed up, free (`1465:54`); synced, Plus (`1465:123`); offline, changes waiting (`1465:192`); Delete your data from Google Drive?, the dialog (`1475:2`); Erase everything on this phone?, the dialog (`1473:27`); Restore from a backup (`1465:258`) | Rebuilt 12 Oct after the user's review ("what is this backup files only on this phone … why you're mixing backup and restore, export and import"), on the structure of the researched Backup & Export mockups (`950:309`) |
@@ -3173,6 +3173,40 @@ Progress*, without the Hide done switches, and *Health ✕* under Week · Month 
 ("whichever is best, based on the reviews"):** the headline is the current run, *Clean for 2 days*, with *Best 30
 days · 1 slip this week* under it: the days-since count is 614 of the 708 reviews praising quit stats, and the best run
 is asked for beside it (Progress report §10). A habit's streaks stay off Progress; a quit habit's run is its number.
+
+### Times of Day and Reminders: placeholders, 19 Oct 2026 (Current Work 145)
+
+The user asked which Settings sections still miss screens. **Day and Week, General, Help & Feedback and About are
+complete.** **Late reminders, decided by the user:** without *Alarms & reminders*, Android decides when a reminder
+arrives (about 10 minutes late on one of the user's phones, about an hour on another), so the app never names a number;
+it says plainly that Android can't deliver reminders at the exact time without this permission and may delay them,
+that this is Android's permission and not the app, and that Allow fixes it ("Off: up to 10 min late" changes in the
+design pass, here and in the form's *Get reminders on time*). **Times of Day** (`1437:2`): 1 the list, 1.1 New, 1.2 Edit,
+1.3 a start moved, then placeholders 1.4 the time picker, 1.5 a clashing start, 1.6 ✕ with changes, 1.7 Delete time of
+day? (to decide: its habits go to Anytime with their reminders), 1.8 deleted with Undo. **Reminders** (`1456:2`), four
+rows: 1 the page and keeping reminders coming (Samsung, Xiaomi, other phones); 2 the reminder check's states (all set,
+notifications off, Alarms & reminders off and why, Android's own page, a late reminder, no reminders yet); 3 the
+reminder notification per kind (Done, +1, Log, Start timer, a checklist's steps, a task's Done), tapping it (Day
+details), after Done (to decide), several at once, names hidden; 4 the alarm style (ringing, locked, again every 15
+min, Done). The Settings row was laid out again and everything below moved down 3,234; the page spans −66,000 to
+43,639.
+
+### Times of Day and Reminders: every screen designed, 19 Oct 2026 (Current Work 145; the user: "now complete all of the designs")
+
+All 27 placeholders are designed, cloned from the existing frames. **Times of Day:** 1.4 Android's time picker at
+6:00 AM over Edit · Morning; 1.5 a clashing start (*Morning already starts at 6:00 AM. Choose another time.*, Add
+off); 1.6 *Discard your changes?*; 1.7 *Delete Morning?* · *Its 4 habits move to Anytime and keep their reminders.* ·
+Cancel | Delete (red), the recommendation applied; 1.8 *Morning deleted* · Undo, the FAB raised above the snackbar.
+**Reminders:** 1.3 Xiaomi's two steps and 1.4 other phones' one step on Keep reminders coming; the check's states (2
+all set, 2.1 notifications off with *Turn on*, 2.2 Alarms & reminders off with the user's plain words, 2.3 Android's own
+Alarms & reminders page with its switch, 2.4 a reminder that came late, 2.5 no reminders yet with *Open a habit and turn
+on Remind me to get its reminders.*); the reminder notification in the shade per kind (Done, *+1 glass*, Log, Start
+timer, none for a checklist, Done for a task), 3.6 a tap opens Day details, 3.7 after Done it goes, 3.8 grouped by time
+of day, 3.9 names hidden; the alarm style as a heads-up notification with **Done | Stop** (4), on the lock screen (4.1),
+*Not done yet* again 15 minutes later (4.2), and Today after Done (4.3). **The late-reminder words are applied** to the
+Reminders page (*Off · Android may delay reminders*), 1.1 (*Alarms & reminders*, not "Exact times") and the form's *Get
+reminders on time* sheet. **For the build:** a check's reminder line is its plan, not "Time for …"; Log and Start timer
+are new buttons; Stop is new on the alarm.
 
 ## How we work on these (the user's standing preferences)
 

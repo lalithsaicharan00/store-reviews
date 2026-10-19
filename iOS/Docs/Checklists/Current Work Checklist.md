@@ -1269,6 +1269,66 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **146. Our logo in Android's notifications: the one-colour exception (the user's decision)** (added 19 October
+  2026, from the user: "in the notifications, can we set our app logo … add this into the checklist so that we don't
+  forget").
+  - **How Android works:** the **small icon** (status bar, every notification's header, the timer's Live Update chip)
+    is drawn from the icon's shape only and painted one colour by Android; a full-colour logo shows as a white blob.
+    The **large icon** (the round picture at the right) can be full colour, but the designs use it for the habit's own
+    icon, and Android keeps it for the content, not the app.
+  - **Today:** the built app's small icon is a generic tick in a circle (`Android/…/res/drawable/ic_notification.xml`);
+    the designs show a stand-in stacked symbol. Neither is our logo.
+  - **The conflict:** the Logo Guide keeps the tonal steps as part of the identity and approves no single-ink mark;
+    Rulebook U29 says never to bring one back silently for a platform's tinting.
+  - **Recommended:** approve one exception, a one-colour outline of the three tilted tiles with transparent gaps
+    between them (so the stack reads at 24 dp), **only where Android forces one colour**: the status bar, the
+    notification header, the Live Update chip. Everywhere else the tonal logo; the large icon stays the habit's icon.
+    The same decision covers Android 13's themed (one-colour) home-screen icon.
+  - [ ] The user decides (approve the exception, or keep a generic symbol).
+  - [ ] If approved: draw the outline in `Brand/` (check it at 24 dp and in the status bar on a real phone, U9), record
+    the exception in the Logo Guide and U29, and use it in the designs' notifications and the app's
+    `ic_notification` (and the themed launcher icon).
+
+- [ ] **145. Android: Times of Day and Reminders, the missing screens** (added 19 October 2026, from the user: "check
+  these sections … any of the missing screens … in whichever sections we need empty screens, add them … placeholders
+  first"). Figma `1437:2`, `1456:2`. Day and Week, General, Help & Feedback and About were checked and are complete.
+  - [x] **Decided by the user (19 Oct): late reminders are explained as Android's, plainly.** Without the *Alarms &
+    reminders* permission Android decides when a reminder arrives, and how late varies by phone (the user saw about 10
+    minutes on one device and about an hour on another). So the app never promises a number ("up to 10 min late" goes):
+    it says that without this permission Android can't deliver reminders at the exact time and may delay them, that
+    this is Android's permission and not the app, and Allow fixes it. This settles the question found while building
+    (item 131: `setAndAllowWhileIdle` gives about an hour; the page said 10 minutes).
+  - [x] **Times of Day placeholders (19 Oct):** the 4 frames renumbered (1 the list, 1.1 New, 1.2 Edit Morning, 1.3 a
+    start moved) and 1.4 the start time picker, 1.5 a start that clashes, 1.6 ✕ with changes, 1.7 Delete time of
+    day? (to decide: its habits move to Anytime, keeping their reminders; recommended), 1.8 deleted with Undo.
+  - [x] **Reminders placeholders (19 Oct), four rows:** 1 the page, a reminder that didn't arrive, Keep reminders
+    coming (Samsung), plus Xiaomi (1.3) and other phones (1.4); 2 the reminder check: all set, notifications off,
+    Alarms & reminders off and why (the decision above), Android's Alarms & reminders page, a reminder that came late,
+    no habit has reminders; 3 the reminder itself for each kind (a check Done, a step +1, typed Log, a time Start
+    timer, a checklist opens its steps, a task Done), tapping it (opens Day details, item 143's note), after Done (to
+    decide), several at once, names hidden; 4 the alarm style: ringing, on the lock screen, again every 15 min, Done
+    from the alarm.
+  - [x] The Settings row was laid out again (Times of Day, Day and Week, Reminders, General) and everything below it
+    moved down 3,234; no sections overlap.
+  - [x] **Every placeholder designed (19 Oct)**, 27 screens built from the existing frames (Times of Day's edit screen,
+    Android's time picker and the app's dialogs; the Reminders page, its check rows and Keep reminders coming; the
+    notification shade drawn for the timer's Live Update). Choices made while designing, for the user's review:
+    - **Times of Day:** the picker opens at the start (6:00 AM, hand on 6); a clashing start says *Morning already
+      starts at 6:00 AM. Choose another time.* and Add waits; ✕ after changes asks *Discard your changes?*; **Delete
+      Morning?** says *Its 4 habits move to Anytime and keep their reminders.* (the recommendation, applied), Cancel |
+      Delete in red; then *Morning deleted* · Undo.
+    - **The late-reminder words, applied:** the Reminders row reads *Off · Android may delay reminders*; 2.2 says it in
+      full (*Reminders may come late. Android sends them at the exact time only when Alarms & reminders is allowed.
+      Without it, Android decides when: a few minutes to an hour late, depending on the phone. It's Android's setting,
+      not the app. Allow turns it on.*); 2.4 *Water's 8:00 AM reminder came at 8:52 AM* with the same reason and Allow;
+      the form's *Get reminders on time* sheet no longer says "up to 10 minutes", and its button is *Allow*. "Exact
+      times" in 1.1 is now *Alarms & reminders*.
+    - **The reminder, as the built app words it** (title the habit's name, the plan under it, *Not done yet* on a
+      repeat, *Reminder · 8:00 AM* with names hidden, grouped as *Morning · Take vitamins, Water, Meds +1*). **To add
+      in the build:** a check's line is its plan (*Morning · Every day*), not "Time for take vitamins"; a typed
+      amount gets **Log** (opens Add log) and a time habit **Start timer**; the ringing alarm gets **Stop** beside
+      Done. After Done the reminder goes, as built (3.7). A tap opens Day details (3.6).
+  - [ ] The user's review, then the app (Android first, on `claude/android-app`).
 - [ ] **144. Android: Progress, every screen** (added 19 October 2026, from the user: "next what's left is the progress
   page … figure out what are the screens that are missing … let's start on creating the empty placeholders"). Figma
   `1376:2`.
@@ -2027,9 +2087,12 @@ and the Add note keyboard coming up by itself.
     notification question allowed, refused once and refused twice, then the reminder set for 9:00 AM.
   - [x] Tests: `HabitFormTest` (6, new): type change asks then starts over, Cancel and Discard keep it, the goal note,
     the 6th habit and Make room, a new time of day by its start, quick picks and a task's Time.
-  - [ ] Found, not changed: without exact alarms Android gives a reminder a one-hour window (`setAndAllowWhileIdle`),
+  - [x] Found, not changed: without exact alarms Android gives a reminder a one-hour window (`setAndAllowWhileIdle`),
     while Get reminders on time says "up to 10 minutes late" (A11 D1 planned a 10-minute window). Decide: a
     10-minute `setWindow` (held in Doze) or say "up to an hour".
+    **Decided 19 Oct (the user, item 145):** no number at all. Say that without this permission Android decides
+    when reminders arrive and may delay them (it varies by phone), that it's Android's permission, not the app, and
+    Allow fixes it. Change "up to 10 minutes late" wherever it appears (Reminders, Get reminders on time).
   - [x] Committed to main, 19 Oct 2026.
 - [ ] **132. Android: the Habits page, as Figma `2106:2`** (added 19 October 2026, from the user: "implement everything
   we have related to habits page and test it in the emulator").
