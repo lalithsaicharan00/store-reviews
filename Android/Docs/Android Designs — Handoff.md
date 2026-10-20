@@ -22,7 +22,7 @@ sections sit in rows, top to bottom, each row left to right, 240 apart:
 11. Widgets · Widgets: adding and changing · Widgets: every state (they belong to no menu row)
 12. (Archived) future phases: How was today
 
-A new section goes into the row its menu row or parent screen belongs to. The page spans y −66,000 to 43,639 (19 Oct, after Progress and the Settings row grew) and x 0 to
+A new section goes into the row its menu row or parent screen belongs to. The page spans y −66,000 to 47,159 (20 Oct, after Plus & Account grew) and x 0 to
 29,280, inside Figma's canvas limit.
 
 Figma file `Ncccsm1l2O62GJ5xLSInqk` ("Design"), page **Andriod mobile** (`1241:2`):
@@ -739,8 +739,8 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   pinned). **Coming back:** Welcome back with **Sign in with Google** (your habits come back from Google Drive; Android's
   account chooser, Google's permission screen, then Getting your habits with an Expressive loading indicator and a
   count) and **Restore a backup** (Google Drive or a backup file, then the restore flow); Start without restoring.
-  **Move from another device is gone** (A12: a transfer is built last). Not drawn yet: "We found data on this device"
-  (when Android's own Auto Backup has already brought the database back).
+  **Move from another device is gone** (A12: a transfer is built last). ~~Not drawn yet: "We found data on this device"
+  (when Android's own Auto Backup has already brought the database back).~~ Drawn 20 Oct as 00–00.5 (below).
   The iPhone's matching changes: Current Work 105.
 - **Today, empty** (12 Oct). **No habits yet** (after Skip setup, Start without restoring, or deleting the last
   habit): only ≡ and + in the top bar (Edit and Filter have nothing to act on), no day bar; an Expressive cookie shape
@@ -1360,6 +1360,37 @@ plain **white card** (24 corners, no border or shadow) with two rows: ◉ **Just
 ○ **Family** · *You + 5 people* · **$59.99**, a hairline between them. The selected radio is the only dark mark, and it's
 small. The line under the old buttons is gone (each row says who it's for). On 2, 2.4 and the pages behind 2.1, 2.1.2, 2.5.
 This replaces the fourteenth round's connected buttons.
+**Changed 19 Oct 2026 (the user: "no difference … between selected and unselected"):** the chosen row now has
+Material 3's selected-row fill (`#ECECF0`, corners 16, inset 8 from the card, no hairline between the rows), and the
+plans card holds the refund panel under the two rows (*100% refund if you don't like it*, Current Work 110's refund
+text). Drawn on Get Plus `1544:3`; the other plan choices follow once the user signs off.
+**Also 19 Oct (the user):** *I already have Plus* moved from under Get Plus to the top app bar's right as a text button,
+**Restore purchases**, with the same destination; the pinned bottom holds only the Get Plus button.
+**20 Oct (the user):** Restore purchases removed from Get Plus altogether; Plus & Account's *Already have Plus?* is one
+row, **Sign in** · *Get your Plus and habits back*, with *Use the account you linked to Plus.* under it.
+The same day Get Plus got it back as *Already have Plus?* **Sign in**, a text button under its main button (the same
+Sign in flow), so a returning buyer at the limit never pays twice.
+**20 Oct (the user):** Get Plus's plans are now two equal tiles side by side (chosen: tonal fill, 2 dp ink outline,
+filled radio; other: 1 dp grey outline), with the refund panel under them and *What you get with Plus* above the
+features; the stacked version was kept as `2597:2` (deleted 20 Oct with the other old versions). With Family chosen, the heading and one more point (up to 5 more
+people) are still to add.
+**Later the same day:** the refund note became a white card under the hero, and the plans two white cards that switch
+like tabs (the chosen one raised with a shadow and a filled radio, the other flat and grey); the previous version is
+kept as `2598:2`.
+**Then (20 Oct):** the plan cards follow Material's checkable card: the name with its marker at the top end (a filled
+✓ on the chosen card, an empty circle on the other), ink text on both, the chosen card raised and the other outlined
+1 dp; the previous version is kept as `2599:2`.
+**v2 to review (20 Oct, `2601:103`, beside the current `1544:3`):** what you get first, then the plans, then one
+reassurance card under the prices (the refund line in green, then *Student? Get Plus for less ›*), then Works on.
+**v3 to review (20 Oct, `2603:2`):** the hero names both reasons to buy (*Unlimited habits on all your devices. One
+payment, yours forever.*), a compact *Works on all your devices* card (eight device icons and one line) comes next,
+then the plans, the refund and student card, then *What you get with Plus*; all of it to the student row fits above
+the button on 360 × 800.
+**v3 revised the same day (the user):** *One payment, yours forever.*, then *What you get with Plus* with **Works on**
+inside it (eight devices, each named, Wear OS and Apple Watch by name), then the plans, then the refund and student
+card, which now starts just below the pinned button on 360 × 800.
+**Decided (the user, 20 Oct):** the current Get Plus (`1544:3`) stays; only its Works on changed, from eight chips to
+v3's grid of named device icons (Wear OS and Apple Watch by name). v2 and v3 stay as tried versions.
 
 ### Plus & Account, sixteenth round, 15 Oct 2026: the manager hears when someone joins
 
@@ -1795,8 +1826,8 @@ Two new rows under row 1 (everything below moved down 1920) and two more frames 
 - **Notices on Today, their own row** (the user: "not attached to anything … a separate row"): one card at a time, the
   most important first (data at risk, then backup, then reminders, then a Plus payment), only on today, above the first time of
   day; *Not now* hides one for 7 days. **1.9** Drive full (*Manage storage*), **1.9.1** Drive can't be reached
-  (*Reconnect*), **1.9.2** the backup was removed (*Back up again*, D3), **1.9.3** deleted on another device, held
-  (*Review*, D17), **1.9.4** *Habits moved to another Drive* (*Choose account*): **only** for Plus on several
+  (*Reconnect*), **1.9.2** the backup was removed (*Back up again*, D3), ~~**1.9.3** deleted on another device, held
+  (*Review*, D17)~~ (removed 20 Oct 2026 with D17, the user's decision; 1.9.4–1.9.7 moved one column left), each with its matching Backup & Sync state since 20 Oct (1.4 Drive full, 1.5 can't reach Drive, 1.6 backup removed, with *Keep it off*), **1.9.4** *Habits moved to another Drive* (*Choose account*): **only** for Plus on several
   devices, when the Google account was switched on another device and this one would go on backing up apart (the
   user, 16 Oct: "it only happens if the user manually selects a different Google Drive, right?" Yes: the account
   never changes by itself. A switch on this phone is the person's own choice, confirmed in *Switch Google Drive?*, and
@@ -3208,6 +3239,51 @@ Reminders page (*Off · Android may delay reminders*), 1.1 (*Alarms & reminders*
 reminders on time* sheet. **For the build:** a check's reminder line is its plan, not "Time for …"; Log and Start timer
 are new buttons; Stop is new on the alarm.
 
+### Plus & Account: placeholders for sign in, refunds, the student discount and missing states, 20 Oct 2026
+
+The user: "create the empty placeholder frames first … so that no flows or no states miss" (no design changes yet).
+Section `1476:2` grew to 4,680 × 14,160 with four numbered rows: **9** Sign in, one way back (Google Play first, then
+Google or Apple; replaces 3 and 4 once designed); **10** Request a refund (with Family, with the upgrade, sending,
+sent, refunded, a family member's view, already refunded); **11** Student discount (item 147); **12** the missing
+states (Google Drive not connected for each Plus state, the refund row by state, a linked purchase, a refund on its
+way). The 1.2/1.3 overlap is fixed: 1.3–1.5 moved down 169 with their arrows. Everything below Plus & Account moved
+down 3,520; the page spans −66,000 to 47,159. **Rolled out the same day:** the single Sign in row on 1.1 and behind 4.2; the finished Get Plus
+on 2.1, 2.1.2, 2.4 and 2.5 (Family chosen on 2.4 and 2.5, with *What you get with Plus Family* and *Plus for up to 5
+more people*); the refund card, that heading and the Works on grid on 8 and 8.1.
+
+### Plus & Account: rows 9–12 designed, 20 Oct 2026 (the user: "let's complete the remaining designs as well")
+
+All 30 placeholders are drawn, each cloned from the approved Plus & Account screens: **9** Sign in, one way back
+(Google Play first; found; not found, so Google or Apple; Apple's sign-in in a browser tab, Android having no Apple
+sheet; Plus and habits back; no Plus found); **10** Request a refund (the dialog; Family; choosing the upgrade or both;
+requesting; done; back on Free with a snackbar; a family member's notice; already refunded once); **11** the student
+price (the page, school email, code, not a school address, Get Plus at $12.49, Play's sheet, already used, Free's
+Student? line); **12** the states (Google Drive not connected on 1.2, 1.3 and 1.4; the refund row on 1.3 and 1.4; none
+for a family member; a linked purchase; a refund requested). Frames longer than the screen are cut at 800. Open choices
+are named "to decide" in the frames: refunds done in the app by our server, half price for Just you checked by a
+school-email code, one refund per person, and whether the Free card carries the Student? line. Not yet changed: 1.2's
+why-an-account paragraph and Rulebook D16's "Plus works only on this device" (waiting for the user).
+
+**Later on 20 Oct (the user):** 2.2 now encourages an account in a few words, never as a requirement (*Add an account to
+take Plus everywhere you go*; Plus on all your devices, easy to get back, ready for your family; *It holds your
+purchase, never your habits.*), and D16's "Plus works only on this device" is corrected. A row **13** shows the
+screens after the refund date (1.3 and 1.4 with no refund row, and a request that arrives too late). The five old Get
+Plus versions were deleted. Plus & Account is 4,680 × 15,040; the page spans −66,000 to 48,039.
+
+### Onboarding: habits already on the phone (Android's Auto Backup), 20 Oct 2026 (Current Work 148.6)
+
+When Android's own backup has put the app's data back before the first launch, 01 Splash leads (a long arrow over the
+top) to **Onboarding: coming back**'s new top row instead of 02 Welcome, since this person isn't new: **0** *Welcome
+back. Your habits are already on this phone. Do you want to keep using them?* · Yes, use these | No, not these. Yes:
+0.1 *Turn reminders back on* (only with reminders), 0.2 Android's dialog, 0.3 Today, 0.4 *Connect Google Drive again*,
+0.5 *A newer backup is in Google Drive* (Free). No: Coming back **1**, which now ends with **Start fresh** for everyone.
+Start fresh with habits on the phone asks honestly: 0.6 *Start fresh?* (Google Drive has them: they stay there) or
+0.6.1 *Delete these habits?* (only on this phone; Delete in red), then 0.7 Your days and weeks with *31 habits
+deleted · Undo*; with nothing on the phone it goes straight to 8. The first version's separate row and its "put aside"
+copy were removed. Coming back grew 880 (14,000 high); New to the app is back to 1,840. Android's backup leaves out
+App lock and reminders (`backup_rules.xml`). Start fresh on 1 is an **outlined** button (Material's medium emphasis for an
+alternative; a grey fill would read as disabled); 1 keeps its back arrow (to 02 Welcome or to 0).
+
 ## How we work on these (the user's standing preferences)
 
 - **Centred screens: the content sits centred between the top and the buttons, and centred text wraps within 280 px** (40 from each edge), never a title set to grow with its text; after narrowing, reword any word left alone (the user, 15 Oct 2026: content should never reach "so extended that it touches the borders"). Fixed across Plus & Account, Today's empty state and App lock's reset screens.
@@ -3233,14 +3309,14 @@ are new buttons; Stop is new on the alarm.
 4. ~~**The ≡ menu** as Material's navigation drawer.~~ Built 12 Oct.
 5. **The routine player and the timer:** built 12 Oct; **35 placeholders added and designed 19 Oct** (Current Work 140),
    the Live Update (A11 D4) among them. Next: the user's review. (Today's timer bar was dropped 16 Oct: the row keeps the clock.)
-6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct; All milestones drawn 14 Oct. Not drawn: Go to
-   date, a habit with no history yet, and the other kinds' Progress (time, checks, quit, checklist).
+6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct; All milestones drawn 14 Oct; **the final
+   design 19 Oct (Current Work 143)** drew Go to date, a habit with no history yet and the other kinds' Progress.
 7. **Progress:** built 12 Oct (Week, Month, Year; no ⋮); **34 placeholders added and designed 19 Oct** (Current Work
    144), the legend expanded among them. Next: the user's review.
 8. ~~**Settings pages:**~~ Built 12 Oct (Times of Day, Day and Week, Reminders, Appearance, Google Drive & Backup and
    the restore flow, Privacy & Security and App lock, Plus, Help & Feedback, About). Was: Times of Day, Day and Week, Reminders (with the reminder check, A11 D1–D2), Appearance, Google
    Drive & Backup (the sync line and status, A7), Privacy & Security and App Lock, Plus, Help & Feedback, About.
-9. ~~**Welcome**~~ (the onboarding) built 12 Oct. ~~An empty Today~~ built 12 Oct. Still to draw: "We found data on this device".
+9. ~~**Welcome**~~ (the onboarding) built 12 Oct. ~~An empty Today~~ built 12 Oct. ~~"We found data on this device"~~ drawn 20 Oct (00–00.5).
 10. ~~**Widgets**~~ built 12 Oct: every kind, every state, adding and changing. Paused: lock-screen widgets (the user, 12 Oct).
 12. ~~**Habits** (`2106:2`): 56 placeholders to design~~ **designed 18 Oct**, all 56 frames. Next: the app's Habits page
     to match (the built app has no row ⋮, Duplicate, search, selection, Show by, pause sheet or Archived page yet).

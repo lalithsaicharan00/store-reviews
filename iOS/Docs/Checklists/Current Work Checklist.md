@@ -1016,6 +1016,141 @@ and the Add note keyboard coming up by itself.
     say it plainly, Android: "Not for you? Full refund within 30 days." iPhone: Apple decides refunds, so never a
     promise; something like "Not for you? Ask Apple for a refund from the app" (`beginRefundRequest`). The website's
     Terms and the Play listing state the same policy.
+    - [x] **First screen drawn for the user's review (19 Oct 2026; the user: "let's try in one screen … once I approve
+      that note, let's add it in the other places"; it covers Plus for just you and Plus Family alike).** A first try,
+      one grey line above the button (*Not for you? Full refund within 30 days.*), was rejected the same day: "this
+      line increases conversion … it should be very very easily noticeable … 100% refund … say that loud and clearly
+      … try and buy without any worry … do some research". **Research (web, 19 Oct):** paywalls put the guarantee near
+      the price and the button; a single line or a small badge is the easiest to miss, and a guarantee tied to the plan
+      choice is the hardest (an analysis of 14 subscription paywalls, funnelsgrove.com); unconditional wording ("no
+      questions asked") reads as the buyer's right, "if you are not satisfied" as someone else's judgement; 30 days is
+      the most common window; refunds are rarely claimed (RevenueCat: fewer than ten guarantee mentions in three
+      months of one app's refund tickets). No controlled study of "100%" against "full refund" was found; reported
+      lifts (6–12 % for a badge by the button) are unsourced, so they aren't relied on. **Now on Get Plus (Figma
+      `1544:3`):** a banner directly under the Just you / Family prices, ink with white text (the page's strongest
+      surface after the button), `verified_user` in a light circle, **100% refund within 30 days** (18 Medium, one
+      line) and *Try Plus worry-free. Not for you? Get it all back, no questions asked.* (14). The grey line is gone.
+      **Second round, the same day (the user):** the black banner was "complete black … grabbing too much attention …
+      like a caution", wanted "green … to associate with a positive feeling", "smaller … compact", and the headline on
+      the refund, not the days ("100% refund if you don't like it … keep the 30 days in the subtext"). Now: a compact
+      light-green card (66 tall, corners 16, no border) with a green `verified_user`, **100% refund if you don't like
+      it** (16 Medium, deep green) and *Ask within 30 days. No questions asked.* (14, green). The plan choice above it
+      is unchanged: the white card with no fill on the chosen row, as decided on 15 Oct (Plus & Account, fifteenth
+      round; the same on 2, 2.1, 2.1.2, 2.4 and 2.5).
+      **Third round, the same day (the user):** "embedded in a white card … in the prices section … don't use it on top
+      of a gray background", and more context back in the line ("try worry-free … ask within 30 days, no questions
+      asked … your complete money"). Now **inside the plans card**, under Just you and Family: a light-green panel
+      (corners 16, 12 in from the card's edges) with `verified_user` in a soft green circle, **100% refund if you don't
+      like it** (16 Medium, deep green) and *Try Plus worry-free. Ask within 30 days and get all your money back, no
+      questions asked.* (14). The separate card on the grey is gone.
+      **Approved by the user (19 Oct: "this is looking good"), with two changes, made:** the shield's soft circle removed
+      (by the user) and `verified_user` enlarged to 28, centred beside the text; and **the chosen plan now looks
+      chosen** (the user: "there is no difference … between selected and unselected … based on Android Material
+      design"): Material 3's selected list row, a tonal fill (`#ECECF0`) with 16 corners, inset 8 from the plans card's
+      edges, the other row plain, the hairline between them gone (two rounded rows need none); the radio stays the only
+      dark mark. This replaces the 15 Oct "no fill on the chosen row" (fifteenth round). On Get Plus `1544:3` only so far.
+      **And (the user, 19 Oct):** *I already have Plus* left the bottom for the top app bar's right side as **Restore
+      purchases** (the label people know from other apps' paywalls), a text button that opens the same ways back as
+      before; the bottom now holds only Get Plus · $24.99.
+      **Then removed (the user, 20 Oct: "we should remove completely restore purchases from there"):** Get Plus has no
+      restore or sign-in entry; getting Plus back lives only on Plus & Account's *Sign in · Get your Plus and habits
+      back*.
+      **Then back, renamed (the user, 20 Oct, after asking whether removing it was good):** a returning buyer meets Get
+      Plus at the 6-habit limit and, with no way back there, may pay twice; paywalls keep "already have it?" near the
+      button; Apple requires a restore entry for one-time purchases. Now a text button under Get Plus · $24.99:
+      *Already have Plus?* (grey) **Sign in** (ink, Medium), opening the same Sign in flow as Plus & Account.
+      **Misclick check (the user, 20 Oct):** it was 38 dp tall, 4 dp under the main button and tappable across the
+      whole width; now a 48 dp target (Android's minimum) as wide as its words (205), centred, 8 dp below Get Plus.
+      **Plans side by side, and a heading (the user, 20 Oct: "instead of vertical, maybe we can keep the price selection
+      horizontal … there should be a text above the what you get block"; Get Plus `1544:3` only):** two equal tiles in
+      the plans card, *Just you · $24.99 · All your devices* and *Family · $59.99 · You + 5 people*; the chosen tile has
+      the tonal fill, a 2 dp ink outline and a filled radio, the other a 1 dp grey outline and an empty radio (so it
+      still looks tappable: the 14 Oct connected buttons were rejected as "not even looking like something you can
+      select"); the refund panel stays under them. *What you get with Plus* (14 Medium, grey) now heads the features.
+      Research (web, 20 Oct): no published test compares side-by-side with stacked plans on phones; two plans is the
+      most common paywall (51.5 % of 734, Lazyweb), and a horizontal list is a popular pattern for comparing offers
+      (Nami). The stacked version was kept beside the row as `2597:2` (removed 20 Oct with the other old Get Plus versions, the user: "we have … screen number two … many versions, so clean up").
+      **Then (the user, 20 Oct: "these cards are not at all looking good … instead of a green light let's keep it white
+      … below the overall Plus, one-time payment … those two should be white cards and like switchable tabs", and keep
+      the earlier design to compare):** the refund note is a **white card right under the hero** (*Plus · One payment,
+      yours forever.*), the shield still green, the heading ink and the line grey; the plans are **two white cards**,
+      no border: the chosen one raised with a soft shadow, filled radio and ink text, the other flat with an empty
+      radio and grey text. The tiles-with-green-panel version is kept as `2598:2`, labelled replaced.
+      **Then Material's checkable cards (the user, 20 Oct: "let's improve this part … research about Android native
+      patterns"):** Material's Android cards are *checkable*: "When a card is checked, it will show a checked icon",
+      `check_circle`, 24 dp at the top end (material-components-android, Card.md); and colour alone shouldn't be the
+      only sign of a choice. Now: the plan's name with its marker at the top end (a filled ✓ on the chosen card, an
+      empty circle on the other), the price, then who it's for; **both cards keep ink text** (the grey Family card had
+      read as unavailable); the chosen card stays raised with no border, the other has a 1 dp light outline. A
+      per-person line (*$10 each*) was tried and dropped: it didn't fit at 360 dp. The previous version is kept as
+      `2599:2`, labelled replaced.
+      **v2, a revamp to review (the user, 20 Oct: "you're losing the core purpose of the screen … we do need to have all
+      of these things accommodated … we should split anything … then that is also fine"):** built beside it as
+      `2601:103`, the current `1544:3` untouched. The page's one job, top to bottom: **what Plus is** (Plus · One
+      payment, yours forever.), **what you get** (the three benefits first), **the two plans**, then **one reassurance
+      card** right under the prices, **100% refund if you don't like it** in green with *Within 30 days. No questions
+      asked.* and, under a hairline, the *Student? Get Plus for less ›* row; **Works on** (the devices) moves to the
+      end as its own card, detail rather than the decision. Pinned as before. On a 360 × 800 phone everything down to
+      the student row shows above the button, with Works on peeking out below.
+      **v3 (the user, 20 Oct: "works on all of these devices … is a huge selling point … having it tucked away is a bad
+      thing … the student discount easily discoverable … the most important line is, if you don't like it, you will get
+      refund"):** built as `2603:2`, v2 and the current screen untouched. Our research puts devices first: multi-device
+      is "the strongest true differentiator among buyers" (Feature Ledger C013, lift ×9.8) and one account across
+      iPhone, iPad, Watch, Mac, Android and Windows "a top purchase trigger" (C251, 106 reviews at 4–5★); web sources
+      gave no layout evidence (RevenueCat: plain words beat clever ones). Top to bottom: the hero says the two reasons
+      to buy, *Unlimited habits on all your devices. One payment, yours forever.*; a compact **Works on all your
+      devices** card, one row of eight device icons and *Android and iPhone, tablets, watches, Windows and Mac.*; the
+      two plans; the refund (green) and student card; then *What you get with Plus* as detail. On 360 × 800 the
+      refund and student rows end at 608, clear of the button at 644; the old device tiles are gone.
+      **v3 revised (the user, 20 Oct: keep "one payment, yours forever", then unlimited, sync through Google Drive and
+      more widgets, "just underneath it add a works on … don't just include watches, include clearly Apple Watch, Wear
+      OS; we don't support all watches"):** the hero line is *One payment, yours forever.* again; *What you get with
+      Plus* follows it, and inside the same card, under a hairline, **Works on**: two rows of device icons each with
+      its name, *Android · Tablet · Wear OS · Windows* and *iPhone · iPad · Apple Watch · Mac*. Then the plans, then the
+      refund and student card. **Trade-off to review:** on 360 × 800 that card now starts at 653, just under the
+      pinned button (644), so it shows after a short scroll; the plans and the button stay on the first screen.
+      **Decided (the user, 20 Oct): keep the current Get Plus (`1544:3`) and take only v3's Works on.** Every order hit
+      the same height limit, and the current one keeps the refund, the plans and the student line on the first screen.
+      In *What you get with Plus*, the eight device chips became v3's grid: two rows of icons, each with its name,
+      *Android · Tablet · Wear OS · Windows* and *iPhone · iPad · Apple Watch · Mac*, under the same *Works on* label.
+      Nothing else changed. v2 (`2601:103`) and v3 (`2603:2`) stay beside it as tried versions.
+      **The refund heading stays ink (the user, 20 Oct):** two greens were tried, `#1B7A3D` (5.4:1) and `#0A6630`
+      (7.1:1), and both rejected ("it's not looking good … revert it back to the previous black"); the heading is ink
+      again, the shield keeps its green.
+    - [x] **When Family is chosen (2.4, 2.5):** *What you get with Plus Family*, and the list opens with *Plus for up to
+      5 more people* (done 20 Oct).
+      **Plus & Account · Free (`1872:2`), the first screen only (the user, 19 Oct):** *Restore from Google Play · From
+      this Google account* became **Restore purchases** · *Get your Plus back* with the `restore` icon. A first try said
+      *Plus bought on Google Play*: rejected ("you're repeating the same mistake … iPhone users coming to Android feel
+      left out"; free users have no account, so "this account" was wrong too). One entry for everyone, wherever they
+      bought; the section's note: *We look in Google Play first. If your Plus isn't there, choose your Google account
+      or continue with Apple.* The Sign in row above it is unchanged for now.
+      **Then one row (the user, 20 Oct: "two options are not needed … keep it as a sign in itself"):** Plus bought on
+      Google Play comes back by itself on open (Google Play ties it to the Google account, not the phone), so the extra
+      row only repeated that; without an account an iPhone purchase can't reach Android at all. *Already have Plus?*
+      is now one row, **Sign in** · *Get your Plus and habits back* (the user, 20 Oct: signing in "also gets back your
+      habits": Plus from the account, the habits from the Google Drive it remembers, D16), and the note one plain line, *Use the account you linked to Plus.*
+      (the Google Play explanation "doesn't make sense" to people; "the account you bought Plus with" was wrong too,
+      the user, 20 Oct: Plus is bought from Google Play or the App Store and the account is linked after). Restore purchases is gone from this frame.
+    - [ ] **Design the Sign in flow behind it (the user, 19–20 Oct; from Plus & Account's Sign in row and Get Plus's
+      *Already have Plus? Sign in*):** tap → the app asks Google Play at once (a short *Looking for your Plus* wait) → **found:** Plus is
+      back, whichever Google account bought it on this phone (Google Play hands it over by itself on open, too) →
+      **not found:** a sheet to choose where it was bought, **Continue with Google** (Google's account chooser) or
+      **Continue with Apple** (an iPhone purchase, through the Plus account) → looking again → Plus is back, or plainly
+      *No Plus found* with the other way and Get Plus. Decide then whether the Sign in row stays beside it or folds into
+      this flow (it says *Bought on an iPhone, or have an account*).
+    - [x] **Rolled out (the user, 20 Oct: "let's update the sign-in option … as well as the purchase screens
+      everywhere"):** *Already have Plus?* is the one **Sign in · Get your Plus and habits back** row on 1.1 (Free,
+      Drive not connected) and on the page behind 4.2, as on 1. **2.1, 2.1.2, 2.4, 2.5** have the finished Get Plus
+      page and bottom under their own sheet or dialog (refund card, checkable plan cards, the student line, *What you
+      get with Plus*, the Works on grid, *Already have Plus? Sign in*); on **2.4 and 2.5 Family is the chosen card**,
+      the button is *Get Plus Family · $59.99*, the heading *What you get with Plus Family* and the list opens with
+      *Plus for up to 5 more people* (the user's missing point). **8 and 8.1** (Upgrade to Plus Family, already has
+      Plus) gain the refund card under the hero, the *What you get with Plus Family* heading and the Works on grid;
+      no plan cards, student line or sign-in there. No frames overlap.
+    - [ ] Then every screen that sells Plus, Plus Family or the upgrade gets the panel, and every plan choice (2.1,
+      2.1.2, 2.4, 2.5) the selected row.
+    - [ ] Then the refund flows (the user will explain them).
   - [ ] **Refund flows in the app (the user, 16 Oct 2026: "we need to add these refund flows"; design first, then
     build on both platforms).** Today the app has no refund option at all: only Help & Feedback › Contact us (an email
     to support@oftenenough.com) and Google Play's own 48-hour refund, which the app never mentions. Proposed: a
@@ -1027,6 +1162,83 @@ and the Add note keyboard coming up by itself.
     - **iPhone:** opens Apple's own refund request inside the app (StoreKit `beginRefundRequest`); Apple decides.
     - **After a refund:** the app shows plainly what changed (Plus ended; family members lose Plus from the family;
       habits stay, D10), and a family member sees why their Plus ended.
+    - [x] **The entry, first drawn (the user, 20 Oct: "for someone who already has Plus … a way to ask for a refund …
+      if the 30 days passed, we need a different view … or should it be completely removed?"):** on Plus & Account ·
+      Plus, no account yet (`1872:200`, 1.2), **inside the *Plus is yours* card**, under a hairline: **Request a
+      refund** · *Full refund until 11 Nov* ›, with `currency_exchange` in the card's round icon style. It sits with
+      the purchase it undoes, not in a section of its own. **After 30 days the row is gone** and the card is exactly as
+      before, drawn as **1.2.1** (`2610:62`, at the end of 1.2's row; the section widened by 520 for it): no greyed
+      control that leads nowhere; anyone with a problem later still has Help & Feedback.
+    - [ ] The same row on every Plus state (1.3 with an account, 1.4 Plus Family, a family member's view?), then the
+      request flow itself and its cases (the user will explain them).
+    - [x] **Sign in beside Create an account (the user, 20 Oct: "communicate to the new users that they can create an
+      account, but also sign in"):** the real case is someone who linked an account before and reinstalled or moved to a
+      new Android phone: Google Play brings Plus back by itself, the account isn't signed in, and *Create an account*
+      would read as starting over. The Plus card on 1.2 and 1.2.1 offers **Create an account** (tonal) and, on its own
+      line under it, *Already have an account?* **Sign in** (a 48 dp text button, lined up with the card's text); both
+      open the same Google or Apple sign-in, which signs in or creates as needed. (A side-by-side version was tried only
+      to dodge a canvas overlap and rejected: "that was better … you should solve the overlapping".)
+    - [x] **Tidy the canvas:** 1.2 overlapped 1.3 by ~9 dp; fixed 20 Oct (1.3–1.5 moved down 169 with their arrows).
+    - [ ] Later: when the server already knows the Play purchase is linked to an account, the card can lead with
+      *Your Plus is linked to an account* and Sign in alone.
+    - [ ] **Don't push an account; explain backup instead (the user, 20 Oct).** Found the same day: *"Without an
+      account, Plus works only on this device"* is wrong on both platforms. Plus follows the store account (any Android
+      device with the same Play Store account, any Apple device with the same Apple Account gets it back by itself)
+      and the habits follow the Google Drive or iCloud they back up to; an account is needed only to cross between
+      Android and iPhone/iPad, for Windows, for Plus Family, or with a different store account. So: the Plus card on
+      1.2 loses its why-an-account paragraph (Create an account and *Already have an account? Sign in* stay, plain),
+      and **when backup isn't connected** the Backup row says so with one line, e.g. *Not backed up · Connect Google
+      Drive to keep your habits safe and synced on your other devices* (to Backup & Sync). **Waiting for the user's go
+      to change the frames.** Also to correct: Rulebook **D16**'s *"Without an account, Plus works only on this
+      device"* and the same line under *Not now* on 2.2 (*Plus is yours: keep it on all your devices?*) — a rule
+      change, so with the user's say-so.
+    - [x] **Placeholders for everything still to design (the user, 20 Oct: "create the empty placeholder frames first …
+      so that no flows or no states miss"; no design changes yet).** Plus & Account (`1476:2`) has four new rows of
+      numbered placeholders with arrows: **9** Sign in, one way back (Google Play first; found; not found, so Continue
+      with Google or Apple; Apple's sign-in; Plus and habits back; no Plus on that account; replaces flows 3 and 4 once
+      designed); **10** Request a refund (the request; with Plus Family; with the upgrade; sending it; sent; refunded,
+      back to Free; a family member's view; already refunded once); **11** Student discount (the page; school email;
+      the code; not a school address; Get Plus at the student price; Play's sheet; already used; a second way in from
+      the Free card); **12** the missing states (Drive not connected with Plus and no account, with an account, as the
+      Family manager; the refund row on 1.3 and 1.4 and none for a family member; the purchase already linked; a refund
+      on its way). **Overlap fixed:** 1.3, 1.4 and 1.5 moved down 169 (their 11 arrows' starts with them); the section
+      grew 3,520 taller and 520 wider; everything below it on the page moved down 3,520; no frames or sections overlap.
+    - [x] **Every placeholder designed (the user, 20 Oct: "let's complete the remaining designs as well")**, 30 frames
+      built from the approved Plus & Account screens so they match. **9** Sign in: *Looking for your Plus · Checking
+      Google Play first*; found there (Plus is back, no account needed); not there, so *Sign in · Plus isn't on this
+      phone's Google Play. Use the account you linked to it* with Google or Apple; Apple's own sign-in in a browser tab;
+      *Plus and your habits are back* (habits from the Google Drive it remembers); *No Plus found*. **10** Refunds:
+      *Request a refund?* (Cancel | Request refund); *Refund Plus Family?* naming Lee; *What should be refunded?* (the
+      Family upgrade $35.00, or Plus and the upgrade $59.99); *Requesting your refund*; *Refund done* (money back within a
+      few days, Plus ended, habits all here); back on Free with a snackbar; a family member's notice *Your Plus from
+      Lee's family ended*; *This purchase can't be refunded: Plus was refunded once before*. **11** Student price:
+      *Plus for students · Half price: $12.49 instead of $24.99* (all of Plus; checked by a code to the school email,
+      never kept; once per person, Just you only); the school email field and Send code; the 6-digit code with *Send a
+      new code*; *That isn't a school address* (ink, never red); Get Plus with $12.49 and the struck $24.99, Family
+      greyed *Full price only*; Play's sheet with the offer; *Student price already used* (Not now | Get Plus); the Free
+      card's Student? line. **12** States: Not backed up · *Connect Google Drive to keep your habits safe and synced on
+      your other devices* on 1.2, 1.3 and 1.4; Request a refund on 1.3 and 1.4; none for a family member; *Linked to an
+      account* with Sign in instead of Create an account; *Refund requested · Plus ends when Google Play confirms it*.
+      Every clone longer than the screen is cut at 800 like rows 9–10; no frames overlap. **My defaults, marked "to
+      decide" in the frame names:** a refund is asked for in the app and done by our server through Google Play's API
+      (so 10.3 is seconds and 12.7 only if Play doesn't confirm at once); half price, Just you only, a school-email code
+      (item 147); one refund per person (10.7); the Free card's Student? line (11.7).
+    - [x] **2.2 corrected and encouraging (the user, 20 Oct: "it is still saying that without an account your Plus will
+      stay only on this device … which is a technically wrong thing"; then "we should encourage them to create an
+      account … it should not be persuasive … not like if you don't have an account, you can't do this … don't use too
+      much to explain").** *Plus is yours. Thank you. Add an account to take Plus everywhere you go.* Three points:
+      *Plus on all your devices · Android, Apple and Windows*; *Easy to get back · Just sign in on a new phone*; *Ready
+      for your family · Add up to 5 people with Family*; above the buttons *It holds your purchase, never your habits.*;
+      Continue with Google, Not now. The Drive point and "Your purchase stays safe even if you lose this phone" went
+      (both true without an account). Rulebook D16 corrected the same day. Not changed (not named): 1.2's card still
+      says *An account keeps Plus on all your devices*, and 2.6 and 8.2.
+    - [x] **After the refund date (the user, 20 Oct: "once the refund date has been expired … we need [a screen] for
+      that").** Row **13**: 13 Plus with an account and 13.1 the Family manager after the 30 days (no Request a refund
+      row, as 1.2.1 for no account); 13.2 a request that reaches the server after the last day (the screen left open):
+      *The 30 days ended · Plus was bought on 12 Oct, so a refund could be asked for until 11 Nov. Plus stays yours.*
+      (Get help | OK; whether to offer help is to decide). The section grew 880; everything below moved down 880.
+    - [x] **Cleanup (20 Oct):** the five old Get Plus versions (stacked, green panel, white switchable cards, v2, v3)
+      deleted; the current 2 is the only Get Plus. No frames or sections overlap.
   - [ ] **Refunds: test every case properly before launch (the user, 16 Oct 2026: "we have to test everything").** Proven
     on dev with real Google Play: Google's notifications reach the Worker (test message; signed only); a Play Console
     refund **with "Remove entitlement"** ended the upgrade within seconds and kept Plus (`GPA.3300-8440-7215-88090`); a
@@ -1269,6 +1481,117 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **148. Android designs: the screens and states still missing** (added 20 October 2026, from the user: "add all of
+  this five points … exactly as it is into the checklist, we will work on them"; found by reading every frame name in
+  every section except the widgets).
+  - [x] **1. Backup & Sync, the problems Today warns about.** Today's notices 1.9–1.9.2 (Google Drive full; Drive can't
+    be reached; the backup was removed from Drive) can be put off for 7 days, but the Backup & Sync page only has
+    backed up, not backed up, synced (Plus) and no internet, so it would show an old "Backed up" (D4: the page always
+    says the truth). It needs its own state for each: Drive full, can't reach Drive, backup removed ("Back up
+    again?"), each with its notice's action. ~~And the held deletes asking what to do (D17).~~ **Removed 20 Oct (the
+    user: "let's remove those 1.9.3"):** Today's 1.9.3 *Deleted on another device · Review* deleted from Figma (1.9.4–1.9.7
+    moved one column left, numbers kept); Rulebook D17 marked removed.
+    **Designed 20 Oct (the user: "let's go, whatever you are recommending and create the missing screens"):** Backup &
+    Sync's status card in three new states under 1.3: **1.4** *Backup is paused · Google Drive is full* (Manage storage,
+    which opens Google's storage page; Change account; it starts again by itself once there's room); **1.5** *Backup
+    is off · Can't reach your Google Drive* (Reconnect → 2 and 2.1; Change account); **1.6** *Backup removed · Gone
+    from your Google Drive · Nothing is sent until you choose* (Back up again | **Keep it off**, the recommendation,
+    which turns backup off and shows 1.1). With Plus, each title says sync is paused too. The section grew 218 and
+    everything below moved down 218.
+    **Buttons given room (the user, 20 Oct: "the text within the button itself is very close to the edges … fix those
+    kind of things"):** the status card's two buttons shared a row at 140 each with 12 inside, so *Manage storage* sat 1
+    from its edges; they're now stacked, each full width, 40 high, label centred, in every frame that shows the card
+    (1, 1.2, 1.4–1.6, and the page behind 2, 2.2, 4.1.3, 5, 6); the long frames grew to fit. Checked every filled or
+    outlined button on the page: the others under 16 are Material's small buttons by design (Undo, + Note, Edit note
+    at 13; the player's ‹ › icon buttons at 12; Make room's Archive at 13; Progress's segmented Week).
+  - [ ] **2. Backup & Sync, the Export rows.** *Save a backup file* and *Export a spreadsheet (CSV)* are on the page,
+    but what happens after the tap isn't drawn: Android's own save screen, then a "Saved" confirmation.
+  - [ ] **3. Move to a new phone, the old phone when it stops.** The new phone has "The move stopped" (5.3.1); the old
+    phone has nothing for a lost connection, or for being offline when it tries to show a code.
+  - [ ] **4. App lock, a phone with no screen lock.** "How do you want to unlock?" offers *Your phone's lock* even when
+    the phone has none: it needs that choice turned off, with a line to set up a screen lock first (or use an app
+    passcode).
+  - [ ] **5. Plus Family, what the member sees.** The member's side when Lee removes them (7.3) or deletes Lee's
+    account (7.9) isn't drawn; only a refund ending the family is (10.6).
+  - [x] **6. Habits already on the phone at the first launch (Android's Auto Backup)** (the user, 20 Oct: "if you detect
+    any data, it should be the first screen … an alternate scenario with a condition"; then, after a first version
+    with a separate row and a "put aside" copy: "I'll ask you … this device has this data, do you want to use that? …
+    if you say no … do you want to get the data from anywhere else … if you already find something on this phone,
+    then most probably they are not new, so we shouldn't show … I'm new here / I'm existing … the onboarding flow for
+    coming back, we have no connection to"; and "on [Coming back 1] we also need to add a Start fresh option").
+    Now one connected flow in **Onboarding: coming back** (`1549:2`), its top row, with an arrow from 01 Splash:
+    **0** *Welcome back. Your habits are already on this phone. Do you want to keep using them?* (the count, when last
+    used, *Plus is on* when it is) · **Yes, use these** | **No, not these**; 02 Welcome (new or used before) is skipped.
+    **Yes:** **0.1** *Turn reminders back on* (only when a habit has reminders; Android doesn't bring the
+    notifications permission back), **0.2** Android's own dialog, **0.3** Today *Your habits are all here.* (Google
+    Drive reconnects by itself when its account is on the phone), **0.4** *Connect Google Drive again* when it isn't,
+    **0.5** *A newer backup is in Google Drive* (Free; with Plus the two merge). **No:** Coming back **1**, which now
+    ends with **Start fresh** for everyone (signing in again or found data); Google, Apple, Drive, old phone and file
+    are the existing flows, and bringing habits back replaces what's on the phone like any restore (30-day undo, D5).
+    **Start fresh with habits on the phone:** **0.6** *Start fresh? Your habits stay in your Google Drive backup, so
+    you can bring them back later.* when Drive has them; **0.6.1** *Delete these habits? Your 31 habits are only on
+    this phone. Starting fresh deletes them.* (Cancel | Delete, red, D9) when it doesn't; **0.7** Your days and weeks
+    with *31 habits deleted. · Undo*, then 8.1. With nothing on the phone, Start fresh goes straight to 8. The "put
+    aside" frames (00.6–00.8) were removed; New to the app is back to its own row.
+    **Start fresh on 1 is an outlined button** (the user, 20 Oct: "it is not looking like a button … not a primary or
+    secondary … choose based on the UX"): full width, 56 high, 1 dp outline, ink text; Material 3's medium-emphasis
+    button for an alternative, where a grey fill would read as disabled. The back arrow on 1 stays: it returns to 02
+    Welcome or to 0, matching Android's Back.
+  - [ ] **7. Take the mass-change brake (D17) out of the code** (the user removed it, 20 Oct). Built in the shared core
+    (`CloudStore.kt`: the incoming hold and `outgoingBrake`; `DriveStore.kt`; `DriveSync.kt`'s held-deletes paths)
+    and the iPhone (`CloudSync.swift`, `ICloudPage.swift`, the check in `CloudSyncCheck.swift`), with their tests
+    (`CloudStoreTest`, `DriveSyncTest`, `RealRounds`). Build work, not design: the core and Android first; the iPhone
+    after the Android revamp (it's frozen until then).
+
+- [ ] **147. A student discount on Plus, with a link only students will take** (added 20 October 2026, from the user:
+  "having genuine discounts like a student discount … where we can include a link for discounts, so for students
+  specifically, so that others don't click … we need to think where we can add it").
+  - **The evidence:** Feature Ledger **C025 — Scholarship / hardship / discount program** (Strong, 22 apps): the
+    cleanest 5★ generator in report 1 (91 of 101 mentions 5★); a pay-it-forward programme was one of the few money
+    themes with a positive mean, and its one complaint was "no visible way to apply"; ~110 teen and low-income
+    reviewers who can't pay (report 31). Related: C238 (teens and students who can't pay).
+  - **What Google Play allows (20 Oct, Android Developers):** a one-time product can carry a **discount offer** (a
+    lower price, a purchase limit per person, countries and dates); Play returns only offers the person is eligible
+    for, and **the app chooses which offer to use** by its token, so the student price is shown only after the
+    student step. (The iPhone: Apple's offer codes; later, iPhone frozen.)
+  - **Recommended place:** on **Get Plus, one clearly labelled line under the plan cards**, *Student? Get Plus for
+    less ›* with a school icon: next to the price, where the decision is made, and worded so nobody else taps it.
+    It opens a short **Student discount** page (the price, who qualifies, how to show it) before Google Play's sheet.
+    Not on Today or in the menu (a discount isn't a habit task); Plus & Account's Free card can carry the same line.
+  - [ ] **The user decides:** how much (e.g. half price), Just you only or Family too, and **how someone shows
+    they're a student**: their word alone (simplest; some will take it who aren't), a school email with a code
+    (our Worker sends it; nothing kept beyond a hash, D16), or a verification service such as SheerID (costs money).
+    Whether hardship / low-income joins the same page (C025 covers both).
+  - [x] **The line, on Get Plus only, to test and improve (the user, 20 Oct: "let's add it into that screen … only the
+    second screen"):** under the two plan cards, a 48 dp text link as wide as its words: `school` icon, *Student?*
+    (grey) **Get Plus for less** (ink, Medium) ›. Figma `1544:3`.
+  - [ ] Then the Student discount page and its states; then build (the Play offer, its tag, the
+    eligibility check).
+  - [x] **How we check someone is a student, decided (the user, 20 Oct: "how we are going to verify whether an email
+    is a college email … we can't use SheerID … if it is free, we will use it"; then "students who don't have a college
+    email or their email is not in the list … note down all of this … we will implement this when we are implementing
+    the complete working").** The note: [Student Price — How We Check Someone Is a Student](<../../../Research/Research Reports/Business Model and Monetization/Student Price — How We Check Someone Is a Student.md>).
+    - **No paid service:** SheerID has no free plan (a private quote; median about $70,800 a year, Vendr); UNiDAYS
+      and Student Beans take a commission on every sale.
+    - **Four checks, free (as JetBrains does it):** the domain is on JetBrains' **swot** list (MIT; its `abused.txt`
+      rejected too); a 6-digit code sent to the school address; a one-way fingerprint (salted hash) so one address
+      works once, plus Play's once-per-account limit; and a student ticket from our server that the purchase must
+      carry (`setObfuscatedAccountId`), checked when the purchase is confirmed.
+    - **Not stopped:** graduates who keep their school inbox (worst case $12.49 once); schools missing from the list;
+      students with no school email.
+    - **A school not on the list:** *We don't have your school yet · Ask us to add it*; checked once per school
+      (its website or a registry), added to our list and sent to swot; then we email that address *Your school is
+      added. Continue* (which also proves it's theirs).
+    - **No school email:** no student price and no manual ID checks (easy to fake, ID photos on our server, costly,
+      unfair across countries): *The student price needs an email address from your school … Plus is $24.99, and you
+      can still get all your money back within 30 days.* Later, only if one country shows demand, a free or cheap
+      student-card check (e.g. ISIC).
+  - [ ] **Design changes from the note** (row 11): 11.1's line (we keep a scrambled fingerprint, not "never kept");
+    11.3 split into *That isn't a school address* and *We don't have your school yet · Ask us to add it*; new 11.3.1
+    *We'll email you when your school is added*; new 11.3.2 *No school email?*.
+  - [ ] **Build, with the complete purchase flow:** the swot list in the account Worker (updated from the repo), the
+    code email, the fingerprint store, the ticket and its check on purchase, the add-a-school request and its email.
+
 - [ ] **146. Our logo in Android's notifications: the one-colour exception (the user's decision)** (added 19 October
   2026, from the user: "in the notifications, can we set our app logo … add this into the checklist so that we don't
   forget").
