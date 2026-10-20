@@ -1515,6 +1515,31 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **149. Plus is $29.99, students half: change the price everywhere** (added 20 October 2026, from the user: "let's
+  make it our price also 29.99 And for students, 50% discount, let's update the price everywhere and also add checklist
+  that … play store as well as … App Store we need to update … We haven't released the app yet … in the Google Play
+  Console. We will do it later, but add it in the checklist"). After HabitKit's US prices: Pro $1.99 a month, $11.99 a
+  year or **$29.99 Lifetime**, iPhone and Android only, no sync, no watch app. Plus Family stays **$59.99**, so the
+  Family upgrade is **$30.00** (was $35.00); the student price is **$14.99** (half of each country's price, item 147).
+  - [x] **The Android designs (Figma):** every price on the Android page changed, 55 texts and two layer names: $24.99
+    → $29.99, $35.00 → $30.00, $12.49 → $14.99; none left.
+  - [x] **The documents:** the price folder's README (decisions) and prompts (section 10), the extreme-case report's
+    note, the student note, Architecture 02 (Billing and Entitlements), the Android build prompt and the Android
+    handoff. History entries keep the price they had then.
+  - [ ] **Google Play Console** (before release, the user's step): `com.oftenenough.app.plus` at $29.99 with regional
+    prices (none below $19.99); `com.oftenenough.app.plusfamily` $59.99; `com.oftenenough.app.plusfamily.upgrade`
+    $30.00; the student **discount offer** on Plus, 50% off in every country (or half of each country's price, rechecked
+    when regional prices change), once per person, Just you only.
+  - [ ] **App Store Connect** (later, the iPhone's release): the same three products and prices, regional prices, and
+    the student price as offer codes.
+  - [ ] **Android code** (with the Play Console step; the real price always comes from Play): the fallback shown
+    before Play answers in `Android/app/.../app/Plus.kt` ("$24.99", and the upgrade's), and the label the test reads in
+    `PlusAccountFramesTest.kt` ("Get Plus · $24.99"); run the Plus tests after.
+  - [ ] **iPhone and Watch code and designs** (after the Android revamp; the iPhone is frozen until then):
+    `iOS/OftenEnough.storekit`, `PlusStore.swift`, `PlusScreens.swift`, the Watch's `PlusState.swift`,
+    `PlusUITests.swift`, the Watch design notes and the iPhone's Figma Plus screens.
+  - [ ] **The website** (oftenenough.com, Current Work 118): any price it shows.
+
 - [ ] **148. Android designs: the screens and states still missing** (added 20 October 2026, from the user: "add all of
   this five points … exactly as it is into the checklist, we will work on them"; found by reading every frame name in
   every section except the widgets).
@@ -1538,13 +1563,45 @@ and the Add note keyboard coming up by itself.
     (1, 1.2, 1.4–1.6, and the page behind 2, 2.2, 4.1.3, 5, 6); the long frames grew to fit. Checked every filled or
     outlined button on the page: the others under 16 are Material's small buttons by design (Undo, + Note, Edit note
     at 13; the player's ‹ › icon buttons at 12; Make room's Archive at 13; Progress's segmented Week).
-  - [ ] **2. Backup & Sync, the Export rows.** *Save a backup file* and *Export a spreadsheet (CSV)* are on the page,
+  - [x] **2. Backup & Sync, the Export rows.** *Save a backup file* and *Export a spreadsheet (CSV)* are on the page,
     but what happens after the tap isn't drawn: Android's own save screen, then a "Saved" confirmation.
-  - [ ] **3. Move to a new phone, the old phone when it stops.** The new phone has "The move stopped" (5.3.1); the old
+    **Designed 20 Oct (the user: "let's work on the 1. backup and sync"):** two new rows with arrows from 1's rows.
+    **7** Android's own save screen (Downloads; *Often Enough backup 2026-10-20 0914.zip* filled in, D5; Save), **7.1**
+    *Backup file saved and checked.* (read back and its checksum matched first, D4), **7.2** *Couldn't save the file.
+    Your habits are safe on this phone.*; **8** the save screen with *Often Enough Export 2026-10-20.csv*, **8.1**
+    *Spreadsheet saved.*, **8.2** *Couldn't export. Your habits are safe on this phone.* The words are the built
+    app's (`BackupScreens.kt`). 1's arrows were re-anchored on their rows (they moved when the card's buttons were
+    stacked). The section grew 1,848; everything below moved down 1,848.
+  - [x] **3. Move to a new phone, the old phone when it stops.** The new phone has "The move stopped" (5.3.1); the old
     phone has nothing for a lost connection, or for being offline when it tries to show a code.
-  - [ ] **4. App lock, a phone with no screen lock.** "How do you want to unlock?" offers *Your phone's lock* even when
+    **Designed 20 Oct:** Backup & Sync **3.4** *The move stopped · Nothing changed on either phone. Keep the app open on
+    both, then try again.* (the new phone's 5.3.1 words; Try again shows a new code), with an arrow from 3.1; **3.5**
+    *Can't show a code · Moving needs both phones on the internet. Check this phone's connection, then try again.*
+    (offline, or the move service unreachable), with an arrow from 3. Both: Try again | Cancel.
+  - [x] **4. App lock, a phone with no screen lock.** "How do you want to unlock?" offers *Your phone's lock* even when
     the phone has none: it needs that choice turned off, with a line to set up a screen lock first (or use an app
     passcode).
+    **Decided and designed 20 Oct (the user agreed: let them use an app passcode, offer a screen lock, never force
+    one).** Why: 38 reviews in the App Lock research want a code separate from the phone's; some people keep their
+    phone unlocked and still want one app private; the iPhone decided the same on 10 Oct (App Lock research, point 6).
+    Privacy & Security: **2.1.1** *Your phone's lock* greyed out, *This phone has no screen lock.*, **Set a screen
+    lock** (opens Android's own setup), *An app passcode* chosen; **2.1.2** Android's own *Choose screen lock*; back
+    in the app, 2.1. A forgotten passcode with no screen lock is the 24-hour wait alone (5–5.5, already drawn; 5's name
+    says so). **A gap found and designed:** *Your phone's lock* chosen, then the screen lock removed: Android makes no
+    app passcode then, so the lock screen asked for a lock that no longer exists and the app stayed shut. **3.3**
+    *Screen lock removed* (Set a screen lock | Open in 24 hours), **3.3.1** the 24-hour wait (setting a screen lock
+    again and unlocking stops it), **3.3.2** *The 24 hours are up* (Choose an app passcode | Turn off App lock).
+  - [ ] **Build (Android): App lock when the phone has no screen lock.** `PrivacyLock.kt` today: (a) the greyed-out
+    *Your phone's lock* only says where to go; add **Set a screen lock** (Android's `Settings.ACTION_BIOMETRIC_ENROLL`
+    with `DEVICE_CREDENTIAL`, Android 11+, or the security settings before that) and refresh when the person comes
+    back; (b) **the bug:** with *Your phone's lock* chosen and the screen lock later removed, the lock screen keeps
+    asking Android's prompt, which can't appear, so the app can't be opened: build 3.3–3.3.2 (the 24-hour wait, then an
+    app passcode or App lock off), with a test.
+  - [ ] **To decide (found 20 Oct):** with *An app passcode* chosen and a screen lock on the phone, the built Android
+    app lets the screen lock replace a forgotten app passcode at once (`PrivacyLock.kt`, "Unlock with this phone's
+    screen lock, then choose a new app passcode"); the designs (5) and the iPhone's decision (App Lock research, point
+    4) give the passcode way the 24-hour wait only, because people choose a separate code when others know the phone's
+    PIN. The two should match.
   - [ ] **5. Plus Family, what the member sees.** The member's side when Lee removes them (7.3) or deletes Lee's
     account (7.9) isn't drawn; only a refund ending the family is (10.6).
   - [x] **6. Habits already on the phone at the first launch (Android's Auto Backup)** (the user, 20 Oct: "if you detect
@@ -1592,7 +1649,13 @@ and the Add note keyboard coming up by itself.
     less ›* with a school icon: next to the price, where the decision is made, and worded so nobody else taps it.
     It opens a short **Student discount** page (the price, who qualifies, how to show it) before Google Play's sheet.
     Not on Today or in the menu (a discount isn't a habit task); Plus & Account's Free card can carry the same line.
-  - [ ] **The user decides:** how much (e.g. half price), Just you only or Family too, and **how someone shows
+  - [x] **The price, decided 20 Oct (the user: "the half price that is fine … whatever the country price is there,
+    it's half of that … let's note down that rule"):** **half of that country's Plus price**, $12.49 where Plus was
+    $24.99, **$14.99 since Plus became $29.99 the same day (item 149)**; Just you only, Plus Family has none; below the
+    $19.99 floor (which regional prices and sales keep), since no server holds habits (D16) and half price still keeps
+    about $10.62–$12.74 a sale. Recorded in the price folder's
+    README and prompts (section 9), the extreme-case report's §7 and the student note §6.
+  - [ ] ~~**The user decides:** how much (e.g. half price), Just you only or Family too, and~~ (decided 20 Oct) **how someone shows
     they're a student**: their word alone (simplest; some will take it who aren't), a school email with a code
     (our Worker sends it; nothing kept beyond a hash, D16), or a verification service such as SheerID (costs money).
     Whether hardship / low-income joins the same page (C025 covers both).
@@ -1611,7 +1674,7 @@ and the Add note keyboard coming up by itself.
       rejected too); a 6-digit code sent to the school address; a one-way fingerprint (salted hash) so one address
       works once, plus Play's once-per-account limit; and a student ticket from our server that the purchase must
       carry (`setObfuscatedAccountId`), checked when the purchase is confirmed.
-    - **Not stopped:** graduates who keep their school inbox (worst case $12.49 once); schools missing from the list;
+    - **Not stopped:** graduates who keep their school inbox (worst case $14.99 once); schools missing from the list;
       students with no school email.
     - **A school not on the list:** *We don't have your school yet · Ask us to add it*; checked once per school
       (its website or a registry), added to our list and sent to swot; then we email that address *Your school is
@@ -3400,8 +3463,9 @@ and the Add note keyboard coming up by itself.
       the realistic-pessimistic case; with the server changes in §5 one sale costs $8.74; $29.99 keeps 52% at Apple
       30% (61% at 15%) and is recommended (the reviews' objection line is ~$30–35); regional and student prices up to
       30% off at $29.99, never below $20.99; Family discounts at most $10.*
-    - [ ] The user's choice: Plus at **$29.99** (recommended) or $24.99; the student price and how students are
-      verified (Apple offer codes work for one-time purchases since 2025).
+    - [x] The user's choice: Plus at **$29.99** (recommended) or $24.99; the student price and how students are
+      verified (Apple offer codes work for one-time purchases since 2025). **Decided 20 Oct 2026: $29.99; students
+      half of their country's price; checked by school email (Current Work 147, 149).**
     - [ ] **Build the cost changes before launch** (report §5): free accounts push-only, quiet free accounts archived
       to R2 after ~12 months and restored on sign-in, 7 daily copies; for every account push sync (hibernating
       WebSocket), only the last 2 years in the Durable Object, 3 rows a record, nightly copies as changes; the daily

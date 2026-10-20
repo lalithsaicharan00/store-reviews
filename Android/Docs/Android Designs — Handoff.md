@@ -711,19 +711,19 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   price, that is the most important thing, and what it unlocks is the second"). Buy, top to bottom: a **left-aligned
   header** (the icon at 64 px beside "Plus" / "One payment, yours forever."; the user: "the header … left aligned, I
   really liked it"); the **free-habits card** ("3 of 5 free habits used · 2 left" with a linear bar; the user: "that
-  limit was amazing, let's add it back"); the **plan rows**, one segmented list, no outline: Plus · Just you · $24.99 ·
+  limit was amazing, let's add it back"); the **plan rows**, one segmented list, no outline: Plus · Just you · $29.99 ·
   one-time and **Plus Family** · You + 5 people, each with their own habits · $59.99 · one-time, the chosen one with a
   filled radio on the neutral tone `#E6E6EA` (U2); then **What you get with Plus, one list** of two-line rows (a tonal
   round icon, a title, one line; the user: "let's combine everything together … what you will get in the Plus"):
   Unlimited habits (Free has 5. Add as many as you like.), More widgets (Today's list and This week, A13), Tablet,
   Wear OS watch, Windows app (A14), **Synced through Google Drive** (never "your own Google Drive": the user, "syncing
-  through Google Drive, that's it"). Pinned at the bottom on the page's background: **Get Plus · $24.99** and a
+  through Google Drive, that's it"). Pinned at the bottom on the page's background: **Get Plus · $29.99** and a
   full-width tonal **Restore purchases** (no "One-time, no subscription" line). The first screen (360 × 800) shows the
   price, both plans and the button. **Restore purchases lives only on the buy screen** (the user: "when the Plus is
   already yours, why do we need a restore purchase there?"). Owned: the same left-aligned header ("Plus is yours / Yours forever"; the user: "to make consistent … make it left alignment"),
   **What you have with Plus** (the same list), "Nothing to sign in to: Plus comes with your Google account, on every
   phone, tablet and computer signed in to it", a **Plus Family** card with the sum (Plus Family $59.99 · You paid for
-  Plus −$24.99 · **You pay $35.00**) and **Upgrade for $35.00**, then Contact us. The iPhone's matching changes are
+  Plus −$29.99 · **You pay $30.00**) and **Upgrade for $30.00**, then Contact us. The iPhone's matching changes are
   Current Work 103.
 - **Onboarding** (12 Oct, from the user's wireframes `835:503` and the built iPhone app; the user handed it over:
   "we do need some changes in the onboarding since we have removed some things"). Two sections above Today, in the
@@ -777,7 +777,7 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   setup is also optional, `configuration_optional`, so a widget never sits empty: a new One habit shows "Choose a
   habit · Tap to choose", which opens the same screen). **Adding a Plus widget without Plus** never blocks: the screen
   says what Plus adds and what the widget does without it ("shows how many are done and opens Today"), with **Get
-  Plus · $24.99** and **Add without Plus**; on the home screen it shows the day's count, "Tick habits off here with
+  Plus · $29.99** and **Add without Plus**; on the home screen it shows the day's count, "Tick habits off here with
   Plus" and Open Today (Current Work 93: never blank, never a paywall on a tap). The launcher's own screens (the
   menu, the picker, Add, the pencil) differ between Pixel and Samsung: check both on the phones (A11 D12).
 - **Every widget state** (12 Oct, from the built iPhone widgets): One habit in 30 states (a check, done, several a day,
@@ -817,7 +817,7 @@ Screenshots go in `Research/Temp/android-design-shots/`.
   "looking very ugly"): ✕; the left-aligned "Add a 6th habit" and "You're using all 5 free habits. Plus makes room for
   as many as you like."; one white card with the person's five habits in their colours and the sixth as a filled ink
   + at the end, "5 of 5 free habits used · Plus: no limit" and a full bar; then the Plus page's own plan rows and its
-  What you get with Plus list; pinned: Get Plus · $24.99, a tonal **Make room instead** (archive or delete one) and
+  What you get with Plus list; pinned: Get Plus · $29.99, a tonal **Make room instead** (archive or delete one) and
   its one-line explanation. Not drawn yet: Make room's list, a task's Repeat, a quit habit's Started picker.
 - **Help & Feedback and About** (12 Oct, the iPhone's words): Help has a Material search bar at the top (the iPhone has
   it at the bottom), Contact us, Show the welcome again, the iPhone's footer, then the topics grouped as on the iPhone,
@@ -1027,7 +1027,7 @@ positively; our app icon; the Get Plus and Restore flows. The structure is in [T
   family, so you can sign in on any device. We never see your habits: they're stored in your own Google Drive.*; Your
   family; Sign out; Delete my account…), **1.3 Plus from a family** (Leave Lee's family).
 - **The flows, one row each, from the rows that start them:** **2 Get Plus** (its own page: plans, what you get, Get Plus ·
-  $24.99, *I already have Plus*) → 2.1 Google Play's own purchase sheet → 2.2 *Plus is yours. Keep it on all your
+  $29.99, *I already have Plus*) → 2.1 Google Play's own purchase sheet → 2.2 *Plus is yours. Keep it on all your
   devices?* (Continue with Google · Continue with Apple · Not now; *Without an account, Plus works only on this device.
   You can create one later.*) → 2.3 Google's account sheet → 1.2; 2.1.1 Payment pending; 2.1.2 Payment not completed.
   **3 Sign in** → Google's sheet → Looking for your Plus → Plus is back (→ 1.2), or 3.4 No account found (Another Google
@@ -1264,7 +1264,7 @@ so the structure doesn't change between states.
     Sync across all your devices · *Through your own Google Drive.*; More widgets · *Today's list and This week.*;
     Your tablet too; Wear OS watch; iPhone and iPad too · *The same habits, with an account.*; Windows app;
   - fixed at the bottom: **Plus** and **Plus Family** as two equal tiles side by side (name, radio, price, *Just you* /
-    *You + 5 people*), then **Get Plus · $24.99** and **I already have Plus**. The 3-of-5 bar left this page (the Free
+    *You + 5 people*), then **Get Plus · $29.99** and **I already have Plus**. The 3-of-5 bar left this page (the Free
     card and the 6th-habit sheet show it). On a 360 × 800 phone all seven features show without scrolling.
 
 ### Plus & Account, tenth round, 15 Oct 2026 (the user, on `1544:3`, `1867:2`): Get Plus, less to read
@@ -1328,7 +1328,7 @@ The user: "too compact … doesn't have breathing space"; on a short phone it wi
 itself, like choosing only Plus or family beforehand … do research and come up with the best possible design".
 
 - **The choice comes first**, right under the title: a two-part single-select **Just you | Family**, each showing its
-  price ($24.99, $59.99), with ✓ on the chosen one. Android's own guidance: a segmented button is "to let users choose
+  price ($29.99, $59.99), with ✓ on the chosen one. Android's own guidance: a segmented button is "to let users choose
   from a set of options, side-by-side" ([Compose](https://developer.android.com/develop/ui/compose/components/segmented-button));
   paywall guidance on tiers that differ by who they're for suggests choosing the tier first, and keeping every option's
   price visible rather than hiding one behind a switch ([Adapty](https://adapty.io/docs/paywall-with-tabs.md),
@@ -1336,7 +1336,7 @@ itself, like choosing only Plus or family beforehand … do research and come up
   says who it's for: *Just for you, on all your devices.* / *For you + 5 people, each with their own habits.*
 - **More room:** 20 between parts, the card padded 20 with 16 between lines, device labels 32 high and 8 apart. On a
   360 × 800 phone the last row of devices scrolls under the fixed bottom (a soft shadow marks it); shorter phones scroll
-  more. **The bottom holds only Get Plus · $24.99 (Get Plus Family · $59.99 on 2.4) and I already have Plus.**
+  more. **The bottom holds only Get Plus · $29.99 (Get Plus Family · $59.99 on 2.4) and I already have Plus.**
 - 2.4 is the same page with Family chosen; 2.1, 2.1.2 and 2.5 show the new page behind them; the upgrade page (8, 8.1)
   has the same card spacing. In 2.4 and 8 the bottom area had slipped under the page; it is on top again.
 
@@ -1356,7 +1356,7 @@ shadow; only Get Plus should draw the eye) and asked what native Material would 
 a set is the radio button** ("lets a user select an option from a set of options … when only one item can be selected"),
 in 56 dp rows where the whole row is the target (`Modifier.selectable`, `Role.RadioButton`, `selectableGroup()`)
 ([Compose radio button](https://developer.android.com/develop/ui/compose/components/radio-button)). So the choice is one
-plain **white card** (24 corners, no border or shadow) with two rows: ◉ **Just you** · *On all your devices* · **$24.99**,
+plain **white card** (24 corners, no border or shadow) with two rows: ◉ **Just you** · *On all your devices* · **$29.99**,
 ○ **Family** · *You + 5 people* · **$59.99**, a hairline between them. The selected radio is the only dark mark, and it's
 small. The line under the old buttons is gone (each row says who it's for). On 2, 2.4 and the pages behind 2.1, 2.1.2, 2.5.
 This replaces the fourteenth round's connected buttons.
@@ -3280,7 +3280,7 @@ All 30 placeholders are drawn, each cloned from the approved Plus & Account scre
 (Google Play first; found; not found, so Google or Apple; Apple's sign-in in a browser tab, Android having no Apple
 sheet; Plus and habits back; no Plus found); **10** Request a refund (the dialog; Family; choosing the upgrade or both;
 requesting; done; back on Free with a snackbar; a family member's notice; already refunded once); **11** the student
-price (the page, school email, code, not a school address, Get Plus at $12.49, Play's sheet, already used, Free's
+price (the page, school email, code, not a school address, Get Plus at $14.99, Play's sheet, already used, Free's
 Student? line); **12** the states (Google Drive not connected on 1.2, 1.3 and 1.4; the refund row on 1.3 and 1.4; none
 for a family member; a linked purchase; a refund requested). Frames longer than the screen are cut at 800. Open choices
 are named "to decide" in the frames: refunds done in the app by our server, half price for Just you checked by a
@@ -3306,6 +3306,37 @@ deleted · Undo*; with nothing on the phone it goes straight to 8. The first ver
 copy were removed. Coming back grew 880 (14,000 high); New to the app is back to 1,840. Android's backup leaves out
 App lock and reminders (`backup_rules.xml`). Start fresh on 1 is an **outlined** button (Material's medium emphasis for an
 alternative; a grey fill would read as disabled); 1 keeps its back arrow (to 02 Welcome or to 0).
+
+### Prices: Plus $29.99, students half, 20 Oct 2026 (Current Work 149)
+
+The user: "let's make it our price also 29.99, and for students 50% discount, let's update the price everywhere".
+Every price on the Android page changed (55 texts, two layer names): Plus **$29.99** (was $24.99), the Family upgrade
+**$30.00** (was $35.00; Plus Family stays $59.99), the student price **$14.99** (was $12.49). This file's prices were
+changed to match; the iPhone and Watch designs wait for the freeze to end.
+
+### Backup & Sync: saving a backup file and the spreadsheet, 20 Oct 2026 (Current Work 148.2)
+
+Two rows under the page's others, with arrows from 1's Export rows: **7** Android's own save screen (Downloads, the
+file name filled in as *Often Enough backup 2026-10-20 0914.zip*, D5) → **7.1** *Backup file saved and checked.* or
+**7.2** *Couldn't save the file. Your habits are safe on this phone.*; **8** the same save screen with *Often Enough
+Export 2026-10-20.csv* → **8.1** *Spreadsheet saved.* or **8.2** *Couldn't export. Your habits are safe on this
+phone.* The words match the built app. Backup & Sync grew 1,848; everything below moved down 1,848; the page spans
+−66,000 to 50,985.
+
+### Move to a new phone, the old phone when it stops, 20 Oct 2026 (Current Work 148.3)
+
+Backup & Sync **3.4** *The move stopped* (from 3.1, the same words as the new phone's 5.3.1; Try again shows a new
+code) and **3.5** *Can't show a code · Moving needs both phones on the internet…* (from 3, when this phone is offline
+or the move service can't be reached). Both: Try again | Cancel.
+
+### App lock on a phone with no screen lock, 20 Oct 2026 (Current Work 148.4)
+
+The user agreed: an app passcode, with a way to set a screen lock, never forcing one. Privacy & Security **2.1.1**
+(*Your phone's lock* greyed out, *This phone has no screen lock.*, **Set a screen lock**; *An app passcode* chosen) →
+**2.1.2** Android's own *Choose screen lock*. A forgotten passcode there is the 24-hour wait alone (5–5.5). New, for a
+gap: *Your phone's lock* chosen and the screen lock later removed (Android makes no app passcode then): **3.3** *Screen
+lock removed* (Set a screen lock | Open in 24 hours) → **3.3.1** the wait → **3.3.2** *The 24 hours are up* (Choose an
+app passcode | Turn off App lock).
 
 ## How we work on these (the user's standing preferences)
 

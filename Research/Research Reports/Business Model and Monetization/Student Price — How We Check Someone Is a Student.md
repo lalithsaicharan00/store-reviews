@@ -14,7 +14,7 @@ implementing the complete working of this").
 
 | Service | What it costs us | Why not |
 |---|---|---|
-| **SheerID** | No free plan or free tier. Pricing is a private quote; Vendr's buyer data puts the median contract at about **$70,800 a year** ([Vendr](https://www.vendr.com/buyer-guides/sheerid); [Capterra](https://www.capterra.com/p/147803/SheerID/): "free version not included") | Students verify for free, but the app pays. Far more than a $12.49 one-time discount could ever return |
+| **SheerID** | No free plan or free tier. Pricing is a private quote; Vendr's buyer data puts the median contract at about **$70,800 a year** ([Vendr](https://www.vendr.com/buyer-guides/sheerid); [Capterra](https://www.capterra.com/p/147803/SheerID/): "free version not included") | Students verify for free, but the app pays. Far more than a $14.99 one-time discount could ever return |
 | **UNiDAYS, Student Beans** | A commission on every sale through them; rates aren't published ([how UNiDAYS earns](https://productmint.com/?p=7915)) | Marketplaces that also list our discount in their own apps. Not free, and not what we want |
 
 ## 2. The free way: four checks together
@@ -43,7 +43,7 @@ The iPhone does the same later with Apple's offer codes. The iPhone is frozen un
 
 - **Graduates who keep their school inbox.** Many universities let former students keep their address. Paid services
   have the same gap unless they check enrolment records. Since Plus is a one-time purchase, the worst case is one
-  graduate paying $12.49 once.
+  graduate paying $14.99 once.
 - **Schools that aren't on the list.** swot covers colleges and universities with at least one long-term IT-related
   course, not primary or secondary schools. Some real colleges are missing until someone asks (section 4).
 - **Students whose college gives them no email.** This is common in some countries (section 4).
@@ -66,11 +66,11 @@ We don't check student ID cards by hand:
 
 - **Easy to fake.** A convincing student card takes minutes to make, so it lets more people cheat than the email check.
 - **Privacy.** It means storing ID photos with names, faces, dates of birth and ID numbers on a server we promise holds
-  almost nothing (Rulebook D16). That's a serious data-protection duty for a $12.49 discount.
+  almost nothing (Rulebook D16). That's a serious data-protection duty for a $15 discount.
 - **Cost.** Every card needs a person to look at it, reply and handle disputes. That costs more than the discount.
 - **Unfair in its own way.** Cards differ by country and school, so a reviewer would be guessing.
 
-The screen says: *The student price needs an email address from your school. If you don't have one, Plus is $24.99,
+The screen says: *The student price needs an email address from your school. If you don't have one, Plus is $29.99,
 and you can still get all your money back within 30 days.* The 30-day refund and the Free plan mean nobody pays
 without trying it first.
 
@@ -85,9 +85,17 @@ then.
 - **11.3 splits into two cases:** *That isn't a school address* (Gmail and the like), and *We don't have your school
   yet*, with **Ask us to add it**.
 - **New 11.3.1:** *Thanks. We'll email priya@college.edu when your school is added.*
-- **New 11.3.2:** *No school email?*, with the plain answer from section 4 and Get Plus at $24.99.
+- **New 11.3.2:** *No school email?*, with the plain answer from section 4 and Get Plus at $29.99.
 
-## 6. Still the user's decisions (Current Work 147)
+## 6. The price, decided 20 October 2026
 
-How much the student price is (the designs assume half price, $12.49), and whether it's Just you only or Family too.
-Whether hardship or low-income discounts join the same page (Feature Ledger C025 covers both).
+**Half of that country's Plus price** (the user: "whatever the country price is there, it's half of that"): $14.99
+where Plus is $29.99 (Plus went from $24.99 to $29.99 the same day; it was $12.49), and half the regional price wherever Plus costs less. Just you only; Plus Family has no student
+price. Below the $19.99 floor that regional prices and sales keep, because with no server holding habits (Rulebook D16)
+a sale costs almost nothing to run: half price keeps about $12.74 in the US and $10.62 with 20% VAT (Google Play 15%).
+
+**For the build:** set the Google Play discount offer as 50% off if Play allows a percentage; otherwise give it a price
+in every country, half of that country's Plus price, and recheck them whenever the regional prices change (exchange
+rates move). The iPhone later does the same with Apple's offer codes. The screens show the person's own currency.
+
+Still open: whether hardship or low-income discounts join the same page (Feature Ledger C025 covers both).

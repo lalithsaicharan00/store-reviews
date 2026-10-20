@@ -147,6 +147,14 @@ dollars, before that country's tax** (32% margin at Apple 30%, 44% at 15%). That
 | Plus Family | At most **$10 off** ($49.99, 31% margin) | — | Families already save; deeper cuts drop below 30% |
 
 Discounts never stack: a student in a lower-priced country pays the lower of the two, never less than the floor.
+
+> **Superseded for students, 20 October 2026 (the user):** the student price is **half of that country's Plus price**
+> ($12.49 where Plus is $24.99), below the floor and on top of the regional price. The floor's reason here, server
+> costs for 15–20 years, went with the server (Rulebook D16, 10 Oct 2026). Regional prices and sales keep the floor.
+> README, "Student price".
+>
+> **And the list price, 20 October 2026 (the user):** Plus is **$29.99**, this report's recommendation, so students pay
+> $14.99; Plus Family stays $59.99 (the upgrade is $30.00).
 One gap: the floor is a US-dollar figure, and exchange rates move. Check regional prices against it whenever Apple
 re-equalises them.
 

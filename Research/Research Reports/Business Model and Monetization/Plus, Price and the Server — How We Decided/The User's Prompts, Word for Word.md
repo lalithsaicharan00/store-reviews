@@ -66,3 +66,18 @@ came earlier the same day and is quoted in [Buying Plus — Should an Account Be
 *14:13 UTC*
 
 > Okay, this is good. Uh, so I, I just have few doubts. So yeah, I think you're noting down all of these things. These are important. Note down all of these things in a one folder itself, like till now, whatever the research report from the price we came down to here, right? So note down all of these, how we came down, the prompts that I gave you, because these are important uh, when we discuss with the same thing with other agents. Uh, this data get lost and the agent will think otherwise. So the first doubt that I have is uh, iCloud with a CK sync engine. Is it something provided by devel uh, Apple developer account and uh, do does it have any limits like uh, limits and uh, do we need to charge, uh, do we get charged for anything using it? Does it have any limits or do we get charged for using it? Okay, and uh, then the second thing that we need to test is uh, and think about Android. So in Android, like, uh, okay, so from Mac, we can completely remove this, like. Syncing problem at all from Apple ecosystem. So what about Android? So Android doesn't have anything. So obviously we can't leave out the Android. So what does Android users accept and still pay for it? I mean, maybe for this entitlement and between Android and iCloud, uh, sorry, between Apple and uh, Android, maybe we can keep the account, but keeping it, uh, we can easily do it in the Cloudflare free plan itself, okay? So we don't need to worry about the cost here at this point. Maybe if in the future, uh, if Cloudflare changes, we can move to the revenue gate and all of that. So we have a lot of solutions for it. So we don't need to worry about entitlement issue. Okay. Mm, what about Android? So obviously we can't just leave out Android users like that. So we need to think about it. So what about Android users? So what do we do for that? What do they accept first thing? And uh, when do they pay? And what do they expect? How can we stay like with the server free and still uh, be usable on the Android as well? And what about if any people like from Mac to Android, what about them? Everything should be considered realistically. So yeah, let me know.
+
+## 9. The student price: half of each country's price (20 October 2026)
+
+*After the recommendation to make the student price half the list price ($12.49 against $24.99), below the $19.99
+floor of section 6, since no server holds habits any more (Rulebook D16).*
+
+> that's fine. The price that you're recommending like the half price that is fine. So the rule is, it's half price right now. It's 12.49, cents but based on the country and regional prices, the rule is like whatever the country price is there. It's half of that, we need to make sure that because country price will di[ffer] so yeah, let's note down that rule.
+
+## 10. Plus at $29.99, students half (20 October 2026)
+
+*After HabitKit's US prices: Pro $1.99 a month, $11.99 a year or $29.99 Lifetime, on iPhone and Android only, with no
+sync and no watch app.*
+
+> okay, then, let's make it our price also 29.99 And for students, 50% discount, let's update the price everywhere and also add checklist that even they like play store as well as a store we need to update I mean in App Store. We haven't released the app yet. Update it everywhere we need to update in the Google play Console. We will do it later, but add it in the checklist. That's what I'm saying
+

@@ -13,8 +13,9 @@ doesn't lose the thread and think otherwise.
 
 | | Decision |
 |---|---|
-| Plus | **One-time, never a subscription.** List price **never below $24.99** (raise it if the evidence allows) |
-| Lowest price anywhere | **Never below $19.99** (regional, student, sale); discounts real, never a raised price crossed out, never stacked |
+| Plus | **One-time, never a subscription.** **$29.99** since 20 Oct 2026 (the user: "let's make it our price also 29.99", after HabitKit's Lifetime at $29.99 with no sync or watch); it was $24.99, set 10 Oct as the lowest list price "raise it if the evidence allows" |
+| Lowest price anywhere | **Never below $19.99** (regional prices and sales); discounts real, never a raised price crossed out, never stacked. ~~Student too~~: the student price is the one exception (next row, 20 Oct 2026) |
+| **Student price** | **Half of that country's Plus price** (the user, 20 Oct 2026: "whatever the country price is there, it's half of that"): **$14.99** where Plus is $29.99 (it was $12.49 at $24.99), and half the regional price wherever Plus costs less. Just you only (Plus Family has none); once per person, after the student checks ([Student Price — How We Check Someone Is a Student](<../Student Price — How We Check Someone Is a Student.md>)). It follows the country's price, so it stacks with regional pricing by design. Why it can go below the floor: with no server holding habits (D16) a sale costs almost nothing to run, and half price still keeps about $10.62–$12.74 (Play 15%, with or without 20% VAT) |
 | Plus Family | **$59.99** one-time; through Family Sharing on Apple, so **the buyer + 5** (Apple's number; the earlier 5 assumed our own invite) |
 | Free users | **Must be cheap by design** |
 | Every sale | **Profitable with a good margin**, at the extreme case, with inflation; never at break-even |
@@ -25,13 +26,13 @@ doesn't lose the thread and think otherwise.
 | **Apple, built first** | Sync and backup through the person's iCloud (CloudKit with `CKSyncEngine`); Plus from StoreKit; **Plus Family through Apple's Family Sharing** (the buyer + 5, Apple's number), so no invites and no account |
 | **Android, after Apple** | Android's own Auto Backup + a daily file in their Google Drive (free) at launch; **Drive sync for Plus after a two-device prototype passes, built after the CloudKit work** |
 | **Privacy** | **Full privacy: habits never reach us.** They live on the person's devices and in their own iCloud or Google Drive. A new advantage to say plainly in the listing and on the Plus page |
-| **Plus price** | **$24.99** (the user's price; $29.99 was suggested only to carry server costs, now gone) |
+| **Plus price** | **$29.99** (the user, 20 Oct 2026); it was $24.99. Plus Family stays **$59.99**, so the Family upgrade is now **$30.00** (was $35.00) |
 
 **Next (to work on later, Current Work 81):** move sync and backup from our server to CloudKit with `CKSyncEngine`,
 delete the code it replaces, and redesign the Backup & Restore and Account pages for iCloud. **The design is done:**
 [Architecture 11 — iCloud Sync with CloudKit](<../../../../Architecture/11. iCloud Sync with CloudKit.md>).
 
-**Still open:** the student price and how students are verified (Apple offer codes work for one-time purchases);
+**Decided 20 Oct 2026:** the student price (half of each country's price) and how students are checked (the note above). **Still open:**
 before Android, Google Play's rules on unlocking purchases from another store and its family sharing.
 
 ## How we got here
