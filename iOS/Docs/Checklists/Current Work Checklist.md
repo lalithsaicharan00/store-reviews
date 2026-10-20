@@ -1375,7 +1375,7 @@ and the Add note keyboard coming up by itself.
     praised in 708 reviews in 26 apps, 614 of them for the days-since count, and people ask for the best run beside it
     (Progress report §10.1–10.2). A habit's streaks stay off Progress; a quit habit's run is its main number.
   - [ ] The user's review, then the app (Android first, on `claude/android-app`).
-- [ ] **140. Android: the routine player and the timer, every screen** (added 19 October 2026, from the user: "first
+- [x] **140. Android: the routine player and the timer, every screen** (added 19 October 2026, from the user: "first
   let's complete the routine player and … timer … what designs are left? … add … the empty screens placeholders first
   … with the numbering"). Figma `1328:2`. Numbered 140: 134–139 are taken on other branches.
   - [x] Reviewed the 18 frames from 12 Oct against the player's decisions (Design Rules, the iPhone player spec, the
@@ -1408,7 +1408,36 @@ and the Add note keyboard coming up by itself.
     notification running, paused and at the goal, and the lock screen.
   - [x] Checked by the user (19 Oct): "+1" / "+2.5" only on habits logged by a step (Water, Run); a habit typed each
     time (Savings) shows **Log**, the word alone with no pencil icon, not Log amount (the user: "it's a redundant word just use log"; 3.3, 3.5).
-  - [ ] Then the app (Android first, on `claude/android-app`).
+  - [x] **Then the app, Android first** (the user, 19 Oct 2026: "work on this Figma section … make sure the design is
+    matching implement everything properly and then test it"). Built on `main`, where Android work is committed now.
+    - [x] 1 · Starting and the page: Start on Today opens the player in Today's order (1.1); a partly done routine opens
+      on the first unfinished habit (1.2); all done opens the end page (1.3); another day's chip names the day and logs
+      go to it (1.4); 200 % text (1.5); the description under the name (1.6); the header (one-line title ▾, the
+      indicator with "N of 12").
+    - [x] 2 · Checks, several a day, tasks: Not done yet / Done; the Saved snackbar with Undo and Add note; Log one, goal
+      met → Next; 3 times a week with ✓ Done for today (2.3, 2.4); a task, and one done earlier today (2.5, 2.6).
+    - [x] 3 · Amounts: "+1" / "+2.5" for a step; goal met → Next; a habit typed each time shows **Log** (no icon); Add
+      log over the player and back with the count (3.3–3.5); long labels end in ….
+    - [x] 4 · Time: Start, Pause / Resume (4.2); at the goal the clock keeps counting with ✓ Goal met, Next once paused
+      (4.3); N days a week (4.4); a week total (4.5).
+    - [x] 5 · Checklists: steps in the card, many steps scroll, every step ticked → Next, no snackbar (5.2).
+    - [x] 6 · Day details over the player from the chip, Skip today there; the Skipped snackbar; Add note from it.
+    - [x] 7 · ⋮: Go to first unfinished, Change order, End routine; Your routine sheet; Edit (drag, this routine only).
+    - [x] 8 · The end: the last habit done; some left; everything done (Done only); End routine (8.3); ✕ with a timer
+      running goes to Today and the row keeps its clock (8.4).
+    - [x] 9 · The timer on its own: running, paused, over the limit (neutral, in words), Log manually, ⌄ / Back.
+    - [x] 10 · The Live Update outside the app: the status bar chip, the notification running / paused / at the goal,
+      the lock screen (Pause works locked, D13), a tap opens the timer or the player.
+    - [x] Every frame checked beside Figma at 360 × 800 dp, light and dark, on the Pixel 10 Pro emulator (Android 16),
+      the Live Update in the real shade and status bar, and at 200 % text (1.5: the bar's "5 of 12" now grows instead of
+      clipping). Tests: `PlayerTest` 6 (new: starting, the timer, each kind's button and status, ⋮ and Your routine,
+      another day, the Live Update's Pause, Resume and tap), `ScreensTest` 13, `TodayTest` 12, the unit tests
+      (`PlayerWordsTest`). Committed and pushed.
+    - Settled while building (Android Designs — Handoff, "built on Android"): a timer waits for Start; ✕ leaves a running
+      timer running; on another day the message says "already done"; the Live Update's body says the goal because
+      Android can't tick text there (the clock is in its header and the status bar chip).
+    - Found and fixed: moving a habit in Your routine scrolled the pager inside a layout and crashed ("performMeasureAndLayout
+      called during measure layout"); the scroll now waits a frame.
 - [ ] **143. Habit details: Year in Pixels fills the width, then the rest of the page** (added 19 October 2026, from the
   user, Figma `1373:2`: "the blocks … should be occupying the space dynamically … rather than leaving out some empty
   space on the right … the same thing [as] the mood section … each cell should follow the meaning of … what the squares

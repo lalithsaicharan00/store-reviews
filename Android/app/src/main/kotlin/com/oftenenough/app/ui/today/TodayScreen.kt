@@ -604,7 +604,7 @@ private fun LazyListScope.section(
     val count = if (open) pieces.size + 1 else 1
     val section = store.section(card)
     val start: (() -> Unit)? = if (!future && left > 0) {
-        { nav.startRoutine(card, day, items.filter { content.done[it.habit.id] != true }.map { it.habit }) }
+        { nav.startRoutine(card, day, layout.order(card, items) { it.habit.id }.map { it.habit }.filter { !it.isQuitOrLimit }) }
     } else null
     val badge = when {
         future -> "${items.size} planned"

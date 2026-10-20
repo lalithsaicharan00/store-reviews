@@ -124,7 +124,7 @@ class ScreensTest {
         val next = com.oftenenough.app.ui.nextRoutine(AppGraph.store)
         assertEquals("morning", next?.first)
         onMain { AppGraph.widgetRoute = "routine|-1" }
-        waitFor(hasText("Habit 1 of ${next!!.second.size}"), "the player on Morning")
+        waitFor(hasText("1 of ${next!!.second.size}"), "the player on Morning")
     }
 
     @Test fun theIconsShortcutOpensNewHabit() {
@@ -144,7 +144,10 @@ class ScreensTest {
     @Test fun aRoutineStartsAtItsFirstHabitAndCloses() {
         launch()
         tap(hasContentDescription("Start Morning"), "Morning's Start")
-        waitFor(hasText("Habit 1 of 2"), "the player's first habit")
+        // The whole routine, in Today's order; it opens on the first unfinished habit (Figma 1.2).
+        waitFor(hasTestTag("routine-player"), "the player")
+        val morning = com.oftenenough.app.ui.routineHabits(AppGraph.store, "morning", AppGraph.store.today())
+        waitFor(hasText(" of ${morning.size}", substring = true), "the player's position")
         back()
         waitFor(hasTestTag("today-list"), "Today again")
     }

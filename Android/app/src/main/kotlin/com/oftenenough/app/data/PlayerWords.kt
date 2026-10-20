@@ -15,9 +15,9 @@ enum class PlayerAction {
     MARK_DONE,
     /** A check counted several times (a day, or N a week): adds one, never takes one back (U14). */
     LOG_ONE,
-    /** An amount with a saved step: adds the step ("Log 1 glass"). */
+    /** An amount with a saved step: adds the step ("+1", "+2.5": + and the step, never the unit, U16). */
     LOG_STEP,
-    /** An amount typed each time: opens Add log. */
+    /** An amount typed each time ("Log", the word alone), or time on another day: opens Add log. */
     LOG_AMOUNT,
     START,
     RESUME,
@@ -33,22 +33,30 @@ object PlayerWords {
     // The save messages ("Saved · Undo · Add note"), as the iPhone's banner says them.
     const val SAVED = "Saved"
     const val LOGGED = "Logged"
-    const val STEP_SAVED = "Step saved"
-    const val STEP_UNCHECKED = "Step unchecked"
     const val UNDONE = "Undone"
     const val SKIPPED = "Skipped for today"
-    const val TIME_SAVED = "Time saved"
-    const val AMOUNT_SAVED = "Amount saved"
 
     const val QUEUE_FOOTER = "Jump to any habit, or change the order for this routine. Moving on never marks a habit done."
+    /** Your routine · Edit (Figma 7.2). */
+    const val QUEUE_FOOTER_EDIT = "Drag to change the order for this routine. Today keeps its own order."
+
+    // The status line under the count (Figma 2.4, 4.2–4.5, 6.1, 9.1, 9.2): neutral words, never red (U3).
+    const val DONE_FOR_TODAY = "Done for today"
+    const val PAUSED = "Paused"
+    const val GOAL_MET = "Goal met"
+    const val OVER_LIMIT = "Over the limit"
+    /** A single check or a task, in place of "0 of 1" (Figma 1, 2, 2.5, 2.6). */
+    const val NOT_DONE_YET = "Not done yet"
+    const val DONE = "Done"
     const val NEW_DAY_TITLE = "A new day has started"
     const val NEW_DAY_TEXT = "Your routine's progress is saved to its original day. Return to Today to continue."
 
-    /** "Habit 4 of 12" under the routine's name. */
-    fun position(index: Int, count: Int): String = "Habit ${minOf(index + 1, count)} of $count"
+    /** "4 of 12" at the end of the routine's progress bar (Figma 1328:2, under the title since 14 Oct). */
+    fun position(index: Int, count: Int): String = "${minOf(index + 1, count)} of $count"
 
-    /** The end page's line under the routine's name: "12 of 12 covered". */
-    fun covered(covered: Int, count: Int): String = "$covered of $count covered"
+    /** Opening a routine that's partly done (Figma 1.2): "3 done earlier today. Starting at Water."; another day, "3 already done". */
+    fun startingAt(doneBefore: Int, name: String, today: Boolean = true): String =
+        "$doneBefore " + (if (today) "done earlier today" else "already done") + ". Starting at $name."
 
     /** TalkBack's name for the title: "Morning routine, habit 2 of 10", or "…, summary" on the end page. */
     fun routineSpoken(name: String, index: Int, count: Int): String =
@@ -92,19 +100,22 @@ object PlayerWords {
      * habit); a limit logs what happened and is never "done"; otherwise ✓, one, a step, an amount or the timer.
      * [goal] is the habit's goal as judged ("Log one" for more than one).
      */
-    fun mainAction(habit: Habit, goal: Double, done: Boolean, skipped: Boolean, isLast: Boolean, running: Boolean, started: Boolean): MainAction {
+    fun mainAction(habit: Habit, goal: Double, done: Boolean, skipped: Boolean, isLast: Boolean, running: Boolean, started: Boolean,
+                   today: Boolean = true): MainAction {
         val onward = if (isLast) MainAction(PlayerAction.FINISH, "Finish routine", "Finish routine")
             else MainAction(PlayerAction.NEXT, "Next", "Next habit")
         if (skipped) return onward
         val unit = habit.unit
         val step = habit.quickIncrement
         fun timer() = when {
+            // Another day has no clock to run: its time is typed (Figma 1.4, "logs go to it").
+            !today -> MainAction(PlayerAction.LOG_AMOUNT, "Log", "Log time for ${habit.name}")
             running -> MainAction(PlayerAction.PAUSE, "Pause", "Stop ${habit.name} timer")
             started -> MainAction(PlayerAction.RESUME, "Resume", "Start ${habit.name} timer")
             else -> MainAction(PlayerAction.START, "Start", "Start ${habit.name} timer")
         }
-        fun amount() = if (step != null) MainAction(PlayerAction.LOG_STEP, "Log " + HabitCopy.amount(step, unit), "Add ${HabitCopy.amount(step, unit)} to ${habit.name}")
-            else MainAction(PlayerAction.LOG_AMOUNT, "Log amount", "Log an amount for ${habit.name}")
+        fun amount() = if (step != null) MainAction(PlayerAction.LOG_STEP, "+" + HabitCopy.number(step), "Add ${HabitCopy.amount(step, unit)} to ${habit.name}")
+            else MainAction(PlayerAction.LOG_AMOUNT, "Log", "Log an amount for ${habit.name}")
         if (habit.atMost) {
             // Cut down: log what happened; it never becomes "done" (P23).
             return when (habit.kind) {
@@ -114,6 +125,8 @@ object PlayerWords {
                 HabitKind.Checklist, HabitKind.Quit -> MainAction(PlayerAction.NONE, "", "")
             }
         }
+        // At the goal the clock keeps counting and Pause stays; Next comes once it's paused (Figma 4.3).
+        if (habit.kind == HabitKind.Duration && running && today) return timer()
         if (done) return onward
         return when (habit.kind) {
             HabitKind.Check, HabitKind.Task ->
@@ -133,14 +146,12 @@ object PlayerWords {
         else -> "Not finished"
     }
 
-    /** The end page's title. */
-    fun endTitle(remaining: Int): String = if (remaining == 0) "Routine finished" else "End of the routine"
+    /** The end page's title: "Anytime is done" (Figma 1.3, 8.2), or "End of the routine" with some left (8.1, 8.3). */
+    fun endTitle(remaining: Int, name: String): String = if (remaining == 0) "$name is done" else "End of the routine"
 
-    /** "2 left for later. Your progress is saved." */
-    fun endText(remaining: Int, reviewed: Int): String {
-        if (remaining == 0) return if (reviewed == 0) "All habits in this routine are done." else "Your routine is complete. Your progress is saved."
-        return "$remaining left for later. Your progress is saved."
-    }
+    /** "All 12 done today." or "2 left for later. Your progress is saved." */
+    fun endText(remaining: Int, count: Int): String =
+        if (remaining == 0) "All $count done today." else "$remaining left for later. Your progress is saved."
 
     /** "1 skipped for today. Skipped days don't count against you." (never shame, U3), or null with none. */
     fun skippedLine(skipped: Int): String? =

@@ -163,6 +163,17 @@ private fun AppMain(
             "item" -> if (store.habit(id) != null) dayTarget = "$id|$day"
             "log", "slip" -> if (store.habit(id) != null) nav.navigate(Routes.add(id, day))
             "timer" -> if (store.habit(id) != null) nav.navigate(Routes.timer(id))
+            // A timer started in a routine: its Live Update opens that routine at that habit (Figma 10.5).
+            "player" -> {
+                val parts = id.split("/")
+                val part = android.net.Uri.decode(parts.getOrNull(0) ?: "")
+                val at = parts.getOrNull(2)
+                val on = parts.getOrNull(1)?.toIntOrNull() ?: store.today()
+                val habits = routineHabits(store, part, on)
+                if (at != null && store.habit(at) != null) {
+                    if (habits.isNotEmpty() && at in habits) nav.navigate(Routes.routine(part, on, habits, at)) else nav.navigate(Routes.timer(at))
+                }
+            }
             "plus" -> nav.navigate(Routes.GET_PLUS)
             // The app icon's long-press shortcuts (A11 D8).
             "new" -> nav.navigate(Routes.NEW)
@@ -349,14 +360,17 @@ private fun AppMain(
                 }) { nav.popBackStack() }
             }
         }
-        composable("routine/{part}/{day}/{ids}") { e ->
+        composable("routine/{part}/{day}/{ids}?at={at}", arguments = listOf(androidx.navigation.navArgument("at") { nullable = true; defaultValue = null })) { e ->
             val a = e.arguments!!
             WithDay(store, nav) { openDay ->
                 RoutinePlayer(store, a.getString("part")!!, a.getString("day")!!.toInt(), a.getString("ids")!!.split(",").filter { it.isNotEmpty() },
+                    startAt = a.getString("at"), nav =
                     object : PlayerNav {
                         override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                         override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
                         override fun openTimer(habit: Habit) = nav.navigate(Routes.timer(habit.id))
+                        // The snackbar's Add note opens Add note for that day, and Save comes back to the player (Figma 6.2).
+                        override fun writeNote(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
                         override fun habitPage(habit: Habit, milestones: Boolean) {
                             if (milestones) com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id
                             nav.navigate(Routes.habit(habit.id))
@@ -455,6 +469,12 @@ private fun plusFlowNav(nav: NavHostController, scope: CoroutineScope, snackbar:
  * The routine "Start the next routine" opens: the time of day that is now if it has anything left, else the next card
  * down Today that does (then from the top). Null when everything planned today is done: Today opens and says so.
  */
+/** A time of day's habits for the routine player, in the person's order: everything due that day but quit habits and limits. */
+fun routineHabits(store: HabitStore, part: String, day: Int): List<String> =
+    (store.rules.cardMembers()[part] ?: emptyList()).mapNotNull { store.habit(it) }.filter { h ->
+        !h.archived && !h.isQuitOrLimit && store.rules.isDue(h, day) && !store.isPaused(h, day)
+    }.map { it.id }
+
 fun nextRoutine(store: HabitStore): Pair<String, List<String>>? {
     val today = store.today()
     val members = store.rules.cardMembers()
@@ -533,7 +553,8 @@ object Routes {
     fun timer(id: String) = "timer/$id"
     fun pause(id: String) = "pause/$id"
     fun pause(ids: List<String>) = "pause/" + ids.joinToString(",")
-    fun routine(part: String, day: Int, ids: List<String>) = "routine/" + android.net.Uri.encode(part) + "/$day/" + ids.joinToString(",")
+    fun routine(part: String, day: Int, ids: List<String>, at: String? = null) =
+        "routine/" + android.net.Uri.encode(part) + "/$day/" + ids.joinToString(",") + (at?.let { "?at=$it" } ?: "")
 }
 
 /**

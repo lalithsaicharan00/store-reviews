@@ -4,6 +4,8 @@
 
     <!-- Reminders (Current Work 107): notifications, exact times, and planning again after a restart. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- A running timer's Live Update: Android 16 shows it as a chip in the status bar (A11 D4). -->
+    <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- No advertising ID, ever (no ads, no tracking; Play's advertising ID declaration says No). Removed here so a
