@@ -30,4 +30,4 @@ Preserve hero, habits, progress, Morning routines and the separate tasks section
 
 ## Final validation
 
-Final read-back, previews and structural checks are recorded in [the current handoff](<../../../website/Design Handoff.md>) and [Round 02 manifest](<../../../website/Design Previews/Section 05 Round 02/manifest.json>). Review PNGs are references, not production payloads. Figma interaction configuration and real browser keyboard/touch testing are separate checks.
+The [current handoff](<../../../website/Design Handoff.md>) records the revision's status, and the [Round 02 preview folder](<../../../website/Design Previews/Section 05 Round 02/>) preserves its saved renders. A final Round 02 manifest was not completed before this revision was superseded. Review PNGs are references, not production payloads. Figma interaction configuration and real browser keyboard/touch testing are separate checks.

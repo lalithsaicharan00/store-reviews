@@ -20,10 +20,12 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 The user asks to commit all uncommitted repository work, push completed work to main and development, and synchronize the local repositories (W3/W4/T10).
 
 - [x] Fetch and inspect every local branch and registered worktree. All existing local branch tips are already ancestors of main; there is no branch named development or dev. The Android development branch is `claude/android-app`. Its untracked schema 10 matches the main checkout's file byte for byte.
-- [ ] Validate and commit the pending research, website, documentation and exported database schema. Preserve pending design/deployment statuses and ignored scratch/build data.
+- [x] Validate and commit the pending research, website, documentation and exported database schema. Saved 259 files in `74b8f44e` on `codex/local-sync-20261020`, pushed to GitHub. Pending design/deployment statuses and ignored scratch/build data are preserved.
 - [ ] Push the saved work to main and the existing Android development branch, then fast-forward local branches/worktrees and pull to verify synchronization. Use ordinary commit messages without test/performance/widget tags; record validation and final state below.
 
 Validation: website static checks pass (seven pages, support/404, 161 links/assets); speed rules and Git whitespace checks pass; 57 JSON files, five CSV files and six Python sources parse; schema 10 agrees with `HabitRepository.SCHEMA_VERSION`; a high-confidence credential scan found no matches. Run the existing website checker with Python's `-X utf8` on Windows. Core CI will run on the synchronization branch before main moves (W3/T19).
+
+A local Markdown audit checked 641 references and found one missing historical Round 02 gallery manifest. Its report now links to the saved preview folder and states that the manifest was not completed before the revision was superseded; no missing evidence was invented.
 
 Existing main CI issue, present before this synchronization: [Android run 39358413967](https://github.com/lalithsaicharan00/store-reviews/actions/runs/39358413967) fails lint at `Android/app/src/main/kotlin/com/oftenenough/app/ui/record/NoteScreens.kt:118` (`SuspiciousIndentation`). No Android source is changed by this synchronization; this failure remains an open validation issue (T2).
 
