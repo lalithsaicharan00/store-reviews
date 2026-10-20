@@ -1,0 +1,79 @@
+{
+  "app_id": 6443918070,
+  "bundle_id": "com.roehl.habitkit",
+  "research_order": 4,
+  "scope": "organic acquisition, iOS first; Android evidence separately labeled",
+  "release_utc": "2022-11-26T08:00:00Z",
+  "video": {
+    "id": "vC9N7PgIvEM",
+    "publisher": "The Studio",
+    "published_date": "2024-12-14",
+    "habitkit_segment_seconds": [
+      187,
+      226
+    ],
+    "explicit_other_sponsor": "Epidemic Sound, approximately 7:11",
+    "habitkit_placement": "apparently earned editorial; no HabitKit sponsorship identified in inspected description/transcript",
+    "paid_amplification_audited": false,
+    "founder_attribution": true,
+    "numeric_attributed_installs": null,
+    "discovery_via_threads": "founder conjecture"
+  },
+  "periods": [
+    {
+      "period": "May 2023",
+      "metric": "ranking breakthrough, no numeric installs",
+      "source_id": "founder_2024",
+      "trigger": "unknown"
+    },
+    {
+      "period": "December 2024",
+      "metric": "founder-reported download surge after original video",
+      "source_id": "founder_2024",
+      "independent_time_series": false
+    },
+    {
+      "period": "late December 2024 through 19 January 2025",
+      "metric": "four-week high-download narrative",
+      "source_id": "log_56",
+      "numeric_installs": null
+    }
+  ],
+  "context": {
+    "cumulative_combined_by_2024_03_10": ">300000",
+    "ios_inference_approx": 100000,
+    "inference_basis": "Play approximately twice App Store, combined total/3",
+    "source_id": "milestone_2024",
+    "annual_2025_reported_downloads": {
+      "app_store": 272000,
+      "google_play": 290000,
+      "excludes": "31 December",
+      "source_id": "founder_2025"
+    },
+    "revenue_is_not_installs": true
+  },
+  "organic_search": {
+    "source_ids": [
+      "aso",
+      "log_58",
+      "log_67"
+    ],
+    "ranking_scope": "search keyword habit tracker, not overall/category chart",
+    "historical_apple_search_ads_disclosed": true,
+    "fully_organic_business_claim_supported": false
+  },
+  "unknowns": [
+    "exact daily download peak",
+    "incremental iOS installs",
+    "geographic lift",
+    "video versus New Year contribution",
+    "unpaid Starter Story placement",
+    "initial ranking trigger"
+  ],
+  "evidence_limits": [
+    "repeated founder accounts are one reporting source",
+    "automatic captions can have errors",
+    "revenue figures cannot establish install counts",
+    "no controlled causal measurement"
+  ]
+}

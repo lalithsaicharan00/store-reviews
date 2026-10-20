@@ -1,5 +1,30 @@
 package com.oftenenough.app.ui.player
 
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.zIndex
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.key
+import androidx.compose.material.icons.rounded.DragIndicator
+import androidx.compose.material.icons.rounded.DoneAll
+import androidx.compose.material3.minimumInteractiveComponentSize
+import com.oftenenough.app.data.GoalPeriod
+import androidx.compose.material.icons.rounded.EventAvailable
+import com.oftenenough.app.data.Frequency
+import androidx.compose.material.icons.outlined.Info
+import com.oftenenough.app.data.Format
+import androidx.compose.material.icons.rounded.DateRange
+import com.oftenenough.app.data.pageIsTotal
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.foundation.Canvas
+import androidx.compose.material.icons.rounded.SwapVert
+import androidx.compose.foundation.layout.offset
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
@@ -163,20 +188,31 @@ interface PlayerNav {
  * leaving"). Only the clock ticks (S3). A slide the player starts never takes the pages it passes as choices (U24).
  */
 @Composable
-fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<String>, nav: PlayerNav, onClose: () -> Unit) {
+fun RoutinePlayer(
+    store: HabitStore, part: String, day: Int, habitIds: List<String>, nav: PlayerNav,
+    /** The habit to open on (a running timer's Live Update, Figma 10.5); otherwise the first unfinished one (1.2). */
+    startAt: String? = null,
+    onClose: () -> Unit,
+) {
     val c = appColors
     val scope = rememberCoroutineScope()
     // The session lives through Add log and Day details (and a rotation): kept as saveable text, never in the database.
     val orderText = rememberSaveable { mutableStateOf(joinIds(habitIds)) }
-    val indexState = rememberSaveable { mutableIntStateOf(0) }
+    // Where it opens: the habit asked for, else the first unfinished (1.2), else the end page when all are done (1.3).
+    val indexState = rememberSaveable { mutableIntStateOf(openingIndex(store, part, day, habitIds, startAt)) }
+    // The position the end page's bar shows: where the person was when the routine ended (8.1 "12 of 12", 8.3 "5 of 12").
+    val endFrom = rememberSaveable { mutableIntStateOf(if (indexState.intValue >= habitIds.size) habitIds.size else indexState.intValue + 1) }
+    // Only a routine opened on its own day ends when the day does; one opened for another day logs to that day (1.4).
+    val forToday = rememberSaveable { mutableStateOf(day == store.today()) }
     val reviewedText = rememberSaveable { mutableStateOf("") }
     val expiredState = rememberSaveable { mutableStateOf(false) }
     val manualText = rememberSaveable { mutableStateOf("") }
     val opened = rememberSaveable { mutableStateOf(false) }
     var showQueue by rememberSaveable { mutableStateOf(false) }
+    var queueEditing by rememberSaveable { mutableStateOf(false) }
     val pager = rememberPagerState(initialPage = indexState.intValue) { idCount(orderText.value) + 1 }
     val session = remember(store, part, day) {
-        PlayerSession(store, part, day, orderText, indexState, reviewedText, expiredState, manualText, pager, scope)
+        PlayerSession(store, part, day, orderText, indexState, reviewedText, expiredState, manualText, pager, scope, endFrom)
     }
     val view = LocalView.current
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -202,12 +238,20 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
         ribbonFor = shown.habitId
     }
 
-    // On first opening only: the first habit's clock starts if it's timed (P1).
+    // On first opening only: a routine partly done says where it starts (Figma 1.2). A timer waits for Start (4).
     LaunchedEffect(session) {
-        if (!opened.value) { opened.value = true; session.startCurrentTimer() }
+        if (opened.value) return@LaunchedEffect
+        opened.value = true
+        val at = session.index
+        val habit = session.current
+        if (startAt == null && habit != null && at > 0) {
+            val before = session.order.take(at).count { session.covered(it, emptySet()) }
+            if (before > 0) session.say(PlayerWords.startingAt(before, habit.name, today = day == store.today()))
+        }
     }
     // A new day ends the session on its own day; checked twice a minute, never per frame.
     LaunchedEffect(session) {
+        if (!forToday.value) return@LaunchedEffect
         while (true) {
             if (!session.expired && store.today() != day) session.expire()
             delay(30_000)
@@ -265,19 +309,17 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
     Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding().semantics { testTag = "routine-player" }) {
         PlayerTopBar(
             title = sectionName,
-            subtitle = if (index < order.size) PlayerWords.position(index, order.size) else PlayerWords.covered(coveredCount, order.size),
             spoken = PlayerWords.routineSpoken(sectionName, index, order.size),
             enabled = !expired,
-            current = current,
-            showFirstUnfinished = firstUnfinished != null && firstUnfinished != index,
+            canGoToFirst = firstUnfinished != null && firstUnfinished != index,
             onClose = { session.close(onClose) },
-            onQueue = { showQueue = true },
-            onDay = { current?.let { nav.openDay(it, day) } },
+            onQueue = { queueEditing = false; showQueue = true },
+            onChangeOrder = { queueEditing = true; showQueue = true },
             onFirstUnfinished = { firstUnfinished?.let { session.navigate(it) } },
             onEnd = { session.navigate(order.size) },
         )
-        if (!expired && index < order.size) RoutineSegments(covered, index, PlayerWords.segmentsSpoken(coveredCount, order.size))
-        else Spacer(Modifier.height(SEGMENTS_HEIGHT))
+        val position = if (index < order.size) index + 1 else endFrom.intValue.coerceIn(0, order.size)
+        RoutineProgress(position, order.size, PlayerWords.segmentsSpoken(coveredCount, order.size))
         if (expired) {
             NewDayCard(Modifier.weight(1f)) { session.close(onClose) }
         } else {
@@ -286,15 +328,17 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
                     state = pager,
                     modifier = Modifier.fillMaxSize().semantics { testTag = "routine-pager" },
                     contentPadding = PaddingValues(horizontal = 16.dp),
-                    pageSpacing = 8.dp,
+                    // Wider than the side margin, so the next card never peeks in (Figma shows one card).
+                    pageSpacing = 24.dp,
                 ) { page ->
                     val id = order.getOrNull(page)
                     if (id != null) HabitPage(id, session, nav, playRibbon = ribbonFor == id)
                     else EndPage(
+                        name = sectionName,
+                        count = order.size,
                         remaining = covered.count { !it },
                         skipped = order.count { habitId -> store.habit(habitId)?.let { session.skipped(it) } == true },
-                        reviewed = reviewed.size,
-                        onReview = { showQueue = true },
+                        onReview = { queueEditing = false; showQueue = true },
                         reached = splitIds(reachedText.value).mapNotNull { hid ->
                             val h = store.habit(hid) ?: return@mapNotNull null
                             center.visible(h)?.let { h to center.words(it, h) }
@@ -302,11 +346,12 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
                     )
                 }
                 if (feedback != null) {
+                    // Over the card's foot, as Figma draws it (2, 3.1, 6.1): 16 from the sides, 4 past the card.
                     FeedbackBar(
                         feedback,
                         onUndo = { session.undo(feedback) },
                         onNote = { store.habit(feedback.habitId)?.let { nav.writeNote(it, day) } },
-                        modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 16.dp, vertical = 8.dp),
+                        modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 16.dp).offset(y = 4.dp),
                     )
                 }
             }
@@ -323,7 +368,8 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
         }
     }
     if (showQueue && !expired) {
-        RoutineSheet(session, covered, onJump = { position -> showQueue = false; session.navigate(position) }, onDismiss = { showQueue = false })
+        RoutineSheet(session, covered, queueEditing, onEditing = { queueEditing = it },
+            onJump = { position -> showQueue = false; session.navigate(position) }, onDismiss = { showQueue = false })
     }
     // A landmark reached in the routine: its pop-up rises over the end screen, once (Figma RP.3).
     if (!endPopupDone && index >= order.size && endPopupText.value.isNotEmpty() && pager.currentPage >= order.size) {
@@ -346,9 +392,23 @@ fun RoutinePlayer(store: HabitStore, part: String, day: Int, habitIds: List<Stri
 private const val SEP = ","
 /** Habits with more steps than this get the compact header and their steps scroll inside the card (design 05). */
 private const val COMPACT_STEPS = 3
-/** A timed habit's clock starts when you arrive on it, and the screen says so (the iPhone's P1). */
-private const val START_TIMER_ON_ARRIVAL = true
-private val SEGMENTS_HEIGHT: Dp = 30.dp
+/** A timed habit waits for Start (Figma 4: "Not started", Start → 4.1); arriving never starts a clock. */
+private const val START_TIMER_ON_ARRIVAL = false
+
+/** Covered: done for today or skipped (what the bar, Your routine and the end page count). A limit is never in a routine. */
+private fun routineCovered(store: HabitStore, part: String, day: Int, habit: Habit): Boolean {
+    if (habit.atMost) return false
+    val slot = store.placements(habit).firstOrNull { it.section == part }?.slot
+    val done = slot?.let { store.isSlotDone(habit, it, day) } ?: store.rules.isSatisfied(habit, day)
+    return done || store.isSkipped(habit, day)
+}
+
+/** Where a routine opens: [startAt] if it's in it, the first unfinished habit, or the end page when all are done. */
+private fun openingIndex(store: HabitStore, part: String, day: Int, ids: List<String>, startAt: String?): Int {
+    startAt?.let { id -> ids.indexOf(id).takeIf { it >= 0 }?.let { return it } }
+    val first = ids.indexOfFirst { id -> store.habit(id)?.let { !routineCovered(store, part, day, it) } ?: false }
+    return if (first >= 0) first else ids.size
+}
 
 private fun splitIds(text: String): List<String> = if (text.isEmpty()) emptyList() else text.split(SEP)
 private fun joinIds(ids: Collection<String>): String = ids.joinToString(SEP)
@@ -380,6 +440,7 @@ private class PlayerSession(
     private val manualText: MutableState<String>,
     val pager: PagerState,
     private val scope: CoroutineScope,
+    private val endFrom: MutableIntState,
 ) {
     val slide = PagerSlide()
     var feedback by mutableStateOf<Feedback?>(null)
@@ -399,16 +460,25 @@ private class PlayerSession(
         set(value) { indexState.intValue = value }
     val reviewed: Set<String> get() = splitIds(reviewedText.value).toSet()
     val expired: Boolean get() = expiredState.value
-    /** Changes are made only on the routine's own day, before a new day starts. */
-    val live: Boolean get() = !expired && day == store.today()
+    /** Changes are made on the routine's own day, today or an earlier one (1.4), never after a new day ends it. */
+    val live: Boolean get() = !expired && day <= store.today()
+    val isToday: Boolean get() = day == store.today()
     val current: Habit? get() = order.getOrNull(index)?.let { store.habit(it) }
 
     /** The tick of this time of day, for a check ticked in several times of day (the iPhone's `slots(of:)`). */
     fun slotOf(habit: Habit): String? = store.placements(habit).firstOrNull { it.section == part }?.slot
 
-    /** Nothing more is asked: the main button moves on. A "3 times a week" habit ticked once today still offers "Log one". */
-    fun done(habit: Habit): Boolean =
-        !habit.atMost && (slotOf(habit)?.let { store.isSlotDone(habit, it, day) } ?: store.rules.isComplete(habit, day))
+    /**
+     * Nothing more is asked: the main button moves on. A check counted by the week or month is done for today once ticked
+     * today (Figma 2.4, "✓ Done for today", Next); other kinds when today's goal is met.
+     */
+    fun done(habit: Habit): Boolean {
+        if (habit.atMost) return false
+        slotOf(habit)?.let { return store.isSlotDone(habit, it, day) }
+        val ruled = store.rule(habit, day)
+        return if (ruled.kind == HabitKind.Check && !ruled.frequency.isDayBased) store.rules.isSatisfied(habit, day)
+        else store.rules.isComplete(habit, day)
+    }
 
     /** Done for today: what the segments and Your routine show (a week or month goal, once something is logged today). */
     fun doneToday(habit: Habit): Boolean =
@@ -418,7 +488,7 @@ private class PlayerSession(
 
     fun covered(id: String, reviewed: Set<String>): Boolean {
         val habit = store.habit(id) ?: return true
-        return if (habit.atMost) id in reviewed else doneToday(habit) || skipped(habit)
+        return if (habit.atMost) id in reviewed else routineCovered(store, part, day, habit)
     }
 
     // ------------------------------------------------------------------ Moving (U24)
@@ -451,6 +521,7 @@ private class PlayerSession(
         current?.let { habit -> if (store.timers.containsKey(habit.id)) store.stopTimer(habit, day, source = EntrySource.ROUTINE) }
         if (reviewing != null) reviewedText.value = joinIds(reviewed + reviewing)
         feedback = null
+        if (destination == order.size) endFrom.intValue = minOf(index + 1, order.size)
         index = destination
         showPage()
         startCurrentTimer()
@@ -479,7 +550,9 @@ private class PlayerSession(
         if (shown != null) index = list.indexOf(shown)
         val target = index
         slide.job?.cancel()
-        slide.job = scope.launch { pager.scrollToPage(target) }
+        // On the next frame: scrolling at once forced a layout inside the one Your routine's move started (a crash,
+        // "performMeasureAndLayout called during measure layout", found by PlayerTest's Move down).
+        slide.job = scope.launch { androidx.compose.runtime.withFrameNanos { }; pager.scrollToPage(target) }
     }
 
     // ------------------------------------------------------------------ Changing a habit (S7)
@@ -495,9 +568,11 @@ private class PlayerSession(
 
     /** Pause and Resume: no message and no Undo (an Undo there deleted the session's time, found by hand on the iPhone). */
     fun startTimer(habit: Habit) {
-        if (!live) return
+        if (!live || !isToday) return
         feedback = null
         if (!store.timers.containsKey(habit.id)) store.toggleTimer(habit, slotOf(habit))
+        // Its Live Update opens this routine at this habit (Figma 10.5).
+        com.oftenenough.app.app.reminders.TimerNotice.startedInRoutine(habit.id, part, day)
     }
 
     fun pauseTimer(habit: Habit) {
@@ -508,6 +583,18 @@ private class PlayerSession(
 
     fun saySkipped(habitId: String) {
         feedback = Feedback(PlayerWords.SKIPPED, habitId, null, unskip = true, serial = ++serial)
+    }
+
+    /** A message alone, with no Undo or Add note ("3 done earlier today. Starting at Water.", Figma 1.2). */
+    fun say(message: String) {
+        feedback = Feedback(message, "", null, unskip = false, serial = ++serial)
+    }
+
+    /** A checklist's step: ticked or unticked at once, with no message, so nothing covers the steps (Figma 5.2). */
+    fun toggleStep(habit: Habit, step: Step) {
+        if (!live) return
+        feedback = null
+        store.toggleStep(step, habit, day, source = EntrySource.ROUTINE)
     }
 
     fun undo(f: Feedback) {
@@ -551,19 +638,17 @@ private class PlayerSession(
         val habit = store.habit(parts[0]) ?: return
         val before = splitIds(parts[2]).toHashSet()
         val added = store.entries(habit.id, day).lastOrNull { it.id !in before }
-        if (added != null) {
-            val message = if (habit.kind == HabitKind.Duration) PlayerWords.TIME_SAVED else PlayerWords.AMOUNT_SAVED
-            feedback = Feedback(message, habit.id, added.id, unskip = false, serial = ++serial)
-        }
+        if (added != null) feedback = Feedback(PlayerWords.SAVED, habit.id, added.id, unskip = false, serial = ++serial)
         if (parts[1] == "1" && live && habit.kind == HabitKind.Duration && !store.timers.containsKey(habit.id) && !done(habit)) {
             store.toggleTimer(habit, slotOf(habit))
         }
     }
 
-    /** ✕, Done and back: the habit on screen's time is saved, then the player goes. */
+    /**
+     * ✕, Done and back: the player goes and a running timer keeps running (Figma 8.4): Today's row keeps its clock, and
+     * outside the app its Live Update (10).
+     */
     fun close(onClose: () -> Unit) {
-        val habit = current
-        if (habit != null && !expired && store.timers.containsKey(habit.id)) store.stopTimer(habit, day, source = EntrySource.ROUTINE)
         onClose()
     }
 
@@ -581,68 +666,83 @@ private class PlayerSession(
 
 // ---------------------------------------------------------------------------------------------- The top
 
+/**
+ * ✕ · "Anytime ▾" (one line; it opens Your routine, as Calendar's "October ▾") · ⋮ with Go to first unfinished, Change
+ * order and End routine (Figma 7; Day details is the card's chip, Your routine the title).
+ */
 @Composable
 private fun PlayerTopBar(
-    title: String, subtitle: String, spoken: String, enabled: Boolean, current: Habit?, showFirstUnfinished: Boolean,
-    onClose: () -> Unit, onQueue: () -> Unit, onDay: () -> Unit, onFirstUnfinished: () -> Unit, onEnd: () -> Unit,
+    title: String, spoken: String, enabled: Boolean, canGoToFirst: Boolean,
+    onClose: () -> Unit, onQueue: () -> Unit, onChangeOrder: () -> Unit, onFirstUnfinished: () -> Unit, onEnd: () -> Unit,
 ) {
     val c = appColors
     var menu by remember { mutableStateOf(false) }
-    Row(Modifier.fillMaxWidth().heightIn(min = 72.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClose, Modifier.semantics { testTag = "player-close" }) { Icon(Icons.Rounded.Close, "Close", tint = c.ink) }
-        Box(Modifier.weight(1f)) {
-            // "Anytime ▾ / Habit 4 of 12": one button that opens Your routine.
-            Column(
+        Box(Modifier.weight(1f).padding(start = 4.dp)) {
+            Row(
                 Modifier.clip(RoundedCornerShape(12.dp))
                     .clickable(enabled = enabled, onClickLabel = "View and reorder the routine", role = Role.Button, onClick = onQueue)
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .heightIn(min = 48.dp).padding(end = 4.dp)
                     .semantics(mergeDescendants = true) { contentDescription = spoken; testTag = "routine-queue" },
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(title, Modifier.weight(1f, fill = false), style = AppType.headlineSmall,
-                        color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Icon(Icons.Rounded.ArrowDropDown, null, tint = c.ink)
-                }
-                Text(subtitle, style = MaterialTheme.typography.bodyLarge, color = c.secondary, maxLines = 1,
-                    modifier = Modifier.semantics { testTag = "routine-position" })
+                Text(title, Modifier.weight(1f, fill = false), style = AppType.titleLargeEmphasized,
+                    color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Spacer(Modifier.width(2.dp))
+                Icon(Icons.Rounded.ArrowDropDown, null, tint = c.ink)
             }
         }
         Box {
             IconButton({ menu = true }, Modifier.semantics { testTag = "player-more" }, enabled = enabled) {
                 Icon(Icons.Rounded.MoreVert, "Routine options", tint = c.ink)
             }
-            DropdownMenu(menu, { menu = false }) {
-                @Composable fun item(text: String, icon: ImageVector, tag: String, action: () -> Unit) = DropdownMenuItem(
-                    text = { Text(text, style = MaterialTheme.typography.bodyLarge, color = c.ink) },
+            DropdownMenu(menu, { menu = false }, shape = RoundedCornerShape(16.dp), containerColor = c.menu) {
+                @Composable fun item(text: String, icon: ImageVector, tag: String, on: Boolean = true, action: () -> Unit) = DropdownMenuItem(
+                    text = { Text(text, style = AppType.bodyLarge, color = if (on) c.ink else c.ink.copy(alpha = 0.38f)) },
                     onClick = { menu = false; action() },
-                    leadingIcon = { Icon(icon, null, tint = c.ink) },
+                    enabled = on,
+                    leadingIcon = { Icon(icon, null, tint = if (on) c.ink else c.ink.copy(alpha = 0.38f)) },
                     modifier = Modifier.semantics { testTag = tag },
                 )
-                if (current != null) item("Day details", Icons.Rounded.CalendarMonth, "player-menu-day", onDay)
-                item("View routine", Icons.AutoMirrored.Rounded.List, "player-menu-routine", onQueue)
-                if (showFirstUnfinished) item("Go to first unfinished", Icons.AutoMirrored.Rounded.Undo, "player-menu-first", onFirstUnfinished)
-                item("End routine", Icons.Rounded.Flag, "player-menu-end", onEnd)
+                item("Go to first unfinished", Icons.AutoMirrored.Rounded.Undo, "player-menu-first", canGoToFirst, onFirstUnfinished)
+                item("Change order", Icons.Rounded.SwapVert, "player-menu-order", action = onChangeOrder)
+                item("End routine", Icons.Rounded.Flag, "player-menu-end", action = onEnd)
             }
         }
     }
 }
 
-/** Done / current / left: the thin segments under the title. */
+/**
+ * Where the routine is (Figma 1328:2, 14 Oct): Material 3 Expressive's linear progress indicator, 4 high with a 4 gap
+ * and a stop dot, and "4 of 12" after it. One bar works for 25 habits, where 25 segments don't.
+ */
 @Composable
-private fun RoutineSegments(covered: List<Boolean>, index: Int, spoken: String) {
+private fun RoutineProgress(position: Int, count: Int, spoken: String) {
     val c = appColors
+    val track = if (c.dark) c.line else Color(0xFFD5D5DA)
+    val fraction = if (count == 0) 0f else (position.toFloat() / count).coerceIn(0f, 1f)
     Row(
-        Modifier.fillMaxWidth().height(SEGMENTS_HEIGHT).padding(horizontal = 24.dp).semantics { contentDescription = spoken; testTag = "routine-segments" },
-        horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically,
+        // At least 16 high; larger text grows the row rather than clipping "5 of 12" (Figma 1.5).
+        Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 16.dp).heightIn(min = 16.dp)
+            .semantics(mergeDescendants = true) { contentDescription = spoken; testTag = "routine-segments" },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        covered.forEachIndexed { i, done ->
-            val color = when {
-                i == index -> c.ink
-                done -> c.ink.copy(alpha = 0.45f)
-                else -> c.tonal
+        Canvas(Modifier.weight(1f).height(4.dp)) {
+            val h = size.height
+            val gap = 4.dp.toPx()
+            val active = size.width * fraction
+            val r = androidx.compose.ui.geometry.CornerRadius(h / 2, h / 2)
+            if (active > 0f) drawRoundRect(c.ink, size = Size(active, h), cornerRadius = r)
+            if (fraction < 1f) {
+                val from = if (active > 0f) active + gap else 0f
+                drawRoundRect(track, topLeft = Offset(from, 0f), size = Size(size.width - from, h), cornerRadius = r)
+                drawCircle(c.ink, h / 2, Offset(size.width - h / 2, h / 2))
             }
-            Box(Modifier.weight(1f).height(if (i == index) 6.dp else 5.dp).clip(CircleShape).background(color))
         }
+        Spacer(Modifier.width(12.dp))
+        Text(PlayerWords.position(position - 1, count), style = AppType.labelMedium, color = c.secondary, maxLines = 1,
+            modifier = Modifier.semantics { testTag = "routine-position" })
     }
 }
 
@@ -671,11 +771,8 @@ private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav, playRi
         onDay = { nav.openDay(habit, day) },
         // A tap on the clock types time (the iPhone's FocusClock).
         onCountTap = if (timed && live && !skipped) ({ session.openLog(habit, nav) }) else null,
-        onStep = if (live && !skipped) ({ step: Step, wasDone: Boolean ->
-            session.change(habit, if (wasDone) PlayerWords.STEP_UNCHECKED else PlayerWords.STEP_SAVED, captureUndo = !wasDone) {
-                store.toggleStep(step, habit, day, source = EntrySource.ROUTINE)
-            }
-        }) else null,
+        description = store.descriptions[habit.id],
+        onStep = if (live && !skipped) ({ step: Step, _: Boolean -> session.toggleStep(habit, step) }) else null,
     )
 }
 
@@ -690,12 +787,18 @@ internal fun HeroCard(
     onDay: (() -> Unit)?, onCountTap: (() -> Unit)?, onStep: ((Step, Boolean) -> Unit)?, modifier: Modifier = Modifier,
     /** "30 days in a row · reached today": the ribbon across the card's top (RP.1); [playMilestone]: it was just reached. */
     milestone: String? = null, playMilestone: Boolean = false,
+    /** The habit's description, under its name: two lines at most, then … (Figma 1.6). */
+    description: String? = null,
 ) {
     val c = appColors
     val running = ruled.kind == HabitKind.Duration && day == store.today() && store.timers.containsKey(habit.id)
+    // A single check or a task says Not done yet / Done in place of "0 of 1" (Figma 1, 2, 2.5, 2.6).
+    val single = ruled.kind == HabitKind.Task ||
+        (ruled.kind == HabitKind.Check && ruled.frequency.isDayBased && store.rules.goal(ruled) <= 1.0 && ruled.checkUnit == null)
     val tick = rememberTicker(running, store.clock)
     val goal = remember(ruled, rev) { store.rules.goal(ruled) }
-    val dayText = DayWords.day(day, store.today())
+    // Today, or the day named in full on any other ("Mon 13 Oct", Figma 1.4): the logs go to it.
+    val dayText = if (day == store.today()) "Today" else com.oftenenough.app.data.pageDayDate(day)
     val checklist = ruled.kind == HabitKind.Checklist
     val compact = checklist && ruled.steps.size > COMPACT_STEPS
     // Just reached: the cookie pops with a burst of twelve dots as Mark done fills it (RP.1, 0.18–1.0 s of 2.4 s).
@@ -724,7 +827,8 @@ internal fun HeroCard(
                 Spacer(Modifier.height(16.dp))
                 CountLine(habit, ruled, day, store, goal, rev, tick, running, center = false, baseStyle = AppType.displayMedium, onTap = onCountTap)
                 Spacer(Modifier.height(8.dp))
-                if (skipped) SkippedLine(center = false) else ProgressLine(habit, day, store, goal, rev, tick, running)
+                playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped)?.let { StatusLine(it); Spacer(Modifier.height(8.dp)) }
+                ProgressLine(habit, ruled, day, store, goal, rev, tick, running, neutral = false)
                 Spacer(Modifier.height(16.dp))
                 val scroll = rememberScrollState()
                 Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -738,23 +842,38 @@ internal fun HeroCard(
                 }
             }
         } else {
+            // Figma 1–4: the cookie (144, its glyph 64), the name, the description, the day chip, the count, a status line
+            // and the wave, centred in the card; a checklist's steps under them (5).
             BoxWithConstraints(Modifier.fillMaxSize()) {
                 val minHeight = maxHeight
                 Column(
-                    Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight).padding(24.dp),
+                    Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight)
+                        .padding(horizontal = 24.dp, vertical = if (checklist) 16.dp else 24.dp),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 136.dp, shape = CookieShape(), modifier = cookie)
-                    Spacer(Modifier.height(if (checklist) 16.dp else 32.dp))
+                    HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
+                    Spacer(Modifier.height(if (checklist) 12.dp else 28.dp))
                     HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 2)
-                    Spacer(Modifier.height(12.dp))
+                    if (!description.isNullOrBlank()) {
+                        Spacer(Modifier.height(4.dp))
+                        Text(description, Modifier.widthIn(max = 264.dp).semantics { testTag = "player-description" },
+                            style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    }
+                    // The chip is 32 high with a 48 target; the gaps around it are Figma's 12 and 20 less the target's 8.
+                    Spacer(Modifier.height(4.dp))
                     DayChip(dayText, onDay)
-                    Spacer(Modifier.height(if (checklist) 16.dp else 32.dp))
-                    CountLine(habit, ruled, day, store, goal, rev, tick, running, center = true, baseStyle = if (checklist) AppType.displayMedium else AppType.displayLarge, onTap = onCountTap)
-                    Spacer(Modifier.height(if (checklist) 8.dp else 24.dp))
-                    if (skipped) SkippedLine(center = true) else ProgressLine(habit, day, store, goal, rev, tick, running)
+                    Spacer(Modifier.height(if (checklist) 4.dp else 12.dp))
+                    if (single && !checklist) SingleState(habit, day, store, rev)
+                    else CountLine(habit, ruled, day, store, goal, rev, tick, running, center = true, baseStyle = if (checklist) AppType.displayMedium else AppType.displayLarge, onTap = onCountTap)
+                    val status = playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped)
+                    if (status != null) {
+                        Spacer(Modifier.height(8.dp))
+                        StatusLine(status)
+                    }
+                    Spacer(Modifier.height(if (checklist) 8.dp else 16.dp))
+                    ProgressLine(habit, ruled, day, store, goal, rev, tick, running, neutral = status?.neutral == true)
                     if (checklist) {
-                        Spacer(Modifier.height(16.dp))
+                        Spacer(Modifier.height(12.dp))
                         StepRows(habit, ruled, day, store, rev, c.habit(habit.color), onStep)
                     }
                 }
@@ -762,6 +881,61 @@ internal fun HeroCard(
         }
       }
       }
+    }
+}
+
+/** A single check or a task: "Not done yet" (grey) or "Done" (ink), 28 (Figma 1, 2). */
+@Composable
+private fun SingleState(habit: Habit, day: Int, store: HabitStore, rev: Int) {
+    val c = appColors
+    val done = remember(habit, rev) { store.rules.isComplete(habit, day) }
+    Text(if (done) PlayerWords.DONE else PlayerWords.NOT_DONE_YET, Modifier.heightIn(min = 64.dp).wrapContentHeight().semantics { testTag = "player-count" },
+        style = AppType.headlineMedium, color = if (done) c.ink else c.secondary, textAlign = TextAlign.Center)
+}
+
+/** The line under the count: an icon and a few neutral words (U3). [neutral]: the bar turns grey (over a limit, 9.2). */
+private data class PlayerStatus(val icon: ImageVector, val text: String, val neutral: Boolean = false, val tag: String)
+
+/**
+ * Which status line a habit shows, if any: skipped (6.1); a time limit gone over (9.2); a timer at its goal (4.3) or
+ * paused (4.2, 9.1); a week total of time ("1 h 45 min of 3 h this week", 4.5); N days a week ("1 of 3 days this week",
+ * 4.4); a check by the week done for today (2.4). Only the timer's lines read the ticking clock (S3).
+ */
+@Composable
+private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>,
+                         running: Boolean, skipped: Boolean): PlayerStatus? {
+    if (skipped) return PlayerStatus(Icons.Rounded.FastForward, PlayerWords.SKIPPED, tag = "player-skipped")
+    val today = day == store.today()
+    val f = ruled.frequency
+    if (ruled.kind == HabitKind.Duration) {
+        if (pageIsTotal(ruled)) {
+            val total = if (running) store.rules.progress(habit, day, tick.value) else remember(habit, rev) { store.rules.progress(habit, day) }
+            return PlayerStatus(Icons.Rounded.DateRange, Format.minutes(total) + " of " + Format.minutes(goal) + PlayerWords.period(f), tag = "player-status")
+        }
+        val now = if (running) store.rules.dayProgress(habit, day, tick.value) else remember(habit, rev) { store.rules.dayProgress(habit, day) }
+        val dayGoal = remember(ruled, rev) { store.rules.dayGoal(ruled) }
+        if (ruled.atMost && dayGoal > 0 && now > dayGoal) return PlayerStatus(Icons.Outlined.Info, PlayerWords.OVER_LIMIT, neutral = true, tag = "player-status")
+        if (!ruled.atMost && dayGoal > 0 && now >= dayGoal) return PlayerStatus(Icons.Rounded.Check, PlayerWords.GOAL_MET, tag = "player-status")
+        if (today && !running && now > 0) return PlayerStatus(Icons.Rounded.Pause, PlayerWords.PAUSED, tag = "player-status")
+    }
+    if (f is Frequency.Flexible && ruled.kind != HabitKind.Check && ruled.kind != HabitKind.Task) {
+        val days = remember(habit, rev) { store.rules.flexibleProgress(habit, day) } ?: 0
+        return PlayerStatus(Icons.Rounded.EventAvailable, "$days of ${f.n} days " + (if (f.period == GoalPeriod.MONTH) "this month" else "this week"), tag = "player-status")
+    }
+    if (ruled.kind == HabitKind.Check && !f.isDayBased) {
+        val doneToday = remember(habit, rev) { store.rules.isSatisfied(habit, day) && !store.rules.isPeriodMet(habit, day) }
+        if (doneToday) return PlayerStatus(Icons.Rounded.Check, PlayerWords.DONE_FOR_TODAY, tag = "player-status")
+    }
+    return null
+}
+
+@Composable
+private fun StatusLine(s: PlayerStatus) {
+    val c = appColors
+    Row(Modifier.heightIn(min = 20.dp).semantics(mergeDescendants = true) { testTag = s.tag }, verticalAlignment = Alignment.CenterVertically) {
+        Icon(s.icon, null, Modifier.size(18.dp), tint = c.secondary)
+        Spacer(Modifier.width(6.dp))
+        Text(s.text, style = AppType.bodyMedium, color = c.secondary, maxLines = 2, textAlign = TextAlign.Center)
     }
 }
 
@@ -806,19 +980,21 @@ private fun HabitName(name: String, style: TextStyle, align: TextAlign, maxLines
 @Composable
 internal fun DayChip(text: String, onClick: (() -> Unit)?) {
     val c = appColors
-    Row(
-        Modifier.clip(RoundedCornerShape(10.dp)).background(c.tonal)
-            .let { if (onClick != null) it.clickable(onClickLabel = "Open Day details", role = Role.Button, onClick = onClick) else it }
-            .heightIn(min = 40.dp).padding(start = 12.dp, end = if (onClick != null) 6.dp else 14.dp)
-            .semantics { testTag = "player-day-chip" },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(Icons.Rounded.CalendarToday, null, Modifier.size(20.dp), tint = c.ink)
-        Spacer(Modifier.width(10.dp))
-        Text(text, style = AppType.titleMedium, color = c.ink, maxLines = 1)
-        if (onClick != null) {
-            Spacer(Modifier.width(4.dp))
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(20.dp), tint = c.secondary)
+    Box(Modifier.minimumInteractiveComponentSize(), contentAlignment = Alignment.Center) {
+        Row(
+            Modifier.clip(RoundedCornerShape(8.dp)).background(c.soft)
+                .let { if (onClick != null) it.clickable(onClickLabel = "Open Day details", role = Role.Button, onClick = onClick) else it }
+                .heightIn(min = 32.dp).padding(start = 8.dp, end = if (onClick != null) 4.dp else 10.dp)
+                .semantics { testTag = "player-day-chip" },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(Icons.Rounded.CalendarToday, null, Modifier.size(18.dp), tint = c.ink)
+            Spacer(Modifier.width(6.dp))
+            Text(text, style = AppType.labelLarge, color = c.ink, maxLines = 1)
+            if (onClick != null) {
+                Spacer(Modifier.width(6.dp))
+                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(18.dp), tint = c.secondary)
+            }
         }
     }
 }
@@ -830,9 +1006,22 @@ private fun CountLine(
     center: Boolean, baseStyle: TextStyle, onTap: (() -> Unit)?,
 ) {
     val c = appColors
-    val progress = if (running) store.rules.progress(habit, day, tick.value) else remember(habit, rev) { store.rules.progress(habit, day) }
+    // A week total of time shows today's time big, "today" beside it, and the week under it (Figma 4.5).
+    val weekTime = ruled.kind == HabitKind.Duration && pageIsTotal(ruled)
+    val dayGoal = remember(ruled, rev) { store.rules.dayGoal(ruled) }
+    // N days a week counts today's time against the day's goal (4.4).
+    val byDay = ruled.kind == HabitKind.Duration && ruled.frequency is Frequency.Flexible
+    val progress = when {
+        weekTime || byDay -> if (running) store.rules.dayProgress(habit, day, tick.value) else remember(habit, rev) { store.rules.dayProgress(habit, day) }
+        running -> store.rules.progress(habit, day, tick.value)
+        else -> remember(habit, rev) { store.rules.progress(habit, day) }
+    }
     val value = PlayerWords.value(ruled, progress)
-    val target = PlayerWords.target(ruled, goal)
+    val target = when {
+        weekTime -> "today"
+        byDay -> "of " + Format.minutes(dayGoal)
+        else -> PlayerWords.target(ruled, goal)
+    }
     // A long clock ("1:23:45") steps down one style rather than shrinking to a size of its own.
     val style = if (value.length > 5) (if (baseStyle == AppType.displayLarge) AppType.displayMedium else AppType.displaySmall) else baseStyle
     Row(
@@ -844,31 +1033,36 @@ private fun CountLine(
     ) {
         Text(value, Modifier.alignByBaseline(), style = style.copy(fontFeatureSettings = "tnum"),
             color = c.ink, maxLines = 1)
-        Spacer(Modifier.width(12.dp))
-        Text(target, Modifier.alignByBaseline().weight(1f, fill = false), style = AppType.titleLarge,
+        Spacer(Modifier.width(8.dp))
+        Text(target, Modifier.alignByBaseline().weight(1f, fill = false), style = AppType.bodyLarge,
             color = c.secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
 }
 
-/** Expressive's wavy bar in the habit's colour (a limit's too: its words say "max", never red, U3). */
+/**
+ * Expressive's wavy bar in the habit's colour (a limit's too: its words say "max", never red, U3). Over a limit it's a
+ * full grey line (Figma 9.2); a week total fills toward the week (4.5). 8 in from the card's content, as Figma (32 of 328).
+ */
 @Composable
-private fun ProgressLine(habit: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>, running: Boolean) {
-    val color = appColors.habit(habit.color)
-    val progress = if (running) store.rules.progress(habit, day, tick.value) else remember(habit, rev) { store.rules.progress(habit, day) }
-    val fraction = (progress / maxOf(goal, 0.001)).toFloat().coerceIn(0f, 1f)
-    WavyProgress(fraction, color, color.copy(alpha = 0.25f),
-        Modifier.fillMaxWidth().padding(horizontal = 4.dp).height(16.dp).semantics { progressBarRangeInfo = ProgressBarRangeInfo(fraction, 0f..1f) })
-}
-
-/** Where the bar was: "⏩ Skipped for today" (neutral, U3). */
-@Composable
-private fun SkippedLine(center: Boolean) {
+private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>, running: Boolean, neutral: Boolean) {
     val c = appColors
-    Row(Modifier.fillMaxWidth().heightIn(min = 24.dp).semantics(mergeDescendants = true) { testTag = "player-skipped" },
-        horizontalArrangement = if (center) Arrangement.Center else Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
-        Icon(Icons.Rounded.FastForward, null, Modifier.size(20.dp), tint = c.secondary)
-        Spacer(Modifier.width(8.dp))
-        Text(PlayerWords.SKIPPED, style = AppType.bodyLarge, color = c.secondary)
+    val color = c.habit(habit.color)
+    val byDay = ruled.kind == HabitKind.Duration && ruled.frequency is Frequency.Flexible
+    val progress = when {
+        byDay -> if (running) store.rules.dayProgress(habit, day, tick.value) else remember(habit, rev) { store.rules.dayProgress(habit, day) }
+        running -> store.rules.progress(habit, day, tick.value)
+        else -> remember(habit, rev) { store.rules.progress(habit, day) }
+    }
+    val target = if (byDay) remember(ruled, rev) { store.rules.dayGoal(ruled) } else goal
+    val fraction = (progress / maxOf(target, 0.001)).toFloat().coerceIn(0f, 1f)
+    val modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).height(16.dp)
+        .semantics { progressBarRangeInfo = ProgressBarRangeInfo(fraction, 0f..1f); testTag = "player-bar" }
+    if (neutral) {
+        Box(modifier, contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(c.secondary))
+        }
+    } else {
+        WavyProgress(fraction, color, color.copy(alpha = 0.22f), modifier)
     }
 }
 
@@ -919,10 +1113,11 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
     val action: MainAction? = if (habit == null) null else {
         val rev = store.revision(habit.id)
         val timers = store.timers
-        remember(habit, rev, timers, index, order.size) {
+        val isToday = session.isToday
+        remember(habit, rev, timers, index, order.size, isToday) {
             val ruled = store.rule(habit, day)
             PlayerWords.mainAction(ruled, store.rules.goal(ruled), session.done(habit), session.skipped(habit), index == order.size - 1,
-                timers.containsKey(habit.id), store.rules.progress(habit, day) > 0)
+                timers.containsKey(habit.id), store.rules.dayProgress(habit, day) > 0, today = isToday)
         }
     }
     val next = order.getOrNull(index + 1)?.let { store.habit(it) }
@@ -953,70 +1148,75 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
         SideButton(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, "Previous habit", enabled = index > 0, tag = "player-previous",
             modifier = if (wide) Modifier.weight(1f) else Modifier.width(56.dp)) { session.navigate(index - 1) }
         if (!wide && action != null && habit != null) {
-            MainButton(actionIcon(action.action), action.label, action.spoken, "player-main", Modifier.weight(1f)) { perform(action.action, habit) }
+            // "+1" and "Log" are words alone (Figma 3, 3.3); "+1" a size up, as the row's round button says it.
+            val step = action.action == PlayerAction.LOG_STEP
+            MainButton(actionIcon(action.action), action.label, action.spoken, "player-main", Modifier.weight(1f),
+                labelStyle = if (step) AppType.headlineSmallEmphasized else AppType.title20) { perform(action.action, habit) }
         }
         SideButton(Icons.AutoMirrored.Rounded.KeyboardArrowRight, next?.let { "Next habit: ${it.name}" } ?: "Finish routine", enabled = true,
             tag = "player-next", modifier = if (wide) Modifier.weight(1f) else Modifier.width(56.dp)) { session.advance() }
     }
-    Spacer(Modifier.height(16.dp))
+    Spacer(Modifier.height(24.dp))
 }
 
-private fun actionIcon(a: PlayerAction): ImageVector = when (a) {
+private fun actionIcon(a: PlayerAction): ImageVector? = when (a) {
     PlayerAction.NEXT -> Icons.AutoMirrored.Rounded.ArrowForward
     PlayerAction.FINISH, PlayerAction.MARK_DONE, PlayerAction.LOG_ONE, PlayerAction.NONE -> Icons.Rounded.Check
-    PlayerAction.LOG_STEP -> Icons.Rounded.Add
-    PlayerAction.LOG_AMOUNT -> Icons.Rounded.Edit
+    PlayerAction.LOG_STEP, PlayerAction.LOG_AMOUNT -> null
     PlayerAction.START, PlayerAction.RESUME -> Icons.Rounded.PlayArrow
     PlayerAction.PAUSE -> Icons.Rounded.Pause
 }
 
-/** ‹ or ›: tonal, as tall as the group. */
+/** ‹ or ›: tonal, as tall as the group (Figma: #E2E2E7, corners 28, a 32 chevron; off, the ink at 6 % and 30 %). */
 @Composable
 private fun SideButton(icon: ImageVector, spoken: String, enabled: Boolean, tag: String, modifier: Modifier, onClick: () -> Unit) {
     val c = appColors
     Button(
         onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken; testTag = tag }, enabled = enabled,
         shape = RoundedCornerShape(28.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = c.tonal, contentColor = c.ink, disabledContainerColor = c.tonal, disabledContentColor = c.ink.copy(alpha = 0.3f)),
+        colors = ButtonDefaults.buttonColors(containerColor = c.behind, contentColor = c.ink,
+            disabledContainerColor = c.ink.copy(alpha = 0.06f), disabledContentColor = c.ink.copy(alpha = 0.3f)),
         contentPadding = PaddingValues(0.dp),
     ) {
-        Icon(icon, null, Modifier.size(28.dp))
+        Icon(icon, null, Modifier.size(32.dp))
     }
 }
 
 /** The one main action, in ink. Its label is one line and ends in … when long; TalkBack reads the whole of [spoken]. */
 @Composable
-internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: String, modifier: Modifier, onClick: () -> Unit) {
+internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: String, modifier: Modifier,
+                        labelStyle: TextStyle = AppType.title20, iconSize: Dp = 28.dp, onClick: () -> Unit) {
     val c = appColors
     Button(
         onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken; testTag = tag },
-        shape = RoundedCornerShape(40.dp),
+        shape = RoundedCornerShape(28.dp),
         colors = ButtonDefaults.buttonColors(containerColor = c.ink, contentColor = c.onInk),
-        contentPadding = PaddingValues(horizontal = 20.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
     ) {
         if (icon != null) {
-            Icon(icon, null, Modifier.size(28.dp))
-            Spacer(Modifier.width(12.dp))
+            Icon(icon, null, Modifier.size(iconSize))
+            Spacer(Modifier.width(10.dp))
         }
-        Text(label, Modifier.weight(1f, fill = false), style = AppType.title20,
+        Text(label, Modifier.weight(1f, fill = false), style = labelStyle,
             maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
 /** A tonal button as tall as the group, beside [MainButton] ("Log manually", "Return to unfinished"). */
 @Composable
-internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier, onClick: () -> Unit) {
+internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier,
+                             labelStyle: TextStyle = AppType.title20, onClick: () -> Unit) {
     val c = appColors
     Button(
-        onClick, modifier.semantics { testTag = tag }, shape = RoundedCornerShape(32.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = c.tonal, contentColor = c.ink),
+        onClick, modifier.semantics { testTag = tag }, shape = RoundedCornerShape(28.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = c.behind, contentColor = c.ink),
         contentPadding = PaddingValues(horizontal = 16.dp),
     ) {
         if (icon != null) {
             Icon(icon, null, Modifier.size(24.dp))
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(10.dp))
         }
-        Text(label, Modifier.weight(1f, fill = false), style = AppType.title20,
+        Text(label, Modifier.weight(1f, fill = false), style = labelStyle,
             maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
@@ -1025,47 +1225,51 @@ internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modi
 
 @Composable
 private fun FeedbackBar(f: Feedback, onUndo: () -> Unit, onNote: () -> Unit, modifier: Modifier) {
-    val actionColors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.inversePrimary)
+    val dark = appColors.dark
+    val container = if (dark) Color(0xFFE6E1E5) else Color(0xFF313033)
+    val text = if (dark) Color(0xFF313033) else Color(0xFFF4EFF4)
+    val action = if (dark) Color(0xFF46464A) else Color(0xFFD7D7DC)
+    val actionColors = ButtonDefaults.textButtonColors(contentColor = action)
     val actions: @Composable () -> Unit = {
         Row {
-            TextButton(onUndo, Modifier.semantics { testTag = "player-undo" }, colors = actionColors) { Text("Undo") }
+            TextButton(onUndo, Modifier.semantics { testTag = "player-undo" }, colors = actionColors,
+                contentPadding = PaddingValues(horizontal = 8.dp)) { Text("Undo", style = AppType.labelLarge) }
             // The note belongs right after logging, next to Undo; never asked for.
-            TextButton(onNote, Modifier.semantics { testTag = "player-add-note" }, colors = actionColors) { Text("Add note") }
+            TextButton(onNote, Modifier.semantics { testTag = "player-add-note" }, colors = actionColors,
+                contentPadding = PaddingValues(horizontal = 8.dp)) { Text("Add note", style = AppType.labelLarge) }
         }
     }
     Snackbar(
         modifier = modifier.semantics { testTag = "player-snackbar" },
         shape = RoundedCornerShape(4.dp),
+        containerColor = container,
+        contentColor = text,
         action = if (f.canUndo) actions else null,
     ) {
-        Text(f.message, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(f.message, style = AppType.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
 }
 
 // ---------------------------------------------------------------------------------------------- The end
 
 @Composable
-private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () -> Unit,
+private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onReview: () -> Unit,
     reached: List<Pair<Habit, com.oftenenough.app.data.MilestoneWords>> = emptyList()) {
     val c = appColors
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Card(Modifier.fillMaxWidth().semantics { testTag = "player-end" }, shape = RoundedCornerShape(32.dp)) {
-            Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 40.dp, bottom = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 // Not a pause symbol: it read as a media button (found by hand on the iPhone, 29 Sep).
-                CookieIcon(if (remaining == 0) Icons.Rounded.Check else Icons.Rounded.History, size = 112.dp, container = c.ink, tint = c.onInk)
-                Spacer(Modifier.height(24.dp))
-                Text(PlayerWords.endTitle(remaining), style = AppType.headlineLarge,
+                CookieIcon(if (remaining == 0) Icons.Rounded.DoneAll else Icons.Rounded.History, size = 120.dp, container = c.ink, tint = c.onInk, glyph = 0.47f)
+                Spacer(Modifier.height(28.dp))
+                Text(PlayerWords.endTitle(remaining, name), style = AppType.headlineMedium,
                     color = c.ink, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
-                Spacer(Modifier.height(12.dp))
-                Text(PlayerWords.endText(remaining, reviewed), style = AppType.bodyLarge,
+                Spacer(Modifier.height(16.dp))
+                Text(PlayerWords.endText(remaining, count), Modifier.widthIn(max = 280.dp), style = AppType.bodyLarge,
                     color = c.secondary, textAlign = TextAlign.Center)
                 PlayerWords.skippedLine(skipped)?.let {
                     Spacer(Modifier.height(16.dp))
-                    Text(it, style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
-                }
-                PlayerWords.limitsLine(reviewed)?.let {
-                    Spacer(Modifier.height(8.dp))
-                    Text(it, style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
+                    Text(it, Modifier.widthIn(max = 264.dp), style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
                 }
                 // Every milestone the routine's steps reached, once (Figma RP.2).
                 if (reached.isNotEmpty()) {
@@ -1084,25 +1288,26 @@ private fun EndPage(remaining: Int, skipped: Int, reviewed: Int, onReview: () ->
                         }
                     }
                 }
-                Spacer(Modifier.height(12.dp))
-                TextButton(onReview, Modifier.semantics { testTag = "player-review" }) {
-                    Icon(Icons.AutoMirrored.Rounded.List, null, Modifier.size(22.dp), tint = c.ink)
-                    Spacer(Modifier.width(12.dp))
-                    Text("Review routine", style = AppType.titleMedium, color = c.ink)
+                Spacer(Modifier.height(10.dp))
+                TextButton(onReview, Modifier.semantics { testTag = "player-review" }, contentPadding = PaddingValues(start = 12.dp, end = 16.dp)) {
+                    Icon(Icons.AutoMirrored.Rounded.List, null, Modifier.size(20.dp), tint = c.ink)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Review routine", style = AppType.labelLarge, color = c.ink)
                 }
             }
         }
     }
 }
 
-/** Done is the main way out (large, ink); going back to what's left is the second choice (tonal). */
+/** Done is the main way out (96, ink); going back to what's left is the second choice (64, tonal). All done: Done only. */
 @Composable
 private fun EndButtons(hasRemaining: Boolean, onReturn: () -> Unit, onDone: () -> Unit) {
-    Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (hasRemaining) {
-            TonalBigButton(Icons.AutoMirrored.Rounded.Undo, "Return to unfinished", "player-return", Modifier.fillMaxWidth().height(64.dp), onReturn)
+            TonalBigButton(Icons.AutoMirrored.Rounded.Undo, "Return to unfinished", "player-return", Modifier.fillMaxWidth().height(64.dp),
+                labelStyle = AppType.titleMedium, onClick = onReturn)
         }
-        MainButton(Icons.Rounded.Check, "Done", "Done", "player-done", Modifier.fillMaxWidth().height(96.dp), onDone)
+        MainButton(Icons.Rounded.Check, "Done", "Done", "player-done", Modifier.fillMaxWidth().height(96.dp), iconSize = 24.dp, onClick = onDone)
     }
 }
 
@@ -1128,63 +1333,98 @@ private fun NewDayCard(modifier: Modifier, onBack: () -> Unit) {
 
 // ---------------------------------------------------------------------------------------------- Your routine
 
-/** Your routine: jump to any habit, or change the order for this routine (a modal bottom sheet: Edit, ✓, ▶). */
+/**
+ * Your routine (Figma 7.1): a modal sheet, every habit with its state (✓ done, ▶ the one on screen). Edit (7.2) shows a
+ * drag handle on each: drag to change the order for this routine only; Today keeps its own. TalkBack moves a habit with
+ * the row's Move up and Move down actions.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, onJump: (Int) -> Unit, onDismiss: () -> Unit) {
+private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, editing: Boolean, onEditing: (Boolean) -> Unit,
+                         onJump: (Int) -> Unit, onDismiss: () -> Unit) {
     val c = appColors
     val store = session.store
-    val state = rememberModalBottomSheetState()
-    var editing by remember { mutableStateOf(false) }
+    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val order = session.order
     val index = session.index
-    val reviewed = session.reviewed
+    val density = LocalDensity.current
+    val rowStep = with(density) { (64.dp + 2.dp).toPx() }
+    var dragging by remember { mutableStateOf<String?>(null) }
+    var dragOffset by remember { mutableFloatStateOf(0f) }
     ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.screen) {
-        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).padding(bottom = 16.dp)
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState(), enabled = dragging == null).padding(bottom = 24.dp)
             .semantics { testTag = "routine-sheet" }) {
-            Row(Modifier.fillMaxWidth().padding(start = 8.dp, bottom = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("Your routine", Modifier.weight(1f).semantics { heading() }, style = MaterialTheme.typography.headlineMedium, color = c.ink)
-                TextButton({ editing = !editing }, Modifier.semantics { testTag = "routine-edit" }) {
-                    Text(if (editing) "Done" else "Edit", style = MaterialTheme.typography.titleMedium, color = c.ink)
+            Row(Modifier.fillMaxWidth().height(56.dp).padding(start = 24.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text("Your routine", Modifier.weight(1f).semantics { heading() }, style = AppType.titleLargeEmphasized, color = c.ink)
+                TextButton({ onEditing(!editing) }, Modifier.semantics { testTag = "routine-edit" }) {
+                    Text(if (editing) "Done" else "Edit", style = AppType.labelLarge, color = c.ink)
                 }
             }
-            SegmentedList {
+            Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 order.forEachIndexed { i, id ->
-                    val habit = store.habit(id)
-                    if (habit != null) {
+                    val habit = store.habit(id) ?: return@forEachIndexed
+                    key(id) {
                         val skipped = session.skipped(habit)
                         val doneToday = session.doneToday(habit)
-                        val status = PlayerWords.queueStatus(habit.atMost, id in reviewed, doneToday, skipped)
-                        val jump: () -> Unit = { onJump(i) }
-                        val click: (() -> Unit)? = if (editing) null else jump
-                        Segment(i, order.size, Modifier.semantics { testTag = "queue-${habit.name}" }, onClick = click) {
+                        val status = PlayerWords.queueStatus(habit.atMost, false, doneToday, skipped)
+                        val lifted = dragging == id
+                        Row(
+                            Modifier.fillMaxWidth()
+                                .zIndex(if (lifted) 1f else 0f)
+                                .graphicsLayer { translationY = if (lifted) dragOffset else 0f; shadowElevation = if (lifted) 8f else 0f }
+                                .clip(segmentShape(i, order.size, outer = 20.dp)).background(c.surface)
+                                .let { if (editing) it else it.clickable { onJump(i) } }
+                                .height(64.dp).padding(horizontal = 16.dp)
+                                .semantics(mergeDescendants = true) {
+                                    testTag = "queue-${habit.name}"
+                                    if (editing) customActions = listOfNotNull(
+                                        if (i > 0) CustomAccessibilityAction("Move up") { session.move(i, i - 1); true } else null,
+                                        if (i < order.size - 1) CustomAccessibilityAction("Move down") { session.move(i, i + 1); true } else null,
+                                    )
+                                },
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
                             HabitIcon(habit.symbol, habit.color, size = 40.dp)
                             Spacer(Modifier.width(16.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(habit.name, style = AppType.bodyLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 Text(status, style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
                             }
+                            Spacer(Modifier.width(16.dp))
                             if (editing) {
-                                IconButton({ session.move(i, i - 1) }, enabled = i > 0) {
-                                    Icon(Icons.Rounded.KeyboardArrowUp, "Move ${habit.name} up", tint = c.ink)
+                                // The handle: a drag here moves the row, one place for each row's height it passes.
+                                Box(
+                                    Modifier.size(48.dp).pointerInput(id) {
+                                        detectDragGestures(
+                                            onDragStart = { dragging = id; dragOffset = 0f },
+                                            onDragEnd = { dragging = null; dragOffset = 0f },
+                                            onDragCancel = { dragging = null; dragOffset = 0f },
+                                        ) { change, amount ->
+                                            change.consume()
+                                            dragOffset += amount.y
+                                            val now = session.order.indexOf(id)
+                                            if (dragOffset > rowStep / 2 && now < session.order.size - 1) {
+                                                session.move(now, now + 1); dragOffset -= rowStep
+                                            } else if (dragOffset < -rowStep / 2 && now > 0) {
+                                                session.move(now, now - 1); dragOffset += rowStep
+                                            }
+                                        }
+                                    }.semantics { testTag = "queue-drag-${habit.name}" },
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Icon(Icons.Rounded.DragIndicator, "Drag to move ${habit.name}", tint = c.secondary)
                                 }
-                                IconButton({ session.move(i, i + 1) }, enabled = i < order.size - 1) {
-                                    Icon(Icons.Rounded.KeyboardArrowDown, "Move ${habit.name} down", tint = c.ink)
-                                }
-                            } else {
-                                Spacer(Modifier.width(8.dp))
-                                when {
-                                    i == index -> Icon(Icons.Rounded.PlayArrow, "Current habit", tint = c.ink)
-                                    skipped -> Icon(Icons.Rounded.FastForward, "Skipped", tint = c.secondary)
-                                    covered.getOrNull(i) == true -> Icon(Icons.Rounded.Check, if (doneToday) "Done" else "Checked in", tint = c.ink)
-                                }
+                            } else when {
+                                i == index -> Icon(Icons.Rounded.PlayArrow, "Current habit", tint = c.ink)
+                                skipped -> Icon(Icons.Rounded.FastForward, "Skipped", tint = c.secondary)
+                                covered.getOrNull(i) == true -> Icon(Icons.Rounded.Check, "Done", tint = c.ink)
                             }
                         }
                     }
                 }
             }
-            Text(PlayerWords.QUEUE_FOOTER, Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+            Text(if (editing) PlayerWords.QUEUE_FOOTER_EDIT else PlayerWords.QUEUE_FOOTER, Modifier.padding(start = 32.dp, end = 32.dp, top = 12.dp),
+                style = AppType.bodySmall, color = c.secondary)
         }
     }
 }

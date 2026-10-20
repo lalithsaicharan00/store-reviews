@@ -1,0 +1,562 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "round": "02",
+  "scope": "All six habit methods and frequencies, informational examples; separate tasks introduction.",
+  "sourceComponentSetId": "1395:3263",
+  "methodComponentIds": [
+    "1395:3210",
+    "1395:3219",
+    "1395:3228",
+    "1395:3237",
+    "1395:3246",
+    "1395:3255"
+  ],
+  "taskComponentId": "1395:3265",
+  "layouts": [
+    {
+      "id": "1284:146",
+      "width": 1440,
+      "height": 919,
+      "sectionId": "1284:146",
+      "sectionHeight": 919,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3278;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3286;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3294;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3304;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3312;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3320;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    },
+    {
+      "id": "1284:501",
+      "width": 768,
+      "height": 1166,
+      "sectionId": "1284:501",
+      "sectionHeight": 1166,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3416;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3424;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3434;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3442;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3452;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3460;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    },
+    {
+      "id": "1284:810",
+      "width": 390,
+      "height": 1888,
+      "sectionId": "1284:810",
+      "sectionHeight": 1888,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3558;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3568;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3578;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3588;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3598;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3608;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    },
+    {
+      "id": "1291:1241",
+      "width": 320,
+      "height": 2011,
+      "sectionId": "1291:1241",
+      "sectionHeight": 2011,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3712;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3722;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3732;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3742;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3752;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3762;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    },
+    {
+      "id": "1385:2974",
+      "width": 1440,
+      "height": 1260,
+      "sectionId": "1395:3337",
+      "sectionHeight": 919,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3347;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3348;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3349;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3352;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3353;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3354;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    },
+    {
+      "id": "1385:3097",
+      "width": 768,
+      "height": 1672,
+      "sectionId": "1395:3477",
+      "sectionHeight": 1166,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3487;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3488;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3491;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3492;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3495;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3496;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    },
+    {
+      "id": "1385:3220",
+      "width": 390,
+      "height": 2354,
+      "sectionId": "1395:3625",
+      "sectionHeight": 1888,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3635;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3638;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3641;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3644;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3647;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3650;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    },
+    {
+      "id": "1385:3343",
+      "width": 320,
+      "height": 2504,
+      "sectionId": "1395:3779",
+      "sectionHeight": 2011,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Follow a checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coveragePassed": true,
+      "weeklyMonthly": true,
+      "quitElapsed": true,
+      "bothLimits": true,
+      "images": [
+        {
+          "id": "I1395:3789;1395:3212",
+          "hash": "335ad9c26321f97b3ceeadbd2fc35a7a86573c1e"
+        },
+        {
+          "id": "I1395:3792;1395:3221",
+          "hash": "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3"
+        },
+        {
+          "id": "I1395:3795;1395:3230",
+          "hash": "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+        },
+        {
+          "id": "I1395:3798;1395:3239",
+          "hash": "e7b70725023d936faf55d0f8f662acaf2684d1ee"
+        },
+        {
+          "id": "I1395:3801;1395:3248",
+          "hash": "5c1c1790cd1f3091d9e6c522a210bb02ffd5f6b6"
+        },
+        {
+          "id": "I1395:3804;1395:3257",
+          "hash": "2ec2c68f550508ec28ae590e61717c8d28304364"
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "overflow": [],
+      "background": {
+        "r": 0.9300000071525574,
+        "g": 0.9300000071525574,
+        "b": 0.9300000071525574
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1284:163",
+      "width": 1440,
+      "height": 341,
+      "copy": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "imageCount": 1
+    },
+    {
+      "id": "1284:518",
+      "width": 768,
+      "height": 506,
+      "copy": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "imageCount": 1
+    },
+    {
+      "id": "1284:827",
+      "width": 390,
+      "height": 466,
+      "copy": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "imageCount": 1
+    },
+    {
+      "id": "1291:1258",
+      "width": 320,
+      "height": 493,
+      "copy": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "imageCount": 1
+    }
+  ],
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "nodeId": "1385:2974",
+      "file": "Desktop 1440.png",
+      "pixelSize": [
+        1440,
+        1260
+      ],
+      "sha256": "da4c0ff70c0895d16693b403acda75234ed87249f84cef1529ae7cedec8508e4"
+    },
+    {
+      "name": "Tablet 768",
+      "nodeId": "1385:3097",
+      "file": "Tablet 768.png",
+      "pixelSize": [
+        768,
+        1672
+      ],
+      "sha256": "64aae1af05492cd04aee764f2c23dc17c1ee9f96d0fdb139e90ade58222d042c"
+    },
+    {
+      "name": "Mobile 390",
+      "nodeId": "1385:3220",
+      "file": "Mobile 390.png",
+      "pixelSize": [
+        390,
+        2354
+      ],
+      "sha256": "4953c3075884444587972de67361934029fa99f22fa8c8cb6f9307ba13ea977a"
+    },
+    {
+      "name": "Narrow Phone 320",
+      "nodeId": "1385:3343",
+      "file": "Narrow Phone 320.png",
+      "pixelSize": [
+        320,
+        2504
+      ],
+      "sha256": "f1b73e41df2df657e0370942c5f0106b19ba4f827ef38af03c75d07aba25bb13"
+    }
+  ],
+  "validation": {
+    "allSixMethodsPresent": true,
+    "weeklyAndMonthlyExplicit": true,
+    "checklistStepsAndRepetitionExplicit": true,
+    "quitUsesElapsedTime": true,
+    "amountAndTimeLimitsExplicit": true,
+    "heroPreserved": true,
+    "fonts": "SF Pro with licensed PNG emoji",
+    "textOverflow": false,
+    "fourFinalRendersInspected": true,
+    "nativeAppUIImitation": false,
+    "runtimePerformanceMeasured": false
+  },
+  "currentEmojiBytes": 27538,
+  "approval": "Pending user design review. No implementation, CI dispatch, commit, push or deployment."
+}

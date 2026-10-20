@@ -1,0 +1,91 @@
+{
+  "observed_date": "2026-10-15",
+  "app_id": 963034692,
+  "sources": [
+    {
+      "id": "apple_lookup",
+      "url": "https://itunes.apple.com/lookup?id=963034692&country=us",
+      "type": "store_api",
+      "supports": "Stable identity and first release; ratings are not downloads"
+    },
+    {
+      "id": "apple_spotlight",
+      "url": "https://developer.apple.com/news/?id=67dti69d",
+      "published": "2021-02-05",
+      "type": "platform_original_interview",
+      "supports": "Quentin Zervaas and Isaac Forman; 2016 award"
+    },
+    {
+      "id": "sensor_tower",
+      "url": "https://sensortower.com/blog/apple-design-awards-effect",
+      "published": "2016-06",
+      "type": "provider_original_estimates",
+      "supports": "US App Store before/after comparison",
+      "limits": "Chart-read approximate bounds; no app daily series; prose/chart featuring conflict"
+    },
+    {
+      "id": "sensor_tower_chart",
+      "url": "https://images.ctfassets.net/vfkpgemp7ek3/1457087462/646d80690ce2fe7914bf705c14917580/apple-design-awards-2016-download-ranking.png",
+      "type": "provider_original_chart",
+      "supports": "Streaks bars and no-featuring footnote",
+      "limits": "Visually inspected; no exact data labels; competitor image kept in ignored scratch only"
+    },
+    {
+      "id": "developer_award",
+      "url": "https://crunchybagel.com/apple-design-awards-2016/",
+      "published": "2016-07-07",
+      "type": "developer_original",
+      "supports": "Award; press and store exposure opportunities",
+      "limits": "No attributed installs or precise exposure dates"
+    },
+    {
+      "id": "gruber_sponsor",
+      "url": "https://daringfireball.net/linked/2016/06/03/streaks",
+      "published": "2016-06-03",
+      "type": "original_paid_placement",
+      "supports": "Explicit RSS sponsorship disclosure",
+      "limits": "Excluded from organic shortlist; contribution unknown"
+    },
+    {
+      "id": "founder_localization",
+      "url": "https://www.kodeco.com/357-creator-of-streaks-and-full-time-indie-ios-dev-a-top-dev-interview-with-quentin-zervaas",
+      "published": "2017-10-13",
+      "type": "original_founder_interview",
+      "supports": "Translation, screenshot automation and contextual review workflow",
+      "limits": "No rollout date or download result; original found through a mirror then verified"
+    },
+    {
+      "id": "founder_features",
+      "url": "https://www.kodeco.com/357-creator-of-streaks-and-full-time-indie-ios-dev-a-top-dev-interview-with-quentin-zervaas/page/2",
+      "published": "2017-10-13",
+      "type": "original_founder_interview",
+      "supports": "25+ languages; accessibility and new platform features advice",
+      "limits": "Advice, not measured acquisition effect"
+    },
+    {
+      "id": "founder_launch",
+      "url": "https://syntopikon.com/interviews/quentin-zervaas/",
+      "published": "2022-07",
+      "type": "original_founder_interview",
+      "supports": "Retrospective June 2015 launch success and coverage",
+      "limits": "No launch installs, outreach process or unpaid status"
+    },
+    {
+      "id": "excluded_android_namesake",
+      "url": "https://yourstory.com/2016/07/seinfelds-productivity-hack-app-streaks-daily-habit-tracker",
+      "published": "2016-07-12",
+      "type": "other_app_founder_account",
+      "supports": "Different developer Shobhit Bakliwal and Google Play scope",
+      "limits": "Exclude all acquisition numbers from this iOS study"
+    },
+    {
+      "id": "apple_2016_ceremony_archive",
+      "url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "published": "2016-06-13",
+      "observed_date": "2026-10-15",
+      "type": "Apple speaker transcript preserved by third-party archive",
+      "supports": "Explicit simplicity, visual design and Watch rationale; 25 languages at award time",
+      "limits": "Historical transcript; one platform enumeration inconsistent; no localization install attribution"
+    }
+  ]
+}

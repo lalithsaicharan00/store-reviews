@@ -1,0 +1,63 @@
+{
+  "apple_lookup_us": {
+    "url": "https://itunes.apple.com/lookup?id=1438388363&country=us",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "apple_lookup_cn": {
+    "url": "https://itunes.apple.com/lookup?id=1438388363&country=cn",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "apple_store_us": {
+    "url": "https://apps.apple.com/us/app/habit-tracker/id1438388363",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "mwm_app": {
+    "url": "https://mwm.ai/apps/habit-tracker/1438388363",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Worldwide App Store modeled cumulative achievements; observation snapshot 2026-08-17. Duplicate cohort achievements deduplicated; no download peaks."
+  },
+  "mwm_methodology": {
+    "url": "https://mwm.ai/data-methodology/app-achievements",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "sensortower_overview": {
+    "url": "https://app.sensortower.com/overview/1438388363?page=1&page_size=25",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Web retrieval labels 200K Worldwide/Last Month. Exact calendar month not independently fixed; no historical time series or organic attribution obtained."
+  },
+  "reddit_challenge": {
+    "url": "https://www.reddit.com/r/GetMotivatedBuddies/comments/c6g9di/",
+    "status": "failed",
+    "error": "HTTP Error 403: Blocked",
+    "retrieved_date": "2026-10-13",
+    "browser_access": "Full public post/comments read in imported browser session; direct capture and web full-page retrieval failed. Only relevant public text, link and dates preserved; no session data saved."
+  },
+  "carleton_2023_resource": {
+    "url": "https://wellness.carleton.ca/wp-content/uploads/2023/01/Carletons-Virtual-Care-Package.pdf",
+    "status": "failed",
+    "error": "HTTP Error 500: Internal Server Error",
+    "retrieved_date": "2026-10-13",
+    "web_access": "PDF read through web retrieval. Physical PDF page index 2, printed page 5, goal-trackers paragraph names Davetech. Direct scratch capture failed."
+  },
+  "italian_editorial_2023": {
+    "url": "https://mobile-marketing.it/app-review-habit-tracker",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "korean_user_story_2023": {
+    "url": "https://fp2j.tistory.com/13",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "apple_argentina_2025_localization": {
+    "url": "https://apps.apple.com/ar/app/daily-planner-routine-4-adhd/id1438388363",
+    "web_access": "Dated indexed/readable Apple listing snapshot with version 2.11.4 dated 2025-08-22; states French support testing. Historical snapshot, not current exact rollout or install lift.",
+    "retrieved_date": "2026-10-13"
+  }
+}

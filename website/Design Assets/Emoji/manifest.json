@@ -1,0 +1,173 @@
+[
+  {
+    "name": "water",
+    "file": "water.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 1707,
+    "sha256": "f523b07e40891a9765bac75766fc426c4cbcf405eaf9bde95a2657971755a463",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f4a7.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "call-family",
+    "file": "call-family.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 3873,
+    "sha256": "d1105b320a543a2152662cb3c030fa1ad7c2027aa02e5de594458622abeacfdf",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u260e.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "read",
+    "file": "read.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 5845,
+    "sha256": "90ff1e0862641d7c3bc20fc6d538e6ee013e92ea18521de984efc98e560ba27a",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f4da.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "check",
+    "file": "check.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 2271,
+    "sha256": "9b5a6051081eda2337cd7ce3b883de0d69f7e864c9429c1c48a0654bd6b8508d",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u2705.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "time",
+    "file": "time.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 4929,
+    "sha256": "906cf200d371a859d761ff72ff9bb0231b5c7c73686eb3019427b2a7237e5b75",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u23f1.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "checklist",
+    "file": "checklist.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 2966,
+    "sha256": "2ff02d1af3d9ab4a331c0038745d2a446788115be6bf60f4b64f8628c142c6f4",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f9f9.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "quit",
+    "file": "quit.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 6031,
+    "sha256": "4259bc31a516e93cc6b07337f044231783e0d27bfa940559ac489a8fb5b00d30",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f6ad.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "cut-down",
+    "file": "cut-down.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 5769,
+    "sha256": "935f15a04ff24911bef524216559dfb5314a818fdfbd50064273c3d7fecaea35",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u2615.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "tasks",
+    "file": "tasks.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 3865,
+    "sha256": "b95ccee8d8e690f259872f37211eb0fcb72413e6f94ab465f56b2705b54e2810",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f6d2.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "kitchen-utensils",
+    "file": "kitchen-utensils.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 2058,
+    "sha256": "7f21b1f216cbc256f344a0b1b90db701f1ad79a958f416a1c069d6f39c41c410",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f374.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "progress",
+    "file": "progress.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 2518,
+    "sha256": "bba7b0436e268398dd04013495aad534d1d6f7c8ac9836eaa38c44d74eb4540f",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f4c8.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt"
+  },
+  {
+    "name": "home",
+    "file": "home.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 3146,
+    "sha256": "4a0915a7c2fc04fcc742e64a7d4424e528dad7b4782be67a10b590992bee2822",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f3e0.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt",
+    "usage": "Historical combined Section 04; reserved for later widgets/reminders coverage."
+  },
+  {
+    "name": "bell",
+    "file": "bell.png",
+    "size": [
+      128,
+      128
+    ],
+    "bytes": 3657,
+    "sha256": "546f1d98cd071a2b80c094b1e5c4b40f1bf3c963d94eca6a891ea624ae7bd8bd",
+    "source": "https://raw.githubusercontent.com/googlefonts/noto-emoji/v2.047/png/128/emoji_u1f514.png",
+    "license": "Apache-2.0",
+    "licenseFile": "LICENSE.txt",
+    "usage": "Historical combined Section 04; reserved for later widgets/reminders coverage."
+  }
+]

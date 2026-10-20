@@ -1,0 +1,2209 @@
+{
+  "method": "Hand-reviewed annual original Apple descriptions; 2016 uses archived Apple ceremony transcript. No keyword-only coding.",
+  "codebook": {
+    "clarity": "Explicitly approachable controls, hierarchy, reduced effort or onboarding.",
+    "platform": "Meaningful Apple-device adaptation or named system/tool integration.",
+    "inclusion": "Access across disability, language, identity or ability explicitly addressed.",
+    "delight": "Playfulness, rewarding feedback, sound or emotional enjoyment.",
+    "visuals": "A coherent or unusually crafted visual/animated presentation.",
+    "innovation": "A distinct mechanism, new capability or reframed familiar activity.",
+    "impact": "An explicit human, social, ecological or community benefit.",
+    "performance": "Performance, low latency or graphical adaptability explicitly praised."
+  },
+  "relevance_definition": "Analyst prioritization: direct includes habits, planning, mindfulness and recurring self-care; adjacent includes enabling utilities, fitness, journaling and everyday workflows; broad and game retained for whole-cohort coverage.",
+  "records": [
+    {
+      "year": 2016,
+      "name": "Linum",
+      "kind": "game",
+      "category": "Student",
+      "apple_rationale_summary": "Simple rules and touch-led puzzle progression.",
+      "codes": [
+        "clarity",
+        "platform",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2016-linum",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Dividr",
+      "kind": "game",
+      "category": "Student",
+      "apple_rationale_summary": "Pressure-sensitive controls shape an approachable arcade challenge.",
+      "codes": [
+        "platform",
+        "innovation",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2016-dividr",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Frame.io",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Elegant collaboration resolves a complex video-review workflow.",
+      "codes": [
+        "clarity",
+        "platform",
+        "innovation"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2016-frameio",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Chameleon Run",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Responsive controls, audiovisual craft and strong performance.",
+      "codes": [
+        "platform",
+        "visuals",
+        "delight",
+        "performance"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2016-chameleonrun",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Auxy Music Creation",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Minimal interface and unobtrusive onboarding enable music creation.",
+      "codes": [
+        "clarity",
+        "platform",
+        "delight"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2016-auxymusiccreation",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Streaks",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Simple visual design and exceptional Apple Watch execution.",
+      "codes": [
+        "clarity",
+        "visuals",
+        "platform"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2016-streaks",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Lara Croft GO",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Touch-first reinvention of an established adventure franchise.",
+      "codes": [
+        "clarity",
+        "platform",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2016-laracroftgo",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Complete Anatomy",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Detailed anatomical models with performance and uncluttered controls.",
+      "codes": [
+        "visuals",
+        "performance",
+        "clarity",
+        "innovation"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2016-completeanatomy",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "INKS.",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Distinctive ink simulation joins pinball and artistic expression.",
+      "codes": [
+        "visuals",
+        "innovation",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2016-inks",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Zova Personal Trainer",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Living-room workouts designed specifically for Apple TV.",
+      "codes": [
+        "platform",
+        "clarity",
+        "innovation"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2016-zovapersonaltrainer",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "Ulysses",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Distraction-free writing with thoughtfully integrated platform tools.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2016-ulysses",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2016,
+      "name": "djay Pro",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Accessible professional tools exploit audio hardware and performance.",
+      "codes": [
+        "inclusion",
+        "platform",
+        "performance"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2016-djaypro",
+      "status": "winner",
+      "source_id": "awards_2016",
+      "source_url": "https://nonstrict.eu/wwdcindex/wwdc2016/103/",
+      "window": "baseline"
+    },
+    {
+      "year": 2017,
+      "name": "Airmail 3",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Accessible email workflows integrate deeply with other services.",
+      "codes": [
+        "inclusion",
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2017-airmail3",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Bear",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Elegant writing remains consistently fast across devices.",
+      "codes": [
+        "clarity",
+        "performance",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2017-bear",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Blackbox",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Audio interfaces extend access beyond visual puzzle controls.",
+      "codes": [
+        "inclusion",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2017-blackbox",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Elk",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Watch currency conversion infers context and minimizes effort.",
+      "codes": [
+        "clarity",
+        "platform",
+        "innovation"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2017-elk",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Enlight",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Professional editing combines low latency with mobile performance.",
+      "codes": [
+        "performance",
+        "platform"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2017-enlight",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Kitchen Stories",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Approachable cooking extends across Apple devices.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2017-kitchenstories",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Lake",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Curated illustration meets Pencil-based coloring.",
+      "codes": [
+        "visuals",
+        "platform",
+        "delight"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2017-lake",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Mushroom 11",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Hand-painted play supports touch variation and left-handed use.",
+      "codes": [
+        "visuals",
+        "platform",
+        "inclusion"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2017-mushroom11",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Old Man’s Journey",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Landscape manipulation delivers an emotional visual narrative.",
+      "codes": [
+        "visuals",
+        "innovation",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2017-oldmansjourney",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Severed",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Original adventure adapts controls and syncing for iOS.",
+      "codes": [
+        "visuals",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2017-severed",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Splitter Critters",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Touch-centered puzzles combine distinctive paper art and sound.",
+      "codes": [
+        "platform",
+        "visuals",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2017-splittercritters",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2017,
+      "name": "Things 3",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Task management integrates calendar, reminders and device conventions.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2017-things3",
+      "status": "winner",
+      "source_id": "awards_2017",
+      "source_url": "https://www.apple.com/newsroom/2017/06/apple-design-awards-celebrate-the-best-in-innovation-and-creativity/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Florence",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Interactive comics connect artwork, music and emotional storytelling.",
+      "codes": [
+        "visuals",
+        "delight",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2018-florence",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Agenda",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "A timeline unifies notes, tasks and calendar context.",
+      "codes": [
+        "clarity",
+        "innovation",
+        "platform"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2018-agenda",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "iTranslate Converse",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Offline language detection makes two-way conversation simpler.",
+      "codes": [
+        "clarity",
+        "inclusion",
+        "platform",
+        "innovation"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2018-itranslateconverse",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Calzy 3",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Everyday calculations integrate privacy, continuity and system tools.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2018-calzy3",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Frost",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Metal animates particle-guiding puzzles smoothly.",
+      "codes": [
+        "visuals",
+        "performance",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2018-frost",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Oddmar",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Cinematic hand-drawn platforming is adapted to touch.",
+      "codes": [
+        "visuals",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2018-oddmar",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Alto’s Odyssey",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Intuitive play combines haptics, artwork and immersive sound.",
+      "codes": [
+        "clarity",
+        "visuals",
+        "platform",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2018-altosodyssey",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Bandimal",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Animal instruments remove notation barriers to musical experimentation.",
+      "codes": [
+        "clarity",
+        "delight",
+        "innovation"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2018-bandimal",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Playdead’s INSIDE",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Visuals, sound and puzzles are optimized across devices.",
+      "codes": [
+        "visuals",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2018-playdeadsinside",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2018,
+      "name": "Triton Sponge",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Camera and machine learning assist surgical blood-loss measurement.",
+      "codes": [
+        "platform",
+        "innovation",
+        "impact"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2018-tritonsponge",
+      "status": "winner",
+      "source_id": "awards_2018",
+      "source_url": "https://www.apple.com/newsroom/2018/06/apple-design-awards-highlight-excellence-in-app-and-game-design/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "Ordia",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "One-finger controls make an unusual action world approachable.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2019-ordia",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "Butterfly IQ",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Portable ultrasound expands access through a single probe.",
+      "codes": [
+        "innovation",
+        "impact"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2019-butterflyiq",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "ELOH",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Rhythm provides the organizing idea for musical puzzles.",
+      "codes": [
+        "delight",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2019-eloh",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "Flow by Moleskine",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "An uninterrupted drawing space supports capturing ideas.",
+      "codes": [
+        "clarity"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2019-flowbymoleskine",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "Thumper: Pocket Edition",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Intense rhythm action creates audiovisual immersion.",
+      "codes": [
+        "visuals",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2019-thumperpocketedition",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "Pixelmator Photo",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Machine learning makes advanced photo enhancement approachable.",
+      "codes": [
+        "platform",
+        "innovation",
+        "clarity"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2019-pixelmatorphoto",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "The Gardens Between",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Time manipulation connects puzzles with memory and friendship.",
+      "codes": [
+        "innovation",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2019-thegardensbetween",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "HomeCourt",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Camera-based analysis turns basketball practice into usable feedback.",
+      "codes": [
+        "platform",
+        "innovation"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2019-homecourt",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2019,
+      "name": "Asphalt 9: Legends",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Reimagined racing controls support mobile play.",
+      "codes": [
+        "innovation",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2019-asphalt9legends",
+      "status": "winner",
+      "source_id": "awards_2019",
+      "source_url": "https://www.apple.com/newsroom/2019/06/apple-design-awards-celebrate-best-in-class-design-for-apps-and-games/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "Shapr 3D",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Pencil-first CAD combines tactile editing and professional performance.",
+      "codes": [
+        "platform",
+        "performance",
+        "innovation"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2020-shapr3d",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "Looom",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Playful controls lower the barrier to drawn animation.",
+      "codes": [
+        "clarity",
+        "platform",
+        "delight"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2020-looom",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "StaffPad",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Handwritten notation becomes polished scores and orchestral playback.",
+      "codes": [
+        "platform",
+        "innovation"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2020-staffpad",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "Darkroom",
+      "kind": "app",
+      "category": "General",
+      "apple_rationale_summary": "Powerful photo tools remain elegantly organized and approachable.",
+      "codes": [
+        "clarity",
+        "visuals"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2020-darkroom",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "Sayonara Wild Hearts",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Music, narrative and arcade action form a cohesive experience.",
+      "codes": [
+        "delight",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2020-sayonarawildhearts",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "Song of Bloom",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Nonlinear artistic puzzles challenge conventional interaction.",
+      "codes": [
+        "innovation",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2020-songofbloom",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "Where Cards Fall",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Card-building puzzles reconstruct an emotional personal history.",
+      "codes": [
+        "innovation",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2020-wherecardsfall",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2020,
+      "name": "Sky: Children of the Light",
+      "kind": "game",
+      "category": "General",
+      "apple_rationale_summary": "Cooperative mechanics place generosity at the center.",
+      "codes": [
+        "impact",
+        "visuals",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2020-skychildrenofthelight",
+      "status": "winner",
+      "source_id": "awards_2020",
+      "source_url": "https://developer.apple.com/design/awards/2020/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "HoloVista",
+      "kind": "game",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Adjustable motion, text, contrast and sound widen participation.",
+      "codes": [
+        "inclusion"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2021-holovista",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Voice Dream Reader",
+      "kind": "app",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Adaptable spoken reading supports varied sources and languages.",
+      "codes": [
+        "inclusion",
+        "clarity"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2021-voicedreamreader",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Little Orpheus",
+      "kind": "game",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Easy controls and humorous storytelling sustain approachable adventure.",
+      "codes": [
+        "delight",
+        "clarity"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2021-littleorpheus",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Pok Pok Playroom",
+      "kind": "app",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Tactile animation, sound and haptics reward open-ended experimentation.",
+      "codes": [
+        "delight",
+        "visuals",
+        "platform"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2021-pokpokplayroom",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Bird Alone",
+      "kind": "game",
+      "category": "Interaction",
+      "apple_rationale_summary": "Gestures and contextual sound connect play to daily conditions.",
+      "codes": [
+        "clarity",
+        "platform",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2021-birdalone",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "CARROT Weather",
+      "kind": "app",
+      "category": "Interaction",
+      "apple_rationale_summary": "A simpler redesign joins personality, widgets and watch information.",
+      "codes": [
+        "clarity",
+        "platform",
+        "delight"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2021-carrotweather",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Alba: A Wildlife Adventure",
+      "kind": "game",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Wildlife protection connects an ecological story with restoration.",
+      "codes": [
+        "impact"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2021-albaawildlifeadventure",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Be My Eyes",
+      "kind": "app",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Volunteer video assistance helps blind and low-vision people.",
+      "codes": [
+        "impact",
+        "inclusion"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2021-bemyeyes",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Genshin Impact",
+      "kind": "game",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Detailed combat worlds offer adjustable graphical fidelity.",
+      "codes": [
+        "visuals",
+        "performance"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2021-genshinimpact",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "Loóna",
+      "kind": "app",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "A cohesive audiovisual world makes bedtime activity calming.",
+      "codes": [
+        "visuals",
+        "delight"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2021-loona",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "League of Legends: Wild Rift",
+      "kind": "game",
+      "category": "Innovation",
+      "apple_rationale_summary": "Mobile-specific controls rework a complex PC experience.",
+      "codes": [
+        "innovation",
+        "platform",
+        "clarity"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2021-leagueoflegendswildrift",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2021,
+      "name": "NaadSadhana",
+      "kind": "app",
+      "category": "Innovation",
+      "apple_rationale_summary": "Real-time musical feedback and accompaniment use machine learning.",
+      "codes": [
+        "innovation",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2021-naadsadhana",
+      "status": "winner",
+      "source_id": "awards_2021",
+      "source_url": "https://developer.apple.com/design/awards/2021/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Procreate",
+      "kind": "app",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Motor, vision and audio adaptations expand artistic independence.",
+      "codes": [
+        "inclusion",
+        "platform"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2022-procreate",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Wylde Flowers",
+      "kind": "game",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Diverse characters place identity and acceptance within the story.",
+      "codes": [
+        "inclusion"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2022-wyldeflowers",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "(Not Boring) Habits",
+      "kind": "app",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Playful haptics and a visual journey enliven habit tracking.",
+      "codes": [
+        "delight",
+        "visuals",
+        "platform"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2022-notboringhabits",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Overboard!",
+      "kind": "game",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Reversed murder-mystery roles create humorous, replayable narrative.",
+      "codes": [
+        "delight",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2022-overboard",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "A Musical Story",
+      "kind": "game",
+      "category": "Interaction",
+      "apple_rationale_summary": "Minimal animation, music and novel rhythm play work together.",
+      "codes": [
+        "clarity",
+        "innovation",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2022-amusicalstory",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Slopes",
+      "kind": "app",
+      "category": "Interaction",
+      "apple_rationale_summary": "One-button tracking organizes rich skiing data and social context.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2022-slopes",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Gibbon: Beyond the Trees",
+      "kind": "game",
+      "category": "Social Impact",
+      "apple_rationale_summary": "An ecological narrative builds empathy through movement.",
+      "codes": [
+        "impact",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2022-gibbonbeyondthetrees",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Rebel Girls",
+      "kind": "app",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Diverse women’s stories unite audio and commissioned illustration.",
+      "codes": [
+        "impact",
+        "inclusion",
+        "visuals"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2022-rebelgirls",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Halide Mark II",
+      "kind": "app",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Advanced camera tools retain an uncluttered, familiar organization.",
+      "codes": [
+        "visuals",
+        "clarity",
+        "platform"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2022-halidemarkii",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "LEGO Star Wars: Castaways",
+      "kind": "game",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Cinematic environments and tactile animation create immersion.",
+      "codes": [
+        "visuals",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2022-legostarwarscastaways",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "MARVEL Future Revolution",
+      "kind": "game",
+      "category": "Innovation",
+      "apple_rationale_summary": "Metal enables an expansive, detailed mobile action world.",
+      "codes": [
+        "innovation",
+        "platform",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2022-marvelfuturerevolution",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2022,
+      "name": "Odio",
+      "kind": "app",
+      "category": "Innovation",
+      "apple_rationale_summary": "Spatial sound and direct mixing create customizable ambient scenes.",
+      "codes": [
+        "innovation",
+        "platform",
+        "visuals"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2022-odio",
+      "status": "winner",
+      "source_id": "awards_2022",
+      "source_url": "https://developer.apple.com/design/awards/2022/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Universe — Website Builder",
+      "kind": "app",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Block-based creation pairs accessibility with multilingual publishing.",
+      "codes": [
+        "inclusion",
+        "clarity",
+        "innovation",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2023-universewebsitebuilder",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "stitch.",
+      "kind": "game",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Relaxed pacing and sensory adaptations broaden puzzle access.",
+      "codes": [
+        "inclusion",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2023-stitch",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Duolingo",
+      "kind": "app",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Redesigned learning paths and characters reinforce daily participation.",
+      "codes": [
+        "delight",
+        "clarity"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2023-duolingo",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Afterplace",
+      "kind": "game",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "One-handed exploration combines gentle onboarding and surprises.",
+      "codes": [
+        "delight",
+        "clarity",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2023-afterplace",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Flighty",
+      "kind": "app",
+      "category": "Interaction",
+      "apple_rationale_summary": "Travel information appears at the right moment across surfaces.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2023-flighty",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Railbound",
+      "kind": "game",
+      "category": "Interaction",
+      "apple_rationale_summary": "Simple track gestures and easy undo support polished puzzles.",
+      "codes": [
+        "clarity",
+        "delight",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2023-railbound",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Headspace",
+      "kind": "app",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Clear navigation and representation make mindfulness approachable.",
+      "codes": [
+        "impact",
+        "clarity",
+        "inclusion",
+        "platform"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2023-headspace",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Endling",
+      "kind": "game",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Simple controls foreground empathy for environmental destruction.",
+      "codes": [
+        "impact",
+        "clarity"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2023-endling",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Any Distance",
+      "kind": "app",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Expressive fitness visualizations represent many kinds of movement.",
+      "codes": [
+        "visuals",
+        "platform",
+        "inclusion"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2023-anydistance",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "Resident Evil Village",
+      "kind": "game",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Apple silicon and Metal deliver high-fidelity Mac horror.",
+      "codes": [
+        "visuals",
+        "platform",
+        "performance"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2023-residentevilvillage",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "SwingVision: A.I. Tennis App",
+      "kind": "app",
+      "category": "Innovation",
+      "apple_rationale_summary": "Video and Watch data deliver actionable tennis coaching.",
+      "codes": [
+        "innovation",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2023-swingvisionaitennisapp",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2023,
+      "name": "MARVEL SNAP",
+      "kind": "game",
+      "category": "Innovation",
+      "apple_rationale_summary": "A stakes-doubling mechanic adds strategic depth to quick matches.",
+      "codes": [
+        "innovation",
+        "delight",
+        "visuals",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2023-marvelsnap",
+      "status": "winner",
+      "source_id": "awards_2023",
+      "source_url": "https://developer.apple.com/design/awards/2023/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Bears Gratitude",
+      "kind": "app",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Welcoming characters encourage consistent, honest daily reflection.",
+      "codes": [
+        "delight",
+        "visuals"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2024-bearsgratitude",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "NYT Games",
+      "kind": "game",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Refined navigation and varied puzzles support repeated play.",
+      "codes": [
+        "delight",
+        "clarity"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2024-nytgames",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "oko",
+      "kind": "app",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Accessible haptic and audio signals support pedestrian autonomy.",
+      "codes": [
+        "inclusion",
+        "platform",
+        "impact"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2024-oko",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Crayola Adventures",
+      "kind": "game",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Inclusive character options and narration broaden creative access.",
+      "codes": [
+        "inclusion",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2024-crayolaadventures",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Procreate Dreams",
+      "kind": "app",
+      "category": "Innovation",
+      "apple_rationale_summary": "Touch and Pencil make sophisticated animation approachable.",
+      "codes": [
+        "innovation",
+        "platform",
+        "clarity"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2024-procreatedreams",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Lost in Play",
+      "kind": "game",
+      "category": "Innovation",
+      "apple_rationale_summary": "Handcrafted narrative worlds combine easy interaction and imaginative puzzles.",
+      "codes": [
+        "innovation",
+        "visuals",
+        "clarity"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2024-lostinplay",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Crouton",
+      "kind": "app",
+      "category": "Interaction",
+      "apple_rationale_summary": "Recipe hierarchy keeps attention on cooking rather than navigation.",
+      "codes": [
+        "clarity"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2024-crouton",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Rytmos",
+      "kind": "game",
+      "category": "Interaction",
+      "apple_rationale_summary": "Simple dragging and clear onboarding build evolving musical puzzles.",
+      "codes": [
+        "clarity",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2024-rytmos",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Gentler Streak Fitness Tracker",
+      "kind": "app",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Encouraging guidance balances progress, recovery and mental wellbeing.",
+      "codes": [
+        "impact",
+        "clarity",
+        "visuals"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2024-gentlerstreakfitnesstracker",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "The Wreck",
+      "kind": "game",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Expressive narrative explores grief, family and consequential choices.",
+      "codes": [
+        "impact",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2024-thewreck",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Rooms",
+      "kind": "app",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "A coherent retro world supports creation and social exploration.",
+      "codes": [
+        "visuals",
+        "delight"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2024-rooms",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Lies of P",
+      "kind": "game",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Detailed lighting, textures and customization realize a dark world.",
+      "codes": [
+        "visuals",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2024-liesofp",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "djay",
+      "kind": "app",
+      "category": "Spatial Computing",
+      "apple_rationale_summary": "Spatial turntables and environments reinterpret live music performance.",
+      "codes": [
+        "platform",
+        "innovation",
+        "visuals"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2024-djay",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2024,
+      "name": "Blackbox",
+      "kind": "game",
+      "category": "Spatial Computing",
+      "apple_rationale_summary": "Spatial puzzles explore room-scale interaction through surprising detail.",
+      "codes": [
+        "platform",
+        "innovation",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2024-blackbox",
+      "status": "winner",
+      "source_id": "awards_2024",
+      "source_url": "https://developer.apple.com/design/awards/2024/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "CapWords",
+      "kind": "app",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Photographed objects become playful language-learning stickers.",
+      "codes": [
+        "delight",
+        "innovation",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2025-capwords",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Balatro",
+      "kind": "game",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "A simple card-game premise creates deep, replayable combinations.",
+      "codes": [
+        "delight",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2025-balatro",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Speechify",
+      "kind": "app",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Accessible spoken reading reduces language and cognitive barriers.",
+      "codes": [
+        "inclusion",
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2025-speechify",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Art of Fauna",
+      "kind": "game",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Alternative puzzle modes and sensory choices broaden participation.",
+      "codes": [
+        "inclusion",
+        "impact"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2025-artoffauna",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Play",
+      "kind": "app",
+      "category": "Innovation",
+      "apple_rationale_summary": "Native prototypes bridge interactive design and shipping code.",
+      "codes": [
+        "innovation",
+        "platform",
+        "clarity"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2025-play",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "PBJ — The Musical",
+      "kind": "game",
+      "category": "Innovation",
+      "apple_rationale_summary": "Handcrafted animation and musical storytelling create distinctive interaction.",
+      "codes": [
+        "innovation",
+        "visuals",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2025-pbjthemusical",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Taobao",
+      "kind": "app",
+      "category": "Interaction",
+      "apple_rationale_summary": "Spatial product manipulation and comparison feel naturally organized.",
+      "codes": [
+        "clarity",
+        "platform",
+        "innovation"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2025-taobao",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "DREDGE",
+      "kind": "game",
+      "category": "Interaction",
+      "apple_rationale_summary": "Fishing adventure adapts smoothly across touch and controllers.",
+      "codes": [
+        "clarity",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2025-dredge",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Watch Duty: Wildfire Maps",
+      "kind": "app",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Clear, reliable updates support communities during active wildfires.",
+      "codes": [
+        "impact",
+        "clarity"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2025-watchdutywildfiremaps",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Neva",
+      "kind": "game",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Visual storytelling connects environmental decline with emotional attachment.",
+      "codes": [
+        "impact",
+        "visuals"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2025-neva",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Feather: Draw in 3D",
+      "kind": "app",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Minimal controls make Pencil-based three-dimensional creation approachable.",
+      "codes": [
+        "visuals",
+        "clarity",
+        "platform",
+        "innovation"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2025-featherdrawin3d",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2025,
+      "name": "Infinity Nikki",
+      "kind": "game",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Detailed fabrics, lighting and animation create a cohesive world.",
+      "codes": [
+        "visuals",
+        "platform"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2025-infinitynikki",
+      "status": "winner",
+      "source_id": "awards_2025",
+      "source_url": "https://developer.apple.com/design/awards/2025/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "grug",
+      "kind": "app",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "A restrained daily affirmation idea sustains a coherent personality.",
+      "codes": [
+        "delight",
+        "visuals",
+        "clarity"
+      ],
+      "relevance": "direct",
+      "record_id": "ada-2026-grug",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Is This Seat Taken?",
+      "kind": "game",
+      "category": "Delight and Fun",
+      "apple_rationale_summary": "Playful feedback and unhurried puzzles create accessible charm.",
+      "codes": [
+        "delight",
+        "clarity"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2026-isthisseattaken",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Guitar Wiz",
+      "kind": "app",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "SwiftUI tools make complex musical information independently accessible.",
+      "codes": [
+        "inclusion",
+        "platform",
+        "clarity"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2026-guitarwiz",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Pine Hearts",
+      "kind": "game",
+      "category": "Inclusivity",
+      "apple_rationale_summary": "Sensory and control options accompany a sensitive grief narrative.",
+      "codes": [
+        "inclusion",
+        "impact"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2026-pinehearts",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "NBA: Live Games & Scores",
+      "kind": "app",
+      "category": "Innovation",
+      "apple_rationale_summary": "Immersive multi-game viewing rethinks sports on a spatial canvas.",
+      "codes": [
+        "innovation",
+        "platform",
+        "visuals"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2026-nbalivegamesscores",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Blue Prince",
+      "kind": "game",
+      "category": "Innovation",
+      "apple_rationale_summary": "Room-building joins nonlinear puzzles and layered narrative discovery.",
+      "codes": [
+        "innovation",
+        "delight"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2026-blueprince",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Moonlitt: Moon Phase Tracker",
+      "kind": "app",
+      "category": "Interaction",
+      "apple_rationale_summary": "SwiftUI, clear onboarding and platform design simplify lunar information.",
+      "codes": [
+        "clarity",
+        "platform",
+        "visuals"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2026-moonlittmoonphasetracker",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Sago Mini Jinja’s Garden",
+      "kind": "game",
+      "category": "Interaction",
+      "apple_rationale_summary": "Reading-free controls support independent exploration by young children.",
+      "codes": [
+        "clarity",
+        "inclusion"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2026-sagominijinjasgarden",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Primary: News in Depth",
+      "kind": "app",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Restrained spatial presentation foregrounds responsible reporting.",
+      "codes": [
+        "impact",
+        "clarity",
+        "platform"
+      ],
+      "relevance": "broad",
+      "record_id": "ada-2026-primarynewsindepth",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Consume Me",
+      "kind": "game",
+      "category": "Social Impact",
+      "apple_rationale_summary": "Personal game mechanics communicate body-image and eating-disorder experiences.",
+      "codes": [
+        "impact",
+        "innovation"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2026-consumeme",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Tide Guide: Charts & Tables",
+      "kind": "app",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Clear charts and system surfaces make dense forecasts usable.",
+      "codes": [
+        "visuals",
+        "clarity",
+        "platform"
+      ],
+      "relevance": "adjacent",
+      "record_id": "ada-2026-tideguidechartstables",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    },
+    {
+      "year": 2026,
+      "name": "Cyberpunk 2077 Ultimate Edition",
+      "kind": "game",
+      "category": "Visuals and Graphics",
+      "apple_rationale_summary": "Advanced rendering adapts a detailed world to Mac hardware.",
+      "codes": [
+        "visuals",
+        "platform",
+        "performance"
+      ],
+      "relevance": "game",
+      "record_id": "ada-2026-cyberpunk2077ultimateedition",
+      "status": "winner",
+      "source_id": "awards_2026",
+      "source_url": "https://developer.apple.com/design/awards/",
+      "window": "ten_year_census"
+    }
+  ]
+}

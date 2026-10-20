@@ -1,0 +1,47 @@
+{
+  "research_order": 6,
+  "app_id": 1596403446,
+  "bundle_id": "alarm.smart.awake.sleep.health",
+  "seller": "ENERJOY PTE. LTD.",
+  "release_utc": "2022-01-07T08:00:00Z",
+  "current_name_launch_date_verified": false,
+  "historical_download_peak": null,
+  "numeric_organic_install_lift": null,
+  "cumulative_context_source_id": "mwm",
+  "mwm_snapshot": "2026-08-17",
+  "official_snapshot_date": "2024-09-03",
+  "official_total_scope": "iOS and Android combined; underlying our apps wording preserved",
+  "family_acquisition": {
+    "source_id": "family_review",
+    "reviewer": "Hattie_11",
+    "date": "2024-08-16",
+    "evidence_type": "individual reported sibling adoption",
+    "aggregate_install_count": null
+  },
+  "owned_content": {
+    "source_id": "instagram_post",
+    "post_id": "Dc0Mk5LEgpP",
+    "timestamp_utc": "2026-09-03T06:44:08.000Z",
+    "image_alt_date": "2026-09-02",
+    "likes_observed": 254,
+    "visible_comments_report_installs": false,
+    "paid_boosting_known": false
+  },
+  "paid_creator_lead": {
+    "source_id": "creator_brief",
+    "matched_app_id": 1596403446,
+    "posted_company": "EWP PTE. LTD.",
+    "corporate_relationship_to_seller_verified": false,
+    "compensation_usd": 100,
+    "campaign_date_verified": false,
+    "natural_content_does_not_establish_unpaid": true
+  },
+  "shortlist": "no new outcome-supported organic tactic added to Marketing",
+  "unknowns": [
+    "exact historical spike",
+    "organic channel share",
+    "incremental installs from guides/community",
+    "original contest incentives and outcomes",
+    "localization rollout lift"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-12",
+  "type": "Editable native UI design reconstruction",
+  "nativeCapture": false,
+  "screenSourceId": "1512:7875",
+  "phoneSourceId": "1512:7950",
+  "sourceDimensions": [
+    402,
+    874
+  ],
+  "deviceFrameDimensions": [
+    330,
+    673.4693603515625
+  ],
+  "bezelHash": "7b519f15410878a9616cc58f4d4c73ff11d2129b",
+  "referenceCapture": "Routine — Simulator.png (Anytime); unchanged original retained as historical reference only",
+  "sourceCode": [
+    "iOS/Habits/Today/RoutinePlayer.swift",
+    "iOS/Habits/Model/HabitStore.swift:2718",
+    "iOS/Habits/Components/Components.swift",
+    "iOS/Shared/WidgetPalette.swift"
+  ],
+  "appleAssets": {
+    "library": "iOS and iPadOS 26",
+    "statusBar": "51ddb19de206b67eae2d554b1d20c018feb754f4",
+    "liquidGlassSymbol": "bae56ff9b36723a4780ab9bc01ec7dcac3a67b38",
+    "liquidGlassText": "9f6ac5f06e70da8bc816bac2c6f0b011461eb244"
+  },
+  "state": [
+    "Morning · 1/4",
+    "Stretch",
+    "Today",
+    "0:08 / 10 min",
+    "Pause",
+    "Day details",
+    "Previous disabled; Next available"
+  ],
+  "authorization": "User previously allowed faithful UI reconstruction when native screenshots are unavailable.",
+  "limits": "System rendering approximated with Apple Figma components; not a real simulator/physical iPhone capture or pixel-exact proof. Capture this actual Morning state before production publication.",
+  "nativePixelsRetouched": false
+}

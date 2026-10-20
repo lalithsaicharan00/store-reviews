@@ -1,0 +1,286 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "round": "03",
+  "headline": "Your habits. Your way.",
+  "subtext": "From daily habits to monthly goals.",
+  "scope": "Scan-first second section; all habit meanings retained. Hero and separate tasks section preserved.",
+  "componentSetId": "1395:3263",
+  "wordCount": {
+    "before": 181,
+    "after": 75,
+    "reductionPercent": 58.6,
+    "method": "Whitespace-delimited visible text tokens, same method for both rounds; habit section only."
+  },
+  "layouts": [
+    {
+      "id": "1284:146",
+      "w": 1440,
+      "h": 641,
+      "sectionId": "1284:146",
+      "sectionHeight": 641,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    },
+    {
+      "id": "1284:501",
+      "w": 768,
+      "h": 792,
+      "sectionId": "1284:501",
+      "sectionHeight": 792,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    },
+    {
+      "id": "1284:810",
+      "w": 390,
+      "h": 1083,
+      "sectionId": "1284:810",
+      "sectionHeight": 1083,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    },
+    {
+      "id": "1291:1241",
+      "w": 320,
+      "h": 1158,
+      "sectionId": "1291:1241",
+      "sectionHeight": 1158,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    },
+    {
+      "id": "1385:2974",
+      "w": 1440,
+      "h": 982,
+      "sectionId": "1395:3337",
+      "sectionHeight": 641,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    },
+    {
+      "id": "1385:3097",
+      "w": 768,
+      "h": 1298,
+      "sectionId": "1395:3477",
+      "sectionHeight": 792,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    },
+    {
+      "id": "1385:3220",
+      "w": 390,
+      "h": 1549,
+      "sectionId": "1395:3625",
+      "sectionHeight": 1083,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    },
+    {
+      "id": "1385:3343",
+      "w": 320,
+      "h": 1651,
+      "sectionId": "1395:3779",
+      "sectionHeight": 1158,
+      "words": 75,
+      "methods": [
+        "Check it off",
+        "Track an amount",
+        "Time it",
+        "Checklist",
+        "Quit",
+        "Cut down"
+      ],
+      "coverage": true,
+      "weeklyMonthly": true,
+      "checklist": true,
+      "quit": true,
+      "limits": true,
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "removedLabelsStillPresent": [],
+      "imageCount": 6,
+      "cardTextOverflow": []
+    }
+  ],
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "nodeId": "1385:2974",
+      "file": "Desktop 1440.png",
+      "pixelSize": [
+        1440,
+        982
+      ],
+      "sha256": "e75b8cc90195404e61e8aa9108aafbb1a071c8eb801a2c63ad54def99d2f155d"
+    },
+    {
+      "name": "Tablet 768",
+      "nodeId": "1385:3097",
+      "file": "Tablet 768.png",
+      "pixelSize": [
+        768,
+        1298
+      ],
+      "sha256": "4350bea1a97afef23a9078d2e29ac391ae95543cb6e3cdd8eb54775b31158cef"
+    },
+    {
+      "name": "Mobile 390",
+      "nodeId": "1385:3220",
+      "file": "Mobile 390.png",
+      "pixelSize": [
+        390,
+        1549
+      ],
+      "sha256": "73df0c3b7757ce636f2a8f4ca7e904c253f5faa259194b4a75ee4017db71bab0"
+    },
+    {
+      "name": "Narrow Phone 320",
+      "nodeId": "1385:3343",
+      "file": "Narrow Phone 320.png",
+      "pixelSize": [
+        320,
+        1651
+      ],
+      "sha256": "dcf0a8d921dbb1cd8c9eff3c86af76eeedf8b15f4eb9a00d55d8e1717c4a5b87"
+    }
+  ],
+  "validation": {
+    "allSixMethods": true,
+    "weeklyMonthlyChecklistQuitAndBothLimits": true,
+    "heroAndTasksPreserved": true,
+    "noCardTextOverflow": true,
+    "SFProAndSharedStyles": true,
+    "allFourFinalRendersInspected": true,
+    "runtimePerformanceMeasured": false
+  },
+  "approval": "Ready for design review; implementation remains pending."
+}

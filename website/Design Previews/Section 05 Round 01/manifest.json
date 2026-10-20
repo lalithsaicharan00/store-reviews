@@ -1,0 +1,1073 @@
+{
+  "date": "2026-10-12",
+  "round": "01",
+  "topic": "Interactive widgets",
+  "mainSections": [
+    {
+      "id": "1467:3551",
+      "w": 1440,
+      "h": 1355.6610107421875,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Plus",
+        "Free",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your week at a glance",
+        "Your tasks, together",
+        "Your habits, together",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 158,
+          "h": 158
+        },
+        {
+          "source": "1508:3550",
+          "w": 158,
+          "h": 158
+        },
+        {
+          "source": "669:5347",
+          "w": 338,
+          "h": 158
+        },
+        {
+          "source": "688:7617",
+          "w": 338,
+          "h": 158
+        },
+        {
+          "source": "687:7560",
+          "w": 338,
+          "h": 354
+        },
+        {
+          "source": "621:6382",
+          "w": 338,
+          "h": 158
+        },
+        {
+          "source": "606:7397",
+          "w": 338,
+          "h": 354
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 136,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    },
+    {
+      "id": "1467:3595",
+      "w": 768,
+      "h": 1546.574462890625,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Plus",
+        "Free",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your week at a glance",
+        "Your tasks, together",
+        "Your habits, together",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 132,
+          "h": 132
+        },
+        {
+          "source": "1508:3550",
+          "w": 132,
+          "h": 132
+        },
+        {
+          "source": "669:5347",
+          "w": 276,
+          "h": 129.01776123046875
+        },
+        {
+          "source": "688:7617",
+          "w": 276,
+          "h": 129.01776123046875
+        },
+        {
+          "source": "687:7560",
+          "w": 276,
+          "h": 289.0650939941406
+        },
+        {
+          "source": "621:6382",
+          "w": 276,
+          "h": 129.01776123046875
+        },
+        {
+          "source": "606:7397",
+          "w": 276,
+          "h": 289.0650939941406
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 137,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    },
+    {
+      "id": "1467:3639",
+      "w": 390,
+      "h": 2586.2080078125,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Free",
+        "Plus",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your tasks, together",
+        "Your habits, together",
+        "Your week at a glance",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 141,
+          "h": 141
+        },
+        {
+          "source": "1508:3550",
+          "w": 141,
+          "h": 141
+        },
+        {
+          "source": "688:7617",
+          "w": 294,
+          "h": 137.4319610595703
+        },
+        {
+          "source": "687:7560",
+          "w": 294,
+          "h": 307.91717529296875
+        },
+        {
+          "source": "621:6382",
+          "w": 294,
+          "h": 137.4319610595703
+        },
+        {
+          "source": "606:7397",
+          "w": 294,
+          "h": 307.91717529296875
+        },
+        {
+          "source": "669:5347",
+          "w": 294,
+          "h": 137.4319610595703
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 135,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    },
+    {
+      "id": "1467:3683",
+      "w": 320,
+      "h": 2388.3203125,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Free",
+        "Plus",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your tasks, together",
+        "Your habits, together",
+        "Your week at a glance",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 122,
+          "h": 122
+        },
+        {
+          "source": "1508:3550",
+          "w": 122,
+          "h": 122
+        },
+        {
+          "source": "688:7617",
+          "w": 256,
+          "h": 119.66864013671875
+        },
+        {
+          "source": "687:7560",
+          "w": 256,
+          "h": 268.11834716796875
+        },
+        {
+          "source": "621:6382",
+          "w": 256,
+          "h": 119.66864013671875
+        },
+        {
+          "source": "606:7397",
+          "w": 256,
+          "h": 268.11834716796875
+        },
+        {
+          "source": "669:5347",
+          "w": 256,
+          "h": 119.66864013671875
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 135,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    }
+  ],
+  "combinedSections": [
+    {
+      "id": "1467:3727",
+      "w": 1440,
+      "h": 1355.6610107421875,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Plus",
+        "Free",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your week at a glance",
+        "Your tasks, together",
+        "Your habits, together",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 158,
+          "h": 158
+        },
+        {
+          "source": "1508:3550",
+          "w": 158,
+          "h": 158
+        },
+        {
+          "source": "669:5347",
+          "w": 338,
+          "h": 158
+        },
+        {
+          "source": "688:7617",
+          "w": 338,
+          "h": 158
+        },
+        {
+          "source": "687:7560",
+          "w": 338,
+          "h": 354
+        },
+        {
+          "source": "621:6382",
+          "w": 338,
+          "h": 158
+        },
+        {
+          "source": "606:7397",
+          "w": 338,
+          "h": 354
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 136,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    },
+    {
+      "id": "1467:3771",
+      "w": 768,
+      "h": 1546.574462890625,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Plus",
+        "Free",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your week at a glance",
+        "Your tasks, together",
+        "Your habits, together",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 132,
+          "h": 132
+        },
+        {
+          "source": "1508:3550",
+          "w": 132,
+          "h": 132
+        },
+        {
+          "source": "669:5347",
+          "w": 276,
+          "h": 129.01776123046875
+        },
+        {
+          "source": "688:7617",
+          "w": 276,
+          "h": 129.01776123046875
+        },
+        {
+          "source": "687:7560",
+          "w": 276,
+          "h": 289.0650939941406
+        },
+        {
+          "source": "621:6382",
+          "w": 276,
+          "h": 129.01776123046875
+        },
+        {
+          "source": "606:7397",
+          "w": 276,
+          "h": 289.0650939941406
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 137,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    },
+    {
+      "id": "1467:3815",
+      "w": 390,
+      "h": 2586.2080078125,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Free",
+        "Plus",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your tasks, together",
+        "Your habits, together",
+        "Your week at a glance",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 141,
+          "h": 141
+        },
+        {
+          "source": "1508:3550",
+          "w": 141,
+          "h": 141
+        },
+        {
+          "source": "688:7617",
+          "w": 294,
+          "h": 137.4319610595703
+        },
+        {
+          "source": "687:7560",
+          "w": 294,
+          "h": 307.91717529296875
+        },
+        {
+          "source": "621:6382",
+          "w": 294,
+          "h": 137.4319610595703
+        },
+        {
+          "source": "606:7397",
+          "w": 294,
+          "h": 307.91717529296875
+        },
+        {
+          "source": "669:5347",
+          "w": 294,
+          "h": 137.4319610595703
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 135,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    },
+    {
+      "id": "1467:3859",
+      "w": 320,
+      "h": 2388.3203125,
+      "overflow": [],
+      "plans": [
+        "Free",
+        "Free",
+        "Plus",
+        "Plus",
+        "Free"
+      ],
+      "headings": [
+        "Interactive widgets.",
+        "One habit or task",
+        "Your tasks, together",
+        "Your habits, together",
+        "Your week at a glance",
+        "Lock Screen widgets."
+      ],
+      "nativeCopies": [
+        {
+          "source": "540:2978",
+          "w": 122,
+          "h": 122
+        },
+        {
+          "source": "1508:3550",
+          "w": 122,
+          "h": 122
+        },
+        {
+          "source": "688:7617",
+          "w": 256,
+          "h": 119.66864013671875
+        },
+        {
+          "source": "687:7560",
+          "w": 256,
+          "h": 268.11834716796875
+        },
+        {
+          "source": "621:6382",
+          "w": 256,
+          "h": 119.66864013671875
+        },
+        {
+          "source": "606:7397",
+          "w": 256,
+          "h": 268.11834716796875
+        },
+        {
+          "source": "669:5347",
+          "w": 256,
+          "h": 119.66864013671875
+        },
+        {
+          "source": "694:8984",
+          "w": 72,
+          "h": 72
+        },
+        {
+          "source": "694:9093",
+          "w": 160,
+          "h": 72
+        },
+        {
+          "source": "694:9151",
+          "w": 234,
+          "h": 26
+        },
+        {
+          "source": "694:9159",
+          "w": 234,
+          "h": 26
+        }
+      ],
+      "types": {
+        "FRAME": 135,
+        "TEXT": 116,
+        "INSTANCE": 71,
+        "RECTANGLE": 27,
+        "VECTOR": 2,
+        "ELLIPSE": 2
+      }
+    }
+  ],
+  "sourceComponents": [
+    {
+      "id": "1508:3570",
+      "name": "Website / Widget plan / Free"
+    },
+    {
+      "id": "1508:3572",
+      "name": "Website / Widget plan / Plus"
+    },
+    {
+      "id": "1508:3574",
+      "name": "Website / Widget catalogue / small / 1440",
+      "w": 410.6666564941406,
+      "h": 299
+    },
+    {
+      "id": "1508:3634",
+      "name": "Website / Widget catalogue / tasks / 1440",
+      "w": 410.6666564941406,
+      "h": 706
+    },
+    {
+      "id": "1508:3758",
+      "name": "Website / Widget catalogue / today / 1440",
+      "w": 410.6666564941406,
+      "h": 706
+    },
+    {
+      "id": "1508:3955",
+      "name": "Website / Widget catalogue / week / 1440",
+      "w": 410.6666564941406,
+      "h": 299
+    },
+    {
+      "id": "1508:4014",
+      "name": "Website / Lock Screen catalogue / 1440",
+      "w": 1280,
+      "h": 226
+    },
+    {
+      "id": "1508:4055",
+      "name": "Website / Widget catalogue / small / 768",
+      "w": 324,
+      "h": 299
+    },
+    {
+      "id": "1508:4101",
+      "name": "Website / Widget catalogue / tasks / 768",
+      "w": 324,
+      "h": 706
+    },
+    {
+      "id": "1508:4207",
+      "name": "Website / Widget catalogue / today / 768",
+      "w": 324,
+      "h": 706
+    },
+    {
+      "id": "1508:4316",
+      "name": "Website / Widget catalogue / week / 768",
+      "w": 324,
+      "h": 299
+    },
+    {
+      "id": "1508:4372",
+      "name": "Website / Lock Screen catalogue / 768",
+      "w": 672,
+      "h": 226
+    },
+    {
+      "id": "1508:4410",
+      "name": "Website / Widget catalogue / small / 390",
+      "w": 342,
+      "h": 299
+    },
+    {
+      "id": "1508:4456",
+      "name": "Website / Widget catalogue / tasks / 390",
+      "w": 342,
+      "h": 706
+    },
+    {
+      "id": "1508:4562",
+      "name": "Website / Widget catalogue / today / 390",
+      "w": 342,
+      "h": 706
+    },
+    {
+      "id": "1508:4671",
+      "name": "Website / Widget catalogue / week / 390",
+      "w": 342,
+      "h": 299
+    },
+    {
+      "id": "1508:4727",
+      "name": "Website / Lock Screen catalogue / 390",
+      "w": 342,
+      "h": 306
+    },
+    {
+      "id": "1508:4765",
+      "name": "Website / Widget catalogue / small / 320",
+      "w": 288,
+      "h": 283
+    },
+    {
+      "id": "1508:4811",
+      "name": "Website / Widget catalogue / tasks / 320",
+      "w": 288,
+      "h": 690
+    },
+    {
+      "id": "1508:4917",
+      "name": "Website / Widget catalogue / today / 320",
+      "w": 288,
+      "h": 690
+    },
+    {
+      "id": "1508:5026",
+      "name": "Website / Widget catalogue / week / 320",
+      "w": 288,
+      "h": 283
+    },
+    {
+      "id": "1508:5082",
+      "name": "Website / Lock Screen catalogue / 320",
+      "w": 288,
+      "h": 327
+    }
+  ],
+  "widgetSources": {
+    "small": "540:2978",
+    "taskSmall": "1508:3550",
+    "tasksMedium": "688:7617",
+    "tasksLarge": "687:7560",
+    "todayMedium": "621:6382",
+    "todayLarge": "606:7397",
+    "week": "669:5347",
+    "circle": "694:8984",
+    "rectangle": "694:9093",
+    "inlineToday": "694:9151",
+    "inlineHabit": "694:9159"
+  },
+  "retainedTasks": [
+    {
+      "id": "1508:5120",
+      "w": 1440,
+      "h": 341,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    },
+    {
+      "id": "1508:5488",
+      "w": 768,
+      "h": 506,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    },
+    {
+      "id": "1508:5857",
+      "w": 390,
+      "h": 466,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    },
+    {
+      "id": "1508:6224",
+      "w": 320,
+      "h": 493,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    },
+    {
+      "id": "1508:6591",
+      "w": 1440,
+      "h": 341,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    },
+    {
+      "id": "1508:6959",
+      "w": 768,
+      "h": 506,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    },
+    {
+      "id": "1508:7328",
+      "w": 390,
+      "h": 466,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    },
+    {
+      "id": "1508:7695",
+      "w": 320,
+      "h": 493,
+      "text": [
+        "TASKS, TOO",
+        "For the things\nyou do once.",
+        "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+        "FOR EXAMPLE",
+        "Buy groceries · Send a parcel · Pay a bill"
+      ],
+      "afterWidgets": true
+    }
+  ],
+  "preservedSectionDimensions": [
+    {
+      "id": "1340:2412",
+      "w": 1440,
+      "h": 800
+    },
+    {
+      "id": "1340:2441",
+      "w": 768,
+      "h": 600
+    },
+    {
+      "id": "1340:2468",
+      "w": 390,
+      "h": 977.3673095703125
+    },
+    {
+      "id": "1340:2495",
+      "w": 320,
+      "h": 891.9284057617188
+    },
+    {
+      "id": "1284:146",
+      "w": 1440,
+      "h": 691
+    },
+    {
+      "id": "1284:501",
+      "w": 768,
+      "h": 931
+    },
+    {
+      "id": "1284:810",
+      "w": 390,
+      "h": 1208
+    },
+    {
+      "id": "1291:1241",
+      "w": 320,
+      "h": 1208
+    },
+    {
+      "id": "1284:163",
+      "w": 1440,
+      "h": 487.322509765625
+    },
+    {
+      "id": "1284:518",
+      "w": 768,
+      "h": 743.1459350585938
+    },
+    {
+      "id": "1284:827",
+      "w": 390,
+      "h": 474.118896484375
+    },
+    {
+      "id": "1291:1258",
+      "w": 320,
+      "h": 436.2054138183594
+    }
+  ],
+  "previews": [
+    {
+      "path": "website/Design Previews/Section 05 Round 01/Desktop 1440.png",
+      "pixels": [
+        1440,
+        1356
+      ],
+      "bytes": 217167,
+      "sha256": "263e25d097d1e2e46d52e4a52b54bb7f7c307288fe540c400b845eae74a81927",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    },
+    {
+      "path": "website/Design Previews/Section 05 Round 01/Tablet 768.png",
+      "pixels": [
+        768,
+        1547
+      ],
+      "bytes": 182207,
+      "sha256": "33c33ff668bd162a452e90c4935002eaee466354d5b0d95adce087fab7de12b4",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    },
+    {
+      "path": "website/Design Previews/Section 05 Round 01/Mobile 390.png",
+      "pixels": [
+        390,
+        2587
+      ],
+      "bytes": 192516,
+      "sha256": "9077af003ddaf10b27b9e49d4a6ac3b6172a786f592b1ba75972be26669199f3",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    },
+    {
+      "path": "website/Design Previews/Section 05 Round 01/Narrow Phone 320.png",
+      "pixels": [
+        320,
+        2389
+      ],
+      "bytes": 170215,
+      "sha256": "30d3618798b0497c70df0572948244ef3c522c829a8ae8d34b95dffeac6a554d",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    }
+  ],
+  "sourceVisuals": "Approved editable iPhone widget components, not new installed Home Screen/Lock Screen captures. Small task example derived from SmallWidget/fillTask.",
+  "free": [
+    "Small habit",
+    "Small task",
+    "Tasks Medium",
+    "Tasks Large",
+    "Lock Circular",
+    "Lock Rectangular",
+    "Lock Inline Today",
+    "Lock Inline habit"
+  ],
+  "plus": [
+    "Today habits Medium",
+    "Today habits Large",
+    "This week Medium"
+  ],
+  "approval": "Ready for design review; implementation/publication await approval.",
+  "runtimePaywalls": "Intended user plan. Current local native widget code has no paywalls; reconcile before release.",
+  "validation": "All eight copies contain all eleven specimens and five correct plan badges; no visible horizontal text overflow; four final renders inspected. Static Figma validation, not a device performance result."
+}

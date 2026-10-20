@@ -20,7 +20,14 @@ Reusable marketing examples are saved in the root Marketing folder.
 
 | Document | Author | Date | Scope |
 |---|---|---|---|
+| [Google Play Listing Tags — Evidence and Launch Shortlist](<Store Listing and ASO/Google Play Listing Tags — Evidence and Launch Shortlist.md>) | Codex | 15 Oct 2026 | Current Google relevance/policy/discovery guidance, a dated third-party taxonomy transcription with explicit official-verification gap, ten competitors' observed categories/Similar apps, and a provisional two-tag launch shortlist. No competitor saved-tag sets or live Console taxonomy claimed as verified. |
 | [Marketing and How We Can Market It](<../../Marketing/Marketing and How We Can Market It.md>) | Codex | 13 Oct 2026 | User-selected examples: Habit Tracker Reddit challenge and bondavi app/store localization. Original sources, discovery, exact app identities, reusable approaches and limits; localization reports gradual overseas growth, not a measured surge. User-data/content-coverage tactic excluded. |
+
+## Market Discovery
+
+| Report | Author | Date | What it is |
+|---|---|---|---|
+| [Built-in Trackers — The Market and What Fits Version 2](<Market Discovery/Built-in Trackers — The Market and What Fits Version 2.md>) | **Claude** | 17 Oct 2026 | 42 kinds of tracker surveyed on Google Play (US search, download bands) and the App Store (US search, rating counts), 672 rows in `Built-in Trackers Data/`. Five-part fit test; six kinds need a tracker of their own (sleep, weight, energy/stress as a scale, fasting, gratitude, Health-filled steps and exercise), about fifteen are ready-made habits, the rest (period, food, medical, baby, money, GPS, screen time) stay out. Recommends Sleep, Weight, Energy, then Fasting or Gratitude for version 2. Store snapshot plus Feature Ledger evidence; no hand-read review pass. |
 
 ## Individual Habit Details
 

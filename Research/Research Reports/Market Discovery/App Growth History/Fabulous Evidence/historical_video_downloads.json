@@ -1,0 +1,19 @@
+{
+  "downloaded_date": "2026-10-13",
+  "app": "Fabulous",
+  "source_page": "https://www.pipiads.com/tiktok-ads-examples/fabulous-tiktok-ads-1753583265073185",
+  "access": "User-authorized imported browser session. Original videos exposed in visible authenticated players and downloaded with the browser media control. Native Pipiads download buttons and original post links are subscription locked.",
+  "local_folder": "Research/Temp/fabulous_growth_2026_10_13/TikTok Videos",
+  "validation": "All six files contain MP4 ftyp, moov and mdat boxes with positive movie-header duration; different original CDN URLs preserved.",
+  "videos": [
+    {"topic": "Morning routines", "ad_id": "8b75976c38b99777d3b4", "media_url": "https://cdn-video.pipiads.com/video_83ba4d7d978fdb664827d6930b8a4591.mp4", "first_seen": "2022-12-30", "last_seen": "2023-01-02", "creation_date": "2022-12-29", "date_source": "Public archive and authenticated detail", "duration_seconds": 18.334, "file": "01 Morning routines - 2022-12-30 to 2023-01-02.mp4"},
+    {"topic": "Growth is never linear", "ad_id": "90cab76c3178dde87b1d", "media_url": "https://cdn-video.pipiads.com/video_870811bb6e2bc80fe4968b6640caeb1f.mp4", "first_seen": "2022-12-30", "last_seen": "2022-12-31", "creation_date": "2022-12-29", "date_source": "Public archive and authenticated detail", "duration_seconds": 18.445, "file": "02 Growth is never linear - 2022-12-30 to 2022-12-31.mp4"},
+    {"topic": "Decluttering", "ad_id": "a7aa3c4687cb10074779", "media_url": "https://cdn-video.pipiads.com/video_42fb15fe55cc46cc1ca15bc5e4cb8987.mp4", "first_seen": "2022-12-30", "last_seen": "2023-01-03", "date_source": "Public archive; authenticated list starts at 2022-12-29", "duration_seconds": 12.067, "file": "03 Decluttering - 2022-12-30 to 2023-01-03.mp4"},
+    {"topic": "Looking back on 2022", "ad_id": "a4bf54f5d4d0841240d7", "media_url": "https://cdn-video.pipiads.com/video_d2fc42bb9d833dbb6adda7f444235f09.mp4", "first_seen": "2022-12-30", "last_seen": "2023-07-13", "date_source": "Public archive; authenticated list starts at 2022-12-29", "duration_seconds": 7.5, "file": "04 Looking back on 2022 - 2022-12-30 to 2023-07-13.mp4"},
+    {"topic": "Kickstart 2023", "ad_id": "c1c48b6edd3363a64128", "media_url": "https://cdn-video.pipiads.com/video_dd2e11ba35cd6654d403d4afaa7bfd71.mp4", "first_seen": "2023-01-26", "last_seen": "2023-04-02", "creation_date": "2023-01-17", "date_source": "Authenticated detail; list starts at creation date", "duration_seconds": 25.134, "file": "05 Kickstart 2023 - first seen 2023-01-26.mp4", "causal_limit": "Too late to explain the early January peak"},
+    {"topic": "Customized daily routines", "ad_id": "319a6578593cd0384273", "media_url": "https://cdn-video.pipiads.com/video_44592452cab3d53549dba7d27ddd2c90.mp4", "first_seen": "2022-12-31", "last_seen": "2023-01-26", "creation_date": "2022-12-29", "date_source": "Authenticated detail; list starts at creation date", "duration_seconds": 16.534, "file": "06 Customized daily routines - first seen 2022-12-31.mp4"}
+  ],
+  "unresolved_entry": "Public table has a second Kickstart row with 1.4M impressions; authenticated exact-caption search returned only the 1.6M entry. No second original downloaded or substituted.",
+  "metric_followup": "Morning-routine public 66 Popularity corresponds to 66 Like in authenticated results, not a download percentage. Conversion ranges are provider estimates, not publisher-attributed downloads. Locked fields show unrelated placeholders and are excluded from app evidence.",
+  "privacy": "No cookies, credentials or account identifiers saved. Competitor media is kept in ignored Research/Temp (D11)."
+}

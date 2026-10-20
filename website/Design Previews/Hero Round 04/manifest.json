@@ -1,0 +1,293 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "round": "04",
+  "scope": "Faint static background only; Round 03 copy/layout/device accepted by user.",
+  "componentId": "1370:2132",
+  "background": "Static monochrome habit-rhythm marks; 0–5% opacity, four desktop clusters and two smaller clusters on tablet/phones.",
+  "validation": {
+    "contentStylesAndAssetHashesUnchanged": true,
+    "copyDeviceAndHeroGeometryUnchanged": true,
+    "responsiveRendersInspected": [
+      1440,
+      768,
+      390,
+      320
+    ],
+    "runtimePerformanceMeasured": false
+  },
+  "heroLayouts": [
+    {
+      "heroId": "1340:2412",
+      "backgroundId": "1370:2166",
+      "instances": [
+        {
+          "id": "1370:2167",
+          "x": -42,
+          "y": -40,
+          "w": 300,
+          "h": 165
+        },
+        {
+          "id": "1370:2201",
+          "x": 636,
+          "y": 45,
+          "w": 312.0000305175781,
+          "h": 171.60000610351562
+        },
+        {
+          "id": "1370:2235",
+          "x": 1270,
+          "y": 504,
+          "w": 360,
+          "h": 198
+        },
+        {
+          "id": "1370:2269",
+          "x": 420,
+          "y": 727,
+          "w": 240,
+          "h": 132
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        1440,
+        800
+      ]
+    },
+    {
+      "heroId": "1340:2441",
+      "backgroundId": "1370:2303",
+      "instances": [
+        {
+          "id": "1370:2304",
+          "x": -80,
+          "y": 18,
+          "w": 204,
+          "h": 112.20000457763672
+        },
+        {
+          "id": "1370:2338",
+          "x": 690,
+          "y": 435,
+          "w": 251.99998474121094,
+          "h": 138.59999084472656
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        768,
+        692
+      ]
+    },
+    {
+      "heroId": "1340:2468",
+      "backgroundId": "1370:2372",
+      "instances": [
+        {
+          "id": "1370:2373",
+          "x": 260,
+          "y": 390,
+          "w": 168,
+          "h": 92.4000015258789
+        },
+        {
+          "id": "1370:2407",
+          "x": -122,
+          "y": 857,
+          "w": 204,
+          "h": 112.20000457763672
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        390,
+        1049.8297119140625
+      ]
+    },
+    {
+      "heroId": "1340:2495",
+      "backgroundId": "1370:2441",
+      "instances": [
+        {
+          "id": "1370:2442",
+          "x": 224,
+          "y": 363,
+          "w": 144,
+          "h": 79.20000457763672
+        },
+        {
+          "id": "1370:2476",
+          "x": -112,
+          "y": 756,
+          "w": 172.8000030517578,
+          "h": 95.04000091552734
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        320,
+        926.4799194335938
+      ]
+    },
+    {
+      "heroId": "1335:2390",
+      "backgroundId": "1370:2510",
+      "instances": [
+        {
+          "id": "1370:2511",
+          "x": -42,
+          "y": -40,
+          "w": 300,
+          "h": 165
+        },
+        {
+          "id": "1370:2545",
+          "x": 636,
+          "y": 45,
+          "w": 312.0000305175781,
+          "h": 171.60000610351562
+        },
+        {
+          "id": "1370:2579",
+          "x": 1270,
+          "y": 504,
+          "w": 360,
+          "h": 198
+        },
+        {
+          "id": "1370:2613",
+          "x": 420,
+          "y": 727,
+          "w": 240,
+          "h": 132
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        1440,
+        800
+      ]
+    },
+    {
+      "heroId": "1335:2437",
+      "backgroundId": "1370:2647",
+      "instances": [
+        {
+          "id": "1370:2648",
+          "x": -80,
+          "y": 18,
+          "w": 204,
+          "h": 112.20000457763672
+        },
+        {
+          "id": "1370:2682",
+          "x": 690,
+          "y": 435,
+          "w": 251.99998474121094,
+          "h": 138.59999084472656
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        768,
+        692
+      ]
+    },
+    {
+      "heroId": "1335:2482",
+      "backgroundId": "1370:2716",
+      "instances": [
+        {
+          "id": "1370:2717",
+          "x": 260,
+          "y": 390,
+          "w": 168,
+          "h": 92.4000015258789
+        },
+        {
+          "id": "1370:2751",
+          "x": -122,
+          "y": 857,
+          "w": 204,
+          "h": 112.20000457763672
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        390,
+        1049.8297119140625
+      ]
+    },
+    {
+      "heroId": "1335:2527",
+      "backgroundId": "1370:2785",
+      "instances": [
+        {
+          "id": "1370:2786",
+          "x": 224,
+          "y": 363,
+          "w": 144,
+          "h": 79.20000457763672
+        },
+        {
+          "id": "1370:2820",
+          "x": -112,
+          "y": 756,
+          "w": 172.8000030517578,
+          "h": 95.04000091552734
+        }
+      ],
+      "unchangedContentAndGeometry": true,
+      "size": [
+        320,
+        926.4799194335938
+      ]
+    }
+  ],
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "nodeId": "1335:2366",
+      "file": "Desktop 1440.png",
+      "pixelSize": [
+        1440,
+        900
+      ],
+      "sha256": "577c761beea08e67d9e4f9031d4bea912549170faef72257459731da93efeabe"
+    },
+    {
+      "name": "Tablet 768",
+      "nodeId": "1335:2419",
+      "file": "Tablet 768.png",
+      "pixelSize": [
+        768,
+        792
+      ],
+      "sha256": "5c427b929a1bef0e6b6f43efe44cefa8e5437574aba870229355afe3deab6749"
+    },
+    {
+      "name": "Mobile 390",
+      "nodeId": "1335:2462",
+      "file": "Mobile 390.png",
+      "pixelSize": [
+        390,
+        1126
+      ],
+      "sha256": "e332901e6e9d0e191f12750b58766d10e93af82eb7f3423d4d0e9c83d490ce1a"
+    },
+    {
+      "name": "Narrow Phone 320",
+      "nodeId": "1335:2509",
+      "file": "Narrow Phone 320.png",
+      "pixelSize": [
+        320,
+        1003
+      ],
+      "sha256": "8e3bb7a3f8aaf21f9ab0856febefdfd7ed087f38ad62ebb27980e798cac6925f"
+    }
+  ],
+  "approval": "New background pending review. Other sections and implementation remain pending."
+}

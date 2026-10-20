@@ -3175,6 +3175,29 @@ button is "+1" / "+2.5" (U16; no unit, no cut-off label); a single check or task
 the shade (header *Often Enough · Timer*, title, *5:24 of 20 min*, a progress bar, one action) and the same card on the
 lock screen. 5.2 has no snackbar: it would cover the step just ticked, and a ticked step unticks with a tap.
 
+### Routine player and timer: built on Android, 19–20 Oct 2026 (Current Work 140)
+
+Every row of `1328:2` is in the app (`ui/player/RoutinePlayer.kt`, `TimerScreen.kt`, `app/reminders/TimerNotice.kt`),
+checked beside the frames at 360 × 800 dp in light and dark, and tested (`PlayerTest`, `PlayerWordsTest`). What the
+build settled:
+- **Start passes the whole routine in Today's order**, done ones too, and the player opens on the first unfinished
+  habit with *"3 done earlier today. Starting at Water."* (1.2); all done opens the end page (1.3). On another day the
+  chip names the day (*Sun 18 Oct*), every log goes to that day, a timer's time is typed (**Log**), and the message says
+  *"4 already done"* instead of "earlier today" (1.4). Limits and quit habits are never in a routine.
+- **A timer waits for Start** (4): arriving on a time habit no longer starts its clock (the iPhone's P1 did). **✕ leaves a
+  running timer running** (8.4): Today's row keeps the clock; › and ‹ still save it when leaving the habit.
+- **The status line** under the count: *Skipped for today*, *Over the limit* (with a full grey bar, 9.2), *Goal met*
+  (4.3, Pause stays until paused), *Paused* (4.2, 9.1), *1 h 45 min of 3 h this week* (4.5, today's time big with
+  "today"), *1 of 3 days this week* (4.4), *Done for today* for a check by the week ticked today (2.4, with Next).
+- **The Live Update** (10): an ongoing notification that asks Android 16 to promote it (`POST_PROMOTED_NOTIFICATIONS`,
+  `setRequestPromotedOngoing`), so the status bar shows a chip with the clock; the shade shows *Often Enough · Timer* and
+  the clock (today's whole time, as the app's), the habit, its goal, a progress bar and **Pause**; paused, *Read ·
+  Paused*, *12:49 of 20 min* and **Resume** (it can be swiped away); a tap opens the routine at that habit when the
+  timer was started in one (10.5), else the timer. **One difference from the frame:** Android can't tick text inside a
+  notification's body, so the running clock is in the header and the chip, and the body says *Goal 20 min* (*Goal met ·
+  20 min* at the goal, *Over the limit · 30 min max* for a limit) where 10.1 draws *5:24 of 20 min*. The chip's colour
+  is Android's own (a promoted notification can't be colourised).
+
 ### Progress: placeholders, 19 Oct 2026 (Current Work 144; the user: "let's start on creating the empty placeholders")
 
 **Two decisions first (the user, 19 Oct, on the recommendation):** a tap on a square opens **that habit's Day details
@@ -3308,7 +3331,7 @@ alternative; a grey fill would read as disabled); 1 keeps its back arrow (to 02 
    habits, its Quit or cut down opened a blank sheet.
 4. ~~**The ≡ menu** as Material's navigation drawer.~~ Built 12 Oct.
 5. **The routine player and the timer:** built 12 Oct; **35 placeholders added and designed 19 Oct** (Current Work 140),
-   the Live Update (A11 D4) among them. Next: the user's review. (Today's timer bar was dropped 16 Oct: the row keeps the clock.)
+   the Live Update (A11 D4) among them; **every frame built on Android 19–20 Oct** (above, "built on Android"). (Today's timer bar was dropped 16 Oct: the row keeps the clock.)
 6. ~~**Habit details:** Progress, History and Notes tabs.~~ Built 12 Oct; All milestones drawn 14 Oct; **the final
    design 19 Oct (Current Work 143)** drew Go to date, a habit with no history yet and the other kinds' Progress.
 7. **Progress:** built 12 Oct (Week, Month, Year; no ⋮); **34 placeholders added and designed 19 Oct** (Current Work

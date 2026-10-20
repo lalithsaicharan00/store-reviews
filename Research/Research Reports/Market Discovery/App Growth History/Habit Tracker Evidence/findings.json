@@ -1,0 +1,95 @@
+{
+  "researched_date": "2026-10-13",
+  "research_order": 3,
+  "apple_id": 1438388363,
+  "name": "Habit Tracker",
+  "current_seller": "Inner Grow Limited",
+  "historical_developer_name": "Davetech Co., Ltd.",
+  "developer_continuity_evidence": "Current Apple ID and bundle com.davetech.habit; 2019 community post links same Apple ID and names Davetech. Publisher-change date and cause not established.",
+  "scope": "iOS app 1438388363, organic acquisition only",
+  "verified_download_spikes": [],
+  "download_history_limit": "No dated daily/weekly/monthly historical series obtained for this exact app. Cumulative milestones and last-month badges cannot identify spikes.",
+  "modeled_cumulative_milestones": [
+    {
+      "period": "March 2019",
+      "downloads": 25000,
+      "release_window": "Within 90 days",
+      "source": "mwm_app",
+      "is_spike": false
+    },
+    {
+      "period": "October 2019",
+      "downloads": 100000,
+      "release_window": "Within 365 days",
+      "source": "mwm_app",
+      "is_spike": false
+    },
+    {
+      "period": "March 2024",
+      "downloads": 10000000,
+      "release_window": "Lifetime",
+      "source": "mwm_app",
+      "is_spike": false
+    }
+  ],
+  "monthly_download_badge": {
+    "value": 200000,
+    "platform": "Apple App Store",
+    "geography": "Worldwide",
+    "period": "Last Month (provider label; exact calendar month unresolved)",
+    "source": "sensortower_overview",
+    "is_spike": false
+  },
+  "community_challenge": {
+    "source": "reddit_challenge",
+    "post_id": "c6g9di",
+    "post_date_utc": "2019-06-28T05:29:48.468Z",
+    "organizer": "AsteroidCollection",
+    "linked_apple_url": "https://apps.apple.com/us/app/habit-tracker-simple/id1438388363",
+    "link_comment_url": "https://www.reddit.com/r/GetMotivatedBuddies/comments/c6g9di/comment/es9amyd/",
+    "invitation_comment_url": "https://www.reddit.com/r/GetMotivatedBuddies/comments/c6g9di/comment/es9pumu/",
+    "mechanism": "User organized July habit-streak competition, invited others to exchange in-app friend/ref codes and track together; an actual group gives prospective users a reason to install.",
+    "download_comment_url": "https://www.reddit.com/r/GetMotivatedBuddies/comments/c6g9di/comment/et5x6og/",
+    "download_comment_date_utc": "2019-07-07T10:21:51.151Z",
+    "download_comment_author": "kafene69",
+    "download_comment_quote": "Okay, I’m down. Just downloaded the app. How do I send you the code? New to Reddit.",
+    "organic_status": "Apparently user-led peer challenge: organizer discusses paying for the app. No developer sponsorship asserted or independently verified.",
+    "causal_limit": "Self-reported individual acquisition in a matched-app thread, not verified attribution logs or a quantified aggregate spike."
+  },
+  "distribution_leads": [
+    {
+      "source": "carleton_2023_resource",
+      "period": "2023 edition; URL January 2023",
+      "mechanism": "University wellness resource recommends Habit Tracker by Davetech and notes customization/friends",
+      "install_evidence": "No reader-install, traffic or campaign data; compensation status not verified"
+    },
+    {
+      "source": "italian_editorial_2023",
+      "date": "2023-03-07",
+      "mechanism": "Gloria Caliaro editorial review links app and describes shared habits",
+      "install_evidence": "No referral traffic or attributed installs; sponsorship not independently verified"
+    },
+    {
+      "source": "korean_user_story_2023",
+      "date": "2023-12-14",
+      "mechanism": "First-person user describes downloading Davetech iOS app and writes a review",
+      "install_evidence": "Evidence of individual use/public discussion; discovery channel and resulting reader downloads unknown"
+    }
+  ],
+  "localization_lead": {
+    "source": "apple_argentina_2025_localization",
+    "date": "2025-08-22",
+    "version": "2.11.4",
+    "event": "French support testing announced",
+    "limit": "No exact production rollout date or dated French-country download series matched; not a proven organic growth explanation"
+  },
+  "excluded_claims": [
+    "Developer description on Apple-hosted Chinese listing claims editorial recommendation; no dated independent Apple placement or attributable lift found.",
+    "Developer 15M+ users wording is not a verified download count or a spike.",
+    "Current language availability does not establish when localization changed or its install contribution.",
+    "Public provider not actively advertised wording does not prove all historical acquisition organic.",
+    "Differing monthly badges from separate providers/observation dates were not joined into a growth curve.",
+    "Other generic Habit Tracker apps and Chinese Apple ID 1439928374 are different products."
+  ],
+  "conclusion": "Concrete small community-led acquisition example found, plus institutional/editorial discovery leads. No exact aggregate download spike or organic spike explanation established."
+}

@@ -1,0 +1,211 @@
+{
+  "app_id": "1203637303",
+  "app_name": "Fabulous: Daily Habit Tracker",
+  "researched_date": "2026-10-13",
+  "selection": "First entry in the saved report’s iOS download-supported section; not a popularity rank or the first all-candidate CSV row",
+  "ios_release": "2017-11-21",
+  "public_ios_announcement": "2018-01-02",
+  "android_origin_year": 2014,
+  "milestones": [
+    {
+      "period": "2017-12",
+      "downloads_threshold": 25000,
+      "window": "within 30 days",
+      "platform": "Apple App Store",
+      "geography": "Worldwide",
+      "metric": "cumulative download threshold",
+      "evidence_type": "provider estimate",
+      "source_key": "mwm_app",
+      "snapshot_date": "2026-08-17",
+      "is_download_peak": false
+    },
+    {
+      "period": "2018-01",
+      "downloads_threshold": 100000,
+      "window": "within 90 days",
+      "platform": "Apple App Store",
+      "geography": "Worldwide",
+      "metric": "cumulative download threshold",
+      "evidence_type": "provider estimate",
+      "source_key": "mwm_app",
+      "snapshot_date": "2026-08-17",
+      "is_download_peak": false
+    },
+    {
+      "period": "2018-05",
+      "downloads_threshold": 500000,
+      "window": "within 365 days",
+      "platform": "Apple App Store",
+      "geography": "Worldwide",
+      "metric": "cumulative download threshold",
+      "evidence_type": "provider estimate",
+      "source_key": "mwm_app",
+      "snapshot_date": "2026-08-17",
+      "is_download_peak": false
+    },
+    {
+      "period": "2021-07",
+      "downloads_threshold": 10000000,
+      "window": "lifetime",
+      "platform": "Apple App Store",
+      "geography": "Worldwide",
+      "metric": "cumulative download threshold",
+      "evidence_type": "provider estimate",
+      "source_key": "mwm_app",
+      "snapshot_date": "2026-08-17",
+      "is_download_peak": false
+    }
+  ],
+  "weekly_download_points": [
+    {
+      "period": "late March 2021",
+      "quarter": "2021-Q1",
+      "geography": "United States",
+      "downloads_approx": 61000,
+      "source_key": "st_us_ios_2021q1",
+      "causal_status": "exact cause not found",
+      "app_id": "1203637303",
+      "platform": "iOS",
+      "metric": "weekly downloads",
+      "evidence_type": "provider estimate / AI narrative",
+      "precision": "Approximate value and textual period; no invented week-start date",
+      "source_url": "https://sensortower.com/blog/2021-q1-ios-top-5-self-therapy%20and%20journaling-units-us-63dcdd28e1714cfff1e3bd68",
+      "worldwide_or_lifetime_peak": false
+    },
+    {
+      "period": "early July 2022",
+      "quarter": "2022-Q3",
+      "geography": "United States",
+      "downloads_approx": 32000,
+      "source_key": "st_us_ios_2022q3",
+      "causal_status": "exact cause not found",
+      "app_id": "1203637303",
+      "platform": "iOS",
+      "metric": "weekly downloads",
+      "evidence_type": "provider estimate / AI narrative",
+      "precision": "Approximate value and textual period; no invented week-start date",
+      "source_url": "https://sensortower.com/blog/2022-q3-ios-top-5-self-therapy%20and%20journaling-units-us-63dcdd28e1714cfff1e3bd68",
+      "worldwide_or_lifetime_peak": false
+    },
+    {
+      "period": "last week December 2022",
+      "quarter": "2022-Q4",
+      "geography": "United States",
+      "downloads_approx": 25000,
+      "source_key": "st_us_ios_2022q4",
+      "causal_status": "contemporaneous ads; contribution unmeasured",
+      "app_id": "1203637303",
+      "platform": "iOS",
+      "metric": "weekly downloads",
+      "evidence_type": "provider estimate / AI narrative",
+      "precision": "Approximate value and textual period; no invented week-start date",
+      "source_url": "https://sensortower.com/blog/2022-q4-ios-top-5-self-therapy%20and%20journaling-revenue-us-63dcdd28e1714cfff1e3bd68",
+      "worldwide_or_lifetime_peak": false
+    },
+    {
+      "period": "early January 2023",
+      "quarter": "2023-Q1",
+      "geography": "United States",
+      "downloads_approx": 36000,
+      "source_key": "st_us_ios_2023q1",
+      "causal_status": "date/country/platform matched advertising lead; contribution unmeasured",
+      "app_id": "1203637303",
+      "platform": "iOS",
+      "metric": "weekly downloads",
+      "evidence_type": "provider estimate / AI narrative",
+      "precision": "Approximate value and textual period; no invented week-start date",
+      "source_url": "https://sensortower.com/blog/2023-q1-ios-top-5-self-therapy%20and%20journaling-revenue-us-63dcdd28e1714cfff1e3bd68",
+      "worldwide_or_lifetime_peak": false
+    },
+    {
+      "period": "first week January 2024",
+      "quarter": "2024-Q1",
+      "geography": "Brazil",
+      "downloads_approx": 10600,
+      "source_key": "st_br_ios_2024q1",
+      "causal_status": "exact cause not found",
+      "app_id": "1203637303",
+      "platform": "iOS",
+      "metric": "weekly downloads",
+      "evidence_type": "provider estimate / AI narrative",
+      "precision": "Approximate value and textual period; no invented week-start date",
+      "source_url": "https://sensortower.com/blog/2024-q1-ios-top-5-self-therapy%20and%20journaling-revenue-br-63dcdd28e1714cfff1e3bd68",
+      "worldwide_or_lifetime_peak": false
+    }
+  ],
+  "matched_ad_observations": [
+    {
+      "theme": "Morning routines",
+      "first_seen": "2022-12-30",
+      "last_seen": "2023-01-02",
+      "country": "United States",
+      "platform_label": "Apple",
+      "cta": "Install",
+      "source_key": "pipiads_new_year_2023",
+      "attributed_installs": null,
+      "evidence_type": "ad-monitoring observation"
+    },
+    {
+      "theme": "Decluttering guidance",
+      "first_seen": "2022-12-30",
+      "last_seen": "2023-01-03",
+      "country": "United States",
+      "platform_label": "Apple",
+      "cta": "Go to App Store",
+      "source_key": "pipiads_new_year_2023",
+      "attributed_installs": null,
+      "evidence_type": "ad-monitoring observation"
+    }
+  ],
+  "conclusion": "New Year 2023 US Apple TikTok activity is a specific contemporaneous growth lead, not quantified causal install attribution",
+  "other_dated_events": [
+    {
+      "date": "2017-12-01",
+      "event": "Product Hunt iOS launch promotion, rank 3 of day",
+      "source_key": "product_hunt_ios",
+      "attributed_install_lift": null
+    },
+    {
+      "period": "early January 2018",
+      "event": "App of the Day near public launch",
+      "source_keys": [
+        "pa_life_jan_2018",
+        "company_2018_press_release"
+      ],
+      "attributed_install_lift": null
+    },
+    {
+      "date": "2018-05-18",
+      "event": "Life Well Balanced module launch; company total >5M downloads, no OS split",
+      "source_key": "company_2018_press_release",
+      "attributed_install_lift": null
+    },
+    {
+      "date": "2018-12-03",
+      "event": "Apple self-care trend selection",
+      "source_key": "apple_best_2018",
+      "attributed_install_lift": null
+    },
+    {
+      "period": "late 2020",
+      "event": "Audio coaching launch; Android-facing source, exact iOS rollout unknown",
+      "source_key": "google_coaching_feature",
+      "attributed_install_lift": null
+    },
+    {
+      "period": "2025 onwards; result interval undisclosed",
+      "event": "Birch paid campaign automation across Meta/TikTok/Snapchat",
+      "source_key": "birch_paid_growth",
+      "vendor_claim_campaign_scaling_percent": 50,
+      "attributed_install_lift": null
+    }
+  ],
+  "limits": [
+    "No complete worldwide historical download series",
+    "Peak estimates are provider AI narratives; aggregate images do not verify weekly points",
+    "No matched install-attribution or incrementality data",
+    "Medium full text inaccessible",
+    "Cross-platform company totals not assigned to iOS",
+    "Undated last-month badges not assigned to historical months"
+  ]
+}

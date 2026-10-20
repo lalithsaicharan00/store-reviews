@@ -1,0 +1,1145 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "round": "04",
+  "headline": "Your habits. Your way.",
+  "subtext": "Goals and limits. Daily, weekly or monthly.",
+  "scope": "White second section with nine compact illustrative habit cards. Static stagger, editable examples, no app controls. Hero and tasks preserved.",
+  "componentSetId": "1412:3228",
+  "layouts": [
+    {
+      "id": "1284:146",
+      "w": 1440,
+      "h": 685,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 3,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15314",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15323",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15332",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15342",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15351",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 280,
+          "h": 197
+        },
+        {
+          "id": "1412:15360",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15370",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15379",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15388",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    },
+    {
+      "id": "1284:501",
+      "w": 768,
+      "h": 918,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 3,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15399",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15408",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15417",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15427",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15436",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 213.33334350585938,
+          "h": 209
+        },
+        {
+          "id": "1412:15445",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15455",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 213.3333282470703,
+          "h": 164
+        },
+        {
+          "id": "1412:15464",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 213.3333282470703,
+          "h": 164
+        },
+        {
+          "id": "1412:15473",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 213.3333282470703,
+          "h": 164
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    },
+    {
+      "id": "1284:810",
+      "w": 390,
+      "h": 1124,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 2,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15484",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15493",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15502",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15511",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15520",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15530",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15539",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15548",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 163,
+          "h": 209
+        },
+        {
+          "id": "1412:15557",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    },
+    {
+      "id": "1291:1241",
+      "w": 320,
+      "h": 1220,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 2,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15568",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15577",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15586",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15595",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 128,
+          "h": 209
+        },
+        {
+          "id": "1412:15604",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 128,
+          "h": 215
+        },
+        {
+          "id": "1412:15614",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15623",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15632",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 128,
+          "h": 254
+        },
+        {
+          "id": "1412:15641",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 128,
+          "h": 191
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    },
+    {
+      "id": "1395:3337",
+      "w": 1440,
+      "h": 685,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 3,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15652",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15661",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15670",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15680",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15689",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 280,
+          "h": 197
+        },
+        {
+          "id": "1412:15698",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15708",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15717",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 280,
+          "h": 159
+        },
+        {
+          "id": "1412:15726",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 280,
+          "h": 159
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    },
+    {
+      "id": "1395:3477",
+      "w": 768,
+      "h": 918,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 3,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15737",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15746",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15755",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15765",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15774",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 213.33334350585938,
+          "h": 209
+        },
+        {
+          "id": "1412:15783",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 213.33334350585938,
+          "h": 164
+        },
+        {
+          "id": "1412:15793",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 213.3333282470703,
+          "h": 164
+        },
+        {
+          "id": "1412:15802",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 213.3333282470703,
+          "h": 164
+        },
+        {
+          "id": "1412:15811",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 213.3333282470703,
+          "h": 164
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    },
+    {
+      "id": "1395:3625",
+      "w": 390,
+      "h": 1124,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 2,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15822",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15831",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15840",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15849",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15858",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15868",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15877",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        },
+        {
+          "id": "1412:15886",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 163,
+          "h": 209
+        },
+        {
+          "id": "1412:15895",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 163,
+          "h": 164
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    },
+    {
+      "id": "1395:3779",
+      "w": 320,
+      "h": 1220,
+      "background": {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:1281:6"
+          }
+        }
+      },
+      "cards": 9,
+      "columns": 2,
+      "words": 66,
+      "text": [
+        {
+          "id": "1412:15906",
+          "words": [
+            "Call family",
+            "3 times",
+            "a week"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15915",
+          "words": [
+            "Read",
+            "2 books",
+            "a month"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15924",
+          "words": [
+            "Exercise",
+            "3 hours",
+            "a week"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15933",
+          "words": [
+            "Quit smoking",
+            "12 days",
+            "Since stopping"
+          ],
+          "w": 128,
+          "h": 209
+        },
+        {
+          "id": "1412:15942",
+          "words": [
+            "Less scrolling",
+            "30 min max.",
+            "a day"
+          ],
+          "w": 128,
+          "h": 215
+        },
+        {
+          "id": "1412:15952",
+          "words": [
+            "Drink water",
+            "8 glasses",
+            "a day"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15961",
+          "words": [
+            "Meditate",
+            "30 min",
+            "a day"
+          ],
+          "w": 128,
+          "h": 164
+        },
+        {
+          "id": "1412:15970",
+          "words": [
+            "Clean kitchen",
+            "Dishes\nSink\nFloor",
+            "Weekly / monthly"
+          ],
+          "w": 128,
+          "h": 254
+        },
+        {
+          "id": "1412:15979",
+          "words": [
+            "Less coffee",
+            "2 cups max.",
+            "a day"
+          ],
+          "w": 128,
+          "h": 191
+        }
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": []
+    }
+  ],
+  "reviews": [
+    {
+      "id": "1385:2974",
+      "w": 1440,
+      "h": 1026,
+      "name": "Website / Section 02 and Tasks / Round 04 / 1440"
+    },
+    {
+      "id": "1385:3097",
+      "w": 768,
+      "h": 1424,
+      "name": "Website / Section 02 and Tasks / Round 04 / 768"
+    },
+    {
+      "id": "1385:3220",
+      "w": 390,
+      "h": 1590,
+      "name": "Website / Section 02 and Tasks / Round 04 / 390"
+    },
+    {
+      "id": "1385:3343",
+      "w": 320,
+      "h": 1713,
+      "name": "Website / Section 02 and Tasks / Round 04 / 320"
+    }
+  ],
+  "homes": [
+    {
+      "id": "1284:2",
+      "w": 1440,
+      "h": 5917.7998046875
+    },
+    {
+      "id": "1284:365",
+      "w": 768,
+      "h": 6209.64013671875
+    },
+    {
+      "id": "1284:720",
+      "w": 390,
+      "h": 7482.896484375
+    },
+    {
+      "id": "1291:1217",
+      "w": 320,
+      "h": 7770.9072265625
+    }
+  ],
+  "examples": [
+    [
+      "Call family",
+      "3 times",
+      "a week",
+      0
+    ],
+    [
+      "Drink water",
+      "8 glasses",
+      "a day",
+      1
+    ],
+    [
+      "Read",
+      "2 books",
+      "a month",
+      2
+    ],
+    [
+      "Meditate",
+      "30 min",
+      "a day",
+      3
+    ],
+    [
+      "Exercise",
+      "3 hours",
+      "a week",
+      3
+    ],
+    [
+      "Clean kitchen",
+      "Dishes\nSink\nFloor",
+      "Weekly / monthly",
+      4
+    ],
+    [
+      "Quit smoking",
+      "12 days",
+      "Since stopping",
+      5
+    ],
+    [
+      "Less coffee",
+      "2 cups max.",
+      "a day",
+      6
+    ],
+    [
+      "Less scrolling",
+      "30 min max.",
+      "a day",
+      3
+    ]
+  ],
+  "quitExample": "12 days is illustrative elapsed time, not a native capture or countdown.",
+  "validation": {
+    "nineExamples": true,
+    "noCardOverflow": true,
+    "allFourFinalRendersInspected": true,
+    "heroAndTasksPreserved": true,
+    "SFProAndSharedStyles": true,
+    "staticComposition": true,
+    "runtimePerformanceMeasured": false
+  },
+  "approval": "Design review pending; implementation waits for approval.",
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "nodeId": "1284:146",
+      "file": "Desktop 1440.png",
+      "pixelSize": [
+        1440,
+        685
+      ],
+      "sha256": "92bd8c91539efd80873380e02492986772194321d13e6e725a92303b363e016c"
+    },
+    {
+      "name": "Tablet 768",
+      "nodeId": "1284:501",
+      "file": "Tablet 768.png",
+      "pixelSize": [
+        768,
+        918
+      ],
+      "sha256": "148cba541f458dc7b7a12a28c6545caf6dbf8f40070ef1cdcdaa01d0999135c3"
+    },
+    {
+      "name": "Mobile 390",
+      "nodeId": "1284:810",
+      "file": "Mobile 390.png",
+      "pixelSize": [
+        390,
+        1124
+      ],
+      "sha256": "bc446d084b1c4d4f46f60c597836528009cccd23fd855b295815fb07bb0a72bc"
+    },
+    {
+      "name": "Narrow Phone 320",
+      "nodeId": "1291:1241",
+      "file": "Narrow Phone 320.png",
+      "pixelSize": [
+        320,
+        1220
+      ],
+      "sha256": "6d55e23110debd3bd0475b80b63a48de9dcb75a9fd262c76eafe7f83c9e3220d"
+    }
+  ]
+}

@@ -15,6 +15,40 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## Commit and synchronize local work — 20 October 2026
+
+The user asks to commit all uncommitted repository work, push completed work to main and development, and synchronize the local repositories (W3/W4/T10).
+
+- [x] Fetch and inspect every local branch and registered worktree. All existing local branch tips are already ancestors of main; there is no branch named development or dev. The Android development branch is `claude/android-app`. Its untracked schema 10 matches the main checkout's file byte for byte.
+- [x] Validate and commit the pending research, website, documentation and exported database schema. Saved 259 files in `74b8f44e` on `codex/local-sync-20261020`, pushed to GitHub. Pending design/deployment statuses and ignored scratch/build data are preserved.
+- [ ] Push the saved work to main and the existing Android development branch, then fast-forward local branches/worktrees and pull to verify synchronization. Use ordinary commit messages without test/performance/widget tags; record validation and final state below.
+
+Validation: website static checks pass (seven pages, support/404, 161 links/assets); speed rules and Git whitespace checks pass; 57 JSON files, five CSV files and six Python sources parse; schema 10 agrees with `HabitRepository.SCHEMA_VERSION`; a high-confidence credential scan found no matches. Run the existing website checker with Python's `-X utf8` on Windows. [Core CI 39370115111](https://github.com/lalithsaicharan00/store-reviews/actions/runs/39370115111) passed before main moved: JVM tests (2,000 seeded Drive runs and the 15-year account) and compilation for all five iPhone/Watch targets (W3/T19).
+
+A local Markdown audit checked 641 references and found one missing historical Round 02 gallery manifest. Its report now links to the saved preview folder and states that the manifest was not completed before the revision was superseded; no missing evidence was invented.
+
+Local synchronization: the Android development worktree, Reddit research worktree and inventory branch fast-forwarded to `1796553c`. Git first refused Android's identical untracked schema 10; its original bytes were copied to ignored `Research/Temp/sync-20261020/android-schema-10.json`, verified by SHA-256, then the duplicate was removed and the fast-forward succeeded. Every worktree was clean after this step. Core validation has now passed; main and remote development can fast-forward to the validated work and its documentation.
+
+Existing main CI issue, present before this synchronization: [Android run 39358413967](https://github.com/lalithsaicharan00/store-reviews/actions/runs/39358413967) fails lint at `Android/app/src/main/kotlin/com/oftenenough/app/ui/record/NoteScreens.kt:118` (`SuspiciousIndentation`). No Android source is changed by this synchronization; this failure remains an open validation issue (T2).
+
+## Google Play listing-tag research — 15 October 2026
+
+Google Play listing-tag research, 15 October 2026: [report](<../../../Research/Research Reports/Store Listing and ASO/Google Play Listing Tags — Evidence and Launch Shortlist.md>) and [research checklist](<Google Play Listing Tags — Research.md>). Public-source audit covers all ten requested competitors and Google's current guidance. Exact live Console taxonomy and competitors' saved selections could not be verified; proposed Productivity/Self-help choices remain provisional. The user confirmed there is no existing listing. Research only; no publication or store changes.
+
+## Website verification deployment — 15 October 2026
+
+**Optional account policy update, the user, 15 October 2026 (D15/D16, Android A15):** keep this release's other pages and styling unchanged.
+- [x] Add Privacy's “Your optional account” section and short-version mention: optional Google/Apple sign-in; only account/provider IDs, masked email, verified purchase/refund details, family membership, cloud/private cloud ID and last sync; never habits, tasks, logs or notes. Explain purpose, Cloudflare processing, encrypted transit and the service's preparation status.
+- [x] Update Delete account with **Plus & Account › Delete my account**, family-owner deletion, and store purchases/restoration; retain separate local/cloud/export removal instructions.
+- [ ] Regenerate; run `website/tests/verification-check.py`; redeploy the existing Pages project on oftenenough.com, verify the public policy/deletion pages, and record deployment evidence in `website/Verification Deployment.md`.
+  - Regeneration and static checks pass (161 links/assets); only Privacy and Delete account changed in the public build. Rule and whitespace checks pass. Publication awaits renewed Cloudflare authentication: no callable plugin, expired saved CLI login, and the device authorization request timed out. No new deployment or live-policy verification is claimed.
+
+- [x] Implemented the seven supplied Figma pages as plain static HTML: Home `1284:2`, Download `1289:2245`, Plus `1289:2657`, Privacy `1289:2916`, Help `1289:3145`, Terms `1289:3401`, Delete Account `1289:3603`. Visual fidelity is secondary for this explicitly authorized verification release. Every page says work in progress and distinguishes unfinished platforms/public downloads. This supersedes the earlier design-only approval hold for this verification site.
+- [x] Replaced old server/account claims with current app data flows, optional usage sharing, one-time store purchases and separate device/cloud deletion instructions. Removed the obsolete web Google sign-in/deletion script; no fake deletion or store-download flow. Source evidence is in `website/Verification Deployment.md`.
+- [x] Published on Cloudflare Pages at https://oftenenough.com and https://www.oftenenough.com; both domains are active. Deployment `4399123f-1c45-4dab-8b38-80cc18995c00`. Seven live pages, three aliases, assets, strict headers and the real 404 pass HTTPS checks. Native app, production API, Figma and unrelated files are untouched; no Git push, new local branch or worktree. Details and prior DNS values are in `website/Verification Deployment.md` (W1/W3/W4/D11/S19).
+  - Local validation passed: seven required pages plus support/404, 160 links/assets, strict CSP, approved logo and all seven pages at 320px without overflow/broken images. Rule check and whitespace check pass. Cloudflare's saved OAuth token is expired; device sign-in with Pages write and read-only account/zone access awaits the user. No deployment or DNS success is claimed. No local branch/worktree, Git push, API change or Figma change.
+  - The user connected the Cloudflare plugin, which verified access despite the separate CLI device code expiring. Pages deployment and root/www DNS cutover completed. Automatic website analytics injection is disabled, and support email markup avoids JavaScript-dependent obfuscation; final live HTML has zero scripts and functioning mail links. The preceding authentication note is historical.
+
 ## Reddit marketing example — current request
 
 **Localization example, the user, 13 October 2026:** add bondavi's July 2023 app/store localization to [Marketing and How We Can Market It](<../../../Marketing/Marketing and How We Can Market It.md>), including original sources, discovery and gradual overseas growth with no quantified surge. Exclude the separate user-data/content-coverage tactic as not useful for our plan. Commit this scoped package to main, verify publication, then continue with Me+ Lifestyle Routine. Progress: [publication and continuation checklist](<Localization Marketing Example — Publish and Continue.md>) (W1/W2/W4).
@@ -1698,7 +1732,7 @@ and the Add note keyboard coming up by itself.
     praised in 708 reviews in 26 apps, 614 of them for the days-since count, and people ask for the best run beside it
     (Progress report §10.1–10.2). A habit's streaks stay off Progress; a quit habit's run is its main number.
   - [ ] The user's review, then the app (Android first, on `claude/android-app`).
-- [ ] **140. Android: the routine player and the timer, every screen** (added 19 October 2026, from the user: "first
+- [x] **140. Android: the routine player and the timer, every screen** (added 19 October 2026, from the user: "first
   let's complete the routine player and … timer … what designs are left? … add … the empty screens placeholders first
   … with the numbering"). Figma `1328:2`. Numbered 140: 134–139 are taken on other branches.
   - [x] Reviewed the 18 frames from 12 Oct against the player's decisions (Design Rules, the iPhone player spec, the
@@ -1731,7 +1765,36 @@ and the Add note keyboard coming up by itself.
     notification running, paused and at the goal, and the lock screen.
   - [x] Checked by the user (19 Oct): "+1" / "+2.5" only on habits logged by a step (Water, Run); a habit typed each
     time (Savings) shows **Log**, the word alone with no pencil icon, not Log amount (the user: "it's a redundant word just use log"; 3.3, 3.5).
-  - [ ] Then the app (Android first, on `claude/android-app`).
+  - [x] **Then the app, Android first** (the user, 19 Oct 2026: "work on this Figma section … make sure the design is
+    matching implement everything properly and then test it"). Built on `main`, where Android work is committed now.
+    - [x] 1 · Starting and the page: Start on Today opens the player in Today's order (1.1); a partly done routine opens
+      on the first unfinished habit (1.2); all done opens the end page (1.3); another day's chip names the day and logs
+      go to it (1.4); 200 % text (1.5); the description under the name (1.6); the header (one-line title ▾, the
+      indicator with "N of 12").
+    - [x] 2 · Checks, several a day, tasks: Not done yet / Done; the Saved snackbar with Undo and Add note; Log one, goal
+      met → Next; 3 times a week with ✓ Done for today (2.3, 2.4); a task, and one done earlier today (2.5, 2.6).
+    - [x] 3 · Amounts: "+1" / "+2.5" for a step; goal met → Next; a habit typed each time shows **Log** (no icon); Add
+      log over the player and back with the count (3.3–3.5); long labels end in ….
+    - [x] 4 · Time: Start, Pause / Resume (4.2); at the goal the clock keeps counting with ✓ Goal met, Next once paused
+      (4.3); N days a week (4.4); a week total (4.5).
+    - [x] 5 · Checklists: steps in the card, many steps scroll, every step ticked → Next, no snackbar (5.2).
+    - [x] 6 · Day details over the player from the chip, Skip today there; the Skipped snackbar; Add note from it.
+    - [x] 7 · ⋮: Go to first unfinished, Change order, End routine; Your routine sheet; Edit (drag, this routine only).
+    - [x] 8 · The end: the last habit done; some left; everything done (Done only); End routine (8.3); ✕ with a timer
+      running goes to Today and the row keeps its clock (8.4).
+    - [x] 9 · The timer on its own: running, paused, over the limit (neutral, in words), Log manually, ⌄ / Back.
+    - [x] 10 · The Live Update outside the app: the status bar chip, the notification running / paused / at the goal,
+      the lock screen (Pause works locked, D13), a tap opens the timer or the player.
+    - [x] Every frame checked beside Figma at 360 × 800 dp, light and dark, on the Pixel 10 Pro emulator (Android 16),
+      the Live Update in the real shade and status bar, and at 200 % text (1.5: the bar's "5 of 12" now grows instead of
+      clipping). Tests: `PlayerTest` 6 (new: starting, the timer, each kind's button and status, ⋮ and Your routine,
+      another day, the Live Update's Pause, Resume and tap), `ScreensTest` 13, `TodayTest` 12, the unit tests
+      (`PlayerWordsTest`). Committed and pushed.
+    - Settled while building (Android Designs — Handoff, "built on Android"): a timer waits for Start; ✕ leaves a running
+      timer running; on another day the message says "already done"; the Live Update's body says the goal because
+      Android can't tick text there (the clock is in its header and the status bar chip).
+    - Found and fixed: moving a habit in Your routine scrolled the pager inside a layout and crashed ("performMeasureAndLayout
+      called during measure layout"); the scroll now waits a frame.
 - [ ] **143. Habit details: Year in Pixels fills the width, then the rest of the page** (added 19 October 2026, from the
   user, Figma `1373:2`: "the blocks … should be occupying the space dynamically … rather than leaving out some empty
   space on the right … the same thing [as] the mood section … each cell should follow the meaning of … what the squares

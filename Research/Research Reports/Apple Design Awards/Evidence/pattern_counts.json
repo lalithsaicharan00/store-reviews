@@ -1,0 +1,109 @@
+{
+  "observed_date": "2026-10-15",
+  "ten_year_window": [
+    2017,
+    2026
+  ],
+  "winner_instances": 113,
+  "apps": 57,
+  "games": 56,
+  "baseline_2016": 12,
+  "annual_counts": {
+    "2016": 12,
+    "2017": 12,
+    "2018": 10,
+    "2019": 9,
+    "2020": 8,
+    "2021": 12,
+    "2022": 12,
+    "2023": 12,
+    "2024": 14,
+    "2025": 12,
+    "2026": 12
+  },
+  "codes": {
+    "clarity": {
+      "count": 49,
+      "denominator": 113,
+      "percent": 43.4
+    },
+    "platform": {
+      "count": 63,
+      "denominator": 113,
+      "percent": 55.8
+    },
+    "inclusion": {
+      "count": 21,
+      "denominator": 113,
+      "percent": 18.6
+    },
+    "delight": {
+      "count": 34,
+      "denominator": 113,
+      "percent": 30.1
+    },
+    "visuals": {
+      "count": 47,
+      "denominator": 113,
+      "percent": 41.6
+    },
+    "innovation": {
+      "count": 42,
+      "denominator": 113,
+      "percent": 37.2
+    },
+    "impact": {
+      "count": 18,
+      "denominator": 113,
+      "percent": 15.9
+    },
+    "performance": {
+      "count": 7,
+      "denominator": 113,
+      "percent": 6.2
+    }
+  },
+  "limits": "Single-researcher manual coding of public rationales and award categories. Mentions are not verified feature prevalence, causal effects or win probabilities. No nonwinner comparison group.",
+  "app_only_codes": {
+    "clarity": {
+      "count": 34,
+      "denominator": 57,
+      "percent": 59.6
+    },
+    "platform": {
+      "count": 42,
+      "denominator": 57,
+      "percent": 73.7
+    },
+    "inclusion": {
+      "count": 12,
+      "denominator": 57,
+      "percent": 21.1
+    },
+    "delight": {
+      "count": 12,
+      "denominator": 57,
+      "percent": 21.1
+    },
+    "visuals": {
+      "count": 18,
+      "denominator": 57,
+      "percent": 31.6
+    },
+    "innovation": {
+      "count": 21,
+      "denominator": 57,
+      "percent": 36.8
+    },
+    "impact": {
+      "count": 9,
+      "denominator": 57,
+      "percent": 15.8
+    },
+    "performance": {
+      "count": 3,
+      "denominator": 57,
+      "percent": 5.3
+    }
+  }
+}

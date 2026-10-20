@@ -1,0 +1,33 @@
+{
+  "componentId": "1447:3514",
+  "emojiId": "1447:3516",
+  "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984",
+  "file": "Design Assets/Native/Progress Week — Simulator.png",
+  "type": "Actual native iPhone simulator screenshot",
+  "captureTimeUTC": "2026-10-10T11:13:13.075Z",
+  "originalSize": [
+    1206,
+    2622
+  ],
+  "viewport": {
+    "x": 48,
+    "y": 1650,
+    "width": 1110,
+    "height": 656,
+    "radius": 56
+  },
+  "facts": [
+    "Read",
+    "20 min a day",
+    "Reached on 6 of 6 days so far",
+    "2 h 12 min this week",
+    "Six completed days and current-day partial progress"
+  ],
+  "nativePixelsEdited": false,
+  "sha256": "f201de9c62fdc420d8cd2ff86c26258da2ad65b3430d6f7d65a365cac084404b",
+  "bytes": 270810,
+  "source": "Research/Temp/store-screenshots/captures/run2/C3583B8A-1301-4133-94EE-4A8D700C92B4.png",
+  "sourceManifest": "Research/Temp/store-screenshots/captures/run2/manifest.json",
+  "test": "ProgressUITests/testOpenSwitchAndBack()",
+  "note": "Existing native simulator capture copied without edits; website text/layout remain editable. Not a physical-phone photograph or performance measurement."
+}

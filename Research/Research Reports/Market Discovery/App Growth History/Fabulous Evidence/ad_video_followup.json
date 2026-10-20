@@ -1,0 +1,34 @@
+{
+  "researched_date": "2026-10-13",
+  "app": "Fabulous: Daily Habit Tracker",
+  "apple_id": "1203637303",
+  "exact_peak_cause_established": false,
+  "65_percent_supported": false,
+  "recalled_percentage_origin": "Unknown; do not equate with the archive's 66 Popularity score",
+  "download_observation": {
+    "period": "Early January 2023",
+    "value_approximate": 36000,
+    "unit": "weekly downloads",
+    "platform": "iOS",
+    "country": "US",
+    "provenance": "Sensor Tower AI Insights narrative; aggregate chart does not independently verify weekly point"
+  },
+  "dated_ad_source": "https://www.pipiads.com/tiktok-ads-examples/fabulous-tiktok-ads-1753583265073185",
+  "dated_ads": [
+    {"message": "Morning routines", "first_seen": "2022-12-30", "last_seen": "2023-01-02", "country": "US", "platform_label": "Apple", "cta": "Install", "ad_impressions_display": "17.4K", "popularity_display": "66"},
+    {"message": "Step-by-step decluttering", "first_seen": "2022-12-30", "last_seen": "2023-01-03", "country": "US", "platform_label": "Apple", "cta": "Go to App Store", "ad_impressions_display": "2.9K", "popularity_display": "17"}
+  ],
+  "original_video_access": "Dated morning-routine viewing link redirects to Pipiads login; public video not obtained",
+  "illustrative_video": {
+    "library": "https://motionapp.com/library/the-fabulous",
+    "url": "https://motionswipefile.blob.core.windows.net/swipe-file-cached-links/swipe-file-source-link/1428783962338250/6a09de0008c1a6eaf94517aa/4f368703-75df-492a-ab13-956bd3db8f44.mp4",
+    "duration_seconds": 56.619,
+    "library_platform": "Meta",
+    "matches_historical_tiktok_creative": "Not established",
+    "campaign_date": "Not established",
+    "inspected_frames": "Opening animated doll in bed with procrastination framing; struggling to change; later eating a salad with improved-focus messaging; closing frame at 53.5 seconds invites a three-minute quiz",
+    "cta": "Take the quiz",
+    "causal_limit": "Illustrative creative only; no install attribution or January 2023 performance evidence",
+    "remote_media_downloaded": false
+  }
+}

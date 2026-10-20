@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "purpose": "Current Figma hero review exports, not web payloads",
+  "approval": "pending",
+  "images": [
+    {
+      "file": "Desktop 1440.png",
+      "figmaId": "1335:2366",
+      "width": 1440,
+      "height": 900,
+      "bytes": 140782,
+      "sha256": "8aa019ce5c43762768a2c143a14b63c3e3e9c2b991e3eba8c1cac88627bcb8aa"
+    },
+    {
+      "file": "Tablet 768.png",
+      "figmaId": "1335:2419",
+      "width": 768,
+      "height": 792,
+      "bytes": 97523,
+      "sha256": "6444373fe644dda8abc563ff75fd782239c7d8051ec7d93f55488ba9cc36d10f"
+    },
+    {
+      "file": "Mobile 390.png",
+      "figmaId": "1335:2462",
+      "width": 390,
+      "height": 1126,
+      "bytes": 94523,
+      "sha256": "e28dd207cafbe1f3a493a2b32bacc88b938b623d7bb4440775aa7c2a241bbbcc"
+    },
+    {
+      "file": "Narrow Phone 320.png",
+      "figmaId": "1335:2509",
+      "width": 320,
+      "height": 1003,
+      "bytes": 75936,
+      "sha256": "ceaa18e9d52542ed23de4942614614115f1a680c1fd9f7bc116e58ae9cbdd34f"
+    }
+  ]
+}

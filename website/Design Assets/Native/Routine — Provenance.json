@@ -1,0 +1,40 @@
+{
+  "source": "Research/Temp/website-section4/native-evidence/73E77EA8-0E4F-4957-B38A-FCE5ADBD9CAE.png",
+  "sourceArtifact": {
+    "repository": "lalithsaicharan00/store-reviews",
+    "run": 37624444958,
+    "artifact": 11485733976,
+    "commit": "aa6ee1ed95b31cd4db9f49f522f39891982f5930",
+    "url": "https://github.com/lalithsaicharan00/store-reviews/actions/runs/37624444958"
+  },
+  "sourceManifest": "Research/Temp/website-section4/native-evidence/manifest.json",
+  "test": "FocusPlayerUITests/testCompactProgressAcrossPeriodsAndTypes()",
+  "attachment": {
+    "configurationName": "Test Scheme Action",
+    "deviceId": "22452A91-4697-4369-8812-53ADB77EB73B",
+    "deviceName": "iPhone 17 Pro",
+    "exportedFileName": "73E77EA8-0E4F-4957-B38A-FCE5ADBD9CAE.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "compact-04-timer_0_EB60258F-8E67-48F1-ADAA-4296BCB2F822.png",
+    "timestamp": 1791378964.731
+  },
+  "captureUTC": "2026-10-07T13:16:04.731000+00:00",
+  "originalSize": [
+    1206,
+    2622
+  ],
+  "sha1": "4bb14b69f7984185e96b4e1e99d30a25eb3605cd",
+  "sha256": "790fb063d062eb3647e823b81b4d56fd63b5f642f1283a92434e8355dbcf69ed",
+  "bytes": 198234,
+  "facts": [
+    "Anytime · 4/9",
+    "Read a little",
+    "Today",
+    "0:08 / 20 min",
+    "Pause",
+    "Day details",
+    "Previous / next navigation"
+  ],
+  "nativePixelsEdited": false,
+  "note": "Actual native iPhone 17 Pro simulator capture from a prior test. The selected screenshot is not failure-associated; the run also contains a different failing pause test, and is not claimed as a passing suite. No new CI run dispatched. Not a physical-device photo or customer result."
+}

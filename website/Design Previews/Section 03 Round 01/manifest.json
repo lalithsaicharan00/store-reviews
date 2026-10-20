@@ -1,0 +1,739 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "round": "01",
+  "section": "03",
+  "visitorQuestion": "Can I see that my efforts are adding up?",
+  "headline": "Small actions. Visible progress.",
+  "subtext": "See your week, month and year. Your totals, patterns and streaks.",
+  "ordering": "Reasoned recommendation from qualitative review evidence and current page context; no measured third-place ranking.",
+  "research": {
+    "originals": 32,
+    "sourceDatasets": 16,
+    "minDate": "2016-08-23",
+    "maxDate": "2026-03-27",
+    "selection": "Purposive re-verification of earlier streak-placement and website leads; full originals read."
+  },
+  "proof": {
+    "componentId": "1447:3514",
+    "emojiId": "1447:3516",
+    "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984",
+    "file": "Design Assets/Native/Progress Week — Simulator.png",
+    "type": "Actual native iPhone simulator screenshot",
+    "captureTimeUTC": "2026-10-10T11:13:13.075Z",
+    "originalSize": [
+      1206,
+      2622
+    ],
+    "viewport": {
+      "x": 48,
+      "y": 1650,
+      "width": 1110,
+      "height": 656,
+      "radius": 56
+    },
+    "facts": [
+      "Read",
+      "20 min a day",
+      "Reached on 6 of 6 days so far",
+      "2 h 12 min this week",
+      "Six completed days and current-day partial progress"
+    ],
+    "nativePixelsEdited": false
+  },
+  "reviews": [
+    {
+      "id": "1450:3690",
+      "sectionId": "1450:3691",
+      "w": 1440,
+      "h": 527.322509765625
+    },
+    {
+      "id": "1450:3704",
+      "sectionId": "1450:3705",
+      "w": 768,
+      "h": 783.1459350585938
+    },
+    {
+      "id": "1450:3718",
+      "sectionId": "1450:3719",
+      "w": 390,
+      "h": 514.118896484375
+    },
+    {
+      "id": "1450:3732",
+      "sectionId": "1450:3733",
+      "w": 320,
+      "h": 476.2054138183594
+    }
+  ],
+  "sections": [
+    {
+      "id": "1284:163",
+      "w": 1440,
+      "h": 527.322509765625,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3534",
+        "w": 608,
+        "h": 359.322509765625,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1284:518",
+      "w": 768,
+      "h": 783.1459350585938,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3556",
+        "w": 672,
+        "h": 397.14593505859375,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1284:827",
+      "w": 390,
+      "h": 514.118896484375,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3578",
+        "w": 341.9999694824219,
+        "h": 202.11891174316406,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1291:1258",
+      "w": 320,
+      "h": 476.2054138183594,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3600",
+        "w": 288,
+        "h": 170.20541381835938,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1395:3397",
+      "w": 1440,
+      "h": 527.322509765625,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3622",
+        "w": 608,
+        "h": 359.322509765625,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1395:3539",
+      "w": 768,
+      "h": 783.1459350585938,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3644",
+        "w": 672,
+        "h": 397.14593505859375,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1395:3693",
+      "w": 390,
+      "h": 514.118896484375,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3666",
+        "w": 341.9999694824219,
+        "h": 202.11891174316406,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1395:3847",
+      "w": 320,
+      "h": 476.2054138183594,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3688",
+        "w": 288,
+        "h": 170.20541381835938,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1450:3691",
+      "w": 1440,
+      "h": 527.322509765625,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3701",
+        "w": 608,
+        "h": 359.322509765625,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1450:3705",
+      "w": 768,
+      "h": 783.1459350585938,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3715",
+        "w": 672,
+        "h": 397.14593505859375,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1450:3719",
+      "w": 390,
+      "h": 514.118896484375,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3729",
+        "w": 341.9999694824219,
+        "h": 202.11891174316406,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1450:3733",
+      "w": 320,
+      "h": 476.2054138183594,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks.",
+        "4–10 Oct · A week of reading"
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unsharedStyles": [],
+      "overflow": [],
+      "nativeProof": {
+        "id": "1450:3743",
+        "w": 288,
+        "h": 170.20541381835938,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      "background": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9750000238418579,
+            "g": 0.9750000238418579,
+            "b": 0.9750000238418579
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:4"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "preservation": [
+    {
+      "id": "1340:2412",
+      "unchanged": true
+    },
+    {
+      "id": "1340:2441",
+      "unchanged": true
+    },
+    {
+      "id": "1340:2468",
+      "unchanged": true
+    },
+    {
+      "id": "1340:2495",
+      "unchanged": true
+    },
+    {
+      "id": "1284:146",
+      "unchanged": true
+    },
+    {
+      "id": "1284:501",
+      "unchanged": true
+    },
+    {
+      "id": "1284:810",
+      "unchanged": true
+    },
+    {
+      "id": "1291:1241",
+      "unchanged": true
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1450:3514",
+      "w": 1440,
+      "h": 341,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    },
+    {
+      "id": "1450:3536",
+      "w": 768,
+      "h": 506,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    },
+    {
+      "id": "1450:3558",
+      "w": 390,
+      "h": 466,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    },
+    {
+      "id": "1450:3580",
+      "w": 320,
+      "h": 493,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    },
+    {
+      "id": "1450:3602",
+      "w": 1440,
+      "h": 341,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    },
+    {
+      "id": "1450:3624",
+      "w": 768,
+      "h": 506,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    },
+    {
+      "id": "1450:3646",
+      "w": 390,
+      "h": 466,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    },
+    {
+      "id": "1450:3668",
+      "w": 320,
+      "h": 493,
+      "contentPreserved": true,
+      "dimensionsPreserved": true,
+      "afterProgress": true
+    }
+  ],
+  "homes": [
+    {
+      "id": "1284:2",
+      "w": 1440,
+      "h": 6451.12255859375
+    },
+    {
+      "id": "1284:365",
+      "w": 768,
+      "h": 6913.7861328125
+    },
+    {
+      "id": "1284:720",
+      "w": 390,
+      "h": 8008.552734375
+    },
+    {
+      "id": "1291:1217",
+      "w": 320,
+      "h": 8200.5615234375
+    }
+  ],
+  "validation": {
+    "fourFinalRendersInspected": true,
+    "nativeSourceHashVerified": true,
+    "heroAndHabitInternalsPreserved": true,
+    "tasksContentAndDimensionsPreserved": true,
+    "SFProAndSharedStyles": true,
+    "noWebsiteTextOverflow": true,
+    "runtimePerformanceMeasured": false
+  },
+  "approval": "Ready for design review; implementation waits for approval.",
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "nodeId": "1450:3690",
+      "file": "Desktop 1440.png",
+      "pixelSize": [
+        1440,
+        528
+      ],
+      "sha256": "f077419778ee512a49bb7c6ab0d9773c2d2640a27dc6cf04cedcc2f961a667c1"
+    },
+    {
+      "name": "Tablet 768",
+      "nodeId": "1450:3704",
+      "file": "Tablet 768.png",
+      "pixelSize": [
+        768,
+        784
+      ],
+      "sha256": "e9cb782a7f93cc2a8c05b8be4da02e2a7547e6bc2bdbd329d310be4d683390f3"
+    },
+    {
+      "name": "Mobile 390",
+      "nodeId": "1450:3718",
+      "file": "Mobile 390.png",
+      "pixelSize": [
+        390,
+        515
+      ],
+      "sha256": "3f6c20994c94e62b7811359adf6fbe3823b9328efef7a51847bd8dfe293947e4"
+    },
+    {
+      "name": "Narrow Phone 320",
+      "nodeId": "1450:3732",
+      "file": "Narrow Phone 320.png",
+      "pixelSize": [
+        320,
+        477
+      ],
+      "sha256": "674a9a6ca97d02bd933a52749f4fc1acce48049e5c7e5a94b510bdb4c350a3dc"
+    }
+  ]
+}

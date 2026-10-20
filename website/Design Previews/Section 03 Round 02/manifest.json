@@ -1,0 +1,693 @@
+{
+  "date": "2026-10-12",
+  "round": "02",
+  "topic": "Caption removal and quiet card shadow",
+  "mainSections": [
+    {
+      "id": "1284:163",
+      "w": 1440,
+      "h": 487.322509765625,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1284:518",
+      "w": 768,
+      "h": 743.1459350585938,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1284:827",
+      "w": 390,
+      "h": 474.118896484375,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1291:1258",
+      "w": 320,
+      "h": 436.2054138183594,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    }
+  ],
+  "allCopies": [
+    {
+      "id": "1284:163",
+      "w": 1440,
+      "h": 487.322509765625,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1284:518",
+      "w": 768,
+      "h": 743.1459350585938,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1284:827",
+      "w": 390,
+      "h": 474.118896484375,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1291:1258",
+      "w": 320,
+      "h": 436.2054138183594,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1395:3397",
+      "w": 1440,
+      "h": 487.322509765625,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1395:3539",
+      "w": 768,
+      "h": 743.1459350585938,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1395:3693",
+      "w": 390,
+      "h": 474.118896484375,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1395:3847",
+      "w": 320,
+      "h": 436.2054138183594,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1450:3691",
+      "w": 1440,
+      "h": 487.322509765625,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1450:3705",
+      "w": 768,
+      "h": 743.1459350585938,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1450:3719",
+      "w": 390,
+      "h": 474.118896484375,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    },
+    {
+      "id": "1450:3733",
+      "w": 320,
+      "h": 436.2054138183594,
+      "text": [
+        "Small actions.",
+        "Visible progress.",
+        "See your week, month and year.\nYour totals, patterns and streaks."
+      ],
+      "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+      "shadow": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06499999761581421
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        }
+      ],
+      "unclipped": true,
+      "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "1450:3690",
+      "sectionId": "1450:3691",
+      "w": 1440,
+      "h": 487.322509765625
+    },
+    {
+      "id": "1450:3704",
+      "sectionId": "1450:3705",
+      "w": 768,
+      "h": 743.1459350585938
+    },
+    {
+      "id": "1450:3718",
+      "sectionId": "1450:3719",
+      "w": 390,
+      "h": 474.118896484375
+    },
+    {
+      "id": "1450:3732",
+      "sectionId": "1450:3733",
+      "w": 320,
+      "h": 436.2054138183594
+    }
+  ],
+  "proofSourceId": "1447:3514",
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "file": "Design Previews/Section 03 Round 02/Desktop 1440.png",
+      "size": [
+        1440,
+        488
+      ],
+      "bytes": 88102,
+      "sha256": "c56a9e4bfca046869c572dc18ed1950ad190f1aee4e1be36c4677dd5723bd608",
+      "visuallyInspected": true
+    },
+    {
+      "name": "Tablet 768",
+      "file": "Design Previews/Section 03 Round 02/Tablet 768.png",
+      "size": [
+        768,
+        744
+      ],
+      "bytes": 89919,
+      "sha256": "dcdfb261237d381212d618b96baf559de2b912aace6f378034d1bec2ee6e12cb",
+      "visuallyInspected": true
+    },
+    {
+      "name": "Mobile 390",
+      "file": "Design Previews/Section 03 Round 02/Mobile 390.png",
+      "size": [
+        390,
+        475
+      ],
+      "bytes": 45695,
+      "sha256": "f98bdc0dac8a684146ae9de64f28ec158f88ed1023e1282889bd1d7bf579fbbe",
+      "visuallyInspected": true
+    },
+    {
+      "name": "Narrow Phone 320",
+      "file": "Design Previews/Section 03 Round 02/Narrow Phone 320.png",
+      "size": [
+        320,
+        437
+      ],
+      "bytes": 38369,
+      "sha256": "9b825783d89fdccf3a33781630f2c899c8eaee34f8b2c57e162c845cb865919e",
+      "visuallyInspected": true
+    }
+  ],
+  "retainedTasks": [
+    {
+      "id": "1467:3551",
+      "w": 1440,
+      "h": 341,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3595",
+      "w": 768,
+      "h": 506,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3639",
+      "w": 390,
+      "h": 466,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3683",
+      "w": 320,
+      "h": 493,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3727",
+      "w": 1440,
+      "h": 341,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3771",
+      "w": 768,
+      "h": 506,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3815",
+      "w": 390,
+      "h": 466,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3859",
+      "w": 320,
+      "h": 493,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    }
+  ],
+  "approval": "User accepted Section 03; requested date removal and shadow refinements completed. Website implementation still awaits approval."
+}

@@ -1,0 +1,5699 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "branch": "codex/website-design",
+  "domain": "oftenenough.com",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "pageId": "1268:11389",
+  "designOnly": true,
+  "approval": "Section 03 and remaining website design review pending; website implementation remains pending.",
+  "layouts": [
+    {
+      "id": "1284:2",
+      "name": "Website / Home / 1440",
+      "width": 1440,
+      "height": 6391.6123046875,
+      "sectionOrder": [
+        {
+          "id": "1284:3",
+          "name": "Navigation",
+          "h": 88
+        },
+        {
+          "id": "1340:2412",
+          "name": "Hero / visitor needs and native product",
+          "h": 800
+        },
+        {
+          "id": "1284:146",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 691
+        },
+        {
+          "id": "1284:163",
+          "name": "02 / Small actions visible progress",
+          "h": 487.322509765625
+        },
+        {
+          "id": "1450:3514",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 752.4898071289062
+        },
+        {
+          "id": "1467:3551",
+          "name": "05 / Tasks / retained for next review",
+          "h": 341
+        },
+        {
+          "id": "1284:221",
+          "name": "04 / Privacy",
+          "h": 517
+        },
+        {
+          "id": "1284:242",
+          "name": "05 / Device family",
+          "h": 952.800048828125
+        },
+        {
+          "id": "1284:302",
+          "name": "06 / Free and Plus",
+          "h": 559
+        },
+        {
+          "id": "1284:315",
+          "name": "07 / Common questions",
+          "h": 495
+        },
+        {
+          "id": "1284:331",
+          "name": "Final invitation",
+          "h": 377
+        },
+        {
+          "id": "1284:336",
+          "name": "Footer",
+          "h": 331
+        }
+      ]
+    },
+    {
+      "id": "1284:365",
+      "name": "Website / Home / 768",
+      "width": 768,
+      "height": 6913.3984375,
+      "sectionOrder": [
+        {
+          "id": "1284:366",
+          "name": "Navigation",
+          "h": 88
+        },
+        {
+          "id": "1340:2441",
+          "name": "Hero / visitor needs and native product",
+          "h": 600
+        },
+        {
+          "id": "1284:501",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 931
+        },
+        {
+          "id": "1284:518",
+          "name": "02 / Small actions visible progress",
+          "h": 743.1459350585938
+        },
+        {
+          "id": "1450:3536",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 876.6122436523438
+        },
+        {
+          "id": "1467:3595",
+          "name": "05 / Tasks / retained for next review",
+          "h": 506
+        },
+        {
+          "id": "1284:576",
+          "name": "04 / Privacy",
+          "h": 517
+        },
+        {
+          "id": "1284:597",
+          "name": "05 / Device family",
+          "h": 865.6400146484375
+        },
+        {
+          "id": "1284:657",
+          "name": "06 / Free and Plus",
+          "h": 583
+        },
+        {
+          "id": "1284:670",
+          "name": "07 / Common questions",
+          "h": 495
+        },
+        {
+          "id": "1284:686",
+          "name": "Final invitation",
+          "h": 377
+        },
+        {
+          "id": "1284:691",
+          "name": "Footer",
+          "h": 331
+        }
+      ]
+    },
+    {
+      "id": "1284:720",
+      "name": "Website / Home / 390",
+      "width": 390,
+      "height": 7667.85888671875,
+      "sectionOrder": [
+        {
+          "id": "1284:721",
+          "name": "Navigation",
+          "h": 84
+        },
+        {
+          "id": "1340:2468",
+          "name": "Hero / visitor needs and native product",
+          "h": 977.3673095703125
+        },
+        {
+          "id": "1284:810",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 1208
+        },
+        {
+          "id": "1284:827",
+          "name": "02 / Small actions visible progress",
+          "h": 474.118896484375
+        },
+        {
+          "id": "1450:3558",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 755.3060913085938
+        },
+        {
+          "id": "1467:3639",
+          "name": "05 / Tasks / retained for next review",
+          "h": 466
+        },
+        {
+          "id": "1284:887",
+          "name": "04 / Privacy",
+          "h": 564
+        },
+        {
+          "id": "1284:908",
+          "name": "05 / Device family",
+          "h": 1272.066650390625
+        },
+        {
+          "id": "1284:968",
+          "name": "06 / Free and Plus",
+          "h": 708
+        },
+        {
+          "id": "1284:981",
+          "name": "07 / Common questions",
+          "h": 524
+        },
+        {
+          "id": "1284:997",
+          "name": "Final invitation",
+          "h": 289
+        },
+        {
+          "id": "1284:1002",
+          "name": "Footer",
+          "h": 346
+        }
+      ]
+    },
+    {
+      "id": "1289:2245",
+      "name": "Website / Download / 1440",
+      "width": 1440,
+      "height": 1605.679931640625
+    },
+    {
+      "id": "1289:2387",
+      "name": "Website / Download / 768",
+      "width": 768,
+      "height": 1546.5999755859375
+    },
+    {
+      "id": "1289:2521",
+      "name": "Website / Download / 390",
+      "width": 390,
+      "height": 2236.679931640625
+    },
+    {
+      "id": "1289:2657",
+      "name": "Website / Plus / 1440",
+      "width": 1440,
+      "height": 1372
+    },
+    {
+      "id": "1289:2748",
+      "name": "Website / Plus / 768",
+      "width": 768,
+      "height": 1444
+    },
+    {
+      "id": "1289:2831",
+      "name": "Website / Plus / 390",
+      "width": 390,
+      "height": 2223
+    },
+    {
+      "id": "1289:2916",
+      "name": "Website / Privacy / 1440",
+      "width": 1440,
+      "height": 1580
+    },
+    {
+      "id": "1289:2997",
+      "name": "Website / Privacy / 768",
+      "width": 768,
+      "height": 1746
+    },
+    {
+      "id": "1289:3070",
+      "name": "Website / Privacy / 390",
+      "width": 390,
+      "height": 2322
+    },
+    {
+      "id": "1289:3145",
+      "name": "Website / Help / 1440",
+      "width": 1440,
+      "height": 1520
+    },
+    {
+      "id": "1289:3234",
+      "name": "Website / Help / 768",
+      "width": 768,
+      "height": 1627
+    },
+    {
+      "id": "1289:3315",
+      "name": "Website / Help / 390",
+      "width": 390,
+      "height": 2087
+    },
+    {
+      "id": "1289:3401",
+      "name": "Website / Terms / 1440",
+      "width": 1440,
+      "height": 1552
+    },
+    {
+      "id": "1289:3473",
+      "name": "Website / Terms / 768",
+      "width": 768,
+      "height": 1552
+    },
+    {
+      "id": "1289:3537",
+      "name": "Website / Terms / 390",
+      "width": 390,
+      "height": 1773
+    },
+    {
+      "id": "1289:3603",
+      "name": "Website / Delete account / 1440",
+      "width": 1440,
+      "height": 1210
+    },
+    {
+      "id": "1289:3674",
+      "name": "Website / Delete account / 768",
+      "width": 768,
+      "height": 1210
+    },
+    {
+      "id": "1289:3737",
+      "name": "Website / Delete account / 390",
+      "width": 390,
+      "height": 1354
+    },
+    {
+      "id": "1289:3802",
+      "name": "Website / 404 / 1440",
+      "width": 1440,
+      "height": 809
+    },
+    {
+      "id": "1289:3865",
+      "name": "Website / 404 / 768",
+      "width": 768,
+      "height": 809
+    },
+    {
+      "id": "1289:3920",
+      "name": "Website / 404 / 390",
+      "width": 390,
+      "height": 802
+    },
+    {
+      "id": "1291:1217",
+      "name": "Website / Home / 320",
+      "width": 320,
+      "height": 7796.724609375,
+      "sectionOrder": [
+        {
+          "id": "1291:1218",
+          "name": "Navigation",
+          "h": 88
+        },
+        {
+          "id": "1340:2495",
+          "name": "Hero / visitor needs and native product",
+          "h": 891.9284057617188
+        },
+        {
+          "id": "1291:1241",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 1208
+        },
+        {
+          "id": "1291:1258",
+          "name": "02 / Small actions visible progress",
+          "h": 436.2054138183594
+        },
+        {
+          "id": "1450:3580",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 692.1632690429688
+        },
+        {
+          "id": "1467:3683",
+          "name": "05 / Tasks / retained for next review",
+          "h": 493
+        },
+        {
+          "id": "1291:1304",
+          "name": "04 / Privacy",
+          "h": 589
+        },
+        {
+          "id": "1291:1315",
+          "name": "05 / Device family",
+          "h": 1285.2518310546875
+        },
+        {
+          "id": "1291:1334",
+          "name": "06 / Free and Plus",
+          "h": 816
+        },
+        {
+          "id": "1291:1346",
+          "name": "07 / Common questions",
+          "h": 524
+        },
+        {
+          "id": "1291:1362",
+          "name": "Final invitation",
+          "h": 400.1754455566406
+        },
+        {
+          "id": "1291:1366",
+          "name": "Footer",
+          "h": 373
+        }
+      ]
+    },
+    {
+      "id": "1291:1530",
+      "name": "Website / State / Mobile menu",
+      "width": 390,
+      "height": 646
+    },
+    {
+      "id": "1291:1565",
+      "name": "Website / State / Android download",
+      "width": 390,
+      "height": 1715.800048828125
+    },
+    {
+      "id": "1291:1686",
+      "name": "Website / State / Desktop download",
+      "width": 390,
+      "height": 1189.066650390625
+    },
+    {
+      "id": "1291:1783",
+      "name": "Website / State / Apple store live / future",
+      "width": 390,
+      "height": 1422.679931640625
+    },
+    {
+      "id": "1291:1895",
+      "name": "Website / Review / Start here",
+      "width": 2400,
+      "height": 938
+    },
+    {
+      "id": "1291:1915",
+      "name": "Website / Review / Motion and asset contract",
+      "width": 2400,
+      "height": 1126
+    },
+    {
+      "id": "1295:1904",
+      "name": "Website / Home / Android 390",
+      "width": 390,
+      "height": 7752.64208984375
+    },
+    {
+      "id": "1295:2272",
+      "name": "Website / State / Delete account Confirmation",
+      "width": 390,
+      "height": 667
+    },
+    {
+      "id": "1295:2302",
+      "name": "Website / State / Delete account Success",
+      "width": 390,
+      "height": 493
+    },
+    {
+      "id": "1295:2328",
+      "name": "Website / State / Delete account Error",
+      "width": 390,
+      "height": 468
+    },
+    {
+      "id": "1298:2055",
+      "name": "Website / State / Android download / 1440",
+      "width": 1440,
+      "height": 1605.679931640625
+    },
+    {
+      "id": "1298:2199",
+      "name": "Website / State / Android download / 768",
+      "width": 768,
+      "height": 1546.5999755859375
+    },
+    {
+      "id": "1298:2335",
+      "name": "Website / State / Desktop download / 1440",
+      "width": 1440,
+      "height": 1445
+    },
+    {
+      "id": "1298:2513",
+      "name": "Website / State / Desktop download / 768",
+      "width": 768,
+      "height": 1541
+    },
+    {
+      "id": "1315:2355",
+      "name": "Website / State / Delete account Confirmation / checked",
+      "width": 390,
+      "height": 667
+    }
+  ],
+  "components": [
+    {
+      "id": "1281:70",
+      "name": "Website / Button",
+      "type": "COMPONENT_SET"
+    },
+    {
+      "id": "1281:72",
+      "name": "Website / Logo / Light",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1281:83",
+      "name": "Website / Logo / Dark",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1281:94",
+      "name": "Website / Product / Today phone",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1281:150",
+      "name": "Website / Product / Routine timer",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1281:160",
+      "name": "Website / Product / Progress",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1281:196",
+      "name": "Website / Product / Widget",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1281:202",
+      "name": "Website / Product / Watch",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1281:210",
+      "name": "Website / Product / Tablet",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1291:1161",
+      "name": "Website / Product / Android phone / illustrative",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "1295:1851",
+      "name": "Website / FAQ",
+      "type": "COMPONENT_SET"
+    },
+    {
+      "id": "1447:3514",
+      "name": "Website / Proof / Native Progress Week",
+      "width": 1110,
+      "height": 656
+    },
+    {
+      "id": "1447:3516",
+      "name": "Website / Emoji / Progress",
+      "width": 48,
+      "height": 48
+    },
+    {
+      "id": "1466:3538",
+      "name": "Website / Sourced iPhone / Native Routine",
+      "type": "COMPONENT"
+    }
+  ],
+  "validation": {
+    "horizontalOverflow": 0,
+    "unstyledFreeStandingText": 0,
+    "fontFamilies": [
+      "SF Pro"
+    ],
+    "websiteColorAndGeometryVariables": 28,
+    "productIllustrations": "Editable representative demo UI, not native screenshots. Scaled text validated from source styles and resolved font sizes.",
+    "runtimePerformance": "Not implemented or measured. Budgets in Research/Research Reports/Website/README.md are targets.",
+    "contrast": "Neutral body text >=4.5:1, large muted headline >=3:1; see handoff",
+    "section04": "12 routine copies: SF Pro/shared website styles, no text overflow, verified native routine and intact hardware hashes; four renders inspected. Prior 3 sections text/dimensions/internal text geometry preserved; tasks preserved. Design only."
+  },
+  "heroRevision": {
+    "date": "2026-10-12",
+    "author": "Codex",
+    "status": "superseded by Round 03; prior PNGs retained, live review IDs now updated",
+    "scope": "Hero only; later sections require revision",
+    "reviews": [
+      {
+        "id": "1335:2366",
+        "width": 1440,
+        "height": 880,
+        "nodeCounts": {
+          "FRAME": 12,
+          "INSTANCE": 6,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 11,
+          "TEXT": 14
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "unboundText": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2398;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 72,
+            "height": 72,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1335:2413;1335:2361",
+            "name": "Native Today screen · unchanged app pixels",
+            "width": 290.30364990234375,
+            "height": 631.2127075195312,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1335:2415;1335:2363",
+            "name": "Native Water widget · unchanged app pixels",
+            "width": 328,
+            "height": 164.6304931640625,
+            "hash": "f9da137ceae517fd7bf6c37e9a224b3cb773748f"
+          }
+        ],
+        "textOutsideRoot": []
+      },
+      {
+        "id": "1335:2419",
+        "width": 768,
+        "height": 792,
+        "nodeCounts": {
+          "FRAME": 12,
+          "INSTANCE": 6,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 11,
+          "TEXT": 10
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "unboundText": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2445;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 39.999996185302734,
+            "height": 39.999996185302734,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1335:2457;1335:2361",
+            "name": "Native Today screen · unchanged app pixels",
+            "width": 255.4672088623047,
+            "height": 555.4672241210938,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1335:2459;1335:2363",
+            "name": "Native Water widget · unchanged app pixels",
+            "width": 220,
+            "height": 110.42288970947266,
+            "hash": "f9da137ceae517fd7bf6c37e9a224b3cb773748f"
+          }
+        ],
+        "textOutsideRoot": []
+      },
+      {
+        "id": "1335:2462",
+        "width": 390,
+        "height": 1131.8297119140625,
+        "nodeCounts": {
+          "FRAME": 13,
+          "INSTANCE": 5,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 11,
+          "TEXT": 10
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "unboundText": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2490;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 40,
+            "height": 40,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1335:2503;1335:2361",
+            "name": "Native Today screen · unchanged app pixels",
+            "width": 255.4672088623047,
+            "height": 555.4672241210938,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1335:2505;1335:2363",
+            "name": "Native Water widget · unchanged app pixels",
+            "width": 220,
+            "height": 110.42288970947266,
+            "hash": "f9da137ceae517fd7bf6c37e9a224b3cb773748f"
+          }
+        ],
+        "textOutsideRoot": []
+      },
+      {
+        "id": "1335:2509",
+        "width": 320,
+        "height": 1038.47998046875,
+        "nodeCounts": {
+          "FRAME": 13,
+          "INSTANCE": 5,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 11,
+          "TEXT": 10
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "unboundText": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2535;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 40,
+            "height": 40,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1335:2547;1335:2361",
+            "name": "Native Today screen · unchanged app pixels",
+            "width": 216.7600555419922,
+            "height": 471.3055114746094,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1335:2549;1335:2363",
+            "name": "Native Water widget · unchanged app pixels",
+            "width": 194,
+            "height": 97.37290954589844,
+            "hash": "f9da137ceae517fd7bf6c37e9a224b3cb773748f"
+          }
+        ],
+        "textOutsideRoot": []
+      }
+    ],
+    "homes": [
+      {
+        "id": "1284:2",
+        "width": 1440,
+        "height": 6089.7998046875,
+        "heroId": "1340:2412",
+        "heroWidth": 1440,
+        "heroHeight": 780
+      },
+      {
+        "id": "1284:365",
+        "width": 768,
+        "height": 6051.64013671875,
+        "heroId": "1340:2441",
+        "heroWidth": 768,
+        "heroHeight": 692
+      },
+      {
+        "id": "1284:720",
+        "width": 390,
+        "height": 7836.896484375,
+        "heroId": "1340:2468",
+        "heroWidth": 390,
+        "heroHeight": 1055.8297119140625
+      },
+      {
+        "id": "1291:1217",
+        "width": 320,
+        "height": 8128.9072265625,
+        "heroId": "1340:2495",
+        "heroWidth": 320,
+        "heroHeight": 962.4799194335938
+      }
+    ],
+    "sources": [
+      {
+        "id": "1335:2360",
+        "name": "Website / Native iPhone / Today",
+        "width": 330,
+        "height": 705,
+        "children": [
+          {
+            "id": "1335:2361",
+            "width": 319.3340148925781,
+            "height": 694.333984375,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          }
+        ]
+      },
+      {
+        "id": "1335:2362",
+        "name": "Website / Native WidgetKit / Water weekly",
+        "width": 360,
+        "height": 180.69200134277344,
+        "children": [
+          {
+            "id": "1335:2363",
+            "width": 360,
+            "height": 180.69200134277344,
+            "hash": "f9da137ceae517fd7bf6c37e9a224b3cb773748f"
+          }
+        ]
+      },
+      {
+        "id": "1335:2364",
+        "name": "Website / Emoji / Store seedling",
+        "width": 64,
+        "height": 64,
+        "children": [
+          {
+            "id": "1335:2365",
+            "width": 64,
+            "height": 64,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          }
+        ]
+      }
+    ],
+    "sourceFrameId": "1335:2359",
+    "originalHeroIdsRemoved": [
+      "1284:28",
+      "1284:383",
+      "1284:738",
+      "1291:1225"
+    ],
+    "nativeCaptureProvenance": "iPhone simulator / WidgetKit output already in the user's store screenshots; no physical-device photograph captured",
+    "screenshotUse": "Explicitly authorized product content; website copy and controls remain editable",
+    "performance": "Static composition; no runtime performance tested",
+    "previewFolder": "Design Previews/Hero Round 02",
+    "approval": "pending"
+  },
+  "heroRound03": {
+    "date": "2026-10-12",
+    "author": "Codex",
+    "approval": "pending",
+    "scope": "hero only",
+    "evidence": "25 source-verified full originals across six apps; visitor intent is a hypothesis, not an analytics result",
+    "research": "Research/Research Reports/Website/Hero Round 03 — What Visitors Need First.md",
+    "reviews": [
+      {
+        "id": "1335:2366",
+        "name": "Website / Hero / Round 03 / 1440",
+        "width": 1440,
+        "height": 900,
+        "typeCounts": {
+          "FRAME": 13,
+          "INSTANCE": 5,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 10,
+          "TEXT": 13
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "withoutStyles": [],
+        "horizontalTextOverflow": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2398;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 72,
+            "height": 72,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1357:2145;1357:2126",
+            "name": "Actual native Today capture / unchanged pixels",
+            "width": 305.9388122558594,
+            "height": 666.08544921875,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1357:2145;1357:2127",
+            "name": "Sourced transparent hardware bezel / intact",
+            "width": 342,
+            "height": 697.9591064453125,
+            "hash": "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          }
+        ],
+        "unwantedHeroContent": [],
+        "heroBody": [
+          {
+            "id": "1335:2401",
+            "copy": "Know what to do today.\nSee your progress over time.",
+            "w": 480,
+            "h": 56
+          },
+          {
+            "id": "1335:2409",
+            "copy": "5 habits free. Buy Plus once.",
+            "w": 480,
+            "h": 20
+          }
+        ],
+        "phone": [
+          {
+            "id": "1357:2145",
+            "w": 342,
+            "h": 697.9591064453125,
+            "rotation": 0,
+            "effects": []
+          }
+        ]
+      },
+      {
+        "id": "1335:2419",
+        "name": "Website / Hero / Round 03 / 768",
+        "width": 768,
+        "height": 792,
+        "typeCounts": {
+          "FRAME": 13,
+          "INSTANCE": 5,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 10,
+          "TEXT": 9
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "withoutStyles": [],
+        "horizontalTextOverflow": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2445;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 39.999996185302734,
+            "height": 39.999996185302734,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1357:2149;1357:2126",
+            "name": "Actual native Today capture / unchanged pixels",
+            "width": 254.05447387695312,
+            "height": 553.1235961914062,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1357:2149;1357:2127",
+            "name": "Sourced transparent hardware bezel / intact",
+            "width": 284,
+            "height": 579.591796875,
+            "hash": "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          }
+        ],
+        "unwantedHeroContent": [],
+        "heroBody": [
+          {
+            "id": "1335:2448",
+            "copy": "Know what to do today.\nSee your progress over time.",
+            "w": 304,
+            "h": 48
+          },
+          {
+            "id": "1335:2454",
+            "copy": "5 habits free. Buy Plus once.",
+            "w": 304,
+            "h": 20
+          }
+        ],
+        "phone": [
+          {
+            "id": "1357:2149",
+            "w": 284,
+            "h": 579.591796875,
+            "rotation": 0,
+            "effects": []
+          }
+        ]
+      },
+      {
+        "id": "1335:2462",
+        "name": "Website / Hero / Round 03 / 390",
+        "width": 390,
+        "height": 1125.8297119140625,
+        "typeCounts": {
+          "FRAME": 14,
+          "INSTANCE": 4,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 10,
+          "TEXT": 9
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "withoutStyles": [],
+        "horizontalTextOverflow": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2490;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 40,
+            "height": 40,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1357:2153;1357:2126",
+            "name": "Actual native Today capture / unchanged pixels",
+            "width": 257.6326904296875,
+            "height": 560.9140625,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1357:2153;1357:2127",
+            "name": "Sourced transparent hardware bezel / intact",
+            "width": 288,
+            "height": 587.7550659179688,
+            "hash": "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          }
+        ],
+        "unwantedHeroContent": [],
+        "heroBody": [
+          {
+            "id": "1335:2493",
+            "copy": "Know what to do today.\nSee your progress over time.",
+            "w": 342,
+            "h": 48
+          },
+          {
+            "id": "1335:2500",
+            "copy": "5 habits free. Buy Plus once.",
+            "w": 342,
+            "h": 20
+          }
+        ],
+        "phone": [
+          {
+            "id": "1357:2153",
+            "w": 288,
+            "h": 587.7550659179688,
+            "rotation": 0,
+            "effects": []
+          }
+        ]
+      },
+      {
+        "id": "1335:2509",
+        "name": "Website / Hero / Round 03 / 320",
+        "width": 320,
+        "height": 1002.4799194335938,
+        "typeCounts": {
+          "FRAME": 14,
+          "INSTANCE": 4,
+          "BOOLEAN_OPERATION": 2,
+          "RECTANGLE": 10,
+          "TEXT": 9
+        },
+        "fonts": [
+          "SF Pro"
+        ],
+        "withoutStyles": [],
+        "horizontalTextOverflow": [],
+        "imageNodes": [
+          {
+            "id": "I1335:2535;1335:2365",
+            "name": "Store seedling artwork",
+            "width": 40,
+            "height": 40,
+            "hash": "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0"
+          },
+          {
+            "id": "I1357:2157;1357:2126",
+            "name": "Actual native Today capture / unchanged pixels",
+            "width": 214.69390869140625,
+            "height": 467.4283752441406,
+            "hash": "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b"
+          },
+          {
+            "id": "I1357:2157;1357:2127",
+            "name": "Sourced transparent hardware bezel / intact",
+            "width": 239.99998474121094,
+            "height": 489.7958679199219,
+            "hash": "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          }
+        ],
+        "unwantedHeroContent": [],
+        "heroBody": [
+          {
+            "id": "1335:2538",
+            "copy": "Know what to do today.\nSee your progress over time.",
+            "w": 272,
+            "h": 48
+          },
+          {
+            "id": "1335:2544",
+            "copy": "5 habits free. Buy Plus once.",
+            "w": 272,
+            "h": 20
+          }
+        ],
+        "phone": [
+          {
+            "id": "1357:2157",
+            "w": 239.99998474121094,
+            "h": 489.7958679199219,
+            "rotation": 0,
+            "effects": []
+          }
+        ]
+      }
+    ],
+    "homes": [
+      {
+        "id": "1284:2",
+        "w": 1440,
+        "h": 6109.7998046875,
+        "heroId": "1340:2412"
+      },
+      {
+        "id": "1284:365",
+        "w": 768,
+        "h": 6051.64013671875,
+        "heroId": "1340:2441"
+      },
+      {
+        "id": "1284:720",
+        "w": 390,
+        "h": 7830.896484375,
+        "heroId": "1340:2468"
+      },
+      {
+        "id": "1291:1217",
+        "w": 320,
+        "h": 8092.9072265625,
+        "heroId": "1340:2495"
+      }
+    ],
+    "source": {
+      "id": "1357:2124",
+      "rawCapture": "1320×2868",
+      "frame": "1470×3000",
+      "assetOrigin": "Mockify provider attributes Apple Design Resources",
+      "performanceMeasured": false
+    },
+    "frameProvenance": {
+      "provider": "Mecury-Labs/mockify",
+      "providerOriginClaim": "Apple Design Resources",
+      "gitBlob": "75acb0659211d370ebea5a5f77676cf3458a6881",
+      "sha256": "c2ecd474699ee14a87994c49d0d28fbe11e2db639ff0fe1b1182e2b513c13135",
+      "width": 1470,
+      "height": 3000,
+      "sourceBytes": 382572,
+      "publicRepoSourceArt": "not added; kept in ignored scratch",
+      "screenshot": "native iPhone simulator output"
+    },
+    "previews": "Design Previews/Hero Round 03",
+    "runtimeChanged": false
+  },
+  "heroRound04": {
+    "componentId": "1370:2132",
+    "reviewFrameIds": [
+      "1335:2366",
+      "1335:2419",
+      "1335:2462",
+      "1335:2509"
+    ],
+    "heroIds": [
+      "1340:2412",
+      "1340:2441",
+      "1340:2468",
+      "1340:2495",
+      "1335:2390",
+      "1335:2437",
+      "1335:2482",
+      "1335:2527"
+    ],
+    "backgroundIds": [
+      "1370:2166",
+      "1370:2303",
+      "1370:2372",
+      "1370:2441",
+      "1370:2510",
+      "1370:2647",
+      "1370:2716",
+      "1370:2785"
+    ],
+    "manifest": "Design Previews/Hero Round 04/manifest.json",
+    "validation": {
+      "contentStylesAndAssetHashesUnchanged": true,
+      "copyDeviceAndHeroGeometryUnchanged": true,
+      "responsiveRendersInspected": [
+        1440,
+        768,
+        390,
+        320
+      ],
+      "runtimePerformanceMeasured": false
+    },
+    "approval": "New background pending review. Other sections and implementation remain pending."
+  },
+  "section02": {
+    "round": "06",
+    "manifest": "Design Previews/Responsive Round 06/manifest.json",
+    "layouts": [
+      {
+        "id": "1284:146",
+        "w": 1440,
+        "h": 691,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "LEFT",
+          "LEFT"
+        ]
+      },
+      {
+        "id": "1284:501",
+        "w": 768,
+        "h": 931,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "LEFT",
+          "LEFT"
+        ]
+      },
+      {
+        "id": "1284:810",
+        "w": 390,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "CENTER",
+          "CENTER"
+        ]
+      },
+      {
+        "id": "1291:1241",
+        "w": 320,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "CENTER",
+          "CENTER"
+        ]
+      },
+      {
+        "id": "1395:3337",
+        "w": 1440,
+        "h": 691,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "LEFT",
+          "LEFT"
+        ]
+      },
+      {
+        "id": "1395:3477",
+        "w": 768,
+        "h": 931,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "LEFT",
+          "LEFT"
+        ]
+      },
+      {
+        "id": "1395:3625",
+        "w": 390,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "CENTER",
+          "CENTER"
+        ]
+      },
+      {
+        "id": "1395:3779",
+        "w": 320,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "CENTER",
+          "CENTER"
+        ]
+      },
+      {
+        "id": "1424:15580",
+        "w": 820,
+        "h": 931,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "alignment": [
+          "LEFT",
+          "LEFT"
+        ]
+      }
+    ],
+    "componentSetId": "1412:3228",
+    "approval": "Ready for review; implementation waits for approval."
+  },
+  "section02Round01": {
+    "question": "Will this tracker fit the habits I actually have?",
+    "headline": "Goals that fit the way you live.",
+    "componentSetId": "1385:2912",
+    "sectionIds": [
+      "1284:146",
+      "1284:501",
+      "1284:810",
+      "1291:1241"
+    ],
+    "reviewIds": [
+      "1385:2974",
+      "1385:3097",
+      "1385:3220",
+      "1385:3343"
+    ],
+    "manifest": "Design Previews/Section 02 Round 01/manifest.json",
+    "validation": {
+      "originalReviewsVerified": 9,
+      "sourceApps": 6,
+      "readingMapComplete": true,
+      "heroPreserved": true,
+      "fonts": "SF Pro; emoji PNG artwork",
+      "allFourResponsiveRendersInspected": true,
+      "headlineGrayOnPanelContrast": 5.31,
+      "illustrationsFitCardInnerWidth": true,
+      "runtimePerformanceMeasured": false
+    },
+    "approval": "Section design pending user review; implementation remains pending.",
+    "status": "Historical; superseded by expanded informational Round 02."
+  },
+  "section02Round02": {
+    "round": "02",
+    "question": "Will this tracker fit the habits I actually have?",
+    "headline": "Different habits. Different ways to track.",
+    "sourceComponentSetId": "1395:3263",
+    "taskComponentId": "1395:3265",
+    "sectionIds": [
+      "1284:146",
+      "1284:501",
+      "1284:810",
+      "1291:1241"
+    ],
+    "tasksSectionIds": [
+      "1284:163",
+      "1284:518",
+      "1284:827",
+      "1291:1258"
+    ],
+    "reviewIds": [
+      "1385:2974",
+      "1385:3097",
+      "1385:3220",
+      "1385:3343"
+    ],
+    "manifest": "Design Previews/Section 02 Round 02/manifest.json",
+    "validation": {
+      "allSixMethodsPresent": true,
+      "weeklyAndMonthlyExplicit": true,
+      "checklistStepsAndRepetitionExplicit": true,
+      "quitUsesElapsedTime": true,
+      "amountAndTimeLimitsExplicit": true,
+      "heroPreserved": true,
+      "fonts": "SF Pro with licensed PNG emoji",
+      "textOverflow": false,
+      "fourFinalRendersInspected": true,
+      "nativeAppUIImitation": false,
+      "runtimePerformanceMeasured": false
+    },
+    "approval": "Pending user design review. No implementation, CI dispatch, commit, push or deployment.",
+    "status": "Historical; user rejected text density."
+  },
+  "section02Round03": {
+    "round": "03",
+    "question": "Will this tracker fit the habits I actually have?",
+    "headline": "Your habits. Your way.",
+    "sourceComponentSetId": "1395:3263",
+    "taskComponentId": "1395:3265",
+    "sectionIds": [
+      "1284:146",
+      "1284:501",
+      "1284:810",
+      "1291:1241"
+    ],
+    "tasksSectionIds": [
+      "1284:163",
+      "1284:518",
+      "1284:827",
+      "1291:1258"
+    ],
+    "reviewIds": [
+      "1385:2974",
+      "1385:3097",
+      "1385:3220",
+      "1385:3343"
+    ],
+    "manifest": "Design Previews/Section 02 Round 03/manifest.json",
+    "validation": {
+      "allSixMethods": true,
+      "weeklyMonthlyChecklistQuitAndBothLimits": true,
+      "heroAndTasksPreserved": true,
+      "noCardTextOverflow": true,
+      "SFProAndSharedStyles": true,
+      "allFourFinalRendersInspected": true,
+      "runtimePerformanceMeasured": false
+    },
+    "approval": "Ready for design review; implementation remains pending.",
+    "status": "Historical; user rejected text density.",
+    "wordCount": {
+      "before": 181,
+      "after": 75,
+      "reductionPercent": 58.6,
+      "method": "Whitespace-delimited visible text tokens, same method for both rounds; habit section only."
+    }
+  },
+  "section02Round04": {
+    "round": "04",
+    "manifest": "Design Previews/Section 02 Round 04/manifest.json",
+    "componentSetId": "1412:3228",
+    "layouts": [
+      {
+        "id": "1284:146",
+        "w": 1440,
+        "h": 685,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 3,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15314",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15323",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15332",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15342",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15351",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 280,
+            "h": 197
+          },
+          {
+            "id": "1412:15360",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15370",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15379",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15388",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      },
+      {
+        "id": "1284:501",
+        "w": 768,
+        "h": 918,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 3,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15399",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15408",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15417",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15427",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15436",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 213.33334350585938,
+            "h": 209
+          },
+          {
+            "id": "1412:15445",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15455",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 213.3333282470703,
+            "h": 164
+          },
+          {
+            "id": "1412:15464",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 213.3333282470703,
+            "h": 164
+          },
+          {
+            "id": "1412:15473",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 213.3333282470703,
+            "h": 164
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      },
+      {
+        "id": "1284:810",
+        "w": 390,
+        "h": 1124,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 2,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15484",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15493",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15502",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15511",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15520",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15530",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15539",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15548",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 163,
+            "h": 209
+          },
+          {
+            "id": "1412:15557",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      },
+      {
+        "id": "1291:1241",
+        "w": 320,
+        "h": 1220,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 2,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15568",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15577",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15586",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15595",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 128,
+            "h": 209
+          },
+          {
+            "id": "1412:15604",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 128,
+            "h": 215
+          },
+          {
+            "id": "1412:15614",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15623",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15632",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 128,
+            "h": 254
+          },
+          {
+            "id": "1412:15641",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 128,
+            "h": 191
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      },
+      {
+        "id": "1395:3337",
+        "w": 1440,
+        "h": 685,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 3,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15652",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15661",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15670",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15680",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15689",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 280,
+            "h": 197
+          },
+          {
+            "id": "1412:15698",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15708",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15717",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 280,
+            "h": 159
+          },
+          {
+            "id": "1412:15726",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 280,
+            "h": 159
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      },
+      {
+        "id": "1395:3477",
+        "w": 768,
+        "h": 918,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 3,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15737",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15746",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15755",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15765",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15774",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 213.33334350585938,
+            "h": 209
+          },
+          {
+            "id": "1412:15783",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 213.33334350585938,
+            "h": 164
+          },
+          {
+            "id": "1412:15793",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 213.3333282470703,
+            "h": 164
+          },
+          {
+            "id": "1412:15802",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 213.3333282470703,
+            "h": 164
+          },
+          {
+            "id": "1412:15811",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 213.3333282470703,
+            "h": 164
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      },
+      {
+        "id": "1395:3625",
+        "w": 390,
+        "h": 1124,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 2,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15822",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15831",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15840",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15849",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15858",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15868",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15877",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          },
+          {
+            "id": "1412:15886",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 163,
+            "h": 209
+          },
+          {
+            "id": "1412:15895",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 163,
+            "h": 164
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      },
+      {
+        "id": "1395:3779",
+        "w": 320,
+        "h": 1220,
+        "background": {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:1281:6"
+            }
+          }
+        },
+        "cards": 9,
+        "columns": 2,
+        "words": 66,
+        "text": [
+          {
+            "id": "1412:15906",
+            "words": [
+              "Call family",
+              "3 times",
+              "a week"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15915",
+            "words": [
+              "Read",
+              "2 books",
+              "a month"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15924",
+            "words": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15933",
+            "words": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ],
+            "w": 128,
+            "h": 209
+          },
+          {
+            "id": "1412:15942",
+            "words": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ],
+            "w": 128,
+            "h": 215
+          },
+          {
+            "id": "1412:15952",
+            "words": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15961",
+            "words": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ],
+            "w": 128,
+            "h": 164
+          },
+          {
+            "id": "1412:15970",
+            "words": [
+              "Clean kitchen",
+              "Dishes\nSink\nFloor",
+              "Weekly / monthly"
+            ],
+            "w": 128,
+            "h": 254
+          },
+          {
+            "id": "1412:15979",
+            "words": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ],
+            "w": 128,
+            "h": 191
+          }
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "1385:2974",
+        "w": 1440,
+        "h": 1026,
+        "name": "Website / Section 02 and Tasks / Round 04 / 1440"
+      },
+      {
+        "id": "1385:3097",
+        "w": 768,
+        "h": 1424,
+        "name": "Website / Section 02 and Tasks / Round 04 / 768"
+      },
+      {
+        "id": "1385:3220",
+        "w": 390,
+        "h": 1590,
+        "name": "Website / Section 02 and Tasks / Round 04 / 390"
+      },
+      {
+        "id": "1385:3343",
+        "w": 320,
+        "h": 1713,
+        "name": "Website / Section 02 and Tasks / Round 04 / 320"
+      }
+    ],
+    "approval": "Design review pending; implementation waits for approval.",
+    "staticComposition": true
+  },
+  "heroRound05": {
+    "round": "05",
+    "manifest": "Design Previews/Responsive Round 05/manifest.json",
+    "layouts": [
+      {
+        "id": "1340:2412",
+        "w": 1440,
+        "h": 800,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free. Plus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1340:2441",
+        "w": 768,
+        "h": 600,
+        "text": [
+          "Habit tracker",
+          "for real life.",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1340:2468",
+        "w": 390,
+        "h": 887.3060913085938,
+        "text": [
+          "Habit tracker",
+          "for real life.",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1340:2495",
+        "w": 320,
+        "h": 812.1632690429688,
+        "text": [
+          "Habit tracker",
+          "for real life.",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1335:2390",
+        "w": 1440,
+        "h": 800,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free. Plus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1335:2437",
+        "w": 768,
+        "h": 600,
+        "text": [
+          "Habit tracker",
+          "for real life.",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1335:2482",
+        "w": 390,
+        "h": 887.3060913085938,
+        "text": [
+          "Habit tracker",
+          "for real life.",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1335:2527",
+        "w": 320,
+        "h": 812.1632690429688,
+        "text": [
+          "Habit tracker",
+          "for real life.",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": []
+      },
+      {
+        "id": "1424:15494",
+        "w": 820,
+        "h": 600,
+        "text": [
+          "Habit tracker",
+          "for real life.",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.9750000238418579,
+              "g": 0.9750000238418579,
+              "b": 0.9750000238418579
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:1281:4"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "nativeHashesUnchanged": true,
+    "desktopCompositionPreserved": true,
+    "approval": "Ready for review; implementation waits for approval."
+  },
+  "currentHeroRound": "06",
+  "section02Round05": {
+    "round": "05",
+    "manifest": "Design Previews/Responsive Round 05/manifest.json",
+    "layouts": [
+      {
+        "id": "1284:146",
+        "w": 1440,
+        "h": 691,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1284:501",
+        "w": 768,
+        "h": 931,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1284:810",
+        "w": 390,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1291:1241",
+        "w": 320,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1395:3337",
+        "w": 1440,
+        "h": 691,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1395:3477",
+        "w": 768,
+        "h": 931,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1395:3625",
+        "w": 390,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1395:3779",
+        "w": 320,
+        "h": 1208,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max. a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max. a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      },
+      {
+        "id": "1424:15580",
+        "w": 820,
+        "h": 931,
+        "cards": 9,
+        "examples": [
+          {
+            "name": "Illustrative habit / Call family",
+            "text": [
+              "Call family",
+              "3 times",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Meditate",
+            "text": [
+              "Meditate",
+              "30 min",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Quit smoking",
+            "text": [
+              "Quit smoking",
+              "12 days",
+              "Since stopping"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Drink water",
+            "text": [
+              "Drink water",
+              "8 glasses",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Clean kitchen",
+            "text": [
+              "Clean kitchen",
+              "Dishes",
+              "Sink",
+              "Floor",
+              "Weekly / monthly"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less coffee",
+            "text": [
+              "Less coffee",
+              "2 cups max.",
+              "a day"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Read",
+            "text": [
+              "Read",
+              "2 books",
+              "a month"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Exercise",
+            "text": [
+              "Exercise",
+              "3 hours",
+              "a week"
+            ]
+          },
+          {
+            "name": "Illustrative habit / Less scrolling",
+            "text": [
+              "Less scrolling",
+              "30 min max.",
+              "a day"
+            ]
+          }
+        ],
+        "overflow": [],
+        "kitchenMarks": 3,
+        "kitchenImage": [
+          "fd86671d8818a1004aeb4c9d60a0222ad4598362"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ]
+      }
+    ],
+    "componentSetId": "1412:3228",
+    "approval": "Ready for review; implementation waits for approval."
+  },
+  "heroRound06": {
+    "round": "06",
+    "manifest": "Design Previews/Responsive Round 06/manifest.json",
+    "layouts": [
+      {
+        "id": "1340:2412",
+        "w": 1440,
+        "h": 800,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free. Plus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1340:2441",
+        "w": 768,
+        "h": 600,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1340:2468",
+        "w": 390,
+        "h": 977.3673095703125,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1340:2495",
+        "w": 320,
+        "h": 891.9284057617188,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1335:2390",
+        "w": 1440,
+        "h": 800,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free. Plus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1335:2437",
+        "w": 768,
+        "h": 600,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1335:2482",
+        "w": 390,
+        "h": 977.3673095703125,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1335:2527",
+        "w": 320,
+        "h": 891.9284057617188,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      },
+      {
+        "id": "1424:15494",
+        "w": 820,
+        "h": 600,
+        "text": [
+          "Habit tracker",
+          "for your",
+          "real life",
+          "Know what to do today.\nSee your progress over time.",
+          "5 habits free.\nPlus: one-time payment."
+        ],
+        "featureLabels": 0,
+        "overflow": [],
+        "imageHashes": [
+          "c1f6faa47c49a1ae8065fd8e56eee59e85c79bf0",
+          "b10c1f5225e5f17f398fa7ac0a59f88bcca12d7b",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ],
+        "background": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.9750000238418579,
+              "g": 0.9750000238418579,
+              "b": 0.9750000238418579
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:1281:4"
+              }
+            }
+          }
+        ],
+        "headline": "Habit tracker for your real life",
+        "chipPresent": true
+      }
+    ],
+    "nativeHashesUnchanged": true,
+    "desktopCompositionPreserved": true,
+    "approval": "Ready for review; implementation waits for approval."
+  },
+  "section03": {
+    "round": "02",
+    "mainSections": [
+      {
+        "id": "1284:163",
+        "w": 1440,
+        "h": 487.322509765625,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks."
+        ],
+        "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+        "shadow": [
+          {
+            "type": "DROP_SHADOW",
+            "visible": true,
+            "radius": 24,
+            "boundVariables": {},
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06499999761581421
+            },
+            "offset": {
+              "x": 0,
+              "y": 8
+            },
+            "spread": 0,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": true
+          }
+        ],
+        "unclipped": true,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      {
+        "id": "1284:518",
+        "w": 768,
+        "h": 743.1459350585938,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks."
+        ],
+        "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+        "shadow": [
+          {
+            "type": "DROP_SHADOW",
+            "visible": true,
+            "radius": 24,
+            "boundVariables": {},
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06499999761581421
+            },
+            "offset": {
+              "x": 0,
+              "y": 8
+            },
+            "spread": 0,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": true
+          }
+        ],
+        "unclipped": true,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      {
+        "id": "1284:827",
+        "w": 390,
+        "h": 474.118896484375,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks."
+        ],
+        "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+        "shadow": [
+          {
+            "type": "DROP_SHADOW",
+            "visible": true,
+            "radius": 24,
+            "boundVariables": {},
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06499999761581421
+            },
+            "offset": {
+              "x": 0,
+              "y": 8
+            },
+            "spread": 0,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": true
+          }
+        ],
+        "unclipped": true,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      },
+      {
+        "id": "1291:1258",
+        "w": 320,
+        "h": 436.2054138183594,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks."
+        ],
+        "shadowStyle": "S:71651fda5b2f0ef7450ff55d40288a7a1f6b488e,",
+        "shadow": [
+          {
+            "type": "DROP_SHADOW",
+            "visible": true,
+            "radius": 24,
+            "boundVariables": {},
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06499999761581421
+            },
+            "offset": {
+              "x": 0,
+              "y": 8
+            },
+            "spread": 0,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": true
+          }
+        ],
+        "unclipped": true,
+        "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+      }
+    ],
+    "reviews": [
+      {
+        "id": "1450:3690",
+        "sectionId": "1450:3691",
+        "w": 1440,
+        "h": 487.322509765625
+      },
+      {
+        "id": "1450:3704",
+        "sectionId": "1450:3705",
+        "w": 768,
+        "h": 743.1459350585938
+      },
+      {
+        "id": "1450:3718",
+        "sectionId": "1450:3719",
+        "w": 390,
+        "h": 474.118896484375
+      },
+      {
+        "id": "1450:3732",
+        "sectionId": "1450:3733",
+        "w": 320,
+        "h": 436.2054138183594
+      }
+    ],
+    "proofSourceId": "1447:3514",
+    "retainedTasks": [
+      {
+        "id": "1467:3551",
+        "w": 1440,
+        "h": 341,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3595",
+        "w": 768,
+        "h": 506,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3639",
+        "w": 390,
+        "h": 466,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3683",
+        "w": 320,
+        "h": 493,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3727",
+        "w": 1440,
+        "h": 341,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3771",
+        "w": 768,
+        "h": 506,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3815",
+        "w": 390,
+        "h": 466,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3859",
+        "w": 320,
+        "h": 493,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      }
+    ],
+    "approval": "User accepted Section 03; requested date removal and shadow refinements completed. Website implementation still awaits approval.",
+    "manifest": "Design Previews/Section 03 Round 02/manifest.json"
+  },
+  "section03Round01": {
+    "round": "01",
+    "manifest": "Design Previews/Section 03 Round 01/manifest.json",
+    "mainSections": [
+      {
+        "id": "1284:163",
+        "w": 1440,
+        "h": 527.322509765625,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks.",
+          "4–10 Oct · A week of reading"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": [],
+        "nativeProof": {
+          "id": "1450:3534",
+          "w": 608,
+          "h": 359.322509765625,
+          "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+        },
+        "background": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.9750000238418579,
+              "g": 0.9750000238418579,
+              "b": 0.9750000238418579
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:1281:4"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "1284:518",
+        "w": 768,
+        "h": 783.1459350585938,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks.",
+          "4–10 Oct · A week of reading"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": [],
+        "nativeProof": {
+          "id": "1450:3556",
+          "w": 672,
+          "h": 397.14593505859375,
+          "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+        },
+        "background": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.9750000238418579,
+              "g": 0.9750000238418579,
+              "b": 0.9750000238418579
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:1281:4"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "1284:827",
+        "w": 390,
+        "h": 514.118896484375,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks.",
+          "4–10 Oct · A week of reading"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": [],
+        "nativeProof": {
+          "id": "1450:3578",
+          "w": 341.9999694824219,
+          "h": 202.11891174316406,
+          "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+        },
+        "background": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.9750000238418579,
+              "g": 0.9750000238418579,
+              "b": 0.9750000238418579
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:1281:4"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "1291:1258",
+        "w": 320,
+        "h": 476.2054138183594,
+        "text": [
+          "Small actions.",
+          "Visible progress.",
+          "See your week, month and year.\nYour totals, patterns and streaks.",
+          "4–10 Oct · A week of reading"
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unsharedStyles": [],
+        "overflow": [],
+        "nativeProof": {
+          "id": "1450:3600",
+          "w": 288,
+          "h": 170.20541381835938,
+          "imageHash": "6bef82203dd66fff5de789b5801ca99f82418984"
+        },
+        "background": [
+          {
+            "type": "SOLID",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 0.9750000238418579,
+              "g": 0.9750000238418579,
+              "b": 0.9750000238418579
+            },
+            "boundVariables": {
+              "color": {
+                "type": "VARIABLE_ALIAS",
+                "id": "VariableID:1281:4"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": "1450:3690",
+        "sectionId": "1450:3691",
+        "w": 1440,
+        "h": 527.322509765625
+      },
+      {
+        "id": "1450:3704",
+        "sectionId": "1450:3705",
+        "w": 768,
+        "h": 783.1459350585938
+      },
+      {
+        "id": "1450:3718",
+        "sectionId": "1450:3719",
+        "w": 390,
+        "h": 514.118896484375
+      },
+      {
+        "id": "1450:3732",
+        "sectionId": "1450:3733",
+        "w": 320,
+        "h": 476.2054138183594
+      }
+    ],
+    "proofSourceId": "1447:3514",
+    "retainedTasks": [
+      {
+        "id": "1450:3514",
+        "w": 1440,
+        "h": 341,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      },
+      {
+        "id": "1450:3536",
+        "w": 768,
+        "h": 506,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      },
+      {
+        "id": "1450:3558",
+        "w": 390,
+        "h": 466,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      },
+      {
+        "id": "1450:3580",
+        "w": 320,
+        "h": 493,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      },
+      {
+        "id": "1450:3602",
+        "w": 1440,
+        "h": 341,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      },
+      {
+        "id": "1450:3624",
+        "w": 768,
+        "h": 506,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      },
+      {
+        "id": "1450:3646",
+        "w": 390,
+        "h": 466,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      },
+      {
+        "id": "1450:3668",
+        "w": 320,
+        "h": 493,
+        "contentPreserved": true,
+        "dimensionsPreserved": true,
+        "afterProgress": true
+      }
+    ],
+    "approval": "Ready for design review; implementation waits for approval."
+  },
+  "section04": {
+    "topic": "Guided Morning routine",
+    "round": "03",
+    "mainSections": [
+      {
+        "id": "1450:3514",
+        "w": 1440,
+        "h": 752.4898071289062,
+        "morning": true,
+        "anytime": false,
+        "nativeHash": [
+          "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ]
+      },
+      {
+        "id": "1450:3536",
+        "w": 768,
+        "h": 876.6122436523438,
+        "morning": true,
+        "anytime": false,
+        "nativeHash": [
+          "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ]
+      },
+      {
+        "id": "1450:3558",
+        "w": 390,
+        "h": 755.3060913085938,
+        "morning": true,
+        "anytime": false,
+        "nativeHash": [
+          "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ]
+      },
+      {
+        "id": "1450:3580",
+        "w": 320,
+        "h": 692.1632690429688,
+        "morning": true,
+        "anytime": false,
+        "nativeHash": [
+          "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+          "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+        ]
+      }
+    ],
+    "proofSourceId": "1512:7950",
+    "screenSourceId": "1512:7875",
+    "manifest": "Design Previews/Section 04 Round 03/manifest.json",
+    "nativeProvenance": "Design Assets/Native/Morning Routine — Design Provenance.json",
+    "approval": "Ready for design review; native Morning capture required before publication."
+  },
+  "section04Round01": {
+    "manifest": "Design Previews/Section 04 Round 01/manifest.json",
+    "status": "Rejected combined daily-use section; historical raster snapshots, Figma IDs now show Round 02."
+  },
+  "section04Round02": {
+    "round": "02",
+    "topic": "Guided routines",
+    "mainSections": [
+      {
+        "id": "1450:3514",
+        "w": 1440,
+        "h": 752.4898071289062,
+        "descendants": 14,
+        "typeCounts": {
+          "FRAME": 6,
+          "TEXT": 3,
+          "INSTANCE": 2,
+          "RECTANGLE": 3
+        },
+        "text": [
+          "Your routine.",
+          "One step at a time.",
+          "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unshared": [],
+        "overflow": [],
+        "images": [
+          {
+            "id": "I1492:15806;1412:3205",
+            "name": "Rectangle",
+            "w": 48,
+            "h": 48,
+            "hashes": [
+              "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+            ]
+          },
+          {
+            "id": "I1492:15811;1466:3540",
+            "name": "Actual native Routine capture / unchanged pixels",
+            "w": 273.7347412109375,
+            "h": 595.97119140625,
+            "hashes": [
+              "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+            ]
+          },
+          {
+            "id": "I1492:15811;1466:3541",
+            "name": "Sourced transparent hardware bezel / intact",
+            "w": 306,
+            "h": 624.4898071289062,
+            "hashes": [
+              "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1450:3536",
+        "w": 768,
+        "h": 876.6122436523438,
+        "descendants": 14,
+        "typeCounts": {
+          "FRAME": 6,
+          "TEXT": 3,
+          "INSTANCE": 2,
+          "RECTANGLE": 3
+        },
+        "text": [
+          "Your routine.",
+          "One step at a time.",
+          "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unshared": [],
+        "overflow": [],
+        "images": [
+          {
+            "id": "I1492:15820;1412:3205",
+            "name": "Rectangle",
+            "w": 48,
+            "h": 48,
+            "hashes": [
+              "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+            ]
+          },
+          {
+            "id": "I1492:15825;1466:3540",
+            "name": "Actual native Routine capture / unchanged pixels",
+            "w": 232.5850830078125,
+            "h": 506.3807678222656,
+            "hashes": [
+              "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+            ]
+          },
+          {
+            "id": "I1492:15825;1466:3541",
+            "name": "Sourced transparent hardware bezel / intact",
+            "w": 260,
+            "h": 530.6122436523438,
+            "hashes": [
+              "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1450:3558",
+        "w": 390,
+        "h": 755.3060913085938,
+        "descendants": 14,
+        "typeCounts": {
+          "FRAME": 6,
+          "TEXT": 3,
+          "INSTANCE": 2,
+          "RECTANGLE": 3
+        },
+        "text": [
+          "Your routine.",
+          "One step at a time.",
+          "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unshared": [],
+        "overflow": [],
+        "images": [
+          {
+            "id": "I1492:15834;1412:3205",
+            "name": "Rectangle",
+            "w": 32,
+            "h": 32,
+            "hashes": [
+              "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+            ]
+          },
+          {
+            "id": "I1492:15839;1466:3540",
+            "name": "Actual native Routine capture / unchanged pixels",
+            "w": 203.95921325683594,
+            "h": 444.0569763183594,
+            "hashes": [
+              "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+            ]
+          },
+          {
+            "id": "I1492:15839;1466:3541",
+            "name": "Sourced transparent hardware bezel / intact",
+            "w": 228,
+            "h": 465.30609130859375,
+            "hashes": [
+              "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1450:3580",
+        "w": 320,
+        "h": 692.1632690429688,
+        "descendants": 14,
+        "typeCounts": {
+          "FRAME": 6,
+          "TEXT": 3,
+          "INSTANCE": 2,
+          "RECTANGLE": 3
+        },
+        "text": [
+          "Your routine.",
+          "One step at a time.",
+          "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+        ],
+        "fontFamilies": [
+          "SF Pro"
+        ],
+        "unshared": [],
+        "overflow": [],
+        "images": [
+          {
+            "id": "I1492:15848;1412:3205",
+            "name": "Rectangle",
+            "w": 32,
+            "h": 32,
+            "hashes": [
+              "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+            ]
+          },
+          {
+            "id": "I1492:15853;1466:3540",
+            "name": "Actual native Routine capture / unchanged pixels",
+            "w": 178.91160583496094,
+            "h": 389.523681640625,
+            "hashes": [
+              "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+            ]
+          },
+          {
+            "id": "I1492:15853;1466:3541",
+            "name": "Sourced transparent hardware bezel / intact",
+            "w": 200,
+            "h": 408.16326904296875,
+            "hashes": [
+              "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+            ]
+          }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": "1467:3903",
+        "sectionId": "1467:3904",
+        "w": 1440,
+        "h": 752.4898071289062
+      },
+      {
+        "id": "1467:3936",
+        "sectionId": "1467:3937",
+        "w": 768,
+        "h": 876.6122436523438
+      },
+      {
+        "id": "1467:3969",
+        "sectionId": "1467:3970",
+        "w": 390,
+        "h": 755.3060913085938
+      },
+      {
+        "id": "1467:4002",
+        "sectionId": "1467:4003",
+        "w": 320,
+        "h": 692.1632690429688
+      }
+    ],
+    "proofSourceId": "1466:3538",
+    "nativeProvenance": "Design Assets/Native/Routine — Provenance.json",
+    "retainedTasks": [
+      {
+        "id": "1467:3551",
+        "w": 1440,
+        "h": 341,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3595",
+        "w": 768,
+        "h": 506,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3639",
+        "w": 390,
+        "h": 466,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3683",
+        "w": 320,
+        "h": 493,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3727",
+        "w": 1440,
+        "h": 341,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3771",
+        "w": 768,
+        "h": 506,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3815",
+        "w": 390,
+        "h": 466,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      },
+      {
+        "id": "1467:3859",
+        "w": 320,
+        "h": 493,
+        "dimensionsMatch": true,
+        "textMatch": true,
+        "afterRoutines": true
+      }
+    ],
+    "approval": "Ready for design review; implementation awaits approval.",
+    "manifest": "Design Previews/Section 04 Round 02/manifest.json",
+    "status": "Historical Anytime native capture; superseded by Morning Round 03 at the same Figma section IDs."
+  },
+  "section05": {
+    "topic": "Interactive widgets",
+    "round": "01",
+    "mainSections": [
+      {
+        "id": "1467:3551",
+        "w": 1440,
+        "h": 1355.6610107421875,
+        "overflow": [],
+        "plans": [
+          "Free",
+          "Plus",
+          "Free",
+          "Plus",
+          "Free"
+        ],
+        "headings": [
+          "Interactive widgets.",
+          "One habit or task",
+          "Your week at a glance",
+          "Your tasks, together",
+          "Your habits, together",
+          "Lock Screen widgets."
+        ],
+        "nativeCopies": [
+          {
+            "source": "540:2978",
+            "w": 158,
+            "h": 158
+          },
+          {
+            "source": "1508:3550",
+            "w": 158,
+            "h": 158
+          },
+          {
+            "source": "669:5347",
+            "w": 338,
+            "h": 158
+          },
+          {
+            "source": "688:7617",
+            "w": 338,
+            "h": 158
+          },
+          {
+            "source": "687:7560",
+            "w": 338,
+            "h": 354
+          },
+          {
+            "source": "621:6382",
+            "w": 338,
+            "h": 158
+          },
+          {
+            "source": "606:7397",
+            "w": 338,
+            "h": 354
+          },
+          {
+            "source": "694:8984",
+            "w": 72,
+            "h": 72
+          },
+          {
+            "source": "694:9093",
+            "w": 160,
+            "h": 72
+          },
+          {
+            "source": "694:9151",
+            "w": 234,
+            "h": 26
+          },
+          {
+            "source": "694:9159",
+            "w": 234,
+            "h": 26
+          }
+        ],
+        "types": {
+          "FRAME": 136,
+          "TEXT": 116,
+          "INSTANCE": 71,
+          "RECTANGLE": 27,
+          "VECTOR": 2,
+          "ELLIPSE": 2
+        }
+      },
+      {
+        "id": "1467:3595",
+        "w": 768,
+        "h": 1546.574462890625,
+        "overflow": [],
+        "plans": [
+          "Free",
+          "Plus",
+          "Free",
+          "Plus",
+          "Free"
+        ],
+        "headings": [
+          "Interactive widgets.",
+          "One habit or task",
+          "Your week at a glance",
+          "Your tasks, together",
+          "Your habits, together",
+          "Lock Screen widgets."
+        ],
+        "nativeCopies": [
+          {
+            "source": "540:2978",
+            "w": 132,
+            "h": 132
+          },
+          {
+            "source": "1508:3550",
+            "w": 132,
+            "h": 132
+          },
+          {
+            "source": "669:5347",
+            "w": 276,
+            "h": 129.01776123046875
+          },
+          {
+            "source": "688:7617",
+            "w": 276,
+            "h": 129.01776123046875
+          },
+          {
+            "source": "687:7560",
+            "w": 276,
+            "h": 289.0650939941406
+          },
+          {
+            "source": "621:6382",
+            "w": 276,
+            "h": 129.01776123046875
+          },
+          {
+            "source": "606:7397",
+            "w": 276,
+            "h": 289.0650939941406
+          },
+          {
+            "source": "694:8984",
+            "w": 72,
+            "h": 72
+          },
+          {
+            "source": "694:9093",
+            "w": 160,
+            "h": 72
+          },
+          {
+            "source": "694:9151",
+            "w": 234,
+            "h": 26
+          },
+          {
+            "source": "694:9159",
+            "w": 234,
+            "h": 26
+          }
+        ],
+        "types": {
+          "FRAME": 137,
+          "TEXT": 116,
+          "INSTANCE": 71,
+          "RECTANGLE": 27,
+          "VECTOR": 2,
+          "ELLIPSE": 2
+        }
+      },
+      {
+        "id": "1467:3639",
+        "w": 390,
+        "h": 2586.2080078125,
+        "overflow": [],
+        "plans": [
+          "Free",
+          "Free",
+          "Plus",
+          "Plus",
+          "Free"
+        ],
+        "headings": [
+          "Interactive widgets.",
+          "One habit or task",
+          "Your tasks, together",
+          "Your habits, together",
+          "Your week at a glance",
+          "Lock Screen widgets."
+        ],
+        "nativeCopies": [
+          {
+            "source": "540:2978",
+            "w": 141,
+            "h": 141
+          },
+          {
+            "source": "1508:3550",
+            "w": 141,
+            "h": 141
+          },
+          {
+            "source": "688:7617",
+            "w": 294,
+            "h": 137.4319610595703
+          },
+          {
+            "source": "687:7560",
+            "w": 294,
+            "h": 307.91717529296875
+          },
+          {
+            "source": "621:6382",
+            "w": 294,
+            "h": 137.4319610595703
+          },
+          {
+            "source": "606:7397",
+            "w": 294,
+            "h": 307.91717529296875
+          },
+          {
+            "source": "669:5347",
+            "w": 294,
+            "h": 137.4319610595703
+          },
+          {
+            "source": "694:8984",
+            "w": 72,
+            "h": 72
+          },
+          {
+            "source": "694:9093",
+            "w": 160,
+            "h": 72
+          },
+          {
+            "source": "694:9151",
+            "w": 234,
+            "h": 26
+          },
+          {
+            "source": "694:9159",
+            "w": 234,
+            "h": 26
+          }
+        ],
+        "types": {
+          "FRAME": 135,
+          "TEXT": 116,
+          "INSTANCE": 71,
+          "RECTANGLE": 27,
+          "VECTOR": 2,
+          "ELLIPSE": 2
+        }
+      },
+      {
+        "id": "1467:3683",
+        "w": 320,
+        "h": 2388.3203125,
+        "overflow": [],
+        "plans": [
+          "Free",
+          "Free",
+          "Plus",
+          "Plus",
+          "Free"
+        ],
+        "headings": [
+          "Interactive widgets.",
+          "One habit or task",
+          "Your tasks, together",
+          "Your habits, together",
+          "Your week at a glance",
+          "Lock Screen widgets."
+        ],
+        "nativeCopies": [
+          {
+            "source": "540:2978",
+            "w": 122,
+            "h": 122
+          },
+          {
+            "source": "1508:3550",
+            "w": 122,
+            "h": 122
+          },
+          {
+            "source": "688:7617",
+            "w": 256,
+            "h": 119.66864013671875
+          },
+          {
+            "source": "687:7560",
+            "w": 256,
+            "h": 268.11834716796875
+          },
+          {
+            "source": "621:6382",
+            "w": 256,
+            "h": 119.66864013671875
+          },
+          {
+            "source": "606:7397",
+            "w": 256,
+            "h": 268.11834716796875
+          },
+          {
+            "source": "669:5347",
+            "w": 256,
+            "h": 119.66864013671875
+          },
+          {
+            "source": "694:8984",
+            "w": 72,
+            "h": 72
+          },
+          {
+            "source": "694:9093",
+            "w": 160,
+            "h": 72
+          },
+          {
+            "source": "694:9151",
+            "w": 234,
+            "h": 26
+          },
+          {
+            "source": "694:9159",
+            "w": 234,
+            "h": 26
+          }
+        ],
+        "types": {
+          "FRAME": 135,
+          "TEXT": 116,
+          "INSTANCE": 71,
+          "RECTANGLE": 27,
+          "VECTOR": 2,
+          "ELLIPSE": 2
+        }
+      }
+    ],
+    "manifest": "Design Previews/Section 05 Round 01/manifest.json",
+    "retainedTasks": [
+      {
+        "id": "1508:5120",
+        "w": 1440,
+        "h": 341,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      },
+      {
+        "id": "1508:5488",
+        "w": 768,
+        "h": 506,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      },
+      {
+        "id": "1508:5857",
+        "w": 390,
+        "h": 466,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      },
+      {
+        "id": "1508:6224",
+        "w": 320,
+        "h": 493,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      },
+      {
+        "id": "1508:6591",
+        "w": 1440,
+        "h": 341,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      },
+      {
+        "id": "1508:6959",
+        "w": 768,
+        "h": 506,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      },
+      {
+        "id": "1508:7328",
+        "w": 390,
+        "h": 466,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      },
+      {
+        "id": "1508:7695",
+        "w": 320,
+        "h": 493,
+        "text": [
+          "TASKS, TOO",
+          "For the things\nyou do once.",
+          "Add a date and optional time. Keep one-time to-dos alongside your habits.",
+          "FOR EXAMPLE",
+          "Buy groceries · Send a parcel · Pay a bill"
+        ],
+        "afterWidgets": true
+      }
+    ],
+    "approval": "Pending authentic captures and revised Figma design; implementation waits for approval.",
+    "currentRevision": {
+      "remove": [
+        "Free/Plus labels",
+        "Separate Lock catalogue",
+        "Individual widget family blocks"
+      ],
+      "name": "Round 03 — Native Widget Screenshots",
+      "base": "ac462364b33bc90ebaaa7a222893d153cdae87ac",
+      "branch": "codex/website-widgets-capture",
+      "report": "Research/Research Reports/Website/Section 05 Round 03 — Native Widget Screenshots.md",
+      "priorCatalogue": "Historical, superseded by user screenshot request",
+      "status": "Capture fixture and SpringBoard tests prepared; CI run and Figma screenshot replacement pending"
+    }
+  }
+}

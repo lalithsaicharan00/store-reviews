@@ -61,9 +61,9 @@ import com.oftenenough.app.ui.theme.appColors
 
 /** A habit's icon: a filled circle in its colour with a white glyph (in the app and on widgets). */
 @Composable
-fun HabitIcon(symbol: String, color: HabitColor, size: Dp = 40.dp, shape: Shape = CircleShape, modifier: Modifier = Modifier) {
+fun HabitIcon(symbol: String, color: HabitColor, size: Dp = 40.dp, shape: Shape = CircleShape, modifier: Modifier = Modifier, glyph: Float = 0.55f) {
     Box(modifier.size(size).clip(shape).background(appColors.habit(color)), contentAlignment = Alignment.Center) {
-        Icon(HabitIcons.icon(symbol), contentDescription = null, tint = Color.White, modifier = Modifier.size(size * 0.55f))
+        Icon(HabitIcons.icon(symbol), contentDescription = null, tint = Color.White, modifier = Modifier.size(size * glyph))
     }
 }
 
@@ -238,9 +238,9 @@ fun PlainButton(
 
 /** An icon in the Expressive cookie, tonal grey (illustrations on empty states and choices). */
 @Composable
-fun CookieIcon(icon: ImageVector, size: Dp = 56.dp, container: Color? = null, tint: Color? = null) {
+fun CookieIcon(icon: ImageVector, size: Dp = 56.dp, container: Color? = null, tint: Color? = null, glyph: Float = 0.45f) {
     Box(Modifier.size(size).clip(CookieShape()).background(container ?: appColors.tonal), contentAlignment = Alignment.Center) {
-        Icon(icon, null, tint = tint ?: appColors.ink, modifier = Modifier.size(size * 0.45f))
+        Icon(icon, null, tint = tint ?: appColors.ink, modifier = Modifier.size(size * glyph))
     }
 }
 

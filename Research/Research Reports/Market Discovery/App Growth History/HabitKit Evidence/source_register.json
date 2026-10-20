@@ -1,0 +1,96 @@
+{
+  "written_by": "Codex",
+  "observed_date": "2026-10-13",
+  "sources": [
+    {
+      "id": "apple",
+      "url": "https://itunes.apple.com/lookup?id=6443918070&country=us",
+      "scope": "Apple identity and first release",
+      "access": "Public API read; raw metadata saved"
+    },
+    {
+      "id": "founder_2024",
+      "url": "https://www.linkedin.com/pulse/2024-my-indie-app-business-year-review-sebastian-r%C3%B6hl-kyybe",
+      "scope": "31 December 2024 founder retrospective",
+      "access": "Original article body read"
+    },
+    {
+      "id": "video",
+      "url": "https://www.youtube.com/watch?v=vC9N7PgIvEM&t=187s",
+      "scope": "The Studio original video",
+      "access": "Browser expanded description and exported English automatic captions read"
+    },
+    {
+      "id": "founder_site",
+      "url": "https://www.roehl.dev/",
+      "scope": "Founder appearances register",
+      "access": "Original site read; linked identical video ID"
+    },
+    {
+      "id": "milestone_2024",
+      "url": "https://www.linkedin.com/pulse/weekly-indie-log-22-sebastian-r%C3%B6hl-sjgne",
+      "scope": "10 March 2024 cumulative milestone",
+      "access": "Original article read"
+    },
+    {
+      "id": "aso",
+      "url": "https://sebastianroehl.substack.com/p/my-app-store-optimization-strategy",
+      "scope": "20 October 2024 store optimization practices",
+      "access": "Original article body read"
+    },
+    {
+      "id": "log_53",
+      "url": "https://sebastianroehl.substack.com/p/weekly-indie-log-53",
+      "scope": "8 December 2024 SEO and Uneed",
+      "access": "Original article read"
+    },
+    {
+      "id": "log_56",
+      "url": "https://sebastianroehl.substack.com/p/building-an-indie-app-business-56",
+      "scope": "19 January 2025 high-growth period",
+      "access": "Original article read"
+    },
+    {
+      "id": "log_58",
+      "url": "https://sebastianroehl.substack.com/p/building-an-indie-app-business-58",
+      "scope": "2 February 2025 US keyword rank",
+      "access": "Original article read"
+    },
+    {
+      "id": "log_67",
+      "url": "https://sebastianroehl.substack.com/p/building-an-indie-app-business-67",
+      "scope": "8 June 2025 Play organic acquisition",
+      "access": "Original article read"
+    },
+    {
+      "id": "founder_2025",
+      "url": "https://sebastianroehl.substack.com/p/2025-the-year-that-changed-everything",
+      "scope": "31 December 2025 annual review",
+      "access": "Original article body read"
+    },
+    {
+      "id": "happy_bootstrapping",
+      "url": "https://happy-bootstrapping.podigee.io/143-von-5-000-auf-30-000-dollar-mrr-sebastian-von-habitkit-zuruck-nach-2-jahren-143",
+      "scope": "16 October 2025 interview",
+      "access": "Publisher transcript inspected; speaker named XXXX inferred from interview context"
+    },
+    {
+      "id": "launched",
+      "url": "https://launchedfm.com/episode/84-habitkit-sebastian-rohl",
+      "scope": "28 January 2026 interview",
+      "access": "Publisher transcript inspected; relative-year reference not used to date Studio feature"
+    },
+    {
+      "id": "sensor_tower",
+      "url": "https://app.sensortower.com/overview/6443918070?country=US",
+      "scope": "Historical download series attempt",
+      "access": "No readable series returned"
+    },
+    {
+      "id": "starter_story",
+      "url": "https://www.youtube.com/watch?v=gpn1jEoWT4A",
+      "scope": "Secondary creator acquisition lead",
+      "access": "Video identity from founder links; disclosure/transcript not inspected"
+    }
+  ]
+}

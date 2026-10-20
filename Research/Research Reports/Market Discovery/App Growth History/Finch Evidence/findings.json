@@ -1,0 +1,151 @@
+{
+  "researched_date": "2026-10-13",
+  "research_order": 2,
+  "app": "Finch: Self-Care Pet",
+  "apple_id": 1528595748,
+  "scope": "Organic acquisition only; iOS download history. Cross-platform or unknown-platform qualitative stories are labeled and not assigned to iOS totals.",
+  "download_metric_provenance": "Approximate provider AI narratives; all downloads, not organic-only downloads. Complete worldwide 2021-2026 history unavailable.",
+  "peaks_or_rises": [
+    {
+      "period": "September 2024",
+      "country": "Sweden",
+      "platform": "iOS",
+      "approx_weekly_downloads": 6600,
+      "source": "st_se_ios_2024q3",
+      "interpretation": "Reported September surge",
+      "organic_cause": "Unknown; no matched unpaid Swedish event found"
+    },
+    {
+      "period": "Early September 2024",
+      "country": "Norway",
+      "platform": "iOS",
+      "approx_weekly_downloads": 3500,
+      "source": "st_no_ios_2024q3",
+      "interpretation": "Reported quarterly peak",
+      "organic_cause": "Unknown; no matched unpaid Norwegian event found"
+    },
+    {
+      "period": "Late December 2024",
+      "country": "US",
+      "platform": "iOS",
+      "approx_weekly_downloads": 143000,
+      "comparison": "78000 in late November; 116000 near October start",
+      "source": "st_us_ios_2024q4",
+      "interpretation": "Reported recovery; highest of three stated observations, not a verified lifetime peak",
+      "organic_cause": "December 9 Bustle review is a contemporaneous editorial lead. Unpaid status and install contribution unverified; New Year demand is a hypothesis"
+    }
+  ],
+  "context_observations": [
+    {
+      "period": "Late March 2025",
+      "country": "US",
+      "platform": "iOS",
+      "approx_weekly_downloads": 115000,
+      "source": "st_us_ios_2025q1",
+      "is_confirmed_spike": false
+    },
+    {
+      "period": "Early April 2025",
+      "country": "US",
+      "platform": "iOS",
+      "approx_weekly_downloads": 115000,
+      "source": "st_us_ios_2025q2",
+      "is_confirmed_spike": false,
+      "interpretation": "Same approximate level as late March, then declining to 73000 by late June. No aggregate increase established around Morbid March 31 mention"
+    }
+  ],
+  "organic_events": [
+    {
+      "event": "Morbid episode 659 unpaid recommendation",
+      "date": "2025-03-31",
+      "source": "morbid_659_transcript",
+      "date_source": "morbid_659_apple",
+      "segment": "About 05:07-10:09 in transcript version; timestamps may shift with dynamic ads",
+      "unpaid_evidence": "Hosts explicitly state no payment/no sponsorship; invite Finch to sponsor in future",
+      "message": "Personal use for two weeks; virtual bird motivated by completing manageable daily self-care tasks; recommend download",
+      "install_evidence": "Listeners in May 5 discovery thread attribute trying or downloading Finch to Morbid. No exact episode, device, country or publisher attribution available",
+      "aggregate_peak_caused": "Not established"
+    },
+    {
+      "event": "Bustle first-person Finch review",
+      "date": "2024-12-09",
+      "source": "bustle_2024_review",
+      "unpaid_evidence": "No sponsored label found; unpaid status not independently confirmed",
+      "install_evidence": "No attributed reader installs or traffic figures",
+      "aggregate_peak_caused": "Not established"
+    },
+    {
+      "event": "Non-sponsored individual user story",
+      "date": "2025-05-13",
+      "source": "unsponsored_user_story_android",
+      "unpaid_evidence": "Author explicitly says not sponsored",
+      "install_evidence": "Author describes Play Store discovery and persuading brother to use Finch",
+      "platform": "Android-facing account; not iOS spike evidence",
+      "aggregate_peak_caused": "Not established"
+    }
+  ],
+  "qualitative_acquisition_examples": [
+    {
+      "author": "madame-olga",
+      "url": "https://www.reddit.com/r/finch/comments/1kfor7z/comment/mqsmbh0/",
+      "read_in": "reddit_discovery",
+      "channel": "Morbid",
+      "account": "Unpaid podcast recommendation prompted trial after prior paid-ad awareness; confirmed podcast identity in reply",
+      "limit": "Mixed-touch self-report; not wholly organic initial discovery; standalone permalink unavailable in reader"
+    },
+    {
+      "author": "Popular-Honeydew7846",
+      "read_in": "reddit_discovery",
+      "channel": "Morbid",
+      "account": "Remembered podcast mention and subsequently downloaded app",
+      "limit": "Exact episode/platform/country unknown"
+    },
+    {
+      "author": "Just_Raisin1124",
+      "url": "https://www.reddit.com/r/finch/comments/1kfor7z/comment/mqsm6hc/",
+      "read_in": "reddit_discovery",
+      "channel": "Reddit user pet picture",
+      "account": "Saw pet in recommended feed, wanted one, became user and brought friends",
+      "limit": "Self-report; post date is not exposure date; platform/country unknown"
+    },
+    {
+      "author": "No-Title-01",
+      "url": "https://www.reddit.com/r/finch/comments/1kfor7z/comment/mqt0bq2/",
+      "read_in": "reddit_discovery",
+      "channel": "Reddit recommendation",
+      "account": "Curiosity about a productivity recommendation led to download",
+      "limit": "Self-report; platform/country unknown"
+    },
+    {
+      "author": "chelschailatte",
+      "read_in": "reddit_discovery",
+      "channel": "Incentivized friend referral",
+      "account": "Downloaded after friend showed app so friend could earn referral reward",
+      "limit": "Non-cash product incentive, not a paid media campaign; no iOS-specific contribution"
+    },
+    {
+      "author": "mimicathead",
+      "read_in": "reddit_discovery",
+      "channel": "Google search",
+      "account": "Searched for ADHD/self-care apps",
+      "limit": "Qualitative discovery only; query rank, traffic and install volume unknown"
+    }
+  ],
+  "referral_mechanism": {
+    "source": "official_invite_rewards",
+    "updated": "2026-09-16",
+    "description": "New-user invite links/codes with micropet rewards for invitee and inviter progression; non-cash incentive",
+    "historical_evidence": "May 2025 discovery-thread anecdotes describe reward-motivated invitations",
+    "historical_exact_rules": "Not established; do not backdate current terms",
+    "install_contribution": "Unquantified"
+  },
+  "rejected_or_unverified_claims": [
+    "Public TikTok view totals and user-generated appearance do not establish unpaid reach or installs; no dated unpaid TikTok video matched to the reported peaks.",
+    "GrowthMap almost-entirely-organic/no-ad-spend claim lacks verified primary channel attribution in the evidence obtained; not adopted.",
+    "Apple editorial recommendation recalled by one user is undated and not verified by historical Apple placement records.",
+    "Generic-title Podscripts URL returns mismatched lighthouse transcript; excluded. Episode-659 URL matched to Apple episode identity used instead.",
+    "Android and unified Sensor Tower estimates were not reassigned to the iOS series.",
+    "Revenue peaks and cumulative milestones were not used as download spikes."
+  ],
+  "conclusion": "There is specific self-reported organic acquisition through unpaid podcast recommendations, pet sharing, friends and search. No examined aggregate iOS download spike has a proven organic cause or quantified organic share."
+}
