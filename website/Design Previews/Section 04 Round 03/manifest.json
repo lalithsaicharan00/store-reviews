@@ -1,0 +1,194 @@
+{
+  "date": "2026-10-12",
+  "round": "03",
+  "topic": "Morning routine correction",
+  "mainSections": [
+    {
+      "id": "1450:3514",
+      "w": 1440,
+      "h": 752.4898071289062,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1450:3536",
+      "w": 768,
+      "h": 876.6122436523438,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1450:3558",
+      "w": 390,
+      "h": 755.3060913085938,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1450:3580",
+      "w": 320,
+      "h": 692.1632690429688,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    }
+  ],
+  "combinedSections": [
+    {
+      "id": "1450:3602",
+      "w": 1440,
+      "h": 752.4898071289062,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1450:3624",
+      "w": 768,
+      "h": 876.6122436523438,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1450:3646",
+      "w": 390,
+      "h": 755.3060913085938,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1450:3668",
+      "w": 320,
+      "h": 692.1632690429688,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    }
+  ],
+  "standaloneSections": [
+    {
+      "id": "1467:3904",
+      "w": 1440,
+      "h": 752.4898071289062,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1467:3937",
+      "w": 768,
+      "h": 876.6122436523438,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1467:3970",
+      "w": 390,
+      "h": 755.3060913085938,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    },
+    {
+      "id": "1467:4003",
+      "w": 320,
+      "h": 692.1632690429688,
+      "morning": true,
+      "anytime": false,
+      "nativeHash": [
+        "20fde336ab4c194c8c0b1c055a79f7d7be826ba8",
+        "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+      ]
+    }
+  ],
+  "proofSourceId": "1512:7950",
+  "screenSourceId": "1512:7875",
+  "nativeCapture": false,
+  "previews": [
+    {
+      "path": "website/Design Previews/Section 04 Round 03/Desktop 1440.png",
+      "pixels": [
+        1440,
+        753
+      ],
+      "bytes": 81685,
+      "sha256": "53eb6c18b6be76cc20069c5ff302f3c4d7fce6258a22ba7d9bc9517f3c4b1c20",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    },
+    {
+      "path": "website/Design Previews/Section 04 Round 03/Tablet 768.png",
+      "pixels": [
+        768,
+        877
+      ],
+      "bytes": 65392,
+      "sha256": "25d7b0f6492f2a4f9062d54c2b954a76bef62b874e685db2ce9b83add55611a4",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    },
+    {
+      "path": "website/Design Previews/Section 04 Round 03/Mobile 390.png",
+      "pixels": [
+        390,
+        756
+      ],
+      "bytes": 49475,
+      "sha256": "df13248b855cfba128dc0522e987b68e6b38ca220f1cac640a7aa8e2d117cace",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    },
+    {
+      "path": "website/Design Previews/Section 04 Round 03/Narrow Phone 320.png",
+      "pixels": [
+        320,
+        693
+      ],
+      "bytes": 41988,
+      "sha256": "00ec7e73ac5af37ccb1b9859bbb4471e34ef0d214a51b8fcd58bc1643b8fd5e2",
+      "visuallyInspected": true,
+      "productionOptimized": false
+    }
+  ],
+  "approval": "Ready for design review; native Morning capture required before publication.",
+  "validation": "Morning, no Anytime text, original hardware hash preserved, unchanged accepted section sizes/copy; four final renders inspected. Source native UI is editable, not retouched screenshot pixels."
+}

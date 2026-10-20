@@ -1,0 +1,81 @@
+{
+  "written_by": "Codex",
+  "observed_date": "2026-10-13",
+  "sources": [
+    {
+      "id": "apple",
+      "url": "https://itunes.apple.com/lookup?id=1596403446&country=us",
+      "access": "Fresh public API read; full metadata saved"
+    },
+    {
+      "id": "apple_listing",
+      "url": "https://apps.apple.com/us/app/me-lifestyle-routine/id1596403446",
+      "access": "Original current listing and purchase labels read"
+    },
+    {
+      "id": "mwm",
+      "url": "https://mwm.ai/apps/me-lifestyle-routine/1596403446",
+      "access": "Original achievement text read; modeled cumulative thresholds, deduplicated cohort badges"
+    },
+    {
+      "id": "mwm_method",
+      "url": "https://mwm.ai/data-methodology/app-achievements",
+      "access": "Original worldwide-estimate methodology read"
+    },
+    {
+      "id": "sensor_tower",
+      "url": "https://app.sensortower.com/overview/1596403446?country=US",
+      "access": "Fresh page had no readable time series; prior inventory estimate separately retained"
+    },
+    {
+      "id": "enerjoy_product",
+      "url": "https://enerjoy.life/me-plus/",
+      "access": "Original product-page audience badge and 3 September 2024 footer date read"
+    },
+    {
+      "id": "enerjoy_home",
+      "url": "https://enerjoy.life/",
+      "access": "Original portfolio totals read; not assigned to app"
+    },
+    {
+      "id": "family_review",
+      "url": "https://apps.apple.com/gb/app/me-lifestyle-routine/id1596403446?platform=iphone&see-all=reviews",
+      "access": "Original Hattie_11 review, dated 16 August 2024, read in matched App Store page"
+    },
+    {
+      "id": "instagram_profile",
+      "url": "https://www.instagram.com/meplus_app/",
+      "access": "Public profile read through browser; approximately 304K followers at observation; personal account information excluded"
+    },
+    {
+      "id": "instagram_post",
+      "url": "https://www.instagram.com/p/Dc0Mk5LEgpP/",
+      "access": "Public caption, visible comments and DOM timestamps read; 254 likes; no install statement in visible comments"
+    },
+    {
+      "id": "creator_brief",
+      "url": "https://homefromcollege.com/gigs/back-to-school-with--89374",
+      "access": "Original paid creator brief read; offered $100, exact Apple ID followed; campaign date unknown"
+    },
+    {
+      "id": "kpi_media",
+      "url": "https://www.kpimedia.co/blog/performance-marketing-for-the-health-wellness-industry-in-singapore",
+      "access": "Agency-authored paid-search portfolio case read"
+    },
+    {
+      "id": "third_party_breakdown",
+      "url": "https://thegrowthhackinglab.com/case-studies/me-lifestyle-300k-month/",
+      "access": "Original third-party interpretation read; claims not treated as verified acquisition outcomes"
+    },
+    {
+      "id": "reddit_breakdown",
+      "url": "https://www.reddit.com/r/iOSAppsMarketing/comments/1n5q9cu/this_wellness_app_is_quietly_doing_300kmonth/",
+      "access": "Public third-party marketing post read; repeated claims not founder evidence"
+    },
+    {
+      "id": "contest_lead",
+      "url": "https://me-daily-routine-planner.soft112.com/",
+      "access": "Search-returned mirrored changelog; original contest rules and outcomes unverified"
+    }
+  ]
+}

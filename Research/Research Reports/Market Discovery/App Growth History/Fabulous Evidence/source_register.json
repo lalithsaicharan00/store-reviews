@@ -1,0 +1,117 @@
+{
+  "apple_lookup_us": {
+    "url": "https://itunes.apple.com/lookup?id=1203637303&country=us",
+    "status": "cached",
+    "retrieved_date": "2026-10-13"
+  },
+  "company_ios_launch": {
+    "url": "https://blog.thefabulous.co/fabulous-app-now-on-ios/",
+    "status": "cached",
+    "retrieved_date": "2026-10-13"
+  },
+  "founder_ios_retrospective": {
+    "url": "https://medium.com/the-fabulous/a-new-fabulous-journey-in-the-mobile-world-b47a3776a0f9",
+    "status": "failed",
+    "error": "HTTP Error 403: Forbidden",
+    "web_access": "Search-index snippets only; full body unavailable; lead rather than primary basis for chronology",
+    "retrieved_date": "2026-10-13"
+  },
+  "mwm_app": {
+    "url": "https://mwm.ai/apps/fabulous-daily-habit-tracker/1203637303",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Modeled worldwide download thresholds; app achievement snapshot 2026-08-17; not publisher-reported counts"
+  },
+  "mwm_methodology": {
+    "url": "https://mwm.ai/data-methodology/app-achievements",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Modeled worldwide download thresholds; app achievement snapshot 2026-08-17; not publisher-reported counts"
+  },
+  "birch_paid_growth": {
+    "url": "https://bir.ch/case-studies/the-fabulous",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Vendor case: customer since 2025; 50% campaign scaling, with no published result period or OS split; not 50% download lift"
+  },
+  "adjust_attribution": {
+    "url": "https://www.adjust.com/resources/case-studies/fabulous/",
+    "status": "failed",
+    "error": "HTTP Error 429: Too Many Requests",
+    "web_access": "Full public article read with web retrieval; direct capture returned HTTP 429",
+    "retrieved_date": "2026-10-13"
+  },
+  "st_us_ios_2021q1": {
+    "url": "https://sensortower.com/blog/2021-q1-ios-top-5-self-therapy%20and%20journaling-units-us-63dcdd28e1714cfff1e3bd68",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Provider estimate narrated by AI Insights/Timothy; chart is aggregate app comparison, not an independently readable weekly timeline"
+  },
+  "st_us_ios_2022q3": {
+    "url": "https://sensortower.com/blog/2022-q3-ios-top-5-self-therapy%20and%20journaling-units-us-63dcdd28e1714cfff1e3bd68",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Provider estimate narrated by AI Insights/Timothy; chart is aggregate app comparison, not an independently readable weekly timeline"
+  },
+  "st_us_ios_2022q4": {
+    "url": "https://sensortower.com/blog/2022-q4-ios-top-5-self-therapy%20and%20journaling-revenue-us-63dcdd28e1714cfff1e3bd68",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Provider estimate narrated by AI Insights/Timothy; chart is aggregate app comparison, not an independently readable weekly timeline"
+  },
+  "st_us_ios_2023q1": {
+    "url": "https://sensortower.com/blog/2023-q1-ios-top-5-self-therapy%20and%20journaling-revenue-us-63dcdd28e1714cfff1e3bd68",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Provider estimate narrated by AI Insights/Timothy; chart is aggregate app comparison, not an independently readable weekly timeline"
+  },
+  "st_br_ios_2024q1": {
+    "url": "https://sensortower.com/blog/2024-q1-ios-top-5-self-therapy%20and%20journaling-revenue-br-63dcdd28e1714cfff1e3bd68",
+    "status": "cached",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Provider estimate narrated by AI Insights/Timothy; chart is aggregate app comparison, not an independently readable weekly timeline"
+  },
+  "pipiads_new_year_2023": {
+    "url": "https://www.pipiads.com/tiktok-ads-examples/fabulous-tiktok-ads-1753583265073185",
+    "status": "read",
+    "characters": 339319,
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Ad-monitoring observations of US Apple-targeted creative; no install attribution; impressions and button labels are not downloads"
+  },
+  "google_coaching_feature": {
+    "url": "https://play.google.com/store/apps/editorial?hl=en&id=mc_wmhd_fabulous_fcp",
+    "status": "read",
+    "characters": 965365,
+    "retrieved_date": "2026-10-13"
+  },
+  "apple_best_2018": {
+    "url": "https://www.apple.com/newsroom/2018/12/apple-presents-the-best-of-2018.html",
+    "status": "read",
+    "characters": 164744,
+    "retrieved_date": "2026-10-13"
+  },
+  "company_2018_press_release": {
+    "url": "https://www.prweb.com/releases/wellness_app_helping_millions_create_and_cement_good_habits_launches_free_life_well_balanced_journey_to_enable_users_to_moderate_digital_engagement/prweb15494083.htm",
+    "status": "read",
+    "characters": 172967,
+    "retrieved_date": "2026-10-13"
+  },
+  "product_hunt_ios": {
+    "url": "https://www.producthunt.com/posts/the-fabulous",
+    "status": "read",
+    "characters": 356562,
+    "retrieved_date": "2026-10-13"
+  },
+  "pa_life_jan_2018": {
+    "url": "https://palife.co.uk/news/app-of-the-week-fabulous-motivate-me/",
+    "status": "web search excerpt read",
+    "publication_date": "2018-01-08",
+    "scope": "Contemporary report of recent App of the Day exposure",
+    "retrieved_date": "2026-10-13"
+  },
+  "apple_public_listing": {
+    "url": "https://apps.apple.com/us/app/fabulous-daily-habit-tracker/id1203637303?uo=4",
+    "status": "Identity resolved by fresh Apple lookup",
+    "retrieved_date": "2026-10-13"
+  }
+}

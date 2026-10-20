@@ -1,0 +1,70 @@
+{
+  "research_order": 7,
+  "app_id": 963034692,
+  "bundle_id": "com.streaksapp.streak",
+  "seller": "Crunchy Bagel Pty Ltd",
+  "release_utc": "2015-06-01T02:53:36Z",
+  "download_comparison": {
+    "source_id": "sensor_tower_chart",
+    "platform": "US App Store",
+    "measurement": "provider estimates; visual bounds from unlabeled bars",
+    "before": {
+      "start": "2016-06-05",
+      "end": "2016-06-12",
+      "downloads_less_than": 500
+    },
+    "after": {
+      "start": "2016-06-13",
+      "end": "2016-06-20",
+      "approximate_download_range": [
+        3000,
+        4000
+      ]
+    },
+    "exact_values_available": false,
+    "exact_multiplier": null,
+    "individual_daily_peak": null,
+    "cohort_totals_excluded": true
+  },
+  "organic_install_lift": null,
+  "causal_interpretation": "Award publicity plausible; channel contributions not isolated",
+  "featuring_conflict": {
+    "chart": "Streaks asterisk: no featuring",
+    "prose": "Nonstudent winners received hero banners",
+    "resolved": false
+  },
+  "paid_placement": {
+    "source_id": "gruber_sponsor",
+    "date": "2016-06-03",
+    "excluded_from_organic": true
+  },
+  "localization": {
+    "source_ids": [
+      "founder_localization",
+      "founder_features"
+    ],
+    "languages_as_of_interview": "25+",
+    "rollout_date": null,
+    "attributed_installs": null,
+    "workflow": [
+      "Translate strings",
+      "Generate language/device screenshots",
+      "Review screenshots in context",
+      "Generate/upload store assets"
+    ]
+  },
+  "new_approved_marketing_example": false,
+  "saved_supported_ios_subset_completed": true,
+  "android_research_complete": false,
+  "exhaustive_inventory_claim": false,
+  "award_rationale_followup": {
+    "source_id": "apple_2016_ceremony_archive",
+    "stated_reasons": [
+      "simplicity",
+      "visual design",
+      "Apple Watch implementation"
+    ],
+    "languages_mentioned_at_award": 25,
+    "localization_install_lift": null
+  }
+}

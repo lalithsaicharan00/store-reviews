@@ -1,0 +1,95 @@
+{
+  "apple_lookup_us": {
+    "url": "https://itunes.apple.com/lookup?id=1528595748&country=us",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "st_us_ios_2024q4": {
+    "url": "https://sensortower.com/blog/2024-q4-ios-top-5-health%20and%20fitness-units-us-600af518241bc16eb8dce802",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Sensor Tower AI Insights narrative, approximate weekly provider estimates. No raw weekly time series independently verified; no paid/organic split."
+  },
+  "st_us_ios_2025q1": {
+    "url": "https://sensortower.com/blog/2025-q1-ios-top-5-health%20and%20fitness-units-us-600af518241bc16eb8dce802",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Sensor Tower AI Insights narrative, approximate weekly provider estimates. No raw weekly time series independently verified; no paid/organic split."
+  },
+  "st_us_ios_2025q2": {
+    "url": "https://sensortower.com/blog/2025-q2-ios-top-5-health%20and%20fitness-units-us-600af518241bc16eb8dce802",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Sensor Tower AI Insights narrative, approximate weekly provider estimates. No raw weekly time series independently verified; no paid/organic split."
+  },
+  "st_se_ios_2024q3": {
+    "url": "https://sensortower.com/blog/2024-q3-ios-top-5-health%20and%20fitness-units-se-600af518241bc16eb8dce802",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Sensor Tower AI Insights narrative, approximate weekly provider estimates. No raw weekly time series independently verified; no paid/organic split."
+  },
+  "st_no_ios_2024q3": {
+    "url": "https://sensortower.com/blog/2024-q3-ios-top-5-health%20and%20fitness-units-no-600af518241bc16eb8dce802",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Sensor Tower AI Insights narrative, approximate weekly provider estimates. No raw weekly time series independently verified; no paid/organic split."
+  },
+  "bustle_2024_review": {
+    "url": "https://www.bustle.com/wellness/finch-app-review-features-price",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Dated editorial review with no sponsored label found in readable page. Absence of label does not prove unpaid distribution or attributed installs."
+  },
+  "morbid_659_apple": {
+    "url": "https://podcasts.apple.com/us/podcast/the-unsolved-murder-of-kristin-oconnell/id1379959217?i=1000699552231",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "morbid_659_publisher": {
+    "url": "https://morbid-53aa329e.simplecast.com/episodes/the-unsolved-murder-of-kristin-oconnell-_1qIgiRv",
+    "status": "read",
+    "retrieved_date": "2026-10-13"
+  },
+  "morbid_659_transcript": {
+    "url": "https://podscripts.co/podcasts/morbid/episode-659-the-unsolved-murder-of-kristin-oconnell",
+    "status": "read",
+    "retrieved_date": "2026-10-13",
+    "quality_note": "Third-party transcript of hosts speech. Episode number/date/title matched to Apple publisher listing; original audio not independently listened to."
+  },
+  "reddit_discovery": {
+    "url": "https://www.reddit.com/r/finch/comments/1kfor7z/how_did_you_discover_finch/",
+    "status": "failed",
+    "error": "HTTP Error 403: Blocked",
+    "retrieved_date": "2026-10-13",
+    "web_access": "Read with web search/retrieval; direct scratch capture failed. Attributed extracts and limits are preserved in findings.json."
+  },
+  "reddit_morbid_date": {
+    "url": "https://www.reddit.com/r/finch/comments/1jmd4q5/",
+    "status": "failed",
+    "error": "HTTP Error 403: Blocked",
+    "retrieved_date": "2026-10-13",
+    "web_access": "Search-index text read; full reader and direct scratch capture failed. Lead only."
+  },
+  "official_invite_rewards": {
+    "url": "https://help.finchcare.com/hc/en-us/articles/37780423805069-Invite-Rewards",
+    "status": "failed",
+    "error": "HTTP Error 403: Forbidden",
+    "retrieved_date": "2026-10-13",
+    "web_access": "Read with web search/retrieval; direct scratch capture failed. Attributed extracts and limits are preserved in findings.json.",
+    "quality_note": "Updated 2026-09-16; current mechanics do not establish a 2024 launch date. Article has conflicting 5-day/48-hour entry windows; neither is relied on."
+  },
+  "official_adding_friends": {
+    "url": "https://help.finchcare.com/hc/en-us/articles/37780316582413-Adding-Friends",
+    "status": "failed",
+    "error": "HTTP Error 403: Forbidden",
+    "retrieved_date": "2026-10-13",
+    "web_access": "Read with web search/retrieval; direct scratch capture failed. Attributed extracts and limits are preserved in findings.json."
+  },
+  "unsponsored_user_story_android": {
+    "url": "https://medium.com/@manya.manuseema/how-a-virtual-pet-bird-helped-me-rebuild-small-habits-3d10d00cef22",
+    "status": "failed",
+    "error": "HTTP Error 403: Forbidden",
+    "retrieved_date": "2026-10-13",
+    "web_access": "Read with web search/retrieval; direct scratch capture failed. Attributed extracts and limits are preserved in findings.json."
+  }
+}

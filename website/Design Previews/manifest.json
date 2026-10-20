@@ -1,0 +1,292 @@
+{
+  "scope": "Figma design previews, not production web assets or native screenshots",
+  "previews": [
+    {
+      "file": "404 - 1440.png",
+      "width": 1440,
+      "height": 809,
+      "bytes": 40519,
+      "sha256": "ee87d00aed83eba27eb2956b404355130068c94757e8bfec2ed72cb1241661be"
+    },
+    {
+      "file": "404 - 390.png",
+      "width": 390,
+      "height": 802,
+      "bytes": 29401,
+      "sha256": "25c44bf028670a64cc349c5dda330a8dc84de57d508bfd22537503ef46878495"
+    },
+    {
+      "file": "404 - 768.png",
+      "width": 768,
+      "height": 809,
+      "bytes": 35385,
+      "sha256": "1e600957b3f5f97248d213e99eab9a4ef9e44082176784fc430d26d2bff28069"
+    },
+    {
+      "file": "Assets - Foundations.png",
+      "width": 2200,
+      "height": 2005,
+      "bytes": 148867,
+      "sha256": "1ce95eb5db897fe0a410d5541b1a28149ad38c37e7c070d9fec28be8e60de978"
+    },
+    {
+      "file": "Delete account - 1440.png",
+      "width": 1440,
+      "height": 1210,
+      "bytes": 76462,
+      "sha256": "2fb59912e218ce59a73076917c206a031035eef5e94053d7ce520c85de1c514a"
+    },
+    {
+      "file": "Delete account - 390.png",
+      "width": 390,
+      "height": 1354,
+      "bytes": 63273,
+      "sha256": "52a231e26e5f06e18baecbc1bdcfc47f4c6a3f590f9ea178857ecfb36d16f683"
+    },
+    {
+      "file": "Delete account - 768.png",
+      "width": 768,
+      "height": 1210,
+      "bytes": 68586,
+      "sha256": "9a98c5fda87e93622dcb0ce74a7635c92354aeed5e266c73e1d90ff6fbd923f1"
+    },
+    {
+      "file": "Download - 1440.png",
+      "width": 1440,
+      "height": 1606,
+      "bytes": 112857,
+      "sha256": "3b09d247626f5be3d76bf23f806a82360212bbc3ad851df70a00574b279f7ca6"
+    },
+    {
+      "file": "Download - 390.png",
+      "width": 390,
+      "height": 2237,
+      "bytes": 99058,
+      "sha256": "d9d800485436caae0279edd8feee1c5cd4b80bb0cc6bd13b16f2effbeb64d235"
+    },
+    {
+      "file": "Download - 768.png",
+      "width": 768,
+      "height": 1547,
+      "bytes": 101378,
+      "sha256": "01c96a2e22281cd05d8c2b2bd68974ffce2d6ef3199c6a4c169a6c74e9217b40"
+    },
+    {
+      "file": "Help - 1440.png",
+      "width": 1440,
+      "height": 1520,
+      "bytes": 99581,
+      "sha256": "6300e701ab3a0ea983849f0442ecf953eaa89cf511b920ec4461a5ef8e883b4c"
+    },
+    {
+      "file": "Help - 390.png",
+      "width": 390,
+      "height": 2087,
+      "bytes": 89869,
+      "sha256": "2ddd44bc598ca1b92953e598bd36db909c9bcd826859552d83f01903697d9ee6"
+    },
+    {
+      "file": "Help - 768.png",
+      "width": 768,
+      "height": 1627,
+      "bytes": 95180,
+      "sha256": "3c85ba5cdcd107b91fcd4ce05c49b9b0c77b61f4dbc206b49cec208441a1cbf0"
+    },
+    {
+      "file": "Home - 1440.png",
+      "width": 1440,
+      "height": 6411,
+      "bytes": 467220,
+      "sha256": "3ed0e624057bc61b3e3571f97b52edda6d97d863369b14adaaf31f3a02bd0fd0"
+    },
+    {
+      "file": "Home - 320.png",
+      "width": 320,
+      "height": 8116,
+      "bytes": 307227,
+      "sha256": "ab17f33edffe7da2aab754aabf06c8acc1e9cb58898a2c061834871ddf4a9feb"
+    },
+    {
+      "file": "Home - 390.png",
+      "width": 390,
+      "height": 7733,
+      "bytes": 325006,
+      "sha256": "516cb28377598139c05e98b2e89701a1bd37243d4add4d7ee79e230745ede31f"
+    },
+    {
+      "file": "Home - 768.png",
+      "width": 768,
+      "height": 6305,
+      "bytes": 396768,
+      "sha256": "42bf938e51ea461b87890816b71c2626407a1778c652038acf89c9cb70691ea7"
+    },
+    {
+      "file": "Home - Android 390.png",
+      "width": 390,
+      "height": 7753,
+      "bytes": 325600,
+      "sha256": "10ea4cc5f488474bb98d1c5f94e96f63060c85f379a3d1632ccac8554fdf2f4a"
+    },
+    {
+      "file": "Plus - 1440.png",
+      "width": 1440,
+      "height": 1372,
+      "bytes": 109383,
+      "sha256": "e410cf5ee12e98a8144463f4e94dca8bdb400031a05309c4f2054ee73095bf8f"
+    },
+    {
+      "file": "Plus - 390.png",
+      "width": 390,
+      "height": 2223,
+      "bytes": 98640,
+      "sha256": "d80c684a5dc823a31d67de9c349cbcbea0d222c51523a7f34b999888d8f4897c"
+    },
+    {
+      "file": "Plus - 768.png",
+      "width": 768,
+      "height": 1444,
+      "bytes": 102411,
+      "sha256": "7c3cccc1b596c25e6f10e9fa335cd1d562534010b6577a1c690af97a2c29c5de"
+    },
+    {
+      "file": "Privacy - 1440.png",
+      "width": 1440,
+      "height": 1580,
+      "bytes": 133396,
+      "sha256": "09f2c9baf4045d2d62b225097df9e17137890a2459bcf8b6ad86e7906867cc3f"
+    },
+    {
+      "file": "Privacy - 390.png",
+      "width": 390,
+      "height": 2322,
+      "bytes": 121684,
+      "sha256": "6b3790fbd393f1c4bdc589c49955ed64c184290573b87c7549e76cd7aa248865"
+    },
+    {
+      "file": "Privacy - 768.png",
+      "width": 768,
+      "height": 1746,
+      "bytes": 128318,
+      "sha256": "a5d5ccba7a79d4c6f34cef622c31513d5f56014afbd09ac1161dbff0c17c2444"
+    },
+    {
+      "file": "Review - Motion and asset contract.png",
+      "width": 2400,
+      "height": 1126,
+      "bytes": 125305,
+      "sha256": "4a44782aceec44b4a26e6735f6f1c07778e0f895ae48beb87d172cf117b99d7d"
+    },
+    {
+      "file": "Review - Start here.png",
+      "width": 2400,
+      "height": 938,
+      "bytes": 105668,
+      "sha256": "c7624842a009f3aaa25f79cfafe54f6c2ff0eb39d5574590e772f030b0298485"
+    },
+    {
+      "file": "State - Android download - 1440.png",
+      "width": 1440,
+      "height": 1606,
+      "bytes": 113223,
+      "sha256": "909825f3a79e787860ad1f6f2bcd4430fbcd579dc9e75fcbeb8156da1d4255de"
+    },
+    {
+      "file": "State - Android download - 768.png",
+      "width": 768,
+      "height": 1547,
+      "bytes": 102832,
+      "sha256": "12f2f095cf665a962d17caf5bc4a923c4375147861fdf337d7249caa9f791e8a"
+    },
+    {
+      "file": "State - Android download.png",
+      "width": 390,
+      "height": 1716,
+      "bytes": 70438,
+      "sha256": "808f9409c21069700ca15d20bf538dd029e890f15bb6202eee959b9806729d51"
+    },
+    {
+      "file": "State - Apple store live - future.png",
+      "width": 390,
+      "height": 1423,
+      "bytes": 56499,
+      "sha256": "1997c7036fd3b2078074626ee859fc80de8551e7046c7f249330f978c409fa2a"
+    },
+    {
+      "file": "State - Delete account Confirmation - checked.png",
+      "width": 390,
+      "height": 667,
+      "bytes": 26105,
+      "sha256": "b37713cd35f0d85d50fa8538d9fd27f170e191a7923a7175590d737110df47d8"
+    },
+    {
+      "file": "State - Delete account Confirmation.png",
+      "width": 390,
+      "height": 667,
+      "bytes": 25665,
+      "sha256": "b17d4f806110f4d6327fa8bd5214f7f7a4d969374b756c94c96ee966b0acf856"
+    },
+    {
+      "file": "State - Delete account Error.png",
+      "width": 390,
+      "height": 468,
+      "bytes": 17064,
+      "sha256": "6b5bf58d55335ce8be0f1e50c53e7f49e65100b04b6347f097d249aac83a57ce"
+    },
+    {
+      "file": "State - Delete account Success.png",
+      "width": 390,
+      "height": 493,
+      "bytes": 18960,
+      "sha256": "db177963cc8a68593b62ea65ed03347d2816a08df3390e046c1fd096369205d7"
+    },
+    {
+      "file": "State - Desktop download - 1440.png",
+      "width": 1440,
+      "height": 1445,
+      "bytes": 105422,
+      "sha256": "050e2c3537e944442abfc9922b48fa35faf9992c20e86ecfb998035ae974eac4"
+    },
+    {
+      "file": "State - Desktop download - 768.png",
+      "width": 768,
+      "height": 1541,
+      "bytes": 95222,
+      "sha256": "ed99a9b084a9aa46bcbe607d48edc1e6ab7b04975dba6c15b506c43e64664467"
+    },
+    {
+      "file": "State - Desktop download.png",
+      "width": 390,
+      "height": 1190,
+      "bytes": 46536,
+      "sha256": "e9690e9f8f599545196883a303d14dd324ec697fe71d8dc3a36766d722fb7f91"
+    },
+    {
+      "file": "State - Mobile menu.png",
+      "width": 390,
+      "height": 646,
+      "bytes": 14596,
+      "sha256": "d8123f4cd14c81fefaccbd1868c347418fea575ea0d0c52544847cdc73c83cce"
+    },
+    {
+      "file": "Terms - 1440.png",
+      "width": 1440,
+      "height": 1552,
+      "bytes": 104509,
+      "sha256": "0054dd2244c5d3daf5c1dc222176c0045f630ade9ff1bc4a6499d3c648563058"
+    },
+    {
+      "file": "Terms - 390.png",
+      "width": 390,
+      "height": 1773,
+      "bytes": 90494,
+      "sha256": "b0a8b2dbc64557f9706d45617aecf5f3aa4c5ea76226b031fa352fa395bfaacc"
+    },
+    {
+      "file": "Terms - 768.png",
+      "width": 768,
+      "height": 1552,
+      "bytes": 95759,
+      "sha256": "0214ede31af4eacdda7ca384f83b506bca17743f3c9171f49aacf65f5570394f"
+    }
+  ]
+}

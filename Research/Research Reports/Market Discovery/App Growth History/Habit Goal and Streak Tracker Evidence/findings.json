@@ -1,0 +1,63 @@
+{
+  "app_id": 1120239484,
+  "bundle_id": "info.todice.habit",
+  "research_order": 5,
+  "english_name": "Habit: Goal & Streak Tracker",
+  "japanese_short_name": "継続する技術",
+  "release_utc": "2016-06-18T22:52:44Z",
+  "release_japan_date": "2016-06-19",
+  "download_comparison": {
+    "source_id": "growth_2020",
+    "period": "April–May 2020",
+    "baseline": "February–March 2020",
+    "relative_increase_percent": 51,
+    "absolute_downloads": null,
+    "platform_split": null,
+    "geography_split": null,
+    "evidence_type": "company self-report",
+    "independent_causal_test": false
+  },
+  "localization": {
+    "source_id": "localization_2023",
+    "app_update_month": "2023-07",
+    "announcement_date": "2023-08-09",
+    "exact_rollout_day": null,
+    "reported_language_count": 32,
+    "includes_localized_store_screenshots": true,
+    "growth_evidence": "qualitative overseas growth after rollout",
+    "numeric_install_lift": null,
+    "website_landing_page_evidence": false,
+    "staff_account_scope": "portfolio; mentions native English/Chinese localization and August completion"
+  },
+  "content": {
+    "source_id": "research_release",
+    "publication_date": "2023-12-26",
+    "data_period": [
+      "2022-12-01",
+      "2023-11-30"
+    ],
+    "sample_records": 552692,
+    "goal_types": 20,
+    "editorial_date": "2023-12-31",
+    "editorial_source_id": "editorial_pickup",
+    "attributed_installs": null,
+    "commercial_arrangement_verified": false
+  },
+  "organicity": {
+    "company_asserts_no_paid_promotion": true,
+    "independent_ads_audit": false,
+    "press_distribution_fees_known": false
+  },
+  "actionable_shortlist": [
+    "localized app and store presentation",
+    "useful original content with observed editorial pickup"
+  ],
+  "unknowns": [
+    "raw install time series",
+    "exact daily peak",
+    "country-level localization lift",
+    "incremental iOS installs per tactic",
+    "organic share"
+  ],
+  "user_feedback": "HabitKit earned recommendation excluded from actionable shortlist; factual report preserved"
+}

@@ -1,0 +1,423 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "question": "Will this tracker fit the habits I actually have?",
+  "inference": "Proposed page order, not a visitor-data ranking.",
+  "componentSetId": "1385:2912",
+  "components": [
+    "1385:2797",
+    "1385:2815",
+    "1385:2831",
+    "1385:2855",
+    "1385:2873",
+    "1385:2889"
+  ],
+  "sectionIds": [
+    "1284:146",
+    "1284:501",
+    "1284:810",
+    "1291:1241"
+  ],
+  "layouts": [
+    {
+      "id": "1284:146",
+      "width": 1440,
+      "height": 670,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:2919",
+          "w": 416,
+          "h": 330,
+          "illustrationWidth": 352,
+          "innerWidth": 352,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:2936",
+          "w": 416,
+          "h": 330,
+          "illustrationWidth": 352,
+          "innerWidth": 352,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:2951",
+          "w": 416,
+          "h": 330,
+          "illustrationWidth": 352,
+          "innerWidth": 352,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    },
+    {
+      "id": "1284:501",
+      "width": 768,
+      "height": 686,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:3042",
+          "w": 213.33299255371094,
+          "h": 282,
+          "illustrationWidth": 165.33299255371094,
+          "innerWidth": 165.33299255371094,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3059",
+          "w": 213.33299255371094,
+          "h": 282,
+          "illustrationWidth": 165.33299255371094,
+          "innerWidth": 165.33299255371094,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3074",
+          "w": 213.33299255371094,
+          "h": 282,
+          "illustrationWidth": 165.33299255371094,
+          "innerWidth": 165.33299255371094,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    },
+    {
+      "id": "1284:810",
+      "width": 390,
+      "height": 1113,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:3165",
+          "w": 342,
+          "h": 248,
+          "illustrationWidth": 294,
+          "innerWidth": 294,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3182",
+          "w": 342,
+          "h": 248,
+          "illustrationWidth": 294,
+          "innerWidth": 294,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3197",
+          "w": 342,
+          "h": 248,
+          "illustrationWidth": 294,
+          "innerWidth": 294,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    },
+    {
+      "id": "1291:1241",
+      "width": 320,
+      "height": 1140,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:3288",
+          "w": 272,
+          "h": 248,
+          "illustrationWidth": 224,
+          "innerWidth": 224,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3305",
+          "w": 272,
+          "h": 248,
+          "illustrationWidth": 224,
+          "innerWidth": 224,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3320",
+          "w": 272,
+          "h": 248,
+          "illustrationWidth": 224,
+          "innerWidth": 224,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    },
+    {
+      "id": "1385:2974",
+      "width": 1440,
+      "height": 670,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:2981",
+          "w": 416,
+          "h": 330,
+          "illustrationWidth": 352,
+          "innerWidth": 352,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:2982",
+          "w": 416,
+          "h": 330,
+          "illustrationWidth": 352,
+          "innerWidth": 352,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:2983",
+          "w": 416,
+          "h": 330,
+          "illustrationWidth": 352,
+          "innerWidth": 352,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    },
+    {
+      "id": "1385:3097",
+      "width": 768,
+      "height": 686,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:3104",
+          "w": 213.33299255371094,
+          "h": 282,
+          "illustrationWidth": 165.33299255371094,
+          "innerWidth": 165.33299255371094,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3105",
+          "w": 213.33299255371094,
+          "h": 282,
+          "illustrationWidth": 165.33299255371094,
+          "innerWidth": 165.33299255371094,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3106",
+          "w": 213.33299255371094,
+          "h": 282,
+          "illustrationWidth": 165.33299255371094,
+          "innerWidth": 165.33299255371094,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    },
+    {
+      "id": "1385:3220",
+      "width": 390,
+      "height": 1113,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:3227",
+          "w": 342,
+          "h": 248,
+          "illustrationWidth": 294,
+          "innerWidth": 294,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3228",
+          "w": 342,
+          "h": 248,
+          "illustrationWidth": 294,
+          "innerWidth": 294,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3229",
+          "w": 342,
+          "h": 248,
+          "illustrationWidth": 294,
+          "innerWidth": 294,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    },
+    {
+      "id": "1385:3343",
+      "width": 320,
+      "height": 1140,
+      "imageCount": 3,
+      "imageHashes": [
+        "a4c003b9ff6c4cc256d2bcbaa5a01df319dcabf3",
+        "cc98b27b38f334e16de390f9f666bc522f82865a",
+        "cd6f47d8c55e76951fa48ae743037d4033916eaa"
+      ],
+      "fonts": [
+        "SF Pro"
+      ],
+      "textCount": 25,
+      "overflow": [],
+      "illustrations": [
+        {
+          "id": "1385:3350",
+          "w": 272,
+          "h": 248,
+          "illustrationWidth": 224,
+          "innerWidth": 224,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3351",
+          "w": 272,
+          "h": 248,
+          "illustrationWidth": 224,
+          "innerWidth": 224,
+          "illustrationFits": true
+        },
+        {
+          "id": "1385:3352",
+          "w": 272,
+          "h": 248,
+          "illustrationWidth": 224,
+          "innerWidth": 224,
+          "illustrationFits": true
+        }
+      ],
+      "unboundFreeText": []
+    }
+  ],
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "nodeId": "1385:2974",
+      "file": "Desktop 1440.png",
+      "pixelSize": [
+        1440,
+        670
+      ],
+      "sha256": "41a056130588d2646d66b631d59bbaa0aba2e400246dd1019f730ef7e96624e4"
+    },
+    {
+      "name": "Tablet 768",
+      "nodeId": "1385:3097",
+      "file": "Tablet 768.png",
+      "pixelSize": [
+        768,
+        686
+      ],
+      "sha256": "41e48ac3ddef990dcbe6916b343356452278f8dca263d531b8037af6d53422c8"
+    },
+    {
+      "name": "Mobile 390",
+      "nodeId": "1385:3220",
+      "file": "Mobile 390.png",
+      "pixelSize": [
+        390,
+        1113
+      ],
+      "sha256": "f6f44664e21d1e688cc2911201849c83fbdff4fe13bba3bc2505e3d9c4dad1c1"
+    },
+    {
+      "name": "Narrow Phone 320",
+      "nodeId": "1385:3343",
+      "file": "Narrow Phone 320.png",
+      "pixelSize": [
+        320,
+        1140
+      ],
+      "sha256": "f536e2bedf4556988accf40a17e8e01a875db1cfecb63809c916b1682aa680a1"
+    }
+  ],
+  "validation": {
+    "originalReviewsVerified": 9,
+    "sourceApps": 6,
+    "readingMapComplete": true,
+    "heroPreserved": true,
+    "fonts": "SF Pro; emoji PNG artwork",
+    "allFourResponsiveRendersInspected": true,
+    "headlineGrayOnPanelContrast": 5.31,
+    "illustrationsFitCardInnerWidth": true,
+    "runtimePerformanceMeasured": false
+  },
+  "emojiBytesTotal": 11425,
+  "approval": "Section design pending user review; implementation remains pending."
+}

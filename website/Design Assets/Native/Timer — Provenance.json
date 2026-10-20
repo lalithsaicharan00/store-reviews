@@ -1,0 +1,22 @@
+{
+  "source": "Research/Temp/store-screenshots/captures/run5/5F163357-E571-4DDB-B495-CCB6BE8F280F.png",
+  "sourceManifest": "Research/Temp/store-screenshots/captures/run5/manifest.json",
+  "test": "TimerUITests/testPlayOpensTimerScreenThatClosesWithoutStopping()",
+  "type": "Native iPhone 17 Pro simulator capture",
+  "nativePixelsEdited": false,
+  "facts": [
+    "Read",
+    "Today",
+    "12:07 / 20 min",
+    "Pause",
+    "Log manually"
+  ],
+  "sha1": "c70944eda1f8be64b2643c172504ccc09735eca5",
+  "sha256": "48daa3e791909de66780d44bdf9d043cbeb7c6f3d36b8a01afea560e9ab5f47e",
+  "bytes": 157875,
+  "originalSize": [
+    1206,
+    2622
+  ],
+  "note": "Existing demo capture, not a physical-device photograph, customer result or website performance measurement. Standalone timer screen; not a capture of the routine player."
+}

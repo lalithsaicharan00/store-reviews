@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-13",
+  "inventory_rows": 256,
+  "play_primary_verified": 106,
+  "play_adjacent_verified": 7,
+  "apple_prioritized": 143,
+  "apple_download_supported": 7,
+  "apple_download_unverified": 136,
+  "apple_discovery_candidates": 1575,
+  "play_discovered_packages": 275,
+  "apple_storefronts_requested": 176,
+  "apple_storefronts_read": 174,
+  "failed_apple_storefronts": [
+    "bi",
+    "er"
+  ],
+  "apple_search_cells": 24,
+  "play_search_cells": 24,
+  "validation": "Unique platform/ID keys, download evidence separate from ratings, threshold-supported rows >=10,000, Apple sums match per-country evidence"
+}

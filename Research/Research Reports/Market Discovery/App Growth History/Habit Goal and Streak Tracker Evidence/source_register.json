@@ -1,0 +1,66 @@
+{
+  "written_by": "Codex",
+  "observed_date": "2026-10-13",
+  "sources": [
+    {
+      "id": "apple_us",
+      "url": "https://itunes.apple.com/lookup?id=1120239484&country=us",
+      "access": "API read; full public metadata saved"
+    },
+    {
+      "id": "apple_jp",
+      "url": "https://itunes.apple.com/lookup?id=1120239484&country=jp",
+      "access": "API read; Japanese identity matches stable ID/bundle"
+    },
+    {
+      "id": "growth_2020",
+      "url": "https://prtimes.jp/main/html/rd/p/000000007.000066061.html",
+      "access": "Original company release body read; reported period comparison, not independent analytics"
+    },
+    {
+      "id": "localization_2023",
+      "url": "https://prtimes.jp/main/html/rd/p/000000054.000066061.html",
+      "access": "Original company release body read"
+    },
+    {
+      "id": "localization_pdf",
+      "url": "https://bondavi.jp/news/2308_global.pdf",
+      "access": "Original four-page PDF text read; screenshots returned internal errors; HTML counterpart verified"
+    },
+    {
+      "id": "staff_account",
+      "url": "https://note.com/bondavi/n/n3cd1e79fe4a4",
+      "access": "Original company PR account read; portfolio and Focus link scope preserved"
+    },
+    {
+      "id": "research_release",
+      "url": "https://prtimes.jp/main/html/rd/p/000000057.000066061.html",
+      "access": "Original company methodology and dates read"
+    },
+    {
+      "id": "editorial_pickup",
+      "url": "https://www.daily.co.jp/gossip/subculture/2023/12/31/0017183070.shtml",
+      "access": "Original article date, app name and study identity verified"
+    },
+    {
+      "id": "publisher_milestone",
+      "url": "https://prtimes.jp/main/html/rd/p/000001453.000018193.html",
+      "access": "Book publisher promotional cumulative claim"
+    },
+    {
+      "id": "company_retrospective",
+      "url": "https://bondavi.jp/story/donate-2",
+      "access": "Original company narrative read; includes other apps"
+    },
+    {
+      "id": "sensor_tower",
+      "url": "https://app.sensortower.com/overview/1120239484?page=1&page_size=25",
+      "access": "Fresh overview inaccessible; prior inventory estimate retained separately"
+    },
+    {
+      "id": "mwm",
+      "url": "https://mwm.ai/apps/habit-daily-routine-tracker/1120239484",
+      "access": "Fetched page did not expose the dated achievements from search snippet; snippet milestone not used"
+    }
+  ]
+}

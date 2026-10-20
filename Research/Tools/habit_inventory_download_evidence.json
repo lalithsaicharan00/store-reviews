@@ -1,0 +1,42 @@
+{
+  "1438388363": {
+    "download_evidence_type": "provider_estimate",
+    "downloads": 200000,
+    "period": "Last Month (provider label; exact month not independently fixed)",
+    "scope": "Worldwide, Apple App Store",
+    "source": "https://app.sensortower.com/overview/1438388363?page=1&page_size=25",
+    "note": "Public Sensor Tower result explicitly labels Worldwide and Last Month; sufficient estimated evidence for the lifetime threshold. Not an official Apple count."
+  },
+  "1528595748": {
+    "download_evidence_type": "provider_estimate",
+    "downloads": 300000,
+    "period": "Last Month (provider label; exact month not independently fixed)",
+    "scope": "Worldwide, Apple App Store",
+    "source": "https://app.sensortower.com/overview/1528595748?country=us",
+    "note": "Public Sensor Tower result explicitly labels Worldwide and Last Month. Not an official Apple count."
+  },
+  "1596403446": {
+    "download_evidence_type": "provider_estimate",
+    "downloads": 50000,
+    "period": "Last Month (provider label; exact month not independently fixed)",
+    "scope": "Worldwide, Apple App Store",
+    "source": "https://app.sensortower.com/overview/1596403446?ad_monetization_measure=adsPerMau&ad_monetization_metric=adImpressions&breakdown_attribute=appId&category=6013&chart_plotting_type=line&chart_type=free&country=US&device=iphone&edit=1&end_date=2025-12-22&granularity=daily&impression_share_metric_option=all&install_base_measure=installBase&measure=revenue&metricType=absolute&os=ios&platform_type=networks&retention_chart_type=curve&retention_measure=retentionD1&retention_period=day&rolling_days=0&selected_tab=0&session_count=sessionCount&start_date=2025-11-23&time_period=day&time_spent=timeSpent",
+    "note": "Public Sensor Tower result explicitly labels Worldwide and Last Month. Query dates do not establish the month of the summary badge. Not an official Apple count."
+  },
+  "963034692": {
+    "download_evidence_type": "provider_estimate",
+    "downloads": 20000,
+    "period": "September 2026",
+    "scope": "Apple App Store; estimate geography not explicitly specified; source listing market US",
+    "source": "https://socialpeta.com/en/app-store/963034692",
+    "note": "Estimate passes 10,000 even if restricted to the source market, because one market is a subset of worldwide downloads. Do not relabel this number as an explicitly worldwide estimate."
+  },
+  "6443918070": {
+    "download_evidence_type": "founder_report_with_inference",
+    "downloads": 100000,
+    "period": "Cumulative to 10 March 2024",
+    "scope": "iOS inferred from founder's cross-platform total and platform ratio",
+    "source": "https://www.linkedin.com/pulse/weekly-indie-log-22-sebastian-r%C3%B6hl-sjgne",
+    "note": "Founder reports over 300,000 combined iOS/Android downloads and twice as many on Google Play as App Store. Approximately 100,000 on iOS follows from total/3; this is an inference from a self-report, not an Apple-verified count or a growth-cause finding."
+  }
+}

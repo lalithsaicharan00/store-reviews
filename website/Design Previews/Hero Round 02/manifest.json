@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-12",
+  "author": "Codex",
+  "purpose": "Figma hero review exports; not production payloads",
+  "approval": "pending",
+  "images": [
+    {
+      "file": "Desktop 1440.png",
+      "figmaId": "1335:2366",
+      "width": 1440,
+      "height": 880,
+      "bytes": 195064,
+      "sha256": "d6f5c48f6c6eb93519ddebbc6a95ea67f1f4fea0af464f280a622f7b8274c2e1"
+    },
+    {
+      "file": "Tablet 768.png",
+      "figmaId": "1335:2419",
+      "width": 768,
+      "height": 792,
+      "bytes": 120339,
+      "sha256": "31f5f9e1e471548323f773913a42f6f71ff7fa1e94f6b7c3bdfd833870b8340a"
+    },
+    {
+      "file": "Mobile 390.png",
+      "figmaId": "1335:2462",
+      "width": 390,
+      "height": 1132,
+      "bytes": 113865,
+      "sha256": "137e5d8e362294a642af15d8aa3cab30604b1dc5462dbf93eb6b041c6b7eecc3"
+    },
+    {
+      "file": "Narrow Phone 320.png",
+      "figmaId": "1335:2509",
+      "width": 320,
+      "height": 1039,
+      "bytes": 93181,
+      "sha256": "10dacbbcbc4f2b1b3413dcdfb818b0fbd9061b222c0c6fa148f283d68fa726f3"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "validated_on": "2026-10-15",
+  "winner_instances_total": 125,
+  "ten_year_instances": 113,
+  "ten_year_apps": 57,
+  "ten_year_games": 56,
+  "baseline_2016": 12,
+  "annual_source_list_checks": {
+    "2020": "Exact winner-heading set matches census",
+    "2021": "Exact winner-heading set matches census",
+    "2022": "Exact winner-heading set matches census",
+    "2023": "Exact winner-heading set matches census",
+    "2024": "Exact winner-heading set matches census",
+    "2025": "Exact Winner-badge set matches census",
+    "2026": "Exact Winner-badge set matches census",
+    "2017": "Exact named-winner paragraph set matches census",
+    "2018": "Exact named-winner paragraph set matches census",
+    "2019": "Nine source descriptions hand reviewed, all names present; original article independently states nine winners",
+    "2016": "Archived ceremony hand reviewed, all names present; ceremony independently states ten main plus two student winners"
+  },
+  "unique_record_ids": true,
+  "source_references_resolve": true,
+  "manual_codes_recomputed": true,
+  "local_links_checked": 32,
+  "report_external_urls_registered": true,
+  "competitor_images_or_full_raw_pages_in_package": false,
+  "source_count": 32,
+  "word_counts": {
+    "Apple Design Awards — Complete Winner Catalogue, 2016–2026.md": 3655,
+    "Apple Design Awards — Why Apps Win and Our 2027 Strategy.md": 9177,
+    "Often Enough — Award Readiness and Evidence Plan.md": 2103,
+    "README.md": 281
+  },
+  "limits": [
+    "No independent second coder",
+    "No nonwinner control group or selection probability",
+    "No hands-on historical build audit",
+    "No new device or CI tests",
+    "2027 category/selection details not established",
+    "2016 relies on archived Apple transcript"
+  ]
+}

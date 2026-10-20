@@ -15,6 +15,36 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## Commit and synchronize local work — 20 October 2026
+
+The user asks to commit all uncommitted repository work, push completed work to main and development, and synchronize the local repositories (W3/W4/T10).
+
+- [x] Fetch and inspect every local branch and registered worktree. All existing local branch tips are already ancestors of main; there is no branch named development or dev. The Android development branch is `claude/android-app`. Its untracked schema 10 matches the main checkout's file byte for byte.
+- [ ] Validate and commit the pending research, website, documentation and exported database schema. Preserve pending design/deployment statuses and ignored scratch/build data.
+- [ ] Push the saved work to main and the existing Android development branch, then fast-forward local branches/worktrees and pull to verify synchronization. Use ordinary commit messages without test/performance/widget tags; record validation and final state below.
+
+Validation: website static checks pass (seven pages, support/404, 161 links/assets); speed rules and Git whitespace checks pass; 57 JSON files, five CSV files and six Python sources parse; schema 10 agrees with `HabitRepository.SCHEMA_VERSION`; a high-confidence credential scan found no matches. Run the existing website checker with Python's `-X utf8` on Windows. Core CI will run on the synchronization branch before main moves (W3/T19).
+
+Existing main CI issue, present before this synchronization: [Android run 39358413967](https://github.com/lalithsaicharan00/store-reviews/actions/runs/39358413967) fails lint at `Android/app/src/main/kotlin/com/oftenenough/app/ui/record/NoteScreens.kt:118` (`SuspiciousIndentation`). No Android source is changed by this synchronization; this failure remains an open validation issue (T2).
+
+## Google Play listing-tag research — 15 October 2026
+
+Google Play listing-tag research, 15 October 2026: [report](<../../../Research/Research Reports/Store Listing and ASO/Google Play Listing Tags — Evidence and Launch Shortlist.md>) and [research checklist](<Google Play Listing Tags — Research.md>). Public-source audit covers all ten requested competitors and Google's current guidance. Exact live Console taxonomy and competitors' saved selections could not be verified; proposed Productivity/Self-help choices remain provisional. The user confirmed there is no existing listing. Research only; no publication or store changes.
+
+## Website verification deployment — 15 October 2026
+
+**Optional account policy update, the user, 15 October 2026 (D15/D16, Android A15):** keep this release's other pages and styling unchanged.
+- [x] Add Privacy's “Your optional account” section and short-version mention: optional Google/Apple sign-in; only account/provider IDs, masked email, verified purchase/refund details, family membership, cloud/private cloud ID and last sync; never habits, tasks, logs or notes. Explain purpose, Cloudflare processing, encrypted transit and the service's preparation status.
+- [x] Update Delete account with **Plus & Account › Delete my account**, family-owner deletion, and store purchases/restoration; retain separate local/cloud/export removal instructions.
+- [ ] Regenerate; run `website/tests/verification-check.py`; redeploy the existing Pages project on oftenenough.com, verify the public policy/deletion pages, and record deployment evidence in `website/Verification Deployment.md`.
+  - Regeneration and static checks pass (161 links/assets); only Privacy and Delete account changed in the public build. Rule and whitespace checks pass. Publication awaits renewed Cloudflare authentication: no callable plugin, expired saved CLI login, and the device authorization request timed out. No new deployment or live-policy verification is claimed.
+
+- [x] Implemented the seven supplied Figma pages as plain static HTML: Home `1284:2`, Download `1289:2245`, Plus `1289:2657`, Privacy `1289:2916`, Help `1289:3145`, Terms `1289:3401`, Delete Account `1289:3603`. Visual fidelity is secondary for this explicitly authorized verification release. Every page says work in progress and distinguishes unfinished platforms/public downloads. This supersedes the earlier design-only approval hold for this verification site.
+- [x] Replaced old server/account claims with current app data flows, optional usage sharing, one-time store purchases and separate device/cloud deletion instructions. Removed the obsolete web Google sign-in/deletion script; no fake deletion or store-download flow. Source evidence is in `website/Verification Deployment.md`.
+- [x] Published on Cloudflare Pages at https://oftenenough.com and https://www.oftenenough.com; both domains are active. Deployment `4399123f-1c45-4dab-8b38-80cc18995c00`. Seven live pages, three aliases, assets, strict headers and the real 404 pass HTTPS checks. Native app, production API, Figma and unrelated files are untouched; no Git push, new local branch or worktree. Details and prior DNS values are in `website/Verification Deployment.md` (W1/W3/W4/D11/S19).
+  - Local validation passed: seven required pages plus support/404, 160 links/assets, strict CSP, approved logo and all seven pages at 320px without overflow/broken images. Rule check and whitespace check pass. Cloudflare's saved OAuth token is expired; device sign-in with Pages write and read-only account/zone access awaits the user. No deployment or DNS success is claimed. No local branch/worktree, Git push, API change or Figma change.
+  - The user connected the Cloudflare plugin, which verified access despite the separate CLI device code expiring. Pages deployment and root/www DNS cutover completed. Automatic website analytics injection is disabled, and support email markup avoids JavaScript-dependent obfuscation; final live HTML has zero scripts and functioning mail links. The preceding authentication note is historical.
+
 ## Reddit marketing example — current request
 
 **Localization example, the user, 13 October 2026:** add bondavi's July 2023 app/store localization to [Marketing and How We Can Market It](<../../../Marketing/Marketing and How We Can Market It.md>), including original sources, discovery and gradual overseas growth with no quantified surge. Exclude the separate user-data/content-coverage tactic as not useful for our plan. Commit this scoped package to main, verify publication, then continue with Me+ Lifestyle Routine. Progress: [publication and continuation checklist](<Localization Marketing Example — Publish and Continue.md>) (W1/W2/W4).

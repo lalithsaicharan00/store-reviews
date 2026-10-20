@@ -1,0 +1,28 @@
+{
+  "US": {
+    "trackId": 1438388363,
+    "trackName": "Habit Tracker",
+    "bundleId": "com.davetech.habit",
+    "sellerName": "Inner Grow Limited",
+    "releaseDate": "2019-01-31T09:10:14Z",
+    "languageCodesISO2A": [
+      "EN",
+      "FR",
+      "DE",
+      "IT",
+      "JA",
+      "PT",
+      "RU",
+      "ZH",
+      "ES",
+      "ZH"
+    ]
+  },
+  "CN": {
+    "trackId": 1438388363,
+    "trackName": "习惯清单- 自律打卡养成,喝水时间提醒记录&目标计划",
+    "bundleId": "com.davetech.habit",
+    "sellerName": "Inner Grow Limited",
+    "releaseDate": "2019-01-31T09:10:14Z"
+  }
+}

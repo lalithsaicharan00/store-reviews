@@ -1,0 +1,1531 @@
+{
+  "date": "2026-10-12",
+  "round": "02",
+  "topic": "Guided routines",
+  "approval": "Ready for design review; implementation awaits approval.",
+  "mainSections": [
+    {
+      "id": "1450:3514",
+      "w": 1440,
+      "h": 752.4898071289062,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15806;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15811;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 273.7347412109375,
+          "h": 595.97119140625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15811;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 306,
+          "h": 624.4898071289062,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3536",
+      "w": 768,
+      "h": 876.6122436523438,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15820;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15825;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 232.5850830078125,
+          "h": 506.3807678222656,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15825;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 260,
+          "h": 530.6122436523438,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3558",
+      "w": 390,
+      "h": 755.3060913085938,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15834;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15839;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 203.95921325683594,
+          "h": 444.0569763183594,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15839;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 228,
+          "h": 465.30609130859375,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3580",
+      "w": 320,
+      "h": 692.1632690429688,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15848;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15853;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 178.91160583496094,
+          "h": 389.523681640625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15853;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 200,
+          "h": 408.16326904296875,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    }
+  ],
+  "allCopies": [
+    {
+      "id": "1450:3514",
+      "w": 1440,
+      "h": 752.4898071289062,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15806;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15811;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 273.7347412109375,
+          "h": 595.97119140625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15811;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 306,
+          "h": 624.4898071289062,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3536",
+      "w": 768,
+      "h": 876.6122436523438,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15820;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15825;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 232.5850830078125,
+          "h": 506.3807678222656,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15825;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 260,
+          "h": 530.6122436523438,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3558",
+      "w": 390,
+      "h": 755.3060913085938,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15834;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15839;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 203.95921325683594,
+          "h": 444.0569763183594,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15839;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 228,
+          "h": 465.30609130859375,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3580",
+      "w": 320,
+      "h": 692.1632690429688,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15848;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15853;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 178.91160583496094,
+          "h": 389.523681640625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15853;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 200,
+          "h": 408.16326904296875,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3602",
+      "w": 1440,
+      "h": 752.4898071289062,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15862;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15867;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 273.7347412109375,
+          "h": 595.97119140625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15867;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 306,
+          "h": 624.4898071289062,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3624",
+      "w": 768,
+      "h": 876.6122436523438,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15876;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15881;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 232.5850830078125,
+          "h": 506.3807678222656,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15881;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 260,
+          "h": 530.6122436523438,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3646",
+      "w": 390,
+      "h": 755.3060913085938,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15890;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15895;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 203.95921325683594,
+          "h": 444.0569763183594,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15895;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 228,
+          "h": 465.30609130859375,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1450:3668",
+      "w": 320,
+      "h": 692.1632690429688,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15904;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15909;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 178.91160583496094,
+          "h": 389.523681640625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15909;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 200,
+          "h": 408.16326904296875,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1467:3904",
+      "w": 1440,
+      "h": 752.4898071289062,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15918;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15923;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 273.7347412109375,
+          "h": 595.97119140625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15923;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 306,
+          "h": 624.4898071289062,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1467:3937",
+      "w": 768,
+      "h": 876.6122436523438,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15932;1412:3205",
+          "name": "Rectangle",
+          "w": 48,
+          "h": 48,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15937;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 232.5850830078125,
+          "h": 506.3807678222656,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15937;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 260,
+          "h": 530.6122436523438,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1467:3970",
+      "w": 390,
+      "h": 755.3060913085938,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15946;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15951;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 203.95921325683594,
+          "h": 444.0569763183594,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15951;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 228,
+          "h": 465.30609130859375,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1467:4003",
+      "w": 320,
+      "h": 692.1632690429688,
+      "descendants": 14,
+      "typeCounts": {
+        "FRAME": 6,
+        "TEXT": 3,
+        "INSTANCE": 2,
+        "RECTANGLE": 3
+      },
+      "text": [
+        "Your routine.",
+        "One step at a time.",
+        "Follow your habits in a guided routine.\nUse timers, pause, and move on at your own pace."
+      ],
+      "fontFamilies": [
+        "SF Pro"
+      ],
+      "unshared": [],
+      "overflow": [],
+      "images": [
+        {
+          "id": "I1492:15960;1412:3205",
+          "name": "Rectangle",
+          "w": 32,
+          "h": 32,
+          "hashes": [
+            "20fde336ab4c194c8c0b1c055a79f7d7be826ba8"
+          ]
+        },
+        {
+          "id": "I1492:15965;1466:3540",
+          "name": "Actual native Routine capture / unchanged pixels",
+          "w": 178.91160583496094,
+          "h": 389.523681640625,
+          "hashes": [
+            "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+          ]
+        },
+        {
+          "id": "I1492:15965;1466:3541",
+          "name": "Sourced transparent hardware bezel / intact",
+          "w": 200,
+          "h": 408.16326904296875,
+          "hashes": [
+            "7b519f15410878a9616cc58f4d4c73ff11d2129b"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "id": "1467:3903",
+      "sectionId": "1467:3904",
+      "w": 1440,
+      "h": 752.4898071289062
+    },
+    {
+      "id": "1467:3936",
+      "sectionId": "1467:3937",
+      "w": 768,
+      "h": 876.6122436523438
+    },
+    {
+      "id": "1467:3969",
+      "sectionId": "1467:3970",
+      "w": 390,
+      "h": 755.3060913085938
+    },
+    {
+      "id": "1467:4002",
+      "sectionId": "1467:4003",
+      "w": 320,
+      "h": 692.1632690429688
+    }
+  ],
+  "proofSourceId": "1466:3538",
+  "nativeProvenance": "Design Assets/Native/Routine — Provenance.json",
+  "retainedTasks": [
+    {
+      "id": "1467:3551",
+      "w": 1440,
+      "h": 341,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3595",
+      "w": 768,
+      "h": 506,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3639",
+      "w": 390,
+      "h": 466,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3683",
+      "w": 320,
+      "h": 493,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3727",
+      "w": 1440,
+      "h": 341,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3771",
+      "w": 768,
+      "h": 506,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3815",
+      "w": 390,
+      "h": 466,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    },
+    {
+      "id": "1467:3859",
+      "w": 320,
+      "h": 493,
+      "dimensionsMatch": true,
+      "textMatch": true,
+      "afterRoutines": true
+    }
+  ],
+  "preservation": [
+    {
+      "id": "1340:2412",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1340:2441",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1340:2468",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1340:2495",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1284:146",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1284:501",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1284:810",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1291:1241",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1284:163",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1284:518",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1284:827",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    },
+    {
+      "id": "1291:1258",
+      "dimensionsMatch": true,
+      "textAndGeometryMatch": true
+    }
+  ],
+  "mutationLedger": {
+    "createdNodeIds": [
+      "1492:15801",
+      "1492:15802",
+      "1492:15803",
+      "1492:15804",
+      "1492:15805",
+      "1492:15806",
+      "1492:15808",
+      "1492:15809",
+      "1492:15810",
+      "1492:15811",
+      "1492:15815",
+      "1492:15816",
+      "1492:15817",
+      "1492:15818",
+      "1492:15819",
+      "1492:15820",
+      "1492:15822",
+      "1492:15823",
+      "1492:15824",
+      "1492:15825",
+      "1492:15829",
+      "1492:15830",
+      "1492:15831",
+      "1492:15832",
+      "1492:15833",
+      "1492:15834",
+      "1492:15836",
+      "1492:15837",
+      "1492:15838",
+      "1492:15839",
+      "1492:15843",
+      "1492:15844",
+      "1492:15845",
+      "1492:15846",
+      "1492:15847",
+      "1492:15848",
+      "1492:15850",
+      "1492:15851",
+      "1492:15852",
+      "1492:15853",
+      "1492:15857",
+      "1492:15858",
+      "1492:15859",
+      "1492:15860",
+      "1492:15861",
+      "1492:15862",
+      "1492:15864",
+      "1492:15865",
+      "1492:15866",
+      "1492:15867",
+      "1492:15871",
+      "1492:15872",
+      "1492:15873",
+      "1492:15874",
+      "1492:15875",
+      "1492:15876",
+      "1492:15878",
+      "1492:15879",
+      "1492:15880",
+      "1492:15881",
+      "1492:15885",
+      "1492:15886",
+      "1492:15887",
+      "1492:15888",
+      "1492:15889",
+      "1492:15890",
+      "1492:15892",
+      "1492:15893",
+      "1492:15894",
+      "1492:15895",
+      "1492:15899",
+      "1492:15900",
+      "1492:15901",
+      "1492:15902",
+      "1492:15903",
+      "1492:15904",
+      "1492:15906",
+      "1492:15907",
+      "1492:15908",
+      "1492:15909",
+      "1492:15913",
+      "1492:15914",
+      "1492:15915",
+      "1492:15916",
+      "1492:15917",
+      "1492:15918",
+      "1492:15920",
+      "1492:15921",
+      "1492:15922",
+      "1492:15923",
+      "1492:15927",
+      "1492:15928",
+      "1492:15929",
+      "1492:15930",
+      "1492:15931",
+      "1492:15932",
+      "1492:15934",
+      "1492:15935",
+      "1492:15936",
+      "1492:15937",
+      "1492:15941",
+      "1492:15942",
+      "1492:15943",
+      "1492:15944",
+      "1492:15945",
+      "1492:15946",
+      "1492:15948",
+      "1492:15949",
+      "1492:15950",
+      "1492:15951",
+      "1492:15955",
+      "1492:15956",
+      "1492:15957",
+      "1492:15958",
+      "1492:15959",
+      "1492:15960",
+      "1492:15962",
+      "1492:15963",
+      "1492:15964",
+      "1492:15965"
+    ],
+    "removedNodeIds": [
+      "1467:3561",
+      "1467:3605",
+      "1467:3649",
+      "1467:3693",
+      "1467:3737",
+      "1467:3781",
+      "1467:3825",
+      "1467:3869",
+      "1467:3905",
+      "1467:3938",
+      "1467:3971",
+      "1467:4004"
+    ],
+    "mutatedNodeIds": [
+      "1450:3514",
+      "1450:3536",
+      "1450:3558",
+      "1450:3580",
+      "1450:3602",
+      "1450:3624",
+      "1450:3646",
+      "1450:3668",
+      "1467:3904",
+      "1467:3937",
+      "1467:3970",
+      "1467:4003",
+      "1467:3903",
+      "1467:3936",
+      "1467:3969",
+      "1467:4002"
+    ],
+    "layouts": [
+      {
+        "id": "1450:3514",
+        "w": 1440,
+        "h": 801.4693603515625,
+        "proof": "1492:15811"
+      },
+      {
+        "id": "1450:3536",
+        "w": 768,
+        "h": 1019.4693603515625,
+        "proof": "1492:15825"
+      },
+      {
+        "id": "1450:3558",
+        "w": 390,
+        "h": 974.4693603515625,
+        "proof": "1492:15839"
+      },
+      {
+        "id": "1450:3580",
+        "w": 320,
+        "h": 971.4693603515625,
+        "proof": "1492:15853"
+      },
+      {
+        "id": "1450:3602",
+        "w": 1440,
+        "h": 801.4693603515625,
+        "proof": "1492:15867"
+      },
+      {
+        "id": "1450:3624",
+        "w": 768,
+        "h": 1019.4693603515625,
+        "proof": "1492:15881"
+      },
+      {
+        "id": "1450:3646",
+        "w": 390,
+        "h": 974.4693603515625,
+        "proof": "1492:15895"
+      },
+      {
+        "id": "1450:3668",
+        "w": 320,
+        "h": 971.4693603515625,
+        "proof": "1492:15909"
+      },
+      {
+        "id": "1467:3904",
+        "w": 1440,
+        "h": 801.4693603515625,
+        "proof": "1492:15923"
+      },
+      {
+        "id": "1467:3937",
+        "w": 768,
+        "h": 1019.4693603515625,
+        "proof": "1492:15937"
+      },
+      {
+        "id": "1467:3970",
+        "w": 390,
+        "h": 974.4693603515625,
+        "proof": "1492:15951"
+      },
+      {
+        "id": "1467:4003",
+        "w": 320,
+        "h": 971.4693603515625,
+        "proof": "1492:15965"
+      }
+    ],
+    "source": "1466:3538",
+    "nativeHash": "4bb14b69f7984185e96b4e1e99d30a25eb3605cd"
+  },
+  "homes": [
+    {
+      "id": "1284:2",
+      "w": 1440,
+      "h": 6391.6123046875,
+      "order": [
+        {
+          "id": "1284:3",
+          "name": "Navigation",
+          "h": 88
+        },
+        {
+          "id": "1340:2412",
+          "name": "Hero / visitor needs and native product",
+          "h": 800
+        },
+        {
+          "id": "1284:146",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 691
+        },
+        {
+          "id": "1284:163",
+          "name": "02 / Small actions visible progress",
+          "h": 487.322509765625
+        },
+        {
+          "id": "1450:3514",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 752.4898071289062
+        },
+        {
+          "id": "1467:3551",
+          "name": "05 / Tasks / retained for next review",
+          "h": 341
+        },
+        {
+          "id": "1284:221",
+          "name": "04 / Privacy",
+          "h": 517
+        },
+        {
+          "id": "1284:242",
+          "name": "05 / Device family",
+          "h": 952.800048828125
+        },
+        {
+          "id": "1284:302",
+          "name": "06 / Free and Plus",
+          "h": 559
+        },
+        {
+          "id": "1284:315",
+          "name": "07 / Common questions",
+          "h": 495
+        },
+        {
+          "id": "1284:331",
+          "name": "Final invitation",
+          "h": 377
+        },
+        {
+          "id": "1284:336",
+          "name": "Footer",
+          "h": 331
+        }
+      ]
+    },
+    {
+      "id": "1284:365",
+      "w": 768,
+      "h": 6913.3984375,
+      "order": [
+        {
+          "id": "1284:366",
+          "name": "Navigation",
+          "h": 88
+        },
+        {
+          "id": "1340:2441",
+          "name": "Hero / visitor needs and native product",
+          "h": 600
+        },
+        {
+          "id": "1284:501",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 931
+        },
+        {
+          "id": "1284:518",
+          "name": "02 / Small actions visible progress",
+          "h": 743.1459350585938
+        },
+        {
+          "id": "1450:3536",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 876.6122436523438
+        },
+        {
+          "id": "1467:3595",
+          "name": "05 / Tasks / retained for next review",
+          "h": 506
+        },
+        {
+          "id": "1284:576",
+          "name": "04 / Privacy",
+          "h": 517
+        },
+        {
+          "id": "1284:597",
+          "name": "05 / Device family",
+          "h": 865.6400146484375
+        },
+        {
+          "id": "1284:657",
+          "name": "06 / Free and Plus",
+          "h": 583
+        },
+        {
+          "id": "1284:670",
+          "name": "07 / Common questions",
+          "h": 495
+        },
+        {
+          "id": "1284:686",
+          "name": "Final invitation",
+          "h": 377
+        },
+        {
+          "id": "1284:691",
+          "name": "Footer",
+          "h": 331
+        }
+      ]
+    },
+    {
+      "id": "1284:720",
+      "w": 390,
+      "h": 7667.85888671875,
+      "order": [
+        {
+          "id": "1284:721",
+          "name": "Navigation",
+          "h": 84
+        },
+        {
+          "id": "1340:2468",
+          "name": "Hero / visitor needs and native product",
+          "h": 977.3673095703125
+        },
+        {
+          "id": "1284:810",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 1208
+        },
+        {
+          "id": "1284:827",
+          "name": "02 / Small actions visible progress",
+          "h": 474.118896484375
+        },
+        {
+          "id": "1450:3558",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 755.3060913085938
+        },
+        {
+          "id": "1467:3639",
+          "name": "05 / Tasks / retained for next review",
+          "h": 466
+        },
+        {
+          "id": "1284:887",
+          "name": "04 / Privacy",
+          "h": 564
+        },
+        {
+          "id": "1284:908",
+          "name": "05 / Device family",
+          "h": 1272.066650390625
+        },
+        {
+          "id": "1284:968",
+          "name": "06 / Free and Plus",
+          "h": 708
+        },
+        {
+          "id": "1284:981",
+          "name": "07 / Common questions",
+          "h": 524
+        },
+        {
+          "id": "1284:997",
+          "name": "Final invitation",
+          "h": 289
+        },
+        {
+          "id": "1284:1002",
+          "name": "Footer",
+          "h": 346
+        }
+      ]
+    },
+    {
+      "id": "1291:1217",
+      "w": 320,
+      "h": 7796.724609375,
+      "order": [
+        {
+          "id": "1291:1218",
+          "name": "Navigation",
+          "h": 88
+        },
+        {
+          "id": "1340:2495",
+          "name": "Hero / visitor needs and native product",
+          "h": 891.9284057617188
+        },
+        {
+          "id": "1291:1241",
+          "name": "01 / Your habits your way / visual examples",
+          "h": 1208
+        },
+        {
+          "id": "1291:1258",
+          "name": "02 / Small actions visible progress",
+          "h": 436.2054138183594
+        },
+        {
+          "id": "1450:3580",
+          "name": "04 / Guided routines / one step at a time",
+          "h": 692.1632690429688
+        },
+        {
+          "id": "1467:3683",
+          "name": "05 / Tasks / retained for next review",
+          "h": 493
+        },
+        {
+          "id": "1291:1304",
+          "name": "04 / Privacy",
+          "h": 589
+        },
+        {
+          "id": "1291:1315",
+          "name": "05 / Device family",
+          "h": 1285.2518310546875
+        },
+        {
+          "id": "1291:1334",
+          "name": "06 / Free and Plus",
+          "h": 816
+        },
+        {
+          "id": "1291:1346",
+          "name": "07 / Common questions",
+          "h": 524
+        },
+        {
+          "id": "1291:1362",
+          "name": "Final invitation",
+          "h": 400.1754455566406
+        },
+        {
+          "id": "1291:1366",
+          "name": "Footer",
+          "h": 373
+        }
+      ]
+    }
+  ],
+  "previews": [
+    {
+      "name": "Desktop 1440",
+      "file": "Design Previews/Section 04 Round 02/Desktop 1440.png",
+      "size": [
+        1440,
+        753
+      ],
+      "bytes": 79137,
+      "sha256": "3663aaf79e6d496d1798c16a6e7fee04e0c40a4ae2c95ab78b852e827070d20e",
+      "visuallyInspected": true
+    },
+    {
+      "name": "Tablet 768",
+      "file": "Design Previews/Section 04 Round 02/Tablet 768.png",
+      "size": [
+        768,
+        877
+      ],
+      "bytes": 64519,
+      "sha256": "f4458cce95f66aef9df251fdd5db6958d8436062ce86892b5edb12dfab111534",
+      "visuallyInspected": true
+    },
+    {
+      "name": "Mobile 390",
+      "file": "Design Previews/Section 04 Round 02/Mobile 390.png",
+      "size": [
+        390,
+        756
+      ],
+      "bytes": 49184,
+      "sha256": "12e0395706c651bb02a3e209da3abd61e57f1711378d94dd120c354ce9ff61f6",
+      "visuallyInspected": true
+    },
+    {
+      "name": "Narrow Phone 320",
+      "file": "Design Previews/Section 04 Round 02/Narrow Phone 320.png",
+      "size": [
+        320,
+        693
+      ],
+      "bytes": 41539,
+      "sha256": "b52a030040c646ced23caf936e70e919da1154da5e3cecd84be2565361a726fd",
+      "visuallyInspected": true
+    }
+  ],
+  "performance": "Static design only; no web/runtime/device speed measurement."
+}
