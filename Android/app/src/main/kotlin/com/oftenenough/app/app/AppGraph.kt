@@ -35,13 +35,6 @@ object AppGraph {
     val backup: com.oftenenough.app.app.backup.BackupCenter get() = backupInstance ?: error("AppGraph.open first")
 
     val store: HabitStore get() = storeInstance ?: error("AppGraph.open first")
-    /**
-     * Where Move to a new phone's relay is (account-server/src/move.ts): the Worker's dev in debug builds, its production
-     * in release ones. A debug or test launch may point it elsewhere ([TestLaunch.MOVE_SERVER]: the relay under
-     * `wrangler dev`, reached from the emulator at http://10.0.2.2:8787).
-     */
-    var moveServer: String = if (com.oftenenough.app.BuildConfig.DEBUG) "https://api-dev.oftenenough.com" else "https://api.oftenenough.com"
-    val moveHttp by lazy { com.oftenenough.app.data.move.moveHttp() }
 
     /** "habitId|day" a reminder asked to open (Day details), read once by Today. */
     var dayToOpen by androidx.compose.runtime.mutableStateOf<String?>(null)

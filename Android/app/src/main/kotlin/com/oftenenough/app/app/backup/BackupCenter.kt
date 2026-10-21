@@ -89,12 +89,6 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
         }
     }
 
-    /** What Move to a new phone sends (D15): the same checked file as Save a backup file, made the moment it's sent. */
-    suspend fun moveFile(): com.oftenenough.app.data.move.MoveFile = mutex.withLock {
-        store.flush()
-        val file = store.repo.backupFile(info)
-        com.oftenenough.app.data.move.MoveFile(Base64.getDecoder().decode(file.base64), file.habits, file.entries)
-    }
 
     /**
      * Coming back with Google Drive (Onboarding: coming back, 4.2): connects the chosen account and brings Drive's copy

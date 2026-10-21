@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.MobileScreenShare
 import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -48,11 +47,9 @@ import com.oftenenough.app.ui.backup.countText
 import com.oftenenough.app.ui.backup.driveEmail
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
-import com.oftenenough.app.ui.move.CountCard
-import com.oftenenough.app.ui.move.FromOldPhoneFlow
-import com.oftenenough.app.ui.move.MoveEntry
-import com.oftenenough.app.ui.move.StepHeading
-import com.oftenenough.app.ui.move.fromLine
+import com.oftenenough.app.ui.backup.CountCard
+import com.oftenenough.app.ui.backup.StepHeading
+import com.oftenenough.app.ui.backup.fromLine
 import com.oftenenough.app.ui.plus.CenterScreen
 import com.oftenenough.app.ui.plus.FlowScreen
 import com.oftenenough.app.ui.plus.MainButton
@@ -65,7 +62,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Onboarding: coming back (Figma `1549:2`). One question, "how do you want to bring your habits back?": Google Drive,
- * your old phone with the move code, or a backup file. There are no accounts (D16, 21 Oct 2026); Plus comes back from
+ * or a backup file (moving with a code was removed 21 Oct 2026, to keep the first release simple). There are no accounts (D16, 21 Oct 2026); Plus comes back from
  * Google Play by itself. Every "Start fresh" goes to Your days and weeks (8), then the empty Today; nothing here deletes
  * a copy anywhere (the Drive copy stays, D3). Nothing found is said plainly, never a blank Today that looks like loss.
  */
@@ -81,8 +78,6 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
     var fileName by remember { mutableStateOf("") }
     var problem by remember { mutableStateOf<String?>(null) }
     var askFresh by remember { mutableStateOf(false) }
-    // Where Back from the move code returns: the screen that offered it.
-    var phoneFrom by rememberSaveable { mutableStateOf("start") }
     val back = { step = "start" }
 
     fun backMessage(h: Int, e: Int) = "Your habits are back: " + countText(h, e)
@@ -127,7 +122,7 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
     }
     fun chooseFile() = file.launch(arrayOf("application/zip", "application/octet-stream", "*/*"))
 
-    /** Bring a file or a move in: replace (a new phone has nothing to merge with), with its undo file kept (D5). */
+    /** Bring a file in: replace (a new phone has nothing to merge with), with its undo file kept (D5). */
     fun restore(p: BackupCenter.Pending) {
         val preview = p.check.preview ?: return
         step = "bringing"
@@ -143,12 +138,11 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
     fun WaysBack(drive: Boolean = true) = SegmentedList {
         val rows = buildList {
             if (drive) add("drive")
-            add("phone"); add("file")
+            add("file")
         }
         rows.forEachIndexed { i, r ->
             when (r) {
                 "drive" -> WayRow({ Image(painterResource(R.drawable.ic_drive_logo), null, Modifier.size(22.dp)) }, "Google Drive", "Your backups there", i, rows.size, "back-drive") { chooseDrive() }
-                "phone" -> WayRow({ Icon(Icons.Outlined.MobileScreenShare, null, Modifier.size(22.dp), tint = appColors.ink) }, "Your old phone", "Move them with a code", i, rows.size, "back-phone") { phoneFrom = step; step = "phone" }
                 else -> WayRow({ Icon(Icons.Outlined.Description, null, Modifier.size(22.dp), tint = appColors.ink) }, "A backup file", "A file you saved", i, rows.size, "back-file") { chooseFile() }
             }
         }
@@ -181,14 +175,6 @@ fun ComingBackFlow(store: HabitStore, onBack: () -> Unit, onFinished: (String?) 
         // 4.2.1 · Couldn't connect
         "offline" -> CenterScreen("Couldn’t connect", "We couldn’t reach Google. Check your internet connection, then try again.", "Cancel", "offline", back,
             icon = Icons.Outlined.WifiOff, main = "Try again", onMain = { chooseDrive() })
-        // ------------------------------------------------------------ 5 · Your old phone
-        "phone" -> FromOldPhoneFlow(center, MoveEntry.WELCOME, onBack = { step = phoneFrom }) { p -> pending = p; step = "phone-here" }
-        "phone-here" -> pending?.check?.preview?.let { p ->
-            FlowScreen(onBack = back, tag = "phone-here", top = true, bottom = { MainButton("Bring them back", "bring-back") { restore(pending!!) } }) {
-                StepHeading("Your habits are here.", "Everything your old phone sent.")
-                CountCard(p.fileHabits, p.fileEntries, fromLine(p.deviceName, p.createdAt, store))
-            }
-        }
         // ------------------------------------------------------------ 6 · A backup file
         "file-found" -> pending?.check?.preview?.let { p ->
             FlowScreen(onBack = back, tag = "file-found", top = true, bottom = {

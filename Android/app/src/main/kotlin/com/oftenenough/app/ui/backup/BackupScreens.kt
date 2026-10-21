@@ -35,7 +35,6 @@ import androidx.compose.material.icons.outlined.CloudUpload
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.DriveFolderUpload
-import androidx.compose.material.icons.outlined.MobileScreenShare
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Sync
@@ -75,13 +74,6 @@ import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.TonalButton
-import com.oftenenough.app.ui.move.CountCard
-import com.oftenenough.app.ui.move.FactRow
-import com.oftenenough.app.ui.move.FromOldPhoneFlow
-import com.oftenenough.app.ui.move.MoveEntry
-import com.oftenenough.app.ui.move.RestoreWhatItSent
-import com.oftenenough.app.ui.move.StepHeading
-import com.oftenenough.app.ui.move.fromLine
 import com.oftenenough.app.ui.plus.FlowScreen
 import com.oftenenough.app.ui.plus.MainButton
 import com.oftenenough.app.ui.plus.PlusDialog
@@ -144,11 +136,11 @@ private fun PageRow(icon: ImageVector, title: String, line: String?, index: Int,
 
 /**
  * ≡ › Backup & Sync (Figma `1461:2`, 1–1.3): where the habits are first (backed up, synced with Plus, not backed up, no
- * internet), devices with Plus, then Move and restore, Export, and the two deliberate deletions, each asking with two
+ * internet), devices with Plus, then Restore, Export, and the two deliberate deletions, each asking with two
  * buttons only (5, 6; D9). Rulebook D4, D10: backup and export are free and visible.
  */
 @Composable
-fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onMove: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
+fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
     val c = appColors
     val scope = rememberCoroutineScope()
     val snack = snackbar ?: remember { SnackbarHostState() }
@@ -225,12 +217,11 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                 Text("Anything logged on a device shows on the others once it next syncs.", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     style = AppType.bodySmall, color = c.secondary)
             }
-            SectionLabel("Move and restore")
+            SectionLabel("Restore")
             SegmentedList {
-                val count = if (center.undoAvailable) 3 else 2
-                PageRow(Icons.Outlined.MobileScreenShare, "Move to a new phone", "Show a code to scan on your new phone", 0, count, "move-row", onClick = onMove)
-                PageRow(Icons.Outlined.Restore, "Restore from a backup", "From Google Drive, a backup file or your old phone", 1, count, "restore-row", onClick = onRestore)
-                if (center.undoAvailable) PageRow(Icons.AutoMirrored.Rounded.Undo, "Undo last restore", "Back to how this phone was just before", 2, count, "undo-restore", chevron = false) {
+                val count = if (center.undoAvailable) 2 else 1
+                PageRow(Icons.Outlined.Restore, "Restore from a backup", "From Google Drive or a backup file", 0, count, "restore-row", onClick = onRestore)
+                if (center.undoAvailable) PageRow(Icons.AutoMirrored.Rounded.Undo, "Undo last restore", "Back to how this phone was just before", 1, count, "undo-restore", chevron = false) {
                     scope.launch { if (center.undoRestore()) snack.showSnackbar("This phone is back to how it was before the restore.") }
                 }
             }
@@ -304,8 +295,8 @@ fun FileProblem(problem: String, onChoose: () -> Unit, onBack: () -> Unit) {
 }
 
 /**
- * Restore from a backup (Figma 4–4.3.2): Google Drive, a backup file (Android's own picker, then Restore this file?) or
- * your old phone (the move code, then Restore what it sent?). Each says it replaces this phone's habits and that it can
+ * Restore from a backup (Figma 4–4.3.2): Google Drive, or a backup file (Android's own picker, then Restore this
+ * file?). Each says it replaces this phone's habits and that it can
  * be undone for 30 days; then Restoring, and back to Backup & Sync with "Restored …" and Undo (4.1.3). A backup with
  * nothing in it is never shown as restored (D5).
  */
@@ -343,8 +334,6 @@ fun RestoreScreen(center: BackupCenter, store: HabitStore, onBack: () -> Unit, o
     when (step) {
         "restoring" -> WaitScreen("Restoring your habits", "This takes a moment", "restoring")
         "problem" -> FileProblem(problem ?: BackupProblem.NOT_A_BACKUP, onChoose = { pick() }, onBack = { step = "where" })
-        "phone" -> FromOldPhoneFlow(center, MoveEntry.RESTORE, onBack = { step = "where" }) { p -> pending = p; step = "sent" }
-        "sent" -> pending?.let { p -> RestoreWhatItSent(p, store, onRestore = { restore(p) }, onCancel = { step = "where" }) }
         "file" -> pending?.check?.preview?.let { preview ->
             // 4.2.1 · Restore this file?
             FlowScreen(onBack = { step = "where" }, tag = "restore-file-preview", top = true, bottom = {
@@ -361,14 +350,13 @@ fun RestoreScreen(center: BackupCenter, store: HabitStore, onBack: () -> Unit, o
             SectionLabel("Where is your backup?")
             SegmentedList {
                 PageRow(Icons.Outlined.AddToDrive, "Google Drive", if (center.link.accountName != null) "Your newest copy there" else "Connect it, and what’s there comes back",
-                    0, 3, "restore-drive") {
+                    0, 2, "restore-drive") {
                     scope.launch {
                         val ok = if (center.link.accountName == null) center.connectDrive() else center.syncNow() != null
                         if (ok) onRestored("Your habits from Google Drive are here.", false)
                     }
                 }
-                PageRow(Icons.Outlined.DriveFolderUpload, "A backup file", "A file you saved", 1, 3, "restore-file") { pick() }
-                PageRow(Icons.Outlined.MobileScreenShare, "Your old phone", "Scan or type the code it shows", 2, 3, "restore-phone") { step = "phone" }
+                PageRow(Icons.Outlined.DriveFolderUpload, "A backup file", "A file you saved", 1, 2, "restore-file") { pick() }
             }
             Text("Restoring replaces the habits on this phone. You can undo it for 30 days.", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 style = AppType.bodySmall, color = appColors.secondary)

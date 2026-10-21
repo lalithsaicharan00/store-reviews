@@ -1560,6 +1560,18 @@ and the Add note keyboard coming up by itself.
     it gone, 21 Oct).
   - [x] Play Console: Real-time developer notifications turned off and saved by the user (21 Oct). Nothing of the
     account design is left anywhere.
+  - [x] **Move to a new phone removed** (the user, 21 Oct: "remove this move to another phone with a code … let's
+    keep this app that simple, let's first release it … then we will add features if it is necessary"; Rulebook D15,
+    Android A25): Android's `ui/move` and `data/move` (SPAKE2, the relay client), Backup & Sync's row, Restore's and
+    Welcome back's "Your old phone", the move tests (`MoveLiveTest`, `Spake2Test`, two in `OnboardingTest`), and the
+    ZXing, code-scanner and OkHttp libraries; the shared pieces moved to `ui/backup/FlowParts.kt`. Both relay Workers
+    deleted from Cloudflare (api.oftenenough.com and api-dev no longer answer) and `account-server/` deleted: **we run
+    no server**. Also deleted: `Core`'s `LiveSyncTest` (it synced through the habit-sync server retired 16 Oct). Android
+    and the core compiled once on the MacBook; not tested (the user: "we are still in design phase").
+  - [ ] Still pointing at the old server, for the website's owner: `website/tests/site-check.mjs` calls
+    `api-dev.oftenenough.com`'s old sign-in routes, and `website/README.md` says the delete page talks to
+    `api.oftenenough.com`; the website's account-deletion page has nothing to delete now.
+  - [ ] Figma still has the move-code and account frames (kept, as old versions are; mark them retired when designing).
   - [x] Plus Family removed from the iPhone too (the user, 21 Oct: "from the iPhone, we have to delete the family plan
     as well"): `PlusProduct` and `PlusPlan` are Plus alone; the upgrade screen, the plan choice on the Plus page and
     the 6th-habit sheet, "Plus Family is yours", the family products in `OftenEnough.storekit`, the plan-choosing

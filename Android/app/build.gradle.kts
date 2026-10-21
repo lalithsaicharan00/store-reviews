@@ -43,9 +43,6 @@ android {
         }
     }
 
-    // The account server (account-server/): debug builds talk to dev, release builds to production, once the build has
-    // the Google client above (the Worker only takes real Google sign-ins). Without it: the on-phone stand-in in debug,
-    // none in release. `-PaccountServer=standin|dev|production` overrides.
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -101,13 +98,8 @@ dependencies {
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
     implementation("androidx.metrics:metrics-performance:1.0.0")
     implementation("com.android.billingclient:billing-ktx:9.1.0")
-    // Move to a new phone's QR code (drawn on the phone, ZXing's encoder only).
-    implementation("com.google.zxing:core:3.5.3")
     // Material 3 Expressive's loading indicator, drawn with the library Material's own uses (LoadingIndicator.kt).
     implementation("androidx.graphics:graphics-shapes:1.1.0")
-    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
-    // Moving to a new phone (data/move): the relay is a WebSocket (account-server/src/move.ts).
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     debugImplementation("androidx.compose.ui:ui-tooling")

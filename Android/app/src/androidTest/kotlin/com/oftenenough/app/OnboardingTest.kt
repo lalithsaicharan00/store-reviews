@@ -38,8 +38,6 @@ class OnboardingTest {
     private fun launch(onboarding: Boolean = true, demo: String? = null) {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, 10)
-            // Nothing listens on port 9: the move can't reach a relay, whatever the network.
-            .putExtra(TestLaunch.MOVE_SERVER, "http://127.0.0.1:9")
         if (onboarding) intent.putExtra(TestLaunch.ONBOARDING, true)
         if (demo != null) intent.putExtra(TestLaunch.DEMO, demo)
         scenario = ActivityScenario.launch(intent)
@@ -142,7 +140,7 @@ class OnboardingTest {
         launch()
         tapTag("onboarding-returning")
         waitFor(hasText("Welcome back."), "Welcome back")
-        for (t in listOf("back-drive", "back-phone", "back-file")) waitFor(hasTestTag(t), t)
+        for (t in listOf("back-drive", "back-file")) waitFor(hasTestTag(t), t)
         tapTag("flow-back")
         waitFor(hasTestTag("onboarding-returning"), "the welcome again")
     }
@@ -152,25 +150,11 @@ class OnboardingTest {
         tapTag("onboarding-returning")
         tapTag("back-drive")
         waitFor(hasText("No habits found."), "No habits found")
-        waitFor(hasTestTag("back-phone"), "the other ways back")
+        waitFor(hasTestTag("back-file"), "the other way back")
         tapTag("start-fresh")
         waitFor(hasText("Your days and weeks."), "Your days and weeks")
         tapTag("onboarding-continue")
         waitFor(hasText("No habits yet"), "an empty Today")
-    }
-
-    @Test fun theOldPhoneCodeTakesSixDigitsAndSaysWhenItCantConnect() {
-        launch()
-        tapTag("onboarding-returning")
-        tapTag("back-phone")
-        waitFor(hasText("From your old phone."), "From your old phone")
-        tapTag("move-type")
-        waitFor(hasText("Type the code."), "Type the code")
-        // The sixth digit checks it by itself; with no relay, the move stops and says so, with Try again.
-        compose.onAllNodes(hasTestTag("move-code-field"), useUnmergedTree = true)[0].performTextInput("123456")
-        waitFor(hasText("The move stopped"), "The move stopped", timeout = 30_000)
-        tapTag("move-stopped-main")
-        waitFor(hasText("From your old phone."), "From your old phone again")
     }
 
     // ------------------------------------------------------------------ Backup & Sync (1461:2)
@@ -181,25 +165,16 @@ class OnboardingTest {
         tapTag("menu-backup")
         waitFor(hasTestTag("backup-page"), "Backup & Sync")
         waitFor(hasText("Not backed up"), "the state")
-        for (t in listOf("drive-connect", "move-row", "restore-row", "save-file", "export-csv", "erase-all")) waitFor(hasTestTag(t), t)
+        for (t in listOf("drive-connect", "restore-row", "save-file", "export-csv", "erase-all")) waitFor(hasTestTag(t), t)
         // Erase asks with two buttons only (D9); Cancel leaves everything.
         tapTag("erase-all")
         waitFor(hasText("Erase all your data?"), "the erase question")
         tapTag("erase-dialog-dismiss")
         assertNone(hasText("Erase all your data?"), "the erase question after Cancel")
-        // Restore offers the three places.
+        // Restore offers the two places.
         tapTag("restore-row")
-        for (t in listOf("restore-drive", "restore-file", "restore-phone")) waitFor(hasTestTag(t), t)
+        for (t in listOf("restore-drive", "restore-file")) waitFor(hasTestTag(t), t)
         tapTag("page-back")
         waitFor(hasTestTag("backup-page"), "Backup & Sync again")
-    }
-
-    @Test fun moveToANewPhoneSaysWhenItCantConnect() {
-        launch(onboarding = false, demo = "today")
-        tapTag("menu-button")
-        tapTag("menu-backup")
-        tapTag("move-row")
-        waitFor(hasText("Couldn’t connect"), "Couldn't connect", timeout = 30_000)
-        waitFor(hasTestTag("move-offline-main"), "Try again")
     }
 }

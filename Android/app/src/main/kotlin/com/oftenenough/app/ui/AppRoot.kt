@@ -326,9 +326,7 @@ private fun AppMain(
                 MenuItem.DAY_AND_WEEK.title -> DayAndWeekPage(store) { nav.popBackStack() }
                 MenuItem.APPEARANCE.title -> AppearancePage(prefs) { nav.popBackStack() }
                 MenuItem.BACKUP.title -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.page("Restore from a backup")) },
-                    { nav.navigate(Routes.page("Move to a new phone")) }, { nav.popBackStack() }, snackbar)
-                // Backup & Sync › Move to a new phone (Figma 1461:2, 3–3.3): this phone shows the code.
-                "Move to a new phone" -> com.oftenenough.app.ui.move.MoveToNewPhoneScreen(AppGraph.backup) { nav.popBackStack() }
+                    { nav.popBackStack() }, snackbar)
                 "Restore from a backup" -> RestoreScreen(AppGraph.backup, store, { nav.popBackStack() }) { message, undoable ->
                     nav.popBackStack()
                     // 4.1.3 · Restored, with Undo (D5: the undo file is kept 30 days; Undo here takes it straight back).
