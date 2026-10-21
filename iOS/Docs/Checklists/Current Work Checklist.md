@@ -1556,8 +1556,9 @@ and the Add note keyboard coming up by itself.
   - [x] Google Cloud (21 Oct, `gcloud` installed with Homebrew, the user signed in): both Pub/Sub subscriptions, the
     topic `play-notifications`, the Workload Identity pool `cloudflare-workers` and the service accounts
     `play-purchases` and `play-notifications-push` deleted.
-  - [ ] Play Console, by hand (the user): turn off Real-time developer notifications; remove `play-purchases@…` from
-    Users and permissions.
+  - [x] Play Console's Users and permissions: `play-purchases@…` went with the deleted service account (the user saw
+    it gone, 21 Oct).
+  - [ ] Play Console, by hand (the user): turn off Real-time developer notifications.
   - [x] Plus Family removed from the iPhone too (the user, 21 Oct: "from the iPhone, we have to delete the family plan
     as well"): `PlusProduct` and `PlusPlan` are Plus alone; the upgrade screen, the plan choice on the Plus page and
     the 6th-habit sheet, "Plus Family is yours", the family products in `OftenEnough.storekit`, the plan-choosing
