@@ -77,6 +77,16 @@ so the branches can go; keep this list current. Plan and progress: [Merge and Ha
 
 ## Branches to delete (for any agent or person reading this)
 
+**All deleted again, 21 October 2026** (the user: "merge everything into the main … and delete unnecessary branches").
+Merged into `main` first: `claude/phones-only-launch` (phones only, no accounts), Codex's revenue research
+(`codex/habit-revenue-research-2026-10-21`, committed from the main folder), `claude/android-welcome-font` (its one
+commit, App lock's sixth digit), `codex/website-widgets-capture` (the website widget captures; `main` kept its side of
+the workflow, without the Watch job) and Codex's 2 Oct shareable-progress research left uncommitted in the
+`progress-month-copy` worktree. The `android-app` worktree's uncommitted Android edits of 13 Oct were deleted at the
+user's word, a copy kept in `Research/Temp/android-app-uncommitted-2026-10-13/` (ignored). Then 149 branches went from
+GitHub (every one in `main`, or a `claude/shared-habit-rules-…` scratch copy listed below as safe) and every extra
+worktree was removed. GitHub has 3 again: `main`, `ci-results` and `archive/all-2026-10-04`.
+
 **All deleted, 12 October 2026** (the user: "delete the unnecessary branches that are marked as safe to delete").
 GitHub went from 76 branches to 3: `main`, `ci-results` (CI's own, never delete) and `archive/all-2026-10-04` (kept on
 purpose). Before deleting, every branch was checked against `main`: the 71 deleted first held only empty test-trigger
