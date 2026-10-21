@@ -1553,8 +1553,17 @@ and the Add note keyboard coming up by itself.
     `npm test` 9/9, type check clean, live checks pass on both); both D1 account databases deleted (production 0 accounts,
     dev 4 test accounts); secrets `GOOGLE_WIF_SIGNING_KEY` (both) and `TEST_SIGN_IN_SECRET` (dev) deleted; the account
     source, tests, migrations and Google key files deleted from `account-server/` (21 Oct).
-  - [ ] Google Cloud and Play Console (by the user): turn off Real-time developer notifications, delete the Pub/Sub topic
-    and push subscription, the Workload Identity pool and the two service accounts (`account-server/README.md`).
+  - [x] Google Cloud (21 Oct, `gcloud` installed with Homebrew, the user signed in): both Pub/Sub subscriptions, the
+    topic `play-notifications`, the Workload Identity pool `cloudflare-workers` and the service accounts
+    `play-purchases` and `play-notifications-push` deleted.
+  - [ ] Play Console, by hand (the user): turn off Real-time developer notifications; remove `play-purchases@…` from
+    Users and permissions.
+  - [x] Plus Family removed from the iPhone too (the user, 21 Oct: "from the iPhone, we have to delete the family plan
+    as well"): `PlusProduct` and `PlusPlan` are Plus alone; the upgrade screen, the plan choice on the Plus page and
+    the 6th-habit sheet, "Plus Family is yours", the family products in `OftenEnough.storekit`, the plan-choosing
+    speed steps and the family steps of `PlusUITests` and `SmallScreenUITests` are gone. Apple's Family Sharing of a
+    purchase is still handled if it's ever turned on (it's off). Parsed and `check_rules.sh` passed; not built (T1)
+    and not run on CI (the user). Rulebook D16 says it for both platforms.
   - [x] Deleted the apps' account code (the user: "from the shared core, whatever the things to be deleted, delete
     them", 21 Oct): the shared core's `app.habits.account` and its test; Android's sign-in (`app/account`, Credential
     Manager and Google ID libraries), the account screens, family invites and the `/join/` link, Plus Family (Get Plus,

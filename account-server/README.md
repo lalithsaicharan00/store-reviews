@@ -28,10 +28,12 @@ between iPhone and Android **by hand** (Rulebook D16). The same day, with the us
   `scripts/make-wif-key.mjs`) is deleted from this folder; it's in git history before 21 Oct 2026, with this README's
   old sections on accounts, keyless Google sign-in and refunds.
 
-**Still to do, outside Cloudflare (Google Cloud and Play Console, by the user):** turn off Real-time developer
-notifications in Play Console (Monetization setup) and delete the Pub/Sub topic and its push subscription (it now
-pushes to a 404); delete the Workload Identity pool `cloudflare-workers` and the service accounts `play-purchases` and
-`play-notifications-push` in project `often-enough`. **In the apps, deleted the same day:** the shared core's
+**Google Cloud, deleted the same day with `gcloud`** (project `often-enough`, signed in by the user): the Pub/Sub
+subscriptions `play-notifications-dev` and `play-notifications-production`, the topic `play-notifications`, the
+Workload Identity pool `cloudflare-workers` (Google erases a deleted pool for good after 30 days) and the service
+accounts `play-purchases` and `play-notifications-push`. **Left in Play Console, by hand (no command line reaches
+them):** turn off Real-time developer notifications (Monetize with Play › Monetization setup) and remove
+`play-purchases@often-enough.iam.gserviceaccount.com` from Users and permissions. **In the apps, deleted the same day:** the shared core's
 `app.habits.account` package, Android's sign-in, account screens, family invites and their tests, and Plus Family on
 Android; the menu row is now **Plus** (Free or Plus, Restore from Google Play, Redeem a code).
 

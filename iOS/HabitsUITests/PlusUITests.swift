@@ -64,20 +64,18 @@ final class PlusUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Add a 6th habit"].waitForExistence(timeout: 5), labels(app))
     }
 
-    /// Screens 2 and 11: both plans side by side, the button follows the choice, and ✕ is the only way out.
-    func testSixthHabitSheetOffersBothPlansAndNoNotNow() {
+    /// Screens 2 and 11: Plus alone (no Plus Family since 21 Oct 2026), its price on the button, and ✕ is the only way out.
+    func testSixthHabitSheetOffersPlusAndNoNotNow() {
         let app = launch()
         openSixthHabitSheet(app)
-        XCTAssertTrue(app.buttons["plan-plus"].exists && app.buttons["plan-family"].exists, labels(app))
+        XCTAssertTrue(app.buttons["plan-plus"].exists, labels(app))
+        XCTAssertFalse(app.buttons["plan-family"].exists, "No Plus Family: \(labels(app))")
         let buy = app.buttons["plus-buy"]
         XCTAssertTrue(buy.waitForExistence(timeout: 5))
         XCTAssertEqual(buy.label, "Get Plus · $24.99")
         XCTAssertFalse(app.buttons["Not now"].exists || app.buttons["Not Now"].exists, "No Not now (the user, 10 Oct 2026)")
         XCTAssertTrue(app.buttons["plus-make-room"].exists, "Make room instead: \(labels(app))")
         shot(app, "plus-02-sixth-habit")
-        app.buttons["plan-family"].tap()
-        XCTAssertEqual(buy.label, "Get Plus Family · $59.99")
-        XCTAssertTrue(app.buttons["plan-family"].isSelected, "Plus Family chosen")
         app.buttons["plus-close"].tap()
         XCTAssertTrue(app.staticTexts["Add a 6th habit"].waitForNonExistence(timeout: 5))
         XCTAssertTrue(app.navigationBars["New"].exists, "✕ goes back to New")
@@ -89,7 +87,7 @@ final class PlusUITests: XCTestCase {
         openSixthHabitSheet(app)
         app.buttons["plus-buy"].tap()
         XCTAssertTrue(app.staticTexts["Plus is yours"].waitForExistence(timeout: 10), labels(app))
-        XCTAssertTrue(app.staticTexts["Your habits stay on your devices and in your own iCloud. We never see them."].exists)
+        XCTAssertTrue(app.staticTexts["Your habits stay on your iPhone and in your own iCloud. We never see them."].exists)
         shot(app, "plus-07-plus-is-yours")
         app.buttons["plus-done"].tap()
         let check = button(startingWith: "Check it off", app)
@@ -108,7 +106,7 @@ final class PlusUITests: XCTestCase {
         XCTAssertFalse(row.label.contains("of 5"), row.label)
         row.tap()
         XCTAssertTrue(app.staticTexts["Plus is yours"].waitForExistence(timeout: 5), labels(app))
-        XCTAssertTrue(app.buttons["plus-upgrade"].exists, "Upgrade to Plus Family, for a Plus owner")
+        XCTAssertFalse(app.buttons["plus-upgrade"].exists, "No upgrade: there is no Plus Family")
     }
 
     /// Screens 5 and 6: Archive on each habit, Delete only behind ••• asking first; archiving one goes ahead for free.
@@ -183,8 +181,9 @@ final class PlusUITests: XCTestCase {
         shot(app, "plus-15-waiting")
     }
 
-    /// Screens 18, 21, 17 and 22: an owner's page, the upgrade to Plus Family, and a family member's page.
-    func testOwnerUpgradesAndFamilyMemberPage() {
+    /// Screens 18 and 22: an owner's page (no upgrade: there is no Plus Family), and the page of someone Apple's Family
+    /// Sharing gave Plus to (only if Family Sharing is ever turned on for Plus).
+    func testOwnerAndFamilyMemberPage() {
         var app = launch(["-plus-owned"])
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]
@@ -194,17 +193,7 @@ final class PlusUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Plus is yours"].waitForExistence(timeout: 5), labels(app))
         XCTAssertFalse(app.buttons["plus-buy"].exists, "Never Get Plus again")
         shot(app, "plus-18-owner")
-        app.buttons["plus-upgrade"].tap()
-        XCTAssertTrue(app.navigationBars["Upgrade"].waitForExistence(timeout: 5), labels(app))
-        let upgrade = app.buttons["plus-upgrade-buy"]
-        XCTAssertTrue(upgrade.waitForExistence(timeout: 5))
-        XCTAssertEqual(upgrade.label, "Upgrade · $35.00")
-        upgrade.tap()
-        XCTAssertTrue(app.staticTexts["Plus Family is yours"].waitForExistence(timeout: 10), labels(app))
-        shot(app, "plus-17-family-is-yours")
-        app.buttons["plus-done"].tap()
-        XCTAssertTrue(app.staticTexts["Plus is yours"].waitForExistence(timeout: 5))
-        XCTAssertFalse(app.buttons["plus-upgrade"].exists, "No upgrade once it's Plus Family")
+        XCTAssertFalse(app.buttons["plus-upgrade"].exists, "No upgrade: there is no Plus Family")
         app.terminate()
 
         app = launch(["-plus-family-member"])

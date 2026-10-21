@@ -361,13 +361,13 @@ final class SmallScreenUITests: XCTestCase {
                 XCTAssertTrue(element.exists && element.isHittable, "\(what), \(id) on screen: \(frames(ids))")
                 XCTAssertLessThanOrEqual(element.frame.maxY, window.maxY + 1, "\(what), \(id) inside the window: \(frames(ids))")
             }
-            for plan in ["plan-plus", "plan-family"] {
+            for plan in ["plan-plus"] {
                 XCTAssertLessThanOrEqual(app.buttons[plan].frame.maxY, buy.frame.minY, "\(what), \(plan) above the button: \(frames(ids))")
             }
         }
         new.tap()
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
-        fits(["plan-plus", "plan-family", "plus-buy", "plus-make-room"], "The 6th-habit sheet")
+        fits(["plan-plus", "plus-buy", "plus-make-room"], "The 6th-habit sheet")
         shot("se-plus-sixth-habit")
         app.buttons["plus-close"].tap()
         XCTAssertTrue(app.buttons["plus-close"].waitForNonExistence(timeout: 5))
@@ -376,7 +376,7 @@ final class SmallScreenUITests: XCTestCase {
         let row = app.buttons["menu-plus"]
         if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-appearance"].swipeUp() }
         row.tap()
-        fits(["plan-plus", "plan-family", "plus-buy", "plus-restore"], "The Plus page")
+        fits(["plan-plus", "plus-buy", "plus-restore"], "The Plus page")
         shot("se-plus-page")
     }
 
