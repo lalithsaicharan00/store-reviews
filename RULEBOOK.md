@@ -21,6 +21,24 @@ How it works:
 - **Learned something new** (a mistake, a measurement, a near miss)? Add or sharpen the rule here **the same day**,
   and put the numbers in the evidence file.
 
+## Starting again (21 Oct 2026): read this first
+
+The user, 21 Oct 2026: "add a new rule that it has to ignore all of the existing rules, because we are working it on
+from scratch again … existing rules, all of it, mostly it should ignore. When it comes to designing, since we are
+designing new flow."
+
+- **The app is being designed again from scratch, Android first** (phones only, no accounts: D16; Android decisions
+  A24 onwards in [Android/Docs/README.md](<Android/Docs/README.md>)).
+- **For the new design, ignore the existing rules and earlier designs.** The U rules, [Design Rules — Don't
+  Regress](<iOS/Design Rules — Don't Regress.md>), the screen specs in `iOS/Docs/` and every earlier Figma design are
+  history: read them for reference when useful, never as constraints. Never hold back, argue for or bring back
+  something only because an old rule or design says so. **The user's new decisions win**, and they're written down as
+  Android decisions (A-numbers) the same day.
+- **What still holds** (the user said "mostly"): people's data is never lost (the D rules' intent), secrets never go
+  in git (D11), a test is never skipped or loosened to get green (T2), and how agents share the repository (W3, W4,
+  T10). If any other old rule seems to matter, name it and ask; never apply it silently.
+- New rules for the new design are added here as they're decided.
+
 ## Before a piece of work is done: the checklist
 
 1. `iOS/Tools/perf/check_rules.sh` passes (a second, works on Linux; run it before every push). Never loosen it.
