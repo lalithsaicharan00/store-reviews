@@ -1551,8 +1551,14 @@ and the Add note keyboard coming up by itself.
     source, tests, migrations and Google key files deleted from `account-server/` (21 Oct).
   - [ ] Google Cloud and Play Console (by the user): turn off Real-time developer notifications, delete the Pub/Sub topic
     and push subscription, the Workload Identity pool and the two service accounts (`account-server/README.md`).
-  - [ ] Delete the apps' account code: the shared core's `app.habits.account` package and Android's account screens and
-    tests (marked `TO BE DELETED`), with the Plus decision above.
+  - [x] Deleted the apps' account code (the user: "from the shared core, whatever the things to be deleted, delete
+    them", 21 Oct): the shared core's `app.habits.account` and its test; Android's sign-in (`app/account`, Credential
+    Manager and Google ID libraries), the account screens, family invites and the `/join/` link, Plus Family (Get Plus,
+    the 6th-habit page), the account tests (5 files, and 5 tests in `OnboardingTest`); Welcome back now offers Google
+    Drive, the old phone's code and a file; ≡ › **Plus** shows Free or Plus with Restore from Google Play and Redeem a
+    code. The 6th-habit page no longer lists Tablet, Wear OS or Windows. Compiled once on the MacBook (app, unit tests,
+    device tests, the core's tests); not run on CI (the user: no test runs). iOS's own Plus Family choice is still
+    there (the iPhone is frozen until Android is final).
 - [ ] **149. Plus is $29.99, students half: change the price everywhere** (added 20 October 2026, from the user: "let's
   make it our price also 29.99 And for students, 50% discount, let's update the price everywhere and also add checklist
   that … play store as well as … App Store we need to update … We haven't released the app yet … in the Google Play

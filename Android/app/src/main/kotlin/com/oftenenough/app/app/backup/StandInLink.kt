@@ -5,14 +5,13 @@ import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import app.habits.account.StandInAccountServer
 import app.habits.core.DriveApi
 import java.io.File
 
 /**
  * Google Drive while the Android OAuth client doesn't exist yet (build prompt §5): the stand-in Drive on this phone,
  * "connected" as the Google account Google's chooser would have given ([nextAccount], which a test sets). Every account
- * shares the one folder; what differs is the account's key, as the real Drive's would ([StandInAccountServer.driveKey]),
+ * shares the one folder; what differs is the account's key, as the real Drive's would ([driveKey]),
  * so coming back can be tested with a different Google account. Debug builds and test launches only.
  */
 class StandInLink(private val folder: File, private val prefs: SharedPreferences) : DriveLink {
@@ -23,7 +22,7 @@ class StandInLink(private val folder: File, private val prefs: SharedPreferences
     private val drive by lazy { LocalDrive(folder) }
 
     override val accountName: String? get() = account?.let { "Google Drive ($it)" }
-    override val accountKey: String? get() = account?.let(StandInAccountServer::driveKey)
+    override val accountKey: String? get() = account?.let(::driveKey)
     override fun api(): DriveApi? = if (account != null) drive else null
 
     override suspend fun connect(context: Context, account: String?): Boolean {
@@ -43,6 +42,10 @@ class StandInLink(private val folder: File, private val prefs: SharedPreferences
     private companion object {
         const val KEY = "drive.standin.connected"
         const val ACCOUNT = "drive.standin.account"
+
+        /** The key DriveSync binds to: "gdrive:" and a SHA-256 of Google's fixed ID (here the stand-in's email). */
+        fun driveKey(email: String): String = "gdrive:" + java.security.MessageDigest.getInstance("SHA-256")
+            .digest("google:stand-in:${email.lowercase()}".toByteArray()).joinToString("") { "%02x".format(it) }
     }
 }
 

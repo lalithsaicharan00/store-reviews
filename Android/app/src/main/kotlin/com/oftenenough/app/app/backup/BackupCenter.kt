@@ -59,11 +59,6 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
 
     var status by mutableStateOf<DriveStatus?>(null); private set
     var working by mutableStateOf(false); private set
-    /**
-     * Where the habits live now, for the Plus account (D16): this Drive's key after a round that synced, null once the
-     * Drive copy is deleted. Set by AppGraph; the account decides whether it needs telling (`AccountCenter.noteCloud`).
-     */
-    var onCloud: (suspend (key: String?) -> Unit)? = null
     /** The last restore's undo file, kept 30 days (D5). */
     var undoAvailable by mutableStateOf(latestUndo() != null); private set
 
@@ -203,7 +198,7 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
 
     /** One round: download, merge, upload (never replace). The phone's own data stays the truth (D1). */
     suspend fun syncNow(): DriveStatus? {
-        val result = mutex.withLock {
+        return mutex.withLock {
             val s = sync() ?: return null
             working = true
             try {
@@ -216,9 +211,6 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
                 working = false
             }
         }
-        // Outside the lock: the account's server never holds up the next round.
-        if (result.state == DriveState.SYNCED) link.accountKey?.let { key -> runCatching { onCloud?.invoke(key) } }
-        return result
     }
 
     suspend fun refreshStatus() { status = sync()?.status() }
@@ -230,8 +222,6 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
             link.disconnect()
             status = null
         }
-        // Nothing is there now: the account stops pointing at it.
-        runCatching { onCloud?.invoke(null) }
     }
 
     suspend fun disconnectDrive() = mutex.withLock { link.disconnect(); status = null }

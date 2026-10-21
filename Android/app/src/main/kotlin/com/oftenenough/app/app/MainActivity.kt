@@ -51,8 +51,8 @@ class MainActivity : FragmentActivity() {
             AppGraph.lock.returned()
             // LOCKED (widget taps): waiting taps are saved on every return (W5).
             if (AppGraph.store.isLoaded) lifecycleScope.launch { WidgetTapSaver.saveWaiting(applicationContext) }
-            // Plus is asked of Google Play on every return (a pending payment finished, a refund), then reaches the account.
-            (AppGraph.plus as? PlayPlusStore)?.let { play -> lifecycleScope.launch { if (play.refresh()) AppGraph.accounts.syncPurchases(play.purchases()) } }
+            // Plus is asked of Google Play on every return (a pending payment finished, a refund).
+            (AppGraph.plus as? PlayPlusStore)?.let { play -> lifecycleScope.launch { play.refresh() } }
         }
     }
 
@@ -104,7 +104,7 @@ class MainActivity : FragmentActivity() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) window.isNavigationBarContrastEnforced = false
         val test = intent.getBooleanExtra(TestLaunch.UITEST, false)
         if (test) {
-            AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 }, intent.getStringExtra(TestLaunch.ACCOUNT_SERVER),
+            AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 },
                 plus = intent.getBooleanExtra(TestLaunch.PLUS, false))
             if (!intent.getBooleanExtra(TestLaunch.ONBOARDING, false)) AppGraph.prefs.onboarded = true
             // Today has been opened on this many earlier days (the ✏ tip waits for three, Figma 2.0).
@@ -153,8 +153,6 @@ object TestLaunch {
     const val DAYS_SEEN = "daysSeen"
     /** Show the welcome (test launches skip it otherwise). */
     const val ONBOARDING = "onboarding"
-    /** "dev": the account Worker's dev instead of the stand-in (the end-to-end tests, `AccountServerLiveTest`). */
-    const val ACCOUNT_SERVER = "accountServer"
     /** Move to a new phone's relay, for a debug or test launch (AppGraph.moveServer). */
     const val MOVE_SERVER = "moveServer"
     /** Plus owned from the start (the stand-in store, as if bought). */

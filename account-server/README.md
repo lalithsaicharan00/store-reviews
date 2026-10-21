@@ -31,8 +31,9 @@ between iPhone and Android **by hand** (Rulebook D16). The same day, with the us
 **Still to do, outside Cloudflare (Google Cloud and Play Console, by the user):** turn off Real-time developer
 notifications in Play Console (Monetization setup) and delete the Pub/Sub topic and its push subscription (it now
 pushes to a 404); delete the Workload Identity pool `cloudflare-workers` and the service accounts `play-purchases` and
-`play-notifications-push` in project `often-enough`. **In the apps:** the shared core's `app.habits.account` package
-and Android's account screens still exist, marked `TO BE DELETED` (Current Work 150).
+`play-notifications-push` in project `often-enough`. **In the apps, deleted the same day:** the shared core's
+`app.habits.account` package, Android's sign-in, account screens, family invites and their tests, and Plus Family on
+Android; the menu row is now **Plus** (Free or Plus, Restore from Google Play, Redeem a code).
 
 ## Test
 
