@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-21",
+  "ios_rows": 10,
+  "android_rows": 10,
+  "android_analyst_scenarios_in_top_ten": 8,
+  "ios_sorted": true,
+  "android_sorted": true,
+  "model_arithmetic_verified": true,
+  "review_files": 216,
+  "review_records": 1238784,
+  "manifest_mismatches": 0,
+  "report_screens": 70,
+  "new_local_links_checked": 4,
+  "all_json_parsed": true,
+  "fresh_handreading_complete": false,
+  "verified_marketwide_ranking": false
+}

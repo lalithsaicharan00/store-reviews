@@ -15,6 +15,10 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## Habit-app revenue research — 21 October 2026
+
+The user requested descending App Store and Google Play top tens by estimated revenue, including both stores for cross-platform apps. [Research report](<../../../Research/Research Reports/Market Discovery/Habit Apps — Revenue Estimates and Provisional Store Top Tens — 21 October 2026.md>) and [checklist](<Habit Apps — Store Revenue Research — 21 October 2026.md>) preserve the scope. Two ten-name provisional shortlists are saved, with 45 source records, cross-store identities and explicit Android conversion/renewal scenarios. Sorting, model arithmetic, JSON files, new relative links and Git whitespace checks pass. Life Reset's public $203K figure has unresolved financial store scope and is not assigned to iOS. All 216 local corpora were inventoried; a fresh individual reading of all 1,238,784 records and a verified same-month worldwide revenue ranking remain unfinished. Research only; no commit/push or CI requested.
+
 ## Commit and synchronize local work — 20 October 2026
 
 The user asks to commit all uncommitted repository work, push completed work to main and development, and synchronize the local repositories (W3/W4/T10).

@@ -27,6 +27,7 @@ Reusable marketing examples are saved in the root Marketing folder.
 
 | Report | Author | Date | What it is |
 |---|---|---|---|
+| [Habit Apps — Revenue Estimates and Provisional Store Top Tens](<Market Discovery/Habit Apps — Revenue Estimates and Provisional Store Top Tens — 21 October 2026.md>) | Codex | 21 Oct 2026 | Separate descending ten-name store shortlists; source-specific dates/definitions, eight explicit Android monetization scenarios, cross-platform identities, conflicts and unresolved Life Reset store allocation. Census of 216 corpora / 1,238,784 records; fresh individual reading of all reviews remains unfinished. Not a verified global revenue ranking. |
 | [Built-in Trackers — The Market and What Fits Version 2](<Market Discovery/Built-in Trackers — The Market and What Fits Version 2.md>) | **Claude** | 17 Oct 2026 | 42 kinds of tracker surveyed on Google Play (US search, download bands) and the App Store (US search, rating counts), 672 rows in `Built-in Trackers Data/`. Five-part fit test; six kinds need a tracker of their own (sleep, weight, energy/stress as a scale, fasting, gratitude, Health-filled steps and exercise), about fifteen are ready-made habits, the rest (period, food, medical, baby, money, GPS, screen time) stay out. Recommends Sleep, Weight, Energy, then Fasting or Gratitude for version 2. Store snapshot plus Feature Ledger evidence; no hand-read review pass. |
 
 ## Individual Habit Details
