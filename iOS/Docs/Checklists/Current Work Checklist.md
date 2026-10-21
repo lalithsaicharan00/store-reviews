@@ -1558,7 +1558,8 @@ and the Add note keyboard coming up by itself.
     `play-purchases` and `play-notifications-push` deleted.
   - [x] Play Console's Users and permissions: `play-purchases@…` went with the deleted service account (the user saw
     it gone, 21 Oct).
-  - [ ] Play Console, by hand (the user): turn off Real-time developer notifications.
+  - [x] Play Console: Real-time developer notifications turned off and saved by the user (21 Oct). Nothing of the
+    account design is left anywhere.
   - [x] Plus Family removed from the iPhone too (the user, 21 Oct: "from the iPhone, we have to delete the family plan
     as well"): `PlusProduct` and `PlusPlan` are Plus alone; the upgrade screen, the plan choice on the Plus page and
     the 6th-habit sheet, "Plus Family is yours", the family products in `OftenEnough.storekit`, the plan-choosing
