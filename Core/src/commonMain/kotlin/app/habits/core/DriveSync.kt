@@ -219,7 +219,7 @@ class DriveSync(
         return call { drive.get(version.prev) }?.let { Version(it) }?.takeIf { it.valid && it.chain == version.chain }
     }
 
-    private suspend fun merge(chain: String, rows: List<PeerFill.Row>, round: Round): Boolean {
+    private suspend fun merge(chain: String, rows: List<SyncRows.Row>, round: Round): Boolean {
         val allowance = if (round.allowDeletes) Int.MAX_VALUE else CloudStore.incomingAllowance(round.liveAtStart, round.deleted)
         val merged = store.merge(chain, rows, allowance)
         if (merged.held) {

@@ -1,5 +1,7 @@
 # 12. Apple Watch — Data and Sync
 
+> **Retired 21 Oct 2026 (the user: phones only, Rulebook D16).** The Apple Watch app (its targets, the iPhone's link to it and the shared core's Watch queue) was removed from the code on branch `claude/phones-only-launch`; the first launch is the iPhone and Android phones only. Everything here is kept as the record of what was designed and decided, for if it ever comes back. Don't build from it.
+
 *Written by Claude (Claude Code), 10 October 2026, as Architecture 12 (kept with the rest of the Watch work in this folder). Step 4 of the user's Watch plan (Current Work 82). Builds on
 [11. iCloud Sync with CloudKit](<../../../Architecture/11. iCloud Sync with CloudKit.md>) (being built by another agent, item 81) and the Watch
 research ([Apple Watch App report](<Research/Apple Watch App — What People Want, What Breaks, and How Ours Works.md>) §5.3,

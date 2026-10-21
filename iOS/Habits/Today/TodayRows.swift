@@ -172,8 +172,6 @@ struct HabitRow: View {
     /// task: the user, 3 Oct 2026).
     private func openDay() {
         guard lineOverride == nil else { return }
-        // The iPad's Day details points at the row tapped (a habit ticked per section has one in each).
-        if Device.isPad { PadAnchor.shared.tapped(habit.id, section: slot) }
         store.dayTarget = .init(habitID: habit.id, day: day)
     }
 
@@ -640,7 +638,6 @@ struct EditHabitSheet: View {
             HabitForm(editing: store.habits.first { $0.id == habit.id } ?? habit, weekStart: store.settings.weekStart,
                       description: store.description(of: habit) ?? "", group: store.groupOf[habit.id]) { _ in onSaved() }
         }
-        .padFormSheet()
     }
 }
 

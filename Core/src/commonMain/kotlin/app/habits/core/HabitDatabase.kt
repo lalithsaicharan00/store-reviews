@@ -27,18 +27,6 @@ interface HabitDao {
     @Query("SELECT * FROM entry WHERE deleted_at IS NULL ORDER BY created_at")
     suspend fun entries(): List<EntryRecord>
 
-    /** The Apple Watch's history in memory: logs from [day] on, and every log of a quit habit or a task (their runs
-     *  and repeats read the whole past, and they are few). Older logs stay in the database. */
-    @Query(
-        "SELECT * FROM entry WHERE deleted_at IS NULL AND (day >= :day OR habit_id IN " +
-            "(SELECT id FROM habit WHERE kind IN ('quit', 'task'))) ORDER BY created_at"
-    )
-    suspend fun entriesSince(day: String): List<EntryRecord>
-
-    /** The day of each habit's oldest log, so the Watch knows which habits have history before its window. */
-    @Query("SELECT habit_id, MIN(day) AS day FROM entry WHERE deleted_at IS NULL GROUP BY habit_id")
-    suspend fun oldestDays(): List<HabitOldestDay>
-
     @Query("SELECT * FROM setting")
     suspend fun settings(): List<SettingRecord>
 
@@ -63,6 +51,8 @@ interface HabitDao {
     @Query("DELETE FROM outbox") suspend fun eraseOutbox()
     @Query("DELETE FROM sync_meta") suspend fun eraseSyncMeta()
     @Query("DELETE FROM local_state") suspend fun eraseLocalState()
+    /** `peer_out` was the Apple Watch's queue, unused since the Watch app was removed (21 Oct 2026); kept, empty, so schema
+     *  10 opens unchanged, and dropped with the next schema change. */
     @Query("DELETE FROM peer_out") suspend fun erasePeerOut()
 
     /** Every row of every table, in one transaction: the database is as on first launch. */
@@ -124,23 +114,6 @@ interface HabitDao {
     @Query("DELETE FROM outbox WHERE op_id IN (:ids)") suspend fun deleteOutbox(ids: List<String>)
     @Query("UPDATE outbox SET problem = :problem WHERE op_id = :id") suspend fun markOutboxProblem(id: String, problem: String)
     @Query("DELETE FROM outbox") suspend fun clearOutbox()
-    /** A change passed on from the paired device may already be waiting (it came both ways): kept once. */
-    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertOutboxIfNew(op: OutboxRecord)
-
-    // The paired device's queue (schema 9, Architecture 12 §3.1).
-    @Insert suspend fun insertPeerOut(op: PeerOutRecord)
-    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertPeerOutIfNew(op: PeerOutRecord)
-    @Query("SELECT * FROM peer_out ORDER BY seq LIMIT :limit") suspend fun peerOut(limit: Int): List<PeerOutRecord>
-    @Query("SELECT * FROM peer_out WHERE seq > :after ORDER BY seq LIMIT :limit") suspend fun peerOutAfter(after: Long, limit: Int): List<PeerOutRecord>
-    @Query("SELECT count(*) FROM peer_out") suspend fun peerOutCount(): Int
-    @Query("DELETE FROM peer_out WHERE seq <= :seq") suspend fun deletePeerOutThrough(seq: Long)
-
-    // The first fill, read a page at a time by key, so rows added meanwhile never shift a page and skip a row.
-    @Query("SELECT * FROM sync_meta WHERE (table_name != 'entry' OR pending = 1) AND (table_name > :table OR (table_name = :table AND row_id > :row)) ORDER BY table_name, row_id LIMIT :limit")
-    suspend fun fillMeta(table: String, row: String, limit: Int): List<SyncMetaRecord>
-    @Query("SELECT id, day FROM entry WHERE day < :day OR (day = :day AND id < :id) ORDER BY day DESC, id DESC LIMIT :limit")
-    suspend fun fillEntries(day: String, id: String, limit: Int): List<EntryKey>
-
     // iCloud (Architecture 11 §6–8): the CloudKit system fields kept with each row, and the outbox by row.
     @Query("UPDATE sync_meta SET ck_system = :system WHERE table_name = :table AND row_id = :row")
     suspend fun setCloudSystem(table: String, row: String, system: String?)
@@ -224,13 +197,7 @@ interface HabitDao {
     @Transaction
     suspend fun snapshot(): Snapshot = Snapshot(habits(), steps(), reminders(), entries(), settings())
 
-    @Transaction
-    suspend fun snapshotSince(day: String): Snapshot = Snapshot(habits(), steps(), reminders(), entriesSince(day), settings())
-
 }
-
-/** A habit's oldest log day (`HabitDao.oldestDays`). */
-data class HabitOldestDay(@ColumnInfo(name = "habit_id") val habitId: String, val day: String)
 
 /** A log with its sync stamps (`HabitDao.driveYear`). */
 data class EntryWithSync(
@@ -240,9 +207,6 @@ data class EntryWithSync(
     @ColumnInfo(name = "sync_extra") val extra: String?,
     @ColumnInfo(name = "sync_pending") val pending: Boolean,
 )
-
-/** An entry's place in the first fill's newest-first order. */
-data class EntryKey(val id: String, val day: String)
 
 @Database(
     entities = [

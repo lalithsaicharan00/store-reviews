@@ -36,15 +36,6 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     @Throws(Exception::class)
     suspend fun load(): Snapshot = dao.snapshot()
 
-    /** The Apple Watch's load: everything but logs older than [day] (`yyyy-MM-dd`), except a quit habit's or a
-     *  task's, which are all kept. The database keeps every log (Architecture 12); this is what's read into memory. */
-    @Throws(Exception::class)
-    suspend fun loadSince(day: String): Snapshot = dao.snapshotSince(day)
-
-    /** Each habit's oldest log day, as `habit id → yyyy-MM-dd`. */
-    @Throws(Exception::class)
-    suspend fun oldestLogDays(): Map<String, String> = dao.oldestDays().associate { it.habitId to it.day }
-
     // Every write below is one transaction that also records the change for sync (SyncWriter).
 
     @Throws(Exception::class)
@@ -92,9 +83,8 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
 
     /**
      * Stopping a timer must never save elapsed time without removing its running marker. The entry's ID comes from
-     * [TimerStop.entryId] (the habit and the timer's start), so the same timer stopped on the iPhone and on the Watch is
-     * one log: a second stop here updates it rather than adding another, and between devices the later stop's minutes
-     * win (Architecture 12 §4).
+     * [TimerStop.entryId] (the habit and the timer's start), so the same timer stopped on two devices is one log: a
+     * second stop here updates it rather than adding another, and between devices the later stop's minutes win.
      */
     @Throws(Exception::class)
     suspend fun finishTimer(entry: EntryRecord?, key: String) = dao.synced(clock()) { sync ->
@@ -290,125 +280,6 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         }
     }
 
-    // MARK: The paired device (Apple Watch ⇄ iPhone, Architecture 12 §3.1). The platform carries the files and batches
-    // (WatchConnectivity); everything about what's sent, merged and kept is here, the same on both devices.
-
-    /**
-     * Starts keeping a queue of this device's changes for its paired device. The Watch does this when it first opens;
-     * the iPhone when its Watch first asks for a fill, before the first part is made, so a change made while the fill
-     * travels is in the queue, never lost between the two.
-     */
-    @Throws(Exception::class)
-    suspend fun peerStart() = dao.synced(clock()) { dao.setState(LocalStateRecord(SyncWriter.PEER, "1")) }
-
-    /**
-     * The Watch's [peerStart]: it keeps a queue for its iPhone, and with iCloud on (Architecture 12 §3.2) sends its own
-     * changes there too, but passes nothing on: the iPhone already sends its own changes to iCloud and fetches iCloud's
-     * itself, so nothing travels twice. Run at every launch; a Watch that started as the iPhone does becomes the Watch.
-     */
-    @Throws(Exception::class)
-    suspend fun peerStartOnWatch() = dao.synced(clock()) { dao.setState(LocalStateRecord(SyncWriter.PEER, SyncWriter.PEER_WATCH)) }
-
-    /** The paired device is gone (unpaired, the Watch app removed): stop queueing and drop what was waiting for it. */
-    @Throws(Exception::class)
-    suspend fun peerStop() = dao.synced(clock()) {
-        dao.setState(LocalStateRecord(SyncWriter.PEER, "0"))
-        dao.erasePeerOut()
-    }
-
-    /**
-     * One part of the first fill for the paired device: a checked file of whole records, each field with its own sync
-     * stamp, so the copy can never win over a change made since (unlike a restore, which would stamp every row anew).
-     * Habits, steps, reminders and settings come first, then logs newest first, so Today is right after the first parts.
-     * [cursor] is the previous part's `next` (null for the first part).
-     */
-    @Throws(Exception::class)
-    suspend fun peerFillPart(cursor: String?, maxRecords: Int = PeerFill.DEFAULT_PART): PeerFillPart = offMain {
-        val at = PeerFill.Cursor.decode(cursor)
-        val records = mutableListOf<PeerFill.Row>()
-        var next: PeerFill.Cursor? = null
-        dao.synced(clock()) { sync ->
-            var from = at
-            if (from.phase == PeerFill.Cursor.META) {
-                val metas = dao.fillMeta(from.a, from.b, maxRecords)
-                metas.forEach { meta -> sync.current(meta.tableName, meta.rowId)?.let { records += PeerFill.Row(meta.tableName, meta.rowId, it) } }
-                if (metas.size == maxRecords) {
-                    next = PeerFill.Cursor(PeerFill.Cursor.META, metas.last().tableName, metas.last().rowId)
-                    return@synced
-                }
-                from = PeerFill.Cursor.firstEntries
-            }
-            val room = maxRecords - records.size
-            val keys = dao.fillEntries(from.a, from.b, room)
-            keys.forEach { key -> sync.current(SyncCodec.ENTRY, key.id)?.let { records += PeerFill.Row(SyncCodec.ENTRY, key.id, it) } }
-            next = if (keys.size == room) PeerFill.Cursor(PeerFill.Cursor.ENTRIES, keys.last().day, keys.last().id) else null
-        }
-        PeerFill.write(records, cursor, next?.encode(), clock())
-    }
-
-    /**
-     * Checks one part of the first fill and merges it in one transaction. Throws [BackupProblem] for a damaged part,
-     * before anything changes: the platform then asks for the same part again.
-     */
-    @Throws(Exception::class)
-    suspend fun acceptPeerFill(base64: String): PeerFillReceipt = offMain {
-        val part = PeerFill.read(base64)
-        dao.synced(clock()) { sync ->
-            part.rows.forEach { sync.receiveRecord(it.table, it.row, it.record) }
-            if (part.next == null) dao.setState(LocalStateRecord(SyncWriter.PEER_FILLED, "1"))
-            else dao.setState(LocalStateRecord(PEER_FILL_CURSOR, part.next))
-        }
-        PeerFillReceipt(part.cursor, part.next, part.rows.size)
-    }
-
-    /**
-     * The next batch for the paired device: up to [maxOps] waiting changes, oldest first, as
-     * `{"seq": <highest>, "ops": [...]}`; null when nothing is waiting. They stay queued until [ackPeer].
-     */
-    @Throws(Exception::class)
-    suspend fun peerBatch(maxOps: Int = 100): String? = offMain {
-        val rows = dao.peerOut(maxOps)
-        if (rows.isEmpty()) return@offMain null
-        JsonObject(mapOf("seq" to JsonPrimitive(rows.last().seq), "ops" to JsonArray(rows.map { Json.parseToJsonElement(it.op) }))).toString()
-    }
-
-    /**
-     * Merges a batch from the paired device in one transaction and returns the sequence number to acknowledge. A batch
-     * that arrives twice merges as nothing the second time; a malformed op is skipped, never applied half-way.
-     */
-    @Throws(Exception::class)
-    suspend fun acceptPeerBatch(batch: String): Long = offMain {
-        val o = Json.parseToJsonElement(batch).jsonObject
-        val seq = o.getValue("seq").jsonPrimitive.long
-        val ops = o["ops"]?.jsonArray?.mapNotNull { (it as? JsonObject)?.let(SyncRules::opFrom) } ?: emptyList()
-        dao.synced(clock()) { sync -> ops.filter { SyncRules.problem(it) == null }.forEach { sync.receive(it, SyncWriter.Source.PEER) } }
-        seq
-    }
-
-    /** The paired device saved everything up to [seq]: those changes leave the queue. A late or repeated ack is harmless. */
-    @Throws(Exception::class)
-    suspend fun ackPeer(seq: Long) = dao.deletePeerOutThrough(seq)
-
-    /** For the Watch's first screen (WA2) and for deciding what to send. */
-    @Throws(Exception::class)
-    suspend fun peerStatus(): PeerStatus {
-        val state = dao.states(listOf(SyncWriter.PEER, SyncWriter.PEER_FILLED, PEER_FILL_CURSOR)).associate { it.key to it.value }
-        return PeerStatus(
-            enabled = state[SyncWriter.PEER] == "1" || state[SyncWriter.PEER] == SyncWriter.PEER_WATCH, filled = state[SyncWriter.PEER_FILLED] == "1",
-            fillCursor = state[PEER_FILL_CURSOR], waiting = dao.peerOutCount(),
-        )
-    }
-
-    /**
-     * Starts the first fill again from the beginning (a wiped Watch, or a fill the iPhone says is out of date). What's
-     * here stays: the parts merge, never replace.
-     */
-    @Throws(Exception::class)
-    suspend fun peerRefill() = dao.synced(clock()) {
-        dao.setState(LocalStateRecord(SyncWriter.PEER_FILLED, "0"))
-        dao.setState(LocalStateRecord(PEER_FILL_CURSOR, ""))
-    }
-
     /** For Settings → Account & backup: "Synced 2 min ago", or how many changes are waiting. */
     @Throws(Exception::class)
     suspend fun syncStatus(): SyncStatus = SyncStatus(
@@ -442,9 +313,6 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     fun close() = database.close()
 
     companion object {
-        /** Where the Watch's first fill got to, so a fill cut off by the Watch going out of range resumes there. */
-        internal const val PEER_FILL_CURSOR = "peer.fill_cursor"
-
         /** Bump with every schema change, and add a migration plus a migration test. */
         const val SCHEMA_VERSION = 10
 
@@ -476,21 +344,6 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         }
     }
 }
-
-/** Where the paired device's sync stands on this device. */
-data class PeerStatus(
-    /** This device keeps a queue for its paired device. */
-    val enabled: Boolean,
-    /** On the Watch: the iPhone's first fill has fully arrived, so an empty Today really is empty (WA2). */
-    val filled: Boolean,
-    /** On the Watch: the next part of the first fill to ask for (empty or null: from the start). */
-    val fillCursor: String?,
-    /** Changes waiting for the paired device. */
-    val waiting: Int,
-)
-
-/** What one accepted part of the first fill was. */
-data class PeerFillReceipt(val cursor: String?, val next: String?, val records: Int)
 
 /** Where sync stands on this device. */
 data class SyncStatus(

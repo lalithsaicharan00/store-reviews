@@ -2,11 +2,7 @@ import Core
 import Foundation
 import Observation
 import SwiftUI
-#if os(watchOS)
-import WatchKit
-#else
 import UIKit
-#endif
 
 /// User settings that change how days and weeks are counted (Architecture 05 §4.2–4.3).
 struct DaySettings: Codable, Hashable, Sendable {
@@ -185,11 +181,6 @@ final class HabitStore {
     private(set) var dayFinishedAt: Date?
     /// What the last tap reached: "30 days in a row", "All 5 done today". Shown beside that row's Undo while it lasts.
     private(set) var milestoneOffer: MilestoneOffer?
-    /// The Apple Watch keeps this many days of logs in memory (a quit habit's and a task's whole); 0 keeps everything,
-    /// as the iPhone does. Set before the first load.
-    @ObservationIgnored var historyWindowDays = 0
-    /// With a window: the habits that have logs from before it, whose runs may be longer than counted here.
-    private(set) var historyBeforeWindow: Set<UUID> = []
     struct MilestoneOffer: Equatable { let entry: UUID; let habit: UUID; let day: LocalDay; let text: String }
     /// Only writes what changes: every row reads these, and an observed write redraws them even when it's nil to nil.
     func clearLogOffer() {
@@ -1650,19 +1641,7 @@ final class HabitStore {
     func load() async {
         do {
             let readStarted = CFAbsoluteTimeGetCurrent()
-            let snapshot: Snapshot
-            if historyWindowDays > 0 {
-                // The Apple Watch: its window of logs in memory (quit habits and tasks whole); the database keeps
-                // every log (Architecture 12). Reading 15 years took 27 s on the Watch simulator (run 38109083512).
-                let start = today().adding(days: -historyWindowDays, calendar: calendar)
-                snapshot = try await repository.loadSince(day: start.key)
-                let oldest = try await repository.oldestLogDays()
-                historyBeforeWindow = Set(oldest.compactMap { id, day in
-                    (LocalDay(key: day).map { $0 < start } ?? false) ? UUID(uuidString: id) : nil
-                })
-            } else {
-                snapshot = try await repository.load()
-            }
+            let snapshot = try await repository.load()
             perfNote("Store load: read the database", since: readStarted)
             // The shared rules' copy of every log, made off the main thread while nothing on screen has changed yet
             // (S16): made on first use, it cost 45–80 ms of the main thread after every load (Current Work 92).
@@ -2742,13 +2721,9 @@ final class HabitStore {
         }
     }
 
-    /// VoiceOver is on (the iPhone and the Apple Watch ask in their own ways).
+    /// VoiceOver is on.
     static var voiceOverRunning: Bool {
-        #if os(watchOS)
-        WKAccessibilityIsVoiceOverRunning()
-        #else
         UIAccessibility.isVoiceOverRunning
-        #endif
     }
 
     private func offerUndo(_ entry: Entry) {

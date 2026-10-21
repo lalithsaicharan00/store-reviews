@@ -60,19 +60,12 @@
 	<string>production</string>
 	<key>AnalyticsProductionEnabled</key>
 	<false/>
-	<!-- One window (the user, 11 Oct 2026, Current Work 86): no second window of the app on the iPad. Every window size
-	     still works; per-window state is kept in @SceneStorage so a second window can come later without changes. -->
+	<!-- One window: the app is iPhone-only (the user, 21 Oct 2026). -->
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 	</dict>
-	<!-- Handoff from the Apple Watch: Open on iPhone (a habit) and Continue on iPhone (Plus). -->
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>com.oftenenough.app.open-habit</string>
-		<string>com.oftenenough.app.open-plus</string>
-	</array>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID unlocks the app when App Lock is on.</string>
 	<key>NSAlarmKitUsageDescription</key>

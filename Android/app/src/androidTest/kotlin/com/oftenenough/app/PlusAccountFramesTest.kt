@@ -1,3 +1,4 @@
+// TO BE DELETED (the user, 21 Oct 2026): no accounts; Plus moves between iPhone and Android by hand. The server side was deleted the same day (account-server/README.md, "The accounts, deleted 21 Oct 2026").
 package com.oftenenough.app
 
 import android.content.Intent

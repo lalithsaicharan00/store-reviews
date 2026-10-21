@@ -23,9 +23,6 @@ enum Preferences {
     /// A running timer shows on the Lock Screen and in the Dynamic Island (a Live Activity). On by default; iOS's own
     /// Settings → Often Enough → Live Activities turns it off too.
     static let timerLiveActivity = "timers.liveActivity"
-    /// The iPad's Today: one column (List) or each time of day its own column (`PadLayout`; the View menu ⌘1/⌘2 and
-    /// Appearance → Layout, Current Work 86). Per device, as every preference here.
-    static let padLayout = "today.padLayout"
 
     static func register() {
         UserDefaults.standard.register(defaults: [theme: Theme.automatic.rawValue, haptics: true, sound: false,

@@ -1,4 +1,4 @@
-# The shared Kotlin core's own checks (Core/): its JVM tests on Linux, and its iPhone and Apple Watch targets compiled
+# The shared Kotlin core's own checks (Core/): its JVM tests on Linux, and its iPhone targets compiled
 # on a Mac, so a change to the core can't break the apps that build it. Runs on any push that changes Core/ (tagged or
 # not: it never touches the iOS job's queue, Rulebook T10), or by hand.
 #
@@ -90,8 +90,7 @@ jobs:
             ~/.konan
           key: gradle-core-apple-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: gradle-core-apple-
-      - name: Compile the iPhone and Watch targets
+      - name: Compile the iPhone targets
         working-directory: Core
         run: >-
-          ./gradlew --console=plain compileKotlinIosArm64 compileKotlinIosSimulatorArm64 compileKotlinWatchosArm64
-          compileKotlinWatchosDeviceArm64 compileKotlinWatchosSimulatorArm64
+          ./gradlew --console=plain compileKotlinIosArm64 compileKotlinIosSimulatorArm64

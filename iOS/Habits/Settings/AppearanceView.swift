@@ -11,7 +11,6 @@ struct AppearanceView: View {
     @AppStorage(Preferences.timerScreen) private var timerScreen = true
     @AppStorage(Preferences.timerLiveActivity) private var timerLiveActivity = true
     /// The iPad's Today: List or Columns (Design Notes §6), the same choice as the View menu's ⌘1 / ⌘2.
-    @AppStorage(Preferences.padLayout) private var padLayout = PadLayout.list.rawValue
 
     var body: some View {
         Form {
@@ -24,7 +23,7 @@ struct AppearanceView: View {
             } header: {
                 Text("Theme")
             } footer: {
-                Text(Device.words("Automatic follows your iPhone, light by day and dark at night if you've set it to."))
+                Text("Automatic follows your iPhone, light by day and dark at night if you've set it to.")
             }
 
             Section {
@@ -32,28 +31,18 @@ struct AppearanceView: View {
                     ForEach(DoneOrder.allCases) { Text($0.title).tag($0.rawValue) }
                 }
                 .accessibilityIdentifier("appearance-done-order")
-                if Device.isPad {
-                    Picker("Layout", selection: $padLayout) {
-                        ForEach(PadLayout.allCases) { Text($0.title).tag($0.rawValue) }
-                    }
-                    .accessibilityIdentifier("appearance-layout")
-                }
             } header: {
                 Text("Today")
             } footer: {
                 Text((doneOrder == DoneOrder.inPlace.rawValue
                      ? "Habits keep your order when they're done."
-                     : "Done habits go below the rest once you pause, never while you're still ticking.")
-                     + (Device.isPad ? " Columns puts each time of day side by side; also in the View menu (⌘1, ⌘2)." : ""))
+                     : "Done habits go below the rest once you pause, never while you're still ticking."))
             }
 
             Section {
-                // iPads have no Taptic Engine: no Haptics row there (README, "Words that change on the iPad").
-                if !Device.isPad {
-                    Toggle("Haptics", isOn: $haptics)
-                        .tint(.green)
-                        .accessibilityIdentifier("appearance-haptics")
-                }
+                Toggle("Haptics", isOn: $haptics)
+                    .tint(.green)
+                    .accessibilityIdentifier("appearance-haptics")
                 Toggle("Sound When Done", isOn: $sound)
                     .tint(.green)
                     .accessibilityIdentifier("appearance-sound")
@@ -61,8 +50,7 @@ struct AppearanceView: View {
             } header: {
                 Text("When You Tick")
             } footer: {
-                Text(Device.isPad ? "A chime when a habit is done."
-                     : "A light tap as you log, and a chime when a habit is done. The chime follows your iPhone's silent switch.")
+                Text("A light tap as you log, and a chime when a habit is done. The chime follows your iPhone's silent switch.")
             }
 
             Section {
@@ -76,12 +64,8 @@ struct AppearanceView: View {
             } footer: {
                 Text((timerScreen ? "▶ starts the timer and opens it full screen; swipe down to put it away while it keeps running. "
                       : "▶ starts the timer in its row; tap the bar at the bottom of Today to see it full screen. ")
-                     + (Device.isPad
-                        // No Dynamic Island on the iPad.
-                        ? (timerLiveActivity ? "When you leave the app, a running timer shows on the Lock Screen, with Pause."
-                           : "A running timer stays off the Lock Screen.")
-                        : (timerLiveActivity ? "When you leave the app, a running timer shows on the Lock Screen and in the Dynamic Island, with Pause."
-                           : "A running timer stays off the Lock Screen and the Dynamic Island.")))
+                     + (timerLiveActivity ? "When you leave the app, a running timer shows on the Lock Screen and in the Dynamic Island, with Pause."
+                        : "A running timer stays off the Lock Screen and the Dynamic Island."))
             }
         }
         .analyticsScreen(.appearance)

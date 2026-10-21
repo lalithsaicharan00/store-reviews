@@ -390,10 +390,10 @@ final class BackupCenter {
 
         var issue: BackupCenter.Issue {
             switch self {
-            case .full: .init(id: "icloud-full", text: Device.words("Your habits can't be backed up: your iCloud is full. They're safe on this iPhone."), fix: .manageStorage)
-            case .signedOut: .init(id: "icloud-signed-out", text: Device.words("Your habits aren't being backed up: this iPhone isn't signed in to iCloud, or iCloud Drive is off."), fix: .openSettings)
-            case .offForApp: .init(id: "icloud-off", text: Device.words("Backup to iCloud is turned off for Often Enough in your iPhone's iCloud settings."), fix: .openSettings)
-            case .accountChanged: .init(id: "icloud-changed", text: Device.words("This iPhone now uses a different Apple Account, so your backup moved to a new iCloud. Your old backup is still in the other account."), fix: .backUpNow)
+            case .full: .init(id: "icloud-full", text: "Your habits can't be backed up: your iCloud is full. They're safe on this iPhone.", fix: .manageStorage)
+            case .signedOut: .init(id: "icloud-signed-out", text: "Your habits aren't being backed up: this iPhone isn't signed in to iCloud, or iCloud Drive is off.", fix: .openSettings)
+            case .offForApp: .init(id: "icloud-off", text: "Backup to iCloud is turned off for Often Enough in your iPhone's iCloud settings.", fix: .openSettings)
+            case .accountChanged: .init(id: "icloud-changed", text: "This iPhone now uses a different Apple Account, so your backup moved to a new iCloud. Your old backup is still in the other account.", fix: .backUpNow)
             }
         }
 

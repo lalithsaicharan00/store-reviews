@@ -215,7 +215,7 @@ struct RestoreSourcePage: View {
                 Section {
                     ForEach(copies) { copy in
                         Button { chosen = copy } label: {
-                            WayLabel(symbol: "icloud.and.arrow.down", title: copy.deviceName.isEmpty ? (copy.isThisDevice ? Device.words("This iPhone's backup") : "iCloud backup") : copy.deviceName,
+                            WayLabel(symbol: "icloud.and.arrow.down", title: copy.deviceName.isEmpty ? (copy.isThisDevice ? "This iPhone's backup" : "iCloud backup") : copy.deviceName,
                                      detail: copy.detail, checked: copies.count > 1 && chosen == copy)
                         }
                         .accessibilityIdentifier("onboarding-icloud-copy")
@@ -256,8 +256,8 @@ struct RestoreSourcePage: View {
 
     private var iCloudLine: String {
         if searching { return "Looking for a backup in iCloud…" }
-        if FileManager.default.ubiquityIdentityToken == nil { return Device.words("This iPhone isn't signed in to iCloud.") }
-        return searched ? Device.words("No backup found in this iPhone's iCloud.") : "Find a backup saved in iCloud."
+        if FileManager.default.ubiquityIdentityToken == nil { return "This iPhone isn't signed in to iCloud." }
+        return searched ? "No backup found in this iPhone's iCloud." : "Find a backup saved in iCloud."
     }
 
     private var fileRow: some View {
@@ -334,17 +334,17 @@ struct ReviewBackupPage: View {
                         .accessibilityIdentifier("onboarding-review-counts")
                     LabeledContent("Made on", value: preview.deviceName)
                     if !empty {
-                        LabeledContent(Device.words("On this iPhone now"), value: RestoreStartView.counts(habits: Int(preview.phoneHabits), entries: Int(preview.phoneEntries)))
+                        LabeledContent("On this iPhone now", value: RestoreStartView.counts(habits: Int(preview.phoneHabits), entries: Int(preview.phoneEntries)))
                     }
                 }
                 if nothing {
                     Section { Text("Everything in this backup is already here. Nothing needs to change.") }
                 } else if !empty {
                     Section {
-                        Button(Device.words("Replace What's on This iPhone")) { flow.go(.working(.restore(.replace))) }
+                        Button("Replace What's on This iPhone") { flow.go(.working(.restore(.replace))) }
                             .accessibilityIdentifier("onboarding-review-replace")
                     } footer: {
-                        Text(Device.words("This iPhone becomes exactly the backup. ") + RestorePreviewView.describe(preview.replace)).formNote()
+                        Text("This iPhone becomes exactly the backup. " + RestorePreviewView.describe(preview.replace)).formNote()
                     }
                     Section {
                         Button("Merge") { flow.go(.working(.restore(.merge))) }
@@ -357,7 +357,7 @@ struct ReviewBackupPage: View {
                 }
                 Section {
                 } footer: {
-                    Text(Device.words("You can undo a restore for 30 days in ≡ › iCloud & Backup.")).formNote()
+                    Text("You can undo a restore for 30 days in ≡ › iCloud & Backup.").formNote()
                 }
             }
         } bottom: {
@@ -414,7 +414,7 @@ struct WorkingPage: View {
 
     private var from: String {
         switch work {
-        case .thisDevice: Device.words("With the data already on this iPhone.")
+        case .thisDevice: "With the data already on this iPhone."
         case .file: ReturnSource.file.from
         case .restore: flow.review?.source.from ?? ""
         }
@@ -507,7 +507,7 @@ struct WorkingPage: View {
         guard failure == nil else { return }
         let started = Date.now
         guard let backup else {
-            failure = Failure(text: Device.words("Your data can't be brought back on this iPhone right now."), main: .back, other: .startFresh)
+            failure = Failure(text: "Your data can't be brought back on this iPhone right now.", main: .back, other: .startFresh)
             return
         }
         switch work {
