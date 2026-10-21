@@ -77,6 +77,7 @@ import com.oftenenough.app.ui.newhabit.Note
 import com.oftenenough.app.ui.newhabit.RadioRow
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -306,6 +307,11 @@ fun Keypad(heading: String, line: String?, lineIsProblem: Boolean, shake: Int, e
     LaunchedEffect(shake) {
         if (shake > 0) { code = ""; for (x in listOf(12f, -12f, 8f, -8f, 0f)) offset.animateTo(x) }
     }
+    // The sixth dot is drawn filled before the code is handed over (as the iPhone does): clearing it in the same tap
+    // made the sixth digit look as if it was never typed (the user, 14 Oct 2026).
+    LaunchedEffect(code) {
+        if (code.length == 6) { delay(150); val done = code; code = ""; onCode(done) }
+    }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(vertical = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Box(Modifier.size(72.dp).clip(CookieShape()).background(c.ink), contentAlignment = Alignment.Center) {
             Icon(Icons.Rounded.Lock, null, tint = c.onInk, modifier = Modifier.size(32.dp))
@@ -332,9 +338,8 @@ fun Keypad(heading: String, line: String?, lineIsProblem: Boolean, shake: Int, e
                         when {
                             k.isEmpty() -> m
                             k == "⌫" -> m.clickable(enabled = enabled && code.isNotEmpty()) { code = code.dropLast(1) }.semantics { contentDescription = "Delete" }
-                            else -> m.background(c.tonal).clickable(enabled = enabled) {
+                            else -> m.background(c.tonal).clickable(enabled = enabled && code.length < 6) {
                                 if (code.length < 6) code += k
-                                if (code.length == 6) { val done = code; code = ""; onCode(done) }
                             }.semantics { testTag = "key-$k" }
                         }
                     }, contentAlignment = Alignment.Center) {
