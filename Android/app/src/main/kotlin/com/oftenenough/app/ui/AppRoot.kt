@@ -80,7 +80,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -132,7 +131,6 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
                 prefs.onboarded = true
                 message?.let { rootScope.launch { snackbar.showSnackbar(it, duration = androidx.compose.material3.SnackbarDuration.Long) } }
             }
-            override fun signIn() { handOver = Routes.menu(MenuItem.BACKUP); prefs.onboarded = true }
             override fun restore() { handOver = Routes.page("Restore from a backup"); prefs.onboarded = true }
         }) else AppMain(store, prefs, nav, snackbar, rootScope, view, handOverState)
     }
@@ -149,7 +147,7 @@ private fun AppMain(
     val todayLayout = remember { com.oftenenough.app.ui.today.TodayLayout(rootScope) }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
-    // Restore from Google Play found nothing: Plus & Account shows "No Plus found" over itself (Figma 4.2).
+    // Restore from Google Play found nothing: Plus shows "No Plus found" over itself (Figma 4.2).
     var noPlusFound by rememberSaveable { mutableStateOf(false) }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
     LaunchedEffect(AppGraph.widgetRoute) {
@@ -315,7 +313,7 @@ private fun AppMain(
                 MenuItem.REMINDERS.title -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 MenuItem.PRIVACY.title -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
-                MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusAccountPage(store, AppGraph.plus, AppGraph.accounts, AppGraph.signIn, AppGraph.backup,
+                MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusPage(store, AppGraph.plus, AppGraph.backup,
                     snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false }, codes = AppGraph.plusCodes)
                 "Arrange your day" -> {
                     // The habit Arrange… or Move asked for, lifted once (Figma 1.4, 1.6).
@@ -381,7 +379,6 @@ private fun AppMain(
         composable(Routes.WELCOME) {
             OnboardingFlow(store, object : OnboardingNav {
                 override fun finished(message: String?) { nav.popBackStack() }
-                override fun signIn() { nav.popBackStack(); nav.navigate(Routes.menu(MenuItem.BACKUP)) }
                 override fun restore() { nav.popBackStack(); nav.navigate(Routes.page("Restore from a backup")) }
             }, replay = true)
         }
@@ -406,51 +403,29 @@ private fun AppMain(
         composable("section/{id}") { e ->
             SectionEditorScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }) { nav.popBackStack() }
         }
-        // Plus & Account's flows (Figma 1476:2): each finishes back on Plus & Account.
+        // Plus's flows (Figma 1476:2): each finishes back on the Plus page.
         val flowNav = plusFlowNav(nav, rootScope, snackbar) { noPlusFound = true }
-        composable(Routes.GET_PLUS) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, AppGraph.accounts, AppGraph.signIn, upgrade = false, flowNav) { nav.popBackStack() } }
-        composable(Routes.UPGRADE) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, AppGraph.accounts, AppGraph.signIn, upgrade = true, flowNav) { nav.popBackStack() } }
-        composable(Routes.SIGN_IN) { com.oftenenough.app.ui.plus.SignInFlow(AppGraph.accounts, AppGraph.signIn, AppGraph.plus, flowNav, onBack = { nav.popBackStack() }) }
-        composable(Routes.CREATE_ACCOUNT) { com.oftenenough.app.ui.plus.CreateAccountScreen(AppGraph.accounts, AppGraph.signIn, AppGraph.plus, flowNav) { nav.popBackStack() } }
-        composable(Routes.RESTORE_PLUS) { com.oftenenough.app.ui.plus.RestoreFlow(AppGraph.plus, AppGraph.accounts, flowNav) }
-        composable(Routes.JOIN_FAMILY) { com.oftenenough.app.ui.plus.JoinFamilyScreen({ token -> nav.navigate(Routes.invite(token)) }) { nav.popBackStack() } }
-        composable("family/invite/{token}") { e ->
-            com.oftenenough.app.ui.plus.InviteFlow(e.arguments!!.getString("token")!!, AppGraph.plus, AppGraph.accounts, AppGraph.signIn, flowNav)
-        }
+        composable(Routes.GET_PLUS) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, flowNav) { nav.popBackStack() } }
+        composable(Routes.RESTORE_PLUS) { com.oftenenough.app.ui.plus.RestoreFlow(AppGraph.plus, flowNav) }
     }
     }
-    // Plus & Account has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
+    // Plus has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
     // snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
     if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
         .let { if (menuItem == MenuItem.PLUS) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
     }
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
-    // A family invite opened from a link (Figma 5): its own screen, over whatever was open.
-    // Only the screen in front (resumed) takes it: a link tapped in another app can start a second copy of this screen on top,
-    // and the copy underneath (paused before the new one starts) must not open the invite where nobody sees it (16 Oct 2026).
-    val lifecycle = androidx.lifecycle.compose.LocalLifecycleOwner.current.lifecycle
-    LaunchedEffect(lifecycle) {
-        lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.RESUMED) {
-            androidx.compose.runtime.snapshotFlow { AppGraph.inviteToOpen }.collect { token ->
-                if (token != null) { AppGraph.inviteToOpen = null; nav.navigate(Routes.invite(token)) }
-            }
-        }
-    }
 }
 
-/** Plus & Account's rows. */
+/** The Plus page's rows. */
 private fun plusNav(nav: NavHostController) = object : com.oftenenough.app.ui.plus.PlusNav {
     override fun seePlus() = nav.navigate(Routes.GET_PLUS)
-    override fun upgradeToFamily() = nav.navigate(Routes.UPGRADE)
-    override fun signIn() = nav.navigate(Routes.SIGN_IN)
     override fun restore() = nav.navigate(Routes.RESTORE_PLUS)
-    override fun joinFamily() = nav.navigate(Routes.JOIN_FAMILY)
-    override fun createAccount() = nav.navigate(Routes.CREATE_ACCOUNT)
     override fun backup() = nav.navigate(Routes.menu(MenuItem.BACKUP))
     override fun back() { nav.popBackStack() }
 }
 
-/** Where a Plus & Account flow ends: back on Plus & Account (opened if the flow began elsewhere, as an invite link does). */
+/** Where a Plus flow ends: back on the Plus page (opened if the flow began elsewhere, as the 6th-habit page). */
 private fun plusFlowNav(nav: NavHostController, scope: CoroutineScope, snackbar: SnackbarHostState, onNoPlusFound: () -> Unit) =
     object : com.oftenenough.app.ui.plus.PlusFlowNav {
         override fun toPage(message: String?) {
@@ -462,7 +437,7 @@ private fun plusFlowNav(nav: NavHostController, scope: CoroutineScope, snackbar:
         }
         override fun toPageNoPlusFound() { onNoPlusFound(); toPage() }
         override fun getPlus() = nav.navigate(Routes.GET_PLUS)
-        override fun signIn() = nav.navigate(Routes.SIGN_IN)
+        override fun restore() = nav.navigate(Routes.RESTORE_PLUS)
     }
 
 /**
@@ -533,12 +508,7 @@ object Routes {
     const val COMPLETED_TASKS = "tasks/completed"
     fun restoreRoom(id: String) = "restoreroom/$id"
     const val GET_PLUS = "plus/get"
-    const val UPGRADE = "plus/upgrade"
-    const val SIGN_IN = "account/signin"
-    const val CREATE_ACCOUNT = "account/create"
-    const val RESTORE_PLUS = "account/restore"
-    const val JOIN_FAMILY = "family/join"
-    fun invite(token: String) = "family/invite/$token"
+    const val RESTORE_PLUS = "plus/restore"
     fun group(id: String?) = "group/" + (id ?: "new")
     const val LOCK_SETUP = "applock/setup"
     const val LOCK_PASSCODE = "applock/passcode"

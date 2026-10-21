@@ -26,7 +26,7 @@ class DriveStore internal constructor(private val dao: HabitDao, private val clo
     /** Everything in one file, as this device has it now, and the outbox position it was read at (one transaction). */
     internal suspend fun build(chain: String): Built = synced { sync ->
         val upTo = dao.lastOutboxSeq()
-        val rows = records(sync, chain).map { (key, record) -> PeerFill.Row(key.first, key.second, record) }
+        val rows = records(sync, chain).map { (key, record) -> SyncRows.Row(key.first, key.second, record) }
             .sortedWith(compareBy({ it.table }, { it.row }))
         var live = 0
         var habits = 0
@@ -46,7 +46,7 @@ class DriveStore internal constructor(private val dao: HabitDao, private val clo
      * nothing is merged ([Merged.held]). A record this version can't accept is counted, never applied half-way: the file
      * is then blocked from being written by this version (DriveSync), so a newer app's data is never dropped.
      */
-    internal suspend fun merge(chain: String, rows: List<PeerFill.Row>, deleteAllowance: Int): Merged = synced { sync ->
+    internal suspend fun merge(chain: String, rows: List<SyncRows.Row>, deleteAllowance: Int): Merged = synced { sync ->
         val here = records(sync, chain)
         val incoming = rows.filter { here[it.table to it.row] != it.record }
         val readable = incoming.filter { SyncRules.recordProblem(it.table, it.row, it.record) == null }
@@ -121,7 +121,7 @@ class DriveStore internal constructor(private val dao: HabitDao, private val clo
         dao.eraseSyncMetaRow(table, row)
     }
 
-    internal class Built(val rows: List<PeerFill.Row>, val upTo: Long, val live: Int, val habits: Int)
+    internal class Built(val rows: List<SyncRows.Row>, val upTo: Long, val live: Int, val habits: Int)
 
     internal class Merged(val changed: Int, val deleted: Int, val unreadable: Int, val held: Boolean, val moved: Int, val dirty: Set<String>)
 

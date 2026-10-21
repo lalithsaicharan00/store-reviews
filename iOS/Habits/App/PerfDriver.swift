@@ -219,76 +219,6 @@ enum PerfDriver {
                 await pause(1.0)
                 if store.timers[timed.id] != nil { store.toggleTimer(timed) }
             }
-        // The iPad (Current Work 86; Build Prompt §4.5), in landscape with the sidebar beside Today, a year of history:
-        // Today's column, the Day details popover and Add log typed inside it, the Columns view, and the sidebar's places.
-        case "pad-today":
-            guard Device.isPad, let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# NOTE not an iPad, or no Water") }
-            await landscape()
-            await measure("iPad Today: scrolling") { await scroll() }
-            await measure("iPad Today: +1 and day ‹ ›") {
-                await repeatFor(window) {
-                    withAnimation { store.increment(water, on: store.today()) }
-                    await pause(0.35)
-                    send(.previousDay)
-                    await pause(0.35)
-                    send(.nextDay)
-                    await pause(0.35)
-                }
-            }
-            PadAnchor.shared.tapped(water.id, section: nil)
-            await open("iPad: Day details popover (first)") { store.dayTarget = .init(habitID: water.id, day: store.today()) }
-            send(.closeDay)
-            await pause(1.2)
-            await open("iPad: Day details popover (again)") { store.dayTarget = .init(habitID: water.id, day: store.today()) }
-            await open("iPad: Add log inside the popover") { send(.openLog) }
-            await measure("iPad: typing in Add log inside the popover") {
-                await repeatFor(window) {
-                    for text in ["1", "12", "123", "12", "1"] { type(text); await pause(0.1) }
-                }
-            }
-            send(.closeLog)
-            await pause(1.0)
-            send(.closeDay)
-            await pause(1.0)
-        case "pad-columns":
-            guard Device.isPad, let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# NOTE not an iPad, or no Water") }
-            await landscape()
-            await open("iPad: List to Columns") { UserDefaults.standard.set(PadLayout.columns.rawValue, forKey: Preferences.padLayout) }
-            await measure("iPad Columns: scrolling sideways") { await scrollSideways() }
-            await measure("iPad Columns: scrolling down") { await scroll() }
-            await measure("iPad Columns: +1 and day ‹ ›") {
-                await repeatFor(window) {
-                    withAnimation { store.increment(water, on: store.today()) }
-                    await pause(0.35)
-                    send(.previousDay)
-                    await pause(0.35)
-                    send(.nextDay)
-                    await pause(0.35)
-                }
-            }
-            await open("iPad: Columns to List") { UserDefaults.standard.set(PadLayout.list.rawValue, forKey: Preferences.padLayout) }
-        case "pad-places":
-            guard Device.isPad else { return MainThreadMeter.mark("# NOTE not an iPad") }
-            await landscape()
-            await openTwice("iPad: Habits, list and page") { PadCommands.shared.placeRequest = .init(place: .habits) }
-            let habits = store.habits.filter { !$0.archived && $0.kind != .task }.prefix(8).map(\.id)
-            await measure("iPad Habits: moving between habits") {
-                await repeatFor(window) {
-                    for id in habits { AppModel.shared.menu.padHabit[.habits] = id; await pause(0.5) }
-                }
-            }
-            send(.close)
-            await pause(1.2)
-            await openTwice("iPad: Progress, two across") { PadCommands.shared.placeRequest = .init(place: .progress) }
-            await measure("iPad Progress: scrolling") { await scroll() }
-            send(.close)
-            await pause(1.2)
-            await openTwice("iPad: Appearance beside the sidebar") { PadCommands.shared.placeRequest = .init(place: .appearance) }
-            send(.close)
-            await pause(1.2)
-            await open("iPad: Today from the sidebar") { PadCommands.shared.placeRequest = .init(place: nil) }
-            await open("iPad: the sidebar put away") { PadCommands.shared.sidebarRequests += 1 }
-            await open("iPad: the sidebar back") { PadCommands.shared.sidebarRequests += 1 }
         case "typing-control":
             await open("Typing control") { send(.openTypingControl) }
             await pause(1)
@@ -752,14 +682,6 @@ enum PerfDriver {
     }
 
     private static func send(_ action: PerfAction) { PerfRemote.shared.send(action) }
-
-    /// The iPad's scenarios run in landscape (the sidebar beside Today), as the speed runs launch in portrait.
-    private static func landscape() async {
-        for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
-            scene.requestGeometryUpdate(.iOS(interfaceOrientations: .landscapeRight)) { _ in }
-        }
-        await pause(2)
-    }
 
     private static func pause(_ seconds: Double) async { try? await Task.sleep(for: .seconds(seconds)) }
 

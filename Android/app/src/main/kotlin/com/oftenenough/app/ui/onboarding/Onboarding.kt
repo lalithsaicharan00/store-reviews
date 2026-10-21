@@ -122,11 +122,10 @@ data class HabitIdea(
     }
 }
 
-/** Where the welcome hands over: Today (finished, with or without a first habit), or a way back (sign in, restore). */
+/** Where the welcome hands over: Today (finished, with or without a first habit), or a way back (restore). */
 interface OnboardingNav {
     /** The welcome is over; [message] is said on Today ("Your habits are back: 31 habits, 929 logs"). */
     fun finished(message: String? = null)
-    fun signIn()
     fun restore()
 }
 

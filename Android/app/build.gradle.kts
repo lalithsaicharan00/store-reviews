@@ -16,12 +16,6 @@ android {
         versionCode = 4
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        // Sign in with Google (Plus & Account): the Web OAuth client ID the Worker checks ID tokens against. Public, not
-        // a secret (Google puts it in every copy of the app), but kept out of the repository: on a PC it's
-        // `googleWebClientId` in ~/.gradle/gradle.properties, on CI the repository variable GOOGLE_WEB_CLIENT_ID.
-        // Empty, debug builds use the stand-in sign-in and a release build offers none.
-        val webClientId = webClientIdFor(project)
-        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"" + webClientId + "\"")
         // Debug builds use the stand-in Plus store unless built with -PrealBilling (to test real purchases as a license tester).
         buildConfigField("boolean", "REAL_BILLING", (project.findProperty("realBilling") != null).toString())
     }
@@ -52,19 +46,8 @@ android {
     // The account server (account-server/): debug builds talk to dev, release builds to production, once the build has
     // the Google client above (the Worker only takes real Google sign-ins). Without it: the on-phone stand-in in debug,
     // none in release. `-PaccountServer=standin|dev|production` overrides.
-    val accountServer = { debug: Boolean ->
-        (project.findProperty("accountServer") as String?) ?: when {
-            webClientIdFor(project).isEmpty() -> if (debug) "standin" else "none"
-            debug -> "dev"
-            else -> "production"
-        }
-    }
     buildTypes {
-        debug {
-            buildConfigField("String", "ACCOUNT_SERVER", "\"" + accountServer(true) + "\"")
-        }
         release {
-            buildConfigField("String", "ACCOUNT_SERVER", "\"" + accountServer(false) + "\"")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -118,11 +101,7 @@ dependencies {
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
     implementation("androidx.metrics:metrics-performance:1.0.0")
     implementation("com.android.billingclient:billing-ktx:9.1.0")
-    // Plus & Account: Sign in with Google through Android's Credential Manager (Google's own account sheet), the family
-    // invite's QR code (drawn on the phone, ZXing's encoder only) and Google's code scanner (no camera permission).
-    implementation("androidx.credentials:credentials:1.5.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    // Move to a new phone's QR code (drawn on the phone, ZXing's encoder only).
     implementation("com.google.zxing:core:3.5.3")
     // Material 3 Expressive's loading indicator, drawn with the library Material's own uses (LoadingIndicator.kt).
     implementation("androidx.graphics:graphics-shapes:1.1.0")
@@ -150,7 +129,3 @@ dependencies {
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.4.0")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 }
-
-/** The Google sign-in client's ID (public): `googleWebClientId` in ~/.gradle/gradle.properties, or GOOGLE_WEB_CLIENT_ID on CI. */
-fun webClientIdFor(project: Project): String =
-    (project.findProperty("googleWebClientId") as String?) ?: System.getenv("GOOGLE_WEB_CLIENT_ID") ?: ""

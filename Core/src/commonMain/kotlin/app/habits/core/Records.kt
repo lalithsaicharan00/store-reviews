@@ -78,7 +78,7 @@ data class ReminderRecord(
 
 /**
  * One thing the user logged. Its ID is made at the tap, so the same tap saved twice counts once. The (day, id) index
- * (schema 9) lets the Watch's first fill read logs newest first a page at a time (Architecture 12 §3.1).
+ * (schema 9) was for the Apple Watch's first fill (removed 21 Oct 2026); it stays with schema 10.
  */
 @Entity(tableName = "entry", indices = [Index("habit_id", "day"), Index("day", "id")])
 data class EntryRecord(
@@ -163,9 +163,9 @@ data class LocalStateRecord(
 )
 
 /**
- * Schema 9: a change waiting for the paired device (the Apple Watch on the iPhone, the iPhone on the Watch;
- * Architecture 12 §3.1). Written in the same transaction as the change, like [OutboxRecord], and removed only when the
- * other device acknowledges the batch it was in, so a closed app or a Watch out of range never loses one.
+ * Schema 9–10: the Apple Watch's queue of changes. **Unused since the Watch app was removed (21 Oct 2026):** nothing
+ * writes or reads it. The table stays, empty, so schema 10 opens unchanged (Room checks every table); drop it with the
+ * next schema change, in that change's migration (Rulebook D2).
  */
 @Entity(tableName = "peer_out", indices = [Index("op_id", unique = true)])
 data class PeerOutRecord(

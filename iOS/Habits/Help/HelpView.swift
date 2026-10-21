@@ -73,7 +73,7 @@ struct HelpView: View {
             Button("Copy Address") { UIPasteboard.general.string = Support.email }
             Button("OK", role: .cancel) {}
         } message: {
-            Text(Device.words("Email \(Support.email). Say what happened and when, and which iPhone you use."))
+            Text("Email \(Support.email). Say what happened and when, and which iPhone you use.")
         }
     }
 
@@ -150,12 +150,12 @@ private struct TopicRow: View {
     var body: some View {
         DisclosureGroup(isExpanded: $expanded) {
             // Said for this device: on the iPad "this iPad", and "the sidebar ›" for the ≡ menu (Current Work 86).
-            Text(Device.words(topic.answer))
+            Text(topic.answer)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.vertical, 2)
         } label: {
-            Text(Device.words(topic.question)).foregroundStyle(Color.primary)
+            Text(topic.question).foregroundStyle(Color.primary)
         }
         .onChange(of: expanded) {
             if expanded { Analytics.shared.count(.faq, ticket: Analytics.shared.ticket) }

@@ -301,8 +301,9 @@ class MigrationTest {
     }
 
     /**
-     * Schema 10 adds the Apple Watch's queue (`peer_out`) and the (day, id) index the first fill reads by (Architecture 12
-     * §5). A schema-8 database keeps everything, and only queues changes once a paired device is started.
+     * Schema 10 adds the Apple Watch's queue (`peer_out`) and the (day, id) index its first fill read by. The Watch app was
+     * removed (21 Oct 2026): the table stays, empty, until the next schema change. A schema-8 database keeps everything,
+     * and nothing is ever queued there now.
      */
     @Test fun version8UpgradesAndGetsThePeerQueue() = runTest {
         val connection = createSchema(8)
@@ -318,19 +319,16 @@ class MigrationTest {
         val snapshot = repo.load()
         assertEquals("Evening", snapshot.habits.single().reminderText)
         assertEquals(listOf("e1"), snapshot.entries.map { it.id })
-        assertEquals(0, repo.peerStatus().waiting)
         repo.addEntry(EntryRecord("e2", "h1", null, "2026-09-28", 1.0, 3000, "Europe/London", null, null, "today"))
-        assertEquals(0, repo.peerStatus().waiting, "nothing is queued for a Watch that isn't there")
-        repo.peerStart()
-        repo.addEntry(EntryRecord("e3", "h1", null, "2026-09-29", 1.0, 4000, "Europe/London", null, null, "watch"))
-        assertEquals(1, repo.peerStatus().waiting)
         repo.close()
         val after = BundledSQLiteDriver().open(path)
         val waiting = after.prepare("SELECT count(*) FROM outbox").use { it.step(); it.getLong(0) }
         val index = after.prepare("SELECT count(*) FROM sqlite_master WHERE name = 'index_entry_day_id'").use { it.step(); it.getLong(0) }
+        val peer = after.prepare("SELECT count(*) FROM peer_out").use { it.step(); it.getLong(0) }
         after.close()
         assertEquals(1L, waiting, "what was waiting to sync is still there")
         assertEquals(1L, index)
+        assertEquals(0L, peer, "nothing is ever queued for a Watch")
     }
 
     /** An upgrade cut off after creating the queue (the app killed mid-migration) runs again and still opens. */

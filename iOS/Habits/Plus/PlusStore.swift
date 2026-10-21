@@ -20,7 +20,7 @@ enum PlusPlan: String, CaseIterable, Identifiable {
     /// The Plus page's row title.
     var title: String { self == .plus ? "Plus · just you" : "Plus Family · you + 5" }
     var detail: String {
-        self == .plus ? "Unlimited habits, \(Device.otherDevices.lowercasedFirst), sync through your own iCloud"
+        self == .plus ? "Unlimited habits, sync through your own iCloud"
             : "Everything in Plus for you and up to 5 people in your Apple family, each with their own habits"
     }
 }

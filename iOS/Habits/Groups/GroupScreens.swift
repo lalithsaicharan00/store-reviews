@@ -37,8 +37,6 @@ struct FilterSheet: View {
     @State private var path = NavigationPath()
     /// Half height for choosing (Today stays in view behind it), full height once a group screen opens.
     @State private var detent = PresentationDetent.medium
-    /// The iPad's popover from the Filter button: no Done; a tap outside closes it (Design Notes §5).
-    @Environment(\.inPadPopover) private var inPopover
 
     var body: some View {
         let current = store.existingGroup(selection)
@@ -85,13 +83,10 @@ struct FilterSheet: View {
                     Text("Completed ones leave Today a moment after the last tick, and come back when these are off.")
                 }
             }
-            .fitsPadPopover("filter")
             .navigationTitle("Filter")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if !inPopover {
-                    ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
-                }
+                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
             }
             .groupDestinations()
         }
@@ -154,7 +149,6 @@ struct GroupsView: View {
                 }
             }
         }
-        .fitsPadPopover("groups")
         .navigationTitle("Groups")
         .toolbar { ToolbarItem(placement: .topBarTrailing) { EditButton() } }
         .deleteGroupDialog($deleting)
@@ -286,7 +280,6 @@ struct GroupForm: View {
             }
         }
         .accessibilityIdentifier("group-form")
-        .fitsPadPopover("group-form")
         .navigationTitle(original == nil ? "New Group" : "Edit Group")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(original == nil || changed)

@@ -1519,6 +1519,50 @@ and the Add note keyboard coming up by itself.
   - [x] On Today's own screens (1, 1.1, 1.8, 4.2, 4.3), on empty Today (5 with an introduction, 6), a title link and ⋮ › See all days to its details, Habits row hidden state (1.1) (16 Oct; research: first-day evidence).
   - [x] The How was today? widget (A20): its own **medium 4×2, the only size at launch** (small replaced the same day: too small on iPhone for six targets); a face logs at once, + Note opens Add note; a separate board in Widgets: every state laid out as the day's flow (① nothing logged → ② a face tapped, marked in place → ③ a note saved; plus a note without a mood, content hidden, couldn't save), one layout in every state, the date as *Thursday, 16 October*; on a home screen in Widgets with the arrow to Add note (16 Oct).
   - [x] The Habits page: new section, 1 · Habits with How was today? first under *Comes with the app* (replaces *Built in* everywhere) (16 Oct). A first pass; to improve later.
+- [ ] **150. Phones only, no accounts: remove the Apple Watch and the iPad, mark the account server for deletion**
+  (added 21 October 2026, from the user: "for the initial first launch … only for the main apps … in App Store only for
+  iPhone. And in Play Store, only for Android phone … No tablets, no watch"; "purchases will be manually synced …
+  since there are no accounts"; "we will be syncing through iCloud … CloudKit … and then in the Android we will be backing
+  up the data"; "remove the iWatch support and delete all of the code related to it and iPad as well … whatever we have
+  like Cloudflare server … mark things to be deleted like … account management … And note down all of this"; "we will be
+  removing the family plans"). Branch `claude/phones-only-launch`. Why: [Phones Only, No Accounts — Why](<../../../Research/Research Reports/Market Discovery/Phones Only, No Accounts — Why, 21 October 2026.md>).
+  - [x] Recorded: Rulebook D16 rewritten (phones only, no accounts, no Plus Family, Plus moved by hand between stores,
+    iPhone syncs through iCloud, Android backs up to Google Drive); D5, D15 and D18 follow; U30–U35, T18 and T20 retired;
+    T6 and T19 updated. The Watch and iPad docs and index rows carry a "Retired" banner (21 Oct).
+  - [x] The Apple Watch removed: its three Xcode targets, `Watch/`, `WatchShared/`, `WatchWidgets/`, `WatchUITests/`, plists,
+    entitlements and scheme; the iPhone's `PhoneWatchLink`, `PeerMessage`, Handoff, `PairDriver`/`PairLog` and the
+    `-pair-test` check; the 400-day history window (U34); the shared core's Watch queue (`SyncWriter`, `HabitRepository`
+    peer calls, `PeerFill`, now `SyncRows` for Google Drive only), its watchOS targets and `PeerSyncTest`; the Watch CI
+    job and scripts. `peer_out` stays, empty, until the next schema change (D2) (21 Oct).
+  - [x] The iPad removed: `TARGETED_DEVICE_FAMILY = 1`, `Habits/Pad/`, every `Device.isPad` branch and iPad modifier
+    across ~30 files, the iPad speed scenarios, the Layout preference, the Extra Large widget (iPad only),
+    `IPadUITests` and `IPadWidgetSystemUITests`. Every changed Swift file parses; `check_rules.sh` passes (21 Oct).
+  - [x] Account management marked TO BE DELETED (not deleted, nothing switched off): the account Worker's account routes,
+    `accounts.ts`, `identity.ts`, `play.ts`, `refunds.ts`, its migrations, tests and keyless Google set-up; the shared core's
+    `app.habits.account` package; Android's account code and tests. The move relay stays. The order to delete them is in
+    `account-server/README.md`, "To be deleted" (21 Oct).
+  - [ ] Build and test on GitHub (T1, T7): the iPhone app, the core's tests and Apple compile, the iOS UI classes that
+    touch Today, Day details, Progress, Appearance, widgets and iCloud. Needs the user's OK to push the branch.
+  - [ ] Plus without devices or Family: Plus's wording no longer promises "iPad and Apple Watch" (removed); its contents,
+    the Plus Family product and its screens need the user's decision on both platforms, then the Plus screens, StoreKit
+    products and Play products follow.
+  - [ ] Android's Plus page still lists "Tablet, Wear OS watch, Windows" (`PlusParts.kt`, `FormMorePages.kt`): change with
+    the Plus decision above (Android designs are final in Figma, so the designs first).
+  - [x] **Cloudflare (the user: "can you also delete that from the cloudflare"; confirmed "Yes, do all of it"):** both
+    Workers redeployed as the move relay only (dev `ed77f81d`, production `890a2795`; account routes 404, daily job gone;
+    `npm test` 9/9, type check clean, live checks pass on both); both D1 account databases deleted (production 0 accounts,
+    dev 4 test accounts); secrets `GOOGLE_WIF_SIGNING_KEY` (both) and `TEST_SIGN_IN_SECRET` (dev) deleted; the account
+    source, tests, migrations and Google key files deleted from `account-server/` (21 Oct).
+  - [ ] Google Cloud and Play Console (by the user): turn off Real-time developer notifications, delete the Pub/Sub topic
+    and push subscription, the Workload Identity pool and the two service accounts (`account-server/README.md`).
+  - [x] Deleted the apps' account code (the user: "from the shared core, whatever the things to be deleted, delete
+    them", 21 Oct): the shared core's `app.habits.account` and its test; Android's sign-in (`app/account`, Credential
+    Manager and Google ID libraries), the account screens, family invites and the `/join/` link, Plus Family (Get Plus,
+    the 6th-habit page), the account tests (5 files, and 5 tests in `OnboardingTest`); Welcome back now offers Google
+    Drive, the old phone's code and a file; ≡ › **Plus** shows Free or Plus with Restore from Google Play and Redeem a
+    code. The 6th-habit page no longer lists Tablet, Wear OS or Windows. Compiled once on the MacBook (app, unit tests,
+    device tests, the core's tests); not run on CI (the user: no test runs). iOS's own Plus Family choice is still
+    there (the iPhone is frozen until Android is final).
 - [ ] **149. Plus is $29.99, students half: change the price everywhere** (added 20 October 2026, from the user: "let's
   make it our price also 29.99 And for students, 50% discount, let's update the price everywhere and also add checklist
   that … play store as well as … App Store we need to update … We haven't released the app yet … in the Google Play

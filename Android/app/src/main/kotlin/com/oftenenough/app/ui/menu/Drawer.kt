@@ -50,7 +50,7 @@ enum class MenuItem(val title: String, val icon: ImageVector) {
     APPEARANCE("Appearance", Icons.Rounded.Contrast),
     BACKUP("Backup & Sync", Icons.Outlined.Cloud),
     PRIVACY("Privacy & Security", Icons.Outlined.Shield),
-    PLUS("Plus & Account", Icons.Rounded.AddCircleOutline),
+    PLUS("Plus", Icons.Rounded.AddCircleOutline),
     HELP("Help & Feedback", Icons.AutoMirrored.Rounded.HelpOutline),
     ABOUT("About", Icons.Outlined.Info),
 }

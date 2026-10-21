@@ -9,7 +9,7 @@ import kotlinx.serialization.json.longOrNull
 
 /**
  * One saved version of one Google Drive sync file (a year of logs, or "base": habits, steps, times, settings and
- * notes). Made and checked like the backup file and the Watch's first fill ([BackupFile], [PeerFill]): a small zip of
+ * notes). Made and checked like the backup file ([BackupFile], [SyncRows]): a small zip of
  * `manifest.json` (what it is, which file, which version, how many records, their SHA-256) and `records.json`,
  * deflated, every record whole with every field's sync stamp, so merging it is exactly as if each change had arrived
  * on its own (SyncRules.mergeRecord).
@@ -21,10 +21,10 @@ internal object DriveSnapshot {
     const val MANIFEST = "manifest.json"
     const val RECORDS = "records.json"
 
-    class Contents(val chain: String, val seq: Long, val rows: List<PeerFill.Row>)
+    class Contents(val chain: String, val seq: Long, val rows: List<SyncRows.Row>)
 
-    fun write(chain: String, seq: Long, rows: List<PeerFill.Row>, by: String, now: Long): ByteArray {
-        val records = PeerFill.encodeRows(rows)
+    fun write(chain: String, seq: Long, rows: List<SyncRows.Row>, by: String, now: Long): ByteArray {
+        val records = SyncRows.encodeRows(rows)
         val manifest = JsonObject(buildMap {
             put("kind", JsonPrimitive(KIND))
             put("format", JsonPrimitive(FORMAT))
@@ -55,6 +55,6 @@ internal object DriveSnapshot {
         if ((manifest["count"] as? JsonPrimitive)?.longOrNull != list.size.toLong()) throw BackupProblem(BackupProblem.DAMAGED)
         val chain = (manifest["chain"] as? JsonPrimitive)?.content ?: throw BackupProblem(BackupProblem.DAMAGED)
         val seq = (manifest["seq"] as? JsonPrimitive)?.longOrNull ?: throw BackupProblem(BackupProblem.DAMAGED)
-        return Contents(chain, seq, PeerFill.decodeRows(list))
+        return Contents(chain, seq, SyncRows.decodeRows(list))
     }
 }

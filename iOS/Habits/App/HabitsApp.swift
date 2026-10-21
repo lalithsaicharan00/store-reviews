@@ -43,15 +43,6 @@ struct HabitsApp: App {
                 .onChange(of: model.lock.isLocked) {
                     Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
                 }
-                // Handoff from the Apple Watch: "Open on iPhone" (a habit's page) and "Continue on iPhone" (Plus), G1, B13.
-                .onContinueUserActivity("com.oftenenough.app.open-habit") { activity in
-                    if let id = (activity.userInfo?["habit"] as? String).flatMap(UUID.init(uuidString:)) { model.router.openHabit = id }
-                }
-                .onContinueUserActivity("com.oftenenough.app.open-plus") { _ in
-                    model.menu.reset()
-                    // The iPad: Plus beside the sidebar, as its sidebar row opens it (Current Work 86).
-                    if Device.isPad { model.menu.padPlace = .plus } else { model.menu.path.append(MenuPlace.plus) }
-                }
                 .onOpenURL { url in
                     // A backup file opened from AirDrop, Files or Mail (Backup, Sync and Accounts §4.8).
                     if url.isFileURL, let backup = model.backup { Task { await backup.open(url) }; return }
@@ -93,9 +84,6 @@ struct HabitsApp: App {
             if scenePhase == .background { model.lock.lock() }
             if scenePhase == .active { Task { await model.lock.appeared() } }
         }
-        // The iPad's menu bar: View (as List ⌘1, as Columns ⌘2, Hide Sidebar ⌃⌘S, Go to Today ⌘T, Previous and Next Day
-        // ⌘← ⌘→) and New Habit ⌘N (I11). Every command is off on the iPhone.
-        .commands { PadMenuCommands() }
     }
 
     /// The app's links, from widgets and the Live Activity (Implementation Spec §3): each opens exactly the screen its
@@ -168,13 +156,9 @@ struct HabitsApp: App {
         }
     }
 
-    /// The iPhone: Today with the ≡ menu over it. The iPad: Today in Apple's iPad frame, with the sidebar (`PadRoot`).
-    @ViewBuilder private var appShell: some View {
-        if Device.isPad {
-            PadRoot(menu: model.menu)
-        } else {
-            MenuShell(menu: model.menu) { TodayView() }
-        }
+    /// Today with the ≡ menu over it.
+    private var appShell: some View {
+        MenuShell(menu: model.menu) { TodayView() }
     }
 
     private var todayView: some View {
@@ -192,8 +176,6 @@ struct HabitsApp: App {
                 // Every way back (sign in, restore, move from another device) finishes inside the welcome, so it
                 // always ends on Today (Current Work 73.1).
                 OnboardingView { showOnboarding = false }
-                // The iPad: the welcome in a 480-pt column in the middle (Design Notes §5).
-                .padColumn(480)
                 .environment(model.store)
                 .environment(model.scheduler)
                 .environment(model.menu)
@@ -218,7 +200,6 @@ struct HabitsApp: App {
                 }
                 #if DEBUG
                 PerfDriver.startIfAsked(store: model.store)
-                PairDriver.startIfAsked(store: model.store)
                 #endif
                 model.scheduleRefresh()
                 await model.dailySnapshot()
@@ -235,7 +216,6 @@ private struct IncomingBackupSheet: ViewModifier {
         content.sheet(item: $backup.incoming) { pending in
             NavigationStack { RestorePreviewView(pending: pending) }
                 .environment(backup)
-                .padFormSheet()
         }
     }
 }

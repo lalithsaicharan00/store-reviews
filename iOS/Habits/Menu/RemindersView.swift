@@ -26,14 +26,14 @@ struct RemindersView: View {
                     settingsButton
                 }
                 if ReminderScheduler.alarmsAvailable {
-                    LabeledContent("Alarms", value: scheduler.alarmsAuthorized ? "Allowed" : scheduler.alarmsDenied() ? Device.words("Off in iPhone Settings") : "Not Allowed Yet")
+                    LabeledContent("Alarms", value: scheduler.alarmsAuthorized ? "Allowed" : scheduler.alarmsDenied() ? "Off in iPhone Settings" : "Not Allowed Yet")
                     if !scheduler.alarmsAuthorized {
                         if scheduler.alarmsDenied() { settingsButton }
                         else { Button("Allow Alarms") { Task { _ = await scheduler.requestAlarmPermission(); await refresh() } } }
                     }
                 }
-            } header: { Text(Device.words("On This iPhone")) } footer: {
-                Text(Device.words("Notifications respect silent mode, Focus and Scheduled Summary. An alarm is used only when you choose Alarm for that item and allow it on this iPhone."))
+            } header: { Text("On This iPhone") } footer: {
+                Text("Notifications respect silent mode, Focus and Scheduled Summary. An alarm is used only when you choose Alarm for that item and allow it on this iPhone.")
             }
             if let problem = scheduler.problem {
                 Section {
@@ -57,7 +57,7 @@ struct RemindersView: View {
                     Text("Latest scheduled alert: \(through.formatted(date: .abbreviated, time: .shortened)).")
                         .accessibilityIdentifier("reminders-through")
                 } else { Text(loading ? "Checking…" : "No upcoming alerts are scheduled.").foregroundStyle(.secondary) }
-                Text(Device.words("iPhone limits how many alerts an app can schedule. Often Enough schedules the nearest ones first. Some items may have fewer days scheduled when the limit is reached. Opening Often Enough refreshes the schedule. iOS decides when background refresh can run; open Often Enough periodically to extend the dates shown here."))
+                Text("iPhone limits how many alerts an app can schedule. Often Enough schedules the nearest ones first. Some items may have fewer days scheduled when the limit is reached. Opening Often Enough refreshes the schedule. iOS decides when background refresh can run; open Often Enough periodically to extend the dates shown here.")
                     .foregroundStyle(.secondary)
                 Text("If an alarm can’t be added, Often Enough tries a notification instead. With notification permission off, that fallback can’t alert you.")
                     .foregroundStyle(.secondary)
@@ -76,13 +76,13 @@ struct RemindersView: View {
         case .authorized: "Allowed"
         case .provisional: "Delivered Quietly"
         case .ephemeral: "Allowed Temporarily"
-        case .denied: Device.words("Off in iPhone Settings")
+        case .denied: "Off in iPhone Settings"
         case .notDetermined: "Not Allowed Yet"
-        @unknown default: Device.words("Check iPhone Settings")
+        @unknown default: "Check iPhone Settings"
         }
     }
     private var settingsButton: some View {
-        Button(Device.words("Open iPhone Settings")) { if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) } }
+        Button("Open iPhone Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) } }
     }
     private func reminderRow(_ habit: Habit) -> some View {
         Button { editing = habit } label: {

@@ -677,6 +677,8 @@ every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the
 
 ## Apple Watch (built 10–11 Oct 2026, Current Work 82; Watch check pending)
 
+> **Retired 21 Oct 2026 (the user: phones only, Rulebook D16):** removed from the code. Kept as the record; don't build from it.
+
 Designs and notes: [Apple Watch](<Docs/Apple Watch/README.md>) ([Design Notes](<Docs/Apple Watch/Designs/Design Notes.md>)).
 Data and sync: [Architecture 12](<Docs/Apple Watch/Data and Sync (Architecture 12).md>). Rules: Rulebook U30–U34
 (WA1–WA13, R1–R9). Built screens, as photographed on CI: [Built Screens](<Docs/Apple Watch/Built Screens/>).
@@ -710,6 +712,8 @@ Data and sync: [Architecture 12](<Docs/Apple Watch/Data and Sync (Architecture 1
   U28), and changing which habit a complication shows from inside the app (Apple's face editor does it).
 
 ## iPad (built 11 Oct 2026, Current Work 86; real-iPad check pending)
+
+> **Retired 21 Oct 2026 (the user: phones only, Rulebook D16):** removed from the code. Kept as the record; don't build from it.
 
 The iPad is the iPhone's app in Apple's iPad frame; every decision and its reason is in
 [`Docs/iPad/README.md`](<Docs/iPad/README.md>) (and its "Built" section), the screens in `Docs/iPad/Designs/`. What must

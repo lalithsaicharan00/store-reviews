@@ -151,7 +151,7 @@ final class ReminderScheduler {
         let confirmedIDs = Set(confirmed.map(\.identifier))
         let acceptedIDs = Set(accepted.map(\.identifier)).intersection(confirmedIDs)
         if wanted.contains(where: { !confirmedIDs.contains($0.identifier) }), problem == nil {
-            problem = Device.words("iPhone couldn’t keep all scheduled reminders. Try scheduling again.")
+            problem = "iPhone couldn’t keep all scheduled reminders. Try scheduling again."
         }
         let dates = wanted.filter { acceptedIDs.contains($0.identifier) }.compactMap { ($0.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate() }
         let alarmDates = planned.filter { alarmIDs.contains($0.id) }.map(\.fire)

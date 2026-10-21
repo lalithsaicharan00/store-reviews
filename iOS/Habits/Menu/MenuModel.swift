@@ -19,10 +19,6 @@ import SwiftUI
     var mounted = false
     /// Today's navigation stack. A menu row appends its place; the habit page appends a habit's ID.
     var path = NavigationPath()
-    /// The iPad: the place shown beside the sidebar (nil is Today), and the habit or task whose page shows beside the
-    /// Habits or Tasks list (`PadRoot`, Current Work 86). Never set on the iPhone.
-    var padPlace: MenuPlace?
-    var padHabit: [MenuPlace: UUID] = [:]
 
     /// Opens or closes the menu from wherever a finger left it, and on closing can open `place` on Today's stack in
     /// the same animation.
@@ -48,7 +44,6 @@ import SwiftUI
         drag = 0
         mounted = false
         path = NavigationPath()
-        if padPlace != nil { padPlace = nil }
     }
 
     /// The system's own spring for a panel sliding in; a short fade with Reduce Motion on.

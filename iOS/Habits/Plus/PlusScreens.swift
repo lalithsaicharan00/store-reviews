@@ -41,7 +41,6 @@ struct PlusPage: View {
         }
         .sheet(item: $bought) { plan in
             PlusIsYoursView(plan: plan) { bought = nil }
-                .padFormSheet()
         }
         // Ask to Buy, approved while the page is open: Plus unlocked on its own.
         .onChange(of: plus.approved) {
@@ -191,7 +190,6 @@ private struct YourPlusView: View {
             }
             Section {
                 Label("Unlimited habits", systemImage: "infinity")
-                Label(Device.otherDevices, systemImage: "ipad.and.iphone")
                 Label("Sync through your own iCloud", systemImage: "icloud")
                 if plus.ownedPlan == .family {
                     Label("Up to 5 people in your Apple family", systemImage: "person.2")
@@ -396,7 +394,6 @@ struct SixthHabitSheet: View {
         }
         .presentationDragIndicator(.visible)
         // The iPad: a form sheet in the middle of the screen, Make Room pushed inside it (Design Notes §9).
-        .padFormSheet()
         .onChange(of: plus.approved) {
             guard let approved = plus.approved, bought == nil else { return }
             plus.approved = nil
@@ -692,7 +689,6 @@ struct PlusEndedView: View {
             .navigationDestination(isPresented: $showPlus) { PlusPage() }
         }
         .presentationDragIndicator(.visible)
-        .padFormSheet()
     }
 
     private var habitsLine: String {
@@ -908,7 +904,7 @@ private struct PlusIncluded: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
-            ForEach(["Unlimited habits", Device.otherDevices, "Sync through your own iCloud"], id: \.self) { item in
+            ForEach(["Unlimited habits", "Sync through your own iCloud"], id: \.self) { item in
                 Label {
                     Text(item)
                 } icon: {

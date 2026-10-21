@@ -151,8 +151,6 @@ struct AddNoteView: View {
     /// From the Notes tab: the day can be chosen (any day from the habit's start to today).
     var picksDay = false
     var onSaved: (() -> Void)? = nil
-    /// Pushed inside the iPad's Day details popover, with ✕ (Design Notes §3); otherwise its own sheet.
-    var pushed = false
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var day: LocalDay
@@ -161,10 +159,9 @@ struct AddNoteView: View {
     @State private var asked = false
     @FocusState private var focused: Bool
 
-    init(habit: Habit?, day: LocalDay, picksDay: Bool = false, pushed: Bool = false, onSaved: (() -> Void)? = nil) {
+    init(habit: Habit?, day: LocalDay, picksDay: Bool = false, onSaved: (() -> Void)? = nil) {
         self.habit = habit
         self.picksDay = picksDay
-        self.pushed = pushed
         self.onSaved = onSaved
         _day = State(initialValue: day)
         _draft = State(initialValue: NoteDraft(""))
@@ -175,20 +172,12 @@ struct AddNoteView: View {
     }
 
     var body: some View {
-        if pushed {
-            page
-                .navigationBarBackButtonHidden(true)
-                .interactiveDismissDisabled(draft.edited)
-                .padPopoverHeight("add-note", 360)
-        } else {
-            NavigationStack { page }
-                .analyticsScreen(nil)
-                .presentationDetents([.large])
-                .interactiveDismissDisabled(draft.edited)
-                // Solid, like the calendar sheet: see-through, Today's rows showed through behind the text (29 Sep).
-                .presentationBackground(Color(.systemGroupedBackground))
-                .padFormSheet()
-        }
+        NavigationStack { page }
+            .analyticsScreen(nil)
+            .presentationDetents([.large])
+            .interactiveDismissDisabled(draft.edited)
+            // Solid, like the calendar sheet: see-through, Today's rows showed through behind the text (29 Sep).
+            .presentationBackground(Color(.systemGroupedBackground))
     }
 
     private var page: some View {
@@ -374,9 +363,8 @@ struct NoteView: View {
             Button("Keep Editing", role: .cancel) {}
             Button("Discard Changes", role: .destructive) { leaveEditing() }
         }
-        .sheet(isPresented: $showDay) { if let habit { DaySheet(habit: habit, day: day).padFormSheet() } }
+        .sheet(isPresented: $showDay) { if let habit { DaySheet(habit: habit, day: day) } }
         .interactiveDismissDisabled(editing && draft.edited)
-        .padPopoverHeight("note", 380)
         .onAppear {
             guard !started else { return }
             started = true

@@ -28,6 +28,7 @@ Reusable marketing examples are saved in the root Marketing folder.
 | Report | Author | Date | What it is |
 |---|---|---|---|
 | [Habit Apps — Revenue Estimates and Provisional Store Top Tens](<Market Discovery/Habit Apps — Revenue Estimates and Provisional Store Top Tens — 21 October 2026.md>) | Codex | 21 Oct 2026 | Separate descending ten-name store shortlists; source-specific dates/definitions, eight explicit Android monetization scenarios, cross-platform identities, conflicts and unresolved Life Reset store allocation. Census of 216 corpora / 1,238,784 records; fresh individual reading of all reviews remains unfinished. Not a verified global revenue ranking. |
+| [Phones Only, No Accounts — Why](<Market Discovery/Phones Only, No Accounts — Why, 21 October 2026.md>) | **Claude** | 21 Oct 2026 | The evidence behind the user's 21 Oct decisions (Rulebook D16): why single-platform trackers sell (HabitKit 209 and HabitNow 510 of 1,433 buyer reviews read), how rare data loss is (0.08% HabitNow, 0.40% HabitKit, every candidate read), themed vs generic apps and who advertises (Meta Ad Library), which devices the top 16 apps support, sync vs backup demand, platform switching (72 of 235,723 reviews read as real switchers, 0.03%), and what a server would cost. Mixes hand-read sets, keyword counts and store snapshots, each labelled. |
 | [Built-in Trackers — The Market and What Fits Version 2](<Market Discovery/Built-in Trackers — The Market and What Fits Version 2.md>) | **Claude** | 17 Oct 2026 | 42 kinds of tracker surveyed on Google Play (US search, download bands) and the App Store (US search, rating counts), 672 rows in `Built-in Trackers Data/`. Five-part fit test; six kinds need a tracker of their own (sleep, weight, energy/stress as a scale, fasting, gratitude, Health-filled steps and exercise), about fifteen are ready-made habits, the rest (period, food, medical, baby, money, GPS, screen time) stay out. Recommends Sleep, Weight, Energy, then Fasting or Gratitude for version 2. Store snapshot plus Feature Ledger evidence; no hand-read review pass. |
 
 ## Individual Habit Details
@@ -298,7 +299,7 @@ without a server. Start at [`Android/Docs/README.md`](<../../Android/Docs/README
 
 ## Apple Watch
 
-The Watch app (Plus): what people want on the wrist, what breaks, and how ours syncs without a server.
+The Watch app (Plus): what people want on the wrist, what breaks, and how ours syncs without a server. **Retired 21 Oct 2026: the first launch is phones only; the Watch app was removed from the code (Rulebook D16).**
 
 | Report | Author | Date | What it is |
 |---|---|---|---|
@@ -307,7 +308,7 @@ The Watch app (Plus): what people want on the wrist, what breaks, and how ours s
 
 ## iPad
 
-The iPad app (free): familiar like the iPhone, native to the iPad. The research lives with the designs in `iOS/Docs/iPad/`.
+The iPad app (free): familiar like the iPhone, native to the iPad. **Retired 21 Oct 2026: the first launch is phones only; the iPad app was removed from the code (Rulebook D16).** The research lives with the designs in `iOS/Docs/iPad/`.
 
 | Report | Author | Date | What it is |
 |---|---|---|---|
