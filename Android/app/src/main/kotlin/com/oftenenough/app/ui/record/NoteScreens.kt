@@ -113,22 +113,23 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
                         Text(habit.name + " · " + store.noteDayLine(habit, day), style = AppType.bodyMedium, color = c.secondary)
                     }
                 }
-            } else
-            // The habit and the day (Figma: 40 high, 16 in): its icon in a 24 circle, the name, then the date.
-            Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
-                else Icon(Icons.Outlined.CalendarToday, null, tint = c.secondary, modifier = Modifier.size(24.dp))
-                Text(habit?.name ?: "This day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                if (editing && adding) {
-                    Row(Modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).border(1.dp, c.outline, RoundedCornerShape(8.dp))
-                        .clickable(role = Role.Button) { pickDay = true }.padding(start = 8.dp, end = 16.dp).semantics { testTag = "note-date" },
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Outlined.CalendarToday, null, Modifier.size(18.dp), tint = c.ink)
-                        Spacer(Modifier.width(8.dp))
-                        Text(DayWords.withDate(day, today), style = AppType.labelLarge, color = c.ink, maxLines = 1)
-                    }
-                } else Text(DayWords.withDate(day, today), style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
+            } else {
+                // The habit and the day (Figma: 40 high, 16 in): its icon in a 24 circle, the name, then the date.
+                Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
+                    else Icon(Icons.Outlined.CalendarToday, null, tint = c.secondary, modifier = Modifier.size(24.dp))
+                    Text(habit?.name ?: "This day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    if (editing && adding) {
+                        Row(Modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).border(1.dp, c.outline, RoundedCornerShape(8.dp))
+                            .clickable(role = Role.Button) { pickDay = true }.padding(start = 8.dp, end = 16.dp).semantics { testTag = "note-date" },
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Outlined.CalendarToday, null, Modifier.size(18.dp), tint = c.ink)
+                            Spacer(Modifier.width(8.dp))
+                            Text(DayWords.withDate(day, today), style = AppType.labelLarge, color = c.ink, maxLines = 1)
+                        }
+                    } else Text(DayWords.withDate(day, today), style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
+                }
             }
             if (editing && adding && saved != null && !leaving) {
                 Text("$shortDay already has a note; you're changing it.", Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = c.secondary)

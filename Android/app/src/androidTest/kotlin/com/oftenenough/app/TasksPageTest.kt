@@ -60,7 +60,9 @@ class TasksPageTest {
         scenario = ActivityScenario.launch(intent)
         waitFor(hasTestTag("row-Pay electricity bill"), "the demo on Today")
         tapTag("menu-button")
-        tapTag("menu-tasks")
+        tapTag("menu-habits")
+        tapTag("habits-more")
+        tapTag("habits-menu-tasks")
         waitHere(hasTestTag("tasks-list"), "the Tasks page")
         // The coach mark hangs under the first row: wait for it where it is, never scrolling the list away from it.
         waitHere(hasTestTag("tasks-coach-ok"), "the coach mark")
@@ -267,13 +269,23 @@ class TasksPageTest {
         assertNotNull(store.setting("tasks.coach_seen"))
     }
 
-    @Test fun theMenuCountsTasksStillOpenToday() {
+    /** The menu counts every habit and task someone keeps, on one row (Figma `12:5259`, 22 Oct 2026). */
+    @Test fun theMenuCountsEveryHabitAndTask() {
         launch()
-        // Call the dentist (carried), Pay electricity bill and Pick up dry cleaning: Book flights is done (Figma 10.1).
+        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         tapTag("menu-button")
-        waitHere(hasTestTag("menu-tasks"), "the menu")
-        val words = compose.onAllNodes(hasTestTag("menu-tasks"))[0].fetchSemanticsNode().config.getOrNull(SemanticsProperties.Text)?.map { it.text }
-        assertEquals(listOf("Tasks", "3"), words)
+        waitHere(hasTestTag("menu-habits"), "the menu")
+        val words = compose.onAllNodes(hasTestTag("menu-habits"))[0].fetchSemanticsNode().config.getOrNull(SemanticsProperties.Text)?.map { it.text }
+        val kept = onMainCount()
+        assertEquals(listOf("Habits & Tasks", kept.toString()), words)
+    }
+
+    private fun onMainCount(): Int {
+        var n = 0
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            n = com.oftenenough.app.app.AppGraph.store.habits.count { !it.archived }
+        }
+        return n
     }
 }

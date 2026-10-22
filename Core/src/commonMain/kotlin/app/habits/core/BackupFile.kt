@@ -7,6 +7,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -72,6 +73,9 @@ object BackupFile {
                 "appVersion" to JsonPrimitive(info.appVersion),
                 "platform" to JsonPrimitive(info.platform),
                 "deviceName" to JsonPrimitive(info.deviceName),
+                // Made with Plus: a fact about the device that made the file, never a key. Plus is unlocked by the
+                // store alone (Rulebook D16, 22 Oct 2026), so reading this only chooses the words a restore shows.
+                "plus" to JsonPrimitive(info.plus),
                 "createdAt" to JsonPrimitive(now),
                 "schema" to JsonPrimitive(HabitRepository.SCHEMA_VERSION),
                 "data" to JsonObject(mapOf("file" to JsonPrimitive(DATA), "sha256" to JsonPrimitive(Sha256.hex(dataJson)), "bytes" to JsonPrimitive(dataJson.size))),
@@ -163,6 +167,8 @@ object BackupFile {
             deviceName = text("deviceName"),
             platform = text("platform"),
             appVersion = text("appVersion"),
+            // Files made before 22 Oct 2026 have no flag: read as "not made with Plus", which only picks words.
+            plus = (manifest["plus"] as? JsonPrimitive)?.booleanOrNull == true,
         )
     }
 
@@ -191,7 +197,7 @@ object BackupFile {
 }
 
 /** Who is making a backup: shown when it's restored ("from 'Lalith's iPhone', 30 Sep"). */
-data class BackupInfo(val deviceName: String, val platform: String, val appVersion: String)
+data class BackupInfo(val deviceName: String, val platform: String, val appVersion: String, val plus: Boolean = false)
 
 /**
  * A finished backup file. `base64` crosses to Swift and Kotlin/JS cheaply as one string; `sha256` (of the whole file)
@@ -218,6 +224,8 @@ data class BackupContents(
     val deviceName: String,
     val platform: String,
     val appVersion: String,
+    /** The device that made it had Plus. It never unlocks Plus here (D16); it only chooses what a restore says. */
+    val plus: Boolean = false,
 )
 
 /** Why a file can't be restored. The app turns [reason] into plain words; nothing was changed. */

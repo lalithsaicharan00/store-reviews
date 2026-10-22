@@ -182,7 +182,7 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
                         val result = plus.buy(a, product)
                         buying = false
                         said = when (result) {
-                            BuyResult.BOUGHT -> { AppGraph.accounts.syncPurchases(plus.purchases()); null }
+                            BuyResult.BOUGHT -> null
                             BuyResult.PENDING -> "Waiting for your payment. Plus turns on as soon as Google Play confirms it."
                             BuyResult.NOT_COMPLETED -> "Payment not completed. Nothing was charged."
                             BuyResult.CANCELLED -> null

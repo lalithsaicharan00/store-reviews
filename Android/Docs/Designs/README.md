@@ -17,6 +17,11 @@ Source: Figma file `Ncccsm1l2O62GJ5xLSInqk`, page **Andriod mobile** (`1241:2`).
 ![Dark mode reference — an old design, for colours only](<Images/00 Dark mode reference (old design, colours only).png>)
 
 
+> **Superseded, 22 October 2026.** Sections 01 and 02 below are the old onboarding. There is no onboarding any more:
+> the app opens on Android's own splash, then Today (Rulebook U40; [Android — Start Here](<../README.md>) A25). The
+> frames that replaced them are in the new Figma file **Android-app** (`sJptV3HAKYauEIGUxYS3qs`), page **onboarding**
+> (`1:5`). The menu in section 03 is superseded too: it is six rows now (`12:5259`).
+
 ## 01. Onboarding: new to the app
 
 Figma section `1548:2`. First launch for someone new. The Welcome shows our light app icon; "What's included" (the free plan page) was removed. Three pages with a page indicator, Skip setup and Continue, then Your days and weeks (each row opens a dropdown menu: 12:00 AM … and Sunday … Saturday; never "Midnight" or "Automatic"), then Your first habit (an idea opens the New Habit form, section 07).

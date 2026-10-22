@@ -136,40 +136,10 @@ object NoPlusStore : PlusStore {
     override fun purchase(): app.habits.account.StorePurchase? = null
 }
 
-/**
- * Plus from a code (Play's "Sign in details": reviewers must be able to "fully and freely access and review the app
- * behind the paywall"). Entering a valid code in Plus & Account › Redeem a code unlocks Plus on this phone, kept in its
- * own file (a test launch's own, D8). Only each code's SHA-256 is in the app, never the code itself (the repository is
- * public, D11): the user chooses a code, keeps it in their password manager and gives it only to Google's reviewers.
- * A code is retired by removing its fingerprint in an update. Codes are letters and digits; spaces, dashes and case
- * don't matter.
+/*
+ * **No code unlocks Plus on this phone.** There used to be a `PlusCodes` class here that turned Plus on when a
+ * reviewer typed a fingerprinted code into Plus & Account. It is gone (22 Oct 2026, the user: "nothing unlocks a
+ * Plus on device. A Plus should be always and only unlocked through Google Play Store"). Reviewers and anyone whose
+ * Plus did not come back are given a **Google Play promo code** instead, which Play redeems, so Plus still arrives
+ * the one way it ever does (Rulebook D16; the restore flows 3.7 and 5.6).
  */
-class PlusCodes(private val sp: SharedPreferences, private val valid: Set<String> = VALID) {
-    var redeemed by mutableStateOf(sp.getString(KEY, null)?.let { it in valid } == true); private set
-
-    /** True when [code] is one of ours; Plus is then on for good on this phone (until the code is retired). */
-    fun redeem(code: String): Boolean {
-        val fingerprint = fingerprint(code)
-        if (fingerprint !in valid) return false
-        sp.edit().putString(KEY, fingerprint).commit()
-        redeemed = true
-        return true
-    }
-
-    companion object {
-        private const val KEY = "redeemed"
-        /** The fingerprints of the codes that unlock Plus (SHA-256 of the normalized code, lowercase hex). */
-        val VALID: Set<String> = setOf(
-            // Google Play's reviewers (Sign in details). The codes are in Play Console and the user's password manager only.
-            // The random code (15 Oct 2026), for Production:
-            "8eaa5ce9c8252991256157e21204146ab6ae23c4eff0732214eb4028531086bb",
-            // The first, guessable code: kept only until Sign in details has the random one and a version with it is
-            // live; then remove it (Google Play — Setup and Declarations, "Still open").
-            "aa51aff518a8db3d72a25d5ababccbec9d8713c5ecf66139b8a43ac28767cb0d",
-        )
-
-        fun normalize(code: String) = code.uppercase().filter { it in 'A'..'Z' || it in '0'..'9' }
-        fun fingerprint(code: String): String =
-            java.security.MessageDigest.getInstance("SHA-256").digest(normalize(code).toByteArray()).joinToString("") { "%02x".format(it) }
-    }
-}

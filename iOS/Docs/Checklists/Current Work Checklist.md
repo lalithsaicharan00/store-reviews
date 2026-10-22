@@ -15,6 +15,70 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## The new Android app — onboarding and navigation — 22 October 2026
+
+The user: the app is being rebuilt for Android first, then iPhone; a lot has been dropped. Kotlin Multiplatform stays
+as the shared rules; Android uses Google Drive, Apple uses iCloud. New Figma file **Android-app**
+(`sJptV3HAKYauEIGUxYS3qs`), page **onboarding** (`1:5`). This round: **onboarding and the menu only** — Today, Habits &
+Tasks, Plus, Settings and Contact us come later ("we are working on these"). Everything native: **Material 3
+Expressive, native components** (the user, 22 Oct 2026: "everything should feel like a native Android thing").
+
+- [x] **147. Onboarding is gone: straight to Today.** The Welcome, the three pages, Your days and weeks, Your first
+  habit and the whole "coming back" flow are replaced by splash → Today. The empty Today (`36:32`) is the only
+  first-run screen: *No habits yet* / *Add something you'd like to do often enough.* with **New habit** (filled) and
+  **Restore from a backup** (tonal), and a top bar of ≡ and + alone. Shown only while there are no habits.
+- [x] **148. Restore from a backup, as designed** (`39:1590` and the twelve flows): *Restore from a backup.* /
+  *Choose where your backup is.* with two ways only — **Google Drive** (*Backed up automatically*) and **A backup
+  file** (*A file you saved*). "Your old phone" is gone. Then Restoring (`39:1755`), and Today with
+  *Your habits are back: N habits, M logs*.
+- [x] **149. Every edge case the flows draw:** No internet, for Drive and for the Plus check (`39:4741`, `43:2999`);
+  No backup found, with *Try another Google account* (`39:6065`); That isn't a backup (`39:6596`); From a newer
+  version (`39:7095`); Plus isn't on this phone, with *Check again* and *Contact us* (`43:1776`); the same from an
+  iPhone, *Contact us* alone (`43:2689`); and the two prefilled emails (`43:2413`, `43:2723`).
+- [x] **150. The menu is six rows** (`12:5259`): the logo and *Often Enough*, **Today**, **Habits & Tasks** (with its
+  count), a divider, **Plus**, **Settings**, **Contact us**, **Send feedback**. Rows 56 high, fully rounded, Label
+  Large; the open one is tonal.
+- [x] **151. Every backup records who made it** (the note under flow 2): *made with Plus · made on iPhone or Android ·
+  app version · date*, in the shared core's manifest, on both platforms.
+- [x] **152. The Plus flag never unlocks anything** (the user, 22 Oct 2026: "nothing unlocks a Plus on device. Plus
+  should be always and only unlocked through Google Play Store"). Restoring a backup with more habits than the free
+  limit needs Plus **on this phone, from Google Play**; the backup's own flag only chooses which words to show.
+- [x] **153. No backend.** Cloudflare is deleted: no account server, no Plus account, no move relay. Plus comes from
+  Google Play alone; habits live on the phone and in the person's own Google Drive.
+- [x] **154. Checked in dark mode, flow by flow, and for speed and data safety** before it is called done.
+
+**Built and checked, 22 October 2026** (on this PC: Pixel 10 Pro emulator, Android 16, at Figma's 360 × 800 dp).
+
+- **Light and dark, flow by flow, on the device:** the empty Today, Restore from a backup, the Google Drive way ending
+  in *No backup found*, the file way ending in *Plus isn't on this phone*, the menu, Settings and Plus. Dark mode is
+  derived, never drawn, and reads correctly throughout.
+- **The Plus gate was proved both ways on the device.** A backup made with Plus (17 habits, 396 logs) restored onto a
+  phone without Plus stops at *Plus isn't on this phone*, and **Today is still empty afterwards** — nothing is written
+  before the check. The same file on a phone with Plus restores and Today says *Your habits are back: 17 habits,
+  396 logs*.
+- **Tests:** Core JVM tests pass (the 2,000 seeded Drive runs, the golden fixtures and the 15-year account), with a new
+  `BackupTest.everyBackupRecordsWhoMadeItIncludingPlus`. Android unit tests pass. On the emulator: `FirstRunTest` 8
+  (new), `DataSafetyTest` 8 (3 new), `HabitsPageTest` 12, `TasksPageTest` 12. Lint is green — this also fixes the
+  `SuspiciousIndentation` error in `NoteScreens.kt:118` that had been failing CI on main.
+- **One pre-existing failure, not from this work:** `TodayTest.milestonesTakeThePopUpThenTheBarThenTheRow` fails on this
+  Pixel 10 (API 36) emulator. Checked against unchanged `main` in a worktree: it fails there identically (*Take vitamins'
+  bar: null; streak 13*), so it is an existing emulator/timing issue to chase separately (T2).
+
+**Left for the user to decide or hand over:**
+
+- **Progress has no way in from the menu**, which the design draws as six rows. Its route still works and the Habits
+  page's ⋮ reaches it, but where it belongs is the user's call.
+- **Habits & Tasks is one menu row over two pages.** It opens Habits; Tasks is in that page's ⋮. The one page is still
+  being designed.
+- **The Plus and Settings screens are the plain native versions**, built so nothing the shorter menu dropped became
+  unreachable. Both are waiting for their designs.
+- **Google Drive restore runs against the on-phone stand-in Drive** in debug builds; the real one still needs the
+  Android OAuth client (unchanged, and the only reason the account chooser and Google's permission screen in flows
+  2.4–2.5 aren't the real ones yet).
+- **A restore that needs Plus is refused outright**, as the flows draw it. That is stricter than D10 ("data is never
+  held hostage"); the ways back are the Play Store account switch and a promo code from us. Say if it should instead
+  restore everything and archive what is over the free limit.
+
 ## Commit and synchronize local work — 20 October 2026
 
 The user asks to commit all uncommitted repository work, push completed work to main and development, and synchronize the local repositories (W3/W4/T10).

@@ -37,6 +37,7 @@ import androidx.compose.material.icons.rounded.Checklist
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Lightbulb
+import androidx.compose.material.icons.rounded.SettingsBackupRestore
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -685,20 +686,25 @@ fun DayBar(store: HabitStore, day: Int, today: Int, onPrevious: () -> Unit, onNe
     }
 }
 
-/** No habits yet (Figma 1551:3): New habit and Start from an idea, never a dead end (onboarding report §4). */
+/**
+ * No habits yet (Figma `36:32`, 22 October 2026). **This is the first screen of the app**: there is no onboarding any
+ * more, so someone who opens Often Enough for the first time lands on Today and sees exactly this. It is shown only
+ * while there are no habits at all, and it offers the only two things worth offering then — make one, or bring back
+ * the ones you already had. Never a dead end (onboarding report §4).
+ */
 @Composable
 private fun NoHabitsYet(nav: TodayNav) {
     Column(Modifier.fillMaxSize().padding(horizontal = 32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         CookieIcon(Icons.Rounded.Checklist, size = 112.dp)
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
         Text("No habits yet", style = AppType.headlineSmallEmphasized, color = appColors.ink)
         Spacer(Modifier.height(8.dp))
-        Text("Add something you’d like to do often enough, or start from an idea.", Modifier.widthIn(max = 268.dp), style = AppType.bodyLarge,
+        Text("Add something you’d like to do often enough.", Modifier.widthIn(max = 268.dp), style = AppType.bodyLarge,
             color = appColors.secondary, textAlign = TextAlign.Center)
         Spacer(Modifier.height(24.dp))
         InkButton("New habit", nav::newHabit, icon = Icons.Rounded.Add, height = 48.dp, textStyle = AppType.labelLarge)
         Spacer(Modifier.height(8.dp))
-        TonalButton("Start from an idea", nav::ideas, icon = Icons.Rounded.Lightbulb)
+        TonalButton("Restore from a backup", nav::restore, icon = Icons.Rounded.SettingsBackupRestore)
     }
 }
 

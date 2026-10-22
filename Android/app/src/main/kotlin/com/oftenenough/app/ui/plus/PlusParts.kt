@@ -303,12 +303,16 @@ fun CheckLine(title: String, line: String? = null) {
     }
 }
 
-/** "Works on": Plus on every kind of device, ours and Apple's side by side (A13–A14: some built later). */
+/**
+ * "Works on": the devices Plus actually works on **today**. The first release is the two phone apps and nothing else
+ * (the user, 22 Oct 2026: "we are only planning it to release for Android as well as iPhone apps, just apps in the
+ * first phase"), so the tablet, Wear OS, Windows, iPad, Apple Watch and Mac rows are gone until those ship.
+ */
 @Composable
 fun WorksOn() {
     val c = appColors
     Text("Works on", Modifier.fillMaxWidth(), style = AppType.labelLarge, color = c.secondary)
-    val pairs = listOf("Android phone" to "iPhone", "Tablet" to "iPad", "Wear OS watch" to "Apple Watch", "Windows" to "Mac")
+    val pairs = listOf("Android phone" to "iPhone")
     Column(Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         for ((a, b) in pairs) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             for (name in listOf(a, b)) Box(Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).border(1.dp, if (c.dark) c.outline.copy(alpha = 0.45f) else Color(0xFFC9C9CE), RoundedCornerShape(12.dp))

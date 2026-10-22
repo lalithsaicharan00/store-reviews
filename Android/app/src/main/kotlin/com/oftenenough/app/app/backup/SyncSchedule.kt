@@ -51,8 +51,16 @@ object SyncSchedule {
         WorkManager.getInstance(context).enqueueUniqueWork(SOON, ExistingWorkPolicy.REPLACE, request)
     }
 
-    /** Whether a round may run now: Drive connected, the welcome finished. */
-    fun mayRun(): Boolean = AppGraph.isOpen && !AppGraph.isTest && AppGraph.prefs.onboarded &&
+    /**
+     * Whether a round may run now: Drive connected, and **this phone has something of its own to send**.
+     *
+     * That second half used to be "the welcome is finished" (D4, D14: a fresh install must never write its empty
+     * database over the person's Drive copy before they have decided anything). There is no welcome any more
+     * (22 Oct 2026), so the test is the thing the rule was really protecting: a phone with no habits sends nothing.
+     * It has nothing to send in any case, and restoring reads with `allowUpload = false`, so the Drive copy is never
+     * at risk from an install that has not been used yet.
+     */
+    fun mayRun(): Boolean = AppGraph.isOpen && !AppGraph.isTest && AppGraph.store.habits.isNotEmpty() &&
         runCatching { AppGraph.backup.link.api() != null }.getOrDefault(false)
 }
 

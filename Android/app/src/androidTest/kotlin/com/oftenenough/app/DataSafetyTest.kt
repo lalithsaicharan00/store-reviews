@@ -14,6 +14,7 @@ import java.io.File
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -85,6 +86,43 @@ class DataSafetyTest {
         // Undo puts the phone back exactly as it was just before the restore: empty.
         assertTrue(backup.undoRestore())
         assertEquals(0, onMain { store.habits.size })
+    }
+
+    /**
+     * **Every backup says who made it, and the Plus flag unlocks nothing** (the new Figma file's note under flow 2;
+     * Rulebook D16; the user, 22 Oct 2026: "nothing unlocks a Plus on device"). A file made on a phone that had Plus
+     * says so when it is read back, and reading it leaves this phone's own Plus exactly as it was.
+     */
+    @Test fun aBackupRecordsWhoMadeItAndItsPlusFlagUnlocksNothing() = runBlocking {
+        onMain { store.isPlus = true }
+        val uri = Uri.fromFile(file("made-with-plus.zip"))
+        assertTrue(backup.saveFile(uri))
+
+        // This phone has no purchase: the free plan, whatever the file says.
+        onMain { store.isPlus = false }
+        val preview = backup.check(uri)!!.check.preview!!
+        assertTrue("the file says it was made with Plus", preview.plus)
+        assertEquals("and on Android", "android", preview.platform)
+        assertTrue("and names the device", preview.deviceName.isNotEmpty())
+
+        backup.restore(backup.check(uri)!!, RestoreMode.REPLACE)
+        assertFalse("restoring a Plus backup never turns Plus on", AppGraph.hasPlus)
+        assertFalse("nor the store's own free-plan limit", onMain { store.isPlus })
+    }
+
+    /** A file made without Plus says so too, so the restore screens never ask for Plus when they needn't. */
+    @Test fun aBackupMadeOnTheFreePlanSaysSo() = runBlocking {
+        onMain { store.isPlus = false }
+        val uri = Uri.fromFile(file("made-free.zip"))
+        assertTrue(backup.saveFile(uri))
+        assertFalse(backup.check(uri)!!.check.preview!!.plus)
+    }
+
+    /** Every file a person gets is named the one way every app opens (D5). */
+    @Test fun aBackupFileIsNamedTheSameOnEveryDevice() {
+        val name = backup.fileName()
+        assertTrue("named \"Often Enough backup …\"; got $name", name.startsWith("Often Enough backup "))
+        assertTrue("and is a zip; got $name", name.endsWith(".zip"))
     }
 
     @Test fun mergeBringsBackWhatIsMissingAndDoublesNothing() = runBlocking {

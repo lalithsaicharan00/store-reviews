@@ -79,9 +79,14 @@ object Support {
     const val EMAIL = "support@oftenenough.com"
     val appVersion: String get() = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
 
-    fun mail(): Intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
+    fun mail(): Intent = letter("Often Enough $appVersion")
+
+    /** Send feedback (the menu, Figma `12:5259`): the same letter, named so we can tell the two apart. */
+    fun feedback(): Intent = letter("Feedback: Often Enough $appVersion")
+
+    private fun letter(subject: String): Intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
         putExtra(Intent.EXTRA_EMAIL, arrayOf(EMAIL))
-        putExtra(Intent.EXTRA_SUBJECT, "Often Enough $appVersion")
+        putExtra(Intent.EXTRA_SUBJECT, subject)
         putExtra(Intent.EXTRA_TEXT, "\n\n\n—\nOften Enough $appVersion · ${Build.MANUFACTURER} ${Build.MODEL} · Android ${Build.VERSION.RELEASE}")
     }
 }
@@ -215,7 +220,7 @@ object HelpTopics {
 
 /** ≡ › Help & Feedback: search at the top, Contact us and the welcome again, then every topic opened in place. */
 @Composable
-fun HelpPage(onWelcome: () -> Unit, onBack: () -> Unit) {
+fun HelpPage(onBack: () -> Unit) {
     val context = LocalContext.current
     var query by rememberSaveable { mutableStateOf("") }
     var open by rememberSaveable { mutableStateOf(emptySet<String>()) }
@@ -227,12 +232,9 @@ fun HelpPage(onWelcome: () -> Unit, onBack: () -> Unit) {
         if (query.isBlank()) {
             SegmentedList {
                 Box(Modifier.semantics { testTag = "help-contact" }) {
-                    ListRow("Contact us", 0, 2, Support.EMAIL, Icons.Outlined.Email, chevron = false, onClick = {
+                    ListRow("Contact us", 0, 1, Support.EMAIL, Icons.Outlined.Email, chevron = false, onClick = {
                         try { context.startActivity(Support.mail()) } catch (e: ActivityNotFoundException) { showAddress = true }
                     })
-                }
-                Box(Modifier.semantics { testTag = "help-welcome" }) {
-                    ListRow("Show the welcome again", 1, 2, "What's free, and what Often Enough can do", Icons.Rounded.WavingHand, chevron = false, onClick = onWelcome)
                 }
             }
             Note("We read every message. Tell us what happened and when; your habits are never sent with it.")

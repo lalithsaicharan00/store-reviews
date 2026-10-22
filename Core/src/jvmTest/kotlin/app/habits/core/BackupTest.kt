@@ -100,6 +100,38 @@ class BackupTest {
         assertEquals(MessageDigest.getInstance("SHA-256").digest(bytes(file)).joinToString("") { "%02x".format(it) }, file.sha256)
     }
 
+    /**
+     * Every backup says who made it: the device, its platform, the app version, the date **and whether that device
+     * had Plus** (22 Oct 2026, the new Figma file's note under flow 2). The flag is read back and shown by the
+     * restore screens; it never unlocks anything, here or on a phone (Rulebook D16).
+     */
+    @Test fun everyBackupRecordsWhoMadeItIncludingPlus() = runBlocking {
+        val phone = repo("who")
+        phone.fill()
+        val withPlus = phone.backupFile(BackupInfo("Pixel 9", "android", "1.4", plus = true))
+        val entries = mutableMapOf<String, ByteArray>()
+        ZipInputStream(ByteArrayInputStream(bytes(withPlus))).use { zip ->
+            while (true) { val e = zip.nextEntry ?: break; entries[e.name] = zip.readBytes() }
+        }
+        val manifest = Json.parseToJsonElement(entries.getValue("manifest.json").decodeToString()).jsonObject
+        assertEquals("Pixel 9", manifest.getValue("deviceName").jsonPrimitive.content)
+        assertEquals("android", manifest.getValue("platform").jsonPrimitive.content)
+        assertEquals("1.4", manifest.getValue("appVersion").jsonPrimitive.content)
+        assertEquals(true, manifest.getValue("plus").jsonPrimitive.content.toBoolean())
+        assertEquals(wall, manifest.getValue("createdAt").jsonPrimitive.long)
+
+        // It comes back on the other side, for the words the restore screens choose.
+        val target = repo("who-target")
+        val read = target.checkBackup(withPlus.base64).preview!!
+        assertEquals(true, read.plus)
+        assertEquals("android", read.platform)
+        assertEquals("Pixel 9", read.deviceName)
+
+        // A file made without Plus says so, and an older file with no flag at all reads as "no Plus", never as Plus.
+        val free = phone.backupFile(BackupInfo("Pixel 9", "android", "1.4"))
+        assertEquals(false, target.checkBackup(free.base64).preview!!.plus)
+    }
+
     @Test fun sha256MatchesTheJvms() {
         val random = Random(7)
         for (size in listOf(0, 1, 55, 56, 63, 64, 65, 119, 120, 1000, 100_000)) {

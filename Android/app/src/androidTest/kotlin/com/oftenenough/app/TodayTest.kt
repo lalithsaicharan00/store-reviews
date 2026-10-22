@@ -40,11 +40,10 @@ class TodayTest {
 
     @After fun close() { scenario?.close() }
 
-    private fun launch(demo: String? = null, onboarding: Boolean = false, clockHour: Int = 10) {
+    private fun launch(demo: String? = null, clockHour: Int = 10) {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, clockHour)
         if (demo != null) intent.putExtra(TestLaunch.DEMO, demo)
-        if (onboarding) intent.putExtra(TestLaunch.ONBOARDING, true)
         scenario = ActivityScenario.launch(intent)
     }
 
@@ -138,38 +137,19 @@ class TodayTest {
         waitGone(hasTestTag("landmark-popup"), "a second pop-up")
     }
 
-    @Test fun aNewPersonGoesThroughTheWelcomeToAnEmptyToday() {
-        launch(onboarding = true)
-        tapTag("onboarding-new")
-        waitFor(hasText("Your habit. Your goal."), "the first page")
-        tapTag("onboarding-continue")
-        waitFor(hasText("Quit or cut down."), "the quit page")
-        tapTag("onboarding-continue")
-        waitFor(hasText("Tasks, once or on repeat."), "the tasks page")
-        tapTag("onboarding-continue")
-        waitFor(hasText("Your days and weeks."), "days and weeks")
-        waitFor(hasText("12:00 AM"), "the day start")
-        waitFor(hasText("Sunday"), "the week start")
-        tapTag("onboarding-continue")
-        waitFor(hasText("Your first habit."), "the ideas")
-        tapTag("skip-setup")
+    @Test fun aNewPersonLandsStraightOnAnEmptyToday() {
+        // No onboarding since 22 Oct 2026 (Figma `36:32`): the splash, then Today, and nothing asked.
+        launch()
         waitFor(hasText("No habits yet"), "an empty Today")
-    }
-
-    @Test fun someoneComingBackCanStartWithoutRestoring() {
-        launch(onboarding = true)
-        tapTag("onboarding-returning")
-        waitFor(hasText("Welcome back."), "Welcome back")
-        tapTag("back-drive")
-        tapTag("start-fresh")
-        tapTag("onboarding-continue")
-        waitFor(hasText("No habits yet"), "an empty Today")
+        waitFor(hasText("New habit"), "New habit")
+        waitFor(hasText("Restore from a backup"), "Restore from a backup")
     }
 
     @Test fun anIdeaOpensTheFormWithItsName() {
-        launch(onboarding = true)
-        tapTag("onboarding-new")
-        repeat(4) { tapTag("onboarding-continue") }
+        launch()
+        tapTag("menu-button")
+        tapTag("menu-habits")
+        tapTag("habits-empty-ideas")
         tapTag("idea-Exercise")
         waitFor(hasTestTag("name-field"), "the New Habit form")
         // The preview says it (Figma 1302:2: the sentence footer is gone).

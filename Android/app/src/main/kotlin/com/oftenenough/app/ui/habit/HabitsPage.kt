@@ -49,6 +49,8 @@ import androidx.compose.material.icons.rounded.Checklist
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Inventory2
 import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AlertDialog
@@ -124,6 +126,12 @@ interface HabitsNav {
     fun arrange()
     fun editGroups()
     fun openGroup(id: String)
+    /**
+     * Tasks and Progress, from this page's ⋮. The menu is six rows now (Figma `12:5259`) and **Habits & Tasks**
+     * opens here, so until that one page exists these two keep their way in from the page they belong with.
+     */
+    fun tasks()
+    fun progress()
 }
 
 private const val SHOW_BY = "habits.show_by"
@@ -251,6 +259,9 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                                 else MenuItem("New group", Icons.Outlined.CreateNewFolder, "habits-new-group") { topMenu = false; newGroup = true }
                                 // Figma 5, 5.3 (19 Oct 2026): Archived habits from the menu too; the list's last row stays.
                                 MenuItem("Archived habits", Icons.Outlined.Archive, "habits-menu-archived") { topMenu = false; nav.archived() }
+                                // Until Habits and Tasks are one page, this is the way to the other half, and to Progress.
+                                MenuItem("Tasks", Icons.AutoMirrored.Outlined.List, "habits-menu-tasks") { topMenu = false; nav.tasks() }
+                                MenuItem("Progress", Icons.Outlined.BarChart, "habits-menu-progress") { topMenu = false; nav.progress() }
                             }
                         }
                     },

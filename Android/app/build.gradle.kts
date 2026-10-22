@@ -49,22 +49,9 @@ android {
         }
     }
 
-    // The account server (account-server/): debug builds talk to dev, release builds to production, once the build has
-    // the Google client above (the Worker only takes real Google sign-ins). Without it: the on-phone stand-in in debug,
-    // none in release. `-PaccountServer=standin|dev|production` overrides.
-    val accountServer = { debug: Boolean ->
-        (project.findProperty("accountServer") as String?) ?: when {
-            webClientIdFor(project).isEmpty() -> if (debug) "standin" else "none"
-            debug -> "dev"
-            else -> "production"
-        }
-    }
+    // No server of ours (22 Oct 2026): Plus comes from Google Play and the habits from the person's own Google Drive.
     buildTypes {
-        debug {
-            buildConfigField("String", "ACCOUNT_SERVER", "\"" + accountServer(true) + "\"")
-        }
         release {
-            buildConfigField("String", "ACCOUNT_SERVER", "\"" + accountServer(false) + "\"")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

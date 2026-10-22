@@ -28,7 +28,6 @@ class Prefs(private val sp: SharedPreferences) {
     var timerScreen by bool("timers.openScreen", true)
     var timerNotification by bool("timers.liveUpdate", true)
     /** The welcome is finished (new, or back from a backup). Nothing goes to Google Drive before it (D4, D14). */
-    var onboarded by bool("onboarding.done", false)
     var hideNames by bool("privacy.hideNames", false)
     /** The days Today was opened on, the first three (the ✏ tip waits for three, Figma 2.0): "20350,20351". */
     var todayDaysSeen by str("today.daysSeen", "")

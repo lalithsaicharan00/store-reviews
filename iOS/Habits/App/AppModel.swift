@@ -312,7 +312,7 @@ final class AppModel {
                     sample.isPlus = true
                     sample.add(Habit(name: "Restored habit", symbol: "star", color: .orange, kind: .check, goal: 1))
                     await sample.flush()
-                    if let file = try? await repository.backupFile(info: BackupCenter.info), let data = Data(base64Encoded: file.base64) {
+                    if let file = try? await repository.backupFile(info: BackupCenter.info(plus: sample.isPlus)), let data = Data(base64Encoded: file.base64) {
                         backup.incoming = await backup.check(data)
                     }
                 }

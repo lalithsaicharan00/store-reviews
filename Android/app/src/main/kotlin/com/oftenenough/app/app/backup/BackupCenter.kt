@@ -46,6 +46,20 @@ interface DriveLink {
     suspend fun deleteAll()
 }
 
+/** What looking for habits in a Google Drive ended as (the restore flows 2, 8 and 10). */
+sealed class DriveLook {
+    /** Drive's copy is here now: this is what came down. */
+    data class Found(val habits: Int, val logs: Int) : DriveLook()
+    /** That Google account holds no Often Enough backup (10.7). Nothing changed. */
+    object Nothing : DriveLook()
+    /** No internet (8.4). Nothing changed. */
+    object Offline : DriveLook()
+    /** Signed out, or access removed. Nothing changed. */
+    object NotConnected : DriveLook()
+    /** Drive had trouble or is full. Nothing changed. */
+    object Problem : DriveLook()
+}
+
 /**
  * Everything that moves data off the phone or back (Rulebook D4, D5, D9, D10, D16): a checked backup file, the
  * spreadsheet, restore with its 30-day undo, erasing, and Google Drive sync through the core's [DriveSync]. Every
@@ -53,24 +67,25 @@ interface DriveLink {
  * replaces the phone's data without the person choosing it.
  */
 class BackupCenter(private val context: Context, private val store: HabitStore, val link: DriveLink, private val test: Boolean) {
-    val info = BackupInfo(deviceName = Build.MODEL ?: "Android phone", platform = "android", appVersion = BuildConfig.VERSION_NAME)
+    /**
+     * Who made a backup, written into every file it makes: this phone, "android", the app version and whether this
+     * phone has Plus **now** (read each time, so a file made after buying says so). The flag is a fact, never a key:
+     * it unlocks nothing here or anywhere (Rulebook D16; the user, 22 Oct 2026).
+     */
+    val info: BackupInfo
+        get() = BackupInfo(deviceName = Build.MODEL ?: "Android phone", platform = "android", appVersion = BuildConfig.VERSION_NAME, plus = store.isPlus)
     private val mutex = Mutex()
     private val undoFolder = File(context.noBackupFilesDir, if (test) "uitest-restore-undo" else "restore-undo")
 
     var status by mutableStateOf<DriveStatus?>(null); private set
     var working by mutableStateOf(false); private set
-    /**
-     * Where the habits live now, for the Plus account (D16): this Drive's key after a round that synced, null once the
-     * Drive copy is deleted. Set by AppGraph; the account decides whether it needs telling (`AccountCenter.noteCloud`).
-     */
-    var onCloud: (suspend (key: String?) -> Unit)? = null
     /** The last restore's undo file, kept 30 days (D5). */
     var undoAvailable by mutableStateOf(latestUndo() != null); private set
 
     // ------------------------------------------------------------------ Files
 
-    /** "Often Enough 2026-10-13 0914.zip", as the iPhone names its file. */
-    fun fileName(): String = "Often Enough " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")) + ".zip"
+    /** "Often Enough backup 2026-10-13 0914.zip": one name on every device, which every app opens (D5). */
+    fun fileName(): String = "Often Enough backup " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")) + ".zip"
     fun csvName(): String = "Often Enough Export " + java.time.LocalDate.ofEpochDay(store.today().toLong()) + ".csv"
 
     /** Writes a checked backup file to [uri] (the system's own file picker chose it), then reads it back and compares. */
@@ -94,35 +109,37 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
         }
     }
 
-    /** What Move to a new phone sends (D15): the same checked file as Save a backup file, made the moment it's sent. */
-    suspend fun moveFile(): com.oftenenough.app.data.move.MoveFile = mutex.withLock {
-        store.flush()
-        val file = store.repo.backupFile(info)
-        com.oftenenough.app.data.move.MoveFile(Base64.getDecoder().decode(file.base64), file.habits, file.entries)
-    }
-
     /**
-     * Coming back with Google Drive (Onboarding: coming back, 4.2): connects the chosen account and brings Drive's copy
-     * down, sending nothing up (a fresh install's welcome isn't finished, D14). The habits found, or null when Drive
-     * couldn't be reached. Start fresh erases what came down ([eraseThisPhone]); the copy in Drive stays.
+     * Restoring from Google Drive (the restore flows 2, 8, 10): connects the chosen account and brings Drive's copy
+     * down, **sending nothing up** (a fresh install's welcome isn't finished, D14), so the copy in Drive is untouched
+     * whatever happens here and [eraseThisPhone] can put this phone back exactly as it was.
      */
-    suspend fun lookInDrive(): Pair<Int, Int>? {
-        val key = link.accountKey ?: return null
-        val s = sync() ?: return null
+    suspend fun lookInDrive(): DriveLook {
+        val key = link.accountKey ?: return DriveLook.NotConnected
+        val s = sync() ?: return DriveLook.NotConnected
+        val habitsBefore = store.habits.size
+        val logsBefore = store.entryCount
         mutex.withLock {
             working = true
             try {
                 s.connect(key)
                 val result = s.syncNow(allowUpload = false)
                 status = result
-                if (result.state == DriveState.OFFLINE || result.state == DriveState.NOT_CONNECTED || result.state == DriveState.PROBLEM || result.state == DriveState.BUSY) return null
+                when (result.state) {
+                    DriveState.OFFLINE -> return DriveLook.Offline
+                    DriveState.NOT_CONNECTED -> return DriveLook.NotConnected
+                    DriveState.PROBLEM, DriveState.BUSY, DriveState.FULL -> return DriveLook.Problem
+                    else -> Unit
+                }
                 store.reloadAfterSync()
                 store.flush()
             } finally {
                 working = false
             }
         }
-        return store.habits.count { !it.archived } to store.entryCount
+        // Nothing new came down: that Google account has no Often Enough backup in it (10.7).
+        if (store.habits.size == habitsBefore && store.entryCount == logsBefore) return DriveLook.Nothing
+        return DriveLook.Found(store.habits.count { !it.archived }, store.entryCount)
     }
 
     // ------------------------------------------------------------------ Restore
@@ -216,8 +233,6 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
                 working = false
             }
         }
-        // Outside the lock: the account's server never holds up the next round.
-        if (result.state == DriveState.SYNCED) link.accountKey?.let { key -> runCatching { onCloud?.invoke(key) } }
         return result
     }
 
@@ -230,8 +245,6 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
             link.disconnect()
             status = null
         }
-        // Nothing is there now: the account stops pointing at it.
-        runCatching { onCloud?.invoke(null) }
     }
 
     suspend fun disconnectDrive() = mutex.withLock { link.disconnect(); status = null }

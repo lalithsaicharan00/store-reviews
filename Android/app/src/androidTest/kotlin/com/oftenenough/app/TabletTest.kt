@@ -74,12 +74,12 @@ class TabletTest {
 
     @Test fun aSidebarChoiceReplacesThePageAndNeverPilesUp() {
         waitFor("menu-sidebar")
-        device.findObject(By.res("menu-progress")).click()
-        waitFor("progress-list")
-        assertTrue("the sidebar stays beside Progress", device.hasObject(By.res("menu-sidebar")))
+        device.findObject(By.res("menu-settings")).click()
+        waitFor("settings-page")
+        assertTrue("the sidebar stays beside Settings", device.hasObject(By.res("menu-sidebar")))
         device.findObject(By.res("menu-habits")).click()
         waitFor("habits-list")
-        assertFalse("Progress is gone from under Habits", device.hasObject(By.res("progress-list")))
+        assertFalse("Settings is gone from under Habits", device.hasObject(By.res("settings-page")))
         // One step back is Today, however many pages were chosen.
         device.pressBack()
         waitFor("today-list")

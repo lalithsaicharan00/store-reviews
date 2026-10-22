@@ -209,6 +209,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             problem = null,
             preview = RestorePreview(
                 createdAt = contents.createdAt, deviceName = contents.deviceName, platform = contents.platform, appVersion = contents.appVersion,
+                plus = contents.plus,
                 fileHabits = fileHabits, fileEntries = fileEntries, phoneHabits = phoneHabits, phoneEntries = phoneEntries,
                 replace = RestorePlanner.plan(phone, known, contents.snapshot, RestoreMode.REPLACE, now).counts,
                 merge = RestorePlanner.plan(phone, known, contents.snapshot, RestoreMode.MERGE, now).counts,

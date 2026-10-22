@@ -26,8 +26,15 @@ enum class RestoreMode { REPLACE, MERGE }
 data class RestorePreview(
     val createdAt: Long,
     val deviceName: String,
+    /** "ios" or "android": which kind of phone made the file. */
     val platform: String,
     val appVersion: String,
+    /**
+     * The device that made the file had Plus. It never unlocks Plus here (Rulebook D16, the user, 22 Oct 2026:
+     * "nothing unlocks a Plus on device"); it only tells the restore screen which words to show when this phone's
+     * Google Play account hasn't bought Plus.
+     */
+    val plus: Boolean,
     /** Live habits and logs in the file, and on this device now. */
     val fileHabits: Int,
     val fileEntries: Int,

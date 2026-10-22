@@ -75,13 +75,7 @@ import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.TonalButton
-import com.oftenenough.app.ui.move.CountCard
-import com.oftenenough.app.ui.move.FactRow
-import com.oftenenough.app.ui.move.FromOldPhoneFlow
-import com.oftenenough.app.ui.move.MoveEntry
-import com.oftenenough.app.ui.move.RestoreWhatItSent
-import com.oftenenough.app.ui.move.StepHeading
-import com.oftenenough.app.ui.move.fromLine
+import com.oftenenough.app.ui.components.StepHeading
 import com.oftenenough.app.ui.plus.FlowScreen
 import com.oftenenough.app.ui.plus.MainButton
 import com.oftenenough.app.ui.plus.PlusDialog
@@ -100,9 +94,6 @@ private fun whenText(ms: Long?, store: HabitStore): String {
     val time = DayWords.clock(ms)
     return when (day) { today -> "Today $time"; today - 1 -> "Yesterday $time"; else -> DayWords.short(day) + ", " + time }
 }
-
-/** "12 habits, 840 logs". */
-fun countText(habits: Int, logs: Int) = "$habits ${if (habits == 1) "habit" else "habits"}, $logs ${if (logs == 1) "log" else "logs"}"
 
 /** "sam@gmail.com" from the link's "Google Drive (sam@gmail.com)"; null for the stand-in. */
 fun driveEmail(center: BackupCenter): String? = center.link.accountName?.let { Regex("\\(([^)]+@[^)]+)\\)").find(it)?.groupValues?.get(1) }
@@ -148,7 +139,7 @@ private fun PageRow(icon: ImageVector, title: String, line: String?, index: Int,
  * buttons only (5, 6; D9). Rulebook D4, D10: backup and export are free and visible.
  */
 @Composable
-fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onMove: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
+fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
     val c = appColors
     val scope = rememberCoroutineScope()
     val snack = snackbar ?: remember { SnackbarHostState() }
@@ -225,12 +216,11 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                 Text("Anything logged on a device shows on the others once it next syncs.", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     style = AppType.bodySmall, color = c.secondary)
             }
-            SectionLabel("Move and restore")
+            SectionLabel("Restore")
             SegmentedList {
-                val count = if (center.undoAvailable) 3 else 2
-                PageRow(Icons.Outlined.MobileScreenShare, "Move to a new phone", "Show a code to scan on your new phone", 0, count, "move-row", onClick = onMove)
-                PageRow(Icons.Outlined.Restore, "Restore from a backup", "From Google Drive, a backup file or your old phone", 1, count, "restore-row", onClick = onRestore)
-                if (center.undoAvailable) PageRow(Icons.AutoMirrored.Rounded.Undo, "Undo last restore", "Back to how this phone was just before", 2, count, "undo-restore", chevron = false) {
+                val count = if (center.undoAvailable) 2 else 1
+                PageRow(Icons.Outlined.Restore, "Restore from a backup", "From Google Drive or a backup file", 0, count, "restore-row", onClick = onRestore)
+                if (center.undoAvailable) PageRow(Icons.AutoMirrored.Rounded.Undo, "Undo last restore", "Back to how this phone was just before", 1, count, "undo-restore", chevron = false) {
                     scope.launch { if (center.undoRestore()) snack.showSnackbar("This phone is back to how it was before the restore.") }
                 }
             }
@@ -300,79 +290,6 @@ fun FileProblem(problem: String, onChoose: () -> Unit, onBack: () -> Unit) {
             BackupProblem.DAMAGED -> "Something in this file doesn’t match, so it may be damaged. Choose another copy, whose name starts with “Often Enough backup”."
             else -> "Choose a file whose name starts with “Often Enough backup”."
         })
-    }
-}
-
-/**
- * Restore from a backup (Figma 4–4.3.2): Google Drive, a backup file (Android's own picker, then Restore this file?) or
- * your old phone (the move code, then Restore what it sent?). Each says it replaces this phone's habits and that it can
- * be undone for 30 days; then Restoring, and back to Backup & Sync with "Restored …" and Undo (4.1.3). A backup with
- * nothing in it is never shown as restored (D5).
- */
-@Composable
-fun RestoreScreen(center: BackupCenter, store: HabitStore, onBack: () -> Unit, onRestored: (String, Boolean) -> Unit) {
-    val scope = rememberCoroutineScope()
-    var step by remember { mutableStateOf("where") }
-    var pending by remember { mutableStateOf<BackupCenter.Pending?>(null) }
-    var fileName by remember { mutableStateOf("") }
-    var problem by remember { mutableStateOf<String?>(null) }
-    val context = androidx.compose.ui.platform.LocalContext.current
-    val open = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-        if (uri != null) scope.launch {
-            fileName = runCatching {
-                context.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)?.use { if (it.moveToFirst()) it.getString(0) else null }
-            }.getOrNull() ?: "Your backup file"
-            val p = center.check(uri)
-            when {
-                p == null -> { problem = BackupProblem.NOT_A_BACKUP; step = "problem" }
-                p.check.problem != null -> { problem = p.check.problem; step = "problem" }
-                else -> { pending = p; step = "file" }
-            }
-        }
-    }
-    fun pick() = open.launch(arrayOf("application/zip", "application/octet-stream", "*/*"))
-    fun restore(p: BackupCenter.Pending) {
-        val preview = p.check.preview ?: return
-        if (preview.fileHabits == 0 && preview.fileEntries == 0) { onRestored("That backup has no habits in it, so nothing changed.", false); return }
-        step = "restoring"
-        scope.launch {
-            val changes = center.restore(p, RestoreMode.REPLACE)
-            onRestored(if (changes.changesNothing) "Everything in it is already here." else "Restored " + countText(preview.fileHabits, preview.fileEntries), !changes.changesNothing)
-        }
-    }
-    when (step) {
-        "restoring" -> WaitScreen("Restoring your habits", "This takes a moment", "restoring")
-        "problem" -> FileProblem(problem ?: BackupProblem.NOT_A_BACKUP, onChoose = { pick() }, onBack = { step = "where" })
-        "phone" -> FromOldPhoneFlow(center, MoveEntry.RESTORE, onBack = { step = "where" }) { p -> pending = p; step = "sent" }
-        "sent" -> pending?.let { p -> RestoreWhatItSent(p, store, onRestore = { restore(p) }, onCancel = { step = "where" }) }
-        "file" -> pending?.check?.preview?.let { preview ->
-            // 4.2.1 · Restore this file?
-            FlowScreen(onBack = { step = "where" }, tag = "restore-file-preview", top = true, bottom = {
-                MainButton("Restore", "restore-confirm") { restore(pending!!) }
-                QuietButton("Choose another file", "restore-choose") { pick() }
-            }) {
-                StepHeading("Restore this file?", fileName)
-                CountCard(preview.fileHabits, preview.fileEntries, fromLine(preview.deviceName, preview.createdAt, store), Icons.Outlined.Description, tag = "restore-preview")
-                FactRow(Icons.Outlined.SwapVert, "This replaces what’s on this phone",
-                    "The ${countText(preview.phoneHabits, preview.phoneEntries)} on this phone now are replaced with the file. You can undo it for 30 days.")
-            }
-        }
-        else -> TitledPage("Restore from a backup", onBack, "restore-page") {
-            SectionLabel("Where is your backup?")
-            SegmentedList {
-                PageRow(Icons.Outlined.AddToDrive, "Google Drive", if (center.link.accountName != null) "Your newest copy there" else "Connect it, and what’s there comes back",
-                    0, 3, "restore-drive") {
-                    scope.launch {
-                        val ok = if (center.link.accountName == null) center.connectDrive() else center.syncNow() != null
-                        if (ok) onRestored("Your habits from Google Drive are here.", false)
-                    }
-                }
-                PageRow(Icons.Outlined.DriveFolderUpload, "A backup file", "A file you saved", 1, 3, "restore-file") { pick() }
-                PageRow(Icons.Outlined.MobileScreenShare, "Your old phone", "Scan or type the code it shows", 2, 3, "restore-phone") { step = "phone" }
-            }
-            Text("Restoring replaces the habits on this phone. You can undo it for 30 days.", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                style = AppType.bodySmall, color = appColors.secondary)
-        }
     }
 }
 

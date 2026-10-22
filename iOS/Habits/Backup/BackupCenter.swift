@@ -257,9 +257,14 @@ final class BackupCenter {
         if let value { defaults.set(value.timeIntervalSince1970, forKey: key) } else { defaults.removeObject(forKey: key) }
     }
 
-    static var info: BackupInfo {
-        BackupInfo(deviceName: UIDevice.current.name, platform: DeviceIdentity.platform, appVersion: DeviceIdentity.appVersion)
+    /// Who made this backup, recorded in the file: the device, its platform, the app version and whether that device
+    /// had Plus (`plus`). The flag is a fact only — it never unlocks Plus anywhere (Rulebook D16, 22 Oct 2026).
+    static func info(plus: Bool) -> BackupInfo {
+        BackupInfo(deviceName: UIDevice.current.name, platform: DeviceIdentity.platform, appVersion: DeviceIdentity.appVersion, plus: plus)
     }
+
+    /// This device's own details, with the Plus it has now.
+    var info: BackupInfo { Self.info(plus: store.isPlus) }
 
     // MARK: Backing up
 
@@ -341,7 +346,7 @@ final class BackupCenter {
         let file: BackupFileData
         do {
             // Without the CSV copies (Current Work 75): smaller, and imported the same way by every version (D5).
-            file = try await repository.automaticBackupFile(info: Self.info)
+            file = try await repository.automaticBackupFile(info: info)
         } catch {
             dataChanged()
             return false
@@ -572,7 +577,7 @@ final class BackupCenter {
 
     private func writeFile() async throws -> URL {
         await store.flush()
-        let file = try await repository.backupFile(info: Self.info)
+        let file = try await repository.backupFile(info: info)
         guard let data = Data(base64Encoded: file.base64) else { throw CocoaError(.fileWriteUnknown) }
         let folder = FileManager.default.temporaryDirectory.appending(path: "Share-\(UUID().uuidString)", directoryHint: .isDirectory)
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
@@ -626,7 +631,7 @@ final class BackupCenter {
         let restoreMode = mode == .replace ? "replace" : "merge"
         await store.flush()
         let result: RestoreResult
-        do { result = try await repository.restore(file: pending.base64, mode: mode, info: Self.info) } catch {
+        do { result = try await repository.restore(file: pending.base64, mode: mode, info: info) } catch {
             recordBackup("restore", provider: "unknown", format: "checked_backup", mode: restoreMode, succeeded: false, ticket: ticket)
             throw error
         }
@@ -653,7 +658,7 @@ final class BackupCenter {
         guard let url = undoFile else { return }
         let data = try Data(contentsOf: url)
         await store.flush()
-        _ = try await repository.restore(file: data.base64EncodedString(), mode: .replace, info: Self.info)
+        _ = try await repository.restore(file: data.base64EncodedString(), mode: .replace, info: info)
         try? FileManager.default.removeItem(at: url)
         store.reloadAfterSync()
         dataChanged()

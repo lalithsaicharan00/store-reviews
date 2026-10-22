@@ -138,7 +138,7 @@ enum BackupCheck {
         for habit in store.habits { for d in 0..<30 { store.addProgress(habit, value: 1, on: store.today().adding(days: -d, calendar: store.calendar)) } }
         await store.flush()
         do {
-            let info = BackupCenter.info
+            let info = BackupCenter.info(plus: store.isPlus)
             let full = try await repository.backupFile(info: info)
             let auto = try await repository.automaticBackupFile(info: info)
             if !(auto.format == 2 && full.format == 1) { failures.append("compact: formats \(auto.format)/\(full.format)") }
