@@ -89,6 +89,8 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A49 | **On Today a name is always one line** (22 Oct 2026). A habit or task name never takes a second line: whatever doesn't fit ends in …, and the line under it is one line with … too. The same in Day details' habit card (the longest name fits there at normal size; with large text it ends in …); the whole name is in Habit details and the habit form. With the phone's Font size turned up (200%): text grows in sp, icons keep their size, rows grow taller, names still stay one line, and each time of day's header goes onto two lines (the name and ⌃; then when it starts, what's left and Start). Replaces the earlier "the longest name wraps to two lines". Figma: Today page, "Long names and large text"; day details page, "Day details with a long name and large text" | "whenever we have a long name for something, name should not be in two lines. It should never take two lines. It should be always in one line. And whatever it doesn't fit in the … one line, remaining things should be like ellipses" |
 | A50 | **A row's second line is the goal, never the schedule; a reminder time follows a |** (22 Oct 2026). On Today the line under a name shows progress toward the goal for its period: **Not done** / **Done** for a once-a-day check, 5/8 glasses, 4/10 min, 1/4 steps, 2/3 times, 2/3 this week, 1/4 this month (quit and cut-down rows keep their own words, A41; a task keeps "Task"). "Every day · 8:00 AM" (a schedule) is gone everywhere. **If the habit has a reminder, its time follows: "Not done \| 8:00 AM", "1/4 steps \| 9:00 PM"**; with several reminders, the next one still to come. No reminder, no time. Once the habit is done the time goes. One line, … if it doesn't fit (A49). Figma: Today page, "What a row's second line says, with reminders"; every Today row on both pages updated | "every day is not a goal. It's a schedule … What they have to do today is the goal"; "just keep it simple, like not done. And then use that pipe and then it will be like eight AM" |
 | A51 | **A habit's icon is the same filled icon everywhere** (22 Oct 2026). The icon of a habit or task (Water's drop, Meds' pill) is drawn from the filled set (Material Icons Round, as on Today's rows) wherever it appears: Today, Day details' habit card, Add log, the Log, Slip and Note pages, Edit Today, the timer. The app's own controls (menus, toolbar actions, Add a note…) keep Material Symbols' outlined icons. Fixed in Figma on both the Today and day details pages, where the Day details card and several add and view screens had outlined habit icons | "suddenly all of the … icons that we have in the today, they changed to line icons … Icons should be consistent everywhere" |
+| A52 | **The routine player keeps the cookie shape** (22 Oct 2026). The player's hero card keeps the habit's icon inside the cookie (the 9-point star, 144, in the habit's colour), as the earlier designs had it; the timer on its own and the end page use the same card. Figma: page "routine player" (`234:2`) | "In the routine player, we intentionally kept the cookie shape because it was good and it is good … we will be keeping that shape" |
+| A53 | **In the routine player a milestone is a ribbon; pop-ups wait for the end** (22 Oct 2026). Whatever Today would show as a band or a bar shows in the player as a ribbon across the top of the hero card (the habit's colour, one line, the milestone only), with the cookie's burst; no bar and no pop-up while the routine plays. The end page lists **Reached in this routine**; a pop-up-tier milestone's pop-up rises over the end page. No "reached today" or "reached in this routine" anywhere (A42). As in the earlier designs (Design file, `2199:2`) | "In Android, we don't use bars … in routine player … We have a ribbon. So whether it is a row or a bar, it will be shown as a ribbon. Only pop-ups will be shown like … an actual pop-up … remember about the reached today word. We have removed it" |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
@@ -113,8 +115,7 @@ the user says how.
   slips, the touch-and-hold menu with Pause and Resume, Undo and Note, skip and the swipes, notes, other days
   (yesterday, tomorrow, pick a day), empty Today, the notices, cut-down habits, smaller states, then Arrange Today and
   the times of day. Right column (x 4,400): milestones (on the row, the bar, the pop-ups, reached away, the 17 Oct
-  rules). Still the user's call: "All done for today" (folding every time of day would move things, A32) and the
-  routine player on a page of its own.
+  rules). Still the user's call: "All done for today" (folding every time of day would move things, A32).
 - **Page "day details"** (`169:1270`): 44 rows of flows, every one starting on Today (rows run from y −35,000; the
   page was moved up so it stays inside Figma's canvas). In order: open and close; +1 to the goal and past it; Log
   manually; Add log on another day and time; nothing typed or a later time; ✕ after typing; open a log; edit a log;
@@ -124,6 +125,13 @@ the user says how.
   delete a slip; cut down (amount, time limit); a task (mark done, reschedule); resume a paused habit; an earlier day;
   a later day; the ⋮ menu (archive, delete, pause); notes (add, change, delete, unsaved, a long note); milestones from
   Day details (bar, pop-up); a long name and large text.
+- **Page "routine player"** (`234:2`): 25 rows of flows from y 0, every one starting on Today's Start or ▶. In order:
+  start a routine and ✕; a check (Mark done, Saved, Next); Undo and Add note from the snackbar; a time habit (Start,
+  Pause, Next); a checklist; the end with everything done; the end with some left; Day details from the chip and
+  skip; Your routine (title ▾: jump, change order); the ⋮ menu; an amount; an amount typed each time; several a day,
+  a week goal and a task; partly done, all done on Start, another day; ✕ with a timer running; the timer on its own
+  (Pause, Resume, the goal; a limit and Log manually); the Live Update outside the app; milestones (the ribbon; a
+  big one's pop-up at the end, A53); long names, a description and large text.
 
 **Onboarding, as decided 21 Oct.** No welcome or intro pages and no first-habit step: **Splash → Today, "No habits
 yet"**, with **New habit** and **Restore from a backup**. Restore offers **Google Drive** (Google's account chooser →
@@ -165,6 +173,29 @@ the user's word changes any of them):
 - **Milestones** reached from Day details: the bar shows over the sheet (it's on top of everything); the pop-up rises
   over it and Close returns to Day details.
 - **Large text** (200%): the count and "to go" stack, the buttons stack full width, rows grow, the sheet scrolls.
+
+**The routine player, as drawn 22 Oct** (A52, A53; the rest are the agent's choices while drawing, not yet reviewed by
+the user, so not A-numbers; the user's word changes any of them):
+- **One screen per habit:** ✕ · the routine's name ▾ (opens Your routine) · ⋮ (Go to first unfinished, Change order,
+  End routine); a thin progress line with "2 of 3"; the hero card (the cookie, the name, the Today chip that opens Day
+  details, the count, the wavy line, a status line); a 96-high button group **‹ · main · ›**.
+- **The main button follows the kind:** Mark done; +1 (the step); Log (typed each time); Start, Pause, Resume; Add a
+  check; a checklist's steps are ticked in the card, and its main button appears once all are ticked; then Next, and
+  Finish on the last habit. Limits and quit habits are never in a routine; tasks come last.
+- **Nothing advances on its own:** after a log the button says Next. Saved · Undo · Add note follows every log.
+- **A timer waits for Start** when you arrive, and the big clock is today's whole time. Pause saves the time so far as
+  one log; at the goal the line fills and "✓ Goal met" shows while the clock keeps counting. › while it runs saves
+  and moves on. **✕ never stops a running clock**: Today's row keeps it ticking.
+- **The timer on its own** (from Today's ▶) is the same card with Log manually | Pause. A limit says "of 30 min max"
+  with a grey line and "Over the limit" past it, never red. Log manually opens the usual Add log; typed time joins
+  the big clock.
+- **Outside the app** the running clock is a Live Update: a status bar chip in the habit's colour, a notification card
+  (the clock, its line, one button: Pause or Resume), the same on the lock screen with Pause working while locked,
+  "✓ Goal met" at the goal; a tap opens where the clock started (the player, or the timer on its own).
+- **The end page:** an ink cookie, "Morning is done" or what's left, Review routine, Return to unfinished (tonal) and
+  Done; "Reached in this routine" when milestones were reached (A53).
+- **Names are one line with …** (A49); a habit's description shows under the name, two lines at most, then …. At 200%
+  the cookie shrinks to 96, the name stays one line, the chip and count grow, and the buttons keep their height.
 
 **Milestone motion lives in the new file** (22 Oct 2026, so the old file can go): every milestone screen on the Today page carries Figma motion keyframes (select the screen, press play), rebuilt exactly from the old *Milestones on Today* section: the row (button press and fill, number roll, burst ring and 8 dots, Undo · Note fade, the band rising with its medal spinning in, words, sheen, sparkles), the bar (rise, medal pop, sparkles, sheen, 5-second line) and the pop-up (slide up, glow, medal spin and pop, ring and 12 dots, sparkles, then title, line, card and buttons). The medal is a 9-point rounded star (inner radius 0.86) with a light-to-colour gradient, a white inner ring and a soft shadow; the pop-up's has a blurred glow. A "Motion" note at the top of the milestone column gives the timings; with Remove animations on, only the end state shows.
 
