@@ -21,8 +21,6 @@ enum GoldenRecorder {
         var probes: [Int64]? = nil
         /// "full" also records Progress, the habit page, Over Time and the widgets; "rules" only the rules.
         var detail: String? = nil
-        /// Also loads the rows as the Apple Watch does (its last 400 days) and records its streaks (U34).
-        var watch: Bool? = nil
         let snapshot: Rows
     }
 
@@ -143,7 +141,7 @@ enum GoldenRecorder {
         return Snapshot(habits: habits, steps: steps, reminders: reminders, entries: entries, settings: settings)
     }
 
-    static func store(_ c: Case, window: Int = 0) async -> (HabitStore, Persistence) {
+    static func store(_ c: Case) async -> (HabitStore, Persistence) {
         let big = (c.snapshot.entries?.count ?? 0) > 100_000
         let began = Date()
         let persistence = Persistence.inMemory()
@@ -153,7 +151,6 @@ enum GoldenRecorder {
         store.fixedTimeZone = TimeZone(identifier: c.timeZone)
         let now = Date(millis: c.nowMs)
         store.clock = { now }
-        store.historyWindowDays = window
         await store.load()
         if big { note("\(c.name): loaded in \(Int(Date().timeIntervalSince(began)))s") }
         return (store, persistence)
@@ -247,13 +244,6 @@ enum GoldenRecorder {
         }
         if c.detail == "full" {
             out["full"] = full(s, today: today, now: now)
-        }
-        if c.watch == true {
-            let (w, wp) = await store(c, window: 400)
-            defer { _ = wp }
-            out["watch"] = w.habits.map { habit -> [Any] in
-                [habit.id.uuidString, w.streak(of: habit, asOf: today), w.bestStreak(of: habit), w.historyBeforeWindow.contains(habit.id)]
-            }
         }
         return out
     }

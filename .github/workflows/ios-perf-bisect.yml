@@ -6,8 +6,8 @@
 #   perf-variants: base=396c40e head=HEAD nosound=HEAD+-perf-switch+no-sound
 #   perf-scenarios: scroll-today tap-today new-habit progress
 #   perf-rounds: 4   (four or more to call a difference: two rounds on one machine have varied 2.5x, L29)
-#   perf-device: iPad Air 11-inch   (optional: the simulator whose name starts with this; the newest iPhone without it.
-#                                     For the iPad's own scenarios, Current Work 86. An iPhone-only build runs scaled.)
+#   perf-device: iPhone SE (3rd generation)   (optional: the simulator whose name starts with this; the newest iPhone
+#                                               without it)
 # A variant is name=ref, optionally with extra launch arguments after "+" (PerfSwitches). Keep the builds to three or
 # four: each takes ~4-5 minutes and the job stops at 60. Results: the summary goes to ci-results like ios-tests.yml.
 # Before a tagged push, check the repository's live runs (Rulebook T10).

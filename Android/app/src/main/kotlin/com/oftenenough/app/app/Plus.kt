@@ -6,16 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-/** Plus and Plus Family, one-time purchases with the iPhone's own product IDs (the shared core's [app.habits.account.PlusProducts]). */
-enum class PlusProduct(val id: String, val title: String, val who: String) {
-    PLUS(app.habits.account.PlusProducts.PLUS, "Plus", "Just you"),
-    FAMILY(app.habits.account.PlusProducts.FAMILY, "Plus Family", "You + 5 people, each with their own habits"),
-    /** Plus → Plus Family, for the difference. */
-    FAMILY_UPGRADE(app.habits.account.PlusProducts.FAMILY_UPGRADE, "Plus Family upgrade", "Upgrade from Plus"),
+/** Plus, a one-time purchase with the iPhone's own product ID. No Plus Family since 21 Oct 2026 (D16). */
+enum class PlusProduct(val id: String, val title: String) {
+    PLUS("com.oftenenough.app.plus", "Plus"),
 }
 
-/** What this phone's Google Play account owns: nothing, Plus, or Plus Family. */
-enum class PlusOwned { NONE, PLUS, FAMILY }
+/** What this phone's Google Play account owns: nothing, or Plus. */
+enum class PlusOwned { NONE, PLUS }
 
 /** How a purchase ended (Figma 2.1, 2.1.1, 2.1.2). */
 enum class BuyResult {
@@ -36,9 +33,9 @@ enum class RestoreResult { FOUND, NONE, COULD_NOT_CONNECT }
 
 /**
  * Where purchases come from (build prompt §5): Google Play Billing once the Play Console app exists, a stand-in store in
- * debug builds and tests until then. Plus bought on an iPhone, or shared by a family, comes from the account instead
- * (`account/Accounts.kt`); [AppGraph.hasPlus] joins the two. An ended or missing purchase never hides data (D10): it only
- * stops adding a 6th habit and the Plus widgets.
+ * debug builds and tests until then. Plus bought on an iPhone is moved across by support, by hand (D16); a code
+ * ([PlusCodes]) also gives it. An ended or missing purchase never hides data (D10): it only stops adding a 6th habit
+ * and the Plus widgets.
  */
 interface PlusStore {
     val owned: PlusOwned
@@ -52,13 +49,6 @@ interface PlusStore {
     suspend fun restore(): RestoreResult
     /** Whether buying works on this build at all. */
     val canBuy: Boolean
-    /** What this Google account bought, with Play's token, for the account's server to check with Google (D16). */
-    fun purchase(): app.habits.account.StorePurchase?
-    /**
-     * Every purchase this Google account owns, Plus first: the Plus Family upgrade counts on the account only beside Plus
-     * (account-server, `paidFor`), so the account is sent all of them, not just the best one.
-     */
-    fun purchases(): List<app.habits.account.StorePurchase> = listOfNotNull(purchase())
 }
 
 /**
@@ -77,8 +67,6 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
 
     override fun price(product: PlusProduct): String = when (product) {
         PlusProduct.PLUS -> "$24.99"
-        PlusProduct.FAMILY -> "$59.99"
-        PlusProduct.FAMILY_UPGRADE -> "$35.00"
     }
 
     override suspend fun buy(activity: Activity, product: PlusProduct): BuyResult {
@@ -98,31 +86,19 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
     /** Play confirmed a pending payment (what the real store hears from Play's purchase updates). */
     fun confirmPending() { pending?.let { own(it); pending = null } }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun own(product: PlusProduct) {
-        val now = if (product == PlusProduct.PLUS) PlusOwned.PLUS else PlusOwned.FAMILY
-        sp.edit().putString(KEY, now.name).apply()
-        owned = now
+        sp.edit().putString(KEY, PlusOwned.PLUS.name).apply()
+        owned = PlusOwned.PLUS
     }
 
     override suspend fun restore(): RestoreResult =
         kotlinx.coroutines.delay(latencyMs).let { nextRestore }?.also { nextRestore = null } ?: if (owned == PlusOwned.NONE) RestoreResult.NONE else RestoreResult.FOUND
 
-    override fun purchase() = when (owned) {
-        PlusOwned.NONE -> null
-        PlusOwned.PLUS -> app.habits.account.StorePurchase(PlusProduct.PLUS.id, token())
-        PlusOwned.FAMILY -> app.habits.account.StorePurchase(PlusProduct.FAMILY.id, token())
-    }
-
-    /**
-     * This install's stand-in purchase token, "stand-in-<random>": the dev Worker counts it as bought, and gives one
-     * purchase to one account, as Google's real tokens are; production never counts it.
-     */
-    private fun token(): String = sp.getString(TOKEN, null) ?: ("stand-in-" + java.util.UUID.randomUUID()).also { sp.edit().putString(TOKEN, it).apply() }
-
     /** Back to the free plan (tests). */
     fun reset() { sp.edit().remove(KEY).apply(); owned = PlusOwned.NONE; pending = null }
 
-    companion object { private const val KEY = "owned"; private const val TOKEN = "token" }
+    companion object { private const val KEY = "owned" }
 }
 
 /** A release build before Play Billing is connected: nothing can be bought yet, and nothing is ever taken away. */
@@ -133,7 +109,6 @@ object NoPlusStore : PlusStore {
     override fun price(product: PlusProduct): String? = null
     override suspend fun buy(activity: Activity, product: PlusProduct) = BuyResult.UNAVAILABLE
     override suspend fun restore() = RestoreResult.COULD_NOT_CONNECT
-    override fun purchase(): app.habits.account.StorePurchase? = null
 }
 
 /*

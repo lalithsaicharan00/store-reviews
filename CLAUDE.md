@@ -8,6 +8,10 @@ its rule numbers, and add to it the same day you learn something.
 
 @RULEBOOK.md
 
+**21 Oct 2026: starting again.** The app is being designed again from scratch, Android first. For new design work,
+the existing design rules, specs and earlier designs are reference only; the user's new decisions win. Read the
+Rulebook's "Starting again" section first: it says what still holds.
+
 ## Everything else
 
 - `Brand/` — the current Often Enough logo guide, decision history and exported assets. Follow

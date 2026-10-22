@@ -223,7 +223,7 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
 
     /** One round: download, merge, upload (never replace). The phone's own data stays the truth (D1). */
     suspend fun syncNow(): DriveStatus? {
-        val result = mutex.withLock {
+        return mutex.withLock {
             val s = sync() ?: return null
             working = true
             try {
@@ -236,7 +236,6 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
                 working = false
             }
         }
-        return result
     }
 
     suspend fun refreshStatus() { status = sync()?.status() }

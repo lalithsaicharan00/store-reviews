@@ -4,33 +4,28 @@ import StoreKit
 import UIKit
 
 // Plus from the App Store, with StoreKit 2 (Current Work 80; the Plus screens, 10 Oct 2026). Plus is the account's
-// `HabitStore.isPlus` (Debug's default, the account path) OR an App Store entitlement for any of the three products,
-// not revoked. Prices are always the App Store's own `displayPrice`, never typed here. No server sees a purchase: the
+// `HabitStore.isPlus` (Debug's default) OR an App Store entitlement for Plus, not revoked. Prices are always the App Store's own `displayPrice`, never typed here. No server sees a purchase: the
 // App Store keeps it with the person's Apple Account, so every device signed in to it has Plus (Rulebook D16).
 
-/// The two plans. Plus Family is shared through Apple's Family Sharing: nothing to set up in the app.
+/// The one plan. There is no Plus Family since 21 Oct 2026 (Rulebook D16).
 enum PlusPlan: String, CaseIterable, Identifiable {
-    case plus, family
+    case plus
     var id: Self { self }
 
-    var productID: String { self == .plus ? PlusProduct.plus : PlusProduct.family }
-    var name: String { self == .plus ? "Plus" : "Plus Family" }
-    /// Who it's for, in the 6th-habit sheet's cards.
-    var who: String { self == .plus ? "Just you" : "You + 5 people" }
+    var productID: String { PlusProduct.plus }
+    var name: String { "Plus" }
     /// The Plus page's row title.
-    var title: String { self == .plus ? "Plus · just you" : "Plus Family · you + 5" }
-    var detail: String {
-        self == .plus ? "Unlimited habits, \(Device.otherDevices.lowercasedFirst), sync through your own iCloud"
-            : "Everything in Plus for you and up to 5 people in your Apple family, each with their own habits"
-    }
+    var title: String { "Plus" }
+    var detail: String { "Unlimited habits, sync through your own iCloud" }
 }
 
 /// Who has Plus on this Apple Account, as the App Store says.
 enum PlusOwnership: Equatable {
     case none
-    /// Bought with this Apple Account: Plus, or Plus Family (bought outright or as the upgrade).
+    /// Bought with this Apple Account.
     case owner(PlusPlan, since: Date)
-    /// Shared by someone in the person's Apple family (`ownershipType == .familyShared`).
+    /// Shared by someone in the person's Apple family (`ownershipType == .familyShared`): only if Family Sharing is ever
+    /// turned on for Plus in App Store Connect (it's off: no Plus Family, D16).
     case familyMember(since: Date)
 }
 
@@ -82,7 +77,7 @@ protocol PlusBackend: AnyObject {
     /// Product ID → the App Store's display price. Throws when the App Store can't be reached.
     func prices() async throws -> [String: String]
     func purchase(_ productID: String) async -> PlusBackendPurchase
-    /// This Apple Account's current entitlements to the three products, revoked ones left out.
+    /// This Apple Account's current entitlements to Plus, revoked ones left out.
     func entitlements() async -> [PlusEntitlement]
     /// Whether one of the products was refunded (a revoked transaction).
     func refunded() async -> Bool
@@ -152,8 +147,7 @@ final class PlusStore {
         do {
             let found = try await backend.prices()
             prices = found
-            // Both plans or nothing: one price and a blank beside it would look like a made-up choice.
-            pricesState = found[PlusProduct.plus] != nil && found[PlusProduct.family] != nil ? .loaded : .failed
+            pricesState = found[PlusProduct.plus] != nil ? .loaded : .failed
         } catch {
             pricesState = .failed
         }
@@ -163,9 +157,9 @@ final class PlusStore {
         let now = Self.ownership(from: await backend.entitlements())
         let before = ownership
         if now != before { ownership = now }
-        if now != .none, let product = waiting {
+        if now != .none, waiting != nil {
             waiting = nil
-            approved = product == PlusProduct.plus ? .plus : .family
+            approved = .plus
         }
         onChange(now != .none)
         await noteEnded(now: now)
@@ -174,7 +168,7 @@ final class PlusStore {
     static func ownership(from list: [PlusEntitlement]) -> PlusOwnership {
         let own = list.filter { !$0.familyShared }
         if let first = own.map(\.purchased).min() {
-            return .owner(own.contains { $0.productID != PlusProduct.plus } ? .family : .plus, since: first)
+            return .owner(.plus, since: first)
         }
         if let shared = list.filter(\.familyShared).map(\.purchased).min() { return .familyMember(since: shared) }
         return .none
@@ -196,7 +190,7 @@ final class PlusStore {
                 ownership = Self.ownership(from: [entitlement])
                 onChange(true)
             }
-            outcome = .bought(productID == PlusProduct.plus ? .plus : .family)
+            outcome = .bought(.plus)
         case .pending:
             waiting = productID
             outcome = .pending
@@ -205,7 +199,7 @@ final class PlusStore {
         case .failed(let problem):
             outcome = .failed(problem)
         }
-        let tier = productID == PlusProduct.plus ? "plus" : productID == PlusProduct.family ? "family" : "family_upgrade"
+        let tier = "plus"
         let result = switch outcome {
         case .bought: "verified"
         case .pending: "pending"
@@ -383,7 +377,7 @@ final class AppStoreBackend: PlusBackend {
 /// A test launch's App Store (Rulebook D8: a test never touches the person's own purchases), scripted by launch
 /// arguments so every state of the screens can be reached: `-plus-prices-fail` (the first load fails, Try Again
 /// works), `-plus-ask-to-buy` (waits for approval), `-plus-purchase-fails`, `-plus-payments-off` (Screen Time),
-/// `-plus-owned`, `-plus-owned-family`, `-plus-family-member`, and `-plus-ended refund|family` (PlusStore.start).
+/// `-plus-owned`, `-plus-family-member`, and `-plus-ended refund|family` (PlusStore.start).
 /// `-real-storekit` uses the App Store instead (the scheme's StoreKit configuration file, `OftenEnough.storekit`).
 final class PlusTestBackend: PlusBackend {
     private let arguments = ProcessInfo.processInfo.arguments
@@ -394,8 +388,7 @@ final class PlusTestBackend: PlusBackend {
         failures = arguments.contains("-plus-prices-fail") ? 1 : 0
         let bought = Calendar(identifier: .gregorian).date(from: DateComponents(year: 2026, month: 3, day: 12, hour: 12)) ?? .now
         if arguments.contains("-plus-owned") { owned = [PlusEntitlement(productID: PlusProduct.plus, familyShared: false, purchased: bought)] }
-        if arguments.contains("-plus-owned-family") { owned = [PlusEntitlement(productID: PlusProduct.family, familyShared: false, purchased: bought)] }
-        if arguments.contains("-plus-family-member") { owned = [PlusEntitlement(productID: PlusProduct.family, familyShared: true, purchased: bought)] }
+        if arguments.contains("-plus-family-member") { owned = [PlusEntitlement(productID: PlusProduct.plus, familyShared: true, purchased: bought)] }
     }
 
     var canMakePayments: Bool { !arguments.contains("-plus-payments-off") }
@@ -407,7 +400,7 @@ final class PlusTestBackend: PlusBackend {
             throw URLError(.notConnectedToInternet)
         }
         // The StoreKit configuration file's prices (iOS/OftenEnough.storekit).
-        return [PlusProduct.plus: "$24.99", PlusProduct.family: "$59.99", PlusProduct.upgrade: "$35.00"]
+        return [PlusProduct.plus: "$24.99"]
     }
 
     func purchase(_ productID: String) async -> PlusBackendPurchase {

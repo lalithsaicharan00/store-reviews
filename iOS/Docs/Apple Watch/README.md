@@ -1,5 +1,7 @@
 # Apple Watch — Start Here
 
+> **Retired 21 Oct 2026 (the user: phones only, Rulebook D16).** The Apple Watch app (its targets, the iPhone's link to it and the shared core's Watch queue) was removed from the code on branch `claude/phones-only-launch`; the first launch is the iPhone and Android phones only. Everything here is kept as the record of what was designed and decided, for if it ever comes back. Don't build from it.
+
 Written by Claude (Claude Code), 10 October 2026. Everything for building the Apple Watch app (Current Work 82,
 roadmap #65) in one folder: the research, the data and sync design, the designs as pictures, and their notes. No
 design-tool links: everything needed is in here.

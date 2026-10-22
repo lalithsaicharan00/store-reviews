@@ -107,10 +107,9 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
     val plus = AppGraph.plus
     val activity = LocalActivity.current
     val scope = rememberCoroutineScope()
-    var family by remember { mutableStateOf(false) }
     var buying by remember { mutableStateOf(false) }
     var said by remember { mutableStateOf<String?>(null) }
-    val product = if (family) PlusProduct.FAMILY else PlusProduct.PLUS
+    val product = PlusProduct.PLUS
     BackHandler(onBack = onBack)
     // Plus on (bought here, or a pending payment confirmed): the habit goes ahead.
     LaunchedEffect(store.canAddHabit) { if (store.canAddHabit) onBought() }
@@ -135,24 +134,17 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
                 }
                 Box(Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)).background(c.ink))
             }
-            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface)) {
-                for ((i, p) in listOf(PlusProduct.PLUS, PlusProduct.FAMILY).withIndex()) {
-                    if (i == 1) HorizontalDivider(color = c.screen)
-                    val on = (p == PlusProduct.FAMILY) == family
-                    Row(Modifier.fillMaxWidth().background(if (on) c.soft else Color.Transparent).selectable(on, role = Role.RadioButton) { family = p == PlusProduct.FAMILY }
-                        .padding(start = 16.dp, end = 20.dp, top = 14.dp, bottom = 14.dp).semantics { testTag = "sixth-" + p.name.lowercase() },
-                        verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(on, null, colors = RadioButtonDefaults.colors(selectedColor = c.ink, unselectedColor = c.secondary))
-                        Spacer(Modifier.width(16.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text(p.title, style = AppType.titleMedium, color = c.ink)
-                            Text(p.who, style = AppType.bodyMedium, color = c.secondary)
-                        }
-                        Column(horizontalAlignment = Alignment.End) {
-                            Text(plus.price(p) ?: "", style = AppType.titleLarge, color = c.ink)
-                            Text("one-time", style = AppType.bodySmall, color = c.secondary)
-                        }
-                    }
+            // Plus alone since 21 Oct 2026 (no Plus Family, D16): its name and price, no choice to make.
+            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface)
+                .padding(start = 20.dp, end = 20.dp, top = 14.dp, bottom = 14.dp).semantics(mergeDescendants = true) { testTag = "sixth-plus-price" },
+                verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(product.title, style = AppType.titleMedium, color = c.ink)
+                    Text("Just you", style = AppType.bodyMedium, color = c.secondary)
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(plus.price(product) ?: "", style = AppType.titleLarge, color = c.ink)
+                    Text("one-time", style = AppType.bodySmall, color = c.secondary)
                 }
             }
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -161,9 +153,6 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
                     val rows = listOf(
                         Triple(Icons.Rounded.AllInclusive, "Unlimited habits", "Free has ${HabitStore.FREE_HABIT_LIMIT}. Add as many as you like."),
                         Triple(Icons.Outlined.Widgets, "More widgets", "Today’s list and This week"),
-                        Triple(Icons.Outlined.TabletAndroid, "Tablet", "The whole app on your Android tablet"),
-                        Triple(Icons.Outlined.Watch, "Wear OS watch", "Tick off habits from your wrist"),
-                        Triple(Icons.Outlined.Devices, "Windows app", "Your habits on your PC"),
                         Triple(Icons.Outlined.Sync, "Synced through Google Drive", "A change on one shows on all of them"),
                     )
                     rows.forEachIndexed { i, (icon, title, line) -> GetRow(icon, title, line, i, rows.size) }
@@ -190,7 +179,7 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
                         }
                     }
                 }.semantics { testTag = "sixth-plus" }, contentAlignment = Alignment.Center) {
-                Text((if (family) "Get Plus Family" else "Get Plus") + (price?.let { " · $it" } ?: ""), style = AppType.titleMedium, color = if (plus.canBuy && !buying) c.onInk else c.ink.copy(alpha = 0.38f))
+                Text("Get Plus" + (price?.let { " · $it" } ?: ""), style = AppType.titleMedium, color = if (plus.canBuy && !buying) c.onInk else c.ink.copy(alpha = 0.38f))
             }
             Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(24.dp)).background(c.soft).clickable(role = Role.Button, onClick = onMakeRoom)
                 .semantics { testTag = "sixth-make-room" }, horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {

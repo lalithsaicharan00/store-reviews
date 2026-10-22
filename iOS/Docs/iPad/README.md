@@ -1,5 +1,7 @@
 # iPad — Start Here
 
+> **Retired 21 Oct 2026 (the user: phones only, Rulebook D16).** The iPad app (the sidebar, popovers, Columns, the Extra Large widget; the app is iPhone-only) was removed from the code on branch `claude/phones-only-launch`; the first launch is the iPhone and Android phones only. Everything here is kept as the record of what was designed and decided, for if it ever comes back. Don't build from it.
+
 Written by Claude (Claude Code), 11 October 2026. Everything for building the iPad app (Current Work 86) in one
 place: what it is, every decision, pictures of every screen, the system changes, and the build order.
 

@@ -6,7 +6,7 @@ plugins {
 }
 
 // Android (Android/, Current Work 107): only when the Android app builds the core (`core.android`, set by
-// Android/gradle.properties), so the iPhone's, the Watch's and the server's builds never need an Android SDK.
+// Android/gradle.properties), so the iPhone's and the server's builds never need an Android SDK.
 val withAndroid = (providers.systemProperty("core.android").orNull ?: providers.gradleProperty("core.android").orNull) == "true"
 if (withAndroid) {
     apply(plugin = "com.android.kotlin.multiplatform.library")
@@ -23,9 +23,8 @@ kotlin {
 
     // Desktop JVM: runs the storage tests on the Mac, and later the Windows/Mac desktop builds.
     jvm()
-    // The iPhone, and the Apple Watch (Architecture 12 §5): arm64_32 for Series 4–8 and SE, arm64 for Series 9 and later
-    // on watchOS 26, and the Watch simulator. Room and SQLite publish all three (checked 10 Oct 2026).
-    listOf(iosArm64(), iosSimulatorArm64(), watchosArm64(), watchosDeviceArm64(), watchosSimulatorArm64()).forEach { target ->
+    // The iPhone and its simulator (the app is iPhone-only: the Apple Watch app was removed 21 Oct 2026).
+    listOf(iosArm64(), iosSimulatorArm64()).forEach { target ->
         target.binaries.framework {
             baseName = "Core"
             isStatic = true
@@ -55,7 +54,7 @@ room3 {
 }
 
 dependencies {
-    listOf("kspJvm", "kspIosArm64", "kspIosSimulatorArm64", "kspWatchosArm64", "kspWatchosDeviceArm64", "kspWatchosSimulatorArm64").forEach {
+    listOf("kspJvm", "kspIosArm64", "kspIosSimulatorArm64").forEach {
         add(it, "androidx.room3:room3-compiler:3.0.3")
     }
     if (withAndroid) add("kspAndroid", "androidx.room3:room3-compiler:3.0.3")

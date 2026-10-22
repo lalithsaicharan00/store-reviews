@@ -61,8 +61,8 @@ import com.oftenenough.app.ui.backup.WaitScreen
 import com.oftenenough.app.ui.backup.driveEmail
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
-import com.oftenenough.app.ui.components.StepHeading
-import com.oftenenough.app.ui.components.countText
+import com.oftenenough.app.ui.backup.StepHeading
+import com.oftenenough.app.ui.backup.countText
 import com.oftenenough.app.ui.plus.FlowScreen
 import com.oftenenough.app.ui.plus.MainButton
 import com.oftenenough.app.ui.plus.QuietButton

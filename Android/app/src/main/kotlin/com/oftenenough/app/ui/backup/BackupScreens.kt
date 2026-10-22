@@ -35,7 +35,6 @@ import androidx.compose.material.icons.outlined.CloudUpload
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.DriveFolderUpload
-import androidx.compose.material.icons.outlined.MobileScreenShare
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Sync
@@ -75,7 +74,6 @@ import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.TonalButton
-import com.oftenenough.app.ui.components.StepHeading
 import com.oftenenough.app.ui.plus.FlowScreen
 import com.oftenenough.app.ui.plus.MainButton
 import com.oftenenough.app.ui.plus.PlusDialog
@@ -94,6 +92,9 @@ private fun whenText(ms: Long?, store: HabitStore): String {
     val time = DayWords.clock(ms)
     return when (day) { today -> "Today $time"; today - 1 -> "Yesterday $time"; else -> DayWords.short(day) + ", " + time }
 }
+
+/** "12 habits, 840 logs". */
+fun countText(habits: Int, logs: Int) = "$habits ${if (habits == 1) "habit" else "habits"}, $logs ${if (logs == 1) "log" else "logs"}"
 
 /** "sam@gmail.com" from the link's "Google Drive (sam@gmail.com)"; null for the stand-in. */
 fun driveEmail(center: BackupCenter): String? = center.link.accountName?.let { Regex("\\(([^)]+@[^)]+)\\)").find(it)?.groupValues?.get(1) }
@@ -135,7 +136,7 @@ private fun PageRow(icon: ImageVector, title: String, line: String?, index: Int,
 
 /**
  * ≡ › Backup & Sync (Figma `1461:2`, 1–1.3): where the habits are first (backed up, synced with Plus, not backed up, no
- * internet), devices with Plus, then Move and restore, Export, and the two deliberate deletions, each asking with two
+ * internet), devices with Plus, then Restore, Export, and the two deliberate deletions, each asking with two
  * buttons only (5, 6; D9). Rulebook D4, D10: backup and export are free and visible.
  */
 @Composable

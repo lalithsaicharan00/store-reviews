@@ -20,9 +20,6 @@ struct AddLogView: View {
     var source: EntrySource = .manual
     /// Told the new log's ID once it's on screen (a slip's Undo on Today and the habit page).
     var onAdded: ((UUID) -> Void)? = nil
-    /// Pushed inside the iPad's Day details popover (Design Notes §3): ✕ goes back to Day details, and the popover doesn't
-    /// close on a tap outside while something is typed. Otherwise its own sheet.
-    var pushed = false
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
@@ -38,11 +35,10 @@ struct AddLogView: View {
     @ScaledMetric(relativeTo: .largeTitle) private var numberSize: CGFloat = 48
     @ScaledMetric(relativeTo: .title) private var durationSize: CGFloat = 32
 
-    init(habit: Habit, day: LocalDay, at time: Date? = nil, source: EntrySource = .manual, pushed: Bool = false,
+    init(habit: Habit, day: LocalDay, at time: Date? = nil, source: EntrySource = .manual,
          onAdded: ((UUID) -> Void)? = nil) {
         self.habit = habit
         self.source = source
-        self.pushed = pushed
         self.onAdded = onAdded
         _day = State(initialValue: day)
         _time = State(initialValue: time ?? .distantPast)
@@ -56,17 +52,10 @@ struct AddLogView: View {
     private var chosenTime: Date { time == .distantPast ? defaultTime(on: day) : time }
 
     var body: some View {
-        if pushed {
-            page
-                .navigationBarBackButtonHidden(true)
-                .interactiveDismissDisabled(draft.edited || ticked != nil)
-        } else {
-            NavigationStack { page }
-                .presentationDetents([.large])
-                .presentationBackground(Color(.systemGroupedBackground))
-                .interactiveDismissDisabled(draft.edited || ticked != nil)
-                .padFormSheet()
-        }
+        NavigationStack { page }
+            .presentationDetents([.large])
+            .presentationBackground(Color(.systemGroupedBackground))
+            .interactiveDismissDisabled(draft.edited || ticked != nil)
     }
 
     private var page: some View {
@@ -104,10 +93,8 @@ struct AddLogView: View {
                 RecordBottomBar {
                     DayButton(kind.addButton, prominent: true, id: "record-add") { add(kind, ruled: ruled) }
                         .disabled(!canAdd(kind, ruled: ruled))
-                        .padDefaultAction()
                 }
             }
-            .padReturnAdds { if canAdd(kind, ruled: ruled) { add(kind, ruled: ruled) } }
             .alert("Discard this \(kind == .slip ? "slip" : "log")?", isPresented: $confirmingDiscard) {
                 Button("Keep Editing", role: .cancel) {}
                 Button("Discard Changes", role: .destructive) { dismiss() }
@@ -137,7 +124,6 @@ struct AddLogView: View {
                 default: break
                 }
             }
-            .fitsPadPopover("add-log")
     }
 
     // MARK: The main thing

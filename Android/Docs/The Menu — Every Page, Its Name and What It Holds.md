@@ -14,6 +14,11 @@ It's for Android; the iPhone is the same with iCloud in place of Google Drive (l
 - Habits live only on the phone and in the person's own Google Drive (iCloud on iPhone and iPad).
 - The account exists only for Plus: the purchase, Plus Family, and where the habits are backed up.
 
+> **Replaced 21 Oct 2026 (Android decisions A26–A29, [README](<README.md>)):** the menu is now **Today · Habits & Tasks │
+> Plus · Settings · Contact us · Send feedback**. There's no Progress page (progress is on the Habits page), the settings
+> rows, Backup, Privacy and About become sections of one Settings page, App Lock is out of the first version, and Contact
+> us and Send feedback open the email app directly. What follows is the earlier menu, kept for its reasoning.
+
 ## The rules for names
 
 1. **Name things the way people look for them.**

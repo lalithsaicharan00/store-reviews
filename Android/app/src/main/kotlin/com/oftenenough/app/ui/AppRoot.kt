@@ -82,7 +82,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -135,6 +134,8 @@ private fun AppMain(
     val todayLayout = remember { com.oftenenough.app.ui.today.TodayLayout(rootScope) }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
+    // Restore from Google Play found nothing: Plus shows "No Plus found" over itself (Figma 4.2).
+    var noPlusFound by rememberSaveable { mutableStateOf(false) }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
     LaunchedEffect(AppGraph.widgetRoute) {
         val (route, d) = AppGraph.widgetRoute?.split("|")?.let { it[0] to (it.getOrNull(1)?.toIntOrNull() ?: -1) } ?: return@LaunchedEffect
@@ -194,7 +195,7 @@ private fun AppMain(
             } else ModalNavigationDrawer(drawerContent = {
                 MenuDrawer(store, MenuItem.TODAY) { item ->
                     scope.launch { drawer.close() }
-                    if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
+                    openMenuItem(item, nav, appContext)
                 }
             }, drawerState = drawer) {
                 TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
@@ -298,10 +299,8 @@ private fun AppMain(
                 SettingsPage.REMINDERS -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 SettingsPage.PRIVACY -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
-                MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusPage(store, AppGraph.plus,
-                    onGetPlus = { nav.navigate(Routes.GET_PLUS) }, onBack = { nav.popBackStack() }) { said ->
-                    rootScope.launch { snackbar.showSnackbar(said) }
-                }
+                MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusPage(store, AppGraph.plus, AppGraph.backup,
+                    snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false })
                 MenuItem.SETTINGS.title -> SettingsHome({ page -> nav.navigate(Routes.page(page)) }) { nav.popBackStack() }
                 "Arrange your day" -> {
                     // The habit Arrange… or Move asked for, lifted once (Figma 1.4, 1.6).
@@ -381,16 +380,13 @@ private fun AppMain(
         composable("section/{id}") { e ->
             SectionEditorScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }) { nav.popBackStack() }
         }
-        // Buying Plus: Google Play's own sheet, and nothing else (D16).
-        val bought: (String?) -> Unit = { said ->
-            nav.popBackStack()
-            said?.let { rootScope.launch { snackbar.showSnackbar(it) } }
-        }
-        composable(Routes.GET_PLUS) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, upgrade = false, onDone = bought) { nav.popBackStack() } }
-        composable(Routes.UPGRADE) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, upgrade = true, onDone = bought) { nav.popBackStack() } }
+        // Plus's flows (Figma 1476:2): each finishes back on the Plus page.
+        val flowNav = plusFlowNav(nav, rootScope, snackbar) { noPlusFound = true }
+        composable(Routes.GET_PLUS) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, flowNav) { nav.popBackStack() } }
+        composable(Routes.RESTORE_PLUS) { com.oftenenough.app.ui.plus.RestoreFlow(AppGraph.plus, flowNav) }
     }
     }
-    // Plus & Account has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
+    // Plus has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
     // snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
     if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
         .let { if (menuItem == MenuItem.PLUS) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
@@ -416,6 +412,28 @@ private fun openMenuItem(item: MenuItem, nav: NavHostController, context: androi
     if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
 }
 
+/** The Plus page's rows. */
+private fun plusNav(nav: NavHostController) = object : com.oftenenough.app.ui.plus.PlusNav {
+    override fun seePlus() = nav.navigate(Routes.GET_PLUS)
+    override fun restore() = nav.navigate(Routes.RESTORE_PLUS)
+    override fun backup() = nav.navigate(Routes.page(SettingsPage.BACKUP))
+    override fun back() { nav.popBackStack() }
+}
+
+/** Where a Plus flow ends: back on the Plus page (opened if the flow began elsewhere, as the 6th-habit page). */
+private fun plusFlowNav(nav: NavHostController, scope: CoroutineScope, snackbar: SnackbarHostState, onNoPlusFound: () -> Unit) =
+    object : com.oftenenough.app.ui.plus.PlusFlowNav {
+        override fun toPage(message: String?) {
+            if (!nav.popBackStack(Routes.menu(MenuItem.PLUS), inclusive = false)) {
+                nav.popBackStack(Routes.TODAY, inclusive = false)
+                nav.navigate(Routes.menu(MenuItem.PLUS))
+            }
+            message?.let { scope.launch { snackbar.showSnackbar(it) } }
+        }
+        override fun toPageNoPlusFound() { onNoPlusFound(); toPage() }
+        override fun getPlus() = nav.navigate(Routes.GET_PLUS)
+        override fun restore() = nav.navigate(Routes.RESTORE_PLUS)
+    }
 /**
  * The routine "Start the next routine" opens: the time of day that is now if it has anything left, else the next card
  * down Today that does (then from the top). Null when everything planned today is done: Today opens and says so.
@@ -484,7 +502,7 @@ object Routes {
     const val COMPLETED_TASKS = "tasks/completed"
     fun restoreRoom(id: String) = "restoreroom/$id"
     const val GET_PLUS = "plus/get"
-    const val UPGRADE = "plus/upgrade"
+    const val RESTORE_PLUS = "plus/restore"
     fun group(id: String?) = "group/" + (id ?: "new")
     const val LOCK_SETUP = "applock/setup"
     const val LOCK_PASSCODE = "applock/passcode"
@@ -512,14 +530,12 @@ private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostControlle
     if (LocalSidebar.current) { content(null); return }
     val drawer = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val pageContext = androidx.compose.ui.platform.LocalContext.current
     androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
     ModalNavigationDrawer(drawerContent = {
         MenuDrawer(store, current) { item ->
             scope.launch { drawer.close() }
-            if (item != current) {
-                nav.popBackStack(Routes.TODAY, inclusive = false)
-                if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
-            }
+            if (item != current) openMenuItem(item, nav, pageContext)
         }
     }, drawerState = drawer) { content { scope.launch { drawer.open() } } }
 }

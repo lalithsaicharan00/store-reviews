@@ -73,7 +73,7 @@ checkpoints below, and report at each.
    `Core/Backup File Format.md`, `Core/README.md`, `Core/spec/`.
 6. `Android/Docs/Research/Android Plus — What Android People Pay For, and Keeping Both Apps the Same.md`, A13–A14 and
    `Architecture/02. Billing and Entitlements.md` (free: 5 habits, the small one-habit widgets and the Tasks widgets;
-   Plus: unlimited habits, Today and This week widgets, more devices; Plus $24.99, Plus Family $59.99, one-time).
+   Plus: unlimited habits, Today and This week widgets, more devices; Plus $29.99, Plus Family $59.99, one-time).
 7. Widgets: **`iOS/Docs/Widgets — Taps and Updates (Locked).md`** (W1–W17: the user's measured, approved behaviour;
    on Android keep every principle: the whole card changes at once on a tap, every tap is written before anything
    else and saved in order, idempotently, then synced; never a tap kept only until the app opens), the widget lessons
@@ -191,7 +191,7 @@ for them").** Don't stop for them, and don't invent or create any yourself:
   config that reads the upload key from secrets; and, when Billing is wired, a signed `.aab` with the Play Billing
   Library for them to upload to **Internal testing** (Play only lets them create products after such an upload).
 - **Product IDs, the same as the iPhone's** (`iOS/Habits/Plus/PlusProduct.swift`): `com.oftenenough.app.plus`
-  ($24.99), `com.oftenenough.app.plusfamily` ($59.99), and `com.oftenenough.app.plusfamily.upgrade` (Plus → Plus
+  ($29.99; students half, 20 Oct 2026), `com.oftenenough.app.plusfamily` ($59.99), and `com.oftenenough.app.plusfamily.upgrade` (Plus → Plus
   Family, the difference). Tell the user these exact IDs when you ask.
 
 Otherwise ask only for what you can't decide from the documents: a product decision they don't make (how Play

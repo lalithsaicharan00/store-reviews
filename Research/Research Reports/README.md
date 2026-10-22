@@ -27,6 +27,8 @@ Reusable marketing examples are saved in the root Marketing folder.
 
 | Report | Author | Date | What it is |
 |---|---|---|---|
+| [Habit Apps — Revenue Estimates and Provisional Store Top Tens](<Market Discovery/Habit Apps — Revenue Estimates and Provisional Store Top Tens — 21 October 2026.md>) | Codex | 21 Oct 2026 | Separate descending ten-name store shortlists; source-specific dates/definitions, eight explicit Android monetization scenarios, cross-platform identities, conflicts and unresolved Life Reset store allocation. Census of 216 corpora / 1,238,784 records; fresh individual reading of all reviews remains unfinished. Not a verified global revenue ranking. |
+| [Phones Only, No Accounts — Why](<Market Discovery/Phones Only, No Accounts — Why, 21 October 2026.md>) | **Claude** | 21 Oct 2026 | The evidence behind the user's 21 Oct decisions (Rulebook D16): why single-platform trackers sell (HabitKit 209 and HabitNow 510 of 1,433 buyer reviews read), how rare data loss is (0.08% HabitNow, 0.40% HabitKit, every candidate read), themed vs generic apps and who advertises (Meta Ad Library), which devices the top 16 apps support, sync vs backup demand, platform switching (72 of 235,723 reviews read as real switchers, 0.03%), and what a server would cost. Mixes hand-read sets, keyword counts and store snapshots, each labelled. |
 | [Built-in Trackers — The Market and What Fits Version 2](<Market Discovery/Built-in Trackers — The Market and What Fits Version 2.md>) | **Claude** | 17 Oct 2026 | 42 kinds of tracker surveyed on Google Play (US search, download bands) and the App Store (US search, rating counts), 672 rows in `Built-in Trackers Data/`. Five-part fit test; six kinds need a tracker of their own (sleep, weight, energy/stress as a scale, fasting, gratitude, Health-filled steps and exercise), about fifteen are ready-made habits, the rest (period, food, medical, baby, money, GPS, screen time) stay out. Recommends Sleep, Weight, Energy, then Fasting or Gratitude for version 2. Store snapshot plus Feature Ledger evidence; no hand-read review pass. |
 
 ## Individual Habit Details
@@ -94,6 +96,7 @@ Evidence folders in this section:
 
 | Report | Author | Date | What it is |
 |---|---|---|---|
+| [Student Price — How We Check Someone Is a Student](<Business Model and Monetization/Student Price — How We Check Someone Is a Student.md>) | **Claude** | 20 Oct 2026 | Current Work 147. SheerID has no free plan (a quote; median ~$70.8k a year, Vendr), and UNiDAYS and Student Beans take a commission, so neither is used. The free way, as JetBrains does it: JetBrains' swot list of school domains (MIT), a 6-digit code to the school address, a one-way fingerprint so it works once, and a student ticket the purchase must carry. A missing school is added once on request; with no school email, no student price, said plainly (no manual ID checks). Built with the purchase flow. |
 | [Habit Tracker — Business Model, Free Baseline and Moat](<Business Model and Monetization/Habit Tracker — Business Model, Free Baseline and Moat.md>) | **Claude** | 23 Sep 2026 | What to give free, what to charge for (the one-time Plus purchase and the optional Companion subscription), and the moat. Built from every Feature Ledger card. |
 | [Asking for a Review — When, How Often, Never How](<Business Model and Monetization/Asking for a Review — When, How Often, Never How.md>) | **Claude** | 30 Sep 2026 | C094 for the iOS app. Builds on the ledger's 53-app evidence plus a fresh scan (1,238,784 reviews): nagging prompts 237 (2.78★), asked too early 159 (2.47★), forced 68 (2.74★); 7 quotes verified. Design: only Apple's own request, no pre-question, no reward; after a week of real use (7 days logged, 10 logs); only on the tap that finishes today, 2 s after the All done line; once per version and 120 days apart; Rate Habits in Settings once the App Store ID exists. |
 | [Plus and Subscription Deep Dive](<Business Model and Monetization/Plus and Subscription Deep Dive/Plus and Subscription Deep Dive.md>) | **Claude** | 23 Sep 2026 | Each proposed Plus or Companion feature explained, with annotated screenshots. |
@@ -274,6 +277,7 @@ The Progress screen, per-habit statistics, history views, and quit and cut-down 
 
 | Report | Author | Date | What it is |
 |---|---|---|---|
+| [Shareable Progress Reports — What People Save and Share](<Progress and Statistics/Shareable Progress Reports — What People Save and Share.md>) | Codex | 2 Oct 2026 | Pinterest-first audit of 25 live pins with reaction counts, Instagram/Reddit actual sharing and official Spotify/Duolingo cases; eight bounded review candidates checked against original IDs; 33 authentic reference images in Figma. Proposes monthly selected-habit export, one-habit achievement and yearly keepsake tests, distinguishing saves, shares and app discovery. No app code changed. |
 | [Progress Week — Visual Options](<Progress and Statistics/Progress Week — Visual Options.md>) | **Claude** | 2 Oct 2026 | Visual research only: 1,487,223 records scanned, 662 multilingual candidates individually read and coded, complete ID index; genuine current light baseline, five demo-based 14-habit options in light/dark/accessibility-size layouts and close-ups. Recommends individual breathing cards, title-aligned icons, full-width week strips, visible key plus legend, completion-led overview and prominent quit runs. Exact implementing-agent spec; scoring and top controls retained. Inspiration imagery/source links in Figma via MCP; genuine dark/accessibility/quit-scroll before captures unavailable. |
 | [The Progress Page — What People Need, and How to Build It](<Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>) | **Claude** | 30 Sep 2026 | Build Plan #60. Whole-corpus screen (1,487,223 reviews → 19,382 matches in habit apps); **14,726 read and hand-coded** in 74 batches, 11,870 on topic from 152 apps, 83 quotes and 136 IDs machine-verified; plus **1,604 Feature Ledger cards** read, with all 254 canonical points mapped (96 answered, 158 named as not about this page). Top ask: an all-habits overview (697 asks, 63 apps). Top complaints: wrong numbers (468, 72 apps), too thin (366), paywalled (345, 2.87★), confusing (253), weekly or skipped days counted wrongly (245), lost history (220, 50% 1–2★). 'Design: one Progress screen from the ≡ menu (Week/Month/Year day rings, three plain numbers, a row per habit with its strip, a Day sheet), then the existing habit page extended (Over Time, Year grid, Runs, By Weekday). Also covers every type's numbers and charts (ten shapes), quit (live clock, clean days that never go down, "Log a Slip"), cut-down (lower is better, judged at day end), tasks excluded, group-ready calculations, day marks, exact copy, model changes, 17 golden test cases, speed, accessibility, and all stats free. Evidence in `Progress and Statistics/Progress Evidence/`. |
 | [Day Marks — Heat Map, Rule and Palette](<Progress and Statistics/Day Marks — Heat Map, Rule and Palette.md>) | **Claude** | 2 Oct 2026 | Which way of marking days people like, counted in every language (heat maps first); what people expect from a heat map; one rule for every habit type; the measured OKLCH palette. Evidence and scripts in `Day Marks Evidence/` |
@@ -296,7 +300,7 @@ without a server. Start at [`Android/Docs/README.md`](<../../Android/Docs/README
 
 ## Apple Watch
 
-The Watch app (Plus): what people want on the wrist, what breaks, and how ours syncs without a server.
+The Watch app (Plus): what people want on the wrist, what breaks, and how ours syncs without a server. **Retired 21 Oct 2026: the first launch is phones only; the Watch app was removed from the code (Rulebook D16).**
 
 | Report | Author | Date | What it is |
 |---|---|---|---|
@@ -305,7 +309,7 @@ The Watch app (Plus): what people want on the wrist, what breaks, and how ours s
 
 ## iPad
 
-The iPad app (free): familiar like the iPhone, native to the iPad. The research lives with the designs in `iOS/Docs/iPad/`.
+The iPad app (free): familiar like the iPhone, native to the iPad. **Retired 21 Oct 2026: the first launch is phones only; the iPad app was removed from the code (Rulebook D16).** The research lives with the designs in `iOS/Docs/iPad/`.
 
 | Report | Author | Date | What it is |
 |---|---|---|---|

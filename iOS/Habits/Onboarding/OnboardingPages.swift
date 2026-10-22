@@ -324,7 +324,7 @@ struct DaysPage: View {
             } footer: {
                 // "You can later change these later in Settings", put right (the user, 9 Oct 2026), naming the place
                 // as the app names it: there's no Settings page, only ≡ → Day and Week (Help's rule).
-                Text(Device.words("You can change these later in ≡ › Day and Week.")).formNote()
+                Text("You can change these later in ≡ › Day and Week.").formNote()
             }
         } bottom: {
             OnboardingButton(title: "Continue", id: "onboarding-continue") { flow.go(.firstHabit) }

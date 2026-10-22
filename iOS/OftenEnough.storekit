@@ -16,36 +16,6 @@
       "productID" : "com.oftenenough.app.plus",
       "referenceName" : "Plus",
       "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "59.99",
-      "familyShareable" : true,
-      "internalID" : "6740000002",
-      "localizations" : [
-        {
-          "description" : "Plus for you and up to 5 people in your Apple family, through Family Sharing. One payment, yours forever.",
-          "displayName" : "Often Enough Plus Family",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "com.oftenenough.app.plusfamily",
-      "referenceName" : "Plus Family",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "35.00",
-      "familyShareable" : true,
-      "internalID" : "6740000003",
-      "localizations" : [
-        {
-          "description" : "Turns your Plus into Plus Family: you pay only the difference.",
-          "displayName" : "Upgrade to Plus Family",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "com.oftenenough.app.plusfamily.upgrade",
-      "referenceName" : "Plus Family upgrade",
-      "type" : "NonConsumable"
     }
   ],
   "settings" : {

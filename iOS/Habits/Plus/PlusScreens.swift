@@ -1,13 +1,14 @@
 import SwiftUI
 
 // The Plus screens (Current Work 80; the user's flows of 10 Oct 2026, built from their mockups and kept calm and
-// native): the 6th-habit sheet and Make Room, ≡ › Plus (buying, or Plus once it's yours), the upgrade to Plus Family,
-// "Plus is yours", and "Plus has ended". One filled button per screen, monochrome chrome (U2), no badges, countdowns
-// or pressure. Prices are always the App Store's own (`PlusStore.prices`).
+// native): the 6th-habit sheet and Make Room, ≡ › Plus (buying, or Plus once it's yours), "Plus is yours", and "Plus
+// has ended". Plus alone since 21 Oct 2026: no Plus Family and no upgrade to it (Rulebook D16). One filled button per
+// screen, monochrome chrome (U2), no badges, countdowns or pressure. Prices are always the App Store's own
+// (`PlusStore.prices`).
 
 // MARK: - ≡ › Plus
 
-/// ≡ › Plus: the plans and their prices without Plus (screens 10–15); "Plus is yours" once it's yours (18, 22, 25),
+/// ≡ › Plus: Plus and its price without Plus (screens 10–15); "Plus is yours" once it's yours (18, 22, 25),
 /// never "Get Plus" again. Restore Purchases is always on the page (App Review 3.1.1).
 struct PlusPage: View {
     @Environment(PlusStore.self) private var plus
@@ -15,33 +16,20 @@ struct PlusPage: View {
     @Environment(\.openURL) private var openURL
     @State private var restoreResult: PlusRestore?
     @State private var bought: PlusPlan?
-    /// The upgrade page, held here rather than by its row, which goes away once Plus Family is bought (U27).
-    @State private var upgrading = false
     @State private var analyticsFlow = Analytics.shared.ticket
 
     var body: some View {
         Group {
             if store.isPlus {
-                YourPlusView(restore: restore, upgrade: { upgrading = true })
+                YourPlusView(restore: restore)
             } else {
                 PlusBuyView(onBought: { bought = $0 }, restore: restore)
             }
         }
         .navigationTitle("Plus")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(isPresented: $upgrading) {
-            PlusUpgradeView {
-                upgrading = false
-                // Once the upgrade page has gone back: a sheet asked for mid-slide can be dropped.
-                Task {
-                    try? await Task.sleep(for: .milliseconds(500))
-                    bought = .family
-                }
-            }
-        }
         .sheet(item: $bought) { plan in
             PlusIsYoursView(plan: plan) { bought = nil }
-                .padFormSheet()
         }
         // Ask to Buy, approved while the page is open: Plus unlocked on its own.
         .onChange(of: plus.approved) {
@@ -74,7 +62,6 @@ struct PlusPage: View {
     /// Restore's result names what was found (screen 19), or says plainly that nothing was (20).
     static func title(_ result: PlusRestore?) -> String {
         switch result {
-        case .found(.owner(.family, _)): "Plus Family found"
         case .found: "Plus found"
         case .nothing: "No Plus on this Apple Account"
         case .failed: "The App Store didn't respond"
@@ -97,14 +84,14 @@ struct PlusPage: View {
     }
 }
 
-/// The Plus page without Plus: where the person stands, the two plans (Plus chosen), and one button that names what it
-/// buys and its price. Prices that can't load show no price at all, only Try Again; purchases turned off (Screen
+/// The Plus page without Plus: where the person stands, Plus and its price, and one button that names what it buys and
+/// its price. Prices that can't load show no price at all, only Try Again; purchases turned off (Screen
 /// Time) turn the button off and say who can change it; Ask to Buy says it's waiting.
 private struct PlusBuyView: View {
     let onBought: (PlusPlan) -> Void
     let restore: () -> Void
     @Environment(PlusStore.self) private var plus
-    @State private var plan: PlusPlan = .plus
+    private let plan: PlusPlan = .plus
     @State private var problem: PlusProblem?
 
     var body: some View {
@@ -116,15 +103,12 @@ private struct PlusBuyView: View {
                 if plus.pricesState == .failed {
                     PlusNote(title: "Prices didn't load", line: "Check your connection, then try again. Nothing was charged.",
                              id: "plus-prices-failed")
-                } else if let waiting = plus.waiting {
-                    PlusNote(title: "Waiting for approval", line: "Plus unlocks as soon as it's approved. You can close this.",
-                             id: "plus-waiting")
-                    let waitingPlan: PlusPlan = waiting == PlusProduct.plus ? .plus : .family
-                    PlanRow(plan: waitingPlan, price: plus.prices[waiting], chosen: true, choosable: false) {}
                 } else {
-                    ForEach(PlusPlan.allCases) { option in
-                        PlanRow(plan: option, price: plus.prices[option.productID], chosen: plan == option) { plan = option }
+                    if plus.waiting != nil {
+                        PlusNote(title: "Waiting for approval", line: "Plus unlocks as soon as it's approved. You can close this.",
+                                 id: "plus-waiting")
                     }
+                    PlanRow(plan: plan, price: plus.prices[plan.productID], chosen: true, choosable: false) {}
                 }
             }
             .padding(.horizontal, 16)
@@ -148,7 +132,6 @@ private struct PlusBuyView: View {
             .background(Color(.systemGroupedBackground))
         }
         .plusProblemAlert($problem) { buy() }
-        .onPerfCommand { action in if action == .nextPlan { plan = plan == .plus ? .family : .plus } }
     }
 
     @ViewBuilder private var mainButton: some View {
@@ -173,12 +156,10 @@ private struct PlusBuyView: View {
     }
 }
 
-/// "Plus is yours" (screens 18, 22 and 25): how it came, what's included, and for a Plus owner the upgrade to Plus
-/// Family. A family member sees no purchase buttons; leaving the family is done in Settings. On a new device with the
-/// same Apple Account it's already here, with nothing to press or sign in to.
+/// "Plus is yours" (screens 18 and 25): how it came and what's included. On a new device with the same Apple Account
+/// it's already here, with nothing to press or sign in to.
 private struct YourPlusView: View {
     let restore: () -> Void
-    let upgrade: () -> Void
     @Environment(PlusStore.self) private var plus
     @Environment(\.openURL) private var openURL
 
@@ -191,11 +172,7 @@ private struct YourPlusView: View {
             }
             Section {
                 Label("Unlimited habits", systemImage: "infinity")
-                Label(Device.otherDevices, systemImage: "ipad.and.iphone")
                 Label("Sync through your own iCloud", systemImage: "icloud")
-                if plus.ownedPlan == .family {
-                    Label("Up to 5 people in your Apple family", systemImage: "person.2")
-                }
             } header: {
                 Text("Included")
             } footer: {
@@ -203,25 +180,6 @@ private struct YourPlusView: View {
                     Text("Your habits are your own: nobody in the family sees them. To leave the family, go to Settings › your name › Family Sharing. Your habits all stay; only Plus stops.")
                 } else if plus.ownedPlan != nil {
                     Text("Nothing to sign in to: Plus comes with your Apple Account, on every device signed in to it.")
-                }
-            }
-            if plus.ownedPlan == .plus {
-                Section {
-                    Button(action: upgrade) {
-                        HStack {
-                            Text("Upgrade to Plus Family").foregroundStyle(Color.primary)
-                            Spacer(minLength: 8)
-                            if let price = plus.prices[PlusProduct.upgrade] { Text(price).foregroundStyle(.secondary) }
-                            Image(systemName: "chevron.right")
-                                .font(.footnote.weight(.semibold))
-                                .foregroundStyle(.tertiary)
-                                .accessibilityHidden(true)
-                        }
-                        .contentShape(Rectangle())
-                    }
-                    .accessibilityIdentifier("plus-upgrade")
-                } footer: {
-                    Text("Add up to 5 people for the difference.")
                 }
             }
             Section {
@@ -244,82 +202,8 @@ private struct YourPlusView: View {
     }
 }
 
-/// Plus → Plus Family (screen 21): only the difference, then Apple's sheet, then "Plus Family is yours".
-struct PlusUpgradeView: View {
-    let onBought: () -> Void
-    @Environment(PlusStore.self) private var plus
-    @State private var problem: PlusProblem?
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 14) {
-                PlusHeading(symbol: "plus.circle", title: "Plus Family", line: "Add up to 5 people. You pay only the difference.")
-                    .padding(.bottom, 10)
-                if plus.pricesState == .failed {
-                    PlusNote(title: "Prices didn't load", line: "Check your connection, then try again. Nothing was charged.",
-                             id: "plus-prices-failed")
-                } else {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Plus Family").font(.headline)
-                        Text("You + 5 people in your Apple family, each with their own habits")
-                            .font(.subheadline).foregroundStyle(.secondary)
-                        HStack(alignment: .firstTextBaseline, spacing: 6) {
-                            PriceText(price: plus.prices[PlusProduct.upgrade]).font(.title2.bold())
-                            Text("the difference · one-time").font(.caption).foregroundStyle(.secondary)
-                        }
-                        .padding(.top, 6)
-                    }
-                    .plusCard(chosen: true)
-                    VStack(spacing: 12) {
-                        LabeledContent("You already have Plus") {
-                            if let since = plus.since { Text("Since \(PlusDates.day(since))") }
-                        }
-                        Divider()
-                        LabeledContent("Plus Family") { PriceText(price: plus.prices[PlusProduct.family]) }
-                    }
-                    .plusCard()
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-            .padding(.bottom, 20)
-        }
-        .background(Color(.systemGroupedBackground))
-        .safeAreaInset(edge: .bottom) {
-            VStack(spacing: 10) {
-                if plus.pricesState == .failed {
-                    PlusMainButton(title: "Try Again", id: "plus-try-again") { Task { await plus.loadPrices() } }
-                } else {
-                    PlusMainButton(title: plus.prices[PlusProduct.upgrade].map { "Upgrade · \($0)" } ?? "Upgrade",
-                                   working: plus.buying || plus.pricesState == .loading || plus.waiting != nil,
-                                   enabled: plus.canMakePayments, id: "plus-upgrade-buy") { buy() }
-                }
-                Text(plus.canMakePayments ? "Shared through Apple's Family Sharing." : PlusStore.purchasesOffLine)
-                    .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 10)
-            .padding(.bottom, 6)
-            .background(Color(.systemGroupedBackground))
-        }
-        .navigationTitle("Upgrade")
-        .navigationBarTitleDisplayMode(.inline)
-        .plusProblemAlert($problem) { buy() }
-    }
-
-    private func buy() {
-        Task {
-            switch await plus.buy(PlusProduct.upgrade) {
-            case .bought: onBought()
-            case .failed(let failure): problem = failure
-            case .pending, .cancelled: break
-            }
-        }
-    }
-}
-
-/// After paying (screens 7 and 17): Plus is on the person's Apple Account; Plus Family reaches their Apple family
-/// through Family Sharing, with nothing to set up, invite or sign in to. Done goes back to what they were doing.
+/// After paying (screen 7): Plus is on the person's Apple Account, with nothing to set up or sign in to. Done goes back
+/// to what they were doing.
 struct PlusIsYoursView: View {
     let plan: PlusPlan
     let done: () -> Void
@@ -327,14 +211,10 @@ struct PlusIsYoursView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 18) {
-                PlusHeading(symbol: "checkmark.circle", title: plan == .plus ? "Plus is yours" : "Plus Family is yours",
-                            line: plan == .plus
-                                ? "Thank you. It's on your Apple Account, so every iPhone, iPad and Mac signed in to it has Plus."
-                                : "Everyone in your Apple family gets Plus on their own devices, with nothing to set up here. Their habits stay their own; nobody sees anyone else's.")
-                if plan == .plus {
-                    Text("Your habits stay on your devices and in your own iCloud. We never see them.")
-                        .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
-                }
+                PlusHeading(symbol: "checkmark.circle", title: "Plus is yours",
+                            line: "Thank you. It's on your Apple Account, so every iPhone signed in to it has Plus.")
+                Text("Your habits stay on your iPhone and in your own iCloud. We never see them.")
+                    .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
             }
             .padding(.horizontal, 24)
             .padding(.top, 56)
@@ -344,10 +224,6 @@ struct PlusIsYoursView: View {
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 10) {
                 PlusMainButton(title: "Done", id: "plus-done", action: done)
-                if plan == .family {
-                    Text("Up to 5 people in your Apple family. They need Share Purchases on: Settings › your name › Family Sharing.")
-                        .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
-                }
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 6)
@@ -360,7 +236,7 @@ struct PlusIsYoursView: View {
 // MARK: - The 6th habit
 
 /// Starting a 6th habit on the free plan (screens 2–4): straight away, the person's own 5 habits and an empty 6th,
-/// Plus and Plus Family side by side, and "Make room instead". ✕ is the only way out: there is no "Not now" (the user,
+/// Plus and its price, and "Make room instead". ✕ is the only way out: there is no "Not now" (the user,
 /// 10 Oct 2026). Whatever they were doing is kept: `onUnlocked` runs once they have Plus or have made room, and the
 /// caller saves its habit (or brings it back) once the sheet has closed.
 struct SixthHabitSheet: View {
@@ -377,8 +253,7 @@ struct SixthHabitSheet: View {
     let onUnlocked: () -> Void
     @Environment(PlusStore.self) private var plus
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.dynamicTypeSize) private var typeSize
-    @State private var plan: PlusPlan = .plus
+    private let plan: PlusPlan = .plus
     @State private var problem: PlusProblem?
     @State private var bought: PlusPlan?
     @State private var analyticsFlow = Analytics.shared.ticket
@@ -396,7 +271,6 @@ struct SixthHabitSheet: View {
         }
         .presentationDragIndicator(.visible)
         // The iPad: a form sheet in the middle of the screen, Make Room pushed inside it (Design Notes §9).
-        .padFormSheet()
         .onChange(of: plus.approved) {
             guard let approved = plus.approved, bought == nil else { return }
             plus.approved = nil
@@ -441,13 +315,8 @@ struct SixthHabitSheet: View {
                     PlusNote(title: "Waiting for approval", line: "Plus unlocks as soon as it's approved. You can close this.",
                              id: "plus-waiting")
                 } else {
-                    let layout = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 12)) : AnyLayout(HStackLayout(spacing: 12))
-                    layout {
-                        ForEach(PlusPlan.allCases) { option in
-                            PlanCard(plan: option, price: plus.prices[option.productID], chosen: plan == option) { plan = option }
-                        }
-                    }
-                    .fixedSize(horizontal: false, vertical: true)
+                    PlanRow(plan: plan, price: plus.prices[plan.productID], chosen: true, choosable: false) {}
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 PlusIncluded()
             }
@@ -493,7 +362,6 @@ struct SixthHabitSheet: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .plusProblemAlert($problem) { buy() }
-        .onPerfCommand { action in if action == .nextPlan { plan = plan == .plus ? .family : .plus } }
     }
 
     @ViewBuilder private var mainButton: some View {
@@ -692,7 +560,6 @@ struct PlusEndedView: View {
             .navigationDestination(isPresented: $showPlus) { PlusPage() }
         }
         .presentationDragIndicator(.visible)
-        .padFormSheet()
     }
 
     private var habitsLine: String {
@@ -816,39 +683,6 @@ private struct PlanRow: View {
     }
 }
 
-/// A plan in the 6th-habit sheet: the two side by side.
-private struct PlanCard: View {
-    let plan: PlusPlan
-    let price: String?
-    let chosen: Bool
-    let choose: () -> Void
-
-    var body: some View {
-        Button(action: choose) {
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(plan.name).font(.headline)
-                    Spacer(minLength: 4)
-                    Image(systemName: chosen ? "checkmark.circle.fill" : "circle")
-                        .font(.title3)
-                        .foregroundStyle(chosen ? Color.ink : Color(.tertiaryLabel))
-                        .accessibilityHidden(true)
-                }
-                Text(plan.who).font(.subheadline).foregroundStyle(.secondary)
-                Spacer(minLength: 12)
-                PriceText(price: price).font(.title2.bold())
-                Text("one-time").font(.caption).foregroundStyle(.secondary)
-            }
-            .foregroundStyle(Color.primary)
-            .plusCard(chosen: chosen)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityAddTraits(chosen ? .isSelected : [])
-        .accessibilityIdentifier("plan-" + plan.rawValue)
-    }
-}
-
 /// A price as the App Store gave it; a grey placeholder while it loads, never a made-up number.
 private struct PriceText: View {
     let price: String?
@@ -900,15 +734,15 @@ private struct PlusNote: View {
     }
 }
 
-/// What both plans include, in the 6th-habit sheet.
+/// What Plus includes, in the 6th-habit sheet.
 private struct PlusIncluded: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Both plans include")
+            Text("Plus includes")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
-            ForEach(["Unlimited habits", Device.otherDevices, "Sync through your own iCloud"], id: \.self) { item in
+            ForEach(["Unlimited habits", "Sync through your own iCloud"], id: \.self) { item in
                 Label {
                     Text(item)
                 } icon: {

@@ -54,14 +54,6 @@ struct TodayView: View {
     @Environment(\.requestReview) private var requestReview
     /// Speed runs only: the New Habit form opened straight away, to measure typing in it.
     @State private var perfForm = false
-    /// The iPad (Current Work 86): the sidebar's button, the window's width, and List or Columns. On the iPhone these
-    /// are nil, compact and List, and Today is exactly the iPhone's.
-    @Environment(\.padSidebar) private var padSidebar
-    /// A regular-width iPad window: the day control at the top centre, popovers, Today's column at 700 pt. A narrow
-    /// window is the iPhone's Today (I2).
-    private var padRegular: Bool { padSidebar?.regular == true }
-    /// The Columns view's columns, as tall as their cards, so the whole page scrolls down together (Design Notes §6).
-
     private var navigation: some View {
         NavigationStack(path: Bindable(menu).path) {
             Group {
@@ -69,7 +61,6 @@ struct TodayView: View {
                     Color(.systemGroupedBackground).ignoresSafeArea()
                 } else if arranging {
                     ArrangeDayView()
-                        .padColumn(PadMetrics.column)
                         .transition(.opacity)
                 } else {
                     // Once a minute (Now moves, a new day starts), and when a running timer reaches its goal so
@@ -79,8 +70,6 @@ struct TodayView: View {
                     content(now: clock)
                         .task(id: goalTimes()) { await tick() }
                         .modifier(ClocksPausedUnderMenu(menu: menu))
-                        // The iPad's Day details popover, pointing at its row (`PadDayPresenter`).
-                        .padDayPresenter()
                 }
             }
             .toolbar { if !covered { topBar } }
@@ -92,7 +81,7 @@ struct TodayView: View {
             .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id) }
             .perfBlankDestination()
             .toolbar { if !covered && !arranging && store.isLoaded && !store.habits.isEmpty { dayBar } }
-            .sheet(isPresented: Binding(get: { showCalendar && !padRegular }, set: { showCalendar = $0 })) {
+            .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
                     .analyticsScreen(.historyDay)
                     // Sized to the calendar and solid, so nothing shows through or gets cut off.
@@ -106,15 +95,12 @@ struct TodayView: View {
             }
             // One habit's timer, full screen until swiped away (it keeps running). A large sheet, so the swipe that puts
             // it away is the iPhone's own.
-            .sheet(isPresented: Binding(get: { store.timerScreen != nil && !Device.isPad }, set: { if !$0 { store.timerScreen = nil } })) {
+            .sheet(isPresented: Binding(get: { store.timerScreen != nil }, set: { if !$0 { store.timerScreen = nil } })) {
                 if let id = store.timerScreen { TimerScreen(habitID: id) }
             }
-            .sheet(item: Binding(get: { Device.isPad ? PadAnchor.shared.fallback : store.dayTarget },
-                                 set: { store.dayTarget = $0; if Device.isPad && $0 == nil { PadAnchor.shared.fallback = nil } })) { target in
+            .sheet(item: Binding(get: { store.dayTarget }, set: { store.dayTarget = $0 })) { target in
                 if let habit = store.habits.first(where: { $0.id == target.habitID }) {
-                    DaySheet(habit: habit, day: target.day, pageLink: true,
-                             pad: padSidebar.map { PadDayOptions(openHabit: $0.openHabit) })
-                        .padFormSheet()
+                    DaySheet(habit: habit, day: target.day, pageLink: true)
                 }
             }
             // A note is written in its own sheet, with Save, never typed in a row or a bar over Today (the user, 3 Oct
@@ -122,7 +108,7 @@ struct TodayView: View {
             .sheet(item: Binding(get: { store.noteTarget }, set: { store.noteTarget = $0 })) { target in
                 noteSheet(target)
             }
-            .sheet(isPresented: Binding(get: { showFilter && !padRegular }, set: { showFilter = $0 })) {
+            .sheet(isPresented: $showFilter) {
                 FilterSheet(day: selectedDay, selection: $groupRaw)
                     .analyticsScreen(nil)
                     .presentationBackground(Color(.systemBackground))
@@ -132,11 +118,9 @@ struct TodayView: View {
             .onChange(of: groupRaw) { store.analytics.count(.filterUsed, ticket: store.analytics.ticket) }
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView(group: filterGroup) { added = $0 }
-                    .padFormSheet()
             }
             .sheet(isPresented: $showIdeas, onDismiss: revealAdded) {
                 IdeasSheet { added = $0 }
-                    .padFormSheet()
             }
         }
     }
@@ -210,7 +194,6 @@ struct TodayView: View {
             }
         }
         .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
-        .padToday(visible: visibleRows, perform: perform)
     }
 
     var body: some View {
@@ -233,7 +216,6 @@ struct TodayView: View {
             // Progress's Day sheet: "Show on Today" has closed Progress; open that day here, where logging happens.
             guard let shown = router.showDay else { return }
             router.showDay = nil
-            if Device.isPad { menu.padPlace = nil }
             day = shown == store.today() ? nil : shown
         }
         .onChange(of: router.widgetToday) { routeWidget() }
@@ -275,11 +257,6 @@ struct TodayView: View {
         guard let id = router.openHabit, routine == nil, !showNewHabit else { return }
         router.openHabit = nil
         menu.reset()
-        if Device.isPad {
-            menu.padHabit[.habits] = id
-            menu.padPlace = .habits
-            return
-        }
         menu.path.append(MenuPlace.habits)
         menu.path.append(id)
     }
@@ -428,10 +405,9 @@ struct TodayView: View {
         }
     }
     /// Today comes back the moment the player starts closing, so it's drawn while the cover slides away.
-    /// Covered: the routine player over Today, or (the iPad) a page beside the sidebar in front of it. Today stays alive
-    /// (its day, the widgets' routes) but draws nothing: its rows hidden any other way were still read by VoiceOver
-    /// (runs 38149917285–38162641513; U1).
-    private var covered: Bool { (playerCovering && routine != nil) || (Device.isPad && PadAnchor.shared.covered) }
+    /// Covered: the routine player over Today. Today stays alive (its day, the widgets' routes) but draws nothing: its
+    /// rows hidden any other way were still read by VoiceOver (runs 38149917285–38162641513; U1).
+    private var covered: Bool { playerCovering && routine != nil }
 
     /// Moves `clock` on at each of `TodaySchedule`'s moments until Today is covered or the goal times change.
     private func tick() async {
@@ -561,9 +537,6 @@ struct TodayView: View {
                     .accessibilityIdentifier("empty-help")
             }
             .background(Color(.systemGroupedBackground))
-        } else if padRegular && padSidebar?.columns == true {
-            padColumns(rows: rowsBySection(tracked), restraint: restraint, paused: paused, day: shown, isToday: isToday,
-                       nowPart: nowPart)
         } else {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in
@@ -635,8 +608,6 @@ struct TodayView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            // The iPad: the iPhone's cards in one column at 700 pt, centred (I5); the list still spans the room.
-            .padColumn(PadMetrics.column)
             // Rows hold their place after a log, and read their checklist's open state, through this (#58, #59).
             .environment(layout)
             // The filter is always obvious, and one tap clears it (Day Structure report §2.8: no hidden habits). Pinned
@@ -666,18 +637,15 @@ struct TodayView: View {
                         HiddenTimerBars(visible: visibleRows) { store.timerScreen = $0.id }
                     }
                     // On today the button isn't there at all (so VoiceOver can't find an invisible button, found
-                    // by the UI tests 29 Sep); an empty space of its height keeps the list from shifting. On a
-                    // regular-width iPad, Back to Today sits beside the day control at the top (I6).
-                    if !padRegular {
-                        ZStack {
-                            Color.clear.frame(height: 44)
-                            if !isToday {
-                                BackToTodayButton { withAnimation { day = nil } }
-                                    .transition(.opacity)
-                            }
+                    // by the UI tests 29 Sep); an empty space of its height keeps the list from shifting.
+                    ZStack {
+                        Color.clear.frame(height: 44)
+                        if !isToday {
+                            BackToTodayButton { withAnimation { day = nil } }
+                                .transition(.opacity)
                         }
-                        .animation(.snappy, value: isToday)
                     }
+                    .animation(.snappy, value: isToday)
                 }
                 .padding(.bottom, 6)
             }
@@ -706,65 +674,6 @@ struct TodayView: View {
                     visibleRows: visibleRows, alwaysOpen: alwaysOpen)
     }
 
-    /// The iPad's Columns view (Design Notes §6; Reminders' Columns): each time of day its own column, 320 pt wide, left
-    /// to right in the person's order, then Quit or Cut Down and Paused; the row of columns scrolls sideways and the
-    /// page scrolls down together. Header and rows are Today's own; a column never folds; a row opens Day details at
-    /// itself; nothing moves during a run of taps (U4) and done rows sink within their column after the pause (U13).
-    @ViewBuilder
-    private func padColumns(rows: [String: [TodayItem]], restraint: [Habit], paused: [Habit], day: LocalDay, isToday: Bool,
-                            nowPart: String?) -> some View {
-        let cards = store.todayCards.filter { $0 == .quittingCard ? !restraint.isEmpty : !(rows[$0] ?? []).isEmpty }
-        ScrollView(.vertical) {
-            ScrollView(.horizontal) {
-                HStack(alignment: .top, spacing: 0) {
-                    ForEach(Array(cards.enumerated()), id: \.element) { index, card in
-                        columnList(card, count: card == .quittingCard ? restraint.count : rows[card]?.count ?? 0) {
-                            // The day's note leads the first column, as it leads the list.
-                            if index == 0, day <= store.today(), let note = store.dayNote(on: day) {
-                                Section {
-                                    Button { store.noteTarget = .init(habit: nil, day: day) } label: {
-                                        Label { Text(note).foregroundStyle(Color.primary).multilineTextAlignment(.leading) }
-                                            icon: { Image(systemName: "note.text").foregroundStyle(.secondary) }
-                                    }
-                                    .accessibilityIdentifier("day-note")
-                                }
-                            }
-                            if card == .quittingCard {
-                                quittingSection(restraint, day: day, isToday: isToday, alwaysOpen: true)
-                            } else if let items = rows[card] {
-                                partSection(card, items: items, day: day, isToday: isToday, isNow: card == nowPart, alwaysOpen: true)
-                            }
-                        }
-                    }
-                    if !paused.isEmpty {
-                        columnList(Self.pausedCard, count: paused.count) {
-                            Section {
-                                PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: true, onStart: nil,
-                                           onToggle: {}, folds: false)
-                                    .accessibilityIdentifier("paused-card")
-                                ForEach(paused) { habit in
-                                    PausedRow(habit: habit, day: day)
-                                        .id(Self.rowKey(Self.pausedCard, habit.id))
-                                }
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal, 4)
-            }
-            .scrollIndicators(.hidden)
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier("today-columns")
-        }
-        .background(Color(.systemGroupedBackground))
-        .environment(layout)
-    }
-
-    /// One column: Today's own grouped list, as tall as its cards (it doesn't scroll on its own).
-    private func columnList<Content: View>(_ card: String, count: Int, @ViewBuilder content: () -> Content) -> some View {
-        PadColumnList(card: card, estimate: CGFloat(80 + count * 60), content: content())
-    }
-
     /// Quit or Cut Down folds like the other cards, and starts open. No "N left" and no Start: nothing in it is to do.
     /// Quit habits keep their counter row; a limit keeps its ordinary row, logged with + when it happens.
     @ViewBuilder
@@ -782,12 +691,9 @@ struct TodayView: View {
                     let key = Self.rowKey(Self.quitting, habit.id)
                     if habit.kind == .quit {
                         QuitRow(habit: habit, highlighted: highlighted == key)
-                            .padDayAnchor(key)
-                            .padVisibleRow(key, in: visibleRows)
                             .id(key)
                     } else {
                         HabitRow(habit: habit, day: day, isToday: isToday, highlighted: highlighted == key)
-                            .padDayAnchor(key)
                             .id(key)
                             .onAppear { visibleRows.show(key) }
                             .onDisappear { visibleRows.hide(key) }
@@ -838,28 +744,7 @@ struct TodayView: View {
         let today = store.today()
         let shown = day ?? today
         let label = dayLabel(shown, today: today)
-        if padRegular {
-            // The iPad: the same ‹ · ring Today ⌄ 4/13 · › at the top centre, as Calendar's controls (I6); Back to Today
-            // beside it only on another day; the calendar as a popover from "Today ⌄".
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 12) {
-                    Button("Previous day", systemImage: "chevron.left") { day = shown.adding(days: -1, calendar: store.calendar) }
-                        .labelStyle(.iconOnly)
-                    DayCountButton(label: label, day: shown) { showCalendar = true }
-                        .padPopover(isPresented: Binding(get: { showCalendar && padRegular }, set: { showCalendar = $0 }), width: 360) {
-                            CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
-                                .analyticsScreen(.historyDay)
-                        }
-                    Button("Next day", systemImage: "chevron.right") { day = shown.adding(days: 1, calendar: store.calendar) }
-                        .labelStyle(.iconOnly)
-                    if shown != today {
-                        BackToTodayButton(primary: false) { withAnimation { day = nil } }
-                    }
-                }
-            }
-        } else {
-            phoneDayBar(label: label, shown: shown)
-        }
+        phoneDayBar(label: label, shown: shown)
     }
 
     /// The iPhone's bottom bar: ‹ · Today ⌄ 6/15 · ›.
@@ -895,19 +780,11 @@ struct TodayView: View {
                     .accessibilityIdentifier("arrange-done")
             }
         } else {
-            if Device.isPad {
-                // The system's sidebar button at every width (the user, 11 Oct 2026: one menu icon); while the sidebar is
-                // beside Today its own button, at its top right, puts it away.
-                if let padSidebar, !padSidebar.docked {
-                    ToolbarItem(placement: .topBarLeading) { PadSidebarButton(control: padSidebar) }
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Menu", systemImage: "line.3.horizontal") {
+                    menu.setOpen(true, reduceMotion: reduceMotion)
                 }
-            } else {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Menu", systemImage: "line.3.horizontal") {
-                        menu.setOpen(true, reduceMotion: reduceMotion)
-                    }
-                    .accessibilityIdentifier("menu-button")
-                }
+                .accessibilityIdentifier("menu-button")
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") { arrange(true) }
@@ -926,10 +803,6 @@ struct TodayView: View {
                 Button("Filter", systemImage: filtered ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle") {
                     showFilter = true
                 }
-                .padPopover(isPresented: Binding(get: { showFilter && padRegular }, set: { showFilter = $0 }), width: 340) {
-                    FilterSheet(day: selectedDay, selection: $groupRaw)
-                        .analyticsScreen(nil)
-                }
                 .accessibilityValue([shownGroup?.name, hideDoneHabits || hideDoneTasks ? "Completed hidden" : nil].compactMap { $0 }.joined(separator: ", "))
                 .accessibilityIdentifier("filter-button")
                 Button("New Habit", systemImage: "plus") { showNewHabit = true }
@@ -945,43 +818,6 @@ struct TodayView: View {
 
     /// The tip on Edit shows only on today's Today, with nothing over it (`ArrangeTip` decides when).
     private var tipShown: Bool { day == nil && !covered && store.noteTarget == nil && !showNewHabit && !showFilter && !showCalendar }
-}
-
-/// The iPad's part of Today (Current Work 86): Day details as a form sheet when its habit has no row on screen
-/// (`PadAnchor`), the timer full screen (Design Notes §5: focus on one thing), and the menu bar's commands. Nothing on the
-/// iPhone.
-private struct PadToday: ViewModifier {
-    let visible: VisibleRows
-    let perform: (PerfAction) -> Void
-    @Environment(HabitStore.self) private var store
-
-    func body(content: Content) -> some View {
-            content
-                // Day details opened: point at its row on screen (`PadAnchor`), or, with none, a form sheet.
-                .onChange(of: store.dayTarget?.id, initial: true) {
-                    let anchor = PadAnchor.shared
-                    guard let target = store.dayTarget else { anchor.clear(); return }
-                    if anchor.fallback?.id == target.id { return }
-                    let key = anchor.key(for: target, visible: visible.keys)
-                    anchor.key = key
-                    if key == nil { anchor.rect = nil }
-                    anchor.fallback = key == nil ? target : nil
-                }
-                .fullScreenCover(isPresented: Binding(get: { store.timerScreen != nil }, set: { if !$0 { store.timerScreen = nil } })) {
-                    if let id = store.timerScreen { TimerScreen(habitID: id) }
-                }
-                .onChange(of: PadCommands.shared.todayRequest) { _, request in
-                    guard let request else { return }
-                    PadCommands.shared.todayRequest = nil
-                    perform(request.action)
-                }
-    }
-}
-
-private extension View {
-    @ViewBuilder func padToday(visible: VisibleRows, perform: @escaping (PerfAction) -> Void) -> some View {
-        if Device.isPad { modifier(PadToday(visible: visible, perform: perform)) } else { self }
-    }
 }
 
 /// "● Health ✕" above Today's list while a group is chosen, and "Completed hidden ✕" while done rows are hidden: each
@@ -1085,8 +921,7 @@ private struct ClocksPausedUnderMenu: ViewModifier {
     let menu: MenuModel
 
     func body(content: Content) -> some View {
-        // The iPad: also while another place is shown beside the sidebar (Today stays alive under it, `PadRoot`).
-        content.environment(\.clocksPaused, !menu.path.isEmpty || menu.padPlace != nil)
+        content.environment(\.clocksPaused, !menu.path.isEmpty)
     }
 }
 
@@ -1104,33 +939,5 @@ private struct DayCountButton: View {
             DayLabel(label: label, done: summary.done, total: summary.total)
         }
         .accessibilityLabel("\(label), \(summary.done) of \(summary.total) done. Open calendar")
-    }
-}
-
-/// One column of the iPad's Columns view: a List as tall as its rows (the columns scroll down together), holding its own
-/// height, so a column that grows or shrinks redraws only itself, never Today (Rulebook S6). With the heights on Today,
-/// one day change redrew every column once per column (run 38131557328: 683 ms/s and 37 freezes on +1 and day ‹ ›; held
-/// per column, 738 → 648 in run 38143097108). Holding the height still through a run of taps changed nothing (run
-/// 38146701137: 598 → 630), so it isn't the resizing: every row of every column is drawn (PERFORMANCE-LESSONS L33).
-private struct PadColumnList<Content: View>: View {
-    let card: String
-    let estimate: CGFloat
-    let content: Content
-    @State private var height: CGFloat?
-
-    var body: some View {
-        List { content }
-            .listStyle(.insetGrouped)
-            .listSectionSpacing(14)
-            .environment(\.defaultMinListRowHeight, 44)
-            .contentMargins(.top, 4, for: .scrollContent)
-            .scrollDisabled(true)
-            .onScrollGeometryChange(for: CGFloat.self) { $0.contentSize.height + $0.contentInsets.top + $0.contentInsets.bottom } action: { _, new in
-                let rounded = new.rounded(.up)
-                if abs((height ?? 0) - rounded) >= 1 { height = rounded }
-            }
-            .frame(width: 320, height: max(height ?? estimate, 120))
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier("today-column-" + card)
     }
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 // Android (Android/, Current Work 107): only when the Android app builds the core (`core.android`, set by
-// Android/gradle.properties), so the iPhone's, the Watch's and the server's builds never need an Android SDK.
+// Android/gradle.properties), so the iPhone's and the server's builds never need an Android SDK.
 if ((providers.systemProperty("core.android").orNull ?: providers.gradleProperty("core.android").orNull) == "true") {
     apply(plugin = "com.android.kotlin.multiplatform.library")
     val targets = (kotlin as ExtensionAware).extensions
@@ -25,7 +25,7 @@ kotlin {
         useEsModules()
         generateTypeScriptDefinitions()
     }
-    listOf(iosArm64(), iosSimulatorArm64(), watchosArm64(), watchosDeviceArm64(), watchosSimulatorArm64())
+    listOf(iosArm64(), iosSimulatorArm64())
 
     sourceSets {
         commonMain.dependencies {

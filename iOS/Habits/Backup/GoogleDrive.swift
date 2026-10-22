@@ -279,7 +279,7 @@ struct GoogleDriveCopiesView: View {
             defer { loading = false }
             files = ((try? await GoogleDrive.shared.list()) ?? []).filter { $0.name.hasSuffix(".zip") }.sorted { $0.modified > $1.modified }
         }
-        .sheet(item: $pending) { pending in NavigationStack { RestorePreviewView(pending: pending) }.padFormSheet() }
+        .sheet(item: $pending) { pending in NavigationStack { RestorePreviewView(pending: pending) } }
     }
 
     private func open(_ file: GoogleDrive.File) async {

@@ -1,6 +1,5 @@
 package com.oftenenough.app.ui.plus
 
-import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,10 +52,6 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.qrcode.QRCodeWriter
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.oftenenough.app.R
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.theme.AppType
@@ -370,21 +365,6 @@ fun PlusTonalButton(text: String, icon: ImageVector, tag: String, onClick: () ->
         Spacer(Modifier.width(8.dp))
         Text(text, style = AppType.labelLarge)
     }
-}
-
-/** The invite's QR code: drawn on the phone from the link, black on white in both themes (cameras read that best). */
-@Composable
-fun InviteQr(link: String, size: Dp = 160.dp) {
-    val bitmap = remember(link) { qrBitmap(link, 512) }
-    Box(Modifier.size(size).clip(RoundedCornerShape(8.dp)).background(Color.White).padding(6.dp)) {
-        Image(bitmap.asImageBitmap(), "Invite QR code", Modifier.fillMaxSize(), filterQuality = FilterQuality.None)
-    }
-}
-
-private fun qrBitmap(text: String, px: Int): Bitmap {
-    val m = QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, px, px, mapOf(EncodeHintType.MARGIN to 0, EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.M))
-    val pixels = IntArray(m.width * m.height) { i -> if (m.get(i % m.width, i / m.width)) android.graphics.Color.BLACK else android.graphics.Color.WHITE }
-    return Bitmap.createBitmap(pixels, m.width, m.height, Bitmap.Config.RGB_565)
 }
 
 /** A plain clickable modifier for whole rows, with the row's own name for TalkBack. */

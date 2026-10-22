@@ -1,0 +1,772 @@
+{
+  "author": "Codex",
+  "observed_date": "2026-10-21",
+  "target_currency": "USD",
+  "target_geography": "worldwide; source-specific gaps retained",
+  "status": "provisional; fresh all-review hand-reading incomplete",
+  "ios_shortlist": [
+    {
+      "key": "finch",
+      "name": "Finch",
+      "apple_id": "1528595748",
+      "monthly": 1000000,
+      "source": "finch_ios",
+      "confidence": "medium-low"
+    },
+    {
+      "key": "me",
+      "name": "Me+ Lifestyle Routine",
+      "apple_id": "1596403446",
+      "monthly": 100000,
+      "source": "me_ios",
+      "confidence": "low"
+    },
+    {
+      "key": "habit",
+      "name": "Habit Tracker — InnerGrow",
+      "apple_id": "1438388363",
+      "monthly": 100000,
+      "source": "habit_ios",
+      "confidence": "low"
+    },
+    {
+      "key": "myroutine",
+      "name": "MyRoutine",
+      "apple_id": "1518956326",
+      "monthly": 100000,
+      "source": "myroutine_ios",
+      "confidence": "very low"
+    },
+    {
+      "key": "productive",
+      "name": "Productive",
+      "apple_id": "983826477",
+      "monthly": 70000,
+      "source": "productive_ios",
+      "confidence": "low"
+    },
+    {
+      "key": "grit",
+      "name": "Grit",
+      "apple_id": "6446997766",
+      "monthly": 65000,
+      "source": "grit",
+      "confidence": "low"
+    },
+    {
+      "key": "fabulous",
+      "name": "Fabulous",
+      "apple_id": "1203637303",
+      "monthly": 50000,
+      "source": "fabulous_ios",
+      "confidence": "medium-low"
+    },
+    {
+      "key": "routinery",
+      "name": "Routinery",
+      "apple_id": "1450486923",
+      "monthly": 40000,
+      "source": "routinery_ios",
+      "confidence": "low"
+    },
+    {
+      "key": "habitkit",
+      "name": "HabitKit",
+      "apple_id": "6443918070",
+      "monthly": 40000,
+      "source": "habitkit_ios",
+      "confidence": "low: March record"
+    },
+    {
+      "key": "habitify",
+      "name": "Habitify",
+      "apple_id": "1111447047",
+      "monthly": 40000,
+      "source": "habitify_ios",
+      "confidence": "very low"
+    }
+  ],
+  "android_candidates": [
+    {
+      "key": "finch",
+      "name": "Finch",
+      "package": "com.finch.finch",
+      "downloads": 400000,
+      "kind": "provider_point",
+      "monthly": 700000,
+      "low": null,
+      "high": null,
+      "source": "finch_android",
+      "confidence": "medium-low"
+    },
+    {
+      "key": "me",
+      "name": "Me+ Lifestyle Routine",
+      "package": "daily.planner.routine.habits",
+      "downloads": 280000,
+      "kind": "analyst_scenario_S",
+      "low": 54600.0,
+      "monthly": 224000.0,
+      "high": 630000.0,
+      "source": "me_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "hello",
+      "name": "HelloHabit",
+      "package": "com.studio.hellohabit",
+      "downloads": 100000,
+      "kind": "analyst_scenario_S",
+      "low": 19500.0,
+      "monthly": 80000.0,
+      "high": 225000.0,
+      "source": "hello_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "habitica",
+      "name": "Habitica",
+      "package": "com.habitrpg.android.habitica",
+      "downloads": null,
+      "kind": "provider_range_midpoint",
+      "monthly": 49699.09455915671,
+      "low": 19000,
+      "high": 130000,
+      "source": "habitica_android",
+      "confidence": "low"
+    },
+    {
+      "key": "life",
+      "name": "Life Reset",
+      "package": "build.designand.riselife",
+      "downloads": 61000,
+      "kind": "analyst_scenario_S",
+      "low": 11895.0,
+      "monthly": 48800.0,
+      "high": 137250.0,
+      "source": "life_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "teddy",
+      "name": "TeddyCare",
+      "package": "com.kappa.teddybear.android",
+      "downloads": 39000,
+      "kind": "analyst_scenario_S",
+      "low": 7605.0,
+      "monthly": 31200.0,
+      "high": 87750.0,
+      "source": "teddy_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "dear",
+      "name": "Dear Me",
+      "package": "com.kompanion.habit.android",
+      "downloads": 27000,
+      "kind": "analyst_scenario_S",
+      "low": 5265.0,
+      "monthly": 21600.0,
+      "high": 60750.0,
+      "source": "dear_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "diary",
+      "name": "Habit Tracker - Habit Diary",
+      "package": "habittracker.todolist.tickit.daily.planner",
+      "downloads": 79000,
+      "kind": "analyst_scenario_U",
+      "low": 6320.0,
+      "monthly": 18960.0,
+      "high": 63200.0,
+      "source": "diary_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "myroutine",
+      "name": "MyRoutine",
+      "package": "com.minding.myroutine",
+      "downloads": 21000,
+      "kind": "analyst_scenario_S",
+      "low": 4095.0,
+      "monthly": 16800.0,
+      "high": 47250.0,
+      "source": "myroutine_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "routinery",
+      "name": "Routinery",
+      "package": "com.alt.goodmorning",
+      "downloads": 20000,
+      "kind": "analyst_scenario_S",
+      "low": 3900.0,
+      "monthly": 16000.0,
+      "high": 45000.0,
+      "source": "routinery_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "roubit",
+      "name": "Roubit",
+      "package": "com.roubit",
+      "downloads": 18000,
+      "kind": "analyst_scenario_S",
+      "low": 3510.0,
+      "monthly": 14400.0,
+      "high": 40500.0,
+      "source": "roubit_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "habitnow",
+      "name": "HabitNow",
+      "package": "com.habitnow",
+      "downloads": 52000,
+      "kind": "analyst_scenario_U",
+      "low": 4160.0,
+      "monthly": 12480.0,
+      "high": 41600.0,
+      "source": "habitnow_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "t21",
+      "name": "21 Days Challenge",
+      "package": "com.limatech.dayschallenge.dayschallenge",
+      "downloads": 50000,
+      "kind": "analyst_scenario_U",
+      "low": 4000.0,
+      "monthly": 12000.0,
+      "high": 40000.0,
+      "source": "t21_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "productive",
+      "name": "Productive",
+      "package": "com.apalon.to.do.list",
+      "downloads": 12000,
+      "kind": "analyst_scenario_S",
+      "low": 2340.0,
+      "monthly": 9600.0,
+      "high": 27000.0,
+      "source": "productive_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "fabulous",
+      "name": "Fabulous",
+      "package": "co.thefabulous.app",
+      "downloads": 20000,
+      "kind": "provider_point",
+      "monthly": 8000,
+      "low": null,
+      "high": null,
+      "source": "fabulous_android",
+      "confidence": "medium-low"
+    },
+    {
+      "key": "habitify",
+      "name": "Habitify",
+      "package": "co.unstatic.habitify",
+      "downloads": 7400,
+      "kind": "analyst_scenario_S",
+      "low": 1443.0,
+      "monthly": 5920.0,
+      "high": 16650.0,
+      "source": "habitify_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "disciplined",
+      "name": "Disciplined",
+      "package": "app.disciplined.productive.structured.habit.tracker",
+      "downloads": 6800,
+      "kind": "analyst_scenario_S",
+      "low": 1326.0,
+      "monthly": 5440.0,
+      "high": 15300.0,
+      "source": "disciplined_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "habitkit",
+      "name": "HabitKit",
+      "package": "com.roehl.habitkit",
+      "downloads": null,
+      "kind": "provider_range_midpoint",
+      "monthly": 5099.019513592785,
+      "low": 2000,
+      "high": 13000,
+      "source": "habitkit_android",
+      "confidence": "low"
+    },
+    {
+      "key": "hizo",
+      "name": "Hizo",
+      "package": "dev.voksu.hizo",
+      "downloads": 18000,
+      "kind": "analyst_scenario_U",
+      "low": 1440.0,
+      "monthly": 4320.0,
+      "high": 14400.0,
+      "source": "hizo_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "motivated",
+      "name": "Motivated",
+      "package": "com.motivated.app",
+      "downloads": 3900,
+      "kind": "analyst_scenario_S",
+      "low": 760.5,
+      "monthly": 3120.0,
+      "high": 8775.0,
+      "source": "motivated_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "rabbit",
+      "name": "Habit Rabbit",
+      "package": "com.superbyte.habitrabbit",
+      "downloads": 11000,
+      "kind": "analyst_scenario_U",
+      "low": 880.0,
+      "monthly": 2640.0,
+      "high": 8800.0,
+      "source": "rabbit_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "rabit",
+      "name": "Rabit",
+      "package": "com.blu.rabito",
+      "downloads": 2700,
+      "kind": "analyst_scenario_S",
+      "low": 526.5,
+      "monthly": 2160.0,
+      "high": 6075.0,
+      "source": "rabit_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "routineflow",
+      "name": "RoutineFlow",
+      "package": "app.routineflow.routineflow",
+      "downloads": 1800,
+      "kind": "analyst_scenario_S",
+      "low": 351.0,
+      "monthly": 1440.0,
+      "high": 4050.0,
+      "source": "routineflow_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "fsa",
+      "name": "Daily Habits: AI Habit Tracker",
+      "package": "com.free_simple_apps.habits",
+      "downloads": 1100,
+      "kind": "analyst_scenario_S",
+      "low": 214.5,
+      "monthly": 880.0,
+      "high": 2475.0,
+      "source": "fsa_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "fun",
+      "name": "Fun Habit",
+      "package": "com.habits.todolist.plan.wish",
+      "downloads": 2300,
+      "kind": "analyst_scenario_U",
+      "low": 184.0,
+      "monthly": 552.0,
+      "high": 1840.0,
+      "source": "fun_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "avocation",
+      "name": "Avocation",
+      "package": "app.avocation.avocation",
+      "downloads": 440,
+      "kind": "analyst_scenario_U",
+      "low": 35.2,
+      "monthly": 105.6,
+      "high": 352.0,
+      "source": "avocation_downloads",
+      "confidence": "very low"
+    },
+    {
+      "key": "habitbull",
+      "name": "HabitBull / Habit Tracker",
+      "package": "com.oristats.habitbull",
+      "downloads": 100000,
+      "kind": "provider_upper_bound",
+      "monthly": null,
+      "low": null,
+      "high": 5000,
+      "source": "habitbull",
+      "confidence": "low"
+    }
+  ],
+  "sources": {
+    "finch_ios": {
+      "title": "Sensor Tower — Finch, App Store",
+      "url": "https://app.sensortower.com/overview/1528595748?country=US",
+      "facts": "Indexed overview: approximately $1M revenue and 300K downloads, worldwide last month. Canonical overview can render no figures without sign-in; estimate was read in indexed overview text. Exact month and fee/tax basis not obtained.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "App Store; worldwide"
+    },
+    "finch_android": {
+      "title": "Sensor Tower — Finch, Google Play",
+      "url": "https://app.sensortower.com/overview/com.finch.finch?country=US",
+      "facts": "Indexed overview summary: approximately $700K revenue and 400K downloads, last month. Exact reporting dates and fee/tax basis not obtained.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; worldwide overview"
+    },
+    "finch_conflict": {
+      "title": "AppRank — Finch",
+      "url": "https://apprank.io/finch-self-care-pet",
+      "facts": "Platform section shows $2M iOS and $800K Android. Revenue record collected 22 January 2026, despite October storefront metadata; not an October financial observation.",
+      "date": "Revenue record collected 22 January 2026; period unspecified",
+      "scope": "Source-specific; see facts"
+    },
+    "me_ios": {
+      "title": "Sensor Tower — Me+, App Store",
+      "url": "https://app.sensortower.com/overview/1596403446?country=US",
+      "facts": "Indexed overview: $100K revenue and 30K downloads, worldwide last month. Exact reporting month unknown.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "App Store; worldwide"
+    },
+    "habit_ios": {
+      "title": "Sensor Tower — InnerGrow Habit Tracker",
+      "url": "https://app.sensortower.com/overview/1438388363?page=1&page_size=25",
+      "facts": "Indexed overview: $100K revenue and 200K downloads, worldwide last month. App ID 1438388363; do not match to App Holdings HabitBull on Android.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "App Store; worldwide"
+    },
+    "habit_conflict": {
+      "title": "AppRank — InnerGrow Habit Tracker",
+      "url": "https://apprank.io/habit-tracker-8363",
+      "facts": "Displays $400K monthly iOS revenue and 500K downloads; materially higher than the Sensor Tower overview. Not an independent audited financial disclosure.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Source-specific; see facts"
+    },
+    "life": {
+      "title": "Airbridge / AppKittie — Life Reset",
+      "url": "https://www.airbridge.io/en/app-revenue/life-reset",
+      "facts": "Shows $203K monthly revenue and 71K monthly downloads. App Store metadata is used but the revenue paragraph does not explicitly specify a store split. The figure is kept outside the store-specific revenue tables. Do not add it to an Android scenario as a verified combined total.",
+      "date": "Published 19 October 2026; AppKittie snapshot 16 October, series ends 18 October",
+      "scope": "Store allocation unresolved; App Store-oriented profile"
+    },
+    "myroutine_ios": {
+      "title": "NicheMetric — MyRoutine",
+      "url": "https://www.nichemetric.com/app/myroutine-routine-habit-goal--8377266",
+      "facts": "App-level profile explicitly labels iOS, store ID 1518956326, $100K revenue and 100K downloads for last 30 days. Geographic and fee/tax basis not disclosed; low confidence.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "iOS; geography undisclosed"
+    },
+    "productive_ios": {
+      "title": "AppRank — Productive",
+      "url": "https://apprank.io/productive-habit-tracker-6477",
+      "facts": "Displays $70K monthly iOS revenue and 20K downloads. A September page label/crawl is not proof of the covered revenue month.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "iOS; exact geographical coverage not verified"
+    },
+    "productive_conflict": {
+      "title": "NicheMetric — Productive",
+      "url": "https://www.nichemetric.com/app/productive-habit-tracker--5923522",
+      "facts": "App profile lists iOS ID 983826477 and $40K revenue / 40K downloads, last 30 days. Conflicts with the $70K AppRank anchor.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Source-specific; see facts"
+    },
+    "grit": {
+      "title": "ScreensDesign — Grit",
+      "url": "https://screensdesign.com/apps/grit-daily-habit-tracker/",
+      "facts": "Current indexed header: $65K monthly revenue, 100K installs, developer Stepan Kurennykh. The showcase elsewhere retains $90K; exact financial reporting interval unspecified.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Apple app GrittyApps, ID 6446997766; geography undisclosed"
+    },
+    "grit_conflict": {
+      "title": "NicheMetric — Grit",
+      "url": "https://www.nichemetric.com/app/grit-daily-habit-tracker--13968919",
+      "facts": "App-level last-30-days section shows $200K. Other niche/publisher sections show incompatible amounts; those totals are not used as app monthly revenue.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Source-specific; see facts"
+    },
+    "fabulous_ios": {
+      "title": "Sensor Tower — Fabulous, App Store",
+      "url": "https://app.sensortower.com/overview/1203637303?country=US",
+      "facts": "Indexed overview shows $50K revenue and 20K downloads, worldwide last month. Exact reporting dates not exposed.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "App Store; worldwide"
+    },
+    "fabulous_android": {
+      "title": "Sensor Tower — TheFabulous publisher",
+      "url": "https://app.sensortower.com/publisher/android/TheFabulous/",
+      "facts": "App row for Fabulous Daily Routine Planner shows $8K revenue and 20K downloads last month. The specific app row, not the whole publisher total, is used.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; worldwide"
+    },
+    "routinery_ios": {
+      "title": "Peekly — Routinery",
+      "url": "https://peekly.app/apps/fa49739e-0b7f-4e92-a6e9-204034829799",
+      "facts": "Public named-app headline: $40K monthly App Store revenue, fewer than 5K downloads. Other gated tiles contain inconsistent numbers; they are not evidence.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "App Store; exact geographical coverage not verified"
+    },
+    "routinery_conflict": {
+      "title": "AppRank — Routinery",
+      "url": "https://apprank.io/routine-planner-habit-tracker-6923",
+      "facts": "Displays $70K monthly iOS revenue and 50K downloads. Shows why the $40K anchor is directional, not a confirmed contemporary monthly result.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Source-specific; see facts"
+    },
+    "habitkit_ios": {
+      "title": "AppRank — HabitKit",
+      "url": "https://apprank.io/habit-tracker-habitkit-8070",
+      "facts": "Displays $40K monthly iOS revenue / 20K downloads; direct page says revenue record collected 24 March 2026. Not a September/October revenue observation.",
+      "date": "Revenue record collected 24 March 2026; financial period unspecified",
+      "scope": "iOS; geography not verified"
+    },
+    "habitkit_founder": {
+      "title": "Sebastian Röhl — 2025 annual review",
+      "url": "https://sebastianroehl.substack.com/p/2025-the-year-that-changed-everything",
+      "facts": "Founder reports $602K business revenue and $28K MRR; figures exclude 31 December. FocusKit separately had $874 revenue and $52 MRR. HabitKit downloads: 272K App Store, 290K Play. No store revenue split. January 2025 revenue $112K; monthly revenue stabilized above $40K. These are historical founder reports, not current store-specific estimates.",
+      "date": "31 December 2025; covers 2025 excluding final day",
+      "scope": "Business / both stores; no store revenue split"
+    },
+    "habitkit_android": {
+      "title": "AppCurrents — HabitKit, Android",
+      "url": "https://appcurrents.com/apps/habit-tracker-habitkit-android-com.roehl.habitkit",
+      "facts": "Provider models $2K–$13K monthly revenue and 9K–36K monthly downloads. Medium confidence is the provider label; this report treats actual earnings inference as low confidence.",
+      "date": "Estimate updated 17 October 2026",
+      "scope": "Google Play; modeled worldwide estimate"
+    },
+    "habitica_android": {
+      "title": "AppCurrents — Habitica, Android",
+      "url": "https://appcurrents.com/apps/habitica-gamify-your-tasks-android-com.habitrpg.android.habitica",
+      "facts": "Provider models $19K–$130K monthly revenue; 39K–160K monthly downloads; low confidence. Our ranking anchor is geometric midpoint, approximately $50K, not another measured figure.",
+      "date": "Estimate updated 9 October 2026",
+      "scope": "Google Play; modeled worldwide estimate"
+    },
+    "habitify_ios": {
+      "title": "NicheMetric — Habitify",
+      "url": "https://www.nichemetric.com/app/habitify-habit-tracker--240962",
+      "facts": "App-level profile lists iOS ID 1111447047, $40K revenue and 40K downloads, last 30 days. Tied with the displayed cutoff anchors; cannot be confidently excluded from a real top ten.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "iOS; geography undisclosed"
+    },
+    "hello_ios": {
+      "title": "ScreensDesign — HelloHabit",
+      "url": "https://screensdesign.com/showcase/hellohabit-daily-planner",
+      "facts": "Header shows $30K monthly revenue / 20K downloads, while body retains $200K / 100K. Neither is treated as independently verified current financials; app could displace cutoff members.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Source-specific; see facts"
+    },
+    "me_downloads": {
+      "title": "AppBrain — Me+ Lifestyle Routine",
+      "url": "https://www.appbrain.com/app/me-lifestyle-routine/daily.planner.routine.habits",
+      "facts": "Approximately 280,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "hello_downloads": {
+      "title": "AppBrain — HelloHabit",
+      "url": "https://www.appbrain.com/app/hellohabit-habit-tracker/com.studio.hellohabit",
+      "facts": "Approximately 100,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "life_downloads": {
+      "title": "AppBrain — Life Reset",
+      "url": "https://www.appbrain.com/app/rise-66-days-life-reset/build.designand.riselife",
+      "facts": "Approximately 61,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "teddy_downloads": {
+      "title": "AppBrain — TeddyCare",
+      "url": "https://www.appbrain.com/app/teddycare-daily-routine-plan/com.kappa.teddybear.android",
+      "facts": "Approximately 39,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "dear_downloads": {
+      "title": "AppBrain — Dear Me",
+      "url": "https://www.appbrain.com/app/dear-me-daily-routine-tracker/com.kompanion.habit.android",
+      "facts": "Approximately 27,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "diary_downloads": {
+      "title": "AppBrain — Habit Tracker - Habit Diary",
+      "url": "https://www.appbrain.com/app/habit-tracker-habit-diary/habittracker.todolist.tickit.daily.planner",
+      "facts": "Approximately 79,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "myroutine_downloads": {
+      "title": "AppBrain — MyRoutine",
+      "url": "https://www.appbrain.com/app/myroutine-routine-habit-goal/com.minding.myroutine",
+      "facts": "Approximately 21,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "routinery_downloads": {
+      "title": "AppBrain — Routinery",
+      "url": "https://www.appbrain.com/app/routine-planner-habit-tracker/com.alt.goodmorning",
+      "facts": "Approximately 20,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "roubit_downloads": {
+      "title": "AppBrain — Roubit",
+      "url": "https://www.appbrain.com/app/roubit-daily-life-routine-care/com.roubit",
+      "facts": "Approximately 18,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "habitnow_downloads": {
+      "title": "AppBrain — HabitNow",
+      "url": "https://www.appbrain.com/app/habitnow-daily-routine-planner/com.habitnow",
+      "facts": "Approximately 52,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "productive_downloads": {
+      "title": "AppBrain — Productive",
+      "url": "https://www.appbrain.com/app/productive-habit-tracker/com.apalon.to.do.list",
+      "facts": "Approximately 12,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "disciplined_downloads": {
+      "title": "AppBrain — Disciplined",
+      "url": "https://www.appbrain.com/app/disciplined-habit-tracker/app.disciplined.productive.structured.habit.tracker",
+      "facts": "Approximately 6,800 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "rabit_downloads": {
+      "title": "AppBrain — Rabit",
+      "url": "https://www.appbrain.com/app/rabit-habit-tracker-planner/com.blu.rabito",
+      "facts": "Approximately 2,700 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "routineflow_downloads": {
+      "title": "AppBrain — RoutineFlow",
+      "url": "https://www.appbrain.com/app/routineflow-routine-for-adhd/app.routineflow.routineflow",
+      "facts": "Approximately 1,800 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "t21_downloads": {
+      "title": "AppBrain — 21 Days Challenge",
+      "url": "https://www.appbrain.com/app/21-days-challenge/com.limatech.dayschallenge.dayschallenge",
+      "facts": "Approximately 50,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "hizo_downloads": {
+      "title": "AppBrain — Hizo",
+      "url": "https://www.appbrain.com/app/hizo-habit-tracker-todo/dev.voksu.hizo",
+      "facts": "Approximately 18,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "motivated_downloads": {
+      "title": "AppBrain — Motivated",
+      "url": "https://www.appbrain.com/app/motivated-habit-tracker/com.motivated.app",
+      "facts": "Approximately 3,900 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "avocation_downloads": {
+      "title": "AppBrain — Avocation",
+      "url": "https://www.appbrain.com/app/avocation-goal-habit-tracker/app.avocation.avocation",
+      "facts": "Approximately 440 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "fun_downloads": {
+      "title": "AppBrain — Fun Habit",
+      "url": "https://www.appbrain.com/app/fun-habit-habit-tracker/com.habits.todolist.plan.wish",
+      "facts": "Approximately 2,300 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "fsa_downloads": {
+      "title": "AppBrain — Daily Habits: AI Habit Tracker",
+      "url": "https://www.appbrain.com/app/daily-habits-ai-habit-tracker/com.free_simple_apps.habits",
+      "facts": "Approximately 1,100 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "rabbit_downloads": {
+      "title": "AppBrain — Habit Rabbit",
+      "url": "https://www.appbrain.com/app/habit-rabbit-habit-tracker/com.superbyte.habitrabbit",
+      "facts": "Approximately 11,000 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "habitify_downloads": {
+      "title": "AppBrain — Habitify",
+      "url": "https://www.appbrain.com/app/habitify-habit-tracker/co.unstatic.habitify",
+      "facts": "Approximately 7,400 installs/downloads over its displayed last 30 days. This is a download estimate, not a revenue disclosure. Page observation/crawl and reporting interval are distinct.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; app download estimate"
+    },
+    "habitbull": {
+      "title": "Peekly — App Holdings Habit Tracker",
+      "url": "https://peekly.app/apps/21235a8f-a4ee-4a19-9cbe-d53734239615",
+      "facts": "Named-app headline reports under $5K monthly Google Play revenue and 100K downloads. Gated placeholder tiles conflict and are not used. This illustrates why a large download count alone does not establish large store sales.",
+      "date": "Observed 21 October 2026; reporting dates unspecified",
+      "scope": "Google Play; provider estimate"
+    }
+  },
+  "model_assumptions": {
+    "S": {
+      "low": [
+        0.01,
+        15,
+        1.3
+      ],
+      "base": [
+        0.02,
+        20,
+        2
+      ],
+      "high": [
+        0.03,
+        30,
+        2.5
+      ]
+    },
+    "U": {
+      "low": [
+        0.02,
+        4
+      ],
+      "base": [
+        0.04,
+        6
+      ],
+      "high": [
+        0.08,
+        10
+      ]
+    }
+  },
+  "review_scope": {
+    "ios_apps": 70,
+    "ios_records": 337331,
+    "play_apps": 146,
+    "play_records": 901453,
+    "raw_records_freshly_hand_read": false
+  }
+}

@@ -19,7 +19,6 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
-import app.habits.account.StorePurchase
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -32,8 +31,7 @@ import kotlinx.coroutines.withTimeoutOrNull
  * - **What's owned comes from Play**, asked on every launch and return; the last answer is kept in a small file so
  *   Plus shows at once on an offline start. A refunded or revoked purchase disappears from Play's answer and Plus goes
  *   with it, but nothing else changes (D10: an ended purchase never hides data).
- * - Plus Family, or the upgrade to it, owns Family; Plus alone owns Plus.
- * - The Plus account's server checks each purchase with Google later (D16); the phone never trusts anything but Play.
+ * - The phone trusts nothing but Play. There's no account to tell (D16, 21 Oct 2026).
  */
 class PlayPlusStore(context: Context, private val scope: CoroutineScope, private val sp: SharedPreferences) : PlusStore {
     override var owned by mutableStateOf(runCatching { PlusOwned.valueOf(sp.getString(KEY_OWNED, "NONE")!!) }.getOrDefault(PlusOwned.NONE)); private set
@@ -97,11 +95,7 @@ class PlayPlusStore(context: Context, private val scope: CoroutineScope, private
         purchases = list
         for (p in list) if (p.purchaseState == Purchase.PurchaseState.PURCHASED && !p.isAcknowledged) acknowledge(p)
         val bought = list.filter { it.purchaseState == Purchase.PurchaseState.PURCHASED }.flatMap { it.products }.toSet()
-        val now = when {
-            PlusProduct.FAMILY.id in bought || PlusProduct.FAMILY_UPGRADE.id in bought -> PlusOwned.FAMILY
-            PlusProduct.PLUS.id in bought -> PlusOwned.PLUS
-            else -> PlusOwned.NONE
-        }
+        val now = if (PlusProduct.PLUS.id in bought) PlusOwned.PLUS else PlusOwned.NONE
         if (now != owned) { owned = now; sp.edit().putString(KEY_OWNED, now.name).apply() }
         pending = if (now != PlusOwned.NONE) null else list.firstOrNull { it.purchaseState == Purchase.PurchaseState.PENDING }
             ?.products?.firstNotNullOfOrNull { id -> PlusProduct.entries.firstOrNull { it.id == id } }
@@ -110,20 +104,6 @@ class PlayPlusStore(context: Context, private val scope: CoroutineScope, private
     private suspend fun acknowledge(p: Purchase) {
         // Repeating it is harmless; a failure is tried again on the next refresh (within Play's 3 days).
         runCatching { client.acknowledgePurchase(AcknowledgePurchaseParams.newBuilder().setPurchaseToken(p.purchaseToken).build()) }
-    }
-
-    override fun purchases(): List<StorePurchase> {
-        val rank = listOf(PlusProduct.PLUS.id, PlusProduct.FAMILY.id, PlusProduct.FAMILY_UPGRADE.id)
-        return purchases.filter { it.purchaseState == Purchase.PurchaseState.PURCHASED }
-            .flatMap { p -> p.products.filter { it in rank }.map { StorePurchase(it, p.purchaseToken) } }
-            .sortedBy { rank.indexOf(it.product) }
-    }
-
-    override fun purchase(): StorePurchase? {
-        val bought = purchases.filter { it.purchaseState == Purchase.PurchaseState.PURCHASED }
-        val best = bought.firstOrNull { p -> p.products.any { it == PlusProduct.FAMILY.id || it == PlusProduct.FAMILY_UPGRADE.id } }
-            ?: bought.firstOrNull { PlusProduct.PLUS.id in it.products } ?: return null
-        return StorePurchase(best.products.first(), best.purchaseToken)
     }
 
     // ------------------------------------------------------------------ Buying
