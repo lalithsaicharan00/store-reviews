@@ -119,6 +119,8 @@ all of them, one saved order per time of day for every day, changes save at once
 their time of day and are never arranged; Day details is a bottom sheet; every Add screen (Add log, Add slip, Add note)
 has ✕, Date | Time, the value, and its button above the keyboard.
 
+**Milestone motion lives in the new file** (22 Oct 2026, so the old file can go): every milestone screen on the Today page carries Figma motion keyframes (select the screen, press play), rebuilt exactly from the old *Milestones on Today* section: the row (button press and fill, number roll, burst ring and 8 dots, Undo · Note fade, the band rising with its medal spinning in, words, sheen, sparkles), the bar (rise, medal pop, sparkles, sheen, 5-second line) and the pop-up (slide up, glow, medal spin and pop, ring and 12 dots, sparkles, then title, line, card and buttons). The medal is a 9-point rounded star (inner radius 0.86) with a light-to-colour gradient, a white inner ring and a soft shadow; the pop-up's has a blurred glow. A "Motion" note at the top of the milestone column gives the timings; with Remove animations on, only the end state shows.
+
 **How flows are drawn** (the user drew the first one): one row per flow, left to right with arrows; a plain #333 bar
 140 high above each row with the flow's name in white Google Sans Flex Medium 56; a small yellow "Who" note under it;
 screens 360 × 800, 560 apart; short arrow labels (the tap) and only a few small notes. **Every flow is complete on its
