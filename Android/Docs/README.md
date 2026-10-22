@@ -77,6 +77,47 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
 synced" note; the user doubted it and it moved to the end of Today's list, the native place (Mail, Photos).
 
+## The redesign (21–22 October 2026): where the designs are and how they're drawn
+
+The app is being designed again from scratch, Android first (Rulebook, "Starting again"). The decisions are A24–A34
+above; this is where their designs are and how to add to them.
+
+**Figma.** New designs go only in the file **[Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app)**.
+The old file named *Design* (`Ncccsm1l2O62GJ5xLSInqk`) is reference only: read it, never add to it (frames can't be
+copied between files, so rebuild what you need). The design-system file (`DCLa48e0M68Y2miWj8OoiN`) is touched only when
+the user says how.
+
+- **Page "onboarding"** (`1:5`): the menu (`12:5087`, A28) and 12 onboarding flows, each from the Splash: New to the
+  app; Back from Google Drive; Plus didn't come back; Plus still not back; From an iPhone, with Plus; From an iPhone,
+  without Plus; Back with a backup file; No internet: Google Drive; No internet: checking Plus; Wrong Google account;
+  Wrong file; Backup from a newer version.
+- **Page "Today"** (`54:5580`): 77 flows. Left column, top to bottom: the habit types (check, several a day, amount,
+  log an amount manually, typed amount, timer, log time manually, checklist, week or month goal, a task), quit and
+  slips, the touch-and-hold menu with Pause and Resume, Undo and Note, skip and the swipes, notes, other days
+  (yesterday, tomorrow, pick a day), empty Today, the notices, cut-down habits, smaller states, then Arrange Today and
+  the times of day. Right column (x 4,400): milestones (on the row, the bar, the pop-ups, reached away, the 17 Oct
+  rules). Still the user's call: "All done for today" (folding every time of day would move things, A32) and the
+  routine player on a page of its own.
+
+**Onboarding, as decided 21 Oct.** No welcome or intro pages and no first-habit step: **Splash → Today, "No habits
+yet"**, with **New habit** and **Restore from a backup**. Restore offers **Google Drive** (Google's account chooser →
+Drive permission the first time → Restoring → Today with the habits) or **A backup file** (Android's file picker).
+Errors each have a screen: no internet, no backup found in that account, not a backup, made by a newer version. Plus:
+A30 and A31. There's no "habits already on this phone" case (A26) and no hint about iPhones anywhere: the backup file
+says where it was made.
+
+**Today, as decided 21–22 Oct** (A32–A34 plus): top bar ≡ · ✏ · + with no filter; ✏ opens Edit Today (habits only,
+all of them, one saved order per time of day for every day, changes save at once); tasks come after the habits in
+their time of day and are never arranged; Day details is a bottom sheet; every Add screen (Add log, Add slip, Add note)
+has ✕, Date | Time, the value, and its button above the keyboard.
+
+**How flows are drawn** (the user drew the first one): one row per flow, left to right with arrows; a plain #333 bar
+140 high above each row with the flow's name in white Google Sans Flex Medium 56; a small yellow "Who" note under it;
+screens 360 × 800, 560 apart; short arrow labels (the tap) and only a few small notes. **Every flow is complete on its
+own:** it starts on the screen people start on (the Splash, or Today) with the tap that enters it, even if screens
+repeat in other flows, and covers errors and what happens after. Keep related flows next to each other. Light mode
+only. Follow native Android and Material 3 Expressive, never an old rule or the iPhone design.
+
 ## Results: Google Drive sync, stages 1–2 (11 October 2026)
 
 **Verdict: Go with changes** ([Prototype Results](<Research/Google Drive Sync — Prototype Results.md>)). Built in the
