@@ -9,10 +9,12 @@ import app.habits.core.DriveApi
 import java.io.File
 
 /**
- * Google Drive while the Android OAuth client doesn't exist yet (build prompt §5): the stand-in Drive on this phone,
- * "connected" as the Google account Google's chooser would have given ([nextAccount], which a test sets). Every account
- * shares the one folder; what differs is the account's key, as the real Drive's would ([driveKey]),
- * so coming back can be tested with a different Google account. Debug builds and test launches only.
+ * **A Google Drive on this phone, for tests and for working without Google Play.** Every test launch gets one of its
+ * own, emptied each launch (D8: a test never touches the person's Drive), and a debug build made with
+ * `-PstandInDrive` uses one too, for an emulator with no Google Play services. It is "connected" as the Google
+ * account Google's chooser would have given ([nextAccount], which a test sets); every account shares the one folder,
+ * and what differs is the account's key, as the real Drive's does ([driveKey]), so coming back with a different
+ * Google account can be tested. The person's own Drive is [GoogleDriveLink].
  */
 class StandInLink(private val folder: File, private val prefs: SharedPreferences) : DriveLink {
     /** The account the next "chooser" gives (StandInSignIn's default person). */
@@ -49,8 +51,9 @@ class StandInLink(private val folder: File, private val prefs: SharedPreferences
     }
 }
 
-/** A release build before the OAuth client exists: Google Drive can't be connected yet; files still work. */
+/** A phone with no Google Play services: Google Drive can't be reached at all. Backup files still work. */
 object NoDriveLink : DriveLink {
+    override val available: Boolean get() = false
     override val accountName: String? get() = null
     override val accountKey: String? get() = null
     override fun api(): DriveApi? = null

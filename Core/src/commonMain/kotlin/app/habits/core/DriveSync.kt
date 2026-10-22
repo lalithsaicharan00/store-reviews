@@ -47,6 +47,9 @@ class DriveSync(
     private val pause: suspend (Long) -> Unit = { delay(it) },
     private val random: Random = Random.Default,
 ) {
+    /** Told how many files have been saved, while the person watches a full re-send ([sendEverythingAgain]). */
+    private var onSave: ((Int, Int) -> Unit)? = null
+
     private val store = repo.drive
     private val cloud = repo.cloud
     private val mutex = Mutex()
@@ -84,6 +87,20 @@ class DriveSync(
             store.setState(PROBLEM, problem)
             status()
         }
+    }
+
+    /**
+     * **Back up again** (A39): everything this device holds goes up as new records, every year, not only the files
+     * that changed. A backup rewrites a file only when something in it changed, so after the Drive copy is deleted
+     * the years with nothing new would never be written again and the backup would look whole while missing them.
+     * Nothing local changes, and nothing goes up until the person chooses it (the deletion may have been deliberate).
+     */
+    @Throws(Exception::class)
+    suspend fun sendEverythingAgain(progress: (saved: Int, of: Int) -> Unit = { _, _ -> }): DriveStatus {
+        store.forget()
+        cloud.uploadEverythingAgain()
+        onSave = progress
+        return try { syncNow() } finally { onSave = null }
     }
 
     /** The brake (incoming): the person chose to apply the deletes Drive brought (Architecture 11 §13.2). */
@@ -140,6 +157,7 @@ class DriveSync(
             val round = Round(allowUpload, cloud.counts().liveRecords, store.state(ALLOW_DELETES) == "1")
             try {
                 val listing = Listing(call { drive.list() })
+                if (backupRemoved(listing)) return DriveState.REMOVED to null
                 if (!pull(listing, round)) return DriveState.HELD to null
                 if (round.allowDeletes) {
                     store.setState(ALLOW_DELETES, null)
@@ -165,6 +183,17 @@ class DriveSync(
             }
         }
         return DriveState.BUSY to "files kept changing during sync"
+    }
+
+    /**
+     * **A39: is the app's Drive copy gone?** A file this device has saved to or merged from before is no longer
+     * there. With nothing saved yet there is nothing to miss: that is a first backup, not a deletion.
+     */
+    private suspend fun backupRemoved(listing: Listing): Boolean {
+        val known = store.states(SEEN).keys.filter(DriveStore::isChain)
+        if (known.isEmpty()) return false
+        val there = listing.chains().toSet()
+        return known.any { it !in there }
     }
 
     /** Downloads and merges every newest version this device hasn't merged. False when the brake holds one. */
@@ -252,12 +281,15 @@ class DriveSync(
             round.outgoing = counts.waitingDeletes
             return
         }
+        var saved = 0
+        onSave?.invoke(0, chains.size)
         for (chain in chains) {
             if (store.state(BLOCKED + chain) != null) {
                 round.blocked = true
                 continue
             }
             if (!save(listing, chain, round)) return
+            onSave?.invoke(++saved, chains.size)
         }
         if (cloud.counts().waitingDeletes == 0) store.setState(DELETES_APPROVED, null)
     }
@@ -616,6 +648,13 @@ enum class DriveState {
     OFFLINE,
     /** Signed out, access removed, or the sign-in expired: "Google Drive isn't connected". */
     NOT_CONNECTED,
+    /**
+     * **The app's files aren't in the person's Drive any more** (A39): they cleared the hidden folder, or another
+     * device deleted the backup. Nothing goes up until they choose **Back up again** ([sendEverythingAgain]): a
+     * backup saves only the files that changed, so a quiet carry-on would leave the untouched years missing, and the
+     * deletion may have been deliberate. Nothing on this phone is touched either way.
+     */
+    REMOVED,
     /** "Google Drive is full": nothing is lost; it waits. */
     FULL,
     /** Drive asked us to slow down, or had trouble, after several tries: it tries again next time. */

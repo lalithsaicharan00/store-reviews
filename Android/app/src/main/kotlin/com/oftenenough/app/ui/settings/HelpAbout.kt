@@ -79,10 +79,11 @@ object Support {
     const val EMAIL = "support@oftenenough.com"
     val appVersion: String get() = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
 
-    fun mail(): Intent = letter("Often Enough $appVersion")
+    /** Contact us (the menu): help. A29's subject, so the two are told apart at a glance. */
+    fun mail(): Intent = letter("Often Enough: I need help")
 
-    /** Send feedback (the menu, Figma `12:5259`): the same letter, named so we can tell the two apart. */
-    fun feedback(): Intent = letter("Feedback: Often Enough $appVersion")
+    /** Send feedback (the menu): feedback, not help (A29). */
+    fun feedback(): Intent = letter("Often Enough feedback")
 
     private fun letter(subject: String): Intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
         putExtra(Intent.EXTRA_EMAIL, arrayOf(EMAIL))

@@ -198,6 +198,8 @@ fun RestoreFlow(
 
     /** Google Drive needs the internet before Android's account chooser is worth opening (8.4). */
     fun chooseDrive() {
+        // A phone with no Google Play services can't reach Drive at all: say so, and a file still brings them back.
+        if (!center.link.available) { step = NO_DRIVE; return }
         if (!online(context)) { fromDrive = true; step = NO_INTERNET_DRIVE; return }
         scope.launch { if (center.link.connect(context)) restoreFromDrive() }
     }
@@ -241,6 +243,15 @@ fun RestoreFlow(
             StepHeading(
                 "No backup found.",
                 "There’s no Often Enough backup in " + (email?.plus("’s") ?: "that") + " Google Drive.",
+            )
+            SegmentedList { FileChoice(0, 1) { pickFile() } }
+        }
+
+        // This phone has no Google Play services, so nothing here can reach Google Drive. A file is the way back.
+        NO_DRIVE -> FlowScreen(onBack = { step = WHERE }, tag = "no-drive", top = true) {
+            StepHeading(
+                "Google Drive isn’t available on this phone.",
+                "Reaching Google Drive needs Google Play services, which this phone doesn’t have. A backup file brings everything back just the same.",
             )
             SegmentedList { FileChoice(0, 1) { pickFile() } }
         }
@@ -295,6 +306,7 @@ private const val NO_INTERNET_PLUS = "no-internet-plus"
 private const val NO_BACKUP = "no-backup"
 private const val PROBLEM = "problem"
 private const val NEEDS_PLUS = "needs-plus"
+private const val NO_DRIVE = "no-drive"
 
 /** "A backup file · A file you saved" — the same row wherever a file is a way back (39:1590, 39:6065). */
 @Composable

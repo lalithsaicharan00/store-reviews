@@ -8,12 +8,16 @@
     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Google Drive: the person's own backup (A4, A39). INTERNET for Drive's own calls and Google's permission
+         screen; ACCESS_NETWORK_STATE so the app can say "No internet" instead of waiting on a call that can't go. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- No advertising ID, ever (no ads, no tracking; Play's advertising ID declaration says No). Removed here so a
          Google library can never add it without us noticing. -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
     <application
         android:name=".app.OftenEnoughApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"

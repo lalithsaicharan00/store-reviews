@@ -502,6 +502,44 @@ class DriveSyncTest {
         assertEquals(listOf("2026"), added.map { it.properties["chain"] })
     }
 
+    /**
+     * **A39: a deleted Drive backup is noticed, and sent again whole.** A backup saves only the files that changed,
+     * so after the person clears the app's hidden folder the untouched years would never be written again. The round
+     * stops instead and says so; nothing goes up until the person chooses Back up again, and then every file does.
+     */
+    @Test fun aDeletedDriveBackupIsNoticedAndSentAgainWhole() = runBlocking<Unit> {
+        val phone = devices(1).single()
+        phone.repo.saveHabit(habit("water"), emptyList(), emptyList(), now())
+        phone.repo.addEntry(entry("old", "water", now(), day = "2024-12-31"))
+        phone.repo.addEntry(entry("new", "water", now(), day = "2026-01-01"))
+        phone.syncNow()
+        assertEquals(setOf("base", "2024", "2026"), phone.drive.versions().map { it.properties["chain"] }.toSet())
+
+        // The person empties the app's folder in their Drive.
+        for (file in phone.drive.files.keys.toList()) phone.client.delete(file)
+        assertEquals(DriveState.REMOVED, phone.syncNow().state)
+        assertEquals(emptyList(), phone.drive.versions(), "nothing goes up until the person chooses")
+
+        // Back up again: every file, not only the ones that changed since.
+        val progress = mutableListOf<Pair<Int, Int>>()
+        val status = phone.sync.sendEverythingAgain { saved, of -> progress += saved to of }
+        assertEquals(DriveState.SYNCED, status.state)
+        assertEquals(setOf("base", "2024", "2026"), phone.drive.versions().map { it.properties["chain"] }.toSet())
+        assertEquals(3, progress.last().second, "the line fills over every file")
+        assertEquals(3, progress.last().first)
+        // And the copy in Drive holds everything a fresh phone would need.
+        val fresh = Device("fresh", phone.drive).also(Device::connect)
+        fresh.syncNow()
+        assertEquals(2, fresh.live().entries.count { it.deletedAt == null })
+    }
+
+    /** A first backup is not a deletion: with nothing saved yet there is nothing to miss. */
+    @Test fun anEmptyDriveIsAFirstBackupNotADeletion() = runBlocking<Unit> {
+        val phone = devices(1).single()
+        phone.repo.saveHabit(habit("water"), emptyList(), emptyList(), now())
+        assertEquals(DriveState.SYNCED, phone.syncNow().state)
+    }
+
     // MARK: Thousands of seeded runs
 
     /**

@@ -35,6 +35,28 @@ import com.oftenenough.app.app.widgets.WidgetTapSaver
  * database and preferences (D8); an ordinary launch opens the person's own.
  */
 class MainActivity : FragmentActivity() {
+    /** The answer to Google's Drive permission screen, while it is open. */
+    private var consenting: kotlinx.coroutines.CompletableDeferred<Boolean>? = null
+    private val consentScreen = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        consenting?.complete(result.resultCode == RESULT_OK)
+        consenting = null
+    }
+
+    /**
+     * How Google Drive asks for permission (A4): its own screen, over this Activity, answered when it closes. The
+     * link asks for it only when the grant is missing; after that a token comes back with no screen at all.
+     */
+    private fun driveConsent() {
+        com.oftenenough.app.app.backup.DriveConsent.ask = { pending ->
+            val answer = kotlinx.coroutines.CompletableDeferred<Boolean>()
+            consenting = answer
+            runCatching {
+                consentScreen.launch(androidx.activity.result.IntentSenderRequest.Builder(pending).build())
+            }.getOrElse { consenting = null; answer.complete(false) }
+            answer.await()
+        }
+    }
+
     companion object {
         /** A reminder's tap: open this habit's Day details for this day. */
         const val OPEN_HABIT = "openHabit"
@@ -103,6 +125,7 @@ class MainActivity : FragmentActivity() {
         // Screens keep their content clear of it with navigationBarsPadding; gesture navigation is unchanged.
         // Android 8–9 keep the library's scrim: they can't always draw dark buttons on a light bar.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) window.isNavigationBarContrastEnforced = false
+        driveConsent()
         val test = intent.getBooleanExtra(TestLaunch.UITEST, false)
         if (test) {
             AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 },

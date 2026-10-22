@@ -164,6 +164,9 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                 data class S(val icon: ImageVector, val filled: Boolean, val title: String, val line: String, val text: String)
                 val who = email?.let { " · $it" } ?: ""
                 val s = when {
+                    // No Google Play services: Drive can't be reached from this phone at all. Say so (D4: the truth).
+                    !center.link.available -> S(Icons.Outlined.CloudOff, false, "Not backed up", "Only on this phone",
+                        "Backing up to Google Drive needs Google Play services, which this phone doesn’t have. Save a backup file below to keep a copy.")
                     !connected -> S(Icons.Outlined.CloudOff, false, "Not backed up", "Only on this phone for now",
                         "Back up to your own Google Drive as you go. Only Often Enough can open it, and we never see your habits.")
                     offline -> S(Icons.Outlined.WifiOff, false, "No internet", "${status?.waiting ?: 0} ${if (status?.waiting == 1) "change" else "changes"} waiting to sync",
@@ -172,8 +175,9 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                         "Your habits are safe on this phone. Make room in your Google Drive, and it carries on by itself.")
                     status?.state == DriveState.NOT_CONNECTED -> S(Icons.Outlined.CloudOff, false, "Google Drive isn’t connected", "Your habits are safe on this phone",
                         "Connect it again to keep backing up.")
-                    store.isPlus -> S(Icons.Outlined.CloudSync, true, "Synced", whenText(status?.lastSynced, store) + who,
-                        "Your habits sync through your own Google Drive. Only Often Enough can open them, and we never see them.")
+                    // A39: the app's files aren't in Drive any more. Nothing goes up until the person chooses.
+                    status?.state == DriveState.REMOVED -> S(Icons.Outlined.CloudOff, false, "Your backup was removed", "Your habits are safe on this phone",
+                        "The app’s files aren’t in your Google Drive any more. Back up again to send everything, every year.")
                     else -> S(Icons.Outlined.CloudDone, true, "Backed up", whenText(status?.lastSent, store) + who,
                         "Your habits are in your own Google Drive. Only Often Enough can open them, and we never see them. It backs up as you go, at least daily.")
                 }
@@ -191,32 +195,24 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                 Text(s.text, style = AppType.bodyMedium, color = c.secondary)
                 Spacer(Modifier.height(16.dp))
                 when {
+                    !center.link.available -> Unit
                     !connected -> InkButton("Back up to Google Drive", { scope.launch { center.connectDrive() } }, Modifier.semantics { testTag = "drive-connect" },
                         icon = Icons.Outlined.AddToDrive, height = 48.dp, textStyle = AppType.labelLarge)
                     offline -> TonalButton("Try again", { scope.launch { center.syncNow() } }, Modifier.semantics { testTag = "drive-now" }, icon = Icons.Outlined.Sync)
+                    // A39: everything again, every year — a backup saves only what changed, so the untouched years
+                    // would stay missing. This is the only button here: nothing else is sent until it's done.
+                    status?.state == DriveState.REMOVED -> InkButton("Back up again", { scope.launch { center.backUpEverythingAgain() } },
+                        Modifier.semantics { testTag = "drive-again" }, icon = Icons.Outlined.CloudUpload, height = 48.dp, textStyle = AppType.labelLarge,
+                        enabled = !center.working)
                     else -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        TonalButton(if (store.isPlus) "Sync now" else "Back up now", { scope.launch { center.syncNow() } }, Modifier.semantics { testTag = "drive-now" },
-                            enabled = !center.working, icon = if (store.isPlus) Icons.Outlined.Sync else Icons.Outlined.CloudUpload)
+                        TonalButton("Back up now", { scope.launch { center.syncNow() } }, Modifier.semantics { testTag = "drive-now" },
+                            enabled = !center.working, icon = Icons.Outlined.CloudUpload)
                         TonalButton("Change account", { confirm = "switch" }, Modifier.semantics { testTag = "drive-change" })
                     }
                 }
             }
-            // Devices: with Plus, every device on this Google Drive (1.2).
-            if (connected && store.isPlus) {
-                SectionLabel("Devices")
-                SegmentedList {
-                    val devices = status?.devices.orEmpty().ifEmpty { null }
-                    if (devices == null) PageRow(Icons.Outlined.PhoneAndroid, "This phone", center.info.deviceName, 0, 1, "device-this", onClick = null)
-                    else devices.forEachIndexed { i, d ->
-                        PageRow(if (d.platform == "android" && d.name.contains("Tablet", true)) Icons.Outlined.TabletAndroid else Icons.Outlined.PhoneAndroid,
-                            if (d.thisDevice) "This phone" else d.name,
-                            if (d.thisDevice) d.name + " · " + (if (offline) "${status?.waiting ?: 0} changes not sent yet" else "synced " + whenText(d.lastCheckIn, store).replaceFirstChar { it.lowercase() })
-                            else "Last synced at " + DayWords.clock(d.lastCheckIn), i, devices.size, "device-$i", onClick = null)
-                    }
-                }
-                Text("Anything logged on a device shows on the others once it next syncs.", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    style = AppType.bodySmall, color = c.secondary)
-            }
+            // Devices (Figma 1.2) waits for the second device: this release is phones only and nothing syncs
+            // between devices yet (A24), so a list of them would promise what the app doesn't do.
             SectionLabel("Restore")
             SegmentedList {
                 val count = if (center.undoAvailable) 2 else 1

@@ -3,6 +3,8 @@ package com.oftenenough.app.app.backup
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -36,9 +38,15 @@ interface DriveLink {
     /** The Drive calls, while connected. */
     fun api(): DriveApi?
     /**
-     * Signs in (Android's own account chooser and Google's permission screen); false when the person backs out. With
-     * [account] (the email this phone just signed in to Plus with, D16: "signed in with Google, backed up to that same
-     * account"), that account is asked for at once, with no chooser; the email stays on this phone.
+     * Can this phone reach Google Drive at all? False without Google Play services (a phone that never had them, or
+     * a de-Googled one): then the app says so plainly and offers a backup file instead, rather than a dead button.
+     */
+    val available: Boolean get() = true
+
+    /**
+     * Asks Google for the app's own folder in the person's Drive: Android's account chooser and Google's permission
+     * screen, shown only while the permission is missing. False when they back out, or when this phone can't reach
+     * Drive ([available]). [account] is unused since there are no accounts (D16, 21 Oct 2026).
      */
     suspend fun connect(context: Context, account: String? = null): Boolean
     suspend fun disconnect()
@@ -78,6 +86,8 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
     val info: BackupInfo
         get() = BackupInfo(deviceName = Build.MODEL ?: "Android phone", platform = "android", appVersion = BuildConfig.VERSION_NAME, plus = store.isPlus)
     private val mutex = Mutex()
+    /** Carries a round's progress back to the main thread, where the card that shows it is drawn. */
+    private val main = Handler(Looper.getMainLooper())
     private val undoFolder = File(context.noBackupFilesDir, if (test) "uitest-restore-undo" else "restore-undo")
 
     var status by mutableStateOf<DriveStatus?>(null); private set
@@ -235,6 +245,29 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
             } finally {
                 working = false
             }
+        }
+    }
+
+    /**
+     * **Back up again** (A39): everything on this phone goes to Drive again, every file, after the Drive copy was
+     * deleted. A backup saves only the files that changed, so carrying on quietly would leave the untouched years
+     * missing. [progress] is told how many files of how many are saved, on the main thread, for the card the person
+     * is watching. False when it didn't finish; nothing on this phone is touched either way.
+     */
+    suspend fun backUpEverythingAgain(progress: (Int, Int) -> Unit = { _, _ -> }): Boolean = mutex.withLock {
+        val s = sync()
+        if (s == null) return@withLock false
+        working = true
+        try {
+            store.flush()
+            val result = s.sendEverythingAgain { saved, of -> main.post { progress(saved, of) } }
+            status = result
+            if (result.state != DriveState.OFF) store.reloadAfterSync()
+            result.state == DriveState.SYNCED
+        } catch (_: Exception) {
+            false
+        } finally {
+            working = false
         }
     }
 

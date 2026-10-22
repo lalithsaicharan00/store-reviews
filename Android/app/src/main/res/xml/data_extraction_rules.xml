@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Android's own backup (A4, D16) and moving to a new phone: the habits and the person's settings go; what belongs to
-     this phone stays (App lock and its passcode, the reminder alarm's state, test launches' own files, D8). -->
+<!-- Android's own backup is off (A26, 21 Oct 2026; the user: "We will turn it off. Let's keep everything dead
+     simple."). `allowBackup="false"` alone still lets the phone-to-phone copy through on some phones, so both
+     cloud-backup and device-transfer exclude everything. Every fresh install starts empty, and the habits come back
+     from the person's own Google Drive, or from a backup file. -->
 <data-extraction-rules>
     <cloud-backup>
-        <exclude domain="sharedpref" path="applock.xml" />
-        <exclude domain="sharedpref" path="reminders.xml" />
-        <exclude domain="sharedpref" path="uitest.xml" />
-        <exclude domain="sharedpref" path="uitest-applock.xml" />
-        <exclude domain="sharedpref" path="uitest-drive.xml" />
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
     </cloud-backup>
     <device-transfer>
-        <exclude domain="sharedpref" path="applock.xml" />
-        <exclude domain="sharedpref" path="reminders.xml" />
-        <exclude domain="sharedpref" path="uitest.xml" />
-        <exclude domain="sharedpref" path="uitest-applock.xml" />
-        <exclude domain="sharedpref" path="uitest-drive.xml" />
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
     </device-transfer>
 </data-extraction-rules>

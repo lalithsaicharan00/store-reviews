@@ -6,6 +6,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import app.habits.core.DriveState
 import app.habits.core.RestoreMode
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.data.Habit
@@ -153,6 +154,46 @@ class DataSafetyTest {
         val slim = backup.check(small)!!.check.preview!!
         assertEquals(HabitStore.FREE_HABIT_LIMIT, slim.fileActiveHabits)
         assertTrue("archived habits and tasks are still in the file", slim.fileHabits > slim.fileActiveHabits)
+    }
+
+    /**
+     * **A deleted Google Drive backup is noticed, and Back up again sends everything** (A39, 22 Oct 2026). A backup
+     * saves only the files that changed, so after the person clears the app's folder in their Drive the untouched
+     * years would never be written again. The app stops instead and says so; nothing goes up until they choose, and
+     * then every file does. Against the whole stack on the emulator, with this test launch's own stand-in Drive (D8).
+     */
+    @Test fun aRemovedDriveBackupIsNoticedAndBackUpAgainSendsEverything() = runBlocking {
+        // Logs in two years, so there are year files to miss as well as `base`.
+        val water = onMain { store.habits.first { it.name == "Water" } }
+        onMain {
+            store.increment(water, store.today())
+            store.increment(water, store.today() - 400)
+        }
+        store.flush()
+        assertTrue("Google Drive connects", backup.connectDrive())
+        assertEquals(DriveState.SYNCED, backup.status?.state)
+        val files = backup.link.api()!!
+        suspend fun chains(): String = files.list().mapNotNull { it.properties["chain"] }.toSortedSet().toString()
+        val before = chains()
+        val habitsHere = onMain { store.habits.size }
+        assertTrue("base and a file per year are in Drive; got $before", before.count { it == ',' } >= 2)
+
+        // The person empties the app's folder in their Google Drive.
+        backup.link.deleteAll()
+        backup.syncNow()
+        assertEquals("the app says the backup was removed", DriveState.REMOVED, backup.status?.state)
+        assertEquals("and sends nothing by itself", "[]", chains())
+        assertEquals("nothing on this phone is touched", habitsHere, onMain { store.habits.size })
+
+        // Back up again: every file, with the person watching each one saved.
+        val seen = mutableListOf<Pair<Int, Int>>()
+        assertTrue(backup.backUpEverythingAgain { saved, of -> synchronized(seen) { seen += saved to of } })
+        assertEquals(DriveState.SYNCED, backup.status?.state)
+        assertEquals("every file is back, every year", before, chains())
+        val end = System.currentTimeMillis() + 2_000
+        while (System.currentTimeMillis() < end && synchronized(seen) { seen.isEmpty() }) Thread.sleep(20)
+        val progress = synchronized(seen) { seen.toList() }
+        assertTrue("the card is told how far it got; got $progress", progress.isNotEmpty() && progress.last().second >= 3)
     }
 
     /** Every file a person gets is named the one way every app opens (D5). */

@@ -133,10 +133,21 @@ object AppGraph {
         followPlus(store)
     }
 
-    /** Google Drive: the stand-in on this phone in debug builds until the user's OAuth client exists (build prompt §5). */
+    /**
+     * Google Drive: **the person's own, through Google's permission screen** (A4, A39). Debug builds can take the
+     * stand-in Drive instead with `-PstandInDrive`, for working on an emulator with no Google Play; a test launch
+     * always gets its own stand-in (D8). Without Google Play on the phone at all, Drive can't be connected and the
+     * app says so rather than offering it.
+     */
     private fun driveLink(context: Context, folder: String, prefs: android.content.SharedPreferences): com.oftenenough.app.app.backup.DriveLink =
-        if (BuildConfig.DEBUG) com.oftenenough.app.app.backup.StandInLink(java.io.File(context.noBackupFilesDir, folder), prefs)
+        if (BuildConfig.DEBUG && BuildConfig.STAND_IN_DRIVE) com.oftenenough.app.app.backup.StandInLink(java.io.File(context.noBackupFilesDir, folder), prefs)
+        else if (playServices(context)) com.oftenenough.app.app.backup.GoogleDriveLink(context, prefs)
         else com.oftenenough.app.app.backup.NoDriveLink
+
+    /** Google Play services, which Google Drive's permission screen and its token come from. */
+    private fun playServices(context: Context): Boolean =
+        com.google.android.gms.common.GoogleApiAvailability.getInstance()
+            .isGooglePlayServicesAvailable(context) == com.google.android.gms.common.ConnectionResult.SUCCESS
 
     /** A test launch: an in-memory database, its own preferences, and (optionally) a clock that starts at [clockHour]:30. */
     fun openForTest(context: Context, clockHour: Int?, plus: Boolean = false) {
@@ -166,7 +177,6 @@ object AppGraph {
         // Its own purchases, none each launch unless the launch asks for Plus (TestLaunch.PLUS).
         plusInstance = FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
             .also { if (plus) it.ownForTest() }
-        // Its own account and stand-in server, emptied each launch (D8).
         followPlus(store)
     }
 

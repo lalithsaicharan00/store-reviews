@@ -15,6 +15,60 @@ push it to `main`. This supersedes the earlier local-only and remote-sync holds 
 documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
 existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
+## The new Android app — onboarding, the menu and Google Drive — 22 October 2026
+
+The user: the app is being rebuilt for Android first, then the iPhone; a lot has been dropped. Kotlin Multiplatform
+stays as the shared rules; Android uses Google Drive, Apple uses iCloud. New Figma file **Android-app**
+(`sJptV3HAKYauEIGUxYS3qs`), page **onboarding** (`1:5`). This round: **onboarding, the menu and the Google Drive
+connection**; Today, Habits & Tasks, Plus, Settings and Contact us are the user's own ("we are working on these").
+Everything native (the user: "everything should feel like a native Android thing": Material 3 Expressive, native
+components only). Checked in light and dark; nothing but Google Play ever unlocks Plus.
+
+- [x] **151. Onboarding is gone: straight to Today.** The welcome, its three pages, Your days and weeks, Your first
+  habit and the whole "coming back" flow are replaced by Android's own splash, then Today. The empty Today (`36:32`)
+  is the only first-run screen: *No habits yet* / *Add something you'd like to do often enough.* with **New habit**
+  and **Restore from a backup**, and a top bar of ≡ and + alone.
+- [x] **152. Restore from a backup, with every end the flows draw** (`39:1590`): two ways and only two — **Google
+  Drive** and **A backup file**. Then no internet for Drive (`39:4741`) and for the Plus check (`43:2999`), no backup
+  in that Google account (`39:6065`), that isn't a backup (`39:6596`), from a newer version (`39:7095`), and "Plus
+  isn't on this phone" for Android (`43:1776`) and from an iPhone (`43:2689`), each with the prefilled email we answer
+  with a Play promo code. **Added 22 Oct:** a phone with no Google Play services says so and still offers a file.
+- [x] **153. The menu is the six rows the design draws** (`12:5259`): Today, Habits & Tasks with its count, a divider,
+  Plus, Settings, Contact us, Send feedback. The long settings list became one **Settings** page; the two email rows
+  open the person's own mail app, with the subjects A29 fixes.
+- [x] **154. Every backup records who made it and whether that device had Plus** — and the flag unlocks nothing
+  (the user: "nothing unlocks a Plus on device"). In the shared core's manifest, so the iPhone writes it too.
+  `BackupTest`, `DataSafetyTest`.
+- [x] **155. A restore above the free limit needs Plus on this phone, from Google Play** (A30), and what it weighs is
+  the habits the free plan limits — not tasks, not archived habits, so a free person's own backup always comes back
+  (`RestorePreview.fileActiveHabits`; `DataSafetyTest.theFreeLimitCountsOnlyTheHabitsItLimits`).
+- [x] **156. Android's own backup is off** (A26: `allowBackup="false"` and extraction rules that exclude everything,
+  both ways), and the help and feedback emails carry the subjects A29 names.
+- [x] **157. Google Drive works in production** (22 Oct 2026). Release builds no longer ship `NoDriveLink`: the app
+  asks Google for its own folder in the person's Drive through Play Services' `AuthorizationClient`
+  (`GoogleDriveLink`, scope `drive.appdata`), shows Google's account chooser and permission screen through the one
+  Activity (`DriveConsent`), keeps the token in memory only and refreshes it on a 401. **No client ID is in the code
+  or the repository** (D11): Google recognises the app by its package name and signing certificate against the
+  Android OAuth clients already made (debug on this PC, and the Play app signing key). The manifest was missing
+  **INTERNET** and `ACCESS_NETWORK_STATE` — nothing had needed them while Drive was a stand-in — so Drive could
+  never have worked in a release; both are in now. A test launch keeps its own stand-in Drive (D8), and a debug build
+  can take one with `-PstandInDrive`. The storage is unchanged (A39): `base` plus a file per year, each a version
+  chain, download → merge → upload, so a second device later syncs through the same files.
+- [x] **158. A removed Google Drive backup is noticed, and Back up again sends everything** (A39). The core sees that
+  a file it has saved to or merged from is no longer in Drive and stops with `DriveState.REMOVED`, sending nothing by
+  itself (the deletion may have been deliberate). Today's card says *Your Google Drive backup was removed · Your
+  habits are safe on this phone*, and **Back up again** does it in the card: a turning circle, a line that fills as
+  each file is saved, then *Everything is in your Google Drive again*, then it folds away; a failure says so with
+  **Try again**. `DriveSync.sendEverythingAgain` re-queues every record, so the years with nothing new are written
+  again too. Checked end to end on the emulator (`FirstRunTest`, `DataSafetyTest`) and by eye in light and dark.
+- [x] **159. Google Drive belongs to whoever connects it** (A46): no account, no free-or-Plus words. Backup & Sync
+  says **Backed up** and **Back up now** for everyone, and the Plus-only **Devices** list waits for the second device
+  (A24).
+- [ ] **160. What the user still needs to do for Drive in production:** in Google Cloud, the consent screen's Data
+  Access list must include `https://www.googleapis.com/auth/drive.appdata` (the two Android OAuth clients already
+  exist); then install a release build signed with the upload key through Play's internal testing and connect a real
+  Google account once. Nothing in the app can prove this from here.
+
 ## Habit-app revenue research — 21 October 2026
 
 The user requested descending App Store and Google Play top tens by estimated revenue, including both stores for cross-platform apps. [Research report](<../../../Research/Research Reports/Market Discovery/Habit Apps — Revenue Estimates and Provisional Store Top Tens — 21 October 2026.md>) and [checklist](<Habit Apps — Store Revenue Research — 21 October 2026.md>) preserve the scope. Two ten-name provisional shortlists are saved, with 45 source records, cross-store identities and explicit Android conversion/renewal scenarios. Sorting, model arithmetic, JSON files, new relative links and Git whitespace checks pass. Life Reset's public $203K figure has unresolved financial store scope and is not assigned to iOS. All 216 local corpora were inventoried; a fresh individual reading of all 1,238,784 records and a verified same-month worldwide revenue ranking remain unfinished. Research only; no commit/push or CI requested.

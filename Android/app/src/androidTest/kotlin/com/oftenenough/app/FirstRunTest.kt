@@ -166,20 +166,57 @@ class FirstRunTest {
         waitFor(hasTestTag("habits-add"), "the Habits & Tasks page")
     }
 
+    // ------------------------------------------------------------------ The backup that was removed (A39)
+
+    /**
+     * **Today says the Google Drive backup was removed, and Back up again sends everything from the card** (A39).
+     * The person watches it happen where they tapped: the card turns into "Backing up to Google Drive…" with a line
+     * that fills, then says everything is back, then folds away by itself. Nothing is sent until they tap it.
+     */
+    @Test fun theRemovedBackupNoticeSendsEverythingFromTheCard() {
+        launch(demo = "today")
+        waitFor(hasText("Today"), "Today")
+        kotlinx.coroutines.runBlocking {
+            AppGraph.store.flush()
+            assertTrue("the stand-in Drive connects", AppGraph.backup.connectDrive())
+            val drive = AppGraph.backup.link.api()!!
+            assertTrue("something was backed up", drive.list().isNotEmpty())
+            // The person empties the app's folder in their Google Drive.
+            AppGraph.backup.link.deleteAll()
+            AppGraph.backup.syncNow()
+            assertTrue("nothing is in Drive now", drive.list().isEmpty())
+        }
+        waitFor(hasTestTag("notice-removed"), "the removed-backup notice")
+        waitFor(hasText("Your Google Drive backup was removed"), "what it says")
+        assertTrue("it never blames the person; on screen: ${screen()}", screen().contains("safe on this phone"))
+
+        tapTag("notice-action")
+        waitFor(hasText("Everything is in your Google Drive again"), "the card saying it's done")
+        kotlinx.coroutines.runBlocking {
+            val chains = AppGraph.backup.link.api()!!.list().mapNotNull { it.properties["chain"] }
+            assertTrue("base and every year are back; got $chains", chains.contains("base") && chains.size >= 2)
+        }
+        // And it folds away by itself.
+        compose.waitUntil(10_000) { !has(hasTestTag("notice-removed")) }
+    }
+
     // ------------------------------------------------------------------ Plus comes from Google Play alone (D16)
 
     @Test fun thePlusPageSaysPlusComesFromGooglePlay() {
         launch(demo = "today")
         tapTag("menu-button")
         tapTag("menu-plus")
-        waitFor(hasTestTag("plus-page"), "the Plus page")
-        waitFor(hasText("Unlimited habits"), "what Plus unlocks")
+        waitFor(hasText("Plus"), "the Plus page")
+        waitFor(hasText("No sign-in needed"), "that nothing has to be signed into")
+        // The one way back to a Plus bought before is Google Play itself.
+        waitFor(hasTestTag("plus-restore"), "Restore from Google Play")
         assertTrue(
-            "the Plus page says where Plus comes from; on screen: ${screen()}",
-            screen().contains("only from Google Play"),
+            "the Plus page says Plus comes back from this Google account; on screen: ${screen()}",
+            screen().contains("this Google account"),
         )
-        // No account, no family, no code: there is no server (22 Oct 2026).
+        // No account, no family, no code: nothing on the device unlocks Plus (D16; the user, 22 Oct 2026).
         assertNone(hasText("Sign in with Google"), "a sign-in")
         assertNone(hasText("Redeem a code"), "a code to redeem")
+        assertNone(hasText("Plus Family"), "a family plan")
     }
 }

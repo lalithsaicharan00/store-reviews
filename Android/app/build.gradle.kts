@@ -18,6 +18,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Debug builds use the stand-in Plus store unless built with -PrealBilling (to test real purchases as a license tester).
         buildConfigField("boolean", "REAL_BILLING", (project.findProperty("realBilling") != null).toString())
+        // `-PstandInDrive`: a debug build works against the stand-in Drive on the phone, for an emulator with no
+        // Google Play. Every other build talks to the person's own Google Drive.
+        buildConfigField("boolean", "STAND_IN_DRIVE", (project.findProperty("standInDrive") != null).toString())
     }
 
     // Debug builds on CI use a stable key kept only as GitHub secrets (D11), so the Google OAuth client can trust its
@@ -99,6 +102,9 @@ dependencies {
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
     implementation("androidx.metrics:metrics-performance:1.0.0")
     implementation("com.android.billingclient:billing-ktx:9.1.0")
+    // Google Drive's permission screen and its drive.appdata token (A4, A39). No sign-in and no client ID in the
+    // app: Play Services matches the package name and signing certificate to our Android OAuth client.
+    implementation("com.google.android.gms:play-services-auth:21.4.0")
     // Material 3 Expressive's loading indicator, drawn with the library Material's own uses (LoadingIndicator.kt).
     implementation("androidx.graphics:graphics-shapes:1.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
