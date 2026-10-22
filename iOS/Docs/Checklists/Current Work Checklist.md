@@ -64,10 +64,15 @@ components only). Checked in light and dark; nothing but Google Play ever unlock
 - [x] **159. Google Drive belongs to whoever connects it** (A46): no account, no free-or-Plus words. Backup & Sync
   says **Backed up** and **Back up now** for everyone, and the Plus-only **Devices** list waits for the second device
   (A24).
-- [ ] **160. What the user still needs to do for Drive in production:** in Google Cloud, the consent screen's Data
-  Access list must include `https://www.googleapis.com/auth/drive.appdata` (the two Android OAuth clients already
-  exist); then install a release build signed with the upload key through Play's internal testing and connect a real
-  Google account once. Nothing in the app can prove this from here.
+- [ ] **160. The last step is the user's: allow it once on a real phone.** Checked by hand on the Pixel 10 emulator
+  with an ordinary (not test) debug launch, 22 Oct 2026: Restore › Google Drive brings up **Google's own account
+  chooser** ("Often Enough is requesting access to your Google Account"), then **Google's permission screen**, which
+  describes the scope exactly as *"See, create, and delete its own configuration data in your Google Drive"* —
+  `drive.appdata`, with **no unverified-app warning**, so the Cloud project and the debug Android OAuth client are
+  right. Backing out leaves the app exactly as it was, with nothing connected and nothing written. **Not done here:**
+  tapping **Allow**, which grants access to a real Google account — the user's own call. After that: install a
+  release build signed with the upload key through Play's internal testing and connect once there too, since that
+  build is matched against the *Play app signing* SHA-1, not this PC's debug key.
 
 ## Habit-app revenue research — 21 October 2026
 
