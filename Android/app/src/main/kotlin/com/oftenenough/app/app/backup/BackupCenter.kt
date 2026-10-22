@@ -48,8 +48,11 @@ interface DriveLink {
 
 /** What looking for habits in a Google Drive ended as (the restore flows 2, 8 and 10). */
 sealed class DriveLook {
-    /** Drive's copy is here now: this is what came down. */
-    data class Found(val habits: Int, val logs: Int) : DriveLook()
+    /**
+     * Drive's copy is here now: this is what came down. [activeHabits] is what the free plan counts (not archived,
+     * not a task), which is what a restore weighs against the free limit; [habits] is everything, for the words.
+     */
+    data class Found(val habits: Int, val logs: Int, val activeHabits: Int) : DriveLook()
     /** That Google account holds no Often Enough backup (10.7). Nothing changed. */
     object Nothing : DriveLook()
     /** No internet (8.4). Nothing changed. */
@@ -139,7 +142,7 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
         }
         // Nothing new came down: that Google account has no Often Enough backup in it (10.7).
         if (store.habits.size == habitsBefore && store.entryCount == logsBefore) return DriveLook.Nothing
-        return DriveLook.Found(store.habits.count { !it.archived }, store.entryCount)
+        return DriveLook.Found(store.habits.count { !it.archived }, store.entryCount, store.activeHabitCount)
     }
 
     // ------------------------------------------------------------------ Restore

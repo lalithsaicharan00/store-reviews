@@ -112,8 +112,12 @@ fun RestoreFlow(
 
     // ---------------------------------------------------------------- Doing the work
 
-    /** A file or a Drive copy needs Plus when it holds more habits than the free plan keeps going at once. */
-    fun needsPlus(habits: Int) = habits > HabitStore.FREE_HABIT_LIMIT
+    /**
+     * A file or a Drive copy needs Plus when it holds more habits **than the free plan keeps going at once** — the
+     * same count a device makes of its own (not archived, not a task). Counting tasks or archived habits here would
+     * stop a free person restoring their own backup, which is the opposite of the point.
+     */
+    fun needsPlus(activeHabits: Int) = activeHabits > HabitStore.FREE_HABIT_LIMIT
 
     /**
      * Asks Google Play again what this phone's Google account owns — the only place Plus ever comes from (D16). A
@@ -140,7 +144,7 @@ fun RestoreFlow(
         }
         step = RESTORING
         scope.launch {
-            if (needsPlus(preview.fileHabits) && !hasPlus()) {
+            if (needsPlus(preview.fileActiveHabits) && !hasPlus()) {
                 when (playHasPlus()) {
                     null -> { step = NO_INTERNET_PLUS; return@launch }
                     false -> { step = NEEDS_PLUS; return@launch }
@@ -163,8 +167,8 @@ fun RestoreFlow(
                 is DriveLook.NotConnected, is DriveLook.Problem, is DriveLook.Nothing -> step = NO_BACKUP
                 is DriveLook.Found -> {
                     madeOn = "android"
-                    madeWithPlus = needsPlus(look.habits)
-                    if (needsPlus(look.habits) && !hasPlus() && playHasPlus() != true) {
+                    madeWithPlus = needsPlus(look.activeHabits)
+                    if (needsPlus(look.activeHabits) && !hasPlus() && playHasPlus() != true) {
                         // Checked before anything is kept: this phone goes back as it was (it was empty — the only
                         // place this flow starts), and Drive keeps everything, because nothing ever went up.
                         val offline = !online(context)

@@ -204,13 +204,15 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         val now = clock()
         val live = { s: Snapshot -> s.habits.count { it.deletedAt == null } to s.entries.count { it.deletedAt == null } }
         val (fileHabits, fileEntries) = live(contents.snapshot)
+        // What the free plan counts: live, not archived, not a task (HabitStore.activeHabitCount).
+        val fileActive = contents.snapshot.habits.count { it.deletedAt == null && it.archivedAt == null && it.kind != "task" }
         val (phoneHabits, phoneEntries) = live(phone)
         BackupCheck(
             problem = null,
             preview = RestorePreview(
                 createdAt = contents.createdAt, deviceName = contents.deviceName, platform = contents.platform, appVersion = contents.appVersion,
                 plus = contents.plus,
-                fileHabits = fileHabits, fileEntries = fileEntries, phoneHabits = phoneHabits, phoneEntries = phoneEntries,
+                fileHabits = fileHabits, fileActiveHabits = fileActive, fileEntries = fileEntries, phoneHabits = phoneHabits, phoneEntries = phoneEntries,
                 replace = RestorePlanner.plan(phone, known, contents.snapshot, RestoreMode.REPLACE, now).counts,
                 merge = RestorePlanner.plan(phone, known, contents.snapshot, RestoreMode.MERGE, now).counts,
             ),

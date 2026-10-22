@@ -8,6 +8,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import app.habits.core.RestoreMode
 import com.oftenenough.app.app.AppGraph
+import com.oftenenough.app.data.Habit
+import com.oftenenough.app.data.HabitColor
+import com.oftenenough.app.data.HabitKind
+import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.app.MainActivity
 import com.oftenenough.app.app.TestLaunch
 import java.io.File
@@ -116,6 +120,39 @@ class DataSafetyTest {
         val uri = Uri.fromFile(file("made-free.zip"))
         assertTrue(backup.saveFile(uri))
         assertFalse(backup.check(uri)!!.check.preview!!.plus)
+    }
+
+    /**
+     * **What a restore weighs against the free plan is the habits the free plan counts** — not tasks, not archived
+     * habits (22 Oct 2026). A backup with more than the free limit is kept back until this phone's Google Play
+     * account has Plus, so a Plus backup can't hand anyone unlimited habits; but a free person's own backup, with
+     * tasks and archived habits in it, must still come back.
+     */
+    @Test fun theFreeLimitCountsOnlyTheHabitsItLimits() = runBlocking {
+        // A phone with a task and an archived habit beside its habits: both are in the file, neither is limited.
+        onMain {
+            store.add(Habit(name = "Post the letter", symbol = "tray.fill", color = HabitColor.BROWN, kind = HabitKind.Task))
+            store.archive(store.habits.filter { !it.archived && it.kind != HabitKind.Task }.take(1))
+        }
+        store.flush()
+        val uri = Uri.fromFile(file("counts.zip"))
+        assertTrue(backup.saveFile(uri))
+        val preview = backup.check(uri)!!.check.preview!!
+        val active = onMain { store.activeHabitCount }
+        assertTrue("there is a task to be miscounted", onMain { store.habits.any { !it.archived && it.kind == HabitKind.Task } })
+        assertTrue("and an archived habit", onMain { store.habits.any { it.archived } })
+        assertEquals("the file counts active habits as this phone does", active, preview.fileActiveHabits)
+        assertTrue("and that is fewer than every live row", preview.fileActiveHabits < preview.fileHabits)
+
+        // The same file with everything archived but the free limit is within the free plan again.
+        val keep = onMain { store.habits.filter { !it.archived && it.kind != HabitKind.Task }.take(HabitStore.FREE_HABIT_LIMIT).map { it.id } }
+        onMain { store.archive(store.habits.filter { !it.archived && it.kind != HabitKind.Task && it.id !in keep }) }
+        store.flush()
+        val small = Uri.fromFile(file("counts-small.zip"))
+        assertTrue(backup.saveFile(small))
+        val slim = backup.check(small)!!.check.preview!!
+        assertEquals(HabitStore.FREE_HABIT_LIMIT, slim.fileActiveHabits)
+        assertTrue("archived habits and tasks are still in the file", slim.fileHabits > slim.fileActiveHabits)
     }
 
     /** Every file a person gets is named the one way every app opens (D5). */

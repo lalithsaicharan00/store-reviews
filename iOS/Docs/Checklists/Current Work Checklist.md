@@ -75,9 +75,12 @@ Expressive, native components** (the user, 22 Oct 2026: "everything should feel 
 - **Google Drive restore runs against the on-phone stand-in Drive** in debug builds; the real one still needs the
   Android OAuth client (unchanged, and the only reason the account chooser and Google's permission screen in flows
   2.4–2.5 aren't the real ones yet).
-- **A restore that needs Plus is refused outright**, as the flows draw it. That is stricter than D10 ("data is never
-  held hostage"); the ways back are the Play Store account switch and a promo code from us. Say if it should instead
-  restore everything and archive what is over the free limit.
+- ~~**A restore that needs Plus is refused outright**, as the flows draw it.~~ **Confirmed by the user, 22 Oct 2026:**
+  it should be refused, because otherwise a Plus person's backup file would hand anyone unlimited habits for free.
+  **Fixed the same day, found while answering it:** the gate counted every live row in the file, which includes tasks
+  and archived habits, so a free person with five habits and a few tasks would have been blocked from their own
+  backup. It now counts what the free plan limits (`RestorePreview.fileActiveHabits`), pinned by
+  `DataSafetyTest.theFreeLimitCountsOnlyTheHabitsItLimits`.
 
 ## Commit and synchronize local work — 20 October 2026
 

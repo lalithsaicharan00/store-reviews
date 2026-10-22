@@ -37,6 +37,13 @@ data class RestorePreview(
     val plus: Boolean,
     /** Live habits and logs in the file, and on this device now. */
     val fileHabits: Int,
+    /**
+     * The habits in the file that **count against the free plan**: not deleted, not archived, and not tasks, exactly
+     * as a device counts its own (`activeHabitCount`). This, never [fileHabits], is what a restore weighs against the
+     * free limit: [fileHabits] counts tasks and archived habits too, so using it would stop a free person restoring
+     * their own backup (22 Oct 2026).
+     */
+    val fileActiveHabits: Int,
     val fileEntries: Int,
     val phoneHabits: Int,
     val phoneEntries: Int,
