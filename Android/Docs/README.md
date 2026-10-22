@@ -109,6 +109,15 @@ the user says how.
   the times of day. Right column (x 4,400): milestones (on the row, the bar, the pop-ups, reached away, the 17 Oct
   rules). Still the user's call: "All done for today" (folding every time of day would move things, A32) and the
   routine player on a page of its own.
+- **Page "day details"** (`169:1270`): 44 rows of flows, every one starting on Today (rows run from y −35,000; the
+  page was moved up so it stays inside Figma's canvas). In order: open and close; +1 to the goal and past it; Log
+  manually; Add log on another day and time; nothing typed or a later time; ✕ after typing; open a log; edit a log;
+  ✕ with changes; move a log to another day; delete a log; All logs; time a habit; log time manually; a timer's log
+  (seconds); check: Mark done and Undo done; skip and undo; several checks a day; week goal; month goal; amount week
+  goal (Push-ups); typed amount month goal (Savings); time week goal (Piano); checklist; log a slip; open, change and
+  delete a slip; cut down (amount, time limit); a task (mark done, reschedule); resume a paused habit; an earlier day;
+  a later day; the ⋮ menu (archive, delete, pause); notes (add, change, delete, unsaved, a long note); milestones from
+  Day details (bar, pop-up); a long name and large text.
 
 **Onboarding, as decided 21 Oct.** No welcome or intro pages and no first-habit step: **Splash → Today, "No habits
 yet"**, with **New habit** and **Restore from a backup**. Restore offers **Google Drive** (Google's account chooser →
@@ -121,6 +130,35 @@ says where it was made.
 all of them, one saved order per time of day for every day, changes save at once); tasks come after the habits in
 their time of day and are never arranged; Day details is a bottom sheet; every Add screen (Add log, Add slip, Add note)
 has ✕, Date | Time, the value, and its button above the keyboard.
+
+**Day details, as drawn 22 Oct** (the agent's choices while drawing, not yet reviewed by the user, so not A-numbers;
+the user's word changes any of them):
+- One sheet for every habit type: the habit card (opens Habit details), **This day** (the count, the buttons, the
+  note), the logs, then Skip. The title names the day: Today, Yesterday, Tomorrow, or the date.
+- **Up to 3 logs show; with 4 or more, the 2 newest and "All N logs"**, a page of its own that stays open after a
+  delete. A check habit's checks and a timer's sessions are logs too; a checklist has no logs list (its steps are the
+  record).
+- **Every saved record opens as a view first** (Log, Slip, Note: what, when, where it came from), with **Delete … |
+  Edit** at the bottom, Delete in red text. Edit is the same screen as Add with Save. ✕ asks only when something
+  changed: Keep editing | Discard. Delete asks with Cancel | Delete and offers Undo after.
+- **A log can be moved to another day** from Edit's date (today and earlier only); the footer says what moving does to
+  today before Save. A timer's log keeps its seconds (Hours | Minutes | Seconds); a typed one has Hours | Minutes.
+- **Add log never greys Add**: with nothing typed it outlines the amount and says "Enter more than zero."; a time
+  later than now goes back to now and says so.
+- **Skip goes once the day's goal is met** (a done day has nothing to skip), and never shows for week or month goals,
+  cut-down habits or tasks (A35). A done check shows "Done at 2:05 PM" with a tonal Undo done.
+- **Week and month goals count the period**: "This week · 140 of 300", the period's logs with their days; the button
+  is the habit's step (+20), Add a check, Start timer, or Log for an amount typed each time. (The Savings screen at
+  the end of Today's "An amount typed each time" still shows today's $50 big; it should follow this.)
+- **A past day logs on that day at the same clock time**, changeable in the Log; a later day can't be logged.
+- **A task** has Mark done and a Reschedule list (Do tomorrow, Another day… with a tomorrow-and-later picker); moving
+  it closes Day details and shows "Moved to … · Undo".
+- **⋮** holds View habit, Edit habit, Pause…, Archive and Delete (red, last). Archive asks nothing (it's undoable and
+  keeps everything); Delete asks and points to Archive in its body.
+- **A note shows at most 2 lines with …**; the Note view shows all of it.
+- **Milestones** reached from Day details: the bar shows over the sheet (it's on top of everything); the pop-up rises
+  over it and Close returns to Day details.
+- **Large text** (200%): the count and "to go" stack, the buttons stack full width, rows grow, the sheet scrolls.
 
 **Milestone motion lives in the new file** (22 Oct 2026, so the old file can go): every milestone screen on the Today page carries Figma motion keyframes (select the screen, press play), rebuilt exactly from the old *Milestones on Today* section: the row (button press and fill, number roll, burst ring and 8 dots, Undo · Note fade, the band rising with its medal spinning in, words, sheen, sparkles), the bar (rise, medal pop, sparkles, sheen, 5-second line) and the pop-up (slide up, glow, medal spin and pop, ring and 12 dots, sparkles, then title, line, card and buttons). The medal is a 9-point rounded star (inner radius 0.86) with a light-to-colour gradient, a white inner ring and a soft shadow; the pop-up's has a blurred glow. A "Motion" note at the top of the milestone column gives the timings; with Remove animations on, only the end state shows.
 
