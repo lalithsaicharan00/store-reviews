@@ -95,6 +95,9 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A55 | **No selecting several, and a long press does nothing** (23 Oct 2026), on Habits and on Tasks alike: one item at a time through its ⋮. Replaces Rulebook U39 (Select in ⋮ beside a long press) | "Do we really need that? … just for the namesake … overall mental model should be same"; "don't create the designs for multi-select and also long press … Long press shouldn't give any options" |
 | A57 | **Tasks' One-time · Repeating is a connected button group, like Habits' Week · Month · Year** (23 Oct 2026), not a second row of tabs under Habits · Tasks; it scrolls away with the list | "The tab navigation should be similar to how we have in habits like week, month, year … Have you ever seen any of the app using it? No, it's a terrible user experience" |
 | A58 | **A task's Move to another day… opens the date picker at once** (23 Oct 2026), with no menu of Tomorrow, Pick a day… and No date first | "when you click move to another day, it should directly open the calendar, as simple as that, rather than opening another pop-up" |
+| A60 | **No note dots in the first version** (23 Oct 2026): a day with a note gets no dot on any square (Week, Month, Year, Habits & Tasks), and What the squares mean has no "A note that day" row. Notes show in History and Day details | "we have to remove those dots … we don't need it, at least in the first version" |
+| A61 | **Year in Pixels is cells that say what happened** (23 Oct 2026), as in the old design: each day's cell shows ✓, ✕, ↷ or ⏸ (part done is lighter, no mark); days before the habit started are blank, no outline | "it should be cells, and within that cells we need to have just what happened. We don't need those dots" |
+| A62 | **A state card is white with a black main button** (23 Oct 2026): the Paused card (Resume), the Archived card (Restore), the type-change cards (Open earlier / Open the new …), everywhere they appear | "This should be actually white card … with a resume as a primary CTA … wherever we have cards, update them" |
 | A59 | **Habits & Tasks has one search for the whole page** (23 Oct 2026): from either tab it finds habits and tasks, results grouped **Habits** then **Tasks** (a group shows only when something in it matches; archived and completed ones say so); nothing matching offers a generic **+ New habit** and **+ New task** (the typed word becomes the name; repeating it on the buttons was redundant, the user, 23 Oct) | "when the user searches, it search everything like tasks and habits, both"; "Yes, make search one page-wide search across habits and tasks, results grouped Habits then Tasks" |
 | A56 | **A quit habit's row says "Since" the day its current run began** (23 Oct 2026): the day quitting started until the first slip, then the day of the latest slip. Never its best run on the row; the best is on the Streaks page. The same on Today, in Day details' habit rows and on its Habits & Tasks card (Smoking: "Since 3 Oct") | "in the today's row, always in the subtext, what we need to show is … when it started, for the very first time … and from when the log slip, we'll be showing it the new day. Best 45 days, we don't need to show them in the row. You always need to showcase their since … in the streaks page, streaks will be there" |
 
@@ -256,8 +259,11 @@ A-numbers; the user's word changes any of them):
   day?"** (opens on today, button names the day: Open today / Open Tue 8 Sep), then opens that day's Day details, so
   one Add covers logs and notes. Go to date is Android's date picker (from the start to today) and lights the day's
   row for a moment. Notes show two lines under their day.
-- **Edit habit's Started** can move earlier, never past the first log; the days it adds count as not done until logged.
-- **Archived:** the page stays open with a card (Archived · Restore), History has no Add, ⋮ is Restore and Delete.
+- **Edit habit** (first in ⋮) opens the habit form at once, designed on its own page (a labelled stand-in until then).
+  Moving Started earlier brings those days into History, plain ✕ until logged.
+- **Year in Pixels** is a grid of cells, months across and days down, each cell showing what happened (✓ done, ✕
+  not done or a slip, ↷ skipped, ⏸ paused, lighter when part done); days before the habit started are blank (A61).
+- **Archived:** the page stays open with a white card and a black Restore button (A62), History has no Add, ⋮ is Restore and Delete.
   **After a type change** the new habit's History starts empty with a card linking to the earlier one (archived, with
   "Open the new Water" instead of Restore).
 - **A new habit** shows small true numbers; comparisons and the month's bar chart wait until there's something to
