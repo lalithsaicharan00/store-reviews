@@ -296,6 +296,9 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                     if (content.isEmpty) NothingPlanned(nav, isToday)
                     else Column(Modifier.fillMaxSize()) {
                     val listState = rememberLazyListState()
+                    // Another day starts at its top, so its first line ("Planned for Sat, 24 Oct…") is read, never
+                    // scrolled past because the day before was.
+                    LaunchedEffect(day) { listState.scrollToItem(0) }
                     val index = remember { ItemIndex() }
                     // A habit just added comes into view, lit (Figma 1.6).
                     LaunchedEffect(lit) {

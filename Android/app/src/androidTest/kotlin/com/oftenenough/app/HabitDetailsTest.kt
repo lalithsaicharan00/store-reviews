@@ -219,8 +219,9 @@ class HabitDetailsTest {
         tapTag("habit-day-" + dayKey(day))
         waitFor(hasTestTag("day-details"), "that day")
         tapTag("day-edit-note")
+        // The title is the day in Today's own words ("Wed, 21 Oct"), then the habit it is about (Today flow 27).
         waitFor(hasTestTag("note-day"), "the note's day as its title")
-        waitFor(hasText("Water · ", substring = true), "the habit and how the day went")
+        waitFor(hasText("Water"), "the habit the note is about")
         waitFor(hasTestTag("note-delete"), "Delete note")
     }
 

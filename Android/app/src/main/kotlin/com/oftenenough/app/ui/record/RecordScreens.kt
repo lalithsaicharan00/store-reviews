@@ -93,11 +93,15 @@ fun RecordTopBar(title: String, close: Boolean = true, onClose: () -> Unit, acti
     }
 }
 
-/** Keep editing / Discard changes: asked before closing anything typed (D7: back never loses typing). */
+/**
+ * Keep editing / Discard: asked before closing anything typed (D7: back never loses typing). Two buttons, the one
+ * that loses something in red, and a line saying what it is (Today flow 29).
+ */
 @Composable
-fun DiscardDialog(title: String, onKeep: () -> Unit, onDiscard: () -> Unit, keepLabel: String = "Keep editing") {
-    AlertDialog(onKeep, title = { Text(title) },
-        confirmButton = { TextButton(onDiscard, Modifier.semantics { testTag = "discard" }) { Text("Discard changes", color = appColors.error) } },
+fun DiscardDialog(title: String, onKeep: () -> Unit, onDiscard: () -> Unit, keepLabel: String = "Keep editing",
+                  body: String = "What you typed won’t be saved.") {
+    AlertDialog(onKeep, title = { Text(title) }, text = { Text(body) },
+        confirmButton = { TextButton(onDiscard, Modifier.semantics { testTag = "discard" }) { Text("Discard", color = appColors.error) } },
         dismissButton = { TextButton(onKeep, Modifier.semantics { testTag = "keep-editing" }) { Text(keepLabel, color = appColors.ink) } })
 }
 

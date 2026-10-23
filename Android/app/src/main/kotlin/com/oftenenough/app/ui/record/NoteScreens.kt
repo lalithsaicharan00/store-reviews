@@ -59,7 +59,6 @@ import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.data.noteDayLine
 import com.oftenenough.app.ui.theme.appColors
 
 /**
@@ -102,15 +101,16 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(title, close = editing, onClose = ::close)
         Column(Modifier.weight(1f).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            // A habit's note, read (Habit details, Figma 1373:2, 2.9): the day as its title, then the habit and how the day went.
+            // A note, read (Today flow 27): the day it belongs to as the title — "Today, 23 Oct", the same words the
+            // rest of Today uses — then the habit it is about. How the day went is on the Day details underneath, so
+            // it isn't repeated here.
             if (!editing && habit != null) {
                 Column(Modifier.padding(horizontal = 4.dp).padding(bottom = 8.dp)) {
-                    Text(DayWords.date(day).format(java.time.format.DateTimeFormatter.ofPattern("EEEE, d MMMM", java.util.Locale.ENGLISH)),
-                        Modifier.semantics { testTag = "note-day" }, style = AppType.headlineSmall, color = c.ink)
+                    Text(DayWords.withDate(day, today), Modifier.semantics { testTag = "note-day" }, style = AppType.headlineSmall, color = c.ink)
                     Spacer(Modifier.height(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         HabitIcon(habit.symbol, habit.color, size = 20.dp)
-                        Text(habit.name + " · " + store.noteDayLine(habit, day), style = AppType.bodyMedium, color = c.secondary)
+                        Text(habit.name, style = AppType.bodyMedium, color = c.secondary)
                     }
                 }
             } else {
@@ -160,10 +160,11 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
     if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes to this note?", { discard = false }, {
         discard = false
         if (adding) onDone() else editing = false
-    }, keepLabel = if (adding) "Keep writing" else "Keep editing")
+    }, keepLabel = "Keep editing")
+    // Cancel and Delete, nothing else, and Delete in red (D9); the body says what stays (Today flow 28).
     if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this note?") },
-        text = { Text("Only the note for $shortDay is removed. That day's progress stays.") },
-        confirmButton = { TextButton({ confirmDelete = false; save(""); onDone() }, Modifier.semantics { testTag = "note-delete-confirm" }) { Text("Delete note", color = c.error) } },
+        text = { Text("Your logs for this day stay as they are.") },
+        confirmButton = { TextButton({ confirmDelete = false; save(""); onDone() }, Modifier.semantics { testTag = "note-delete-confirm" }) { Text("Delete", color = c.error) } },
         dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } })
     if (pickDay) {
         val first = habit?.let { store.rules.startDay(it) } ?: Int.MIN_VALUE
