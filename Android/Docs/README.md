@@ -141,7 +141,15 @@ the user says how.
   One-time; Repeating; a task's ⋮ (Move to another day with the date picker, Edit task, Duplicate, Archive, Delete);
   Skip this time; No date (Do today, Pick a day); done on Today and the day ending; Completed tasks (Mark as not
   done, Delete all completed); Archived tasks; search; + a new task; a task's details; empty states and 200%. Habit
-  details, Task details and the habit and task forms are labelled stand-ins until their pages are drawn.
+  details and Task details are the real screens from "details pages" (23 Oct); the habit and task forms are labelled
+  stand-ins until their pages are drawn.
+- **Page "details pages"** (`298:2`): Habit details and Task details, rows of flows from y 0. In order: open from
+  Habits & Tasks (Progress top, scrolled, the whole page); a description; ⋮ (Pause…, Delete); Streaks; Milestones (All
+  milestones, How milestones work, a reached one's pop-up again); What the squares mean; Month (an earlier month, a
+  day's Day details); Month for a week goal and an amount; Year in Pixels; History (every day; With notes; search
+  notes; Go to date; Add; a note for any day); Edit habit with Started moved earlier; an archived habit; after a type
+  change; a new habit and one made today; a quit habit's Progress; 200% and loading; Task details (one-time,
+  repeating).
 
 **Onboarding, as decided 21 Oct.** No welcome or intro pages and no first-habit step: **Splash → Today, "No habits
 yet"**, with **New habit** and **Restore from a backup**. Restore offers **Google Drive** (Google's account chooser →
@@ -228,6 +236,32 @@ the user, so not A-numbers; the user's word changes any of them):
   Completed; unfinished ones wait in Today with their planned day.
 - **Completed tasks** has a ⋮ with its one page action, Delete all completed (asks first, Undo after); each task's ⋮
   has Mark as not done and Delete.
+
+**Habit details and Task details, as drawn 23 Oct** (from the old Design file's section, which the user called
+"very sorted out"; the changes below are the agent's choices while drawing, not yet reviewed by the user, so not
+A-numbers; the user's word changes any of them):
+- **Habit details:** ← · ⋮ (Edit habit, Pause…, Archive, Delete); the icon, name and goal; tabs **Progress · History**,
+  pinned on scroll with the name moving into the top bar. Progress: Overall record (See all streaks), Milestones (See
+  all → All milestones → How milestones work: in a row, in total, anniversaries, which get a pop-up, quitting), What
+  the squares mean (folded), Week, Month, Year in Pixels. A square opens that day's Day details.
+- **History:** Search notes; chips All · With notes · Go to date; every day newest first, grouped by month with "Goal
+  met on N of M days"; a day below its goal is a plain grey ✕ with its count, never red. **Add asks "Add to which
+  day?"** (opens on today, button names the day: Open today / Open Tue 8 Sep), then opens that day's Day details, so
+  one Add covers logs and notes. Go to date is Android's date picker (from the start to today) and lights the day's
+  row for a moment. Notes show two lines under their day.
+- **Edit habit's Started** can move earlier, never past the first log; the days it adds count as not done until logged.
+- **Archived:** the page stays open with a card (Archived · Restore), History has no Add, ⋮ is Restore and Delete.
+  **After a type change** the new habit's History starts empty with a card linking to the earlier one (archived, with
+  "Open the new Water" instead of Restore).
+- **A new habit** shows small true numbers; comparisons and the month's bar chart wait until there's something to
+  compare; ‹ is off before the first period. **A quit habit** leads with time smoke-free (Current run, Longest run,
+  Slips, Days with no slip; See all runs); milestones say "clean"; a slip day is a plain ✕. Its start is 15 Jul so
+  Today's "Best 45 days" fits; Day details' "Quitting since 27 Sep" disagrees and should follow.
+- **200%:** the name and goal wrap, the record's tiles stack, History's chips wrap. **Loading:** header and card shapes
+  at once, no number until it's real.
+- **Task details:** no tabs, only its days. One-time: a Planned card (it's ticked on Today, U38), "Nothing done yet",
+  Add note; done: the day with its time and note. Repeating: every time it was done, newest first, by year, the next
+  time under the name. ⋮ is the task's five actions.
 
 **Milestone motion lives in the new file** (22 Oct 2026, so the old file can go): every milestone screen on the Today page carries Figma motion keyframes (select the screen, press play), rebuilt exactly from the old *Milestones on Today* section: the row (button press and fill, number roll, burst ring and 8 dots, Undo · Note fade, the band rising with its medal spinning in, words, sheen, sparkles), the bar (rise, medal pop, sparkles, sheen, 5-second line) and the pop-up (slide up, glow, medal spin and pop, ring and 12 dots, sparkles, then title, line, card and buttons). The medal is a 9-point rounded star (inner radius 0.86) with a light-to-colour gradient, a white inner ring and a soft shadow; the pop-up's has a blurred glow. A "Motion" note at the top of the milestone column gives the timings; with Remove animations on, only the end state shows.
 
