@@ -47,6 +47,8 @@ object SettingsPage {
     const val TIMES_OF_DAY = "Times of Day"
     const val DAY_AND_WEEK = "Day and Week"
     const val REMINDERS = "Reminders"
+    /** Keep reminders coming (A40): the one page that gets reminders through this phone. */
+    const val KEEP_REMINDERS = "Keep reminders coming"
     const val APPEARANCE = "Appearance"
     const val BACKUP = "Backup & Sync"
     const val PRIVACY = "Privacy & Security"

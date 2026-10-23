@@ -18,15 +18,36 @@ fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime
             return (if (habit.kind == HabitKind.Check) days else goalLine(habit, progress, goal, running) + " · " + days) + t
         }
     }
+    // A once-a-day check says where the day stands, then its reminder: "Not done | 8:00 AM", then "Done" (Today flow 1).
     if (habit.kind == HabitKind.Check && f.isDayBased && (slot != null || goal <= 1)) {
-        return HabitCopy.capitalized(HabitCopy.rhythm(f, weekStart, short = true)) + t
+        val done = if (slot != null) isSlotDone(habit, slot, day) else progress > 0
+        return if (done) "Done" else "Not done" + (time?.let { " | " + DayWords.clockMinute(it.minuteOfDay) } ?: "")
     }
-    // A limit says where it stands in words, never in red (Figma 1.12, 1.12.1; U3).
-    if (habit.atMost && goal > 0 && progress >= goal) {
-        val counted = goalLine(habit, progress, goal, running).replace(" max", "")
-        return (if (progress > goal) "Over the limit · " else "Limit reached · ") + counted + t
-    }
+    // A limit never fills, so its words say where it stands (A41, Today flows 44–45); never red, never a warning (U3).
+    if (habit.atMost && goal > 0) return limitLine(habit, progress, goal, running) + t
     return goalLine(habit, progress, goal, running) + t
+}
+
+/**
+ * A cut-down row's line (A41, 22 Oct 2026): "1 of 2 cups · 1 left", "Limit reached · 2 of 2 cups",
+ * "Over the limit · 3 of 2 cups"; a running timer "12:40 · 17 min left", then "Limit reached · 30:00 of 30 min".
+ */
+fun limitLine(habit: Habit, progress: Double, goal: Double, running: Boolean): String {
+    val counted = limitCounted(habit, progress, goal, running)
+    return when {
+        progress > goal -> "Over the limit · $counted"
+        progress >= goal -> "Limit reached · $counted"
+        running -> Format.clock(progress) + " · " + Format.minutes(kotlin.math.ceil(goal - progress)) + " left"
+        else -> "$counted · ${Format.amount(goal - progress)} left"
+    }
+}
+
+/** "1 of 2 cups", "42 of 30 min", "30:00 of 30 min" while the timer runs. */
+private fun limitCounted(habit: Habit, progress: Double, goal: Double, running: Boolean): String = when (val k = habit.kind) {
+    HabitKind.Duration -> (if (running) Format.clock(progress) else Format.amount(kotlin.math.floor(progress))) + " of " + Format.minutes(goal)
+    is HabitKind.Amount -> if (k.unit in HabitCopy.currencies) "${k.unit}${Format.amount(progress)} of ${k.unit}${Format.amount(goal)}"
+        else "${Format.amount(progress)} of ${Format.amount(goal)}${if (k.unit.isEmpty()) "" else " " + k.unit}"
+    else -> "${Format.amount(progress)} of ${Format.amount(goal)}"
 }
 
 /** One day's result, never a weekly total labelled Today. */
@@ -250,7 +271,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     }
                     // A limit says where it stands in words, never in red (Figma 10–11.3, U3).
                     if (r.atMost) return DayStatus("${today(saved)} $dayWord", "Limit ${text(goal)} · " + when {
-                        saved > goal -> "Over the limit"; saved >= goal -> "Limit reached"; else -> "within max"
+                        saved > goal -> "Over the limit"; saved >= goal -> "Limit reached"; else -> "within limit"
                     }, running)
                     val title = if (timed) {
                         if (goal < 60 && saved < 60) "${kotlin.math.floor(saved).toInt()} of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"

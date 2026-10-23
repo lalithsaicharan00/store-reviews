@@ -187,11 +187,11 @@ class FirstRunTest {
             assertTrue("nothing is in Drive now", drive.list().isEmpty())
         }
         waitFor(hasTestTag("notice-removed"), "the removed-backup notice")
-        waitFor(hasText("Your Google Drive backup was removed"), "what it says")
+        waitFor(hasText("Your Google Drive backup was deleted"), "what it says")
         assertTrue("it never blames the person; on screen: ${screen()}", screen().contains("safe on this phone"))
 
         tapTag("notice-action")
-        waitFor(hasText("Everything is in your Google Drive again"), "the card saying it's done")
+        waitFor(hasText("Backed up"), "the card saying it's done")
         kotlinx.coroutines.runBlocking {
             val chains = AppGraph.backup.link.api()!!.list().mapNotNull { it.properties["chain"] }
             assertTrue("base and every year are back; got $chains", chains.contains("base") && chains.size >= 2)

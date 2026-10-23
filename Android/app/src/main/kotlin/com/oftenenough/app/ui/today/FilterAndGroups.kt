@@ -95,64 +95,6 @@ fun groupCount(store: HabitStore, groupId: String?, day: Int): Int? {
     return members.count { store.rules.isDue(it, day) }
 }
 
-/**
- * Today's Filter (Figma 3, "Show on Today"): All or one group as filter chips ("Health · 5": how many it shows on the day
- * open), Edit groups and New group, then Hide done habits and Hide done tasks. With no groups yet (Figma 3.2) the top says
- * what groups are, with New group and Not now; the two switches stay below it, so hiding done rows never needs a group.
- * Only "show less" lives here; arranging the day is Today's ✏.
- */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-@Composable
-fun FilterSheet(store: HabitStore, prefs: Prefs, day: Int, onNewGroup: () -> Unit, onEditGroups: () -> Unit, onDismiss: () -> Unit) {
-    val c = appColors
-    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    // Worked out only while the sheet is open.
-    val counts = remember(store.dataVersion, day) { store.groups.associate { it.id to groupCount(store, it.id, day) } }
-    val current = prefs.todayGroup.takeIf { id -> store.groups.any { it.id == id } }
-    ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.surface, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
-        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 40.dp)
-            .semantics { testTag = "filter-sheet"; testTagsAsResourceId = true },
-            verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            if (store.groups.isEmpty()) {
-                // Figma 3.2: what groups are, and New group.
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Icon(Icons.Outlined.Category, null, Modifier.size(32.dp), tint = c.ink)
-                    Text("Group your habits", style = AppType.titleLarge, color = c.ink)
-                    Text("Put habits together, then filter Today and Progress by group.", style = AppType.bodyMedium, color = c.secondary,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-                    Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).clip(RoundedCornerShape(28.dp)).background(c.ink).clickable(onClick = onNewGroup)
-                        .semantics { testTag = "group-new" }, contentAlignment = Alignment.Center) {
-                        Text("New group", style = AppType.titleMedium, color = c.onInk)
-                    }
-                    Box(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(24.dp)).clickable(onClick = onDismiss)
-                        .semantics { testTag = "groups-not-now" }, contentAlignment = Alignment.Center) {
-                        Text("Not now", style = AppType.titleMedium, color = c.ink)
-                    }
-                }
-            } else {
-                Text("Show on Today", style = AppType.titleLarge, color = c.ink)
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Chip("All", current == null, "group-chip-all") { prefs.todayGroup = "" }
-                    for (g in store.groups) {
-                        val n = counts[g.id]
-                        Chip(if (n != null) "${g.name} · $n" else g.name, current == g.id, "group-chip-${g.name}") { prefs.todayGroup = g.id }
-                    }
-                }
-                Column {
-                    SheetRow(Icons.Outlined.Edit, "Edit groups", "groups-edit", onEditGroups)
-                    SheetRow(Icons.Rounded.Add, "New group", "group-new", onNewGroup)
-                }
-                Text("Groups change only what Today and Progress show.", style = AppType.bodySmall, color = c.secondary)
-            }
-            Box(Modifier.fillMaxWidth().height(1.dp).background(c.line))
-            Column {
-                SwitchRow("Hide done habits", prefs.hideDoneHabits, "hide-done-habits") { prefs.hideDoneHabits = it }
-                SwitchRow("Hide done tasks", prefs.hideDoneTasks, "hide-done-tasks") { prefs.hideDoneTasks = it }
-            }
-        }
-    }
-}
-
 /** A filter chip (Figma 3): the chosen one tonal with a ✓, the others outlined; corners 8. */
 @Composable
 private fun Chip(title: String, selected: Boolean, tag: String, onClick: () -> Unit) {

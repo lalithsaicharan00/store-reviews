@@ -111,8 +111,9 @@ fun animatedProgress(target: Float): Float {
 @Composable
 fun StreakLabel(count: Int, unit: StreakUnit, roll: Float = 1f) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.semantics(mergeDescendants = true) { contentDescription = unit.explained(count) }) {
-        Box(Modifier.size(18.dp), contentAlignment = Alignment.Center) { Text("🔥", fontSize = 12.sp, lineHeight = 18.sp) }
-        Spacer(Modifier.width(2.dp))
+        // The 🔥 grows with the phone's text size: a fixed 18 dp box clipped the flame at 200 % (the user, 23 Oct 2026).
+        Text("🔥", style = AppType.labelLarge.copy(lineHeight = AppType.labelLarge.fontSize * 1.45f), maxLines = 1, softWrap = false)
+        Spacer(Modifier.width(4.dp))
         if (roll >= 0.24f || count < 1) Text(unit.short(count), style = AppType.labelLarge, color = appColors.ink, maxLines = 1)
         else {
             // A milestone shown in the row alone rolls the count (Figma R.1: 59 slips up and out, 60 pops up in).

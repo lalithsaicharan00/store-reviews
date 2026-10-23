@@ -11,8 +11,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Nothing on Today moves during a run of taps (Rulebook U4): a log holds every section's order and fold, and Today tidies
- * (done rows sink, finished sections fold) [pauseMillis] after the last one. The iPhone's `TodayLayout`.
+ * Nothing on Today moves during a run of taps (Rulebook U4): a log holds every section's order and fold until
+ * [pauseMillis] after the last one. Since A32 and A45 (21–22 Oct 2026) nothing tidies itself afterwards either — a done
+ * row stays where it is and no card folds on its own — so this only keeps the list still while rows are being added or
+ * removed. The iPhone's `TodayLayout`.
  */
 @Stable
 class TodayLayout(private val scope: CoroutineScope) {

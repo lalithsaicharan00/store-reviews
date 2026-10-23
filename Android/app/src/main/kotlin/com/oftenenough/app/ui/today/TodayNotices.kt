@@ -20,11 +20,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CloudDone
 import androidx.compose.material.icons.outlined.CloudOff
-import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.HourglassTop
 import androidx.compose.material.icons.outlined.LinkOff
 import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material.icons.outlined.NotificationsPaused
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -54,6 +54,7 @@ import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.app.reminders.Reminders
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
+import com.oftenenough.app.ui.settings.PhoneMaker
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
@@ -86,7 +87,12 @@ class NoticeWork(
 /** Where a notice's action goes on Today's side (the pages are Today's to open). */
 interface NoticeNav {
     fun backup()
+    /** Keep reminders coming (A40), opened straight from the notice: no trip through Settings. */
     fun reminders()
+    /** Google's own account chooser, over Today, with nothing restored (Today flow 36). */
+    fun reconnectDrive()
+    /** Android's own question, where it will still ask; its notification settings where it won't (Today flows 41–42). */
+    fun askNotifications()
 }
 
 object TodayNotices {
@@ -94,7 +100,7 @@ object TodayNotices {
     private val PREFS: String get() = if (AppGraph.isTest) "uitest-today-notices" else "today-notices"
     private const val HIDDEN_MS = 7 * 24 * 3_600_000L
 
-    /** Test launches: the notice to show whatever the phone's state ("full", "off", "held", "removed", "missed", "notifications", "pending"). */
+    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "late", "notifications", "pending"). */
     var forced: String? = null
 
     /** A notice doing its own work stays on Today until its card folds away, even once the state it reported is gone. */
@@ -108,8 +114,9 @@ object TodayNotices {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getLong(key, 0L) > now
 
     /**
-     * The notice to show now, the most important first: anything that could cost data (deletes held from another device,
-     * backup off, backup paused), then reminders that can't come or didn't, then a payment Google Play hasn't finished.
+     * The notice to show now, the most important first: anything that could cost data (a backup that was deleted,
+     * backup off, backup paused), then reminders that can't come, came late or didn't come, then a payment Google Play
+     * hasn't finished. Each one stays until the person acts on it (A38): nothing here goes away on its own.
      */
     fun current(context: Context, store: HabitStore, nav: NoticeNav, now: Long): TodayNotice? {
         if (!AppGraph.isOpen) return null
@@ -123,24 +130,22 @@ object TodayNotices {
         val forced = forced
         val status = AppGraph.backup.status
         val state = status?.state
-        if (state == DriveState.HELD || forced == "held") list += TodayNotice("held", Icons.Outlined.DeleteSweep, "Deleted on another device",
-            "Nothing has changed here yet. Check them before anything is removed from this phone.", "Later", "Review") { nav.backup() }
         // A39: the Drive copy is gone (the person cleared the folder, say). Nothing has gone up since, and nothing
         // does until they choose Back up again, which sends every file. `holding` keeps the card here while it works.
         if (state == DriveState.REMOVED || holding == "removed" || forced == "removed") list += TodayNotice(
-            "removed", Icons.Outlined.CloudOff, "Your Google Drive backup was removed",
-            "Your habits are safe on this phone. Nothing has been backed up since.", "Not now", "Back up again",
+            "removed", Icons.Outlined.CloudOff, "Your Google Drive backup was deleted",
+            "Your habits are still safe on this phone. Back them up again to keep a copy in Google Drive.", "Not now", "Back up again",
             act = { nav.backup() },
             work = NoticeWork(
                 working = "Backing up to Google Drive…",
-                done = "Everything is in your Google Drive again",
+                done = "Backed up",
                 failed = "Couldn’t back up just now. Your habits are safe on this phone.",
                 retry = "Try again",
             ) { progress -> AppGraph.backup.backUpEverythingAgain(progress) },
         )
         if (state == DriveState.NOT_CONNECTED || forced == "off") list += TodayNotice("off", Icons.Outlined.LinkOff, "Backup is off",
-            "The app can no longer reach your Google Drive. Your habits are safe on this phone.", "Not now", "Reconnect") {
-            AppGraph.scope.launch { runCatching { AppGraph.backup.connectDrive() } }
+            "Often Enough can no longer reach your Google Drive. Your habits are safe on this phone.", "Not now", "Reconnect") {
+            nav.reconnectDrive()
         }
         if (state == DriveState.FULL || forced == "full") list += TodayNotice("full", Icons.Outlined.CloudOff, "Backup is paused",
             "Your Google Drive is full. Your habits are safe on this phone, but new changes aren’t backed up.", "Not now", "Manage storage") {
@@ -148,16 +153,22 @@ object TodayNotices {
         }
         val wantsReminders = store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() }
         if ((wantsReminders && !Reminders.canPost(context)) || forced == "notifications") list += TodayNotice("notifications", Icons.Outlined.NotificationsOff,
-            "Reminders can’t come", "Notifications for the app are off in your phone’s settings.", "Not now", "Turn on") {
-            open(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
+            "Reminders can’t come", "Notifications for Often Enough are off in your phone’s settings.", "Not now", "Turn on") {
+            nav.askNotifications()
         }
+        // A reminder that didn’t arrive, or came late: each says what this phone did, and Show me how opens the one
+        // page that fixes it (A40, Today flows 38–39).
         val missed = Reminders.missed(context, now)
-        if (missed != null || forced == "missed") {
+        if (missed != null || forced == "missed" || forced == "late") {
             val name = missed?.let { store.habit(it.habitId)?.name }
             val time = missed?.let { DayWords.clockMinute(it.minute) } ?: "8:00 AM"
-            list += TodayNotice("missed", Icons.Outlined.NotificationsPaused, "A reminder didn’t arrive",
-                "Your $time reminder" + (name?.let { " for $it" } ?: "") + " didn’t show. Your phone may be stopping the app in the background.",
+            val whose = (name?.let { it + "’ " } ?: "Your ") + time + " reminder"
+            val lateBy = missed?.lateMinutes ?: (if (forced == "late") 40 else 0)
+            if (lateBy > 0) list += TodayNotice("late", Icons.Outlined.Schedule, "$whose came $lateBy minutes late",
+                "Android sends reminders at the exact time only when Alarms & reminders is allowed for Often Enough.",
                 "Dismiss", "Show me how") { nav.reminders() }
+            else list += TodayNotice("missed", Icons.Outlined.NotificationsPaused, "$whose didn’t arrive",
+                PhoneMaker.whyMissed(), "Dismiss", "Show me how") { nav.reminders() }
         }
         if (AppGraph.plus.pending != null || forced == "pending") list += TodayNotice("pending", Icons.Outlined.HourglassTop,
             "Plus is waiting for your payment", "Google Play hasn’t finished it yet. Plus turns on by itself when it does.", "Not now", "Open Google Play") {
@@ -168,7 +179,7 @@ object TodayNotices {
 
     /** "Not now": hidden for 7 days; a missed reminder's Dismiss ends that one (the next one shows again). */
     fun dismiss(context: Context, notice: TodayNotice, now: Long) {
-        if (notice.key == "missed") Reminders.dismissMissed(context) else hide(context, notice.key, now)
+        if (notice.key == "missed" || notice.key == "late") Reminders.dismissMissed(context) else hide(context, notice.key, now)
         if (forced == notice.key) forced = null
     }
 

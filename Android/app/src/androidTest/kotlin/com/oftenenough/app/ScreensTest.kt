@@ -94,6 +94,15 @@ class ScreensTest {
     private fun tapTag(tag: String) = tap(hasTestTag(tag), "tag $tag")
     private fun tapText(text: String) = tap(hasText(text), "\"$text\"")
     private fun menu(item: String) { tapTag("menu-button"); tapTag("menu-$item") }
+
+    /** The menu is six rows since A28: everything else is a row on the one Settings page. */
+    private fun settings(page: String) { menu("settings"); tapTag("settings-$page") }
+
+    /** Nothing on screen matches: used for a control the redesign took away. */
+    private fun assertNone(m: SemanticsMatcher, what: String) {
+        compose.waitForIdle()
+        assertTrue("$what should not be on screen", compose.onAllNodes(m, useUnmergedTree = true).fetchSemanticsNodes().isEmpty())
+    }
     private fun onMain(block: () -> Unit) = InstrumentationRegistry.getInstrumentation().runOnMainSync(block)
 
     @Test fun habitDetailsOpensFromDayDetailsWithItsTabs() {
@@ -111,10 +120,12 @@ class ScreensTest {
     @Test fun aLongPressOnARowOpensItsMenu() {
         launch()
         compose.onNodeWithTag("row-Water", useUnmergedTree = true).performTouchInput { longClick() }
-        // Figma 1.4: Edit habit, Arrange…, Pause…, Add note, Skip today.
+        // Today flow 13: Edit habit, Pause, Add note, Skip today — and nothing else.
         waitFor(hasText("Edit habit"), "the row's menu")
-        waitFor(hasText("Arrange…"), "Arrange…")
-        tapText("Pause…")
+        waitFor(hasText("Add note"), "Add note")
+        waitFor(hasText("Skip today"), "Skip today")
+        assertNone(hasText("Arrange…"), "Arrange… in the row's menu")
+        tapText("Pause")
         waitFor(hasText("Pause Water"), "the Pause page")
     }
 
@@ -135,7 +146,10 @@ class ScreensTest {
 
     @Test fun progressShowsTheWeek() {
         launch()
-        menu("progress")
+        // Progress has no menu row of its own since A28: it is in the Habits page's ⋮.
+        menu("habits")
+        tapTag("habits-more")
+        tapTag("habits-menu-progress")
         waitFor(hasText("This week"), "this week on Progress")
         tapText("Month")
         waitFor(hasText("This month"), "this month")
@@ -176,25 +190,25 @@ class ScreensTest {
         assertTrue("Water archived", AppGraph.store.habits.first { it.name == "Water" }.archived)
     }
 
-    @Test fun aNewGroupFiltersToday() {
+    /**
+     * Groups live on the Habits page since A28 (21 Oct 2026): Today's top bar is ≡ · ✏ · + and has no filter, so a
+     * group changes what Habits and Progress show, never Today.
+     */
+    @Test fun aNewGroupIsMadeFromTheHabitsPage() {
         launch()
-        tapTag("filter-button")
-        tapTag("group-new")
-        compose.onNodeWithTag("group-name-field", useUnmergedTree = true).performTextInput("Health")
-        tapTag("group-habit-Water")
-        waitFor(hasTestTag("group-habit-Water") and isSelected(), "Water chosen for the group")
-        tapTag("group-save")
-        waitFor(hasTestTag("today-list"), "Today")
-        tapTag("filter-button")
-        tapTag("group-chip-Health")
-        back()
-        waitGone(hasTestTag("row-Read"), "Read (not in Health)")
-        waitFor(hasTestTag("row-Water"), "Water (in Health)")
+        assertNone(hasTestTag("filter-button"), "a filter on Today")
+        menu("habits")
+        waitFor(hasTestTag("habits-row-Water"), "Water in Habits")
+        tapTag("habits-more")
+        tapTag("habits-new-group")
+        compose.onNodeWithTag("group-name", useUnmergedTree = true).performTextInput("Health")
+        tapText("Create")
+        compose.waitUntil(10_000) { AppGraph.store.groups.any { it.name == "Health" } }
     }
 
     @Test fun arrangingMovesAHabitAndTodayFollows() {
         launch()
-        tap(hasContentDescription("Arrange your day"), "Edit")
+        tap(hasContentDescription("Edit Today"), "Edit Today")
         waitFor(hasTestTag("arrange-row-Water"), "Water in Arrange")
         compose.onNodeWithTag("arrange-row-Water").performCustomAccessibilityActionWithLabel("Move up")
         compose.waitForIdle()
@@ -204,7 +218,7 @@ class ScreensTest {
 
     @Test fun helpFindsATopicAndSaysWhenNothingMatches() {
         launch()
-        menu("help")
+        settings("help")
         compose.onNodeWithTag("help-search", useUnmergedTree = true).performTextInput("slip")
         waitFor(hasTestTag("help-topic-Log a slip"), "Log a slip")
         tapTag("help-topic-Log a slip")
@@ -217,13 +231,13 @@ class ScreensTest {
         waitFor(hasText("free habits used", substring = true), "the free habits line")
         tapTag("plus-see")
         tapTag("plus-buy")
-        waitFor(hasText("Plus is yours."), "Plus is yours.")
+        waitFor(hasText("Plus is yours"), "Plus is yours")
         assertTrue("the store's free limit is lifted", AppGraph.store.isPlus)
     }
 
     @Test fun appLockWithAPasscodeLocksAndOpens() {
         launch()
-        menu("privacy")
+        settings("privacy-and-security")
         tapTag("privacy-app-lock")
         tapTag("app-lock-switch")
         tapTag("setup-passcode")

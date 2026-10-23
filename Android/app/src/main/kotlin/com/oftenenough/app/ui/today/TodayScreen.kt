@@ -162,12 +162,11 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     // Kept above Today by the app, so the cards and steps opened stay open while a note or Add log is on top.
     val layout = kept ?: remember { TodayLayout(scope) }
     var calendar by remember { mutableStateOf(false) }
-    var filtering by rememberSaveable { mutableStateOf(false) }
     var lit by remember { mutableStateOf<String?>(null) }
-    // Another day: the buttons under the last log go, and every card follows its rule again (Figma 1.2). Coming back to
-    // Today from a page it opened (a note, Add log) is not another day.
+    // Another day: every card follows its rule again (Figma 1.2). Undo · Note stay on their own log — looking at
+    // another day never takes them away (A33) — they simply belong to a day that isn't on screen.
     var lastDay by rememberSaveable { mutableStateOf(day) }
-    LaunchedEffect(day) { if (lastDay != day) { lastDay = day; layout.reset(); store.afterLog = null } }
+    LaunchedEffect(day) { if (lastDay != day) { lastDay = day; layout.reset() } }
 
     // The ✏ tip (Figma 2.0): once, after Today has been opened on three different days and a time of day holds two habits.
     LaunchedEffect(today) {
@@ -259,9 +258,6 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     }
 
     val hasHabits = store.habits.isNotEmpty()
-    val group = prefs.todayGroup.takeIf { id -> store.groups.any { it.id == id } }
-    val filterOn = group != null || prefs.hideDoneHabits || prefs.hideDoneTasks
-    if (filtering) FilterSheet(store, prefs, day, { filtering = false; nav.newGroup() }, { filtering = false; nav.editGroups() }) { filtering = false }
     val (notice, dismissNotice) = rememberTodayNotice(store, nav)
     Scaffold(
         containerColor = c.screen,
@@ -270,11 +266,9 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                 title = {},
                 // Beside a sidebar (tablets) there's no menu to open.
                 navigationIcon = { if (!com.oftenenough.app.ui.LocalSidebar.current) IconButton(nav::openMenu, Modifier.semantics { testTag = "menu-button" }) { Icon(Icons.Rounded.Menu, "Menu", tint = c.ink) } },
+                // ≡ · ✏ · + and nothing else (A28, 21 Oct 2026): no filter on Today.
                 actions = {
-                    if (hasHabits) {
-                        TopIcon(Icons.Outlined.Edit, "Arrange your day", tipShows, "arrange-button") { prefs.arrangeTipDone = true; nav.arrange() }
-                        TopIcon(Icons.Rounded.FilterList, if (filterOn) "Filter, on" else "Filter", filterOn, "filter-button") { filtering = true }
-                    }
+                    if (hasHabits) TopIcon(Icons.Outlined.Edit, "Edit Today", tipShows, "arrange-button") { prefs.arrangeTipDone = true; nav.arrange() }
                     IconButton(nav::newHabit, Modifier.semantics { testTag = "new-habit" }) { Icon(Icons.Rounded.Add, "New habit", tint = c.ink) }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, scrolledContainerColor = c.screen),
@@ -296,17 +290,11 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                 !store.isLoaded -> {}
                 !hasHabits -> NoHabitsYet(nav)
                 else -> {
-                    val content = remember(store.dataVersion, day, today, now / 60_000, prefs.doneOrder, prefs.hideDoneHabits, prefs.hideDoneTasks, prefs.todayGroup, layout.holding) {
-                        TodayContent.make(store, day, today, now, prefs)
+                    val content = remember(store.dataVersion, day, today, now / 60_000, layout.holding) {
+                        TodayContent.make(store, day, today, now)
                     }
-                    if (content.isEmpty) Column(Modifier.fillMaxSize()) {
-                        Box(Modifier.padding(horizontal = 16.dp)) { TodayChips(store, prefs, group) }
-                        if (group != null) NothingInGroup(store.groups.first { it.id == group }.name, isToday) { prefs.todayGroup = "" }
-                        else NothingPlanned(nav, isToday)
-                    }
+                    if (content.isEmpty) NothingPlanned(nav, isToday)
                     else Column(Modifier.fillMaxSize()) {
-                    // The filter's chips stay under the top bar (Figma 3.1, 3.4), never scrolled away above the list.
-                    Box(Modifier.padding(horizontal = 16.dp)) { TodayChips(store, prefs, group) }
                     val listState = rememberLazyListState()
                     val index = remember { ItemIndex() }
                     // A habit just added comes into view, lit (Figma 1.6).
@@ -367,22 +355,18 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     }
     // Back on another day returns to today first (Figma 4.2).
     androidx.activity.compose.BackHandler(enabled = !isToday) { shownDay = null }
+    // Go to a day (A37, 22 Oct 2026): one tap on a date goes there. Nothing is saved by picking, so there is nothing to
+    // confirm: no headline, no ✏ (typing a date) and no Cancel | Go. Tapping outside or Back closes it.
     if (calendar) {
         val state = rememberDatePickerState(initialSelectedDateMillis = LocalDate.ofEpochDay(day.toLong()).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
-        DatePickerDialog(
-            onDismissRequest = { calendar = false },
-            confirmButton = {
-                TextButton({
-                    state.selectedDateMillis?.let { ms ->
-                        val picked = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()
-                        shownDay = if (picked == today) null else picked
-                    }
-                    calendar = false
-                }, Modifier.semantics { testTag = "calendar-go" }) { Text("Go", color = c.ink) }
-            },
-            dismissButton = { TextButton({ calendar = false }) { Text("Cancel", color = c.ink) } },
-        ) {
-            DatePicker(state, title = { Text("Go to a day", Modifier.padding(start = 24.dp, top = 16.dp)) })
+        LaunchedEffect(state.selectedDateMillis) {
+            val ms = state.selectedDateMillis ?: return@LaunchedEffect
+            val picked = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()
+            if (picked != day) { shownDay = picked.takeIf { it != today }; calendar = false }
+        }
+        DatePickerDialog(onDismissRequest = { calendar = false }, confirmButton = {}) {
+            DatePicker(state, title = { Text("Go to a day", Modifier.padding(start = 24.dp, top = 16.dp), style = AppType.titleMedium, color = c.ink) },
+                headline = null, showModeToggle = false)
         }
     }
 }
@@ -395,35 +379,6 @@ private fun TopIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, label
         Box(Modifier.size(48.dp).clip(CircleShape).background(if (on) c.behind else Color.Transparent), contentAlignment = Alignment.Center) {
             Icon(icon, label, tint = c.ink)
         }
-    }
-}
-
-/**
- * What Today is filtered by, as input chips under the top bar (Figma 3.1, 3.4): the group ("Health ✕") and "Done hidden
- * ✕"; ✕ clears it.
- */
-@Composable
-private fun TodayChips(store: HabitStore, prefs: Prefs, group: String?) {
-    val hides = prefs.hideDoneHabits || prefs.hideDoneTasks
-    if (group != null || hides) Row(Modifier.fillMaxWidth().padding(bottom = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        group?.let { id -> store.groups.firstOrNull { it.id == id }?.let { g -> InputChip(g.name, "chip-group") { prefs.todayGroup = "" } } }
-        if (hides) InputChip("Done hidden", "chip-done-hidden") { prefs.hideDoneHabits = false; prefs.hideDoneTasks = false }
-    }
-}
-
-/** An input chip (Figma 1960:484): #E2E2E7, corners 8, the label (Label Large) and ✕ 18 dp. */
-@Composable
-private fun InputChip(label: String, tag: String, onClear: () -> Unit) {
-    val c = appColors
-    Row(
-        Modifier.heightIn(min = 34.dp).clip(RoundedCornerShape(8.dp)).background(c.behind).clickable(onClickLabel = "Clear $label", onClick = onClear)
-            .padding(start = 12.dp, end = 8.dp, top = 6.dp, bottom = 6.dp).semantics { testTag = tag },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(label, style = AppType.labelLarge, color = c.ink, maxLines = 1)
-        Spacer(Modifier.width(8.dp))
-        Icon(Icons.Rounded.Close, "Clear $label", Modifier.size(18.dp), tint = c.ink)
     }
 }
 
@@ -468,7 +423,7 @@ private fun ArrangeTip(modifier: Modifier, onDone: () -> Unit) {
             .background(c.surface).padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp).semantics { testTag = "arrange-tip" },
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Text("Arrange your day", style = AppType.titleMedium, color = c.ink)
+        Text("Edit Today", style = AppType.titleMedium, color = c.ink)
         Text("Put habits in your own order, or move one to another time of day.", style = AppType.bodyMedium, color = c.secondary)
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             TextButton(onDone, Modifier.semantics { testTag = "arrange-tip-done" }) { Text("Got it", style = AppType.labelLarge, color = c.ink) }
@@ -496,18 +451,15 @@ class TodayItem(val habit: Habit, val placement: Placement)
 class TodayContent(
     val cards: List<Pair<String, List<TodayItem>>>, val restraint: List<Habit>, val paused: List<Habit>,
     /** The time of day it is now by the clock (on today and earlier days: those cards open; Figma 4.2). */
-    val nowPart: String?, val day: Int, val today: Int, val dayNote: String?, val done: Map<String, Boolean>,
+    val nowPart: String?, val day: Int, val today: Int, val done: Map<String, Boolean>,
 ) {
     val isEmpty: Boolean get() = cards.isEmpty() && restraint.isEmpty() && paused.isEmpty()
-    /** Everything planned is done (or skipped): "All done for today." (Figma 1.8). */
-    val allDone: Boolean get() = day == today && cards.any { it.second.isNotEmpty() } && cards.all { (_, items) -> items.all { done[it.habit.id] == true } }
 
     companion object {
-        fun make(store: HabitStore, day: Int, today: Int, now: Long, prefs: Prefs): TodayContent {
+        fun make(store: HabitStore, day: Int, today: Int, now: Long): TodayContent {
             val isToday = day == today
             val rules = store.rules
-            val group = prefs.todayGroup.takeIf { it.isNotEmpty() }?.let { id -> store.groups.firstOrNull { it.id == id } }
-            val active = store.habits.filter { !it.archived && rules.startDay(it) <= day && (group == null || it.id in group.habits) }
+            val active = store.habits.filter { !it.archived && rules.startDay(it) <= day }
             val restraint = active.filter { h ->
                 if (h.kind == HabitKind.Quit) isToday && !store.isPaused(h, today)
                 else h.isQuitOrLimit && rules.isDue(h, day, now, countingSkips = false) && !store.isPaused(h, day)
@@ -521,8 +473,7 @@ class TodayContent(
             val cards = store.todayCards().mapNotNull { card ->
                 if (card == DaySection.QUITTING) card to emptyList<TodayItem>() else rows[card]?.takeIf { it.isNotEmpty() }?.let { card to it }
             }.filter { (card, items) -> card == DaySection.QUITTING && restraint.isNotEmpty() || items.isNotEmpty() }
-            return TodayContent(cards, restraint, paused, if (day <= today) store.nowSection(now)?.id else null, day, today,
-                if (day <= today) store.dayNote(day) else null, done)
+            return TodayContent(cards, restraint, paused, if (day <= today) store.nowSection(now)?.id else null, day, today, done)
         }
     }
 }
@@ -530,39 +481,22 @@ class TodayContent(
 private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, layout: TodayLayout, actions: TodayActions, nav: TodayNav, prefs: Prefs, lit: String?, ix: ItemIndex) {
     val day = content.day
     val today = content.today
-    // The line above the cards: everything done today (Figma 1.8), or what a later day is (4.3).
-    val line = when {
-        day > today -> "Planned for ${DayWords.short(day)}. Habits are logged on their day."
-        content.allDone -> "All done for today."
-        else -> null
-    }
-    if (line != null) indexed(ix, "line") {
-        Text(line, Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).semantics { testTag = "today-line" },
+    // A later day says what it is (Figma 4.3). There is no "All done for today" line: it would push every row down
+    // (A45, 22 Oct 2026); the "Done" chip on each time of day and the full day ring say the day is finished.
+    if (day > today) indexed(ix, "line") {
+        Text("Planned for ${DayWords.short(day)}. Habits are logged on their day.",
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).semantics { testTag = "today-line" },
             style = AppType.bodyMedium, color = appColors.secondary)
-    }
-    content.dayNote?.let { note ->
-        indexed(ix, "day-note") {
-            Row(Modifier.fillMaxWidth().padding(bottom = 16.dp).clip(RoundedCornerShape(24.dp)).background(appColors.surface)
-                .clickable { actions.writeNote(null, day) }.padding(16.dp)) {
-                Icon(Icons.AutoMirrored.Rounded.StickyNote2, null, tint = appColors.secondary)
-                Spacer(Modifier.width(12.dp))
-                Text(note, style = AppType.bodyMedium, color = appColors.ink)
-            }
-        }
     }
     for ((card, items) in content.cards) {
         if (card == DaySection.QUITTING) quitting(content.restraint, store, layout, actions, day, today, prefs, ix)
         else section(card, items, content, store, layout, actions, nav, prefs, lit, ix)
     }
     if (content.paused.isNotEmpty()) {
-        val open = layout.choice("paused") ?: false
-        val first = content.paused.first()
-        val subtitle = if (content.paused.size == 1) {
-            val p = store.pause(first, day)
-            first.name + " · " + (p?.through?.let { "back on " + DayWords.dayMonth(it + 1) } ?: "until you resume")
-        } else "${content.paused.size} habits"
+        // Open, like every other card: nothing on Today folds by itself (A45). Each row says when its habit comes back.
+        val open = layout.choice("paused") ?: true
         indexed(ix, "header-paused") {
-            PartHeader("Paused", subtitle, content.paused, null, false, open, if (open) segmentShape(0, content.paused.size + 1) else RoundedCornerShape(24.dp), null) {
+            PartHeader("Paused", null, content.paused, null, false, open, if (open) segmentShape(0, content.paused.size + 1) else RoundedCornerShape(24.dp), null) {
                 layout.setOpen("paused", !open)
             }
         }
@@ -570,13 +504,6 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
             indexed(ix, "paused-${h.id}") { Spacer(Modifier.height(2.dp)); PausedRow(h, segmentShape(i + 1, content.paused.size + 1), store, actions) }
         }
         indexed(ix, "gap-paused") { Spacer(Modifier.height(16.dp)) }
-    }
-    if (day <= today && content.dayNote == null) {
-        indexed(ix, "add-day-note") {
-            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                TextButton({ actions.writeNote(null, day) }) { Text("Note for the day", style = AppType.labelLarge, color = appColors.secondary) }
-            }
-        }
     }
 }
 
@@ -588,14 +515,10 @@ private fun LazyListScope.section(
     val future = day > content.today
     val isNow = card == content.nowPart
     val left = items.count { content.done[it.habit.id] != true }
-    // Open: the time of day it is now and Anytime, while they have something left; a later day opens Anytime only (4.3).
-    val open = layout.isOpen(card, if (future) card == DaySection.ANYTIME else left > 0 && (isNow || card == DaySection.ANYTIME))
-    val hides = prefs.hideDoneHabits || prefs.hideDoneTasks
-    val shown = if (!hides || layout.holding) items else items.filter { item ->
-        content.done[item.habit.id] != true || !(if (item.habit.kind == HabitKind.Task) prefs.hideDoneTasks else prefs.hideDoneHabits)
-    }
-    val fresh = if (prefs.doneOrder != "inPlace") shown.filter { content.done[it.habit.id] != true } + shown.filter { content.done[it.habit.id] == true } else shown
-    val ordered = layout.order(card, fresh) { it.habit.id }
+    // Open: the time of day it is now and Anytime; a later day opens Anytime only (4.3). A card never folds because its
+    // habits were done (A45) and a done row never moves (A32): the person's order is the only order.
+    val open = layout.isOpen(card, if (future) card == DaySection.ANYTIME else isNow || card == DaySection.ANYTIME)
+    val ordered = layout.order(card, items) { it.habit.id }
     // Every piece of the card, a checklist's steps block included, so the corners are right.
     val pieces = ArrayList<Pair<TodayItem, Boolean>>()
     for (item in ordered) {
@@ -605,7 +528,11 @@ private fun LazyListScope.section(
     val count = if (open) pieces.size + 1 else 1
     val section = store.section(card)
     val start: (() -> Unit)? = if (!future && left > 0) {
-        { nav.startRoutine(card, day, layout.order(card, items) { it.habit.id }.map { it.habit }.filter { !it.isQuitOrLimit }) }
+        {
+            // Starting a routine clears Undo · Note (A33): the next thing logged is in the player.
+            store.afterLog = null
+            nav.startRoutine(card, day, layout.order(card, items) { it.habit.id }.map { it.habit }.filter { !it.isQuitOrLimit })
+        }
     } else null
     val badge = when {
         future -> "${items.size} planned"
@@ -708,7 +635,10 @@ private fun NoHabitsYet(nav: TodayNav) {
     }
 }
 
-/** Habits exist, none on this day (Figma 1551:195): neutral words, never "missed" or "no habits due" (U3, Current Work 106). */
+/**
+ * Habits exist, none on this day (Today flow 34): never a blank Today — it says why, and offers the same two things
+ * "No habits yet" does. Neutral words, never "missed" or "no habits due" (U3).
+ */
 @Composable
 private fun NothingPlanned(nav: TodayNav, isToday: Boolean) {
     Column(Modifier.fillMaxSize().padding(horizontal = 32.dp).padding(bottom = 96.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -719,21 +649,8 @@ private fun NothingPlanned(nav: TodayNav, isToday: Boolean) {
         Text("Your habits are planned for other days. Each shows up on its days.", style = AppType.bodyLarge,
             color = appColors.secondary, textAlign = TextAlign.Center)
         Spacer(Modifier.height(24.dp))
-        TonalButton("New habit", nav::newHabit, icon = Icons.Rounded.Add)
-    }
-}
-
-/** A group with nothing on the day open (Figma 3.5): says so, with Show all; never a blank Today. */
-@Composable
-private fun NothingInGroup(name: String, isToday: Boolean, onShowAll: () -> Unit) {
-    Column(Modifier.fillMaxSize().padding(horizontal = 32.dp).padding(bottom = 96.dp).semantics { testTag = "nothing-in-group" },
-        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        CookieIcon(Icons.Rounded.FilterList, size = 112.dp)
-        Spacer(Modifier.height(24.dp))
-        Text(if (isToday) "Nothing from $name today" else "Nothing from $name this day", style = AppType.headlineSmallEmphasized, color = appColors.ink, textAlign = TextAlign.Center)
+        InkButton("New habit", nav::newHabit, icon = Icons.Rounded.Add, height = 48.dp, textStyle = AppType.labelLarge)
         Spacer(Modifier.height(8.dp))
-        Text("$name’s habits are planned for other days.", style = AppType.bodyLarge, color = appColors.secondary, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(24.dp))
-        TonalButton("Show all", onShowAll)
+        TonalButton("Restore from a backup", nav::restore, icon = Icons.Rounded.SettingsBackupRestore)
     }
 }

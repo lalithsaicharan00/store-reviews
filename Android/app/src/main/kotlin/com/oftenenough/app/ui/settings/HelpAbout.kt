@@ -139,7 +139,7 @@ object HelpTopics {
         )),
         HelpSection("Quitting and cutting down", listOf(
             HelpTopic("Log a slip",
-                "Touch and hold the quit habit and choose Record a slip…, or swipe its row to show Log slip. The clock starts again from then; your best run and your history are kept, and Undo is right there."),
+                "Touch and hold the quit habit and choose Log a slip, or swipe its row to show Log slip. The clock starts again from then; your best run and your history are kept, and Undo is right there."),
             HelpTopic("When a daily limit counts",
                 "A Cut down limit is judged when the day ends, so it never shows as met in the morning before you've had the chance to go over it."),
         )),

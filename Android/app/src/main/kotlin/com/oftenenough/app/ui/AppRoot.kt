@@ -113,7 +113,14 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
             if (prefs.vibration) view.performHapticFeedback(if (done) HapticFeedbackConstants.CONFIRM else HapticFeedbackConstants.CLOCK_TICK)
         }
     }
-    LaunchedEffect(store.problem) { store.problem?.let { snackbar.showSnackbar(it); store.problem = null } }
+    LaunchedEffect(store.problem) {
+        val said = store.problem ?: return@LaunchedEffect
+        val again = store.retry
+        store.problem = null
+        store.retry = null
+        val result = snackbar.showSnackbar(said, actionLabel = again?.let { "Try again" })
+        if (result == androidx.compose.material3.SnackbarResult.ActionPerformed) again?.invoke()
+    }
     if (!store.isLoaded) { Box(Modifier.fillMaxSize().background(appColors.screen)); return }
     // **No onboarding** (the new Figma file, 22 October 2026): Android's own splash, then Today. Someone new sees
     // Today's "No habits yet" (Figma `36:32`), which offers New habit and Restore from a backup, and that is the whole
@@ -187,18 +194,42 @@ private fun AppMain(
         composable(Routes.TODAY) {
             val drawer = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
+            // Reminders can't come → Turn on: Android's own question where it will still ask (Today flow 41); where
+            // it won't (two refusals), its notification settings instead (flow 42). Both end on Today.
+            val askPermission = androidx.activity.compose.rememberLauncherForActivityResult(
+                androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted ->
+                if (granted) scope.launch { snackbar.showSnackbar("Reminders are on") }
+            }
+            val activity = appContext as? android.app.Activity
+            val askNotifications: () -> Unit = {
+                val can = android.os.Build.VERSION.SDK_INT >= 33 && activity != null &&
+                    androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.POST_NOTIFICATIONS)
+                val asked = AppGraph.prefs.notificationsAsked
+                if (android.os.Build.VERSION.SDK_INT >= 33 && (!asked || can)) {
+                    AppGraph.prefs.notificationsAsked = true
+                    askPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                } else com.oftenenough.app.ui.settings.PhoneMaker.openNotifications(appContext)
+            }
+            // Reconnect happens right on Today: Google's own account chooser rises over it, nothing is restored
+            // (Today flow 36); the snackbar names the account, so it is clear where the habits go.
+            val reconnect: () -> Unit = {
+                AppGraph.scope.launch {
+                    runCatching { AppGraph.backup.connectDrive() }
+                        .onSuccess { snackbar.showSnackbar("Google Drive connected" + (AppGraph.backup.link.accountName?.let { " · $it" } ?: "")) }
+                }
+            }
             // Back closes the open menu first; it used to leave the app.
             androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
             // With the sidebar (tablets, unfolded foldables) there's no drawer to open; the phone is untouched.
             if (LocalSidebar.current) {
-                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
+                TodayScreen(store, prefs, todayNav(nav, {}, askNotifications, reconnect), todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             } else ModalNavigationDrawer(drawerContent = {
                 MenuDrawer(store, MenuItem.TODAY) { item ->
                     scope.launch { drawer.close() }
                     openMenuItem(item, nav, appContext)
                 }
             }, drawerState = drawer) {
-                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
+                TodayScreen(store, prefs, todayNav(nav, { scope.launch { drawer.open() } }, askNotifications, reconnect), todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             }
             dayTarget?.split("|")?.let { (id, d) ->
                 DayDetailsSheet(id, d.toInt(), store, dayNav) { dayTarget = null }
@@ -296,6 +327,7 @@ private fun AppMain(
                         override fun archived() = nav.navigate(Routes.ARCHIVED_TASKS)
                     })
                 }
+                SettingsPage.KEEP_REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersPage(prefs) { nav.popBackStack() }
                 SettingsPage.REMINDERS -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
                 SettingsPage.PRIVACY -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
@@ -565,7 +597,7 @@ private fun WithDay(store: HabitStore, nav: NavHostController, content: @Composa
     }
 }
 
-private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : TodayNav {
+private fun todayNav(nav: NavHostController, openDrawer: () -> Unit, askNotifications: () -> Unit = {}, reconnect: () -> Unit = {}) = object : TodayNav {
     override fun openMenu() = openDrawer()
     override fun newHabit() = nav.navigate(Routes.NEW)
     override fun ideas() = nav.navigate(Routes.page("Start from an idea"))
@@ -577,7 +609,10 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun editGroups() = nav.navigate(Routes.GROUPS)
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))
     override fun backup() = nav.navigate(Routes.page(SettingsPage.BACKUP))
-    override fun reminders() = nav.navigate(Routes.page(SettingsPage.REMINDERS))
+    // Show me how opens Keep reminders coming straight from Today, with ← back to Today (A40, Today flow 38).
+    override fun reminders() = nav.navigate(Routes.page(SettingsPage.KEEP_REMINDERS))
+    override fun reconnectDrive() = reconnect()
+    override fun askNotifications() = askNotifications()
 }
 
 private fun todayActions(nav: NavHostController, view: android.view.View, openDay: (Habit, Int) -> Unit) = object : TodayActions {

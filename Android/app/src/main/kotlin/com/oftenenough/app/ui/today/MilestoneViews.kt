@@ -122,7 +122,7 @@ fun DrawScope.sparkle(p: Offset, size: Float, color: Color) {
  * a sheen and two sparkles. [early]: played on its own (reached away, A.1), from the start.
  */
 @Composable
-fun MilestoneBand(text: String, color: HabitColor, see: Boolean, raw: Float, early: Boolean, onTap: () -> Unit) {
+fun MilestoneBand(text: String, color: HabitColor, raw: Float, early: Boolean, onTap: () -> Unit) {
     val c = appColors
     val base = c.habit(color)
     val ink = bandInk(color)
@@ -162,10 +162,6 @@ fun MilestoneBand(text: String, color: HabitColor, see: Boolean, raw: Float, ear
         val ta = track(t, Key(0f, 0f), Key(0.246f, 0f, Arrive), Key(0.331f, 1f))
         Text(text, Modifier.weight(1f).graphicsLayer { translationX = tx * density.density; alpha = ta },
             style = AppType.labelMedium, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        if (see) {
-            Text("See", Modifier.graphicsLayer { alpha = ta }, style = AppType.labelMedium, color = ink)
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(16.dp).graphicsLayer { alpha = ta }, tint = ink)
-        }
     }
 }
 
@@ -211,10 +207,15 @@ fun MilestoneBar(
     val c = appColors
     val base = c.habit(color)
     val density = LocalDensity.current
-    val light = base.luminance() > 0.45f
-    val ink = if (light) Color(0xFF1C1B1F) else Color.White
-    val deep = Color.Black.copy(alpha = 0.12f).compositeOver(base)
-    val bright = Color.White.copy(alpha = 0.22f).compositeOver(base)
+    // Everything on the bar is white (the user, 23 Oct 2026: a yellow bar with black words and a black button "is not
+    // acceptable"). So the habit's colour is deepened until white reads on it — the lighter the colour, the further
+    // down it goes — and the gradient runs from that to a little darker still. Only as far as it needs to go: the bar
+    // keeps looking like the habit's own colour, polished, not a dark slab (the user, same day: "enough contrast…
+    // it should have that gradient and polished effect"). The medal and See stay white blocks.
+    val deepen = (0.10f + base.luminance() * 0.50f).coerceIn(0.10f, 0.52f)
+    val bright = Color.Black.copy(alpha = (deepen - 0.06f).coerceAtLeast(0f)).compositeOver(base)
+    val deep = Color.Black.copy(alpha = (deepen + 0.10f).coerceAtMost(0.7f)).compositeOver(base)
+    val ink = Color.White
     val t = rememberPlay(key, true, 1200)
     val a11y = LocalAccessibilityManager.current
     val stay = remember(key) { a11y?.calculateRecommendedTimeoutMillis(5_000, containsIcons = true, containsText = true, containsControls = true) ?: 5_000 }
@@ -275,10 +276,10 @@ fun MilestoneBar(
             Text(name, style = AppType.bodySmall, color = ink.copy(alpha = 0.85f), maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.width(8.dp))
-        Box(Modifier.heightIn(min = 36.dp).clip(RoundedCornerShape(18.dp)).background(if (light) Color(0xFF1C1B1F) else Color.White)
+        Box(Modifier.heightIn(min = 36.dp).clip(RoundedCornerShape(18.dp)).background(Color.White)
             .clickable(role = Role.Button, onClick = onSee).padding(horizontal = 18.dp, vertical = 8.dp).semantics { testTag = "milestone-bar-see" },
             contentAlignment = Alignment.Center) {
-            Text("See", style = AppType.labelLarge, color = if (light) Color.White else base, maxLines = 1)
+            Text("See", style = AppType.labelLarge, color = deep, maxLines = 1)
         }
     }
 }

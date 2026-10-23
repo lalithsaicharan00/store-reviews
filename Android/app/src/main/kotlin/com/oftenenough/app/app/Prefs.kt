@@ -18,12 +18,15 @@ class Prefs(private val sp: SharedPreferences) {
     var theme by str("appearance.theme", "system")
     var vibration by bool("feedback.haptics", true)
     var sound by bool("feedback.sound", false)
-    /** "bottom" (done habits move to the bottom, after the pause) or "inPlace". */
-    var doneOrder by str("today.doneOrder", "bottom")
-    var hideDoneHabits by bool("today.hideDoneHabits", false)
-    var hideDoneTasks by bool("today.hideDoneTasks", false)
     /** The group Today shows ("" is all). */
     var todayGroup by str("today.group", "")
+    /**
+     * The steps of Keep reminders coming this phone's maker asks for that have been opened and come back from (A40):
+     * "0,1". The app can't read a maker's own list, so opening one is the only sign it has been dealt with.
+     */
+    var reminderStepsDone by str("reminders.makerSteps", "")
+    /** Android's notifications question has been asked once; after two refusals it never shows again (U37, A40). */
+    var notificationsAsked by bool("reminders.notificationsAsked", false)
     var progressGroup by str("progress.group", "")
     var timerScreen by bool("timers.openScreen", true)
     var timerNotification by bool("timers.liveUpdate", true)

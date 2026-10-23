@@ -133,8 +133,11 @@ interface DayNav {
 fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     HabitKind.Quit -> "Quitting since " + DayWords.long(store.rules.calendarDayOf(habit.quitSince ?: habit.createdAt))
     HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
+    // Its plan, then its reminder where it has one ("Every day · 8:00 AM", Today flows 16 and 19), else where it sits
+    // on Today ("8 glasses a day · Anytime", flow 25).
     else -> shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) } + " · " +
-        (if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name })))
+        (habit.reminders.takeIf { habit.remind && it.isNotEmpty() }?.minByOrNull { it.minuteOfDay }?.let { DayWords.clockMinute(it.minuteOfDay) }
+            ?: if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name })))
 }
 
 /** A check on set days names them short, in week order (Figma 3.3: "Mon, Wed, Fri · Morning"); otherwise empty. */
@@ -223,7 +226,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             } else if (!isTask && habit.kind != HabitKind.Quit && started && !habit.atMost && !store.isPaused(habit, day)) {
                 val skipped = store.isSkipped(habit, day)
                 val planned = store.rules.isDue(habit, day, countingSkips = false) || !store.rule(habit, day).frequency.isDayBased || store.rule(habit, day).frequency.isFlexible
-                if (skipped || (planned && store.rules.canSkip(store.rule(habit, day)))) {
+                // Skip goes once the day's goal is met: a done day has nothing to skip (A35, Today flows 19 and 24).
+                val met = store.rules.isDayMet(habit, day)
+                if (skipped || (planned && !met && store.rules.canSkip(store.rule(habit, day)))) {
                     SkipButton(if (skipped) "Undo skip" else if (day == today) "Skip today" else "Skip this day") { store.setSkipped(habit, day, !skipped) }
                 }
             }
@@ -574,7 +579,8 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
             else DayAction("Start timer", ask, !skipped, tag = "day-start-timer") { store.toggleTimer(habit) },
             DayAction("Log manually", enabled = !skipped, tag = "day-add-entry", run = manual),
         )
-        HabitKind.Quit -> listOf(DayAction(if (hasLogs) "Record another slip" else "Record a slip", tag = "day-add-entry", run = manual))
+        HabitKind.Quit -> // "Log a slip", "Log another slip" (Today flow 11): the same word the row's menu and its swipe use.
+            listOf(DayAction(if (hasLogs) "Log another slip" else "Log a slip", tag = "day-add-entry", run = manual))
     }
 }
 

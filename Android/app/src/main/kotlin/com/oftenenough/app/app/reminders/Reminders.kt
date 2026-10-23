@@ -116,7 +116,10 @@ object Reminders {
         val due = ReminderPlan.plan(store, yesterday, days = 3).filter { it.fire in (since + 1)..(now + 30_000) }
         prefs.edit().putLong(LAST, now + 30_000).apply()
         due.minByOrNull { it.fire }?.let { first ->
-            if (now - first.fire > LATE_MS) prefs.edit().putString(MISSED, "${first.fire}|${first.habit.id}|${first.fire.minuteOfDay()}").apply()
+            // It did arrive, only late: the words say so, and Alarms & reminders is what fixes it (Today flow 39).
+            val late = now - first.fire
+            if (late > LATE_MS) prefs.edit().putString(MISSED,
+                "${first.fire}|${first.habit.id}|${first.fire.minuteOfDay()}|${(late / 60_000L).toInt()}").apply()
         }
         if (canPost(context)) post(context, store, due)
         replan(context, store)
@@ -195,8 +198,12 @@ object Reminders {
         if (now - at > LATE_MS && prefs.getLong(LAST, 0L) < at) prefs.edit().putString(MISSED, planned).apply()
     }
 
-    /** The reminder that didn't arrive on time, if any and not dismissed: its habit ID, its time (minute of day) and when. */
-    data class Missed(val at: Long, val habitId: String, val minute: Int)
+    /**
+     * The reminder that didn't arrive on time, if any and not dismissed: its habit ID, its time (minute of day) and
+     * when. [lateMinutes] is 0 when it never came at all, and how late it was when it did (Today flows 38 and 39: the
+     * two have different words, because they have different causes and different fixes).
+     */
+    data class Missed(val at: Long, val habitId: String, val minute: Int, val lateMinutes: Int = 0)
 
     fun missed(context: Context, now: Long): Missed? {
         noteNeverFired(context, now)
@@ -207,7 +214,8 @@ object Reminders {
         val at = parts.getOrNull(0)?.toLongOrNull() ?: return null
         // Only a recent one is worth saying: older than two days, it's history.
         if (now - at > 2 * 24 * 3_600_000L) return null
-        return Missed(at, parts.getOrNull(1) ?: return null, parts.getOrNull(2)?.toIntOrNull() ?: return null)
+        return Missed(at, parts.getOrNull(1) ?: return null, parts.getOrNull(2)?.toIntOrNull() ?: return null,
+            parts.getOrNull(3)?.toIntOrNull() ?: 0)
     }
 
     fun dismissMissed(context: Context) {

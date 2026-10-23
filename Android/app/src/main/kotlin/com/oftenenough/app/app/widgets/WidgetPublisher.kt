@@ -55,7 +55,7 @@ object WidgetPublisher {
         val prefs = AppGraph.prefs
         val now = store.clock()
         val previous = if (hold) withContext(Dispatchers.IO) { WidgetDisk.read(context) } else null
-        var snapshot = WidgetItems.snapshot(store, now, sinkDone = prefs.doneOrder != "stay", timerOpensScreen = prefs.timerScreen,
+        var snapshot = WidgetItems.snapshot(store, now, sinkDone = false, timerOpensScreen = prefs.timerScreen,
             previous = previous, hold = if (hold) now + 1_500 else null)
         if (AppGraph.hidesNames) snapshot = snapshot.withoutNames()
         withContext(Dispatchers.IO) { WidgetDisk.write(context, snapshot) }

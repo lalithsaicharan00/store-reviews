@@ -712,7 +712,7 @@ fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -
     AlertDialog(onDismiss, icon = { Icon(Icons.Outlined.CreateNewFolder, null) }, title = { Text("New group") }, containerColor = appColors.menu,
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Put habits together, then filter Today and Progress by group.", textAlign = TextAlign.Center, color = appColors.secondary)
+                Text("Put habits together, then show the Habits page and Progress by group.", textAlign = TextAlign.Center, color = appColors.secondary)
                 Spacer(Modifier.height(16.dp))
                 OutlinedTextField(name, { name = it.take(TextLimit.GROUP) }, label = { Text("Name") }, singleLine = true,
                     supportingText = { Text(if (exists) "There's a group with that name." else "${name.length}/${TextLimit.GROUP}", Modifier.fillMaxWidth(), textAlign = TextAlign.End) },

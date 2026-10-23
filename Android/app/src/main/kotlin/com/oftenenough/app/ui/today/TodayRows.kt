@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,11 +40,13 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,6 +64,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -192,10 +196,8 @@ fun HabitRow(
                     // The fill: only the draw reads the ticking clock, so a running timer redraws its fill, not the row (S3).
                     val progress = if (running) store.rules.progress(habit, day, tick.value) else model.progress
                     val p = (progress / maxOf(model.goal, 1e-9)).coerceIn(0.0, 1.0).toFloat()
-                    if (p > 0f) {
-                        val color = if (habit.atMost) c.neutralFill else c.fill(habit.color, full = p >= 1f)
-                        drawRect(color, size = size.copy(width = size.width * p))
-                    }
+                    // A fill means progress toward done, so a limit never fills, in any colour (A41): its words say it.
+                    if (p > 0f && !habit.atMost) drawRect(c.fill(habit.color, full = p >= 1f), size = size.copy(width = size.width * p))
                     if (litColor.alpha > 0f) drawRect(litColor)
                     if (held.alpha > 0f) drawRect(held)
                 }
@@ -207,7 +209,9 @@ fun HabitRow(
                 HabitIcon(habit.symbol, habit.color)
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    // A name is always one line on Today, whatever doesn't fit ends in … (Today flow 47); the full
+                    // name shows in Day details.
+                    Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     if (running) RunningLine(store, habit, day, slot, time, model.goal, tick)
                     else Text(model.line, style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.semantics { testTag = "line-${habit.name}" })
@@ -226,7 +230,7 @@ fun HabitRow(
             if (offer != null) AfterLogButtons(offer, habit, day, store, layout, actions, note)
             RowMenu(menu, { menu = false }, habit, day, store, actions, layout)
           }
-            moment.band?.let { b -> MilestoneBand(moment.text, habit.color, b.see, moment.t, early = !moment.full) { actions.seeMilestone(habit) } }
+            moment.band?.let { MilestoneBand(moment.text, habit.color, moment.t, early = !moment.full) { actions.seeMilestone(habit) } }
         }
     }
 }
@@ -356,12 +360,13 @@ private fun RowMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, day: Int
             modifier = Modifier.heightIn(min = 48.dp),
         )
         item(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", Icons.Outlined.Edit) { actions.editHabit(habit) }
-        item("Arrange…", Icons.Outlined.SwapVert) { actions.arrange(habit) }
-        if (store.rules.canPause(habit)) {
+        // A task moves to another day instead of being paused or skipped (Today flow 13).
+        if (habit.kind == HabitKind.Task) item("Move to another day", Icons.Outlined.SwapVert) { actions.openDay(habit, day) }
+        if (habit.kind != HabitKind.Task && store.rules.canPause(habit)) {
             if (store.isPaused(habit, today)) item("Resume habit", Icons.Outlined.PlayCircle) { store.resume(habit) }
-            else item("Pause…", Icons.Outlined.PauseCircle) { actions.pause(habit) }
+            else item("Pause", Icons.Outlined.PauseCircle) { actions.pause(habit) }
         }
-        item(if (store.note(habit, day) == null) "Add note" else "Edit note", Icons.AutoMirrored.Outlined.StickyNote2) { actions.writeNote(habit, day) }
+        item(if (store.note(habit, day) == null) "Add note" else "Edit note", Icons.Rounded.EditNote) { actions.writeNote(habit, day) }
         when {
             habit.kind == HabitKind.Quit -> if (!store.isPaused(habit, today)) item("Log a slip", Icons.Outlined.AddCircleOutline) { actions.addLog(habit, today) }
             habit.kind == HabitKind.Task -> {}
@@ -399,10 +404,10 @@ fun StepsBlock(habit: Habit, day: Int, shape: Shape, store: HabitStore, layout: 
         Modifier.fillMaxWidth().clip(shape).background(c.surface).padding(start = 56.dp, end = 12.dp, top = 4.dp, bottom = 4.dp)
             .semantics { testTag = "steps-${habit.name}" },
     ) {
+        // The steps fold only when the person taps ⌃ (A45, Today flow 8): nothing folds by itself.
         for (step in habit.steps) StepLine(step, done[step.id] == true, habit, canTick) {
             layout.hold()
             store.toggleStep(step, habit, day)
-            if (store.rules.isDone(habit, day)) layout.foldAfterHold("steps-${habit.id}")
         }
     }
 }
@@ -451,6 +456,7 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
     val lastSlip = remember(rev, today) { store.entries(habit.id, today).lastOrNull() }
     val note = store.note(habit, today) != null
     val held by animateColorAsState(if (menu) c.ink.copy(alpha = 0.08f) else Color.Transparent, tween(150), label = "held")
+    val big = LocalDensity.current.fontScale >= 1.3f
     val slip = if (!paused) SwipeAction("Slip", "Log a slip", Icons.Outlined.AddCircleOutline, "row-swipe-slip") { actions.addLog(habit, today) } else null
     // A run that passed a length yesterday: the band, once, when the row is first seen (Figma R.9, A.1).
     val moment = rememberRowMilestone(habit, true, rev, store)
@@ -463,7 +469,7 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
                 HabitIcon(habit.symbol, habit.color)
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     val current = ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0
                     val line = when {
                         paused -> "Paused"
@@ -474,14 +480,20 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
                     Text(line, style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.semantics { testTag = "line-${habit.name}" })
                 }
-                Spacer(Modifier.width(16.dp))
-                Text(Format.elapsed(ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0),
-                    style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = c.ink, maxLines = 1)
+                // The run's clock is long ("19d 12:32:45"), so at large text it takes a line of its own rather than
+                // squeezing the name away (Today flow 47).
+                if (!big) {
+                    Spacer(Modifier.width(16.dp))
+                    Text(Format.elapsed(ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0),
+                        style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = c.ink, maxLines = 1)
+                }
             }
+            if (big) Text(Format.elapsed(ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0),
+                Modifier.padding(top = 4.dp), style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = c.ink, maxLines = 1)
             if (offer != null) AfterLogButtons(offer, habit, today, store, layout, actions, note)
             RowMenu(menu, { menu = false }, habit, today, store, actions, layout)
           }
-            moment.band?.let { b -> MilestoneBand(moment.text, habit.color, b.see, moment.t, early = true) { actions.seeMilestone(habit) } }
+            moment.band?.let { MilestoneBand(moment.text, habit.color, moment.t, early = true) { actions.seeMilestone(habit) } }
         }
     }
 }
@@ -500,24 +512,42 @@ fun PartHeader(
     onToggle: () -> Unit,
 ) {
     val c = appColors
-    Row(
-        Modifier.fillMaxWidth().clip(shape).background(c.surface).clickable(onClickLabel = if (isOpen) "Fold $title" else "Open $title", onClick = onToggle)
-            .semantics { testTag = "header-$title" }
-            .heightIn(min = 64.dp).padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
+    // At large text the header goes onto two lines: the name with ⌃, then when it starts, what's left and Start
+    // (Today flow 47). The layout is chosen from the phone's text size, never measured per row (Rulebook S10).
+    val big = LocalDensity.current.fontScale >= 1.3f
+    @Composable fun fold() = Box(
+        Modifier.size(40.dp).clip(CircleShape).clickable(onClick = onToggle)
+            .semantics { contentDescription = if (isOpen) "Fold $title" else "Open $title" }, contentAlignment = Alignment.Center,
+    ) { Icon(if (isOpen) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, null, tint = c.secondary) }
+    @Composable fun RowScope.rest() {
+        if (!isOpen && habits.isNotEmpty()) FoldedIcons(habits, marked, Modifier.weight(1f)) else Spacer(Modifier.weight(1f))
+        if (badge != null) com.oftenenough.app.ui.components.Badge(badge)
+        if (onStart != null && isOpen) StartButton(title, isNow, onStart)
+    }
+    val box = Modifier.fillMaxWidth().clip(shape).background(c.surface)
+        .clickable(onClickLabel = if (isOpen) "Fold $title" else "Open $title", onClick = onToggle)
+        .semantics { testTag = "header-$title" }
+        .heightIn(min = 64.dp).padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp)
+    if (big) Column(box, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(title, Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            fold()
+        }
+        // The second line gives its room to the badge and Start, and shortens "Starts 12 PM" instead of clipping them.
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            if (subtitle != null) Text(subtitle, Modifier.weight(1f), style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            else Spacer(Modifier.weight(1f))
+            if (!isOpen && habits.isNotEmpty()) FoldedIcons(habits, marked)
+            if (badge != null) com.oftenenough.app.ui.components.Badge(badge)
+            if (onStart != null && isOpen) StartButton(title, isNow, onStart)
+        }
+    } else Row(box, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         Column {
             Text(title, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (subtitle != null) Text(subtitle, style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        if (!isOpen && habits.isNotEmpty()) FoldedIcons(habits, marked, Modifier.weight(1f)) else Spacer(Modifier.weight(1f))
-        if (badge != null) com.oftenenough.app.ui.components.Badge(badge)
-        if (onStart != null && isOpen) StartButton(title, isNow, onStart)
-        Box(Modifier.size(40.dp).clip(CircleShape).clickable(onClick = onToggle).semantics { contentDescription = if (isOpen) "Fold $title" else "Open $title" },
-            contentAlignment = Alignment.Center) {
-            Icon(if (isOpen) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, null, tint = c.secondary)
-        }
+        rest()
+        fold()
     }
 }
 
@@ -567,11 +597,16 @@ private fun FoldedIcons(habits: List<Habit>, marked: Set<String>, modifier: Modi
     }
 }
 
-/** A paused habit, in the Paused card at the bottom (opened): its icon, "Paused · back 20 Oct", and Resume. */
+/**
+ * A paused habit, in the Paused card at the end of Today (Today flow 16): its icon, the name over when it comes back
+ * ("Back on Wed, 28 Oct"), and a ⋮ whose menu has Resume habit. Tapping the row opens its Day details, which has
+ * Resume too.
+ */
 @Composable
 fun PausedRow(habit: Habit, shape: Shape, store: HabitStore, actions: TodayActions) {
     val c = appColors
     val p = store.pause(habit, store.today())
+    var menu by remember { mutableStateOf(false) }
     Row(Modifier.fillMaxWidth().clip(shape).background(c.surface).heightIn(min = 72.dp)
         .clickable { actions.openDay(habit, store.today()) }.padding(start = 16.dp, end = 8.dp)
         .semantics { testTag = "paused-${habit.name}" },
@@ -579,9 +614,28 @@ fun PausedRow(habit: Habit, shape: Shape, store: HabitStore, actions: TodayActio
         HabitIcon(habit.symbol, habit.color)
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
-            Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            Text(p?.let(DayWords::paused) ?: "Paused", style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
+            Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(p?.through?.let { "Back on " + DayWords.short(it + 1) } ?: "Until you resume it",
+                style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
         }
-        androidx.compose.material3.TextButton({ store.resume(habit) }) { Text("Resume", style = AppType.labelLarge, color = c.ink) }
+        Box {
+            IconButton({ menu = true }, Modifier.semantics { testTag = "paused-menu-${habit.name}" }) {
+                Icon(Icons.Rounded.MoreVert, "More for ${habit.name}", tint = c.secondary)
+            }
+            DropdownMenu(menu, { menu = false }, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp) {
+                DropdownMenuItem(
+                    text = { Text("Resume habit", style = AppType.bodyLarge, color = c.ink) },
+                    leadingIcon = { Icon(Icons.Outlined.PlayCircle, null, tint = c.secondary) },
+                    onClick = { menu = false; store.resume(habit) },
+                    modifier = Modifier.heightIn(min = 48.dp).semantics { testTag = "resume-${habit.name}" },
+                )
+                DropdownMenuItem(
+                    text = { Text("Edit habit", style = AppType.bodyLarge, color = c.ink) },
+                    leadingIcon = { Icon(Icons.Outlined.Edit, null, tint = c.secondary) },
+                    onClick = { menu = false; actions.editHabit(habit) },
+                    modifier = Modifier.heightIn(min = 48.dp),
+                )
+            }
+        }
     }
 }

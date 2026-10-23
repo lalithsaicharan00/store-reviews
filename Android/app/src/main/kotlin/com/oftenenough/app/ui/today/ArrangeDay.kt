@@ -139,9 +139,9 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTime
     val today = store.today()
     val cards = store.todayCards()
     val members = remember(store.dataVersion, store.habits, store.sections, store.cardOrder) {
-        store.rules.cardMembers().mapValues { (_, ids) -> ids.mapNotNull { store.habit(it) }.filter { !store.isPaused(it, today) } }
+        // A paused habit keeps its place here (Today flow 48): it is off Today, but this is where its order lives.
+        store.rules.cardMembers().mapValues { (_, ids) -> ids.mapNotNull { store.habit(it) } }
     }
-    val paused = remember(store.dataVersion, store.habits) { store.habits.filter { !it.archived && store.isPaused(it, today) } }
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val scroll = rememberScrollState()
@@ -266,7 +266,7 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTime
             Row(Modifier.fillMaxWidth().statusBarsPadding().height(64.dp).padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onBack, Modifier.semantics { testTag = "arrange-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
                 Spacer(Modifier.width(4.dp))
-                Text("Arrange Today", style = AppType.titleLargeEmphasized, color = c.ink, modifier = Modifier.semantics { heading() })
+                Text("Edit Today", style = AppType.titleLargeEmphasized, color = c.ink, modifier = Modifier.semantics { heading() })
             }
         },
         snackbarHost = { SnackbarHost(snackbar) { Snackbar(it, shape = RoundedCornerShape(4.dp)) } },
@@ -275,21 +275,25 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTime
             Modifier.fillMaxSize().padding(padding).onSizeChanged { viewport = it.height }.verticalScroll(scroll, enabled = drag == null)
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
         ) {
+            // Add time of day sits after the last time of day that has one (Today flow 50); Anytime and Quitting have
+            // no time, so it never goes under them.
+            val timed = cards.filter { it != DaySection.QUITTING && !store.section(it).isAnytime }
+            val afterTimed = timed.lastOrNull()?.let { last -> cards.getOrNull(cards.indexOf(last) + 1) }
             entries.forEachIndexed { i, e ->
+                if (e is ArrangeEntry.Header && e.card == afterTimed) { Spacer(Modifier.height(16.dp)); AddTimeOfDayRow { onEditSection(null) } }
                 // Keyed: as a dragged row moves, its composition (and its gesture) moves with it.
                 key(e.key) { when (e) {
                     is ArrangeEntry.Header -> {
                         if (i > 0) Spacer(Modifier.height(16.dp))
-                        ArrangeHeader(e, cards, store, Modifier.measured(e.key, tops, heights), onEdit = onEditSection, members = members[e.card] ?: emptyList()) { words, ids ->
-                            // A sort replaces the person's own order (U13), so it can be taken back.
-                            val before = store.habits.map { it.id }
-                            store.reorder(ids)
-                            scope.launch {
-                                val r = snackbar.showSnackbar(words, actionLabel = "Undo", duration = SnackbarDuration.Short)
-                                if (r == SnackbarResult.ActionPerformed) store.reorder(before)
+                        ArrangeHeader(e, cards, store, Modifier.measured(e.key, tops, heights), onEdit = onEditSection, members = members[e.card] ?: emptyList())
+                        Spacer(Modifier.height(8.dp))
+                        // A time of day with nothing in it says what to do with it (Today flow 53).
+                        if ((members[e.card] ?: emptyList()).isEmpty() && e.card != DaySection.QUITTING) {
+                            Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).heightIn(min = 56.dp)
+                                .semantics { testTag = "arrange-empty-${e.card}" }, contentAlignment = Alignment.CenterStart) {
+                                Text("Drag a habit here", Modifier.padding(horizontal = 16.dp), style = AppType.bodyLarge, color = c.secondary)
                             }
                         }
-                        Spacer(Modifier.height(8.dp))
                     }
                     is ArrangeEntry.Row -> {
                         val cardRows = cardAt(i)?.let { rowsOf(it) } ?: listOf(e)
@@ -315,30 +319,7 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTime
                     }
                 } }
             }
-            if (paused.isNotEmpty()) {
-                Spacer(Modifier.height(16.dp))
-                Text("Paused · always last", Modifier.padding(start = 16.dp).heightIn(min = 20.dp), style = AppType.labelLarge, color = c.secondary)
-                Spacer(Modifier.height(8.dp))
-                paused.forEachIndexed { i, h ->
-                    if (i > 0) Spacer(Modifier.height(2.dp))
-                    val back = store.pause(h, today)?.through?.let { "Back on " + DayWords.dayMonth(it + 1) } ?: "Until you resume"
-                    ArrangeRow(h, segmentShape(i, paused.size, outer = 20.dp), back, lifted = false, modifier = Modifier,
-                        onDragStart = null, onDrag = {}, onDragEnd = {}, onTap = null, menuOpen = false, onMenuDismiss = {},
-                        canUp = false, canDown = false, onUp = {}, onDown = {}, onMoveTo = null)
-                }
-            }
-            Spacer(Modifier.height(16.dp))
-            Text("Drag a habit to change its order, or into another time of day. Anytime and Quitting move as a whole; the others follow their times. Changes save as you go.",
-                Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = c.secondary)
-            Spacer(Modifier.height(16.dp))
-            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).clickable(onClick = onTimesOfDay)
-                .heightIn(min = 56.dp).padding(horizontal = 16.dp).semantics { testTag = "arrange-times-of-day" },
-                verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Outlined.Schedule, null, tint = c.ink)
-                Spacer(Modifier.width(16.dp))
-                Text("Times of Day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink)
-                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-            }
+            if (afterTimed == null) { Spacer(Modifier.height(16.dp)); AddTimeOfDayRow { onEditSection(null) } }
         }
     }
     moving?.let { h -> MoveToDialog(h, cards.filter { it != DaySection.QUITTING }, store, onDismiss = { moving = null }) { to ->
@@ -357,6 +338,19 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTime
     } }
 }
 
+/** "＋ Add time of day" (Today flow 50): a plain row under the last time of day, which opens New time of day. */
+@Composable
+private fun AddTimeOfDayRow(onClick: () -> Unit) {
+    val c = appColors
+    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).clickable(onClick = onClick)
+        .heightIn(min = 56.dp).padding(horizontal = 16.dp).semantics { testTag = "arrange-add-section" },
+        verticalAlignment = Alignment.CenterVertically) {
+        Icon(Icons.Rounded.Add, null, tint = c.ink)
+        Spacer(Modifier.width(16.dp))
+        Text("Add time of day", Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink)
+    }
+}
+
 /** One item of Arrange Today's list: a card's header, or a habit in a card. */
 sealed class ArrangeEntry {
     abstract val key: String
@@ -369,19 +363,21 @@ sealed class ArrangeEntry {
 private fun Modifier.measured(key: String, tops: MutableMap<String, Float>, heights: MutableMap<String, Float>): Modifier =
     onGloballyPositioned { tops[key] = it.positionInParent().y; heights[key] = it.size.height.toFloat() }
 
-/** "Mon, Wed, Fri": how often, under the name, only when it isn't every day (Figma 2). */
-private fun arrangeSubtitle(h: Habit, store: HabitStore): String? =
-    if (h.kind == com.oftenenough.app.data.HabitKind.Task || h.frequency == com.oftenenough.app.data.Frequency.Daily) null
-    else com.oftenenough.app.data.HabitCopy.capitalized(com.oftenenough.app.data.HabitCopy.rhythm(h.frequency, store.weekStart, short = true))
+/** "Paused", or "Mon, Wed, Fri": what a row needs saying under its name, nothing when it's simply every day. */
+private fun arrangeSubtitle(h: Habit, store: HabitStore): String? = when {
+    store.isPaused(h, store.today()) -> "Paused"
+    h.kind == com.oftenenough.app.data.HabitKind.Task || h.frequency == com.oftenenough.app.data.Frequency.Daily -> null
+    else -> com.oftenenough.app.data.HabitCopy.capitalized(com.oftenenough.app.data.HabitCopy.rhythm(h.frequency, store.weekStart, short = true))
+}
 
 /**
- * A time of day's label (Figma 2): "Morning · 6 AM – 12 PM" in Label Large, grey, and its ⋮ (sort, or edit the time of
- * day). Anytime and Quitting also have ⠿, and their ⋮ moves them.
+ * A time of day's label (Today flow 48): "Morning · 6 AM – 12 PM" in Label Large, grey, with **✏** at its end, which
+ * opens Edit time of day. **Anytime and Quitting have ⠿ instead** — they have no time to edit, and they move as a
+ * whole. There is no ⋮ here: the drawn page has one control per heading, and a row's own moves are on the row.
  */
 @Composable
 private fun ArrangeHeader(
     e: ArrangeEntry.Header, cards: List<String>, store: HabitStore, modifier: Modifier, onEdit: (String?) -> Unit, members: List<Habit>,
-    onSort: (words: String, ids: List<String>) -> Unit,
 ) {
     val c = appColors
     val card = e.card
@@ -395,30 +391,20 @@ private fun ArrangeHeader(
         }
     }
     val movable = card == DaySection.ANYTIME || card == DaySection.QUITTING
-    var menu by remember { mutableStateOf(false) }
+    val i = cards.indexOf(card)
     Row(modifier.fillMaxWidth().heightIn(min = if (movable) 48.dp else 40.dp).padding(start = 16.dp, end = 4.dp)
-        .semantics { testTag = "arrange-card-$title" }, verticalAlignment = Alignment.CenterVertically) {
+        .semantics {
+            testTag = "arrange-card-$title"
+            customActions = listOfNotNull(
+                if (movable && i > 0) CustomAccessibilityAction("Move up") { store.moveCard(card, HabitStore.CardMove.UP); true } else null,
+                if (movable && i < cards.size - 1) CustomAccessibilityAction("Move down") { store.moveCard(card, HabitStore.CardMove.DOWN); true } else null,
+            )
+        }, verticalAlignment = Alignment.CenterVertically) {
         Text(title, Modifier.weight(1f).semantics { heading() }, style = AppType.labelLarge, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Box {
-            Box(Modifier.size(40.dp).clip(CircleShape).background(if (menu) c.behind else Color.Transparent).clickable { menu = true }
-                .semantics { testTag = "arrange-menu-$title"; contentDescription = "$title options" }, contentAlignment = Alignment.Center) {
-                Icon(Icons.Rounded.MoreVert, null, tint = c.secondary)
-            }
-            DropdownMenu(menu, { menu = false }, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp) {
-                @Composable fun item(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, action: () -> Unit) =
-                    DropdownMenuItem({ Text(text, style = AppType.bodyLarge, color = c.ink) }, { menu = false; action() },
-                        leadingIcon = { Icon(icon, null, tint = c.secondary) }, modifier = Modifier.semantics { testTag = tag })
-                if (members.size > 1) {
-                    if (members.any { h -> store.placements(h).any { it.section == card && it.times.isNotEmpty() } })
-                        item("Sort by reminder time", Icons.Outlined.Schedule, "arrange-sort-time-$title") { onSort("${section?.name ?: title} sorted by reminder time", sortedByReminder(members, card, store).map { it.id }) }
-                    item("Sort A to Z", Icons.Rounded.SortByAlpha, "arrange-sort-az-$title") { onSort("${section?.name ?: title} sorted A to Z", sortedByName(members).map { it.id }) }
-                }
-                if (section != null && !section.isAnytime) item("Edit time of day", Icons.Outlined.Edit, "arrange-edit-$title") { onEdit(section.id) }
-                if (movable) {
-                    val i = cards.indexOf(card)
-                    if (i > 0) item("Move up", Icons.Rounded.ArrowUpward, "arrange-up-$title") { store.moveCard(card, HabitStore.CardMove.UP) }
-                    if (i < cards.size - 1) item("Move down", Icons.Rounded.ArrowDownward, "arrange-down-$title") { store.moveCard(card, HabitStore.CardMove.DOWN) }
-                }
+        if (section != null && !section.isAnytime) {
+            Box(Modifier.size(40.dp).clip(CircleShape).clickable { onEdit(section.id) }
+                .semantics { testTag = "arrange-edit-$title"; contentDescription = "Edit $title" }, contentAlignment = Alignment.Center) {
+                Icon(Icons.Outlined.Edit, null, Modifier.size(20.dp), tint = c.secondary)
             }
         }
         if (movable) {

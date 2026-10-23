@@ -139,11 +139,6 @@ fun AppearancePage(prefs: Prefs, onBack: () -> Unit) {
                 }
         }
         Note("System default follows your phone: light by day and dark at night if you've set it to.")
-        GroupTitle("Today")
-        DropdownRow("Done habits", if (prefs.doneOrder == "stay") "Stay in place" else "Move to bottom", Icons.AutoMirrored.Rounded.PlaylistAddCheck,
-            listOf("Move to bottom", "Stay in place"), if (prefs.doneOrder == "stay") 1 else 0, "done-order") { prefs.doneOrder = if (it == 1) "stay" else "bottom" }
-        Note(if (prefs.doneOrder == "stay") "Done habits stay where they are. Your order never changes by itself."
-            else "Done habits go below the rest once you pause, never while you're still ticking.")
         GroupTitle("When you tick")
         SegmentedList {
             ToggleRow("Vibration", Icons.Rounded.Vibration, prefs.vibration, 0, 2, "vibration") { prefs.vibration = it }
@@ -293,14 +288,18 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         confirmButton = { TextButton({ confirmSplit = false; save() }, Modifier.semantics { testTag = "section-split-confirm" }) {
             Text(if (existing == null) "Split and add $trimmed" else "Split and save", color = appColors.ink) } },
         dismissButton = { TextButton({ confirmSplit = false }) { Text("Cancel", color = appColors.ink) } })
-    if (confirmDelete && existing != null) AlertDialog({ confirmDelete = false }, title = { Text("Delete ${existing.name}?") },
-        text = { Text("Its habits move to Anytime. Nothing else changes.") },
-        confirmButton = { TextButton({
-            confirmDelete = false
-            store.saveSections(store.sections.filter { it.id != existing.id })
-            onClose(null)
-        }, Modifier.semantics { testTag = "section-delete-confirm" }) { Text("Delete time of day", color = appColors.error) } },
-        dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = appColors.ink) } })
+    // Two choices only, Cancel and Delete, and Delete is red (D9); the body says where its habits go (Today flow 52).
+    if (confirmDelete && existing != null) {
+        val moving = store.rules.cardMembers()[existing.id]?.size ?: 0
+        AlertDialog({ confirmDelete = false }, title = { Text("Delete ${existing.name}?") },
+            text = { Text(if (moving == 0) "It has no habits, so nothing moves." else "Its $moving habit${if (moving == 1) "" else "s"} will move to Anytime.") },
+            confirmButton = { TextButton({
+                confirmDelete = false
+                store.saveSections(store.sections.filter { it.id != existing.id })
+                onClose(null)
+            }, Modifier.semantics { testTag = "section-delete-confirm" }) { Text("Delete", color = appColors.error) } },
+            dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = appColors.ink) } })
+    }
 }
 
 /** "🕒 Starts / 6:00 AM": a big clock time that opens Android's time picker. */

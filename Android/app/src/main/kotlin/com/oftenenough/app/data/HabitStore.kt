@@ -41,6 +41,10 @@ class HabitStore(
     var isLoaded by mutableStateOf(false); private set
     /** Shown to the person when a write fails or the data can't be read. */
     var problem by mutableStateOf<String?>(null)
+    /** What Try again does on the snackbar that reports a failed tap; null when there is nothing to try again. */
+    var retry by mutableStateOf<(() -> Unit)?>(null)
+    /** The habit a tap being written belongs to, so a failure can name it. */
+    private var tapName: String? = null
     var sections by mutableStateOf(DaySection.defaults); private set
     var cardOrder by mutableStateOf<List<String>>(emptyList()); private set
     var dayEndHour by mutableIntStateOf(0); private set
@@ -359,12 +363,16 @@ class HabitStore(
     private var reloadWhenWritten = false
     private var worker: Job? = null
 
-    /** Runs database writes one at a time, in the order they were made. [tap]: a log from a tap (its own words if it fails). */
-    fun perform(tap: Boolean = false, change: suspend () -> Unit) {
+    /**
+     * Runs database writes one at a time, in the order they were made. [tap]: a log from a tap, named by [named] so a
+     * failure can say which habit went back ("Couldn't save Meds. Nothing changed.", Today flow 46).
+     */
+    fun perform(tap: Boolean = false, named: String? = null, change: suspend () -> Unit) {
         if (!isLoaded) {
             problem = "Your habits haven't loaded, so that change wasn't saved. Please restart the app."
             return
         }
+        if (tap) tapName = named
         pendingWrites++
         queue.trySend(tap to change)
         if (worker == null) worker = scope.launch {
@@ -376,7 +384,10 @@ class HabitStore(
                 } catch (e: Exception) {
                     changeIsFromSync = false
                     // Figma 1.5: Today reloads and says so in a snackbar above the day bar (S7).
-                    problem = if (isTap) "Couldn’t save that tap. It’s undone." else "That change couldn't be saved, so it was undone. Please try again."
+                    // A tap shows at once and saves behind; when the save fails Today reloads from what is saved and
+                    // says so plainly, with Try again (Today flow 46, S7).
+                    problem = if (isTap) "Couldn’t save ${tapName ?: "that tap"}. Nothing changed." else "That change couldn’t be saved, so it was undone. Please try again."
+                    retry = if (isTap) ({ perform(tap = true, named = tapName, change = job) }) else null
                     reloadWhenWritten = true
                 }
                 changeIsFromSync = false
@@ -597,15 +608,15 @@ class HabitStore(
             milestones.after(before, habit, entry.source ?: EntrySource.TODAY, added)
             logFeedback(habit, entry.day, wasComplete)
         }
-        perform(tap = true) { repository.addEntry(entry.record) }
+        perform(tap = true, named = habit?.name) { repository.addEntry(entry.record) }
     }
 
     /** Undoing a tap: gone from the screen now, the removal written next in the queue. */
     private fun removeLogged(id: String) {
-        removeEntry(id) ?: return
+        val gone = removeEntry(id) ?: return
         if ((afterLog as? AfterLog.Log)?.entry?.id == id) afterLog = null
         val at = clock()
-        perform(tap = true) { repository.removeEntry(id, at) }
+        perform(tap = true, named = habit(gone.habitId)?.name) { repository.removeEntry(id, at) }
     }
 
     /** A log from Today (a tap, Add log, the timer) takes Undo · Note; one made elsewhere by the person ends it. */
@@ -799,8 +810,8 @@ class HabitStore(
         if (timers.containsKey(habit.id)) return stopTimer(habit, today(now), now)
         milestones.timerStarted(habit)
         timers = timers + (habit.id to now)
-        // ▶ is the next thing done: the buttons under the last log go (a timer's own come when it stops, Figma 1.2).
-        afterLog = null
+        // Undo · Note stay on the last log: starting a timer is not a log, and only the next log, a routine or Undo
+        // takes them away (A33, 21–22 Oct 2026). The running row hides them while its clock is on screen.
         timerSlots = if (slot != null) timerSlots + (habit.id to slot) else timerSlots - habit.id
         settingRows[Keys.TIMER + habit.id] = now.toString() + (slot?.let { "|$it" } ?: "")
         rulesChanged()
