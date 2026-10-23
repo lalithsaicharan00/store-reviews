@@ -194,8 +194,10 @@ the user, so not A-numbers; the user's word changes any of them):
   "✓ Goal met" at the goal; a tap opens where the clock started (the player, or the timer on its own).
 - **The end page:** an ink cookie, "Morning is done" or what's left, Review routine, Return to unfinished (tonal) and
   Done; "Reached in this routine" when milestones were reached (A53).
-- **Names are one line with …** (A49); a habit's description shows under the name, two lines at most, then …. At 200%
-  the cookie shrinks to 96, the name stays one line, the chip and count grow, and the buttons keep their height.
+- **Names are one line with …** (A49). **A habit's description is one quiet line under the name, then …** (23 Oct:
+  the user found two lines "very weird"); a tap on it opens a sheet with the whole name and the whole description
+  (Close, a swipe down or a tap outside goes back). At 200% the cookie shrinks to 96, the name and the description
+  stay one line each, the chip and count grow, and the buttons keep their height.
 
 **Milestone motion lives in the new file** (22 Oct 2026, so the old file can go): every milestone screen on the Today page carries Figma motion keyframes (select the screen, press play), rebuilt exactly from the old *Milestones on Today* section: the row (button press and fill, number roll, burst ring and 8 dots, Undo · Note fade, the band rising with its medal spinning in, words, sheen, sparkles), the bar (rise, medal pop, sparkles, sheen, 5-second line) and the pop-up (slide up, glow, medal spin and pop, ring and 12 dots, sparkles, then title, line, card and buttons). The medal is a 9-point rounded star (inner radius 0.86) with a light-to-colour gradient, a white inner ring and a soft shadow; the pop-up's has a blurred glow. A "Motion" note at the top of the milestone column gives the timings; with Remove animations on, only the end state shows.
 
