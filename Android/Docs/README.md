@@ -93,6 +93,8 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A53 | **In the routine player a milestone is a ribbon; pop-ups wait for the end** (22 Oct 2026). Whatever Today would show as a band or a bar shows in the player as a ribbon across the top of the hero card (the habit's colour, one line, the milestone only), and **only the ribbon moves**: no burst or dots around the cookie, nothing else in the card shifts, and the medal and words sit centred in the ribbon (23 Oct 2026: "we had some unnecessary circle and dots … I have removed it … Whatever animates in here, it should be only that ribbon"). No bar and no pop-up while the routine plays. The end page lists **Reached in this routine**; a pop-up-tier milestone's pop-up rises over the end page. No "reached today" or "reached in this routine" anywhere (A42). As in the earlier designs (Design file, `2199:2`) | "In Android, we don't use bars … in routine player … We have a ribbon. So whether it is a row or a bar, it will be shown as a ribbon. Only pop-ups will be shown like … an actual pop-up … remember about the reached today word. We have removed it" |
 | A54 | **Habits & Tasks: the Habits tab is the Progress page** (23 Oct 2026). One page from the menu, tabs **Habits · Tasks**. Habits shows Week · Month · Year as three visible buttons, the period on its own row (its name on the left, ‹ › on the right, and a This week / This month / This year chip to come back when on an earlier one), and one card per habit (headline, line, squares) by Today's times of day; Paused, then Archived at the end. Tap a card: Habit details; tap a square in Week or Month: Day details; the card's ⋮: Edit habit, Pause…, Archive, Delete. No List | Progress switch and no ⋮ in the top bar (☰ · Habits & Tasks · search · +). Scrolling keeps the top bar, the tabs and the period row. Figma: page "Habits & tasks" (`269:148`), version 3 | "the earlier progress page design … is very well researched … we are just letting everything go away which is not a good thing"; "if we do have any options in the 3-dot menu, then keep it, otherwise remove it. Just don't overcomplicate anything"; "version 3, we will go with the version 3" |
 | A55 | **No selecting several, and a long press does nothing** (23 Oct 2026), on Habits and on Tasks alike: one item at a time through its ⋮. Replaces Rulebook U39 (Select in ⋮ beside a long press) | "Do we really need that? … just for the namesake … overall mental model should be same"; "don't create the designs for multi-select and also long press … Long press shouldn't give any options" |
+| A57 | **Tasks' One-time · Repeating is a connected button group, like Habits' Week · Month · Year** (23 Oct 2026), not a second row of tabs under Habits · Tasks; it scrolls away with the list | "The tab navigation should be similar to how we have in habits like week, month, year … Have you ever seen any of the app using it? No, it's a terrible user experience" |
+| A58 | **A task's Move to another day… opens the date picker at once** (23 Oct 2026), with no menu of Tomorrow, Pick a day… and No date first | "when you click move to another day, it should directly open the calendar, as simple as that, rather than opening another pop-up" |
 | A56 | **A quit habit's row says "Since" the day its current run began** (23 Oct 2026): the day quitting started until the first slip, then the day of the latest slip. Never its best run on the row; the best is on the Streaks page. The same on Today, in Day details' habit rows and on its Habits & Tasks card (Smoking: "Since 3 Oct") | "in the today's row, always in the subtext, what we need to show is … when it started, for the very first time … and from when the log slip, we'll be showing it the new day. Best 45 days, we don't need to show them in the row. You always need to showcase their since … in the streaks page, streaks will be there" |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
@@ -229,10 +231,11 @@ the user, so not A-numbers; the user's word changes any of them):
   so the card opens instead); ⋮ → Edit habit, Pause… (Resume when paused), Archive, Delete. Archive and Restore ask
   nothing and offer Undo; Delete asks with Cancel | Delete (red). A new habit goes plain at the end of its time of
   day (A47); days before a habit started are blank, never missed.
-- **Tasks:** One-time | Repeating under the tabs (U38). One-time by day (Today, Tomorrow, each day with tasks, months
+- **Tasks:** a **One-time · Repeating** button group under the tabs, like Week · Month · Year, scrolling away with the
+  list (A57). One-time by day (Today, Tomorrow, each day with tasks, months
   further out), then No date, then **Completed** and **Archived** as rows (they were in the old top ⋮). Repeating by
-  how often, each with its next time. A task's ⋮: Edit task, Move to another day… (Tomorrow, Pick a day…, No date),
-  Duplicate, Archive, Delete; a repeating one has Skip this time instead of Move; one with No date has Do today and
+  how often, each with its next time. A task's ⋮: Edit task, Move to another day… (opens the date picker at once,
+  A58; No date is set in Edit task), Duplicate, Archive, Delete; a repeating one has Skip this time instead of Move; one with No date has Do today and
   Pick a day…. Tasks are ticked only on Today; done ones show struck through until the day ends, then go to
   Completed; unfinished ones wait in Today with their planned day.
 - **Completed tasks** has a ⋮ with its one page action, Delete all completed (asks first, Undo after); each task's ⋮
@@ -298,6 +301,10 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 - **Designs still to make:** the same field edited on two offline devices ("Use This Instead"), a delete arriving from
   another device ("Archived on Pixel 8"), the same thing logged on two devices ("Keep Both / Remove One"), two devices
   that each created the same habit (combine), widgets refreshed the moment synced changes arrive.
+- **Coach marks, after every other design** (the user, 23 Oct 2026: "once all of the designs are completed, even
+  including widgets, we have to work on the [coach] marks"; the dictation read "quotes marks"). A48 (none in the first
+  version) stands until then. **Right after them, decide whether ⋮ also offers View habit** or a tap on the card is the
+  only way to Habit details (the user wants to discuss it then).
 - **The twelve decisions in the Android app report** (§11, D1–D12: exact-time reminders, the reminder check, the
   Alarm style, the timer outside the app, wallpaper colours, the themed icon, back, launcher extras, tablets and
   foldables, the free plan, moving from an iPhone, test phones); then Figma designs, small screens first.
