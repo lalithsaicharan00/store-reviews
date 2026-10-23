@@ -45,6 +45,7 @@ import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -109,6 +110,8 @@ import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.WavyProgress
 import com.oftenenough.app.ui.components.segmentShape
+import com.oftenenough.app.ui.components.SaidHere
+import com.oftenenough.app.data.Said
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.rememberTicker
 import com.oftenenough.app.ui.today.showsStreaks
@@ -132,7 +135,14 @@ interface DayNav {
 /** "8 glasses a day · Anytime", "Quitting since 19 Sep 2026", "Task · Planned for Sat, 4 Oct" (the iPhone's DayIdentityRow). */
 fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     HabitKind.Quit -> "Quitting since " + DayWords.long(store.rules.calendarDayOf(habit.quitSince ?: habit.createdAt))
-    HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
+    HabitKind.Task -> habit.dueDay?.let {
+        when (it) {
+            com.oftenenough.app.data.NO_DATE_DAY -> "Task · No date"
+            store.today() -> "Task · Today"
+            store.today() + 1 -> "Task · Tomorrow"
+            else -> "Task · Planned for " + DayWords.short(it)
+        }
+    } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
     // Its plan, then its reminder where it has one ("Every day · 8:00 AM", Today flows 16 and 19), else where it sits
     // on Today ("8 glasses a day · Anytime", flow 25).
     else -> shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) } + " · " +
@@ -176,6 +186,7 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
         // A sheet is its own window: its tags reach UI Automator only if it says so too.
         val snackbar = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
+        SaidHere(store, snackbar)
         Box(Modifier.fillMaxHeight().semantics { testTagsAsResourceId = true }) {
             DayDetailsContent(habit, day, store, nav, onDismiss) { words ->
                 // A log added to a past day says what it added and where, with Undo (Habit details, Figma 1373:2, 4.3).
@@ -212,15 +223,17 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             Text(if (day == today + 1) "Tomorrow" else DayWords.day(day, today), Modifier.weight(1f), style = AppType.titleLargeEmphasized, color = c.ink, maxLines = 1)
             Box {
                 IconButton({ menu = true }, Modifier.semantics { testTag = "day-more" }) { Icon(Icons.Rounded.MoreVert, if (isTask) "Task actions" else "Habit actions", tint = c.ink) }
-                DayMenu(menu, { menu = false }, habit, store, today, nav, onDismiss) { confirmDelete = true }
+                DayMenu(menu, { menu = false }, habit, store, today, nav, onDismiss, onResume = { resume(habit, store, onDismiss) }) { confirmDelete = true }
             }
         }
         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             IdentityCard(habit, store, nav)
-            DayActivity(habit, day, editable, started, rev, store, nav, onAdded)
+            DayActivity(habit, day, editable, started, rev, store, nav, onDismiss, onAdded)
             if (isTask && store.canReschedule(habit, day)) {
                 SectionList("Reschedule") {
-                    RowAction("Do tomorrow", Icons.AutoMirrored.Rounded.Redo, segmentShape(0, 2), "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
+                    RowAction("Do tomorrow", Icons.AutoMirrored.Rounded.Redo, segmentShape(0, 2), "day-do-tomorrow", DayWords.short(today + 1)) {
+                        moved(habit, day, today + 1, store); onDismiss()
+                    }
                     RowAction("Another day…", Icons.Rounded.CalendarMonth, segmentShape(1, 2), "day-another-day") { reschedule = true }
                 }
             } else if (!isTask && habit.kind != HabitKind.Quit && started && !habit.atMost && !store.isPaused(habit, day)) {
@@ -238,21 +251,28 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
     if (confirmDelete) AlertDialog(
         onDismissRequest = { confirmDelete = false },
         title = { Text("Delete ${habit.name}?") },
-        text = { Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.") },
-        confirmButton = { TextButton({ confirmDelete = false; onDismiss(); store.delete(listOf(habit)) }, Modifier.semantics { testTag = "day-delete-confirm" }) { Text(if (isTask) "Delete task" else "Delete habit", color = c.error) } },
-        dismissButton = {
-            Row {
-                if (!habit.archived) TextButton({ confirmDelete = false; store.archive(listOf(habit)); onDismiss() }) { Text("Archive instead", color = c.ink) }
-                TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) }
-            }
+        text = { Text("Its " + (if (isTask) "notes and its history go" else "logs, notes and streak go") +
+            " too. To keep them, choose Archive in the same menu instead.") },
+        confirmButton = {
+            TextButton({
+                confirmDelete = false
+                onDismiss()
+                // Off Today at once, everything kept; really deleted only once Undo has gone (Figma 2.6.1).
+                if (!habit.archived) store.archive(listOf(habit))
+                store.said = Said(habit.name + " deleted", behind = true,
+                    then = { store.habit(habit.id)?.let { store.delete(listOf(it)) } },
+                    undo = { if (!habit.archived) store.restore(habit, undoing = true) })
+            }, Modifier.semantics { testTag = "day-delete-confirm" }) { Text("Delete", color = c.error) }
         },
+        dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } },
     )
     if (reschedule) RescheduleDialog(habit, day, store, { reschedule = false }) { reschedule = false; onDismiss() }
 }
 
 /** ⋮ (Figma 1.5): View habit, Edit habit, Pause…, then Archive and Delete habit…, each with its icon; only Delete red. */
 @Composable
-private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: HabitStore, today: Int, nav: DayNav, onClose: () -> Unit, onDelete: () -> Unit) {
+private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: HabitStore, today: Int, nav: DayNav, onClose: () -> Unit,
+                    onResume: () -> Unit, onDelete: () -> Unit) {
     val c = appColors
     val isTask = habit.kind == HabitKind.Task
     DropdownMenu(open, onDismiss, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp) {
@@ -260,16 +280,21 @@ private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: H
             text = { Text(text, style = AppType.bodyLarge, color = if (red) c.error else c.ink) },
             leadingIcon = { Icon(icon, null, tint = if (red) c.error else c.secondary) },
             onClick = { onDismiss(); action() }, modifier = Modifier.semantics { testTag = tag })
-        if (!isTask) item("View habit", Icons.Outlined.Insights, tag = "day-menu-view") { nav.habitPage(habit) }
+        if (!isTask) item("View habit", Icons.Outlined.Visibility, tag = "day-menu-view") { nav.habitPage(habit) }
         item(if (isTask) "Edit task" else "Edit habit", Icons.Outlined.Edit, tag = "day-menu-edit") { nav.edit(habit) }
         if (!isTask && store.rules.canPause(habit)) {
-            if (store.isPaused(habit, today)) item("Resume habit", Icons.Outlined.PlayCircle, tag = "day-menu-resume") { store.resume(habit) }
-            else item("Pause…", Icons.Outlined.PauseCircle, tag = "day-menu-pause") { nav.pause(habit) }
+            if (store.isPaused(habit, today)) item("Resume habit", Icons.Outlined.PlayCircle, tag = "day-menu-resume") { onResume() }
+            // The sheet opens over Today, not over this one: pausing takes the habit off the day (flow 36).
+            else item("Pause…", Icons.Outlined.PauseCircle, tag = "day-menu-pause") { nav.pause(habit); onClose() }
         }
         HorizontalDivider(color = c.tonal)
         if (habit.archived) item("Restore", Icons.Outlined.Unarchive, tag = "day-menu-restore") { store.restore(habit) }
-        else item("Archive", Icons.Outlined.Archive, tag = "day-menu-archive") { store.archive(listOf(habit)); onClose() }
-        item(if (isTask) "Delete task…" else "Delete habit…", Icons.Outlined.Delete, red = true, tag = "day-menu-delete") { onDelete() }
+        else item("Archive", Icons.Outlined.Archive, tag = "day-menu-archive") {
+            store.archive(listOf(habit))
+            store.said = Said(habit.name + " archived", behind = true) { store.restore(habit, undoing = true) }
+            onClose()
+        }
+        item("Delete", Icons.Outlined.Delete, red = true, tag = "day-menu-delete") { onDelete() }
     }
 }
 
@@ -284,7 +309,7 @@ private fun IdentityCard(habit: Habit, store: HabitStore, nav: DayNav) {
         HabitIcon(habit.symbol, habit.color, size = 48.dp)
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
-            Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(planLine(habit, store), style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         if (!isTask) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
@@ -301,13 +326,31 @@ private fun SectionList(title: String, rows: @Composable () -> Unit) {
 }
 
 @Composable
-private fun RowAction(text: String, icon: ImageVector, shape: Shape, tag: String, onClick: () -> Unit) {
+private fun RowAction(text: String, icon: ImageVector, shape: Shape, tag: String, detail: String? = null, onClick: () -> Unit) {
     Row(Modifier.fillMaxWidth().clip(shape).background(appColors.surface).clickable(onClick = onClick).heightIn(min = 56.dp)
         .padding(start = 16.dp, end = 12.dp).semantics { testTag = tag }, verticalAlignment = Alignment.CenterVertically) {
         Icon(icon, null, tint = appColors.ink)
         Spacer(Modifier.width(16.dp))
-        Text(text, style = AppType.bodyLarge, color = appColors.ink)
+        Text(text, Modifier.weight(1f), style = AppType.bodyLarge, color = appColors.ink)
+        if (detail != null) Text(detail, style = AppType.bodyMedium, color = appColors.secondary)
     }
+}
+
+/** Moving a task: Today says where it went, with Undo (store.justMoved, flow 30). */
+private fun moved(habit: Habit, from: Int, to: Int, store: HabitStore) = store.reschedule(habit, from, to)
+
+/** Resuming closes the sheet: the habit is back in its place on Today, which says so (flow 31). */
+private fun resume(habit: Habit, store: HabitStore, onDismiss: () -> Unit) {
+    val before = store.pauses[habit.id] ?: emptyList()
+    store.resume(habit)
+    store.said = Said(habit.name + " resumed", behind = true) { store.setPauses(habit, before) }
+    onDismiss()
+}
+
+/** What the card counts: a day, or the week or month a period goal is judged over (flows 19-23). */
+private fun cardLabel(ruled: Habit): String {
+    val period = DayStatus.periodWord(ruled.frequency).trim()
+    return if (period.isEmpty()) "This day" else period.replaceFirstChar { it.uppercase() }
 }
 
 /** Skip today, last and plain (Figma: outlined, 48 high, corners 24): skipping isn't an action to invite (U17). */
@@ -329,15 +372,16 @@ private class DayAction(val title: String, val prominent: Boolean = false, val e
  * the note behind a divider. The day's logs follow below the card.
  */
 @Composable
-private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Boolean, rev: Int, store: HabitStore, nav: DayNav, onAdded: ((String) -> Unit)? = null) {
+private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Boolean, rev: Int, store: HabitStore, nav: DayNav,
+                        onDismiss: () -> Unit, onAdded: ((String) -> Unit)? = null) {
     val c = appColors
     val today = store.today()
     val ruled = store.rule(habit, day)
     val running = day == today && store.timers.containsKey(habit.id)
     val tick = rememberTicker(running, store.clock)
     val status = remember(rev, day, store.timers, store.skips, store.pauses) { DayStatus.make(habit, day, store) }
-    val logs = remember(rev, day) { if (showsLogs(ruled, habit, day, store)) store.dayLogs(habit, day) else emptyList() }
-    val actions = dayActions(habit, ruled, day, editable, logs.isNotEmpty(), store, nav, onAdded)
+    val logs = remember(rev, day) { if (showsLogs(ruled, habit, day, store)) store.listedLogs(habit, day) else emptyList() }
+    val actions = dayActions(habit, ruled, day, editable, logs.isNotEmpty(), store, nav, onAdded) { resume(habit, store, onDismiss) }
     val skipped = store.isSkipped(habit, day)
     val paused = store.isPaused(habit, day)
     val future = day > today
@@ -363,11 +407,15 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             MilestoneRibbon(remember(milestone) { center.words(milestone, habit).band }, habit.color, "${habit.id}|${milestone.value}", play = playRibbon)
             Spacer(Modifier.height(12.dp))
         }
-        Text("This day", style = AppType.labelMedium, color = c.secondary)
-        val detail = if (running && status.running != null) {
-            "Timer running · " + Format.clock((tick.value - status.running) / 60_000.0) + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")
-        } else status.detail
-        StatusLine(status.title, detail)
+        Text(cardLabel(ruled), style = AppType.labelMedium, color = c.secondary)
+        val live = if (running && status.running != null) DayStatus.make(habit, day, store) else status
+        val ticking = running && status.running != null
+        // While it runs the count is the live time: a limit counts up with its seconds, a goal reads as the goal does.
+        val sofar = if (ticking) store.rules.progress(habit, day, tick.value) else 0.0
+        val title = if (!ticking) status.title
+            else if (ruled.atMost) Format.clock(sofar) + " today"
+            else Format.minutes(kotlin.math.floor(sofar)) + " of " + Format.minutes(store.rules.goal(ruled))
+        StatusLine(title, if (!ticking) status.detail else if (ruled.atMost) live.detail else "Running")
         if (showsBar) {
             val goal = maxOf(store.rules.goal(ruled), 1e-9)
             val progress = if (future) 0.0 else if (running) store.rules.progress(habit, day, tick.value) else store.rules.progress(habit, day)
@@ -380,7 +428,12 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         }
         if (actions.isNotEmpty()) {
             Spacer(Modifier.height(12.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // Large text stacks the buttons, each full width, instead of cutting their words short (U36, flow 44).
+            if (LocalDensity.current.fontScale >= 1.3f) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    for (a in actions) DayButton(a, Modifier.fillMaxWidth())
+                }
+            } else Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 for (a in actions) DayButton(a, Modifier.weight(1f))
             }
         }
@@ -418,7 +471,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             shown.forEachIndexed { i, e -> LogRow(e, ruled, segmentShape(i, rows), store, nav) }
             if (logs.size > 3) Row(Modifier.fillMaxWidth().clip(segmentShape(rows - 1, rows)).background(c.surface).clickable { nav.allLogs(habit, day) }
                 .heightIn(min = 56.dp).padding(start = 16.dp, end = 12.dp).semantics { testTag = "day-all-logs" }, verticalAlignment = Alignment.CenterVertically) {
-                Text("All " + logCount(logs.size, ruled), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink)
+                Text("All " + logCount(logs.size, ruled) + DayStatus.periodWord(ruled.frequency), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink)
                 Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
             }
         }
@@ -436,11 +489,11 @@ private fun DayButton(a: DayAction, modifier: Modifier) {
     val c = appColors
     val bg = when { !a.enabled -> c.ink.copy(alpha = 0.12f); a.prominent -> c.ink; else -> c.soft }
     val fg = when { !a.enabled -> c.ink.copy(alpha = 0.38f); a.prominent -> c.onInk; else -> c.ink }
-    Box(modifier.height(52.dp).clip(RoundedCornerShape(26.dp)).background(bg)
+    Box(modifier.heightIn(min = 52.dp).clip(RoundedCornerShape(26.dp)).background(bg)
         .clickable(enabled = a.enabled, role = Role.Button, onClick = a.run)
         .semantics { testTag = a.tag; a.spoken?.let { contentDescription = it } }.padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center) {
-        Text(a.title, style = AppType.titleMedium, color = fg, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(a.title, Modifier.padding(vertical = 12.dp), style = AppType.titleMedium, color = fg, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -469,21 +522,27 @@ fun StepCheck(name: String, done: Boolean, habit: Habit, enabled: Boolean, tag: 
 @Composable
 private fun StatusLine(title: String, detail: String?) {
     val c = appColors
-    val match = Regex("^([$€£₹]?\\d[\\d,.]*)\\s*(.*)$").find(title)
+    // "1 h 40 of 3 h" and "$250 of $500" split at " of "; "42 min today" splits after its number (Figma 1.2, 10, 18).
+    val cut = title.indexOf(" of ")
+    val head = if (cut > 0) title.take(cut) else Regex("^([$€£₹]?\\d[\\d,.:]*)").find(title)?.value
+    val rest = if (head == null) "" else title.drop(head.length).trimStart()
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         val room = with(density) { maxWidth.toPx() }
         fun w(text: String, style: androidx.compose.ui.text.TextStyle) = measurer.measure(text, style).size.width.toFloat()
-        val headWidth = if (match != null) w(match.groupValues[1], AppType.displayMedium) + with(density) { 8.dp.toPx() } + w(match.groupValues[2], AppType.bodyLarge)
+        val headWidth = if (head != null) w(head, AppType.displayMedium) + with(density) { 8.dp.toPx() } + w(rest, AppType.bodyLarge)
             else w(title, AppType.headlineMediumEmphasized)
-        val fits = detail != null && headWidth + with(density) { 16.dp.toPx() } + w(detail, AppType.bodyMedium) <= room
+        // Without a count, the line under it carries the detail (Figma: "Done" over "Done at 2:05 PM").
+        val fits = head != null && detail != null && headWidth + with(density) { 16.dp.toPx() } + w(detail, AppType.bodyMedium) <= room
         Column {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
-                if (match != null) {
-                    Text(match.groupValues[1], Modifier.alignByBaseline().semantics { testTag = "day-result" }, style = AppType.displayMedium, color = c.ink, maxLines = 1)
-                    Spacer(Modifier.width(8.dp))
-                    Text(match.groupValues[2], Modifier.alignByBaseline(), style = AppType.bodyLarge, color = c.secondary, maxLines = 1)
+                if (head != null) {
+                    Text(head, Modifier.alignByBaseline().semantics { testTag = "day-result" }, style = AppType.displayMedium, color = c.ink, maxLines = 1)
+                    if (rest.isNotEmpty()) {
+                        Spacer(Modifier.width(8.dp))
+                        Text(rest, Modifier.alignByBaseline(), style = AppType.bodyLarge, color = c.secondary, maxLines = 1)
+                    }
                 } else Text(title, Modifier.alignByBaseline().semantics { testTag = "day-result" }, style = AppType.headlineMediumEmphasized, color = c.ink)
                 if (fits && detail != null) {
                     Spacer(Modifier.weight(1f))
@@ -504,7 +563,7 @@ private fun LogRow(entry: Entry, habit: Habit, shape: Shape, store: HabitStore, 
         .heightIn(min = 56.dp).padding(start = 16.dp, end = if (opens) 12.dp else 4.dp).semantics { testTag = "log-${entry.id}" },
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(entry.description(habit), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink, maxLines = 1)
-        Text(clockText(entry), style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"), color = c.secondary)
+        Text(logWhen(entry, habit, store.today()), style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"), color = c.secondary)
         if (opens) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
         else TextButton({ store.undoEntry(entry.id) }, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }) {
             Text("Undo", style = AppType.labelLarge, color = c.ink)
@@ -514,10 +573,29 @@ private fun LogRow(entry: Entry, habit: Habit, shape: Shape, store: HabitStore, 
 
 fun logsTitle(habit: Habit, day: Int, today: Int): String {
     val short = DayWords.short(day).replace(",", "")
+    val period = DayStatus.periodWord(habit.frequency).trim()
+    // A period goal lists the period it is judged over, not the day (Figma 16-18).
+    if (period.isNotEmpty() && habit.kind != HabitKind.Quit) {
+        return period.replaceFirstChar { it.uppercase() } + "'s " + (if (habit.kind == HabitKind.Check) "checks" else "logs")
+    }
     return when (habit.kind) {
-        HabitKind.Quit -> if (day == today) "Slips today" else "Slips on $short"
-        HabitKind.Check -> if (day == today) "Checks today" else "Checks on $short"
-        else -> if (day == today) "Today's logs" else "Logs for $short"
+        HabitKind.Quit -> if (day == today) "Slips today" else if (day == today - 1) "Yesterday's slips" else "Slips on $short"
+        else -> if (day == today) "Today's logs" else if (day == today - 1) "Yesterday's logs" else "Logs for $short"
+    }
+}
+
+/**
+ * When a log happened, as its list needs it: a day's own list says the time, a week's or month's list says the
+ * day too, and a day far enough back says its date instead of a time (Figma 16-18).
+ */
+fun logWhen(entry: Entry, habit: Habit, today: Int): String {
+    val period = DayStatus.periodWord(habit.frequency)
+    return when {
+        period.isEmpty() -> clockText(entry)
+        entry.day == today -> "Today, " + clockText(entry)
+        // A week is read by its days, a month and a year by their dates (Figma 16–18).
+        period == " this week" -> DayWords.short(entry.day).substringBefore(",") + ", " + clockText(entry)
+        else -> DayWords.short(entry.day)
     }
 }
 
@@ -535,7 +613,7 @@ private fun showsLogs(ruled: Habit, habit: Habit, day: Int, store: HabitStore): 
 
 /** The habit's own buttons for this day, one rule per kind (U16: prominent only for what a positive goal asks). */
 private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, hasLogs: Boolean, store: HabitStore, nav: DayNav,
-                       onAdded: ((String) -> Unit)? = null): List<DayAction> {
+                       onAdded: ((String) -> Unit)? = null, onResume: () -> Unit = {}): List<DayAction> {
     if (!editable) return emptyList()
     val today = store.today()
     // On a past day, a quick add says so: "Added 1 glass to Sat 19 Sep" (Figma 4.3); today's shows on the screen itself.
@@ -545,7 +623,7 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
     val manual = { nav.addLog(habit, day) }
     // Paused: only Resume (Figma 13).
     if (store.isPaused(habit, day)) {
-        return if (store.pause(habit, today)?.contains(today) == true) listOf(DayAction("Resume habit", true, tag = "day-resume") { store.resume(habit) }) else emptyList()
+        return if (store.pause(habit, today)?.contains(today) == true) listOf(DayAction("Resume habit", true, tag = "day-resume") { onResume() }) else emptyList()
     }
     // A day it isn't planned: the same buttons, none of them asking (Figma 3.3).
     val planned = store.rules.isDue(habit, day, countingSkips = false) || !ruled.frequency.isDayBased || ruled.frequency.isFlexible
@@ -564,7 +642,7 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
         HabitKind.Checklist -> emptyList()
         is HabitKind.Amount -> {
             val step = ruled.quickIncrement
-            if (step == null) listOf(DayAction("Log amount", ask, !skipped, tag = "day-add-entry", run = manual))
+            if (step == null) listOf(DayAction("Log", ask, !skipped, tag = "day-add-entry", run = manual))
             else listOf(
                 DayAction("+" + Format.amount(step), ask, !skipped, "Add " + HabitCopy.amount(step, k.unit), "day-add-step") {
                     store.increment(habit, day, src)
@@ -573,9 +651,10 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
                 DayAction("Log manually", enabled = !skipped, tag = "day-add-entry", run = manual),
             )
         }
-        HabitKind.Duration -> if (day != today) listOf(DayAction("Log time", ask, !skipped, tag = "day-add-entry", run = manual))
+        HabitKind.Duration -> if (day != today) listOf(DayAction("Log manually", ask, !skipped, tag = "day-add-entry", run = manual))
         else listOf(
-            if (store.timers.containsKey(habit.id)) DayAction("Stop and save", ask, !skipped, tag = "day-stop-timer") { store.stopTimer(habit, day) }
+            // Running, Start timer becomes Pause, as on the timer screen; pausing saves the time as one log (flows 13, 23, 28).
+            if (store.timers.containsKey(habit.id)) DayAction("Pause", ask, !skipped, "Pause and save the time", "day-stop-timer") { store.stopTimer(habit, day) }
             else DayAction("Start timer", ask, !skipped, tag = "day-start-timer") { store.toggleTimer(habit) },
             DayAction("Log manually", enabled = !skipped, tag = "day-add-entry", run = manual),
         )
@@ -591,16 +670,16 @@ private fun RescheduleDialog(habit: Habit, day: Int, store: HabitStore, onDismis
     val c = appColors
     val range = store.rescheduleRange(habit, day) ?: run { onDismiss(); return }
     val toMs = { d: Int -> LocalDate.ofEpochDay(d.toLong()).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() }
-    val picker = rememberDatePickerState(initialSelectedDateMillis = toMs(range.first), selectableDates = object : SelectableDates {
+    val picker = rememberDatePickerState(selectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean =
             Instant.ofEpochMilli(utcTimeMillis).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt() in range
     })
     DatePickerDialog(onDismiss, confirmButton = {
         TextButton({
-            picker.selectedDateMillis?.let { store.reschedule(habit, day, Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()) }
+            picker.selectedDateMillis?.let { moved(habit, day, Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt(), store) }
             onMoved()
-        }) { Text("Move", color = c.ink) }
+        }) { Text("OK", color = c.ink) }
     }, dismissButton = { TextButton(onDismiss) { Text("Cancel", color = c.ink) } }) {
-        DatePicker(picker, title = { Text("Another day", Modifier.padding(start = 24.dp, top = 16.dp)) })
+        DatePicker(picker, title = { Text("Select a day", Modifier.padding(start = 24.dp, top = 16.dp)) })
     }
 }

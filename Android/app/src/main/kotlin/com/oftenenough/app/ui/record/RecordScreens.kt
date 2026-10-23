@@ -36,6 +36,11 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.rememberCoroutineScope
+import com.oftenenough.app.ui.components.SaidHere
+import com.oftenenough.app.ui.components.SaidHost
+import kotlinx.coroutines.launch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -76,6 +81,7 @@ import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.day.StepCheck
 import com.oftenenough.app.ui.day.logCount
+import com.oftenenough.app.ui.day.logWhen
 import com.oftenenough.app.ui.day.logsTitle
 import com.oftenenough.app.ui.theme.appColors
 import java.time.ZoneId
@@ -278,7 +284,10 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
         }
         BottomAction(kind.addButton, canAdd, onClick = ::add)
     }
-    if (discard) DiscardDialog("Discard this ${if (kind == RecordKind.SLIP) "slip" else "log"}?", { discard = false }, onDone)
+    if (discard) DiscardDialog("Discard this ${if (kind == RecordKind.SLIP) "slip" else "log"}?", { discard = false }, onDone,
+        body = draft.value?.let { v ->
+            "The " + (if (kind == RecordKind.TIME) Format.minutes(v) else HabitCopy.amount(v, ruled.unit)) + " you typed won't be added."
+        } ?: "What you typed won't be added.")
 }
 
 /** Exactly what will happen, then a paused or skipped day's note (the iPhone's footers). */
@@ -286,8 +295,12 @@ private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, 
     val date = DayWords.short(day)
     val clock = DayWords.clock(at)
     var text = when (kind) {
-        RecordKind.AMOUNT -> if (ruled.atMost) "Records what happened. Your limit stays the same." else "Adds a new log. Other logs stay as they are."
-        RecordKind.TIME -> if (ruled.atMost) "Records what happened. Your limit stays the same." else "Adds one session. Other logs stay as they are."
+        RecordKind.AMOUNT -> if (ruled.atMost) "Records what happened. Your limit stays the same."
+            else if (day != today) "Adds a new log to ${dayWord(day, today)}. Today's logs stay as they are."
+            else "Adds a new log. Other logs stay as they are."
+        RecordKind.TIME -> if (ruled.atMost) "Records what happened. Your limit stays the same."
+            else if (day != today) "Adds one session to ${dayWord(day, today)}. Today's logs stay as they are."
+            else "Adds one session. Other logs stay as they are."
         RecordKind.CHECK -> {
             var t = "Adds one check to $date at $clock. Checks already there stay."
             if (!ruled.frequency.isDayBased) {
@@ -308,6 +321,11 @@ private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, 
     return text
 }
 
+/** "today", "yesterday", or "Mon, 19 Oct": a day inside a sentence (Day details flows 10 and 11). */
+private fun dayWord(day: Int, today: Int): String = when (day) {
+    today -> "today"; today - 1 -> "yesterday"; today + 1 -> "tomorrow"; else -> DayWords.short(day)
+}
+
 /** "India Standard Time": a zone's own name, for a record made somewhere else (Figma 9.3.4). */
 private fun zoneName(zone: String): String? = runCatching {
     val z = ZoneId.of(zone)
@@ -324,25 +342,38 @@ private fun zoneName(zone: String): String? = runCatching {
 fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
     val c = appColors
     val rev = store.dataVersion
-    val entry: Entry = remember(rev) { store.entry(entryId) } ?: run { LaunchedEffect(Unit) { onBack() }; return }
-    val habit = store.habit(entry.habitId) ?: run { LaunchedEffect(Unit) { onBack() }; return }
+    // The page leaves once and once only (U27): a second pop would take Day details, and Today, with it.
+    val left = remember { mutableStateOf(false) }
+    fun leave() { if (!left.value) { left.value = true; onBack() } }
+    val entry: Entry = remember(rev) { store.entry(entryId) } ?: run { LaunchedEffect(Unit) { leave() }; return }
+    val habit = store.habit(entry.habitId) ?: run { LaunchedEffect(Unit) { leave() }; return }
     val ruled = store.rule(habit, entry.day)
     val slip = ruled.kind == HabitKind.Quit
     val noun = if (slip) "slip" else "log"
+    // A counted check has no amount: the record is the habit, the day and the time (flow 18).
+    val check = ruled.kind == HabitKind.Check
+    val thing = if (slip) "slip" else if (check) "check" else "log"
     var editing by rememberSaveable { mutableStateOf(false) }
     var confirmDelete by remember { mutableStateOf(false) }
     var discard by remember { mutableStateOf(false) }
     val draft = remember(editing) { ValueDraft(ruled.kind, entry.value) }
     var time by remember(editing) { mutableStateOf(entry.createdAt) }
+    // Edit's Date can move the log to another day (U19, Day details flow 10): today and earlier only.
+    var day by remember(editing) { mutableStateOf(entry.day) }
     val focus = remember { FocusRequester() }
     val today = store.today()
+    val first = if (slip) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
+    val range = minOf(first, today)..today
+    val snackbar = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     // A timer's log keeps its seconds (Figma 2.5); one typed by hand has whole minutes.
     val withSeconds = ruled.kind == HabitKind.Duration && Math.abs(entry.value - Math.rint(entry.value)) > 1e-6
     val zone = zoneName(entry.timeZone)
-    fun leaveEdit() { if (draft.differs || time != entry.createdAt) discard = true else editing = false }
+    fun leaveEdit() { if (draft.differs || time != entry.createdAt || day != entry.day) discard = true else editing = false }
     BackHandler(editing) { leaveEdit() }
     LaunchedEffect(editing) { if (editing && !slip) runCatching { focus.requestFocus() } }
 
+    Box(Modifier.fillMaxSize()) {
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(if (editing) "Edit $noun" else noun.replaceFirstChar { it.uppercase() }, close = editing, onClose = { if (editing) leaveEdit() else onBack() })
         val scroll = rememberScrollState()
@@ -352,49 +383,101 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 HabitFact(habit, 0, 2)
-                DateTimeRows(entry.day, today, entry.day..entry.day, time, if (ruled.kind == HabitKind.Duration) "Finished at" else "Time",
-                    onDay = {}, onTime = { t -> time = store.logTime(t, entry.day, entry.timeZone) },
-                    editableDay = false, editableTime = editing, last = zone == null,
+                DateTimeRows(day, today, range, time, if (ruled.kind == HabitKind.Duration) "Finished at" else "Time",
+                    onDay = { d -> time = store.sameClockTime(time, d); day = d },
+                    onTime = { t -> time = store.logTime(t, day, entry.timeZone) },
+                    editableDay = editing, editableTime = editing, last = zone == null,
                     timeText = if (editing) DayWords.clock(time) else clockText(entry).removeSuffix(" " + entry.timeZone))
                 if (zone != null) Row(Modifier.fillMaxWidth().clip(segmentShape(1, 2)).background(c.surface).padding(horizontal = 16.dp, vertical = 12.dp)) {
                     Text("Recorded in $zone", style = AppType.bodyMedium, color = c.secondary)
                 }
             }
             when (ruled.kind) {
-                is HabitKind.Amount, HabitKind.Check -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit.ifEmpty { if (ruled.kind == HabitKind.Check) "checks" else "" }, focus, readOnly = !editing) }
+                is HabitKind.Amount -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit, focus, readOnly = !editing) }
                 HabitKind.Duration -> { SectionTitle("How long"); DurationCard(draft, focus, readOnly = !editing, withSeconds = withSeconds) }
                 else -> {}
             }
             val problem = draft.check().second
-            val footer = if (editing) (problem ?: if (slip) "Changing the time updates your quit run." else null) else entry.originLine(slip)
+            val moving = day != entry.day
+            val footer = when {
+                // A slip's footer says what it did to the run; everything else says where it came from (flows 18, 26).
+                !editing -> listOfNotNull(
+                    if (slip && store.listedLogs(habit, entry.day).none { it.createdAt > entry.createdAt }) "Your run started again from this slip."
+                    else if (check) "One check, " + (entry.originLine(false)?.replaceFirstChar { it.lowercase() } ?: "added by hand.")
+                    else entry.originLine(slip),
+                    store.changedHere[entry.id]).joinToString(" ").ifEmpty { null }
+                problem != null -> problem
+                // Before saving, the footer says plainly what moving does to the day it leaves (flow 10).
+                moving -> "Moves this " + noun + " to " + dayWord(day, today) + ". " +
+                    dayWord(entry.day, today).replaceFirstChar { it.uppercase() } + " goes down by " + entry.description(ruled) + "."
+                slip -> "Changes this slip only. Your run counts from the new time."
+                else -> "Changes this " + noun + " only. Other logs stay as they are."
+            }
             footer?.let { Footer(it, problem = editing && problem != null) }
         }
         if (editing) {
             BottomAction("Save", true, tag = "record-save") {
                 val v = if (slip) 1.0 else draft.value ?: return@BottomAction
-                store.editEntry(entry.id, v, time)
+                val moved = day != entry.day
+                if (moved) {
+                    if (v != entry.value) store.editEntry(entry.id, v, entry.createdAt)
+                    store.moveEntry(entry.id, day, time)
+                } else store.editEntry(entry.id, v, time)
                 editing = false
+                store.changedHere[entry.id] = if (moved) "Moved from " + dayWord(entry.day, today) + " at " + DayWords.clock(store.clock()) + "."
+                    else "Changed at " + DayWords.clock(store.clock()) + "."
+                val words = if (moved) "Moved to " + dayWord(day, today) else noun.replaceFirstChar { it.uppercase() } + " changed"
+                scope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(words) }
             }
         } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
-    if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this $noun?") },
+        SaidHost(snackbar, Modifier.align(Alignment.BottomCenter), bottom = 88)
+    }
+    // Two choices only, Cancel and Delete, the red word alone (D9); the body names what goes and what stays.
+    if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this $thing?") },
         text = {
-            Text(if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
-                else "${entry.description(ruled)} at ${clockText(entry)} is removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.")
+            Text(if (slip) "The ${clockText(entry)} slip will be removed. " + runAfter(entry, habit, store)
+                else if (check) "The ${clockText(entry)} check will be removed from ${dayWord(entry.day, today)}. Your other checks stay."
+                else "${entry.description(ruled)} at ${clockText(entry)} will be removed from ${dayWord(entry.day, today)}. Your other logs stay.")
         },
-        confirmButton = { TextButton({ confirmDelete = false; onBack(); store.undoEntry(entry.id) }, Modifier.semantics { testTag = "confirm-delete" }) { Text("Delete $noun", color = c.error) } },
+        confirmButton = {
+            TextButton({
+                confirmDelete = false
+                // The page goes first, then the record (U27); what is left behind says so, with Undo (flow 11).
+                val undone = entry
+                leave()
+                store.undoEntry(entry.id)
+                val up = thing.replaceFirstChar { it.uppercase() }
+                store.said = com.oftenenough.app.data.Said("$up deleted") {
+                    store.putBack(undone)
+                    store.said = com.oftenenough.app.data.Said("$up restored")
+                }
+            }, Modifier.semantics { testTag = "confirm-delete" }) { Text("Delete", color = c.error) }
+        },
         dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } })
-    if (discard) DiscardDialog("Discard your changes to this $noun?", { discard = false }, { discard = false; editing = false })
+    if (discard) DiscardDialog("Discard your changes?", { discard = false }, { discard = false; editing = false },
+        body = "This " + thing + " stays " + (if (check || slip) "at " else entry.description(ruled) + " at ") + clockText(entry) + ".")
+}
+
+/** What the quit run goes back to once [entry] is removed: the slip before it, or the day quitting began (flow 26). */
+private fun runAfter(entry: Entry, habit: com.oftenenough.app.data.Habit, store: HabitStore): String {
+    val before = store.entries(habit.id).filter { it.id != entry.id && it.createdAt < entry.createdAt }.maxByOrNull { it.createdAt }
+    val from = before?.let { store.rules.calendarDayOf(it.createdAt) } ?: store.rules.quitStartDay(habit)
+    val days = maxOf(0, store.today() - from)
+    return "Your run goes back to $days ${if (days == 1) "day" else "days"}."
 }
 
 /** All of a day's logs, newest first (Figma 1.7: from "All N logs ›"), titled as Day details titles them. */
 @Composable
 fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -> Unit, onBack: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onBack() }; return }
+    // A log deleted on its own page says so here, where it was opened from, with Undo (flow 12).
+    val said = remember { SnackbarHostState() }
+    SaidHere(store, said)
     val c = appColors
     val rev = store.revision(habitId)
     val ruled = store.rule(habit, day)
-    val logs = remember(rev, day) { store.dayLogs(habit, day) }
+    val logs = remember(rev, day) { store.listedLogs(habit, day) }
     val total = logs.sumOf { it.value }
     val all = when (val k = ruled.kind) {
         is HabitKind.Amount -> HabitCopy.amount(total, k.unit) + " in all. Tap a log to change or delete it."
@@ -402,6 +485,7 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
         HabitKind.Quit -> "Tap a slip to change or delete it."
         else -> "Undo takes one back."
     }
+    Box(Modifier.fillMaxSize()) {
     Column(Modifier.fillMaxSize().background(c.screen).navigationBarsPadding()) {
         RecordTopBar(logsTitle(ruled, day, store.today()), close = false, onClose = onBack)
         Column(Modifier.verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -413,7 +497,7 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
                         .heightIn(min = 56.dp).padding(start = 16.dp, end = if (opens) 12.dp else 4.dp).semantics { testTag = "all-log-$i" },
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(e.description(ruled), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink, maxLines = 1)
-                        Text(clockText(e), style = AppType.bodyMedium, color = c.secondary)
+                        Text(logWhen(e, ruled, store.today()), style = AppType.bodyMedium, color = c.secondary)
                         if (opens) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
                         else TextButton({ store.undoEntry(e.id) }, Modifier.semantics { contentDescription = e.undoLabel(ruled) }) { Text("Undo", style = AppType.labelLarge, color = c.ink) }
                     }
@@ -422,5 +506,7 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
             Footer(all)
             Spacer(Modifier.height(16.dp))
         }
+    }
+        SaidHost(said, Modifier.align(Alignment.BottomCenter))
     }
 }

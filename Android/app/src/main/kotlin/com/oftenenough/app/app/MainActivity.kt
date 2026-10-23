@@ -137,6 +137,8 @@ class MainActivity : FragmentActivity() {
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         pinWidget(intent)
+        // Nothing a sheet was asked for survives a new activity: the Pause sheet is asked for, never saved.
+        com.oftenenough.app.ui.habit.PauseOpen.close()
         val demo = intent.getStringExtra(TestLaunch.DEMO)
         if (test || BuildConfig.DEBUG) com.oftenenough.app.ui.today.TodayNotices.forced = intent.getStringExtra(TestLaunch.NOTICE)
         syncWhileOnScreen()

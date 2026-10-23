@@ -36,7 +36,6 @@ import kotlinx.coroutines.launch
 import com.oftenenough.app.ui.newhabit.NewHabitFlow
 import com.oftenenough.app.ui.habit.HabitDetailsNav
 import com.oftenenough.app.ui.habit.HabitDetailsScreen
-import com.oftenenough.app.ui.habit.PauseScreen
 import com.oftenenough.app.ui.habit.ArchivedNav
 import com.oftenenough.app.ui.habit.ArchivedHabitsScreen
 import com.oftenenough.app.ui.habit.HabitsNav
@@ -361,7 +360,7 @@ private fun AppMain(
                     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
                     override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
                     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
-                    override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+                    override fun pause(habit: Habit) = com.oftenenough.app.ui.habit.PauseOpen.open(listOf(habit))
                     override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                 }) { nav.popBackStack() }
             }
@@ -391,12 +390,11 @@ private fun AppMain(
                 rootScope.launch { snackbar.showSnackbar(message, duration = androidx.compose.material3.SnackbarDuration.Long) }
             }
         }
-        composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
         composable(Routes.LOCK_SETUP) { AppLockSetup(AppGraph.lock, passcodeOnly = false) { nav.popBackStack() } }
         composable(Routes.LOCK_PASSCODE) { AppLockSetup(AppGraph.lock, passcodeOnly = true) { nav.popBackStack() } }
         composable(Routes.GROUPS) { GroupsScreen(store, { id -> nav.navigate(Routes.group(id)) }) { nav.popBackStack() } }
         composable("group/{id}") { e ->
-            GroupFormScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }, { hs -> nav.navigate(Routes.pause(hs.map { it.id })) }) { nav.popBackStack() }
+            GroupFormScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }, { hs -> com.oftenenough.app.ui.habit.PauseOpen.open(hs) }) { nav.popBackStack() }
         }
         composable(Routes.NEW_TASK) {
             NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { nav.navigate(Routes.GET_PLUS) }, task = true)
@@ -416,6 +414,19 @@ private fun AppMain(
         val flowNav = plusFlowNav(nav, rootScope, snackbar) { noPlusFound = true }
         composable(Routes.GET_PLUS) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, flowNav) { nav.popBackStack() } }
         composable(Routes.RESTORE_PLUS) { com.oftenenough.app.ui.plus.RestoreFlow(AppGraph.plus, flowNav) }
+    }
+    // Pause… from a Today row, Day details, Habit details or a group: the one sheet, over whatever is on screen (flow 36).
+    val asked = com.oftenenough.app.ui.habit.PauseOpen.habits
+    if (asked.isNotEmpty()) {
+        val before = asked.associate { it.id to (store.pauses[it.id] ?: emptyList<com.oftenenough.app.data.HabitPause>()) }
+        com.oftenenough.app.ui.habit.PauseSheet(asked, store, { com.oftenenough.app.ui.habit.PauseOpen.close() }) { back ->
+            com.oftenenough.app.ui.habit.PauseOpen.close()
+            val name = if (asked.size == 1) asked[0].name else "${asked.size} habits"
+            val until = back?.let { " until " + com.oftenenough.app.data.DayWords.short(it) } ?: ""
+            store.said = com.oftenenough.app.data.Said("$name paused$until", behind = true) {
+                asked.forEach { h -> store.setPauses(h, before[h.id] ?: emptyList()) }
+            }
+        }
     }
     }
     // Plus has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
@@ -547,8 +558,6 @@ object Routes {
     fun note(habit: String?, day: Int) = "note/${habit ?: "day"}/$day"
     fun habit(id: String) = "habit/$id"
     fun timer(id: String) = "timer/$id"
-    fun pause(id: String) = "pause/$id"
-    fun pause(ids: List<String>) = "pause/" + ids.joinToString(",")
     fun routine(part: String, day: Int, ids: List<String>, at: String? = null) =
         "routine/" + android.net.Uri.encode(part) + "/$day/" + ids.joinToString(",") + (at?.let { "?at=$it" } ?: "")
 }
@@ -581,7 +590,7 @@ private fun dayNav(nav: NavHostController, close: () -> Unit) = object : DayNav 
     override fun log(habit: Habit, entry: Entry) = nav.navigate(Routes.log(entry.id))
     override fun allLogs(habit: Habit, day: Int) = nav.navigate(Routes.allLogs(habit.id, day))
     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
-    override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+    override fun pause(habit: Habit) = com.oftenenough.app.ui.habit.PauseOpen.open(listOf(habit))
 }
 
 /**
@@ -622,7 +631,7 @@ private fun todayActions(nav: NavHostController, view: android.view.View, openDa
     override fun openTimer(habit: Habit) = nav.navigate(Routes.timer(habit.id))
     override fun editHabit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.habit(habit.id))
-    override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+    override fun pause(habit: Habit) = com.oftenenough.app.ui.habit.PauseOpen.open(listOf(habit))
     override fun feedback(done: Boolean) { view.performHapticFeedback(HapticFeedbackConstants.CONFIRM) }
     override fun arrange(habit: Habit?) { ArrangeLift.habit = habit?.id; nav.navigate(Routes.page("Arrange your day")) }
 }

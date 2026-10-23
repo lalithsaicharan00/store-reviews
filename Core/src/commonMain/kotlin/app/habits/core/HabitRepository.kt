@@ -65,6 +65,16 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         sync.change(SyncCodec.ENTRY, id, SyncCodec.entry(entry.copy(value = value, createdAt = createdAt)))
     }
 
+    /**
+     * Moves one log to another day, keeping its ID (U19, 14 Oct 2026): one change to the same record, with its new day
+     * and the moment inside it — never a delete and an add, which would lose it if only half of the pair synced.
+     */
+    @Throws(Exception::class)
+    suspend fun moveEntry(id: String, day: String, createdAt: Long) = dao.synced(clock()) { sync ->
+        val entry = dao.entryById(id)?.takeIf { it.deletedAt == null } ?: return@synced
+        sync.change(SyncCodec.ENTRY, id, SyncCodec.entry(entry.copy(day = day, createdAt = createdAt)))
+    }
+
     /** Undo keeps a tombstone rather than deleting the row (Architecture 05 §7). */
     @Throws(Exception::class)
     suspend fun removeEntry(id: String, at: Long) = dao.synced(clock()) { sync -> removeEntry(sync, id, at) }

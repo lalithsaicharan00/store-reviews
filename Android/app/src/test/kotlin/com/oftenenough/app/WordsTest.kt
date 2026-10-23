@@ -29,7 +29,7 @@ class WordsTest {
         assertEquals("10,000", HabitCopy.number(10_000.0))
         assertEquals("45 min", Format.minutes(45.0))
         assertEquals("1 h", Format.minutes(60.0))
-        assertEquals("1 h 25 min", Format.minutes(85.0))
+        assertEquals("1 h 25", Format.minutes(85.0))
         assertEquals("7:42", Format.clock(7.7))
         assertEquals("1:07:42", Format.clock(67.7))
     }
@@ -70,7 +70,7 @@ class WordsTest {
         assertEquals("3/8 glasses", goalLine(habit(HabitKind.Amount("glasses", 1.0), 8.0), 3.0, 8.0))
         // Under an hour the minutes are a bare number before the goal (Figma 1350:2).
         assertEquals("12/20 min", goalLine(habit(HabitKind.Duration, 20.0), 12.4, 20.0))
-        assertEquals("1 h 30 min/3 h this week", goalLine(habit(HabitKind.Duration, 180.0, Frequency.PerWeek(1)), 90.0, 180.0))
+        assertEquals("1 h 30/3 h this week", goalLine(habit(HabitKind.Duration, 180.0, Frequency.PerWeek(1)), 90.0, 180.0))
         // Money's sign before each number (U22).
         assertEquals("\$250/\$500 this month", goalLine(habit(HabitKind.Amount("\$", 0.0), 500.0, Frequency.PerMonth(1)), 250.0, 500.0))
         assertEquals("7:42/20 min", goalLine(habit(HabitKind.Duration, 20.0), 7.7, 20.0, running = true))

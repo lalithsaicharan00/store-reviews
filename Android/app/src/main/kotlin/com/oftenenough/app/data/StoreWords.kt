@@ -123,7 +123,8 @@ fun Entry.opensRecord(habit: Habit): Boolean {
     if (stepId != null) return false
     return when (habit.kind) {
         is HabitKind.Amount, HabitKind.Duration, HabitKind.Quit -> true
-        HabitKind.Check -> value != 1.0
+        // Each check of a counted habit is a record of its own: it opens, and its time can be changed (flow 18).
+        HabitKind.Check -> true
         HabitKind.Task, HabitKind.Checklist -> false
     }
 }
@@ -164,6 +165,14 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
             else -> ""
         }
 
+        /** Where a limit stands, in plain words, never in red (U3; flows 27 and 28). */
+        private fun limitWord(had: Double, limit: Double, timed: Boolean, unit: String): String = when {
+            had > limit -> "Over the limit"
+            had >= limit -> "Limit reached"
+            timed -> Format.minutes(limit - had) + " left"
+            else -> HabitCopy.amount(limit - had, unit) + " left"
+        }
+
         fun make(habit: Habit, day: Int, store: HabitStore): DayStatus {
             val isToday = day == store.today()
             val dayWord = if (isToday) "today" else "this day"
@@ -172,7 +181,9 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
             val rules = store.rules
             val entries = store.entries(habit.id, day).filter { it.stepId == null }
             if (store.isPaused(habit, day)) {
-                return DayStatus("Paused", if (entries.isEmpty()) "Paused days don't count toward your streak" else "Progress already recorded stays in your history")
+                val back = store.pause(habit, day)?.through?.let { "Back on " + DayWords.short(it + 1) + ". " } ?: "Paused until you resume it. "
+                return DayStatus("Paused", back + (if (entries.isEmpty()) "Paused days don't count against your streak."
+                    else "What you logged stays in your history."))
             }
             if (store.isSkipped(habit, day)) {
                 val total = entries.sumOf { it.value }
@@ -182,7 +193,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     HabitKind.Check -> if (rules.countsUp(habit, day)) HabitCopy.amount(total, r.checkUnit ?: "checks") + " saved" else null
                     else -> null
                 }
-                return DayStatus("Skipped", (saved?.let { "$it · " } ?: "") + "Doesn't count toward your streak")
+                return DayStatus("Skipped", (saved?.let { "$it · " } ?: "") + "Your streak stays safe.")
             }
             if (day < rules.startDay(habit)) return DayStatus("Before it started")
             // A later day plans (Figma 1.4): what the day asks, "For Tue, 13 Oct"; logging waits for the day.
@@ -214,14 +225,14 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     val done = rules.isDone(habit, day)
                     val last = (if (r.dueDay == null) entries else store.entries(habit.id)).lastOrNull()
                     if (!done || last == null) return DayStatus(if (done) "Done" else "Not done")
-                    val whenText = if (last.day == day) clockText(last) else DayWords.short(last.day) + " at " + clockText(last)
-                    return DayStatus("Done", "Completed " + (if (last.day == day) "at " else "on ") + whenText)
+                    return DayStatus("Done", "Done " + (if (last.day == day) "at " + clockText(last)
+                        else "on " + DayWords.short(last.day) + " at " + clockText(last)))
                 }
                 HabitKind.Checklist -> {
                     val done = rules.dayProgress(r, day).toInt()
                     val all = r.steps.size
                     val left = all - done
-                    return DayStatus("$done of $all steps done", if (left <= 0) "All steps done" else if (left == 1) "One step left" else "$left steps left")
+                    return DayStatus("$done of $all steps done", if (left <= 0) "All steps done" else "$left step${if (left == 1) "" else "s"} left")
                 }
                 HabitKind.Check -> {
                     val unit = r.checkUnit ?: "times"
@@ -229,16 +240,16 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     if (!r.frequency.isDayBased) {
                         val period = rules.progress(habit, day)
                         val goal = rules.goal(habit)
-                        // Met: the week's or month's goal is reached, in words (Figma 5.1, 6.1).
-                        val periodName = periodWord(r.frequency).trim().removePrefix("this ").replaceFirstChar { it.uppercase() }
-                        return DayStatus(HabitCopy.amount(progress, unit) + " " + dayWord,
-                            if (period >= goal && periodName.isNotEmpty()) "$periodName goal reached"
-                            else "${HabitCopy.number(period)} of ${HabitCopy.amount(goal, unit)}" + periodWord(r.frequency))
+                        // Once a period: "Not done yet" / "Done this month" (flow 20); more than once, the count (flow 19).
+                        if (goal <= 1.0) return DayStatus(if (period >= goal) "Done" + periodWord(r.frequency) else "Not done yet")
+                        val left = goal - period
+                        return DayStatus("${HabitCopy.number(period)} of ${HabitCopy.number(goal)}" + periodWord(r.frequency),
+                            if (left <= 0) "Goal reached" else "${HabitCopy.number(left)} to go")
                     }
                     if (rules.countsUp(habit, day)) {
                         val goal = rules.dayGoal(r)
                         val left = goal - progress
-                        val detail = if (left <= 0) "Goal reached" else if (isToday) (if (left == 1.0) "One more reaches today's goal" else "${HabitCopy.number(left)} more reach today's goal") else "For $shortDay"
+                        val detail = if (left <= 0) "Goal reached" else if (isToday) "${HabitCopy.number(left)} to go" else "For $shortDay"
                         return DayStatus("${HabitCopy.number(progress)} of ${HabitCopy.amount(goal, unit)}", detail)
                     }
                     val done = rules.isDayMet(r, day)
@@ -248,7 +259,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         if (count != null) return DayStatus(if (done) "Done" else "Not done", "$count of ${f.n} ${if (f.n == 1) "day" else "days"}" + periodWord(f))
                     }
                     val last = entries.lastOrNull()
-                    if (done && last != null) return DayStatus("Done", "Checked at " + clockText(last))
+                    if (done && last != null) return DayStatus("Done", "Done at " + clockText(last))
                     return DayStatus(if (done) "Done" else "Not done")
                 }
                 is HabitKind.Amount, HabitKind.Duration -> {
@@ -264,15 +275,15 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     val goal = rules.dayGoal(r)
                     if (rules.isTotal(r)) {
                         val total = rules.progress(habit, day)
-                        val period = periodWord(r.frequency)
-                        return DayStatus("${today(saved)} $dayWord",
-                            if (r.atMost) "${text(total)}$period · limit ${text(goal)}"
-                            else "${bare(total)} of ${bare(goal)}$period" + (if (total >= goal) " · Goal reached" else ""), running)
+                        // Plain numbers need the period to be read right ("140 of 300 this week"); money and time carry it (flow 22).
+                        val period = if (timed || unit.trim() in HabitCopy.currencies) "" else periodWord(r.frequency)
+                        if (r.atMost) return DayStatus("${text(total)}$period", "Limit ${text(goal)} · " + limitWord(total, goal, timed, unit), running)
+                        val left = goal - total
+                        return DayStatus("${bare(total)} of ${bare(goal)}$period",
+                            if (left <= 0) "Goal reached" else "${bare(left)} to go", running)
                     }
                     // A limit says where it stands in words, never in red (Figma 10–11.3, U3).
-                    if (r.atMost) return DayStatus("${today(saved)} $dayWord", "Limit ${text(goal)} · " + when {
-                        saved > goal -> "Over the limit"; saved >= goal -> "Limit reached"; else -> "within limit"
-                    }, running)
+                    if (r.atMost) return DayStatus("${today(saved)} $dayWord", "Limit ${text(goal)} · " + limitWord(saved, goal, timed, unit), running)
                     val title = if (timed) {
                         if (goal < 60 && saved < 60) "${kotlin.math.floor(saved).toInt()} of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"
                     } else if (unit.trim() in HabitCopy.currencies) "${HabitCopy.amount(saved, unit)} of ${HabitCopy.amount(goal, unit)}"

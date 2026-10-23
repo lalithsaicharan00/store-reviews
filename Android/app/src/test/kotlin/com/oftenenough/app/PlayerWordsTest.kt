@@ -37,7 +37,7 @@ class PlayerWordsTest {
         assertEquals("of 2 cups max", PlayerWords.target(habit(HabitKind.Amount("cups", 1.0), 2.0, atMost = true), 2.0))
         assertEquals("of 20 min", PlayerWords.target(habit(HabitKind.Duration, 20.0), 20.0))
         assertEquals("of 30 min max", PlayerWords.target(habit(HabitKind.Duration, 30.0, atMost = true), 30.0))
-        assertEquals("of 1 h 30 min", PlayerWords.target(habit(HabitKind.Duration, 90.0), 90.0))
+        assertEquals("of 1 h 30", PlayerWords.target(habit(HabitKind.Duration, 90.0), 90.0))
         assertEquals("of 3 steps", PlayerWords.target(habit(HabitKind.Checklist, 3.0), 3.0))
         assertEquals("of 1", PlayerWords.target(habit(HabitKind.Check), 1.0))
         assertEquals("of 3", PlayerWords.target(habit(HabitKind.Check, 3.0), 3.0))

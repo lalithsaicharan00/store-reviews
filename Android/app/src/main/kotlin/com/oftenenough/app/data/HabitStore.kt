@@ -41,6 +41,16 @@ class HabitStore(
     var isLoaded by mutableStateOf(false); private set
     /** Shown to the person when a write fails or the data can't be read. */
     var problem by mutableStateOf<String?>(null)
+    /**
+     * A line for the snackbar, said by whichever screen is on top when the one that caused it has gone (Day details
+     * flows 11 and 12: a log deleted from the Log page is reported on Day details, or on All logs, with its Undo).
+     */
+    var said by mutableStateOf<Said?>(null)
+    /**
+     * What a record was changed to say since the app opened ("Changed at 2:07 PM.", "Moved from today at
+     * 2:08 PM.", flows 8 and 10). A record keeps no changed-at of its own, so this is this session's only.
+     */
+    val changedHere = androidx.compose.runtime.mutableStateMapOf<String, String>()
     /** What Try again does on the snackbar that reports a failed tap; null when there is nothing to try again. */
     var retry by mutableStateOf<(() -> Unit)?>(null)
     /** The habit a tap being written belongs to, so a failure can name it. */
@@ -511,9 +521,13 @@ class HabitStore(
         }
     }
 
-    /** Brings an archived habit back if there's a free slot (or Plus). The archived stretch becomes a pause. */
-    fun restore(habit: Habit): Boolean {
-        if (habit.kind != HabitKind.Task && !canAddHabit) return false
+    /**
+     * Brings an archived habit back if there's a free slot (or Plus). The archived stretch becomes a pause.
+     * [undoing] is an Undo of the person's own archive or delete seconds ago, which puts the list back as it was and
+     * so is never "adding" a habit (Day details flow 35: Undo must always work).
+     */
+    fun restore(habit: Habit, undoing: Boolean = false): Boolean {
+        if (!undoing && habit.kind != HabitKind.Task && !canAddHabit) return false
         perform {
             val i = habits.indexOfFirst { it.id == habit.id }
             if (i < 0) return@perform
@@ -771,7 +785,43 @@ class HabitStore(
         perform { repository.editEntry(updated.id, updated.value, updated.createdAt) }
     }
 
+    /**
+     * Moves one log to another day (U19, Day details flow 10): the same log, with the same amount, keeps its ID and
+     * takes its time with it — one atomic change, never a delete and an add. [at] is the moment inside [toDay]; the
+     * day it leaves and the day it joins are both worked out again. Returns false when the move isn't allowed
+     * (a later day, a day before the habit started, a step, or a task).
+     */
+    fun moveEntry(id: String, toDay: Int, at: Long): Boolean {
+        val entry = entries.firstOrNull { it.id == id } ?: return false
+        val habit = habit(entry.habitId) ?: return false
+        if (entry.stepId != null || habit.kind == HabitKind.Task) return false
+        if (toDay > today() || toDay < rules.startDay(habit)) return false
+        if (toDay == entry.day) return false
+        val moment = logTime(at, toDay)
+        if (habit.kind == HabitKind.Quit && moment < minOf(habit.quitSince ?: habit.createdAt, habit.createdAt)) return false
+        val from = entry.day
+        val moved = entry.copy(day = toDay, createdAt = moment)
+        // Out of the day it leaves, into the day it joins: the indexes and the rules follow the record.
+        removeEntry(id)
+        insertEntry(moved)
+        summaries.remove(from)
+        summaries.remove(toDay)
+        forget(habit.id)
+        // History moved by hand is never celebrated (A36, the milestone rules), so no milestone is looked for here.
+        perform { repository.moveEntry(id, dayKey(toDay), moment) }
+        return true
+    }
+
     /** A day's logs (no checklist steps), newest first by their time. */
+    /**
+     * The logs a day's list shows: that day's own, or the whole week or month a period goal is judged over, newest
+     * first (Figma 16–18, Day details flows 19 and 21–23).
+     */
+    fun listedLogs(habit: Habit, day: Int): List<Entry> {
+        val period = rules.periodRange(habit, day)?.takeIf { it.first != it.last } ?: return dayLogs(habit, day)
+        return period.flatMap { dayLogs(habit, it) }.sortedByDescending { it.createdAt }
+    }
+
     fun dayLogs(habit: Habit, day: Int): List<Entry> {
         val list = entries(habit.id, day)
         return list.indices.filter { list[it].stepId == null }
@@ -956,8 +1006,11 @@ class HabitStore(
     /** Puts a repeating task's moved days back as they were (the Undo of [moveOccurrence]). */
     fun setTaskMoves(task: Habit, moves: Map<Int, Int>) = setMoves(task.id, moves)
 
-    /** A log taken back on the Tasks page (Mark as not done) put back by its Undo, as a new log with the same day, time and value. */
-    fun putBack(entry: Entry) = addLogged(entry.copy(id = newId(), source = EntrySource.DAY_SHEET))
+    /**
+     * A log taken back put back by its Undo (the Tasks page's Mark as not done, a log deleted from its own page): a new
+     * log with the same day, time, value and where it came from, so the day reads exactly as it did.
+     */
+    fun putBack(entry: Entry) = addLogged(entry.copy(id = newId(), source = entry.source ?: EntrySource.DAY_SHEET))
 
     private fun setMoves(habitId: String, moves: Map<Int, Int>) {
         taskMoves = if (moves.isEmpty()) taskMoves - habitId else taskMoves + (habitId to moves)
@@ -1156,6 +1209,14 @@ class HabitStore(
 }
 
 /** What Undo · Note on Today offers (Figma 1.2, 7.10): the last log made from Today, or a skip. */
+/** Something to say, with what Undo does if it can be taken back. */
+/**
+ * Something to say on the screen the person lands on after an action: its words, what Undo takes back, and
+ * [then], which runs once the message has gone unanswered (a delete waits there, Figma 2.6.1, flow 35).
+ * [behind] marks a message for whatever is behind the sheet, so the sheet it came from never shows it.
+ */
+class Said(val text: String, val behind: Boolean = false, val then: (() -> Unit)? = null, val undo: (() -> Unit)? = null)
+
 sealed class AfterLog {
     abstract val habitId: String
     abstract val day: Int

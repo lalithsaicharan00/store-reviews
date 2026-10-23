@@ -40,6 +40,27 @@ import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 
+/** How long a pause lasts. */
+enum class PauseLength { WEEK, TWO_WEEKS, DATE, OPEN }
+
+/** The day a pause of [length] from [from] comes back on ([chosen] for a date the person picked). */
+fun pauseBack(length: PauseLength, from: Int, chosen: Int): Int? = when (length) {
+    PauseLength.WEEK -> from + 7
+    PauseLength.TWO_WEEKS -> from + 14
+    PauseLength.DATE -> maxOf(chosen, from + 1)
+    PauseLength.OPEN -> null
+}
+
+/**
+ * Pause… from anywhere — a Today row's hold menu, Day details' ⋮, Habit details, a group — opens the one sheet over
+ * the screen that asked for it (Figma 2.3, Day details flow 36). The app's root watches [habits] and shows it.
+ */
+object PauseOpen {
+    var habits by mutableStateOf<List<Habit>>(emptyList())
+    fun open(list: List<Habit>) { habits = list }
+    fun close() { habits = emptyList() }
+}
+
 /**
  * The Habits page's Pause… (Figma 2106:2, 2.3–2.3.3, 2.7, 3.4): a sheet over the list, from today, for 1 week, 2 weeks,
  * until a date (tomorrow and later) or until resumed. A quit habit's sheet says first that its current run ends and is
@@ -60,7 +81,9 @@ fun PauseSheet(habits: List<Habit>, store: HabitStore, onDismiss: () -> Unit, on
             .semantics { testTag = "pause-sheet"; testTagsAsResourceId = true }) {
             Text("Pause $name", style = AppType.headlineSmall, color = c.ink)
             Spacer(Modifier.padding(top = 16.dp))
-            Text(pauseSheetWords(habits, store), style = AppType.bodyMedium, color = c.secondary)
+            val quitDays = habits.singleOrNull()?.takeIf { it.kind == HabitKind.Quit }
+                ?.let { (store.rules.quitRuns(it).first / 86_400).toInt() }
+            Text(pauseSheetWords(habits, quitDays), style = AppType.bodyMedium, color = c.secondary)
             Spacer(Modifier.padding(top = 16.dp))
             PauseOption("1 week", "Back on " + DayWords.short(today + 7), length == PauseLength.WEEK, "pause-week") { length = PauseLength.WEEK }
             PauseOption("2 weeks", "Back on " + DayWords.short(today + 14), length == PauseLength.TWO_WEEKS, "pause-two-weeks") { length = PauseLength.TWO_WEEKS }
@@ -72,12 +95,7 @@ fun PauseSheet(habits: List<Habit>, store: HabitStore, onDismiss: () -> Unit, on
                 TextButton(onDismiss, Modifier.semantics { testTag = "pause-cancel" }) { Text("Cancel", style = AppType.labelLarge, color = c.ink) }
                 Spacer(Modifier.width(8.dp))
                 InkButton("Pause", {
-                    val back = when (length) {
-                        PauseLength.WEEK -> today + 7
-                        PauseLength.TWO_WEEKS -> today + 14
-                        PauseLength.DATE -> chosen ?: (today + 7)
-                        PauseLength.OPEN -> null
-                    }
+                    val back = pauseBack(length, today, chosen ?: (today + 7))
                     for (h in habits) store.pause(h, today, back?.let { it - 1 })
                     onPaused(back)
                 }, Modifier.semantics { testTag = "confirm-pause" }, height = 40.dp, textStyle = AppType.labelLarge)
@@ -104,11 +122,11 @@ private fun PauseOption(title: String, line: String, selected: Boolean, tag: Str
 }
 
 /** What pausing does, said before it's tapped (Figma 2.3, 2.7, 3.4). */
-fun pauseSheetWords(habits: List<Habit>, store: HabitStore): String {
+fun pauseSheetWords(habits: List<Habit>, quitDays: Int? = null): String {
     if (habits.size == 1) {
         val h = habits[0]
         if (h.kind == HabitKind.Quit) {
-            val days = (store.rules.quitRuns(h).first / 86_400).toInt()
+            val days = quitDays ?: 0
             val run = if (days >= 1) "your current run of $days ${if (days == 1) "day" else "days"}" else "your current run"
             return "Pausing ends $run. It stays in your history, and a new run starts when you resume. While it's paused, ${h.name} is off Today."
         }

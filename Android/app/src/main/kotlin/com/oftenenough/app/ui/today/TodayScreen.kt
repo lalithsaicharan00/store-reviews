@@ -145,6 +145,8 @@ private fun rememberNow(store: HabitStore): Long {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: TodayActions, snackbar: SnackbarHostState, kept: TodayLayout? = null) {
+    // What Day details did before it closed is said here, where the person can see the result (flows 30, 31, 34-36).
+    com.oftenenough.app.ui.components.SaidHere(store, snackbar, behind = true)
     val c = appColors
     // A milestone's pop-up, asked for from its band or its bar's See (never counted against the day's limits).
     var popup by remember { mutableStateOf<MilestoneShown?>(null) }
@@ -204,7 +206,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
         if (store.clock() - moved.at > 15_000) return@LaunchedEffect
         val where = if (moved.to == today + 1) "tomorrow" else DayWords.short(moved.to)
         scope.launch {
-            val result = snackbar.showSnackbar("${habit.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+            val result = snackbar.showSnackbar("Moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
             if (result == SnackbarResult.ActionPerformed) moved.undo()
         }
     }

@@ -88,6 +88,13 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A48 | **A cut-down habit’s milestone says “within limit”, never “within max”** (23 Oct 2026): "30 days within limit", "10 days within limit in total", and Day details’ "Limit 2 cups · within limit". It goes with the row’s own words, which no longer say "max" either ("1 of 2 cups · 1 left", "Limit reached"), and with the milestone notification, which already said "within the limit" (A44). Replaces A23’s "within max" everywhere it was used. The iPhone follows | "for coffee, 30 days within max, that row … is not good. Instead, we can say 30 days within limit … update these in the designs as well as update here as well, so that everything is consistent" |
 | A49 | **The streak 🔥 grows with the phone’s text size** (23 Oct 2026). It was drawn in a fixed 18 dp box at a fixed 12 sp, so at 200 % text the flame was clipped to a sliver. It is now a text of its own in the label’s style, so it grows with every other word on the row (U36: everything in sp, no fixed heights) | "emojis should be fire emoji. Right now they are not taking up well. Emojis are getting cut off, the fire emoji for streaks, are getting cut off" |
 | A46 | **Google Drive is for whoever connects it: no account, no free-or-Plus about it** (22 Oct 2026). There are no accounts anywhere (D16), and nothing about backing up depends on Plus: a person connects a Google account, and the app backs up to that Drive as it goes. So Backup & Sync says **Backed up** and **Back up now** for everyone (never "Synced"/"Sync now" for Plus alone), and the **Devices** list waits for the second device, which this release doesn't have (A24). The storage stays the sync design (A39): one `base` file and one per year, each a version chain, so a later device syncs through the same files. Plus still comes from Google Play alone, and a backup's Plus flag unlocks nothing (D16) | "there is no accounts first thing … so there is nothing like free users and paid users, whoever connects the next Google Drive, they will use it"; "we only have one device, but still use it like a syncing, because in future we might release it for other devices" |
+| A50 | **Day details counts what the goal is judged over, not always the day** (23 Oct 2026, the day-details flows). A day goal keeps **This day**, **Today's logs** and today's count; a week or month goal says **This week** / **This month**, counts the period ("140 of 300 this week", "$250 of $500", "1 h 40 of 3 h"), lists the period's logs (**This week's logs**, **This month's checks**) with each log's day beside it (a week: "Mon, 6:50 PM"; a month: "Mon, 12 Oct"; today always "Today, 2:05 PM"), and its "All N logs this week" says the period too. What is left is said the same way everywhere: **"160 to go"**, **"1 to go"**, **"Goal reached"** | the Figma frames for flows 19–23 |
+| A51 | **Each check of a counted habit is a record that opens** (23 Oct 2026, flow 18). A check row in Day details opens a **Log** with the habit, the date and the time and nothing to type (a check has no amount), whose Edit changes its time and whose Delete asks "Delete this check?" — "The 11:30 AM check will be removed from today. Your other checks stay." — and says "Check deleted · Undo" afterwards. Replaces the per-row Undo of the old U19 | the Figma frames for flow 18 |
+| A52 | **Anything taken away from Day details says so where the person lands, with Undo** (23 Oct 2026, flows 11, 12, 26, 30, 31, 34–36, 39). A log, check, slip or note deleted on its own page: the page leaves first (U27), then the record goes, and what is left behind says "Log deleted · Undo" (and "Log restored" when Undo is tapped). Archive, Delete, Pause, Resume and a task's move close the sheet and say it on Today — "Water archived", "Water deleted", "Water paused until Fri, 30 Oct", "Water resumed", "Moved to tomorrow" — each with Undo. **A habit deleted here really goes only once its Undo has gone**: it is archived at once (off Today, everything kept) and deleted when the message closes unanswered, so Undo always brings it back whole. Deleting asks with **Cancel** and **Delete** only (D9) and the body points at Archive in the same menu | the Figma frames for those flows |
+| A53 | **Past an hour, minutes carry no unit: "1 h 40", never "1 h 40 min"** (23 Oct 2026). Under an hour stays "40 min"; a timer's log keeps its seconds ("12 min 10 s"). It is one shared formatter, so Today's rows, Day details, the habit page, the widgets and Progress all read the same | every time in the Figma designs |
+| A54 | **While a timer runs, the day's count is the clock** (23 Oct 2026, flows 13, 23, 28). Day details shows the live time as its big number — a goal reads as the goal does ("1 h 52 of 3 h") with **Running** under it; a limit counts up with its seconds ("42:10 today") and keeps saying where it stands ("Limit 30 min · Over the limit") — and **Start timer becomes Pause**, which saves the time as one log. Only that number ticks (S3) | the Figma frames for flows 13, 23 and 28 |
+| A55 | **One Pause sheet, opened from everywhere** (23 Oct 2026, flow 36). A Today row's hold menu, Day details' ⋮, Habit details and a group all open the same sheet over the screen that asked for it: "Pause Water", the sentence about what pausing does, 1 week · 2 weeks · Until a date… · Until I resume it with their dates, Cancel · Pause. The full-screen Pause page it replaces is gone, and Day details closes as the sheet opens, so the person sees the habit leave Today | the Figma frames for flow 36 |
+| A56 | **A log can be moved to another day from its own page** (23 Oct 2026, flow 10). Edit log's Date opens the date picker (today and earlier); before saving the footer says what will happen — "Moves this log to yesterday. Today goes down by 2 glasses." — and Save moves it in one step, keeping its ID, and says "Moved to yesterday". The log's footer then carries what changed in this session ("Changed at 2:07 PM.", "Moved from today at 2:08 PM."); a record keeps no changed-at of its own, so that line is this session's only | the Figma frames for flows 8 and 10 |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
@@ -207,6 +214,34 @@ screens 360 × 800, 560 apart; short arrow labels (the tap) and only a few small
 own:** it starts on the screen people start on (the Splash, or Today) with the tap that enters it, even if screens
 repeat in other flows, and covers errors and what happens after. Keep related flows next to each other. Light mode
 only. Follow native Android and Material 3 Expressive, never an old rule or the iPhone design.
+
+### Day details, built from the page's 44 flows (23 October 2026)
+
+Every flow on the Figma page **day details** (`169:1270`) was walked on the emulator, in light and dark and at 200 %
+text. What changed in the app:
+
+- **The card and its words** (A50): "This day" / "This week" / "This month"; the count split so the quantity is big and
+  what it is of sits beside it ("1 h 40" + "of 3 h", "$250" + "of $500", "42" + "min today"); "N to go", "Goal reached",
+  "Limit 2 cups · 1 cup left", "Limit reached", "Over the limit"; "Done" with "Done at 2:05 PM" under it; "Not done
+  yet" / "Done this month" for a once-a-period goal; "Skipped · Your streak stays safe."; "Paused · Back on Fri,
+  30 Oct. Paused days don't count against your streak."
+- **The logs** (A50): the period's own list and title, each log's day beside its time, "All 5 logs this week".
+- **Records** (A51, A52, A56): a check opens its Log; Edit can move a log to another day; delete leaves the page first
+  and says so with Undo, on Day details or on All logs, whichever it came back to.
+- **The ⋮ menu** (A52): View habit (the eye), Edit habit, Pause…, Archive, **Delete** (red, no "…"); Archive and
+  Delete say so on Today with Undo; the delete question has two buttons and points at Archive.
+- **Tasks**: "Task · Today" / "Task · Tomorrow"; Reschedule's **Do tomorrow** carries its date; **Another day…**
+  opens the picker with nothing chosen, headed "Select a day", confirmed with **OK**; moving says "Moved to tomorrow".
+- **Timers** (A54) and **the Pause sheet** (A55).
+- **Large text** (flow 44): the day's buttons stack full width instead of cutting their words short; the habit's name
+  is one line with ….
+
+**A bug found and fixed:** deleting a log left a blank screen. The page popped twice — once from the delete, once from
+the "this record is gone" effect — which took Day details and Today with it. It leaves once now.
+
+**Known differences from Figma, deliberate:** a log made in another time zone keeps its own row ("Recorded in London")
+instead of saying both times in the footer; "Changed at…" on a log's footer lasts this session only (a record keeps
+no changed-at, and adding one would change the database, the sync codec and the golden answers for one sentence).
 
 ## Results: Google Drive sync, stages 1–2 (11 October 2026)
 

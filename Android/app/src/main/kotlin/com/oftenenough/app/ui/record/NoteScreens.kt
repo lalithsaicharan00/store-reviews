@@ -154,6 +154,7 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
             if (leaving) return@BottomAction
             if (adding) leaving = true
             save(text)
+            if (!adding) store.said = com.oftenenough.app.data.Said("Note saved")
             if (adding) onDone() else editing = false
         } else DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
     }
@@ -164,7 +165,15 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
     // Cancel and Delete, nothing else, and Delete in red (D9); the body says what stays (Today flow 28).
     if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this note?") },
         text = { Text("Your logs for this day stay as they are.") },
-        confirmButton = { TextButton({ confirmDelete = false; save(""); onDone() }, Modifier.semantics { testTag = "note-delete-confirm" }) { Text("Delete", color = c.error) } },
+        confirmButton = {
+            TextButton({
+                confirmDelete = false
+                val gone = saved ?: ""
+                save("")
+                onDone()
+                store.said = com.oftenenough.app.data.Said("Note deleted") { save(gone) }
+            }, Modifier.semantics { testTag = "note-delete-confirm" }) { Text("Delete", color = c.error) }
+        },
         dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } })
     if (pickDay) {
         val first = habit?.let { store.rules.startDay(it) } ?: Int.MIN_VALUE

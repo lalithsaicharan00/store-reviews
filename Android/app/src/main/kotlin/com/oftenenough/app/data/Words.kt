@@ -47,7 +47,8 @@ object Format {
         val h = total / 60
         val m = total % 60
         if (h == 0) return "$m min"
-        return if (m == 0) "$h h" else "$h h $m min"
+        // Past an hour the minutes need no unit of their own: "1 h 40", as every design draws it (Figma 16–18).
+        return if (m == 0) "$h h" else "$h h $m"
     }
 
     /** A running timer's clock: "0:07", "7:42", "1:07:42". Minutes in, whole seconds out. */

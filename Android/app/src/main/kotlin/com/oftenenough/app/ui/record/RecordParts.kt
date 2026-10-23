@@ -192,7 +192,8 @@ fun DateTimeRows(
     var pickTime by remember { mutableStateOf(false) }
     val bottom = if (last) 24.dp else 4.dp
     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        DatePiece("Date", recordDate(day, today, year = editableDay), editableDay,
+        // The year is always there, read or not: a record is dated in full (Figma 1.8, flow 7).
+        DatePiece("Date", recordDate(day, today, year = true), editableDay,
             RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = 4.dp, bottomStart = bottom), "record-date", Modifier.weight(1f), grow = true) { pickDay = true }
         DatePiece(timeTitle, timeText, editableTime,
             RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = bottom, bottomStart = 4.dp), "record-time", Modifier) { pickTime = true }
