@@ -6,6 +6,7 @@ import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.click
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -14,6 +15,7 @@ import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
@@ -119,9 +121,15 @@ class HabitDetailsTest {
         tapTag("habit-milestones-see-all")
         waitFor(hasTestTag("all-milestones"), "All milestones")
         waitFor(hasText("Floss · ", substring = true), "the habit and how many it reached")
-        for (track in listOf("In a row", "Times in total", "Anniversaries")) waitFor(hasText(track), "the track $track")
+        // At the top: In a row, with its next and the medals of the ones reached.
         waitFor(hasTestTag("habit-milestone-next-inARow"), "the next in a row")
         waitFor(hasTestTag("milestone-reached"), "a reached milestone with its medal")
+        // Then every track, scrolled to in turn: the page is a lazy list, so a heading below the fold isn't composed
+        // until it is reached (T22).
+        for (track in listOf("In a row", "Times in total", "Anniversaries")) {
+            compose.onNode(hasTestTag("all-milestones-list")).performScrollToNode(hasText(track))
+            waitFor(hasText(track), "the track $track")
+        }
         tapTag("milestones-back")
         waitFor(hasTestTag("habit-details"), "back on the page")
     }
@@ -240,9 +248,12 @@ class HabitDetailsTest {
         waitFor(hasTestTag("day-details"), "the first day of the week")
         val before = store.entries(habit("Water").id, first).size
         tapTag("day-add-step")
+        // The snackbar says what was added and to which day, and goes after about four seconds — so its Undo is
+        // pressed through its own click action as soon as it is there, never found again after another wait (T22).
         waitFor(hasText("Added 1 glass to", substring = true), "what was added, and to which day")
         assertEquals(before + 1, store.entries(habit("Water").id, first).size)
-        tap(hasText("Undo"), "Undo")
+        compose.onAllNodes(hasText("Undo") and hasClickAction())[0]
+            .performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick)
         compose.waitUntil(5_000) { store.entries(habit("Water").id, first).size == before }
     }
 

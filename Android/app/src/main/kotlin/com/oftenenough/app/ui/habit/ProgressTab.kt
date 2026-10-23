@@ -460,7 +460,8 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
             navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "milestones-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, titleContentColor = c.ink, navigationIconContentColor = c.ink),
         )
-        LazyColumn(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp)) {
+        // The list carries its own tag: a test scrolls this, not the page around it (T22).
+        LazyColumn(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp).semantics { testTag = "all-milestones-list" }) {
             item(key = "summary") {
                 Text("$habitName · ${milestones.reached.size} reached", Modifier.padding(start = 16.dp, top = 8.dp, bottom = 24.dp),
                     style = AppType.bodyMedium, color = c.secondary)
