@@ -155,7 +155,7 @@ the user says how.
   Skip this time; No date (Do today, Pick a day); done on Today and the day ending; Completed tasks (Mark as not
   done, Delete all completed); Archived tasks; search; + a new task; a task's details; empty states and 200%. Habit
   details and Task details are the real screens from "details pages" (23 Oct), the habit form from "create new"; the
-  task form is a labelled stand-in until its page is drawn.
+  task form is the real one from "create new" (24 Oct).
 - **Page "details pages"** (`298:2`): Habit details and Task details, rows of flows from y 0. In order: open from
   Habits & Tasks (Progress top, scrolled, the whole page); a description; ⋮ (Pause…, Delete); Streaks; Milestones (All
   milestones, How milestones work, a reached one's pop-up again); What the squares mean; Month (an earlier month, a
@@ -163,13 +163,15 @@ the user says how.
   notes; Go to date; Add; a note for any day); Edit habit with Started moved earlier; an archived habit; after a type
   change; a new habit and one made today; a quit habit's Progress; 200% and loading; Task details (one-time,
   repeating).
-- **Page "create new"** (`381:2`): the habit form, 21 rows of flows from y 0 (A64). A new habit: check it off (Today + →
+- **Page "create new"** (`381:2`): the habit form and the task form, rows of flows from y 0 (A64). A new habit: check it off (Today + →
   What do you want to do? → How do you want to track it? → the form → Time of day → Add); leaving it (A65);
   icon and colour; How often (several a day and a number of times; days of the week and every few; on a date); Time of
   day (several, and a new one); Reminders (allowed, refused, on time on some phones); Starts and Ends; track an amount
   (How much, Unit, what + adds); time it (How long); a checklist (Steps); quit (Started, At); cut down (Limit: Amount or Time, A67; How
   often for a limit); a sixth habit on the free plan (Plus, or Make room); Edit habit (a goal from today, Discard your
-  changes?, the name cleared: Save waits, A65; no Type row, A68); 200%.
+  changes?, the name cleared: Save waits, A65; no Type row, A68). **The task form** (24 Oct): a new task for today; a
+  task's date (menu, Android's date picker, No date); a task's time; a repeating task (How often for a task, A while
+  after it's done); leaving it; Edit task. Then 200%.
 
 **Onboarding, as decided 21 Oct.** No welcome or intro pages and no first-habit step: **Splash → Today, "No habits
 yet"**, with **New habit** and **Restore from a backup**. Restore offers **Google Drive** (Google's account chooser →
@@ -288,6 +290,15 @@ A-numbers; the user's word changes any of them):
 - **Task details:** no tabs, only its days. One-time: a Planned card (it's ticked on Today, U38), "Nothing done yet",
   Add note; done: the day with its time and note. Repeating: every time it was done, newest first, by year, the next
   time under the name. ⋮ is the task's five actions.
+
+**The task form, as drawn 24 Oct** (from the app's code, `HabitForm.kt` `TaskRows`, and the old Design file's 4 · Task; the same rules as the habit form: text styles, no preview, no Group, Add quiet until there's a name and nothing red (A65), no Type row (A68); the agent's choices while drawing, not yet reviewed, so not A-numbers):
+- **Start:** + → What do you want to do? → Add a task opens New task straight away (no type to pick).
+- **The form:** Name, Description (optional), Icon | Colour (a task starts with a blue calendar); **Repeat** (Never), **Date** (Today · Fri, 23 Oct), **Time** (a switch, off), with one line under them: "If it isn't done, it moves to today until it is."; Time of day, Reminders. A one-time task has no Starts or Ends.
+- **Date:** a menu under the row (Today, Tomorrow · day, Pick a date…, No date); Pick a date… is Android's date picker, today and later only. **No date** drops the Time row and says it stays on Tasks, under No date, never on Today (U38).
+- **Time:** turning it on opens Android's time picker; it stays off unless OK.
+- **Repeat:** a menu, Never or On a schedule. On a schedule drops Date and adds How often, Starts and Ends; the line says "It comes back on the days you pick." How often for a task has the habit's choices without several a day or a number of times, plus **A while after it's done**: one block with Days · Weeks · Months and Again after [2] (counted from the day it's ticked).
+- **Leaving:** nothing typed, ← closes it; anything typed asks Discard this task? (Keep editing | Discard).
+- **Edit task:** from a task's ⋮; the same form filled in, Save; no name keeps Save quiet; leaving with changes asks Discard your changes?. Habits & Tasks' four task-form stand-ins are now this form.
 
 **The habit form, as drawn 23 Oct** (A64; from the old Design file's section, the rest the agent's choices while
 drawing, not yet reviewed by the user, so not A-numbers):
