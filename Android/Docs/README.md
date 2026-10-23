@@ -313,7 +313,9 @@ drawing, not yet reviewed by the user, so not A-numbers):
 
 **How flows are drawn** (the user drew the first one): one row per flow, left to right with arrows; a plain #333 bar
 140 high above each row with the flow's name in white Google Sans Flex Medium 56; a small yellow "Who" note under it;
-screens 360 × 800, 560 apart; short arrow labels (the tap) and only a few small notes. **Every flow is complete on its
+screens 360 × 800, 560 apart; short arrow labels (the tap) and only a few small notes. **No tap markers on screens** (the user, 23 Oct
+2026): nothing is drawn over or tinted to show what was tapped; the arrow's label names the tap, and Android draws its
+own press ripple. **Every flow is complete on its
 own:** it starts on the screen people start on (the Splash, or Today) with the tap that enters it, even if screens
 repeat in other flows, and covers errors and what happens after. Keep related flows next to each other. Light mode
 only. Follow native Android and Material 3 Expressive, never an old rule or the iPhone design.
