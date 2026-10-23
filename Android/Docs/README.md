@@ -134,6 +134,14 @@ the user says how.
   a week goal and a task; partly done, all done on Start, another day; ✕ with a timer running; the timer on its own
   (Pause, Resume, the goal; a limit and Log manually); the Live Update outside the app; milestones (the ribbon; a
   big one's pop-up at the end, A53); long names, a description and large text.
+- **Page "habits & tasks"** (`269:148`): 35 rows of flows from y 0 (A54, A55). Habits: open it from the menu; Week,
+  Month and Year; an earlier week and back; scrolling; a card to Habit details; a square to Day details; a card's ⋮
+  (Edit habit, Pause…, Resume, Archive, Delete); Archived habits (Restore, Delete, the empty page); search (a match,
+  no match → New habit); + a new habit; every kind of card; empty and first states; a long name and 200%. Tasks:
+  One-time; Repeating; a task's ⋮ (Move to another day with the date picker, Edit task, Duplicate, Archive, Delete);
+  Skip this time; No date (Do today, Pick a day); done on Today and the day ending; Completed tasks (Mark as not
+  done, Delete all completed); Archived tasks; search; + a new task; a task's details; empty states and 200%. Habit
+  details, Task details and the habit and task forms are labelled stand-ins until their pages are drawn.
 
 **Onboarding, as decided 21 Oct.** No welcome or intro pages and no first-habit step: **Splash → Today, "No habits
 yet"**, with **New habit** and **Restore from a backup**. Restore offers **Google Drive** (Google's account chooser →
@@ -200,6 +208,26 @@ the user, so not A-numbers; the user's word changes any of them):
   the user found two lines "very weird"); a tap on it opens a sheet with the whole name and the whole description
   (Close, a swipe down or a tap outside goes back). At 200% the cookie shrinks to 96, the name and the description
   stay one line each, the chip and count grow, and the buttons keep their height.
+
+**Habits & Tasks, as drawn 23 Oct** (A54, A55; the rest are the agent's choices while drawing, not yet reviewed by
+the user, so not A-numbers; the user's word changes any of them):
+- **Top:** ☰ · Habits & Tasks · search · + (no ⋮); tabs **Habits · Tasks**. Search and + act on the tab you're on.
+- **Habits:** Week · Month · Year buttons, then the period on its own row (name left, ‹ › right; a This week / This
+  month / This year chip when on an earlier one; ‹ off on the first, › off on the latest). One card per habit by
+  Today's times of day; Paused, then the Archived row, then What the squares mean (folded) at the end. Scrolling keeps
+  the top bar, the tabs and the period row on the scrolled surface colour.
+- **A card:** tap → Habit details; a square in Week or Month → Day details for that day (Year's squares are too small,
+  so the card opens instead); ⋮ → Edit habit, Pause… (Resume when paused), Archive, Delete. Archive and Restore ask
+  nothing and offer Undo; Delete asks with Cancel | Delete (red). A new habit goes plain at the end of its time of
+  day (A47); days before a habit started are blank, never missed.
+- **Tasks:** One-time | Repeating under the tabs (U38). One-time by day (Today, Tomorrow, each day with tasks, months
+  further out), then No date, then **Completed** and **Archived** as rows (they were in the old top ⋮). Repeating by
+  how often, each with its next time. A task's ⋮: Edit task, Move to another day… (Tomorrow, Pick a day…, No date),
+  Duplicate, Archive, Delete; a repeating one has Skip this time instead of Move; one with No date has Do today and
+  Pick a day…. Tasks are ticked only on Today; done ones show struck through until the day ends, then go to
+  Completed; unfinished ones wait in Today with their planned day.
+- **Completed tasks** has a ⋮ with its one page action, Delete all completed (asks first, Undo after); each task's ⋮
+  has Mark as not done and Delete.
 
 **Milestone motion lives in the new file** (22 Oct 2026, so the old file can go): every milestone screen on the Today page carries Figma motion keyframes (select the screen, press play), rebuilt exactly from the old *Milestones on Today* section: the row (button press and fill, number roll, burst ring and 8 dots, Undo · Note fade, the band rising with its medal spinning in, words, sheen, sparkles), the bar (rise, medal pop, sparkles, sheen, 5-second line) and the pop-up (slide up, glow, medal spin and pop, ring and 12 dots, sparkles, then title, line, card and buttons). The medal is a 9-point rounded star (inner radius 0.86) with a light-to-colour gradient, a white inner ring and a soft shadow; the pop-up's has a blurred glow. A "Motion" note at the top of the milestone column gives the timings; with Remove animations on, only the end state shows.
 
