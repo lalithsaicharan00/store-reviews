@@ -95,6 +95,12 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A54 | **While a timer runs, the day's count is the clock** (23 Oct 2026, flows 13, 23, 28). Day details shows the live time as its big number — a goal reads as the goal does ("1 h 52 of 3 h") with **Running** under it; a limit counts up with its seconds ("42:10 today") and keeps saying where it stands ("Limit 30 min · Over the limit") — and **Start timer becomes Pause**, which saves the time as one log. Only that number ticks (S3) | the Figma frames for flows 13, 23 and 28 |
 | A55 | **One Pause sheet, opened from everywhere** (23 Oct 2026, flow 36). A Today row's hold menu, Day details' ⋮, Habit details and a group all open the same sheet over the screen that asked for it: "Pause Water", the sentence about what pausing does, 1 week · 2 weeks · Until a date… · Until I resume it with their dates, Cancel · Pause. The full-screen Pause page it replaces is gone, and Day details closes as the sheet opens, so the person sees the habit leave Today | the Figma frames for flow 36 |
 | A56 | **A log can be moved to another day from its own page** (23 Oct 2026, flow 10). Edit log's Date opens the date picker (today and earlier); before saving the footer says what will happen — "Moves this log to yesterday. Today goes down by 2 glasses." — and Save moves it in one step, keeping its ID, and says "Moved to yesterday". The log's footer then carries what changed in this session ("Changed at 2:07 PM.", "Moved from today at 2:08 PM."); a record keeps no changed-at of its own, so that line is this session's only | the Figma frames for flows 8 and 10 |
+| A57 | **A timer waits for Start; "Paused" belongs to a clock paused in this visit** (23 Oct 2026, the routine player's flows 4 and 21). Arriving on a time habit never starts its clock, and time logged earlier in the day is not a pause: the button says **Start**, with no status line. Only a clock the person paused since the app opened says **Paused** and offers **Resume**. The same in the player, on the timer screen and on Today's row | the Figma frames for flow 4 |
+| A58 | **The player's words follow what the button does** (23 Oct 2026). On the last habit the button says **Finish** (TalkBack still reads "Finish routine"); a check counted several times says **Add a check**, as Day details does; a day's goal reached says **Goal met** under the count and the button becomes **Next**; a week's or month's goal reached says **Goal met this week** / **this month**. A single check or a task says "Done" in place of a count, with no extra line | the Figma frames for flows 2, 11, 13 and 14 |
+| A59 | **"3 times a week" counts the week; "3 days a week" counts days** (23 Oct 2026, flow 14). A habit counted N times a week or month stays in the routine, with Add a check, every day until that goal is met — one check today does not finish it. A habit planned N *days* a week is done for today once today is checked, and says **Done for today**. The routine's bar, Your routine and the end page count them the same way | the Figma frames for flow 14 |
+| A60 | **The end page names what is left** (23 Oct 2026, flow 6): "2 left for later: Stretch and Skincare. Your progress is saved."; with everything done, "Morning is done" and "All 3 done today." **Review routine** opens Your routine; **Return to unfinished** (tonal) goes to the first one left and **Done** (ink) closes the player | the Figma frames for flows 6 and 7 |
+| A61 | **The player says the day in the same words as everywhere else, and repeats what another screen left to say** (23 Oct 2026, flows 3 and 18). The card's chip says **Today**, **Yesterday** or the date, so it is always clear where a log goes. A note written over the player (Saved · Undo · **Add note**) comes back to the same habit and says **Note saved** there; the same message shows on Day details when a note is written or changed from it | the Figma frames for flows 3, 18, 37 and 38 |
+| A62 | **The player's card gives its room to the words at large text** (23 Oct 2026, flow 25). A habit's name is always one line, ending in …; its description is one quiet line under the name, which opens in full in a sheet when it is tapped; at 200 % the cookie shrinks from 144 to 96 so the name, the count and the buttons keep their room, and the buttons keep their height | the Figma frames for flow 25 |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
@@ -242,6 +248,28 @@ the "this record is gone" effect — which took Day details and Today with it. I
 **Known differences from Figma, deliberate:** a log made in another time zone keeps its own row ("Recorded in London")
 instead of saying both times in the footer; "Changed at…" on a log's footer lasts this session only (a record keeps
 no changed-at, and adding one would change the database, the sync codec and the golden answers for one sentence).
+
+### The routine player, built from the page's 25 flows (23 October 2026)
+
+Every flow on the Figma page **routine player** (`234:2`) was walked on the emulator, at 100 % and 200 % text. The
+player was already close to it, so this was a pass of corrections:
+
+- **A timer waits for Start** (A57), and "Paused · Resume" appear only after a pause in this visit.
+- **Finish**, **Add a check**, **Goal met** and **Goal met this week** (A58).
+- **"3 times a week"** keeps its place in the routine until the week is met (A59).
+- **The end page names what is left** (A60).
+- **The chip says Today / Yesterday / the date**, and **Note saved** is said in the player (A61).
+- **One-line name, a description that opens in full, a 96 cookie at 200 %** (A62).
+
+Checked and already right: the top bar (✕ · "Morning ▾" · ⋮ with Go to first unfinished, Change order, End routine);
+the thin bar with "1 of 3"; the hero card with its cookie, the Today chip, the count and the wave; Saved · Undo · Add
+note; a checklist's steps in the card with no message; Day details over the player and skipping there; Your routine
+with jump and Edit; the message when a routine opens part-done; the timer on its own (Log manually | Pause); Android's
+Live Update with Pause and Resume, its goal and limit words, and its tap opening the routine at that habit; the
+milestone ribbon on the card and the landmark pop-up over the end page with "and N more in this routine".
+
+The tablet test went with this change: the app is phones only (D16), so there is nothing to test. The wide-screen
+layout code stays where it is; it changes nothing on a phone.
 
 ## Results: Google Drive sync, stages 1–2 (11 October 2026)
 

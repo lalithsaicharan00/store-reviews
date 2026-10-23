@@ -154,7 +154,8 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
             if (leaving) return@BottomAction
             if (adding) leaving = true
             save(text)
-            if (!adding) store.said = com.oftenenough.app.data.Said("Note saved")
+            // Said wherever the person lands: Day details, or the player they wrote it from (flows 3, 37, 38).
+            store.said = com.oftenenough.app.data.Said("Note saved")
             if (adding) onDone() else editing = false
         } else DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
     }

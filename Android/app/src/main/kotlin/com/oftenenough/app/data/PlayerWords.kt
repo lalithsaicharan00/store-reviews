@@ -44,6 +44,8 @@ object PlayerWords {
     const val DONE_FOR_TODAY = "Done for today"
     const val PAUSED = "Paused"
     const val GOAL_MET = "Goal met"
+    /** A week or month goal met: "Goal met this week" (flow 14). */
+    fun goalMet(f: Frequency): String = GOAL_MET + period(f)
     const val OVER_LIMIT = "Over the limit"
     /** A single check or a task, in place of "0 of 1" (Figma 1, 2, 2.5, 2.6). */
     const val NOT_DONE_YET = "Not done yet"
@@ -102,7 +104,8 @@ object PlayerWords {
      */
     fun mainAction(habit: Habit, goal: Double, done: Boolean, skipped: Boolean, isLast: Boolean, running: Boolean, started: Boolean,
                    today: Boolean = true): MainAction {
-        val onward = if (isLast) MainAction(PlayerAction.FINISH, "Finish routine", "Finish routine")
+        // The last habit's button says Finish; TalkBack still reads the whole thing (flows 6 and 15).
+        val onward = if (isLast) MainAction(PlayerAction.FINISH, "Finish", "Finish routine")
             else MainAction(PlayerAction.NEXT, "Next", "Next habit")
         if (skipped) return onward
         val unit = habit.unit
@@ -130,7 +133,8 @@ object PlayerWords {
         if (done) return onward
         return when (habit.kind) {
             HabitKind.Check, HabitKind.Task ->
-                if (habit.kind == HabitKind.Check && goal > 1) MainAction(PlayerAction.LOG_ONE, "Log one", "Mark ${habit.name} done")
+                // A check counted several times says what it does, as Day details does (flow 13).
+                if (habit.kind == HabitKind.Check && goal > 1) MainAction(PlayerAction.LOG_ONE, "Add a check", "Add a check to ${habit.name}")
                 else MainAction(PlayerAction.MARK_DONE, "Mark done", "Mark ${habit.name} done")
             is HabitKind.Amount -> amount()
             HabitKind.Duration -> timer()
@@ -149,9 +153,12 @@ object PlayerWords {
     /** The end page's title: "Anytime is done" (Figma 1.3, 8.2), or "End of the routine" with some left (8.1, 8.3). */
     fun endTitle(remaining: Int, name: String): String = if (remaining == 0) "$name is done" else "End of the routine"
 
-    /** "All 12 done today." or "2 left for later. Your progress is saved." */
-    fun endText(remaining: Int, count: Int): String =
-        if (remaining == 0) "All $count done today." else "$remaining left for later. Your progress is saved."
+    /** "All 12 done today.", or what is left, by name: "2 left for later: Stretch and Skincare. Your progress is saved." */
+    fun endText(remaining: Int, count: Int, names: List<String> = emptyList()): String {
+        if (remaining == 0) return "All $count done today."
+        val which = if (names.isEmpty()) "" else ": " + HabitCopy.join(names)
+        return "$remaining left for later$which. Your progress is saved."
+    }
 
     /** "1 skipped for today. Skipped days don't count against you." (never shame, U3), or null with none. */
     fun skippedLine(skipped: Int): String? =

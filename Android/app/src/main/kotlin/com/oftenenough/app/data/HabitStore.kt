@@ -854,11 +854,18 @@ class HabitStore(
 
     // ------------------------------------------------------------------ Timers
 
+    /**
+     * Timers paused since the app opened. A habit with time logged earlier in the day still waits for **Start**;
+     * only a clock paused in this visit offers **Resume** and says "Paused" (the player's flows 4 and 21).
+     */
+    val justPaused = androidx.compose.runtime.mutableStateListOf<String>()
+
     /** Start the timer, or stop it and log the minutes. A running timer is saved, so it survives the app being closed. */
     fun toggleTimer(habit: Habit, slot: String? = null) {
         val now = clock()
         if (timers.containsKey(habit.id)) return stopTimer(habit, today(now), now)
         milestones.timerStarted(habit)
+        justPaused.remove(habit.id)
         timers = timers + (habit.id to now)
         // Undo · Note stay on the last log: starting a timer is not a log, and only the next log, a routine or Undo
         // takes them away (A33, 21–22 Oct 2026). The running row hides them while its clock is on screen.
@@ -879,6 +886,7 @@ class HabitStore(
             slot = timerSlots[habit.id], source = source,
         ) else null
         timers = timers - habit.id
+        if (habit.id !in justPaused) justPaused.add(habit.id)
         timerSlots = timerSlots - habit.id
         settingRows.remove(Keys.TIMER + habit.id)
         rulesChanged()

@@ -120,6 +120,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -286,6 +287,14 @@ fun RoutinePlayer(
         onDispose { view.keepScreenOn = false }
     }
 
+    // What another screen left to say ("Note saved", after Add note over the player, flow 3) is said here, where the
+    // person came back to; nothing is left waiting for a screen that isn't open.
+    LaunchedEffect(store.said) {
+        val said = store.said ?: return@LaunchedEffect
+        if (said.behind) return@LaunchedEffect
+        store.said = null
+        session.say(said.text)
+    }
     // The save message goes after four seconds, like Android's own short snackbar, so it never sits over the card.
     val feedback = session.feedback
     LaunchedEffect(feedback?.serial) {
@@ -337,6 +346,7 @@ fun RoutinePlayer(
                         name = sectionName,
                         count = order.size,
                         remaining = covered.count { !it },
+                        left = order.filterIndexed { i, _ -> !covered[i] }.mapNotNull { store.habit(it)?.name },
                         skipped = order.count { habitId -> store.habit(habitId)?.let { session.skipped(it) } == true },
                         onReview = { queueEditing = false; showQueue = true },
                         reached = splitIds(reachedText.value).mapNotNull { hid ->
@@ -399,7 +409,11 @@ private const val START_TIMER_ON_ARRIVAL = false
 private fun routineCovered(store: HabitStore, part: String, day: Int, habit: Habit): Boolean {
     if (habit.atMost) return false
     val slot = store.placements(habit).firstOrNull { it.section == part }?.slot
-    val done = slot?.let { store.isSlotDone(habit, it, day) } ?: store.rules.isSatisfied(habit, day)
+    val ruled = store.rule(habit, day)
+    // A habit counted over a week or month stays in the routine until that goal is met (flow 14).
+    val period = ruled.kind == HabitKind.Check && !ruled.frequency.isDayBased && !ruled.frequency.isFlexible
+    val done = slot?.let { store.isSlotDone(habit, it, day) }
+        ?: if (period) store.rules.isPeriodMet(habit, day) else store.rules.isSatisfied(habit, day)
     return done || store.isSkipped(habit, day)
 }
 
@@ -476,8 +490,11 @@ private class PlayerSession(
         if (habit.atMost) return false
         slotOf(habit)?.let { return store.isSlotDone(habit, it, day) }
         val ruled = store.rule(habit, day)
-        return if (ruled.kind == HabitKind.Check && !ruled.frequency.isDayBased) store.rules.isSatisfied(habit, day)
-        else store.rules.isComplete(habit, day)
+        // "3 times a week" counts the week, so Add a check stays until the week's goal is met; "3 days a week" counts
+        // days, so one check today is done for today (flow 14).
+        return if (ruled.kind == HabitKind.Check && !ruled.frequency.isDayBased) {
+            if (ruled.frequency.isFlexible) store.rules.isSatisfied(habit, day) else store.rules.isPeriodMet(habit, day)
+        } else store.rules.isComplete(habit, day)
     }
 
     /** Done for today: what the segments and Your routine show (a week or month goal, once something is logged today). */
@@ -791,6 +808,9 @@ internal fun HeroCard(
     description: String? = null,
 ) {
     val c = appColors
+    // A description is one line here; the whole of it opens in a sheet (flow 25).
+    var showDescription by remember(habit.id) { mutableStateOf(false) }
+    if (showDescription && !description.isNullOrBlank()) DescriptionSheet(habit, description) { showDescription = false }
     val running = ruled.kind == HabitKind.Duration && day == store.today() && store.timers.containsKey(habit.id)
     // A single check or a task says Not done yet / Done in place of "0 of 1" (Figma 1, 2, 2.5, 2.6).
     val single = ruled.kind == HabitKind.Task ||
@@ -798,7 +818,11 @@ internal fun HeroCard(
     val tick = rememberTicker(running, store.clock)
     val goal = remember(ruled, rev) { store.rules.goal(ruled) }
     // Today, or the day named in full on any other ("Mon 13 Oct", Figma 1.4): the logs go to it.
-    val dayText = if (day == store.today()) "Today" else com.oftenenough.app.data.pageDayDate(day)
+    val dayText = when (day) {
+        store.today() -> "Today"
+        store.today() - 1 -> "Yesterday"
+        else -> com.oftenenough.app.data.pageDayDate(day)
+    }
     val checklist = ruled.kind == HabitKind.Checklist
     val compact = checklist && ruled.steps.size > COMPACT_STEPS
     // Just reached: the cookie pops with a burst of twelve dots as Mark done fills it (RP.1, 0.18–1.0 s of 2.4 s).
@@ -851,13 +875,16 @@ internal fun HeroCard(
                         .padding(horizontal = 24.dp, vertical = if (checklist) 16.dp else 24.dp),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
+                    // At large text the cookie gives its room to the words (flow 25: 96 at 200%).
+                    val big = LocalDensity.current.fontScale >= 1.3f
+                    HabitIcon(habit.symbol, habit.color, size = if (checklist || big) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
                     Spacer(Modifier.height(if (checklist) 12.dp else 28.dp))
-                    HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 2)
+                    HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 1)
                     if (!description.isNullOrBlank()) {
                         Spacer(Modifier.height(4.dp))
-                        Text(description, Modifier.widthIn(max = 264.dp).semantics { testTag = "player-description" },
-                            style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                        Text(description, Modifier.widthIn(max = 264.dp).clickable { showDescription = true }
+                            .semantics { testTag = "player-description" },
+                            style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                     // The chip is 32 high with a 48 target; the gaps around it are Figma's 12 and 20 less the target's 8.
                     Spacer(Modifier.height(4.dp))
@@ -881,6 +908,21 @@ internal fun HeroCard(
         }
       }
       }
+    }
+}
+
+/** The whole of a habit's description, when it is too long for the card's one line (flow 25). */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DescriptionSheet(habit: Habit, text: String, onDismiss: () -> Unit) {
+    val c = appColors
+    ModalBottomSheet(onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = c.screen) {
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 32.dp)
+            .semantics { testTag = "player-description-sheet"; testTagsAsResourceId = true }) {
+            Text(habit.name, Modifier.semantics { heading() }, style = AppType.titleLargeEmphasized, color = c.ink)
+            Spacer(Modifier.height(12.dp))
+            Text(text, style = AppType.bodyLarge, color = c.secondary)
+        }
     }
 }
 
@@ -916,15 +958,28 @@ private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore
         val dayGoal = remember(ruled, rev) { store.rules.dayGoal(ruled) }
         if (ruled.atMost && dayGoal > 0 && now > dayGoal) return PlayerStatus(Icons.Outlined.Info, PlayerWords.OVER_LIMIT, neutral = true, tag = "player-status")
         if (!ruled.atMost && dayGoal > 0 && now >= dayGoal) return PlayerStatus(Icons.Rounded.Check, PlayerWords.GOAL_MET, tag = "player-status")
-        if (today && !running && now > 0) return PlayerStatus(Icons.Rounded.Pause, PlayerWords.PAUSED, tag = "player-status")
+        // "Paused" belongs to a clock paused in this visit, not to time logged earlier in the day (flow 4).
+        if (today && !running && habit.id in store.justPaused) return PlayerStatus(Icons.Rounded.Pause, PlayerWords.PAUSED, tag = "player-status")
     }
     if (f is Frequency.Flexible && ruled.kind != HabitKind.Check && ruled.kind != HabitKind.Task) {
         val days = remember(habit, rev) { store.rules.flexibleProgress(habit, day) } ?: 0
         return PlayerStatus(Icons.Rounded.EventAvailable, "$days of ${f.n} days " + (if (f.period == GoalPeriod.MONTH) "this month" else "this week"), tag = "player-status")
     }
-    if (ruled.kind == HabitKind.Check && !f.isDayBased) {
+    // A week or month goal met says so, and the button becomes Next (flow 14).
+    if (!f.isDayBased && ruled.kind != HabitKind.Duration) {
+        val met = remember(habit, rev) { store.rules.isPeriodMet(habit, day) }
+        if (met) return PlayerStatus(Icons.Rounded.Check, PlayerWords.goalMet(f), tag = "player-status")
+    }
+    // "3 days a week": today's day is done, the week is not (flow 14).
+    if (ruled.kind == HabitKind.Check && f.isFlexible) {
         val doneToday = remember(habit, rev) { store.rules.isSatisfied(habit, day) && !store.rules.isPeriodMet(habit, day) }
         if (doneToday) return PlayerStatus(Icons.Rounded.Check, PlayerWords.DONE_FOR_TODAY, tag = "player-status")
+    }
+    // A day goal reached says so, and the button becomes Next (flows 11 and 13); a single check says "Done" instead.
+    if (f.isDayBased && !ruled.atMost && ruled.kind != HabitKind.Task && ruled.kind != HabitKind.Quit) {
+        val single = ruled.kind == HabitKind.Check && goal <= 1.0 && ruled.checkUnit == null
+        val met = remember(habit, rev) { store.rules.isDayMet(ruled, day) }
+        if (met && !single) return PlayerStatus(Icons.Rounded.Check, PlayerWords.GOAL_MET, tag = "player-status")
     }
     return null
 }
@@ -1117,7 +1172,7 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
         remember(habit, rev, timers, index, order.size, isToday) {
             val ruled = store.rule(habit, day)
             PlayerWords.mainAction(ruled, store.rules.goal(ruled), session.done(habit), session.skipped(habit), index == order.size - 1,
-                timers.containsKey(habit.id), store.rules.dayProgress(habit, day) > 0, today = isToday)
+                timers.containsKey(habit.id), habit.id in store.justPaused, today = isToday)
         }
     }
     val next = order.getOrNull(index + 1)?.let { store.habit(it) }
@@ -1253,7 +1308,7 @@ private fun FeedbackBar(f: Feedback, onUndo: () -> Unit, onNote: () -> Unit, mod
 // ---------------------------------------------------------------------------------------------- The end
 
 @Composable
-private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onReview: () -> Unit,
+private fun EndPage(name: String, count: Int, remaining: Int, left: List<String>, skipped: Int, onReview: () -> Unit,
     reached: List<Pair<Habit, com.oftenenough.app.data.MilestoneWords>> = emptyList()) {
     val c = appColors
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
@@ -1265,7 +1320,7 @@ private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onRe
                 Text(PlayerWords.endTitle(remaining, name), style = AppType.headlineMedium,
                     color = c.ink, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
                 Spacer(Modifier.height(16.dp))
-                Text(PlayerWords.endText(remaining, count), Modifier.widthIn(max = 280.dp), style = AppType.bodyLarge,
+                Text(PlayerWords.endText(remaining, count, left), Modifier.widthIn(max = 280.dp), style = AppType.bodyLarge,
                     color = c.secondary, textAlign = TextAlign.Center)
                 PlayerWords.skippedLine(skipped)?.let {
                     Spacer(Modifier.height(16.dp))

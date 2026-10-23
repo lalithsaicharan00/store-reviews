@@ -135,14 +135,16 @@ class PlayerTest {
         launch()
         start()
         goTo("Read")
-        // Arriving never starts the clock (Figma 4): Read has 12:34 from earlier, so it's paused, with Resume (4.2).
+        // Arriving never starts the clock, and time logged earlier is not a pause: it waits for Start (flow 4).
         assertTrue("Read isn't running", habit("Read").id !in store.timers)
-        waitFor(hasText("Paused"), "Paused")
-        waitFor(hasText("Resume"), "Resume")
+        waitFor(hasText("Start"), "Start")
+        if (has(hasText("Paused"))) throw AssertionError("Paused before anything ran; on screen: ${screen()}")
         tapTag("player-main")
         waitFor(hasText("Pause"), "Pause (4.1)")
         assertTrue("Read runs", habit("Read").id in store.timers)
+        // Paused here: now it says so, and offers Resume (flow 4.2).
         tapTag("player-main")
+        waitFor(hasText("Paused"), "Paused")
         waitFor(hasText("Resume"), "Resume again")
         tapTag("player-main")
         waitFor(hasText("Pause"), "Pause")
@@ -167,9 +169,13 @@ class PlayerTest {
         waitFor(hasTestTag("player-undo"), "Undo")
         waitFor(hasTestTag("player-add-note"), "Add note")
         waitFor(hasText("Next"), "Next")
-        // A check by the week, ticked today: ✓ Done for today and Next (2.4).
+        // "3 times a week" counts the week: one check today doesn't finish it, so Add a check stays (flow 14).
         goTo("Call family")
-        waitFor(hasText("Done for today"), "Done for today")
+        waitFor(hasText("of 3 this week", substring = true), "the week's count")
+        waitFor(hasText("Add a check"), "Add a check")
+        tapTag("player-main")
+        tapTag("player-main")
+        waitFor(hasText("Goal met this week"), "the week's goal met")
         waitFor(hasText("Next"), "Next")
         // A checklist: its steps in the card, and a tick says nothing (5.2).
         goTo("Tidy desk")
@@ -218,7 +224,7 @@ class PlayerTest {
         tapTag("player-more")
         tapTag("player-menu-end")
         waitFor(hasText("End of the routine"), "the end page")
-        waitFor(hasText("left for later. Your progress is saved.", substring = true), "what's left")
+        waitFor(hasText("left for later: ", substring = true), "what's left, by name")
         waitFor(hasTestTag("player-return"), "Return to unfinished")
         assertTrue("the bar at 1 of …: ${position()}", position().startsWith("1 of "))
         tapTag("player-done")
@@ -272,7 +278,7 @@ class PlayerTest {
         tapTag("day-previous")
         start()
         val yesterday = store.today() - 1
-        waitFor(hasText(com.oftenenough.app.data.pageDayDate(yesterday)), "the day on the chip")
+        waitFor(hasText("Yesterday"), "the day on the chip")
         // Water, Read, Take vitamins and Floss were done yesterday: it starts at Stretch breaks and says so.
         waitFor(hasText("4 already done. Starting at Stretch breaks."), "the message")
         assertEquals("Stretch breaks", current())

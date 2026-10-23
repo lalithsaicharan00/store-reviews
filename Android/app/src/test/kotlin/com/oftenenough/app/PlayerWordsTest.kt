@@ -64,12 +64,12 @@ class PlayerWordsTest {
         assertEquals("Mark done", action(check).label)
         assertEquals("Mark Take vitamins done", action(check).spoken)
         assertEquals("Next", action(check, done = true).label)
-        assertEquals("Finish routine", action(check, done = true, last = true).label)
+        assertEquals("Finish", action(check, done = true, last = true).label)
         assertEquals(PlayerAction.FINISH, action(check, done = true, last = true).action)
 
         val several = habit(HabitKind.Check, 3.0, name = "Stretch breaks")
         assertEquals(PlayerAction.LOG_ONE, action(several).action)
-        assertEquals("Log one", action(several).label)
+        assertEquals("Add a check", action(several).label)
 
         val water = habit(HabitKind.Amount("glasses", 1.0), 8.0)
         assertEquals("+1", action(water).label)
