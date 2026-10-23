@@ -97,6 +97,7 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A58 | **A task's Move to another day… opens the date picker at once** (23 Oct 2026), with no menu of Tomorrow, Pick a day… and No date first | "when you click move to another day, it should directly open the calendar, as simple as that, rather than opening another pop-up" |
 | A60 | **No note dots in the first version** (23 Oct 2026): a day with a note gets no dot on any square (Week, Month, Year, Habits & Tasks), and What the squares mean has no "A note that day" row. Notes show in History and Day details | "we have to remove those dots … we don't need it, at least in the first version" |
 | A61 | **Year in Pixels is cells that say what happened** (23 Oct 2026), as in the old design: each day's cell shows ✓, ✕, ↷ or ⏸ (part done is lighter, no mark); days before the habit started are blank, no outline | "it should be cells, and within that cells we need to have just what happened. We don't need those dots" |
+| A64 | **The habit form has no preview and no Group** (23 Oct 2026): no "Preview" card or "Enter a habit name to see the preview" line; groups are gone. **How often has no group titles** ("Daily", "A number of times"…): the chosen row itself says what it means and changes as it's set ("3 times a week", "Every Monday, Wednesday and Friday", "Every other day", "On the 1st and 15th of every month", "Every year on October 23"). **Time of day has no line under it** repeating the choice; How much, How long and Limit don't repeat How often above the number | "remove the preview … it's adding a lot of clutter and it's not adding that much value"; "we need to keep this in the how often page … remove the label that we are showing at the top … Even from the time of the day, let's remove that label" |
 | A63 | **Streaks wear the 🔥 emoji, never a fire icon** (23 Oct 2026), everywhere a streak or run shows: the Current streak / Current run tile, See all streaks, every longest run, Habits & Tasks and Today. Emoji are the phone's own (Noto on Android) | "wherever we use streaks, don't use fire icon, use fire emoji. Update this rule everywhere" |
 | A62 | **A state card has one structure everywhere** (23 Oct 2026, the user's second word the same day): a white card, more padding; its icon top left with the title and a line beside it; the action alone at the **bottom right**, a **grey (tonal) button**, never a black primary one. The Paused card (Resume), the Archived card (Restore), the type-change cards (Open earlier / Open the new …) and the Planned card on Task details (no action), on Habit details, Task details and Habits & Tasks. Today's text buttons are a different thing | "This should be actually white card"; then "let's have a gray button there and also add some spacing … CTA should be always at the right, bottom right … Have the same structure everywhere, and don't use primary CTA" |
 | A59 | **Habits & Tasks has one search for the whole page** (23 Oct 2026): from either tab it finds habits and tasks, results grouped **Habits** then **Tasks** (a group shows only when something in it matches; archived and completed ones say so); nothing matching offers a generic **+ New habit** and **+ New task** (the typed word becomes the name; repeating it on the buttons was redundant, the user, 23 Oct) | "when the user searches, it search everything like tasks and habits, both"; "Yes, make search one page-wide search across habits and tasks, results grouped Habits then Tasks" |
@@ -149,8 +150,8 @@ the user says how.
   One-time; Repeating; a task's ⋮ (Move to another day with the date picker, Edit task, Duplicate, Archive, Delete);
   Skip this time; No date (Do today, Pick a day); done on Today and the day ending; Completed tasks (Mark as not
   done, Delete all completed); Archived tasks; search; + a new task; a task's details; empty states and 200%. Habit
-  details and Task details are the real screens from "details pages" (23 Oct); the habit and task forms are labelled
-  stand-ins until their pages are drawn.
+  details and Task details are the real screens from "details pages" (23 Oct), the habit form from "create new"; the
+  task form is a labelled stand-in until its page is drawn.
 - **Page "details pages"** (`298:2`): Habit details and Task details, rows of flows from y 0. In order: open from
   Habits & Tasks (Progress top, scrolled, the whole page); a description; ⋮ (Pause…, Delete); Streaks; Milestones (All
   milestones, How milestones work, a reached one's pop-up again); What the squares mean; Month (an earlier month, a
@@ -158,6 +159,13 @@ the user says how.
   notes; Go to date; Add; a note for any day); Edit habit with Started moved earlier; an archived habit; after a type
   change; a new habit and one made today; a quit habit's Progress; 200% and loading; Task details (one-time,
   repeating).
+- **Page "create new"** (`381:2`): the habit form, 21 rows of flows from y 0 (A64). A new habit: check it off (Today + →
+  What do you want to do? → How do you want to track it? → the form → Time of day → Add); no name yet, and leaving;
+  icon and colour; How often (several a day and a number of times; days of the week and every few; on a date); Time of
+  day (several, and a new one); Reminders (allowed, refused, on time on some phones); Starts and Ends; track an amount
+  (How much, Unit, what + adds); time it (How long); a checklist (Steps); quit (Started, At); cut down (Limit, How
+  often for a limit); a sixth habit on the free plan (Plus, or Make room); Edit habit (a goal from today, Discard your
+  changes?); changing the type (Start over); a quit habit's type; 200%.
 
 **Onboarding, as decided 21 Oct.** No welcome or intro pages and no first-habit step: **Splash → Today, "No habits
 yet"**, with **New habit** and **Restore from a backup**. Restore offers **Google Drive** (Google's account chooser →
@@ -278,6 +286,28 @@ A-numbers; the user's word changes any of them):
 - **Task details:** no tabs, only its days. One-time: a Planned card (it's ticked on Today, U38), "Nothing done yet",
   Add note; done: the day with its time and note. Repeating: every time it was done, newest first, by year, the next
   time under the name. ⋮ is the task's five actions.
+
+**The habit form, as drawn 23 Oct** (A64; from the old Design file's section, the rest the agent's choices while
+drawing, not yet reviewed by the user, so not A-numbers):
+- **Start:** + → What do you want to do? (Build or maintain · Quit or cut down · Add a task) → How do you want to track
+  it? (Check it off · Track an amount · Time it · Checklist, each with an example). Quit or cut down → Quit · Cut down.
+- **The form:** ← New habit · Add (quiet until there's a name; tapped anyway, the name field is outlined and says
+  "Give it a name to add it."). Name, Description (optional), Icon | Colour; the kind's own rows (How much / How long /
+  Steps / Limit) with How often; for an amount, When you tap + (Add a set amount, Each tap adds · Type the amount each
+  time); Time of day, Reminders; Starts, Ends. Quit has only Started | At; Cut down has no time of day. Leaving with
+  something typed asks Discard this habit? (Keep editing | Discard).
+- **Pages:** Icon (search, icons by kind, Done); Colour (a sheet of 14, one tap closes it); How often (five groups, the
+  chosen row in words, its controls under it); Time of day (Anytime, or one or more set times; New time of day);
+  Reminders (off until turned on; Android asks then; times, how, Reminder says; refused → back off and why, then Open
+  settings; Get reminders on time only on phones that hold exact times back); How much / Limit (the number pad, the
+  unit after the number; Unit groups units by what they count, plus Create your own unit); How long (Hours : Minutes,
+  quick picks); Steps (one per line, drag, ✕). Starts and Ends use Android's date picker; Ends is a menu first (Never ·
+  On a date…).
+- **A sixth habit on the free plan** (A30): says why, offers Plus once (one time), Make room instead (Archive, or Delete
+  in ⋮), Undo, then Continue to the form.
+- **Edit habit** opens the same form filled in, with a Type row and Save. A new goal or How often says it starts today
+  and the days before keep theirs (D6); leaving with changes asks Discard your changes?. A new type asks Start … over as
+  …? (Cancel | Start over; D6); a quit habit's type is only Quit or Cut down.
 
 **Milestone motion lives in the new file** (22 Oct 2026, so the old file can go): every milestone screen on the Today page carries Figma motion keyframes (select the screen, press play), rebuilt exactly from the old *Milestones on Today* section: the row (button press and fill, number roll, burst ring and 8 dots, Undo · Note fade, the band rising with its medal spinning in, words, sheen, sparkles), the bar (rise, medal pop, sparkles, sheen, 5-second line) and the pop-up (slide up, glow, medal spin and pop, ring and 12 dots, sparkles, then title, line, card and buttons). The medal is a 9-point rounded star (inner radius 0.86) with a light-to-colour gradient, a white inner ring and a soft shadow; the pop-up's has a blurred glow. A "Motion" note at the top of the milestone column gives the timings; with Remove animations on, only the end state shows.
 
