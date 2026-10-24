@@ -12,7 +12,8 @@ import androidx.compose.ui.unit.sp
  * "create the shared text styles … so that nothing stays inconsistent"). Written down in Android/README.md, "Text".
  *
  * - **Google Sans Flex, Regular and Medium only** (`Fonts.kt`); "Emphasized" is Medium, as in Material 3 Expressive.
- * - **Sizes are Material 3's** (57, 45, 36, 32, 28, 24, 22, 16, 14, 12, 11) **plus our 20**; line heights are Material's.
+ * - **Sizes are Material 3's own** (57, 45, 36, 32, 28, 24, 22, 16, 14, 12, 11); line heights are Material's. Nothing else:
+ *   the 20 sp step this app once had was removed on 24 Oct 2026 (U40) because Material has no such role.
  *   Within one screen, neighbouring levels differ by at least 1.25×: skip steps rather than use neighbours together.
  * - **Everything is in sp, never dp or px**, so the phone's font size and display size change all text (Android 14+
  *   scales large text less than small, by itself, from sp). Never a fixed height around text: give rows and buttons a
@@ -50,9 +51,6 @@ object AppType {
     /** Top app bar and sheet titles (Emphasized). */
     val titleLarge = style(22, 28, false)
     val titleLargeEmphasized = style(22, 28, true)
-    /** Ours: a one-line key sentence, a large typed name, a plan's price, the drawer's name, the player's big buttons. */
-    val title20 = style(20, 28, false)
-    val title20Emphasized = style(20, 28, true)
     /** List item and card names; a name over supporting text. */
     val titleMedium = style(16, 24, true)
     /** Body text; a unit beside a figure. */

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -139,6 +140,10 @@ class MainActivity : FragmentActivity() {
         pinWidget(intent)
         // Nothing a sheet was asked for survives a new activity: the Pause sheet is asked for, never saved.
         com.oftenenough.app.ui.habit.PauseOpen.close()
+        // Which tab Habits & Tasks opens on is this run's, not the process's: a test launch starts on Habits (T22).
+        com.oftenenough.app.ui.habit.HabitsTasksOpen.onTasks = false
+        // The same for the period: a test that moves to Month must not leave the next test's page on Month (T8, T22).
+        if (test) com.oftenenough.app.ui.progress.ProgressRangeMemory.range = com.oftenenough.app.data.ProgressRange.WEEK
         val demo = intent.getStringExtra(TestLaunch.DEMO)
         if (test || BuildConfig.DEBUG) com.oftenenough.app.ui.today.TodayNotices.forced = intent.getStringExtra(TestLaunch.NOTICE)
         syncWhileOnScreen()
@@ -147,6 +152,11 @@ class MainActivity : FragmentActivity() {
                 snapshotFlow { store.isLoaded }.first { it }
                 DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits", tasks = demo == "tasks")
             }
+            // The launcher icon follows the app's own theme, light or dark (AppIcon). It settles here, where the
+            // theme does: Appearance's own choice and the phone's theme both land in this one value. A test launch
+            // never touches the person's icon (D8).
+            val iconDark = when (AppGraph.prefs.theme) { "light" -> false; "dark" -> true; else -> isSystemInDarkTheme() }
+            if (!test) LaunchedEffect(iconDark) { AppIcon.follow(applicationContext, iconDark) }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
                 val lock = AppGraph.lock

@@ -54,8 +54,9 @@ internal object ProgressHeatSize {
     val WEEK = 40.dp
     /** The least space between two squares in Week and Month. */
     val GAP = 6.dp
-    val YEAR = 24.dp
-    val YEAR_GAP = 4.dp
+    // The year shows about twelve weeks at a time, as the design draws it (Habits & Tasks, flow 2).
+    val YEAR = 20.dp
+    val YEAR_GAP = 3.dp
     /** Room around a square for today's outline. */
     val OUTLINE = 3.dp
     /** Room for the month names over the year. */
@@ -125,7 +126,7 @@ internal fun HeatWeek(columns: List<WeekColumn>, cells: List<HeatCell>, color: H
     }
 }
 
-/** Month: the weekday letters in the person's order (today's underlined), then the month in rows of seven. */
+/** Month: the weekday letters in the person's order (today's in bold ink), then the month in rows of seven. */
 @Composable
 internal fun HeatMonth(lead: Int, letters: List<String>, todayIndex: Int?, cells: List<HeatCell>, color: HabitColor, onCell: (Int?) -> Unit) {
     val todayColumn = todayIndex?.let { (lead + it) % 7 }
@@ -142,9 +143,8 @@ private fun WeekdayLabel(text: String, isToday: Boolean, modifier: Modifier) {
     val c = appColors
     Text(
         text, modifier, maxLines = 1, textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.bodyMedium.copy(
+        style = AppType.labelMedium.copy(
             fontWeight = if (isToday) FontWeight.Medium else FontWeight.Normal,
-            textDecoration = if (isToday) TextDecoration.Underline else TextDecoration.None,
         ),
         color = if (isToday) c.ink else c.secondary,
     )

@@ -18,12 +18,12 @@ val Habit.isOneTimeTask: Boolean get() = kind == HabitKind.Task && dueDay != nul
 val Habit.isRepeatingTask: Boolean get() = kind == HabitKind.Task && dueDay == null
 val Habit.hasNoDate: Boolean get() = kind == HabitKind.Task && dueDay == NO_DATE_DAY
 
-private val dayName = DateTimeFormatter.ofPattern("EEEE, d MMM", Locale.ENGLISH)
+private val dayName = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.ENGLISH)
 private val monthName = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH)
 private val monthYear = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)
-private val shortDay = DateTimeFormatter.ofPattern("EEE d MMM", Locale.ENGLISH)
+private val shortDay = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.ENGLISH)
 
-/** "Thu 16 Oct": the Tasks page's short day, without a comma (Figma 1); with its year when that isn't [today]'s ("Fri 28 Nov 2025"). */
+/** "Thu, 16 Oct": the Tasks page's short day (Habits & Tasks, flow 20); with its year when that isn't [today]'s. */
 fun taskDay(day: Int, today: Int? = null): String {
     val d = LocalDate.ofEpochDay(day.toLong())
     val sameYear = today == null || LocalDate.ofEpochDay(today.toLong()).year == d.year
@@ -31,7 +31,7 @@ fun taskDay(day: Int, today: Int? = null): String {
 }
 
 /**
- * The One-time tab's heading for a day (Figma 1): Today, Tomorrow, the next days by name ("Monday, 20 Oct"), then by
+ * The One-time tab's heading for a day (Figma 1): Today, Tomorrow, the next days by name ("Mon, 20 Oct"), then by
  * month ("November"; with its year when it isn't this year). [byDay] is false for the month headings.
  */
 fun taskHeading(day: Int, today: Int): Pair<String, Boolean> {
@@ -63,7 +63,8 @@ fun HabitStore.taskWhen(task: Habit): String {
 fun HabitStore.oneTimeLine(task: Habit, today: Int): String {
     val due = task.dueDay ?: return ""
     doneEntry(task)?.let { return "Done " + DayWords.clock(it.createdAt) }
-    if (due == NO_DATE_DAY) return ""
+    // A task with no day says so on its own row too, under the No date heading (Habits & Tasks, flow 20).
+    if (due == NO_DATE_DAY) return "No date"
     if (due < today) return "Planned for " + taskDay(due)
     val (_, byDay) = taskHeading(due, today)
     return if (byDay) taskWhen(task) else taskDay(due) + " · " + taskWhen(task).let { if (it == "Anytime") "" else it }.ifEmpty { "Anytime" }
@@ -135,26 +136,33 @@ fun HabitStore.taskMoveRange(task: Habit, today: Int): IntRange? {
     return if (last >= today) today..last else null
 }
 
-/** The three lines under a repeating task's name (Figma 7, 2.1, 3.4.1): how often (with its time), then its day, then the last time it was done. */
-fun HabitStore.repeatingLines(task: Habit, today: Int): List<String> {
-    val rhythm = HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart)).let { r ->
-        task.dueMinute?.let { "$r, " + DayWords.clockMinute(it) } ?: r
-    }
+/**
+ * The one line under a repeating task's name (Habits & Tasks, flow 21): how often it comes and when it is next —
+ * "Every 3 days · Next Sun, 25 Oct", "8:00 AM · Next today", "Done today". The group heading already says how often,
+ * so a daily task with a time shows the time instead; a turn left undone says since when, and a skipped one says so.
+ */
+fun HabitStore.repeatingLines(task: Habit, today: Int): List<String> = listOf(repeatingLine(task, today))
+
+fun HabitStore.repeatingLine(task: Habit, today: Int): String {
+    val last = entries(task.id).maxByOrNull { it.createdAt }
     val n = taskNext(task, today)
-    val second = when {
-        n.waitingSince != null -> "Waiting since " + taskDay(n.waitingSince)
-        n.today -> "Today"
+    if (last?.day == today && !n.today) return "Done today"
+    val time = task.dueMinute?.let { DayWords.clockMinute(it) }
+    val rhythm = HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart))
+    // A daily task's heading already says "Every day": its time is the useful half of the line.
+    val how = when {
+        time != null && task.frequency == Frequency.Daily -> time
+        time != null -> "$rhythm, $time"
+        else -> rhythm
+    }
+    val whenNext = when {
+        n.skipped != null -> "Skipped " + taskDay(n.skipped, today)
+        n.waitingSince != null -> "Waiting since " + taskDay(n.waitingSince, today)
+        n.today -> "Next today"
         n.next != null -> "Next " + taskDay(n.next, today)
         else -> null
     }
-    val last = entries(task.id).maxByOrNull { it.createdAt }
-    val lastWords = when {
-        last == null -> null
-        last.day == today -> "Last done today, " + DayWords.clock(last.createdAt)
-        else -> "Last done " + taskDay(last.day, today)
-    }
-    val third = n.skipped?.let { s -> "Skipped " + taskDay(s) + (lastWords?.let { " · " + it.replaceFirstChar { c -> c.lowercase() } } ?: "") } ?: lastWords
-    return listOfNotNull(rhythm, second, third)
+    return listOfNotNull(how.ifEmpty { null }, whenNext).joinToString(" · ")
 }
 
 /** The heading line on a task's details (Figma 10, 7.3, 8.6): "Today · Morning", "Every 3 days, anytime", "A task · Anytime". */

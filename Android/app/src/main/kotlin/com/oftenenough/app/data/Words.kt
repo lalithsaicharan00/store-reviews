@@ -47,9 +47,12 @@ object Format {
         val h = total / 60
         val m = total % 60
         if (h == 0) return "$m min"
-        // Past an hour the minutes need no unit of their own: "1 h 40", as every design draws it (Figma 16–18).
+        // Past an hour the minutes need no unit of their own next to a goal: "1 h 40 of 3 h" (Figma 16–18).
         return if (m == 0) "$h h" else "$h h $m"
     }
+
+    /** A time on its own, with its unit: "3 h 40 min this month" (Habits & Tasks, flows 1–2). */
+    fun minutesFull(v: Double): String = minutes(v).let { if (it.endsWith(" min") || it.endsWith(" h")) it else "$it min" }
 
     /** A running timer's clock: "0:07", "7:42", "1:07:42". Minutes in, whole seconds out. */
     fun clock(minutes: Double): String {
@@ -267,6 +270,9 @@ object HabitCopy {
 
     fun minutes(value: Double): String = Format.minutes(value)
 
+    /** A time on its own, with its unit (Format.minutesFull). */
+    fun minutesFull(value: Double): String = Format.minutesFull(value)
+
     /** How much, or null for done-or-not: "8 glasses", "30 min". */
     fun howMuch(habit: Habit): String? = when (val k = habit.kind) {
         HabitKind.Duration -> minutes(habit.goal)
@@ -352,6 +358,7 @@ fun goalLine(habit: Habit, progress: Double, goal: Double, running: Boolean = fa
 /** The words for days and clock times. */
 object DayWords {
     private val shortDate = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.ENGLISH)
+    private val weekdayOnly = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH)
     private val dayMonth = DateTimeFormatter.ofPattern("d MMM", Locale.ENGLISH)
     private val longDate = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)
     private var clockFormat: DateTimeFormatter? = null
@@ -369,6 +376,9 @@ object DayWords {
     fun withDate(day: Int, today: Int): String = relative(day, today)?.let { "$it, " + date(day).format(dayMonth) } ?: short(day)
 
     fun short(day: Int): String = date(day).format(shortDate)
+
+    /** "Tue": a weekday on its own, for a card's skipped and paused days (Habits & Tasks, flow 17). */
+    fun weekdayShort(day: Int): String = date(day).format(weekdayOnly)
     fun dayMonth(day: Int): String = date(day).format(dayMonth)
     fun long(day: Int): String = date(day).format(longDate)
 

@@ -155,7 +155,7 @@ object ProgressWords {
 
     /** The mark's name, as TalkBack says it; a limit's marks say what they mean for a limit. */
     fun markWords(mark: DayMark, atMost: Boolean = false): String = when (mark) {
-        DayMark.DONE -> if (atMost) "Within max" else "Done"
+        DayMark.DONE -> if (atMost) "Within the limit" else "Done"
         DayMark.SOME -> if (atMost) "Logged" else "Partial"
         DayMark.MISSED -> if (atMost) "Over the limit" else "Not done"
         DayMark.OPEN -> "Today, still open"
@@ -317,9 +317,8 @@ internal fun HabitStore.progressCard(habit: Habit, span: IntRange, range: Progre
 internal fun HabitStore.progressQuitCard(habit: Habit, span: IntRange, range: ProgressRange, today: Int, now: Long): ProgressWeekCard {
     val card = quitPeriodCard(habit, span, range, today, now)
     val running = today in span
-    val runStart = if (running && !isPaused(habit, today)) {
-        rules.quitHistory(habit, now).lastOrNull()?.takeIf { it.ending == QuitRun.Ending.ONGOING }?.start
-    } else null
+    // The headline says the run in days now, so nothing on the card ticks (S3, Habits & Tasks flow 17).
+    val runStart: Long? = null
     val week = range == ProgressRange.WEEK
     val values = if (!week) emptyList() else {
         val perDay = HashMap<Int, Int>()

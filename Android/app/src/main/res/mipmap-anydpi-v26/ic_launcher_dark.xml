@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The launcher icon for dark surfaces (Logo Guide 01: base #404040, middle #A6A6A6, top #FFFFFF on #0D0D0D).
+  Which of the two the launcher shows is decided by the app, not by a -night qualifier: a launcher caches the icon
+  it read at install and never re-reads it when the system's theme changes (measured on a moto g54, 24 Oct 2026),
+  so the app enables one of two activity-aliases instead (AppIcon).
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@mipmap/ic_launcher_dark_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_dark_foreground" />
+</adaptive-icon>

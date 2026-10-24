@@ -102,7 +102,7 @@ private fun StateCard(hasPlus: Boolean, store: HabitStore, onSeePlus: () -> Unit
             AppIconTile(56.dp, flat = true)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(if (hasPlus) "Plus is yours" else "Free", style = AppType.title20Emphasized, color = c.ink)
+                Text(if (hasPlus) "Plus is yours" else "Free", style = AppType.titleLargeEmphasized, color = c.ink)
                 Text(if (hasPlus) "Bought with this Google account" else "No sign-in needed",
                     style = AppType.bodyMedium, color = c.secondary)
             }

@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.Icon
@@ -479,6 +480,8 @@ fun HeatKeyCard(open: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifi
                 },
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            Icon(Icons.AutoMirrored.Rounded.HelpOutline, null, Modifier.size(24.dp), tint = c.ink)
+            Spacer(Modifier.width(16.dp))
             Text("What the squares mean", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, color = c.ink)
             Icon(if (open) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, null, tint = c.ink)
         }

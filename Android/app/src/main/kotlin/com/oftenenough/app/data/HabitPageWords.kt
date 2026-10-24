@@ -203,8 +203,9 @@ fun progressShape(rule: Habit): ProgressShape {
 }
 
 /** An amount in the habit's own words: "46 glasses", "3 h 20 min", "12". */
-fun progressValue(value: Double, rule: Habit): String =
-    if (rule.kind == HabitKind.Duration) HabitCopy.minutes(value) else HabitCopy.amount(value, rule.unit)
+fun progressValue(value: Double, rule: Habit, full: Boolean = false): String =
+    if (rule.kind == HabitKind.Duration) (if (full) HabitCopy.minutesFull(value) else HabitCopy.minutes(value))
+    else HabitCopy.amount(value, rule.unit)
 
 private fun rank(k: GoalPeriod): Int = when (k) { GoalPeriod.DAY -> 0; GoalPeriod.WEEK -> 1; GoalPeriod.MONTH -> 2; GoalPeriod.YEAR -> 3 }
 
@@ -359,7 +360,7 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
         }
         ProgressShape.AMOUNT, ProgressShape.TIME -> {
             headline = "Reached on " + of(doneDays, counted.size)
-            detail = if (total > 0) progressValue(total, rule) + " " + whenText else plusExtra()
+            detail = if (total > 0) progressValue(total, rule, full = true) + " " + whenText else plusExtra()
         }
         ProgressShape.CHECKLIST -> {
             headline = "Every step on " + of(doneDays, counted.size)
@@ -372,8 +373,8 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
             headline = if (judged.isEmpty()) {
                 val now = amounts[today] ?: 0.0
                 if (running) "${progressValue(now, rule)} of ${progressValue(rule.goal, rule)} so far today" else "Nothing judged that $noun"
-            } else "Within max on $within of ${dayCount(judged.size)}"
-            detail = if (total > 0 && judged.isNotEmpty()) progressValue(total, rule) + " " + whenText else null
+            } else "Within the limit on $within of ${dayCount(judged.size)}"
+            detail = if (total > 0 && judged.isNotEmpty()) progressValue(total, rule, full = true) + " " + whenText else null
         }
         else -> {
             val text = periodText(habit, rule, shape, span, range, today, strip, amounts, total)
@@ -396,13 +397,47 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
             if (extraDays == 0 && total == 0.0) detail = if (running) nextDueText(habit, span.last) else null
         }
     }
+    val quiet = quietDaysText(strip, range, span)
+    if (quiet != null) detail = quiet
     if (running && !habit.archived) {
         val p = pause(habit, today)
-        if (p != null && today in p) { headline = DayWords.paused(p); detail = null }
+        // A paused card says when it comes back and that the grey days count for nothing (Habits & Tasks, flow 9).
+        if (p != null && today in p) {
+            headline = p.through?.let { "Paused until " + DayWords.short(it + 1) } ?: "Paused until you turn it back on"
+            detail = "Paused days don't count"
+        }
     }
     val anything = strip.any { it.mark == DayMark.DONE || it.mark == DayMark.SOME || it.mark == DayMark.MISSED }
     if (habit.archived && !anything && total == 0.0) return null
     return PeriodCard(headline, detail, strip)
+}
+
+/**
+ * "Skipped Tue · paused from Thu": the period's skipped and paused days, named in a week, counted in a month or year
+ * (Habits & Tasks, flow 17). Null when there are none, so the card keeps its own total.
+ */
+private fun quietDaysText(strip: List<WeekCardDay>, range: ProgressRange, span: IntRange): String? {
+    val skipped = strip.filter { it.mark == DayMark.SKIPPED }.map { it.day }
+    val paused = strip.filter { it.mark == DayMark.PAUSED }.map { it.day }
+    if (skipped.isEmpty() && paused.isEmpty()) return null
+    fun named(days: List<Int>) = days.joinToString(", ") { DayWords.weekdayShort(it) }
+    val skippedText = when {
+        skipped.isEmpty() -> null
+        range == ProgressRange.WEEK && skipped.size <= 3 -> "Skipped " + named(skipped)
+        skipped.size == 1 -> "1 day skipped"
+        else -> "${skipped.size} days skipped"
+    }
+    val pausedText = when {
+        paused.isEmpty() -> null
+        // A pause that runs to the end of the period reads as "from" the day it started.
+        range == ProgressRange.WEEK && paused.isNotEmpty() && paused.max() == span.last && paused.size > 1 ->
+            "paused from " + DayWords.weekdayShort(paused.min())
+        range == ProgressRange.WEEK && paused.size <= 3 -> "paused " + named(paused)
+        paused.size == 1 -> "1 day paused"
+        else -> "${paused.size} days paused"
+    }
+    val text = listOfNotNull(skippedText, pausedText).joinToString(" \u00b7 ")
+    return text.ifEmpty { null }
 }
 
 /** The day's square, from its mark. A week or month total colours a day by its share of a fair day's part; a week or
@@ -570,7 +605,7 @@ private fun HabitStore.periodText(
         val judged = results.count { it.met != null }
         fun periods(n: Int) = if (kind == GoalPeriod.WEEK) (if (n == 1) "week" else "weeks") else (if (n == 1) "month" else "months")
         val open = results.lastOrNull()?.takeIf { it.met == null && today in it.period }
-        val head = if (shape == ProgressShape.LIMIT_PERIOD) "Within max $met of $judged ${periods(judged)}"
+        val head = if (shape == ProgressShape.LIMIT_PERIOD) "Within the limit $met of $judged ${periods(judged)}"
         else if (judged == 0 && open != null) {
             (if (shape == ProgressShape.PERIOD_TOTAL) "${pv(open.value)} of ${pv(open.goal)}"
             else "${count(min(open.value, open.goal))} of ${count(open.goal)}") + " this ${periods(1)}"
@@ -718,9 +753,15 @@ fun HabitStore.quitPeriodCard(habit: Habit, span: IntRange, range: ProgressRange
     val slips = if (count == 0) "No slips $whenText" else if (count == 1) "1 slip $whenText" else "$count slips $whenText"
     val paused = running && isPaused(habit, today)
     if (running && !paused) {
+        // The run in whole days, and under it where it started and this period's slips (Habits & Tasks, flow 17).
         val current = rules.quitHistory(habit, now).lastOrNull()?.takeIf { it.ending == QuitRun.Ending.ONGOING }?.start
-        val headline = current?.let { "Current run " + Format.run((now - it) / 1000.0) } ?: slips
-        return PeriodCard(headline, if (current == null) null else slips, strip)
+        if (current != null) {
+            val days = ((now - current) / 86_400_000L).toInt()
+            val headline = "$days ${if (days == 1) "day" else "days"} clean"
+            val since = "Since " + DayWords.dayMonth(rules.calendarDayOf(current))
+            return PeriodCard(headline, since + " · " + slips.replaceFirstChar { it.lowercase() }, strip)
+        }
+        return PeriodCard(slips, null, strip)
     }
     return PeriodCard(if (paused) "Paused" else slips, if (paused) slips else null, strip)
 }
@@ -1059,7 +1100,7 @@ fun HabitStore.habitRecord(habit: Habit, today: Int): HabitOverall {
         GoalPeriod.MONTH -> if (n == 1) "month" else "months"
         GoalPeriod.YEAR -> if (n == 1) "year" else "years"
     }
-    val goalTitle = if (shape == ProgressShape.CHECKLIST) "Every step" else if (now.atMost) "Within max" else "Goal met"
+    val goalTitle = if (shape == ProgressShape.CHECKLIST) "Every step" else if (now.atMost) "Within the limit" else "Goal met"
     val goalMet = if (tally.eligible > 0) RecordFact(goalTitle, HabitCopy.number(tally.met.toDouble()),
         "of ${tally.eligible} ${periods(tally.eligible)}", null, "$goalTitle, ${tally.met} of ${tally.eligible} ${periods(tally.eligible)}") else null
     // "58% of days" (Figma 1373:2, 1.1): the days counted are the planned ones, as "of 40 days" above it says.

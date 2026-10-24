@@ -536,9 +536,9 @@ private fun NameField(typed: TypedText, placeholder: String, focus: FocusRequest
             .heightIn(min = 72.dp).padding(horizontal = 16.dp, vertical = 22.dp), contentAlignment = Alignment.CenterStart) {
             BasicTextField(typed.text, { typed.text = it.replace("\n", "").take(TextLimit.NAME) },
                 Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "name-field"; contentDescription = "Name" },
-                textStyle = AppType.title20.copy(color = c.ink), singleLine = true, cursorBrush = SolidColor(c.ink),
+                textStyle = AppType.titleLarge.copy(color = c.ink), singleLine = true, cursorBrush = SolidColor(c.ink),
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                decorationBox = { inner -> Box { if (typed.text.isEmpty()) Text(placeholder, style = AppType.title20.copy(color = c.secondary)); inner() } })
+                decorationBox = { inner -> Box { if (typed.text.isEmpty()) Text(placeholder, style = AppType.titleLarge.copy(color = c.secondary)); inner() } })
         }
         if (missing) Text("Give it a name to add it.", Modifier.padding(start = 16.dp, top = 4.dp, bottom = 8.dp).semantics { testTag = "name-missing" },
             style = AppType.bodySmall, color = c.error)

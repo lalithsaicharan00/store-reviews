@@ -144,13 +144,11 @@ class ScreensTest {
         waitFor(hasText("What do you want to do?"), "New")
     }
 
-    @Test fun progressShowsTheWeek() {
+    /** The Habits tab is the week itself since A63: there is no separate Progress page to open. */
+    @Test fun habitsAndTasksShowsTheWeekAndTheMonth() {
         launch()
-        // Progress has no menu row of its own since A28: it is in the Habits page's ⋮.
         menu("habits")
-        tapTag("habits-more")
-        tapTag("habits-menu-progress")
-        waitFor(hasText("This week"), "this week on Progress")
+        waitFor(hasText("This week"), "this week on the Habits tab")
         tapText("Month")
         waitFor(hasText("This month"), "this month")
     }
@@ -179,31 +177,22 @@ class ScreensTest {
         assertTrue("Water is paused today", AppGraph.store.isPaused(water, AppGraph.store.today()))
     }
 
-    @Test fun theHabitsListArchivesSeveral() {
+    /** A card's ⋮ is the whole of what you can do to a habit (A65); nothing is selected on this page (A68). */
+    @Test fun theHabitsTabArchivesFromACardsMenu() {
         launch()
         menu("habits")
-        waitFor(hasTestTag("habits-row-Water"), "Water in Habits")
-        compose.onNodeWithTag("habits-row-Water", useUnmergedTree = true).performTouchInput { longClick() }
-        waitFor(hasText("1 selected"), "one selected")
-        tapTag("habits-archive")
-        waitFor(hasText("Archived"), "the Archived group")
+        waitFor(hasTestTag("habits-card-water"), "Water's card")
+        tapTag("habits-row-more-Water")
+        waitFor(hasTestTag("habits-menu-archive"), "Archive in the menu")
+        compose.onAllNodes(hasTestTag("habits-menu-archive"), useUnmergedTree = true)[0].performClick()
+        waitFor(hasText("Water archived"), "the snackbar")
         assertTrue("Water archived", AppGraph.store.habits.first { it.name == "Water" }.archived)
     }
 
-    /**
-     * Groups live on the Habits page since A28 (21 Oct 2026): Today's top bar is ≡ · ✏ · + and has no filter, so a
-     * group changes what Habits and Progress show, never Today.
-     */
-    @Test fun aNewGroupIsMadeFromTheHabitsPage() {
+    /** Today has no group filter (A28); since A68 the Habits page has no ⋮ either, so a group is set in the form. */
+    @Test fun todayHasNoGroupFilter() {
         launch()
         assertNone(hasTestTag("filter-button"), "a filter on Today")
-        menu("habits")
-        waitFor(hasTestTag("habits-row-Water"), "Water in Habits")
-        tapTag("habits-more")
-        tapTag("habits-new-group")
-        compose.onNodeWithTag("group-name", useUnmergedTree = true).performTextInput("Health")
-        tapText("Create")
-        compose.waitUntil(10_000) { AppGraph.store.groups.any { it.name == "Health" } }
     }
 
     @Test fun arrangingMovesAHabitAndTodayFollows() {

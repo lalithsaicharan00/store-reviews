@@ -14,6 +14,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
+import com.oftenenough.app.data.isTask
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -35,11 +36,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * The Tasks page (Figma 2373:2, 19 Oct 2026), on the design's own tasks (`demo tasks`): the One-time tab's days (carried
- * first, done today struck at the end, No date last) and the Repeating tab's lines; a row's ⋮ (Move with Undo, Do today,
- * Skip this time, Delete only once Undo has gone, D6); a long press selecting (never opening) and the bar's Move; search
- * with its groups and New task; Completed's Mark as not done; Archived tasks' Restore; a new task with No date; the coach
- * mark; the menu's count. Test launches only (D8) at 10:30 (T11); a failure says what was on screen (T14).
+ * The Tasks tab of **Habits & Tasks** (Figma 269:148, 23 Oct 2026), on the design's own tasks (`demo tasks`): the
+ * One-time tab's days (carried first, done today struck at the end, No date last) and the Repeating tab's lines; a
+ * row's ⋮ (Move to another day straight to the picker, Do today, Skip this time, Delete only once Undo has gone, D6);
+ * a hold that does nothing (A68); the page's one search over habits and tasks, with New task; the Completed and
+ * Archived rows at the end, Mark as not done and Restore; a new task with No date; the menu's count. Test launches
+ * only (D8) at 10:30 (T11); a failure says what was on screen (T14).
  */
 @OptIn(androidx.compose.ui.test.ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
@@ -52,7 +54,7 @@ class TasksPageTest {
     private val store: HabitStore get() = AppGraph.store
     private val today: Int get() = store.today()
 
-    private fun launch(coach: Boolean = false) {
+    private fun launch() {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, 10).putExtra(TestLaunch.DEMO, "tasks")
             .putExtra(TestLaunch.PLUS, true)
@@ -61,12 +63,8 @@ class TasksPageTest {
         waitFor(hasTestTag("row-Pay electricity bill"), "the demo on Today")
         tapTag("menu-button")
         tapTag("menu-habits")
-        tapTag("habits-more")
-        tapTag("habits-menu-tasks")
-        waitHere(hasTestTag("tasks-list"), "the Tasks page")
-        // The coach mark hangs under the first row: wait for it where it is, never scrolling the list away from it.
-        waitHere(hasTestTag("tasks-coach-ok"), "the coach mark")
-        if (!coach) { here("tasks-coach-ok"); waitGone(hasTestTag("tasks-coach-ok"), "the coach mark") }
+        tapTag("habits-tasks-tab-1")
+        waitHere(hasTestTag("tasks-list"), "the Tasks tab")
     }
 
     private fun waitHere(m: SemanticsMatcher, what: String) {
@@ -108,7 +106,7 @@ class TasksPageTest {
 
     private fun tapTag(tag: String) = tap(hasTestTag(tag), "tag $tag")
     private fun tapText(text: String) = tap(hasText(text), "\"$text\"")
-    /** Taps a popup's item (a menu, a coach mark, a dialog) where it is: scrolling the list behind would close it (T22). */
+    /** Taps a popup's item (a menu, a dialog) where it is: scrolling the list behind would close it (T22). */
     private fun here(tag: String) {
         waitHere(hasTestTag(tag), "tag $tag")
         compose.onAllNodes(hasTestTag(tag), useUnmergedTree = true)[0].performClick()
@@ -146,9 +144,11 @@ class TasksPageTest {
         assertFalse(store.rules.isDue(task("Fix the bike light"), today))
     }
 
-    @Test fun moveToTomorrowSaysSoAndUndoPutsItBack() {
+    @Test fun moveToAnotherDayOpensThePickerAtOnceAndUndoPutsItBack() {
         launch()
-        menuFor("Pay electricity bill", "move", "tomorrow")
+        menuFor("Pay electricity bill", "move")
+        waitHere(hasText("Select date"), "the date picker, with no menu in between")
+        here("date-ok")
         waitFor(hasText("Moved to Tomorrow"), "the snackbar")
         assertEquals(today + 1, task("Pay electricity bill").dueDay)
         undo()
@@ -190,30 +190,25 @@ class TasksPageTest {
         waitUntil("the task gone once the snackbar has", timeout = 20_000) { store.habits.none { it.name == "Pick up dry cleaning" } }
     }
 
-    @Test fun aLongPressSelectsAndTheBarMovesThemAll() {
+    @Test fun aHoldDoesNothingAndOpensNothing() {
         launch()
         longPress("Call the dentist")
-        waitHere(hasText("1 selected"), "selection, not the task's page")
-        assertFalse(has(hasTestTag("habit-details")))
-        tapTag("tasks-row-Clean the fridge")
-        waitHere(hasText("2 selected"), "two selected")
-        tapTag("tasks-move")
-        here("tasks-move-tomorrow")
-        waitFor(hasText("2 tasks moved to Tomorrow"), "the snackbar")
-        assertEquals(today + 1, task("Call the dentist").dueDay)
-        assertEquals(today + 1, task("Clean the fridge").dueDay)
+        compose.waitForIdle()
+        assertFalse("nothing is selected", has(hasText("1 selected")))
+        assertFalse("the task did not open", has(hasTestTag("habit-details")))
+        waitHere(hasTestTag("tasks-row-Call the dentist"), "still on the list")
     }
 
     @Test fun searchGroupsTasksArchivedAndOffersANewTask() {
         launch()
-        tapTag("tasks-search")
+        tapTag("habits-search")
         compose.onNodeWithTag("habits-search-field").performTextInput("den")
         waitFor(hasText("Today · planned " + taskDay(today - 2).substringAfter(' ')), "Call the dentist with its day")
         waitFor(hasText("Dentist check-up"), "Dentist check-up")
-        waitFor(hasTestTag("habits-section-Archived"), "Archived")
+        waitFor(hasTestTag("search-group-Tasks"), "the Tasks group")
         waitFor(hasText("Find a new dentist"), "the archived one")
         compose.onNodeWithTag("habits-search-field").performTextInput("plumber")
-        waitFor(hasText("No tasks called “denplumber”"), "no match")
+        waitFor(hasText("Nothing called “denplumber”"), "no match")
         tapTag("tasks-search-new")
         waitFor(hasTestTag("name-field"), "the task form")
         waitFor(hasText("denplumber"), "its name filled in")
@@ -221,8 +216,7 @@ class TasksPageTest {
 
     @Test fun completedTakesATaskBackAndUndoKeepsItDone() {
         launch()
-        tapTag("tasks-more")
-        here("tasks-completed")
+        tapTag("tasks-completed")
         waitFor(hasText("Every task you finish, by the day you did it. To bring one back, use its ⋮ menu."), "Completed's note")
         tapTag("tasks-row-more-Send the parcel")
         here("completed-menu-not-done")
@@ -246,14 +240,14 @@ class TasksPageTest {
 
     @Test fun aNewTaskWithNoDateStaysOffToday() {
         launch()
-        tapTag("tasks-add")
+        tapTag("habits-add")
         compose.onNodeWithTag("name-field").performTextInput("Mend the fence")
         tapTag("task-date")
         here("task-date-none")
         waitGone(hasTestTag("task-time"), "the Time row")
         waitFor(hasText("It shows on the Tasks page under No date, not on Today."), "the preview's note")
         tapTag("form-add")
-        waitHere(hasTestTag("tasks-list"), "back on Tasks")
+        waitHere(hasTestTag("tasks-list"), "back on the Tasks tab")
         waitUntil("saved") { store.habits.any { it.name == "Mend the fence" } }
         val t = task("Mend the fence")
         assertEquals(NO_DATE_DAY, t.dueDay)
@@ -262,18 +256,24 @@ class TasksPageTest {
         waitFor(hasTestTag("tasks-row-Mend the fence"), "under No date")
     }
 
-    @Test fun theCoachMarkGoesForGood() {
-        launch(coach = true)
-        here("tasks-coach-ok")
-        waitGone(hasTestTag("tasks-coach-ok"), "the coach mark")
-        assertNotNull(store.setting("tasks.coach_seen"))
+    @Test fun deleteAllCompletedAsksHowManyAndUndoBringsThemBack() {
+        launch()
+        tapTag("tasks-completed")
+        waitFor(hasTestTag("completed-list"), "Completed")
+        val before = store.habits.count { it.isTask }
+        tapTag("completed-more")
+        here("completed-menu-delete-all")
+        waitHere(hasText("Their notes go with them. Your open tasks and your repeating tasks stay as they are."), "what stays")
+        here("delete-confirm")
+        undo()
+        waitUntil("every task kept") { store.habits.count { it.isTask } == before }
     }
 
     /** The menu counts every habit and task someone keeps, on one row (Figma `12:5259`, 22 Oct 2026). */
     @Test fun theMenuCountsEveryHabitAndTask() {
         launch()
         scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-        scenario!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        waitFor(hasTestTag("today-list"), "Today again")
         tapTag("menu-button")
         waitHere(hasTestTag("menu-habits"), "the menu")
         val words = compose.onAllNodes(hasTestTag("menu-habits"))[0].fetchSemanticsNode().config.getOrNull(SemanticsProperties.Text)?.map { it.text }

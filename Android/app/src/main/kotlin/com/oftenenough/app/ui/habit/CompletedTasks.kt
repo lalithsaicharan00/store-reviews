@@ -17,10 +17,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.outlined.DeleteSweep
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.TaskAlt
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,7 +30,6 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -47,6 +48,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Entry
 import com.oftenenough.app.data.Habit
@@ -78,10 +80,11 @@ private val doneHeadingYear = DateTimeFormatter.ofPattern("EEEE, d MMM yyyy", Lo
 private val forDay = DateTimeFormatter.ofPattern("d MMM", Locale.ENGLISH)
 
 /**
- * Completed tasks (Tasks, Figma 8–8.6): every task finished, by the day it was done, newest first, one-time and repeating
- * together; each with the time done and the day it was for when that's another day. Its ⋮ takes it back (Mark as not
- * done, with Undo). A long press selects completed one-time tasks to delete them (a repeating task's done times are its
- * history and stay with it). Nothing here is ever deleted by the app.
+ * Completed tasks (Habits & Tasks, flows 28–29): every task finished, by the day it was done, newest first, one-time and
+ * repeating together; each with the time done and the day it was for when that's another day. A row's ⋮ takes it back
+ * (**Mark as not done**, with Undo) or deletes it (**Delete**, red, asking first). The page's one action is in the top
+ * bar's ⋮: **Delete all completed**, which asks how many and says that open and repeating tasks stay; nothing is
+ * selected here (A68). Nothing is ever deleted by the app.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,15 +92,14 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
     val c = appColors
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
-    var chosen by rememberSaveable { mutableStateOf(emptySet<String>()) }
-    var selecting by rememberSaveable { mutableStateOf(false) }
     var searching by rememberSaveable { mutableStateOf(false) }
     var query by rememberSaveable { mutableStateOf("") }
     var hidden by remember { mutableStateOf(emptySet<String>()) }
     var deleting by remember { mutableStateOf<List<Habit>>(emptyList()) }
+    var clearing by remember { mutableStateOf(false) }
+    var topMenu by remember { mutableStateOf(false) }
     val today = store.today()
-    fun endSelection() { selecting = false; chosen = emptySet() }
-    BackHandler { if (selecting) endSelection() else if (searching) { searching = false; query = "" } else nav.back() }
+    BackHandler { if (searching) { searching = false; query = "" } else nav.back() }
 
     val all = remember(store.habits, store.dataVersion, hidden, today) {
         store.habits.filter { it.isTask && !it.archived && it.id !in hidden }.flatMap { t ->
@@ -107,8 +109,8 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
     }
     val q = query.trim().lowercase()
     val shown = if (q.isEmpty()) all else all.filter { it.task.name.lowercase().contains(q) }
-    val deletable = all.filter { it.task.isOneTimeTask }.map { it.task.id }.toSet()
-    val marked = all.filter { it.task.id in chosen }.map { it.task }.distinctBy { it.id }
+    // A repeating task's done times are its history and stay with it: only a one-time task is deleted from here.
+    val deletable = all.filter { it.task.isOneTimeTask }.map { it.task }.distinctBy { it.id }
 
     fun heading(day: Int): String = when (day) {
         today -> "Today"
@@ -150,28 +152,24 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
             }
         }
     }
-    fun toggle(t: Habit) { if (t.id in deletable) chosen = if (t.id in chosen) chosen - t.id else chosen + t.id }
 
     Box(Modifier.fillMaxSize().background(c.screen)) {
         Column(Modifier.fillMaxSize()) {
             when {
                 searching -> SearchBar(query, { query = it }, onBack = { searching = false; query = "" }, placeholder = "Search completed tasks")
-                selecting -> TopAppBar(
-                    title = { Text(if (chosen.isEmpty()) "Select tasks" else "${chosen.size} selected") },
-                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "completed-end-selection" }) { Icon(Icons.Rounded.Close, "Stop selecting") } },
-                    actions = {
-                        val everything = deletable.isNotEmpty() && chosen.containsAll(deletable)
-                        TextButton({ chosen = if (everything) emptySet() else deletable }, Modifier.padding(end = 4.dp).semantics { testTag = "completed-select-all" }) {
-                            Text(if (everything) "Deselect all" else "Select all", style = AppType.labelLarge, color = c.ink)
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = c.tonal, titleContentColor = c.ink, navigationIconContentColor = c.ink),
-                )
                 else -> TopAppBar(
                     title = { Text("Completed") },
                     navigationIcon = { IconButton(nav::back, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
                     actions = {
                         if (all.isNotEmpty()) IconButton({ searching = true }, Modifier.semantics { testTag = "completed-search" }) { Icon(Icons.Rounded.Search, "Search completed tasks") }
+                        // The page's one action (flow 29): one go, no selecting.
+                        if (deletable.isNotEmpty()) Box {
+                            IconButton({ topMenu = true }, Modifier.semantics { testTag = "completed-more" }) { Icon(Icons.Rounded.MoreVert, "More") }
+                            DropdownMenu(topMenu, { topMenu = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+                                MenuItem("Delete all completed", Icons.Outlined.DeleteSweep, "completed-menu-delete-all", danger = true) { topMenu = false; clearing = true }
+                            }
+                        }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, titleContentColor = c.ink,
                         navigationIconContentColor = c.ink, actionIconContentColor = c.ink),
@@ -199,24 +197,18 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
                     first = false
                     list.forEachIndexed { i, d ->
                         item(key = d.key) {
-                            TaskRow(d.task, listOf(line(d)), true, i, list.size, selecting, d.task.id in chosen,
-                                onClick = { if (selecting) toggle(d.task) else nav.open(d.task) },
-                                onLongClick = { if (d.task.id in deletable) { selecting = true; toggle(d.task) } },
-                                menu = if (selecting) null else { _, dismiss ->
+                            TaskRow(d.task, listOf(line(d)), true, i, list.size, onClick = { nav.open(d.task) },
+                                menu = { _, dismiss ->
                                     MenuItem("Mark as not done", Icons.AutoMirrored.Outlined.Undo, "completed-menu-not-done") { dismiss(); notDone(d) }
+                                    if (d.task.isOneTimeTask) MenuItem("Delete", Icons.Outlined.Delete, "completed-menu-delete", danger = true) { dismiss(); deleting = listOf(d.task) }
                                 })
                         }
                     }
                 }
                 item { Spacer(Modifier.height(96.dp)) }
             }
-            if (selecting) Surface(color = c.surface, tonalElevation = 3.dp) {
-                Row(Modifier.fillMaxWidth().navigationBarsPadding().padding(8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    BarAction("Delete", Icons.Outlined.Delete, marked.isNotEmpty(), "completed-delete", { deleting = marked }, danger = true)
-                }
-            }
         }
-        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
+        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
     }
     if (deleting.isNotEmpty()) {
         val list = deleting
@@ -226,8 +218,19 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
             title = { Text(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} completed tasks?") },
             text = { Text(if (one) "It's gone for good once the next screen closes, with its notes. Your open tasks aren't touched."
                 else "They're gone for good once the next screen closes, with their notes. Your open tasks aren't touched.") },
-            confirmButton = { TextButton({ deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
+            confirmButton = { TextButton({ deleting = emptyList(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
             dismissButton = { TextButton({ deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }) { Text("Cancel", color = c.ink) } },
+            containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
+    }
+    // Delete all completed (flow 29): how many go, what stays, two buttons; then the page is empty and Undo is in the snackbar.
+    if (clearing) {
+        val list = deletable
+        AlertDialog({ clearing = false },
+            modifier = Modifier.semantics { testTagsAsResourceId = true },
+            title = { Text(if (list.size == 1) "Delete 1 completed task?" else "Delete all ${list.size} completed tasks?") },
+            text = { Text("Their notes go with them. Your open tasks and your repeating tasks stay as they are.") },
+            confirmButton = { TextButton({ clearing = false; delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
+            dismissButton = { TextButton({ clearing = false }, Modifier.semantics { testTag = "delete-cancel" }) { Text("Cancel", color = c.ink) } },
             containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
     }
 }

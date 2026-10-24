@@ -86,7 +86,7 @@ private fun MenuItems(store: HabitStore, current: MenuItem?, onPick: (MenuItem) 
         ) {
             Image(painterResource(if (c.dark) R.drawable.mark_dark else R.drawable.mark_light), null, Modifier.size(36.dp))
             Spacer(Modifier.width(12.dp))
-            Text("Often Enough", style = AppType.title20Emphasized, color = c.ink)
+            Text("Often Enough", style = AppType.titleLargeEmphasized, color = c.ink)
         }
         for (item in MenuItem.entries) {
             // The line between where you are and what you do (Figma: under Habits & Tasks).

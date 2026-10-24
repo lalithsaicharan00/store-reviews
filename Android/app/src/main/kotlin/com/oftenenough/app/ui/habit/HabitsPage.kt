@@ -82,6 +82,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -118,6 +120,8 @@ import kotlinx.coroutines.launch
 interface HabitsNav {
     val openMenu: (() -> Unit)?
     fun open(habit: Habit)
+    /** A square on a card: that habit's Day details, for that day (Habits & Tasks, flow 6). */
+    fun openDay(habit: Habit, day: Int)
     fun edit(habit: Habit)
     fun duplicate(habit: Habit)
     fun newHabit(name: String? = null)
@@ -138,7 +142,7 @@ private const val SHOW_BY = "habits.show_by"
 private const val COACH_SEEN = "habits.coach_seen"
 
 /** A section of the list: its title and its habits, in the person's order. */
-private class HabitSection(val key: String, val title: String, val habits: List<Habit>)
+internal class HabitSection(val key: String, val title: String, val habits: List<Habit>)
 
 /**
  * ≡ › Habits (Figma 2106:2): every habit by time of day, in the person's order as on Today (or by group), then Quitting,
@@ -340,7 +344,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
 }
 
 /** Sections by time of day as on Today (then Quitting), or by group; then Paused. */
-private fun habitSections(store: HabitStore, active: List<Habit>, paused: List<Habit>, byGroup: Boolean): List<HabitSection> {
+internal fun habitSections(store: HabitStore, active: List<Habit>, paused: List<Habit>, byGroup: Boolean): List<HabitSection> {
     val pausedIds = paused.map { it.id }.toSet()
     val going = active.filter { it.id !in pausedIds }
     val out = mutableListOf<HabitSection>()
@@ -376,10 +380,15 @@ fun HabitsRow(
     menu: (@Composable (Habit, () -> Unit) -> Unit)?, coach: (() -> Unit)? = null,
 ) {
     val c = appColors
+    val line2 = c.tonal
     var open by remember { mutableStateOf(false) }
     Box {
         Row(
-            Modifier.padding(bottom = 2.dp).fillMaxWidth().clip(segmentShape(index, count)).background(if (marked) c.tonal else c.surface)
+            Modifier.fillMaxWidth().clip(segmentShape(index, count, outer = 16.dp, inner = 0.dp)).background(if (marked) c.tonal else c.surface)
+                .then(if (index == count - 1) Modifier else Modifier.drawBehind {
+                    val h = 1.dp.toPx()
+                    drawLine(line2, Offset(0f, size.height - h), Offset(size.width, size.height - h), h)
+                })
                 .combinedClickable(onClick = onClick, onLongClick = onLongClick, role = if (selecting) Role.Checkbox else Role.Button)
                 .semantics(mergeDescendants = true) {
                     testTag = "habits-row-" + habit.name
@@ -557,7 +566,7 @@ private fun SearchResults(
 
 /** No habits yet (Figma 1.3), or every habit archived (1.4, the Archived row kept one tap away). */
 @Composable
-private fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
+internal fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
     val c = appColors
     Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         Column(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {

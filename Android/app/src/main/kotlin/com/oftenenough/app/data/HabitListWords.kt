@@ -23,9 +23,18 @@ fun HabitStore.listLine(habit: Habit, today: Int = today()): String {
     return parts.joinToString(" · ")
 }
 
-/** "Archived 3 Sep", or "Started over as Time it" for a habit a type change archived (Figma 6, 6.7). */
-fun HabitStore.archivedLine(habit: Habit): String =
-    startedOverAs(habit.id)?.let { "Started over as $it" } ?: archivedOn[habit.id]?.let { "Archived " + DayWords.dayMonth(it) } ?: "Archived"
+/**
+ * "Archived 3 Sep · 61 days", or "Started over as Time it" for a habit a type change archived (Habits & Tasks, flow 12).
+ * The days are how long it ran: from its first day to the day it was put away.
+ */
+fun HabitStore.archivedLine(habit: Habit, withDays: Boolean = false): String {
+    startedOverAs(habit.id)?.let { return "Started over as $it" }
+    val day = archivedOn[habit.id] ?: return "Archived"
+    val from = habit.startsOn ?: today(habit.createdAt)
+    val days = day - from + 1
+    val ran = if (!withDays || days < 1) null else if (days == 1) "1 day" else "$days days"
+    return "Archived " + DayWords.dayMonth(day) + (ran?.let { " · $it" } ?: "")
+}
 
 /** The goal, How often and the first reminder, joined by " · " (no status). */
 fun habitPlanLine(habit: Habit, weekStart: Int): String {

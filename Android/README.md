@@ -44,8 +44,10 @@ The user, 15 Oct 2026: "create the shared text styles for Android … so that no
 not be absolute units … if someone has an increased font size they should reflect here." Rulebook **U36**.
 
 - **Every piece of text uses a style from [`ui/theme/Type.kt`](<app/src/main/kotlin/com/oftenenough/app/ui/theme/Type.kt>)**
-  (`AppType`): the Figma file's **Android / …** styles, Material 3's sizes (57, 45, 36, 32, 28, 24, 22, 16, 14, 12, 11)
-  plus our 20, Regular and Medium ("Emphasized") only, line heights Material's, letter spacing 0. Material's own
+  (`AppType`): the Figma file's **Android / …** styles, which are **Material 3's roles and nothing else** (57, 45, 36,
+  32, 28, 24, 22, 16, 14, 12, 11), Regular and Medium ("Emphasized") only, line heights Material's, letter spacing 0.
+  The 20 sp step and an 11 sp Regular that this app used to carry were removed from the Figma file and from `Type.kt`
+  on 24 Oct 2026 (U40), and every style in the file now carries a description of where it is used. Material's own
   components get the same styles through `MaterialTheme.typography` (`AppType.material`). **Never** `fontSize = …`,
   `TextStyle(fontSize = …)` or `.copy(fontSize = …)` in a screen: pick the style for the job (each one's job is written
   above it). A truly new size goes into Figma first, then `Type.kt`.
@@ -56,6 +58,13 @@ not be absolute units … if someone has an increased font size they should refl
   large text less than small, by itself). So a text's container never has a fixed height: rows and buttons take a
   minimum (`heightIn(min = …)`), and pages scroll, so 200 % text grows them instead of clipping. The one exception is
   a number drawn inside a fixed graphic (a milestone medal), which is sized to its shape.
+- **The weight is Figma's, the size and the spacing are Android's** (the user, 24 Oct 2026; Rulebook **U40**). A design's
+  *Title Medium* is `titleMedium` (Medium 16/24), *Title Large Emphasized* is `titleLargeEmphasized` (Medium 22/28), and
+  a Regular style stays Regular. `MaterialTheme.typography.titleLarge` is **Regular**, so an emphasized title in the
+  design names the `AppType` style instead of Material's slot. Read a style from the file — `get_variable_defs` on a
+  frame lists the styles it uses, and on a single text node names that node's own style — never by measuring a
+  screenshot. Spacing takes Figma's intent and snaps to Android's 4 dp steps (4, 8, 12, 16, 20, 24, 28, 32, 40, 48): an
+  odd number in the file is a slip, and the same job keeps the same number across a page.
 
 ## Plus & Account (Figma `1476:2`, built 15 Oct 2026)
 

@@ -148,20 +148,19 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
                 }
             } else LazyColumn(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp).semantics { testTag = "archived-list" }) {
                 item(key = "note") {
-                    Text(if (tasks) "Archived tasks keep their history and stay off Today and Tasks. Restore one to bring it back."
-                        else "Archived habits keep all their history and send no reminders." +
-                        if (store.isPlus) "" else " They don't count toward your five free habits.",
+                    Text(if (tasks) "Archived tasks keep everything they had. They're off Today and Tasks until you restore one."
+                        else "Archived habits keep everything they had. They're off Today and send no reminders.",
                         Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp), style = AppType.bodyMedium, color = c.secondary)
                 }
                 archived.forEachIndexed { i, h ->
                     item(key = h.id) {
-                        HabitsRow(h, store.archivedLine(h), i, archived.size, selecting, h.id in chosen,
+                        HabitsRow(h, store.archivedLine(h, withDays = true), i, archived.size, selecting, h.id in chosen,
                             onClick = { if (selecting) chosen = if (h.id in chosen) chosen - h.id else chosen + h.id else nav.open(h) },
                             onLongClick = { chosen = if (h.id in chosen) chosen - h.id else chosen + h.id },
                             menu = if (selecting) null else { habit, dismiss ->
                                 MenuItem("Restore", Icons.Outlined.Unarchive, "archived-menu-restore") { dismiss(); restore(listOf(habit)) }
                                 HorizontalDivider(color = c.tonal)
-                                MenuItem(if (tasks) "Delete task…" else "Delete habit…", Icons.Outlined.Delete, "archived-menu-delete", danger = true) { dismiss(); deleting = listOf(habit) }
+                                MenuItem("Delete", Icons.Outlined.Delete, "archived-menu-delete", danger = true) { dismiss(); deleting = listOf(habit) }
                             })
                     }
                 }

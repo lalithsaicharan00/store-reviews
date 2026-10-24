@@ -23,12 +23,15 @@ internal object ProgressRangeMemory {
 internal class HeatKeyVisit(private val store: HabitStore) {
     private var shown by mutableStateOf<Boolean?>(null)
 
-    val isOpen: Boolean get() = shown ?: (store.setting(HEAT_KEY_FOLDED) != "true")
+    // Folded until someone opens it (Habits & Tasks, flow 5: "help · What the squares mean · expand_more"); once
+    // opened or folded, that choice is kept.
+    val isOpen: Boolean get() = shown ?: (store.setting(HEAT_KEY_FOLDED) == "false")
 
     fun toggle() {
         val open = !isOpen
         shown = open
-        // Written once, the first time (S15).
-        if (!open && store.setting(HEAT_KEY_FOLDED) != "true") store.saveAppSetting(HEAT_KEY_FOLDED, "true")
+        // One write when the choice changes, never per redraw (S15).
+        val want = if (open) "false" else "true"
+        if (store.setting(HEAT_KEY_FOLDED) != want) store.saveAppSetting(HEAT_KEY_FOLDED, want)
     }
 }

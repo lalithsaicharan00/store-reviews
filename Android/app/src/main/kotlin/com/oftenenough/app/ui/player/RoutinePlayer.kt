@@ -1206,7 +1206,7 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
             // "+1" and "Log" are words alone (Figma 3, 3.3); "+1" a size up, as the row's round button says it.
             val step = action.action == PlayerAction.LOG_STEP
             MainButton(actionIcon(action.action), action.label, action.spoken, "player-main", Modifier.weight(1f),
-                labelStyle = if (step) AppType.headlineSmallEmphasized else AppType.title20) { perform(action.action, habit) }
+                labelStyle = if (step) AppType.headlineSmallEmphasized else AppType.titleLarge) { perform(action.action, habit) }
         }
         SideButton(Icons.AutoMirrored.Rounded.KeyboardArrowRight, next?.let { "Next habit: ${it.name}" } ?: "Finish routine", enabled = true,
             tag = "player-next", modifier = if (wide) Modifier.weight(1f) else Modifier.width(56.dp)) { session.advance() }
@@ -1240,7 +1240,7 @@ private fun SideButton(icon: ImageVector, spoken: String, enabled: Boolean, tag:
 /** The one main action, in ink. Its label is one line and ends in … when long; TalkBack reads the whole of [spoken]. */
 @Composable
 internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: String, modifier: Modifier,
-                        labelStyle: TextStyle = AppType.title20, iconSize: Dp = 28.dp, onClick: () -> Unit) {
+                        labelStyle: TextStyle = AppType.titleLarge, iconSize: Dp = 28.dp, onClick: () -> Unit) {
     val c = appColors
     Button(
         onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken; testTag = tag },
@@ -1260,7 +1260,7 @@ internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: 
 /** A tonal button as tall as the group, beside [MainButton] ("Log manually", "Return to unfinished"). */
 @Composable
 internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier,
-                             labelStyle: TextStyle = AppType.title20, onClick: () -> Unit) {
+                             labelStyle: TextStyle = AppType.titleLarge, onClick: () -> Unit) {
     val c = appColors
     Button(
         onClick, modifier.semantics { testTag = tag }, shape = RoundedCornerShape(28.dp),

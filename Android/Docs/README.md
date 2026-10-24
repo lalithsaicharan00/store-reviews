@@ -101,6 +101,13 @@ Earlier work this builds on: [Plus, Price and the Server — How We Decided](<..
 | A60 | **The end page names what is left** (23 Oct 2026, flow 6): "2 left for later: Stretch and Skincare. Your progress is saved."; with everything done, "Morning is done" and "All 3 done today." **Review routine** opens Your routine; **Return to unfinished** (tonal) goes to the first one left and **Done** (ink) closes the player | the Figma frames for flows 6 and 7 |
 | A61 | **The player says the day in the same words as everywhere else, and repeats what another screen left to say** (23 Oct 2026, flows 3 and 18). The card's chip says **Today**, **Yesterday** or the date, so it is always clear where a log goes. A note written over the player (Saved · Undo · **Add note**) comes back to the same habit and says **Note saved** there; the same message shows on Day details when a note is written or changed from it | the Figma frames for flows 3, 18, 37 and 38 |
 | A62 | **The player's card gives its room to the words at large text** (23 Oct 2026, flow 25). A habit's name is always one line, ending in …; its description is one quiet line under the name, which opens in full in a sheet when it is tapped; at 200 % the cookie shrinks from 144 to 96 so the name, the count and the buttons keep their room, and the buttons keep their height | the Figma frames for flow 25 |
+| A63 | **Habits and Tasks are one page with two tabs** (23 Oct 2026, the Habits & Tasks flows). The menu's second row opens **Habits & Tasks**: the top bar is ☰ · the title · search · **+**, with no ⋮, and + makes what the tab is for (a habit on Habits, a task on Tasks). **Habits** is a card per habit, by time of day as on Today, each with the period's squares; **Tasks** is the Tasks list with its own One-time · Repeating. **Nothing is selected or held**: a long press does nothing, there is no Select, and every action is one row in a menu. The separate Tasks page and the separate Progress page are gone (the Habits tab is that view) | the Figma page `269:148` |
+| A64 | **A habit's card is its week, month or year** (23 Oct 2026). Week · Month · Year above the list, the period's dates with ‹ › under them, and a **This week** button back to now once you have stepped away; the period row stays while the cards scroll. A card is its icon, name and plan line, a headline on the habit's own clock ("Done on 6 of 6 days so far", "Within the limit on 4 of 5 days", "2 of 3 this week"), one more fact, and a square a day. The whole card opens Habit details; in Week and Month a **square opens that day's Day details**, and in Year the squares are too small to aim at, so the card opens the habit. At the end: Paused, the **Archived** row, and **What the squares mean**, folded | the Figma frames for flows 1–6 |
+| A65 | **A card's ⋮ is the whole of what you can do to a habit** (23 Oct 2026): **Edit habit**, **Pause…** (or **Resume** on a paused one), **Archive**, and **Delete** last, in red. Archive asks nothing and says "Water archived · Undo"; Pause and Resume say so with Undo; Delete asks with **Cancel** and **Delete** only, its body pointing at Archive in the same menu (D9), and the habit really goes only once its Undo has gone | the Figma frames for flows 7–11 |
+| A66 | **One search over habits and tasks** (23 Oct 2026, flows 14, 15, 31, 32). The top bar's search is the page's, not the tab's: Android's full-screen search view, "Search habits and tasks", the keyboard up, results as you type in two groups with their counts — **Habits** first, then **Tasks** — archived and done ones among them, saying so. Nothing matching says so and offers **+ New habit** and **+ New task**, each opening with the typed word as its name | the Figma frames for those flows |
+| A67 | **A quit card says its run in whole days** (23 Oct 2026): "31 days clean", with "Since 22 Sep · no slips this week" under it. It replaces the ticking "Current run 31 d 2 h", so nothing on the page ticks (S3). **A limit says "within the limit", never "max"**, on the cards as everywhere else (A48) | the Figma frames for flows 1 and 17 |
+| A68 | **Nothing is selected or held on Habits & Tasks, or on the pages it opens** (23 Oct 2026, the page's flows: "A long press does nothing", "One action, no selecting"). A hold on a card or a task row does nothing — no selection bar, no Select in a menu, no coach mark — and every action is one row in a ⋮: a habit's card (A65), a task's row (Edit task · Move to another day… · Duplicate · Archive · Delete, plus Skip this time on a repeating one, Do today · Pick a day… on one with no date), a completed task's (**Mark as not done** · **Delete**) and an archived one's (**Restore** · **Delete**). A page-wide action lives in that page's own top bar: **Completed tasks** has **Delete all completed**, which asks how many go and says that open and repeating tasks stay. The one hold that still does something is dragging a task within its day to reorder it; let go without moving and nothing happens. **Completed** and **Archived** are rows at the end of the Tasks list, since the shared top bar has no ⋮. This replaces U39 and U38's ⋮ for these pages | the Figma frames for flows 7–11 and 22–30 |
+| A69 | **The launcher icon follows the app's own theme** (the user, 24 Oct 2026: "whatever the current theme that we have in the app, actively based on that, the app icon should change"). Appearance on **System default** (the default) gives the phone's theme; set to **Light** or **Dark**, the icon follows the person's choice, not the phone's. **It is not a `-night` mipmap:** a launcher reads an app's icon when the package changes and caches it, and never reads it again on a theme change — measured on a moto g54, where the icon stayed light through a switch to dark and only turned dark on reinstall. So the two sets of artwork are two launcher entries (`LightIcon`, `DarkIcon`, each with its own `android:icon`) and the app enables exactly one (`AppIcon.follow`, from the same value that decides the app's own colours); enabling the other is itself the package change that makes the launcher read the icon again. The wanted one is enabled before the other is disabled, so the app is never without a launcher entry, and nothing happens unless the icon is actually wrong. **The home-screen shortcut survives the swap and changes with it** (checked on the moto g54, both ways and with Appearance set against the phone). A test launch never touches the person's icon (D8). The icon can only change while the app runs, so a theme changed with the app closed is picked up the next time it is opened | the Logo Guide's light and dark tonal sets (Figma `553:3653`) |
 
 **Recorded corrections** (so no agent repeats them): an early summary said Android people don't pay for sync; measured
 side by side they do, at least as much as on the iPhone (report §3–4). Day details was first proposed for the "last
@@ -270,6 +277,45 @@ milestone ribbon on the card and the landmark pop-up over the end page with "and
 
 The tablet test went with this change: the app is phones only (D16), so there is nothing to test. The wide-screen
 layout code stays where it is; it changes nothing on a phone.
+
+### Habits & Tasks, from the page's 35 flows (23 October 2026)
+
+The Figma page **Habits & Tasks** (`269:148`) replaces three pages with one (A63). What was built:
+
+- **The page**: ☰ · Habits & Tasks · search · +, the Habits · Tasks tabs, and the tab you left remembered.
+- **The Habits tab** (A64): Week · Month · Year and the period row over a card per habit, grouped by time of day,
+  Paused at the end, then the Archived row and What the squares mean. The cards, their squares and their numbers are
+  the Progress page's, now shared by both (one snapshot, built a frame at a time and kept, S5).
+- **The card's ⋮** (A65) and **the one search** (A66).
+- **The words** (A67): "31 days clean · Since 22 Sep · no slips this week"; "Within the limit on 5 of 5 days".
+- **The Tasks tab** (flows 20–35) is the One-time | Repeating list under the page's own top bar. Its row ⋮ follows the
+  design: **Move to another day…** opens the date picker at once, with no menu in between, and **Delete** is the word
+  alone. **Completed** and **Archived** are the last two rows of the list, on both tabs, each with its count — they
+  were in the old page's top-bar ⋮, which the shared top bar does not have.
+- **Nothing is selected or held** (A68): the selection bars, Select, the coach marks and the group dialog are gone from
+  the Habits tab, the Tasks tab and Completed tasks. **Completed tasks** gained what selection used to carry: **Delete**
+  in each row's ⋮, and **Delete all completed** in its own top bar's ⋮, asking how many go and what stays.
+- **The dead paths went with it**: the standalone Tasks page (its link redirects to the Tasks tab) and the Tasks search
+  it had, since the page's search covers both halves.
+
+**What the Progress page showed and the Habits tab does not** (U5): the group chips that filtered it (the same
+question as groups, below), and a card per **archived** habit with "Archived habits count for the days before they
+were archived" — the design ends the list with the **Archived** row instead, which opens the archived habits with
+their own history. Everything else it had (Week · Month · Year, the period row with ‹ ›, What the squares mean, a
+card per habit on its own goal's clock) is on the tab, with the ⋮ and the sections by time of day added.
+
+**Walked on the emulator**: both tabs, the period row, a card's ⋮ with Archive and Undo, the search from each tab
+(results in two groups, and the no-match with both pills), the empty Habits tab, the Completed and Archived rows,
+Completed's row ⋮ and Delete all completed (it names the one-time tasks it will delete, not every done row: a
+repeating task's done times are its history and stay with it, and the Completed row counts tasks, not times), Move to another day opening the picker straight away, and a 1.2 s hold doing nothing.
+
+**Still to do on this page**, and why: the Archived habits and Archived tasks pages keep their long-press selection
+(the design is silent on them; only their ⋮ wording was brought in line), the first-week and 200 % passes were not
+walked, and a square's tap can only be checked by hand — the card is one TalkBack element, so no Compose test can aim
+at a day. **One question for the user**: the design has no ⋮ on this page, so **groups** lost their way in (New group,
+Edit groups and Show by group were in the old page's ⋮). A habit's group is still set in its own form, and the Groups
+page and its route are untouched; it just has no entry point. The old `HabitsPage` list composable is left in the code,
+unused, with that machinery in it until the user decides.
 
 ## Results: Google Drive sync, stages 1–2 (11 October 2026)
 

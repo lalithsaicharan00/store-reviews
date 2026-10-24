@@ -28,13 +28,41 @@
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" />
+        <!--
+          The launcher icon follows the app's own theme (the user, 24 Oct 2026), so it is not a -night resource: a
+          launcher caches the icon it read when the package last changed and never re-reads it on a theme change
+          (measured on a moto g54). Instead there are two launcher entries, one per set of artwork, and the app
+          enables exactly one (AppIcon). Changing which is enabled is what makes the launcher read the icon again.
+        -->
+        <activity-alias
+            android:name=".app.LightIcon"
+            android:targetActivity=".app.MainActivity"
+            android:exported="true"
+            android:enabled="true"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
-        </activity>
+        </activity-alias>
+        <activity-alias
+            android:name=".app.DarkIcon"
+            android:targetActivity=".app.MainActivity"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@mipmap/ic_launcher_dark"
+            android:roundIcon="@mipmap/ic_launcher_dark"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+        </activity-alias>
         <receiver android:name=".app.reminders.ReminderReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

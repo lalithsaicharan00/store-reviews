@@ -299,32 +299,31 @@ private fun AppMain(
                         override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                     }) { nav.popBackStack() }
                 }
+                // Habits & Tasks: one page, two tabs (Figma 269:148, 23 Oct 2026).
                 MenuItem.HABITS.title -> WithMenu(store, MenuItem.HABITS, nav) { openMenu ->
-                    HabitsPage(store, object : HabitsNav {
-                        override val openMenu = openMenu
-                        override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
-                        override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
-                        override fun duplicate(habit: Habit) = nav.navigate(Routes.NEW + "?copy=${habit.id}&from=habits")
-                        override fun newHabit(name: String?) = nav.navigate(Routes.NEW + "?from=habits" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
-                        override fun ideas() = nav.navigate(Routes.page("Start from an idea"))
-                        override fun archived() = nav.navigate(Routes.ARCHIVED)
-                        override fun arrange() = nav.navigate(Routes.page("Arrange your day"))
-                        override fun editGroups() = nav.navigate(Routes.GROUPS)
-                        override fun openGroup(id: String) = nav.navigate(Routes.group(id))
-                        override fun tasks() = nav.navigate(Routes.page(TASKS_PAGE))
-                        override fun progress() = nav.navigate(Routes.page(SettingsPage.PROGRESS))
-                    })
+                    WithDay(store, nav) { openTheDay ->
+                        com.oftenenough.app.ui.habit.HabitsTasksPage(store, object : HabitsNav {
+                            override val openMenu = openMenu
+                            override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                            override fun openDay(habit: Habit, day: Int) = openTheDay(habit, day)
+                            override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
+                            override fun duplicate(habit: Habit) = nav.navigate(Routes.NEW + "?copy=${habit.id}&from=habits")
+                            override fun newHabit(name: String?) = nav.navigate(Routes.NEW + "?from=habits" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
+                            override fun ideas() = nav.navigate(Routes.page("Start from an idea"))
+                            override fun archived() = nav.navigate(Routes.ARCHIVED)
+                            override fun arrange() = nav.navigate(Routes.page("Arrange your day"))
+                            override fun editGroups() = nav.navigate(Routes.GROUPS)
+                            override fun openGroup(id: String) = nav.navigate(Routes.group(id))
+                            override fun tasks() = nav.navigate(Routes.page(TASKS_PAGE))
+                            override fun progress() = nav.navigate(Routes.page(SettingsPage.PROGRESS))
+                        }, tasksNav(nav, openMenu))
+                    }
                 }
-                TASKS_PAGE -> WithMenu(store, MenuItem.HABITS, nav) { openMenu ->
-                    com.oftenenough.app.ui.habit.TasksPage(store, object : com.oftenenough.app.ui.habit.TasksNav {
-                        override val openMenu = openMenu
-                        override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
-                        override fun edit(task: Habit) = nav.navigate(Routes.edit(task.id))
-                        override fun duplicate(task: Habit) = nav.navigate(Routes.NEW + "?copy=${task.id}&from=tasks")
-                        override fun newTask(name: String?) = nav.navigate(Routes.NEW + "?from=tasks" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
-                        override fun completed() = nav.navigate(Routes.COMPLETED_TASKS)
-                        override fun archived() = nav.navigate(Routes.ARCHIVED_TASKS)
-                    })
+                // The old Tasks page's link, kept for anything still pointing at it: Habits & Tasks, on Tasks.
+                TASKS_PAGE -> LaunchedEffect(Unit) {
+                    com.oftenenough.app.ui.habit.HabitsTasksOpen.onTasks = true
+                    nav.popBackStack()
+                    nav.navigate(Routes.page(MenuItem.HABITS.title))
                 }
                 SettingsPage.KEEP_REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersPage(prefs) { nav.popBackStack() }
                 SettingsPage.REMINDERS -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
@@ -582,6 +581,16 @@ private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostControlle
 }
 
 /** Day details' way out to the pages it opens; [close] closes the sheet first where a page replaces it. */
+private fun tasksNav(nav: NavHostController, openMenu: (() -> Unit)?) = object : com.oftenenough.app.ui.habit.TasksNav {
+    override val openMenu = openMenu
+    override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
+    override fun edit(task: Habit) = nav.navigate(Routes.edit(task.id))
+    override fun duplicate(task: Habit) = nav.navigate(Routes.NEW + "?copy=${task.id}&from=tasks")
+    override fun newTask(name: String?) = nav.navigate(Routes.NEW + "?from=tasks" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
+    override fun completed() = nav.navigate(Routes.COMPLETED_TASKS)
+    override fun archived() = nav.navigate(Routes.ARCHIVED_TASKS)
+}
+
 private fun dayNav(nav: NavHostController, close: () -> Unit) = object : DayNav {
     override fun habitPage(habit: Habit) { close(); nav.navigate(Routes.habit(habit.id)) }
     override fun allMilestones(habit: Habit) { com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id; habitPage(habit) }
