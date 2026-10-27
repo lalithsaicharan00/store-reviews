@@ -14,6 +14,9 @@ Rulebook's "Starting again" section first: it says what still holds.
 
 ## Everything else
 
+- [`Implementation — Up Next.md`](<Implementation — Up Next.md>) — what ships at launch (and what's in Plus), then the order
+  of everything after it: Reports, languages one at a time, App Lock, and the later platforms.
+
 - `Brand/` — the current Often Enough logo guide, decision history and exported assets. Follow
   [`Brand/Logo Guide.md`](<Brand/Logo Guide.md>) for reproduction (U29); the research archive preserves rejected directions.
 - `Research/` — all store-review research. Its rules are in [`Research/CLAUDE.md`](Research/CLAUDE.md);
