@@ -7,7 +7,6 @@ import com.oftenenough.app.ui.components.StandardIconButton
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -52,12 +51,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.app.Prefs
@@ -71,10 +70,13 @@ import com.oftenenough.app.data.ProgressSnapshot
 import com.oftenenough.app.data.ProgressWeekCard
 import com.oftenenough.app.data.progressBuilder
 import com.oftenenough.app.data.title
-import com.oftenenough.app.ui.components.Card
+import com.oftenenough.app.ui.components.HabitHistoryCard
+import com.oftenenough.app.ui.components.HistoryHabitHeader
+import com.oftenenough.app.ui.components.HistoryMonth
+import com.oftenenough.app.ui.components.HistorySummary
+import com.oftenenough.app.ui.components.HistoryWeek
+import com.oftenenough.app.ui.components.HistoryYear
 import com.oftenenough.app.ui.components.CookieIcon
-import com.oftenenough.app.ui.components.CookieShape
-import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.habit.HeatKeyCard
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
@@ -305,12 +307,12 @@ private fun tagName(name: String): String = name.trim().lowercase().replace(Rege
 private val headlineStyle = AppType.titleLargeEmphasized
 
 /**
- * One habit's card: icon, name on one line, the goal; the headline and at most one more fact; the period's squares.
- * The card opens the habit; a square of a day up to today opens that day's details.
+ * One habit's card, the Habit history card (4.15) with the habit's header: icon, name and goal on one line each; the
+ * summary and at most one more fact; the period's squares. The card opens the habit; a square of a day up to today
+ * opens that day's details.
  */
 @Composable
 private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: HabitStore, nav: ProgressNav, modifier: Modifier) {
-    val c = appColors
     val habit = card.habit
     // From the largest text sizes, the squares give way to the words, which carry the meaning.
     val big = LocalDensity.current.fontScale >= 1.8f
@@ -319,49 +321,23 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
         if (d != null && d.heat != HeatCell.Blank && d.day <= snap.today) nav.openDay(habit, d.day) else nav.openHabit(habit)
     }
     val tag = (if (card.isQuit) "progress-quit-" else "progress-row-") + tagName(habit.name)
-    Card(modifier.fillMaxWidth()) {
-        Column(
-            Modifier.fillMaxWidth()
-                .clickable(onClickLabel = "Opens the habit", role = Role.Button) { nav.openHabit(habit) }
-                // TalkBack: the whole card is one element that says everything (the squares are in its words).
-                .clearAndSetSemantics { contentDescription = card.accessibility; testTag = tag }
-                .padding(20.dp),
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                HabitIcon(habit.symbol, habit.color, 44.dp, CookieShape())
-                Spacer(Modifier.width(16.dp))
-                Column(Modifier.weight(1f)) {
-                    // One line: a long name ends in "…".
-                    Text(habit.name, maxLines = 1, overflow = TextOverflow.Ellipsis, color = c.ink,
-                        style = AppType.bodyLarge)
-                    Text(card.goal, maxLines = 1, overflow = TextOverflow.Ellipsis, color = c.secondary, style = MaterialTheme.typography.bodyMedium)
-                }
-                Spacer(Modifier.width(8.dp))
-                Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
-            }
-            Spacer(Modifier.height(16.dp))
-            val start = card.runStart
-            if (start != null) QuitRunClock(start, store.clock) else Text(card.headline, style = headlineStyle, color = c.ink)
-            card.detail?.let {
-                Spacer(Modifier.height(4.dp))
-                Text(it, style = MaterialTheme.typography.bodyMedium.copy(fontFeatureSettings = "tnum"), color = c.secondary)
-            }
-            if (!big) {
-                when (snap.range) {
-                    ProgressRange.WEEK -> if (snap.columns.size == card.heat.size) {
-                        Spacer(Modifier.height(16.dp))
-                        HeatWeek(snap.columns, card.heat, habit.color, onCell)
-                    }
-                    ProgressRange.MONTH -> if (snap.columns.size == card.heat.size) {
-                        Spacer(Modifier.height(16.dp))
-                        HeatMonth(snap.monthLead, snap.letters, snap.columns.indexOfFirst { it.isToday }.takeIf { it >= 0 }, card.heat, habit.color, onCell)
-                    }
-                    ProgressRange.YEAR -> snap.year?.let { year ->
-                        if (card.heat.size >= year.shown) {
-                            Spacer(Modifier.height(16.dp))
-                            HeatYear(year, card.heat, habit.color, onCell)
-                        }
-                    }
+    // TalkBack: the whole card is one element that says everything (the squares are in its words).
+    HabitHistoryCard(modifier.clearAndSetSemantics { contentDescription = card.accessibility; testTag = tag; onClick(label = "Opens the habit") { nav.openHabit(habit); true } },
+        onClick = { nav.openHabit(habit) }, onClickLabel = "Opens the habit") {
+        HistoryHabitHeader(habit.symbol, habit.color, habit.name, card.goal) {
+            Icon(Symbols.KeyboardArrowRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        val start = card.runStart
+        if (start != null) HistorySummary(card.detail) { QuitRunClock(start, store.clock) } else HistorySummary(card.headline, card.detail)
+        if (!big) {
+            val todayIndex = snap.columns.indexOfFirst { it.isToday }.takeIf { it >= 0 }
+            when (snap.range) {
+                ProgressRange.WEEK -> if (snap.columns.size == card.heat.size)
+                    HistoryWeek(snap.columns.map { it.short }, card.heat, todayIndex, habit.color, onTap = onCell)
+                ProgressRange.MONTH -> if (snap.columns.size == card.heat.size)
+                    HistoryMonth(snap.letters, snap.monthLead, card.heat, todayIndex, habit.color, onTap = onCell)
+                ProgressRange.YEAR -> snap.year?.let { year ->
+                    if (card.heat.size >= year.shown) HistoryYear(year, card.heat, habit.color, onCell)
                 }
             }
         }

@@ -1415,17 +1415,6 @@ fun HabitStore.noteIndexes(habit: Habit, span: IntRange): Set<Int> {
 }
 
 /**
- * What an amount habit recorded each day of [span], under its square (Figma 3.5: "22", "0", "12"): from the start to
- * today; nothing for days to come or before it began. Null for a habit that isn't counted in amounts or minutes.
- */
-fun HabitStore.amountsUnder(habit: Habit, span: IntRange, today: Int): List<String>? {
-    val rule = rule(habit, today)
-    if (rule.kind !is HabitKind.Amount && rule.kind != HabitKind.Duration) return null
-    val start = rules.startDay(habit)
-    return span.map { day -> if (day < start || day > today) "" else HabitCopy.number(Math.rint(rules.dayProgress(habit, day))) }
-}
-
-/**
  * A week goal's Week column on the month (Figma 3.4: "Met", "1 of 3"), one label per row of the grid; each row is a week
  * on the person's week start. Null for a goal that isn't counted by the week. Weeks to come say nothing.
  */

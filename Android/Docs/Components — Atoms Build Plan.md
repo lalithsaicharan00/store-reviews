@@ -90,7 +90,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 ### 4. Later: built from the atoms
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
-ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile ☑ (4.14), Habit history card, Overall record
+ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile ☑ (4.14), Habit history card ☑ (4.15), Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
@@ -1108,3 +1108,47 @@ What each atom changed, newest last.
   - The tiles' grid (two a row, 8 apart, one a row from 150 % text) and which tile a quit habit tints are the Overall
     record card's, 4.16; a quit habit's current run keeps the 🔥 it had as a flame.
   - Figma draws light only; in dark the Fill is the colour at 24 % on the card (1.20).
+  - **Built:** run 40764348850 (Android #111, commit 77e6ce7) passed: assembleDebug, unit tests and lint.
+- **4.15 Habit history card (28 Oct).** Figma: Habit history card (978:1598), Period Week · Month · Year · Year scrolled
+  back, with Habit header, Period header, Comparison, Daily chart and Week 6; no motion. 124 instances on Habits &
+  Tasks (Habit header: Week, Month, Year) and 22 on Habit details › Progress (Period header, the comparison, and
+  Recorded each day on Month). Built as `ui/components/HabitHistoryCard.kt`: the card (Surface container lowest, 24
+  corners, 16 at the top, 20 at the start and bottom, 12 at the end, 12 apart) and its parts in Figma's order:
+  `HistoryHabitHeader` (the 40 dp avatar, Title Medium over Body Medium, a trailing slot), `HistoryPeriodHeader`
+  (Title Medium over Body Medium, ‹ ›), `HistorySummary` (Title Large Emphasized over Body Medium, 2 apart),
+  `HistoryWeek` and `HistoryMonth` (weekday names in Body Small, today's in Label Medium On surface; the squares 36
+  and 6 apart, 8 under the names in Week, 6 in Month), `HistoryYear` (letters 12 wide, 6, weeks of 24 squares 4 apart
+  under the months in Body Small; scrolls and opens on the latest week), `HistorySection` (a divider, the heading in
+  Label Large, 12 apart) and `HistoryDailyChart`. Every card's squares are one Canvas (S12). Moved: the Progress
+  page's habit cards (Week, Month, Year) and Habit details' Week and Month cards, the Year in Pixels card's header.
+  Deleted: `ui/progress/HeatMap.kt` (its grid, week, month, year and sizes), `HeatMonthGrid`, Habit details'
+  `DayNames` and `PeriodHeader`, `ui/charts/Charts.kt` (`LightBarChart`, `ChartAxis`) and `amountsUnder`. The tags
+  (`progress-row-…`, `habit-progress-week`, `week-strip`, `month-grid`, `previous-…`, `next-…`, `habit-comparison`,
+  `habit-month-chart`) and the spoken words stay. The app, the unit tests (55) and the instrumented tests' code build
+  in the session.
+  Fixed:
+  - Both cards had 16 or 20 all round and 16 or 4 between their parts; now Figma's 16 / 20 / 12 and 12, the summary
+    and its line 2 apart. Habit details' summary was Title Large; now Title Large Emphasized.
+  - The squares were spread to fill the card's width (each a seventh, up to 36); now Figma's 36, 6 apart, as drawn.
+  - The weekday names were Body Medium (today's underlined) on the Progress page and Label Medium on Habit details;
+    now Body Small, today's in Label Medium On surface, no underline.
+  - Habit details' Month put the day's number over every square, the amount under it and a dot for a note; Figma's
+    Month has none of them (A60 for the dots). The amounts stay in Recorded each day.
+  - The Progress page's icon was 44 in a cookie; now the list item's 40 dp circle. Its name was Body Large; now
+    Title Medium.
+  - Year: the letters were Label Medium in a 16 column, 4 from the weeks, the months Label Medium in an 18 row; now
+    Body Small, 12, 6 and 16 + 4.
+  - Recorded each day and the comparison now sit under a divider each, their headings in Label Large (the
+    comparison's was Title Small), the comparison's rows 8 in from the end as drawn.
+  - Recorded each day was an auto-scaled chart with ticks every step, a dashed goal line and a day number every
+    week; now Figma's: the goal at 96 of 120 (bars stop at 120), lines at the goal, half of it and the baseline in
+    Outline variant, the goal's and the half's amounts in the habit's own words at the end ("8 glasses"), bars two
+    thirds of their slot with top corners 2, and the 1st and today under them.
+  Noted, not changed:
+  - Figma's Habits & Tasks header ends in ⋮ (Edit habit, Pause…, Archive, Delete; A54); the Progress page keeps its
+    chevron until Habits & Tasks is built (section 5), which also brings Week · Month · Year as A54 has them.
+  - A week goal's Week column ("Met", "1 of 3") isn't in Figma's Month; kept, the squares then 32. The user's call.
+  - With no daily goal (a week or month total), the most in a day takes the goal's place on the chart; in a past
+    month only the 1st is numbered. Figma draws only a daily goal in the current month.
+  - The squares keep Figma's 288 dp: on a wider phone the room is at the card's end, as Figma's card hugs them.
+  - Figma draws light only; the squares, lines and words take the dark scheme's roles.

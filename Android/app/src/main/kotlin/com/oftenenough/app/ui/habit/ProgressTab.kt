@@ -1,14 +1,19 @@
 package com.oftenenough.app.ui.habit
 
-import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.components.Medal
 import com.oftenenough.app.ui.components.MilestonesCard
 import com.oftenenough.app.ui.components.StatTile
+import com.oftenenough.app.ui.components.HabitHistoryCard
+import com.oftenenough.app.ui.components.HistoryDailyChart
+import com.oftenenough.app.ui.components.HistoryMonth
+import com.oftenenough.app.ui.components.HistoryPeriodHeader
+import com.oftenenough.app.ui.components.HistorySection
+import com.oftenenough.app.ui.components.HistorySummary
+import com.oftenenough.app.ui.components.HistoryWeek
 import com.oftenenough.app.ui.components.NextMilestone
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.components.ComparisonRow
-import com.oftenenough.app.ui.components.StandardIconButton
 import com.oftenenough.app.ui.components.segmentShape
 import androidx.compose.foundation.lazy.itemsIndexed
 import com.oftenenough.app.ui.theme.AppType
@@ -37,7 +42,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -60,8 +64,6 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.Habit
@@ -95,11 +97,8 @@ import com.oftenenough.app.data.quitPeriodCard
 import com.oftenenough.app.data.recordedEachDay
 import com.oftenenough.app.data.quitRecord
 import com.oftenenough.app.data.noteIndexes
-import com.oftenenough.app.data.amountsUnder
+import com.oftenenough.app.data.progressValue
 import com.oftenenough.app.data.weekLabels
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.ui.input.pointer.pointerInput
-import com.oftenenough.app.ui.charts.LightBarChart
 import com.oftenenough.app.ui.theme.appColors
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -354,7 +353,7 @@ private fun trackTitle(track: Milestone.Track, totalLabel: String): String = whe
 private class PeriodView(
     val span: IntRange, val subtitle: String, val card: PeriodCard?, val comparison: PeriodComparison?, val lead: Int,
     val bars: Pair<List<Double>, Double?>?, val canGoBack: Boolean, val canGoForward: Boolean, val todayIndex: Int?,
-    val notes: Set<Int>, val below: List<String>?, val weekLabels: List<String>?,
+    val weekLabels: List<String>?,
 )
 
 private fun periodView(store: HabitStore, habit: Habit, week: Boolean, anchor: Int?, today: Int): PeriodView {
@@ -376,122 +375,65 @@ private fun periodView(store: HabitStore, habit: Habit, week: Boolean, anchor: I
         canGoBack = span.first > first,
         canGoForward = span.last < today,
         todayIndex = if (today in span) today - span.first else null,
-        notes = store.noteIndexes(habit, span),
-        below = if (week || quit) null else store.amountsUnder(habit, span, today),
         weekLabels = if (week || quit) null else store.weekLabels(habit, span, pageMonthLead(span.first, store.weekStart), today),
     )
 }
 
-/** The Week or Month card: its dates with ‹ ›, what was recorded on the goal's own clock, the squares, the amount
- *  recorded each day (Month), and the period against the one before. */
+/** The Week or Month card (the Habit history card, 4.15): its dates with ‹ ›, what was recorded on the goal's own
+ *  clock, the squares, the amount recorded each day (Month), and the period against the one before. */
 @Composable
 private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today: Int, revision: Int, onOpenDay: (Int) -> Unit) {
     val c = appColors
     var anchor by rememberSaveable(habit.id, week) { mutableStateOf<Int?>(null) }
     val view = remember(habit, revision, today, anchor, store.weekStart) { periodView(store, habit, week, anchor, today) }
     val noun = if (week) "week" else "month"
-    PageCard(if (week) "habit-progress-week" else "habit-progress-month") {
-        PeriodHeader(if (week) "Week" else "Month", view.subtitle, noun, view.canGoBack, view.canGoForward) { step ->
+    HabitHistoryCard(Modifier.pageItem().semantics { testTag = if (week) "habit-progress-week" else "habit-progress-month" }) {
+        HistoryPeriodHeader(if (week) "Week" else "Month", view.subtitle, noun, view.canGoBack, view.canGoForward) { step ->
             val next = if (step < 0) view.span.first - 1 else view.span.last + 1
             anchor = if (next >= today || store.rules.period(if (week) PeriodKind.WEEK else PeriodKind.MONTH, next).contains(today)) null else next
         }
         val card = view.card
         if (card != null) {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(card.headline, style = MaterialTheme.typography.titleLarge, color = c.ink)
-                card.detail?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = c.secondary) }
-            }
+            HistorySummary(card.headline, card.detail)
             if (card.days.size == view.span.last - view.span.first + 1) {
                 val cells = remember(card) { card.days.map { it.heat } }
-                if (week) {
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        DayNames(pageWeekdayNames(store.weekStart), view.todayIndex)
-                        HeatStrip(cells, view.todayIndex, habit.color, DayCellSize.week, Modifier.semantics { testTag = "week-strip" }.pointerInput(view.span) {
-                            // A tap opens that day (Figma 4.1); a day to come does nothing.
-                            detectTapGestures { at ->
-                                val i = (at.x / (size.width.toFloat() / cells.size)).toInt()
-                                val day = view.span.first + i
-                                if (i in cells.indices && day <= today && cells[i] != HeatCell.Blank) onOpenDay(day)
-                            }
-                        })
-                    }
-                } else {
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        DayNames(pageWeekdayLetters(store.weekStart) + listOfNotNull(view.weekLabels?.let { "Week" }), view.todayIndex?.let { (view.lead + it) % 7 })
-                        HeatMonthGrid(view.lead, cells, view.todayIndex, habit.color, size = if (view.weekLabels != null) 32.dp else DayCellSize.week,
-                            notes = view.notes, below = view.below, weekLabels = view.weekLabels) { i -> onOpenDay(view.span.first + i) }
-                    }
+                // A tap opens that day (Figma 4.1); a day to come does nothing.
+                val open: (Int?) -> Unit = { i ->
+                    if (i != null && view.span.first + i <= today && cells[i] != HeatCell.Blank && cells[i] != HeatCell.Upcoming) onOpenDay(view.span.first + i)
                 }
+                if (week) HistoryWeek(pageWeekdayNames(store.weekStart), cells, view.todayIndex, habit.color, Modifier.semantics { testTag = "week-strip" }, open)
+                else HistoryMonth(pageWeekdayLetters(store.weekStart), view.lead, cells, view.todayIndex, habit.color,
+                    Modifier.semantics { testTag = "month-grid" }, view.weekLabels, open)
             }
             val bars = view.bars
             if (bars != null) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Recorded each day", style = AppType.labelLarge, color = c.ink)
-                    val labels = remember(bars) { bars.first.indices.map { i -> if (i % 7 == 0) "${i + 1}" else "" } }
-                    LightBarChart(
-                        values = bars.first,
-                        color = c.habit(habit.color),
-                        description = "Recorded each day in " + pageMonthTitle(view.span.first, today) + (card.detail?.let { ": $it" } ?: ""),
-                        modifier = Modifier.fillMaxWidth().height(140.dp).semantics { testTag = "habit-month-chart" },
-                        goal = bars.second,
-                        labels = labels,
-                    )
+                HistorySection("Recorded each day") {
+                    val ruled = remember(habit, revision, view.span) { store.rule(habit, minOf(view.span.last, today)) }
+                    HistoryDailyChart(bars.first, bars.second, view.todayIndex, habit.color, { progressValue(it, ruled) },
+                        "Recorded each day in " + pageMonthTitle(view.span.first, today) + (card.detail?.let { ": $it" } ?: ""),
+                        Modifier.semantics { testTag = "habit-month-chart" })
                 }
             }
         } else {
             Text(if (habit.kind == HabitKind.Quit) "Nothing recorded this $noun." else "Not started yet this $noun.",
-                style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+                style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        view.comparison?.let { comparison ->
-            HorizontalDivider()
-            ComparisonView(comparison, habit.color)
-        }
+        view.comparison?.let { ComparisonView(it, habit.color) }
     }
 }
 
-/** The weekday names (or letters) over the squares; today's in Medium, in ink (Figma 1.5, 3.3). */
-@Composable
-private fun DayNames(names: List<String>, todayColumn: Int?) {
-    Row(Modifier.fillMaxWidth().clearAndSetSemantics { }) {
-        names.forEachIndexed { i, name ->
-            val isToday = i == todayColumn
-            Text(name, Modifier.weight(1f), style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = if (isToday) FontWeight.Medium else FontWeight.Normal,
-            ), color = if (isToday) appColors.ink else appColors.secondary, textAlign = TextAlign.Center, maxLines = 1)
-        }
-    }
-}
-
-/** A card's title and scope, with ‹ › for the period before and after. */
-@Composable
-private fun PeriodHeader(title: String, subtitle: String, noun: String, canGoBack: Boolean, canGoForward: Boolean, move: (Int) -> Unit) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }) {
-            Text(title, style = AppType.titleMedium, color = c.ink)
-            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-        }
-        StandardIconButton(Symbols.KeyboardArrowLeft, "Previous $noun", { move(-1) },
-            Modifier.semantics { testTag = "previous-$noun" }, enabled = canGoBack)
-        StandardIconButton(Symbols.KeyboardArrowRight, "Next $noun", { move(1) },
-            Modifier.semantics { testTag = "next-$noun" }, enabled = canGoForward)
-    }
-}
-
-/** This period and the one before, as two Comparison rows (molecule 4.6) with exact values, both in the habit's colour;
- *  no arrows, no better or worse. */
+/** This period and the one before (Figma's Comparison: "Same days last week"), as two Comparison rows (molecule 4.6)
+ *  with exact values, both in the habit's colour; no arrows, no better or worse. */
 @Composable
 private fun ComparisonView(comparison: PeriodComparison, color: HabitColor) {
-    val c = appColors
-    Column(Modifier.semantics(mergeDescendants = true) { testTag = "habit-comparison" }, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(comparison.title, style = MaterialTheme.typography.titleSmall, color = c.ink)
+    HistorySection(comparison.title, Modifier.semantics(mergeDescendants = true) { testTag = "habit-comparison" }) {
         val note = comparison.note
         if (note != null) {
-            Text(note, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
+            Text(note, style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         } else {
             val top = maxOf(comparison.thisValue ?: 0.0, comparison.previousValue ?: 0.0, 0.0001)
-            ComparisonRow(comparison.thisLabel, comparison.thisText, ((comparison.thisValue ?: 0.0) / top).toFloat(), color)
-            ComparisonRow(comparison.previousLabel, comparison.previousText, ((comparison.previousValue ?: 0.0) / top).toFloat(), color)
+            ComparisonRow(comparison.thisLabel, comparison.thisText, ((comparison.thisValue ?: 0.0) / top).toFloat(), color, Modifier.padding(end = 8.dp))
+            ComparisonRow(comparison.previousLabel, comparison.previousText, ((comparison.previousValue ?: 0.0) / top).toFloat(), color, Modifier.padding(end = 8.dp))
         }
     }
 }
@@ -532,7 +474,7 @@ private fun YearCard(habit: Habit, store: HabitStore, today: Int, revision: Int,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Box(Modifier.padding(start = 4.dp)) {
-            PeriodHeader("Year in Pixels", if (shown == thisYear) "$shown · This year" else "$shown", "year",
+            HistoryPeriodHeader("Year in Pixels", if (shown == thisYear) "$shown · This year" else "$shown", "year",
                 shown > view.earliestYear, shown < thisYear) { step ->
                 year = if (shown + step == thisYear) null else shown + step
             }
