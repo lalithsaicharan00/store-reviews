@@ -85,6 +85,7 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.Placement
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.DayNavigation
+import com.oftenenough.app.ui.components.EmptyState
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
@@ -664,24 +665,18 @@ fun DayBar(store: HabitStore, day: Int, today: Int, onPrevious: () -> Unit, onNe
 }
 
 /**
- * No habits yet (Figma `36:32`, 22 October 2026). **This is the first screen of the app**: there is no onboarding any
- * more, so someone who opens Often Enough for the first time lands on Today and sees exactly this. It is shown only
- * while there are no habits at all, and it offers the only two things worth offering then — make one, or bring back
- * the ones you already had. Never a dead end (onboarding report §4).
+ * No habits yet (Figma 547:2419, the Empty state, 5.1.2; 22 October 2026). **This is the first screen of the app**:
+ * there is no onboarding any more, so someone who opens Often Enough for the first time lands on Today and sees
+ * exactly this. It is shown only while there are no habits at all, and it offers the only two things worth offering
+ * then — make one, or bring back the ones you already had. Never a dead end (onboarding report §4).
  */
 @Composable
 private fun NoHabitsYet(nav: TodayNav) {
-    Column(Modifier.fillMaxSize().padding(horizontal = 32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        CookieIcon(Symbols.Checklist, size = 112.dp)
-        Spacer(Modifier.height(16.dp))
-        Text("No habits yet", style = AppType.headlineSmallEmphasized, color = appColors.ink)
-        Spacer(Modifier.height(8.dp))
-        Text("Add something you’d like to do often enough.", Modifier.widthIn(max = 268.dp), style = AppType.bodyLarge,
-            color = appColors.secondary, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(24.dp))
-        AppButton("New habit", nav::newHabit, icon = Symbols.Add)
-        Spacer(Modifier.height(8.dp))
-        AppButton("Restore from a backup", nav::restore, style = ButtonStyle.Tonal, icon = Symbols.SettingsBackupRestore)
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        EmptyState(Symbols.Checklist, "No habits yet", "Add something you’d like to do often enough.") {
+            AppButton("New habit", nav::newHabit, icon = Symbols.Add)
+            AppButton("Restore from a backup", nav::restore, style = ButtonStyle.Tonal, icon = Symbols.SettingsBackupRestore)
+        }
     }
 }
 

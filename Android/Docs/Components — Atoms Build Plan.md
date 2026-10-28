@@ -105,7 +105,7 @@ reminder, sync or backup does (the build prompt's rule).
 | # | Component | Figma | Status |
 |---|---|---|---|
 | 5.1.1 | Onboarding · Splash | 553:2427 | ☑ |
-| 5.1.2 | Onboarding · Today, no habits yet | 547:2419 | ☐ |
+| 5.1.2 | Onboarding · Today, no habits yet | 547:2419 | ☑ |
 | 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☐ |
 | 5.1.4 | Onboarding · Restoring | 582:7893 | ☐ |
 | 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☐ |
@@ -1315,3 +1315,20 @@ What each atom changed, newest last.
   - The white is the Logo Guide's, not a colour role (Figma uses no style there); kept.
   - Figma draws light only; in dark the splash is #0D0D0D with the dark foreground (`values-night`,
     `drawable-night`), from the Logo Guide (13 Oct 2026).
+  - **Built:** run 40770191493 (Android #116, commit 9675fd1) passed: assembleDebug, unit tests and lint.
+- **5.1.2 Onboarding · Today, no habits yet (28 Oct).** Figma: Today, no habits yet (547:2419), one screen, no
+  properties and no motion; fourteen instances in the onboarding flows. Today's top bar (☰ and +; built with Today,
+  5.2.2) over the empty state, built as `ui/components/EmptyState.kt`: centred in what's left, 16 at the sides, the
+  checklist glyph (48) in a 112 dp cookie of Surface container highest, On surface; 16; "No habits yet" in Headline
+  Small Emphasized On surface over "Add something you'd like to do often enough." in Body Large On surface variant, 8
+  apart, centred, the full width; 24; New habit (Filled, Small, +) over Restore from a backup (Tonal, Small), 8
+  apart. Moved: Today's `NoHabitsYet`. The words FirstRunTest reads stay. The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - The cookie was Secondary container (the same grey in light, not the same role); now Surface container highest.
+    The glyph was 50; now 48.
+  - The words were held to 268 dp, 32 in at the sides; now the full width, 16 in, as drawn.
+  Noted, not changed:
+  - Figma's cookie is a nine-point star with sharp points (inner radius 0.86); the app's `CookieShape` is the same
+    nine scallops, rounded, as Material's cookie shapes are. Kept.
+  - Today's other empty states (Nothing planned, Nothing from a group) keep their own layout until Today (5.2.2).
