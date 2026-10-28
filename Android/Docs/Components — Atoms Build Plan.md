@@ -89,7 +89,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 ### 4. Later: built from the atoms
 
-Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row, Comparison row, Card notice, Milestone bar, Milestone
+Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row, Card notice, Milestone bar, Milestone
 ribbon, Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
@@ -817,3 +817,30 @@ What each atom changed, newest last.
     time of day should keep Start.
   - Figma draws Paused open on every screen; the code opens it folded. That's Today's own choice, for the Today screen.
   - The switch to the 200% layout is at font scale 1.5 (Figma has only 100 % and 200 %).
+  - **Built:** run 40734638057 (Android #101, commit ce4eefb) passed: assembleDebug, unit tests and lint.
+- **4.5 Run row (28 Oct).** Figma: Run row (1034:2), one component, no motion; used only on the Streaks page
+  (`Screen=Streaks` and its flow, 6 instances). The length in Title Medium (On surface) taking the room left and the
+  dates in Body Medium (On surface variant), 12 apart on one baseline; 8 under them, the track, 8 tall, corners 4,
+  Surface container high. The bar is the run's share of the longest (the longest fills it; 12 of 23 days leaves 138 of
+  288), in the habit's **Colour** for the run going on now and its **Pale** for an earlier one. On the screen, the rows
+  sit 16 apart in a white card (24 corners, 20 inside) under "3 runs", 16 below it.
+  Built as `RunRow` (`ui/components/RunRow.kt`), and `appColors.habitPale` (`ui/theme/Theme.kt`): Figma's 13 Pale
+  colours (tone 75), beside Fill and Band. In dark it's the colour at 60 % on the card, as Figma draws light only. The
+  Streaks page (a quit habit's Runs too) moved onto it; its own `RunRow` is gone. The tags (`run-current`, `run`) and
+  each run's spoken words stay (T3).
+  Fixed:
+  - An earlier run's bar was the habit's colour at 60 %; now its Pale.
+  - The track was Secondary container (#E2E2E2); now Surface container high (#E8E8E8).
+  - The length and dates were centred on each other; now on one baseline.
+  - Runs sat 20 apart (10 above and below each) and 14 under the title; now 16 and 16, as drawn. The note follows 16
+    under the last run (it was 22).
+  Noted, not changed:
+  - **For the user:** Figma's Pale styles each say "the light end of the medal's gradient, and nothing else", but the
+    Run row (and its screen) uses Pale for an earlier run's bar. Built as the Run row draws it. Should the Pale
+    descriptions mention the Streaks page, or should earlier runs take another colour?
+  - Figma's page puts the note ("Runs of 3 days or more …", Body Small) under the card, 16 below it; the code keeps it
+    as the card's last line. Its habit line is 20 from the screen's edge (16 and 4) where the code has 28. Both belong
+    to the Streaks page component (`Streaks page`, 1034:74), for when it's built.
+  - A share too small to see keeps 3 % of the track (the code's, kept), so a 3-day run beside a 300-day one still
+    shows a bar. Figma's formula has no least width.
+  - The Pale values are also the medal's top (`Medal.kt`'s own list); left as they are.

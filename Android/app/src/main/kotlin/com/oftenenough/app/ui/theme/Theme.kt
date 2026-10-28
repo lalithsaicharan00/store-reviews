@@ -70,6 +70,12 @@ data class AppColors(
      */
     fun habitBand(c: HabitColor): Color = if (dark) habit(c).copy(alpha = 0.28f).compositeOver(surface) else habitBandLight.getValue(c)
 
+    /**
+     * A habit's Pale (Figma's "Habit / <colour> / Pale", tone 75): the light end of its medal's gradient, and an earlier
+     * run's bar on the Streaks page (4.5). Light only in Figma; in dark it's the colour at 60 % on the card.
+     */
+    fun habitPale(c: HabitColor): Color = if (dark) habit(c).copy(alpha = 0.6f).compositeOver(surface) else habitPaleLight.getValue(c)
+
     /** The progress fill behind a row: a light tint of the habit's colour on the card (Figma: 16 %, 18 % once full). */
     fun fill(c: HabitColor, full: Boolean = true): Color =
         habit(c).copy(alpha = if (dark) (if (full) 0.28f else 0.24f) else (if (full) 0.18f else 0.16f)).compositeOver(surface)
@@ -117,6 +123,13 @@ data class AppColors(
             HabitColor.CYAN to Color(0xFFC0D9E0), HabitColor.BLUE to Color(0xFFCDD4EA), HabitColor.INDIGO to Color(0xFFD1D3EB),
             HabitColor.PURPLE to Color(0xFFDFCFE8), HabitColor.PINK to Color(0xFFF0CBD7), HabitColor.BROWN to Color(0xFFEBCEC4),
             HabitColor.GRAY to Color(0xFFCFD5DA),
+        )
+        private val habitPaleLight = mapOf(
+            HabitColor.RED to Color(0xFFFF9F92), HabitColor.ORANGE to Color(0xFFFFA269), HabitColor.YELLOW to Color(0xFFF7A900),
+            HabitColor.GREEN to Color(0xFF5ECF75), HabitColor.MINT to Color(0xFF4DCBC1), HabitColor.TEAL to Color(0xFF3CC9E0),
+            HabitColor.CYAN to Color(0xFF34C9E8), HabitColor.BLUE to Color(0xFF97B8FF), HabitColor.INDIGO to Color(0xFFA8B4FF),
+            HabitColor.PURPLE to Color(0xFFD5A5FF), HabitColor.PINK to Color(0xFFFF9AC4), HabitColor.BROWN to Color(0xFFCFB3A9),
+            HabitColor.GRAY to Color(0xFFB4B9BF),
         )
         private val habitFillLight = mapOf(
             HabitColor.RED to Color(0xFFFBE3DF), HabitColor.ORANGE to Color(0xFFF9E4D9), HabitColor.YELLOW to Color(0xFFFFEFDA),
