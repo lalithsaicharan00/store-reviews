@@ -90,7 +90,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 ### 4. Later: built from the atoms
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
-ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card, Stat tile, Habit history card, Overall record
+ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
@@ -1065,3 +1065,26 @@ What each atom changed, newest last.
     page (section 5).
   - Figma draws light only; in dark the card is Surface container lowest of the dark scheme, and the glow, dots and
     medal take the habit colours' dark values (1.21, 3.5).
+  - **Built:** run 40762725369 (Android #109, commit dfe1d8b) passed: assembleDebug, unit tests and lint.
+- **4.13 Milestones card (28 Oct).** Figma: Milestones card (1007:24), one component with Show earlier, Show next,
+  Latest and Reached; no motion; eleven instances, all on Habit details › Progress. Built as
+  `ui/components/MilestonesCard.kt`: Surface container lowest, 24 corners, 20 in, 12 apart: the header (Milestones,
+  a heading, and See all N as Material's Small Text button), the latest on the habit's Fill (20 corners, 16 in; the
+  Medium Medal, 16, Latest / the milestone / its day, 2 apart), Earlier over up to three Milestone badges (4.11), and
+  Next over each track's Next milestone (4.10); a part with nothing in it isn't shown. The habit page's words for a
+  next milestone (`NextMilestone(next, …)`, with "Next · " on All milestones and its spoken line) moved beside it.
+  Moved: the habit page's Progress and All milestones. Deleted: the page's own card, `MilestoneNextRow`, its plate
+  colour and `MilestoneBadgeWidth`. The tags `habit-milestones`, `habit-milestones-see-all`, `habit-milestone-latest`,
+  `habit-milestone-shelf` and `habit-milestone-next-…` and the spoken words stay. The app, the unit tests (55) and
+  the instrumented tests' code build in the session.
+  Fixed:
+  - The latest milestone sat on the habit's colour at 14 % on the card; now the habit's Fill, as Figma's.
+  - See all N was a hand-made pill with a chevron in On surface; now Material's Small Text button (40, 24 at the
+    sides, its ripple), no chevron, as drawn.
+  - Earlier showed up to four side by side and scrolled past that; Figma's description says up to three, so it shows
+    the three newest, each a third, and All milestones keeps the rest.
+  - The card was the page's Surface; now Surface container lowest by name (the same white in light).
+  Noted, not changed:
+  - With one milestone reached the header says "1 reached" and has no See all; Figma draws only the card with
+    several. Kept; the user's call.
+  - Figma draws light only; in dark the Fill is the colour at 24 % on the card (1.20).

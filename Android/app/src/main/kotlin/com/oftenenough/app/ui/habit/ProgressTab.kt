@@ -2,14 +2,12 @@ package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.components.Medal
-import com.oftenenough.app.ui.components.MilestoneBadge
-import com.oftenenough.app.ui.components.MilestoneBadgeWidth
+import com.oftenenough.app.ui.components.MilestonesCard
 import com.oftenenough.app.ui.components.NextMilestone
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.components.ComparisonRow
 import com.oftenenough.app.ui.components.StandardIconButton
-import androidx.compose.ui.graphics.compositeOver
 import com.oftenenough.app.ui.components.segmentShape
 import androidx.compose.foundation.lazy.itemsIndexed
 import com.oftenenough.app.ui.theme.AppType
@@ -17,7 +15,6 @@ import com.oftenenough.app.ui.theme.AppType
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +34,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -56,7 +52,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -76,7 +71,6 @@ import com.oftenenough.app.data.HabitOverall
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.data.Milestone
-import com.oftenenough.app.data.MilestoneNext
 import com.oftenenough.app.data.PeriodCard
 import com.oftenenough.app.data.PeriodComparison
 import com.oftenenough.app.data.PeriodKind
@@ -130,7 +124,7 @@ internal fun LazyListScope.progressItems(
         item(key = "progress-record") { RecordCard(record, habit.color, showStreaks, showPercentages, habit.archived, onSeeAllStreaks) }
     }
     val shown = milestones.shown(showStreaks)
-    if (shown.next.isNotEmpty()) item(key = "progress-milestones") { MilestonesCard(shown, habit.color, onSeeAll) }
+    if (shown.next.isNotEmpty()) item(key = "progress-milestones") { MilestonesCard(shown, habit.color, onSeeAll, Modifier.pageItem()) }
     item(key = "progress-key") { HabitKeyCard(keyOpen, onToggleKey, habit.color, Modifier.pageItem()) }
     item(key = "progress-week") { PeriodCardView(habit, store, week = true, today = today, revision = revision, onOpenDay = onOpenDay) }
     item(key = "progress-month") { PeriodCardView(habit, store, week = false, today = today, revision = revision, onOpenDay = onOpenDay) }
@@ -300,87 +294,6 @@ private fun QuitClockText(start: Long, clock: () -> Long) {
 // ------------------------------------------------------------------------------------------------ Milestones
 
 /**
- * Milestones (Figma 1373:2, 2475:75): the latest on a tinted plate with its 72 dp medal, the earlier ones side by side,
- * and the next one of each track with a ring filling toward it. See all opens every milestone, track by track.
- */
-@Composable
-private fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSeeAll: () -> Unit) {
-    val c = appColors
-    val reached = milestones.reached
-    Column(
-        Modifier.pageItem().fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(20.dp)
-            .semantics { testTag = "habit-milestones" },
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("Milestones", Modifier.weight(1f).semantics { heading() }, style = AppType.titleMedium, color = c.ink)
-            if (reached.size >= 2) {
-                Row(
-                    Modifier.clip(RoundedCornerShape(20.dp)).clickable(onClick = onSeeAll).heightIn(min = 40.dp).padding(start = 12.dp, end = 4.dp)
-                        .clearAndSetSemantics { contentDescription = "See all ${reached.size} milestones"; testTag = "habit-milestones-see-all" },
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text("See all ${reached.size}", style = AppType.labelLarge, color = c.ink)
-                    Spacer(Modifier.width(2.dp))
-                    Icon(Symbols.KeyboardArrowRight, null, Modifier.size(20.dp), tint = c.ink)
-                }
-            } else if (reached.size == 1) {
-                Text("1 reached", style = AppType.bodyMedium, color = c.secondary)
-            }
-        }
-        reached.firstOrNull()?.let { latest ->
-            Row(
-                Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(plateColor(c, color)).padding(16.dp)
-                    .clearAndSetSemantics {
-                        contentDescription = (if (reached.size > 1) "Latest: " else "") + latest.spoken
-                        testTag = "habit-milestone-latest"
-                    },
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Medal(latest.number, 72.dp, color)
-                Spacer(Modifier.width(16.dp))
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    if (reached.size > 1) Text("Latest", style = AppType.labelMedium, color = c.secondary)
-                    Text(latest.title, style = AppType.titleMedium, color = c.ink)
-                    Text(latest.reachedText, style = AppType.bodyMedium, color = c.secondary)
-                }
-            }
-        }
-        if (reached.size > 1) {
-            Text("Earlier", style = AppType.labelMedium, color = c.secondary)
-            val earlier = reached.drop(1)
-            if (earlier.size <= 4) {
-                // Side by side, each a share of the width (Figma: three, 4 apart).
-                Row(Modifier.fillMaxWidth().semantics { testTag = "habit-milestone-shelf" }, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    for (m in earlier) MilestoneBadge(m.number, m.shelfTop, m.shelfBottom, color, m.spoken, Modifier.weight(1f))
-                    repeat(3 - earlier.size.coerceAtMost(3)) { Spacer(Modifier.weight(1f)) }
-                }
-            } else {
-                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).semantics { testTag = "habit-milestone-shelf" },
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    for (m in earlier) MilestoneBadge(m.number, m.shelfTop, m.shelfBottom, color, m.spoken, Modifier.width(MilestoneBadgeWidth))
-                }
-            }
-        }
-        if (milestones.next.isNotEmpty()) {
-            Text("Next", style = AppType.labelMedium, color = c.secondary)
-            for (next in milestones.next) MilestoneNextRow(next, color, onPage = false)
-        }
-    }
-}
-
-/** The plate behind the latest medal: the habit's colour at 14 % on the card (Figma), a little more on dark. */
-private fun plateColor(c: com.oftenenough.app.ui.theme.AppColors, color: HabitColor): Color =
-    c.habit(color).copy(alpha = if (c.dark) 0.2f else 0.14f).compositeOver(c.surface)
-
-/** A track's next milestone (4.10): "7 to go · now 23"; on All milestones "Next · …". */
-@Composable
-private fun MilestoneNextRow(next: MilestoneNext, color: HabitColor, onPage: Boolean, modifier: Modifier = Modifier) =
-    NextMilestone(next.number.takeIf { next.target != null }, next.title,
-        next.detail?.let { if (onPage && next.target != null) "Next · $it" else it }, next.fraction.toFloat(), color,
-        modifier.clearAndSetSemantics { contentDescription = next.spoken; testTag = "habit-milestone-next-" + next.track.key })
-
-/**
  * All milestones (Figma 1735:4), from "See all N ›": the habit and how many it reached, then each track (In a row, the
  * total in the habit's own unit, Anniversaries; a quit habit's Since a slip) as one list: its next milestone first, then
  * every one reached, newest first; a note on how the tracks count at the end.
@@ -415,7 +328,7 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
                 if (next != null) item(key = "next-" + track.key) {
                     Box(Modifier.fillMaxWidth().padding(bottom = if (count == 1) 0.dp else 2.dp).clip(segmentShape(0, count)).background(c.surface)
                         .heightIn(min = 76.dp).padding(horizontal = 16.dp), contentAlignment = Alignment.CenterStart) {
-                        MilestoneNextRow(next, color, onPage = true)
+                        NextMilestone(next, color, onPage = true)
                     }
                 }
                 itemsIndexed(reached, key = { _, m -> m.id }) { i, m ->

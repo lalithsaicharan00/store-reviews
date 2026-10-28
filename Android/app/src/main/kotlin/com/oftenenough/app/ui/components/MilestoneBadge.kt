@@ -14,9 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.ui.theme.AppType
 
-/** Figma's badge width: three share the Milestones card's row; past that the row scrolls, each this wide. */
-val MilestoneBadgeWidth = 92.dp
-
 /**
  * Molecule 4.11, **Milestone badge** (Figma 1007:9; Components — Atoms Build Plan): a milestone already reached, its
  * [Medal], what it was and the day. Three share a row under Earlier in the Milestones card (4.13).
