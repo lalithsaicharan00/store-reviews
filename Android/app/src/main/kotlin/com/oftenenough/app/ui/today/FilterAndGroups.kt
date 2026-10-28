@@ -4,12 +4,8 @@ import androidx.compose.material3.LocalContentColor
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
-import com.oftenenough.app.ui.components.AppFilterChip
-import com.oftenenough.app.ui.components.AppSwitch
-import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,8 +13,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,20 +21,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import com.oftenenough.app.ui.components.rememberWholeSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -59,14 +47,11 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitGroup
-import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.ui.components.HabitIcon
@@ -75,94 +60,6 @@ import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.GroupTitle
 import com.oftenenough.app.ui.newhabit.Note
 import com.oftenenough.app.ui.theme.appColors
-
-/** How many of a group's habits (null: every habit) show on Today on [day]; null when the group has none at all. */
-fun groupCount(store: HabitStore, groupId: String?, day: Int): Int? {
-    val habits = store.habits.filter { !it.archived && it.kind != HabitKind.Task }
-    val members = if (groupId == null) habits else {
-        val g = store.groups.firstOrNull { it.id == groupId } ?: return null
-        habits.filter { it.id in g.habits }.ifEmpty { return null }
-    }
-    return members.count { store.rules.isDue(it, day) }
-}
-
-/**
- * Today's Filter (Figma 3, "Show on Today"): All or one group as filter chips ("Health · 5": how many it shows on the day
- * open), Edit groups and New group, then Hide done habits and Hide done tasks. With no groups yet (Figma 3.2) the top says
- * what groups are, with New group and Not now; the two switches stay below it, so hiding done rows never needs a group.
- * Only "show less" lives here; arranging the day is Today's ✏.
- */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-@Composable
-fun FilterSheet(store: HabitStore, prefs: Prefs, day: Int, onNewGroup: () -> Unit, onEditGroups: () -> Unit, onDismiss: () -> Unit) {
-    val c = appColors
-    val state = rememberWholeSheetState()
-    // Worked out only while the sheet is open.
-    val counts = remember(store.dataVersion, day) { store.groups.associate { it.id to groupCount(store, it.id, day) } }
-    val current = prefs.todayGroup.takeIf { id -> store.groups.any { it.id == id } }
-    ModalBottomSheet(onDismiss, sheetState = state) {
-        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 40.dp)
-            .semantics { testTag = "filter-sheet"; testTagsAsResourceId = true },
-            verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            if (store.groups.isEmpty()) {
-                // Figma 3.2: what groups are, and New group.
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Icon(Symbols.Category, null, Modifier.size(32.dp), tint = c.ink)
-                    Text("Group your habits", style = AppType.titleLarge, color = c.ink)
-                    Text("Put habits together, then filter Today and Progress by group.", style = AppType.bodyMedium, color = c.secondary,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-                    AppButton("New group", onNewGroup, Modifier.fillMaxWidth(), size = ButtonSize.Medium, tag = "group-new")
-                    AppButton("Not now", onDismiss, Modifier.fillMaxWidth(), style = ButtonStyle.Text, size = ButtonSize.Medium, tag = "groups-not-now")
-                }
-            } else {
-                Text("Show on Today", style = AppType.titleLarge, color = c.ink)
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Chip("All", current == null, "group-chip-all") { prefs.todayGroup = "" }
-                    for (g in store.groups) {
-                        val n = counts[g.id]
-                        Chip(if (n != null) "${g.name} · $n" else g.name, current == g.id, "group-chip-${g.name}") { prefs.todayGroup = g.id }
-                    }
-                }
-                Column {
-                    SheetRow(Symbols.Edit, "Edit groups", "groups-edit", onEditGroups)
-                    SheetRow(Symbols.Add, "New group", "group-new", onNewGroup)
-                }
-                Text("Groups change only what Today and Progress show.", style = AppType.bodySmall, color = c.secondary)
-            }
-            Box(Modifier.fillMaxWidth().height(1.dp).background(c.line))
-            Column {
-                SwitchRow("Hide done habits", prefs.hideDoneHabits, "hide-done-habits") { prefs.hideDoneHabits = it }
-                SwitchRow("Hide done tasks", prefs.hideDoneTasks, "hide-done-tasks") { prefs.hideDoneTasks = it }
-            }
-        }
-    }
-}
-
-/** A filter chip (Figma 3): Material's (1.15). */
-@Composable
-private fun Chip(title: String, selected: Boolean, tag: String, onClick: () -> Unit) = AppFilterChip(title, selected, onClick, tag = tag)
-
-/** A row in a sheet: a grey 24 dp icon, 16 dp, the words (Body Large). */
-@Composable
-private fun SheetRow(icon: androidx.compose.ui.graphics.vector.ImageVector, text: String, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(12.dp)).clickable(onClick = onClick).semantics { testTag = tag }
-        .padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-        Icon(icon, null, tint = c.secondary)
-        Spacer(Modifier.width(16.dp))
-        Text(text, style = AppType.bodyLarge, color = c.ink)
-    }
-}
-
-@Composable
-private fun SwitchRow(text: String, on: Boolean, tag: String, onChange: (Boolean) -> Unit) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable { onChange(!on) }.semantics { testTag = tag },
-        verticalAlignment = Alignment.CenterVertically) {
-        Text(text, Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink)
-        AppSwitch(on)
-    }
-}
 
 // ------------------------------------------------------------------ Groups
 

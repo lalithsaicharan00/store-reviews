@@ -176,22 +176,6 @@ class ScreensTest {
         assertTrue("Water archived", AppGraph.store.habits.first { it.name == "Water" }.archived)
     }
 
-    @Test fun aNewGroupFiltersToday() {
-        launch()
-        tapTag("filter-button")
-        tapTag("group-new")
-        compose.onNodeWithTag("group-name-field", useUnmergedTree = true).performTextInput("Health")
-        tapTag("group-habit-Water")
-        waitFor(hasTestTag("group-habit-Water") and isSelected(), "Water chosen for the group")
-        tapTag("group-save")
-        waitFor(hasTestTag("today-list"), "Today")
-        tapTag("filter-button")
-        tapTag("group-chip-Health")
-        back()
-        waitGone(hasTestTag("row-Read"), "Read (not in Health)")
-        waitFor(hasTestTag("row-Water"), "Water (in Health)")
-    }
-
     @Test fun arrangingMovesAHabitAndTodayFollows() {
         launch()
         tap(hasContentDescription("Arrange your day"), "Edit")

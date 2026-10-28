@@ -1,5 +1,11 @@
 package com.oftenenough.app.ui.today
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ButtonDefaults
 import com.oftenenough.app.ui.components.MilestonePopup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -21,9 +27,7 @@ import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppTopBar
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,11 +41,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -69,12 +71,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.DayWords
@@ -83,7 +82,6 @@ import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.Placement
-import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.DayNavigation
 import com.oftenenough.app.ui.components.EmptyState
 import com.oftenenough.app.ui.components.segmentShape
@@ -113,8 +111,6 @@ interface TodayNav : NoticeNav {
     fun restore()
     fun help()
     fun arrange()
-    fun newGroup()
-    fun editGroups()
     fun startRoutine(part: String, day: Int, habits: List<Habit>)
     /** The Habits page, where archived habits are (the start-over snackbar's View, Figma 6.3.2). */
     fun archivedHabits() {}
@@ -164,20 +160,11 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     // Kept above Today by the app, so the cards and steps opened stay open while a note or Add log is on top.
     val layout = kept ?: remember { TodayLayout(scope) }
     var calendar by remember { mutableStateOf(false) }
-    var filtering by rememberSaveable { mutableStateOf(false) }
     var lit by remember { mutableStateOf<String?>(null) }
     // Another day: the buttons under the last log go, and every card follows its rule again (Figma 1.2). Coming back to
     // Today from a page it opened (a note, Add log) is not another day.
     var lastDay by rememberSaveable { mutableStateOf(day) }
     LaunchedEffect(day) { if (lastDay != day) { lastDay = day; layout.reset(); store.afterLog = null } }
-
-    // The ✏ tip (Figma 2.0): once, after Today has been opened on three different days and a time of day holds two habits.
-    LaunchedEffect(today) {
-        val seen = prefs.todayDaysSeen.split(",").filter { it.isNotEmpty() }
-        if (seen.size < 3 && today.toString() !in seen) prefs.todayDaysSeen = (seen + today.toString()).joinToString(",")
-    }
-    val tipShows = !prefs.arrangeTipDone && isToday && prefs.todayDaysSeen.split(",").count { it.isNotEmpty() } >= 3 &&
-        store.rules.cardMembers().any { (card, ids) -> card != DaySection.QUITTING && ids.size >= 2 }
 
     // A habit just added: Today says where it went, with Move, and lights its row briefly (Figma 1.6).
     LaunchedEffect(store.justAdded) {
@@ -261,9 +248,6 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     }
 
     val hasHabits = store.habits.isNotEmpty()
-    val group = prefs.todayGroup.takeIf { id -> store.groups.any { it.id == id } }
-    val filterOn = group != null || prefs.hideDoneHabits || prefs.hideDoneTasks
-    if (filtering) FilterSheet(store, prefs, day, { filtering = false; nav.newGroup() }, { filtering = false; nav.editGroups() }) { filtering = false }
     val (notice, dismissNotice) = rememberTodayNotice(store, nav)
     Scaffold(
         containerColor = c.screen,
@@ -274,8 +258,8 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                 navigationIcon = { if (!com.oftenenough.app.ui.LocalSidebar.current) IconButton(nav::openMenu, Modifier.semantics { testTag = "menu-button" }) { Icon(Symbols.Menu, "Menu") } },
                 actions = {
                     if (hasHabits) {
-                        TopIcon(Symbols.Edit, "Arrange your day", tipShows, "arrange-button") { prefs.arrangeTipDone = true; nav.arrange() }
-                        TopIcon(Symbols.FilterList, if (filterOn) "Filter, on" else "Filter", filterOn, "filter-button") { filtering = true }
+                        // Figma's Today: ≡ · ✏ · + and no filter (A32–A34); no tip under ✏ (A48).
+                        IconButton(nav::arrange, Modifier.semantics { testTag = "arrange-button" }) { Icon(Symbols.Edit, "Arrange your day") }
                     }
                     IconButton(nav::newHabit, Modifier.semantics { testTag = "new-habit" }) { Icon(Symbols.Add, "New habit") }
                 },
@@ -297,17 +281,11 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                 !store.isLoaded -> {}
                 !hasHabits -> NoHabitsYet(nav)
                 else -> {
-                    val content = remember(store.dataVersion, day, today, now / 60_000, prefs.doneOrder, prefs.hideDoneHabits, prefs.hideDoneTasks, prefs.todayGroup, layout.holding) {
-                        TodayContent.make(store, day, today, now, prefs)
+                    val content = remember(store.dataVersion, day, today, now / 60_000, layout.holding) {
+                        TodayContent.make(store, day, today, now)
                     }
-                    if (content.isEmpty) Column(Modifier.fillMaxSize()) {
-                        Box(Modifier.padding(horizontal = 16.dp)) { TodayChips(store, prefs, group) }
-                        if (group != null) NothingInGroup(store.groups.first { it.id == group }.name, isToday) { prefs.todayGroup = "" }
-                        else NothingPlanned(nav, isToday)
-                    }
+                    if (content.isEmpty) NothingPlanned(nav, isToday)
                     else Column(Modifier.fillMaxSize()) {
-                    // The filter's chips stay under the top bar (Figma 3.1, 3.4), never scrolled away above the list.
-                    Box(Modifier.padding(horizontal = 16.dp)) { TodayChips(store, prefs, group) }
                     val listState = rememberLazyListState()
                     val index = remember { ItemIndex() }
                     // A habit just added comes into view, lit (Figma 1.6).
@@ -321,8 +299,10 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                     LazyColumn(
                         Modifier.fillMaxSize().semantics { testTag = "today-list" },
                         state = listState,
-                        // Room under the last card for the day bar, and Back to today above it on another day.
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 0.dp, bottom = if (isToday) 132.dp else 192.dp),
+                        // Figma's 80 under the last card for the day bar (and 56 more for Back to today on another day),
+                        // above the gesture bar.
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 0.dp,
+                            bottom = (if (isToday) 80.dp else 136.dp) + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
                     ) {
                         index.reset()
                         if (isToday && notice != null) indexed(index, "notice-${notice.key}") {
@@ -361,7 +341,6 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                     }
                 }
             }
-            if (tipShows && hasHabits) ArrangeTip(Modifier.align(Alignment.TopEnd)) { prefs.arrangeTipDone = true }
             if (!hasHabits) Box(Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 16.dp)) { TodaySnackbars(snackbar) }
         }
     }
@@ -402,86 +381,38 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
 }
 
 /** A top bar icon button; [on] gives it the tonal circle (the filter while it filters, ✏ while its tip shows: Figma 3.1, 2.0). */
-@Composable
-private fun TopIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, on: Boolean, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    IconButton(onClick, Modifier.semantics { testTag = tag }) {
-        Box(Modifier.size(48.dp).clip(CircleShape).background(if (on) c.behind else Color.Transparent), contentAlignment = Alignment.Center) {
-            Icon(icon, label)
-        }
-    }
-}
-
 /**
- * What Today is filtered by, as input chips under the top bar (Figma 3.1, 3.4): the group ("Health ✕") and "Done hidden
- * ✕"; ✕ clears it.
+ * The fade under the day bar (Figma's Bottom fade): the page colour from clear to 90 % at 60 % of its 80 dp, then
+ * solid, and solid under it over the gesture bar.
  */
-@Composable
-private fun TodayChips(store: HabitStore, prefs: Prefs, group: String?) {
-    val hides = prefs.hideDoneHabits || prefs.hideDoneTasks
-    if (group != null || hides) Row(Modifier.fillMaxWidth().padding(bottom = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        group?.let { id -> store.groups.firstOrNull { it.id == id }?.let { g -> InputChip(g.name, "chip-group") { prefs.todayGroup = "" } } }
-        if (hides) InputChip("Done hidden", "chip-done-hidden") { prefs.hideDoneHabits = false; prefs.hideDoneTasks = false }
-    }
-}
-
-/** An input chip (Figma 1960:484): #E2E2E7, corners 8, the label (Label Large) and ✕ 18 dp. */
-@Composable
-private fun InputChip(label: String, tag: String, onClear: () -> Unit) {
-    val c = appColors
-    Row(
-        Modifier.heightIn(min = 34.dp).clip(RoundedCornerShape(8.dp)).background(c.behind).clickable(onClickLabel = "Clear $label", onClick = onClear)
-            .padding(start = 12.dp, end = 8.dp, top = 6.dp, bottom = 6.dp).semantics { testTag = tag },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(label, style = AppType.labelLarge, color = c.ink, maxLines = 1)
-        Spacer(Modifier.width(8.dp))
-        Icon(Symbols.Close, "Clear $label", Modifier.size(18.dp), tint = c.ink)
-    }
-}
-
-/** The fade under the day bar (Figma "Bottom fade"): the screen's colour from clear to solid over 170 dp. */
 @Composable
 private fun BottomFade(modifier: Modifier) {
     val s = appColors.screen
-    Box(modifier.fillMaxWidth().height(170.dp).background(Brush.verticalGradient(0f to s.copy(alpha = 0f), 0.5f to s.copy(alpha = 0.85f), 1f to s)))
+    Column(modifier.fillMaxWidth()) {
+        Box(Modifier.fillMaxWidth().height(80.dp).background(Brush.verticalGradient(0f to s.copy(alpha = 0f), 0.6f to s.copy(alpha = 0.9f), 1f to s)))
+        Spacer(Modifier.fillMaxWidth().windowInsetsBottomHeight(WindowInsets.navigationBars).background(s))
+    }
 }
 
 /** Today's messages, 12 dp above the day bar (Figma 1.5, 1.6): the Snackbar (2.6). */
 @Composable
 private fun TodaySnackbars(snackbar: SnackbarHostState) = AppSnackbarHost(snackbar, Modifier.padding(horizontal = 4.dp))
 
-/** "Back to today" (Figma 1985:173): the day bar's own surface, floating 8 dp above it. */
+/**
+ * "Back to today" (Figma's Back to today): Material's Small Tonal button with calendar_today, on Surface container
+ * lowest with Elevation Level 3, 16 above the day bar.
+ */
 @Composable
 private fun BackToToday(onClick: () -> Unit) {
-    val c = appColors
-    Row(
-        Modifier.padding(bottom = 12.dp).shadow(6.dp, RoundedCornerShape(24.dp)).clip(RoundedCornerShape(24.dp)).background(c.surface)
-            .border(1.dp, c.ink.copy(alpha = 0.08f), RoundedCornerShape(24.dp)).clickable(onClick = onClick)
-            .padding(start = 16.dp, end = 20.dp, top = 10.dp, bottom = 10.dp).semantics { testTag = "back-to-today" },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(Symbols.Today, null, Modifier.size(20.dp), tint = c.ink)
+    val s = MaterialTheme.colorScheme
+    val h = ButtonDefaults.MinHeight
+    FilledTonalButton(onClick, ButtonDefaults.shapesFor(h), Modifier.padding(bottom = 16.dp).heightIn(min = h).semantics { testTag = "back-to-today" },
+        colors = ButtonDefaults.filledTonalButtonColors(containerColor = s.surfaceContainerLowest, contentColor = s.onSurface),
+        elevation = ButtonDefaults.filledTonalButtonElevation(defaultElevation = 6.dp, pressedElevation = 6.dp),
+        contentPadding = ButtonDefaults.contentPaddingFor(h, hasStartIcon = true)) {
+        Icon(Symbols.CalendarToday, null, Modifier.size(ButtonDefaults.iconSizeFor(h)))
         Spacer(Modifier.width(8.dp))
-        Text("Back to today", style = AppType.labelLarge, color = c.ink)
-    }
-}
-
-/** The ✏ tip (Figma 2.0): a rich tooltip under the button, "Got it" ends it for good. */
-@Composable
-private fun ArrangeTip(modifier: Modifier, onDone: () -> Unit) {
-    val c = appColors
-    Column(
-        modifier.padding(end = 16.dp, top = 0.dp).widthIn(max = 280.dp).shadow(8.dp, RoundedCornerShape(12.dp)).clip(RoundedCornerShape(12.dp))
-            .background(c.surface).padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp).semantics { testTag = "arrange-tip" },
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text("Arrange your day", style = AppType.titleMedium, color = c.ink)
-        Text("Put habits in your own order, or move one to another time of day.", style = AppType.bodyMedium, color = c.secondary)
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-            AppButton("Got it", onDone, Modifier.semantics { testTag = "arrange-tip-done" }, style = ButtonStyle.Text)
-        }
+        Text("Back to today", style = AppType.labelLarge, maxLines = 1)
     }
 }
 
@@ -512,11 +443,10 @@ class TodayContent(
     val allDone: Boolean get() = day == today && cards.any { it.second.isNotEmpty() } && cards.all { (_, items) -> items.all { done[it.habit.id] == true } }
 
     companion object {
-        fun make(store: HabitStore, day: Int, today: Int, now: Long, prefs: Prefs): TodayContent {
+        fun make(store: HabitStore, day: Int, today: Int, now: Long): TodayContent {
             val isToday = day == today
             val rules = store.rules
-            val group = prefs.todayGroup.takeIf { it.isNotEmpty() }?.let { id -> store.groups.firstOrNull { it.id == id } }
-            val active = store.habits.filter { !it.archived && rules.startDay(it) <= day && (group == null || it.id in group.habits) }
+            val active = store.habits.filter { !it.archived && rules.startDay(it) <= day }
             val restraint = active.filter { h ->
                 if (h.kind == HabitKind.Quit) isToday && !store.isPaused(h, today)
                 else h.isQuitOrLimit && rules.isDue(h, day, now, countingSkips = false) && !store.isPaused(h, day)
@@ -546,8 +476,9 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
         else -> null
     }
     if (line != null) indexed(ix, "line") {
-        Text(line, Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).semantics { testTag = "today-line" },
-            style = AppType.bodyMedium, color = appColors.secondary)
+        // Figma's Planned line: Body Medium On surface variant, 4 in, 16 above the first card.
+        Text(line, Modifier.fillMaxWidth().padding(bottom = 16.dp).padding(4.dp).semantics { testTag = "today-line" },
+            style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
     content.dayNote?.let { note ->
         indexed(ix, "day-note") {
@@ -594,12 +525,8 @@ private fun LazyListScope.section(
     val left = items.count { content.done[it.habit.id] != true }
     // Open: the time of day it is now and Anytime, while they have something left; a later day opens Anytime only (4.3).
     val open = layout.isOpen(card, if (future) card == DaySection.ANYTIME else left > 0 && (isNow || card == DaySection.ANYTIME))
-    val hides = prefs.hideDoneHabits || prefs.hideDoneTasks
-    val shown = if (!hides || layout.holding) items else items.filter { item ->
-        content.done[item.habit.id] != true || !(if (item.habit.kind == HabitKind.Task) prefs.hideDoneTasks else prefs.hideDoneHabits)
-    }
-    val fresh = if (prefs.doneOrder != "inPlace") shown.filter { content.done[it.habit.id] != true } + shown.filter { content.done[it.habit.id] == true } else shown
-    val ordered = layout.order(card, fresh) { it.habit.id }
+    // Done habits stay where they are (A32): nothing on Today moves because something was done, and nothing hides.
+    val ordered = layout.order(card, items) { it.habit.id }
     // Every piece of the card, a checklist's steps block included, so the corners are right.
     val pieces = ArrayList<Pair<TodayItem, Boolean>>()
     for (item in ordered) {
@@ -680,32 +607,16 @@ private fun NoHabitsYet(nav: TodayNav) {
     }
 }
 
-/** Habits exist, none on this day (Figma 1551:195): neutral words, never "missed" or "no habits due" (U3, Current Work 106). */
+/**
+ * Habits exist, none on this day (Figma's Today, Nothing planned): the empty state (5.1.2) centred in the page, with
+ * New habit (Tonal); neutral words, never "missed" or "no habits due" (U3, Current Work 106).
+ */
 @Composable
 private fun NothingPlanned(nav: TodayNav, isToday: Boolean) {
-    Column(Modifier.fillMaxSize().padding(horizontal = 32.dp).padding(bottom = 96.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        CookieIcon(Symbols.EventAvailable, size = 112.dp)
-        Spacer(Modifier.height(24.dp))
-        Text(if (isToday) "Nothing planned today" else "Nothing planned this day", style = AppType.headlineSmallEmphasized, color = appColors.ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Text("Your habits are planned for other days. Each shows up on its days.", style = AppType.bodyLarge,
-            color = appColors.secondary, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(24.dp))
-        AppButton("New habit", nav::newHabit, style = ButtonStyle.Tonal, icon = Symbols.Add)
-    }
-}
-
-/** A group with nothing on the day open (Figma 3.5): says so, with Show all; never a blank Today. */
-@Composable
-private fun NothingInGroup(name: String, isToday: Boolean, onShowAll: () -> Unit) {
-    Column(Modifier.fillMaxSize().padding(horizontal = 32.dp).padding(bottom = 96.dp).semantics { testTag = "nothing-in-group" },
-        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        CookieIcon(Symbols.FilterList, size = 112.dp)
-        Spacer(Modifier.height(24.dp))
-        Text(if (isToday) "Nothing from $name today" else "Nothing from $name this day", style = AppType.headlineSmallEmphasized, color = appColors.ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Text("$name’s habits are planned for other days.", style = AppType.bodyLarge, color = appColors.secondary, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(24.dp))
-        AppButton("Show all", onShowAll, style = ButtonStyle.Tonal)
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        EmptyState(Symbols.EventAvailable, if (isToday) "Nothing planned today" else "Nothing planned this day",
+            "Your habits are planned for other days. Each shows up on its days.") {
+            AppButton("New habit", nav::newHabit, style = ButtonStyle.Tonal, icon = Symbols.Add)
+        }
     }
 }

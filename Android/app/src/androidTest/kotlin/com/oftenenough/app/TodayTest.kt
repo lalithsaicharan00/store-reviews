@@ -126,8 +126,8 @@ class TodayTest {
         // Two big moments used: Water's 200th glass is just the row (card 4 B).
         repeat(4) { tapLabel("Add 1 glass to Water") }
         waitFor(hasText("200 glasses in total · reached today"), "Water's band")
-        // Undo takes it back; done again, it's back without a second moment. The row can sit behind the floating day bar
-        // once done rows settle below, so Undo is pressed through its click action, as TalkBack presses it.
+        // Undo takes it back; done again, it's back without a second moment. The row can sit behind the floating day bar,
+        // so Undo is pressed through its click action, as TalkBack presses it.
         waitFor(hasTestTag("undo-Water"), "Water's Undo")
         compose.onAllNodes(hasTestTag("undo-Water"), useUnmergedTree = true)[0]
             .performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick)

@@ -113,7 +113,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.7 | Onboarding · No backup found | 690:13442 | ☑ |
 | 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☑ |
 | 5.2.1 | Today · Navigation drawer | 626:76 | ☑ |
-| 5.2.2 | Today · Today | 728:7985 | ☐ |
+| 5.2.2 | Today · Today | 728:7985 | ☑ |
 | 5.2.3 | Today · Edit Today | 827:39487 | ☐ |
 | 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☐ |
 | 5.3.1 | Day details · Day details sheet | 669:234 | ☐ |
@@ -1436,3 +1436,35 @@ What each atom changed, newest last.
   Noted, not changed:
   - The sheet's width is Material's (`ModalDrawerSheet`); Figma's 304 on a 360 dp phone is what Material leaves for
     the scrim there, so no width of ours is set.
+  - **Built:** run 40777327621 (Android #124, commit fc0566d) passed: assembleDebug, unit tests and lint.
+- **5.2.2 Today · Today (28 Oct).** Figma: Today (728:7985), Screen Today · Steps open · Back to today · Tomorrow ·
+  Nothing planned · Notice · Large text, with Morning row 4, Anytime row 4 and Paused section; 523 instances. The top
+  app bar (☰, ✏, +; no title), then the list 16 at the sides: the time-of-day sections 16 apart, each a Section header
+  (4.4) and its Habit rows (4.1) 2 apart; the Card notice (4.7) first when there is one; on a later day the Planned
+  line (Body Medium On surface variant, 4 in); 80 under the last card; the Bottom fade (80: the page colour, clear, 90 %
+  at 60 %, solid) with the day bar (4.18) 16 above the screen's foot; Back to today (Material's Small Tonal button with
+  calendar_today, Surface container lowest, Level 3) 16 above it on another day; Nothing planned as the empty state
+  (5.1.2) with New habit (Tonal). It is `TodayScreen` (`today/TodayScreen.kt`). The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed (Figma and the decisions of 21–23 Oct: "top bar ≡ · ✏ · + with no filter", A32, A48, A64):
+  - The top bar had a Filter button and its sheet (a group to show, Hide done habits, Hide done tasks) with chips
+    under the bar; gone, and Today no longer applies a group or hides done rows from the old saved settings, so nobody
+    is left with a filter they can't see or turn off. The groups pages themselves stay (Habits & Tasks opens them).
+  - Done rows sank to the end of their time of day; now they stay where they are (A32).
+  - The tip under ✏ after three days is gone (A48), with its seen-days count and the test launch's argument for it.
+  - The bottom fade was 170 tall (50 % at the middle); now Figma's 80 (90 % at 60 %), solid under it over the
+    gesture bar. The list's room under the last card was 132 (192 on another day) whatever the gesture bar; now 80
+    (136) above the gesture bar.
+  - Back to today was a hand-made pill (an outline, a 6 dp shadow in the page's white, 12 above the bar); now
+    Material's Small Tonal button on Surface container lowest with Level 3, 16 above the bar.
+  - The Planned line was 16 in; now 4, as drawn. Nothing planned had a 24 gap under the cookie, words held to 32 in
+    and sat 96 high; now the empty state (16, full width, centred).
+  - Deleted: `FilterSheet` and its rows (`FilterAndGroups.kt`), `groupCount`, `TodayChips`, `InputChip`, `TopIcon`,
+    `NothingInGroup`, `ArrangeTip`, TodayNav's `newGroup` and `editGroups`, and the instrumented test
+    `aNewGroupFiltersToday`, which tested only the filter that's gone (a removed feature, not a loosened test).
+  Noted, not changed:
+  - Settings still has "Done habits: Move to bottom / Stay in place"; on Today it now does nothing (A32). It goes with
+    Settings (5.8.3). The widgets keep their own order rule (widgets: their look only).
+  - The day's note (a card above the sections) and "Note for the day" under them aren't in Figma's Today; kept, the
+    user's call.
+  - The Progress page still filters by group; that's Habits & Tasks (5.5).

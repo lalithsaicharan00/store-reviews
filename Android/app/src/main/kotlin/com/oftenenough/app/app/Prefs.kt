@@ -30,9 +30,7 @@ class Prefs(private val sp: SharedPreferences) {
     /** The welcome is finished (new, or back from a backup). Nothing goes to Google Drive before it (D4, D14). */
     var hideNames by bool("privacy.hideNames", false)
     /** The days Today was opened on, the first three (the ✏ tip waits for three, Figma 2.0): "20350,20351". */
-    var todayDaysSeen by str("today.daysSeen", "")
     /** The ✏ tip was shown and ended (Got it, or ✏ itself). */
-    var arrangeTipDone by bool("today.arrangeTipDone", false)
     /**
      * Today's milestones as shown, and the counts the day's limits read (MilestoneCenter): presentation on this phone,
      * never habit data (the milestones themselves are worked out from the logs, D6).
