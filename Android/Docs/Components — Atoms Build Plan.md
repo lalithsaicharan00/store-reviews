@@ -90,7 +90,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 ### 4. Later: built from the atoms
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
-ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile, Habit history card, Overall record
+ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile ☑ (4.14), Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
@@ -1087,4 +1087,24 @@ What each atom changed, newest last.
   Noted, not changed:
   - With one milestone reached the header says "1 reached" and has no See all; Figma draws only the card with
     several. Kept; the user's call.
+  - Figma draws light only; in dark the Fill is the colour at 24 % on the card (1.20).
+  - **Built:** run 40763664187 (Android #110, commit 58b791b) passed: assembleDebug, unit tests and lint.
+- **4.14 Stat tile (28 Oct).** Figma: Stat tile (1005:2), one component (Label, Show emoji, Emoji, Number, Unit,
+  Caption), no motion; eight instances, all in the Overall record card's specimen (default and 200 % text). Built as
+  `ui/components/StatTile.kt`: Surface container low, or the habit's Fill for the current streak; corners 16, 14 in,
+  4 apart: the label in Body Small On surface variant; the value on one baseline, 4 apart (the phone's own emoji in
+  Body Large, the number in Headline Small Emphasized, the unit in Body Medium, both On surface), wrapping before it's
+  cut; the caption in Body Small On surface variant; one spoken line for TalkBack. Moved: the habit page's Overall
+  record and a quit habit's record (`RecordBox`, its tags `habit-streak-…`, `habit-record-…` and `habit-quit-…` and
+  spoken words kept). The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The tiles had 20 corners and 16 inside; now 16 and 14.
+  - A neutral tile was Surface container high; now Surface container low. The current streak was the habit's colour
+    at 18 % on the card; now its Fill.
+  - The label was Body Medium; now Body Small. The unit was Body Large; now Body Medium.
+  - The current streak had Material's flame icon (24, the flame colour, 6 from the number); now the phone's own 🔥,
+    as Figma's emoji, in Body Large, 4 from the number on its baseline.
+  Noted, not changed:
+  - The tiles' grid (two a row, 8 apart, one a row from 150 % text) and which tile a quit habit tints are the Overall
+    record card's, 4.16; a quit habit's current run keeps the 🔥 it had as a flame.
   - Figma draws light only; in dark the Fill is the colour at 24 % on the card (1.20).

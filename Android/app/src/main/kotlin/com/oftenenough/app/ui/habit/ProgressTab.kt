@@ -3,6 +3,7 @@ package com.oftenenough.app.ui.habit
 import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.components.Medal
 import com.oftenenough.app.ui.components.MilestonesCard
+import com.oftenenough.app.ui.components.StatTile
 import com.oftenenough.app.ui.components.NextMilestone
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppTopBar
@@ -206,32 +207,11 @@ private fun ColumnScope.SeeAllLink(text: String, tag: String, onClick: () -> Uni
 
 private class RecordBoxData(val tag: String, val fact: RecordFact, val detail: String?, val spoken: String, val tinted: Boolean)
 
-/** One box: its label, the number with its unit, and a line under it. Current streak is tinted with the habit's colour
- *  and has Today's flame. */
+/** One box: the Stat tile (4.14); the current streak on the habit's Fill with the phone's 🔥. */
 @Composable
-private fun RecordBox(box: RecordBoxData, color: HabitColor, modifier: Modifier) {
-    val c = appColors
-    Column(
-        modifier.clip(RoundedCornerShape(20.dp)).background(if (box.tinted) c.fill(color) else c.tonal2).padding(16.dp)
-            .clearAndSetSemantics { contentDescription = box.spoken; testTag = box.tag },
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text(box.fact.title, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            if (box.tinted) {
-                Icon(Symbols.Filled.LocalFireDepartment, null, Modifier.size(24.dp), tint = c.flame)
-                Spacer(Modifier.width(6.dp))
-            }
-            Text(
-                buildAnnotatedString {
-                    withStyle(AppType.headlineSmallEmphasized.toSpanStyle().copy(color = c.ink)) { append(box.fact.number) }
-                    if (box.fact.unit.isNotEmpty()) withStyle(AppType.bodyLarge.toSpanStyle().copy(color = c.ink)) { append(" " + box.fact.unit) }
-                },
-            )
-        }
-        if (box.detail != null) Text(box.detail, style = MaterialTheme.typography.bodySmall, color = c.secondary)
-    }
-}
+private fun RecordBox(box: RecordBoxData, color: HabitColor, modifier: Modifier) =
+    StatTile(box.fact.title, box.fact.number, box.fact.unit, box.detail, box.spoken, modifier,
+        emoji = if (box.tinted) "🔥" else null, fill = if (box.tinted) color else null, tag = box.tag)
 
 /**
  * A quit habit's Overall record (Figma 3.9): the time without a slip, ticking in its own Text; the run now, the longest,
