@@ -107,7 +107,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.1 | Onboarding · Splash | 553:2427 | ☑ |
 | 5.1.2 | Onboarding · Today, no habits yet | 547:2419 | ☑ |
 | 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☑ |
-| 5.1.4 | Onboarding · Restoring | 582:7893 | ☐ |
+| 5.1.4 | Onboarding · Restoring | 582:7893 | ☑ |
 | 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☐ |
 | 5.1.6 | Onboarding · No internet | 582:8426 | ☐ |
 | 5.1.7 | Onboarding · No backup found | 690:13442 | ☐ |
@@ -1352,3 +1352,20 @@ What each atom changed, newest last.
     values).
   Noted, not changed:
   - The rows already matched Figma (the List item atom, 2.4).
+  - **Built:** run 40772411782 (Android #118, commit eb47678) passed: assembleDebug, unit tests and lint.
+- **5.1.4 Onboarding · Restoring (28 Oct).** Figma: Restoring (582:7893), one screen, no properties and no motion; 15
+  instances. No top bar; centred, 24 at the sides: Material's contained loading indicator (64, its shapes On surface
+  in a Surface container highest circle), 24, "Restoring your habits" in Headline Small Emphasized On surface over
+  "From sam@gmail.com's Google Drive" in Body Medium On surface variant, 8 apart; Cancel (the Medium Text button,
+  full width) in a bottom bar. The screen is `WaitScreen` (`backup/BackupScreens.kt`), `RestoreFlow`'s Restoring step.
+  The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The title was Title Large Emphasized; now Headline Small Emphasized.
+  - The sides were 40; now 24, the words the full width between them.
+  - The indicator's circle was Secondary container (the same grey in light); now Surface container highest. Its
+    shapes and the words take On surface and On surface variant by name.
+  Noted, not changed:
+  - **Cancel isn't there.** The code is built to have no way out while habits are written ("writing habits isn't
+    stopped halfway", and Back does nothing), so nothing is ever half restored. Adding Cancel changes what a restore
+    does; that's the user's call (the build prompt's rule on data). Without the bottom bar the words sit 40 lower
+    than Figma's, centred in the whole screen.
