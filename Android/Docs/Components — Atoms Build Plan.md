@@ -91,7 +91,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
 ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile ☑ (4.14), Habit history card ☑ (4.15), Overall record
-card ☑ (4.16), Year in pixels card ☑ (4.17), and the day navigation inside the floating toolbar.
+card ☑ (4.16), Year in pixels card ☑ (4.17), and the day navigation inside the floating toolbar ☑ (4.18).
 
 ## Log
 
@@ -1205,3 +1205,20 @@ What each atom changed, newest last.
     Year), which is one change with the Plus screen and Habits & Tasks (section 5). The card is ready for it.
   - Figma's grid shows no today ring; the Day cell keeps its Today ring (3.6).
   - The blur is Android 12's and later; on Android 11 a locked card shows the scrim and the prompt without it.
+  - **Built:** run 40767915907 (Android #114, commit db8856e) passed: assembleDebug, unit tests and lint.
+- **4.18 Day navigation (28 Oct).** Figma: Floating toolbar (581:145), one component with Day, Count, Show count and
+  Show ring; no motion; seven instances on Today. Built as `ui/components/DayNavigation.kt`: the Floating toolbar
+  atom (1.5, Material's `HorizontalFloatingToolbar` on Surface bright, 16 from the edges, its width never changing)
+  with ‹ and › (Icon buttons, 48) and between them the day, one button for Go to a day, 4 in at its sides and 8
+  apart: `DayRing` (20 dp, inner radius 0.72, the arc On surface from twelve o'clock on an Outline variant track),
+  the day in Title Medium with ▾ 2 after it, and the count in Label Large On surface variant. Moved: Today's
+  `DayBar`, which now works out only the day's words and numbers. Deleted: `MiniRing` (`Shapes.kt`). The tags
+  `day-bar`, `day-previous` and `day-next` and the spoken words stay. The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - The ring's band was 3 dp; now Figma's inner radius 0.72 (2.8 dp on 20).
+  - The ▾ touched the day's name; now 2 after it. The day had nothing at its sides; now 4. A long day name now ends
+    in … before it pushes the count out.
+  Noted, not changed:
+  - Figma's description still names `DayBar` and `MiniRing` as the code; the new Code line is added after it, as
+    the build prompt says to change nothing else there.

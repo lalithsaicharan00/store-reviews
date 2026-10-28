@@ -1,18 +1,11 @@
 package com.oftenenough.app.ui.components
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -48,15 +41,3 @@ fun segmentShape(index: Int, count: Int, outer: Dp = 24.dp, inner: Dp = 4.dp): R
     return RoundedCornerShape(topStart = top, topEnd = top, bottomStart = bottom, bottomEnd = bottom)
 }
 
-/** The day bar's ring (Figma 581:145, Day ring): the share done of what's planned, 20 dp, a 3 dp band, square ends. */
-@Composable
-fun MiniRing(progress: Float, color: Color, track: Color, modifier: Modifier = Modifier.size(20.dp)) {
-    val p = remember(progress) { progress.coerceIn(0f, 1f) }
-    Canvas(modifier) {
-        val w = 3.dp.toPx()
-        val inset = w / 2
-        val arcSize = Size(size.width - w, size.height - w)
-        drawArc(track, 0f, 360f, false, Offset(inset, inset), arcSize, style = Stroke(w))
-        if (p > 0f) drawArc(color, -90f, 360f * p, false, Offset(inset, inset), arcSize, style = Stroke(w))
-    }
-}

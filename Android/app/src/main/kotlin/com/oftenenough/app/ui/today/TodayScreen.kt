@@ -48,8 +48,6 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.FloatingToolbarDefaults
-import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -74,7 +72,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextAlign
@@ -87,7 +84,7 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.Placement
 import com.oftenenough.app.ui.components.CookieIcon
-import com.oftenenough.app.ui.components.MiniRing
+import com.oftenenough.app.ui.components.DayNavigation
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
@@ -657,42 +654,13 @@ private fun LazyListScope.quitting(habits: List<Habit>, store: HabitStore, layou
     indexed(ix, "gap-quitting") { Spacer(Modifier.height(16.dp)) }
 }
 
-/**
- * Atom 1.5, **Floating toolbar** (Figma 581:145; Components — Atoms Build Plan): the day bar, Material 3 Expressive's own
- * `HorizontalFloatingToolbar` as it is (Material 1.5, Android A76): 64 dp, fully round, 8 at the ends, 4 between,
- * Material's shadow and no outline, 16 from each edge of the screen (328 wide on a 360 dp phone). One setting of the
- * design's: **Surface bright**, like every floating surface (Material's Surface container is our page, where the bar
- * would vanish). Content is Material's toolbar colour, On surface: ‹ and › are icon buttons (1.1, 48 dp); between them,
- * centred as one group, the day's ring (20 dp: the share done, On surface on Outline variant), the day ▾ in Title
- * Medium, and the count in Label Large, On surface variant. It never changes width as the day changes (the user, 12
- * Oct 2026).
- */
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+/** The day bar (Day navigation, 4.18): the day open, how much of it is done, ‹ › and Go to a day. */
 @Composable
 fun DayBar(store: HabitStore, day: Int, today: Int, onPrevious: () -> Unit, onNext: () -> Unit, onPick: () -> Unit) {
-    val s = MaterialTheme.colorScheme
     val score = remember(store.dataVersion, day, today) { store.daySummary(day) }
     val label = when (day) { today -> "Today"; today - 1 -> "Yesterday"; today + 1 -> "Tomorrow"; else -> DayWords.short(day) }
-    HorizontalFloatingToolbar(
-        expanded = true,
-        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth().semantics { testTag = "day-bar" },
-        colors = FloatingToolbarDefaults.standardFloatingToolbarColors(toolbarContainerColor = s.surfaceBright),
-    ) {
-        IconButton(onPrevious, Modifier.semantics { testTag = "day-previous" }) { Icon(Symbols.KeyboardArrowLeft, "Previous day") }
-        Row(Modifier.weight(1f).clip(RoundedCornerShape(24.dp)).clickable(onClick = onPick).padding(vertical = 12.dp)
-            .semantics(mergeDescendants = true) { contentDescription = "$label, ${score.done} of ${score.planned} done. Go to a day" },
-            horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-            MiniRing(score.fraction.toFloat(), s.onSurface, s.outlineVariant, Modifier.size(20.dp))
-            Spacer(Modifier.width(8.dp))
-            Text(label, style = AppType.titleMedium, maxLines = 1)
-            Icon(Symbols.ArrowDropDown, null, Modifier.size(20.dp))
-            if (score.planned > 0) {
-                Spacer(Modifier.width(8.dp))
-                Text("${score.done}/${score.planned}", style = AppType.labelLarge.copy(fontFeatureSettings = "tnum"), color = s.onSurfaceVariant)
-            }
-        }
-        IconButton(onNext, Modifier.semantics { testTag = "day-next" }) { Icon(Symbols.KeyboardArrowRight, "Next day") }
-    }
+    DayNavigation(label, if (score.planned > 0) "${score.done}/${score.planned}" else null, score.fraction.toFloat(),
+        "$label, ${score.done} of ${score.planned} done. Go to a day", onPrevious, onNext, onPick)
 }
 
 /**
