@@ -90,7 +90,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 ### 4. Later: built from the atoms
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
-ribbon, Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
+ribbon ☑ (4.9), Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
@@ -974,3 +974,31 @@ What each atom changed, newest last.
   - Figma's pop-up and row motion in the same "Milestone · Motion" frame are 4.12's and 4.1's.
   - `Celebration.kt` line 246 has a needless `.toFloat()` (from 1.21); it goes with 4.10 Next milestone, which draws
     that ring.
+  - **Built:** run 40744805315 (Android #105, commit 5c25474) passed: assembleDebug, unit tests and lint.
+- **4.9 Milestone ribbon (28 Oct).** Figma: Milestone ribbon (902:16439), one component, its motion in the routine
+  player's frame (2 s; the ribbon's part from 460 ms). Built as `ui/components/MilestoneRibbon.kt`: 40 tall, the full
+  width, the habit's Band; centred, 16 at the sides, the 16 dp `Medal`, 8, the milestone in Label Large in the habit's
+  Deep, one line. **Its own motion**, once when it's reached (`play`), read only where it's drawn: the medal spins in
+  from 35° and pops (0.01 → 1.3 → 1), the words slide 8 dp and fade up, a sheen (48 × 80, tilted 20°, white at 50 %)
+  passes once; at rest otherwise and with Remove animations. **The screens' motion**, `MilestoneRibbonArrival`
+  (10 dp up and fading in, Material's fast spatial and effects springs, nothing with Remove animations), kept beside
+  the ribbon because both screens play it alike. Moved: the routine player (across the hero card's top) and Day
+  details (top of This day, corners 12, keyed per milestone). Deleted: the old `MilestoneRibbon` in `Celebration.kt`
+  and the imports it alone used. The tag `day-ribbon` stays. The app, the unit tests (55) and the instrumented
+  tests' code build in the session.
+  Fixed:
+  - The ribbon was the habit's colour at 24 % over the surface; now the habit's Band. Its words were the colour
+    darkened with black at 50 %; now the habit's Deep (light; see below for dark).
+  - The medal was 18; now 16. The sides were 12; now 16. Day details' words sat at the start; now centred, as Figma's
+    one ribbon is.
+  - It dropped 20 dp from above; now it rises 10 dp, as Figma's frame does, on Material's springs.
+  - The sheen was upright, 48 wide, at 45 %; now Figma's: 48 × 80, tilted 20°, at 50 %, once from 420 ms.
+  - A long milestone ran past the ribbon; now one line with an ellipsis.
+  Noted, not changed:
+  - Figma's Day details has no ribbon: a milestone reached there shows the bar over the sheet. Kept the ribbon in
+    Day details until the Day details sheet (section 5); the user's call.
+  - Figma's player frame lays the ribbon over the card (A53: nothing shifts); in the code it sits in the card's
+    column, so the card grows by 40 when it's reached. For the Routine player (section 5).
+  - Figma draws light only. In dark the Band is the colour at 28 % on the card, where Deep doesn't read, so the words
+    are the colour's light shade there (white at 72 % over it), as before.
+  - Figma's medal shadow is #244A87 at 35 % (not a style); the `Medal` atom (3.5) keeps its own shadow.

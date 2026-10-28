@@ -10,6 +10,8 @@ import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.MenuDivider
+import com.oftenenough.app.ui.components.MilestoneRibbon
+import com.oftenenough.app.ui.components.MilestoneRibbonArrival
 import com.oftenenough.app.ui.components.StepRow
 import com.oftenenough.app.ui.components.StepRowPlace
 import com.oftenenough.app.ui.components.StandardIconButton
@@ -55,6 +57,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -312,7 +315,13 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
 
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(start = 20.dp, end = 20.dp, top = 18.dp, bottom = 4.dp)) {
         if (milestone != null) {
-            MilestoneRibbon(remember(milestone) { center.words(milestone, habit).band }, habit.color, "${habit.id}|${milestone.value}", play = playRibbon)
+            // Not in Figma's Day details (a milestone reached here shows the bar over it); kept for the Day details sheet.
+            key("${habit.id}|${milestone.value}") {
+                MilestoneRibbonArrival(playRibbon) {
+                    MilestoneRibbon(remember(milestone) { center.words(milestone, habit).band }, habit.color, play = playRibbon,
+                        modifier = Modifier.clip(RoundedCornerShape(12.dp)))
+                }
+            }
             Spacer(Modifier.height(12.dp))
         }
         Text("This day", style = AppType.labelMedium, color = c.secondary)

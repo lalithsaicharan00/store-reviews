@@ -37,13 +37,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
@@ -96,48 +92,6 @@ private fun rememberTimeline(key: Any, play: Boolean = true): Animatable<Float, 
 @Composable
 fun CelebrationMedal(number: String?, size: Dp, color: HabitColor, modifier: Modifier = Modifier) =
     com.oftenenough.app.ui.components.Medal(number, size, color, modifier)
-
-// ------------------------------------------------------------------ The ribbon (Figma 14)
-
-/**
- * A milestone reached today, at the top of This day (Figma 14, as in the routine player): the habit's colour at 24 %, a
- * small medal and "14 days in a row · reached today" in a dark shade of the colour. It drops in once, the medal spins in
- * and a sheen passes over it once; it stays for the rest of the day.
- */
-@Composable
-fun MilestoneRibbon(text: String, color: HabitColor, key: Any, play: Boolean = true, strip: Boolean = false) {
-    val c = appColors
-    val base = c.habit(color)
-    val ink = if (c.dark) Color.White.copy(alpha = 0.72f).compositeOver(base) else Color.Black.copy(alpha = 0.5f).compositeOver(base)
-    val tl = rememberTimeline(key, play)
-    val t = tl.value
-    val density = LocalDensity.current
-    val dropY = track(t, Key(0f, -20f), Key(0.25f, -20f, Arrive), Key(0.40f, 0f))
-    val alpha = track(t, Key(0f, 0f), Key(0.25f, 0f, EaseOut), Key(0.33f, 1f))
-    Row(
-        Modifier.fillMaxWidth().height(40.dp)
-            .graphicsLayer { translationY = dropY * density.density; this.alpha = alpha }
-            .clip(RoundedCornerShape(if (strip) 0.dp else 12.dp)).background(base.copy(alpha = 0.24f).compositeOver(c.surface))
-            .drawWithContent {
-                drawContent()
-                // The sheen: once, left to right.
-                val x = track(t, Key(0f, 0f), Key(0.46f, 0f, EaseInOut), Key(0.76f, 520f)) * density.density - 48.dp.toPx()
-                if (t in 0.46f..0.78f) drawRect(Brush.horizontalGradient(listOf(Color.Transparent, Color.White.copy(alpha = 0.45f), Color.Transparent),
-                    startX = x, endX = x + 48.dp.toPx()), topLeft = Offset(x, 0f), size = Size(48.dp.toPx(), size.height))
-            }
-            .padding(horizontal = 12.dp).semantics(mergeDescendants = true) { testTag = "day-ribbon" },
-        verticalAlignment = Alignment.CenterVertically,
-        // In the routine player it's a strip across the hero card's top, its words centred (Figma RP.1).
-        horizontalArrangement = if (strip) Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally) else Arrangement.spacedBy(8.dp),
-    ) {
-        val rot = track(t, Key(0f, 35f), Key(0.31f, 35f, EaseOut), Key(0.47f, 0f))
-        val sc = track(t, Key(0f, 0.01f), Key(0.31f, 0.01f, EaseOut), Key(0.40f, 1.3f, EaseInOut), Key(0.47f, 1f))
-        CelebrationMedal(null, 18.dp, color, Modifier.graphicsLayer { rotationZ = rot; scaleX = sc; scaleY = sc })
-        val tx = track(t, Key(0f, -8f), Key(0.33f, -8f, Arrive), Key(0.44f, 0f))
-        val ta = track(t, Key(0f, 0f), Key(0.33f, 0f, Arrive), Key(0.44f, 1f))
-        Text(text, Modifier.graphicsLayer { translationX = tx * density.density; this.alpha = ta }, style = AppType.labelLarge, color = ink, maxLines = 1)
-    }
-}
 
 // ------------------------------------------------------------------ The pop-up (Figma 14.1)
 

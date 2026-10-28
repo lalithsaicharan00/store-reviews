@@ -10,6 +10,8 @@ import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import androidx.compose.material3.LinearProgressIndicator
 import com.oftenenough.app.ui.components.AppAssistChip
+import com.oftenenough.app.ui.components.MilestoneRibbon
+import com.oftenenough.app.ui.components.MilestoneRibbonArrival
 import com.oftenenough.app.ui.components.StepRow
 import com.oftenenough.app.ui.components.StepRowPlace
 import com.oftenenough.app.ui.components.StandardIconButton
@@ -761,7 +763,9 @@ internal fun HeroCard(
     }.cookieBurst(pop, c.habit(habit.color))
     Card(modifier.fillMaxSize().semantics { testTag = "player-hero" }, shape = RoundedCornerShape(32.dp)) {
       Column(Modifier.fillMaxSize()) {
-        if (milestone != null) com.oftenenough.app.ui.day.MilestoneRibbon(milestone, habit.color, "ribbon-${habit.id}-$milestone", play = playMilestone, strip = true)
+        if (milestone != null) key("ribbon-${habit.id}-$milestone") {
+            MilestoneRibbonArrival(playMilestone) { MilestoneRibbon(milestone, habit.color, play = playMilestone) }
+        }
       Box(Modifier.weight(1f).fillMaxWidth()) {
         if (compact) {
             // Many steps (design 05): a compact header, then the steps scroll inside the card with a fade at the end.
