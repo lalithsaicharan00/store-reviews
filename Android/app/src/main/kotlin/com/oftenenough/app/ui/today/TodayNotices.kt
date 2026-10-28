@@ -1,29 +1,11 @@
 package com.oftenenough.app.ui.today
 
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.AppButton
-import com.oftenenough.app.ui.components.WavyProgress
+import com.oftenenough.app.ui.components.CardNotice
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
@@ -32,14 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import app.habits.core.DriveState
@@ -47,8 +23,6 @@ import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.app.reminders.Reminders
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.ui.theme.AppType
-import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -67,11 +41,12 @@ class TodayNotice(
 
 /**
  * Work a notice does in the card (A39, the user's words: "the pop-up should turn into something like a small
- * animation … so it create that worker illusion"). The card turns into [working] with a line that fills as each file
- * is saved, then [done] for a moment, then folds away; if it doesn't finish, [failed] with [retry].
+ * animation … so it create that worker illusion"). The card turns into [working] over [workingBody] with a line that
+ * fills as each file is saved, then [done] over [doneBody] for a moment, then folds away; if it doesn't finish,
+ * [failed] with [retry].
  */
 class NoticeWork(
-    val working: String, val done: String, val failed: String, val retry: String,
+    val working: String, val workingBody: String, val done: String, val doneBody: String, val failed: String, val retry: String,
     /** Does it, telling the card how many files of how many are saved. False when it didn't finish. */
     val run: suspend ((Int, Int) -> Unit) -> Boolean,
 )
@@ -121,12 +96,14 @@ object TodayNotices {
         // A39: the Drive copy is gone (the person cleared the folder, say). Nothing has gone up since, and nothing
         // does until they choose Back up again, which sends every file. `holding` keeps the card here while it works.
         if (state == DriveState.REMOVED || holding == "removed" || forced == "removed") list += TodayNotice(
-            "removed", Symbols.CloudOff, "Your Google Drive backup was removed",
-            "Your habits are safe on this phone. Nothing has been backed up since.", "Not now", "Back up again",
+            "removed", Symbols.CloudAlert, "Your Google Drive backup was deleted",
+            "Your habits are still safe on this phone. Back them up again to keep a copy in Google Drive.", "Not now", "Back up again",
             act = { nav.backup() },
             work = NoticeWork(
                 working = "Backing up to Google Drive…",
-                done = "Everything is in your Google Drive again",
+                workingBody = "Everything goes again: your habits, notes and every year of logs.",
+                done = "Backed up",
+                doneBody = "Everything is in your Google Drive again.",
                 failed = "Couldn’t back up just now. Your habits are safe on this phone.",
                 retry = "Try again",
             ) { progress -> AppGraph.backup.backUpEverythingAgain(progress) },
@@ -184,24 +161,22 @@ fun rememberTodayNotice(store: HabitStore, nav: NoticeNav): Pair<TodayNotice?, (
     return notice to { notice?.let { TodayNotices.dismiss(context, it, store.clock()) }; refresh++ }
 }
 
-/**
- * The notice card (Figma 1.9): white, corners 24; a 40 dp disc (#E2E2E7) with the icon; the title (Title Medium) over the
- * words (Body Medium, grey); the two text buttons at the end, the action last.
- */
+/** The notice card (molecule 4.7, [CardNotice]): its words, then Not now and what to do about it. */
 @Composable
 fun NoticeCard(notice: TodayNotice, onDismiss: () -> Unit) {
     val work = notice.work
-    if (work != null) WorkingNoticeCard(notice, work, onDismiss) else PlainNoticeCard(notice, notice.title, notice.body, onDismiss)
+    if (work != null) WorkingNoticeCard(notice, work, onDismiss)
+    else CardNotice(notice.icon, notice.title, notice.body, dismiss = notice.dismiss, onDismiss = onDismiss,
+        action = notice.action, onAction = notice.act, tag = "notice-${notice.key}")
 }
 
 /**
- * A notice whose action happens here (A39): the same card turns into the work, with a turning circle and a line that
- * fills as each file is saved, then says it is done for a moment and folds away. Nothing else on Today moves (U4):
- * the card keeps its place and its shape, only its words and its end change.
+ * A notice whose action happens here (A39): the same card turns into the work (Card notice's Progress: "Backing up to
+ * Google Drive…" and a line that fills as each file is saved), then Done for a moment, then folds away. Nothing else
+ * on Today moves (U4): the card keeps its place, only its words and its end change.
  */
 @Composable
 private fun WorkingNoticeCard(notice: TodayNotice, work: NoticeWork, onDismiss: () -> Unit) {
-    val c = appColors
     val scope = rememberCoroutineScope()
     var state by remember { mutableStateOf("ask") }
     var saved by remember { mutableIntStateOf(0) }
@@ -224,68 +199,12 @@ private fun WorkingNoticeCard(notice: TodayNotice, work: NoticeWork, onDismiss: 
             onDismiss()
         }
     }
+    val tag = "notice-${notice.key}"
     when (state) {
-        "working" -> NoticeShape(notice.key) {
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(40.dp).clip(CircleShape).background(c.behind), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(Modifier.size(20.dp), color = c.ink, strokeWidth = 2.dp)
-                }
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(work.working, style = AppType.titleMedium, color = c.ink)
-                    WavyProgress(if (of == 0) 0f else saved / of.toFloat())
-                }
-            }
-            Spacer(Modifier.height(8.dp))
-        }
-        "done" -> NoticeShape(notice.key) {
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) {
-                    Icon(Symbols.CloudDone, null, tint = c.onInk)
-                }
-                Text(work.done, Modifier.weight(1f).padding(vertical = 10.dp), style = AppType.titleMedium, color = c.ink)
-            }
-            Spacer(Modifier.height(8.dp))
-        }
-        "failed" -> PlainNoticeCard(notice, notice.title, work.failed, { TodayNotices.holding = null; onDismiss() }, work.retry, start)
-        else -> PlainNoticeCard(notice, notice.title, notice.body, onDismiss, notice.action, start)
-    }
-}
-
-/** The card's shape: the surface, corners 24, the row then whatever ends it. */
-@Composable
-private fun NoticeShape(key: String, content: @Composable ColumnScope.() -> Unit) {
-    val c = appColors
-    Column(
-        Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface)
-            .padding(start = 16.dp, end = 12.dp, top = 16.dp, bottom = 8.dp).semantics { testTag = "notice-$key" },
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        content = content,
-    )
-}
-
-@Composable
-private fun PlainNoticeCard(
-    notice: TodayNotice, title: String, body: String, onDismiss: () -> Unit,
-    action: String = notice.action, act: () -> Unit = notice.act,
-) {
-    val c = appColors
-    Column(
-        Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface)
-            .padding(start = 16.dp, end = 12.dp, top = 16.dp, bottom = 8.dp).semantics { testTag = "notice-${notice.key}" },
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            Box(Modifier.size(40.dp).clip(CircleShape).background(c.behind), contentAlignment = Alignment.Center) {
-                Icon(notice.icon, null, tint = c.ink)
-            }
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(title, style = AppType.titleMedium, color = c.ink)
-                Text(body, style = AppType.bodyMedium, color = c.secondary)
-            }
-        }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
-            AppButton(notice.dismiss, onDismiss, Modifier.semantics { testTag = "notice-dismiss" }, style = ButtonStyle.Text)
-            AppButton(action, act, Modifier.semantics { testTag = "notice-action" }, style = ButtonStyle.Text)
-        }
+        "working" -> CardNotice(Symbols.CloudUpload, work.working, work.workingBody, working = true, progress = if (of == 0) 0f else saved / of.toFloat(), tag = tag)
+        "done" -> CardNotice(Symbols.CloudDone, work.done, work.doneBody, tag = tag)
+        "failed" -> CardNotice(notice.icon, notice.title, work.failed, dismiss = notice.dismiss, onDismiss = { TodayNotices.holding = null; onDismiss() },
+            action = work.retry, onAction = start, tag = tag)
+        else -> CardNotice(notice.icon, notice.title, notice.body, dismiss = notice.dismiss, onDismiss = onDismiss, action = notice.action, onAction = start, tag = tag)
     }
 }

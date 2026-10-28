@@ -8,8 +8,7 @@ import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.ListAvatar
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.CardNotice
 import androidx.compose.foundation.layout.WindowInsets
 import com.oftenenough.app.ui.components.NavigationIcon
 import com.oftenenough.app.ui.components.AppTopBar
@@ -21,21 +20,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +39,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -76,7 +67,7 @@ private fun whenText(ms: Long?, store: HabitStore): String {
     val day = store.rules.calendarDayOf(ms)
     val today = store.rules.calendarDayOf(now)
     val time = DayWords.clock(ms)
-    return when (day) { today -> "Today $time"; today - 1 -> "Yesterday $time"; else -> DayWords.short(day) + ", " + time }
+    return when (day) { today -> "Today at $time"; today - 1 -> "Yesterday at $time"; else -> DayWords.short(day) + " at " + time }
 }
 
 /** "12 habits, 840 logs". */
@@ -136,51 +127,44 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
     Box(Modifier.fillMaxSize()) {
         TitledPage("Backup & Sync", onBack, "backup-page") {
             Spacer(Modifier.height(8.dp))
-            // 1–1.3: the state, said plainly (D4: always the truth).
-            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(20.dp).semantics { testTag = "backup-state" }) {
-                data class S(val icon: ImageVector, val filled: Boolean, val title: String, val line: String, val text: String)
-                val who = email?.let { " · $it" } ?: ""
-                val s = when {
-                    // No Google Play services: Drive can't be reached from this phone at all. Say so (D4: the truth).
-                    !center.link.available -> S(Symbols.CloudOff, false, "Not backed up", "Only on this phone",
-                        "Backing up to Google Drive needs Google Play services, which this phone doesn’t have. Save a backup file below to keep a copy.")
-                    !connected -> S(Symbols.CloudOff, false, "Not backed up", "Only on this phone for now",
-                        "Back up to your own Google Drive as you go. Only Often Enough can open it, and we never see your habits.")
-                    offline -> S(Symbols.WifiOff, false, "No internet", "${status?.waiting ?: 0} ${if (status?.waiting == 1) "change" else "changes"} waiting to sync",
-                        "Everything works offline and is saved on this phone. Your changes sync as soon as you’re back online.")
-                    status?.state == DriveState.FULL -> S(Symbols.CloudOff, false, "Google Drive is full", "Nothing is lost; it backs up when there’s room",
-                        "Your habits are safe on this phone. Make room in your Google Drive, and it carries on by itself.")
-                    status?.state == DriveState.NOT_CONNECTED -> S(Symbols.CloudOff, false, "Google Drive isn’t connected", "Your habits are safe on this phone",
-                        "Connect it again to keep backing up.")
-                    // A39: the app's files aren't in Drive any more. Nothing goes up until the person chooses.
-                    status?.state == DriveState.REMOVED -> S(Symbols.CloudOff, false, "Your backup was removed", "Your habits are safe on this phone",
-                        "The app’s files aren’t in your Google Drive any more. Back up again to send everything, every year.")
-                    else -> S(Symbols.CloudDone, true, "Backed up", whenText(status?.lastSent, store) + who,
-                        "Your habits are in your own Google Drive. Only Often Enough can open them, and we never see them. It backs up as you go, at least daily.")
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(56.dp).clip(CircleShape).background(if (s.filled) c.ink else c.tonal), contentAlignment = Alignment.Center) {
-                        Icon(s.icon, null, Modifier.size(28.dp), tint = if (s.filled) c.onInk else c.ink)
-                    }
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(s.title, style = AppType.titleLarge, color = c.ink)
-                        Text(s.line, style = AppType.bodyMedium, color = c.secondary)
-                    }
-                }
-                Spacer(Modifier.height(12.dp))
-                Text(s.text, style = AppType.bodyMedium, color = c.secondary)
-                Spacer(Modifier.height(16.dp))
-                when {
-                    !center.link.available -> Unit
-                    !connected -> AppButton("Back up to Google Drive", { scope.launch { center.connectDrive() } }, Modifier.semantics { testTag = "drive-connect" }, icon = Symbols.AddToDrive)
-                    offline -> AppButton("Try again", { scope.launch { center.syncNow() } }, Modifier.semantics { testTag = "drive-now" }, style = ButtonStyle.Tonal, icon = Symbols.Sync)
-                    // A39: everything again, every year — a backup saves only what changed, so the untouched years
-                    // would stay missing. This is the only button here: nothing else is sent until it's done.
-                    status?.state == DriveState.REMOVED -> AppButton("Back up again", { scope.launch { center.backUpEverythingAgain() } }, Modifier.semantics { testTag = "drive-again" }, icon = Symbols.CloudUpload, enabled = !center.working)
-                    else -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        AppButton("Back up now", { scope.launch { center.syncNow() } }, Modifier.semantics { testTag = "drive-now" }, style = ButtonStyle.Tonal, icon = Symbols.CloudUpload, enabled = !center.working)
-                        AppButton("Change account", { confirm = "switch" }, Modifier.semantics { testTag = "drive-change" }, style = ButtonStyle.Tonal)
+            // 1–1.3: the state, said plainly (D4: always the truth), as a Card notice (molecule 4.7), its one action
+            // a tonal button under the words; then, connected, which Google account it backs up to.
+            var count by remember { mutableStateOf<Pair<Int, Int>?>(null) }
+            val again: () -> Unit = { scope.launch { center.backUpEverythingAgain { saved, of -> count = saved to of }; count = null } }
+            val now: () -> Unit = { scope.launch { center.syncNow() } }
+            val last = status?.lastSent?.let { whenText(it, store) }
+            val m = Modifier.semantics { testTag = "backup-state" }
+            when {
+                // No Google Play services: Drive can't be reached from this phone at all. Say so (D4: the truth).
+                !center.link.available -> CardNotice(Symbols.CloudOff, "Not backed up",
+                    "Backing up to Google Drive needs Google Play services, which this phone doesn’t have. Save a backup file below to keep a copy.", m)
+                connected && center.working -> CardNotice(Symbols.CloudUpload, "Backing up…", "You can leave this page; it carries on.", m,
+                    working = true, progress = count?.let { (saved, of) -> if (of == 0) 0f else saved / of.toFloat() })
+                !connected -> CardNotice(Symbols.CloudOff, "Not backed up",
+                    "Your habits are only on this phone. Back them up to your own Google Drive to keep them safe.", m,
+                    action = "Back up to Google Drive", onAction = { scope.launch { center.connectDrive() } }, actionUnder = true, actionTag = "drive-connect")
+                offline -> CardNotice(Symbols.CloudOff, "Waiting for the internet",
+                    (last?.let { "Last backed up " + it.replaceFirstChar { ch -> ch.lowercase() } + ". " } ?: "") +
+                        "Nothing is lost: it backs up by itself once you’re online.", m)
+                status?.state == DriveState.FULL -> CardNotice(Symbols.CloudOff, "Google Drive is full",
+                    "Your habits are safe on this phone. Make room in your Google Drive, and it carries on by itself.", m,
+                    action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
+                status?.state == DriveState.NOT_CONNECTED -> CardNotice(Symbols.LinkOff, "Google Drive isn’t connected",
+                    "Your habits are safe on this phone. Connect it again to keep backing up.", m,
+                    action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
+                // A39: the app's files aren't in Drive any more. Nothing goes up until the person chooses; then
+                // everything again, every year (a backup saves only what changed, so untouched years would stay missing).
+                status?.state == DriveState.REMOVED -> CardNotice(Symbols.CloudAlert, "Your Google Drive backup was deleted",
+                    "Your habits are still safe on this phone. Back them up again to keep a copy in Google Drive.", m,
+                    action = "Back up again", onAction = again, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-again")
+                else -> CardNotice(Symbols.CloudDone, "Backed up", (last ?: "Not yet") + ". It backs up by itself as you go.", m,
+                    action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
+            }
+            if (connected) {
+                Spacer(Modifier.height(8.dp))
+                SegmentedList {
+                    PageRow(Symbols.SwitchAccount, "Change account", "Backing up to " + (email ?: "your Google Drive"), 0, 1, "drive-change", chevron = false) {
+                        confirm = "switch"
                     }
                 }
             }

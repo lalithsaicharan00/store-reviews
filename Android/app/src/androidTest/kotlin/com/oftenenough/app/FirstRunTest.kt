@@ -166,12 +166,12 @@ class FirstRunTest {
         waitFor(hasTestTag("habits-add"), "the Habits & Tasks page")
     }
 
-    // ------------------------------------------------------------------ The backup that was removed (A39)
+    // ------------------------------------------------------------------ The backup that was deleted (A39)
 
     /**
-     * **Today says the Google Drive backup was removed, and Back up again sends everything from the card** (A39).
+     * **Today says the Google Drive backup was deleted, and Back up again sends everything from the card** (A39).
      * The person watches it happen where they tapped: the card turns into "Backing up to Google Drive…" with a line
-     * that fills, then says everything is back, then folds away by itself. Nothing is sent until they tap it.
+     * that fills, then says "Backed up", then folds away by itself. Nothing is sent until they tap it.
      */
     @Test fun theRemovedBackupNoticeSendsEverythingFromTheCard() {
         launch(demo = "today")
@@ -187,11 +187,11 @@ class FirstRunTest {
             assertTrue("nothing is in Drive now", drive.list().isEmpty())
         }
         waitFor(hasTestTag("notice-removed"), "the removed-backup notice")
-        waitFor(hasText("Your Google Drive backup was removed"), "what it says")
+        waitFor(hasText("Your Google Drive backup was deleted"), "what it says")
         assertTrue("it never blames the person; on screen: ${screen()}", screen().contains("safe on this phone"))
 
         tapTag("notice-action")
-        waitFor(hasText("Everything is in your Google Drive again"), "the card saying it's done")
+        waitFor(hasText("Everything is in your Google Drive again."), "the card saying it's done")
         kotlinx.coroutines.runBlocking {
             val chains = AppGraph.backup.link.api()!!.list().mapNotNull { it.properties["chain"] }
             assertTrue("base and every year are back; got $chains", chains.contains("base") && chains.size >= 2)

@@ -89,7 +89,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 ### 4. Later: built from the atoms
 
-Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice, Milestone bar, Milestone
+Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar, Milestone
 ribbon, Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
@@ -872,3 +872,57 @@ What each atom changed, newest last.
   - The code's comparison has no divider, its heading is Title Small (Figma: Label Large; the same 14/20 Medium, a
     different name), and its pieces are 8 apart (Figma 12). The rows are placed by the card.
   - A share too small to see keeps 2 % of the width (the code's, kept); Figma's formula has none.
+  - **Built:** compiled in the session (the app and both test sets); run 40739873815 (Android #103, commit 5ae9471)
+    passed: assembleDebug, unit tests and lint.
+- **4.7 Card notice (28 Oct).** Figma: Card notice (795:499), State Notice · Progress · Done, with Show dismiss; no
+  motion. Surface bright, corners 24. The icon in a 40 dp disc of Secondary container (glyph On secondary container,
+  outlined), 16, the title in Title Medium (On surface) over the body in Body Medium (On surface variant), 4 apart,
+  both wrapping. **Notice:** 16 at the start and top, 8 at the end and bottom; 4 under the words, Text buttons (Not
+  now, then the action) at the end, 8 apart, wrapping. **Progress:** 16 all round, no buttons, 12 under the words the
+  wavy bar (Primary on Secondary container). **Done:** 16 all round, the words alone. 14 instances on Today (backup
+  paused, off, deleted, being sent again and done; reminders off, didn't arrive, came late; Plus waiting) and 30 on
+  Backup & Sync, where it is the page's status card: 16 all round, one **Tonal** button under the words (56 in, 12
+  below them), or none; and under the card, 8 down, a List item: Change account · "Backing up to sam@gmail.com".
+  Built as `CardNotice` (`ui/components/CardNotice.kt`) on Material's own filled `Card` (its colours set to Surface
+  bright and On surface, its 12 corners to the designs' 24), with `actionUnder` for Backup & Sync's tonal button and
+  `working` / `progress` for the Progress state (Material's own moving wave, `LinearWavyProgressIndicator`, while
+  there is no count). `cloud_alert` and `switch_account` added to `Symbols` from Google's own 24 px Rounded SVGs.
+  Moved onto it: Today's notices (`NoticeCard`, `TodayNotices.kt`; `PlainNoticeCard` and `NoticeShape` gone) and
+  Backup & Sync's status card (`BackupScreens.kt`). The tags stay (`notice-…`, `notice-dismiss`, `notice-action`,
+  `backup-state`, `drive-connect`, `drive-now`, `drive-again`, `drive-change`); `FirstRunTest` reads the new words.
+  The app, the unit tests (55, all passed) and the instrumented tests' code build in the session.
+  Fixed:
+  - The icon disc was Surface container highest with an ink glyph; now Secondary container and On secondary
+    container (the same greys in light, the roles in dark). The title and body were 2 apart; now 4.
+  - The card was a hand-made column on white (Surface container lowest), 12 at the end; now Material's card in
+    Surface bright, 8 at the end with the words 16 in. The buttons didn't wrap; now they do.
+  - Backing up again (A39) showed a turning circle in the disc and the title alone; now Figma's Progress: the disc
+    keeps its icon (cloud_upload), "Backing up to Google Drive…" over "Everything goes again: your habits, notes and
+    every year of logs.", the bar 12 under them, 16 all round. Done was an ink disc and "Everything is in your Google
+    Drive again" alone; now the usual disc (cloud_done), "Backed up" over "Everything is in your Google Drive again.",
+    as A39 and Figma say. `NoticeWork` carries the two bodies.
+  - The deleted backup's notice said "Your Google Drive backup was removed" with cloud_off; now A39's and Figma's
+    "Your Google Drive backup was deleted", "Your habits are still safe on this phone. Back them up again to keep a
+    copy in Google Drive.", with cloud_alert.
+  - Backup & Sync's status card was a 56 dp disc (ink when backed up), the title in Title Large, a line and a
+    paragraph, and two buttons (Back up now, Change account; Back up to Google Drive was Filled with an icon). Now the
+    Card notice as drawn: title, one body line, one Tonal button under the words; Change account is its own List item
+    under the card, with the account in its line. Figma's words for its states: "Backed up · Today at 9:14 AM. It
+    backs up by itself as you go.", "Not backed up · Your habits are only on this phone. Back them up to your own
+    Google Drive to keep them safe.", "Backing up… · You can leave this page; it carries on." (the Progress state,
+    new: the page had none), "Waiting for the internet · Last backed up … Nothing is lost: it backs up by itself once
+    you're online." (no button, as drawn), and the deleted backup as on Today. The time reads "Today at 9:14 AM".
+  Noted, not changed:
+  - **For the user:** Backup & Sync's card no longer says "Only Often Enough can open them, and we never see them. It
+    backs up as you go, at least daily." (Figma's words are shorter), and waiting for the internet no longer shows how
+    many changes wait or a Try again button (Figma has neither). Rulebook D4 asks the page to say the truth, "waiting
+    (how many)". Should the count come back?
+  - Figma draws no Backup & Sync card for Drive full, Drive not connected or a phone without Google Play services; they
+    keep the code's words in the same card (Not connected now has link_off, as Today's "Backup is off").
+  - A39's own text says the working card shows "a turning circle"; Figma's drawing of the same flow, and this
+    component, keep the icon. Built as Figma draws it.
+  - Today's other notices keep the code's words where Figma's differ (Today's own copy, for the Today screen):
+    "Backup is off" and "Reminders can't come" say "the app" where Figma says "Often Enough"; the missed reminder says
+    "A reminder didn't arrive" where Figma names the habit, the time and the phone's maker (A40), and the "came 40
+    minutes late" notice isn't built. The "Deleted on another device" notice is still in the code (D17 removed it from
+    the designs; its code goes as build work 148.7).
