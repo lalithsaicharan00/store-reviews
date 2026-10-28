@@ -111,7 +111,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☑ |
 | 5.1.6 | Onboarding · No internet | 582:8426 | ☑ |
 | 5.1.7 | Onboarding · No backup found | 690:13442 | ☑ |
-| 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☐ |
+| 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☑ |
 | 5.2.1 | Today · Navigation drawer | 626:76 | ☐ |
 | 5.2.2 | Today · Today | 728:7985 | ☐ |
 | 5.2.3 | Today · Edit Today | 827:39487 | ☐ |
@@ -1406,3 +1406,16 @@ What each atom changed, newest last.
   another Google account (Medium Filled) in the bottom bar. It is `RestoreFlow`'s NO_BACKUP step on `FlowScreen`,
   `StepHeading` (5.1.3) and the shared `FileChoice` row. Compared: words, the row and its position, the button and
   the layout are Figma's. Nothing differs, so nothing changed.
+  - **Built:** run 40775688323 (Android #122, commit aa573ca) passed: assembleDebug, unit tests and lint.
+- **5.1.8 Onboarding · That isn't a backup (28 Oct).** Figma: That isn't a backup (582:8484), one screen, no
+  properties and no motion; two instances (not a backup; from a newer version). ← only; the Heading; one button in
+  the bottom bar (Choose another file, or Update Often Enough; Medium Filled). It is `FileProblem`
+  (`backup/BackupScreens.kt`) on `FlowScreen` and `StepHeading` (5.1.3). The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - From a newer version said "… to bring it back; nothing has changed yet."; now Figma's "… to bring it back.
+    Nothing has changed yet."
+  Noted, not changed:
+  - The code also says why when a file was zipped again by another app or doesn't match (damaged); Figma draws only
+    the plain case and a newer version. Kept.
+  - Section 5.1 (Onboarding) is done.

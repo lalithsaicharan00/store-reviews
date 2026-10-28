@@ -229,7 +229,7 @@ fun FileProblem(problem: String, onChoose: () -> Unit, onBack: () -> Unit) {
             runCatching { context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse("market://details?id=com.oftenenough.app"))) }
         }
     }) {
-        StepHeading("From a newer version.", "This backup is from a newer Often Enough. Update the app to bring it back; nothing has changed yet.")
+        StepHeading("From a newer version.", "This backup is from a newer Often Enough. Update the app to bring it back. Nothing has changed yet.")
     } else FlowScreen(onBack = onBack, tag = "file-not-backup", top = true, bottom = { MainButton("Choose another file", "file-choose", onClick = onChoose) }) {
         StepHeading("That isn’t a backup.", when (problem) {
             BackupProblem.REPACKED -> "This file was unzipped and zipped again by another app. Choose the original file, whose name starts with “Often Enough backup”."
