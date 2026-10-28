@@ -11,7 +11,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -29,32 +28,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.RoundRect
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.ui.theme.appColors
-import kotlin.math.floor
 
 // The day cells' layouts: a week's strip, a month, the year in pixels, and the key. Every cell is the Day cell atom
 // (ui/components/DayCell.kt), drawn in batches by `DayCellDraw`, in one Canvas each (Rulebook S12).
@@ -73,82 +61,6 @@ fun HeatStrip(cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, size: 
     }
 }
 
-/**
- * Year in Pixels: twelve month columns by 31 day rows, the whole year at once. Squares are always 24 dp; only the gap
- * between columns adjusts so twelve fit. Days a month doesn't have stay empty. A tap selects a day; it never logs
- * anything. One Canvas, its labels measured once.
- */
-@Composable
-fun HeatYearPixels(
-    cells: List<HeatCell>, monthStarts: List<Int>, monthLengths: List<Int>, monthNames: List<String>, todayIndex: Int?,
-    selected: Int?, color: HabitColor, notes: Set<Int> = emptySet(), onSelect: (Int) -> Unit,
-) {
-    val colors = dayCellColors(color)
-    val label = appColors.secondary
-    val ink = appColors.ink
-    val measurer = rememberTextMeasurer()
-    val monthStyle = AppType.labelSmall
-    val dayStyle = AppType.labelSmall.copy(fontWeight = FontWeight.Normal)
-    val monthLabels = remember(measurer, monthNames) { monthNames.map { measurer.measure(it, monthStyle) } }
-    val dayLabels = remember(measurer) { (1..31).map { measurer.measure("$it", dayStyle) } }
-    val gutter = 20.dp
-    val header = 22.dp
-    val rowGap = 3.dp
-    val square = DayCellSize.year
-    val height = header + square * 31 + rowGap * 30 + DayCellSize.ring
-    Canvas(
-        Modifier.fillMaxWidth().height(height)
-            .pointerInput(monthStarts, monthLengths, cells.size) {
-                detectTapGestures { at ->
-                    val s = square.toPx()
-                    val g = gutter.toPx()
-                    val gap = ((size.width - g - 12 * s) / 11).coerceIn(1.dp.toPx(), 4.dp.toPx())
-                    val rg = rowGap.toPx()
-                    val column = floor((at.x - g + gap / 2) / (s + gap)).toInt()
-                    val row = floor((at.y - header.toPx() + rg / 2) / (s + rg)).toInt()
-                    if (column < 0 || column >= minOf(12, monthStarts.size) || row < 0 || row >= monthLengths[column]) return@detectTapGestures
-                    val index = monthStarts[column] + row
-                    if (index < cells.size) onSelect(index)
-                }
-            }
-            .clearAndSetSemantics { testTag = "year-pixels" },
-    ) {
-        val s = square.toPx()
-        val g = gutter.toPx()
-        val h = header.toPx()
-        val rg = rowGap.toPx()
-        val gap = ((size.width - g - 12 * s) / 11).coerceIn(1.dp.toPx(), 4.dp.toPx())
-        val pitchX = s + gap
-        val pitchY = s + rg
-        for (m in 0 until minOf(12, monthLabels.size)) {
-            val t = monthLabels[m]
-            drawText(t, color = label, topLeft = Offset(g + m * pitchX + s / 2 - t.size.width / 2f, h / 2 - t.size.height / 2f))
-        }
-        for (d in 0 until 31) {
-            val t = dayLabels[d]
-            drawText(t, color = label, topLeft = Offset(g - 4.dp.toPx() - t.size.width, h + d * pitchY + s / 2 - t.size.height / 2f))
-        }
-        val draw = DayCellDraw(s, 1.dp.toPx())
-        var picked: Rect? = null
-        for (m in 0 until minOf(12, monthStarts.size)) {
-            for (d in 0 until monthLengths[m]) {
-                val i = monthStarts[m] + d
-                if (i >= cells.size) continue
-                val left = g + m * pitchX
-                val top = h + d * pitchY
-                draw.add(cells[i], left, top, i == todayIndex)
-                if (i in notes) draw.note(cells[i], left, top, below = false)
-                if (i == selected) picked = Rect(left, top, left + s, top + s)
-            }
-        }
-        draw.draw(this, colors)
-        picked?.let { r ->
-            val grow = 2.dp.toPx()
-            val ring = Path().apply { addRoundRect(RoundRect(r.inflate(grow), CornerRadius(draw.radius + grow))) }
-            drawPath(ring, ink, style = Stroke(2.dp.toPx()))
-        }
-    }
-}
 
 // ------------------------------------------------------------------------------------------------ What the squares mean
 

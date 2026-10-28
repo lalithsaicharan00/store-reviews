@@ -3,6 +3,7 @@ package com.oftenenough.app.ui.habit
 import com.oftenenough.app.ui.components.Medal
 import com.oftenenough.app.ui.components.MilestonesCard
 import com.oftenenough.app.ui.components.StatTile
+import com.oftenenough.app.ui.components.YearInPixelsCard
 import com.oftenenough.app.ui.components.OverallRecordCard
 import com.oftenenough.app.ui.components.OverallRecordTotal
 import com.oftenenough.app.ui.components.HabitHistoryCard
@@ -22,7 +23,6 @@ import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +38,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -81,7 +80,6 @@ import com.oftenenough.app.data.pageDay
 import com.oftenenough.app.data.pageMonthCaption
 import com.oftenenough.app.data.pageMonthLead
 import com.oftenenough.app.data.pageMonthLength
-import com.oftenenough.app.data.pageMonthShort
 import com.oftenenough.app.data.pageMonthTitle
 import com.oftenenough.app.data.pageWeekCaption
 import com.oftenenough.app.data.pageWeekTitle
@@ -93,7 +91,6 @@ import com.oftenenough.app.data.periodComparison
 import com.oftenenough.app.data.quitPeriodCard
 import com.oftenenough.app.data.recordedEachDay
 import com.oftenenough.app.data.quitRecord
-import com.oftenenough.app.data.noteIndexes
 import com.oftenenough.app.data.progressValue
 import com.oftenenough.app.data.weekLabels
 import com.oftenenough.app.ui.theme.appColors
@@ -383,7 +380,7 @@ private fun ComparisonView(comparison: PeriodComparison, color: HabitColor) {
 
 private class YearView(
     val first: Int, val cells: List<HeatCell>, val starts: List<Int>, val lengths: List<Int>, val todayIndex: Int?,
-    val headline: String?, val detail: String?, val earliestYear: Int, val notes: Set<Int>,
+    val headline: String?, val detail: String?, val earliestYear: Int,
 )
 
 private fun yearView(store: HabitStore, habit: Habit, year: Int, today: Int): YearView {
@@ -395,41 +392,25 @@ private fun yearView(store: HabitStore, habit: Habit, year: Int, today: Int): Ye
     val starts = (1..12).map { pageDay(year, it, 1) - span.first }
     val lengths = (1..12).map { pageMonthLength(pageDay(year, it, 1)) }
     val first = if (quit) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
-    return YearView(span.first, cells, starts, lengths, if (today in span) today - span.first else null, card?.headline, card?.detail, pageYear(first),
-        store.noteIndexes(habit, span))
+    return YearView(span.first, cells, starts, lengths, if (today in span) today - span.first else null, card?.headline, card?.detail, pageYear(first))
 }
 
-private val monthNamesShort = (1..12).map { pageMonthShort(it) }
-
-/** Year in Pixels: the whole year as twelve month columns; a tap on a square shows its day under the grid, with Open day. */
+/** Year in pixels (molecule 4.17): the whole year as twelve month columns; a tap on a square opens its day. */
 @Composable
 private fun YearCard(habit: Habit, store: HabitStore, today: Int, revision: Int, onOpenDay: (Int) -> Unit) {
-    val c = appColors
     val thisYear = pageYear(today)
     var year by rememberSaveable(habit.id) { mutableStateOf<Int?>(null) }
     val shown = year ?: thisYear
     val view = remember(habit, revision, today, shown) { yearView(store, habit, shown, today) }
-    Column(
-        Modifier.pageItem().fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface)
-            .padding(horizontal = 12.dp, vertical = 16.dp).semantics { testTag = "habit-year-grid" },
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Box(Modifier.padding(start = 4.dp)) {
-            HistoryPeriodHeader("Year in Pixels", if (shown == thisYear) "$shown · This year" else "$shown", "year",
-                shown > view.earliestYear, shown < thisYear) { step ->
-                year = if (shown + step == thisYear) null else shown + step
-            }
-        }
-        view.headline?.let { headline ->
-            Column(Modifier.padding(horizontal = 4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(headline, style = MaterialTheme.typography.titleLarge, color = c.ink)
-                view.detail?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = c.secondary) }
-            }
-        }
-        HeatYearPixels(view.cells, view.starts, view.lengths, monthNamesShort, view.todayIndex, null, habit.color, view.notes) { index ->
+    YearInPixelsCard(
+        if (shown == thisYear) "$shown · This year" else "$shown", shown > view.earliestYear, shown < thisYear,
+        { step -> year = if (shown + step == thisYear) null else shown + step },
+        view.headline, view.detail, view.cells, view.starts, view.lengths, view.todayIndex, habit.color,
+        onTap = { index ->
             // A tap opens that day (Figma 4.1); a day to come does nothing.
             val day = view.first + index
             if (day <= today && view.cells[index] != HeatCell.Blank) onOpenDay(day)
-        }
-    }
+        },
+        modifier = Modifier.pageItem().semantics { testTag = "habit-year-grid" },
+    )
 }

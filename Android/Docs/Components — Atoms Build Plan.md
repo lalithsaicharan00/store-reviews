@@ -91,7 +91,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
 ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile ☑ (4.14), Habit history card ☑ (4.15), Overall record
-card ☑ (4.16), Year in pixels card, and the day navigation inside the floating toolbar.
+card ☑ (4.16), Year in pixels card ☑ (4.17), and the day navigation inside the floating toolbar.
 
 ## Log
 
@@ -1177,3 +1177,31 @@ What each atom changed, newest last.
     the unit's style.
   - A quit habit's record (its four tiles, the money saved) has no Figma variant here; it uses the same card.
   - Figma draws light only; the card takes the dark scheme's roles.
+  - **Built:** run 40766647917 (Android #113, commit e389f20) passed: assembleDebug, unit tests and lint.
+- **4.17 Year in pixels card (28 Oct).** Figma: Year in pixels card (1226:2470), Plan Plus · Free, with Period,
+  Summary and Detail; no motion; ten instances (Plus) and one (Free) on Habit details › Progress. Built as
+  `ui/components/YearInPixelsCard.kt` on the Habit history card's frame and header (4.15): "Year in pixels" with
+  its year and ‹ ›, the summary, the grid, and "Tap a square to see its day." in Body Small. The grid fills the
+  card's width and never scrolls sideways: a square is (width − 8 − 18 − 12 × 3) ÷ 12 (19.5 on a 360 dp phone),
+  rows and columns 3 apart, the months' letters over the columns and the 1st, 6th … 31st down the side, all Body
+  Small On surface variant; each square the Day cell (3.6, Size Year, scaled), in one Canvas. The Free plan is built
+  in (`locked`, `onUnlock`): blurred under the Scrim at 16 %, the arrows hidden in place, the prompt with the Plus
+  label 16 under the header, the whole card one tap target. Moved: Habit details' Year card (tags `habit-year-grid`,
+  `year-pixels`, `previous-year`, `next-year` kept). Deleted: `HeatYearPixels`, the Day cell atom's note dots
+  (`DayCellDraw.note`, its two paths and colour) and `noteIndexes`, which nothing draws since A60. The app, the unit
+  tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The card was 12 at the sides and 16 at the top and bottom, its parts 16 apart; now the history card's 16 / 12 /
+    20 / 20 and 12. Its title said "Year in Pixels"; now Figma's "Year in pixels". The summary is Title Large
+    Emphasized, 2 over its line.
+  - Squares were always 24 with the gaps squeezed between 1 and 4 to fit, so on a 360 dp phone the twelve columns ran
+    past the card; now they fill the width, 3 apart, as Figma's description says.
+  - Months were three letters in Label Small Medium; now one letter in Body Small. Every day was numbered down the
+    side in Label Small, right-aligned; now the 1st and every fifth day after, in Body Small, from the start.
+  - A day with a note had a dot in its square's corner; gone (A60).
+  - The footnote "Tap a square to see its day." was missing.
+  Noted, not changed:
+  - The Free plan isn't switched on: A73 makes the year at a glance Plus (this card, and the Habits page's Month and
+    Year), which is one change with the Plus screen and Habits & Tasks (section 5). The card is ready for it.
+  - Figma's grid shows no today ring; the Day cell keeps its Today ring (3.6).
+  - The blur is Android 12's and later; on Android 11 a locked card shows the scrim and the prompt without it.

@@ -71,7 +71,7 @@ fun DayCell(cell: HeatCell, color: HabitColor, modifier: Modifier = Modifier, si
 @Immutable
 class DayCellColors(
     val done: Color, val part: Color, val more: Color, val check: Color, val checkOnMore: Color,
-    val grey: Color, val sign: Color, val dash: Color, val ring: Color, val noteOnColour: Color,
+    val grey: Color, val sign: Color, val dash: Color, val ring: Color,
 )
 
 @Composable
@@ -83,7 +83,6 @@ fun dayCellColors(habit: HabitColor): DayCellColors {
         done = done, part = done.copy(alpha = 0.5f), more = medalColors(c, habit).bottom,
         check = if (c.dark) Color(darkChecks.getValue(habit)) else Color.White, checkOnMore = Color.White,
         grey = s.surfaceContainerHigh, sign = s.outline, dash = s.outlineVariant, ring = s.onSurface,
-        noteOnColour = if (c.dark) s.onSurface else Color.White,
     )
 }
 
@@ -129,8 +128,6 @@ class DayCellDraw(private val square: Float, private val unit: Float) {
     private val checks = Path()
     private val checksOnMore = Path()
     private val today = Path()
-    private val notesInk = Path()
-    private val notesOnColour = Path()
 
     fun add(cell: HeatCell, left: Float, top: Float, isToday: Boolean = false) {
         val rect = Rect(left, top, left + square, top + square)
@@ -158,17 +155,6 @@ class DayCellDraw(private val square: Float, private val unit: Float) {
         }
     }
 
-    /** A dot [below] the cell at [left], [top] (a month), or in its corner (a year): the day has a note. */
-    fun note(cell: HeatCell, left: Float, top: Float, below: Boolean) {
-        val r = (if (below) 2f else 1.6f) * unit
-        if (below) {
-            notesInk.addOval(Rect(Offset(left + square / 2, top + square + 5f * unit), r))
-        } else {
-            val onColour = cell is HeatCell.Level && cell.n > 0
-            (if (onColour) notesOnColour else notesInk).addOval(Rect(Offset(left + square - 3.5f * unit, top + 3.5f * unit), r))
-        }
-    }
-
     fun draw(scope: DrawScope, colors: DayCellColors) = with(scope) {
         drawPath(grey, colors.grey)
         drawPath(part, colors.part)
@@ -179,8 +165,6 @@ class DayCellDraw(private val square: Float, private val unit: Float) {
         drawPath(checks, colors.check)
         drawPath(checksOnMore, colors.checkOnMore)
         drawPath(today, colors.ring, style = Stroke(2f * unit))
-        drawPath(notesInk, colors.ring)
-        drawPath(notesOnColour, colors.noteOnColour)
     }
 
     private val scaled = HashMap<Path, Path>(4)

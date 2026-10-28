@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
@@ -111,20 +112,23 @@ fun HistoryHabitHeader(symbol: String, color: HabitColor, name: String, goal: St
 
 /**
  * Habit details' header: the [title] ("Week") in Title Medium On surface over the [period] ("18–24 Oct · This week")
- * in Body Medium On surface variant, a heading; then ‹ and › (Icon buttons, 48), › off on the latest period.
+ * in Body Medium On surface variant, a heading; then ‹ and › (Icon buttons, 48), › off on the latest period, both
+ * hidden in place when [arrows] is off.
  */
 @Composable
-fun HistoryPeriodHeader(title: String, period: String, noun: String, canGoBack: Boolean, canGoForward: Boolean, move: (Int) -> Unit) {
+fun HistoryPeriodHeader(title: String, period: String, noun: String, canGoBack: Boolean, canGoForward: Boolean, arrows: Boolean = true, move: (Int) -> Unit) {
     val s = MaterialTheme.colorScheme
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }) {
             Text(title, style = AppType.titleMedium, color = s.onSurface)
             Text(period, style = AppType.bodyMedium, color = s.onSurfaceVariant)
         }
+        // [arrows] off (a locked card): hidden in place, so nothing moves.
+        val hidden = if (arrows) Modifier else Modifier.alpha(0f).clearAndSetSemantics { }
         StandardIconButton(Symbols.KeyboardArrowLeft, "Previous $noun", { move(-1) },
-            Modifier.semantics { testTag = "previous-$noun" }, enabled = canGoBack)
+            hidden.semantics { testTag = "previous-$noun" }, enabled = canGoBack && arrows)
         StandardIconButton(Symbols.KeyboardArrowRight, "Next $noun", { move(1) },
-            Modifier.semantics { testTag = "next-$noun" }, enabled = canGoForward)
+            hidden.semantics { testTag = "next-$noun" }, enabled = canGoForward && arrows)
     }
 }
 

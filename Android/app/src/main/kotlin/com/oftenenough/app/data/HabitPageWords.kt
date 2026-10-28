@@ -1407,13 +1407,6 @@ private fun HabitStore.quitMilestones(habit: Habit, today: Int): HabitMilestones
 
 // ---------------------------------------------------------------------------------------------------------- Habit details, 19 Oct 2026
 
-/** The days of [span] that have a note, as indexes into it (a dot under the square, Figma 1373:2, 3.3, 3.6). */
-fun HabitStore.noteIndexes(habit: Habit, span: IntRange): Set<Int> {
-    val out = HashSet<Int>()
-    for ((day, text) in notes(habit)) if (day in span && text.isNotBlank()) out.add(day - span.first)
-    return out
-}
-
 /**
  * A week goal's Week column on the month (Figma 3.4: "Met", "1 of 3"), one label per row of the grid; each row is a week
  * on the person's week start. Null for a goal that isn't counted by the week. Weeks to come say nothing.
