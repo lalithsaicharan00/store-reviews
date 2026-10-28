@@ -1,5 +1,17 @@
 package com.oftenenough.app.ui.today
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.runtime.key
+import androidx.compose.ui.platform.LocalDensity
+import com.oftenenough.app.ui.components.MilestoneBar
+import com.oftenenough.app.ui.components.animationsOn
 import com.oftenenough.app.ui.components.SectionHabit
 import com.oftenenough.app.ui.components.SectionHeader
 import com.oftenenough.app.ui.components.AppSnackbarHost
@@ -134,7 +146,7 @@ private fun rememberNow(store: HabitStore): Long {
  * The home screen (Figma `1260:2`, "Today"): one card per time of day, then Quitting and Paused; the day bar floats at
  * the bottom over a fade. Light is Figma's; dark is the same layout in the app's dark colours.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: TodayActions, snackbar: SnackbarHostState, kept: TodayLayout? = null) {
     val c = appColors
@@ -327,9 +339,22 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                         bar?.let { shown ->
                             store.habit(shown.habitId)?.let { h ->
                                 val w = remember(shown) { center.words(shown, h) }
-                                MilestoneBar(w.number, w.title, h.name, h.color, key = "${shown.habitId}|${shown.value}", leaving = barLeaving,
-                                    onSee = { popup = shown; barGone() }, onGone = { barGone() },
-                                    modifier = Modifier.padding(bottom = 8.dp).onGloballyPositioned { barBox = it.boundsInRoot() })
+                                // Each milestone its own bar (molecule 4.8): it rises over the day bar and fades in, and
+                                // leaves fading up (Figma's Milestone · Motion: 24 dp in 250 ms, Material's fast springs).
+                                key("${shown.habitId}|${shown.value}") {
+                                    val visible = remember { MutableTransitionState(false) }.apply { targetState = !barLeaving }
+                                    val motion = MaterialTheme.motionScheme
+                                    val density = LocalDensity.current
+                                    val on = animationsOn()
+                                    AnimatedVisibility(
+                                        visible,
+                                        enter = if (on) fadeIn(motion.fastEffectsSpec()) + slideInVertically(motion.fastSpatialSpec()) { with(density) { 24.dp.roundToPx() } } else EnterTransition.None,
+                                        exit = if (on) fadeOut(motion.fastEffectsSpec()) + slideOutVertically(motion.fastSpatialSpec()) { with(density) { -16.dp.roundToPx() } } else ExitTransition.None,
+                                    ) {
+                                        MilestoneBar(w.number, w.title, h.name, h.color, onSee = { popup = shown; barGone() }, onGone = { barGone() },
+                                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp).onGloballyPositioned { barBox = it.boundsInRoot() })
+                                    }
+                                }
                             }
                         }
                         TodaySnackbars(snackbar)

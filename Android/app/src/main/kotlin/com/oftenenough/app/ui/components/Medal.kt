@@ -24,8 +24,6 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.PathParser
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
@@ -39,7 +37,7 @@ import com.oftenenough.app.ui.theme.appColors
 // details), Small 40 (a list row's leading slot); between them it scales, as Figma's instances do.
 
 /** Figma's star, in a 72 × 72 box (its path, moved into the medal's own space). Parsed once. */
-private val starPath: Path by lazy {
+internal val starPath: Path by lazy {
     PathParser().parsePathString(
         "M32.063 2.563C34.454 1.004 37.54 1.004 39.931 2.563L45.181 5.988C46.105 6.591 47.156 6.973 48.252 7.105L54.475 7.857" +
             "C57.308 8.199 59.672 10.183 60.502 12.914L62.322 18.912C62.642 19.968 63.202 20.936 63.956 21.742L68.24 26.318" +
@@ -89,15 +87,6 @@ fun medalColors(c: AppColors, habit: HabitColor): MedalColors {
 private fun scale(color: Color, f: Float) = Color(color.red * f, color.green * f, color.blue * f, color.alpha)
 private fun contrastWithWhite(color: Color): Double = 1.05 / (color.luminance() + 0.05)
 
-/** The star as a shape, for whatever is drawn in it (the bar's white medal, a folded section's small one). */
-object MedalShape : androidx.compose.ui.graphics.Shape {
-    override fun createOutline(size: androidx.compose.ui.geometry.Size, layoutDirection: androidx.compose.ui.unit.LayoutDirection,
-                               density: androidx.compose.ui.unit.Density): androidx.compose.ui.graphics.Outline {
-        val k = size.minDimension / 72f
-        return androidx.compose.ui.graphics.Outline.Generic(Path().apply { addPath(starPath); transform(Matrix().apply { scale(k, k) }) })
-    }
-}
-
 /**
  * A reached milestone, the same everywhere it's shown (the habit page, All milestones, the pop-up, the row's band, the
  * routine): the star at [size], its [number] in white (null: the medal alone, as in a band's sparkles). The number is
@@ -136,28 +125,5 @@ fun Medal(number: String?, size: Dp, color: HabitColor, modifier: Modifier = Mod
         }
         if (number != null) Text(number, color = Color.White, maxLines = 1,
             style = if (shrink == 1f) style else style.copy(fontSize = style.fontSize * shrink, lineHeight = style.lineHeight * shrink))
-    }
-}
-
-/**
- * The milestone bar's medal (Figma 2160:2, item 2): the star in white with the number in the habit's colour, so it reads
- * on any colour (a light colour deepened, as the medal's own); the inner line in the colour, lighter.
- */
-@Composable
-fun WhiteMedal(number: String, size: Dp, color: HabitColor, modifier: Modifier = Modifier) {
-    // The number in the medal's own deepened colour, so a light one (yellow) still reads on white (Figma 2160:2).
-    val c = appColors
-    val ink = remember(c, color) { medalColors(c, color).bottom }
-    val fontSize = with(LocalDensity.current) { (size * (if (number.length > 2) 0.28f else 0.36f)).toSp() }
-    Box(modifier.size(size), contentAlignment = Alignment.Center) {
-        Canvas(Modifier.size(size)) {
-            val k = this.size.minDimension / 72f
-            val shape = Path().apply { addPath(starPath); transform(Matrix().apply { scale(k, k) }) }
-            drawPath(shape, Color.White)
-            withTransform({ scale(0.82f, 0.82f, Offset(this.size.width / 2, this.size.height / 2)) }) {
-                drawPath(shape, ink.copy(alpha = 0.35f), style = Stroke(width = (1.5f * k / 0.82f).coerceAtLeast(1.dp.toPx() / 0.82f)))
-            }
-        }
-        Text(number, color = ink, fontSize = fontSize, fontWeight = FontWeight.Medium, fontFamily = AppType.labelLarge.fontFamily, maxLines = 1)
     }
 }

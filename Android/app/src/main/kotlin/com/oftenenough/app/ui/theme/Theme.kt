@@ -76,6 +76,19 @@ data class AppColors(
      */
     fun habitPale(c: HabitColor): Color = if (dark) habit(c).copy(alpha = 0.6f).compositeOver(surface) else habitPaleLight.getValue(c)
 
+    /**
+     * A habit's Strong (Figma's "Habit / <colour> / Strong", tone 48): the deep end of its medal's gradient, and the
+     * surface that carries white content (the milestone bar's end, its See label). The same in dark: Figma draws light
+     * only, and the habit colours are the same in both modes.
+     */
+    fun habitStrong(c: HabitColor): Color = habitStrongLight.getValue(c)
+
+    /**
+     * A habit's Deep (tone 30): the start of Figma's "Habit / <colour> / Bar", the milestone bar's gradient from Deep to
+     * Strong. The same in dark, as Strong.
+     */
+    fun habitDeep(c: HabitColor): Color = habitDeepLight.getValue(c)
+
     /** The progress fill behind a row: a light tint of the habit's colour on the card (Figma: 16 %, 18 % once full). */
     fun fill(c: HabitColor, full: Boolean = true): Color =
         habit(c).copy(alpha = if (dark) (if (full) 0.28f else 0.24f) else (if (full) 0.18f else 0.16f)).compositeOver(surface)
@@ -130,6 +143,20 @@ data class AppColors(
             HabitColor.CYAN to Color(0xFF34C9E8), HabitColor.BLUE to Color(0xFF97B8FF), HabitColor.INDIGO to Color(0xFFA8B4FF),
             HabitColor.PURPLE to Color(0xFFD5A5FF), HabitColor.PINK to Color(0xFFFF9AC4), HabitColor.BROWN to Color(0xFFCFB3A9),
             HabitColor.GRAY to Color(0xFFB4B9BF),
+        )
+        private val habitStrongLight = mapOf(
+            HabitColor.RED to Color(0xFFD53428), HabitColor.ORANGE to Color(0xFFB85600), HabitColor.YELLOW to Color(0xFF9A6800),
+            HabitColor.GREEN to Color(0xFF008437), HabitColor.MINT to Color(0xFF008079), HabitColor.TEAL to Color(0xFF007E8E),
+            HabitColor.CYAN to Color(0xFF007D93), HabitColor.BLUE to Color(0xFF226FDC), HabitColor.INDIGO to Color(0xFF5D6CC1),
+            HabitColor.PURPLE to Color(0xFF9D3DF0), HabitColor.PINK to Color(0xFFD81488), HabitColor.BROWN to Color(0xFF846D65),
+            HabitColor.GRAY to Color(0xFF6D7378),
+        )
+        private val habitDeepLight = mapOf(
+            HabitColor.RED to Color(0xFF930004), HabitColor.ORANGE to Color(0xFF753400), HabitColor.YELLOW to Color(0xFF614000),
+            HabitColor.GREEN to Color(0xFF005320), HabitColor.MINT to Color(0xFF00504B), HabitColor.TEAL to Color(0xFF004E59),
+            HabitColor.CYAN to Color(0xFF004E5C), HabitColor.BLUE to Color(0xFF004494), HabitColor.INDIGO to Color(0xFF2F3F92),
+            HabitColor.PURPLE to Color(0xFF6A00B2), HabitColor.PINK to Color(0xFF8C0056), HabitColor.BROWN to Color(0xFF56423B),
+            HabitColor.GRAY to Color(0xFF41484C),
         )
         private val habitFillLight = mapOf(
             HabitColor.RED to Color(0xFFFBE3DF), HabitColor.ORANGE to Color(0xFFF9E4D9), HabitColor.YELLOW to Color(0xFFFFEFDA),

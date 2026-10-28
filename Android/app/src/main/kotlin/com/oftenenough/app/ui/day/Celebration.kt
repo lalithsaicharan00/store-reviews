@@ -8,8 +8,6 @@ import com.oftenenough.app.ui.components.CircularProgressLabel
 import com.oftenenough.app.ui.components.AppCircularProgress
 import android.provider.Settings
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -60,6 +58,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
+import com.oftenenough.app.ui.components.Arrive
+import com.oftenenough.app.ui.components.EaseIn
+import com.oftenenough.app.ui.components.EaseInOut
+import com.oftenenough.app.ui.components.EaseOut
+import com.oftenenough.app.ui.components.Key
+import com.oftenenough.app.ui.components.Pop
+import com.oftenenough.app.ui.components.track
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlin.math.cos
@@ -67,30 +72,7 @@ import kotlin.math.sin
 
 // ------------------------------------------------------------------ Figma's timings, exactly (Figma 14, 14.1)
 
-/** One keyframe of a track: its time (0–1 of the 2 s timeline), its value, and the easing from it to the next. */
-class Key(val at: Float, val value: Float, val ease: Easing = LinearEasing)
-
-/** The value of a keyframe track at [t] (0–1). */
-fun track(t: Float, vararg keys: Key): Float {
-    if (t <= keys.first().at) return keys.first().value
-    for (i in 0 until keys.size - 1) {
-        val a = keys[i]
-        val b = keys[i + 1]
-        if (t <= b.at) {
-            val f = ((t - a.at) / (b.at - a.at)).coerceIn(0f, 1f)
-            return a.value + (b.value - a.value) * a.ease.transform(f)
-        }
-    }
-    return keys.last().value
-}
-
-private val EaseOut = CubicBezierEasing(0f, 0f, 0.58f, 1f)
-private val EaseIn = CubicBezierEasing(0.42f, 0f, 1f, 1f)
-private val EaseInOut = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
-/** Material's emphasized decelerate: things that arrive. */
-private val Arrive = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
-/** The sparkles' pop, with a little overshoot. */
-private val Pop = CubicBezierEasing(0.45f, 1.45f, 0.8f, 1f)
+// Key, track and Figma's easings (EaseOut, EaseIn, EaseInOut, Arrive, Pop) are the design system's (ui/components/Motion.kt).
 
 /**
  * The 2 s timeline, played once when [key] first shows (the design loops it only as a preview). With animations off on

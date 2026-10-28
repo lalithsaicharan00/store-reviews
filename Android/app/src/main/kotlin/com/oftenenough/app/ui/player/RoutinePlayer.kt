@@ -755,8 +755,8 @@ internal fun HeroCard(
     // Just reached: the cookie pops with a burst of twelve dots as Mark done fills it (RP.1, 0.18–1.0 s of 2.4 s).
     val pop = com.oftenenough.app.ui.today.rememberPlay(if (playMilestone && milestone != null) "pop-${habit.id}" else null, playMilestone && milestone != null, 2400)
     val cookie = Modifier.graphicsLayer {
-        val sc = com.oftenenough.app.ui.day.track(pop, com.oftenenough.app.ui.day.Key(0f, 1f), com.oftenenough.app.ui.day.Key(0.075f, 1f, PopEaseOut),
-            com.oftenenough.app.ui.day.Key(0.167f, 1.12f, PopEaseInOut), com.oftenenough.app.ui.day.Key(0.258f, 1f))
+        val sc = com.oftenenough.app.ui.components.track(pop, com.oftenenough.app.ui.components.Key(0f, 1f), com.oftenenough.app.ui.components.Key(0.075f, 1f, PopEaseOut),
+            com.oftenenough.app.ui.components.Key(0.167f, 1.12f, PopEaseInOut), com.oftenenough.app.ui.components.Key(0.258f, 1f))
         scaleX = sc; scaleY = sc
     }.cookieBurst(pop, c.habit(habit.color))
     Card(modifier.fillMaxSize().semantics { testTag = "player-hero" }, shape = RoundedCornerShape(32.dp)) {
@@ -900,19 +900,19 @@ private fun Modifier.cookieBurst(t: Float, color: Color): Modifier = drawWithCon
     if (t <= 0.125f || t >= 0.43f) return@drawWithContent
     val centre = androidx.compose.ui.geometry.Offset(size.width / 2, size.height / 2)
     val radius = size.minDimension / 2
-    val ra = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(0.125f, 0f, PopEaseOut),
-        com.oftenenough.app.ui.day.Key(0.146f, 0.6f, PopEaseOut), com.oftenenough.app.ui.day.Key(0.354f, 0f))
-    val rs = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0.8f), com.oftenenough.app.ui.day.Key(0.125f, 0.8f, PopEaseOut), com.oftenenough.app.ui.day.Key(0.354f, 1.3f))
+    val ra = com.oftenenough.app.ui.components.track(t, com.oftenenough.app.ui.components.Key(0f, 0f), com.oftenenough.app.ui.components.Key(0.125f, 0f, PopEaseOut),
+        com.oftenenough.app.ui.components.Key(0.146f, 0.6f, PopEaseOut), com.oftenenough.app.ui.components.Key(0.354f, 0f))
+    val rs = com.oftenenough.app.ui.components.track(t, com.oftenenough.app.ui.components.Key(0f, 0.8f), com.oftenenough.app.ui.components.Key(0.125f, 0.8f, PopEaseOut), com.oftenenough.app.ui.components.Key(0.354f, 1.3f))
     if (ra > 0f) drawCircle(color.copy(alpha = ra), radius * rs, centre, style = androidx.compose.ui.graphics.drawscope.Stroke(2.dp.toPx()))
     for (i in 0 until 12) {
         val start = 0.125f + 0.0042f * i
         val a = Math.toRadians(15.0 + 30.0 * i)
-        val da = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(start, 0f, PopEaseOut),
-            com.oftenenough.app.ui.day.Key(start + 0.033f, 1f, PopEaseIn), com.oftenenough.app.ui.day.Key(start + 0.25f, 0f))
-        val ds = com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0.6f), com.oftenenough.app.ui.day.Key(start, 0.6f, PopEaseOut),
-            com.oftenenough.app.ui.day.Key(start + 0.0625f, 1f, PopEaseIn), com.oftenenough.app.ui.day.Key(start + 0.25f, 0.3f))
-        val r = radius + com.oftenenough.app.ui.day.track(t, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(start, 0f, PopEaseOut),
-            com.oftenenough.app.ui.day.Key(start + 0.167f, 24f)) * density
+        val da = com.oftenenough.app.ui.components.track(t, com.oftenenough.app.ui.components.Key(0f, 0f), com.oftenenough.app.ui.components.Key(start, 0f, PopEaseOut),
+            com.oftenenough.app.ui.components.Key(start + 0.033f, 1f, PopEaseIn), com.oftenenough.app.ui.components.Key(start + 0.25f, 0f))
+        val ds = com.oftenenough.app.ui.components.track(t, com.oftenenough.app.ui.components.Key(0f, 0.6f), com.oftenenough.app.ui.components.Key(start, 0.6f, PopEaseOut),
+            com.oftenenough.app.ui.components.Key(start + 0.0625f, 1f, PopEaseIn), com.oftenenough.app.ui.components.Key(start + 0.25f, 0.3f))
+        val r = radius + com.oftenenough.app.ui.components.track(t, com.oftenenough.app.ui.components.Key(0f, 0f), com.oftenenough.app.ui.components.Key(start, 0f, PopEaseOut),
+            com.oftenenough.app.ui.components.Key(start + 0.167f, 24f)) * density
         if (da > 0f) drawCircle(color.copy(alpha = da), (if (i % 2 == 0) 3.5f else 2.5f) * density * ds,
             androidx.compose.ui.geometry.Offset(centre.x + (kotlin.math.cos(a) * r).toFloat(), centre.y + (kotlin.math.sin(a) * r).toFloat()))
     }

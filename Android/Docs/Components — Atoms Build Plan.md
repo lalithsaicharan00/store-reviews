@@ -89,7 +89,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 ### 4. Later: built from the atoms
 
-Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar, Milestone
+Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
 ribbon, Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
@@ -926,3 +926,51 @@ What each atom changed, newest last.
     "A reminder didn't arrive" where Figma names the habit, the time and the phone's maker (A40), and the "came 40
     minutes late" notice isn't built. The "Deleted on another device" notice is still in the code (D17 removed it from
     the designs; its code goes as build work 148.7).
+  - **Built:** run 40742120775 (Android #104, commit 49ae1d3) passed: assembleDebug, unit tests and lint.
+- **4.8 Milestone bar (28 Oct).** Figma: Milestone bar (852:45599), one component; its entrance is Today's ("Milestone ·
+  Motion", 853:45982). 328 × 72, corners 20, the habit's **Bar** gradient (Figma's "Habit / … / Bar": Deep, tone 30,
+  to Strong, tone 48, left to right), Elevation Level 3. 12 at the sides, 14 above and below; the medal (a 44 box: a
+  white 40 star with a 3.3 shadow, a 0.8 line in the habit's Pale at 82 %, the number in Label Large in its Strong,
+  three white sparkles at 95, 80 and 70 %), 12, the title in Title Medium over the habit's name in Body Medium at 86 %,
+  both On primary, 12, See (the Small filled button, white, its label Strong). A 56 × 130 sheen tilted 20° (white at
+  28 % in its middle), and the time left along the foot (20 in, 3 up, 3 tall, white at 45 %). Motion, one 5.6 s
+  timeline: the bar fades in and rises 24 dp from 300 to 550 ms (emphasized decelerate); then the badge pops 0.6 → 1
+  (300 ms, an overshoot), the sparkles appear 60 ms apart and settle at 60 %, the sheen sweeps once (600 ms,
+  ease-in-out), and the time-left line shrinks.
+  Built as `MilestoneBar` (`ui/components/MilestoneBar.kt`), with its white medal (`BarMedal`, moved in from
+  `Medal.kt`'s `WhiteMedal`), and the theme's `habitStrong` and `habitDeep` (Figma's 13 Strong and Deep colours).
+  See is Material's own `Button` at the Small size in white with the Strong label. The bar's own motion runs on one
+  timeline read only in its layer and draw lambdas, so a moving bar never recomposes (S3, S6); the time left is an
+  `Animatable` too (it was a 50 ms loop recomposing the bar). **Screen motion, on Today:** the rise and the leaving
+  are `TodayScreen`'s now, Material's `AnimatedVisibility` with the motion scheme's fast spatial and effects springs
+  (24 dp up and in; out, 16 dp up and fading), none with Remove animations, each milestone its own bar (keyed).
+  The design system's motion helpers moved to `ui/components/Motion.kt`: `Key`, `track`, Figma's easings (`EaseOut`,
+  `EaseIn`, `EaseInOut`, `Arrive`, `Pop`), `animationsOn` and `sparkle` (Celebration, MilestoneViews, HabitRow and the
+  routine player use them from there; their copies are gone). Deleted with the old bar: `WhiteMedal` and the unused
+  `MedalShape` (`Medal.kt`). The tags `milestone-bar` and `milestone-bar-see`, the spoken words, the swipe away and
+  Android's longer time for people who ask for it stay. The app, the unit tests (55) and the instrumented tests'
+  code build in the session.
+  Fixed:
+  - The bar was 64 tall with a gradient worked out from the habit's colour (12 % darker to 22 % lighter) and a 10 dp
+    shadow in the habit's colour; now 72, Figma's Bar gradient, and Material's Level 3 shadow.
+  - On a light habit colour the words and See turned dark (#1C1B1F); Figma's bar is always deep enough for On primary,
+    so they are always light now, and See is white with its label in Strong.
+  - The habit's name was Body Small at 85 %; now Body Medium at 86 %. The gaps were 10 and 8; now 12 and 12.
+  - See was a hand-made 36 dp pill; now Material's button (40, its ripple and pressed shape).
+  - The medal's number was sized by a share of the medal (a size of its own, U36); now Label Large (Label Medium past
+    two digits, to stay inside the line). Its line was the Strong colour at 35 %; now the habit's Pale, 0.8.
+  - The sparkles went from 40 % to 100 % and back to 70 %, growing from 60 % with an overshoot; now Figma's: from
+    nothing to full and settling at 60 %, growing from nothing with the pop. The sheen was upright at 35 %; now
+    tilted 20° at 28 %, 56 wide.
+  - The time-left line was 16 in, 2 tall, square, in the words' colour at 55 %; now 20 in, 3 tall and round, white
+    at 45 %. It starts once the bar is up, as Figma's does.
+  Noted, not changed:
+  - Figma's star is white to #F5F5F7 with a shadow in #244A87 at 35 % (neither is a style); built plain white
+    with the shadow black at 35 %.
+  - Figma's time-left line stops at 205 of 288 at the end of its loop (Figma's keyframes); the description says it
+    shrinks over the 5 s, so it runs to nothing.
+  - Figma draws light only. In dark the bar keeps its light look (On primary is dark in the dark scheme, so the words
+    are white; See stays white); the Bar, Strong and Deep colours are the same in both, as the habit colours are.
+  - Figma's pop-up and row motion in the same "Milestone · Motion" frame are 4.12's and 4.1's.
+  - `Celebration.kt` line 246 has a needless `.toFloat()` (from 1.21); it goes with 4.10 Next milestone, which draws
+    that ring.

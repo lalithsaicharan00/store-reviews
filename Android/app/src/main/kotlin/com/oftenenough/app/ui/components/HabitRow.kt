@@ -151,10 +151,10 @@ fun HabitRowStreak(count: Int, unit: StreakUnit, roll: Float = 1f) {
             val density = androidx.compose.ui.platform.LocalDensity.current.density
             val ease = androidx.compose.animation.core.CubicBezierEasing(0.3f, 0f, 0.8f, 0.15f)
             val pop = androidx.compose.animation.core.CubicBezierEasing(0.45f, 1.45f, 0.8f, 1f)
-            val oldA = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 1f), com.oftenenough.app.ui.day.Key(0.131f, 1f, ease), com.oftenenough.app.ui.day.Key(0.169f, 0f))
-            val oldY = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(0.131f, 0f, ease), com.oftenenough.app.ui.day.Key(0.169f, -10f))
-            val newA = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 0f), com.oftenenough.app.ui.day.Key(0.169f, 0f), com.oftenenough.app.ui.day.Key(0.208f, 1f))
-            val newY = com.oftenenough.app.ui.day.track(roll, com.oftenenough.app.ui.day.Key(0f, 10f), com.oftenenough.app.ui.day.Key(0.169f, 10f, pop), com.oftenenough.app.ui.day.Key(0.231f, 0f))
+            val oldA = track(roll, Key(0f, 1f), Key(0.131f, 1f, ease), Key(0.169f, 0f))
+            val oldY = track(roll, Key(0f, 0f), Key(0.131f, 0f, ease), Key(0.169f, -10f))
+            val newA = track(roll, Key(0f, 0f), Key(0.169f, 0f), Key(0.208f, 1f))
+            val newY = track(roll, Key(0f, 10f), Key(0.169f, 10f, pop), Key(0.231f, 0f))
             Box {
                 Text(unit.short(count - 1), Modifier.graphicsLayer { alpha = oldA; translationY = oldY * density }, style = AppType.labelLarge, color = ink, maxLines = 1)
                 Text(unit.short(count), Modifier.graphicsLayer { alpha = newA; translationY = newY * density }, style = AppType.labelLarge, color = ink, maxLines = 1)
