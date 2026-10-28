@@ -49,12 +49,14 @@ enum class MenuItem(val title: String, val icon: ImageVector, val selectedIcon: 
 }
 
 /**
- * The ≡ menu: Material's own navigation drawer, 304 wide, its rows 56 high and fully rounded, the open one tonal
- * (Figma `12:5259`). The logo and the app's name sit above them; a divider separates where you are from what you do.
+ * The ≡ menu (5.2.1, Figma Navigation drawer 626:76): Material's own modal navigation drawer on Surface container low,
+ * its end corners 16; the header (the mark, 36, and "Often Enough" in Title Large Emphasized, 12 apart, 28 from the
+ * edges and 16 above and below); then the Drawer items (1.8), 56 tall, 12 in, one under another; a divider in Outline
+ * variant, 16 + 12 in, separates where you are from what you do.
  */
 @Composable
 fun MenuDrawer(store: HabitStore, current: MenuItem, onPick: (MenuItem) -> Unit) {
-    ModalDrawerSheet(drawerContainerColor = appColors.surface, modifier = Modifier.semantics { testTag = "menu-drawer" }) {
+    ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow, modifier = Modifier.semantics { testTag = "menu-drawer" }) {
         MenuItems(store, current, onPick)
     }
 }
@@ -65,7 +67,7 @@ fun MenuDrawer(store: HabitStore, current: MenuItem, onPick: (MenuItem) -> Unit)
  */
 @Composable
 fun MenuSidebar(store: HabitStore, current: MenuItem?, onPick: (MenuItem) -> Unit) {
-    PermanentDrawerSheet(Modifier.width(300.dp).semantics { testTag = "menu-sidebar" }, drawerContainerColor = appColors.surface) {
+    PermanentDrawerSheet(Modifier.width(300.dp).semantics { testTag = "menu-sidebar" }, drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
         MenuItems(store, current, onPick)
     }
 }
@@ -77,17 +79,18 @@ private fun MenuItems(store: HabitStore, current: MenuItem?, onPick: (MenuItem) 
     val kept = store.habits.count { !it.archived }
     Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
         Row(
-            Modifier.padding(start = 12.dp, end = 16.dp, top = 16.dp, bottom = 28.dp),
+            // 28 from the sheet's edges (12 + 16), so the mark lines up with the rows' icons; 16 above and below.
+            Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(painterResource(if (c.dark) R.drawable.mark_dark else R.drawable.mark_light), null, Modifier.size(36.dp))
             Spacer(Modifier.width(12.dp))
-            Text("Often Enough", style = AppType.titleLargeEmphasized, color = c.ink)
+            Text("Often Enough", style = AppType.titleLargeEmphasized, color = MaterialTheme.colorScheme.onSurface)
         }
         for (item in MenuItem.entries) {
             // The line between where you are and what you do (Figma: under Habits & Tasks).
             if (item == MenuItem.PLUS) {
-                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), color = c.line.copy(alpha = 0.6f))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), color = MaterialTheme.colorScheme.outlineVariant)
             }
             NavigationDrawerItem(
                 label = { Text(item.title, style = AppType.labelLarge) },
@@ -95,13 +98,13 @@ private fun MenuItems(store: HabitStore, current: MenuItem?, onPick: (MenuItem) 
                 onClick = { onPick(item) },
                 icon = { Icon(if (item == current) item.selectedIcon else item.icon, null) },
                 badge = if (item == MenuItem.HABITS && kept > 0) ({ Text("$kept", style = AppType.labelLarge) }) else null,
-                modifier = Modifier.padding(vertical = 2.dp).semantics { testTag = "menu-" + item.name.lowercase() },
+                modifier = Modifier.semantics { testTag = "menu-" + item.name.lowercase() },
                 // Atom 1.8 (Figma Drawer item 625:46): Material's own colours (selected Secondary container with On
                 // secondary container, unselected transparent with On surface variant); only the count stays On surface
                 // variant on the selected row too, as the design draws it.
                 colors = NavigationDrawerItemDefaults.colors(selectedBadgeColor = MaterialTheme.colorScheme.onSurfaceVariant),
             )
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
     }
 }

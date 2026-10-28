@@ -112,7 +112,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.6 | Onboarding · No internet | 582:8426 | ☑ |
 | 5.1.7 | Onboarding · No backup found | 690:13442 | ☑ |
 | 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☑ |
-| 5.2.1 | Today · Navigation drawer | 626:76 | ☐ |
+| 5.2.1 | Today · Navigation drawer | 626:76 | ☑ |
 | 5.2.2 | Today · Today | 728:7985 | ☐ |
 | 5.2.3 | Today · Edit Today | 827:39487 | ☐ |
 | 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☐ |
@@ -1419,3 +1419,20 @@ What each atom changed, newest last.
   - The code also says why when a file was zipped again by another app or doesn't match (damaged); Figma draws only
     the plain case and a newer version. Kept.
   - Section 5.1 (Onboarding) is done.
+  - **Built:** run 40776376075 (Android #123, commit de38ade) passed: assembleDebug, unit tests and lint.
+- **5.2.1 Today · Navigation drawer (28 Oct).** Figma: Navigation drawer (626:76), one component, no properties and no
+  motion (Material's drawer slides in itself); two instances. Material's modal navigation drawer on Surface container
+  low, end corners 16: the header (the mark, 36, and "Often Enough" in Title Large Emphasized On surface, 12 apart, 28
+  from the edges, 16 above and below), then six Drawer items (1.8), 56 tall and 12 in, one under another (Today,
+  Habits & Tasks with its count; a divider in Outline variant, 8 above and below, 28 in; Plus, Settings, Contact us,
+  Send feedback). It is `MenuDrawer` (`menu/Drawer.kt`), with the tablet's `MenuSidebar` on the same rows. The tags
+  `menu-drawer` and `menu-…` stay. The app, the unit tests (55) and the instrumented tests' code build in the
+  session.
+  Fixed:
+  - The sheet was Surface container lowest (the cards' white); now Surface container low, as drawn (the sidebar too).
+  - The header sat 24 from the start and had 28 under it; now 28 from both edges and 16 above and below.
+  - The rows had 4 between them; now none, as Material's and Figma's.
+  - The divider was Outline variant at 60 %; now Outline variant. The room under the last row was 24; now 16.
+  Noted, not changed:
+  - The sheet's width is Material's (`ModalDrawerSheet`); Figma's 304 on a 360 dp phone is what Material leaves for
+    the scrim there, so no width of ours is set.
