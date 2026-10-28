@@ -1,12 +1,12 @@
 package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.DayCellSize
-import com.oftenenough.app.ui.components.dayCellColors
 import com.oftenenough.app.ui.components.Medal
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.CircularProgressLabel
 import com.oftenenough.app.ui.components.AppCircularProgress
 import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.ComparisonRow
 import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.compose.ui.graphics.compositeOver
 import com.oftenenough.app.ui.components.segmentShape
@@ -33,12 +33,10 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -613,8 +611,8 @@ private fun PeriodHeader(title: String, subtitle: String, noun: String, canGoBac
     }
 }
 
-/** This period and the one before, as two labelled bars with exact values: the habit's colour for this period, a lighter
- *  step for the one before; no arrows, no better or worse. */
+/** This period and the one before, as two Comparison rows (molecule 4.6) with exact values, both in the habit's colour;
+ *  no arrows, no better or worse. */
 @Composable
 private fun ComparisonView(comparison: PeriodComparison, color: HabitColor) {
     val c = appColors
@@ -625,21 +623,9 @@ private fun ComparisonView(comparison: PeriodComparison, color: HabitColor) {
             Text(note, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
         } else {
             val top = maxOf(comparison.thisValue ?: 0.0, comparison.previousValue ?: 0.0, 0.0001)
-            ComparisonRow(comparison.thisLabel, comparison.thisText, (comparison.thisValue ?: 0.0) / top, c.habit(color))
-            ComparisonRow(comparison.previousLabel, comparison.previousText, (comparison.previousValue ?: 0.0) / top, dayCellColors(color).part)
+            ComparisonRow(comparison.thisLabel, comparison.thisText, ((comparison.thisValue ?: 0.0) / top).toFloat(), color)
+            ComparisonRow(comparison.previousLabel, comparison.previousText, ((comparison.previousValue ?: 0.0) / top).toFloat(), color)
         }
-    }
-}
-
-@Composable
-private fun ComparisonRow(label: String, text: String, fraction: Double, fill: Color) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(label, Modifier.width(92.dp), style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Box(Modifier.weight(1f).height(10.dp).clip(CircleShape).background(c.tonal)) {
-            Box(Modifier.fillMaxHeight().fillMaxWidth(fraction.toFloat().coerceIn(0.02f, 1f)).clip(CircleShape).background(fill))
-        }
-        Text(text, Modifier.widthIn(min = 64.dp), style = MaterialTheme.typography.labelLarge, color = c.ink, textAlign = TextAlign.End, maxLines = 1)
     }
 }
 

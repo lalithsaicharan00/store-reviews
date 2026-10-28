@@ -89,7 +89,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 ### 4. Later: built from the atoms
 
-Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row, Card notice, Milestone bar, Milestone
+Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice, Milestone bar, Milestone
 ribbon, Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
@@ -844,3 +844,31 @@ What each atom changed, newest last.
   - A share too small to see keeps 3 % of the track (the code's, kept), so a 3-day run beside a 300-day one still
     shows a bar. Figma's formula has no least width.
   - The Pale values are also the medal's top (`Medal.kt`'s own list); left as they are.
+  - **Built:** run 40736055121 (Android #102, commit 641c719) passed: assembleDebug, unit tests and lint.
+- **Compiling in the session (28 Oct).** The user opened the session's network fully. Google's Maven and the Android
+  SDK now download (the SDK installed outside the repository, `/root/android-sdk`), but Maven Central
+  (`repo.maven.apache.org`) answers the shared proxy with 429 Too Many Requests, so the session fetches it through
+  Google's own copy (`maven-central.storage-download.googleapis.com`), set by an init script in the session's Gradle
+  home (`/root/.gradle/init.d`), never in the repository. From 4.6 on, each component compiles in the session first
+  (the app, the unit tests and the instrumented tests' code, which GitHub's build job doesn't compile), then GitHub's
+  build checks the push. The first full compile also found two needless `!!` in 4.4's `SectionHeader` (Kotlin already
+  knows `onStart` is there); removed with 4.6.
+- **4.6 Comparison row (28 Oct).** Figma: Comparison row (1009:2), one component, no motion; 180 instances, all in
+  Habit details' Week card ("Same days last week": This week, Last week) and Month card ("Compared with the month
+  before": October, September). The label in Body Medium (On surface variant) taking the room left and the value in
+  Label Large (On surface), 12 apart on one baseline; 6 under them, the bar, 8 tall, corners 4, in the habit's Colour,
+  on no track. The larger value fills the width, the other its share. Both bars are the habit's Colour in every
+  instance (Blue, Green, Orange, Grey, Brown, Purple). In the card each comparison is a divider, a heading in Label
+  Large (On surface) and the two rows, 12 apart.
+  Built as `ComparisonRow` (`ui/components/ComparisonRow.kt`). Habit details' comparison (`ComparisonView`,
+  `ProgressTab.kt`) moved onto it; its own `ComparisonRow` is gone. The tag `habit-comparison` stays (T3).
+  Fixed:
+  - The label, bar and value were on one line (the label 92 wide, the value 64 at the end); now the label and value
+    on one baseline, the bar under them across the width, as drawn.
+  - The bar was 10 tall and round on a grey track (Secondary container); now 8 tall, corners 4, no track.
+  - The earlier period's bar was the Day cell's Part colour (3.6 had moved it there from the old second step); Figma
+    draws both periods in the habit's Colour, so now both are.
+  Noted, not changed (the card's, for 4.15 Habit history card):
+  - The code's comparison has no divider, its heading is Title Small (Figma: Label Large; the same 14/20 Medium, a
+    different name), and its pieces are 8 apart (Figma 12). The rows are placed by the card.
+  - A share too small to see keeps 2 % of the width (the code's, kept); Figma's formula has none.

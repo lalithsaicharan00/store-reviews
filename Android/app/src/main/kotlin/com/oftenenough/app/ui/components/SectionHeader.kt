@@ -100,7 +100,7 @@ fun SectionHeader(
             }
             if (discs) { Spacer(Modifier.width(12.dp)); SectionDiscs(habits) }
             if (count != null) { Spacer(Modifier.width(12.dp)); SectionCount(count) }
-            if (start) { Spacer(Modifier.width(12.dp)); StartButton(name, onStart!!) }
+            if (start) { Spacer(Modifier.width(12.dp)); StartButton(name, onStart) }
             Spacer(Modifier.width(8.dp))
             chevron()
         }
@@ -117,7 +117,7 @@ fun SectionHeader(
                     if (time != null) Text(time, Modifier.align(Alignment.CenterVertically), style = AppType.bodySmall, color = s.onSurfaceVariant)
                     if (discs) SectionDiscs(habits, Modifier.align(Alignment.CenterVertically))
                     if (count != null) SectionCount(count, Modifier.align(Alignment.CenterVertically))
-                    if (start) StartButton(name, onStart!!, Modifier.align(Alignment.CenterVertically))
+                    if (start) StartButton(name, onStart, Modifier.align(Alignment.CenterVertically))
                 }
             }
         }
