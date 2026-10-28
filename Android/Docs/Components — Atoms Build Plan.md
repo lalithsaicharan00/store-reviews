@@ -108,7 +108,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.2 | Onboarding · Today, no habits yet | 547:2419 | ☑ |
 | 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☑ |
 | 5.1.4 | Onboarding · Restoring | 582:7893 | ☑ |
-| 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☐ |
+| 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☑ |
 | 5.1.6 | Onboarding · No internet | 582:8426 | ☐ |
 | 5.1.7 | Onboarding · No backup found | 690:13442 | ☐ |
 | 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☐ |
@@ -1369,3 +1369,16 @@ What each atom changed, newest last.
     stopped halfway", and Back does nothing), so nothing is ever half restored. Adding Cancel changes what a restore
     does; that's the user's call (the build prompt's rule on data). Without the bottom bar the words sit 40 lower
     than Figma's, centred in the whole screen.
+  - **Built:** run 40773139756 (Android #119, commit 91bece1) passed: assembleDebug, unit tests and lint.
+- **5.1.5 Onboarding · Plus isn't on this phone (28 Oct).** Figma: Plus isn't on this phone (582:8320), one screen, no
+  properties and no motion; three instances (made on Android with Plus, twice; made on an iPhone with Plus). ← only;
+  the Heading ("Plus isn't on this phone." over the lead); a bottom bar, 12 / 16 in and 8 apart: Check again (Medium
+  Filled, full width) over Contact us (Medium Text). It is `RestoreFlow`'s NEEDS_PLUS step on `FlowScreen` and
+  `StepHeading`, fixed with 5.1.3. Compared: the words (both leads), the buttons, their order, sizes and styles, the
+  bottom bar and the top bar are Figma's. Nothing differs, so nothing changed.
+  Noted, not changed:
+  - In the iPhone instance Check again is hidden and Contact us is left as the Text button, alone; the code makes it
+    the Filled button there, as the screen's one way on. It looks like a hidden layer rather than a decision; the
+    user's call.
+  - Figma's frame is filled #F0F0F3 (no style), not Surface container; the screen keeps Surface container, as every
+    other flow screen.
