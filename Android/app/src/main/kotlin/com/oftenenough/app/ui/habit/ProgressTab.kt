@@ -3,6 +3,8 @@ package com.oftenenough.app.ui.habit
 import com.oftenenough.app.ui.components.Medal
 import com.oftenenough.app.ui.components.MilestonesCard
 import com.oftenenough.app.ui.components.StatTile
+import com.oftenenough.app.ui.components.OverallRecordCard
+import com.oftenenough.app.ui.components.OverallRecordTotal
 import com.oftenenough.app.ui.components.HabitHistoryCard
 import com.oftenenough.app.ui.components.HistoryDailyChart
 import com.oftenenough.app.ui.components.HistoryMonth
@@ -20,15 +22,11 @@ import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -57,7 +55,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -131,77 +128,32 @@ internal fun LazyListScope.progressItems(
     item(key = "progress-year") { YearCard(habit, store, today, revision, onOpenDay) }
 }
 
-/** A white card on the page (corners 24, 16 dp inside). */
-@Composable
-private fun PageCard(tag: String, content: @Composable ColumnScope.() -> Unit) {
-    Column(
-        Modifier.pageItem().fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(appColors.surface).padding(16.dp)
-            .semantics { testTag = tag },
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        content = content,
-    )
-}
-
 // ------------------------------------------------------------------------------------------------ Overall record
 
 @Composable
 private fun RecordCard(record: HabitOverall, color: HabitColor, showStreaks: Boolean, showPercentages: Boolean, archived: Boolean, onSeeAll: () -> Unit) {
-    val c = appColors
-    val oneColumn = LocalDensity.current.fontScale >= 1.5f
-    PageCard("habit-progress-record") {
-        Row(Modifier.fillMaxWidth().semantics(mergeDescendants = true) { heading() }, verticalAlignment = Alignment.CenterVertically) {
-            Text("Overall record", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink)
-            Spacer(Modifier.width(8.dp))
-            Text(record.since, style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1)
-        }
-        val headline = remember(record, c) {
-            buildAnnotatedString {
-                if (record.lead.isNotEmpty()) { withStyle(AppType.bodyLarge.toSpanStyle().copy(color = c.secondary)) { append(record.lead + " ") } }
-                withStyle(AppType.displayMedium.toSpanStyle().copy(color = c.ink)) { append(record.value) }
-                if (record.trail.isNotEmpty()) { withStyle(AppType.bodyLarge.toSpanStyle().copy(color = c.secondary)) { append(" " + record.trail) } }
-            }
-        }
-        Text(headline, Modifier.clearAndSetSemantics { contentDescription = record.headline; testTag = "habit-record-headline" })
-        val boxes = ArrayList<RecordBoxData>()
-        val current = record.current
-        val best = record.best
-        if (showStreaks && current != null && best != null) {
-            // An archived habit's run stopped with it (Figma 6.2).
-            val now = if (archived) current.copy(title = "Streak when archived", spoken = current.spoken.replace("Current streak", "Streak when archived")) else current
-            boxes.add(RecordBoxData("habit-streak-current", now, now.detail, now.spoken, true))
-            boxes.add(RecordBoxData("habit-streak-best", best, best.detail, best.spoken, false))
-        }
-        record.goalMet?.let { goal ->
-            // The percentage follows Progress's "Show percentages".
-            val percent = if (showPercentages && record.eligible > 0) Math.round(record.met.toDouble() / record.eligible * 100).toInt() else null
-            boxes.add(RecordBoxData("habit-record-goal-met", goal, percent?.let { "$it% ${record.percentNoun}" },
-                goal.spoken + (percent?.let { ", $it percent ${record.percentNoun}" } ?: ""), false))
-        }
-        record.bestPeriod?.let { boxes.add(RecordBoxData("habit-record-best-period", it, it.detail, it.spoken, false)) }
-        if (boxes.isNotEmpty()) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                for (row in boxes.chunked(if (oneColumn) 1 else 2)) {
-                    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        for (box in row) RecordBox(box, color, Modifier.weight(1f).fillMaxHeight())
-                    }
-                }
-            }
-        }
-        if (showStreaks && current != null) SeeAllLink("See all streaks", "habit-see-all-streaks", onSeeAll)
+    val boxes = ArrayList<RecordBoxData>()
+    val current = record.current
+    val best = record.best
+    if (showStreaks && current != null && best != null) {
+        // An archived habit's run stopped with it (Figma 6.2).
+        val now = if (archived) current.copy(title = "Streak when archived", spoken = current.spoken.replace("Current streak", "Streak when archived")) else current
+        boxes.add(RecordBoxData("habit-streak-current", now, now.detail, now.spoken, true))
+        boxes.add(RecordBoxData("habit-streak-best", best, best.detail, best.spoken, false))
     }
-}
-
-/** "See all streaks ›" at a card's end (Figma 3.1), the way Milestones' See all opens All milestones. */
-@Composable
-private fun ColumnScope.SeeAllLink(text: String, tag: String, onClick: () -> Unit) {
-    Row(
-        Modifier.align(Alignment.End).clip(RoundedCornerShape(20.dp)).clickable(onClick = onClick).heightIn(min = 48.dp).padding(horizontal = 8.dp)
-            .semantics(mergeDescendants = true) { testTag = tag },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(text, style = AppType.labelLarge, color = appColors.ink)
-        Icon(Symbols.KeyboardArrowRight, null, Modifier.size(20.dp), tint = appColors.ink)
+    record.goalMet?.let { goal ->
+        // The percentage follows Progress's "Show percentages".
+        val percent = if (showPercentages && record.eligible > 0) Math.round(record.met.toDouble() / record.eligible * 100).toInt() else null
+        boxes.add(RecordBoxData("habit-record-goal-met", goal, percent?.let { "$it% ${record.percentNoun}" },
+            goal.spoken + (percent?.let { ", $it percent ${record.percentNoun}" } ?: ""), false))
     }
+    record.bestPeriod?.let { boxes.add(RecordBoxData("habit-record-best-period", it, it.detail, it.spoken, false)) }
+    OverallRecordCard(
+        record.since, if (showStreaks && current != null) "See all streaks" else null, onSeeAll,
+        Modifier.pageItem().semantics { testTag = "habit-progress-record" }, seeAllTag = "habit-see-all-streaks",
+        total = { OverallRecordTotal(record.lead, record.value, record.trail, record.headline, Modifier.semantics { testTag = "habit-record-headline" }) },
+        tiles = boxes.map { box -> { m: Modifier -> RecordBox(box, color, m) } },
+    )
 }
 
 private class RecordBoxData(val tag: String, val fact: RecordFact, val detail: String?, val spoken: String, val tinted: Boolean)
@@ -218,35 +170,24 @@ private fun RecordBox(box: RecordBoxData, color: HabitColor, modifier: Modifier)
  */
 @Composable
 private fun QuitRecordCard(habit: Habit, store: HabitStore, today: Int, revision: Int, onSeeAll: () -> Unit) {
-    val c = appColors
     val record = remember(habit, revision, today) { store.quitRecord(habit, today) }
     val saved = remember(habit, revision, today) { store.moneySaved(habit) }
-    PageCard("habit-progress-record") {
-        Row(Modifier.fillMaxWidth().semantics(mergeDescendants = true) { heading() }, verticalAlignment = Alignment.CenterVertically) {
-            Text("Overall record", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink)
-            Spacer(Modifier.width(8.dp))
-            Text(record.since, style = MaterialTheme.typography.bodyMedium, color = c.secondary, maxLines = 1)
-        }
-        val start = record.runStart
-        if (start != null) QuitClockText(start, store.clock)
-        else Text("Paused", style = AppType.headlineSmall, color = c.ink)
-        val oneColumn = LocalDensity.current.fontScale >= 1.5f
-        val boxes = listOf(
-            RecordBoxData("habit-streak-current", record.current, record.current.detail, record.current.spoken, true),
-            RecordBoxData("habit-streak-best", record.longest, record.longest.detail, record.longest.spoken, false),
-            RecordBoxData("habit-quit-slips", record.slips, record.slips.detail, record.slips.spoken, false),
-            RecordBoxData("habit-quit-clean", record.clean, record.clean.detail, record.clean.spoken, false),
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            for (row in boxes.chunked(if (oneColumn) 1 else 2)) {
-                Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    for (box in row) RecordBox(box, habit.color, Modifier.weight(1f).fillMaxHeight())
-                }
-            }
-        }
-        saved?.let { Text(it, Modifier.semantics { testTag = "quit-money-saved" }, style = MaterialTheme.typography.labelLarge, color = c.ink) }
-        SeeAllLink("See all runs", "habit-see-all-runs", onSeeAll)
-    }
+    val boxes = listOf(
+        RecordBoxData("habit-streak-current", record.current, record.current.detail, record.current.spoken, true),
+        RecordBoxData("habit-streak-best", record.longest, record.longest.detail, record.longest.spoken, false),
+        RecordBoxData("habit-quit-slips", record.slips, record.slips.detail, record.slips.spoken, false),
+        RecordBoxData("habit-quit-clean", record.clean, record.clean.detail, record.clean.spoken, false),
+    )
+    OverallRecordCard(
+        record.since, "See all runs", onSeeAll, Modifier.pageItem().semantics { testTag = "habit-progress-record" }, seeAllTag = "habit-see-all-runs",
+        total = {
+            val start = record.runStart
+            if (start != null) QuitClockText(start, store.clock)
+            else Text("Paused", style = AppType.headlineLargeEmphasized, color = MaterialTheme.colorScheme.onSurface)
+        },
+        tiles = boxes.map { box -> { m: Modifier -> RecordBox(box, habit.color, m) } },
+        more = { saved?.let { Text(it, Modifier.semantics { testTag = "quit-money-saved" }, style = AppType.labelLarge, color = MaterialTheme.colorScheme.onSurface) } },
+    )
 }
 
 /** The live run, ticking each second in this Text only, from the run's start (Rulebook S3, S4). */
@@ -264,8 +205,8 @@ private fun QuitClockText(start: Long, clock: () -> Long) {
     val days = seconds / 86400
     val hours = seconds % 86400 / 3600
     val text = buildAnnotatedString {
-        withStyle(AppType.displayMedium.toSpanStyle().copy(color = appColors.ink)) { append(com.oftenenough.app.data.HabitCopy.number(days.toDouble())) }
-        withStyle(AppType.bodyLarge.toSpanStyle().copy(color = appColors.secondary)) { append(" " + (if (days == 1L) "day" else "days") + " $hours h clean") }
+        withStyle(AppType.headlineLargeEmphasized.toSpanStyle().copy(color = MaterialTheme.colorScheme.onSurface)) { append(com.oftenenough.app.data.HabitCopy.number(days.toDouble())) }
+        withStyle(AppType.bodyLarge.toSpanStyle().copy(color = MaterialTheme.colorScheme.onSurfaceVariant)) { append(" " + (if (days == 1L) "day" else "days") + " $hours h clean") }
     }
     Text(text, Modifier.semantics { contentDescription = "$days ${if (days == 1L) "day" else "days"} $hours hours without a slip"; testTag = "quit-clock" }, maxLines = 2)
 }

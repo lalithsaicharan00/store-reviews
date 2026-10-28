@@ -91,7 +91,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
 ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile ☑ (4.14), Habit history card ☑ (4.15), Overall record
-card, Year in pixels card, and the day navigation inside the floating toolbar.
+card ☑ (4.16), Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
 
@@ -1152,3 +1152,28 @@ What each atom changed, newest last.
     month only the 1st is numbered. Figma draws only a daily goal in the current month.
   - The squares keep Figma's 288 dp: on a wider phone the room is at the card's end, as Figma's card hugs them.
   - Figma draws light only; the squares, lines and words take the dark scheme's roles.
+  - **Built:** run 40765453143 (Android #112, commit 409a132) passed: assembleDebug, unit tests and lint.
+- **4.16 Overall record card (28 Oct).** Figma: Overall record card (1158:119643), Text Default · 200 %, with Since,
+  Total and Total unit; no motion; eleven instances, all on Habit details › Progress. Built as
+  `ui/components/OverallRecordCard.kt`: Surface container lowest, 24 corners, 20 in, 12 apart: the header (Overall
+  record in Title Medium, a heading, and since when in Body Medium, 8 apart; stacked 4 apart from 150 % text), the
+  total (`OverallRecordTotal`: the number in Headline Large Emphasized On surface and its unit in Body Large On
+  surface variant, 8 apart on one baseline, wrapping), the Stat tiles (4.14) two a row, 8 apart and as tall as each
+  other (one a row from 150 % text), anything more, then See all streaks (Material's Small Text button) at the end.
+  Moved: the habit page's record and a quit habit's record (its ticking run in the total's styles, See all runs,
+  the money saved). Deleted: `PageCard` and `SeeAllLink`. The tags `habit-progress-record`, `habit-record-headline`,
+  `habit-see-all-streaks`, `habit-see-all-runs` and `quit-money-saved` stay. The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - The card had 16 inside and 16 between its parts; now 20 and 12.
+  - The total was Display Medium; now Headline Large Emphasized, its words 8 from the number on its baseline (they
+    were one string). A quit habit's run takes the same styles.
+  - At large text the header stayed on one line; now the date goes under the title, as Figma's 200 %.
+  - See all streaks (and See all runs) was a hand-made link with a chevron in On surface, 48 tall; now Material's
+    Small Text button, no chevron, as drawn.
+  - A row with one tile left gave it the whole width; now it keeps its half, as Figma's grid of two.
+  Noted, not changed:
+  - "Done on" before the number (a check habit's record) isn't in Figma's card, which draws an amount; kept, in
+    the unit's style.
+  - A quit habit's record (its four tiles, the money saved) has no Figma variant here; it uses the same card.
+  - Figma draws light only; the card takes the dark scheme's roles.
