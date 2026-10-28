@@ -2,9 +2,8 @@ package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.components.Medal
+import com.oftenenough.app.ui.components.NextMilestone
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.CircularProgressLabel
-import com.oftenenough.app.ui.components.AppCircularProgress
 import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.components.ComparisonRow
 import com.oftenenough.app.ui.components.StandardIconButton
@@ -384,27 +383,12 @@ private fun ShelfMedal(m: Milestone, color: HabitColor, modifier: Modifier) {
     }
 }
 
-/** A track's next milestone as a circular progress (1.21): its number in the middle, or ✓ once the last is reached. */
+/** A track's next milestone (4.10): "7 to go · now 23"; on All milestones "Next · …". */
 @Composable
-private fun MilestoneRing(next: MilestoneNext, color: HabitColor) =
-    AppCircularProgress(next.fraction.toFloat(), color) {
-        if (next.target == null) Icon(Symbols.Check, null, tint = appColors.ink) else CircularProgressLabel(next.number)
-    }
-
-/** A track's next milestone: its ring, what it is, and what's left ("7 to go · now 23"; on All milestones "Next · …"). */
-@Composable
-private fun MilestoneNextRow(next: MilestoneNext, color: HabitColor, onPage: Boolean, modifier: Modifier = Modifier) {
-    val c = appColors
-    Row(modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = next.spoken; testTag = "habit-milestone-next-" + next.track.key },
-        verticalAlignment = Alignment.CenterVertically) {
-        MilestoneRing(next, color)
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Text(next.title, style = AppType.titleMedium, color = c.ink)
-            next.detail?.let { Text(if (onPage && next.target != null) "Next · $it" else it, style = AppType.bodyMedium, color = c.secondary) }
-        }
-    }
-}
+private fun MilestoneNextRow(next: MilestoneNext, color: HabitColor, onPage: Boolean, modifier: Modifier = Modifier) =
+    NextMilestone(next.number.takeIf { next.target != null }, next.title,
+        next.detail?.let { if (onPage && next.target != null) "Next · $it" else it }, next.fraction.toFloat(), color,
+        modifier.clearAndSetSemantics { contentDescription = next.spoken; testTag = "habit-milestone-next-" + next.track.key })
 
 /**
  * All milestones (Figma 1735:4), from "See all N ›": the habit and how many it reached, then each track (In a row, the

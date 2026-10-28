@@ -90,7 +90,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 ### 4. Later: built from the atoms
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
-ribbon ☑ (4.9), Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
+ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
@@ -1002,3 +1002,20 @@ What each atom changed, newest last.
   - Figma draws light only. In dark the Band is the colour at 28 % on the card, where Deep doesn't read, so the words
     are the colour's light shade there (white at 72 % over it), as before.
   - Figma's medal shadow is #244A87 at 35 % (not a style); the `Medal` atom (3.5) keeps its own shadow.
+  - **Built:** run 40759503541 (Android #106, commit bf2277d) passed: assembleDebug, unit tests and lint.
+- **4.10 Next milestone (28 Oct).** Figma: Next milestone (1007:16), one component, properties Title and Supporting
+  text, no motion; two instances, both in the Milestones card (the design system's specimen and the habit page's
+  Progress); the milestone pop-up draws the same row by hand inside its own card (853:45869). Built as
+  `ui/components/NextMilestone.kt`: a row, items centred, the Circular progress (1.21, 52) with the milestone's number
+  in it (✓ once a track's last is reached), 16, the title in Title Medium On surface over the supporting text in Body
+  Medium On surface variant, both wrapping. Moved: the habit page's Milestones card and All milestones
+  (`MilestoneNextRow`, its spoken line and the tags `habit-milestone-next-…` kept) and the milestone pop-up's next
+  milestone. The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The row was built twice (the habit page and the pop-up); now one component.
+  - The pop-up's needless `.toFloat()` (from 1.21) is gone with its copy. Nothing on screen changes: both copies
+    already matched Figma's row.
+  Noted, not changed:
+  - The pop-up's card round the row is the colour Surface, 20 corners, 34 and 14 inside and 76 tall at least;
+    Figma's is Surface container lowest, 24 corners, 20 all round. It's the pop-up's, so it goes with 4.12.
+  - Material's ring keeps its 4 dp gap and round ends (1.21).

@@ -4,8 +4,6 @@ import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
-import com.oftenenough.app.ui.components.CircularProgressLabel
-import com.oftenenough.app.ui.components.AppCircularProgress
 import android.provider.Settings
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -59,6 +57,7 @@ import com.oftenenough.app.ui.components.EaseIn
 import com.oftenenough.app.ui.components.EaseInOut
 import com.oftenenough.app.ui.components.EaseOut
 import com.oftenenough.app.ui.components.Key
+import com.oftenenough.app.ui.components.NextMilestone
 import com.oftenenough.app.ui.components.Pop
 import com.oftenenough.app.ui.components.track
 import com.oftenenough.app.ui.theme.AppType
@@ -193,16 +192,10 @@ fun LandmarkPopup(
             }
             if (next != null) {
                 Spacer(Modifier.height(20.dp))
-                val target = next.number
-                val fraction = next.fraction
-                Row(Modifier.fillMaxWidth().arrive(0.45f, 12f).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(horizontal = 18.dp, vertical = 14.dp)
-                    .heightIn(min = 76.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    AppCircularProgress(fraction.toFloat(), color) { CircularProgressLabel(target) }
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(next.title, style = AppType.titleMedium, color = c.ink)
-                        Text(next.detail, style = AppType.bodyMedium, color = c.secondary)
-                    }
+                // The card round it is the pop-up's (4.12).
+                Box(Modifier.fillMaxWidth().arrive(0.45f, 12f).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(horizontal = 18.dp, vertical = 14.dp)
+                    .heightIn(min = 76.dp).padding(horizontal = 16.dp), contentAlignment = Alignment.CenterStart) {
+                    NextMilestone(next.number, next.title, next.detail, next.fraction, color)
                 }
             }
             Spacer(Modifier.height(20.dp))
