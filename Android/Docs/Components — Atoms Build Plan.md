@@ -110,7 +110,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.4 | Onboarding · Restoring | 582:7893 | ☑ |
 | 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☑ |
 | 5.1.6 | Onboarding · No internet | 582:8426 | ☑ |
-| 5.1.7 | Onboarding · No backup found | 690:13442 | ☐ |
+| 5.1.7 | Onboarding · No backup found | 690:13442 | ☑ |
 | 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☐ |
 | 5.2.1 | Today · Navigation drawer | 626:76 | ☐ |
 | 5.2.2 | Today · Today | 728:7985 | ☐ |
@@ -1399,3 +1399,10 @@ What each atom changed, newest last.
   Noted, not changed:
   - Figma fills this frame and its circle without styles (#F0F0F3 and #E2E2E2); the screen keeps Surface container,
     and the circle takes the matching role.
+  - **Built:** run 40774985570 (Android #121, commit 5c69b56) passed: assembleDebug, unit tests and lint.
+- **5.1.7 Onboarding · No backup found (28 Oct).** Figma: No backup found (690:13442), one screen, no properties and
+  no motion; one instance. ← only; the Heading ("No backup found." over "There's no Often Enough backup in
+  sam@gmail.com's Google Drive."); one List item, Single (description · A backup file · A file you saved ›); Try
+  another Google account (Medium Filled) in the bottom bar. It is `RestoreFlow`'s NO_BACKUP step on `FlowScreen`,
+  `StepHeading` (5.1.3) and the shared `FileChoice` row. Compared: words, the row and its position, the button and
+  the layout are Figma's. Nothing differs, so nothing changed.
