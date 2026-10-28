@@ -1,9 +1,22 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.components.AppMenuItem
+import androidx.compose.material3.MaterialTheme
+import com.oftenenough.app.ui.components.SegmentedListGap
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.MenuDivider
+import com.oftenenough.app.ui.components.SearchHeader
+import com.oftenenough.app.ui.components.AppConnectedButtons
+import com.oftenenough.app.ui.components.scrolledTopBarColor
+import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Arrangement
@@ -25,43 +38,16 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.CheckBox
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.EditCalendar
-import androidx.compose.material.icons.outlined.EventBusy
-import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material.icons.outlined.Undo
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Checklist
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.Repeat
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -112,7 +98,6 @@ import com.oftenenough.app.data.taskRhythm
 import com.oftenenough.app.data.taskWhen
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
@@ -241,62 +226,65 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     val onLong: (Habit) -> Unit = { t -> seeCoach(); if (!selecting) { selecting = true; chosen = setOf(t.id) } else toggle(t) }
 
     val scroll = TopAppBarDefaults.pinnedScrollBehavior()
-    val barColor = if (selecting) c.tonal else lerp(c.screen, c.tonal, scroll.state.overlappedFraction.coerceIn(0f, 1f))
+    val barColor = if (selecting) c.tonal else lerp(c.screen, scrolledTopBarColor, scroll.state.overlappedFraction.coerceIn(0f, 1f))
     Box(Modifier.fillMaxSize().background(c.screen)) {
         Column(Modifier.fillMaxSize()) {
-            if (searching) SearchBar(query, { query = it }, onBack = { searching = false; query = "" }, placeholder = "Search tasks")
+            if (searching) SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search tasks",
+                fieldTag = "habits-search-field", backTag = "habits-search-back", clearTag = "habits-search-clear")
             else {
-                if (selecting) TopAppBar(
-                    title = { Text(if (chosen.isEmpty()) "Select tasks" else "${chosen.size} selected", maxLines = 1) },
-                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "tasks-end-selection" }) { Icon(Icons.Rounded.Close, "Stop selecting") } },
+                if (selecting) AppTopBar(
+                    if (chosen.isEmpty()) "Select tasks" else "${chosen.size} selected",
+                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "tasks-end-selection" }) { Icon(Symbols.Close, "Stop selecting") } },
                     actions = {
                         val ids = (if (tab == 0) oneTime else repeating).map { it.id }.toSet()
                         val everything = ids.isNotEmpty() && chosen.containsAll(ids)
-                        TextButton({ chosen = if (everything) emptySet() else ids }, Modifier.padding(end = 4.dp).semantics { testTag = "tasks-select-all" }) {
-                            Text(if (everything) "Deselect all" else "Select all", style = AppType.labelLarge, color = c.ink)
-                        }
+                        AppButton(if (everything) "Deselect all" else "Select all", { chosen = if (everything) emptySet() else ids }, Modifier.padding(end = 4.dp).semantics { testTag = "tasks-select-all" }, style = ButtonStyle.Text)
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = barColor, titleContentColor = c.ink, navigationIconContentColor = c.ink),
-                ) else TopAppBar(
-                    title = { Text("Tasks", maxLines = 1) },
-                    navigationIcon = { nav.openMenu?.let { o -> IconButton(o, Modifier.semantics { testTag = "tasks-menu" }) { Icon(Icons.Rounded.Menu, "Menu") } } },
+                    containerColor = barColor,
+                ) else AppTopBar(
+                    "Tasks",
+                    navigationIcon = { nav.openMenu?.let { o -> IconButton(o, Modifier.semantics { testTag = "tasks-menu" }) { Icon(Symbols.Menu, "Menu") } } },
                     actions = {
-                        IconButton({ searching = true }, Modifier.semantics { testTag = "tasks-search" }) { Icon(Icons.Rounded.Search, "Search tasks") }
-                        IconButton({ nav.newTask() }, Modifier.semantics { testTag = "tasks-add" }) { Icon(Icons.Rounded.Add, "New task") }
+                        IconButton({ searching = true }, Modifier.semantics { testTag = "tasks-search" }) { Icon(Symbols.Search, "Search tasks") }
+                        IconButton({ nav.newTask() }, Modifier.semantics { testTag = "tasks-add" }) { Icon(Symbols.Add, "New task") }
                         Box {
-                            IconButton({ topMenu = true }, Modifier.semantics { testTag = "tasks-more" }) { Icon(Icons.Rounded.MoreVert, "More") }
-                            DropdownMenu(topMenu, { topMenu = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp),
-                                modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                                MenuItem("Select", Icons.Outlined.CheckBox, "tasks-select") { topMenu = false; seeCoach(); selecting = true; chosen = emptySet() }
-                                MenuItem("Completed tasks", Icons.Outlined.CheckCircle, "tasks-completed") { topMenu = false; nav.completed() }
-                                MenuItem("Archived tasks", Icons.Outlined.Archive, "tasks-archived-menu") { topMenu = false; nav.archived() }
+                            IconButton({ topMenu = true }, Modifier.semantics { testTag = "tasks-more" }) { Icon(Symbols.MoreVert, "More") }
+                            AppMenu(topMenu, { topMenu = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+                                AppMenuItem("Select", { topMenu = false; seeCoach(); selecting = true; chosen = emptySet() }, icon = Symbols.CheckBox, tag = "tasks-select")
+                                AppMenuItem("Completed tasks", { topMenu = false; nav.completed() }, icon = Symbols.CheckCircle, tag = "tasks-completed")
+                                AppMenuItem("Archived tasks", { topMenu = false; nav.archived() }, icon = Symbols.Archive, tag = "tasks-archived-menu")
                             }
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = barColor, titleContentColor = c.ink,
-                        navigationIconContentColor = c.ink, actionIconContentColor = c.ink),
+                    containerColor = barColor,
                 )
-                PrimaryTabRow(tab, containerColor = barColor, contentColor = c.ink, modifier = Modifier.semantics { testTag = "tasks-tabs" }) {
-                    for ((i, t) in listOf("One-time", "Repeating").withIndex()) {
-                        Tab(tab == i, { tab = i; chosen = emptySet() }, Modifier.semantics { testTag = "tasks-tab-$i" },
-                            text = { Text(t, style = AppType.labelLarge) }, selectedContentColor = c.ink, unselectedContentColor = c.secondary)
-                    }
-                }
+            }
+            // One-time · Repeating: a connected button group at the top of the list, scrolling away with it (A57, Figma
+            // List, Group wrap), never pinned tabs. The empty states keep it, so the other kind is one tap away.
+            val kinds: @Composable (Modifier) -> Unit = { m ->
+                AppConnectedButtons(listOf(0 to "One-time", 1 to "Repeating"), tab, m, tag = "tasks-tab") { tab = it; chosen = emptySet() }
             }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when {
                     // Results open (Figma 5.1); selecting several is the list's, not the search's.
                     searching -> TaskSearch(store, query, open, archived, today, onRow, {}, rowMenu) { nav.newTask(query.trim()) }
-                    all.isEmpty() -> EmptyTasks(Icons.Rounded.Checklist, "No tasks yet", "Every task you make lives here: for today, a later day, or no day at all.") {
-                        InkButton("New task", { nav.newTask() }, Modifier.semantics { testTag = "tasks-empty-new" }, icon = Icons.Rounded.Add, height = 48.dp, textStyle = AppType.labelLarge)
+                    all.isEmpty() -> Column {
+                        kinds(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp))
+                        EmptyTasks(Symbols.Checklist, "No tasks yet", "Every task you make lives here: for today, a later day, or no day at all.") {
+                            AppButton("New task", { nav.newTask() }, Modifier.semantics { testTag = "tasks-empty-new" }, icon = Symbols.Add)
+                        }
                     }
-                    tab == 1 && repeating.isEmpty() -> EmptyTasks(Icons.Rounded.Repeat, "No repeating tasks",
-                        "Tasks that come back on their own show here, by how often they come. Choose Repeat when you add a task.") {}
+                    tab == 1 && repeating.isEmpty() -> Column {
+                        kinds(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp))
+                        EmptyTasks(Symbols.Repeat, "No repeating tasks",
+                            "Tasks that come back on their own show here, by how often they come. Choose Repeat when you add a task.") {}
+                    }
                     else -> {
                         // Each tab keeps its own place in its list (Figma 1.1, 7.1).
                         val list = if (tab == 0) oneTimeList else repeatingList
                         LazyColumn(Modifier.fillMaxSize().nestedScroll(scroll.nestedScrollConnection).padding(horizontal = 16.dp)
                             .semantics { testTag = if (tab == 0) "tasks-list" else "tasks-repeating-list" }, state = list) {
+                            item(key = "kinds") { kinds(Modifier.padding(top = 16.dp, bottom = 4.dp)) }
                             var first = true
                             for ((n, s) in sections.withIndex()) {
                                 item(key = "title-${s.key}") {
@@ -331,22 +319,21 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
                 Row(Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
                     val any = marked.isNotEmpty()
                     Box {
-                        BarAction("Move", Icons.Outlined.EditCalendar, any, "tasks-move", { barMove = true })
-                        DropdownMenu(barMove, { barMove = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp),
-                            modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                            MenuItem("Tomorrow · " + taskDay(today + 1), Icons.Outlined.CalendarMonth, "tasks-move-tomorrow") {
+                        BarAction("Move", Symbols.EditCalendar, any, "tasks-move", { barMove = true })
+                        AppMenu(barMove, { barMove = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+                            AppMenuItem("Tomorrow · " + taskDay(today + 1), {
                                 barMove = false; move(marked, today + 1); endSelection()
-                            }
-                            MenuItem("Pick a day…", Icons.Outlined.CalendarMonth, "tasks-move-pick") { barMove = false; picking = marked }
-                            if (marked.all { it.isOneTimeTask }) MenuItem("No date", Icons.Outlined.EventBusy, "tasks-move-none") { barMove = false; move(marked, null); endSelection() }
+                            }, icon = Symbols.CalendarMonth, tag = "tasks-move-tomorrow")
+                            AppMenuItem("Pick a day…", { barMove = false; picking = marked }, icon = Symbols.Event, tag = "tasks-move-pick")
+                            if (marked.all { it.isOneTimeTask }) AppMenuItem("No date", { barMove = false; move(marked, null); endSelection() }, icon = Symbols.EventBusy, tag = "tasks-move-none")
                         }
                     }
-                    BarAction("Archive", Icons.Outlined.Archive, any, "tasks-archive", { archive(marked); endSelection() })
-                    BarAction("Delete", Icons.Outlined.Delete, any, "tasks-delete", { deleting = marked }, danger = true)
+                    BarAction("Archive", Symbols.Archive, any, "tasks-archive", { archive(marked); endSelection() })
+                    BarAction("Delete", Symbols.Delete, any, "tasks-delete", { deleting = marked }, danger = true)
                 }
             }
         }
-        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
+        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
     }
 
     if (picking.isNotEmpty()) {
@@ -364,8 +351,8 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
             modifier = Modifier.semantics { testTagsAsResourceId = true },
             title = { Text(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} tasks?") },
             text = { Text(if (one) "Its history and notes are deleted too. To keep them, archive it instead." else "Their history and notes are deleted too. To keep them, archive them instead.") },
-            confirmButton = { TextButton({ deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
-            dismissButton = { TextButton({ deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }) { Text("Cancel", color = c.ink) } },
+            confirmButton = { AppButton("Delete", { deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
+            dismissButton = { AppButton("Cancel", { deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }, style = ButtonStyle.Text) },
             containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
     }
 }
@@ -391,7 +378,8 @@ private fun repeatingSections(repeating: List<Habit>): List<TaskSection> =
 /**
  * One task: icon (a check mark when selected), name (struck through once done today) and its lines, and ⋮. With [drag]
  * (its day's open tasks, in order), touch and hold lifts it to move within its day; let go without moving and it's
- * selected instead (Figma 1.10).
+ * selected instead (Figma 1.10). It looks like the List item atom (2.4: Surface, its corners, a Title Medium name) but keeps
+ * its own gestures, because a hold lifts it to drag and must not also open it (T22).
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -438,7 +426,7 @@ internal fun TaskRow(
     }
     Box(Modifier.graphicsLayer { translationY = if (lifted) dy else 0f }.let { if (lifted) it.shadow(8.dp, segmentShape(index, count)) else it }) {
         Row(
-            Modifier.padding(bottom = 2.dp).fillMaxWidth().clip(segmentShape(index, count)).background(if (marked) c.tonal else c.surface)
+            Modifier.padding(bottom = SegmentedListGap).fillMaxWidth().clip(segmentShape(index, count)).background(if (marked) c.tonal else MaterialTheme.colorScheme.surface)
                 .onSizeChanged { height = it.height.coerceAtLeast(1) }
                 .then(dragModifier)
                 .combinedClickable(onClick = { if (android.os.SystemClock.uptimeMillis() > heldUntil) onClick() }, onLongClick = if (drag == null) onLongClick else null, role = if (selecting) Role.Checkbox else Role.Button)
@@ -450,18 +438,17 @@ internal fun TaskRow(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (marked) Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) {
-                Icon(Icons.Rounded.Check, null, Modifier.size(20.dp), tint = c.onInk)
+                Icon(Symbols.Check, null, Modifier.size(20.dp), tint = c.onInk)
             } else HabitIcon(task.symbol, task.color)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp)) {
-                Text(task.name, style = AppType.bodyLarge.copy(textDecoration = if (done) TextDecoration.LineThrough else null),
+                Text(task.name, style = AppType.titleMedium.copy(textDecoration = if (done) TextDecoration.LineThrough else null),
                     color = if (done) c.secondary else c.ink)
                 for (l in lines) Text(l, style = AppType.bodyMedium, color = c.secondary)
             }
             if (menu != null) Box {
-                IconButton({ open = true }, Modifier.semantics { testTag = "tasks-row-more-" + task.name }) { Icon(Icons.Rounded.MoreVert, "More for ${task.name}", tint = c.ink) }
-                DropdownMenu(open, { open = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.semantics { testTagsAsResourceId = true }) { menu(task) { open = false } }
+                StandardIconButton(Symbols.MoreVert, "More for ${task.name}", { open = true }, Modifier.semantics { testTag = "tasks-row-more-" + task.name })
+                AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { menu(task) { open = false } }
             }
         }
         if (coach != null) Popup(alignment = Alignment.TopStart, offset = IntOffset(0, with(LocalDensity.current) { 68.dp.roundToPx() }), onDismissRequest = coach) {
@@ -491,25 +478,25 @@ private fun TaskMenuItems(
     val c = appColors
     var moving by remember { mutableStateOf(false) }
     if (moving) {
-        MenuItem("Tomorrow · " + taskDay(today + 1), Icons.Outlined.CalendarMonth, "tasks-menu-tomorrow") { dismiss(); onMove(today + 1) }
-        MenuItem("Pick a day…", Icons.Outlined.CalendarMonth, "tasks-menu-pick") { dismiss(); onPick() }
-        if (kind != RowKind.REPEATING) MenuItem("No date", Icons.Outlined.EventBusy, "tasks-menu-nodate") { dismiss(); onMove(null) }
+        AppMenuItem("Tomorrow · " + taskDay(today + 1), { dismiss(); onMove(today + 1) }, icon = Symbols.CalendarMonth, tag = "tasks-menu-tomorrow")
+        AppMenuItem("Pick a day…", { dismiss(); onPick() }, icon = Symbols.Event, tag = "tasks-menu-pick")
+        if (kind != RowKind.REPEATING) AppMenuItem("No date", { dismiss(); onMove(null) }, icon = Symbols.EventBusy, tag = "tasks-menu-nodate")
         return
     }
-    MenuItem("Edit task", Icons.Outlined.Edit, "tasks-menu-edit") { dismiss(); onEdit() }
+    AppMenuItem("Edit task", { dismiss(); onEdit() }, icon = Symbols.Edit, tag = "tasks-menu-edit")
     when (kind) {
         RowKind.NO_DATE -> {
-            MenuItem("Do today", Icons.Outlined.Today, "tasks-menu-today") { dismiss(); onMove(today) }
-            MenuItem("Pick a day…", Icons.Outlined.CalendarMonth, "tasks-menu-pick") { dismiss(); onPick() }
+            AppMenuItem("Do today", { dismiss(); onMove(today) }, icon = Symbols.Today, tag = "tasks-menu-today")
+            AppMenuItem("Pick a day…", { dismiss(); onPick() }, icon = Symbols.Event, tag = "tasks-menu-pick")
         }
-        RowKind.DONE -> MenuItem("Mark as not done", Icons.Outlined.Undo, "tasks-menu-not-done") { dismiss(); onNotDone() }
-        else -> MenuItem("Move to another day…", Icons.Outlined.EditCalendar, "tasks-menu-move") { moving = true }
+        RowKind.DONE -> AppMenuItem("Mark as not done", { dismiss(); onNotDone() }, icon = Symbols.Undo, tag = "tasks-menu-not-done")
+        else -> AppMenuItem("Move to another day…", { moving = true }, icon = Symbols.Event, tag = "tasks-menu-move")
     }
-    MenuItem("Duplicate", Icons.Outlined.ContentCopy, "tasks-menu-duplicate") { dismiss(); onDuplicate() }
-    if (kind == RowKind.REPEATING) MenuItem("Skip this time", Icons.Rounded.SkipNext, "tasks-menu-skip") { dismiss(); onSkip() }
-    HorizontalDivider(color = c.tonal)
-    MenuItem("Archive", Icons.Outlined.Archive, "tasks-menu-archive") { dismiss(); onArchive() }
-    MenuItem("Delete task…", Icons.Outlined.Delete, "tasks-menu-delete", danger = true) { dismiss(); onDelete() }
+    AppMenuItem("Duplicate", { dismiss(); onDuplicate() }, icon = Symbols.ContentCopy, tag = "tasks-menu-duplicate")
+    if (kind == RowKind.REPEATING) AppMenuItem("Skip this time", { dismiss(); onSkip() }, icon = Symbols.Redo, tag = "tasks-menu-skip")
+    MenuDivider()
+    AppMenuItem("Archive", { dismiss(); onArchive() }, icon = Symbols.Archive, tag = "tasks-menu-archive")
+    AppMenuItem("Delete task…", { dismiss(); onDelete() }, icon = Symbols.Delete, destructive = true, tag = "tasks-menu-delete")
 }
 
 /** Search (Figma 5–5.3): open tasks first with their day, then Completed and Archived, each saying so; no match offers a new task. */
@@ -531,12 +518,7 @@ private fun TaskSearch(
             Spacer(Modifier.height(16.dp))
             Text("Check the spelling, or add it as a new task.", style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
             Spacer(Modifier.height(16.dp))
-            Row(Modifier.clip(RoundedCornerShape(20.dp)).background(c.tonal).clickable(onClick = onNew).semantics(mergeDescendants = true) { testTag = "tasks-search-new" }
-                .heightIn(min = 40.dp).padding(start = 16.dp, end = 24.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Rounded.Add, null, Modifier.size(18.dp), tint = c.ink)
-                Spacer(Modifier.width(8.dp))
-                Text("New task “${query.trim()}”", style = AppType.labelLarge, color = c.ink, maxLines = 1)
-            }
+            AppButton("New task “${query.trim()}”", onNew, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "tasks-search-new")
         }
         return
     }

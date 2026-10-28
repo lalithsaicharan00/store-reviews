@@ -1,5 +1,17 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.components.HabitRowSwipe
+import com.oftenenough.app.ui.components.SwipeAction
+import com.oftenenough.app.ui.components.HabitRowLayout
+import com.oftenenough.app.ui.components.HabitRowLine
+import com.oftenenough.app.ui.components.HabitRowStreak
+import com.oftenenough.app.ui.components.HabitRowAfterLogButton
+import androidx.compose.material3.MaterialTheme
+import com.oftenenough.app.ui.components.AppMenuItem
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.animation.animateColorAsState
@@ -8,7 +20,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,28 +34,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Redo
-import androidx.compose.material.icons.automirrored.rounded.Undo
-import androidx.compose.material.icons.outlined.AddCircleOutline
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.PauseCircle
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.SwapVert
-import androidx.compose.material.icons.automirrored.outlined.StickyNote2
-import androidx.compose.material.icons.automirrored.outlined.Undo
-import androidx.compose.material.icons.outlined.NoteAdd
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.EditNote
-import androidx.compose.material.icons.rounded.ExpandLess
-import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.Pause
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,7 +47,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -79,14 +68,10 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.QuitRun
 import com.oftenenough.app.data.ReminderTime
 import com.oftenenough.app.data.Step
-import com.oftenenough.app.data.milestoneRowTitle
-import com.oftenenough.app.data.milestonesUpTo
 import com.oftenenough.app.data.rowLine
 import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.OutlinedPill
-import com.oftenenough.app.ui.components.RoundActionButton
-import com.oftenenough.app.ui.components.StreakLabel
+import com.oftenenough.app.ui.components.AppFilledIconButton
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
 
@@ -123,11 +108,6 @@ fun rememberTicker(running: Boolean, clock: () -> Long): State<Long> {
     }
     return now
 }
-
-/** Today's row geometry (Figma 1350:2): 16 dp before the icon, 12 dp after the button, 14 dp above and below. */
-private val RowStart = 16.dp
-/** The end padding: the round button's 48 dp touch target is 4 dp wider than the 40 dp circle Figma draws 12 dp in. */
-private val RowEnd = 8.dp
 
 /** One row's numbers, worked out once per change of its habit's logs, the day or a timer (S5), never per frame. */
 private class RowModel(
@@ -180,54 +160,42 @@ fun HabitRow(
     val model = remember(habit, day, today, rev, running, slot, note, streaks) { rowModel(store, habit, day, slot, time, store.clock(), streaks) }
     val offer = store.afterLog?.takeIf { it.habitId == habit.id && it.day == day && !running }
     var menu by remember { mutableStateOf(false) }
-    val litColor by animateColorAsState(if (lit) c.ink.copy(alpha = 0.08f) else Color.Transparent, tween(600), label = "lit")
-    val held by animateColorAsState(if (menu) c.ink.copy(alpha = 0.08f) else Color.Transparent, tween(150), label = "held")
     val moment = rememberRowMilestone(habit, isToday, rev, store)
 
-    SwipeRow(left = skipAction(habit, day, today, model, running, store, layout), right = noteAction(habit, day, today, store, actions), shape = shape, haptics = haptics) {
-        Column(
-            Modifier.fillMaxWidth().clip(shape).background(c.surface)
-                .drawBehind {
-                    if (future) return@drawBehind
-                    // The fill: only the draw reads the ticking clock, so a running timer redraws its fill, not the row (S3).
-                    val progress = if (running) store.rules.progress(habit, day, tick.value) else model.progress
-                    val p = (progress / maxOf(model.goal, 1e-9)).coerceIn(0.0, 1.0).toFloat()
-                    if (p > 0f) {
-                        val color = if (habit.atMost) c.neutralFill else c.fill(habit.color, full = p >= 1f)
-                        drawRect(color, size = size.copy(width = size.width * p))
-                    }
-                    if (litColor.alpha > 0f) drawRect(litColor)
-                    if (held.alpha > 0f) drawRect(held)
-                }
-                .combinedClickable(onClick = { actions.openDay(habit, day) }, onLongClick = { menu = true })
-                .semantics { testTag = "row-${habit.name}" },
-        ) {
-          Column(Modifier.padding(start = RowStart, end = RowEnd, top = 14.dp, bottom = 14.dp)) {
-            Row(Modifier.heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
-                HabitIcon(habit.symbol, habit.color)
-                Spacer(Modifier.width(16.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    if (running) RunningLine(store, habit, day, slot, time, model.goal, tick)
-                    else Text(model.line, style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.semantics { testTag = "line-${habit.name}" })
-                }
-                val trailing = rowButton(habit, day, isToday, future, slot, model, running)
-                if (streaks && model.streak > 0 && !future) {
-                    Spacer(Modifier.width(16.dp))
-                    StreakLabel(model.streak, store.rule(habit, day).frequency.streakUnit, roll = moment.rolling)
-                    Spacer(Modifier.width(if (trailing) 16.dp else 4.dp))
-                } else if (trailing) Spacer(Modifier.width(12.dp))
-                if (trailing) Box(if (moment.full) Modifier.milestoneBurst(moment.t, c.habit(habit.color)) else Modifier) {
+    val trailing = rowButton(habit, day, isToday, future, slot, model, running)
+    // An amount typed each time has no step to add: its button is the word Log (Figma's Show log button).
+    val typed = habit.kind is HabitKind.Amount && habit.quickIncrement == null
+
+    HabitRowSwipe(left = skipAction(habit, day, today, model, running, store, layout), right = noteAction(habit, day, today, store, actions), shape = shape, haptics = haptics) {
+        HabitRowLayout(
+            habit.symbol, habit.color, habit.name, shape,
+            onClick = { actions.openDay(habit, day) }, onLongClick = { menu = true },
+            modifier = Modifier.semantics { testTag = "row-${habit.name}" },
+            // A later day plans, and a limit never fills (A41). Only the draw reads the ticking clock (S3).
+            progress = if (future || habit.atMost) null else { {
+                val progress = if (running) store.rules.progress(habit, day, tick.value) else model.progress
+                (progress / maxOf(model.goal, 1e-9)).toFloat()
+            } },
+            pressed = menu, lit = lit,
+            line = {
+                if (running) RunningLine(store, habit, day, slot, time, model.goal, tick)
+                else HabitRowLine(model.line, Modifier.semantics { testTag = "line-${habit.name}" })
+            },
+            streak = if (streaks && model.streak > 0 && !future) { { HabitRowStreak(model.streak, store.rule(habit, day).frequency.streakUnit, roll = moment.rolling) } } else null,
+            action = if (trailing && !typed) { {
+                Box(if (moment.full) Modifier.milestoneBurst(moment.t, c.habit(habit.color)) else Modifier) {
                     RowButton(habit, day, isToday, slot, model, store, layout, actions, stepsOpen, onToggleSteps, running)
                 }
-                else if (future && habit.kind == HabitKind.Task) DoneTodayButton(habit, store, layout)
-            }
-            if (offer != null) AfterLogButtons(offer, habit, day, store, layout, actions, note)
-            RowMenu(menu, { menu = false }, habit, day, store, actions, layout)
-          }
-            moment.band?.let { b -> MilestoneBand(moment.text, habit.color, b.see, moment.t, early = !moment.full) { actions.seeMilestone(habit) } }
-        }
+            } } else null,
+            trailing = when {
+                trailing && typed -> { { AppButton("Log", { actions.addLog(habit, day) }, style = ButtonStyle.Tonal, tag = "log-${habit.name}") } }
+                future && habit.kind == HabitKind.Task -> { { DoneTodayButton(habit, store, layout) } }
+                else -> null
+            },
+            below = offer?.let { o -> { AfterLogButtons(o, habit, day, store, layout, actions, note) } },
+            band = moment.band?.let { b -> { MilestoneBand(moment.text, habit.color, b.see, moment.t, early = !moment.full) { actions.seeMilestone(habit) } } },
+            menu = { RowMenu(menu, { menu = false }, habit, day, store, actions, layout) },
+        )
     }
 }
 
@@ -239,17 +207,17 @@ private fun rowButton(habit: Habit, day: Int, isToday: Boolean, future: Boolean,
 private fun skipAction(habit: Habit, day: Int, today: Int, model: RowModel, running: Boolean, store: HabitStore, layout: TodayLayout): SwipeAction? {
     if (habit.kind == HabitKind.Task) return null
     // A skip holds Today still like any log (U4): the row stays where it is, with Undo · Note, until the pause.
-    if (model.skipped) return SwipeAction("Undo", "Undo skip", Icons.AutoMirrored.Rounded.Undo, "row-swipe-undo-skip") { layout.hold(); store.setSkipped(habit, day, false) }
+    if (model.skipped) return SwipeAction("Undo", "Undo skip", Symbols.Undo, "row-swipe-undo-skip") { layout.hold(); store.setSkipped(habit, day, false) }
     // Nothing to skip: a week or month goal, a limit, a day already done or a timer running (Figma 7.14, 7.15).
     if (habit.atMost || running || model.done || !store.rules.canSkip(store.rule(habit, day)) || store.isPaused(habit, day)) return null
     val word = if (day == today) "Skip today" else "Skip this day"
-    return SwipeAction("Skip", word, Icons.AutoMirrored.Rounded.Redo, "row-swipe-skip") { layout.hold(); store.setSkipped(habit, day, true, offer = true) }
+    return SwipeAction("Skip", word, Symbols.Redo, "row-swipe-skip") { layout.hold(); store.setSkipped(habit, day, true, offer = true) }
 }
 
 /** Swipe right (Figma 7.17–7.24): Note, on every row; opens the note sheet, where nothing is saved until Save. */
 private fun noteAction(habit: Habit, day: Int, today: Int, store: HabitStore, actions: TodayActions): SwipeAction {
     val has = store.note(habit, day) != null
-    return SwipeAction("Note", if (has) "Edit note" else "Add note", if (has) Icons.Rounded.EditNote else Icons.Outlined.NoteAdd, "row-swipe-note") {
+    return SwipeAction("Note", if (has) "Edit note" else "Add note", if (has) Symbols.EditNote else Symbols.NoteAdd, "row-swipe-note") {
         actions.writeNote(habit, day)
     }
 }
@@ -257,8 +225,7 @@ private fun noteAction(habit: Habit, day: Int, today: Int, store: HabitStore, ac
 @Composable
 private fun RunningLine(store: HabitStore, habit: Habit, day: Int, slot: String?, time: ReminderTime?, goal: Double, tick: State<Long>) {
     val progress = store.rules.progress(habit, day, tick.value)
-    Text(runningWords(store.rowLine(habit, day, slot, time, progress, goal, true)), style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"),
-        color = appColors.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    HabitRowLine(runningWords(store.rowLine(habit, day, slot, time, progress, goal, true)), numbers = true)
 }
 
 /** "2:42/10 min" → "2:42 of 10 min" (Figma 1.3.1). */
@@ -271,68 +238,52 @@ private fun RowButton(
 ) {
     fun log(change: () -> Unit) { layout.hold(); change() }
     when (val k = habit.kind) {
-        HabitKind.Checklist -> RoundActionButton(if (stepsOpen) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, model.done, habit.color,
-            if (stepsOpen) "Hide ${habit.name} steps" else "Show ${habit.name} steps", onToggleSteps)
+        HabitKind.Checklist -> AppFilledIconButton(if (stepsOpen) Symbols.ExpandLess else Symbols.ExpandMore, if (stepsOpen) "Hide ${habit.name} steps" else "Show ${habit.name} steps", onToggleSteps, done = model.done, color = habit.color)
         HabitKind.Check -> if (slot == null && model.countsUp) {
             // Ticked several times a day, or N a week: still a ✓; each tap adds one and never takes one back (U14).
-            RoundActionButton(Icons.Rounded.Check, model.done, habit.color, "Add 1 to ${habit.name}",
-                onClick = { log { store.addProgress(habit, 1.0, day) } })
+            AppFilledIconButton(Symbols.Check, "Add 1 to ${habit.name}", { log { store.addProgress(habit, 1.0, day) } }, done = model.done, color = habit.color)
         } else {
-            RoundActionButton(Icons.Rounded.Check, model.ticked, habit.color, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done",
-                onClick = { log { if (slot != null) store.toggleSlot(habit, slot, day) else store.toggleCheck(habit, day) } })
+            AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { if (slot != null) store.toggleSlot(habit, slot, day) else store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color)
         }
-        HabitKind.Task -> RoundActionButton(Icons.Rounded.Check, model.ticked, habit.color, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done",
-            onClick = { log { store.toggleCheck(habit, day) } })
+        HabitKind.Task -> AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color)
         is HabitKind.Amount -> {
             // A limit's + stays plain however much is logged (Figma 1.12: never filled as if done).
             val filled = model.done && !habit.atMost
             val step = habit.quickIncrement
-            if (step != null) RoundActionButton(Icons.Rounded.Add, filled, habit.color, "Add ${HabitCopy.amount(step, k.unit)} to ${habit.name}",
-                onClick = { log { store.increment(habit, day) } })
-            else RoundActionButton(Icons.Rounded.Add, filled, habit.color, "Add an amount to ${habit.name}", onClick = { actions.addLog(habit, day) })
+            if (step != null) AppFilledIconButton(Symbols.Add, "Add ${HabitCopy.amount(step, k.unit)} to ${habit.name}", { log { store.increment(habit, day) } }, done = filled, color = habit.color)
+            else AppFilledIconButton(Symbols.Add, "Add an amount to ${habit.name}", { actions.addLog(habit, day) }, done = filled, color = habit.color)
         }
         HabitKind.Duration -> {
             // Past the goal the button fills, running or not (Figma 1.3.2); a limit's never does.
             val filled = !habit.atMost && (model.done || (running && store.rules.isDone(habit, day)))
-            RoundActionButton(if (running) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, filled, habit.color,
-                if (running) "Stop ${habit.name} timer" else "Start ${habit.name} timer", enabled = isToday,
-                onClick = {
+            AppFilledIconButton(if (running) Symbols.Filled.Pause else Symbols.Filled.PlayArrow, if (running) "Stop ${habit.name} timer" else "Start ${habit.name} timer", {
                     if (!running) { store.toggleTimer(habit, slot); actions.openTimer(habit) } else log { store.toggleTimer(habit, slot) }
-                })
+                }, done = filled, color = habit.color, enabled = isToday)
         }
         HabitKind.Quit -> {}
     }
 }
 
-/** A task planned for a later day can still be done today (Figma 4.3): "Done today", tonal. */
+/** A task planned for a later day can still be done today (Figma 4.3): "Done today", a tonal Small button, as the row's Log. */
 @Composable
-private fun DoneTodayButton(habit: Habit, store: HabitStore, layout: TodayLayout) {
-    val c = appColors
-    Spacer(Modifier.width(12.dp))
-    Box(
-        Modifier.heightIn(min = 36.dp).clip(RoundedCornerShape(20.dp)).background(c.behind)
-            .clickable(role = Role.Button) { layout.hold(); store.toggleCheck(habit, store.today()) }
-            .padding(horizontal = 16.dp, vertical = 8.dp).semantics { testTag = "done-today-${habit.name}" },
-        contentAlignment = Alignment.Center,
-    ) { Text("Done today", style = AppType.labelLarge, color = c.ink, maxLines = 1) }
-}
+private fun DoneTodayButton(habit: Habit, store: HabitStore, layout: TodayLayout) =
+    AppButton("Done today", { layout.hold(); store.toggleCheck(habit, store.today()) }, style = ButtonStyle.Tonal, tag = "done-today-${habit.name}")
 
 /**
- * Undo · Note (Figma 1.2): under the row of the last thing done from Today, 16 dp below its line and lined up with the
- * name (56 dp in). Undo takes back exactly that log (or the skip); Note opens the day's note for this habit, "Note"
+ * Undo · Note (Figma 1.2): under the row of the last thing done from Today, 12 dp below its line and lined up with the
+ * name (56 dp in, placed by [HabitRowLayout]). Undo takes back exactly that log (or the skip); Note opens the day's note for this habit, "Note"
  * with ✎ once there is one. They go with the next log, another day or leaving Today (HabitStore.afterLog).
  */
 @Composable
 private fun AfterLogButtons(offer: AfterLog, habit: Habit, day: Int, store: HabitStore, layout: TodayLayout, actions: TodayActions, hasNote: Boolean) {
-    Spacer(Modifier.height(16.dp))
-    Row(Modifier.padding(start = 56.dp, end = 4.dp).fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         val undoSays = when (offer) {
             is AfterLog.Skip -> "Undo skip"
             is AfterLog.Log -> offer.entry.undoLabel(store.rule(habit, day))
         }
-        OutlinedPill("Undo", Icons.AutoMirrored.Rounded.Undo, { layout.hold(); store.undo(offer) },
+        HabitRowAfterLogButton("Undo", Symbols.Undo, { layout.hold(); store.undo(offer) },
             Modifier.semantics { contentDescription = undoSays; testTag = "undo-${habit.name}" })
-        OutlinedPill("Note", if (hasNote) Icons.Rounded.EditNote else Icons.Rounded.Add, { actions.writeNote(habit, day) },
+        HabitRowAfterLogButton("Note", if (hasNote) Symbols.EditNote else Symbols.Add, { actions.writeNote(habit, day) },
             Modifier.semantics { contentDescription = if (hasNote) "Edit note" else "Add note"; testTag = "note-${habit.name}" })
     }
 }
@@ -344,30 +295,22 @@ private fun AfterLogButtons(offer: AfterLog, habit: Habit, day: Int, store: Habi
  */
 @Composable
 private fun RowMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, day: Int, store: HabitStore, actions: TodayActions, layout: TodayLayout) {
-    val c = appColors
-    DropdownMenu(open, onDismiss, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp,
-        modifier = Modifier.semantics { testTag = "row-menu" }) {
+    AppMenu(open, onDismiss, Modifier.semantics { testTag = "row-menu" }) {
         val today = store.today()
-        @Composable fun item(text: String, icon: ImageVector, action: () -> Unit) = DropdownMenuItem(
-            text = { Text(text, style = AppType.bodyLarge, color = c.ink) },
-            leadingIcon = { Icon(icon, null, tint = c.secondary) },
-            onClick = { onDismiss(); action() },
-            contentPadding = MenuDefaults.DropdownMenuItemContentPadding,
-            modifier = Modifier.heightIn(min = 48.dp),
-        )
-        item(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", Icons.Outlined.Edit) { actions.editHabit(habit) }
-        item("Arrange…", Icons.Outlined.SwapVert) { actions.arrange(habit) }
+        @Composable fun item(text: String, icon: ImageVector, action: () -> Unit) = AppMenuItem(text, { onDismiss(); action() }, icon = icon)
+        item(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", Symbols.Edit) { actions.editHabit(habit) }
+        item("Arrange…", Symbols.SwapVert) { actions.arrange(habit) }
         if (store.rules.canPause(habit)) {
-            if (store.isPaused(habit, today)) item("Resume habit", Icons.Outlined.PlayCircle) { store.resume(habit) }
-            else item("Pause…", Icons.Outlined.PauseCircle) { actions.pause(habit) }
+            if (store.isPaused(habit, today)) item("Resume habit", Symbols.PlayCircle) { store.resume(habit) }
+            else item("Pause…", Symbols.PauseCircle) { actions.pause(habit) }
         }
-        item(if (store.note(habit, day) == null) "Add note" else "Edit note", Icons.AutoMirrored.Outlined.StickyNote2) { actions.writeNote(habit, day) }
+        item(if (store.note(habit, day) == null) "Add note" else "Edit note", Symbols.StickyNote2) { actions.writeNote(habit, day) }
         when {
-            habit.kind == HabitKind.Quit -> if (!store.isPaused(habit, today)) item("Log a slip", Icons.Outlined.AddCircleOutline) { actions.addLog(habit, today) }
+            habit.kind == HabitKind.Quit -> if (!store.isPaused(habit, today)) item("Log a slip", Symbols.AddCircle) { actions.addLog(habit, today) }
             habit.kind == HabitKind.Task -> {}
-            store.isSkipped(habit, day) -> item("Undo skip", Icons.AutoMirrored.Outlined.Undo) { layout.hold(); store.setSkipped(habit, day, false) }
+            store.isSkipped(habit, day) -> item("Undo skip", Symbols.Undo) { layout.hold(); store.setSkipped(habit, day, false) }
             store.rules.canSkip(store.rule(habit, day)) && !store.isPaused(habit, day) && !store.rules.isDone(habit, day) && !habit.atMost ->
-                item(if (day == today) "Skip today" else "Skip this day", Icons.AutoMirrored.Rounded.Redo) { layout.hold(); store.setSkipped(habit, day, true, offer = true) }
+                item(if (day == today) "Skip today" else "Skip this day", Symbols.Redo) { layout.hold(); store.setSkipped(habit, day, true, offer = true) }
         }
     }
 }
@@ -422,7 +365,7 @@ private fun StepLine(step: Step, done: Boolean, habit: Habit, enabled: Boolean, 
                 Modifier.size(18.dp).clip(RoundedCornerShape(2.dp)).background(box)
                     .let { if (done) it else it.border(2.dp, c.secondary, RoundedCornerShape(2.dp)) },
                 contentAlignment = Alignment.Center,
-            ) { if (done) Icon(Icons.Rounded.Check, null, Modifier.size(16.dp), tint = Color.White) }
+            ) { if (done) Icon(Symbols.Check, null, Modifier.size(16.dp), tint = Color.White) }
         }
         Spacer(Modifier.width(8.dp))
         Text(step.name, Modifier.weight(1f), style = AppType.bodyLarge.copy(textDecoration = if (done) TextDecoration.LineThrough else null),
@@ -450,39 +393,34 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
     val offer = store.afterLog?.takeIf { it.habitId == habit.id && it.day == today }
     val lastSlip = remember(rev, today) { store.entries(habit.id, today).lastOrNull() }
     val note = store.note(habit, today) != null
-    val held by animateColorAsState(if (menu) c.ink.copy(alpha = 0.08f) else Color.Transparent, tween(150), label = "held")
-    val slip = if (!paused) SwipeAction("Slip", "Log a slip", Icons.Outlined.AddCircleOutline, "row-swipe-slip") { actions.addLog(habit, today) } else null
+    val slip = if (!paused) SwipeAction("Slip", "Log a slip", Symbols.AddCircle, "row-swipe-slip") { actions.addLog(habit, today) } else null
     // A run that passed a length yesterday: the band, once, when the row is first seen (Figma R.9, A.1).
     val moment = rememberRowMilestone(habit, true, rev, store)
-    SwipeRow(left = slip, right = noteAction(habit, today, today, store, actions), shape = shape, haptics = haptics) {
-        Column(Modifier.fillMaxWidth().clip(shape).background(c.surface).drawBehind { if (held.alpha > 0f) drawRect(held) }
-            .combinedClickable(onClick = { actions.openDay(habit, today) }, onLongClick = { menu = true })
-            .semantics { testTag = "row-${habit.name}" }) {
-          Column(Modifier.padding(start = RowStart, end = 12.dp, top = 14.dp, bottom = 14.dp)) {
-            Row(Modifier.heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
-                HabitIcon(habit.symbol, habit.color)
-                Spacer(Modifier.width(16.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    val current = ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0
-                    val line = when {
-                        paused -> "Paused"
-                        lastSlip != null && offer != null -> "Slip at " + DayWords.clock(lastSlip.createdAt)
-                        streaks -> "Best " + Format.days(maxOf(pastBest, current))
-                        else -> ongoing?.let { "Since " + DayWords.short(store.rules.calendarDayOf(it)) } ?: "Paused"
-                    } + (if (note) " · Note" else "")
-                    Text(line, style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.semantics { testTag = "line-${habit.name}" })
-                }
-                Spacer(Modifier.width(16.dp))
+    HabitRowSwipe(left = slip, right = noteAction(habit, today, today, store, actions), shape = shape, haptics = haptics) {
+        // No fill: a quit row has no goal to fill toward (A41). Its live count is where other rows have their button.
+        HabitRowLayout(
+            habit.symbol, habit.color, habit.name, shape,
+            onClick = { actions.openDay(habit, today) }, onLongClick = { menu = true },
+            modifier = Modifier.semantics { testTag = "row-${habit.name}" },
+            pressed = menu,
+            line = {
+                val current = ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0
+                val line = when {
+                    paused -> "Paused"
+                    lastSlip != null && offer != null -> "Slip at " + DayWords.clock(lastSlip.createdAt)
+                    streaks -> "Best " + Format.days(maxOf(pastBest, current))
+                    else -> ongoing?.let { "Since " + DayWords.short(store.rules.calendarDayOf(it)) } ?: "Paused"
+                } + (if (note) " · Note" else "")
+                HabitRowLine(line, Modifier.semantics { testTag = "line-${habit.name}" })
+            },
+            trailing = {
                 Text(Format.elapsed(ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0),
-                    style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = c.ink, maxLines = 1)
-            }
-            if (offer != null) AfterLogButtons(offer, habit, today, store, layout, actions, note)
-            RowMenu(menu, { menu = false }, habit, today, store, actions, layout)
-          }
-            moment.band?.let { b -> MilestoneBand(moment.text, habit.color, b.see, moment.t, early = true) { actions.seeMilestone(habit) } }
-        }
+                    style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = MaterialTheme.colorScheme.onSurface, maxLines = 1)
+            },
+            below = offer?.let { o -> { AfterLogButtons(o, habit, today, store, layout, actions, note) } },
+            band = moment.band?.let { b -> { MilestoneBand(moment.text, habit.color, b.see, moment.t, early = true) { actions.seeMilestone(habit) } } },
+            menu = { RowMenu(menu, { menu = false }, habit, today, store, actions, layout) },
+        )
     }
 }
 
@@ -516,7 +454,7 @@ fun PartHeader(
         if (onStart != null && isOpen) StartButton(title, isNow, onStart)
         Box(Modifier.size(40.dp).clip(CircleShape).clickable(onClick = onToggle).semantics { contentDescription = if (isOpen) "Fold $title" else "Open $title" },
             contentAlignment = Alignment.Center) {
-            Icon(if (isOpen) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, null, tint = c.secondary)
+            Icon(if (isOpen) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = c.secondary)
         }
     }
 }
@@ -531,7 +469,7 @@ private fun StartButton(title: String, isNow: Boolean, onStart: () -> Unit) {
             .padding(start = if (isNow) 14.dp else 12.dp, end = if (isNow) 18.dp else 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Rounded.PlayArrow, null, Modifier.size(18.dp), tint = if (isNow) c.onInk else c.ink)
+        Icon(Symbols.Filled.PlayArrow, null, Modifier.size(18.dp), tint = if (isNow) c.onInk else c.ink)
         Spacer(Modifier.width(4.dp))
         Text("Start", style = AppType.labelLarge, color = if (isNow) c.onInk else c.ink, maxLines = 1)
     }
@@ -582,6 +520,6 @@ fun PausedRow(habit: Habit, shape: Shape, store: HabitStore, actions: TodayActio
             Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Text(p?.let(DayWords::paused) ?: "Paused", style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
         }
-        androidx.compose.material3.TextButton({ store.resume(habit) }) { Text("Resume", style = AppType.labelLarge, color = c.ink) }
+        AppButton("Resume", { store.resume(habit) }, style = ButtonStyle.Text)
     }
 }

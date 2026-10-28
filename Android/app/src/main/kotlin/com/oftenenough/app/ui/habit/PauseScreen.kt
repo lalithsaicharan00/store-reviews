@@ -1,5 +1,8 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.AppButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -8,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Event
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +25,6 @@ import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.ListRow
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.DayDialog
@@ -103,17 +103,17 @@ fun PauseScreen(habitIds: List<String>, store: HabitStore, onClose: () -> Unit) 
                 Spacer(Modifier.height(16.dp))
                 SegmentedList {
                     Box(Modifier.semantics { testTag = "pause-start" }) {
-                        ListRow("Starts", 0, 1, if (start == today) "Today" else DayWords.short(start), Icons.Rounded.Event, onClick = { picking = "start" })
+                        ListRow("Starts", 0, 1, if (start == today) "Today" else DayWords.short(start), Symbols.Event, onClick = { picking = "start" })
                     }
                 }
             }
             Note(pauseSummary(habits, from, back, today))
             Spacer(Modifier.height(96.dp))
         }
-        InkButton("Pause", {
+        AppButton("Pause", {
             for (h in habits) store.pause(h, from, back?.let { it - 1 })
             onClose()
-        }, Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(16.dp).semantics { testTag = "confirm-pause" })
+        }, Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(16.dp).semantics { testTag = "confirm-pause" }, size = ButtonSize.Medium)
     }
     when (picking) {
         "back" -> DayDialog(maxOf(chosen, from + 1), { it > from }, { picking = null }) { chosen = it }

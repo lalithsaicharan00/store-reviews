@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.plus
 
+import com.oftenenough.app.ui.theme.Symbols
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,8 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -115,7 +114,7 @@ fun GetPlusScreen(plus: PlusStore, nav: PlusFlowNav, onBack: () -> Unit) {
                         CheckLine("Unlimited habits")
                         CheckLine("Sync across all your devices", "Through your own Google Drive.")
                         CheckLine("More widgets")
-                        HorizontalDivider(color = c.tonal)
+                        HorizontalDivider()
                         WorksOn()
                     }
                 }
@@ -164,7 +163,7 @@ fun RestoreFlow(plus: PlusStore, nav: PlusFlowNav) {
             Spacer(Modifier.height(28.dp))
             PointsCard(listOf(
                 Point(Symbols.Devices, "Plus on your Android phones", "Signed in to this Google account."),
-                Point(Icons.Rounded.Email, "Moving to an iPhone?", "Write to us and we’ll move Plus across."),
+                Point(Symbols.Mail, "Moving to an iPhone?", "Write to us and we’ll move Plus across."),
             ))
         }
         "offline" -> CenterScreen("Couldn’t connect", "We couldn’t reach Google Play. Check your internet connection, then try again.", "Cancel", "restore-offline",

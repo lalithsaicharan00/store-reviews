@@ -1,5 +1,9 @@
 package com.oftenenough.app.ui.plus
 
+import com.oftenenough.app.ui.components.ListAvatar
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.AppButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,14 +12,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -29,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -102,7 +100,7 @@ private fun StateCard(hasPlus: Boolean, store: HabitStore, onSeePlus: () -> Unit
             AppIconTile(56.dp, flat = true)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(if (hasPlus) "Plus is yours" else "Free", style = AppType.title20Emphasized, color = c.ink)
+                Text(if (hasPlus) "Plus is yours" else "Free", style = AppType.headlineSmallEmphasized, color = c.ink)
                 Text(if (hasPlus) "Bought with this Google account" else "No sign-in needed",
                     style = AppType.bodyMedium, color = c.secondary)
             }
@@ -125,18 +123,10 @@ private fun FreeBox(store: HabitStore, onSeePlus: () -> Unit) {
                 Text("$used of $limit free habits used", Modifier.weight(1f), style = AppType.labelLarge, color = c.ink)
                 Text(maxOf(0, limit - used).let { if (it == 0) "None left" else "$it left" }, style = AppType.bodyMedium, color = c.secondary)
             }
-            LinearProgressIndicator({ minOf(1f, used / limit.toFloat()) }, Modifier.fillMaxWidth().height(6.dp),
-                color = c.ink, trackColor = c.tonal.let { if (c.dark) it else androidx.compose.ui.graphics.Color(0xFFD9D9DE) },
-                strokeCap = StrokeCap.Round, gapSize = 0.dp, drawStopIndicator = {})
+            LinearProgressIndicator({ minOf(1f, used / limit.toFloat()) }, Modifier.fillMaxWidth())
         }
         Text("Plus gives you unlimited habits, sync across all your devices and more widgets. One payment, yours forever.", style = AppType.bodyMedium, color = c.secondary)
-        Button(onSeePlus, Modifier.heightIn(min = 40.dp).semantics { testTag = "plus-see" },
-            colors = ButtonDefaults.buttonColors(containerColor = c.ink, contentColor = c.onInk),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 24.dp, end = 16.dp, top = 10.dp, bottom = 10.dp)) {
-            Text("See what’s in Plus", style = AppType.labelLarge)
-            Spacer(Modifier.width(8.dp))
-            Icon(Symbols.ArrowForward, null, Modifier.size(18.dp))
-        }
+        AppButton("See what’s in Plus", onSeePlus, tag = "plus-see")
     }
 }
 
@@ -151,15 +141,9 @@ private fun BackupRow(backup: BackupCenter, onOpen: () -> Unit) {
     if (email != null) SegmentedList {
         PlusRow("Backed up to Google Drive", 0, 1, email, Symbols.AddToDrive, onClick = onOpen,
             modifier = Modifier.semantics { testTag = "plus-backup" })
-    } else Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).heightIn(min = 72.dp).padding(16.dp)
-        .semantics { testTag = "plus-not-backed-up" }, verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        IconDisc(Symbols.CloudOff)
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text("Not backed up", style = AppType.titleMedium, color = c.ink)
-            Text("Only on this phone for now", style = AppType.bodyMedium, color = c.secondary)
-            Box(Modifier.padding(top = 12.dp)) { PlusTonalButton("Back up to Google Drive", Symbols.AddToDrive, "plus-back-up", onOpen) }
-        }
-    }
+    } else AppListItem("Not backed up", 0, 1, supporting = "Only on this phone for now", tag = "plus-not-backed-up",
+        leading = { ListAvatar(Symbols.CloudOff) },
+        below = { Box(Modifier.padding(top = 12.dp)) { PlusTonalButton("Back up to Google Drive", Symbols.AddToDrive, "plus-back-up", onOpen) } })
 }
 
 /** A labelled group: "Backup", "Already have Plus?"; an optional footer under it. */

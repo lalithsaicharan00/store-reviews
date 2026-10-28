@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.theme.Symbols
 import android.provider.Settings
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
@@ -22,8 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,7 +60,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
-import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.day.Key
 import com.oftenenough.app.ui.day.track
 import com.oftenenough.app.ui.theme.AppType
@@ -157,14 +155,14 @@ fun MilestoneBand(text: String, color: HabitColor, see: Boolean, raw: Float, ear
     ) {
         val rot = track(t, Key(0f, 35f), Key(0.223f, 35f, EaseOut), Key(0.346f, 0f))
         val sc = track(t, Key(0f, 0.01f), Key(0.223f, 0.01f, EaseOut), Key(0.292f, 1.3f, EaseInOut), Key(0.346f, 1f))
-        com.oftenenough.app.ui.habit.MilestoneMedal(null, 16.dp, color, Modifier.graphicsLayer { rotationZ = rot; scaleX = sc; scaleY = sc })
+        com.oftenenough.app.ui.components.Medal(null, 16.dp, color, Modifier.graphicsLayer { rotationZ = rot; scaleX = sc; scaleY = sc })
         val tx = track(t, Key(0f, -8f), Key(0.246f, -8f, Arrive), Key(0.331f, 0f))
         val ta = track(t, Key(0f, 0f), Key(0.246f, 0f, Arrive), Key(0.331f, 1f))
         Text(text, Modifier.weight(1f).graphicsLayer { translationX = tx * density.density; alpha = ta },
             style = AppType.labelMedium, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
         if (see) {
             Text("See", Modifier.graphicsLayer { alpha = ta }, style = AppType.labelMedium, color = ink)
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(16.dp).graphicsLayer { alpha = ta }, tint = ink)
+            Icon(Symbols.KeyboardArrowRight, null, Modifier.size(16.dp).graphicsLayer { alpha = ta }, tint = ink)
         }
     }
 }
@@ -258,7 +256,7 @@ fun MilestoneBar(
     ) {
         Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) {
             val ms = track(t, Key(0f, 0.6f), Key(0.208f, 0.6f, Pop), Key(0.458f, 1f))
-            com.oftenenough.app.ui.habit.WhiteMedal(number, 38.dp, color, Modifier.graphicsLayer { scaleX = ms; scaleY = ms })
+            com.oftenenough.app.ui.components.WhiteMedal(number, 38.dp, color, Modifier.graphicsLayer { scaleX = ms; scaleY = ms })
             androidx.compose.foundation.Canvas(Modifier.matchParentSizeCompat()) {
                 listOf(Offset(36f, 4f) to 7f, Offset(6f, 34f) to 5f, Offset(40f, 38f) to 5f).forEachIndexed { i, (p, s) ->
                     val start = 0.208f + 0.06f * i
@@ -290,7 +288,7 @@ private fun Modifier.matchParentSizeCompat(): Modifier = this.then(Modifier.size
 @Composable
 fun MiniMedal(color: HabitColor, modifier: Modifier = Modifier) {
     val c = appColors
-    val shape = com.oftenenough.app.ui.habit.MedalShape
+    val shape = com.oftenenough.app.ui.components.MedalShape
     Box(modifier.size(14.dp).clip(shape).background(c.surface).padding(1.5.dp).clip(shape).background(c.habit(color)))
 }
 

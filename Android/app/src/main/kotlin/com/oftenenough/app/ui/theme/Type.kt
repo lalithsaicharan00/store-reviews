@@ -7,12 +7,14 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 
 /**
- * The app's text styles: one list, the Figma file's **Android / …** styles (Android Designs — Handoff, "The type scale
- * and text styles", 14 Oct 2026). Every screen refers to these and never makes a size of its own (the user, 15 Oct 2026:
+ * The app's text styles: one list, the Figma file's **Android / …** styles, which are **Material 3's own type scale
+ * (names, sizes, line heights, weights) in Google Sans Flex** (Android A74, 28 Oct 2026; never rename, add or change one
+ * without the user). Every screen refers to these and never makes a size of its own (the user, 15 Oct 2026:
  * "create the shared text styles … so that nothing stays inconsistent"). Written down in Android/README.md, "Text".
  *
  * - **Google Sans Flex, Regular and Medium only** (`Fonts.kt`); "Emphasized" is Medium, as in Material 3 Expressive.
- * - **Sizes are Material 3's** (57, 45, 36, 32, 28, 24, 22, 16, 14, 12, 11) **plus our 20**; line heights are Material's.
+ * - **Sizes and line heights are Material 3's** (57, 45, 36, 32, 28, 24, 22, 16, 14, 12, 11), with no size of our own
+ *   (the 20 went on 28 Oct 2026, A74). Material's Bold Emphasized styles (Title Medium and Small, the labels) aren't used.
  *   Within one screen, neighbouring levels differ by at least 1.25×: skip steps rather than use neighbours together.
  * - **Everything is in sp, never dp or px**, so the phone's font size and display size change all text (Android 14+
  *   scales large text less than small, by itself, from sp). Never a fixed height around text: give rows and buttons a
@@ -50,17 +52,20 @@ object AppType {
     /** Top app bar and sheet titles (Emphasized). */
     val titleLarge = style(22, 28, false)
     val titleLargeEmphasized = style(22, 28, true)
-    /** Ours: a one-line key sentence, a large typed name, a plan's price, the drawer's name, the player's big buttons. */
-    val title20 = style(20, 28, false)
-    val title20Emphasized = style(20, 28, true)
     /** List item and card names; a name over supporting text. */
     val titleMedium = style(16, 24, true)
+    /** A small heading inside a dense card or sheet (same size and weight as Label Large, which is for actions). */
+    val titleSmall = style(14, 20, true)
     /** Body text; a unit beside a figure. */
     val bodyLarge = style(16, 24, false)
+    /** One line picked out of Body Large. */
+    val bodyLargeEmphasized = style(16, 24, true)
     /** Supporting text under a name. */
     val bodyMedium = style(14, 20, false)
+    val bodyMediumEmphasized = style(14, 20, true)
     /** Footers and notes under a group. */
     val bodySmall = style(12, 16, false)
+    val bodySmallEmphasized = style(12, 16, true)
     /** Buttons, tabs, chips, section labels, menu items. */
     val labelLarge = style(14, 20, true)
     /** Badges. */
@@ -72,7 +77,7 @@ object AppType {
     val material = Typography(
         displayLarge = displayLarge, displayMedium = displayMedium, displaySmall = displaySmall,
         headlineLarge = headlineLarge, headlineMedium = headlineMedium, headlineSmall = headlineSmall,
-        titleLarge = titleLarge, titleMedium = titleMedium, titleSmall = labelLarge,
+        titleLarge = titleLarge, titleMedium = titleMedium, titleSmall = titleSmall,
         bodyLarge = bodyLarge, bodyMedium = bodyMedium, bodySmall = bodySmall,
         labelLarge = labelLarge, labelMedium = labelMedium, labelSmall = labelSmall,
     )

@@ -1,6 +1,10 @@
 package com.oftenenough.app.ui.today
 
-import androidx.compose.foundation.BorderStroke
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppTopBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,37 +28,22 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.rounded.StickyNote2
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.EventAvailable
-import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material.icons.rounded.Checklist
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.FilterList
-import androidx.compose.material.icons.rounded.Lightbulb
-import androidx.compose.material.icons.rounded.SettingsBackupRestore
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.FloatingToolbarDefaults
+import androidx.compose.material3.HorizontalFloatingToolbar
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -83,9 +72,7 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.Placement
 import com.oftenenough.app.ui.components.CookieIcon
-import com.oftenenough.app.ui.components.InkButton
 import com.oftenenough.app.ui.components.MiniRing
-import com.oftenenough.app.ui.components.TonalButton
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
@@ -266,18 +253,17 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     Scaffold(
         containerColor = c.screen,
         topBar = {
-            TopAppBar(
-                title = {},
+            AppTopBar(
+                null,
                 // Beside a sidebar (tablets) there's no menu to open.
-                navigationIcon = { if (!com.oftenenough.app.ui.LocalSidebar.current) IconButton(nav::openMenu, Modifier.semantics { testTag = "menu-button" }) { Icon(Icons.Rounded.Menu, "Menu", tint = c.ink) } },
+                navigationIcon = { if (!com.oftenenough.app.ui.LocalSidebar.current) IconButton(nav::openMenu, Modifier.semantics { testTag = "menu-button" }) { Icon(Symbols.Menu, "Menu") } },
                 actions = {
                     if (hasHabits) {
-                        TopIcon(Icons.Outlined.Edit, "Arrange your day", tipShows, "arrange-button") { prefs.arrangeTipDone = true; nav.arrange() }
-                        TopIcon(Icons.Rounded.FilterList, if (filterOn) "Filter, on" else "Filter", filterOn, "filter-button") { filtering = true }
+                        TopIcon(Symbols.Edit, "Arrange your day", tipShows, "arrange-button") { prefs.arrangeTipDone = true; nav.arrange() }
+                        TopIcon(Symbols.FilterList, if (filterOn) "Filter, on" else "Filter", filterOn, "filter-button") { filtering = true }
                     }
-                    IconButton(nav::newHabit, Modifier.semantics { testTag = "new-habit" }) { Icon(Icons.Rounded.Add, "New habit", tint = c.ink) }
+                    IconButton(nav::newHabit, Modifier.semantics { testTag = "new-habit" }) { Icon(Symbols.Add, "New habit") }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, scrolledContainerColor = c.screen),
             )
         },
     ) { padding ->
@@ -372,15 +358,15 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
         DatePickerDialog(
             onDismissRequest = { calendar = false },
             confirmButton = {
-                TextButton({
+                AppButton("Go", {
                     state.selectedDateMillis?.let { ms ->
                         val picked = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()
                         shownDay = if (picked == today) null else picked
                     }
                     calendar = false
-                }, Modifier.semantics { testTag = "calendar-go" }) { Text("Go", color = c.ink) }
+                }, Modifier.semantics { testTag = "calendar-go" }, style = ButtonStyle.Text)
             },
-            dismissButton = { TextButton({ calendar = false }) { Text("Cancel", color = c.ink) } },
+            dismissButton = { AppButton("Cancel", { calendar = false }, style = ButtonStyle.Text) },
         ) {
             DatePicker(state, title = { Text("Go to a day", Modifier.padding(start = 24.dp, top = 16.dp)) })
         }
@@ -393,7 +379,7 @@ private fun TopIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, label
     val c = appColors
     IconButton(onClick, Modifier.semantics { testTag = tag }) {
         Box(Modifier.size(48.dp).clip(CircleShape).background(if (on) c.behind else Color.Transparent), contentAlignment = Alignment.Center) {
-            Icon(icon, label, tint = c.ink)
+            Icon(icon, label)
         }
     }
 }
@@ -423,7 +409,7 @@ private fun InputChip(label: String, tag: String, onClear: () -> Unit) {
     ) {
         Text(label, style = AppType.labelLarge, color = c.ink, maxLines = 1)
         Spacer(Modifier.width(8.dp))
-        Icon(Icons.Rounded.Close, "Clear $label", Modifier.size(18.dp), tint = c.ink)
+        Icon(Symbols.Close, "Clear $label", Modifier.size(18.dp), tint = c.ink)
     }
 }
 
@@ -434,14 +420,9 @@ private fun BottomFade(modifier: Modifier) {
     Box(modifier.fillMaxWidth().height(170.dp).background(Brush.verticalGradient(0f to s.copy(alpha = 0f), 0.5f to s.copy(alpha = 0.85f), 1f to s)))
 }
 
-/** Today's messages, 12 dp above the day bar (Figma 1.5, 1.6): Material's snackbar, corners 4. */
+/** Today's messages, 12 dp above the day bar (Figma 1.5, 1.6): the Snackbar (2.6). */
 @Composable
-private fun TodaySnackbars(snackbar: SnackbarHostState) {
-    val c = appColors
-    SnackbarHost(snackbar, Modifier.padding(horizontal = 4.dp)) { data ->
-        Snackbar(data, shape = RoundedCornerShape(4.dp), actionColor = if (c.dark) Color(0xFF45454A) else Color(0xFFD7D7DC))
-    }
-}
+private fun TodaySnackbars(snackbar: SnackbarHostState) = AppSnackbarHost(snackbar, Modifier.padding(horizontal = 4.dp))
 
 /** "Back to today" (Figma 1985:173): the day bar's own surface, floating 8 dp above it. */
 @Composable
@@ -453,7 +434,7 @@ private fun BackToToday(onClick: () -> Unit) {
             .padding(start = 16.dp, end = 20.dp, top = 10.dp, bottom = 10.dp).semantics { testTag = "back-to-today" },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Outlined.Today, null, Modifier.size(20.dp), tint = c.ink)
+        Icon(Symbols.Today, null, Modifier.size(20.dp), tint = c.ink)
         Spacer(Modifier.width(8.dp))
         Text("Back to today", style = AppType.labelLarge, color = c.ink)
     }
@@ -471,7 +452,7 @@ private fun ArrangeTip(modifier: Modifier, onDone: () -> Unit) {
         Text("Arrange your day", style = AppType.titleMedium, color = c.ink)
         Text("Put habits in your own order, or move one to another time of day.", style = AppType.bodyMedium, color = c.secondary)
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-            TextButton(onDone, Modifier.semantics { testTag = "arrange-tip-done" }) { Text("Got it", style = AppType.labelLarge, color = c.ink) }
+            AppButton("Got it", onDone, Modifier.semantics { testTag = "arrange-tip-done" }, style = ButtonStyle.Text)
         }
     }
 }
@@ -544,7 +525,7 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
         indexed(ix, "day-note") {
             Row(Modifier.fillMaxWidth().padding(bottom = 16.dp).clip(RoundedCornerShape(24.dp)).background(appColors.surface)
                 .clickable { actions.writeNote(null, day) }.padding(16.dp)) {
-                Icon(Icons.AutoMirrored.Rounded.StickyNote2, null, tint = appColors.secondary)
+                Icon(Symbols.StickyNote2, null, tint = appColors.secondary)
                 Spacer(Modifier.width(12.dp))
                 Text(note, style = AppType.bodyMedium, color = appColors.ink)
             }
@@ -574,7 +555,7 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
     if (day <= today && content.dayNote == null) {
         indexed(ix, "add-day-note") {
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                TextButton({ actions.writeNote(null, day) }) { Text("Note for the day", style = AppType.labelLarge, color = appColors.secondary) }
+                AppButton("Note for the day", { actions.writeNote(null, day) }, style = ButtonStyle.Text)
             }
         }
     }
@@ -655,34 +636,40 @@ private fun LazyListScope.quitting(habits: List<Habit>, store: HabitStore, layou
 }
 
 /**
- * The day bar (Figma 1256:6): Material's floating toolbar, fixed width (it never changes as the day changes), the ring,
- * the day ▾ and the count centred as one group; ‹ and › at its ends (the user, 12 Oct 2026).
+ * Atom 1.5, **Floating toolbar** (Figma 581:145; Components — Atoms Build Plan): the day bar, Material 3 Expressive's own
+ * `HorizontalFloatingToolbar` as it is (Material 1.5, Android A76): 64 dp, fully round, 8 at the ends, 4 between,
+ * Material's shadow and no outline, 16 from each edge of the screen (328 wide on a 360 dp phone). One setting of the
+ * design's: **Surface bright**, like every floating surface (Material's Surface container is our page, where the bar
+ * would vanish). Content is Material's toolbar colour, On surface: ‹ and › are icon buttons (1.1, 48 dp); between them,
+ * centred as one group, the day's ring (20 dp: the share done, On surface on Outline variant), the day ▾ in Title
+ * Medium, and the count in Label Large, On surface variant. It never changes width as the day changes (the user, 12
+ * Oct 2026).
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DayBar(store: HabitStore, day: Int, today: Int, onPrevious: () -> Unit, onNext: () -> Unit, onPick: () -> Unit) {
-    val c = appColors
+    val s = MaterialTheme.colorScheme
     val score = remember(store.dataVersion, day, today) { store.daySummary(day) }
     val label = when (day) { today -> "Today"; today - 1 -> "Yesterday"; today + 1 -> "Tomorrow"; else -> DayWords.short(day) }
-    Surface(
-        modifier = Modifier.width(320.dp).height(64.dp).shadow(10.dp, RoundedCornerShape(32.dp)).semantics { testTag = "day-bar" },
-        shape = RoundedCornerShape(32.dp), color = c.surface, border = BorderStroke(1.dp, c.ink.copy(alpha = 0.08f)),
+    HorizontalFloatingToolbar(
+        expanded = true,
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth().semantics { testTag = "day-bar" },
+        colors = FloatingToolbarDefaults.standardFloatingToolbarColors(toolbarContainerColor = s.surfaceBright),
     ) {
-        Row(Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onPrevious, Modifier.size(48.dp).semantics { testTag = "day-previous" }) { Icon(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, "Previous day", tint = c.ink) }
-            Row(Modifier.weight(1f).clip(RoundedCornerShape(24.dp)).clickable(onClick = onPick).padding(vertical = 12.dp)
-                .semantics(mergeDescendants = true) { contentDescription = "$label, ${score.done} of ${score.planned} done. Go to a day" },
-                horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                MiniRing(score.fraction.toFloat(), c.ink, c.tonal)
+        IconButton(onPrevious, Modifier.semantics { testTag = "day-previous" }) { Icon(Symbols.KeyboardArrowLeft, "Previous day") }
+        Row(Modifier.weight(1f).clip(RoundedCornerShape(24.dp)).clickable(onClick = onPick).padding(vertical = 12.dp)
+            .semantics(mergeDescendants = true) { contentDescription = "$label, ${score.done} of ${score.planned} done. Go to a day" },
+            horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+            MiniRing(score.fraction.toFloat(), s.onSurface, s.outlineVariant, Modifier.size(20.dp))
+            Spacer(Modifier.width(8.dp))
+            Text(label, style = AppType.titleMedium, maxLines = 1)
+            Icon(Symbols.ArrowDropDown, null, Modifier.size(20.dp))
+            if (score.planned > 0) {
                 Spacer(Modifier.width(8.dp))
-                Text(label, style = AppType.titleMedium, color = c.ink, maxLines = 1)
-                Icon(Icons.Rounded.ArrowDropDown, null, Modifier.size(20.dp), tint = c.ink)
-                if (score.planned > 0) {
-                    Spacer(Modifier.width(8.dp))
-                    Text("${score.done}/${score.planned}", style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"), color = c.secondary)
-                }
+                Text("${score.done}/${score.planned}", style = AppType.labelLarge.copy(fontFeatureSettings = "tnum"), color = s.onSurfaceVariant)
             }
-            IconButton(onNext, Modifier.size(48.dp).semantics { testTag = "day-next" }) { Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, "Next day", tint = c.ink) }
         }
+        IconButton(onNext, Modifier.semantics { testTag = "day-next" }) { Icon(Symbols.KeyboardArrowRight, "Next day") }
     }
 }
 
@@ -695,16 +682,16 @@ fun DayBar(store: HabitStore, day: Int, today: Int, onPrevious: () -> Unit, onNe
 @Composable
 private fun NoHabitsYet(nav: TodayNav) {
     Column(Modifier.fillMaxSize().padding(horizontal = 32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        CookieIcon(Icons.Rounded.Checklist, size = 112.dp)
+        CookieIcon(Symbols.Checklist, size = 112.dp)
         Spacer(Modifier.height(16.dp))
         Text("No habits yet", style = AppType.headlineSmallEmphasized, color = appColors.ink)
         Spacer(Modifier.height(8.dp))
         Text("Add something you’d like to do often enough.", Modifier.widthIn(max = 268.dp), style = AppType.bodyLarge,
             color = appColors.secondary, textAlign = TextAlign.Center)
         Spacer(Modifier.height(24.dp))
-        InkButton("New habit", nav::newHabit, icon = Icons.Rounded.Add, height = 48.dp, textStyle = AppType.labelLarge)
+        AppButton("New habit", nav::newHabit, icon = Symbols.Add)
         Spacer(Modifier.height(8.dp))
-        TonalButton("Restore from a backup", nav::restore, icon = Icons.Rounded.SettingsBackupRestore)
+        AppButton("Restore from a backup", nav::restore, style = ButtonStyle.Tonal, icon = Symbols.SettingsBackupRestore)
     }
 }
 
@@ -712,14 +699,14 @@ private fun NoHabitsYet(nav: TodayNav) {
 @Composable
 private fun NothingPlanned(nav: TodayNav, isToday: Boolean) {
     Column(Modifier.fillMaxSize().padding(horizontal = 32.dp).padding(bottom = 96.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        CookieIcon(Icons.Outlined.EventAvailable, size = 112.dp)
+        CookieIcon(Symbols.EventAvailable, size = 112.dp)
         Spacer(Modifier.height(24.dp))
         Text(if (isToday) "Nothing planned today" else "Nothing planned this day", style = AppType.headlineSmallEmphasized, color = appColors.ink, textAlign = TextAlign.Center)
         Spacer(Modifier.height(8.dp))
         Text("Your habits are planned for other days. Each shows up on its days.", style = AppType.bodyLarge,
             color = appColors.secondary, textAlign = TextAlign.Center)
         Spacer(Modifier.height(24.dp))
-        TonalButton("New habit", nav::newHabit, icon = Icons.Rounded.Add)
+        AppButton("New habit", nav::newHabit, style = ButtonStyle.Tonal, icon = Symbols.Add)
     }
 }
 
@@ -728,12 +715,12 @@ private fun NothingPlanned(nav: TodayNav, isToday: Boolean) {
 private fun NothingInGroup(name: String, isToday: Boolean, onShowAll: () -> Unit) {
     Column(Modifier.fillMaxSize().padding(horizontal = 32.dp).padding(bottom = 96.dp).semantics { testTag = "nothing-in-group" },
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        CookieIcon(Icons.Rounded.FilterList, size = 112.dp)
+        CookieIcon(Symbols.FilterList, size = 112.dp)
         Spacer(Modifier.height(24.dp))
         Text(if (isToday) "Nothing from $name today" else "Nothing from $name this day", style = AppType.headlineSmallEmphasized, color = appColors.ink, textAlign = TextAlign.Center)
         Spacer(Modifier.height(8.dp))
         Text("$name’s habits are planned for other days.", style = AppType.bodyLarge, color = appColors.secondary, textAlign = TextAlign.Center)
         Spacer(Modifier.height(24.dp))
-        TonalButton("Show all", onShowAll)
+        AppButton("Show all", onShowAll, style = ButtonStyle.Tonal)
     }
 }

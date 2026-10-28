@@ -1,12 +1,19 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.DayCellSize
+import com.oftenenough.app.ui.components.dayCellColors
+import com.oftenenough.app.ui.components.Medal
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.CircularProgressLabel
+import com.oftenenough.app.ui.components.AppCircularProgress
+import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.compose.ui.graphics.compositeOver
 import com.oftenenough.app.ui.components.segmentShape
 import androidx.compose.foundation.lazy.itemsIndexed
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -33,22 +40,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,29 +57,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.oftenenough.app.data.DayWords
-import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitKind
@@ -96,9 +83,7 @@ import com.oftenenough.app.data.PeriodCard
 import com.oftenenough.app.data.PeriodComparison
 import com.oftenenough.app.data.PeriodKind
 import com.oftenenough.app.data.ProgressRange
-import com.oftenenough.app.data.QuitRun
 import com.oftenenough.app.data.RecordFact
-import com.oftenenough.app.data.dayResult
 import com.oftenenough.app.data.moneySaved
 import com.oftenenough.app.data.pageDay
 import com.oftenenough.app.data.pageMonthCaption
@@ -113,9 +98,7 @@ import com.oftenenough.app.data.pageWeekdayNames
 import com.oftenenough.app.data.pageYear
 import com.oftenenough.app.data.periodCard
 import com.oftenenough.app.data.periodComparison
-import com.oftenenough.app.data.quitClock
 import com.oftenenough.app.data.quitPeriodCard
-import com.oftenenough.app.data.quitTotalLine
 import com.oftenenough.app.data.recordedEachDay
 import com.oftenenough.app.data.quitRecord
 import com.oftenenough.app.data.noteIndexes
@@ -124,10 +107,7 @@ import com.oftenenough.app.data.weekLabels
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
 import com.oftenenough.app.ui.charts.LightBarChart
-import com.oftenenough.app.ui.components.CookieShape
-import com.oftenenough.app.ui.components.TonalButton
 import com.oftenenough.app.ui.theme.appColors
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.delay
@@ -228,7 +208,7 @@ private fun ColumnScope.SeeAllLink(text: String, tag: String, onClick: () -> Uni
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(text, style = AppType.labelLarge, color = appColors.ink)
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(20.dp), tint = appColors.ink)
+        Icon(Symbols.KeyboardArrowRight, null, Modifier.size(20.dp), tint = appColors.ink)
     }
 }
 
@@ -247,7 +227,7 @@ private fun RecordBox(box: RecordBoxData, color: HabitColor, modifier: Modifier)
         Text(box.fact.title, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (box.tinted) {
-                Icon(Icons.Rounded.LocalFireDepartment, null, Modifier.size(24.dp), tint = c.flame)
+                Icon(Symbols.Filled.LocalFireDepartment, null, Modifier.size(24.dp), tint = c.flame)
                 Spacer(Modifier.width(6.dp))
             }
             Text(
@@ -344,7 +324,7 @@ private fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSee
                 ) {
                     Text("See all ${reached.size}", style = AppType.labelLarge, color = c.ink)
                     Spacer(Modifier.width(2.dp))
-                    Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(20.dp), tint = c.ink)
+                    Icon(Symbols.KeyboardArrowRight, null, Modifier.size(20.dp), tint = c.ink)
                 }
             } else if (reached.size == 1) {
                 Text("1 reached", style = AppType.bodyMedium, color = c.secondary)
@@ -359,7 +339,7 @@ private fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSee
                     },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                MilestoneMedal(latest.number, 72.dp, color)
+                Medal(latest.number, 72.dp, color)
                 Spacer(Modifier.width(16.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     if (reached.size > 1) Text("Latest", style = AppType.labelMedium, color = c.secondary)
@@ -400,30 +380,18 @@ private fun ShelfMedal(m: Milestone, color: HabitColor, modifier: Modifier) {
     val c = appColors
     Column(modifier.clearAndSetSemantics { contentDescription = m.spoken }, horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        MilestoneMedal(m.number, 52.dp, color)
+        Medal(m.number, 52.dp, color)
         Text(m.shelfTop, style = AppType.labelMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Text(m.shelfBottom, style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
-/** A ring filling clockwise from the top toward a track's next milestone (Figma: 52, a 3.9 band, the colour at 20 %). */
+/** A track's next milestone as a circular progress (1.21): its number in the middle, or ✓ once the last is reached. */
 @Composable
-private fun MilestoneRing(next: MilestoneNext, color: HabitColor) {
-    val c = appColors
-    val ring = c.habit(color)
-    val track = ring.copy(alpha = if (c.dark) 0.28f else 0.2f)
-    Box(Modifier.size(52.dp), contentAlignment = Alignment.Center) {
-        Canvas(Modifier.size(52.dp)) {
-            val w = 3.9.dp.toPx()
-            val inset = w / 2
-            val arc = Size(size.width - w, size.height - w)
-            drawArc(track, 0f, 360f, false, Offset(inset, inset), arc, style = Stroke(w))
-            if (next.fraction > 0) drawArc(ring, -90f, 360f * next.fraction.toFloat(), false, Offset(inset, inset), arc, style = Stroke(w, cap = StrokeCap.Round))
-        }
-        if (next.target == null) Icon(Icons.Rounded.Check, null, tint = c.ink)
-        else Text(next.number, color = c.ink, style = if (next.number.length >= 3) AppType.labelLarge else AppType.titleMedium, maxLines = 1)
+private fun MilestoneRing(next: MilestoneNext, color: HabitColor) =
+    AppCircularProgress(next.fraction.toFloat(), color) {
+        if (next.target == null) Icon(Symbols.Check, null, tint = appColors.ink) else CircularProgressLabel(next.number)
     }
-}
 
 /** A track's next milestone: its ring, what it is, and what's left ("7 to go · now 23"; on All milestones "Next · …"). */
 @Composable
@@ -455,10 +423,9 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
             .sortedBy { listOf(Milestone.Track.IN_A_ROW, Milestone.Track.SINCE_SLIP, Milestone.Track.IN_TOTAL, Milestone.Track.ANNIVERSARY).indexOf(it) }
     }
     Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "all-milestones" }) {
-        TopAppBar(
-            title = { Text("All milestones", style = AppType.titleLargeEmphasized, maxLines = 1) },
-            navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "milestones-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, titleContentColor = c.ink, navigationIconContentColor = c.ink),
+        AppTopBar(
+            "All milestones",
+            navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "milestones-back" }) { Icon(Symbols.ArrowBack, "Back") } },
         )
         LazyColumn(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp)) {
             item(key = "summary") {
@@ -487,7 +454,7 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
                             .clearAndSetSemantics { contentDescription = m.spoken; testTag = "milestone-reached" },
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        MilestoneMedal(m.number, 52.dp, color)
+                        Medal(m.number, 52.dp, color)
                         Spacer(Modifier.width(16.dp))
                         Column {
                             Text(m.title, style = AppType.titleMedium, color = c.ink)
@@ -574,7 +541,7 @@ private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today
                 if (week) {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         DayNames(pageWeekdayNames(store.weekStart), view.todayIndex)
-                        HeatStrip(cells, view.todayIndex, habit.color, HeatSize.week, Modifier.semantics { testTag = "week-strip" }.pointerInput(view.span) {
+                        HeatStrip(cells, view.todayIndex, habit.color, DayCellSize.week, Modifier.semantics { testTag = "week-strip" }.pointerInput(view.span) {
                             // A tap opens that day (Figma 4.1); a day to come does nothing.
                             detectTapGestures { at ->
                                 val i = (at.x / (size.width.toFloat() / cells.size)).toInt()
@@ -586,7 +553,7 @@ private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today
                 } else {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         DayNames(pageWeekdayLetters(store.weekStart) + listOfNotNull(view.weekLabels?.let { "Week" }), view.todayIndex?.let { (view.lead + it) % 7 })
-                        HeatMonthGrid(view.lead, cells, view.todayIndex, habit.color, size = if (view.weekLabels != null) 32.dp else HeatSize.month,
+                        HeatMonthGrid(view.lead, cells, view.todayIndex, habit.color, size = if (view.weekLabels != null) 32.dp else DayCellSize.week,
                             notes = view.notes, below = view.below, weekLabels = view.weekLabels) { i -> onOpenDay(view.span.first + i) }
                     }
                 }
@@ -611,7 +578,7 @@ private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today
                 style = MaterialTheme.typography.bodyMedium, color = c.secondary)
         }
         view.comparison?.let { comparison ->
-            HorizontalDivider(color = c.tonal)
+            HorizontalDivider()
             ComparisonView(comparison, habit.color)
         }
     }
@@ -634,18 +601,15 @@ private fun DayNames(names: List<String>, todayColumn: Int?) {
 @Composable
 private fun PeriodHeader(title: String, subtitle: String, noun: String, canGoBack: Boolean, canGoForward: Boolean, move: (Int) -> Unit) {
     val c = appColors
-    val colors = IconButtonDefaults.iconButtonColors(contentColor = c.ink, disabledContentColor = c.secondary.copy(alpha = 0.4f))
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }) {
             Text(title, style = AppType.titleMedium, color = c.ink)
             Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
         }
-        IconButton({ move(-1) }, Modifier.semantics { testTag = "previous-$noun" }, enabled = canGoBack, colors = colors) {
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, "Previous $noun")
-        }
-        IconButton({ move(1) }, Modifier.semantics { testTag = "next-$noun" }, enabled = canGoForward, colors = colors) {
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, "Next $noun")
-        }
+        StandardIconButton(Symbols.KeyboardArrowLeft, "Previous $noun", { move(-1) },
+            Modifier.semantics { testTag = "previous-$noun" }, enabled = canGoBack)
+        StandardIconButton(Symbols.KeyboardArrowRight, "Next $noun", { move(1) },
+            Modifier.semantics { testTag = "next-$noun" }, enabled = canGoForward)
     }
 }
 
@@ -662,7 +626,7 @@ private fun ComparisonView(comparison: PeriodComparison, color: HabitColor) {
         } else {
             val top = maxOf(comparison.thisValue ?: 0.0, comparison.previousValue ?: 0.0, 0.0001)
             ComparisonRow(comparison.thisLabel, comparison.thisText, (comparison.thisValue ?: 0.0) / top, c.habit(color))
-            ComparisonRow(comparison.previousLabel, comparison.previousText, (comparison.previousValue ?: 0.0) / top, HeatPalette.color(2, color, c.dark))
+            ComparisonRow(comparison.previousLabel, comparison.previousText, (comparison.previousValue ?: 0.0) / top, dayCellColors(color).part)
         }
     }
 }

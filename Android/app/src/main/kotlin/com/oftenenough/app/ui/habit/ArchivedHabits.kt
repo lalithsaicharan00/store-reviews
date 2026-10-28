@@ -1,5 +1,12 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.components.AppMenuItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.MenuDivider
+import com.oftenenough.app.ui.components.AppTopBar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,26 +20,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Unarchive
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Inventory2
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -119,25 +115,22 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
 
     Box(Modifier.fillMaxSize().background(c.screen)) {
         Column(Modifier.fillMaxSize()) {
-            if (selecting) TopAppBar(
-                title = { Text("${chosen.size} selected") },
-                navigationIcon = { IconButton({ chosen = emptySet() }) { Icon(Icons.Rounded.Close, "Stop selecting") } },
+            if (selecting) AppTopBar(
+                "${chosen.size} selected",
+                navigationIcon = { IconButton({ chosen = emptySet() }) { Icon(Symbols.Close, "Stop selecting") } },
                 actions = {
                     val everything = chosen.size == archived.size
-                    TextButton({ chosen = if (everything) emptySet() else archived.map { it.id }.toSet() }, Modifier.padding(end = 4.dp)) {
-                        Text(if (everything) "Deselect all" else "Select all", style = AppType.labelLarge, color = c.ink)
-                    }
+                    AppButton(if (everything) "Deselect all" else "Select all", { chosen = if (everything) emptySet() else archived.map { it.id }.toSet() }, Modifier.padding(end = 4.dp), style = ButtonStyle.Text)
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = c.tonal, titleContentColor = c.ink, navigationIconContentColor = c.ink),
-            ) else TopAppBar(
-                title = { Text(if (tasks) "Archived tasks" else "Archived habits") },
-                navigationIcon = { IconButton(nav::back, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, titleContentColor = c.ink, navigationIconContentColor = c.ink),
+                containerColor = c.tonal,
+            ) else AppTopBar(
+                if (tasks) "Archived tasks" else "Archived habits",
+                navigationIcon = { IconButton(nav::back, Modifier.semantics { testTag = "page-back" }) { Icon(Symbols.ArrowBack, "Back") } },
             )
             if (archived.isEmpty()) {
                 Column(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 32.dp), horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center) {
-                    CookieIcon(Icons.Rounded.Inventory2, 112.dp)
+                    CookieIcon(Symbols.Inventory2, 112.dp)
                     Spacer(Modifier.height(24.dp))
                     Text("Nothing archived", style = AppType.titleLarge, color = c.ink)
                     Spacer(Modifier.height(12.dp))
@@ -159,9 +152,9 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
                             onClick = { if (selecting) chosen = if (h.id in chosen) chosen - h.id else chosen + h.id else nav.open(h) },
                             onLongClick = { chosen = if (h.id in chosen) chosen - h.id else chosen + h.id },
                             menu = if (selecting) null else { habit, dismiss ->
-                                MenuItem("Restore", Icons.Outlined.Unarchive, "archived-menu-restore") { dismiss(); restore(listOf(habit)) }
-                                HorizontalDivider(color = c.tonal)
-                                MenuItem(if (tasks) "Delete task…" else "Delete habit…", Icons.Outlined.Delete, "archived-menu-delete", danger = true) { dismiss(); deleting = listOf(habit) }
+                                AppMenuItem("Restore", { dismiss(); restore(listOf(habit)) }, icon = Symbols.Unarchive, tag = "archived-menu-restore")
+                                MenuDivider()
+                                AppMenuItem(if (tasks) "Delete task…" else "Delete habit…", { dismiss(); deleting = listOf(habit) }, icon = Symbols.Delete, destructive = true, tag = "archived-menu-delete")
                             })
                     }
                 }
@@ -169,12 +162,12 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
             }
             if (selecting) Surface(color = c.surface, tonalElevation = 3.dp) {
                 Row(Modifier.fillMaxWidth().navigationBarsPadding().padding(8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    BarAction("Restore", Icons.Outlined.Unarchive, true, "archived-restore", { restore(marked); chosen = emptySet() })
-                    BarAction("Delete", Icons.Outlined.Delete, true, "archived-delete", { deleting = marked }, danger = true)
+                    BarAction("Restore", Symbols.Unarchive, true, "archived-restore", { restore(marked); chosen = emptySet() })
+                    BarAction("Delete", Symbols.Delete, true, "archived-delete", { deleting = marked }, danger = true)
                 }
             }
         }
-        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
+        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
     }
     if (deleting.isNotEmpty()) {
         val list = deleting
@@ -182,8 +175,8 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
             modifier = Modifier.semantics { testTagsAsResourceId = true },
             title = { Text(if (list.size == 1) "Delete ${list[0].name}?" else "Delete ${list.size} ${noun}s?") },
             text = { Text(if (list.size == 1) "Its history and notes are deleted too." else "Their history and notes are deleted too.") },
-            confirmButton = { TextButton({ deleting = emptyList(); chosen = emptySet(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
-            dismissButton = { TextButton({ deleting = emptyList() }) { Text("Cancel", color = c.ink) } },
+            confirmButton = { AppButton("Delete", { deleting = emptyList(); chosen = emptySet(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
+            dismissButton = { AppButton("Cancel", { deleting = emptyList() }, style = ButtonStyle.Text) },
             containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
     }
 }

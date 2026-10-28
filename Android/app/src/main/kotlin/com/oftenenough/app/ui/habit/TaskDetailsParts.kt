@@ -1,32 +1,22 @@
 package com.oftenenough.app.ui.habit
 
-import androidx.compose.material.icons.automirrored.outlined.StickyNote2
+import androidx.compose.ui.text.AnnotatedString
+import com.oftenenough.app.ui.components.ListNote
+import com.oftenenough.app.ui.components.ListAvatar
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.AppButton
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Unarchive
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.SkipNext
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.semantics
@@ -37,8 +27,6 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TaskEvent
 import com.oftenenough.app.data.archivedLine
 import com.oftenenough.app.data.taskHistory
-import com.oftenenough.app.ui.components.InkButton
-import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 
@@ -69,33 +57,16 @@ fun LazyListScope.taskHistoryItems(store: HabitStore, task: Habit, today: Int, o
 private fun TaskEventRow(e: TaskEvent, index: Int, count: Int, note: String?, onClick: (() -> Unit)?) {
     val c = appColors
     val icon = when (e.kind) {
-        TaskEvent.Kind.WAITING -> Icons.Outlined.Schedule
-        TaskEvent.Kind.PLANNED -> if (e.line.startsWith("Not done")) Icons.Outlined.CalendarToday else Icons.Outlined.Schedule
-        TaskEvent.Kind.DONE -> Icons.Rounded.Check
-        TaskEvent.Kind.SKIPPED -> Icons.Rounded.SkipNext
-        TaskEvent.Kind.CREATED -> Icons.Rounded.Add
+        TaskEvent.Kind.WAITING -> Symbols.Schedule
+        TaskEvent.Kind.PLANNED -> if (e.line.startsWith("Not done")) Symbols.CalendarToday else Symbols.Schedule
+        TaskEvent.Kind.DONE -> Symbols.Check
+        TaskEvent.Kind.SKIPPED -> Symbols.SkipNext
+        TaskEvent.Kind.CREATED -> Symbols.Add
     }
-    Row(
-        Modifier.padding(horizontal = 16.dp).padding(bottom = 2.dp).fillMaxWidth().clip(segmentShape(index, count)).background(c.surface)
-            .let { if (onClick != null) it.clickable(onClick = onClick) else it }
-            .semantics(mergeDescendants = true) { testTag = "task-event" }
-            .heightIn(min = 72.dp).padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(Modifier.size(40.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-            Icon(icon, null, Modifier.size(20.dp), tint = c.ink)
-        }
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Text(e.title, style = AppType.bodyLarge, color = c.ink)
-            Text(e.line, style = AppType.bodyMedium, color = c.secondary)
-            if (note != null) Row(Modifier.padding(top = 4.dp)) {
-                Icon(Icons.AutoMirrored.Outlined.StickyNote2, null, Modifier.padding(top = 2.dp).size(16.dp), tint = c.secondary)
-                Spacer(Modifier.width(6.dp))
-                Text(note, style = AppType.bodyMedium, color = c.ink, maxLines = 2, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
-            }
-        }
-    }
+    AppListItem(
+        e.title, index, count, Modifier.padding(horizontal = 16.dp).padding(bottom = 2.dp).semantics(mergeDescendants = true) {}, e.line,
+        leading = { ListAvatar(icon) }, below = note?.let { { ListNote(AnnotatedString(it)) } }, onClick = onClick, tag = "task-event",
+    )
 }
 
 /** An archived task (Figma 9.4): when, that it's off Today and Tasks and keeps its history, and Restore. */
@@ -106,7 +77,6 @@ private fun TaskArchivedCard(store: HabitStore, task: Habit) {
         .padding(20.dp).semantics { testTag = "habit-archived" }) {
         Text(store.archivedLine(task) + ". It’s off Today and Tasks, and keeps its history.", style = AppType.bodyMedium, color = c.secondary)
         Spacer(Modifier.height(16.dp))
-        InkButton("Restore", { store.restore(task) }, Modifier.semantics { testTag = "habit-restore" }, icon = Icons.Outlined.Unarchive,
-            height = 40.dp, textStyle = AppType.labelLarge)
+        AppButton("Restore", { store.restore(task) }, Modifier.semantics { testTag = "habit-restore" }, icon = Symbols.Unarchive)
     }
 }

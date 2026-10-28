@@ -1,5 +1,13 @@
 package com.oftenenough.app.ui.settings
 
+import androidx.compose.ui.semantics.stateDescription
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.ListAction
+import com.oftenenough.app.ui.components.ListAvatar
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
 import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -11,7 +19,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,16 +27,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.Alarm
-import androidx.compose.material.icons.outlined.BatteryStd
-import androidx.compose.material.icons.outlined.FactCheck
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.NotificationsOff
-import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -57,9 +55,6 @@ import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.InkButton
-import com.oftenenough.app.ui.components.PlainButton
-import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.newhabit.FormPage
@@ -118,7 +113,7 @@ fun RemindersSettingsPage(store: HabitStore, onEdit: (Habit) -> Unit, onBack: ()
             val name = store.habit(missed.habitId)?.name
             Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(appColors.surface).padding(20.dp).semantics { testTag = "reminder-missed" }) {
                 Row(verticalAlignment = Alignment.Top) {
-                    Icon(Icons.Outlined.NotificationsOff, null, tint = appColors.ink)
+                    Icon(Symbols.NotificationsOff, null, tint = appColors.ink)
                     Spacer(Modifier.width(16.dp))
                     Text((name?.let { "$it's " } ?: "A ") + DayWords.clockMinute(missed.minute) + " reminder didn't arrive",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium), color = appColors.ink)
@@ -127,9 +122,9 @@ fun RemindersSettingsPage(store: HabitStore, onEdit: (Habit) -> Unit, onBack: ()
                 Text(missedReason(Build.MANUFACTURER), style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
                 Spacer(Modifier.height(12.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
-                    PlainButton("Dismiss", { Reminders.dismissMissed(context); refresh++ }, Modifier.semantics { testTag = "reminder-missed-dismiss" })
+                    AppButton("Dismiss", { Reminders.dismissMissed(context); refresh++ }, Modifier.semantics { testTag = "reminder-missed-dismiss" }, style = ButtonStyle.Text)
                     Spacer(Modifier.width(8.dp))
-                    InkButton("Show me how", { openBatterySettings(context) }, Modifier.semantics { testTag = "reminder-missed-fix" }, height = 48.dp)
+                    AppButton("Show me how", { openBatterySettings(context) }, Modifier.semantics { testTag = "reminder-missed-fix" })
                 }
             }
             Spacer(Modifier.height(16.dp))
@@ -137,21 +132,21 @@ fun RemindersSettingsPage(store: HabitStore, onEdit: (Habit) -> Unit, onBack: ()
         SegmentedList {
             Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp, 28.dp, 4.dp, 4.dp)).background(appColors.surface).padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Outlined.FactCheck, null, tint = appColors.ink)
+                    Icon(Symbols.FactCheck, null, tint = appColors.ink)
                     Spacer(Modifier.width(12.dp))
                     Text("Reminder check", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Medium), color = appColors.ink)
                 }
                 Spacer(Modifier.height(4.dp))
                 Text("What this phone allows, so your reminders arrive on time.", style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
             }
-            CheckRow(Icons.Outlined.Notifications, "Notifications", if (notifications) "Allowed" else "Off: reminders can't show", notifications, "Allow", 1, 4, "check-notifications") {
+            CheckRow(Symbols.Notifications, "Notifications", if (notifications) "Allowed" else "Off: reminders can't show", notifications, "Allow", 1, 4, "check-notifications") {
                 if (Build.VERSION.SDK_INT >= 33 && !notifications) askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
                 if (Build.VERSION.SDK_INT < 33 || notifications) openNotificationSettings(context)
             }
-            CheckRow(Icons.Outlined.Alarm, "Exact times", if (exact) "Allowed" else "Off: reminders may come up to 10 minutes late", exact, "Allow", 2, 4, "check-exact") {
+            CheckRow(Symbols.Alarm, "Exact times", if (exact) "Allowed" else "Off: reminders may come up to 10 minutes late", exact, "Allow", 2, 4, "check-exact") {
                 if (Build.VERSION.SDK_INT >= 31) open(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
             }
-            CheckRow(Icons.Outlined.BatteryStd, "Battery", if (battery) "Not restricted" else "Often Enough can be stopped to save battery", battery, "Fix", 3, 4, "check-battery") {
+            CheckRow(Symbols.BatteryStd, "Battery", if (battery) "Not restricted" else "Often Enough can be stopped to save battery", battery, "Fix", 3, 4, "check-battery") {
                 openBatterySettings(context)
             }
         }
@@ -169,35 +164,21 @@ fun RemindersSettingsPage(store: HabitStore, onEdit: (Habit) -> Unit, onBack: ()
     }
 }
 
+/** One permission (A70): its icon turns into the ✓ once it's allowed; until then its fix sits under the words. */
 @Composable
-private fun CheckRow(icon: ImageVector, title: String, state: String, ok: Boolean, fix: String, index: Int, count: Int, tag: String, onFix: () -> Unit) {
-    Segment(index, count, Modifier.semantics(mergeDescendants = false) { testTag = tag }) {
-        Box(Modifier.size(40.dp).clip(CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
-            Icon(icon, null, tint = appColors.ink, modifier = Modifier.size(22.dp))
-        }
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Text(state, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-        }
-        Spacer(Modifier.width(8.dp))
-        if (ok) Icon(Icons.Rounded.CheckCircle, "OK", tint = appColors.ink)
-        else InkButton(fix, onFix, Modifier.semantics { testTag = "$tag-fix" }, height = 40.dp)
-    }
-}
+private fun CheckRow(icon: ImageVector, title: String, state: String, ok: Boolean, fix: String, index: Int, count: Int, tag: String, onFix: () -> Unit) =
+    AppListItem(
+        title, index, count, Modifier.semantics { if (ok) stateDescription = "Allowed" }, state, tag = tag,
+        leading = { ListAvatar(if (ok) Symbols.Check else icon, done = ok) },
+        below = if (ok) null else ({ ListAction(fix, onFix, "$tag-fix") }),
+    )
 
 @Composable
-private fun HabitReminderRow(habit: Habit, line: String, index: Int, count: Int, onClick: () -> Unit) {
-    Segment(index, count, Modifier.semantics { testTag = "reminders-habit-" + habit.name }, onClick = onClick) {
-        HabitIcon(habit.symbol, habit.color, 40.dp, CookieShape())
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-            Text(habit.name, style = MaterialTheme.typography.bodyLarge, color = appColors.ink, maxLines = 1)
-            Text(line, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-        }
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
-    }
-}
+private fun HabitReminderRow(habit: Habit, line: String, index: Int, count: Int, onClick: () -> Unit) =
+    AppListItem(
+        habit.name, index, count, supporting = line, headlineLines = 1, onClick = onClick, tag = "reminders-habit-" + habit.name,
+        leading = { HabitIcon(habit.symbol, habit.color, 40.dp, CookieShape()) }, trailing = { ListChevron() },
+    )
 
 private fun open(context: Context, intent: Intent) {
     try { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }

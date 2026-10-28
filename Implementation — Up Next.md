@@ -99,8 +99,43 @@ From here on, a language is added between each of the steps below, one at a time
 
 **Smaller features that are already decided,** to be fitted in between steps when there's a gap:
 
-- **How was today** — the built-in mood habit and its widget, designed and held for later (A18, A20, A22).
 - **Moving between iPhone and Android with a code** — removed for launch (D15). Bring it back only if people ask for it.
+
+---
+
+## In the plan, timing not decided — dedicated trackers
+
+*Added 27 October 2026 at the user's request: "dedicated trackers are like things that users can't create, but these
+are like specialized ones within our app … we don't know when to release it, but yeah, this is in the plan."*
+
+**What:**
+- **Dedicated trackers are made by us, not by the person.** Each is a specialised tracker with its own kind of record
+  and its own settings, not the habit form.
+- **They live in a library.** A person picks one from there, and it joins Today like any other row.
+- **They are released one at a time.** Each new tracker is researched again first, so the best ones go first.
+
+**Which, in order:**
+1. **Mood and emotions, with Year in Pixels.** This is the first one, and it's already designed as *How was today*. It was
+   archived for launch (A22). The designs are kept in the old Design file's section *How was today: mood and the day's note*
+   (Figma `Ncccsm1l2O62GJ5xLSInqk`, node `2037:2`): its Today row, a five-mood emoji scale (A17), the mood year in pixels
+   and its widget (A18, A20).
+2. **Sleep.** We already have research on it.
+3. **Weight, then others,** chosen by a fresh round of research.
+
+The research so far is [Built-in Trackers — The Market and What Fits Version 2](<Research/Research Reports/Market Discovery/Built-in Trackers — The Market and What Fits Version 2.md>)
+(17 Oct 2026, a store snapshot with no hand-read review pass). It recommends this order after mood: sleep, weight, energy
+and stress as one scale, then fasting or gratitude. Things the app already tracks as habits, such as water, meditation
+and quitting smoking, belong in the library as ready-made habits, not trackers.
+
+**Why it matters:**
+- **The user expects a lot of traction from it.**
+- **The stores agree:** the single-purpose trackers are among the biggest apps in their categories (store snapshot, 17 Oct
+  2026, US). On Google Play, Daylio has 10M+ downloads, and Sleep Cycle, Sleep as Android, ShutEye and BetterSleep have
+  10M+ each.
+
+**Still open:**
+- When the trackers come.
+- Whether they are free or Plus. They are new, so either fits the rule above.
 
 ---
 

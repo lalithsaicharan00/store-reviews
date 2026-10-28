@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.player
 
+import com.oftenenough.app.ui.theme.Symbols
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.background
@@ -19,10 +20,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.Pause
-import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -49,6 +46,8 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.PlayerAction
 import com.oftenenough.app.data.PlayerWords
+import com.oftenenough.app.ui.components.AppLargeIconButton
+import com.oftenenough.app.ui.components.LargeIconWidth
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
 
@@ -125,7 +124,7 @@ fun TimerScreen(
             Row(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 // Putting it away, not stopping: the name says so to TalkBack too.
                 IconButton(onClose, Modifier.semantics { testTag = "timer-screen-close" }) {
-                    Icon(Icons.Rounded.KeyboardArrowDown, PlayerWords.timerClose(running), tint = c.ink)
+                    Icon(Symbols.KeyboardArrowDown, PlayerWords.timerClose(running), tint = c.ink)
                 }
             }
             if (habit == null) {
@@ -144,20 +143,20 @@ fun TimerScreen(
                     )
                 }
                 Spacer(Modifier.height(16.dp))
-                // One main button, always in the same place: Pause while it runs, Resume (or Start) when it doesn't. The two
-                // are equal (Figma 1.3), so "Log manually" is never cut short on a 360 dp phone.
+                // One main button, always in the same place: Pause while it runs, Resume (or Start) when it doesn't, the
+                // Wide large icon button (128 dp, Figma's Timer screen); Log manually takes the rest of the row.
                 val started = remember(habit, rev, running) { store.rules.progress(habit, day) > 0 }
                 val action = PlayerWords.mainAction(ruled, store.rules.goal(ruled), done = false, skipped = false, isLast = false, running = running, started = started)
                 Row(Modifier.fillMaxWidth().height(96.dp).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (onLogManually != null) {
                         TonalBigButton(null, "Log manually", "timer-screen-log", Modifier.weight(1f).fillMaxHeight()) { logManually() }
                     }
-                    MainButton(
-                        if (action.action == PlayerAction.PAUSE) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
-                        action.label, action.spoken, "timer-screen-primary", Modifier.weight(1f),
-                    ) {
-                        if (store.timers.containsKey(habit.id)) store.toggleTimer(habit) else store.toggleTimer(habit, slot)
-                    }
+                    AppLargeIconButton(
+                        if (action.action == PlayerAction.PAUSE) Symbols.Filled.Pause else Symbols.Filled.PlayArrow, action.spoken,
+                        { if (store.timers.containsKey(habit.id)) store.toggleTimer(habit) else store.toggleTimer(habit, slot) },
+                        width = if (onLogManually != null) LargeIconWidth.Wide else LargeIconWidth.Fill,
+                        modifier = if (onLogManually != null) Modifier else Modifier.weight(1f), tag = "timer-screen-primary",
+                    )
                 }
                 Spacer(Modifier.height(16.dp))
             }

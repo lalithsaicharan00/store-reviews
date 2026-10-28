@@ -1,4 +1,4 @@
-package com.oftenenough.app.ui.habit
+package com.oftenenough.app.ui.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
@@ -33,11 +33,10 @@ import com.oftenenough.app.ui.theme.AppColors
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 
-// The milestone medal (Habit details, Figma 1373:2, 2475:82; All milestones 1735:4): a soft nine-point star, its colour
-// running from a lighter step at the top to a deeper one at the bottom, the same star again inside as a fine white line,
-// a soft shadow under it in a dark shade of the colour, and the number in white. Figma draws Water's blue (#4285F4 →
-// #77A7F7 top, #3A75D7 bottom, shadow #244986 at 35 %); every habit colour gets the same steps from its own colour, in
-// light and dark, darkened only as far as the white number needs to stay readable (3:1, large text).
+// Atom 3.5, **Medal** (Figma 913:29957; Components — Atoms Build Plan): a reached milestone. A soft nine-point star
+// (inner radius 86 %, corners 10 % of its size) in the habit's Medal gradient, the same star again at 82 % as a white
+// line, a soft shadow under it, and the number reached in white. Large 104 (the milestone pop-up), Medium 72 (Habit
+// details), Small 40 (a list row's leading slot); between them it scales, as Figma's instances do.
 
 /** Figma's star, in a 72 × 72 box (its path, moved into the medal's own space). Parsed once. */
 private val starPath: Path by lazy {
@@ -58,21 +57,33 @@ private val starPath: Path by lazy {
 @Immutable
 data class MedalColors(val top: Color, val bottom: Color, val shadow: Color)
 
+/** Figma's "Habit / <colour> / Medal": Pale (tone 75) at the top to Strong (tone 48) at the bottom, light mode. */
+private val medalLight = mapOf(
+    HabitColor.RED to (0xFFFF9F92 to 0xFFD53428), HabitColor.ORANGE to (0xFFFFA269 to 0xFFB85600),
+    HabitColor.YELLOW to (0xFFF7A900 to 0xFF9A6800), HabitColor.GREEN to (0xFF5ECF75 to 0xFF008437),
+    HabitColor.MINT to (0xFF4DCBC1 to 0xFF008079), HabitColor.TEAL to (0xFF3CC9E0 to 0xFF007E8E),
+    HabitColor.CYAN to (0xFF34C9E8 to 0xFF007D93), HabitColor.BLUE to (0xFF97B8FF to 0xFF226FDC),
+    HabitColor.INDIGO to (0xFFA8B4FF to 0xFF5D6CC1), HabitColor.PURPLE to (0xFFD5A5FF to 0xFF9D3DF0),
+    HabitColor.PINK to (0xFFFF9AC4 to 0xFFD81488), HabitColor.BROWN to (0xFFCFB3A9 to 0xFF846D65),
+    HabitColor.GRAY to (0xFFB4B9BF to 0xFF6D7378),
+)
+
 /**
- * The medal's colours for [habit] in [c]'s mode. The steps are Figma's own (blue): top 28 % of the way to white, bottom
- * 88 % of the colour, shadow 55 % of it at 35 % (on dark, a plain dark shadow: a coloured one turns muddy). A light colour
- * (yellow, mint, the dark mode's brighter shades) is deepened first, step by step, until the white number is readable on
- * the middle of the gradient, so every medal looks like a medal and none washes out.
+ * The medal's colours for [habit] in [c]'s mode. Light: Figma's Medal gradient, and its shadow, black at 20 %. Figma
+ * draws light only, so dark works its steps out from the habit's dark colour: top 18 % of the way to white, bottom 88 %
+ * of the colour, deepened first until the white number reads on the middle (3:1, large text), with a plain dark shadow
+ * (a coloured one turns muddy).
  */
 fun medalColors(c: AppColors, habit: HabitColor): MedalColors {
+    if (!c.dark) {
+        val (pale, strong) = medalLight.getValue(habit)
+        return MedalColors(Color(pale), Color(strong), Color.Black.copy(alpha = 0.2f))
+    }
     var base = c.habit(habit)
-    fun mid(b: Color) = lerp(lerp(b, Color.White, if (c.dark) 0.18f else 0.28f), scale(b, 0.88f), 0.5f)
+    fun mid(b: Color) = lerp(lerp(b, Color.White, 0.18f), scale(b, 0.88f), 0.5f)
     var guard = 0
     while (contrastWithWhite(mid(base)) < 3.0 && guard++ < 20) base = scale(base, 0.93f)
-    val top = lerp(base, Color.White, if (c.dark) 0.18f else 0.28f)
-    val bottom = scale(base, 0.88f)
-    val shadow = if (c.dark) Color.Black.copy(alpha = 0.55f) else scale(base, 0.55f).copy(alpha = 0.35f)
-    return MedalColors(top, bottom, shadow)
+    return MedalColors(lerp(base, Color.White, 0.18f), scale(base, 0.88f), Color.Black.copy(alpha = 0.55f))
 }
 
 private fun scale(color: Color, f: Float) = Color(color.red * f, color.green * f, color.blue * f, color.alpha)
@@ -89,37 +100,42 @@ object MedalShape : androidx.compose.ui.graphics.Shape {
 
 /**
  * A reached milestone, the same everywhere it's shown (the habit page, All milestones, the pop-up, the row's band, the
- * routine): the star at [size], its number in white ([number] null: the medal alone, as in a band). The shadow reaches a
- * little past the box, as Figma's does; nothing clips it.
+ * routine): the star at [size], its [number] in white (null: the medal alone, as in a band's sparkles). The number is
+ * Figma's style for the size: Headline Large Emphasized on the Large (88 and up), Headline Small Emphasized on the
+ * Medium (56 and up), Title Medium below; three digits a step smaller, four or more two, so they stay inside the line.
+ * The shadow (2 down, a 6 blur at 72) reaches a little past the box, as Figma's does; nothing clips it.
  */
 @Composable
-fun MilestoneMedal(number: String?, size: Dp, color: HabitColor, modifier: Modifier = Modifier) {
+fun Medal(number: String?, size: Dp, color: HabitColor, modifier: Modifier = Modifier) {
     val c = appColors
     val colors = remember(c, color) { medalColors(c, color) }
-    // Figma: 24 at 72, 34.7 at 104, 16 at 52; longer numbers a step smaller so they stay inside the inner line.
-    val base = if (size in 48.dp..60.dp) 16f / 52f else 24f / 72f
-    val share = when { (number?.length ?: 0) >= 4 -> base * 0.62f; number?.length == 3 -> base * 0.8f; else -> base }
-    val fontSize = with(LocalDensity.current) { (size * share).toSp() }
+    // Figma's three sizes, each with its own number style and ring (2.2 on the Large, 1.8 on the Medium, 1.2 on the Small).
+    val (style, ref, ring) = when {
+        size >= 88.dp -> Triple(AppType.headlineLargeEmphasized, 104f, 2.2f)
+        size >= 56.dp -> Triple(AppType.headlineSmallEmphasized, 72f, 1.8f)
+        else -> Triple(AppType.titleMedium, 40f, 1.2f)
+    }
+    val shrink = when { (number?.length ?: 0) >= 4 -> 0.62f; number?.length == 3 -> 0.8f; else -> 1f }
     Box(modifier.size(size), contentAlignment = Alignment.Center) {
         Canvas(Modifier.size(size)) {
             val k = this.size.minDimension / 72f
             val shape = Path().apply { addPath(starPath); transform(Matrix().apply { scale(k, k) }) }
-            // The shadow: 2 down, a 6 blur (Figma's dy 2, σ 3), drawn by the platform under the star.
             drawIntoCanvas { canvas ->
                 val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
-                    this.color = android.graphics.Color.TRANSPARENT
+                    this.color = colors.bottom.toArgb()
                     setShadowLayer(6f * k, 0f, 2f * k, colors.shadow.toArgb())
                 }
-                paint.color = colors.bottom.toArgb()
                 canvas.nativeCanvas.drawPath(shape.asAndroidPath(), paint)
             }
             drawPath(shape, Brush.verticalGradient(listOf(colors.top, colors.bottom), startY = 0f, endY = this.size.height))
-            // The inner line: the same star at 82 %, about the centre (Figma 59.04 of 72), white at 55 %.
+            // The inner ring: the same star at 82 % about the centre (Figma 59 of 72), a line of white at 60 %.
+            val line = ring.dp.toPx() * (size.value / ref)
             withTransform({ scale(0.82f, 0.82f, Offset(this.size.width / 2, this.size.height / 2)) }) {
-                drawPath(shape, Color.White.copy(alpha = 0.55f), style = Stroke(width = (1.5f * k / 0.82f).coerceAtLeast(1.dp.toPx() / 0.82f), cap = StrokeCap.Round))
+                drawPath(shape, Color.White.copy(alpha = 0.6f), style = Stroke(width = line / 0.82f, cap = StrokeCap.Round))
             }
         }
-        if (number != null) Text(number, color = Color.White, fontSize = fontSize, fontWeight = FontWeight.Medium, fontFamily = AppType.labelLarge.fontFamily, maxLines = 1)
+        if (number != null) Text(number, color = Color.White, maxLines = 1,
+            style = if (shrink == 1f) style else style.copy(fontSize = style.fontSize * shrink, lineHeight = style.lineHeight * shrink))
     }
 }
 

@@ -1,14 +1,10 @@
 package com.oftenenough.app.ui.onboarding
 
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.AppListItem
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
@@ -16,14 +12,9 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.ListRow
-import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.Note
-import com.oftenenough.app.ui.theme.AppType
-import com.oftenenough.app.ui.theme.HabitIcons
-import com.oftenenough.app.ui.theme.appColors
 
 /**
  * One ready-made habit: [title] is the row ("Drink 8 glasses of water"), [name] the habit it makes ("Drink water"),
@@ -55,17 +46,9 @@ data class HabitIdea(
 
 /** One idea's row: its icon in its colour, what it is, and how often. */
 @Composable
-fun IdeaRow(idea: HabitIdea, index: Int, count: Int, onClick: () -> Unit) {
-    Segment(index, count, Modifier.semantics { testTag = "idea-${idea.name}" }, onClick = onClick) {
-        HabitIcon(idea.symbol, idea.color)
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Text(idea.title, style = AppType.titleMedium, color = appColors.ink)
-            Text(idea.line, style = AppType.bodyMedium, color = appColors.secondary)
-        }
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
-    }
-}
+fun IdeaRow(idea: HabitIdea, index: Int, count: Int, onClick: () -> Unit) =
+    AppListItem(idea.title, index, count, supporting = idea.line, onClick = onClick, tag = "idea-${idea.name}",
+        leading = { HabitIcon(idea.symbol, idea.color) }, trailing = { ListChevron() })
 
 /** Start from an idea (the Habits page): each row opens the habit form, filled in. */
 @Composable

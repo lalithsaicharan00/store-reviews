@@ -1,5 +1,14 @@
 package com.oftenenough.app.ui.today
 
+import androidx.compose.material3.LocalContentColor
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppFilterChip
+import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
@@ -25,27 +34,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.PauseCircle
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.CheckCircle
-import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material.icons.rounded.RadioButtonUnchecked
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
+import com.oftenenough.app.ui.components.rememberWholeSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -67,9 +62,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.oftenenough.app.app.Prefs
-import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitGroup
@@ -77,11 +70,9 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.GroupTitle
-import com.oftenenough.app.ui.newhabit.InkSwitch
 import com.oftenenough.app.ui.newhabit.Note
 import com.oftenenough.app.ui.theme.appColors
 
@@ -105,29 +96,23 @@ fun groupCount(store: HabitStore, groupId: String?, day: Int): Int? {
 @Composable
 fun FilterSheet(store: HabitStore, prefs: Prefs, day: Int, onNewGroup: () -> Unit, onEditGroups: () -> Unit, onDismiss: () -> Unit) {
     val c = appColors
-    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val state = rememberWholeSheetState()
     // Worked out only while the sheet is open.
     val counts = remember(store.dataVersion, day) { store.groups.associate { it.id to groupCount(store, it.id, day) } }
     val current = prefs.todayGroup.takeIf { id -> store.groups.any { it.id == id } }
-    ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.surface, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
+    ModalBottomSheet(onDismiss, sheetState = state) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 40.dp)
             .semantics { testTag = "filter-sheet"; testTagsAsResourceId = true },
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
             if (store.groups.isEmpty()) {
                 // Figma 3.2: what groups are, and New group.
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Icon(Icons.Outlined.Category, null, Modifier.size(32.dp), tint = c.ink)
+                    Icon(Symbols.Category, null, Modifier.size(32.dp), tint = c.ink)
                     Text("Group your habits", style = AppType.titleLarge, color = c.ink)
                     Text("Put habits together, then filter Today and Progress by group.", style = AppType.bodyMedium, color = c.secondary,
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-                    Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).clip(RoundedCornerShape(28.dp)).background(c.ink).clickable(onClick = onNewGroup)
-                        .semantics { testTag = "group-new" }, contentAlignment = Alignment.Center) {
-                        Text("New group", style = AppType.titleMedium, color = c.onInk)
-                    }
-                    Box(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(24.dp)).clickable(onClick = onDismiss)
-                        .semantics { testTag = "groups-not-now" }, contentAlignment = Alignment.Center) {
-                        Text("Not now", style = AppType.titleMedium, color = c.ink)
-                    }
+                    AppButton("New group", onNewGroup, Modifier.fillMaxWidth(), size = ButtonSize.Medium, tag = "group-new")
+                    AppButton("Not now", onDismiss, Modifier.fillMaxWidth(), style = ButtonStyle.Text, size = ButtonSize.Medium, tag = "groups-not-now")
                 }
             } else {
                 Text("Show on Today", style = AppType.titleLarge, color = c.ink)
@@ -139,8 +124,8 @@ fun FilterSheet(store: HabitStore, prefs: Prefs, day: Int, onNewGroup: () -> Uni
                     }
                 }
                 Column {
-                    SheetRow(Icons.Outlined.Edit, "Edit groups", "groups-edit", onEditGroups)
-                    SheetRow(Icons.Rounded.Add, "New group", "group-new", onNewGroup)
+                    SheetRow(Symbols.Edit, "Edit groups", "groups-edit", onEditGroups)
+                    SheetRow(Symbols.Add, "New group", "group-new", onNewGroup)
                 }
                 Text("Groups change only what Today and Progress show.", style = AppType.bodySmall, color = c.secondary)
             }
@@ -153,20 +138,9 @@ fun FilterSheet(store: HabitStore, prefs: Prefs, day: Int, onNewGroup: () -> Uni
     }
 }
 
-/** A filter chip (Figma 3): the chosen one tonal with a ✓, the others outlined; corners 8. */
+/** A filter chip (Figma 3): Material's (1.15). */
 @Composable
-private fun Chip(title: String, selected: Boolean, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    Row(Modifier.clip(RoundedCornerShape(8.dp)).background(if (selected) c.behind else Color.Transparent)
-        .let { if (selected) it else it.border(1.dp, c.line, RoundedCornerShape(8.dp)) }
-        .clickable(onClick = onClick)
-        .semantics(mergeDescendants = true) { testTag = tag; this.selected = selected }
-        .heightIn(min = 32.dp).padding(start = if (selected) 8.dp else 12.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        if (selected) { Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.ink); Spacer(Modifier.width(8.dp)) }
-        Text(title, style = AppType.labelLarge, color = c.ink, maxLines = 1)
-    }
-}
+private fun Chip(title: String, selected: Boolean, tag: String, onClick: () -> Unit) = AppFilterChip(title, selected, onClick, tag = tag)
 
 /** A row in a sheet: a grey 24 dp icon, 16 dp, the words (Body Large). */
 @Composable
@@ -186,7 +160,7 @@ private fun SwitchRow(text: String, on: Boolean, tag: String, onChange: (Boolean
     Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable { onChange(!on) }.semantics { testTag = tag },
         verticalAlignment = Alignment.CenterVertically) {
         Text(text, Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink)
-        InkSwitch(on)
+        AppSwitch(on)
     }
 }
 
@@ -202,20 +176,11 @@ fun GroupsScreen(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> Uni
             val n = store.groups.size + 1
             store.groups.forEachIndexed { i, g ->
                 val members = g.habits.count { id -> store.habit(id)?.archived == false }
-                Segment(i, n, Modifier.semantics { testTag = "groups-row-${g.name}" }, onClick = { onEdit(g.id) }) {
-                    Box(Modifier.size(12.dp).clip(CircleShape).background(c.habit(g.color)))
-                    Spacer(Modifier.width(20.dp))
-                    Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                        Text(g.name, style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                        Text(when (members) { 0 -> "No habits yet"; 1 -> "1 habit"; else -> "$members habits" }, style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-                    }
-                    Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-                }
+                AppListItem(g.name, i, n, supporting = when (members) { 0 -> "No habits yet"; 1 -> "1 habit"; else -> "$members habits" },
+                    leading = { Box(Modifier.size(12.dp).clip(CircleShape).background(c.habit(g.color))) }, trailing = { ListChevron() },
+                    onClick = { onEdit(g.id) }, tag = "groups-row-${g.name}")
             }
-            Segment(store.groups.size, n, Modifier.semantics { testTag = "groups-new" }, onClick = { onEdit(null) }) {
-                Icon(Icons.Rounded.Add, null, tint = c.ink); Spacer(Modifier.width(24.dp))
-                Text("New group", style = MaterialTheme.typography.bodyLarge, color = c.ink)
-            }
+            AppListItem("New group", store.groups.size, n, leading = { Icon(Symbols.Add, null) }, onClick = { onEdit(null) }, tag = "groups-new")
         }
         Note(if (store.groupsManual) "Your order, the same on Today, Progress and the habit form." else "A to Z, the same on Today, Progress and the habit form.")
     }
@@ -248,10 +213,8 @@ fun GroupFormScreen(store: HabitStore, groupId: String?, onPause: (List<Habit>) 
         onClose()
     }
     FormPage(if (original == null) "New group" else "Edit group", chip = null, onBack = onClose, close = changed, actions = {
-        Button(::save, Modifier.padding(end = 8.dp).semantics { testTag = "group-save" }, enabled = trimmed.isNotEmpty() && !taken && changed,
-            colors = ButtonDefaults.buttonColors(containerColor = c.ink, contentColor = c.onInk, disabledContainerColor = c.tonal, disabledContentColor = c.secondary)) {
-            Text(if (original == null) "Add" else "Save")
-        }
+        AppButton(if (original == null) "Add" else "Save", ::save, Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && !taken && changed,
+            tag = "group-save")
     }) {
         val focus = remember { FocusRequester() }
         LaunchedEffect(Unit) { if (original == null) runCatching { focus.requestFocus() } }
@@ -284,16 +247,13 @@ fun GroupFormScreen(store: HabitStore, groupId: String?, onPause: (List<Habit>) 
                 candidates.forEachIndexed { i, h ->
                     val isIn = h.id in chosen
                     val elsewhere = store.groupOf(h.id)?.takeIf { it.id != original?.id }
-                    Segment(i, candidates.size, Modifier.semantics(mergeDescendants = true) { testTag = "group-habit-${h.name}"; selected = isIn },
-                        onClick = { chosen = if (isIn) chosen - h.id else chosen + h.id }) {
-                        HabitIcon(h.symbol, h.color)
-                        Spacer(Modifier.width(16.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text(h.name, style = MaterialTheme.typography.bodyLarge, color = c.ink, maxLines = 1)
-                            if (elsewhere != null) Text(if (isIn) "Moves from ${elsewhere.name}" else "In ${elsewhere.name}", style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-                        }
-                        Icon(if (isIn) Icons.Rounded.CheckCircle else Icons.Rounded.RadioButtonUnchecked, null, tint = if (isIn) c.ink else c.secondary)
-                    }
+                    AppListItem(
+                        h.name, i, candidates.size, Modifier.semantics(mergeDescendants = true) { selected = isIn },
+                        supporting = elsewhere?.let { if (isIn) "Moves from ${it.name}" else "In ${it.name}" }, headlineLines = 1,
+                        leading = { HabitIcon(h.symbol, h.color) },
+                        trailing = { Icon(if (isIn) Symbols.Filled.CheckCircle else Symbols.RadioButtonUnchecked, null, tint = if (isIn) c.ink else LocalContentColor.current) },
+                        onClick = { chosen = if (isIn) chosen - h.id else chosen + h.id }, tag = "group-habit-${h.name}",
+                    )
                 }
             }
             Note("A habit is in one group at a time. Habits with no group still show under All habits.")
@@ -303,14 +263,10 @@ fun GroupFormScreen(store: HabitStore, groupId: String?, onPause: (List<Habit>) 
             Spacer(Modifier.height(16.dp))
             SegmentedList {
                 val n = if (members.isNotEmpty()) 2 else 1
-                if (members.isNotEmpty()) Segment(0, n, Modifier.semantics { testTag = "group-pause" }, onClick = { onPause(members) }) {
-                    Icon(Icons.Outlined.PauseCircle, null, tint = c.ink); Spacer(Modifier.width(24.dp))
-                    Text("Pause these habits…", style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                }
-                Segment(n - 1, n, Modifier.semantics { testTag = "group-delete" }, onClick = { deleting = true }) {
-                    Icon(Icons.Outlined.Delete, null, tint = c.error); Spacer(Modifier.width(24.dp))
-                    Text("Delete group", style = MaterialTheme.typography.bodyLarge, color = c.error)
-                }
+                if (members.isNotEmpty()) AppListItem("Pause these habits…", 0, n, leading = { Icon(Symbols.PauseCircle, null) },
+                    onClick = { onPause(members) }, tag = "group-pause")
+                AppListItem("Delete group", n - 1, n, leading = { Icon(Symbols.Delete, null, tint = c.error) }, headlineColor = c.error,
+                    onClick = { deleting = true }, tag = "group-delete")
             }
         }
         Spacer(Modifier.height(24.dp))
@@ -319,8 +275,8 @@ fun GroupFormScreen(store: HabitStore, groupId: String?, onPause: (List<Habit>) 
         val n = original.habits.count { id -> store.habit(id) != null }
         AlertDialog({ deleting = false }, title = { Text("Delete ${original.name}?") },
             text = { Text(when (n) { 0 -> "No habits are in it."; 1 -> "Its habit stays, with no group. Its history isn't touched."; else -> "Its $n habits stay, with no group. Their history isn't touched." }) },
-            confirmButton = { TextButton({ deleting = false; store.deleteGroup(original.id); onClose() }, Modifier.semantics { testTag = "group-delete-confirm" }) { Text("Delete group", color = c.error) } },
-            dismissButton = { TextButton({ deleting = false }) { Text("Cancel", color = c.ink) } })
+            confirmButton = { AppButton("Delete group", { deleting = false; store.deleteGroup(original.id); onClose() }, Modifier.semantics { testTag = "group-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
+            dismissButton = { AppButton("Cancel", { deleting = false }, style = ButtonStyle.Text) })
     }
 }
 

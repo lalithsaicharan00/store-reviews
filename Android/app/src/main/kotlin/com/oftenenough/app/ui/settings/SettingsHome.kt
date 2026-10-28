@@ -1,5 +1,11 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.theme.Symbols
+import androidx.compose.foundation.layout.WindowInsets
+import com.oftenenough.app.ui.components.NavigationIcon
+import com.oftenenough.app.ui.components.AppTopBar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -7,27 +13,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.HelpOutline
-import androidx.compose.material.icons.outlined.Cloud
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Shield
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Contrast
-import androidx.compose.material.icons.rounded.ViewWeek
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -67,32 +59,29 @@ fun SettingsHome(onOpen: (String) -> Unit, onBack: () -> Unit) {
     val c = appColors
     BackHandler(onBack = onBack)
     Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().semantics { testTag = "settings-page" }) {
-        Row(Modifier.heightIn(min = 64.dp).padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onBack, Modifier.semantics { testTag = "page-back" }) {
-                Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink)
-            }
-            Text("Settings", style = AppType.titleLargeEmphasized, color = c.ink)
-        }
+        AppTopBar("Settings", navigationIcon = {
+            NavigationIcon(Symbols.ArrowBack, "Back", onBack, Modifier.semantics { testTag = "page-back" })
+        }, windowInsets = WindowInsets(0))
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).navigationBarsPadding()) {
             Group("Your day")
             SegmentedList {
-                Row("Times of Day", "Morning, Afternoon, Evening and your own", Icons.Rounded.ViewWeek, 0, 2, SettingsPage.TIMES_OF_DAY, onOpen)
-                Row("Day and Week", "When a new day starts, and which day a week starts on", Icons.Rounded.CalendarMonth, 1, 2, SettingsPage.DAY_AND_WEEK, onOpen)
+                Row("Times of Day", "Morning, Afternoon, Evening and your own", Symbols.ViewWeek, 0, 2, SettingsPage.TIMES_OF_DAY, onOpen)
+                Row("Day and Week", "When a new day starts, and which day a week starts on", Symbols.CalendarMonth, 1, 2, SettingsPage.DAY_AND_WEEK, onOpen)
             }
             Group("The app")
             SegmentedList {
-                Row("Reminders", "Every habit that reminds you, and when", Icons.Outlined.Notifications, 0, 2, SettingsPage.REMINDERS, onOpen)
-                Row("Appearance", "Theme, streaks and what a done habit does", Icons.Rounded.Contrast, 1, 2, SettingsPage.APPEARANCE, onOpen)
+                Row("Reminders", "Every habit that reminds you, and when", Symbols.Notifications, 0, 2, SettingsPage.REMINDERS, onOpen)
+                Row("Appearance", "Theme, streaks and what a done habit does", Symbols.Contrast, 1, 2, SettingsPage.APPEARANCE, onOpen)
             }
             Group("Your habits")
             SegmentedList {
-                Row("Backup & Sync", "Google Drive, backup files and restoring", Icons.Outlined.Cloud, 0, 2, SettingsPage.BACKUP, onOpen)
-                Row("Privacy & Security", "App lock, and hiding names outside the app", Icons.Outlined.Shield, 1, 2, SettingsPage.PRIVACY, onOpen)
+                Row("Backup & Sync", "Google Drive, backup files and restoring", Symbols.Cloud, 0, 2, SettingsPage.BACKUP, onOpen)
+                Row("Privacy & Security", "App lock, and hiding names outside the app", Symbols.Shield, 1, 2, SettingsPage.PRIVACY, onOpen)
             }
             Group("About")
             SegmentedList {
-                Row("Help", "Answers to the things people ask", Icons.AutoMirrored.Rounded.HelpOutline, 0, 2, SettingsPage.HELP, onOpen)
-                Row("About", "Version, licences and what the app promises", Icons.Outlined.Info, 1, 2, SettingsPage.ABOUT, onOpen)
+                Row("Help", "Answers to the things people ask", Symbols.Help, 0, 2, SettingsPage.HELP, onOpen)
+                Row("About", "Version, licences and what the app promises", Symbols.Info, 1, 2, SettingsPage.ABOUT, onOpen)
             }
             Spacer(Modifier.height(24.dp))
         }

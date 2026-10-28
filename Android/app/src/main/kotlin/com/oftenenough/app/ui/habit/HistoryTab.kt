@@ -1,8 +1,19 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.DayCell
+import com.oftenenough.app.ui.components.DayCellSize
+import com.oftenenough.app.ui.components.ListNote
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppAssistChip
+import com.oftenenough.app.ui.components.AppFilterChip
+import com.oftenenough.app.ui.components.SearchBarButton
+import com.oftenenough.app.ui.components.SearchHeader
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,37 +25,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.StickyNote2
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.ExpandLess
-import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.History
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,14 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
@@ -71,9 +57,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
@@ -152,7 +136,7 @@ internal fun FoldHeader(title: String, summary: String, open: Boolean, count: In
             Text(title, style = AppType.titleMedium, color = c.ink)
             if (summary.isNotEmpty()) Text(summary, style = AppType.bodyMedium, color = c.secondary)
         }
-        Icon(if (open) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, null, tint = c.ink)
+        Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = c.ink)
     }
 }
 
@@ -182,7 +166,7 @@ internal fun LazyListScope.historyItems(
         item(key = "history-empty") { NothingYet() }
         return
     }
-    item(key = "history-search") { SearchPill(onSearch) }
+    item(key = "history-search") { SearchBarButton("Search notes", onSearch, Modifier.pageItem().semantics { testTag = "history-search" }) }
     item(key = "history-chips") { HistoryChips(filter, onFilter, onGoToDate) }
     val shown = historyShown(months, filter)
     if (shown.isEmpty()) {
@@ -202,94 +186,27 @@ internal fun LazyListScope.historyItems(
     }
 }
 
-/** Search notes, as a pill: a tap opens the search (Figma 2.5). */
-@Composable
-private fun SearchPill(onSearch: () -> Unit) {
-    val c = appColors
-    Row(
-        Modifier.pageItem().fillMaxWidth().heightIn(min = 56.dp).clip(RoundedCornerShape(28.dp)).background(c.tonal)
-            .clickable(onClickLabel = "Search notes", onClick = onSearch).padding(horizontal = 20.dp)
-            .semantics(mergeDescendants = true) { role = Role.Button; testTag = "history-search" },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(Icons.Rounded.Search, null, tint = c.ink)
-        Spacer(Modifier.width(16.dp))
-        Text("Search notes", style = AppType.bodyLarge, color = c.secondary)
-    }
-}
-
 /** All · With notes · Go to date (Figma 2.1, 2.4): the first two choose what's listed, the last scrolls to a day. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun HistoryChips(filter: HistoryFilter, onFilter: (HistoryFilter) -> Unit, onGoToDate: () -> Unit) {
     FlowRow(Modifier.pageItem().fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        PageChip("All", filter == HistoryFilter.ALL, "history-all") { onFilter(HistoryFilter.ALL) }
-        PageChip("With notes", filter == HistoryFilter.NOTES, "history-with-notes") { onFilter(HistoryFilter.NOTES) }
-        PageChip("Go to date", null, "history-go-to-date", onClick = onGoToDate)
+        AppFilterChip("All", filter == HistoryFilter.ALL, { onFilter(HistoryFilter.ALL) }, tag = "history-all")
+        AppFilterChip("With notes", filter == HistoryFilter.NOTES, { onFilter(HistoryFilter.NOTES) }, tag = "history-with-notes")
+        AppAssistChip("Go to date", onGoToDate, tag = "history-go-to-date")
     }
 }
 
-/** Material's filter chip, as Figma draws it: selected is tonal with ✓; [selected] null is an action (Go to date). */
+/** One day (List item, 2.4, Show note): its square, the date (with Today or Yesterday), what was recorded, its note, ›. */
 @Composable
-private fun PageChip(text: String, selected: Boolean?, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    val on = selected == true
-    Row(
-        Modifier.heightIn(min = 32.dp).clip(RoundedCornerShape(8.dp))
-            .let { if (on) it.background(c.tonal) else it.border(1.dp, c.line, RoundedCornerShape(8.dp)) }
-            .clickable(onClick = onClick).padding(horizontal = if (on) 8.dp else 16.dp, vertical = 6.dp)
-            .semantics(mergeDescendants = true) {
-                testTag = tag
-                if (selected != null) this.selected = on else role = Role.Button
-            },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        if (on) {
-            Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.ink)
-            Spacer(Modifier.width(8.dp))
-        } else if (selected == null) {
-            Icon(Icons.Outlined.CalendarToday, null, Modifier.size(18.dp), tint = c.ink)
-            Spacer(Modifier.width(8.dp))
-        }
-        Text(text, style = AppType.labelLarge, color = c.ink)
-    }
-}
-
-/** One day: its square, the date (with Today or Yesterday), what was recorded, its note under it, and a chevron. */
-@Composable
-private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count: Int, title: String = day.title, query: String? = null, onOpen: () -> Unit) {
-    val c = appColors
-    Row(
-        Modifier.pagePiece(index, count).fillMaxWidth().clip(segmentShape(index, count)).background(c.surface)
-            .clickable(onClickLabel = "Open the day", onClick = onOpen)
-            .heightIn(min = 64.dp).padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)
-            .semantics(mergeDescendants = true) { testTag = "habit-day-" + dayKey(day.day) },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        HeatSquare(day.heat, color, HeatSize.smallest, isToday = day.relative == "Today")
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(title, style = AppType.bodyLarge, color = c.ink)
-                if (day.relative != null) {
-                    Spacer(Modifier.width(8.dp))
-                    Text(day.relative, style = AppType.bodyMedium, color = c.secondary)
-                }
-            }
-            Text(day.detail, style = AppType.bodyMedium, color = c.secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            day.note?.let { note ->
-                Row(Modifier.padding(top = 4.dp).semantics { contentDescription = "Note: $note" }) {
-                    Icon(Icons.AutoMirrored.Outlined.StickyNote2, null, Modifier.padding(top = 2.dp).size(16.dp), tint = c.secondary)
-                    Spacer(Modifier.width(6.dp))
-                    Text(if (query != null) highlighted(note, query) else AnnotatedString(note), style = AppType.bodyMedium, color = c.ink,
-                        maxLines = 2, overflow = TextOverflow.Ellipsis)
-                }
-            }
-        }
-        Spacer(Modifier.width(8.dp))
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-    }
-}
+private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count: Int, title: String = day.title, query: String? = null, onOpen: () -> Unit) =
+    AppListItem(
+        title, index, count, Modifier.pagePiece(index, count).semantics(mergeDescendants = true) {}, day.detail,
+        leading = { DayCell(day.heat, color, size = DayCellSize.year, isToday = day.relative == "Today") },
+        beside = day.relative?.let { { Text(it, style = AppType.bodyMedium, color = appColors.secondary) } },
+        below = day.note?.let { { ListNote(if (query != null) highlighted(it, query) else AnnotatedString(it)) } },
+        trailing = { ListChevron() }, onClick = onOpen, tag = "habit-day-" + dayKey(day.day),
+    )
 
 /** [text] with every match of [query] in Medium (Figma 2.5: "glasses", "glass"). */
 private fun highlighted(text: String, query: String): AnnotatedString = buildAnnotatedString {
@@ -314,7 +231,7 @@ private fun NothingYet() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(Modifier.size(112.dp).clip(CookieShape()).background(c.tonal), contentAlignment = Alignment.Center) {
-            Icon(Icons.Rounded.History, null, Modifier.size(40.dp), tint = c.ink)
+            Icon(Symbols.History, null, Modifier.size(40.dp), tint = c.ink)
         }
         Spacer(Modifier.height(24.dp))
         Text("Nothing here yet", Modifier.semantics { heading() }, style = AppType.headlineSmall, color = c.ink, textAlign = TextAlign.Center)
@@ -341,34 +258,13 @@ internal fun HistorySearchPage(months: List<HistoryMonth>, color: HabitColor, to
         delay(300)
         query = text
     }
-    val focus = remember { FocusRequester() }
-    LaunchedEffect(Unit) { focus.requestFocus() }
     val found = remember(months, query) {
         val q = query.trim()
         if (q.isEmpty()) emptyList() else months.flatMap { m -> m.days.filter { it.note?.contains(q, ignoreCase = true) == true } }
     }
     Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "history-search-page" }) {
-        Row(
-            Modifier.fillMaxWidth().background(c.tonal).statusBarsPadding().heightIn(min = 64.dp).padding(start = 4.dp, end = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            IconButton(onBack, Modifier.semantics { testTag = "search-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
-            Box(Modifier.weight(1f).padding(horizontal = 4.dp), contentAlignment = Alignment.CenterStart) {
-                if (text.isEmpty()) Text("Search notes", style = AppType.bodyLarge, color = c.secondary)
-                BasicTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    modifier = Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "notes-search" },
-                    singleLine = true,
-                    textStyle = AppType.bodyLarge.copy(color = c.ink),
-                    cursorBrush = SolidColor(c.ink),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                )
-            }
-            if (text.isNotEmpty()) IconButton({ text = ""; query = "" }, Modifier.semantics { testTag = "search-clear" }) {
-                Icon(Icons.Rounded.Close, "Clear search", tint = c.ink)
-            }
-        }
+        SearchHeader(text, { text = it; if (it.isEmpty()) query = "" }, onBack, "Search notes",
+            fieldTag = "notes-search", backTag = "search-back", clearTag = "search-clear", clearLabel = "Clear search")
         val q = query.trim()
         when {
             q.isEmpty() -> {}
@@ -408,10 +304,8 @@ internal fun AddToWhichDay(name: String, first: Int, today: Int, onDismiss: () -
     })
     val picked = state.selectedDateMillis?.let(::utcMsToDay)
     DatePickerDialog(onDismiss, confirmButton = {
-        TextButton({ picked?.let(onOpen); onDismiss() }, Modifier.semantics { testTag = "add-day-open" }, enabled = picked != null) {
-            Text(picked?.let { "Open " + pageDayDate(it) } ?: "Open", color = c.ink)
-        }
-    }, dismissButton = { TextButton(onDismiss, Modifier.semantics { testTag = "add-day-cancel" }) { Text("Cancel", color = c.ink) } }) {
+        AppButton(picked?.let { "Open " + pageDayDate(it) } ?: "Open", { picked?.let(onOpen); onDismiss() }, Modifier.semantics { testTag = "add-day-open" }, enabled = picked != null, style = ButtonStyle.Text)
+    }, dismissButton = { AppButton("Cancel", onDismiss, Modifier.semantics { testTag = "add-day-cancel" }, style = ButtonStyle.Text) }) {
         DatePicker(state, showModeToggle = false,
             title = {
                 Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp).semantics(mergeDescendants = true) { testTag = "add-day" }) {

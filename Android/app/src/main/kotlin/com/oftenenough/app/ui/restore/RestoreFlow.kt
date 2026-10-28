@@ -1,5 +1,9 @@
 package com.oftenenough.app.ui.restore
 
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.ListAvatar
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -14,7 +18,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,12 +26,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.WifiOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,7 +57,6 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.backup.FileProblem
 import com.oftenenough.app.ui.backup.WaitScreen
 import com.oftenenough.app.ui.backup.driveEmail
-import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.backup.StepHeading
 import com.oftenenough.app.ui.backup.countText
@@ -224,13 +221,13 @@ fun RestoreFlow(
 
         // 39:4741 · No internet, before Google Drive is even asked.
         NO_INTERNET_DRIVE -> Centred(
-            Icons.Outlined.WifiOff, "No internet", "Connect to the internet to restore from Google Drive.",
+            Symbols.WifiOff, "No internet", "Connect to the internet to restore from Google Drive.",
             "no-internet-drive", onTryAgain = { tryAgain() }, onCancel = { step = WHERE },
         )
 
         // 43:2999 · The same, while this phone's Plus is checked with Google Play.
         NO_INTERNET_PLUS -> Centred(
-            Icons.Outlined.WifiOff, "No internet", "Connect to the internet to check your Plus.",
+            Symbols.WifiOff, "No internet", "Connect to the internet to check your Plus.",
             "no-internet-plus", onTryAgain = { tryAgain() }, onCancel = { step = WHERE },
         )
 
@@ -284,13 +281,8 @@ fun RestoreFlow(
         else -> FlowScreen(onBack = onBack, tag = "restore-where", top = true) {
             StepHeading("Restore from a backup.", "Choose where your backup is.")
             SegmentedList {
-                Segment(0, 2, Modifier.semantics { testTag = "restore-drive" }, onClick = { chooseDrive() }) {
-                    Box(Modifier.size(40.dp).clip(CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
-                        Image(painterResource(R.drawable.ic_drive_logo), null, Modifier.size(22.dp))
-                    }
-                    Spacer(Modifier.width(16.dp))
-                    ChoiceWords("Google Drive", "Backed up automatically")
-                }
+                AppListItem("Google Drive", 0, 2, supporting = "Backed up automatically", onClick = { chooseDrive() }, tag = "restore-drive",
+                    leading = { ListAvatar { Image(painterResource(R.drawable.ic_drive_logo), null, Modifier.size(24.dp)) } }, trailing = { ListChevron() })
                 FileChoice(1, 2) { pickFile() }
             }
         }
@@ -310,24 +302,9 @@ private const val NO_DRIVE = "no-drive"
 
 /** "A backup file · A file you saved" — the same row wherever a file is a way back (39:1590, 39:6065). */
 @Composable
-private fun FileChoice(index: Int, count: Int, onClick: () -> Unit) {
-    Segment(index, count, Modifier.semantics { testTag = "restore-file" }, onClick = onClick) {
-        Box(Modifier.size(40.dp).clip(CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
-            Icon(Icons.Outlined.Description, null, Modifier.size(22.dp), tint = appColors.ink)
-        }
-        Spacer(Modifier.width(16.dp))
-        ChoiceWords("A backup file", "A file you saved")
-    }
-}
-
-@Composable
-private fun RowScope.ChoiceWords(title: String, line: String) {
-    Column(Modifier.weight(1f)) {
-        Text(title, style = AppType.titleMedium, color = appColors.ink)
-        Text(line, style = AppType.bodyMedium, color = appColors.secondary)
-    }
-    Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
-}
+private fun FileChoice(index: Int, count: Int, onClick: () -> Unit) =
+    AppListItem("A backup file", index, count, supporting = "A file you saved", onClick = onClick, tag = "restore-file",
+        leading = { ListAvatar(Symbols.Description) }, trailing = { ListChevron() })
 
 /**
  * A whole-screen message: its icon in a 64 tonal circle, the words in the middle, its two buttons at the bottom

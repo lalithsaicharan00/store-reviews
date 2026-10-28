@@ -1,16 +1,29 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.components.AppMenuItem
+import androidx.compose.ui.graphics.Color
+import com.oftenenough.app.ui.components.SegmentedListGap
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.ListAvatar
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.MenuDivider
+import com.oftenenough.app.ui.components.SearchHeader
+import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,61 +31,25 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.CheckBox
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.CreateNewFolder
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Lightbulb
-import androidx.compose.material.icons.outlined.PauseCircle
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.SwapVert
-import androidx.compose.material.icons.outlined.ViewAgenda
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Checklist
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Inventory2
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.BarChart
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -83,12 +60,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
@@ -100,15 +73,12 @@ import androidx.compose.ui.window.Popup
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
-import com.oftenenough.app.data.HabitCopy
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitPause
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.listLine
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.InkButton
-import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.newhabit.NewGroupDialog
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
@@ -227,47 +197,43 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     Box(Modifier.fillMaxSize().background(c.screen)) {
         Column(Modifier.fillMaxSize()) {
             when {
-                searching -> SearchBar(query, { query = it }, onBack = { searching = false; query = "" })
-                selecting -> TopAppBar(
-                    title = { Text(if (chosen.isEmpty()) "Select habits" else "${chosen.size} selected", maxLines = 1) },
-                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "habits-end-selection" }) { Icon(Icons.Rounded.Close, "Stop selecting") } },
+                searching -> SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search habits",
+                    fieldTag = "habits-search-field", backTag = "habits-search-back", clearTag = "habits-search-clear")
+                selecting -> AppTopBar(
+                    if (chosen.isEmpty()) "Select habits" else "${chosen.size} selected",
+                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "habits-end-selection" }) { Icon(Symbols.Close, "Stop selecting") } },
                     actions = {
                         val allIds = active.map { it.id }.toSet()
                         val everything = chosen.containsAll(allIds) && allIds.isNotEmpty()
-                        TextButton({ chosen = if (everything) emptySet() else allIds }, Modifier.padding(end = 4.dp).semantics { testTag = "habits-select-all" }) {
-                            Text(if (everything) "Deselect all" else "Select all", style = AppType.labelLarge, color = c.ink)
-                        }
+                        AppButton(if (everything) "Deselect all" else "Select all", { chosen = if (everything) emptySet() else allIds }, Modifier.padding(end = 4.dp).semantics { testTag = "habits-select-all" }, style = ButtonStyle.Text)
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = c.tonal, titleContentColor = c.ink, navigationIconContentColor = c.ink),
+                    containerColor = c.tonal,
                 )
-                else -> TopAppBar(
-                    title = { Text("Habits", maxLines = 1) },
+                else -> AppTopBar(
+                    "Habits",
                     navigationIcon = {
-                        nav.openMenu?.let { open -> IconButton(open, Modifier.semantics { testTag = "habits-menu" }) { Icon(Icons.Rounded.Menu, "Menu") } }
+                        nav.openMenu?.let { open -> IconButton(open, Modifier.semantics { testTag = "habits-menu" }) { Icon(Symbols.Menu, "Menu") } }
                     },
                     actions = {
-                        IconButton({ searching = true }, Modifier.semantics { testTag = "habits-search" }) { Icon(Icons.Rounded.Search, "Search habits") }
-                        IconButton({ nav.newHabit() }, Modifier.semantics { testTag = "habits-add" }) { Icon(Icons.Rounded.Add, "New habit") }
+                        IconButton({ searching = true }, Modifier.semantics { testTag = "habits-search" }) { Icon(Symbols.Search, "Search habits") }
+                        IconButton({ nav.newHabit() }, Modifier.semantics { testTag = "habits-add" }) { Icon(Symbols.Add, "New habit") }
                         Box {
-                            IconButton({ topMenu = true }, Modifier.semantics { testTag = "habits-more" }) { Icon(Icons.Rounded.MoreVert, "More") }
-                            DropdownMenu(topMenu, { topMenu = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp),
-                                modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                                MenuItem("Select", Icons.Outlined.CheckBox, "habits-select") { topMenu = false; seeCoach(); selecting = true; chosen = emptySet() }
-                                if (store.groups.isNotEmpty()) MenuItem("Show by…", Icons.Outlined.ViewAgenda, "habits-show-by") { topMenu = false; showByDialog = true }
-                                MenuItem("Arrange…", Icons.Outlined.SwapVert, "habits-arrange") { topMenu = false; nav.arrange() }
-                                if (store.groups.isNotEmpty()) MenuItem("Edit groups", Icons.Outlined.Folder, "habits-edit-groups") { topMenu = false; nav.editGroups() }
-                                else MenuItem("New group", Icons.Outlined.CreateNewFolder, "habits-new-group") { topMenu = false; newGroup = true }
+                            IconButton({ topMenu = true }, Modifier.semantics { testTag = "habits-more" }) { Icon(Symbols.MoreVert, "More") }
+                            AppMenu(topMenu, { topMenu = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+                                AppMenuItem("Select", { topMenu = false; seeCoach(); selecting = true; chosen = emptySet() }, icon = Symbols.CheckBox, tag = "habits-select")
+                                if (store.groups.isNotEmpty()) AppMenuItem("Show by…", { topMenu = false; showByDialog = true }, icon = Symbols.ViewAgenda, tag = "habits-show-by")
+                                AppMenuItem("Arrange…", { topMenu = false; nav.arrange() }, icon = Symbols.SwapVert, tag = "habits-arrange")
+                                if (store.groups.isNotEmpty()) AppMenuItem("Edit groups", { topMenu = false; nav.editGroups() }, icon = Symbols.Folder, tag = "habits-edit-groups")
+                                else AppMenuItem("New group", { topMenu = false; newGroup = true }, icon = Symbols.CreateNewFolder, tag = "habits-new-group")
                                 // Figma 5, 5.3 (19 Oct 2026): Archived habits from the menu too; the list's last row stays.
-                                MenuItem("Archived habits", Icons.Outlined.Archive, "habits-menu-archived") { topMenu = false; nav.archived() }
+                                AppMenuItem("Archived habits", { topMenu = false; nav.archived() }, icon = Symbols.Archive, tag = "habits-menu-archived")
                                 // Until Habits and Tasks are one page, this is the way to the other half, and to Progress.
-                                MenuItem("Tasks", Icons.AutoMirrored.Outlined.List, "habits-menu-tasks") { topMenu = false; nav.tasks() }
-                                MenuItem("Progress", Icons.Outlined.BarChart, "habits-menu-progress") { topMenu = false; nav.progress() }
+                                AppMenuItem("Tasks", { topMenu = false; nav.tasks() }, icon = Symbols.List, tag = "habits-menu-tasks")
+                                AppMenuItem("Progress", { topMenu = false; nav.progress() }, icon = Symbols.BarChart, tag = "habits-menu-progress")
                             }
                         }
                     },
                     scrollBehavior = scroll,
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, scrolledContainerColor = c.tonal, titleContentColor = c.ink,
-                        navigationIconContentColor = c.ink, actionIconContentColor = c.ink),
                 )
             }
             val list = rememberLazyListState()
@@ -304,7 +270,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                 onGroup = { grouping = marked },
                 onDelete = { deleting = marked })
         }
-        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
+        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
     }
 
     if (pausing.isNotEmpty()) {
@@ -324,8 +290,8 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
             modifier = Modifier.semantics { testTagsAsResourceId = true },
             title = { Text(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} habits?") },
             text = { Text(if (one) "Its history and notes are deleted too. To keep them, archive it instead." else "Their history and notes are deleted too. To keep them, archive them instead.") },
-            confirmButton = { TextButton({ deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
-            dismissButton = { TextButton({ deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }) { Text("Cancel", color = c.ink) } },
+            confirmButton = { AppButton("Delete", { deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
+            dismissButton = { AppButton("Cancel", { deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }, style = ButtonStyle.Text) },
             containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
     }
     if (grouping.isNotEmpty()) GroupDialog(grouping, store, { grouping = emptyList() }) { groupId ->
@@ -378,32 +344,18 @@ fun HabitsRow(
     val c = appColors
     var open by remember { mutableStateOf(false) }
     Box {
-        Row(
-            Modifier.padding(bottom = 2.dp).fillMaxWidth().clip(segmentShape(index, count)).background(if (marked) c.tonal else c.surface)
-                .combinedClickable(onClick = onClick, onLongClick = onLongClick, role = if (selecting) Role.Checkbox else Role.Button)
-                .semantics(mergeDescendants = true) {
-                    testTag = "habits-row-" + habit.name
-                    if (selecting) stateDescription = if (marked) "Selected" else "Not selected"
+        AppListItem(
+            habit.name, index, count,
+            Modifier.padding(bottom = SegmentedListGap).semantics(mergeDescendants = true) { if (selecting) stateDescription = if (marked) "Selected" else "Not selected" },
+            line, onClick = onClick, onLongClick = onLongClick, containerColor = if (marked) c.tonal else Color.Unspecified, tag = "habits-row-" + habit.name,
+            leading = { if (marked) ListAvatar(Symbols.Check, done = true) else HabitIcon(habit.symbol, habit.color) },
+            trailing = menu?.let { m -> {
+                Box {
+                    StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })
+                    AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { m(habit) { open = false } }
                 }
-                .heightIn(min = 72.dp).padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (marked) Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) {
-                Icon(Icons.Rounded.Check, null, Modifier.size(20.dp), tint = c.onInk)
-            } else HabitIcon(habit.symbol, habit.color)
-            Spacer(Modifier.width(16.dp))
-            Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp)) {
-                Text(habit.name, style = AppType.bodyLarge, color = c.ink)
-                Text(line, style = AppType.bodyMedium, color = c.secondary)
-            }
-            if (menu != null) Box {
-                IconButton({ open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name }) {
-                    Icon(Icons.Rounded.MoreVert, "More for ${habit.name}", tint = c.ink)
-                }
-                DropdownMenu(open, { open = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.semantics { testTagsAsResourceId = true }) { menu(habit) { open = false } }
-            }
-        }
+            } },
+        )
         // First visit (Figma 3.8): Material's rich tooltip under the first row.
         if (coach != null) Popup(alignment = Alignment.TopStart, offset = IntOffset(0, with(androidx.compose.ui.platform.LocalDensity.current) { 68.dp.roundToPx() }),
             onDismissRequest = coach) {
@@ -429,41 +381,20 @@ private fun RowMenuItems(
     onEdit: () -> Unit, onDuplicate: () -> Unit, onPause: () -> Unit, onResume: () -> Unit, onArchive: () -> Unit, onDelete: () -> Unit,
 ) {
     val c = appColors
-    MenuItem("Edit habit", Icons.Outlined.Edit, "habits-menu-edit") { dismiss(); onEdit() }
-    MenuItem("Duplicate", Icons.Outlined.ContentCopy, "habits-menu-duplicate") { dismiss(); onDuplicate() }
-    if (store.isPaused(h, today)) MenuItem("Resume", Icons.Outlined.PlayCircle, "habits-menu-resume") { dismiss(); onResume() }
-    else if (store.rules.canPause(h)) MenuItem("Pause…", Icons.Outlined.PauseCircle, "habits-menu-pause") { dismiss(); onPause() }
-    HorizontalDivider(color = c.tonal)
-    MenuItem("Archive", Icons.Outlined.Archive, "habits-menu-archive") { dismiss(); onArchive() }
-    MenuItem("Delete habit…", Icons.Outlined.Delete, "habits-menu-delete", danger = true) { dismiss(); onDelete() }
+    AppMenuItem("Edit habit", { dismiss(); onEdit() }, icon = Symbols.Edit, tag = "habits-menu-edit")
+    AppMenuItem("Duplicate", { dismiss(); onDuplicate() }, icon = Symbols.ContentCopy, tag = "habits-menu-duplicate")
+    if (store.isPaused(h, today)) AppMenuItem("Resume", { dismiss(); onResume() }, icon = Symbols.PlayCircle, tag = "habits-menu-resume")
+    else if (store.rules.canPause(h)) AppMenuItem("Pause…", { dismiss(); onPause() }, icon = Symbols.PauseCircle, tag = "habits-menu-pause")
+    MenuDivider()
+    AppMenuItem("Archive", { dismiss(); onArchive() }, icon = Symbols.Archive, tag = "habits-menu-archive")
+    AppMenuItem("Delete habit…", { dismiss(); onDelete() }, icon = Symbols.Delete, destructive = true, tag = "habits-menu-delete")
 }
 
+/** The Archived row (Figma 1): its count; it opens Archived habits (List item, 2.4, on its own). */
 @Composable
-fun MenuItem(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, danger: Boolean = false, onClick: () -> Unit) {
-    val c = appColors
-    val color = if (danger) c.error else c.ink
-    DropdownMenuItem({ Text(text, style = AppType.bodyLarge, color = color) }, onClick, Modifier.semantics { testTag = tag }.widthIn(min = 200.dp),
-        leadingIcon = { Icon(icon, null, tint = color) })
-}
-
-/** The Archived row (Figma 1): its count; it opens Archived habits. */
-@Composable
-internal fun ArchivedRow(count: Int, enabled: Boolean, noun: String = "habit", onClick: () -> Unit) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).clickable(enabled = enabled, onClick = onClick)
-        .semantics(mergeDescendants = true) { testTag = "habits-archived" }.heightIn(min = 72.dp).padding(start = 16.dp, end = 16.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(40.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-            Icon(Icons.Rounded.Inventory2, null, Modifier.size(20.dp), tint = c.ink)
-        }
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Text("Archived", style = AppType.bodyLarge, color = c.ink)
-            Text(if (count == 1) "1 $noun" else "$count ${noun}s", style = AppType.bodyMedium, color = c.secondary)
-        }
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.ink)
-    }
-}
+internal fun ArchivedRow(count: Int, enabled: Boolean, noun: String = "habit", onClick: () -> Unit) =
+    AppListItem("Archived", 0, 1, Modifier.semantics(mergeDescendants = true) {}, if (count == 1) "1 $noun" else "$count ${noun}s",
+        leading = { ListAvatar(Symbols.Inventory2) }, trailing = { ListChevron() }, onClick = onClick, enabled = enabled, tag = "habits-archived")
 
 /** The selection's bottom bar (Figma 3–3.7, 5.6): each action with its word; Pause and Resume show only when they'd act. */
 @Composable
@@ -477,11 +408,11 @@ private fun SelectionBar(
     val canResume = marked.any { store.isPaused(it, today) }
     Surface(color = c.surface, tonalElevation = 3.dp) {
         Row(Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-            if (canPause || !any) BarAction("Pause", Icons.Outlined.PauseCircle, any, "habits-pause", onPause)
-            if (canResume) BarAction("Resume", Icons.Outlined.PlayCircle, true, "habits-resume", onResume)
-            BarAction("Archive", Icons.Outlined.Archive, any, "habits-archive", onArchive)
-            BarAction("Group", Icons.Outlined.Folder, any, "habits-group", onGroup)
-            BarAction("Delete", Icons.Outlined.Delete, any, "habits-delete", onDelete, danger = true)
+            if (canPause || !any) BarAction("Pause", Symbols.PauseCircle, any, "habits-pause", onPause)
+            if (canResume) BarAction("Resume", Symbols.PlayCircle, true, "habits-resume", onResume)
+            BarAction("Archive", Symbols.Archive, any, "habits-archive", onArchive)
+            BarAction("Group", Symbols.Folder, any, "habits-group", onGroup)
+            BarAction("Delete", Symbols.Delete, any, "habits-delete", onDelete, danger = true)
         }
     }
 }
@@ -496,24 +427,6 @@ fun BarAction(text: String, icon: androidx.compose.ui.graphics.vector.ImageVecto
         Icon(icon, null, tint = color)
         Spacer(Modifier.height(4.dp))
         Text(text, style = AppType.labelMedium, color = color)
-    }
-}
-
-/** Android's full-screen search (Figma 4): ←, the field with the keyboard up, ✕ to clear. */
-@Composable
-internal fun SearchBar(query: String, onChange: (String) -> Unit, onBack: () -> Unit, placeholder: String = "Search habits") {
-    val c = appColors
-    val focus = remember { FocusRequester() }
-    LaunchedEffect(Unit) { if (query.isEmpty()) runCatching { focus.requestFocus() } }
-    Box(Modifier.fillMaxWidth().background(c.tonal).windowInsetsPadding(WindowInsets.statusBars)) {
-        Row(Modifier.fillMaxWidth().heightIn(min = 72.dp).padding(start = 4.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onBack, Modifier.semantics { testTag = "habits-search-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
-            Spacer(Modifier.width(8.dp))
-            BasicTextField(query, { onChange(it.take(40)) }, Modifier.weight(1f).focusRequester(focus).semantics { testTag = "habits-search-field"; contentDescription = placeholder },
-                textStyle = AppType.bodyLarge.copy(color = c.ink), singleLine = true, cursorBrush = SolidColor(c.ink),
-                decorationBox = { inner -> Box { if (query.isEmpty()) Text(placeholder, style = AppType.bodyLarge, color = c.secondary); inner() } })
-            if (query.isNotEmpty()) IconButton({ onChange("") }, Modifier.semantics { testTag = "habits-search-clear" }) { Icon(Icons.Rounded.Close, "Clear", tint = c.ink) }
-        }
     }
 }
 
@@ -534,12 +447,7 @@ private fun SearchResults(
             Spacer(Modifier.height(16.dp))
             Text("Check the spelling, or add it as a new habit.", style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
             Spacer(Modifier.height(16.dp))
-            Row(Modifier.clip(RoundedCornerShape(20.dp)).background(c.tonal).clickable(onClick = onNew).semantics(mergeDescendants = true) { testTag = "habits-search-new" }
-                .heightIn(min = 40.dp).padding(start = 16.dp, end = 24.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Rounded.Add, null, Modifier.size(18.dp), tint = c.ink)
-                Spacer(Modifier.width(8.dp))
-                Text("New habit “${query.trim()}”", style = AppType.labelLarge, color = c.ink, maxLines = 1)
-            }
+            AppButton("New habit “${query.trim()}”", onNew, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "habits-search-new")
         }
         return
     }
@@ -561,7 +469,7 @@ private fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
     val c = appColors
     Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         Column(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            CookieIcon(if (archivedCount > 0) Icons.Rounded.Inventory2 else Icons.Rounded.Checklist, 112.dp)
+            CookieIcon(if (archivedCount > 0) Symbols.Inventory2 else Symbols.Checklist, 112.dp)
             Spacer(Modifier.height(24.dp))
             Text(if (archivedCount > 0) "No habits right now" else "No habits yet", style = AppType.titleLarge, color = c.ink, textAlign = TextAlign.Center)
             Spacer(Modifier.height(12.dp))
@@ -569,15 +477,10 @@ private fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
                 else "Every habit you make lives here. Add one, or start from an idea.",
                 style = AppType.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
             Spacer(Modifier.height(24.dp))
-            InkButton("New habit", { nav.newHabit() }, Modifier.semantics { testTag = "habits-empty-new" }, icon = Icons.Rounded.Add, height = 48.dp, textStyle = AppType.labelLarge)
+            AppButton("New habit", { nav.newHabit() }, Modifier.semantics { testTag = "habits-empty-new" }, icon = Symbols.Add)
             if (archivedCount == 0) {
                 Spacer(Modifier.height(8.dp))
-                Row(Modifier.clip(RoundedCornerShape(24.dp)).background(c.tonal).clickable { nav.ideas() }.semantics(mergeDescendants = true) { testTag = "habits-empty-ideas" }
-                    .heightIn(min = 48.dp).padding(horizontal = 24.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Outlined.Lightbulb, null, Modifier.size(18.dp), tint = c.ink)
-                    Spacer(Modifier.width(8.dp))
-                    Text("Start from an idea", style = AppType.labelLarge, color = c.ink)
-                }
+                AppButton("Start from an idea", { nav.ideas() }, style = ButtonStyle.Tonal, icon = Symbols.Lightbulb, tag = "habits-empty-ideas")
             }
         }
         if (archivedCount > 0) {
@@ -602,14 +505,14 @@ private fun GroupDialog(habits: List<Habit>, store: HabitStore, onDismiss: () ->
                 for (g in store.groups) GroupOption(g.name, pick == g.id, "group-${g.name}") { pick = g.id }
                 Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { creating = true }.semantics(mergeDescendants = true) { testTag = "group-new" },
                     verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Icons.Rounded.Add, null, tint = c.ink) }
+                    Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null, tint = c.ink) }
                     Spacer(Modifier.width(12.dp))
                     Text("New group", style = AppType.bodyLarge, color = c.ink)
                 }
             }
         },
-        confirmButton = { TextButton({ onMove(pick) }, Modifier.semantics { testTag = "group-move" }) { Text("Move", color = c.ink) } },
-        dismissButton = { TextButton(onDismiss) { Text("Cancel", color = c.ink) } },
+        confirmButton = { AppButton("Move", { onMove(pick) }, Modifier.semantics { testTag = "group-move" }, style = ButtonStyle.Text) },
+        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) },
         containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.ink)
     if (creating) NewGroupDialog(store, { creating = false }) { id -> creating = false; pick = id }
 }
@@ -619,7 +522,7 @@ private fun GroupOption(text: String, selected: Boolean, tag: String, onClick: (
     val c = appColors
     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable(role = Role.RadioButton, onClick = onClick).semantics(mergeDescendants = true) { testTag = tag },
         verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(selected, null, colors = RadioButtonDefaults.colors(selectedColor = c.ink, unselectedColor = c.ink))
+        RadioButton(selected, null)
         Spacer(Modifier.width(12.dp))
         Text(text, style = AppType.bodyLarge, color = c.ink)
     }
@@ -638,7 +541,7 @@ private fun ShowByDialog(store: HabitStore, current: String, onDismiss: () -> Un
                 ShowByOption("Group", store.groups.joinToString(", ") { it.name } + ", then No group", current == "group", "show-by-group") { onPick("group") }
             }
         },
-        confirmButton = { TextButton(onDismiss) { Text("Cancel", color = c.ink) } },
+        confirmButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) },
         containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.ink)
 }
 
@@ -647,7 +550,7 @@ private fun ShowByOption(title: String, line: String, selected: Boolean, tag: St
     val c = appColors
     Row(Modifier.fillMaxWidth().clickable(role = Role.RadioButton, onClick = onClick).semantics(mergeDescendants = true) { testTag = tag }.padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(selected, null, colors = RadioButtonDefaults.colors(selectedColor = c.ink, unselectedColor = c.ink))
+        RadioButton(selected, null)
         Spacer(Modifier.width(12.dp))
         Column {
             Text(title, style = AppType.bodyLarge, color = c.ink)

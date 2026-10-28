@@ -1,5 +1,12 @@
 package com.oftenenough.app.app.widgets
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import com.oftenenough.app.ui.components.PlusLabel
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,10 +46,7 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.pageSentence
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.InkButton
-import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
-import com.oftenenough.app.ui.components.TonalButton
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.GroupTitle
 import com.oftenenough.app.ui.theme.OftenEnoughTheme
@@ -103,7 +106,11 @@ class WidgetSetupActivity : ComponentActivity() {
                 FormPage(title, chip = null, onBack = onClose, close = true) {
                     Spacer(Modifier.height(8.dp))
                     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(24.dp)) {
-                        Text("$title is a Plus widget", style = MaterialTheme.typography.titleLarge, color = c.ink)
+                        // Figma's Plus card heading: the Plus label (3.3), 8 before the title.
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                            PlusLabel()
+                            Text("$title is a Plus widget", Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleLarge, color = c.ink)
+                        }
                         Spacer(Modifier.height(12.dp))
                         Text(if (kind == WidgetKind.WEEK) "With Plus, you see one habit's whole week and log it right from the widget."
                             else "With Plus, you tick habits off right from the widget, and see the whole day or one part of it.",
@@ -115,12 +122,12 @@ class WidgetSetupActivity : ComponentActivity() {
                     }
                 }
                 Column(Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(16.dp)) {
-                    InkButton("Get Plus" + (AppGraph.plus.price(com.oftenenough.app.app.PlusProduct.PLUS)?.let { " · $it" } ?: ""), {
+                    AppButton("Get Plus" + (AppGraph.plus.price(com.oftenenough.app.app.PlusProduct.PLUS)?.let { " · $it" } ?: ""), {
                         startActivity(Intent(this@WidgetSetupActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra(MainActivity.WIDGET_ROUTE, "plus"))
-                    }, Modifier.fillMaxWidth().semantics { testTag = "setup-get-plus" })
+                    }, Modifier.fillMaxWidth().semantics { testTag = "setup-get-plus" }, size = ButtonSize.Medium)
                     Spacer(Modifier.height(8.dp))
-                    TonalButton("Add without Plus", { withoutPlus = true }, Modifier.fillMaxWidth().semantics { testTag = "setup-without-plus" }, height = 56.dp)
+                    AppButton("Add without Plus", { withoutPlus = true }, Modifier.fillMaxWidth().semantics { testTag = "setup-without-plus" }, style = ButtonStyle.Tonal, size = ButtonSize.Medium)
                 }
             }
             return
@@ -156,20 +163,13 @@ class WidgetSetupActivity : ComponentActivity() {
                 }
                 Spacer(Modifier.height(96.dp))
             }
-            InkButton("Add widget", { chosen?.let(save) }, Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(16.dp)
-                .semantics { testTag = "setup-add" }, enabled = chosen != null)
+            AppButton("Add widget", { chosen?.let(save) }, Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(16.dp)
+                .semantics { testTag = "setup-add" }, size = ButtonSize.Medium, enabled = chosen != null)
         }
     }
 
     @Composable
-    private fun Choice(title: String, line: String, selected: Boolean, index: Int, count: Int, tag: String, icon: (@Composable () -> Unit)? = null, onClick: () -> Unit) {
-        Segment(index, count, Modifier.semantics { testTag = tag }, onClick = onClick) {
-            if (icon != null) { icon(); Spacer(Modifier.width(16.dp)) }
-            Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                Text(title, style = MaterialTheme.typography.bodyLarge, color = appColors.ink, maxLines = 1)
-                Text(line, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary, maxLines = 1)
-            }
-            androidx.compose.material3.RadioButton(selected, null, colors = androidx.compose.material3.RadioButtonDefaults.colors(selectedColor = appColors.ink, unselectedColor = appColors.secondary))
-        }
-    }
+    private fun Choice(title: String, line: String, selected: Boolean, index: Int, count: Int, tag: String, icon: (@Composable () -> Unit)? = null, onClick: () -> Unit) =
+        AppListItem(title, index, count, supporting = line, headlineLines = 1, leading = icon, onClick = onClick, tag = tag,
+            trailing = { androidx.compose.material3.RadioButton(selected, null) })
 }

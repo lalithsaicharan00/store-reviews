@@ -1,5 +1,18 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.data.HabitColor
+import androidx.compose.foundation.layout.ColumnScope
+import com.oftenenough.app.ui.components.Skeleton
+import com.oftenenough.app.ui.components.AppMenuItem
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppExtendedFab
+import com.oftenenough.app.ui.components.MenuDivider
+import com.oftenenough.app.ui.components.PrimaryTabs
+import com.oftenenough.app.ui.components.scrolledTopBarColor
+import com.oftenenough.app.ui.components.AppTopBar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -22,37 +35,11 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.PauseCircle
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.Unarchive
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.History
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.KeyboardArrowUp
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Upload
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -90,10 +77,7 @@ import com.oftenenough.app.data.isTask
 import com.oftenenough.app.data.taskDetailsLine
 import com.oftenenough.app.data.taskMoveRange
 import com.oftenenough.app.data.taskOpenDay
-import androidx.compose.material.icons.automirrored.outlined.Undo
-import androidx.compose.material.icons.outlined.EditCalendar
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.TonalButton
 import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
@@ -181,10 +165,9 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     if (habit == null) {
         // Deleted from another device while open.
         Column(Modifier.fillMaxSize().background(c.screen)) {
-            TopAppBar(
-                title = {},
-                navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, navigationIconContentColor = c.ink),
+            AppTopBar(
+                null,
+                navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "page-back" }) { Icon(Symbols.ArrowBack, "Back") } },
             )
             Text("Habit deleted", Modifier.padding(16.dp), style = AppType.titleLarge, color = c.secondary)
         }
@@ -248,18 +231,18 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         return
     }
     val earlier = remember(habit, store.habits) { store.earlierOf(habit.id) }
-    val barColor = if (collapsed) c.tonal else c.screen
+    val barColor = if (collapsed) scrolledTopBarColor else c.screen
     // Another tab starts at its own top, just under the pinned tabs, wherever the last one was scrolled to.
     LaunchedEffect(shown) { if (listState.firstVisibleItemIndex > 1) listState.scrollToItem(1) }
 
     Box(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "habit-details" }) {
         Column(Modifier.fillMaxSize()) {
-            TopAppBar(
-                title = { if (collapsed) Text(habit.name, maxLines = 1, overflow = TextOverflow.Ellipsis, style = AppType.titleLarge) },
-                navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
+            AppTopBar(
+                if (collapsed) habit.name else null,
+                navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "page-back" }) { Icon(Symbols.ArrowBack, "Back") } },
                 actions = {
                     Box {
-                        IconButton({ menuOpen = true }, Modifier.semantics { testTag = "habit-menu" }) { Icon(Icons.Rounded.MoreVert, "More") }
+                        IconButton({ menuOpen = true }, Modifier.semantics { testTag = "habit-menu" }) { Icon(Symbols.MoreVert, "More") }
                         if (habit.isTask) TaskMenu(habit, store, menuOpen, onDismiss = { menuOpen = false }, onEdit = { nav.edit(habit) },
                             onMove = { moving = true }, onDelete = { confirmDelete = true }, onArchive = { store.archive(listOf(habit)); onBack() })
                         else HabitMenu(habit, store, today, menuOpen, onDismiss = { menuOpen = false }, nav = nav,
@@ -267,40 +250,19 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                             onNoRoom = { noRoom = true })
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = barColor, titleContentColor = c.ink,
-                    navigationIconContentColor = c.ink, actionIconContentColor = c.ink),
+                containerColor = barColor,
             )
             LazyColumn(Modifier.fillMaxWidth().weight(1f).semantics { testTag = "habit-details-list" }, state = listState) {
                 item(key = "header") { Header(habit, sentence, store.descriptions[habit.id]) }
                 if (tabs.size > 1) stickyHeader(key = "tabs") {
-                    PrimaryTabRow(
-                        selectedTabIndex = tabs.indexOf(shown),
-                        modifier = Modifier.background(barColor).semantics { testTag = "habit-tabs" },
-                        containerColor = barColor,
-                        contentColor = c.ink,
-                        indicator = {
-                            androidx.compose.material3.TabRowDefaults.PrimaryIndicator(
-                                Modifier.tabIndicatorOffset(tabs.indexOf(shown), matchContentSize = true), width = 56.dp, color = c.ink)
-                        },
-                        divider = { HorizontalDivider(color = c.line) },
-                    ) {
-                        for (t in tabs) {
-                            Tab(
-                                selected = t == shown,
-                                onClick = { tab = t },
-                                modifier = Modifier.heightIn(min = 48.dp).semantics { testTag = t.tag },
-                                text = { Text(t.title, style = AppType.labelLarge, maxLines = 1) },
-                                selectedContentColor = c.ink,
-                                unselectedContentColor = c.secondary,
-                            )
-                        }
-                    }
+                    PrimaryTabs(tabs.indexOf(shown), tabs.map { it.title }, { tab = tabs[it] },
+                        Modifier.semantics { testTag = "habit-tabs" }, containerColor = barColor, tag = { tabs[it].tag })
                 }
                 item(key = "tabs-gap") { Spacer(Modifier.height(16.dp)) }
                 when (shown) {
                     HabitTab.PROGRESS -> {
                         stateCards(habit, store, today, onRestore = { if (!store.restore(habit)) noRoom = true }, onOpen = nav::openHabit)
-                        if (progress == null) loadingItems()
+                        if (progress == null) loadingItems(habit.color, keyOpen, toggleKey)
                         else progressItems(
                             habit = habit, store = store, today = today, revision = revision, record = progress.first, milestones = progress.second,
                             showStreaks = showStreaks, showPercentages = showPercentages, keyOpen = keyOpen, onToggleKey = toggleKey,
@@ -325,13 +287,8 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         }
         // Add (Figma 2.1, 2.11): on History, while the habit can be logged (an archived one can't, Figma 6.2).
         if (shown == HabitTab.HISTORY && !habit.archived) {
-            ExtendedFloatingActionButton({ adding = true },
-                Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp).semantics { testTag = "history-add" },
-                containerColor = c.ink, contentColor = c.onInk) {
-                Icon(Icons.Rounded.Add, null)
-                Spacer(Modifier.width(12.dp))
-                Text("Add", style = AppType.titleMedium)
-            }
+            AppExtendedFab("Add", Symbols.Add, { adding = true },
+                Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp), tag = "history-add")
         }
     }
 
@@ -359,24 +316,24 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             text = { Text(if (habit.isTask) "Its history and notes are deleted too. To keep them, archive it instead."
                 else "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.") },
             confirmButton = {
-                TextButton({
+                AppButton("Delete", {
                     confirmDelete = false
                     // The page leaves first, then the habit goes (U27).
                     onBack()
                     store.delete(listOf(habit))
-                }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) }
+                }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true)
             },
             dismissButton = {
                 Row {
                     // A task asks with two buttons only (Tasks, Figma 3.6).
                     if (!habit.archived && !habit.isTask) {
-                        TextButton({
+                        AppButton("Archive instead", {
                             confirmDelete = false
                             store.archive(listOf(habit))
                             onBack()
-                        }, Modifier.semantics { testTag = "delete-archive-instead" }) { Text("Archive instead", color = c.ink) }
+                        }, Modifier.semantics { testTag = "delete-archive-instead" }, style = ButtonStyle.Text)
                     }
-                    TextButton({ confirmDelete = false }, Modifier.semantics { testTag = "delete-cancel" }) { Text("Cancel", color = c.ink) }
+                    AppButton("Cancel", { confirmDelete = false }, Modifier.semantics { testTag = "delete-cancel" }, style = ButtonStyle.Text)
                 }
             },
             containerColor = c.surface,
@@ -398,7 +355,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             onDismissRequest = { noRoom = false },
             title = { Text("No room for another habit") },
             text = { Text("The free plan keeps ${HabitStore.FREE_HABIT_LIMIT} habits going at once. Archive one, or get Plus, to bring ${habit.name} back.") },
-            confirmButton = { TextButton({ noRoom = false }) { Text("OK", color = c.ink) } },
+            confirmButton = { AppButton("OK", { noRoom = false }, style = ButtonStyle.Text) },
             containerColor = c.surface,
             titleContentColor = c.ink,
             textContentColor = c.secondary,
@@ -437,7 +394,7 @@ private fun Header(habit: Habit, sentence: String, description: String?) {
                 ) {
                     Text(if (open) "Less" else "More", style = AppType.labelLarge, color = c.ink)
                     Spacer(Modifier.width(4.dp))
-                    Icon(if (open) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, null, Modifier.size(20.dp), tint = c.ink)
+                    Icon(if (open) Symbols.KeyboardArrowUp else Symbols.KeyboardArrowDown, null, Modifier.size(20.dp), tint = c.ink)
                 }
             }
         }
@@ -453,17 +410,17 @@ private fun LazyListScope.stateCards(habit: Habit, store: HabitStore, today: Int
         val on = store.archivedOn[habit.id]?.let { DayWords.dayMonth(it) }
         val replaced = store.replacedBy(habit.id)
         item(key = "state-archived") {
-            if (replaced != null) StateCard(Icons.Outlined.Archive, "Archived" + (on?.let { " on $it" } ?: "") + ", when ${habit.name} changed to " + countedIn(replaced),
-                "Everything it recorded is kept here.", "Open the new ${replaced.name}", Icons.AutoMirrored.Outlined.OpenInNew, "habit-archived") { onOpen(replaced) }
-            else StateCard(Icons.Outlined.Archive, "Archived" + (on?.let { " on $it" } ?: ""),
-                "Everything it recorded is kept. Restore it to log again.", "Restore", Icons.Rounded.Upload, "habit-archived", onRestore)
+            if (replaced != null) StateCard(Symbols.Archive, "Archived" + (on?.let { " on $it" } ?: "") + ", when ${habit.name} changed to " + countedIn(replaced),
+                "Everything it recorded is kept here.", "Open the new ${replaced.name}", Symbols.OpenInNew, "habit-archived") { onOpen(replaced) }
+            else StateCard(Symbols.Archive, "Archived" + (on?.let { " on $it" } ?: ""),
+                "Everything it recorded is kept. Restore it to log again.", "Restore", Symbols.Upload, "habit-archived", onRestore)
         }
         return
     }
     val pause = store.pause(habit, today)
     if (pause != null && today in pause) item(key = "state-paused") {
-        StateCard(Icons.Outlined.PauseCircle, pause.through?.let { "Paused until " + pageDayDate(it + 1) } ?: "Paused until you resume it",
-            "Nothing is expected while it's paused, and those days don't count against it.", "Resume", Icons.Rounded.PlayArrow, "habit-paused") {
+        StateCard(Symbols.PauseCircle, pause.through?.let { "Paused until " + pageDayDate(it + 1) } ?: "Paused until you resume it",
+            "Nothing is expected while it's paused, and those days don't count against it.", "Resume", Symbols.Filled.PlayArrow, "habit-paused") {
             store.resume(habit)
         }
     }
@@ -474,9 +431,9 @@ private fun LazyListScope.stateCards(habit: Habit, store: HabitStore, today: Int
 private fun EarlierCard(habit: Habit, earlier: Habit, store: HabitStore, onOpen: () -> Unit) {
     val on = store.archivedOn[earlier.id]
     val until = on?.let { (if (it == store.today()) "today, " else "") + DayWords.dayMonth(it) }
-    StateCard(Icons.Rounded.History, "${habit.name} was counted in ${countedIn(earlier)}" + (until?.let { " until $it" } ?: ""),
+    StateCard(Symbols.History, "${habit.name} was counted in ${countedIn(earlier)}" + (until?.let { " until $it" } ?: ""),
         "That history stays with the earlier ${earlier.name}, in Archived habits.", "Open earlier ${earlier.name}",
-        Icons.AutoMirrored.Outlined.OpenInNew, "habit-earlier", onOpen)
+        Symbols.OpenInNew, "habit-earlier", onOpen)
 }
 
 /** "glasses", "minutes", "checks", "steps": what a habit counted. */
@@ -499,33 +456,51 @@ private fun StateCard(icon: ImageVector, title: String, text: String, action: St
             Text(title, style = AppType.titleMedium, color = c.ink)
             Text(text, style = AppType.bodyMedium, color = c.secondary)
             Spacer(Modifier.height(8.dp))
-            TonalButton(action, onAction, Modifier.semantics { testTag = "$tag-action" }, icon = actionIcon, height = 40.dp)
+            AppButton(action, onAction, Modifier.semantics { testTag = "$tag-action" }, style = ButtonStyle.Tonal, icon = actionIcon)
         }
     }
 }
 
-/** The cards' shapes while the record is read (Figma 6.7): never an empty 0 shown as true. */
-private fun LazyListScope.loadingItems() {
+/**
+ * The cards' shapes while the record is read (Figma's Progress, Loading): Overall record, Milestones, What the squares
+ * mean (the real card), Week and Month, each drawn in Skeletons (3.4); never an empty 0 shown as true.
+ */
+private fun LazyListScope.loadingItems(color: HabitColor, keyOpen: Boolean, onToggleKey: () -> Unit) {
     item(key = "loading") {
-        val c = appColors
         Column(Modifier.semantics { testTag = "habit-loading" }) {
-            Column(Modifier.pageItem().fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Box(Modifier.width(120.dp).height(20.dp).clip(RoundedCornerShape(6.dp)).background(c.tonal))
-                Box(Modifier.width(180.dp).height(40.dp).clip(RoundedCornerShape(8.dp)).background(c.tonal))
-                for (row in 0..1) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Box(Modifier.weight(1f).height(100.dp).clip(RoundedCornerShape(20.dp)).background(c.tonal))
-                    Box(Modifier.weight(1f).height(100.dp).clip(RoundedCornerShape(20.dp)).background(c.tonal))
+            LoadingCard {
+                Skeleton(Modifier.size(120.dp, 20.dp))
+                Skeleton(Modifier.size(180.dp, 40.dp))
+                repeat(2) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        repeat(2) { Skeleton(Modifier.weight(1f).height(96.dp), RoundedCornerShape(16.dp)) }
+                    }
                 }
             }
-            Column(Modifier.pageItem().fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                Box(Modifier.width(110.dp).height(20.dp).clip(RoundedCornerShape(6.dp)).background(c.tonal))
-                Box(Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)).background(c.tonal))
+            LoadingCard {
+                Skeleton(Modifier.size(110.dp, 20.dp))
+                Skeleton(Modifier.fillMaxWidth().height(104.dp), RoundedCornerShape(20.dp))
+                Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                    repeat(3) { Skeleton(Modifier.size(52.dp), CircleShape) }
+                }
+            }
+            HabitKeyCard(keyOpen, onToggleKey, color, Modifier.pageItem())
+            repeat(2) {
+                LoadingCard {
+                    Skeleton(Modifier.size(100.dp, 20.dp))
+                    Skeleton(Modifier.size(200.dp, 28.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) { repeat(7) { Skeleton(Modifier.weight(1f).height(36.dp)) } }
+                }
             }
         }
     }
 }
+
+/** One loading card: the page's white card, 24 corners, 20 inside, its pieces 12 apart. */
+@Composable
+private fun LoadingCard(content: @Composable ColumnScope.() -> Unit) =
+    Column(Modifier.pageItem().fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(appColors.surface).padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
 
 /** Editing the habit, pausing, archiving and deleting: less frequent actions in the ⋮ menu. Logs are corrected in History,
  *  notes with the note. */
@@ -534,62 +509,22 @@ private fun HabitMenu(
     habit: Habit, store: HabitStore, today: Int, expanded: Boolean, onDismiss: () -> Unit, nav: HabitDetailsNav,
     onDelete: () -> Unit, onArchive: () -> Unit, onNoRoom: () -> Unit,
 ) {
-    val c = appColors
     val pause = store.pause(habit, today)
-    DropdownMenu(expanded, onDismiss, containerColor = c.surface) {
+    @Composable
+    fun item(text: String, icon: ImageVector, tag: String, danger: Boolean = false, act: () -> Unit) =
+        AppMenuItem(text, { onDismiss(); act() }, icon = icon, destructive = danger, tag = tag)
+    AppMenu(expanded, onDismiss) {
         // An archived habit's ⋮ holds Restore and Delete habit… only (Habits, Figma 6.6).
-        if (!habit.archived) DropdownMenuItem(
-            text = { Text(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", color = c.ink) },
-            onClick = { onDismiss(); nav.edit(habit) },
-            leadingIcon = { Icon(Icons.Outlined.Edit, null, tint = c.ink) },
-            modifier = Modifier.semantics { testTag = "habit-menu-edit" },
-        )
+        if (!habit.archived) item(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", Symbols.Edit, "habit-menu-edit") { nav.edit(habit) }
         if (!habit.archived && (store.rules.canPause(habit) || pause != null)) {
-            if (pause != null && today in pause) {
-                DropdownMenuItem(
-                    text = { Text("Resume", color = c.ink) },
-                    onClick = { onDismiss(); store.resume(habit) },
-                    leadingIcon = { Icon(Icons.Outlined.PlayCircle, null, tint = c.ink) },
-                    modifier = Modifier.semantics { testTag = "habit-menu-resume" },
-                )
-            } else if (pause != null) {
-                DropdownMenuItem(
-                    text = { Text("Cancel pause from " + DayWords.short(pause.from), color = c.ink) },
-                    onClick = { onDismiss(); store.resume(habit) },
-                    leadingIcon = { Icon(Icons.Outlined.Cancel, null, tint = c.ink) },
-                    modifier = Modifier.semantics { testTag = "habit-menu-cancel-pause" },
-                )
-            } else {
-                DropdownMenuItem(
-                    text = { Text("Pause…", color = c.ink) },
-                    onClick = { onDismiss(); nav.pause(habit) },
-                    leadingIcon = { Icon(Icons.Outlined.PauseCircle, null, tint = c.ink) },
-                    modifier = Modifier.semantics { testTag = "habit-menu-pause" },
-                )
-            }
+            if (pause != null && today in pause) item("Resume", Symbols.PlayCircle, "habit-menu-resume") { store.resume(habit) }
+            else if (pause != null) item("Cancel pause from " + DayWords.short(pause.from), Symbols.Cancel, "habit-menu-cancel-pause") { store.resume(habit) }
+            else item("Pause…", Symbols.PauseCircle, "habit-menu-pause") { nav.pause(habit) }
         }
-        if (habit.archived) {
-            DropdownMenuItem(
-                text = { Text("Restore", color = c.ink) },
-                onClick = { onDismiss(); if (!store.restore(habit)) onNoRoom() },
-                leadingIcon = { Icon(Icons.Outlined.Unarchive, null, tint = c.ink) },
-                modifier = Modifier.semantics { testTag = "habit-menu-restore" },
-            )
-        } else {
-            DropdownMenuItem(
-                text = { Text("Archive", color = c.ink) },
-                onClick = { onDismiss(); onArchive() },
-                leadingIcon = { Icon(Icons.Outlined.Archive, null, tint = c.ink) },
-                modifier = Modifier.semantics { testTag = "habit-menu-archive" },
-            )
-        }
-        HorizontalDivider(color = c.tonal)
-        DropdownMenuItem(
-            text = { Text("Delete", color = c.error) },
-            onClick = { onDismiss(); onDelete() },
-            leadingIcon = { Icon(Icons.Outlined.Delete, null, tint = c.error) },
-            modifier = Modifier.semantics { testTag = "habit-menu-delete" },
-        )
+        if (habit.archived) item("Restore", Symbols.Unarchive, "habit-menu-restore") { if (!store.restore(habit)) onNoRoom() }
+        else item("Archive", Symbols.Archive, "habit-menu-archive", act = onArchive)
+        MenuDivider()
+        item("Delete", Symbols.Delete, "habit-menu-delete", danger = true, act = onDelete)
     }
 }
 
@@ -602,23 +537,21 @@ private fun TaskMenu(
     task: Habit, store: HabitStore, expanded: Boolean, onDismiss: () -> Unit, onEdit: () -> Unit, onMove: () -> Unit,
     onDelete: () -> Unit, onArchive: () -> Unit,
 ) {
-    val c = appColors
     val done = if (task.isOneTimeTask) store.doneEntry(task) else null
     @Composable
-    fun item(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, danger: Boolean = false, act: () -> Unit) =
-        DropdownMenuItem(text = { Text(text, color = if (danger) c.error else c.ink) }, onClick = { onDismiss(); act() },
-            leadingIcon = { Icon(icon, null, tint = if (danger) c.error else c.ink) }, modifier = Modifier.semantics { testTag = tag })
-    DropdownMenu(expanded, onDismiss, containerColor = c.surface) {
-        if (task.archived) item("Restore", Icons.Outlined.Unarchive, "habit-menu-restore") { store.restore(task) }
+    fun item(text: String, icon: ImageVector, tag: String, danger: Boolean = false, act: () -> Unit) =
+        AppMenuItem(text, { onDismiss(); act() }, icon = icon, destructive = danger, tag = tag)
+    AppMenu(expanded, onDismiss) {
+        if (task.archived) item("Restore", Symbols.Unarchive, "habit-menu-restore") { store.restore(task) }
         else {
-            item("Edit task", Icons.Outlined.Edit, "habit-menu-edit", act = onEdit)
-            if (done != null) item("Mark as not done", Icons.AutoMirrored.Outlined.Undo, "habit-menu-not-done") { store.undoEntry(done.id) }
+            item("Edit task", Symbols.Edit, "habit-menu-edit", act = onEdit)
+            if (done != null) item("Mark as not done", Symbols.Undo, "habit-menu-not-done") { store.undoEntry(done.id) }
             else if (store.taskMoveRange(task, store.today()) != null)
-                item("Move to another day…", Icons.Outlined.EditCalendar, "habit-menu-move", act = onMove)
-            item("Archive", Icons.Outlined.Archive, "habit-menu-archive", act = onArchive)
+                item("Move to another day…", Symbols.Event, "habit-menu-move", act = onMove)
+            item("Archive", Symbols.Archive, "habit-menu-archive", act = onArchive)
         }
-        HorizontalDivider(color = c.tonal)
-        item("Delete task…", Icons.Outlined.Delete, "habit-menu-delete", danger = true, act = onDelete)
+        MenuDivider()
+        item("Delete task…", Symbols.Delete, "habit-menu-delete", danger = true, act = onDelete)
     }
 }
 

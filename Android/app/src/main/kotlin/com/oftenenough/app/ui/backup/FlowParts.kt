@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.backup
 
+import com.oftenenough.app.ui.theme.Symbols
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,8 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.History
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,7 +54,7 @@ fun Disc(icon: ImageVector, size: androidx.compose.ui.unit.Dp = 40.dp) =
 
 /** What a backup or a move holds: "31 habits, 929 logs" and where and when it's from (Figma 2.2, 4.3, 5.4, 6.1). */
 @Composable
-fun CountCard(habits: Int, logs: Int, line: String, icon: ImageVector = Icons.Rounded.History, tag: String = "count-card") {
+fun CountCard(habits: Int, logs: Int, line: String, icon: ImageVector = Symbols.History, tag: String = "count-card") {
     Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(appColors.surface).padding(horizontal = 16.dp, vertical = 20.dp)
         .semantics(mergeDescendants = true) { testTag = tag }, verticalAlignment = Alignment.CenterVertically) {
         Disc(icon)

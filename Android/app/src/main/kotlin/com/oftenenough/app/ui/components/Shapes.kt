@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -49,45 +48,15 @@ fun segmentShape(index: Int, count: Int, outer: Dp = 24.dp, inner: Dp = 4.dp): R
     return RoundedCornerShape(topStart = top, topEnd = top, bottomStart = bottom, bottomEnd = bottom)
 }
 
-/** Expressive's wavy progress bar: a wave in the habit's colour up to [progress], a straight track after. */
+/** The day bar's ring (Figma 581:145, Day ring): the share done of what's planned, 20 dp, a 3 dp band, square ends. */
 @Composable
-fun WavyProgress(progress: Float, color: Color, track: Color, modifier: Modifier = Modifier) {
-    val p = progress.coerceIn(0f, 1f)
-    Canvas(modifier) {
-        val h = size.height
-        val mid = h / 2
-        val stroke = 4.dp.toPx()
-        val gap = 6.dp.toPx()
-        val split = size.width * p
-        if (split > 0f) {
-            val path = Path()
-            val amp = (h - stroke) / 2 * 0.6f
-            val wave = 20.dp.toPx()
-            var x = 0f
-            path.moveTo(0f, mid)
-            while (x <= split) {
-                path.lineTo(x, mid + amp * sin(2 * PI * x / wave).toFloat())
-                x += 1f
-            }
-            drawPath(path, color, style = Stroke(stroke, cap = StrokeCap.Round))
-        }
-        val start = if (split > 0f) split + gap else 0f
-        if (start < size.width) {
-            drawLine(track, Offset(start, mid), Offset(size.width, mid), stroke, StrokeCap.Round)
-            drawCircle(color, stroke / 2 + 0.5f, Offset(size.width - stroke / 2, mid))
-        }
-    }
-}
-
-/** The day bar's small ring: the share done of what's planned. */
-@Composable
-fun MiniRing(progress: Float, color: Color, track: Color, modifier: Modifier = Modifier.size(22.dp)) {
+fun MiniRing(progress: Float, color: Color, track: Color, modifier: Modifier = Modifier.size(20.dp)) {
     val p = remember(progress) { progress.coerceIn(0f, 1f) }
     Canvas(modifier) {
         val w = 3.dp.toPx()
         val inset = w / 2
         val arcSize = Size(size.width - w, size.height - w)
         drawArc(track, 0f, 360f, false, Offset(inset, inset), arcSize, style = Stroke(w))
-        if (p > 0f) drawArc(color, -90f, 360f * p, false, Offset(inset, inset), arcSize, style = Stroke(w, cap = StrokeCap.Round))
+        if (p > 0f) drawArc(color, -90f, 360f * p, false, Offset(inset, inset), arcSize, style = Stroke(w))
     }
 }

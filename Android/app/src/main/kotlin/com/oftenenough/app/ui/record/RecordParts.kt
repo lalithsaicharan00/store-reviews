@@ -1,5 +1,10 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
@@ -7,11 +12,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,14 +26,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
@@ -52,7 +51,6 @@ import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.appColors
 import java.time.Instant
 import java.time.LocalDate
@@ -143,32 +141,18 @@ fun utcMsToDay(ms: Long): Int = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).
 /** A tonal pill button that opens a picker ("7 Oct 2026", "2:15 PM"). */
 @Composable
 fun Pill(text: String, enabled: Boolean = true, tag: String? = null, onClick: () -> Unit) {
-    Button(onClick, enabled = enabled, modifier = Modifier.heightIn(min = 40.dp).let { m -> tag?.let { m.semantics { testTag = it } } ?: m },
-        colors = ButtonDefaults.buttonColors(containerColor = appColors.tonal, contentColor = appColors.ink)) {
-        Text(text, style = MaterialTheme.typography.labelLarge)
-    }
+    AppButton(text, onClick, style = ButtonStyle.Tonal, enabled = enabled, tag = tag)
 }
 
-/** One segmented row: a label at the start and its value or control at the end. */
+/** One segmented row: a label at the start and its value or control at the end (List item, 2.4). */
 @Composable
-fun FactRow(label: String, index: Int, count: Int, content: @Composable () -> Unit) {
-    Row(Modifier.fillMaxWidth().clip(segmentShape(index, count)).background(appColors.surface).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        Text(label, Modifier.weight(1f), style = AppType.bodyLarge, color = appColors.ink)
-        content()
-    }
-}
+fun FactRow(label: String, index: Int, count: Int, content: @Composable () -> Unit) =
+    AppListItem(label, index, count, trailing = content)
 
-/** The habit a record belongs to (Figma 1.6: 64 high, its icon in a 40 circle, the name). The first piece of the fields. */
+/** The habit a record belongs to (Figma 1.6: its icon in a 40 circle, the name; List item, 2.4). The first piece of the fields. */
 @Composable
-fun HabitFact(habit: Habit, index: Int, count: Int) {
-    Row(Modifier.fillMaxWidth().clip(segmentShape(index, count)).background(appColors.surface).heightIn(min = 64.dp)
-        .padding(start = 16.dp, end = 12.dp).semantics { testTag = "record-habit" }, verticalAlignment = Alignment.CenterVertically) {
-        HabitIcon(habit.symbol, habit.color)
-        Spacer(Modifier.width(16.dp))
-        Text(habit.name, style = AppType.titleMedium, color = appColors.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-    }
-}
+fun HabitFact(habit: Habit, index: Int, count: Int) =
+    AppListItem(habit.name, index, count, headlineLines = 2, leading = { HabitIcon(habit.symbol, habit.color) }, tag = "record-habit")
 
 private val yearFormat = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH)
 
@@ -202,19 +186,19 @@ fun DateTimeRows(
             override fun isSelectableDate(utcTimeMillis: Long) = utcMsToDay(utcTimeMillis) in range
         })
         DatePickerDialog({ pickDay = false }, confirmButton = {
-            TextButton({ state.selectedDateMillis?.let { onDay(utcMsToDay(it)) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }) { Text("OK", color = appColors.ink) }
-        }, dismissButton = { TextButton({ pickDay = false }) { Text("Cancel", color = appColors.ink) } }) { DatePicker(state) }
+            AppButton("OK", { state.selectedDateMillis?.let { onDay(utcMsToDay(it)) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }, style = ButtonStyle.Text)
+        }, dismissButton = { AppButton("Cancel", { pickDay = false }, style = ButtonStyle.Text) }) { DatePicker(state) }
     }
     if (pickTime) {
         val zone = ZoneId.systemDefault()
         val local = Instant.ofEpochMilli(time).atZone(zone)
         val state = rememberTimePickerState(local.hour, local.minute, DayWords.is24Hour)
         AlertDialog({ pickTime = false }, confirmButton = {
-            TextButton({
+            AppButton("OK", {
                 onTime(local.withHour(state.hour).withMinute(state.minute).withSecond(0).toInstant().toEpochMilli())
                 pickTime = false
-            }, Modifier.semantics { testTag = "picker-ok" }) { Text("OK", color = appColors.ink) }
-        }, dismissButton = { TextButton({ pickTime = false }) { Text("Cancel", color = appColors.ink) } },
+            }, Modifier.semantics { testTag = "picker-ok" }, style = ButtonStyle.Text)
+        }, dismissButton = { AppButton("Cancel", { pickTime = false }, style = ButtonStyle.Text) },
             title = { Text("Select time", style = AppType.labelLarge, color = appColors.secondary) },
             text = { Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { TimePicker(state) } })
     }
@@ -233,7 +217,7 @@ private fun DatePiece(title: String, value: String, opens: Boolean, shape: Round
         }
         if (opens) {
             Spacer(Modifier.width(8.dp))
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+            Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
         }
     }
 }
@@ -261,19 +245,13 @@ fun BottomAction(text: String, enabled: Boolean, tag: String = "record-add", onC
     }
 }
 
-/** A saved record's two actions (Figma 1.8: 48 high): Delete in red on the tonal grey, Edit in ink. */
+/** A saved record's two actions (Figma's Log and Note screens): Delete, Outlined in red (D9), and Edit, Filled; both Medium. */
 @Composable
 fun DeleteEditBar(noun: String, deleteTag: String, editTag: String, onDelete: () -> Unit, onEdit: () -> Unit) {
-    val c = appColors
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Box(Modifier.weight(1f).height(48.dp).clip(RoundedCornerShape(24.dp)).background(c.tonal).clickable(role = Role.Button, onClick = onDelete)
-            .semantics { testTag = deleteTag }, contentAlignment = Alignment.Center) {
-            Text("Delete $noun", style = AppType.titleMedium, color = c.error)
-        }
-        Box(Modifier.weight(1f).height(48.dp).clip(RoundedCornerShape(24.dp)).background(c.ink).clickable(role = Role.Button, onClick = onEdit)
-            .semantics { testTag = editTag }, contentAlignment = Alignment.Center) {
-            Text("Edit", style = AppType.titleMedium, color = c.onInk)
-        }
+        AppButton("Delete $noun", onDelete, Modifier.weight(1f), style = ButtonStyle.Outlined, size = ButtonSize.Medium, destructive = true,
+            compact = true, tag = deleteTag)
+        AppButton("Edit", onEdit, Modifier.weight(1f), size = ButtonSize.Medium, compact = true, tag = editTag)
     }
 }
 

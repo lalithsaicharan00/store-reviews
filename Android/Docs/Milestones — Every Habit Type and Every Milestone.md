@@ -133,10 +133,10 @@ when the row is first seen, and a pop-up's band has See.
   anniversaries, with the pop-ups' words (`milestoneTotalWords`, `milestonePeriodGoal`, shared with `MilestoneCenter`).
   A cut-down habit keeps days within max; quit keeps days since a slip ("30 days clean").
 - **One medal, everywhere it's shown** (the user, 19 Oct 2026: "make sure the milestones are consistent everywhere"):
-  `MilestoneMedal` (`ui/habit/Medals.kt`) draws Figma's nine-point star in a vertical gradient of the habit's colour,
-  the same star at 82 % as a white line at 55 %, a soft shadow in a dark shade of the colour, and the number in white.
-  The steps are Figma's own for blue (top 28 % toward white, bottom 88 %, shadow 55 % at 35 %); a light colour is
-  deepened until white reads on it (3:1), and on dark the shadow is a plain dark one. Used by the habit page, All
+  `Medal` (`ui/components/Medal.kt`, atom 3.5, Figma 913:29957 since 28 Oct 2026) draws Figma's nine-point star in
+  the habit's Medal gradient (Pale at the top to Strong at the bottom), the same star at 82 % as a white line at 60 %,
+  a soft shadow (black at 20 %), and the number in white. Figma draws light only; on dark the steps come from the
+  habit's dark colour, deepened until white reads on it (3:1), with a plain dark shadow. Used by the habit page, All
   milestones, the pop-up (over its glow, burst ring and sparkles), the row's band, Day details' ribbon and the routine;
   the bar's `WhiteMedal` is the same star in white with the number in the deepened colour; a folded card's small medal
   is the star (`MedalShape`).

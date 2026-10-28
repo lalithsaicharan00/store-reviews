@@ -66,8 +66,10 @@ account, Sign in (looking, Plus is back, no account found, couldn't connect), Re
 account, Join a family (link or QR code via Google's code scanner) and every invite state, the invite sheets with a
 real QR code, and every dialog (sign out, delete, remove, leave, cancel an invite). Code: `ui/plus/`, `app/account/`.
 
-- **Icons are Figma's own:** Material Symbols Rounded, outlined (`ui/plus/Symbols.kt`, the Symbols' outlines; the older
-  Material Icons draw some of them filled), and Material Icons Round in the hero cookies, as Figma sets them. Dialogs
+- **Icons are Figma's own:** Material Symbols Rounded, weight 400, outlined everywhere (`ui/theme/Symbols.kt`, every
+  icon the app draws, the Symbols' own outlines; atom 2.3, 28 Oct 2026), filled (`Symbols.Filled`) only where Figma
+  fills them: a habit's or task's icon, play and pause on a big action, the open drawer row. The older Material Icons
+  library is gone from the build. Dialogs
   are drawn as Figma's (`PlusDialogFrame`: the icon at the start, only deleting the account in red). Checked against
   every frame on 15 Oct 2026 (Current Work 110).
 - **The loading animation** (`ui/components/LoadingIndicator.kt`): Material 3 Expressive's contained loading

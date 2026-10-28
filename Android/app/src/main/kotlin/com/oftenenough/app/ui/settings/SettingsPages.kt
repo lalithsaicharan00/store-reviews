@@ -1,5 +1,13 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppExtendedFab
+import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
@@ -20,31 +28,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.rounded.PlaylistAddCheck
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.NotificationsActive
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.CropFree
-import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material.icons.rounded.Update
-import androidx.compose.material.icons.rounded.Vibration
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,11 +48,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
@@ -79,7 +63,6 @@ import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.GroupTitle
-import com.oftenenough.app.ui.newhabit.InkSwitch
 import com.oftenenough.app.ui.newhabit.MinuteDialog
 import com.oftenenough.app.ui.newhabit.Note
 import com.oftenenough.app.ui.theme.appColors
@@ -91,17 +74,17 @@ import com.oftenenough.app.ui.theme.appColors
 fun DayAndWeekPage(store: HabitStore, onBack: () -> Unit) {
     FormPage("Day and Week", chip = null, onBack = onBack) {
         Spacer(Modifier.height(8.dp))
-        DropdownRow("New day starts at", DayWords.clockMinute(store.dayEndHour * 60), Icons.Rounded.Update,
+        DropdownRow("New day starts at", DayWords.clockMinute(store.dayEndHour * 60), Symbols.Update,
             (0..12).map { DayWords.clockMinute(it * 60) }, store.dayEndHour, "day-start") { store.setDayEnd(it) }
         Note("Your day starts at ${DayWords.clockMinute(store.dayEndHour * 60)}. For late nights or night shifts, pick a later time: what you log before it counts for the day before.")
         Spacer(Modifier.height(12.dp))
-        DropdownRow("Week starts on", HabitCopy.fullDays[store.weekStart - 1], Icons.Rounded.CalendarMonth,
+        DropdownRow("Week starts on", HabitCopy.fullDays[store.weekStart - 1], Symbols.CalendarMonth,
             HabitCopy.fullDays, store.weekStart - 1, "week-start") { store.chooseWeekStart(it + 1) }
         Note("Weekly goals, week streaks, the calendar and Progress count in these weeks, past weeks too.")
         GroupTitle("Clock")
         SegmentedList {
-            InfoRow(Icons.Outlined.Schedule, "Times follow your phone's 24-hour time setting, in Settings › System › Date & time.", 0, 2)
-            InfoRow(Icons.Outlined.Public, "Daylight saving and travel are handled for you: what you log keeps its day, and reminders keep their time.", 1, 2)
+            InfoRow(Symbols.Schedule, "Times follow your phone's 24-hour time setting, in Settings › System › Date & time.", 0, 2)
+            InfoRow(Symbols.Public, "Daylight saving and travel are handled for you: what you log keeps its day, and reminders keep their time.", 1, 2)
         }
     }
 }
@@ -123,7 +106,7 @@ fun AppearancePage(prefs: Prefs, onBack: () -> Unit) {
     FormPage("Appearance", chip = null, onBack = onBack) {
         GroupTitle("Theme")
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            listOf(Triple("light", "Light", Icons.Outlined.LightMode), Triple("dark", "Dark", Icons.Outlined.DarkMode), Triple("system", "System default", null))
+            listOf(Triple("light", "Light", Symbols.LightMode), Triple("dark", "Dark", Symbols.DarkMode), Triple("system", "System default", null))
                 .forEachIndexed { i, (key, title, icon) ->
                     val on = prefs.theme == key
                     val shape = when (i) { 0 -> RoundedCornerShape(24.dp, 4.dp, 4.dp, 24.dp); 2 -> RoundedCornerShape(4.dp, 24.dp, 24.dp, 4.dp); else -> RoundedCornerShape(4.dp) }
@@ -131,7 +114,7 @@ fun AppearancePage(prefs: Prefs, onBack: () -> Unit) {
                         .clickable { prefs.theme = key }.heightIn(min = 76.dp).padding(vertical = 12.dp)
                         .semantics { testTag = "theme-$key"; contentDescription = title + if (on) ", chosen" else "" },
                         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        val shown = if (on) Icons.Rounded.Check else icon
+                        val shown = if (on) Symbols.Check else icon
                         if (shown != null) Icon(shown, null, tint = if (on) appColors.onInk else appColors.ink)
                         Spacer(Modifier.height(6.dp))
                         Text(title, style = AppType.titleMedium, color = if (on) appColors.onInk else appColors.ink, maxLines = 1)
@@ -140,33 +123,30 @@ fun AppearancePage(prefs: Prefs, onBack: () -> Unit) {
         }
         Note("System default follows your phone: light by day and dark at night if you've set it to.")
         GroupTitle("Today")
-        DropdownRow("Done habits", if (prefs.doneOrder == "stay") "Stay in place" else "Move to bottom", Icons.AutoMirrored.Rounded.PlaylistAddCheck,
+        DropdownRow("Done habits", if (prefs.doneOrder == "stay") "Stay in place" else "Move to bottom", Symbols.PlaylistAddCheck,
             listOf("Move to bottom", "Stay in place"), if (prefs.doneOrder == "stay") 1 else 0, "done-order") { prefs.doneOrder = if (it == 1) "stay" else "bottom" }
         Note(if (prefs.doneOrder == "stay") "Done habits stay where they are. Your order never changes by itself."
             else "Done habits go below the rest once you pause, never while you're still ticking.")
         GroupTitle("When you tick")
         SegmentedList {
-            ToggleRow("Vibration", Icons.Rounded.Vibration, prefs.vibration, 0, 2, "vibration") { prefs.vibration = it }
-            ToggleRow("Sound when done", Icons.Rounded.MusicNote, prefs.sound, 1, 2, "sound") { prefs.sound = it }
+            ToggleRow("Vibration", Symbols.Vibration, prefs.vibration, 0, 2, "vibration") { prefs.vibration = it }
+            ToggleRow("Sound when done", Symbols.MusicNote, prefs.sound, 1, 2, "sound") { prefs.sound = it }
         }
         Note("A light buzz as you log, and a chime when a habit is done. The chime follows your phone's sound mode.")
         GroupTitle("Timers")
         SegmentedList {
-            ToggleRow("Open timer full screen", Icons.Rounded.CropFree, prefs.timerScreen, 0, 2, "timer-screen") { prefs.timerScreen = it }
-            ToggleRow("Show in notifications", Icons.Outlined.NotificationsActive, prefs.timerNotification, 1, 2, "timer-notification") { prefs.timerNotification = it }
+            ToggleRow("Open timer full screen", Symbols.CropFree, prefs.timerScreen, 0, 2, "timer-screen") { prefs.timerScreen = it }
+            ToggleRow("Show in notifications", Symbols.NotificationsActive, prefs.timerNotification, 1, 2, "timer-notification") { prefs.timerNotification = it }
         }
         Note("Starting a timer opens it full screen; swipe down to put it away while it keeps running. When you leave the app, a running timer stays in your notifications, on the lock screen and in the status bar, with Pause.")
     }
 }
 
+/** A setting that's on or off; the whole row is the toggle (List item, 2.4). */
 @Composable
-fun ToggleRow(title: String, icon: ImageVector?, checked: Boolean, index: Int, count: Int, tag: String, onChange: (Boolean) -> Unit) {
-    Segment(index, count, Modifier.semantics { testTag = tag }, onClick = { onChange(!checked) }) {
-        if (icon != null) { Icon(icon, null, tint = appColors.ink); Spacer(Modifier.width(24.dp)) }
-        Text(title, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-        InkSwitch(checked)
-    }
-}
+fun ToggleRow(title: String, icon: ImageVector?, checked: Boolean, index: Int, count: Int, tag: String, onChange: (Boolean) -> Unit) =
+    AppListItem(title, index, count, leading = icon?.let { { Icon(it, null) } }, trailing = { AppSwitch(checked) },
+        onClick = { onChange(!checked) }, tag = tag)
 
 // ------------------------------------------------------------------ Times of Day
 
@@ -179,31 +159,17 @@ fun TimesOfDayPage(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> U
             val timed = store.timedSections()
             SegmentedList {
                 val count = timed.size + 1
-                Segment(0, count, Modifier.semantics { testTag = "section-anytime" }) {
-                    Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                        Text("Anytime", style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                        Text("No set time", style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-                    }
-                }
+                AppListItem("Anytime", 0, count, supporting = "No set time", tag = "section-anytime")
                 timed.forEachIndexed { i, (s, _) ->
-                    Segment(i + 1, count, Modifier.semantics { testTag = "section-${s.name}" }, onClick = { onEdit(s.id) }) {
-                        Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                            Text(s.name, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                            Text(FormOutcome.hours(s, store) ?: "", style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-                        }
-                        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
-                    }
+                    AppListItem(s.name, i + 1, count, supporting = FormOutcome.hours(s, store) ?: "", trailing = { ListChevron() },
+                        onClick = { onEdit(s.id) }, tag = "section-${s.name}")
                 }
             }
             Note("Morning, Evening, or your own, like Before work. Each one ends when the next one starts.")
             Spacer(Modifier.height(80.dp))
         }
-        ExtendedFloatingActionButton({ onEdit(null) }, Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp).semantics { testTag = "add-section" },
-            containerColor = appColors.ink, contentColor = appColors.onInk) {
-            Icon(Icons.Rounded.Add, null)
-            Spacer(Modifier.width(12.dp))
-            Text("Add time of day", style = MaterialTheme.typography.titleMedium)
-        }
+        AppExtendedFab("Add time of day", Symbols.Add, { onEdit(null) },
+            Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp), tag = "add-section")
     }
 }
 
@@ -227,11 +193,8 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         onClose(subject.id)
     }
     FormPage(if (existing == null) "New time of day" else "Edit time of day", chip = null, onBack = { onClose(null) }, close = true, actions = {
-        Button({ if (plan?.split.isNullOrEmpty()) save() else confirmSplit = true }, Modifier.padding(end = 8.dp).semantics { testTag = "section-save" },
-            enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null,
-            colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk, disabledContainerColor = appColors.tonal, disabledContentColor = appColors.secondary)) {
-            Text(if (existing == null) "Add" else "Save")
-        }
+        AppButton(if (existing == null) "Add" else "Save", { if (plan?.split.isNullOrEmpty()) save() else confirmSplit = true },
+            Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null, tag = "section-save")
     }) {
         val focus = remember { FocusRequester() }
         LaunchedEffect(Unit) { if (existing == null) runCatching { focus.requestFocus() } }
@@ -266,7 +229,7 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
                         if (row.isSubject) {
                             Row(Modifier.clip(RoundedCornerShape(16.dp)).background(appColors.tonal).padding(start = 8.dp, end = 12.dp, top = 6.dp, bottom = 6.dp),
                                 verticalAlignment = Alignment.CenterVertically) {
-                                Icon(if (existing == null) Icons.Rounded.Add else Icons.Outlined.Edit, null, Modifier.size(18.dp), tint = appColors.ink)
+                                Icon(if (existing == null) Symbols.Add else Symbols.Edit, null, Modifier.size(18.dp), tint = appColors.ink)
                                 Spacer(Modifier.width(4.dp))
                                 Text(if (existing == null) "New" else "Editing", style = MaterialTheme.typography.labelLarge, color = appColors.ink)
                             }
@@ -279,28 +242,23 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         }
         if (existing != null) {
             Spacer(Modifier.height(24.dp))
-            Button({ confirmDelete = true }, Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { testTag = "section-delete" },
-                colors = ButtonDefaults.buttonColors(containerColor = appColors.tonal, contentColor = appColors.error)) {
-                Icon(Icons.Outlined.Delete, null)
-                Spacer(Modifier.width(8.dp))
-                Text("Delete time of day", style = MaterialTheme.typography.titleMedium)
-            }
+            AppButton("Delete time of day", { confirmDelete = true }, Modifier.fillMaxWidth(), style = ButtonStyle.Outlined,
+                size = ButtonSize.Medium, destructive = true, tag = "section-delete")
         }
     }
     if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }) { start = it }
     if (confirmSplit && plan != null) AlertDialog({ confirmSplit = false }, title = { Text("Split ${HabitCopy.join(plan.split.map { it.name })}?") },
         text = { Text(plan.rows.filter { it.isSubject || it.changed }.joinToString("\n") { "${it.name}: ${it.range}" }) },
-        confirmButton = { TextButton({ confirmSplit = false; save() }, Modifier.semantics { testTag = "section-split-confirm" }) {
-            Text(if (existing == null) "Split and add $trimmed" else "Split and save", color = appColors.ink) } },
-        dismissButton = { TextButton({ confirmSplit = false }) { Text("Cancel", color = appColors.ink) } })
+        confirmButton = { AppButton(if (existing == null) "Split and add $trimmed" else "Split and save", { confirmSplit = false; save() }, Modifier.semantics { testTag = "section-split-confirm" }, style = ButtonStyle.Text) },
+        dismissButton = { AppButton("Cancel", { confirmSplit = false }, style = ButtonStyle.Text) })
     if (confirmDelete && existing != null) AlertDialog({ confirmDelete = false }, title = { Text("Delete ${existing.name}?") },
         text = { Text("Its habits move to Anytime. Nothing else changes.") },
-        confirmButton = { TextButton({
+        confirmButton = { AppButton("Delete time of day", {
             confirmDelete = false
             store.saveSections(store.sections.filter { it.id != existing.id })
             onClose(null)
-        }, Modifier.semantics { testTag = "section-delete-confirm" }) { Text("Delete time of day", color = appColors.error) } },
-        dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = appColors.ink) } })
+        }, Modifier.semantics { testTag = "section-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
+        dismissButton = { AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text) })
 }
 
 /** "🕒 Starts / 6:00 AM": a big clock time that opens Android's time picker. */
@@ -313,10 +271,10 @@ private fun StartTile(minute: Int?, endWords: String?, onClick: () -> Unit) {
         .semantics(mergeDescendants = true) { testTag = "section-start"; contentDescription = "Starts, ${text ?: "not chosen"}" + (endWords?.let { ". $it" } ?: "") }
         .padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Outlined.Schedule, null, Modifier.size(20.dp), tint = appColors.secondary)
+            Icon(Symbols.Schedule, null, Modifier.size(20.dp), tint = appColors.secondary)
             Spacer(Modifier.width(8.dp))
             Text("Starts", Modifier.weight(1f), style = AppType.titleMedium, color = appColors.secondary)
-            Icon(Icons.Outlined.Edit, null, Modifier.size(20.dp), tint = appColors.ink)
+            Icon(Symbols.Edit, null, Modifier.size(20.dp), tint = appColors.ink)
         }
         Row(verticalAlignment = Alignment.Bottom) {
             Text(main, style = AppType.displayMedium.copy(color = appColors.ink))

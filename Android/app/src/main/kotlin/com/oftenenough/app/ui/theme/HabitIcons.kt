@@ -1,13 +1,10 @@
 package com.oftenenough.app.ui.theme
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * Habit icons are saved by the iPhone's symbol names (SF Symbols: "drop.fill"), so a habit keeps its icon on every
- * device; Android draws each with the nearest Material icon. The groups are the iPhone's icon picker's
+ * device; Android draws each with the nearest Material Symbol, filled (`Symbols.Filled`). The groups are the iPhone's icon picker's
  * (iOS/Habits/AddHabit/Appearance.swift), in the same order.
  */
 object HabitIcons {
@@ -26,90 +23,90 @@ object HabitIcons {
     )
 
     private val map: Map<String, ImageVector> = mapOf(
-        "heart.fill" to Icons.Rounded.Favorite, "pills.fill" to Icons.Rounded.Medication, "cross.case.fill" to Icons.Rounded.MedicalServices,
-        "drop.fill" to Icons.Rounded.WaterDrop, "lungs.fill" to Icons.Rounded.Air, "brain.head.profile" to Icons.Rounded.Psychology,
-        "bandage.fill" to Icons.Rounded.Healing, "mouth.fill" to Icons.Rounded.Mood, "eye.fill" to Icons.Rounded.Visibility,
-        "bed.double.fill" to Icons.Rounded.Bed, "allergens" to Icons.Rounded.Grass, "stethoscope" to Icons.Rounded.LocalHospital,
-        "figure.walk" to Icons.Rounded.DirectionsWalk, "figure.run" to Icons.Rounded.DirectionsRun,
-        "figure.flexibility" to Icons.Rounded.SportsGymnastics, "figure.strengthtraining.traditional" to Icons.Rounded.FitnessCenter,
-        "figure.yoga" to Icons.Rounded.SelfImprovement, "figure.pool.swim" to Icons.Rounded.Pool, "bicycle" to Icons.Rounded.DirectionsBike,
-        "dumbbell.fill" to Icons.Rounded.FitnessCenter, "figure.hiking" to Icons.Rounded.Hiking, "sportscourt.fill" to Icons.Rounded.SportsTennis,
-        "stopwatch.fill" to Icons.Rounded.Timer, "shoeprints.fill" to Icons.Rounded.NordicWalking,
-        "figure.mind.and.body" to Icons.Rounded.SelfImprovement, "book.fill" to Icons.Rounded.MenuBook, "brain" to Icons.Rounded.Psychology,
-        "pencil" to Icons.Rounded.Edit, "text.book.closed.fill" to Icons.Rounded.Book, "lightbulb.fill" to Icons.Rounded.Lightbulb,
-        "music.note" to Icons.Rounded.MusicNote, "paintpalette.fill" to Icons.Rounded.Palette, "guitars.fill" to Icons.Rounded.Piano,
-        "headphones" to Icons.Rounded.Headphones, "character.book.closed.fill" to Icons.Rounded.Translate, "sparkles" to Icons.Rounded.AutoAwesome,
-        "house.fill" to Icons.Rounded.Home, "washer.fill" to Icons.Rounded.LocalLaundryService, "dishwasher.fill" to Icons.Rounded.Countertops,
-        "sink.fill" to Icons.Rounded.Wash, "refrigerator.fill" to Icons.Rounded.Kitchen, "trash.fill" to Icons.Rounded.Delete,
-        "leaf.fill" to Icons.Rounded.Eco, "pawprint.fill" to Icons.Rounded.Pets, "cart.fill" to Icons.Rounded.ShoppingCart,
-        "tshirt.fill" to Icons.Rounded.Checkroom, "shower.fill" to Icons.Rounded.Shower,
-        "laptopcomputer" to Icons.Rounded.Laptop, "briefcase.fill" to Icons.Rounded.Work, "envelope.fill" to Icons.Rounded.Email,
-        "phone.fill" to Icons.Rounded.Phone, "calendar" to Icons.Rounded.CalendarMonth, "checklist" to Icons.Rounded.Checklist,
-        "clock.fill" to Icons.Rounded.Schedule, "chart.bar.fill" to Icons.Rounded.BarChart, "graduationcap.fill" to Icons.Rounded.School,
-        "dollarsign.circle.fill" to Icons.Rounded.MonetizationOn, "person.2.fill" to Icons.Rounded.People, "bubble.left.fill" to Icons.Rounded.ChatBubble,
-        "hands.and.sparkles.fill" to Icons.Rounded.VolunteerActivism, "book.closed.fill" to Icons.Rounded.AutoStories,
-        "moon.stars.fill" to Icons.Rounded.Bedtime, "sun.max.fill" to Icons.Rounded.WbSunny, "sunrise.fill" to Icons.Rounded.WbTwilight,
-        "building.columns.fill" to Icons.Rounded.AccountBalance, "heart.text.square.fill" to Icons.Rounded.Loyalty, "star.fill" to Icons.Rounded.Star,
-        "fork.knife" to Icons.Rounded.Restaurant, "cup.and.saucer.fill" to Icons.Rounded.Coffee, "carrot.fill" to Icons.Rounded.Agriculture,
-        "fish.fill" to Icons.Rounded.SetMeal, "takeoutbag.and.cup.and.straw.fill" to Icons.Rounded.Fastfood, "birthday.cake.fill" to Icons.Rounded.Cake,
-        "mug.fill" to Icons.Rounded.EmojiFoodBeverage, "wineglass" to Icons.Rounded.WineBar,
-        "nosign" to Icons.Rounded.Block, "smoke.fill" to Icons.Rounded.SmokeFree, "iphone.slash" to Icons.Rounded.Smartphone,
-        "gamecontroller.fill" to Icons.Rounded.SportsEsports, "tv.fill" to Icons.Rounded.Tv, "cart.badge.minus" to Icons.Rounded.RemoveShoppingCart,
-        "hand.raised.fill" to Icons.Rounded.PanTool, "bolt.slash.fill" to Icons.Rounded.FlashOff,
-        "flame.fill" to Icons.Rounded.LocalFireDepartment, "bolt.fill" to Icons.Rounded.Bolt, "target" to Icons.Rounded.TrackChanges,
-        "flag.fill" to Icons.Rounded.Flag, "gift.fill" to Icons.Rounded.CardGiftcard, "camera.fill" to Icons.Rounded.PhotoCamera,
-        "globe" to Icons.Rounded.Public, "airplane" to Icons.Rounded.Flight, "car.fill" to Icons.Rounded.DirectionsCar, "tree.fill" to Icons.Rounded.Park,
-        "plus.forwardslash.minus" to Icons.Rounded.Calculate, "timer" to Icons.Rounded.Timer, "trophy.fill" to Icons.Rounded.EmojiEvents,
+        "heart.fill" to Symbols.Filled.Favorite, "pills.fill" to Symbols.Filled.Medication, "cross.case.fill" to Symbols.Filled.MedicalServices,
+        "drop.fill" to Symbols.Filled.WaterDrop, "lungs.fill" to Symbols.Filled.Air, "brain.head.profile" to Symbols.Filled.Psychology,
+        "bandage.fill" to Symbols.Filled.Healing, "mouth.fill" to Symbols.Filled.Mood, "eye.fill" to Symbols.Filled.Visibility,
+        "bed.double.fill" to Symbols.Filled.Bed, "allergens" to Symbols.Filled.Grass, "stethoscope" to Symbols.Filled.LocalHospital,
+        "figure.walk" to Symbols.Filled.DirectionsWalk, "figure.run" to Symbols.Filled.DirectionsRun,
+        "figure.flexibility" to Symbols.Filled.SportsGymnastics, "figure.strengthtraining.traditional" to Symbols.Filled.FitnessCenter,
+        "figure.yoga" to Symbols.Filled.SelfImprovement, "figure.pool.swim" to Symbols.Filled.Pool, "bicycle" to Symbols.Filled.DirectionsBike,
+        "dumbbell.fill" to Symbols.Filled.FitnessCenter, "figure.hiking" to Symbols.Filled.Hiking, "sportscourt.fill" to Symbols.Filled.SportsTennis,
+        "stopwatch.fill" to Symbols.Filled.Timer, "shoeprints.fill" to Symbols.Filled.NordicWalking,
+        "figure.mind.and.body" to Symbols.Filled.SelfImprovement, "book.fill" to Symbols.Filled.MenuBook, "brain" to Symbols.Filled.Psychology,
+        "pencil" to Symbols.Filled.Edit, "text.book.closed.fill" to Symbols.Filled.Book, "lightbulb.fill" to Symbols.Filled.Lightbulb,
+        "music.note" to Symbols.Filled.MusicNote, "paintpalette.fill" to Symbols.Filled.Palette, "guitars.fill" to Symbols.Filled.Piano,
+        "headphones" to Symbols.Filled.Headphones, "character.book.closed.fill" to Symbols.Filled.Translate, "sparkles" to Symbols.Filled.AutoAwesome,
+        "house.fill" to Symbols.Filled.Home, "washer.fill" to Symbols.Filled.LocalLaundryService, "dishwasher.fill" to Symbols.Filled.Countertops,
+        "sink.fill" to Symbols.Filled.Wash, "refrigerator.fill" to Symbols.Filled.Kitchen, "trash.fill" to Symbols.Filled.Delete,
+        "leaf.fill" to Symbols.Filled.Eco, "pawprint.fill" to Symbols.Filled.Pets, "cart.fill" to Symbols.Filled.ShoppingCart,
+        "tshirt.fill" to Symbols.Filled.Checkroom, "shower.fill" to Symbols.Filled.Shower,
+        "laptopcomputer" to Symbols.Filled.Laptop, "briefcase.fill" to Symbols.Filled.Work, "envelope.fill" to Symbols.Filled.Mail,
+        "phone.fill" to Symbols.Filled.Phone, "calendar" to Symbols.Filled.CalendarMonth, "checklist" to Symbols.Filled.Checklist,
+        "clock.fill" to Symbols.Filled.Schedule, "chart.bar.fill" to Symbols.Filled.BarChart, "graduationcap.fill" to Symbols.Filled.School,
+        "dollarsign.circle.fill" to Symbols.Filled.MonetizationOn, "person.2.fill" to Symbols.Filled.People, "bubble.left.fill" to Symbols.Filled.ChatBubble,
+        "hands.and.sparkles.fill" to Symbols.Filled.VolunteerActivism, "book.closed.fill" to Symbols.Filled.AutoStories,
+        "moon.stars.fill" to Symbols.Filled.Bedtime, "sun.max.fill" to Symbols.Filled.WbSunny, "sunrise.fill" to Symbols.Filled.WbTwilight,
+        "building.columns.fill" to Symbols.Filled.AccountBalance, "heart.text.square.fill" to Symbols.Filled.Loyalty, "star.fill" to Symbols.Filled.Star,
+        "fork.knife" to Symbols.Filled.Restaurant, "cup.and.saucer.fill" to Symbols.Filled.Coffee, "carrot.fill" to Symbols.Filled.Agriculture,
+        "fish.fill" to Symbols.Filled.SetMeal, "takeoutbag.and.cup.and.straw.fill" to Symbols.Filled.Fastfood, "birthday.cake.fill" to Symbols.Filled.Cake,
+        "mug.fill" to Symbols.Filled.EmojiFoodBeverage, "wineglass" to Symbols.Filled.WineBar,
+        "nosign" to Symbols.Filled.Block, "smoke.fill" to Symbols.Filled.SmokeFree, "iphone.slash" to Symbols.Filled.Smartphone,
+        "gamecontroller.fill" to Symbols.Filled.SportsEsports, "tv.fill" to Symbols.Filled.Tv, "cart.badge.minus" to Symbols.Filled.RemoveShoppingCart,
+        "hand.raised.fill" to Symbols.Filled.PanTool, "bolt.slash.fill" to Symbols.Filled.FlashOff,
+        "flame.fill" to Symbols.Filled.LocalFireDepartment, "bolt.fill" to Symbols.Filled.Bolt, "target" to Symbols.Filled.TrackChanges,
+        "flag.fill" to Symbols.Filled.Flag, "gift.fill" to Symbols.Filled.CardGiftcard, "camera.fill" to Symbols.Filled.PhotoCamera,
+        "globe" to Symbols.Filled.Public, "airplane" to Symbols.Filled.Flight, "car.fill" to Symbols.Filled.DirectionsCar, "tree.fill" to Symbols.Filled.Park,
+        "plus.forwardslash.minus" to Symbols.Filled.Calculate, "timer" to Symbols.Filled.Timer, "trophy.fill" to Symbols.Filled.EmojiEvents,
         // Symbols the iPhone's ideas and tasks use outside the picker.
-        "shippingbox.fill" to Icons.Rounded.Inventory2, "creditcard.fill" to Icons.Rounded.CreditCard, "banknote.fill" to Icons.Rounded.Payments,
-        "checkmark.circle.fill" to Icons.Rounded.CheckCircle, "list.bullet" to Icons.Rounded.Checklist, "figure.cooldown" to Icons.Rounded.SportsGymnastics,
-        "sun.horizon.fill" to Icons.Rounded.WbTwilight, "moon.fill" to Icons.Rounded.Bedtime, "drop" to Icons.Rounded.WaterDrop,
-        "phone.down.fill" to Icons.Rounded.PhoneDisabled, "wind" to Icons.Rounded.Air, "flower" to Icons.Rounded.LocalFlorist,
-        "camera.macro" to Icons.Rounded.LocalFlorist, "repeat" to Icons.Rounded.Repeat, "square.and.pencil" to Icons.Rounded.EditNote,
+        "shippingbox.fill" to Symbols.Filled.Inventory2, "creditcard.fill" to Symbols.Filled.CreditCard, "banknote.fill" to Symbols.Filled.Payments,
+        "checkmark.circle.fill" to Symbols.Filled.CheckCircle, "list.bullet" to Symbols.Filled.Checklist, "figure.cooldown" to Symbols.Filled.SportsGymnastics,
+        "sun.horizon.fill" to Symbols.Filled.WbTwilight, "moon.fill" to Symbols.Filled.Bedtime, "drop" to Symbols.Filled.WaterDrop,
+        "phone.down.fill" to Symbols.Filled.PhoneDisabled, "wind" to Symbols.Filled.Air, "flower" to Symbols.Filled.LocalFlorist,
+        "camera.macro" to Symbols.Filled.LocalFlorist, "repeat" to Symbols.Filled.Repeat, "square.and.pencil" to Symbols.Filled.EditNote,
     )
 
     /** The same icons outlined, as the picker draws them (Figma 2.1.1: Material Symbols, fill 0); a habit's own circle stays filled. */
     private val outlinedMap: Map<String, ImageVector> = mapOf(
-        "heart.fill" to Icons.Outlined.FavoriteBorder, "pills.fill" to Icons.Outlined.Medication, "cross.case.fill" to Icons.Outlined.MedicalServices,
-        "drop.fill" to Icons.Outlined.WaterDrop, "lungs.fill" to Icons.Outlined.Air, "brain.head.profile" to Icons.Outlined.Psychology,
-        "bandage.fill" to Icons.Outlined.Healing, "mouth.fill" to Icons.Outlined.Mood, "eye.fill" to Icons.Outlined.Visibility,
-        "bed.double.fill" to Icons.Outlined.Bed, "allergens" to Icons.Outlined.Grass, "stethoscope" to Icons.Outlined.LocalHospital,
-        "figure.walk" to Icons.Outlined.DirectionsWalk, "figure.run" to Icons.Outlined.DirectionsRun,
-        "figure.flexibility" to Icons.Outlined.SportsGymnastics, "figure.strengthtraining.traditional" to Icons.Outlined.FitnessCenter,
-        "figure.yoga" to Icons.Outlined.SelfImprovement, "figure.pool.swim" to Icons.Outlined.Pool, "bicycle" to Icons.Outlined.DirectionsBike,
-        "dumbbell.fill" to Icons.Outlined.FitnessCenter, "figure.hiking" to Icons.Outlined.Hiking, "sportscourt.fill" to Icons.Outlined.SportsTennis,
-        "stopwatch.fill" to Icons.Outlined.Timer, "shoeprints.fill" to Icons.Outlined.NordicWalking,
-        "figure.mind.and.body" to Icons.Outlined.SelfImprovement, "book.fill" to Icons.Outlined.MenuBook, "brain" to Icons.Outlined.Psychology,
-        "pencil" to Icons.Outlined.Edit, "text.book.closed.fill" to Icons.Outlined.Book, "lightbulb.fill" to Icons.Outlined.Lightbulb,
-        "music.note" to Icons.Outlined.MusicNote, "paintpalette.fill" to Icons.Outlined.Palette, "guitars.fill" to Icons.Outlined.Piano,
-        "headphones" to Icons.Outlined.Headphones, "character.book.closed.fill" to Icons.Outlined.Translate, "sparkles" to Icons.Outlined.AutoAwesome,
-        "house.fill" to Icons.Outlined.Home, "washer.fill" to Icons.Outlined.LocalLaundryService, "dishwasher.fill" to Icons.Outlined.Countertops,
-        "sink.fill" to Icons.Outlined.Wash, "refrigerator.fill" to Icons.Outlined.Kitchen, "trash.fill" to Icons.Outlined.Delete,
-        "leaf.fill" to Icons.Outlined.Eco, "pawprint.fill" to Icons.Outlined.Pets, "cart.fill" to Icons.Outlined.ShoppingCart,
-        "tshirt.fill" to Icons.Outlined.Checkroom, "shower.fill" to Icons.Outlined.Shower,
-        "laptopcomputer" to Icons.Outlined.Laptop, "briefcase.fill" to Icons.Outlined.Work, "envelope.fill" to Icons.Outlined.Email,
-        "phone.fill" to Icons.Outlined.Phone, "calendar" to Icons.Outlined.CalendarMonth, "checklist" to Icons.Outlined.Checklist,
-        "clock.fill" to Icons.Outlined.Schedule, "chart.bar.fill" to Icons.Outlined.BarChart, "graduationcap.fill" to Icons.Outlined.School,
-        "dollarsign.circle.fill" to Icons.Outlined.MonetizationOn, "person.2.fill" to Icons.Outlined.People, "bubble.left.fill" to Icons.Outlined.ChatBubble,
-        "hands.and.sparkles.fill" to Icons.Outlined.VolunteerActivism, "book.closed.fill" to Icons.Outlined.AutoStories,
-        "moon.stars.fill" to Icons.Outlined.Bedtime, "sun.max.fill" to Icons.Outlined.WbSunny, "sunrise.fill" to Icons.Outlined.WbTwilight,
-        "building.columns.fill" to Icons.Outlined.AccountBalance, "heart.text.square.fill" to Icons.Outlined.Loyalty, "star.fill" to Icons.Outlined.StarOutline,
-        "fork.knife" to Icons.Outlined.Restaurant, "cup.and.saucer.fill" to Icons.Outlined.Coffee, "carrot.fill" to Icons.Outlined.Agriculture,
-        "fish.fill" to Icons.Outlined.SetMeal, "takeoutbag.and.cup.and.straw.fill" to Icons.Outlined.Fastfood, "birthday.cake.fill" to Icons.Outlined.Cake,
-        "mug.fill" to Icons.Outlined.EmojiFoodBeverage, "wineglass" to Icons.Outlined.WineBar,
-        "nosign" to Icons.Outlined.Block, "smoke.fill" to Icons.Outlined.SmokeFree, "iphone.slash" to Icons.Outlined.Smartphone,
-        "gamecontroller.fill" to Icons.Outlined.SportsEsports, "tv.fill" to Icons.Outlined.Tv, "cart.badge.minus" to Icons.Outlined.RemoveShoppingCart,
-        "hand.raised.fill" to Icons.Outlined.PanTool, "bolt.slash.fill" to Icons.Outlined.FlashOff,
-        "flame.fill" to Icons.Outlined.LocalFireDepartment, "bolt.fill" to Icons.Outlined.Bolt, "target" to Icons.Outlined.TrackChanges,
-        "flag.fill" to Icons.Outlined.Flag, "gift.fill" to Icons.Outlined.CardGiftcard, "camera.fill" to Icons.Outlined.PhotoCamera,
-        "globe" to Icons.Outlined.Public, "airplane" to Icons.Outlined.Flight, "car.fill" to Icons.Outlined.DirectionsCar, "tree.fill" to Icons.Outlined.Park,
-        "plus.forwardslash.minus" to Icons.Outlined.Calculate, "timer" to Icons.Outlined.Timer, "trophy.fill" to Icons.Outlined.EmojiEvents,
+        "heart.fill" to Symbols.Favorite, "pills.fill" to Symbols.Medication, "cross.case.fill" to Symbols.MedicalServices,
+        "drop.fill" to Symbols.WaterDrop, "lungs.fill" to Symbols.Air, "brain.head.profile" to Symbols.Psychology,
+        "bandage.fill" to Symbols.Healing, "mouth.fill" to Symbols.Mood, "eye.fill" to Symbols.Visibility,
+        "bed.double.fill" to Symbols.Bed, "allergens" to Symbols.Grass, "stethoscope" to Symbols.LocalHospital,
+        "figure.walk" to Symbols.DirectionsWalk, "figure.run" to Symbols.DirectionsRun,
+        "figure.flexibility" to Symbols.SportsGymnastics, "figure.strengthtraining.traditional" to Symbols.FitnessCenter,
+        "figure.yoga" to Symbols.SelfImprovement, "figure.pool.swim" to Symbols.Pool, "bicycle" to Symbols.DirectionsBike,
+        "dumbbell.fill" to Symbols.FitnessCenter, "figure.hiking" to Symbols.Hiking, "sportscourt.fill" to Symbols.SportsTennis,
+        "stopwatch.fill" to Symbols.Timer, "shoeprints.fill" to Symbols.NordicWalking,
+        "figure.mind.and.body" to Symbols.SelfImprovement, "book.fill" to Symbols.MenuBook, "brain" to Symbols.Psychology,
+        "pencil" to Symbols.Edit, "text.book.closed.fill" to Symbols.Book, "lightbulb.fill" to Symbols.Lightbulb,
+        "music.note" to Symbols.MusicNote, "paintpalette.fill" to Symbols.Palette, "guitars.fill" to Symbols.Piano,
+        "headphones" to Symbols.Headphones, "character.book.closed.fill" to Symbols.Translate, "sparkles" to Symbols.AutoAwesome,
+        "house.fill" to Symbols.Home, "washer.fill" to Symbols.LocalLaundryService, "dishwasher.fill" to Symbols.Countertops,
+        "sink.fill" to Symbols.Wash, "refrigerator.fill" to Symbols.Kitchen, "trash.fill" to Symbols.Delete,
+        "leaf.fill" to Symbols.Eco, "pawprint.fill" to Symbols.Pets, "cart.fill" to Symbols.ShoppingCart,
+        "tshirt.fill" to Symbols.Checkroom, "shower.fill" to Symbols.Shower,
+        "laptopcomputer" to Symbols.Laptop, "briefcase.fill" to Symbols.Work, "envelope.fill" to Symbols.Mail,
+        "phone.fill" to Symbols.Phone, "calendar" to Symbols.CalendarMonth, "checklist" to Symbols.Checklist,
+        "clock.fill" to Symbols.Schedule, "chart.bar.fill" to Symbols.BarChart, "graduationcap.fill" to Symbols.School,
+        "dollarsign.circle.fill" to Symbols.MonetizationOn, "person.2.fill" to Symbols.People, "bubble.left.fill" to Symbols.ChatBubble,
+        "hands.and.sparkles.fill" to Symbols.VolunteerActivism, "book.closed.fill" to Symbols.AutoStories,
+        "moon.stars.fill" to Symbols.Bedtime, "sun.max.fill" to Symbols.WbSunny, "sunrise.fill" to Symbols.WbTwilight,
+        "building.columns.fill" to Symbols.AccountBalance, "heart.text.square.fill" to Symbols.Loyalty, "star.fill" to Symbols.Star,
+        "fork.knife" to Symbols.Restaurant, "cup.and.saucer.fill" to Symbols.Coffee, "carrot.fill" to Symbols.Agriculture,
+        "fish.fill" to Symbols.SetMeal, "takeoutbag.and.cup.and.straw.fill" to Symbols.Fastfood, "birthday.cake.fill" to Symbols.Cake,
+        "mug.fill" to Symbols.EmojiFoodBeverage, "wineglass" to Symbols.WineBar,
+        "nosign" to Symbols.Block, "smoke.fill" to Symbols.SmokeFree, "iphone.slash" to Symbols.Smartphone,
+        "gamecontroller.fill" to Symbols.SportsEsports, "tv.fill" to Symbols.Tv, "cart.badge.minus" to Symbols.RemoveShoppingCart,
+        "hand.raised.fill" to Symbols.PanTool, "bolt.slash.fill" to Symbols.FlashOff,
+        "flame.fill" to Symbols.LocalFireDepartment, "bolt.fill" to Symbols.Bolt, "target" to Symbols.TrackChanges,
+        "flag.fill" to Symbols.Flag, "gift.fill" to Symbols.CardGiftcard, "camera.fill" to Symbols.PhotoCamera,
+        "globe" to Symbols.Public, "airplane" to Symbols.Flight, "car.fill" to Symbols.DirectionsCar, "tree.fill" to Symbols.Park,
+        "plus.forwardslash.minus" to Symbols.Calculate, "timer" to Symbols.Timer, "trophy.fill" to Symbols.EmojiEvents,
         // Symbols the iPhone's ideas and tasks use outside the picker.
-        "shippingbox.fill" to Icons.Outlined.Inventory2, "creditcard.fill" to Icons.Outlined.CreditCard, "banknote.fill" to Icons.Outlined.Payments,
-        "checkmark.circle.fill" to Icons.Outlined.CheckCircle, "list.bullet" to Icons.Outlined.Checklist, "figure.cooldown" to Icons.Outlined.SportsGymnastics,
-        "sun.horizon.fill" to Icons.Outlined.WbTwilight, "moon.fill" to Icons.Outlined.Bedtime, "drop" to Icons.Outlined.WaterDrop,
-        "phone.down.fill" to Icons.Outlined.PhoneDisabled, "wind" to Icons.Outlined.Air, "flower" to Icons.Outlined.LocalFlorist,
-        "camera.macro" to Icons.Outlined.LocalFlorist, "repeat" to Icons.Outlined.Repeat, "square.and.pencil" to Icons.Outlined.EditNote,
+        "shippingbox.fill" to Symbols.Inventory2, "creditcard.fill" to Symbols.CreditCard, "banknote.fill" to Symbols.Payments,
+        "checkmark.circle.fill" to Symbols.CheckCircle, "list.bullet" to Symbols.Checklist, "figure.cooldown" to Symbols.SportsGymnastics,
+        "sun.horizon.fill" to Symbols.WbTwilight, "moon.fill" to Symbols.Bedtime, "drop" to Symbols.WaterDrop,
+        "phone.down.fill" to Symbols.PhoneDisabled, "wind" to Symbols.Air, "flower" to Symbols.LocalFlorist,
+        "camera.macro" to Symbols.LocalFlorist, "repeat" to Symbols.Repeat, "square.and.pencil" to Symbols.EditNote,
     )
 
     /** Extra words for search (the iPhone's `IconLibrary.keywords`). */
@@ -139,9 +136,9 @@ object HabitIcons {
         "laptopcomputer" to listOf("work", "code", "computer"), "clock.fill" to listOf("time", "early"), "person.2.fill" to listOf("friends", "social"),
     )
 
-    fun icon(symbol: String): ImageVector = map[symbol] ?: Icons.Rounded.Star
+    fun icon(symbol: String): ImageVector = map[symbol] ?: Symbols.Filled.Star
 
-    fun outlined(symbol: String): ImageVector = outlinedMap[symbol] ?: Icons.Outlined.StarOutline
+    fun outlined(symbol: String): ImageVector = outlinedMap[symbol] ?: Symbols.Star
 
     /** TalkBack's name for an icon. */
     fun spokenName(symbol: String): String = keywords[symbol]?.firstOrNull() ?: symbol.replace(".fill", "").replace(".", " ")

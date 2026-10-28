@@ -1,5 +1,12 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.components.AppMenuItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.SearchHeader
+import com.oftenenough.app.ui.components.AppTopBar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,26 +20,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Undo
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.TaskAlt
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -155,32 +151,29 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
     Box(Modifier.fillMaxSize().background(c.screen)) {
         Column(Modifier.fillMaxSize()) {
             when {
-                searching -> SearchBar(query, { query = it }, onBack = { searching = false; query = "" }, placeholder = "Search completed tasks")
-                selecting -> TopAppBar(
-                    title = { Text(if (chosen.isEmpty()) "Select tasks" else "${chosen.size} selected") },
-                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "completed-end-selection" }) { Icon(Icons.Rounded.Close, "Stop selecting") } },
+                searching -> SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search completed tasks",
+                    fieldTag = "habits-search-field", backTag = "habits-search-back", clearTag = "habits-search-clear")
+                selecting -> AppTopBar(
+                    if (chosen.isEmpty()) "Select tasks" else "${chosen.size} selected",
+                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "completed-end-selection" }) { Icon(Symbols.Close, "Stop selecting") } },
                     actions = {
                         val everything = deletable.isNotEmpty() && chosen.containsAll(deletable)
-                        TextButton({ chosen = if (everything) emptySet() else deletable }, Modifier.padding(end = 4.dp).semantics { testTag = "completed-select-all" }) {
-                            Text(if (everything) "Deselect all" else "Select all", style = AppType.labelLarge, color = c.ink)
-                        }
+                        AppButton(if (everything) "Deselect all" else "Select all", { chosen = if (everything) emptySet() else deletable }, Modifier.padding(end = 4.dp).semantics { testTag = "completed-select-all" }, style = ButtonStyle.Text)
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = c.tonal, titleContentColor = c.ink, navigationIconContentColor = c.ink),
+                    containerColor = c.tonal,
                 )
-                else -> TopAppBar(
-                    title = { Text("Completed") },
-                    navigationIcon = { IconButton(nav::back, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
+                else -> AppTopBar(
+                    "Completed",
+                    navigationIcon = { IconButton(nav::back, Modifier.semantics { testTag = "page-back" }) { Icon(Symbols.ArrowBack, "Back") } },
                     actions = {
-                        if (all.isNotEmpty()) IconButton({ searching = true }, Modifier.semantics { testTag = "completed-search" }) { Icon(Icons.Rounded.Search, "Search completed tasks") }
+                        if (all.isNotEmpty()) IconButton({ searching = true }, Modifier.semantics { testTag = "completed-search" }) { Icon(Symbols.Search, "Search completed tasks") }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, titleContentColor = c.ink,
-                        navigationIconContentColor = c.ink, actionIconContentColor = c.ink),
                 )
             }
             if (all.isEmpty()) {
                 Column(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 32.dp).semantics { testTag = "completed-empty" },
                     horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    CookieIcon(Icons.Rounded.TaskAlt, 112.dp)
+                    CookieIcon(Symbols.TaskAlt, 112.dp)
                     Spacer(Modifier.height(24.dp))
                     Text("Nothing completed yet", style = AppType.titleLarge, color = c.ink)
                     Spacer(Modifier.height(12.dp))
@@ -203,7 +196,7 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
                                 onClick = { if (selecting) toggle(d.task) else nav.open(d.task) },
                                 onLongClick = { if (d.task.id in deletable) { selecting = true; toggle(d.task) } },
                                 menu = if (selecting) null else { _, dismiss ->
-                                    MenuItem("Mark as not done", Icons.AutoMirrored.Outlined.Undo, "completed-menu-not-done") { dismiss(); notDone(d) }
+                                    AppMenuItem("Mark as not done", { dismiss(); notDone(d) }, icon = Symbols.Undo, tag = "completed-menu-not-done")
                                 })
                         }
                     }
@@ -212,11 +205,11 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
             }
             if (selecting) Surface(color = c.surface, tonalElevation = 3.dp) {
                 Row(Modifier.fillMaxWidth().navigationBarsPadding().padding(8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    BarAction("Delete", Icons.Outlined.Delete, marked.isNotEmpty(), "completed-delete", { deleting = marked }, danger = true)
+                    BarAction("Delete", Symbols.Delete, marked.isNotEmpty(), "completed-delete", { deleting = marked }, danger = true)
                 }
             }
         }
-        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
+        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
     }
     if (deleting.isNotEmpty()) {
         val list = deleting
@@ -226,8 +219,8 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
             title = { Text(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} completed tasks?") },
             text = { Text(if (one) "It's gone for good once the next screen closes, with its notes. Your open tasks aren't touched."
                 else "They're gone for good once the next screen closes, with their notes. Your open tasks aren't touched.") },
-            confirmButton = { TextButton({ deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }) { Text("Delete", color = c.error) } },
-            dismissButton = { TextButton({ deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }) { Text("Cancel", color = c.ink) } },
+            confirmButton = { AppButton("Delete", { deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
+            dismissButton = { AppButton("Cancel", { deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }, style = ButtonStyle.Text) },
             containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
     }
 }

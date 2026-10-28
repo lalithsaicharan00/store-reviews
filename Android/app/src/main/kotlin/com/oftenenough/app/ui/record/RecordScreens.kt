@@ -1,11 +1,19 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.components.SegmentedListGap
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.NavigationIcon
+import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,7 +29,6 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -29,15 +36,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -72,7 +72,6 @@ import com.oftenenough.app.data.clockText
 import com.oftenenough.app.data.description
 import com.oftenenough.app.data.opensRecord
 import com.oftenenough.app.data.originLine
-import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.day.StepCheck
 import com.oftenenough.app.ui.day.logCount
@@ -83,22 +82,18 @@ import java.time.ZoneId
 /** ✕ (or ←) and a one-line title (U18; Figma: 64 high, Title Large Emphasized). */
 @Composable
 fun RecordTopBar(title: String, close: Boolean = true, onClose: () -> Unit, actions: @Composable () -> Unit = {}) {
-    Row(Modifier.fillMaxWidth().statusBarsPadding().height(64.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClose, Modifier.semantics { testTag = "record-close" }) {
-            if (close) Icon(Icons.Rounded.Close, "Cancel", tint = appColors.ink) else Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = appColors.ink)
-        }
-        Spacer(Modifier.width(4.dp))
-        Text(title, Modifier.weight(1f), style = AppType.titleLargeEmphasized, color = appColors.ink, maxLines = 1)
-        actions()
-    }
+    AppTopBar(title, navigationIcon = {
+        if (close) NavigationIcon(Symbols.Close, "Cancel", onClose, Modifier.semantics { testTag = "record-close" })
+        else NavigationIcon(Symbols.ArrowBack, "Back", onClose, Modifier.semantics { testTag = "record-close" })
+    }, actions = { actions() })
 }
 
 /** Keep editing / Discard changes: asked before closing anything typed (D7: back never loses typing). */
 @Composable
 fun DiscardDialog(title: String, onKeep: () -> Unit, onDiscard: () -> Unit, keepLabel: String = "Keep editing") {
     AlertDialog(onKeep, title = { Text(title) },
-        confirmButton = { TextButton(onDiscard, Modifier.semantics { testTag = "discard" }) { Text("Discard changes", color = appColors.error) } },
-        dismissButton = { TextButton(onKeep, Modifier.semantics { testTag = "keep-editing" }) { Text(keepLabel, color = appColors.ink) } })
+        confirmButton = { AppButton("Discard changes", onDiscard, Modifier.semantics { testTag = "discard" }, style = ButtonStyle.Text, destructive = true) },
+        dismissButton = { AppButton(keepLabel, onKeep, Modifier.semantics { testTag = "keep-editing" }, style = ButtonStyle.Text) })
 }
 
 /** The amount (Figma 1.6: 112 high, corners 20): one large typed number (45 Medium), the unit under it, the decimal pad up. */
@@ -378,8 +373,8 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
             Text(if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
                 else "${entry.description(ruled)} at ${clockText(entry)} is removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.")
         },
-        confirmButton = { TextButton({ confirmDelete = false; onBack(); store.undoEntry(entry.id) }, Modifier.semantics { testTag = "confirm-delete" }) { Text("Delete $noun", color = c.error) } },
-        dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } })
+        confirmButton = { AppButton("Delete $noun", { confirmDelete = false; onBack(); store.undoEntry(entry.id) }, Modifier.semantics { testTag = "confirm-delete" }, style = ButtonStyle.Text, destructive = true) },
+        dismissButton = { AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text) })
     if (discard) DiscardDialog("Discard your changes to this $noun?", { discard = false }, { discard = false; editing = false })
 }
 
@@ -402,17 +397,11 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
         RecordTopBar(logsTitle(ruled, day, store.today()), close = false, onClose = onBack)
         Column(Modifier.verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             SectionTitle(habit.name + " · " + logCount(logs.size, ruled))
-            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) {
                 logs.forEachIndexed { i, e ->
                     val opens = e.opensRecord(ruled)
-                    Row(Modifier.fillMaxWidth().clip(segmentShape(i, logs.size, outer = 20.dp)).background(c.surface).let { if (opens) it.clickable { onLog(e) } else it }
-                        .heightIn(min = 56.dp).padding(start = 16.dp, end = if (opens) 12.dp else 4.dp).semantics { testTag = "all-log-$i" },
-                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(e.description(ruled), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink, maxLines = 1)
-                        Text(clockText(e), style = AppType.bodyMedium, color = c.secondary)
-                        if (opens) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-                        else TextButton({ store.undoEntry(e.id) }, Modifier.semantics { contentDescription = e.undoLabel(ruled) }) { Text("Undo", style = AppType.labelLarge, color = c.ink) }
-                    }
+                    AppListItem(e.description(ruled), i, logs.size, headlineLines = 1, tag = "all-log-$i", onClick = if (opens) ({ onLog(e) }) else null,
+                        trailing = { com.oftenenough.app.ui.day.LogTrailing(e, ruled, opens) { store.undoEntry(e.id) } })
                 }
             }
             Footer(all)

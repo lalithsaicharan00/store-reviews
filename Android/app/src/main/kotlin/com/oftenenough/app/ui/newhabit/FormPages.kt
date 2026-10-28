@@ -1,8 +1,28 @@
 package com.oftenenough.app.ui.newhabit
 
-import androidx.compose.material.icons.outlined.ChatBubbleOutline
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.CreateNewFolder
+import com.oftenenough.app.ui.components.ColourSwatch
+import com.oftenenough.app.ui.components.FormFieldRemove
+import com.oftenenough.app.ui.components.FormField
+import com.oftenenough.app.ui.components.DayToggleSize
+import com.oftenenough.app.ui.components.DayToggle
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.oftenenough.app.ui.components.AppMenuItem
+import androidx.compose.ui.unit.DpOffset
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.rememberWholeSheetState
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppBottomSheet
+import com.oftenenough.app.ui.components.AppFilterChip
+import com.oftenenough.app.ui.components.AppFilledIconButton
+import com.oftenenough.app.ui.components.AppConnectedButtons
+import com.oftenenough.app.ui.components.IconButtonSize
+import com.oftenenough.app.ui.components.DropdownField
+import com.oftenenough.app.ui.components.SearchBarField
+import com.oftenenough.app.ui.components.StandardIconButton
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
@@ -15,7 +35,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -32,29 +51,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Alarm
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material.icons.rounded.Remove
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.CreateNewFolder
-import androidx.compose.material.icons.rounded.DragIndicator
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -79,19 +83,14 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.semantics.selected
-import androidx.compose.material.icons.rounded.Check
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.oftenenough.app.data.CalendarRule
 import com.oftenenough.app.data.DaySection
@@ -117,7 +116,6 @@ import com.oftenenough.app.ui.record.GoalNumber
 import com.oftenenough.app.ui.theme.HabitIcons
 import com.oftenenough.app.ui.theme.appColors
 import java.util.Currency
-import java.util.Locale
 
 // ------------------------------------------------------------------ How much, Limit and How long
 
@@ -146,12 +144,7 @@ fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
                     }
                 },
             )
-            Row(Modifier.clip(RoundedCornerShape(8.dp)).border(1.dp, appColors.outline, RoundedCornerShape(8.dp)).clickable(onClick = onUnit)
-                .semantics { testTag = "much-unit" }.heightIn(min = 40.dp).padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(form.unit.ifEmpty { "No unit" }, style = AppType.labelLarge, color = appColors.ink)
-                Icon(Icons.Rounded.ArrowDropDown, null, Modifier.size(18.dp), tint = appColors.ink)
-            }
+            DropdownField("Unit", form.unit.ifEmpty { "No unit" }, onUnit, Modifier.fillMaxWidth(), tag = "much-unit")
         }
         val text = form.amountText.trim()
         val error = if (text.isNotEmpty() && (GoalNumber.parse(text)?.let { it > 0 } != true)) "Enter a number above 0, with up to 2 decimal places." else null
@@ -199,9 +192,9 @@ fun HowLongPage(form: FormState, onBack: () -> Unit) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Quick picks", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = appColors.secondary)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                for (m in listOf(5, 10, 15, 20, 30, 45, 60)) FilterPill(if (m == 60) "1 h" else "$m min", total == m, "pick-$m") {
+                for (m in listOf(5, 10, 15, 20, 30, 45, 60)) AppFilterChip(if (m == 60) "1 h" else "$m min", total == m, tag = "pick-$m", onClick = {
                     form.hours = if (m >= 60) (m / 60).toString() else ""; form.minutes = (m % 60).toString().padStart(2, '0')
-                }
+                })
             }
         }
         val period = form.amountPeriod
@@ -212,18 +205,6 @@ fun HowLongPage(form: FormState, onBack: () -> Unit) {
 }
 
 /** Material's filter chip, drawn as Figma has it: outlined, or tonal with a check when chosen. */
-@Composable
-private fun FilterPill(text: String, chosen: Boolean, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    val shape = RoundedCornerShape(8.dp)
-    Row(Modifier.clip(shape).background(if (chosen) c.tonal else c.surface).border(if (chosen) 0.dp else 1.dp, if (chosen) Color.Transparent else c.outline, shape)
-        .clickable(onClick = onClick).semantics { testTag = tag; selected = chosen }.heightIn(min = 32.dp)
-        .padding(start = if (chosen) 8.dp else 16.dp, end = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-        if (chosen) { Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.ink); Spacer(Modifier.width(8.dp)) }
-        Text(text, style = AppType.labelLarge, color = c.ink)
-    }
-}
-
 @Composable
 private fun TimeBox(value: String, label: String, tag: String, modifier: Modifier, onChange: (String) -> Unit) {
     var focused by remember { mutableStateOf(false) }
@@ -279,15 +260,13 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
         SegmentedList {
             val count = 2 + used.size
             if (creating) {
-                Segment(0, count) {
-                    val focus = remember { FocusRequester() }
-                    LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
-                    BasicTextField(custom, { custom = it.take(TextLimit.UNIT) }, Modifier.weight(1f).focusRequester(focus).semantics { testTag = "custom-unit" },
-                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(onDone = { TextLimit.clean(custom, TextLimit.UNIT).takeIf { it.isNotEmpty() }?.let(::pick) }),
-                        decorationBox = { inner -> Box { if (custom.isEmpty()) Text("e.g. prayers", style = MaterialTheme.typography.bodyLarge, color = appColors.secondary); inner() } })
-                    TextButton({ TextLimit.clean(custom, TextLimit.UNIT).takeIf { it.isNotEmpty() }?.let(::pick) }, enabled = custom.isNotBlank()) { Text("Done", color = appColors.ink) }
+                val focus = remember { FocusRequester() }
+                LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
+                val done = { TextLimit.clean(custom, TextLimit.UNIT).takeIf { it.isNotEmpty() }?.let(::pick) }
+                FormField(custom, { custom = it.take(TextLimit.UNIT) }, "e.g. prayers", 0, count,
+                    fieldModifier = Modifier.focusRequester(focus).semantics { testTag = "custom-unit" },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), keyboardActions = KeyboardActions(onDone = { done() })) {
+                    AppButton("Done", { done() }, Modifier.padding(end = 4.dp), enabled = custom.isNotBlank(), style = ButtonStyle.Text)
                 }
             } else AddRow("Create your own unit", 0, count, "create-unit") { creating = true }
             RadioRow("No unit", form.unit.isBlank(), 1, count, "no-unit") { pick("") }
@@ -325,14 +304,17 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
                     val focus = remember { FocusRequester() }
                     LaunchedEffect(focusNew) { if (focusNew == step.id) { runCatching { focus.requestFocus() }; focusNew = null } }
                     val isDragged = dragging == step.id
-                    Segment(i, count, Modifier.zIndex(if (isDragged) 1f else 0f).graphicsLayer { translationY = if (isDragged) offset else 0f }
-                        .semantics {
-                            customActions = listOfNotNull(
-                                if (i > 0) CustomAccessibilityAction("Move up") { move(i, i - 1); true } else null,
-                                if (i < items.size - 1) CustomAccessibilityAction("Move down") { move(i, i + 1); true } else null,
-                            )
-                        }) {
-                        Icon(Icons.Rounded.DragIndicator, "Reorder", tint = appColors.secondary, modifier = Modifier.size(24.dp).pointerInput(step.id) {
+                    FormField(step.name, { text -> form.items = form.items.map { if (it.id == step.id) it.copy(name = text.take(TextLimit.CHECKLIST_PART)) else it } },
+                        "Step ${i + 1}", i, count,
+                        Modifier.zIndex(if (isDragged) 1f else 0f).graphicsLayer { translationY = if (isDragged) offset else 0f }
+                            .semantics {
+                                customActions = listOfNotNull(
+                                    if (i > 0) CustomAccessibilityAction("Move up") { move(i, i - 1); true } else null,
+                                    if (i < items.size - 1) CustomAccessibilityAction("Move down") { move(i, i + 1); true } else null,
+                                )
+                            },
+                        Modifier.focusRequester(focus).semantics { testTag = "step-field-$i" },
+                        handle = Modifier.pointerInput(step.id) {
                             detectVerticalDragGestures(
                                 onDragStart = { dragging = step.id; offset = 0f },
                                 onDragEnd = { dragging = null; offset = 0f },
@@ -344,13 +326,9 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
                                 if (offset > rowPx * 0.6f && at < form.items.size - 1) { move(at, at + 1); offset -= rowPx }
                                 else if (offset < -rowPx * 0.6f && at > 0) { move(at, at - 1); offset += rowPx }
                             }
-                        })
-                        Spacer(Modifier.width(16.dp))
-                        BasicTextField(step.name, { text -> form.items = form.items.map { if (it.id == step.id) it.copy(name = text.take(TextLimit.CHECKLIST_PART)) else it } },
-                            Modifier.weight(1f).focusRequester(focus).semantics { testTag = "step-field-$i" },
-                            textStyle = MaterialTheme.typography.bodyLarge.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-                            decorationBox = { inner -> Box { if (step.name.isEmpty()) Text("Step ${i + 1}", style = MaterialTheme.typography.bodyLarge, color = appColors.secondary); inner() } })
-                        IconButton({ form.items = form.items.filter { it.id != step.id } }) { Icon(Icons.Rounded.Close, "Remove ${step.name.ifEmpty { "step ${i + 1}" }}", tint = appColors.secondary) }
+                        },
+                    ) {
+                        FormFieldRemove("Remove ${step.name.ifEmpty { "step ${i + 1}" }}") { form.items = form.items.filter { it.id != step.id } }
                     }
                 }
             }
@@ -395,7 +373,7 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
     fun countControls(days: Boolean, index: Int, count: Int) {
         Segment(index, count) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Segments(listOf(GoalPeriod.WEEK to "Week", GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), d.countPeriod, "often-count-period") { p ->
+                AppConnectedButtons(listOf(GoalPeriod.WEEK to "Week", GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), d.countPeriod, tag = "often-count-period") { p ->
                     val next = d.copy(countPeriod = p)
                     set(next.copy(count = minOf(next.count, next.countMaximum(days))))
                 }
@@ -456,8 +434,8 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
                 if (open) Segment(1, 2) {
                     Column(Modifier.weight(1f).padding(start = 40.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            ChoicePill("Weekdays", tag = "often-weekdays-quick") { set(d.copy(weekdays = setOf(2, 3, 4, 5, 6))) }
-                            ChoicePill("Weekends", tag = "often-weekends-quick") { set(d.copy(weekdays = setOf(1, 7))) }
+                            AppFilterChip("Weekdays", false, { set(d.copy(weekdays = setOf(2, 3, 4, 5, 6))) }, tag = "often-weekdays-quick")
+                            AppFilterChip("Weekends", false, { set(d.copy(weekdays = setOf(1, 7))) }, tag = "often-weekends-quick")
                         }
                         WeekdayCircles(d.weekdays, ws, "often-weekday-picker") { days ->
                             set(if (days.size == 7) d.copy(choice = Choice.EVERY_DAY) else d.copy(weekdays = days))
@@ -507,7 +485,7 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
                 if (open) {
                     Segment(1, count) {
                         Box(Modifier.weight(1f)) {
-                            Segments(GoalPeriod.entries.map { it to HabitCopy.capitalized(it.noun) + "s" }, d.afterUnit, "often-after-unit") { set(d.copy(afterUnit = it)) }
+                            AppConnectedButtons(GoalPeriod.entries.map { it to HabitCopy.capitalized(it.noun) + "s" }, d.afterUnit, tag = "often-after-unit") { set(d.copy(afterUnit = it)) }
                         }
                     }
                     NumberRow("Again after", d.afterCount, 1..365, 2, count, "often-after-count", { if (it == 1) d.afterUnit.noun else d.afterUnit.noun + "s" }) { set(d.copy(afterCount = it)) }
@@ -530,47 +508,43 @@ private fun setDaysNote(d: OftenDraft): String? {
 /** Each month (on dates, the last day, or a weekday like the first Saturday) or each year (a month and a date). */
 @Composable
 private fun DateControls(rule: CalendarRule, onChange: (CalendarRule) -> Unit) {
-    Segments(listOf(GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), rule.unit, "often-date-unit") { onChange(rule.copy(unit = it)) }
+    AppConnectedButtons(listOf(GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), rule.unit, tag = "often-date-unit") { onChange(rule.copy(unit = it)) }
     if (rule.unit == GoalPeriod.MONTH) {
-        Segments(listOf("Dates" to "Dates", "Last day" to "The last day", "Weekday" to "A weekday"), rule.pattern, "often-date-pattern") { onChange(rule.copy(pattern = it)) }
+        val patterns = listOf("Dates" to "Dates", "Last day" to "The last day", "Weekday" to "A weekday")
+        DropdownField("Repeat on", patterns.first { it.first == rule.pattern }.second, patterns.map { it.second },
+            { onChange(rule.copy(pattern = patterns[it].first)) }, tag = "often-date-pattern")
         when (rule.pattern) {
             "Dates" -> {
-                // A plain grid sized up front, never a lazy one (S13).
-                Column(verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.semantics { testTag = "often-month-dates" }) {
-                    for (week in (1..31).chunked(7)) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        for (date in week) {
-                            val on = date in rule.dates
-                            Box(Modifier.weight(1f).aspectRatio(1f).clip(CircleShape).background(if (on) appColors.ink else appColors.tonal)
-                                .clickable { onChange(rule.copy(dates = if (on) rule.dates - date else rule.dates + date)) }
-                                .semantics { contentDescription = "Day $date" + if (on) ", chosen" else "" }, contentAlignment = Alignment.Center) {
-                                Text("$date", color = if (on) appColors.onInk else appColors.ink, style = MaterialTheme.typography.labelLarge)
-                            }
-                        }
-                        repeat(7 - week.size) { Spacer(Modifier.weight(1f)) }
+                // A plain grid sized up front, never a lazy one (S13): seven dates a row, spread across it, rows 8 apart (Figma).
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.semantics { testTag = "often-month-dates" }) {
+                    for (week in (1..31).chunked(7)) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        for (date in week) DayToggle("$date", date in rule.dates, { on -> onChange(rule.copy(dates = if (on) rule.dates + date else rule.dates - date)) },
+                            "Day $date", size = DayToggleSize.Date)
+                        repeat(7 - week.size) { Spacer(Modifier.size(DayToggleSize.Date.size)) }
                     }
                 }
-                if (rule.dates.any { it > 28 }) Segments(listOf(true to "Use the last day", false to "Skip that month"), rule.useLastDay, "often-short-months") { onChange(rule.copy(useLastDay = it)) }
+                if (rule.dates.any { it > 28 }) AppConnectedButtons(listOf(true to "Use the last day", false to "Skip that month"), rule.useLastDay, tag = "often-short-months") { onChange(rule.copy(useLastDay = it)) }
             }
-            "Weekday" -> Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("The", style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                MenuPill(HabitCopy.ordinalWord(rule.ordinal), listOf(1, 2, 3, 4, 5, -1).map { HabitCopy.ordinalWord(it) }, "often-weekday-ordinal") {
-                    onChange(rule.copy(ordinal = listOf(1, 2, 3, 4, 5, -1)[it]))
-                }
-                MenuPill(HabitCopy.fullDays[(rule.weekday - 1 + 7) % 7], HabitCopy.fullDays, "often-weekday-day") { onChange(rule.copy(weekday = it + 1)) }
-                Text("of the month", style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
+            "Weekday" -> Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                val ordinals = listOf(1, 2, 3, 4, 5, -1)
+                DropdownField("Which", HabitCopy.capitalized(HabitCopy.ordinalWord(rule.ordinal)), ordinals.map { HabitCopy.capitalized(HabitCopy.ordinalWord(it)) },
+                    { onChange(rule.copy(ordinal = ordinals[it])) }, Modifier.weight(1f), tag = "often-weekday-ordinal")
+                DropdownField("Day", HabitCopy.fullDays[(rule.weekday - 1 + 7) % 7], HabitCopy.fullDays,
+                    { onChange(rule.copy(weekday = it + 1)) }, Modifier.weight(1f), tag = "often-weekday-day")
             }
             else -> {}
         }
         NumberRow("Every", rule.interval, 1..12, 0, 1, "often-month-interval", { if (it == 1) "month" else "months" }) { onChange(rule.copy(interval = it)) }
     } else {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            MenuPill(HabitCopy.monthNames[rule.month - 1], HabitCopy.monthNames, "often-year-month") { m ->
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            DropdownField("Month", HabitCopy.monthNames[rule.month - 1], HabitCopy.monthNames, { m ->
                 val month = m + 1
                 onChange(rule.copy(month = month, day = minOf(rule.day, daysIn(month))))
-            }
-            MenuPill(HabitCopy.ordinal(rule.day), (1..daysIn(rule.month)).map { HabitCopy.ordinal(it) }, "often-year-day") { onChange(rule.copy(day = it + 1)) }
+            }, Modifier.weight(1f), tag = "often-year-month")
+            DropdownField("Day", "${rule.day}", (1..daysIn(rule.month)).map { "$it" }, { onChange(rule.copy(day = it + 1)) },
+                Modifier.weight(1f), tag = "often-year-day")
         }
-        if (rule.month == 2 && rule.day == 29) Segments(listOf(true to "Use 28 February", false to "Skip that year"), rule.useLastDay, "often-leap") { onChange(rule.copy(useLastDay = it)) }
+        if (rule.month == 2 && rule.day == 29) AppConnectedButtons(listOf(true to "Use 28 February", false to "Skip that year"), rule.useLastDay, tag = "often-leap") { onChange(rule.copy(useLastDay = it)) }
     }
 }
 
@@ -584,10 +558,10 @@ fun MenuPill(text: String, options: List<String>, tag: String, onPick: (Int) -> 
         Row(Modifier.clip(RoundedCornerShape(8.dp)).border(1.dp, appColors.outline, RoundedCornerShape(8.dp)).clickable { open = true }
             .semantics { testTag = tag }.heightIn(min = 40.dp).padding(start = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(text, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Icon(Icons.Rounded.ArrowDropDown, null, tint = appColors.ink)
+            Icon(Symbols.ArrowDropDown, null, tint = appColors.ink)
         }
-        DropdownMenu(open, { open = false }, containerColor = appColors.surface) {
-            options.forEachIndexed { i, o -> DropdownMenuItem({ Text(o) }, { onPick(i); open = false }) }
+        AppMenu(open, { open = false }) {
+            options.forEachIndexed { i, o -> AppMenuItem(o, { onPick(i); open = false }, selected = o == text) }
         }
     }
 }
@@ -643,15 +617,14 @@ fun NewSectionDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String)
             }
         },
         confirmButton = {
-            Button({
+            AppButton("Add", {
                 val s = DaySection(newId(), clean, start, null)
                 store.saveSections(store.sections + s)
                 onAdded(s.id)
                 onDismiss()
-            }, enabled = clean.isNotEmpty() && !taken, colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk),
-                modifier = Modifier.semantics { testTag = "section-add" }) { Text("Add") }
+            }, enabled = clean.isNotEmpty() && !taken, tag = "section-add")
         },
-        dismissButton = { TextButton(onDismiss) { Text("Cancel", color = appColors.ink) } })
+        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) })
     if (picking) MinuteDialog(start, { picking = false }) { start = it }
 }
 
@@ -680,12 +653,12 @@ fun GroupPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
 fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
     val c = appColors
     // Opened whole, and scrolling: half-open, its buttons were under the gesture bar and below the screen (360 x 800 dp).
-    ModalBottomSheet(onDismiss, sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = c.screen) {
+    ModalBottomSheet(onDismiss, sheetState = rememberWholeSheetState()) {
         Column(Modifier.fillMaxWidth().verticalScroll(androidx.compose.foundation.rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 24.dp)
             .semantics { testTag = "exact-times-sheet"; testTagsAsResourceId = true },
             horizontalAlignment = Alignment.CenterHorizontally) {
             Box(Modifier.size(64.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-                Icon(Icons.Outlined.Alarm, null, tint = c.ink)
+                Icon(Symbols.Alarm, null, tint = c.ink)
             }
             Spacer(Modifier.height(24.dp))
             Text("Get reminders on time", style = MaterialTheme.typography.headlineSmall, color = c.ink, textAlign = TextAlign.Center)
@@ -696,9 +669,9 @@ fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
             Text("Next, Android opens Alarms & reminders: switch it on for Often Enough, then come back.",
                 style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
             Spacer(Modifier.height(24.dp))
-            com.oftenenough.app.ui.components.InkButton("Allow exact times", onAllow, Modifier.fillMaxWidth().semantics { testTag = "exact-times-allow" })
+            AppButton("Allow exact times", onAllow, Modifier.fillMaxWidth().semantics { testTag = "exact-times-allow" }, size = ButtonSize.Medium)
             Spacer(Modifier.height(8.dp))
-            TextButton(onDismiss, Modifier.semantics { testTag = "exact-times-not-now" }) { Text("Not now", color = c.ink) }
+            AppButton("Not now", onDismiss, Modifier.semantics { testTag = "exact-times-not-now" }, style = ButtonStyle.Text)
         }
     }
 }
@@ -709,7 +682,7 @@ fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -
     var name by remember { mutableStateOf("") }
     val clean = TextLimit.clean(name, TextLimit.GROUP)
     val exists = store.groups.any { it.name.equals(clean, ignoreCase = true) }
-    AlertDialog(onDismiss, icon = { Icon(Icons.Outlined.CreateNewFolder, null) }, title = { Text("New group") }, containerColor = appColors.menu,
+    AlertDialog(onDismiss, icon = { Icon(Symbols.CreateNewFolder, null) }, title = { Text("New group") }, containerColor = appColors.menu,
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Put habits together, then filter Today and Progress by group.", textAlign = TextAlign.Center, color = appColors.secondary)
@@ -721,16 +694,15 @@ fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -
             }
         },
         confirmButton = {
-            Button({
+            AppButton("Create", {
                 val used = store.groups.map { it.color }.toSet()
                 val g = HabitGroup(name = clean, color = HabitColor.entries.firstOrNull { it !in used } ?: HabitColor.BLUE)
                 store.saveGroup(g)
                 onAdded(g.id)
                 onDismiss()
-            }, enabled = clean.isNotEmpty() && !exists, colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk),
-                modifier = Modifier.semantics { testTag = "group-add" }) { Text("Create") }
+            }, enabled = clean.isNotEmpty() && !exists, tag = "group-add")
         },
-        dismissButton = { TextButton(onDismiss) { Text("Cancel", color = appColors.ink) } })
+        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) })
 }
 
 // ------------------------------------------------------------------ Reminders
@@ -794,14 +766,11 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
             SegmentedList {
                 val count = form.times.size + 1
                 form.times.forEachIndexed { i, t ->
-                    Segment(i, count, Modifier.semantics { testTag = "reminder-$i" }, onClick = { editing = t.id }) {
-                        Icon(Icons.Outlined.Schedule, null, tint = appColors.secondary)
-                        Spacer(Modifier.width(16.dp))
-                        Text(DayWords.clockMinute(t.minute), Modifier.weight(1f).semantics { testTag = "reminder-time-$i" }, style = AppType.bodyLarge, color = appColors.ink)
-                        IconButton({ form.remindersEdited = true; form.times = form.times.filter { it.id != t.id } }) {
-                            Icon(Icons.Rounded.Close, "Remove the ${DayWords.clockMinute(t.minute)} reminder", tint = appColors.secondary)
-                        }
-                    }
+                    AppListItem(DayWords.clockMinute(t.minute), i, count, leading = { Icon(Symbols.Schedule, null) }, onClick = { editing = t.id },
+                        tag = "reminder-$i", trailing = {
+                            StandardIconButton(Symbols.Close, "Remove the ${DayWords.clockMinute(t.minute)} reminder",
+                                { form.remindersEdited = true; form.times = form.times.filter { it.id != t.id } })
+                        })
                 }
                 AddRow("Add a time", form.times.size, count, "add-reminder") { adding = true }
             }
@@ -811,7 +780,8 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
                     val rows = if (form.type != ItemType.CUT_DOWN) 2 else 1
                     // An alarm rings on Android's alarm sound until it's answered; never a full screen (A11 D3).
                     val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
-                    MenuRow("Remind me with", styles.first { it.first == form.alert }.second, styles.map { it.second }, 0, rows, "remind-with") { form.alert = styles[it].first }
+                    MenuRow("Remind me with", styles.first { it.first == form.alert }.second, styles.map { it.second }, 0, rows, "remind-with",
+                        listOf(Symbols.Notifications, Symbols.Alarm)) { form.alert = styles[it].first }
                     if (form.type != ItemType.CUT_DOWN) {
                         val options = listOf(null, 15, 30, 60)
                         MenuRow("If not done, remind again", followWords(form.followUp), options.map { followWords(it) }, 1, rows, "follow-up") { form.followUp = options[it] }
@@ -821,7 +791,7 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
                 Spacer(Modifier.height(16.dp))
                 SegmentedList {
                     Segment(0, 1) {
-                        Icon(Icons.Outlined.ChatBubbleOutline, null, tint = appColors.secondary)
+                        Icon(Symbols.ChatBubble, null, tint = appColors.secondary)
                         Spacer(Modifier.width(16.dp))
                         BasicTextField(form.reminderWords, { form.reminderWords = it.take(TextLimit.REMINDER_TEXT) },
                             Modifier.weight(1f).semantics { testTag = "reminder-says"; contentDescription = "Reminder says" },
@@ -857,20 +827,18 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     }
 }
 
-/** A row whose value opens a menu (Figma 2.1.6.2's "How"): its title over the value, then ▾. */
+/**
+ * A row whose value opens a menu (Figma 2.1.6.2's "How"): its title over the value, then ▾ (List item, 2.4). The menu
+ * marks the value chosen (Menu item, Selected), each choice with its [icons] if it has them (A notification, An alarm).
+ */
 @Composable
-private fun MenuRow(title: String, value: String, options: List<String>, index: Int, count: Int, tag: String, onPick: (Int) -> Unit) {
+private fun MenuRow(title: String, value: String, options: List<String>, index: Int, count: Int, tag: String, icons: List<ImageVector>? = null, onPick: (Int) -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box {
-        Segment(index, count, Modifier.heightIn(min = 72.dp).semantics(mergeDescendants = true) { testTag = tag; contentDescription = "$title, $value" }, onClick = { open = true }) {
-            Column(Modifier.weight(1f)) {
-                Text(title, style = AppType.titleMedium, color = appColors.ink)
-                Text(value, style = AppType.bodyMedium, color = appColors.secondary)
-            }
-            Icon(Icons.Rounded.ArrowDropDown, null, tint = appColors.secondary)
-        }
-        DropdownMenu(open, { open = false }, offset = androidx.compose.ui.unit.DpOffset(140.dp, 0.dp), containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
-            options.forEachIndexed { i, o -> DropdownMenuItem({ Text(o, style = AppType.bodyLarge) }, { onPick(i); open = false }) }
+        AppListItem(title, index, count, Modifier.semantics(mergeDescendants = true) { contentDescription = "$title, $value" }, value,
+            trailing = { Icon(Symbols.ArrowDropDown, null) }, onClick = { open = true }, tag = tag)
+        AppMenu(open, { open = false }, offset = DpOffset(140.dp, 0.dp)) {
+            options.forEachIndexed { i, o -> AppMenuItem(o, { onPick(i); open = false }, icon = icons?.get(i), selected = o == value) }
         }
     }
 }
@@ -894,17 +862,9 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
     var chosen by remember { mutableStateOf(form.symbol) }
     var query by remember { mutableStateOf("") }
     FormPage("Icon", chip = null, onBack = onBack, close = true, scrolls = false, actions = {
-        Button({ form.symbol = chosen; form.pickedSymbol = true; onBack() }, Modifier.padding(end = 8.dp).semantics { testTag = "icon-done" },
-            colors = ButtonDefaults.buttonColors(containerColor = appColors.ink, contentColor = appColors.onInk)) { Text("Done") }
+        AppButton("Done", { form.symbol = chosen; form.pickedSymbol = true; onBack() }, Modifier.padding(end = 8.dp), tag = "icon-done")
     }) {
-        Row(Modifier.fillMaxWidth().padding(vertical = 8.dp).clip(RoundedCornerShape(28.dp)).background(appColors.tonal).heightIn(min = 56.dp).padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Rounded.Search, null, tint = appColors.ink)
-            Spacer(Modifier.width(16.dp))
-            BasicTextField(query, { query = it.take(30) }, Modifier.weight(1f).semantics { testTag = "icon-search"; contentDescription = "Search icons" },
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-                decorationBox = { inner -> Box { if (query.isEmpty()) Text("Search icons", style = MaterialTheme.typography.bodyLarge, color = appColors.secondary); inner() } })
-        }
+        SearchBarField(query, { query = it.take(30) }, "Search icons", Modifier.padding(vertical = 8.dp), fieldTag = "icon-search")
         val q = query.trim().lowercase()
         val groups = HabitIcons.groups.mapNotNull { g ->
             val symbols = if (q.isEmpty()) g.symbols else g.symbols.filter { s ->
@@ -913,41 +873,30 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
             symbols.takeIf { it.isNotEmpty() }?.let { g.name to it }
         }
         if (groups.isEmpty()) Note("No icons match \"${query.trim()}\".")
-        LazyVerticalGrid(GridCells.Fixed(6), Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        LazyVerticalGrid(GridCells.FixedSize(56.dp), Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceBetween, verticalArrangement = Arrangement.spacedBy(12.dp)) {
             for ((name, symbols) in groups) {
                 item(key = "h-$name", span = { GridItemSpan(maxLineSpan) }) { GroupTitle(name) }
                 items(symbols, key = { "$name-$it" }) { s ->
                     val on = s == chosen
-                    Box(Modifier.aspectRatio(1f).clip(if (on) CircleShape else RoundedCornerShape(16.dp)).background(if (on) appColors.habit(form.color) else appColors.surface)
-                        .clickable { chosen = s }.semantics { contentDescription = HabitIcons.spokenName(s) + if (on) ", chosen" else ""; testTag = "icon-$s" },
-                        contentAlignment = Alignment.Center) {
-                        Icon(HabitIcons.outlined(s), null, Modifier.size(24.dp), tint = if (on) Color.White else appColors.ink)
-                    }
+                    AppFilledIconButton(HabitIcons.outlined(s), HabitIcons.spokenName(s) + if (on) ", chosen" else "", { chosen = s },
+                        done = on, color = form.color, size = IconButtonSize.Medium, tag = "icon-$s")
                 }
             }
         }
     }
 }
 
-/** The thirteen habit colours, in a sheet. */
+/** The thirteen habit colours, in a sheet (Figma Colour, 1074:161496): Colour swatches (3.2), seven to a row. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColourSheet(form: FormState, onDismiss: () -> Unit) {
-    ModalBottomSheet(onDismiss, containerColor = appColors.surface) {
-        Column(Modifier.padding(horizontal = 24.dp).padding(bottom = 32.dp).semantics { testTagsAsResourceId = true }) {
-            Text("Colour", style = MaterialTheme.typography.headlineSmall, color = appColors.ink)
-            Spacer(Modifier.height(20.dp))
+    AppBottomSheet(onDismiss, Modifier.semantics { testTagsAsResourceId = true }, title = "Colour") {
+        // Figma's Swatches: 16 at the sides, 8 above, 24 under (the sheet adds its own 24), rows 12 apart, 8 between.
+        Column(Modifier.padding(horizontal = 16.dp).padding(top = 8.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             for (row in HabitColor.entries.chunked(7)) {
-                Row(Modifier.fillMaxWidth().padding(bottom = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    for (c in row) {
-                        val on = c == form.color
-                        Box(Modifier.weight(1f).aspectRatio(1f).clip(CircleShape)
-                            .border(if (on) 3.dp else 0.dp, if (on) appColors.ink else Color.Transparent, CircleShape)
-                            .padding(if (on) 6.dp else 0.dp).clip(CircleShape).background(appColors.habit(c))
-                            .clickable { form.color = c; onDismiss() }
-                            .semantics { contentDescription = c.key.replaceFirstChar { it.uppercase() } + if (on) ", chosen" else ""; testTag = "colour-${c.key}" })
-                    }
-                    repeat(7 - row.size) { Spacer(Modifier.weight(1f)) }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    for (c in row) ColourSwatch(appColors.habit(c), c == form.color, { form.color = c; onDismiss() },
+                        if (c == HabitColor.GRAY) "Grey" else c.key.replaceFirstChar { it.uppercase() }, Modifier.semantics { testTag = "colour-${c.key}" })
                 }
             }
         }

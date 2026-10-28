@@ -1,18 +1,26 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.components.AppMenuItem
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.MenuDivider
+import com.oftenenough.app.ui.components.AppCheckbox
+import com.oftenenough.app.ui.components.StandardIconButton
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import com.oftenenough.app.ui.theme.AppType
 
-import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,26 +38,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.rounded.Redo
-import androidx.compose.material.icons.automirrored.outlined.StickyNote2
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Insights
-import androidx.compose.material.icons.outlined.PauseCircle
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.Unarchive
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -57,9 +48,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberModalBottomSheetState
+import com.oftenenough.app.ui.components.rememberWholeSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -70,10 +60,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -85,7 +72,6 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.data.DayStatus
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Entry
@@ -96,10 +82,8 @@ import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitCopy
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.data.StreakUnit
 import com.oftenenough.app.data.clockText
 import com.oftenenough.app.data.description
-import com.oftenenough.app.data.milestoneRowTitle
 import com.oftenenough.app.data.MilestoneCenter
 import com.oftenenough.app.data.MilestoneFront
 import com.oftenenough.app.data.MilestoneShown
@@ -108,10 +92,8 @@ import com.oftenenough.app.data.opensRecord
 import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.WavyProgress
-import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.rememberTicker
-import com.oftenenough.app.ui.today.showsStreaks
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -144,9 +126,6 @@ private fun shortDays(habit: Habit, weekStart: Int): String {
     return f.days.sortedBy { ((it - weekStart) % 7 + 7) % 7 }.joinToString(", ") { HabitCopy.shortDays[(it - 1 + 7) % 7] }
 }
 
-/** The divider in This day, and the outline of Skip (Figma #E2E2E6, #C7C7CC). */
-private val DividerLight = Color(0xFFE2E2E6)
-private val SkipLineLight = Color(0xFFC7C7CC)
 
 /**
  * Day details (Figma `2308:2`): one habit (or task) on one day, a modal bottom sheet. Its top bar is ✕, the day and ⋮; the
@@ -165,11 +144,8 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
         onDispose { if (store.milestones.front == mine) store.milestones.front = before }
     }
     val c = appColors
-    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.screen, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-        dragHandle = {
-            Box(Modifier.padding(top = 16.dp, bottom = 4.dp).size(32.dp, 4.dp).clip(RoundedCornerShape(2.dp)).background(Color(0x8079797E)))
-        }) {
+    val state = rememberWholeSheetState()
+    ModalBottomSheet(onDismiss, sheetState = state) {
         // A sheet is its own window: its tags reach UI Automator only if it says so too.
         val snackbar = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
@@ -183,9 +159,7 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
                     }
                 }
             }
-            SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(16.dp)) { data ->
-                Snackbar(data, containerColor = appColors.ink, contentColor = appColors.onInk, actionColor = appColors.onInk)
-            }
+            AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(16.dp))
         }
     }
 }
@@ -204,11 +178,11 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
     Column(Modifier.verticalScroll(rememberScrollState()).navigationBarsPadding().semantics { testTag = "day-details" }) {
         // The top bar: ✕, the day, ⋮ (56 high).
         Row(Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onDismiss, Modifier.semantics { testTag = "day-close" }) { Icon(Icons.Rounded.Close, "Close", tint = c.ink) }
+            IconButton(onDismiss, Modifier.semantics { testTag = "day-close" }) { Icon(Symbols.Close, "Close", tint = c.ink) }
             Spacer(Modifier.width(4.dp))
             Text(if (day == today + 1) "Tomorrow" else DayWords.day(day, today), Modifier.weight(1f), style = AppType.titleLargeEmphasized, color = c.ink, maxLines = 1)
             Box {
-                IconButton({ menu = true }, Modifier.semantics { testTag = "day-more" }) { Icon(Icons.Rounded.MoreVert, if (isTask) "Task actions" else "Habit actions", tint = c.ink) }
+                StandardIconButton(Symbols.MoreVert, if (isTask) "Task actions" else "Habit actions", { menu = true }, Modifier.semantics { testTag = "day-more" })
                 DayMenu(menu, { menu = false }, habit, store, today, nav, onDismiss) { confirmDelete = true }
             }
         }
@@ -217,8 +191,8 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             DayActivity(habit, day, editable, started, rev, store, nav, onAdded)
             if (isTask && store.canReschedule(habit, day)) {
                 SectionList("Reschedule") {
-                    RowAction("Do tomorrow", Icons.AutoMirrored.Rounded.Redo, segmentShape(0, 2), "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
-                    RowAction("Another day…", Icons.Rounded.CalendarMonth, segmentShape(1, 2), "day-another-day") { reschedule = true }
+                    RowAction("Do tomorrow", Symbols.Redo, 0, 2, "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
+                    RowAction("Another day…", Symbols.CalendarMonth, 1, 2, "day-another-day") { reschedule = true }
                 }
             } else if (!isTask && habit.kind != HabitKind.Quit && started && !habit.atMost && !store.isPaused(habit, day)) {
                 val skipped = store.isSkipped(habit, day)
@@ -234,11 +208,11 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
         onDismissRequest = { confirmDelete = false },
         title = { Text("Delete ${habit.name}?") },
         text = { Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.") },
-        confirmButton = { TextButton({ confirmDelete = false; onDismiss(); store.delete(listOf(habit)) }, Modifier.semantics { testTag = "day-delete-confirm" }) { Text(if (isTask) "Delete task" else "Delete habit", color = c.error) } },
+        confirmButton = { AppButton(if (isTask) "Delete task" else "Delete habit", { confirmDelete = false; onDismiss(); store.delete(listOf(habit)) }, Modifier.semantics { testTag = "day-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
         dismissButton = {
             Row {
-                if (!habit.archived) TextButton({ confirmDelete = false; store.archive(listOf(habit)); onDismiss() }) { Text("Archive instead", color = c.ink) }
-                TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) }
+                if (!habit.archived) AppButton("Archive instead", { confirmDelete = false; store.archive(listOf(habit)); onDismiss() }, style = ButtonStyle.Text)
+                AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text)
             }
         },
     )
@@ -248,23 +222,20 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
 /** ⋮ (Figma 1.5): View habit, Edit habit, Pause…, then Archive and Delete habit…, each with its icon; only Delete red. */
 @Composable
 private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: HabitStore, today: Int, nav: DayNav, onClose: () -> Unit, onDelete: () -> Unit) {
-    val c = appColors
     val isTask = habit.kind == HabitKind.Task
-    DropdownMenu(open, onDismiss, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp) {
-        @Composable fun item(text: String, icon: ImageVector, red: Boolean = false, tag: String, action: () -> Unit) = DropdownMenuItem(
-            text = { Text(text, style = AppType.bodyLarge, color = if (red) c.error else c.ink) },
-            leadingIcon = { Icon(icon, null, tint = if (red) c.error else c.secondary) },
-            onClick = { onDismiss(); action() }, modifier = Modifier.semantics { testTag = tag })
-        if (!isTask) item("View habit", Icons.Outlined.Insights, tag = "day-menu-view") { nav.habitPage(habit) }
-        item(if (isTask) "Edit task" else "Edit habit", Icons.Outlined.Edit, tag = "day-menu-edit") { nav.edit(habit) }
+    AppMenu(open, onDismiss) {
+        @Composable fun item(text: String, icon: ImageVector, red: Boolean = false, tag: String, action: () -> Unit) =
+            AppMenuItem(text, { onDismiss(); action() }, icon = icon, destructive = red, tag = tag)
+        if (!isTask) item("View habit", Symbols.Visibility, tag = "day-menu-view") { nav.habitPage(habit) }
+        item(if (isTask) "Edit task" else "Edit habit", Symbols.Edit, tag = "day-menu-edit") { nav.edit(habit) }
         if (!isTask && store.rules.canPause(habit)) {
-            if (store.isPaused(habit, today)) item("Resume habit", Icons.Outlined.PlayCircle, tag = "day-menu-resume") { store.resume(habit) }
-            else item("Pause…", Icons.Outlined.PauseCircle, tag = "day-menu-pause") { nav.pause(habit) }
+            if (store.isPaused(habit, today)) item("Resume habit", Symbols.PlayCircle, tag = "day-menu-resume") { store.resume(habit) }
+            else item("Pause…", Symbols.PauseCircle, tag = "day-menu-pause") { nav.pause(habit) }
         }
-        HorizontalDivider(color = c.tonal)
-        if (habit.archived) item("Restore", Icons.Outlined.Unarchive, tag = "day-menu-restore") { store.restore(habit) }
-        else item("Archive", Icons.Outlined.Archive, tag = "day-menu-archive") { store.archive(listOf(habit)); onClose() }
-        item(if (isTask) "Delete task…" else "Delete habit…", Icons.Outlined.Delete, red = true, tag = "day-menu-delete") { onDelete() }
+        MenuDivider()
+        if (habit.archived) item("Restore", Symbols.Unarchive, tag = "day-menu-restore") { store.restore(habit) }
+        else item("Archive", Symbols.Archive, tag = "day-menu-archive") { store.archive(listOf(habit)); onClose() }
+        item(if (isTask) "Delete task…" else "Delete habit…", Symbols.Delete, red = true, tag = "day-menu-delete") { onDelete() }
     }
 }
 
@@ -282,7 +253,7 @@ private fun IdentityCard(habit: Habit, store: HabitStore, nav: DayNav) {
             Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Text(planLine(habit, store), style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        if (!isTask) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+        if (!isTask) Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
     }
 }
 
@@ -296,25 +267,13 @@ private fun SectionList(title: String, rows: @Composable () -> Unit) {
 }
 
 @Composable
-private fun RowAction(text: String, icon: ImageVector, shape: Shape, tag: String, onClick: () -> Unit) {
-    Row(Modifier.fillMaxWidth().clip(shape).background(appColors.surface).clickable(onClick = onClick).heightIn(min = 56.dp)
-        .padding(start = 16.dp, end = 12.dp).semantics { testTag = tag }, verticalAlignment = Alignment.CenterVertically) {
-        Icon(icon, null, tint = appColors.ink)
-        Spacer(Modifier.width(16.dp))
-        Text(text, style = AppType.bodyLarge, color = appColors.ink)
-    }
-}
+private fun RowAction(text: String, icon: ImageVector, index: Int, count: Int, tag: String, onClick: () -> Unit) =
+    AppListItem(text, index, count, leading = { Icon(icon, null) }, onClick = onClick, tag = tag)
 
-/** Skip today, last and plain (Figma: outlined, 48 high, corners 24): skipping isn't an action to invite (U17). */
+/** Skip today, last and plain (Figma: the Medium Outlined button): skipping isn't an action to invite (U17). */
 @Composable
-private fun SkipButton(text: String, onClick: () -> Unit) {
-    val c = appColors
-    Box(Modifier.fillMaxWidth().height(48.dp).clip(RoundedCornerShape(24.dp))
-        .border(1.dp, if (c.dark) c.line else SkipLineLight, RoundedCornerShape(24.dp)).clickable(role = Role.Button, onClick = onClick)
-        .semantics { testTag = "day-skip" }, contentAlignment = Alignment.Center) {
-        Text(text, style = AppType.titleMedium, color = c.ink)
-    }
-}
+private fun SkipButton(text: String, onClick: () -> Unit) =
+    AppButton(text, onClick, Modifier.fillMaxWidth(), style = ButtonStyle.Outlined, size = ButtonSize.Medium, tag = "day-skip")
 
 private class DayAction(val title: String, val prominent: Boolean = false, val enabled: Boolean = true, val spoken: String? = null, val tag: String, val run: () -> Unit)
 
@@ -367,7 +326,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             val goal = maxOf(store.rules.goal(ruled), 1e-9)
             val progress = if (future) 0.0 else if (running) store.rules.progress(habit, day, tick.value) else store.rules.progress(habit, day)
             Spacer(Modifier.height(8.dp))
-            WavyProgress((progress / goal).toFloat(), c.habit(habit.color), c.habit(habit.color).copy(alpha = 0.22f), Modifier.fillMaxWidth().height(10.dp))
+            WavyProgress((progress / goal).toFloat(), color = c.habit(habit.color), trackColor = c.habitFill(habit.color))
         }
         if (future && !skipped) {
             Spacer(Modifier.height(12.dp))
@@ -389,12 +348,12 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             }
         }
         Spacer(Modifier.height(16.dp))
-        HorizontalDivider(color = if (c.dark) c.tonal else DividerLight)
+        HorizontalDivider()
         val note = store.note(habit, day)
         Row(Modifier.fillMaxWidth().clickable(enabled = editable || note != null || future) { nav.note(habit, day) }
             .padding(vertical = if (note == null) 14.dp else 12.dp)
             .semantics { testTag = if (note == null) "day-add-note" else "day-edit-note" }, verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.AutoMirrored.Outlined.StickyNote2, null, tint = c.secondary)
+            Icon(Symbols.StickyNote2, null, tint = c.secondary)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 if (note != null) {
@@ -403,19 +362,16 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
                 } else Text("Add a note…", style = AppType.bodyMedium, color = c.secondary)
             }
             Spacer(Modifier.width(16.dp))
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+            Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
         }
     }
     if (logs.isNotEmpty()) {
         val shown = if (logs.size <= 3) logs else logs.take(2)
         val rows = shown.size + if (logs.size > 3) 1 else 0
         SectionList(logsTitle(ruled, day, today)) {
-            shown.forEachIndexed { i, e -> LogRow(e, ruled, segmentShape(i, rows), store, nav) }
-            if (logs.size > 3) Row(Modifier.fillMaxWidth().clip(segmentShape(rows - 1, rows)).background(c.surface).clickable { nav.allLogs(habit, day) }
-                .heightIn(min = 56.dp).padding(start = 16.dp, end = 12.dp).semantics { testTag = "day-all-logs" }, verticalAlignment = Alignment.CenterVertically) {
-                Text("All " + logCount(logs.size, ruled), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink)
-                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-            }
+            shown.forEachIndexed { i, e -> LogRow(e, ruled, i, rows, store, nav) }
+            if (logs.size > 3) AppListItem("All " + logCount(logs.size, ruled), rows - 1, rows, trailing = { ListChevron() },
+                onClick = { nav.allLogs(habit, day) }, tag = "day-all-logs")
         }
     }
     popup?.let { s ->
@@ -425,19 +381,11 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     }
 }
 
-/** A logging button (Figma: 52 high, corners 26, Title Medium): ink when it's what the goal asks, else the soft grey. */
+/** A logging button (Figma's This day: the Medium button): Filled when it's what the goal asks (U16), else Tonal. */
 @Composable
-private fun DayButton(a: DayAction, modifier: Modifier) {
-    val c = appColors
-    val bg = when { !a.enabled -> c.ink.copy(alpha = 0.12f); a.prominent -> c.ink; else -> c.soft }
-    val fg = when { !a.enabled -> c.ink.copy(alpha = 0.38f); a.prominent -> c.onInk; else -> c.ink }
-    Box(modifier.height(52.dp).clip(RoundedCornerShape(26.dp)).background(bg)
-        .clickable(enabled = a.enabled, role = Role.Button, onClick = a.run)
-        .semantics { testTag = a.tag; a.spoken?.let { contentDescription = it } }.padding(horizontal = 12.dp),
-        contentAlignment = Alignment.Center) {
-        Text(a.title, style = AppType.titleMedium, color = fg, maxLines = 1, overflow = TextOverflow.Ellipsis)
-    }
-}
+private fun DayButton(a: DayAction, modifier: Modifier) =
+    AppButton(a.title, a.run, modifier.semantics { a.spoken?.let { contentDescription = it } },
+        style = if (a.prominent) ButtonStyle.Filled else ButtonStyle.Tonal, size = ButtonSize.Medium, enabled = a.enabled, compact = true, tag = a.tag)
 
 /** One step: a square checkbox in the habit's colour, the name crossed out once ticked (Figma 8). 48 to tap. */
 @Composable
@@ -445,12 +393,7 @@ fun StepCheck(name: String, done: Boolean, habit: Habit, enabled: Boolean, tag: 
     val c = appColors
     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(8.dp)).clickable(enabled = enabled, role = Role.Checkbox, onClick = onToggle)
         .semantics { stateDescription = if (done) "Done" else "Not done"; testTag = tag }, verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-            Box(Modifier.size(18.dp).clip(RoundedCornerShape(2.dp)).background(if (done) c.habit(habit.color) else Color.Transparent)
-                .let { if (done) it else it.border(2.dp, c.secondary, RoundedCornerShape(2.dp)) }, contentAlignment = Alignment.Center) {
-                if (done) Icon(Icons.Rounded.Check, null, Modifier.size(16.dp), tint = Color.White)
-            }
-        }
+        AppCheckbox(done, onCheckedChange = null, enabled = enabled, habitColor = c.habit(habit.color))
         Spacer(Modifier.width(16.dp))
         Text(name, style = AppType.bodyLarge.copy(textDecoration = if (done && strike) TextDecoration.LineThrough else null),
             color = if (done && strike) c.secondary else if (enabled) c.ink else c.secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
@@ -490,22 +433,23 @@ private fun StatusLine(title: String, detail: String?) {
     }
 }
 
-/** One log (Figma: 56 high): what it is, its time, ›; a check has its own Undo instead (U19: checks correct here). */
+/** One log (List item, 2.4): what it is, its time, ›; a check has its own Undo instead (U19: checks correct here). */
 @Composable
-private fun LogRow(entry: Entry, habit: Habit, shape: Shape, store: HabitStore, nav: DayNav) {
-    val c = appColors
+private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: HabitStore, nav: DayNav) {
     val opens = entry.opensRecord(habit)
-    Row(Modifier.fillMaxWidth().clip(shape).background(c.surface).let { if (opens) it.clickable { nav.log(habit, entry) } else it }
-        .heightIn(min = 56.dp).padding(start = 16.dp, end = if (opens) 12.dp else 4.dp).semantics { testTag = "log-${entry.id}" },
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(entry.description(habit), Modifier.weight(1f), style = AppType.bodyLarge, color = c.ink, maxLines = 1)
-        Text(clockText(entry), style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"), color = c.secondary)
-        if (opens) Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-        else TextButton({ store.undoEntry(entry.id) }, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }) {
-            Text("Undo", style = AppType.labelLarge, color = c.ink)
-        }
-    }
+    AppListItem(entry.description(habit), index, count, headlineLines = 1, tag = "log-${entry.id}",
+        onClick = if (opens) ({ nav.log(habit, entry) }) else null,
+        trailing = { LogTrailing(entry, habit, opens) { store.undoEntry(entry.id) } })
 }
+
+/** A log row's end: its time (tabular figures), then › when it opens, or a check's named Undo. */
+@Composable
+internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, onUndo: () -> Unit) =
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(clockText(entry), style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"))
+        if (opens) ListChevron()
+        else AppButton("Undo", onUndo, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }, style = ButtonStyle.Text)
+    }
 
 fun logsTitle(habit: Habit, day: Int, today: Int): String {
     val short = DayWords.short(day).replace(",", "")
@@ -590,11 +534,11 @@ private fun RescheduleDialog(habit: Habit, day: Int, store: HabitStore, onDismis
             Instant.ofEpochMilli(utcTimeMillis).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt() in range
     })
     DatePickerDialog(onDismiss, confirmButton = {
-        TextButton({
+        AppButton("Move", {
             picker.selectedDateMillis?.let { store.reschedule(habit, day, Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()) }
             onMoved()
-        }) { Text("Move", color = c.ink) }
-    }, dismissButton = { TextButton(onDismiss) { Text("Cancel", color = c.ink) } }) {
+        }, style = ButtonStyle.Text)
+    }, dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) }) {
         DatePicker(picker, title = { Text("Another day", Modifier.padding(start = 24.dp, top = 16.dp)) })
     }
 }

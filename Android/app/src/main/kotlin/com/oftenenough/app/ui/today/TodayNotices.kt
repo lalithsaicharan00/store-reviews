@@ -1,5 +1,9 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.WavyProgress
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -17,19 +21,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CloudDone
-import androidx.compose.material.icons.outlined.CloudOff
-import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.HourglassTop
-import androidx.compose.material.icons.outlined.LinkOff
-import androidx.compose.material.icons.outlined.NotificationsOff
-import androidx.compose.material.icons.outlined.NotificationsPaused
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
@@ -41,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
@@ -123,12 +116,12 @@ object TodayNotices {
         val forced = forced
         val status = AppGraph.backup.status
         val state = status?.state
-        if (state == DriveState.HELD || forced == "held") list += TodayNotice("held", Icons.Outlined.DeleteSweep, "Deleted on another device",
+        if (state == DriveState.HELD || forced == "held") list += TodayNotice("held", Symbols.DeleteSweep, "Deleted on another device",
             "Nothing has changed here yet. Check them before anything is removed from this phone.", "Later", "Review") { nav.backup() }
         // A39: the Drive copy is gone (the person cleared the folder, say). Nothing has gone up since, and nothing
         // does until they choose Back up again, which sends every file. `holding` keeps the card here while it works.
         if (state == DriveState.REMOVED || holding == "removed" || forced == "removed") list += TodayNotice(
-            "removed", Icons.Outlined.CloudOff, "Your Google Drive backup was removed",
+            "removed", Symbols.CloudOff, "Your Google Drive backup was removed",
             "Your habits are safe on this phone. Nothing has been backed up since.", "Not now", "Back up again",
             act = { nav.backup() },
             work = NoticeWork(
@@ -138,16 +131,16 @@ object TodayNotices {
                 retry = "Try again",
             ) { progress -> AppGraph.backup.backUpEverythingAgain(progress) },
         )
-        if (state == DriveState.NOT_CONNECTED || forced == "off") list += TodayNotice("off", Icons.Outlined.LinkOff, "Backup is off",
+        if (state == DriveState.NOT_CONNECTED || forced == "off") list += TodayNotice("off", Symbols.LinkOff, "Backup is off",
             "The app can no longer reach your Google Drive. Your habits are safe on this phone.", "Not now", "Reconnect") {
             AppGraph.scope.launch { runCatching { AppGraph.backup.connectDrive() } }
         }
-        if (state == DriveState.FULL || forced == "full") list += TodayNotice("full", Icons.Outlined.CloudOff, "Backup is paused",
+        if (state == DriveState.FULL || forced == "full") list += TodayNotice("full", Symbols.CloudOff, "Backup is paused",
             "Your Google Drive is full. Your habits are safe on this phone, but new changes aren’t backed up.", "Not now", "Manage storage") {
             open(context, Intent(Intent.ACTION_VIEW, Uri.parse("https://one.google.com/storage")))
         }
         val wantsReminders = store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() }
-        if ((wantsReminders && !Reminders.canPost(context)) || forced == "notifications") list += TodayNotice("notifications", Icons.Outlined.NotificationsOff,
+        if ((wantsReminders && !Reminders.canPost(context)) || forced == "notifications") list += TodayNotice("notifications", Symbols.NotificationsOff,
             "Reminders can’t come", "Notifications for the app are off in your phone’s settings.", "Not now", "Turn on") {
             open(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
         }
@@ -155,11 +148,11 @@ object TodayNotices {
         if (missed != null || forced == "missed") {
             val name = missed?.let { store.habit(it.habitId)?.name }
             val time = missed?.let { DayWords.clockMinute(it.minute) } ?: "8:00 AM"
-            list += TodayNotice("missed", Icons.Outlined.NotificationsPaused, "A reminder didn’t arrive",
+            list += TodayNotice("missed", Symbols.NotificationsPaused, "A reminder didn’t arrive",
                 "Your $time reminder" + (name?.let { " for $it" } ?: "") + " didn’t show. Your phone may be stopping the app in the background.",
                 "Dismiss", "Show me how") { nav.reminders() }
         }
-        if (AppGraph.plus.pending != null || forced == "pending") list += TodayNotice("pending", Icons.Outlined.HourglassTop,
+        if (AppGraph.plus.pending != null || forced == "pending") list += TodayNotice("pending", Symbols.HourglassTop,
             "Plus is waiting for your payment", "Google Play hasn’t finished it yet. Plus turns on by itself when it does.", "Not now", "Open Google Play") {
             open(context, Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/orderhistory")))
         }
@@ -239,8 +232,7 @@ private fun WorkingNoticeCard(notice: TodayNotice, work: NoticeWork, onDismiss: 
                 }
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(work.working, style = AppType.titleMedium, color = c.ink)
-                    LinearProgressIndicator({ if (of == 0) 0f else saved / of.toFloat() }, Modifier.fillMaxWidth().height(6.dp),
-                        color = c.ink, trackColor = c.behind, strokeCap = StrokeCap.Round, gapSize = 0.dp, drawStopIndicator = {})
+                    WavyProgress(if (of == 0) 0f else saved / of.toFloat())
                 }
             }
             Spacer(Modifier.height(8.dp))
@@ -248,7 +240,7 @@ private fun WorkingNoticeCard(notice: TodayNotice, work: NoticeWork, onDismiss: 
         "done" -> NoticeShape(notice.key) {
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Outlined.CloudDone, null, tint = c.onInk)
+                    Icon(Symbols.CloudDone, null, tint = c.onInk)
                 }
                 Text(work.done, Modifier.weight(1f).padding(vertical = 10.dp), style = AppType.titleMedium, color = c.ink)
             }
@@ -292,8 +284,8 @@ private fun PlainNoticeCard(
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
-            TextButton(onDismiss, Modifier.semantics { testTag = "notice-dismiss" }) { Text(notice.dismiss, style = AppType.labelLarge, color = c.ink) }
-            TextButton(act, Modifier.semantics { testTag = "notice-action" }) { Text(action, style = AppType.labelLarge, color = c.ink) }
+            AppButton(notice.dismiss, onDismiss, Modifier.semantics { testTag = "notice-dismiss" }, style = ButtonStyle.Text)
+            AppButton(action, act, Modifier.semantics { testTag = "notice-action" }, style = ButtonStyle.Text)
         }
     }
 }

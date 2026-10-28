@@ -84,8 +84,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
+    // Material 3 Expressive (Android A76): 1.5 has its components, 1.4 has none. Back to the BOM's version once 1.5 is stable.
+    implementation("androidx.compose.material3:material3:1.5.0-beta02")
     implementation("androidx.graphics:graphics-shapes:1.1.0")
     implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.navigation:navigation-compose:2.10.2")

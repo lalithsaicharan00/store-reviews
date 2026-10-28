@@ -1,5 +1,9 @@
 package com.oftenenough.app.ui.progress
 
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.AppFilterChip
+import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.StandardIconButton
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
@@ -25,20 +29,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.BarChart
-import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -60,15 +55,11 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.Habit
@@ -85,7 +76,6 @@ import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.habit.HeatKeyCard
-import com.oftenenough.app.ui.newhabit.ChoicePill
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
 
@@ -144,13 +134,11 @@ fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: ()
     }
 
     Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "progress-screen" }) {
-        TopAppBar(
-            title = { Text("Progress", maxLines = 1) },
+        AppTopBar(
+            "Progress",
             navigationIcon = {
-                IconButton(onBack, Modifier.semantics { testTag = "progress-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") }
+                IconButton(onBack, Modifier.semantics { testTag = "progress-back" }) { Icon(Symbols.ArrowBack, "Back") }
             },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, scrolledContainerColor = c.screen,
-                titleContentColor = c.ink, navigationIconContentColor = c.ink),
         )
         if (!snap.hasHabits) {
             NoProgressYet()
@@ -269,7 +257,7 @@ private fun RangePicker(selected: ProgressRange, onPick: (ProgressRange) -> Unit
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (on) {
-                    Icon(Icons.Rounded.Check, null, Modifier.size(18.dp), tint = c.onInk)
+                    Icon(Symbols.Check, null, Modifier.size(18.dp), tint = c.onInk)
                     Spacer(Modifier.width(8.dp))
                 }
                 Text(r.title, style = AppType.labelLarge, color = if (on) c.onInk else c.ink, maxLines = 1)
@@ -283,11 +271,9 @@ private fun RangePicker(selected: ProgressRange, onPick: (ProgressRange) -> Unit
 private fun PeriodBar(snap: ProgressSnapshot, move: (Int) -> Unit) {
     val c = appColors
     val noun = snap.range.noun
-    val colors = IconButtonDefaults.iconButtonColors(contentColor = c.ink, disabledContentColor = c.secondary.copy(alpha = 0.45f))
     Row(Modifier.fillMaxWidth().background(c.screen).padding(horizontal = 8.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        IconButton({ move(-1) }, Modifier.semantics { testTag = "progress-previous" }, enabled = snap.canGoBack, colors = colors) {
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, "Previous $noun")
-        }
+        StandardIconButton(Symbols.KeyboardArrowLeft, "Previous $noun", { move(-1) },
+            Modifier.semantics { testTag = "progress-previous" }, enabled = snap.canGoBack)
         Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(snap.title, Modifier.semantics { testTag = "progress-period" }, maxLines = 1,
                 style = MaterialTheme.typography.titleLarge.copy(fontFeatureSettings = "tnum"), color = c.ink)
@@ -296,9 +282,8 @@ private fun PeriodBar(snap: ProgressSnapshot, move: (Int) -> Unit) {
                     style = MaterialTheme.typography.bodyMedium, color = c.secondary)
             }
         }
-        IconButton({ move(1) }, Modifier.semantics { testTag = "progress-next" }, enabled = snap.canGoForward, colors = colors) {
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, "Next $noun")
-        }
+        StandardIconButton(Symbols.KeyboardArrowRight, "Next $noun", { move(1) },
+            Modifier.semantics { testTag = "progress-next" }, enabled = snap.canGoForward)
     }
 }
 
@@ -310,14 +295,14 @@ private fun GroupChips(groups: List<HabitGroup>, selected: String?, onPick: (Str
             .semantics { testTag = "progress-groups" },
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        ChoicePill("All", selected == null, "progress-group-all") { onPick("") }
-        for (g in groups) ChoicePill(g.name, selected == g.id, "progress-group-" + tagName(g.name)) { onPick(g.id) }
+        AppFilterChip("All", selected == null, { onPick("") }, tag = "progress-group-all")
+        for (g in groups) AppFilterChip(g.name, selected == g.id, { onPick(g.id) }, tag = "progress-group-" + tagName(g.name))
     }
 }
 
 private fun tagName(name: String): String = name.trim().lowercase().replace(Regex("\\s+"), "-")
 
-private val headlineStyle = AppType.title20Emphasized
+private val headlineStyle = AppType.titleLargeEmphasized
 
 /**
  * One habit's card: icon, name on one line, the goal; the headline and at most one more fact; the period's squares.
@@ -352,7 +337,7 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
                     Text(card.goal, maxLines = 1, overflow = TextOverflow.Ellipsis, color = c.secondary, style = MaterialTheme.typography.bodyMedium)
                 }
                 Spacer(Modifier.width(8.dp))
-                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+                Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
             }
             Spacer(Modifier.height(16.dp))
             val start = card.runStart
@@ -400,7 +385,7 @@ private fun QuitRunClock(start: Long, clock: () -> Long) {
     }
     Text(
         buildAnnotatedString {
-            withStyle(AppType.title20Emphasized.toSpanStyle().copy(color = c.ink)) { append(Format.run((now - start) / 1000.0)) }
+            withStyle(AppType.titleLargeEmphasized.toSpanStyle().copy(color = c.ink)) { append(Format.run((now - start) / 1000.0)) }
             withStyle(AppType.bodyMedium.toSpanStyle().copy(color = c.secondary)) { append(" current run") }
         },
         style = headlineStyle.copy(fontFeatureSettings = "tnum"),
@@ -415,7 +400,7 @@ private fun NoProgressYet() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        CookieIcon(Icons.Rounded.BarChart, size = 112.dp)
+        CookieIcon(Symbols.BarChart, size = 112.dp)
         Spacer(Modifier.height(24.dp))
         Text("No progress yet", style = MaterialTheme.typography.headlineMedium, color = appColors.ink, textAlign = TextAlign.Center)
         Spacer(Modifier.height(8.dp))

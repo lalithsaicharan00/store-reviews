@@ -38,20 +38,22 @@ import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.data.WeekColumn
 import com.oftenenough.app.data.YearLayout
-import com.oftenenough.app.ui.habit.HeatDraw
+import com.oftenenough.app.ui.components.DayCellDraw
+import com.oftenenough.app.ui.components.dayCellColors
+import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.theme.appColors
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
 // Progress's squares (the iPhone's HeatMap.swift: HeatRow, HeatMonth, HeatYear): Week's row, Month's rows of seven and
-// Year's GitHub grid. Every square is drawn by the habit page's `HeatDraw` (ui/habit/HeatSquares.kt), so a square looks
+// Year's GitHub grid. Every square is drawn by the Day cell atom's `DayCellDraw` (ui/components/DayCell.kt), so a square looks
 // the same everywhere; each card's squares are one drawing, cached until its cells change (Rulebook S8, S12), never a
 // lazy grid (S13). A tap on a square names its day; the card decides what opens.
 
 /** Square sizes on Progress: Week's and Month's fill a seventh of the card up to [WEEK]; Year's stay readable and it scrolls. */
 internal object ProgressHeatSize {
-    val WEEK = 40.dp
+    val WEEK = DayCellSize.week
     /** The least space between two squares in Week and Month. */
     val GAP = 6.dp
     val YEAR = 24.dp
@@ -74,7 +76,7 @@ private fun sevenths(width: Float, cap: Float, gap: Float): Float = max(1f, min(
 internal fun HeatGrid(cells: List<HeatCell>, lead: Int, todayIndex: Int?, color: HabitColor, onCell: (Int?) -> Unit, modifier: Modifier = Modifier) {
     val density = LocalDensity.current
     val unit = density.density
-    val dark = appColors.dark
+    val colors = dayCellColors(color)
     val cap = with(density) { ProgressHeatSize.WEEK.toPx() }
     val gap = with(density) { ProgressHeatSize.GAP.toPx() }
     val pad = with(density) { ProgressHeatSize.OUTLINE.toPx() }
@@ -93,12 +95,12 @@ internal fun HeatGrid(cells: List<HeatCell>, lead: Int, todayIndex: Int?, color:
             .drawWithCache {
                 val sq = sevenths(size.width, cap, gap)
                 val column = size.width / 7f
-                val heat = HeatDraw(sq, unit)
+                val heat = DayCellDraw(sq, unit)
                 cells.forEachIndexed { i, cell ->
                     val place = lead + i
                     heat.add(cell, column * (place % 7 + 0.5f) - sq / 2, pad + (place / 7) * (sq + gap), i == todayIndex)
                 }
-                onDrawBehind { heat.draw(this, color, dark) }
+                onDrawBehind { heat.draw(this, colors) }
             }
             .pointerInput(lead, cells.size) {
                 detectTapGestures { at: Offset ->
@@ -157,7 +159,7 @@ private fun WeekdayLabel(text: String, isToday: Boolean, modifier: Modifier) {
 @Composable
 internal fun HeatYear(layout: YearLayout, cells: List<HeatCell>, color: HabitColor, onCell: (Int?) -> Unit) {
     val c = appColors
-    val dark = c.dark
+    val colors = dayCellColors(color)
     val unit = LocalDensity.current.density
     val measurer = rememberTextMeasurer()
     val labelStyle = MaterialTheme.typography.labelMedium.copy(color = c.secondary)
@@ -193,7 +195,7 @@ internal fun HeatYear(layout: YearLayout, cells: List<HeatCell>, color: HabitCol
                         val step = pitch.toPx()
                         val top = labels.toPx() + pad
                         val names = layout.months.map { it to measurer.measure(it.name, labelStyle) }
-                        val heat = HeatDraw(sq, unit)
+                        val heat = DayCellDraw(sq, unit)
                         val todayPlace = if (layout.todayRow == null) -1 else layout.lead + layout.shown - 1
                         for (i in 0 until min(layout.shown, cells.size)) {
                             val place = layout.lead + i
@@ -201,7 +203,7 @@ internal fun HeatYear(layout: YearLayout, cells: List<HeatCell>, color: HabitCol
                         }
                         onDrawBehind {
                             for ((month, text) in names) drawText(text, topLeft = Offset(pad + month.column * step, 0f))
-                            heat.draw(this, color, dark)
+                            heat.draw(this, colors)
                         }
                     }
                     .pointerInput(layout) {

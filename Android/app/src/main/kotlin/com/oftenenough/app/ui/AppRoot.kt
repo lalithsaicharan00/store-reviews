@@ -1,11 +1,9 @@
 package com.oftenenough.app.ui
 
-import com.oftenenough.app.ui.theme.sharedAxisX
-import com.oftenenough.app.ui.theme.sharedAxisSlidePx
+import com.oftenenough.app.ui.components.AppSnackbarHost
 import android.view.View
 import kotlinx.coroutines.CoroutineScope
 import androidx.compose.runtime.MutableState
-import androidx.compose.animation.AnimatedContent
 import com.oftenenough.app.ui.newhabit.EditHabitScreen
 import com.oftenenough.app.ui.menu.MenuDrawer
 import com.oftenenough.app.ui.menu.MenuSidebar
@@ -50,19 +48,9 @@ import com.oftenenough.app.ui.progress.ProgressScreen
 import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -85,7 +73,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.navigationBarsPadding
 import com.oftenenough.app.app.Prefs
@@ -388,7 +375,7 @@ private fun AppMain(
     }
     // Plus has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
     // snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
-    if (route != null && route != Routes.TODAY) SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
+    if (route != null && route != Routes.TODAY) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
         .let { if (menuItem == MenuItem.PLUS) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
     }
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }

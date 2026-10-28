@@ -1,4 +1,4 @@
-package com.oftenenough.app.ui.today
+package com.oftenenough.app.ui.components
 
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.animateColorAsState
@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -46,7 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.AppType
-import com.oftenenough.app.ui.theme.appColors
+import androidx.compose.material3.MaterialTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -58,20 +56,25 @@ import kotlin.math.sign
  */
 class SwipeAction(val short: String, val full: String, val icon: ImageVector, val tag: String, val act: () -> Unit)
 
-/** How far a row gives when its side has nothing ("the row gives a little and springs back", Figma 7.14). */
+/** How far a row gives when its side has nothing ("the row gives a little and springs back", Figma 7.14, Nudge). */
 private val GiveDp = 24.dp
 
 /**
- * A Today row that swipes (Figma 7.1–7.24; the user's design, 18 Oct 2026, which replaces the earlier "reveal buttons,
- * never act"): swipe left for [left] (Skip, Undo skip, a slip), right for [right] (Note). Short of halfway the grey
- * (#E2E2E7) shows the short word; past it the colour fills with ink, the full words show and the phone ticks once; let go
- * there and it acts, short of it the row springs back. Either way the row comes home: nothing is ever left open. A side
- * with nothing gives a little and springs back. While it moves the row lifts: corners 12 and a soft shadow. Both actions
- * are TalkBack actions on the row too.
+ * Molecule 4.2, **Habit row · Swipe** (Figma 763:273; Components — Atoms Build Plan): a Today row ([HabitRowLayout])
+ * that swipes, acting when let go past halfway (Android A16): swipe left for [left] (Skip, Undo skip, Log a slip),
+ * right for [right] (Note).
+ *
+ * Behind the row, its whole size, the action: a 24 dp icon, 8, its word in Label Large, 16 from the side it comes
+ * from. Short of halfway (Reveal) it's Surface container highest with On surface and the short word ("Skip",
+ * "Note"); past halfway it turns Inverse surface with Inverse on surface and the full words ("Skip today", "Add note"),
+ * and the phone ticks once. Let go there and it acts; short of it the row springs back. Either way the row comes home:
+ * nothing is ever left open. The row slides flat, inside its section's [shape]: no lift, no shadow. A side with nothing
+ * (A35: a week or month goal, a cut-down, a task) gives 24 and springs back (Nudge). Both actions are TalkBack actions
+ * on the row too.
  */
 @Composable
-fun SwipeRow(left: SwipeAction?, right: SwipeAction?, shape: Shape, haptics: Boolean = true, content: @Composable () -> Unit) {
-    val c = appColors
+fun HabitRowSwipe(left: SwipeAction?, right: SwipeAction?, shape: Shape, haptics: Boolean = true, content: @Composable () -> Unit) {
+    val s = MaterialTheme.colorScheme
     val view = LocalView.current
     val density = LocalDensity.current
     val givePx = with(density) { GiveDp.toPx() }
@@ -89,10 +92,10 @@ fun SwipeRow(left: SwipeAction?, right: SwipeAction?, shape: Shape, haptics: Boo
         val v = offset.value
         val action = if (v < 0) left else if (v > 0) right else null
         if (action != null && abs(v) > 0.5f) {
-            val background by animateColorAsState(if (past) c.ink else c.behind, tween(120), label = "swipe")
-            val ink = if (past) c.onInk else c.ink
+            val background by animateColorAsState(if (past) s.inverseSurface else s.surfaceContainerHighest, tween(120), label = "swipe")
+            val ink = if (past) s.inverseOnSurface else s.onSurface
             Row(
-                Modifier.matchParentSize().background(background).padding(horizontal = if (past) 24.dp else 16.dp)
+                Modifier.matchParentSize().background(background).padding(horizontal = 16.dp)
                     .semantics { testTag = action.tag },
                 horizontalArrangement = if (v < 0) Arrangement.End else Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
@@ -102,16 +105,8 @@ fun SwipeRow(left: SwipeAction?, right: SwipeAction?, shape: Shape, haptics: Boo
                 Text(if (past) action.full else action.short, style = AppType.labelLarge, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
-        val lifted = abs(v) > 0.5f
         Box(
             Modifier.offset { IntOffset(v.roundToInt(), 0) }
-                .graphicsLayer {
-                    if (lifted) {
-                        this.shape = RoundedCornerShape(12.dp)
-                        clip = true
-                        shadowElevation = with(density) { 3.dp.toPx() }
-                    }
-                }
                 .pointerInput(Unit) {
                     detectHorizontalDragGestures(
                         onDragStart = { past = false },

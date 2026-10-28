@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.AppTopBar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,14 +20,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -56,10 +54,9 @@ internal fun StreaksPage(habit: Habit, store: HabitStore, today: Int, revision: 
     val c = appColors
     val list = remember(habit, revision, today) { store.streakList(habit, today) }
     Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "streaks-page" }) {
-        TopAppBar(
-            title = { Text(list.title, style = AppType.titleLarge) },
-            navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "page-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = c.screen, titleContentColor = c.ink, navigationIconContentColor = c.ink),
+        AppTopBar(
+            list.title,
+            navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "page-back" }) { Icon(Symbols.ArrowBack, "Back") } },
         )
         LazyColumn(Modifier.fillMaxWidth().weight(1f)) {
             item(key = "who") {

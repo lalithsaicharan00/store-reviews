@@ -1,11 +1,13 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppAssistChip
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,14 +21,11 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -34,7 +33,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +47,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -118,16 +115,10 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
                 Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
-                    else Icon(Icons.Outlined.CalendarToday, null, tint = c.secondary, modifier = Modifier.size(24.dp))
+                    else Icon(Symbols.CalendarToday, null, tint = c.secondary, modifier = Modifier.size(24.dp))
                     Text(habit?.name ?: "This day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     if (editing && adding) {
-                        Row(Modifier.height(32.dp).clip(RoundedCornerShape(8.dp)).border(1.dp, c.outline, RoundedCornerShape(8.dp))
-                            .clickable(role = Role.Button) { pickDay = true }.padding(start = 8.dp, end = 16.dp).semantics { testTag = "note-date" },
-                            verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Outlined.CalendarToday, null, Modifier.size(18.dp), tint = c.ink)
-                            Spacer(Modifier.width(8.dp))
-                            Text(DayWords.withDate(day, today), style = AppType.labelLarge, color = c.ink, maxLines = 1)
-                        }
+                        AppAssistChip(DayWords.withDate(day, today), { pickDay = true }, tag = "note-date")
                     } else Text(DayWords.withDate(day, today), style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
                 }
             }
@@ -163,15 +154,15 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
     }, keepLabel = if (adding) "Keep writing" else "Keep editing")
     if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this note?") },
         text = { Text("Only the note for $shortDay is removed. That day's progress stays.") },
-        confirmButton = { TextButton({ confirmDelete = false; save(""); onDone() }, Modifier.semantics { testTag = "note-delete-confirm" }) { Text("Delete note", color = c.error) } },
-        dismissButton = { TextButton({ confirmDelete = false }) { Text("Cancel", color = c.ink) } })
+        confirmButton = { AppButton("Delete note", { confirmDelete = false; save(""); onDone() }, Modifier.semantics { testTag = "note-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
+        dismissButton = { AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text) })
     if (pickDay) {
         val first = habit?.let { store.rules.startDay(it) } ?: Int.MIN_VALUE
         val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long) = utcMsToDay(utcTimeMillis).let { it <= today && it >= first }
         })
         DatePickerDialog({ pickDay = false }, confirmButton = {
-            TextButton({ state.selectedDateMillis?.let { day = utcMsToDay(it) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }) { Text("OK", color = c.ink) }
-        }, dismissButton = { TextButton({ pickDay = false }) { Text("Cancel", color = c.ink) } }) { DatePicker(state) }
+            AppButton("OK", { state.selectedDateMillis?.let { day = utcMsToDay(it) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }, style = ButtonStyle.Text)
+        }, dismissButton = { AppButton("Cancel", { pickDay = false }, style = ButtonStyle.Text) }) { DatePicker(state) }
     }
 }

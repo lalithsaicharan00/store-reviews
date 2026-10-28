@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.menu
 
+import com.oftenenough.app.ui.theme.Symbols
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,16 +11,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Feedback
-import androidx.compose.material.icons.rounded.AddCircleOutline
-import androidx.compose.material.icons.rounded.Checklist
-import androidx.compose.material.icons.rounded.ContactSupport
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.WbSunny
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.PermanentDrawerSheet
@@ -43,13 +38,14 @@ import com.oftenenough.app.ui.theme.appColors
  * come for. Progress, Times of Day, Day and Week, Reminders, Appearance, Backup & Sync, Privacy and About are all
  * inside Settings now.
  */
-enum class MenuItem(val title: String, val icon: ImageVector) {
-    TODAY("Today", Icons.Rounded.WbSunny),
-    HABITS("Habits & Tasks", Icons.Rounded.Checklist),
-    PLUS("Plus", Icons.Rounded.AddCircleOutline),
-    SETTINGS("Settings", Icons.Rounded.Settings),
-    CONTACT("Contact us", Icons.Rounded.ContactSupport),
-    FEEDBACK("Send feedback", Icons.Outlined.Feedback),
+/** [selectedIcon]: the open row's glyph is filled, as Material's drawer and Figma draw it (Drawer item, State=Selected). */
+enum class MenuItem(val title: String, val icon: ImageVector, val selectedIcon: ImageVector) {
+    TODAY("Today", Symbols.WbSunny, Symbols.Filled.WbSunny),
+    HABITS("Habits & Tasks", Symbols.Checklist, Symbols.Filled.Checklist),
+    PLUS("Plus", Symbols.AddCircle, Symbols.Filled.AddCircle),
+    SETTINGS("Settings", Symbols.Settings, Symbols.Filled.Settings),
+    CONTACT("Contact us", Symbols.ContactSupport, Symbols.Filled.ContactSupport),
+    FEEDBACK("Send feedback", Symbols.Feedback, Symbols.Filled.Feedback),
 }
 
 /**
@@ -86,7 +82,7 @@ private fun MenuItems(store: HabitStore, current: MenuItem?, onPick: (MenuItem) 
         ) {
             Image(painterResource(if (c.dark) R.drawable.mark_dark else R.drawable.mark_light), null, Modifier.size(36.dp))
             Spacer(Modifier.width(12.dp))
-            Text("Often Enough", style = AppType.title20Emphasized, color = c.ink)
+            Text("Often Enough", style = AppType.titleLargeEmphasized, color = c.ink)
         }
         for (item in MenuItem.entries) {
             // The line between where you are and what you do (Figma: under Habits & Tasks).
@@ -97,15 +93,13 @@ private fun MenuItems(store: HabitStore, current: MenuItem?, onPick: (MenuItem) 
                 label = { Text(item.title, style = AppType.labelLarge) },
                 selected = item == current,
                 onClick = { onPick(item) },
-                icon = { Icon(item.icon, null) },
+                icon = { Icon(if (item == current) item.selectedIcon else item.icon, null) },
                 badge = if (item == MenuItem.HABITS && kept > 0) ({ Text("$kept", style = AppType.labelLarge) }) else null,
                 modifier = Modifier.padding(vertical = 2.dp).semantics { testTag = "menu-" + item.name.lowercase() },
-                colors = NavigationDrawerItemDefaults.colors(
-                    selectedContainerColor = c.behind, unselectedContainerColor = c.surface,
-                    selectedTextColor = c.ink, unselectedTextColor = c.ink,
-                    selectedIconColor = c.ink, unselectedIconColor = c.secondary,
-                    selectedBadgeColor = c.secondary, unselectedBadgeColor = c.secondary,
-                ),
+                // Atom 1.8 (Figma Drawer item 625:46): Material's own colours (selected Secondary container with On
+                // secondary container, unselected transparent with On surface variant); only the count stays On surface
+                // variant on the selected row too, as the design draws it.
+                colors = NavigationDrawerItemDefaults.colors(selectedBadgeColor = MaterialTheme.colorScheme.onSurfaceVariant),
             )
         }
         Spacer(Modifier.height(24.dp))

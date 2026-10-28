@@ -1,5 +1,14 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.components.AppMenuItem
+import androidx.compose.ui.unit.DpOffset
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.NavigationIcon
+import com.oftenenough.app.ui.components.AppTopBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.scrollBy
@@ -7,25 +16,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.rounded.ArrowDownward
-import androidx.compose.material.icons.rounded.ArrowUpward
-import androidx.compose.material.icons.rounded.DragIndicator
-import androidx.compose.material.icons.rounded.SortByAlpha
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.LaunchedEffect
@@ -46,7 +43,6 @@ import com.oftenenough.app.ui.theme.HabitIcons
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -59,22 +55,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.DragHandle
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -94,17 +77,12 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.data.TextLimit
-import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.segmentShape
-import com.oftenenough.app.ui.newhabit.FormPage
-import com.oftenenough.app.ui.newhabit.Note
 import com.oftenenough.app.ui.theme.appColors
 import kotlin.math.roundToInt
 
@@ -263,13 +241,11 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTime
     Scaffold(
         containerColor = c.screen,
         topBar = {
-            Row(Modifier.fillMaxWidth().statusBarsPadding().height(64.dp).padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onBack, Modifier.semantics { testTag = "arrange-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back", tint = c.ink) }
-                Spacer(Modifier.width(4.dp))
-                Text("Arrange Today", style = AppType.titleLargeEmphasized, color = c.ink, modifier = Modifier.semantics { heading() })
-            }
+            AppTopBar("Arrange Today", Modifier.semantics { heading() }, navigationIcon = {
+                NavigationIcon(Symbols.ArrowBack, "Back", onBack, Modifier.semantics { testTag = "arrange-back" })
+            })
         },
-        snackbarHost = { SnackbarHost(snackbar) { Snackbar(it, shape = RoundedCornerShape(4.dp)) } },
+        snackbarHost = { AppSnackbarHost(snackbar) },
     ) { padding ->
         Column(
             Modifier.fillMaxSize().padding(padding).onSizeChanged { viewport = it.height }.verticalScroll(scroll, enabled = drag == null)
@@ -334,10 +310,10 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onTime
             Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).clickable(onClick = onTimesOfDay)
                 .heightIn(min = 56.dp).padding(horizontal = 16.dp).semantics { testTag = "arrange-times-of-day" },
                 verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Outlined.Schedule, null, tint = c.ink)
+                Icon(Symbols.Schedule, null, tint = c.ink)
                 Spacer(Modifier.width(16.dp))
                 Text("Times of Day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink)
-                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
+                Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
             }
         }
     }
@@ -402,22 +378,21 @@ private fun ArrangeHeader(
         Box {
             Box(Modifier.size(40.dp).clip(CircleShape).background(if (menu) c.behind else Color.Transparent).clickable { menu = true }
                 .semantics { testTag = "arrange-menu-$title"; contentDescription = "$title options" }, contentAlignment = Alignment.Center) {
-                Icon(Icons.Rounded.MoreVert, null, tint = c.secondary)
+                Icon(Symbols.MoreVert, null, tint = c.secondary)
             }
-            DropdownMenu(menu, { menu = false }, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp) {
+            AppMenu(menu, { menu = false }) {
                 @Composable fun item(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, action: () -> Unit) =
-                    DropdownMenuItem({ Text(text, style = AppType.bodyLarge, color = c.ink) }, { menu = false; action() },
-                        leadingIcon = { Icon(icon, null, tint = c.secondary) }, modifier = Modifier.semantics { testTag = tag })
+                    AppMenuItem(text, { menu = false; action() }, icon = icon, tag = tag)
                 if (members.size > 1) {
                     if (members.any { h -> store.placements(h).any { it.section == card && it.times.isNotEmpty() } })
-                        item("Sort by reminder time", Icons.Outlined.Schedule, "arrange-sort-time-$title") { onSort("${section?.name ?: title} sorted by reminder time", sortedByReminder(members, card, store).map { it.id }) }
-                    item("Sort A to Z", Icons.Rounded.SortByAlpha, "arrange-sort-az-$title") { onSort("${section?.name ?: title} sorted A to Z", sortedByName(members).map { it.id }) }
+                        item("Sort by reminder time", Symbols.Schedule, "arrange-sort-time-$title") { onSort("${section?.name ?: title} sorted by reminder time", sortedByReminder(members, card, store).map { it.id }) }
+                    item("Sort A to Z", Symbols.SortByAlpha, "arrange-sort-az-$title") { onSort("${section?.name ?: title} sorted A to Z", sortedByName(members).map { it.id }) }
                 }
-                if (section != null && !section.isAnytime) item("Edit time of day", Icons.Outlined.Edit, "arrange-edit-$title") { onEdit(section.id) }
+                if (section != null && !section.isAnytime) item("Edit time of day", Symbols.Edit, "arrange-edit-$title") { onEdit(section.id) }
                 if (movable) {
                     val i = cards.indexOf(card)
-                    if (i > 0) item("Move up", Icons.Rounded.ArrowUpward, "arrange-up-$title") { store.moveCard(card, HabitStore.CardMove.UP) }
-                    if (i < cards.size - 1) item("Move down", Icons.Rounded.ArrowDownward, "arrange-down-$title") { store.moveCard(card, HabitStore.CardMove.DOWN) }
+                    if (i > 0) item("Move up", Symbols.ArrowUpward, "arrange-up-$title") { store.moveCard(card, HabitStore.CardMove.UP) }
+                    if (i < cards.size - 1) item("Move down", Symbols.ArrowDownward, "arrange-down-$title") { store.moveCard(card, HabitStore.CardMove.DOWN) }
                 }
             }
         }
@@ -432,7 +407,7 @@ private fun ArrangeHeader(
                     if (dy >= step) { store.moveCard(card, HabitStore.CardMove.DOWN); dy = 0f }
                 }
             }.semantics { testTag = "arrange-card-handle-$title"; contentDescription = "Move $title" }, contentAlignment = Alignment.Center) {
-                Icon(Icons.Rounded.DragIndicator, null, tint = c.secondary)
+                Icon(Symbols.DragIndicator, null, tint = c.secondary)
             }
         }
     }
@@ -485,17 +460,15 @@ private fun ArrangeRow(
             }
             if (onDragStart != null) Box(Modifier.size(48.dp).then(drag).semantics { testTag = "arrange-handle-${habit.name}"; contentDescription = "Drag to move" },
                 contentAlignment = Alignment.Center) {
-                Icon(Icons.Rounded.DragHandle, null, tint = if (lifted) c.ink else c.secondary)
+                Icon(Symbols.DragHandle, null, tint = if (lifted) c.ink else c.secondary)
             }
         }
-        DropdownMenu(menuOpen, onMenuDismiss, shape = RoundedCornerShape(16.dp), containerColor = c.menu, shadowElevation = 6.dp,
-            offset = androidx.compose.ui.unit.DpOffset(120.dp, 0.dp)) {
+        AppMenu(menuOpen, onMenuDismiss, offset = DpOffset(120.dp, 0.dp)) {
             @Composable fun item(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, enabled: Boolean = true, action: () -> Unit) =
-                DropdownMenuItem({ Text(text, style = AppType.bodyLarge, color = if (enabled) c.ink else c.secondary) }, action, enabled = enabled,
-                    leadingIcon = { Icon(icon, null, tint = c.secondary) }, modifier = Modifier.semantics { testTag = tag })
-            item("Move up", Icons.Rounded.ArrowUpward, "arrange-move-up", canUp, onUp)
-            item("Move down", Icons.Rounded.ArrowDownward, "arrange-move-down", canDown, onDown)
-            if (onMoveTo != null) item("Move to…", Icons.Outlined.Schedule, "arrange-move-to") { onMoveTo() }
+                AppMenuItem(text, action, icon = icon, enabled = enabled, tag = tag)
+            item("Move up", Symbols.ArrowUpward, "arrange-move-up", canUp, onUp)
+            item("Move down", Symbols.ArrowDownward, "arrange-move-down", canDown, onDown)
+            if (onMoveTo != null) item("Move to…", Symbols.Schedule, "arrange-move-to") { onMoveTo() }
         }
     }
 }
@@ -510,7 +483,7 @@ private fun MoveToDialog(habit: Habit, cards: List<String>, store: HabitStore, o
         onDismissRequest = onDismiss,
         title = {
             Column(Modifier.fillMaxWidth()) {
-                Icon(Icons.Outlined.Schedule, null, tint = c.ink)
+                Icon(Symbols.Schedule, null, tint = c.ink)
                 Spacer(Modifier.height(16.dp))
                 Text("Move ${habit.name} to", style = AppType.headlineSmall, color = c.ink)
             }
@@ -521,15 +494,15 @@ private fun MoveToDialog(habit: Habit, cards: List<String>, store: HabitStore, o
                     val name = store.section(card).name
                     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(8.dp)).clickable { chosen = card }
                         .semantics(mergeDescendants = true) { testTag = "move-to-$name" }, verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(chosen == card, { chosen = card }, colors = RadioButtonDefaults.colors(selectedColor = c.ink, unselectedColor = c.secondary))
+                        RadioButton(chosen == card, { chosen = card })
                         Spacer(Modifier.width(8.dp))
                         Text(if (card == now) "$name (where it is now)" else name, style = AppType.bodyLarge, color = c.ink)
                     }
                 }
             }
         },
-        confirmButton = { TextButton({ onMove(chosen) }, Modifier.semantics { testTag = "move-to-confirm" }) { Text("Move", style = AppType.labelLarge, color = c.ink) } },
-        dismissButton = { TextButton(onDismiss) { Text("Cancel", style = AppType.labelLarge, color = c.ink) } },
+        confirmButton = { AppButton("Move", { onMove(chosen) }, Modifier.semantics { testTag = "move-to-confirm" }, style = ButtonStyle.Text) },
+        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) },
         containerColor = c.menu,
     )
 }

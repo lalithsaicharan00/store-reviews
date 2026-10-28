@@ -1,16 +1,23 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.FormField
+import com.oftenenough.app.ui.components.AppMenuItem
+import androidx.compose.ui.unit.DpOffset
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppSwitch
+import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.ui.semantics.Role
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,42 +39,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.rounded.Notes
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.WbSunny
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Checklist
-import androidx.compose.material.icons.rounded.EditCalendar
-import androidx.compose.material.icons.rounded.Event
-import androidx.compose.material.icons.rounded.EventBusy
-import androidx.compose.material.icons.rounded.History
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Repeat
-import androidx.compose.material.icons.rounded.Speed
-import androidx.compose.material.icons.rounded.Tag
-import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.EditCalendar
-import androidx.compose.material.icons.outlined.EventBusy
-import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -87,29 +63,23 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.oftenenough.app.data.DayWords
-import com.oftenenough.app.data.Frequency
-import com.oftenenough.app.data.GoalPeriod
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitCopy
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.RoundActionButton
+import com.oftenenough.app.ui.components.AppFilledIconButton
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.onboarding.HabitIdea
 import com.oftenenough.app.ui.record.DiscardDialog
 import com.oftenenough.app.ui.record.GoalNumber
-import com.oftenenough.app.ui.record.Pill
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -203,14 +173,11 @@ fun HabitForm(
     val scroll = rememberScrollState()
     var discard by remember { mutableStateOf(false) }
     var startOver by remember { mutableStateOf(false) }
-    // Add with no name (Figma 2.1.10): Name takes the focus, outlined, and says what's missing.
-    var nameMissing by remember { mutableStateOf(false) }
     val nameFocus = remember { FocusRequester() }
     // The previews catch up when typing pauses (0.3 s); Add follows at once (S11).
     LaunchedEffect(typed) {
         snapshotFlow { typed.text }.collectLatest { text ->
             form.nameFilled = text.isNotBlank()
-            if (text.isNotBlank()) nameMissing = false
             delay(300)
             form.name = text
             form.suggestIcon()
@@ -247,7 +214,7 @@ fun HabitForm(
     fun save() {
         form.name = typed.text
         form.description = describing.text
-        if (!form.nameFilled) { nameMissing = true; runCatching { nameFocus.requestFocus() }; return }
+        if (!form.nameFilled) { runCatching { nameFocus.requestFocus() }; return } // nothing turns red (A65)
         missingPage()?.let { open(it); return }
         val o = form.original
         if (o != null) {
@@ -288,7 +255,7 @@ fun HabitForm(
         Page.TYPE -> TypePage(form, ::back)
         Page.SIXTH -> SixthHabitPage(store, ::back, onMakeRoom = { open(Page.MAKE_ROOM) }, onPlus = onPlus, onBought = { pages = emptyList(); add() })
         Page.MAKE_ROOM -> MakeRoomPage(store, ::back) { pages = emptyList(); add() }
-        null -> FormBody(form, store, typed, describing, scroll, nameFocus, nameMissing, ::open, ::close, ::save)
+        null -> FormBody(form, store, typed, describing, scroll, nameFocus, ::open, ::close, ::save)
     }
     if (discard) DiscardDialog(if (form.editing) "Discard your changes?" else if (form.type == ItemType.TASK) "Discard this task?" else "Discard this habit?",
         onKeep = { discard = false }, onDiscard = { discard = false; onClose() }, keepLabel = "Keep editing")
@@ -301,8 +268,8 @@ fun HabitForm(
                 Text(if (o?.kind == HabitKind.Quit) "Changing $name to $kind starts it over from today. Your old $name, with its quit run and slips, is kept in Archived habits."
                     else "Changing $name to $kind starts it over from today. Your old $name and its history are kept in Archived habits.")
             },
-            confirmButton = { TextButton({ startOver = false; startOverNow() }, Modifier.semantics { testTag = "start-over" }) { Text("Start over", color = appColors.ink) } },
-            dismissButton = { TextButton({ startOver = false }) { Text("Cancel", color = appColors.ink) } })
+            confirmButton = { AppButton("Start over", { startOver = false; startOverNow() }, Modifier.semantics { testTag = "start-over" }, style = ButtonStyle.Text) },
+            dismissButton = { AppButton("Cancel", { startOver = false }, style = ButtonStyle.Text) })
     }
 }
 
@@ -310,22 +277,21 @@ fun HabitForm(
 @Composable
 private fun FormBody(
     form: FormState, store: HabitStore, typed: TypedText, describing: TypedText, scroll: androidx.compose.foundation.ScrollState,
-    nameFocus: FocusRequester, nameMissing: Boolean, open: (Page) -> Unit, close: () -> Unit, save: () -> Unit,
+    nameFocus: FocusRequester, open: (Page) -> Unit, close: () -> Unit, save: () -> Unit,
 ) {
     val type = form.type
     var colours by remember { mutableStateOf(false) }
     BackHandler(onBack = close)
     Column(Modifier.fillMaxSize().background(appColors.screen).imePadding()) {
-        TopAppBar(
-            title = { Text(formTitle(form), style = AppType.titleLargeEmphasized, maxLines = 1) },
-            navigationIcon = { IconButton(close, Modifier.semantics { testTag = "form-back" }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
+        AppTopBar(
+            formTitle(form),
+            navigationIcon = { IconButton(close, Modifier.semantics { testTag = "form-back" }) { Icon(Symbols.ArrowBack, "Back") } },
             actions = { AddButton(if (form.editing) "Save" else "Add", ready = form.canAdd, onClick = save) },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = appColors.screen, titleContentColor = appColors.ink, navigationIconContentColor = appColors.ink),
         )
         Column(Modifier.fillMaxWidth().verticalScroll(scroll).padding(horizontal = 16.dp).padding(top = 8.dp, bottom = 24.dp).navigationBarsPadding(),
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
             if (type != ItemType.QUIT) Preview(form)
-            NameGroup(form, typed, describing, nameFocus, nameMissing, onIcon = { open(Page.ICON) }, onColour = { colours = true })
+            NameGroup(form, typed, describing, nameFocus, onIcon = { open(Page.ICON) }, onColour = { colours = true })
             when (type) {
                 ItemType.QUIT -> {
                     if (form.editing) SegmentedList { OpenRow("Type", type.title, null, 0, 1, "type-row") { open(Page.TYPE) } }
@@ -423,17 +389,12 @@ private fun MilestoneSwitch(form: FormState, store: HabitStore) {
 /** "⚙ Open settings": Android's notification settings for the app (Figma N.4, 2.1.6.4). */
 @Composable
 fun OpenSettingsButton(context: android.content.Context) {
-    androidx.compose.material3.FilledTonalButton({
+    AppButton("Open settings", {
         runCatching {
             context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName))
         }
-    }, Modifier.padding(start = 16.dp, top = 4.dp).semantics { testTag = "open-settings" },
-        colors = androidx.compose.material3.ButtonDefaults.filledTonalButtonColors(containerColor = appColors.soft, contentColor = appColors.ink)) {
-        Icon(Icons.Outlined.Settings, null, Modifier.size(18.dp))
-        Spacer(Modifier.width(8.dp))
-        Text("Open settings", style = AppType.labelLarge)
-    }
+    }, Modifier.padding(start = 16.dp, top = 4.dp), style = ButtonStyle.Tonal, icon = Symbols.Settings, tag = "open-settings")
 }
 
 /** A one-time task's day on the form (Figma 1.9, 6.2): "Today · Sat 18 Oct", "Tomorrow · Sun 19 Oct", "Thu 23 Oct", "No date". */
@@ -482,12 +443,12 @@ private fun Preview(form: FormState) {
                 previewLine(form, habit)?.let { Text(it, style = AppType.bodyMedium, color = appColors.secondary, maxLines = 1) }
             }
             val (icon, text) = when {
-                habit.kind == HabitKind.Duration -> Icons.Rounded.PlayArrow to null
-                habit.kind is HabitKind.Amount -> Icons.Rounded.Check to ("+" + (habit.quickIncrement?.let { GoalNumber.text(it) } ?: ""))
-                habit.kind == HabitKind.Checklist -> Icons.Rounded.ExpandMore to null
-                else -> Icons.Rounded.Check to null
+                habit.kind == HabitKind.Duration -> Symbols.Filled.PlayArrow to null
+                habit.kind is HabitKind.Amount -> Symbols.Check to ("+" + (habit.quickIncrement?.let { GoalNumber.text(it) } ?: ""))
+                habit.kind == HabitKind.Checklist -> Symbols.ExpandMore to null
+                else -> Symbols.Check to null
             }
-            RoundActionButton(icon, done = false, color = habit.color, label = "", onClick = {}, text = text, enabled = true)
+            AppFilledIconButton(icon, "", {}, color = habit.color, text = text)
         }
         if (named && form.taskHasNoDate) Text("It shows on the Tasks page under No date, not on Today.",
             Modifier.padding(horizontal = 16.dp).semantics { testTag = "habit-sentence" }, style = AppType.bodySmall, color = appColors.secondary)
@@ -506,10 +467,10 @@ private fun previewLine(form: FormState, habit: Habit): String? = when {
 
 /** The name, the description, and Icon | Colour, as one group (Figma 2.1's "Card · Name"). */
 @Composable
-private fun NameGroup(form: FormState, typed: TypedText, describing: TypedText, focus: FocusRequester, missing: Boolean, onIcon: () -> Unit, onColour: () -> Unit) {
+private fun NameGroup(form: FormState, typed: TypedText, describing: TypedText, focus: FocusRequester, onIcon: () -> Unit, onColour: () -> Unit) {
     val describes = form.type != ItemType.QUIT
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        NameField(typed, form.type.namePlaceholder, focus, missing, autoFocus = !form.editing && typed.text.isEmpty())
+        NameField(typed, form.type.namePlaceholder, focus, autoFocus = !form.editing && typed.text.isEmpty())
         if (describes) DescriptionField(describing)
         Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
             HalfRow("Icon", "icon-row", RoundedCornerShape(4.dp, 4.dp, 4.dp, 24.dp), Modifier.weight(1f), onIcon) {
@@ -523,40 +484,24 @@ private fun NameGroup(form: FormState, typed: TypedText, describing: TypedText, 
 }
 
 /**
- * The name field on its own, so typing redraws only it (S11). A name is at most 24 letters, and shows only what's kept
- * (U6). With nothing typed, Add outlines it in red and says so (Figma 2.1.10).
+ * The name field on its own, so typing redraws only it (S11): the Form field atom (3.1), first in its group. A name is
+ * at most 24 letters, and shows only what's kept (U6). With nothing typed it looks as usual: Add only stays quiet (A65).
  */
 @Composable
-private fun NameField(typed: TypedText, placeholder: String, focus: FocusRequester, missing: Boolean, autoFocus: Boolean) {
-    val c = appColors
+private fun NameField(typed: TypedText, placeholder: String, focus: FocusRequester, autoFocus: Boolean) {
     LaunchedEffect(Unit) { if (autoFocus) runCatching { focus.requestFocus() } }
-    val shape = RoundedCornerShape(24.dp, 24.dp, 4.dp, 4.dp)
-    Column(Modifier.clip(shape).background(c.surface)) {
-        Box(Modifier.fillMaxWidth().clip(shape).then(if (missing) Modifier.border(2.dp, c.error, shape) else Modifier)
-            .heightIn(min = 72.dp).padding(horizontal = 16.dp, vertical = 22.dp), contentAlignment = Alignment.CenterStart) {
-            BasicTextField(typed.text, { typed.text = it.replace("\n", "").take(TextLimit.NAME) },
-                Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "name-field"; contentDescription = "Name" },
-                textStyle = AppType.title20.copy(color = c.ink), singleLine = true, cursorBrush = SolidColor(c.ink),
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                decorationBox = { inner -> Box { if (typed.text.isEmpty()) Text(placeholder, style = AppType.title20.copy(color = c.secondary)); inner() } })
-        }
-        if (missing) Text("Give it a name to add it.", Modifier.padding(start = 16.dp, top = 4.dp, bottom = 8.dp).semantics { testTag = "name-missing" },
-            style = AppType.bodySmall, color = c.error)
-    }
-    TextLimit.note(typed.text, TextLimit.NAME)?.let { Text(it, Modifier.padding(start = 16.dp, top = 4.dp), style = AppType.bodySmall, color = c.secondary) }
+    FormField(typed.text, { typed.text = it.replace("\n", "").take(TextLimit.NAME) }, placeholder, 0, 3,
+        fieldModifier = Modifier.focusRequester(focus).semantics { testTag = "name-field"; contentDescription = "Name" },
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences))
+    TextLimit.note(typed.text, TextLimit.NAME)?.let { Text(it, Modifier.padding(start = 16.dp, top = 4.dp), style = AppType.bodySmall, color = appColors.secondary) }
 }
 
+/** The description, second in the group (Form field, Middle), up to four lines. */
 @Composable
-private fun DescriptionField(describing: TypedText) {
-    Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp)).background(appColors.surface).heightIn(min = 56.dp).padding(16.dp),
-        contentAlignment = Alignment.CenterStart) {
-        BasicTextField(describing.text, { describing.text = it.take(TextLimit.DESCRIPTION) },
-            Modifier.fillMaxWidth().semantics { testTag = "description-field"; contentDescription = "Description" },
-            textStyle = AppType.bodyLarge.copy(color = appColors.ink), maxLines = 4, cursorBrush = SolidColor(appColors.ink),
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-            decorationBox = { inner -> Box { if (describing.text.isEmpty()) Text("Description (optional)", style = AppType.bodyLarge, color = appColors.secondary); inner() } })
-    }
-}
+private fun DescriptionField(describing: TypedText) =
+    FormField(describing.text, { describing.text = it.take(TextLimit.DESCRIPTION) }, "Description (optional)", 1, 3,
+        fieldModifier = Modifier.semantics { testTag = "description-field"; contentDescription = "Description" }, maxLines = 4,
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences))
 
 @Composable
 private fun HalfRow(title: String, tag: String, shape: RoundedCornerShape, modifier: Modifier, onClick: () -> Unit, lead: @Composable () -> Unit) {
@@ -565,7 +510,7 @@ private fun HalfRow(title: String, tag: String, shape: RoundedCornerShape, modif
         lead()
         Spacer(Modifier.width(12.dp))
         Text(title, Modifier.weight(1f), style = AppType.titleMedium, color = appColors.ink)
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
+        Icon(Symbols.KeyboardArrowRight, null, tint = appColors.secondary)
     }
 }
 
@@ -651,15 +596,13 @@ private fun StartEndRows(form: FormState, store: HabitStore) {
             OpenRow(if (form.startDate < today) "Started" else "Starts", dayWords(form.startDate, today), null, 0, 2, "starts-row") { picking = "start" }
             Box {
                 OpenRow("Ends", if (form.hasEnd) dayWords(form.endDate, today) else "Never", null, 1, 2, "ends-row") { endsMenu = true }
-                DropdownMenu(endsMenu, { endsMenu = false }, Modifier.width(200.dp).semantics { testTag = "ends-menu" }, offset = androidx.compose.ui.unit.DpOffset(130.dp, 0.dp),
-                    containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
-                    DropdownMenuItem({ Text("Never", style = AppType.bodyLarge) }, { form.hasEnd = false; endsMenu = false },
-                        leadingIcon = { if (!form.hasEnd) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
-                    DropdownMenuItem({ Text("On a date…", style = AppType.bodyLarge) }, {
+                AppMenu(endsMenu, { endsMenu = false }, Modifier.width(200.dp).semantics { testTag = "ends-menu" }, offset = DpOffset(130.dp, 0.dp)) {
+                    AppMenuItem("Never", { form.hasEnd = false; endsMenu = false }, selected = !form.hasEnd)
+                    AppMenuItem("On a date…", {
                         endsMenu = false
                         if (!form.hasEnd && form.endDate <= form.startDate) form.endDate = form.startDate + 30
                         picking = "end"
-                    }, leadingIcon = { if (form.hasEnd) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
+                    }, selected = form.hasEnd)
                 }
             }
         }
@@ -711,7 +654,7 @@ private fun HalfValue(title: String, value: String, tag: String, shape: RoundedC
             Text(value, style = AppType.bodyMedium, color = appColors.secondary, maxLines = 1)
         }
         Spacer(Modifier.width(8.dp))
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = appColors.secondary)
+        Icon(Symbols.KeyboardArrowRight, null, tint = appColors.secondary)
     }
 }
 
@@ -728,36 +671,27 @@ private fun TaskRows(form: FormState, store: HabitStore) {
         var i = 0
         Box {
             OpenRow("Repeat", if (form.taskRepeats) "On a schedule" else "Never", null, i++, count, "repeat-row") { repeatMenu = true }
-            DropdownMenu(repeatMenu, { repeatMenu = false }, Modifier.width(200.dp), offset = androidx.compose.ui.unit.DpOffset(130.dp, 0.dp),
-                containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
-                DropdownMenuItem({ Text("Never", style = AppType.bodyLarge) }, { form.taskRepeats = false; repeatMenu = false },
-                    leadingIcon = { if (!form.taskRepeats) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
-                DropdownMenuItem({ Text("On a schedule", style = AppType.bodyLarge) }, { form.taskRepeats = true; repeatMenu = false },
-                    leadingIcon = { if (form.taskRepeats) Icon(Icons.Rounded.Check, null) else Spacer(Modifier.size(24.dp)) })
+            AppMenu(repeatMenu, { repeatMenu = false }, Modifier.width(200.dp), offset = DpOffset(130.dp, 0.dp)) {
+                AppMenuItem("Never", { form.taskRepeats = false; repeatMenu = false }, selected = !form.taskRepeats)
+                AppMenuItem("On a schedule", { form.taskRepeats = true; repeatMenu = false }, selected = form.taskRepeats)
             }
         }
         // Date (Tasks, Figma 1.9): Today, Tomorrow, Pick a date… or No date, from a menu under the row.
         if (!form.taskRepeats) Box {
             OpenRow("Date", taskDateWords(form.taskDate, today), null, i++, count, "task-date") { dateMenu = true }
-            DropdownMenu(dateMenu, { dateMenu = false }, Modifier.width(240.dp).semantics { testTagsAsResourceId = true },
-                offset = androidx.compose.ui.unit.DpOffset(88.dp, 0.dp), containerColor = appColors.menu, shape = RoundedCornerShape(16.dp)) {
+            AppMenu(dateMenu, { dateMenu = false }, Modifier.width(240.dp).semantics { testTagsAsResourceId = true }, offset = DpOffset(88.dp, 0.dp)) {
                 val item = @Composable { text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tag: String, pick: () -> Unit ->
-                    DropdownMenuItem({ Text(text, style = AppType.bodyLarge) }, { dateMenu = false; pick() }, Modifier.semantics { testTag = tag },
-                        leadingIcon = { Icon(icon, null) })
+                    AppMenuItem(text, { dateMenu = false; pick() }, icon = icon, tag = tag)
                 }
-                item("Today", Icons.Outlined.Today, "task-date-today") { form.taskDate = today }
-                item("Tomorrow · " + com.oftenenough.app.data.taskDay(today + 1), Icons.Outlined.CalendarMonth, "task-date-tomorrow") { form.taskDate = today + 1 }
-                item("Pick a date…", Icons.Outlined.EditCalendar, "task-date-pick") { picking = "date" }
-                item("No date", Icons.Outlined.EventBusy, "task-date-none") { form.taskDate = com.oftenenough.app.data.NO_DATE_DAY }
+                item("Today", Symbols.Today, "task-date-today") { form.taskDate = today }
+                item("Tomorrow · " + com.oftenenough.app.data.taskDay(today + 1), Symbols.CalendarMonth, "task-date-tomorrow") { form.taskDate = today + 1 }
+                item("Pick a date…", Symbols.EditCalendar, "task-date-pick") { picking = "date" }
+                item("No date", Symbols.EventBusy, "task-date-none") { form.taskDate = com.oftenenough.app.data.NO_DATE_DAY }
             }
         }
-        if (!form.taskHasNoDate) Segment(i, count, Modifier.heightIn(min = 72.dp).semantics { testTag = "task-time" }, onClick = { picking = "time" }) {
-            Column(Modifier.weight(1f)) {
-                Text("Time", style = AppType.titleMedium, color = appColors.ink)
-                if (form.taskHasTime) Text(DayWords.clockMinute(form.taskMinute), Modifier.semantics { testTag = "task-time-pill" }, style = AppType.bodyMedium, color = appColors.secondary)
-            }
-            InkSwitch(form.taskHasTime) { on -> if (on) picking = "time" else { form.taskHasTime = false; form.syncReminders() } }
-        }
+        if (!form.taskHasNoDate) AppListItem("Time", i, count, onClick = { picking = "time" }, tag = "task-time",
+            below = if (form.taskHasTime) ({ Text(DayWords.clockMinute(form.taskMinute), Modifier.semantics { testTag = "task-time-pill" }) }) else null,
+            trailing = { AppSwitch(form.taskHasTime, onCheckedChange = { on -> if (on) picking = "time" else { form.taskHasTime = false; form.syncReminders() } }) })
     }
     when (picking) {
         "date" -> DayDialog(if (form.taskHasNoDate) today else form.taskDate, { it >= earliest }, { picking = null }) { form.taskDate = it }

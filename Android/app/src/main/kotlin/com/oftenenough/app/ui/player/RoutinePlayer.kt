@@ -1,5 +1,17 @@
 package com.oftenenough.app.ui.player
 
+import com.oftenenough.app.ui.components.SnackbarAction
+import com.oftenenough.app.ui.components.AppSnackbar
+import com.oftenenough.app.ui.components.AppMenuItem
+import com.oftenenough.app.ui.components.AppGroupedMenu
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import androidx.compose.material3.LinearProgressIndicator
+import com.oftenenough.app.ui.components.AppAssistChip
+import com.oftenenough.app.ui.components.AppCheckbox
+import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -8,22 +20,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.zIndex
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.key
-import androidx.compose.material.icons.rounded.DragIndicator
-import androidx.compose.material.icons.rounded.DoneAll
-import androidx.compose.material3.minimumInteractiveComponentSize
 import com.oftenenough.app.data.GoalPeriod
-import androidx.compose.material.icons.rounded.EventAvailable
 import com.oftenenough.app.data.Frequency
-import androidx.compose.material.icons.outlined.Info
 import com.oftenenough.app.data.Format
-import androidx.compose.material.icons.rounded.DateRange
 import com.oftenenough.app.data.pageIsTotal
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.foundation.Canvas
-import androidx.compose.material.icons.rounded.SwapVert
 import androidx.compose.foundation.layout.offset
 import com.oftenenough.app.ui.theme.AppType
 
@@ -55,43 +58,15 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.rounded.List
-import androidx.compose.material.icons.automirrored.rounded.Undo
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.CalendarToday
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material.icons.rounded.FastForward
-import androidx.compose.material.icons.rounded.Flag
-import androidx.compose.material.icons.rounded.History
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.KeyboardArrowUp
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.Pause
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.WbTwilight
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
+import com.oftenenough.app.ui.components.rememberWholeSheetState
+import com.oftenenough.app.ui.components.AppLargeIconButton
+import com.oftenenough.app.ui.components.LargeIconWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -121,17 +96,12 @@ import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.EntrySource
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitKind
@@ -144,9 +114,6 @@ import com.oftenenough.app.ui.components.Card
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.InkButton
-import com.oftenenough.app.ui.components.Segment
-import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.WavyProgress
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.appColors
@@ -678,7 +645,7 @@ private fun PlayerTopBar(
     val c = appColors
     var menu by remember { mutableStateOf(false) }
     Row(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClose, Modifier.semantics { testTag = "player-close" }) { Icon(Icons.Rounded.Close, "Close", tint = c.ink) }
+        StandardIconButton(Symbols.Close, "Close", onClose, Modifier.semantics { testTag = "player-close" })
         Box(Modifier.weight(1f).padding(start = 4.dp)) {
             Row(
                 Modifier.clip(RoundedCornerShape(12.dp))
@@ -690,37 +657,32 @@ private fun PlayerTopBar(
                 Text(title, Modifier.weight(1f, fill = false), style = AppType.titleLargeEmphasized,
                     color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.width(2.dp))
-                Icon(Icons.Rounded.ArrowDropDown, null, tint = c.ink)
+                Icon(Symbols.ArrowDropDown, null, tint = c.ink)
             }
         }
         Box {
-            IconButton({ menu = true }, Modifier.semantics { testTag = "player-more" }, enabled = enabled) {
-                Icon(Icons.Rounded.MoreVert, "Routine options", tint = c.ink)
-            }
-            DropdownMenu(menu, { menu = false }, shape = RoundedCornerShape(16.dp), containerColor = c.menu) {
-                @Composable fun item(text: String, icon: ImageVector, tag: String, on: Boolean = true, action: () -> Unit) = DropdownMenuItem(
-                    text = { Text(text, style = AppType.bodyLarge, color = if (on) c.ink else c.ink.copy(alpha = 0.38f)) },
-                    onClick = { menu = false; action() },
-                    enabled = on,
-                    leadingIcon = { Icon(icon, null, tint = if (on) c.ink else c.ink.copy(alpha = 0.38f)) },
-                    modifier = Modifier.semantics { testTag = tag },
-                )
-                item("Go to first unfinished", Icons.AutoMirrored.Rounded.Undo, "player-menu-first", canGoToFirst, onFirstUnfinished)
-                item("Change order", Icons.Rounded.SwapVert, "player-menu-order", action = onChangeOrder)
-                item("End routine", Icons.Rounded.Flag, "player-menu-end", action = onEnd)
-            }
+            StandardIconButton(Symbols.MoreVert, "Routine options", { menu = true }, Modifier.semantics { testTag = "player-more" }, enabled = enabled)
+            @Composable fun item(text: String, icon: ImageVector, tag: String, on: Boolean = true, action: () -> Unit) =
+                AppMenuItem(text, { menu = false; action() }, icon = icon, enabled = on, tag = tag)
+            // Two groups, 2 apart (Figma's Grouped menu): moving through the routine, then ending it.
+            AppGroupedMenu(menu, { menu = false }, listOf(
+                {
+                    item("Go to first unfinished", Symbols.FirstPage, "player-menu-first", canGoToFirst, onFirstUnfinished)
+                    item("Change order", Symbols.SwapVert, "player-menu-order", action = onChangeOrder)
+                },
+                { item("End routine", Symbols.StopCircle, "player-menu-end", action = onEnd) },
+            ))
         }
     }
 }
 
 /**
- * Where the routine is (Figma 1328:2, 14 Oct): Material 3 Expressive's linear progress indicator, 4 high with a 4 gap
- * and a stop dot, and "4 of 12" after it. One bar works for 25 habits, where 25 segments don't.
+ * Where the routine is (Figma 1328:2, 14 Oct): Material's own linear progress indicator (1.20, Style=Flat), 4 high with a
+ * 4 gap and a stop dot, and "4 of 12" after it. One bar works for 25 habits, where 25 segments don't.
  */
 @Composable
 private fun RoutineProgress(position: Int, count: Int, spoken: String) {
     val c = appColors
-    val track = if (c.dark) c.line else Color(0xFFD5D5DA)
     val fraction = if (count == 0) 0f else (position.toFloat() / count).coerceIn(0f, 1f)
     Row(
         // At least 16 high; larger text grows the row rather than clipping "5 of 12" (Figma 1.5).
@@ -728,18 +690,7 @@ private fun RoutineProgress(position: Int, count: Int, spoken: String) {
             .semantics(mergeDescendants = true) { contentDescription = spoken; testTag = "routine-segments" },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Canvas(Modifier.weight(1f).height(4.dp)) {
-            val h = size.height
-            val gap = 4.dp.toPx()
-            val active = size.width * fraction
-            val r = androidx.compose.ui.geometry.CornerRadius(h / 2, h / 2)
-            if (active > 0f) drawRoundRect(c.ink, size = Size(active, h), cornerRadius = r)
-            if (fraction < 1f) {
-                val from = if (active > 0f) active + gap else 0f
-                drawRoundRect(track, topLeft = Offset(from, 0f), size = Size(size.width - from, h), cornerRadius = r)
-                drawCircle(c.ink, h / 2, Offset(size.width - h / 2, h / 2))
-            }
-        }
+        LinearProgressIndicator({ fraction }, Modifier.weight(1f))
         Spacer(Modifier.width(12.dp))
         Text(PlayerWords.position(position - 1, count), style = AppType.labelMedium, color = c.secondary, maxLines = 1,
             modifier = Modifier.semantics { testTag = "routine-position" })
@@ -904,27 +855,27 @@ private data class PlayerStatus(val icon: ImageVector, val text: String, val neu
 @Composable
 private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>,
                          running: Boolean, skipped: Boolean): PlayerStatus? {
-    if (skipped) return PlayerStatus(Icons.Rounded.FastForward, PlayerWords.SKIPPED, tag = "player-skipped")
+    if (skipped) return PlayerStatus(Symbols.FastForward, PlayerWords.SKIPPED, tag = "player-skipped")
     val today = day == store.today()
     val f = ruled.frequency
     if (ruled.kind == HabitKind.Duration) {
         if (pageIsTotal(ruled)) {
             val total = if (running) store.rules.progress(habit, day, tick.value) else remember(habit, rev) { store.rules.progress(habit, day) }
-            return PlayerStatus(Icons.Rounded.DateRange, Format.minutes(total) + " of " + Format.minutes(goal) + PlayerWords.period(f), tag = "player-status")
+            return PlayerStatus(Symbols.DateRange, Format.minutes(total) + " of " + Format.minutes(goal) + PlayerWords.period(f), tag = "player-status")
         }
         val now = if (running) store.rules.dayProgress(habit, day, tick.value) else remember(habit, rev) { store.rules.dayProgress(habit, day) }
         val dayGoal = remember(ruled, rev) { store.rules.dayGoal(ruled) }
-        if (ruled.atMost && dayGoal > 0 && now > dayGoal) return PlayerStatus(Icons.Outlined.Info, PlayerWords.OVER_LIMIT, neutral = true, tag = "player-status")
-        if (!ruled.atMost && dayGoal > 0 && now >= dayGoal) return PlayerStatus(Icons.Rounded.Check, PlayerWords.GOAL_MET, tag = "player-status")
-        if (today && !running && now > 0) return PlayerStatus(Icons.Rounded.Pause, PlayerWords.PAUSED, tag = "player-status")
+        if (ruled.atMost && dayGoal > 0 && now > dayGoal) return PlayerStatus(Symbols.Info, PlayerWords.OVER_LIMIT, neutral = true, tag = "player-status")
+        if (!ruled.atMost && dayGoal > 0 && now >= dayGoal) return PlayerStatus(Symbols.Check, PlayerWords.GOAL_MET, tag = "player-status")
+        if (today && !running && now > 0) return PlayerStatus(Symbols.Filled.Pause, PlayerWords.PAUSED, tag = "player-status")
     }
     if (f is Frequency.Flexible && ruled.kind != HabitKind.Check && ruled.kind != HabitKind.Task) {
         val days = remember(habit, rev) { store.rules.flexibleProgress(habit, day) } ?: 0
-        return PlayerStatus(Icons.Rounded.EventAvailable, "$days of ${f.n} days " + (if (f.period == GoalPeriod.MONTH) "this month" else "this week"), tag = "player-status")
+        return PlayerStatus(Symbols.EventAvailable, "$days of ${f.n} days " + (if (f.period == GoalPeriod.MONTH) "this month" else "this week"), tag = "player-status")
     }
     if (ruled.kind == HabitKind.Check && !f.isDayBased) {
         val doneToday = remember(habit, rev) { store.rules.isSatisfied(habit, day) && !store.rules.isPeriodMet(habit, day) }
-        if (doneToday) return PlayerStatus(Icons.Rounded.Check, PlayerWords.DONE_FOR_TODAY, tag = "player-status")
+        if (doneToday) return PlayerStatus(Symbols.Check, PlayerWords.DONE_FOR_TODAY, tag = "player-status")
     }
     return null
 }
@@ -976,28 +927,10 @@ private fun HabitName(name: String, style: TextStyle, align: TextAlign, maxLines
     )
 }
 
-/** "📅 Today ›": opens Day details for this habit and day (also first in ⋮). */
+/** "📅 Today": an assist chip (1.16) that opens Day details for this habit and day (also first in ⋮). */
 @Composable
-internal fun DayChip(text: String, onClick: (() -> Unit)?) {
-    val c = appColors
-    Box(Modifier.minimumInteractiveComponentSize(), contentAlignment = Alignment.Center) {
-        Row(
-            Modifier.clip(RoundedCornerShape(8.dp)).background(c.soft)
-                .let { if (onClick != null) it.clickable(onClickLabel = "Open Day details", role = Role.Button, onClick = onClick) else it }
-                .heightIn(min = 32.dp).padding(start = 8.dp, end = if (onClick != null) 4.dp else 10.dp)
-                .semantics { testTag = "player-day-chip" },
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(Icons.Rounded.CalendarToday, null, Modifier.size(18.dp), tint = c.ink)
-            Spacer(Modifier.width(6.dp))
-            Text(text, style = AppType.labelLarge, color = c.ink, maxLines = 1)
-            if (onClick != null) {
-                Spacer(Modifier.width(6.dp))
-                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(18.dp), tint = c.secondary)
-            }
-        }
-    }
-}
+internal fun DayChip(text: String, onClick: (() -> Unit)?) =
+    AppAssistChip(text, onClick ?: {}, enabled = onClick != null, tag = "player-day-chip")
 
 /** The count, large, with what it's out of beside it on the same baseline. While a timer runs, only this and the bar tick. */
 @Composable
@@ -1062,7 +995,7 @@ private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore
             Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(c.secondary))
         }
     } else {
-        WavyProgress(fraction, color, color.copy(alpha = 0.22f), modifier)
+        WavyProgress(fraction, modifier, color, c.habitFill(habit.color))
     }
 }
 
@@ -1082,8 +1015,7 @@ private fun StepRows(habit: Habit, ruled: Habit, day: Int, store: HabitStore, re
                     .semantics { testTag = "player-step-$i" },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Checkbox(checked = done, onCheckedChange = null, enabled = enabled,
-                    colors = CheckboxDefaults.colors(checkedColor = color, uncheckedColor = c.ink, checkmarkColor = Color.White))
+                AppCheckbox(done, onCheckedChange = null, enabled = enabled, habitColor = color)
                 Spacer(Modifier.width(12.dp))
                 Text(step.name, style = AppType.bodyLarge, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
@@ -1145,110 +1077,50 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
     }
 
     Row(Modifier.fillMaxWidth().height(96.dp).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SideButton(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, "Previous habit", enabled = index > 0, tag = "player-previous",
-            modifier = if (wide) Modifier.weight(1f) else Modifier.width(56.dp)) { session.navigate(index - 1) }
+        AppLargeIconButton(Symbols.KeyboardArrowLeft, "Previous habit", { session.navigate(index - 1) },
+            if (wide) Modifier.weight(1f) else Modifier, tonal = true, width = if (wide) LargeIconWidth.Fill else LargeIconWidth.Narrow,
+            enabled = index > 0, tag = "player-previous")
         if (!wide && action != null && habit != null) {
-            // "+1" and "Log" are words alone (Figma 3, 3.3); "+1" a size up, as the row's round button says it.
-            val step = action.action == PlayerAction.LOG_STEP
-            MainButton(actionIcon(action.action), action.label, action.spoken, "player-main", Modifier.weight(1f),
-                labelStyle = if (step) AppType.headlineSmallEmphasized else AppType.title20) { perform(action.action, habit) }
+            // "+1" and "Log" are words alone (Figma 3, 3.3).
+            MainButton(actionIcon(action.action), action.label, action.spoken, "player-main", Modifier.weight(1f)) { perform(action.action, habit) }
         }
-        SideButton(Icons.AutoMirrored.Rounded.KeyboardArrowRight, next?.let { "Next habit: ${it.name}" } ?: "Finish routine", enabled = true,
-            tag = "player-next", modifier = if (wide) Modifier.weight(1f) else Modifier.width(56.dp)) { session.advance() }
+        AppLargeIconButton(Symbols.KeyboardArrowRight, next?.let { "Next habit: ${it.name}" } ?: "Finish routine",
+            { session.advance() }, if (wide) Modifier.weight(1f) else Modifier, tonal = true,
+            width = if (wide) LargeIconWidth.Fill else LargeIconWidth.Narrow, tag = "player-next")
     }
     Spacer(Modifier.height(24.dp))
 }
 
 private fun actionIcon(a: PlayerAction): ImageVector? = when (a) {
-    PlayerAction.NEXT -> Icons.AutoMirrored.Rounded.ArrowForward
-    PlayerAction.FINISH, PlayerAction.MARK_DONE, PlayerAction.LOG_ONE, PlayerAction.NONE -> Icons.Rounded.Check
+    PlayerAction.NEXT -> Symbols.ArrowForward
+    PlayerAction.FINISH, PlayerAction.MARK_DONE, PlayerAction.LOG_ONE, PlayerAction.NONE -> Symbols.Check
     PlayerAction.LOG_STEP, PlayerAction.LOG_AMOUNT -> null
-    PlayerAction.START, PlayerAction.RESUME -> Icons.Rounded.PlayArrow
-    PlayerAction.PAUSE -> Icons.Rounded.Pause
+    PlayerAction.START, PlayerAction.RESUME -> Symbols.Filled.PlayArrow
+    PlayerAction.PAUSE -> Symbols.Filled.Pause
 }
 
-/** ‹ or ›: tonal, as tall as the group (Figma: #E2E2E7, corners 28, a 32 chevron; off, the ink at 6 % and 30 %). */
+/**
+ * The one main action: the Large square Filled button (2.1, Figma's Screen=Habit, Checklist, End). Its label is one line
+ * and ends in … when long; TalkBack reads the whole of [spoken].
+ */
 @Composable
-private fun SideButton(icon: ImageVector, spoken: String, enabled: Boolean, tag: String, modifier: Modifier, onClick: () -> Unit) {
-    val c = appColors
-    Button(
-        onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken; testTag = tag }, enabled = enabled,
-        shape = RoundedCornerShape(28.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = c.behind, contentColor = c.ink,
-            disabledContainerColor = c.ink.copy(alpha = 0.06f), disabledContentColor = c.ink.copy(alpha = 0.3f)),
-        contentPadding = PaddingValues(0.dp),
-    ) {
-        Icon(icon, null, Modifier.size(32.dp))
-    }
-}
+internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: String, modifier: Modifier, onClick: () -> Unit) =
+    AppButton(label, onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken }, size = ButtonSize.Large,
+        icon = icon, square = true, tag = tag)
 
-/** The one main action, in ink. Its label is one line and ends in … when long; TalkBack reads the whole of [spoken]. */
+/** A tonal button beside or above [MainButton] ("Log manually": Large, Figma's timer screen; "Return to unfinished": Medium). */
 @Composable
-internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: String, modifier: Modifier,
-                        labelStyle: TextStyle = AppType.title20, iconSize: Dp = 28.dp, onClick: () -> Unit) {
-    val c = appColors
-    Button(
-        onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken; testTag = tag },
-        shape = RoundedCornerShape(28.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = c.ink, contentColor = c.onInk),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-    ) {
-        if (icon != null) {
-            Icon(icon, null, Modifier.size(iconSize))
-            Spacer(Modifier.width(10.dp))
-        }
-        Text(label, Modifier.weight(1f, fill = false), style = labelStyle,
-            maxLines = 1, overflow = TextOverflow.Ellipsis)
-    }
-}
-
-/** A tonal button as tall as the group, beside [MainButton] ("Log manually", "Return to unfinished"). */
-@Composable
-internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier,
-                             labelStyle: TextStyle = AppType.title20, onClick: () -> Unit) {
-    val c = appColors
-    Button(
-        onClick, modifier.semantics { testTag = tag }, shape = RoundedCornerShape(28.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = c.behind, contentColor = c.ink),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-    ) {
-        if (icon != null) {
-            Icon(icon, null, Modifier.size(24.dp))
-            Spacer(Modifier.width(10.dp))
-        }
-        Text(label, Modifier.weight(1f, fill = false), style = labelStyle,
-            maxLines = 1, overflow = TextOverflow.Ellipsis)
-    }
-}
+internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier, size: ButtonSize = ButtonSize.Large, onClick: () -> Unit) =
+    AppButton(label, onClick, modifier, style = ButtonStyle.Tonal, size = size, icon = icon, square = true, tag = tag)
 
 // ---------------------------------------------------------------------------------------------- The save message
 
 @Composable
-private fun FeedbackBar(f: Feedback, onUndo: () -> Unit, onNote: () -> Unit, modifier: Modifier) {
-    val dark = appColors.dark
-    val container = if (dark) Color(0xFFE6E1E5) else Color(0xFF313033)
-    val text = if (dark) Color(0xFF313033) else Color(0xFFF4EFF4)
-    val action = if (dark) Color(0xFF46464A) else Color(0xFFD7D7DC)
-    val actionColors = ButtonDefaults.textButtonColors(contentColor = action)
-    val actions: @Composable () -> Unit = {
-        Row {
-            TextButton(onUndo, Modifier.semantics { testTag = "player-undo" }, colors = actionColors,
-                contentPadding = PaddingValues(horizontal = 8.dp)) { Text("Undo", style = AppType.labelLarge) }
-            // The note belongs right after logging, next to Undo; never asked for.
-            TextButton(onNote, Modifier.semantics { testTag = "player-add-note" }, colors = actionColors,
-                contentPadding = PaddingValues(horizontal = 8.dp)) { Text("Add note", style = AppType.labelLarge) }
-        }
-    }
-    Snackbar(
-        modifier = modifier.semantics { testTag = "player-snackbar" },
-        shape = RoundedCornerShape(4.dp),
-        containerColor = container,
-        contentColor = text,
-        action = if (f.canUndo) actions else null,
-    ) {
-        Text(f.message, style = AppType.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-    }
-}
+private fun FeedbackBar(f: Feedback, onUndo: () -> Unit, onNote: () -> Unit, modifier: Modifier) =
+    // The note belongs right after logging, next to Undo; never asked for.
+    AppSnackbar(f.message,
+        if (f.canUndo) listOf(SnackbarAction("Undo", "player-undo", onUndo), SnackbarAction("Add note", "player-add-note", onNote)) else emptyList(),
+        modifier.semantics { testTag = "player-snackbar" })
 
 // ---------------------------------------------------------------------------------------------- The end
 
@@ -1260,7 +1132,7 @@ private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onRe
         Card(Modifier.fillMaxWidth().semantics { testTag = "player-end" }, shape = RoundedCornerShape(32.dp)) {
             Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 40.dp, bottom = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 // Not a pause symbol: it read as a media button (found by hand on the iPhone, 29 Sep).
-                CookieIcon(if (remaining == 0) Icons.Rounded.DoneAll else Icons.Rounded.History, size = 120.dp, container = c.ink, tint = c.onInk, glyph = 0.47f)
+                CookieIcon(if (remaining == 0) Symbols.DoneAll else Symbols.History, size = 120.dp, container = c.ink, tint = c.onInk, glyph = 0.47f)
                 Spacer(Modifier.height(28.dp))
                 Text(PlayerWords.endTitle(remaining, name), style = AppType.headlineMedium,
                     color = c.ink, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
@@ -1279,7 +1151,7 @@ private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onRe
                         Text("Reached in this routine", style = AppType.titleMedium, color = c.ink)
                         for ((h, w) in reached) Row(verticalAlignment = Alignment.CenterVertically) {
                             // The same medal as everywhere (Figma RP.2: 32).
-                            com.oftenenough.app.ui.habit.MilestoneMedal(w.number, 32.dp, h.color)
+                            com.oftenenough.app.ui.components.Medal(w.number, 32.dp, h.color)
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text(w.title, style = AppType.bodyLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -1289,11 +1161,7 @@ private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onRe
                     }
                 }
                 Spacer(Modifier.height(10.dp))
-                TextButton(onReview, Modifier.semantics { testTag = "player-review" }, contentPadding = PaddingValues(start = 12.dp, end = 16.dp)) {
-                    Icon(Icons.AutoMirrored.Rounded.List, null, Modifier.size(20.dp), tint = c.ink)
-                    Spacer(Modifier.width(8.dp))
-                    Text("Review routine", style = AppType.labelLarge, color = c.ink)
-                }
+                AppButton("Review routine", onReview, style = ButtonStyle.Text, icon = Symbols.List, tag = "player-review")
             }
         }
     }
@@ -1304,10 +1172,10 @@ private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onRe
 private fun EndButtons(hasRemaining: Boolean, onReturn: () -> Unit, onDone: () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (hasRemaining) {
-            TonalBigButton(Icons.AutoMirrored.Rounded.Undo, "Return to unfinished", "player-return", Modifier.fillMaxWidth().height(64.dp),
-                labelStyle = AppType.titleMedium, onClick = onReturn)
+            TonalBigButton(Symbols.Undo, "Return to unfinished", "player-return", Modifier.fillMaxWidth(),
+                size = ButtonSize.Medium, onClick = onReturn)
         }
-        MainButton(Icons.Rounded.Check, "Done", "Done", "player-done", Modifier.fillMaxWidth().height(96.dp), iconSize = 24.dp, onClick = onDone)
+        MainButton(Symbols.Check, "Done", "Done", "player-done", Modifier.fillMaxWidth(), onClick = onDone)
     }
 }
 
@@ -1318,14 +1186,14 @@ private fun NewDayCard(modifier: Modifier, onBack: () -> Unit) {
     Column(modifier.fillMaxWidth().padding(16.dp).verticalScroll(rememberScrollState())) {
         Card(Modifier.fillMaxWidth().semantics { testTag = "player-new-day" }, shape = RoundedCornerShape(32.dp)) {
             Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                CookieIcon(Icons.Rounded.WbTwilight, size = 96.dp)
+                CookieIcon(Symbols.WbTwilight, size = 96.dp)
                 Spacer(Modifier.height(24.dp))
                 Text(PlayerWords.NEW_DAY_TITLE, style = MaterialTheme.typography.headlineMedium, color = c.ink, textAlign = TextAlign.Center,
                     modifier = Modifier.semantics { heading() })
                 Spacer(Modifier.height(12.dp))
                 Text(PlayerWords.NEW_DAY_TEXT, style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(24.dp))
-                InkButton("Back to Today", onBack, Modifier.fillMaxWidth())
+                AppButton("Back to Today", onBack, Modifier.fillMaxWidth(), size = ButtonSize.Medium)
             }
         }
     }
@@ -1344,21 +1212,19 @@ private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, editing
                          onJump: (Int) -> Unit, onDismiss: () -> Unit) {
     val c = appColors
     val store = session.store
-    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val state = rememberWholeSheetState()
     val order = session.order
     val index = session.index
     val density = LocalDensity.current
     val rowStep = with(density) { (64.dp + 2.dp).toPx() }
     var dragging by remember { mutableStateOf<String?>(null) }
     var dragOffset by remember { mutableFloatStateOf(0f) }
-    ModalBottomSheet(onDismiss, sheetState = state, containerColor = c.screen) {
+    ModalBottomSheet(onDismiss, sheetState = state) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState(), enabled = dragging == null).padding(bottom = 24.dp)
             .semantics { testTag = "routine-sheet" }) {
             Row(Modifier.fillMaxWidth().height(56.dp).padding(start = 24.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text("Your routine", Modifier.weight(1f).semantics { heading() }, style = AppType.titleLargeEmphasized, color = c.ink)
-                TextButton({ onEditing(!editing) }, Modifier.semantics { testTag = "routine-edit" }) {
-                    Text(if (editing) "Done" else "Edit", style = AppType.labelLarge, color = c.ink)
-                }
+                AppButton(if (editing) "Done" else "Edit", { onEditing(!editing) }, Modifier.semantics { testTag = "routine-edit" }, style = ButtonStyle.Text)
             }
             Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 order.forEachIndexed { i, id ->
@@ -1412,12 +1278,12 @@ private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, editing
                                     }.semantics { testTag = "queue-drag-${habit.name}" },
                                     contentAlignment = Alignment.Center,
                                 ) {
-                                    Icon(Icons.Rounded.DragIndicator, "Drag to move ${habit.name}", tint = c.secondary)
+                                    Icon(Symbols.DragIndicator, "Drag to move ${habit.name}", tint = c.secondary)
                                 }
                             } else when {
-                                i == index -> Icon(Icons.Rounded.PlayArrow, "Current habit", tint = c.ink)
-                                skipped -> Icon(Icons.Rounded.FastForward, "Skipped", tint = c.secondary)
-                                covered.getOrNull(i) == true -> Icon(Icons.Rounded.Check, "Done", tint = c.ink)
+                                i == index -> Icon(Symbols.Filled.PlayArrow, "Current habit", tint = c.ink)
+                                skipped -> Icon(Symbols.FastForward, "Skipped", tint = c.secondary)
+                                covered.getOrNull(i) == true -> Icon(Symbols.Check, "Done", tint = c.ink)
                             }
                         }
                     }

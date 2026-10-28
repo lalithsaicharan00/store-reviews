@@ -1,5 +1,12 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
@@ -23,24 +30,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Backspace
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.QueryStats
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,7 +47,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
@@ -59,19 +54,14 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.oftenenough.app.app.AppLock
 import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.ui.components.CookieShape
-import com.oftenenough.app.ui.components.InkButton
-import com.oftenenough.app.ui.components.PlainButton
-import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.GroupTitle
-import com.oftenenough.app.ui.newhabit.InkSwitch
 import com.oftenenough.app.ui.newhabit.MenuPill
 import com.oftenenough.app.ui.newhabit.Note
 import com.oftenenough.app.ui.newhabit.RadioRow
@@ -108,35 +98,23 @@ fun PrivacyPage(prefs: Prefs, lock: AppLock, onAppLock: () -> Unit, onBack: () -
     FormPage("Privacy & Security", chip = null, onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         SegmentedList {
-            Segment(0, 1, Modifier.semantics { testTag = "privacy-app-lock" }, onClick = onAppLock) {
-                Icon(Icons.Outlined.Lock, null, tint = c.ink)
-                Spacer(Modifier.width(24.dp))
-                Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                    Text("App lock", style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                    Text("Lock the app with your fingerprint, face or a passcode", style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-                }
-                Spacer(Modifier.width(8.dp))
-                Text(if (lock.isOn) "On" else "Off", style = MaterialTheme.typography.bodyLarge, color = c.secondary)
-                Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-            }
+            AppListItem("App lock", 0, 1, supporting = "Lock the app with your fingerprint, face or a passcode", tag = "privacy-app-lock",
+                leading = { Icon(Symbols.Lock, null) }, onClick = onAppLock,
+                trailing = { Row(verticalAlignment = Alignment.CenterVertically) { Text(if (lock.isOn) "On" else "Off", style = AppType.bodyLarge); ListChevron() } })
         }
         GroupTitle("Outside the app")
         SegmentedList {
             // Always on while App lock is on: what's locked inside isn't shown outside.
             val on = prefs.hideNames || lock.isOn
-            Segment(0, 1, Modifier.semantics { testTag = "privacy-hide-names" }, onClick = if (lock.isOn) null else ({ prefs.hideNames = !prefs.hideNames })) {
-                Icon(Icons.Outlined.VisibilityOff, null, tint = c.ink)
-                Spacer(Modifier.width(24.dp))
-                Text("Hide names outside the app", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                Box(Modifier.alpha(if (lock.isOn) 0.5f else 1f)) { InkSwitch(on) }
-            }
+            AppListItem("Hide names outside the app", 0, 1, tag = "privacy-hide-names", leading = { Icon(Symbols.VisibilityOff, null) },
+                onClick = { prefs.hideNames = !prefs.hideNames }, enabled = !lock.isOn, trailing = { AppSwitch(on, enabled = !lock.isOn) })
         }
         Note("Widgets, reminders, alarms and the running timer show icons and numbers instead of habit names." +
             if (lock.isOn) " It's always on while App lock is on." else "")
         GroupTitle("Help improve the app")
         SegmentedList {
-            Unavailable(Icons.Outlined.QueryStats, "Share usage", 0, 2)
-            Unavailable(Icons.Outlined.BugReport, "Share crash diagnostics", 1, 2)
+            Unavailable(Symbols.QueryStats, "Share usage", 0, 2)
+            Unavailable(Symbols.BugReport, "Share crash diagnostics", 1, 2)
         }
         Note("Nothing about how you use the app is sent: there's nothing to share yet. If sharing comes, it will be off until you turn it on, and habit and task names, notes, goals and logged values will never be sent.")
         Note("No ads. No account. Your habits stay on your phone and in your own Google Drive; we never see them.")
@@ -145,17 +123,9 @@ fun PrivacyPage(prefs: Prefs, lock: AppLock, onAppLock: () -> Unit, onBack: () -
 }
 
 @Composable
-private fun Unavailable(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, index: Int, count: Int) {
-    Segment(index, count, Modifier.alpha(0.5f)) {
-        Icon(icon, null, tint = appColors.ink)
-        Spacer(Modifier.width(24.dp))
-        Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Text("Not available yet", style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-        }
-        InkSwitch(false)
-    }
-}
+private fun Unavailable(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, index: Int, count: Int) =
+    AppListItem(title, index, count, supporting = "Not available yet", enabled = false, leading = { Icon(icon, null) },
+        trailing = { AppSwitch(false, enabled = false) })
 
 // ------------------------------------------------------------------ App lock
 
@@ -170,12 +140,8 @@ fun AppLockPage(lock: AppLock, onSetUp: () -> Unit, onNewPasscode: () -> Unit, o
     FormPage("App lock", chip = null, onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         SegmentedList {
-            Segment(0, 1, Modifier.semantics { testTag = "app-lock-switch" }, onClick = { if (lock.isOn) confirmOff = true else onSetUp() }) {
-                Icon(Icons.Outlined.Lock, null, tint = c.ink)
-                Spacer(Modifier.width(24.dp))
-                Text("App lock", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                InkSwitch(lock.isOn)
-            }
+            AppListItem("App lock", 0, 1, tag = "app-lock-switch", leading = { Icon(Symbols.Lock, null) }, trailing = { AppSwitch(lock.isOn) },
+                onClick = { if (lock.isOn) confirmOff = true else onSetUp() })
         }
         if (!lock.isOn) {
             Note("Ask for your fingerprint, face, screen lock or an app passcode each time you open the app. Widgets and reminders keep working, without habit names.")
@@ -197,23 +163,14 @@ fun AppLockPage(lock: AppLock, onSetUp: () -> Unit, onNewPasscode: () -> Unit, o
             if (lock.method == AppLock.Method.PASSCODE) {
                 Spacer(Modifier.height(8.dp))
                 SegmentedList {
-                    Segment(0, 1, Modifier.semantics { testTag = "change-passcode" }, onClick = onNewPasscode) {
-                        Text("Change app passcode", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.secondary)
-                    }
+                    AppListItem("Change app passcode", 0, 1, tag = "change-passcode", trailing = { ListChevron() }, onClick = onNewPasscode)
                 }
             }
             Spacer(Modifier.height(16.dp))
             SegmentedList {
-                Segment(0, 1) {
-                    Icon(Icons.Outlined.Timer, null, tint = c.ink)
-                    Spacer(Modifier.width(24.dp))
-                    Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                        Text("Lock again", style = MaterialTheme.typography.bodyLarge, color = c.ink)
-                    }
-                    val options = AppLock.Again.entries
-                    MenuPill(lock.again.words, options.map { it.words }, "lock-again") { lock.chooseAgain(options[it]) }
-                }
+                val options = AppLock.Again.entries
+                AppListItem("Lock again", 0, 1, leading = { Icon(Symbols.Timer, null) },
+                    trailing = { MenuPill(lock.again.words, options.map { it.words }, "lock-again") { lock.chooseAgain(options[it]) } })
             }
             Note("Locking your phone always locks the app at once.")
         }
@@ -221,17 +178,17 @@ fun AppLockPage(lock: AppLock, onSetUp: () -> Unit, onNewPasscode: () -> Unit, o
     if (confirmOff) {
         AlertDialog({ confirmOff = false }, title = { Text("Turn off App lock?") },
             text = { Text("The app opens without asking. Your habits stay as they are.") },
-            confirmButton = { TextButton({
+            confirmButton = { AppButton("Turn off", {
                 confirmOff = false
                 // Only the person who can unlock may turn it off.
                 if (lock.method == AppLock.Method.PHONE && activity != null) askPhoneLock(activity, "Turn off App lock", "Confirm it's you") { ok -> if (ok) lock.turnOff() }
                 else lock.turnOff()
-            }, Modifier.semantics { testTag = "app-lock-off-confirm" }) { Text("Turn off", color = c.ink) } },
-            dismissButton = { TextButton({ confirmOff = false }) { Text("Cancel", color = c.ink) } })
+            }, Modifier.semantics { testTag = "app-lock-off-confirm" }, style = ButtonStyle.Text) },
+            dismissButton = { AppButton("Cancel", { confirmOff = false }, style = ButtonStyle.Text) })
     }
     problem?.let { p ->
         AlertDialog({ problem = null }, title = { Text("No screen lock") }, text = { Text(p) },
-            confirmButton = { TextButton({ problem = null }) { Text("OK", color = c.ink) } })
+            confirmButton = { AppButton("OK", { problem = null }, style = ButtonStyle.Text) })
     }
 }
 
@@ -270,12 +227,12 @@ fun AppLockSetup(lock: AppLock, passcodeOnly: Boolean, onDone: () -> Unit) {
                 Note("You can change this later in App lock. Your habits are never deleted, whatever happens.")
                 Spacer(Modifier.height(96.dp))
             }
-            InkButton("Continue", {
+            AppButton("Continue", {
                 if (choice == "passcode") step = "create"
                 else if (activity != null) askPhoneLock(activity, "Unlock Often Enough", "Use your fingerprint or screen lock") { ok ->
                     if (ok) { lock.turnOnWithPhone(); onDone() }
                 }
-            }, Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(16.dp).semantics { testTag = "setup-continue" })
+            }, Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(16.dp).semantics { testTag = "setup-continue" }, size = ButtonSize.Medium)
         }
         "create" -> PasscodePage("Set up app lock", "Create an app passcode", "Six digits. You'll use it to open the app.", message, 0, back) { code ->
             first = code; message = null; step = "confirm"
@@ -314,7 +271,7 @@ fun Keypad(heading: String, line: String?, lineIsProblem: Boolean, shake: Int, e
     }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(vertical = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Box(Modifier.size(72.dp).clip(CookieShape()).background(c.ink), contentAlignment = Alignment.Center) {
-            Icon(Icons.Rounded.Lock, null, tint = c.onInk, modifier = Modifier.size(32.dp))
+            Icon(Symbols.Lock, null, tint = c.onInk, modifier = Modifier.size(32.dp))
         }
         Spacer(Modifier.height(24.dp))
         Text(heading, style = AppType.headlineSmall, color = c.ink, textAlign = TextAlign.Center)
@@ -343,7 +300,7 @@ fun Keypad(heading: String, line: String?, lineIsProblem: Boolean, shake: Int, e
                             }.semantics { testTag = "key-$k" }
                         }
                     }, contentAlignment = Alignment.Center) {
-                        if (k == "⌫") Icon(Icons.AutoMirrored.Outlined.Backspace, null, tint = c.ink)
+                        if (k == "⌫") Icon(Symbols.Backspace, null, tint = c.ink)
                         else if (k.isNotEmpty()) Text(k, style = MaterialTheme.typography.headlineMedium, color = c.ink)
                     }
                 }
@@ -382,17 +339,17 @@ fun LockScreen(lock: AppLock) {
             LaunchedEffect(Unit) { ask() }
             Column(Modifier.align(Alignment.Center).padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(Modifier.size(96.dp).clip(CookieShape()).background(c.ink), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Rounded.Lock, null, tint = c.onInk, modifier = Modifier.size(40.dp))
+                    Icon(Symbols.Lock, null, tint = c.onInk, modifier = Modifier.size(40.dp))
                 }
                 Spacer(Modifier.height(32.dp))
                 Text("Often Enough is locked", style = MaterialTheme.typography.headlineMedium, color = c.ink, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(24.dp))
-                InkButton("Unlock", ask, Modifier.semantics { testTag = "lock-unlock" })
+                AppButton("Unlock", ask, Modifier.semantics { testTag = "lock-unlock" }, size = ButtonSize.Medium)
             }
         } else {
             val reset = lock.resetLeft(context)
             Keypad("Enter app passcode", lock.waitText() ?: message ?: reset?.let { resetWords(it) }, message != null, lock.wrongCount, enabled = !checking,
-                footer = { PlainButton("Forgot app passcode?", { forgot = true }, Modifier.semantics { testTag = "lock-forgot" }) }) { code ->
+                footer = { AppButton("Forgot app passcode?", { forgot = true }, Modifier.semantics { testTag = "lock-forgot" }, style = ButtonStyle.Text) }) { code ->
                 checking = true
                 scope.launch {
                     // PBKDF2 off the main thread (S16).
@@ -415,18 +372,16 @@ fun LockScreen(lock: AppLock) {
                 })
             },
             confirmButton = {
-                TextButton({
+                AppButton(when { left == 0L -> "Choose a new passcode"; secure -> "Use screen lock"; left == null -> "Start 24-hour reset"; else -> "OK" }, {
                     forgot = false
                     when {
                         left == 0L -> newCode = true
                         secure && activity != null -> askPhoneLock(activity, "Choose a new app passcode", "Use your fingerprint or screen lock") { ok -> if (ok) newCode = true }
                         left == null -> lock.startReset(context)
                     }
-                }, Modifier.semantics { testTag = "lock-forgot-go" }) {
-                    Text(when { left == 0L -> "Choose a new passcode"; secure -> "Use screen lock"; left == null -> "Start 24-hour reset"; else -> "OK" }, color = c.ink)
-                }
+                }, Modifier.semantics { testTag = "lock-forgot-go" }, style = ButtonStyle.Text)
             },
-            dismissButton = { if (left != 0L) TextButton({ forgot = false }) { Text("Cancel", color = c.ink) } })
+            dismissButton = { if (left != 0L) AppButton("Cancel", { forgot = false }, style = ButtonStyle.Text) })
     }
 }
 

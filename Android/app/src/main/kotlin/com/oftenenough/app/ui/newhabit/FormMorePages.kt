@@ -1,10 +1,22 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.AppMenuItem
+import com.oftenenough.app.ui.components.AppMenu
+import com.oftenenough.app.ui.components.ListAvatar
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import androidx.compose.foundation.layout.WindowInsets
+import com.oftenenough.app.ui.components.NavigationIcon
+import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,31 +32,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.TabletAndroid
-import androidx.compose.material.icons.outlined.Watch
-import androidx.compose.material.icons.outlined.Widgets
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AllInclusive
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,9 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -115,7 +106,9 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
     LaunchedEffect(store.canAddHabit) { if (store.canAddHabit) onBought() }
     val habits = store.habits.filter { !it.archived && it.kind != HabitKind.Task }
     Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding()) {
-        IconButton(onBack, Modifier.padding(start = 4.dp, top = 4.dp).semantics { testTag = "sixth-close" }) { Icon(Icons.Rounded.Close, "Close", tint = c.ink) }
+        AppTopBar(null, navigationIcon = {
+            NavigationIcon(Symbols.Close, "Close", onBack, Modifier.semantics { testTag = "sixth-close" })
+        }, windowInsets = WindowInsets(0))
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).semantics { testTag = "sixth-habit" },
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -126,7 +119,7 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
             Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     habits.take(HabitStore.FREE_HABIT_LIMIT).forEach { HabitIcon(it.symbol, it.color, 40.dp) }
-                    Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) { Icon(Icons.Rounded.Add, null, tint = c.onInk) }
+                    Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null, tint = c.onInk) }
                 }
                 Row {
                     Text("${habits.size} of ${HabitStore.FREE_HABIT_LIMIT} free habits used", Modifier.weight(1f), style = AppType.labelLarge, color = c.ink)
@@ -151,9 +144,9 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
                 Text("What you get with Plus", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = c.secondary)
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     val rows = listOf(
-                        Triple(Icons.Rounded.AllInclusive, "Unlimited habits", "Free has ${HabitStore.FREE_HABIT_LIMIT}. Add as many as you like."),
-                        Triple(Icons.Outlined.Widgets, "More widgets", "Today’s list and This week"),
-                        Triple(Icons.Outlined.Sync, "Synced through Google Drive", "A change on one shows on all of them"),
+                        Triple(Symbols.AllInclusive, "Unlimited habits", "Free has ${HabitStore.FREE_HABIT_LIMIT}. Add as many as you like."),
+                        Triple(Symbols.Widgets, "More widgets", "Today’s list and This week"),
+                        Triple(Symbols.Sync, "Synced through Google Drive", "A change on one shows on all of them"),
                     )
                     rows.forEachIndexed { i, (icon, title, line) -> GetRow(icon, title, line, i, rows.size) }
                 }
@@ -163,9 +156,8 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
         Column(Modifier.fillMaxWidth().background(c.screen).padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             said?.let { Text(it, Modifier.fillMaxWidth().padding(horizontal = 8.dp), style = AppType.bodySmall, color = c.secondary) }
             val price = plus.price(product)
-            Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).clip(RoundedCornerShape(28.dp)).background(if (plus.canBuy && !buying) c.ink else c.ink.copy(alpha = 0.12f))
-                .clickable(enabled = plus.canBuy && !buying, role = Role.Button) {
-                    val a = activity ?: return@clickable
+            AppButton("Get Plus" + (price?.let { " · $it" } ?: ""), {
+                    val a = activity ?: return@AppButton
                     scope.launch {
                         buying = true
                         val result = plus.buy(a, product)
@@ -178,15 +170,9 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
                             BuyResult.UNAVAILABLE -> { onPlus(); null }
                         }
                     }
-                }.semantics { testTag = "sixth-plus" }, contentAlignment = Alignment.Center) {
-                Text("Get Plus" + (price?.let { " · $it" } ?: ""), style = AppType.titleMedium, color = if (plus.canBuy && !buying) c.onInk else c.ink.copy(alpha = 0.38f))
-            }
-            Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(24.dp)).background(c.soft).clickable(role = Role.Button, onClick = onMakeRoom)
-                .semantics { testTag = "sixth-make-room" }, horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Outlined.Archive, null, Modifier.size(18.dp), tint = c.ink)
-                Spacer(Modifier.width(8.dp))
-                Text("Make room instead", style = AppType.labelLarge, color = c.ink)
-            }
+                }, Modifier.fillMaxWidth(), size = ButtonSize.Medium, enabled = plus.canBuy && !buying, tag = "sixth-plus")
+            AppButton("Make room instead", onMakeRoom, Modifier.fillMaxWidth(), style = ButtonStyle.Tonal, size = ButtonSize.Medium,
+                icon = Symbols.Archive, tag = "sixth-make-room")
             Text("Archive a habit (it keeps its progress) or delete one.", Modifier.fillMaxWidth(), style = AppType.bodySmall, color = c.secondary,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         }
@@ -194,18 +180,8 @@ fun SixthHabitPage(store: HabitStore, onBack: () -> Unit, onMakeRoom: () -> Unit
 }
 
 @Composable
-private fun GetRow(icon: ImageVector, title: String, line: String, index: Int, count: Int) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().clip(com.oftenenough.app.ui.components.segmentShape(index, count)).background(c.surface).heightIn(min = 72.dp)
-        .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(40.dp).clip(CircleShape).background(c.soft), contentAlignment = Alignment.Center) { Icon(icon, null, Modifier.size(22.dp), tint = c.ink) }
-        Spacer(Modifier.width(16.dp))
-        Column {
-            Text(title, style = AppType.titleMedium, color = c.ink)
-            Text(line, style = AppType.bodyMedium, color = c.secondary)
-        }
-    }
-}
+private fun GetRow(icon: ImageVector, title: String, line: String, index: Int, count: Int) =
+    AppListItem(title, index, count, supporting = line, leading = { ListAvatar(icon) })
 
 // ------------------------------------------------------------------ 5.1 · Make room
 
@@ -232,15 +208,11 @@ fun MakeRoomPage(store: HabitStore, onBack: () -> Unit, onRoom: () -> Unit) {
                     HabitIcon(h.symbol, h.color, 40.dp)
                     Spacer(Modifier.width(16.dp))
                     Text(h.name, Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Box(Modifier.heightIn(min = 40.dp).clip(RoundedCornerShape(20.dp)).border(1.dp, c.outline, RoundedCornerShape(20.dp))
-                        .clickable(role = Role.Button) { store.archive(listOf(h)) }.padding(horizontal = 16.dp, vertical = 10.dp)
-                        .semantics { testTag = "room-archive-${h.name}" }, contentAlignment = Alignment.Center) {
-                        Text("Archive", style = AppType.labelLarge, color = c.ink)
-                    }
+                    AppButton("Archive", { store.archive(listOf(h)) }, style = ButtonStyle.Outlined, tag = "room-archive-${h.name}")
                     Box {
-                        IconButton({ menu = true }, Modifier.semantics { testTag = "room-more-${h.name}" }) { Icon(Icons.Rounded.MoreVert, "More for ${h.name}", tint = c.secondary) }
-                        DropdownMenu(menu, { menu = false }, containerColor = c.menu, shape = RoundedCornerShape(16.dp)) {
-                            DropdownMenuItem({ Text("Delete…", style = AppType.bodyLarge, color = c.error) }, { menu = false; deleting = h })
+                        StandardIconButton(Symbols.MoreVert, "More for ${h.name}", { menu = true }, Modifier.semantics { testTag = "room-more-${h.name}" })
+                        AppMenu(menu, { menu = false }) {
+                            AppMenuItem("Delete…", { menu = false; deleting = h }, icon = Symbols.Delete, destructive = true)
                         }
                     }
                 }
@@ -251,8 +223,8 @@ fun MakeRoomPage(store: HabitStore, onBack: () -> Unit, onRoom: () -> Unit) {
     deleting?.let { h ->
         AlertDialog({ deleting = null }, title = { Text("Delete ${h.name}?") },
             text = { Text("Its history and notes are deleted too. Archiving keeps them and makes room just the same.") },
-            confirmButton = { TextButton({ deleting = null; store.delete(listOf(h)) }, Modifier.semantics { testTag = "room-delete" }) { Text("Delete", color = c.error) } },
-            dismissButton = { TextButton({ deleting = null }) { Text("Cancel", color = c.ink) } })
+            confirmButton = { AppButton("Delete", { deleting = null; store.delete(listOf(h)) }, Modifier.semantics { testTag = "room-delete" }, style = ButtonStyle.Text, destructive = true) },
+            dismissButton = { AppButton("Cancel", { deleting = null }, style = ButtonStyle.Text) })
     }
 }
 

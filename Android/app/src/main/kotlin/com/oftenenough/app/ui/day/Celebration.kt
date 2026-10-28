@@ -1,5 +1,11 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.CircularProgressLabel
+import com.oftenenough.app.ui.components.AppCircularProgress
 import android.provider.Settings
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
@@ -8,7 +14,6 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,12 +29,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import com.oftenenough.app.ui.components.rememberWholeSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -42,7 +45,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -58,7 +60,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
-import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlin.math.cos
@@ -109,10 +110,10 @@ private fun rememberTimeline(key: Any, play: Boolean = true): Animatable<Float, 
 
 // ------------------------------------------------------------------ The medal
 
-/** A milestone's medal: the one medal the whole app draws (`MilestoneMedal`: Figma's star, gradient, inner line, shadow). */
+/** A milestone's medal: the one medal the whole app draws (`Medal`, 3.5: Figma's star, gradient, inner line, shadow). */
 @Composable
 fun CelebrationMedal(number: String?, size: Dp, color: HabitColor, modifier: Modifier = Modifier) =
-    com.oftenenough.app.ui.habit.MilestoneMedal(number, size, color, modifier)
+    com.oftenenough.app.ui.components.Medal(number, size, color, modifier)
 
 // ------------------------------------------------------------------ The ribbon (Figma 14)
 
@@ -174,9 +175,8 @@ fun LandmarkPopup(
     more: String? = null,
 ) {
     val c = appColors
-    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    ModalBottomSheet(onClose, sheetState = state, containerColor = c.menu, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-        dragHandle = { Box(Modifier.padding(top = 12.dp).size(32.dp, 4.dp).clip(RoundedCornerShape(2.dp)).background(c.outline.copy(alpha = 0.4f))) }) {
+    val state = rememberWholeSheetState()
+    ModalBottomSheet(onClose, sheetState = state) {
         val tl = rememberTimeline(number)
         val t = tl.value
         val density = LocalDensity.current
@@ -252,7 +252,7 @@ fun LandmarkPopup(
                     .padding(start = 14.dp, end = 8.dp, top = 6.dp, bottom = 6.dp).semantics { testTag = "landmark-more" },
                     verticalAlignment = Alignment.CenterVertically) {
                     Text(more, style = AppType.labelLarge, color = c.ink)
-                    androidx.compose.material3.Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, Modifier.size(18.dp), tint = c.ink)
+                    androidx.compose.material3.Icon(Symbols.KeyboardArrowRight, null, Modifier.size(18.dp), tint = c.ink)
                 }
             }
             if (next != null) {
@@ -261,16 +261,7 @@ fun LandmarkPopup(
                 val fraction = next.fraction
                 Row(Modifier.fillMaxWidth().arrive(0.45f, 12f).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(horizontal = 18.dp, vertical = 14.dp)
                     .heightIn(min = 76.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(52.dp), contentAlignment = Alignment.Center) {
-                        Canvas(Modifier.size(52.dp)) {
-                            // The same ring as the habit page's Next (Figma: a 3.9 band, the colour at 20 %).
-                            val w = 3.9.dp.toPx()
-                            val arc = Size(size.width - w, size.height - w)
-                            drawArc(base.copy(alpha = if (c.dark) 0.28f else 0.2f), 0f, 360f, false, Offset(w / 2, w / 2), arc, style = Stroke(w))
-                            drawArc(base, -90f, 360f * fraction, false, Offset(w / 2, w / 2), arc, style = Stroke(w, cap = StrokeCap.Round))
-                        }
-                        Text(target, style = if (target.length > 3) AppType.labelMedium else AppType.titleMedium, color = c.ink, maxLines = 1)
-                    }
+                    AppCircularProgress(fraction.toFloat(), color) { CircularProgressLabel(target) }
                     Spacer(Modifier.width(16.dp))
                     Column {
                         Text(next.title, style = AppType.titleMedium, color = c.ink)
@@ -280,14 +271,8 @@ fun LandmarkPopup(
             }
             Spacer(Modifier.height(20.dp))
             Row(Modifier.fillMaxWidth().arrive(0.50f, 8f), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Box(Modifier.weight(1f).height(48.dp).clip(RoundedCornerShape(24.dp)).border(1.dp, c.outline, RoundedCornerShape(24.dp))
-                    .clickable(onClick = onClose).semantics { testTag = "landmark-close" }, contentAlignment = Alignment.Center) {
-                    Text("Close", style = AppType.labelLarge, color = c.ink)
-                }
-                Box(Modifier.weight(1f).height(48.dp).clip(RoundedCornerShape(24.dp)).background(c.ink)
-                    .clickable(onClick = onAll).semantics { testTag = "landmark-all" }, contentAlignment = Alignment.Center) {
-                    Text(second, style = AppType.labelLarge, color = c.onInk)
-                }
+                AppButton("Close", onClose, Modifier.weight(1f), style = ButtonStyle.Outlined, size = ButtonSize.Medium, compact = true, tag = "landmark-close")
+                AppButton(second, onAll, Modifier.weight(1f), size = ButtonSize.Medium, compact = true, tag = "landmark-all")
             }
         }
     }
