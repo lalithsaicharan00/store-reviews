@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.components.SectionHabit
+import com.oftenenough.app.ui.components.SectionHeader
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonStyle
@@ -110,6 +112,9 @@ interface TodayNav : NoticeNav {
 
 /** "Starts 6 AM". */
 fun startsText(section: DaySection): String? = section.start?.let { "Starts " + DayWords.hourShort(it) }
+
+/** A habit as a folded section header draws it: a disc of its Colour with its filled icon. */
+private fun Habit.inSection() = SectionHabit(name, symbol, color)
 
 /** Today's day: moves on at the day's start and once a minute (the Now section), never per second (S3). */
 @Composable
@@ -537,15 +542,10 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
     }
     if (content.paused.isNotEmpty()) {
         val open = layout.choice("paused") ?: false
-        val first = content.paused.first()
-        val subtitle = if (content.paused.size == 1) {
-            val p = store.pause(first, day)
-            first.name + " · " + (p?.through?.let { "back on " + DayWords.dayMonth(it + 1) } ?: "until you resume")
-        } else "${content.paused.size} habits"
         indexed(ix, "header-paused") {
-            PartHeader("Paused", subtitle, content.paused, null, false, open, if (open) segmentShape(0, content.paused.size + 1) else RoundedCornerShape(24.dp), null) {
-                layout.setOpen("paused", !open)
-            }
+            // Figma's Paused header has no time line; each paused row says when it comes back.
+            SectionHeader("Paused", null, open, if (open) segmentShape(0, content.paused.size + 1) else RoundedCornerShape(24.dp),
+                onToggle = { layout.setOpen("paused", !open) }, habits = content.paused.map { it.inSection() }, tag = "header-Paused")
         }
         if (open) content.paused.forEachIndexed { i, h ->
             indexed(ix, "paused-${h.id}") { Spacer(Modifier.height(2.dp)); PausedRow(h, segmentShape(i + 1, content.paused.size + 1), store, actions) }
@@ -590,15 +590,13 @@ private fun LazyListScope.section(
     } else null
     val badge = when {
         future -> "${items.size} planned"
-        left == 0 -> "✓ Done"
+        left == 0 -> "Done"
         else -> "$left left"
     }
     indexed(ix, "header-$card") {
-        PartHeader(section.name, startsText(section), items.map { it.habit }, badge, isNow, open,
-            if (open) segmentShape(0, count) else RoundedCornerShape(24.dp),
-            onStart = start,
-            onToggle = { layout.setOpen(card, !open) },
-            marked = if (!open && day == content.today) store.milestones.unplayed(items.map { it.habit.id }) else emptySet())
+        SectionHeader(section.name, startsText(section), open, if (open) segmentShape(0, count) else RoundedCornerShape(24.dp),
+            onToggle = { layout.setOpen(card, !open) }, count = badge, habits = items.map { it.habit.inSection() }, onStart = start,
+            tag = "header-${section.name}")
     }
     if (open) pieces.forEachIndexed { i, (item, steps) ->
         val habit = item.habit
@@ -620,9 +618,8 @@ private fun LazyListScope.quitting(habits: List<Habit>, store: HabitStore, layou
     val open = layout.choice(DaySection.QUITTING) ?: true
     val count = if (open) habits.size + 1 else 1
     indexed(ix, "header-quitting") {
-        PartHeader("Quitting", "Stop, or do less", habits, null, false, open, if (open) segmentShape(0, count) else RoundedCornerShape(24.dp), null,
-            onToggle = { layout.setOpen(DaySection.QUITTING, !open) },
-            marked = if (!open && day == today) store.milestones.unplayed(habits.map { it.id }) else emptySet())
+        SectionHeader("Quitting", "Stop, or do less", open, if (open) segmentShape(0, count) else RoundedCornerShape(24.dp),
+            onToggle = { layout.setOpen(DaySection.QUITTING, !open) }, habits = habits.map { it.inSection() }, tag = "header-Quitting")
     }
     if (open) habits.forEachIndexed { i, h ->
         indexed(ix, "quit-${h.id}") {

@@ -284,14 +284,6 @@ fun MilestoneBar(
 /** A Canvas the size of its Box (the medal's sparkles). */
 private fun Modifier.matchParentSizeCompat(): Modifier = this.then(Modifier.size(44.dp))
 
-/** The small medal on a folded card's icon: a habit reached a milestone away, not yet seen (Figma A.2). */
-@Composable
-fun MiniMedal(color: HabitColor, modifier: Modifier = Modifier) {
-    val c = appColors
-    val shape = com.oftenenough.app.ui.components.MedalShape
-    Box(modifier.size(14.dp).clip(shape).background(c.surface).padding(1.5.dp).clip(shape).background(c.habit(color)))
-}
-
 // ------------------------------------------------------------------ A row's milestone today
 
 /**

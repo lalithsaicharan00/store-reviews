@@ -89,7 +89,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 ### 4. Later: built from the atoms
 
-Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header, Run row, Comparison row, Card notice, Milestone bar, Milestone
+Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row, Comparison row, Card notice, Milestone bar, Milestone
 ribbon, Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
@@ -767,5 +767,53 @@ What each atom changed, newest last.
     built.
   - The Tick steps add screen (`RecordScreens.kt`) has no Figma; its rows use the Card place on its white card.
   - Figma's step names wrap freely in a fixed 48; the code keeps two lines with … and lets the row grow (U36).
-  - The session can't reach Google's Maven (T22), so the compile check is GitHub's Android build on this commit; its
-    result is recorded with the next entry.
+  - The session can't reach Google's Maven (T22), so the compile check is GitHub's Android build on this commit.
+    **Built:** run 40731917778 (Android #100, commit 34cfc77) passed: assembleDebug, unit tests and lint, in 7
+    minutes. It was the first build of `main` on GitHub since 22 Oct, so it checked every atom before it too (they had
+    been pushed with `[skip ci]`).
+- **4.4 Section header (28 Oct).** Figma: Section header (562:48), State Open · Closed by Text size Default · 200%, with
+  Show time, Show badge, Show start and Show habit icons; no motion. Used only on Today: 1,048 instances on the Today
+  page (Morning, Afternoon, Evening, Anytime, Quitting, Paused), and Today again behind the sheets of the other pages.
+  Surface bright, 64 tall: 16 at the start, 12 between its parts, 8 at the end. The name in Title Medium (On surface)
+  over the time in Body Small (On surface variant), taking the room left. Closed, the habits as 28 dp discs of their
+  Colour with the filled icon at 16 in On habit, ringed 2 dp in Surface bright, 6 over each other, and past three a
+  "+N" disc (Surface container highest, Label Medium). The count is a neutral pill: 24 tall, corners 12, 10 at the
+  sides, Label Medium On surface on Surface container highest. Open, Start is Material's extra-small button: 32, round,
+  Primary with On primary, the filled play arrow at 20, 8, Label Large. ⌃ ⌄ is Material's small standard icon button
+  (40, a 24 glyph, On surface variant). Open, the corners are 24 over 4; closed, 24 all round. At 200%: the name and
+  ⌃ ⌄ on the first line; under it, 8 down, the time, discs, count and Start, 12 apart, wrapping 8 apart.
+
+  Built as `SectionHeader` with `SectionHabit` (`ui/components/SectionHeader.kt`). Start is Material's own `Button`
+  at `ButtonDefaults.ExtraSmallContainerHeight` with its round shape, which squares up while pressed. Its sides and
+  icon gap are set to Material's tokens (`ButtonXSmallTokens`, 16 and 8, which Figma draws): Compose 1.5's own
+  extra-small padding is still 12 with a 4 gap, marked in its code to be corrected. ⌃ ⌄ is `StandardIconButton` (1.1);
+  its 48 dp target leaves 4 less around it, so the glyph sits where Figma draws it. Large text (font scale 1.5 and up,
+  as Habit details' one column) takes the 200% layout, its second line a `FlowRow`. Today's three headers moved onto it
+  (the times of day, Quitting, Paused). `PartHeader`, its `StartButton` and `FoldedIcons`, the grey `Badge`
+  (`Components.kt`) and `MiniMedal` (`MilestoneViews.kt`) are gone. The tags (`header-…`, `start-…`), "Start Morning"
+  and the "Fold …" / "Open …" TalkBack words stay (T3).
+  Fixed:
+  - The header was white (Surface container lowest); now Surface bright. The rest of 4.1's mismatch: Today's cards are
+    one colour now.
+  - Start was tonal grey with ink for every time of day but the current one. Figma draws it Primary everywhere
+    (Morning and Anytime alike, all 478 instances that show it, no other colour), so now it always is.
+  - Start was hand-drawn: 32 tall, ▶ 18, 4 dp, 14 and 18 at the sides. Now Material's extra-small button: ▶ 20, 8,
+    16 and 16, Material's ripple and pressed shape.
+  - ⌃ ⌄ was a hand-made clickable circle; now Material's icon button.
+  - The name sat at its own width, so closed sections' discs followed the name. Now the name takes the room that's
+    left, so the discs sit beside the count, as drawn.
+  - The discs' ring was white (Surface container lowest); now Surface bright. "+N" was a fixed 28 circle that couldn't
+    grow; it now grows into a pill with large text, as at 200%.
+  - A folded section put a small medal on a habit's disc for a milestone not yet seen, and moved that habit first.
+    A43 (22 Oct) took that away: a folded section shows nothing about a milestone. Both are gone.
+  - A finished section said "✓ Done"; Figma's count says "Done".
+  - Paused's header had a line under it ("Meds · back on 20 Oct", "2 habits"). Figma's Paused header has none (all 9
+    instances); each paused row says when it comes back.
+  - Large text: the name was cut to one line beside everything else; now the 200% layout.
+
+  Noted, not changed:
+  - Figma's milestone flows show a finished Morning ("Done") still offering Start (2 instances, flows where only the
+    badge text was changed). The code shows Start only while something is left, and still does. Say if a finished
+    time of day should keep Start.
+  - Figma draws Paused open on every screen; the code opens it folded. That's Today's own choice, for the Today screen.
+  - The switch to the 200% layout is at font scale 1.5 (Figma has only 100 % and 200 %).

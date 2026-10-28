@@ -1,6 +1,5 @@
 package com.oftenenough.app.ui.components
 
-import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -24,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -108,15 +106,6 @@ fun ListRow(
 fun CookieIcon(icon: ImageVector, size: Dp = 56.dp, container: Color? = null, tint: Color? = null, glyph: Float = 0.45f) {
     Box(Modifier.size(size).clip(CookieShape()).background(container ?: appColors.tonal), contentAlignment = Alignment.Center) {
         Icon(icon, null, tint = tint ?: appColors.ink, modifier = Modifier.size(size * glyph))
-    }
-}
-
-/** A grey badge: "2 left", "✓ Done", "3 planned" (Figma: 24 dp, 10 dp each side, Label Medium on #ECECEF). */
-@Composable
-fun Badge(text: String) {
-    Box(Modifier.heightIn(min = 24.dp).clip(RoundedCornerShape(12.dp)).background(appColors.soft).padding(horizontal = 10.dp, vertical = 4.dp),
-        contentAlignment = Alignment.Center) {
-        Text(text, style = AppType.labelMedium, color = appColors.ink, maxLines = 1)
     }
 }
 

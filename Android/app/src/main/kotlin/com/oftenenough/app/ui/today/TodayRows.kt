@@ -27,11 +27,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -46,10 +43,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -391,87 +386,6 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
             band = moment.band?.let { b -> { MilestoneBand(moment.text, habit.color, b.see, moment.t, early = true) { actions.seeMilestone(habit) } } },
             menu = { RowMenu(menu, { menu = false }, habit, today, store, actions, layout) },
         )
-    }
-}
-
-/**
- * The first piece of every card (Figma 1350:56): the name over "Starts 6 AM"; folded, the habits' icons overlapping;
- * the badge ("2 left", "✓ Done", "3 planned"); Start where the card is open (ink for the time of day it is now, tonal
- * otherwise); the ⌃/⌄ in a 40 dp button. Tapping anywhere on it folds or opens the card.
- */
-@Composable
-fun PartHeader(
-    title: String, subtitle: String?, habits: List<Habit>, badge: String?, isNow: Boolean, isOpen: Boolean, shape: Shape,
-    onStart: (() -> Unit)?,
-    /** Habits with a milestone not yet seen: a small medal on their icon while the card is folded (Figma A.2). */
-    marked: Set<String> = emptySet(),
-    onToggle: () -> Unit,
-) {
-    val c = appColors
-    Row(
-        Modifier.fillMaxWidth().clip(shape).background(c.surface).clickable(onClickLabel = if (isOpen) "Fold $title" else "Open $title", onClick = onToggle)
-            .semantics { testTag = "header-$title" }
-            .heightIn(min = 64.dp).padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Column {
-            Text(title, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            if (subtitle != null) Text(subtitle, style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        }
-        if (!isOpen && habits.isNotEmpty()) FoldedIcons(habits, marked, Modifier.weight(1f)) else Spacer(Modifier.weight(1f))
-        if (badge != null) com.oftenenough.app.ui.components.Badge(badge)
-        if (onStart != null && isOpen) StartButton(title, isNow, onStart)
-        Box(Modifier.size(40.dp).clip(CircleShape).clickable(onClick = onToggle).semantics { contentDescription = if (isOpen) "Fold $title" else "Open $title" },
-            contentAlignment = Alignment.Center) {
-            Icon(if (isOpen) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = c.secondary)
-        }
-    }
-}
-
-/** Start (Figma 1958:253): 32 dp, ▶ 18 dp, 4 dp, "Start"; ink for the time of day it is now, tonal for the others. */
-@Composable
-private fun StartButton(title: String, isNow: Boolean, onStart: () -> Unit) {
-    val c = appColors
-    Row(
-        Modifier.height(32.dp).clip(RoundedCornerShape(16.dp)).background(if (isNow) c.ink else c.soft)
-            .clickable(role = Role.Button, onClick = onStart).semantics { contentDescription = "Start $title"; testTag = "start-$title" }
-            .padding(start = if (isNow) 14.dp else 12.dp, end = if (isNow) 18.dp else 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(Symbols.Filled.PlayArrow, null, Modifier.size(18.dp), tint = if (isNow) c.onInk else c.ink)
-        Spacer(Modifier.width(4.dp))
-        Text("Start", style = AppType.labelLarge, color = if (isNow) c.onInk else c.ink, maxLines = 1)
-    }
-}
-
-/**
- * A folded card's habits (Figma 1350:60): 28 dp circles in each habit's colour with a 16 dp white glyph and a 2 dp ring
- * of the card's own white, each overlapping the one before by 6 dp; after three, a "+N" circle in the same shape.
- */
-@Composable
-private fun FoldedIcons(habits: List<Habit>, marked: Set<String>, modifier: Modifier = Modifier) {
-    val c = appColors
-    // A habit with a milestone not yet seen comes first among the icons, so its medal shows (Figma A.2).
-    val shown = (habits.filter { it.id in marked } + habits.filter { it.id !in marked }).take(3)
-    val more = habits.size - shown.size
-    // The ring is the card's white behind a 24 dp disc, never a stroke over the disc: a stroke leaves a fringe of colour.
-    fun Modifier.ringed(fill: Color) = size(28.dp).clip(CircleShape).background(c.surface).padding(2.dp).clip(CircleShape).background(fill)
-    Row(modifier.semantics(mergeDescendants = true) { contentDescription = habits.joinToString(", ") { it.name + if (it.id in marked) ", a milestone" else "" } },
-        horizontalArrangement = Arrangement.spacedBy((-6).dp), verticalAlignment = Alignment.CenterVertically) {
-        shown.forEach { h ->
-            Box {
-                Box(Modifier.ringed(c.habit(h.color)), contentAlignment = Alignment.Center) {
-                    Icon(com.oftenenough.app.ui.theme.HabitIcons.icon(h.symbol), null, Modifier.size(16.dp), tint = Color.White)
-                }
-                if (h.id in marked) MiniMedal(h.color, Modifier.align(Alignment.TopEnd).offset(x = 4.dp, y = (-3).dp))
-            }
-        }
-        if (more > 0) {
-            Box(Modifier.ringed(c.soft), contentAlignment = Alignment.Center) {
-                Text("+$more", style = AppType.labelMedium, color = c.ink, maxLines = 1, softWrap = false)
-            }
-        }
     }
 }
 
