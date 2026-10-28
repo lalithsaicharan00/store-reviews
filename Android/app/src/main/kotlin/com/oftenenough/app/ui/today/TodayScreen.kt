@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.components.MilestonePopup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -103,7 +104,6 @@ import com.oftenenough.app.data.MilestoneCenter
 import com.oftenenough.app.data.MilestoneShown
 import com.oftenenough.app.data.MilestoneTier
 import com.oftenenough.app.data.MilestoneTrack
-import com.oftenenough.app.ui.day.LandmarkPopup
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -372,7 +372,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
         if (h == null) popup = null
         else {
             val w = remember(shown) { center.words(shown, h) }
-            LandmarkPopup(w.number, w.popupTitle, w.popupSubtitle, h.color, w.next, second = w.second,
+            MilestonePopup(w.number, w.popupTitle, w.popupSubtitle, h.color, w.next, second = w.second,
                 onClose = { popup = null },
                 onAll = {
                     popup = null

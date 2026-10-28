@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.components.MilestonePopup
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.AppMenuItem
 import com.oftenenough.app.ui.components.AppMenu
@@ -384,7 +385,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     }
     popup?.let { s ->
         val w = remember(s) { center.words(s, habit) }
-        LandmarkPopup(w.number, w.popupTitle, w.popupSubtitle, habit.color, w.next, second = w.second,
+        MilestonePopup(w.number, w.popupTitle, w.popupSubtitle, habit.color, w.next, second = w.second,
             onClose = { popup = null }, onAll = { popup = null; nav.allMilestones(habit) })
     }
 }

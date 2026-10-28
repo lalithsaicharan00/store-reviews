@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.player
 
+import com.oftenenough.app.ui.components.MilestonePopup
 import com.oftenenough.app.ui.components.SnackbarAction
 import com.oftenenough.app.ui.components.AppSnackbar
 import com.oftenenough.app.ui.components.AppMenuItem
@@ -126,7 +127,6 @@ import com.oftenenough.app.data.MilestoneCenter
 import com.oftenenough.app.data.MilestoneFront
 import com.oftenenough.app.data.MilestoneTier
 import com.oftenenough.app.data.MilestoneTrack
-import com.oftenenough.app.ui.day.LandmarkPopup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -348,7 +348,7 @@ fun RoutinePlayer(
         else {
             val w = remember(shown) { center.words(shown, h) }
             val others = splitIds(reachedText.value).count { it != h.id && store.habit(it)?.let { o -> center.visible(o) } != null }
-            LandmarkPopup(w.number, w.popupTitle, w.popupSubtitle.replace("reached today", "reached in this routine"), h.color, w.next,
+            MilestonePopup(w.number, w.popupTitle, w.popupSubtitle.replace("reached today", "reached in this routine"), h.color, w.next,
                 second = w.second, more = if (others > 0) "and $others more in this routine" else null,
                 onClose = { endPopupDone = true },
                 onAll = { endPopupDone = true; nav.habitPage(h, milestones = shown.track != MilestoneTrack.ANNIVERSARY) })

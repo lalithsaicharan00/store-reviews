@@ -90,7 +90,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 ### 4. Later: built from the atoms
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
-ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
+ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
@@ -1032,3 +1032,36 @@ What each atom changed, newest last.
   - Past four, the row scrolled with each badge 88 wide; now Figma's 92.
   Noted, not changed:
   - The Earlier row itself (a share each up to four, scrolling past that) is the Milestones card's, 4.13.
+  - **Built:** run 40761546106 (Android #108, commit d4b1196) passed: assembleDebug, unit tests and lint.
+- **4.12 Milestone pop-up (28 Oct).** Figma: Milestone pop-up (853:45861), one component, six text properties; its
+  motion in "Milestone · Motion", Pop-up (today components: the sheet sliding up 532 dp in 380 ms, and every layer's
+  keyframes over 2.4 s); three instances (Today's motion, Day details' Mark done, the habit page's "tap a reached
+  one"). Built as `ui/components/MilestonePopup.kt` on the Bottom sheet atom (1.18): 24 at the sides and 24 apart, the
+  hero (the medal's stage, 176; 4; the title in Headline Small Emphasized; 4; the supporting text in Body Medium), the
+  Next milestone (4.10) on a Surface container lowest card (24 corners, 20 in), and Close (Outlined) and All
+  milestones (Filled), Medium, 8 apart. **Its own motion** follows Figma's keyframes to the millisecond (checked layer
+  by layer: glow, medal, ring, all twelve dots, the four sparkles, the words, the card, the buttons), read only where
+  it's drawn, at rest with Remove animations. **Its entrance and leaving** are Material's sheet's own (scrim, slide,
+  predictive back); Close and All milestones now slide it away before they act. Moved: Today, Day details and the
+  routine player. Deleted: `Celebration.kt` (`LandmarkPopup`, `CelebrationMedal` and its timeline). The tags
+  `landmark-popup`, `landmark-close`, `landmark-all` and `landmark-more` stay. The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - The card behind the next milestone was Surface, 20 corners, 34 and 14 inside, 76 tall at least; now Surface
+    container lowest, 24 corners, 20 all round (noted at 4.10).
+  - The gaps were 8 over the stage, 6 between the title and the words, 20 before the card and the buttons, 10
+    between the buttons and 32 under; now none, 4, 24, 8 and the sheet's 24.
+  - The buttons kept 12 at the sides (`compact`); now Figma's 24.
+  - The glow was the habit's colour at 42 % fading out; now the habit's Band, 150 across, with Figma's 24 dp blur
+    (drawn as its soft edge, so it works on every Android version). The ring's line was 2; now 2.5. The dots were the
+    habit's Colour; now its Pale.
+  - The medal was hidden until 250 ms; Figma's is there from the start, small and turned, as the sheet rises.
+  - The card and the buttons arrived 50 ms late (900 and 1000 ms); now 850 and 950.
+  - Close and All milestones took the sheet away at once; now it slides down first, as Material's sheets do.
+  Noted, not changed:
+  - "and 1 more in this routine" (the routine player's chip, RP.3) isn't in the component; kept as it was, for the
+    Routine player (section 5).
+  - The habit page's "tap a reached one: its pop-up again" (Figma's details pages) isn't built; for the Habit details
+    page (section 5).
+  - Figma draws light only; in dark the card is Surface container lowest of the dark scheme, and the glow, dots and
+    medal take the habit colours' dark values (1.21, 3.5).
