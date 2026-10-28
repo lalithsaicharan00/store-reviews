@@ -104,7 +104,7 @@ reminder, sync or backup does (the build prompt's rule).
 
 | # | Component | Figma | Status |
 |---|---|---|---|
-| 5.1.1 | Onboarding · Splash | 553:2427 | ☐ |
+| 5.1.1 | Onboarding · Splash | 553:2427 | ☑ |
 | 5.1.2 | Onboarding · Today, no habits yet | 547:2419 | ☐ |
 | 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☐ |
 | 5.1.4 | Onboarding · Restoring | 582:7893 | ☐ |
@@ -1304,3 +1304,14 @@ What each atom changed, newest last.
   Noted, not changed:
   - Figma's description still names `DayBar` and `MiniRing` as the code; the new Code line is added after it, as
     the build prompt says to change nothing else there.
+  - **Built:** run 40768891140 (Android #115, commit b8870fa) passed: assembleDebug, unit tests and lint.
+- **5.1.1 Onboarding · Splash (28 Oct).** Figma: Splash (553:2427), one component, no properties and no motion; thirteen
+  instances (onboarding's flows, one on Today). Android's own splash (the SplashScreen API, A76's "as it is"): the
+  adaptive icon's foreground, 288 dp in Figma (Android shows it in its 192 dp circle), on white, then Today. Compared
+  with the code: `themes.xml` sets the splash background to #FFFFFF and the icon to `splash_icon`, Figma's own SVG
+  export of the same three tiles (#BFBFBF, #666666, #333333, the 52:60 inset and 12° tilt), and `MainActivity` keeps it
+  up until the habits are read. Nothing differs, so nothing changed; no Kotlin component, because Android draws it.
+  Noted, not changed:
+  - The white is the Logo Guide's, not a colour role (Figma uses no style there); kept.
+  - Figma draws light only; in dark the splash is #0D0D0D with the dark foreground (`values-night`,
+    `drawable-night`), from the Logo Guide (13 Oct 2026).
