@@ -93,6 +93,88 @@ Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section h
 ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up ☑ (4.12), Milestones card ☑ (4.13), Stat tile ☑ (4.14), Habit history card ☑ (4.15), Overall record
 card ☑ (4.16), Year in pixels card ☑ (4.17), and the day navigation inside the floating toolbar ☑ (4.18).
 
+### 5. The pages' components (added 28 Oct 2026)
+
+Every other component set in the Figma file, page by page in Figma's order, built the same way, one at a time. Left
+out, as Status bar and Gesture navigation are: what Figma marks as Android's own and draws only to show a flow (the
+Google account and Drive screens, the file picker, Samsung's and Android's settings pages, the notifications
+permission, notifications, the lock screen, the shade, keyboards, the browser tab, the launcher, its menus and the
+widget picker, the home screen). **Widgets and reminders: their look only** — never what a tap, an update, a
+reminder, sync or backup does (the build prompt's rule).
+
+| # | Component | Figma | Status |
+|---|---|---|---|
+| 5.1.1 | Onboarding · Splash | 553:2427 | ☐ |
+| 5.1.2 | Onboarding · Today, no habits yet | 547:2419 | ☐ |
+| 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☐ |
+| 5.1.4 | Onboarding · Restoring | 582:7893 | ☐ |
+| 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☐ |
+| 5.1.6 | Onboarding · No internet | 582:8426 | ☐ |
+| 5.1.7 | Onboarding · No backup found | 690:13442 | ☐ |
+| 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☐ |
+| 5.2.1 | Today · Navigation drawer | 626:76 | ☐ |
+| 5.2.2 | Today · Today | 728:7985 | ☐ |
+| 5.2.3 | Today · Edit Today | 827:39487 | ☐ |
+| 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☐ |
+| 5.3.1 | Day details · Day details sheet | 669:234 | ☐ |
+| 5.3.2 | Day details · Log screen | 687:829 | ☐ |
+| 5.3.3 | Day details · All logs screen | 694:607 | ☐ |
+| 5.3.4 | Day details · Dialog | 702:618 | ☐ |
+| 5.3.5 | Day details · Time picker | 703:602 | ☐ |
+| 5.3.6 | Day details · Date picker | 705:1025 | ☐ |
+| 5.3.7 | Day details · Timer screen | 705:7745 | ☐ |
+| 5.3.8 | Day details · Note screen | 765:1087 | ☐ |
+| 5.4.1 | Routine player · Routine player | 906:89513 | ☐ |
+| 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☐ |
+| 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☐ |
+| 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☐ |
+| 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☐ |
+| 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☐ |
+| 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☐ |
+| 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☐ |
+| 5.6.1 | Details pages · Habit details page | 1020:4052 | ☐ |
+| 5.6.2 | Details pages · Streaks page | 1034:74 | ☐ |
+| 5.6.3 | Details pages · All milestones page | 1036:235 | ☐ |
+| 5.6.4 | Details pages · Notes search page | 1053:9079 | ☐ |
+| 5.6.5 | Details pages · Task details page | 1136:9271 | ☐ |
+| 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☐ |
+| 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☐ |
+| 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☐ |
+| 5.7.3 | Create new · Create new form | 1065:2597 | ☐ |
+| 5.7.4 | Create new · Icon picker | 1074:932 | ☐ |
+| 5.7.5 | Create new · Colour | 1074:161496 | ☐ |
+| 5.7.6 | Create new · How often page | 1075:161386 | ☐ |
+| 5.7.7 | Create new · Time of day page | 1098:2480 | ☐ |
+| 5.7.8 | Create new · Reminders page | 1100:2996 | ☐ |
+| 5.7.9 | Create new · How much page | 1102:2782 | ☐ |
+| 5.7.10 | Create new · Unit page | 1102:3316 | ☐ |
+| 5.7.11 | Create new · How long page | 1103:3208 | ☐ |
+| 5.7.12 | Create new · Steps page | 1104:163327 | ☐ |
+| 5.7.13 | Create new · Limit page | 1105:3190 | ☐ |
+| 5.7.14 | Create new · What kind of task? | 1109:2 | ☐ |
+| 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☐ |
+| 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☐ |
+| 5.8.1 | Settings · Keep reminders coming | 804:192 | ☐ |
+| 5.8.2 | Settings · Edit time of day | 830:265 | ☐ |
+| 5.8.3 | Settings · Settings | 1173:547 | ☐ |
+| 5.8.4 | Settings · Times of day | 1176:356264 | ☐ |
+| 5.8.5 | Settings · Backup & Sync | 1178:960 | ☐ |
+| 5.8.6 | Settings · New day starts at | 1186:13870 | ☐ |
+| 5.8.7 | Settings · Week starts on | 1186:13871 | ☐ |
+| 5.8.8 | Settings · Theme | 1188:376784 | ☐ |
+| 5.9.1 | Plus · Plus | 1204:175 | ☐ |
+| 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☐ |
+| 5.10.2 | Widgets · Widget row fill | 1238:428 | ☐ |
+| 5.10.3 | Widgets · Widget · List row | 1238:429 | ☐ |
+| 5.10.4 | Widgets · Widget · List | 1240:488 | ☐ |
+| 5.10.5 | Widgets · Widget · This week | 1243:857 | ☐ |
+| 5.10.6 | Widgets · Widget setup | 1252:3618 | ☐ |
+| 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☐ |
+| 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☐ |
+| 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☐ |
+| 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☐ |
+| 5.11.5 | Notifications & alarms · Let alarms fill the screen | 1274:16200 | ☐ |
+
 ## Log
 
 What each atom changed, newest last.
