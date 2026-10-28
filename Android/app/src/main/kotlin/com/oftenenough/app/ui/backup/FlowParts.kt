@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
@@ -33,15 +35,17 @@ import com.oftenenough.app.ui.theme.appColors
 // Pieces shared by Backup & Sync's restore flows and coming back (Welcome back). They lived with Move to a new phone
 // until it was removed (21 Oct 2026: the first release is kept simple).
 
-/** A flow step's heading (coming back, Backup & Sync): Headline Medium Emphasized over a Body Large line, 8 apart. */
+/**
+ * A flow step's heading (Figma's Heading on every onboarding, restore and Plus screen, 5.1.3): the title in Headline
+ * Small Emphasized On surface, a heading, over its lead in Body Large On surface variant, 8 apart, the full width; 24
+ * under it.
+ */
 @Composable
 fun StepHeading(title: String, lead: String?) {
-    Column(Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, bottom = 24.dp)) {
-        Text(title, Modifier.semantics { heading() }, style = AppType.headlineMediumEmphasized, color = appColors.ink)
-        if (lead != null) {
-            Spacer(Modifier.height(8.dp))
-            Text(lead, style = AppType.bodyLarge, color = appColors.secondary)
-        }
+    val s = MaterialTheme.colorScheme
+    Column(Modifier.fillMaxWidth().padding(bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(title, Modifier.semantics { heading() }, style = AppType.headlineSmallEmphasized, color = s.onSurface)
+        if (lead != null) Text(lead, style = AppType.bodyLarge, color = s.onSurfaceVariant)
     }
 }
 

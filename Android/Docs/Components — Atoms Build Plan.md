@@ -106,7 +106,7 @@ reminder, sync or backup does (the build prompt's rule).
 |---|---|---|---|
 | 5.1.1 | Onboarding · Splash | 553:2427 | ☑ |
 | 5.1.2 | Onboarding · Today, no habits yet | 547:2419 | ☑ |
-| 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☐ |
+| 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☑ |
 | 5.1.4 | Onboarding · Restoring | 582:7893 | ☐ |
 | 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☐ |
 | 5.1.6 | Onboarding · No internet | 582:8426 | ☐ |
@@ -1332,3 +1332,23 @@ What each atom changed, newest last.
   - Figma's cookie is a nine-point star with sharp points (inner radius 0.86); the app's `CookieShape` is the same
     nine scallops, rounded, as Material's cookie shapes are. Kept.
   - Today's other empty states (Nothing planned, Nothing from a group) keep their own layout until Today (5.2.2).
+  - **Built:** run 40771154930 (Android #117, commit e4db293) passed: assembleDebug, unit tests and lint.
+- **5.1.3 Onboarding · Restore from a backup (28 Oct).** Figma: Restore from a backup (553:4083), one screen, no
+  properties and no motion; 21 instances across the onboarding flows. A top app bar with ← only; the content 16 at the
+  sides, 24 apart and 24 under: the Heading ("Restore from a backup." in Headline Small Emphasized On surface over
+  "Choose where your backup is." in Body Large On surface variant, 8 apart) and two List items (2.4), First and Last,
+  2 apart: Google Drive · Backed up automatically (the Drive logo in a Surface container highest avatar) and A backup
+  file · A file you saved (description), each ending in ›. The screen is `RestoreFlow`'s first step, on the flows'
+  shared `FlowScreen` and `StepHeading`. Figma's onboarding and Plus screens all draw their heading and content this
+  way (checked: 14 onboarding frames, 10 Plus frames), so the two shared parts were fixed rather than this screen
+  alone. The words and tags FirstRunTest reads stay. The app, the unit tests (55) and the instrumented tests' code
+  build in the session.
+  Fixed:
+  - Every flow's title was Headline Medium Emphasized, 8 in from the sides; now Headline Small Emphasized at the
+    content's edge, as Figma's Heading.
+  - A flow's content started 8 under the top bar; now right under it (Figma's content has no top padding). A centred
+    message keeps its 24.
+  - The heading's colours were the app's ink and secondary; now On surface and On surface variant by name (the same
+    values).
+  Noted, not changed:
+  - The rows already matched Figma (the List item atom, 2.4).

@@ -149,7 +149,8 @@ fun FlowScreen(
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
                 Column(Modifier.fillMaxWidth().heightIn(min = room), horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = if (top) Arrangement.Top else Arrangement.Center) {
-                    Spacer(Modifier.height(if (top) 8.dp else 24.dp))
+                    // Figma's content starts right under the top bar; a centred message keeps 24 above it.
+                    if (!top) Spacer(Modifier.height(24.dp))
                     content()
                     Spacer(Modifier.height(24.dp))
                 }
