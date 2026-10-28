@@ -2,6 +2,8 @@ package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.components.Medal
+import com.oftenenough.app.ui.components.MilestoneBadge
+import com.oftenenough.app.ui.components.MilestoneBadgeWidth
 import com.oftenenough.app.ui.components.NextMilestone
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppTopBar
@@ -64,7 +66,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.Habit
@@ -351,13 +352,13 @@ private fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSee
             if (earlier.size <= 4) {
                 // Side by side, each a share of the width (Figma: three, 4 apart).
                 Row(Modifier.fillMaxWidth().semantics { testTag = "habit-milestone-shelf" }, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    for (m in earlier) ShelfMedal(m, color, Modifier.weight(1f))
+                    for (m in earlier) MilestoneBadge(m.number, m.shelfTop, m.shelfBottom, color, m.spoken, Modifier.weight(1f))
                     repeat(3 - earlier.size.coerceAtMost(3)) { Spacer(Modifier.weight(1f)) }
                 }
             } else {
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).semantics { testTag = "habit-milestone-shelf" },
                     horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    for (m in earlier) ShelfMedal(m, color, Modifier.width(88.dp))
+                    for (m in earlier) MilestoneBadge(m.number, m.shelfTop, m.shelfBottom, color, m.spoken, Modifier.width(MilestoneBadgeWidth))
                 }
             }
         }
@@ -371,17 +372,6 @@ private fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSee
 /** The plate behind the latest medal: the habit's colour at 14 % on the card (Figma), a little more on dark. */
 private fun plateColor(c: com.oftenenough.app.ui.theme.AppColors, color: HabitColor): Color =
     c.habit(color).copy(alpha = if (c.dark) 0.2f else 0.14f).compositeOver(c.surface)
-
-@Composable
-private fun ShelfMedal(m: Milestone, color: HabitColor, modifier: Modifier) {
-    val c = appColors
-    Column(modifier.clearAndSetSemantics { contentDescription = m.spoken }, horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Medal(m.number, 52.dp, color)
-        Text(m.shelfTop, style = AppType.labelMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Text(m.shelfBottom, style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
-    }
-}
 
 /** A track's next milestone (4.10): "7 to go · now 23"; on All milestones "Next · …". */
 @Composable

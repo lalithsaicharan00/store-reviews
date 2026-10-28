@@ -90,7 +90,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 ### 4. Later: built from the atoms
 
 Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header ☑ (4.4), Run row ☑ (4.5), Comparison row ☑ (4.6), Card notice ☑ (4.7), Milestone bar ☑ (4.8), Milestone
-ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
+ribbon ☑ (4.9), Next milestone ☑ (4.10), Milestone badge ☑ (4.11), Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
 ## Log
@@ -1019,3 +1019,16 @@ What each atom changed, newest last.
   - The pop-up's card round the row is the colour Surface, 20 corners, 34 and 14 inside and 76 tall at least;
     Figma's is Surface container lowest, 24 corners, 20 all round. It's the pop-up's, so it goes with 4.12.
   - Material's ring keeps its 4 dp gap and round ends (1.21).
+  - **Built:** run 40760673622 (Android #107, commit 95bdeeb) passed: assembleDebug, unit tests and lint.
+- **4.11 Milestone badge (28 Oct).** Figma: Milestone badge (1007:9), one component, properties Name and Date, no
+  motion; three instances, side by side 4 apart under Earlier in the Milestones card. Built as
+  `ui/components/MilestoneBadge.kt`: a column, centred, 4 apart: the Medal at 52 (Figma's Small, scaled as its
+  instance is) with its number, the name in Label Medium On surface, the date in Body Small On surface variant;
+  TalkBack reads its one spoken line. `MilestoneBadgeWidth` is Figma's 92. Moved: the habit page's Earlier row
+  (Progress), its tag `habit-milestone-shelf` kept. Deleted: `ShelfMedal`. The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - The name and the date were cut to one line with an ellipsis; Figma's grow in height, so they wrap now, centred.
+  - Past four, the row scrolled with each badge 88 wide; now Figma's 92.
+  Noted, not changed:
+  - The Earlier row itself (a share each up to four, scrolling past that) is the Milestones card's, 4.13.
