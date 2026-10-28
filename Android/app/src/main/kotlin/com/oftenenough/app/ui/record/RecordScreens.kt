@@ -73,7 +73,8 @@ import com.oftenenough.app.data.description
 import com.oftenenough.app.data.opensRecord
 import com.oftenenough.app.data.originLine
 import com.oftenenough.app.ui.components.segmentShape
-import com.oftenenough.app.ui.day.StepCheck
+import com.oftenenough.app.ui.components.StepRow
+import com.oftenenough.app.ui.components.StepRowPlace
 import com.oftenenough.app.ui.day.logCount
 import com.oftenenough.app.ui.day.logsTitle
 import com.oftenenough.app.ui.theme.appColors
@@ -259,7 +260,8 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
                     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(horizontal = 20.dp, vertical = 8.dp)) {
                         ruled.steps.forEachIndexed { i, s ->
                             val on = s.id in chosen
-                            StepCheck(s.name, on, habit, true, "record-step-$i", strike = false) { ticked = if (on) chosen - s.id else chosen + s.id }
+                            StepRow(s.name, on, c.habit(habit.color), place = StepRowPlace.Card, tag = "record-step-$i",
+                                onToggle = { ticked = if (on) chosen - s.id else chosen + s.id })
                         }
                     }
                 }

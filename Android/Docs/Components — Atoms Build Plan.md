@@ -89,7 +89,7 @@ Not built: Status bar and Gesture navigation (Android draws them), the Google Dr
 
 ### 4. Later: built from the atoms
 
-Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row, Section header, Run row, Comparison row, Card notice, Milestone bar, Milestone
+Habit row ☑ (4.1), Habit row · Swipe ☑ (4.2), Step row ☑ (4.3), Section header, Run row, Comparison row, Card notice, Milestone bar, Milestone
 ribbon, Next milestone, Milestone badge, Milestone pop-up, Milestones card, Stat tile, Habit history card, Overall record
 card, Year in pixels card, and the day navigation inside the floating toolbar.
 
@@ -717,3 +717,55 @@ What each atom changed, newest last.
   The app and both test sets compile.
   Noted, not changed:
   - Figma draws no motion for the swipe; the spring back, the 120 ms colour change and the tick at halfway stay.
+- **4.3 Step row (28 Oct).** Figma: Step row (575:136), State To do · Done, no motion. 48 tall, 56 in, 12 at the end,
+  8 between the box and the words, Surface bright. Material's checkbox in a 40 dp frame: an 18 dp box with 2 corners;
+  not ticked, a 2 dp On surface variant outline; ticked, the habit's Colour with a filled white check (On habit). The
+  step in Body Large, On surface, and On surface variant once ticked, never crossed out. The screens use the one
+  component in three places, each with its own room:
+  - **Today** (Steps open, 739:10266): a block of rows stacked with no gap, Surface bright, the section's corners (4
+    under the row, 24 at the section's end), 8 above and below.
+  - **Day details' This day** (669:158): 48 tall, nothing at the start (the card's 16 is the indent), 12 at the end;
+    the rows keep the component's Surface bright on the white card.
+  - **The routine player** (926:112641): 56 tall, 8 in, 16 at the end, Surface container lowest, each a segment 2 apart
+    (24 outside, 4 between).
+
+  Built as `StepRow` with `StepRowPlace` (Today, Card, Player) and `StepRowBlock` (`ui/components/StepRow.kt`). The
+  whole row is the toggle (a checkbox to TalkBack, read "Done" or "Not done"), with Material's `Checkbox`
+  (`AppCheckbox`, the habit's colour) centred in the 40. Moved onto it: Today's steps (`StepsBlock`; `StepLine`
+  deleted), Day details' steps and the Tick steps add screen (`StepCheck` deleted), and the routine player's
+  (`StepRows`). The tags (`steps-…`, `step-…`, `day-step-…`, `record-step-…`, `player-step-…`) and the "Done" / "Not
+  done" TalkBack states stay (T3).
+  Fixed:
+  - Today crossed a ticked step out; now it only greys it, as drawn. Day details crossed it out too.
+  - Today's block was white (Surface container lowest) with 4 above and below; now Surface bright with 8, as the
+    Steps open screen draws it. The block now matches the Habit row above it (4.1's noted mismatch, half of it; the
+    section header is 4.4).
+  - Today's box was drawn by hand (a 16 dp check, faded in over 150 ms); now Material's checkbox, with its own tick
+    animation.
+  - Today's rows had 8 corners and the 56 and 12 outside them, on the block; now each row runs the full width with the
+    56 and 12 inside it, so the whole width is the touch target.
+  - Day details put the 24 dp checkbox at the row's start and the words 16 after it (40 in); now the 40 frame and 8,
+    the words 48 in, as drawn.
+  - The player's steps were the page's Surface container on 20 and 4 corners, 4 apart, 52 tall, 12 at the sides, 12
+    after the box, and a ticked step's words stayed On surface. Now Surface container lowest, 24 and 4, 2 apart, 56
+    tall, 8 and 16, the 40 frame and 8, and ticked words On surface variant.
+  - A switched-off step (a later day; a paused or skipped day in Day details): the words stayed On surface on Today and
+    in the player and turned On surface variant in Day details. Figma draws no switched-off step, so now one rule,
+    Material's: the box and the words in On surface at 38 %.
+
+  Noted, not changed:
+  - **For the user:** the component's description says the block takes 4 above and below, but its only screen (Today
+    › Steps open) draws 8. Built as the screen draws it. Which is meant?
+  - **For the user:** Day details draws the steps on Surface bright inside the white This day card. That's the
+    component's own fill, not set on that screen, so it reads as a grey panel of steps on the white card. Built as
+    drawn; say if they should be white like the card.
+  - Figma's This day reads top to bottom: the reading, the steps, then the buttons, 24 apart, 16 inside, corners 24
+    over 4. The code puts the buttons before the steps, 20 inside, 28 corners. That's the Day details card's own
+    layout, for its molecule.
+  - Figma's player puts the steps on the page under a white hero card; the code keeps them inside Material's `Card`
+    (Surface container highest). The white segments read on it. That's the routine player's own layout, for when it's
+    built.
+  - The Tick steps add screen (`RecordScreens.kt`) has no Figma; its rows use the Card place on its white card.
+  - Figma's step names wrap freely in a fixed 48; the code keeps two lines with … and lets the row grow (U36).
+  - The session can't reach Google's Maven (T22), so the compile check is GitHub's Android build on this commit; its
+    result is recorded with the next entry.

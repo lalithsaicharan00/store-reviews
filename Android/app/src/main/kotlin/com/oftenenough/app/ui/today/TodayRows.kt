@@ -6,6 +6,8 @@ import com.oftenenough.app.ui.components.HabitRowLayout
 import com.oftenenough.app.ui.components.HabitRowLine
 import com.oftenenough.app.ui.components.HabitRowStreak
 import com.oftenenough.app.ui.components.HabitRowAfterLogButton
+import com.oftenenough.app.ui.components.StepRow
+import com.oftenenough.app.ui.components.StepRowBlock
 import androidx.compose.material3.MaterialTheme
 import com.oftenenough.app.ui.components.AppMenuItem
 import com.oftenenough.app.ui.components.AppMenu
@@ -14,11 +16,8 @@ import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.theme.AppType
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,9 +52,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.AfterLog
@@ -67,7 +64,6 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.QuitRun
 import com.oftenenough.app.data.ReminderTime
-import com.oftenenough.app.data.Step
 import com.oftenenough.app.data.rowLine
 import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.HabitIcon
@@ -328,9 +324,9 @@ fun addTitle(habit: Habit, store: HabitStore, day: Int): String {
 }
 
 /**
- * A checklist's steps, open in their own block under its row (Figma 1.7–1.7.3): each step 48 dp, a checkbox in the
- * habit's colour lined up with the name above, ticked steps faded and crossed out, staying in place. When the last step
- * is ticked the steps stay through the pause, then fold (TodayLayout.foldAfterHold).
+ * A checklist's steps, open in their own block under its row (Figma's Steps open; molecule 4.3, [StepRowBlock] and
+ * [StepRow]): ticked steps stay in place, greyed. When the last step is ticked the steps stay through the pause, then
+ * fold (TodayLayout.foldAfterHold).
  */
 @Composable
 fun StepsBlock(habit: Habit, day: Int, shape: Shape, store: HabitStore, layout: TodayLayout) {
@@ -338,38 +334,12 @@ fun StepsBlock(habit: Habit, day: Int, shape: Shape, store: HabitStore, layout: 
     val rev = store.revision(habit.id)
     val done = remember(rev, day) { habit.steps.associate { it.id to store.isStepDone(it, habit, day) } }
     val canTick = day <= store.today()
-    Column(
-        Modifier.fillMaxWidth().clip(shape).background(c.surface).padding(start = 56.dp, end = 12.dp, top = 4.dp, bottom = 4.dp)
-            .semantics { testTag = "steps-${habit.name}" },
-    ) {
-        for (step in habit.steps) StepLine(step, done[step.id] == true, habit, canTick) {
+    StepRowBlock(shape, Modifier.semantics { testTag = "steps-${habit.name}" }) {
+        for (step in habit.steps) StepRow(step.name, done[step.id] == true, c.habit(habit.color), enabled = canTick, tag = "step-${step.name}", onToggle = {
             layout.hold()
             store.toggleStep(step, habit, day)
             if (store.rules.isDone(habit, day)) layout.foldAfterHold("steps-${habit.id}")
-        }
-    }
-}
-
-@Composable
-private fun StepLine(step: Step, done: Boolean, habit: Habit, enabled: Boolean, onToggle: () -> Unit) {
-    val c = appColors
-    val box by animateColorAsState(if (done) c.habit(habit.color) else Color.Transparent, tween(150), label = "step")
-    Row(
-        Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(8.dp))
-            .clickable(enabled = enabled, role = Role.Checkbox, onClick = onToggle)
-            .semantics { stateDescription = if (done) "Done" else "Not done"; testTag = "step-${step.name}" },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) {
-            Box(
-                Modifier.size(18.dp).clip(RoundedCornerShape(2.dp)).background(box)
-                    .let { if (done) it else it.border(2.dp, c.secondary, RoundedCornerShape(2.dp)) },
-                contentAlignment = Alignment.Center,
-            ) { if (done) Icon(Symbols.Check, null, Modifier.size(16.dp), tint = Color.White) }
-        }
-        Spacer(Modifier.width(8.dp))
-        Text(step.name, Modifier.weight(1f), style = AppType.bodyLarge.copy(textDecoration = if (done) TextDecoration.LineThrough else null),
-            color = if (done) c.secondary else c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        })
     }
 }
 

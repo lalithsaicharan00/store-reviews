@@ -10,7 +10,8 @@ import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.MenuDivider
-import com.oftenenough.app.ui.components.AppCheckbox
+import com.oftenenough.app.ui.components.StepRow
+import com.oftenenough.app.ui.components.StepRowPlace
 import com.oftenenough.app.ui.components.StandardIconButton
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -62,14 +63,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.DayStatus
@@ -338,13 +336,14 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
                 for (a in actions) DayButton(a, Modifier.weight(1f))
             }
         }
-        // A checklist's steps: checkboxes in the habit's colour; a ticked step crossed out (Figma 8–8.2).
+        // A checklist's steps: Step rows in the card (molecule 4.3), the ticked box in the habit's colour.
         if (ruled.kind == HabitKind.Checklist && started) {
             val locked = !editable || skipped || paused
             Spacer(Modifier.height(4.dp))
             ruled.steps.forEachIndexed { i, step ->
                 val done = remember(rev, day) { store.isStepDone(step, ruled, day) }
-                StepCheck(step.name, done, habit, !locked, "day-step-$i") { store.toggleStep(step, ruled, day, source = EntrySource.DAY_SHEET) }
+                StepRow(step.name, done, c.habit(habit.color), place = StepRowPlace.Card, enabled = !locked, tag = "day-step-$i",
+                    onToggle = { store.toggleStep(step, ruled, day, source = EntrySource.DAY_SHEET) })
             }
         }
         Spacer(Modifier.height(16.dp))
@@ -386,19 +385,6 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
 private fun DayButton(a: DayAction, modifier: Modifier) =
     AppButton(a.title, a.run, modifier.semantics { a.spoken?.let { contentDescription = it } },
         style = if (a.prominent) ButtonStyle.Filled else ButtonStyle.Tonal, size = ButtonSize.Medium, enabled = a.enabled, compact = true, tag = a.tag)
-
-/** One step: a square checkbox in the habit's colour, the name crossed out once ticked (Figma 8). 48 to tap. */
-@Composable
-fun StepCheck(name: String, done: Boolean, habit: Habit, enabled: Boolean, tag: String, strike: Boolean = true, onToggle: () -> Unit) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(8.dp)).clickable(enabled = enabled, role = Role.Checkbox, onClick = onToggle)
-        .semantics { stateDescription = if (done) "Done" else "Not done"; testTag = tag }, verticalAlignment = Alignment.CenterVertically) {
-        AppCheckbox(done, onCheckedChange = null, enabled = enabled, habitColor = c.habit(habit.color))
-        Spacer(Modifier.width(16.dp))
-        Text(name, style = AppType.bodyLarge.copy(textDecoration = if (done && strike) TextDecoration.LineThrough else null),
-            color = if (done && strike) c.secondary else if (enabled) c.ink else c.secondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
-    }
-}
 
 /**
  * The count or the state, with its words (Figma "Count and to go"): "4" (Display Medium) "of 8 glasses" (Body Large, grey),

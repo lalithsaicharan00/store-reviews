@@ -10,7 +10,8 @@ import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import androidx.compose.material3.LinearProgressIndicator
 import com.oftenenough.app.ui.components.AppAssistChip
-import com.oftenenough.app.ui.components.AppCheckbox
+import com.oftenenough.app.ui.components.StepRow
+import com.oftenenough.app.ui.components.StepRowPlace
 import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.customActions
@@ -54,7 +55,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -999,26 +999,18 @@ private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore
     }
 }
 
-/** A checklist's steps: the work itself, in the card (Material checkboxes in the habit's colour). */
+/**
+ * A checklist's steps: the work itself, under the card (Figma's player checklist; molecule 4.3): each a [StepRow] of
+ * its own, a white segment 2 apart with the group's corners, the ticked box in the habit's colour.
+ */
 @Composable
 private fun StepRows(habit: Habit, ruled: Habit, day: Int, store: HabitStore, rev: Int, color: Color, onStep: ((Step, Boolean) -> Unit)?) {
-    val c = appColors
     val count = ruled.steps.size
-    val enabled = onStep != null
-    Column(Modifier.fillMaxWidth().semantics { testTag = "player-steps" }, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(Modifier.fillMaxWidth().semantics { testTag = "player-steps" }, verticalArrangement = Arrangement.spacedBy(2.dp)) {
         ruled.steps.forEachIndexed { i, step ->
             val done = store.isStepDone(step, habit, day)
-            Row(
-                Modifier.fillMaxWidth().clip(segmentShape(i, count, outer = 20.dp)).background(c.screen)
-                    .toggleable(value = done, enabled = enabled, role = Role.Checkbox, onValueChange = { onStep?.invoke(step, done) })
-                    .heightIn(min = 52.dp).padding(horizontal = 12.dp)
-                    .semantics { testTag = "player-step-$i" },
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                AppCheckbox(done, onCheckedChange = null, enabled = enabled, habitColor = color)
-                Spacer(Modifier.width(12.dp))
-                Text(step.name, style = AppType.bodyLarge, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            }
+            StepRow(step.name, done, color, place = StepRowPlace.Player, enabled = onStep != null, shape = segmentShape(i, count),
+                tag = "player-step-$i", onToggle = { onStep?.invoke(step, done) })
         }
     }
 }
