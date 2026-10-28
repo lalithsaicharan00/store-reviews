@@ -109,7 +109,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.3 | Onboarding · Restore from a backup | 553:4083 | ☑ |
 | 5.1.4 | Onboarding · Restoring | 582:7893 | ☑ |
 | 5.1.5 | Onboarding · Plus isn’t on this phone | 582:8320 | ☑ |
-| 5.1.6 | Onboarding · No internet | 582:8426 | ☐ |
+| 5.1.6 | Onboarding · No internet | 582:8426 | ☑ |
 | 5.1.7 | Onboarding · No backup found | 690:13442 | ☐ |
 | 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☐ |
 | 5.2.1 | Today · Navigation drawer | 626:76 | ☐ |
@@ -1382,3 +1382,20 @@ What each atom changed, newest last.
     user's call.
   - Figma's frame is filled #F0F0F3 (no style), not Surface container; the screen keeps Surface container, as every
     other flow screen.
+  - **Built:** run 40774018710 (Android #120, commit 5ecd4c2) passed: assembleDebug, unit tests and lint.
+- **5.1.6 Onboarding · No internet (28 Oct).** Figma: No internet (582:8426), one screen, no properties and no motion;
+  two instances (restoring from Google Drive; checking Plus). No top bar; centred over a bottom bar, 24 at the sides:
+  wifi_off (28, On surface) in a 64 dp circle, 24, "No internet" in Headline Small Emphasized over the line in Body
+  Medium On surface variant, 8 apart; Try again (Medium Filled) over Cancel (Medium Text), 8 apart, 12 / 16 in. It
+  draws the same as Restoring (5.1.4) but for its icon and buttons, so both are now one component,
+  `ui/components/CentredMessage.kt` (`CentredMessage`, with `MessageIcon`): `RestoreFlow`'s two No internet steps
+  (`Centred`) and `WaitScreen` use it. Both screens' words and the tags `no-internet-…` stay. The app, the unit tests
+  (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The title was Title Large Emphasized; now Headline Small Emphasized. The sides were 40; now 24, the words the
+    full width.
+  - The icon's circle was Secondary container (the same grey in light); now Surface container highest, as Figma's
+    #E2E2E2 is on these screens (Restoring's is that style by name).
+  Noted, not changed:
+  - Figma fills this frame and its circle without styles (#F0F0F3 and #E2E2E2); the screen keeps Surface container,
+    and the circle takes the matching role.

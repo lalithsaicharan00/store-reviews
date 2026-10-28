@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.restore
 
+import com.oftenenough.app.ui.components.CentredMessage
+import com.oftenenough.app.ui.components.MessageIcon
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.ListAvatar
 import com.oftenenough.app.ui.components.AppListItem
@@ -14,21 +16,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,15 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.habits.core.BackupProblem
 import app.habits.core.RestoreMode
@@ -64,8 +47,6 @@ import com.oftenenough.app.ui.plus.FlowScreen
 import com.oftenenough.app.ui.plus.MainButton
 import com.oftenenough.app.ui.plus.QuietButton
 import com.oftenenough.app.ui.settings.Support
-import com.oftenenough.app.ui.theme.AppType
-import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
 
 /**
@@ -307,33 +288,15 @@ private fun FileChoice(index: Int, count: Int, onClick: () -> Unit) =
         leading = { ListAvatar(Symbols.Description) }, trailing = { ListChevron() })
 
 /**
- * A whole-screen message: its icon in a 64 tonal circle, the words in the middle, its two buttons at the bottom
- * (`39:4741`, `43:2999`). Nothing has changed when one of these shows, so Cancel is a real way out.
+ * A whole-screen message ([CentredMessage], Figma's No internet 582:8426): its icon, the words in the middle, Try
+ * again and Cancel at the bottom. Nothing has changed when one of these shows, so Cancel is a real way out.
  */
 @Composable
 private fun Centred(icon: ImageVector, title: String, line: String, tag: String, onTryAgain: () -> Unit, onCancel: () -> Unit) {
-    val c = appColors
     BackHandler(onBack = onCancel)
-    Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding().semantics { testTag = tag }) {
-        Column(
-            Modifier.weight(1f).fillMaxWidth().padding(horizontal = 40.dp),
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,
-        ) {
-            Box(Modifier.size(64.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-                Icon(icon, null, Modifier.size(28.dp), tint = c.ink)
-            }
-            Spacer(Modifier.height(24.dp))
-            Text(title, style = AppType.titleLargeEmphasized, color = c.ink, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(8.dp))
-            Text(line, style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
-        }
-        Column(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            MainButton("Try again", tag + "-again", onClick = onTryAgain)
-            QuietButton("Cancel", tag + "-cancel", onClick = onCancel)
-        }
+    CentredMessage(title, line, tag, mark = { MessageIcon(icon) }) {
+        MainButton("Try again", tag + "-again", onClick = onTryAgain)
+        QuietButton("Cancel", tag + "-cancel", onClick = onCancel)
     }
 }
 

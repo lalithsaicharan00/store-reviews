@@ -2,6 +2,7 @@
 
 package com.oftenenough.app.ui.backup
 
+import com.oftenenough.app.ui.components.CentredMessage
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import androidx.compose.ui.graphics.Color
 import com.oftenenough.app.ui.components.ListChevron
@@ -17,12 +18,10 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -44,7 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.habits.core.BackupProblem
 import app.habits.core.DriveState
@@ -218,17 +216,8 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
 /** A waiting moment with no way out (Restoring, Bringing them back): writing habits isn't stopped halfway. */
 @Composable
 fun WaitScreen(title: String, line: String, tag: String) {
-    val c = appColors
     BackHandler { }
-    val s = MaterialTheme.colorScheme
-    Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding().padding(horizontal = 24.dp).semantics { testTag = tag },
-        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        ExpressiveLoadingIndicator(s.surfaceContainerHighest, s.onSurface)
-        Spacer(Modifier.height(24.dp))
-        Text(title, Modifier.fillMaxWidth(), style = AppType.headlineSmallEmphasized, color = s.onSurface, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Text(line, Modifier.fillMaxWidth(), style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
-    }
+    CentredMessage(title, line, tag, mark = { ExpressiveLoadingIndicator(MaterialTheme.colorScheme.surfaceContainerHighest, MaterialTheme.colorScheme.onSurface) })
 }
 
 /** A backup file that can't be brought in (coming back 6.1.1, 6.1.2; Restore 4.2): why, and what to do. */
