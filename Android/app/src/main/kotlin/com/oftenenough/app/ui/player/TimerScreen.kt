@@ -140,6 +140,7 @@ fun TimerScreen(
                         // A tap on the clock types time, as on the iPhone.
                         onCountTap = if (onLogManually != null && ruled.kind == HabitKind.Duration) ({ logManually() }) else null,
                         onStep = null,
+                        identityGap = 28.dp, namingGap = 12.dp,
                     )
                 }
                 // One main button, always in the same place: Pause while it runs, Resume (or Start) when it doesn't, the

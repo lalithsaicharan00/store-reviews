@@ -124,7 +124,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.6 | Day details · Date picker | 705:1025 | ☑ |
 | 5.3.7 | Day details · Timer screen | 705:7745 | ☑ |
 | 5.3.8 | Day details · Note screen | 765:1087 | ☑ |
-| 5.4.1 | Routine player · Routine player | 906:89513 | ☐ |
+| 5.4.1 | Routine player · Routine player | 906:89513 | ☑ |
 | 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☐ |
 | 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☐ |
 | 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☐ |
@@ -1734,3 +1734,42 @@ What each atom changed, newest last.
     note being changed is never a surprise.
   - The day's own note (no habit) shows calendar_today in the icon's place and "This day" for the name; Figma draws
     only a habit's note.
+  - **Built:** run 40804357386 (Android #135, commit 5af489b) passed: assembleDebug, unit tests and lint.
+- **5.4.1 Routine player · Routine player (29 Oct).** Figma: Routine player (906:89513), Screen Habit · Checklist ·
+  Checklist · many steps · End · Habit · 200% text, with the milestone ribbon, snackbar, description, status and End's
+  sections as properties. One habit at a time, ‹ › between them: the top bar (✕, "Morning ▾" in Title Large Emphasized
+  with ▾ in On surface variant, ⋮); the routine's Flat progress with "1 of 3" (Label Medium On surface variant), 4
+  above, 12 below, 16 at the sides; the hero card (Surface container lowest, corners 32, 32 by 24 in, 32 between its
+  parts: the cookie 144, 24, the name in Headline Large Emphasized, the description in Body Large On surface variant and
+  the day chip 8 apart; the count or "Not done" in Display Large; the wave, the status 12 under it); the bottom bar (12 /
+  16): ‹ (Narrow tonal), the main action (Large square Filled), › (Narrow tonal). A checklist: a card holding the
+  header (the cookie 72, 12, the name in Headline Medium Emphasized, the description and chip 6 apart, 16, the wave with
+  "1 of 4 steps" in Label Large 12 after it), the steps 12 under it as their own group, scrolling when there are many;
+  ‹ › only, Wide. The end: the card (the cookie 112 in Inverse surface, done_all, 16, the title in Headline Medium
+  Emphasized and its line in Body Large, 8 apart), then, 24 apart, Done, Left for later (each row opens that habit
+  again) and Reached in this routine, each a Label Large Primary title over two-line List items on Surface bright;
+  Done, Large square Filled, the full width. At 200 % text the habit card's cookie is 96, 24 by 16 in, 16 and 20 apart.
+  It is `RoutinePlayer` (`player/RoutinePlayer.kt`): `PlayerTopBar`, `RoutineProgress`, `HeroCard`, `HabitButtons`,
+  `EndPage`, `EndButtons`. PlayerTest: "Not done" (was "Not done yet") and "Left for later" (was the Return to
+  unfinished button). The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The routine's progress row was 24 in at the sides, 12 above and 16 below; now 16, 4 and 12. ▾ was On surface; now
+    On surface variant, against the title with no gap.
+  - The hero card: 24 between the cookie and the name (was 28) and 8 between the name, the description and the chip
+    (was 4 to 12); the description in Body Large across the card (was Body Medium, 264 wide). A single check or task
+    says "Not done" or "Done" in Display Large On surface (was "Not done yet" in Headline Medium, grey). The Timer
+    screen keeps its own 28 and 12 (5.3.7).
+  - A checklist had its steps inside the card, a 96 cookie and a large "1 of 4" count, and from four steps a compact
+    left-aligned header with the steps scrolling inside the card; now one layout for any number of steps, as Figma:
+    the header card, "1 of 4 steps" beside the wave, the steps under the card.
+  - The buttons had 16 above and 24 below; now the bottom bar's 12 and 12.
+  - The end: the cookie was 120 in On surface, the title Headline Medium, 28 and 16 apart, the milestones in a grey box
+    inside the card, with Review routine under them and Return to unfinished (Medium tonal) over Done; now Figma's
+    card, the Done / Left for later / Reached sections, and Done alone. A Left for later row opens that habit (the
+    title ▾ still opens Your routine).
+  Noted, not changed:
+  - "1 skipped for today. Skipped days don't count against you." under the end's line isn't in Figma; kept (U3:
+    skipped days are neutral, and the list shows them as "Skipped").
+  - Figma's many-steps checklist draws a scrollbar that fades; Compose has none of its own, so the steps keep the fade
+    at their foot when there's more.
+  - Figma's day chip and snackbar are the Assist chip and Snackbar atoms the player already used; unchanged.

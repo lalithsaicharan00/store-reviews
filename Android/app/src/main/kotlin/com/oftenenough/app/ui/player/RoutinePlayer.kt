@@ -1,5 +1,10 @@
 package com.oftenenough.app.ui.player
 
+import com.oftenenough.app.data.dayResult
+import com.oftenenough.app.ui.components.SegmentedListGap
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.AppListItem
+import androidx.compose.ui.unit.Dp
 import com.oftenenough.app.ui.components.MilestonePopup
 import com.oftenenough.app.ui.components.SnackbarAction
 import com.oftenenough.app.ui.components.AppSnackbar
@@ -29,7 +34,6 @@ import com.oftenenough.app.data.Frequency
 import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.pageIsTotal
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.foundation.layout.offset
 import com.oftenenough.app.ui.theme.AppType
@@ -305,9 +309,11 @@ fun RoutinePlayer(
                     else EndPage(
                         name = sectionName,
                         count = order.size,
-                        remaining = covered.count { !it },
                         skipped = order.count { habitId -> store.habit(habitId)?.let { session.skipped(it) } == true },
-                        onReview = { queueEditing = false; showQueue = true },
+                        done = order.indices.filter { covered[it] }.mapNotNull { store.habit(order[it]) },
+                        later = order.indices.filter { !covered[it] }.mapNotNull { i -> store.habit(order[i])?.let { i to it } },
+                        result = { h -> store.dayResult(h, day) },
+                        onOpen = { i -> session.navigate(i) },
                         reached = splitIds(reachedText.value).mapNotNull { hid ->
                             val h = store.habit(hid) ?: return@mapNotNull null
                             center.visible(h)?.let { h to center.words(it, h) }
@@ -324,13 +330,8 @@ fun RoutinePlayer(
                     )
                 }
             }
-            Spacer(Modifier.height(16.dp))
             if (index >= order.size) {
-                EndButtons(
-                    hasRemaining = firstUnfinished != null,
-                    onReturn = { firstUnfinished?.let { session.navigate(it) } },
-                    onDone = { session.close(onClose) },
-                )
+                EndButtons(onDone = { session.close(onClose) })
             } else {
                 HabitButtons(session, current, nav)
             }
@@ -359,8 +360,6 @@ fun RoutinePlayer(
 // ---------------------------------------------------------------------------------------------- The session
 
 private const val SEP = ","
-/** Habits with more steps than this get the compact header and their steps scroll inside the card (design 05). */
-private const val COMPACT_STEPS = 3
 /** A timed habit waits for Start (Figma 4: "Not started", Start → 4.1); arriving never starts a clock. */
 private const val START_TIMER_ON_ARRIVAL = false
 
@@ -388,7 +387,7 @@ private data class Feedback(val message: String, val habitId: String, val undoEn
     val canUndo: Boolean get() = undoEntry != null || unskip
 }
 
-/** The slide the player started (‹ ›, the queue, Return to unfinished), until it ends. Not observed: nothing redraws for it. */
+/** The slide the player started (‹ ›, the queue, a Left for later row), until it ends. Not observed: nothing redraws for it. */
 private class PagerSlide {
     var job: Job? = null
     val running: Boolean get() = job?.isActive == true
@@ -637,7 +636,8 @@ private class PlayerSession(
 
 /**
  * ✕ · "Anytime ▾" (one line; it opens Your routine, as Calendar's "October ▾") · ⋮ with Go to first unfinished, Change
- * order and End routine (Figma 7; Day details is the card's chip, Your routine the title).
+ * order and End routine (Figma 7; Day details is the card's chip, Your routine the title). 64 high, 4 at the sides;
+ * the title in Title Large Emphasized On surface, 4 in, with ▾ in On surface variant (Figma's Routine player, 5.4.1).
  */
 @Composable
 private fun PlayerTopBar(
@@ -658,8 +658,7 @@ private fun PlayerTopBar(
             ) {
                 Text(title, Modifier.weight(1f, fill = false), style = AppType.titleLargeEmphasized,
                     color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Spacer(Modifier.width(2.dp))
-                Icon(Symbols.ArrowDropDown, null, tint = c.ink)
+                Icon(Symbols.ArrowDropDown, null, tint = c.secondary)
             }
         }
         Box {
@@ -679,8 +678,9 @@ private fun PlayerTopBar(
 }
 
 /**
- * Where the routine is (Figma 1328:2, 14 Oct): Material's own linear progress indicator (1.20, Style=Flat), 4 high with a
- * 4 gap and a stop dot, and "4 of 12" after it. One bar works for 25 habits, where 25 segments don't.
+ * Where the routine is (Figma's Routine progress, 5.4.1): Material's own linear progress indicator (1.20, Style=Flat), 4
+ * high with a 4 gap and a stop dot, and "4 of 12" 12 after it in Label Medium On surface variant; 16 at the sides, 4
+ * above, 12 below. One bar works for 25 habits, where 25 segments don't.
  */
 @Composable
 private fun RoutineProgress(position: Int, count: Int, spoken: String) {
@@ -688,7 +688,7 @@ private fun RoutineProgress(position: Int, count: Int, spoken: String) {
     val fraction = if (count == 0) 0f else (position.toFloat() / count).coerceIn(0f, 1f)
     Row(
         // At least 16 high; larger text grows the row rather than clipping "5 of 12" (Figma 1.5).
-        Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 16.dp).heightIn(min = 16.dp)
+        Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 12.dp).heightIn(min = 16.dp)
             .semantics(mergeDescendants = true) { contentDescription = spoken; testTag = "routine-segments" },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -730,9 +730,10 @@ private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav, playRi
 }
 
 /**
- * The Expressive hero card, shared with the timer screen: the habit's icon in the cookie, its name, the day chip, the
- * count ("2 of 8 glasses", or a running clock) and the wavy bar; a checklist's steps below. Only the count and the bar
- * read the ticking clock, and only while the timer runs (S3).
+ * The Expressive hero card (Figma's Routine player, 5.4.1), shared with the timer screen: Surface container lowest,
+ * corners 32; the habit's icon in the cookie, its name, its description, the day chip, the count ("2 of 8 glasses", a
+ * running clock, or "Not done" / "Done") and the wavy bar. A checklist's card holds only its header, and its steps
+ * follow under it. Only the count and the bar read the ticking clock, and only while the timer runs (S3).
  */
 @Composable
 internal fun HeroCard(
@@ -742,10 +743,13 @@ internal fun HeroCard(
     milestone: String? = null, playMilestone: Boolean = false,
     /** The habit's description, under its name: two lines at most, then … (Figma 1.6). */
     description: String? = null,
+    /** Between the cookie and the name, and between the name, the description and the day chip: Figma's Routine player
+     *  draws 24 and 8 (5.4.1), its Timer screen 28 and 12 (5.3.7). */
+    identityGap: Dp = 24.dp, namingGap: Dp = 8.dp,
 ) {
     val c = appColors
     val running = ruled.kind == HabitKind.Duration && day == store.today() && store.timers.containsKey(habit.id)
-    // A single check or a task says Not done yet / Done in place of "0 of 1" (Figma 1, 2, 2.5, 2.6).
+    // A single check or a task says Not done / Done in place of "0 of 1" (Figma's Value, 5.4.1).
     val single = ruled.kind == HabitKind.Task ||
         (ruled.kind == HabitKind.Check && ruled.frequency.isDayBased && store.rules.goal(ruled) <= 1.0 && ruled.checkUnit == null)
     val tick = rememberTicker(running, store.clock)
@@ -753,7 +757,6 @@ internal fun HeroCard(
     // Today, or the day named in full on any other ("Mon 13 Oct", Figma 1.4): the logs go to it.
     val dayText = if (day == store.today()) "Today" else com.oftenenough.app.data.pageDayDate(day)
     val checklist = ruled.kind == HabitKind.Checklist
-    val compact = checklist && ruled.steps.size > COMPACT_STEPS
     // Just reached: the cookie pops with a burst of twelve dots as Mark done fills it (RP.1, 0.18–1.0 s of 2.4 s).
     val pop = com.oftenenough.app.ui.today.rememberPlay(if (playMilestone && milestone != null) "pop-${habit.id}" else null, playMilestone && milestone != null, 2400)
     val cookie = Modifier.graphicsLayer {
@@ -761,97 +764,102 @@ internal fun HeroCard(
             com.oftenenough.app.ui.components.Key(0.167f, 1.12f, PopEaseInOut), com.oftenenough.app.ui.components.Key(0.258f, 1f))
         scaleX = sc; scaleY = sc
     }.cookieBurst(pop, c.habit(habit.color))
-    Card(modifier.fillMaxSize().semantics { testTag = "player-hero" }, shape = RoundedCornerShape(32.dp)) {
-      Column(Modifier.fillMaxSize()) {
+    val ribbon: @Composable () -> Unit = {
         if (milestone != null) key("ribbon-${habit.id}-$milestone") {
             MilestoneRibbonArrival(playMilestone) { MilestoneRibbon(milestone, habit.color, play = playMilestone) }
         }
-      Box(Modifier.weight(1f).fillMaxWidth()) {
-        if (compact) {
-            // Many steps (design 05): a compact header, then the steps scroll inside the card with a fade at the end.
-            Column(Modifier.fillMaxSize().padding(start = 24.dp, end = 24.dp, top = 24.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    HabitIcon(habit.symbol, habit.color, size = 64.dp, shape = CookieShape(), modifier = cookie)
-                    Spacer(Modifier.width(16.dp))
-                    Column(Modifier.weight(1f)) {
-                        HabitName(habit.name, AppType.headlineMediumEmphasized, TextAlign.Start, maxLines = 1)
-                        Spacer(Modifier.height(8.dp))
-                        DayChip(dayText, onDay)
+    }
+    val status = playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped)
+    if (checklist) {
+        // Figma's Checklist (any number of steps): the card holds the header, 20 by 24 in: the cookie (72), 12, the name
+        // in Headline Medium Emphasized, the description and the day chip 6 apart, 16, the wave with "1 of 4 steps" 12
+        // after it. The steps are the action: their own group 12 under the card, scrolling when they don't fit.
+        Column(modifier.fillMaxSize().padding(bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Card(Modifier.fillMaxWidth().semantics { testTag = "player-hero" }, shape = RoundedCornerShape(32.dp)) {
+                ribbon()
+                Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    HabitIcon(habit.symbol, habit.color, size = 72.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
+                    Spacer(Modifier.height(12.dp))
+                    HabitName(habit.name, AppType.headlineMediumEmphasized, TextAlign.Center, maxLines = 2)
+                    if (!description.isNullOrBlank()) {
+                        Spacer(Modifier.height(6.dp))
+                        Description(description)
                     }
-                }
-                Spacer(Modifier.height(16.dp))
-                CountLine(habit, ruled, day, store, goal, rev, tick, running, center = false, baseStyle = AppType.displayMedium, onTap = onCountTap)
-                Spacer(Modifier.height(8.dp))
-                playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped)?.let { StatusLine(it); Spacer(Modifier.height(8.dp)) }
-                ProgressLine(habit, ruled, day, store, goal, rev, tick, running, neutral = false)
-                Spacer(Modifier.height(16.dp))
-                val scroll = rememberScrollState()
-                Box(Modifier.weight(1f).fillMaxWidth()) {
-                    Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 24.dp)) {
-                        StepRows(habit, ruled, day, store, rev, c.habit(habit.color), onStep)
+                    // The chip's 48 dp target already gives 8 above and below it.
+                    DayChip(dayText, onDay)
+                    Spacer(Modifier.height(8.dp))
+                    val total = ruled.steps.size
+                    val done = remember(habit, rev) { ruled.steps.count { store.isStepDone(it, habit, day) } }
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        ProgressLine(habit, ruled, day, store, goal, rev, tick, running, neutral = status?.neutral == true, Modifier.weight(1f), inset = 0.dp)
+                        Spacer(Modifier.width(12.dp))
+                        Text("$done of $total ${if (total == 1) "step" else "steps"}", Modifier.semantics { testTag = "player-count" },
+                            style = AppType.labelLarge, color = c.secondary, maxLines = 1)
                     }
-                    if (scroll.canScrollForward) {
-                        Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(56.dp)
-                            .background(Brush.verticalGradient(listOf(c.surface.copy(alpha = 0f), c.surface))))
+                    if (status != null) {
+                        Spacer(Modifier.height(12.dp))
+                        StatusLine(status)
                     }
                 }
             }
-        } else {
-            // Figma 1–4 and the Timer screen (5.3.7): 32 above and below, 24 at the sides; the cookie (144, its glyph 64), the
-            // name, the description, the day chip; 32; the count; 32; the wave, and a status line 12 under it; all centred
-            // in the card. A checklist (5) keeps its tighter spacing, its status over the wave and its steps under them.
-            BoxWithConstraints(Modifier.fillMaxSize()) {
-                val minHeight = maxHeight
-                Column(
-                    Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight)
-                        .padding(horizontal = 24.dp, vertical = if (checklist) 16.dp else 32.dp),
-                    verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
-                    Spacer(Modifier.height(if (checklist) 12.dp else 28.dp))
-                    HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 2)
-                    if (!description.isNullOrBlank()) {
-                        Spacer(Modifier.height(4.dp))
-                        Text(description, Modifier.widthIn(max = 264.dp).semantics { testTag = "player-description" },
-                            style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    }
-                    // The chip is 32 high with a 48 target; the gaps around it are Figma's 12 and 20 less the target's 8.
-                    Spacer(Modifier.height(4.dp))
-                    DayChip(dayText, onDay)
-                    // 32 under the chip, less its target's 8.
-                    Spacer(Modifier.height(if (checklist) 4.dp else 24.dp))
-                    if (single && !checklist) SingleState(habit, day, store, rev)
-                    else CountLine(habit, ruled, day, store, goal, rev, tick, running, center = true, baseStyle = if (checklist) AppType.displayMedium else AppType.displayLarge, onTap = onCountTap)
-                    val status = playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped)
-                    if (checklist && status != null) {
-                        Spacer(Modifier.height(8.dp))
-                        StatusLine(status)
-                    }
-                    Spacer(Modifier.height(if (checklist) 8.dp else 32.dp))
-                    ProgressLine(habit, ruled, day, store, goal, rev, tick, running, neutral = status?.neutral == true)
-                    if (!checklist && status != null) {
-                        Spacer(Modifier.height(12.dp))
-                        StatusLine(status)
-                    }
-                    if (checklist) {
-                        Spacer(Modifier.height(12.dp))
-                        StepRows(habit, ruled, day, store, rev, c.habit(habit.color), onStep)
-                    }
+            val scroll = rememberScrollState()
+            Box(Modifier.weight(1f, fill = false).fillMaxWidth()) {
+                Column(Modifier.verticalScroll(scroll)) { StepRows(habit, ruled, day, store, rev, c.habit(habit.color), onStep) }
+                if (scroll.canScrollForward) {
+                    Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(56.dp)
+                        .background(Brush.verticalGradient(listOf(c.screen.copy(alpha = 0f), c.screen))))
                 }
             }
         }
-      }
-      }
+        return
+    }
+    Card(modifier.fillMaxSize().semantics { testTag = "player-hero" }, shape = RoundedCornerShape(32.dp)) {
+        ribbon()
+        // Figma's Habit (and the Timer screen, 5.3.7): 32 above and below, 24 at the sides; the cookie (144, its glyph 64),
+        // [identityGap], the name, the description and the day chip [namingGap] apart; 32; the count; 32; the wave, and a
+        // status line 12 under it; all centred in the card. Large text (Figma's Habit · 200% text, from Android's font
+        // scale 1.5): the cookie 96, 24 by 16 in, 16 under the cookie and 20 between the parts; the card scrolls.
+        val large = LocalDensity.current.fontScale >= 1.5f
+        val part = if (large) 20.dp else 32.dp
+        BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
+            val minHeight = maxHeight
+            Column(
+                Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight)
+                    .padding(horizontal = if (large) 16.dp else 24.dp, vertical = if (large) 24.dp else 32.dp),
+                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                HabitIcon(habit.symbol, habit.color, size = if (large) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
+                Spacer(Modifier.height(if (large) 16.dp else identityGap))
+                HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 2)
+                if (!description.isNullOrBlank()) {
+                    Spacer(Modifier.height(namingGap))
+                    Description(description)
+                }
+                // The chip is 32 high with a 48 target: the gap above it is [namingGap] less the target's 8.
+                Spacer(Modifier.height(namingGap - 8.dp))
+                DayChip(dayText, onDay)
+                // [part] under the chip, less its target's 8.
+                Spacer(Modifier.height(part - 8.dp))
+                if (single) SingleState(habit, day, store, rev)
+                else CountLine(habit, ruled, day, store, goal, rev, tick, running, center = true, baseStyle = AppType.displayLarge, onTap = onCountTap)
+                Spacer(Modifier.height(part))
+                ProgressLine(habit, ruled, day, store, goal, rev, tick, running, neutral = status?.neutral == true)
+                if (status != null) {
+                    Spacer(Modifier.height(12.dp))
+                    StatusLine(status)
+                }
+            }
+        }
     }
 }
 
-/** A single check or a task: "Not done yet" (grey) or "Done" (ink), 28 (Figma 1, 2). */
+/** A single check or a task: "Not done" or "Done", Display Large On surface (Figma's Value, 5.4.1). */
 @Composable
 private fun SingleState(habit: Habit, day: Int, store: HabitStore, rev: Int) {
     val c = appColors
     val done = remember(habit, rev) { store.rules.isComplete(habit, day) }
-    Text(if (done) PlayerWords.DONE else PlayerWords.NOT_DONE_YET, Modifier.heightIn(min = 64.dp).wrapContentHeight().semantics { testTag = "player-count" },
-        style = AppType.headlineMedium, color = if (done) c.ink else c.secondary, textAlign = TextAlign.Center)
+    Text(if (done) PlayerWords.DONE else PlayerWords.NOT_DONE, Modifier.heightIn(min = 64.dp).wrapContentHeight().semantics { testTag = "player-count" },
+        style = AppType.displayLarge, color = c.ink, textAlign = TextAlign.Center)
 }
 
 /** The line under the count: an icon and a few neutral words (U3). [neutral]: the bar turns grey (over a limit, 9.2). */
@@ -929,6 +937,12 @@ private fun Modifier.cookieBurst(t: Float, color: Color): Modifier = drawWithCon
     }
 }
 
+/** The habit's description under its name: Body Large On surface variant, centred, two lines at most, then … */
+@Composable
+private fun Description(text: String) =
+    Text(text, Modifier.fillMaxWidth().semantics { testTag = "player-description" },
+        style = AppType.bodyLarge, color = appColors.secondary, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
+
 @Composable
 private fun HabitName(name: String, style: TextStyle, align: TextAlign, maxLines: Int) {
     Text(
@@ -988,7 +1002,8 @@ private fun CountLine(
  * full grey line (Figma 9.2); a week total fills toward the week (4.5). 8 in from the card's content, as Figma (32 of 328).
  */
 @Composable
-private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>, running: Boolean, neutral: Boolean) {
+private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>, running: Boolean, neutral: Boolean,
+                         modifier: Modifier = Modifier, inset: Dp = 8.dp) {
     val c = appColors
     val color = c.habit(habit.color)
     val byDay = ruled.kind == HabitKind.Duration && ruled.frequency is Frequency.Flexible
@@ -999,14 +1014,14 @@ private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore
     }
     val target = if (byDay) remember(ruled, rev) { store.rules.dayGoal(ruled) } else goal
     val fraction = (progress / maxOf(target, 0.001)).toFloat().coerceIn(0f, 1f)
-    val modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).height(16.dp)
+    val bar = modifier.fillMaxWidth().padding(horizontal = inset).height(16.dp)
         .semantics { progressBarRangeInfo = ProgressBarRangeInfo(fraction, 0f..1f); testTag = "player-bar" }
     if (neutral) {
-        Box(modifier, contentAlignment = Alignment.Center) {
+        Box(bar, contentAlignment = Alignment.Center) {
             Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(c.secondary))
         }
     } else {
-        WavyProgress(fraction, modifier, color, c.habitFill(habit.color))
+        WavyProgress(fraction, bar, color, c.habitFill(habit.color))
     }
 }
 
@@ -1079,7 +1094,8 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
         }
     }
 
-    Row(Modifier.fillMaxWidth().height(96.dp).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    // Figma's Bottom bar: 12 above and below, 16 at the sides, 8 apart.
+    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp).height(96.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         AppLargeIconButton(Symbols.KeyboardArrowLeft, "Previous habit", { session.navigate(index - 1) },
             if (wide) Modifier.weight(1f) else Modifier, tonal = true, width = if (wide) LargeIconWidth.Fill else LargeIconWidth.Narrow,
             enabled = index > 0, tag = "player-previous")
@@ -1091,7 +1107,6 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
             { session.advance() }, if (wide) Modifier.weight(1f) else Modifier, tonal = true,
             width = if (wide) LargeIconWidth.Fill else LargeIconWidth.Narrow, tag = "player-next")
     }
-    Spacer(Modifier.height(24.dp))
 }
 
 private fun actionIcon(a: PlayerAction): ImageVector? = when (a) {
@@ -1111,10 +1126,10 @@ internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: 
     AppButton(label, onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken }, size = ButtonSize.Large,
         icon = icon, square = true, tag = tag)
 
-/** A tonal button beside or above [MainButton] ("Log time": Large, Figma's Timer screen; "Return to unfinished": Medium). */
+/** A tonal button beside [MainButton] ("Log time": Large square Tonal, Figma's Timer screen). */
 @Composable
-internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier, size: ButtonSize = ButtonSize.Large, onClick: () -> Unit) =
-    AppButton(label, onClick, modifier, style = ButtonStyle.Tonal, size = size, icon = icon, square = true, tag = tag)
+internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier, onClick: () -> Unit) =
+    AppButton(label, onClick, modifier, style = ButtonStyle.Tonal, size = ButtonSize.Large, icon = icon, square = true, tag = tag)
 
 // ---------------------------------------------------------------------------------------------- The save message
 
@@ -1127,57 +1142,70 @@ private fun FeedbackBar(f: Feedback, onUndo: () -> Unit, onNote: () -> Unit, mod
 
 // ---------------------------------------------------------------------------------------------- The end
 
+/**
+ * The end (Figma's Routine player, Screen=End): the card (Surface container lowest, corners 32, 28 by 24 in), the
+ * cookie (112, Inverse surface, done_all, or history with some left) 16 over the title ("Morning is done", Headline
+ * Medium Emphasized On surface) and what it means ("All 3 done today.", Body Large On surface variant), 8 apart; then,
+ * 24 apart, the sections, each its title in Label Large Primary 16 in, 8 over its rows (two-line List items on Surface
+ * bright, 2 apart: the habit's icon, its name, how its day went): Done; Left for later, each row opening that habit
+ * again (›); Reached in this routine, each milestone with its medal. Scrolls when it doesn't fit.
+ */
 @Composable
-private fun EndPage(name: String, count: Int, remaining: Int, skipped: Int, onReview: () -> Unit,
-    reached: List<Pair<Habit, com.oftenenough.app.data.MilestoneWords>> = emptyList()) {
+private fun EndPage(name: String, count: Int, skipped: Int, done: List<Habit>, later: List<Pair<Int, Habit>>, result: (Habit) -> String,
+    onOpen: (Int) -> Unit, reached: List<Pair<Habit, com.oftenenough.app.data.MilestoneWords>> = emptyList()) {
     val c = appColors
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+    val s = MaterialTheme.colorScheme
+    val remaining = later.size
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
         Card(Modifier.fillMaxWidth().semantics { testTag = "player-end" }, shape = RoundedCornerShape(32.dp)) {
-            Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 40.dp, bottom = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 28.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 // Not a pause symbol: it read as a media button (found by hand on the iPhone, 29 Sep).
-                CookieIcon(if (remaining == 0) Symbols.DoneAll else Symbols.History, size = 120.dp, container = c.ink, tint = c.onInk, glyph = 0.47f)
-                Spacer(Modifier.height(28.dp))
-                Text(PlayerWords.endTitle(remaining, name), style = AppType.headlineMedium,
-                    color = c.ink, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
+                CookieIcon(if (remaining == 0) Symbols.DoneAll else Symbols.History, size = 112.dp, container = s.inverseSurface,
+                    tint = s.inverseOnSurface, glyph = 0.5f)
                 Spacer(Modifier.height(16.dp))
-                Text(PlayerWords.endText(remaining, count), Modifier.widthIn(max = 280.dp), style = AppType.bodyLarge,
-                    color = c.secondary, textAlign = TextAlign.Center)
+                Text(PlayerWords.endTitle(remaining, name), style = AppType.headlineMediumEmphasized,
+                    color = s.onSurface, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
+                Spacer(Modifier.height(8.dp))
+                Text(PlayerWords.endText(remaining, count), style = AppType.bodyLarge, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
                 PlayerWords.skippedLine(skipped)?.let {
-                    Spacer(Modifier.height(16.dp))
-                    Text(it, Modifier.widthIn(max = 264.dp), style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(8.dp))
+                    Text(it, style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
                 }
-                // Every milestone the routine's steps reached, once (Figma RP.2).
-                if (reached.isNotEmpty()) {
-                    Spacer(Modifier.height(20.dp))
-                    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.screen).padding(16.dp)
-                        .semantics { testTag = "player-reached" }, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("Reached in this routine", style = AppType.titleMedium, color = c.ink)
-                        for ((h, w) in reached) Row(verticalAlignment = Alignment.CenterVertically) {
-                            // The same medal as everywhere (Figma RP.2: 32).
-                            com.oftenenough.app.ui.components.Medal(w.number, 32.dp, h.color)
-                            Spacer(Modifier.width(12.dp))
-                            Column {
-                                Text(w.title, style = AppType.bodyLarge, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                Text(h.name, style = AppType.bodySmall, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                            }
-                        }
-                    }
-                }
-                Spacer(Modifier.height(10.dp))
-                AppButton("Review routine", onReview, style = ButtonStyle.Text, icon = Symbols.List, tag = "player-review")
+            }
+        }
+        @Composable fun section(title: String, tag: String, rows: @Composable () -> Unit) =
+            Column(Modifier.fillMaxWidth().semantics { testTag = tag }) {
+                Text(title, Modifier.padding(start = 16.dp, bottom = 8.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
+                Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) { rows() }
+            }
+        if (done.isNotEmpty()) section("Done", "player-end-done") {
+            done.forEachIndexed { i, h ->
+                AppListItem(h.name, i, done.size, supporting = result(h), leading = { HabitIcon(h.symbol, h.color) },
+                    containerColor = s.surfaceBright, headlineLines = 1, tag = "player-end-done-${h.name}")
+            }
+        }
+        if (later.isNotEmpty()) section("Left for later", "player-later") {
+            later.forEachIndexed { i, (at, h) ->
+                AppListItem(h.name, i, later.size, supporting = result(h), leading = { HabitIcon(h.symbol, h.color) },
+                    trailing = { ListChevron() }, onClick = { onOpen(at) }, containerColor = s.surfaceBright, headlineLines = 1,
+                    tag = "player-later-${h.name}")
+            }
+        }
+        // Every milestone the routine's steps reached, once (Figma RP.2), with the same medal as everywhere.
+        if (reached.isNotEmpty()) section("Reached in this routine", "player-reached") {
+            reached.forEachIndexed { i, (h, w) ->
+                AppListItem(w.title, i, reached.size, supporting = h.name,
+                    leading = { com.oftenenough.app.ui.components.Medal(w.number, 40.dp, h.color) },
+                    containerColor = s.surfaceBright, headlineLines = 1)
             }
         }
     }
 }
 
-/** Done is the main way out (96, ink); going back to what's left is the second choice (64, tonal). All done: Done only. */
+/** The end's one way out: Done, the Large square Filled button the full width, in the bottom bar (12 / 16). */
 @Composable
-private fun EndButtons(hasRemaining: Boolean, onReturn: () -> Unit, onDone: () -> Unit) {
-    Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        if (hasRemaining) {
-            TonalBigButton(Symbols.Undo, "Return to unfinished", "player-return", Modifier.fillMaxWidth(),
-                size = ButtonSize.Medium, onClick = onReturn)
-        }
+private fun EndButtons(onDone: () -> Unit) {
+    Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp).height(96.dp)) {
         MainButton(Symbols.Check, "Done", "Done", "player-done", Modifier.fillMaxWidth(), onClick = onDone)
     }
 }

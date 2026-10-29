@@ -159,9 +159,9 @@ class PlayerTest {
         goTo("Water")
         assertEquals("Add 1 glass to Water", mainLabel())
         waitFor(hasText("+1"), "+1")
-        // A single check: Not done yet → Mark done → Done, Saved with Undo and Add note, then Next (Figma 1, 2).
+        // A single check: Not done → Mark done → Done, Saved with Undo and Add note, then Next (Figma 1, 2).
         goTo("Take vitamins")
-        waitFor(hasText("Not done yet"), "Not done yet")
+        waitFor(hasText("Not done"), "Not done")
         tapTag("player-main")
         waitFor(hasText("Done"), "Done")
         waitFor(hasTestTag("player-undo"), "Undo")
@@ -219,7 +219,7 @@ class PlayerTest {
         tapTag("player-menu-end")
         waitFor(hasText("End of the routine"), "the end page")
         waitFor(hasText("left for later. Your progress is saved.", substring = true), "what's left")
-        waitFor(hasTestTag("player-return"), "Return to unfinished")
+        waitFor(hasText("Left for later"), "what's left for later")
         assertTrue("the bar at 1 of …: ${position()}", position().startsWith("1 of "))
         tapTag("player-done")
         waitFor(hasTestTag("today-list"), "Today")

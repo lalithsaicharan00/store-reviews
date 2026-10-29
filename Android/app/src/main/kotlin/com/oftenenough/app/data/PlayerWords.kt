@@ -45,8 +45,8 @@ object PlayerWords {
     const val PAUSED = "Paused"
     const val GOAL_MET = "Goal met"
     const val OVER_LIMIT = "Over the limit"
-    /** A single check or a task, in place of "0 of 1" (Figma 1, 2, 2.5, 2.6). */
-    const val NOT_DONE_YET = "Not done yet"
+    /** A single check or a task, in place of "0 of 1" (Figma's Routine player, Value). */
+    const val NOT_DONE = "Not done"
     const val DONE = "Done"
     const val NEW_DAY_TITLE = "A new day has started"
     const val NEW_DAY_TEXT = "Your routine's progress is saved to its original day. Return to Today to continue."
