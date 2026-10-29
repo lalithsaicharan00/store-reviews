@@ -101,6 +101,9 @@ import com.oftenenough.app.ui.today.BackToButton
 import kotlinx.coroutines.launch
 
 /** Where Habits & Tasks goes. [openMenu] is null where the menu is a sidebar beside the page. */
+/** Habits deleted from their own page (Habit details' Delete): hidden here while the snackbar offers Undo (D6). */
+object PendingDelete { val ids = androidx.compose.runtime.mutableStateListOf<String>() }
+
 interface HabitsNav {
     val openMenu: (() -> Unit)?
     /** Habit details. */
@@ -157,7 +160,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     val range = ProgressRangeMemory.range
     val visit = remember(store) { HeatKeyVisit(store) }
 
-    val all = store.habits.filter { it.kind != HabitKind.Task && it.id !in hidden }
+    val all = store.habits.filter { it.kind != HabitKind.Task && it.id !in hidden && it.id !in PendingDelete.ids }
     val active = all.filter { !it.archived }
     val archived = all.filter { it.archived }
     val paused = active.filter { store.isPaused(it, today) }

@@ -1,6 +1,13 @@
 package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.AppDialog
+import com.oftenenough.app.ui.components.AppSnackbarHost
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.CardNotice
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import com.oftenenough.app.data.HabitColor
 import androidx.compose.foundation.layout.ColumnScope
 import com.oftenenough.app.ui.components.Skeleton
@@ -17,7 +24,6 @@ import com.oftenenough.app.ui.components.AppTopBar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -102,6 +108,9 @@ interface HabitDetailsNav {
     fun pause(habit: Habit)
     /** Another habit's page: the earlier or the new one after a type change (Figma 6.3, 6.4). */
     fun openHabit(habit: Habit)
+    /** Delete, confirmed: the page closes and the page under it says "Water deleted" with Undo; it goes once Undo has
+     *  (Figma's Delete flow, D6). */
+    fun deleted(habit: Habit)
 }
 
 /** Progress · History: two jobs, one control. */
@@ -191,24 +200,31 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     // Opened at All milestones by a landmark's pop-up (Figma 14.1).
     var allMilestones by rememberSaveable(habitId) { mutableStateOf(HabitPageOpen.milestones == habitId.also { HabitPageOpen.milestones = null }) }
     var allStreaks by rememberSaveable(habitId) { mutableStateOf(false) }
-    // This visit's "What the squares mean".
-    var keyShown by rememberSaveable(habitId) { mutableStateOf<Boolean?>(null) }
-    val keyOpen = keyShown ?: (store.setting(HEAT_KEY_FOLDED) != "true")
-    val toggleKey: () -> Unit = {
-        val open = !keyOpen
-        keyShown = open
-        // Folding it anywhere folds it everywhere from now on; written once (S15).
-        if (!open && store.setting(HEAT_KEY_FOLDED) != "true") store.saveAppSetting(HEAT_KEY_FOLDED, "true")
-    }
+    // "What the squares mean" starts folded (Figma's details pages: "it stays folded everywhere"); open for this visit only.
+    var keyOpen by rememberSaveable(habitId) { mutableStateOf(false) }
+    val toggleKey: () -> Unit = { keyOpen = !keyOpen }
     var historyToggled by remember(habitId) { mutableStateOf(emptySet<Int>()) }
     val showStreaks = store.setting(SHOW_STREAKS) != "false"
     val showPercentages = store.setting(SHOW_PERCENTAGES) != "false"
     val sentence = remember(habit, store.sections, store.weekStart, today, revision, store.taskMoves) {
-        if (habit.isTask) store.taskDetailsLine(habit, today) else store.pageGoalLine(habit, today)
+        if (habit.isTask) store.taskDetailsLine(habit, today) else store.pageGoalLine(habit)
     }
     var moving by remember { mutableStateOf(false) }
+    // Go to date's day, lit in the habit's colour for a moment (Figma 2.7, "History · gone to a date").
+    var lit by remember(habitId) { mutableStateOf<Int?>(null) }
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val snackbar = remember { SnackbarHostState() }
+    fun archive() {
+        // Archive never asks first (Figma): the page stays, now archived, and says so with Undo.
+        store.archive(listOf(habit))
+        scope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            if (snackbar.showSnackbar("${habit.name} archived", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) {
+                store.habit(habit.id)?.let { store.restore(it) }
+            }
+        }
+    }
     // The header has scrolled away: its name moves into the top bar and the tabs stay under it (Figma 1.5).
     val collapsed by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
     // Progress's cards show their shapes for the first frame, then their numbers: the header never waits (Figma 6.7).
@@ -231,11 +247,12 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         return
     }
     val earlier = remember(habit, store.habits) { store.earlierOf(habit.id) }
-    val barColor = if (collapsed) scrolledTopBarColor else c.screen
+    val barColor = if (collapsed) scrolledTopBarColor else MaterialTheme.colorScheme.surfaceContainer
+    val fresh = !habit.isTask && !habit.archived && store.entries(habit.id).isEmpty()
     // Another tab starts at its own top, just under the pinned tabs, wherever the last one was scrolled to.
     LaunchedEffect(shown) { if (listState.firstVisibleItemIndex > 1) listState.scrollToItem(1) }
 
-    Box(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "habit-details" }) {
+    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainer).semantics { testTag = "habit-details" }) {
         Column(Modifier.fillMaxSize()) {
             AppTopBar(
                 if (collapsed) habit.name else null,
@@ -246,7 +263,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                         if (habit.isTask) TaskMenu(habit, store, menuOpen, onDismiss = { menuOpen = false }, onEdit = { nav.edit(habit) },
                             onMove = { moving = true }, onDelete = { confirmDelete = true }, onArchive = { store.archive(listOf(habit)); onBack() })
                         else HabitMenu(habit, store, today, menuOpen, onDismiss = { menuOpen = false }, nav = nav,
-                            onDelete = { confirmDelete = true }, onArchive = { store.archive(listOf(habit)); onBack() },
+                            onDelete = { confirmDelete = true }, onArchive = ::archive,
                             onNoRoom = { noRoom = true })
                     }
                 },
@@ -263,6 +280,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                     HabitTab.PROGRESS -> {
                         stateCards(habit, store, today, onRestore = { if (!store.restore(habit)) noRoom = true }, onOpen = nav::openHabit)
                         if (progress == null) loadingItems(habit.color, keyOpen, toggleKey)
+                        else if (fresh) freshItems(habit, store, today, revision, keyOpen, toggleKey) { day -> nav.openDay(habit, day) }
                         else progressItems(
                             habit = habit, store = store, today = today, revision = revision, record = progress.first, milestones = progress.second,
                             showStreaks = showStreaks, showPercentages = showPercentages, keyOpen = keyOpen, onToggleKey = toggleKey,
@@ -277,7 +295,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                             color = habit.color, months = months, filter = filter, toggled = historyToggled,
                             onSearch = { searching = true }, onFilter = { filter = it }, onGoToDate = { goToDate = true },
                             onToggleMonth = { m -> historyToggled = if (m in historyToggled) historyToggled - m else historyToggled + m },
-                            onOpenDay = { day -> nav.openDay(habit, day) },
+                            onOpenDay = { day -> nav.openDay(habit, day) }, lit = lit,
                         )
                     }
                 }
@@ -290,6 +308,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             AppExtendedFab("Add", Symbols.Add, { adding = true },
                 Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp), tag = "history-add")
         }
+        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
     }
 
     if (adding) AddToWhichDay(habit.name, minOf(first, today), today, onDismiss = { adding = false }) { day -> nav.openDay(habit, day) }
@@ -306,18 +325,18 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                 // The header, the tabs and the gap come first; then the earlier habit's card, if any.
                 val lead = 3 + (if (earlier != null) 1 else 0)
                 scope.launch { listState.animateScrollToItem(lead + index) }
+                lit = day
             }
         }
     }
     if (confirmDelete) {
         AppDialog("Delete ${habit.name}?",
             if (habit.isTask) "Its history and notes are deleted too. To keep them, archive it instead."
-                else "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.",
+                else "Its logs, notes, streaks and milestones go too. To keep them, archive it instead: Archive is in the same menu.",
             "Delete", {
                 confirmDelete = false
-                // The page leaves first, then the habit goes (U27).
-                onBack()
-                store.delete(listOf(habit))
+                // The page leaves first (U27); the page under it deletes once its Undo has gone.
+                if (habit.isTask) { onBack(); store.delete(listOf(habit)) } else nav.deleted(habit)
             }, { confirmDelete = false }, destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
     }
     if (moving) {
@@ -337,65 +356,64 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
 }
 
 /**
- * What the habit is, in a glance (Figma 1.1–1.4): its icon, name and goal in words, then its description, cut at two
- * lines with More when longer (Less folds it again). No numbers: they belong to Progress.
+ * What the habit is, in a glance (Figma's Large title · habit, 1020:4052): its icon (56, the habit's colour), 16, its name
+ * in Headline Medium Emphasized over the goal and time of day in Body Medium On surface variant ("8 glasses a day |
+ * Anytime"), 16 at the sides and under. A description follows, 12 under, in Body Medium On surface variant, two lines at
+ * most, then More (a Text button, its label lined up with the words); More opens the whole of it in place, Less folds
+ * it again. No numbers: they belong to Progress. On scroll the name moves into the top bar.
  */
 @Composable
 private fun Header(habit: Habit, sentence: String, description: String?) {
-    val c = appColors
-    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(top = 4.dp, bottom = 16.dp).semantics { testTag = "habit-header" }) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            HabitIcon(habit.symbol, habit.color, 56.dp, CircleShape)
+    val s = MaterialTheme.colorScheme
+    val text = description?.takeIf { it.isNotBlank() }
+    Column(Modifier.fillMaxWidth().semantics { testTag = "habit-header" }) {
+        Row(Modifier.padding(start = 16.dp, end = 16.dp, bottom = if (text != null) 12.dp else 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            HabitIcon(habit.symbol, habit.color, 56.dp, CircleShape, glyph = 0.5f)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).semantics(mergeDescendants = true) { heading() }) {
-                Text(habit.name, style = AppType.headlineMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                Text(sentence, style = AppType.bodyMedium, color = c.secondary)
+                Text(habit.name, style = AppType.headlineMediumEmphasized, color = s.onSurface, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(sentence, style = AppType.bodyMedium, color = s.onSurfaceVariant)
             }
         }
-        description?.takeIf { it.isNotBlank() }?.let { text ->
+        if (text != null) {
             var open by rememberSaveable(habit.id) { mutableStateOf(false) }
             var cut by remember(text) { mutableStateOf(false) }
-            Spacer(Modifier.height(12.dp))
-            Text(text, Modifier.semantics { testTag = "habit-description" }, style = AppType.bodyLarge, color = c.ink,
+            Text(text, Modifier.padding(horizontal = 16.dp).semantics { testTag = "habit-description" }, style = AppType.bodyMedium, color = s.onSurfaceVariant,
                 maxLines = if (open) Int.MAX_VALUE else 2, overflow = TextOverflow.Ellipsis,
                 onTextLayout = { if (!open) cut = it.hasVisualOverflow })
             if (open || cut) {
-                Row(
-                    Modifier.padding(top = 4.dp).clip(RoundedCornerShape(8.dp)).clickable { open = !open }.heightIn(min = 40.dp)
-                        .semantics(mergeDescendants = true) { testTag = "habit-description-more" },
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(if (open) "Less" else "More", style = AppType.labelLarge, color = c.ink)
-                    Spacer(Modifier.width(4.dp))
-                    Icon(if (open) Symbols.KeyboardArrowUp else Symbols.KeyboardArrowDown, null, Modifier.size(20.dp), tint = c.ink)
+                // The Text button's 12 of padding, from 4 in: its label starts where the words do.
+                Row(Modifier.padding(start = 4.dp, bottom = 8.dp).heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+                    AppButton(if (open) "Less" else "More", { open = !open }, style = ButtonStyle.Text, size = ButtonSize.Small, tag = "habit-description-more")
                 }
-            }
+            } else Spacer(Modifier.height(16.dp))
         }
     }
 }
 
 /**
- * Progress's first card while the habit isn't running as usual (Figma 6.1, 6.2, 6.4): paused (until when, what it means,
- * Resume) or archived (when, that everything is kept, Restore; or, after a type change, a link to the new habit).
+ * Progress's first card while the habit isn't running as usual (Figma: Archived notice, the Paused flow): the Card
+ * notice (4.7): archived ("Archived today", that everything is kept, Restore; or, after a type change, a link to the new
+ * habit) or paused (until when, what it means, Resume).
  */
 private fun LazyListScope.stateCards(habit: Habit, store: HabitStore, today: Int, onRestore: () -> Unit, onOpen: (Habit) -> Unit) {
     if (habit.archived) {
-        val on = store.archivedOn[habit.id]?.let { DayWords.dayMonth(it) }
+        val on = store.archivedOn[habit.id]?.let { if (it == today) "today" else DayWords.dayMonth(it) }
         val replaced = store.replacedBy(habit.id)
         item(key = "state-archived") {
-            if (replaced != null) StateCard(Symbols.Archive, "Archived" + (on?.let { " on $it" } ?: "") + ", when ${habit.name} changed to " + countedIn(replaced),
-                "Everything it recorded is kept here.", "Open the new ${replaced.name}", Symbols.OpenInNew, "habit-archived") { onOpen(replaced) }
-            else StateCard(Symbols.Archive, "Archived" + (on?.let { " on $it" } ?: ""),
-                "Everything it recorded is kept. Restore it to log again.", "Restore", Symbols.Upload, "habit-archived", onRestore)
+            if (replaced != null) CardNotice(Symbols.Archive, "Archived" + (on?.let { " $it" } ?: "") + ", when ${habit.name} changed to " + countedIn(replaced),
+                "Everything it recorded is kept here.", Modifier.pageItem(), action = "Open the new ${replaced.name}", onAction = { onOpen(replaced) },
+                actionTag = "habit-archived-action", tag = "habit-archived")
+            else CardNotice(Symbols.Archive, "Archived" + (on?.let { " $it" } ?: ""), "Everything it recorded is kept. Restore it to log again.",
+                Modifier.pageItem(), action = "Restore", onAction = onRestore, actionTag = "habit-archived-action", tag = "habit-archived")
         }
         return
     }
     val pause = store.pause(habit, today)
     if (pause != null && today in pause) item(key = "state-paused") {
-        StateCard(Symbols.PauseCircle, pause.through?.let { "Paused until " + pageDayDate(it + 1) } ?: "Paused until you resume it",
-            "Nothing is expected while it's paused, and those days don't count against it.", "Resume", Symbols.Filled.PlayArrow, "habit-paused") {
-            store.resume(habit)
-        }
+        CardNotice(Symbols.PauseCircle, pause.through?.let { "Paused until " + pageDayDate(it + 1) } ?: "Paused until you resume it",
+            "Off Today, no reminders. Paused days don’t count.", Modifier.pageItem(), action = "Resume", onAction = { store.resume(habit) },
+            actionTag = "habit-paused-action", tag = "habit-paused")
     }
 }
 
@@ -404,9 +422,9 @@ private fun LazyListScope.stateCards(habit: Habit, store: HabitStore, today: Int
 private fun EarlierCard(habit: Habit, earlier: Habit, store: HabitStore, onOpen: () -> Unit) {
     val on = store.archivedOn[earlier.id]
     val until = on?.let { (if (it == store.today()) "today, " else "") + DayWords.dayMonth(it) }
-    StateCard(Symbols.History, "${habit.name} was counted in ${countedIn(earlier)}" + (until?.let { " until $it" } ?: ""),
-        "That history stays with the earlier ${earlier.name}, in Archived habits.", "Open earlier ${earlier.name}",
-        Symbols.OpenInNew, "habit-earlier", onOpen)
+    CardNotice(Symbols.History, "${habit.name} was counted in ${countedIn(earlier)}" + (until?.let { " until $it" } ?: ""),
+        "That history stays with the earlier ${earlier.name}, in Archived habits.", Modifier.pageItem(), action = "Open earlier ${earlier.name}",
+        onAction = onOpen, actionTag = "habit-earlier-action", tag = "habit-earlier")
 }
 
 /** "glasses", "minutes", "checks", "steps": what a habit counted. */
@@ -416,22 +434,6 @@ private fun countedIn(habit: Habit): String = when (val k = habit.kind) {
     HabitKind.Checklist -> "steps"
     HabitKind.Quit -> "slips"
     else -> "checks"
-}
-
-/** A card with an icon, a title, what it means and one action (Figma 6.1–6.4). */
-@Composable
-private fun StateCard(icon: ImageVector, title: String, text: String, action: String, actionIcon: ImageVector, tag: String, onAction: () -> Unit) {
-    val c = appColors
-    Row(Modifier.pageItem().fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).padding(20.dp).semantics { testTag = tag }) {
-        Icon(icon, null, Modifier.size(24.dp), tint = c.ink)
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(title, style = AppType.titleMedium, color = c.ink)
-            Text(text, style = AppType.bodyMedium, color = c.secondary)
-            Spacer(Modifier.height(8.dp))
-            AppButton(action, onAction, Modifier.semantics { testTag = "$tag-action" }, style = ButtonStyle.Tonal, icon = actionIcon)
-        }
-    }
 }
 
 /**
@@ -494,9 +496,9 @@ private fun HabitMenu(
             else if (pause != null) item("Cancel pause from " + DayWords.short(pause.from), Symbols.Cancel, "habit-menu-cancel-pause") { store.resume(habit) }
             else item("Pause…", Symbols.PauseCircle, "habit-menu-pause") { nav.pause(habit) }
         }
+        // Figma's ⋮: Edit habit, Pause…, a line, Archive, Delete (red); archived: Restore and Delete.
         if (habit.archived) item("Restore", Symbols.Unarchive, "habit-menu-restore") { if (!store.restore(habit)) onNoRoom() }
-        else item("Archive", Symbols.Archive, "habit-menu-archive", act = onArchive)
-        MenuDivider()
+        else { MenuDivider(); item("Archive", Symbols.Archive, "habit-menu-archive", act = onArchive) }
         item("Delete", Symbols.Delete, "habit-menu-delete", danger = true, act = onDelete)
     }
 }

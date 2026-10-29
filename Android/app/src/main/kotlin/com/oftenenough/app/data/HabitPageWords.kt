@@ -248,22 +248,13 @@ fun pageSentenceOf(habit: Habit, weekStart: Int, partNames: List<String>, quitSi
 }
 
 /**
- * Habit details' line under the name (Figma 1373:2, 1.1, 6.1, 6.2): "8 glasses a day, anytime", "Quit since 2 Sep", then
- * " · Paused" or " · Archived". The name is just above it, so it isn't said again.
+ * Habit details' line under the name (Figma 1020:4052): the goal, then its times of day by name, "8 glasses a day |
+ * Anytime"; a quit habit's "Quit since 2 Sep". Paused or archived is said by the card at the top, not here. The name is
+ * just above it, so it isn't said again.
  */
-fun HabitStore.pageGoalLine(habit: Habit, today: Int): String {
-    val line = if (habit.kind == HabitKind.Quit) "Quit since " + DayWords.dayMonth(rules.quitStartDay(habit))
-    else {
-        val parts = if (habit.parts == listOf(DaySection.ANYTIME)) "anytime" else partsPhrase(habit.parts.map { section(it).name })
-        HabitCopy.capitalized(HabitCopy.plan(habit, weekStart)) + ", " + parts
-    }
-    val pause = pause(habit, today)
-    return line + when {
-        habit.archived -> " · Archived"
-        pause != null && today in pause -> " · Paused"
-        else -> ""
-    }
-}
+fun HabitStore.pageGoalLine(habit: Habit): String =
+    if (habit.kind == HabitKind.Quit) "Quit since " + DayWords.dayMonth(rules.quitStartDay(habit))
+    else HabitCopy.capitalized(HabitCopy.plan(habit, weekStart)) + " | " + habit.parts.joinToString(", ") { section(it).name }
 
 fun HabitStore.pageSentence(habit: Habit): String {
     val since = rules.calendarDayOf(habit.quitSince ?: habit.createdAt)

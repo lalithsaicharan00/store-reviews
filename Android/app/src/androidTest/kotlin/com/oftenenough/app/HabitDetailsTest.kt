@@ -31,6 +31,7 @@ import com.oftenenough.app.data.dayKey
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -133,7 +134,7 @@ class HabitDetailsTest {
         waitFor(hasTestTag("habit-tab-history"), "the History tab")
         if (has(hasText("Notes"))) throw AssertionError("Notes is part of History now; on screen: ${screen()}")
         waitFor(hasText("Overall record"), "the record")
-        waitFor(hasText("8 glasses a day, anytime"), "the goal in words, without the name")
+        waitFor(hasText("8 glasses a day | Anytime"), "the goal and its time of day, without the name")
         tapTag("habit-see-all-streaks")
         waitFor(hasTestTag("streaks-page"), "the Streaks page")
         waitFor(hasText(" run", substring = true), "how many runs")
@@ -204,6 +205,9 @@ class HabitDetailsTest {
         launch()
         onMain { store.add(Habit(name = "Journal", symbol = "book.fill", color = com.oftenenough.app.data.HabitColor.BROWN, kind = HabitKind.Check)) }
         openPage("Journal")
+        // Progress (Figma's New habit): No progress yet, then its first week.
+        waitFor(hasText("No progress yet"), "No progress yet")
+        waitFor(hasText("Your first week"), "its first week")
         tapTag("habit-tab-history")
         waitFor(hasText("Nothing here yet"), "Nothing here yet")
         waitFor(hasTestTag("history-add"), "Add, to log any day")
@@ -276,11 +280,15 @@ class HabitDetailsTest {
         val today = store.today()
         onMain { store.pause(habit("Water"), today, today + 6) }
         waitFor(hasText("Paused until", substring = true), "the paused card")
-        waitFor(hasText("8 glasses a day, anytime · Paused"), "Paused in the header")
+        waitFor(hasText("Off Today, no reminders. Paused days don’t count."), "what it means")
         tapTag("habit-paused-action")
         waitGone(hasTestTag("habit-paused"), "the paused card")
-        onMain { store.archive(listOf(habit("Water"))) }
-        waitFor(hasText("Archived on", substring = true), "the archived card")
+        // Archive never asks first: the page stays, says so with Undo, and the card shows.
+        tapTag("habit-menu")
+        tapTag("habit-menu-archive")
+        waitFor(hasText("Water archived"), "the snackbar")
+        assertTrue(habit("Water").archived)
+        waitFor(hasText("Archived today"), "the archived card")
         waitFor(hasContentDescription("Streak when archived", substring = true), "the streak, as it was")
         tapTag("habit-tab-history")
         waitGone(hasTestTag("history-add"), "Add on an archived habit")
@@ -295,7 +303,7 @@ class HabitDetailsTest {
         // This page is the old Water's: archived, with the way to the new one.
         waitFor(hasText("when Water changed to minutes", substring = true), "the old page's card")
         tapTag("habit-archived-action")
-        waitFor(hasText("10 min a day, anytime"), "the new Water's page")
+        waitFor(hasText("10 min a day | Anytime"), "the new Water's page")
         tapTag("habit-tab-history")
         waitFor(hasText("Water was counted in glasses until today", substring = true), "the new page's card")
         tapTag("habit-earlier-action")

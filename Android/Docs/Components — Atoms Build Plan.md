@@ -139,7 +139,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☑ |
 | 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☑ |
 | 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☑ |
-| 5.6.1 | Details pages · Habit details page | 1020:4052 | ☐ |
+| 5.6.1 | Details pages · Habit details page | 1020:4052 | ☑ |
 | 5.6.2 | Details pages · Streaks page | 1034:74 | ☐ |
 | 5.6.3 | Details pages · All milestones page | 1036:235 | ☐ |
 | 5.6.4 | Details pages · Notes search page | 1053:9079 | ☐ |
@@ -2044,4 +2044,58 @@ What each atom changed, newest last.
   - A day in another year adds its year ("Thu, 22 Oct 2025"); Figma draws only this year.
   - Figma's description of this component is a copy of Archived habits' (it describes the archived page); its Code
     line is added after it, as the build prompt says to change nothing else.
+  - **Built:** run 40861173881 (Android #148, commit 9d97623) passed: assembleDebug, unit tests and lint.
+
+- **5.6.1 Details pages · Habit details page (29 Oct).** Figma: Habit details page (1020:4052), its 22 screens (Progress,
+  Scrolled, With description, Description open, Loading, New habit, History and its states, At the key, Key open, At
+  Month, At Year in Pixels, Progress · full length and its free plan) and the details pages' flows. On Surface container:
+  the Top app bar (←, ⋮; the name moves into it on scroll, Surface container high), the large title (the icon 56 in the
+  habit's colour, the name in Headline Medium Emphasized, "8 glasses a day | Anytime" in Body Medium On surface variant,
+  16 at the sides and under), a description in Body Medium On surface variant cut at two lines with a Text button More /
+  Less lined up with the words, then Primary tabs Progress | History, pinned. Progress: a Card notice when archived or
+  paused, then the Overall record, Milestones, What the squares mean (folded), Week, Month and Year in Pixels (the
+  molecules 4.13–4.17); a habit with nothing logged shows the Empty state "No progress yet", its first Week ("Your first
+  week", "Started today, Fri 23 Oct") and the key. History: Search notes, All · With notes · Go to date, a rounded list
+  per month on Surface container lowest (the month's List item header folds it; each day a List item with its Small Day
+  cell, "Today · 4/8 glasses · 4 logs", its note and ›), and Add. It is `HabitDetailsScreen` (`habit/HabitDetails.kt`)
+  with `progressItems` / `freshItems` (`ProgressTab.kt`) and `historyItems` (`HistoryTab.kt`). The app, the unit tests
+  (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The name was Headline Medium; now Headline Medium Emphasized. The line under it said "8 glasses a day, anytime ·
+    Paused"; now "8 glasses a day | Anytime" (the times of day by name), with paused or archived said by the card only
+    (`pageGoalLine`). The header lost its 4 above.
+  - The description was Body Large in On surface, and More was its own label with an arrow; now Body Medium On surface
+    variant and Material's Text button (More / Less, no icon), its label lined up with the words.
+  - The paused and archived cards were the page's own; now the Card notice (4.7), with Figma's words ("Archived today",
+    "Everything it recorded is kept. Restore it to log again."; "Paused until Fri 30 Oct", "Off Today, no reminders.
+    Paused days don't count."). The page's own StateCard is deleted.
+  - Archive left the page; now the page stays, archived, and says "Water archived" with Undo (Figma: Archive never asks).
+  - Delete deleted at once; now the page closes and Habits & Tasks says "Water deleted" with Undo, deleting only once
+    Undo has gone (D6; the habit's card hidden meanwhile, `PendingDelete`). The question's words are Figma's ("Its logs,
+    notes, streaks and milestones go too. To keep them, archive it instead: Archive is in the same menu.").
+  - ⋮ had a line before Delete; now before Archive, as Figma's (and the Habits page's) menu.
+  - What the squares mean opened unfolded until it had been folded once; now it starts folded and opens for the visit
+    (Figma: "it stays folded everywhere").
+  - A habit with nothing logged showed every card at zero; now Figma's New habit: No progress yet, its first week, the
+    key.
+  - History's month headers were drawn by hand (20 in, the chevron in ink); now the List item (Title Medium, Body Medium,
+    expand_less / expand_more On surface variant). Each day showed the Year Day cell (24) and "Today" beside the date;
+    now the Small cell (28) in the 40 leading slot and "Today · 4/8 glasses · 4 logs" in its line, on Surface container
+    lowest.
+  - With notes now ends with "Days without a note are hidden while With notes is on."; Nothing here yet is the Empty
+    state (history in its cookie).
+  - Go to date's day is lit in the habit's Fill for a moment and fades back (Material's slow effects spring).
+  - Tests: HabitDetailsTest reads the new header line, the cards' words and Archive's snackbar, and checks a new habit's
+    No progress yet; HabitsPageTest has a test for Delete from the page coming back with Undo.
+  Noted, not changed:
+  - **Held for the user:** History's Add. One Figma note says "Add opens Add log for today" (and the button is named
+    so), while the "History: Add, for any day" flow asks "Add to which day?" first. Kept the dialog, as the flow draws it.
+  - Deleting from a page opened from Today returns to Today, whose own snackbar isn't this one: there it deletes at
+    once, as before. Figma draws only the way back to Habits & Tasks.
+  - "No progress yet" shows while nothing at all is logged; Figma draws a habit made today. A habit made days ago with
+    nothing logged shows the same.
+  - A pause still to come keeps "Cancel pause from Fri 30 Oct" in ⋮; Figma draws only Pause… and Resume.
+  - The cards after a type change (Archived …, when Water changed to minutes; Water was counted in glasses) stay, on the
+    Card notice: A68 ended type changes, so they're only for habits changed before; they go with the Figma cleanup.
+  - Tasks open this page too; their page is 5.6.5, so their ⋮, header and History are unchanged here.
 

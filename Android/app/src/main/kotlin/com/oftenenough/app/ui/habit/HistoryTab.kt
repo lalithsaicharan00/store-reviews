@@ -1,6 +1,10 @@
 package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.DayCell
+import com.oftenenough.app.ui.components.EmptyState
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.components.ListNote
 import com.oftenenough.app.ui.components.ListChevron
@@ -14,13 +18,11 @@ import com.oftenenough.app.ui.components.SearchBarButton
 import com.oftenenough.app.ui.components.SearchHeader
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,8 +67,6 @@ import com.oftenenough.app.data.HistoryDay
 import com.oftenenough.app.data.HistoryMonth
 import com.oftenenough.app.data.dayKey
 import com.oftenenough.app.data.pageDayDate
-import com.oftenenough.app.ui.components.CookieShape
-import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.components.dayToUtcMs
 import com.oftenenough.app.ui.components.utcMsToDay
 import com.oftenenough.app.ui.theme.AppType
@@ -118,27 +118,19 @@ fun historyIndexOf(day: Int, shown: List<HistoryMonth>, toggled: Set<Int>): Int?
     return null
 }
 
-/** A month's header: its name and how it went (or how many notes), folding the month (an accordion's chevron). */
+/**
+ * A month's header (Figma's Month header, a List item First): its name in Title Medium, how it went (or how many notes) in
+ * Body Medium, and expand_less / expand_more On surface variant; the whole row folds the month.
+ */
 @Composable
-internal fun FoldHeader(title: String, summary: String, open: Boolean, count: Int, tag: String, onToggle: () -> Unit) {
-    val c = appColors
-    Row(
-        Modifier.pagePiece(0, count).fillMaxWidth().clip(segmentShape(0, count)).background(c.surface)
-            .clickable(onClickLabel = if (open) "Fold the month" else "Show the month", onClick = onToggle)
-            .padding(start = 20.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
-            .semantics(mergeDescendants = true) {
-                stateDescription = if (open) "Open" else "Folded"
-                testTag = tag
-            },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(title, style = AppType.titleMedium, color = c.ink)
-            if (summary.isNotEmpty()) Text(summary, style = AppType.bodyMedium, color = c.secondary)
-        }
-        Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = c.ink)
-    }
-}
+internal fun FoldHeader(title: String, summary: String, open: Boolean, count: Int, tag: String, onToggle: () -> Unit) =
+    AppListItem(
+        title, 0, count,
+        Modifier.pagePiece(0, count).semantics(mergeDescendants = true) { stateDescription = if (open) "Open" else "Folded" },
+        summary.ifEmpty { null },
+        trailing = { Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, if (open) "Fold the month" else "Show the month", tint = MaterialTheme.colorScheme.onSurfaceVariant) },
+        onClick = onToggle, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = tag,
+    )
 
 /** A plain card with a line of text. */
 @Composable
@@ -161,6 +153,7 @@ internal fun MessageCard(title: String?, text: String, tag: String) {
 internal fun LazyListScope.historyItems(
     color: HabitColor, months: List<HistoryMonth>, filter: HistoryFilter, toggled: Set<Int>,
     onSearch: () -> Unit, onFilter: (HistoryFilter) -> Unit, onGoToDate: () -> Unit, onToggleMonth: (Int) -> Unit, onOpenDay: (Int) -> Unit,
+    lit: Int? = null,
 ) {
     if (months.isEmpty()) {
         item(key = "history-empty") { NothingYet() }
@@ -180,9 +173,13 @@ internal fun LazyListScope.historyItems(
         }
         if (open) {
             itemsIndexed(month.days, key = { _, d -> month.key + "-" + d.day }) { i, d ->
-                HistoryDayRow(d, color, i + 1, count) { onOpenDay(d.day) }
+                HistoryDayRow(d, color, i + 1, count, lit = d.day == lit) { onOpenDay(d.day) }
             }
         }
+    }
+    if (filter == HistoryFilter.NOTES && shown.isNotEmpty()) item(key = "history-notes-only") {
+        Text("Days without a note are hidden while With notes is on.", Modifier.pageItem().padding(horizontal = 16.dp),
+            style = AppType.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
@@ -197,16 +194,31 @@ private fun HistoryChips(filter: HistoryFilter, onFilter: (HistoryFilter) -> Uni
     }
 }
 
-/** One day (List item, 2.4, Show note): its square, the date (with Today or Yesterday), what was recorded, its note, ›. */
+/**
+ * One day (Figma's Day row, a List item with Show note): its Day cell (Small, 28, in the 40 leading slot, Today ringed),
+ * the date in Title Medium, then "Today · 4/8 glasses · 4 logs" in Body Medium, its note under it, and ›, on Surface
+ * container lowest. [lit] (Go to date's day) shows it in the habit's Fill for a moment, fading back (Figma 2.7).
+ */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count: Int, title: String = day.title, query: String? = null, onOpen: () -> Unit) =
+private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count: Int, title: String = day.title, query: String? = null, lit: Boolean = false, onOpen: () -> Unit) {
+    val s = MaterialTheme.colorScheme
+    var shine by remember { mutableStateOf(false) }
+    LaunchedEffect(lit) {
+        if (!lit) return@LaunchedEffect
+        shine = true
+        delay(1200)
+        shine = false
+    }
+    val container by animateColorAsState(if (shine) appColors.habitFill(color) else s.surfaceContainerLowest, MaterialTheme.motionScheme.slowEffectsSpec(), label = "lit")
     AppListItem(
-        title, index, count, Modifier.pagePiece(index, count).semantics(mergeDescendants = true) {}, day.detail,
-        leading = { DayCell(day.heat, color, size = DayCellSize.year, isToday = day.relative == "Today") },
-        beside = day.relative?.let { { Text(it, style = AppType.bodyMedium, color = appColors.secondary) } },
+        title, index, count, Modifier.pagePiece(index, count).semantics(mergeDescendants = true) {},
+        listOfNotNull(day.relative, day.detail.ifEmpty { null }).joinToString(" · "),
+        leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { DayCell(day.heat, color, size = DayCellSize.small, isToday = day.relative == "Today") } },
         below = day.note?.let { { ListNote(if (query != null) highlighted(it, query) else AnnotatedString(it)) } },
-        trailing = { ListChevron() }, onClick = onOpen, tag = "habit-day-" + dayKey(day.day),
+        trailing = { ListChevron() }, onClick = onOpen, containerColor = container, tag = "habit-day-" + dayKey(day.day),
     )
+}
 
 /** [text] with every match of [query] in Medium (Figma 2.5: "glasses", "glass"). */
 private fun highlighted(text: String, query: String): AnnotatedString = buildAnnotatedString {
@@ -222,24 +234,11 @@ private fun highlighted(text: String, query: String): AnnotatedString = buildAnn
     }
 }
 
-/** Nothing here yet (Figma 2.8): a habit with no logs and no notes. */
+/** Nothing here yet (Figma's History · empty): a habit with no logs and no notes, as the Empty state (history). */
 @Composable
-private fun NothingYet() {
-    val c = appColors
-    Column(
-        Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 16.dp).semantics(mergeDescendants = true) { testTag = "history-empty" },
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(Modifier.size(112.dp).clip(CookieShape()).background(c.tonal), contentAlignment = Alignment.Center) {
-            Icon(Symbols.History, null, Modifier.size(40.dp), tint = c.ink)
-        }
-        Spacer(Modifier.height(24.dp))
-        Text("Nothing here yet", Modifier.semantics { heading() }, style = AppType.headlineSmall, color = c.ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Text("Each day you log or write a note shows here, newest first. Add opens any day.",
-            style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
-    }
-}
+private fun NothingYet() =
+    EmptyState(Symbols.History, "Nothing here yet", "Each day you log or write a note shows here, newest first. Add opens any day.",
+        Modifier.padding(top = 24.dp).semantics(mergeDescendants = true) { testTag = "history-empty" })
 
 // ------------------------------------------------------------------------------------------------------------ Search
 

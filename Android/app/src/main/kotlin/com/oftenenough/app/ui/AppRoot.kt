@@ -315,6 +315,23 @@ private fun AppMain(
                     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
                     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
                     override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                    override fun deleted(habit: Habit) {
+                        nav.popBackStack()
+                        // Today has its own snackbar, not this one: from there it goes at once, as before.
+                        if (nav.currentBackStackEntry?.destination?.route == Routes.TODAY) { store.delete(listOf(habit)); return }
+                        com.oftenenough.app.ui.habit.PendingDelete.ids.add(habit.id)
+                        rootScope.launch {
+                            snackbar.currentSnackbarData?.dismiss()
+                            var undone = false
+                            try {
+                                undone = snackbar.showSnackbar("${habit.name} deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+                                    androidx.compose.material3.SnackbarResult.ActionPerformed
+                            } finally {
+                                if (!undone) store.habit(habit.id)?.let { store.delete(listOf(it)) }
+                                com.oftenenough.app.ui.habit.PendingDelete.ids.remove(habit.id)
+                            }
+                        }
+                    }
                 }) { nav.popBackStack() }
             }
         }

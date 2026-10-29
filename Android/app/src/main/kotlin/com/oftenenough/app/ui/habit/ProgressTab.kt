@@ -1,6 +1,7 @@
 package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.Medal
+import com.oftenenough.app.ui.components.EmptyState
 import com.oftenenough.app.ui.components.MilestonesCard
 import com.oftenenough.app.ui.components.StatTile
 import com.oftenenough.app.ui.components.YearInPixelsCard
@@ -104,7 +105,7 @@ import kotlinx.coroutines.delay
 // (a `remember` keyed on the habit's revision), never while drawing (S5, S8); the only thing that ticks is a quit habit's
 // live run, in its own small Text (S3).
 
-private val selectedDayFormat = DateTimeFormatter.ofPattern("EEEE d MMMM", Locale.ENGLISH)
+private val startDay = DateTimeFormatter.ofPattern("EEE d MMM", Locale.ENGLISH)
 
 /** The Progress tab's items. [record] and [milestones] come from the page's model (null for a quit habit's record). */
 internal fun LazyListScope.progressItems(
@@ -123,6 +124,20 @@ internal fun LazyListScope.progressItems(
     item(key = "progress-week") { PeriodCardView(habit, store, week = true, today = today, revision = revision, onOpenDay = onOpenDay) }
     item(key = "progress-month") { PeriodCardView(habit, store, week = false, today = today, revision = revision, onOpenDay = onOpenDay) }
     item(key = "progress-year") { YearCard(habit, store, today, revision, onOpenDay) }
+}
+
+/**
+ * Progress for a habit with nothing logged yet (Figma's New habit): no record, milestones or charts to show, so the
+ * Empty state (insights in its cookie, "No progress yet", what will build up here), 40 under the tabs; 24 under it, the
+ * first Week ("Your first week", when it started); then What the squares mean, folded. Nothing is padded or guessed.
+ */
+internal fun LazyListScope.freshItems(habit: Habit, store: HabitStore, today: Int, revision: Int, keyOpen: Boolean, onToggleKey: () -> Unit, onOpenDay: (Int) -> Unit) {
+    item(key = "progress-fresh") {
+        EmptyState(Symbols.Insights, "No progress yet", "Log ${habit.name} on Today. Your record, streaks and milestones build up here.",
+            Modifier.padding(top = 24.dp, bottom = 40.dp).semantics { testTag = "habit-no-progress" })
+    }
+    item(key = "progress-week") { PeriodCardView(habit, store, week = true, today = today, revision = revision, onOpenDay = onOpenDay, firstWeek = true) }
+    item(key = "progress-key") { HabitKeyCard(keyOpen, onToggleKey, habit.color, Modifier.pageItem()) }
 }
 
 // ------------------------------------------------------------------------------------------------ Overall record
@@ -320,7 +335,7 @@ private fun periodView(store: HabitStore, habit: Habit, week: Boolean, anchor: I
 /** The Week or Month card (the Habit history card, 4.15): its dates with ‹ ›, what was recorded on the goal's own
  *  clock, the squares, the amount recorded each day (Month), and the period against the one before. */
 @Composable
-private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today: Int, revision: Int, onOpenDay: (Int) -> Unit) {
+private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today: Int, revision: Int, onOpenDay: (Int) -> Unit, firstWeek: Boolean = false) {
     val c = appColors
     var anchor by rememberSaveable(habit.id, week) { mutableStateOf<Int?>(null) }
     val view = remember(habit, revision, today, anchor, store.weekStart) { periodView(store, habit, week, anchor, today) }
@@ -331,8 +346,11 @@ private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today
             anchor = if (next >= today || store.rules.period(if (week) PeriodKind.WEEK else PeriodKind.MONTH, next).contains(today)) null else next
         }
         val card = view.card
+        val start = if (habit.kind == HabitKind.Quit) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
         if (card != null) {
-            HistorySummary(card.headline, card.detail)
+            // A habit's first week, nothing logged yet (Figma's New habit): "Your first week", "Started today, Fri 23 Oct".
+            if (firstWeek && start in view.span) HistorySummary("Your first week", "Started " + (if (start == today) "today, " else "") + startDay.format(java.time.LocalDate.ofEpochDay(start.toLong())))
+            else HistorySummary(card.headline, card.detail)
             if (card.days.size == view.span.last - view.span.first + 1) {
                 val cells = remember(card) { card.days.map { it.heat } }
                 // A tap opens that day (Figma 4.1); a day to come does nothing.

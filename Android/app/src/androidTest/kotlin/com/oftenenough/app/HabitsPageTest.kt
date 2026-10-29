@@ -207,6 +207,23 @@ class HabitsPageTest {
         waitUntil("Gym archived again") { habit("Gym").archived }
     }
 
+    /** Habit details' Delete (Figma's Delete flow): back on Habits & Tasks, "Water deleted" with Undo, deleted only once
+     *  Undo has gone (D6). */
+    @Test fun deleteFromHabitDetailsComesBackHereWithUndo() {
+        launch()
+        tapTag("habits-row-Water")
+        waitHere(hasTestTag("habit-details"), "Water's page")
+        tapTag("habit-menu")
+        here("habit-menu-delete")
+        waitHere(hasText("Delete Water?"), "the question")
+        tapTag("delete-confirm")
+        waitFor(hasText("Water deleted"), "the snackbar")
+        assertTrue("kept while Undo shows", store.habits.any { it.name == "Water" })
+        tapText("Undo")
+        waitFor(hasTestTag("habits-row-Water"), "Water's card back")
+        assertTrue("nothing deleted", store.habits.any { it.name == "Water" })
+    }
+
     @Test fun onTheFreePlanPlusOpensAddASixthHabitFirst() {
         launch(plus = false)
         tapTag("habits-add")
