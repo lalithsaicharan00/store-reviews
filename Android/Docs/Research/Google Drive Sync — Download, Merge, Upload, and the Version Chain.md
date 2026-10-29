@@ -60,6 +60,17 @@ fields kept, order-free and repeatable).
 | Code to build | More | Less; reuses the iCloud merge and the backup file format |
 Snapshot merge is simpler and has fewer ways to go wrong; it costs more bytes, which a habit app can afford.
 
+## Small change files, looked at again (29 Oct 2026, kept for later)
+The user asked whether small change files (one per change or batch, like a sync server's log) would be better than
+rewriting a year's file. The shape that would work on Drive: Drive's changes feed (`changes.list` from a saved
+`getStartPageToken`, `spaces=appDataFolder`) for "what's new since"; each small batch carried in the file's private
+properties (30 × 124 bytes, returned by one `files.list` for up to 1,000 files, so no download per file); the per-year
+files kept as checkpoints that any device folds the change files into; change files deleted only once folded and 30
+days old. It would make each save small and the other device's pickup quick for heavy accounts; a new phone is
+already 15–27 s. **The user's call: keep today's design for launch, and think about this for Plus sync** (it needs a
+prototype measured on the real Drive first: the changes feed on the app folder, rate limits, folding while two devices
+write).
+
 ## What still goes wrong in production (honest)
 - **Slow, not lost:** Android delays background work (Xiaomi/Samsung battery savers), so a change can show on the
   other device only when it's opened. "Didn't sync" complaints stay possible; show "Synced 2 min ago" and sync on open.
