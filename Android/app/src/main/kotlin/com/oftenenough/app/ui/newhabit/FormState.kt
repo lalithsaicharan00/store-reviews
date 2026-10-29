@@ -31,8 +31,8 @@ data class DraftTime(val id: String = newId(), val minute: Int, val part: String
 class FormState(initialType: ItemType, val original: Habit?, private val store: HabitStore, template: Habit? = null) {
     /** Where the form's values come from: the habit being edited, or the one being duplicated (Habits, Figma 2.2). */
     private val from: Habit? = original ?: template
-    /** The kind of habit. Edit can change it (Figma 6.3): saving then starts the habit over, after asking. */
-    var type by mutableStateOf(initialType)
+    /** The kind of habit, chosen before the form opens; it never changes, in Edit too (A68). */
+    val type: ItemType = initialType
     /** The name as the previews show it: it catches up when typing pauses (S11); saving reads the live field. */
     var name by mutableStateOf(original?.name ?: template?.let { TextLimit.clean("${it.name} (copy)", TextLimit.NAME) } ?: "")
     /** Whether the live field has a name: changes only when it becomes empty or not, so Add follows at once. */
@@ -69,8 +69,6 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     var endDate by mutableStateOf(original?.endsOn ?: store.today())
     var alert by mutableStateOf(from?.alert ?: "notification")
     var followUp by mutableStateOf(from?.followUpMinutes)
-    var groupId by mutableStateOf(from?.let { store.groupOf(it.id)?.id })
-    private val originalGroup = groupId
     private val originalDescription = description
 
     init {
@@ -107,19 +105,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     }
 
     val editing: Boolean get() = original != null
-    /** Edit chose another kind: saving starts the habit over (Figma 6.3.1, 6.4.2). */
-    val typeChanged: Boolean get() = original != null && type != ItemType.of(original)
-
-    /** Another kind chosen in Edit: what the new kind needs starts from a sensible place (Time it: 10 min, Figma 6.3.1). */
-    fun changeType(to: ItemType) {
-        if (to == type) return
-        type = to
-        if (to == ItemType.TIME && (hours.toIntOrNull() ?: 0) == 0 && (minutes.toIntOrNull() ?: 0) == 0) { hours = ""; minutes = "10" }
-        if (to == ItemType.AMOUNT || to == ItemType.CUT_DOWN) { if (GoalNumber.parse(amountText) == null) amountText = "" }
-        if (to == ItemType.CUT_DOWN && timesOfDay != listOf(DaySection.ANYTIME)) timesOfDay = listOf(DaySection.ANYTIME)
-    }
     val weekStart: Int get() = store.weekStart
-    val originalGroupId: String? get() = originalGroup
     val isHabit: Boolean get() = type.isBuild || type == ItemType.CUT_DOWN
     val hasAmount: Boolean get() = type == ItemType.AMOUNT || type == ItemType.TIME || type == ItemType.CUT_DOWN
     val timed: Boolean get() = type == ItemType.TIME
@@ -171,13 +157,13 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     private var pristine: String? = null
     /** The form as an idea (or a search's name) filled it in: [hasChanges] compares with it from now on. */
     fun markPristine() { pristine = signature() }
-    private fun signature(): String = makeHabit(trimmedName).copy(id = "", createdAt = 0L).toString() + "|" + description + "|" + groupId
+    private fun signature(): String = makeHabit(trimmedName).copy(id = "", createdAt = 0L).toString() + "|" + description
 
     val editChanged: Boolean get() {
         val o = original ?: return false
         return edited(o.name) != o || trimmedName != o.name || TextLimit.clean(reminderWords, TextLimit.REMINDER_TEXT) != (o.reminderText ?: "") ||
-            TextLimit.clean(description, TextLimit.DESCRIPTION) != originalDescription || groupId != originalGroup ||
-            milestoneAlerts != originalAlerts || typeChanged
+            TextLimit.clean(description, TextLimit.DESCRIPTION) != originalDescription ||
+            milestoneAlerts != originalAlerts
     }
 
     fun edited(name: String): Habit? {

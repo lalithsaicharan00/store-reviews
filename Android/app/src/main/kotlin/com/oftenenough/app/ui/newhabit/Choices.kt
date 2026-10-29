@@ -72,12 +72,11 @@ fun icon(type: ItemType): ImageVector = when (type) {
 /**
  * A choice (Figma's Create new pages): a two-line List item on Surface bright, its icon in the avatar (Surface container
  * highest), the name in Title Medium, one line in Body Medium On surface variant, an example tag (Show example), ›.
- * [outlined]: the one chosen now (Edit's "Current type").
  */
 @Composable
-fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?, index: Int, count: Int, tag: String, outlined: Boolean = false, onClick: () -> Unit) =
+fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?, index: Int, count: Int, tag: String, onClick: () -> Unit) =
     AppListItem(
-        title, index, count, if (outlined) Modifier.border(2.dp, MaterialTheme.colorScheme.onSurface, segmentShape(index, count)) else Modifier, line,
+        title, index, count, Modifier, line,
         leading = { ListAvatar(icon) }, trailing = { ListChevron() }, onClick = onClick, tag = tag,
         below = example?.let { { ListExample(it) } }, containerColor = MaterialTheme.colorScheme.surfaceBright,
     )

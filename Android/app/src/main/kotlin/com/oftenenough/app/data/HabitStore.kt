@@ -469,11 +469,9 @@ class HabitStore(
         }
     }
 
-    /** The name of a habit just started over with a new type (Figma 6.3.2): Today says where the old one went. */
-    var startedOver by mutableStateOf<String?>(null)
-
     /**
-     * A habit whose type changed starts over (Figma 6.3.1, 6.4.2; the user, 18 Oct 2026): the old one is archived with
+     * A habit whose type changed starts over (Figma 6.3.1, 6.4.2; the user, 18 Oct 2026; no screen does it since A68,
+     * 23 Oct, but habits started over before then keep their two linked pages): the old one is archived with
      * everything it had, and [fresh] (a new ID, so sync never merges the two) takes its place on Today from today. Old
      * logs can't be converted (glasses aren't minutes), so nothing is rewritten (D6); Restore brings the old one back.
      */
@@ -496,7 +494,6 @@ class HabitStore(
             for (k in i until list.size) saveHabitRecord(list[k], k)
             habits = list
             rulesChanged()
-            startedOver = old.name
         }
     }
 

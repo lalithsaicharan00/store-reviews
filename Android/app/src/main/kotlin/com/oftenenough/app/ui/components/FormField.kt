@@ -20,7 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.Symbols
@@ -57,11 +59,13 @@ fun FormField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     handle: Modifier? = null,
+    /** Its fill: Surface, or the page's own (the habit form's Surface bright). */
+    containerColor: Color = Color.Unspecified,
     trailing: (@Composable RowScope.() -> Unit)? = null,
 ) {
     val s = MaterialTheme.colorScheme
     Row(
-        modifier.fillMaxWidth().clip(segmentShape(index, count)).background(s.surface).heightIn(min = 56.dp)
+        modifier.fillMaxWidth().clip(segmentShape(index, count)).background(containerColor.takeOrElse { s.surface }).heightIn(min = 56.dp)
             .padding(start = 16.dp, end = if (trailing != null) 4.dp else 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

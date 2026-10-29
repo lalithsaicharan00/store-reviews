@@ -247,8 +247,7 @@ private fun AppMain(
                 title = "Restore a 6th habit")
         }
         composable("edit/{id}") { e ->
-            // A new type starts the habit over (Figma 6.3.2): back to Today, which says where the old one went.
-            EditHabitScreen(e.arguments!!.getString("id")!!, store, { nav.popBackStack() }) { nav.popBackStack(Routes.TODAY, inclusive = false) }
+            EditHabitScreen(e.arguments!!.getString("id")!!, store) { nav.popBackStack() }
         }
         composable("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {

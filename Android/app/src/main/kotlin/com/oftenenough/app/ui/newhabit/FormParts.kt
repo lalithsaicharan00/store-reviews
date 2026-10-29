@@ -133,10 +133,12 @@ fun AddRow(title: String, index: Int, count: Int, tag: String, indent: Boolean =
  * Medium). The habit form's rows have no icon; a settings row keeps its icon.
  */
 @Composable
-fun OpenRow(title: String, value: String, icon: ImageVector?, index: Int, count: Int, tag: String, onClick: () -> Unit) =
-    AppListItem(
+fun OpenRow(
+    title: String, value: String, icon: ImageVector?, index: Int, count: Int, tag: String,
+    containerColor: androidx.compose.ui.graphics.Color = androidx.compose.ui.graphics.Color.Unspecified, onClick: () -> Unit,
+) = AppListItem(
         title, index, count, Modifier.semantics(mergeDescendants = true) { contentDescription = "$title, $value" }, value,
-        leading = icon?.let { { Icon(it, null) } }, trailing = { ListChevron() }, onClick = onClick, tag = tag,
+        leading = icon?.let { { Icon(it, null) } }, trailing = { ListChevron() }, onClick = onClick, containerColor = containerColor, tag = tag,
     )
 
 /** A row with a switch at its end ("Time", "Remind me"); the whole row is the toggle (List item, 2.4). */

@@ -6,6 +6,8 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isEnabled
+import androidx.compose.ui.test.isNotEnabled
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
@@ -32,8 +34,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * The New habit and Edit habit flows of Figma 1302:2 (18 Oct 2026): changing a habit's type starts it over only after
- * asking (D6), a goal change says it starts today, the 6th habit and Make room, a new time of day set by its start alone
+ * The New habit and Edit habit flows (Create new form, 5.7.3, Figma 1065:2597): Edit has no Type row (A68) and asks
+ * before leaving with changes, a goal change says it starts today, the 6th habit and Make room, a new time of day set by its start alone
  * (Current Work 108), How long's quick picks and a task's Time. Every launch is a test launch (D8) at 10:30 (T11); a
  * failure says, on one line, what was on screen (T14).
  */
@@ -101,43 +103,25 @@ class HabitFormTest {
     private fun editWater() {
         compose.onNodeWithTag("row-Water", useUnmergedTree = true).performTouchInput { longClick() }
         tapText("Edit habit")
-        waitFor(hasTestTag("type-row"), "Edit habit's Type row")
+        waitFor(hasTestTag("how-much-row"), "Edit habit's How much")
     }
 
     private fun water() = store.habits.filter { it.name == "Water" }
 
-    @Test fun changingTheTypeAsksThenStartsOverAndTodaySaysWhere() {
+    /**
+     * Edit habit (5.7.3, Figma's Edit habit): the same form, filled in, with Save; no Type row (A68), no Group and no
+     * preview (A64). ← with changes asks; Keep editing stays, Discard leaves the habit as it was.
+     */
+    @Test fun editHasNoTypeRowAndLeavingWithChangesAsks() {
         launch()
         val before = water().single()
         editWater()
-        tapTag("type-row")
-        waitFor(hasText("Change the type"), "the Type page")
-        waitFor(hasText("Current type"), "the current type")
-        tapTag("type-time")
-        waitFor(hasTestTag("how-much-row"), "the form as Time it")
-        tapTag("form-add")
-        waitFor(hasText("Start Water over as Time it?"), "the start-over question")
-        tapTag("start-over")
-        waitFor(hasText("Old Water is in Archived habits"), "Today's snackbar")
-        waitUntil("the old Water archived and a new one") { water().size == 2 }
-        val (old, fresh) = water().partition { it.id == before.id }
-        assertTrue("the old Water is archived", old.single().archived)
-        assertTrue("the old Water keeps its kind", old.single().kind is HabitKind.Amount)
-        assertTrue("the new Water is Time it", fresh.single().kind == HabitKind.Duration && !fresh.single().archived)
-        assertEquals(before.color, fresh.single().color)
-    }
-
-    @Test fun cancellingTheStartOverKeepsTheHabitThenDiscardLeavesItAlone() {
-        launch()
-        val before = water().single()
-        editWater()
-        tapTag("type-row")
-        tapTag("type-check")
-        tapTag("form-add")
-        waitFor(hasText("Start Water over as Check it off?"), "the start-over question")
-        tapText("Cancel")
-        waitGone(hasTestTag("start-over"), "the question")
-        waitFor(hasTestTag("form-back"), "still on Edit habit")
+        waitFor(hasText("Edit habit"), "the title")
+        waitFor(hasText("Save"), "Save")
+        assertTrue("no Type row", !has(hasTestTag("type-row")))
+        assertTrue("no Group row", !has(hasTestTag("group-row")))
+        assertTrue("no preview", !has(hasTestTag("today-preview")))
+        type("description-field", "Before lunch")
         tapTag("form-back")
         waitFor(hasText("Discard your changes?"), "the discard question")
         tapText("Keep editing")
@@ -146,6 +130,28 @@ class HabitFormTest {
         tapText("Discard")
         waitFor(hasTestTag("row-Water"), "Today")
         assertEquals(listOf(before), water())
+    }
+
+    /** New habit (5.7.3): Figma's rows for Check it off, Add quiet until there's a name, and a quit habit's footer. */
+    @Test fun theNewFormHasFigmasRows() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-check")
+        waitFor(hasText("New habit"), "the title")
+        for (tag in listOf("name-field", "description-field", "icon-row", "colour-row", "how-often-row", "time-of-day-row", "reminders-row", "starts-row", "ends-row"))
+            waitFor(hasTestTag(tag), "the row $tag")
+        waitFor(hasTestTag("form-add").and(isNotEnabled()), "Add quiet with no name")
+        type("name-field", "Journal")
+        waitFor(hasTestTag("form-add").and(isEnabled()), "Add ready")
+        tapTag("form-back")
+        tapText("Discard")
+        tapTag("page-back")
+        tapTag("new-quit")
+        tapTag("type-quit")
+        waitFor(hasTestTag("quit-started"), "Started | At")
+        waitFor(hasText("The run counts up from here. A slip starts it again."), "its footer")
+        assertTrue("a quit habit has no How often", !has(hasTestTag("how-often-row")))
     }
 
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
@@ -218,7 +224,7 @@ class HabitFormTest {
         tapTag("new-habit")
         tapTag("new-build")
         tapTag("type-time")
-        waitFor(hasText("Set"), "How long not set yet")
+        waitFor(hasText("Not set yet"), "How long not set yet")
         tapTag("how-much-row")
         tapTag("pick-30")
         tapTag("page-back")

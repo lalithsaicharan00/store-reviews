@@ -194,16 +194,6 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
         }
     }
 
-    // A habit started over with a new type (Figma 6.3.2): the snackbar says where the old one went; View opens it.
-    LaunchedEffect(store.startedOver) {
-        val name = store.startedOver ?: return@LaunchedEffect
-        store.startedOver = null
-        scope.launch {
-            val r = snackbar.showSnackbar("Old $name is in Archived habits", actionLabel = "View", duration = SnackbarDuration.Short)
-            if (r == SnackbarResult.ActionPerformed) nav.archivedHabits()
-        }
-    }
-
     // Milestones (Android/Docs/Milestones, decided 17 Oct 2026): quit and cut-down habits judged once a day; the others
     // shown at once as they're reached here, first come first served: a pop-up, the bar, or the row (MilestoneCenter).
     val center = store.milestones

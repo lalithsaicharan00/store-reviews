@@ -147,7 +147,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☑ |
 | 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☑ |
 | 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☑ |
-| 5.7.3 | Create new · Create new form | 1065:2597 | ☐ |
+| 5.7.3 | Create new · Create new form | 1065:2597 | ☑ |
 | 5.7.4 | Create new · Icon picker | 1074:932 | ☐ |
 | 5.7.5 | Create new · Colour | 1074:161496 | ☐ |
 | 5.7.6 | Create new · How often page | 1075:161386 | ☐ |
@@ -2250,3 +2250,54 @@ What each atom changed, newest last.
   - Quit said "Track time since you stopped."; now Figma's "Track the time since you stopped."
   - The page and its rows take 5.7.1's Figma layout and colours.
   - Tests: HabitFormTest opens Quit or cut down and checks both choices, their examples and ←.
+  - **Built:** run 40937900222 (Android #157, commit 3a6bc4c) passed: assembleDebug, unit tests and lint (5.7.1 and
+    5.7.2 together).
+
+- **5.7.3 Create new · Create new form (29 Oct).** Figma: Create new form (1065:2597), Type Check it off · Track an
+  amount · Time it · Checklist · Quit · Cut down · Task once (and its Date picker) · Task on repeat · Check it off at
+  200%, with the create new page's flows (A new habit: check it off, track an amount, quit; Starts and Ends; Edit
+  habit). New habit, New task, Edit habit and Edit task, the type already chosen. On Surface container: the Top app
+  bar (←, the title, **Add** or **Save** as a Filled Small button, quiet until there's a name, A65); then one list, 16 at
+  the sides and above, 40 under, 16 between groups, 2 within, every row on Surface bright: the name (focused, the
+  keyboard up) and Description (optional), then Icon | Colour (one-line halves, the icon or the colour at 40, ›); the
+  type's rows (How much, How long, Steps or Limit, "Not set yet" or "None yet" until set, then How often; a quit
+  habit's Started | At with "The run counts up from here. A slip starts it again."; a task's Date ("Today · Fri, 23
+  Oct") and Time, "If it isn’t done, it moves to today until it is.", or How often and Time, "It comes back on the days
+  you pick."); Time of day and Reminders (a limit: Reminders only); Starts and Ends (Ends a menu, ▾). In Edit a changed
+  goal says "The new goal starts today. Days before keep 8 glasses a day." under its rows (Body Medium). It is
+  `HabitForm` (`newhabit/HabitForm.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in
+  the session.
+  Fixed:
+  - Edit had a Type row opening "Change the type", and saving another type started the habit over (A68: a habit keeps
+    its type). The row, the page (`TypePage`), `changeType`, `typeChanged`, the Start over question and Today's "Old
+    Water is in Archived habits" snackbar are deleted; habits started over before A68 keep their linked pages
+    (`HabitStore.startOver` stays for them and their tests).
+  - The form opened with a Preview card and "Enter a habit name to see the preview." (A64): deleted.
+  - Groups were on the form (a Group row and its page, with New group): deleted (A64, "Groups are gone"). Saving no
+    longer changes a habit's group, so one already in a group stays in it.
+  - Notes under the rows that Figma doesn't have ("It shows on Today under Quit or Cut Down…", "The counter runs from
+    here…", the start date's and end date's lines, "Tasks don't have progress or stats."): deleted; the footers are
+    Figma's (Body Small On surface variant, 16 in, 8 under).
+  - The titles were "New Habit", "Task", "Quit" and "Cut down"; now "New habit" and "New task".
+  - Add was a hand-drawn pill in ink; now the Filled Small button, disabled until there's a name.
+  - A quit habit had no description; now it has one, as Figma.
+  - Values said "Set" and "Add"; now "Not set yet" and "None yet". How much says what one tap adds ("8 glasses · each
+    tap adds 1"). Days say "Wed, 2 Sep" (and "Today · Fri, 23 Oct" for a task), "Time of Day" is "Time of day".
+  - Icon and Colour were 32 with 12 between; now 40 and 8, as Figma's one-line List item. The rows, field and halves
+    take Surface bright (`OpenRow` and `FormField` gained a colour), the page Surface container.
+  - Ends showed ›; now ▾, as it opens a menu.
+  - Tests: HabitFormTest's two type-change tests are replaced by Edit's (no Type, Group or preview; leaving with
+    changes asks) and a New habit test of Figma's rows, Add's quiet and ready states and the quit footer; How long's
+    test reads "Not set yet".
+  Noted, not changed:
+  - **Tell me at milestones** (a quit or cut-down habit's switch, with its notes) isn't on Figma's form, but How
+    milestones work says "Tell me at milestones, on the habit’s form, also sends a notification". It turns milestone
+    notifications on, so it stays at the end of those forms until the user says where it goes (held).
+  - **When you tap +** (Track an amount) stays on the form for now: Figma moves it to How much ("When you log it"),
+    built with 5.7.9, where it goes then.
+  - **Repeat** (Never | On a schedule) stays first in the task form: Figma chooses it before the form, on What kind of
+    task? (5.7.14), where it goes then.
+  - Figma's Edit notes say a name over 24 characters shows a snackbar; the form keeps its line under the field (U6)
+    for now.
+  - Groups are still on Today's filter and Progress (`FilterAndGroups.kt`, `Progress.kt`); A64 says they're gone. That is
+    cleanup item 6.4, after every page is built.

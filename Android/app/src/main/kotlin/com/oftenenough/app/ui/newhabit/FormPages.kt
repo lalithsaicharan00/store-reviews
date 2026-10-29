@@ -628,25 +628,6 @@ fun NewSectionDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String)
     if (picking) MinuteDialog(start, { picking = false }) { start = it }
 }
 
-// ------------------------------------------------------------------ Group
-
-@Composable
-fun GroupPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
-    var adding by remember { mutableStateOf(false) }
-    FormPage("Group", chip = null, onBack = onBack) {
-        val groups = store.groups
-        SegmentedList {
-            val count = groups.size + 1
-            RadioRow("None", form.groupId == null, 0, count, "group-none") { form.groupId = null }
-            groups.forEachIndexed { i, g -> RadioRow(g.name, form.groupId == g.id, i + 1, count, "group-${g.name}") { form.groupId = g.id } }
-        }
-        Note("A habit can be in one group at a time. Groups change only what Today and Progress show.")
-        Spacer(Modifier.height(16.dp))
-        SegmentedList { AddRow("New group", 0, 1, "new-group") { adding = true } }
-    }
-    if (adding) NewGroupDialog(store, { adding = false }) { form.groupId = it }
-}
-
 /** "Get reminders on time" (design §15): why exact times matter, then Android's own Alarms & reminders page. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -674,35 +655,6 @@ fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
             AppButton("Not now", onDismiss, Modifier.semantics { testTag = "exact-times-not-now" }, style = ButtonStyle.Text)
         }
     }
-}
-
-/** "New group": put habits together, then filter Today and Progress by group. */
-@Composable
-fun NewGroupDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -> Unit) {
-    var name by remember { mutableStateOf("") }
-    val clean = TextLimit.clean(name, TextLimit.GROUP)
-    val exists = store.groups.any { it.name.equals(clean, ignoreCase = true) }
-    AlertDialog(onDismiss, icon = { Icon(Symbols.CreateNewFolder, null) }, title = { Text("New group") }, containerColor = appColors.menu,
-        text = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Put habits together, then filter Today and Progress by group.", textAlign = TextAlign.Center, color = appColors.secondary)
-                Spacer(Modifier.height(16.dp))
-                OutlinedTextField(name, { name = it.take(TextLimit.GROUP) }, label = { Text("Name") }, singleLine = true,
-                    supportingText = { Text(if (exists) "There's a group with that name." else "${name.length}/${TextLimit.GROUP}", Modifier.fillMaxWidth(), textAlign = TextAlign.End) },
-                    modifier = Modifier.fillMaxWidth().semantics { testTag = "group-name" },
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = appColors.ink, focusedLabelColor = appColors.ink, cursorColor = appColors.ink))
-            }
-        },
-        confirmButton = {
-            AppButton("Create", {
-                val used = store.groups.map { it.color }.toSet()
-                val g = HabitGroup(name = clean, color = HabitColor.entries.firstOrNull { it !in used } ?: HabitColor.BLUE)
-                store.saveGroup(g)
-                onAdded(g.id)
-                onDismiss()
-            }, enabled = clean.isNotEmpty() && !exists, tag = "group-add")
-        },
-        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) })
 }
 
 // ------------------------------------------------------------------ Reminders

@@ -67,25 +67,6 @@ import kotlinx.coroutines.launch
 
 // ------------------------------------------------------------------ 6.3 · Change the type
 
-/**
- * Change the type (Figma 6.3, 6.4.1), from Edit: the same choices as New habit, the current one outlined and saying
- * "Current type". A build habit chooses among the four ways to track; a quit or cut-down habit between Quit and Cut down.
- * Choosing another returns to the form, already showing it; saving then asks before starting over (6.3.1).
- */
-@Composable
-fun TypePage(form: FormState, onBack: () -> Unit) {
-    val current = form.original?.let { ItemType.of(it) } ?: form.type
-    val types = if (current == ItemType.QUIT || current == ItemType.CUT_DOWN) listOf(ItemType.QUIT, ItemType.CUT_DOWN)
-        else listOf(ItemType.CHECK, ItemType.AMOUNT, ItemType.TIME, ItemType.CHECKLIST)
-    BackHandler(onBack = onBack)
-    ChoicePage("Change the type", close = false, onBack = onBack) {
-        types.forEachIndexed { i, t ->
-            ChoiceCard(icon(t), t.title, if (t == current) "Current type" else t.summary, t.example, i, types.size, "type-${t.name.lowercase()}",
-                outlined = t == form.type) { form.changeType(t); onBack() }
-        }
-    }
-}
-
 // ------------------------------------------------------------------ 5 · Add a 6th habit
 
 /**
