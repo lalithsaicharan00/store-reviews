@@ -28,7 +28,6 @@ import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,12 +38,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -64,8 +61,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -414,11 +409,6 @@ private fun habitSections(store: HabitStore, active: List<Habit>, paused: List<H
     return out.filter { it.habits.isNotEmpty() }
 }
 
-@Composable
-internal fun SectionTitle(text: String, first: Boolean) =
-    Text(text, Modifier.padding(start = 16.dp, top = if (first) 8.dp else 24.dp, bottom = 8.dp).semantics { testTag = "habits-section-$text" },
-        style = AppType.bodyMedium, color = appColors.secondary)
-
 /** A habit's ⋮ (A54): Edit habit, Pause… or Resume, then Archive and Delete (red). */
 @Composable
 private fun HabitMenuItems(
@@ -442,19 +432,6 @@ internal fun ArchivedRow(count: Int, enabled: Boolean, noun: String = "habit", o
     AppListItem("Archived", 0, 1, Modifier.semantics(mergeDescendants = true) {}, if (count == 1) "1 $noun" else "$count ${noun}s",
         leading = { Icon(Symbols.Inventory2, null) }, trailing = { ListChevron() }, onClick = onClick, enabled = enabled,
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = "habits-archived")
-
-@Composable
-fun BarAction(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, enabled: Boolean, tag: String, onClick: () -> Unit, danger: Boolean = false) {
-    val c = appColors
-    val color = (if (danger) c.error else c.ink).let { if (enabled) it else it.copy(alpha = 0.38f) }
-    Column(Modifier.clip(RoundedCornerShape(16.dp)).clickable(enabled = enabled, role = Role.Button, onClick = onClick)
-        .semantics(mergeDescendants = true) { testTag = tag }.widthIn(min = 64.dp).padding(horizontal = 8.dp, vertical = 6.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Icon(icon, null, tint = color)
-        Spacer(Modifier.height(4.dp))
-        Text(text, style = AppType.labelMedium, color = color)
-    }
-}
 
 /**
  * 5.5.3, **Search page** (Figma 991:8050, Screen Start · Results · No match · Tasks only, each with the keyboard down;

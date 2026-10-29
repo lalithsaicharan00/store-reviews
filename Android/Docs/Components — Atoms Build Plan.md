@@ -138,7 +138,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☑ |
 | 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☑ |
 | 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☑ |
-| 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☐ |
+| 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☑ |
 | 5.6.1 | Details pages · Habit details page | 1020:4052 | ☐ |
 | 5.6.2 | Details pages · Streaks page | 1034:74 | ☐ |
 | 5.6.3 | Details pages · All milestones page | 1036:235 | ☐ |
@@ -187,8 +187,10 @@ reminder, sync or backup does (the build prompt's rule).
 The user, 29 Oct 2026: "whatever we have Figma, that is the final thing … If something we don't have in the Figma, then
 it definitely means it has to be deleted." Each row settles what earlier entries left under "Noted, not changed" on a
 page already built, by Figma: what the app has and Figma doesn't is deleted (code, route, tests); where they differ,
-Figma's. Saved data is never deleted with a screen (the D rules). Done one at a time, like a component, **before
-5.5.6**; pages not built yet (5.5.6 onwards) follow A77 as they're built. Checked against the whole file on 29 Oct (a
+Figma's. Saved data is never deleted with a screen (the D rules). Done one at a time, like a component, **after
+every page in section 5 is built** (the user, 29 Oct 2026: "once everything implementation is done, clean up the old
+things"); pages not built yet (5.5.6 onwards) follow A77 as they're built. Anything genuinely unclear is held for the
+user, not guessed. Checked against the whole file on 29 Oct (a
 search of every page's text).
 
 | # | What goes or changes (Figma) | Status |
@@ -2002,4 +2004,44 @@ What each atom changed, newest last.
   Noted, not changed:
   - The snackbar no longer says where a restored task went (Today or under its day on Tasks); Figma says "restored"
     only.
+  - **Built:** run 40829236155 (Android #142, commit 9d8320e) passed: assembleDebug, unit tests and lint.
+
+- **5.5.6 Habits & Tasks · Completed tasks page (29 Oct).** Figma: Completed tasks page (1002:230), Screen Completed ·
+  Menu open · Open again · Nothing completed · Deleted, and the habits & tasks flows "Completed tasks: by the day they
+  were done" and "The top bar's ⋮: Delete all completed". From Tasks › Completed: the Top app bar (←, "Completed tasks",
+  ⋮ with Delete all completed) on Surface container; content 16 at the sides, 8 above, 40 under, 24 between days; each
+  day's subheader ("Today", "Thu, 22 Oct") in Label Large Primary, 16 in, 8 over one rounded list of two-line List items
+  2 apart on Surface bright (icon in its colour, the name, "Done 9:12 AM", "· planned for Wed" or a repeating task's
+  "· every day", ⋮ with Mark as not done and Delete); Mark as not done says "… is open again" with Undo; Delete all
+  completed asks "Delete 14 completed tasks?" ("They go for good, with their notes. Tasks still to do and repeating
+  tasks stay.", Cancel | Delete) and says "14 completed tasks deleted" with Undo; nothing completed: the Empty state
+  (task_alt), no ⋮. It is `CompletedTasksScreen` (`habit/CompletedTasks.kt`), on the List item (2.4), Menu (2.5),
+  Dialog (5.3.4) and Empty state atoms. The app, the unit tests (55), lint and the instrumented tests' code build in
+  the session.
+  Fixed:
+  - The title was "Completed"; now "Completed tasks".
+  - Search (its own header) and selecting several (a long press, Select all, a bottom bar with Delete) are gone (A55,
+    A77); the page's one action is ⋮ › Delete all completed, as Figma.
+  - The intro line ("Every task you finish, by the day you did it …") is gone: Figma has none.
+  - Day headings said "Yesterday" and "Thursday, 22 Oct" in Body Medium grey; now "Today" or "Thu, 22 Oct" in Label
+    Large Primary, 8 above the list and 24 between days.
+  - Rows were the Tasks page's task row (Surface container lowest, done names grey); now the List item on Surface
+    bright with the name in On surface, as Figma draws them.
+  - The line said "Done 6:40 PM · for 21 Oct"; now "· planned for Wed" (the weekday within a week, "d MMM" beyond), and
+    a repeating task's rhythm ("· every day").
+  - A row's ⋮ had Mark as not done only; now Mark as not done and Delete (red), Delete asking first (D9).
+  - Mark as not done said "… is back in Today" / "… back under No date"; now "… is open again", as Figma's Open again.
+  - The empty page was its own column with "Tasks you finish are kept here, by the day you did them."; now the Empty
+    state with Figma's "Tasks you tick off on Today come here when the day ends."
+  - `TaskRow` lost its selecting state (Completed was its last user); `SectionTitle` and `BarAction` (Habits page) had
+    no users left and are deleted.
+  - Tests: TasksPageTest's completed test reads the new title and snackbar; a new test checks Delete all completed asks
+    first and keeps everything while Undo shows.
+  Noted, not changed:
+  - **Held for the user:** a repeating task's row has no Delete. Figma draws the menu only on a one-time task, and
+    deleting from one done time would delete the whole repeating task with its history; Mark as not done is there.
+  - Figma doesn't say how far back "planned for Wed" names a weekday; within a week it does, beyond that "d MMM".
+  - A day in another year adds its year ("Thu, 22 Oct 2025"); Figma draws only this year.
+  - Figma's description of this component is a copy of Archived habits' (it describes the archived page); its Code
+    line is added after it, as the build prompt says to change nothing else.
 

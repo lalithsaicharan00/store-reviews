@@ -23,6 +23,7 @@ import com.oftenenough.app.app.TestLaunch
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.NO_DATE_DAY
 import com.oftenenough.app.data.doneEntry
+import com.oftenenough.app.data.isOneTimeTask
 import com.oftenenough.app.data.taskDay
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -37,7 +38,7 @@ import org.junit.runner.RunWith
  * Habits & Tasks' Tasks tab (5.5.4, Figma 999:1061; A55, A58), on the design's own tasks (`demo tasks`): the One-time
  * tab's days (carried first, done today at the end, No date last) and the Repeating tab's lines; a row's ⋮ (Move to
  * another day… opening the date picker at once, Do today, Skip this time with Undo, Delete only once Undo has gone, D6);
- * a still hold doing nothing; the page's search with its groups and Add; Completed's Mark as not done; Archived tasks'
+ * a still hold doing nothing; the page's search with its groups and Add; Completed's Mark as not done and Delete all completed; Archived tasks'
  * Restore; a new task with No date; the menu's count. Test launches only (D8) at 10:30 (T11); a failure says what was on
  * screen (T14).
  */
@@ -216,13 +217,31 @@ class TasksPageTest {
     @Test fun completedTakesATaskBackAndUndoKeepsItDone() {
         launch()
         tapTag("tasks-completed")
-        waitFor(hasText("Every task you finish, by the day you did it. To bring one back, use its ⋮ menu."), "Completed's note")
+        waitFor(hasText("Completed tasks"), "Completed tasks")
         tapTag("tasks-row-more-Send the parcel")
         here("completed-menu-not-done")
-        waitFor(hasText("Send the parcel is back in Today"), "the snackbar")
+        waitFor(hasText("Send the parcel is open again"), "the snackbar")
         assertNull(store.doneEntry(task("Send the parcel")))
         undo()
         waitUntil("done again") { store.doneEntry(task("Send the parcel")) != null }
+    }
+
+    /** Completed tasks' one page-wide action (Figma 1002:230): asked first, deleted only once Undo has gone (D6, D9). */
+    @Test fun deleteAllCompletedAsksAndUndoKeepsThem() {
+        launch()
+        tapTag("tasks-completed")
+        waitFor(hasTestTag("completed-list"), "Completed tasks")
+        val done = store.habits.filter { it.isOneTimeTask && store.doneEntry(it) != null && !it.archived }.map { it.id }
+        assertTrue("the demo has completed one-time tasks", done.isNotEmpty())
+        tapTag("completed-more")
+        here("completed-delete-all")
+        waitFor(hasText("completed task", substring = true), "the question")
+        tapTag("delete-confirm")
+        waitFor(hasTestTag("completed-empty").or(hasText("deleted", substring = true)), "the snackbar")
+        assertTrue("kept while Undo shows", done.all { id -> store.habits.any { it.id == id } })
+        undo()
+        waitFor(hasTestTag("tasks-row-Send the parcel"), "the tasks back")
+        assertTrue("nothing deleted", done.all { id -> store.habits.any { it.id == id } })
     }
 
     @Test fun archivedTasksRestoreWithUndo() {

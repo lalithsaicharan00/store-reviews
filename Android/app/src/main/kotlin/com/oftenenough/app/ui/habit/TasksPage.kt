@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
@@ -59,7 +58,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
@@ -225,7 +223,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
                                 val kind = when { t.isRepeatingTask -> RowKind.REPEATING; done -> RowKind.DONE; t.dueDay == NO_DATE_DAY -> RowKind.NO_DATE; else -> RowKind.ONE_TIME }
                                 val line = if (t.isRepeatingTask) store.repeatingLine(t, today)
                                     else store.oneTimeLine(t, today).ifEmpty { if (t.dueDay == NO_DATE_DAY) "No date" else "" }
-                                TaskRow(t, listOf(line).filter { it.isNotEmpty() }, done, i, sec.tasks.size, false, false, { nav.open(t) }, {},
+                                TaskRow(t, listOf(line).filter { it.isNotEmpty() }, done, i, sec.tasks.size, { nav.open(t) }, {},
                                     { task, dismiss -> rowMenu(task, kind, dismiss) },
                                     drag = if (sec.drag && !done) sec.tasks.filter { store.doneEntry(it) == null }.map { it.id } else null,
                                     onDrop = { ids -> store.reorder(ids) })
@@ -298,7 +296,7 @@ private fun repeatingSections(repeating: List<Habit>): List<TaskSection> =
     TaskRhythm.entries.mapNotNull { r -> repeating.filter { taskRhythm(it.frequency) == r }.takeIf { it.isNotEmpty() }?.let { TaskSection("r-" + r.name, r.title, it) } }
 
 /**
- * One task (Figma's task row, 5.5.4): its icon in its colour (a check mark when selected, Completed's selecting), its name
+ * One task (Figma's task row, 5.5.4): its icon in its colour, its name
  * in Title Medium (On surface variant once done), its lines in Body Medium On surface variant, and ⋮. With [drag] (its
  * day's open tasks, in order), touch and hold lifts it to move within its day; let go without moving and [onLongClick]
  * runs. It looks like the List item atom (2.4: Surface container lowest, its corners) but keeps its own gestures, because
@@ -307,7 +305,7 @@ private fun repeatingSections(repeating: List<Habit>): List<TaskSection> =
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TaskRow(
-    task: Habit, lines: List<String>, done: Boolean, index: Int, count: Int, selecting: Boolean, marked: Boolean,
+    task: Habit, lines: List<String>, done: Boolean, index: Int, count: Int,
     onClick: () -> Unit, onLongClick: () -> Unit, menu: (@Composable (Habit, () -> Unit) -> Unit)?,
     drag: List<String>? = null, onDrop: (List<String>) -> Unit = {},
 ) {
@@ -349,20 +347,15 @@ internal fun TaskRow(
     }
     Box(Modifier.graphicsLayer { translationY = if (lifted) dy else 0f }.let { if (lifted) it.shadow(8.dp, segmentShape(index, count)) else it }) {
         Row(
-            Modifier.padding(bottom = SegmentedListGap).fillMaxWidth().clip(segmentShape(index, count)).background(if (marked) c.tonal else MaterialTheme.colorScheme.surfaceContainerLowest)
+            Modifier.padding(bottom = SegmentedListGap).fillMaxWidth().clip(segmentShape(index, count)).background(MaterialTheme.colorScheme.surfaceContainerLowest)
                 .onSizeChanged { height = it.height.coerceAtLeast(1) }
                 .then(dragModifier)
-                .combinedClickable(onClick = { if (android.os.SystemClock.uptimeMillis() > heldUntil) onClick() }, onLongClick = if (drag == null) onLongClick else null, role = if (selecting) Role.Checkbox else Role.Button)
-                .semantics(mergeDescendants = true) {
-                    testTag = "tasks-row-" + task.name
-                    if (selecting) stateDescription = if (marked) "Selected" else "Not selected"
-                }
+                .combinedClickable(onClick = { if (android.os.SystemClock.uptimeMillis() > heldUntil) onClick() }, onLongClick = if (drag == null) onLongClick else null, role = Role.Button)
+                .semantics(mergeDescendants = true) { testTag = "tasks-row-" + task.name }
                 .heightIn(min = 72.dp).padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (marked) Box(Modifier.size(40.dp).clip(CircleShape).background(c.ink), contentAlignment = Alignment.Center) {
-                Icon(Symbols.Check, null, Modifier.size(20.dp), tint = c.onInk)
-            } else HabitIcon(task.symbol, task.color)
+            HabitIcon(task.symbol, task.color)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp)) {
                 Text(task.name, style = AppType.titleMedium, color = if (done) c.secondary else c.ink)
