@@ -1,5 +1,8 @@
 package com.oftenenough.app.ui.today
 
+import kotlin.math.roundToInt
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.draw.clipToBounds
 import com.oftenenough.app.ui.theme.Symbols
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -79,7 +82,7 @@ fun bandInk(color: HabitColor): Color {
  * the habit's colour at 22 %, a 16 dp medal 72 dp in (under the name), and "60 days in a row · reached today" in the
  * colour's dark shade; See › at the end for a pop-up's band reached away (A.1). Tapping it opens the pop-up.
  *
- * [raw]: where R.1's 2.6 s timeline is (1 at rest): the band rises from 0.46 s, the medal spins in, the words slide in,
+ * [raw]: where R.1's 2.6 s timeline is (1 at rest): the band opens from 0.42 s, the medal spins in, the words slide in,
  * a sheen and two sparkles. [early]: played on its own (reached away, A.1), from the start.
  */
 @Composable
@@ -90,11 +93,18 @@ fun MilestoneBand(text: String, color: HabitColor, see: Boolean, raw: Float, ear
     val density = LocalDensity.current
     // Played on its own, the band starts at once: R.1's band timings moved 0.46 s earlier.
     val t = if (early) (raw + 0.177f).coerceAtMost(1f) else raw
-    val y = track(t, Key(0f, 10f), Key(0.177f, 10f, Arrive), Key(0.285f, 0f))
-    val a = track(t, Key(0f, 0f), Key(0.177f, 0f, EaseOut), Key(0.231f, 1f))
+    // Figma's Row band (Milestone · Motion): the band opens from nothing to its height (0.42–0.80 s, emphasized
+    // decelerate) and fades in (0.46–0.62 s), so the row grows instead of jumping.
+    val open = track(t, Key(0f, 0f), Key(0.1615f, 0f, Arrive), Key(0.3077f, 1f))
+    val a = track(t, Key(0f, 0f), Key(0.177f, 0f, EaseOut), Key(0.2385f, 1f))
     Row(
-        Modifier.fillMaxWidth().heightIn(min = 32.dp)
-            .graphicsLayer { translationY = y * density.density; alpha = a }
+        Modifier.fillMaxWidth().clipToBounds()
+            .layout { measurable, constraints ->
+                val p = measurable.measure(constraints)
+                layout(p.width, (p.height * open).roundToInt()) { p.place(0, 0) }
+            }
+            .heightIn(min = 32.dp)
+            .graphicsLayer { alpha = a }
             .background(base.copy(alpha = if (c.dark) 0.30f else 0.22f))
             .drawWithContent {
                 drawContent()

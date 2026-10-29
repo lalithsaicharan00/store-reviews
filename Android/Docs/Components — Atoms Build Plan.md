@@ -115,7 +115,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.2.1 | Today · Navigation drawer | 626:76 | ☑ |
 | 5.2.2 | Today · Today | 728:7985 | ☑ |
 | 5.2.3 | Today · Edit Today | 827:39487 | ☑ |
-| 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☐ |
+| 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☑ |
 | 5.3.1 | Day details · Day details sheet | 669:234 | ☐ |
 | 5.3.2 | Day details · Log screen | 687:829 | ☐ |
 | 5.3.3 | Day details · All logs screen | 694:607 | ☐ |
@@ -1492,3 +1492,23 @@ What each atom changed, newest last.
   - Sort by reminder time and Sort A to Z (the old ⋮) aren't in Figma, so they're gone from the screen; their helpers
     (`sortedByName`, `sortedByReminder`) stay, as a unit test covers the first. The user's call to bring sorting back.
   - The paused rows no longer say when they come back ("Back on …"); Figma says "Paused". Today's paused rows still do.
+  - **Built:** run 40797496814 (Android #126, commit 3cc6ab0) passed: assembleDebug, unit tests and lint.
+- **5.2.4 Today · Milestone · Motion (29 Oct).** Figma: Milestone · Motion (853:45982), Kind Bar · Pop-up · Row band,
+  motion only; 25 instances. Checked keyframe by keyframe against the code:
+  - **Bar:** rises 24 and fades in, then stays 5 s: Today's `AnimatedVisibility` on Material's fast springs (4.8);
+    the 5 s (longer when the phone asks for more time) is the bar's own.
+  - **Pop-up:** the scrim to 32 % and the sheet sliding up (380 ms, emphasized decelerate) are Material's
+    `ModalBottomSheet`'s own (4.12); everything inside follows Figma to the millisecond (4.12).
+  - **Row band** (a milestone reached by a tap in the row, `MilestoneBand` and `milestoneBurst` in
+    `today/MilestoneViews.kt`): the medal's spin and pop, the words, the sheen, both sparkles, the burst ring and its
+    eight dots, 12 ms apart, all match Figma's 2 s loop on the code's 2.6 s timeline, ms for ms; the row's own fill,
+    count roll, button press and after-log buttons are the Habit row's (4.1).
+  The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The band slid 10 dp into a row that had already grown by its full height, and was in by 600 ms; now it opens
+    from nothing to its height (420–800 ms, emphasized decelerate) and fades in over 460–620 ms, so the row grows
+    smoothly, as drawn.
+  Noted, not changed:
+  - The band opening changes the row's height while it plays (one row, under a second); the rest of the moment is
+    drawn without layout (S3, S6).
+  - Section 5.2 (Today) is done.
