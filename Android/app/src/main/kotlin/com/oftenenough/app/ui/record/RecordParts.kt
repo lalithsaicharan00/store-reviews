@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.components.AppTimePicker
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonSize
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,15 +24,12 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +47,6 @@ import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.theme.appColors
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -192,15 +188,9 @@ fun DateTimeRows(
     if (pickTime) {
         val zone = ZoneId.systemDefault()
         val local = Instant.ofEpochMilli(time).atZone(zone)
-        val state = rememberTimePickerState(local.hour, local.minute, DayWords.is24Hour)
-        AlertDialog({ pickTime = false }, confirmButton = {
-            AppButton("OK", {
-                onTime(local.withHour(state.hour).withMinute(state.minute).withSecond(0).toInstant().toEpochMilli())
-                pickTime = false
-            }, Modifier.semantics { testTag = "picker-ok" }, style = ButtonStyle.Text)
-        }, dismissButton = { AppButton("Cancel", { pickTime = false }, style = ButtonStyle.Text) },
-            title = { Text("Select time", style = AppType.labelLarge, color = appColors.secondary) },
-            text = { Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { TimePicker(state) } })
+        AppTimePicker(local.hour, local.minute, { pickTime = false }) { h, m ->
+            onTime(local.withHour(h).withMinute(m).withSecond(0).toInstant().toEpochMilli())
+        }
     }
 }
 

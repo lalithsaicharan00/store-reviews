@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.AppTimePicker
 import com.oftenenough.app.ui.components.DayToggle
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
@@ -15,7 +16,6 @@ import com.oftenenough.app.ui.theme.AppType
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -34,7 +34,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,9 +43,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +55,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.ui.record.dayToUtcMs
 import com.oftenenough.app.ui.record.utcMsToDay
 import com.oftenenough.app.ui.theme.appColors
@@ -218,14 +214,7 @@ fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title:
     }
 }
 
-/** Android's time picker in a dialog: minutes of the day in and out. */
-@OptIn(ExperimentalMaterial3Api::class)
+/** The Time picker (5.3.5, [AppTimePicker]) with minutes of the day in and out. */
 @Composable
-fun MinuteDialog(minute: Int, onDismiss: () -> Unit, onPick: (Int) -> Unit) {
-    val state = rememberTimePickerState(minute / 60 % 24, minute % 60, DayWords.is24Hour)
-    AlertDialog(onDismiss, confirmButton = {
-        AppButton("OK", { onPick(state.hour * 60 + state.minute); onDismiss() }, Modifier.semantics { testTag = "time-ok" }, style = ButtonStyle.Text)
-    }, dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) },
-        title = { Text("Select time", style = AppType.labelLarge, color = appColors.secondary) },
-        text = { Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { TimePicker(state) } })
-}
+fun MinuteDialog(minute: Int, onDismiss: () -> Unit, onPick: (Int) -> Unit) =
+    AppTimePicker(minute / 60 % 24, minute % 60, onDismiss, okTag = "time-ok") { h, m -> onPick(h * 60 + m) }

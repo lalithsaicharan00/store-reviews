@@ -120,7 +120,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.2 | Day details · Log screen | 687:829 | ☑ |
 | 5.3.3 | Day details · All logs screen | 694:607 | ☑ |
 | 5.3.4 | Day details · Dialog | 702:618 | ☑ |
-| 5.3.5 | Day details · Time picker | 703:602 | ☐ |
+| 5.3.5 | Day details · Time picker | 703:602 | ☑ |
 | 5.3.6 | Day details · Date picker | 705:1025 | ☐ |
 | 5.3.7 | Day details · Timer screen | 705:7745 | ☐ |
 | 5.3.8 | Day details · Note screen | 765:1087 | ☐ |
@@ -1632,3 +1632,26 @@ What each atom changed, newest last.
   - Dialogs that hold a list or a field (Put in a group, Show habits by, New time of day, New group, Move to, the time
     pickers, Plus's own dialog) aren't this component; they keep their look until their own frames (5.3.5, 5.7, 5.9).
   - "Write to us" offers OK and Copy address, neither the Default nor the Destructive pair; kept as it is.
+  - **Built:** run 40801223299 (Android #131, commit 7e5f819) passed: assembleDebug, unit tests and lint.
+- **5.3.5 Day details · Time picker (29 Oct).** Figma: Time picker (703:602), with Label, Hours and Minutes as text
+  properties. Android's time picker in its typed mode, the one a log's Time field opens: corners 28, 24 in all round;
+  "Enter time" in Label Medium On surface variant, 16; the hours and minutes fields (96 × 72, corners 8, Surface
+  container highest, Display Medium On surface, the focused one outlined in Primary), ":" between them, AM / PM (52 ×
+  72, corners 8, 1 dp Outline, the chosen half Primary with On primary); 24; the clock icon (to the dial), Cancel and
+  OK in Text. It is `AppTimePicker` (`components/TimePickerDialog.kt`): Material 1.5's own `TimePickerDialog`, its
+  `DisplayModeToggle` and `TimeInput` (the dial, `TimePicker`, a tap away), on Surface bright. A log's Time
+  (`DateTimeRows`, `record/RecordParts.kt`) and every minute of the day the forms ask for (`MinuteDialog`,
+  `newhabit/FormParts.kt`: a task's time, a reminder, a time of day's start) open it. Tags `picker-ok` / `time-ok`
+  stay; HabitFormTest waits for "Enter time" (was "Select time"). The app, the unit tests (55) and the instrumented
+  tests' code build in the session.
+  Fixed:
+  - Both opened the dial (`TimePicker`) in a plain alert dialog, titled "Select time" in Label Large, with no way to
+    type; now the typed mode first, as Figma, with the clock icon to switch, in Material's own time picker dialog.
+  - The AM / PM chosen half was Material's Tertiary container; now Primary with On primary, as Figma (our scheme has no
+    hue for Tertiary). The typed fields are Surface container highest whether focused or not, On surface.
+  Noted, not changed:
+  - Figma sets the ":" in Display Medium so it fits the 72 dp field (Material's token is Display Large); Material's
+    `TimeInput` draws its own separator, kept as Material draws it.
+  - The dial isn't drawn in Figma; it keeps Material's colours, with the dialog's container and Figma's AM / PM.
+  - The description names Surface container high (Material's token); the frame is filled Surface bright, as the Dialog
+    (5.3.4); Surface bright used.
