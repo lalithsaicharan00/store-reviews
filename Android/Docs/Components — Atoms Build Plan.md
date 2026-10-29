@@ -2038,8 +2038,9 @@ What each atom changed, newest last.
   - Tests: TasksPageTest's completed test reads the new title and snackbar; a new test checks Delete all completed asks
     first and keeps everything while Undo shows.
   Noted, not changed:
-  - **Held for the user:** a repeating task's row has no Delete. Figma draws the menu only on a one-time task, and
-    deleting from one done time would delete the whole repeating task with its history; Mark as not done is there.
+  - ~~Held for the user: a repeating task's row has no Delete.~~ Settled the same day (A80): it has Delete, which
+    deletes the whole task, the question saying its progress goes too; added to Figma as Menu open · repeating and
+    Delete a repeating task.
   - Figma doesn't say how far back "planned for Wed" names a weekday; within a week it does, beyond that "d MMM".
   - A day in another year adds its year ("Thu, 22 Oct 2025"); Figma draws only this year.
   - Figma's description of this component is a copy of Archived habits' (it describes the archived page); its Code

@@ -79,7 +79,8 @@ private val dayMonth = DateTimeFormatter.ofPattern("d MMM", Locale.ENGLISH)
  * day's subheader ("Today", "Thu, 22 Oct") in Label Large Primary, 16 in, 8 above its rounded list of two-line List
  * items 2 apart on Surface bright: the task's icon in its colour, its name, "Done 9:12 AM" with "· planned for Wed" when
  * it was planned for another day, or "· every day" for a repeating task, and ⋮ with **Mark as not done** (Undo) and
- * **Delete** (red, asked first). A row opens its Task details. Delete all completed asks "Delete 14 completed tasks?"
+ * **Delete** (red, asked first; a repeating task goes whole, the question saying its progress goes too, A80). A row
+ * opens its Task details. Delete all completed asks "Delete 14 completed tasks?"
  * (Cancel | Delete) and says so with Undo; repeating tasks and tasks still to do stay. Nothing completed: the Empty
  * state (task_alt in its cookie), no ⋮. No search and no selecting several (A55).
  */
@@ -181,8 +182,8 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
                                         StandardIconButton(Symbols.MoreVert, "More for ${d.task.name}", { open = true }, Modifier.semantics { testTag = "tasks-row-more-" + d.task.name })
                                         AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
                                             AppMenuItem("Mark as not done", { open = false; notDone(d) }, icon = Symbols.Undo, tag = "completed-menu-not-done")
-                                            // A repeating task's Delete isn't drawn (Figma's menu is a one-time task's): held for the user.
-                                            if (d.task.isOneTimeTask) AppMenuItem("Delete", { open = false; deleting = listOf(d.task); deletingAll = false }, icon = Symbols.Delete, destructive = true, tag = "completed-menu-delete")
+                                            // A repeating task can be deleted here too, the whole task (the user, 29 Oct 2026, A80).
+                                            AppMenuItem("Delete", { open = false; deleting = listOf(d.task); deletingAll = false }, icon = Symbols.Delete, destructive = true, tag = "completed-menu-delete")
                                         }
                                     }
                                 },
@@ -204,8 +205,12 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
                 one -> "Delete 1 completed task?"
                 else -> "Delete ${list.size} completed tasks?"
             },
-            (if (one) "It goes for good, with its notes." else "They go for good, with their notes.") +
-                if (deletingAll) " Tasks still to do and repeating tasks stay." else "",
+            when {
+                // A repeating task goes whole: every time it was done, with its notes (A80).
+                !deletingAll && !list[0].isOneTimeTask -> "It's a repeating task: it goes for good, with every time it was done and its notes. Its progress can't come back."
+                one -> "It goes for good, with its notes."
+                else -> "They go for good, with their notes."
+            } + if (deletingAll) " Tasks still to do and repeating tasks stay." else "",
             "Delete", { deleting = emptyList(); delete(list) }, { deleting = emptyList() },
             destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
     }
