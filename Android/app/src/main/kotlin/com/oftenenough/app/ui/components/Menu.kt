@@ -83,6 +83,7 @@ fun AppGroupedMenu(
  * - **[selected]:** for a menu of choices (Sort by, A notification or an alarm, Ends): Material's selectable item,
  *   the chosen one on Tertiary container (our Secondary container's grey) with 12 dp corners, read as a radio button.
  *   Null for an action.
+ * - **[supporting]:** a line under the label in Body Medium On surface variant ("In your notifications").
  *
  * Material leaves closing the menu to the caller, so [onClick] closes it as well as acting.
  */
@@ -96,9 +97,16 @@ fun AppMenuItem(
     enabled: Boolean = true,
     destructive: Boolean = false,
     selected: Boolean? = null,
+    supporting: String? = null,
     tag: String? = null,
 ) {
-    val label: @Composable () -> Unit = { Text(text, style = AppType.bodyLarge) }
+    val label: @Composable () -> Unit = {
+        if (supporting == null) Text(text, style = AppType.bodyLarge)
+        else androidx.compose.foundation.layout.Column {
+            Text(text, style = AppType.bodyLarge)
+            Text(supporting, style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
     val leading: (@Composable () -> Unit)? = icon?.let { { Icon(it, null, Modifier.size(MenuDefaults.LeadingIconSize)) } }
     val m = modifier.semantics { tag?.let { testTag = it } }
     val red = if (destructive) MaterialTheme.colorScheme.error else Color.Unspecified

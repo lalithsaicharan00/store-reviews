@@ -208,7 +208,7 @@ fun HelpPage(onBack: () -> Unit) {
     var open by rememberSaveable { mutableStateOf(emptySet<String>()) }
     var showAddress by remember { mutableStateOf(false) }
     val toggle: (String) -> Unit = { q -> open = if (q in open) open - q else open + q }
-    FormPage("Help & Feedback", chip = null, onBack = onBack) {
+    FormPage("Help & Feedback", onBack = onBack) {
         SearchBarField(query, { query = it }, "Search help", fieldTag = "help-search")
         Spacer(Modifier.height(16.dp))
         if (query.isBlank()) {
@@ -270,7 +270,7 @@ private val libraries = listOf(
 @Composable
 fun AboutPage(onLicences: () -> Unit, onBack: () -> Unit) {
     val c = appColors
-    FormPage("About", chip = null, onBack = onBack) {
+    FormPage("About", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -305,7 +305,7 @@ private fun TextCard(text: String) {
 /** Open source licences: each library's licence, in full words a person can read (Android's standard page). */
 @Composable
 fun LicencesPage(onBack: () -> Unit) {
-    FormPage("Open source licences", chip = null, onBack = onBack) {
+    FormPage("Open source licences", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         SegmentedList { libraries.forEachIndexed { i, (name, licence) -> ListRow(name, i, libraries.size, licence) } }
         Note("The Apache License 2.0 lets anyone use, change and share the software, keeping its copyright and licence notices. Its full text: apache.org/licenses/LICENSE-2.0. SQLite is in the public domain: anyone may use it for any purpose.")

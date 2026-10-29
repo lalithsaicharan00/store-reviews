@@ -72,7 +72,7 @@ import com.oftenenough.app.ui.theme.appColors
 /** ≡ › Day and Week: when the day starts, when the week starts, and how the clock is read. */
 @Composable
 fun DayAndWeekPage(store: HabitStore, onBack: () -> Unit) {
-    FormPage("Day and Week", chip = null, onBack = onBack) {
+    FormPage("Day and Week", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         DropdownRow("New day starts at", DayWords.clockMinute(store.dayEndHour * 60), Symbols.Update,
             (0..12).map { DayWords.clockMinute(it * 60) }, store.dayEndHour, "day-start") { store.setDayEnd(it) }
@@ -103,7 +103,7 @@ private fun InfoRow(icon: ImageVector, text: String, index: Int, count: Int) {
 /** ≡ › Appearance: the theme, done habits on Today, what happens when you tick, and timers. */
 @Composable
 fun AppearancePage(prefs: Prefs, onBack: () -> Unit) {
-    FormPage("Appearance", chip = null, onBack = onBack) {
+    FormPage("Appearance", onBack = onBack) {
         GroupTitle("Theme")
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             listOf(Triple("light", "Light", Symbols.LightMode), Triple("dark", "Dark", Symbols.DarkMode), Triple("system", "System default", null))
@@ -154,7 +154,7 @@ fun ToggleRow(title: String, icon: ImageVector?, checked: Boolean, index: Int, c
 @Composable
 fun TimesOfDayPage(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> Unit) {
     Box(Modifier.fillMaxSize()) {
-        FormPage("Times of Day", chip = null, onBack = onBack) {
+        FormPage("Times of Day", onBack = onBack) {
             Spacer(Modifier.height(8.dp))
             val timed = store.timedSections()
             SegmentedList {
@@ -192,7 +192,7 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         store.saveSections(plan.sections)
         onClose(subject.id)
     }
-    FormPage(if (existing == null) "New time of day" else "Edit time of day", chip = null, onBack = { onClose(null) }, close = true, actions = {
+    FormPage(if (existing == null) "New time of day" else "Edit time of day", onBack = { onClose(null) }, close = true, actions = {
         AppButton(if (existing == null) "Add" else "Save", { if (plan?.split.isNullOrEmpty()) save() else confirmSplit = true },
             Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null, tag = "section-save")
     }) {

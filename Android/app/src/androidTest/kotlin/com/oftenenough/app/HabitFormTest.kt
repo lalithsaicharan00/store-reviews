@@ -212,6 +212,25 @@ class HabitFormTest {
         waitFor(hasTestTag("how-often-row").and(hasContentDescription("times a week", substring = true)), "the form's row saying it")
     }
 
+    /**
+     * Reminders (5.7.8, Figma 1100:2996): off as every habit starts, saying what turning it on does; on, Remind me at with
+     * a time, How with its footer, and Reminder says. On the free plan, remind again is Plus (A73).
+     */
+    @Test fun remindersTurnOnWithFigmasGroups() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-check")
+        tapTag("reminders-row")
+        waitFor(hasText("Reminders are off. Turning on Remind me asks Android once if Often Enough may send notifications."), "the off footer")
+        tapTag("remind-me")
+        waitFor(hasText("Remind me at"), "Remind me at")
+        waitFor(hasTestTag("reminder-0"), "a time")
+        waitFor(hasText("Not sent on a day it’s already done."), "How's footer")
+        waitFor(hasText("Shown instead of the name when names are hidden outside the app."), "Reminder says' footer")
+        waitFor(hasTestTag("follow-up").and(hasContentDescription("Plus", substring = true)), "remind again marked Plus")
+    }
+
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
         launch()
         editWater()

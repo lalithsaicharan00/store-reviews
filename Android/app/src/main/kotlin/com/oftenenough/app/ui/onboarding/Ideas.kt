@@ -53,7 +53,7 @@ fun IdeaRow(idea: HabitIdea, index: Int, count: Int, onClick: () -> Unit) =
 /** Start from an idea (the Habits page): each row opens the habit form, filled in. */
 @Composable
 fun IdeasScreen(onBack: () -> Unit, onPick: (HabitIdea) -> Unit) {
-    FormPage("Start from an idea", chip = null, onBack = onBack) {
+    FormPage("Start from an idea", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         SegmentedList {
             HabitIdea.all.forEachIndexed { i, idea ->

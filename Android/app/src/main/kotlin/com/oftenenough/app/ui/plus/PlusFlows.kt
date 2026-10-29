@@ -99,7 +99,7 @@ fun GetPlusScreen(plus: PlusStore, nav: PlusFlowNav, onBack: () -> Unit) {
     when (step) {
         "pending" -> CenterScreen("Waiting for your payment", "Plus turns on as soon as Google Play confirms it.", "Close", "plus-pending", { nav.toPage() })
         "choose" -> Box(Modifier.fillMaxSize().background(c.screen)) {
-            FormPage("Get Plus", chip = null, onBack = onBack) {
+            FormPage("Get Plus", onBack = onBack) {
                 Spacer(Modifier.height(12.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
                     Row(Modifier.padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {

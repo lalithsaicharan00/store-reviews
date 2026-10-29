@@ -150,9 +150,9 @@ fun NewHabitFlow(
 
 /** Edit habit: the same form on a saved habit, every row as it is now; its type stays (A68). */
 @Composable
-fun EditHabitScreen(habitId: String, store: HabitStore, onClose: () -> Unit) {
+fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: () -> Unit, onClose: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onClose() }; return }
-    HabitForm(ItemType.of(habit), habit, store, null, onClose, { onClose() }, {})
+    HabitForm(ItemType.of(habit), habit, store, null, onClose, { onClose() }, onPlus)
 }
 
 /**
@@ -244,7 +244,7 @@ fun HabitForm(
         Page.OFTEN -> HowOftenPage(form, ::back)
         Page.TIME_OF_DAY -> TimeOfDayPage(form, store, ::back) { open(Page.NEW_PART) }
         Page.NEW_PART -> com.oftenenough.app.ui.settings.SectionEditorScreen(store, null) { id -> back(); id?.let { form.choose(it) } }
-        Page.REMINDERS -> RemindersPage(form, store, ::back)
+        Page.REMINDERS -> RemindersPage(form, store, ::back, onPlus)
         Page.ICON -> IconPage(form, ::back)
         Page.SIXTH -> SixthHabitPage(store, ::back, onMakeRoom = { open(Page.MAKE_ROOM) }, onPlus = onPlus, onBought = { pages = emptyList(); add() })
         Page.MAKE_ROOM -> MakeRoomPage(store, ::back) { pages = emptyList(); add() }

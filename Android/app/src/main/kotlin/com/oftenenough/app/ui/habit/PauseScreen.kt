@@ -90,7 +90,7 @@ fun PauseScreen(habitIds: List<String>, store: HabitStore, onClose: () -> Unit) 
     var picking by rememberSaveable { mutableStateOf<String?>(null) }
     val back = pauseBack(length, from, chosen)
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
-        FormPage(if (habits.size == 1) "Pause ${habit.name}" else "Pause ${habits.size} habits", chip = null, onBack = onClose, close = true) {
+        FormPage(if (habits.size == 1) "Pause ${habit.name}" else "Pause ${habits.size} habits", onBack = onClose, close = true) {
             GroupTitle("Pause until")
             SegmentedList {
                 RadioRow("1 week", length == PauseLength.WEEK, 0, 4, "pause-week", "Back ${DayWords.short(from + 7)}") { length = PauseLength.WEEK }

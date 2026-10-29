@@ -178,7 +178,7 @@ fun MakeRoomPage(store: HabitStore, onBack: () -> Unit, onRoom: () -> Unit) {
     // An archive or a delete leaves room: the new habit goes ahead.
     LaunchedEffect(store.canAddHabit) { if (store.canAddHabit) onRoom() }
     val habits = store.habits.filter { !it.archived && it.kind != HabitKind.Task }
-    FormPage("Make room", chip = null, onBack = onBack) {
+    FormPage("Make room", onBack = onBack) {
         Text("Archive or delete one of your ${habits.size} habits to add a new one.", Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
             style = AppType.bodyLarge, color = c.secondary)
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {

@@ -66,7 +66,7 @@ import com.oftenenough.app.ui.theme.appColors
 @Composable
 fun GroupsScreen(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> Unit) {
     val c = appColors
-    FormPage("Groups", chip = null, onBack = onBack) {
+    FormPage("Groups", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         SegmentedList {
             val n = store.groups.size + 1
@@ -108,7 +108,7 @@ fun GroupFormScreen(store: HabitStore, groupId: String?, onPause: (List<Habit>) 
             habits = base.habits.filter { it in archived } + candidates.map { it.id }.filter { it in chosen }))
         onClose()
     }
-    FormPage(if (original == null) "New group" else "Edit group", chip = null, onBack = onClose, close = changed, actions = {
+    FormPage(if (original == null) "New group" else "Edit group", onBack = onClose, close = changed, actions = {
         AppButton(if (original == null) "Add" else "Save", ::save, Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && !taken && changed,
             tag = "group-save")
     }) {

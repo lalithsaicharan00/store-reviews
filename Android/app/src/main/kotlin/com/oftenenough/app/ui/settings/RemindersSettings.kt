@@ -107,7 +107,7 @@ fun RemindersSettingsPage(store: HabitStore, onEdit: (Habit) -> Unit, onBack: ()
     val withReminders = habits.filter(::hasReminders)
     val without = habits.filter { !hasReminders(it) }
 
-    FormPage("Reminders", chip = null, onBack = onBack) {
+    FormPage("Reminders", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         if (missed != null) {
             val name = store.habit(missed.habitId)?.name

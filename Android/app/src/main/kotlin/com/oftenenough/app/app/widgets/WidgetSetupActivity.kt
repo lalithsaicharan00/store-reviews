@@ -103,7 +103,7 @@ class WidgetSetupActivity : ComponentActivity() {
         if (!store.isLoaded) { Box(Modifier.fillMaxSize().background(c.screen)); return }
         if (kind.plus && !store.isPlus && !withoutPlus) {
             Box(Modifier.fillMaxSize().background(c.screen)) {
-                FormPage(title, chip = null, onBack = onClose, close = true) {
+                FormPage(title, onBack = onClose, close = true) {
                     Spacer(Modifier.height(8.dp))
                     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(24.dp)) {
                         // Figma's Plus card heading: the Plus label (3.3), 8 before the title.
@@ -133,7 +133,7 @@ class WidgetSetupActivity : ComponentActivity() {
             return
         }
         Box(Modifier.fillMaxSize().background(c.screen)) {
-            FormPage(title, chip = null, onBack = onClose, close = true) {
+            FormPage(title, onBack = onClose, close = true) {
                 GroupTitle("Show")
                 if (kind.oneHabit) {
                     val habits = store.habits.filter { !it.archived && it.kind != HabitKind.Task }

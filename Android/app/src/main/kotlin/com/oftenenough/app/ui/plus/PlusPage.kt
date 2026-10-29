@@ -68,7 +68,7 @@ fun PlusPage(
     val say: (String) -> Unit = { m -> scope.launch { snackbar.showSnackbar(m) } }
     LaunchedEffect(restoreFoundNothing) { if (restoreFoundNothing) { dialog = "no-plus"; onRestoreDialogSeen() } }
 
-    FormPage("Plus", chip = null, onBack = nav::back) {
+    FormPage("Plus", onBack = nav::back) {
         Spacer(Modifier.height(8.dp))
         StateCard(hasPlus, store, onSeePlus = nav::seePlus)
         Spacer(Modifier.height(24.dp))

@@ -61,14 +61,11 @@ import java.util.Locale
 /** "12 Oct 2026": the date on a pill. */
 fun pillDate(day: Int): String = LocalDate.ofEpochDay(day.toLong()).format(DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault()))
 
-/**
- * A page the form opens: ← and its title, the habit's sentence as a chip (the same one the form shows, so the result of
- * each choice is read here), then its content. Back returns to the form, keeping what was chosen.
- */
+/** A page the form opens: ← (or ✕) and its title, then its content, 16 at the sides. Back returns to the form, keeping what was chosen. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormPage(
-    title: String, chip: String?, onBack: () -> Unit, close: Boolean = false, actions: @Composable () -> Unit = {},
+    title: String, onBack: () -> Unit, close: Boolean = false, actions: @Composable () -> Unit = {},
     scrolls: Boolean = true, content: @Composable ColumnScope.() -> Unit,
 ) {
     BackHandler(onBack = onBack)
@@ -84,21 +81,8 @@ fun FormPage(
         )
         val body = Modifier.fillMaxWidth().semantics { testTag = "page-body" }.let { if (scrolls) it.verticalScroll(rememberScrollState()) else it.weight(1f) }
         Column(body.padding(horizontal = 16.dp).navigationBarsPadding()) {
-            if (chip != null) SentenceChip(chip)
             content()
             Spacer(Modifier.height(24.dp))
-        }
-    }
-}
-
-/** The habit's sentence, pinned at the top of a page ("⚑ Every Mon, Wed and Fri"). */
-@Composable
-fun SentenceChip(text: String) {
-    Surface(Modifier.padding(top = 4.dp, bottom = 8.dp).semantics { testTag = "screen-sentence" }, shape = RoundedCornerShape(8.dp), color = appColors.tonal) {
-        Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(Symbols.Flag, null, Modifier.size(18.dp), tint = appColors.ink)
-            Spacer(Modifier.width(8.dp))
-            Text(text, style = AppType.labelLarge, color = appColors.ink)
         }
     }
 }

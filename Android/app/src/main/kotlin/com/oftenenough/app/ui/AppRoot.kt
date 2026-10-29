@@ -247,7 +247,7 @@ private fun AppMain(
                 title = "Restore a 6th habit")
         }
         composable("edit/{id}") { e ->
-            EditHabitScreen(e.arguments!!.getString("id")!!, store) { nav.popBackStack() }
+            EditHabitScreen(e.arguments!!.getString("id")!!, store, { nav.navigate(Routes.GET_PLUS) }) { nav.popBackStack() }
         }
         composable("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {

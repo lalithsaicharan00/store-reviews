@@ -210,30 +210,6 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
         return h
     }
 
-    /** The whole habit in one sentence: name, how much, how often and the parts of the day. */
-    fun sentence(): String {
-        if (type == ItemType.TASK && !taskRepeats && taskDate == com.oftenenough.app.data.NO_DATE_DAY) return trimmedName
-        if (type == ItemType.TASK && !taskRepeats) {
-            val day = when (taskDate) { store.today() -> "today"; store.today() + 1 -> "tomorrow"; else -> null }
-            return trimmedName + (day?.let { " $it" } ?: (" on " + com.oftenenough.app.data.DayWords.short(taskDate))) +
-                (if (taskHasTime) " at " + com.oftenenough.app.data.DayWords.clockMinute(taskMinute) else "")
-        }
-        val base = previewHabit().let { if (hasAmount && amountValue == null) it.copy(kind = HabitKind.Check, goal = 1.0) else it }
-        val text = HabitCopy.sentence(base.copy(name = trimmedName), store.weekStart)
-        if (type == ItemType.CUT_DOWN) return text
-        val parts = if (timesOfDay == listOf(DaySection.ANYTIME)) "anytime" else HabitCopy.join(timesOfDay.map { store.section(it).name.let { n -> if (n.lowercase() in setOf("morning", "afternoon", "evening", "night")) n.lowercase() else n } })
-        return "$text, $parts"
-    }
-
-    /** Before a name: only how much and how often; with one, the whole sentence (the pages' chip). */
-    fun chipText(): String {
-        if (trimmedName.isEmpty()) {
-            if (hasAmount && amountValue == null) return plan.often.label(true, weekStart = store.weekStart)
-            return HabitCopy.capitalized(HabitCopy.plan(previewHabit(), store.weekStart))
-        }
-        return sentence()
-    }
-
     // ------------------------------------------------------------------ Times of day and reminders
 
     fun choose(id: String) {

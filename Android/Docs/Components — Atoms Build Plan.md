@@ -152,7 +152,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.5 | Create new · Colour | 1074:161496 | ☑ |
 | 5.7.6 | Create new · How often page | 1075:161386 | ☑ |
 | 5.7.7 | Create new · Time of day page | 1098:2480 | ☑ |
-| 5.7.8 | Create new · Reminders page | 1100:2996 | ☐ |
+| 5.7.8 | Create new · Reminders page | 1100:2996 | ☑ |
 | 5.7.9 | Create new · How much page | 1102:2782 | ☐ |
 | 5.7.10 | Create new · Unit page | 1102:3316 | ☐ |
 | 5.7.11 | Create new · How long page | 1103:3208 | ☐ |
@@ -2371,6 +2371,7 @@ What each atom changed, newest last.
     they keep their options, now without titles.
   - The notes for months without a date ("Months without that date use their last day.") and the last-day and leap-year
     choices aren't drawn (no variant picks a 29th to 31st or 29 February); they stay for those days.
+  - **Built:** run 40941854863 (Android #160, commit 8851c69) passed: assembleDebug, unit tests and lint.
 
 - **5.7.7 Create new · Time of day page (29 Oct).** Figma: Time of day page (1098:2480), Option At set times of day ·
   Anytime, and the flow "Time of day: more than one, and a new one". From the form's Time of day. On Surface container:
@@ -2390,3 +2391,35 @@ What each atom changed, newest last.
   Noted, not changed:
   - Figma's chosen "At set times of day" is Title Medium, its unchosen one and every other Option Body Large; the app
     uses Body Large for both.
+
+- **5.7.8 Create new · Reminders page (29 Oct).** Figma: Reminders page (1100:2996), Reminders Off · On · On, menu
+  open · On, free plan, and the flows "Reminders: turned on", "notifications not allowed", "on time, on some phones".
+  From the form's Reminders. On Surface container: the Top app bar (← "Reminders"); groups 24 apart, 16 at the sides
+  and above, 40 under, each footer 8 under in Body Small On surface variant, rows on Surface bright. **Remind me**
+  (its switch; off: "Reminders are off. Turning on Remind me asks Android once if Often Enough may send
+  notifications."; refused: "Notifications are off for Often Enough, so reminders can’t come. Turning Remind me on asks
+  again."; once Android won't ask: "Android won’t ask again. To get reminders, allow notifications for Often Enough in
+  Settings." with Open settings). **Remind me at** (Label Large Primary): each time (schedule, Body Large, ✕) and + Add
+  a time. **How**: Remind me with (its menu: A notification, "In your notifications"; An alarm, "Rings until you stop
+  it") and If not done, remind again (Never, 15 or 30 min, an hour), then "Not sent on a day it’s already done."
+  **Reminder says (optional)** (chat_bubble): "Shown instead of the name when names are hidden outside the app." It is
+  `RemindersPage` (`newhabit/FormPages.kt`). The app, the unit tests (55), lint and the instrumented tests' code build
+  in the session.
+  Fixed:
+  - The page opened with the habit's icon and its sentence; Figma has neither: deleted, with the form pages' sentence
+    chip (`SentenceChip`, `FormState.sentence`, `chipText`) and the `chip` parameter every page passed as null.
+  - The footers were the app's own ("Reminders are off. Turn on Remind me to choose times …", "Notifications are off for
+    the app …", a long "A notification at 9:00 AM on planned days …" sentence, "Shown in this habit's reminders …");
+    now Figma's words. `FormOutcome.reminders` and its rules sentence are deleted.
+  - Remind me at and How were grey Label Large 24 above; now Label Large Primary, 8 over their rows, groups 24 apart.
+  - The times and Add a time were Title Medium; now Body Large, as Figma. Rows sit on Surface bright.
+  - **If not done, remind again is Plus (A73):** on the free plan the row carries the Plus label under Never and opens
+    Plus instead of its menu. A habit that already has a follow-up keeps it; reminders themselves are unchanged.
+  - The Remind me with menu's choices have their lines ("In your notifications", "Rings until you stop it");
+    `AppMenuItem` gained a supporting line.
+  - Edit habit's form had no way to Plus (an empty `onPlus`); it now opens Plus too.
+  - Tests: HabitFormTest turns reminders on and checks the off footer, Remind me at, a time, both footers and remind
+    again marked Plus.
+  Noted, not changed:
+  - Figma's free-plan row opens Plus with Reason=Remind me again; the Plus screen has no reasons yet (5.9.1), so it
+    opens the Plus screen as it is.

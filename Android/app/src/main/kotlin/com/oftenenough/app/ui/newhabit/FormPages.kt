@@ -126,7 +126,7 @@ import java.util.Currency
 @Composable
 fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
     val limit = form.type == ItemType.CUT_DOWN
-    FormPage(if (limit) "Limit" else "How much", chip = null, onBack = onBack) {
+    FormPage(if (limit) "Limit" else "How much", onBack = onBack) {
         val focus = remember { FocusRequester() }
         var focused by remember { mutableStateOf(false) }
         LaunchedEffect(Unit) { if (form.amountText.isEmpty()) runCatching { focus.requestFocus() } }
@@ -179,7 +179,7 @@ private fun oftenHeader(form: FormState): String {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HowLongPage(form: FormState, onBack: () -> Unit) {
-    FormPage("How long", chip = null, onBack = onBack) {
+    FormPage("How long", onBack = onBack) {
         val minutesFocus = remember { FocusRequester() }
         LaunchedEffect(Unit) { if (form.amountValue == null) runCatching { minutesFocus.requestFocus() } }
         GoalCard(oftenHeader(form)) {
@@ -258,7 +258,7 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     val known = groups.flatMap { it.second }.toSet()
     val used = store.habits.map { it.unit }.filter { it.isNotEmpty() && it !in known && it != "minutes" && it != "hours" }.distinct()
     fun pick(value: String) { form.unit = value; onBack() }
-    FormPage("Unit", chip = null, onBack = onBack) {
+    FormPage("Unit", onBack = onBack) {
         GroupTitle("Your own")
         SegmentedList {
             val count = 2 + used.size
@@ -298,7 +298,7 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
         list.add(to, list.removeAt(from))
         form.items = list
     }
-    FormPage("Steps", chip = null, onBack = onBack) {
+    FormPage("Steps", onBack = onBack) {
         SegmentedList {
             val items = form.items
             val count = items.size + 1
@@ -403,7 +403,7 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
         }
     }
 
-    FormPage("How often", chip = null, onBack = onBack) {
+    FormPage("How often", onBack = onBack) {
         Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             if (limit) {
                 Options(
@@ -589,7 +589,7 @@ fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew:
     val anytime = form.timesOfDay == listOf(DaySection.ANYTIME)
     // At set times of day, chosen before any time is ticked: the times show, waiting for one.
     var setTimes by remember { mutableStateOf(!anytime) }
-    FormPage("Time of day", chip = null, onBack = onBack) {
+    FormPage("Time of day", onBack = onBack) {
         val timed = store.sections.filter { !it.isAnytime }
         val showTimes = setTimes || !anytime
         SegmentedList(Modifier.padding(top = 16.dp, bottom = 16.dp)) {
@@ -637,18 +637,30 @@ fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
 // ------------------------------------------------------------------ Reminders
 
 /**
- * Reminders (Figma 2.1.6–2.1.6.4): the habit in a sentence; Remind me, off as every habit starts. Turning it on asks
- * Android for notifications the first time (its own dialog); not allowed, it goes back off and says how to allow them.
- * On: Remind me at (each time, ✕ to remove; Add a time opens the time picker at now), How (with what, and again if not
- * done), what will happen, and what the reminder says.
+ * 5.7.8, **Reminders page** (Figma 1100:2996, Reminders Off · On · On, menu open · On, free plan; flows "Reminders:
+ * turned on", "notifications not allowed", "on time, on some phones"; Components — Atoms Build Plan). From the form's
+ * Reminders. On Surface container: the Top app bar (← "Reminders"); groups 24 apart, 16 at the sides and above, 40
+ * under, each with its footer 8 under in Body Small On surface variant:
+ *
+ * - **Remind me**, off as every habit starts ("Reminders are off. Turning on Remind me asks Android once if Often
+ *   Enough may send notifications."). Turning it on asks Android for notifications the first time (its own dialog);
+ *   not allowed, it goes back off and says so ("… Turning Remind me on asks again."), and once Android won't ask
+ *   again, Open settings (U37, U40).
+ * - **Remind me at** (Label Large Primary): each time (schedule, the time in Body Large, ✕), and + Add a time
+ *   (Android's time picker at now).
+ * - **How**: Remind me with (A notification, "In your notifications" · An alarm, "Rings until you stop it") and If not
+ *   done, remind again (Never, every 15 or 30 min or every hour; Plus, A73: on the free plan it carries the Plus label
+ *   and opens Plus); "Not sent on a day it’s already done."
+ * - **Reminder says (optional)** (chat_bubble): "Shown instead of the name when names are hidden outside the app."
  */
 @Composable
-fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
+fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus: () -> Unit) {
     var editing by remember { mutableStateOf<String?>(null) }
     var adding by remember { mutableStateOf(false) }
     var refused by remember { mutableStateOf(false) }
     var canAskAgain by remember { mutableStateOf(false) }
     val context = androidx.compose.ui.platform.LocalContext.current
+    val s = MaterialTheme.colorScheme
     // Reminders turned on: Android's own question for notifications first, then exact times (A11 D1). Never in a test
     // launch: a system question stays over every later launch on that emulator (T18).
     var askExact by remember { mutableStateOf(false) }
@@ -668,68 +680,77 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
             else askExact = !com.oftenenough.app.app.reminders.Reminders.canBeExact(context)
         }
     }
-    FormPage("Reminders", chip = null, onBack = onBack) {
-        val habit = form.previewHabit()
-        Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-            com.oftenenough.app.ui.components.HabitIcon(habit.symbol, habit.color, 40.dp)
-            Spacer(Modifier.width(12.dp))
-            Text(if (form.trimmedName.isNotEmpty()) form.sentence() else form.chipText(), Modifier.semantics { testTag = "screen-sentence" },
-                style = AppType.titleMedium, color = appColors.ink)
-        }
-        SegmentedList {
-            SwitchRow("Remind me", form.remindOn, 0, 1, "remind-me") { on ->
-                form.remindOn = on
-                if (on) refused = false
-                if (on && (form.times.isEmpty() || !form.remindersEdited)) form.syncReminders(force = true)
-                if (on) turnedOn()
-            }
-        }
-        if (!form.remindOn) {
-            if (refused && canAskAgain) Note("Notifications are off for the app, so reminders can't come. Turn on Remind me to be asked again.")
-            else if (refused) {
-                Note("Notifications are off for the app, so reminders can't come. To get them, allow notifications in Settings.")
-                OpenSettingsButton(context)
-            } else Note("Reminders are off. Turn on Remind me to choose times; Android asks once if the app may send notifications.")
-        } else {
-            Text("Remind me at", Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
-            SegmentedList {
-                val count = form.times.size + 1
-                form.times.forEachIndexed { i, t ->
-                    AppListItem(DayWords.clockMinute(t.minute), i, count, leading = { Icon(Symbols.Schedule, null) }, onClick = { editing = t.id },
-                        tag = "reminder-$i", trailing = {
-                            StandardIconButton(Symbols.Close, "Remove the ${DayWords.clockMinute(t.minute)} reminder",
-                                { form.remindersEdited = true; form.times = form.times.filter { it.id != t.id } })
-                        })
+    @Composable fun Footer(text: String) = Text(text, Modifier.padding(horizontal = 16.dp).semantics { testTag = "reminders-footer" },
+        style = AppType.bodySmall, color = s.onSurfaceVariant)
+    @Composable fun Subheader(text: String) = Text(text, Modifier.padding(horizontal = 16.dp).semantics { heading() },
+        style = AppType.labelLarge, color = s.primary)
+    val bright = s.surfaceBright
+    FormPage("Reminders", onBack = onBack) {
+        Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                AppListItem("Remind me", 0, 1, trailing = { AppSwitch(form.remindOn) }, containerColor = bright, tag = "remind-me", onClick = {
+                    val on = !form.remindOn
+                    form.remindOn = on
+                    if (on) refused = false
+                    if (on && (form.times.isEmpty() || !form.remindersEdited)) form.syncReminders(force = true)
+                    if (on) turnedOn()
+                })
+                if (!form.remindOn) {
+                    if (refused && canAskAgain) Footer("Notifications are off for Often Enough, so reminders can’t come. Turning Remind me on asks again.")
+                    else if (refused) {
+                        Footer("Android won’t ask again. To get reminders, allow notifications for Often Enough in Settings.")
+                        OpenSettingsButton(context)
+                    } else Footer("Reminders are off. Turning on Remind me asks Android once if Often Enough may send notifications.")
                 }
-                AddRow("Add a time", form.times.size, count, "add-reminder") { adding = true }
             }
-            if (form.times.isNotEmpty()) {
-                Text("How", Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
-                SegmentedList {
-                    val rows = if (form.type != ItemType.CUT_DOWN) 2 else 1
-                    // An alarm rings on Android's alarm sound until it's answered; never a full screen (A11 D3).
-                    val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
-                    MenuRow("Remind me with", styles.first { it.first == form.alert }.second, styles.map { it.second }, 0, rows, "remind-with",
-                        listOf(Symbols.Notifications, Symbols.Alarm)) { form.alert = styles[it].first }
-                    if (form.type != ItemType.CUT_DOWN) {
-                        val options = listOf(null, 15, 30, 60)
-                        MenuRow("If not done, remind again", followWords(form.followUp), options.map { followWords(it) }, 1, rows, "follow-up") { form.followUp = options[it] }
+            if (form.remindOn) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Subheader("Remind me at")
+                    SegmentedList {
+                        val count = form.times.size + 1
+                        form.times.forEachIndexed { i, t ->
+                            AppListItem(DayWords.clockMinute(t.minute), i, count, leading = { Icon(Symbols.Schedule, null) }, onClick = { editing = t.id },
+                                containerColor = bright, headlineStyle = AppType.bodyLarge, tag = "reminder-$i", trailing = {
+                                    StandardIconButton(Symbols.Close, "Remove the ${DayWords.clockMinute(t.minute)} reminder",
+                                        { form.remindersEdited = true; form.times = form.times.filter { it.id != t.id } })
+                                })
+                        }
+                        AppListItem("Add a time", form.times.size, count, leading = { Icon(Symbols.Add, null) }, onClick = { adding = true },
+                            containerColor = bright, headlineStyle = AppType.bodyLarge, tag = "add-reminder")
                     }
                 }
-                Note(FormOutcome.reminders(form.previewHabit(), store, alarmsAvailable = true))
-                Spacer(Modifier.height(16.dp))
-                SegmentedList {
-                    Segment(0, 1) {
-                        Icon(Symbols.ChatBubble, null, tint = appColors.secondary)
-                        Spacer(Modifier.width(16.dp))
-                        BasicTextField(form.reminderWords, { form.reminderWords = it.take(TextLimit.REMINDER_TEXT) },
-                            Modifier.weight(1f).semantics { testTag = "reminder-says"; contentDescription = "Reminder says" },
-                            textStyle = AppType.bodyLarge.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-                            decorationBox = { inner -> Box { if (form.reminderWords.isEmpty()) Text("Reminder says (optional)", style = AppType.bodyLarge, color = appColors.secondary); inner() } })
+                if (form.times.isNotEmpty()) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Subheader("How")
+                        SegmentedList {
+                            val rows = if (form.type != ItemType.CUT_DOWN) 2 else 1
+                            // An alarm rings on Android's alarm sound until it's answered; never a full screen (A11 D3).
+                            val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
+                            MenuRow("Remind me with", styles.first { it.first == form.alert }.second, styles.map { it.second }, 0, rows, "remind-with",
+                                listOf(Symbols.Notifications, Symbols.Alarm), listOf("In your notifications", "Rings until you stop it")) { form.alert = styles[it].first }
+                            if (form.type != ItemType.CUT_DOWN) {
+                                val options = listOf(null, 15, 30, 60)
+                                // Remind again is Plus (A73): on the free plan the row opens Plus; one already set keeps working.
+                                MenuRow("If not done, remind again", followWords(form.followUp), options.map { followWords(it) }, 1, rows, "follow-up",
+                                    plus = !store.isPlus, onPlus = onPlus) { form.followUp = options[it] }
+                            }
+                        }
+                        Footer("Not sent on a day it’s already done.")
+                    }
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        SegmentedList {
+                            Segment(0, 1, color = bright) {
+                                Icon(Symbols.ChatBubble, null, tint = s.onSurfaceVariant)
+                                Spacer(Modifier.width(16.dp))
+                                BasicTextField(form.reminderWords, { form.reminderWords = it.take(TextLimit.REMINDER_TEXT) },
+                                    Modifier.weight(1f).semantics { testTag = "reminder-says"; contentDescription = "Reminder says" },
+                                    textStyle = AppType.bodyLarge.copy(color = s.onSurface), singleLine = true, cursorBrush = SolidColor(s.primary),
+                                    decorationBox = { inner -> Box { if (form.reminderWords.isEmpty()) Text("Reminder says (optional)", style = AppType.bodyLarge, color = s.onSurfaceVariant); inner() } })
+                            }
+                        }
+                        Footer(TextLimit.note(form.reminderWords, TextLimit.REMINDER_TEXT) ?: "Shown instead of the name when names are hidden outside the app.")
                     }
                 }
-                Note(TextLimit.note(form.reminderWords, TextLimit.REMINDER_TEXT)
-                    ?: "Shown in this habit's reminders. When names are hidden outside the app, it's shown instead of the name.")
             }
         }
     }
@@ -749,7 +770,7 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
             form.times = form.times.map { if (it.id == id) it.copy(minute = minute) else it }
         }
     }
-    // Add a time (Figma 2.1.6.2.1): Android's time picker, starting at now; OK adds it.
+    // Add a time: Android's time picker, starting at now; OK adds it.
     if (adding) {
         val now = java.time.LocalTime.now()
         MinuteDialog(now.hour * 60 + now.minute, { adding = false }) { picked -> form.addReminderAt(picked) }
@@ -757,17 +778,22 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
 }
 
 /**
- * A row whose value opens a menu (Figma 2.1.6.2's "How"): its title over the value, then ▾ (List item, 2.4). The menu
- * marks the value chosen (Menu item, Selected), each choice with its [icons] if it has them (A notification, An alarm).
+ * A row whose value opens a menu (Figma's Menu row): its title over the value, then ▾ (List item, 2.4), on Surface
+ * bright. The menu marks the value chosen (Menu item, Selected), each choice with its [icons] and [lines] if it has them.
+ * [plus]: a Plus feature on the free plan, the Plus label under the value, and a tap opens Plus instead (A73).
  */
 @Composable
-private fun MenuRow(title: String, value: String, options: List<String>, index: Int, count: Int, tag: String, icons: List<ImageVector>? = null, onPick: (Int) -> Unit) {
+private fun MenuRow(
+    title: String, value: String, options: List<String>, index: Int, count: Int, tag: String, icons: List<ImageVector>? = null,
+    lines: List<String>? = null, plus: Boolean = false, onPlus: () -> Unit = {}, onPick: (Int) -> Unit,
+) {
     var open by remember { mutableStateOf(false) }
     Box {
-        AppListItem(title, index, count, Modifier.semantics(mergeDescendants = true) { contentDescription = "$title, $value" }, value,
-            trailing = { Icon(Symbols.ArrowDropDown, null) }, onClick = { open = true }, tag = tag)
-        AppMenu(open, { open = false }, offset = DpOffset(140.dp, 0.dp)) {
-            options.forEachIndexed { i, o -> AppMenuItem(o, { onPick(i); open = false }, icon = icons?.get(i), selected = o == value) }
+        AppListItem(title, index, count, Modifier.semantics(mergeDescendants = true) { contentDescription = "$title, $value" + if (plus) ", Plus" else "" }, value,
+            trailing = { Icon(Symbols.ArrowDropDown, null) }, onClick = { if (plus) onPlus() else open = true },
+            containerColor = MaterialTheme.colorScheme.surfaceBright, below = if (plus) ({ com.oftenenough.app.ui.components.PlusLabel(Modifier.padding(top = 4.dp)) }) else null, tag = tag)
+        AppMenu(open, { open = false }, offset = DpOffset(96.dp, 0.dp)) {
+            options.forEachIndexed { i, o -> AppMenuItem(o, { onPick(i); open = false }, icon = icons?.get(i), selected = o == value, supporting = lines?.get(i)) }
         }
     }
 }
@@ -796,7 +822,7 @@ private fun clampToPart(part: String, minute: Int, store: HabitStore): Int {
 fun IconPage(form: FormState, onBack: () -> Unit) {
     var chosen by remember { mutableStateOf(form.symbol) }
     var query by remember { mutableStateOf("") }
-    FormPage("Icon", chip = null, onBack = onBack, close = true, scrolls = false, actions = {
+    FormPage("Icon", onBack = onBack, close = true, scrolls = false, actions = {
         AppButton("Done", { form.symbol = chosen; form.pickedSymbol = true; onBack() }, Modifier.padding(end = 8.dp), tag = "icon-done")
     }) {
         SearchBarField(query, { query = it.take(30) }, "Search icons", Modifier.padding(top = 16.dp, bottom = 16.dp), fieldTag = "icon-search")

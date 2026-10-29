@@ -95,7 +95,7 @@ fun askPhoneLock(activity: FragmentActivity, title: String, subtitle: String, on
 @Composable
 fun PrivacyPage(prefs: Prefs, lock: AppLock, onAppLock: () -> Unit, onBack: () -> Unit) {
     val c = appColors
-    FormPage("Privacy & Security", chip = null, onBack = onBack) {
+    FormPage("Privacy & Security", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         SegmentedList {
             AppListItem("App lock", 0, 1, supporting = "Lock the app with your fingerprint, face or a passcode", tag = "privacy-app-lock",
@@ -137,7 +137,7 @@ fun AppLockPage(lock: AppLock, onSetUp: () -> Unit, onNewPasscode: () -> Unit, o
     val activity = androidx.activity.compose.LocalActivity.current as? FragmentActivity
     var confirmOff by remember { mutableStateOf(false) }
     var problem by remember { mutableStateOf<String?>(null) }
-    FormPage("App lock", chip = null, onBack = onBack) {
+    FormPage("App lock", onBack = onBack) {
         Spacer(Modifier.height(8.dp))
         SegmentedList {
             AppListItem("App lock", 0, 1, tag = "app-lock-switch", leading = { Icon(Symbols.Lock, null) }, trailing = { AppSwitch(lock.isOn) },
@@ -210,7 +210,7 @@ fun AppLockSetup(lock: AppLock, passcodeOnly: Boolean, onDone: () -> Unit) {
     }
     when (step) {
         "choose" -> Box(Modifier.fillMaxSize().background(appColors.screen)) {
-            FormPage("Set up app lock", chip = null, onBack = onDone, close = true) {
+            FormPage("Set up app lock", onBack = onDone, close = true) {
                 Text("How do you want to unlock Often Enough?", Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
                     style = AppType.headlineMedium, color = appColors.ink)
                 SegmentedList {
@@ -246,7 +246,7 @@ fun AppLockSetup(lock: AppLock, passcodeOnly: Boolean, onDone: () -> Unit) {
 @Composable
 private fun PasscodePage(title: String, heading: String, line: String, message: String?, shake: Int, onBack: () -> Unit, onCode: (String) -> Unit) {
     BackHandler(onBack = onBack)
-    FormPage(title, chip = null, onBack = onBack, scrolls = false) {
+    FormPage(title, onBack = onBack, scrolls = false) {
         Keypad(heading, message ?: line, message != null, shake, onCode = onCode)
     }
 }
