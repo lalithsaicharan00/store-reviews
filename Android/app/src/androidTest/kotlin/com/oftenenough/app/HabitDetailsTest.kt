@@ -8,6 +8,8 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.isEnabled
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isSelected
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
@@ -191,7 +193,13 @@ class HabitDetailsTest {
         tapTag("habit-tab-history")
         tapTag("history-add")
         waitFor(hasText("Add to which day?"), "Add to which day?")
-        waitFor(hasText("Choose a day to log Water or add a note."), "what it's for")
+        // No day is chosen when it opens (A81): Open is off until one is picked.
+        waitFor(hasText("Selected date"), "nothing chosen yet")
+        if (compose.onAllNodes(hasTestTag("add-day-open").and(isEnabled()), useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty())
+            throw AssertionError("Open is on with no day chosen; on screen: ${screen()}")
+        // Today is in the month it opens on; the day picked names the button.
+        tap(hasText(java.time.LocalDate.ofEpochDay(store.today().toLong()).dayOfMonth.toString()).and(hasClickAction()), "today in the calendar")
+        waitFor(hasText("Open " + com.oftenenough.app.data.pageDayDate(store.today())), "Open, naming the day")
         tapTag("add-day-open")
         waitFor(hasTestTag("day-details"), "that day's details")
         tapTag("day-close")

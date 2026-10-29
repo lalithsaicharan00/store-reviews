@@ -2089,8 +2089,10 @@ What each atom changed, newest last.
   - Tests: HabitDetailsTest reads the new header line, the cards' words and Archive's snackbar, and checks a new habit's
     No progress yet; HabitsPageTest has a test for Delete from the page coming back with Undo.
   Noted, not changed:
-  - **Held for the user:** History's Add. One Figma note says "Add opens Add log for today" (and the button is named
-    so), while the "History: Add, for any day" flow asks "Add to which day?" first. Kept the dialog, as the flow draws it.
+  - ~~Held for the user: History's Add.~~ Settled the same day (A81): Add always asks "Add to which day?", with no day
+    chosen (today only ringed, "Selected date", Open off until a day is picked). `AppDatePicker` (5.3.6) now takes no
+    day for that, and a button named after the day picked; Figma's flow step, notes and the Add button's layer name were
+    changed to match. HabitDetailsTest picks a day before Open.
   - Deleting from a page opened from Today returns to Today, whose own snackbar isn't this one: there it deletes at
     once, as before. Figma draws only the way back to Habits & Tasks.
   - "No progress yet" shows while nothing at all is logged; Figma draws a habit made today. A habit made days ago with

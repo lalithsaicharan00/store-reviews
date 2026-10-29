@@ -13,6 +13,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
@@ -22,7 +23,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 /** A day number's midnight in UTC, as Material's date picker counts days; and back. */
 fun dayToUtcMs(day: Int): Long = LocalDate.ofEpochDay(day.toLong()).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
@@ -40,21 +40,27 @@ fun utcMsToDay(ms: Long): Int = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).
  * primary label; days [allowed] says no to (Figma's Limit: Any day · Today and earlier · Tomorrow and later · Today and
  * later) sit in Outline and can't be tapped; Cancel and [confirm] ("OK"), Small Text buttons On surface variant.
  * [onPick] gets the chosen day.
+ *
+ * With no [day] (null), nothing is chosen when it opens (Material's own empty state: today only ringed, the headline
+ * "Selected date" in On surface variant) and [confirm] stays off until a day is picked, so nothing lands on a day by
+ * default (History's Add, A81). [confirmFor] names the button after the day picked ("Open Tue 8 Sep").
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun AppDatePicker(
-    day: Int,
+    day: Int?,
     allowed: (Int) -> Boolean,
     onDismiss: () -> Unit,
     title: String = "Select date",
     confirm: String = "OK",
     confirmTag: String? = "picker-ok",
     note: String? = null,
+    confirmFor: ((Int?) -> String)? = null,
+    dismissTag: String? = null,
     onPick: (Int) -> Unit,
 ) {
     val s = MaterialTheme.colorScheme
-    val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
+    val state = rememberDatePickerState(initialSelectedDateMillis = day?.let(::dayToUtcMs), selectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long) = allowed(utcMsToDay(utcTimeMillis))
     })
     val colors = DatePickerDefaults.colors(
@@ -72,18 +78,24 @@ fun AppDatePicker(
     )
     DatePickerDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { AppButton(confirm, { state.selectedDateMillis?.let { onPick(utcMsToDay(it)) }; onDismiss() }, style = ButtonStyle.Text, tag = confirmTag) },
+        confirmButton = {
+            val picked = state.selectedDateMillis?.let(::utcMsToDay)
+            AppButton(confirmFor?.invoke(picked) ?: confirm, { picked?.let(onPick); onDismiss() }, style = ButtonStyle.Text,
+                enabled = picked != null, tag = confirmTag)
+        },
         modifier = Modifier.semantics { testTag = "date-picker"; testTagsAsResourceId = true },
-        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) },
+        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text, tag = dismissTag) },
         colors = colors,
     ) {
         DatePicker(state, colors = colors,
             title = { Text(title, Modifier.padding(start = 24.dp, end = 12.dp, top = 16.dp), style = AppType.labelLarge) },
             headline = {
                 val picked = state.selectedDateMillis?.let(::utcMsToDay)
+                val locale = LocalConfiguration.current.locales[0]
                 Column(Modifier.padding(start = 24.dp, end = 12.dp, bottom = 12.dp)) {
-                    Text(picked?.let { LocalDate.ofEpochDay(it.toLong()).format(DateTimeFormatter.ofPattern("EEE, d MMM", Locale.getDefault())) } ?: "",
+                    if (picked != null) Text(LocalDate.ofEpochDay(picked.toLong()).format(DateTimeFormatter.ofPattern("EEE, d MMM", locale)),
                         style = AppType.headlineLarge, maxLines = 1)
+                    else Text("Selected date", style = AppType.headlineLarge, color = s.onSurfaceVariant, maxLines = 1)
                     // The note sits under the day: below the picker it was drawn over the title (a DatePicker takes the dialog's height).
                     if (note != null) Text(note, Modifier.padding(top = 4.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
                 }

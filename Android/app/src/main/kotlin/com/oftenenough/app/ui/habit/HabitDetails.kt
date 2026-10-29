@@ -311,7 +311,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
     }
 
-    if (adding) AddToWhichDay(habit.name, minOf(first, today), today, onDismiss = { adding = false }) { day -> nav.openDay(habit, day) }
+    if (adding) AddToWhichDay(minOf(first, today), today, onDismiss = { adding = false }) { day -> nav.openDay(habit, day) }
     if (goToDate) {
         // Any day from the habit's start to today; OK scrolls History there (Figma 2.7), opening its month if folded.
         DayDialog(today, { it in minOf(first, today)..today }, onDismiss = { goToDate = false }) { day ->

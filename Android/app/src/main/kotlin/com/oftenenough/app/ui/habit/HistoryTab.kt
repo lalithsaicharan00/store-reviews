@@ -1,6 +1,7 @@
 package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.DayCell
+import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.EmptyState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.material3.MaterialTheme
@@ -10,8 +11,6 @@ import com.oftenenough.app.ui.components.ListNote
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppAssistChip
 import com.oftenenough.app.ui.components.AppFilterChip
 import com.oftenenough.app.ui.components.SearchBarButton
@@ -34,13 +33,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,7 +45,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
@@ -67,8 +60,6 @@ import com.oftenenough.app.data.HistoryDay
 import com.oftenenough.app.data.HistoryMonth
 import com.oftenenough.app.data.dayKey
 import com.oftenenough.app.data.pageDayDate
-import com.oftenenough.app.ui.components.dayToUtcMs
-import com.oftenenough.app.ui.components.utcMsToDay
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
@@ -291,28 +282,12 @@ internal fun HistorySearchPage(months: List<HistoryMonth>, color: HabitColor, to
 // ------------------------------------------------------------------------------------------------------------ Add
 
 /**
- * Add, step by step (Figma 2.11–2.17): "Add to which day?", any day from the start to today; Open shows that day's
- * details, where +1, Log manually and Add a note… are. Nothing is added here: Cancel goes back with nothing changed.
+ * Add, step by step (Figma's "History: Add, for any day"; A81): "Add to which day?", the date picker (5.3.6) with no day
+ * chosen when it opens, so a log never lands on a day by default; any day from the start to today; Open stays off until
+ * a day is picked, then names it ("Open Tue 8 Sep") and shows that day's details, where +1, Log manually and Add a note…
+ * are. Nothing is added here: Cancel goes back with nothing changed.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun AddToWhichDay(name: String, first: Int, today: Int, onDismiss: () -> Unit, onOpen: (Int) -> Unit) {
-    val c = appColors
-    val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(today), selectableDates = object : SelectableDates {
-        override fun isSelectableDate(utcTimeMillis: Long) = utcMsToDay(utcTimeMillis) in first..today
-    })
-    val picked = state.selectedDateMillis?.let(::utcMsToDay)
-    DatePickerDialog(onDismiss, confirmButton = {
-        AppButton(picked?.let { "Open " + pageDayDate(it) } ?: "Open", { picked?.let(onOpen); onDismiss() }, Modifier.semantics { testTag = "add-day-open" }, enabled = picked != null, style = ButtonStyle.Text)
-    }, dismissButton = { AppButton("Cancel", onDismiss, Modifier.semantics { testTag = "add-day-cancel" }, style = ButtonStyle.Text) }) {
-        DatePicker(state, showModeToggle = false,
-            title = {
-                Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp).semantics(mergeDescendants = true) { testTag = "add-day" }) {
-                    Text("Add to which day?", Modifier.semantics { heading() }, style = AppType.headlineSmall, color = c.ink)
-                    Spacer(Modifier.height(8.dp))
-                    Text("Choose a day to log $name or add a note.", style = AppType.bodyMedium, color = c.secondary)
-                }
-            },
-            headline = null)
-    }
-}
+internal fun AddToWhichDay(first: Int, today: Int, onDismiss: () -> Unit, onOpen: (Int) -> Unit) =
+    AppDatePicker(null, { it in first..today }, onDismiss, title = "Add to which day?", confirmTag = "add-day-open",
+        confirmFor = { picked -> picked?.let { "Open " + pageDayDate(it) } ?: "Open" }, dismissTag = "add-day-cancel", onPick = onOpen)
