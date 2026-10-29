@@ -1,10 +1,10 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.components.AppDialog
 import androidx.compose.material3.LocalContentColor
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 
 import androidx.compose.foundation.background
@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -170,10 +169,9 @@ fun GroupFormScreen(store: HabitStore, groupId: String?, onPause: (List<Habit>) 
     }
     if (deleting && original != null) {
         val n = original.habits.count { id -> store.habit(id) != null }
-        AlertDialog({ deleting = false }, title = { Text("Delete ${original.name}?") },
-            text = { Text(when (n) { 0 -> "No habits are in it."; 1 -> "Its habit stays, with no group. Its history isn't touched."; else -> "Its $n habits stay, with no group. Their history isn't touched." }) },
-            confirmButton = { AppButton("Delete group", { deleting = false; store.deleteGroup(original.id); onClose() }, Modifier.semantics { testTag = "group-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
-            dismissButton = { AppButton("Cancel", { deleting = false }, style = ButtonStyle.Text) })
+        AppDialog("Delete ${original.name}?",
+            when (n) { 0 -> "No habits are in it."; 1 -> "Its habit stays, with no group. Its history isn't touched."; else -> "Its $n habits stay, with no group. Their history isn't touched." },
+            "Delete group", { deleting = false; store.deleteGroup(original.id); onClose() }, { deleting = false }, destructive = true, confirmTag = "group-delete-confirm")
     }
 }
 

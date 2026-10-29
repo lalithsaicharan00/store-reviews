@@ -2,6 +2,7 @@
 
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppMenuItem
 import com.oftenenough.app.ui.components.AppMenu
 import com.oftenenough.app.ui.components.ListAvatar
@@ -35,7 +36,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -221,10 +221,8 @@ fun MakeRoomPage(store: HabitStore, onBack: () -> Unit, onRoom: () -> Unit) {
         Note("Archived habits keep all their progress, and you can bring them back any time.")
     }
     deleting?.let { h ->
-        AlertDialog({ deleting = null }, title = { Text("Delete ${h.name}?") },
-            text = { Text("Its history and notes are deleted too. Archiving keeps them and makes room just the same.") },
-            confirmButton = { AppButton("Delete", { deleting = null; store.delete(listOf(h)) }, Modifier.semantics { testTag = "room-delete" }, style = ButtonStyle.Text, destructive = true) },
-            dismissButton = { AppButton("Cancel", { deleting = null }, style = ButtonStyle.Text) })
+        AppDialog("Delete ${h.name}?", "Its history and notes are deleted too. Archiving keeps them and makes room just the same.",
+            "Delete", { deleting = null; store.delete(listOf(h)) }, { deleting = null }, destructive = true, confirmTag = "room-delete")
     }
 }
 

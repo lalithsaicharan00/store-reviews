@@ -119,7 +119,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.1 | Day details · Day details sheet | 669:234 | ☑ |
 | 5.3.2 | Day details · Log screen | 687:829 | ☑ |
 | 5.3.3 | Day details · All logs screen | 694:607 | ☑ |
-| 5.3.4 | Day details · Dialog | 702:618 | ☐ |
+| 5.3.4 | Day details · Dialog | 702:618 | ☑ |
 | 5.3.5 | Day details · Time picker | 703:602 | ☐ |
 | 5.3.6 | Day details · Date picker | 705:1025 | ☐ |
 | 5.3.7 | Day details · Timer screen | 705:7745 | ☐ |
@@ -1605,3 +1605,30 @@ What each atom changed, newest last.
   Noted, not changed:
   - A check's rows (a counted check has nothing to view) keep their named Undo in place of ›, and their footer "Undo
     takes one back."; Figma draws only amounts.
+  - **Built:** run 40800473737 (Android #130, commit d242498) passed: assembleDebug, unit tests and lint.
+- **5.3.4 Day details · Dialog (29 Oct).** Figma: Dialog (702:618), Kind Default · Destructive. Material's alert dialog:
+  one question, one line of what follows, two text actions. Corners 28, 24 in all round, the question in Headline
+  Small On surface, 16, the line in Body Medium On surface variant, 24, the actions at the end 8 apart (Small Text
+  buttons, On surface variant); Default is Keep editing / Discard, Destructive Cancel / Delete with Delete in Error
+  (D9). It is `AppDialog` (`components/Dialog.kt`): Material's `AlertDialog` on Surface bright, its actions the Button
+  atom, its tags readable by UI Automator. Every yes/no question moved onto it: deleting a habit (Day details, Habit
+  details, Habits, Tasks, Completed tasks, Archived, Make room), a log, a slip, a note, a time of day, a group;
+  splitting a time of day; starting a habit over; turning off App lock, no screen lock, Forgot app passcode; Write to
+  us; No room for another habit; and every Discard question (`DiscardDialog`, `record/RecordScreens.kt`). Every tag
+  the tests use stays; HabitFormTest taps "Discard" (was "Discard changes"). The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - Each dialog set its own colours: Surface container lowest, Surface container low (`menu`) or Material's default
+    Surface container high; now all Surface bright, as Figma fills it.
+  - Deleting a habit from Day details or Habit details offered three buttons (Archive instead, Cancel, Delete); now
+    Cancel and Delete only (D9, Figma's two text actions). The body still says archiving keeps the history, and
+    Archive is in the same ⋮ menu.
+  - The Discard question's action was "Discard changes" in red, with no line under the question; now Figma's Default:
+    "Discard", not red (nothing saved is lost), and a line that says what goes ("The 2 glasses you typed won’t be
+    added.", "The note stays as it was.", "This habit won’t be added.").
+  Noted, not changed:
+  - Figma's description names Surface container high (Material's DialogTokens) while its frames are filled Surface
+    bright; Surface bright used, as drawn: on our grey page Surface container high is darker than the page behind it.
+  - Dialogs that hold a list or a field (Put in a group, Show habits by, New time of day, New group, Move to, the time
+    pickers, Plus's own dialog) aren't this component; they keep their look until their own frames (5.3.5, 5.7, 5.9).
+  - "Write to us" offers OK and Copy address, neither the Default nor the Destructive pair; kept as it is.

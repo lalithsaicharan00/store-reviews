@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
@@ -33,7 +34,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -176,19 +176,15 @@ fun AppLockPage(lock: AppLock, onSetUp: () -> Unit, onNewPasscode: () -> Unit, o
         }
     }
     if (confirmOff) {
-        AlertDialog({ confirmOff = false }, title = { Text("Turn off App lock?") },
-            text = { Text("The app opens without asking. Your habits stay as they are.") },
-            confirmButton = { AppButton("Turn off", {
-                confirmOff = false
-                // Only the person who can unlock may turn it off.
-                if (lock.method == AppLock.Method.PHONE && activity != null) askPhoneLock(activity, "Turn off App lock", "Confirm it's you") { ok -> if (ok) lock.turnOff() }
-                else lock.turnOff()
-            }, Modifier.semantics { testTag = "app-lock-off-confirm" }, style = ButtonStyle.Text) },
-            dismissButton = { AppButton("Cancel", { confirmOff = false }, style = ButtonStyle.Text) })
+        AppDialog("Turn off App lock?", "The app opens without asking. Your habits stay as they are.", "Turn off", {
+            confirmOff = false
+            // Only the person who can unlock may turn it off.
+            if (lock.method == AppLock.Method.PHONE && activity != null) askPhoneLock(activity, "Turn off App lock", "Confirm it's you") { ok -> if (ok) lock.turnOff() }
+            else lock.turnOff()
+        }, { confirmOff = false }, confirmTag = "app-lock-off-confirm")
     }
     problem?.let { p ->
-        AlertDialog({ problem = null }, title = { Text("No screen lock") }, text = { Text(p) },
-            confirmButton = { AppButton("OK", { problem = null }, style = ButtonStyle.Text) })
+        AppDialog("No screen lock", p, "OK", { problem = null }, { problem = null }, dismiss = null)
     }
 }
 
@@ -362,26 +358,21 @@ fun LockScreen(lock: AppLock) {
     if (forgot) {
         val secure = AppLock.phoneIsSecure(context)
         val left = lock.resetLeft(context)
-        AlertDialog({ forgot = false }, title = { Text("Forgot app passcode?") },
-            text = {
-                Text(when {
-                    left == 0L -> "The 24 hours are up: choose a new app passcode."
-                    secure -> "Unlock with this phone's screen lock, then choose a new app passcode. Your habits stay as they are."
-                    left != null -> resetWords(left) + " Entering your app passcode before then cancels it."
-                    else -> "This phone has no screen lock, so a new passcode can be chosen after 24 hours. Entering your app passcode before then cancels the reset. Your habits stay as they are."
-                })
+        AppDialog("Forgot app passcode?",
+            when {
+                left == 0L -> "The 24 hours are up: choose a new app passcode."
+                secure -> "Unlock with this phone's screen lock, then choose a new app passcode. Your habits stay as they are."
+                left != null -> resetWords(left) + " Entering your app passcode before then cancels it."
+                else -> "This phone has no screen lock, so a new passcode can be chosen after 24 hours. Entering your app passcode before then cancels the reset. Your habits stay as they are."
             },
-            confirmButton = {
-                AppButton(when { left == 0L -> "Choose a new passcode"; secure -> "Use screen lock"; left == null -> "Start 24-hour reset"; else -> "OK" }, {
-                    forgot = false
-                    when {
-                        left == 0L -> newCode = true
-                        secure && activity != null -> askPhoneLock(activity, "Choose a new app passcode", "Use your fingerprint or screen lock") { ok -> if (ok) newCode = true }
-                        left == null -> lock.startReset(context)
-                    }
-                }, Modifier.semantics { testTag = "lock-forgot-go" }, style = ButtonStyle.Text)
-            },
-            dismissButton = { if (left != 0L) AppButton("Cancel", { forgot = false }, style = ButtonStyle.Text) })
+            when { left == 0L -> "Choose a new passcode"; secure -> "Use screen lock"; left == null -> "Start 24-hour reset"; else -> "OK" }, {
+                forgot = false
+                when {
+                    left == 0L -> newCode = true
+                    secure && activity != null -> askPhoneLock(activity, "Choose a new app passcode", "Use your fingerprint or screen lock") { ok -> if (ok) newCode = true }
+                    left == null -> lock.startReset(context)
+                }
+            }, { forgot = false }, dismiss = if (left != 0L) "Cancel" else null, confirmTag = "lock-forgot-go")
     }
 }
 

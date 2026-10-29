@@ -1,9 +1,8 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.SearchBarField
 
 import android.content.ActivityNotFoundException
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -238,13 +236,11 @@ fun HelpPage(onBack: () -> Unit) {
     if (showAddress) {
         val clipboard = LocalClipboard.current
         val scope = androidx.compose.runtime.rememberCoroutineScope()
-        AlertDialog({ showAddress = false }, title = { Text("Write to us") },
-            text = { Text("Email ${Support.EMAIL}. Say what happened and when, and which phone you use.") },
-            confirmButton = { AppButton("OK", { showAddress = false }, style = ButtonStyle.Text) },
-            dismissButton = { AppButton("Copy address", {
+        AppDialog("Write to us", "Email ${Support.EMAIL}. Say what happened and when, and which phone you use.", "OK", { showAddress = false }, { showAddress = false },
+            dismiss = "Copy address", onDismissButton = {
                 scope.launch { clipboard.setClipEntry(ClipData.newPlainText("Email", Support.EMAIL).toClipEntry()) }
                 showAddress = false
-            }, style = ButtonStyle.Text) })
+            })
     }
 }
 

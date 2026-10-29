@@ -143,7 +143,7 @@ class HabitFormTest {
         tapText("Keep editing")
         waitGone(hasText("Discard your changes?"), "the discard question")
         tapTag("form-back")
-        tapText("Discard changes")
+        tapText("Discard")
         waitFor(hasTestTag("row-Water"), "Today")
         assertEquals(listOf(before), water())
     }

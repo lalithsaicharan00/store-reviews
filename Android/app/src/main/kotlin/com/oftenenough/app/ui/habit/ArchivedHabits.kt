@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.AppMenuItem
 import com.oftenenough.app.ui.theme.Symbols
@@ -20,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,7 +40,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.Habit
@@ -171,12 +170,9 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
     }
     if (deleting.isNotEmpty()) {
         val list = deleting
-        AlertDialog({ deleting = emptyList() },
-            modifier = Modifier.semantics { testTagsAsResourceId = true },
-            title = { Text(if (list.size == 1) "Delete ${list[0].name}?" else "Delete ${list.size} ${noun}s?") },
-            text = { Text(if (list.size == 1) "Its history and notes are deleted too." else "Their history and notes are deleted too.") },
-            confirmButton = { AppButton("Delete", { deleting = emptyList(); chosen = emptySet(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
-            dismissButton = { AppButton("Cancel", { deleting = emptyList() }, style = ButtonStyle.Text) },
-            containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
+        AppDialog(if (list.size == 1) "Delete ${list[0].name}?" else "Delete ${list.size} ${noun}s?",
+            if (list.size == 1) "Its history and notes are deleted too." else "Their history and notes are deleted too.",
+            "Delete", { deleting = emptyList(); chosen = emptySet(); delete(list) }, { deleting = emptyList() },
+            destructive = true, confirmTag = "delete-confirm")
     }
 }

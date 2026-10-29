@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.AppMenu
 import com.oftenenough.app.ui.components.AppMenuItem
@@ -286,13 +287,10 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     if (deleting.isNotEmpty()) {
         val list = deleting
         val one = list.size == 1
-        AlertDialog({ deleting = emptyList() },
-            modifier = Modifier.semantics { testTagsAsResourceId = true },
-            title = { Text(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} habits?") },
-            text = { Text(if (one) "Its history and notes are deleted too. To keep them, archive it instead." else "Their history and notes are deleted too. To keep them, archive them instead.") },
-            confirmButton = { AppButton("Delete", { deleting = emptyList(); endSelection(); delete(list) }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
-            dismissButton = { AppButton("Cancel", { deleting = emptyList() }, Modifier.semantics { testTag = "delete-cancel" }, style = ButtonStyle.Text) },
-            containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.secondary)
+        AppDialog(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} habits?",
+            if (one) "Its history and notes are deleted too. To keep them, archive it instead." else "Their history and notes are deleted too. To keep them, archive them instead.",
+            "Delete", { deleting = emptyList(); endSelection(); delete(list) }, { deleting = emptyList() },
+            destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
     }
     if (grouping.isNotEmpty()) GroupDialog(grouping, store, { grouping = emptyList() }) { groupId ->
         grouping.forEach { store.setGroup(groupId, it.id) }

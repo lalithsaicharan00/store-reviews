@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
@@ -26,7 +27,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -148,14 +148,13 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
             if (adding) onDone() else editing = false
         } else DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
     }
-    if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes to this note?", { discard = false }, {
+    if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes to this note?",
+        if (adding) "What you wrote won’t be saved." else "The note stays as it was.", { discard = false }, {
         discard = false
         if (adding) onDone() else editing = false
     }, keepLabel = if (adding) "Keep writing" else "Keep editing")
-    if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this note?") },
-        text = { Text("Only the note for $shortDay is removed. That day's progress stays.") },
-        confirmButton = { AppButton("Delete note", { confirmDelete = false; save(""); onDone() }, Modifier.semantics { testTag = "note-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
-        dismissButton = { AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text) })
+    if (confirmDelete) AppDialog("Delete this note?", "Only the note for $shortDay is removed. That day's progress stays.",
+        "Delete note", { confirmDelete = false; save(""); onDone() }, { confirmDelete = false }, destructive = true, confirmTag = "note-delete-confirm")
     if (pickDay) {
         val first = habit?.let { store.rules.startDay(it) } ?: Int.MIN_VALUE
         val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {

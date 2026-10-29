@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.settings
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
@@ -28,7 +29,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -247,18 +247,15 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         }
     }
     if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }) { start = it }
-    if (confirmSplit && plan != null) AlertDialog({ confirmSplit = false }, title = { Text("Split ${HabitCopy.join(plan.split.map { it.name })}?") },
-        text = { Text(plan.rows.filter { it.isSubject || it.changed }.joinToString("\n") { "${it.name}: ${it.range}" }) },
-        confirmButton = { AppButton(if (existing == null) "Split and add $trimmed" else "Split and save", { confirmSplit = false; save() }, Modifier.semantics { testTag = "section-split-confirm" }, style = ButtonStyle.Text) },
-        dismissButton = { AppButton("Cancel", { confirmSplit = false }, style = ButtonStyle.Text) })
-    if (confirmDelete && existing != null) AlertDialog({ confirmDelete = false }, title = { Text("Delete ${existing.name}?") },
-        text = { Text("Its habits move to Anytime. Nothing else changes.") },
-        confirmButton = { AppButton("Delete time of day", {
-            confirmDelete = false
-            store.saveSections(store.sections.filter { it.id != existing.id })
-            onClose(null)
-        }, Modifier.semantics { testTag = "section-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
-        dismissButton = { AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text) })
+    if (confirmSplit && plan != null) AppDialog("Split ${HabitCopy.join(plan.split.map { it.name })}?",
+        plan.rows.filter { it.isSubject || it.changed }.joinToString("\n") { "${it.name}: ${it.range}" },
+        if (existing == null) "Split and add $trimmed" else "Split and save", { confirmSplit = false; save() }, { confirmSplit = false },
+        confirmTag = "section-split-confirm")
+    if (confirmDelete && existing != null) AppDialog("Delete ${existing.name}?", "Its habits move to Anytime. Nothing else changes.", "Delete time of day", {
+        confirmDelete = false
+        store.saveSections(store.sections.filter { it.id != existing.id })
+        onClose(null)
+    }, { confirmDelete = false }, destructive = true, confirmTag = "section-delete-confirm")
 }
 
 /** "🕒 Starts / 6:00 AM": a big clock time that opens Android's time picker. */

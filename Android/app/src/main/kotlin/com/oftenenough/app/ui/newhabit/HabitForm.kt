@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.FormField
 import com.oftenenough.app.ui.components.AppMenuItem
 import androidx.compose.ui.unit.DpOffset
@@ -15,7 +16,6 @@ import com.oftenenough.app.ui.theme.AppType
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.ui.semantics.Role
-import androidx.compose.material3.AlertDialog
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.clickable
@@ -258,18 +258,16 @@ fun HabitForm(
         null -> FormBody(form, store, typed, describing, scroll, nameFocus, ::open, ::close, ::save)
     }
     if (discard) DiscardDialog(if (form.editing) "Discard your changes?" else if (form.type == ItemType.TASK) "Discard this task?" else "Discard this habit?",
+        if (form.editing) "${form.original?.name ?: "It"} stays as it was." else if (form.type == ItemType.TASK) "This task won’t be added." else "This habit won’t be added.",
         onKeep = { discard = false }, onDiscard = { discard = false; onClose() }, keepLabel = "Keep editing")
     if (startOver) {
         val o = form.original
         val name = o?.name ?: form.trimmedName
         val kind = form.type.title
-        AlertDialog({ startOver = false }, title = { Text("Start $name over as $kind?") },
-            text = {
-                Text(if (o?.kind == HabitKind.Quit) "Changing $name to $kind starts it over from today. Your old $name, with its quit run and slips, is kept in Archived habits."
-                    else "Changing $name to $kind starts it over from today. Your old $name and its history are kept in Archived habits.")
-            },
-            confirmButton = { AppButton("Start over", { startOver = false; startOverNow() }, Modifier.semantics { testTag = "start-over" }, style = ButtonStyle.Text) },
-            dismissButton = { AppButton("Cancel", { startOver = false }, style = ButtonStyle.Text) })
+        AppDialog("Start $name over as $kind?",
+            if (o?.kind == HabitKind.Quit) "Changing $name to $kind starts it over from today. Your old $name, with its quit run and slips, is kept in Archived habits."
+                else "Changing $name to $kind starts it over from today. Your old $name and its history are kept in Archived habits.",
+            "Start over", { startOver = false; startOverNow() }, { startOver = false }, confirmTag = "start-over")
     }
 }
 

@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.data.HabitColor
 import androidx.compose.foundation.layout.ColumnScope
 import com.oftenenough.app.ui.components.Skeleton
@@ -35,7 +36,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -310,36 +310,15 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         }
     }
     if (confirmDelete) {
-        AlertDialog(
-            onDismissRequest = { confirmDelete = false },
-            title = { Text("Delete ${habit.name}?") },
-            text = { Text(if (habit.isTask) "Its history and notes are deleted too. To keep them, archive it instead."
-                else "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.") },
-            confirmButton = {
-                AppButton("Delete", {
-                    confirmDelete = false
-                    // The page leaves first, then the habit goes (U27).
-                    onBack()
-                    store.delete(listOf(habit))
-                }, Modifier.semantics { testTag = "delete-confirm" }, style = ButtonStyle.Text, destructive = true)
-            },
-            dismissButton = {
-                Row {
-                    // A task asks with two buttons only (Tasks, Figma 3.6).
-                    if (!habit.archived && !habit.isTask) {
-                        AppButton("Archive instead", {
-                            confirmDelete = false
-                            store.archive(listOf(habit))
-                            onBack()
-                        }, Modifier.semantics { testTag = "delete-archive-instead" }, style = ButtonStyle.Text)
-                    }
-                    AppButton("Cancel", { confirmDelete = false }, Modifier.semantics { testTag = "delete-cancel" }, style = ButtonStyle.Text)
-                }
-            },
-            containerColor = c.surface,
-            titleContentColor = c.ink,
-            textContentColor = c.secondary,
-        )
+        AppDialog("Delete ${habit.name}?",
+            if (habit.isTask) "Its history and notes are deleted too. To keep them, archive it instead."
+                else "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.",
+            "Delete", {
+                confirmDelete = false
+                // The page leaves first, then the habit goes (U27).
+                onBack()
+                store.delete(listOf(habit))
+            }, { confirmDelete = false }, destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
     }
     if (moving) {
         // Another day for a task (Figma 10): a one-time task any day from today; a repeating one's open day before its next.
@@ -351,15 +330,9 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         }
     }
     if (noRoom) {
-        AlertDialog(
-            onDismissRequest = { noRoom = false },
-            title = { Text("No room for another habit") },
-            text = { Text("The free plan keeps ${HabitStore.FREE_HABIT_LIMIT} habits going at once. Archive one, or get Plus, to bring ${habit.name} back.") },
-            confirmButton = { AppButton("OK", { noRoom = false }, style = ButtonStyle.Text) },
-            containerColor = c.surface,
-            titleContentColor = c.ink,
-            textContentColor = c.secondary,
-        )
+        AppDialog("No room for another habit",
+            "The free plan keeps ${HabitStore.FREE_HABIT_LIMIT} habits going at once. Archive one, or get Plus, to bring ${habit.name} back.",
+            "OK", { noRoom = false }, { noRoom = false }, dismiss = null)
     }
 }
 

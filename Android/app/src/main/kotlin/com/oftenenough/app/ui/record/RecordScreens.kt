@@ -2,11 +2,10 @@
 
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.NavigationIcon
 import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.theme.AppType
@@ -33,7 +32,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -86,13 +84,14 @@ fun RecordTopBar(title: String, close: Boolean = true, onClose: () -> Unit, acti
     }, actions = { actions() })
 }
 
-/** Keep editing / Discard changes: asked before closing anything typed (D7: back never loses typing). */
+/**
+ * Asked before closing anything typed (back never loses typing): the Dialog's Default kind (5.3.4, Figma 702:618), the
+ * question ("Discard this log?"), what goes ([text]: "The 2 glasses you typed won’t be added."), Keep editing (or
+ * [keepLabel]) and Discard, neither in red: nothing saved is lost.
+ */
 @Composable
-fun DiscardDialog(title: String, onKeep: () -> Unit, onDiscard: () -> Unit, keepLabel: String = "Keep editing") {
-    AlertDialog(onKeep, title = { Text(title) },
-        confirmButton = { AppButton("Discard changes", onDiscard, Modifier.semantics { testTag = "discard" }, style = ButtonStyle.Text, destructive = true) },
-        dismissButton = { AppButton(keepLabel, onKeep, Modifier.semantics { testTag = "keep-editing" }, style = ButtonStyle.Text) })
-}
+fun DiscardDialog(title: String, text: String, onKeep: () -> Unit, onDiscard: () -> Unit, keepLabel: String = "Keep editing") =
+    AppDialog(title, text, "Discard", onDiscard, onKeep, dismiss = keepLabel, confirmTag = "discard", dismissTag = "keep-editing")
 
 /**
  * The value's card (Figma's Value, Log screen 687:829): Surface container lowest, corners 24, 16 above and below, its
@@ -298,7 +297,12 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
         }
         BottomAction(kind.addButton, canAdd, onClick = ::add)
     }
-    if (discard) DiscardDialog("Discard this ${if (kind == RecordKind.SLIP) "slip" else "log"}?", { discard = false }, onDone)
+    if (discard) DiscardDialog("Discard this ${if (kind == RecordKind.SLIP) "slip" else "log"}?", when {
+        kind == RecordKind.AMOUNT && value != null -> "The ${HabitCopy.amount(value, ruled.unit)} you typed won’t be added."
+        kind == RecordKind.TIME && value != null -> "The ${Format.minutes(value)} you typed won’t be added."
+        kind == RecordKind.STEPS -> "The steps you ticked won’t be saved."
+        else -> "What you typed won’t be added."
+    }, { discard = false }, onDone)
 }
 
 /** Exactly what will happen, then a paused or skipped day's note (the iPhone's footers). */
@@ -397,14 +401,12 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
             }
         } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
-    if (confirmDelete) AlertDialog({ confirmDelete = false }, title = { Text("Delete this $noun?") },
-        text = {
-            Text(if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
-                else "${entry.description(ruled)} at ${clockText(entry)} is removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.")
-        },
-        confirmButton = { AppButton("Delete $noun", { confirmDelete = false; onBack(); store.undoEntry(entry.id) }, Modifier.semantics { testTag = "confirm-delete" }, style = ButtonStyle.Text, destructive = true) },
-        dismissButton = { AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text) })
-    if (discard) DiscardDialog("Discard your changes to this $noun?", { discard = false }, { discard = false; editing = false })
+    if (confirmDelete) AppDialog("Delete this $noun?",
+        if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
+            else "${entry.description(ruled)} at ${clockText(entry)} is removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.",
+        "Delete $noun", { confirmDelete = false; onBack(); store.undoEntry(entry.id) }, { confirmDelete = false },
+        destructive = true, confirmTag = "confirm-delete")
+    if (discard) DiscardDialog("Discard your changes to this $noun?", "The $noun stays as it was.", { discard = false }, { discard = false; editing = false })
 }
 
 /**

@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppTopBar
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.graphics.Color
@@ -47,7 +48,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -208,18 +208,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
         }
         Spacer(Modifier.height(24.dp))
     }
-    if (confirmDelete) AlertDialog(
-        onDismissRequest = { confirmDelete = false },
-        title = { Text("Delete ${habit.name}?") },
-        text = { Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.") },
-        confirmButton = { AppButton(if (isTask) "Delete task" else "Delete habit", { confirmDelete = false; onDismiss(); store.delete(listOf(habit)) }, Modifier.semantics { testTag = "day-delete-confirm" }, style = ButtonStyle.Text, destructive = true) },
-        dismissButton = {
-            Row {
-                if (!habit.archived) AppButton("Archive instead", { confirmDelete = false; store.archive(listOf(habit)); onDismiss() }, style = ButtonStyle.Text)
-                AppButton("Cancel", { confirmDelete = false }, style = ButtonStyle.Text)
-            }
-        },
-    )
+    if (confirmDelete) AppDialog("Delete ${habit.name}?", "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.",
+        if (isTask) "Delete task" else "Delete habit", { confirmDelete = false; onDismiss(); store.delete(listOf(habit)) }, { confirmDelete = false },
+        destructive = true, confirmTag = "day-delete-confirm")
     if (reschedule) RescheduleDialog(habit, day, store, { reschedule = false }) { reschedule = false; onDismiss() }
 }
 
