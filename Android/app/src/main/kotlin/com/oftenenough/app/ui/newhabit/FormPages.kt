@@ -397,7 +397,7 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
     fun Options(vararg rows: Option) {
         SegmentedList {
             rows.forEachIndexed { i, o ->
-                if (o.chosen && o.settings != null) OpenOption(o.title, i, rows.size, o.tag, o.bottom, o.settings)
+                if (o.chosen && o.settings != null) OpenOption(o.title, i, rows.size, o.tag, o.bottom, content = o.settings)
                 else RadioRow(o.title, o.chosen, i, rows.size, o.tag, option = true, onClick = o.pick)
             }
         }
@@ -577,63 +577,32 @@ fun MenuPill(text: String, options: List<String>, tag: String, onPick: (Int) -> 
 // ------------------------------------------------------------------ Time of Day
 
 /**
- * Time of Day (Figma 2.1.4): Anytime ("No set time") or At set times of day ("Pick one or more"); only under the second,
- * indented, the times of day as checkboxes and + New time of day, which opens the same page as Settings › Times of Day.
+ * 5.7.7, **Time of day page** (Figma 1098:2480, Option At set times of day · Anytime; Components — Atoms Build Plan),
+ * from the form's Time of day. On Surface container: the Top app bar (← "Time of day"); one group of two Options 16 in
+ * and 16 down, on Surface bright: Anytime ("No set time") and At set times of day ("Pick one or more"). Chosen, the
+ * second opens in the same piece: the times of day as checkboxes, 40 further in, each with its hours ("6:00 AM – 12:00
+ * PM"), and + New time of day, which opens the same page as Settings › Times of day; 8 under. No line under it repeating
+ * the choice (A64).
  */
 @Composable
 fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew: () -> Unit) {
     val anytime = form.timesOfDay == listOf(DaySection.ANYTIME)
     // At set times of day, chosen before any time is ticked: the times show, waiting for one.
     var setTimes by remember { mutableStateOf(!anytime) }
-    FormPage("Time of Day", chip = null, onBack = onBack) {
+    FormPage("Time of day", chip = null, onBack = onBack) {
         val timed = store.sections.filter { !it.isAnytime }
         val showTimes = setTimes || !anytime
-        SegmentedList {
-            val count = 2 + if (showTimes) timed.size + 1 else 0
-            RadioRow("Anytime", !showTimes, 0, count, "part-anytime", detail = "No set time") { setTimes = false; form.choose(DaySection.ANYTIME) }
-            RadioRow("At set times of day", showTimes, 1, count, "part-set", detail = "Pick one or more") { setTimes = true }
-            if (showTimes) {
-                timed.forEachIndexed { i, s ->
-                    CheckRow(s.name, s.id in form.timesOfDay, i + 2, count, "part-${s.id}", detail = FormOutcome.hours(s, store), indent = true) { form.choose(s.id) }
+        SegmentedList(Modifier.padding(top = 16.dp, bottom = 16.dp)) {
+            RadioRow("Anytime", !showTimes, 0, 2, "part-anytime", detail = "No set time", option = true) { setTimes = false; form.choose(DaySection.ANYTIME) }
+            if (!showTimes) RadioRow("At set times of day", false, 1, 2, "part-set", detail = "Pick one or more", option = true) { setTimes = true }
+            else OpenOption("At set times of day", 1, 2, "part-set", bottom = 8.dp, detail = "Pick one or more", gap = 0.dp) {
+                timed.forEach { s ->
+                    CheckRow(s.name, s.id in form.timesOfDay, 0, 1, "part-${s.id}", detail = FormOutcome.hours(s, store), indent = true, option = true) { form.choose(s.id) }
                 }
-                AddRow("New time of day", count - 1, count, "new-time-of-day", indent = true, onClick = onNew)
+                AddRow("New time of day", 0, 1, "new-time-of-day", indent = true, option = true, onClick = onNew)
             }
         }
-        Note(FormOutcome.timeOfDay(form.previewHabit(), store))
     }
-}
-
-/** A new time of day: its name and when it starts; it ends where the next one begins. */
-@Composable
-fun NewSectionDialog(store: HabitStore, onDismiss: () -> Unit, onAdded: (String) -> Unit) {
-    var name by remember { mutableStateOf("") }
-    var start by remember { mutableStateOf(21 * 60) }
-    var picking by remember { mutableStateOf(false) }
-    val taken = store.sections.any { it.start == start }
-    val clean = TextLimit.clean(name, TextLimit.SECTION)
-    AlertDialog(onDismiss, title = { Text("New time of day") },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedTextField(name, { name = it.take(TextLimit.SECTION) }, label = { Text("Name") }, singleLine = true,
-                    supportingText = { Text("${name.length}/${TextLimit.SECTION}") }, modifier = Modifier.fillMaxWidth().semantics { testTag = "section-name" },
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = appColors.ink, focusedLabelColor = appColors.ink, cursorColor = appColors.ink))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Starts", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-                    com.oftenenough.app.ui.record.Pill(DayWords.clockMinute(start), tag = "section-start") { picking = true }
-                }
-                Text(if (taken) "Another time of day starts then." else "It ends when the next time of day begins.", style = MaterialTheme.typography.bodyMedium, color = appColors.secondary)
-            }
-        },
-        confirmButton = {
-            AppButton("Add", {
-                val s = DaySection(newId(), clean, start, null)
-                store.saveSections(store.sections + s)
-                onAdded(s.id)
-                onDismiss()
-            }, enabled = clean.isNotEmpty() && !taken, tag = "section-add")
-        },
-        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) })
-    if (picking) MinuteDialog(start, { picking = false }) { start = it }
 }
 
 /** "Get reminders on time" (design §15): why exact times matter, then Android's own Alarms & reminders page. */

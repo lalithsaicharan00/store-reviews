@@ -262,7 +262,11 @@ class HabitFormTest {
         tapTag("new-build")
         tapTag("type-check")
         tapTag("time-of-day-row")
+        // Time of day (5.7.7, Figma 1098:2480): its title, and no line under it repeating the choice (A64).
+        waitFor(hasText("Time of day"), "the title")
         tapTag("part-set")
+        waitFor(hasText("Pick one or more"), "At set times of day")
+        assertTrue("no line under the choice", !has(hasText("It shows in", substring = true)))
         tapTag("new-time-of-day")
         waitFor(hasText("Ends 6:00 AM, when Morning starts"), "the worked-out end")
         waitFor(hasText("New"), "the + New chip")
@@ -274,7 +278,7 @@ class HabitFormTest {
                 store.sections.first { it.name == "Morning" }.start == 6 * 60
         }
         val id = store.sections.first { it.name == "Before work" }.id
-        waitFor(hasTestTag("part-$id"), "Before work on the Time of Day page")
+        waitFor(hasTestTag("part-$id"), "Before work on the Time of day page")
     }
 
     @Test fun howLongTakesAQuickPickAndATasksTimeWaitsForOk() {

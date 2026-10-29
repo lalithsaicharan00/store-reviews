@@ -7,26 +7,6 @@ object FormOutcome {
     /** Most "remind again" follow-ups for one reminder (the iPhone's `ReminderScheduler.maxFollowUps`). */
     const val MAX_FOLLOW_UPS = 3
 
-    /** Where it shows on Today, and for week, month and year rules, until when. */
-    fun timeOfDay(habit: Habit, store: HabitStore): String {
-        val f = habit.frequency
-        if (f is Frequency.Flexible) {
-            val what = HabitCopy.howMuch(habit)?.let { "Reach $it" } ?: "Tick it"
-            return "$what on ${if (f.n == 1) "1 day" else "${f.n} different days"} each ${f.period.noun}. You can still log extra days after that."
-        }
-        val placements = store.rules.placements(habit)
-        val names = placements.map { store.section(it.section).name }
-        var sentence = if (placements.size >= 2) {
-            "It shows in ${HabitCopy.join(names)}. It's one ${if (habit.kind == HabitKind.Task) "task" else "habit"}: do it in any of them."
-        } else {
-            val section = store.section(placements.firstOrNull()?.section ?: DaySection.ANYTIME)
-            hours(section, store)?.let { "It shows in ${section.name} on Today ($it)." }
-                ?: "It shows in Anytime on Today, so you can do it whenever suits you."
-        }
-        periodRule(habit)?.let { sentence += " It stays on Today every day until $it." }
-        return sentence
-    }
-
     /** What the phone will do, and when it stops. */
     fun reminders(habit: Habit, store: HabitStore, alarmsAvailable: Boolean): String {
         if (!habit.remind || habit.reminders.isEmpty()) return "No notifications. You'll see it on Today."

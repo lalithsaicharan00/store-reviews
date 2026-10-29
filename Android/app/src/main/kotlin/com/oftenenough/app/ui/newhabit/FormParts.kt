@@ -15,6 +15,7 @@ import com.oftenenough.app.ui.theme.AppType
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -128,11 +129,14 @@ fun RadioRow(
  * then [content] 8 apart, [bottom] under, on Surface bright.
  */
 @Composable
-fun OpenOption(title: String, index: Int, count: Int, tag: String, bottom: androidx.compose.ui.unit.Dp = 16.dp, content: @Composable ColumnScope.() -> Unit) {
+fun OpenOption(
+    title: String, index: Int, count: Int, tag: String, bottom: androidx.compose.ui.unit.Dp = 16.dp, detail: String? = null,
+    gap: androidx.compose.ui.unit.Dp = 8.dp, content: @Composable ColumnScope.() -> Unit,
+) {
     Column(Modifier.fillMaxWidth().clip(com.oftenenough.app.ui.components.segmentShape(index, count))
         .background(androidx.compose.material3.MaterialTheme.colorScheme.surfaceBright).padding(bottom = bottom),
-        verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        RadioRow(title, true, 0, 1, tag, option = true, containerColor = androidx.compose.ui.graphics.Color.Transparent) {}
+        verticalArrangement = Arrangement.spacedBy(gap)) {
+        RadioRow(title, true, 0, 1, tag, detail, option = true, containerColor = androidx.compose.ui.graphics.Color.Transparent) {}
         content()
     }
 }
@@ -162,16 +166,24 @@ fun Stepper(label: String, value: Int, range: IntRange, tag: String, unit: (Int)
 
 /** One of any number: a checkbox, its words, and a line under them (List item, 2.4). */
 @Composable
-fun CheckRow(title: String, checked: Boolean, index: Int, count: Int, tag: String, detail: String? = null, indent: Boolean = false, onClick: () -> Unit) =
-    AppListItem(title, index, count, supporting = detail, onClick = onClick, tag = tag, leading = {
-        Row(verticalAlignment = Alignment.CenterVertically) { if (indent) Spacer(Modifier.width(36.dp)); AppCheckbox(checked, onCheckedChange = null) }
+fun CheckRow(title: String, checked: Boolean, index: Int, count: Int, tag: String, detail: String? = null, indent: Boolean = false, option: Boolean = false, onClick: () -> Unit) =
+    AppListItem(title, index, count, supporting = detail, onClick = onClick, tag = tag,
+        containerColor = if (option) androidx.compose.ui.graphics.Color.Transparent else androidx.compose.ui.graphics.Color.Unspecified,
+        headlineStyle = if (option) AppType.bodyLarge else AppType.titleMedium, leading = {
+        Row(verticalAlignment = Alignment.CenterVertically) { if (indent) Spacer(Modifier.width(if (option) 40.dp else 36.dp)); AppCheckbox(checked, onCheckedChange = null) }
     })
 
 /** "+ New group", "+ Add step" (List item, 2.4). */
 @Composable
-fun AddRow(title: String, index: Int, count: Int, tag: String, indent: Boolean = false, onClick: () -> Unit) =
-    AppListItem(title, index, count, onClick = onClick, tag = tag, leading = {
-        Row(verticalAlignment = Alignment.CenterVertically) { if (indent) Spacer(Modifier.width(36.dp)); Icon(Symbols.Add, null) }
+fun AddRow(title: String, index: Int, count: Int, tag: String, indent: Boolean = false, option: Boolean = false, onClick: () -> Unit) =
+    AppListItem(title, index, count, onClick = onClick, tag = tag,
+        containerColor = if (option) androidx.compose.ui.graphics.Color.Transparent else androidx.compose.ui.graphics.Color.Unspecified,
+        headlineStyle = if (option) AppType.bodyLarge else AppType.titleMedium, leading = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (indent) Spacer(Modifier.width(if (option) 40.dp else 36.dp))
+            // In an option the icon sits in its 40 box, as the checkboxes do.
+            if (option) Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null) } else Icon(Symbols.Add, null)
+        }
     })
 
 /**

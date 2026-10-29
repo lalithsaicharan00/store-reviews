@@ -151,7 +151,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.4 | Create new · Icon picker | 1074:932 | ☑ |
 | 5.7.5 | Create new · Colour | 1074:161496 | ☑ |
 | 5.7.6 | Create new · How often page | 1075:161386 | ☑ |
-| 5.7.7 | Create new · Time of day page | 1098:2480 | ☐ |
+| 5.7.7 | Create new · Time of day page | 1098:2480 | ☑ |
 | 5.7.8 | Create new · Reminders page | 1100:2996 | ☐ |
 | 5.7.9 | Create new · How much page | 1102:2782 | ☐ |
 | 5.7.10 | Create new · Unit page | 1102:3316 | ☐ |
@@ -2371,3 +2371,22 @@ What each atom changed, newest last.
     they keep their options, now without titles.
   - The notes for months without a date ("Months without that date use their last day.") and the last-day and leap-year
     choices aren't drawn (no variant picks a 29th to 31st or 29 February); they stay for those days.
+
+- **5.7.7 Create new · Time of day page (29 Oct).** Figma: Time of day page (1098:2480), Option At set times of day ·
+  Anytime, and the flow "Time of day: more than one, and a new one". From the form's Time of day. On Surface container:
+  the Top app bar (← "Time of day"); one group of two Options (16 in, 16 down, Surface bright, Body Large over Body
+  Medium): Anytime ("No set time") and At set times of day ("Pick one or more"). Chosen, the second opens in the same
+  piece, 8 under: the times of day as checkboxes 40 further in, each with its hours ("6:00 AM – 12:00 PM"), and + New
+  time of day (the same page as Settings › Times of day). It is `TimeOfDayPage` (`newhabit/FormPages.kt`). The app, the
+  unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The title said "Time of Day"; now "Time of day".
+  - A line under the list repeated the choice ("It shows in Morning on Today …", A64): deleted, with
+    `FormOutcome.timeOfDay`.
+  - The times and New time of day were rows of their own, 2 apart; now in the chosen option's piece, Body Large, 40 in
+    (`CheckRow` and `AddRow` gained `option`).
+  - `NewSectionDialog`, a New time of day dialog nothing opened, is deleted.
+  - Tests: HabitFormTest's new time of day test checks the title and that no line repeats the choice.
+  Noted, not changed:
+  - Figma's chosen "At set times of day" is Title Medium, its unchosen one and every other Option Body Large; the app
+    uses Body Large for both.
