@@ -27,7 +27,6 @@ import com.oftenenough.app.data.taskDay
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -35,11 +34,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * The Tasks page (Figma 2373:2, 19 Oct 2026), on the design's own tasks (`demo tasks`): the One-time tab's days (carried
- * first, done today struck at the end, No date last) and the Repeating tab's lines; a row's ⋮ (Move with Undo, Do today,
- * Skip this time, Delete only once Undo has gone, D6); a long press selecting (never opening) and the bar's Move; search
- * with its groups and New task; Completed's Mark as not done; Archived tasks' Restore; a new task with No date; the coach
- * mark; the menu's count. Test launches only (D8) at 10:30 (T11); a failure says what was on screen (T14).
+ * Habits & Tasks' Tasks tab (5.5.4, Figma 999:1061; A55, A58), on the design's own tasks (`demo tasks`): the One-time
+ * tab's days (carried first, done today at the end, No date last) and the Repeating tab's lines; a row's ⋮ (Move to
+ * another day… opening the date picker at once, Do today, Skip this time with Undo, Delete only once Undo has gone, D6);
+ * a still hold doing nothing; the page's search with its groups and Add; Completed's Mark as not done; Archived tasks'
+ * Restore; a new task with No date; the menu's count. Test launches only (D8) at 10:30 (T11); a failure says what was on
+ * screen (T14).
  */
 @OptIn(androidx.compose.ui.test.ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
@@ -52,7 +52,7 @@ class TasksPageTest {
     private val store: HabitStore get() = AppGraph.store
     private val today: Int get() = store.today()
 
-    private fun launch(coach: Boolean = false) {
+    private fun launch() {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, 10).putExtra(TestLaunch.DEMO, "tasks")
             .putExtra(TestLaunch.PLUS, true)
@@ -63,9 +63,6 @@ class TasksPageTest {
         tapTag("menu-habits")
         tapTag("habits-tab-tasks")
         waitHere(hasTestTag("tasks-list"), "the Tasks tab")
-        // The coach mark hangs under the first row: wait for it where it is, never scrolling the list away from it.
-        waitHere(hasTestTag("tasks-coach-ok"), "the coach mark")
-        if (!coach) { here("tasks-coach-ok"); waitGone(hasTestTag("tasks-coach-ok"), "the coach mark") }
     }
 
     private fun waitHere(m: SemanticsMatcher, what: String) {
@@ -145,19 +142,20 @@ class TasksPageTest {
         assertFalse(store.rules.isDue(task("Fix the bike light"), today))
     }
 
-    @Test fun moveToTomorrowSaysSoAndUndoPutsItBack() {
+    /** Move to another day… opens the date picker at once (A58); a task carried over, moved to today, says it's on Today. */
+    @Test fun moveOpensTheDatePickerAtOnce() {
         launch()
-        menuFor("Pay electricity bill", "move", "tomorrow")
-        waitFor(hasText("Moved to Tomorrow"), "the snackbar")
-        assertEquals(today + 1, task("Pay electricity bill").dueDay)
-        undo()
-        waitUntil("the task back on today") { task("Pay electricity bill").dueDay == today }
+        menuFor("Call the dentist", "move")
+        waitHere(hasTestTag("date-picker"), "the date picker")
+        here("date-ok")
+        waitFor(hasText("Call the dentist is on Today"), "the snackbar")
+        assertEquals(today, task("Call the dentist").dueDay)
     }
 
     @Test fun doTodayGivesANoDateTaskToday() {
         launch()
         menuFor("Fix the bike light", "today")
-        waitFor(hasText("Fix the bike light moved to Today"), "the snackbar")
+        waitFor(hasText("Fix the bike light is on Today"), "the snackbar, with Show")
         assertEquals(today, task("Fix the bike light").dueDay)
         assertTrue(store.rules.isDue(task("Fix the bike light"), today))
     }
@@ -165,7 +163,7 @@ class TasksPageTest {
     @Test fun repeatingTasksSayWhenTheyComeAndSkipThisTimeIsUndone() {
         launch()
         tapTag("tasks-tab-1")
-        waitFor(hasText("Waiting since " + taskDay(today - 2)), "Water plants waiting")
+        waitFor(hasText("Waiting since " + taskDay(today - 2), substring = true), "Water plants waiting")
         waitFor(hasTestTag("habits-section-Every few months or longer"), "the longest group")
         menuFor("Water plants", "skip")
         waitFor(hasText("Water plants skipped this time"), "the snackbar")
@@ -189,18 +187,13 @@ class TasksPageTest {
         waitUntil("the task gone once the snackbar has", timeout = 20_000) { store.habits.none { it.name == "Pick up dry cleaning" } }
     }
 
-    @Test fun aLongPressSelectsAndTheBarMovesThemAll() {
+    /** A still hold does nothing (A55): nothing selects, nothing opens. */
+    @Test fun aLongPressDoesNothing() {
         launch()
         longPress("Call the dentist")
-        waitHere(hasText("1 selected"), "selection, not the task's page")
-        assertFalse(has(hasTestTag("habit-details")))
-        tapTag("tasks-row-Clean the fridge")
-        waitHere(hasText("2 selected"), "two selected")
-        tapTag("tasks-move")
-        here("tasks-move-tomorrow")
-        waitFor(hasText("2 tasks moved to Tomorrow"), "the snackbar")
-        assertEquals(today + 1, task("Call the dentist").dueDay)
-        assertEquals(today + 1, task("Clean the fridge").dueDay)
+        compose.waitForIdle()
+        assertFalse("no selection", has(hasText("1 selected")))
+        assertFalse("not the task's page", has(hasTestTag("habit-details")))
     }
 
     @Test fun searchGroupsTasksArchivedAndOffersAdd() {
@@ -260,13 +253,6 @@ class TasksPageTest {
         assertNull(t.dueMinute)
         assertFalse(store.rules.isDue(t, today))
         waitFor(hasTestTag("tasks-row-Mend the fence"), "under No date")
-    }
-
-    @Test fun theCoachMarkGoesForGood() {
-        launch(coach = true)
-        here("tasks-coach-ok")
-        waitGone(hasTestTag("tasks-coach-ok"), "the coach mark")
-        assertNotNull(store.setting("tasks.coach_seen"))
     }
 
     /** The menu counts every habit and task someone keeps, on one row (Figma `12:5259`, 22 Oct 2026). */

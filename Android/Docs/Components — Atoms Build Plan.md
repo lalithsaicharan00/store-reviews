@@ -129,7 +129,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☑ |
 | 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☑ |
 | 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☑ |
-| 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☐ |
+| 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☑ |
 | 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☐ |
 | 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☐ |
 | 5.6.1 | Details pages · Habit details page | 1020:4052 | ☐ |
@@ -1904,3 +1904,45 @@ What each atom changed, newest last.
   Noted, not changed:
   - A habit's line is "<time of day> · " and the Habits page's line (its plan, or "Back on 3 Nov" when paused, "Starts
     …", "Ends …"), so a paused one reads "Paused · Back on 3 Nov"; Figma draws only habits going on.
+  - **Built:** run 40827006219 (Android #140, commit 68be94b) passed: assembleDebug, unit tests and lint.
+- **5.5.4 Habits & Tasks · Tasks page (29 Oct).** Figma: Tasks page (999:1061), Screen One-time · One-time · end of the
+  list · Repeating · Repeating · end of the list · Menu open · Moved to Today · No tasks yet · No repeating tasks · Moved
+  to another day · Next day · Task added · Large text (A55, A57, A58). Habits & Tasks' Tasks tab, under the page's bar,
+  tabs and search: the list 16 in, 16 above, 80 under, 12 between its parts; One-time · Repeating (the Connected
+  button group, scrolling away); each section's title in Label Large Primary 16 in (No date's note in Body Small On
+  surface variant, 2 under) over one rounded list of two-line List items 2 apart on Surface container lowest (the icon
+  in its colour, the name in Title Medium, On surface variant once done, the line in Body Medium On surface variant,
+  ⋮); at the end of both kinds Completed ("6 tasks done") and Archived. The ⋮: Edit task; Move to another day… (the
+  date picker at once, A58), Skip this time (repeating), Do today and Pick a day… (No date) or Mark as not done (done
+  today); Duplicate; Archive; Delete. Nothing to show: the Empty state with New task, the button group kept over it.
+  It is `TasksPage` (`habit/TasksPage.kt`); a repeating task's line is `repeatingLine` (`data/TaskWords.kt`, also the
+  search's). TasksPageTest follows. The app, the unit tests (55), lint and the instrumented tests' code build in the
+  session.
+  Fixed:
+  - Selecting several (a long press, its top bar with Select all, its bar of Move, Archive, Delete) and the first-visit
+    coach mark are gone (A55, A48); a still hold does nothing.
+  - Move to another day… opened a submenu (Tomorrow, Pick a day…, No date); now the date picker at once (A58). A
+    repeating task's ⋮ had Move and Skip; now Skip this time in its place (README, 23 Oct). The ⋮ had a divider and
+    "Delete task…"; now Figma's six rows, "Delete".
+  - Do today said "… moved to Today" with Undo; now "… is on Today" with Show, which opens Today (Figma's Moved to
+    Today).
+  - The rows were on Surface with a done task struck through in grey; now Surface container lowest, a done one's name
+    On surface variant and not struck, as Figma. (Completed tasks' rows, the same row, follow until 5.5.6.)
+  - A repeating task had up to three lines (how often with its time, its day, when it was last done or skipped); now
+    Figma's one ("Every 3 days · Next 25 Oct", "8:00 AM · Next today" under Every day, "Done today").
+  - A task with No date had no line; now "No date".
+  - Section titles were Body Medium On surface variant (No date's note Body Medium, 12 under); now Label Large Primary
+    with the note in Body Small 2 under, 20 above and 12 below each, as Figma.
+  - Completed was a row without a count at the end of One-time only, with check_circle; now task_alt and its count, at
+    the end of both kinds, shown once something is done.
+  - The empty pages were their own column (Title Large, the repeat icon, no button on Repeating); now the Empty state
+    with task_alt, Figma's words, and New task on both.
+  - Tests: TasksPageTest's move test checks the picker opens at once (A58) and the "is on Today" snackbar; the long
+    press test checks a still hold does nothing; the coach mark and selection tests are gone with what they tested.
+  Noted, not changed:
+  - A hold that moves still drags a task within its day (the person's own order, U13); A55 says a long press does
+    nothing, which a still hold now honours. The user's call whether dragging stays.
+  - Moving to any other day says "Moved to Fri, 30 Oct" with Undo; Figma's Moved to another day draws no snackbar.
+  - Figma writes the next day as "Next 25 Oct" in one row and "Next Tue 27 Oct" in another; the app writes every one
+    the same way (`taskDay`).
+  - Repeating rows lose "Last done …" and "Skipped …" (on the task's details still).

@@ -135,26 +135,25 @@ fun HabitStore.taskMoveRange(task: Habit, today: Int): IntRange? {
     return if (last >= today) today..last else null
 }
 
-/** The three lines under a repeating task's name (Figma 7, 2.1, 3.4.1): how often (with its time), then its day, then the last time it was done. */
-fun HabitStore.repeatingLines(task: Habit, today: Int): List<String> {
-    val rhythm = HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart)).let { r ->
-        task.dueMinute?.let { "$r, " + DayWords.clockMinute(it) } ?: r
-    }
+/**
+ * The line under a repeating task's name (Figma's Tasks page, Repeating; Search): how often, then its day: "Every 3 days ·
+ * Next 25 Oct", "Tuesdays · Next Tue 27 Oct", "Every 2 months · Next 9 Dec". Under Every day the time says more than the
+ * rhythm ("8:00 AM · Next today"). Done today and not due again today: "Done today". Waiting since an earlier day it
+ * wasn't done: "Waiting since Mon, 19 Oct" (never "missed", U3).
+ */
+fun HabitStore.repeatingLine(task: Habit, today: Int): String {
     val n = taskNext(task, today)
+    if (!n.today && n.waitingSince == null && entries(task.id).any { it.day == today }) return "Done today"
+    val time = task.dueMinute?.let { DayWords.clockMinute(it) }
+    val first = if (taskRhythm(task.frequency) == TaskRhythm.DAY && time != null) time
+        else HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart))
     val second = when {
         n.waitingSince != null -> "Waiting since " + taskDay(n.waitingSince)
-        n.today -> "Today"
+        n.today -> "Next today"
         n.next != null -> "Next " + taskDay(n.next, today)
         else -> null
     }
-    val last = entries(task.id).maxByOrNull { it.createdAt }
-    val lastWords = when {
-        last == null -> null
-        last.day == today -> "Last done today, " + DayWords.clock(last.createdAt)
-        else -> "Last done " + taskDay(last.day, today)
-    }
-    val third = n.skipped?.let { s -> "Skipped " + taskDay(s) + (lastWords?.let { " · " + it.replaceFirstChar { c -> c.lowercase() } } ?: "") } ?: lastWords
-    return listOfNotNull(rhythm, second, third)
+    return listOfNotNull(first, second).joinToString(" · ")
 }
 
 /** The heading line on a task's details (Figma 10, 7.3, 8.6): "Today · Morning", "Every 3 days, anytime", "A task · Anytime". */

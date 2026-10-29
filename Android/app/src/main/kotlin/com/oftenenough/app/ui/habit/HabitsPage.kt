@@ -5,7 +5,7 @@ import com.oftenenough.app.data.isOneTimeTask
 import com.oftenenough.app.data.isTask
 import com.oftenenough.app.data.doneEntry
 import com.oftenenough.app.data.taskWhen
-import com.oftenenough.app.data.repeatingLines
+import com.oftenenough.app.data.repeatingLine
 import com.oftenenough.app.data.taskDay
 import com.oftenenough.app.data.NO_DATE_DAY
 import androidx.compose.foundation.layout.Arrangement
@@ -492,7 +492,7 @@ private fun PageSearch(
     fun habitLine(h: Habit): String = if (h.archived) store.archivedLine(h) else listOfNotNull(where[h.id], store.listLine(h, today)).joinToString(" · ")
     fun taskLine(t: Habit): String {
         if (t.archived) return store.archivedLine(t)
-        if (t.isRepeatingTask) return store.repeatingLines(t, today).first()
+        if (t.isRepeatingTask) return store.repeatingLine(t, today)
         store.doneEntry(t)?.let { return "Completed " + taskDay(it.day) }
         val due = t.dueDay ?: return ""
         return when {

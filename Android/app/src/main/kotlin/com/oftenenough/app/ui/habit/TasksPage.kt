@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.EmptyState
+import androidx.compose.ui.semantics.heading
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.AppMenu
@@ -7,14 +9,9 @@ import com.oftenenough.app.ui.components.AppMenuItem
 import androidx.compose.material3.MaterialTheme
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
-import com.oftenenough.app.ui.components.MenuDivider
 import com.oftenenough.app.ui.components.AppConnectedButtons
-import com.oftenenough.app.ui.components.scrolledTopBarColor
-import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.components.StandardIconButton
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -32,21 +29,16 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -62,8 +54,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -72,11 +62,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.NO_DATE_DAY
@@ -86,13 +72,12 @@ import com.oftenenough.app.data.isOneTimeTask
 import com.oftenenough.app.data.isRepeatingTask
 import com.oftenenough.app.data.isTask
 import com.oftenenough.app.data.oneTimeLine
-import com.oftenenough.app.data.repeatingLines
+import com.oftenenough.app.data.repeatingLine
 import com.oftenenough.app.data.taskDay
 import com.oftenenough.app.data.taskHeading
 import com.oftenenough.app.data.taskMoveRange
 import com.oftenenough.app.data.taskOpenDay
 import com.oftenenough.app.data.taskRhythm
-import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.components.ListChevron
@@ -111,42 +96,43 @@ interface TasksNav {
     fun newTask(name: String? = null)
     fun completed()
     fun archived()
+    /** A task moved to today: the snackbar's Show, which opens Today. */
+    fun showToday()
 }
-
-private const val TASKS_COACH_SEEN = "tasks.coach_seen"
 
 /** One section of a tab: its heading, an optional note, and its tasks. */
 private class TaskSection(val key: String, val title: String, val tasks: List<Habit>, val note: String? = null, val drag: Boolean = false)
 
-/** What a row's ⋮ offers, by the kind of row (Figma 3, 3.7, 3.8). */
+/** What a row's ⋮ offers, by the kind of row. */
 private enum class RowKind { ONE_TIME, DONE, NO_DATE, REPEATING }
 
 /**
- * ≡ › Tasks (Figma 2373:2): two tabs. **One-time** lists every one-time task by when (Today with the ones carried over
- * and the ones done today, struck, at its end; Tomorrow; the next days by name; later by month; No date last), then the
- * Archived row. **Repeating** lists every repeating task once, by how often it comes, with its next day and when it was
- * last done. Ticking happens on Today only. Each row's ⋮ edits, moves, duplicates, skips (repeating), archives or
- * deletes; a long press selects several (or drags a row within its day); every change says so with Undo, and a delete
- * waits for its Undo to go (D6). Completed and Archived are rows at the end of One-time.
- *
- * It is the Tasks tab of Habits & Tasks (5.5.1): the page's top bar, tabs and search (5.5.3) sit over it. Its own look
- * is 5.5.4's.
+ * 5.5.4, **Tasks page** (Figma 999:1061; Components — Atoms Build Plan; A55, A57, A58): Habits & Tasks' Tasks tab,
+ * under the page's top bar, tabs and search. The list, 16 in, 16 above and 80 under, 12 between its parts: One-time ·
+ * Repeating (the Connected button group, scrolling away, A57); then the sections, each title in Label Large Primary, 16
+ * in (No date's with its note in Body Small On surface variant, 2 under), over one rounded list of two-line List items 2
+ * apart on Surface container lowest: the task's icon in its colour, its name in Title Medium (On surface variant once
+ * done), its line in Body Medium On surface variant ("Planned for Wed, 21 Oct", "5:00 PM · Evening", "Done 9:12 AM",
+ * "No date"; a repeating one's "Every 3 days · Next 25 Oct" or "Done today"), and ⋮. **One-time**: Today (carried
+ * over first, then today's, then the ones done today), Tomorrow, the next days by name, later by month, No date.
+ * **Repeating**: by how often each comes. At the end of both, Completed ("6 tasks done") and Archived. A row opens its
+ * Task details; ticking happens on Today only. Its ⋮: Edit task; Move to another day… (the date picker at once, A58),
+ * Skip this time for a repeating one, Do today and Pick a day… for one with No date, Mark as not done for one done
+ * today; Duplicate; Archive; Delete (asks, Cancel | Delete). Moving to today says so with Show (Today); every other
+ * change says so with Undo, and a delete waits for its Undo to go (D6). No selecting several, and a still hold does
+ * nothing (A55); a hold that moves drags a task within its day. Nothing to show: the Empty state with New task.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TasksPage(store: HabitStore, nav: TasksNav) {
-    val c = appColors
+    val s = MaterialTheme.colorScheme
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
     val today = store.today()
     var tab by rememberSaveable { mutableIntStateOf(0) }
-    var selecting by rememberSaveable { mutableStateOf(false) }
-    var chosen by rememberSaveable { mutableStateOf(emptySet<String>()) }
     var hidden by remember { mutableStateOf(emptySet<String>()) }
-    var coachSeen by remember { mutableStateOf(store.setting(TASKS_COACH_SEEN) != null) }
-    var deleting by remember { mutableStateOf<List<Habit>>(emptyList()) }
-    var picking by remember { mutableStateOf<List<Habit>>(emptyList()) }
-    var barMove by remember { mutableStateOf(false) }
+    var deleting by remember { mutableStateOf<Habit?>(null) }
+    var picking by remember { mutableStateOf<Habit?>(null) }
     val oneTimeList = rememberLazyListState()
     val repeatingList = rememberLazyListState()
 
@@ -158,45 +144,44 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     val oneTimeSections = remember(all, today, store.dataVersion, store.skips, store.taskMoves) { oneTimeSections(store, oneTime, today) }
     val repeatingSections = remember(all, today, store.dataVersion, store.skips, store.taskMoves) { repeatingSections(repeating) }
     val sections = if (tab == 0) oneTimeSections else repeatingSections
-    val marked = all.filter { it.id in chosen }
+    // What Completed lists: each one-time task done, and each time a repeating one was done.
+    val completed = remember(all, store.dataVersion) { open.sumOf { t -> if (t.isOneTimeTask) (if (store.doneEntry(t) != null) 1 else 0) else store.entries(t.id).size } }
 
-    fun endSelection() { selecting = false; chosen = emptySet() }
     fun say(text: String, action: String = "Undo", onAction: () -> Unit) {
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
             if (snackbar.showSnackbar(text, action, duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) onAction()
         }
     }
-    fun named(list: List<Habit>) = if (list.size == 1) list[0].name else "${list.size} tasks"
-    /** Moves one-time tasks to [day] (null: No date) and a repeating task's open day to [day]; says where, with Undo. */
-    fun move(list: List<Habit>, day: Int?) {
-        val before = list.map { it to (store.taskMoves[it.id] ?: emptyMap()) }
-        for (t in list) {
-            if (t.isOneTimeTask) store.moveTask(t, day)
-            else if (day != null) {
-                val from = store.taskOpenDay(t, today)
-                if (from != null && from != day && day in (store.taskMoveRange(t, today) ?: IntRange.EMPTY)) store.moveOccurrence(t, from, day)
-            }
+    /** Moves a one-time task to [day] (null: No date) and a repeating task's open day to [day]; says where. */
+    fun move(t: Habit, day: Int?) {
+        val moves = store.taskMoves[t.id] ?: emptyMap()
+        if (t.isOneTimeTask) store.moveTask(t, day)
+        else if (day != null) {
+            val from = store.taskOpenDay(t, today)
+            if (from != null && from != day && day in (store.taskMoveRange(t, today) ?: IntRange.EMPTY)) store.moveOccurrence(t, from, day)
         }
-        val where = when (day) { null -> "No date"; today -> "Today"; today + 1 -> "Tomorrow"; else -> taskDay(day) }
-        val text = if (list.size == 1 && day == today) "${list[0].name} moved to Today" else if (list.size == 1) "Moved to $where" else "${list.size} tasks moved to $where"
-        say(text) { for ((t, moves) in before) if (t.isOneTimeTask) store.update(t) else store.setTaskMoves(t, moves) }
+        // On Today now (Figma's Moved to Today): Show goes there. Elsewhere it says where, with Undo.
+        if (day == today) say("${t.name} is on Today", "Show") { nav.showToday() }
+        else {
+            val where = when (day) { null -> "No date"; today + 1 -> "Tomorrow"; else -> taskDay(day) }
+            say("Moved to $where") { if (t.isOneTimeTask) store.update(t) else store.setTaskMoves(t, moves) }
+        }
     }
-    fun archive(list: List<Habit>) {
-        store.archive(list)
-        say("${named(list)} archived") { list.forEach { store.restore(it) } }
+    fun archive(t: Habit) {
+        store.archive(listOf(t))
+        say("${t.name} archived") { store.restore(t) }
     }
-    fun delete(list: List<Habit>) {
-        val ids = list.map { it.id }.toSet()
-        hidden = hidden + ids
+    fun delete(t: Habit) {
+        hidden = hidden + t.id
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
             var undone = false
             try {
-                undone = snackbar.showSnackbar("${named(list)} deleted", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
+                undone = snackbar.showSnackbar("${t.name} deleted", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
             } finally {
-                if (!undone) store.delete(ids.mapNotNull { store.habit(it) })
-                hidden = hidden - ids
+                if (!undone) store.habit(t.id)?.let { store.delete(listOf(it)) }
+                hidden = hidden - t.id
             }
         }
     }
@@ -210,129 +195,87 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
         store.undoEntry(e.id)
         say("${t.name} is back in Today") { store.putBack(e) }
     }
-    fun toggle(t: Habit) { chosen = if (t.id in chosen) chosen - t.id else chosen + t.id }
-    fun seeCoach() { if (!coachSeen) { coachSeen = true; store.saveAppSetting(TASKS_COACH_SEEN, "1") } }
-
-    BackHandler(enabled = selecting) { endSelection() }
 
     val rowMenu: @Composable (Habit, RowKind, () -> Unit) -> Unit = { t, kind, dismiss ->
-        TaskMenuItems(t, kind, today, dismiss, onEdit = { nav.edit(t) }, onDuplicate = { nav.duplicate(t) }, onMove = { day -> move(listOf(t), day) },
-            onPick = { picking = listOf(t) }, onSkip = { skip(t) }, onNotDone = { notDone(t) }, onArchive = { archive(listOf(t)) }, onDelete = { deleting = listOf(t) })
+        TaskMenuItems(kind, dismiss, onEdit = { nav.edit(t) }, onDuplicate = { nav.duplicate(t) }, onToday = { move(t, today) },
+            onPick = { picking = t }, onSkip = { skip(t) }, onNotDone = { notDone(t) }, onArchive = { archive(t) }, onDelete = { deleting = t })
     }
-    val onRow: (Habit) -> Unit = { t -> if (selecting) toggle(t) else nav.open(t) }
-    val onLong: (Habit) -> Unit = { t -> seeCoach(); if (!selecting) { selecting = true; chosen = setOf(t.id) } else toggle(t) }
 
-    val scroll = TopAppBarDefaults.pinnedScrollBehavior()
-    val barColor = if (selecting) c.tonal else lerp(c.screen, scrolledTopBarColor, scroll.state.overlappedFraction.coerceIn(0f, 1f))
-    Box(Modifier.fillMaxSize().background(c.screen)) {
-        Column(Modifier.fillMaxSize()) {
-            if (selecting) AppTopBar(
-                    if (chosen.isEmpty()) "Select tasks" else "${chosen.size} selected",
-                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "tasks-end-selection" }) { Icon(Symbols.Close, "Stop selecting") } },
-                    actions = {
-                        val ids = (if (tab == 0) oneTime else repeating).map { it.id }.toSet()
-                        val everything = ids.isNotEmpty() && chosen.containsAll(ids)
-                        AppButton(if (everything) "Deselect all" else "Select all", { chosen = if (everything) emptySet() else ids }, Modifier.padding(end = 4.dp).semantics { testTag = "tasks-select-all" }, style = ButtonStyle.Text)
-                    },
-                    containerColor = barColor,
-                )
-            // One-time · Repeating: a connected button group at the top of the list, scrolling away with it (A57, Figma
-            // List, Group wrap), never pinned tabs. The empty states keep it, so the other kind is one tap away.
-            val kinds: @Composable (Modifier) -> Unit = { m ->
-                AppConnectedButtons(listOf(0 to "One-time", 1 to "Repeating"), tab, m, tag = "tasks-tab") { tab = it; chosen = emptySet() }
-            }
-            Box(Modifier.weight(1f).fillMaxWidth()) {
-                when {
-                    all.isEmpty() -> Column {
-                        kinds(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp))
-                        EmptyTasks(Symbols.Checklist, "No tasks yet", "Every task you make lives here: for today, a later day, or no day at all.") {
-                            AppButton("New task", { nav.newTask() }, Modifier.semantics { testTag = "tasks-empty-new" }, icon = Symbols.Add)
+    // One-time · Repeating: a connected button group at the top of the list, scrolling away with it (A57), never pinned
+    // tabs. The empty states keep it, so the other kind is one tap away.
+    val kinds: @Composable (Modifier) -> Unit = { m ->
+        AppConnectedButtons(listOf(0 to "One-time", 1 to "Repeating"), tab, m, tag = "tasks-tab") { tab = it }
+    }
+    Box(Modifier.fillMaxSize().background(s.surfaceContainer)) {
+        when {
+            all.isEmpty() -> EmptyTasks(kinds, "No tasks yet", "Tasks you add show here by their day, and on Today when it comes.") { nav.newTask() }
+            tab == 1 && repeating.isEmpty() -> EmptyTasks(kinds, "No repeating tasks",
+                "A task that comes back, like watering the plants every 3 days, shows here. Choose Repeat when you add it.") { nav.newTask() }
+            else -> {
+                // Each tab keeps its own place in its list.
+                val list = if (tab == 0) oneTimeList else repeatingList
+                LazyColumn(Modifier.fillMaxSize().padding(horizontal = 16.dp).semantics { testTag = if (tab == 0) "tasks-list" else "tasks-repeating-list" },
+                    state = list) {
+                    item(key = "kinds") { kinds(Modifier.padding(top = 16.dp)) }
+                    for ((n, sec) in sections.withIndex()) {
+                        item(key = "title-${sec.key}") { TaskSectionTitle(sec.title, sec.note, first = n == 0) }
+                        sec.tasks.forEachIndexed { i, t ->
+                            item(key = t.id) {
+                                val done = t.isOneTimeTask && store.doneEntry(t) != null
+                                val kind = when { t.isRepeatingTask -> RowKind.REPEATING; done -> RowKind.DONE; t.dueDay == NO_DATE_DAY -> RowKind.NO_DATE; else -> RowKind.ONE_TIME }
+                                val line = if (t.isRepeatingTask) store.repeatingLine(t, today)
+                                    else store.oneTimeLine(t, today).ifEmpty { if (t.dueDay == NO_DATE_DAY) "No date" else "" }
+                                TaskRow(t, listOf(line).filter { it.isNotEmpty() }, done, i, sec.tasks.size, false, false, { nav.open(t) }, {},
+                                    { task, dismiss -> rowMenu(task, kind, dismiss) },
+                                    drag = if (sec.drag && !done) sec.tasks.filter { store.doneEntry(it) == null }.map { it.id } else null,
+                                    onDrop = { ids -> store.reorder(ids) })
+                            }
                         }
                     }
-                    tab == 1 && repeating.isEmpty() -> Column {
-                        kinds(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp))
-                        EmptyTasks(Symbols.Repeat, "No repeating tasks",
-                            "Tasks that come back on their own show here, by how often they come. Choose Repeat when you add a task.") {}
+                    // Completed and Archived, at the end of both kinds (Figma's End of the list): 20 under the last task, 12 apart.
+                    if (completed > 0) item(key = "completed") {
+                        AppListItem("Completed", 0, 1, Modifier.padding(top = 18.dp),
+                            if (completed == 1) "1 task done" else "$completed tasks done",
+                            leading = { Icon(Symbols.TaskAlt, null) }, trailing = { ListChevron() },
+                            onClick = { nav.completed() }, containerColor = s.surfaceContainerLowest, tag = "tasks-completed")
                     }
-                    else -> {
-                        // Each tab keeps its own place in its list (Figma 1.1, 7.1).
-                        val list = if (tab == 0) oneTimeList else repeatingList
-                        LazyColumn(Modifier.fillMaxSize().nestedScroll(scroll.nestedScrollConnection).padding(horizontal = 16.dp)
-                            .semantics { testTag = if (tab == 0) "tasks-list" else "tasks-repeating-list" }, state = list) {
-                            item(key = "kinds") { kinds(Modifier.padding(top = 16.dp, bottom = 4.dp)) }
-                            var first = true
-                            for ((n, s) in sections.withIndex()) {
-                                item(key = "title-${s.key}") {
-                                    SectionTitle(s.title, n == 0)
-                                    s.note?.let { Text(it, Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp), style = AppType.bodyMedium, color = c.secondary) }
-                                }
-                                s.tasks.forEachIndexed { i, t ->
-                                    val coach = first && !coachSeen && !selecting && open.size >= 2
-                                    first = false
-                                    item(key = t.id) {
-                                        val done = t.isOneTimeTask && store.doneEntry(t) != null
-                                        val kind = when { t.isRepeatingTask -> RowKind.REPEATING; done -> RowKind.DONE; t.dueDay == NO_DATE_DAY -> RowKind.NO_DATE; else -> RowKind.ONE_TIME }
-                                        val lines = if (t.isRepeatingTask) store.repeatingLines(t, today) else listOf(store.oneTimeLine(t, today)).filter { it.isNotEmpty() }
-                                        TaskRow(t, lines, done, i, s.tasks.size, selecting, t.id in chosen, { onRow(t) }, { onLong(t) },
-                                            if (selecting) null else { task, dismiss -> rowMenu(task, kind, dismiss) },
-                                            coach = if (coach) ({ seeCoach() }) else null,
-                                            drag = if (s.drag && !done && !selecting) s.tasks.filter { store.doneEntry(it) == null }.map { it.id } else null,
-                                            onDrop = { ids -> store.reorder(ids) })
-                                    }
-                                }
-                            }
-                            // Completed and Archived, rows at the end of One-time (they were in the old top bar's ⋮).
-                            if (tab == 0) item(key = "completed") {
-                                Spacer(Modifier.height(22.dp))
-                                AppListItem("Completed", 0, 1, leading = { Icon(Symbols.CheckCircle, null) }, trailing = { ListChevron() },
-                                    onClick = { nav.completed() }, enabled = !selecting, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                                    tag = "tasks-completed")
-                            }
-                            if (tab == 0 && archived.isNotEmpty()) item(key = "archived") {
-                                Spacer(Modifier.height(12.dp))
-                                Box(Modifier.semantics { testTag = "tasks-archived" }) { ArchivedRow(archived.size, enabled = !selecting, noun = "task") { nav.archived() } }
-                            }
-                            item(key = "end") { Spacer(Modifier.height(if (selecting) 120.dp else 88.dp)) }
+                    if (archived.isNotEmpty()) item(key = "archived") {
+                        Box(Modifier.padding(top = if (completed > 0) 12.dp else 18.dp).semantics { testTag = "tasks-archived" }) {
+                            ArchivedRow(archived.size, enabled = true, noun = "task") { nav.archived() }
                         }
                     }
-                }
-            }
-            if (selecting) Surface(color = c.surface, tonalElevation = 3.dp) {
-                Row(Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    val any = marked.isNotEmpty()
-                    Box {
-                        BarAction("Move", Symbols.EditCalendar, any, "tasks-move", { barMove = true })
-                        AppMenu(barMove, { barMove = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                            AppMenuItem("Tomorrow · " + taskDay(today + 1), {
-                                barMove = false; move(marked, today + 1); endSelection()
-                            }, icon = Symbols.CalendarMonth, tag = "tasks-move-tomorrow")
-                            AppMenuItem("Pick a day…", { barMove = false; picking = marked }, icon = Symbols.Event, tag = "tasks-move-pick")
-                            if (marked.all { it.isOneTimeTask }) AppMenuItem("No date", { barMove = false; move(marked, null); endSelection() }, icon = Symbols.EventBusy, tag = "tasks-move-none")
-                        }
-                    }
-                    BarAction("Archive", Symbols.Archive, any, "tasks-archive", { archive(marked); endSelection() })
-                    BarAction("Delete", Symbols.Delete, any, "tasks-delete", { deleting = marked }, danger = true)
+                    item(key = "end") { Spacer(Modifier.navigationBarsPadding().height(80.dp)) }
                 }
             }
         }
-        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
+        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
     }
 
-    if (picking.isNotEmpty()) {
-        val list = picking
-        // A repeating task's day moves only before its next one (Figma 3.2).
-        val last = list.filter { it.isRepeatingTask }.mapNotNull { store.taskMoveRange(it, today)?.last }.minOrNull()
-        DayDialog(today + 1, { it >= today && (last == null || it <= last) }, { picking = emptyList() }, title = "Select date") { day ->
-            picking = emptyList(); move(list, day); endSelection()
+    picking?.let { t ->
+        // A repeating task's day moves only before its next one; a one-time task to any day from today (A58).
+        val last = if (t.isRepeatingTask) store.taskMoveRange(t, today)?.last else null
+        DayDialog(maxOf(today, t.dueDay?.takeIf { it != NO_DATE_DAY } ?: today), { it >= today && (last == null || it <= last) },
+            { picking = null }, title = "Select date") { day ->
+            picking = null; move(t, day)
         }
     }
-    if (deleting.isNotEmpty()) {
-        val list = deleting
-        val one = list.size == 1
-        AppDialog(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} tasks?",
-            if (one) "Its history and notes are deleted too. To keep them, archive it instead." else "Their history and notes are deleted too. To keep them, archive them instead.",
-            "Delete", { deleting = emptyList(); endSelection(); delete(list) }, { deleting = emptyList() },
-            destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
+    deleting?.let { t ->
+        AppDialog("Delete ${t.name}?", "Its history and notes are deleted too. To keep them, archive it instead.",
+            "Delete", { deleting = null; delete(t) }, { deleting = null }, destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
+    }
+}
+
+/**
+ * A section's title (Figma's Section): Label Large Primary, 16 in; 20 under what comes before it and 12 over its list;
+ * [note] (No date's) in Body Small On surface variant, 2 under it.
+ */
+@Composable
+private fun TaskSectionTitle(title: String, note: String?, first: Boolean) {
+    val s = MaterialTheme.colorScheme
+    Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = if (first) 20.dp else 18.dp, bottom = 12.dp)
+        .semantics(mergeDescendants = true) { heading(); testTag = "habits-section-$title" }, verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(title, style = AppType.labelLarge, color = s.primary)
+        note?.let { Text(it, style = AppType.bodySmall, color = s.onSurfaceVariant) }
     }
 }
 
@@ -355,16 +298,17 @@ private fun repeatingSections(repeating: List<Habit>): List<TaskSection> =
     TaskRhythm.entries.mapNotNull { r -> repeating.filter { taskRhythm(it.frequency) == r }.takeIf { it.isNotEmpty() }?.let { TaskSection("r-" + r.name, r.title, it) } }
 
 /**
- * One task: icon (a check mark when selected), name (struck through once done today) and its lines, and ⋮. With [drag]
- * (its day's open tasks, in order), touch and hold lifts it to move within its day; let go without moving and it's
- * selected instead (Figma 1.10). It looks like the List item atom (2.4: Surface, its corners, a Title Medium name) but keeps
- * its own gestures, because a hold lifts it to drag and must not also open it (T22).
+ * One task (Figma's task row, 5.5.4): its icon in its colour (a check mark when selected, Completed's selecting), its name
+ * in Title Medium (On surface variant once done), its lines in Body Medium On surface variant, and ⋮. With [drag] (its
+ * day's open tasks, in order), touch and hold lifts it to move within its day; let go without moving and [onLongClick]
+ * runs. It looks like the List item atom (2.4: Surface container lowest, its corners) but keeps its own gestures, because
+ * a hold lifts it to drag and must not also open it (T22).
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TaskRow(
     task: Habit, lines: List<String>, done: Boolean, index: Int, count: Int, selecting: Boolean, marked: Boolean,
-    onClick: () -> Unit, onLongClick: () -> Unit, menu: (@Composable (Habit, () -> Unit) -> Unit)?, coach: (() -> Unit)? = null,
+    onClick: () -> Unit, onLongClick: () -> Unit, menu: (@Composable (Habit, () -> Unit) -> Unit)?,
     drag: List<String>? = null, onDrop: (List<String>) -> Unit = {},
 ) {
     val c = appColors
@@ -405,7 +349,7 @@ internal fun TaskRow(
     }
     Box(Modifier.graphicsLayer { translationY = if (lifted) dy else 0f }.let { if (lifted) it.shadow(8.dp, segmentShape(index, count)) else it }) {
         Row(
-            Modifier.padding(bottom = SegmentedListGap).fillMaxWidth().clip(segmentShape(index, count)).background(if (marked) c.tonal else MaterialTheme.colorScheme.surface)
+            Modifier.padding(bottom = SegmentedListGap).fillMaxWidth().clip(segmentShape(index, count)).background(if (marked) c.tonal else MaterialTheme.colorScheme.surfaceContainerLowest)
                 .onSizeChanged { height = it.height.coerceAtLeast(1) }
                 .then(dragModifier)
                 .combinedClickable(onClick = { if (android.os.SystemClock.uptimeMillis() > heldUntil) onClick() }, onLongClick = if (drag == null) onLongClick else null, role = if (selecting) Role.Checkbox else Role.Button)
@@ -421,8 +365,7 @@ internal fun TaskRow(
             } else HabitIcon(task.symbol, task.color)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp)) {
-                Text(task.name, style = AppType.titleMedium.copy(textDecoration = if (done) TextDecoration.LineThrough else null),
-                    color = if (done) c.secondary else c.ink)
+                Text(task.name, style = AppType.titleMedium, color = if (done) c.secondary else c.ink)
                 for (l in lines) Text(l, style = AppType.bodyMedium, color = c.secondary)
             }
             if (menu != null) Box {
@@ -430,67 +373,46 @@ internal fun TaskRow(
                 AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { menu(task) { open = false } }
             }
         }
-        if (coach != null) Popup(alignment = Alignment.TopStart, offset = IntOffset(0, with(LocalDensity.current) { 68.dp.roundToPx() }), onDismissRequest = coach) {
-            Column(Modifier.semantics { testTag = "tasks-coach"; testTagsAsResourceId = true }) {
-                Box(Modifier.padding(start = 28.dp).size(12.dp).graphicsLayer { rotationZ = 45f; translationY = 6.dp.toPx() }.background(c.ink))
-                Column(Modifier.widthIn(max = 312.dp).clip(RoundedCornerShape(12.dp)).background(c.ink).padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 4.dp)) {
-                    Text("Select several at once", style = AppType.labelLarge, color = c.onInk)
-                    Spacer(Modifier.height(4.dp))
-                    Text("Touch and hold a task to move, archive or delete several together. Or use Select in the menu at the top right.",
-                        style = AppType.bodyMedium, color = c.onInk.copy(alpha = 0.85f))
-                    TextButton(coach, Modifier.semantics { testTag = "tasks-coach-ok" }) { Text("Got it", style = AppType.labelLarge, color = c.onInk) }
-                }
-            }
-        }
     }
 }
 
 /**
- * A row's ⋮ (Figma 3, 3.2, 3.7, 3.8). One-time: Edit task, Move to another day… (Tomorrow, Pick a day…, No date), Duplicate,
- * Archive, Delete task…. Repeating adds Skip this time. No date: Do today and Pick a day…. Done today: Mark as not done.
+ * A row's ⋮ (README, 23 Oct; Figma's Menu open): Edit task; then Move to another day… (the date picker at once, A58),
+ * Skip this time for a repeating task, Do today and Pick a day… for one with No date, or Mark as not done for one done
+ * today; then Duplicate, Archive and Delete (Error).
  */
 @Composable
 private fun TaskMenuItems(
-    t: Habit, kind: RowKind, today: Int, dismiss: () -> Unit, onEdit: () -> Unit, onDuplicate: () -> Unit, onMove: (Int?) -> Unit,
+    kind: RowKind, dismiss: () -> Unit, onEdit: () -> Unit, onDuplicate: () -> Unit, onToday: () -> Unit,
     onPick: () -> Unit, onSkip: () -> Unit, onNotDone: () -> Unit, onArchive: () -> Unit, onDelete: () -> Unit,
 ) {
-    val c = appColors
-    var moving by remember { mutableStateOf(false) }
-    if (moving) {
-        AppMenuItem("Tomorrow · " + taskDay(today + 1), { dismiss(); onMove(today + 1) }, icon = Symbols.CalendarMonth, tag = "tasks-menu-tomorrow")
-        AppMenuItem("Pick a day…", { dismiss(); onPick() }, icon = Symbols.Event, tag = "tasks-menu-pick")
-        if (kind != RowKind.REPEATING) AppMenuItem("No date", { dismiss(); onMove(null) }, icon = Symbols.EventBusy, tag = "tasks-menu-nodate")
-        return
-    }
     AppMenuItem("Edit task", { dismiss(); onEdit() }, icon = Symbols.Edit, tag = "tasks-menu-edit")
     when (kind) {
         RowKind.NO_DATE -> {
-            AppMenuItem("Do today", { dismiss(); onMove(today) }, icon = Symbols.Today, tag = "tasks-menu-today")
+            AppMenuItem("Do today", { dismiss(); onToday() }, icon = Symbols.Today, tag = "tasks-menu-today")
             AppMenuItem("Pick a day…", { dismiss(); onPick() }, icon = Symbols.Event, tag = "tasks-menu-pick")
         }
         RowKind.DONE -> AppMenuItem("Mark as not done", { dismiss(); onNotDone() }, icon = Symbols.Undo, tag = "tasks-menu-not-done")
-        else -> AppMenuItem("Move to another day…", { moving = true }, icon = Symbols.Event, tag = "tasks-menu-move")
+        RowKind.REPEATING -> AppMenuItem("Skip this time", { dismiss(); onSkip() }, icon = Symbols.Redo, tag = "tasks-menu-skip")
+        RowKind.ONE_TIME -> AppMenuItem("Move to another day…", { dismiss(); onPick() }, icon = Symbols.Event, tag = "tasks-menu-move")
     }
     AppMenuItem("Duplicate", { dismiss(); onDuplicate() }, icon = Symbols.ContentCopy, tag = "tasks-menu-duplicate")
-    if (kind == RowKind.REPEATING) AppMenuItem("Skip this time", { dismiss(); onSkip() }, icon = Symbols.Redo, tag = "tasks-menu-skip")
-    MenuDivider()
     AppMenuItem("Archive", { dismiss(); onArchive() }, icon = Symbols.Archive, tag = "tasks-menu-archive")
-    AppMenuItem("Delete task…", { dismiss(); onDelete() }, icon = Symbols.Delete, destructive = true, tag = "tasks-menu-delete")
+    AppMenuItem("Delete", { dismiss(); onDelete() }, icon = Symbols.Delete, destructive = true, tag = "tasks-menu-delete")
 }
 
-/** An empty tab (Figma 1.3, 7.2): its icon in a cookie, what goes here, and how to start. */
+/**
+ * A tab with nothing to show (Figma's No tasks yet, No repeating tasks): [kinds] still at the top (16 in, 16 above, 8
+ * under), then centred in the rest the Empty state (5.1.2: task_alt in its cookie, [title], [body]) with New task.
+ */
 @Composable
-private fun EmptyTasks(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, body: String, action: @Composable () -> Unit) {
-    val c = appColors
-    Column(Modifier.fillMaxSize().padding(horizontal = 32.dp).semantics { testTag = "tasks-empty" }, horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
-        CookieIcon(icon, 112.dp)
-        Spacer(Modifier.height(24.dp))
-        Text(title, style = AppType.titleLarge, color = c.ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(12.dp))
-        Text(body, style = AppType.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(24.dp))
-        action()
-        Spacer(Modifier.height(64.dp))
+private fun EmptyTasks(kinds: @Composable (Modifier) -> Unit, title: String, body: String, onNew: () -> Unit) {
+    Column(Modifier.fillMaxSize()) {
+        kinds(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp))
+        Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+            EmptyState(Symbols.TaskAlt, title, body, Modifier.semantics { testTag = "tasks-empty" }) {
+                AppButton("New task", onNew, Modifier.semantics { testTag = "tasks-empty-new" }, icon = Symbols.Add)
+            }
+        }
     }
 }

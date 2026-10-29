@@ -275,6 +275,7 @@ private fun AppMain(
                                 override fun newTask(name: String?) = nav.navigate(Routes.NEW + "?from=tasks" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
                                 override fun completed() = nav.navigate(Routes.COMPLETED_TASKS)
                                 override fun archived() = nav.navigate(Routes.ARCHIVED_TASKS)
+                                override fun showToday() { nav.popBackStack(Routes.TODAY, inclusive = false) }
                             }
                         })
                     }
