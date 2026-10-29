@@ -117,7 +117,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.2.3 | Today · Edit Today | 827:39487 | ☑ |
 | 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☑ |
 | 5.3.1 | Day details · Day details sheet | 669:234 | ☑ |
-| 5.3.2 | Day details · Log screen | 687:829 | ☐ |
+| 5.3.2 | Day details · Log screen | 687:829 | ☑ |
 | 5.3.3 | Day details · All logs screen | 694:607 | ☐ |
 | 5.3.4 | Day details · Dialog | 702:618 | ☐ |
 | 5.3.5 | Day details · Time picker | 703:602 | ☐ |
@@ -1544,3 +1544,45 @@ What each atom changed, newest last.
     habit's Fill, as everywhere else.
   - The two buttons keep 12 at their sides (`compact`) so "Log manually" fits half the width; Figma draws 24.
   - The milestone ribbon at the top of This day isn't in Figma (5.1 / 4.9); kept.
+  - **Built:** run 40798504142 (Android #128, commit aaa4f9d) passed: assembleDebug, unit tests and lint.
+- **5.3.2 Day details · Log screen (29 Oct).** Figma: Log screen (687:829), Kind Amount · Duration · Slip by Mode
+  Entry · View · Error, with Show seconds. The one screen for adding, viewing and editing a record: the Top app bar
+  (64); the content 16 at the sides, 8 apart, nothing above; the fields, 2 apart (the habit, a List item, First, one
+  line; Date | Time, two two-line List items 72 high, 8 above and below, 16 / 8 in, ›, Date filling and Time hugging,
+  their outer corners 24); "Amount" or "How long" in Label Large On surface variant, 16 in, 8 above; the Value card
+  (Surface container lowest, corners 24, 16 above and below: the number in Display Medium On surface, the unit in Body
+  Large On surface variant) or the How long card (corners 24, 20 by 16 in, 12 apart: boxes 80 high, corners 12, Surface
+  container high when focused and Surface container when not, Display Medium Emphasized On surface / On surface
+  variant, the labels 8 under in Body Medium); the footer in Body Small On surface variant, 16 in, Error for what's
+  wrong ("Enter more than zero.", the "0" in Outline); the Bottom bar (12 / 16): Add or Save, Medium Filled, the full
+  width; in View, "Delete log" / "Delete slip" (Medium Outlined, Error) and Edit (Medium Filled), half each. It is
+  `AddLogScreen` and `LogScreen` (`record/RecordScreens.kt`) with their parts in `record/RecordParts.kt`. Every tag and
+  word the tests use stays. The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The main button was a hand-made 48 dp box in On surface; now the Button atom (2.1), Medium Filled, 56, Material's
+    own disabled colours. Delete | Edit lost their 12 dp sides (`compact`): Figma's Medium buttons keep 24.
+  - The amount card had 20 corners, 18 above and below and a 112 dp floor, its number in Display Medium Emphasized and
+    its empty "0" in Secondary container; now 24, 16, no floor, Display Medium and Outline. The View shows the number
+    as text, not a field you could focus.
+  - The How long card had 28 corners; the focused box was Secondary container with a 2 dp On surface outline and the
+    others Surface container high, every number On surface; now 24 corners, Surface container high / Surface container
+    with no outline, the unfocused numbers On surface variant and an empty focused "0" in Outline.
+  - A time log's View showed the three typing boxes, read-only; now Figma's Value card, "2 min 42 s" (`DurationValue`,
+    tag `record-duration`).
+  - Date | Time had 14 above and below and an arrow (keyboard_arrow_right); now 8 and Figma's chevron_right. The View's
+    date has its year ("Today, 21 Oct 2026"), as Entry's always had.
+  - The content had 8 above it; now none, as Figma.
+  - A zero How long said "A session is longer than zero." (or "Enter how long, more than zero."); now Figma's "Enter
+    more than zero.", as for an amount.
+  Noted, not changed:
+  - Figma's Top app bar instances in Entry show ← (Leading=Back) while the description says Entry closes; ✕ kept for
+    Entry and Edit (U18 asks before losing typing), ← for View.
+  - Figma's View draws › on Date and Time, but in View neither opens anything until Edit; no › there, so nothing looks
+    tappable that isn't.
+  - Figma's footers in View read "Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM." and "Your run started
+    again from this slip."; the app's words ("Logged by hand.", "Logged with the timer.") come from the record's own
+    source (`originLine`) and a timer's start isn't stored apart from its log. The user's call.
+  - The habit's name may take two lines at large text sizes (Figma: one line), so a 24-letter name is never cut.
+  - "Recorded in India Standard Time", for a record made in another time zone, isn't in this frame (Figma 9.3.4); kept.
+  - The Add screen's Steps card (Tick steps) and the check / mark-done kinds aren't in this frame; they keep their
+    look until their own frames.

@@ -13,7 +13,6 @@ import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.layout.ime
@@ -37,6 +35,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -97,32 +96,59 @@ fun DiscardDialog(title: String, onKeep: () -> Unit, onDiscard: () -> Unit, keep
         dismissButton = { AppButton(keepLabel, onKeep, Modifier.semantics { testTag = "keep-editing" }, style = ButtonStyle.Text) })
 }
 
-/** The amount (Figma 1.6: 112 high, corners 20): one large typed number (45 Medium), the unit under it, the decimal pad up. */
+/**
+ * The value's card (Figma's Value, Log screen 687:829): Surface container lowest, corners 24, 16 above and below, its
+ * [content] centred.
+ */
+@Composable
+private fun ValueCard(content: @Composable () -> Unit) =
+    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(MaterialTheme.colorScheme.surfaceContainerLowest).padding(vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) { content() }
+
+/**
+ * Amount (Figma's Value card): the number in Display Medium On surface, typed with the decimal pad up (a whole number
+ * for checks); "0" in Outline until something is typed; the unit under it in Body Large On surface variant (a currency
+ * sign goes before the number instead). [readOnly]: the View, the number as plain text.
+ */
 @Composable
 fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly: Boolean = false) {
-    val c = appColors
+    val s = MaterialTheme.colorScheme
     val currency = unit.trim().takeIf { it in HabitCopy.currencies }
-    Column(Modifier.fillMaxWidth().heightIn(min = 112.dp).clip(RoundedCornerShape(20.dp)).background(c.surface).padding(vertical = 18.dp),
-        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    val spoken = if (unit.isBlank() || currency != null) "Amount" else "Amount, in $unit"
+    ValueCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            if (currency != null) Text(currency, style = AppType.displayMediumEmphasized, color = c.secondary)
-            var field by remember { mutableStateOf(TextFieldValue(draft.amount, TextRange(draft.amount.length))) }
-            if (field.text != draft.amount) field = TextFieldValue(draft.amount, TextRange(draft.amount.length))
-            BasicTextField(field, { field = it.copy(text = it.text.take(16)); draft.amount = field.text }, readOnly = readOnly,
-                textStyle = AppType.displayMediumEmphasized.copy(color = c.ink, textAlign = TextAlign.Center),
-                keyboardOptions = KeyboardOptions(keyboardType = if (draft.kind == HabitKind.Check) KeyboardType.Number else KeyboardType.Decimal),
-                singleLine = true, cursorBrush = SolidColor(c.ink),
-                modifier = Modifier.widthIn(min = 32.dp).width(widthFor(draft.amount)).let { m -> focus?.let { m.focusRequester(it) } ?: m }
-                    .semantics { testTag = "record-amount"; contentDescription = if (unit.isBlank() || currency != null) "Amount" else "Amount, in $unit" },
-                decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
-                    if (draft.amount.isEmpty()) Text("0", style = AppType.displayMediumEmphasized.copy(color = c.tonal), textAlign = TextAlign.Center)
-                    inner()
-                } })
+            if (currency != null) Text(currency, style = AppType.displayMedium, color = s.onSurfaceVariant)
+            if (readOnly) Text(draft.amount, Modifier.semantics { testTag = "record-amount" }, style = AppType.displayMedium, color = s.onSurface)
+            else {
+                var field by remember { mutableStateOf(TextFieldValue(draft.amount, TextRange(draft.amount.length))) }
+                if (field.text != draft.amount) field = TextFieldValue(draft.amount, TextRange(draft.amount.length))
+                BasicTextField(field, { field = it.copy(text = it.text.take(16)); draft.amount = field.text },
+                    textStyle = AppType.displayMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
+                    keyboardOptions = KeyboardOptions(keyboardType = if (draft.kind == HabitKind.Check) KeyboardType.Number else KeyboardType.Decimal),
+                    singleLine = true, cursorBrush = SolidColor(s.onSurface),
+                    modifier = Modifier.widthIn(min = 32.dp).width(widthFor(draft.amount)).let { m -> focus?.let { m.focusRequester(it) } ?: m }
+                        .semantics { testTag = "record-amount"; contentDescription = spoken },
+                    decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
+                        if (draft.amount.isEmpty()) Text("0", style = AppType.displayMedium.copy(color = s.outline), textAlign = TextAlign.Center)
+                        inner()
+                    } })
+            }
         }
         if (currency == null && unit.isNotBlank()) {
             val one = draft.value == 1.0
-            Text(if (one) HabitCopy.unitWord(1.0, unit) else unit, style = AppType.bodyLarge, color = c.secondary)
+            Text(if (one) HabitCopy.unitWord(1.0, unit) else unit, style = AppType.bodyLarge, color = s.onSurfaceVariant)
         }
+    }
+}
+
+/** How long, read (Figma's Duration View): "2 min 42 s" in Display Medium On surface, in the Value card. */
+@Composable
+fun DurationValue(draft: ValueDraft) {
+    val parts = listOf(draft.hours to "h", draft.minutes to "min", draft.seconds to "s")
+        .filter { (v, _) -> v.isNotBlank() && (GoalNumber.parse(v) ?: 0.0) > 0 }.joinToString(" ") { (v, u) -> "$v $u" }
+    ValueCard {
+        Text(parts.ifEmpty { "0 min" }, Modifier.semantics { testTag = "record-duration" }, style = AppType.displayMedium,
+            color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center)
     }
 }
 
@@ -130,43 +156,46 @@ fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly
 private fun widthFor(text: String) = (maxOf(1, text.length) * 27 + 6).dp
 
 /**
- * How long (Figma 2.4–2.6: corners 28): Hours and Minutes in boxes 80 high (Minutes focused first), a timer's log keeps
- * its Seconds too. The focused box is outlined in ink.
+ * How long (Figma's How long card, Log screen 687:829): Surface container lowest, corners 24, 20 by 16 in, 12 apart:
+ * Hours and Minutes in boxes 80 high (corners 12), each its label under it, 8 apart, in Body Medium On surface variant;
+ * a timer's log keeps its Seconds too (Figma's Show seconds). Minutes is focused first. The focused box is Surface
+ * container high, its number in Display Medium Emphasized On surface ("0" in Outline until typed); the others are
+ * Surface container, their numbers On surface variant. No outline.
  */
 @Composable
-fun DurationCard(draft: ValueDraft, focus: FocusRequester?, readOnly: Boolean = false, withSeconds: Boolean = false) {
-    val c = appColors
+fun DurationCard(draft: ValueDraft, focus: FocusRequester?, withSeconds: Boolean = false) {
+    val s = MaterialTheme.colorScheme
     val fields = listOfNotNull(
         Triple("Hours", draft.hours, { v: String -> draft.hours = v }),
         Triple("Minutes", draft.minutes, { v: String -> draft.minutes = v }),
         if (withSeconds) Triple("Seconds", draft.seconds, { v: String -> draft.seconds = v }) else null,
     )
-    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(horizontal = 16.dp, vertical = 20.dp),
+    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest).padding(horizontal = 16.dp, vertical = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         fields.forEachIndexed { i, (label, value, set) ->
             var focused by remember { mutableStateOf(false) }
             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Box(Modifier.fillMaxWidth().height(80.dp).clip(RoundedCornerShape(12.dp)).background(if (focused && !readOnly) c.tonal else c.tonal2)
-                    .let { if (focused && !readOnly) it.border(2.dp, c.ink, RoundedCornerShape(12.dp)) else it }, contentAlignment = Alignment.Center) {
+                Box(Modifier.fillMaxWidth().height(80.dp).clip(RoundedCornerShape(12.dp)).background(if (focused) s.surfaceContainerHigh else s.surfaceContainer),
+                    contentAlignment = Alignment.Center) {
                     var field by remember { mutableStateOf(TextFieldValue(value, TextRange(value.length))) }
                     if (field.text != value) field = TextFieldValue(value, TextRange(value.length))
                     BasicTextField(field, { v ->
                         val clean = v.text.filter { ch -> ch.isDigit() || ch == '.' || ch == ',' }.take(5)
                         field = v.copy(text = clean, selection = TextRange(minOf(v.selection.end, clean.length))); set(clean)
-                    }, readOnly = readOnly,
-                        textStyle = AppType.displayMediumEmphasized.copy(color = c.ink, textAlign = TextAlign.Center),
+                    },
+                        textStyle = AppType.displayMediumEmphasized.copy(color = if (focused) s.onSurface else s.onSurfaceVariant, textAlign = TextAlign.Center),
                         keyboardOptions = KeyboardOptions(keyboardType = if (label == "Seconds") KeyboardType.Decimal else KeyboardType.Number,
                             imeAction = if (i < fields.lastIndex) ImeAction.Next else ImeAction.Done),
-                        singleLine = true, cursorBrush = SolidColor(c.ink),
+                        singleLine = true, cursorBrush = SolidColor(s.onSurface),
                         modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused }
                             .let { m -> if (i == 1 && focus != null) m.focusRequester(focus) else m }
                             .semantics { testTag = "record-${label.lowercase()}"; contentDescription = label },
                         decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
-                            if (value.isEmpty()) Text("0", style = AppType.displayMediumEmphasized.copy(color = c.secondary, textAlign = TextAlign.Center))
+                            if (value.isEmpty()) Text("0", style = AppType.displayMediumEmphasized.copy(color = if (focused) s.outline else s.onSurfaceVariant, textAlign = TextAlign.Center))
                             inner()
                         } })
                 }
-                Text(label, style = AppType.bodyMedium, color = c.secondary)
+                Text(label, style = AppType.bodyMedium, color = s.onSurfaceVariant)
             }
         }
     }
@@ -229,7 +258,7 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
         onDone()
     }
     // What the footer says: a problem (red) once Add was tried, a time kept at now, or what will happen.
-    val shownProblem = problem ?: if (tried && typed && value == null) (if (kind == RecordKind.TIME) "Enter how long, more than zero." else "Enter more than zero.") else null
+    val shownProblem = problem ?: if (tried && typed && value == null) "Enter more than zero." else null
     val footer = when {
         shownProblem != null -> shownProblem
         later -> "That’s later than now, so the time stays ${DayWords.clock(store.logTime(time, day))}."
@@ -243,7 +272,7 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     LaunchedEffect(keyboard, scroll.maxValue) { if (keyboard) scroll.scrollTo(scroll.maxValue) }
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(kind.addTitle, onClose = ::close)
-        Column(Modifier.weight(1f).verticalScroll(scroll).padding(start = 16.dp, end = 16.dp, top = 8.dp),
+        Column(Modifier.weight(1f).verticalScroll(scroll).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 HabitFact(habit, 0, 2)
@@ -341,7 +370,7 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
         val scroll = rememberScrollState()
         val keyboard = WindowInsets.ime.getBottom(LocalDensity.current) > 0
         LaunchedEffect(keyboard, scroll.maxValue) { if (keyboard) scroll.scrollTo(scroll.maxValue) }
-        Column(Modifier.weight(1f).verticalScroll(scroll).padding(start = 16.dp, end = 16.dp, top = 8.dp),
+        Column(Modifier.weight(1f).verticalScroll(scroll).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 HabitFact(habit, 0, 2)
@@ -355,7 +384,7 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
             }
             when (ruled.kind) {
                 is HabitKind.Amount, HabitKind.Check -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit.ifEmpty { if (ruled.kind == HabitKind.Check) "checks" else "" }, focus, readOnly = !editing) }
-                HabitKind.Duration -> { SectionTitle("How long"); DurationCard(draft, focus, readOnly = !editing, withSeconds = withSeconds) }
+                HabitKind.Duration -> { SectionTitle("How long"); if (editing) DurationCard(draft, focus, withSeconds = withSeconds) else DurationValue(draft) }
                 else -> {}
             }
             val problem = draft.check().second
