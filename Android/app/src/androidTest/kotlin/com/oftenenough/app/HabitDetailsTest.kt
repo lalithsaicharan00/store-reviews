@@ -183,11 +183,13 @@ class HabitDetailsTest {
         // Search: the days whose note has the words.
         tapTag("history-search")
         waitFor(hasTestTag("notes-search"), "the search field")
+        waitFor(hasText("Search Water’s notes by any word."), "what it searches, before anything is typed")
         compose.onNodeWithTag("notes-search").performTextInput("bottle")
         waitFor(hasText("1 note"), "one note found")
         waitFor(hasTestTag("habit-day-" + dayKey(today - 3)), "the day of that note")
         compose.onNodeWithTag("notes-search").performTextReplacement("lemon")
         waitFor(hasText("No notes with “lemon”"), "nothing found, said plainly")
+        waitFor(hasText("Search looks through this habit’s notes. To find a day, use Go to date."), "where to look instead")
         tapTag("search-back")
         waitFor(hasTestTag("history-search"), "History again")
     }

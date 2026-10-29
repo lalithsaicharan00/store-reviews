@@ -243,7 +243,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     }
     val months = if (shown == HabitTab.HISTORY && !habit.isTask) model.history(store, habit, revision, today) else emptyList()
     if (searching) {
-        HistorySearchPage(months, habit.color, today, onBack = { searching = false }) { day -> nav.openDay(habit, day) }
+        HistorySearchPage(habit.name, months, habit.color, onBack = { searching = false }) { day -> nav.openDay(habit, day) }
         return
     }
     val earlier = remember(habit, store.habits) { store.earlierOf(habit.id) }

@@ -142,7 +142,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.6.1 | Details pages · Habit details page | 1020:4052 | ☑ |
 | 5.6.2 | Details pages · Streaks page | 1034:74 | ☑ |
 | 5.6.3 | Details pages · All milestones page | 1036:235 | ☑ |
-| 5.6.4 | Details pages · Notes search page | 1053:9079 | ☐ |
+| 5.6.4 | Details pages · Notes search page | 1053:9079 | ☑ |
 | 5.6.5 | Details pages · Task details page | 1136:9271 | ☐ |
 | 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☐ |
 | 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☐ |
@@ -2144,4 +2144,25 @@ What each atom changed, newest last.
     it. Until then the page keeps its closing note in Body Small.
   - The Quitting screen's anniversary says "27 Sep 2027 · 339 days to go" without "Next ·", where Water's says "Next ·";
     the app says "Next ·" on every next milestone, as Water's.
+  - **Built:** run 40933613903 (Android #153, commit 3abd934) passed: assembleDebug, unit tests and lint.
+
+- **5.6.4 Details pages · Notes search page (29 Oct).** Figma: Notes search page (1053:9079), Screen Start · Results · No
+  match. From History's Search notes: the Search view header (1.9, "Search notes") and its divider, the keyboard up, on
+  Surface container. Nothing typed: "Search Water’s notes by any word." in Body Medium On surface variant, centred, 16
+  in. Results: "2 notes" in Label Large Primary (32 in, 16 above, 8 below) over one rounded list of History's day rows
+  (List items 2 apart on Surface bright, the Small Day cell, the date, its line, the note with the words in Medium,
+  ›); a row opens its Day details. No match: "No notes with “swim”" in Title Medium and "Search looks through this
+  habit’s notes. To find a day, use Go to date." in Body Medium On surface variant, centred, 48 down, 8 apart. It is
+  `HistorySearchPage` (`habit/HistoryTab.kt`). The app, the unit tests (55), lint and the instrumented tests' code build
+  in the session.
+  Fixed:
+  - Nothing typed showed an empty page; now Figma's hint, naming the habit.
+  - The count was Body Medium in grey; now the subheader in Label Large Primary, 8 over the list.
+  - Matched words were Bold; now Medium, as Figma (and A74's weights).
+  - The rows were History's (Surface container lowest); here they're Surface bright, as Figma's results.
+  - No match said only "Search looks through this habit's notes." 64 down; now Figma's two lines, 48 down, 8 apart.
+  - The page took the app's old colours; now the theme's roles.
+  - Tests: HabitDetailsTest checks the hint and No match's second line.
+  Noted, not changed:
+  - The search counts what's typed from 0.3 s after typing stops (S11); Figma shows results "as you type".
 

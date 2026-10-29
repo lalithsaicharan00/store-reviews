@@ -22,10 +22,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,6 +42,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -192,7 +191,8 @@ private fun HistoryChips(filter: HistoryFilter, onFilter: (HistoryFilter) -> Uni
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count: Int, title: String = day.title, query: String? = null, lit: Boolean = false, onOpen: () -> Unit) {
+private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count: Int, title: String = day.title, query: String? = null, lit: Boolean = false,
+    container: Color = MaterialTheme.colorScheme.surfaceContainerLowest, onOpen: () -> Unit) {
     val s = MaterialTheme.colorScheme
     var shine by remember { mutableStateOf(false) }
     LaunchedEffect(lit) {
@@ -201,13 +201,13 @@ private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count:
         delay(1200)
         shine = false
     }
-    val container by animateColorAsState(if (shine) appColors.habitFill(color) else s.surfaceContainerLowest, MaterialTheme.motionScheme.slowEffectsSpec(), label = "lit")
+    val fill by animateColorAsState(if (shine) appColors.habitFill(color) else container, MaterialTheme.motionScheme.slowEffectsSpec(), label = "lit")
     AppListItem(
         title, index, count, Modifier.pagePiece(index, count).semantics(mergeDescendants = true) {},
         listOfNotNull(day.relative, day.detail.ifEmpty { null }).joinToString(" · "),
         leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { DayCell(day.heat, color, size = DayCellSize.small, isToday = day.relative == "Today") } },
         below = day.note?.let { { ListNote(if (query != null) highlighted(it, query) else AnnotatedString(it)) } },
-        trailing = { ListChevron() }, onClick = onOpen, containerColor = container, tag = "habit-day-" + dayKey(day.day),
+        trailing = { ListChevron() }, onClick = onOpen, containerColor = fill, tag = "habit-day-" + dayKey(day.day),
     )
 }
 
@@ -220,7 +220,7 @@ private fun highlighted(text: String, query: String): AnnotatedString = buildAnn
         val found = text.indexOf(q, at, ignoreCase = true)
         if (found < 0) { append(text.substring(at)); break }
         append(text.substring(at, found))
-        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(text.substring(found, found + q.length)) }
+        withStyle(SpanStyle(fontWeight = FontWeight.Medium)) { append(text.substring(found, found + q.length)) }
         at = found + q.length
     }
 }
@@ -234,14 +234,19 @@ private fun NothingYet() =
 // ------------------------------------------------------------------------------------------------------------ Search
 
 /**
- * Search notes (Figma 2.5, 2.6): the search bar takes the page; the days whose note has the words, newest first, with
- * the words in bold; a row opens its day. Back closes it. The field's text lives here; the list follows once typing
- * pauses, 0.3 s (S11).
+ * 5.6.4, **Notes search page** (Figma 1053:9079, Screen Start · Results · No match; Components — Atoms Build Plan), from
+ * History's Search notes: the same scaffold as Habits & Tasks' search (the Search view header, 1.9, "Search notes", its
+ * divider, the keyboard up), on Surface container. Nothing typed: "Search Water’s notes by any word.", centred, 16 in.
+ * Typed: the days whose note has the words, newest first, under a subheader ("2 notes") in Label Large Primary, 16 in,
+ * 8 over one rounded list of History's day rows (List items 2 apart on Surface bright) with the note shown and the
+ * words in Medium; a row opens that day's Day details. Nothing found: "No notes with “swim”" in Title Medium and "Search
+ * looks through this habit’s notes. To find a day, use Go to date." in Body Medium On surface variant, centred, 48 down,
+ * 8 apart. Back closes it. The field's text lives here; the list follows once typing pauses, 0.3 s (S11).
  */
 @Composable
-internal fun HistorySearchPage(months: List<HistoryMonth>, color: HabitColor, today: Int, onBack: () -> Unit, onOpenDay: (Int) -> Unit) {
+internal fun HistorySearchPage(habitName: String, months: List<HistoryMonth>, color: HabitColor, onBack: () -> Unit, onOpenDay: (Int) -> Unit) {
     BackHandler(onBack = onBack)
-    val c = appColors
+    val s = MaterialTheme.colorScheme
     var text by rememberSaveable { mutableStateOf("") }
     var query by remember { mutableStateOf("") }
     LaunchedEffect(text) {
@@ -252,27 +257,28 @@ internal fun HistorySearchPage(months: List<HistoryMonth>, color: HabitColor, to
         val q = query.trim()
         if (q.isEmpty()) emptyList() else months.flatMap { m -> m.days.filter { it.note?.contains(q, ignoreCase = true) == true } }
     }
-    Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "history-search-page" }) {
+    Column(Modifier.fillMaxSize().background(s.surfaceContainer).semantics { testTag = "history-search-page" }) {
         SearchHeader(text, { text = it; if (it.isEmpty()) query = "" }, onBack, "Search notes",
             fieldTag = "notes-search", backTag = "search-back", clearTag = "search-clear", clearLabel = "Clear search")
         val q = query.trim()
         when {
-            q.isEmpty() -> {}
+            q.isEmpty() -> Text("Search $habitName’s notes by any word.", Modifier.fillMaxWidth().padding(16.dp).semantics { testTag = "search-hint" },
+                style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             found.isEmpty() -> Column(
-                Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 64.dp).semantics(mergeDescendants = true) { testTag = "search-nothing" },
-                horizontalAlignment = Alignment.CenterHorizontally,
+                Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 48.dp).semantics(mergeDescendants = true) { testTag = "search-nothing" },
+                horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text("No notes with “$q”", style = AppType.titleMedium, color = c.ink, textAlign = TextAlign.Center)
-                Spacer(Modifier.height(8.dp))
-                Text("Search looks through this habit's notes.", style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
+                Text("No notes with “$q”", style = AppType.titleMedium, color = s.onSurface, textAlign = TextAlign.Center)
+                Text("Search looks through this habit’s notes. To find a day, use Go to date.", style = AppType.bodyMedium,
+                    color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             }
             else -> LazyColumn(Modifier.fillMaxWidth().weight(1f).imePadding().semantics { testTag = "search-results" }) {
                 item(key = "count") {
-                    Text(if (found.size == 1) "1 note" else "${found.size} notes", Modifier.padding(start = 32.dp, top = 16.dp, bottom = 12.dp),
-                        style = AppType.bodyMedium, color = c.secondary)
+                    Text(if (found.size == 1) "1 note" else "${found.size} notes", Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 8.dp),
+                        style = AppType.labelLarge, color = s.primary)
                 }
                 itemsIndexed(found, key = { _, d -> "found-" + d.day }) { i, d ->
-                    HistoryDayRow(d, color, i, found.size, title = pageDayDate(d.day), query = q) { onOpenDay(d.day) }
+                    HistoryDayRow(d, color, i, found.size, title = pageDayDate(d.day), query = q, container = s.surfaceBright) { onOpenDay(d.day) }
                 }
             }
         }
