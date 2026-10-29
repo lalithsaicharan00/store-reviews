@@ -38,6 +38,7 @@ designing new flow."
   in git (D11), a test is never skipped or loosened to get green (T2), and how agents share the repository (W3, W4,
   T10). If any other old rule seems to matter, name it and ask; never apply it silently.
 - New rules for the new design are added here as they're decided.
+- **Figma is the final word (29 Oct 2026, Android A77).** When the app and the Android Figma file disagree, Figma wins; anything the app has that Figma doesn't (a screen, row, button, setting, word or behaviour) is deleted from the app with its code, route and tests. Never at the cost of saved data (D rules), and widgets', reminders', sync's and backup's behaviour stay as they are.
 - **Text and colour styles are Android's names with our values (28 Oct 2026, Android A74, A75).** Text: Material 3's type scale (names, sizes, line heights, weights) in Google Sans Flex. Colour: Material 3's colour roles with our neutral greys, plus the habit colours in their own group. Never rename a style, add one of our own, or change a value without the user; the reasons are in A74 and A75.
 
 ## Before a piece of work is done: the checklist

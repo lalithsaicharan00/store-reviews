@@ -19,6 +19,10 @@ wherever one exists, set up once so every screen gets the same thing, then the s
 - **Snackbar:** Android's snackbar, changed only to allow a second action where a design has two; its colours (the
   action's too) exactly as the design draws them.
 - **One at a time:** an atom is done only when it's built, the screens use it, and the app compiles. Then the next.
+- **Figma is the final word (the user, 29 Oct 2026, Android A77):** "whatever we have Figma, that is the final thing
+  … If something we don't have in the Figma, then it definitely means it has to be deleted." When the app has a
+  screen, row, button, word or behaviour Figma doesn't, delete it (code, route, tests); never leave it under "Noted,
+  not changed". Saved data is never lost, and widgets', reminders', sync's and backup's behaviour stay as they are.
 - Design phase: a local compile is the check (no CI or device tests until the user says).
 
 ## Order and status
@@ -174,6 +178,36 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☐ |
 | 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☐ |
 | 5.11.5 | Notifications & alarms · Let alarms fill the screen | 1274:16200 | ☐ |
+
+### 6. Figma cleanup (added 29 Oct 2026, Android A77)
+
+The user, 29 Oct 2026: "whatever we have Figma, that is the final thing … If something we don't have in the Figma, then
+it definitely means it has to be deleted." Each row settles what earlier entries left under "Noted, not changed" on a
+page already built, by Figma: what the app has and Figma doesn't is deleted (code, route, tests); where they differ,
+Figma's. Saved data is never deleted with a screen (the D rules). Done one at a time, like a component, **before
+5.5.6**; pages not built yet (5.5.6 onwards) follow A77 as they're built. Checked against the whole file on 29 Oct (a
+search of every page's text).
+
+| # | What goes or changes (Figma) | Status |
+|---|---|---|
+| 6.1 | Start from an idea: `IdeasScreen`, its route and its idea lists (no idea screen anywhere in Figma) | ☐ |
+| 6.2 | The old Progress page: `ProgressScreen` and its route (the Habits tab is that page, A54); SpeedTest moves to the Habits tab | ☐ |
+| 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☐ |
+| 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☐ |
+| 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☐ |
+| 6.6 | Add screens Figma doesn't draw: Tick steps (steps are ticked in Day details) and any other kind with no Figma frame | ☐ |
+| 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line | ☐ |
+| 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☐ |
+| 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☐ |
+| 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☐ |
+| 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☐ |
+| 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☐ |
+
+Still for the user (Figma itself is unclear): what "· 48 days" counts on Archived habits; Day details' Top app bar draws
+no ✕ while its description says ✕ (kept); Figma's milestone flows show Start on a finished Morning (copied instances?);
+Edit note draws the date as a chip, but a note can't move to another day. Today's "Deleted on another device" notice
+goes only with the sync brake it belongs to (D17's build work 148.7), not on its own: without it held deletes would wait
+silently.
 
 ## Log
 
