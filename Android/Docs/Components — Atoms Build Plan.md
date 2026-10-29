@@ -207,8 +207,8 @@ search of every page's text).
 | 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☐ |
 
 Settled by the user the same day (A78): "· 48 days" removed from Figma; Day details keeps ✕ (added to Figma); notes
-have no date chip (removed from Figma). Still for the user: Figma's milestone flows show Start on a finished Morning
-(copied instances?). Today's "Deleted on another device" notice
+have no date chip (removed from Figma). Start on a finished Morning: settled (A79), Start removed from those frames and the "Start when everything's already
+done" flow deleted from Figma. Today's "Deleted on another device" notice
 goes only with the sync brake it belongs to (D17's build work 148.7), not on its own: without it held deletes would wait
 silently.
 
