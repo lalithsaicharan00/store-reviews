@@ -122,7 +122,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.4 | Day details · Dialog | 702:618 | ☑ |
 | 5.3.5 | Day details · Time picker | 703:602 | ☑ |
 | 5.3.6 | Day details · Date picker | 705:1025 | ☑ |
-| 5.3.7 | Day details · Timer screen | 705:7745 | ☐ |
+| 5.3.7 | Day details · Timer screen | 705:7745 | ☑ |
 | 5.3.8 | Day details · Note screen | 765:1087 | ☐ |
 | 5.4.1 | Routine player · Routine player | 906:89513 | ☐ |
 | 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☐ |
@@ -1682,3 +1682,29 @@ What each atom changed, newest last.
     (5.6).
   - The description names Surface container high; the frames are filled Surface bright, as the Dialog (5.3.4);
     Surface bright used.
+  - **Built:** run 40802892671 (Android #133, commit 382c8a4) passed: assembleDebug, unit tests and lint.
+- **5.3.7 Day details · Timer screen (29 Oct).** Figma: Timer screen (705:7745), State Running · Paused, with Habit,
+  Elapsed, Goal, Day and Status as properties. The timer, full screen: the Top app bar (64) with ⌄ (expand_more: it
+  minimises, the timer keeps running) and "Timer"; the content 16 at the sides, the hero card filling it (Surface
+  container lowest, corners 32, 32 by 24 in, 32 between its parts: the cookie 144 in the habit's colour, 28, the name
+  in Headline Large Emphasized and the day chip 12 under it; "6:42" in Display Large with "of 10 min" in Body Large, 8
+  apart; the wavy bar, and the status 12 under it: an 18 dp icon, 4, Label Large On surface variant); the bottom bar,
+  12 above and below, 16 at the sides, 8 apart: Log time (Large square Tonal) and Pause or Resume (the Wide Large
+  icon button, Filled). It is `TimerScreen` (`player/TimerScreen.kt`) with the routine player's `HeroCard`
+  (`player/RoutinePlayer.kt`). Every tag stays. The app, the unit tests (55) and the instrumented tests' code build in
+  the session.
+  Fixed:
+  - The top was a hand-made row with keyboard_arrow_down and no title; now the Top app bar atom with expand_more and
+    "Timer".
+  - The tonal button said "Log manually"; now Figma's "Log time".
+  - The buttons had 16 above and below; now the bottom bar's 12.
+  - The hero card had 24 above and below its stack, 20 under the day chip and 16 over the wave; now 32 each, as
+    Figma's Timer screen and Routine player both draw it (the routine player's card is the same one).
+  - The status line ("Goal met", "Paused") sat over the wave, 6 from its icon, in Body Medium; now 12 under the wave,
+    4 from its icon, in Label Large, as Figma's Progress and status. A checklist's card keeps its own order and
+    spacing until 5.4.1.
+  Noted, not changed:
+  - Figma's timer draws its own day chip (34 high, corners 8, Surface container, calendar_today · Today · ›); the app
+    uses the Assist chip atom (1.16), as the routine player's Figma does.
+  - Figma's routine player puts 24 between the cookie and the name and 8 under the name; the timer's 28 and 12 are
+    kept here; 5.4.1 decides the player's.

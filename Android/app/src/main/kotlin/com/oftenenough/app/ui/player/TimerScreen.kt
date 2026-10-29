@@ -16,12 +16,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -31,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
@@ -47,18 +43,24 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.PlayerAction
 import com.oftenenough.app.data.PlayerWords
 import com.oftenenough.app.ui.components.AppLargeIconButton
+import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.NavigationIcon
+import androidx.compose.foundation.layout.WindowInsets
 import com.oftenenough.app.ui.components.LargeIconWidth
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
 
 /**
- * One habit's timer, full screen (the iPhone's `TimerScreen`, iOS/Habits/Today/TimerScreen.swift; the Android design
- * "Timer · running"): ⌄ at the top, the same hero card as the routine player (the clock counts up from the saved start,
- * the goal beside it, the wavy bar), and a button group: Log manually (tonal) and Pause (ink). Pause stops the timer and
- * saves the time, exactly as ⏸ on Today's row; Resume (or Start) runs it again.
+ * 5.3.7, **Timer screen** (Figma 705:7745, State Running · Paused; Components — Atoms Build Plan): one habit's timer,
+ * full screen, opened by Start timer on a Today row or in Day details. A scaffold: the Top app bar (64) with ⌄
+ * (expand_more: it minimises, the timer keeps running) and "Timer"; the content 16 at the sides, the routine player's
+ * hero card filling it (the clock counts up from the saved start in Display Large, "of 10 min" beside it, the wavy
+ * bar); the bottom bar, 12 above and below, 16 at the sides, 8 apart: Log time (Large square Tonal) and Pause, or
+ * Resume (the Wide Large icon button, Filled). Pause stops the timer and saves the time, exactly as ⏸ on Today's row;
+ * Resume (or Start) runs it again.
  *
  * Never a trap: ⌄, back or a swipe down puts it away and the timer keeps running. Only the clock and the bar tick (S3).
- * [onLogManually] opens the habit's Add screen (the timer is paused first so no minute counts twice, and runs again on
+ * [onLogManually] (Log time) opens the habit's Add screen (the timer is paused first so no minute counts twice, and runs again on
  * return); without it there is no Log manually. [onOpenDay] makes the day chip open Day details.
  */
 @Composable
@@ -121,15 +123,13 @@ fun TimerScreen(
             Modifier.fillMaxSize().graphicsLayer { translationY = drag.floatValue }.background(c.screen)
                 .statusBarsPadding().navigationBarsPadding().semantics { testTag = "timer-screen" },
         ) {
-            Row(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            AppTopBar("Timer", navigationIcon = {
                 // Putting it away, not stopping: the name says so to TalkBack too.
-                IconButton(onClose, Modifier.semantics { testTag = "timer-screen-close" }) {
-                    Icon(Symbols.KeyboardArrowDown, PlayerWords.timerClose(running), tint = c.ink)
-                }
-            }
+                NavigationIcon(Symbols.ExpandMore, PlayerWords.timerClose(running), onClose, Modifier.semantics { testTag = "timer-screen-close" })
+            }, windowInsets = WindowInsets(0))
             if (habit == null) {
                 Box(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp)) { GoneCard() }
-                Spacer(Modifier.height(112.dp))
+                Spacer(Modifier.height(120.dp))
             } else {
                 val rev = store.revision(habit.id)
                 val ruled = remember(habit, rev) { store.rule(habit, day) }
@@ -142,14 +142,13 @@ fun TimerScreen(
                         onStep = null,
                     )
                 }
-                Spacer(Modifier.height(16.dp))
                 // One main button, always in the same place: Pause while it runs, Resume (or Start) when it doesn't, the
                 // Wide large icon button (128 dp, Figma's Timer screen); Log manually takes the rest of the row.
                 val started = remember(habit, rev, running) { store.rules.progress(habit, day) > 0 }
                 val action = PlayerWords.mainAction(ruled, store.rules.goal(ruled), done = false, skipped = false, isLast = false, running = running, started = started)
-                Row(Modifier.fillMaxWidth().height(96.dp).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp).height(96.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (onLogManually != null) {
-                        TonalBigButton(null, "Log manually", "timer-screen-log", Modifier.weight(1f).fillMaxHeight()) { logManually() }
+                        TonalBigButton(null, "Log time", "timer-screen-log", Modifier.weight(1f).fillMaxHeight()) { logManually() }
                     }
                     AppLargeIconButton(
                         if (action.action == PlayerAction.PAUSE) Symbols.Filled.Pause else Symbols.Filled.PlayArrow, action.spoken,
@@ -158,7 +157,6 @@ fun TimerScreen(
                         modifier = if (onLogManually != null) Modifier else Modifier.weight(1f), tag = "timer-screen-primary",
                     )
                 }
-                Spacer(Modifier.height(16.dp))
             }
         }
     }

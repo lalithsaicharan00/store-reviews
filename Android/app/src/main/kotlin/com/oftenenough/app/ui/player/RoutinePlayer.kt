@@ -797,13 +797,14 @@ internal fun HeroCard(
                 }
             }
         } else {
-            // Figma 1–4: the cookie (144, its glyph 64), the name, the description, the day chip, the count, a status line
-            // and the wave, centred in the card; a checklist's steps under them (5).
+            // Figma 1–4 and the Timer screen (5.3.7): 32 above and below, 24 at the sides; the cookie (144, its glyph 64), the
+            // name, the description, the day chip; 32; the count; 32; the wave, and a status line 12 under it; all centred
+            // in the card. A checklist (5) keeps its tighter spacing, its status over the wave and its steps under them.
             BoxWithConstraints(Modifier.fillMaxSize()) {
                 val minHeight = maxHeight
                 Column(
                     Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight)
-                        .padding(horizontal = 24.dp, vertical = if (checklist) 16.dp else 24.dp),
+                        .padding(horizontal = 24.dp, vertical = if (checklist) 16.dp else 32.dp),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     HabitIcon(habit.symbol, habit.color, size = if (checklist) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
@@ -817,16 +818,21 @@ internal fun HeroCard(
                     // The chip is 32 high with a 48 target; the gaps around it are Figma's 12 and 20 less the target's 8.
                     Spacer(Modifier.height(4.dp))
                     DayChip(dayText, onDay)
-                    Spacer(Modifier.height(if (checklist) 4.dp else 12.dp))
+                    // 32 under the chip, less its target's 8.
+                    Spacer(Modifier.height(if (checklist) 4.dp else 24.dp))
                     if (single && !checklist) SingleState(habit, day, store, rev)
                     else CountLine(habit, ruled, day, store, goal, rev, tick, running, center = true, baseStyle = if (checklist) AppType.displayMedium else AppType.displayLarge, onTap = onCountTap)
                     val status = playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped)
-                    if (status != null) {
+                    if (checklist && status != null) {
                         Spacer(Modifier.height(8.dp))
                         StatusLine(status)
                     }
-                    Spacer(Modifier.height(if (checklist) 8.dp else 16.dp))
+                    Spacer(Modifier.height(if (checklist) 8.dp else 32.dp))
                     ProgressLine(habit, ruled, day, store, goal, rev, tick, running, neutral = status?.neutral == true)
+                    if (!checklist && status != null) {
+                        Spacer(Modifier.height(12.dp))
+                        StatusLine(status)
+                    }
                     if (checklist) {
                         Spacer(Modifier.height(12.dp))
                         StepRows(habit, ruled, day, store, rev, c.habit(habit.color), onStep)
@@ -884,13 +890,14 @@ private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore
     return null
 }
 
+/** The status line (Figma's Status, Timer screen 5.3.7): an 18 dp icon, 4, the words in Label Large, On surface variant. */
 @Composable
 private fun StatusLine(s: PlayerStatus) {
     val c = appColors
     Row(Modifier.heightIn(min = 20.dp).semantics(mergeDescendants = true) { testTag = s.tag }, verticalAlignment = Alignment.CenterVertically) {
         Icon(s.icon, null, Modifier.size(18.dp), tint = c.secondary)
-        Spacer(Modifier.width(6.dp))
-        Text(s.text, style = AppType.bodyMedium, color = c.secondary, maxLines = 2, textAlign = TextAlign.Center)
+        Spacer(Modifier.width(4.dp))
+        Text(s.text, style = AppType.labelLarge, color = c.secondary, maxLines = 2, textAlign = TextAlign.Center)
     }
 }
 
@@ -1104,7 +1111,7 @@ internal fun MainButton(icon: ImageVector?, label: String, spoken: String, tag: 
     AppButton(label, onClick, modifier.fillMaxHeight().semantics { contentDescription = spoken }, size = ButtonSize.Large,
         icon = icon, square = true, tag = tag)
 
-/** A tonal button beside or above [MainButton] ("Log manually": Large, Figma's timer screen; "Return to unfinished": Medium). */
+/** A tonal button beside or above [MainButton] ("Log time": Large, Figma's Timer screen; "Return to unfinished": Medium). */
 @Composable
 internal fun TonalBigButton(icon: ImageVector?, label: String, tag: String, modifier: Modifier, size: ButtonSize = ButtonSize.Large, onClick: () -> Unit) =
     AppButton(label, onClick, modifier, style = ButtonStyle.Tonal, size = size, icon = icon, square = true, tag = tag)
