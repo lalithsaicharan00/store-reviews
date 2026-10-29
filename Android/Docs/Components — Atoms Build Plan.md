@@ -153,7 +153,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.6 | Create new · How often page | 1075:161386 | ☑ |
 | 5.7.7 | Create new · Time of day page | 1098:2480 | ☑ |
 | 5.7.8 | Create new · Reminders page | 1100:2996 | ☑ |
-| 5.7.9 | Create new · How much page | 1102:2782 | ☐ |
+| 5.7.9 | Create new · How much page | 1102:2782 | ☑ |
 | 5.7.10 | Create new · Unit page | 1102:3316 | ☐ |
 | 5.7.11 | Create new · How long page | 1103:3208 | ☐ |
 | 5.7.12 | Create new · Steps page | 1104:163327 | ☐ |
@@ -2423,3 +2423,25 @@ What each atom changed, newest last.
   Noted, not changed:
   - Figma's free-plan row opens Plus with Reason=Remind me again; the Plus screen has no reasons yet (5.9.1), so it
     opens the Plus screen as it is.
+
+- **5.7.9 Create new · How much page (29 Oct).** Figma: How much page (1102:2782), State Typing · Keyboard down, and
+  the flow "A new habit: track an amount". From the form's How much. On Surface container: the Top app bar (← "How
+  much"); 16 at the sides and above, 40 under, 24 between: the amount's card (Surface bright, corners 24, 24 above and
+  under, 20 at the sides, 16 apart): the number field (80 tall, Surface container highest, corners 16, Display Medium,
+  the number pad up while it's empty) over the Unit dropdown; its footer, "Up to 2 decimal places. The unit is
+  optional."; then **When you log it** (Label Large Primary): One tap adds a set amount, open with Each tap adds and its
+  step (72 wide, Surface container highest, corners 8), or Type the amount each time. The form says it back ("8 glasses
+  · each tap adds 1"). It is `HowMuchPage` and `WhenYouLogIt` (`newhabit/FormPages.kt`). The app, the unit tests (55),
+  lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The card started with the rhythm ("Every day") over the number; nothing above the number repeats How often (A64).
+  - The footer said "Tap the number to type it, up to 2 decimal places. The unit is optional."; now Figma's words.
+  - How a tap logs ("When you tap +", on the form since 5.7.3) moves here as Figma's When you log it, with its words
+    (One tap adds a set amount, Each tap adds, Type the amount each time); its notes go. `TapRows` is deleted.
+  - The number field and card take the theme's roles (Surface container highest, Surface bright, Primary while typing).
+  - Tests: HabitFormTest types 8, checks the footer and When you log it, and sees the form say "each tap adds 1" and
+    then "typed each time".
+  Noted, not changed:
+  - Limit still opens this page with its old card and note until its own page, 5.7.13 (A67: Amount · Time).
+  - An amount that isn't a number above 0 says "Enter a number above 0, with up to 2 decimal places." in the footer's
+    place (Figma draws no such state).

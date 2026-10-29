@@ -122,27 +122,36 @@ import java.util.Currency
 
 // ------------------------------------------------------------------ How much, Limit and How long
 
-/** Figma 2.2.1 / 3.2.1: one wide number field (the number keypad comes up), with the unit chip under it. */
+/**
+ * 5.7.9, **How much page** (Figma 1102:2782, State Typing · Keyboard down; Components — Atoms Build Plan), from the
+ * form's How much (and, until 5.7.13, Limit). On Surface container: the Top app bar (← "How much"); 16 at the sides and
+ * above, 40 under, 24 between: the amount's card (Surface bright, corners 24, 24 above and under, 20 at the sides, 16
+ * apart): the number field (80, Surface container highest, corners 16, Display Medium, the number pad up while it's
+ * empty) over the Unit dropdown; its footer, "Up to 2 decimal places. The unit is optional."; then **When you log it**
+ * (Label Large Primary): One tap adds a set amount, with Each tap adds and its step, or Type the amount each time. That
+ * choice holds everywhere logging happens. Nothing above the number repeats How often (A64).
+ */
 @Composable
 fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
     val limit = form.type == ItemType.CUT_DOWN
+    val s = MaterialTheme.colorScheme
     FormPage(if (limit) "Limit" else "How much", onBack = onBack) {
         val focus = remember { FocusRequester() }
         var focused by remember { mutableStateOf(false) }
         LaunchedEffect(Unit) { if (form.amountText.isEmpty()) runCatching { focus.requestFocus() } }
-        GoalCard(oftenHeader(form)) {
+        val number = @Composable {
             BasicTextField(
                 form.amountText, { form.amountText = it.filter { c -> c.isDigit() || c == '.' || c == ',' }.take(12) },
-                Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(appColors.tonal)
-                    .border(if (focused) 2.dp else 0.dp, if (focused) appColors.ink else Color.Transparent, RoundedCornerShape(16.dp))
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(s.surfaceContainerHighest)
+                    .border(if (focused) 2.dp else 0.dp, if (focused) s.primary else Color.Transparent, RoundedCornerShape(16.dp))
                     .heightIn(min = 80.dp).focusRequester(focus).onFocusChanged { focused = it.isFocused }
                     .semantics { testTag = "much-number"; contentDescription = if (limit) "Limit" else "Amount" },
-                textStyle = AppType.displayMedium.copy(color = appColors.ink, textAlign = TextAlign.Center),
+                textStyle = AppType.displayMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
-                singleLine = true, cursorBrush = SolidColor(appColors.ink),
+                singleLine = true, cursorBrush = SolidColor(s.primary),
                 decorationBox = { inner ->
                     Box(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), contentAlignment = Alignment.Center) {
-                        if (form.amountText.isEmpty() && !focused) Text(if (limit) "2" else "8", style = AppType.displayMedium.copy(color = appColors.secondary.copy(alpha = 0.45f)))
+                        if (form.amountText.isEmpty() && !focused) Text(if (limit) "2" else "8", style = AppType.displayMedium.copy(color = s.onSurfaceVariant.copy(alpha = 0.45f)))
                         inner()
                     }
                 },
@@ -151,8 +160,49 @@ fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
         }
         val text = form.amountText.trim()
         val error = if (text.isNotEmpty() && (GoalNumber.parse(text)?.let { it > 0 } != true)) "Enter a number above 0, with up to 2 decimal places." else null
-        Note(error ?: if (limit) "Log it only when it happens. Staying at or under the limit counts as a good day."
-            else "Tap the number to type it, up to 2 decimal places. The unit is optional.")
+        if (limit) {
+            // The limit's own page is 5.7.13; until then it keeps its card.
+            GoalCard(oftenHeader(form)) { number() }
+            Note(error ?: "Log it only when it happens. Staying at or under the limit counts as a good day.")
+            return@FormPage
+        }
+        Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(horizontal = 20.dp, vertical = 24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) { number() }
+                Text(error ?: "Up to 2 decimal places. The unit is optional.", Modifier.padding(horizontal = 16.dp),
+                    style = AppType.bodySmall, color = s.onSurfaceVariant)
+            }
+            if (form.type == ItemType.AMOUNT) WhenYouLogIt(form)
+        }
+    }
+}
+
+/**
+ * When you log it (Figma's How much): One tap adds a set amount (chosen, Each tap adds and its step: 72 wide, Surface
+ * container highest, corners 8, the number at its end) or Type the amount each time.
+ */
+@Composable
+private fun WhenYouLogIt(form: FormState) {
+    val s = MaterialTheme.colorScheme
+    val plan = form.plan
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("When you log it", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
+        SegmentedList {
+            if (!form.asks) OpenOption("One tap adds a set amount", 0, 2, "tap-adds-step") {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text("Each tap adds", Modifier.weight(1f), style = AppType.bodyLarge, color = s.onSurface)
+                    var text by remember { mutableStateOf(form.step?.let { GoalNumber.text(it) } ?: "") }
+                    BasicTextField(text, { t -> text = t.filter { it.isDigit() || it == '.' || it == ',' }.take(10); form.step = GoalNumber.parse(text)?.takeIf { it > 0 } },
+                        Modifier.width(72.dp).clip(RoundedCornerShape(8.dp)).background(s.surfaceContainerHighest).heightIn(min = 40.dp).padding(end = 12.dp, start = 12.dp)
+                            .semantics { testTag = "tap-step"; contentDescription = "Each tap adds" },
+                        textStyle = AppType.bodyLarge.copy(color = s.onSurface, textAlign = TextAlign.End), singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), cursorBrush = SolidColor(s.primary),
+                        decorationBox = { inner -> Box(Modifier.heightIn(min = 40.dp), contentAlignment = Alignment.CenterEnd) { if (text.isEmpty()) Text(HabitCopy.number(plan.stepValue), style = AppType.bodyLarge, color = s.onSurface); inner() } })
+                }
+            } else RadioRow("One tap adds a set amount", false, 0, 2, "tap-adds-step", option = true) { form.asks = false }
+            RadioRow("Type the amount each time", form.asks, 1, 2, "tap-asks", option = true) { form.asks = true }
+        }
     }
 }
 

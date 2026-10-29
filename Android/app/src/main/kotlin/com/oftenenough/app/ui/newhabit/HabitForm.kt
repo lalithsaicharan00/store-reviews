@@ -302,7 +302,6 @@ private fun FormBody(
                         PlanRows(form, open)
                         goalNote(form, store)?.let { Text(it, Modifier.padding(horizontal = 16.dp), style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                     }
-                    if (type == ItemType.AMOUNT) TapRows(form)
                     PlaceRows(form, store, open, withTime = type != ItemType.CUT_DOWN)
                     StartEndRows(form, store)
                     if (type == ItemType.CUT_DOWN) MilestoneSwitch(form, store)
@@ -469,31 +468,6 @@ private fun PlanRows(form: FormState, open: (Page) -> Unit) {
             else -> {}
         }
         OpenRow("How often", plan.often.label(plan.hasAmount || form.hasAmount, plan.checklist, form.weekStart), null, count - 1, count, "how-often-row", rowColor) { open(Page.OFTEN) }
-    }
-}
-
-/** What + does on Today, chosen: add a set step, or type the amount each time. */
-@Composable
-private fun TapRows(form: FormState) {
-    val plan = form.plan
-    Column {
-        Text("When you tap +", Modifier.padding(start = 16.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
-        SegmentedList {
-            val count = if (form.asks) 2 else 3
-            RadioRow("Add a set amount", !form.asks, 0, count, "tap-adds-step") { form.asks = false }
-            if (!form.asks) Segment(1, count) {
-                Text("Each tap adds", Modifier.weight(1f).padding(start = 40.dp), style = AppType.bodyLarge, color = appColors.ink)
-                var text by remember { mutableStateOf(form.step?.let { GoalNumber.text(it) } ?: "") }
-                BasicTextField(text, { t -> text = t.filter { it.isDigit() || it == '.' || it == ',' }.take(10); form.step = GoalNumber.parse(text)?.takeIf { it > 0 } },
-                    Modifier.width(72.dp).clip(RoundedCornerShape(8.dp)).background(appColors.tonal).heightIn(min = 40.dp).padding(horizontal = 12.dp, vertical = 8.dp)
-                        .semantics { testTag = "tap-step"; contentDescription = "Each tap adds" },
-                    textStyle = AppType.bodyLarge.copy(color = appColors.ink, textAlign = TextAlign.End), singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), cursorBrush = SolidColor(appColors.ink),
-                    decorationBox = { inner -> Box(contentAlignment = Alignment.CenterEnd) { if (text.isEmpty()) Text(HabitCopy.number(plan.stepValue), style = AppType.bodyLarge, color = appColors.ink); inner() } })
-            }
-            RadioRow("Type the amount each time", form.asks, count - 1, count, "tap-asks") { form.asks = true }
-        }
-        Note(if (form.asks) "Tap + to type how much you did." else "Each tap on + adds ${HabitCopy.amount(plan.stepValue, plan.unit)}.")
     }
 }
 

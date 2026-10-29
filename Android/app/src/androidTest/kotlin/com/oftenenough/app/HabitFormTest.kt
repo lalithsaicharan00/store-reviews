@@ -231,6 +231,28 @@ class HabitFormTest {
         waitFor(hasTestTag("follow-up").and(hasContentDescription("Plus", substring = true)), "remind again marked Plus")
     }
 
+    /**
+     * How much (5.7.9, Figma 1102:2782; flow "A new habit: track an amount"): the number, its footer, and When you log it,
+     * which the form says back ("8 · each tap adds 1", or typed each time).
+     */
+    @Test fun howMuchChoosesHowItIsLogged() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-amount")
+        tapTag("how-much-row")
+        waitFor(hasText("Up to 2 decimal places. The unit is optional."), "the footer")
+        type("much-number", "8")
+        waitFor(hasText("When you log it"), "When you log it")
+        waitFor(hasTestTag("tap-step"), "Each tap adds")
+        tapTag("page-back")
+        waitFor(hasTestTag("how-much-row").and(hasContentDescription("each tap adds 1", substring = true)), "the form saying what a tap adds")
+        tapTag("how-much-row")
+        tapTag("tap-asks")
+        tapTag("page-back")
+        waitFor(hasTestTag("how-much-row").and(hasContentDescription("typed each time", substring = true)), "the form saying it's typed")
+    }
+
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
         launch()
         editWater()
