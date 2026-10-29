@@ -197,14 +197,14 @@ class PlayerTest {
         // Change order opens Your routine in Edit: drag handles, and Move down moves Water for this routine only (7.2).
         tapTag("player-menu-order")
         waitFor(hasTestTag("routine-sheet"), "Your routine")
-        waitFor(hasText("Drag to change the order for this routine. Today keeps its own order."), "the Edit footer")
+        waitFor(hasText("Drag to change the order for this run. Today's order stays as it is."), "the Change order footer")
         waitFor(hasTestTag("queue-drag-Water"), "Water's handle")
         val before = AppGraph.store.rules.cardMembers()["anytime"]
         compose.onAllNodes(hasTestTag("queue-Water"), useUnmergedTree = true)[0].performCustomAccessibilityActionWithLabel("Move down")
         compose.waitForIdle()
         assertEquals("Today's own order stays", before, AppGraph.store.rules.cardMembers()["anytime"])
         tapTag("routine-edit")
-        waitFor(hasText("Jump to any habit, or change the order for this routine. Moving on never marks a habit done."), "out of Edit")
+        waitFor(hasText("Tap a habit to go to it. Moving never marks anything done."), "out of Change order")
         androidx.test.espresso.Espresso.pressBack()
         waitGone(hasTestTag("routine-sheet"), "Your routine")
         // Water moved down: the player is still on Water, now 2 of N.

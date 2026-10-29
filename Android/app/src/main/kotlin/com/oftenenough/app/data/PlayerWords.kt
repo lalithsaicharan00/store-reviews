@@ -36,9 +36,9 @@ object PlayerWords {
     const val UNDONE = "Undone"
     const val SKIPPED = "Skipped for today"
 
-    const val QUEUE_FOOTER = "Jump to any habit, or change the order for this routine. Moving on never marks a habit done."
+    const val QUEUE_FOOTER = "Tap a habit to go to it. Moving never marks anything done."
     /** Your routine · Edit (Figma 7.2). */
-    const val QUEUE_FOOTER_EDIT = "Drag to change the order for this routine. Today keeps its own order."
+    const val QUEUE_FOOTER_EDIT = "Drag to change the order for this run. Today's order stays as it is."
 
     // The status line under the count (Figma 2.4, 4.2–4.5, 6.1, 9.1, 9.2): neutral words, never red (U3).
     const val DONE_FOR_TODAY = "Done for today"
@@ -138,12 +138,13 @@ object PlayerWords {
         }
     }
 
-    /** A habit's line in Your routine. */
-    fun queueStatus(atMost: Boolean, reviewed: Boolean, doneToday: Boolean, skipped: Boolean): String = when {
+    /** A habit's line in Your routine (Figma 907:29174): "Here now", "Done", "Not done", a limit's check-in, "Skipped for today". */
+    fun queueStatus(atMost: Boolean, reviewed: Boolean, doneToday: Boolean, skipped: Boolean, here: Boolean = false): String = when {
+        here -> "Here now"
         atMost -> if (reviewed) "Checked in" else "Limit check-in"
         doneToday -> "Done"
         skipped -> "Skipped for today"
-        else -> "Not finished"
+        else -> "Not done"
     }
 
     /** The end page's title: "Anytime is done" (Figma 1.3, 8.2), or "End of the routine" with some left (8.1, 8.3). */

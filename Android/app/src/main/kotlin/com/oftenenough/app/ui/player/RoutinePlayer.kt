@@ -1233,95 +1233,96 @@ private fun NewDayCard(modifier: Modifier, onBack: () -> Unit) {
 // ---------------------------------------------------------------------------------------------- Your routine
 
 /**
- * Your routine (Figma 7.1): a modal sheet, every habit with its state (✓ done, ▶ the one on screen). Edit (7.2) shows a
- * drag handle on each: drag to change the order for this routine only; Today keeps its own. TalkBack moves a habit with
- * the row's Move up and Move down actions.
+ * 5.4.2, **Your routine sheet** (Figma 907:29174, Mode Your routine · Change order; Components — Atoms Build Plan): from
+ * the routine's name (Morning ▾) in the player, every habit in this run with where it stands; a tap goes to it (moving
+ * never marks anything done). Material's sheet on Surface container with its drag handle; the header, 24 in, 12 at the
+ * end, 12 under it: "Your routine" in Title Large Emphasized On surface and Edit (Text); then the habits, 16 at the
+ * sides, two-line List items 2 apart on Surface bright (the habit's icon, its name, "Here now" / "Done" / "Not done"),
+ * ▶ on the one on screen and ✓ on a done one, in On surface; the footer 12 under them, 24 in, Body Small On surface
+ * variant; 24 under it all. Change order: the title "Change order", Done, and a drag handle on every row: drag to
+ * change the order for this run only; Today's order stays. TalkBack moves a habit with the row's Move up and Move down.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, editing: Boolean, onEditing: (Boolean) -> Unit,
                          onJump: (Int) -> Unit, onDismiss: () -> Unit) {
-    val c = appColors
+    val s = MaterialTheme.colorScheme
     val store = session.store
     val state = rememberWholeSheetState()
     val order = session.order
     val index = session.index
     val density = LocalDensity.current
-    val rowStep = with(density) { (64.dp + 2.dp).toPx() }
+    val rowStep = with(density) { (72.dp + SegmentedListGap).toPx() }
     var dragging by remember { mutableStateOf<String?>(null) }
     var dragOffset by remember { mutableFloatStateOf(0f) }
-    ModalBottomSheet(onDismiss, sheetState = state) {
+    ModalBottomSheet(onDismiss, sheetState = state, containerColor = s.surfaceContainer) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState(), enabled = dragging == null).padding(bottom = 24.dp)
             .semantics { testTag = "routine-sheet" }) {
-            Row(Modifier.fillMaxWidth().height(56.dp).padding(start = 24.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("Your routine", Modifier.weight(1f).semantics { heading() }, style = AppType.titleLargeEmphasized, color = c.ink)
+            Row(Modifier.fillMaxWidth().padding(start = 24.dp, end = 12.dp, bottom = 12.dp).heightIn(min = 40.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(if (editing) "Change order" else "Your routine", Modifier.weight(1f).semantics { heading() },
+                    style = AppType.titleLargeEmphasized, color = s.onSurface)
                 AppButton(if (editing) "Done" else "Edit", { onEditing(!editing) }, Modifier.semantics { testTag = "routine-edit" }, style = ButtonStyle.Text)
             }
-            Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) {
                 order.forEachIndexed { i, id ->
                     val habit = store.habit(id) ?: return@forEachIndexed
                     key(id) {
                         val skipped = session.skipped(habit)
                         val doneToday = session.doneToday(habit)
-                        val status = PlayerWords.queueStatus(habit.atMost, false, doneToday, skipped)
+                        val status = PlayerWords.queueStatus(habit.atMost, false, doneToday, skipped, here = i == index)
                         val lifted = dragging == id
-                        Row(
-                            Modifier.fillMaxWidth()
-                                .zIndex(if (lifted) 1f else 0f)
+                        AppListItem(
+                            habit.name, i, order.size,
+                            Modifier.zIndex(if (lifted) 1f else 0f)
                                 .graphicsLayer { translationY = if (lifted) dragOffset else 0f; shadowElevation = if (lifted) 8f else 0f }
-                                .clip(segmentShape(i, order.size, outer = 20.dp)).background(c.surface)
-                                .let { if (editing) it else it.clickable { onJump(i) } }
-                                .height(64.dp).padding(horizontal = 16.dp)
-                                .semantics(mergeDescendants = true) {
-                                    testTag = "queue-${habit.name}"
+                                .semantics {
                                     if (editing) customActions = listOfNotNull(
                                         if (i > 0) CustomAccessibilityAction("Move up") { session.move(i, i - 1); true } else null,
                                         if (i < order.size - 1) CustomAccessibilityAction("Move down") { session.move(i, i + 1); true } else null,
                                     )
                                 },
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            HabitIcon(habit.symbol, habit.color, size = 40.dp)
-                            Spacer(Modifier.width(16.dp))
-                            Column(Modifier.weight(1f)) {
-                                Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                Text(status, style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
-                            }
-                            Spacer(Modifier.width(16.dp))
-                            if (editing) {
-                                // The handle: a drag here moves the row, one place for each row's height it passes.
-                                Box(
-                                    Modifier.size(48.dp).pointerInput(id) {
-                                        detectDragGestures(
-                                            onDragStart = { dragging = id; dragOffset = 0f },
-                                            onDragEnd = { dragging = null; dragOffset = 0f },
-                                            onDragCancel = { dragging = null; dragOffset = 0f },
-                                        ) { change, amount ->
-                                            change.consume()
-                                            dragOffset += amount.y
-                                            val now = session.order.indexOf(id)
-                                            if (dragOffset > rowStep / 2 && now < session.order.size - 1) {
-                                                session.move(now, now + 1); dragOffset -= rowStep
-                                            } else if (dragOffset < -rowStep / 2 && now > 0) {
-                                                session.move(now, now - 1); dragOffset += rowStep
+                            supporting = status,
+                            leading = { HabitIcon(habit.symbol, habit.color) },
+                            trailing = {
+                                if (editing) {
+                                    // The handle: a drag here moves the row, one place for each row's height it passes.
+                                    Box(
+                                        Modifier.size(48.dp).pointerInput(id) {
+                                            detectDragGestures(
+                                                onDragStart = { dragging = id; dragOffset = 0f },
+                                                onDragEnd = { dragging = null; dragOffset = 0f },
+                                                onDragCancel = { dragging = null; dragOffset = 0f },
+                                            ) { change, amount ->
+                                                change.consume()
+                                                dragOffset += amount.y
+                                                val now = session.order.indexOf(id)
+                                                if (dragOffset > rowStep / 2 && now < session.order.size - 1) {
+                                                    session.move(now, now + 1); dragOffset -= rowStep
+                                                } else if (dragOffset < -rowStep / 2 && now > 0) {
+                                                    session.move(now, now - 1); dragOffset += rowStep
+                                                }
                                             }
-                                        }
-                                    }.semantics { testTag = "queue-drag-${habit.name}" },
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    Icon(Symbols.DragIndicator, "Drag to move ${habit.name}", tint = c.secondary)
+                                        }.semantics { testTag = "queue-drag-${habit.name}" },
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        Icon(Symbols.DragIndicator, "Drag to move ${habit.name}", tint = s.onSurface)
+                                    }
+                                } else when {
+                                    i == index -> Icon(Symbols.Filled.PlayArrow, "Current habit", tint = s.onSurface)
+                                    skipped -> Icon(Symbols.FastForward, "Skipped", tint = s.onSurfaceVariant)
+                                    covered.getOrNull(i) == true -> Icon(Symbols.Check, "Done", tint = s.onSurface)
                                 }
-                            } else when {
-                                i == index -> Icon(Symbols.Filled.PlayArrow, "Current habit", tint = c.ink)
-                                skipped -> Icon(Symbols.FastForward, "Skipped", tint = c.secondary)
-                                covered.getOrNull(i) == true -> Icon(Symbols.Check, "Done", tint = c.ink)
-                            }
-                        }
+                            },
+                            onClick = if (editing) null else ({ onJump(i) }),
+                            containerColor = s.surfaceBright,
+                            headlineLines = 1,
+                            tag = "queue-${habit.name}",
+                        )
                     }
                 }
             }
-            Text(if (editing) PlayerWords.QUEUE_FOOTER_EDIT else PlayerWords.QUEUE_FOOTER, Modifier.padding(start = 32.dp, end = 32.dp, top = 12.dp),
-                style = AppType.bodySmall, color = c.secondary)
+            Text(if (editing) PlayerWords.QUEUE_FOOTER_EDIT else PlayerWords.QUEUE_FOOTER, Modifier.padding(start = 24.dp, end = 24.dp, top = 12.dp),
+                style = AppType.bodySmall, color = s.onSurfaceVariant)
         }
     }
 }

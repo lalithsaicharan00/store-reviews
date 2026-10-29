@@ -119,7 +119,8 @@ class PlayerWordsTest {
     @Test fun queue() {
         assertEquals("Done", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = true, skipped = false))
         assertEquals("Skipped for today", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = false, skipped = true))
-        assertEquals("Not finished", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = false, skipped = false))
+        assertEquals("Not done", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = false, skipped = false))
+        assertEquals("Here now", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = false, skipped = false, here = true))
         assertEquals("Limit check-in", PlayerWords.queueStatus(atMost = true, reviewed = false, doneToday = false, skipped = false))
         assertEquals("Checked in", PlayerWords.queueStatus(atMost = true, reviewed = true, doneToday = false, skipped = false))
         assertEquals("Close, the timer keeps running", PlayerWords.timerClose(true))

@@ -125,7 +125,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.7 | Day details · Timer screen | 705:7745 | ☑ |
 | 5.3.8 | Day details · Note screen | 765:1087 | ☑ |
 | 5.4.1 | Routine player · Routine player | 906:89513 | ☑ |
-| 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☐ |
+| 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☑ |
 | 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☐ |
 | 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☐ |
 | 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☐ |
@@ -1773,3 +1773,26 @@ What each atom changed, newest last.
   - Figma's many-steps checklist draws a scrollbar that fades; Compose has none of its own, so the steps keep the fade
     at their foot when there's more.
   - Figma's day chip and snackbar are the Assist chip and Snackbar atoms the player already used; unchanged.
+  - **Built:** run 40805471229 (Android #136, commit 9743823) passed: assembleDebug, unit tests and lint.
+- **5.4.2 Routine player · Your routine sheet (29 Oct).** Figma: Your routine sheet (907:29174), Mode Your routine ·
+  Change order. From the routine's name in the player: Material's sheet on Surface container with its drag handle; the
+  header (24 in, 12 at the end, 12 under it): "Your routine" or "Change order" in Title Large Emphasized On surface,
+  Edit or Done (Text); the habits, 16 at the sides, two-line List items (72) 2 apart on Surface bright: the habit's
+  icon, its name, "Here now" / "Done" / "Not done", and ▶ (the one on screen) or ✓ (done) in On surface, or, changing
+  the order, drag_indicator; the footer 12 under them, 24 in, Body Small On surface variant; 24 under it all. It is
+  `RoutineSheet` (`player/RoutinePlayer.kt`); its words are `PlayerWords.queueStatus`, `QUEUE_FOOTER` and
+  `QUEUE_FOOTER_EDIT`. Tags stay; PlayerTest and PlayerWordsTest follow the new words. The app, the unit tests (55)
+  and the instrumented tests' code build in the session.
+  Fixed:
+  - The rows were hand-made, 64 high, 20 dp outer corners, on Surface container lowest; now the List item atom, 72
+    high, 24 / 4 corners, on Surface bright. ✓, ▶ and the drag handle were On surface variant or ink; now On surface.
+  - The sheet was Material's Surface container low; now Surface container, as Figma's sheet here.
+  - Changing the order kept the title "Your routine"; now "Change order".
+  - The words: the habit on screen said nothing of its own ("Not finished" or "Done"); now "Here now"; "Not finished"
+    is now "Not done". The footers now read "Tap a habit to go to it. Moving never marks anything done." and "Drag to
+    change the order for this run. Today's order stays as it is." (were "Jump to any habit, or change the order …"
+    and "Drag to change the order for this routine. Today keeps its own order.").
+  - The header was 56 high with the list 8 under it, the footer 32 in; now 40 with 12 under it, and 24.
+  Noted, not changed:
+  - A limit's rows keep "Limit check-in" / "Checked in" and a skipped one "Skipped for today" with ⏩; Figma draws
+    only done, here and not done.
