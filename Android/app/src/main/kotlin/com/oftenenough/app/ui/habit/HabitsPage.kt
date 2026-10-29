@@ -17,10 +17,10 @@ import com.oftenenough.app.ui.components.SearchHeader
 import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,27 +31,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.RadioButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -60,269 +57,345 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitPause
 import com.oftenenough.app.data.HabitStore
+import com.oftenenough.app.data.HeatCell
+import com.oftenenough.app.data.ProgressRange
+import com.oftenenough.app.data.ProgressSnapshot
+import com.oftenenough.app.data.ProgressWeekCard
+import com.oftenenough.app.data.archivedLine
 import com.oftenenough.app.data.listLine
-import com.oftenenough.app.ui.components.CookieIcon
+import com.oftenenough.app.data.title
+import com.oftenenough.app.ui.components.AppConnectedButtons
+import com.oftenenough.app.ui.components.EmptyState
+import com.oftenenough.app.ui.components.HabitHistoryCard
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.newhabit.NewGroupDialog
+import com.oftenenough.app.ui.components.HistoryHabitHeader
+import com.oftenenough.app.ui.components.HistoryMonth
+import com.oftenenough.app.ui.components.HistorySummary
+import com.oftenenough.app.ui.components.HistoryWeek
+import com.oftenenough.app.ui.components.HistoryYear
+import com.oftenenough.app.ui.components.PrimaryTabs
+import com.oftenenough.app.ui.progress.HeatKeyVisit
+import com.oftenenough.app.ui.progress.ProgressRangeMemory
+import com.oftenenough.app.ui.progress.QuitRunClock
+import com.oftenenough.app.ui.progress.movedAnchor
+import com.oftenenough.app.ui.progress.rememberProgressSnapshot
+import com.oftenenough.app.ui.progress.rememberToday
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
+import com.oftenenough.app.ui.today.BackToButton
 import kotlinx.coroutines.launch
 
-/** Where the Habits page goes. [openMenu] is null where the menu is a sidebar beside the page. */
+/** Where Habits & Tasks goes. [openMenu] is null where the menu is a sidebar beside the page. */
 interface HabitsNav {
     val openMenu: (() -> Unit)?
+    /** Habit details. */
     fun open(habit: Habit)
+    /** Day details for one of a habit's days (a square in Week or Month). */
+    fun openDay(habit: Habit, day: Int)
     fun edit(habit: Habit)
-    fun duplicate(habit: Habit)
     fun newHabit(name: String? = null)
-    fun ideas()
     fun archived()
-    fun arrange()
-    fun editGroups()
-    fun openGroup(id: String)
-    /**
-     * Tasks and Progress, from this page's ⋮. The menu is six rows now (Figma `12:5259`) and **Habits & Tasks**
-     * opens here, so until that one page exists these two keep their way in from the page they belong with.
-     */
-    fun tasks()
-    fun progress()
+    /** The Tasks tab's way out. */
+    val tasks: TasksNav
 }
-
-private const val SHOW_BY = "habits.show_by"
-private const val COACH_SEEN = "habits.coach_seen"
 
 /** A section of the list: its title and its habits, in the person's order. */
 private class HabitSection(val key: String, val title: String, val habits: List<Habit>)
 
 /**
- * ≡ › Habits (Figma 2106:2): every habit by time of day, in the person's order as on Today (or by group), then Quitting,
- * Paused, and the Archived row. Each row's ⋮ edits, duplicates, pauses or resumes, archives or deletes it; a long press
- * (or ⋮ › Select) selects several; search finds any habit, archived ones too. Pause, Resume, Archive and Delete each say
- * what happened with Undo (D6: a delete only happens once its Undo has gone).
+ * 5.5.1, **Habits page** (Figma 986:150825; Components — Atoms Build Plan; Android A54, A55, A57): Habits & Tasks, one
+ * page from the menu, scaffolded like Today on Surface container. The Top app bar (☰ · Habits & Tasks · search · +, the
+ * + acting on the tab you're on), then Primary tabs Habits · Tasks, which stay.
+ *
+ * Habits is the Progress page (A54): Week · Month · Year (a connected button group, 16 in, 16 above and 8 below,
+ * scrolling away); the period row (the dates in Title Medium On surface over "This week" in Body Small On surface
+ * variant, 16 in; ‹ › at the end, › off on the latest period), which stays pinned under the tabs; then by Today's times
+ * of day, Quitting and Paused, each title in Label Large Primary 16 in, the Habit history cards (4.15), 12 apart, 16
+ * from the edges: a card opens Habit details, a square in Week or Month that day's Day details (Year's are too small,
+ * so the card opens), its ⋮ Edit habit, Pause… (Resume when paused), Archive (Undo, no question) and Delete (asks,
+ * Cancel | Delete). At the end, the Archived row and What the squares mean, 80 under them. Scrolled, the top bar, the
+ * tabs and the pinned period row turn Surface container high. On an earlier period, "Back to this week" (month, year)
+ * floats 16 above the gesture bar, as Today's Back to today. No habits: the empty page (New habit), with the Archived
+ * row under it when every habit is archived. No selecting several, and a long press does nothing (A55).
+ *
+ * A habit just added (or duplicated) scrolls into view, where it goes plain at the end of its time of day (A47).
+ * Speed: one snapshot, kept for the app's life, worked out a few cards a frame (S5, S16); cards are a lazy list with
+ * stable keys, each card's squares one drawing (S12, S13).
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HabitsPage(store: HabitStore, nav: HabitsNav) {
+    val s = MaterialTheme.colorScheme
     val c = appColors
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
-    val today = store.today()
-    var selecting by rememberSaveable { mutableStateOf(false) }
-    var chosen by rememberSaveable { mutableStateOf(emptySet<String>()) }
+    val today = rememberToday(store)
+    var tab by rememberSaveable { mutableIntStateOf(0) }
     var searching by rememberSaveable { mutableStateOf(false) }
     var query by rememberSaveable { mutableStateOf("") }
     var hidden by remember { mutableStateOf(emptySet<String>()) }
-    var showBy by remember { mutableStateOf(store.setting(SHOW_BY) ?: "time") }
-    var coachSeen by remember { mutableStateOf(store.setting(COACH_SEEN) != null) }
-    var topMenu by remember { mutableStateOf(false) }
-    var showByDialog by remember { mutableStateOf(false) }
-    var newGroup by remember { mutableStateOf(false) }
     var pausing by remember { mutableStateOf<List<Habit>>(emptyList()) }
     var deleting by remember { mutableStateOf<List<Habit>>(emptyList()) }
-    var grouping by remember { mutableStateOf<List<Habit>>(emptyList()) }
+    /** A day in the period on screen; null means the current one, so the page always opens on it. */
+    var anchor by rememberSaveable { mutableStateOf<Int?>(null) }
+    val range = ProgressRangeMemory.range
+    val visit = remember(store) { HeatKeyVisit(store) }
 
     val all = store.habits.filter { it.kind != HabitKind.Task && it.id !in hidden }
     val active = all.filter { !it.archived }
     val archived = all.filter { it.archived }
     val paused = active.filter { store.isPaused(it, today) }
-    val byGroup = showBy == "group" && store.groups.isNotEmpty()
-    val sections = remember(all, store.sections, store.groups, byGroup, today, store.pauses) {
-        habitSections(store, active, paused, byGroup)
-    }
-    val marked = all.filter { it.id in chosen }
+    val sections = remember(all, store.sections, today, store.pauses) { habitSections(store, active, paused) }
+    val snap = rememberProgressSnapshot(store, range, anchor, today, "")
 
-    fun endSelection() { selecting = false; chosen = emptySet() }
     fun say(text: String, action: String, onAction: () -> Unit) {
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
             if (snackbar.showSnackbar(text, action, duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) onAction()
         }
     }
-    fun named(list: List<Habit>) = if (list.size == 1) list[0].name else "${list.size} habits"
-    fun archive(list: List<Habit>) {
-        store.archive(list)
-        say("${named(list)} archived", "Undo") { list.forEach { store.restore(it) } }
+    fun archive(h: Habit) {
+        store.archive(listOf(h))
+        say("${h.name} archived", "Undo") { store.restore(h) }
     }
-    fun resume(list: List<Habit>) {
-        val before = list.associate { it.id to (store.pauses[it.id] ?: emptyList<HabitPause>()) }
-        list.forEach { store.resume(it) }
-        say("${named(list)} resumed", "Undo") { list.forEach { h -> store.setPauses(h, before[h.id] ?: emptyList()) } }
+    fun resume(h: Habit) {
+        val before = store.pauses[h.id] ?: emptyList<HabitPause>()
+        store.resume(h)
+        say("${h.name} resumed", "Undo") { store.setPauses(h, before) }
     }
-    // Deleted only once its Undo has gone (Figma 2.6.1): till then the rows are hidden, and leaving the page deletes them.
-    fun delete(list: List<Habit>) {
-        val ids = list.map { it.id }.toSet()
-        hidden = hidden + ids
+    // Deleted only once its Undo has gone (D6): till then the card is hidden, and leaving the page deletes it.
+    fun delete(h: Habit) {
+        hidden = hidden + h.id
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
             var undone = false
             try {
-                undone = snackbar.showSnackbar("${named(list)} deleted", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
+                undone = snackbar.showSnackbar("${h.name} deleted", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
             } finally {
-                if (!undone) store.delete(ids.mapNotNull { store.habit(it) })
-                hidden = hidden - ids
+                if (!undone) store.habit(h.id)?.let { store.delete(listOf(it)) }
+                hidden = hidden - h.id
             }
         }
     }
-    fun toggle(h: Habit) { chosen = if (h.id in chosen) chosen - h.id else chosen + h.id }
-    fun seeCoach() { if (!coachSeen) { coachSeen = true; store.saveAppSetting(COACH_SEEN, "1") } }
-
-    BackHandler(enabled = selecting || searching) {
-        if (selecting) endSelection() else { searching = false; query = "" }
+    val menu: @Composable (Habit, () -> Unit) -> Unit = { h, dismiss ->
+        HabitMenuItems(h, store, today, dismiss, onEdit = { nav.edit(h) }, onPause = { pausing = listOf(h) }, onResume = { resume(h) },
+            onArchive = { archive(h) }, onDelete = { deleting = listOf(h) })
     }
 
-    val rowMenu: @Composable (Habit, () -> Unit) -> Unit = { h, dismiss ->
-        RowMenuItems(h, store, today, dismiss, onEdit = { nav.edit(h) }, onDuplicate = { nav.duplicate(h) },
-            onPause = { pausing = listOf(h) }, onResume = { resume(listOf(h)) }, onArchive = { archive(listOf(h)) }, onDelete = { deleting = listOf(h) })
-    }
-    val onRow: (Habit) -> Unit = { h -> if (selecting) toggle(h) else nav.open(h) }
-    val onLong: (Habit) -> Unit = { h -> seeCoach(); if (!selecting) { selecting = true; chosen = setOf(h.id) } else toggle(h) }
+    BackHandler(enabled = searching) { searching = false; query = "" }
 
-    val scroll = TopAppBarDefaults.pinnedScrollBehavior()
-    Box(Modifier.fillMaxSize().background(c.screen)) {
+    // The list's items, by key, so a habit just added can be found and scrolled to.
+    val cards = remember(snap) { snap.cards.associateBy { it.habit.id } }
+    val keys = buildList {
+        add("range"); add("period")
+        for (sec in sections) {
+            val shown = sec.habits.filter { it.id in cards }
+            if (shown.isEmpty()) continue
+            add("title-" + sec.key)
+            shown.forEach { add("card-" + it.id) }
+        }
+        if (archived.isNotEmpty()) add("archived")
+        add("key"); add("end")
+    }
+    val list = rememberLazyListState()
+    val scrolled by remember(list) { derivedStateOf { list.firstVisibleItemIndex > 0 || list.firstVisibleItemScrollOffset > 0 } }
+    // The period row stays under the tabs once the buttons above it have scrolled away (read through derivedStateOf: the
+    // page redraws only when it comes or goes, never per scrolled pixel, S6).
+    val pinned by remember(list) { derivedStateOf { list.firstVisibleItemIndex > 1 || (list.firstVisibleItemIndex == 1 && list.firstVisibleItemScrollOffset > 0) } }
+    val raised = tab == 0 && !searching && active.isNotEmpty() && scrolled
+    val bar by animateColorAsState(if (raised) s.surfaceContainerHigh else s.surfaceContainer, MaterialTheme.motionScheme.defaultEffectsSpec(), label = "bar")
+
+    // A habit that wasn't here before (just added or duplicated): its card scrolls into view once it's drawn.
+    var known by rememberSaveable { mutableStateOf<List<String>?>(null) }
+    val activeIds = active.map { it.id }
+    var pending by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(activeIds) {
+        val before = known
+        known = activeIds
+        if (before != null) activeIds.firstOrNull { it !in before }?.let { pending = it }
+    }
+    LaunchedEffect(pending, keys) {
+        val id = pending ?: return@LaunchedEffect
+        val at = keys.indexOf("card-$id")
+        if (at >= 0) { pending = null; list.animateScrollToItem(at) }
+    }
+
+    Box(Modifier.fillMaxSize().background(s.surfaceContainer)) {
         Column(Modifier.fillMaxSize()) {
-            when {
-                searching -> SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search habits",
+            if (searching && tab == 0) {
+                SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search habits",
                     fieldTag = "habits-search-field", backTag = "habits-search-back", clearTag = "habits-search-clear")
-                selecting -> AppTopBar(
-                    if (chosen.isEmpty()) "Select habits" else "${chosen.size} selected",
-                    navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "habits-end-selection" }) { Icon(Symbols.Close, "Stop selecting") } },
-                    actions = {
-                        val allIds = active.map { it.id }.toSet()
-                        val everything = chosen.containsAll(allIds) && allIds.isNotEmpty()
-                        AppButton(if (everything) "Deselect all" else "Select all", { chosen = if (everything) emptySet() else allIds }, Modifier.padding(end = 4.dp).semantics { testTag = "habits-select-all" }, style = ButtonStyle.Text)
-                    },
-                    containerColor = c.tonal,
-                )
-                else -> AppTopBar(
-                    "Habits",
+            } else if (!searching) {
+                AppTopBar(
+                    "Habits & Tasks",
                     navigationIcon = {
                         nav.openMenu?.let { open -> IconButton(open, Modifier.semantics { testTag = "habits-menu" }) { Icon(Symbols.Menu, "Menu") } }
                     },
                     actions = {
-                        IconButton({ searching = true }, Modifier.semantics { testTag = "habits-search" }) { Icon(Symbols.Search, "Search habits") }
-                        IconButton({ nav.newHabit() }, Modifier.semantics { testTag = "habits-add" }) { Icon(Symbols.Add, "New habit") }
-                        Box {
-                            IconButton({ topMenu = true }, Modifier.semantics { testTag = "habits-more" }) { Icon(Symbols.MoreVert, "More") }
-                            AppMenu(topMenu, { topMenu = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                                AppMenuItem("Select", { topMenu = false; seeCoach(); selecting = true; chosen = emptySet() }, icon = Symbols.CheckBox, tag = "habits-select")
-                                if (store.groups.isNotEmpty()) AppMenuItem("Show by…", { topMenu = false; showByDialog = true }, icon = Symbols.ViewAgenda, tag = "habits-show-by")
-                                AppMenuItem("Arrange…", { topMenu = false; nav.arrange() }, icon = Symbols.SwapVert, tag = "habits-arrange")
-                                if (store.groups.isNotEmpty()) AppMenuItem("Edit groups", { topMenu = false; nav.editGroups() }, icon = Symbols.Folder, tag = "habits-edit-groups")
-                                else AppMenuItem("New group", { topMenu = false; newGroup = true }, icon = Symbols.CreateNewFolder, tag = "habits-new-group")
-                                // Figma 5, 5.3 (19 Oct 2026): Archived habits from the menu too; the list's last row stays.
-                                AppMenuItem("Archived habits", { topMenu = false; nav.archived() }, icon = Symbols.Archive, tag = "habits-menu-archived")
-                                // Until Habits and Tasks are one page, this is the way to the other half, and to Progress.
-                                AppMenuItem("Tasks", { topMenu = false; nav.tasks() }, icon = Symbols.List, tag = "habits-menu-tasks")
-                                AppMenuItem("Progress", { topMenu = false; nav.progress() }, icon = Symbols.BarChart, tag = "habits-menu-progress")
-                            }
+                        IconButton({ searching = true }, Modifier.semantics { testTag = "habits-search" }) {
+                            Icon(Symbols.Search, if (tab == 0) "Search habits" else "Search tasks")
+                        }
+                        IconButton({ if (tab == 0) nav.newHabit() else nav.tasks.newTask() }, Modifier.semantics { testTag = "habits-add" }) {
+                            Icon(Symbols.Add, if (tab == 0) "New habit" else "New task")
                         }
                     },
-                    scrollBehavior = scroll,
+                    containerColor = bar,
                 )
+                PrimaryTabs(tab, listOf("Habits", "Tasks"), { tab = it }, containerColor = bar,
+                    tag = { i -> if (i == 0) "habits-tab-habits" else "habits-tab-tasks" })
             }
-            val list = rememberLazyListState()
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when {
-                    searching -> SearchResults(store, query, active, archived, today, onRow, onLong, rowMenu) { nav.newHabit(query.trim()) }
+                    tab == 1 -> TasksPage(store, nav.tasks, searchOpen = searching, onSearchClosed = { searching = false })
+                    searching -> SearchResults(store, query, active, archived, today, { nav.open(it) }, menu) { nav.newHabit(query.trim()) }
                     active.isEmpty() -> EmptyHabits(archived.size, nav)
-                    else -> LazyColumn(Modifier.fillMaxSize().nestedScroll(scroll.nestedScrollConnection).padding(horizontal = 16.dp)
-                        .semantics { testTag = "habits-list" }, state = list) {
-                        var first = true
-                        for ((n, s) in sections.withIndex()) {
-                            item(key = "title-${s.key}") { SectionTitle(s.title, n == 0) }
-                            s.habits.forEachIndexed { i, h ->
-                                val coach = first && !coachSeen && !selecting && active.size >= 2
-                                first = false
-                                item(key = h.id) {
-                                    HabitsRow(h, store.listLine(h, today), i, s.habits.size, selecting, h.id in chosen, { onRow(h) }, { onLong(h) },
-                                        if (selecting) null else rowMenu, coach = if (coach) ({ seeCoach() }) else null)
+                    else -> {
+                        val move: (Int) -> Unit = { step -> anchor = movedAnchor(store, snap, step) }
+                        LazyColumn(Modifier.fillMaxSize().semantics { testTag = "habits-list" }, state = list) {
+                            items(keys, key = { it }, contentType = { it.substringBefore('-') }) { key ->
+                                when {
+                                    key == "range" -> AppConnectedButtons(ProgressRange.entries.map { it to it.title }, range,
+                                        Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp), tag = "habits-range") {
+                                        ProgressRangeMemory.range = it
+                                    }
+                                    key == "period" -> PeriodRow(snap, Color.Transparent, move)
+                                    key.startsWith("title-") -> CardSectionTitle(sections.first { "title-" + it.key == key }.title, first = keys.getOrNull(2) == key)
+                                    key.startsWith("card-") -> cards[key.removePrefix("card-")]?.let { card ->
+                                        HabitCard(card, snap, store, nav, menu, Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
+                                    }
+                                    key == "archived" -> Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 6.dp)) {
+                                        ArchivedRow(archived.size, enabled = true) { nav.archived() }
+                                    }
+                                    key == "key" -> HeatKeyCard(visit.isOpen, { visit.toggle() },
+                                        Modifier.padding(start = 16.dp, end = 16.dp, top = if (archived.isEmpty()) 14.dp else 6.dp))
+                                    key == "end" -> Spacer(Modifier.navigationBarsPadding().height(80.dp))
                                 }
                             }
                         }
-                        if (archived.isNotEmpty()) item(key = "archived") {
-                            Spacer(Modifier.height(22.dp))
-                            ArchivedRow(archived.size, enabled = !selecting) { nav.archived() }
+                        if (pinned) PeriodRow(snap, bar, move)
+                        if (!snap.isRunning) Box(Modifier.align(Alignment.BottomCenter).navigationBarsPadding()) {
+                            BackToButton("Back to this ${range.noun}", "habits-back-to-now") { anchor = null }
                         }
-                        item(key = "end") { Spacer(Modifier.height(if (selecting) 120.dp else 88.dp)) }
                     }
                 }
+                if (tab == 0) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
             }
-            if (selecting) SelectionBar(marked, store, today,
-                onPause = { pausing = marked.filter { !store.isPaused(it, today) && store.rules.canPause(it) } },
-                onResume = { resume(marked.filter { store.isPaused(it, today) }); endSelection() },
-                onArchive = { archive(marked); endSelection() },
-                onGroup = { grouping = marked },
-                onDelete = { deleting = marked })
         }
-        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp).padding(bottom = if (selecting) 88.dp else 0.dp))
     }
 
     if (pausing.isNotEmpty()) {
-        val list = pausing
-        val before = list.associate { it.id to (store.pauses[it.id] ?: emptyList<HabitPause>()) }
-        PauseSheet(list, store, { pausing = emptyList() }) { back ->
+        val list1 = pausing
+        val before = list1.associate { it.id to (store.pauses[it.id] ?: emptyList<HabitPause>()) }
+        PauseSheet(list1, store, { pausing = emptyList() }) { back ->
             pausing = emptyList()
-            endSelection()
             val until = back?.let { " until " + DayWords.dayMonth(it) } ?: ""
-            say("${named(list)} paused$until", "Undo") { list.forEach { h -> store.setPauses(h, before[h.id] ?: emptyList()) } }
+            say("${list1[0].name} paused$until", "Undo") { list1.forEach { h -> store.setPauses(h, before[h.id] ?: emptyList()) } }
         }
     }
     if (deleting.isNotEmpty()) {
-        val list = deleting
-        val one = list.size == 1
-        AppDialog(if (one) "Delete ${list[0].name}?" else "Delete ${list.size} habits?",
-            if (one) "Its history and notes are deleted too. To keep them, archive it instead." else "Their history and notes are deleted too. To keep them, archive them instead.",
-            "Delete", { deleting = emptyList(); endSelection(); delete(list) }, { deleting = emptyList() },
+        val h = deleting[0]
+        AppDialog("Delete ${h.name}?", "Its history and notes are deleted too. To keep them, archive it instead.",
+            "Delete", { deleting = emptyList(); delete(h) }, { deleting = emptyList() },
             destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
     }
-    if (grouping.isNotEmpty()) GroupDialog(grouping, store, { grouping = emptyList() }) { groupId ->
-        grouping.forEach { store.setGroup(groupId, it.id) }
-        grouping = emptyList()
-        endSelection()
-    }
-    if (showByDialog) ShowByDialog(store, showBy, { showByDialog = false }) { pick ->
-        showBy = pick; showByDialog = false; store.saveAppSetting(SHOW_BY, pick)
-    }
-    if (newGroup) NewGroupDialog(store, { newGroup = false }) { id -> newGroup = false; nav.openGroup(id) }
 }
 
-/** Sections by time of day as on Today (then Quitting), or by group; then Paused. */
-private fun habitSections(store: HabitStore, active: List<Habit>, paused: List<Habit>, byGroup: Boolean): List<HabitSection> {
+/**
+ * The period row (Figma's Period row): 56 high, 16 in at the start and 4 at the end; the dates ("18–24 Oct") in Title
+ * Medium On surface over which period it is ("This week") in Body Small On surface variant, then ‹ and › (Material's
+ * standard icon buttons, On surface variant; off, at 38 %, where there's nothing to go to). Pinned, it's [background].
+ */
+@Composable
+private fun PeriodRow(snap: ProgressSnapshot, background: Color, move: (Int) -> Unit) {
+    val s = MaterialTheme.colorScheme
+    val noun = snap.range.noun
+    Row(Modifier.fillMaxWidth().background(background).heightIn(min = 56.dp).padding(start = 16.dp, end = 4.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(snap.title, Modifier.semantics { testTag = "habits-period" }, maxLines = 1,
+                style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = s.onSurface)
+            snap.caption?.let { Text(it, maxLines = 1, style = AppType.bodySmall, color = s.onSurfaceVariant) }
+        }
+        StandardIconButton(Symbols.ChevronLeft, "Previous $noun", { move(-1) }, Modifier.semantics { testTag = "habits-previous" }, enabled = snap.canGoBack)
+        StandardIconButton(Symbols.ChevronRight, "Next $noun", { move(1) }, Modifier.semantics { testTag = "habits-next" }, enabled = snap.canGoForward)
+    }
+}
+
+/**
+ * A section's title over its cards (Figma's Section): Label Large Primary, 16 in from the cards; 20 under the card
+ * before it (the list's 12 and the title's 8), 16 under the period row when [first], and 12 over its first card.
+ */
+@Composable
+private fun CardSectionTitle(text: String, first: Boolean) =
+    Text(text, Modifier.padding(start = 32.dp, end = 16.dp, top = if (first) 16.dp else 14.dp, bottom = 6.dp)
+        .semantics { heading(); testTag = "habits-section-$text" },
+        style = AppType.labelLarge, color = MaterialTheme.colorScheme.primary)
+
+/**
+ * One habit's card: the Habit history card (4.15) with the habit's header (its icon, name, goal and ⋮), the period's
+ * summary and one more fact, and the period's squares. The card opens the habit; a square of a day up to today in Week
+ * or Month opens that day's details.
+ */
+@Composable
+private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: HabitStore, nav: HabitsNav,
+                      menu: @Composable (Habit, () -> Unit) -> Unit, modifier: Modifier) {
+    val habit = card.habit
+    val onCell: (Int?) -> Unit = { i ->
+        val d = i?.let { card.days.getOrNull(it) }
+        if (d != null && d.heat != HeatCell.Blank && d.day <= snap.today) nav.openDay(habit, d.day) else nav.open(habit)
+    }
+    var open by remember { mutableStateOf(false) }
+    HabitHistoryCard(modifier.semantics { testTag = "habits-row-" + habit.name }, onClick = { nav.open(habit) }, onClickLabel = "Opens the habit") {
+        HistoryHabitHeader(habit.symbol, habit.color, habit.name, card.goal) {
+            Box {
+                StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })
+                AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { menu(habit) { open = false } }
+            }
+        }
+        val start = card.runStart
+        if (start != null) HistorySummary(card.detail) { QuitRunClock(start, store.clock) } else HistorySummary(card.headline, card.detail)
+        val todayIndex = snap.columns.indexOfFirst { it.isToday }.takeIf { it >= 0 }
+        when (snap.range) {
+            ProgressRange.WEEK -> if (snap.columns.size == card.heat.size)
+                HistoryWeek(snap.columns.map { it.short }, card.heat, todayIndex, habit.color, onTap = onCell)
+            ProgressRange.MONTH -> if (snap.columns.size == card.heat.size)
+                HistoryMonth(snap.letters, snap.monthLead, card.heat, todayIndex, habit.color, onTap = onCell)
+            // A year's squares are too small to aim at: a tap opens the habit.
+            ProgressRange.YEAR -> snap.year?.let { year ->
+                if (card.heat.size >= year.shown) HistoryYear(year, card.heat, habit.color) { nav.open(habit) }
+            }
+        }
+    }
+}
+
+/** Sections by time of day as on Today, then Quitting; then Paused. */
+private fun habitSections(store: HabitStore, active: List<Habit>, paused: List<Habit>): List<HabitSection> {
     val pausedIds = paused.map { it.id }.toSet()
     val going = active.filter { it.id !in pausedIds }
     val out = mutableListOf<HabitSection>()
-    if (byGroup) {
-        for (g in store.groups) out += HabitSection("g-${g.id}", g.name, going.filter { store.groupOf(it.id)?.id == g.id })
-        out += HabitSection("g-none", "No group", going.filter { store.groupOf(it.id) == null })
-    } else {
-        val members = store.rules.cardMembers()
-        val placed = HashSet<String>()
-        for (card in store.todayCards()) {
-            val ids = members[card] ?: emptyList()
-            val list = ids.mapNotNull { id -> going.firstOrNull { it.id == id } }.filter { placed.add(it.id) }
-            out += HabitSection(card, if (card == DaySection.QUITTING) "Quitting" else store.section(card).name, list)
-        }
-        // Anything no card holds (shouldn't happen) still shows, under Anytime.
-        val rest = going.filter { it.id !in placed }
-        if (rest.isNotEmpty()) out += HabitSection("rest", store.section(DaySection.ANYTIME).name, rest)
+    val members = store.rules.cardMembers()
+    val placed = HashSet<String>()
+    for (card in store.todayCards()) {
+        val ids = members[card] ?: emptyList()
+        val list = ids.mapNotNull { id -> going.firstOrNull { it.id == id } }.filter { placed.add(it.id) }
+        out += HabitSection(card, if (card == DaySection.QUITTING) "Quitting" else store.section(card).name, list)
     }
+    // Anything no card holds (shouldn't happen) still shows, under Anytime.
+    val rest = going.filter { it.id !in placed }
+    if (rest.isNotEmpty()) out += HabitSection("rest", store.section(DaySection.ANYTIME).name, rest)
     out += HabitSection("paused", "Paused", paused)
     return out.filter { it.habits.isNotEmpty() }
 }
@@ -336,84 +409,48 @@ internal fun SectionTitle(text: String, first: Boolean) =
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HabitsRow(
-    habit: Habit, line: String, index: Int, count: Int, selecting: Boolean, marked: Boolean, onClick: () -> Unit, onLongClick: () -> Unit,
-    menu: (@Composable (Habit, () -> Unit) -> Unit)?, coach: (() -> Unit)? = null,
+    habit: Habit, line: String, index: Int, count: Int, selecting: Boolean, marked: Boolean, onClick: () -> Unit, onLongClick: (() -> Unit)?,
+    menu: (@Composable (Habit, () -> Unit) -> Unit)?,
 ) {
     val c = appColors
     var open by remember { mutableStateOf(false) }
-    Box {
-        AppListItem(
-            habit.name, index, count,
-            Modifier.padding(bottom = SegmentedListGap).semantics(mergeDescendants = true) { if (selecting) stateDescription = if (marked) "Selected" else "Not selected" },
-            line, onClick = onClick, onLongClick = onLongClick, containerColor = if (marked) c.tonal else Color.Unspecified, tag = "habits-row-" + habit.name,
-            leading = { if (marked) ListAvatar(Symbols.Check, done = true) else HabitIcon(habit.symbol, habit.color) },
-            trailing = menu?.let { m -> {
-                Box {
-                    StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })
-                    AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { m(habit) { open = false } }
-                }
-            } },
-        )
-        // First visit (Figma 3.8): Material's rich tooltip under the first row.
-        if (coach != null) Popup(alignment = Alignment.TopStart, offset = IntOffset(0, with(androidx.compose.ui.platform.LocalDensity.current) { 68.dp.roundToPx() }),
-            onDismissRequest = coach) {
-            Column(Modifier.semantics { testTag = "habits-coach"; testTagsAsResourceId = true }) {
-            // The caret, pointing up at the row (Material's rich tooltip).
-            Box(Modifier.padding(start = 28.dp).size(12.dp).graphicsLayer { rotationZ = 45f; translationY = 6.dp.toPx() }.background(c.ink))
-            Column(Modifier.widthIn(max = 312.dp).clip(RoundedCornerShape(12.dp)).background(c.ink).padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 4.dp)) {
-                Text("Select several at once", style = AppType.labelLarge, color = c.onInk)
-                Spacer(Modifier.height(4.dp))
-                Text("Touch and hold a habit to group, pause, archive or delete several together. Or use Select in the menu at the top right.",
-                    style = AppType.bodyMedium, color = c.onInk.copy(alpha = 0.85f))
-                TextButton(coach, Modifier.semantics { testTag = "habits-coach-ok" }) { Text("Got it", style = AppType.labelLarge, color = c.onInk) }
+    AppListItem(
+        habit.name, index, count,
+        Modifier.padding(bottom = SegmentedListGap).semantics(mergeDescendants = true) { if (selecting) stateDescription = if (marked) "Selected" else "Not selected" },
+        line, onClick = onClick, onLongClick = onLongClick, containerColor = if (marked) c.tonal else Color.Unspecified, tag = "habits-row-" + habit.name,
+        leading = { if (marked) ListAvatar(Symbols.Check, done = true) else HabitIcon(habit.symbol, habit.color) },
+        trailing = menu?.let { m -> {
+            Box {
+                StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })
+                AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { m(habit) { open = false } }
             }
-            }
-        }
-    }
+        } },
+    )
 }
 
-/** A row's ⋮ (Figma 2, 2.4): Edit habit, Duplicate, Pause… or Resume, then Archive and Delete habit… (red). */
+/** A habit's ⋮ (A54): Edit habit, Pause… or Resume, then Archive and Delete (red). */
 @Composable
-private fun RowMenuItems(
+private fun HabitMenuItems(
     h: Habit, store: HabitStore, today: Int, dismiss: () -> Unit,
-    onEdit: () -> Unit, onDuplicate: () -> Unit, onPause: () -> Unit, onResume: () -> Unit, onArchive: () -> Unit, onDelete: () -> Unit,
+    onEdit: () -> Unit, onPause: () -> Unit, onResume: () -> Unit, onArchive: () -> Unit, onDelete: () -> Unit,
 ) {
-    val c = appColors
     AppMenuItem("Edit habit", { dismiss(); onEdit() }, icon = Symbols.Edit, tag = "habits-menu-edit")
-    AppMenuItem("Duplicate", { dismiss(); onDuplicate() }, icon = Symbols.ContentCopy, tag = "habits-menu-duplicate")
     if (store.isPaused(h, today)) AppMenuItem("Resume", { dismiss(); onResume() }, icon = Symbols.PlayCircle, tag = "habits-menu-resume")
     else if (store.rules.canPause(h)) AppMenuItem("Pause…", { dismiss(); onPause() }, icon = Symbols.PauseCircle, tag = "habits-menu-pause")
     MenuDivider()
     AppMenuItem("Archive", { dismiss(); onArchive() }, icon = Symbols.Archive, tag = "habits-menu-archive")
-    AppMenuItem("Delete habit…", { dismiss(); onDelete() }, icon = Symbols.Delete, destructive = true, tag = "habits-menu-delete")
+    AppMenuItem("Delete", { dismiss(); onDelete() }, icon = Symbols.Delete, destructive = true, tag = "habits-menu-delete")
 }
 
-/** The Archived row (Figma 1): its count; it opens Archived habits (List item, 2.4, on its own). */
+/**
+ * The Archived row (Figma's Archived, a List item on its own): inventory_2, "Archived" over its count ("3 habits"), ›,
+ * on Surface container lowest; it opens Archived habits (or tasks).
+ */
 @Composable
 internal fun ArchivedRow(count: Int, enabled: Boolean, noun: String = "habit", onClick: () -> Unit) =
     AppListItem("Archived", 0, 1, Modifier.semantics(mergeDescendants = true) {}, if (count == 1) "1 $noun" else "$count ${noun}s",
-        leading = { ListAvatar(Symbols.Inventory2) }, trailing = { ListChevron() }, onClick = onClick, enabled = enabled, tag = "habits-archived")
-
-/** The selection's bottom bar (Figma 3–3.7, 5.6): each action with its word; Pause and Resume show only when they'd act. */
-@Composable
-private fun SelectionBar(
-    marked: List<Habit>, store: HabitStore, today: Int,
-    onPause: () -> Unit, onResume: () -> Unit, onArchive: () -> Unit, onGroup: () -> Unit, onDelete: () -> Unit,
-) {
-    val c = appColors
-    val any = marked.isNotEmpty()
-    val canPause = marked.any { !store.isPaused(it, today) && store.rules.canPause(it) }
-    val canResume = marked.any { store.isPaused(it, today) }
-    Surface(color = c.surface, tonalElevation = 3.dp) {
-        Row(Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-            if (canPause || !any) BarAction("Pause", Symbols.PauseCircle, any, "habits-pause", onPause)
-            if (canResume) BarAction("Resume", Symbols.PlayCircle, true, "habits-resume", onResume)
-            BarAction("Archive", Symbols.Archive, any, "habits-archive", onArchive)
-            BarAction("Group", Symbols.Folder, any, "habits-group", onGroup)
-            BarAction("Delete", Symbols.Delete, any, "habits-delete", onDelete, danger = true)
-        }
-    }
-}
+        leading = { Icon(Symbols.Inventory2, null) }, trailing = { ListChevron() }, onClick = onClick, enabled = enabled,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = "habits-archived")
 
 @Composable
 fun BarAction(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, enabled: Boolean, tag: String, onClick: () -> Unit, danger: Boolean = false) {
@@ -432,7 +469,7 @@ fun BarAction(text: String, icon: androidx.compose.ui.graphics.vector.ImageVecto
 @Composable
 private fun SearchResults(
     store: HabitStore, query: String, active: List<Habit>, archived: List<Habit>, today: Int,
-    onRow: (Habit) -> Unit, onLong: (Habit) -> Unit, menu: @Composable (Habit, () -> Unit) -> Unit, onNew: () -> Unit,
+    onRow: (Habit) -> Unit, menu: @Composable (Habit, () -> Unit) -> Unit, onNew: () -> Unit,
 ) {
     val c = appColors
     val q = query.trim().lowercase()
@@ -453,7 +490,12 @@ private fun SearchResults(
         fun LazyListScope.group(title: String, list: List<Habit>) {
             if (list.isEmpty()) return
             item(key = "t-$title") { SectionTitle(title, title == "Habits" || found.isEmpty()) }
-            list.forEachIndexed { i, h -> item(key = h.id) { HabitsRow(h, store.listLine(h, today), i, list.size, false, false, { onRow(h) }, { onLong(h) }, menu) } }
+            list.forEachIndexed { i, h ->
+                item(key = h.id) {
+                    HabitsRow(h, if (h.archived) store.archivedLine(h) else store.listLine(h, today), i, list.size, false, false, { onRow(h) }, null,
+                        if (h.archived) null else menu)
+                }
+            }
         }
         group("Habits", found)
         group("Archived", old)
@@ -461,98 +503,24 @@ private fun SearchResults(
     }
 }
 
-/** No habits yet (Figma 1.3), or every habit archived (1.4, the Archived row kept one tap away). */
+/**
+ * No habits (Figma's No habits yet and All archived): the empty page, centred: the checklist in its cookie, "No habits
+ * yet" (or "No habits right now") and what it means, New habit (Filled). Every habit archived: the Archived row under
+ * it, 16 at the sides and 24 under.
+ */
 @Composable
 private fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
-    val c = appColors
-    Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
-        Column(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            CookieIcon(if (archivedCount > 0) Symbols.Inventory2 else Symbols.Checklist, 112.dp)
-            Spacer(Modifier.height(24.dp))
-            Text(if (archivedCount > 0) "No habits right now" else "No habits yet", style = AppType.titleLarge, color = c.ink, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(12.dp))
-            Text(if (archivedCount > 0) "Your archived habits keep all their history. Bring one back, or add a new habit."
-                else "Every habit you make lives here. Add one, or start from an idea.",
-                style = AppType.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(24.dp))
-            AppButton("New habit", { nav.newHabit() }, Modifier.semantics { testTag = "habits-empty-new" }, icon = Symbols.Add)
-            if (archivedCount == 0) {
-                Spacer(Modifier.height(8.dp))
-                AppButton("Start from an idea", { nav.ideas() }, style = ButtonStyle.Tonal, icon = Symbols.Lightbulb, tag = "habits-empty-ideas")
+    Column(Modifier.fillMaxSize()) {
+        Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+            EmptyState(Symbols.Checklist,
+                if (archivedCount > 0) "No habits right now" else "No habits yet",
+                if (archivedCount > 0) "Every habit is archived. Restore one, or add a new habit." else "Habits you add show here, with how each one is going.",
+                Modifier.semantics { testTag = "habits-empty" }) {
+                AppButton("New habit", { nav.newHabit() }, Modifier.semantics { testTag = "habits-empty-new" }, icon = Symbols.Add)
             }
         }
-        if (archivedCount > 0) {
+        if (archivedCount > 0) Box(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 24.dp)) {
             ArchivedRow(archivedCount, enabled = true) { nav.archived() }
-            Spacer(Modifier.height(24.dp))
-        }
-    }
-}
-
-/** Put N habits in a group (Figma 3.3): No group, each group, New group; Cancel | Move. */
-@Composable
-private fun GroupDialog(habits: List<Habit>, store: HabitStore, onDismiss: () -> Unit, onMove: (String?) -> Unit) {
-    val c = appColors
-    val common = habits.map { store.groupOf(it.id)?.id }.distinct().singleOrNull()
-    var pick by remember { mutableStateOf(common) }
-    var creating by remember { mutableStateOf(false) }
-    AlertDialog(onDismiss,
-        title = { Text(if (habits.size == 1) "Put ${habits[0].name} in a group" else "Put ${habits.size} habits in a group") },
-        text = {
-            Column {
-                GroupOption("No group", pick == null, "group-none") { pick = null }
-                for (g in store.groups) GroupOption(g.name, pick == g.id, "group-${g.name}") { pick = g.id }
-                Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { creating = true }.semantics(mergeDescendants = true) { testTag = "group-new" },
-                    verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null, tint = c.ink) }
-                    Spacer(Modifier.width(12.dp))
-                    Text("New group", style = AppType.bodyLarge, color = c.ink)
-                }
-            }
-        },
-        confirmButton = { AppButton("Move", { onMove(pick) }, Modifier.semantics { testTag = "group-move" }, style = ButtonStyle.Text) },
-        dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) },
-        containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.ink)
-    if (creating) NewGroupDialog(store, { creating = false }) { id -> creating = false; pick = id }
-}
-
-@Composable
-private fun GroupOption(text: String, selected: Boolean, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable(role = Role.RadioButton, onClick = onClick).semantics(mergeDescendants = true) { testTag = tag },
-        verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(selected, null)
-        Spacer(Modifier.width(12.dp))
-        Text(text, style = AppType.bodyLarge, color = c.ink)
-    }
-}
-
-/** Show habits by (Figma 5.1): a simple dialog; a tap chooses, closes it and is remembered. */
-@Composable
-private fun ShowByDialog(store: HabitStore, current: String, onDismiss: () -> Unit, onPick: (String) -> Unit) {
-    val c = appColors
-    val parts = store.sections.filter { !it.isAnytime }.map { it.name } + store.section(DaySection.ANYTIME).name
-    AlertDialog(onDismiss,
-        title = { Text("Show habits by") },
-        text = {
-            Column {
-                ShowByOption("Time of day", parts.joinToString(", ") + ", as on Today", current != "group", "show-by-time") { onPick("time") }
-                ShowByOption("Group", store.groups.joinToString(", ") { it.name } + ", then No group", current == "group", "show-by-group") { onPick("group") }
-            }
-        },
-        confirmButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) },
-        containerColor = c.menu, titleContentColor = c.ink, textContentColor = c.ink)
-}
-
-@Composable
-private fun ShowByOption(title: String, line: String, selected: Boolean, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().clickable(role = Role.RadioButton, onClick = onClick).semantics(mergeDescendants = true) { testTag = tag }.padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(selected, null)
-        Spacer(Modifier.width(12.dp))
-        Column {
-            Text(title, style = AppType.bodyLarge, color = c.ink)
-            Text(line, style = AppType.bodyMedium, color = c.secondary)
         }
     }
 }

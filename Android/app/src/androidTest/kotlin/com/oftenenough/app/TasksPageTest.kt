@@ -61,9 +61,8 @@ class TasksPageTest {
         waitFor(hasTestTag("row-Pay electricity bill"), "the demo on Today")
         tapTag("menu-button")
         tapTag("menu-habits")
-        tapTag("habits-more")
-        tapTag("habits-menu-tasks")
-        waitHere(hasTestTag("tasks-list"), "the Tasks page")
+        tapTag("habits-tab-tasks")
+        waitHere(hasTestTag("tasks-list"), "the Tasks tab")
         // The coach mark hangs under the first row: wait for it where it is, never scrolling the list away from it.
         waitHere(hasTestTag("tasks-coach-ok"), "the coach mark")
         if (!coach) { here("tasks-coach-ok"); waitGone(hasTestTag("tasks-coach-ok"), "the coach mark") }
@@ -206,7 +205,7 @@ class TasksPageTest {
 
     @Test fun searchGroupsTasksArchivedAndOffersANewTask() {
         launch()
-        tapTag("tasks-search")
+        tapTag("habits-search")
         compose.onNodeWithTag("habits-search-field").performTextInput("den")
         waitFor(hasText("Today · planned " + taskDay(today - 2).substringAfter(' ')), "Call the dentist with its day")
         waitFor(hasText("Dentist check-up"), "Dentist check-up")
@@ -221,8 +220,7 @@ class TasksPageTest {
 
     @Test fun completedTakesATaskBackAndUndoKeepsItDone() {
         launch()
-        tapTag("tasks-more")
-        here("tasks-completed")
+        tapTag("tasks-completed")
         waitFor(hasText("Every task you finish, by the day you did it. To bring one back, use its ⋮ menu."), "Completed's note")
         tapTag("tasks-row-more-Send the parcel")
         here("completed-menu-not-done")
@@ -246,7 +244,7 @@ class TasksPageTest {
 
     @Test fun aNewTaskWithNoDateStaysOffToday() {
         launch()
-        tapTag("tasks-add")
+        tapTag("habits-add")
         compose.onNodeWithTag("name-field").performTextInput("Mend the fence")
         tapTag("task-date")
         here("task-date-none")

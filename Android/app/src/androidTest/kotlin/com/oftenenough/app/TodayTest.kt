@@ -145,20 +145,6 @@ class TodayTest {
         waitFor(hasText("Restore from a backup"), "Restore from a backup")
     }
 
-    @Test fun anIdeaOpensTheFormWithItsName() {
-        launch()
-        tapTag("menu-button")
-        tapTag("menu-habits")
-        tapTag("habits-empty-ideas")
-        tapTag("idea-Exercise")
-        waitFor(hasTestTag("name-field"), "the New Habit form")
-        // The preview says it (Figma 1302:2: the sentence footer is gone).
-        waitFor(hasText("Exercise"), "the idea's name in the preview")
-        waitFor(hasText("30 min"), "the idea's goal")
-        tapTag("form-add")
-        waitFor(hasTestTag("row-Exercise"), "Exercise on Today")
-    }
-
     @Test fun aCheckTicksAndUndoes() {
         launch(demo = "today")
         showRow("Meds")

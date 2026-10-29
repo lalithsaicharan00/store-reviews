@@ -99,6 +99,8 @@ object Symbols {
     val Checkroom: ImageVector by lazy { symbol("checkroom", "M240-240h480L480-420 240-240Zm185-444q-5 11-14.5 18t-22.5 7q-17 0-28.5-11.5T348-699q0-5 .5-8.5t2.5-7.5q17-38 52-61.5t77-23.5q58 0 99 40.5t41 98.5q0 47-27.5 84T520-526v36l344 258q8 5 12 13.5t4 18.5q0 17-11.5 28.5T840-160H120q-17 0-28.5-11.5T80-200q0-10 4-18.5T96-232l344-258v-70q0-17 12-28.5t29-11.5q25 0 42-18t17-43q0-25-17.5-42T480-720q-18 0-33 9.5T425-684Z") }
     /** chevron_right */
     val ChevronRight: ImageVector by lazy { symbol("chevron_right", "M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z", mirror = true) }
+    /** chevron_left: Material's glyph is chevron_right mirrored. */
+    val ChevronLeft: ImageVector by lazy { mirrored("chevron_left", "M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z") }
     /** close */
     val Close: ImageVector by lazy { symbol("close", "M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z") }
     /** cloud */
@@ -707,6 +709,13 @@ object Symbols {
     /** [mirror]: turned for right-to-left languages, as Material's AutoMirrored icons are (arrows, chevrons, undo and redo). */
     private fun symbol(name: String, d: String, mirror: Boolean = false) = ImageVector.Builder(name, 24.dp, 24.dp, 960f, 960f, autoMirror = mirror).apply {
         addGroup(translationY = 960f)
+        addPath(addPathNodes(d), fill = SolidColor(Color.Black))
+        clearGroup()
+    }.build()
+
+    /** [d] drawn mirrored left to right (a glyph that's another's mirror image), mirrored again right to left. */
+    private fun mirrored(name: String, d: String) = ImageVector.Builder(name, 24.dp, 24.dp, 960f, 960f, autoMirror = true).apply {
+        addGroup(scaleX = -1f, pivotX = 480f, translationY = 960f)
         addPath(addPathNodes(d), fill = SolidColor(Color.Black))
         clearGroup()
     }.build()

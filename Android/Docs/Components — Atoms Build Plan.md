@@ -126,7 +126,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.8 | Day details · Note screen | 765:1087 | ☑ |
 | 5.4.1 | Routine player · Routine player | 906:89513 | ☑ |
 | 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☑ |
-| 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☐ |
+| 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☑ |
 | 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☐ |
 | 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☐ |
 | 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☐ |
@@ -1796,3 +1796,56 @@ What each atom changed, newest last.
   Noted, not changed:
   - A limit's rows keep "Limit check-in" / "Checked in" and a skipped one "Skipped for today" with ⏩; Figma draws
     only done, here and not done.
+  - **Built:** run 40806096329 (Android #137, commit c658edb) passed: assembleDebug, unit tests and lint.
+- **5.5.1 Habits & Tasks · Habits page (29 Oct).** Figma: Habits page (986:150825), Screen Week · Scrolled · Habit added
+  · End of the list · Another week · Month · Year · No habits yet · All archived · Large text · Scrolled to Water (A54,
+  A55, A57). Habits & Tasks, one page from the menu on Surface container: the Top app bar (☰ · Habits & Tasks · search ·
+  +, the + acting on the tab you're on) and Primary tabs Habits · Tasks, which stay. Habits is the Progress page (A54):
+  Week · Month · Year (the Connected button group, 16 in, 16 above, 8 below, scrolling away); the period row (56: the
+  dates in Title Medium On surface over "This week" in Body Small On surface variant, 16 in; chevron_left and
+  chevron_right at the end, off on the first and latest), pinned under the tabs once the buttons have gone; the cards by
+  Today's times of day, then Quitting and Paused, each title in Label Large Primary, the Habit history cards (4.15) 12
+  apart and 16 from the edges, the header's ⋮ (Edit habit, Pause… or Resume, Archive, Delete); then the Archived row and
+  What the squares mean, 80 under them. Scrolled, the top bar, the tabs and the pinned row turn Surface container high.
+  On an earlier period "Back to this week" (month, year) floats 16 above the gesture bar, the same button as Today's.
+  No habits: the empty page (the checklist cookie, "No habits yet", "Habits you add show here, with how each one is
+  going.", New habit), and with every habit archived "No habits right now" with the Archived row under it. A card opens
+  Habit details; a square in Week or Month opens that day's Day details; Year's squares are too small, so the card
+  opens. A habit just added scrolls into view. It is `HabitsPage` (`habit/HabitsPage.kt`, routed from the menu's
+  Habits & Tasks in `AppRoot.kt`); the snapshot is Progress's own (`rememberProgressSnapshot`, `progress/Progress.kt`,
+  now shared), the button that brings you back is Today's (`BackToButton`, `today/TodayScreen.kt`, now shared), and
+  the Tasks tab is `TasksPage` (5.5.4) under the page's bar. The app, the unit tests (55), lint and the instrumented
+  tests' code build in the session.
+  Fixed:
+  - The menu's Habits & Tasks opened a "Habits" list of rows (icon, name, a line, ⋮) with a top ⋮ (Select, Show by…,
+    Arrange…, New or Edit groups, Archived habits, Tasks, Progress); Tasks and Progress were separate pages behind it.
+    Now Figma's one page: the tabs, and the Habits tab is the Progress page's cards by time of day (A54).
+  - Selecting several (a long press, Select, its bar with Pause, Resume, Archive, Group, Delete) and its first-visit
+    coach mark are gone (A55, A48); Show by group and New group are gone (A64); the card's ⋮ has no Duplicate (A54).
+  - The empty page had "Start from an idea" (Tonal) under New habit and its own words; now Figma's one Filled New habit
+    and its words, on the Empty state (5.1.2).
+  - The Archived row's icon sat in a 40 dp avatar on the List item's own colour; now inventory_2 bare, on Surface
+    container lowest, as Figma (the Tasks tab's row too).
+  - What the squares mean had no icon and its arrow was On surface; now help first and the arrow On surface variant
+    (Habit details' Progress uses the same card).
+  - The Tasks page lost its own top bar (☰ · Tasks · search · + · ⋮) and lives under the page's; its search opens from
+    the page's search, and Completed tasks (in its ⋮) is a row at the end of One-time, over Archived (README, 23 Oct).
+  - Material Symbols' chevron_left joined the icons (chevron_right mirrored).
+  - Tests: HabitsPageTest covers the card's ⋮ (Archive, Delete, Pause, Resume), Week · Month · Year with Back to this
+    week, search, the Archived row and Restore, the free plan's +; its Duplicate, selection, Show by, top ⋮ and coach
+    mark tests are gone with what they tested. ScreensTest archives from a card's ⋮ (was a selection). TasksPageTest
+    opens the Tasks tab, searches and adds from the page's bar and opens Completed from its row. TodayTest's "an idea
+    opens the form" is gone: nothing opens Start from an idea now.
+  Noted, not changed:
+  - Start from an idea (`IdeasScreen`) now has no way in: Figma's empty page has one button and nothing else offered
+    it. The screen and its route are kept. The user's call.
+  - The old Progress page (`ProgressScreen`) was opened only from the old Habits ⋮; it now has no way in, its route
+    kept. The Habits tab is that page now (A54); the user's call whether it goes. (SpeedTest still opens it through a
+    menu row that hasn't existed since the six-row menu.)
+  - Figma's search for the whole page (A59, Habits then Tasks) is 5.5.3; until then the search finds habits on Habits
+    and tasks on Tasks, as before. "Scrolled to Water" (a result scrolling to its card) comes with it.
+  - The Tasks tab keeps its own look (its coach mark, selecting several, its colours) until 5.5.4.
+  - What the squares mean opens unfolded until it has been folded once anywhere (the app's rule since 6 Oct); Figma
+    draws it folded at the end of the list.
+  - The Archived habits' cards and their "count for the days before" note (the old Progress page) aren't here: Figma
+    has only the Archived row.

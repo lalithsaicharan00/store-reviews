@@ -165,14 +165,16 @@ class ScreensTest {
         assertTrue("Water is paused today", AppGraph.store.isPaused(water, AppGraph.store.today()))
     }
 
-    @Test fun theHabitsListArchivesSeveral() {
+    /** Habits & Tasks (5.5.1): a card's ⋮ archives it, with no question (A54); nothing selects several (A55). */
+    @Test fun aHabitsCardArchivesFromItsMenu() {
         launch()
         menu("habits")
-        waitFor(hasTestTag("habits-row-Water"), "Water in Habits")
-        compose.onNodeWithTag("habits-row-Water", useUnmergedTree = true).performTouchInput { longClick() }
-        waitFor(hasText("1 selected"), "one selected")
-        tapTag("habits-archive")
-        waitFor(hasText("Archived"), "the Archived group")
+        tapTag("habits-row-more-Water")
+        // The menu is a popup: wait for it where it is, never scrolling the list away from it.
+        compose.waitUntil(15_000) { has(hasTestTag("habits-menu-archive")) }
+        compose.onAllNodes(hasTestTag("habits-menu-archive"), useUnmergedTree = true)[0].performClick()
+        waitFor(hasText("Water archived"), "the snackbar")
+        waitFor(hasTestTag("habits-archived"), "the Archived row")
         assertTrue("Water archived", AppGraph.store.habits.first { it.name == "Water" }.archived)
     }
 

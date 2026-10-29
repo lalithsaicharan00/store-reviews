@@ -331,7 +331,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                             }
                         }
                         TodaySnackbars(snackbar)
-                        if (!isToday) BackToToday { shownDay = null }
+                        if (!isToday) BackToButton("Back to today", "back-to-today") { shownDay = null }
                         DayBar(store, day, today, onPrevious = { shownDay = (day - 1).takeIf { it != today } }, onNext = { shownDay = (day + 1).takeIf { it != today } }, onPick = { calendar = true })
                     }
                 }
@@ -381,20 +381,20 @@ private fun BottomFade(modifier: Modifier) {
 private fun TodaySnackbars(snackbar: SnackbarHostState) = AppSnackbarHost(snackbar, Modifier.padding(horizontal = 4.dp))
 
 /**
- * "Back to today" (Figma's Back to today): Material's Small Tonal button with calendar_today, on Surface container
- * lowest with Elevation Level 3, 16 above the day bar.
+ * "Back to today" (Figma's Back to today), and Habits & Tasks' "Back to this week" (5.5.1): Material's Small Tonal
+ * button with calendar_today, on Surface container lowest with Elevation Level 3, 16 above what it floats over.
  */
 @Composable
-private fun BackToToday(onClick: () -> Unit) {
+internal fun BackToButton(label: String, tag: String, onClick: () -> Unit) {
     val s = MaterialTheme.colorScheme
     val h = ButtonDefaults.MinHeight
-    FilledTonalButton(onClick, ButtonDefaults.shapesFor(h), Modifier.padding(bottom = 16.dp).heightIn(min = h).semantics { testTag = "back-to-today" },
+    FilledTonalButton(onClick, ButtonDefaults.shapesFor(h), Modifier.padding(bottom = 16.dp).heightIn(min = h).semantics { testTag = tag },
         colors = ButtonDefaults.filledTonalButtonColors(containerColor = s.surfaceContainerLowest, contentColor = s.onSurface),
         elevation = ButtonDefaults.filledTonalButtonElevation(defaultElevation = 6.dp, pressedElevation = 6.dp),
         contentPadding = ButtonDefaults.contentPaddingFor(h, hasStartIcon = true)) {
         Icon(Symbols.CalendarToday, null, Modifier.size(ButtonDefaults.iconSizeFor(h)))
         Spacer(Modifier.width(8.dp))
-        Text("Back to today", style = AppType.labelLarge, maxLines = 1)
+        Text(label, style = AppType.labelLarge, maxLines = 1)
     }
 }
 

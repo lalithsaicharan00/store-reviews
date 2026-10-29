@@ -105,35 +105,9 @@ fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: ()
     val range = ProgressRangeMemory.range
     /** A day in the period on screen; null means the current one, so the page always opens on it. */
     var anchor by rememberSaveable { mutableStateOf<Int?>(null) }
-    // A new day makes new numbers ("This week" kept from before the day's start would be last week). Wakes once a day,
-    // at its start, never on a ticker (S3).
-    var today by remember { mutableIntStateOf(store.today()) }
-    LaunchedEffect(store) {
-        while (true) {
-            val t = store.today()
-            today = t
-            delay(maxOf(1_000L, store.rules.dayStart(t + 1) - store.clock()))
-        }
-    }
-    val groupId = prefs.progressGroup
-    val key = SnapshotKey(range, anchor, store.dataVersion, groupId, today, store.weekStart, System.identityHashCode(store))
-    // The page's numbers: kept ones at once; otherwise the period and its first cards now (one frame's worth) and the
-    // rest a few per frame, so even a year of many habits never holds a frame (S5, S16).
-    val builder = remember(key) { if (ProgressCache.peek(key) != null) null else store.progressBuilder(range, anchor ?: today, today, groupId) }
-    var snap by remember(key) { mutableStateOf(ProgressCache.peek(key) ?: builder!!.also { it.step(FIRST_BUDGET) }.snapshot()) }
-    LaunchedEffect(key) {
-        val b = builder ?: return@LaunchedEffect
-        while (!b.isDone) {
-            withFrameNanos { }
-            b.step(FRAME_BUDGET)
-            snap = b.snapshot()
-        }
-        ProgressCache.put(key, snap)
-    }
-    val move: (Int) -> Unit = { step ->
-        val day = if (step < 0) snap.first - 1 else snap.last + 1
-        anchor = if (today in store.rules.period(range.kind, day)) null else day
-    }
+    val today = rememberToday(store)
+    val snap = rememberProgressSnapshot(store, range, anchor, today, prefs.progressGroup)
+    val move: (Int) -> Unit = { step -> anchor = movedAnchor(store, snap, step) }
 
     Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "progress-screen" }) {
         AppTopBar(
@@ -197,6 +171,51 @@ fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: ()
             }
         }
     }
+}
+
+/**
+ * Today's day number, moved on at each new day's start (a new day makes new numbers: "This week" kept from before the
+ * day's start would be last week). Wakes once a day, never on a ticker (S3).
+ */
+@Composable
+internal fun rememberToday(store: HabitStore): Int {
+    var today by remember { mutableIntStateOf(store.today()) }
+    LaunchedEffect(store) {
+        while (true) {
+            val t = store.today()
+            today = t
+            delay(maxOf(1_000L, store.rules.dayStart(t + 1) - store.clock()))
+        }
+    }
+    return today
+}
+
+/**
+ * The period's numbers for [range] around [anchor] (null: the current period): kept ones at once; otherwise the period
+ * and its first cards now (one frame's worth) and the rest a few per frame, so even a year of many habits never holds a
+ * frame (S5, S16). Shared by Progress and Habits & Tasks.
+ */
+@Composable
+internal fun rememberProgressSnapshot(store: HabitStore, range: ProgressRange, anchor: Int?, today: Int, groupId: String): ProgressSnapshot {
+    val key = SnapshotKey(range, anchor, store.dataVersion, groupId, today, store.weekStart, System.identityHashCode(store))
+    val builder = remember(key) { if (ProgressCache.peek(key) != null) null else store.progressBuilder(range, anchor ?: today, today, groupId) }
+    var snap by remember(key) { mutableStateOf(ProgressCache.peek(key) ?: builder!!.also { it.step(FIRST_BUDGET) }.snapshot()) }
+    LaunchedEffect(key) {
+        val b = builder ?: return@LaunchedEffect
+        while (!b.isDone) {
+            withFrameNanos { }
+            b.step(FRAME_BUDGET)
+            snap = b.snapshot()
+        }
+        ProgressCache.put(key, snap)
+    }
+    return snap
+}
+
+/** The anchor one period before ([step] < 0) or after [snap]'s: null when that's the current one. */
+internal fun movedAnchor(store: HabitStore, snap: ProgressSnapshot, step: Int): Int? {
+    val day = if (step < 0) snap.first - 1 else snap.last + 1
+    return if (snap.today in store.rules.period(snap.range.kind, day)) null else day
 }
 
 /** The first frame's share of the cards' work, and each later frame's (a Year card is ~23 ms: one a frame). */
@@ -302,7 +321,7 @@ private fun GroupChips(groups: List<HabitGroup>, selected: String?, onPick: (Str
     }
 }
 
-private fun tagName(name: String): String = name.trim().lowercase().replace(Regex("\\s+"), "-")
+internal fun tagName(name: String): String = name.trim().lowercase().replace(Regex("\\s+"), "-")
 
 private val headlineStyle = AppType.titleLargeEmphasized
 
@@ -349,7 +368,7 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
  * run's own minutes (S3, S4).
  */
 @Composable
-private fun QuitRunClock(start: Long, clock: () -> Long) {
+internal fun QuitRunClock(start: Long, clock: () -> Long) {
     val c = appColors
     var now by remember(start) { mutableLongStateOf(clock()) }
     LaunchedEffect(start) {

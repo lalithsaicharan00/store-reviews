@@ -98,6 +98,8 @@ import com.oftenenough.app.data.taskRhythm
 import com.oftenenough.app.data.taskWhen
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.HabitIcon
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
@@ -105,9 +107,8 @@ import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-/** Where the Tasks page goes. [openMenu] is null where the menu is a sidebar beside the page. */
+/** Where the Tasks tab goes. */
 interface TasksNav {
-    val openMenu: (() -> Unit)?
     fun open(task: Habit)
     fun edit(task: Habit)
     fun duplicate(task: Habit)
@@ -130,11 +131,14 @@ private enum class RowKind { ONE_TIME, DONE, NO_DATE, REPEATING }
  * Archived row. **Repeating** lists every repeating task once, by how often it comes, with its next day and when it was
  * last done. Ticking happens on Today only. Each row's ⋮ edits, moves, duplicates, skips (repeating), archives or
  * deletes; a long press selects several (or drags a row within its day); every change says so with Undo, and a delete
- * waits for its Undo to go (D6). Completed tasks and Archived tasks are in the top bar's ⋮.
+ * waits for its Undo to go (D6). Completed and Archived are rows at the end of One-time.
+ *
+ * It is the Tasks tab of Habits & Tasks (5.5.1): the page's top bar and tabs sit over it, and its search ([searchOpen],
+ * closed through [onSearchClosed]) opens from the page's search. Its own look is 5.5.4's.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun TasksPage(store: HabitStore, nav: TasksNav) {
+fun TasksPage(store: HabitStore, nav: TasksNav, searchOpen: Boolean, onSearchClosed: () -> Unit) {
     val c = appColors
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
@@ -142,11 +146,10 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     var tab by rememberSaveable { mutableIntStateOf(0) }
     var selecting by rememberSaveable { mutableStateOf(false) }
     var chosen by rememberSaveable { mutableStateOf(emptySet<String>()) }
-    var searching by rememberSaveable { mutableStateOf(false) }
+    val searching = searchOpen
     var query by rememberSaveable { mutableStateOf("") }
     var hidden by remember { mutableStateOf(emptySet<String>()) }
     var coachSeen by remember { mutableStateOf(store.setting(TASKS_COACH_SEEN) != null) }
-    var topMenu by remember { mutableStateOf(false) }
     var deleting by remember { mutableStateOf<List<Habit>>(emptyList()) }
     var picking by remember { mutableStateOf<List<Habit>>(emptyList()) }
     var barMove by remember { mutableStateOf(false) }
@@ -216,7 +219,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     fun toggle(t: Habit) { chosen = if (t.id in chosen) chosen - t.id else chosen + t.id }
     fun seeCoach() { if (!coachSeen) { coachSeen = true; store.saveAppSetting(TASKS_COACH_SEEN, "1") } }
 
-    BackHandler(enabled = selecting || searching) { if (selecting) endSelection() else { searching = false; query = "" } }
+    BackHandler(enabled = selecting || searching) { if (selecting) endSelection() else { onSearchClosed(); query = "" } }
 
     val rowMenu: @Composable (Habit, RowKind, () -> Unit) -> Unit = { t, kind, dismiss ->
         TaskMenuItems(t, kind, today, dismiss, onEdit = { nav.edit(t) }, onDuplicate = { nav.duplicate(t) }, onMove = { day -> move(listOf(t), day) },
@@ -229,7 +232,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     val barColor = if (selecting) c.tonal else lerp(c.screen, scrolledTopBarColor, scroll.state.overlappedFraction.coerceIn(0f, 1f))
     Box(Modifier.fillMaxSize().background(c.screen)) {
         Column(Modifier.fillMaxSize()) {
-            if (searching) SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search tasks",
+            if (searching) SearchHeader(query, { query = it.take(40) }, onBack = { onSearchClosed(); query = "" }, "Search tasks",
                 fieldTag = "habits-search-field", backTag = "habits-search-back", clearTag = "habits-search-clear")
             else {
                 if (selecting) AppTopBar(
@@ -239,22 +242,6 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
                         val ids = (if (tab == 0) oneTime else repeating).map { it.id }.toSet()
                         val everything = ids.isNotEmpty() && chosen.containsAll(ids)
                         AppButton(if (everything) "Deselect all" else "Select all", { chosen = if (everything) emptySet() else ids }, Modifier.padding(end = 4.dp).semantics { testTag = "tasks-select-all" }, style = ButtonStyle.Text)
-                    },
-                    containerColor = barColor,
-                ) else AppTopBar(
-                    "Tasks",
-                    navigationIcon = { nav.openMenu?.let { o -> IconButton(o, Modifier.semantics { testTag = "tasks-menu" }) { Icon(Symbols.Menu, "Menu") } } },
-                    actions = {
-                        IconButton({ searching = true }, Modifier.semantics { testTag = "tasks-search" }) { Icon(Symbols.Search, "Search tasks") }
-                        IconButton({ nav.newTask() }, Modifier.semantics { testTag = "tasks-add" }) { Icon(Symbols.Add, "New task") }
-                        Box {
-                            IconButton({ topMenu = true }, Modifier.semantics { testTag = "tasks-more" }) { Icon(Symbols.MoreVert, "More") }
-                            AppMenu(topMenu, { topMenu = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                                AppMenuItem("Select", { topMenu = false; seeCoach(); selecting = true; chosen = emptySet() }, icon = Symbols.CheckBox, tag = "tasks-select")
-                                AppMenuItem("Completed tasks", { topMenu = false; nav.completed() }, icon = Symbols.CheckCircle, tag = "tasks-completed")
-                                AppMenuItem("Archived tasks", { topMenu = false; nav.archived() }, icon = Symbols.Archive, tag = "tasks-archived-menu")
-                            }
-                        }
                     },
                     containerColor = barColor,
                 )
@@ -306,8 +293,15 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
                                     }
                                 }
                             }
-                            if (tab == 0 && archived.isNotEmpty()) item(key = "archived") {
+                            // Completed and Archived, rows at the end of One-time (they were in the old top bar's ⋮).
+                            if (tab == 0) item(key = "completed") {
                                 Spacer(Modifier.height(22.dp))
+                                AppListItem("Completed", 0, 1, leading = { Icon(Symbols.CheckCircle, null) }, trailing = { ListChevron() },
+                                    onClick = { nav.completed() }, enabled = !selecting, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                                    tag = "tasks-completed")
+                            }
+                            if (tab == 0 && archived.isNotEmpty()) item(key = "archived") {
+                                Spacer(Modifier.height(12.dp))
                                 Box(Modifier.semantics { testTag = "tasks-archived" }) { ArchivedRow(archived.size, enabled = !selecting, noun = "task") { nav.archived() } }
                             }
                             item(key = "end") { Spacer(Modifier.height(if (selecting) 120.dp else 88.dp)) }
