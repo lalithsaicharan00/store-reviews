@@ -127,7 +127,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.4.1 | Routine player · Routine player | 906:89513 | ☑ |
 | 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☑ |
 | 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☑ |
-| 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☐ |
+| 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☑ |
 | 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☐ |
 | 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☐ |
 | 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☐ |
@@ -1849,3 +1849,28 @@ What each atom changed, newest last.
     draws it folded at the end of the list.
   - The Archived habits' cards and their "count for the days before" note (the old Progress page) aren't here: Figma
     has only the Archived row.
+  - **Built:** run 40808120294 (Android #138, commit 91f8f75) passed: assembleDebug, unit tests and lint.
+- **5.5.2 Habits & Tasks · Archived habits page (29 Oct).** Figma: Archived habits page (988:7736), Screen Archived ·
+  Menu open · Restored · Nothing archived. From Habits › Archived: the Top app bar (← and "Archived habits") on Surface
+  container; the content 16 at the sides, 8 above, 40 under; the intro ("Archived habits keep everything they had.
+  They're off Today and send no reminders.") in Body Large On surface variant, 16 in; 24 under it one rounded list,
+  newest first, of two-line List items 2 apart on Surface bright (the habit's icon, its name, "Archived 12 Oct", ⋮
+  with Restore and Delete, Delete in Error). A row opens its Habit details, read-only. Restore says so with Undo;
+  Delete asks first and waits for its Undo (D6). Nothing archived: the empty page, centred, no button. It is
+  `ArchivedHabitsScreen` (`habit/ArchivedHabits.kt`; Archived tasks, 5.5.5, is the same screen for tasks). HabitsPageTest
+  also takes Restore back with Undo. The app, the unit tests (55) and the instrumented tests' code build in the
+  session.
+  Fixed:
+  - The rows were the Habits page's old rows on the List item's own colour; now Surface bright, the name one line.
+  - A long press selected several, with a bar of Restore and Delete; gone (A55, on every list).
+  - The ⋮ had a divider and "Delete habit…"; now Restore and Delete, as Figma's Menu.
+  - Restore's snackbar offered View (back to Habits); now Undo, which archives it again, as Figma's Restored.
+  - The intro was Body Medium ("… keep all their history and send no reminders."); now Figma's words in Body Large,
+    16 in, 24 over the list. The bottom room was 96; now 40 above the gesture bar.
+  - Nothing archived was its own centred column ("Nothing archived", Title Large); now the Empty state (5.1.2) with
+    "No archived habits" and "When you archive a habit, it waits here with its history."
+  Noted, not changed:
+  - Figma's rows read "Archived 12 Oct · 48 days"; what the 48 days count isn't said (not how long ago: the dates and
+    numbers don't run that way), so the line stays "Archived 12 Oct" (or "Started over as …"). The user's call.
+  - On the free plan the intro adds "They don't count toward your five free habits."; Figma draws Plus's page.
+  - Archived tasks keeps its own words until 5.5.5; it lost selecting several with this page.

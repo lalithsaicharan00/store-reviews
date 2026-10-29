@@ -201,6 +201,9 @@ class HabitsPageTest {
         waitFor(hasText("Gym restored"), "the snackbar")
         assertFalse(habit("Gym").archived)
         waitGone(hasTestTag("habits-row-Gym"), "Gym leaving the page")
+        // Undo archives it again (Figma's Restored).
+        tapText("Undo")
+        waitUntil("Gym archived again") { habit("Gym").archived }
     }
 
     @Test fun onTheFreePlanPlusOpensAddASixthHabitFirst() {
