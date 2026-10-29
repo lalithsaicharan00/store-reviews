@@ -11,9 +11,7 @@ import com.oftenenough.app.ui.theme.Symbols
 import androidx.compose.foundation.layout.WindowInsets
 import com.oftenenough.app.ui.components.NavigationIcon
 import com.oftenenough.app.ui.components.AppTopBar
-import androidx.compose.foundation.layout.size
 import androidx.compose.ui.semantics.heading
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.border
 import com.oftenenough.app.ui.theme.AppType
 
@@ -33,9 +31,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.components.segmentShape
-import com.oftenenough.app.ui.theme.appColors
+import androidx.compose.material3.MaterialTheme
 
 /** What the person wants to make (the iPhone's `ItemType`): the form each choice opens. */
 enum class ItemType(val title: String, val summary: String, val example: String, val namePlaceholder: String) {
@@ -73,36 +70,46 @@ fun icon(type: ItemType): ImageVector = when (type) {
 }
 
 /**
- * A choice card (Figma 1–3, 6.3): the List item atom (2.4) with its icon in the circle, the name, one line, an example
- * tag (Show example), ›. [outlined]: the one chosen now (Edit's "Current type").
+ * A choice (Figma's Create new pages): a two-line List item on Surface bright, its icon in the avatar (Surface container
+ * highest), the name in Title Medium, one line in Body Medium On surface variant, an example tag (Show example), ›.
+ * [outlined]: the one chosen now (Edit's "Current type").
  */
 @Composable
 fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?, index: Int, count: Int, tag: String, outlined: Boolean = false, onClick: () -> Unit) =
     AppListItem(
-        title, index, count, if (outlined) Modifier.border(2.dp, appColors.ink, segmentShape(index, count)) else Modifier, line,
+        title, index, count, if (outlined) Modifier.border(2.dp, MaterialTheme.colorScheme.onSurface, segmentShape(index, count)) else Modifier, line,
         leading = { ListAvatar(icon) }, trailing = { ListChevron() }, onClick = onClick, tag = tag,
-        below = example?.let { { ListExample(it) } },
+        below = example?.let { { ListExample(it) } }, containerColor = MaterialTheme.colorScheme.surfaceBright,
     )
 
-/** A choice page (Figma 1, 2, 3): ✕ or ← and no title; the question (Headline Medium Emphasized) is its only heading. */
+/**
+ * A choice page (Figma's What do you want to do?): on Surface container, the Top app bar with ✕ or ← and no title; then
+ * the content, 16 at the sides and 24 under, 24 apart: the question in Headline Small Emphasized On surface, its only
+ * heading, over the choices, 2 apart.
+ */
 @Composable
 fun ChoicePage(question: String, close: Boolean, onBack: () -> Unit, content: @Composable () -> Unit) {
-    Column(Modifier.fillMaxSize().background(appColors.screen).statusBarsPadding().navigationBarsPadding()) {
+    val s = MaterialTheme.colorScheme
+    Column(Modifier.fillMaxSize().background(s.surfaceContainer).statusBarsPadding().navigationBarsPadding()) {
         AppTopBar(null, navigationIcon = {
             if (close) NavigationIcon(Symbols.Close, "Close", onBack, Modifier.semantics { testTag = "page-back" })
             else NavigationIcon(Symbols.ArrowBack, "Back", onBack, Modifier.semantics { testTag = "page-back" })
         }, windowInsets = WindowInsets(0))
-        Column(Modifier.verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            Text(question, Modifier.padding(horizontal = 8.dp).widthIn(max = 236.dp).semantics { heading() }, style = AppType.headlineMediumEmphasized, color = appColors.ink)
+        Column(Modifier.verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Text(question, Modifier.semantics { heading() }, style = AppType.headlineSmallEmphasized, color = s.onSurface)
             Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) { content() }
         }
     }
 }
 
-/** New (Figma 1): What do you want to do? */
+/**
+ * 5.7.1, **What do you want to do?** (Figma 1061:2016; Components — Atoms Build Plan): New's first page, from every +.
+ * The choice page with ✕: Build or maintain (trending_up, "A habit you want to start or keep doing."), Quit or cut down
+ * (trending_down, "A habit you want to stop or do less.") and Add a task (event_available, "Something to get done, once
+ * or on repeat."), each opening its next page.
+ */
 @Composable
-fun NewChoices(store: HabitStore, onClose: () -> Unit, onBuild: () -> Unit, onQuit: () -> Unit, onTask: () -> Unit) {
-    @Suppress("UNUSED_VARIABLE") val unused = store
+fun NewChoices(onClose: () -> Unit, onBuild: () -> Unit, onQuit: () -> Unit, onTask: () -> Unit) {
     ChoicePage("What do you want to do?", close = true, onBack = onClose) {
         ChoiceCard(Symbols.TrendingUp, "Build or maintain", "A habit you want to start or keep doing.", null, 0, 3, "new-build", onClick = onBuild)
         ChoiceCard(Symbols.TrendingDown, "Quit or cut down", "A habit you want to stop or do less.", null, 1, 3, "new-quit", onClick = onQuit)

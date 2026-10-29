@@ -145,7 +145,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.6.4 | Details pages · Notes search page | 1053:9079 | ☑ |
 | 5.6.5 | Details pages · Task details page | 1136:9271 | ☑ |
 | 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☑ |
-| 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☐ |
+| 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☑ |
 | 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☐ |
 | 5.7.3 | Create new · Create new form | 1065:2597 | ☐ |
 | 5.7.4 | Create new · Icon picker | 1074:932 | ☐ |
@@ -2222,3 +2222,20 @@ What each atom changed, newest last.
     track) are 1, 3, 7, 10, 14, 30, 45, 60, 90, 120, 180, 270, 365, 500, 730 days, then every year, with no clean days
     in total; the page says 3, 7, 14, 30, 60, 90, 180 and 365 clean in a row, and 10 … 1,000 clean days in total. A
     rule that changes numbers people see is the user's decision (T21).
+
+- **5.7.1 Create new · What do you want to do? (29 Oct).** Figma: What do you want to do? (1061:2016). New's first page,
+  from every +. On Surface container: the Top app bar with ✕ and no title; the content 16 at the sides, 24 under, 24
+  apart: "What do you want to do?" in Headline Small Emphasized On surface, then one rounded list of two-line List
+  items 2 apart on Surface bright (the icon in the avatar on Surface container highest, the name in Title Medium, the
+  line in Body Medium On surface variant, ›): Build or maintain (trending_up), Quit or cut down (trending_down), Add a
+  task (event_available). It is `NewChoices` on `ChoicePage` (`newhabit/Choices.kt`), which the other choice pages
+  share. The app, the unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The question was Headline Medium Emphasized, 8 in and at most 236 wide, 8 under the bar; now Headline Small
+    Emphasized across the page, straight under the bar, as Figma.
+  - The page and its rows took the app's old colours; now Surface container and Surface bright.
+  - `NewChoices` lost a parameter it never used.
+  - Tests: ScreensTest checks the three choices' lines.
+  Noted, not changed:
+  - Edit still has a Type row opening "Change the type", which A68 removed; it is part of the form, so it goes with
+    5.7.3.

@@ -123,7 +123,7 @@ fun NewHabitFlow(
     when {
         step == "choose" -> {
             BackHandler(onBack = onClose)
-            NewChoices(store, onClose, onBuild = { step = "build" }, onQuit = { step = "quit" }, onTask = { step = "form:${ItemType.TASK.name}" })
+            NewChoices(onClose, onBuild = { step = "build" }, onQuit = { step = "quit" }, onTask = { step = "form:${ItemType.TASK.name}" })
         }
         step == "build" -> {
             BackHandler { step = "choose" }

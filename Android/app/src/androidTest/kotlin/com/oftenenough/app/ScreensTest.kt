@@ -131,6 +131,10 @@ class ScreensTest {
         launch()
         onMain { AppGraph.widgetRoute = "new|-1" }
         waitFor(hasText("What do you want to do?"), "New")
+        // Its three choices, each with its line (5.7.1, Figma 1061:2016).
+        waitFor(hasText("A habit you want to start or keep doing."), "Build or maintain")
+        waitFor(hasText("A habit you want to stop or do less."), "Quit or cut down")
+        waitFor(hasText("Something to get done, once or on repeat."), "Add a task")
     }
 
     @Test fun progressShowsTheWeek() {
