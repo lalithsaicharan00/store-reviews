@@ -209,8 +209,8 @@ search of every page's text).
 Settled by the user the same day (A78): "· 48 days" removed from Figma; Day details keeps ✕ (added to Figma); notes
 have no date chip (removed from Figma). Start on a finished Morning: settled (A79), Start removed from those frames and the "Start when everything's already
 done" flow deleted from Figma. Today's "Deleted on another device" notice
-goes only with the sync brake it belongs to (D17's build work 148.7), not on its own: without it held deletes would wait
-silently.
+went with the sync brake it belonged to (29 Oct 2026, the user's go-ahead: Drive sync's brake removed from the core and
+Android, Rulebook D17).
 
 ## Log
 

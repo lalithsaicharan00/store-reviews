@@ -62,7 +62,7 @@ object TodayNotices {
     private val PREFS: String get() = if (AppGraph.isTest) "uitest-today-notices" else "today-notices"
     private const val HIDDEN_MS = 7 * 24 * 3_600_000L
 
-    /** Test launches: the notice to show whatever the phone's state ("full", "off", "held", "removed", "missed", "notifications", "pending"). */
+    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "notifications", "pending"). */
     var forced: String? = null
 
     /** A notice doing its own work stays on Today until its card folds away, even once the state it reported is gone. */
@@ -91,8 +91,6 @@ object TodayNotices {
         val forced = forced
         val status = AppGraph.backup.status
         val state = status?.state
-        if (state == DriveState.HELD || forced == "held") list += TodayNotice("held", Symbols.DeleteSweep, "Deleted on another device",
-            "Nothing has changed here yet. Check them before anything is removed from this phone.", "Later", "Review") { nav.backup() }
         // A39: the Drive copy is gone (the person cleared the folder, say). Nothing has gone up since, and nothing
         // does until they choose Back up again, which sends every file. `holding` keeps the card here while it works.
         if (state == DriveState.REMOVED || holding == "removed" || forced == "removed") list += TodayNotice(

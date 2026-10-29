@@ -75,11 +75,7 @@ class RealRounds {
 
     private suspend fun settle(devices: List<Device>) {
         repeat(10) {
-            for (d in devices) {
-                val s = d.syncNow()
-                if (s.state == DriveState.HELD) d.sync.applyHeldDeletes()
-                if (s.state == DriveState.DELETES_WAITING) d.sync.sendWaitingDeletes()
-            }
+            for (d in devices) d.syncNow()
             if (devices.all { it.repo.cloud.counts().waitingOps == 0 }) {
                 devices.forEach { it.syncNow() }
                 return
@@ -163,20 +159,17 @@ class RealRounds {
         settle(devices)
         same(devices, "scenario 5")
 
-        println("SCENARIO 6: logs in two years, and many deletes at once (the brake)")
+        println("SCENARIO 6: logs in two years, and many deletes at once (no brake since 20 Oct 2026, D17)")
         phone.repo.addEntry(entry("old", "water", day = "2025-12-31"))
         repeat(40) { tablet.repo.addEntry(entry("bulk$it", "water")) }
         settle(devices)
         repeat(40) { tablet.repo.removeEntry("bulk$it", System.currentTimeMillis()) }
-        check(tablet.syncNow().state == DriveState.DELETES_WAITING, "40 deletes at once wait on the tablet")
-        tablet.sync.sendWaitingDeletes()
-        val held = phone.syncNow()
-        check(held.state == DriveState.HELD && held.heldDeletes == 40, "the phone holds them (${held.state}, ${held.heldDeletes})")
-        phone.sync.applyHeldDeletes()
+        check(tablet.syncNow().state == DriveState.SYNCED, "40 deletes at once go from the tablet")
+        check(phone.syncNow().state == DriveState.SYNCED, "and are applied on the phone")
         settle(devices)
         check(devices.all { it.logs("water") == 39 }, "38 + the old one, the 40 deleted")
         same(devices, "scenario 6")
-        RealDrive.show(admin, "after two years and the brake")
+        RealDrive.show(admin, "after two years and many deletes")
 
         println("SCENARIO 7: six devices on one file at once")
         val many = devices + List(3) { Device("Extra $it").also { it.connect() } }

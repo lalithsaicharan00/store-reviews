@@ -6,8 +6,9 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonPrimitive
 
 /**
- * The database's side of Google Drive sync ([DriveSync]): the same outbox, merge rules and brake as iCloud
- * ([CloudStore]); only what's carried differs. Each call is one transaction, off the main thread.
+ * The database's side of Google Drive sync ([DriveSync]): the same outbox and merge rules as iCloud ([CloudStore]),
+ * without its mass-change brake (removed 20 Oct 2026, D17); only what's carried differs. Each call is one
+ * transaction, off the main thread.
  *
  * Drive holds one file per year of logs and one "base" file for everything else ([chainOf]); each is a version chain
  * (DriveSync). Here: what a file of this device's data holds ([build]), merging a downloaded one ([merge]), and
@@ -42,18 +43,14 @@ class DriveStore internal constructor(private val dao: HabitDao, private val clo
      * Merges one downloaded file, field by field, in one transaction ([SyncRules.mergeRecord], exactly as iCloud's
      * fetched records). Records already here unchanged are skipped without touching the database.
      *
-     * The brake (Architecture 11 §13.2): if merging would delete more than [deleteAllowance] rows that are live here,
-     * nothing is merged ([Merged.held]). A record this version can't accept is counted, never applied half-way: the file
-     * is then blocked from being written by this version (DriveSync), so a newer app's data is never dropped.
+     * A record this version can't accept is counted, never applied half-way: the file is then blocked from being written
+     * by this version (DriveSync), so a newer app's data is never dropped.
      */
-    internal suspend fun merge(chain: String, rows: List<SyncRows.Row>, deleteAllowance: Int): Merged = synced { sync ->
+    internal suspend fun merge(chain: String, rows: List<SyncRows.Row>): Merged = synced { sync ->
         val here = records(sync, chain)
         val incoming = rows.filter { here[it.table to it.row] != it.record }
         val readable = incoming.filter { SyncRules.recordProblem(it.table, it.row, it.record) == null }
         val unreadable = incoming.size - readable.size
-        var deletes = 0
-        for (row in readable) if (sync.wouldDelete(row.table, row.row, row.record)) deletes++
-        if (deletes > deleteAllowance) return@synced Merged(0, deletes, unreadable, held = true, moved = 0, dirty = emptySet())
         var changed = 0
         for (row in readable) if (sync.receiveRecord(row.table, row.row, row.record, null)) changed++
         // A record this device files elsewhere (a log it can build that another device couldn't yet): the file this
@@ -71,7 +68,7 @@ class DriveStore internal constructor(private val dao: HabitDao, private val clo
                 dirty += actual
             }
         }
-        Merged(changed, deletes, unreadable, held = false, moved = moved, dirty = dirty)
+        Merged(changed, unreadable, moved = moved, dirty = dirty)
     }
 
     /** A saved file was confirmed: the changes it contained leave the outbox. Returns how many changes still wait. */
@@ -123,7 +120,7 @@ class DriveStore internal constructor(private val dao: HabitDao, private val clo
 
     internal class Built(val rows: List<SyncRows.Row>, val upTo: Long, val live: Int, val habits: Int)
 
-    internal class Merged(val changed: Int, val deleted: Int, val unreadable: Int, val held: Boolean, val moved: Int, val dirty: Set<String>)
+    internal class Merged(val changed: Int, val unreadable: Int, val moved: Int, val dirty: Set<String>)
 
     companion object {
         /** The file for everything that isn't a log of some year. */

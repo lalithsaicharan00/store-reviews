@@ -79,11 +79,7 @@ class DriveSyncTest {
     /** Everyone syncs until nothing waits anywhere, then once more so the last save reaches everyone. */
     private fun settle(devices: List<Device>) {
         repeat(30) {
-            devices.forEach { d ->
-                val status = d.syncNow()
-                if (status.state == DriveState.HELD) runBlocking { d.sync.applyHeldDeletes() }
-                if (status.state == DriveState.DELETES_WAITING) runBlocking { d.sync.sendWaitingDeletes() }
-            }
+            devices.forEach { it.syncNow() }
             if (devices.all { it.waiting() == 0 }) {
                 devices.forEach { it.syncNow() }
                 return
@@ -343,27 +339,20 @@ class DriveSyncTest {
         assertEquals(1, status.waiting, "the new log waits, kept")
     }
 
-    @Test fun incomingDeletesPastTheBrakeWaitForThePerson() = runBlocking<Unit> {
+    /** No brake (D17, removed 20 Oct 2026): many deletes at once go both ways, as any change does. */
+    @Test fun manyDeletesAtOnceGoStraightThrough() = runBlocking<Unit> {
         val (phone, tablet) = devices(2)
         phone.repo.saveHabit(habit("water"), emptyList(), emptyList(), now())
         repeat(40) { phone.repo.addEntry(entry("e$it", "water", now())) }
         settle(listOf(phone, tablet))
         clockNow += 1_000
         repeat(30) { phone.repo.removeEntry("e$it", now()) }
-        assertEquals(DriveState.DELETES_WAITING, phone.syncNow().state, "30 of 41 at once: the phone asks first")
-        runBlocking { phone.sync.sendWaitingDeletes() }
+        assertEquals(DriveState.SYNCED, phone.syncNow().state, "30 of 41 at once: sent without asking again")
         assertEquals(0, phone.waiting())
-        val held = tablet.syncNow()
-        assertEquals(DriveState.HELD, held.state)
-        assertEquals(30, held.heldDeletes)
-        assertEquals(40, liveLogs(tablet, "water").size, "nothing applied while held")
-        tablet.repo.addEntry(entry("t", "water", now()))
-        assertEquals(DriveState.HELD, tablet.syncNow().state, "and nothing sent")
-        val applied = runBlocking { tablet.sync.applyHeldDeletes() }
-        assertEquals(DriveState.SYNCED, applied.state)
-        assertEquals(11, liveLogs(tablet, "water").size)
+        assertEquals(DriveState.SYNCED, tablet.syncNow().state)
+        assertEquals(10, liveLogs(tablet, "water").size, "applied here")
         settle(listOf(phone, tablet))
-        assertSame(listOf(phone, tablet), "after the brake")
+        assertSame(listOf(phone, tablet), "after many deletes")
     }
 
     @Test fun aFewDeletesGoStraightThrough() = runBlocking<Unit> {

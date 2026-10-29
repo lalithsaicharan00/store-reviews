@@ -18,9 +18,11 @@ import kotlinx.serialization.json.longOrNull
 
 /**
  * Sync through the person's own Google Drive (Android/Docs decisions A4, A5, A9; Rulebook D16): download, merge,
- * upload, never replace. The same outbox, merge rules, brake and fresh-install rule as iCloud; only the carrier
- * differs. The app decides when it runs (on opening, a few seconds after changes, about once a minute on screen, in
- * the background): this has one [syncNow] and a [status], and no timers of its own.
+ * upload, never replace. The same outbox, merge rules and fresh-install rule as iCloud; only the carrier differs. No
+ * mass-change brake (removed 20 Oct 2026, D17): every delete in the app asks first, a missing record is never taken
+ * for a deleted one, a version never shrinks, and the dated versions and Restore cover a bug. The app decides when it
+ * runs (on opening, a few seconds after changes, about once a minute on screen, in the background): this has one
+ * [syncNow] and a [status], and no timers of its own.
  *
  * **On Drive** (the app's hidden folder): one file per year of logs and one "base" file for everything else, each a
  * **version chain**, and one small file per device ("Pixel 8 last synced…").
@@ -32,9 +34,8 @@ import kotlinx.serialization.json.longOrNull
  * Two devices starting the same file at once make two first versions: every device merges every newest version
  * ("heads"), saves after the longest, and names the others as taken in; those go once a few newer versions exist.
  *
- * **A round:** list the folder (one call) → download and merge each newest version not yet merged here, through the
- * brake → for each file this device has changes for, build it from this device's data and save it through the chain →
- * confirm: only then do the changes it contained leave the outbox (by outbox position) → check in → tidy old versions.
+ * **A round:** list the folder (one call) → download and merge each newest version not yet merged here → for each
+ * file this device has changes for, build it from this device's data and save it through the chain → confirm: only then do the changes it contained leave the outbox (by outbox position) → check in → tidy old versions.
  */
 class DriveSync(
     private val repo: HabitRepository,
@@ -103,20 +104,6 @@ class DriveSync(
         return try { syncNow() } finally { onSave = null }
     }
 
-    /** The brake (incoming): the person chose to apply the deletes Drive brought (Architecture 11 §13.2). */
-    @Throws(Exception::class)
-    suspend fun applyHeldDeletes(): DriveStatus {
-        store.setState(ALLOW_DELETES, "1")
-        return syncNow()
-    }
-
-    /** The brake (outgoing): the person said to send this device's deletes. */
-    @Throws(Exception::class)
-    suspend fun sendWaitingDeletes(): DriveStatus {
-        store.setState(DELETES_APPROVED, "1")
-        return syncNow()
-    }
-
     /** Where things stand, without asking Drive: the last round's state, what's waiting, and the person's devices. */
     @Throws(Exception::class)
     suspend fun status(): DriveStatus {
@@ -128,8 +115,6 @@ class DriveSync(
             waiting = counts.waitingOps,
             lastSynced = store.state(LAST_SYNCED)?.toLongOrNull(),
             lastSent = store.state(LAST_SENT)?.toLongOrNull(),
-            heldDeletes = store.state(HELD)?.toIntOrNull() ?: 0,
-            waitingDeletes = if (state == DriveState.DELETES_WAITING) counts.waitingDeletes else 0,
             devices = store.state(DEVICES)?.let(::decodeDevices) ?: emptyList(),
             problem = store.state(PROBLEM),
         )
@@ -139,40 +124,30 @@ class DriveSync(
 
     private class Gone : Exception("a file went while it was being read")
 
-    private class Round(val allowUpload: Boolean, val liveAtStart: Int, val allowDeletes: Boolean) {
-        var deleted = 0
-        var held = false
+    private class Round(val allowUpload: Boolean) {
         var sent = false
-        var outgoing = 0
         var blocked = false
         var problem: String? = null
     }
 
     private suspend fun round(allowUpload: Boolean): Pair<DriveState, String?> {
         if (cloud.account()?.startsWith(ACCOUNT_PREFIX) != true) return DriveState.OFF to null
-        // The brake is holding Drive's deletes: nothing else is applied or sent until the person says (D17).
-        if (store.state(HELD) != null && store.state(ALLOW_DELETES) != "1") return DriveState.HELD to null
+        forgetTheBrake()
         unblockAfterUpdate()
         repeat(MAX_RESTARTS) {
-            val round = Round(allowUpload, cloud.counts().liveRecords, store.state(ALLOW_DELETES) == "1")
+            val round = Round(allowUpload)
             try {
                 val listing = Listing(call { drive.list() })
                 if (backupRemoved(listing)) return DriveState.REMOVED to null
-                if (!pull(listing, round)) return DriveState.HELD to null
-                if (round.allowDeletes) {
-                    store.setState(ALLOW_DELETES, null)
-                    store.setState(HELD, null)
-                }
+                pull(listing, round)
                 store.setState(LAST_SYNCED, clock().toString())
                 if (allowUpload) {
                     push(listing, round)
-                    if (round.held) return DriveState.HELD to null
                     checkIn(listing, round)
                     cleanUp(listing)
                 }
                 rememberDevices(listing)
                 return when {
-                    round.outgoing > 0 -> DriveState.DELETES_WAITING
                     round.problem != null -> DriveState.PROBLEM
                     round.blocked -> DriveState.UPDATE_NEEDED
                     !allowUpload -> DriveState.PAUSED
@@ -186,6 +161,14 @@ class DriveSync(
     }
 
     /**
+     * What the removed brake (D17) left on a device that updated while it held deletes or waited to send them: gone, so
+     * the deletes go both ways as every other change does.
+     */
+    private suspend fun forgetTheBrake() {
+        for (key in LEFT_BY_THE_BRAKE) if (store.state(key) != null) store.setState(key, null)
+    }
+
+    /**
      * **A39: is the app's Drive copy gone?** A file this device has saved to or merged from before is no longer
      * there. With nothing saved yet there is nothing to miss: that is a first backup, not a deletion.
      */
@@ -196,8 +179,8 @@ class DriveSync(
         return known.any { it !in there }
     }
 
-    /** Downloads and merges every newest version this device hasn't merged. False when the brake holds one. */
-    private suspend fun pull(listing: Listing, round: Round): Boolean {
+    /** Downloads and merges every newest version this device hasn't merged. */
+    private suspend fun pull(listing: Listing, round: Round) {
         for (chain in listing.chains().sortedWith(CHAIN_ORDER)) {
             val seen = seen(chain)
             val merged = mutableSetOf<String>()
@@ -208,19 +191,18 @@ class DriveSync(
                     merged += head.next
                     continue
                 }
-                if (head.id !in seen && !absorb(listing, head, round)) return false
+                if (head.id !in seen) absorb(listing, head, round)
                 merged += head.id
             }
             store.setState(SEEN + chain, merged.joinToString(","))
         }
-        return true
     }
 
     /**
      * Downloads [version] and merges it. A damaged one (checksums don't match) is skipped for the newest readable
-     * version before it; one from a newer app blocks the file from being written here. False when the brake holds it.
+     * version before it; one from a newer app blocks the file from being written here.
      */
-    private suspend fun absorb(listing: Listing, version: Version, round: Round): Boolean {
+    private suspend fun absorb(listing: Listing, version: Version, round: Round) {
         var at: Version? = version
         while (at != null) {
             val current: Version = at
@@ -231,7 +213,7 @@ class DriveSync(
                 if (p.reason == BackupProblem.NEWER_VERSION) {
                     block(current.chain, "format")
                     round.blocked = true
-                    return true
+                    return
                 }
                 null
             }
@@ -239,7 +221,6 @@ class DriveSync(
             // Damaged: what it added is still with the device that saved it (not confirmed there), and comes again.
             at = predecessor(listing, current)
         }
-        return true
     }
 
     private suspend fun predecessor(listing: Listing, version: Version): Version? {
@@ -248,15 +229,8 @@ class DriveSync(
         return call { drive.get(version.prev) }?.let { Version(it) }?.takeIf { it.valid && it.chain == version.chain }
     }
 
-    private suspend fun merge(chain: String, rows: List<SyncRows.Row>, round: Round): Boolean {
-        val allowance = if (round.allowDeletes) Int.MAX_VALUE else CloudStore.incomingAllowance(round.liveAtStart, round.deleted)
-        val merged = store.merge(chain, rows, allowance)
-        if (merged.held) {
-            store.setState(HELD, merged.deleted.toString())
-            round.held = true
-            return false
-        }
-        round.deleted += merged.deleted
+    private suspend fun merge(chain: String, rows: List<SyncRows.Row>, round: Round) {
+        val merged = store.merge(chain, rows)
         val held = store.state(ROWS_MERGED + chain)?.toLongOrNull() ?: 0
         if (rows.size > held) store.setState(ROWS_MERGED + chain, rows.size.toString())
         if (merged.unreadable > 0) {
@@ -268,19 +242,12 @@ class DriveSync(
             store.setState(MOVED + chain, maxOf(before, merged.moved.toLong()).toString())
             merged.dirty.forEach { store.setState(DIRTY + it, "1") }
         }
-        return true
     }
 
     /** Saves each file this device has changes for, years first (a log moving out of base lands before base drops it). */
     private suspend fun push(listing: Listing, round: Round) {
         val chains = (store.waitingChains() + store.states(DIRTY).keys).filter(DriveStore::isChain).toSet().sortedWith(SAVE_ORDER)
         if (chains.isEmpty()) return
-        val counts = cloud.counts()
-        // The brake (outgoing): too many of this device's own deletes at once wait for the person (D17).
-        if (CloudStore.outgoingBrake(counts.waitingDeletes, counts.liveRecords) && store.state(DELETES_APPROVED) != "1") {
-            round.outgoing = counts.waitingDeletes
-            return
-        }
         var saved = 0
         onSave?.invoke(0, chains.size)
         for (chain in chains) {
@@ -288,14 +255,13 @@ class DriveSync(
                 round.blocked = true
                 continue
             }
-            if (!save(listing, chain, round)) return
+            save(listing, chain, round)
             onSave?.invoke(++saved, chains.size)
         }
-        if (cloud.counts().waitingDeletes == 0) store.setState(DELETES_APPROVED, null)
     }
 
-    /** Saves one file through its version chain. False when the brake holds a version met on the way. */
-    private suspend fun save(listing: Listing, chain: String, round: Round): Boolean {
+    /** Saves one file through its version chain. */
+    private suspend fun save(listing: Listing, chain: String, round: Round) {
         var target = listing.canonical(chain)
         repeat(MAX_CONFLICTS) {
             var seen = seen(chain)
@@ -309,7 +275,7 @@ class DriveSync(
             // The version saved after must be in this device's data first.
             val after = target
             if (after != null && after.id !in seen) {
-                if (!absorb(listing, after, round)) return false
+                absorb(listing, after, round)
                 seen = seen + after.id
             }
             val built = store.build(chain)
@@ -319,7 +285,7 @@ class DriveSync(
                 // Never shrink (D4): a version never holds fewer records than the largest one this device merged into
                 // this file (deletes are kept as deletes). Its data is missing something: save nothing, keep the larger.
                 round.problem = "shrink:$chain"
-                return true
+                return
             }
             val id = after?.next ?: freshId()
             val seq = (after?.seq ?: 0) + 1
@@ -341,7 +307,7 @@ class DriveSync(
                 if (e !is DriveError.Conflict && !(e is DriveError.Rejected && e.code == 400)) throw e
                 val winner = call { drive.get(id) }?.let { Version(it) }?.takeIf { it.valid && it.chain == chain } ?: throw Gone()
                 listing.add(winner.file)
-                if (!absorb(listing, winner, round)) return false
+                absorb(listing, winner, round)
                 store.setState(SEEN + chain, (seen - (after?.id ?: "") + winner.id).joinToString(","))
                 target = winner
                 return@repeat
@@ -352,7 +318,7 @@ class DriveSync(
                 // Drive stored something else (cut off, changed on the way): not confirmed. The changes stay queued
                 // and go in the next save, after this version.
                 round.problem = "checksum:$chain"
-                return true
+                return
             }
             store.confirm(chain, built.upTo)
             store.setState(ROWS_MERGED + chain, built.rows.size.toString())
@@ -360,7 +326,7 @@ class DriveSync(
             store.setState(MOVED + chain, null)
             store.setState(LAST_SENT, clock().toString())
             round.sent = true
-            return true
+            return
         }
         throw DriveError.RateLimited(null) // saved over and over by other devices: try again next round
     }
@@ -608,9 +574,8 @@ class DriveSync(
         private const val LAST_SENT = "lastSent"
         private const val STATE = "state"
         private const val PROBLEM = "problem"
-        private const val HELD = "heldDeletes"
-        private const val ALLOW_DELETES = "allowDeletes"
-        private const val DELETES_APPROVED = "deletesApproved"
+        /** What the removed brake (D17) kept: deletes it held, and the person's go-ahead either way. */
+        private val LEFT_BY_THE_BRAKE = listOf("heldDeletes", "allowDeletes", "deletesApproved")
 
         /** Base first when merging (habits before their logs); years first when saving (see [push]). */
         private val CHAIN_ORDER = compareBy<String> { it != DriveStore.BASE }.thenBy { it }
@@ -659,10 +624,6 @@ enum class DriveState {
     FULL,
     /** Drive asked us to slow down, or had trouble, after several tries: it tries again next time. */
     BUSY,
-    /** Deletes from Drive wait for the person (the brake, D17). */
-    HELD,
-    /** This device's own deletes wait for the person (the brake, D17). */
-    DELETES_WAITING,
     /** Another device has a newer app: this one reads what it can and writes nothing it can't keep whole. */
     UPDATE_NEEDED,
     /** Something unexpected; [DriveStatus.problem] says what. Nothing is lost. */
@@ -677,10 +638,6 @@ data class DriveStatus(
     val lastSynced: Long?,
     /** When this device last saved to Drive. */
     val lastSent: Long?,
-    /** Deletes from Drive the brake holds ([DriveState.HELD]). */
-    val heldDeletes: Int,
-    /** This device's deletes waiting for the person ([DriveState.DELETES_WAITING]). */
-    val waitingDeletes: Int,
     /** Every device on this Google Drive, newest check-in first ("Pixel 8 last synced at 9:14 AM"). */
     val devices: List<DriveDevice>,
     val problem: String?,
