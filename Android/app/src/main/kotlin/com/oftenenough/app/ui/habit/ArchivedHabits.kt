@@ -66,7 +66,10 @@ interface ArchivedNav {
  * so with Undo; Delete asks first and waits for its Undo (D6). Nothing archived: the empty page (inventory_2 in its
  * cookie, "No archived habits", what it means), centred, no button. No selecting several (A55).
  *
- * Archived tasks (5.5.5) is the same page for tasks ([tasks]), with its own words.
+ * 5.5.5, **Archived tasks page** (Figma 1001:178, Screen Archived · Menu open · Restored · Nothing archived): the same
+ * page for tasks ([tasks]), from Tasks › Archived, with its own words: "Archived tasks keep their history. They're off
+ * Today and the Tasks list."; each row "Archived 10 Oct" and opens its Task details, read-only; Restore says "<name>
+ * restored" with Undo; nothing archived: "No archived tasks", "When you archive a task, it waits here with its history."
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,9 +90,8 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
     }
     fun restore(h: Habit) {
         if (!store.restore(h)) { nav.restoreNoRoom(h); return }
-        // A task goes back under its day, or Today when its day has passed (Figma 9.2); Undo archives it again.
-        val where = if (!tasks) "restored" else if (h.dueDay != null && h.dueDay > store.today()) "is back in Tasks" else "is back in Today"
-        say("${h.name} $where") { store.archive(listOf(h)) }
+        // Undo archives it again.
+        say("${h.name} restored") { store.archive(listOf(h)) }
     }
     fun delete(h: Habit) {
         hidden = hidden + h.id
@@ -114,12 +116,11 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
             if (archived.isEmpty()) {
                 Box(Modifier.weight(1f).fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp), contentAlignment = Alignment.Center) {
                     EmptyState(Symbols.Inventory2, if (tasks) "No archived tasks" else "No archived habits",
-                        if (tasks) "Tasks you archive keep their history here, and you can restore them any time."
-                        else "When you archive a habit, it waits here with its history.")
+                        "When you archive a ${if (tasks) "task" else "habit"}, it waits here with its history.")
                 }
             } else LazyColumn(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp).semantics { testTag = "archived-list" }) {
                 item(key = "note") {
-                    Text(if (tasks) "Archived tasks keep their history and stay off Today and Tasks. Restore one to bring it back."
+                    Text(if (tasks) "Archived tasks keep their history. They're off Today and the Tasks list."
                         else "Archived habits keep everything they had. They're off Today and send no reminders." +
                         if (store.isPlus) "" else " They don't count toward your five free habits.",
                         Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp), style = AppType.bodyLarge, color = s.onSurfaceVariant)

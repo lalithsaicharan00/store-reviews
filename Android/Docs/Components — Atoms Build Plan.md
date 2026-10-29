@@ -130,7 +130,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☑ |
 | 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☑ |
 | 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☑ |
-| 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☐ |
+| 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☑ |
 | 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☐ |
 | 5.6.1 | Details pages · Habit details page | 1020:4052 | ☐ |
 | 5.6.2 | Details pages · Streaks page | 1034:74 | ☐ |
@@ -1946,3 +1946,23 @@ What each atom changed, newest last.
   - Figma writes the next day as "Next 25 Oct" in one row and "Next Tue 27 Oct" in another; the app writes every one
     the same way (`taskDay`).
   - Repeating rows lose "Last done …" and "Skipped …" (on the task's details still).
+  - **Built:** run 40828236097 (Android #141, commit 7be2bcd) passed: assembleDebug, unit tests and lint.
+
+- **5.5.5 Habits & Tasks · Archived tasks page (29 Oct).** Figma: Archived tasks page (1001:178), Screen Archived · Menu
+  open · Restored · Nothing archived. From Tasks › Archived: the same page as Archived habits (5.5.2) for tasks: the
+  Top app bar (← and "Archived tasks"), the intro in Body Large On surface variant, one rounded list newest first (the
+  task's icon in its colour, its name, "Archived 10 Oct", ⋮ with Restore and Delete); a row opens its Task details,
+  read-only; Restore says so with Undo; nothing archived: the Empty state, no button. It is `ArchivedHabitsScreen(tasks =
+  true)` (`habit/ArchivedHabits.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in the
+  session.
+  Fixed:
+  - The intro said "Archived tasks keep their history and stay off Today and Tasks. Restore one to bring it back."; now
+    Figma's "Archived tasks keep their history. They're off Today and the Tasks list."
+  - Restore said "… is back in Today" or "… is back in Tasks"; now "… restored" with Undo, as Figma's Restored.
+  - Nothing archived said "Tasks you archive keep their history here, and you can restore them any time."; now "When
+    you archive a task, it waits here with its history."
+  - Tests: TasksPageTest's archived test reads the new intro and snackbar.
+  Noted, not changed:
+  - The snackbar no longer says where a restored task went (Today or under its day on Tasks); Figma says "restored"
+    only.
+

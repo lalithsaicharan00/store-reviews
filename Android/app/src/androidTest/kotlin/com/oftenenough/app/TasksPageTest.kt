@@ -228,10 +228,10 @@ class TasksPageTest {
     @Test fun archivedTasksRestoreWithUndo() {
         launch()
         tapTag("tasks-archived")
-        waitFor(hasText("Archived tasks keep their history and stay off Today and Tasks. Restore one to bring it back."), "the note")
+        waitFor(hasText("Archived tasks keep their history. They're off Today and the Tasks list."), "the note")
         tapTag("habits-row-more-Plan the garage sale")
         here("archived-menu-restore")
-        waitFor(hasText("Plan the garage sale is back in Today"), "the snackbar")
+        waitFor(hasText("Plan the garage sale restored"), "the snackbar")
         waitUntil("restored") { !task("Plan the garage sale").archived }
         undo()
         waitUntil("archived again") { task("Plan the garage sale").archived }
