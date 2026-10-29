@@ -41,7 +41,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -113,7 +112,6 @@ import com.oftenenough.app.data.newId
 import com.oftenenough.app.ui.components.Card
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.Segment
-import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.record.GoalNumber
 import com.oftenenough.app.ui.theme.HabitIcons
 import com.oftenenough.app.ui.theme.appColors
@@ -869,5 +867,3 @@ fun ColourSheet(form: FormState, onDismiss: () -> Unit) {
     }
 }
 
-@Suppress("unused") private val unusedShape = segmentShape(0, 1)
-@Suppress("unused") private fun unusedWidth() = Modifier.widthIn(min = 0.dp)

@@ -9,6 +9,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isEnabled
 import androidx.compose.ui.test.isNotEnabled
+import androidx.compose.ui.test.isSelected
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
@@ -172,6 +173,20 @@ class HabitFormTest {
         tapTag("page-back")
         tapTag("icon-row")
         waitFor(hasTestTag("icon-figure.walk").and(hasContentDescription("chosen", substring = true)), "still the walk after ✕")
+    }
+
+    /** Colour (5.7.5, Figma 1074:161496): a sheet of 13; tapping one chooses it and closes the sheet. */
+    @Test fun aColourIsChosenAsItIsTapped() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-check")
+        tapTag("colour-row")
+        waitFor(hasTestTag("colour-gray"), "the last of the 13")
+        tapTag("colour-orange")
+        waitGone(hasTestTag("colour-gray"), "the sheet")
+        tapTag("colour-row")
+        waitFor(hasTestTag("colour-orange").and(isSelected()), "orange chosen")
     }
 
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {

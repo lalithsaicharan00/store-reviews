@@ -149,7 +149,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☑ |
 | 5.7.3 | Create new · Create new form | 1065:2597 | ☑ |
 | 5.7.4 | Create new · Icon picker | 1074:932 | ☑ |
-| 5.7.5 | Create new · Colour | 1074:161496 | ☐ |
+| 5.7.5 | Create new · Colour | 1074:161496 | ☑ |
 | 5.7.6 | Create new · How often page | 1075:161386 | ☐ |
 | 5.7.7 | Create new · Time of day page | 1098:2480 | ☐ |
 | 5.7.8 | Create new · Reminders page | 1100:2996 | ☐ |
@@ -2301,6 +2301,7 @@ What each atom changed, newest last.
     for now.
   - Groups are still on Today's filter and Progress (`FilterAndGroups.kt`, `Progress.kt`); A64 says they're gone. That is
     cleanup item 6.4, after every page is built.
+  - **Built:** run 40939585087 (Android #158, commit aa82e5f) passed: assembleDebug, unit tests and lint.
 
 - **5.7.4 Create new · Icon picker (29 Oct).** Figma: Icon picker (1074:932), and the flow "A new habit: its icon and
   colour". From the form's Icon. On Surface container: the Top app bar (✕ "Icon", Done as a Filled Small button); the
@@ -2320,3 +2321,14 @@ What each atom changed, newest last.
   - Figma draws four kinds of ten icons as a sample; the app keeps its catalogue (`HabitIcons`, the kinds and icons
     people's habits use) and its search.
   - A search with no match says "No icons match “…”." (Figma draws no such state).
+
+- **5.7.5 Create new · Colour (29 Oct).** Figma: Colour (1074:161496), over the form behind its Scrim. From the form's
+  Colour: the Bottom sheet (Surface container low, its drag handle, the header "Colour" in Title Large Emphasized), then
+  the 13 habit colours as Colour swatches (40, 8 apart, seven to a row, rows 12 apart; 16 at the sides, 8 above, 24
+  under): Red, Orange, Yellow, Green, Mint, Teal, Cyan · Blue, Indigo, Purple, Pink, Brown, Grey. The chosen one is
+  smaller (30) in an On surface ring with a check in On habit (white). A tap chooses it and closes the sheet. It is
+  `ColourSheet` (`newhabit/FormPages.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in
+  the session.
+  Fixed:
+  - It already matched Figma; two placeholder lines that only kept unused imports alive are deleted.
+  - Tests: HabitFormTest chooses orange, sees the sheet close, and finds orange chosen when it opens again.
