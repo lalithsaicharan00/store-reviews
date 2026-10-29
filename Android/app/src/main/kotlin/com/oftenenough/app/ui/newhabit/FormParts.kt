@@ -69,7 +69,7 @@ fun FormPage(
     scrolls: Boolean = true, content: @Composable ColumnScope.() -> Unit,
 ) {
     BackHandler(onBack = onBack)
-    Column(Modifier.fillMaxSize().background(appColors.screen).imePadding()) {
+    Column(Modifier.fillMaxSize().background(androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainer).imePadding()) {
         AppTopBar(
             title,
             navigationIcon = {

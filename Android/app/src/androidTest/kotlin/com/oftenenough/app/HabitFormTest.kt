@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isEnabled
@@ -152,6 +153,25 @@ class HabitFormTest {
         waitFor(hasTestTag("quit-started"), "Started | At")
         waitFor(hasText("The run counts up from here. A slip starts it again."), "its footer")
         assertTrue("a quit habit has no How often", !has(hasTestTag("how-often-row")))
+    }
+
+    /** The Icon picker (5.7.4, Figma 1074:932): kinds with search; Done keeps the one tapped, ✕ leaves it as it was. */
+    @Test fun theIconPickerKeepsATappedIconOnlyWithDone() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-check")
+        tapTag("icon-row")
+        waitFor(hasText("Search icons"), "the search bar")
+        waitFor(hasText("Health"), "the first kind")
+        tapTag("icon-figure.walk")
+        tapTag("icon-done")
+        tapTag("icon-row")
+        waitFor(hasTestTag("icon-figure.walk").and(hasContentDescription("chosen", substring = true)), "the walk chosen")
+        tapTag("icon-figure.run")
+        tapTag("page-back")
+        tapTag("icon-row")
+        waitFor(hasTestTag("icon-figure.walk").and(hasContentDescription("chosen", substring = true)), "still the walk after ✕")
     }
 
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {

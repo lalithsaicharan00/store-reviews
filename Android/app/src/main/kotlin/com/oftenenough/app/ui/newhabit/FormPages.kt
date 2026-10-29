@@ -55,6 +55,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.semantics.heading
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -808,7 +810,13 @@ private fun clampToPart(part: String, minute: Int, store: HabitStore): Int {
 
 // ------------------------------------------------------------------ Icon and Colour
 
-/** Icons by group, with search; the chosen one filled in the habit's colour. Done keeps it, ✕ leaves it as it was. */
+/**
+ * 5.7.4, **Icon picker** (Figma 1074:932; Components — Atoms Build Plan), from the form's Icon. The Top app bar (✕
+ * "Icon", Done as a Filled Small button); the content 16 at the sides and above, 16 apart: the Search bar ("Search
+ * icons"), then the icons by kind (Health, Fitness, Mind, Home …), each kind's label in Label Large On surface variant
+ * (4 in), 12 over its rows of Medium icon buttons (56, five to a row, spread across), 24 between kinds. The current one
+ * is filled in the habit's colour; the rest are neutral. Done keeps the one tapped, ✕ leaves it as it was.
+ */
 @Composable
 fun IconPage(form: FormState, onBack: () -> Unit) {
     var chosen by remember { mutableStateOf(form.symbol) }
@@ -816,7 +824,7 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
     FormPage("Icon", chip = null, onBack = onBack, close = true, scrolls = false, actions = {
         AppButton("Done", { form.symbol = chosen; form.pickedSymbol = true; onBack() }, Modifier.padding(end = 8.dp), tag = "icon-done")
     }) {
-        SearchBarField(query, { query = it.take(30) }, "Search icons", Modifier.padding(vertical = 8.dp), fieldTag = "icon-search")
+        SearchBarField(query, { query = it.take(30) }, "Search icons", Modifier.padding(top = 16.dp, bottom = 16.dp), fieldTag = "icon-search")
         val q = query.trim().lowercase()
         val groups = HabitIcons.groups.mapNotNull { g ->
             val symbols = if (q.isEmpty()) g.symbols else g.symbols.filter { s ->
@@ -825,9 +833,15 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
             symbols.takeIf { it.isNotEmpty() }?.let { g.name to it }
         }
         if (groups.isEmpty()) Note("No icons match \"${query.trim()}\".")
-        LazyVerticalGrid(GridCells.FixedSize(56.dp), Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceBetween, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            for ((name, symbols) in groups) {
-                item(key = "h-$name", span = { GridItemSpan(maxLineSpan) }) { GroupTitle(name) }
+        LazyVerticalGrid(GridCells.FixedSize(56.dp), Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceBetween, verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(bottom = 24.dp)) {
+            for ((n, pair) in groups.withIndex()) {
+                val (name, symbols) = pair
+                // 12 under each label; 24 between kinds (12 more over every label but the first).
+                item(key = "h-$name", span = { GridItemSpan(maxLineSpan) }) {
+                    Text(name, Modifier.padding(start = 4.dp, top = if (n == 0) 0.dp else 12.dp).semantics { heading() },
+                        style = AppType.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
                 items(symbols, key = { "$name-$it" }) { s ->
                     val on = s == chosen
                     AppFilledIconButton(HabitIcons.outlined(s), HabitIcons.spokenName(s) + if (on) ", chosen" else "", { chosen = s },

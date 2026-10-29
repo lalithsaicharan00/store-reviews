@@ -148,7 +148,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☑ |
 | 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☑ |
 | 5.7.3 | Create new · Create new form | 1065:2597 | ☑ |
-| 5.7.4 | Create new · Icon picker | 1074:932 | ☐ |
+| 5.7.4 | Create new · Icon picker | 1074:932 | ☑ |
 | 5.7.5 | Create new · Colour | 1074:161496 | ☐ |
 | 5.7.6 | Create new · How often page | 1075:161386 | ☐ |
 | 5.7.7 | Create new · Time of day page | 1098:2480 | ☐ |
@@ -2301,3 +2301,22 @@ What each atom changed, newest last.
     for now.
   - Groups are still on Today's filter and Progress (`FilterAndGroups.kt`, `Progress.kt`); A64 says they're gone. That is
     cleanup item 6.4, after every page is built.
+
+- **5.7.4 Create new · Icon picker (29 Oct).** Figma: Icon picker (1074:932), and the flow "A new habit: its icon and
+  colour". From the form's Icon. On Surface container: the Top app bar (✕ "Icon", Done as a Filled Small button); the
+  content 16 at the sides and above, 16 apart: the Search bar ("Search icons", Surface container highest), then the
+  icons by kind, each kind's label in Label Large On surface variant (4 in), 12 over its rows of Medium icon buttons
+  (56, five to a row, spread across, 12 apart), 24 between kinds. The current one is filled in the habit's colour, the
+  rest neutral. Done keeps the one tapped, ✕ leaves it as it was. It is `IconPage` (`newhabit/FormPages.kt`) on
+  `FormPage`, which every form page shares. The app, the unit tests (55), lint and the instrumented tests' code build in
+  the session.
+  Fixed:
+  - The kinds' labels were the grey group title (16 above, 8 under, 16 in); now Label Large On surface variant, 4 in, 12
+    over the icons and 24 between kinds.
+  - The search bar sat 8 from the bar and the icons; now 16, as Figma, with 24 under the last row.
+  - Form pages (`FormPage`) took the app's old page colour; now Surface container.
+  - Tests: HabitFormTest picks an icon with Done, and checks ✕ keeps the one chosen before.
+  Noted, not changed:
+  - Figma draws four kinds of ten icons as a sample; the app keeps its catalogue (`HabitIcons`, the kinds and icons
+    people's habits use) and its search.
+  - A search with no match says "No icons match “…”." (Figma draws no such state).
