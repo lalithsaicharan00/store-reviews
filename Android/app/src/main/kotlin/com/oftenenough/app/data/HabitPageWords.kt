@@ -1453,7 +1453,7 @@ fun HabitStore.streakList(habit: Habit, today: Int): StreakList {
     }
     val noun = unit.word(3)
     return StreakList("Streaks", "Since " + DayWords.long(rules.startDay(habit)), if (rows.size == 1) "1 run" else "${rows.size} runs", rows,
-        "Runs of 3 $noun or more, longest first. Skipped and paused days don't end a run.")
+        "Runs of 3 $noun or more, longest first. Skipped and paused days don’t end a run.")
 }
 
 /** A quit habit's record (Figma 3.9): the run now, the longest, the slips and the days with none. */

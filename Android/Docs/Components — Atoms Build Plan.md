@@ -140,7 +140,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☑ |
 | 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☑ |
 | 5.6.1 | Details pages · Habit details page | 1020:4052 | ☑ |
-| 5.6.2 | Details pages · Streaks page | 1034:74 | ☐ |
+| 5.6.2 | Details pages · Streaks page | 1034:74 | ☑ |
 | 5.6.3 | Details pages · All milestones page | 1036:235 | ☐ |
 | 5.6.4 | Details pages · Notes search page | 1053:9079 | ☐ |
 | 5.6.5 | Details pages · Task details page | 1136:9271 | ☐ |
@@ -2101,4 +2101,23 @@ What each atom changed, newest last.
   - The cards after a type change (Archived …, when Water changed to minutes; Water was counted in glasses) stay, on the
     Card notice: A68 ended type changes, so they're only for habits changed before; they go with the Figma cleanup.
   - Tasks open this page too; their page is 5.6.5, so their ⋮, header and History are unchanged here.
+  - **Built:** run 40863412319 (Android #149, commit 5f64411) passed: assembleDebug, unit tests and lint. Then A80
+    (run #150) and A81 (run #151), both passed.
+
+- **5.6.2 Details pages · Streaks page (29 Oct).** Figma: Streaks page (1034:74), Screen Streaks. From Progress's See
+  all streaks (a quit habit's See all runs, titled Runs): on Surface container, the Top app bar (← "Streaks"); content
+  16 at the sides, 8 above, 40 under, 16 apart: the habit (icon 28, 12, name in Title Medium, "Since 2 Sep 2026" in
+  Body Medium On surface variant), 4 in; one card on Surface container lowest, corners 24, 20 inside, 16 between ("3
+  runs" in Title Medium, then a Run row (4.5) per run, longest first, the current one "· now"); the footnote under the
+  card in Body Small On surface variant. It is `StreaksPage` (`habit/StreaksPage.kt`). The app, the unit tests (55),
+  lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The habit line was 28 from the screen's edge and 4 from the top; now 20 and 8, as Figma.
+  - The footnote was the card's last line; now under the card, 16 below it (Run row's note under 4.5 settled).
+  - The page and card took the app's old colours (`appColors`); now Surface container and Surface container lowest.
+  - The footnote's "don't" takes Figma's ’.
+  - The page ends 40 above the gesture bar, as Figma (it was 16).
+  Noted, not changed:
+  - No runs of 3 yet: the card says "None yet" with the footnote; Figma draws only a habit with runs.
+  - A quit habit's page (Runs, "Every run, longest first. A slip ends a run.") is the same page; Figma draws only Water's.
 
