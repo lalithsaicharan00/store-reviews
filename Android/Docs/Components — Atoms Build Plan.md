@@ -141,7 +141,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☑ |
 | 5.6.1 | Details pages · Habit details page | 1020:4052 | ☑ |
 | 5.6.2 | Details pages · Streaks page | 1034:74 | ☑ |
-| 5.6.3 | Details pages · All milestones page | 1036:235 | ☐ |
+| 5.6.3 | Details pages · All milestones page | 1036:235 | ☑ |
 | 5.6.4 | Details pages · Notes search page | 1053:9079 | ☐ |
 | 5.6.5 | Details pages · Task details page | 1136:9271 | ☐ |
 | 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☐ |
@@ -2120,4 +2120,28 @@ What each atom changed, newest last.
   Noted, not changed:
   - No runs of 3 yet: the card says "None yet" with the footnote; Figma draws only a habit with runs.
   - A quit habit's page (Runs, "Every run, longest first. A slip ends a run.") is the same page; Figma draws only Water's.
+  - **Built:** run 40910167664 (Android #152, commit 7cf8821) passed: assembleDebug, unit tests and lint.
+
+- **5.6.3 Details pages · All milestones page (29 Oct).** Figma: All milestones page (1036:235), Screen All milestones ·
+  Quitting, and the details pages' flow "tap a reached one: its pop-up again". From the Milestones card's See all: on
+  Surface container, the Top app bar (← "All milestones"); content 16 at the sides, 8 above, 8 apart: "Water · 4
+  reached" in Body Medium On surface variant, 16 in; per track a subheader in Label Large Primary (16 in, 12 above, 4
+  below) over one rounded list of two-line List items 2 apart on Surface container lowest: its next milestone first
+  (the Circular progress, 40, with its number; "Next · 7 to go · now 23"), then every one reached, newest first (the
+  Small Medal, 40; "Reached 13 Oct"). A reached one opens its pop-up again (4.12: "14 days in a row", "Water · 13 Oct",
+  that track's next, Close | All milestones, both closing it here). It is `AllMilestonesPage` (`habit/ProgressTab.kt`).
+  The app, the unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The rows were drawn by hand (a 52 ring and a 52 medal, 76 tall, on the app's old white); now List items on Surface
+    container lowest with the 40 ring and the Small Medal (40), as Figma.
+  - The track titles were Label Large in grey; now Label Large Primary, 20 from the list above and 12 to their own.
+  - The summary line and the page's colours take the theme's roles (`appColors` gone from the page).
+  - A reached milestone did nothing; now it opens its pop-up again, said as reached on its day; TalkBack can open it
+    too ("Show its pop-up").
+  - Tests: HabitDetailsTest's milestones test opens a reached one's pop-up and closes it.
+  Noted, not changed:
+  - Figma ends the page with a "How milestones work ›" row (help in its avatar); its page is 5.6.6, so the row comes with
+    it. Until then the page keeps its closing note in Body Small.
+  - The Quitting screen's anniversary says "27 Sep 2027 · 339 days to go" without "Next ·", where Water's says "Next ·";
+    the app says "Next ·" on every next milestone, as Water's.
 

@@ -125,6 +125,11 @@ class HabitDetailsTest {
         for (track in listOf("In a row", "Times in total", "Anniversaries")) waitFor(hasText(track), "the track $track")
         waitFor(hasTestTag("habit-milestone-next-inARow"), "the next in a row")
         waitFor(hasTestTag("milestone-reached"), "a reached milestone with its medal")
+        // A reached one opens its pop-up again (Figma's details pages, flow 4); Close returns to the list.
+        tapTag("milestone-reached")
+        waitFor(hasTestTag("landmark-popup"), "its pop-up again")
+        tapTag("landmark-close")
+        waitGone(hasTestTag("landmark-popup"), "the pop-up")
         tapTag("milestones-back")
         waitFor(hasTestTag("habit-details"), "back on the page")
     }

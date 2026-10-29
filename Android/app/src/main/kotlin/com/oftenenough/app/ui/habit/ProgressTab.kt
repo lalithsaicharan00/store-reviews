@@ -1,6 +1,13 @@
 package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.Medal
+import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.components.AppCircularProgress
+import com.oftenenough.app.ui.components.CircularProgressLabel
+import com.oftenenough.app.ui.components.MilestonePopup
+import com.oftenenough.app.ui.components.SegmentedListGap
+import com.oftenenough.app.data.MilestoneAhead
+import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.ui.components.EmptyState
 import com.oftenenough.app.ui.components.MilestonesCard
 import com.oftenenough.app.ui.components.StatTile
@@ -14,28 +21,20 @@ import com.oftenenough.app.ui.components.HistoryPeriodHeader
 import com.oftenenough.app.ui.components.HistorySection
 import com.oftenenough.app.ui.components.HistorySummary
 import com.oftenenough.app.ui.components.HistoryWeek
-import com.oftenenough.app.ui.components.NextMilestone
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.components.ComparisonRow
-import com.oftenenough.app.ui.components.segmentShape
 import androidx.compose.foundation.lazy.itemsIndexed
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
@@ -52,11 +51,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -226,70 +224,80 @@ private fun QuitClockText(start: Long, clock: () -> Long) {
 // ------------------------------------------------------------------------------------------------ Milestones
 
 /**
- * All milestones (Figma 1735:4), from "See all N ›": the habit and how many it reached, then each track (In a row, the
- * total in the habit's own unit, Anniversaries; a quit habit's Since a slip) as one list: its next milestone first, then
- * every one reached, newest first; a note on how the tracks count at the end.
+ * 5.6.3, **All milestones page** (Figma 1036:235, Screen All milestones · Quitting; Components — Atoms Build Plan), from
+ * the Milestones card's See all: on Surface container, the Top app bar (← "All milestones"); content 16 at the sides, 8
+ * above, 40 under, 8 apart. "Water · 4 reached" in Body Medium On surface variant, 16 in; then per track (In a row, the
+ * total in the habit's own unit, Anniversaries; a quit habit's days clean) a subheader in Label Large Primary (16 in,
+ * 12 above, 4 below) over one rounded list of two-line List items 2 apart on Surface container lowest: first its next
+ * milestone (the Circular progress, 40, with its number; "Next · 7 to go · now 23"), then every one reached, newest
+ * first (the Small Medal, 40; "Reached 13 Oct"). A reached one opens its pop-up again ("Water · 13 Oct", that track's
+ * next, Close | All milestones, both closing it).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, color: HabitColor, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
-    val c = appColors
+    val s = MaterialTheme.colorScheme
     val tracks = remember(milestones) {
         (milestones.next.map { it.track } + milestones.reached.map { it.track }).distinct()
             .sortedBy { listOf(Milestone.Track.IN_A_ROW, Milestone.Track.SINCE_SLIP, Milestone.Track.IN_TOTAL, Milestone.Track.ANNIVERSARY).indexOf(it) }
     }
-    Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "all-milestones" }) {
+    var again by remember { mutableStateOf<Milestone?>(null) }
+    Column(Modifier.fillMaxSize().background(s.surfaceContainer).semantics { testTag = "all-milestones" }) {
         AppTopBar(
             "All milestones",
             navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "milestones-back" }) { Icon(Symbols.ArrowBack, "Back") } },
         )
         LazyColumn(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp)) {
             item(key = "summary") {
-                Text("$habitName · ${milestones.reached.size} reached", Modifier.padding(start = 16.dp, top = 8.dp, bottom = 24.dp),
-                    style = AppType.bodyMedium, color = c.secondary)
+                Text("$habitName · ${milestones.reached.size} reached", Modifier.padding(start = 16.dp, top = 8.dp),
+                    style = AppType.bodyMedium, color = s.onSurfaceVariant)
             }
             for (track in tracks) {
                 val next = milestones.next.firstOrNull { it.track == track }
                 val reached = milestones.reached.filter { it.track == track }
                 val count = reached.size + (if (next != null) 1 else 0)
                 item(key = "track-" + track.key) {
-                    Text(trackTitle(track, milestones.totalLabel), Modifier.padding(start = 16.dp, bottom = 8.dp).semantics { heading() },
-                        style = AppType.labelLarge, color = c.secondary)
+                    Text(trackTitle(track, milestones.totalLabel), Modifier.padding(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 12.dp).semantics { heading() },
+                        style = AppType.labelLarge, color = s.primary)
                 }
                 if (next != null) item(key = "next-" + track.key) {
-                    Box(Modifier.fillMaxWidth().padding(bottom = if (count == 1) 0.dp else 2.dp).clip(segmentShape(0, count)).background(c.surface)
-                        .heightIn(min = 76.dp).padding(horizontal = 16.dp), contentAlignment = Alignment.CenterStart) {
-                        NextMilestone(next, color, onPage = true)
-                    }
+                    AppListItem(next.title, 0, count, Modifier.padding(bottom = if (count > 1) SegmentedListGap else 0.dp)
+                        .clearAndSetSemantics { contentDescription = next.spoken; testTag = "habit-milestone-next-" + next.track.key },
+                        next.detail?.let { if (next.target != null) "Next · $it" else it },
+                        leading = {
+                            AppCircularProgress(next.fraction.toFloat(), color, Modifier.size(40.dp)) {
+                                if (next.target == null) Icon(Symbols.Check, null, tint = s.onSurface) else CircularProgressLabel(next.number)
+                            }
+                        },
+                        containerColor = s.surfaceContainerLowest)
                 }
                 itemsIndexed(reached, key = { _, m -> m.id }) { i, m ->
                     val index = i + (if (next != null) 1 else 0)
-                    Row(
-                        Modifier.fillMaxWidth().padding(bottom = if (index == count - 1) 0.dp else 2.dp).clip(segmentShape(index, count))
-                            .background(c.surface).heightIn(min = 76.dp).padding(horizontal = 16.dp)
-                            .clearAndSetSemantics { contentDescription = m.spoken; testTag = "milestone-reached" },
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Medal(m.number, 52.dp, color)
-                        Spacer(Modifier.width(16.dp))
-                        Column {
-                            Text(m.title, style = AppType.titleMedium, color = c.ink)
-                            Text(m.reachedText, style = AppType.bodyMedium, color = c.secondary)
-                        }
-                    }
+                    AppListItem(m.title, index, count, Modifier.padding(bottom = if (index < count - 1) SegmentedListGap else 0.dp)
+                        .clearAndSetSemantics {
+                            contentDescription = m.spoken; testTag = "milestone-reached"
+                            onClick("Show its pop-up") { again = m; true }
+                        },
+                        m.reachedText, leading = { Medal(m.number, 40.dp, color) },
+                        onClick = { again = m }, containerColor = s.surfaceContainerLowest)
                 }
-                item(key = "gap-" + track.key) { Spacer(Modifier.height(24.dp)) }
             }
             item(key = "all-milestones-note") {
                 Text(
                     if (tracks.contains(Milestone.Track.SINCE_SLIP)) "Each track shows its next milestone. Reached ones stay, even after a slip."
                     else "Each track shows its next milestone. Reached ones stay, even if a streak ends. Anniversaries count each year " +
                         "from the first log, when the goal was met in the 30 days before.",
-                    Modifier.padding(horizontal = 16.dp).padding(bottom = 32.dp).navigationBarsPadding(),
-                    style = AppType.bodySmall, color = c.secondary)
+                    Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 40.dp).navigationBarsPadding(),
+                    style = AppType.bodySmall, color = s.onSurfaceVariant)
             }
         }
+    }
+    again?.let { m ->
+        // Its pop-up again, said as reached on its day (Figma's details pages, flow 4); both buttons close it here.
+        val next = milestones.next.firstOrNull { it.track == m.track && it.target != null }
+            ?.let { MilestoneAhead(it.number, it.title, "Next · " + (it.detail ?: ""), it.fraction.toFloat()) }
+        MilestonePopup(m.number, m.title, "$habitName · " + DayWords.dayMonth(m.reached), color, next, onClose = { again = null }, onAll = { again = null })
     }
 }
 
