@@ -12,11 +12,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -28,6 +25,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,19 +49,25 @@ import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.data.noteDayLine
 import com.oftenenough.app.ui.theme.appColors
 
 /**
- * A note for one habit's day ([habitId]), or the day's own note (null) (Figma 15–15.4.3): Add note when there's none,
- * the Note view when there is (Delete note | Edit), and Edit note (✕ only, never ‹ and ✕ together: Current Work 104).
- * A new note's date is an assist chip that opens the date picker (today and earlier); a day that already has a note says
- * so and opens it for changing. Save is off until something is typed; closing with something typed asks first (D7).
+ * 5.3.8, **Note screen** (Figma 765:1087, Mode Entry · empty · Entry · typed · View; Components — Atoms Build Plan): a
+ * note for one habit's day ([habitId]), or the day's own note (null). Built like the Log screen: the Top app bar (✕ and
+ * "Add note" / "Edit note"; ← and "Note"), the content 16 at the sides, nothing above, 8 apart, the bottom bar 12 / 16.
+ *
+ * Entry: the habit and the day, 4 above and below, 8 apart (its icon in a 24 dp circle, the name in Title Medium On
+ * surface, a new note's date an Assist chip, "21 Oct 2026", that opens the date picker, today and earlier); the field
+ * (Surface container lowest, corners 24, 16 in, Body Large, "Write a note" in On surface variant) filling the room;
+ * Save, Medium Filled, off until something is typed. A day that already has a note says so and opens it for changing;
+ * closing with something typed asks first. View: the habit and its date (Body Medium On surface variant), the note's
+ * card, Delete note (Outlined, Error) | Edit (Filled). Edit note is Entry with ✕ only (never ‹ and ✕ together).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () -> Unit) {
     val c = appColors
+    val s = MaterialTheme.colorScheme
     val habit = habitId?.let { store.habit(it) }
     val today = store.today()
     var day by rememberSaveable { mutableStateOf(startDay) }
@@ -91,47 +95,34 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
 
     val title = when { !editing -> "Note"; adding -> "Add note"; else -> "Edit note" }
     val shortDay = DayWords.short(day).replace(",", "")
+    val date = DayWords.date(day).format(noteDate)
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(title, close = editing, onClose = ::close)
-        Column(Modifier.weight(1f).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            // A habit's note, read (Habit details, Figma 1373:2, 2.9): the day as its title, then the habit and how the day went.
-            if (!editing && habit != null) {
-                Column(Modifier.padding(horizontal = 4.dp).padding(bottom = 8.dp)) {
-                    Text(DayWords.date(day).format(java.time.format.DateTimeFormatter.ofPattern("EEEE, d MMMM", java.util.Locale.ENGLISH)),
-                        Modifier.semantics { testTag = "note-day" }, style = AppType.headlineSmall, color = c.ink)
-                    Spacer(Modifier.height(8.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        HabitIcon(habit.symbol, habit.color, size = 20.dp)
-                        Text(habit.name + " · " + store.noteDayLine(habit, day), style = AppType.bodyMedium, color = c.secondary)
-                    }
-                }
-            } else {
-                // The habit and the day (Figma: 40 high, 16 in): its icon in a 24 circle, the name, then the date.
-                Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
-                    else Icon(Symbols.CalendarToday, null, tint = c.secondary, modifier = Modifier.size(24.dp))
-                    Text(habit?.name ?: "This day", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    if (editing && adding) {
-                        AppAssistChip(DayWords.withDate(day, today), { pickDay = true }, tag = "note-date")
-                    } else Text(DayWords.withDate(day, today), style = AppType.bodyMedium, color = c.secondary, maxLines = 1)
-                }
+        Column(Modifier.weight(1f).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            // The habit and the day (Figma's Habit and day): its icon in a 24 circle, the name, then the date.
+            Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
+                else Icon(Symbols.CalendarToday, null, tint = s.onSurfaceVariant, modifier = Modifier.size(24.dp))
+                Text(habit?.name ?: "This day", Modifier.weight(1f), style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (editing && adding) AppAssistChip(date, { pickDay = true }, tag = "note-date")
+                else Text(date, Modifier.semantics { testTag = "note-day" }, style = AppType.bodyMedium, color = s.onSurfaceVariant, maxLines = 1)
             }
             if (editing && adding && saved != null && !leaving) {
-                Text("$shortDay already has a note; you're changing it.", Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = c.secondary)
+                Text("$shortDay already has a note; you're changing it.", Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
             }
             if (editing) {
-                Box(Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(16.dp)) {
+                Box(Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest).padding(16.dp)) {
                     BasicTextField(text, { text = it.take(TextLimit.NOTE) },
-                        textStyle = AppType.bodyLarge.copy(color = c.ink),
+                        textStyle = AppType.bodyLarge.copy(color = s.onSurface),
                         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                        cursorBrush = SolidColor(c.ink),
+                        cursorBrush = SolidColor(s.onSurface),
                         modifier = Modifier.fillMaxSize().focusRequester(focus).semantics { testTag = "note-field" },
-                        decorationBox = { inner -> Box { if (text.isEmpty()) Text("Write a note", style = AppType.bodyLarge, color = c.secondary); inner() } })
+                        decorationBox = { inner -> Box { if (text.isEmpty()) Text("Write a note", style = AppType.bodyLarge, color = s.onSurfaceVariant); inner() } })
                 }
             } else {
-                Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(c.surface).padding(16.dp)) {
-                    Text(saved ?: "", Modifier.verticalScroll(rememberScrollState()).semantics { testTag = "note-text" }, style = AppType.bodyLarge, color = c.ink)
+                Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest).padding(16.dp)) {
+                    Text(saved ?: "", Modifier.verticalScroll(rememberScrollState()).semantics { testTag = "note-text" }, style = AppType.bodyLarge, color = s.onSurface)
                 }
             }
             TextLimit.note(text, TextLimit.NOTE)?.takeIf { editing }?.let { Footer(it) }
@@ -155,3 +146,6 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
         AppDatePicker(day, { it in first..today }, { pickDay = false }) { day = it }
     }
 }
+
+/** A note's date, as Figma writes it: "21 Oct 2026". */
+private val noteDate = java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy", java.util.Locale.ENGLISH)

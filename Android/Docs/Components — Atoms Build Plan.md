@@ -123,7 +123,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.5 | Day details · Time picker | 703:602 | ☑ |
 | 5.3.6 | Day details · Date picker | 705:1025 | ☑ |
 | 5.3.7 | Day details · Timer screen | 705:7745 | ☑ |
-| 5.3.8 | Day details · Note screen | 765:1087 | ☐ |
+| 5.3.8 | Day details · Note screen | 765:1087 | ☑ |
 | 5.4.1 | Routine player · Routine player | 906:89513 | ☐ |
 | 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☐ |
 | 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☐ |
@@ -1708,3 +1708,29 @@ What each atom changed, newest last.
     uses the Assist chip atom (1.16), as the routine player's Figma does.
   - Figma's routine player puts 24 between the cookie and the name and 8 under the name; the timer's 28 and 12 are
     kept here; 5.4.1 decides the player's.
+  - **Built:** run 40803611711 (Android #134, commit 184301f) passed: assembleDebug, unit tests and lint.
+- **5.3.8 Day details · Note screen (29 Oct).** Figma: Note screen (765:1087), Mode Entry · empty · Entry · typed ·
+  View, with Habit and Note as properties. Add note, Edit note and Note, built like the Log screen: the Top app bar (✕
+  and "Add note" / "Edit note"; ← and "Note"); the content 16 at the sides, nothing above, 8 apart: the habit and the
+  day (4 above and below, 8 apart: the icon in a 24 dp circle, the name in Title Medium On surface, then a new note's
+  date as an Assist chip, "21 Oct 2026", or the date in Body Medium On surface variant); the field (Surface container
+  lowest, corners 24, 16 in, Body Large, "Write a note" in On surface variant) or, in View, the note's card; the bottom
+  bar: Save (Medium Filled, off until something is typed) or Delete note | Edit. It is `NoteScreen`
+  (`record/NoteScreens.kt`). Tags stay; HabitDetailsTest's note test now checks the date (`note-day`) and the habit's
+  name (was the day as a title and "Water · " with how the day went). The app, the unit tests (55) and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - A habit's note, read, had its own header: the day as a title in Headline Small ("Wednesday, 21 October"), then a
+    20 dp icon and "Water · Goal met · 8 of 8 glasses" (a frame, 1373:2, that is no longer in Figma); now the same
+    habit-and-day row as Entry, the date in Body Medium, as the component's View. `noteDayLine`, used only there, is
+    gone.
+  - The habit-and-day row was 16 in at the sides with a 40 dp floor; now flush with the content, 4 above and below.
+  - The date read "Today, 21 Oct" (DayWords' day words); now "21 Oct 2026", as Figma's chip and View.
+  - The field and the note's card had 20 corners; now 24. The content had 8 above it; now none.
+  Noted, not changed:
+  - Figma's Edit note is Entry · typed with its title changed, so its date is a chip; editing a saved note keeps its
+    date as text, because a note can't be moved to another day (the chip would open a picker that does nothing).
+  - "21 Oct already has a note; you're changing it." (a new note on a day that has one) isn't in Figma; kept, so the
+    note being changed is never a surprise.
+  - The day's own note (no habit) shows calendar_today in the icon's place and "This day" for the name; Figma draws
+    only a habit's note.

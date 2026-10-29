@@ -210,7 +210,7 @@ class HabitDetailsTest {
         if (has(hasTestTag("history-search"))) throw AssertionError("No search with nothing to search; on screen: ${screen()}")
     }
 
-    @Test fun aNoteReadFromHistoryHasTheDayAsItsTitle() {
+    @Test fun aNoteReadFromHistoryShowsItsHabitAndDay() {
         launch()
         val day = store.today() - 2
         onMain { store.setNote("Travel day, the flight ran late.", habit("Water"), day) }
@@ -219,8 +219,8 @@ class HabitDetailsTest {
         tapTag("habit-day-" + dayKey(day))
         waitFor(hasTestTag("day-details"), "that day")
         tapTag("day-edit-note")
-        waitFor(hasTestTag("note-day"), "the note's day as its title")
-        waitFor(hasText("Water · ", substring = true), "the habit and how the day went")
+        waitFor(hasTestTag("note-day"), "the note's date")
+        waitFor(hasText("Water"), "the habit")
         waitFor(hasTestTag("note-delete"), "Delete note")
     }
 
