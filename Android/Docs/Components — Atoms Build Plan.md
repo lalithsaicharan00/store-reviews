@@ -143,7 +143,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.6.2 | Details pages · Streaks page | 1034:74 | ☑ |
 | 5.6.3 | Details pages · All milestones page | 1036:235 | ☑ |
 | 5.6.4 | Details pages · Notes search page | 1053:9079 | ☑ |
-| 5.6.5 | Details pages · Task details page | 1136:9271 | ☐ |
+| 5.6.5 | Details pages · Task details page | 1136:9271 | ☑ |
 | 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☐ |
 | 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☐ |
 | 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☐ |
@@ -2165,4 +2165,37 @@ What each atom changed, newest last.
   - Tests: HabitDetailsTest checks the hint and No match's second line.
   Noted, not changed:
   - The search counts what's typed from 0.3 s after typing stops (S11); Figma shows results "as you type".
+  - **Built:** run 40934314244 (Android #154, commit bf18635) passed: assembleDebug, unit tests and lint.
 
+- **5.6.5 Details pages · Task details page (29 Oct).** Figma: Task details page (1136:9271), Screen One-time · not done
+  yet · One-time · done · Repeating · Menu open. A tap on a task's row opens it. On Surface container: the Top app bar
+  (←, ⋮; the name moves into it on scroll), the large title (the icon 56 in the task's colour, the name in Headline
+  Medium Emphasized, "One-time · Tue 4 Nov, Morning", "One-time · done today" or "Every 2 months · Next Wed 9 Dec" in
+  Body Medium On surface variant). No tabs: a task has no Progress, only its days, 16 in, 16 apart. Not done yet: the
+  Card notice (event, "Planned for Tue 4 Nov, Morning", "It shows on Today that day; tick it there.") over the Empty
+  state (task_alt, "Nothing done yet", "When it’s done, the day shows here, with any note."). Done: one rounded list on
+  Surface container lowest, "Done" (folds it) then its day ("Fri 23 Oct", "Done at 9:12 AM", the note, ›, the Small Day
+  cell done). Repeating: a list per year ("2026", "Done 4 times"), newest first. A day opens its Day details. Add note
+  (Extended FAB, edit_note). ⋮ is the Tasks row's own: Edit task, Move to another day… (Skip this time, Do today and
+  Pick a day…, Mark as not done by the kind), Duplicate, Archive, Delete (red, asks first). It is `TaskDetailsScreen`
+  (`habit/TaskDetailsParts.kt`), opened by `HabitDetailsScreen` for a task. The app, the unit tests (55), lint and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - A task shared the habit page, with a single History tab and its own ⋮; now a page of its own with no tabs.
+  - The line read "Today · Morning", "Every 3 days, anytime" or "A task · Anytime"; now Figma's "One-time · …" and
+    "Every … · Next …" (`taskDetailsLine`, `taskPlannedFor`).
+  - Its History listed Waiting, Skipped, Planned and "Task created" rows with avatars (A77: not in Figma, deleted with
+    `taskHistory` and `TaskEvent`); now the Planned notice and Nothing done yet, or the days it was done, by year.
+  - The ⋮ had Edit task, Move…, Mark as not done, Archive and "Delete task…" (no Duplicate, no Skip this time); now the
+    Tasks row's `TaskMenuItems`, with the same words, snackbars and Undo. Archive stays on the page and says so with Undo.
+  - Delete went at once; now the page leaves and the page under it says "… deleted" with Undo, deleting once Undo has
+    gone (D6), as a habit's; Tasks and Completed tasks keep it away meanwhile (`PendingDelete`). A repeating task's
+    question says its progress goes too (A80).
+  - There was no Add note; now the Extended FAB.
+  - Tests: TasksPageTest opens a planned task (its line, the notice, Nothing done yet, no tabs) and a done one (Done,
+    its day, Mark as not done with Undo).
+  Noted, not changed:
+  - Figma has no archived task; the page shows the same Archived Card notice as a habit's, with Restore, and ⋮ keeps
+    Restore and Delete.
+  - Add note on a one-time task writes to the day it was done, else its planned day once it has come, else today; a
+    repeating task's asks "Add a note to which day?" with no day chosen, as History's Add (A81). Figma doesn't say which day.

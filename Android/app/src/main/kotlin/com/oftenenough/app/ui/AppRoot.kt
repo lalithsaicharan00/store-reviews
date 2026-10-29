@@ -315,6 +315,7 @@ private fun AppMain(
                     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
                     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
                     override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
+                    override fun duplicate(habit: Habit) = nav.navigate(Routes.NEW + "?copy=${habit.id}&from=tasks")
                     override fun deleted(habit: Habit) {
                         nav.popBackStack()
                         // Today has its own snackbar, not this one: from there it goes at once, as before.

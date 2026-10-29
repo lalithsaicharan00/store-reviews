@@ -80,7 +80,7 @@ class TasksPageTest {
     private fun waitFor(m: SemanticsMatcher, what: String, timeout: Long = 15_000) {
         try {
             compose.waitUntil(timeout) {
-                for (list in listOf("today-list", "tasks-list", "tasks-repeating-list", "habits-search-results", "completed-list", "archived-list"))
+                for (list in listOf("today-list", "tasks-list", "tasks-repeating-list", "habits-search-results", "completed-list", "archived-list", "habit-details-list"))
                     if (has(hasTestTag(list))) runCatching { compose.onNodeWithTag(list).performScrollToNode(m) }
                 has(m)
             }
@@ -186,6 +186,30 @@ class TasksPageTest {
         menuFor("Pick up dry cleaning", "delete")
         here("delete-confirm")
         waitUntil("the task gone once the snackbar has", timeout = 20_000) { store.habits.none { it.name == "Pick up dry cleaning" } }
+    }
+
+    /**
+     * Task details (5.6.5, Figma 1136:9271): no tabs, only its days. Not done yet, the Planned notice over Nothing done yet;
+     * done, "Done" with the day it was done; its ⋮ the Tasks row's own (Mark as not done, with Undo).
+     */
+    @Test fun taskDetailsShowsItsDaysAndTheTasksMenu() {
+        launch()
+        tapTag("tasks-row-Call the dentist")
+        waitHere(hasTestTag("habit-details"), "Task details")
+        waitFor(hasText("One-time · " + taskDay(today - 2), substring = true), "its line")
+        waitFor(hasText("Planned for " + taskDay(today - 2), substring = true), "the Planned notice")
+        waitFor(hasText("Nothing done yet"), "Nothing done yet")
+        assertFalse("no tabs", has(hasTestTag("habit-tabs")))
+        tapTag("page-back")
+        tapTag("tasks-row-Book flights")
+        waitFor(hasText("One-time · done today"), "the done line")
+        waitFor(hasTestTag("task-group-Done"), "the Done list")
+        waitFor(hasText("Done at 9:12 AM"), "the day it was done")
+        tapTag("habit-menu")
+        here("tasks-menu-not-done")
+        waitFor(hasText("Book flights is open again"), "the snackbar")
+        undo()
+        waitUntil("done again") { store.doneEntry(task("Book flights")) != null }
     }
 
     /** A still hold does nothing (A55): nothing selects, nothing opens. */

@@ -156,43 +156,29 @@ fun HabitStore.repeatingLine(task: Habit, today: Int): String {
     return listOfNotNull(first, second).joinToString(" · ")
 }
 
-/** The heading line on a task's details (Figma 10, 7.3, 8.6): "Today · Morning", "Every 3 days, anytime", "A task · Anytime". */
+/**
+ * The line under a task's name on its Task details (Figma 1136:9271): "One-time · Tue 4 Nov, Morning", "One-time · done
+ * today", "One-time · No date"; a repeating task's rhythm and day, "Every 2 months · Next Wed 9 Dec" (never "missed", U3).
+ */
 fun HabitStore.taskDetailsLine(task: Habit, today: Int): String {
-    val part = task.parts.firstOrNull()?.takeIf { it != DaySection.ANYTIME }?.let { section(it).name } ?: "Anytime"
-    if (task.isRepeatingTask) return HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart)) + ", " + part.lowercase()
-    val due = task.dueDay
-    if (task.archived || doneEntry(task) != null || due == null || due == NO_DATE_DAY) return "A task · $part"
-    val (heading, byDay) = taskHeading(maxOf(due, today), today)
-    return (if (byDay) heading else taskDay(due)) + " · " + part
-}
-
-/** One line of a task's History (Figma 7.3, 8.6, 9.4, 10): what happened on a day, newest first. */
-data class TaskEvent(val kind: Kind, val title: String, val line: String, val day: Int? = null) {
-    enum class Kind { WAITING, PLANNED, DONE, SKIPPED, CREATED }
-}
-
-/** A task's History, grouped: Waiting first (a repeating task's open day), then Done (each time, done or skipped), then when it was made. */
-fun HabitStore.taskHistory(task: Habit, today: Int): List<Pair<String?, List<TaskEvent>>> {
-    val out = mutableListOf<Pair<String?, List<TaskEvent>>>()
-    val created = TaskEvent(TaskEvent.Kind.CREATED, "Task created", taskDay(rules.calendarDayOf(task.createdAt), today) + ", " + DayWords.clock(task.createdAt))
     if (task.isRepeatingTask) {
-        taskNext(task, today).waitingSince?.let { out += "Waiting" to listOf(TaskEvent(TaskEvent.Kind.WAITING, taskDay(it, today), "Not done yet", it)) }
-        val done = entries(task.id).map { e -> e.day to TaskEvent(TaskEvent.Kind.DONE, taskDay(e.day, today), "Done " + DayWords.clock(e.createdAt), e.day) }
-        val skips = (skips[task.id] ?: emptySet()).map { d -> d to TaskEvent(TaskEvent.Kind.SKIPPED, taskDay(d, today), "Skipped", d) }
-        val all = (done + skips).sortedByDescending { it.first }.map { it.second }
-        if (all.isNotEmpty()) out += "Done" to all
-        out += null to listOf(created)
-        return out
+        val n = taskNext(task, today)
+        val second = when {
+            n.waitingSince != null -> "Waiting since " + taskDay(n.waitingSince, today)
+            n.today -> "Next today"
+            n.next != null -> "Next " + taskDay(n.next, today)
+            else -> null
+        }
+        return listOfNotNull(HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart)), second).joinToString(" · ")
     }
-    val due = task.dueDay
-    val part = taskWhen(task)
-    val events = mutableListOf<TaskEvent>()
-    val e = doneEntry(task)
-    if (e != null) events += TaskEvent(TaskEvent.Kind.DONE, "Done " + taskDay(e.day, today) + ", " + DayWords.clock(e.createdAt),
-        (due?.takeIf { it != NO_DATE_DAY }?.let { "Planned for " + taskDay(it, today) + " · " } ?: "") + part, e.day)
-    else if (due != null && due != NO_DATE_DAY) events += TaskEvent(TaskEvent.Kind.PLANNED, "Planned for " + taskDay(due, today),
-        if (task.archived) "Not done" else "$part · not done yet", due)
-    events += created
-    out += null to events
-    return out
+    doneEntry(task)?.let { return "One-time · done " + if (it.day == today) "today" else taskDay(it.day, today) }
+    return "One-time · " + (taskPlannedFor(task, today) ?: "No date")
+}
+
+/** A one-time task's day with its time and time of day: "Tue 4 Nov, Morning", "Today, 5:00 PM, Evening"; null with No date. */
+fun HabitStore.taskPlannedFor(task: Habit, today: Int): String? {
+    val due = task.dueDay?.takeIf { it != NO_DATE_DAY } ?: return null
+    val part = task.parts.firstOrNull()?.takeIf { it != DaySection.ANYTIME }?.let { section(it).name }
+    val time = task.dueMinute?.let { DayWords.clockMinute(it) }
+    return listOfNotNull(if (due == today) "Today" else taskDay(due, today), time, part).joinToString(", ")
 }

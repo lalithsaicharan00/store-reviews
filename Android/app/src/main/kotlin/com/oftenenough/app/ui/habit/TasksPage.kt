@@ -102,7 +102,7 @@ interface TasksNav {
 private class TaskSection(val key: String, val title: String, val tasks: List<Habit>, val note: String? = null, val drag: Boolean = false)
 
 /** What a row's ⋮ offers, by the kind of row. */
-private enum class RowKind { ONE_TIME, DONE, NO_DATE, REPEATING }
+internal enum class RowKind { ONE_TIME, DONE, NO_DATE, REPEATING }
 
 /**
  * 5.5.4, **Tasks page** (Figma 999:1061; Components — Atoms Build Plan; A55, A57, A58): Habits & Tasks' Tasks tab,
@@ -134,7 +134,8 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     val oneTimeList = rememberLazyListState()
     val repeatingList = rememberLazyListState()
 
-    val all = store.habits.filter { it.isTask && it.id !in hidden }
+    // A task deleted from its Task details stays away while the snackbar there offers Undo.
+    val all = store.habits.filter { it.isTask && it.id !in hidden && it.id !in PendingDelete.ids }
     val open = all.filter { !it.archived }
     val archived = all.filter { it.archived }
     val oneTime = open.filter { it.isOneTimeTask }
@@ -375,7 +376,7 @@ internal fun TaskRow(
  * today; then Duplicate, Archive and Delete (Error).
  */
 @Composable
-private fun TaskMenuItems(
+internal fun TaskMenuItems(
     kind: RowKind, dismiss: () -> Unit, onEdit: () -> Unit, onDuplicate: () -> Unit, onToday: () -> Unit,
     onPick: () -> Unit, onSkip: () -> Unit, onNotDone: () -> Unit, onArchive: () -> Unit, onDelete: () -> Unit,
 ) {

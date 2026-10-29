@@ -77,12 +77,7 @@ import com.oftenenough.app.data.habitRecord
 import com.oftenenough.app.data.history
 import com.oftenenough.app.data.pageDayDate
 import com.oftenenough.app.data.pageGoalLine
-import com.oftenenough.app.data.doneEntry
-import com.oftenenough.app.data.isOneTimeTask
 import com.oftenenough.app.data.isTask
-import com.oftenenough.app.data.taskDetailsLine
-import com.oftenenough.app.data.taskMoveRange
-import com.oftenenough.app.data.taskOpenDay
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
@@ -111,17 +106,14 @@ interface HabitDetailsNav {
     /** Delete, confirmed: the page closes and the page under it says "Water deleted" with Undo; it goes once Undo has
      *  (Figma's Delete flow, D6). */
     fun deleted(habit: Habit)
+    /** A task's Duplicate: New task, filled in from it. */
+    fun duplicate(habit: Habit)
 }
 
 /** Progress · History: two jobs, one control. */
 enum class HabitTab(val title: String, val tag: String) {
     PROGRESS("Progress", "habit-tab-progress"),
     HISTORY("History", "habit-tab-history");
-
-    companion object {
-        /** A task has no Progress: its history is all there is, with no tabs (Figma 6.5). */
-        fun tabs(habit: Habit): List<HabitTab> = if (habit.kind == HabitKind.Task) listOf(HISTORY) else entries.toList()
-    }
 }
 
 /**
@@ -182,10 +174,12 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         }
         return
     }
+    // A task has its own page, with no tabs: only its days (5.6.5). A type never changes (A68), so neither does the page.
+    if (habit.isTask) { TaskDetailsScreen(habit, store, nav, onBack); return }
     val revision = store.revision(habit.id)
     val today = store.today()
     val model = remember(habitId) { HabitPageModel() }
-    val tabs = HabitTab.tabs(habit)
+    val tabs = HabitTab.entries
     // The page opens on Progress (Figma 1.1); a task has History only.
     var tab by rememberSaveable(habitId) { mutableStateOf(tabs.first()) }
     val shown = if (tab in tabs) tab else tabs.first()
@@ -206,10 +200,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     var historyToggled by remember(habitId) { mutableStateOf(emptySet<Int>()) }
     val showStreaks = store.setting(SHOW_STREAKS) != "false"
     val showPercentages = store.setting(SHOW_PERCENTAGES) != "false"
-    val sentence = remember(habit, store.sections, store.weekStart, today, revision, store.taskMoves) {
-        if (habit.isTask) store.taskDetailsLine(habit, today) else store.pageGoalLine(habit)
-    }
-    var moving by remember { mutableStateOf(false) }
+    val sentence = remember(habit, store.sections, store.weekStart, today, revision) { store.pageGoalLine(habit) }
     // Go to date's day, lit in the habit's colour for a moment (Figma 2.7, "History · gone to a date").
     var lit by remember(habitId) { mutableStateOf<Int?>(null) }
     val listState = rememberLazyListState()
@@ -241,14 +232,14 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         StreaksPage(habit, store, today, revision) { allStreaks = false }
         return
     }
-    val months = if (shown == HabitTab.HISTORY && !habit.isTask) model.history(store, habit, revision, today) else emptyList()
+    val months = if (shown == HabitTab.HISTORY) model.history(store, habit, revision, today) else emptyList()
     if (searching) {
         HistorySearchPage(habit.name, months, habit.color, onBack = { searching = false }) { day -> nav.openDay(habit, day) }
         return
     }
     val earlier = remember(habit, store.habits) { store.earlierOf(habit.id) }
     val barColor = if (collapsed) scrolledTopBarColor else MaterialTheme.colorScheme.surfaceContainer
-    val fresh = !habit.isTask && !habit.archived && store.entries(habit.id).isEmpty()
+    val fresh = !habit.archived && store.entries(habit.id).isEmpty()
     // Another tab starts at its own top, just under the pinned tabs, wherever the last one was scrolled to.
     LaunchedEffect(shown) { if (listState.firstVisibleItemIndex > 1) listState.scrollToItem(1) }
 
@@ -260,9 +251,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                 actions = {
                     Box {
                         IconButton({ menuOpen = true }, Modifier.semantics { testTag = "habit-menu" }) { Icon(Symbols.MoreVert, "More") }
-                        if (habit.isTask) TaskMenu(habit, store, menuOpen, onDismiss = { menuOpen = false }, onEdit = { nav.edit(habit) },
-                            onMove = { moving = true }, onDelete = { confirmDelete = true }, onArchive = { store.archive(listOf(habit)); onBack() })
-                        else HabitMenu(habit, store, today, menuOpen, onDismiss = { menuOpen = false }, nav = nav,
+                        HabitMenu(habit, store, today, menuOpen, onDismiss = { menuOpen = false }, nav = nav,
                             onDelete = { confirmDelete = true }, onArchive = ::archive,
                             onNoRoom = { noRoom = true })
                     }
@@ -290,8 +279,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                     }
                     HabitTab.HISTORY -> {
                         if (earlier != null) item(key = "earlier") { EarlierCard(habit, earlier, store) { nav.openHabit(earlier) } }
-                        if (habit.isTask) taskHistoryItems(store, habit, today) { day -> nav.openDay(habit, day) }
-                        else historyItems(
+                        historyItems(
                             color = habit.color, months = months, filter = filter, toggled = historyToggled,
                             onSearch = { searching = true }, onFilter = { filter = it }, onGoToDate = { goToDate = true },
                             onToggleMonth = { m -> historyToggled = if (m in historyToggled) historyToggled - m else historyToggled + m },
@@ -331,22 +319,12 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     }
     if (confirmDelete) {
         AppDialog("Delete ${habit.name}?",
-            if (habit.isTask) "Its history and notes are deleted too. To keep them, archive it instead."
-                else "Its logs, notes, streaks and milestones go too. To keep them, archive it instead: Archive is in the same menu.",
+            "Its logs, notes, streaks and milestones go too. To keep them, archive it instead: Archive is in the same menu.",
             "Delete", {
                 confirmDelete = false
                 // The page leaves first (U27); the page under it deletes once its Undo has gone.
-                if (habit.isTask) { onBack(); store.delete(listOf(habit)) } else nav.deleted(habit)
+                nav.deleted(habit)
             }, { confirmDelete = false }, destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
-    }
-    if (moving) {
-        // Another day for a task (Figma 10): a one-time task any day from today; a repeating one's open day before its next.
-        val range = store.taskMoveRange(habit, today) ?: (today..today)
-        val from = store.taskOpenDay(habit, today)
-        DayDialog(minOf(range.last, today + 1), { it in range && it != from }, onDismiss = { moving = false }) { day ->
-            moving = false
-            if (habit.isOneTimeTask) store.moveTask(habit, day) else if (from != null) store.moveOccurrence(habit, from, day)
-        }
     }
     if (noRoom) {
         AppDialog("No room for another habit",
@@ -490,7 +468,7 @@ private fun HabitMenu(
         AppMenuItem(text, { onDismiss(); act() }, icon = icon, destructive = danger, tag = tag)
     AppMenu(expanded, onDismiss) {
         // An archived habit's ⋮ holds Restore and Delete habit… only (Habits, Figma 6.6).
-        if (!habit.archived) item(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", Symbols.Edit, "habit-menu-edit") { nav.edit(habit) }
+        if (!habit.archived) item("Edit habit", Symbols.Edit, "habit-menu-edit") { nav.edit(habit) }
         if (!habit.archived && (store.rules.canPause(habit) || pause != null)) {
             if (pause != null && today in pause) item("Resume", Symbols.PlayCircle, "habit-menu-resume") { store.resume(habit) }
             else if (pause != null) item("Cancel pause from " + DayWords.short(pause.from), Symbols.Cancel, "habit-menu-cancel-pause") { store.resume(habit) }
@@ -500,33 +478,6 @@ private fun HabitMenu(
         if (habit.archived) item("Restore", Symbols.Unarchive, "habit-menu-restore") { if (!store.restore(habit)) onNoRoom() }
         else { MenuDivider(); item("Archive", Symbols.Archive, "habit-menu-archive", act = onArchive) }
         item("Delete", Symbols.Delete, "habit-menu-delete", danger = true, act = onDelete)
-    }
-}
-
-/**
- * A task's ⋮ (Tasks, Figma 10, 8.6, 9.4): Edit task, Move to another day…, Mark as not done once a one-time task is done,
- * Archive, Delete task…; archived: Restore and Delete task….
- */
-@Composable
-private fun TaskMenu(
-    task: Habit, store: HabitStore, expanded: Boolean, onDismiss: () -> Unit, onEdit: () -> Unit, onMove: () -> Unit,
-    onDelete: () -> Unit, onArchive: () -> Unit,
-) {
-    val done = if (task.isOneTimeTask) store.doneEntry(task) else null
-    @Composable
-    fun item(text: String, icon: ImageVector, tag: String, danger: Boolean = false, act: () -> Unit) =
-        AppMenuItem(text, { onDismiss(); act() }, icon = icon, destructive = danger, tag = tag)
-    AppMenu(expanded, onDismiss) {
-        if (task.archived) item("Restore", Symbols.Unarchive, "habit-menu-restore") { store.restore(task) }
-        else {
-            item("Edit task", Symbols.Edit, "habit-menu-edit", act = onEdit)
-            if (done != null) item("Mark as not done", Symbols.Undo, "habit-menu-not-done") { store.undoEntry(done.id) }
-            else if (store.taskMoveRange(task, store.today()) != null)
-                item("Move to another day…", Symbols.Event, "habit-menu-move", act = onMove)
-            item("Archive", Symbols.Archive, "habit-menu-archive", act = onArchive)
-        }
-        MenuDivider()
-        item("Delete task…", Symbols.Delete, "habit-menu-delete", danger = true, act = onDelete)
     }
 }
 

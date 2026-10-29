@@ -97,8 +97,8 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
     val today = store.today()
     BackHandler { nav.back() }
 
-    val all = remember(store.habits, store.dataVersion, hidden, today) {
-        store.habits.filter { it.isTask && !it.archived && it.id !in hidden }.flatMap { t ->
+    val all = remember(store.habits, store.dataVersion, hidden, today, PendingDelete.ids.toList()) {
+        store.habits.filter { it.isTask && !it.archived && it.id !in hidden && it.id !in PendingDelete.ids }.flatMap { t ->
             val list = if (t.isOneTimeTask) listOfNotNull(store.doneEntry(t)) else store.entries(t.id)
             list.map { e -> Done(t, e, store.today(e.createdAt)) }
         }.sortedByDescending { it.entry.createdAt }
