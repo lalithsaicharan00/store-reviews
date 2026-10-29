@@ -194,6 +194,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     // Opened at All milestones by a landmark's pop-up (Figma 14.1).
     var allMilestones by rememberSaveable(habitId) { mutableStateOf(HabitPageOpen.milestones == habitId.also { HabitPageOpen.milestones = null }) }
     var allStreaks by rememberSaveable(habitId) { mutableStateOf(false) }
+    var howMilestones by rememberSaveable(habitId) { mutableStateOf(false) }
     // "What the squares mean" starts folded (Figma's details pages: "it stays folded everywhere"); open for this visit only.
     var keyOpen by rememberSaveable(habitId) { mutableStateOf(false) }
     val toggleKey: () -> Unit = { keyOpen = !keyOpen }
@@ -224,8 +225,13 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     val first = if (habit.kind == HabitKind.Quit) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
 
     val progress = if ((shown == HabitTab.PROGRESS && ready) || allMilestones || allStreaks) model.progress(store, habit, revision, today) else null
+    if (howMilestones) {
+        // Over All milestones: ← goes back there.
+        HowMilestonesWorkPage(habit.kind == HabitKind.Quit || habit.atMost) { howMilestones = false }
+        return
+    }
     if (allMilestones && progress != null) {
-        AllMilestonesPage(habit.name, progress.second.shown(showStreaks), habit.color) { allMilestones = false }
+        AllMilestonesPage(habit.name, progress.second.shown(showStreaks), habit.color, onHowTheyWork = { howMilestones = true }) { allMilestones = false }
         return
     }
     if (allStreaks) {

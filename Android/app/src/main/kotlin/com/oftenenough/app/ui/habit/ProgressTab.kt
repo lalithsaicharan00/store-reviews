@@ -2,6 +2,8 @@ package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.Medal
 import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.ListAvatar
 import com.oftenenough.app.ui.components.AppCircularProgress
 import com.oftenenough.app.ui.components.CircularProgressLabel
 import com.oftenenough.app.ui.components.MilestonePopup
@@ -231,11 +233,11 @@ private fun QuitClockText(start: Long, clock: () -> Long) {
  * 12 above, 4 below) over one rounded list of two-line List items 2 apart on Surface container lowest: first its next
  * milestone (the Circular progress, 40, with its number; "Next · 7 to go · now 23"), then every one reached, newest
  * first (the Small Medal, 40; "Reached 13 Oct"). A reached one opens its pop-up again ("Water · 13 Oct", that track's
- * next, Close | All milestones, both closing it).
+ * next, Close | All milestones, both closing it). Last, 24 under, "How milestones work ›" (help in its avatar).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, color: HabitColor, onBack: () -> Unit) {
+internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, color: HabitColor, onHowTheyWork: () -> Unit, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     val s = MaterialTheme.colorScheme
     val tracks = remember(milestones) {
@@ -248,7 +250,7 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
             "All milestones",
             navigationIcon = { IconButton(onBack, Modifier.semantics { testTag = "milestones-back" }) { Icon(Symbols.ArrowBack, "Back") } },
         )
-        LazyColumn(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp)) {
+        LazyColumn(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp).semantics { testTag = "all-milestones-list" }) {
             item(key = "summary") {
                 Text("$habitName · ${milestones.reached.size} reached", Modifier.padding(start = 16.dp, top = 8.dp),
                     style = AppType.bodyMedium, color = s.onSurfaceVariant)
@@ -283,13 +285,11 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
                         onClick = { again = m }, containerColor = s.surfaceContainerLowest)
                 }
             }
-            item(key = "all-milestones-note") {
-                Text(
-                    if (tracks.contains(Milestone.Track.SINCE_SLIP)) "Each track shows its next milestone. Reached ones stay, even after a slip."
-                    else "Each track shows its next milestone. Reached ones stay, even if a streak ends. Anniversaries count each year " +
-                        "from the first log, when the goal was met in the 30 days before.",
-                    Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 40.dp).navigationBarsPadding(),
-                    style = AppType.bodySmall, color = s.onSurfaceVariant)
+            // How milestones work ›, 24 under the last list (Figma), opening its page (5.6.6).
+            item(key = "how-milestones-work") {
+                AppListItem("How milestones work", 0, 1, Modifier.padding(top = 24.dp, bottom = 40.dp).navigationBarsPadding(),
+                    leading = { ListAvatar(Symbols.Help) }, trailing = { ListChevron() }, onClick = onHowTheyWork,
+                    containerColor = s.surfaceContainerLowest, tag = "how-milestones-work")
             }
         }
     }

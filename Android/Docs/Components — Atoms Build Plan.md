@@ -144,7 +144,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.6.3 | Details pages · All milestones page | 1036:235 | ☑ |
 | 5.6.4 | Details pages · Notes search page | 1053:9079 | ☑ |
 | 5.6.5 | Details pages · Task details page | 1136:9271 | ☑ |
-| 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☐ |
+| 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☑ |
 | 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☐ |
 | 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☐ |
 | 5.7.3 | Create new · Create new form | 1065:2597 | ☐ |
@@ -2199,3 +2199,26 @@ What each atom changed, newest last.
     Restore and Delete.
   - Add note on a one-time task writes to the day it was done, else its planned day once it has come, else today; a
     repeating task's asks "Add a note to which day?" with no day chosen, as History's Add (A81). Figma doesn't say which day.
+  - **Built:** run 40935987561 (Android #155, commit c05fd05) passed: assembleDebug, unit tests and lint.
+
+- **5.6.6 Details pages · How milestones work page (29 Oct).** Figma: How milestones work page (1142:29063), Screen How
+  milestones work · Quitting and cutting down, and All milestones' last row. From "How milestones work ›" (24 under
+  All milestones' last list, a one-line List item on Surface container lowest, help in its avatar, ›). On Surface
+  container: the Top app bar (← "How milestones work"); content 16 at the sides, 8 above, 40 under, 8 apart: per part
+  a subheader in Label Large Primary (16 in, 12 above, 4 below) over a card on Surface container lowest (corners 24,
+  16 inside, 12 between lines) in Body Medium On surface. A habit to reach: In a row, In total, Anniversaries, Which
+  ones get a pop-up, Quitting and cutting down. A quit habit or a limit: Quitting: days clean in a row, Quitting: clean
+  days in total, Cutting down: days within the limit, Never counted, Anniversaries, Which ones get a pop-up. ← goes back
+  to All milestones. It is `HowMilestonesWorkPage` (`habit/HowMilestonesWork.kt`). The app, the unit tests (55), lint
+  and the instrumented tests' code build in the session.
+  Fixed:
+  - There was no such page; now Figma's, with both screens' words.
+  - All milestones ended with a note in Body Small (A77: not in Figma, deleted); now the How milestones work row.
+  - Tests: HabitDetailsTest's milestones test opens the page from All milestones, checks its parts and comes back.
+  Noted, not changed:
+  - The page's words are Figma's. For a habit to reach they match the shared rule (`MilestoneRule`: 3 … 365 days, 2 …
+    52 weeks, 2 … 12 months in a row; 10 … 1,000 in total; pop-ups at 30, 180, 365 days). **For a quit habit they
+    don't, held for the user:** the app's quit milestones (`quitMilestoneLadder`, All milestones' one "since a slip"
+    track) are 1, 3, 7, 10, 14, 30, 45, 60, 90, 120, 180, 270, 365, 500, 730 days, then every year, with no clean days
+    in total; the page says 3, 7, 14, 30, 60, 90, 180 and 365 clean in a row, and 10 … 1,000 clean days in total. A
+    rule that changes numbers people see is the user's decision (T21).

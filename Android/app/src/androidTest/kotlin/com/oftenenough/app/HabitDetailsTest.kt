@@ -72,7 +72,7 @@ class HabitDetailsTest {
     private fun waitFor(m: SemanticsMatcher, what: String, timeout: Long = 15_000) {
         try {
             compose.waitUntil(timeout) {
-                for (list in listOf("today-list", "habit-details-list", "search-results"))
+                for (list in listOf("today-list", "habit-details-list", "search-results", "all-milestones-list"))
                     if (has(hasTestTag(list))) runCatching { compose.onNodeWithTag(list).performScrollToNode(m) }
                 has(m)
             }
@@ -130,6 +130,12 @@ class HabitDetailsTest {
         waitFor(hasTestTag("landmark-popup"), "its pop-up again")
         tapTag("landmark-close")
         waitGone(hasTestTag("landmark-popup"), "the pop-up")
+        // How milestones work ›, at the end (5.6.6): its page, and ← back to All milestones.
+        tapTag("how-milestones-work")
+        waitFor(hasTestTag("how-milestones"), "How milestones work")
+        for (part in listOf("In a row", "In total", "Which ones get a pop-up")) waitFor(hasText(part), "the part $part")
+        tapTag("how-milestones-back")
+        waitFor(hasTestTag("all-milestones"), "back on All milestones")
         tapTag("milestones-back")
         waitFor(hasTestTag("habit-details"), "back on the page")
     }
