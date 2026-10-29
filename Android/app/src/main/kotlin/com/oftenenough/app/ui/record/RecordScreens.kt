@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,7 +73,6 @@ import com.oftenenough.app.data.originLine
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.components.StepRow
 import com.oftenenough.app.ui.components.StepRowPlace
-import com.oftenenough.app.ui.day.logCount
 import com.oftenenough.app.ui.day.logsTitle
 import com.oftenenough.app.ui.theme.appColors
 import java.time.ZoneId
@@ -409,7 +407,14 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
     if (discard) DiscardDialog("Discard your changes to this $noun?", { discard = false }, { discard = false; editing = false })
 }
 
-/** All of a day's logs, newest first (Figma 1.7: from "All N logs ›"), titled as Day details titles them. */
+/**
+ * All logs (Figma's All logs screen, 694:607): every record of one habit on one day, newest first, opened from Day
+ * details' "All N logs ›". The Top app bar with ← and the title Day details gives the list ("Today’s logs", "Slips on
+ * Wed 21 Oct"); the content 16 at the sides, 8 apart, nothing above: the rows, one-line List items 2 apart on Surface
+ * container lowest (the value in Title Medium; the clock in Body Medium On surface variant, 16, ›), then the footer
+ * ("7 glasses in all. Tap a log to change or delete it."). A row opens the Log screen's View; a check, which has
+ * nothing to view, keeps its named Undo in place of ›.
+ */
 @Composable
 fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -> Unit, onBack: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onBack() }; return }
@@ -426,17 +431,16 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
     }
     Column(Modifier.fillMaxSize().background(c.screen).navigationBarsPadding()) {
         RecordTopBar(logsTitle(ruled, day, store.today()), close = false, onClose = onBack)
-        Column(Modifier.verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            SectionTitle(habit.name + " · " + logCount(logs.size, ruled))
+        Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) {
                 logs.forEachIndexed { i, e ->
                     val opens = e.opensRecord(ruled)
                     AppListItem(e.description(ruled), i, logs.size, headlineLines = 1, tag = "all-log-$i", onClick = if (opens) ({ onLog(e) }) else null,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                         trailing = { com.oftenenough.app.ui.day.LogTrailing(e, ruled, opens) { store.undoEntry(e.id) } })
                 }
             }
             Footer(all)
-            Spacer(Modifier.height(16.dp))
         }
     }
 }

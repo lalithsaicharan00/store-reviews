@@ -118,7 +118,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☑ |
 | 5.3.1 | Day details · Day details sheet | 669:234 | ☑ |
 | 5.3.2 | Day details · Log screen | 687:829 | ☑ |
-| 5.3.3 | Day details · All logs screen | 694:607 | ☐ |
+| 5.3.3 | Day details · All logs screen | 694:607 | ☑ |
 | 5.3.4 | Day details · Dialog | 702:618 | ☐ |
 | 5.3.5 | Day details · Time picker | 703:602 | ☐ |
 | 5.3.6 | Day details · Date picker | 705:1025 | ☐ |
@@ -1586,3 +1586,22 @@ What each atom changed, newest last.
   - "Recorded in India Standard Time", for a record made in another time zone, isn't in this frame (Figma 9.3.4); kept.
   - The Add screen's Steps card (Tick steps) and the check / mark-done kinds aren't in this frame; they keep their
     look until their own frames.
+  - **Built:** run 40799737559 (Android #129, commit bdd5dde) passed: assembleDebug, unit tests and lint.
+- **5.3.3 Day details · All logs screen (29 Oct).** Figma: All logs screen (694:607), with Log 3 … Log 6 and the
+  Footer as properties. Every record of one habit on one day, newest first, from Day details' "All N logs ›": the Top
+  app bar (64) with ← and "Today’s logs"; the content 16 at the sides, 8 apart, nothing above; the rows, one-line List
+  items 56 high, 2 apart, on Surface container lowest (the value in Title Medium On surface; the clock in Body Medium On
+  surface variant and ›, 16 apart); the footer in Body Small On surface variant ("7 glasses in all. Tap a log to change
+  or delete it."). A row opens the Log screen's View. It is `AllLogsScreen` (`record/RecordScreens.kt`); the rows'
+  end is Day details' `LogTrailing`. Every tag the tests use stays. The app, the unit tests (55) and the instrumented
+  tests' code build in the session.
+  Fixed:
+  - A title over the rows ("Water · 6 logs", Label Large) isn't in Figma; gone. The habit's name was only there; the
+    screen opens from that habit's Day details, which names it.
+  - The rows were on the List item's default colour; now Surface container lowest, as Figma and Day details.
+  - The clock and › (or Undo) were 8 apart; now 16, the List item's own gap (Day details' log rows too).
+  - The content had 8 above and 16 under it; now neither, as Figma.
+  - "Today's logs" had a straight apostrophe; now Figma's ’ (Day details' section title too).
+  Noted, not changed:
+  - A check's rows (a counted check has nothing to view) keep their named Undo in place of ›, and their footer "Undo
+    takes one back."; Figma draws only amounts.

@@ -429,10 +429,10 @@ private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: Ha
         trailing = { LogTrailing(entry, habit, opens) { store.undoEntry(entry.id) } })
 }
 
-/** A log row's end: its time (tabular figures), then › when it opens, or a check's named Undo. */
+/** A log row's end (Figma's List item: Trailing text, then its icon, 16 apart): its time (tabular figures), then › when it opens, or a check's named Undo. */
 @Composable
 internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, onUndo: () -> Unit) =
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(clockText(entry), style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"))
         if (opens) ListChevron()
         else AppButton("Undo", onUndo, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }, style = ButtonStyle.Text)
@@ -443,7 +443,7 @@ fun logsTitle(habit: Habit, day: Int, today: Int): String {
     return when (habit.kind) {
         HabitKind.Quit -> if (day == today) "Slips today" else "Slips on $short"
         HabitKind.Check -> if (day == today) "Checks today" else "Checks on $short"
-        else -> if (day == today) "Today's logs" else "Logs for $short"
+        else -> if (day == today) "Today’s logs" else "Logs for $short"
     }
 }
 
