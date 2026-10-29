@@ -67,8 +67,8 @@ import com.oftenenough.app.data.dayKey
 import com.oftenenough.app.data.pageDayDate
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.segmentShape
-import com.oftenenough.app.ui.record.dayToUtcMs
-import com.oftenenough.app.ui.record.utcMsToDay
+import com.oftenenough.app.ui.components.dayToUtcMs
+import com.oftenenough.app.ui.components.utcMsToDay
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay

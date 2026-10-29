@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.components.AppDatePicker
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.asPaddingValues
@@ -45,8 +46,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -59,7 +58,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -87,9 +85,6 @@ import com.oftenenough.app.ui.components.EmptyState
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.ui.input.pointer.PointerEventPass
@@ -361,21 +356,8 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     // Back on another day returns to today first (Figma 4.2).
     androidx.activity.compose.BackHandler(enabled = !isToday) { shownDay = null }
     if (calendar) {
-        val state = rememberDatePickerState(initialSelectedDateMillis = LocalDate.ofEpochDay(day.toLong()).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
-        DatePickerDialog(
-            onDismissRequest = { calendar = false },
-            confirmButton = {
-                AppButton("Go", {
-                    state.selectedDateMillis?.let { ms ->
-                        val picked = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()
-                        shownDay = if (picked == today) null else picked
-                    }
-                    calendar = false
-                }, Modifier.semantics { testTag = "calendar-go" }, style = ButtonStyle.Text)
-            },
-            dismissButton = { AppButton("Cancel", { calendar = false }, style = ButtonStyle.Text) },
-        ) {
-            DatePicker(state, title = { Text("Go to a day", Modifier.padding(start = 24.dp, top = 16.dp)) })
+        AppDatePicker(day, { true }, { calendar = false }, title = "Go to a day", confirm = "Go", confirmTag = "calendar-go") { picked ->
+            shownDay = if (picked == today) null else picked
         }
     }
 }

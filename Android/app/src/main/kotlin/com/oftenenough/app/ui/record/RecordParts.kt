@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppTimePicker
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
@@ -24,12 +25,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +47,6 @@ import com.oftenenough.app.ui.components.HabitIcon
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -130,8 +126,6 @@ class ValueDraft(val kind: HabitKind, initial: Double? = null) {
 }
 
 private val dateFormat = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)
-fun dayToUtcMs(day: Int): Long = LocalDate.ofEpochDay(day.toLong()).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
-fun utcMsToDay(ms: Long): Int = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()
 
 /** A tonal pill button that opens a picker ("7 Oct 2026", "2:15 PM"). */
 @Composable
@@ -178,12 +172,7 @@ fun DateTimeRows(
             RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = bottom, bottomStart = 4.dp), "record-time", Modifier) { pickTime = true }
     }
     if (pickDay) {
-        val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
-            override fun isSelectableDate(utcTimeMillis: Long) = utcMsToDay(utcTimeMillis) in range
-        })
-        DatePickerDialog({ pickDay = false }, confirmButton = {
-            AppButton("OK", { state.selectedDateMillis?.let { onDay(utcMsToDay(it)) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }, style = ButtonStyle.Text)
-        }, dismissButton = { AppButton("Cancel", { pickDay = false }, style = ButtonStyle.Text) }) { DatePicker(state) }
+        AppDatePicker(day, { it in range }, { pickDay = false }, onPick = onDay)
     }
     if (pickTime) {
         val zone = ZoneId.systemDefault()

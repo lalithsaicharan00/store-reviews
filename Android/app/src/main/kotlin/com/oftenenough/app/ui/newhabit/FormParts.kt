@@ -1,12 +1,11 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppTimePicker
 import com.oftenenough.app.ui.components.DayToggle
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.components.AppFilledIconButton
 import com.oftenenough.app.ui.components.AppCheckbox
@@ -34,16 +33,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,8 +50,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.oftenenough.app.ui.record.dayToUtcMs
-import com.oftenenough.app.ui.record.utcMsToDay
 import com.oftenenough.app.ui.theme.appColors
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -188,31 +181,12 @@ fun WeekdayCircles(selected: Set<Int>, weekStart: Int, tag: String, onChange: (S
 }
 
 /**
- * Android's date picker in its dialog; [allowed] limits the days. Figma 2.1.7, 3.1.1, 4.3: its title says what's being
- * chosen ("Starts", "Started", "Select date"), the day reads "Tue, 13 Oct", and a [note] under the month says what it does.
+ * The Date picker (5.3.6, [AppDatePicker]); [allowed] limits the days. Figma 2.1.7, 3.1.1, 4.3: its title says what's
+ * being chosen ("Starts", "Started", "Select date"), and a [note] under the day says what it does.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title: String = "Select date", note: String? = null, onPick: (Int) -> Unit) {
-    val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
-        override fun isSelectableDate(utcTimeMillis: Long) = allowed(utcMsToDay(utcTimeMillis))
-    })
-    DatePickerDialog(onDismiss, confirmButton = {
-        AppButton("OK", { state.selectedDateMillis?.let { onPick(utcMsToDay(it)) }; onDismiss() }, Modifier.semantics { testTag = "date-ok" }, style = ButtonStyle.Text)
-    }, dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) }) {
-        DatePicker(state,
-            title = { Text(title, Modifier.padding(start = 24.dp, end = 12.dp, top = 16.dp), style = AppType.labelLarge) },
-            headline = {
-                val picked = state.selectedDateMillis?.let { utcMsToDay(it) }
-                Column(Modifier.padding(start = 24.dp, end = 12.dp, bottom = 12.dp)) {
-                    Text(picked?.let { LocalDate.ofEpochDay(it.toLong()).format(DateTimeFormatter.ofPattern("EEE, d MMM", Locale.getDefault())) } ?: "",
-                        style = AppType.headlineLarge, maxLines = 1)
-                    // The note sits under the day: below the picker it was drawn over the title (a DatePicker takes the dialog's height).
-                    if (note != null) Text(note, Modifier.padding(top = 4.dp), style = AppType.bodySmall, color = appColors.secondary)
-                }
-            })
-    }
-}
+fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title: String = "Select date", note: String? = null, onPick: (Int) -> Unit) =
+    AppDatePicker(day, allowed, onDismiss, title, confirmTag = "date-ok", note = note, onPick = onPick)
 
 /** The Time picker (5.3.5, [AppTimePicker]) with minutes of the day in and out. */
 @Composable

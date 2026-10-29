@@ -121,7 +121,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.3.3 | Day details · All logs screen | 694:607 | ☑ |
 | 5.3.4 | Day details · Dialog | 702:618 | ☑ |
 | 5.3.5 | Day details · Time picker | 703:602 | ☑ |
-| 5.3.6 | Day details · Date picker | 705:1025 | ☐ |
+| 5.3.6 | Day details · Date picker | 705:1025 | ☑ |
 | 5.3.7 | Day details · Timer screen | 705:7745 | ☐ |
 | 5.3.8 | Day details · Note screen | 765:1087 | ☐ |
 | 5.4.1 | Routine player · Routine player | 906:89513 | ☐ |
@@ -1655,3 +1655,30 @@ What each atom changed, newest last.
   - The dial isn't drawn in Figma; it keeps Material's colours, with the dialog's container and Figma's AM / PM.
   - The description names Surface container high (Material's token); the frame is filled Surface bright, as the Dialog
     (5.3.4); Surface bright used.
+  - **Built:** run 40802035903 (Android #132, commit f379e17) passed: assembleDebug, unit tests and lint.
+- **5.3.6 Day details · Date picker (29 Oct).** Figma: Date picker (705:1025), Limit Any day · Today and earlier ·
+  Tomorrow and later · Today and later. Android's date picker in its calendar mode: corners 28; the header 24 in, 16
+  above ("Select date" in Label Large On surface variant, 16, "Wed, 21 Oct" in Headline Large On surface, ✏ to type);
+  a divider in Outline variant; the month ▾ and ‹ › in On surface variant; weekdays and days in Body Large On surface,
+  40 dp circles, six rows always, the chosen day Primary with On primary; days outside the limit in Outline, not
+  tappable; Cancel and OK in Text. It is `AppDatePicker` (`components/DatePickerDialog.kt`): Material 1.5's own
+  `DatePickerDialog` and `DatePicker` on Surface bright, the limit given as `allowed`. A log's and a note's Date, the
+  forms' days (`DayDialog`: Starts, Started, a task's date), Another day (moving a task, "Move") and Today's Go to a
+  day ("Go") open it. `dayToUtcMs` / `utcMsToDay` moved with it from `record/RecordParts.kt`. Tags `picker-ok`,
+  `date-ok`, `calendar-go` stay. The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - Six date pickers each built Material's dialog with its colours: Surface container high, the headline and divider
+    in Material's roles, days it can't take in On surface at 38 %; now one component on Surface bright with the
+    headline On surface and those days in Outline, as Figma.
+  - A log's and a note's Date, Another day and Go to a day showed Material's own headline (its date format); now
+    every one shows the day as "Wed, 21 Oct" in Headline Large under its title in Label Large, as the forms' did.
+  Noted, not changed:
+  - Figma's dialog is 328 wide; Material's date picker dialog is 360 (its own fixed width, with 48 dp touch room per
+    day), so on a 360 dp phone it meets the screen's edges. Narrowing it would squeeze Material's day cells; kept until
+    it can be checked on a phone.
+  - Material rings today's date in Primary; Figma draws no ring (Tomorrow and later shows today in plain Outline);
+    Material's ring kept.
+  - "Add to which day?" (Habit details' History) has its own title and wording (Figma 2.11); it moves with its page
+    (5.6).
+  - The description names Surface container high; the frames are filled Surface bright, as the Dialog (5.3.4);
+    Surface bright used.

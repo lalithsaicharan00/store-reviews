@@ -1,9 +1,8 @@
 package com.oftenenough.app.ui.record
 
+import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppAssistChip
 import com.oftenenough.app.ui.theme.AppType
 
@@ -27,13 +26,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -157,11 +152,6 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
         "Delete note", { confirmDelete = false; save(""); onDone() }, { confirmDelete = false }, destructive = true, confirmTag = "note-delete-confirm")
     if (pickDay) {
         val first = habit?.let { store.rules.startDay(it) } ?: Int.MIN_VALUE
-        val state = rememberDatePickerState(initialSelectedDateMillis = dayToUtcMs(day), selectableDates = object : SelectableDates {
-            override fun isSelectableDate(utcTimeMillis: Long) = utcMsToDay(utcTimeMillis).let { it <= today && it >= first }
-        })
-        DatePickerDialog({ pickDay = false }, confirmButton = {
-            AppButton("OK", { state.selectedDateMillis?.let { day = utcMsToDay(it) }; pickDay = false }, Modifier.semantics { testTag = "picker-ok" }, style = ButtonStyle.Text)
-        }, dismissButton = { AppButton("Cancel", { pickDay = false }, style = ButtonStyle.Text) }) { DatePicker(state) }
+        AppDatePicker(day, { it in first..today }, { pickDay = false }) { day = it }
     }
 }

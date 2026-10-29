@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppTopBar
 import androidx.compose.foundation.layout.WindowInsets
@@ -48,15 +49,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import com.oftenenough.app.ui.components.rememberWholeSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -99,9 +96,6 @@ import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.WavyProgress
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.rememberTicker
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
 
 /** Where Day details hands over: the screens it opens. */
 interface DayNav {
@@ -500,23 +494,12 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
     }
 }
 
-/** Another day… (a task): Android's date picker, the days it can move to. */
-@OptIn(ExperimentalMaterial3Api::class)
+/** Another day… (a task): the Date picker (5.3.6), the days it can move to (Figma's Limit, Tomorrow and later). */
 @Composable
 private fun RescheduleDialog(habit: Habit, day: Int, store: HabitStore, onDismiss: () -> Unit, onMoved: () -> Unit) {
-    val c = appColors
     val range = store.rescheduleRange(habit, day) ?: run { onDismiss(); return }
-    val toMs = { d: Int -> LocalDate.ofEpochDay(d.toLong()).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() }
-    val picker = rememberDatePickerState(initialSelectedDateMillis = toMs(range.first), selectableDates = object : SelectableDates {
-        override fun isSelectableDate(utcTimeMillis: Long): Boolean =
-            Instant.ofEpochMilli(utcTimeMillis).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt() in range
-    })
-    DatePickerDialog(onDismiss, confirmButton = {
-        AppButton("Move", {
-            picker.selectedDateMillis?.let { store.reschedule(habit, day, Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay().toInt()) }
-            onMoved()
-        }, style = ButtonStyle.Text)
-    }, dismissButton = { AppButton("Cancel", onDismiss, style = ButtonStyle.Text) }) {
-        DatePicker(picker, title = { Text("Another day", Modifier.padding(start = 24.dp, top = 16.dp)) })
+    AppDatePicker(range.first, { it in range }, onDismiss, title = "Another day", confirm = "Move", confirmTag = null) { picked ->
+        store.reschedule(habit, day, picked)
+        onMoved()
     }
 }
