@@ -146,7 +146,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.6.5 | Details pages · Task details page | 1136:9271 | ☑ |
 | 5.6.6 | Details pages · How milestones work page | 1142:29063 | ☑ |
 | 5.7.1 | Create new · What do you want to do? | 1061:2016 | ☑ |
-| 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☐ |
+| 5.7.2 | Create new · Quit or cut down | 1061:2101 | ☑ |
 | 5.7.3 | Create new · Create new form | 1065:2597 | ☐ |
 | 5.7.4 | Create new · Icon picker | 1074:932 | ☐ |
 | 5.7.5 | Create new · Colour | 1074:161496 | ☐ |
@@ -2222,6 +2222,7 @@ What each atom changed, newest last.
     track) are 1, 3, 7, 10, 14, 30, 45, 60, 90, 120, 180, 270, 365, 500, 730 days, then every year, with no clean days
     in total; the page says 3, 7, 14, 30, 60, 90, 180 and 365 clean in a row, and 10 … 1,000 clean days in total. A
     rule that changes numbers people see is the user's decision (T21).
+  - **Built:** run 40936952551 (Android #156, commit 289a966) passed: assembleDebug, unit tests and lint.
 
 - **5.7.1 Create new · What do you want to do? (29 Oct).** Figma: What do you want to do? (1061:2016). New's first page,
   from every +. On Surface container: the Top app bar with ✕ and no title; the content 16 at the sides, 24 under, 24
@@ -2239,3 +2240,13 @@ What each atom changed, newest last.
   Noted, not changed:
   - Edit still has a Type row opening "Change the type", which A68 removed; it is part of the form, so it goes with
     5.7.3.
+
+- **5.7.2 Create new · Quit or cut down (29 Oct).** Figma: Quit or cut down (1061:2101). From Quit or cut down: the
+  choice page (5.7.1) with ←, "What do you want to do?", and two List items with their example tags: Quit (block,
+  "Stop completely. Track the time since you stopped.", "e.g. Smoking") and Cut down (speed, "Set a maximum and log
+  how much.", "e.g. Coffee, 2 a day"), each opening its form. It is `TypeChoices` (`newhabit/Choices.kt`). The app, the
+  unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - Quit said "Track time since you stopped."; now Figma's "Track the time since you stopped."
+  - The page and its rows take 5.7.1's Figma layout and colours.
+  - Tests: HabitFormTest opens Quit or cut down and checks both choices, their examples and ←.

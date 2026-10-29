@@ -179,6 +179,19 @@ class HabitFormTest {
         assertTrue(store.habits.first { it.id == first.id }.archived)
     }
 
+    /** Quit or cut down (5.7.2, Figma 1061:2101): ←, the question, Quit and Cut down with their lines and examples. */
+    @Test fun quitOrCutDownOffersBothWithTheirExamples() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-quit")
+        waitFor(hasText("Stop completely. Track the time since you stopped."), "Quit")
+        waitFor(hasText("e.g. Smoking"), "Quit's example")
+        waitFor(hasText("Set a maximum and log how much."), "Cut down")
+        waitFor(hasText("e.g. Coffee, 2 a day"), "Cut down's example")
+        tapTag("page-back")
+        waitFor(hasTestTag("new-quit"), "back on What do you want to do?")
+    }
+
     @Test fun aNewTimeOfDayIsSetByItsStartAndChosenForTheHabit() {
         launch()
         tapTag("new-habit")

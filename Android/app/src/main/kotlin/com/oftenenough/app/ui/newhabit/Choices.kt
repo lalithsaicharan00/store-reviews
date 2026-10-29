@@ -41,7 +41,7 @@ enum class ItemType(val title: String, val summary: String, val example: String,
     TIME("Time it", "How long, with a timer.", "e.g. Meditate 10 min", "Name, e.g. Meditate"),
     CHECKLIST("Checklist", "A short list to tick off.", "e.g. Clean kitchen", "Name, e.g. Clean kitchen"),
     CUT_DOWN("Cut down", "Set a maximum and log how much.", "e.g. Coffee, 2 a day", "Name, e.g. Coffee"),
-    QUIT("Quit", "Stop completely. Track time since you stopped.", "e.g. Smoking", "e.g. Smoking"),
+    QUIT("Quit", "Stop completely. Track the time since you stopped.", "e.g. Smoking", "e.g. Smoking"),
     TASK("Task", "Something to get done.", "e.g. Pay the rent", "e.g. Pay the rent");
 
     val isHabit: Boolean get() = this != TASK
