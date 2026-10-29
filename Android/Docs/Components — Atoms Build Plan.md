@@ -154,7 +154,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.7 | Create new · Time of day page | 1098:2480 | ☑ |
 | 5.7.8 | Create new · Reminders page | 1100:2996 | ☑ |
 | 5.7.9 | Create new · How much page | 1102:2782 | ☑ |
-| 5.7.10 | Create new · Unit page | 1102:3316 | ☐ |
+| 5.7.10 | Create new · Unit page | 1102:3316 | ☑ |
 | 5.7.11 | Create new · How long page | 1103:3208 | ☐ |
 | 5.7.12 | Create new · Steps page | 1104:163327 | ☐ |
 | 5.7.13 | Create new · Limit page | 1105:3190 | ☐ |
@@ -2423,6 +2423,8 @@ What each atom changed, newest last.
   Noted, not changed:
   - Figma's free-plan row opens Plus with Reason=Remind me again; the Plus screen has no reasons yet (5.9.1), so it
     opens the Plus screen as it is.
+  - **Built:** run 40943749934 (Android #161, commit d7cfee2) passed: assembleDebug, unit tests and lint (5.7.7 and
+    5.7.8 together).
 
 - **5.7.9 Create new · How much page (29 Oct).** Figma: How much page (1102:2782), State Typing · Keyboard down, and
   the flow "A new habit: track an amount". From the form's How much. On Surface container: the Top app bar (← "How
@@ -2445,3 +2447,22 @@ What each atom changed, newest last.
   - Limit still opens this page with its old card and note until its own page, 5.7.13 (A67: Amount · Time).
   - An amount that isn't a number above 0 says "Enter a number above 0, with up to 2 decimal places." in the footer's
     place (Figma draws no such state).
+
+- **5.7.10 Create new · Unit page (29 Oct).** Figma: Unit page (1102:3316), State No unit · Creating your own ·
+  Searching · Own unit added. From How much's Unit. On Surface container: the Top app bar (← "Unit"); 16 at the sides
+  and above, 40 under, 24 between: the Search bar ("Search units"); **Your own** (No unit, the units of your own, the
+  field "e.g. prayers" with Done while creating, + Create your own unit; "Anything you count, in a word or two:
+  prayers, laps, sets."); then Drinking, Walking and running, Reading and writing, Exercise, Everyday and Money, each a
+  subheader in Label Large Primary over radio Options in Body Large on Surface bright. Searching shows only the
+  matching units, in their groups, without Your own. A tap chooses and goes back. It is `UnitPage`
+  (`newhabit/FormPages.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - There was no search; now Figma's Search units, which filters every group.
+  - Your own started with Create your own unit; now No unit first and Create your own unit last, as Figma, its field
+    opening above it. A unit made here and in no other habit shows with ✕, which takes it off.
+  - A limit's "Cutting down" group (cigarettes, drinks, coffees, snacks) isn't in Figma: deleted.
+  - Group titles were the grey label 16 above; now Label Large Primary 8 over their rows, groups 24 apart, the rows Body
+    Large on Surface bright.
+  - Tests: HabitFormTest searches "bo" (bottles and books, not glasses), makes "prayers" with Done, and finds it with ✕.
+  Noted, not changed:
+  - A cut-down habit still finds "Time" here until Limit's own Amount · Time (5.7.13, A67), which is where it goes.

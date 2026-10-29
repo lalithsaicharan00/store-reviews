@@ -253,6 +253,29 @@ class HabitFormTest {
         waitFor(hasTestTag("how-much-row").and(hasContentDescription("typed each time", substring = true)), "the form saying it's typed")
     }
 
+    /** Unit (5.7.10, Figma 1102:3316): search shows only matching units; your own unit is made with Done. */
+    @Test fun unitSearchesAndMakesYourOwn() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-amount")
+        tapTag("how-much-row")
+        tapTag("much-unit")
+        waitFor(hasText("Search units"), "the search bar")
+        waitFor(hasText("Your own"), "Your own")
+        type("unit-search", "bo")
+        waitFor(hasTestTag("unit-bottles"), "bottles")
+        waitFor(hasTestTag("unit-books"), "books")
+        waitGone(hasTestTag("unit-glasses"), "glasses")
+        type("unit-search", "")
+        tapTag("create-unit")
+        type("custom-unit", "prayers")
+        tapTag("custom-unit-done")
+        waitFor(hasText("prayers"), "How much with prayers")
+        tapTag("much-unit")
+        waitFor(hasContentDescription("Remove prayers"), "prayers with ✕ in Your own")
+    }
+
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
         launch()
         editWater()

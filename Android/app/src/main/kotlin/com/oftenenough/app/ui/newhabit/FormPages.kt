@@ -55,6 +55,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.PaddingValues
@@ -282,12 +283,22 @@ private fun TimeBox(value: String, label: String, tag: String, modifier: Modifie
 
 // ------------------------------------------------------------------ Unit
 
-/** The units people count in, grouped; "Create your own unit" and "No unit" first. */
+/**
+ * 5.7.10, **Unit page** (Figma 1102:3316, State No unit · Creating your own · Searching · Own unit added; Components —
+ * Atoms Build Plan), from How much's Unit. On Surface container: the Top app bar (← "Unit"); 16 at the sides and above,
+ * 40 under, 24 between: the Search bar ("Search units"); **Your own** (No unit, the units of your own, + Create your
+ * own unit, which opens its field with Done, off until something is typed; "Anything you count, in a word or two:
+ * prayers, laps, sets."); then the common units by what they count (Drinking, Walking and running, Reading and
+ * writing, Exercise, Everyday, Money), each a subheader in Label Large Primary over radio Options in Body Large.
+ * Searching shows only the matching units, in their groups. A tap chooses and goes back.
+ */
 @Composable
 fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     val limit = form.type == ItemType.CUT_DOWN
+    val s = MaterialTheme.colorScheme
     var creating by remember { mutableStateOf(false) }
     var custom by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf("") }
     // The phone's own locale, read so the list follows a change of language or region.
     val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     val metric = locale.country !in setOf("US", "LR", "MM")
@@ -296,7 +307,7 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     val volume = if (metric) listOf("ml", "litres", "oz") else listOf("oz", "ml", "litres")
     val distance = if (metric) listOf("km", "miles") else listOf("miles", "km")
     val groups = buildList {
-        if (limit) add("Cutting down" to listOf("cigarettes", "drinks", "coffees", "snacks"))
+        // A time limit is chosen here until Limit's own Amount · Time (5.7.13, A67).
         if (limit && form.original == null) add("Time" to listOf(HabitPlan.TIME_UNIT))
         add("Drinking" to listOf("glasses", "cups", "bottles") + volume)
         add("Walking and running" to listOf("steps") + distance)
@@ -307,28 +318,50 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     }
     val known = groups.flatMap { it.second }.toSet()
     val used = store.habits.map { it.unit }.filter { it.isNotEmpty() && it !in known && it != "minutes" && it != "hours" }.distinct()
+    // The form's own unit, made here and in no other habit yet: it shows with ✕, which takes it off.
+    val mine = form.unit.takeIf { it.isNotBlank() && it !in known && it !in used }
+    val yours = used + listOfNotNull(mine)
     fun pick(value: String) { form.unit = value; onBack() }
+    @Composable fun Subheader(text: String) = Text(text, Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
     FormPage("Unit", onBack = onBack) {
-        GroupTitle("Your own")
-        SegmentedList {
-            val count = 2 + used.size
-            if (creating) {
-                val focus = remember { FocusRequester() }
-                LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
-                val done = { TextLimit.clean(custom, TextLimit.UNIT).takeIf { it.isNotEmpty() }?.let(::pick) }
-                FormField(custom, { custom = it.take(TextLimit.UNIT) }, "e.g. prayers", 0, count,
-                    fieldModifier = Modifier.focusRequester(focus).semantics { testTag = "custom-unit" },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), keyboardActions = KeyboardActions(onDone = { done() })) {
-                    AppButton("Done", { done() }, Modifier.padding(end = 4.dp), enabled = custom.isNotBlank(), style = ButtonStyle.Text)
+        Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            SearchBarField(query, { query = it.take(30) }, "Search units", fieldTag = "unit-search")
+            val q = query.trim().lowercase()
+            if (q.isEmpty()) Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Subheader("Your own")
+                SegmentedList {
+                    val count = 2 + yours.size + (if (creating) 1 else 0)
+                    RadioRow("No unit", form.unit.isBlank(), 0, count, "no-unit", option = true) { pick("") }
+                    yours.forEachIndexed { i, u ->
+                        AppListItem(u, 1 + i, count, leading = { RadioButton(form.unit == u, onClick = null) }, onClick = { pick(u) },
+                            trailing = if (u == mine) ({ StandardIconButton(Symbols.Close, "Remove $u", { form.unit = "" }) }) else null,
+                            containerColor = s.surfaceBright, headlineStyle = AppType.bodyLarge, tag = "unit-$u")
+                    }
+                    if (creating) {
+                        val focus = remember { FocusRequester() }
+                        LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
+                        val done = { TextLimit.clean(custom, TextLimit.UNIT).takeIf { it.isNotEmpty() }?.let(::pick) }
+                        FormField(custom, { custom = it.take(TextLimit.UNIT) }, "e.g. prayers", 1 + yours.size, count,
+                            fieldModifier = Modifier.focusRequester(focus).semantics { testTag = "custom-unit" },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), keyboardActions = KeyboardActions(onDone = { done() }),
+                            containerColor = s.surfaceBright) {
+                            AppButton("Done", { done() }, Modifier.padding(end = 4.dp), enabled = custom.isNotBlank(), style = ButtonStyle.Text, tag = "custom-unit-done")
+                        }
+                    }
+                    AppListItem("Create your own unit", count - 1, count, leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null) } },
+                        onClick = { creating = true }, containerColor = s.surfaceBright, headlineStyle = AppType.bodyLarge, tag = "create-unit")
                 }
-            } else AddRow("Create your own unit", 0, count, "create-unit") { creating = true }
-            RadioRow("No unit", form.unit.isBlank(), 1, count, "no-unit") { pick("") }
-            used.forEachIndexed { i, u -> RadioRow(u, form.unit == u, 2 + i, count, "unit-$u") { pick(u) } }
-        }
-        Note(TextLimit.note(custom, TextLimit.UNIT) ?: "Anything you count, in a word or two: prayers, laps, sets.")
-        for ((title, units) in groups) {
-            GroupTitle(title)
-            SegmentedList { units.forEachIndexed { i, u -> RadioRow(u, form.unit == u, i, units.size, "unit-$u") { pick(u) } } }
+                Text(TextLimit.note(custom, TextLimit.UNIT) ?: "Anything you count, in a word or two: prayers, laps, sets.",
+                    Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
+            }
+            for ((title, units) in groups) {
+                val shown = if (q.isEmpty()) units else units.filter { it.lowercase().contains(q) }
+                if (shown.isEmpty()) continue
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Subheader(title)
+                    SegmentedList { shown.forEachIndexed { i, u -> RadioRow(u, form.unit == u, i, shown.size, "unit-$u", option = true) { pick(u) } } }
+                }
+            }
         }
     }
 }
