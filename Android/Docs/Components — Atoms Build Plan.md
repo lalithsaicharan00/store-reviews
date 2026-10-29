@@ -150,7 +150,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.3 | Create new · Create new form | 1065:2597 | ☑ |
 | 5.7.4 | Create new · Icon picker | 1074:932 | ☑ |
 | 5.7.5 | Create new · Colour | 1074:161496 | ☑ |
-| 5.7.6 | Create new · How often page | 1075:161386 | ☐ |
+| 5.7.6 | Create new · How often page | 1075:161386 | ☑ |
 | 5.7.7 | Create new · Time of day page | 1098:2480 | ☐ |
 | 5.7.8 | Create new · Reminders page | 1100:2996 | ☐ |
 | 5.7.9 | Create new · How much page | 1102:2782 | ☐ |
@@ -2332,3 +2332,42 @@ What each atom changed, newest last.
   Fixed:
   - It already matched Figma; two placeholder lines that only kept unused imports alive are deleted.
   - Tests: HabitFormTest chooses orange, sees the sheet close, and finds orange chosen when it opens again.
+  - **Built:** run 40940598201 (Android #159, commit 26f8cab) passed: assembleDebug, unit tests and lint (5.7.4 and
+    5.7.5 together).
+
+- **5.7.6 Create new · How often page (29 Oct).** Figma: How often page (1075:161386), 15 variants (Every day; Several
+  times a day; Times a week, month or year; On certain days of the week; Every few days; Every few weeks, and on set
+  days; Every few months; On a date: dates, a weekday, a year; Cut down; Task: every day, a while after it’s done; Every
+  day at 200%), and the flows "How often: several a day, or a number of times", "days of the week, or every few", "on a
+  date each month or year". From the form's How often. On Surface container: the Top app bar (← "How often"); groups of
+  radio Options, 16 at the sides and above, 40 under, 16 between groups, 2 within, no titles (A64), each option's words
+  in Body Large on Surface bright. The chosen one says what it means ("Twice a day", "3 times a week", "Every Friday",
+  "Every other week on Friday", "On the 23rd of every month", "Every year on October 23", "2 weeks after it’s done") and
+  opens its settings in the same piece, 8 apart, 16 (or 12, or 24) under: a Stepper (Body Large label, − number +, its
+  unit); Week · Month · Year; Weekdays · Weekends and the seven days; On set days with its switch and days; Month ·
+  Year, Repeat on and the 31 dates, or Which and Day, or Month and Day; Days · Weeks · Months with Again after. A limit
+  chooses "At most 1 h a day / a week / a month"; a task has Every day, the days of the week, every few, on a date and a
+  while after it’s done. It is `HowOftenPage` (`newhabit/FormPages.kt`), with `OpenOption`, `Stepper` and Option-style
+  `RadioRow` (`newhabit/FormParts.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in the
+  session.
+  Fixed:
+  - The groups had titles (Daily, A number of times, Days of the week, Every few days, weeks or months, On a date, In
+    total, A number of days, After it's done); deleted (A64).
+  - A chosen option and its settings were separate rows 2 apart; now one piece of the group, as Figma's "(chosen)".
+  - Options were Title Medium on Surface; now Body Large on Surface bright (`AppListItem` gained a headline style;
+    `RadioRow(option = true)`; other pages keep Title Medium).
+  - Counts were List item rows; now the Stepper (16 at the sides, label filling, then − number + and the unit).
+  - The days of the week sat 40 in with 12 between their parts; now Weekdays · Weekends 16 in, 8 apart, then the days
+    16 in, 24 under. On set days is a row of its own with the switch, then its days.
+  - A date rule had an "Every n months" count Figma doesn't have (Every few months covers it): deleted; a habit that
+    has one keeps it.
+  - A task's page was titled "Repeat"; now "How often". Its "Counted from the day you tick it." note and the Years
+    choice of Again after are gone (Figma: Days · Weeks · Months); a task saved with years keeps them.
+  - The Week · Month · Year and Month · Year groups sit 16 in with 4 above, as Figma's Period.
+  - Tests: HabitFormTest checks no group titles, Several times a day's Twice a day and its + to 3 times a day, Times a
+    week, and the form's row saying it.
+  Noted, not changed:
+  - An amount habit's choices (a day, a week, a month or a year in total, and days a week, month or year) aren't drawn;
+    they keep their options, now without titles.
+  - The notes for months without a date ("Months without that date use their last day.") and the last-day and leap-year
+    choices aren't drawn (no variant picks a 29th to 31st or 29 February); they stay for those days.

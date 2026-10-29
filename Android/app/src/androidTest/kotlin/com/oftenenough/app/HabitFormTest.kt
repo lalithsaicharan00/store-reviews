@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -187,6 +188,28 @@ class HabitFormTest {
         waitGone(hasTestTag("colour-gray"), "the sheet")
         tapTag("colour-row")
         waitFor(hasTestTag("colour-orange").and(isSelected()), "orange chosen")
+    }
+
+    /**
+     * How often (5.7.6, Figma 1075:161386, flow "How often: several a day, or a number of times"): no group titles; the
+     * chosen option says what it means and opens its own settings; ← and the form's row says it.
+     */
+    @Test fun howOftenSaysEachChoiceAsItIsSet() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-check")
+        tapTag("how-often-row")
+        waitFor(hasText("Several times a day"), "the options")
+        assertTrue("no group titles", !has(hasText("Daily")) && !has(hasText("A number of times")))
+        tapTag("often-times-a-day")
+        waitFor(hasText("Twice a day"), "Twice a day")
+        tap(hasContentDescription("More").and(hasAnyAncestor(hasTestTag("often-per-day"))), "+")
+        waitFor(hasText("3 times a day"), "3 times a day")
+        tapTag("often-times")
+        waitFor(hasText("times a week", substring = true), "a number of times a week")
+        tapTag("page-back")
+        waitFor(hasTestTag("how-often-row").and(hasContentDescription("times a week", substring = true)), "the form's row saying it")
     }
 
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {

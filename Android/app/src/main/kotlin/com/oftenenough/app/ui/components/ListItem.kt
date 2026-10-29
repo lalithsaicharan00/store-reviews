@@ -71,6 +71,8 @@ fun AppListItem(
     containerColor: Color = Color.Unspecified,
     headlineColor: Color = Color.Unspecified,
     headlineLines: Int = Int.MAX_VALUE,
+    /** Title Medium; a choice among options takes Body Large (Figma's Option, a radio's row). */
+    headlineStyle: androidx.compose.ui.text.TextStyle = AppType.titleMedium,
     beside: (@Composable () -> Unit)? = null,
     below: (@Composable ColumnScope.() -> Unit)? = null,
     tag: String? = null,
@@ -78,7 +80,7 @@ fun AppListItem(
     val shapes = listItemShapes(index, count)
     val m = modifier.semantics { tag?.let { testTag = it } }
     val headlineText: @Composable () -> Unit = {
-        val text = @Composable { m: Modifier -> Text(headline, m, style = AppType.titleMedium, color = headlineColor, maxLines = headlineLines, overflow = TextOverflow.Ellipsis) }
+        val text = @Composable { m: Modifier -> Text(headline, m, style = headlineStyle, color = headlineColor, maxLines = headlineLines, overflow = TextOverflow.Ellipsis) }
         if (beside == null) text(Modifier)
         else Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) { text(Modifier.weight(1f, fill = false)); beside() }
     }

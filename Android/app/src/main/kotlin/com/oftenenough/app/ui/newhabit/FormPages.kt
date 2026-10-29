@@ -10,6 +10,7 @@ import com.oftenenough.app.ui.components.AppMenuItem
 import androidx.compose.ui.unit.DpOffset
 import com.oftenenough.app.ui.components.AppMenu
 import com.oftenenough.app.ui.components.AppListItem
+import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.rememberWholeSheetState
@@ -54,6 +55,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.semantics.heading
 import androidx.compose.material3.ModalBottomSheet
@@ -345,8 +348,17 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
 // ------------------------------------------------------------------ How often
 
 /**
- * How often: one list of sentence endings, each with the person's own amount in it ("2 chapters a week"), so what each
- * choice means is read, not looked up. A choice's own settings show under it only while it's chosen.
+ * 5.7.6, **How often page** (Figma 1075:161386, Option Every day · Several times a day · Times a week, month or year ·
+ * On certain days of the week · Every few days · Every few weeks (and on set days) · Every few months · On a date
+ * (dates, a weekday, a year) · Cut down · Task (every day, a while after it’s done) · Every day at 200%; Components —
+ * Atoms Build Plan). From the form's How often. On Surface container: the Top app bar (← "How often"); one list of
+ * options, 16 at the sides and above, 40 under, 16 between groups and 2 within, no group titles (A64): each a radio
+ * Option on Surface bright, its words in Body Large. The chosen one says what it means as it's set ("Twice a day", "3
+ * times a week", "Every Monday, Wednesday and Friday", "Every other week on Friday", "On the 23rd of every month",
+ * "Every year on October 23", "2 weeks after it’s done") and opens its own settings in the same piece: a Stepper, Week ·
+ * Month · Year (or Month · Year, Days · Weeks · Months), Weekdays · Weekends with the seven days, On set days, Repeat on
+ * with the dates or Which and Day, Month and Day. A limit chooses at most a day, a week or a month; a task has no
+ * several times a day or number of times, and has "A while after it’s done".
  */
 @Composable
 fun HowOftenPage(form: FormState, onBack: () -> Unit) {
@@ -369,132 +381,120 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
         }
     }
     val countChoice = if (hasAmount) HowOften.Days(d.countPeriod, d.count) else HowOften.Times(d.countPeriod, d.count)
+    // Week · Month · Year over the count (Figma's Period: 4 above, 8 under, 16 at the sides).
     @Composable
-    fun countControls(days: Boolean, index: Int, count: Int) {
-        Segment(index, count) {
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                AppConnectedButtons(listOf(GoalPeriod.WEEK to "Week", GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), d.countPeriod, tag = "often-count-period") { p ->
-                    val next = d.copy(countPeriod = p)
-                    set(next.copy(count = minOf(next.count, next.countMaximum(days))))
-                }
+    fun countControls(days: Boolean) {
+        Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {
+            AppConnectedButtons(listOf(GoalPeriod.WEEK to "Week", GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), d.countPeriod, tag = "often-count-period") { p ->
+                val next = d.copy(countPeriod = p)
+                set(next.copy(count = minOf(next.count, next.countMaximum(days))))
             }
         }
-        NumberRow(if (days) "Days" else "Times", d.count, 1..d.countMaximum(days), index + 1, count, "often-count") { set(d.copy(count = it)) }
+        Stepper(if (days) "Days" else "Times", d.count, 1..d.countMaximum(days), "often-count") { set(d.copy(count = it)) }
+    }
+    /** A group of options: [rows] (title, chosen, tag, pick, its settings or none), 2 apart. */
+    @Composable
+    fun Options(vararg rows: Option) {
+        SegmentedList {
+            rows.forEachIndexed { i, o ->
+                if (o.chosen && o.settings != null) OpenOption(o.title, i, rows.size, o.tag, o.bottom, o.settings)
+                else RadioRow(o.title, o.chosen, i, rows.size, o.tag, option = true, onClick = o.pick)
+            }
+        }
     }
 
-    FormPage(if (task) "Repeat" else "How often", chip = null, onBack = onBack) {
-        if (limit) {
-            SegmentedList {
-                RadioRow(words(HowOften.EveryDay), d.choice == Choice.EVERY_DAY, 0, 3, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) }
-                RadioRow(words(HowOften.Total(GoalPeriod.WEEK)), d.choice == Choice.TOTAL && d.totalPeriod == GoalPeriod.WEEK, 1, 3, "often-total-week") { set(d.copy(choice = Choice.TOTAL, totalPeriod = GoalPeriod.WEEK)) }
-                RadioRow(words(HowOften.Total(GoalPeriod.MONTH)), d.choice == Choice.TOTAL && d.totalPeriod == GoalPeriod.MONTH, 2, 3, "often-total-month") { set(d.copy(choice = Choice.TOTAL, totalPeriod = GoalPeriod.MONTH)) }
+    FormPage("How often", chip = null, onBack = onBack) {
+        Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            if (limit) {
+                Options(
+                    Option(words(HowOften.EveryDay), d.choice == Choice.EVERY_DAY, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) },
+                    Option(words(HowOften.Total(GoalPeriod.WEEK)), d.choice == Choice.TOTAL && d.totalPeriod == GoalPeriod.WEEK, "often-total-week") { set(d.copy(choice = Choice.TOTAL, totalPeriod = GoalPeriod.WEEK)) },
+                    Option(words(HowOften.Total(GoalPeriod.MONTH)), d.choice == Choice.TOTAL && d.totalPeriod == GoalPeriod.MONTH, "often-total-month") { set(d.copy(choice = Choice.TOTAL, totalPeriod = GoalPeriod.MONTH)) },
+                )
+                return@Column
             }
-        } else if (hasAmount) {
-            GroupTitle("In total")
-            SegmentedList {
-                RadioRow(words(HowOften.EveryDay), d.choice == Choice.EVERY_DAY, 0, 4, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) }
-                listOf(GoalPeriod.WEEK, GoalPeriod.MONTH, GoalPeriod.YEAR).forEachIndexed { i, p ->
-                    RadioRow(words(HowOften.Total(p)), d.choice == Choice.TOTAL && d.totalPeriod == p, i + 1, 4, "often-total-${p.noun}") { set(d.copy(choice = Choice.TOTAL, totalPeriod = p)) }
-                }
-            }
-            GroupTitle("A number of days")
-            SegmentedList {
+            if (hasAmount) {
+                Options(
+                    Option(words(HowOften.EveryDay), d.choice == Choice.EVERY_DAY, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) },
+                    *listOf(GoalPeriod.WEEK, GoalPeriod.MONTH, GoalPeriod.YEAR).map { p ->
+                        Option(words(HowOften.Total(p)), d.choice == Choice.TOTAL && d.totalPeriod == p, "often-total-${p.noun}") { set(d.copy(choice = Choice.TOTAL, totalPeriod = p)) }
+                    }.toTypedArray(),
+                )
                 val open = d.choice == Choice.TIMES
-                val count = if (open) 3 else 1
-                RadioRow(if (open) words(countChoice) else "Days a week, month or year", open, 0, count, "often-times") { set(d.copy(choice = Choice.TIMES)) }
-                if (open) countControls(true, 1, count)
-            }
-        } else if (task) {
-            GroupTitle("Daily")
-            SegmentedList { RadioRow("Every day", d.choice == Choice.EVERY_DAY, 0, 1, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) } }
-        } else {
-            GroupTitle("Daily")
-            SegmentedList {
-                val open = d.choice == Choice.TIMES_A_DAY
-                val count = if (open) 3 else 2
-                RadioRow("Every day", d.choice == Choice.EVERY_DAY, 0, count, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) }
-                RadioRow(if (open) words(HowOften.TimesADay(maxOf(2, d.perDay))) else "Several times a day", open, 1, count, "often-times-a-day") { set(d.copy(choice = Choice.TIMES_A_DAY)) }
-                if (open) NumberRow("Times a day", d.perDay, 2..99, 2, count, "often-per-day") { set(d.copy(perDay = it)) }
-            }
-            GroupTitle("A number of times")
-            SegmentedList {
+                Options(Option(if (open) words(countChoice) else "Days a week, month or year", open, "often-times", settings = { countControls(true) }) { set(d.copy(choice = Choice.TIMES)) })
+            } else if (task) {
+                Options(Option("Every day", d.choice == Choice.EVERY_DAY, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) })
+            } else {
+                val several = d.choice == Choice.TIMES_A_DAY
+                Options(
+                    Option("Every day", d.choice == Choice.EVERY_DAY, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) },
+                    Option(if (several) words(HowOften.TimesADay(maxOf(2, d.perDay))) else "Several times a day", several, "often-times-a-day",
+                        settings = { Stepper("Times a day", d.perDay, 2..99, "often-per-day") { set(d.copy(perDay = it)) } }) { set(d.copy(choice = Choice.TIMES_A_DAY)) },
+                )
                 val open = d.choice == Choice.TIMES
-                val count = if (open) 3 else 1
-                RadioRow(if (open) words(countChoice) else "Times a week, month or year", open, 0, count, "often-times") { set(d.copy(choice = Choice.TIMES)) }
-                if (open) countControls(false, 1, count)
+                Options(Option(if (open) words(countChoice) else "Times a week, month or year", open, "often-times", settings = { countControls(false) }) { set(d.copy(choice = Choice.TIMES)) })
             }
-        }
-        if (!limit) {
-            GroupTitle("Days of the week")
-            SegmentedList {
-                val open = d.choice == Choice.WEEKDAYS
-                RadioRow(if (open) HabitCopy.capitalized(words(HowOften.Weekdays(d.weekdays))) else "On certain days of the week", open, 0, if (open) 2 else 1, "often-weekdays") {
-                    set(d.copy(choice = Choice.WEEKDAYS))
-                }
-                if (open) Segment(1, 2) {
-                    Column(Modifier.weight(1f).padding(start = 40.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            AppFilterChip("Weekdays", false, { set(d.copy(weekdays = setOf(2, 3, 4, 5, 6))) }, tag = "often-weekdays-quick")
-                            AppFilterChip("Weekends", false, { set(d.copy(weekdays = setOf(1, 7))) }, tag = "often-weekends-quick")
-                        }
-                        WeekdayCircles(d.weekdays, ws, "often-weekday-picker") { days ->
-                            set(if (days.size == 7) d.copy(choice = Choice.EVERY_DAY) else d.copy(weekdays = days))
-                        }
+            // On certain days of the week: Weekdays · Weekends (4 above, 16 under), then the seven days, 24 under.
+            val weekdays = d.choice == Choice.WEEKDAYS
+            Options(Option(if (weekdays) HabitCopy.capitalized(words(HowOften.Weekdays(d.weekdays))) else "On certain days of the week", weekdays, "often-weekdays", bottom = 24.dp,
+                settings = {
+                    Row(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        AppFilterChip("Weekdays", false, { set(d.copy(weekdays = setOf(2, 3, 4, 5, 6))) }, tag = "often-weekdays-quick")
+                        AppFilterChip("Weekends", false, { set(d.copy(weekdays = setOf(1, 7))) }, tag = "often-weekends-quick")
                     }
-                }
-            }
-            GroupTitle("Every few days, weeks or months")
-            SegmentedList {
-                val rows = mutableListOf<@Composable (Int, Int) -> Unit>()
-                val days = d.choice == Choice.EVERY_DAYS
-                rows += { i, n -> RadioRow(if (days) HabitCopy.capitalized(HabitCopy.everyN(d.daysInterval, "day")) else "Every few days", days, i, n, "often-every-days") { set(d.copy(choice = Choice.EVERY_DAYS)) } }
-                if (days) rows += { i, n -> NumberRow("Every", d.daysInterval, 2..365, i, n, "often-every-count", { "days" }) { set(d.copy(daysInterval = it)) } }
-                val weeks = d.choice == Choice.EVERY_WEEKS
-                rows += { i, n -> RadioRow(if (weeks) HabitCopy.capitalized(words(d.often(hasAmount))) else "Every few weeks", weeks, i, n, "often-every-weeks") { set(d.copy(choice = Choice.EVERY_WEEKS)) } }
-                if (weeks) {
-                    rows += { i, n -> NumberRow("Every", d.weeksInterval, 1..52, i, n, "often-weeks-count", { if (it == 1) "week" else "weeks" }) { set(d.copy(weeksInterval = it)) } }
-                    rows += { i, n ->
-                        SwitchRow("On set days", d.weeksDays.isNotEmpty(), i, n, "often-weeks-days") { on ->
-                            val start = java.time.LocalDate.ofEpochDay(form.startDate.toLong()).dayOfWeek.value % 7 + 1
-                            set(d.copy(weeksDays = if (on) setOf(start) else emptySet()))
-                        }
+                    Box(Modifier.padding(horizontal = 16.dp)) {
+                        WeekdayCircles(d.weekdays, ws, "often-weekday-picker") { days -> set(if (days.size == 7) d.copy(choice = Choice.EVERY_DAY) else d.copy(weekdays = days)) }
                     }
-                    if (d.weeksDays.isNotEmpty()) rows += { i, n -> Segment(i, n) { Box(Modifier.weight(1f)) { WeekdayCircles(d.weeksDays, ws, "often-weeks-picker") { set(d.copy(weeksDays = it)) } } } }
-                }
-                val months = d.choice == Choice.EVERY_MONTHS
-                rows += { i, n -> RadioRow(if (months) HabitCopy.capitalized(HabitCopy.everyN(d.monthsInterval, "month")) else "Every few months", months, i, n, "often-every-months") { set(d.copy(choice = Choice.EVERY_MONTHS)) } }
-                if (months) rows += { i, n -> NumberRow("Every", d.monthsInterval, 1..24, i, n, "often-months-count", { if (it == 1) "month" else "months" }) { set(d.copy(monthsInterval = it)) } }
-                rows.forEachIndexed { i, row -> row(i, rows.size) }
-            }
-            GroupTitle("On a date")
-            SegmentedList {
-                val open = d.choice == Choice.DATE
-                RadioRow(if (open) HabitCopy.capitalized(words(HowOften.Calendar(d.dateRule))) else "On a date each month or year", open, 0, if (open) 2 else 1, "often-date") {
-                    set(d.copy(choice = Choice.DATE))
-                }
-                if (open) Segment(1, 2) { Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp)) { DateControls(d.dateRule) { set(d.copy(dateRule = it)) } } }
-            }
+                }) { set(d.copy(choice = Choice.WEEKDAYS)) })
+            // Every few days, weeks or months.
+            val days = d.choice == Choice.EVERY_DAYS
+            val weeks = d.choice == Choice.EVERY_WEEKS
+            val months = d.choice == Choice.EVERY_MONTHS
+            Options(
+                Option(if (days) HabitCopy.capitalized(HabitCopy.everyN(d.daysInterval, "day")) else "Every few days", days, "often-every-days",
+                    settings = { Stepper("Every", d.daysInterval, 2..365, "often-every-count", { "days" }) { set(d.copy(daysInterval = it)) } }) { set(d.copy(choice = Choice.EVERY_DAYS)) },
+                Option(if (weeks) HabitCopy.capitalized(words(d.often(hasAmount))) else "Every few weeks", weeks, "often-every-weeks",
+                    bottom = if (d.weeksDays.isNotEmpty()) 24.dp else 12.dp,
+                    settings = {
+                        Stepper("Every", d.weeksInterval, 1..52, "often-weeks-count", { if (it == 1) "week" else "weeks" }) { set(d.copy(weeksInterval = it)) }
+                        val on = d.weeksDays.isNotEmpty()
+                        Row(Modifier.fillMaxWidth().toggleable(on, role = Role.Switch) { now ->
+                                val start = java.time.LocalDate.ofEpochDay(form.startDate.toLong()).dayOfWeek.value % 7 + 1
+                                set(d.copy(weeksDays = if (now) setOf(start) else emptySet()))
+                            }.semantics { testTag = "often-weeks-days" }.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = if (on) 16.dp else 12.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Text("On set days", Modifier.weight(1f), style = AppType.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+                            AppSwitch(on)
+                        }
+                        if (on) Box(Modifier.padding(horizontal = 16.dp)) { WeekdayCircles(d.weeksDays, ws, "often-weeks-picker") { set(d.copy(weeksDays = it)) } }
+                    }) { set(d.copy(choice = Choice.EVERY_WEEKS)) },
+                Option(if (months) HabitCopy.capitalized(words(d.often(hasAmount))) else "Every few months", months, "often-every-months",
+                    settings = { Stepper("Every", d.monthsInterval, 1..24, "often-months-count", { if (it == 1) "month" else "months" }) { set(d.copy(monthsInterval = it)) } }) { set(d.copy(choice = Choice.EVERY_MONTHS)) },
+            )
+            // On a date each month or year.
+            val date = d.choice == Choice.DATE
+            Options(Option(if (date) HabitCopy.capitalized(words(HowOften.Calendar(d.dateRule))) else "On a date each month or year", date, "often-date", bottom = 24.dp,
+                settings = { DateControls(d.dateRule) { set(d.copy(dateRule = it)) } }) { set(d.copy(choice = Choice.DATE)) })
             setDaysNote(d)?.let { Note(it) }
-        }
-        if (task) {
-            GroupTitle("After it's done")
-            SegmentedList {
-                val open = d.choice == Choice.AFTER_DONE
-                val count = if (open) 3 else 1
-                RadioRow(if (open) HabitCopy.capitalized(words(d.often(false))) else "A while after it's done", open, 0, count, "often-after-done") { set(d.copy(choice = Choice.AFTER_DONE)) }
-                if (open) {
-                    Segment(1, count) {
-                        Box(Modifier.weight(1f)) {
-                            AppConnectedButtons(GoalPeriod.entries.map { it to HabitCopy.capitalized(it.noun) + "s" }, d.afterUnit, tag = "often-after-unit") { set(d.copy(afterUnit = it)) }
+            if (task) {
+                val after = d.choice == Choice.AFTER_DONE
+                Options(Option(if (after) HabitCopy.capitalized(words(d.often(false))) else "A while after it’s done", after, "often-after-done",
+                    settings = {
+                        Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {
+                            AppConnectedButtons(listOf(GoalPeriod.DAY, GoalPeriod.WEEK, GoalPeriod.MONTH).map { it to HabitCopy.capitalized(it.noun) + "s" }, d.afterUnit, tag = "often-after-unit") { set(d.copy(afterUnit = it)) }
                         }
-                    }
-                    NumberRow("Again after", d.afterCount, 1..365, 2, count, "often-after-count", { if (it == 1) d.afterUnit.noun else d.afterUnit.noun + "s" }) { set(d.copy(afterCount = it)) }
-                }
+                        Stepper("Again after", d.afterCount, 1..365, "often-after-count") { set(d.copy(afterCount = it)) }
+                    }) { set(d.copy(choice = Choice.AFTER_DONE)) })
             }
-            if (d.choice == Choice.AFTER_DONE) Note("Counted from the day you tick it.")
         }
     }
 }
+
+/** One option of How often: its words, whether it's chosen, its tag, its settings while chosen and the room under them. */
+class Option(
+    val title: String, val chosen: Boolean, val tag: String, val bottom: androidx.compose.ui.unit.Dp = 16.dp,
+    val settings: (@Composable ColumnScope.() -> Unit)? = null, val pick: () -> Unit,
+)
 
 private fun setDaysNote(d: OftenDraft): String? {
     if (d.choice != Choice.DATE) return null
@@ -505,27 +505,34 @@ private fun setDaysNote(d: OftenDraft): String? {
     return null
 }
 
-/** Each month (on dates, the last day, or a weekday like the first Saturday) or each year (a month and a date). */
+/**
+ * On a date (Figma): Month · Year (4 above, 16 under); a month's Repeat on (Dates, The last day, A weekday; 8 above, 16
+ * under) over the 31 dates (seven to a row, 8 apart, 8 in) or Which and Day; a year's Month and Day. All 16 at the sides.
+ */
 @Composable
-private fun DateControls(rule: CalendarRule, onChange: (CalendarRule) -> Unit) {
-    AppConnectedButtons(listOf(GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), rule.unit, tag = "often-date-unit") { onChange(rule.copy(unit = it)) }
+private fun ColumnScope.DateControls(rule: CalendarRule, onChange: (CalendarRule) -> Unit) {
+    Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp)) {
+        AppConnectedButtons(listOf(GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), rule.unit, tag = "often-date-unit") { onChange(rule.copy(unit = it)) }
+    }
     if (rule.unit == GoalPeriod.MONTH) {
         val patterns = listOf("Dates" to "Dates", "Last day" to "The last day", "Weekday" to "A weekday")
         DropdownField("Repeat on", patterns.first { it.first == rule.pattern }.second, patterns.map { it.second },
-            { onChange(rule.copy(pattern = patterns[it].first)) }, tag = "often-date-pattern")
+            { onChange(rule.copy(pattern = patterns[it].first)) }, Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp), tag = "often-date-pattern")
         when (rule.pattern) {
             "Dates" -> {
                 // A plain grid sized up front, never a lazy one (S13): seven dates a row, spread across it, rows 8 apart (Figma).
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.semantics { testTag = "often-month-dates" }) {
+                Column(Modifier.padding(horizontal = 8.dp).semantics { testTag = "often-month-dates" }, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     for (week in (1..31).chunked(7)) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         for (date in week) DayToggle("$date", date in rule.dates, { on -> onChange(rule.copy(dates = if (on) rule.dates + date else rule.dates - date)) },
                             "Day $date", size = DayToggleSize.Date)
                         repeat(7 - week.size) { Spacer(Modifier.size(DayToggleSize.Date.size)) }
                     }
                 }
-                if (rule.dates.any { it > 28 }) AppConnectedButtons(listOf(true to "Use the last day", false to "Skip that month"), rule.useLastDay, tag = "often-short-months") { onChange(rule.copy(useLastDay = it)) }
+                if (rule.dates.any { it > 28 }) Box(Modifier.padding(horizontal = 16.dp)) {
+                    AppConnectedButtons(listOf(true to "Use the last day", false to "Skip that month"), rule.useLastDay, tag = "often-short-months") { onChange(rule.copy(useLastDay = it)) }
+                }
             }
-            "Weekday" -> Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            "Weekday" -> Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 val ordinals = listOf(1, 2, 3, 4, 5, -1)
                 DropdownField("Which", HabitCopy.capitalized(HabitCopy.ordinalWord(rule.ordinal)), ordinals.map { HabitCopy.capitalized(HabitCopy.ordinalWord(it)) },
                     { onChange(rule.copy(ordinal = ordinals[it])) }, Modifier.weight(1f), tag = "often-weekday-ordinal")
@@ -534,9 +541,8 @@ private fun DateControls(rule: CalendarRule, onChange: (CalendarRule) -> Unit) {
             }
             else -> {}
         }
-        NumberRow("Every", rule.interval, 1..12, 0, 1, "often-month-interval", { if (it == 1) "month" else "months" }) { onChange(rule.copy(interval = it)) }
     } else {
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             DropdownField("Month", HabitCopy.monthNames[rule.month - 1], HabitCopy.monthNames, { m ->
                 val month = m + 1
                 onChange(rule.copy(month = month, day = minOf(rule.day, daysIn(month))))
@@ -544,7 +550,9 @@ private fun DateControls(rule: CalendarRule, onChange: (CalendarRule) -> Unit) {
             DropdownField("Day", "${rule.day}", (1..daysIn(rule.month)).map { "$it" }, { onChange(rule.copy(day = it + 1)) },
                 Modifier.weight(1f), tag = "often-year-day")
         }
-        if (rule.month == 2 && rule.day == 29) AppConnectedButtons(listOf(true to "Use 28 February", false to "Skip that year"), rule.useLastDay, tag = "often-leap") { onChange(rule.copy(useLastDay = it)) }
+        if (rule.month == 2 && rule.day == 29) Box(Modifier.padding(horizontal = 16.dp)) {
+            AppConnectedButtons(listOf(true to "Use 28 February", false to "Skip that year"), rule.useLastDay, tag = "often-leap") { onChange(rule.copy(useLastDay = it)) }
+        }
     }
 }
 

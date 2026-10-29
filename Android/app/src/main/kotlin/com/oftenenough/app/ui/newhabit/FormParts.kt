@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -109,10 +111,54 @@ fun GroupTitle(text: String) =
 fun Note(text: String) =
     Text(text, Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp), style = AppType.bodySmall, color = appColors.secondary)
 
-/** One choice of several: a radio button, its words, and a line under them (List item, 2.4). */
+/**
+ * One choice of several: a radio button, its words, and a line under them (List item, 2.4). [option]: Figma's Option
+ * (the create new pages' choices), its words in Body Large on Surface bright.
+ */
 @Composable
-fun RadioRow(title: String, selected: Boolean, index: Int, count: Int, tag: String, detail: String? = null, onClick: () -> Unit) =
-    AppListItem(title, index, count, supporting = detail, leading = { RadioButton(selected, onClick = null) }, onClick = onClick, tag = tag)
+fun RadioRow(
+    title: String, selected: Boolean, index: Int, count: Int, tag: String, detail: String? = null, option: Boolean = false,
+    containerColor: androidx.compose.ui.graphics.Color = if (option) androidx.compose.material3.MaterialTheme.colorScheme.surfaceBright else androidx.compose.ui.graphics.Color.Unspecified,
+    onClick: () -> Unit,
+) = AppListItem(title, index, count, supporting = detail, leading = { RadioButton(selected, onClick = null) }, onClick = onClick,
+        containerColor = containerColor, headlineStyle = if (option) AppType.bodyLarge else AppType.titleMedium, tag = tag)
+
+/**
+ * The chosen option with its own settings under it, in one piece of its group (Figma's "Option · … (chosen)"): its row,
+ * then [content] 8 apart, [bottom] under, on Surface bright.
+ */
+@Composable
+fun OpenOption(title: String, index: Int, count: Int, tag: String, bottom: androidx.compose.ui.unit.Dp = 16.dp, content: @Composable ColumnScope.() -> Unit) {
+    Column(Modifier.fillMaxWidth().clip(com.oftenenough.app.ui.components.segmentShape(index, count))
+        .background(androidx.compose.material3.MaterialTheme.colorScheme.surfaceBright).padding(bottom = bottom),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        RadioRow(title, true, 0, 1, tag, option = true, containerColor = androidx.compose.ui.graphics.Color.Transparent) {}
+        content()
+    }
+}
+
+/**
+ * A count inside an open option (Figma's Stepper): its label in Body Large, then − [number] + (Small neutral icon
+ * buttons, the number in Title Medium, typed too), then its unit; 16 at the sides, 8 above and under, 16 apart.
+ */
+@Composable
+fun Stepper(label: String, value: Int, range: IntRange, tag: String, unit: (Int) -> String = { "" }, onChange: (Int) -> Unit) {
+    val s = androidx.compose.material3.MaterialTheme.colorScheme
+    Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp).semantics { testTag = tag },
+        horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+        Text(label, Modifier.weight(1f), style = AppType.bodyLarge, color = s.onSurface)
+        StepButton(Symbols.Remove, "Fewer", value > range.first) { onChange(maxOf(range.first, value - 1)) }
+        BasicTextField(
+            value.toString(), { text -> text.filter { it.isDigit() }.take(5).toIntOrNull()?.let { onChange(it.coerceIn(range)) } },
+            Modifier.widthIn(min = 28.dp, max = 56.dp).semantics { contentDescription = label },
+            textStyle = AppType.titleMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(s.primary),
+        )
+        StepButton(Symbols.Add, "More", value < range.last) { onChange(minOf(range.last, value + 1)) }
+        val words = unit(value)
+        if (words.isNotEmpty()) Text(words, style = AppType.bodyLarge, color = s.onSurface)
+    }
+}
 
 /** One of any number: a checkbox, its words, and a line under them (List item, 2.4). */
 @Composable
