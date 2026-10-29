@@ -114,7 +114,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.1.8 | Onboarding · That isn’t a backup | 582:8484 | ☑ |
 | 5.2.1 | Today · Navigation drawer | 626:76 | ☑ |
 | 5.2.2 | Today · Today | 728:7985 | ☑ |
-| 5.2.3 | Today · Edit Today | 827:39487 | ☐ |
+| 5.2.3 | Today · Edit Today | 827:39487 | ☑ |
 | 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☐ |
 | 5.3.1 | Day details · Day details sheet | 669:234 | ☐ |
 | 5.3.2 | Day details · Log screen | 687:829 | ☐ |
@@ -1468,3 +1468,27 @@ What each atom changed, newest last.
   - The day's note (a card above the sections) and "Note for the day" under them aren't in Figma's Today; kept, the
     user's call.
   - The Progress page still filters by group; that's Habits & Tasks (5.5).
+  - **Built:** run 40778735342 (Android #125, commit 78a1671) passed: assembleDebug, unit tests and lint.
+- **5.2.3 Today · Edit Today (28–29 Oct).** Figma: Edit Today (827:39487), State Default · Dragging a habit · Empty time
+  of day · Dragging a section; no motion of its own (the row follows the finger); fifteen instances. "Edit Today" with
+  ←; the content 16 at the sides, 40 under; each time of day 16 apart: its heading (48 tall, 16 in, "Morning · 6 AM –
+  12 PM" in Label Large Primary, ending in ✏ for a timed one or the drag handle for Anytime and Quitting), 8, then its
+  habits as List items (2.4), 2 apart and 24 at the ends: the icon in a 40 dp Surface container highest avatar, the
+  name in Title Medium, how often in Body Medium, the drag handle; paused ones last in their time of day, "Paused";
+  Add time of day (Small Tonal, +) after the timed ones. It is `ArrangeDayScreen` (`today/ArrangeDay.kt`); the drag,
+  Move up / Move down / Move to…, the snackbars and every tag stay. The app, the unit tests (55) and the instrumented
+  tests' code build in the session.
+  Fixed:
+  - The title said "Arrange Today"; now "Edit Today", as on ✏'s screen in Figma and the decisions (21 Oct).
+  - A time of day's label was grey, 40 tall, with a ⋮ (sort, edit, move); now Primary and 48, with ✏ (timed) or the
+    handle (Anytime, Quitting), which TalkBack can move up and down.
+  - The rows had a 32 dp grey disc (18 dp icon), the name in Body Large over Body Small, 20 dp ends and 4 above and
+    below; now the List item's 40 dp avatar, Title Medium over Body Medium, 24 ends and 8.
+  - Paused habits were a group of their own at the end ("Paused · always last", with their return dates); now last in
+    their own time of day, "Paused", as drawn.
+  - The end had a footnote and a Times of Day row; now Add time of day after the timed ones (it opens New time of
+    day). The content started 8 under the bar; now right under it, with 40 at the end.
+  Noted, not changed:
+  - Sort by reminder time and Sort A to Z (the old ⋮) aren't in Figma, so they're gone from the screen; their helpers
+    (`sortedByName`, `sortedByReminder`) stay, as a unit test covers the first. The user's call to bring sorting back.
+  - The paused rows no longer say when they come back ("Back on …"); Figma says "Paused". Today's paused rows still do.

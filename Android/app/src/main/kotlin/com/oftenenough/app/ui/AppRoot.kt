@@ -292,7 +292,7 @@ private fun AppMain(
                 "Arrange your day" -> {
                     // The habit Arrange… or Move asked for, lifted once (Figma 1.4, 1.6).
                     val lifted = remember { ArrangeLift.habit.also { ArrangeLift.habit = null } }
-                    ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, { nav.navigate(Routes.page(SettingsPage.TIMES_OF_DAY)) }, lifted) { nav.popBackStack() }
+                    ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, lifted) { nav.popBackStack() }
                 }
                 SettingsPage.HELP -> HelpPage { nav.popBackStack() }
                 SettingsPage.ABOUT -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
