@@ -1,5 +1,15 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.data.isRepeatingTask
+import com.oftenenough.app.data.isOneTimeTask
+import com.oftenenough.app.data.isTask
+import com.oftenenough.app.data.doneEntry
+import com.oftenenough.app.data.taskWhen
+import com.oftenenough.app.data.repeatingLines
+import com.oftenenough.app.data.taskDay
+import com.oftenenough.app.data.NO_DATE_DAY
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.AppMenu
@@ -7,7 +17,6 @@ import com.oftenenough.app.ui.components.AppMenuItem
 import androidx.compose.ui.graphics.Color
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.components.ListChevron
-import com.oftenenough.app.ui.components.ListAvatar
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonStyle
@@ -18,7 +27,6 @@ import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -60,10 +68,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
@@ -109,6 +115,8 @@ interface HabitsNav {
     fun edit(habit: Habit)
     fun newHabit(name: String? = null)
     fun archived()
+    /** Search's Add “word”: What do you want to do?, the word as the name (A72). */
+    fun add(name: String)
     /** The Tasks tab's way out. */
     val tasks: TasksNav
 }
@@ -235,10 +243,10 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
 
     Box(Modifier.fillMaxSize().background(s.surfaceContainer)) {
         Column(Modifier.fillMaxSize()) {
-            if (searching && tab == 0) {
-                SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search habits",
+            if (searching) {
+                SearchHeader(query, { query = it.take(40) }, onBack = { searching = false; query = "" }, "Search habits and tasks",
                     fieldTag = "habits-search-field", backTag = "habits-search-back", clearTag = "habits-search-clear")
-            } else if (!searching) {
+            } else {
                 AppTopBar(
                     "Habits & Tasks",
                     navigationIcon = {
@@ -246,7 +254,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                     },
                     actions = {
                         IconButton({ searching = true }, Modifier.semantics { testTag = "habits-search" }) {
-                            Icon(Symbols.Search, if (tab == 0) "Search habits" else "Search tasks")
+                            Icon(Symbols.Search, "Search habits and tasks")
                         }
                         IconButton({ if (tab == 0) nav.newHabit() else nav.tasks.newTask() }, Modifier.semantics { testTag = "habits-add" }) {
                             Icon(Symbols.Add, if (tab == 0) "New habit" else "New task")
@@ -259,8 +267,14 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
             }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when {
-                    tab == 1 -> TasksPage(store, nav.tasks, searchOpen = searching, onSearchClosed = { searching = false })
-                    searching -> SearchResults(store, query, active, archived, today, { nav.open(it) }, menu) { nav.newHabit(query.trim()) }
+                    searching -> PageSearch(store, query, today, sections,
+                        onHabit = { h ->
+                            // A habit going on: back to its card on Habits (Figma's Scrolled to Water); archived: its details.
+                            if (h.archived) nav.open(h) else { searching = false; query = ""; tab = 0; pending = h.id }
+                        },
+                        onTask = { nav.tasks.open(it) },
+                        onAdd = { nav.add(query.trim()) })
+                    tab == 1 -> TasksPage(store, nav.tasks)
                     active.isEmpty() -> EmptyHabits(archived.size, nav)
                     else -> {
                         val move: (Int) -> Unit = { step -> anchor = movedAnchor(store, snap, step) }
@@ -405,29 +419,6 @@ internal fun SectionTitle(text: String, first: Boolean) =
     Text(text, Modifier.padding(start = 16.dp, top = if (first) 8.dp else 24.dp, bottom = 8.dp).semantics { testTag = "habits-section-$text" },
         style = AppType.bodyMedium, color = appColors.secondary)
 
-/** One habit: icon, name, the line under it, and ⋮; selected, the icon becomes a ✓ and the row tonal (Figma 1, 3). */
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun HabitsRow(
-    habit: Habit, line: String, index: Int, count: Int, selecting: Boolean, marked: Boolean, onClick: () -> Unit, onLongClick: (() -> Unit)?,
-    menu: (@Composable (Habit, () -> Unit) -> Unit)?,
-) {
-    val c = appColors
-    var open by remember { mutableStateOf(false) }
-    AppListItem(
-        habit.name, index, count,
-        Modifier.padding(bottom = SegmentedListGap).semantics(mergeDescendants = true) { if (selecting) stateDescription = if (marked) "Selected" else "Not selected" },
-        line, onClick = onClick, onLongClick = onLongClick, containerColor = if (marked) c.tonal else Color.Unspecified, tag = "habits-row-" + habit.name,
-        leading = { if (marked) ListAvatar(Symbols.Check, done = true) else HabitIcon(habit.symbol, habit.color) },
-        trailing = menu?.let { m -> {
-            Box {
-                StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })
-                AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { m(habit) { open = false } }
-            }
-        } },
-    )
-}
-
 /** A habit's ⋮ (A54): Edit habit, Pause… or Resume, then Archive and Delete (red). */
 @Composable
 private fun HabitMenuItems(
@@ -465,41 +456,70 @@ fun BarAction(text: String, icon: androidx.compose.ui.graphics.vector.ImageVecto
     }
 }
 
-/** Matches as rows (Figma 4.1): Habits, then Archived; nothing listed until a letter is typed; no match offers a new habit (4.2). */
+/**
+ * 5.5.3, **Search page** (Figma 991:8050, Screen Start · Results · No match · Tasks only, each with the keyboard down;
+ * Components — Atoms Build Plan; A59, A72): one search for the whole page, from either tab, under the Search view header
+ * (1.9, "Search habits and tasks"). Nothing until a letter is typed; then 16 in, the habits that match and then the
+ * tasks, each group only when something in it matches: a subheader ("4 habits") in Label Large Primary, 16 in, 8 over
+ * one rounded list of two-line List items 2 apart on Surface bright (the icon in its colour, the name, a line: a
+ * habit's time of day and plan or "Archived 12 Oct"; a task's day, its rhythm and next day, or "Completed Wed, 21 Oct"),
+ * the tasks' group 16 under the habits'. A habit going on goes back to its card on Habits; an archived one, and a task,
+ * open their details. Nothing matching: "Nothing matches “yoga”" in Title Medium and one Tonal button, Add “yoga”, which
+ * opens What do you want to do? with the name filled in (the person, not the app, says what it is).
+ */
 @Composable
-private fun SearchResults(
-    store: HabitStore, query: String, active: List<Habit>, archived: List<Habit>, today: Int,
-    onRow: (Habit) -> Unit, menu: @Composable (Habit, () -> Unit) -> Unit, onNew: () -> Unit,
+private fun PageSearch(
+    store: HabitStore, query: String, today: Int, sections: List<HabitSection>,
+    onHabit: (Habit) -> Unit, onTask: (Habit) -> Unit, onAdd: () -> Unit,
 ) {
-    val c = appColors
+    val s = MaterialTheme.colorScheme
     val q = query.trim().lowercase()
     if (q.isEmpty()) return
-    val found = active.filter { it.name.lowercase().contains(q) }
-    val old = archived.filter { it.name.lowercase().contains(q) }
-    if (found.isEmpty() && old.isEmpty()) {
-        Column(Modifier.fillMaxWidth().padding(top = 72.dp, start = 32.dp, end = 32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("No habits called “${query.trim()}”", style = AppType.titleMedium, color = c.ink, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(16.dp))
-            Text("Check the spelling, or add it as a new habit.", style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(16.dp))
-            AppButton("New habit “${query.trim()}”", onNew, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "habits-search-new")
+    fun hit(h: Habit) = h.name.lowercase().contains(q)
+    val where = sections.flatMap { sec -> sec.habits.map { it.id to sec.title } }.toMap()
+    val habits = sections.flatMap { it.habits }.filter(::hit) + store.habits.filter { it.archived && !it.isTask && hit(it) }
+    val tasks = store.habits.filter { it.isTask && !it.archived && hit(it) }
+        .sortedBy { if (it.isOneTimeTask && store.doneEntry(it) != null) 1 else 0 } +
+        store.habits.filter { it.isTask && it.archived && hit(it) }
+    if (habits.isEmpty() && tasks.isEmpty()) {
+        Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 40.dp).semantics { testTag = "habits-search-none" },
+            verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text("Nothing matches “${query.trim()}”", Modifier.padding(horizontal = 16.dp), style = AppType.titleMedium, color = s.onSurface)
+            AppButton("Add “${query.trim()}”", onAdd, Modifier.padding(horizontal = 16.dp), style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "habits-search-add")
         }
         return
     }
-    LazyColumn(Modifier.fillMaxSize().padding(horizontal = 16.dp).semantics { testTag = "habits-search-results" }) {
-        fun LazyListScope.group(title: String, list: List<Habit>) {
+    fun habitLine(h: Habit): String = if (h.archived) store.archivedLine(h) else listOfNotNull(where[h.id], store.listLine(h, today)).joinToString(" · ")
+    fun taskLine(t: Habit): String {
+        if (t.archived) return store.archivedLine(t)
+        if (t.isRepeatingTask) return store.repeatingLines(t, today).first()
+        store.doneEntry(t)?.let { return "Completed " + taskDay(it.day) }
+        val due = t.dueDay ?: return ""
+        return when {
+            due == NO_DATE_DAY -> "No date"
+            due < today -> "Today · planned for " + taskDay(due)
+            due == today -> "Today · " + store.taskWhen(t)
+            else -> taskDay(due) + store.taskWhen(t).let { if (it == "Anytime") "" else " · $it" }
+        }
+    }
+    LazyColumn(Modifier.fillMaxSize().padding(horizontal = 16.dp).semantics { testTag = "habits-search-results" },
+        contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)) {
+        fun LazyListScope.group(title: String, list: List<Habit>, first: Boolean, line: (Habit) -> String, open: (Habit) -> Unit, tag: String) {
             if (list.isEmpty()) return
-            item(key = "t-$title") { SectionTitle(title, title == "Habits" || found.isEmpty()) }
+            item(key = "t-$title") {
+                Text(title, Modifier.padding(start = 16.dp, end = 16.dp, top = if (first) 0.dp else 16.dp, bottom = 8.dp)
+                    .semantics { heading(); testTag = "habits-search-$tag" }, style = AppType.labelLarge, color = s.primary)
+            }
             list.forEachIndexed { i, h ->
                 item(key = h.id) {
-                    HabitsRow(h, if (h.archived) store.archivedLine(h) else store.listLine(h, today), i, list.size, false, false, { onRow(h) }, null,
-                        if (h.archived) null else menu)
+                    AppListItem(h.name, i, list.size, Modifier.padding(bottom = if (i < list.lastIndex) SegmentedListGap else 0.dp), line(h),
+                        leading = { HabitIcon(h.symbol, h.color) }, onClick = { open(h) }, containerColor = s.surfaceBright,
+                        headlineLines = 1, tag = "habits-row-" + h.name)
                 }
             }
         }
-        group("Habits", found)
-        group("Archived", old)
-        item { Spacer(Modifier.height(88.dp)) }
+        group(if (habits.size == 1) "1 habit" else "${habits.size} habits", habits, true, ::habitLine, onHabit, "habits")
+        group(if (tasks.size == 1) "1 task" else "${tasks.size} tasks", tasks, habits.isEmpty(), ::taskLine, onTask, "tasks")
     }
 }
 

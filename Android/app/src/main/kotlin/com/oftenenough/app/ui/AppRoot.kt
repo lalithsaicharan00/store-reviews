@@ -205,13 +205,15 @@ private fun AppMain(
             val a = entry.arguments
             val idea = a?.getString("idea")?.let { name -> HabitIdea.all.firstOrNull { it.name == name } }
             val copyOf = a?.getString("copy")?.let { store.habit(it) }
-            // From the Habits page (+, Duplicate, search's New habit): back there once added, with the 6th-habit page first.
-            // From the Tasks page (Duplicate, search's New task): back there once added.
+            // From Habits & Tasks' + on Habits: back there once added, with the 6th-habit page first.
+            // From its + on Tasks, or a task's Duplicate: back there once added.
             val fromTasks = a?.getString("from") == "tasks"
             val fromHabits = a?.getString("from") == "habits"
+            // Search's Add “word” (A72): back to Habits & Tasks once it's made, with no Add a 6th habit first (it may be a task).
+            val fromSearch = a?.getString("from") == "search"
             NewHabitFlow(store, idea, onClose = { nav.popBackStack() }, onSaved = { habit ->
                 copyOf?.let { store.placeAfter(habit.id, it.id) }
-                if (fromHabits || fromTasks) nav.popBackStack() else nav.popBackStack(Routes.TODAY, inclusive = false)
+                if (fromHabits || fromTasks || fromSearch) nav.popBackStack() else nav.popBackStack(Routes.TODAY, inclusive = false)
             }, onPlus = { nav.navigate(Routes.GET_PLUS) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits, task = fromTasks && copyOf == null)
         }
         composable(Routes.ARCHIVED) {
@@ -265,6 +267,7 @@ private fun AppMain(
                             override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
                             override fun newHabit(name: String?) = nav.navigate(Routes.NEW + "?from=habits" + (name?.let { "&name=" + android.net.Uri.encode(it) } ?: ""))
                             override fun archived() = nav.navigate(Routes.ARCHIVED)
+                            override fun add(name: String) = nav.navigate(Routes.NEW + "?from=search&name=" + android.net.Uri.encode(name))
                             override val tasks = object : com.oftenenough.app.ui.habit.TasksNav {
                                 override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
                                 override fun edit(task: Habit) = nav.navigate(Routes.edit(task.id))

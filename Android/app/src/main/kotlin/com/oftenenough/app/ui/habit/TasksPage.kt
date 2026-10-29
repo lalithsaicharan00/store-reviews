@@ -10,7 +10,6 @@ import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.MenuDivider
-import com.oftenenough.app.ui.components.SearchHeader
 import com.oftenenough.app.ui.components.AppConnectedButtons
 import com.oftenenough.app.ui.components.scrolledTopBarColor
 import com.oftenenough.app.ui.components.AppTopBar
@@ -35,7 +34,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -83,7 +81,6 @@ import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.NO_DATE_DAY
 import com.oftenenough.app.data.TaskRhythm
-import com.oftenenough.app.data.archivedLine
 import com.oftenenough.app.data.doneEntry
 import com.oftenenough.app.data.isOneTimeTask
 import com.oftenenough.app.data.isRepeatingTask
@@ -95,7 +92,6 @@ import com.oftenenough.app.data.taskHeading
 import com.oftenenough.app.data.taskMoveRange
 import com.oftenenough.app.data.taskOpenDay
 import com.oftenenough.app.data.taskRhythm
-import com.oftenenough.app.data.taskWhen
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.AppListItem
@@ -133,12 +129,12 @@ private enum class RowKind { ONE_TIME, DONE, NO_DATE, REPEATING }
  * deletes; a long press selects several (or drags a row within its day); every change says so with Undo, and a delete
  * waits for its Undo to go (D6). Completed and Archived are rows at the end of One-time.
  *
- * It is the Tasks tab of Habits & Tasks (5.5.1): the page's top bar and tabs sit over it, and its search ([searchOpen],
- * closed through [onSearchClosed]) opens from the page's search. Its own look is 5.5.4's.
+ * It is the Tasks tab of Habits & Tasks (5.5.1): the page's top bar, tabs and search (5.5.3) sit over it. Its own look
+ * is 5.5.4's.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun TasksPage(store: HabitStore, nav: TasksNav, searchOpen: Boolean, onSearchClosed: () -> Unit) {
+fun TasksPage(store: HabitStore, nav: TasksNav) {
     val c = appColors
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
@@ -146,8 +142,6 @@ fun TasksPage(store: HabitStore, nav: TasksNav, searchOpen: Boolean, onSearchClo
     var tab by rememberSaveable { mutableIntStateOf(0) }
     var selecting by rememberSaveable { mutableStateOf(false) }
     var chosen by rememberSaveable { mutableStateOf(emptySet<String>()) }
-    val searching = searchOpen
-    var query by rememberSaveable { mutableStateOf("") }
     var hidden by remember { mutableStateOf(emptySet<String>()) }
     var coachSeen by remember { mutableStateOf(store.setting(TASKS_COACH_SEEN) != null) }
     var deleting by remember { mutableStateOf<List<Habit>>(emptyList()) }
@@ -219,7 +213,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav, searchOpen: Boolean, onSearchClo
     fun toggle(t: Habit) { chosen = if (t.id in chosen) chosen - t.id else chosen + t.id }
     fun seeCoach() { if (!coachSeen) { coachSeen = true; store.saveAppSetting(TASKS_COACH_SEEN, "1") } }
 
-    BackHandler(enabled = selecting || searching) { if (selecting) endSelection() else { onSearchClosed(); query = "" } }
+    BackHandler(enabled = selecting) { endSelection() }
 
     val rowMenu: @Composable (Habit, RowKind, () -> Unit) -> Unit = { t, kind, dismiss ->
         TaskMenuItems(t, kind, today, dismiss, onEdit = { nav.edit(t) }, onDuplicate = { nav.duplicate(t) }, onMove = { day -> move(listOf(t), day) },
@@ -232,10 +226,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav, searchOpen: Boolean, onSearchClo
     val barColor = if (selecting) c.tonal else lerp(c.screen, scrolledTopBarColor, scroll.state.overlappedFraction.coerceIn(0f, 1f))
     Box(Modifier.fillMaxSize().background(c.screen)) {
         Column(Modifier.fillMaxSize()) {
-            if (searching) SearchHeader(query, { query = it.take(40) }, onBack = { onSearchClosed(); query = "" }, "Search tasks",
-                fieldTag = "habits-search-field", backTag = "habits-search-back", clearTag = "habits-search-clear")
-            else {
-                if (selecting) AppTopBar(
+            if (selecting) AppTopBar(
                     if (chosen.isEmpty()) "Select tasks" else "${chosen.size} selected",
                     navigationIcon = { IconButton(::endSelection, Modifier.semantics { testTag = "tasks-end-selection" }) { Icon(Symbols.Close, "Stop selecting") } },
                     actions = {
@@ -245,7 +236,6 @@ fun TasksPage(store: HabitStore, nav: TasksNav, searchOpen: Boolean, onSearchClo
                     },
                     containerColor = barColor,
                 )
-            }
             // One-time · Repeating: a connected button group at the top of the list, scrolling away with it (A57, Figma
             // List, Group wrap), never pinned tabs. The empty states keep it, so the other kind is one tap away.
             val kinds: @Composable (Modifier) -> Unit = { m ->
@@ -253,8 +243,6 @@ fun TasksPage(store: HabitStore, nav: TasksNav, searchOpen: Boolean, onSearchClo
             }
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when {
-                    // Results open (Figma 5.1); selecting several is the list's, not the search's.
-                    searching -> TaskSearch(store, query, open, archived, today, onRow, {}, rowMenu) { nav.newTask(query.trim()) }
                     all.isEmpty() -> Column {
                         kinds(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp))
                         EmptyTasks(Symbols.Checklist, "No tasks yet", "Every task you make lives here: for today, a later day, or no day at all.") {
@@ -488,53 +476,6 @@ private fun TaskMenuItems(
     MenuDivider()
     AppMenuItem("Archive", { dismiss(); onArchive() }, icon = Symbols.Archive, tag = "tasks-menu-archive")
     AppMenuItem("Delete task…", { dismiss(); onDelete() }, icon = Symbols.Delete, destructive = true, tag = "tasks-menu-delete")
-}
-
-/** Search (Figma 5–5.3): open tasks first with their day, then Completed and Archived, each saying so; no match offers a new task. */
-@Composable
-private fun TaskSearch(
-    store: HabitStore, query: String, open: List<Habit>, archived: List<Habit>, today: Int,
-    onRow: (Habit) -> Unit, onLong: (Habit) -> Unit, menu: @Composable (Habit, RowKind, () -> Unit) -> Unit, onNew: () -> Unit,
-) {
-    val c = appColors
-    val q = query.trim().lowercase()
-    if (q.isEmpty()) return
-    fun hit(t: Habit) = t.name.lowercase().contains(q)
-    val tasks = open.filter { hit(it) && !(it.isOneTimeTask && store.doneEntry(it) != null) }
-    val done = open.filter { hit(it) && it.isOneTimeTask && store.doneEntry(it) != null }
-    val old = archived.filter { hit(it) }
-    if (tasks.isEmpty() && done.isEmpty() && old.isEmpty()) {
-        Column(Modifier.fillMaxWidth().padding(top = 72.dp, start = 32.dp, end = 32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("No tasks called “${query.trim()}”", style = AppType.titleMedium, color = c.ink, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(16.dp))
-            Text("Check the spelling, or add it as a new task.", style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(16.dp))
-            AppButton("New task “${query.trim()}”", onNew, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "tasks-search-new")
-        }
-        return
-    }
-    fun line(t: Habit): String = when {
-        t.isRepeatingTask -> store.repeatingLines(t, today).first()
-        t.dueDay == NO_DATE_DAY -> "No date"
-        (t.dueDay ?: today) < today -> "Today · planned " + taskDay(t.dueDay!!).substringAfter(' ')
-        t.dueDay == today -> "Today · " + store.taskWhen(t)
-        else -> taskDay(t.dueDay!!) + store.taskWhen(t).let { if (it == "Anytime") "" else " · $it" }
-    }
-    LazyColumn(Modifier.fillMaxSize().padding(horizontal = 16.dp).semantics { testTag = "tasks-search-results" }) {
-        fun LazyListScope.group(title: String, list: List<Habit>, first: Boolean, kind: (Habit) -> RowKind, words: (Habit) -> String, struck: Boolean) {
-            if (list.isEmpty()) return
-            item(key = "t-$title") { SectionTitle(title, first) }
-            list.forEachIndexed { i, t ->
-                item(key = t.id) {
-                    TaskRow(t, listOf(words(t)), struck, i, list.size, false, false, { onRow(t) }, { onLong(t) }, { task, dismiss -> menu(task, kind(task), dismiss) })
-                }
-            }
-        }
-        group("Tasks", tasks, true, { if (it.isRepeatingTask) RowKind.REPEATING else if (it.dueDay == NO_DATE_DAY) RowKind.NO_DATE else RowKind.ONE_TIME }, ::line, false)
-        group("Completed", done, tasks.isEmpty(), { RowKind.DONE }, { t -> "Done " + taskDay(store.doneEntry(t)!!.day) }, true)
-        group("Archived", old, tasks.isEmpty() && done.isEmpty(), { RowKind.ONE_TIME }, { store.archivedLine(it) }, false)
-        item { Spacer(Modifier.height(88.dp)) }
-    }
 }
 
 /** An empty tab (Figma 1.3, 7.2): its icon in a cookie, what goes here, and how to start. */

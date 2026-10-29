@@ -128,7 +128,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.4.2 | Routine player · Your routine sheet | 907:29174 | ☑ |
 | 5.5.1 | Habits & Tasks · Habits page | 986:150825 | ☑ |
 | 5.5.2 | Habits & Tasks · Archived habits page | 988:7736 | ☑ |
-| 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☐ |
+| 5.5.3 | Habits & Tasks · Search page | 991:8050 | ☑ |
 | 5.5.4 | Habits & Tasks · Tasks page | 999:1061 | ☐ |
 | 5.5.5 | Habits & Tasks · Archived tasks page | 1001:178 | ☐ |
 | 5.5.6 | Habits & Tasks · Completed tasks page | 1002:230 | ☐ |
@@ -1874,3 +1874,33 @@ What each atom changed, newest last.
     numbers don't run that way), so the line stays "Archived 12 Oct" (or "Started over as …"). The user's call.
   - On the free plan the intro adds "They don't count toward your five free habits."; Figma draws Plus's page.
   - Archived tasks keeps its own words until 5.5.5; it lost selecting several with this page.
+  - **Built:** run 40808878515 (Android #139, commit c04924f) passed: assembleDebug, unit tests and lint.
+- **5.5.3 Habits & Tasks · Search page (29 Oct).** Figma: Search page (991:8050), Screen Start · Results · Results ·
+  keyboard down · No match · Tasks only · Tasks only · keyboard down (A59, A72). One search for the whole page, from
+  either tab: the Search view header (1.9, "Search habits and tasks") and its divider; nothing until a letter is typed;
+  then 16 in, the habits that match, then the tasks, each group only when something in it matches: its subheader ("4
+  habits", "2 tasks") in Label Large Primary, 16 in, 8 over one rounded list of two-line List items 2 apart on Surface
+  bright (the icon in its colour, the name, a line), the tasks 16 under the habits. A habit's line is its time of day
+  and plan ("Afternoon · 30 min a day") or "Archived 12 Oct"; a task's its day ("Today · planned for Wed, 21 Oct",
+  "Tue, 17 Nov · 10:30 AM"), its rhythm and next day, "Completed Wed, 21 Oct" or "Archived …". Nothing matching:
+  "Nothing matches “yoga”" in Title Medium and one Tonal button, Add “yoga”, opening What do you want to do? with the
+  name filled in. A habit going on goes back to its card on Habits (Figma's Scrolled to Water, 5.5.1); an archived
+  one, and a task, open their details. It is `PageSearch` (`habit/HabitsPage.kt`), opened from the page's search; Add
+  goes to New with `from=search` (`AppRoot.kt`), back to the page once made. The app, the unit tests (55), lint and the
+  instrumented tests' code build in the session.
+  Fixed:
+  - Search was per tab: "Search habits" found habits (and archived ones) as the old rows with ⋮; the Tasks tab had its
+    own search, open tasks then Completed then Archived, as task rows with ⋮. Now one search, Figma's groups and rows,
+    no ⋮ (a result opens or shows its habit).
+  - No match said "No habits called “yoga”" (or "No tasks …") with a line of advice and New habit “yoga” (New task
+    “yoga”); now Figma's one line and Add “yoga”, which asks what it is (A72), never guessing habit or task.
+  - A task carried from an earlier day read "Today · planned 21 Oct"; now "Today · planned for Wed, 21 Oct". A done
+    one read "Done Wed, 21 Oct"; now "Completed Wed, 21 Oct".
+  - The search's groups were Body Medium titles ("Habits", "Archived", "Completed"); now counted subheaders in Label
+    Large Primary, archived and completed ones saying so in their own line.
+  - The old Habits row (`HabitsRow`) and the Tasks page's search (`TaskSearch`) are gone, nothing else used them.
+  - Tests: HabitsPageTest and TasksPageTest search through the one search and add through Add “word” (the task one
+    then picks Add a task).
+  Noted, not changed:
+  - A habit's line is "<time of day> · " and the Habits page's line (its plan, or "Back on 3 Nov" when paused, "Starts
+    …", "Ends …"), so a paused one reads "Paused · Back on 3 Nov"; Figma draws only habits going on.

@@ -169,7 +169,8 @@ class HabitsPageTest {
         waitHere(hasText("This week"), "the week again")
     }
 
-    @Test fun searchFindsArchivedToo_andNoMatchOffersANewHabit() {
+    /** One search for the whole page (5.5.3, A59): habits then tasks; no match offers one Add “word” (A72). */
+    @Test fun searchFindsArchivedToo_andNoMatchOffersAdd() {
         launch()
         tapTag("habits-search")
         compose.onNodeWithTag("habits-search-field", useUnmergedTree = true).performTextInput("wa")
@@ -177,8 +178,8 @@ class HabitsPageTest {
         waitFor(hasText("Archived " + com.oftenenough.app.data.DayWords.dayMonth(store.today() - 46)), "when it was archived")
         tapTag("habits-search-clear")
         compose.onNodeWithTag("habits-search-field", useUnmergedTree = true).performTextInput("yoga")
-        waitFor(hasText("No habits called “yoga”"), "no match")
-        tapTag("habits-search-new")
+        waitFor(hasText("Nothing matches “yoga”"), "no match")
+        tapTag("habits-search-add")
         tapTag("new-build")
         tapTag("type-check")
         waitFor(hasTestTag("name-field"), "the form")

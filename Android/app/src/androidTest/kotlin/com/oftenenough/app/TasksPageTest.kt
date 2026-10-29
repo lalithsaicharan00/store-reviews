@@ -82,7 +82,7 @@ class TasksPageTest {
     private fun waitFor(m: SemanticsMatcher, what: String, timeout: Long = 15_000) {
         try {
             compose.waitUntil(timeout) {
-                for (list in listOf("today-list", "tasks-list", "tasks-repeating-list", "tasks-search-results", "completed-list", "archived-list"))
+                for (list in listOf("today-list", "tasks-list", "tasks-repeating-list", "habits-search-results", "completed-list", "archived-list"))
                     if (has(hasTestTag(list))) runCatching { compose.onNodeWithTag(list).performScrollToNode(m) }
                 has(m)
             }
@@ -203,17 +203,19 @@ class TasksPageTest {
         assertEquals(today + 1, task("Clean the fridge").dueDay)
     }
 
-    @Test fun searchGroupsTasksArchivedAndOffersANewTask() {
+    @Test fun searchGroupsTasksArchivedAndOffersAdd() {
         launch()
         tapTag("habits-search")
         compose.onNodeWithTag("habits-search-field").performTextInput("den")
-        waitFor(hasText("Today · planned " + taskDay(today - 2).substringAfter(' ')), "Call the dentist with its day")
+        waitFor(hasText("Today · planned for " + taskDay(today - 2)), "Call the dentist with its day")
         waitFor(hasText("Dentist check-up"), "Dentist check-up")
-        waitFor(hasTestTag("habits-section-Archived"), "Archived")
+        waitFor(hasTestTag("habits-search-tasks"), "the tasks' subheader")
         waitFor(hasText("Find a new dentist"), "the archived one")
         compose.onNodeWithTag("habits-search-field").performTextInput("plumber")
-        waitFor(hasText("No tasks called “denplumber”"), "no match")
-        tapTag("tasks-search-new")
+        waitFor(hasText("Nothing matches “denplumber”"), "no match")
+        tapTag("habits-search-add")
+        // What do you want to do? (A72): the person says it's a task.
+        tapTag("new-task")
         waitFor(hasTestTag("name-field"), "the task form")
         waitFor(hasText("denplumber"), "its name filled in")
     }
