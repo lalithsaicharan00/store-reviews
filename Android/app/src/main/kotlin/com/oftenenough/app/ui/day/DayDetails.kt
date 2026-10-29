@@ -1,5 +1,12 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.components.AppTopBar
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.MaterialTheme
+import com.oftenenough.app.ui.components.ListAvatar
+import com.oftenenough.app.ui.components.SegmentedListGap
+import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.components.MilestonePopup
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.AppMenuItem
@@ -25,7 +32,6 @@ import androidx.compose.material3.SnackbarHostState
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -34,7 +40,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -46,7 +51,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
@@ -72,7 +76,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.DayStatus
 import com.oftenenough.app.data.DayWords
@@ -178,17 +181,16 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
     val started = day >= store.rules.startDay(habit)
     val editable = day <= today && started
     Column(Modifier.verticalScroll(rememberScrollState()).navigationBarsPadding().semantics { testTag = "day-details" }) {
-        // The top bar: ✕, the day, ⋮ (56 high).
-        Row(Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onDismiss, Modifier.semantics { testTag = "day-close" }) { Icon(Symbols.Close, "Close", tint = c.ink) }
-            Spacer(Modifier.width(4.dp))
-            Text(if (day == today + 1) "Tomorrow" else DayWords.day(day, today), Modifier.weight(1f), style = AppType.titleLargeEmphasized, color = c.ink, maxLines = 1)
-            Box {
-                StandardIconButton(Symbols.MoreVert, if (isTask) "Task actions" else "Habit actions", { menu = true }, Modifier.semantics { testTag = "day-more" })
-                DayMenu(menu, { menu = false }, habit, store, today, nav, onDismiss) { confirmDelete = true }
-            }
-        }
-        Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        // The top bar (Figma: the Top app bar, 64, on the sheet's colour): ✕, the day, ⋮.
+        AppTopBar(if (day == today + 1) "Tomorrow" else DayWords.day(day, today), containerColor = Color.Transparent, windowInsets = WindowInsets(0),
+            navigationIcon = { IconButton(onDismiss, Modifier.semantics { testTag = "day-close" }) { Icon(Symbols.Close, "Close") } },
+            actions = {
+                Box {
+                    StandardIconButton(Symbols.MoreVert, if (isTask) "Task actions" else "Habit actions", { menu = true }, Modifier.semantics { testTag = "day-more" })
+                    DayMenu(menu, { menu = false }, habit, store, today, nav, onDismiss) { confirmDelete = true }
+                }
+            })
+        Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             IdentityCard(habit, store, nav)
             DayActivity(habit, day, editable, started, rev, store, nav, onAdded)
             if (isTask && store.canReschedule(habit, day)) {
@@ -241,36 +243,30 @@ private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: H
     }
 }
 
-/** The habit (Figma: 72 high, corners 24): its icon in a 48 circle, the name over the plan, ›; opens its page. */
+/**
+ * The habit (Figma's List item, Single, two lines, on Surface container lowest): its 40 dp avatar in its colour, the
+ * name in Title Medium over the plan in Body Medium, ›; opens its page (a task has no page, so no ›).
+ */
 @Composable
 private fun IdentityCard(habit: Habit, store: HabitStore, nav: DayNav) {
-    val c = appColors
     val isTask = habit.kind == HabitKind.Task
-    Row(Modifier.fillMaxWidth().heightIn(min = 72.dp).clip(RoundedCornerShape(24.dp)).background(c.surface)
-        .let { if (!isTask) it.clickable { nav.habitPage(habit) } else it }.padding(start = 16.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)
-        .semantics { testTag = "day-identity" }, verticalAlignment = Alignment.CenterVertically) {
-        HabitIcon(habit.symbol, habit.color, size = 48.dp)
-        Spacer(Modifier.width(16.dp))
-        Column(Modifier.weight(1f)) {
-            Text(habit.name, style = AppType.titleMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            Text(planLine(habit, store), style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        }
-        if (!isTask) Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
-    }
+    AppListItem(habit.name, 0, 1, supporting = planLine(habit, store), headlineLines = 2, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        leading = { HabitIcon(habit.symbol, habit.color, size = 40.dp) }, trailing = if (isTask) null else ({ ListChevron() }),
+        onClick = if (isTask) null else ({ nav.habitPage(habit) }), tag = "day-identity")
 }
 
-/** A section under This day: its title (Label Large, grey), 6 dp, then its segmented rows. */
+/** A section under This day (Figma's Today's logs): its title in Label Large On surface variant, 16 in, 8 over its rows. */
 @Composable
 private fun SectionList(title: String, rows: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        Text(title, Modifier.padding(bottom = 6.dp), style = AppType.labelLarge, color = appColors.secondary)
+        Text(title, Modifier.padding(start = 16.dp, end = 16.dp, bottom = 6.dp), style = AppType.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         rows()
     }
 }
 
 @Composable
 private fun RowAction(text: String, icon: ImageVector, index: Int, count: Int, tag: String, onClick: () -> Unit) =
-    AppListItem(text, index, count, leading = { Icon(icon, null) }, onClick = onClick, tag = tag)
+    AppListItem(text, index, count, leading = { Icon(icon, null) }, onClick = onClick, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = tag)
 
 /** Skip today, last and plain (Figma: the Medium Outlined button): skipping isn't an action to invite (U17). */
 @Composable
@@ -314,7 +310,10 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         if (s.tier == MilestoneTier.POPUP) popup = s else playRibbon = true
     }
 
-    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(start = 20.dp, end = 20.dp, top = 18.dp, bottom = 4.dp)) {
+    // This day and the day's note are one group of two (Figma's Day card): This day on top (24 / 4 corners), 2, the note.
+    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier.fillMaxWidth().clip(segmentShape(0, 2)).background(MaterialTheme.colorScheme.surfaceContainerLowest)
+        .padding(horizontal = 16.dp, vertical = 20.dp)) {
         if (milestone != null) {
             // Not in Figma's Day details (a milestone reached here shows the bar over it); kept for the Day details sheet.
             key("${habit.id}|${milestone.value}") {
@@ -325,7 +324,8 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             }
             Spacer(Modifier.height(12.dp))
         }
-        Text("This day", style = AppType.labelMedium, color = c.secondary)
+        Text("This day", style = AppType.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(4.dp))
         val detail = if (running && status.running != null) {
             "Timer running · " + Format.clock((tick.value - status.running) / 60_000.0) + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")
         } else status.detail
@@ -341,7 +341,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             Text("You can log this on the day.", style = AppType.bodyMedium, color = c.secondary)
         }
         if (actions.isNotEmpty()) {
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(24.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 for (a in actions) DayButton(a, Modifier.weight(1f))
             }
@@ -349,30 +349,20 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         // A checklist's steps: Step rows in the card (molecule 4.3), the ticked box in the habit's colour.
         if (ruled.kind == HabitKind.Checklist && started) {
             val locked = !editable || skipped || paused
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(24.dp))
             ruled.steps.forEachIndexed { i, step ->
                 val done = remember(rev, day) { store.isStepDone(step, ruled, day) }
                 StepRow(step.name, done, c.habit(habit.color), place = StepRowPlace.Card, enabled = !locked, tag = "day-step-$i",
                     onToggle = { store.toggleStep(step, ruled, day, source = EntrySource.DAY_SHEET) })
             }
         }
-        Spacer(Modifier.height(16.dp))
-        HorizontalDivider()
-        val note = store.note(habit, day)
-        Row(Modifier.fillMaxWidth().clickable(enabled = editable || note != null || future) { nav.note(habit, day) }
-            .padding(vertical = if (note == null) 14.dp else 12.dp)
-            .semantics { testTag = if (note == null) "day-add-note" else "day-edit-note" }, verticalAlignment = Alignment.CenterVertically) {
-            Icon(Symbols.StickyNote2, null, tint = c.secondary)
-            Spacer(Modifier.width(16.dp))
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                if (note != null) {
-                    Text("Note", style = AppType.labelMedium, color = c.secondary)
-                    Text(note, style = AppType.bodyMedium, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                } else Text("Add a note…", style = AppType.bodyMedium, color = c.secondary)
-            }
-            Spacer(Modifier.width(16.dp))
-            Icon(Symbols.KeyboardArrowRight, null, tint = c.secondary)
-        }
+    }
+    Spacer(Modifier.height(SegmentedListGap))
+    // The day's note (Figma's Note: a List item, Last, one line): Add a note…, or the note itself.
+    val note = store.note(habit, day)
+    AppListItem(note ?: "Add a note…", 1, 2, headlineLines = 2, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        leading = { ListAvatar(Symbols.StickyNote2) }, trailing = { ListChevron() },
+        onClick = { nav.note(habit, day) }, enabled = editable || note != null || future, tag = if (note == null) "day-add-note" else "day-edit-note")
     }
     if (logs.isNotEmpty()) {
         val shown = if (logs.size <= 3) logs else logs.take(2)
@@ -380,6 +370,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         SectionList(logsTitle(ruled, day, today)) {
             shown.forEachIndexed { i, e -> LogRow(e, ruled, i, rows, store, nav) }
             if (logs.size > 3) AppListItem("All " + logCount(logs.size, ruled), rows - 1, rows, trailing = { ListChevron() },
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                 onClick = { nav.allLogs(habit, day) }, tag = "day-all-logs")
         }
     }
@@ -433,7 +424,7 @@ private fun StatusLine(title: String, detail: String?) {
 @Composable
 private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: HabitStore, nav: DayNav) {
     val opens = entry.opensRecord(habit)
-    AppListItem(entry.description(habit), index, count, headlineLines = 1, tag = "log-${entry.id}",
+    AppListItem(entry.description(habit), index, count, headlineLines = 1, tag = "log-${entry.id}", containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         onClick = if (opens) ({ nav.log(habit, entry) }) else null,
         trailing = { LogTrailing(entry, habit, opens) { store.undoEntry(entry.id) } })
 }

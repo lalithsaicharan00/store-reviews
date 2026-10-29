@@ -116,7 +116,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.2.2 | Today · Today | 728:7985 | ☑ |
 | 5.2.3 | Today · Edit Today | 827:39487 | ☑ |
 | 5.2.4 | Today · Milestone · Motion (the bar, the pop-up and the row's moment on Today) | 853:45982 | ☑ |
-| 5.3.1 | Day details · Day details sheet | 669:234 | ☐ |
+| 5.3.1 | Day details · Day details sheet | 669:234 | ☑ |
 | 5.3.2 | Day details · Log screen | 687:829 | ☐ |
 | 5.3.3 | Day details · All logs screen | 694:607 | ☐ |
 | 5.3.4 | Day details · Dialog | 702:618 | ☐ |
@@ -1512,3 +1512,35 @@ What each atom changed, newest last.
   - The band opening changes the row's height while it plays (one row, under a second); the rest of the moment is
     drawn without layout (S3, S6).
   - Section 5.2 (Today) is done.
+  - **Built:** run 40797952439 (Android #127, commit 19ab2d7) passed: assembleDebug, unit tests and lint.
+- **5.3.1 Day details · Day details sheet (29 Oct).** Figma: Day details sheet (669:234), Kind Amount · Status ·
+  Checklist · Cut down, with Period, Status, Show progress, Second button, Logs title, Show logs, Log 2, Log 3, Show
+  skip and Limit; no motion of its own (Material's sheet slides); 147 instances. The Bottom sheet atom (Surface
+  container low, the drag handle); the Top app bar (64, on the sheet's colour) with the day and ⋮; the content 16 at
+  the sides, 16 apart, 24 under: the habit (a List item, Single, two lines: its 40 dp avatar, Title Medium, Body
+  Medium, ›); the Day card, two pieces 2 apart on Surface container lowest: This day (24 / 4 corners, 20 by 16 in:
+  "This day" in Label Medium On surface variant, 4, the count in Display Medium with its words in Body Large and what's
+  left in Body Medium, 8, the wavy progress; 24; a checklist's steps; 24; the Medium buttons, 8 apart) and the note (a
+  List item, Last: sticky_note_2 in its avatar, "Add a note…", ›); the day's logs (their title in Label Large On
+  surface variant, 16 in, 8 over List items with the time and ›; four or more: two and "All N logs"); Skip today
+  (Medium Outlined, full width). It is `DayDetailsSheet` / `DayDetailsContent` (`day/DayDetails.kt`). Every tag and
+  word the tests use stays. The app, the unit tests (55) and the instrumented tests' code build in the session.
+  Fixed:
+  - The top bar was a hand-made row, 56 tall, its title in Title Large Emphasized; now the Top app bar atom (1.6), 64,
+    with ✕ and ⋮ as its icons.
+  - The habit had a 48 dp icon in a hand-made row (16 / 12 in); now the List item's 40 dp avatar and its spacing, on
+    Surface container lowest.
+  - This day and the note were one card (28 corners) with a divider and a row in Body Medium, the note's icon bare;
+    now two pieces of a group (24 / 4 corners, 2 apart), the note a List item with its icon in an avatar and "Add a
+    note…" in Title Medium, as Figma's description asks ("The note is a list item, not a divider and a row").
+  - Inside This day: 20 at the sides and 18 / 4 above and below; now 16 at the sides and 20 above and below; 4 under
+    "This day"; 24 (was 12) above the buttons and above the steps (was 4).
+  - The parts were 12 apart and 8 under the bar; now 16 and none.
+  - The logs' title was flush with the rows; now 16 in. The log rows and All N logs are on Surface container lowest.
+  Noted, not changed:
+  - Figma's Top app bar instance has no leading icon (its description says ✕); ✕ kept, so the sheet can be closed
+    without a swipe. The user's call.
+  - The wavy bar's track is the habit's colour at 25 % in this frame; the Linear progress atom (1.20) keeps the
+    habit's Fill, as everywhere else.
+  - The two buttons keep 12 at their sides (`compact`) so "Log manually" fits half the width; Figma draws 24.
+  - The milestone ribbon at the top of This day isn't in Figma (5.1 / 4.9); kept.
