@@ -23,6 +23,9 @@ wherever one exists, set up once so every screen gets the same thing, then the s
   … If something we don't have in the Figma, then it definitely means it has to be deleted." When the app has a
   screen, row, button, word or behaviour Figma doesn't, delete it (code, route, tests); never leave it under "Noted,
   not changed". Saved data is never lost, and widgets', reminders', sync's and backup's behaviour stay as they are.
+- **Figma descriptions come back HTML-escaped** (`"` as `&quot;`, `'` as `&#39;`, `&` as `&amp;`), so writing back what
+  was read escapes them again (found 29 Oct 2026: 11 descriptions had `&amp;quot;`, repaired). Always unescape what
+  `description` returns before writing it back.
 - Design phase: a local compile is the check (no CI or device tests until the user says).
 
 ## Order and status
@@ -195,17 +198,17 @@ search of every page's text).
 | 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☐ |
 | 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☐ |
 | 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☐ |
-| 6.6 | Add screens Figma doesn't draw: Tick steps (steps are ticked in Day details) and any other kind with no Figma frame | ☐ |
-| 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line | ☐ |
+| 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☐ |
+| 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☐ |
 | 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☐ |
 | 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☐ |
 | 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☐ |
 | 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☐ |
 | 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☐ |
 
-Still for the user (Figma itself is unclear): what "· 48 days" counts on Archived habits; Day details' Top app bar draws
-no ✕ while its description says ✕ (kept); Figma's milestone flows show Start on a finished Morning (copied instances?);
-Edit note draws the date as a chip, but a note can't move to another day. Today's "Deleted on another device" notice
+Settled by the user the same day (A78): "· 48 days" removed from Figma; Day details keeps ✕ (added to Figma); notes
+have no date chip (removed from Figma). Still for the user: Figma's milestone flows show Start on a finished Morning
+(copied instances?). Today's "Deleted on another device" notice
 goes only with the sync brake it belongs to (D17's build work 148.7), not on its own: without it held deletes would wait
 silently.
 
