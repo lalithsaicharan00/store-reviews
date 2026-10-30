@@ -202,7 +202,7 @@ search of every page's text).
 | 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☑ |
 | 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☑ |
 | 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☑ |
-| 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☐ |
+| 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☑ |
 | 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☐ |
 | 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☐ |
 | 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☐ |
@@ -3273,3 +3273,16 @@ What each atom changed, newest last.
   the Add screen's Add a check, Mark a day done and Tick steps modes (`RecordKind.CHECK`, `DAY_DONE`, `STEPS`, their
   steps list, footers and discard words), and `addTitle` in `TodayRows` (read by nothing). An old link for a check, task
   or checklist closes at once. The Log screen (a saved record) is unchanged.
+  - **Built:** run 41043254147 (Android, commit 333208f) passed: assembleDebug, unit tests and lint.
+- **6.7 Cleanup · Day details (30 Oct).** Figma's page "day details" and its components (Log screen 687:829, All logs
+  694:607, Note screen 765:1087).
+  - **Milestones:** a milestone reached in Day details shows the bar over everything, the sheet too (its own window,
+    TopCenter, going after its time, on See or a touch elsewhere), or the pop-up; This day's ribbon is gone
+    ("Milestones from Day details: the bar / the pop-up"). `MilestoneCenter.claim` lets Day details have the bar (only
+    the routine player turns it into its ribbon).
+  - **The Log screen's View footers**, Figma's words: "Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM." (its
+    start: the end less its minutes) and, for a slip, "Your run started again from this slip."; a log from elsewhere
+    keeps its line ("Logged from Today."), which Figma doesn't draw. ✕ on Entry and ← on View were already as drawn.
+  - **All logs:** no footer, as Figma's screen (the rows alone): "Undo takes one back." and the "N in all" line go.
+  - **Notes (A78):** Add note and Edit note show the habit only, no date and no date chip, so a note's day never changes
+    (the date picker, the day switching and "… already has a note; you're changing it." go); Note (View) keeps its date.

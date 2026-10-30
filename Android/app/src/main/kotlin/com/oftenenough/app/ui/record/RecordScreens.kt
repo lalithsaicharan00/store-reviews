@@ -385,13 +385,6 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
     val rev = store.revision(habitId)
     val ruled = store.rule(habit, day)
     val logs = remember(rev, day) { store.dayLogs(habit, day) }
-    val total = logs.sumOf { it.value }
-    val all = when (val k = ruled.kind) {
-        is HabitKind.Amount -> HabitCopy.amount(total, k.unit) + " in all. Tap a log to change or delete it."
-        HabitKind.Duration -> Format.minutes(total) + " in all. Tap a log to change or delete it."
-        HabitKind.Quit -> "Tap a slip to change or delete it."
-        else -> "Undo takes one back."
-    }
     Column(Modifier.fillMaxSize().background(c.screen).navigationBarsPadding()) {
         RecordTopBar(logsTitle(ruled, day, store.today()), close = false, onClose = onBack)
         Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -403,7 +396,6 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
                         trailing = { com.oftenenough.app.ui.day.LogTrailing(e, ruled, opens) { store.undoEntry(e.id) } })
                 }
             }
-            Footer(all)
         }
     }
 }

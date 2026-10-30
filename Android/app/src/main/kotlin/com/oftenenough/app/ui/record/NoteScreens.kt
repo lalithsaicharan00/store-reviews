@@ -1,8 +1,6 @@
 package com.oftenenough.app.ui.record
 
-import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppDialog
-import com.oftenenough.app.ui.components.AppAssistChip
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.activity.compose.BackHandler
@@ -50,13 +48,12 @@ import com.oftenenough.app.ui.theme.appColors
 
 /**
  * 5.3.8, **Note screen** (Figma 765:1087, Mode Entry · empty · Entry · typed · View; Components — Atoms Build Plan): a
- * note for one habit's day ([habitId]). Built like the Log screen: the Top app bar (✕ and
- * "Add note" / "Edit note"; ← and "Note"), the content 16 at the sides, nothing above, 8 apart, the bottom bar 12 / 16.
+ * note for one habit's day ([habitId]). Built like the Log screen: the Top app bar (✕ and "Add note" / "Edit note"; ←
+ * and "Note"), the content 16 at the sides, nothing above, 8 apart, the bottom bar 12 / 16.
  *
- * Entry: the habit and the day, 4 above and below, 8 apart (its icon in a 24 dp circle, the name in Title Medium On
- * surface, a new note's date an Assist chip, "21 Oct 2026", that opens the date picker, today and earlier); the field
- * (Surface container lowest, corners 24, 16 in, Body Large, "Write a note" in On surface variant) filling the room;
- * Save, Medium Filled, off until something is typed. A day that already has a note says so and opens it for changing;
+ * Entry: the habit, 4 above and below, 8 apart (its icon in a 24 dp circle, the name in Title Medium On surface; no
+ * date: a note belongs to the day it's written from, A78); the field (Surface container lowest, corners 24, 16 in, Body
+ * Large, "Write a note" in On surface variant) filling the room; Save, Medium Filled, off until something is typed;
  * closing with something typed asks first. View: the habit and its date (Body Medium On surface variant), the note's
  * card, Delete note (Outlined, Error) | Edit (Filled). Edit note is Entry with ✕ only (never ‹ and ✕ together).
  */
@@ -67,21 +64,15 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> 
     val s = MaterialTheme.colorScheme
     // A habit deleted while this was open: nothing to write on.
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onDone() }; return }
-    val today = store.today()
-    var day by rememberSaveable { mutableStateOf(startDay) }
-    fun noteOf(d: Int) = store.note(habit, d)
-    val opened = remember { noteOf(startDay) }
-    val saved = noteOf(day)
+    // A note belongs to the day it's written from; its day never changes (A78).
+    val day = startDay
+    val opened = remember { store.note(habit, day) }
+    val saved = store.note(habit, day)
     var editing by rememberSaveable { mutableStateOf(opened == null) }
-    // A new note whose day already has one (chosen with the chip): that note is changed (Figma 15.3).
     val adding = opened == null
     var text by rememberSaveable(editing) { mutableStateOf(saved ?: "") }
-    // Another day chosen: its note, if it has one, is the one being written (Figma 15.3); otherwise the typing stays.
-    var shownDay by rememberSaveable { mutableStateOf(startDay) }
-    if (shownDay != day) { shownDay = day; noteOf(day)?.let { text = it } }
     var discard by remember { mutableStateOf(false) }
     var confirmDelete by remember { mutableStateOf(false) }
-    var pickDay by remember { mutableStateOf(false) }
     // Saved and leaving: the screen keeps what it showed while it slides away.
     var leaving by remember { mutableStateOf(false) }
     val focus = remember { FocusRequester() }
@@ -89,7 +80,7 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> 
     fun close() { if (editing && changed && text.isNotBlank()) discard = true else if (editing && !adding) editing = false else onDone() }
     fun save(value: String) = store.setNote(value, habit, day)
     BackHandler { close() }
-    LaunchedEffect(editing, day) { if (editing) runCatching { focus.requestFocus() } }
+    LaunchedEffect(editing) { if (editing) runCatching { focus.requestFocus() } }
 
     val title = when { !editing -> "Note"; adding -> "Add note"; else -> "Edit note" }
     val shortDay = DayWords.short(day).replace(",", "")
@@ -97,16 +88,12 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> 
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(title, close = editing, onClose = ::close)
         Column(Modifier.weight(1f).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            // The habit and the day (Figma's Habit and day): its icon in a 24 circle, the name, then the date.
+            // The habit (Figma's Habit and day): its icon in a 24 circle and the name; the note's date only when reading it.
             Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 HabitIcon(habit.symbol, habit.color, size = 24.dp)
                 Text(habit.name, Modifier.weight(1f), style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                if (editing && adding) AppAssistChip(date, { pickDay = true }, tag = "note-date")
-                else Text(date, Modifier.semantics { testTag = "note-day" }, style = AppType.bodyMedium, color = s.onSurfaceVariant, maxLines = 1)
-            }
-            if (editing && adding && saved != null && !leaving) {
-                Text("$shortDay already has a note; you're changing it.", Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
+                if (!editing) Text(date, Modifier.semantics { testTag = "note-day" }, style = AppType.bodyMedium, color = s.onSurfaceVariant, maxLines = 1)
             }
             if (editing) {
                 Box(Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest).padding(16.dp)) {
@@ -138,10 +125,6 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> 
     }, keepLabel = if (adding) "Keep writing" else "Keep editing")
     if (confirmDelete) AppDialog("Delete this note?", "Only the note for $shortDay is removed. That day's progress stays.",
         "Delete note", { confirmDelete = false; save(""); onDone() }, { confirmDelete = false }, destructive = true, confirmTag = "note-delete-confirm")
-    if (pickDay) {
-        val first = store.rules.startDay(habit)
-        AppDatePicker(day, { it in first..today }, { pickDay = false }) { day = it }
-    }
 }
 
 /** A note's date, as Figma writes it: "21 Oct 2026". */

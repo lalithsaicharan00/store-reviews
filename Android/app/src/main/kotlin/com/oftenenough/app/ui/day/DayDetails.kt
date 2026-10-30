@@ -20,8 +20,6 @@ import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.MenuDivider
-import com.oftenenough.app.ui.components.MilestoneRibbon
-import com.oftenenough.app.ui.components.MilestoneRibbonArrival
 import com.oftenenough.app.ui.components.StepRow
 import com.oftenenough.app.ui.components.StepRowPlace
 import com.oftenenough.app.ui.components.StandardIconButton
@@ -44,10 +42,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -59,7 +57,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -283,32 +280,31 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         !(ruled.kind == HabitKind.Check && !store.rules.countsUp(habit, day) && ruled.frequency.isDayBased) &&
         !(ruled.kind == HabitKind.Check && ruled.frequency.isFlexible)
     // A milestone reached here is this sheet's (Android/Docs/Milestones): its pop-up at once when it's a landmark and the
-    // day still has room (Figma 14.1), else the ribbon (14); it stays for the rest of the day.
+    // day still has room, else the bar over everything, Day details too (Figma's "Milestones from Day details": the bar
+    // and the pop-up); never a ribbon in This day (cleanup 6.7).
     val center = store.milestones
-    val milestone = remember(rev, day, center.shown(habit.id)) { if (day == today) center.visible(habit) else null }
     var popup by remember { mutableStateOf<MilestoneShown?>(null) }
-    var playRibbon by remember { mutableStateOf(false) }
+    var bar by remember { mutableStateOf<MilestoneShown?>(null) }
     val waiting = center.next(MilestoneCenter.Surface.SHEET)
     LaunchedEffect(waiting) {
         val hit = waiting?.takeIf { it.habitId == habit.id } ?: return@LaunchedEffect
         val s = center.claim(hit, MilestoneCenter.Surface.SHEET) ?: return@LaunchedEffect
-        if (s.tier == MilestoneTier.POPUP) popup = s else playRibbon = true
+        when (s.tier) { MilestoneTier.POPUP -> popup = s; MilestoneTier.BAR -> bar = s; MilestoneTier.ROW -> {} }
+    }
+    // The bar rises over the sheet (its own window, so above Day details), goes after its time, on See or on a touch
+    // elsewhere (Figma: "goes on any other touch, a swipe or the next milestone").
+    bar?.let { shown ->
+        val w = remember(shown) { center.words(shown, habit) }
+        androidx.compose.ui.window.Popup(alignment = Alignment.TopCenter, onDismissRequest = { bar = null }) {
+            com.oftenenough.app.ui.components.MilestoneBar(w.number, w.title, habit.name, habit.color, onSee = { popup = shown; bar = null },
+                onGone = { bar = null }, modifier = Modifier.statusBarsPadding().padding(start = 16.dp, end = 16.dp, top = 8.dp))
+        }
     }
 
     // This day and the day's note are one group of two (Figma's Day card): This day on top (24 / 4 corners), 2, the note.
     Column(Modifier.fillMaxWidth()) {
     Column(Modifier.fillMaxWidth().clip(segmentShape(0, 2)).background(MaterialTheme.colorScheme.surfaceContainerLowest)
         .padding(horizontal = 16.dp, vertical = 20.dp)) {
-        if (milestone != null) {
-            // Not in Figma's Day details (a milestone reached here shows the bar over it); kept for the Day details sheet.
-            key("${habit.id}|${milestone.value}") {
-                MilestoneRibbonArrival(playRibbon) {
-                    MilestoneRibbon(remember(milestone) { center.words(milestone, habit).band }, habit.color, play = playRibbon,
-                        modifier = Modifier.clip(RoundedCornerShape(12.dp)))
-                }
-            }
-            Spacer(Modifier.height(12.dp))
-        }
         Text("This day", style = AppType.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(4.dp))
         val detail = if (running && status.running != null) {

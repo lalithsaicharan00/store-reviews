@@ -383,7 +383,8 @@ class MilestoneCenter(private val store: HabitStore) {
         val big = popups + bars
         var tier = if (first) MilestoneTier.POPUP else hit.wanted
         if (tier == MilestoneTier.POPUP && (popups >= 1 || popupDays.count { it > hit.day - 7 } >= 2 || big >= 2)) tier = MilestoneTier.BAR
-        if (tier == MilestoneTier.BAR && surface != Surface.TODAY) tier = MilestoneTier.ROW
+        // Today and Day details show the bar (Figma's "Milestones from Day details: the bar"); the player its ribbon.
+        if (tier == MilestoneTier.BAR && surface == Surface.PLAYER) tier = MilestoneTier.ROW
         if (tier == MilestoneTier.BAR && (bars >= 2 || big >= 2)) tier = MilestoneTier.ROW
         val s = probe.copy(tier = tier, first = first && tier == MilestoneTier.POPUP, played = tier != MilestoneTier.ROW || surface != Surface.TODAY)
         record(s)

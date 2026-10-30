@@ -94,17 +94,18 @@ fun Entry.opensRecord(habit: Habit): Boolean {
     }
 }
 
-/** "Logged with Log manually.": where it came from, in the Log view's footer. */
+/** Where a log came from, in the Log view's footer: "Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.". */
 fun Entry.originLine(slip: Boolean): String? {
+    // Figma's Log screen, View (687:829): a slip says what it did; a log by hand when it was added; a timer's when it began.
+    if (slip) return "Your run started again from this slip."
     val s = source ?: return null
-    val verb = if (slip) "Recorded" else "Logged"
+    val verb = "Logged"
     return when (s) {
-        // Figma 1.8, 9.3: "Logged by hand.", "Recorded by hand."
-        EntrySource.MANUAL -> if (slip) "Recorded by hand." else "Logged by hand."
+        EntrySource.MANUAL -> "Added by hand at ${DayWords.clock(createdAt)}."
+        EntrySource.TIMER -> "From the timer. Started ${DayWords.clock(createdAt - (value * 60_000).toLong())}."
         EntrySource.TODAY -> "$verb from Today."
         EntrySource.ROUTINE -> "$verb in the routine player."
         EntrySource.REMINDER -> "$verb from a reminder."
-        EntrySource.TIMER -> "$verb with the timer."
         EntrySource.DAY_SHEET -> "$verb in Day details."
         EntrySource.SHORTCUT -> "$verb with Google Assistant or a shortcut."
         EntrySource.WIDGET -> "$verb from a widget."
