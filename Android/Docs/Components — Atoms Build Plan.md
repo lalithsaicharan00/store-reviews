@@ -171,7 +171,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.8 | Settings · Theme | 1188:376784 | ☑ |
 | 5.9.1 | Plus · Plus | 1204:175 | ☑ |
 | 5.9.2 | Create new · Make room (the frames of "A sixth habit on the free plan", 1167:351072, 1167:351230; added 30 Oct) | 1167:351072 | ☑ |
-| 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☐ |
+| 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☑ |
 | 5.10.2 | Widgets · Widget row fill | 1238:428 | ☐ |
 | 5.10.3 | Widgets · Widget · List row | 1238:429 | ☐ |
 | 5.10.4 | Widgets · Widget · List | 1240:488 | ☐ |
@@ -2902,3 +2902,34 @@ What each atom changed, newest last.
   - Figma draws light only; dark follows the theme's roles and the habits' dark colours.
 
   **Section 5.9 Plus is built (5.9.1–5.9.2).**
+  - **Built:** run 41026741864 (Android, commit a06471c) passed: assembleDebug, unit tests and lint.
+
+- **5.10.1 Widgets · Widget · One habit (30 Oct).** Figma: Widget · One habit (1235:46), Kind Habit · Message, and its 29
+  states ("One habit (2×2) · every state"). The 2×2 home-screen widget, Jetpack Glance: Surface container lowest, 28
+  corners, 12 above, 16 at the sides and under; at the top the habit's icon (40) and the round button (40, a 48 touch
+  target): Surface container highest with an On surface variant glyph, or the habit's colour with white once its goal is
+  met; at the foot the name (Title Medium, 16 sp), its line (Body Medium, 14 sp, On surface variant; a quit run's or a
+  timer's clock), and 12 under it today's progress (4 tall, the habit's colour on Secondary container) or the band
+  (20 tall, 10 corners, Surface container high, Label Medium: "Best 45 days", "Daily limit", "Limit reached", "Over
+  the limit", "Skipped today", "Back on Mon 19 Oct", "Mon, Wed and Fri"). Kind Message: its icon (24) and the ↗ button
+  at the top, Title Medium over Body Medium at the foot: Choose a habit · Tap to choose; Choose a habit · Habit removed;
+  No habits yet · Start one in the app; Open to update · Data unavailable. It is `SmallCard`, `Band` and `SmallMessage`
+  (`app/widgets/Widgets.kt`). Only how it looks changed: what a tap does, how it's saved and when the widget updates are
+  locked (U28) and untouched. GitHub's Android build is the compile check (5.8.3).
+  Fixed:
+  - The top row sat at the top; the name was 17 sp; the line under a quit run or timer was 15 sp; the caption ("Best 45
+    days", "Daily limit") was a 12 sp line under it and the bar was still drawn under that, 8 tall on Tonal; the card was
+    12 in all round. Now Figma's sizes, the band in place of the bar (so a limit never fills, A41), and the 4 tall bar.
+  - The round button was Secondary container with an On surface glyph at 20; now Surface container highest, On surface
+    variant, 24, as Figma's Filled icon button (every widget's button uses it).
+  - The widgets' glyphs were Material Icons (filled, square ends); now Material Symbols Rounded, as Figma and the app:
+    check, add, arrow_outward, list, refresh, and play and pause filled, as on Today's own button (`ic_w_*.xml`).
+  - The messages were centred, 16 sp, with a 12 sp line; now Figma's layout and words ("Tap to choose", "Choose a habit
+    · Habit removed"), and "No habits yet · Start one in the app" when there's no habit to choose (it opens the app).
+  Noted, not changed:
+  - Glance can't draw Material's flat bar exactly: no gap and no stop dot at the end of the track; its corners are
+    rounded only on Android 12 and later. The text is the launcher's font (Glance can't use Google Sans Flex, T22).
+  - The round button keeps a 48 touch target, so its circle sits 4 in from the edge where Figma's is flush.
+  - Four states need the widget data the locked tap uses: the milestone medal and band, Couldn't save, New best, and
+    skipped's "3 glasses today" (Decisions needed D-30).
+  - Dark follows the app's dark colours (each colour is a day and night pair).

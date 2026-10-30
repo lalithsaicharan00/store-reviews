@@ -328,6 +328,21 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 
 ## Widgets
 
+### D-30. One habit widget: four states Figma draws that need the locked widget data
+
+- **Where:** Widget · One habit (5.10.1), [Figma 1235:46](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1235-46) and its sections "One habit (2×2) · every state" and "· milestones"; `app/widgets/Widgets.kt`, `data/widgets/WidgetItems.kt`.
+- **What Figma shows / what the app does:** (1) a milestone reached by a tap turns the icon into the medal and the band into
+  the milestone band (A21); (2) "Couldn’t save · Check in the app"; (3) a quit run past its best says "New best"; (4)
+  skipped today says "3 glasses today" with the band "Skipped today". The widget draws only the snapshot the app writes,
+  and a tap shows a card the app worked out beforehand (locked, U28, W3). The snapshot has no milestone or save-failure
+  in it, its quit caption is always "Best …", and a skipped day's line is "Skipped today".
+- **What I did for now:** every other state as Figma; these four as before.
+- **Question:** may the widget data (and so the locked tap's prepared card) carry them? (a) yes, all four, checked on a
+  phone's home screen as U28 asks; (b) only (3) and (4), which are words, not tap behaviour; (c) none.
+- **My recommendation:** (b) now, (a) for the milestone once you can try it on a phone: it changes what the tap shows,
+  which U28 says you check yourself.
+
+
 ## Notifications & alarms
 
 ## Cleanup

@@ -126,6 +126,8 @@ private val Ink = pair(L.ink, D.ink)
 private val Secondary = pair(L.secondary, D.secondary)
 private val Tonal = pair(L.tonal, D.tonal)
 private val Tonal2 = pair(L.tonal2, D.tonal2)
+/** Surface container highest: a round button before the goal is met (Figma's Filled icon button, Neutral). */
+private val Soft = pair(L.soft, D.soft)
 private val Flame = pair(L.flame, D.flame)
 private val White = pair(Color.White, Color.White)
 private fun habit(key: String) = (HabitColor.of(key) ?: HabitColor.BLUE).let { pair(L.habit(it), D.habit(it)) }
@@ -140,7 +142,9 @@ private fun style(size: TextUnit, color: ColorProvider = Ink, weight: FontWeight
 private fun WidgetBody(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: String?, page: Int, widgetId: Int) {
     val now = System.currentTimeMillis()
     val frame = snapshot?.frame(now)
-    Box(GlanceModifier.fillMaxSize().cornerRadius(28.dp).background(Surface).padding(12.dp)) {
+    // One habit: 12 above, 16 at the sides and under (Figma 1235:46); the others keep 12 until their own components.
+    val inside = if (kind == WidgetKind.ONE_HABIT) GlanceModifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp) else GlanceModifier.padding(12.dp)
+    Box(GlanceModifier.fillMaxSize().cornerRadius(28.dp).background(Surface).then(inside)) {
         when {
             // Open to update: no snapshot yet, or one from another time zone or day (the app writes seven days ahead).
             snapshot == null || frame == null -> Message(kind, "Open to update", "Data unavailable", R.drawable.ic_w_refresh, open = "today")
@@ -159,6 +163,7 @@ private fun Message(kind: WidgetKind, title: String, line: String, glyph: Int?, 
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         else -> actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to (open ?: "today")))
     }
+    if (kind == WidgetKind.ONE_HABIT) return SmallMessage(title, line, glyph, click)
     Column(GlanceModifier.fillMaxSize().clickable(click), horizontalAlignment = Alignment.CenterHorizontally) {
         if (header != null) Text(header, GlanceModifier.fillMaxWidth().padding(start = 4.dp), style = style(17.sp, weight = FontWeight.Medium), maxLines = 1)
         Spacer(GlanceModifier.defaultWeight())
@@ -175,32 +180,81 @@ private fun Message(kind: WidgetKind, title: String, line: String, glyph: Int?, 
 @Composable
 private fun OneHabit(kind: WidgetKind, snapshot: WidgetSnapshot, frame: WidgetFrame, choice: String?, widgetId: Int) {
     val id = choice?.removePrefix("habit:")
-    if (id == null) return Message(kind, "Choose a habit", "Tap to choose the habit this widget shows.", R.drawable.ic_w_list, setup = widgetId)
-    val item = frame.item(id) ?: return Message(kind, "Habit removed", "Tap to choose another", R.drawable.ic_w_list, setup = widgetId)
+    val small = kind == WidgetKind.ONE_HABIT
+    // No habit made yet (Figma's "no habits yet"): the app opens to start one.
+    if (id == null && small && snapshot.choices.isEmpty()) return Message(kind, "No habits yet", "Start one in the app", R.drawable.ic_w_list, open = "today")
+    if (id == null) return Message(kind, "Choose a habit", if (small) "Tap to choose" else "Tap to choose the habit this widget shows.", R.drawable.ic_w_list, setup = widgetId)
+    val item = frame.item(id) ?: return if (small) Message(kind, "Choose a habit", "Habit removed", R.drawable.ic_w_list, setup = widgetId)
+        else Message(kind, "Habit removed", "Tap to choose another", R.drawable.ic_w_list, setup = widgetId)
     // This week is Plus; without Plus it never blocks or goes blank: it says what's there and opens the app (A13).
     if (kind.plus && !snapshot.plus) return Message(kind, "This week", "See the whole week here with Plus. Tap to open the app.", null, open = "item/$id")
     if (kind == WidgetKind.WEEK) WeekCard(item, frame, snapshot) else SmallCard(item, frame)
 }
 
+/**
+ * 5.10.1, **Widget · One habit** (Figma 1235:46, Kind Habit; every state in "One habit (2×2) · every state"): 2×2,
+ * Surface container lowest, 28 corners, 12 above, 16 at the sides and under. The top: the habit's icon (40, its colour)
+ * and the round button (40 on a 48 touch target; Surface container highest with an On surface variant glyph, or the
+ * habit's colour with white once its goal is met); then, at the foot, the name in Title Medium, its line in Body Medium
+ * On surface variant ("3 of 8 glasses", a quit run's clock, a timer's), and 12 under it either today's progress (Linear
+ * progress, Flat: 4 tall, the habit's colour on Secondary container) or the band (20 tall, 10 corners, Surface container
+ * high, Label Medium On surface variant: "Best 45 days", "Daily limit", "Skipped today", "Back on Mon 19 Oct"). A tap on
+ * the card opens the day; the button logs (LOCKED, widget taps).
+ */
 @Composable
 private fun SmallCard(item: WidgetItem, frame: WidgetFrame) {
     val dayClick = actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to item.routeOrDay, TapKeys.DAY to frame.day))
     Column(GlanceModifier.fillMaxSize().clickable(dayClick).semantics { contentDescription = spoken(item) }) {
-        Row(GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+        Row(GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Icon(item, 40.dp)
             Spacer(GlanceModifier.defaultWeight())
             RoundButton(item, frame)
         }
         Spacer(GlanceModifier.defaultWeight())
-        if (item.name.isNotEmpty()) Text(item.name, style = style(17.sp, weight = FontWeight.Medium), maxLines = 1)
+        if (item.name.isNotEmpty()) Text(item.name, style = style(16.sp, weight = FontWeight.Medium), maxLines = 1)
         when {
-            item.quitStart != null -> QuitClock(item, 15.sp, Secondary)
-            item.timerClock != null -> TimerClock(item, 15.sp, Secondary)
+            item.quitStart != null -> QuitClock(item, 14.sp, Secondary)
+            item.timerClock != null -> TimerClock(item, 14.sp, Secondary)
             else -> Text(item.value.ifEmpty { item.line }, style = style(14.sp, Secondary), maxLines = 1)
         }
-        item.caption?.let { Text(it, style = style(12.sp, Secondary, FontWeight.Medium), maxLines = 1) }
-        Spacer(GlanceModifier.height(8.dp))
-        Bar(item)
+        val caption = item.caption
+        if (caption != null) {
+            Spacer(GlanceModifier.height(12.dp))
+            Band(caption)
+        } else if ((item.cardFraction ?: item.fraction) != null) {
+            Spacer(GlanceModifier.height(12.dp))
+            Bar(item, 4.dp)
+        }
+    }
+}
+
+/** The One habit card's band (Figma's Band): a state in words, in place of the progress bar. */
+@Composable
+private fun Band(words: String) {
+    Box(GlanceModifier.fillMaxWidth().height(20.dp).cornerRadius(10.dp).background(Tonal2).padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
+        Text(words, style = style(12.sp, Secondary, FontWeight.Medium), maxLines = 1)
+    }
+}
+
+/**
+ * The One habit widget with nothing to show (Figma 1235:46, Kind Message): its icon (24, On surface variant) and the
+ * open button at the top, the words at the foot, Title Medium over Body Medium. The whole card is the tap.
+ */
+@Composable
+private fun SmallMessage(title: String, line: String, glyph: Int?, click: androidx.glance.action.Action) {
+    Column(GlanceModifier.fillMaxSize().clickable(click).semantics { contentDescription = "$title, $line" }) {
+        Row(GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            if (glyph != null) Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Secondary))
+            Spacer(GlanceModifier.defaultWeight())
+            Box(GlanceModifier.size(48.dp), contentAlignment = Alignment.Center) {
+                Box(GlanceModifier.size(40.dp).cornerRadius(20.dp).background(Soft), contentAlignment = Alignment.Center) {
+                    Image(ImageProvider(R.drawable.ic_w_open), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Secondary))
+                }
+            }
+        }
+        Spacer(GlanceModifier.defaultWeight())
+        Text(title, style = style(16.sp, weight = FontWeight.Medium), maxLines = 1)
+        Text(line, style = style(14.sp, Secondary), maxLines = 1)
     }
 }
 
@@ -396,11 +450,14 @@ private fun Streak(text: String) {
     }
 }
 
-/** The bar under a Small card and in This week: the habit's colour, or neutral for a limit (U2, U25). */
+/**
+ * Today's progress (Figma's Linear progress, Flat): the habit's colour on Secondary container, or neutral for a limit
+ * (U2, U25). [height]: 4 on One habit; This week keeps its 8 until its own component.
+ */
 @Composable
-private fun Bar(item: WidgetItem) {
+private fun Bar(item: WidgetItem, height: Dp = 8.dp) {
     val share = (item.cardFraction ?: item.fraction) ?: return
-    LinearProgressIndicator(share.toFloat().coerceIn(0f, 1f), GlanceModifier.fillMaxWidth().height(8.dp).cornerRadius(4.dp),
+    LinearProgressIndicator(share.toFloat().coerceIn(0f, 1f), GlanceModifier.fillMaxWidth().height(height).cornerRadius(height / 2),
         color = if (item.limitFill) Secondary else habit(item.color), backgroundColor = Tonal)
 }
 
@@ -412,8 +469,8 @@ private fun Bar(item: WidgetItem) {
 @Composable
 private fun RoundButton(item: WidgetItem, frame: WidgetFrame) {
     val filled = item.done && item.action != WidgetAction.TIMER_PAUSE && !item.limit
-    val back = if (filled) habit(item.color) else Tonal
-    val tint = if (filled) White else Ink
+    val back = if (filled) habit(item.color) else Soft
+    val tint = if (filled) White else Secondary
     val idle = item.state != null
     val (click, label) = when (item.action) {
         WidgetAction.CHECK -> tap(item, frame, if (item.done) "uncheck" else "check") to (if (item.done) "Undo ${item.name}" else "Mark ${item.name} done")
@@ -434,7 +491,7 @@ private fun RoundButton(item: WidgetItem, frame: WidgetFrame) {
                 // A number to type opens its Add screen with a plain + (W8); steps and slips open with ↗.
                 WidgetAction.OPEN -> if (item.route?.startsWith("log/") == true) R.drawable.ic_w_plus else R.drawable.ic_w_open
             }
-            if (glyph != null) Image(ImageProvider(glyph), null, GlanceModifier.size(20.dp), colorFilter = ColorFilter.tint(tint))
+            if (glyph != null) Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(tint))
             else Text(item.actionText ?: "+1", style = style(14.sp, tint, FontWeight.Medium))
         }
     }
