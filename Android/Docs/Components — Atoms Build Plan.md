@@ -165,7 +165,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.2 | Settings · Edit time of day | 830:265 | ☑ |
 | 5.8.3 | Settings · Settings | 1173:547 | ☑ |
 | 5.8.4 | Settings · Times of day | 1176:356264 | ☑ |
-| 5.8.5 | Settings · Backup & Sync | 1178:960 | ☐ |
+| 5.8.5 | Settings · Backup & Sync | 1178:960 | ☑ |
 | 5.8.6 | Settings · New day starts at | 1186:13870 | ☐ |
 | 5.8.7 | Settings · Week starts on | 1186:13871 | ☐ |
 | 5.8.8 | Settings · Theme | 1188:376784 | ☐ |
@@ -2729,3 +2729,40 @@ What each atom changed, newest last.
     drawn ones' pattern.
   - Figma draws light only; dark follows the theme's roles. The rows are List items; nothing moves but the snackbar,
     which is Material's own.
+  - **Built:** run 41020692607 (Android, commit 0472063) passed: assembleDebug, unit tests and lint.
+
+- **5.8.5 Settings · Backup & Sync (30 Oct).** Figma: Backup & Sync (1178:960), Screen Backed up · Not backed up · Backed
+  up · end of the list, and the settings page's backup flows (Back up now, Backing up for the first time, Change account,
+  Back up now with no internet, Restore from Google Drive, Restore from a backup file, Save a backup file, Export a
+  spreadsheet, Delete the Google Drive backup, Erase all my data). From Settings. On Surface container: the Top app bar
+  (← "Backup & Sync"); scrolling, 8 above, 16 at the sides, 40 under, 24 between: the Card notice (4.7) saying where
+  things stand, and 8 under it, connected, Change account (switch_account, "Backing up to sam@gmail.com"); **Restore**
+  (Label Large Primary): Restore from a backup (settings_backup_restore, "From Google Drive or a file", ›); **Export**:
+  Save a backup file (save, "To restore later, on any phone"), Export a spreadsheet (CSV) (table, "To open in Google
+  Sheets or Excel"); then, no heading, in Error: Delete Google Drive backup… (delete, "This phone keeps everything",
+  connected only) and Erase all my data… (delete_forever, "From this phone"). Every row a List item on Surface bright,
+  its icon in its circle. It is `BackupScreen` (`backup/BackupScreens.kt`). GitHub's Android build is the compile check
+  (5.8.3).
+  Fixed:
+  - The rows took the list's default colour, the headings were Secondary with their own gaps, the icons were
+    drive_folder_upload, table_chart, restore and cloud_off, Restore's line said "a backup file", and the two deletions
+    had no second line; now Figma's colours, Section spacing (24 between, 8 under a heading), icons and lines.
+  - The dialogs were Plus's dialog with an icon and their own words; now the Dialog atom (5.3.4) with Figma's: "Delete
+    your Google Drive backup?" / "Your backup in sam@gmail.com’s Google Drive is deleted. Your habits stay on this phone,
+    and nothing is backed up until you turn it on again." / Cancel · Delete; "Erase all your data?" with, when nothing is
+    backed up, "They aren’t backed up anywhere, so they can’t be brought back."; "Back up to another Drive?".
+  - Snackbars in Figma's words: "Google Drive backup deleted", "Backup file saved to Downloads", "Spreadsheet saved to
+    Downloads", and offline Back up now's "No internet. It backs up once you’re online." (it said nothing).
+  - After Erase all my data the page stayed open with "Everything on this phone is erased. You’re starting fresh."; now
+    the app starts again on Today's No habits yet, as Figma (`onErased`).
+  - Icons added: save, table (Material Symbols Rounded, outlined).
+  Noted, not changed:
+  - Android's save picker lets the person choose any folder, so "saved to Downloads" shows only when the file went
+    there (Downloads' own provider, or Download on the phone's storage); elsewhere "Backup file saved" /
+    "Spreadsheet saved" (D4: the truth). The picker opens where Android last left it; Figma draws it on Downloads.
+  - Change account asks before Google's chooser, not after, because the Drive link chooses and connects in one step
+    (Decisions needed D-22). Undo last restore stays under Restore (D-23).
+  - The states Figma doesn't draw (Backing up…, Waiting for the internet, Google Drive is full, isn't connected, backup
+    deleted, no Google Play services) keep the card's words (D-20). A failed save or export keeps its own words.
+  - No instrumented test changes: the tests tap Restore's row only, and a test launch has no real Drive or save picker.
+  - Figma draws light only; dark follows the theme's roles. Delete's and Erase's red is the Error role (D9).

@@ -225,6 +225,32 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) play it once on turning on, as the iPhone; (b) leave it.
 - **My recommendation:** (a): people want to hear what they've turned on.
 
+### D-22. Change account: Google's chooser first, or the question first?
+
+- **Where:** Backup & Sync (5.8.5), [Figma 1178:960](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1178-960), the flow "Change account"; `ui/backup/BackupScreens.kt`, `app/backup/BackupCenter.kt`.
+- **What Figma shows / what the app did:** Figma opens Google's account chooser first, then asks "Back up to another
+  Drive?" naming the account chosen ("… back up to sam.work@gmail.com’s Google Drive"), with Cancel leaving it backing up
+  to the old one. The app's Drive link chooses and connects in one step, so the app asks first ("Back up to another
+  Drive?" … the Google Drive you choose; Choose account), then disconnects and opens Google's chooser.
+- **What I did for now:** Figma's words, asked before the chooser, so it can't name the account yet. I didn't change how
+  the Drive link connects (backup's own behaviour). One gap: backing out of Google's chooser after Choose account leaves
+  the phone not backing up (the card says so: Not backed up, with Back up to Google Drive).
+- **Question:** (a) split the Drive link's connect into "choose" and "connect", so the chooser comes first, the question
+  names the account, and Cancel keeps the old one, as Figma; (b) keep the app's order.
+- **My recommendation:** (a): Figma's order is safer (nothing changes until the person confirms the account they
+  picked). It changes how the Drive link connects, so it's yours to allow.
+
+### D-23. Undo last restore on Backup & Sync
+
+- **Where:** Backup & Sync (5.8.5); `ui/backup/BackupScreens.kt`; Rulebook D5.
+- **What Figma shows / what the app did:** Figma's Restore section has Restore from a backup only; a restore's Undo is in
+  the snackbar on Today right after it. The app also shows "Undo last restore" under it for 30 days (D5: a restore keeps
+  an undo file for 30 days).
+- **What I did for now:** kept: once the snackbar has gone it's the only way to use that undo file, and removing it
+  would make a safety copy of people's data unreachable.
+- **Question:** (a) keep the row (and add it to Figma); (b) remove it (the undo file is kept but only the snackbar uses it).
+- **My recommendation:** (a).
+
 ## Plus
 
 ## Widgets

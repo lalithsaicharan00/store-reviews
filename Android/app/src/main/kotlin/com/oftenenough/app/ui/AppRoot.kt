@@ -294,7 +294,9 @@ private fun AppMain(
                 SettingsPage.LICENCES -> LicencesPage { nav.popBackStack() }
                 SettingsPage.DAY_AND_WEEK -> DayAndWeekPage(store) { nav.popBackStack() }
                 SettingsPage.APPEARANCE -> AppearancePage(prefs) { nav.popBackStack() }
-                SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE) }, { nav.popBackStack() }, snackbar)
+                // After Erase all my data the app starts again on Today, as a fresh install (Figma's Erase flow).
+                SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE) }, { nav.popBackStack(Routes.TODAY, inclusive = false) },
+                    { nav.popBackStack() }, snackbar)
                 "Start from an idea" -> IdeasScreen({ nav.popBackStack() }) { idea ->
                     nav.popBackStack(); nav.navigate(Routes.NEW + "?idea=" + android.net.Uri.encode(idea.name))
                 }

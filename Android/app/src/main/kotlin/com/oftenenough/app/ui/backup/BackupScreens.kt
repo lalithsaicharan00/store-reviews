@@ -20,9 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -53,8 +51,10 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.components.ExpressiveLoadingIndicator
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.plus.FlowScreen
+import com.oftenenough.app.ui.components.AppDialog
+import androidx.compose.ui.semantics.heading
+import androidx.compose.foundation.layout.Arrangement
 import com.oftenenough.app.ui.plus.MainButton
-import com.oftenenough.app.ui.plus.PlusDialog
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
@@ -105,39 +105,70 @@ private fun TitledPage(title: String, onBack: () -> Unit, tag: String, content: 
         AppTopBar(title, navigationIcon = {
             NavigationIcon(Symbols.ArrowBack, "Back", onBack, Modifier.semantics { testTag = "page-back" })
         }, windowInsets = WindowInsets(0))
-        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).navigationBarsPadding(), content = content)
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 40.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp), content = content)
     }
 }
 
+/** A section: its heading (Label Large, Primary, 16 in) 8 above its one list; no heading for the deletions. */
 @Composable
-private fun SectionLabel(text: String) =
-    Text(text, Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
+private fun Section(title: String?, rows: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) =
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (title != null) Text(title, Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge,
+            color = MaterialTheme.colorScheme.primary)
+        SegmentedList(content = rows)
+    }
 
-/** A settings row: its icon in a circle, a title over its line, › (List item, 2.4); [danger] turns the words and icon red (D9). */
+/** A row (List item, Two lines, Surface bright): its icon in a circle, a title over its line; [danger] turns the words and icon Error (D9). */
 @Composable
 private fun PageRow(icon: ImageVector, title: String, line: String?, index: Int, count: Int, tag: String, danger: Boolean = false, chevron: Boolean = true, onClick: (() -> Unit)?) {
     val c = appColors
     AppListItem(title, index, count, supporting = line, onClick = onClick, tag = tag, headlineColor = if (danger) c.error else Color.Unspecified,
         leading = { ListAvatar(icon, tint = if (danger) c.error else null) },
-        trailing = if (onClick != null && chevron && !danger) ({ ListChevron() }) else null)
+        trailing = if (onClick != null && chevron && !danger) ({ ListChevron() }) else null,
+        containerColor = MaterialTheme.colorScheme.surfaceBright)
 }
 
+/** Android's save picker can put a file anywhere: "saved to Downloads" only when it went there (D4: the truth). */
+private fun inDownloads(uri: Uri): Boolean = uri.authority == "com.android.providers.downloads.documents" ||
+    (uri.authority == "com.android.externalstorage.documents" &&
+        runCatching { android.provider.DocumentsContract.getDocumentId(uri) }.getOrNull()?.startsWith("primary:Download") == true)
+
 /**
- * ≡ › Backup & Sync (Figma `1461:2`, 1–1.3): where the habits are first (backed up, synced with Plus, not backed up, no
- * internet), devices with Plus, then Restore, Export, and the two deliberate deletions, each asking with two
- * buttons only (5, 6; D9). Rulebook D4, D10: backup and export are free and visible.
+ * 5.8.5, **Backup & Sync** (Figma 1178:960, Screen Backed up · Not backed up · Backed up · end of the list; the settings
+ * page's flows: Back up now, Backing up for the first time, Change account, Back up now with no internet, Restore from
+ * Google Drive, Restore from a backup file, Save a backup file, Export a spreadsheet, Delete the Google Drive backup,
+ * Erase all my data). From Settings. On Surface container: the Top app bar (← "Backup & Sync"); scrolling, 8 above, 16
+ * at the sides, 40 under, 24 between:
+ *
+ * - **Google Drive:** the Card notice saying where things stand (D4: always the truth), its one action a Tonal button
+ *   under the words (Back up now; Back up to Google Drive); connected, 8 under it, Change account ("Backing up to
+ *   sam@gmail.com").
+ * - **Restore:** Restore from a backup ("From Google Drive or a file", ›).
+ * - **Export:** Save a backup file ("To restore later, on any phone"), Export a spreadsheet (CSV) ("To open in Google
+ *   Sheets or Excel"), each through Android's save picker, then a snackbar.
+ * - The deletions, words and icons in Error: Delete Google Drive backup… ("This phone keeps everything", connected only),
+ *   Erase all my data… ("From this phone"). Each asks first, Cancel and the one action only (D9). After Erase the app
+ *   starts again on Today ([onErased]).
+ *
+ * Rows are List items on Surface bright, the icon in its circle. Rulebook D4, D10: backup and export are free and visible.
  */
 @Composable
-fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
-    val c = appColors
+fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit, onErased: () -> Unit, onBack: () -> Unit, snackbar: SnackbarHostState? = null) {
     val scope = rememberCoroutineScope()
     val snack = snackbar ?: remember { SnackbarHostState() }
     var confirm by remember { mutableStateOf<String?>(null) }
     val save = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri: Uri? ->
-        if (uri != null) scope.launch { snack.showSnackbar(if (center.saveFile(uri)) "Backup file saved and checked." else "Couldn't save the file. Your habits are safe on this phone.") }
+        if (uri != null) scope.launch {
+            snack.showSnackbar(if (!center.saveFile(uri)) "Couldn't save the file. Your habits are safe on this phone."
+                else if (inDownloads(uri)) "Backup file saved to Downloads" else "Backup file saved")
+        }
     }
     val csv = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri: Uri? ->
-        if (uri != null) scope.launch { snack.showSnackbar(if (center.exportCsv(uri)) "Spreadsheet saved." else "Couldn't export. Your habits are safe on this phone.") }
+        if (uri != null) scope.launch {
+            snack.showSnackbar(if (!center.exportCsv(uri)) "Couldn't export. Your habits are safe on this phone."
+                else if (inDownloads(uri)) "Spreadsheet saved to Downloads" else "Spreadsheet saved")
+        }
     }
     LaunchedEffect(center) { center.refreshStatus() }
     val status = center.status
@@ -146,90 +177,88 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
     val offline = connected && status?.state == DriveState.OFFLINE
     Box(Modifier.fillMaxSize()) {
         TitledPage("Backup & Sync", onBack, "backup-page") {
-            Spacer(Modifier.height(8.dp))
-            // 1–1.3: the state, said plainly (D4: always the truth), as a Card notice (molecule 4.7), its one action
-            // a tonal button under the words; then, connected, which Google account it backs up to.
-            var count by remember { mutableStateOf<Pair<Int, Int>?>(null) }
-            val again: () -> Unit = { scope.launch { center.backUpEverythingAgain { saved, of -> count = saved to of }; count = null } }
-            val now: () -> Unit = { scope.launch { center.syncNow() } }
-            val last = status?.lastSent?.let { whenText(it, store) }
-            val m = Modifier.semantics { testTag = "backup-state" }
-            when {
-                // No Google Play services: Drive can't be reached from this phone at all. Say so (D4: the truth).
-                !center.link.available -> CardNotice(Symbols.CloudOff, "Not backed up",
-                    "Backing up to Google Drive needs Google Play services, which this phone doesn’t have. Save a backup file below to keep a copy.", m)
-                connected && center.working -> CardNotice(Symbols.CloudUpload, "Backing up…", "You can leave this page; it carries on.", m,
-                    working = true, progress = count?.let { (saved, of) -> if (of == 0) 0f else saved / of.toFloat() })
-                !connected -> CardNotice(Symbols.CloudOff, "Not backed up",
-                    "Your habits are only on this phone. Back them up to your own Google Drive to keep them safe.", m,
-                    action = "Back up to Google Drive", onAction = { scope.launch { center.connectDrive() } }, actionUnder = true, actionTag = "drive-connect")
-                offline -> CardNotice(Symbols.CloudOff, "Waiting for the internet",
-                    (last?.let { "Last backed up " + it.replaceFirstChar { ch -> ch.lowercase() } + ". " } ?: "") +
-                        "Nothing is lost: it backs up by itself once you’re online.", m)
-                status?.state == DriveState.FULL -> CardNotice(Symbols.CloudOff, "Google Drive is full",
-                    "Your habits are safe on this phone. Make room in your Google Drive, and it carries on by itself.", m,
-                    action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
-                status?.state == DriveState.NOT_CONNECTED -> CardNotice(Symbols.LinkOff, "Google Drive isn’t connected",
-                    "Your habits are safe on this phone. Connect it again to keep backing up.", m,
-                    action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
-                // A39: the app's files aren't in Drive any more. Nothing goes up until the person chooses; then
-                // everything again, every year (a backup saves only what changed, so untouched years would stay missing).
-                status?.state == DriveState.REMOVED -> CardNotice(Symbols.CloudAlert, "Your Google Drive backup was deleted",
-                    "Your habits are still safe on this phone. Back them up again to keep a copy in Google Drive.", m,
-                    action = "Back up again", onAction = again, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-again")
-                else -> CardNotice(Symbols.CloudDone, "Backed up", (last ?: "Not yet") + ". It backs up by itself as you go.", m,
-                    action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
-            }
-            if (connected) {
-                Spacer(Modifier.height(8.dp))
-                SegmentedList {
+            // The state, said plainly (D4: always the truth), as a Card notice (molecule 4.7), its one action a tonal
+            // button under the words; then, connected, which Google account it backs up to.
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                var count by remember { mutableStateOf<Pair<Int, Int>?>(null) }
+                val again: () -> Unit = { scope.launch { center.backUpEverythingAgain { saved, of -> count = saved to of }; count = null } }
+                // Offline, Back up now says so (Figma's "Back up now with no internet"); it backs up by itself once online.
+                val now: () -> Unit = { scope.launch { if (center.syncNow()?.state == DriveState.OFFLINE) snack.showSnackbar("No internet. It backs up once you’re online.") } }
+                val last = status?.lastSent?.let { whenText(it, store) }
+                val m = Modifier.semantics { testTag = "backup-state" }
+                when {
+                    // No Google Play services: Drive can't be reached from this phone at all. Say so (D4: the truth).
+                    !center.link.available -> CardNotice(Symbols.CloudOff, "Not backed up",
+                        "Backing up to Google Drive needs Google Play services, which this phone doesn’t have. Save a backup file below to keep a copy.", m)
+                    connected && center.working -> CardNotice(Symbols.CloudUpload, "Backing up…", "You can leave this page; it carries on.", m,
+                        working = true, progress = count?.let { (saved, of) -> if (of == 0) 0f else saved / of.toFloat() })
+                    !connected -> CardNotice(Symbols.CloudOff, "Not backed up",
+                        "Your habits are only on this phone. Back them up to your own Google Drive to keep them safe.", m,
+                        action = "Back up to Google Drive", onAction = { scope.launch { center.connectDrive() } }, actionUnder = true, actionTag = "drive-connect")
+                    offline -> CardNotice(Symbols.CloudOff, "Waiting for the internet",
+                        (last?.let { "Last backed up " + it.replaceFirstChar { ch -> ch.lowercase() } + ". " } ?: "") +
+                            "Nothing is lost: it backs up by itself once you’re online.", m)
+                    status?.state == DriveState.FULL -> CardNotice(Symbols.CloudOff, "Google Drive is full",
+                        "Your habits are safe on this phone. Make room in your Google Drive, and it carries on by itself.", m,
+                        action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
+                    status?.state == DriveState.NOT_CONNECTED -> CardNotice(Symbols.LinkOff, "Google Drive isn’t connected",
+                        "Your habits are safe on this phone. Connect it again to keep backing up.", m,
+                        action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
+                    // A39: the app's files aren't in Drive any more. Nothing goes up until the person chooses; then
+                    // everything again, every year (a backup saves only what changed, so untouched years would stay missing).
+                    status?.state == DriveState.REMOVED -> CardNotice(Symbols.CloudAlert, "Your Google Drive backup was deleted",
+                        "Your habits are still safe on this phone. Back them up again to keep a copy in Google Drive.", m,
+                        action = "Back up again", onAction = again, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-again")
+                    else -> CardNotice(Symbols.CloudDone, "Backed up", (last ?: "Not yet") + ". It backs up by itself as you go.", m,
+                        action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
+                }
+                if (connected) SegmentedList {
                     PageRow(Symbols.SwitchAccount, "Change account", "Backing up to " + (email ?: "your Google Drive"), 0, 1, "drive-change", chevron = false) {
                         confirm = "switch"
                     }
                 }
             }
-            // Devices (Figma 1.2) waits for the second device: this release is phones only and nothing syncs
-            // between devices yet (A24), so a list of them would promise what the app doesn't do.
-            SectionLabel("Restore")
-            SegmentedList {
+            // Devices waits for the second device: this release is phones only and nothing syncs between devices yet
+            // (A24), so a list of them would promise what the app doesn't do.
+            Section("Restore") {
                 val count = if (center.undoAvailable) 2 else 1
-                PageRow(Symbols.Restore, "Restore from a backup", "From Google Drive or a backup file", 0, count, "restore-row", onClick = onRestore)
+                PageRow(Symbols.SettingsBackupRestore, "Restore from a backup", "From Google Drive or a file", 0, count, "restore-row", onClick = onRestore)
+                // Not in Figma: the 30-day undo file's only way back once the restore's snackbar has gone (D5; Decisions needed D-23).
                 if (center.undoAvailable) PageRow(Symbols.Undo, "Undo last restore", "Back to how this phone was just before", 1, count, "undo-restore", chevron = false) {
                     scope.launch { if (center.undoRestore()) snack.showSnackbar("This phone is back to how it was before the restore.") }
                 }
             }
-            SectionLabel("Export")
-            SegmentedList {
-                PageRow(Symbols.DriveFolderUpload, "Save a backup file", "To restore later, on any phone", 0, 2, "save-file") { save.launch(center.fileName()) }
-                PageRow(Symbols.TableChart, "Export a spreadsheet (CSV)", "To open in Google Sheets or Excel", 1, 2, "export-csv") { csv.launch(center.csvName()) }
+            Section("Export") {
+                PageRow(Symbols.Save, "Save a backup file", "To restore later, on any phone", 0, 2, "save-file") { save.launch(center.fileName()) }
+                PageRow(Symbols.Table, "Export a spreadsheet (CSV)", "To open in Google Sheets or Excel", 1, 2, "export-csv") { csv.launch(center.csvName()) }
             }
-            Spacer(Modifier.height(24.dp))
-            SegmentedList {
+            Section(null) {
                 val count = if (connected) 2 else 1
-                if (connected) PageRow(Symbols.CloudOff, "Delete Google Drive backup…", null, 0, count, "delete-drive", danger = true) { confirm = "drive" }
-                PageRow(Symbols.DeleteForever, "Erase all my data…", null, count - 1, count, "erase-all", danger = true) { confirm = "erase" }
+                if (connected) PageRow(Symbols.Delete, "Delete Google Drive backup…", "This phone keeps everything", 0, count, "delete-drive", danger = true) { confirm = "drive" }
+                PageRow(Symbols.DeleteForever, "Erase all my data…", "From this phone", count - 1, count, "erase-all", danger = true) { confirm = "erase" }
             }
-            Spacer(Modifier.height(72.dp))
         }
         AppSnackbarHost(snack, Modifier.align(Alignment.BottomCenter).navigationBarsPadding())
     }
     val who = email?.let { "$it’s" } ?: "your"
     when (confirm) {
-        // 5 · Delete your Google Drive backup? (two buttons only, D9)
-        "drive" -> PlusDialog(Symbols.CloudOff, "Delete your Google Drive backup?",
-            "Your habits are removed from $who Google Drive. This phone keeps everything.", "Delete",
-            { confirm = null; scope.launch { center.deleteFromDrive(); snack.showSnackbar("Deleted from Google Drive. This phone keeps everything.") } },
-            { confirm = null }, destructive = true, tag = "delete-drive-dialog")
-        // 6 · Erase all your data?
-        "erase" -> PlusDialog(Symbols.DeleteForever, "Erase all your data?",
-            if (connected) "Your habits, logs and notes are removed from this phone. Your Google Drive backup stays, so you can bring them back."
-            else "Your habits, logs and notes are removed from this phone. This can’t be undone; save a backup file first if you might want them.",
-            "Erase", { confirm = null; scope.launch { center.eraseThisPhone(); snack.showSnackbar("Everything on this phone is erased. You’re starting fresh.") } },
-            { confirm = null }, destructive = true, tag = "erase-dialog")
-        // 2.2 · Switch Google Drive? (after Google's own chooser on a real Drive; here before it)
-        "switch" -> PlusDialog(Symbols.SwapVert, "Switch Google Drive?",
-            "Your habits are copied to the Google Drive you choose and backed up there from now on. The copy in $who Drive stays until you delete it.",
-            "Choose account", { confirm = null; scope.launch { center.disconnectDrive(); center.connectDrive() } }, { confirm = null }, tag = "switch-dialog")
+        // Delete your Google Drive backup? Cancel and Delete only (D9); says plainly where the habits stay.
+        "drive" -> AppDialog("Delete your Google Drive backup?",
+            "Your backup in $who Google Drive is deleted. Your habits stay on this phone, and nothing is backed up until you turn it on again.", "Delete",
+            { confirm = null; scope.launch { center.deleteFromDrive(); snack.showSnackbar("Google Drive backup deleted") } },
+            { confirm = null }, Modifier.semantics { testTag = "delete-drive-dialog" }, destructive = true, confirmTag = "delete-drive-confirm")
+        // Erase all your data? Cancel and Erase only (D9); then the app starts again on Today, as a fresh install.
+        "erase" -> AppDialog("Erase all your data?",
+            "Your habits, logs and notes are removed from this phone. " +
+                if (connected) "Your Google Drive backup stays, so you can bring them back." else "They aren’t backed up anywhere, so they can’t be brought back.",
+            "Erase", { confirm = null; scope.launch { center.eraseThisPhone(); onErased() } },
+            { confirm = null }, Modifier.semantics { testTag = "erase-dialog" }, destructive = true, confirmTag = "erase-confirm")
+        // Back up to another Drive? Asked before Google's own chooser: the Drive link chooses and connects in one step
+        // (Figma asks after it, naming the account; Decisions needed D-22).
+        "switch" -> AppDialog("Back up to another Drive?",
+            "From now on, your habits back up to the Google Drive you choose. The backup in $who Drive stays there until you delete it.",
+            "Choose account", { confirm = null; scope.launch { center.disconnectDrive(); center.connectDrive() } }, { confirm = null },
+            Modifier.semantics { testTag = "switch-dialog" }, confirmTag = "switch-confirm")
     }
 }
 
