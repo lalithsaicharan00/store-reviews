@@ -8,7 +8,6 @@ import com.oftenenough.app.data.PlayerAction
 import com.oftenenough.app.data.PlayerWords
 import java.util.Locale
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 
@@ -110,19 +109,14 @@ class PlayerWordsTest {
         assertEquals("Anytime is done", PlayerWords.endTitle(0, "Anytime"))
         assertEquals("2 left for later. Your progress is saved.", PlayerWords.endText(2, 12))
         assertEquals("All 12 done today.", PlayerWords.endText(0, 12))
-        assertEquals("1 skipped for today. Skipped days don't count against you.", PlayerWords.skippedLine(1))
-        assertNull(PlayerWords.skippedLine(0))
-        assertEquals("1 limit check-in. Your limits keep tracking through the day.", PlayerWords.limitsLine(1))
-        assertEquals("2 limit check-ins. Your limits keep tracking through the day.", PlayerWords.limitsLine(2))
     }
 
     @Test fun queue() {
-        assertEquals("Done", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = true, skipped = false))
-        assertEquals("Skipped for today", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = false, skipped = true))
-        assertEquals("Not done", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = false, skipped = false))
-        assertEquals("Here now", PlayerWords.queueStatus(atMost = false, reviewed = false, doneToday = false, skipped = false, here = true))
-        assertEquals("Limit check-in", PlayerWords.queueStatus(atMost = true, reviewed = false, doneToday = false, skipped = false))
-        assertEquals("Checked in", PlayerWords.queueStatus(atMost = true, reviewed = true, doneToday = false, skipped = false))
+        // Figma's three words only: a skipped day or a limit is "Not done" until it's done (cleanup 6.8).
+        assertEquals("Done", PlayerWords.queueStatus(doneToday = true))
+        assertEquals("Not done", PlayerWords.queueStatus(doneToday = false))
+        assertEquals("Here now", PlayerWords.queueStatus(doneToday = false, here = true))
+        assertEquals("Here now", PlayerWords.queueStatus(doneToday = true, here = true))
         assertEquals("Close, the timer keeps running", PlayerWords.timerClose(true))
     }
 }

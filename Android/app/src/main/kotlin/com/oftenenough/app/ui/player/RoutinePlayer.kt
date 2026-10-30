@@ -309,7 +309,6 @@ fun RoutinePlayer(
                     else EndPage(
                         name = sectionName,
                         count = order.size,
-                        skipped = order.count { habitId -> store.habit(habitId)?.let { session.skipped(it) } == true },
                         done = order.indices.filter { covered[it] }.mapNotNull { store.habit(order[it]) },
                         later = order.indices.filter { !covered[it] }.mapNotNull { i -> store.habit(order[i])?.let { i to it } },
                         result = { h -> store.dayResult(h, day) },
@@ -1151,7 +1150,7 @@ private fun FeedbackBar(f: Feedback, onUndo: () -> Unit, onNote: () -> Unit, mod
  * again (›); Reached in this routine, each milestone with its medal. Scrolls when it doesn't fit.
  */
 @Composable
-private fun EndPage(name: String, count: Int, skipped: Int, done: List<Habit>, later: List<Pair<Int, Habit>>, result: (Habit) -> String,
+private fun EndPage(name: String, count: Int, done: List<Habit>, later: List<Pair<Int, Habit>>, result: (Habit) -> String,
     onOpen: (Int) -> Unit, reached: List<Pair<Habit, com.oftenenough.app.data.MilestoneWords>> = emptyList()) {
     val c = appColors
     val s = MaterialTheme.colorScheme
@@ -1167,10 +1166,6 @@ private fun EndPage(name: String, count: Int, skipped: Int, done: List<Habit>, l
                     color = s.onSurface, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
                 Spacer(Modifier.height(8.dp))
                 Text(PlayerWords.endText(remaining, count), style = AppType.bodyLarge, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
-                PlayerWords.skippedLine(skipped)?.let {
-                    Spacer(Modifier.height(8.dp))
-                    Text(it, style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
-                }
             }
         }
         @Composable fun section(title: String, tag: String, rows: @Composable () -> Unit) =
@@ -1269,7 +1264,7 @@ private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, editing
                     key(id) {
                         val skipped = session.skipped(habit)
                         val doneToday = session.doneToday(habit)
-                        val status = PlayerWords.queueStatus(habit.atMost, false, doneToday, skipped, here = i == index)
+                        val status = PlayerWords.queueStatus(doneToday, here = i == index)
                         val lifted = dragging == id
                         AppListItem(
                             habit.name, i, order.size,

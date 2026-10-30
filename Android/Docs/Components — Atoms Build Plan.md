@@ -203,7 +203,7 @@ search of every page's text).
 | 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☑ |
 | 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☑ |
 | 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☑ |
-| 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☐ |
+| 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☑ |
 | 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☐ |
 | 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☐ |
 | 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☐ |
@@ -3286,3 +3286,10 @@ What each atom changed, newest last.
   - **All logs:** no footer, as Figma's screen (the rows alone): "Undo takes one back." and the "N in all" line go.
   - **Notes (A78):** Add note and Edit note show the habit only, no date and no date chip, so a note's day never changes
     (the date picker, the day switching and "… already has a note; you're changing it." go); Note (View) keeps its date.
+  - **Built:** run 41043992718 (Android, commit 54b7bae) passed: assembleDebug, unit tests and lint.
+- **6.8 Cleanup · Routine player (30 Oct).** Figma's end page has no skipped line and Your routine's rows say only Here
+  now, Done or Not done (907:29174). Removed: the end page's "1 skipped for today. Skipped days don't count against
+  you." (`PlayerWords.skippedLine`, and `EndPage`'s count of skipped), Your routine's "Skipped for today", "Limit
+  check-in" and "Checked in" (`queueStatus` is now the three words; a skipped row keeps its skip icon), and
+  `PlayerWords.limitsLine`, which nothing showed. `PlayerWordsTest` checks the three words (not loosened: the words
+  themselves changed).

@@ -138,12 +138,10 @@ object PlayerWords {
         }
     }
 
-    /** A habit's line in Your routine (Figma 907:29174): "Here now", "Done", "Not done", a limit's check-in, "Skipped for today". */
-    fun queueStatus(atMost: Boolean, reviewed: Boolean, doneToday: Boolean, skipped: Boolean, here: Boolean = false): String = when {
+    /** A habit's line in Your routine (Figma 907:29174): "Here now", "Done" or "Not done", nothing else (cleanup 6.8). */
+    fun queueStatus(doneToday: Boolean, here: Boolean = false): String = when {
         here -> "Here now"
-        atMost -> if (reviewed) "Checked in" else "Limit check-in"
         doneToday -> "Done"
-        skipped -> "Skipped for today"
         else -> "Not done"
     }
 
@@ -154,13 +152,6 @@ object PlayerWords {
     fun endText(remaining: Int, count: Int): String =
         if (remaining == 0) "All $count done today." else "$remaining left for later. Your progress is saved."
 
-    /** "1 skipped for today. Skipped days don't count against you." (never shame, U3), or null with none. */
-    fun skippedLine(skipped: Int): String? =
-        if (skipped > 0) "$skipped skipped for today. Skipped days don't count against you." else null
-
-    /** "2 limit check-ins. Your limits keep tracking through the day.", or null with none. */
-    fun limitsLine(reviewed: Int): String? =
-        if (reviewed > 0) "$reviewed limit ${if (reviewed == 1) "check-in" else "check-ins"}. Your limits keep tracking through the day." else null
 
     /** The timer's ⌄: putting it away, not stopping, and TalkBack says so. */
     fun timerClose(running: Boolean): String = if (running) "Close, the timer keeps running" else "Close"
