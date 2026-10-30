@@ -58,8 +58,6 @@ class HabitStore(
     var descriptions by mutableStateOf<Map<String, String>>(emptyMap()); private set
     var archivedOn by mutableStateOf<Map<String, Int>>(emptyMap()); private set
     var costs by mutableStateOf<Map<String, HabitCost>>(emptyMap()); private set
-    var groups by mutableStateOf<List<HabitGroup>>(emptyList()); private set
-    var groupsManual by mutableStateOf(false); private set
     /**
      * Undo · Note under the row of the last thing done from Today (a log, a step, a timer's time, a slip or a skip;
      * Figma 1.2). It stays until the next one (which takes it), another day or leaving Today, never forever.
@@ -286,16 +284,12 @@ class HabitStore(
         val desc = HashMap<String, String>()
         val archived = HashMap<String, Int>()
         val loadedCosts = HashMap<String, HabitCost>()
-        var loadedGroups = emptyList<HabitGroup>()
-        var manual = false
         for ((key, value) in settingRows) {
             when {
                 key == Keys.DAY_END -> dayEnd = (value.toIntOrNull() ?: 0).coerceIn(0, 12)
                 key == Keys.WEEK_START -> value.toIntOrNull()?.takeIf { it in 1..7 }?.let { week = it }
                 key == Keys.SECTIONS -> SwiftJson.sections(value)?.takeIf { it.isNotEmpty() }?.let { loadedSections = it }
                 key == Keys.CARD_ORDER -> cards = SwiftJson.strings(value) ?: emptyList()
-                key == Keys.GROUPS -> loadedGroups = SwiftJson.groups(value) ?: emptyList()
-                key == Keys.GROUPS_ORDER -> manual = value == "manual"
                 key.startsWith(Keys.NOTE) -> {
                     val parts = key.removePrefix(Keys.NOTE).split("|")
                     val day = parseDay(parts.getOrNull(1))
@@ -340,8 +334,6 @@ class HabitStore(
         dayNotes = dNotes
         descriptions = desc
         costs = loadedCosts
-        groupsManual = manual
-        groups = if (manual) loadedGroups else loadedGroups.sortedBy { it.name.lowercase() }
         // Habits archived before archive days were kept: the day after their last log, or their first day.
         val archivedIds = habits.filter { it.archived }.map { it.id }.toSet()
         for (h in habits.filter { it.archived }) {
@@ -1079,41 +1071,6 @@ class HabitStore(
         }
     }
 
-    // ------------------------------------------------------------------ Groups
-
-    fun saveGroup(group: HabitGroup) {
-        val g = group.copy(name = TextLimit.clean(group.name, TextLimit.GROUP))
-        if (g.name.isEmpty()) return
-        perform {
-            val members = g.habits.toSet()
-            val list = groups.map { if (it.id != g.id) it.copy(habits = it.habits.filter { h -> h !in members }) else it }.toMutableList()
-            val i = list.indexOfFirst { it.id == g.id }
-            if (i >= 0) list[i] = g else list.add(g)
-            storeGroups(list, groupsManual)
-        }
-    }
-
-    fun deleteGroup(id: String) = perform { storeGroups(groups.filter { it.id != id }, groupsManual) }
-
-    fun setGroup(groupId: String?, habitId: String) = perform {
-        val list = groups.map { g ->
-            val without = g.habits.filter { it != habitId }
-            g.copy(habits = if (g.id == groupId) without + habitId else without)
-        }
-        storeGroups(list, groupsManual)
-    }
-
-    fun groupOf(habitId: String): HabitGroup? = groups.firstOrNull { habitId in it.habits }
-
-    private suspend fun storeGroups(list: List<HabitGroup>, manual: Boolean) {
-        val seen = HashSet<String>()
-        val cleaned = list.map { g -> g.copy(habits = g.habits.filter { seen.add(it) }) }.let { if (manual) it else it.sortedBy { g -> g.name.lowercase() } }
-        if (cleaned.isEmpty()) removeSetting(Keys.GROUPS) else saveSetting(Keys.GROUPS, SwiftJson.groups(cleaned))
-        if (manual) saveSetting(Keys.GROUPS_ORDER, "manual") else removeSetting(Keys.GROUPS_ORDER)
-        groups = cleaned
-        groupsManual = manual
-    }
-
     // ------------------------------------------------------------------ Settings the app keeps on the phone
 
     /** Any other saved setting (Appearance's choices and the like), as text. */
@@ -1148,8 +1105,6 @@ class HabitStore(
         const val DESCRIPTION = "desc."
         const val ARCHIVED = "archived."
         const val COST = "cost."
-        const val GROUPS = "groups"
-        const val GROUPS_ORDER = "groups_order"
         const val SECTIONS = "day_sections"
         const val CARD_ORDER = "today_order"
     }

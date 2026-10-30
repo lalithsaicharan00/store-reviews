@@ -44,9 +44,9 @@ internal fun rememberToday(store: HabitStore): Int {
  * frame (S5, S16). For Habits & Tasks (the Habits tab is Progress, A54).
  */
 @Composable
-internal fun rememberProgressSnapshot(store: HabitStore, range: ProgressRange, anchor: Int?, today: Int, groupId: String): ProgressSnapshot {
-    val key = SnapshotKey(range, anchor, store.dataVersion, groupId, today, store.weekStart, System.identityHashCode(store))
-    val builder = remember(key) { if (ProgressCache.peek(key) != null) null else store.progressBuilder(range, anchor ?: today, today, groupId) }
+internal fun rememberProgressSnapshot(store: HabitStore, range: ProgressRange, anchor: Int?, today: Int): ProgressSnapshot {
+    val key = SnapshotKey(range, anchor, store.dataVersion, today, store.weekStart, System.identityHashCode(store))
+    val builder = remember(key) { if (ProgressCache.peek(key) != null) null else store.progressBuilder(range, anchor ?: today, today) }
     var snap by remember(key) { mutableStateOf(ProgressCache.peek(key) ?: builder!!.also { it.step(FIRST_BUDGET) }.snapshot()) }
     LaunchedEffect(key) {
         val b = builder ?: return@LaunchedEffect
@@ -70,9 +70,9 @@ internal fun movedAnchor(store: HabitStore, snap: ProgressSnapshot, step: Int): 
 private const val FIRST_BUDGET = 20_000_000L
 private const val FRAME_BUDGET = 6_000_000L
 
-/** One snapshot per range, period, data version, group, day and week start (and store, for a test's own). */
+/** One snapshot per range, period, data version, day and week start (and store, for a test's own). */
 private data class SnapshotKey(
-    val range: ProgressRange, val anchor: Int?, val version: Int, val group: String, val today: Int, val weekStart: Int, val store: Int,
+    val range: ProgressRange, val anchor: Int?, val version: Int, val today: Int, val weekStart: Int, val store: Int,
 )
 
 /**

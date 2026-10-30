@@ -78,8 +78,6 @@ import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.TodayActions
 import com.oftenenough.app.ui.today.TodayNav
 import com.oftenenough.app.ui.today.TodayScreen
-import com.oftenenough.app.ui.today.GroupFormScreen
-import com.oftenenough.app.ui.today.GroupsScreen
 import com.oftenenough.app.ui.today.ArrangeDayScreen
 
 /** The app: the welcome until it's finished, then Today and every page pushed over it (back returns one step, D7). */
@@ -354,10 +352,6 @@ private fun AppMain(
         composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
         composable(Routes.LOCK_SETUP) { AppLockSetup(AppGraph.lock, passcodeOnly = false) { nav.popBackStack() } }
         composable(Routes.LOCK_PASSCODE) { AppLockSetup(AppGraph.lock, passcodeOnly = true) { nav.popBackStack() } }
-        composable(Routes.GROUPS) { GroupsScreen(store, { id -> nav.navigate(Routes.group(id)) }) { nav.popBackStack() } }
-        composable("group/{id}") { e ->
-            GroupFormScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }, { hs -> nav.navigate(Routes.pause(hs.map { it.id })) }) { nav.popBackStack() }
-        }
         composable(Routes.NEW_TASK) {
             NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
                 task = true, onPlusOn = plusOn)
@@ -481,14 +475,12 @@ object Routes {
     const val NEW = "new"
     const val RESTORE = "restore"
     const val NEW_TASK = "newtask"
-    const val GROUPS = "groups"
     const val ARCHIVED = "archived"
     const val ARCHIVED_TASKS = "archived/tasks"
     const val COMPLETED_TASKS = "tasks/completed"
     fun restoreRoom(id: String) = "restoreroom/$id"
     const val PLUS = "plus/{reason}"
     fun plus(reason: PlusReason) = "plus/" + reason.key
-    fun group(id: String?) = "group/" + (id ?: "new")
     const val LOCK_SETUP = "applock/setup"
     const val LOCK_PASSCODE = "applock/passcode"
     fun page(title: String) = "page/" + android.net.Uri.encode(title)

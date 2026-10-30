@@ -339,11 +339,7 @@ object DemoData {
         store.load()
         if (days) store.habits.firstOrNull { it.name == "Meditate" }?.let { store.pause(it, store.today(), store.today() + 6) }
         if (habitsPage) {
-            fun id(name: String) = store.habits.first { it.name == name }.id
             store.habits.firstOrNull { it.name == "Meditate" }?.let { store.pause(it, store.today() - 3, store.today()) }
-            for ((name, members) in listOf("Health" to listOf("Stretch", "Meds", "Walk", "Water", "Smoking"),
-                "Home" to listOf("Refill water", "Skincare", "Skincare (night)"), "Mind" to listOf("Read", "Journal")))
-                store.saveGroup(HabitGroup(name = name, color = HabitColor.BLUE, habits = members.map(::id)))
         }
         if (design) {
             store.habits.firstOrNull { it.name == "Meditate" }?.let { store.pause(it, store.today(), store.today() + 6) }

@@ -253,8 +253,6 @@ data class HabitPause(val from: Int, val through: Int?, val pausedAt: Long, val 
     operator fun contains(day: Int): Boolean = from <= day && (through == null || day <= through)
 }
 
-data class HabitGroup(val id: String = newId(), val name: String, val color: HabitColor, val habits: List<String> = emptyList())
-
 data class HabitCost(val amount: Double, val currency: String)
 
 /** Text limits, the iPhone's `TextLimit` (U6). */
@@ -265,7 +263,6 @@ object TextLimit {
     const val UNIT = 12
     const val NOTE = 1000
     const val DESCRIPTION = 200
-    const val GROUP = 24
     const val REMINDER_TEXT = 24
 
     /** "3 characters left", only in the last 5. */

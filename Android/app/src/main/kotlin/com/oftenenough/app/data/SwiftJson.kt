@@ -220,17 +220,6 @@ object SwiftJson {
     fun strings(list: List<String>): String = JsonArray(list.map { JsonPrimitive(it) }).toString()
     fun strings(text: String): List<String>? = (parse(text) as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
 
-    fun groups(list: List<HabitGroup>): String = JsonArray(list.map { g ->
-        obj("id" to JsonPrimitive(g.id), "name" to JsonPrimitive(g.name), "color" to JsonPrimitive(g.color.key),
-            "habits" to JsonArray(g.habits.map { JsonPrimitive(it) }))
-    }).toString()
-
-    fun groups(text: String): List<HabitGroup>? = (parse(text) as? JsonArray)?.map { e ->
-        val o = e as? JsonObject ?: return null
-        HabitGroup(o.str("id") ?: return null, o.str("name") ?: return null, HabitColor.of(o.str("color") ?: "") ?: HabitColor.BLUE,
-            (o["habits"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull } ?: emptyList())
-    }
-
     fun cost(c: HabitCost): String = obj("amount" to JsonPrimitive(c.amount), "currency" to JsonPrimitive(c.currency)).toString()
     fun cost(text: String): HabitCost? {
         val o = parse(text) as? JsonObject ?: return null

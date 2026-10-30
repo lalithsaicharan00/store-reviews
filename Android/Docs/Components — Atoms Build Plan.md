@@ -199,7 +199,7 @@ search of every page's text).
 | 6.1 | Start from an idea: `IdeasScreen`, its route and its idea lists (no idea screen anywhere in Figma) | ☑ |
 | 6.2 | The old Progress page: `ProgressScreen` and its route (the Habits tab is that page, A54); SpeedTest moves to the Habits tab | ☑ |
 | 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☑ |
-| 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☐ |
+| 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☑ |
 | 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☐ |
 | 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☐ |
 | 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☐ |
@@ -3244,3 +3244,12 @@ What each atom changed, newest last.
   `TodayActions.writeNote`'s null habit, `HabitStore.dayNote` and `setDayNote`. **Saved day notes stay** (D rules): they
   load into `dayNotes`, go in every backup and the spreadsheet export ("Note for the day" rows), and come back with a
   restore; nothing deletes them.
+  - **Built:** run 41040721061 (Android, commit cfd4349) passed: assembleDebug, unit tests and lint.
+- **6.4 Cleanup · Groups (30 Oct).** A64: groups are gone. Most of their screens had already gone with the components
+  (Today's filter and sheet, Show habits by, the form's Group, "Nothing from a group"); what was left had no way in: the
+  Edit groups and group form screens (`ui/today/FilterAndGroups.kt`, routes `groups` and `group/{id}`: nothing navigated
+  to them). Deleted: those screens and routes, `HabitStore.saveGroup`, `deleteGroup`, `setGroup`, `groupOf` and the
+  in-memory `groups`, `HabitGroup`, `SwiftJson.groups`, `TextLimit.GROUP`, `Prefs.todayGroup` and `progressGroup`, the
+  Habits tab's group filter (`ProgressBuilder`'s `groupId`, `ProgressSnapshot.group`), and the demo's three groups.
+  **Saved groups stay** (D rules): the "groups" and "groups_order" settings rows are never touched, so they stay in the
+  database and every backup, and nothing reads or rewrites them.

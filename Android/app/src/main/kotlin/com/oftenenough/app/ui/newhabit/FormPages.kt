@@ -103,7 +103,6 @@ import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.GoalPeriod
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitCopy
-import com.oftenenough.app.data.HabitGroup
 import com.oftenenough.app.data.HabitPlan
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.HowOften

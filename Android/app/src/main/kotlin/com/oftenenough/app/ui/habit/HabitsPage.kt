@@ -165,7 +165,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     val archived = all.filter { it.archived }
     val paused = active.filter { store.isPaused(it, today) }
     val sections = remember(all, store.sections, today, store.pauses) { habitSections(store, active, paused) }
-    val snap = rememberProgressSnapshot(store, range, anchor, today, "")
+    val snap = rememberProgressSnapshot(store, range, anchor, today)
 
     fun say(text: String, action: String, onAction: () -> Unit) {
         scope.launch {

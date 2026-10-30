@@ -80,8 +80,6 @@ class ProgressSnapshot(
     val canGoForward: Boolean,
     /** Any habit Progress can show (tasks never are). */
     val hasHabits: Boolean,
-    /** The group chosen; null is All (a deleted group is All). */
-    val group: HabitGroup?,
     /** False while cards are still being worked out (the list isn't "empty" yet). */
     val complete: Boolean = true,
 ) {
@@ -89,7 +87,7 @@ class ProgressSnapshot(
 
     /** The same page with these cards. */
     fun with(cards: List<ProgressWeekCard>, archived: List<ProgressWeekCard>, complete: Boolean) = ProgressSnapshot(
-        range, first, last, today, title, caption, cards, archived, columns, monthLead, letters, year, canGoBack, canGoForward, hasHabits, group, complete)
+        range, first, last, today, title, caption, cards, archived, columns, monthLead, letters, year, canGoBack, canGoForward, hasHabits, complete)
 }
 
 /** Progress's words and day arithmetic that need no store (the iPhone's, unchanged). */
@@ -218,31 +216,29 @@ fun HabitStore.weekGoalText(habit: Habit): String {
 
 /**
  * Everything Progress shows for [range] around [anchor]: a card per habit in the person's order, then quit habits, and
- * archived habits apart; tasks never. [groupId] chooses one group's habits ("" or an unknown group is All). Reads only.
+ * archived habits apart; tasks never. Reads only.
  */
-fun HabitStore.progressSnapshot(range: ProgressRange, anchor: Int, today: Int, groupId: String?): ProgressSnapshot =
-    ProgressBuilder(this, range, anchor, today, groupId).also { it.step(Long.MAX_VALUE) }.snapshot()
+fun HabitStore.progressSnapshot(range: ProgressRange, anchor: Int, today: Int): ProgressSnapshot =
+    ProgressBuilder(this, range, anchor, today).also { it.step(Long.MAX_VALUE) }.snapshot()
 
-fun HabitStore.progressBuilder(range: ProgressRange, anchor: Int, today: Int, groupId: String?) = ProgressBuilder(this, range, anchor, today, groupId)
+fun HabitStore.progressBuilder(range: ProgressRange, anchor: Int, today: Int) = ProgressBuilder(this, range, anchor, today)
 
 /**
  * A snapshot whose cards are worked out a few at a time, so a year of many habits never holds a frame (S5, S16): the
  * page shows the period and its first cards at once and the rest as they come. Measured 13 Oct 2026 on the emulator:
  * 30 habits' Year took 709 ms in one go (a frozen tap); a Year card is about 23 ms.
  */
-class ProgressBuilder(private val store: HabitStore, private val range: ProgressRange, anchor: Int, private val today: Int, groupId: String?) {
+class ProgressBuilder(private val store: HabitStore, private val range: ProgressRange, anchor: Int, private val today: Int) {
     private val span = store.rules.period(range.kind, anchor)
-    private val group = groupId?.takeIf { it.isNotEmpty() }?.let { id -> store.groups.firstOrNull { it.id == id } }
-    private fun inGroup(h: Habit) = group == null || h.id in group.habits
     private val now = store.clock()
     // Ordinary habits in the person's order, then quit habits: the order the cards are shown in.
     private val todo = ArrayDeque<Habit>().apply {
-        addAll(store.habits.filter { it.kind != HabitKind.Task && it.kind != HabitKind.Quit && inGroup(it) })
-        addAll(store.habits.filter { it.kind == HabitKind.Quit && !it.archived && inGroup(it) && store.rules.quitStartDay(it) <= minOf(span.last, today) })
+        addAll(store.habits.filter { it.kind != HabitKind.Task && it.kind != HabitKind.Quit })
+        addAll(store.habits.filter { it.kind == HabitKind.Quit && !it.archived && store.rules.quitStartDay(it) <= minOf(span.last, today) })
     }
     private val cards = ArrayList<ProgressWeekCard>()
     private val archived = ArrayList<ProgressWeekCard>()
-    private val frame: ProgressSnapshot = store.progressFrame(range, span, today, group)
+    private val frame: ProgressSnapshot = store.progressFrame(range, span, today)
 
     val isDone: Boolean get() = todo.isEmpty()
 
@@ -263,7 +259,7 @@ class ProgressBuilder(private val store: HabitStore, private val range: Progress
 }
 
 /** The page without its cards: the period, its columns and whether the arrows can move. */
-private fun HabitStore.progressFrame(range: ProgressRange, span: IntRange, today: Int, group: HabitGroup?): ProgressSnapshot {
+private fun HabitStore.progressFrame(range: ProgressRange, span: IntRange, today: Int): ProgressSnapshot {
     val first = span.first
     val last = span.last
     val earliest = earliestProgressDay()
@@ -288,7 +284,6 @@ private fun HabitStore.progressFrame(range: ProgressRange, span: IntRange, today
         canGoBack = earliest != null && earliest < first,
         canGoForward = last < today,
         hasHabits = habits.any { it.kind != HabitKind.Task },
-        group = group,
         complete = false,
     )
 }

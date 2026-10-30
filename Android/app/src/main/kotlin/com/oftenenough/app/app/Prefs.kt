@@ -23,8 +23,6 @@ class Prefs(private val sp: SharedPreferences) {
     var hideDoneHabits by bool("today.hideDoneHabits", false)
     var hideDoneTasks by bool("today.hideDoneTasks", false)
     /** The group Today shows ("" is all). */
-    var todayGroup by str("today.group", "")
-    var progressGroup by str("progress.group", "")
     var timerScreen by bool("timers.openScreen", true)
     var timerNotification by bool("timers.liveUpdate", true)
     /** The welcome is finished (new, or back from a backup). Nothing goes to Google Drive before it (D4, D14). */
