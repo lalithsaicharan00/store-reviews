@@ -378,8 +378,12 @@ class HabitFormTest {
         waitFor(hasText("5 of 5 free habits"), "the count")
         tapTag("plus-back")
         waitFor(hasText("Make room"), "Make room")
+        // Make room (5.9.2, Figma 1167:351072): ⋮ › Archive, the snackbar, then Continue.
         val first = store.habits.first { !it.archived && it.kind != HabitKind.Task }
+        tapTag("room-more-${first.name}")
         tapTag("room-archive-${first.name}")
+        waitFor(hasText("${first.name} archived"), "the snackbar")
+        tapTag("room-continue")
         waitUntil("Stretch added after making room") { store.habits.any { it.name == "Stretch" && !it.archived } }
         assertTrue(store.habits.first { it.id == first.id }.archived)
     }

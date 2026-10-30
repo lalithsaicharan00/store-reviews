@@ -170,7 +170,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.7 | Settings · Week starts on | 1186:13871 | ☑ |
 | 5.8.8 | Settings · Theme | 1188:376784 | ☑ |
 | 5.9.1 | Plus · Plus | 1204:175 | ☑ |
-| 5.9.2 | Create new · Make room (the frames of "A sixth habit on the free plan", 1167:351072, 1167:351230; added 30 Oct) | 1167:351072 | ☐ |
+| 5.9.2 | Create new · Make room (the frames of "A sixth habit on the free plan", 1167:351072, 1167:351230; added 30 Oct) | 1167:351072 | ☑ |
 | 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☐ |
 | 5.10.2 | Widgets · Widget row fill | 1238:428 | ☐ |
 | 5.10.3 | Widgets · Widget · List row | 1238:429 | ☐ |
@@ -2873,3 +2873,32 @@ What each atom changed, newest last.
   - **Build:** run 41025304404 (commit d0be0d5) compiled and passed the unit tests, but lint failed once
     (NonObservableLocale): the Year example read `Locale.getDefault()` in a composable, so the months' letters wouldn't
     follow a change of language. It reads `LocalConfiguration`'s locale now, as the date picker does.
+  - **Built:** run 41025974515 (Android, commit f8a3730) passed: assembleDebug, unit tests and lint.
+
+- **5.9.2 Create new · Make room (30 Oct).** Figma: the frames "3 · Make room: each habit’s ⋮ has Archive and Delete; tap
+  Archive on Read" (1167:351072) and "4 · Read archived · Undo; Continue" (1167:351230), in the flow "A sixth habit on the
+  free plan" ("Back (←), then archive one"; "Archive keeps everything; Delete is in ⋮ and asks first"). Not a component
+  set, so it has no Figma description for a Code line. From Plus for a sixth habit, by its ←. On Surface container: the
+  Top app bar (← "Make room"); 8 above, 16 at the sides, 24 between: "Archive or delete one of your habits to add a new
+  one." in Body Large On surface variant, 16 in; one List on Surface bright of the habits (Two lines): each one's own
+  icon in its colour in the grey circle, its name, its goal ("8 glasses a day", "Every day"), and ⋮ (Archive; Delete in
+  Error); then "Archived habits keep all their progress; you can bring them back any time." in Body Medium. Archived,
+  the snackbar says "Read archived" with Undo, and Continue (Filled, Medium) is held at the bottom. It is `MakeRoomPage`
+  (`newhabit/MakeRoom.kt`, renamed from FormMorePages.kt, whose 6th-habit page went with 5.9.1). GitHub's Android build is
+  the compile check (5.8.3).
+  Fixed:
+  - Each row had an Outlined Archive button and ⋮ with only Delete…, the habit's icon in its coloured circle and no
+    goal; now Figma's List item with ⋮ Archive · Delete, the grey circle and the goal.
+  - Making room went on by itself the moment there was room; now the snackbar says what was archived, with Undo, and
+    Continue goes on (Figma 4). Undo restores the habit.
+  - The intro counted the habits ("one of your 5 habits"); the footer was the form's Body Small note with "and";
+    now Figma's words and styles.
+  - ← went back to the sixth-habit page (which now opens Make room by its own ←, 5.9.1); it leaves the flow instead,
+    so the two never loop.
+  - Tests: HabitFormTest archives through ⋮, sees "… archived" and taps Continue.
+  Noted, not changed:
+  - Figma doesn't draw Delete's question here; it keeps the app's ("Its history and notes are deleted too. Archiving
+    keeps them and makes room just the same."), Cancel · Delete (D9). A quit habit's line says "Quit".
+  - Figma draws light only; dark follows the theme's roles and the habits' dark colours.
+
+  **Section 5.9 Plus is built (5.9.1–5.9.2).**
