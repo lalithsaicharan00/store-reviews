@@ -89,8 +89,10 @@ fun RestoreFlow(
     var fromDrive by rememberSaveable { mutableStateOf(false) }
     // A checked file holds the whole backup in memory, so it is never written into the saved state.
     val pending = remember { mutableStateOf<BackupCenter.Pending?>(null) }
-    /** The file restore while it only asks Google Play about Plus: Cancel stops it then, before anything is written. */
+    /** A file's restore while it runs: its Plus check with Google Play, then the one transaction that writes it. */
     var checking by remember { mutableStateOf<Job?>(null) }
+    /** The file's restore has written its habits (so a late Cancel undoes it rather than stopping it). */
+    var fileWritten by remember { mutableStateOf(false) }
     /** Google Drive's restore while it runs: Cancel stops it and puts this phone back as it was (Figma 582:7893). */
     var bringing by remember { mutableStateOf<Job?>(null) }
     var driveFromEmpty by remember { mutableStateOf(false) }
@@ -141,13 +143,26 @@ fun RestoreFlow(
                     true -> Unit
                 }
             }
-            // From here habits are written, so Cancel is gone: a restore is never stopped halfway.
-            checking = null
+            // The restore is one transaction: a Cancel while it runs rolls it back whole, and one after it has
+            // written puts the phone back with the restore's own undo file (D5).
             center.restore(p, RestoreMode.REPLACE)
+            fileWritten = true
+            // `checking` stays set: Restoring keeps its Cancel while it fades out to Today.
             finish()
         }
+        fileWritten = false
         checking = job
         job.start()
+    }
+
+    /** Cancel on a file's Restoring (Figma 602:3305 draws it the whole time): the phone ends as it was. */
+    fun cancelFile(job: Job) {
+        checking = null
+        step = WHERE
+        scope.launch {
+            job.cancelAndJoin()
+            if (fileWritten) { fileWritten = false; center.undoRestore() }
+        }
     }
 
     /** Google Drive: the copy comes down (nothing goes up), then the same gate; without Plus it is put back. */
@@ -174,7 +189,6 @@ fun RestoreFlow(
                     finish()
                 }
             }
-            bringing = null
         }
     }
 
@@ -243,13 +257,13 @@ fun RestoreFlow(
     // ---------------------------------------------------------------- The screens
 
     when (step) {
-        // 582:7893 · Restoring your habits, with Cancel (Figma draws it on every Restoring). A file: only while its
-        // Plus is checked, before anything is written. Google Drive: the whole time, undoing what came down.
+        // 582:7893 · Restoring your habits, with Cancel the whole time (Figma draws it on every Restoring): the
+        // phone ends as it was, whether a file's or Google Drive's copy was coming in.
         RESTORING -> WaitScreen(
             "Restoring your habits",
             if (fromDrive) "From " + (email?.plus("’s") ?: "your") + " Google Drive" else "From your backup file",
             "restoring",
-            onCancel = checking?.let { job -> { job.cancel(); checking = null; step = WHERE } }
+            onCancel = checking?.let { job -> { cancelFile(job) } }
                 ?: bringing?.let { job -> { cancelDrive(job) } },
         )
 

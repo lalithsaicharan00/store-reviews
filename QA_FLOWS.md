@@ -11,7 +11,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 
 | Page | Node | Flows | Passed |
 |---|---|---|---|
-| onboarding | 1:5 | 12 | 3 |
+| onboarding | 1:5 | 12 | 7 |
 | today | 54:5580 | 83 | 0 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
@@ -22,7 +22,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **3** |
+| **All** | | **289** | **7** |
 
 ## Bug log
 
@@ -40,6 +40,7 @@ to do often enough.`, Body Large, 328 dp box) — the line break is in the
 4. Onboarding · Plus still not back — **bug:** Check again on Plus isn’t on this phone went to No backup found: the Plus gate empties the phone and lets go of Drive, so a second look found nothing. Check again now asks Google Play first and stays on the screen without Plus; with Plus it reconnects and brings Drive's copy down (`RestoreFlow.recheckDrivePlus`).
 5. Onboarding · Plus still not back — the email's footer said “Often Enough 1.0 (4) (free)”; Figma 43:2413 says “Often Enough 1.0 (free)” (the version name alone).
 6. Onboarding · Back from Google Drive — Today, habits restored (2.7) showed a snackbar “Your habits are back: …”; Figma's onboarding ends on Today with none. The restore route now knows where it started: from the empty Today nothing more is said, from Settings it still says what came back (`AppRoot` restore?from=settings, `RestoreFlow.onRestored`).
+7. Onboarding · Back with a backup file — a file's Restoring (602:3305) showed no Cancel: it was offered only while Plus was checked, and dropped the moment the habits were written, so the screen faded to Today without it. Cancel now stays the whole restore: before the write it stops it (one transaction, rolled back), after it puts the phone back with the restore's undo file (`RestoreFlow.cancelFile`); Google Drive's Cancel also stays until the screen has gone.
 
 ## Open questions for the user
 
@@ -59,10 +60,10 @@ to do often enough.`, Body Large, 328 dp box) — the line break is in the
 | 2 | 39:1532 | Back from Google Drive | Splash → Today, no habits yet → Restore from a backup → Choose a Google account (native) → Allow Google Drive (native) → Restoring → Today, habits restored | passed |
 | 3 | 39:2021 | Plus didn’t come back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Restoring → Today, habits restored | not started |
 | 4 | 39:2697 | Plus still not back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Email | passed |
-| 5 | 39:3228 | From an iPhone, with Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file (native) → Restoring → Plus isn’t on this phone (iPhone) → Email | not started |
-| 6 | 39:3744 | From an iPhone, without Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | not started |
-| 7 | 39:4212 | Back with a backup file | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | not started |
-| 8 | 39:4635 | No internet: Google Drive | Splash → Today, no habits yet → Restore from a backup → No internet → Choose a Google account → Allow Google Drive → Restoring → Today, habits restored | not started |
+| 5 | 39:3228 | From an iPhone, with Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file (native) → Restoring → Plus isn’t on this phone (iPhone) → Email | passed |
+| 6 | 39:3744 | From an iPhone, without Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | passed |
+| 7 | 39:4212 | Back with a backup file | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | passed |
+| 8 | 39:4635 | No internet: Google Drive | Splash → Today, no habits yet → Restore from a backup → No internet → Choose a Google account → Allow Google Drive → Restoring → Today, habits restored | passed |
 | 9 | 39:5144 | No internet: checking Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → No internet → Restoring → Today, habits restored | not started |
 | 10 | 39:5757 | Wrong Google account | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → No backup found → Choose a Google account → Restoring → Today, habits restored | not started |
 | 11 | 39:6436 | Wrong file | Splash → Today, no habits yet → Restore from a backup → Choose a file → That isn’t a backup → Choose a file → Restoring → Today, habits restored | not started |
