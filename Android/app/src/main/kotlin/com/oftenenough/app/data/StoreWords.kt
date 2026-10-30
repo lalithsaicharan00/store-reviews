@@ -5,11 +5,17 @@ import java.time.ZoneId
 // MOVE TO CORE: the store's words (the iPhone's Words.swift: rowLine, DayStatus, a log's description and Undo), ported
 // unchanged. See Words.kt.
 
-/** The line under a row's name: what today asks of this habit, then its time. */
+/**
+ * The line under a row's name (Figma's Today, flow 49 "What a row's second line says"): the goal for its period, never
+ * the schedule — Not done (a check), 5/8 glasses, 4/10 min, 1/4 steps, 2/3 times, 2/3 this week. With a reminder still
+ * to come today, " | " and the next one's time; once done the line says Done (or 8/8 glasses) and the time goes,
+ * because there's nothing left to remind.
+ */
 fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime?, progress: Double, goal: Double, running: Boolean): String {
     if (habit.kind == HabitKind.Task) return taskLine(habit, day, weekStart)
-    val t = time?.let { " · " + DayWords.clockMinute(it.minuteOfDay) } ?: ""
-    if (isSkipped(habit, day)) return (if (day == today()) "Skipped today" else "Skipped") + t
+    if (isSkipped(habit, day)) return if (day == today()) "Skipped today" else "Skipped"
+    val done = slot?.let { isSlotDone(habit, it, day) } ?: (rules.isDone(habit, day) && !habit.atMost)
+    val t = if (time == null || done) "" else " | " + DayWords.clockMinute(nextReminder(habit, day, time).minuteOfDay)
     val f = habit.frequency
     if (f is Frequency.Flexible) {
         val count = rules.flexibleProgress(habit, day)
@@ -18,15 +24,22 @@ fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime
             return (if (habit.kind == HabitKind.Check) days else goalLine(habit, progress, goal, running) + " · " + days) + t
         }
     }
-    if (habit.kind == HabitKind.Check && f.isDayBased && (slot != null || goal <= 1)) {
-        return HabitCopy.capitalized(HabitCopy.rhythm(f, weekStart, short = true)) + t
-    }
+    if (habit.kind == HabitKind.Check && f.isDayBased && (slot != null || goal <= 1)) return (if (done) "Done" else "Not done") + t
     // A limit says where it stands in words, never in red (Figma 1.12, 1.12.1; U3).
     if (habit.atMost && goal > 0 && progress >= goal) {
         val counted = goalLine(habit, progress, goal, running).replace(" max", "")
         return (if (progress > goal) "Over the limit · " else "Limit reached · ") + counted + t
     }
     return goalLine(habit, progress, goal, running) + t
+}
+
+/** With several reminders, the next one still to come today (Skincare's 9:00 PM after its 8:00 AM); else [first]. */
+private fun HabitStore.nextReminder(habit: Habit, day: Int, first: ReminderTime): ReminderTime {
+    if (day != today() || habit.reminders.size < 2) return first
+    val zone = java.time.ZoneId.systemDefault()
+    val nowTime = java.time.Instant.ofEpochMilli(clock()).atZone(zone).toLocalTime()
+    val minute = nowTime.hour * 60 + nowTime.minute
+    return habit.reminders.sortedBy { it.minuteOfDay }.firstOrNull { it.minuteOfDay > minute } ?: first
 }
 
 /** One day's result, never a weekly total labelled Today. */

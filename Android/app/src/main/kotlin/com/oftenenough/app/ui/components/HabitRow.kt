@@ -103,8 +103,10 @@ fun HabitRowLayout(
             }
             .combinedClickable(onClick = onClick, onLongClick = onLongClick),
     ) {
-        Column(Modifier.padding(start = 16.dp, end = if (action != null) 8.dp else 12.dp, top = 14.dp, bottom = 14.dp)) {
-            Row(Modifier.heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
+        // Figma's Habit row is 72 (14, the 44 of name and line, 14) with a 40 round button. The button keeps its 48 touch
+        // target, so the row's padding is 12 around a 48-high line: every edge lands where Figma draws it (QA, 31 Oct).
+        Column(Modifier.padding(start = 16.dp, end = if (action != null) 8.dp else 12.dp, top = 12.dp, bottom = if (below != null) 14.dp else 12.dp)) {
+            Row(Modifier.heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
                 HabitIcon(symbol, color)
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f)) {
@@ -120,7 +122,7 @@ fun HabitRowLayout(
                 end?.invoke()
             }
             if (below != null) {
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(10.dp))
                 Box(Modifier.padding(start = 56.dp, end = 4.dp)) { below() }
             }
             menu?.invoke()

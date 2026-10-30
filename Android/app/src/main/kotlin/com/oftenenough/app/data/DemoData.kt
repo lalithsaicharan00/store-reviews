@@ -90,7 +90,7 @@ object DemoData {
     }
 
     /**
-     * Today exactly as Figma draws it (`1958:2`, "1.1 · Today, full length"): the same habits, logs, streaks and pause, so
+     * Today exactly as Figma draws it (`700:3219`, the Android file's Today): the same habits, logs, streaks and pause, so
      * the phone can be put beside the design (test launches and Debug builds only, D8). Launch with clockHour 9.
      */
     fun design(store: HabitStore, now: Long): Snapshot {
@@ -124,7 +124,8 @@ object DemoData {
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true).copy(createdAt = now)
         val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(7))
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.EVENING, 10.0)
-        val habits = listOf(stretch, skincare, meds, walk, study, refill, vitamins, bed, night, journal, read, call, water, parcel, smoking, coffee, social, meditate)
+        // Figma's Today (700:3219, 31 Oct 2026): Morning is Meds, Stretch, Skincare, with Meds still to do (57 days).
+        val habits = listOf(meds, stretch, skincare, walk, study, refill, vitamins, bed, night, journal, read, call, water, parcel, smoking, coffee, social, meditate)
         val entries = ArrayList<Entry>()
         fun log(habit: Habit, day: Int, value: Double, stepId: String? = null, at: Long? = null) =
             entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now)))
@@ -138,7 +139,9 @@ object DemoData {
         log(smoking, store.today(earlier), 1.0, at = earlier)
         log(stretch, today, 4.0, at = now)
         log(skincare, today, 1.0, skincare.steps[0].id, at = now)
-        log(meds, today, 1.0, at = now)
+        // Afternoon and Evening each have one done already: 3 left and 2 left, as Figma's Today.
+        log(vitamins, today, 1.0, at = now)
+        log(journal, today, 1.0, at = now)
         log(read, today, 12.0, at = now)
         log(call, week, 1.0, at = now)
         log(call, week, 1.0, at = now)

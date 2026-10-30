@@ -12,7 +12,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 0 |
+| today | 54:5580 | 83 | 1 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -22,7 +22,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **10** |
+| **All** | | **289** | **11** |
 
 ## Bug log
 
@@ -42,6 +42,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 7. Onboarding · Back with a backup file — a file's Restoring (602:3305) showed no Cancel: it was offered only while Plus was checked, and dropped the moment the habits were written, so the screen faded to Today without it. Cancel now stays the whole restore: before the write it stops it (one transaction, rolled back), after it puts the phone back with the restore's undo file (`RestoreFlow.cancelFile`); Google Drive's Cancel also stays until the screen has gone.
 8. Onboarding · Wrong Google account — **bug:** Try another Google account never showed a chooser: it let go of the account and Play Services handed the same one straight back, so the person landed on No backup found again. The Drive link can now ask for a choice (`DriveLink.connect(pick = true)`: Android's own account chooser, then Google's grant for the chosen account), used by Try another Google account and by Settings' Change account; the old account is only replaced once a new one is chosen, so Cancel keeps it.
 9. Onboarding · No internet: checking Plus — **bug:** offline, the Plus check said Plus isn’t on this phone instead of No internet (9.6): Google Play answers from its own cache with no network, and an empty answer was taken as “no Plus”. An empty answer offline now counts as no connection; a cached purchase still counts (`PlayPlusStore.restore`).
+10. Today · Check off a habit — the row's second line said the schedule (“Every day · 8:00 AM”) and kept the reminder after the habit was done; Figma's rule (flow 49): the goal for its period (Not done, 4/10 min, 2/3 this week), then “ | ” and the next reminder still to come, which goes once it's done (“Done”) (`StoreWords.rowLine`).
+11. Today · Check off a habit — every habit row was 76 dp, Figma's is 72: the round button's 48 dp touch target added to 14 + 14. The row keeps the 48 target with 12 around it, so the icon, words and button sit exactly where Figma draws them (shared `HabitRowLayout`).
+12. Today · demo data — the `design` demo was drawn from an older Figma frame (Meds already done, last in Morning). It now matches the Android file's Today (700:3219): Meds first and still to do at 57, one done in Afternoon and in Evening (`DemoData.design`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -90,7 +93,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
-| 1 | 68:2 | Check off a habit | Today → Tap ✓: Meds fills; Undo · Note appear | not started |
+| 1 | 68:2 | Check off a habit | Today → Tap ✓: Meds fills; Undo · Note appear | passed |
 | 2 | 117:2 | Check off several times a day | Stretch breaks 1 of 3 → ✓ 2 of 3, plain → ✓ 3 of 3, fills and chimes → ✓ again: 4, still counts | not started |
 | 3 | 71:2 | Add an amount | Water 5 of 8 → + 6 of 8; Undo · Note → + twice: 8 of 8 → past the goal 9 of 8 | not started |
 | 4 | 87:2 | Log an amount manually | Water 5 of 8 → Day details → Log manually: Add log, 2 → Added: 7 of 8 → Swipe down: Today; Undo · Note | not started |
