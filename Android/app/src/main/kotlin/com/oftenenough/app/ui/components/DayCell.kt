@@ -2,6 +2,7 @@ package com.oftenenough.app.ui.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.data.HeatOff
+import com.oftenenough.app.ui.theme.AppColors
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.theme.appColors
 
@@ -75,9 +77,10 @@ class DayCellColors(
 )
 
 @Composable
-fun dayCellColors(habit: HabitColor): DayCellColors {
-    val c = appColors
-    val s = MaterialTheme.colorScheme
+fun dayCellColors(habit: HabitColor): DayCellColors = dayCellColors(habit, appColors, MaterialTheme.colorScheme)
+
+/** The same colours from the roles themselves, for what draws outside Compose's theme (the This week widget). */
+fun dayCellColors(habit: HabitColor, c: AppColors, s: ColorScheme): DayCellColors {
     val done = c.habit(habit)
     return DayCellColors(
         done = done, part = done.copy(alpha = 0.5f), more = medalColors(c, habit).bottom,

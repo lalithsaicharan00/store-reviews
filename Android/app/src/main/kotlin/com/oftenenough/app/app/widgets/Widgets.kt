@@ -126,6 +126,8 @@ private val Ink = pair(L.ink, D.ink)
 private val Secondary = pair(L.secondary, D.secondary)
 private val Tonal = pair(L.tonal, D.tonal)
 private val Tonal2 = pair(L.tonal2, D.tonal2)
+/** Surface container: This week's two panels (Figma 1243:857). */
+private val Screen = pair(L.screen, D.screen)
 /** Surface container highest: a round button before the goal is met (Figma's Filled icon button, Neutral). */
 private val Soft = pair(L.soft, D.soft)
 private val White = pair(Color.White, Color.White)
@@ -155,7 +157,7 @@ private fun WidgetBody(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: Stri
         when {
             // Open to update: no snapshot yet, or one from another time zone or day (the app writes seven days ahead).
             snapshot == null || frame == null -> Message(kind, "Open to update", "Data unavailable", R.drawable.ic_w_refresh, open = "today",
-                header = if (kind.oneHabit) null else if (kind.tasks) "Tasks" else "Today")
+                header = if (kind.oneHabit) null else if (kind.tasks) "Tasks" else "Today", note = "Open the app to refresh this widget.")
             kind.oneHabit -> OneHabit(kind, snapshot, frame, choice, widgetId)
             else -> ListWidget(kind, snapshot, frame, choice, page, widgetId)
         }
@@ -164,7 +166,10 @@ private fun WidgetBody(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: Stri
 
 /** A widget with nothing to list: a title, one line, a glyph, and where a tap goes. */
 @Composable
-private fun Message(kind: WidgetKind, title: String, line: String, glyph: Int?, open: String? = null, setup: Int? = null, header: String? = null) {
+private fun Message(
+    kind: WidgetKind, title: String, line: String, glyph: Int?, open: String? = null, setup: Int? = null, header: String? = null,
+    note: String = "", plus: Boolean = false,
+) {
     val context = LocalContext.current
     val click = when {
         setup != null -> actionStartActivity(Intent(context, WidgetSetupActivity::class.java).putExtra(android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID, setup)
@@ -172,6 +177,7 @@ private fun Message(kind: WidgetKind, title: String, line: String, glyph: Int?, 
         else -> actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to (open ?: "today")))
     }
     if (kind == WidgetKind.ONE_HABIT) return SmallMessage(title, line, glyph, click)
+    if (kind == WidgetKind.WEEK) return WeekMessage(title, line, note, glyph ?: R.drawable.ic_w_list, click, plus)
     ListMessage(header, title, line, glyph, click)
 }
 
@@ -215,11 +221,12 @@ private fun OneHabit(kind: WidgetKind, snapshot: WidgetSnapshot, frame: WidgetFr
     val small = kind == WidgetKind.ONE_HABIT
     // No habit made yet (Figma's "no habits yet"): the app opens to start one.
     if (id == null && small && snapshot.choices.isEmpty()) return Message(kind, "No habits yet", "Start one in the app", R.drawable.ic_w_list, open = "today")
-    if (id == null) return Message(kind, "Choose a habit", if (small) "Tap to choose" else "Tap to choose the habit this widget shows.", R.drawable.ic_w_list, setup = widgetId)
-    val item = frame.item(id) ?: return if (small) Message(kind, "Choose a habit", "Habit removed", R.drawable.ic_w_list, setup = widgetId)
-        else Message(kind, "Habit removed", "Tap to choose another", R.drawable.ic_w_list, setup = widgetId)
-    // This week is Plus; without Plus it never blocks or goes blank: it says what's there and opens the app (A13).
-    if (kind.plus && !snapshot.plus) return Message(kind, "This week", "See the whole week here with Plus. Tap to open the app.", null, open = "item/$id")
+    val choose = "Tap to choose the habit this widget shows."
+    if (id == null) return Message(kind, "Choose a habit", if (small) "Tap to choose" else "Not chosen yet", R.drawable.ic_w_list, setup = widgetId, note = choose)
+    val item = frame.item(id) ?: return Message(kind, "Choose a habit", "Habit removed", R.drawable.ic_w_list, setup = widgetId, note = choose)
+    // This week is Plus; without Plus it never blocks or goes blank: it says where the habit stands and opens it (A13).
+    if (kind.plus && !snapshot.plus) return Message(kind, "This week", "${item.name}: ${item.line}" + (if (item.quitStart != null || item.line.contains(" this ") || item.line.contains("today", ignoreCase = true)) "" else " today"),
+        R.drawable.ic_w_week, open = "item/$id", note = "See the whole week here with Plus. Tap to open the app.", plus = true)
     if (kind == WidgetKind.WEEK) WeekCard(item, frame, snapshot) else SmallCard(item, frame)
 }
 
@@ -290,42 +297,68 @@ private fun SmallMessage(title: String, line: String, glyph: Int?, click: androi
     }
 }
 
+/**
+ * 5.10.5, **Widget · This week** (Figma 1243:857, Kind Habit; "This week · every state"): 4×2, Surface container
+ * lowest, 28 corners, 12 all round, 12 between its two halves. On the left, on Surface container (96 wide, 16 corners, 8
+ * at the sides, 6 between, centred): the habit's icon (44), its name (Label Large) and its streak (🔥 and the count in
+ * Title Small) or its caption (Body Small, On surface variant: "Best 45 days", "Daily limit"). On the right: today's
+ * number (Headline Medium, 28 sp) and its unit (Body Medium, On surface variant, 6 after it, on its baseline: "of 8
+ * glasses", "since 26 Sep") with the round button (40); 8 under it today's progress (4 tall; none for a quit run); 8
+ * under that the week, on Surface container (16 corners): seven Day cells (Size Year, 24, 2 apart, today ringed) and
+ * their letters under them (11 sp Medium, today's On surface, the rest On surface variant). A tap opens the day; the
+ * button logs (LOCKED, widget taps).
+ */
 @Composable
 private fun WeekCard(item: WidgetItem, frame: WidgetFrame, snapshot: WidgetSnapshot) {
+    val context = LocalContext.current
     val dayClick = actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to item.routeOrDay, TapKeys.DAY to frame.day))
+    // The right half's width (the widget's size is exact): the cells keep Figma's 24 and 2 apart while they fit.
+    val right = LocalSize.current.width - 24.dp - 96.dp - 12.dp
+    val pitch = minOf(26f, (right.value - 16f + 2f) / 7f).coerceAtLeast(8f)
+    val cell = pitch - 2f
     Row(GlanceModifier.fillMaxSize().clickable(dayClick).semantics { contentDescription = spoken(item) }) {
-        Column(GlanceModifier.width(96.dp).fillMaxHeight().cornerRadius(20.dp).background(Tonal2).padding(8.dp),
+        Column(GlanceModifier.width(96.dp).fillMaxHeight().cornerRadius(16.dp).background(Screen).padding(horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
-            Icon(item, 48.dp)
-            Spacer(GlanceModifier.height(8.dp))
-            if (item.name.isNotEmpty()) Text(item.name, style = style(15.sp, weight = FontWeight.Medium), maxLines = 1)
-            item.streak?.let { Streak(it) } ?: item.quitBestText?.let { Text(it, style = style(13.sp, Secondary), maxLines = 1) }
+            Icon(item, 44.dp)
+            Spacer(GlanceModifier.height(6.dp))
+            if (item.name.isNotEmpty()) Text(item.name, style = style(14.sp, weight = FontWeight.Medium).copy(textAlign = TextAlign.Center), maxLines = 1)
+            Spacer(GlanceModifier.height(6.dp))
+            // A quit run or a limit has its caption ("Best 45 days", "Daily limit"); any other habit its streak, if it has one.
+            val caption = item.caption ?: item.quitBestText
+            val streak = if (item.limit || item.quitStart != null) null else item.streak
+            if (streak != null) Streak(streak, 14.sp, FontWeight.Medium)
+            else caption?.let { Text(it, style = style(12.sp, Secondary).copy(textAlign = TextAlign.Center), maxLines = 1) }
         }
         Spacer(GlanceModifier.width(12.dp))
         Column(GlanceModifier.defaultWeight().fillMaxHeight()) {
+            // The round button keeps its 48 touch target, so this row is 48 and the gap under it 4 (8 under the circle).
             Row(GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Column(GlanceModifier.defaultWeight()) {
+                Box(GlanceModifier.defaultWeight()) {
                     when {
-                        item.quitStart != null -> { QuitClock(item, 24.sp, Ink); item.since?.let { Text(it, style = style(14.sp, Secondary), maxLines = 1) } }
-                        item.timerClock != null -> TimerClock(item, 24.sp, Ink)
+                        item.quitStart != null -> Row(verticalAlignment = Alignment.Bottom) {
+                            QuitClock(item, 28.sp, Ink)
+                            item.since?.let { Text("  $it", style = style(14.sp, Secondary), maxLines = 1) }
+                        }
+                        item.timerClock != null -> TimerClock(item, 28.sp, Ink)
                         else -> Row(verticalAlignment = Alignment.Bottom) {
-                            Text(item.big, style = style(30.sp))
+                            Text(item.big, style = style(28.sp), maxLines = 1)
                             Text("  " + item.goal, style = style(14.sp, Secondary), maxLines = 1)
                         }
                     }
                 }
                 RoundButton(item, frame)
             }
+            if (item.quitStart == null) { Spacer(GlanceModifier.height(4.dp)); Bar(item, 4.dp) }
             Spacer(GlanceModifier.height(8.dp))
-            Bar(item)
-            Spacer(GlanceModifier.height(8.dp))
-            Row(GlanceModifier.fillMaxWidth().defaultWeight().cornerRadius(16.dp).background(Tonal2).padding(horizontal = 6.dp, vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                item.week.forEachIndexed { i, cell ->
-                    Column(GlanceModifier.defaultWeight(), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Square(cell, item.color, i == item.weekToday)
-                        Text(snapshot.weekdays.getOrNull(i)?.take(1) ?: "", style = style(11.sp, if (i == item.weekToday) Ink else Secondary,
-                            if (i == item.weekToday) FontWeight.Bold else FontWeight.Normal))
+            Column(GlanceModifier.fillMaxWidth().defaultWeight().cornerRadius(16.dp).background(Screen),
+                horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
+                val density = context.resources.displayMetrics.density
+                Image(ImageProvider(WeekCellBitmaps.get(item.week, item.weekToday, item.color, isDark(context), cell, pitch, density)), null,
+                    GlanceModifier.width((pitch * 7 + 2f * WeekCellBitmaps.RING_DP - 2f).dp).height((cell + 2f * WeekCellBitmaps.RING_DP).dp))
+                Spacer(GlanceModifier.height(1.dp))
+                Row(GlanceModifier.width((pitch * 7).dp)) {
+                    for (i in 0 until 7) Box(GlanceModifier.width(pitch.dp), contentAlignment = Alignment.Center) {
+                        Text(snapshot.weekdays.getOrNull(i)?.take(1) ?: "", style = style(11.sp, if (i == item.weekToday) Ink else Secondary, FontWeight.Medium))
                     }
                 }
             }
@@ -333,20 +366,28 @@ private fun WeekCard(item: WidgetItem, frame: WidgetFrame, snapshot: WidgetSnaps
     }
 }
 
-/** One day's square, in Progress Week's language (never a harsh mark, U3). */
+/**
+ * This week with nothing to show (Figma 1243:857, Kind Message): its glyph (24, On surface variant) in the left half, on
+ * Surface container; on the right the headline (Headline Small, 22 sp) over its line (Body Medium, On surface variant),
+ * then, 8 under, the note on Surface container (16 corners, 16 in, centred): the Plus label on the free plan, and the
+ * words (Body Small, On surface variant). The whole widget is the tap.
+ */
 @Composable
-private fun Square(cell: Int, color: String, today: Boolean) {
-    val level = cell.coerceAtLeast(-5)
-    val back = when {
-        level >= 4 -> habit(color)
-        level in 1..3 -> fill(color)
-        else -> Tonal
-    }
-    // Today's square has an outline (Glance has no border: a slightly larger square behind it).
-    Box(GlanceModifier.size(24.dp).cornerRadius(6.dp).background(if (today) Secondary else back), contentAlignment = Alignment.Center) {
-        Box(GlanceModifier.size(if (today) 20.dp else 24.dp).cornerRadius(if (today) 4.dp else 6.dp).background(back), contentAlignment = Alignment.Center) {
-            if (level >= 4) Image(ImageProvider(R.drawable.ic_w_check), null, GlanceModifier.size(14.dp), colorFilter = ColorFilter.tint(White))
-            else if (cell == WidgetCell.SKIPPED || cell == WidgetCell.PAUSED) Text(if (cell == WidgetCell.SKIPPED) "»" else "‖", style = style(11.sp, Secondary))
+private fun WeekMessage(title: String, line: String, note: String, glyph: Int, click: androidx.glance.action.Action, plus: Boolean = false) {
+    Row(GlanceModifier.fillMaxSize().clickable(click).semantics { contentDescription = "$title, $line, $note" }) {
+        Box(GlanceModifier.width(96.dp).fillMaxHeight().cornerRadius(16.dp).background(Screen), contentAlignment = Alignment.Center) {
+            Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Secondary))
+        }
+        Spacer(GlanceModifier.width(12.dp))
+        Column(GlanceModifier.defaultWeight().fillMaxHeight()) {
+            Text(title, style = style(22.sp), maxLines = 1)
+            Text(line, style = style(14.sp, Secondary), maxLines = 1)
+            Spacer(GlanceModifier.height(8.dp))
+            Column(GlanceModifier.fillMaxWidth().defaultWeight().cornerRadius(16.dp).background(Screen).padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
+                if (plus) { PlusLabel(); Spacer(GlanceModifier.height(8.dp)) }
+                Text(note, style = style(12.sp, Secondary).copy(textAlign = TextAlign.Center), maxLines = 3)
+            }
         }
     }
 }

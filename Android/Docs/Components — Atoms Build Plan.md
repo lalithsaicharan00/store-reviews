@@ -175,7 +175,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.10.2 | Widgets · Widget row fill | 1238:428 | ☑ |
 | 5.10.3 | Widgets · Widget · List row | 1238:429 | ☑ |
 | 5.10.4 | Widgets · Widget · List | 1240:488 | ☑ |
-| 5.10.5 | Widgets · Widget · This week | 1243:857 | ☐ |
+| 5.10.5 | Widgets · Widget · This week | 1243:857 | ☑ |
 | 5.10.6 | Widgets · Widget setup | 1252:3618 | ☐ |
 | 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☐ |
 | 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☐ |
@@ -2999,3 +2999,39 @@ What each atom changed, newest last.
   - Glance can't draw the app's own Compose atoms, so the Plus label is drawn again in Glance from the same roles
     (`AppColors.lightRoles` / `darkRoles`, Primary and On primary) and the same filled workspace_premium.
   - "N tasks left", in Figma's description of the Message variant, is drawn in no state; nothing shows it.
+  - **Built:** run 41032298033 (Android, commit 35cfeda) passed: assembleDebug, unit tests and lint.
+- **5.10.5 Widgets · Widget · This week (30 Oct).** Figma: Widget · This week (1243:857), Kind Habit and Message, and
+  "This week · every state" (done today, quit, cut down, a week goal, choose a habit, open to update, free plan) and
+  "· milestones". 4×2, Surface container lowest, 28 corners, 12 all round, 12 between two halves. Left, on Surface
+  container (96 wide, 16 corners, 8 at the sides, 6 between, centred): the icon (44), the name (Label Large), the streak
+  (🔥 and the count, 14 sp Medium) or, for a quit run or a limit, the caption (Body Small, On surface variant: "Best 45
+  days", "Daily limit"). Right: today's number (28 sp) and unit (14 sp, On surface variant, on its baseline: "of 8
+  glasses", "since 26 Sep") with the round button; today's progress (4 tall, the habit's colour on Secondary container,
+  On surface variant for a limit; none for a quit run); the week on Surface container (16 corners): seven Day cells (Size
+  Year, 24, 2 apart, today ringed) with their letters (11 sp Medium; today's On surface). Message: the glyph (24) on the
+  left panel; Headline Small (22 sp) over Body Medium; the note on Surface container (16 corners, 16 in), with the Plus
+  label on the free plan. It is `WeekCard`, `WeekMessage` and `WeekCellBitmaps` (`app/widgets/Widgets.kt`,
+  `WidgetPublisher.kt`). Taps, saving and updates are locked (U28) and untouched.
+  Fixed:
+  - The week was drawn with Glance squares in the widget's own language (a ✓ on met days, » and ‖ on skipped and paused,
+    a grey square around today); now the Day cell itself: `DayCellDraw` (Atom 3.6) draws the seven cells into one
+    picture with the app's colours (`dayCellColors` now also takes the roles directly), so Part is the colour at 50 %,
+    More than the goal the deep shade, Not done grey with ✕, No goal dashed, Skipped redo, Paused pause, and today's
+    2 dp ring, exactly as Progress shows them. Glance can't draw a dash, a ring or a glyph in a square.
+  - The panels were Surface container high with 20 corners and 8 in all round; now Surface container, 16 corners. The
+    icon was 48, the name 15 sp, the number 30 sp, the quit and timer clocks 24 sp, the bar 8 tall; now 44, 14, 28, 28
+    and 4. A limit showed its streak, or nothing, where Figma has "Daily limit"; now the caption.
+  - Today's letter was Bold; now Medium in On surface, as Figma.
+  - The messages were the list's centred words ("Habit removed · Tap to choose another"; the free plan "See the whole
+    week here with Plus…" as its line); now Figma's Kind Message: Choose a habit · Not chosen yet (or Habit removed) ·
+    "Tap to choose the habit this widget shows."; Open to update · Data unavailable · "Open the app to refresh this
+    widget."; This week · "Water: 3 of 8 glasses today" · the Plus label and "See the whole week here with Plus. Tap to
+    open the app." (calendar_view_week, `ic_w_week`).
+  Noted, not changed:
+  - Figma's quit number is "19d 12:32"; the widget keeps the live clock with seconds ("19d 12:32:45"), the only way a
+    widget can tick without redrawing every minute (S3, U28: the widget's updates are locked).
+  - The round button keeps its 48 touch target, so the top row is 48 tall and the gap under it 4 (8 under the circle).
+  - The free plan's line is worked out from the habit's own line: "Water: 3 of 8 glasses today", "Gym: 2 of 3 this
+    week", "Smoking: since 26 Sep".
+  - The milestone (the medal in place of the icon, the band in place of the bar) is D-30.
+  - The cells keep Figma's 24 and 2 apart while the widget is wide enough, and shrink together below that.

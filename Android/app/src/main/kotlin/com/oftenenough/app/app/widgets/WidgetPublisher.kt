@@ -10,16 +10,23 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.graphics.vector.VectorGroup
 import androidx.compose.ui.graphics.vector.VectorNode
 import androidx.compose.ui.graphics.vector.VectorPath
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.data.HabitStore
+import com.oftenenough.app.data.HeatCell
+import com.oftenenough.app.data.widgets.WidgetCell
+import com.oftenenough.app.ui.components.DayCellDraw
+import com.oftenenough.app.ui.components.dayCellColors
 import com.oftenenough.app.data.widgets.WidgetItems
 import com.oftenenough.app.ui.theme.AppColors
 import com.oftenenough.app.ui.theme.HabitIcons
 import com.oftenenough.app.data.HabitColor
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -127,4 +134,44 @@ object HabitIconBitmaps {
     }
 
     @Suppress("unused") private val keep = Size.Zero
+}
+
+/**
+ * This week's seven days as the app draws them (Figma's Day cell, Size Year; [DayCellDraw], so a widget's week never looks
+ * different from Progress's), in one picture: Glance can't draw a dashed line, a ring or a glyph inside a square. The
+ * cells are [cellDp] square, [pitchDp] apart from the start of one to the next, with room for today's ring all round.
+ */
+object WeekCellBitmaps {
+    /** Room around the cells for today's ring (DayCellSize.ring). */
+    const val RING_DP = 3f
+    private val cache = LinkedHashMap<String, Bitmap>()
+
+    fun get(cells: List<Int>, today: Int, color: String, dark: Boolean, cellDp: Float, pitchDp: Float, density: Float): Bitmap = synchronized(cache) {
+        val key = "${cells.joinToString(",")}|$today|$color|$dark|$cellDp|$pitchDp|$density"
+        cache[key]?.let { return it }
+        if (cache.size > 16) cache.remove(cache.keys.first())
+        draw(cells, today, HabitColor.of(color) ?: HabitColor.BLUE, dark, cellDp, pitchDp, density).also { cache[key] = it }
+    }
+
+    private fun draw(cells: List<Int>, today: Int, habit: HabitColor, dark: Boolean, cellDp: Float, pitchDp: Float, density: Float): Bitmap {
+        val ring = RING_DP * density
+        val width = (pitchDp * 7 - (pitchDp - cellDp) + RING_DP * 2) * density
+        val height = (cellDp + RING_DP * 2) * density
+        val image = ImageBitmap(width.toInt().coerceAtLeast(1), height.toInt().coerceAtLeast(1))
+        val drawer = DayCellDraw(cellDp * density, density)
+        cells.take(7).forEachIndexed { i, cell -> drawer.add(heat(cell), ring + i * pitchDp * density, ring, i == today) }
+        val colors = dayCellColors(habit, if (dark) AppColors.dark else AppColors.light, if (dark) AppColors.darkRoles else AppColors.lightRoles)
+        CanvasDrawScope().draw(Density(density), LayoutDirection.Ltr, Canvas(image), Size(width, height)) { drawer.draw(this, colors) }
+        return image.asAndroidBitmap()
+    }
+
+    /** The snapshot's day ([WidgetCell]: 0 not done, 1–3 part, 4 met, 5 more) as the app's [HeatCell]. */
+    private fun heat(cell: Int): HeatCell = when (cell) {
+        WidgetCell.BLANK -> HeatCell.Blank
+        WidgetCell.UPCOMING -> HeatCell.Upcoming
+        WidgetCell.NOT_SCHEDULED -> HeatCell.notScheduled
+        WidgetCell.SKIPPED -> HeatCell.skipped
+        WidgetCell.PAUSED -> HeatCell.paused
+        else -> HeatCell.level(cell)
+    }
 }
