@@ -6,6 +6,7 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.longClick
@@ -168,6 +169,18 @@ class ScreensTest {
         tapText("Undo")
         compose.waitUntil(15_000) { store.sections.any { it.id == morning.id } && inMorning.all { (id, parts) -> store.habit(id)?.parts == parts } }
         waitFor(hasTestTag("section-Morning"), "Morning back on Times of day")
+    }
+
+    /** New day starts at (5.8.6, Figma 1186:13870): saved the moment an hour is tapped; Settings' row says it. */
+    @Test fun newDayStartsAtIsSavedWhenTapped() {
+        launch()
+        menu("settings")
+        tapTag("settings-new-day")
+        waitFor(hasText("Logs before this time count for the day before. Choose a later hour if you’re often up after midnight."), "the intro")
+        tapTag("day-start-3")
+        compose.waitUntil(15_000) { AppGraph.store.dayEndHour == 3 }
+        back()
+        waitFor(hasTestTag("settings-new-day").and(hasAnyDescendant(hasText("3:00 AM"))), "the row saying 3:00 AM")
     }
 
     @Test fun progressShowsTheWeek() {

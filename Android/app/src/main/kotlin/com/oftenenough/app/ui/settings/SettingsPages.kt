@@ -65,10 +65,45 @@ import com.oftenenough.app.ui.record.DiscardDialog
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
+import com.oftenenough.app.ui.newhabit.RadioRow
 import com.oftenenough.app.ui.newhabit.GroupTitle
 import com.oftenenough.app.ui.newhabit.MinuteDialog
 import com.oftenenough.app.ui.newhabit.Note
 import com.oftenenough.app.ui.theme.appColors
+
+// ------------------------------------------------------------------ Settings' choice pages
+
+/**
+ * A setting chosen from a list (Figma's New day starts at, Week starts on, Theme pages): on Surface container, the Top
+ * app bar (← [title]); 8 above, 16 at the sides, 40 under, 24 between: [intro], what the setting does, in Body Large On
+ * surface variant 16 in; then one List of choices on Surface bright, each a radio and its name in Title Medium (List
+ * item, One line). Saved the moment one is tapped, as Android's own settings pages; nothing to confirm, ← goes back.
+ */
+@Composable
+fun ChoicePage(title: String, intro: String, options: List<String>, selected: Int, tag: String, onBack: () -> Unit, onPick: (Int) -> Unit) {
+    val s = MaterialTheme.colorScheme
+    FormPage(title, onBack = onBack) {
+        Column(Modifier.padding(top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Text(intro, Modifier.padding(horizontal = 16.dp), style = AppType.bodyLarge, color = s.onSurfaceVariant)
+            SegmentedList {
+                options.forEachIndexed { i, option ->
+                    RadioRow(option, i == selected, i, options.size, "$tag-$i", containerColor = s.surfaceBright) { onPick(i) }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 5.8.6, **New day starts at** (Figma 1186:13870, Screen Default · End of the list; the flow "New day starts at"). From
+ * Settings. "Logs before this time count for the day before. Choose a later hour if you’re often up after midnight.",
+ * then the hours. A log at 1 AM then counts for the day before, everywhere at once (D7). The shared rule takes 12:00 AM
+ * to 12:00 PM (Core/spec/day.md, DAY-2); Figma lists every hour of the day (Decisions needed D-24).
+ */
+@Composable
+fun NewDayStartsAtPage(store: HabitStore, onBack: () -> Unit) =
+    ChoicePage("New day starts at", "Logs before this time count for the day before. Choose a later hour if you’re often up after midnight.",
+        (0..12).map { DayWords.clockMinute(it * 60) }, store.dayEndHour, "day-start", onBack) { store.setDayEnd(it) }
 
 // ------------------------------------------------------------------ Day and Week
 

@@ -293,6 +293,7 @@ private fun AppMain(
                 }
                 SettingsPage.LICENCES -> LicencesPage { nav.popBackStack() }
                 SettingsPage.DAY_AND_WEEK -> DayAndWeekPage(store) { nav.popBackStack() }
+                SettingsPage.NEW_DAY -> com.oftenenough.app.ui.settings.NewDayStartsAtPage(store) { nav.popBackStack() }
                 SettingsPage.APPEARANCE -> AppearancePage(prefs) { nav.popBackStack() }
                 // After Erase all my data the app starts again on Today, as a fresh install (Figma's Erase flow).
                 SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE) }, { nav.popBackStack(Routes.TODAY, inclusive = false) },

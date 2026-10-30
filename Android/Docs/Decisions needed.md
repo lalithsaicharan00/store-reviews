@@ -251,6 +251,17 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) keep the row (and add it to Figma); (b) remove it (the undo file is kept but only the snackbar uses it).
 - **My recommendation:** (a).
 
+### D-24. New day starts at: every hour, or up to noon?
+
+- **Where:** New day starts at (5.8.6), [Figma 1186:13870](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1186-13870); `ui/settings/SettingsPages.kt` (`NewDayStartsAtPage`); the shared rule in `Core/spec/day.md`, DAY-2.
+- **What Figma shows / what the app did:** Figma lists all 24 hours, 12:00 AM to 11:00 PM. The shared day rule (iPhone and
+  Android alike) takes 12:00 AM to 12:00 PM and clamps anything later.
+- **What I did for now:** the page offers 12:00 AM to 12:00 PM (13 choices); the rule is unchanged.
+- **Question:** (a) keep up to noon, and Figma's list ends at 12:00 PM; (b) every hour, which changes the shared rule
+  (and which day people's logs count for), with its golden answers (T21).
+- **My recommendation:** (a). A day starting in the afternoon or evening would put a morning log on the day before,
+  which nobody expects; Figma's own intro speaks of being up "after midnight".
+
 ## Plus
 
 ## Widgets

@@ -166,7 +166,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.3 | Settings · Settings | 1173:547 | ☑ |
 | 5.8.4 | Settings · Times of day | 1176:356264 | ☑ |
 | 5.8.5 | Settings · Backup & Sync | 1178:960 | ☑ |
-| 5.8.6 | Settings · New day starts at | 1186:13870 | ☐ |
+| 5.8.6 | Settings · New day starts at | 1186:13870 | ☑ |
 | 5.8.7 | Settings · Week starts on | 1186:13871 | ☐ |
 | 5.8.8 | Settings · Theme | 1188:376784 | ☐ |
 | 5.9.1 | Plus · Plus | 1204:175 | ☐ |
@@ -2766,3 +2766,22 @@ What each atom changed, newest last.
     deleted, no Google Play services) keep the card's words (D-20). A failed save or export keeps its own words.
   - No instrumented test changes: the tests tap Restore's row only, and a test launch has no real Drive or save picker.
   - Figma draws light only; dark follows the theme's roles. Delete's and Erase's red is the Error role (D9).
+  - **Built:** run 41021397917 (Android, commit 7b04baa) passed: assembleDebug, unit tests and lint.
+
+- **5.8.6 Settings · New day starts at (30 Oct).** Figma: New day starts at (1186:13870), Screen Default · End of the
+  list, and the flow "New day starts at" ("A page, like Times of day: it says what the setting does before the choices
+  … Saved the moment it's tapped, as Android's own settings pages; nothing to confirm. ← goes back."). From Settings'
+  row. On Surface container: the Top app bar (← "New day starts at"); 8 above, 16 at the sides, 40 under, 24 between:
+  "Logs before this time count for the day before. Choose a later hour if you’re often up after midnight." in Body
+  Large On surface variant, 16 in; then one List on Surface bright of the hours, each a List item (One line) with its
+  radio and the hour in Title Medium. It is `NewDayStartsAtPage` on `ChoicePage` (`settings/SettingsPages.kt`); Week
+  starts on and Theme take the same page (5.8.7, 5.8.8). GitHub's Android build is the compile check (5.8.3).
+  Fixed:
+  - New day starts at was a dropdown on a "Day and Week" page, with its own note; now Figma's page of its own, saved on
+    tap.
+  - Tests: ScreensTest taps 3:00 AM, checks it's saved, and that Settings' row says 3:00 AM.
+  Noted, not changed:
+  - Figma lists all 24 hours; the shared day rule takes 12:00 AM to 12:00 PM (Core/spec/day.md, DAY-2), so the page lists
+    those (Decisions needed D-24).
+  - The Day and Week page stays for Week starts on until 5.8.7, which deletes it.
+  - Figma draws light only; dark follows the theme's roles. The radios are Material's; each row is one tap target.

@@ -57,6 +57,7 @@ object SettingsPage {
     const val PROGRESS = "Progress"
     const val TIMES_OF_DAY = "Times of Day"
     const val DAY_AND_WEEK = "Day and Week"
+    const val NEW_DAY = "New day starts at"
     const val REMINDERS = "Reminders"
     const val APPEARANCE = "Appearance"
     const val BACKUP = "Backup & Sync"
@@ -119,7 +120,7 @@ fun SettingsHome(store: HabitStore, prefs: Prefs, backup: BackupCenter, openMenu
                 Row("Times of day", store.timedSections().joinToString(", ") { it.first.name }.ifEmpty { "Anytime" }, Symbols.Schedule, 0, 3,
                     "settings-times-of-day") { onOpen(SettingsPage.TIMES_OF_DAY) }
                 Row("New day starts at", DayWords.clockMinute(store.dayEndHour * 60), Symbols.Bedtime, 1, 3, "settings-new-day") {
-                    onOpen(SettingsPage.DAY_AND_WEEK)
+                    onOpen(SettingsPage.NEW_DAY)
                 }
                 Row("Week starts on", HabitCopy.fullDays[store.weekStart - 1], Symbols.DateRange, 2, 3, "settings-week-start") {
                     onOpen(SettingsPage.DAY_AND_WEEK)
