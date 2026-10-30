@@ -176,7 +176,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.10.3 | Widgets · Widget · List row | 1238:429 | ☑ |
 | 5.10.4 | Widgets · Widget · List | 1240:488 | ☑ |
 | 5.10.5 | Widgets · Widget · This week | 1243:857 | ☑ |
-| 5.10.6 | Widgets · Widget setup | 1252:3618 | ☐ |
+| 5.10.6 | Widgets · Widget setup | 1252:3618 | ☑ |
 | 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☐ |
 | 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☐ |
 | 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☐ |
@@ -3035,3 +3035,38 @@ What each atom changed, newest last.
     week", "Smoking: since 26 Sep".
   - The milestone (the medal in place of the icon, the band in place of the bar) is D-30.
   - The cells keep Figma's 24 and 2 apart while the widget is wide enough, and shrink together below that.
+  - **Built:** run 41033132651 (Android, commit e8e3300) passed: assembleDebug, unit tests and lint.
+- **5.10.6 Widgets · Widget setup (30 Oct).** Figma: Widget setup (1252:3618), Screen One habit, One habit · change, Today,
+  Tasks, This week, Today · free plan and This week · free plan. Android's configuration activity, after a widget is
+  added and from Reconfigure. On Surface container: the Top app bar (← and the widget's name; ← leaves without adding);
+  then, scrolling, 8 above, 16 at the sides, 16 between, 24 at the end: the preview (the gradient of Habit / Blue / Fill
+  to Habit / Orange / Fill, top to bottom, 28 corners, 24 above and under; the widget centred, a 2×2 at its 156 × 176,
+  a 4×2 at 296 × 159); "Show" (Label Large, On surface variant); the choices (one List, Surface bright, 2 apart, a Radio
+  button at the end): a habit with its icon (40, its colour, glyph 24), its name and "Anytime · 8 glasses a day"; or
+  All of today ("Every habit planned for today"), All of today’s tasks ("Every task for today") and each time of day
+  ("From 6 AM · 3 habits", "Anytime · 2 habits"). At the bottom, on Surface container, 16 all round: Add widget, or
+  Save when changing a placed widget (Filled, Medium, round). Free plan: the preview as Plus shows it, then the Plus card
+  (Surface container lowest, 24 corners, 20 in, 8 between: the Plus label and "Today’s list comes with Plus" / "This
+  week comes with Plus" in Title Medium; what Plus adds in Body Medium, On surface variant); the whole card opens the
+  Plus screen; Add widget adds the free widget. It is `WidgetSetupActivity` (`app/widgets/`) with `WidgetPreview`
+  (`Widgets.kt`). What a widget does once placed is locked (U28) and untouched.
+  Fixed:
+  - There was no preview; now the real widget, drawn by Glance itself (`GlanceRemoteViews` over `WidgetPreview`, the
+    widget's own body) from the app's snapshot and the choice being made, so it changes as the person picks. It takes no
+    touch (its buttons would log) and TalkBack reads it as "Preview of the widget".
+  - The bar closed with ✕; now ← as Figma's bar ("Leading: Back"; the description's "✕ closes" is the old wording).
+  - "Show" was 16 in from the list (GroupTitle); now level with it, 16 above and under.
+  - A habit's line was its page sentence ("8 glasses a day, anytime"); now Figma's "Anytime · 8 glasses a day" (a quit
+    habit keeps "Quitting since 2 Sep"). Its icon was 40 with a 22 glyph; now 24. The rows were Surface container
+    lowest; now Surface bright, as every List in the app.
+  - Tasks' first choice said "All of today"; now "All of today’s tasks".
+  - Add widget always said Add widget; Reconfigure now says Save.
+  - The free plan was a page of its own ("Today is a Plus widget", two paragraphs) with Get Plus · price and Add without
+    Plus; now Figma's: the preview, one card that opens the Plus screen, and Add widget. Buying Plus there and coming back
+    shows the choices.
+  Noted, not changed:
+  - On the free plan This week shows no choices; the free widget then follows the habit it had, or the first habit in
+    the person's order, so it can say where that habit stands.
+  - The preview's colours follow the phone's light or dark setting, as the widget itself does, even when the app's
+    Theme is set otherwise (widgets follow the phone; Glance resolves day and night from it).
+  - A 4×4's preview is drawn at 90 % too (Figma draws only 4×2 previews).

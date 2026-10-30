@@ -164,6 +164,11 @@ private fun WidgetBody(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: Stri
     }
 }
 
+/** The widget exactly as it draws, for Widget setup's preview (5.10.6): the first page, no widget of its own. */
+@Composable
+internal fun WidgetPreview(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: String?) =
+    WidgetBody(kind, snapshot, choice, 0, android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID)
+
 /** A widget with nothing to list: a title, one line, a glyph, and where a tap goes. */
 @Composable
 private fun Message(
