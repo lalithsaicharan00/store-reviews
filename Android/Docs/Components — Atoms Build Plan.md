@@ -164,7 +164,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.1 | Settings · Keep reminders coming | 804:192 | ☑ |
 | 5.8.2 | Settings · Edit time of day | 830:265 | ☑ |
 | 5.8.3 | Settings · Settings | 1173:547 | ☑ |
-| 5.8.4 | Settings · Times of day | 1176:356264 | ☐ |
+| 5.8.4 | Settings · Times of day | 1176:356264 | ☑ |
 | 5.8.5 | Settings · Backup & Sync | 1178:960 | ☐ |
 | 5.8.6 | Settings · New day starts at | 1186:13870 | ☐ |
 | 5.8.7 | Settings · Week starts on | 1186:13871 | ☐ |
@@ -2698,3 +2698,34 @@ What each atom changed, newest last.
   - Figma draws light only; the page uses the theme's roles, so dark follows them. Rows are List items (56 dp and up,
     growing with the text); the headings are headings and the two switches read as switches to TalkBack; nothing
     moves, so Remove animations changes nothing.
+  - **Built:** run 41019950301 (Android, commit 801bd18) passed: assembleDebug, unit tests and lint.
+
+- **5.8.4 Settings · Times of day (30 Oct).** Figma: Times of day (1176:356264), and the flows Edit a time of day, A new
+  time of day, Delete a time of day and Leaving Edit time of day with changes. From Settings. On Surface container: the
+  Top app bar (← "Times of day"); 8 above, 16 at the sides, 24 between: one List on Surface bright: Anytime ("No set
+  time", no ›: "it has no time to change"), then each time of day in time order with its hours ("6:00 AM – 12:00 PM",
+  ›); then, 16 in, "Morning, Afternoon, Evening, or your own, like Before work. Each one ends when the next one starts." in
+  Body Medium On surface variant; the Extended FAB, Add time of day. After an edit, "Changes saved"; after a delete,
+  "Morning deleted" with Undo, which brings it back with its habits; both above the FAB. A new one just appears in its
+  place, in time order. It is `TimesOfDayPage` (`settings/SettingsPages.kt`), the snackbars in AppRoot's `section/{id}`.
+  GitHub's Android build is the compile check (local Gradle can't reach Maven Central, 5.8.3).
+  Fixed:
+  - The title was "Times of Day"; the rows took the list's default colour (Surface bright now), and the footer was the
+    form's grey note in Body Small without Afternoon; now Figma's.
+  - Nothing said a change was saved, and a deleted time of day couldn't be brought back. Now "Changes saved", and
+    "<name> deleted" with Undo: `HabitStore.deleteSection` keeps the times of day as they were and each moved habit's
+    places then and now; `undoSectionDelete` puts them back, finding each habit by ID when the write runs (S7), and
+    leaves a habit changed in between as it is.
+  - Edit time of day's own flows (5.8.2 missed them): its delete question said "Its habits move to Anytime. Nothing else
+    changes." with "Delete time of day"; now Figma's "Its 4 habits move to Anytime. Their logs, notes and streaks stay."
+    with Delete (one habit: "Its 1 habit moves …"; none: "No habits are in it."). ✕ or Back with something changed
+    closed without asking; now "Discard your changes?" / "Morning stays as it was." / Keep editing · Discard, Edit
+    habit's words, as Figma says (a new one: "Discard this time of day?" / "It won’t be added."). Unchanged, ✕ closes.
+  - Tests: ScreensTest deletes Morning from Settings › Times of day and checks Undo brings it and its habits back.
+  Noted, not changed:
+  - Figma's Content ends 40 under the footer; the page keeps 72 under it so the FAB never covers the footer when the
+    list is long (Material's FAB floats over content).
+  - The one-habit and no-habit delete wordings, and New time of day's discard question, aren't drawn; they follow the
+    drawn ones' pattern.
+  - Figma draws light only; dark follows the theme's roles. The rows are List items; nothing moves but the snackbar,
+    which is Material's own.

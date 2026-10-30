@@ -150,6 +150,26 @@ class ScreensTest {
         waitFor(hasText("These change only Often Enough. Other apps keep saving battery."), "the footer")
     }
 
+    /** Times of day (5.8.4, Figma 1176:356264): a deleted time of day comes back with its habits on Undo. */
+    @Test fun deletingATimeOfDayCanBeUndone() {
+        launch()
+        menu("settings")
+        tapTag("settings-times-of-day")
+        waitFor(hasText("Morning, Afternoon, Evening, or your own, like Before work. Each one ends when the next one starts."), "the footer")
+        val store = AppGraph.store
+        val morning = store.sections.first { it.name == "Morning" }
+        val inMorning = store.habits.filter { morning.id in it.parts }.map { it.id to it.parts }
+        tapTag("section-Morning")
+        tapTag("section-delete")
+        waitFor(hasText("Delete Morning?"), "the question")
+        tapTag("section-delete-confirm")
+        waitFor(hasText("Morning deleted"), "the snackbar")
+        compose.waitUntil(15_000) { store.sections.none { it.id == morning.id } }
+        tapText("Undo")
+        compose.waitUntil(15_000) { store.sections.any { it.id == morning.id } && inMorning.all { (id, parts) -> store.habit(id)?.parts == parts } }
+        waitFor(hasTestTag("section-Morning"), "Morning back on Times of day")
+    }
+
     @Test fun progressShowsTheWeek() {
         launch()
         menu("progress")

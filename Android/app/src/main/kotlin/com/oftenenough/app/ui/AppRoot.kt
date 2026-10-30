@@ -378,7 +378,20 @@ private fun AppMain(
             }
         }
         composable("section/{id}") { e ->
-            SectionEditorScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }) { nav.popBackStack() }
+            val existing = e.arguments!!.getString("id")!!.takeIf { it != "new" }
+            // Back on Times of day (5.8.4, Figma's flows): "Changes saved" after an edit (a new one just appears in its
+            // place, in time order); "Morning deleted" with Undo, which brings it back with its habits.
+            SectionEditorScreen(store, existing, onDeleted = { name, undo ->
+                nav.popBackStack()
+                rootScope.launch {
+                    snackbar.currentSnackbarData?.dismiss()
+                    if (snackbar.showSnackbar("$name deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+                        androidx.compose.material3.SnackbarResult.ActionPerformed) store.undoSectionDelete(undo)
+                }
+            }) { saved ->
+                nav.popBackStack()
+                if (saved != null && existing != null) rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Changes saved") }
+            }
         }
         // Plus's flows (Figma 1476:2): each finishes back on the Plus page.
         val flowNav = plusFlowNav(nav, rootScope, snackbar) { noPlusFound = true }

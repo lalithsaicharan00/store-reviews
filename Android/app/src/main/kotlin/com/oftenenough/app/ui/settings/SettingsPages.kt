@@ -55,11 +55,13 @@ import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitCopy
+import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.SectionPlan
 import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.data.newId
 import com.oftenenough.app.data.FormOutcome
+import com.oftenenough.app.ui.record.DiscardDialog
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
@@ -151,23 +153,34 @@ fun ToggleRow(title: String, icon: ImageVector?, checked: Boolean, index: Int, c
 
 // ------------------------------------------------------------------ Times of Day
 
-/** ≡ › Times of Day: Anytime, then each time of day with its hours; tap one to edit it, or add your own. */
+/**
+ * 5.8.4, **Times of day** (Figma 1176:356264; the flows Edit a time of day, A new time of day, Delete a time of day;
+ * Components — Atoms Build Plan). From Settings. On Surface container: the Top app bar (← "Times of day"); 8 above, 16
+ * at the sides, 24 between: one List on Surface bright: Anytime ("No set time", no ›: it has no time to change), then
+ * each time of day in time order with its hours ("6:00 AM – 12:00 PM", ›, opening Edit time of day); then, 16 in, "Morning,
+ * Afternoon, Evening, or your own, like Before work. Each one ends when the next one starts." in Body Medium On surface
+ * variant. The Extended FAB, Add time of day, opens New time of day. After a save Settings' snackbar says "Changes saved",
+ * after a delete "Morning deleted" with Undo, above the FAB (AppRoot's `section/{id}`).
+ */
 @Composable
 fun TimesOfDayPage(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> Unit) {
+    val s = MaterialTheme.colorScheme
     Box(Modifier.fillMaxSize()) {
-        FormPage("Times of Day", onBack = onBack) {
-            Spacer(Modifier.height(8.dp))
-            val timed = store.timedSections()
-            SegmentedList {
-                val count = timed.size + 1
-                AppListItem("Anytime", 0, count, supporting = "No set time", tag = "section-anytime")
-                timed.forEachIndexed { i, (s, _) ->
-                    AppListItem(s.name, i + 1, count, supporting = FormOutcome.hours(s, store) ?: "", trailing = { ListChevron() },
-                        onClick = { onEdit(s.id) }, tag = "section-${s.name}")
+        FormPage("Times of day", onBack = onBack) {
+            // Under the content, room for the FAB over it (56 and its 16), so the footer is never covered.
+            Column(Modifier.padding(top = 8.dp, bottom = 72.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                val timed = store.timedSections()
+                SegmentedList {
+                    val count = timed.size + 1
+                    AppListItem("Anytime", 0, count, supporting = "No set time", containerColor = s.surfaceBright, tag = "section-anytime")
+                    timed.forEachIndexed { i, (section, _) ->
+                        AppListItem(section.name, i + 1, count, supporting = FormOutcome.hours(section, store) ?: "", trailing = { ListChevron() },
+                            onClick = { onEdit(section.id) }, containerColor = s.surfaceBright, tag = "section-${section.name}")
+                    }
                 }
+                Text("Morning, Afternoon, Evening, or your own, like Before work. Each one ends when the next one starts.",
+                    Modifier.padding(horizontal = 16.dp), style = AppType.bodyMedium, color = s.onSurfaceVariant)
             }
-            Note("Morning, Evening, or your own, like Before work. Each one ends when the next one starts.")
-            Spacer(Modifier.height(80.dp))
         }
         AppExtendedFab("Add time of day", Symbols.Add, { onEdit(null) },
             Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp), tag = "add-section")
@@ -184,7 +197,12 @@ fun TimesOfDayPage(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> U
  * saying "Editing" (or "New"); Delete time of day (Outlined, Medium, red words), asked first.
  */
 @Composable
-fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String?) -> Unit) {
+fun SectionEditorScreen(
+    store: HabitStore, existingId: String?,
+    /** After a delete, with what its Undo needs; without it, a delete just closes. */
+    onDeleted: ((name: String, undo: HabitStore.SectionUndo) -> Unit)? = null,
+    onClose: (String?) -> Unit,
+) {
     val existing = existingId?.let { id -> store.sections.firstOrNull { it.id == id } }
     var name by remember { mutableStateOf(existing?.name ?: "") }
     val newId = remember { newId() }
@@ -193,6 +211,7 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
     var picking by remember { mutableStateOf<String?>(null) }
     var confirmSplit by remember { mutableStateOf(false) }
     var confirmDelete by remember { mutableStateOf(false) }
+    var discard by remember { mutableStateOf(false) }
     val trimmed = TextLimit.clean(name, TextLimit.SECTION)
     val subject = DaySection(existing?.id ?: newId, trimmed.ifEmpty { "New time of day" }, null, null)
     val plan = start?.let { SectionPlan.fromStart(store.sections, subject, it, dayEnd) }
@@ -201,7 +220,10 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         store.saveSections(plan.sections)
         onClose(subject.id)
     }
-    FormPage(if (existing == null) "New time of day" else "Edit time of day", onBack = { onClose(null) }, close = true, actions = {
+    // ✕ or Back with something changed asks first (Figma's "Leaving Edit time of day with changes"); unchanged, it closes.
+    val initialStart = remember { start }
+    val changed = name != (existing?.name ?: "") || start != initialStart
+    FormPage(if (existing == null) "New time of day" else "Edit time of day", onBack = { if (changed) discard = true else onClose(null) }, close = true, actions = {
         AppButton(if (existing == null) "Add" else "Save", { if (plan?.split.isNullOrEmpty()) save() else confirmSplit = true },
             Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null, tag = "section-save")
     }) {
@@ -256,11 +278,22 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         plan.rows.filter { it.isSubject || it.changed }.joinToString("\n") { "${it.name}: ${it.range}" },
         if (existing == null) "Split and add $trimmed" else "Split and save", { confirmSplit = false; save() }, { confirmSplit = false },
         confirmTag = "section-split-confirm")
-    if (confirmDelete && existing != null) AppDialog("Delete ${existing.name}?", "Its habits move to Anytime. Nothing else changes.", "Delete time of day", {
-        confirmDelete = false
-        store.saveSections(store.sections.filter { it.id != existing.id })
-        onClose(null)
-    }, { confirmDelete = false }, destructive = true, confirmTag = "section-delete-confirm")
+    if (confirmDelete && existing != null) {
+        // Figma's "Delete Morning?": Cancel and Delete only (D9), saying where its habits go and that nothing of theirs is lost.
+        val habits = store.habits.count { existing.id in it.parts && !it.archived && it.kind != HabitKind.Task }
+        AppDialog("Delete ${existing.name}?", when (habits) {
+            0 -> "No habits are in it."
+            1 -> "Its 1 habit moves to Anytime. Its logs, notes and streak stay."
+            else -> "Its $habits habits move to Anytime. Their logs, notes and streaks stay."
+        }, "Delete", {
+            confirmDelete = false
+            val undo = store.deleteSection(existing.id)
+            onDeleted?.invoke(existing.name, undo) ?: onClose(null)
+        }, { confirmDelete = false }, destructive = true, confirmTag = "section-delete-confirm")
+    }
+    if (discard) DiscardDialog(if (existing == null) "Discard this time of day?" else "Discard your changes?",
+        if (existing == null) "It won’t be added." else "${existing.name} stays as it was.",
+        onKeep = { discard = false }, onDiscard = { discard = false; onClose(null) })
 }
 
 

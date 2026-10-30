@@ -1038,6 +1038,37 @@ class HabitStore(
         }
     }
 
+    /** What Undo puts back after a time of day is deleted: the list as it was, and each moved habit's places then and now. */
+    class SectionUndo(val sections: List<DaySection>, val parts: Map<String, Pair<List<String>, List<String>>>)
+
+    /** Deletes a time of day (its habits move to Anytime, [saveSections]) and returns what its Undo needs. */
+    fun deleteSection(id: String): SectionUndo {
+        val moved = habits.filter { id in it.parts }.associate { h -> h.id to (h.parts to h.parts.filter { it != id }.ifEmpty { listOf(DaySection.ANYTIME) }) }
+        val undo = SectionUndo(sections, moved)
+        saveSections(sections.filter { it.id != id })
+        return undo
+    }
+
+    /**
+     * Times of day's Undo (Figma: "Undo brings Morning back with its habits"): the times of day as they were, and each
+     * habit the delete moved back where it was, found by ID when the write runs (S7). A habit changed in between keeps
+     * what it has now.
+     */
+    fun undoSectionDelete(undo: SectionUndo) {
+        saveSections(undo.sections)
+        perform {
+            val next = habits.toMutableList()
+            for ((i, h) in next.withIndex()) {
+                val (was, after) = undo.parts[h.id] ?: continue
+                if (h.parts != after) continue
+                next[i] = h.copy(parts = was)
+                saveHabitRecord(next[i], i)
+            }
+            habits = next
+            rulesChanged()
+        }
+    }
+
     enum class CardMove { UP, DOWN, TOP, BOTTOM }
 
     /** Moves Anytime or Quit or cut down among the cards; the times of day keep their time order around it. */
