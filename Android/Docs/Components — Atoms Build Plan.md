@@ -179,7 +179,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.10.6 | Widgets · Widget setup | 1252:3618 | ☑ |
 | 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☑ |
 | 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☑ |
-| 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☐ |
+| 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☑ |
 | 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☐ |
 | 5.11.5 | Notifications & alarms · Let alarms fill the screen | 1274:16200 | ☐ |
 
@@ -3143,3 +3143,25 @@ What each atom changed, newest last.
     or step names ("+1", "Tick next step") and a checklist's steps aren't listed.
   - `ReminderPlan.body` is now read only by the hidden-names path's fallback; cleanup.
   - Several reminders at the same minute are still one summary; that's 5.11.3.
+  - **Built:** run 41035925336 (Android, commit f2f8a05) passed: assembleDebug, unit tests and lint.
+- **5.11.3 Notifications & alarms · Reminder group (30 Oct).** Figma: Reminder group (1273:903), State Collapsed and
+  Expanded, and the flow "Several reminders at the same minute" (one group for Morning; opened, each habit is its own
+  notification; Done takes it out of the group; Stretch opened shows Start and Log time). Android's own grouping
+  (setGroup and a summary, [Notification groups](https://developer.android.com/develop/ui/views/notifications/group)):
+  the summary "8:00 AM · 3 reminders" with a line per reminder ("Take vitamins · Not done yet", "Water · 3 of 8
+  glasses", "Stretch · 1 of 3 today": Android's inbox lines) and the count Android adds; each reminder posted as its own
+  notification in the group (5.11.2), with its own buttons. It is `Reminders.group`, `Reminders.standing` and
+  `ReminderPlan.groupWords`. When reminders ring is unchanged.
+  Fixed:
+  - Same-minute reminders were one notification only ("Morning" · "Meds, Stretch +2") with no buttons: none of them
+    could be logged without opening the app. Now each is there, in the group, with its buttons; the summary alone rings
+    (GROUP_ALERT_SUMMARY), and an update or a log keeps a reminder in its group.
+  - The summary's title was the time of day's name; now Figma's "8:00 AM · 3 reminders" (with names hidden, the title
+    alone, no lines).
+  - An alarm-style reminder in a group never rang as an alarm; the summary now rings on the alarm sound when any of them
+    is an alarm.
+  Noted, not changed:
+  - The summary rings once, not again and again as a single alarm does: logging one reminder in the group couldn't stop
+    the summary's ring. The full-screen alarm is 5.11.4.
+  - The summary's lines say where each stood when it rang; Android removes the summary once every reminder in it is
+    logged or swiped.

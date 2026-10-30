@@ -58,6 +58,7 @@ object Reminders {
     private const val EXTRA_ALARM = "alarm"
     private const val EXTRA_FOLLOW_UP = "followUp"
     private const val EXTRA_PLACE = "place"
+    private const val EXTRA_GROUP = "group"
     /** The direct reply's text. */
     private const val REPLY = "reply"
     /** How long an updated reminder stays once its goal is met (Figma: "it goes away after a few seconds"). */
@@ -160,11 +161,35 @@ object Reminders {
             if (alarm) notification.flags = notification.flags or android.app.Notification.FLAG_INSISTENT
             try { manager.notify(id, notification) } catch (_: SecurityException) {}
         }
-        for (bucket in groups) {
-            val (title, body) = ReminderPlan.groupWords(bucket, hide)
-            val first = bucket[0]
-            try { manager.notify(("group." + first.fire).hashCode(), base(context, title, body, null, first.day, first.section.id).build()) } catch (_: SecurityException) {}
+        for (bucket in groups) group(context, store, bucket, hide, manager)
+    }
+
+    /**
+     * 5.11.3, **Reminder group** (Figma 1273:903, Collapsed · Expanded; the flow "Several reminders at the same minute"):
+     * reminders at the same minute, as Android groups them (setGroup and a summary). The summary is one card: "8:00 AM ·
+     * 3 reminders" and a line per reminder ("Water · 3 of 8 glasses", Android's inbox lines); it rings once for all of
+     * them (on the alarm sound if any is an alarm). Expanded, each reminder is its own notification again (5.11.2) with its
+     * own buttons, so each can be logged without opening the app; once logged it leaves the group.
+     */
+    private fun group(context: Context, store: HabitStore, bucket: List<ReminderPlan.Alert>, hide: Boolean, manager: NotificationManagerCompat) {
+        val first = bucket[0]
+        val key = "group." + first.fire
+        val alarm = bucket.any { it.habit.alert == "alarm" }
+        for (alert in bucket) {
+            val id = alert.id.hashCode()
+            val words = if (hide) ReminderPlan.words(alert, store, true) else null
+            val notification = notice(context, store, Shown(alert.habit.id, alert.day, alert.placement.slot, alert.section.id, id, alert.habit.alert == "alarm",
+                alert.followUp, alert.placement.section.takeIf { alert.placement.slot != null }, group = key), undo = null, update = false, hidden = words) ?: continue
+            try { manager.notify(id, notification) } catch (_: SecurityException) {}
         }
+        val (title, body) = ReminderPlan.groupWords(bucket, hide)
+        val summary = base(context, title, body, null, first.day, first.section.id, alarm).setGroup(key).setGroupSummary(true)
+        if (!hide) summary.setStyle(NotificationCompat.InboxStyle().also { style ->
+            bucket.forEach { alert -> style.addLine(alert.habit.name + " · " + standing(store, alert.habit, alert.day)) }
+        }.setBigContentTitle(title))
+        // It rings once, on the alarm sound if any is an alarm; not again and again: answering one reminder in the group
+        // couldn't stop the summary's ring.
+        try { manager.notify(key.hashCode(), summary.build()) } catch (_: SecurityException) {}
     }
 
     /** Which reminder a notification is: its habit, day and time of day, its ID, and how it rang. */
@@ -172,6 +197,8 @@ object Reminders {
         val habit: String, val day: Int, val slot: String?, val section: String, val id: Int, val alarm: Boolean, val followUp: Int,
         /** For a reminder of one time of day ([slot]), that time of day's section ("Morning · …"). */
         val place: String? = null,
+        /** The same-minute group it belongs to (5.11.3), so it stays there when it updates. */
+        val group: String? = null,
     )
 
     /** Opens the habit's day (or Today, for a group). */
@@ -216,15 +243,7 @@ object Reminders {
         val complete = !rule.atMost && store.rules.isComplete(habit, day)
         val item = com.oftenenough.app.data.widgets.WidgetItems.item(store, habit, day, store.clock(), isToday = day == store.today())
         val dayBased = rule.frequency.isDayBased
-        val progress = when (rule.kind) {
-            HabitKind.Task -> "Task · for today"
-            HabitKind.Check -> when {
-                !dayBased -> item.line
-                store.rules.countsUp(habit, day) -> "${Format.amount(store.rules.progress(habit, day))} of ${Format.amount(store.rules.goal(habit))} today"
-                else -> "Not done yet"
-            }
-            else -> item.line + if (complete && rule.kind != HabitKind.Checklist) " · Goal met" else ""
-        }
+        val progress = standing(store, habit, day, item.line)
         val once = rule.kind == HabitKind.Task || (rule.kind == HabitKind.Check && dayBased && !store.rules.countsUp(habit, day))
         var text = habit.reminderText ?: when {
             shown.followUp > 0 && once -> "Still to do today"
@@ -237,6 +256,8 @@ object Reminders {
         val builder = base(context, title, body, habit.id, day, shown.section, shown.alarm)
             .setColor(AppColors.light.habit(habit.color).toArgb())
             .setOnlyAlertOnce(update)
+        // In a same-minute group (5.11.3) only the summary rings.
+        shown.group?.let { builder.setGroup(it).setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY) }
         goesAfter?.let { builder.setTimeoutAfter(it) }
         // Progress: how far toward the goal, as Today's row fills (none where Today's row has no fill).
         val fraction = (item.cardFraction ?: item.fraction)?.coerceIn(0.0, 1.0)
@@ -270,6 +291,22 @@ object Reminders {
         return builder.build()
     }
 
+    /** Where a habit stands, as its reminder says it: "Not done yet", "1 of 3 today", "3 of 8 glasses · Goal met". */
+    private fun standing(store: HabitStore, habit: com.oftenenough.app.data.Habit, day: Int,
+                         line: String = com.oftenenough.app.data.widgets.WidgetItems.item(store, habit, day, store.clock(), isToday = day == store.today()).line): String {
+        val rule = store.rule(habit, day)
+        val complete = !rule.atMost && store.rules.isComplete(habit, day)
+        return when (rule.kind) {
+            HabitKind.Task -> "Task · for today"
+            HabitKind.Check -> when {
+                !rule.frequency.isDayBased -> line
+                store.rules.countsUp(habit, day) -> "${Format.amount(store.rules.progress(habit, day))} of ${Format.amount(store.rules.goal(habit))} today"
+                else -> "Not done yet"
+            }
+            else -> line + if (complete && rule.kind != HabitKind.Checklist) " · Goal met" else ""
+        }
+    }
+
     /** A button that opens a field in the notification itself (Android's direct reply); ➤ sends what was typed. */
     private fun reply(context: Context, label: String, ask: String, shown: Shown): NotificationCompat.Action {
         val input = androidx.core.app.RemoteInput.Builder(REPLY).setLabel(ask).build()
@@ -283,6 +320,7 @@ object Reminders {
         Intent(context, ReminderReceiver::class.java).setAction(action).putExtra(EXTRA_HABIT, shown.habit).putExtra(EXTRA_DAY, shown.day)
             .putExtra(EXTRA_SLOT, shown.slot).putExtra(EXTRA_NOTIFICATION, shown.id).putExtra(EXTRA_SECTION, shown.section)
             .putExtra(EXTRA_ALARM, shown.alarm).putExtra(EXTRA_FOLLOW_UP, shown.followUp).putExtra(EXTRA_PLACE, shown.place)
+            .putExtra(EXTRA_GROUP, shown.group)
 
     private fun actionIntent(context: Context, action: String, shown: Shown, more: Intent.() -> Unit): PendingIntent =
         PendingIntent.getBroadcast(context, shown.id + action.hashCode(), extras(context, action, shown).apply(more),
@@ -298,7 +336,8 @@ object Reminders {
         val manager = NotificationManagerCompat.from(context)
         val shown = Shown(intent.getStringExtra(EXTRA_HABIT) ?: return, intent.getIntExtra(EXTRA_DAY, store.today()), intent.getStringExtra(EXTRA_SLOT),
             intent.getStringExtra(EXTRA_SECTION) ?: "", intent.getIntExtra(EXTRA_NOTIFICATION, 0), intent.getBooleanExtra(EXTRA_ALARM, false),
-            intent.getIntExtra(EXTRA_FOLLOW_UP, 0), intent.getStringExtra(EXTRA_PLACE))
+            intent.getIntExtra(EXTRA_FOLLOW_UP, 0), intent.getStringExtra(EXTRA_PLACE),
+            intent.getStringExtra(EXTRA_GROUP))
         val habit = store.habit(shown.habit)
         val day = shown.day
         if (habit == null || habit.archived || day > store.today()) return manager.cancel(shown.id)
