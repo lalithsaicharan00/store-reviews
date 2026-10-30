@@ -108,6 +108,8 @@ interface HabitDetailsNav {
     fun deleted(habit: Habit)
     /** A task's Duplicate: New task, filled in from it. */
     fun duplicate(habit: Habit)
+    /** The Plus screen, from the free plan's locked Year in pixels card (Reason=Year in Pixels, A73). */
+    fun plus()
 }
 
 /** Progress · History: two jobs, one control. */
@@ -280,7 +282,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                             habit = habit, store = store, today = today, revision = revision, record = progress.first, milestones = progress.second,
                             showStreaks = showStreaks, showPercentages = showPercentages, keyOpen = keyOpen, onToggleKey = toggleKey,
                             onSeeAll = { allMilestones = true }, onSeeAllStreaks = { allStreaks = true }, onOpenDay = { day -> nav.openDay(habit, day) },
-                            onAddSlip = { nav.addLog(habit, today) },
+                            onAddSlip = { nav.addLog(habit, today) }, onPlus = nav::plus,
                         )
                     }
                     HabitTab.HISTORY -> {

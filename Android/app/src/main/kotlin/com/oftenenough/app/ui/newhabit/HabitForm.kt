@@ -46,6 +46,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.oftenenough.app.app.AppGraph
+import com.oftenenough.app.ui.plus.PlusReason
+import com.oftenenough.app.ui.plus.PlusScreen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -101,13 +104,15 @@ private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, R
  */
 @Composable
 fun NewHabitFlow(
-    store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit, task: Boolean = false,
+    store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: (PlusReason) -> Unit, task: Boolean = false,
     /** Duplicate (Habits, Figma 2.2): the form filled in from this habit as "Name (copy)", its type already chosen. */
     copyOf: Habit? = null,
     /** The name typed in Habits' search (Figma 4.2: New habit "yoga"). */
     name: String? = null,
     /** At the free plan's five habits, Add a 6th habit comes first (Habits' + and Duplicate, Figma 1.9, 2.2.1). */
     roomFirst: Boolean = false,
+    /** Plus turned on from a Plus screen shown inside the flow: the caller says "Plus is on". */
+    onPlusOn: () -> Unit = {},
 ) {
     val ideaType = idea?.let { when (it.type) { "amount" -> ItemType.AMOUNT; "time" -> ItemType.TIME; "quit" -> ItemType.QUIT; "cutDown" -> ItemType.CUT_DOWN; else -> ItemType.CHECK } }
     val copyType = copyOf?.let { ItemType.of(it) }
@@ -115,13 +120,22 @@ fun NewHabitFlow(
     var step by rememberSaveable { mutableStateOf((copyType ?: ideaType)?.let { "form:${it.name}" } ?: if (task) "task" else "choose") }
     var repeats by rememberSaveable { mutableStateOf(false) }
     var room by rememberSaveable { mutableStateOf(if (roomFirst && !store.canAddHabit && copyType != ItemType.TASK) "sixth" else "") }
+    // The free plan's five habits (Figma's "A sixth habit on the free plan"): Plus first; its ← opens Make room ("Back (←),
+    // then archive one"), and Make room's ← leaves, so the two never send each other back and forth.
     if (room == "sixth") {
-        SixthHabitPage(store, onClose, onMakeRoom = { room = "make" }, onPlus = onPlus, onBought = { room = "" })
+        PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { room = "make" }, onBought = { room = ""; onPlusOn() })
         return
     }
     if (room == "make") {
-        MakeRoomPage(store, { room = "sixth" }) { room = "" }
+        MakeRoomPage(store, onClose) { room = "" }
         return
+    }
+    // Checklist on the free plan opened Plus (A73): once it's bought, the checklist form opens straight away (Figma's
+    // "A checklist on the free plan", 4).
+    var wantsChecklist by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(store.isPlus, step) {
+        if (step != "build") wantsChecklist = false
+        else if (wantsChecklist && store.isPlus) { wantsChecklist = false; step = "form:${ItemType.CHECKLIST.name}" }
     }
     when {
         step == "choose" -> {
@@ -137,7 +151,7 @@ fun NewHabitFlow(
         step == "build" -> {
             BackHandler { step = "choose" }
             TypeChoices("How do you want to track it?", listOf(ItemType.CHECK, ItemType.AMOUNT, ItemType.TIME, ItemType.CHECKLIST), { step = "choose" },
-                plus = store.isPlus, onPlus = onPlus) { step = "form:${it.name}" }
+                plus = store.isPlus, onPlus = { wantsChecklist = true; onPlus(PlusReason.CHECKLIST) }) { step = "form:${it.name}" }
         }
         step == "quit" -> {
             BackHandler { step = "choose" }
@@ -152,14 +166,14 @@ fun NewHabitFlow(
                 else step = when { type == ItemType.TASK -> "task"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
             }
             HabitForm(type, null, store, idea.takeIf { ideaType == type }, back, onSaved, onPlus, template = copyOf, prefillName = name,
-                repeats = repeats.takeIf { type == ItemType.TASK && copyOf == null })
+                repeats = repeats.takeIf { type == ItemType.TASK && copyOf == null }, onPlusOn = onPlusOn)
         }
     }
 }
 
 /** Edit habit: the same form on a saved habit, every row as it is now; its type stays (A68). */
 @Composable
-fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: () -> Unit, onClose: () -> Unit) {
+fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> Unit, onClose: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onClose() }; return }
     HabitForm(ItemType.of(habit), habit, store, null, onClose, { onClose() }, onPlus)
 }
@@ -176,10 +190,11 @@ fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: () -> Unit, onCl
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HabitForm(
-    type: ItemType, original: Habit?, store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit,
+    type: ItemType, original: Habit?, store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: (PlusReason) -> Unit,
     template: Habit? = null, prefillName: String? = null,
     /** A new task's kind, chosen on What kind of task? (5.7.14). */
     repeats: Boolean? = null,
+    onPlusOn: () -> Unit = {},
 ) {
     val form = remember {
         FormState(type, original, store, template).also { f ->
@@ -260,9 +275,11 @@ fun HabitForm(
         Page.OFTEN -> HowOftenPage(form, ::back)
         Page.TIME_OF_DAY -> TimeOfDayPage(form, store, ::back) { open(Page.NEW_PART) }
         Page.NEW_PART -> com.oftenenough.app.ui.settings.SectionEditorScreen(store, null) { id -> back(); id?.let { form.choose(it) } }
-        Page.REMINDERS -> RemindersPage(form, store, ::back, onPlus)
+        Page.REMINDERS -> RemindersPage(form, store, ::back) { onPlus(PlusReason.REMIND) }
         Page.ICON -> IconPage(form, ::back)
-        Page.SIXTH -> SixthHabitPage(store, ::back, onMakeRoom = { open(Page.MAKE_ROOM) }, onPlus = onPlus, onBought = { pages = emptyList(); add() })
+        // ← on Plus opens Make room in its place; Make room's ← is back on the form.
+        Page.SIXTH -> PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { pages = pages.dropLast(1) + Page.MAKE_ROOM },
+            onBought = { pages = emptyList(); onPlusOn(); add() })
         Page.MAKE_ROOM -> MakeRoomPage(store, ::back) { pages = emptyList(); add() }
         null -> FormBody(form, store, typed, describing, scroll, nameFocus, ::open, ::close, ::save)
     }

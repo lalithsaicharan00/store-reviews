@@ -205,18 +205,14 @@ class FirstRunTest {
 
     // ------------------------------------------------------------------ Plus comes from Google Play alone (D16)
 
-    @Test fun thePlusPageSaysPlusComesFromGooglePlay() {
+    /** The menu's Plus (5.9.1): Plus stays with the Google Play account; nothing to sign in to or redeem. */
+    @Test fun thePlusScreenSaysPlusStaysWithGooglePlay() {
         launch(demo = "today")
         tapTag("menu-button")
         tapTag("menu-plus")
-        waitFor(hasText("Plus"), "the Plus page")
-        waitFor(hasText("No sign-in needed"), "that nothing has to be signed into")
-        // The one way back to a Plus bought before is Google Play itself.
-        waitFor(hasTestTag("plus-restore"), "Restore from Google Play")
-        assertTrue(
-            "the Plus page says Plus comes back from this Google account; on screen: ${screen()}",
-            screen().contains("this Google account"),
-        )
+        waitFor(hasTestTag("plus-screen"), "the Plus screen")
+        waitFor(hasText("No subscription, no account.", substring = true), "that there's no account")
+        waitFor(hasText("Plus stays with your Google Play account.", substring = true), "that Plus stays with Google Play")
         // No account, no family, no code: nothing on the device unlocks Plus (D16; the user, 22 Oct 2026).
         assertNone(hasText("Sign in with Google"), "a sign-in")
         assertNone(hasText("Redeem a code"), "a code to redeem")

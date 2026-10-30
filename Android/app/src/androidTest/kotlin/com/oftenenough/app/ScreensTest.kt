@@ -262,13 +262,16 @@ class ScreensTest {
         assertEquals("Anytime's order after Move up; on screen: ${screen()}", listOf("Read", "Water", "Call family"), anytime.filter { it in setOf("Read", "Water", "Call family") })
     }
 
+    /** The menu's Plus (5.9.1, Figma 1204:175 Reason=Menu): Get Plus buys it; the screen then says it's yours. */
     @Test fun plusBuysWithTheStandInStore() {
         launch()
         menu("plus")
-        waitFor(hasText("free habits used", substring = true), "the free habits line")
-        tapTag("plus-see")
+        waitFor(hasText("Pay once, keep forever.", substring = true), "the menu's lead")
+        waitFor(hasText("What you get with Plus"), "the features")
         tapTag("plus-buy")
-        waitFor(hasText("Plus is yours."), "Plus is yours.")
+        waitFor(hasText("Plus is on"), "the snackbar")
+        waitFor(hasText("Plus is yours.", substring = true), "Plus is yours")
+        waitGone(hasTestTag("plus-buy"), "Get Plus")
         assertTrue("the store's free limit is lifted", AppGraph.store.isPlus)
     }
 

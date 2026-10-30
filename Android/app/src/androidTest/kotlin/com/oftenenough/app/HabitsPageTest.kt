@@ -227,6 +227,6 @@ class HabitsPageTest {
     @Test fun onTheFreePlanPlusOpensAddASixthHabitFirst() {
         launch(plus = false)
         tapTag("habits-add")
-        waitFor(hasTestTag("sixth-habit"), "Add a 6th habit")
+        waitFor(hasTestTag("plus-screen"), "Plus, for a 6th habit")
     }
 }

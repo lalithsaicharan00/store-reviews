@@ -169,7 +169,8 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.6 | Settings · New day starts at | 1186:13870 | ☑ |
 | 5.8.7 | Settings · Week starts on | 1186:13871 | ☑ |
 | 5.8.8 | Settings · Theme | 1188:376784 | ☑ |
-| 5.9.1 | Plus · Plus | 1204:175 | ☐ |
+| 5.9.1 | Plus · Plus | 1204:175 | ☑ |
+| 5.9.2 | Create new · Make room (the frames of "A sixth habit on the free plan", 1167:351072, 1167:351230; added 30 Oct) | 1167:351072 | ☐ |
 | 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☐ |
 | 5.10.2 | Widgets · Widget row fill | 1238:428 | ☐ |
 | 5.10.3 | Widgets · Widget · List row | 1238:429 | ☐ |
@@ -2822,3 +2823,47 @@ What each atom changed, newest last.
   - Figma draws light only; Dark is the theme's dark scheme.
 
   **Section 5.8 Settings is built (5.8.1–5.8.8).**
+  - **Built:** run 41023514082 (Android, commit 1b16109) passed: assembleDebug, unit tests and lint.
+
+- **5.9.1 Plus · Plus (30 Oct).** Figma: Plus (1204:175), Reason 6th habit · Checklist · Remind me again · Year in Pixels ·
+  Menu, Screen Default · End of the list; the flows "A sixth habit on the free plan", "A checklist on the free plan" and
+  "Remind again on the free plan" (create new). On Surface container: the Top app bar (← only); scrolling, 16 at the
+  sides, 24 under, 24 between: the heading about that one thing (Headline Small Emphasized over Body Large On surface
+  variant, 8 apart; Menu: the app icon on its 56 tile, 16 before "Plus" and "Pay once, keep forever. No subscription, no
+  account.", 2 apart); its picture, the only colour on the screen (the five habits and a dashed Primary sixth spot, "5 of
+  5 free habits"; a Workout row on Today with its three steps open; a Walk reminder at 9:00 AM and, "Not done yet · an
+  hour later", another at 10:00 on Green's Fill; a year of Water in Day cells at 20, under the months' letters, "Water ·
+  2026"); **What you get with Plus** (Label Large Primary): the six as List items on Surface bright, grey icons in their
+  circles (all_inclusive, widgets, calendar_month, checklist, notifications_active, favorite), the reason's own first;
+  **Always free**; the price in a line. Held at the bottom, Get Plus · $29.99 (Filled, Medium, round, the width, 12 above
+  and under). Paid, it goes on where the person was and the snackbar says "Plus is on". It is `PlusScreen` with
+  `PlusReason` (`plus/PlusScreen.kt`), the route `plus/<reason>`, and inside the new-habit flow for a sixth habit.
+  GitHub's Android build is the compile check (5.8.3).
+  Fixed:
+  - Plus was four screens of their own: the menu's Plus page (a Free / Plus is yours card, a Backup row, Already have
+    Plus? › Restore from Google Play), Get Plus (Unlimited habits, Sync across devices, More widgets, Works on, and "I
+    already have Plus"), Restore from Google Play's own steps, and Add a 6th habit (its price card, three features and Make
+    room instead). Now Figma's one screen with its reasons (A77): `PlusPage.kt`, `GetPlusScreen`, the Plus `RestoreFlow`,
+    `SixthHabitPage` and the Plus parts only they used are deleted, with the Google and Apple logos nothing draws now.
+    Google Play is asked what's owned at every start and return (`MainActivity.onStart`, Rulebook D18), so a Plus bought
+    before comes back by itself; onboarding's "Plus isn't on this phone" keeps its own Check again.
+  - Each way in opens Plus for its reason and goes on as Figma's flows: Checklist on How do you want to track it?
+    (paid: the checklist form opens straight away), If not done, remind again (paid: back on Reminders without the
+    label), a sixth habit (paid: the habit is added; ← opens Make room, whose ← leaves, so the two never loop), Restore
+    a 6th habit (the same, titled so), the menu (paid: it stays, saying Plus is yours) and a widget's Plus card (Menu).
+  - **Year in pixels is Plus on the free plan (A73)**, as Figma's Habit details "Progress · full length · free plan": the
+    card's lock (built in 4.17) is switched on, and its tap opens Plus for Year in Pixels (`HabitDetailsNav.plus`).
+  - Tests: HabitFormTest buys Plus from Checklist and sees the checklist form and "Plus is on", and a sixth habit's ←
+    reaches Make room; ScreensTest buys from the menu's Plus and sees it say Plus is yours; FirstRunTest reads that Plus
+    stays with Google Play; HabitsPageTest waits for the Plus screen.
+  Noted, not changed:
+  - Not drawn, so the app's own (Decisions needed D-28): the screen with Plus already on (the menu: "Plus is yours. Thank
+    you for supporting Often Enough.", no button); a payment Play is still waiting for (a snackbar here, and Today's
+    "Plus is waiting for your payment"); "Payment not completed" (the Dialog atom, Try again).
+  - The pictures are Figma's examples, the same for everyone (but the sixth habit's own icons); they take no touch and
+    TalkBack reads each as one sentence. The Workout row fills a third (1 of 3 steps); Figma's fill is 131 of 328.
+    The reminders are on Surface container lowest where Figma's native notification is white, so dark mode reads.
+  - Figma's own description of Plus stores its quotes as the text "&quot;" (an old double escape); the Code line was
+    added after it as it is.
+  - Make room (the frames of the same flow) isn't a component set; it's 5.9.2.
+  - Figma draws light only; dark follows the theme's roles and the habits' dark colours.

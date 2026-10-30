@@ -1,30 +1,15 @@
-@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
-
 package com.oftenenough.app.ui.plus
 
-import com.oftenenough.app.ui.components.ListChevron
-import com.oftenenough.app.ui.components.ListAvatar
-import com.oftenenough.app.ui.components.AppListItem
-import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonStyle
-import com.oftenenough.app.ui.components.ButtonSize
-import com.oftenenough.app.ui.components.AppButton
-import androidx.compose.foundation.layout.WindowInsets
-import com.oftenenough.app.ui.components.NavigationIcon
-import com.oftenenough.app.ui.components.AppTopBar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,40 +18,32 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.R
-import com.oftenenough.app.ui.components.CookieIcon
-import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.AppTopBar
+import com.oftenenough.app.ui.components.ButtonSize
+import com.oftenenough.app.ui.components.ButtonStyle
+import com.oftenenough.app.ui.components.NavigationIcon
+import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.theme.appColors
 
 /*
- * The pieces every Plus & Account screen shares (Figma "Settings: Plus & Account", 1476:2). Text is only the shared
- * styles (AppType); rows and buttons have minimum heights, never fixed ones, so a larger font grows them.
+ * The pieces the Plus screen and the restore flows share. Text is only the shared styles (AppType); rows and buttons
+ * have minimum heights, never fixed ones, so a larger font grows them.
  */
 
 /**
@@ -82,51 +59,10 @@ fun AppIconTile(size: Dp, flat: Boolean = false) {
     }
 }
 
-/** The app's mark alone, small, as a point's icon ("Plus comes back"). */
+/** The app's mark alone, small (the Plus screen's example notifications). */
 @Composable
 fun MarkIcon(size: Dp = 24.dp) =
     Image(painterResource(if (appColors.dark) R.drawable.mark_dark else R.drawable.mark_light), null, Modifier.size(size))
-
-/** What leads a hero: an icon in the Expressive cookie (ink), or the app icon. */
-sealed interface HeroArt {
-    data class Cookie(val icon: ImageVector) : HeroArt
-    data object AppIcon : HeroArt
-}
-
-/** A flow screen's top: its picture, a headline and one line under it, centred (Figma 3, 5, 2.2). */
-@Composable
-fun Hero(art: HeroArt, title: String, line: String) {
-    val c = appColors
-    Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        when (art) {
-            is HeroArt.Cookie -> CookieIcon(art.icon, 88.dp, container = c.ink, tint = c.onInk)
-            HeroArt.AppIcon -> AppIconTile(80.dp)
-        }
-        Spacer(Modifier.height(16.dp))
-        Text(title, Modifier.widthIn(max = 312.dp).semantics { heading() }, style = AppType.headlineMediumEmphasized, color = c.ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Text(line, Modifier.widthIn(max = 280.dp), style = AppType.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
-    }
-}
-
-/** One point in a points card: an icon, a name and a line. [mark] shows the app's mark instead of an icon. */
-data class Point(val icon: ImageVector?, val title: String, val line: String)
-
-/** What a step gives you, a white card of points (Figma 3's "Card · points"). */
-@Composable
-fun PointsCard(points: List<Point>) {
-    val c = appColors
-    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(vertical = 20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        for (p in points) Row(Modifier.fillMaxWidth().padding(start = 24.dp, end = 16.dp).semantics(mergeDescendants = true) {}) {
-            if (p.icon != null) Icon(p.icon, null, Modifier.size(24.dp), tint = c.secondary) else MarkIcon()
-            Spacer(Modifier.width(24.dp))
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(p.title, style = AppType.labelLarge, color = c.ink)
-                Text(p.line, style = AppType.bodyMedium, color = c.secondary)
-            }
-        }
-    }
-}
 
 /**
  * A step of a flow: an optional back arrow, the content (scrolls when the font is large), and its buttons pinned at the
@@ -161,11 +97,6 @@ fun FlowScreen(
     }
 }
 
-/** The small note above a flow's buttons ("Made your account on an iPhone? …"). */
-@Composable
-fun BottomNote(text: String) =
-    Text(text, Modifier.fillMaxWidth(), style = AppType.bodySmall, color = appColors.secondary, textAlign = TextAlign.Center)
-
 /** A flow's main button: the Medium Filled button (2.1), full width. */
 @Composable
 fun MainButton(text: String, tag: String, icon: ImageVector? = null, enabled: Boolean = true, onClick: () -> Unit) =
@@ -179,168 +110,3 @@ fun MainButton(text: String, tag: String, icon: ImageVector? = null, enabled: Bo
 fun QuietButton(text: String, tag: String, height: Dp = 56.dp, small: Boolean = false, onClick: () -> Unit) =
     AppButton(text, onClick, Modifier.fillMaxWidth(), style = ButtonStyle.Text,
         size = if (small || height < 56.dp) ButtonSize.Small else ButtonSize.Medium, tag = tag)
-
-/** Continue with Google or Apple: a white button with the company's own logo (their sign-in branding). */
-@Composable
-fun ContinueWith(google: Boolean, tag: String, onClick: () -> Unit) {
-    val c = appColors
-    Button(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).semantics { testTag = tag },
-        colors = ButtonDefaults.buttonColors(containerColor = c.surface, contentColor = c.ink),
-        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)) {
-        if (google) Image(painterResource(R.drawable.ic_google_logo), null, Modifier.size(20.dp))
-        else Image(painterResource(R.drawable.ic_apple_logo), null, Modifier.size(width = 17.dp, height = 21.dp), colorFilter = ColorFilter.tint(c.ink))
-        Spacer(Modifier.width(12.dp))
-        Text(if (google) "Continue with Google" else "Continue with Apple", style = AppType.titleMedium)
-    }
-}
-
-/**
- * A centred moment (Figma 3.2, 4, 2.1.1, 3.5, 4.3): waiting on Google, Google Play or the server, with Material 3
- * Expressive's contained loading indicator (its seven shapes morphing as it turns; it only draws while on screen), or
- * a still [icon] in the same tonal circle when it's a message ("Couldn't connect"). Then the words, and the way on.
- */
-@Composable
-fun CenterScreen(
-    title: String, line: String, quiet: String, tag: String, onQuiet: () -> Unit,
-    icon: ImageVector? = null, main: String? = null, onMain: () -> Unit = {},
-) {
-    val c = appColors
-    BackHandler(onBack = onQuiet)
-    Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding().semantics { testTag = tag }) {
-        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 40.dp),
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Spacer(Modifier.height(24.dp))
-            if (icon == null) com.oftenenough.app.ui.components.ExpressiveLoadingIndicator(c.tonal, c.ink, Modifier.semantics { testTag = "$tag-loading" })
-            else Box(Modifier.size(64.dp).clip(androidx.compose.foundation.shape.CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-                Icon(icon, null, Modifier.size(32.dp), tint = c.ink)
-            }
-            Spacer(Modifier.height(24.dp))
-            Text(title, style = AppType.titleLargeEmphasized, color = c.ink, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading() })
-            Spacer(Modifier.height(8.dp))
-            Text(line, style = AppType.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(24.dp))
-        }
-        Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (main != null) MainButton(main, "$tag-main", onClick = onMain)
-            QuietButton(quiet, "$tag-quiet", onClick = onQuiet)
-        }
-    }
-}
-
-/**
- * A dialog (Figma 7.x): an icon, a headline, the words, and two actions, all in ink; [destructive] draws the icon and the
- * confirm in red, which only deleting the account does (7.2, 7.9, 7.10: removing, leaving and cancelling stay ink).
- */
-@Composable
-fun PlusDialog(
-    icon: ImageVector, title: String, text: String, confirm: String, onConfirm: () -> Unit, onDismiss: () -> Unit,
-    dismiss: String = "Cancel", destructive: Boolean = false, tag: String,
-) {
-    val c = appColors
-    PlusDialogFrame(icon, title, tag, onDismiss, iconTint = if (destructive) c.error else c.ink, actions = {
-        if (dismiss.isNotEmpty()) DialogButton(dismiss, "$tag-dismiss", onClick = onDismiss)
-        DialogButton(confirm, "$tag-confirm", destructive = destructive, onClick = onConfirm)
-    }) {
-        Text(text, style = AppType.bodyMedium, color = c.secondary)
-    }
-}
-
-/**
- * Figma 7.x's dialog: 312 wide, 24 in (20 under the actions), its icon at the start above the headline, everything 16
- * apart and the actions at the end, 8 under the words' gap. Material's AlertDialog centres the icon, so it's drawn here.
- */
-@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
-@Composable
-fun PlusDialogFrame(
-    icon: ImageVector, title: String, tag: String, onDismiss: () -> Unit, iconTint: Color = appColors.ink,
-    actions: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit, content: @Composable ColumnScope.() -> Unit,
-) {
-    val c = appColors
-    // A dialog is its own window: it needs its own test-tags-as-IDs for UI Automator (Rulebook T22).
-    androidx.compose.material3.BasicAlertDialog(onDismiss, Modifier.widthIn(max = 312.dp).semantics { testTag = tag; testTagsAsResourceId = true }) {
-        // Scrolls when larger text makes it taller than the screen; the actions wrap to a second line rather than break a
-        // button's words ("Cancel invite" at 200 %).
-        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(if (c.dark) c.surface else Color(0xFFF4F4F6))
-            .verticalScroll(rememberScrollState())
-            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Icon(icon, null, Modifier.size(24.dp), tint = iconTint)
-            Text(title, Modifier.semantics { heading() }, style = AppType.headlineSmall, color = c.ink)
-            content()
-            androidx.compose.foundation.layout.FlowRow(Modifier.fillMaxWidth().padding(top = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End), verticalArrangement = Arrangement.spacedBy(8.dp),
-                itemVerticalAlignment = Alignment.CenterVertically, content = actions)
-        }
-    }
-}
-
-/** A dialog's text button: the Small Text button (2.1); [destructive] for Delete, Remove, Erase (D9). */
-@Composable
-fun DialogButton(text: String, tag: String, destructive: Boolean = false, enabled: Boolean = true, onClick: () -> Unit) =
-    AppButton(text, onClick, style = ButtonStyle.Text, enabled = enabled, destructive = destructive, tag = tag)
-
-/** A feature with a check (Get Plus, Plus Family): the name and, under it, an optional line. */
-@Composable
-fun CheckLine(title: String, line: String? = null) {
-    val c = appColors
-    Row(Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}) {
-        Icon(Symbols.Check, null, Modifier.padding(top = 2.dp).size(20.dp), tint = c.ink)
-        Spacer(Modifier.width(12.dp))
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(title, style = AppType.titleMedium, color = c.ink)
-            if (line != null) Text(line, style = AppType.bodyMedium, color = c.secondary)
-        }
-    }
-}
-
-/**
- * "Works on": the devices Plus actually works on **today**. The first release is the two phone apps and nothing else
- * (the user, 22 Oct 2026: "we are only planning it to release for Android as well as iPhone apps, just apps in the
- * first phase"), so the tablet, Wear OS, Windows, iPad, Apple Watch and Mac rows are gone until those ship.
- */
-@Composable
-fun WorksOn() {
-    val c = appColors
-    Text("Works on", Modifier.fillMaxWidth(), style = AppType.labelLarge, color = c.secondary)
-    val pairs = listOf("Android phone" to "iPhone")
-    Column(Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}, verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        for ((a, b) in pairs) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            for (name in listOf(a, b)) Box(Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).border(1.dp, if (c.dark) c.outline.copy(alpha = 0.45f) else Color(0xFFC9C9CE), RoundedCornerShape(12.dp))
-                .heightIn(min = 40.dp).padding(horizontal = 14.dp, vertical = 10.dp), contentAlignment = Alignment.CenterStart) {
-                Text(name, style = AppType.labelLarge, color = c.ink)
-            }
-        }
-    }
-}
-
-/** A grey box inside a card, or a card of its own. */
-@Composable
-fun WhiteCard(modifier: Modifier = Modifier, padding: Dp = 20.dp, gap: Dp = 16.dp, content: @Composable ColumnScope.() -> Unit) =
-    Column(modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(appColors.surface).padding(padding), verticalArrangement = Arrangement.spacedBy(gap), content = content)
-
-/**
- * A row of Plus & Account (Figma 1–1.5's "Row · …"): a 24 icon in a 40 tonal disc, a name and an optional line, and a
- * chevron when it opens something. At least 72 high, 16 around (12 at the chevron's side), so larger text grows it.
- */
-@Composable
-fun PlusRow(
-    title: String, index: Int, count: Int, line: String? = null, icon: ImageVector, onClick: (() -> Unit)? = null,
-    modifier: Modifier = Modifier, red: Boolean = false, chevron: Boolean = onClick != null,
-) = AppListItem(
-    title, index, count, modifier, line, headlineColor = if (red) appColors.error else Color.Unspecified,
-    leading = { ListAvatar(icon, tint = if (red) appColors.error else null) }, trailing = if (chevron) ({ ListChevron() }) else null, onClick = onClick,
-)
-
-/** A row's icon: 24, in a 40 tonal disc. */
-@Composable
-fun IconDisc(icon: ImageVector, tint: Color = appColors.ink) =
-    Box(Modifier.size(40.dp).clip(androidx.compose.foundation.shape.CircleShape).background(appColors.tonal), contentAlignment = Alignment.Center) {
-        Icon(icon, null, Modifier.size(24.dp), tint = tint)
-    }
-
-/** Plus's tonal button (Back up to Google Drive): the Small Tonal button with an icon (2.1). */
-@Composable
-fun PlusTonalButton(text: String, icon: ImageVector, tag: String, onClick: () -> Unit) =
-    AppButton(text, onClick, style = ButtonStyle.Tonal, icon = icon, tag = tag)
-
-/** A plain clickable modifier for whole rows, with the row's own name for TalkBack. */
-fun Modifier.rowClick(label: String, onClick: () -> Unit) = clickable(onClickLabel = label, onClick = onClick)

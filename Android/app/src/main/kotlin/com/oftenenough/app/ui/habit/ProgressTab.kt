@@ -112,6 +112,8 @@ internal fun LazyListScope.progressItems(
     habit: Habit, store: HabitStore, today: Int, revision: Int, record: HabitOverall?, milestones: HabitMilestones,
     showStreaks: Boolean, showPercentages: Boolean, keyOpen: Boolean, onToggleKey: () -> Unit, onSeeAll: () -> Unit,
     onSeeAllStreaks: () -> Unit, onOpenDay: (Int) -> Unit, @Suppress("UNUSED_PARAMETER") onAddSlip: () -> Unit,
+    /** The free plan's locked Year in pixels card opens Plus (A73; Figma's Progress · full length · free plan). */
+    onPlus: () -> Unit,
 ) {
     if (habit.kind == HabitKind.Quit) {
         item(key = "progress-quit-record") { QuitRecordCard(habit, store, today, revision, onSeeAllStreaks) }
@@ -123,7 +125,7 @@ internal fun LazyListScope.progressItems(
     item(key = "progress-key") { HabitKeyCard(keyOpen, onToggleKey, habit.color, Modifier.pageItem()) }
     item(key = "progress-week") { PeriodCardView(habit, store, week = true, today = today, revision = revision, onOpenDay = onOpenDay) }
     item(key = "progress-month") { PeriodCardView(habit, store, week = false, today = today, revision = revision, onOpenDay = onOpenDay) }
-    item(key = "progress-year") { YearCard(habit, store, today, revision, onOpenDay) }
+    item(key = "progress-year") { YearCard(habit, store, today, revision, onOpenDay, onPlus) }
 }
 
 /**
@@ -423,7 +425,7 @@ private fun yearView(store: HabitStore, habit: Habit, year: Int, today: Int): Ye
 
 /** Year in pixels (molecule 4.17): the whole year as twelve month columns; a tap on a square opens its day. */
 @Composable
-private fun YearCard(habit: Habit, store: HabitStore, today: Int, revision: Int, onOpenDay: (Int) -> Unit) {
+private fun YearCard(habit: Habit, store: HabitStore, today: Int, revision: Int, onOpenDay: (Int) -> Unit, onPlus: () -> Unit) {
     val thisYear = pageYear(today)
     var year by rememberSaveable(habit.id) { mutableStateOf<Int?>(null) }
     val shown = year ?: thisYear
@@ -438,5 +440,6 @@ private fun YearCard(habit: Habit, store: HabitStore, today: Int, revision: Int,
             if (day <= today && view.cells[index] != HeatCell.Blank) onOpenDay(day)
         },
         modifier = Modifier.pageItem().semantics { testTag = "habit-year-grid" },
+        locked = !store.isPlus, onUnlock = onPlus,
     )
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isEnabled
 import androidx.compose.ui.test.isNotEnabled
@@ -342,8 +343,13 @@ class HabitFormTest {
         waitFor(hasText("e.g. Workout: push-ups, squats"), "Checklist's example")
         waitFor(hasText("Plus").and(hasAnyAncestor(hasTestTag("type-checklist"))), "the Plus label beside Checklist")
         tapTag("type-checklist")
-        compose.waitForIdle()
+        // Plus, for a checklist (5.9.1, Figma 1204:175 Reason=Checklist), not the form.
+        waitFor(hasText("Checklists come with Plus"), "the Plus screen's heading")
         assertTrue("no checklist form on the free plan", !has(hasTestTag("steps-row")))
+        // Paid (the stand-in store), the checklist form opens straight away and the snackbar says Plus is on.
+        tapTag("plus-buy")
+        waitFor(hasTestTag("steps-row"), "the checklist form")
+        waitFor(hasText("Plus is on"), "the snackbar")
     }
 
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
@@ -357,7 +363,7 @@ class HabitFormTest {
         waitUntil("Water's goal saved as 10") { water().single().goal == 10.0 }
     }
 
-    @Test fun aSixthHabitAsksForPlusOrRoomAndMakeRoomAddsIt() {
+    @Test fun aSixthHabitOpensPlusWhoseBackMakesRoom() {
         launch()
         // The free plan's five: archive the demo's other habits.
         onMain { store.archive(store.habits.filter { !it.archived && it.kind != HabitKind.Task }.drop(HabitStore.FREE_HABIT_LIMIT)) }
@@ -367,9 +373,10 @@ class HabitFormTest {
         tapTag("type-check")
         type("name-field", "Stretch")
         tapTag("form-add")
-        waitFor(hasTestTag("sixth-habit"), "Add a 6th habit")
-        waitFor(hasText("5 of 5 free habits used"), "the count")
-        tapTag("sixth-make-room")
+        // Plus, for a sixth habit (5.9.1, Figma 1204:175 Reason=6th habit); its ← opens Make room.
+        waitFor(hasTestTag("plus-screen").and(hasAnyDescendant(hasText("Add a 6th habit"))), "Add a 6th habit")
+        waitFor(hasText("5 of 5 free habits"), "the count")
+        tapTag("plus-back")
         waitFor(hasText("Make room"), "Make room")
         val first = store.habits.first { !it.archived && it.kind != HabitKind.Task }
         tapTag("room-archive-${first.name}")

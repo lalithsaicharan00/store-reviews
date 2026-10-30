@@ -304,6 +304,28 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 
 ## Plus
 
+### D-28. Plus: the states Figma doesn't draw
+
+- **Where:** Plus (5.9.1), [Figma 1204:175](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1204-175); `ui/plus/PlusScreen.kt`.
+- **What Figma shows:** the Plus screen for someone on the free plan only.
+- **What I did for now:** with Plus already on (≡ › Plus), the same screen says "Plus is yours. Thank you for supporting
+  Often Enough." with no Get Plus button, and the price line becomes "Plus stays with your Google Play account."; a
+  payment Google Play is still waiting for says "Waiting for your payment. Plus turns on as soon as Google Play confirms
+  it." in a snackbar (Today's notice says it too); "Payment not completed" is a dialog with Try again.
+- **Question:** confirm these, or draw them (above all the menu's Plus for someone who has it).
+- **My recommendation:** confirm, and add the "Plus is yours" state to Figma's Menu reason.
+
+### D-29. "Restore from Google Play" and "I already have Plus" are gone
+
+- **Where:** the old ≡ › Plus page and Get Plus (replaced by 5.9.1).
+- **What the app does now:** Figma has no restore button; Google Play is asked what's owned every time the app starts or
+  comes back, so a Plus bought before turns on by itself. Someone whose Plus doesn't appear has no button to press;
+  onboarding's "Plus isn't on this phone" still has Check again.
+- **Question:** (a) leave it to the automatic check; (b) add a "Restore purchase" row to the Plus screen and Figma.
+- **My recommendation:** (a): Google Play hands the app every purchase on each check, so a button would do the same
+  thing again; (b) only if support finds people looking for one after a reinstall.
+
+
 ## Widgets
 
 ## Notifications & alarms

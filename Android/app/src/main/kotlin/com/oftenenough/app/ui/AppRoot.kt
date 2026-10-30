@@ -17,6 +17,8 @@ import com.oftenenough.app.ui.settings.AppLockPage
 import com.oftenenough.app.ui.settings.AppLockSetup
 import com.oftenenough.app.ui.settings.PrivacyPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
+import com.oftenenough.app.ui.plus.PlusReason
+import com.oftenenough.app.ui.plus.PlusScreen
 import com.oftenenough.app.ui.settings.SettingsHome
 import com.oftenenough.app.ui.settings.SettingsPage
 import com.oftenenough.app.ui.settings.Support
@@ -119,8 +121,8 @@ private fun AppMain(
     val todayLayout = remember { com.oftenenough.app.ui.today.TodayLayout(rootScope) }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
-    // Restore from Google Play found nothing: Plus shows "No Plus found" over itself (Figma 4.2).
-    var noPlusFound by rememberSaveable { mutableStateOf(false) }
+    // Plus turned on from a Plus screen (Figma's flows: "the snackbar says Plus is on").
+    val plusOn: () -> Unit = { rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Plus is on") } }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
     LaunchedEffect(AppGraph.widgetRoute) {
         val (route, d) = AppGraph.widgetRoute?.split("|")?.let { it[0] to (it.getOrNull(1)?.toIntOrNull() ?: -1) } ?: return@LaunchedEffect
@@ -144,7 +146,7 @@ private fun AppMain(
                     if (habits.isNotEmpty() && at in habits) nav.navigate(Routes.routine(part, on, habits, at)) else nav.navigate(Routes.timer(at))
                 }
             }
-            "plus" -> nav.navigate(Routes.GET_PLUS)
+            "plus" -> nav.navigate(Routes.plus(PlusReason.MENU))
             // The app icon's long-press shortcuts (A11 D8).
             "new" -> nav.navigate(Routes.NEW)
             "routine" -> nextRoutine(store)?.let { (part, habits) -> nav.navigate(Routes.routine(part, store.today(), habits)) }
@@ -212,7 +214,8 @@ private fun AppMain(
             NewHabitFlow(store, idea, onClose = { nav.popBackStack() }, onSaved = { habit ->
                 copyOf?.let { store.placeAfter(habit.id, it.id) }
                 if (fromHabits || fromTasks || fromSearch) nav.popBackStack() else nav.popBackStack(Routes.TODAY, inclusive = false)
-            }, onPlus = { nav.navigate(Routes.GET_PLUS) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits, task = fromTasks && copyOf == null)
+            }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits,
+                task = fromTasks && copyOf == null, onPlusOn = plusOn)
         }
         composable(Routes.ARCHIVED) {
             ArchivedHabitsScreen(store, object : ArchivedNav {
@@ -235,17 +238,17 @@ private fun AppMain(
             })
         }
         composable("restoreroom/{id}") { e ->
-            // Restore a 6th habit (Habits, Figma 6.4): Plus, or make room; then the habit comes back.
+            // Restore a 6th habit (Habits, Figma 6.4): Plus (Reason=6th habit), whose ← opens Make room; then the habit comes back.
             val habit = store.habit(e.arguments!!.getString("id")!!)
             var making by rememberSaveable { mutableStateOf(false) }
             val done = { habit?.let { store.restore(it) }; nav.popBackStack(); Unit }
             if (habit == null) LaunchedEffect(Unit) { nav.popBackStack() }
-            else if (making) com.oftenenough.app.ui.newhabit.MakeRoomPage(store, { making = false }, done)
-            else com.oftenenough.app.ui.newhabit.SixthHabitPage(store, { nav.popBackStack() }, { making = true }, { nav.navigate(Routes.GET_PLUS) }, done,
+            else if (making) com.oftenenough.app.ui.newhabit.MakeRoomPage(store, { nav.popBackStack() }, done)
+            else PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { making = true }, onBought = { plusOn(); done() },
                 title = "Restore a 6th habit")
         }
         composable("edit/{id}") { e ->
-            EditHabitScreen(e.arguments!!.getString("id")!!, store, { nav.navigate(Routes.GET_PLUS) }) { nav.popBackStack() }
+            EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }) { nav.popBackStack() }
         }
         composable("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {
@@ -280,8 +283,8 @@ private fun AppMain(
                 SettingsPage.REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersComingPage(store) { nav.popBackStack() }
                 SettingsPage.PRIVACY -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
-                MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusPage(store, AppGraph.plus, AppGraph.backup,
-                    snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false })
+                // The menu's Plus (Reason=Menu): bought here, it stays, saying Plus is yours.
+                MenuItem.PLUS.title -> PlusScreen(PlusReason.MENU, store, AppGraph.plus, { nav.popBackStack() }, plusOn)
                 MenuItem.SETTINGS.title -> WithMenu(store, MenuItem.SETTINGS, nav) { openMenu ->
                     SettingsHome(store, prefs, AppGraph.backup, openMenu) { page -> nav.navigate(Routes.page(page)) }
                 }
@@ -316,6 +319,7 @@ private fun AppMain(
                     override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
                     override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                     override fun duplicate(habit: Habit) = nav.navigate(Routes.NEW + "?copy=${habit.id}&from=tasks")
+                    override fun plus() = nav.navigate(Routes.plus(PlusReason.YEAR))
                     override fun deleted(habit: Habit) {
                         nav.popBackStack()
                         // Today has its own snackbar, not this one: from there it goes at once, as before.
@@ -369,7 +373,8 @@ private fun AppMain(
             GroupFormScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }, { hs -> nav.navigate(Routes.pause(hs.map { it.id })) }) { nav.popBackStack() }
         }
         composable(Routes.NEW_TASK) {
-            NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { nav.navigate(Routes.GET_PLUS) }, task = true)
+            NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
+                task = true, onPlusOn = plusOn)
         }
         composable("timer/{id}") { e ->
             val id = e.arguments!!.getString("id")!!
@@ -395,10 +400,11 @@ private fun AppMain(
                 if (saved != null && existing != null) rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Changes saved") }
             }
         }
-        // Plus's flows (Figma 1476:2): each finishes back on the Plus page.
-        val flowNav = plusFlowNav(nav, rootScope, snackbar) { noPlusFound = true }
-        composable(Routes.GET_PLUS) { com.oftenenough.app.ui.plus.GetPlusScreen(AppGraph.plus, flowNav) { nav.popBackStack() } }
-        composable(Routes.RESTORE_PLUS) { com.oftenenough.app.ui.plus.RestoreFlow(AppGraph.plus, flowNav) }
+        // Plus (5.9.1), for a reason: once it's on, back where the person was, which goes on as Figma's flows say (the
+        // checklist form opens; Reminders loses its badge; Year in pixels unlocks), and "Plus is on".
+        composable(Routes.PLUS) { e ->
+            PlusScreen(PlusReason.of(e.arguments?.getString("reason")), store, AppGraph.plus, { nav.popBackStack() }) { nav.popBackStack(); plusOn() }
+        }
     }
     }
     // Plus has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
@@ -426,28 +432,6 @@ private fun openMenuItem(item: MenuItem, nav: NavHostController, context: androi
     if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
 }
 
-/** The Plus page's rows. */
-private fun plusNav(nav: NavHostController) = object : com.oftenenough.app.ui.plus.PlusNav {
-    override fun seePlus() = nav.navigate(Routes.GET_PLUS)
-    override fun restore() = nav.navigate(Routes.RESTORE_PLUS)
-    override fun backup() = nav.navigate(Routes.page(SettingsPage.BACKUP))
-    override fun back() { nav.popBackStack() }
-}
-
-/** Where a Plus flow ends: back on the Plus page (opened if the flow began elsewhere, as the 6th-habit page). */
-private fun plusFlowNav(nav: NavHostController, scope: CoroutineScope, snackbar: SnackbarHostState, onNoPlusFound: () -> Unit) =
-    object : com.oftenenough.app.ui.plus.PlusFlowNav {
-        override fun toPage(message: String?) {
-            if (!nav.popBackStack(Routes.menu(MenuItem.PLUS), inclusive = false)) {
-                nav.popBackStack(Routes.TODAY, inclusive = false)
-                nav.navigate(Routes.menu(MenuItem.PLUS))
-            }
-            message?.let { scope.launch { snackbar.showSnackbar(it) } }
-        }
-        override fun toPageNoPlusFound() { onNoPlusFound(); toPage() }
-        override fun getPlus() = nav.navigate(Routes.GET_PLUS)
-        override fun restore() = nav.navigate(Routes.RESTORE_PLUS)
-    }
 /**
  * The routine "Start the next routine" opens: the time of day that is now if it has anything left, else the next card
  * down Today that does (then from the top). Null when everything planned today is done: Today opens and says so.
@@ -515,8 +499,8 @@ object Routes {
     const val ARCHIVED_TASKS = "archived/tasks"
     const val COMPLETED_TASKS = "tasks/completed"
     fun restoreRoom(id: String) = "restoreroom/$id"
-    const val GET_PLUS = "plus/get"
-    const val RESTORE_PLUS = "plus/restore"
+    const val PLUS = "plus/{reason}"
+    fun plus(reason: PlusReason) = "plus/" + reason.key
     fun group(id: String?) = "group/" + (id ?: "new")
     const val LOCK_SETUP = "applock/setup"
     const val LOCK_PASSCODE = "applock/passcode"
