@@ -181,7 +181,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☑ |
 | 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☑ |
 | 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☑ |
-| 5.11.5 | Notifications & alarms · Let alarms fill the screen | 1274:16200 | ☐ |
+| 5.11.5 | Notifications & alarms · Let alarms fill the screen | 1274:16200 | ☑ |
 
 ### 6. Figma cleanup (added 29 Oct 2026, Android A77)
 
@@ -3196,3 +3196,28 @@ What each atom changed, newest last.
     the phone asks to unlock first. Showing the whole app over the lock screen would show everything without unlocking.
   - Several alarms at the same minute ring as their group's notification (5.11.3), not one screen each.
   - The clock is the reminder's own time, written as the phone writes times (24-hour or not).
+  - **Built:** run 41037408289 (Android, commit e394788) passed: assembleDebug, unit tests and lint.
+- **5.11.5 Notifications & alarms · Let alarms fill the screen (30 Oct).** Figma: Let alarms fill the screen (1274:16200)
+  over Reminders, and the flows "An alarm: turn it on, then answer it" (2 · the sheet, 3 · Android's Full screen
+  notifications for Often Enough, 4 · Allowed, 5 · back on Reminders) and "An alarm without full screen" (Not now: it
+  rings as a notification). The Bottom sheet over the Reminders page, asked once, the first time someone chooses Remind
+  me with: An alarm on Android 14 or later while Android doesn't allow it (13 and lower allow it already): centred, 24
+  at the sides, 16 apart: alarm_on in Primary, "Let alarms fill the screen" (Headline Small), why ("An alarm can show
+  over the lock screen and ring until you answer it, like your clock’s. Android asks you to allow this for each app.
+  Without it, the alarm rings as a notification.") and what to do ("Settings opens on Full screen notifications. Turn on
+  Allow full screen notifications, then come back.") in Body Medium On surface variant, 8 apart; Open settings (Filled,
+  Small) over Not now (Text), the width, 8 apart. It is `FullScreenSheet`, sharing `SettingsSheet` with Get reminders on
+  time (5.7.15) (`ui/newhabit/FormPages.kt`), and `Reminders.shouldAskFullScreen`. Research: 5.11.1's entry.
+  Built:
+  - Open settings goes straight to Often Enough's own switch (`Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT` with the
+    package), and a phone without that page opens App info (U40, `openSettingsPage`). Whether it's allowed is read each
+    time an alarm rings (`canUseFullScreenIntent()`, 5.11.4), so nothing is stale on return.
+  - Not now keeps An alarm chosen; it rings as a notification.
+  Fixed:
+  - Get reminders on time's sheet is now the shared `SettingsSheet`; its words, tags and look are unchanged.
+  - The comment that an alarm is "never a full screen (A11 D3)" now says what the app does (D-35).
+  Noted, not changed:
+  - "Asked once": a second habit set to An alarm doesn't ask again; Keep reminders coming doesn't list this switch
+    (Figma's Keep reminders coming has no row for it).
+  **Section 5.11 Notifications & alarms is built (5.11.1–5.11.5). Every component in section 5 is ☑; next, the
+  cleanup (section 6).**

@@ -766,24 +766,52 @@ fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew:
  * opens on Alarms & reminders. Turn on Allow setting alarms and reminders, then come back.") in Body Medium On surface
  * variant, 8 apart; then Open settings (Filled) over Not now (Text), the width of the sheet, 8 apart.
  */
+@Composable
+fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) = SettingsSheet(
+    Symbols.Alarm, "Get reminders on time",
+    "To save battery, Android can hold reminders back, so one set for 9:00 AM may come a few minutes to an hour late.",
+    "Settings opens on Alarms & reminders. Turn on Allow setting alarms and reminders, then come back.",
+    "exact-times", onAllow, onDismiss,
+)
+
+/**
+ * 5.11.5, **Let alarms fill the screen** (Figma 1274:16200; the flows "An alarm: turn it on, then answer it" and "An
+ * alarm without full screen"): asked once, the first time someone chooses Remind me with: An alarm on Android 14 or
+ * later, where Android asks for Full screen notifications app by app (13 and lower allow it already). The same sheet as
+ * Get reminders on time: alarm_on, "Let alarms fill the screen", why and what to do; **Open settings** goes straight to
+ * Often Enough's own Full screen notifications switch (`ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT`, U40); **Not now**
+ * keeps An alarm: it still rings, as a notification. Whether it's allowed is read when each alarm rings
+ * (`Reminders.canFillScreen`), so coming back needs nothing more.
+ */
+@Composable
+fun FullScreenSheet(onAllow: () -> Unit, onDismiss: () -> Unit) = SettingsSheet(
+    Symbols.AlarmOn, "Let alarms fill the screen",
+    "An alarm can show over the lock screen and ring until you answer it, like your clock’s. Android asks you to allow this for each app. Without it, the alarm rings as a notification.",
+    "Settings opens on Full screen notifications. Turn on Allow full screen notifications, then come back.",
+    "full-screen", onAllow, onDismiss,
+)
+
+/**
+ * The sheet that sends someone to one of Android's switches: the Bottom sheet over Reminders, centred, 24 at the sides,
+ * 16 apart: [icon] in Primary; [title] in Headline Small; [why] and [what] in Body Medium On surface variant, 8 apart;
+ * then Open settings (Filled) over Not now (Text), the width of the sheet, 8 apart.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
+private fun SettingsSheet(icon: ImageVector, title: String, why: String, what: String, tag: String, onAllow: () -> Unit, onDismiss: () -> Unit) {
     val s = MaterialTheme.colorScheme
-    AppBottomSheet(onDismiss, Modifier.semantics { testTag = "exact-times-sheet"; testTagsAsResourceId = true }) {
+    AppBottomSheet(onDismiss, Modifier.semantics { testTag = "$tag-sheet"; testTagsAsResourceId = true }) {
         Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Icon(Symbols.Alarm, null, tint = s.primary)
-            Text("Get reminders on time", style = AppType.headlineSmall, color = s.onSurface, textAlign = TextAlign.Center)
+            Icon(icon, null, tint = s.primary)
+            Text(title, style = AppType.headlineSmall, color = s.onSurface, textAlign = TextAlign.Center)
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("To save battery, Android can hold reminders back, so one set for 9:00 AM may come a few minutes to an hour late.",
-                    style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
-                Text("Settings opens on Alarms & reminders. Turn on Allow setting alarms and reminders, then come back.",
-                    style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
+                Text(why, style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
+                Text(what, style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             }
             Column(Modifier.fillMaxWidth().padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                AppButton("Open settings", onAllow, Modifier.fillMaxWidth(), tag = "exact-times-allow")
-                AppButton("Not now", onDismiss, Modifier.fillMaxWidth(), style = ButtonStyle.Text, tag = "exact-times-not-now")
+                AppButton("Open settings", onAllow, Modifier.fillMaxWidth(), tag = "$tag-allow")
+                AppButton("Not now", onDismiss, Modifier.fillMaxWidth(), style = ButtonStyle.Text, tag = "$tag-not-now")
             }
         }
     }
@@ -819,6 +847,7 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
     // Reminders turned on: Android's own question for notifications first, then exact times (A11 D1). Never in a test
     // launch: a system question stays over every later launch on that emulator (T18).
     var askExact by remember { mutableStateOf(false) }
+    var askFull by remember { mutableStateOf(false) }
     val askNotifications = androidx.activity.compose.rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted ->
         if (!granted) {
@@ -879,10 +908,14 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
                         Subheader("How")
                         SegmentedList {
                             val rows = if (form.type != ItemType.CUT_DOWN) 2 else 1
-                            // An alarm rings on Android's alarm sound until it's answered; never a full screen (A11 D3).
+                            // An alarm rings on Android's alarm sound until it's answered, filling the screen where Android lets it
+                            // (5.11.4); the first time it's chosen on Android 14 or later, the sheet asks (5.11.5).
                             val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
                             MenuRow("Remind me with", styles.first { it.first == form.alert }.second, styles.map { it.second }, 0, rows, "remind-with",
-                                listOf(Symbols.Notifications, Symbols.Alarm), listOf("In your notifications", "Rings until you stop it")) { form.alert = styles[it].first }
+                                listOf(Symbols.Notifications, Symbols.Alarm), listOf("In your notifications", "Rings until you stop it")) {
+                                form.alert = styles[it].first
+                                if (form.alert == "alarm" && com.oftenenough.app.app.reminders.Reminders.shouldAskFullScreen(context)) askFull = true
+                            }
                             if (form.type != ItemType.CUT_DOWN) {
                                 val options = listOf(null, 15, 30, 60)
                                 // Remind again is Plus (A73): on the free plan the row opens Plus; one already set keeps working.
@@ -909,6 +942,12 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
             }
         }
     }
+    if (askFull) FullScreenSheet(onAllow = {
+        askFull = false
+        // Often Enough's own Full screen notifications switch; a phone without that page opens App info (U40).
+        if (android.os.Build.VERSION.SDK_INT >= 34) com.oftenenough.app.ui.settings.openSettingsPage(context,
+            android.content.Intent(android.provider.Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT, android.net.Uri.parse("package:" + context.packageName)))
+    }) { askFull = false }
     if (askExact) ExactTimesSheet(onAllow = {
         askExact = false
         // Often Enough's own Alarms & reminders switch; a phone without that page opens App info (U40).

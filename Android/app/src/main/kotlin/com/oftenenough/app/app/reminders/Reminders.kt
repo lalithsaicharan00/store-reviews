@@ -71,6 +71,8 @@ object Reminders {
     private const val EXTRA_NOTIFICATION = "notification"
     private const val PREFS = "reminders"
     private const val LAST = "lastFired"
+    /** Let alarms fill the screen was asked (5.11.5). */
+    private const val ASKED_FULL_SCREEN = "askedFullScreen"
     /** The alarm last set: when it should fire, and the habit and time it was for ("ms|habitId|minute"). */
     private const val PLANNED = "planned"
     /** A reminder that arrived more than [LATE_MS] late, or never: "ms|habitId|minute" (Reminders shows it until dismissed). */
@@ -399,6 +401,18 @@ object Reminders {
      */
     fun canFillScreen(context: Context): Boolean = Build.VERSION.SDK_INT < 34 ||
         context.getSystemService(NotificationManager::class.java)?.canUseFullScreenIntent() == true
+
+    /**
+     * Whether to ask, now, to let alarms fill the screen (5.11.5): once only, on Android 14 or later, while Android
+     * doesn't allow it. Asking counts as asked, whatever the answer.
+     */
+    fun shouldAskFullScreen(context: Context): Boolean {
+        if (Build.VERSION.SDK_INT < 34 || canFillScreen(context)) return false
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (prefs.getBoolean(ASKED_FULL_SCREEN, false)) return false
+        prefs.edit().putBoolean(ASKED_FULL_SCREEN, true).apply()
+        return true
+    }
 
     private fun alarmScreen(context: Context, shown: Shown): PendingIntent =
         PendingIntent.getActivity(context, shown.id, extras(context, ACTION_ALARM_SCREEN, shown).setClass(context, AlarmActivity::class.java)
