@@ -180,7 +180,13 @@ private fun HabitReminderRow(habit: Habit, line: String, index: Int, count: Int,
         leading = { HabitIcon(habit.symbol, habit.color, 40.dp, CookieShape()) }, trailing = { ListChevron() },
     )
 
-private fun open(context: Context, intent: Intent) {
+private fun open(context: Context, intent: Intent) = openSettingsPage(context, intent)
+
+/**
+ * Opens [intent]'s settings page; a phone that has no such page opens the app's own App info instead, never nothing and
+ * never Settings' home (U40).
+ */
+fun openSettingsPage(context: Context, intent: Intent) {
     try { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
     catch (e: ActivityNotFoundException) { openAppSettings(context) }
 }

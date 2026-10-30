@@ -159,7 +159,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.12 | Create new · Steps page | 1104:163327 | ☑ |
 | 5.7.13 | Create new · Limit page | 1105:3190 | ☑ |
 | 5.7.14 | Create new · What kind of task? | 1109:2 | ☑ |
-| 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☐ |
+| 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☑ |
 | 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☐ |
 | 5.8.1 | Settings · Keep reminders coming | 804:192 | ☐ |
 | 5.8.2 | Settings · Edit time of day | 830:265 | ☐ |
@@ -2525,6 +2525,8 @@ What each atom changed, newest last.
   - The old goal card (`GoalCard`, `oftenHeader`) is deleted: no page uses it now.
   - Tests: HabitFormTest checks At most and Amount's footer, picks Time and 1 h, sees Time's footer, and the form's
     Limit saying 1 h.
+  - **Built:** run 40990668905 (Android #164, commit d89b1fa) passed: assembleDebug, unit tests and lint (5.7.12 and
+    5.7.13 together).
 
 - **5.7.14 Create new · What kind of task? (30 Oct).** Figma: What kind of task? (1109:2), and the task flows ("The
   third choice: Add a task, then once or on repeat"; "No Repeat row: a one-time task has its date"; "The repeating task
@@ -2544,3 +2546,23 @@ What each atom changed, newest last.
     note it read went in 5.7.3).
   Noted, not changed:
   - Edit task has no Repeat row either: a task keeps the kind it was made with, as a habit keeps its type (A68).
+
+- **5.7.15 Create new · Get reminders on time (30 Oct).** Figma: Get reminders on time (1164:344717), and the flow
+  "Reminders: on time, on some phones". After Allow on Reminders, on a phone that holds exact times back: the Bottom
+  sheet (Surface container low, its drag handle) over Reminders and its Scrim; centred, 24 at the sides, 16 apart: the
+  alarm icon in Primary; "Get reminders on time" in Headline Small On surface; "To save battery, Android can hold
+  reminders back, so one set for 9:00 AM may come a few minutes to an hour late." and "Settings opens on Alarms &
+  reminders. Turn on Allow setting alarms and reminders, then come back." in Body Medium On surface variant, 8 apart;
+  then Open settings (Filled) over Not now (Text), the sheet's width, 8 apart, 8 more above them. Open settings opens
+  Often Enough's own Alarms & reminders switch (U40). It is `ExactTimesSheet` (`newhabit/FormPages.kt`) on
+  `AppBottomSheet`. The app, the unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The sheet was Material's plain one with a 64 icon circle, its own words ("Android holds reminders back unless an
+    app may use exact times …") and "Allow exact times" as a Medium button; now the Bottom sheet atom with Figma's
+    icon, words and buttons.
+  - U40's build work: Open settings swallowed a failure and opened nothing on a phone without that page; it now opens
+    App info, through `openSettingsPage` (`settings/RemindersSettings.kt`), which Today's notices (`TodayNotices.open`)
+    use too.
+  Noted, not changed:
+  - No instrumented test opens it: a test launch never asks Android for notifications or exact times (a system
+    question would stay over every later launch on the emulator), so the sheet is checked by building it.

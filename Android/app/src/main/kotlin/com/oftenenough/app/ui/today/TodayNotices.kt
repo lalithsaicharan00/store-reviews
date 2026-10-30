@@ -140,9 +140,8 @@ object TodayNotices {
         if (forced == notice.key) forced = null
     }
 
-    private fun open(context: Context, intent: Intent) {
-        runCatching { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-    }
+    // A phone without that page opens App info (U40).
+    private fun open(context: Context, intent: Intent) = com.oftenenough.app.ui.settings.openSettingsPage(context, intent)
 }
 
 /** Today's notice, worked out again whenever the app comes back (a setting may have changed) and when backup's state does. */

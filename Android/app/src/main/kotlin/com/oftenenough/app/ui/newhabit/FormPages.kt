@@ -758,31 +758,33 @@ fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew:
     }
 }
 
-/** "Get reminders on time" (design §15): why exact times matter, then Android's own Alarms & reminders page. */
+/**
+ * 5.7.15, **Get reminders on time** (Figma 1164:344717; flow "Reminders: on time, on some phones"; Components — Atoms
+ * Build Plan): after Allow, on a phone that holds exact times back. The Bottom sheet over Reminders: centred, 24 at the
+ * sides, 16 apart: the alarm icon in Primary; "Get reminders on time" in Headline Small; why ("To save battery, Android
+ * can hold reminders back, so one set for 9:00 AM may come a few minutes to an hour late.") and what to do ("Settings
+ * opens on Alarms & reminders. Turn on Allow setting alarms and reminders, then come back.") in Body Medium On surface
+ * variant, 8 apart; then Open settings (Filled) over Not now (Text), the width of the sheet, 8 apart.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) {
-    val c = appColors
-    // Opened whole, and scrolling: half-open, its buttons were under the gesture bar and below the screen (360 x 800 dp).
-    ModalBottomSheet(onDismiss, sheetState = rememberWholeSheetState()) {
-        Column(Modifier.fillMaxWidth().verticalScroll(androidx.compose.foundation.rememberScrollState()).padding(horizontal = 24.dp).padding(bottom = 24.dp)
-            .semantics { testTag = "exact-times-sheet"; testTagsAsResourceId = true },
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            Box(Modifier.size(64.dp).clip(CircleShape).background(c.tonal), contentAlignment = Alignment.Center) {
-                Icon(Symbols.Alarm, null, tint = c.ink)
+    val s = MaterialTheme.colorScheme
+    AppBottomSheet(onDismiss, Modifier.semantics { testTag = "exact-times-sheet"; testTagsAsResourceId = true }) {
+        Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Icon(Symbols.Alarm, null, tint = s.primary)
+            Text("Get reminders on time", style = AppType.headlineSmall, color = s.onSurface, textAlign = TextAlign.Center)
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("To save battery, Android can hold reminders back, so one set for 9:00 AM may come a few minutes to an hour late.",
+                    style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
+                Text("Settings opens on Alarms & reminders. Turn on Allow setting alarms and reminders, then come back.",
+                    style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             }
-            Spacer(Modifier.height(24.dp))
-            Text("Get reminders on time", style = MaterialTheme.typography.headlineSmall, color = c.ink, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(16.dp))
-            Text("Android holds reminders back unless an app may use exact times. Without it, a reminder can come up to 10 minutes late.",
-                style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(12.dp))
-            Text("Next, Android opens Alarms & reminders: switch it on for Often Enough, then come back.",
-                style = MaterialTheme.typography.bodyLarge, color = c.secondary, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(24.dp))
-            AppButton("Allow exact times", onAllow, Modifier.fillMaxWidth().semantics { testTag = "exact-times-allow" }, size = ButtonSize.Medium)
-            Spacer(Modifier.height(8.dp))
-            AppButton("Not now", onDismiss, Modifier.semantics { testTag = "exact-times-not-now" }, style = ButtonStyle.Text)
+            Column(Modifier.fillMaxWidth().padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                AppButton("Open settings", onAllow, Modifier.fillMaxWidth(), tag = "exact-times-allow")
+                AppButton("Not now", onDismiss, Modifier.fillMaxWidth(), style = ButtonStyle.Text, tag = "exact-times-not-now")
+            }
         }
     }
 }
@@ -909,10 +911,9 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
     }
     if (askExact) ExactTimesSheet(onAllow = {
         askExact = false
-        if (android.os.Build.VERSION.SDK_INT >= 31) runCatching {
-            context.startActivity(android.content.Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
-                android.net.Uri.parse("package:" + context.packageName)).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
-        }
+        // Often Enough's own Alarms & reminders switch; a phone without that page opens App info (U40).
+        if (android.os.Build.VERSION.SDK_INT >= 31) com.oftenenough.app.ui.settings.openSettingsPage(context,
+            android.content.Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, android.net.Uri.parse("package:" + context.packageName)))
     }) { askExact = false }
     editing?.let { id ->
         val t = form.times.firstOrNull { it.id == id }
