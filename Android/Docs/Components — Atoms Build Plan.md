@@ -178,7 +178,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.10.5 | Widgets · Widget · This week | 1243:857 | ☑ |
 | 5.10.6 | Widgets · Widget setup | 1252:3618 | ☑ |
 | 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☑ |
-| 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☐ |
+| 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☑ |
 | 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☐ |
 | 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☐ |
 | 5.11.5 | Notifications & alarms · Let alarms fill the screen | 1274:16200 | ☐ |
@@ -3101,3 +3101,45 @@ What each atom changed, newest last.
   - The circle of the habit's colour behind it is the notification's `setColor`, part of Reminder notification
     (5.11.2). Some makers' status bars (and Android below 12's) draw the icon without the circle; the alphas still read
     as three tones there.
+  - **Built:** run 41034637519 (Android, commit 4a7bb3e) passed: assembleDebug, unit tests and lint.
+- **5.11.2 Notifications & alarms · Reminder notification (30 Oct).** Figma: Reminder notification (1268:127), State
+  Collapsed · Expanded · Reply, "Reminder notification · every kind" (K.1–K.21) and the flows on the page ("Tick a habit
+  from its reminder", "An amount, +1 at a time, and Undo", "An amount typed in the notification", "A time habit: Start",
+  "A checklist, one step at a time", "A task, from its reminder"). Android's own template (Android 12 and later): the
+  app's icon (5.11.1) in a circle of the habit's colour (setColor), "Often Enough · time", the habit's name, one line of
+  where it stands, today's progress (setProgress) and at most three buttons, each saving in the background as Today's
+  round button would. It is `Reminders.notice` and `Reminders.act` (`app/reminders/Reminders.kt`); the research is in
+  5.11.1's entry. When reminders are planned and rung (`ReminderPlan.plan`, `replan`, `fire`, the alarm channel, D3) is
+  unchanged.
+  Built, kind by kind (Figma's words):
+  - A check once a day: "Not done yet", **Done**; it goes once done. Several a day: "1 of 3 today" and progress, each
+    Done adds one (U14), then **Undo**; at 3 of 3 it goes. A week or month goal: "1 of 3 this week", Done, and after it
+    the count ("2 of 4 this month") for a few seconds, then it goes until the next reminder.
+  - An amount with a step: "3 of 8 glasses", **+1 glass**; after it, **Undo +1 glass**, naming what it takes back; at the
+    goal "8 of 8 glasses · Goal met", Undo only, gone after 4 seconds (setTimeoutAfter). Without a step: **Log** opens
+    Android's direct reply, "How many steps?", ➤ saves (the phone's own way of writing numbers: "8,000", "2,5").
+  - Time: "0 of 20 min", **Start** (the timer runs, and its Live Update, `TimerNotice`, takes the reminder's place) and
+    **Log time** ("How many minutes?"); after a log, Undo; at the goal "Goal met".
+  - A checklist: "0 of 5 steps", the steps as Android's inbox lines (✓ or ○), **Tick Warm-up** naming the next step,
+    **Open** (the day), and Undo after a tick; the last step finishes it and it goes.
+  - A task: "Task · for today", **Done**. A follow-up: "Still to do today". Updates are quiet (setOnlyAlertOnce), so an
+    alarm stops ringing once answered.
+  - Undo takes back exactly the log the button made, by its ID (`undoEntry`), so a second Undo does nothing.
+  Fixed:
+  - The line under the name was the habit's plan ("8 glasses a day", "Time for meds"); now where it stands, as Figma.
+  - There was no colour, no progress, no Undo, and only Done (a check, a task) or +1 (an amount with a step): an amount
+    without a step, a time habit and a checklist had no button at all. Now every kind has Figma's buttons.
+  - Every button closed the notification; now it updates in place, or goes when Figma says.
+  - `ReminderPlan.action` (the old button label) is gone; nothing else read it.
+  Noted, not changed:
+  - "Any button stops further follow-ups" (K.20) needs the reminder plan to remember a button was used; the plan is
+    unchanged (the prompt: don't change what reminders do underneath). Follow-ups still stop once the habit is done.
+    Decisions needed D-33.
+  - Figma's description says a button never repeats the tap on the notification, yet a checklist's Open does (it opens
+    the day, as a tap does); built as drawn (D-34).
+  - Limits (cut down) are not drawn: they keep "1 of 2 cups · Daily limit", + or Log and Undo, no progress (A41) and
+    never "Goal met".
+  - With names hidden outside the app, the words are "Reminder" (or the reminder's own text), the buttons have no units
+    or step names ("+1", "Tick next step") and a checklist's steps aren't listed.
+  - `ReminderPlan.body` is now read only by the hidden-names path's fallback; cleanup.
+  - Several reminders at the same minute are still one summary; that's 5.11.3.

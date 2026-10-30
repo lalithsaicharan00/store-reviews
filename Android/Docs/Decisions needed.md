@@ -368,4 +368,23 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 
 ## Notifications & alarms
 
+### D-33. Reminder notification: "Any button stops further follow-ups"
+
+- **Where:** Reminder notification (5.11.2), K.20 "Remind me again (Plus)", [Figma 1268:127](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1268-127); `data/ReminderPlan.kt`.
+- **What Figma shows:** the follow-up an hour later, "Any button stops further follow-ups."
+- **What I did for now:** follow-ups stop once the habit is done (as before); a +1 that doesn't finish the goal still
+  gets the next follow-up. The plan of reminders is unchanged (the prompt: don't change what reminders do underneath).
+- **Question:** should a +1, a Log or an Undo also stop the follow-ups for that time?
+- **My recommendation:** yes, as Figma: any answer shows the person saw it. It needs the plan to keep "answered at" per
+  reminder; a small change I can make once you say so.
+
+### D-34. Reminder notification: a checklist's Open repeats the tap
+
+- **Where:** Reminder notification (5.11.2), K.16–K.18; [Figma 1268:127](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1268-127).
+- **What Figma shows:** Tick <step>, **Open** and Undo; the description says a button is "never one that repeats the tap
+  on the notification", and Android's guide says the same. Open does what a tap does (the day's steps).
+- **What I did for now:** built as drawn.
+- **Question:** keep Open, or drop it and let the tap open the day?
+- **My recommendation:** keep it: on a checklist the tap target isn't obvious and "Open" says where the other steps are.
+
 ## Cleanup

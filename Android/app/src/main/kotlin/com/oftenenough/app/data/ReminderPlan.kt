@@ -105,11 +105,4 @@ object ReminderPlan {
             else -> "Time for ${habit.name.lowercase()}"
         }
     }
-
-    /** The button a reminder has: "Done" for a check or a to-do, "+1 glass" for an amount with a step, none otherwise. */
-    fun action(habit: Habit, hideNames: Boolean): String? = when (val k = habit.kind) {
-        HabitKind.Check, HabitKind.Task -> "Done"
-        is HabitKind.Amount -> habit.quickIncrement?.let { "+" + if (hideNames) Format.amount(it) else HabitCopy.amount(it, k.unit) }
-        else -> null
-    }
 }
