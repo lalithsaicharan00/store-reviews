@@ -80,7 +80,6 @@ import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.AppFilledIconButton
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
-import com.oftenenough.app.ui.onboarding.HabitIdea
 import com.oftenenough.app.ui.record.DiscardDialog
 import com.oftenenough.app.ui.record.GoalNumber
 import com.oftenenough.app.ui.theme.appColors
@@ -98,13 +97,12 @@ class TypedText(initial: String) { var text by mutableStateOf(initial) }
 private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, REMINDERS, ICON, SIXTH, MAKE_ROOM }
 
 /**
- * New: what do you want to do → (build: how to track it | quit: quit or cut down) → the form. From an idea it opens the
- * form straight away with everything the idea says filled in, so Add works at once (Onboarding 07.1, the user, 19 Oct
- * 2026).
+ * New: what do you want to do → (build: how to track it | quit: quit or cut down) → the form. A copy opens its form
+ * straight away.
  */
 @Composable
 fun NewHabitFlow(
-    store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: (PlusReason) -> Unit, task: Boolean = false,
+    store: HabitStore, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: (PlusReason) -> Unit, task: Boolean = false,
     /** Duplicate (Habits, Figma 2.2): the form filled in from this habit as "Name (copy)", its type already chosen. */
     copyOf: Habit? = null,
     /** The name typed in Habits' search (Figma 4.2: New habit "yoga"). */
@@ -114,10 +112,9 @@ fun NewHabitFlow(
     /** Plus turned on from a Plus screen shown inside the flow: the caller says "Plus is on". */
     onPlusOn: () -> Unit = {},
 ) {
-    val ideaType = idea?.let { when (it.type) { "amount" -> ItemType.AMOUNT; "time" -> ItemType.TIME; "quit" -> ItemType.QUIT; "cutDown" -> ItemType.CUT_DOWN; else -> ItemType.CHECK } }
     val copyType = copyOf?.let { ItemType.of(it) }
-    // Tasks' + starts at What kind of task?; a copy or an idea opens its form straight away.
-    var step by rememberSaveable { mutableStateOf((copyType ?: ideaType)?.let { "form:${it.name}" } ?: if (task) "task" else "choose") }
+    // Tasks' + starts at What kind of task?; a copy opens its form straight away.
+    var step by rememberSaveable { mutableStateOf(copyType?.let { "form:${it.name}" } ?: if (task) "task" else "choose") }
     var repeats by rememberSaveable { mutableStateOf(false) }
     var room by rememberSaveable { mutableStateOf(if (roomFirst && !store.canAddHabit && copyType != ItemType.TASK) "sixth" else "") }
     // The free plan's five habits (Figma's "A sixth habit on the free plan"): Plus first; its ← opens Make room ("Back (←),
@@ -159,13 +156,13 @@ fun NewHabitFlow(
         }
         else -> {
             val type = ItemType.valueOf(step.removePrefix("form:"))
-            // From an idea or a copy, back closes the flow; the step itself never goes blank, since this screen can be drawn
+            // From a copy, back closes the flow; the step itself never goes blank, since this screen can be drawn
             // once more while it leaves (an empty step made `ItemType.valueOf("")` throw).
             val back = {
-                if (idea != null || copyOf != null) onClose()
+                if (copyOf != null) onClose()
                 else step = when { type == ItemType.TASK -> "task"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
             }
-            HabitForm(type, null, store, idea.takeIf { ideaType == type }, back, onSaved, onPlus, template = copyOf, prefillName = name,
+            HabitForm(type, null, store, back, onSaved, onPlus, template = copyOf, prefillName = name,
                 repeats = repeats.takeIf { type == ItemType.TASK && copyOf == null }, onPlusOn = onPlusOn)
         }
     }
@@ -175,7 +172,7 @@ fun NewHabitFlow(
 @Composable
 fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> Unit, onClose: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onClose() }; return }
-    HabitForm(ItemType.of(habit), habit, store, null, onClose, { onClose() }, onPlus)
+    HabitForm(ItemType.of(habit), habit, store, onClose, { onClose() }, onPlus)
 }
 
 /**
@@ -190,7 +187,7 @@ fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HabitForm(
-    type: ItemType, original: Habit?, store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: (PlusReason) -> Unit,
+    type: ItemType, original: Habit?, store: HabitStore, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: (PlusReason) -> Unit,
     template: Habit? = null, prefillName: String? = null,
     /** A new task's kind, chosen on What kind of task? (5.7.14). */
     repeats: Boolean? = null,
@@ -199,9 +196,7 @@ fun HabitForm(
     val form = remember {
         FormState(type, original, store, template).also { f ->
             repeats?.let { f.taskRepeats = it }
-            idea?.let { f.applyIdea(it) }
             prefillName?.let { n -> f.name = TextLimit.clean(n, TextLimit.NAME); f.nameFilled = f.name.isNotBlank() }
-            if (idea != null) f.markPristine()
         }
     }
     val typed = remember { TypedText(form.name) }

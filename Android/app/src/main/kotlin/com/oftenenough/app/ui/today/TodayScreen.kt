@@ -102,7 +102,6 @@ import kotlinx.coroutines.launch
 interface TodayNav : NoticeNav {
     fun openMenu()
     fun newHabit()
-    fun ideas()
     fun restore()
     fun arrange()
     fun startRoutine(part: String, day: Int, habits: List<Habit>)

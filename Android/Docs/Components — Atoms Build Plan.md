@@ -196,7 +196,7 @@ search of every page's text).
 
 | # | What goes or changes (Figma) | Status |
 |---|---|---|
-| 6.1 | Start from an idea: `IdeasScreen`, its route and its idea lists (no idea screen anywhere in Figma) | ☐ |
+| 6.1 | Start from an idea: `IdeasScreen`, its route and its idea lists (no idea screen anywhere in Figma) | ☑ |
 | 6.2 | The old Progress page: `ProgressScreen` and its route (the Habits tab is that page, A54); SpeedTest moves to the Habits tab | ☐ |
 | 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☐ |
 | 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☐ |
@@ -3219,5 +3219,12 @@ What each atom changed, newest last.
   Noted, not changed:
   - "Asked once": a second habit set to An alarm doesn't ask again; Keep reminders coming doesn't list this switch
     (Figma's Keep reminders coming has no row for it).
+  - **Built:** run 41038258162 (Android, commit ced0b4a) passed: assembleDebug, unit tests and lint.
   **Section 5.11 Notifications & alarms is built (5.11.1–5.11.5). Every component in section 5 is ☑; next, the
   cleanup (section 6).**
+- **6.1 Cleanup · Start from an idea (30 Oct).** Figma draws no idea screen anywhere (A77). Proof nothing reaches it:
+  the only way in was `TodayNav.ideas()` (the page "Start from an idea"), and no screen called it; no test uses it.
+  Deleted: `ui/onboarding/Ideas.kt` (`IdeasScreen`, `IdeaRow`, `HabitIdea` and its eight ideas), its page route, the
+  New route's `idea` argument, `NewHabitFlow`'s and `HabitForm`'s `idea` parameter, `FormState.applyIdea`, and the
+  "pristine" check only an idea set (`markPristine`, `signature`): a new form has changes once it has a name or a step,
+  as before for every other new habit. No saved data is touched.

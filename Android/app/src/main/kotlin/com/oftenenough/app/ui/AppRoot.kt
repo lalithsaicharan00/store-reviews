@@ -76,8 +76,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.ui.onboarding.HabitIdea
-import com.oftenenough.app.ui.onboarding.IdeasScreen
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.TodayActions
 import com.oftenenough.app.ui.today.TodayNav
@@ -201,9 +199,8 @@ private fun AppMain(
         composable("note/{habit}/{day}") { e ->
             NoteScreen(e.arguments!!.getString("habit")!!.takeIf { it != "day" }, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
         }
-        composable(Routes.NEW + "?idea={idea}&name={name}&copy={copy}&from={from}") { entry ->
+        composable(Routes.NEW + "?name={name}&copy={copy}&from={from}") { entry ->
             val a = entry.arguments
-            val idea = a?.getString("idea")?.let { name -> HabitIdea.all.firstOrNull { it.name == name } }
             val copyOf = a?.getString("copy")?.let { store.habit(it) }
             // From Habits & Tasks' + on Habits: back there once added, with the 6th-habit page first.
             // From its + on Tasks, or a task's Duplicate: back there once added.
@@ -211,7 +208,7 @@ private fun AppMain(
             val fromHabits = a?.getString("from") == "habits"
             // Search's Add “word” (A72): back to Habits & Tasks once it's made, with no Add a 6th habit first (it may be a task).
             val fromSearch = a?.getString("from") == "search"
-            NewHabitFlow(store, idea, onClose = { nav.popBackStack() }, onSaved = { habit ->
+            NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { habit ->
                 copyOf?.let { store.placeAfter(habit.id, it.id) }
                 if (fromHabits || fromTasks || fromSearch) nav.popBackStack() else nav.popBackStack(Routes.TODAY, inclusive = false)
             }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits,
@@ -300,9 +297,6 @@ private fun AppMain(
                 // After Erase all my data the app starts again on Today, as a fresh install (Figma's Erase flow).
                 SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE) }, { nav.popBackStack(Routes.TODAY, inclusive = false) },
                     { nav.popBackStack() }, snackbar)
-                "Start from an idea" -> IdeasScreen({ nav.popBackStack() }) { idea ->
-                    nav.popBackStack(); nav.navigate(Routes.NEW + "?idea=" + android.net.Uri.encode(idea.name))
-                }
                 SettingsPage.TIMES_OF_DAY -> TimesOfDayPage(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
                 // A page that doesn't exist (an old link): straight back.
                 else -> LaunchedEffect(title) { nav.popBackStack() }
@@ -373,7 +367,7 @@ private fun AppMain(
             GroupFormScreen(store, e.arguments!!.getString("id")!!.takeIf { it != "new" }, { hs -> nav.navigate(Routes.pause(hs.map { it.id })) }) { nav.popBackStack() }
         }
         composable(Routes.NEW_TASK) {
-            NewHabitFlow(store, null, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
+            NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
                 task = true, onPlusOn = plusOn)
         }
         composable("timer/{id}") { e ->
@@ -567,7 +561,6 @@ private fun WithDay(store: HabitStore, nav: NavHostController, content: @Composa
 private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : TodayNav {
     override fun openMenu() = openDrawer()
     override fun newHabit() = nav.navigate(Routes.NEW)
-    override fun ideas() = nav.navigate(Routes.page("Start from an idea"))
     override fun restore() = nav.navigate(Routes.RESTORE)
     override fun arrange() = nav.navigate(Routes.page("Arrange your day"))
     override fun archivedHabits() = nav.navigate(Routes.ARCHIVED)
