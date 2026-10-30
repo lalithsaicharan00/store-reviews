@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.GoalPeriod
 import com.oftenenough.app.data.Habit
-import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitCopy
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitPlan
@@ -179,13 +178,6 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
         return h.copy(alert = alert, followUpMinutes = if (h.atMost) null else followUp)
     }
 
-    /** The habit as the previews show it: "Your habit" until named, a stand-in amount until set. */
-    fun previewHabit(): Habit {
-        var h = makeHabit(trimmedName.ifEmpty { if (type == ItemType.TASK) "Your task" else "Your habit" })
-        if (hasAmount && amountValue == null) h = plan.copy(amount = 7_777_777.0, step = step ?: 1.0).apply(h)
-        return h
-    }
-
     // ------------------------------------------------------------------ Times of day and reminders
 
     fun choose(id: String) {
@@ -212,15 +204,6 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
         times = reminderParts.mapIndexed { i, id -> DraftTime(times.getOrNull(i)?.id ?: newId(), defaultMinute(id), id.takeIf { it != DaySection.ANYTIME }) }
     }
 
-    fun addReminder() {
-        if (times.isEmpty()) { syncReminders(force = true); return }
-        remindersEdited = true
-        val parts: List<String?> = if (reminderParts == listOf(DaySection.ANYTIME)) listOf(null) else reminderParts
-        val part = parts.minByOrNull { p -> times.count { it.part == p } }
-        val last = times.lastOrNull { it.part == part }?.minute
-        times = times + DraftTime(minute = ((last?.plus(60)) ?: defaultMinute(part ?: DaySection.ANYTIME)) % (24 * 60), part = part)
-    }
-
     /** Add a time (Figma 2.1.6.2.1): the minute picked, in whichever time of day it falls. */
     fun addReminderAt(minute: Int) {
         remindersEdited = true
@@ -241,6 +224,4 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     }
 
     fun suggestIcon() { if (!pickedSymbol) HabitIcons.suggest(name)?.let { symbol = it } }
-
-    @Suppress("unused") fun colorName(c: HabitColor) = c.key.replaceFirstChar { it.uppercase() }
 }

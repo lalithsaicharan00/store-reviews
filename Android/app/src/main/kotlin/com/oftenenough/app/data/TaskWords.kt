@@ -16,7 +16,6 @@ const val NO_DATE_DAY = 2932896
 val Habit.isTask: Boolean get() = kind == HabitKind.Task
 val Habit.isOneTimeTask: Boolean get() = kind == HabitKind.Task && dueDay != null
 val Habit.isRepeatingTask: Boolean get() = kind == HabitKind.Task && dueDay == null
-val Habit.hasNoDate: Boolean get() = kind == HabitKind.Task && dueDay == NO_DATE_DAY
 
 private val dayName = DateTimeFormatter.ofPattern("EEEE, d MMM", Locale.ENGLISH)
 private val monthName = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH)

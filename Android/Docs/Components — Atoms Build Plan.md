@@ -3337,3 +3337,22 @@ What each atom changed, newest last.
     welcome's pref notes, `delete_sweep`. The "Start the next routine" note goes back above `nextRoutine`.
   - Noted, not changed: the Today widgets still put done habits last through the old `Prefs.doneOrder`, which nothing
     can change any more; Today keeps them in place (A32). Decisions needed D-37.
+  - **Built:** run 41070511427 (Android, commit d6b18ba) passed: assembleDebug, unit tests and lint.
+- **Part 5 · Dead code (30 Oct).** Every Kotlin, XML and Gradle file under `Android/` (main, unit tests, instrumented
+  tests) was counted word by word; a declaration whose name appears nowhere but its own line is unreachable. Each was
+  read in place before it went; a second count caught what the first removals left unused (`Disc`, the Notes tab's
+  `NoteMonth`/`NoteItem`).
+  - Gone: `progressFill`, `animatedProgress`, `FormState.previewHabit`/`addReminder`/`colorName`, `pillDate`,
+    `NumberRow`, `MenuPill`, `sharedAxisSlidePx`, Record's `Pill` and `dateFormat`, `CountCard`, `fromLine`, `Disc`,
+    `changesText`, `FakePlusStore.confirmPending`, `NoPlusStore`, `WidgetKind.isList`, `DayScore.isFull`,
+    `quitTotalLine`, `quitClock`, `noteMonths`, `matchingNotes`, `NoteMonth`, `NoteItem`, `HowOften.hasStep`,
+    `MilestoneCenter.unplayed`/`timerReachedGoal`, `hasNoDate`, `HabitStore.hasNotes`/`regionWeekStart`,
+    `asksHowMuch`, `HabitCopy.todayCaption`, `floorMinutes`, `isWhole`, `round2`, `toIntRounded`; 47 Material Symbols
+    nothing draws (`Lock`, `Groups`, `Update`, `SortByAlpha`, …); `AppColors.flame`, a colour that was no role (A75)
+    and nothing used; and the imports these left behind.
+  - Kept, though nothing reads them: AppType's Display Large / Display Small / Body Large / Body Medium / Body Small
+    Emphasized (Figma's own styles, A74: a style never goes without the user); `MilestoneLine.pageTitle` (a constructor
+    field filled by position).
+  - Noted, not changed: stored data was never touched (day notes, groups, App Lock's and the ✏ tip's old prefs stay in
+    the files they were in; only the code that read them is gone).
+

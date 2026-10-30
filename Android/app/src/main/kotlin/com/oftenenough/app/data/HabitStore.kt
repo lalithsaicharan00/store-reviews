@@ -10,8 +10,6 @@ import app.habits.core.TimerStop
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.temporal.WeekFields
-import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -952,7 +950,6 @@ class HabitStore(
     // ------------------------------------------------------------------ Notes
 
     fun note(habit: Habit, day: Int): String? = habitNotes[habit.id]?.get(day)
-    fun hasNotes(habit: Habit) = habitNotes[habit.id]?.isNotEmpty() == true
     /** Every note on a habit, newest first. */
     fun notes(habit: Habit): List<Pair<Int, String>> = (habitNotes[habit.id] ?: emptyMap()).entries.sortedByDescending { it.key }.map { it.key to it.value }
 
@@ -1112,9 +1109,6 @@ class HabitStore(
     companion object {
         const val FREE_HABIT_LIMIT = 5
         private val RULE_PREFIXES = listOf(Keys.ARCHIVED, Keys.RULES, Keys.PAUSE, Keys.MOVE, Keys.SKIP, Keys.TIMER)
-
-        /** The phone's own week start, used nowhere by default (Sunday is the default: Current Work 99). */
-        fun regionWeekStart(): Int = WeekFields.of(Locale.getDefault()).firstDayOfWeek.value % 7 + 1
     }
 }
 

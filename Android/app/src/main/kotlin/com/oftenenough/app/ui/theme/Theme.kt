@@ -44,8 +44,6 @@ data class AppColors(
     /** Only for destructive words, never progress or habits (U3). */
     val error: Color,
     val scrim: Color,
-    /** The streak flame. */
-    val flame: Color,
     /** Badges, chips, a row's round button: Surface container highest. */
     val soft: Color,
     /** What a swipe uncovers, a notice's icon disc: Surface container highest. */
@@ -108,7 +106,6 @@ data class AppColors(
             outline = s.outline,
             error = s.error,
             scrim = s.scrim.copy(alpha = 0.32f),
-            flame = if (dark) Color(0xFFFF9F0A) else Color(0xFFF57C00), // not a role: the streak flame
             soft = s.surfaceContainerHighest, // badges, chips, a row's round button
             behind = s.surfaceContainerHighest,
             line = s.outlineVariant,

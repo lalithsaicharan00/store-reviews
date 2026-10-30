@@ -21,7 +21,6 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.LocalSize
-import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.AndroidRemoteViews
@@ -58,10 +57,8 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.oftenenough.app.R
-import com.oftenenough.app.app.MainActivity
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.widgets.WidgetAction
-import com.oftenenough.app.data.widgets.WidgetCell
 import com.oftenenough.app.data.widgets.WidgetFrame
 import com.oftenenough.app.data.widgets.WidgetItem
 import com.oftenenough.app.data.widgets.WidgetSnapshot
@@ -75,7 +72,6 @@ val VERSION_KEY = longPreferencesKey("version")
 
 enum class WidgetKind(val plus: Boolean, val large: Boolean) {
     ONE_HABIT(false, false), TODAY(true, false), TODAY_LARGE(true, true), WEEK(true, false), TASKS(false, false), TASKS_LARGE(false, true);
-    val isList: Boolean get() = this == TODAY || this == TODAY_LARGE || this == TASKS || this == TASKS_LARGE
     val tasks: Boolean get() = this == TASKS || this == TASKS_LARGE
     val oneHabit: Boolean get() = this == ONE_HABIT || this == WEEK
 }

@@ -83,9 +83,6 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
     /** A test launch that asks for Plus (TestLaunch.PLUS): owned from the start, as if bought. */
     fun ownForTest() = own(PlusProduct.PLUS)
 
-    /** Play confirmed a pending payment (what the real store hears from Play's purchase updates). */
-    fun confirmPending() { pending?.let { own(it); pending = null } }
-
     @Suppress("UNUSED_PARAMETER")
     private fun own(product: PlusProduct) {
         sp.edit().putString(KEY, PlusOwned.PLUS.name).apply()
@@ -99,16 +96,6 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
     fun reset() { sp.edit().remove(KEY).apply(); owned = PlusOwned.NONE; pending = null }
 
     companion object { private const val KEY = "owned" }
-}
-
-/** A release build before Play Billing is connected: nothing can be bought yet, and nothing is ever taken away. */
-object NoPlusStore : PlusStore {
-    override val owned = PlusOwned.NONE
-    override val pending: PlusProduct? = null
-    override val canBuy = false
-    override fun price(product: PlusProduct): String? = null
-    override suspend fun buy(activity: Activity, product: PlusProduct) = BuyResult.UNAVAILABLE
-    override suspend fun restore() = RestoreResult.COULD_NOT_CONNECT
 }
 
 /*

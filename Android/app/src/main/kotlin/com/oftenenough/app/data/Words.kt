@@ -7,12 +7,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.floor
-import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 // MOVE TO CORE: the words the app shows (rows, Day details, logs), ported unchanged from the iPhone's HabitCopy.swift and
 // Words.swift (Current Work 107). The iPhone's words stay Swift until they move into the shared core
@@ -317,15 +314,6 @@ object HabitCopy {
         if (habit.atMost) return "$name: $text"
         return "$name $text"
     }
-
-    /** Today's extra line for rules that name days ("Every Mon and Wed"); empty when the progress line says how often. */
-    fun todayCaption(habit: Habit, weekStart: Int): String {
-        if (habit.atMost) return ""
-        return when (habit.frequency) {
-            Frequency.Daily, is Frequency.PerWeek, is Frequency.PerMonth, is Frequency.PerYear, is Frequency.Flexible -> ""
-            else -> capitalized(rhythm(habit.frequency, weekStart, short = true))
-        }
-    }
 }
 
 /** "3/8 glasses", "12/20 min", "2/3 this week", "1/4 steps", "1/3 times", "0/2 cups max"; while a timer runs, "7:42/20 min". */
@@ -403,11 +391,3 @@ fun taskLine(habit: Habit, shownOn: Int, weekStart: Int = 1): String {
     if (parts.size == 1) parts.add(if (habit.dueDay != null) "Once" else HabitCopy.capitalized(HabitCopy.rhythm(habit.frequency, weekStart)))
     return parts.joinToString(" · ")
 }
-
-/** Rounds to whole minutes the way the iPhone's `rounded(.down)` does. */
-fun Double.floorMinutes(): Double = floor(this)
-
-fun Double.isWhole(): Boolean = this == Math.rint(this)
-
-@Suppress("unused") private fun Double.round2(): Double = (this * 100).roundToLong() / 100.0
-@Suppress("unused") private fun Double.toIntRounded(): Int = roundToInt()

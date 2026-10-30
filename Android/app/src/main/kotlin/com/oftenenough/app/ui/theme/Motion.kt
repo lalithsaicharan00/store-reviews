@@ -11,8 +11,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
 /**
@@ -36,10 +34,6 @@ fun <S> AnimatedContentTransitionScope<S>.sharedAxisX(forward: Boolean, slidePx:
         fadeOut(tween(FADE_OUT_MS, easing = FastOutLinearInEasing))
     return enter togetherWith exit
 }
-
-/** The 30 dp the shared axis slides, in pixels for this screen. */
-@Composable
-fun sharedAxisSlidePx(): Int = with(LocalDensity.current) { 30.dp.roundToPx() }
 
 private const val SHARED_AXIS_MS = 300
 private const val FADE_OUT_MS = 90

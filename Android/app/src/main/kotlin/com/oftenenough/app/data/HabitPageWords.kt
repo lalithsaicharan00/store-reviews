@@ -10,9 +10,9 @@ import kotlin.math.min
 // iOS/Habits/Model/HabitStore+HabitPage.swift (History, Overall record, comparisons, milestones),
 // HabitStore+WeekCards.swift (a habit's Week, Month and Year card: headline, detail and squares),
 // HabitStore+Progress.swift (progressShape, progressValue, progressPeriodResults), HabitStore+Phase2.swift (quit
-// numbers and milestones), Milestones.swift (StreakUnit.word), AllHabits/HabitPageParts.swift (NoteMonth) and
-// AllHabits/HabitPageView.swift (the header's sentence). Everything is worked out here, once per data change (the page
-// keys its `remember`s on the habit's revision), never while drawing (Rulebook S5, S8). Nothing here is stored, so an
+// numbers and milestones), Milestones.swift (StreakUnit.word) and AllHabits/HabitPageView.swift (the header's
+// sentence). Everything is worked out here, once per data change (the page keys its `remember`s on the habit's
+// revision), never while drawing (Rulebook S5, S8). Nothing here is stored, so an
 // edit, an undo or a restored backup can never leave a number that disagrees with the history (D6). Checked in
 // HabitPageWordsTest.
 
@@ -716,32 +716,12 @@ fun HabitStore.quitPeriodCard(habit: Habit, span: IntRange, range: ProgressRange
     return PeriodCard(if (paused) "Paused" else slips, if (paused) slips else null, strip)
 }
 
-/** "187 clean days since 2 Jan 2026 · 5 slips": a total a slip can't take away. */
-fun HabitStore.quitTotalLine(habit: Habit, now: Long = clock()): String {
-    val start = rules.quitStartDay(habit)
-    val stats = quitStats(habit, start..today(now), now)
-    val clean = if (stats.cleanDays == 1) "1 clean day" else "${stats.cleanDays} clean days"
-    val slips = if (stats.slips.size == 1) "1 slip" else "${stats.slips.size} slips"
-    return "$clean since ${DayWords.long(start)} · $slips"
-}
-
 /** "Saved so far: £312": clean days since the start times what it cost a day. Null with no cost. */
 fun HabitStore.moneySaved(habit: Habit, now: Long = clock()): String? {
     val cost = costs[habit.id] ?: return null
     if (cost.amount <= 0) return null
     val clean = quitStats(habit, rules.quitStartDay(habit)..today(now), now).cleanDays
     return "Saved so far: " + HabitCopy.amount(Math.rint(clean * cost.amount), cost.currency)
-}
-
-/** The live run: "12 d 4 h 31 min 07 s", "4 h 31 min 07 s", "31 min 07 s". */
-fun quitClock(seconds: Double): String {
-    val s = max(0L, seconds.toLong())
-    val d = s / 86400
-    val h = s % 86400 / 3600
-    val m = s % 3600 / 60
-    val sec = s % 60
-    val tail = "%d min %02d s".format(m, sec)
-    return if (d > 0) "$d d $h h $tail" else if (h > 0) "$h h $tail" else tail
 }
 
 /** Milestones for a quit run: 1, 3, 7 … 730 days, then every year after two, up to at least a year past [days]. */
@@ -841,42 +821,6 @@ private fun HabitStore.historyDetail(habit: Habit, day: Int, logs: List<Entry>, 
         is HabitKind.Amount, HabitKind.Duration -> result + (if (counted == 1) " · 1 log" else " · $counted logs")
         HabitKind.Check -> if (pageDayGoal(rule) > 1 && counted > 1) "$result · $counted logs" else result
         else -> result
-    }
-}
-
-// ---------------------------------------------------------------------------------------------------------- Notes
-
-/** One day's note in the Notes tab. */
-data class NoteItem(val day: Int, val text: String, val title: String, val relative: String?)
-
-/** One month of notes, newest first: a card like History's month. */
-data class NoteMonth(val first: Int, val title: String, val notes: List<NoteItem>) {
-    /** Never the same as a History month's key: both tabs share one lazy list. */
-    val key: String get() = "notes-" + dayKey(first)
-    /** "3 notes". */
-    val summary: String get() = if (notes.size == 1) "1 note" else "${notes.size} notes"
-}
-
-/** [notes] (newest first, as `HabitStore.notes`) by month. */
-fun noteMonths(notes: List<Pair<Int, String>>, today: Int): List<NoteMonth> {
-    val months = ArrayList<NoteMonth>()
-    for ((day, text) in notes) {
-        val first = pageFirstOfMonth(day)
-        val item = NoteItem(day, text, historyDayTitle(day), DayWords.relative(day, today))
-        val last = months.lastOrNull()
-        if (last != null && last.first == first) months[months.size - 1] = last.copy(notes = last.notes + item)
-        else months.add(NoteMonth(first, historyMonthTitle(first), listOf(item)))
-    }
-    return months
-}
-
-/** The notes whose text has [query], by month; every note while the query is empty. */
-fun matchingNotes(months: List<NoteMonth>, query: String): List<NoteMonth> {
-    val q = query.trim()
-    if (q.isEmpty()) return months
-    return months.mapNotNull { m ->
-        val notes = m.notes.filter { it.text.contains(q, ignoreCase = true) }
-        if (notes.isEmpty()) null else m.copy(notes = notes)
     }
 }
 

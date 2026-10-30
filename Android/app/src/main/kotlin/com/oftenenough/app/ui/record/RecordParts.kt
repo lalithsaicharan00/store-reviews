@@ -126,14 +126,6 @@ class ValueDraft(val kind: HabitKind, initial: Double? = null) {
     val value: Double? get() = check().first
 }
 
-private val dateFormat = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)
-
-/** A tonal pill button that opens a picker ("7 Oct 2026", "2:15 PM"). */
-@Composable
-fun Pill(text: String, enabled: Boolean = true, tag: String? = null, onClick: () -> Unit) {
-    AppButton(text, onClick, style = ButtonStyle.Tonal, enabled = enabled, tag = tag)
-}
-
 /** One segmented row: a label at the start and its value or control at the end (List item, 2.4). */
 @Composable
 fun FactRow(label: String, index: Int, count: Int, content: @Composable () -> Unit) =

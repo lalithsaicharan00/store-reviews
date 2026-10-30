@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import kotlin.math.floor
 import kotlin.math.max
 
 /** In a row, in total, or an anniversary (Figma *Milestones: one simple rule*, `2266:2`). */
@@ -125,9 +124,6 @@ class MilestoneCenter(private val store: HabitStore) {
     /** The habit's milestone today while it still stands (an undo hides it; done again, it's back, quietly). */
     fun visible(habit: Habit): MilestoneShown? = shown(habit.id)?.takeIf { stillReached(habit, it) }
 
-    /** Rows with a milestone not yet played (a folded card's header marks them, Figma A.2). */
-    fun unplayed(habitIds: Collection<String>): Set<String> { ensureDay(); return habitIds.filter { shown[it]?.played == false }.toSet() }
-
     fun markPlayed(habitId: String) {
         ensureDay()
         val s = shown[habitId] ?: return
@@ -171,9 +167,6 @@ class MilestoneCenter(private val store: HabitStore) {
         val day = store.today()
         if (eligible(habit, day)) timerBefore[habit.id] = Before(habit.id, day, store.streak(habit, day))
     }
-
-    /** A running timer's clock has just met the goal (no tap: the ⏸ fills; Figma R.6). */
-    fun timerReachedGoal(habit: Habit) { timerBefore[habit.id]?.let { after(it, habit, EntrySource.TIMER, 0.0) } }
 
     fun timerStopped(habitId: String) { timerBefore.remove(habitId) }
 

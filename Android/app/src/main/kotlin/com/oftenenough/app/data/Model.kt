@@ -191,8 +191,6 @@ data class Habit(
     /** What + adds, or null when + asks how much (or the habit has no +). */
     val quickIncrement: Double? get() = (kind as? HabitKind.Amount)?.increment?.takeIf { it > 0 }
 
-    val asksHowMuch: Boolean get() = (kind as? HabitKind.Amount)?.let { it.increment <= 0 } == true
-
     /** The unit the habit is counted in, if any. */
     val unit: String get() = when (kind) {
         is HabitKind.Amount -> kind.unit

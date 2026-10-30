@@ -84,7 +84,6 @@ data class HabitPlan(
 ) {
     val isTimed: Boolean get() = amount != null && unit == TIME_UNIT
     val hasAmount: Boolean get() = amount != null
-    val hasStep: Boolean get() = amount != null && !isTimed && !checklist
     val stepValue: Double get() = step ?: suggestedStep(amount, unit, often)
 
     fun apply(habit: Habit): Habit {

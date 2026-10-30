@@ -12,8 +12,6 @@ import com.oftenenough.app.ui.components.AppMenu
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.ButtonSize
-import com.oftenenough.app.ui.components.rememberWholeSheetState
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppBottomSheet
@@ -28,8 +26,6 @@ import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +33,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -46,12 +41,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -60,9 +53,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.semantics.heading
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -111,8 +101,6 @@ import com.oftenenough.app.data.OftenDraft.Choice
 import com.oftenenough.app.data.FormOutcome
 import com.oftenenough.app.data.Step
 import com.oftenenough.app.data.TextLimit
-import com.oftenenough.app.data.newId
-import com.oftenenough.app.ui.components.Card
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.record.GoalNumber
@@ -709,22 +697,6 @@ private fun ColumnScope.DateControls(rule: CalendarRule, onChange: (CalendarRule
 }
 
 private fun daysIn(month: Int): Int = java.time.YearMonth.of(2024, month).lengthOfMonth()
-
-/** A small menu button showing its choice ("first ▾"). */
-@Composable
-fun MenuPill(text: String, options: List<String>, tag: String, onPick: (Int) -> Unit) {
-    var open by remember { mutableStateOf(false) }
-    Box {
-        Row(Modifier.clip(RoundedCornerShape(8.dp)).border(1.dp, appColors.outline, RoundedCornerShape(8.dp)).clickable { open = true }
-            .semantics { testTag = tag }.heightIn(min = 40.dp).padding(start = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(text, style = MaterialTheme.typography.bodyLarge, color = appColors.ink)
-            Icon(Symbols.ArrowDropDown, null, tint = appColors.ink)
-        }
-        AppMenu(open, { open = false }) {
-            options.forEachIndexed { i, o -> AppMenuItem(o, { onPick(i); open = false }, selected = o == text) }
-        }
-    }
-}
 
 // ------------------------------------------------------------------ Time of Day
 

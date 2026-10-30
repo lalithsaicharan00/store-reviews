@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -54,12 +53,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.appColors
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
-
-/** "12 Oct 2026": the date on a pill. */
-fun pillDate(day: Int): String = LocalDate.ofEpochDay(day.toLong()).format(DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault()))
 
 /** A page the form opens: ← (or ✕) and its title, then its content, 16 at the sides. Back returns to the form, keeping what was chosen. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -188,24 +181,6 @@ fun OpenRow(
 fun SwitchRow(title: String, checked: Boolean, index: Int, count: Int, tag: String, icon: ImageVector? = null, onChange: (Boolean) -> Unit) =
     AppListItem(title, index, count, leading = icon?.let { { Icon(it, null) } }, trailing = { AppSwitch(checked) },
         onClick = { onChange(!checked) }, tag = tag)
-
-/** − [number] +: small nudges, and the number itself can be typed ("100 times a year" isn't 97 taps). */
-@Composable
-fun NumberRow(title: String, value: Int, range: IntRange, index: Int, count: Int, tag: String, unit: (Int) -> String = { "" }, onChange: (Int) -> Unit) =
-    AppListItem(title, index, count, tag = tag, trailing = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            StepButton(Symbols.Remove, "Fewer", value > range.first) { onChange(maxOf(range.first, value - 1)) }
-            BasicTextField(
-                value.toString(), { text -> text.filter { it.isDigit() }.take(5).toIntOrNull()?.let { onChange(it.coerceIn(range)) } },
-                Modifier.widthIn(min = 40.dp, max = 64.dp).semantics { contentDescription = title },
-                textStyle = AppType.titleMedium.copy(color = appColors.ink, textAlign = TextAlign.Center),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-            )
-            StepButton(Symbols.Add, "More", value < range.last) { onChange(minOf(range.last, value + 1)) }
-            val words = unit(value)
-            if (words.isNotEmpty()) Text(words, Modifier.padding(start = 4.dp), style = AppType.bodyLarge, color = appColors.secondary)
-        }
-    })
 
 /** A number's − or +: the neutral filled icon button (2.2), switched off at the end of its range. */
 @Composable

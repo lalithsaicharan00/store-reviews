@@ -44,7 +44,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import app.habits.core.BackupProblem
 import app.habits.core.DriveState
-import app.habits.core.RestoreChanges
 import com.oftenenough.app.app.backup.BackupCenter
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.HabitStore
@@ -289,19 +288,5 @@ fun FileProblem(problem: String, onChoose: () -> Unit, onBack: () -> Unit) {
         // 582:8484 · one sentence for every file that isn't one of ours, repacked or damaged alike.
         StepHeading("That isn’t a backup.", "Choose a file whose name starts with “Often Enough backup”.")
     }
-}
-
-/** "2 habits added, 28 logs added", or "Nothing changes." */
-fun changesText(c: RestoreChanges): String {
-    if (c.changesNothing) return "Nothing changes: everything in it is already here."
-    val parts = buildList {
-        if (c.habitsAdded > 0) add("${c.habitsAdded} ${if (c.habitsAdded == 1) "habit" else "habits"} added")
-        if (c.habitsRemoved > 0) add("${c.habitsRemoved} ${if (c.habitsRemoved == 1) "habit" else "habits"} removed")
-        if (c.habitsUpdated > 0) add("${c.habitsUpdated} ${if (c.habitsUpdated == 1) "habit" else "habits"} changed")
-        if (c.entriesAdded > 0) add("${c.entriesAdded} ${if (c.entriesAdded == 1) "log" else "logs"} added")
-        if (c.entriesRemoved > 0) add("${c.entriesRemoved} ${if (c.entriesRemoved == 1) "log" else "logs"} removed")
-        if (c.settingsChanged > 0 && isEmpty()) add("settings updated")
-    }
-    return parts.joinToString(", ").replaceFirstChar { it.uppercase() } + "."
 }
 

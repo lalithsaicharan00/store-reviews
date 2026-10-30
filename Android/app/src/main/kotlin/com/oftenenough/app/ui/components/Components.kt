@@ -1,8 +1,6 @@
 package com.oftenenough.app.ui.components
 
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -28,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,18 +41,6 @@ fun HabitIcon(symbol: String, color: HabitColor, size: Dp = 40.dp, shape: Shape 
     Box(modifier.size(size).clip(shape).background(appColors.habit(color)), contentAlignment = Alignment.Center) {
         Icon(HabitIcons.icon(symbol), contentDescription = null, tint = Color.White, modifier = Modifier.size(size * glyph))
     }
-}
-
-/** The progress fill behind a row: the share reached, in a light tint of the habit's colour. */
-fun Modifier.progressFill(progress: Float, color: Color): Modifier = drawBehind {
-    val p = progress.coerceIn(0f, 1f)
-    if (p > 0f) drawRect(color, size = size.copy(width = size.width * p))
-}
-
-@Composable
-fun animatedProgress(target: Float): Float {
-    val v by animateFloatAsState(target.coerceIn(0f, 1f), tween(350), label = "fill")
-    return v
 }
 
 /** A white card on the grey screen (corners 24–28). */
