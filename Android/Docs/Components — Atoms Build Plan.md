@@ -205,7 +205,7 @@ search of every page's text).
 | 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☑ |
 | 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☑ |
 | 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☑ |
-| 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☐ |
+| 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☑ |
 | 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☐ |
 | 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☐ |
 
@@ -3304,3 +3304,15 @@ What each atom changed, newest last.
     electricity bill: tap Move to another day…" … "3 · OK: it leaves Today; Moved to Fri 30 Oct · Undo"), so that
     snackbar stays; Skip this time's snackbar says "Water plants skipped this time" where Figma's says "Skipped on Sun
     25 Oct" (TasksPageTest checks the app's words; Decisions needed D-36).
+  - **Built:** run 41067604253 (Android, commit 6e1a3c1) passed: assembleDebug, unit tests and lint.
+- **6.10 Cleanup · Today (30 Oct).** Figma's page "today" and its notices.
+  - Paused opens unfolded, as drawn ("Today, scrolled to the end: the Paused card"); folding it is still remembered.
+  - The notices in Figma's words: "Often Enough can no longer reach your Google Drive. …" and "Notifications for Often
+    Enough are off in your phone's settings." (they said "the app"); a missed reminder is "Meds' 8:00 AM reminder didn't
+    arrive" with why, by the phone's maker ("Samsung phones put apps to sleep to save battery, and that can stop
+    reminders.", "Xiaomi phones stop apps in the background …", any other phone "Your phone can stop apps …", A40);
+    one that came late is "Meds' 8:00 AM reminder came 40 minutes late", and, when exact times aren't allowed, "Android
+    sends reminders at the exact time only when Alarms & reminders is allowed for Often Enough." (`makerReason`; the
+    reminders' own note of a late one now keeps how late, `Reminders.Missed.lateMinutes`).
+  - Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go: nothing called them (sorting is gone from Figma's
+    Edit Today), and with them ArrangeTest's A-to-Z case; its drag case stays.

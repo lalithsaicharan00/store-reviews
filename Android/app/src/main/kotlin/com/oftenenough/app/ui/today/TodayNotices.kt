@@ -107,7 +107,7 @@ object TodayNotices {
             ) { progress -> AppGraph.backup.backUpEverythingAgain(progress) },
         )
         if (state == DriveState.NOT_CONNECTED || forced == "off") list += TodayNotice("off", Symbols.LinkOff, "Backup is off",
-            "The app can no longer reach your Google Drive. Your habits are safe on this phone.", "Not now", "Reconnect") {
+            "Often Enough can no longer reach your Google Drive. Your habits are safe on this phone.", "Not now", "Reconnect") {
             AppGraph.scope.launch { runCatching { AppGraph.backup.connectDrive() } }
         }
         if (state == DriveState.FULL || forced == "full") list += TodayNotice("full", Symbols.CloudOff, "Backup is paused",
@@ -116,16 +116,22 @@ object TodayNotices {
         }
         val wantsReminders = store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() }
         if ((wantsReminders && !Reminders.canPost(context)) || forced == "notifications") list += TodayNotice("notifications", Symbols.NotificationsOff,
-            "Reminders can’t come", "Notifications for the app are off in your phone’s settings.", "Not now", "Turn on") {
+            "Reminders can’t come", "Notifications for Often Enough are off in your phone’s settings.", "Not now", "Turn on") {
             open(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
         }
         val missed = Reminders.missed(context, now)
         if (missed != null || forced == "missed") {
+            // Figma's words: whose reminder, and why, by this phone's maker (A40); a late one says how late, and an
+            // exact-time reminder held back says what to allow.
             val name = missed?.let { store.habit(it.habitId)?.name }
             val time = missed?.let { DayWords.clockMinute(it.minute) } ?: "8:00 AM"
-            list += TodayNotice("missed", Symbols.NotificationsPaused, "A reminder didn’t arrive",
-                "Your $time reminder" + (name?.let { " for $it" } ?: "") + " didn’t show. Your phone may be stopping the app in the background.",
-                "Dismiss", "Show me how") { nav.reminders() }
+            val whose = name?.let { (if (it.endsWith("s")) "$it'" else "$it's") + " $time reminder" } ?: "Your $time reminder"
+            val late = missed?.lateMinutes
+            val title = if (late != null) "$whose came $late ${if (late == 1L) "minute" else "minutes"} late" else "$whose didn't arrive"
+            val why = if (late != null && !Reminders.canBeExact(context))
+                "Android sends reminders at the exact time only when Alarms & reminders is allowed for Often Enough."
+                else makerReason(android.os.Build.MANUFACTURER ?: "")
+            list += TodayNotice("missed", Symbols.NotificationsPaused, title, why, "Dismiss", "Show me how") { nav.reminders() }
         }
         if (AppGraph.plus.pending != null || forced == "pending") list += TodayNotice("pending", Symbols.HourglassTop,
             "Plus is waiting for your payment", "Google Play hasn’t finished it yet. Plus turns on by itself when it does.", "Not now", "Open Google Play") {
@@ -203,5 +209,20 @@ private fun WorkingNoticeCard(notice: TodayNotice, work: NoticeWork, onDismiss: 
         "failed" -> CardNotice(notice.icon, notice.title, work.failed, dismiss = notice.dismiss, onDismiss = { TodayNotices.holding = null; onDismiss() },
             action = work.retry, onAction = start, tag = tag)
         else -> CardNotice(notice.icon, notice.title, notice.body, dismiss = notice.dismiss, onDismiss = onDismiss, action = notice.action, onAction = start, tag = tag)
+    }
+}
+
+/** Why a reminder can be held back, by the phone's maker (Figma's notices: "Samsung phones put apps to sleep …"). */
+internal fun makerReason(manufacturer: String): String {
+    val tail = "to save battery, and that can stop reminders."
+    return when (manufacturer.lowercase()) {
+        "samsung" -> "Samsung phones put apps to sleep $tail"
+        "xiaomi", "redmi", "poco" -> "Xiaomi phones stop apps in the background $tail"
+        "vivo", "iqoo" -> "vivo phones stop apps in the background $tail"
+        "oneplus" -> "OnePlus phones stop apps in the background $tail"
+        "oppo" -> "OPPO phones stop apps in the background $tail"
+        "realme" -> "realme phones stop apps in the background $tail"
+        "huawei", "honor" -> manufacturer.replaceFirstChar { it.uppercase() } + " phones stop apps in the background $tail"
+        else -> "Your phone can stop apps in the background $tail"
     }
 }

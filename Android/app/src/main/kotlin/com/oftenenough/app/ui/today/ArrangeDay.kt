@@ -87,15 +87,6 @@ import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.appColors
 import kotlin.math.roundToInt
 
-/** The card's habits sorted A to Z (the iPhone's sortCard .name). */
-fun sortedByName(list: List<Habit>): List<Habit> = list.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
-
-/** The card's habits by their first reminder time there (on the person's day); those without keep their order, last. */
-fun sortedByReminder(list: List<Habit>, card: String, store: HabitStore): List<Habit> {
-    fun first(h: Habit): Int = store.placements(h).firstOrNull { it.section == card }?.times?.firstOrNull()?.let { store.rules.dayMinute(it.minuteOfDay) } ?: Int.MAX_VALUE
-    return list.withIndex().sortedWith(compareBy<IndexedValue<Habit>> { first(it.value) }.thenBy { it.index }).map { it.value }
-}
-
 /** [list] with the item at [from] moved to [to]. */
 fun <T> List<T>.moved(from: Int, to: Int): List<T> {
     if (from !in indices || to !in indices || from == to) return this

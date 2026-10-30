@@ -451,7 +451,8 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
         else section(card, items, content, store, layout, actions, nav, prefs, lit, ix)
     }
     if (content.paused.isNotEmpty()) {
-        val open = layout.choice("paused") ?: false
+        // Paused opens unfolded, as Figma draws it ("Today, scrolled to the end: the Paused card"); folding it is kept.
+        val open = layout.choice("paused") ?: true
         indexed(ix, "header-paused") {
             // Figma's Paused header has no time line; each paused row says when it comes back.
             SectionHeader("Paused", null, open, if (open) segmentShape(0, content.paused.size + 1) else RoundedCornerShape(24.dp),
