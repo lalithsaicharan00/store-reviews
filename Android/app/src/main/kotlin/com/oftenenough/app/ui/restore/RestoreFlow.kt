@@ -220,11 +220,11 @@ fun RestoreFlow(
     fun pickFile() = open.launch(arrayOf("application/zip", "application/octet-stream", "*/*"))
 
     /** Google Drive needs the internet before Android's account chooser is worth opening (8.4). */
-    fun chooseDrive() {
+    fun chooseDrive(pick: Boolean = false) {
         // A phone with no Google Play services can't reach Drive at all: say so, and a file still brings them back.
         if (!center.link.available) { step = NO_DRIVE; return }
         if (!online(context)) { fromDrive = true; step = NO_INTERNET_DRIVE; return }
-        scope.launch { if (center.link.connect(context)) restoreFromDrive() }
+        scope.launch { if (center.link.connect(context, pick = pick)) restoreFromDrive() }
     }
 
     /**
@@ -282,7 +282,7 @@ fun RestoreFlow(
         // 39:6065 · That Google account holds no backup. A file is still a way back.
         NO_BACKUP -> FlowScreen(onBack = { step = WHERE }, tag = "no-backup", top = true, bottom = {
             MainButton("Try another Google account", "no-backup-another") {
-                scope.launch { center.disconnectDrive(); chooseDrive() }
+                chooseDrive(pick = true)
             }
         }) {
             StepHeading(

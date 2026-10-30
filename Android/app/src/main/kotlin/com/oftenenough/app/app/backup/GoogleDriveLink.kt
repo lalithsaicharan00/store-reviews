@@ -1,5 +1,6 @@
 package com.oftenenough.app.app.backup
 
+import android.accounts.Account
 import android.app.PendingIntent
 import android.content.Context
 import android.content.SharedPreferences
@@ -78,13 +79,15 @@ class GoogleDriveLink(context: Context, private val prefs: SharedPreferences) : 
      *
      * [account] is ignored: there are no accounts to take a hint from any more (D16, 21 Oct 2026).
      */
-    override suspend fun connect(context: Context, account: String?): Boolean {
-        val result = authorize() ?: return false
+    override suspend fun connect(context: Context, account: String?, pick: Boolean): Boolean {
+        // Figma's Try another Google account and Change account open the chooser every time (onboarding 10.8).
+        val chosen = if (pick) DriveConsent.pickAccount?.invoke() ?: return false else null
+        val result = authorize(chosen) ?: return false
         val granted = if (result.hasResolution()) {
             val pending = result.pendingIntent ?: return false
             if (!(DriveConsent.ask?.invoke(pending) ?: false)) return false
             // After the person allows it, ask again: this time it answers with the token and no resolution.
-            authorize()?.takeIf { !it.hasResolution() } ?: return false
+            authorize(chosen)?.takeIf { !it.hasResolution() } ?: return false
         } else {
             result
         }
@@ -111,8 +114,9 @@ class GoogleDriveLink(context: Context, private val prefs: SharedPreferences) : 
 
     // ---------------------------------------------------------------- Google
 
-    private suspend fun authorize(): AuthorizationResult? = withContext(Dispatchers.IO) {
-        val request = AuthorizationRequest.Builder().setRequestedScopes(listOf(Scope(APPDATA))).build()
+    private suspend fun authorize(account: String? = null): AuthorizationResult? = withContext(Dispatchers.IO) {
+        val request = AuthorizationRequest.Builder().setRequestedScopes(listOf(Scope(APPDATA)))
+            .apply { if (account != null) setAccount(Account(account, "com.google")) }.build()
         runCatching { await(request) }.getOrNull()
     }
 
@@ -160,4 +164,6 @@ class GoogleDriveLink(context: Context, private val prefs: SharedPreferences) : 
 object DriveConsent {
     /** Shows Google's permission screen and answers true when the person allowed it. */
     @Volatile var ask: (suspend (PendingIntent) -> Boolean)? = null
+    /** Shows Android's own account chooser for Google accounts; the chosen address, or null when they back out. */
+    @Volatile var pickAccount: (suspend () -> String?)? = null
 }

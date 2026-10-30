@@ -11,7 +11,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 
 | Page | Node | Flows | Passed |
 |---|---|---|---|
-| onboarding | 1:5 | 12 | 7 |
+| onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 83 | 0 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
@@ -22,15 +22,14 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **7** |
+| **All** | | **289** | **10** |
 
 ## Bug log
 
 Each entry: page · flow — what differed — how it was fixed (commit).
 
 1. Onboarding · New to the app — No habits yet's line wrapped on its own ("…to do often / enough."); Figma breaks it
-   after "like" (`Add something you’d like
-to do often enough.`, Body Large, 328 dp box) — the line break is in the
+   after "like" (“Add something you’d like↵to do often enough.”, Body Large, 328 dp box) — the line break is in the
    app's text now (`TodayScreen.NoHabitsYet`, `FirstRunTest`).
 2. Onboarding · New to the app — every Small button drew 8 dp narrower than Figma (New habit 129 dp against 137,
    Restore from a backup 215 against 223): the app used Material Expressive's 16/16 padding, Figma's Button (500:26)
@@ -41,6 +40,9 @@ to do often enough.`, Body Large, 328 dp box) — the line break is in the
 5. Onboarding · Plus still not back — the email's footer said “Often Enough 1.0 (4) (free)”; Figma 43:2413 says “Often Enough 1.0 (free)” (the version name alone).
 6. Onboarding · Back from Google Drive — Today, habits restored (2.7) showed a snackbar “Your habits are back: …”; Figma's onboarding ends on Today with none. The restore route now knows where it started: from the empty Today nothing more is said, from Settings it still says what came back (`AppRoot` restore?from=settings, `RestoreFlow.onRestored`).
 7. Onboarding · Back with a backup file — a file's Restoring (602:3305) showed no Cancel: it was offered only while Plus was checked, and dropped the moment the habits were written, so the screen faded to Today without it. Cancel now stays the whole restore: before the write it stops it (one transaction, rolled back), after it puts the phone back with the restore's undo file (`RestoreFlow.cancelFile`); Google Drive's Cancel also stays until the screen has gone.
+8. Onboarding · Wrong Google account — **bug:** Try another Google account never showed a chooser: it let go of the account and Play Services handed the same one straight back, so the person landed on No backup found again. The Drive link can now ask for a choice (`DriveLink.connect(pick = true)`: Android's own account chooser, then Google's grant for the chosen account), used by Try another Google account and by Settings' Change account; the old account is only replaced once a new one is chosen, so Cancel keeps it.
+
+¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
 ## Open questions for the user
 
@@ -49,6 +51,10 @@ to do often enough.`, Body Large, 328 dp box) — the line break is in the
   specimen — and 97 to FILL 1 (a habit's own icon, play/pause, the selected drawer item, Plus's medal, a state that is
   on). Following "the design wins", each icon matches the fill Figma sets on that node; switching every icon to
   filled would be a change to the design itself.
+- **Two page colours.** Four onboarding screens (Plus isn’t on this phone, No internet, No backup found, That isn’t a
+  backup, From a newer version) fill the page with `#f0f0f3`, a value with no colour style or variable behind it,
+  under a top app bar of `#eeeeee` (*Android / Light / System / Surface container*, the colour of every other screen).
+  The app keeps one page colour, `#eeeeee`; say if the band is meant.
 
 ---
 
@@ -65,9 +71,9 @@ to do often enough.`, Body Large, 328 dp box) — the line break is in the
 | 7 | 39:4212 | Back with a backup file | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | passed |
 | 8 | 39:4635 | No internet: Google Drive | Splash → Today, no habits yet → Restore from a backup → No internet → Choose a Google account → Allow Google Drive → Restoring → Today, habits restored | passed |
 | 9 | 39:5144 | No internet: checking Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → No internet → Restoring → Today, habits restored | not started |
-| 10 | 39:5757 | Wrong Google account | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → No backup found → Choose a Google account → Restoring → Today, habits restored | not started |
-| 11 | 39:6436 | Wrong file | Splash → Today, no habits yet → Restore from a backup → Choose a file → That isn’t a backup → Choose a file → Restoring → Today, habits restored | not started |
-| 12 | 39:6935 | Backup from a newer version | Splash → Today, no habits yet → Restore from a backup → Choose a file → From a newer version | not started |
+| 10 | 39:5757 | Wrong Google account | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → No backup found → Choose a Google account → Restoring → Today, habits restored | passed ¹ |
+| 11 | 39:6436 | Wrong file | Splash → Today, no habits yet → Restore from a backup → Choose a file → That isn’t a backup → Choose a file → Restoring → Today, habits restored | passed |
+| 12 | 39:6935 | Backup from a newer version | Splash → Today, no habits yet → Restore from a backup → Choose a file → From a newer version | passed |
 
 ## Today (54:5580)
 

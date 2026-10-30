@@ -33,6 +33,13 @@ import com.oftenenough.app.app.widgets.WidgetTapSaver
  * database and preferences (D8); an ordinary launch opens the person's own.
  */
 class MainActivity : ComponentActivity() {
+    /** The account chosen in Android's account chooser, while it is open. */
+    private var picking: kotlinx.coroutines.CompletableDeferred<String?>? = null
+    private val accountChooser = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { result ->
+        picking?.complete(result.data?.getStringExtra(android.accounts.AccountManager.KEY_ACCOUNT_NAME).takeIf { result.resultCode == RESULT_OK })
+        picking = null
+    }
+
     /** The answer to Google's Drive permission screen, while it is open. */
     private var consenting: kotlinx.coroutines.CompletableDeferred<Boolean>? = null
     private val consentScreen = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult()) { result ->
@@ -51,6 +58,14 @@ class MainActivity : ComponentActivity() {
             runCatching {
                 consentScreen.launch(androidx.activity.result.IntentSenderRequest.Builder(pending).build())
             }.getOrElse { consenting = null; answer.complete(false) }
+            answer.await()
+        }
+        com.oftenenough.app.app.backup.DriveConsent.pickAccount = {
+            val answer = kotlinx.coroutines.CompletableDeferred<String?>()
+            picking = answer
+            runCatching {
+                accountChooser.launch(android.accounts.AccountManager.newChooseAccountIntent(null, null, arrayOf("com.google"), null, null, null, null))
+            }.getOrElse { picking = null; answer.complete(null) }
             answer.await()
         }
     }

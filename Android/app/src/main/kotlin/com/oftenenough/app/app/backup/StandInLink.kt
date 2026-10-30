@@ -27,7 +27,7 @@ class StandInLink(private val folder: File, private val prefs: SharedPreferences
     override val accountKey: String? get() = account?.let(::driveKey)
     override fun api(): DriveApi? = if (account != null) drive else null
 
-    override suspend fun connect(context: Context, account: String?): Boolean {
+    override suspend fun connect(context: Context, account: String?, pick: Boolean): Boolean {
         val chosen = account ?: nextAccount
         this.account = chosen
         prefs.edit().putBoolean(KEY, true).putString(ACCOUNT, chosen).apply()
@@ -57,7 +57,7 @@ object NoDriveLink : DriveLink {
     override val accountName: String? get() = null
     override val accountKey: String? get() = null
     override fun api(): DriveApi? = null
-    override suspend fun connect(context: Context, account: String?): Boolean = false
+    override suspend fun connect(context: Context, account: String?, pick: Boolean): Boolean = false
     override suspend fun disconnect() {}
     override suspend fun deleteAll() {}
 }

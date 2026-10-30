@@ -257,7 +257,7 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
         // (Figma asks after it, naming the account; Decisions needed D-22).
         "switch" -> AppDialog("Back up to another Drive?",
             "From now on, your habits back up to the Google Drive you choose. The backup in $who Drive stays there until you delete it.",
-            "Choose account", { confirm = null; scope.launch { center.disconnectDrive(); center.connectDrive() } }, { confirm = null },
+            "Choose account", { confirm = null; scope.launch { center.connectDrive(pick = true) } }, { confirm = null },
             Modifier.semantics { testTag = "switch-dialog" }, confirmTag = "switch-confirm")
     }
 }
