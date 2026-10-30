@@ -403,7 +403,8 @@ private fun AppMain(
         // Plus (5.9.1), for a reason: once it's on, back where the person was, which goes on as Figma's flows say (the
         // checklist form opens; Reminders loses its badge; Year in pixels unlocks), and "Plus is on".
         composable(Routes.PLUS) { e ->
-            PlusScreen(PlusReason.of(e.arguments?.getString("reason")), store, AppGraph.plus, { nav.popBackStack() }) { nav.popBackStack(); plusOn() }
+            PlusScreen(PlusReason.of(e.arguments?.getString("reason")), store, AppGraph.plus, { nav.popBackStack() },
+                onBought = { nav.popBackStack(); plusOn() })
         }
     }
     }

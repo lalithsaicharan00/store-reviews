@@ -2867,3 +2867,6 @@ What each atom changed, newest last.
     added after it as it is.
   - Make room (the frames of the same flow) isn't a component set; it's 5.9.2.
   - Figma draws light only; dark follows the theme's roles and the habits' dark colours.
+  - **Build:** run 41024981286 (commit 2f570de) failed to compile: the Plus route's trailing lambda went to
+    `PlusScreen`'s last parameter, `title`, not `onBought` (AppRoot.kt 406). Fixed by naming it; every other call names
+    its arguments.
