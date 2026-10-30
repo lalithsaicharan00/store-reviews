@@ -57,6 +57,7 @@ import androidx.compose.foundation.layout.Arrangement
 import com.oftenenough.app.ui.plus.MainButton
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
+import com.oftenenough.app.ui.plus.QuietButton
 import kotlinx.coroutines.launch
 
 /** "Today at 9:14 AM", "Just now", "Yesterday at 9:14 AM"; Settings' row joins with ", " ("Today, 9:14 AM", Figma 1173:547). */
@@ -262,11 +263,16 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
     }
 }
 
-/** A waiting moment with no way out (Restoring, Bringing them back): writing habits isn't stopped halfway. */
+/**
+ * A waiting moment (Restoring, 582:7893). Cancel (and Back) are offered only while nothing has been written yet;
+ * once habits are being written, there is no way out: a restore is never stopped halfway.
+ */
 @Composable
-fun WaitScreen(title: String, line: String, tag: String) {
-    BackHandler { }
-    CentredMessage(title, line, tag, mark = { ExpressiveLoadingIndicator(MaterialTheme.colorScheme.surfaceContainerHighest, MaterialTheme.colorScheme.onSurface) })
+fun WaitScreen(title: String, line: String, tag: String, onCancel: (() -> Unit)? = null) {
+    BackHandler { onCancel?.invoke() }
+    CentredMessage(title, line, tag,
+        mark = { ExpressiveLoadingIndicator(MaterialTheme.colorScheme.surfaceContainerHighest, MaterialTheme.colorScheme.onSurface) },
+        bottom = { if (onCancel != null) QuietButton("Cancel", "$tag-cancel", onClick = onCancel) })
 }
 
 /** A backup file that can't be brought in (coming back 6.1.1, 6.1.2; Restore 4.2): why, and what to do. */
@@ -280,11 +286,8 @@ fun FileProblem(problem: String, onChoose: () -> Unit, onBack: () -> Unit) {
     }) {
         StepHeading("From a newer version.", "This backup is from a newer Often Enough. Update the app to bring it back. Nothing has changed yet.")
     } else FlowScreen(onBack = onBack, tag = "file-not-backup", top = true, bottom = { MainButton("Choose another file", "file-choose", onClick = onChoose) }) {
-        StepHeading("That isn’t a backup.", when (problem) {
-            BackupProblem.REPACKED -> "This file was unzipped and zipped again by another app. Choose the original file, whose name starts with “Often Enough backup”."
-            BackupProblem.DAMAGED -> "Something in this file doesn’t match, so it may be damaged. Choose another copy, whose name starts with “Often Enough backup”."
-            else -> "Choose a file whose name starts with “Often Enough backup”."
-        })
+        // 582:8484 · one sentence for every file that isn't one of ours, repacked or damaged alike.
+        StepHeading("That isn’t a backup.", "Choose a file whose name starts with “Often Enough backup”.")
     }
 }
 

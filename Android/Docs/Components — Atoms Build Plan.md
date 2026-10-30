@@ -206,7 +206,7 @@ search of every page's text).
 | 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☑ |
 | 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☑ |
 | 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☑ |
-| 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☐ |
+| 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☑ |
 | 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☐ |
 
 Settled by the user the same day (A78): "· 48 days" removed from Figma; Day details keeps ✕ (added to Figma); notes
@@ -3316,3 +3316,15 @@ What each atom changed, newest last.
     reminders' own note of a late one now keeps how late, `Reminders.Missed.lateMinutes`).
   - Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go: nothing called them (sorting is gone from Figma's
     Edit Today), and with them ArrangeTest's A-to-Z case; its drag case stays.
+  - **Built:** run 41068519185 (Android, commit 7551592) passed: assembleDebug, unit tests and lint.
+- **6.11 Cleanup · Onboarding and restore (30 Oct).** Figma's page "onboarding": Restoring (582:7893), Plus isn’t on this
+  phone (582:8320) and That isn’t a backup (582:8484).
+  - Restoring gets Figma's Cancel (Text button) and Back does the same, but **only while a backup file's Plus is being
+    asked of Google Play**, before anything is written (`RestoreFlow.checking`, the job started lazily so it is set
+    before it can clear itself). Once writing starts, Cancel goes: a restore is never stopped halfway (D rules). Google
+    Drive's path writes as it brings its copy down, so it never shows Cancel. `WaitScreen` takes an optional `onCancel`.
+  - Plus isn’t on this phone, for a backup made on an iPhone: Contact us is the Text button alone, as drawn (was filled).
+  - That isn’t a backup: Figma's one sentence for every file that isn't ours, "Choose a file whose name starts with
+    “Often Enough backup”." The repacked and damaged sentences go; the codes behind them stay (the check still tells
+    them apart). From a newer version keeps its own screen.
+  - Noted, not changed: an iPhone's Plus screen with Contact us as its only, quiet, action looks light; Figma draws it so.

@@ -47,6 +47,8 @@ import com.oftenenough.app.ui.plus.FlowScreen
 import com.oftenenough.app.ui.plus.MainButton
 import com.oftenenough.app.ui.plus.QuietButton
 import com.oftenenough.app.ui.settings.Support
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
@@ -85,6 +87,8 @@ fun RestoreFlow(
     var fromDrive by rememberSaveable { mutableStateOf(false) }
     // A checked file holds the whole backup in memory, so it is never written into the saved state.
     val pending = remember { mutableStateOf<BackupCenter.Pending?>(null) }
+    /** The file restore while it only asks Google Play about Plus: Cancel stops it then, before anything is written. */
+    var checking by remember { mutableStateOf<Job?>(null) }
 
     val email = driveEmail(center)
 
@@ -121,17 +125,24 @@ fun RestoreFlow(
             return
         }
         step = RESTORING
-        scope.launch {
+        // Started lazily, so `checking` is set before the body can clear it.
+        val job = scope.launch(start = CoroutineStart.LAZY) {
             if (needsPlus(preview.fileActiveHabits) && !hasPlus()) {
-                when (playHasPlus()) {
+                val owned = playHasPlus()
+                checking = null
+                when (owned) {
                     null -> { step = NO_INTERNET_PLUS; return@launch }
                     false -> { step = NEEDS_PLUS; return@launch }
                     true -> Unit
                 }
             }
+            // From here habits are written, so Cancel is gone: a restore is never stopped halfway.
+            checking = null
             center.restore(p, RestoreMode.REPLACE)
             finish()
         }
+        checking = job
+        job.start()
     }
 
     /** Google Drive: the copy comes down (nothing goes up), then the same gate; without Plus it is put back. */
@@ -193,11 +204,13 @@ fun RestoreFlow(
     // ---------------------------------------------------------------- The screens
 
     when (step) {
-        // 39:1755, 39:3949 · Restoring your habits. Cancel leaves it; nothing is ever half-written.
+        // 582:7893 · Restoring your habits. Cancel only while a file's Plus is being checked, before anything is
+        // written; Drive writes as it brings the copy down, so it has none (nothing is ever half-written).
         RESTORING -> WaitScreen(
             "Restoring your habits",
             if (fromDrive) "From " + (email?.plus("’s") ?: "your") + " Google Drive" else "From your backup file",
             "restoring",
+            onCancel = checking?.let { job -> { job.cancel(); checking = null; step = WHERE } },
         )
 
         // 39:4741 · No internet, before Google Drive is even asked.
@@ -242,7 +255,8 @@ fun RestoreFlow(
             val fromIphone = madeOn == "ios"
             FlowScreen(onBack = { step = WHERE }, tag = "needs-plus", top = true, bottom = {
                 if (fromIphone) {
-                    MainButton("Contact us", "needs-plus-contact") { writeToUs(context, true, madeOn, madeWithPlus) }
+                    // 582:8320 · from an iPhone only we can move Plus, so Contact us stands alone, as Figma's Text button.
+                    QuietButton("Contact us", "needs-plus-contact") { writeToUs(context, true, madeOn, madeWithPlus) }
                 } else {
                     MainButton("Check again", "needs-plus-check") { tryAgain() }
                     QuietButton("Contact us", "needs-plus-contact") { writeToUs(context, false, madeOn, madeWithPlus) }
