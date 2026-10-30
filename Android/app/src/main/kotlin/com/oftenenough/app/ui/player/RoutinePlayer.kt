@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.player
 
+import com.oftenenough.app.ui.components.belowStatusBar
+import com.oftenenough.app.ui.components.sheetInsets
 import com.oftenenough.app.data.dayResult
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.components.ListChevron
@@ -1250,7 +1252,7 @@ private fun RoutineSheet(session: PlayerSession, covered: List<Boolean>, editing
     val rowStep = with(density) { (72.dp + SegmentedListGap).toPx() }
     var dragging by remember { mutableStateOf<String?>(null) }
     var dragOffset by remember { mutableFloatStateOf(0f) }
-    ModalBottomSheet(onDismiss, sheetState = state, containerColor = s.surfaceContainer) {
+    ModalBottomSheet(onDismiss, Modifier.belowStatusBar(), sheetState = state, containerColor = s.surfaceContainer, contentWindowInsets = { sheetInsets() }) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState(), enabled = dragging == null).padding(bottom = 24.dp)
             .semantics { testTag = "routine-sheet" }) {
             Row(Modifier.fillMaxWidth().padding(start = 24.dp, end = 12.dp, bottom = 12.dp).heightIn(min = 40.dp), verticalAlignment = Alignment.CenterVertically) {

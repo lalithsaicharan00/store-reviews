@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.day
 
+import com.oftenenough.app.ui.components.belowStatusBar
+import com.oftenenough.app.ui.components.sheetInsets
 import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppTopBar
@@ -141,7 +143,7 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
     }
     val c = appColors
     val state = rememberWholeSheetState()
-    ModalBottomSheet(onDismiss, sheetState = state) {
+    ModalBottomSheet(onDismiss, Modifier.belowStatusBar(), sheetState = state, contentWindowInsets = { sheetInsets() }) {
         // A sheet is its own window: its tags reach UI Automator only if it says so too.
         val snackbar = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
@@ -471,13 +473,14 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
         HabitKind.Checklist -> emptyList()
         is HabitKind.Amount -> {
             val step = ruled.quickIncrement
-            if (step == null) listOf(DayAction("Log amount", ask, !skipped, tag = "day-add-entry", run = manual))
+            // Figma's Day details sheet (669:234, Kind=Amount): "+1 | Log"; an amount typed each time has the one Log.
+            if (step == null) listOf(DayAction("Log", ask, !skipped, tag = "day-add-entry", run = manual))
             else listOf(
                 DayAction("+" + Format.amount(step), ask, !skipped, "Add " + HabitCopy.amount(step, k.unit), "day-add-step") {
                     store.increment(habit, day, src)
                     said(HabitCopy.amount(step, k.unit))
                 },
-                DayAction("Log manually", enabled = !skipped, tag = "day-add-entry", run = manual),
+                DayAction("Log", enabled = !skipped, tag = "day-add-entry", run = manual),
             )
         }
         HabitKind.Duration -> if (day != today) listOf(DayAction("Log time", ask, !skipped, tag = "day-add-entry", run = manual))

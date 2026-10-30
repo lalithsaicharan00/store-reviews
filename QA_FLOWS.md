@@ -5,14 +5,17 @@ Written by Claude (Claude Code), 31 October 2026, for the flow-by-flow QA pass t
 a row of screens under a title frame; its node ID opens it (`?node-id=<id with - for :>`). Screens are listed in order,
 by the caption Figma gives each one. Status: **not started** · **in progress** · **passed** · **blocked** (why).
 
-Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn0112@gmail.com` (license tester).
+Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, 1080 × 2400 at 480 dpi (Figma's 360 × 800 dp), account
+`jeffreyjohn0112@gmail.com` (license tester). Set to `hw.keyboard=no` on 31 Oct 2026 (the old config is in
+`Research/Temp/qa-flows/avd-config.ini.bak`): with a hardware keyboard reported, Gboard floated and never docked, so
+no screen with a keyboard could be compared with Figma.
 
 ## Totals
 
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 1 |
+| today | 54:5580 | 83 | 4 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -22,7 +25,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **11** |
+| **All** | | **289** | **14** |
 
 ## Bug log
 
@@ -45,10 +48,15 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 10. Today · Check off a habit — the row's second line said the schedule (“Every day · 8:00 AM”) and kept the reminder after the habit was done; Figma's rule (flow 49): the goal for its period (Not done, 4/10 min, 2/3 this week), then “ | ” and the next reminder still to come, which goes once it's done (“Done”) (`StoreWords.rowLine`).
 11. Today · Check off a habit — every habit row was 76 dp, Figma's is 72: the round button's 48 dp touch target added to 14 + 14. The row keeps the 48 target with 12 around it, so the icon, words and button sit exactly where Figma draws them (shared `HabitRowLayout`).
 12. Today · demo data — the `design` demo was drawn from an older Figma frame (Meds already done, last in Morning). It now matches the Android file's Today (700:3219): Meds first and still to do at 57, one done in Afternoon and in Evening (`DemoData.design`).
+13. Today · Log an amount manually — Day details' second button said “Log manually” (and an amount typed each time “Log amount”); Figma's Day details sheet (669:234) says “+1 | Log” and a single “Log” (`DayDetails` actions).
+14. Today · Log an amount manually — tall sheets sat 6 dp lower than Figma: Material's sheet runs up behind the status bar and pads its handle down by it, while Figma's sheet edge is 6 dp above the status bar's bottom with the scrim above (87:178). One shared setting now places every modal sheet's edge there (`Modifier.belowStatusBar`, `sheetInsets`: Day details, the player's sheets, `AppBottomSheet`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
 ## Open questions for the user
+
+- **Add log's date in one flow frame.** Today flow 4's Add log (721:4184) says “21 Oct 2026”; Figma's own Log screen
+  component (687:829) and every other frame say “Today, 21 Oct 2026”. The app follows the component.
 
 - **Blocked: Google Play purchases on the emulator.** With real billing (`-PrealBilling`), Plus's price loads
   (₹2,400.00) but buying fails at once: Google Play says “The item you were attempting to purchase could not be
@@ -94,9 +102,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
 | 1 | 68:2 | Check off a habit | Today → Tap ✓: Meds fills; Undo · Note appear | passed |
-| 2 | 117:2 | Check off several times a day | Stretch breaks 1 of 3 → ✓ 2 of 3, plain → ✓ 3 of 3, fills and chimes → ✓ again: 4, still counts | not started |
-| 3 | 71:2 | Add an amount | Water 5 of 8 → + 6 of 8; Undo · Note → + twice: 8 of 8 → past the goal 9 of 8 | not started |
-| 4 | 87:2 | Log an amount manually | Water 5 of 8 → Day details → Log manually: Add log, 2 → Added: 7 of 8 → Swipe down: Today; Undo · Note | not started |
+| 2 | 117:2 | Check off several times a day | Stretch breaks 1 of 3 → ✓ 2 of 3, plain → ✓ 3 of 3, fills and chimes → ✓ again: 4, still counts | passed |
+| 3 | 71:2 | Add an amount | Water 5 of 8 → + 6 of 8; Undo · Note → + twice: 8 of 8 → past the goal 9 of 8 | passed |
+| 4 | 87:2 | Log an amount manually | Water 5 of 8 → Day details → Log manually: Add log, 2 → Added: 7 of 8 → Swipe down: Today; Undo · Note | passed |
 | 5 | 119:2 | An amount typed each time | Savings $250 of $500 → Log: Add log $50 → Add: $300; Undo · Note → Day details | not started |
 | 6 | 73:2 | Time a habit | Stretch 4 of 10 min → ▶ timer opens and starts → ⌄ row keeps the clock; ⏸ → goal: fills, chimes → ⏸ saved; Undo · Note | not started |
 | 7 | 95:2 | Log time manually | Stretch 4 of 10 → Day details → Add log, 5 min → 9 of 10 → Swipe down: Today | not started |

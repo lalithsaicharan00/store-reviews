@@ -7,6 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,7 +51,7 @@ fun AppBottomSheet(
     actions: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    ModalBottomSheet(onDismiss, sheetState = sheetState) {
+    ModalBottomSheet(onDismiss, Modifier.belowStatusBar(), sheetState = sheetState, contentWindowInsets = { sheetInsets() }) {
         Column(modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
             if (title != null) AppTopBar(title, containerColor = Color.Transparent, windowInsets = WindowInsets(0))
             content()
@@ -60,6 +65,22 @@ fun AppBottomSheet(
         }
     }
 }
+
+/**
+ * Where a tall sheet's top edge sits (Figma's Day details, 87:178): 6 dp above the status bar's bottom edge (at 30
+ * under a 36 dp status bar), the scrim above it, and the drag handle straight under that edge. Material's own sheet
+ * runs up behind the status bar instead and pushes its handle down by the bar's height, so everything sat 6 dp lower
+ * than Figma (QA, 31 Oct 2026). A short sheet is never that tall, so this changes nothing for it.
+ */
+@Composable
+fun Modifier.belowStatusBar(): Modifier {
+    val bar = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    return padding(top = (bar - 6.dp).coerceAtLeast(0.dp))
+}
+
+/** The sheet's own insets: only the navigation bar's, at the bottom (the top is [belowStatusBar]'s). */
+@Composable
+fun sheetInsets(): WindowInsets = WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
 
 /**
  * A modal sheet's state, opened whole: it skips Material's half-open stop, so a sheet's buttons are never below the
