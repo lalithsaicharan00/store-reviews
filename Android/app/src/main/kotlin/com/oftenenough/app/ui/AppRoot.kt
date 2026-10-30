@@ -18,7 +18,6 @@ import com.oftenenough.app.ui.settings.LicencesPage
 import com.oftenenough.app.ui.settings.AppLockPage
 import com.oftenenough.app.ui.settings.AppLockSetup
 import com.oftenenough.app.ui.settings.PrivacyPage
-import com.oftenenough.app.ui.settings.RemindersSettingsPage
 import com.oftenenough.app.ui.settings.DayAndWeekPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
 import com.oftenenough.app.ui.settings.SettingsHome
@@ -279,7 +278,7 @@ private fun AppMain(
                         })
                     }
                 }
-                SettingsPage.REMINDERS -> RemindersSettingsPage(store, { h -> nav.navigate(Routes.edit(h.id)) }) { nav.popBackStack() }
+                SettingsPage.REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersComingPage(store) { nav.popBackStack() }
                 SettingsPage.PRIVACY -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusPage(store, AppGraph.plus, AppGraph.backup,

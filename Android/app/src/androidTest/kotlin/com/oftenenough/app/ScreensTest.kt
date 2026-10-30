@@ -137,6 +137,19 @@ class ScreensTest {
         waitFor(hasText("Something to get done, once or on repeat."), "Add a task")
     }
 
+    /** Keep reminders coming (5.8.1, Figma 804:192; A40, A70): one Permissions list, this phone's steps, the footer. */
+    @Test fun keepRemindersComingListsThePermissions() {
+        launch()
+        menu("settings")
+        tapTag("settings-reminders")
+        waitFor(hasText("Keep reminders coming"), "the page")
+        waitFor(hasTestTag("keep-reminders-lead"), "its lead line")
+        waitFor(hasText("Permissions"), "Permissions")
+        waitFor(hasTestTag("check-notifications"), "Allow notifications")
+        waitFor(hasTestTag("check-exact"), "Allow alarms & reminders")
+        waitFor(hasText("These change only Often Enough. Other apps keep saving battery."), "the footer")
+    }
+
     @Test fun progressShowsTheWeek() {
         launch()
         menu("progress")

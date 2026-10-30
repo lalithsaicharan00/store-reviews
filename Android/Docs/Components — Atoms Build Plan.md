@@ -161,7 +161,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.14 | Create new · What kind of task? | 1109:2 | ☑ |
 | 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☑ |
 | 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☑ |
-| 5.8.1 | Settings · Keep reminders coming | 804:192 | ☐ |
+| 5.8.1 | Settings · Keep reminders coming | 804:192 | ☑ |
 | 5.8.2 | Settings · Edit time of day | 830:265 | ☐ |
 | 5.8.3 | Settings · Settings | 1173:547 | ☐ |
 | 5.8.4 | Settings · Times of day | 1176:356264 | ☐ |
@@ -2588,3 +2588,37 @@ What each atom changed, newest last.
   - Figma's Plus screen opens with a reason; the Plus screen has none yet (5.9.1).
 
   **Section 5.7 Create new is built (5.7.1–5.7.16).**
+
+- **5.8.1 Settings · Keep reminders coming (30 Oct).** Figma: Keep reminders coming (804:192), the per-maker screens on
+  the today page ("Keep reminders coming on each phone": Samsung, Xiaomi, OnePlus, vivo, Honor, Google Pixel and other
+  phones) and the settings flows ("nothing allowed yet", "tap Open settings"); A40, A66, A70. From a reminder notice's
+  Show me how and from Settings. On Surface container: the Top app bar (← "Keep reminders coming"); 16 at the sides, 8
+  above, 40 under, 24 between: the lead in Body Large On surface variant (this phone maker's, e.g. "Samsung puts apps
+  to sleep to save battery, which can stop reminders. Two steps keep Often Enough awake.", or "No habit has a reminder
+  yet. When one does, these steps make sure it comes on time. You can do them now or later."); **Permissions** (Label
+  Large Primary) over one list on Surface bright: Allow notifications (App info › Notifications; Allow), Allow alarms &
+  reminders (Special app access › Alarms & reminders; Open settings), then this phone maker's own steps, each its own
+  row with its own icon and Open settings; a row still to do has its Tonal button under its words, a row done turns its
+  icon into the check (A70); then "These change only Often Enough. Other apps keep saving battery." It is
+  `KeepRemindersComingPage` (`settings/KeepRemindersComing.kt`). The app, the unit tests (55), lint and the instrumented
+  tests' code build in the session.
+  Fixed:
+  - Settings › Reminders was a different page: a "Reminder check" card (Notifications, Exact times, Battery), a "didn't
+    arrive" card, and every habit's reminders under With reminders and Without reminders. Figma has none of those
+    (A77): deleted with `RemindersSettingsPage`, `missedReason` and `reminderLine`. Today's notice still says when a
+    reminder didn't arrive, and its Show me how opens this page.
+  - This phone maker's steps (A40) were one generic Battery row; now each maker's own steps in Figma's words: Samsung
+    (Set battery to Unrestricted; Keep it out of sleeping apps), Xiaomi, Redmi, POCO (Turn on Autostart; Set Battery
+    saver to No restrictions), OnePlus, OPPO, realme (Allow background activity; Allow auto launch), vivo, iQOO (Allow
+    high background power use; Turn on Autostart), Honor, Huawei (Manage App launch yourself, all three on), and every
+    other phone (Set battery to Unrestricted). Each opens that maker's page where Android lets an app name it, else App
+    info; one the app can read (battery Unrestricted) is ticked when it's so, the others once opened (A40).
+  - `openSettingsPage` also falls back to App info when a maker keeps its page closed to other apps.
+  - Icons added: battery_full, autorenew, battery_saver, rocket_launch (Material Symbols, outlined).
+  - Tests: ScreensTest opens the page from Settings (lead, Permissions, both rows, footer); ReminderWordsTest checks
+    each maker's lead and steps (in place of the deleted lines' tests).
+  Noted, not changed:
+  - A40: the makers' menu names change with versions; each step and the page it opens must be checked on a real phone
+    of that maker before release (W2, version-scoped). The emulator is a Google phone, so only "other phones" is seen
+    in tests.
+  - Settings' own row for this page (its name and "1 thing to fix" / "All set" / "No reminders yet") is 5.8.3.
