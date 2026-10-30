@@ -25,12 +25,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -303,18 +300,6 @@ private fun RowMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, day: Int
             store.rules.canSkip(store.rule(habit, day)) && !store.isPaused(habit, day) && !store.rules.isDone(habit, day) && !habit.atMost ->
                 item(if (day == today) "Skip today" else "Skip this day", Symbols.Redo) { layout.hold(); store.setSkipped(habit, day, true, offer = true) }
         }
-    }
-}
-
-/** The Add screen's name for this habit (U21): "Add log", "Add a check", "Mark a day done", "Tick steps", "Add slip". */
-fun addTitle(habit: Habit, store: HabitStore, day: Int): String {
-    val r = store.rule(habit, day)
-    return when (r.kind) {
-        HabitKind.Check -> if (store.rules.countsUp(habit, day)) "Add a check" else "Mark a day done"
-        HabitKind.Checklist -> "Tick steps"
-        HabitKind.Quit -> "Add slip"
-        HabitKind.Task -> "Mark a day done"
-        else -> "Add log"
     }
 }
 

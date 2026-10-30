@@ -69,8 +69,6 @@ import com.oftenenough.app.data.description
 import com.oftenenough.app.data.opensRecord
 import com.oftenenough.app.data.originLine
 import com.oftenenough.app.ui.components.segmentShape
-import com.oftenenough.app.ui.components.StepRow
-import com.oftenenough.app.ui.components.StepRowPlace
 import com.oftenenough.app.ui.day.logsTitle
 import com.oftenenough.app.ui.theme.appColors
 import java.time.ZoneId
@@ -213,18 +211,17 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     var time by rememberSaveable { mutableStateOf(store.stamp(null, startDay)) }
     var later by rememberSaveable { mutableStateOf(false) }
     var tried by rememberSaveable { mutableStateOf(false) }
-    val kind = RecordKind.of(habit, day, store)
+    // A check, a task or a checklist is logged in place, never here (an old link closes).
+    val kind = RecordKind.of(habit, day, store) ?: run { LaunchedEffect(Unit) { onDone() }; return }
     val ruled = store.rule(habit, day)
     val draft = remember(kind) { ValueDraft(ruled.kind) }
-    var ticked by remember(day) { mutableStateOf<Set<String>?>(null) }
     var discard by remember { mutableStateOf(false) }
     val focus = remember { FocusRequester() }
     val first = if (habit.kind == HabitKind.Quit) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
     val range = minOf(first, today)..today
     val slipLower = maxOf(store.rules.dayBounds(day).first, minOf(habit.quitSince ?: habit.createdAt, habit.createdAt))
     val slipUpper = minOf(store.rules.dayBounds(day).last, store.clock())
-    val doneSteps = ruled.steps.filter { store.isStepDone(it, ruled, day) }.map { it.id }.toSet()
-    val changed = draft.differs || ticked != null
+    val changed = draft.differs
     fun close() { if (changed) discard = true else onDone() }
     BackHandler { close() }
     LaunchedEffect(kind) { if (kind == RecordKind.AMOUNT || kind == RecordKind.TIME) runCatching { focus.requestFocus() } }
@@ -233,9 +230,6 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     val typed = kind == RecordKind.AMOUNT || kind == RecordKind.TIME
     val canAdd = day <= today && when (kind) {
         RecordKind.AMOUNT, RecordKind.TIME -> true
-        RecordKind.CHECK -> true
-        RecordKind.DAY_DONE -> !store.rules.isDayMet(ruled, day)
-        RecordKind.STEPS -> ticked?.let { it != doneSteps } ?: false
         RecordKind.SLIP -> slipLower <= slipUpper
     }
     fun add() {
@@ -244,12 +238,6 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
         val at = store.logTime(time, day)
         when (kind) {
             RecordKind.AMOUNT, RecordKind.TIME -> store.addProgress(habit, value!!, day, at, source)
-            RecordKind.CHECK -> store.addProgress(habit, 1.0, day, at, source)
-            RecordKind.DAY_DONE -> store.setDayDone(true, habit, day, at, source)
-            RecordKind.STEPS -> {
-                val wanted = ticked ?: doneSteps
-                for (s in ruled.steps) if ((s.id in wanted) != store.isStepDone(s, ruled, day)) store.toggleStep(s, ruled, day, at, source)
-            }
             RecordKind.SLIP -> store.slip(habit, day, time.coerceIn(slipLower, maxOf(slipLower, slipUpper)), source)
         }
         onDone()
@@ -280,18 +268,7 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
             when (kind) {
                 RecordKind.AMOUNT -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit, focus) }
                 RecordKind.TIME -> { SectionTitle("How long"); DurationCard(draft, focus) }
-                RecordKind.STEPS -> {
-                    SectionTitle("Steps")
-                    val chosen = ticked ?: doneSteps
-                    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(c.surface).padding(horizontal = 20.dp, vertical = 8.dp)) {
-                        ruled.steps.forEachIndexed { i, s ->
-                            val on = s.id in chosen
-                            StepRow(s.name, on, c.habit(habit.color), place = StepRowPlace.Card, tag = "record-step-$i",
-                                onToggle = { ticked = if (on) chosen - s.id else chosen + s.id })
-                        }
-                    }
-                }
-                else -> {}
+                RecordKind.SLIP -> {}
             }
             Footer(footer, problem = shownProblem != null)
         }
@@ -300,31 +277,15 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     if (discard) DiscardDialog("Discard this ${if (kind == RecordKind.SLIP) "slip" else "log"}?", when {
         kind == RecordKind.AMOUNT && value != null -> "The ${HabitCopy.amount(value, ruled.unit)} you typed won’t be added."
         kind == RecordKind.TIME && value != null -> "The ${Format.minutes(value)} you typed won’t be added."
-        kind == RecordKind.STEPS -> "The steps you ticked won’t be saved."
         else -> "What you typed won’t be added."
     }, { discard = false }, onDone)
 }
 
 /** Exactly what will happen, then a paused or skipped day's note (the iPhone's footers). */
 private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, day: Int, today: Int, at: Long, store: HabitStore, slipOk: Boolean): String {
-    val date = DayWords.short(day)
-    val clock = DayWords.clock(at)
     var text = when (kind) {
         RecordKind.AMOUNT -> if (ruled.atMost) "Records what happened. Your limit stays the same." else "Adds a new log. Other logs stay as they are."
         RecordKind.TIME -> if (ruled.atMost) "Records what happened. Your limit stays the same." else "Adds one session. Other logs stay as they are."
-        RecordKind.CHECK -> {
-            var t = "Adds one check to $date at $clock. Checks already there stay."
-            if (!ruled.frequency.isDayBased) {
-                val thisPeriod = store.rules.periodRange(ruled, day)?.contains(today) ?: false
-                val period = com.oftenenough.app.data.DayStatus.periodWord(ruled.frequency).trim()
-                if (period.isNotEmpty()) t += " It counts toward ${if (thisPeriod) period else period.replace("this", "that")}."
-            }
-            t
-        }
-        RecordKind.DAY_DONE -> if (store.rules.isDayMet(ruled, day)) "$date is already done. To take it back, open that day's details."
-            else "Marks $date as done at $clock." + (com.oftenenough.app.data.DayStatus.periodWord(ruled.frequency).replace(" this ", "")
-                .takeIf { ruled.frequency.isFlexible && it.isNotEmpty() }?.let { " It counts toward that $it." } ?: "")
-        RecordKind.STEPS -> "Saves these steps for $date at $clock."
         RecordKind.SLIP -> if (slipOk) "A slip is recorded with its time. You can change or remove it later." else "This day is before this run started."
     }
     if (store.isPaused(ruled, day)) text += " This day is paused. A log still goes into your history."

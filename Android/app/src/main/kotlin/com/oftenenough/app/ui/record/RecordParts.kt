@@ -52,17 +52,18 @@ import java.util.Locale
 
 /** What one Add screen adds (the iPhone's `RecordKind`). */
 enum class RecordKind(val addTitle: String, val addButton: String) {
-    AMOUNT("Add log", "Add"), TIME("Add log", "Add"), CHECK("Add a check", "Add"), DAY_DONE("Mark a day done", "Mark done"),
-    STEPS("Tick steps", "Save"), SLIP("Add slip", "Add");
+    AMOUNT("Add log", "Add"), TIME("Add log", "Add"), SLIP("Add slip", "Add");
 
     companion object {
-        fun of(habit: Habit, day: Int, store: HabitStore): RecordKind = when (store.rule(habit, day).kind) {
+        /**
+         * What Add records for this habit; null for a check, a task or a checklist, which Figma logs in place (Day
+         * details' Mark done, Add a check and its steps; cleanup 6.6), so no Add screen opens for them.
+         */
+        fun of(habit: Habit, day: Int, store: HabitStore): RecordKind? = when (store.rule(habit, day).kind) {
             is HabitKind.Amount -> AMOUNT
             HabitKind.Duration -> TIME
-            HabitKind.Check -> if (store.rules.countsUp(habit, day)) CHECK else DAY_DONE
-            HabitKind.Task -> DAY_DONE
-            HabitKind.Checklist -> STEPS
             HabitKind.Quit -> SLIP
+            HabitKind.Check, HabitKind.Task, HabitKind.Checklist -> null
         }
     }
 }

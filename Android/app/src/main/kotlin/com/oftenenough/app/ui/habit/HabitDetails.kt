@@ -94,7 +94,7 @@ import kotlinx.coroutines.launch
 interface HabitDetailsNav {
     /** Day details for [day] (a History row, Add's day, a calendar square). */
     fun openDay(habit: Habit, day: Int)
-    /** The habit's Add screen (Add log, Add a check, Mark a day done, Tick steps, Add slip) for [day]. */
+    /** The habit's Add screen (Add log or Add slip) for [day]. */
     fun addLog(habit: Habit, day: Int)
     /** The note of [day]: its view when there is one, Add note when there isn't. */
     fun note(habit: Habit, day: Int)

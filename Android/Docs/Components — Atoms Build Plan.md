@@ -201,7 +201,7 @@ search of every page's text).
 | 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☑ |
 | 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☑ |
 | 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☑ |
-| 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☐ |
+| 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☑ |
 | 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☐ |
 | 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☐ |
 | 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☐ |
@@ -3262,3 +3262,14 @@ What each atom changed, newest last.
   `MainActivity` is a `ComponentActivity` again (it was a `FragmentActivity` only for the fingerprint prompt). Names
   hidden outside the app now follow only the person's Hide names setting (`AppGraph.hidesNames`). No habit data was ever
   in App Lock's own file; it is left on the phone untouched.
+  - **Built:** run 41042376880 (Android, commit 2749232) passed: assembleDebug, unit tests and lint.
+- **6.6 Cleanup · Add screens Figma doesn't draw (30 Oct).** Figma's Day details flows (page "day details"): Mark done,
+  Add a check and Undo done act in place ("A check habit: Mark done", "Several checks a day", "A week goal", "A month
+  goal"); a checklist's steps are ticked "right in This day" ("A checklist: tick steps in Day details"); a task is "Mark
+  it done" in place; only **Log** (an amount, time; "Log from Day details", "Log time from Day details", "An amount typed
+  each time") and **Record a slip** ("Log a slip from Day details") open an Add screen. Proof in the code: every way into
+  Add (`Routes.add`: Day details' Log and Log manually, Today's Log and +, Log a slip, the player's Log, the timer's Log
+  manually, a widget's `log/` and `slip/`, an alarm's Log and Log time) is for an amount, time or quit habit. Deleted:
+  the Add screen's Add a check, Mark a day done and Tick steps modes (`RecordKind.CHECK`, `DAY_DONE`, `STEPS`, their
+  steps list, footers and discard words), and `addTitle` in `TodayRows` (read by nothing). An old link for a check, task
+  or checklist closes at once. The Log screen (a saved record) is unchanged.
