@@ -238,7 +238,11 @@ fun HabitForm(
     }
 
     when (pages.lastOrNull()) {
-        Page.HOW_MUCH -> if (form.timed) HowLongPage(form, ::back) else HowMuchPage(form, { open(Page.UNIT) }, ::back)
+        Page.HOW_MUCH -> when {
+            form.timed -> HowLongPage(form, ::back)
+            form.type == ItemType.CUT_DOWN -> LimitPage(form, { open(Page.UNIT) }, ::back)
+            else -> HowMuchPage(form, { open(Page.UNIT) }, ::back)
+        }
         Page.UNIT -> UnitPage(form, store, ::back)
         Page.STEPS -> StepsPage(form, ::back)
         Page.OFTEN -> HowOftenPage(form, ::back)

@@ -125,7 +125,7 @@ import java.util.Currency
 
 /**
  * 5.7.9, **How much page** (Figma 1102:2782, State Typing · Keyboard down; Components — Atoms Build Plan), from the
- * form's How much (and, until 5.7.13, Limit). On Surface container: the Top app bar (← "How much"); 16 at the sides and
+ * form's How much. [LimitPage] shares its number field. On Surface container: the Top app bar (← "How much"); 16 at the sides and
  * above, 40 under, 24 between: the amount's card (Surface bright, corners 24, 24 above and under, 20 at the sides, 16
  * apart): the number field (80, Surface container highest, corners 16, Display Medium, the number pad up while it's
  * empty) over the Unit dropdown; its footer, "Up to 2 decimal places. The unit is optional."; then **When you log it**
@@ -134,39 +134,14 @@ import java.util.Currency
  */
 @Composable
 fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
-    val limit = form.type == ItemType.CUT_DOWN
     val s = MaterialTheme.colorScheme
-    FormPage(if (limit) "Limit" else "How much", onBack = onBack) {
-        val focus = remember { FocusRequester() }
-        var focused by remember { mutableStateOf(false) }
-        LaunchedEffect(Unit) { if (form.amountText.isEmpty()) runCatching { focus.requestFocus() } }
+    FormPage("How much", onBack = onBack) {
         val number = @Composable {
-            BasicTextField(
-                form.amountText, { form.amountText = it.filter { c -> c.isDigit() || c == '.' || c == ',' }.take(12) },
-                Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(s.surfaceContainerHighest)
-                    .border(if (focused) 2.dp else 0.dp, if (focused) s.primary else Color.Transparent, RoundedCornerShape(16.dp))
-                    .heightIn(min = 80.dp).focusRequester(focus).onFocusChanged { focused = it.isFocused }
-                    .semantics { testTag = "much-number"; contentDescription = if (limit) "Limit" else "Amount" },
-                textStyle = AppType.displayMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
-                singleLine = true, cursorBrush = SolidColor(s.primary),
-                decorationBox = { inner ->
-                    Box(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), contentAlignment = Alignment.Center) {
-                        if (form.amountText.isEmpty() && !focused) Text(if (limit) "2" else "8", style = AppType.displayMedium.copy(color = s.onSurfaceVariant.copy(alpha = 0.45f)))
-                        inner()
-                    }
-                },
-            )
+            AmountField(form, limit = false)
             DropdownField("Unit", form.unit.ifEmpty { "No unit" }, onUnit, Modifier.fillMaxWidth(), tag = "much-unit")
         }
         val text = form.amountText.trim()
         val error = if (text.isNotEmpty() && (GoalNumber.parse(text)?.let { it > 0 } != true)) "Enter a number above 0, with up to 2 decimal places." else null
-        if (limit) {
-            // The limit's own page is 5.7.13; until then it keeps its card.
-            GoalCard(oftenHeader(form)) { number() }
-            Note(error ?: "Log it only when it happens. Staying at or under the limit counts as a good day.")
-            return@FormPage
-        }
         Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(horizontal = 20.dp, vertical = 24.dp),
@@ -177,6 +152,34 @@ fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
             if (form.type == ItemType.AMOUNT) WhenYouLogIt(form)
         }
     }
+}
+
+/**
+ * The amount (Figma's Number field): 80 tall, Surface container highest, corners 16, the number in Display Medium, centred,
+ * Primary's 2 dp ring while typing; "8" (a limit: "2") faint until typed. The number pad comes up while it's empty.
+ */
+@Composable
+private fun AmountField(form: FormState, limit: Boolean) {
+    val s = MaterialTheme.colorScheme
+    val focus = remember { FocusRequester() }
+    var focused by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { if (form.amountText.isEmpty()) runCatching { focus.requestFocus() } }
+    BasicTextField(
+        form.amountText, { form.amountText = it.filter { c -> c.isDigit() || c == '.' || c == ',' }.take(12) },
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(s.surfaceContainerHighest)
+            .border(if (focused) 2.dp else 0.dp, if (focused) s.primary else Color.Transparent, RoundedCornerShape(16.dp))
+            .heightIn(min = 80.dp).focusRequester(focus).onFocusChanged { focused = it.isFocused }
+            .semantics { testTag = "much-number"; contentDescription = if (limit) "Limit" else "Amount" },
+        textStyle = AppType.displayMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
+        singleLine = true, cursorBrush = SolidColor(s.primary),
+        decorationBox = { inner ->
+            Box(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), contentAlignment = Alignment.Center) {
+                if (form.amountText.isEmpty() && !focused) Text(if (limit) "2" else "8", style = AppType.displayMedium.copy(color = s.onSurfaceVariant.copy(alpha = 0.45f)))
+                inner()
+            }
+        },
+    )
 }
 
 /**
@@ -207,23 +210,75 @@ private fun WhenYouLogIt(form: FormState) {
     }
 }
 
-/** The white goal card: the rhythm on top ("Every day"), then what's typed. */
+/**
+ * 5.7.13, **Limit page** (Figma 1105:3190, Kind Amount · Time; A67; Components — Atoms Build Plan), from a cut-down
+ * habit's Limit. On Surface container: the Top app bar (← "Limit"); 16 at the sides and above, 40 under, 24 between:
+ * **Amount · Time** (a connected button group, Amount to start; a saved limit keeps its kind, A68), then the card
+ * (Surface bright, corners 24, 20 above, 24 under, 20 at the sides, 16 apart) under "At most" in Body Medium On surface
+ * variant. **Amount:** the number (as How much's, the number pad up) over the Unit dropdown; "Log it only when it
+ * happens. At or under the limit counts as a good day." **Time:** Hours and Minutes (as How long's), then **Quick
+ * picks** (15, 30, 45 min, 1 h, 1 h 30 min, 2 h, 3 h); "Log time spent, or use the timer. At or under the limit counts as
+ * a good day." A time limit is logged as time, or with the timer.
+ */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun GoalCard(header: String, content: @Composable ColumnScope.() -> Unit) {
-    Card(Modifier.fillMaxWidth().padding(top = 8.dp)) {
-        Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text(header, style = AppType.labelLarge, color = appColors.secondary)
-            content()
+fun LimitPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
+    val s = MaterialTheme.colorScheme
+    val time = form.unit == HabitPlan.TIME_UNIT
+    // Minutes as hours and minutes, while Time is chosen (what's saved is the total in minutes).
+    val total = if (time) form.amountValue?.toInt() else null
+    var hours by remember { mutableStateOf(total?.let { (it / 60).takeIf { h -> h > 0 }?.toString() } ?: "") }
+    var minutes by remember { mutableStateOf(total?.let { (it % 60).toString() } ?: "") }
+    fun setTime(h: String, m: String) {
+        hours = h; minutes = m
+        val sum = (h.toIntOrNull() ?: 0) * 60 + (m.toIntOrNull()?.takeIf { it < 60 } ?: if (m.isEmpty()) 0 else return)
+        form.amountText = if (sum > 0) sum.toString() else ""
+    }
+    FormPage("Limit", onBack = onBack) {
+        Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            if (form.original == null) AppConnectedButtons(listOf(false to "Amount", true to "Time"), time, tag = "limit-kind") { toTime ->
+                if (toTime != time) {
+                    // A new kind starts empty: two cups aren't two minutes.
+                    form.amountText = ""; hours = ""; minutes = ""
+                    form.unit = if (toTime) HabitPlan.TIME_UNIT else ""
+                }
+            }
+            val card = Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 24.dp)
+            if (!time) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(card, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Text("At most", style = AppType.bodyMedium, color = s.onSurfaceVariant)
+                        AmountField(form, limit = true)
+                        DropdownField("Unit", form.unit.ifEmpty { "No unit" }, onUnit, Modifier.fillMaxWidth(), tag = "much-unit")
+                    }
+                    val text = form.amountText.trim()
+                    val error = text.isNotEmpty() && GoalNumber.parse(text)?.let { it > 0 } != true
+                    Text(if (error) "Enter a number above 0, with up to 2 decimal places." else "Log it only when it happens. At or under the limit counts as a good day.",
+                        Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
+                }
+            } else {
+                val minutesFocus = remember { FocusRequester() }
+                LaunchedEffect(Unit) { if (form.amountValue == null) runCatching { minutesFocus.requestFocus() } }
+                Column(card, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Text("At most", style = AppType.bodyMedium, color = s.onSurfaceVariant)
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        TimeBox(hours, "Hours", "limit-hours", Modifier.weight(1f), Modifier) { setTime(it, minutes) }
+                        TimeBox(minutes, "Minutes", "limit-minutes", Modifier.weight(1f), Modifier.focusRequester(minutesFocus)) { setTime(hours, it) }
+                    }
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("Quick picks", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        for (m in listOf(15, 30, 45, 60, 90, 120, 180)) AppFilterChip(HabitCopy.minutes(m.toDouble()), form.amountValue?.toInt() == m, tag = "limit-pick-$m",
+                            onClick = { setTime(if (m >= 60) (m / 60).toString() else "", (m % 60).toString()) })
+                    }
+                    Text(if (minutes.toIntOrNull()?.let { it >= 60 } == true) "Minutes go up to 59; use hours for more."
+                        else "Log time spent, or use the timer. At or under the limit counts as a good day.",
+                        Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
+                }
+            }
         }
     }
-}
-
-/** "Every day", "At most, every day", "A week": the rhythm the amount is for. */
-private fun oftenHeader(form: FormState): String {
-    val o = form.plan.often
-    val phrase = o.phrase(true, false, form.weekStart)
-    return if (form.type == ItemType.CUT_DOWN) "At most, $phrase" else HabitCopy.capitalized(phrase)
 }
 
 /**
@@ -303,7 +358,6 @@ private fun TimeBox(value: String, label: String, tag: String, modifier: Modifie
  */
 @Composable
 fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
-    val limit = form.type == ItemType.CUT_DOWN
     val s = MaterialTheme.colorScheme
     var creating by remember { mutableStateOf(false) }
     var custom by remember { mutableStateOf("") }
@@ -316,8 +370,6 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
     val volume = if (metric) listOf("ml", "litres", "oz") else listOf("oz", "ml", "litres")
     val distance = if (metric) listOf("km", "miles") else listOf("miles", "km")
     val groups = buildList {
-        // A time limit is chosen here until Limit's own Amount · Time (5.7.13, A67).
-        if (limit && form.original == null) add("Time" to listOf(HabitPlan.TIME_UNIT))
         add("Drinking" to listOf("glasses", "cups", "bottles") + volume)
         add("Walking and running" to listOf("steps") + distance)
         add("Reading and writing" to listOf("pages", "chapters", "books", "words"))

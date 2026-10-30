@@ -157,7 +157,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.10 | Create new · Unit page | 1102:3316 | ☑ |
 | 5.7.11 | Create new · How long page | 1103:3208 | ☑ |
 | 5.7.12 | Create new · Steps page | 1104:163327 | ☑ |
-| 5.7.13 | Create new · Limit page | 1105:3190 | ☐ |
+| 5.7.13 | Create new · Limit page | 1105:3190 | ☑ |
 | 5.7.14 | Create new · What kind of task? | 1109:2 | ☐ |
 | 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☐ |
 | 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☐ |
@@ -2488,6 +2488,7 @@ What each atom changed, newest last.
   Noted, not changed:
   - A week's or month's total says "How long in a week, in total. The timer on Today counts up to it.", and minutes
     over 59 say "Minutes go up to 59; use hours for more." (Figma draws only a day).
+  - **Built:** run 40989840291 (Android #163, commit 16a231b) passed: assembleDebug, unit tests and lint.
 
 - **5.7.12 Create new · Steps page (30 Oct).** Figma: Steps page (1104:163327), State Typing a step, and the flow "A new
   habit: a checklist". From a checklist's Steps. On Surface container: the Top app bar (← "Steps"); 16 at the sides and
@@ -2503,3 +2504,24 @@ What each atom changed, newest last.
   Noted, not changed:
   - A73 makes a new checklist habit Plus; the free plan doesn't stop it yet. That choice is made on How do you want to
     track it? (5.7.16), where it goes.
+
+- **5.7.13 Create new · Limit page (30 Oct).** Figma: Limit page (1105:3190), Kind Amount · Time, and the flows "A new
+  habit: cut down" and "A new habit: cut down time" (A67). From a cut-down habit's Limit. On Surface container: the Top
+  app bar (← "Limit"); 16 at the sides and above, 40 under, 24 between: **Amount · Time** (a connected button group,
+  Amount to start), then a card on Surface bright (corners 24, 20 above, 24 under, 20 at the sides, 16 apart) under "At
+  most" in Body Medium On surface variant. **Amount:** How much's number field over the Unit dropdown; "Log it only when
+  it happens. At or under the limit counts as a good day." **Time:** How long's Hours and Minutes, then **Quick picks**
+  (15, 30, 45 min, 1 h, 1 h 30 min, 2 h, 3 h); "Log time spent, or use the timer. At or under the limit counts as a good
+  day." A time limit is saved as a Duration limit ("At most 1 h a day"), logged as time or with the timer. It is
+  `LimitPage` (`newhabit/FormPages.kt`), sharing `AmountField` with How much and `TimeBox` with How long. The app, the
+  unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - A67's build work: a time limit was the unit "minutes" in a *Time* group on the Unit page; that group is deleted and
+    Limit's Time choice makes the time limit, typed in hours and minutes.
+  - The limit used How much's old card with the rhythm on top ("At most, every day") and its own note; now Figma's
+    "At most" card and footers.
+  - Switching Amount and Time starts the number again (two cups aren't two minutes). A saved limit keeps its kind and
+    shows no Amount · Time (A68).
+  - The old goal card (`GoalCard`, `oftenHeader`) is deleted: no page uses it now.
+  - Tests: HabitFormTest checks At most and Amount's footer, picks Time and 1 h, sees Time's footer, and the form's
+    Limit saying 1 h.

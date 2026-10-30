@@ -293,6 +293,26 @@ class HabitFormTest {
         waitFor(hasTestTag("steps-row").and(hasContentDescription("2 steps", substring = true)), "the form saying 2 steps")
     }
 
+    /**
+     * Limit (5.7.13, Figma 1105:3190; A67): Amount · Time. Amount: at most a number and its unit; Time: at most hours and
+     * minutes with quick picks, which the form's Limit says back.
+     */
+    @Test fun aLimitIsAnAmountOrATime() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-quit")
+        tapTag("type-cut_down")
+        tapTag("how-much-row")
+        waitFor(hasText("At most"), "At most")
+        waitFor(hasText("Log it only when it happens. At or under the limit counts as a good day."), "Amount's footer")
+        tapTag("limit-kind-1")
+        waitFor(hasText("Quick picks"), "Time's quick picks")
+        tapTag("limit-pick-60")
+        waitFor(hasText("Log time spent, or use the timer. At or under the limit counts as a good day."), "Time's footer")
+        tapTag("page-back")
+        waitFor(hasTestTag("how-much-row").and(hasContentDescription("1 h", substring = true)), "the form's Limit saying 1 h")
+    }
+
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
         launch()
         editWater()
