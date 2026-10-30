@@ -402,10 +402,13 @@ class HabitFormTest {
         waitFor(hasText("Pick one or more"), "At set times of day")
         assertTrue("no line under the choice", !has(hasText("It shows in", substring = true)))
         tapTag("new-time-of-day")
-        waitFor(hasText("Ends 6:00 AM, when Morning starts"), "the worked-out end")
-        waitFor(hasText("New"), "the + New chip")
-        assertTrue("no Ends tile", !has(hasTestTag("section-end")))
+        // Edit time of day's layout (5.8.2, Figma 830:265): Ends follows from the next one; this one says New.
+        waitFor(hasTestTag("section-end").and(hasContentDescription("6:00 AM, when Morning starts", substring = true).or(hasText("6:00 AM, when Morning starts"))), "the worked-out end")
+        waitFor(hasText("New"), "this one marked New")
+        type("section-name-field", "Before breakfast")
+        waitFor(hasText("That's the most: 16 characters."), "the 16-character line")
         type("section-name-field", "Before work")
+        waitGone(hasTestTag("section-name-limit"), "the line, under 16")
         tapTag("section-save")
         waitUntil("Before work saved at 4:00 AM, nothing else changed") {
             store.sections.any { it.name == "Before work" && it.start == 4 * 60 } &&

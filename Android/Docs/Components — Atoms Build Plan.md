@@ -162,7 +162,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☑ |
 | 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☑ |
 | 5.8.1 | Settings · Keep reminders coming | 804:192 | ☑ |
-| 5.8.2 | Settings · Edit time of day | 830:265 | ☐ |
+| 5.8.2 | Settings · Edit time of day | 830:265 | ☑ |
 | 5.8.3 | Settings · Settings | 1173:547 | ☐ |
 | 5.8.4 | Settings · Times of day | 1176:356264 | ☐ |
 | 5.8.5 | Settings · Backup & Sync | 1178:960 | ☐ |
@@ -2587,6 +2587,8 @@ What each atom changed, newest last.
     Duplicate flow doesn't say. Held for the user.
   - Figma's Plus screen opens with a reason; the Plus screen has none yet (5.9.1).
 
+  - **Built:** run 40991904546 (Android #166, commit 1bebdef) passed: assembleDebug, unit tests and lint.
+
   **Section 5.7 Create new is built (5.7.1–5.7.16).**
 
 - **5.8.1 Settings · Keep reminders coming (30 Oct).** Figma: Keep reminders coming (804:192), the per-maker screens on
@@ -2622,3 +2624,29 @@ What each atom changed, newest last.
     of that maker before release (W2, version-scoped). The emulator is a Google phone, so only "other phones" is seen
     in tests.
   - Settings' own row for this page (its name and "1 thing to fix" / "All set" / "No reminders yet") is 5.8.3.
+
+- **5.8.2 Settings · Edit time of day (30 Oct).** Figma: Edit time of day (830:265), State Default · Error. From Times
+  of day (and, as New time of day, from the form's Time of day). The Top app bar (✕, the title, Save or Add); 16 at the
+  sides and above, 40 under, 8 apart: the name (Surface container lowest, Body Large, up to 16 characters; at 16,
+  "That's the most: 16 characters." in Body Small Error); **Time** (Label Large On surface variant): Starts (its time, ›,
+  the time picker) and Ends ("12:00 PM, when Afternoon starts"); "Habits can still be ticked at any time; the time of
+  day only orders Today and marks what's Now."; **Your day**: each time of day with its hours, this one saying
+  "Editing" ("New" while adding); Delete time of day (Outlined, Medium, red words, 16 above), asked first. It is
+  `SectionEditorScreen` (`settings/SettingsPages.kt`). The app, the unit tests (55), lint and the instrumented tests'
+  code build in the session.
+  Fixed:
+  - The name was Headline Medium in a 68-tall card; now Figma's field, Body Large on Surface container lowest.
+  - Starts was a large tile (the time in Display Medium, an edit pencil, the end under it); now Figma's Starts and Ends
+    rows (`StartTile` deleted).
+  - The labels were the grey group title; now Label Large On surface variant 8 above, as Figma's. The footer is Body
+    Small.
+  - Your day's rows were hand-drawn segments with a tonal "✎ Editing" chip; now List items on Surface bright with
+    "Editing" (or "New") as trailing text. The line under them ("Each time of day ends when the next one starts. …") is
+    gone: Figma has none.
+  - Over 16 characters there was the app's limit note; now Figma's "That's the most: 16 characters." in Error.
+  - Tests: HabitFormTest's new time of day test checks the Ends row's words, New, and the 16-character line.
+  Noted, not changed:
+  - Figma's Error line is red (Body Small Error) for a time of day's name; A65 keeps a habit's name field from ever
+    turning red. This follows Figma; held for the user if a time of day's name should follow A65 too.
+  - A row whose hours a new start changes says "Was …" under them, and a start inside another time of day asks to
+    split it first; Figma draws neither state.

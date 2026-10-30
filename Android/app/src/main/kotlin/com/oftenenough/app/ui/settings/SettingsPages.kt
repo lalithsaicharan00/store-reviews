@@ -46,6 +46,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -173,7 +174,15 @@ fun TimesOfDayPage(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> U
     }
 }
 
-/** New or Edit time of day: its name, when it starts and ends, and the whole day as it will be, before saving. */
+/**
+ * 5.8.2, **Edit time of day** (Figma 830:265, State Default · Error; Components — Atoms Build Plan), and New time of day,
+ * from Times of day and the form's Time of day. The Top app bar (✕, the title, Save or Add); 16 at the sides and above,
+ * 40 under, 8 apart: the name (a Form field on Surface container lowest, Body Large, up to 16 characters; at 16, "That's
+ * the most: 16 characters." in Body Small Error); **Time** (Label Large On surface variant): Starts (the time picker) and
+ * Ends ("12:00 PM, when Afternoon starts": it follows from the next time of day); "Habits can still be ticked at any
+ * time; the time of day only orders Today and marks what's Now."; **Your day**: every time of day as it will be, this one
+ * saying "Editing" (or "New"); Delete time of day (Outlined, Medium, red words), asked first.
+ */
 @Composable
 fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String?) -> Unit) {
     val existing = existingId?.let { id -> store.sections.firstOrNull { it.id == id } }
@@ -196,53 +205,49 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
         AppButton(if (existing == null) "Add" else "Save", { if (plan?.split.isNullOrEmpty()) save() else confirmSplit = true },
             Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null, tag = "section-save")
     }) {
+        val s = MaterialTheme.colorScheme
         val focus = remember { FocusRequester() }
         LaunchedEffect(Unit) { if (existing == null) runCatching { focus.requestFocus() } }
-        Box(Modifier.fillMaxWidth().padding(top = 8.dp).clip(RoundedCornerShape(24.dp)).background(appColors.surface).heightIn(min = 68.dp).padding(16.dp),
-            contentAlignment = Alignment.CenterStart) {
-            BasicTextField(name, { name = it.replace("\n", "").take(TextLimit.SECTION) }, Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "section-name-field"; contentDescription = "Name" },
-                textStyle = AppType.headlineMedium.copy(color = appColors.ink), singleLine = true, cursorBrush = SolidColor(appColors.ink),
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                decorationBox = { inner -> Box { if (name.isEmpty()) Text("e.g. Before work", style = AppType.headlineMedium.copy(color = appColors.secondary)); inner() } })
-        }
-        TextLimit.note(name, TextLimit.SECTION)?.let { Note(it) }
-        Spacer(Modifier.height(16.dp))
-        val mine = plan?.rows?.firstOrNull { it.isSubject }
-        val endWords = mine?.let { row ->
-            val next = plan.rows.firstOrNull { it.start == row.end && !it.isSubject }
-            "Ends ${DayWords.clockMinute(row.end % (24 * 60))}, when ${next?.name ?: "your new day"} starts"
-        }
-        StartTile(start, endWords) { picking = "start" }
-        Text(plan?.problem ?: "Habits can still be ticked at any time; the time of day only orders Today and marks what's Now.",
-            Modifier.padding(16.dp, 8.dp).semantics { testTag = "section-problem" }, style = MaterialTheme.typography.bodyMedium,
-            color = if (plan?.problem != null) appColors.error else appColors.secondary)
-        if (plan != null) {
-            GroupTitle("Your day")
+        @Composable fun Label(text: String) = Text(text, Modifier.padding(start = 16.dp, top = 8.dp).semantics { heading() },
+            style = AppType.labelLarge, color = s.onSurfaceVariant)
+        Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest).heightIn(min = 56.dp).padding(16.dp),
+                contentAlignment = Alignment.CenterStart) {
+                BasicTextField(name, { name = it.replace("\n", "").take(TextLimit.SECTION) }, Modifier.fillMaxWidth().focusRequester(focus).semantics { testTag = "section-name-field"; contentDescription = "Name" },
+                    textStyle = AppType.bodyLarge.copy(color = s.onSurface), singleLine = true, cursorBrush = SolidColor(s.primary),
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+                    decorationBox = { inner -> Box { if (name.isEmpty()) Text("e.g. Before work", style = AppType.bodyLarge.copy(color = s.onSurfaceVariant)); inner() } })
+            }
+            // At the limit, Figma's Error line under the field: the field keeps 16.
+            if (name.length >= TextLimit.SECTION) Text("That's the most: ${TextLimit.SECTION} characters.", Modifier.padding(horizontal = 16.dp).semantics { testTag = "section-name-limit" },
+                style = AppType.bodySmall, color = s.error)
+            Label("Time")
+            val mine = plan?.rows?.firstOrNull { it.isSubject }
+            val endWords = mine?.let { row ->
+                val next = plan.rows.firstOrNull { it.start == row.end && !it.isSubject }
+                DayWords.clockMinute(row.end % (24 * 60)) + ", when ${next?.name ?: "your new day"} starts"
+            }
             SegmentedList {
-                plan.rows.forEachIndexed { i, row ->
-                    Segment(i, plan.rows.size, Modifier.semantics(mergeDescendants = true) { testTag = "plan-row-${row.name}" }) {
-                        Column(Modifier.weight(1f).padding(vertical = 4.dp)) {
-                            Text(row.name, style = if (row.isSubject) AppType.titleMedium else AppType.bodyLarge, color = appColors.ink, maxLines = 1)
-                            Text(row.range, style = MaterialTheme.typography.bodyMedium, color = if (row.isSubject || row.changed) appColors.ink else appColors.secondary)
-                            if (!row.isSubject && row.changed) row.oldRange?.let { Text("Was $it", style = MaterialTheme.typography.bodySmall, color = appColors.secondary) }
-                        }
-                        if (row.isSubject) {
-                            Row(Modifier.clip(RoundedCornerShape(16.dp)).background(appColors.tonal).padding(start = 8.dp, end = 12.dp, top = 6.dp, bottom = 6.dp),
-                                verticalAlignment = Alignment.CenterVertically) {
-                                Icon(if (existing == null) Symbols.Add else Symbols.Edit, null, Modifier.size(18.dp), tint = appColors.ink)
-                                Spacer(Modifier.width(4.dp))
-                                Text(if (existing == null) "New" else "Editing", style = MaterialTheme.typography.labelLarge, color = appColors.ink)
-                            }
-                        }
+                val startText = start?.let { DayWords.clockMinute(it % (24 * 60)) } ?: "Choose"
+                AppListItem("Starts", 0, 2, Modifier.semantics(mergeDescendants = true) { contentDescription = "Starts, $startText" }, startText,
+                    trailing = { ListChevron() }, onClick = { picking = "start" }, containerColor = s.surfaceBright, tag = "section-start")
+                AppListItem("Ends", 1, 2, supporting = endWords ?: "When the next time of day starts", containerColor = s.surfaceBright, tag = "section-end")
+            }
+            Text(plan?.problem ?: "Habits can still be ticked at any time; the time of day only orders Today and marks what's Now.",
+                Modifier.padding(horizontal = 16.dp).semantics { testTag = "section-problem" }, style = AppType.bodySmall,
+                color = if (plan?.problem != null) s.error else s.onSurfaceVariant)
+            if (plan != null) {
+                Label("Your day")
+                SegmentedList {
+                    plan.rows.forEachIndexed { i, row ->
+                        AppListItem(row.name, i, plan.rows.size, Modifier.semantics(mergeDescendants = true) { testTag = "plan-row-${row.name}" }, row.range,
+                            trailing = if (row.isSubject) ({ Text(if (existing == null) "New" else "Editing", style = AppType.bodyMedium, color = s.onSurfaceVariant) }) else null,
+                            below = if (!row.isSubject && row.changed) row.oldRange?.let { { Text("Was $it", style = AppType.bodySmall, color = s.onSurfaceVariant) } } else null,
+                            containerColor = s.surfaceBright, headlineLines = 1)
                     }
                 }
             }
-            Note(if (existing == null) "Each time of day ends when the next one starts. This is your day once you add this one."
-                else "Each time of day ends when the next one starts. This is your day once you save.")
-        }
-        if (existing != null) {
-            Spacer(Modifier.height(24.dp))
-            AppButton("Delete time of day", { confirmDelete = true }, Modifier.fillMaxWidth(), style = ButtonStyle.Outlined,
+            if (existing != null) AppButton("Delete time of day", { confirmDelete = true }, Modifier.fillMaxWidth().padding(top = 16.dp), style = ButtonStyle.Outlined,
                 size = ButtonSize.Medium, destructive = true, tag = "section-delete")
         }
     }
@@ -258,26 +263,4 @@ fun SectionEditorScreen(store: HabitStore, existingId: String?, onClose: (String
     }, { confirmDelete = false }, destructive = true, confirmTag = "section-delete-confirm")
 }
 
-/** "🕒 Starts / 6:00 AM": a big clock time that opens Android's time picker. */
-/** The one Starts tile (Current Work 108): the start large, an edit pencil, and the end worked out under it in grey. */
-@Composable
-private fun StartTile(minute: Int?, endWords: String?, onClick: () -> Unit) {
-    val text = minute?.let { DayWords.clockMinute(it % (24 * 60)) }
-    val (main, suffix) = text?.split(" ")?.let { if (it.size == 2) it[0] to it[1] else text to "" } ?: ("Choose" to "")
-    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(appColors.surface).clickable(onClick = onClick)
-        .semantics(mergeDescendants = true) { testTag = "section-start"; contentDescription = "Starts, ${text ?: "not chosen"}" + (endWords?.let { ". $it" } ?: "") }
-        .padding(16.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Symbols.Schedule, null, Modifier.size(20.dp), tint = appColors.secondary)
-            Spacer(Modifier.width(8.dp))
-            Text("Starts", Modifier.weight(1f), style = AppType.titleMedium, color = appColors.secondary)
-            Icon(Symbols.Edit, null, Modifier.size(20.dp), tint = appColors.ink)
-        }
-        Row(verticalAlignment = Alignment.Bottom) {
-            Text(main, style = AppType.displayMedium.copy(color = appColors.ink))
-            if (suffix.isNotEmpty()) Text(" $suffix", Modifier.padding(bottom = 8.dp), style = MaterialTheme.typography.titleMedium, color = appColors.ink)
-        }
-        endWords?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = appColors.secondary) }
-    }
-}
 
