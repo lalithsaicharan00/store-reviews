@@ -489,7 +489,8 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
         else listOf(
             if (store.timers.containsKey(habit.id)) DayAction("Stop and save", ask, !skipped, tag = "day-stop-timer") { store.stopTimer(habit, day) }
             else DayAction("Start timer", ask, !skipped, tag = "day-start-timer") { store.toggleTimer(habit) },
-            DayAction("Log manually", enabled = !skipped, tag = "day-add-entry", run = manual),
+            // Figma's Day details for a time habit: "Start timer | Log time" (Day details flows 13, 23).
+            DayAction("Log time", enabled = !skipped, tag = "day-add-entry", run = manual),
         )
         HabitKind.Quit -> listOf(DayAction(if (hasLogs) "Record another slip" else "Record a slip", tag = "day-add-entry", run = manual))
     }
