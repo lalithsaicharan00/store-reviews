@@ -84,7 +84,7 @@ class FirstRunTest {
     @Test fun theAppOpensStraightOnTodayWithNoOnboarding() {
         launch()
         waitFor(hasText("No habits yet"), "an empty Today")
-        waitFor(hasText("Add something you’d like to do often enough."), "the lead line")
+        waitFor(hasText("Add something you’d like\nto do often enough."), "the lead line")
         waitFor(hasTestTag("new-habit"), "+ in the top bar")
         waitFor(hasTestTag("menu-button"), "the menu button")
         // Nothing to arrange or filter before there is a habit (Figma 36:32: only menu and add).

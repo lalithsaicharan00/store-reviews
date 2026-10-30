@@ -1,0 +1,387 @@
+# QA Flows — Often Enough Android app against Figma
+
+Written by Claude (Claude Code), 31 October 2026, for the flow-by-flow QA pass the user asked for. Figma file:
+[Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app) (`sJptV3HAKYauEIGUxYS3qs`). Each flow is
+a row of screens under a title frame; its node ID opens it (`?node-id=<id with - for :>`). Screens are listed in order,
+by the caption Figma gives each one. Status: **not started** · **in progress** · **passed** · **blocked** (why).
+
+Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn0112@gmail.com` (license tester).
+
+## Totals
+
+| Page | Node | Flows | Passed |
+|---|---|---|---|
+| onboarding | 1:5 | 12 | 1 |
+| today | 54:5580 | 83 | 0 |
+| day details | 169:1270 | 44 | 0 |
+| routine player | 234:2 | 24 | 0 |
+| habits & tasks | 269:148 | 35 | 0 |
+| details pages | 298:2 | 24 | 0 |
+| create new | 381:2 | 28 | 0 |
+| settings | 781:34017 | 23 | 0 |
+| plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
+| widgets | 1232:173760 | 4 | 0 |
+| notifications & alarms | 1265:24553 | 12 | 0 |
+| **All** | | **289** | **1** |
+
+## Bug log
+
+Each entry: page · flow — what differed — how it was fixed (commit).
+
+1. Onboarding · New to the app — No habits yet's line wrapped on its own ("…to do often / enough."); Figma breaks it
+   after "like" (`Add something you’d like
+to do often enough.`, Body Large, 328 dp box) — the line break is in the
+   app's text now (`TodayScreen.NoHabitsYet`, `FirstRunTest`).
+2. Onboarding · New to the app — every Small button drew 8 dp narrower than Figma (New habit 129 dp against 137,
+   Restore from a backup 215 against 223): the app used Material Expressive's 16/16 padding, Figma's Button (500:26)
+   has 24/24, 16/24 with an icon — `AppButton`'s Small padding is Figma's now (`Button.kt`). Shared: every Small
+   button in the app widens to Figma's.
+
+## Open questions for the user
+
+- **Filled icons.** The brief says the design uses filled icons everywhere, but the Figma file sets 449 icon glyphs
+  (Material Symbols Rounded) to FILL 0 — drawn outlined in Figma too, e.g. `calendar_today` in the Assist chip
+  specimen — and 97 to FILL 1 (a habit's own icon, play/pause, the selected drawer item, Plus's medal, a state that is
+  on). Following "the design wins", each icon matches the fill Figma sets on that node; switching every icon to
+  filled would be a change to the design itself.
+
+---
+
+## Onboarding (1:5)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 31:5578 | New to the app | Splash → Today, no habits yet | passed |
+| 2 | 39:1532 | Back from Google Drive | Splash → Today, no habits yet → Restore from a backup → Choose a Google account (native) → Allow Google Drive (native) → Restoring → Today, habits restored | not started |
+| 3 | 39:2021 | Plus didn’t come back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Restoring → Today, habits restored | not started |
+| 4 | 39:2697 | Plus still not back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Email | not started |
+| 5 | 39:3228 | From an iPhone, with Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file (native) → Restoring → Plus isn’t on this phone (iPhone) → Email | not started |
+| 6 | 39:3744 | From an iPhone, without Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | not started |
+| 7 | 39:4212 | Back with a backup file | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | not started |
+| 8 | 39:4635 | No internet: Google Drive | Splash → Today, no habits yet → Restore from a backup → No internet → Choose a Google account → Allow Google Drive → Restoring → Today, habits restored | not started |
+| 9 | 39:5144 | No internet: checking Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → No internet → Restoring → Today, habits restored | not started |
+| 10 | 39:5757 | Wrong Google account | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → No backup found → Choose a Google account → Restoring → Today, habits restored | not started |
+| 11 | 39:6436 | Wrong file | Splash → Today, no habits yet → Restore from a backup → Choose a file → That isn’t a backup → Choose a file → Restoring → Today, habits restored | not started |
+| 12 | 39:6935 | Backup from a newer version | Splash → Today, no habits yet → Restore from a backup → Choose a file → From a newer version | not started |
+
+## Today (54:5580)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 68:2 | Check off a habit | Today → Tap ✓: Meds fills; Undo · Note appear | not started |
+| 2 | 117:2 | Check off several times a day | Stretch breaks 1 of 3 → ✓ 2 of 3, plain → ✓ 3 of 3, fills and chimes → ✓ again: 4, still counts | not started |
+| 3 | 71:2 | Add an amount | Water 5 of 8 → + 6 of 8; Undo · Note → + twice: 8 of 8 → past the goal 9 of 8 | not started |
+| 4 | 87:2 | Log an amount manually | Water 5 of 8 → Day details → Log manually: Add log, 2 → Added: 7 of 8 → Swipe down: Today; Undo · Note | not started |
+| 5 | 119:2 | An amount typed each time | Savings $250 of $500 → Log: Add log $50 → Add: $300; Undo · Note → Day details | not started |
+| 6 | 73:2 | Time a habit | Stretch 4 of 10 min → ▶ timer opens and starts → ⌄ row keeps the clock; ⏸ → goal: fills, chimes → ⏸ saved; Undo · Note | not started |
+| 7 | 95:2 | Log time manually | Stretch 4 of 10 → Day details → Add log, 5 min → 9 of 10 → Swipe down: Today | not started |
+| 8 | 75:2 | Tick checklist steps | Skincare 1 of 4 → ⌄ steps open → tick: 2 of 4 → last step: fills → ⌃ folds | not started |
+| 9 | 77:2 | A week or month goal | Call family 2 of 3 this week → ✓ 3 of 3 → rest of week stays full | not started |
+| 10 | 120:2 | Do a task on Today | Pick up parcel → ✓ done; Undo · Note → stays done in place | not started |
+| 11 | 79:2 | Quit: log a slip | Smoking 19 days → Day details → Add slip → 1 slip recorded → Swipe down: run starts again | not started |
+| 12 | 81:1657 | Log a slip from the menu | Today → hold Smoking: menu → Add slip → back on Today; Undo · Note | not started |
+| 13 | 122:2 | Touch and hold a habit | Today → hold Meds: menu → Skip today: skipped; Undo · Note | not started |
+| 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | not started |
+| 15 | 137:2 | Pause a habit until a date | Today → menu → Pause sheet (1 week) → Until a date…: date picker → 30 → OK: Back on Fri, 30 Oct → Pause | not started |
+| 16 | 122:1300 | Resume a habit | Paused card → Day details, Paused → Resume habit; snackbar Undo | not started |
+| 17 | 84:2 | Undo and Note follow the latest log | Water 6 of 8 → + on Water: buttons on Water → ✓ Call family: buttons move → Start a routine: buttons go | not started |
+| 18 | 139:5 | Undo clears the buttons | Water 6 of 8 → + → ✓ Call family → Undo: check taken back, buttons gone | not started |
+| 19 | 85:2 | Skip a day | Meds not done → Day details → Skip today → Swipe down: Meds skipped | not started |
+| 20 | 85:780 | Skip by swiping | Meds → swipe left: Skip → past halfway: dark, Skip today, tick → let go: skipped | not started |
+| 21 | 124:2 | Add a note by swiping right | Today → swipe right Water: Note → past halfway: Add note → let go: Add note | not started |
+| 22 | 124:647 | Undo a skip by swiping | Meds skipped → swipe left: Undo skip → dark → let go: not done | not started |
+| 23 | 124:1376 | Log a slip by swiping | Smoking → swipe left: Log a slip → dark → let go: Add slip | not started |
+| 24 | 124:2081 | Swiping where there's nothing to do | Today → week goal springs back → cut-down springs back → task springs back | not started |
+| 25 | 90:2 | Add a note after a log | Water 5 of 8 → + 6 of 8 → Note: Add note → type: Save on → Save: Note saved → Day details shows it | not started |
+| 26 | 90:828 | Add a note from Day details | Water → Day details → Add a note… → Save: shows here | not started |
+| 27 | 91:2 | Change a note | Water → Day details with note → Note → Edit note → Save | not started |
+| 28 | 91:607 | Delete a note | Water → Day details → Note → Delete this note? → Delete; Undo | not started |
+| 29 | 91:1143 | Leave a note unsaved | Water → Day details → note typed → ✕: Discard this note? → Discard | not started |
+| 30 | 99:2 | Log yesterday | Today → ‹ Yesterday; Back to today → ✓ Meds for yesterday → Back to today: streak 58 | not started |
+| 31 | 100:2 | Look at tomorrow | Today → › Tomorrow → Water: Day details for tomorrow → ✕ → Back to today | not started |
+| 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | not started |
+| 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | not started |
+| 34 | 104:419 | Nothing planned today | Nothing planned today → › Tomorrow, Gym → Back to today | not started |
+| 35 | 125:2 | Notice: backup is paused | Backup is paused → backed up: notice gone | not started |
+| 36 | 125:371 | Notice: backup is off | Backup is off → Reconnect: account chooser → pick account → Continue: notice gone; snackbar | not started |
+| 37 | 125:807 | Notice: your backup was removed | Backup deleted → Back up again: backing up → Backed up → card gone | not started |
+| 38 | 125:1173 | Notice: a reminder didn't arrive | Reminder didn't arrive → Show me how: Keep reminders coming → Open → Back → Open → Back: all set | not started |
+| 39 | 151:2 | Notice: a reminder came late | Came late → Show me how: Alarms & reminders off → Open settings → Back: all set → ← Today | not started |
+| 40 | 151:498 | Keep reminders coming on each phone | Xiaomi notice → Xiaomi → OnePlus/OPPO → vivo → Honor/Huawei → Pixel and others | not started |
+| 41 | 125:1537 | Notice: reminders can't come | Reminders can't come → Turn on: Android's question → Allow: notice gone | not started |
+| 42 | 153:206 | Notice: reminders can't come (won't ask again) | Reminders can't come → Turn on: notification settings → Back: notice gone | not started |
+| 43 | 125:1901 | Notice: Plus is waiting for payment | Plus waiting for payment → Plus is on: notice gone | not started |
+| 44 | 116:2 | Cut down: an amount | Coffee 1 of 2 → + Limit reached → + Over the limit → Day details | not started |
+| 45 | 116:987 | Cut down: a time limit | Social media 0 of 30 → ▶ timer vs limit → ⌄ → 30:00 Limit reached → ⏸ at 42 min: Over the limit | not started |
+| 46 | 126:362 | A new habit appears | Today (after + → form → Add) → Journal at the end of Morning | not started |
+| 47 | 126:900 | Couldn't save a tap | Meds → ✓ shows at once → save failed: goes back; snackbar | not started |
+| 48 | 126:1437 | Long names and large text | Today → 24-letter name, one line … → 200 % font | not started |
+| 49 | 232:2 | What a row's second line says, with reminders | goal · reminder after a \| → ✓ Meds: reminder time goes | not started |
+| 50 | 57:2 | Arrange Today | Today → ✏ Edit Today → drag Read into Evening → dropped; Undo → ← Today | not started |
+| 51 | 59:4 | Change a time of day | Today → Edit Today → ✏ Morning: Edit time of day → Starts: time picker → 7:00 AM → Save | not started |
+| 52 | 59:712 | Add a time of day | Today → Edit Today → Add time of day → Starts: picker → 10:00 PM → Add: Night | not started |
+| 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | not started |
+| 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | not started |
+| 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | not started |
+| 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | not started |
+| 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | not started |
+| 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | not started |
+| 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | not started |
+| 60 | 107:2429 | Milestone on the row: quit, no tap | Open the app: 30 days clean → Quitting on screen: band rises once | not started |
+| 61 | 108:2 | Milestone bar: one milestone | Meds 2 → ✓ 3: bar above the day bar → after 5 s/touch: bar goes, band | not started |
+| 62 | 108:561 | Milestone bar: the next one replaces it | Stretch past 10, Meds to do → ✓ Meds: bar → ⏸ Stretch: Stretch's bar → 5 s: band | not started |
+| 63 | 108:1308 | Milestone: a number reached again | Meds 6 (had 7) → ✓ 7: just the row → band stays | not started |
+| 64 | 110:2 | Pop-up: your first milestone | Meds 2 → ✓ pop-up once taps stop → Close: band | not started |
+| 65 | 110:592 | Pop-up: a month in a row | Meds 29 → ✓ pop-up → Close | not started |
+| 66 | 110:1179 | Pop-up: a year in a row | Meds 364 → ✓ pop-up → Close | not started |
+| 67 | 110:1766 | Pop-up: weeks of goals met | Call family 2 of 3 (25 weeks) → ✓ pop-up → Close | not started |
+| 68 | 110:2353 | Pop-up: months of goals met | Deep clean 0 of 1 (5 months) → ✓ pop-up → Close | not started |
+| 69 | 110:2937 | Pop-up: a yearly anniversary | Meds a year ago → ✓ One year of Meds → Close | not started |
+| 70 | 111:2 | Pop-up: quit, from its band | Smoking's band → tap: pop-up → Close | not started |
+| 71 | 111:714 | Pop-up: cut down, from its band | Coffee's band → pop-up → Close | not started |
+| 72 | 111:1426 | Pop-up: from a bar's See | Meds → ✓ 25 times: bar → See: pop-up → Close | not started |
+| 73 | 111:2209 | Pop-up: back to your best | Meds 13 (best 14) → ✓ 14: bar → band: pop-up "again" → Close | not started |
+| 74 | 111:2992 | Pop-up: quit, back after a slip | Smoking's band → pop-up → Close | not started |
+| 75 | 112:2 | Reached away: from a widget | Open app: Water finished on widget → band plays once | not started |
+| 76 | 112:360 | Reached away: in a folded section | Afternoon folded → open: band plays once | not started |
+| 77 | 112:757 | Reached away: the milestone notification | Lock screen notification → tap: Today with pop-up → Close | not started |
+| 78 | 166:2 | Reached away: notification, phone in use | heads-up notification → tap: pop-up → Close | not started |
+| 79 | 114:2 | Rule: a pop-up, a bar, then just the row | Meds 29, Stretch 2, Skincare 6 → pop-up → bar → just the row | not started |
+| 80 | 114:793 | Rule: two bars, then just the row | Meds 2, Stretch 6, Skincare 13 → bar → bar → row | not started |
+| 81 | 114:1551 | Rule: no more than 2 pop-ups in 7 days | Wed, 2 pop-ups → ✓ 30 days: a bar → 5 s band; See opens pop-up | not started |
+| 82 | 114:2107 | Rule: history added later is never celebrated | missed yesterday → ‹ Yesterday → ✓: nothing plays | not started |
+| 83 | 114:2646 | Rule: undone and done again | Meds 2 → ✓ bar → Undo → ✓ again: nothing plays twice | not started |
+
+## Day details (169:1270)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 173:2 | Open Day details and close it | Today → Day details → drag down/✕/Back → Today | not started |
+| 2 | 175:2 | +1 to the goal, and past it | Water 7 of 8 → 1 glass to go → +1: Goal reached → +1: 9 of 8 → ✕ | not started |
+| 3 | 176:2 | Log from Day details | Water 5 of 8 → Day details → Log: Add log, 2 → Added: 7 of 8 → ✕ | not started |
+| 4 | 178:2 | Add log on another day and time | → Add log → Date: picker → 20 → OK → Time: picker → OK → Add: snackbar says where | not started |
+| 5 | 179:2 | Add log: nothing typed, or a time later than now | → Add log empty → Add: error line → type 2 → Time 6:00 PM → OK: stays 2:05 PM, says why → Add → ✕ | not started |
+| 6 | 180:2 | Add log: ✕ after typing | → 2 typed → ✕: Discard this log? → Keep editing → ✕ → Discard → ✕ | not started |
+| 7 | 181:2 | Open a log | → Day details → tap log: Log view → ← → ✕ | not started |
+| 8 | 182:2 | Edit a log | → Log → Edit → type 3 → Save: snackbar → ← 6 of 8 → ✕ | not started |
+| 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | not started |
+| 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | not started |
+| 11 | 185:2 | Delete a log | → Log → Delete this log? → Delete; Undo → Undo → ✕ → (Cancel) | not started |
+| 12 | 186:2 | All logs, and deleting there | Water 7 of 8 → 2 newest + All 4 logs → All logs → Log → Delete → Undo → ← → ✕ | not started |
+| 13 | 188:2 | Time a habit from Day details | → Start timer → ⌄ → Pause: saved → ✕ → (timer) Today › | not started |
+| 14 | 189:2 | Log time from Day details | → Log time: 5 min → 9 of 10 → ✕ | not started |
+| 15 | 190:2 | A timer's log: view and change it | → timer's log → Log with seconds → Edit H/M/S → 3 → Save → ← → ✕ | not started |
+| 16 | 191:2 | A check habit: Mark done, and Undo done | → Not done → Mark done → ✕ → Day details Done → Undo done → ✕ | not started |
+| 17 | 192:2 | Skip a day from Day details, and undo it | → Skip today → ✕ → Day details Skipped → Undo skip → ✕ | not started |
+| 18 | 193:2 | Several checks a day | Stretch breaks 2 of 3 → Add a check → tap check: Log → Delete this check? → Delete; Undo → ✓ past goal | not started |
+| 19 | 194:638 | A week goal: checks count toward the week | Call family 2 of 3 → This week, no Skip → Add a check → ✕ → stays full → next Monday 0 of 3 | not started |
+| 20 | 195:2 | A month goal: done once this month | Deep clean → This month → Mark done → ✕ → stays full → done on Wed, 21 Oct | not started |
+| 21 | 196:178 | An amount week goal: Push-ups, 300 a week | 140 of 300 → +20 \| Log → +20 → ✕ → Saturday goal | not started |
+| 22 | 197:2 | An amount typed each time: Savings | $250 of $500 → one Log → Add log $50 → Add → ✕ | not started |
+| 23 | 198:2 | A time week goal: Piano, 3 hours a week | 1 h 40 of 3 h → Start timer → ⌄ → Pause → ✕ | not started |
+| 24 | 199:2 | A checklist: tick steps in Day details | Skincare 1 of 4 → steps in This day → tick → all done → untick → ✕ | not started |
+| 25 | 200:2 | Log a slip from Day details | Smoking → Day details → Add slip → 1 slip recorded → ✕ | not started |
+| 26 | 201:2 | Open a slip: change its time, or delete it | → Slip view → Edit slip → time 8:15 → Save → Delete slip? → Delete; Undo → ✕ → travel time zone | not started |
+| 27 | 202:2 | Cut down: an amount, from Day details | Coffee 1 of 2 → +1 Limit reached → +1 Over the limit → ✕ | not started |
+| 28 | 203:2 | Cut down: a time limit, from Day details | Social media → Start timer → ⌄ at 42 min → Pause → ✕ | not started |
+| 29 | 204:2 | A task in Day details: mark it done | Pick up parcel → Mark done; Reschedule → Done → ✕ | not started |
+| 30 | 204:820 | A task in Day details: reschedule it | → Reschedule → Do tomorrow; Undo → Another day… picker → 25 → OK → Undo | not started |
+| 31 | 205:2 | A paused habit: resume it from Day details | Paused card → Day details Paused → Resume habit | not started |
+| 32 | 206:2 | Day details for an earlier day | ‹ Yesterday → Water → Day details Yesterday → +1 twice → ✕ → Back to today | not started |
+| 33 | 207:1000 | Day details for a later day | › Tomorrow → Water → ✕ → Back to today | not started |
+| 34 | 210:2 | The ⋮ menu: archive a habit | Water → ⋮ → Archive; Undo → Undo | not started |
+| 35 | 210:1012 | The ⋮ menu: delete a habit | Water → ⋮ → Delete Water? → Delete; Undo | not started |
+| 36 | 210:2089 | The ⋮ menu: pause a habit | Water → ⋮ → Pause… → Pause Water sheet → Pause; Undo | not started |
+| 37 | 211:2 | Notes: add a note from Day details | Water → Add a note… → Save | not started |
+| 38 | 211:750 | Notes: change a note | → Note → Edit note → Save | not started |
+| 39 | 211:1528 | Notes: delete a note | → Note → Delete this note? → Delete; Undo | not started |
+| 40 | 211:2237 | Notes: leave a note unsaved | → typed → ✕ Discard this note? → Discard | not started |
+| 41 | 211:3096 | Notes: a long note in Day details | two lines … → Note, whole → ← → ✕ | not started |
+| 42 | 212:2 | Milestones from Day details: the bar | Meds 2 → Mark done: bar over Day details → 5 s → ✕: band | not started |
+| 43 | 212:1089 | Milestones from Day details: the pop-up | Meds 29 → Mark done: pop-up → Close → ✕ | not started |
+| 44 | 215:2 | Day details with a long name and large text | 24-letter name → 200 % → scrolled → ✕ | not started |
+
+## Routine player (234:2)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 239:2 | Start a routine | Morning, 3 left; Start → player on Meds → ✕ | not started |
+| 2 | 240:2 | A check in the player: Mark done, then Next | Start → Meds → Mark done: Saved · Undo · Add note; Next → Stretch → ✕ | not started |
+| 3 | 241:2 | The Saved snackbar: Undo, and Add note | → Mark done → Undo → Mark done → Add note → Save: Note saved | not started |
+| 4 | 242:2 | A time habit in the player | → › Stretch 4:00 → Start → Pause → Resume → 10:00 Goal met → Pause → Next | not started |
+| 5 | 243:2 | A checklist in the player | → Skincare steps → tick → all: Finish → untick | not started |
+| 6 | 245:2 | The end of the routine: everything done | → Skincare all ticked → Finish: end page → Done | not started |
+| 7 | 246:2 | The end of the routine, with some left | → Meds done → Next → › → › last: end page, 2 left → Return to unfinished → Done | not started |
+| 8 | 247:2 | Day details from the player, and skipping | → Today chip: Day details over player → Skip today → ✕ → Next | not started |
+| 9 | 248:300 | Your routine: jump to a habit, change the order | → Morning ▾: Your routine → Skincare → Edit drag → Done | not started |
+| 10 | 249:2 | The ⋮ menu in the player | → ⋮ → Go to first unfinished / Change order / End routine | not started |
+| 11 | 251:2 | An amount in the player | Water → +1 → +1 twice: Goal met → Today chip → Log manually → Add, ✕ | not started |
+| 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | not started |
+| 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | not started |
+| 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | not started |
+| 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | not started |
+| 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | not started |
+| 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | not started |
+| 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | not started |
+| 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | not started |
+| 20 | 258:1282 | The timer against a limit; Log time from the timer | Social media → ▶ → past 30:00 → Log manually → Add → ⌄ → ⏸ | not started |
+| 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | not started |
+| 22 | 266:2 | A milestone in the player: the ribbon | Meds 2 → Mark done: ribbon → Next → ‹ → end: Reached in this routine | not started |
+| 23 | 266:573 | A big milestone in the player: the pop-up waits | Meds 29 → Mark done: ribbon → Finish: pop-up over end page → Close | not started |
+| 24 | 267:2 | Long names, a description and large text | → long name → description → tap: sheet → 200 % | not started |
+
+## Habits & tasks (269:148)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 283:2 | Open Habits & Tasks from the menu | Today → ☰ → Habits & Tasks, Week | not started |
+| 2 | 283:405 | Week, Month and Year | Week → Month → Year | not started |
+| 3 | 283:721 | An earlier week, and back to this one | This week → ‹ last week; Back to this week → back | not started |
+| 4 | 283:1332 | Scroll the page | top → scrolled: bars stay → end: Paused, Archived, key | not started |
+| 5 | 284:2 | Tap a card: Habit details, and back | Stretch card → Habit details → ← | not started |
+| 6 | 285:2 | Tap a square: Day details for that day | Stretch Friday → Day details → Log time 6 min → Add: square fills; Undo | not started |
+| 7 | 286:2 | A card's ⋮: Edit habit | ⋮ → menu → Edit habit → Save: 15 min a day | not started |
+| 8 | 289:2 | A card's ⋮: Pause… | ⋮ Pause… → sheet → Pause; Undo → in Paused | not started |
+| 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | not started |
+| 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | not started |
+| 11 | 292:2 | A card's ⋮: Delete | ⋮ Delete → Delete Stretch? → Delete; Undo → Cancel/Undo | not started |
+| 12 | 293:2 | Archived habits: open, Restore | Archived (3) → list → ⋮ Restore, Delete → Restore; Undo | not started |
+| 13 | 293:849 | Archived habits: Delete, open one, the last one restored | ⋮ Delete → dialog → tap Push-ups: read-only details → empty | not started |
+| 14 | 296:2 | Search habits and tasks (from Habits) | search → search view → “wa” → Water → ← keeps search | not started |
+| 15 | 296:602 | Search: no match (from Habits) | “yoga” → Add “yoga” → What do you want to do? → How track? → New habit “yoga” → Add · Show | not started |
+| 16 | 297:2 | +: a new habit | + → What do you want to do? → How track? → New habit Floss → Add · Show → Show scrolls | not started |
+| 17 | 299:2 | Every kind of card (Week) | Checks → Amounts and goals → Skipped, paused, quit → time limit, every few days | not started |
+| 18 | 301:2 | Empty and first states | No habits → all archived → first week → July all paused | not started |
+| 19 | 303:2 | A long name, and Font size 200% | usual → long name → 200 % | not started |
+| 20 | 305:2 | The Tasks tab: One-time | Tasks → One-time → end: No date, Completed, Archived | not started |
+| 21 | 306:2 | The Tasks tab: Repeating | Repeating → by how often → end | not started |
+| 22 | 308:2 | A task's ⋮: Move to another day | ⋮ Move… → picker → OK; Undo → under Fri 30 Oct | not started |
+| 23 | 309:2 | A task's ⋮: Edit task and Duplicate | Edit task → Save → Duplicate → New task copy → Add · Show | not started |
+| 24 | 309:761 | A task's ⋮: Archive and Delete | Archive; Undo → Delete dialog → Delete; Undo | not started |
+| 25 | 310:2 | A repeating task's ⋮: Skip this time | ⋮ Skip this time → next Wed 28 Oct; Undo → Today unchanged | not started |
+| 26 | 311:2 | A task with No date: Do today, or Pick a day | No date ⋮ → Do today · Show → Show → Pick a day… | not started |
+| 27 | 312:2 | A task done on Today, and when the day ends | ✓ on Today → struck through on Tasks → next day: Completed → 14 | not started |
+| 28 | 313:2 | Completed tasks: Mark as not done | Completed → list → ⋮ → Mark as not done; Undo | not started |
+| 29 | 313:426 | Completed tasks: Delete all completed | ⋮ Delete all completed → dialog → Deleted; Undo | not started |
+| 30 | 313:645 | Archived tasks: Restore, Delete | Archived (3) → list → ⋮ → Restore; Undo | not started |
+| 31 | 314:2 | Search habits and tasks (from Tasks) | search → “den” → Call the dentist → ← | not started |
+| 32 | 314:466 | Search: no match (from Tasks) | “plumber” → Add → Add a task → New task → Add · Show | not started |
+| 33 | 315:2 | +: a new task | + → New task Buy groceries, Tomorrow → Add · Show → Show | not started |
+| 34 | 315:542 | Tap a task: its details, and back | Car service → Task details → ← | not started |
+| 35 | 316:2 | Tasks: empty states and Font size 200% | No tasks → Repeating none → 200 % | not started |
+
+## Details pages (298:2)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 321:2 | Open Habit details: Progress, scrolling | Water card → Progress, large title → scrolled: small bar → whole tab | not started |
+| 2 | 322:2 | A habit's description: two lines, More, Less | two lines, More → More → Less | not started |
+| 3 | 322:2597 | Habit details' ⋮: Pause…, and Delete | ⋮ → Pause sheet → Paused card, Resume → Delete Water? → Delete; Undo | not started |
+| 4 | 324:2 | See all streaks | See all streaks → Streaks → ← | not started |
+| 5 | 325:2 | Milestones: All milestones, and how they work | See all 4 → All milestones → How milestones work → reached one: pop-up → Close | not started |
+| 6 | 326:2 | What the squares mean | folded → open → folded | not started |
+| 7 | 328:2 | Month: an earlier month, a day, and logging it | ‹ → September → Sat 19 → Day details → +1; Undo → ✕ | not started |
+| 8 | 329:2 | Month for other kinds of goal | Gym 3×/week → Read 20 min | not started |
+| 9 | 331:2 | Year in Pixels: a square, its day | Year → 14 Sep → Day details → ✕ | not started |
+| 10 | 335:2 | History: every day, newest first, and one day opened | History → September → Sat 26 → Day details → ✕ | not started |
+| 11 | 337:1861 | History: With notes, and searching notes | With notes → Search notes → “run” → “swim” none → ← | not started |
+| 12 | 339:3638 | History: Go to date | Go to date → picker → September → 14 → OK → lit row → fades | not started |
+| 13 | 345:4263 | History: Add, for any day | Add → Add to which day? → ‹ 8 → Open Tue 8 Sep → Day details → +1; Undo → ✕ | not started |
+| 14 | 342:3249 | History: Add a note to any day | Add → ‹ → 20 → Open → Add a note… → Save → ✕ → scroll | not started |
+| 15 | 347:2396 | Edit habit: Started moved earlier | ⋮ Edit habit → Started 25 Aug → Save: History runs to 25 Aug | not started |
+| 16 | 349:4001 | An archived habit | ⋮ Archive → card with Restore; Undo → History read-only → ⋮ Restore, Delete → Restore | not started |
+| 17 | 351:2274 | A new habit: its first days | 2 days old: Progress → whole page → History First day → made today → No progress yet | not started |
+| 18 | 354:1822 | A quit habit’s Progress | Smoking → whole page → See all 5 → How milestones work | not started |
+| 19 | 1157:99625 | A cut-down habit’s Progress: an amount | Coffee → whole page → See all 4 → How milestones work | not started |
+| 20 | 1158:112719 | A cut-down habit’s Progress: time | Social media → whole page → See all 3 → How milestones work | not started |
+| 21 | 355:2234 | Larger text, and loading | Progress 200 % → History 200 % → Loading | not started |
+| 22 | 380:3192 | Task details: a one-time task | Car service → Task details → ⋮ → done today | not started |
+| 23 | 358:679 | Task details: a repeating task | Replace the water filter → Task details → ← | not started |
+| 24 | 367:2718 | History: a skipped day | Tue 8 → Day details → Skip this day → Add a note… → Save → ✕ | not started |
+
+## Create new (381:2)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 396:2 | A new habit: check it off | + → What do you want to do? → How track? → New habit (keyboard) → “Journal” → form → Time of day → ← → Add: end of Morning | not started |
+| 2 | 397:589 | A new habit: leaving it | + → New habit empty → ← nothing asked → typed, ← → Discard this habit? → Discard | not started |
+| 3 | 399:442 | A new habit: its icon and colour | Icon → icon page → book → Done → Colour → sheet of 14 → orange | not started |
+| 4 | 400:439 | How often: several a day, or a number of times | How often → Every day → Several times a day → + → Times a week… → Month → ← | not started |
+| 5 | 401:536 | How often: days of the week, or every few | certain days → Every Friday → Mon, Wed → Every few days → weeks → set days → months → ← | not started |
+| 6 | 401:1116 | How often: on a date each month or year | date each month → 1 and 15 → a weekday → Year → ← | not started |
+| 7 | 402:488 | Time of day: more than one, and a new one | Morning + Evening → New time of day → “Before work” → Add → ← | not started |
+| 8 | 403:361 | Reminders: turned on | Reminders → Remind me → Android asks → Allow → Add a time → 2:00 PM → ← | not started |
+| 9 | 403:501 | Reminders: notifications not allowed | Remind me → Don’t allow → back off, says why → Open settings after second no | not started |
+| 10 | 403:640 | Reminders: on time, on some phones | after Allow → Open settings: Alarms & reminders → Back | not started |
+| 11 | 404:1152 | Starts and Ends | Starts → picker → 26 → Ends menu → On a date… → 25 Dec → OK | not started |
+| 12 | 405:400 | A new habit: track an amount | Track an amount → form → How much → Unit → glasses → 8 glasses | not started |
+| 13 | 405:710 | A new habit: time it | Time it → form → How long → 15 min → ← | not started |
+| 14 | 405:1039 | A new habit: a checklist | Checklist → form → Steps → ← 3 steps | not started |
+| 15 | 406:523 | A new habit: quit | Quit or cut down → Quit → quit form → Started picker → At time → Add | not started |
+| 16 | 406:870 | A new habit: cut down | Cut down → form → Limit Amount → ← → How often for a limit → ← | not started |
+| 17 | 459:8 | A new habit: cut down time | Cut down → Limit → Time → 1 h → ← → How often → ← | not started |
+| 18 | 406:1153 | A sixth habit on the free plan | 5 habits → Add a 6th habit: Plus → Make room → Archive Read; Undo → Continue | not started |
+| 19 | 1220:383082 | A checklist on the free plan | Checklist → Checklists come with Plus → scrolled → Paid: form; Plus is on | not started |
+| 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | not started |
+| 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | not started |
+| 22 | 469:2 | A new task: for today | + → Add a task → Once → New task → “Pick up parcel” → form → Add | not started |
+| 23 | 471:2 | A task’s date | Date → picker → 30 → OK → No date | not started |
+| 24 | 474:2 | A task’s time | Time on → picker 2:00 PM → OK | not started |
+| 25 | 474:282 | A repeating task | Add a task → On repeat → form → How often → A while after → ← | not started |
+| 26 | 475:2 | A new task: leaving it | + → Add a task → Once → empty ← → typed: Discard this task? → Discard | not started |
+| 27 | 475:835 | Edit task | ⋮ Edit task → form → Date → Tomorrow → Save → name cleared → discard | not started |
+| 28 | 407:2927 | The habit form at 200% text | form 200 % → How often 200 % | not started |
+
+## Settings (781:34017)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 1179:357753 | Opening Settings | Today → ≡ → Settings | not started |
+| 2 | 1181:2810 | Back up now | Settings → Backup & Sync → Back up now → Backing up… → Backed up | not started |
+| 3 | 1181:4132 | Backing up for the first time | Not backed up yet → Back up to Google Drive → chooser → Allow → Backing up… → Backed up | not started |
+| 4 | 1182:4382 | Change account | Change account → chooser → Back up to another Drive? → Backing up… → Backed up | not started |
+| 5 | 1182:360295 | Back up now with no internet | Back up now offline → Waiting + snackbar → online: Backing up… → Backed up | not started |
+| 6 | 1183:5575 | Restore from Google Drive | Restore from a backup → Google Drive → chooser → Allow → Restore this backup? → Restoring → Today + Undo | not started |
+| 7 | 1183:6412 | Restore from a backup file | Restore → A backup file → file picker → Restore this backup? → Restoring → Today + Undo | not started |
+| 8 | 1183:8042 | Save a backup file | Save a backup file → save picker → saved to Downloads | not started |
+| 9 | 1183:8483 | Export a spreadsheet | Export CSV → save picker → saved | not started |
+| 10 | 1183:9112 | Delete the Google Drive backup | Delete Google Drive backup… → dialog → Not backed up + snackbar | not started |
+| 11 | 1183:9556 | Erase all my data | Erase all my data… → dialog → Today, no habits yet | not started |
+| 12 | 1183:11921 | Edit a time of day | Times of day → Morning → Starts → 07:00 → Save → list | not started |
+| 13 | 1183:367054 | A new time of day | Add time of day → name, starts → “Before work” → Add | not started |
+| 14 | 1183:368079 | Delete a time of day | Morning → Delete time of day → Delete Morning? → Undo | not started |
+| 15 | 1183:368648 | Leaving Edit time of day with changes | Morning → renamed → ✕ → Discard your changes? → unchanged | not started |
+| 16 | 1186:373799 | New day starts at | Settings → page → 3:00 AM → ← | not started |
+| 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | not started |
+| 18 | 1183:373672 | Keep reminders coming | 1 thing to fix → Open settings → Alarms & reminders on → All set → Settings · All set | not started |
+| 19 | 1199:16989 | Reminders, before anything is set up | No reminders yet → nothing allowed → 3 things to fix | not started |
+| 20 | 1188:377756 | Theme | Theme → Light → ← → Settings Light | not started |
+| 21 | 1183:374861 | Vibration and sound | Sound when done → on | not started |
+| 22 | 1183:375417 | Privacy policy | Privacy policy → browser tab → back | not started |
+| 23 | 1183:375992 | Open-source licences | licences → Google's licences screen → back | not started |
+
+## Widgets (1232:173760)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 1256:3355 | Add a widget | hold home → Widgets → search, One habit → + Add → choose habit, Add widget → on home | not started |
+| 2 | 1264:8718 | Add the Today widget from the app’s icon | hold icon → Widgets → Today 4×2 → Add → All of today → Morning → Add widget → on home | not started |
+| 3 | 1257:4344 | Change a widget | hold widget → edit frame ✎ → One habit: Read → Save → shows Read | not started |
+| 4 | 1258:5608 | Today widget on the free plan | hold home → Widgets → Today 4×2 → Add → without Plus → tap → app opens Today | not started |
+
+## Notifications & alarms (1265:24553)
+
+| # | Node | Flow | Screens | Status |
+|---|---|---|---|---|
+| 1 | 1274:404399 | Tick a habit from its reminder | reminder over home → Done → Today: Meds done | not started |
+| 2 | 1275:2054 | A week goal, from the lock screen | lock-screen reminder → saved without unlocking → goes away | not started |
+| 3 | 1276:2388 | An amount, +1 at a time, and Undo | Water reminder → +1: 4 of 8, Undo → Undone → shade +1 | not started |
+| 4 | 1277:2639 | An amount typed in the notification | Walk reminder → field → 3000 → saved 5,500 of 8,000 | not started |
+| 5 | 1277:405022 | A time habit: Start from the reminder | Read reminder → timer runs as Live Update → shade → Goal met | not started |
+| 6 | 1278:3210 | A time habit: Log time already spent | Read reminder → field → 8 → Goal met → goes away | not started |
+| 7 | 1278:405794 | A checklist, one step at a time | Tick Cleanser → Serum → Moisturiser → all four: done | not started |
+| 8 | 1279:4534 | A checklist out of order: Open | 2 of 4 → Day details → Sunscreen → reminder keeps up | not started |
+| 9 | 1280:4045 | A task, from its reminder | task reminder → Done | not started |
+| 10 | 1281:4896 | Several reminders at the same minute | group for Morning → opened → Meds done leaves → Stretch: Start or Log time | not started |
+| 11 | 1282:4986 | An alarm: turn it on, then answer it | Remind me with → Let alarms fill the screen → Full screen notifications → Allowed → An alarm → rings → Done | not started |
+| 12 | 1282:407448 | An alarm without full screen | Let alarms fill the screen → without full screen → rings as notification → Not now → Done | not started |

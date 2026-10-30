@@ -549,7 +549,7 @@ fun DayBar(store: HabitStore, day: Int, today: Int, onPrevious: () -> Unit, onNe
 @Composable
 private fun NoHabitsYet(nav: TodayNav) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        EmptyState(Symbols.Checklist, "No habits yet", "Add something you’d like to do often enough.") {
+        EmptyState(Symbols.Checklist, "No habits yet", "Add something you’d like\nto do often enough.") {
             AppButton("New habit", nav::newHabit, icon = Symbols.Add)
             AppButton("Restore from a backup", nav::restore, style = ButtonStyle.Tonal, icon = Symbols.SettingsBackupRestore)
         }

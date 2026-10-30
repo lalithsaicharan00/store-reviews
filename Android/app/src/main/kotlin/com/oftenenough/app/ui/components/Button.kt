@@ -128,12 +128,16 @@ fun AppButton(
 }
 
 /**
- * Material's padding for the size (more at the start before an icon's gap is counted), with two settings of ours:
- * Large keeps 16 at the sides (see [ButtonSize.Large]), and [compact] keeps 12 at the sides for a button sharing a row.
+ * Material's padding for the size (more at the start before an icon's gap is counted), with three settings of ours:
+ * Small is Figma's Button (500:26), ButtonDefaults' 24/24, 16/24 with an icon, not Expressive's 16/16 (QA, 31 Oct
+ * 2026: New habit drew 8 dp narrower than Figma's 137); Large keeps 16 at the sides (see [ButtonSize.Large]); and
+ * [compact] keeps 12 at the sides for a button sharing a row.
  */
 @Composable
 private fun padding(size: ButtonSize, hasIcon: Boolean, compact: Boolean): PaddingValues {
     val material = ButtonDefaults.contentPaddingFor(size.height, hasIcon, false)
+    if (size == ButtonSize.Small && !compact) return PaddingValues(
+        start = if (hasIcon) 16.dp else 24.dp, end = 24.dp, top = material.calculateTopPadding(), bottom = material.calculateBottomPadding())
     val most = when { compact -> 12.dp; size == ButtonSize.Large -> 16.dp; else -> return material }
     val direction = LocalLayoutDirection.current
     return PaddingValues(
