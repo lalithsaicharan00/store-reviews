@@ -49,6 +49,7 @@ import com.oftenenough.app.ui.plus.QuietButton
 import com.oftenenough.app.ui.settings.Support
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 
 /**
@@ -89,6 +90,9 @@ fun RestoreFlow(
     val pending = remember { mutableStateOf<BackupCenter.Pending?>(null) }
     /** The file restore while it only asks Google Play about Plus: Cancel stops it then, before anything is written. */
     var checking by remember { mutableStateOf<Job?>(null) }
+    /** Google Drive's restore while it runs: Cancel stops it and puts this phone back as it was (Figma 582:7893). */
+    var bringing by remember { mutableStateOf<Job?>(null) }
+    var driveFromEmpty by remember { mutableStateOf(false) }
 
     val email = driveEmail(center)
 
@@ -149,8 +153,9 @@ fun RestoreFlow(
     fun restoreFromDrive() {
         fromDrive = true
         step = RESTORING
-        scope.launch {
-            val emptyBefore = store.habits.isEmpty()
+        val emptyBefore = store.habits.isEmpty()
+        driveFromEmpty = emptyBefore
+        bringing = scope.launch {
             when (val look = center.lookInDrive()) {
                 is DriveLook.Offline -> step = NO_INTERNET_DRIVE
                 is DriveLook.NotConnected, is DriveLook.Problem, is DriveLook.Nothing -> step = NO_BACKUP
@@ -168,6 +173,20 @@ fun RestoreFlow(
                     finish()
                 }
             }
+            bringing = null
+        }
+    }
+
+    /**
+     * Cancel on Restoring while Google Drive's copy comes down: the work stops, and a phone that was empty (the only
+     * place this flow starts) is emptied again, so nothing half-brought stays. Drive keeps everything: nothing went up.
+     */
+    fun cancelDrive(job: Job) {
+        bringing = null
+        step = WHERE
+        scope.launch {
+            job.cancelAndJoin()
+            if (driveFromEmpty) center.eraseThisPhone()
         }
     }
 
@@ -193,8 +212,27 @@ fun RestoreFlow(
         scope.launch { if (center.link.connect(context)) restoreFromDrive() }
     }
 
+    /**
+     * Check again after Google Drive's copy met the Plus gate (flow 3: switch account in the Play Store, then Check
+     * again → Restoring → Today). The gate put this phone back empty and let go of Drive, so Play is asked first:
+     * still no Plus, and it says so again without touching Drive; Plus now, and Drive's copy comes down again.
+     */
+    fun recheckDrivePlus() {
+        step = RESTORING
+        scope.launch {
+            val owned = if (hasPlus()) true else playHasPlus()
+            when {
+                owned == null || !online(context) -> step = NO_INTERNET_PLUS
+                !owned -> step = NEEDS_PLUS
+                center.link.accountKey != null || center.link.connect(context) -> restoreFromDrive()
+                else -> step = NEEDS_PLUS
+            }
+        }
+    }
+
     fun tryAgain() {
         when {
+            fromDrive && (step == NEEDS_PLUS || step == NO_INTERNET_PLUS) -> recheckDrivePlus()
             step == NO_INTERNET_DRIVE -> chooseDrive()
             fromDrive -> restoreFromDrive()
             else -> pending.value?.let { restoreFile(it) } ?: pickFile()
@@ -204,13 +242,14 @@ fun RestoreFlow(
     // ---------------------------------------------------------------- The screens
 
     when (step) {
-        // 582:7893 · Restoring your habits. Cancel only while a file's Plus is being checked, before anything is
-        // written; Drive writes as it brings the copy down, so it has none (nothing is ever half-written).
+        // 582:7893 · Restoring your habits, with Cancel (Figma draws it on every Restoring). A file: only while its
+        // Plus is checked, before anything is written. Google Drive: the whole time, undoing what came down.
         RESTORING -> WaitScreen(
             "Restoring your habits",
             if (fromDrive) "From " + (email?.plus("’s") ?: "your") + " Google Drive" else "From your backup file",
             "restoring",
-            onCancel = checking?.let { job -> { job.cancel(); checking = null; step = WHERE } },
+            onCancel = checking?.let { job -> { job.cancel(); checking = null; step = WHERE } }
+                ?: bringing?.let { job -> { cancelDrive(job) } },
         )
 
         // 39:4741 · No internet, before Google Drive is even asked.
@@ -328,7 +367,8 @@ internal fun online(context: Context): Boolean {
 private fun writeToUs(context: Context, fromIphone: Boolean, madeOn: String, madeWithPlus: Boolean) {
     val made = "Backup made on " + (if (madeOn == "ios") "iPhone" else "Android") +
         ", " + (if (madeWithPlus) "with Plus" else "without Plus")
-    val footer = "\n\n—\nOften Enough " + Support.appVersion + " (free) · Android " + Build.VERSION.RELEASE +
+    // Figma 43:2413: "Often Enough 1.0 (free)", the version people see, without its build number.
+    val footer = "\n\n—\nOften Enough " + com.oftenenough.app.BuildConfig.VERSION_NAME + " (free) · Android " + Build.VERSION.RELEASE +
         " · " + Build.MODEL + "\n" + made
     val subject = if (fromIphone) "Move my Plus from iPhone to Android" else "My Plus didn’t come back"
     val body = if (fromIphone)

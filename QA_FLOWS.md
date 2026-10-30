@@ -11,7 +11,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 
 | Page | Node | Flows | Passed |
 |---|---|---|---|
-| onboarding | 1:5 | 12 | 1 |
+| onboarding | 1:5 | 12 | 2 |
 | today | 54:5580 | 83 | 0 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
@@ -22,7 +22,7 @@ Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, account `jeffreyjohn01
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **1** |
+| **All** | | **289** | **2** |
 
 ## Bug log
 
@@ -36,6 +36,9 @@ to do often enough.`, Body Large, 328 dp box) — the line break is in the
    Restore from a backup 215 against 223): the app used Material Expressive's 16/16 padding, Figma's Button (500:26)
    has 24/24, 16/24 with an icon — `AppButton`'s Small padding is Figma's now (`Button.kt`). Shared: every Small
    button in the app widens to Figma's.
+3. Onboarding · Plus still not back — Restoring had no Cancel; Figma draws Cancel on every Restoring (582:7893). The Google Drive restore gained one: it stops the work and empties the phone again (it started empty), so nothing half-restored stays (`RestoreFlow.cancelDrive`).
+4. Onboarding · Plus still not back — **bug:** Check again on Plus isn’t on this phone went to No backup found: the Plus gate empties the phone and lets go of Drive, so a second look found nothing. Check again now asks Google Play first and stays on the screen without Plus; with Plus it reconnects and brings Drive's copy down (`RestoreFlow.recheckDrivePlus`).
+5. Onboarding · Plus still not back — the email's footer said “Often Enough 1.0 (4) (free)”; Figma 43:2413 says “Often Enough 1.0 (free)” (the version name alone).
 
 ## Open questions for the user
 
@@ -54,7 +57,7 @@ to do often enough.`, Body Large, 328 dp box) — the line break is in the
 | 1 | 31:5578 | New to the app | Splash → Today, no habits yet | passed |
 | 2 | 39:1532 | Back from Google Drive | Splash → Today, no habits yet → Restore from a backup → Choose a Google account (native) → Allow Google Drive (native) → Restoring → Today, habits restored | not started |
 | 3 | 39:2021 | Plus didn’t come back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Restoring → Today, habits restored | not started |
-| 4 | 39:2697 | Plus still not back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Email | not started |
+| 4 | 39:2697 | Plus still not back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Email | passed |
 | 5 | 39:3228 | From an iPhone, with Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file (native) → Restoring → Plus isn’t on this phone (iPhone) → Email | not started |
 | 6 | 39:3744 | From an iPhone, without Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | not started |
 | 7 | 39:4212 | Back with a backup file | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | not started |
