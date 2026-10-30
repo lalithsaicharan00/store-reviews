@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -82,7 +83,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
-import java.util.Locale
 
 /**
  * Why the Plus screen opened (Figma's Plus, Reason): the thing the person reached for leads the screen, and its feature
@@ -357,8 +357,10 @@ private fun YearPicture(store: HabitStore) {
             .example("An example: a year of Water, a square a day, coloured by how each day went."),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
+        // The phone's language, read so a change redraws the letters.
+        val locale = LocalConfiguration.current.locales[0]
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            for (m in 1..12) Text(Month.of(m).getDisplayName(TextStyle.NARROW, Locale.getDefault()), Modifier.width(20.dp),
+            for (m in 1..12) Text(Month.of(m).getDisplayName(TextStyle.NARROW, locale), Modifier.width(20.dp),
                 style = AppType.labelSmall, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
         }
         // Drawn in one pass (Rulebook S12).

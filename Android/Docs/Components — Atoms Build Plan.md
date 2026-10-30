@@ -2870,3 +2870,6 @@ What each atom changed, newest last.
   - **Build:** run 41024981286 (commit 2f570de) failed to compile: the Plus route's trailing lambda went to
     `PlusScreen`'s last parameter, `title`, not `onBought` (AppRoot.kt 406). Fixed by naming it; every other call names
     its arguments.
+  - **Build:** run 41025304404 (commit d0be0d5) compiled and passed the unit tests, but lint failed once
+    (NonObservableLocale): the Year example read `Locale.getDefault()` in a composable, so the months' letters wouldn't
+    follow a change of language. It reads `LocalConfiguration`'s locale now, as the date picker does.
