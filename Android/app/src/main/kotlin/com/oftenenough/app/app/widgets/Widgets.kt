@@ -129,6 +129,9 @@ private val Tonal2 = pair(L.tonal2, D.tonal2)
 /** Surface container highest: a round button before the goal is met (Figma's Filled icon button, Neutral). */
 private val Soft = pair(L.soft, D.soft)
 private val White = pair(Color.White, Color.White)
+/** Primary and On primary: the Plus label (Figma 1208:1983). */
+private val Primary = pair(AppColors.lightRoles.primary, AppColors.darkRoles.primary)
+private val OnPrimary = pair(AppColors.lightRoles.onPrimary, AppColors.darkRoles.onPrimary)
 private fun habit(key: String) = (HabitColor.of(key) ?: HabitColor.BLUE).let { pair(L.habit(it), D.habit(it)) }
 private fun fill(key: String) = (HabitColor.of(key) ?: HabitColor.BLUE).let { pair(L.fill(it), D.fill(it)) }
 private fun isDark(context: Context) = (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
@@ -141,12 +144,18 @@ private fun style(size: TextUnit, color: ColorProvider = Ink, weight: FontWeight
 private fun WidgetBody(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: String?, page: Int, widgetId: Int) {
     val now = System.currentTimeMillis()
     val frame = snapshot?.frame(now)
-    // One habit: 12 above, 16 at the sides and under (Figma 1235:46); the others keep 12 until their own components.
-    val inside = if (kind == WidgetKind.ONE_HABIT) GlanceModifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp) else GlanceModifier.padding(12.dp)
+    // One habit: 12 above, 16 at the sides and under (Figma 1235:46). The lists: 10 above and 12 round on a 4×2, 12 all
+    // round on a 4×4 (Figma 1240:488). This week keeps 12 until its own component.
+    val inside = when {
+        kind == WidgetKind.ONE_HABIT -> GlanceModifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp)
+        !kind.oneHabit && !kind.large -> GlanceModifier.padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 12.dp)
+        else -> GlanceModifier.padding(12.dp)
+    }
     Box(GlanceModifier.fillMaxSize().cornerRadius(28.dp).background(Surface).then(inside)) {
         when {
             // Open to update: no snapshot yet, or one from another time zone or day (the app writes seven days ahead).
-            snapshot == null || frame == null -> Message(kind, "Open to update", "Data unavailable", R.drawable.ic_w_refresh, open = "today")
+            snapshot == null || frame == null -> Message(kind, "Open to update", "Data unavailable", R.drawable.ic_w_refresh, open = "today",
+                header = if (kind.oneHabit) null else if (kind.tasks) "Tasks" else "Today")
             kind.oneHabit -> OneHabit(kind, snapshot, frame, choice, widgetId)
             else -> ListWidget(kind, snapshot, frame, choice, page, widgetId)
         }
@@ -163,14 +172,38 @@ private fun Message(kind: WidgetKind, title: String, line: String, glyph: Int?, 
         else -> actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to (open ?: "today")))
     }
     if (kind == WidgetKind.ONE_HABIT) return SmallMessage(title, line, glyph, click)
-    Column(GlanceModifier.fillMaxSize().clickable(click), horizontalAlignment = Alignment.CenterHorizontally) {
-        if (header != null) Text(header, GlanceModifier.fillMaxWidth().padding(start = 4.dp), style = style(17.sp, weight = FontWeight.Medium), maxLines = 1)
-        Spacer(GlanceModifier.defaultWeight())
-        if (glyph != null) Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Ink))
-        Spacer(GlanceModifier.height(6.dp))
-        Text(title, style = style(if (kind == WidgetKind.ONE_HABIT) 16.sp else 17.sp, weight = FontWeight.Medium).copy(textAlign = TextAlign.Center), maxLines = 2)
-        Text(line, style = style(12.sp, Secondary, FontWeight.Medium).copy(textAlign = TextAlign.Center), maxLines = 2)
-        Spacer(GlanceModifier.defaultWeight())
+    ListMessage(header, title, line, glyph, click)
+}
+
+/**
+ * A list widget with no rows (Figma 1240:488, Size 4×2 · Message): the header (its title, 6 under it), then one message
+ * in the middle of the rest, 16 in at the sides, 4 between: an optional glyph (24, On surface variant) or the Plus label,
+ * the headline (Title Medium, 16 sp, On surface) and its line (Body Small, 12 sp, On surface variant). The whole widget
+ * is the tap.
+ */
+@Composable
+private fun ListMessage(header: String?, title: String, line: String, glyph: Int?, click: androidx.glance.action.Action, plus: Boolean = false) {
+    Column(GlanceModifier.fillMaxSize().clickable(click).semantics { contentDescription = listOfNotNull(header, title, line).joinToString(", ") }) {
+        if (header != null) { Header(false, header, null, 0, 1); Spacer(GlanceModifier.height(6.dp)) }
+        Column(GlanceModifier.fillMaxWidth().defaultWeight().padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
+            if (plus) { PlusLabel(); Spacer(GlanceModifier.height(4.dp)) }
+            if (glyph != null) { Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Secondary)); Spacer(GlanceModifier.height(4.dp)) }
+            Text(title, style = style(16.sp, weight = FontWeight.Medium).copy(textAlign = TextAlign.Center), maxLines = 2)
+            Spacer(GlanceModifier.height(4.dp))
+            Text(line, style = style(12.sp, Secondary).copy(textAlign = TextAlign.Center), maxLines = 2)
+        }
+    }
+}
+
+/** Plus label (Figma 1208:1983): a pill of Primary, the filled workspace_premium (16) and "Plus" (Label Medium), On primary. */
+@Composable
+private fun PlusLabel() {
+    Row(GlanceModifier.cornerRadius(12.dp).background(Primary).padding(start = 8.dp, end = 10.dp, top = 4.dp, bottom = 4.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+        Image(ImageProvider(R.drawable.ic_w_plus_label), null, GlanceModifier.size(16.dp), colorFilter = ColorFilter.tint(OnPrimary))
+        Spacer(GlanceModifier.width(4.dp))
+        Text("Plus", style = style(12.sp, OnPrimary, FontWeight.Medium))
     }
 }
 
@@ -332,7 +365,8 @@ private fun ListWidget(kind: WidgetKind, snapshot: WidgetSnapshot, frame: Widget
     val counted = rows.filter { it.counts }
     val doneText = if (counted.isEmpty()) null else "${counted.count { it.countsDone }} of ${counted.size} done"
     when {
-        kind.plus && !snapshot.plus -> return PlusMessage(title, doneText)
+        kind.plus && !snapshot.plus -> return ListMessage(title, "See your whole day here with Plus", "Tap to open the app", null,
+            actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to "today")), plus = true)
         rows.isEmpty() && frame.items.none { !it.isTask == !kind.tasks } -> return Message(kind, if (kind.tasks) "No tasks today" else "No habits yet",
             if (kind.tasks) "Add one in the app" else "Start one in the app", null, header = title)
         rows.isEmpty() -> return Message(kind, if (section != null) "Nothing planned in $title" else if (kind.tasks) "No tasks today" else "Nothing planned for today",
@@ -342,63 +376,56 @@ private fun ListWidget(kind: WidgetKind, snapshot: WidgetSnapshot, frame: Widget
     val pages = (rows.size + perPage - 1) / perPage
     val shown = page.coerceIn(0, pages - 1)
     Column(GlanceModifier.fillMaxSize()) {
-        Header(kind, title, doneText, shown, pages)
+        Header(kind.large, title, doneText, shown, pages)
         Spacer(GlanceModifier.height(if (kind.large) 8.dp else 6.dp))
+        // 4 between the rows on a 4×2, 2 on a 4×4 (Figma).
         // The rows in a column of their own: a Glance container holds at most 10 children (five rows and their gaps
         // beside the header and its gap were 11, and the fifth row was dropped).
         Column(GlanceModifier.fillMaxWidth()) {
             rows.drop(shown * perPage).take(perPage).forEachIndexed { i, item ->
-                ListRow(item, frame, showPlace = section == null && !kind.tasks, top = if (i > 0) 4.dp else 0.dp)
+                ListRow(item, frame, showPlace = section == null && !kind.tasks, top = if (i == 0) 0.dp else if (kind.large) 2.dp else 4.dp)
             }
         }
     }
 }
 
+/**
+ * A list widget's header (Figma 1240:488), 8 in. On a 4×2, 28 tall: the title (the day, a time of day or Tasks; Title
+ * Medium, 16 sp) and, at the end, its count chip ("2 of 5 done": Label Medium, On surface variant, on Surface container
+ * high, 10 corners, 8 at the sides and 2 above and under). On a 4×4 ([large]), 48 tall: the title in Title Large (22 sp)
+ * over the count, and, with more than one page, the pager: ‹ (48), "1/2" (Label Medium, On surface variant), ›.
+ */
 @Composable
-private fun Header(kind: WidgetKind, title: String, done: String?, page: Int, pages: Int) {
-    if (kind.large) {
-        Row(GlanceModifier.fillMaxWidth().padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+private fun Header(large: Boolean, title: String, done: String?, page: Int, pages: Int) {
+    if (large) {
+        Row(GlanceModifier.fillMaxWidth().height(48.dp).padding(start = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(GlanceModifier.defaultWeight()) {
                 Text(title, style = style(22.sp), maxLines = 1)
                 done?.let { Text(it, style = style(12.sp, Secondary, FontWeight.Medium)) }
             }
             if (pages > 1) {
                 PageArrow(R.drawable.ic_w_left, -1, page > 0, "Previous page")
-                Text("${page + 1}/$pages", style = style(14.sp, Ink, FontWeight.Medium))
+                Text("${page + 1}/$pages", style = style(12.sp, Secondary, FontWeight.Medium))
                 PageArrow(R.drawable.ic_w_right, 1, page < pages - 1, "Next page")
             }
         }
     } else {
-        Row(GlanceModifier.fillMaxWidth().padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(title, GlanceModifier.defaultWeight(), style = style(17.sp, weight = FontWeight.Medium), maxLines = 1)
-            done?.let { Text(it, GlanceModifier.cornerRadius(12.dp).background(Tonal).padding(horizontal = 10.dp, vertical = 3.dp), style = style(12.sp, Ink, FontWeight.Medium)) }
+        Row(GlanceModifier.fillMaxWidth().height(28.dp).padding(start = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(title, GlanceModifier.defaultWeight(), style = style(16.sp, weight = FontWeight.Medium), maxLines = 1)
+            done?.let { Text(it, GlanceModifier.cornerRadius(10.dp).background(Tonal2).padding(horizontal = 8.dp, vertical = 2.dp), style = style(12.sp, Secondary, FontWeight.Medium)) }
         }
     }
 }
 
+/**
+ * A pager arrow: Figma's Standard icon button (48, its chevron 24 in On surface variant). Figma draws both arrows alike on
+ * the first and last page; the one with nowhere to go takes no tap (Decisions needed D-31).
+ */
 @Composable
 private fun PageArrow(glyph: Int, delta: Int, enabled: Boolean, label: String) {
-    Box(GlanceModifier.size(40.dp).let { if (enabled) it.clickable(actionRunCallback<WidgetPageAction>(actionParametersOf(TapKeys.DELTA to delta))) else it }
+    Box(GlanceModifier.size(48.dp).let { if (enabled) it.clickable(actionRunCallback<WidgetPageAction>(actionParametersOf(TapKeys.DELTA to delta))) else it }
         .semantics { contentDescription = label }, contentAlignment = Alignment.Center) {
-        Image(ImageProvider(glyph), null, GlanceModifier.size(20.dp), colorFilter = ColorFilter.tint(if (enabled) Ink else Tonal))
-    }
-}
-
-/** Without Plus, a Plus widget never blocks and never shows blank: it says what's there and opens Today (A13). */
-@Composable
-private fun PlusMessage(title: String, done: String?) {
-    Column(GlanceModifier.fillMaxSize().clickable(actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to "today"))),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(GlanceModifier.fillMaxWidth().padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(title, GlanceModifier.defaultWeight(), style = style(17.sp, weight = FontWeight.Medium), maxLines = 1)
-            done?.let { Text(it, GlanceModifier.cornerRadius(12.dp).background(Tonal).padding(horizontal = 10.dp, vertical = 3.dp), style = style(12.sp, Ink, FontWeight.Medium)) }
-        }
-        Spacer(GlanceModifier.defaultWeight())
-        Text("Tick habits off here with Plus", style = style(16.sp, weight = FontWeight.Medium))
-        Text("Your habits are in the app", style = style(12.sp, Secondary, FontWeight.Medium))
-        Spacer(GlanceModifier.height(8.dp))
-        Text("Open Today", GlanceModifier.cornerRadius(20.dp).background(Tonal).padding(horizontal = 16.dp, vertical = 8.dp), style = style(14.sp, Ink, FontWeight.Medium))
-        Spacer(GlanceModifier.defaultWeight())
+        Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Secondary))
     }
 }
 

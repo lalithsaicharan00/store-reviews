@@ -116,6 +116,9 @@ data class AppColors(
         )
         val light = from(lightScheme, dark = false)
         val dark = from(darkScheme, dark = true)
+        /** Every role, light and dark, for what can't read `MaterialTheme` (the home-screen widgets). */
+        val lightRoles: ColorScheme get() = lightScheme
+        val darkRoles: ColorScheme get() = darkScheme
 
         /**
          * The 13 habit colours as Figma's colour sheet draws them (2.1.2, Google's palette; the user, 18 Oct 2026: match

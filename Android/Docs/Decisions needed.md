@@ -346,6 +346,26 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   which U28 says you check yourself.
 
 
+### D-31. Today and Tasks widgets (4×4): the pager's arrow with nowhere to go
+
+- **Where:** Widget · List, Size 4×4 (5.10.4), [Figma 1240:488](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1240-488) and "Today (4×4) · page 2 of 2"; `app/widgets/Widgets.kt` (`PageArrow`).
+- **What Figma shows:** on page 2 of 2, › is drawn exactly like ‹ (On surface variant), as if it could be tapped.
+- **What I did for now:** built as drawn; the arrow with nowhere to go takes no tap (and TalkBack offers no action on it).
+- **Question:** should it look disabled (Material's disabled icon button: On surface at 38 %), be hidden, or wrap round to
+  page 1?
+- **My recommendation:** disabled at 38 %, as Material's own icon button does, so it reads as "no more pages" and the
+  header doesn't shift.
+
+### D-32. Today widget on the free plan: no count, and no Open Today button
+
+- **Where:** Widget · List, Size 4×2 · Message with the Plus label (5.10.4), "Today (4×2) · free plan"; `app/widgets/Widgets.kt`.
+- **What Figma shows:** the title alone (no "2 of 5 done" chip), the Plus label, "See your whole day here with Plus" and
+  "Tap to open the app". The app used to show the count, "Tick habits off here with Plus", "Your habits are in the app"
+  and an Open Today button (A13: "says what's there and opens Today").
+- **What I did for now:** as Figma (A77); the whole widget still opens Today, so nothing is blocked.
+- **Question:** keep the count in the header on the free plan, so the widget still "says what's there"?
+- **My recommendation:** keep it as Figma: the count without the rows invites a tap that only opens the app anyway.
+
 ## Notifications & alarms
 
 ## Cleanup

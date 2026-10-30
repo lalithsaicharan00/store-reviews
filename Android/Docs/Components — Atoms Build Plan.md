@@ -174,7 +174,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☑ |
 | 5.10.2 | Widgets · Widget row fill | 1238:428 | ☑ |
 | 5.10.3 | Widgets · Widget · List row | 1238:429 | ☑ |
-| 5.10.4 | Widgets · Widget · List | 1240:488 | ☐ |
+| 5.10.4 | Widgets · Widget · List | 1240:488 | ☑ |
 | 5.10.5 | Widgets · Widget · This week | 1243:857 | ☐ |
 | 5.10.6 | Widgets · Widget setup | 1252:3618 | ☐ |
 | 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☐ |
@@ -2970,3 +2970,32 @@ What each atom changed, newest last.
   - The milestone (the medal in place of the icon and "30 days in a row" as the line, until the day ends) needs data
     the widget snapshot doesn't have; it joins D-30.
   - The text is the launcher's font (Glance, T22). `AppColors.flame` is now read by nothing: cleanup.
+  - **Built:** run 41031376056 (Android, commit a36b33a) passed: assembleDebug, unit tests and lint.
+- **5.10.4 Widgets · Widget · List (30 Oct).** Figma: Widget · List (1240:488), Size 4×2 · List, 4×2 · Message and 4×4 ·
+  List, and the 15 states of "Today and Tasks (4×2, 4×4) · every state". The Today list (Plus, A73) and Tasks (free)
+  widgets: Surface container lowest, 28 corners. 4×2: 12 at the sides and under, 10 above; the header (28 tall, 8 in:
+  the title in Title Medium, 16 sp, and the count chip "2 of 5 done", Label Medium On surface variant on Surface
+  container high, 10 corners, 8 by 2), 6 under it, two List rows 4 apart. 4×4: 12 all round; the header (48 tall: Title
+  Large, 22 sp, over the count, and the pager ‹ 1/2 ›: 48 Standard icon buttons, chevron 24, Label Medium, all On surface
+  variant), 8 under it, five rows 2 apart. Message: the header's title, then in the middle, 16 in, 4 between: the glyph
+  (24, On surface variant) or the Plus label, the headline (Title Medium) and its line (Body Small, On surface variant):
+  Nothing planned for today · Open Today; Nothing planned in Morning · Open Morning; Section unavailable · Tap to choose
+  another; No habits yet · Start one in the app; No tasks today · Add one in the app; Open to update · Data unavailable;
+  and the free plan, Plus label · See your whole day here with Plus · Tap to open the app. It is `ListWidget`, `Header`,
+  `PageArrow`, `ListMessage` and the widgets' own `PlusLabel` (`app/widgets/Widgets.kt`; the app's `PlusLabel` is
+  Compose, which Glance can't draw). The page change, taps and updates are locked (U28) and untouched.
+  Fixed:
+  - The widget was 12 in all round; the header 4 in, its title 17 sp, the chip on Secondary container in On surface, 10 by
+    3, 12 corners; now Figma's.
+  - The 4×4's pager arrows were 40 with a 20 glyph (Material Icons, square ends), the page number 14 sp On surface, a
+    disabled arrow drawn in Secondary container; now 48, 24, Rounded chevrons (`ic_w_left`, `ic_w_right`), 12 sp, all On
+    surface variant as Figma (D-31). The rows were 4 apart on the 4×4; now 2.
+  - A message's title was 17 sp with no header on Open to update, its glyph On surface 6 above, its line Medium; now the
+    header names the widget (Today or Tasks), the glyph is On surface variant, 4 between, the line Body Small.
+  - The free plan said "Tick habits off here with Plus · Your habits are in the app" with the count and an Open Today
+    button; now Figma's Plus label and words (D-32). The whole widget still opens Today.
+  Noted, not changed:
+  - Figma draws only a 4×2 message; a 4×4 with nothing to list uses the same, in the middle of its height.
+  - Glance can't draw the app's own Compose atoms, so the Plus label is drawn again in Glance from the same roles
+    (`AppColors.lightRoles` / `darkRoles`, Primary and On primary) and the same filled workspace_premium.
+  - "N tasks left", in Figma's description of the Message variant, is drawn in no state; nothing shows it.
