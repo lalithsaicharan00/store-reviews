@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -172,7 +173,7 @@ fun HabitRow(
             streak = if (streaks && model.streak > 0 && !future) { { HabitRowStreak(model.streak, store.rule(habit, day).frequency.streakUnit, roll = moment.rolling) } } else null,
             action = if (trailing && !typed) { {
                 Box(if (moment.full) Modifier.milestoneBurst(moment.t, c.habit(habit.color)) else Modifier) {
-                    RowButton(habit, day, isToday, slot, model, store, layout, actions, stepsOpen, onToggleSteps, running)
+                    RowButton(habit, day, isToday, slot, model, store, layout, actions, stepsOpen, onToggleSteps, running, tick)
                 }
             } } else null,
             trailing = when {
@@ -222,7 +223,7 @@ private fun runningWords(line: String): String = line.replaceFirst(Regex("^([0-9
 @Composable
 private fun RowButton(
     habit: Habit, day: Int, isToday: Boolean, slot: String?, model: RowModel, store: HabitStore, layout: TodayLayout,
-    actions: TodayActions, stepsOpen: Boolean, onToggleSteps: () -> Unit, running: Boolean,
+    actions: TodayActions, stepsOpen: Boolean, onToggleSteps: () -> Unit, running: Boolean, tick: State<Long>? = null,
 ) {
     fun log(change: () -> Unit) { layout.hold(); change() }
     when (val k = habit.kind) {
@@ -242,8 +243,13 @@ private fun RowButton(
             else AppFilledIconButton(Symbols.Add, "Add an amount to ${habit.name}", { actions.addLog(habit, day) }, done = filled, color = habit.color)
         }
         HabitKind.Duration -> {
-            // Past the goal the button fills, running or not (Figma 1.3.2); a limit's never does.
-            val filled = !habit.atMost && (model.done || (running && store.rules.isDone(habit, day)))
+            // Past the goal the button fills, running or not (Figma 1.3.2, Today flow 6 "The goal": the ⏸ fills in the
+            // habit's colour the moment the clock passes it); a limit's never does. Read from the live clock through a
+            // derived state, so the row recomposes once at the goal, not every second (S3).
+            val reached by remember(habit, day, running, model.goal) {
+                derivedStateOf { running && tick != null && store.rules.progress(habit, day, tick.value) >= model.goal }
+            }
+            val filled = !habit.atMost && (model.done || reached || (running && store.rules.isDone(habit, day)))
             AppFilledIconButton(if (running) Symbols.Filled.Pause else Symbols.Filled.PlayArrow, if (running) "Stop ${habit.name} timer" else "Start ${habit.name} timer", {
                     if (!running) { store.toggleTimer(habit, slot); actions.openTimer(habit) } else log { store.toggleTimer(habit, slot) }
                 }, done = filled, color = habit.color, enabled = isToday)

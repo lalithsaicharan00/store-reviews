@@ -747,6 +747,8 @@ internal fun HeroCard(
     /** Between the cookie and the name, and between the name, the description and the day chip: Figma's Routine player
      *  draws 24 and 8 (5.4.1), its Timer screen 28 and 12 (5.3.7). */
     identityGap: Dp = 24.dp, namingGap: Dp = 8.dp,
+    /** The Timer screen's filled day chip with its › (Figma 705:7745); the player's is outlined. */
+    filledDayChip: Boolean = false,
 ) {
     val c = appColors
     val running = ruled.kind == HabitKind.Duration && day == store.today() && store.timers.containsKey(habit.id)
@@ -838,7 +840,7 @@ internal fun HeroCard(
                 }
                 // The chip is 32 high with a 48 target: the gap above it is [namingGap] less the target's 8.
                 Spacer(Modifier.height(namingGap - 8.dp))
-                DayChip(dayText, onDay)
+                DayChip(dayText, onDay, filled = filledDayChip)
                 // [part] under the chip, less its target's 8.
                 Spacer(Modifier.height(part - 8.dp))
                 if (single) SingleState(habit, day, store, rev)
@@ -955,8 +957,8 @@ private fun HabitName(name: String, style: TextStyle, align: TextAlign, maxLines
 
 /** "📅 Today": an assist chip (1.16) that opens Day details for this habit and day (also first in ⋮). */
 @Composable
-internal fun DayChip(text: String, onClick: (() -> Unit)?) =
-    AppAssistChip(text, onClick ?: {}, enabled = onClick != null, tag = "player-day-chip")
+internal fun DayChip(text: String, onClick: (() -> Unit)?, filled: Boolean = false) =
+    AppAssistChip(text, onClick ?: {}, enabled = onClick != null, tag = "player-day-chip", filled = filled)
 
 /** The count, large, with what it's out of beside it on the same baseline. While a timer runs, only this and the bar tick. */
 @Composable

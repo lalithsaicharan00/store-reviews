@@ -1,7 +1,10 @@
 package com.oftenenough.app.ui.components
 
 import com.oftenenough.app.ui.theme.Symbols
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.unit.dp
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.FilterChip
@@ -48,12 +51,21 @@ fun AppAssistChip(
     icon: ImageVector? = Symbols.CalendarToday,
     enabled: Boolean = true,
     tag: String? = null,
+    /**
+     * The Timer screen's day chip (Figma 705:7745, "Day chip"): filled Surface container with no border, 34 high, and a ›
+     * after the label in On surface variant, because it opens Day details. Everywhere else the chip is outlined.
+     */
+    filled: Boolean = false,
 ) {
+    val s = MaterialTheme.colorScheme
     AssistChip(
         onClick = onClick,
         label = { Text(label, maxLines = 1) },
-        modifier = modifier.semantics { tag?.let { testTag = it } },
+        modifier = modifier.then(if (filled) Modifier.height(34.dp) else Modifier).semantics { tag?.let { testTag = it } },
         enabled = enabled,
         leadingIcon = icon?.let { { Icon(it, null, Modifier.size(AssistChipDefaults.IconSize)) } },
+        trailingIcon = if (filled) ({ Icon(Symbols.ChevronRight, null, Modifier.size(AssistChipDefaults.IconSize), tint = s.onSurfaceVariant) }) else null,
+        colors = if (filled) AssistChipDefaults.assistChipColors(containerColor = s.surfaceContainer, leadingIconContentColor = s.onSurface) else AssistChipDefaults.assistChipColors(),
+        border = if (filled) null else AssistChipDefaults.assistChipBorder(enabled),
     )
 }
