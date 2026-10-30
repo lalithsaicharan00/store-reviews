@@ -16,14 +16,15 @@ internal object ProgressRangeMemory {
 }
 
 /**
- * One visit's "What the squares mean" (the iPhone's `HeatKeyVisit`): the app-wide default until the person taps it here,
- * then what they chose, while the page is open. Folding it anywhere folds it everywhere from then on (the user, 6 Oct
- * 2026); the fold is the same saved setting the habit page reads (`HEAT_KEY_FOLDED`), so a test launch keeps its own.
+ * One visit's "What the squares mean" on the Habits tab (the iPhone's `HeatKeyVisit`): folded until the person opens
+ * it, then what they chose, while the page is open. Folding it here still folds Habit details' key from then on (the
+ * user, 6 Oct 2026; the saved setting `HEAT_KEY_FOLDED`), so a test launch keeps its own.
  */
 internal class HeatKeyVisit(private val store: HabitStore) {
     private var shown by mutableStateOf<Boolean?>(null)
 
-    val isOpen: Boolean get() = shown ?: (store.setting(HEAT_KEY_FOLDED) != "true")
+    // The Habits tab's key starts folded (Figma's Habits & Tasks; cleanup 6.9); open, it stays open for the visit.
+    val isOpen: Boolean get() = shown ?: false
 
     fun toggle() {
         val open = !isOpen

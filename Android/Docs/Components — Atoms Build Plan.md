@@ -204,7 +204,7 @@ search of every page's text).
 | 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☑ |
 | 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☑ |
 | 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☑ |
-| 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☐ |
+| 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☑ |
 | 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☐ |
 | 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☐ |
 | 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☐ |
@@ -3293,3 +3293,14 @@ What each atom changed, newest last.
   check-in" and "Checked in" (`queueStatus` is now the three words; a skipped row keeps its skip icon), and
   `PlayerWords.limitsLine`, which nothing showed. `PlayerWordsTest` checks the three words (not loosened: the words
   themselves changed).
+  - **Built:** run 41044490467 (Android, commit ec820b1) passed: assembleDebug, unit tests and lint.
+- **6.9 Cleanup · Habits & Tasks (30 Oct).** Figma's page "habits & tasks".
+  - "What the squares mean" on the Habits tab starts folded (`HeatKeyVisit`); opened, it stays open for the visit, and
+    folding it still folds Habit details' key, as before.
+  - Archived habits: the free-plan sentence ("They don't count toward your five free habits.") goes.
+  - Tasks: drag to reorder goes (`TaskRow`'s hold-and-drag, `TaskSection.drag`); a tap opens the task and a hold does
+    nothing (A55). `taskHeading`'s second value (which days could be dragged) is now read by nothing.
+  - Noted, not changed: Figma does draw "Moved to Fri 30 Oct · Undo" after ⋮ › Move to another day… ("1 · ⋮ on Pay
+    electricity bill: tap Move to another day…" … "3 · OK: it leaves Today; Moved to Fri 30 Oct · Undo"), so that
+    snackbar stays; Skip this time's snackbar says "Water plants skipped this time" where Figma's says "Skipped on Sun
+    25 Oct" (TasksPageTest checks the app's words; Decisions needed D-36).

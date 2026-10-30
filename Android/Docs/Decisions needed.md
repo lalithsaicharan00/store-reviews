@@ -366,6 +366,14 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** keep the count in the header on the free plan, so the widget still "says what's there"?
 - **My recommendation:** keep it as Figma: the count without the rows invites a tap that only opens the app anyway.
 
+### D-36. Tasks: Skip this time's snackbar
+
+- **Where:** the Tasks page, ⋮ › Skip this time on a repeating task; Figma's page "habits & tasks" (Snackbar · Skipped on Sun 25 Oct · Undo); `ui/habit/TasksPage.kt`.
+- **What Figma shows:** "Skipped on Sun 25 Oct · Undo".
+- **What I did for now:** kept the app's "Water plants skipped this time · Undo" (TasksPageTest checks it).
+- **Question:** which words?
+- **My recommendation:** Figma's, with the name: "Water plants skipped on Sun 25 Oct": it says which time was skipped.
+
 ## Notifications & alarms
 
 ### D-33. Reminder notification: "Any button stops further follow-ups"

@@ -121,8 +121,7 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
             } else LazyColumn(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp).semantics { testTag = "archived-list" }) {
                 item(key = "note") {
                     Text(if (tasks) "Archived tasks keep their history. They're off Today and the Tasks list."
-                        else "Archived habits keep everything they had. They're off Today and send no reminders." +
-                        if (store.isPlus) "" else " They don't count toward your five free habits.",
+                        else "Archived habits keep everything they had. They're off Today and send no reminders.",
                         Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp), style = AppType.bodyLarge, color = s.onSurfaceVariant)
                 }
                 archived.forEachIndexed { i, h ->

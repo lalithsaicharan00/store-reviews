@@ -14,8 +14,7 @@ import com.oftenenough.app.ui.components.AppConnectedButtons
 import com.oftenenough.app.ui.components.StandardIconButton
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,22 +39,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -84,7 +76,6 @@ import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 /** Where the Tasks tab goes. */
 interface TasksNav {
@@ -99,7 +90,7 @@ interface TasksNav {
 }
 
 /** One section of a tab: its heading, an optional note, and its tasks. */
-private class TaskSection(val key: String, val title: String, val tasks: List<Habit>, val note: String? = null, val drag: Boolean = false)
+private class TaskSection(val key: String, val title: String, val tasks: List<Habit>, val note: String? = null)
 
 /** What a row's ⋮ offers, by the kind of row. */
 internal enum class RowKind { ONE_TIME, DONE, NO_DATE, REPEATING }
@@ -118,7 +109,7 @@ internal enum class RowKind { ONE_TIME, DONE, NO_DATE, REPEATING }
  * Skip this time for a repeating one, Do today and Pick a day… for one with No date, Mark as not done for one done
  * today; Duplicate; Archive; Delete (asks, Cancel | Delete). Moving to today says so with Show (Today); every other
  * change says so with Undo, and a delete waits for its Undo to go (D6). No selecting several, and a still hold does
- * nothing (A55); a hold that moves drags a task within its day. Nothing to show: the Empty state with New task.
+ * nothing (A55). Nothing to show: the Empty state with New task.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -224,10 +215,8 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
                                 val kind = when { t.isRepeatingTask -> RowKind.REPEATING; done -> RowKind.DONE; t.dueDay == NO_DATE_DAY -> RowKind.NO_DATE; else -> RowKind.ONE_TIME }
                                 val line = if (t.isRepeatingTask) store.repeatingLine(t, today)
                                     else store.oneTimeLine(t, today).ifEmpty { if (t.dueDay == NO_DATE_DAY) "No date" else "" }
-                                TaskRow(t, listOf(line).filter { it.isNotEmpty() }, done, i, sec.tasks.size, { nav.open(t) }, {},
-                                    { task, dismiss -> rowMenu(task, kind, dismiss) },
-                                    drag = if (sec.drag && !done) sec.tasks.filter { store.doneEntry(it) == null }.map { it.id } else null,
-                                    onDrop = { ids -> store.reorder(ids) })
+                                TaskRow(t, listOf(line).filter { it.isNotEmpty() }, done, i, sec.tasks.size, { nav.open(t) },
+                                    { task, dismiss -> rowMenu(task, kind, dismiss) })
                             }
                         }
                     }
@@ -284,11 +273,11 @@ private fun oneTimeSections(store: HabitStore, oneTime: List<Habit>, today: Int)
     val doneToday = oneTime.mapNotNull { t -> store.doneEntry(t)?.takeIf { it.day == today }?.let { t to it } }.sortedBy { it.second.createdAt }.map { it.first }
     val out = mutableListOf<TaskSection>()
     val todays = open.filter { (it.dueDay ?: 0) < today }.sortedBy { it.dueDay } + open.filter { it.dueDay == today }
-    if (todays.isNotEmpty() || doneToday.isNotEmpty()) out += TaskSection("today", "Today", todays + doneToday, drag = true)
+    if (todays.isNotEmpty() || doneToday.isNotEmpty()) out += TaskSection("today", "Today", todays + doneToday)
     val later = open.filter { val d = it.dueDay ?: 0; d > today && d != NO_DATE_DAY }.sortedBy { it.dueDay }
-    for ((heading, list) in later.groupBy { taskHeading(it.dueDay!!, today) }) out += TaskSection("d-" + heading.first, heading.first, list, drag = heading.second)
+    for ((heading, list) in later.groupBy { taskHeading(it.dueDay!!, today) }) out += TaskSection("d-" + heading.first, heading.first, list)
     val noDate = open.filter { it.dueDay == NO_DATE_DAY }
-    if (noDate.isNotEmpty()) out += TaskSection("nodate", "No date", noDate, "They stay here and don't show on Today until you give them a day.", drag = true)
+    if (noDate.isNotEmpty()) out += TaskSection("nodate", "No date", noDate, "They stay here and don't show on Today until you give them a day.")
     return out
 }
 
@@ -297,61 +286,22 @@ private fun repeatingSections(repeating: List<Habit>): List<TaskSection> =
     TaskRhythm.entries.mapNotNull { r -> repeating.filter { taskRhythm(it.frequency) == r }.takeIf { it.isNotEmpty() }?.let { TaskSection("r-" + r.name, r.title, it) } }
 
 /**
- * One task (Figma's task row, 5.5.4): its icon in its colour, its name
- * in Title Medium (On surface variant once done), its lines in Body Medium On surface variant, and ⋮. With [drag] (its
- * day's open tasks, in order), touch and hold lifts it to move within its day; let go without moving and [onLongClick]
- * runs. It looks like the List item atom (2.4: Surface container lowest, its corners) but keeps its own gestures, because
- * a hold lifts it to drag and must not also open it (T22).
+ * One task (Figma's task row, 5.5.4): its icon in its colour, its name in Title Medium (On surface variant once done),
+ * its lines in Body Medium On surface variant, and ⋮. It looks like the List item atom (2.4: Surface container lowest,
+ * its corners). A tap opens the task; a hold does nothing (A55), and there's no drag to reorder (Figma has none; cleanup
+ * 6.9): the order is each task's day.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TaskRow(
     task: Habit, lines: List<String>, done: Boolean, index: Int, count: Int,
-    onClick: () -> Unit, onLongClick: () -> Unit, menu: (@Composable (Habit, () -> Unit) -> Unit)?,
-    drag: List<String>? = null, onDrop: (List<String>) -> Unit = {},
+    onClick: () -> Unit, menu: (@Composable (Habit, () -> Unit) -> Unit)?,
 ) {
     val c = appColors
     var open by remember { mutableStateOf(false) }
-    var dy by remember { mutableFloatStateOf(0f) }
-    var lifted by remember { mutableStateOf(false) }
-    var height by remember { mutableIntStateOf(1) }
-    val order by rememberUpdatedState(drag)
-    val long by rememberUpdatedState(onLongClick)
-    val drop by rememberUpdatedState(onDrop)
-    val slop = with(LocalDensity.current) { 8.dp.toPx() }
-    // A hold that ends where it began selects; the release that ends it isn't also a tap (it opened the task).
-    var heldUntil by remember { mutableStateOf(0L) }
-    val dragModifier = if (drag == null) Modifier else Modifier.pointerInput(task.id) {
-        detectDragGesturesAfterLongPress(
-            // The tap handler sees the release first: from the hold on, no tap until it's over.
-            onDragStart = { heldUntil = Long.MAX_VALUE; lifted = true; dy = 0f },
-            onDrag = { change, amount -> change.consume(); dy += amount.y },
-            onDragEnd = {
-                heldUntil = android.os.SystemClock.uptimeMillis() + 500
-                val ids = order
-                if (kotlin.math.abs(dy) < slop || ids == null) long()
-                else {
-                    val from = ids.indexOf(task.id)
-                    val to = (from + (dy / height).roundToInt()).coerceIn(0, ids.size - 1)
-                    if (from >= 0 && to != from) drop(ids.toMutableList().also { it.removeAt(from); it.add(to, task.id) })
-                }
-                lifted = false; dy = 0f
-            },
-            // The tap handler takes a release that hasn't moved, so a still hold ends here, not in onDragEnd: it selects.
-            // Only while held: the detector is also cancelled when selecting removes it, between gestures.
-            onDragCancel = {
-                if (lifted) heldUntil = android.os.SystemClock.uptimeMillis() + 500
-                if (lifted && kotlin.math.abs(dy) < slop) long()
-                lifted = false; dy = 0f
-            },
-        )
-    }
-    Box(Modifier.graphicsLayer { translationY = if (lifted) dy else 0f }.let { if (lifted) it.shadow(8.dp, segmentShape(index, count)) else it }) {
+    Box {
         Row(
             Modifier.padding(bottom = SegmentedListGap).fillMaxWidth().clip(segmentShape(index, count)).background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                .onSizeChanged { height = it.height.coerceAtLeast(1) }
-                .then(dragModifier)
-                .combinedClickable(onClick = { if (android.os.SystemClock.uptimeMillis() > heldUntil) onClick() }, onLongClick = if (drag == null) onLongClick else null, role = Role.Button)
+                .clickable(role = Role.Button, onClick = onClick)
                 .semantics(mergeDescendants = true) { testTag = "tasks-row-" + task.name }
                 .heightIn(min = 72.dp).padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
