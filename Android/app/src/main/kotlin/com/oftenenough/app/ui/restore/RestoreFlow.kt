@@ -73,7 +73,8 @@ fun RestoreFlow(
     plus: PlusStore,
     hasPlus: () -> Boolean,
     onBack: () -> Unit,
-    onRestored: (String) -> Unit,
+    /** Back on Today with what to say: [done] is true when habits came back, false when nothing changed. */
+    onRestored: (message: String, done: Boolean) -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -115,7 +116,7 @@ fun RestoreFlow(
         RestoreResult.COULD_NOT_CONNECT -> null
     }
 
-    fun finish() = onRestored("Your habits are back: " + countText(store.habits.count { !it.archived }, store.entryCount))
+    fun finish() = onRestored("Your habits are back: " + countText(store.habits.count { !it.archived }, store.entryCount), true)
 
     /** A file that has been read and checked: the Plus gate first, then the restore. Nothing is written before. */
     fun restoreFile(p: BackupCenter.Pending) {
@@ -125,7 +126,7 @@ fun RestoreFlow(
         fromDrive = false
         pending.value = p
         if (preview.fileHabits == 0 && preview.fileEntries == 0) {
-            onRestored("That backup has no habits in it, so nothing changed.")
+            onRestored("That backup has no habits in it, so nothing changed.", false)
             return
         }
         step = RESTORING

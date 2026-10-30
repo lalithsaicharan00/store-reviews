@@ -280,7 +280,7 @@ private fun AppMain(
                 SettingsPage.WEEK_START -> com.oftenenough.app.ui.settings.WeekStartsOnPage(store) { nav.popBackStack() }
                 SettingsPage.THEME -> ThemePage(prefs) { nav.popBackStack() }
                 // After Erase all my data the app starts again on Today, as a fresh install (Figma's Erase flow).
-                SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE) }, { nav.popBackStack(Routes.TODAY, inclusive = false) },
+                SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE_FROM_SETTINGS) }, { nav.popBackStack(Routes.TODAY, inclusive = false) },
                     { nav.popBackStack() }, snackbar)
                 SettingsPage.TIMES_OF_DAY -> TimesOfDayPage(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
                 // A page that doesn't exist (an old link): straight back.
@@ -337,11 +337,14 @@ private fun AppMain(
                     }) { nav.popBackStack() }
             }
         }
-        composable(Routes.RESTORE) {
+        composable(Routes.RESTORE + "?from={from}", arguments = listOf(androidx.navigation.navArgument("from") { nullable = true; defaultValue = null })) { e ->
+            // From the empty Today the restore ends on Today and nothing more (Figma's onboarding, 2.7 and every flow's
+            // last screen); from Settings it says what came back (Settings' Restore flows end "Today, habits restored").
+            val fromSettings = e.arguments?.getString("from") == "settings"
             com.oftenenough.app.ui.restore.RestoreFlow(AppGraph.backup, store, AppGraph.plus, { AppGraph.hasPlus },
-                onBack = { nav.popBackStack() }) { message ->
+                onBack = { nav.popBackStack() }) { message, done ->
                 nav.popBackStack(Routes.TODAY, inclusive = false)
-                rootScope.launch { snackbar.showSnackbar(message, duration = androidx.compose.material3.SnackbarDuration.Long) }
+                if (fromSettings || !done) rootScope.launch { snackbar.showSnackbar(message, duration = androidx.compose.material3.SnackbarDuration.Long) }
             }
         }
         composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
@@ -465,6 +468,7 @@ object Routes {
     const val TODAY = "today"
     const val NEW = "new"
     const val RESTORE = "restore"
+    const val RESTORE_FROM_SETTINGS = "restore?from=settings"
     const val NEW_TASK = "newtask"
     const val ARCHIVED = "archived"
     const val ARCHIVED_TASKS = "archived/tasks"
