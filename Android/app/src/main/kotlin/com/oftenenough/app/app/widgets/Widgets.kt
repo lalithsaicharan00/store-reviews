@@ -407,12 +407,10 @@ private fun PlusMessage(title: String, done: String?) {
 @Composable
 private fun ListRow(item: WidgetItem, frame: WidgetFrame, showPlace: Boolean, top: Dp = 0.dp) {
     val width = LocalSize.current.width - 24.dp
-    val share = (item.fraction ?: 0.0).coerceIn(0.0, 1.0)
     val dayClick = actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to item.routeOrDay, TapKeys.DAY to frame.day))
     Box(GlanceModifier.fillMaxWidth().padding(top = top)) {
     Box(GlanceModifier.fillMaxWidth().height(64.dp).cornerRadius(16.dp).background(Surface)) {
-        // The fill: the share reached, in a light tint of the habit's colour (a limit's stays neutral, U2).
-        if (share > 0) Box(GlanceModifier.width(width * share.toFloat()).fillMaxHeight().background(if (item.limitFill) Tonal2 else fill(item.color))) {}
+        RowFill(item, width)
         Row(GlanceModifier.fillMaxSize().clickable(dayClick).padding(start = 8.dp, end = 4.dp).semantics { contentDescription = spoken(item) },
             verticalAlignment = Alignment.CenterVertically) {
             Icon(item, 36.dp)
@@ -433,6 +431,18 @@ private fun ListRow(item: WidgetItem, frame: WidgetFrame, showPlace: Boolean, to
 }
 
 // ------------------------------------------------------------------ Parts
+
+/**
+ * 5.10.2, **Widget row fill** (Figma 1238:428): how far a list row is toward today's goal, drawn behind the row from its
+ * start in the habit's Fill colour, the row [width] wide when done. A cut-down row (a limit) and a quit row never fill
+ * (A41: Figma's Coffee row is Value 0). Figma draws it in steps of 10, like Linear progress; the row keeps the exact share.
+ */
+@Composable
+private fun RowFill(item: WidgetItem, width: Dp) {
+    if (item.limitFill || item.quitStart != null) return
+    val share = if (item.done) 1.0 else (item.fraction ?: return).coerceIn(0.0, 1.0)
+    if (share > 0) Box(GlanceModifier.width(width * share.toFloat()).fillMaxHeight().background(fill(item.color))) {}
+}
 
 @Composable
 private fun Icon(item: WidgetItem, size: Dp) {

@@ -172,7 +172,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.9.1 | Plus · Plus | 1204:175 | ☑ |
 | 5.9.2 | Create new · Make room (the frames of "A sixth habit on the free plan", 1167:351072, 1167:351230; added 30 Oct) | 1167:351072 | ☑ |
 | 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☑ |
-| 5.10.2 | Widgets · Widget row fill | 1238:428 | ☐ |
+| 5.10.2 | Widgets · Widget row fill | 1238:428 | ☑ |
 | 5.10.3 | Widgets · Widget · List row | 1238:429 | ☐ |
 | 5.10.4 | Widgets · Widget · List | 1240:488 | ☐ |
 | 5.10.5 | Widgets · Widget · This week | 1243:857 | ☐ |
@@ -2933,3 +2933,18 @@ What each atom changed, newest last.
   - Four states need the widget data the locked tap uses: the milestone medal and band, Couldn't save, New best, and
     skipped's "3 glasses today" (Decisions needed D-30).
   - Dark follows the app's dark colours (each colour is a day and night pair).
+  - **Built:** run 41029670193 (Android, commit cb60773) passed: assembleDebug, unit tests and lint.
+- **5.10.2 Widgets · Widget row fill (30 Oct).** Figma: Widget row fill (1238:428), Value 0 … 100 in steps of 10 ("100 =
+  done"), and how the rows of "Today and Tasks (4×2, 4×4) · every state" use it. Behind a list row, from its start: a
+  rectangle in the habit's Fill colour (Habit / <colour> / Fill, Water's #DFEAFB), as wide as the share of today's goal
+  reached; a done row is filled whole; Value 0 draws nothing. Figma's Coffee ("1 of 2 cups max") and Smoking rows are
+  Value 0: a cut-down row and a quit row never fill (A41). It is `RowFill` (`app/widgets/Widgets.kt`), used by
+  `ListRow`. Only the look changed; the widget's data, taps and updates are locked (U28) and untouched.
+  Fixed:
+  - A limit's row filled in Surface container high toward its limit; now it never fills (A41), as Figma draws it.
+  - The fill followed the share alone; it now also follows "done", so a row whose round button shows done is always
+    filled whole (Figma's "100 = done"), whatever its share says.
+  Noted, not changed:
+  - Figma steps the fill by 10, like Linear progress; the widget draws the exact share (3 of 8 glasses is 37.5 %, not
+    40 %), as Today's row in the app does, so the two never disagree.
+  - The fill's corners come from the row's (12, 5.10.3); Glance rounds them only on Android 12 and later.
