@@ -40,8 +40,6 @@ import com.oftenenough.app.ui.habit.HabitsPage
 import com.oftenenough.app.ui.player.PlayerNav
 import com.oftenenough.app.ui.player.RoutinePlayer
 import com.oftenenough.app.ui.player.TimerScreen
-import com.oftenenough.app.ui.progress.ProgressNav
-import com.oftenenough.app.ui.progress.ProgressScreen
 
 import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.background
@@ -249,12 +247,6 @@ private fun AppMain(
         }
         composable("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {
-                SettingsPage.PROGRESS -> WithDay(store, nav) { openDay ->
-                    ProgressScreen(store, prefs, object : ProgressNav {
-                        override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
-                        override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
-                    }) { nav.popBackStack() }
-                }
                 MenuItem.HABITS.title -> WithMenu(store, MenuItem.HABITS, nav) { openMenu ->
                     WithDay(store, nav) { openDay ->
                         HabitsPage(store, object : HabitsNav {

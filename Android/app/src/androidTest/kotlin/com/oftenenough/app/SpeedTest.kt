@@ -111,20 +111,18 @@ class SpeedTest {
         // Today is behind the sheet all along: wait for the sheet itself to go before the next tap.
         device.pressBack(); device.wait(Until.gone(By.res("day-details")), 10_000); settle()
 
-        menu("progress"); waitFor("progress-list")
-        val week = measure("Progress Week scroll") { scroll("progress-list") }
-        val toYear = measure("Progress: Week to Year") { tap("progress-range-year") }
-        val year = measure("Progress Year scroll") { scroll("progress-list") }
-        device.pressBack(); device.wait(Until.gone(By.res("progress-list")), 10_000); waitFor("today-list")
-
+        // Progress is the Habits tab (A54): Week, then Week to Year, then Year; back on Week for the habit's own page.
         menu("habits"); waitFor("habits-list")
-        val list = measure("Habits list scroll") { scroll("habits-list") }
+        val week = measure("Habits Week scroll") { scroll("habits-list") }
+        val toYear = measure("Habits: Week to Year") { tap("habits-range-2") }
+        val year = measure("Habits Year scroll") { scroll("habits-list") }
+        tap("habits-range-0"); settle()
         val open = measure("open Habit details") { tap("habits-row-Water"); waitFor("habit-details") }
         val history = measure("Habit History scroll") { scroll("habit-details-list") }
         tap("habit-tab-progress")
         val habitProgress = measure("Habit Progress scroll") { scroll("habit-details-list") }
 
-        val all = listOf(control, today, day, week, toYear, year, list, open, history, habitProgress)
+        val all = listOf(control, today, day, week, toYear, year, open, history, habitProgress)
         val text = results.joinToString("\n")
         File(ApplicationProvider.getApplicationContext<android.content.Context>().getExternalFilesDir(null), "speed.txt").writeText(text)
         // Every scenario drew frames (the probe saw the moment it measures, T12), and nothing froze for a second.

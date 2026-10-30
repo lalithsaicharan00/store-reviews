@@ -1,177 +1,25 @@
 package com.oftenenough.app.ui.progress
 
-import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.components.AppFilterChip
-import com.oftenenough.app.ui.components.AppTopBar
-import com.oftenenough.app.ui.components.StandardIconButton
-import com.oftenenough.app.ui.theme.AppType
-
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.withFrameNanos
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.onClick
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTag
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
-import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.Format
-import com.oftenenough.app.data.Habit
-import com.oftenenough.app.data.HabitGroup
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.data.ProgressRange
 import com.oftenenough.app.data.ProgressSnapshot
-import com.oftenenough.app.data.ProgressWeekCard
 import com.oftenenough.app.data.progressBuilder
-import com.oftenenough.app.data.title
-import com.oftenenough.app.ui.components.HabitHistoryCard
-import com.oftenenough.app.ui.components.HistoryHabitHeader
-import com.oftenenough.app.ui.components.HistoryMonth
-import com.oftenenough.app.ui.components.HistorySummary
-import com.oftenenough.app.ui.components.HistoryWeek
-import com.oftenenough.app.ui.components.HistoryYear
-import com.oftenenough.app.ui.components.CookieIcon
-import com.oftenenough.app.ui.habit.HeatKeyCard
+import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
-
-/** Where Progress goes: a habit's own page (tapping its card), or Day details for one of its days (tapping a square). */
-interface ProgressNav {
-    fun openHabit(habit: Habit)
-    fun openDay(habit: Habit, day: Int)
-}
-
-/**
- * Progress, opened from the ≡ menu (the iPhone's ProgressScreen.swift; designs §12). Week, Month and Year: the dates of
- * the period with ‹ ›, "What the squares mean", then a card per habit, each on its own goal's clock, with the period's
- * squares; no overview, no day rings, no group numbers (the iPhone, 2 Oct 2026). It only reads: nothing here logs.
- * Follows the group chosen for Progress (`prefs.progressGroup`), apart from Today's.
- *
- * Speed (S5, S8): every number comes from one `ProgressSnapshot`, worked out when the data, the period, the group or the
- * day changes, and kept for the app's life so going back to a period is instant; drawing reads it only. Each card's
- * squares are one drawing (S12); cards are a lazy list with stable keys, never a lazy grid (S13).
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ProgressScreen(store: HabitStore, prefs: Prefs, nav: ProgressNav, onBack: () -> Unit) {
-    val c = appColors
-    val visit = remember(store) { HeatKeyVisit(store) }
-    val range = ProgressRangeMemory.range
-    /** A day in the period on screen; null means the current one, so the page always opens on it. */
-    var anchor by rememberSaveable { mutableStateOf<Int?>(null) }
-    val today = rememberToday(store)
-    val snap = rememberProgressSnapshot(store, range, anchor, today, prefs.progressGroup)
-    val move: (Int) -> Unit = { step -> anchor = movedAnchor(store, snap, step) }
-
-    Column(Modifier.fillMaxSize().background(c.screen).semantics { testTag = "progress-screen" }) {
-        AppTopBar(
-            "Progress",
-            navigationIcon = {
-                IconButton(onBack, Modifier.semantics { testTag = "progress-back" }) { Icon(Symbols.ArrowBack, "Back") }
-            },
-        )
-        if (!snap.hasHabits) {
-            NoProgressYet()
-        } else {
-            val list = rememberLazyListState()
-            // The dates stay at the top while the cards scroll (Week | Month | Year and the key scroll away), so it's always
-            // clear which period the cards show and ‹ › are one tap away. Read through derivedStateOf: the screen redraws
-            // only when the bar comes or goes, never per scrolled pixel (S6).
-            val pinned by remember(list) {
-                derivedStateOf { list.firstVisibleItemIndex > 1 || (list.firstVisibleItemIndex == 1 && list.firstVisibleItemScrollOffset > 0) }
-            }
-            Box(Modifier.weight(1f).fillMaxWidth()) {
-                LazyColumn(
-                    Modifier.fillMaxSize().semantics { testTag = "progress-list" },
-                    state = list,
-                    contentPadding = PaddingValues(bottom = 24.dp),
-                ) {
-                    item(key = "range", contentType = "range") { RangePicker(range) { ProgressRangeMemory.range = it } }
-                    item(key = "period", contentType = "period") { PeriodBar(snap, move) }
-                    if (store.groups.isNotEmpty()) {
-                        item(key = "groups", contentType = "groups") {
-                            GroupChips(store.groups, snap.group?.id) { prefs.progressGroup = it }
-                        }
-                    }
-                    item(key = "key", contentType = "key") {
-                        HeatKeyCard(visit.isOpen, { visit.toggle() }, Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp))
-                    }
-                    if (snap.complete && snap.group != null && snap.cards.isEmpty() && snap.archivedCards.isEmpty()) {
-                        item(key = "group-empty", contentType = "note") {
-                            Text("No habits in this group yet. Add them in Filter on Today, or in a habit's Group.",
-                                Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 8.dp).semantics { testTag = "progress-group-empty" },
-                                style = MaterialTheme.typography.bodyMedium, color = c.secondary, textAlign = TextAlign.Center)
-                        }
-                    }
-                    items(snap.cards, key = { "card-" + it.habit.id }, contentType = { "card" }) { card ->
-                        HabitCard(card, snap, store, nav, Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
-                    }
-                    if (snap.archivedCards.isNotEmpty()) {
-                        item(key = "archived-title", contentType = "note") {
-                            Text("Archived", Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 4.dp).semantics { heading() },
-                                style = AppType.labelLarge, color = c.secondary)
-                        }
-                        items(snap.archivedCards, key = { "archived-" + it.habit.id }, contentType = { "card" }) { card ->
-                            HabitCard(card, snap, store, nav, Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
-                        }
-                        item(key = "archived-note", contentType = "note") {
-                            Text("Archived habits count for the days before they were archived.", Modifier.padding(horizontal = 32.dp, vertical = 4.dp),
-                                style = MaterialTheme.typography.bodySmall, color = c.secondary)
-                        }
-                    }
-                    item(key = "end", contentType = "end") { Spacer(Modifier.navigationBarsPadding()) }
-                }
-                if (pinned) PeriodBar(snap, move)
-            }
-        }
-    }
-}
 
 /**
  * Today's day number, moved on at each new day's start (a new day makes new numbers: "This week" kept from before the
@@ -193,7 +41,7 @@ internal fun rememberToday(store: HabitStore): Int {
 /**
  * The period's numbers for [range] around [anchor] (null: the current period): kept ones at once; otherwise the period
  * and its first cards now (one frame's worth) and the rest a few per frame, so even a year of many habits never holds a
- * frame (S5, S16). Shared by Progress and Habits & Tasks.
+ * frame (S5, S16). For Habits & Tasks (the Habits tab is Progress, A54).
  */
 @Composable
 internal fun rememberProgressSnapshot(store: HabitStore, range: ProgressRange, anchor: Int?, today: Int, groupId: String): ProgressSnapshot {
@@ -228,8 +76,8 @@ private data class SnapshotKey(
 )
 
 /**
- * Progress's numbers, kept between openings (one for the app): reopening Progress, or going back to a period, with
- * nothing changed shows the numbers already worked out (the iPhone's `ProgressModel`).
+ * The Habits tab's numbers, kept between openings (one for the app): going back to a period with nothing changed shows
+ * the numbers already worked out (the iPhone's `ProgressModel`).
  */
 private object ProgressCache {
     private val made = HashMap<SnapshotKey, ProgressSnapshot>()
@@ -241,127 +89,9 @@ private object ProgressCache {
         if (made.size > 80) made.clear()
         made[key] = snapshot
     }
-
-    fun get(key: SnapshotKey, work: () -> ProgressSnapshot): ProgressSnapshot {
-        made[key]?.let { return it }
-        // Numbers from before a change are never shown again.
-        made.keys.removeAll { it.version != key.version || it.store != key.store || it.today != key.today }
-        // Ranges × periods × groups: room for every group's week, month and year and the ones before them.
-        if (made.size > 80) made.clear()
-        return work().also { made[key] = it }
-    }
 }
-
-/** Week | Month | Year: Material 3 Expressive's connected buttons; the chosen one is ink with a ✓. */
-@Composable
-private fun RangePicker(selected: ProgressRange, onPick: (ProgressRange) -> Unit) {
-    val c = appColors
-    val all = ProgressRange.entries
-    Row(
-        Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp).selectableGroup()
-            .semantics { testTag = "progress-range" },
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        all.forEachIndexed { i, r ->
-            val on = r == selected
-            val shape = when {
-                on -> RoundedCornerShape(50)
-                i == 0 -> RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp, topEnd = 8.dp, bottomEnd = 8.dp)
-                i == all.lastIndex -> RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp, topEnd = 24.dp, bottomEnd = 24.dp)
-                else -> RoundedCornerShape(8.dp)
-            }
-            Row(
-                Modifier.weight(1f).height(48.dp).clip(shape).background(if (on) c.ink else c.tonal)
-                    .selectable(selected = on, role = Role.Tab, onClick = { onPick(r) })
-                    .semantics { testTag = "progress-range-" + r.noun },
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (on) {
-                    Icon(Symbols.Check, null, Modifier.size(18.dp), tint = c.onInk)
-                    Spacer(Modifier.width(8.dp))
-                }
-                Text(r.title, style = AppType.labelLarge, color = if (on) c.onInk else c.ink, maxLines = 1)
-            }
-        }
-    }
-}
-
-/** The period's dates with ‹ and ›, and "This week" under them. Opaque, the page's own colour: cards slide under it. */
-@Composable
-private fun PeriodBar(snap: ProgressSnapshot, move: (Int) -> Unit) {
-    val c = appColors
-    val noun = snap.range.noun
-    Row(Modifier.fillMaxWidth().background(c.screen).padding(horizontal = 8.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        StandardIconButton(Symbols.KeyboardArrowLeft, "Previous $noun", { move(-1) },
-            Modifier.semantics { testTag = "progress-previous" }, enabled = snap.canGoBack)
-        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(snap.title, Modifier.semantics { testTag = "progress-period" }, maxLines = 1,
-                style = MaterialTheme.typography.titleLarge.copy(fontFeatureSettings = "tnum"), color = c.ink)
-            snap.caption?.let {
-                Text(it, Modifier.semantics { testTag = "progress-period-caption" }, maxLines = 1,
-                    style = MaterialTheme.typography.bodyMedium, color = c.secondary)
-            }
-        }
-        StandardIconButton(Symbols.KeyboardArrowRight, "Next $noun", { move(1) },
-            Modifier.semantics { testTag = "progress-next" }, enabled = snap.canGoForward)
-    }
-}
-
-/** The groups as choices ("All" first): they choose which habits' cards show. Nothing shows until a group exists. */
-@Composable
-private fun GroupChips(groups: List<HabitGroup>, selected: String?, onPick: (String) -> Unit) {
-    Row(
-        Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 4.dp)
-            .semantics { testTag = "progress-groups" },
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        AppFilterChip("All", selected == null, { onPick("") }, tag = "progress-group-all")
-        for (g in groups) AppFilterChip(g.name, selected == g.id, { onPick(g.id) }, tag = "progress-group-" + tagName(g.name))
-    }
-}
-
-internal fun tagName(name: String): String = name.trim().lowercase().replace(Regex("\\s+"), "-")
 
 private val headlineStyle = AppType.titleLargeEmphasized
-
-/**
- * One habit's card, the Habit history card (4.15) with the habit's header: icon, name and goal on one line each; the
- * summary and at most one more fact; the period's squares. The card opens the habit; a square of a day up to today
- * opens that day's details.
- */
-@Composable
-private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: HabitStore, nav: ProgressNav, modifier: Modifier) {
-    val habit = card.habit
-    // From the largest text sizes, the squares give way to the words, which carry the meaning.
-    val big = LocalDensity.current.fontScale >= 1.8f
-    val onCell: (Int?) -> Unit = { i ->
-        val d = i?.let { card.days.getOrNull(it) }
-        if (d != null && d.heat != HeatCell.Blank && d.day <= snap.today) nav.openDay(habit, d.day) else nav.openHabit(habit)
-    }
-    val tag = (if (card.isQuit) "progress-quit-" else "progress-row-") + tagName(habit.name)
-    // TalkBack: the whole card is one element that says everything (the squares are in its words).
-    HabitHistoryCard(modifier.clearAndSetSemantics { contentDescription = card.accessibility; testTag = tag; onClick(label = "Opens the habit") { nav.openHabit(habit); true } },
-        onClick = { nav.openHabit(habit) }, onClickLabel = "Opens the habit") {
-        HistoryHabitHeader(habit.symbol, habit.color, habit.name, card.goal) {
-            Icon(Symbols.KeyboardArrowRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        val start = card.runStart
-        if (start != null) HistorySummary(card.detail) { QuitRunClock(start, store.clock) } else HistorySummary(card.headline, card.detail)
-        if (!big) {
-            val todayIndex = snap.columns.indexOfFirst { it.isToday }.takeIf { it >= 0 }
-            when (snap.range) {
-                ProgressRange.WEEK -> if (snap.columns.size == card.heat.size)
-                    HistoryWeek(snap.columns.map { it.short }, card.heat, todayIndex, habit.color, onTap = onCell)
-                ProgressRange.MONTH -> if (snap.columns.size == card.heat.size)
-                    HistoryMonth(snap.letters, snap.monthLead, card.heat, todayIndex, habit.color, onTap = onCell)
-                ProgressRange.YEAR -> snap.year?.let { year ->
-                    if (card.heat.size >= year.shown) HistoryYear(year, card.heat, habit.color, onCell)
-                }
-            }
-        }
-    }
-}
 
 /**
  * A quit card's headline: the run going on now, "12 d 11 h current run". Only this text ticks, once a minute, on the
@@ -385,21 +115,4 @@ internal fun QuitRunClock(start: Long, clock: () -> Long) {
         },
         style = headlineStyle.copy(fontFeatureSettings = "tnum"),
     )
-}
-
-/** No habit Progress can show yet (tasks never are): never a dead end. */
-@Composable
-private fun NoProgressYet() {
-    Column(
-        Modifier.fillMaxSize().padding(horizontal = 32.dp).padding(bottom = 96.dp).semantics { testTag = "progress-empty" },
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        CookieIcon(Symbols.BarChart, size = 112.dp)
-        Spacer(Modifier.height(24.dp))
-        Text("No progress yet", style = MaterialTheme.typography.headlineMedium, color = appColors.ink, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(8.dp))
-        Text("Add a habit on Today and its progress shows here.", style = MaterialTheme.typography.bodyLarge,
-            color = appColors.secondary, textAlign = TextAlign.Center)
-    }
 }

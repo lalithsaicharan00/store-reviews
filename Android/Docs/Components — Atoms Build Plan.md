@@ -197,7 +197,7 @@ search of every page's text).
 | # | What goes or changes (Figma) | Status |
 |---|---|---|
 | 6.1 | Start from an idea: `IdeasScreen`, its route and its idea lists (no idea screen anywhere in Figma) | ☑ |
-| 6.2 | The old Progress page: `ProgressScreen` and its route (the Habits tab is that page, A54); SpeedTest moves to the Habits tab | ☐ |
+| 6.2 | The old Progress page: `ProgressScreen` and its route (the Habits tab is that page, A54); SpeedTest moves to the Habits tab | ☑ |
 | 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☐ |
 | 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☐ |
 | 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☐ |
@@ -3228,3 +3228,12 @@ What each atom changed, newest last.
   New route's `idea` argument, `NewHabitFlow`'s and `HabitForm`'s `idea` parameter, `FormState.applyIdea`, and the
   "pristine" check only an idea set (`markPristine`, `signature`): a new form has changes once it has a name or a step,
   as before for every other new habit. No saved data is touched.
+  - **Built:** run 41039142425 (Android, commit f183045) passed: assembleDebug, unit tests and lint.
+- **6.2 Cleanup · The old Progress page (30 Oct).** Since A54 the Habits tab is Progress; the old page had no way in (no
+  menu row: FirstRunTest checks there is none; nothing navigated to `page/Progress`). Deleted: `ProgressScreen`,
+  `ProgressNav`, its range picker, period bar, group chips, card and empty state (`ui/progress/Progress.kt`), its route in
+  `AppRoot` and `SettingsPage.PROGRESS`. Kept, as the Habits tab reads them: `rememberToday`, `rememberProgressSnapshot`
+  with its cache, `movedAnchor` and `QuitRunClock`. SpeedTest measures the same three things on the Habits tab: the Week
+  scroll, Week to Year (`habits-range-2`) and the Year scroll, then back on Week for the habit's own page; the old
+  separate "Habits list scroll" was the Week scroll again, so it goes. The instrumented speed run isn't dispatched here
+  (the prompt), so this test change runs the next time it is.

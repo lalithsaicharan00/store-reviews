@@ -53,8 +53,6 @@ import com.oftenenough.app.ui.theme.Symbols
 
 /** Every page the app opens by its own name (the routes are `page/<title>`). */
 object SettingsPage {
-    /** The old Progress page: nothing opens it since the Habits tab became that page (A54); it goes with cleanup 6.2. */
-    const val PROGRESS = "Progress"
     const val TIMES_OF_DAY = "Times of Day"
     const val NEW_DAY = "New day starts at"
     const val WEEK_START = "Week starts on"
