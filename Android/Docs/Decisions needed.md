@@ -262,6 +262,19 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** (a). A day starting in the afternoon or evening would put a morning log on the day before,
   which nobody expects; Figma's own intro speaks of being up "after midnight".
 
+### D-25. Week starts on: Sunday, or the phone's region, by default?
+
+- **Where:** Week starts on (5.8.7), [Figma 1186:13871](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1186-13871), the flow note "The default follows the phone's region"; `data/HabitStore.kt` (`weekStart`, `regionWeekStart`).
+- **What Figma shows / what the app did:** Figma's default follows the phone's region (Monday in most of Europe and India,
+  Sunday in the US). The app starts on Sunday until someone chooses (Current Work 99: "Sunday by default, never
+  Automatic").
+- **What I did for now:** Sunday, as it was. Changing the default would quietly move every week (week goals, week
+  streaks, Progress) for anyone who never chose a day, including people already using the app.
+- **Question:** (a) keep Sunday; (b) the region's day for new installs only, saved as a choice on first launch so
+  nobody's weeks move later.
+- **My recommendation:** (b): it's what people expect where weeks start on Monday, and saving it on first launch keeps
+  existing people's weeks where they are.
+
 ## Plus
 
 ## Widgets

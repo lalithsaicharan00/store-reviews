@@ -183,6 +183,18 @@ class ScreensTest {
         waitFor(hasTestTag("settings-new-day").and(hasAnyDescendant(hasText("3:00 AM"))), "the row saying 3:00 AM")
     }
 
+    /** Week starts on (5.8.7, Figma 1186:13871): saved the moment a day is tapped; Settings' row says it. */
+    @Test fun weekStartsOnIsSavedWhenTapped() {
+        launch()
+        menu("settings")
+        tapTag("settings-week-start")
+        waitFor(hasText("Week goals, the week view and Progress start on this day."), "the intro")
+        tapTag("week-start-1")
+        compose.waitUntil(15_000) { AppGraph.store.weekStart == 2 }
+        back()
+        waitFor(hasTestTag("settings-week-start").and(hasAnyDescendant(hasText("Monday"))), "the row saying Monday")
+    }
+
     @Test fun progressShowsTheWeek() {
         launch()
         menu("progress")

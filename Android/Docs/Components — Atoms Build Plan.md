@@ -167,7 +167,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.4 | Settings · Times of day | 1176:356264 | ☑ |
 | 5.8.5 | Settings · Backup & Sync | 1178:960 | ☑ |
 | 5.8.6 | Settings · New day starts at | 1186:13870 | ☑ |
-| 5.8.7 | Settings · Week starts on | 1186:13871 | ☐ |
+| 5.8.7 | Settings · Week starts on | 1186:13871 | ☑ |
 | 5.8.8 | Settings · Theme | 1188:376784 | ☐ |
 | 5.9.1 | Plus · Plus | 1204:175 | ☐ |
 | 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☐ |
@@ -2785,3 +2785,20 @@ What each atom changed, newest last.
     those (Decisions needed D-24).
   - The Day and Week page stays for Week starts on until 5.8.7, which deletes it.
   - Figma draws light only; dark follows the theme's roles. The radios are Material's; each row is one tap target.
+  - **Built:** run 41022112231 (Android, commit 3acdb1c) passed: assembleDebug, unit tests and lint.
+
+- **5.8.7 Settings · Week starts on (30 Oct).** Figma: Week starts on (1186:13871), and the flow "Week starts on" ("Says
+  what changes, then every day of the week … Saved at once"). From Settings' row. The choice page of 5.8.6: the Top app
+  bar (← "Week starts on"), "Week goals, the week view and Progress start on this day." in Body Large On surface variant,
+  then Sunday to Saturday, each with its radio, saved on tap. It is `WeekStartsOnPage` on `ChoicePage`
+  (`settings/SettingsPages.kt`). GitHub's Android build is the compile check (5.8.3).
+  Fixed:
+  - Week starts on was a dropdown on the Day and Week page. That page is gone (A77) with its notes and its Clock card
+    ("Times follow your phone's 24-hour time setting …", "Daylight saving and travel are handled for you …"), which
+    Figma doesn't have; so is `DayAndWeekRows`, which nothing used.
+  - Tests: ScreensTest taps Monday, checks it's saved, and that Settings' row says Monday.
+  Noted, not changed:
+  - Figma's default follows the phone's region; the app's is Sunday until someone chooses (Current Work 99). Changing
+    it would move every week for people who never chose (Decisions needed D-25).
+  - `DropdownRow` stays for Appearance until Theme (5.8.8).
+  - Figma draws light only; dark follows the theme's roles.

@@ -56,8 +56,8 @@ object SettingsPage {
     /** The old Progress page: nothing opens it since the Habits tab became that page (A54); it goes with cleanup 6.2. */
     const val PROGRESS = "Progress"
     const val TIMES_OF_DAY = "Times of Day"
-    const val DAY_AND_WEEK = "Day and Week"
     const val NEW_DAY = "New day starts at"
+    const val WEEK_START = "Week starts on"
     const val REMINDERS = "Reminders"
     const val APPEARANCE = "Appearance"
     const val BACKUP = "Backup & Sync"
@@ -123,7 +123,7 @@ fun SettingsHome(store: HabitStore, prefs: Prefs, backup: BackupCenter, openMenu
                     onOpen(SettingsPage.NEW_DAY)
                 }
                 Row("Week starts on", HabitCopy.fullDays[store.weekStart - 1], Symbols.DateRange, 2, 3, "settings-week-start") {
-                    onOpen(SettingsPage.DAY_AND_WEEK)
+                    onOpen(SettingsPage.WEEK_START)
                 }
             }
             Section("Reminders") {

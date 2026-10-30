@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -62,7 +61,6 @@ import com.oftenenough.app.data.TextLimit
 import com.oftenenough.app.data.newId
 import com.oftenenough.app.data.FormOutcome
 import com.oftenenough.app.ui.record.DiscardDialog
-import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.RadioRow
@@ -105,36 +103,14 @@ fun NewDayStartsAtPage(store: HabitStore, onBack: () -> Unit) =
     ChoicePage("New day starts at", "Logs before this time count for the day before. Choose a later hour if you’re often up after midnight.",
         (0..12).map { DayWords.clockMinute(it * 60) }, store.dayEndHour, "day-start", onBack) { store.setDayEnd(it) }
 
-// ------------------------------------------------------------------ Day and Week
-
-/** ≡ › Day and Week: when the day starts, when the week starts, and how the clock is read. */
+/**
+ * 5.8.7, **Week starts on** (Figma 1186:13871; the flow "Week starts on"). From Settings. "Week goals, the week view and
+ * Progress start on this day.", then Sunday to Saturday. Week goals, the week view and Progress start on it at once (D7).
+ */
 @Composable
-fun DayAndWeekPage(store: HabitStore, onBack: () -> Unit) {
-    FormPage("Day and Week", onBack = onBack) {
-        Spacer(Modifier.height(8.dp))
-        DropdownRow("New day starts at", DayWords.clockMinute(store.dayEndHour * 60), Symbols.Update,
-            (0..12).map { DayWords.clockMinute(it * 60) }, store.dayEndHour, "day-start") { store.setDayEnd(it) }
-        Note("Your day starts at ${DayWords.clockMinute(store.dayEndHour * 60)}. For late nights or night shifts, pick a later time: what you log before it counts for the day before.")
-        Spacer(Modifier.height(12.dp))
-        DropdownRow("Week starts on", HabitCopy.fullDays[store.weekStart - 1], Symbols.CalendarMonth,
-            HabitCopy.fullDays, store.weekStart - 1, "week-start") { store.chooseWeekStart(it + 1) }
-        Note("Weekly goals, week streaks, the calendar and Progress count in these weeks, past weeks too.")
-        GroupTitle("Clock")
-        SegmentedList {
-            InfoRow(Symbols.Schedule, "Times follow your phone's 24-hour time setting, in Settings › System › Date & time.", 0, 2)
-            InfoRow(Symbols.Public, "Daylight saving and travel are handled for you: what you log keeps its day, and reminders keep their time.", 1, 2)
-        }
-    }
-}
-
-@Composable
-private fun InfoRow(icon: ImageVector, text: String, index: Int, count: Int) {
-    Segment(index, count) {
-        Icon(icon, null, tint = appColors.secondary)
-        Spacer(Modifier.width(24.dp))
-        Text(text, Modifier.padding(vertical = 8.dp), style = MaterialTheme.typography.bodyLarge, color = appColors.secondary)
-    }
-}
+fun WeekStartsOnPage(store: HabitStore, onBack: () -> Unit) =
+    ChoicePage("Week starts on", "Week goals, the week view and Progress start on this day.",
+        HabitCopy.fullDays, store.weekStart - 1, "week-start", onBack) { store.chooseWeekStart(it + 1) }
 
 // ------------------------------------------------------------------ Appearance
 
