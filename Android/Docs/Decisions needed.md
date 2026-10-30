@@ -374,14 +374,6 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** which words?
 - **My recommendation:** Figma's, with the name: "Water plants skipped on Sun 25 Oct": it says which time was skipped.
 
-### D-37. Today widgets: done habits still move to the end
-
-- **Where:** the Today widgets' lists (5.10.3, 5.10.4); `app/widgets/WidgetPublisher.kt` (`sinkDone = prefs.doneOrder != "stay"`), `data/widgets/WidgetItems.lists`, `app/Prefs.doneOrder`.
-- **What Figma shows:** the widgets in Today's order. Today itself keeps done habits where they are, with no setting (A32, Rulebook U13 replaced 21 Oct 2026).
-- **What I did for now:** nothing. The setting that chose this has no switch any more, and its default ("bottom") never equals "stay", so every widget still puts done habits last after the pause while Today doesn't. Widget behaviour is locked (U28), so I left it.
-- **Question:** should the widgets keep done habits in place, as Today now does?
-- **My recommendation:** yes: pass `sinkDone = false` and drop `Prefs.doneOrder`. Only the order a widget draws changes; taps, saving and updating stay exactly as they are.
-
 ## Notifications & alarms
 
 ### D-33. Reminder notification: "Any button stops further follow-ups"

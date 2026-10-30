@@ -3336,7 +3336,8 @@ What each atom changed, newest last.
     other comments that earlier cleanups orphaned: the Tasks page's and Habits & Tasks' notes, Today's group and the
     welcome's pref notes, `delete_sweep`. The "Start the next routine" note goes back above `nextRoutine`.
   - Noted, not changed: the Today widgets still put done habits last through the old `Prefs.doneOrder`, which nothing
-    can change any more; Today keeps them in place (A32). Decisions needed D-37.
+    can change any more; Today keeps them in place (A32). Decisions needed D-27 (already asked; the D-37 written
+    for it the same day was a duplicate and is gone).
   - **Built:** run 41070511427 (Android, commit d6b18ba) passed: assembleDebug, unit tests and lint.
 - **Part 5 · Dead code (30 Oct).** Every Kotlin, XML and Gradle file under `Android/` (main, unit tests, instrumented
   tests) was counted word by word; a declaration whose name appears nowhere but its own line is unreachable. Each was
@@ -3356,4 +3357,12 @@ What each atom changed, newest last.
   - Noted, not changed: stored data was never touched (day notes, groups, App Lock's and the ✏ tip's old prefs stay in
     the files they were in; only the code that read them is gone).
   - **Built:** run 41071257472 (Android, commit 1dedc0d) passed: assembleDebug, unit tests and lint.
+- **Final pass (30 Oct).** All 119 rows are ☑ (3.1–3.6 had a stray "☐☑"; corrected). Every component in the Figma file
+  was read for its Code line: section 1's Material components (Top app bar, Primary tab and tabs, Drawer item, Search
+  bar, Search view header, Checkbox, Radio button, Radio list item, Switch, Filter chip, Assist chip, Linear progress,
+  Icon button, Dropdown field, Menu divider, Sheet drag handle, Bottom sheet, Circular progress) had none, as they are
+  Material's own; each now names its code. The rest without one are the phone's own screens drawn for context
+  (keyboards, notification shade, launcher, Google's account chooser, Settings pages), the status bar, gesture bar and
+  Google Drive's logo: native, never rebuilt, so no code to name. Nothing in `git ls-files` is a secret
+  (`local.properties`, keystores, `google-services.json`, `.p8`: none).
 
