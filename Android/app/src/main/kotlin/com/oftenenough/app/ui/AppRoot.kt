@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.widthIn
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.ui.backup.BackupScreen
-import com.oftenenough.app.ui.settings.AboutPage
 import com.oftenenough.app.ui.settings.AppearancePage
-import com.oftenenough.app.ui.settings.HelpPage
 import com.oftenenough.app.ui.settings.LicencesPage
 import com.oftenenough.app.ui.settings.AppLockPage
 import com.oftenenough.app.ui.settings.AppLockSetup
@@ -94,9 +92,11 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
     val snackbar = remember { SnackbarHostState() }
     val rootScope = rememberCoroutineScope()
     val view = LocalView.current
+    val chime = remember { AppGraph.chime }
     LaunchedEffect(store) {
         store.onLog = { done ->
             if (prefs.vibration) view.performHapticFeedback(if (done) HapticFeedbackConstants.CONFIRM else HapticFeedbackConstants.CLOCK_TICK)
+            if (done && prefs.sound) chime.play()
         }
     }
     LaunchedEffect(store.problem) { store.problem?.let { snackbar.showSnackbar(it); store.problem = null } }
@@ -283,15 +283,15 @@ private fun AppMain(
                 "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 MenuItem.PLUS.title -> com.oftenenough.app.ui.plus.PlusPage(store, AppGraph.plus, AppGraph.backup,
                     snackbar, plusNav(nav), restoreFoundNothing = noPlusFound, onRestoreDialogSeen = { noPlusFound = false })
-                MenuItem.SETTINGS.title -> SettingsHome({ page -> nav.navigate(Routes.page(page)) }) { nav.popBackStack() }
+                MenuItem.SETTINGS.title -> WithMenu(store, MenuItem.SETTINGS, nav) { openMenu ->
+                    SettingsHome(store, prefs, AppGraph.backup, openMenu) { page -> nav.navigate(Routes.page(page)) }
+                }
                 "Arrange your day" -> {
                     // The habit Arrange… or Move asked for, lifted once (Figma 1.4, 1.6).
                     val lifted = remember { ArrangeLift.habit.also { ArrangeLift.habit = null } }
                     ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, lifted) { nav.popBackStack() }
                 }
-                SettingsPage.HELP -> HelpPage { nav.popBackStack() }
-                SettingsPage.ABOUT -> AboutPage({ nav.navigate(Routes.page("Open source licences")) }) { nav.popBackStack() }
-                "Open source licences" -> LicencesPage { nav.popBackStack() }
+                SettingsPage.LICENCES -> LicencesPage { nav.popBackStack() }
                 SettingsPage.DAY_AND_WEEK -> DayAndWeekPage(store) { nav.popBackStack() }
                 SettingsPage.APPEARANCE -> AppearancePage(prefs) { nav.popBackStack() }
                 SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE) }, { nav.popBackStack() }, snackbar)
@@ -569,7 +569,6 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun newHabit() = nav.navigate(Routes.NEW)
     override fun ideas() = nav.navigate(Routes.page("Start from an idea"))
     override fun restore() = nav.navigate(Routes.RESTORE)
-    override fun help() = nav.navigate(Routes.page(SettingsPage.HELP))
     override fun arrange() = nav.navigate(Routes.page("Arrange your day"))
     override fun archivedHabits() = nav.navigate(Routes.ARCHIVED)
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))

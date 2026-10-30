@@ -205,15 +205,6 @@ class ScreensTest {
         assertEquals("Anytime's order after Move up; on screen: ${screen()}", listOf("Read", "Water", "Call family"), anytime.filter { it in setOf("Read", "Water", "Call family") })
     }
 
-    @Test fun helpFindsATopicAndSaysWhenNothingMatches() {
-        launch()
-        menu("help")
-        compose.onNodeWithTag("help-search", useUnmergedTree = true).performTextInput("slip")
-        waitFor(hasTestTag("help-topic-Log a slip"), "Log a slip")
-        tapTag("help-topic-Log a slip")
-        waitFor(hasText("The clock starts again", substring = true), "its answer")
-    }
-
     @Test fun plusBuysWithTheStandInStore() {
         launch()
         menu("plus")

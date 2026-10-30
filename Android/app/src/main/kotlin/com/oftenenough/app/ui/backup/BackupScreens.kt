@@ -59,15 +59,35 @@ import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.launch
 
-/** "Today 9:14 AM", "Just now", "Yesterday 9:14 AM". */
-private fun whenText(ms: Long?, store: HabitStore): String {
+/** "Today at 9:14 AM", "Just now", "Yesterday at 9:14 AM"; Settings' row joins with ", " ("Today, 9:14 AM", Figma 1173:547). */
+private fun whenText(ms: Long?, store: HabitStore, join: String = " at "): String {
     if (ms == null) return "Not yet"
     val now = System.currentTimeMillis()
     if (now - ms < 120_000) return "Just now"
     val day = store.rules.calendarDayOf(ms)
     val today = store.rules.calendarDayOf(now)
     val time = DayWords.clock(ms)
-    return when (day) { today -> "Today at $time"; today - 1 -> "Yesterday at $time"; else -> DayWords.short(day) + " at " + time }
+    return when (day) { today -> "Today"; today - 1 -> "Yesterday"; else -> DayWords.short(day) } + join + time
+}
+
+/**
+ * Settings' Backup & Sync row (5.8.3, Figma 1173:547): the page's card in a few words, with its icon, following it all
+ * the way (Figma's flows: "Settings' Backup & Sync row follows the same status"). Figma draws Backed up · Today, 9:14 AM
+ * (cloud_done), Backed up · Just now and Not backed up yet (cloud_off); the other states keep the card's own titles.
+ */
+fun backupSummary(center: BackupCenter, store: HabitStore): Pair<ImageVector, String> {
+    val status = center.status
+    val last = status?.lastSent
+    return when {
+        !center.link.available || center.link.accountName == null -> Symbols.CloudOff to "Not backed up yet"
+        center.working -> Symbols.CloudUpload to "Backing up…"
+        status?.state == DriveState.OFFLINE -> Symbols.CloudOff to "Waiting for the internet"
+        status?.state == DriveState.FULL -> Symbols.CloudOff to "Google Drive is full"
+        status?.state == DriveState.NOT_CONNECTED -> Symbols.LinkOff to "Google Drive isn’t connected"
+        status?.state == DriveState.REMOVED -> Symbols.CloudAlert to "Your Google Drive backup was deleted"
+        last == null -> Symbols.CloudOff to "Not backed up yet"
+        else -> Symbols.CloudDone to "Backed up · " + whenText(last, store, ", ")
+    }
 }
 
 /** "12 habits, 840 logs". */

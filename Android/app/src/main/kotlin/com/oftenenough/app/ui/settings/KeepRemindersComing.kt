@@ -102,6 +102,18 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
 
 private const val PREFS = "keep_reminders"
 
+/** A step is done when the app can read that it's so (battery Unrestricted), or once it has been opened (A40). */
+private fun stepDone(context: Context, step: MakerStep): Boolean =
+    step.checked?.invoke(context) ?: context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(step.key, false)
+
+/**
+ * How many of this page's rows are still to do: notifications, alarms & reminders, and this phone maker's steps.
+ * Settings' row counts with it ("1 thing to fix", or All set at 0; Figma 1173:547, A40, A70).
+ */
+fun remindersLeftToFix(context: Context): Int =
+    (if (Reminders.canPost(context)) 0 else 1) + (if (Reminders.canBeExact(context)) 0 else 1) +
+        maker(Build.MANUFACTURER ?: "").steps.count { !stepDone(context, it) }
+
 /**
  * 5.8.1, **Keep reminders coming** (Figma 804:192; flows on the Today and Settings pages; A40, A66, A70; Components —
  * Atoms Build Plan). From a reminder notice's Show me how and from Settings › Keep reminders coming. On Surface
@@ -129,7 +141,7 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
     val phone = remember { maker(Build.MANUFACTURER ?: "") }
     val notifications = remember(refresh) { Reminders.canPost(context) }
     val exact = remember(refresh) { Reminders.canBeExact(context) }
-    val done = remember(refresh) { phone.steps.associate { st -> st.key to (st.checked?.invoke(context) ?: prefs.getBoolean(st.key, false)) } }
+    val done = remember(refresh) { phone.steps.associate { st -> st.key to stepDone(context, st) } }
     val anyReminder = store.habits.any(::hasReminders)
 
     FormPage("Keep reminders coming", onBack = onBack) {

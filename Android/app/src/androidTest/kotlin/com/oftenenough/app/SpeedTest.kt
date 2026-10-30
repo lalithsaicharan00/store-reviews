@@ -27,7 +27,7 @@ import org.junit.runner.RunWith
 /**
  * Speed, measured, never judged by eye (Rulebook S2): the frames Android itself drew (JankStats and FrameMetrics) while
  * each screen is scrolled or tapped by real system touches (UI Automator), with 30 habits and two years of history,
- * beside a control (the static Help page scrolled the same way in the same run).
+ * beside a control (the static Settings page scrolled the same way in the same run).
  *
  * No Compose test rule here: it drives frames and touches from the test's own clock, and every frame then carried
  * 100–250 ms of waiting that wasn't the app's (found 13 Oct 2026: frames with 0 ms of layout and 10 ms of draw read as
@@ -102,9 +102,9 @@ class SpeedTest {
         Log.i("Speed", sizes); results += sizes
 
         // The control: a static page scrolled the same way in the same run (S2).
-        menu("help"); waitFor("help-search")
-        val control = measure("control: Help scroll") { scroll("page-body") }
-        device.pressBack(); device.wait(Until.gone(By.res("help-search")), 10_000); waitFor("today-list")
+        menu("settings"); waitFor("settings-list")
+        val control = measure("control: Settings scroll") { scroll("settings-list") }
+        device.pressBack(); device.wait(Until.gone(By.res("settings-list")), 10_000); waitFor("today-list")
 
         val today = measure("Today scroll") { scroll("today-list") }
         val day = measure("open Day details") { tap("row-Read"); waitFor("day-details") }

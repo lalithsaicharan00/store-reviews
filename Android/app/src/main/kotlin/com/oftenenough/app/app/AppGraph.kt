@@ -57,6 +57,8 @@ object AppGraph {
         intent.removeExtra(MainActivity.OPEN_HABIT)
     }
     val prefs: Prefs get() = prefsInstance ?: error("AppGraph.open first")
+    /** Sound when done's chime; made when the app's screen first shows, so it's loaded before the first goal is met. */
+    val chime: Chime by lazy { Chime(AndroidCore.context) }
     private var lockInstance: AppLock? = null
     val lock: AppLock get() = lockInstance ?: error("AppGraph.open first")
     /** Names are hidden outside the app when the person asked, and always while App lock is on. */

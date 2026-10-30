@@ -144,12 +144,15 @@ class FirstRunTest {
         assertNone(hasTestTag("menu-about"), "an About row")
     }
 
-    @Test fun settingsHoldsEveryPageTheMenuUsedToList() {
+    /** Settings (5.8.3, Figma 1173:547): one page, five sections, every row with its value. */
+    @Test fun settingsHasItsFiveSections() {
         launch(demo = "today")
         tapTag("menu-button")
         tapTag("menu-settings")
         waitFor(hasTestTag("settings-page"), "Settings")
-        for (text in listOf("Times of Day", "Day and Week", "Reminders", "Appearance", "Backup & Sync", "Privacy & Security", "Help", "About")) {
+        for (text in listOf("Backup", "Your day", "Reminders", "General", "About", "Backup & Sync", "Times of day", "New day starts at",
+            "Week starts on", "Keep reminders coming", "Theme", "System default", "Vibration", "A light buzz as you log", "Sound when done",
+            "Plays when a goal is met", "Privacy policy", "Opens in your browser", "Open-source licences", "The libraries we use", "Version")) {
             waitFor(hasText(text), text)
         }
         tapTag("settings-backup-and-sync")

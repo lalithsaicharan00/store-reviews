@@ -104,7 +104,6 @@ interface TodayNav : NoticeNav {
     fun newHabit()
     fun ideas()
     fun restore()
-    fun help()
     fun arrange()
     fun startRoutine(part: String, day: Int, habits: List<Habit>)
     /** The Habits page, where archived habits are (the start-over snackbar's View, Figma 6.3.2). */

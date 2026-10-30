@@ -163,7 +163,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☑ |
 | 5.8.1 | Settings · Keep reminders coming | 804:192 | ☑ |
 | 5.8.2 | Settings · Edit time of day | 830:265 | ☑ |
-| 5.8.3 | Settings · Settings | 1173:547 | ☐ |
+| 5.8.3 | Settings · Settings | 1173:547 | ☑ |
 | 5.8.4 | Settings · Times of day | 1176:356264 | ☐ |
 | 5.8.5 | Settings · Backup & Sync | 1178:960 | ☐ |
 | 5.8.6 | Settings · New day starts at | 1186:13870 | ☐ |
@@ -2650,3 +2650,51 @@ What each atom changed, newest last.
     turning red. This follows Figma; held for the user if a time of day's name should follow A65 too.
   - A row whose hours a new start changes says "Was …" under them, and a start inside another time of day asks to
     split it first; Figma draws neither state.
+  - **Built:** run 40992743287 (Android, commit 3f7c19f) passed: assembleDebug, unit tests and lint (5.8.1 and 5.8.2
+    together).
+
+- **5.8.3 Settings · Settings (30 Oct).** Figma: Settings (1173:547), Screen Default · End of the list · Nothing set up,
+  and the settings page's flows (Opening Settings, Keep reminders coming, Vibration and sound, Privacy policy,
+  Open-source licences, New day starts at, Week starts on, Theme, Reminders before anything is set up). From the menu
+  (A28). On Surface container: the Top app bar (≡ "Settings", Title Large Emphasized); scrolling, 8 above, 16 at the
+  sides, 40 under, 24 between: five sections, each a Label Large Primary heading 16 in and, 8 under it, one List of List
+  items on Surface bright (Two lines, the icon in its circle, › where it opens something): **Backup** (Backup & Sync:
+  "Backed up · Today, 9:14 AM", cloud_done; "Not backed up yet", cloud_off), **Your day** (Times of day: their names;
+  New day starts at: 12:00 AM; Week starts on: Sunday), **Reminders** (Keep reminders coming: "No reminders yet" while
+  no habit reminds, "3 things to fix" … "1 thing to fix" with notification_important, "All set" with
+  notifications_active), **General** (Theme: System default; Vibration, "A light buzz as you log", on; Sound when done,
+  "Plays when a goal is met", off; the whole row toggles), **About** (Privacy policy, "Opens in your browser", ↗;
+  Open-source licences, "The libraries we use"; Version "1.0 (1)", not tappable). It is `SettingsHome`
+  (`settings/SettingsHome.kt`), in the menu's drawer (`WithMenu`). Local Gradle can't reach Maven Central from the
+  session (HTTP 429 on every request through the proxy, 30 Oct), so GitHub's Android build is the compile check; the
+  instrumented tests' code was checked by reading.
+  Fixed:
+  - Settings was a stand-in list (Your day: Times of Day, Day and Week; The app: Reminders, Appearance; Your habits:
+    Backup & Sync, Privacy & Security; About: Help, About) with ← where Figma has ≡; now Figma's five sections, rows,
+    words, values and icons, with the menu.
+  - Each row shows its current value (Figma: "Every row that opens something to change has › and shows its current
+    value under the name"). Backup & Sync's comes from the page's own card (`backupSummary`, `ui/backup/BackupScreens.kt`,
+    "Today, 9:14 AM" where the card says "Today at 9:14 AM"); Keep reminders coming counts what its page shows still to
+    do (`remindersLeftToFix`, shared with the page, read again on return from Android's settings).
+  - **Sound when done did nothing:** the switch was saved but no sound ever played. Now the chime (the iPhone's
+    Tick.wav, `res/raw/tick.wav`, played by `app/Chime.kt`) plays when a log meets a goal (the store's `onLog`, as the
+    iPhone's `TickFeedback`), as a sonification sound muted in silent and vibrate mode (Figma: "Android's silent mode
+    mutes it").
+  - Help & Feedback and About aren't in Figma (A77): deleted with their routes, `HelpTopics`, the About card and
+    Today's unused `help()`. Contact us is in the menu (A29); Version and the licences are Settings' rows. What other
+    screens use stays in `settings/Support.kt` (`Support`, `LicencesPage`). The Privacy & Security row goes; App Lock's
+    own code goes with cleanup 6.5 (A27).
+  - Privacy policy opens oftenenough.com/privacy in the browser.
+  - Icons added: volume_up, policy, code, notification_important (Material Symbols Rounded, outlined).
+  - Tests: FirstRunTest checks the five sections and every row's words; ScreensTest loses the Help test; SpeedTest's
+    control is the Settings page scrolled (the Help page it scrolled is gone).
+  Noted, not changed:
+  - New day starts at and Week starts on open the Day and Week page, and Theme opens Appearance, until their own pages
+    (5.8.6, 5.8.7, 5.8.8).
+  - A Custom Tab (Figma's) needs `androidx.browser`, and Google's licences screen needs its OSS Licenses plugin: no
+    library was added (Decisions needed D-18, D-19).
+  - The Backup & Sync row's states Figma doesn't draw keep the card's titles (D-20). The iPhone plays the chime once
+    when Sound is turned on; Figma doesn't say, so it doesn't (D-21).
+  - Figma draws light only; the page uses the theme's roles, so dark follows them. Rows are List items (56 dp and up,
+    growing with the text); the headings are headings and the two switches read as switches to TalkBack; nothing
+    moves, so Remove animations changes nothing.
