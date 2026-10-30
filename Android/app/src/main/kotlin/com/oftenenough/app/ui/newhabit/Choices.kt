@@ -39,7 +39,7 @@ enum class ItemType(val title: String, val summary: String, val example: String,
     CHECK("Check it off", "Done or not done.", "e.g. Make your bed", "Name, e.g. Make bed"),
     AMOUNT("Track an amount", "How many or how much.", "e.g. 8 glasses of water", "Name, e.g. Drink water"),
     TIME("Time it", "How long, with a timer.", "e.g. Meditate 10 min", "Name, e.g. Meditate"),
-    CHECKLIST("Checklist", "A short list to tick off.", "e.g. Clean kitchen", "Name, e.g. Clean kitchen"),
+    CHECKLIST("Checklist", "One habit, several steps.", "e.g. Workout: push-ups, squats", "Name, e.g. Clean kitchen"),
     CUT_DOWN("Cut down", "Set a maximum and log how much.", "e.g. Coffee, 2 a day", "Name, e.g. Coffee"),
     QUIT("Quit", "Stop completely. Track the time since you stopped.", "e.g. Smoking", "e.g. Smoking"),
     TASK("Task", "Something to get done.", "e.g. Pay the rent", "e.g. Pay the rent");
@@ -72,12 +72,14 @@ fun icon(type: ItemType): ImageVector = when (type) {
 /**
  * A choice (Figma's Create new pages): a two-line List item on Surface bright, its icon in the avatar (Surface container
  * highest), the name in Title Medium, one line in Body Medium On surface variant, an example tag (Show example), ›.
+ * [plus]: a Plus choice on the free plan, the Plus label beside the name (its tap opens Plus).
  */
 @Composable
-fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?, index: Int, count: Int, tag: String, onClick: () -> Unit) =
+fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?, index: Int, count: Int, tag: String, plus: Boolean = false, onClick: () -> Unit) =
     AppListItem(
         title, index, count, Modifier, line,
         leading = { ListAvatar(icon) }, trailing = { ListChevron() }, onClick = onClick, tag = tag,
+        beside = if (plus) ({ com.oftenenough.app.ui.components.PlusLabel() }) else null,
         below = example?.let { { ListExample(it) } }, containerColor = MaterialTheme.colorScheme.surfaceBright,
     )
 
@@ -130,9 +132,17 @@ fun TaskKinds(onBack: () -> Unit, onPick: (repeats: Boolean) -> Unit) {
     }
 }
 
+/**
+ * A choice of types (5.7.2 Quit or cut down; 5.7.16 **How do you want to track it?**, Figma 1208:375097, Plan Plus ·
+ * Free): each type with its icon, line and example. A new checklist is Plus (A73): on the free plan Checklist carries the
+ * Plus label beside its name and opens Plus ([onPlus]); one made earlier or restored always works.
+ */
 @Composable
-fun TypeChoices(question: String, types: List<ItemType>, onBack: () -> Unit, onPick: (ItemType) -> Unit) {
+fun TypeChoices(question: String, types: List<ItemType>, onBack: () -> Unit, plus: Boolean = true, onPlus: () -> Unit = {}, onPick: (ItemType) -> Unit) {
     ChoicePage(question, close = false, onBack = onBack) {
-        types.forEachIndexed { i, t -> ChoiceCard(icon(t), t.title, t.summary, t.example, i, types.size, "type-${t.name.lowercase()}") { onPick(t) } }
+        types.forEachIndexed { i, t ->
+            val locked = t == ItemType.CHECKLIST && !plus
+            ChoiceCard(icon(t), t.title, t.summary, t.example, i, types.size, "type-${t.name.lowercase()}", plus = locked) { if (locked) onPlus() else onPick(t) }
+        }
     }
 }

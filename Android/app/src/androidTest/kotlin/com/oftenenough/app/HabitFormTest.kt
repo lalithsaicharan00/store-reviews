@@ -50,9 +50,10 @@ class HabitFormTest {
 
     @After fun close() { scenario?.close() }
 
-    private fun launch() {
+    private fun launch(plus: Boolean = false) {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
             .putExtra(TestLaunch.UITEST, true).putExtra(TestLaunch.CLOCK_HOUR, 10).putExtra(TestLaunch.DEMO, "today")
+        if (plus) intent.putExtra(TestLaunch.PLUS, true)
         TestDevice.clear()
         scenario = ActivityScenario.launch(intent)
         waitFor(hasTestTag("row-Read"), "the demo on Today")
@@ -278,7 +279,7 @@ class HabitFormTest {
 
     /** Steps (5.7.12, Figma 1104:163327): Add step opens a field to type in; the form counts the steps. */
     @Test fun stepsAreTypedOneByOne() {
-        launch()
+        launch(plus = true)
         tapTag("new-habit")
         tapTag("new-build")
         tapTag("type-checklist")
@@ -327,6 +328,22 @@ class HabitFormTest {
         assertTrue("no Repeat row", !has(hasTestTag("repeat-row")))
         tapTag("form-back")
         waitFor(hasText("What kind of task?"), "back on What kind of task?")
+    }
+
+    /**
+     * How do you want to track it? (5.7.16, Figma 1208:375097): four ways with their examples; on the free plan a new
+     * Checklist is Plus (A73), its label beside the name, and its tap doesn't open the form.
+     */
+    @Test fun aNewChecklistIsPlusOnTheFreePlan() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        waitFor(hasText("One habit, several steps."), "Checklist's line")
+        waitFor(hasText("e.g. Workout: push-ups, squats"), "Checklist's example")
+        waitFor(hasText("Plus").and(hasAnyAncestor(hasTestTag("type-checklist"))), "the Plus label beside Checklist")
+        tapTag("type-checklist")
+        compose.waitForIdle()
+        assertTrue("no checklist form on the free plan", !has(hasTestTag("steps-row")))
     }
 
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {

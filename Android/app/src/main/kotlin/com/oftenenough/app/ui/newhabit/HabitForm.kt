@@ -136,7 +136,8 @@ fun NewHabitFlow(
         }
         step == "build" -> {
             BackHandler { step = "choose" }
-            TypeChoices("How do you want to track it?", listOf(ItemType.CHECK, ItemType.AMOUNT, ItemType.TIME, ItemType.CHECKLIST), { step = "choose" }) { step = "form:${it.name}" }
+            TypeChoices("How do you want to track it?", listOf(ItemType.CHECK, ItemType.AMOUNT, ItemType.TIME, ItemType.CHECKLIST), { step = "choose" },
+                plus = store.isPlus, onPlus = onPlus) { step = "form:${it.name}" }
         }
         step == "quit" -> {
             BackHandler { step = "choose" }

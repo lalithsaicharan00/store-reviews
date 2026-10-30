@@ -160,7 +160,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.13 | Create new · Limit page | 1105:3190 | ☑ |
 | 5.7.14 | Create new · What kind of task? | 1109:2 | ☑ |
 | 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☑ |
-| 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☐ |
+| 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☑ |
 | 5.8.1 | Settings · Keep reminders coming | 804:192 | ☐ |
 | 5.8.2 | Settings · Edit time of day | 830:265 | ☐ |
 | 5.8.3 | Settings · Settings | 1173:547 | ☐ |
@@ -2566,3 +2566,25 @@ What each atom changed, newest last.
   Noted, not changed:
   - No instrumented test opens it: a test launch never asks Android for notifications or exact times (a system
     question would stay over every later launch on the emulator), so the sheet is checked by building it.
+  - **Built:** run 40991406372 (Android #165, commit 56c2cf0) passed: assembleDebug, unit tests and lint (5.7.14 and
+    5.7.15 together).
+
+- **5.7.16 Create new · How do you want to track it? (30 Oct).** Figma: How do you want to track it? (1208:375097), Plan
+  Plus · Free. From Build or maintain. The choice page (5.7.1) with ←: Check it off (check_circle, "Done or not done.",
+  "e.g. Make your bed"), Track an amount (tag, "How many or how much.", "e.g. 8 glasses of water"), Time it (timer, "How
+  long, with a timer.", "e.g. Meditate 10 min") and Checklist (checklist, "One habit, several steps.", "e.g. Workout:
+  push-ups, squats"), each opening its form. **Plan=Free:** Checklist carries the Plus label beside its name and opens
+  Plus (A73: a new checklist is Plus; one made earlier or restored always works). It is `TypeChoices`
+  (`newhabit/Choices.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - Checklist said "A short list to tick off." and "e.g. Clean kitchen"; now Figma's words.
+  - The free plan could make a checklist; now the Plus label and the Plus screen, as Figma (held since 5.7.12).
+    `ChoiceCard` gained `plus`.
+  - Tests: HabitFormTest checks Checklist's words and its Plus label on the free plan, and that its tap opens no form;
+    the Steps test launches with Plus.
+  Noted, not changed:
+  - Duplicate on a checklist habit opens its form straight away, so the free plan can still copy one it has; Figma's
+    Duplicate flow doesn't say. Held for the user.
+  - Figma's Plus screen opens with a reason; the Plus screen has none yet (5.9.1).
+
+  **Section 5.7 Create new is built (5.7.1–5.7.16).**
