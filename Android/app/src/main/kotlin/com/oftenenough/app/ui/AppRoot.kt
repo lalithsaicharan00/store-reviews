@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.widthIn
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.ui.backup.BackupScreen
-import com.oftenenough.app.ui.settings.AppearancePage
+import com.oftenenough.app.ui.settings.ThemePage
 import com.oftenenough.app.ui.settings.LicencesPage
 import com.oftenenough.app.ui.settings.AppLockPage
 import com.oftenenough.app.ui.settings.AppLockSetup
@@ -293,7 +293,7 @@ private fun AppMain(
                 SettingsPage.LICENCES -> LicencesPage { nav.popBackStack() }
                 SettingsPage.NEW_DAY -> com.oftenenough.app.ui.settings.NewDayStartsAtPage(store) { nav.popBackStack() }
                 SettingsPage.WEEK_START -> com.oftenenough.app.ui.settings.WeekStartsOnPage(store) { nav.popBackStack() }
-                SettingsPage.APPEARANCE -> AppearancePage(prefs) { nav.popBackStack() }
+                SettingsPage.THEME -> ThemePage(prefs) { nav.popBackStack() }
                 // After Erase all my data the app starts again on Today, as a fresh install (Figma's Erase flow).
                 SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE) }, { nav.popBackStack(Routes.TODAY, inclusive = false) },
                     { nav.popBackStack() }, snackbar)

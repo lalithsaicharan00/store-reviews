@@ -275,6 +275,33 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** (b): it's what people expect where weeks start on Monday, and saving it on first launch keeps
   existing people's weeks where they are.
 
+### D-26. The timer switches are gone; should the timer always open full screen and always show in notifications?
+
+- **Where:** the old Appearance page's Timers (removed with Theme, 5.8.8); `app/reminders/TimerNotice.kt`
+  (`prefs.timerNotification`), `app/widgets/WidgetPublisher.kt` (`prefs.timerScreen`).
+- **What Figma shows / what the app did:** Figma has no timer settings; its flows say the timer "opens full screen and
+  starts at once" and shows "the same Live Update … one place for the timer". The app had two switches, Open timer full
+  screen and Show in notifications, both on by default.
+- **What I did for now:** the switches are gone from the screen (A77); the saved choices still work exactly as before
+  (the build prompt: reminders' and widgets' behaviour stays), so someone who had turned one off keeps it off, with no
+  way back on.
+- **Question:** (a) always on for everyone, as Figma (the two saved choices stop being read); (b) put the switches back
+  (in Figma too).
+- **My recommendation:** (a): it's what Figma draws, what nearly everyone already has, and it removes a choice nobody
+  can now change.
+
+### D-27. Widgets still move done habits down; Today keeps them in place (A32)
+
+- **Where:** the old Appearance page's Done habits (removed with Theme, 5.8.8); `app/widgets/WidgetPublisher.kt`
+  (`sinkDone = prefs.doneOrder != "stay"`); A32.
+- **What the app does:** A32 keeps done habits where they are on Today, with no setting, and the setting is gone. The
+  widgets still read it: by default ("Move to bottom") a widget list moves done habits below the rest, so a widget and
+  Today can show a different order.
+- **What I did for now:** nothing changed in the widgets (their behaviour is locked, U28); only the setting's row is gone.
+- **Question:** (a) widgets keep done habits in place too, as A32 and Today; (b) widgets keep moving them down.
+- **My recommendation:** (a): a widget is Today on the home screen, and A32 was decided for the person's own order. It
+  is widget work, so it waits for your yes and is checked on a phone (U28).
+
 ## Plus
 
 ## Widgets

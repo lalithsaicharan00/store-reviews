@@ -59,7 +59,7 @@ object SettingsPage {
     const val NEW_DAY = "New day starts at"
     const val WEEK_START = "Week starts on"
     const val REMINDERS = "Reminders"
-    const val APPEARANCE = "Appearance"
+    const val THEME = "Theme"
     const val BACKUP = "Backup & Sync"
     /** App Lock's page: no row opens it (A27); it goes with cleanup 6.5. */
     const val PRIVACY = "Privacy & Security"
@@ -135,7 +135,7 @@ fun SettingsHome(store: HabitStore, prefs: Prefs, backup: BackupCenter, openMenu
                 Row("Keep reminders coming", line, icon, 0, 1, "settings-reminders") { onOpen(SettingsPage.REMINDERS) }
             }
             Section("General") {
-                Row("Theme", themeName(prefs.theme), Symbols.Contrast, 0, 3, "settings-theme") { onOpen(SettingsPage.APPEARANCE) }
+                Row("Theme", themeName(prefs.theme), Symbols.Contrast, 0, 3, "settings-theme") { onOpen(SettingsPage.THEME) }
                 Toggle("Vibration", "A light buzz as you log", Symbols.Vibration, prefs.vibration, 1, 3, "settings-vibration") { prefs.vibration = it }
                 Toggle("Sound when done", "Plays when a goal is met", Symbols.VolumeUp, prefs.sound, 2, 3, "settings-sound") { prefs.sound = it }
             }

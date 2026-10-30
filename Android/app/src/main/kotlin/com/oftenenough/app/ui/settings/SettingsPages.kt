@@ -8,19 +8,14 @@ import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppExtendedFab
-import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -28,7 +23,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -64,10 +57,7 @@ import com.oftenenough.app.ui.record.DiscardDialog
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.RadioRow
-import com.oftenenough.app.ui.newhabit.GroupTitle
 import com.oftenenough.app.ui.newhabit.MinuteDialog
-import com.oftenenough.app.ui.newhabit.Note
-import com.oftenenough.app.ui.theme.appColors
 
 // ------------------------------------------------------------------ Settings' choice pages
 
@@ -112,55 +102,16 @@ fun WeekStartsOnPage(store: HabitStore, onBack: () -> Unit) =
     ChoicePage("Week starts on", "Week goals, the week view and Progress start on this day.",
         HabitCopy.fullDays, store.weekStart - 1, "week-start", onBack) { store.chooseWeekStart(it + 1) }
 
-// ------------------------------------------------------------------ Appearance
-
-/** ≡ › Appearance: the theme, done habits on Today, what happens when you tick, and timers. */
+/**
+ * 5.8.8, **Theme** (Figma 1188:376784; the flow "Theme"). From Settings. "System default turns dark when your phone’s dark
+ * theme is on.", then System default, Light and Dark. Changes at once and is saved; ← goes back.
+ */
 @Composable
-fun AppearancePage(prefs: Prefs, onBack: () -> Unit) {
-    FormPage("Appearance", onBack = onBack) {
-        GroupTitle("Theme")
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            listOf(Triple("light", "Light", Symbols.LightMode), Triple("dark", "Dark", Symbols.DarkMode), Triple("system", "System default", null))
-                .forEachIndexed { i, (key, title, icon) ->
-                    val on = prefs.theme == key
-                    val shape = when (i) { 0 -> RoundedCornerShape(24.dp, 4.dp, 4.dp, 24.dp); 2 -> RoundedCornerShape(4.dp, 24.dp, 24.dp, 4.dp); else -> RoundedCornerShape(4.dp) }
-                    Column(Modifier.weight(if (key == "system") 1.5f else 1f).clip(if (on) RoundedCornerShape(24.dp) else shape).background(if (on) appColors.ink else appColors.surface)
-                        .clickable { prefs.theme = key }.heightIn(min = 76.dp).padding(vertical = 12.dp)
-                        .semantics { testTag = "theme-$key"; contentDescription = title + if (on) ", chosen" else "" },
-                        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        val shown = if (on) Symbols.Check else icon
-                        if (shown != null) Icon(shown, null, tint = if (on) appColors.onInk else appColors.ink)
-                        Spacer(Modifier.height(6.dp))
-                        Text(title, style = AppType.titleMedium, color = if (on) appColors.onInk else appColors.ink, maxLines = 1)
-                    }
-                }
-        }
-        Note("System default follows your phone: light by day and dark at night if you've set it to.")
-        GroupTitle("Today")
-        DropdownRow("Done habits", if (prefs.doneOrder == "stay") "Stay in place" else "Move to bottom", Symbols.PlaylistAddCheck,
-            listOf("Move to bottom", "Stay in place"), if (prefs.doneOrder == "stay") 1 else 0, "done-order") { prefs.doneOrder = if (it == 1) "stay" else "bottom" }
-        Note(if (prefs.doneOrder == "stay") "Done habits stay where they are. Your order never changes by itself."
-            else "Done habits go below the rest once you pause, never while you're still ticking.")
-        GroupTitle("When you tick")
-        SegmentedList {
-            ToggleRow("Vibration", Symbols.Vibration, prefs.vibration, 0, 2, "vibration") { prefs.vibration = it }
-            ToggleRow("Sound when done", Symbols.MusicNote, prefs.sound, 1, 2, "sound") { prefs.sound = it }
-        }
-        Note("A light buzz as you log, and a chime when a habit is done. The chime follows your phone's sound mode.")
-        GroupTitle("Timers")
-        SegmentedList {
-            ToggleRow("Open timer full screen", Symbols.CropFree, prefs.timerScreen, 0, 2, "timer-screen") { prefs.timerScreen = it }
-            ToggleRow("Show in notifications", Symbols.NotificationsActive, prefs.timerNotification, 1, 2, "timer-notification") { prefs.timerNotification = it }
-        }
-        Note("Starting a timer opens it full screen; swipe down to put it away while it keeps running. When you leave the app, a running timer stays in your notifications, on the lock screen and in the status bar, with Pause.")
-    }
+fun ThemePage(prefs: Prefs, onBack: () -> Unit) {
+    val keys = listOf("system", "light", "dark")
+    ChoicePage("Theme", "System default turns dark when your phone’s dark theme is on.", keys.map(::themeName),
+        keys.indexOf(prefs.theme).coerceAtLeast(0), "theme", onBack) { prefs.theme = keys[it] }
 }
-
-/** A setting that's on or off; the whole row is the toggle (List item, 2.4). */
-@Composable
-fun ToggleRow(title: String, icon: ImageVector?, checked: Boolean, index: Int, count: Int, tag: String, onChange: (Boolean) -> Unit) =
-    AppListItem(title, index, count, leading = icon?.let { { Icon(it, null) } }, trailing = { AppSwitch(checked) },
-        onClick = { onChange(!checked) }, tag = tag)
 
 // ------------------------------------------------------------------ Times of Day
 

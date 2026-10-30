@@ -195,6 +195,18 @@ class ScreensTest {
         waitFor(hasTestTag("settings-week-start").and(hasAnyDescendant(hasText("Monday"))), "the row saying Monday")
     }
 
+    /** Theme (5.8.8, Figma 1188:376784): changes at once and is saved; Settings' row says it. */
+    @Test fun themeIsSavedWhenTapped() {
+        launch()
+        menu("settings")
+        tapTag("settings-theme")
+        waitFor(hasText("System default turns dark when your phone’s dark theme is on."), "the intro")
+        tapTag("theme-2")
+        compose.waitUntil(15_000) { AppGraph.prefs.theme == "dark" }
+        back()
+        waitFor(hasTestTag("settings-theme").and(hasAnyDescendant(hasText("Dark"))), "the row saying Dark")
+    }
+
     @Test fun progressShowsTheWeek() {
         launch()
         menu("progress")

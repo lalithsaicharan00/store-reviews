@@ -168,7 +168,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.8.5 | Settings · Backup & Sync | 1178:960 | ☑ |
 | 5.8.6 | Settings · New day starts at | 1186:13870 | ☑ |
 | 5.8.7 | Settings · Week starts on | 1186:13871 | ☑ |
-| 5.8.8 | Settings · Theme | 1188:376784 | ☐ |
+| 5.8.8 | Settings · Theme | 1188:376784 | ☑ |
 | 5.9.1 | Plus · Plus | 1204:175 | ☐ |
 | 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☐ |
 | 5.10.2 | Widgets · Widget row fill | 1238:428 | ☐ |
@@ -2802,3 +2802,23 @@ What each atom changed, newest last.
     it would move every week for people who never chose (Decisions needed D-25).
   - `DropdownRow` stays for Appearance until Theme (5.8.8).
   - Figma draws light only; dark follows the theme's roles.
+  - **Built:** run 41022802724 (Android, commit 17ffa89) passed: assembleDebug, unit tests and lint.
+
+- **5.8.8 Settings · Theme (30 Oct).** Figma: Theme (1188:376784), and the flow "Theme" ("A page, like New day starts at
+  and Week starts on … Changes at once and is saved; ← goes back"). From Settings' row. The choice page of 5.8.6: the
+  Top app bar (← "Theme"), "System default turns dark when your phone’s dark theme is on." in Body Large On surface
+  variant, then System default, Light and Dark, each with its radio, saved on tap. It is `ThemePage` on `ChoicePage`
+  (`settings/SettingsPages.kt`). GitHub's Android build is the compile check (5.8.3).
+  Fixed:
+  - Theme was three hand-drawn tiles at the top of an Appearance page; now Figma's page of its own.
+  - The Appearance page is gone (A77) with what Figma doesn't have: Done habits (A32: no setting), Vibration and Sound
+    when done (on Settings since 5.8.3), and the Timers card (Open timer full screen, Show in notifications), with
+    `ToggleRow` and `DropdownRow` (`settings/DayAndWeek.kt`), which nothing else used.
+  - Tests: ScreensTest taps Dark, checks it's saved, and that Settings' row says Dark.
+  Noted, not changed:
+  - The saved timer and done-habit choices are still read by the timer's notification and the widgets, unchanged
+    (their behaviour stays; a stored setting is kept): Decisions needed D-26 (always on, as Figma?) and D-27 (widgets
+    keep done habits in place, as A32?).
+  - Figma draws light only; Dark is the theme's dark scheme.
+
+  **Section 5.8 Settings is built (5.8.1–5.8.8).**
