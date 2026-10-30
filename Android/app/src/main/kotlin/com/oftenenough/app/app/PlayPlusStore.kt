@@ -34,6 +34,7 @@ import kotlinx.coroutines.withTimeoutOrNull
  * - The phone trusts nothing but Play. There's no account to tell (D16, 21 Oct 2026).
  */
 class PlayPlusStore(context: Context, private val scope: CoroutineScope, private val sp: SharedPreferences) : PlusStore {
+    private val network = context.applicationContext.getSystemService(android.net.ConnectivityManager::class.java)
     override var owned by mutableStateOf(runCatching { PlusOwned.valueOf(sp.getString(KEY_OWNED, "NONE")!!) }.getOrDefault(PlusOwned.NONE)); private set
     override var pending by mutableStateOf<PlusProduct?>(null); private set
     override val canBuy = true
@@ -147,10 +148,20 @@ class PlayPlusStore(context: Context, private val scope: CoroutineScope, private
         }
     }
 
+    /**
+     * Offline, Google Play still answers, from its own cache on the phone: what it found there is true, but "nothing"
+     * may only mean it hasn't heard from Google yet, so that is said as no connection (onboarding 9.6, No internet).
+     */
     override suspend fun restore(): RestoreResult = when {
         !refresh() -> RestoreResult.COULD_NOT_CONNECT
         owned != PlusOwned.NONE -> RestoreResult.FOUND
+        !online() -> RestoreResult.COULD_NOT_CONNECT
         else -> RestoreResult.NONE
+    }
+
+    private fun online(): Boolean {
+        val caps = network?.getNetworkCapabilities(network.activeNetwork) ?: return network == null
+        return caps.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     companion object { private const val KEY_OWNED = "owned" }

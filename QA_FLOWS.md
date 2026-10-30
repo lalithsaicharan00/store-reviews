@@ -41,10 +41,21 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 6. Onboarding · Back from Google Drive — Today, habits restored (2.7) showed a snackbar “Your habits are back: …”; Figma's onboarding ends on Today with none. The restore route now knows where it started: from the empty Today nothing more is said, from Settings it still says what came back (`AppRoot` restore?from=settings, `RestoreFlow.onRestored`).
 7. Onboarding · Back with a backup file — a file's Restoring (602:3305) showed no Cancel: it was offered only while Plus was checked, and dropped the moment the habits were written, so the screen faded to Today without it. Cancel now stays the whole restore: before the write it stops it (one transaction, rolled back), after it puts the phone back with the restore's undo file (`RestoreFlow.cancelFile`); Google Drive's Cancel also stays until the screen has gone.
 8. Onboarding · Wrong Google account — **bug:** Try another Google account never showed a chooser: it let go of the account and Play Services handed the same one straight back, so the person landed on No backup found again. The Drive link can now ask for a choice (`DriveLink.connect(pick = true)`: Android's own account chooser, then Google's grant for the chosen account), used by Try another Google account and by Settings' Change account; the old account is only replaced once a new one is chosen, so Cancel keeps it.
+9. Onboarding · No internet: checking Plus — **bug:** offline, the Plus check said Plus isn’t on this phone instead of No internet (9.6): Google Play answers from its own cache with no network, and an empty answer was taken as “no Plus”. An empty answer offline now counts as no connection; a cached purchase still counts (`PlayPlusStore.restore`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
 ## Open questions for the user
+
+- **Blocked: Google Play purchases on the emulator.** With real billing (`-PrealBilling`), Plus's price loads
+  (₹2,400.00) but buying fails at once: Google Play says “The item you were attempting to purchase could not be
+  found.” (also with versionCode 3). The app's Play page answers “Item not found” for this account too, so the
+  sideloaded debug build isn't one Play will sell to. Needed: install from an internal-testing track that
+  jeffreyjohn0112@gmail.com is on (or add it), then flows Onboarding 3 and 9, Create new 19–20 and the Plus purchases
+  can be finished. Until then the debug build's stand-in store (`FakePlusStore`) stands in for the free plan.
+- **Plus seemed owned, then wasn't.** Before Play Store's data was cleared, Play's cache on the emulator answered that
+  this account owns Plus; after it, Google Play says it doesn't (Get Plus is offered). A refunded test purchase from
+  16 Oct is the likely reason.
 
 - **Filled icons.** The brief says the design uses filled icons everywhere, but the Figma file sets 449 icon glyphs
   (Material Symbols Rounded) to FILL 0 — drawn outlined in Figma too, e.g. `calendar_today` in the Assist chip
@@ -64,13 +75,13 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 |---|---|---|---|---|
 | 1 | 31:5578 | New to the app | Splash → Today, no habits yet | passed |
 | 2 | 39:1532 | Back from Google Drive | Splash → Today, no habits yet → Restore from a backup → Choose a Google account (native) → Allow Google Drive (native) → Restoring → Today, habits restored | passed |
-| 3 | 39:2021 | Plus didn’t come back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Restoring → Today, habits restored | not started |
+| 3 | 39:2021 | Plus didn’t come back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Restoring → Today, habits restored | blocked: 3.1–3.7 pass (the same screens as flow 4, checked there). 3.8–3.9 need Plus to arrive while the screen is open, which needs a real Google Play purchase — see Open questions |
 | 4 | 39:2697 | Plus still not back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Email | passed |
 | 5 | 39:3228 | From an iPhone, with Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file (native) → Restoring → Plus isn’t on this phone (iPhone) → Email | passed |
 | 6 | 39:3744 | From an iPhone, without Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | passed |
 | 7 | 39:4212 | Back with a backup file | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | passed |
 | 8 | 39:4635 | No internet: Google Drive | Splash → Today, no habits yet → Restore from a backup → No internet → Choose a Google account → Allow Google Drive → Restoring → Today, habits restored | passed |
-| 9 | 39:5144 | No internet: checking Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → No internet → Restoring → Today, habits restored | not started |
+| 9 | 39:5144 | No internet: checking Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → No internet → Restoring → Today, habits restored | blocked: 9.1–9.6 pass (offline, the Plus check says No internet; Try again offline stays; back online it checks again). 9.7–9.8 need Plus to come back from Google Play, and Play won't sell Plus to this sideloaded build — see Open questions |
 | 10 | 39:5757 | Wrong Google account | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → No backup found → Choose a Google account → Restoring → Today, habits restored | passed ¹ |
 | 11 | 39:6436 | Wrong file | Splash → Today, no habits yet → Restore from a backup → Choose a file → That isn’t a backup → Choose a file → Restoring → Today, habits restored | passed |
 | 12 | 39:6935 | Backup from a newer version | Splash → Today, no habits yet → Restore from a backup → Choose a file → From a newer version | passed |
