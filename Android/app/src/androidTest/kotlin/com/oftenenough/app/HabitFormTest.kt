@@ -276,6 +276,23 @@ class HabitFormTest {
         waitFor(hasContentDescription("Remove prayers"), "prayers with ✕ in Your own")
     }
 
+    /** Steps (5.7.12, Figma 1104:163327): Add step opens a field to type in; the form counts the steps. */
+    @Test fun stepsAreTypedOneByOne() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-build")
+        tapTag("type-checklist")
+        waitFor(hasTestTag("steps-row").and(hasContentDescription("None yet", substring = true)), "Steps not set yet")
+        tapTag("steps-row")
+        waitFor(hasText("Up to 24 letters a step. Each step is ticked on its own."), "the footer")
+        tapTag("add-step")
+        type("step-field-0", "Dishes")
+        tapTag("add-step")
+        type("step-field-1", "Sink")
+        tapTag("page-back")
+        waitFor(hasTestTag("steps-row").and(hasContentDescription("2 steps", substring = true)), "the form saying 2 steps")
+    }
+
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
         launch()
         editWater()

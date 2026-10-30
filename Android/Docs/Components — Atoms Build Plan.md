@@ -156,7 +156,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.9 | Create new · How much page | 1102:2782 | ☑ |
 | 5.7.10 | Create new · Unit page | 1102:3316 | ☑ |
 | 5.7.11 | Create new · How long page | 1103:3208 | ☑ |
-| 5.7.12 | Create new · Steps page | 1104:163327 | ☐ |
+| 5.7.12 | Create new · Steps page | 1104:163327 | ☑ |
 | 5.7.13 | Create new · Limit page | 1105:3190 | ☐ |
 | 5.7.14 | Create new · What kind of task? | 1109:2 | ☐ |
 | 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☐ |
@@ -2488,3 +2488,18 @@ What each atom changed, newest last.
   Noted, not changed:
   - A week's or month's total says "How long in a week, in total. The timer on Today counts up to it.", and minutes
     over 59 say "Minutes go up to 59; use hours for more." (Figma draws only a day).
+
+- **5.7.12 Create new · Steps page (30 Oct).** Figma: Steps page (1104:163327), State Typing a step, and the flow "A new
+  habit: a checklist". From a checklist's Steps. On Surface container: the Top app bar (← "Steps"); 16 at the sides and
+  above, 40 under: one list, 2 apart, on Surface bright: each step a Form field with its handle (drag to reorder;
+  TalkBack's Move up and Move down) and ✕ ("Step 4" until typed, the new one focused), then + Add step (Body Large); 8
+  under it, "Up to 24 letters a step. Each step is ticked on its own." The form says how many ("None yet", "2 steps").
+  It is `StepsPage` (`newhabit/FormPages.kt`). The app, the unit tests (55), lint and the instrumented tests' code build
+  in the session.
+  Fixed:
+  - The footer said "… Drag to reorder. …"; now Figma's words.
+  - The steps and Add step take Surface bright; Add step is Body Large, as Figma; the list sits 16 under the bar.
+  - Tests: HabitFormTest adds two steps and sees the form say "2 steps".
+  Noted, not changed:
+  - A73 makes a new checklist habit Plus; the free plan doesn't stop it yet. That choice is made on How do you want to
+    track it? (5.7.16), where it goes.

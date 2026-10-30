@@ -377,7 +377,13 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
 
 // ------------------------------------------------------------------ Steps
 
-/** A checklist's steps: type each, drag the handle to reorder, ✕ to remove. */
+/**
+ * 5.7.12, **Steps page** (Figma 1104:163327, State Typing a step; Components — Atoms Build Plan), from a checklist's
+ * Steps. On Surface container: the Top app bar (← "Steps"); 16 at the sides and above, 40 under: one list, 2 apart, on
+ * Surface bright: each step a Form field with its handle (drag to reorder; TalkBack's Move up and Move down) and ✕
+ * ("Step 4" until typed, the new one focused), then + Add step (Body Large); 8 under it, "Up to 24 letters a step. Each
+ * step is ticked on its own."
+ */
 @Composable
 fun StepsPage(form: FormState, onBack: () -> Unit) {
     var dragging by remember { mutableStateOf<String?>(null) }
@@ -390,8 +396,9 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
         list.add(to, list.removeAt(from))
         form.items = list
     }
+    val s = MaterialTheme.colorScheme
     FormPage("Steps", onBack = onBack) {
-        SegmentedList {
+        SegmentedList(Modifier.padding(top = 16.dp, bottom = 8.dp)) {
             val items = form.items
             val count = items.size + 1
             items.forEachIndexed { i, step ->
@@ -408,7 +415,7 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
                                     if (i < items.size - 1) CustomAccessibilityAction("Move down") { move(i, i + 1); true } else null,
                                 )
                             },
-                        Modifier.focusRequester(focus).semantics { testTag = "step-field-$i" },
+                        Modifier.focusRequester(focus).semantics { testTag = "step-field-$i" }, containerColor = s.surfaceBright,
                         handle = Modifier.pointerInput(step.id) {
                             detectVerticalDragGestures(
                                 onDragStart = { dragging = step.id; offset = 0f },
@@ -427,13 +434,15 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
                     }
                 }
             }
-            AddRow("Add step", items.size, count, "add-step") {
-                val s = Step(name = "")
-                form.items = form.items + s
-                focusNew = s.id
-            }
+            AppListItem("Add step", items.size, count, leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null) } },
+                onClick = {
+                    val step = Step(name = "")
+                    form.items = form.items + step
+                    focusNew = step.id
+                }, containerColor = s.surfaceBright, headlineStyle = AppType.bodyLarge, tag = "add-step")
         }
-        Note("Up to ${TextLimit.CHECKLIST_PART} letters a step. Drag to reorder. Each step is ticked on its own.")
+        Text("Up to ${TextLimit.CHECKLIST_PART} letters a step. Each step is ticked on its own.", Modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp),
+            style = AppType.bodySmall, color = s.onSurfaceVariant)
     }
 }
 
