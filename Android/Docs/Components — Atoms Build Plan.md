@@ -155,7 +155,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.8 | Create new · Reminders page | 1100:2996 | ☑ |
 | 5.7.9 | Create new · How much page | 1102:2782 | ☑ |
 | 5.7.10 | Create new · Unit page | 1102:3316 | ☑ |
-| 5.7.11 | Create new · How long page | 1103:3208 | ☐ |
+| 5.7.11 | Create new · How long page | 1103:3208 | ☑ |
 | 5.7.12 | Create new · Steps page | 1104:163327 | ☐ |
 | 5.7.13 | Create new · Limit page | 1105:3190 | ☐ |
 | 5.7.14 | Create new · What kind of task? | 1109:2 | ☐ |
@@ -2466,3 +2466,25 @@ What each atom changed, newest last.
   - Tests: HabitFormTest searches "bo" (bottles and books, not glasses), makes "prayers" with Done, and finds it with ✕.
   Noted, not changed:
   - A cut-down habit still finds "Time" here until Limit's own Amount · Time (5.7.13, A67), which is where it goes.
+  - **Built:** run 40944794438 (Android #162, commit d48b580) passed: assembleDebug, unit tests and lint (5.7.9 and
+    5.7.10 together).
+
+- **5.7.11 Create new · How long page (30 Oct).** Figma: How long page (1103:3208), State Typing · Quick pick, and the
+  flow "A new habit: time it". From Time it's How long. On Surface container: the Top app bar (← "How long"); 16 at the
+  sides and above, 40 under, 24 between: the card (Surface bright, corners 24, 24 above and under, 20 at the sides)
+  with Hours and Minutes side by side, 12 apart, each box 80 tall on Surface container highest, corners 16, the number
+  in Display Medium Emphasized ("0" until typed; Primary's 2 dp ring while typing; the cursor starts in Minutes), its
+  label under it in Body Medium On surface variant; then **Quick picks** (Label Large Primary): 5, 10, 15, 20, 30, 45
+  min and 1 h as filter chips, 8 apart, and "The timer on Today counts up to it." It is `HowLongPage` and `TimeBox`
+  (`newhabit/FormPages.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in the session.
+  Fixed:
+  - The card started with the rhythm ("Every day"); nothing above the boxes repeats How often (A64).
+  - The boxes were 96 wide around a ":" in Display Medium with "00" and labels in Body Small; now two equal boxes 12
+    apart, no ":", Display Medium Emphasized, "0", labels in Body Medium.
+  - Quick picks' title was the grey label; now Label Large Primary. The footer is Figma's "The timer on Today counts
+    up to it." (was "How long it takes on a day. The timer on Today counts up to it.").
+  - Colours take the theme's roles.
+  - Tests: HabitFormTest's How long test checks Quick picks and the footer.
+  Noted, not changed:
+  - A week's or month's total says "How long in a week, in total. The timer on Today counts up to it.", and minutes
+    over 59 say "Minutes go up to 59; use hours for more." (Figma draws only a day).

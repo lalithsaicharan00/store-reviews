@@ -352,6 +352,9 @@ class HabitFormTest {
         tapTag("type-time")
         waitFor(hasText("Not set yet"), "How long not set yet")
         tapTag("how-much-row")
+        // How long (5.7.11, Figma 1103:3208): Hours and Minutes, Quick picks and the footer.
+        waitFor(hasText("Quick picks"), "Quick picks")
+        waitFor(hasText("The timer on Today counts up to it."), "the footer")
         tapTag("pick-30")
         tapTag("page-back")
         waitFor(hasText("30 min"), "How long 30 min on the form")

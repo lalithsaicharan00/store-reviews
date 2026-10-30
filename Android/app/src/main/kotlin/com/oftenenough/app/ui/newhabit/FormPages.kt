@@ -226,58 +226,67 @@ private fun oftenHeader(form: FormState): String {
     return if (form.type == ItemType.CUT_DOWN) "At most, $phrase" else HabitCopy.capitalized(phrase)
 }
 
-/** Figma 2.3.1: Material's time-input boxes (Hours : Minutes, the cursor in Minutes), then Quick picks as filter chips. */
+/**
+ * 5.7.11, **How long page** (Figma 1103:3208, State Typing · Quick pick; Components — Atoms Build Plan), from Time it's
+ * How long (Material's time input, A-decision of 18 Oct). On Surface container: the Top app bar (← "How long"); 16 at the
+ * sides and above, 40 under, 24 between: the card (Surface bright, corners 24, 24 above and under, 20 at the sides) with
+ * Hours and Minutes side by side, 12 apart: each box 80 tall on Surface container highest, corners 16, the number in
+ * Display Medium Emphasized (Primary's 2 dp ring while typing; the cursor starts in Minutes), its label under it in Body
+ * Medium On surface variant; then **Quick picks** (Label Large Primary) as filter chips, 8 apart, and the footer "The
+ * timer on Today counts up to it." Nothing above the boxes repeats How often (A64).
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HowLongPage(form: FormState, onBack: () -> Unit) {
+    val s = MaterialTheme.colorScheme
     FormPage("How long", onBack = onBack) {
         val minutesFocus = remember { FocusRequester() }
         LaunchedEffect(Unit) { if (form.amountValue == null) runCatching { minutesFocus.requestFocus() } }
-        GoalCard(oftenHeader(form)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                TimeBox(form.hours, "Hours", "how-long-hours", Modifier) { form.hours = it }
-                Box(Modifier.width(24.dp).height(72.dp), contentAlignment = Alignment.Center) {
-                    Text(":", style = AppType.displayMedium.copy(color = appColors.ink))
+        Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(horizontal = 20.dp, vertical = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                TimeBox(form.hours, "Hours", "how-long-hours", Modifier.weight(1f), Modifier) { form.hours = it }
+                TimeBox(form.minutes, "Minutes", "how-long-minutes", Modifier.weight(1f), Modifier.focusRequester(minutesFocus)) { form.minutes = it }
+            }
+            val total = form.amountValue?.toInt()
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Quick picks", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    for (m in listOf(5, 10, 15, 20, 30, 45, 60)) AppFilterChip(if (m == 60) "1 h" else "$m min", total == m, tag = "pick-$m", onClick = {
+                        form.hours = if (m >= 60) (m / 60).toString() else ""; form.minutes = (m % 60).toString().padStart(2, '0')
+                    })
                 }
-                TimeBox(form.minutes, "Minutes", "how-long-minutes", Modifier.focusRequester(minutesFocus)) { form.minutes = it }
+                val period = form.amountPeriod
+                Text(if (form.minutes.toIntOrNull()?.let { it >= 60 } == true) "Minutes go up to 59; use hours for more."
+                    else if (period == GoalPeriod.DAY) "The timer on Today counts up to it."
+                    else "How long in a ${period.noun}, in total. The timer on Today counts up to it.",
+                    Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
             }
         }
-        val total = form.amountValue?.toInt()
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Quick picks", Modifier.padding(start = 16.dp), style = AppType.labelLarge, color = appColors.secondary)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                for (m in listOf(5, 10, 15, 20, 30, 45, 60)) AppFilterChip(if (m == 60) "1 h" else "$m min", total == m, tag = "pick-$m", onClick = {
-                    form.hours = if (m >= 60) (m / 60).toString() else ""; form.minutes = (m % 60).toString().padStart(2, '0')
-                })
-            }
-        }
-        val period = form.amountPeriod
-        Note(if (form.minutes.toIntOrNull()?.let { it >= 60 } == true) "Minutes go up to 59; use hours for more."
-            else if (period == GoalPeriod.DAY) "How long it takes on a day. The timer on Today counts up to it."
-            else "How long in a ${period.noun}, in total. The timer on Today counts up to it.")
     }
 }
 
-/** Material's filter chip, drawn as Figma has it: outlined, or tonal with a check when chosen. */
+/** One of How long's boxes (Figma's Field): the number over its label, 8 apart; "0" until something is typed. */
 @Composable
-private fun TimeBox(value: String, label: String, tag: String, modifier: Modifier, onChange: (String) -> Unit) {
+private fun TimeBox(value: String, label: String, tag: String, modifier: Modifier, fieldModifier: Modifier, onChange: (String) -> Unit) {
+    val s = MaterialTheme.colorScheme
     var focused by remember { mutableStateOf(false) }
-    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         BasicTextField(
             value, { onChange(it.filter { c -> c.isDigit() }.take(3)) },
-            modifier.width(96.dp).clip(RoundedCornerShape(16.dp)).background(appColors.tonal)
-                .border(if (focused) 2.dp else 0.dp, if (focused) appColors.ink else Color.Transparent, RoundedCornerShape(16.dp))
-                .heightIn(min = 72.dp).onFocusChanged { focused = it.isFocused }.semantics { testTag = tag; contentDescription = label },
-            textStyle = AppType.displayMedium.copy(color = appColors.ink, textAlign = TextAlign.Center),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(appColors.ink),
+            fieldModifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(s.surfaceContainerHighest)
+                .border(if (focused) 2.dp else 0.dp, if (focused) s.primary else Color.Transparent, RoundedCornerShape(16.dp))
+                .heightIn(min = 80.dp).onFocusChanged { focused = it.isFocused }.semantics { testTag = tag; contentDescription = label },
+            textStyle = AppType.displayMediumEmphasized.copy(color = s.onSurface, textAlign = TextAlign.Center),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(s.primary),
             decorationBox = { inner ->
-                Box(Modifier.padding(vertical = 10.dp), contentAlignment = Alignment.Center) {
-                    if (value.isEmpty() && !focused) Text("00", style = AppType.displayMedium.copy(color = appColors.secondary.copy(alpha = 0.45f)))
+                Box(Modifier.heightIn(min = 80.dp), contentAlignment = Alignment.Center) {
+                    if (value.isEmpty() && !focused) Text("0", style = AppType.displayMediumEmphasized.copy(color = s.onSurfaceVariant))
                     inner()
                 }
             },
         )
-        Text(label, style = AppType.bodySmall, color = appColors.secondary)
+        Text(label, style = AppType.bodyMedium, color = s.onSurfaceVariant)
     }
 }
 
