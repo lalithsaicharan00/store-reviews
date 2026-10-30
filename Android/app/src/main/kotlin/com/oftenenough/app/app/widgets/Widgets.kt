@@ -128,7 +128,6 @@ private val Tonal = pair(L.tonal, D.tonal)
 private val Tonal2 = pair(L.tonal2, D.tonal2)
 /** Surface container highest: a round button before the goal is met (Figma's Filled icon button, Neutral). */
 private val Soft = pair(L.soft, D.soft)
-private val Flame = pair(L.flame, D.flame)
 private val White = pair(Color.White, Color.White)
 private fun habit(key: String) = (HabitColor.of(key) ?: HabitColor.BLUE).let { pair(L.habit(it), D.habit(it)) }
 private fun fill(key: String) = (HabitColor.of(key) ?: HabitColor.BLUE).let { pair(L.fill(it), D.fill(it)) }
@@ -403,27 +402,35 @@ private fun PlusMessage(title: String, done: String?) {
     }
 }
 
-/** One row: the fill toward its goal behind it, the icon, name and line, the streak, and its button. */
+/**
+ * 5.10.3, **Widget · List row** (Figma 1238:429): one habit or task in the Today and Tasks widgets, 56 tall with 12
+ * corners and no background of its own, today's fill behind it ([RowFill]); 8 at the sides, 12 between: the habit's
+ * icon (32), its name (Label Large, On surface) over its line (Body Small, On surface variant: "Anytime · 3 of 8
+ * glasses", a quit run's or a timer's clock), the streak (the phone's 🔥 and the count, Label Medium; tasks have none)
+ * and the round button (40, in a 48 touch target, so the row's end keeps 4). A tap on the row opens its day.
+ */
 @Composable
 private fun ListRow(item: WidgetItem, frame: WidgetFrame, showPlace: Boolean, top: Dp = 0.dp) {
     val width = LocalSize.current.width - 24.dp
     val dayClick = actionRunCallback<WidgetOpenAction>(actionParametersOf(TapKeys.ROUTE to item.routeOrDay, TapKeys.DAY to frame.day))
     Box(GlanceModifier.fillMaxWidth().padding(top = top)) {
-    Box(GlanceModifier.fillMaxWidth().height(64.dp).cornerRadius(16.dp).background(Surface)) {
+    Box(GlanceModifier.fillMaxWidth().height(56.dp).cornerRadius(12.dp)) {
         RowFill(item, width)
         Row(GlanceModifier.fillMaxSize().clickable(dayClick).padding(start = 8.dp, end = 4.dp).semantics { contentDescription = spoken(item) },
             verticalAlignment = Alignment.CenterVertically) {
-            Icon(item, 36.dp)
+            Icon(item, 32.dp)
             Spacer(GlanceModifier.width(12.dp))
             Column(GlanceModifier.defaultWeight()) {
-                if (item.name.isNotEmpty()) Text(item.name, style = style(15.sp, weight = FontWeight.Medium), maxLines = 1)
+                if (item.name.isNotEmpty()) Text(item.name, style = style(14.sp, weight = FontWeight.Medium), maxLines = 1)
                 when {
-                    item.quitStart != null -> Row { QuitClock(item, 13.sp, Secondary); item.quitBestText?.let { Text(" · $it", style = style(13.sp, Secondary), maxLines = 1) } }
-                    item.timerClock != null -> TimerClock(item, 13.sp, Secondary)
-                    else -> Text(if (showPlace) item.todayLine.ifEmpty { item.line } else item.line, style = style(13.sp, Secondary), maxLines = 1)
+                    item.quitStart != null -> Row { QuitClock(item, 12.sp, Secondary); item.quitBestText?.let { Text(" · $it", style = style(12.sp, Secondary), maxLines = 1) } }
+                    item.timerClock != null -> TimerClock(item, 12.sp, Secondary)
+                    else -> Text(if (showPlace) item.todayLine.ifEmpty { item.line } else item.line, style = style(12.sp, Secondary), maxLines = 1)
                 }
             }
-            item.streak?.let { Streak(it); Spacer(GlanceModifier.width(8.dp)) }
+            // 12 to the streak, and 12 from it to the button's circle (8 here and the 4 inside its touch target).
+            item.streak?.let { Spacer(GlanceModifier.width(12.dp)); Streak(it, 12.sp, FontWeight.Medium) }
+            Spacer(GlanceModifier.width(8.dp))
             RoundButton(item, frame)
         }
     }
@@ -451,12 +458,13 @@ private fun Icon(item: WidgetItem, size: Dp) {
     Image(ImageProvider(HabitIconBitmaps.get(item.symbol, item.color, isDark(context), px)), null, GlanceModifier.size(size))
 }
 
+/** A streak: the phone's own 🔥 (emoji are the phone's, as Figma draws them) and the count, 2 apart, in On surface. */
 @Composable
-private fun Streak(text: String) {
+private fun Streak(text: String, size: TextUnit = 15.sp, weight: FontWeight = FontWeight.Normal) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(ImageProvider(R.drawable.ic_w_flame), null, GlanceModifier.size(16.dp), colorFilter = ColorFilter.tint(Flame))
+        Text("🔥", style = style(12.sp, weight = FontWeight.Medium))
         Spacer(GlanceModifier.width(2.dp))
-        Text(text, style = style(15.sp))
+        Text(text, style = style(size, weight = weight))
     }
 }
 

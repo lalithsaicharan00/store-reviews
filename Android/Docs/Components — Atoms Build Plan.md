@@ -173,7 +173,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.9.2 | Create new · Make room (the frames of "A sixth habit on the free plan", 1167:351072, 1167:351230; added 30 Oct) | 1167:351072 | ☑ |
 | 5.10.1 | Widgets · Widget · One habit | 1235:46 | ☑ |
 | 5.10.2 | Widgets · Widget row fill | 1238:428 | ☑ |
-| 5.10.3 | Widgets · Widget · List row | 1238:429 | ☐ |
+| 5.10.3 | Widgets · Widget · List row | 1238:429 | ☑ |
 | 5.10.4 | Widgets · Widget · List | 1240:488 | ☐ |
 | 5.10.5 | Widgets · Widget · This week | 1243:857 | ☐ |
 | 5.10.6 | Widgets · Widget setup | 1252:3618 | ☐ |
@@ -2948,3 +2948,25 @@ What each atom changed, newest last.
   - Figma steps the fill by 10, like Linear progress; the widget draws the exact share (3 of 8 glasses is 37.5 %, not
     40 %), as Today's row in the app does, so the two never disagree.
   - The fill's corners come from the row's (12, 5.10.3); Glance rounds them only on Android 12 and later.
+  - **Built:** run 41030552615 (Android, commit 603d1af) passed: assembleDebug, unit tests and lint.
+- **5.10.3 Widgets · Widget · List row (30 Oct).** Figma: Widget · List row (1238:429) and its rows in "Today and Tasks
+  (4×2, 4×4) · every state". One habit or task in the Today and Tasks widgets: 304 × 56, 12 corners, no background of
+  its own, today's fill behind it (5.10.2); Body 8 at the sides, 12 between, centred: the habit's icon (32, its colour
+  with a white glyph), Name (Label Large, On surface, one line …) over Goal (Body Small, On surface variant, one line …:
+  "Anytime · 3 of 8 glasses", "6:24 of 10 min", "19d 12:32:45 · Best 45 days"), Streak (🔥 and the count, Label Medium,
+  2 apart; tasks have none) and Action (the Filled icon button, Small, 40: Neutral, or Done in the habit's colour). It
+  is `ListRow` and `Streak` (`app/widgets/Widgets.kt`). What a tap does, how it saves and when the widget updates are
+  locked (U28) and untouched.
+  Fixed:
+  - The row was 64 tall with 16 corners on Surface; now 56, 12 corners, and no background of its own (the widget's shows
+    through, as Figma's).
+  - The icon was 36, the name 15 sp, the line 13 sp; now 32, Label Large (14 sp Medium) and Body Small (12 sp).
+  - The streak was a drawn orange flame (`ic_w_flame`, now deleted) and a 15 sp count, tight against the line; now the
+    phone's own 🔥 and the count in Label Medium, 12 after the text and 12 before the button, as Figma. This week's
+    streak uses the same 🔥 (Figma draws it there too); its count keeps its size until 5.10.5.
+  Noted, not changed:
+  - The round button keeps its 48 touch target, so the row's padding at the end is 4 and the circle sits 8 from the
+    edge, as Figma's.
+  - The milestone (the medal in place of the icon and "30 days in a row" as the line, until the day ends) needs data
+    the widget snapshot doesn't have; it joins D-30.
+  - The text is the launcher's font (Glance, T22). `AppColors.flame` is now read by nothing: cleanup.
