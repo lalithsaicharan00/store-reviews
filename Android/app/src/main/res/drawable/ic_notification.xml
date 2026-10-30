@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The notification icon: a tick in a circle, white on transparent (Android tints it). -->
+<!--
+  5.11.1, the notification icon (Figma 1268:3, "Notification icon (Often Enough)"): Often Enough's mark, tilted 12°, in
+  its tonal lift: white at 45 %, 70 % and 96 %, so the newest tile is brightest on any colour (Brand/Logo Guide.md;
+  never a single-ink mark). Figma's own SVG export. Android draws a notification's small icon from its alpha alone, so
+  the three alphas stay three tones in the status bar and in the habit-coloured circle (setColor).
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
-    <path android:fillColor="#FFFFFFFF"
-        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM10,17l-5,-5 1.41,-1.41L10,14.17l7.59,-7.59L19,8l-9,9z"/>
+    <path android:fillColor="#FFFFFFFF" android:fillAlpha="0.45"
+        android:pathData="M7.48075,9.75436C7.40912,10.0663 7.33407,10.4209 7.24776,10.827L7.22624,10.9283C6.88601,12.5289 6.7157,13.3296 6.89725,14.0072C7.05699,14.6031 7.40187,15.133 7.88131,15.5213C8.42645,15.9626 9.22659,16.1327 10.8269,16.4729L10.9282,16.4944C11.3339,16.5806 11.6882,16.6552 12.0021,16.7167C11.8805,17.1586 11.7554,17.4628 11.5608,17.7031C11.2556,18.08 10.8386,18.3508 10.3701,18.4764C9.83753,18.6191 9.20823,18.485 7.95016,18.2176L7.1153,18.0401C5.8571,17.7727 5.22781,17.6392 4.79928,17.2922C4.42235,16.987 4.15157,16.57 4.02603,16.1015C3.88338,15.5689 4.0174,14.9397 4.28483,13.6816L4.46228,12.8467C4.72967,11.5887 4.86317,10.9592 5.21015,10.5307C5.51533,10.1539 5.93232,9.88394 6.40064,9.75839C6.69912,9.67842 7.02795,9.68583 7.48075,9.75436Z"/>
+    <path android:fillColor="#FFFFFFFF" android:fillAlpha="0.7"
+        android:pathData="M10.9552,7.49773C10.8836,7.80968 10.8086,8.16431 10.7223,8.57039L10.7007,8.67164C10.3605,10.2723 10.1902,11.073 10.3718,11.7506C10.5315,12.3465 10.8763,12.8764 11.3558,13.2647C11.9009,13.706 12.7011,13.8761 14.3014,14.2162L14.4027,14.2378C14.8084,14.324 15.1627,14.3986 15.4766,14.46C15.355,14.9021 15.2299,15.2062 15.0353,15.4465C14.7301,15.8234 14.3131,16.0942 13.8446,16.2197C13.312,16.3624 12.6828,16.2284 11.4247,15.9609L10.5898,15.7835C9.33172,15.5161 8.70229,15.3826 8.27378,15.0356C7.89692,14.7304 7.62605,14.3134 7.50053,13.8449C7.35793,13.3123 7.49192,12.683 7.75933,11.4249L7.93658,10.591C8.20393,9.33324 8.33771,8.70355 8.68445,8.27502C8.98962,7.89817 9.40678,7.62736 9.87514,7.50177C10.1736,7.42181 10.5025,7.42923 10.9552,7.49773Z"/>
+    <group android:rotation="12" android:pivotX="12.1759" android:pivotY="4.73934">
+        <path android:fillColor="#FFFFFFFF" android:fillAlpha="0.96"
+            android:pathData="M14.4728,4.7393H18.0821A2.2969,2.2969 0,0 1,20.379,7.0362V10.6456A2.2969,2.2969 0,0 1,18.0821,12.9425H14.4728A2.2969,2.2969 0,0 1,12.1759,10.6456V7.0362A2.2969,2.2969 0,0 1,14.4728,4.7393Z"/>
+    </group>
 </vector>

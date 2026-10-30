@@ -177,7 +177,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.10.4 | Widgets · Widget · List | 1240:488 | ☑ |
 | 5.10.5 | Widgets · Widget · This week | 1243:857 | ☑ |
 | 5.10.6 | Widgets · Widget setup | 1252:3618 | ☑ |
-| 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☐ |
+| 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☑ |
 | 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☐ |
 | 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☐ |
 | 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☐ |
@@ -3070,3 +3070,34 @@ What each atom changed, newest last.
   - The preview's colours follow the phone's light or dark setting, as the widget itself does, even when the app's
     Theme is set otherwise (widgets follow the phone; Glance resolves day and night from it).
   - A 4×4's preview is drawn at 90 % too (Figma draws only 4×2 previews).
+  - **Built:** run 41034100600 (Android, commit 4523645) passed: assembleDebug, unit tests and lint.
+  **Section 5.10 Widgets is built (5.10.1–5.10.6).**
+- **5.11.1 Notifications & alarms · Notification icon (Often Enough) (30 Oct).** Figma: Notification icon (1268:3), 24 ×
+  24: Often Enough's mark (the 52:60 inset artwork, 12° clockwise, true transparent seams) in its tonal lift, the three
+  tiles white at 45 %, 70 % and 96 %, the newest brightest; "Never a single-ink mark." It is `res/drawable/
+  ic_notification.xml`, Figma's own SVG export as a vector (the newest tile a rounded square turned 12° about its
+  corner), the small icon of every notification the app posts: reminders and alarms (`Reminders`), the timer's Live
+  Update (`TimerNotice`) and milestones (`MilestoneAlerts`).
+  Research first (the prompt's rule for notifications), read 30 Oct:
+  - developer.android.com, [Create a notification](https://developer.android.com/develop/ui/views/notifications/build-notification):
+    the small icon is the one thing a notification must have; Android draws it from its alpha alone (white, tinted by
+    the system), so the mark's three alphas stay three tones. Up to three action buttons, never one that repeats the
+    tap on the notification; direct reply (RemoteInput) re-posts the same ID to close the field (for 5.11.2).
+  - [Notification groups](https://developer.android.com/develop/ui/views/notifications/group): children with setGroup,
+    one summary (setGroupSummary, the same ID every time, a line per child); Android groups four or more on its own,
+    but only a summary guarantees it; each child keeps its own buttons (5.11.3).
+  - [Android 14 behaviour changes](https://developer.android.com/about/versions/14/behavior-changes-14): full-screen
+    intents are only for calling and alarm apps on Google Play; check `canUseFullScreenIntent()` and open
+    `ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT` (5.11.4–5.11.5). [Exact alarms](https://developer.android.com/about/versions/14/changes/schedule-exact-alarms):
+    not pre-granted from Android 14; `setAlarmClock` needs it too (already handled: `canBeExact`, U40). Android 15 and
+    16's behaviour pages change nothing here; 16's ProgressStyle is for rides, deliveries and navigation.
+  - [dontkillmyapp.com](https://dontkillmyapp.com/): Huawei, Xiaomi, OnePlus and Samsung (in that order) stop apps in
+    the background; Samsung's "Put unused apps to sleep" stops alarms after 3 days; Xiaomi needs Background autostart;
+    OnePlus's Deep optimisation and Sleep standby hold notifications back. No maker offers a fix in code: the person
+    changes a setting, which Keep reminders coming (5.8.4, A40, U40) already walks through.
+  Fixed:
+  - The icon was a Material ✓ in a circle, one ink; now the brand mark in its three tones, as Figma.
+  Noted, not changed:
+  - The circle of the habit's colour behind it is the notification's `setColor`, part of Reminder notification
+    (5.11.2). Some makers' status bars (and Android below 12's) draw the icon without the circle; the alphas still read
+    as three tones there.
