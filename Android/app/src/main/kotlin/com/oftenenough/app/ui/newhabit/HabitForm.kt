@@ -111,8 +111,9 @@ fun NewHabitFlow(
 ) {
     val ideaType = idea?.let { when (it.type) { "amount" -> ItemType.AMOUNT; "time" -> ItemType.TIME; "quit" -> ItemType.QUIT; "cutDown" -> ItemType.CUT_DOWN; else -> ItemType.CHECK } }
     val copyType = copyOf?.let { ItemType.of(it) }
-    // ≡ › Tasks' + opens the task form straight away.
-    var step by rememberSaveable { mutableStateOf(if (task) "form:${ItemType.TASK.name}" else (copyType ?: ideaType)?.let { "form:${it.name}" } ?: "choose") }
+    // Tasks' + starts at What kind of task?; a copy or an idea opens its form straight away.
+    var step by rememberSaveable { mutableStateOf((copyType ?: ideaType)?.let { "form:${it.name}" } ?: if (task) "task" else "choose") }
+    var repeats by rememberSaveable { mutableStateOf(false) }
     var room by rememberSaveable { mutableStateOf(if (roomFirst && !store.canAddHabit && copyType != ItemType.TASK) "sixth" else "") }
     if (room == "sixth") {
         SixthHabitPage(store, onClose, onMakeRoom = { room = "make" }, onPlus = onPlus, onBought = { room = "" })
@@ -125,7 +126,13 @@ fun NewHabitFlow(
     when {
         step == "choose" -> {
             BackHandler(onBack = onClose)
-            NewChoices(onClose, onBuild = { step = "build" }, onQuit = { step = "quit" }, onTask = { step = "form:${ItemType.TASK.name}" })
+            NewChoices(onClose, onBuild = { step = "build" }, onQuit = { step = "quit" }, onTask = { step = "task" })
+        }
+        step == "task" -> {
+            // From Tasks' +, back closes; from What do you want to do?, it goes back there.
+            val back = { if (task) onClose() else step = "choose" }
+            BackHandler(onBack = back)
+            TaskKinds(back) { r -> repeats = r; step = "form:${ItemType.TASK.name}" }
         }
         step == "build" -> {
             BackHandler { step = "choose" }
@@ -141,9 +148,10 @@ fun NewHabitFlow(
             // once more while it leaves (an empty step made `ItemType.valueOf("")` throw).
             val back = {
                 if (idea != null || copyOf != null) onClose()
-                else step = when { type == ItemType.TASK -> "choose"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
+                else step = when { type == ItemType.TASK -> "task"; type == ItemType.QUIT || type == ItemType.CUT_DOWN -> "quit"; else -> "build" }
             }
-            HabitForm(type, null, store, idea.takeIf { ideaType == type }, back, onSaved, onPlus, template = copyOf, prefillName = name)
+            HabitForm(type, null, store, idea.takeIf { ideaType == type }, back, onSaved, onPlus, template = copyOf, prefillName = name,
+                repeats = repeats.takeIf { type == ItemType.TASK && copyOf == null })
         }
     }
 }
@@ -169,9 +177,12 @@ fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: () -> Unit, onCl
 fun HabitForm(
     type: ItemType, original: Habit?, store: HabitStore, idea: HabitIdea?, onClose: () -> Unit, onSaved: (Habit) -> Unit, onPlus: () -> Unit,
     template: Habit? = null, prefillName: String? = null,
+    /** A new task's kind, chosen on What kind of task? (5.7.14). */
+    repeats: Boolean? = null,
 ) {
     val form = remember {
         FormState(type, original, store, template).also { f ->
+            repeats?.let { f.taskRepeats = it }
             idea?.let { f.applyIdea(it) }
             prefillName?.let { n -> f.name = TextLimit.clean(n, TextLimit.NAME); f.nameFilled = f.name.isNotBlank() }
             if (idea != null) f.markPristine()
@@ -563,26 +574,18 @@ private fun HalfValue(title: String, value: String, tag: String, shape: RoundedC
 }
 
 /**
- * A task (Figma's Task once · Task on repeat): Repeat (Never | On a schedule), then its Date (a menu: Today, Tomorrow,
- * Pick a date…, No date) or How often, then Time (a switch; turning it on waits for the picker's OK).
+ * A task (Figma's Task once · Task on repeat), its kind chosen before the form: its Date (a menu: Today, Tomorrow, Pick
+ * a date…, No date) or How often, then Time (a switch; turning it on waits for the picker's OK).
  */
 @Composable
 private fun TaskRows(form: FormState, store: HabitStore, open: (Page) -> Unit) {
-    var repeatMenu by remember { mutableStateOf(false) }
     var picking by remember { mutableStateOf<String?>(null) }
     var dateMenu by remember { mutableStateOf(false) }
     val today = store.today()
     val earliest = form.original?.dueDay?.takeIf { it != com.oftenenough.app.data.NO_DATE_DAY }?.let { minOf(today, it) } ?: today
     SegmentedList {
-        val count = 2 + (if (form.taskHasNoDate) 0 else 1)
+        val count = 1 + (if (form.taskHasNoDate) 0 else 1)
         var i = 0
-        Box {
-            OpenRow("Repeat", if (form.taskRepeats) "On a schedule" else "Never", null, i++, count, "repeat-row", rowColor) { repeatMenu = true }
-            AppMenu(repeatMenu, { repeatMenu = false }, Modifier.width(200.dp), offset = DpOffset(130.dp, 0.dp)) {
-                AppMenuItem("Never", { form.taskRepeats = false; repeatMenu = false }, selected = !form.taskRepeats)
-                AppMenuItem("On a schedule", { form.taskRepeats = true; repeatMenu = false }, selected = form.taskRepeats)
-            }
-        }
         if (form.taskRepeats) OpenRow("How often", form.often.often(false).label(false, weekStart = form.weekStart), null, i++, count, "how-often-row", rowColor) { open(Page.OFTEN) }
         else Box {
             OpenRow("Date", taskDateWords(form.taskDate, today), null, i++, count, "task-date", rowColor) { dateMenu = true }

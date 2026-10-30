@@ -234,6 +234,8 @@ class TasksPageTest {
         tapTag("habits-search-add")
         // What do you want to do? (A72): the person says it's a task.
         tapTag("new-task")
+        // What kind of task? (5.7.14): Once.
+        tapTag("task-once")
         waitFor(hasTestTag("name-field"), "the task form")
         waitFor(hasText("denplumber"), "its name filled in")
     }
@@ -283,11 +285,17 @@ class TasksPageTest {
     @Test fun aNewTaskWithNoDateStaysOffToday() {
         launch()
         tapTag("habits-add")
+        // What kind of task? (5.7.14, Figma 1109:2): Once or On repeat, each with its example.
+        waitFor(hasText("What kind of task?"), "What kind of task?")
+        waitFor(hasText("e.g. Water plants, every 3 days"), "On repeat's example")
+        tapTag("task-once")
+        waitFor(hasTestTag("name-field"), "the task form")
+        assertFalse("no Repeat row", has(hasTestTag("repeat-row")))
         compose.onNodeWithTag("name-field").performTextInput("Mend the fence")
         tapTag("task-date")
         here("task-date-none")
         waitGone(hasTestTag("task-time"), "the Time row")
-        waitFor(hasText("It shows on the Tasks page under No date, not on Today."), "the preview's note")
+        waitFor(hasText("Saved without a date, it stays on the Tasks page, under No date. It won’t show on Today until you give it a day."), "the form's footer")
         tapTag("form-add")
         waitHere(hasTestTag("tasks-list"), "back on Tasks")
         waitUntil("saved") { store.habits.any { it.name == "Mend the fence" } }

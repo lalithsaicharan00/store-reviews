@@ -116,6 +116,20 @@ fun NewChoices(onClose: () -> Unit, onBuild: () -> Unit, onQuit: () -> Unit, onT
     }
 }
 
+/**
+ * 5.7.14, **What kind of task?** (Figma 1109:2; Components — Atoms Build Plan), from Add a task and Tasks' +. The choice
+ * page with ←: Once (event, "On one day, or with no date.", "e.g. Pick up parcel") and On repeat (event_repeat, "Comes
+ * back on the days you pick, or a while after it’s done.", "e.g. Water plants, every 3 days"), each opening its task
+ * form: Once with its Date, On repeat with How often, Starts and Ends. The form has no Repeat row.
+ */
+@Composable
+fun TaskKinds(onBack: () -> Unit, onPick: (repeats: Boolean) -> Unit) {
+    ChoicePage("What kind of task?", close = false, onBack = onBack) {
+        ChoiceCard(Symbols.Event, "Once", "On one day, or with no date.", "e.g. Pick up parcel", 0, 2, "task-once") { onPick(false) }
+        ChoiceCard(Symbols.EventRepeat, "On repeat", "Comes back on the days you pick, or a while after it’s done.", "e.g. Water plants, every 3 days", 1, 2, "task-repeat") { onPick(true) }
+    }
+}
+
 @Composable
 fun TypeChoices(question: String, types: List<ItemType>, onBack: () -> Unit, onPick: (ItemType) -> Unit) {
     ChoicePage(question, close = false, onBack = onBack) {

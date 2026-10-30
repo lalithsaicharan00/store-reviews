@@ -158,7 +158,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.7.11 | Create new · How long page | 1103:3208 | ☑ |
 | 5.7.12 | Create new · Steps page | 1104:163327 | ☑ |
 | 5.7.13 | Create new · Limit page | 1105:3190 | ☑ |
-| 5.7.14 | Create new · What kind of task? | 1109:2 | ☐ |
+| 5.7.14 | Create new · What kind of task? | 1109:2 | ☑ |
 | 5.7.15 | Create new · Get reminders on time | 1164:344717 | ☐ |
 | 5.7.16 | Create new · How do you want to track it? | 1208:375097 | ☐ |
 | 5.8.1 | Settings · Keep reminders coming | 804:192 | ☐ |
@@ -2525,3 +2525,22 @@ What each atom changed, newest last.
   - The old goal card (`GoalCard`, `oftenHeader`) is deleted: no page uses it now.
   - Tests: HabitFormTest checks At most and Amount's footer, picks Time and 1 h, sees Time's footer, and the form's
     Limit saying 1 h.
+
+- **5.7.14 Create new · What kind of task? (30 Oct).** Figma: What kind of task? (1109:2), and the task flows ("The
+  third choice: Add a task, then once or on repeat"; "No Repeat row: a one-time task has its date"; "The repeating task
+  form: no Date; How often, Starts and Ends"). From Add a task and from Tasks' +. The choice page (5.7.1) with ←: Once
+  (event, "On one day, or with no date.", "e.g. Pick up parcel") and On repeat (event_repeat, "Comes back on the days you
+  pick, or a while after it’s done.", "e.g. Water plants, every 3 days"), each opening its task form. It is `TaskKinds`
+  (`newhabit/Choices.kt`), in `NewHabitFlow`. The app, the unit tests (55), lint and the instrumented tests' code build
+  in the session.
+  Fixed:
+  - There was no such page: Add a task and Tasks' + opened the form, whose first row was Repeat (Never | On a
+    schedule). Now the kind is chosen first and the form has no Repeat row (held since 5.7.3); its menu is deleted.
+  - ← from the task form goes back to What kind of task?; from there, to What do you want to do? (or, from Tasks' +,
+    out). A duplicated task keeps its own kind and opens its form straight away.
+  - `Symbols.EventRepeat` added (Material Symbols' event_repeat, outlined).
+  - Tests: HabitFormTest opens On repeat (How often, its footer, no Date or Repeat row, ← back to the page);
+    TasksPageTest goes through Once from Tasks' + and from search's Add, and reads the No date footer (the preview's
+    note it read went in 5.7.3).
+  Noted, not changed:
+  - Edit task has no Repeat row either: a task keeps the kind it was made with, as a habit keeps its type (A68).

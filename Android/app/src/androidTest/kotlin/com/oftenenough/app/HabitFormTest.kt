@@ -313,6 +313,22 @@ class HabitFormTest {
         waitFor(hasTestTag("how-much-row").and(hasContentDescription("1 h", substring = true)), "the form's Limit saying 1 h")
     }
 
+    /** What kind of task? (5.7.14): On repeat opens the repeating task form, with How often and no Date or Repeat row. */
+    @Test fun aRepeatingTaskIsChosenBeforeTheForm() {
+        launch()
+        tapTag("new-habit")
+        tapTag("new-task")
+        waitFor(hasText("Comes back on the days you pick, or a while after it’s done."), "On repeat")
+        tapTag("task-repeat")
+        waitFor(hasText("New task"), "the task form")
+        waitFor(hasTestTag("how-often-row"), "How often")
+        waitFor(hasText("It comes back on the days you pick."), "its footer")
+        assertTrue("no Date", !has(hasTestTag("task-date")))
+        assertTrue("no Repeat row", !has(hasTestTag("repeat-row")))
+        tapTag("form-back")
+        waitFor(hasText("What kind of task?"), "back on What kind of task?")
+    }
+
     @Test fun aGoalChangeSaysItStartsTodayAndSaves() {
         launch()
         editWater()
@@ -400,6 +416,7 @@ class HabitFormTest {
         waitFor(hasText("How do you want to track it?"), "the choices")
         tapTag("page-back")
         tapTag("new-task")
+        tapTag("task-once")
         tapTag("task-time")
         waitFor(hasText("Enter time"), "the time picker")
         tapText("Cancel")
