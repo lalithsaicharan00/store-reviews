@@ -347,7 +347,6 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     }
 }
 
-/** A top bar icon button; [on] gives it the tonal circle (the filter while it filters, ✏ while its tip shows: Figma 3.1, 2.0). */
 /**
  * The fade under the day bar (Figma's Bottom fade): the page colour from clear to 90 % at 60 % of its 80 dp, then
  * solid, and solid under it over the gesture bar.

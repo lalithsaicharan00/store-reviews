@@ -126,7 +126,6 @@ class MainActivity : ComponentActivity() {
         if (test) {
             AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 },
                 plus = intent.getBooleanExtra(TestLaunch.PLUS, false))
-            // Today has been opened on this many earlier days (the ✏ tip waits for three, Figma 2.0).
         } else AppGraph.open(this)
         val store = AppGraph.store
         AppGraph.openTarget(intent)
@@ -159,7 +158,6 @@ object TestLaunch {
     const val DEMO = "demo"
     /** A Today notice to show whatever the phone's state ("full", "off", "missed", "notifications", "pending"). */
     const val NOTICE = "notice"
-    /** How many earlier days Today counts as opened (the ✏ tip, Figma 2.0). */
     /** Plus owned from the start (the stand-in store, as if bought). */
     const val PLUS = "plus"
 }

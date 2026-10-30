@@ -389,8 +389,6 @@ private fun AppMain(
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
 }
 
-/** The Tasks page, until Habits and Tasks become one screen (the user is designing it). */
-
 /**
  * What a menu row does (Figma `12:5259`). Four open a page; **Contact us** and **Send feedback** open the person's own
  * email app, filled in with the app and the phone, never their habits. A choice replaces the page open now, so the
@@ -406,16 +404,16 @@ private fun openMenuItem(item: MenuItem, nav: NavHostController, context: androi
     if (item != MenuItem.TODAY) nav.navigate(Routes.menu(item))
 }
 
-/**
- * The routine "Start the next routine" opens: the time of day that is now if it has anything left, else the next card
- * down Today that does (then from the top). Null when everything planned today is done: Today opens and says so.
- */
 /** A time of day's habits for the routine player, in the person's order: everything due that day but quit habits and limits. */
 fun routineHabits(store: HabitStore, part: String, day: Int): List<String> =
     (store.rules.cardMembers()[part] ?: emptyList()).mapNotNull { store.habit(it) }.filter { h ->
         !h.archived && !h.isQuitOrLimit && store.rules.isDue(h, day) && !store.isPaused(h, day)
     }.map { it.id }
 
+/**
+ * The routine "Start the next routine" opens: the time of day that is now if it has anything left, else the next card
+ * down Today that does (then from the top). Null when everything planned today is done: Today opens and says so.
+ */
 fun nextRoutine(store: HabitStore): Pair<String, List<String>>? {
     val today = store.today()
     val members = store.rules.cardMembers()

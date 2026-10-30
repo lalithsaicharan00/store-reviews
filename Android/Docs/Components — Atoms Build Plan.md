@@ -207,7 +207,7 @@ search of every page's text).
 | 6.9 | Habits & Tasks: What the squares mean starts folded; Archived habits' free-plan sentence goes; Tasks' drag to reorder and the "Moved to …" snackbar go | ☑ |
 | 6.10 | Today: Paused opens unfolded, as drawn; the notices in Figma's words; Edit Today's sort helpers (`sortedByName`, `sortedByReminder`) go | ☑ |
 | 6.11 | Onboarding: Restoring gets Figma's Cancel (only where nothing is half written); Plus isn't on this phone shows Contact us alone as a Text button; That isn't a backup says only Figma's two cases | ☑ |
-| 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☐ |
+| 6.12 | Atoms: the Day cell's note dots, corner dot and unused Small size go if Figma's cards don't draw them; leftover coach-mark code (the ✏ tip) goes | ☑ |
 
 Settled by the user the same day (A78): "· 48 days" removed from Figma; Day details keeps ✕ (added to Figma); notes
 have no date chip (removed from Figma). Start on a finished Morning: settled (A79), Start removed from those frames and the "Start when everything's already
@@ -3328,3 +3328,12 @@ What each atom changed, newest last.
     “Often Enough backup”." The repacked and damaged sentences go; the codes behind them stay (the check still tells
     them apart). From a newer version keeps its own screen.
   - Noted, not changed: an iPhone's Plus screen with Contact us as its only, quiet, action looks light; Figma draws it so.
+  - **Built:** run 41069668668 (Android, commit 650a5bc) passed: assembleDebug, unit tests and lint.
+- **6.12 Cleanup · Atoms (30 Oct).** Figma's Day cell (977:635): Size is Week, Year and Small (Small is used by
+  History and a task's details), and no state draws a note dot or a corner dot.
+  - Nothing to remove from the Day cell: the dots were already gone (A60), and Small stays, as Figma has it.
+  - The ✏ tip's code was already gone; its leftover comments go (MainActivity, TestLaunch, Prefs, TodayScreen). So do
+    other comments that earlier cleanups orphaned: the Tasks page's and Habits & Tasks' notes, Today's group and the
+    welcome's pref notes, `delete_sweep`. The "Start the next routine" note goes back above `nextRoutine`.
+  - Noted, not changed: the Today widgets still put done habits last through the old `Prefs.doneOrder`, which nothing
+    can change any more; Today keeps them in place (A32). Decisions needed D-37.

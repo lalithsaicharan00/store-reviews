@@ -100,7 +100,6 @@ import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.BackToButton
 import kotlinx.coroutines.launch
 
-/** Where Habits & Tasks goes. [openMenu] is null where the menu is a sidebar beside the page. */
 /** Habits deleted from their own page (Habit details' Delete): hidden here while the snackbar offers Undo (D6). */
 object PendingDelete { val ids = androidx.compose.runtime.mutableStateListOf<String>() }
 

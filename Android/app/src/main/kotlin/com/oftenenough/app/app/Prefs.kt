@@ -22,13 +22,9 @@ class Prefs(private val sp: SharedPreferences) {
     var doneOrder by str("today.doneOrder", "bottom")
     var hideDoneHabits by bool("today.hideDoneHabits", false)
     var hideDoneTasks by bool("today.hideDoneTasks", false)
-    /** The group Today shows ("" is all). */
     var timerScreen by bool("timers.openScreen", true)
     var timerNotification by bool("timers.liveUpdate", true)
-    /** The welcome is finished (new, or back from a backup). Nothing goes to Google Drive before it (D4, D14). */
     var hideNames by bool("privacy.hideNames", false)
-    /** The days Today was opened on, the first three (the ✏ tip waits for three, Figma 2.0): "20350,20351". */
-    /** The ✏ tip was shown and ended (Got it, or ✏ itself). */
     /**
      * Today's milestones as shown, and the counts the day's limits read (MilestoneCenter): presentation on this phone,
      * never habit data (the milestones themselves are worked out from the logs, D6).
