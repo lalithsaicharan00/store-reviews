@@ -59,11 +59,8 @@ object AppGraph {
     val prefs: Prefs get() = prefsInstance ?: error("AppGraph.open first")
     /** Sound when done's chime; made when the app's screen first shows, so it's loaded before the first goal is met. */
     val chime: Chime by lazy { Chime(AndroidCore.context) }
-    private var lockInstance: AppLock? = null
-    val lock: AppLock get() = lockInstance ?: error("AppGraph.open first")
-    /** Names are hidden outside the app when the person asked, and always while App lock is on. */
-    val hidesNames: Boolean get() = prefs.hideNames || lock.isOn
-    private var screenOffWatched = false
+    /** Names are hidden outside the app when the person asked. */
+    val hidesNames: Boolean get() = prefs.hideNames
     private var plusInstance: PlusStore? = null
     /** Where Plus comes from: the fake store in debug builds and tests until Play Billing is connected (build prompt §5). */
     val plus: PlusStore get() = plusInstance ?: error("AppGraph.open first")
@@ -91,14 +88,6 @@ object AppGraph {
      * Drive (Rulebook D16). So there is nothing here to open.
      */
 
-    /** Locking the phone locks the app at once (whatever Lock again says). */
-    private fun watchScreenOff(context: Context) {
-        if (screenOffWatched) return
-        screenOffWatched = true
-        context.applicationContext.registerReceiver(object : android.content.BroadcastReceiver() {
-            override fun onReceive(c: Context, i: android.content.Intent) { lockInstance?.phoneLocked() }
-        }, android.content.IntentFilter(android.content.Intent.ACTION_SCREEN_OFF))
-    }
     val isOpen: Boolean get() = storeInstance != null
 
     /** Opens the person's own database (the app, widgets, notifications). */
@@ -107,8 +96,6 @@ object AppGraph {
         init(context)
         val path = context.getDatabasePath("habits.db").also { it.parentFile?.mkdirs() }.path
         prefsInstance = Prefs.of(context)
-        lockInstance = AppLock(context.getSharedPreferences(AppLock.FILE, Context.MODE_PRIVATE))
-        watchScreenOff(context)
         storeInstance = HabitStore(HabitRepository.open(path), scope).also { s ->
             s.milestones.memory = milestoneMemory()
             // Every saved change plans reminders again once the changes stop (S16).
@@ -163,9 +150,6 @@ object AppGraph {
         context.getSharedPreferences("uitest", Context.MODE_PRIVATE).edit().clear().commit()
         context.getSharedPreferences("uitest-today-notices", Context.MODE_PRIVATE).edit().clear().commit()
         prefsInstance = Prefs.of(context, "uitest")
-        // Its own App lock, off each launch (D8, T8): a test never locks or unlocks the person's app.
-        lockInstance = AppLock(context.getSharedPreferences("uitest-applock", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
-        watchScreenOff(context)
         storeInstance?.repo?.close()
         storeInstance = HabitStore(HabitRepository.openInMemory(), scope) { System.currentTimeMillis() + offset }.also { s ->
             s.milestones.memory = milestoneMemory()

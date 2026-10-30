@@ -200,7 +200,7 @@ search of every page's text).
 | 6.2 | The old Progress page: `ProgressScreen` and its route (the Habits tab is that page, A54); SpeedTest moves to the Habits tab | ☑ |
 | 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☑ |
 | 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☑ |
-| 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☐ |
+| 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☑ |
 | 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☐ |
 | 6.7 | Day details: a milestone shows the bar over the sheet, no ribbon in This day; the Log screen's View footers in Figma's words ("Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.", "Your run started again from this slip."), ← on Entry as drawn; All logs' "Undo takes one back." goes; Add note on a day that has one opens Edit note, without the "already has a note" line; Add note and Edit note show no date (A78) | ☐ |
 | 6.8 | Routine player: the "1 skipped for today …" line goes; Your routine's rows say only Figma's Done, Here now, Not done | ☐ |
@@ -3253,3 +3253,12 @@ What each atom changed, newest last.
   Habits tab's group filter (`ProgressBuilder`'s `groupId`, `ProgressSnapshot.group`), and the demo's three groups.
   **Saved groups stay** (D rules): the "groups" and "groups_order" settings rows are never touched, so they stay in the
   database and every backup, and nothing reads or rewrites them.
+  - **Built:** run 41041552989 (Android, commit 15effcc) passed: assembleDebug, unit tests and lint.
+- **6.5 Cleanup · App Lock (30 Oct).** Not in Figma and not in the first version (A27: no row opened it). Deleted:
+  `app/AppLock.kt` (passcode hash, lock again, wrong-code waits), `ui/settings/PrivacyLock.kt` (Privacy & Security, App
+  lock, its setup and passcode pages, the lock screen and keypad), their routes, `SettingsPage.PRIVACY`, the screen-off
+  watcher, the lock in `MainActivity` (the cover, its TalkBack hiding and the Recents screenshot switch), the unit test
+  `AppLockTest` and ScreensTest's `appLockWithAPasscodeLocksAndOpens`, and the `androidx.biometric` library.
+  `MainActivity` is a `ComponentActivity` again (it was a `FragmentActivity` only for the fingerprint prompt). Names
+  hidden outside the app now follow only the person's Hide names setting (`AppGraph.hidesNames`). No habit data was ever
+  in App Lock's own file; it is left on the phone untouched.

@@ -59,8 +59,6 @@ object SettingsPage {
     const val REMINDERS = "Reminders"
     const val THEME = "Theme"
     const val BACKUP = "Backup & Sync"
-    /** App Lock's page: no row opens it (A27); it goes with cleanup 6.5. */
-    const val PRIVACY = "Privacy & Security"
     const val LICENCES = "Open source licences"
 }
 

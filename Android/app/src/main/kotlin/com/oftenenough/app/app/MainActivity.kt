@@ -1,17 +1,15 @@
 package com.oftenenough.app.app
 
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import android.os.Build
-import com.oftenenough.app.ui.settings.LockScreen
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
@@ -34,7 +32,7 @@ import com.oftenenough.app.app.widgets.WidgetTapSaver
  * The one activity. A test launch passes extras (`uitest`, `clockHour`, `demo`, `onboarding`) and gets its own in-memory
  * database and preferences (D8); an ordinary launch opens the person's own.
  */
-class MainActivity : FragmentActivity() {
+class MainActivity : ComponentActivity() {
     /** The answer to Google's Drive permission screen, while it is open. */
     private var consenting: kotlinx.coroutines.CompletableDeferred<Boolean>? = null
     private val consentScreen = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult()) { result ->
@@ -70,7 +68,6 @@ class MainActivity : FragmentActivity() {
     override fun onStart() {
         super.onStart()
         if (AppGraph.isOpen) {
-            AppGraph.lock.returned()
             // LOCKED (widget taps): waiting taps are saved on every return (W5).
             if (AppGraph.store.isLoaded) lifecycleScope.launch { WidgetTapSaver.saveWaiting(applicationContext) }
             // Plus is asked of Google Play on every return (a pending payment finished, a refund). Play is the only
@@ -82,7 +79,6 @@ class MainActivity : FragmentActivity() {
     override fun onStop() {
         super.onStop()
         if (AppGraph.isOpen) {
-            AppGraph.lock.left()
             // LOCKED (widget taps): leaving the screen publishes at once, so the Home Screen shows what was just logged (W11).
             if (AppGraph.store.isLoaded) AppGraph.scope.launch { WidgetPublisher.publish(applicationContext, AppGraph.store) }
         }
@@ -146,14 +142,7 @@ class MainActivity : FragmentActivity() {
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
-                val lock = AppGraph.lock
-                Box(Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
-                    // While locked, the app stays as it was underneath, hidden from the screen and from TalkBack.
-                    Box(Modifier.fillMaxSize().then(if (lock.isLocked) Modifier.clearAndSetSemantics {} else Modifier)) { AppRoot(store, AppGraph.prefs) }
-                    if (lock.isLocked) LockScreen(lock)
-                }
-                // The recents screenshot shows nothing while App lock is on.
-                LaunchedEffect(lock.isOn) { if (Build.VERSION.SDK_INT >= 33) setRecentsScreenshotEnabled(!lock.isOn) }
+                Box(Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) { AppRoot(store, AppGraph.prefs) }
             }
         }
     }

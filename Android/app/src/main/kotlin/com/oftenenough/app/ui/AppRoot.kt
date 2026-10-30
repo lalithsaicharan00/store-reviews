@@ -13,9 +13,6 @@ import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.ui.backup.BackupScreen
 import com.oftenenough.app.ui.settings.ThemePage
 import com.oftenenough.app.ui.settings.LicencesPage
-import com.oftenenough.app.ui.settings.AppLockPage
-import com.oftenenough.app.ui.settings.AppLockSetup
-import com.oftenenough.app.ui.settings.PrivacyPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
 import com.oftenenough.app.ui.plus.PlusReason
 import com.oftenenough.app.ui.plus.PlusScreen
@@ -268,8 +265,6 @@ private fun AppMain(
                     }
                 }
                 SettingsPage.REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersComingPage(store) { nav.popBackStack() }
-                SettingsPage.PRIVACY -> PrivacyPage(prefs, AppGraph.lock, { nav.navigate(Routes.page("App lock")) }) { nav.popBackStack() }
-                "App lock" -> AppLockPage(AppGraph.lock, { nav.navigate(Routes.LOCK_SETUP) }, { nav.navigate(Routes.LOCK_PASSCODE) }) { nav.popBackStack() }
                 // The menu's Plus (Reason=Menu): bought here, it stays, saying Plus is yours.
                 MenuItem.PLUS.title -> PlusScreen(PlusReason.MENU, store, AppGraph.plus, { nav.popBackStack() }, plusOn)
                 MenuItem.SETTINGS.title -> WithMenu(store, MenuItem.SETTINGS, nav) { openMenu ->
@@ -350,8 +345,6 @@ private fun AppMain(
             }
         }
         composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
-        composable(Routes.LOCK_SETUP) { AppLockSetup(AppGraph.lock, passcodeOnly = false) { nav.popBackStack() } }
-        composable(Routes.LOCK_PASSCODE) { AppLockSetup(AppGraph.lock, passcodeOnly = true) { nav.popBackStack() } }
         composable(Routes.NEW_TASK) {
             NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
                 task = true, onPlusOn = plusOn)
@@ -481,8 +474,6 @@ object Routes {
     fun restoreRoom(id: String) = "restoreroom/$id"
     const val PLUS = "plus/{reason}"
     fun plus(reason: PlusReason) = "plus/" + reason.key
-    const val LOCK_SETUP = "applock/setup"
-    const val LOCK_PASSCODE = "applock/passcode"
     fun page(title: String) = "page/" + android.net.Uri.encode(title)
     fun add(habit: String, day: Int) = "add/$habit/$day"
     fun log(id: String) = "log/$id"

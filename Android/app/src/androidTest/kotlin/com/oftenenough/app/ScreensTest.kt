@@ -35,7 +35,7 @@ import org.junit.runner.RunWith
 
 /**
  * Checkpoint 2's screens on the emulator: Habit details, Progress, the routine player, Pause, the Habits list, the
- * Filter and groups, Arrange your day, Help, Plus without buying for real, and App lock. Every launch is a test launch
+ * Filter and groups, Arrange your day, Help and Plus without buying for real. Every launch is a test launch
  * (D8) at 10:30 (T11); a failure says, on one line, what was on screen (T14).
  */
 @OptIn(androidx.compose.ui.test.ExperimentalTestApi::class)
@@ -273,25 +273,5 @@ class ScreensTest {
         waitFor(hasText("Plus is yours.", substring = true), "Plus is yours")
         waitGone(hasTestTag("plus-buy"), "Get Plus")
         assertTrue("the store's free limit is lifted", AppGraph.store.isPlus)
-    }
-
-    @Test fun appLockWithAPasscodeLocksAndOpens() {
-        launch()
-        menu("privacy")
-        tapTag("privacy-app-lock")
-        tapTag("app-lock-switch")
-        tapTag("setup-passcode")
-        tapTag("setup-continue")
-        repeat(6) { tapTag("key-4") }
-        waitFor(hasText("Confirm the app passcode"), "Confirm")
-        repeat(6) { tapTag("key-4") }
-        waitFor(hasTestTag("app-lock-switch"), "App lock, on")
-        assertTrue("App lock is on", AppGraph.lock.isOn)
-        onMain { AppGraph.lock.phoneLocked() }
-        waitFor(hasTestTag("lock-screen"), "the lock screen")
-        repeat(6) { tapTag("key-1") }
-        waitFor(hasText("That's not your app passcode."), "a wrong code said")
-        repeat(6) { tapTag("key-4") }
-        waitGone(hasTestTag("lock-screen"), "the lock screen")
     }
 }

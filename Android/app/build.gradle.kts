@@ -96,7 +96,6 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.2.0")
     implementation("androidx.appcompat:appcompat:1.8.0")
     implementation("androidx.work:work-runtime-ktx:2.12.0")
-    implementation("androidx.biometric:biometric:1.1.0")
     implementation("androidx.glance:glance-appwidget:1.2.0")
     implementation("androidx.glance:glance-material3:1.2.0")
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
