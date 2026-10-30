@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 4 |
+| today | 54:5580 | 83 | 5 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **14** |
+| **All** | | **289** | **15** |
 
 ## Bug log
 
@@ -50,10 +50,16 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 12. Today · demo data — the `design` demo was drawn from an older Figma frame (Meds already done, last in Morning). It now matches the Android file's Today (700:3219): Meds first and still to do at 57, one done in Afternoon and in Evening (`DemoData.design`).
 13. Today · Log an amount manually — Day details' second button said “Log manually” (and an amount typed each time “Log amount”); Figma's Day details sheet (669:234) says “+1 | Log” and a single “Log” (`DayDetails` actions).
 14. Today · Log an amount manually — tall sheets sat 6 dp lower than Figma: Material's sheet runs up behind the status bar and pads its handle down by it, while Figma's sheet edge is 6 dp above the status bar's bottom with the scrim above (87:178). One shared setting now places every modal sheet's edge there (`Modifier.belowStatusBar`, `sheetInsets`: Day details, the player's sheets, `AppBottomSheet`).
+15. Today · An amount typed each time — Day details for a week's or month's goal said the day's amount (“$100 today”) over the period's total on a second line, under “This day”. Figma's Day details page draws the card as This week / This month, the period's total over its goal (“$300 of $500”, “140 of 300 this week”, “1 h 40 of 3 h”, “2 of 3 this week”), what's left at the end of the line (“$200 to go”, Goal reached), and for once-a-month Not done yet · Any day in October / Done this month · Done today at … (`DayStatus.make`, `DayDetails` card name).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
 ## Open questions for the user
+
+- **Savings' wording differs between pages.** Today flow 5 draws Savings' row as “\$250/\$500” and its Day details as
+  “\$50 today · \$200 to go this month”; Figma's own rule for a row's line (Today flow 49) says a month goal reads
+  “… this month”, and the Day details page (flow 22) draws “This month · \$300 of \$500 · \$200 to go”. The app follows
+  the rule and the Day details page.
 
 - **Add log's date in one flow frame.** Today flow 4's Add log (721:4184) says “21 Oct 2026”; Figma's own Log screen
   component (687:829) and every other frame say “Today, 21 Oct 2026”. The app follows the component.
@@ -105,7 +111,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 2 | 117:2 | Check off several times a day | Stretch breaks 1 of 3 → ✓ 2 of 3, plain → ✓ 3 of 3, fills and chimes → ✓ again: 4, still counts | passed |
 | 3 | 71:2 | Add an amount | Water 5 of 8 → + 6 of 8; Undo · Note → + twice: 8 of 8 → past the goal 9 of 8 | passed |
 | 4 | 87:2 | Log an amount manually | Water 5 of 8 → Day details → Log manually: Add log, 2 → Added: 7 of 8 → Swipe down: Today; Undo · Note | passed |
-| 5 | 119:2 | An amount typed each time | Savings $250 of $500 → Log: Add log $50 → Add: $300; Undo · Note → Day details | not started |
+| 5 | 119:2 | An amount typed each time | Savings $250 of $500 → Log: Add log $50 → Add: $300; Undo · Note → Day details | passed |
 | 6 | 73:2 | Time a habit | Stretch 4 of 10 min → ▶ timer opens and starts → ⌄ row keeps the clock; ⏸ → goal: fills, chimes → ⏸ saved; Undo · Note | not started |
 | 7 | 95:2 | Log time manually | Stretch 4 of 10 → Day details → Add log, 5 min → 9 of 10 → Swipe down: Today | not started |
 | 8 | 75:2 | Tick checklist steps | Skincare 1 of 4 → ⌄ steps open → tick: 2 of 4 → last step: fills → ⌃ folds | not started |

@@ -307,7 +307,9 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     Column(Modifier.fillMaxWidth()) {
     Column(Modifier.fillMaxWidth().clip(segmentShape(0, 2)).background(MaterialTheme.colorScheme.surfaceContainerLowest)
         .padding(horizontal = 16.dp, vertical = 20.dp)) {
-        Text("This day", style = AppType.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        // A week's or month's goal counts the period, so its card says so (Figma's Day details: This week, This month).
+        val cardName = when (ruled.frequency) { is Frequency.PerWeek -> "This week"; is Frequency.PerMonth -> "This month"; is Frequency.PerYear -> "This year"; else -> "This day" }
+        Text(cardName, style = AppType.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(4.dp))
         val detail = if (running && status.running != null) {
             "Timer running · " + Format.clock((tick.value - status.running) / 60_000.0) + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")

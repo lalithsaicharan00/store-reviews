@@ -209,11 +209,19 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     if (!r.frequency.isDayBased) {
                         val period = rules.progress(habit, day)
                         val goal = rules.goal(habit)
-                        // Met: the week's or month's goal is reached, in words (Figma 5.1, 6.1).
-                        val periodName = periodWord(r.frequency).trim().removePrefix("this ").replaceFirstChar { it.uppercase() }
-                        return DayStatus(HabitCopy.amount(progress, unit) + " " + dayWord,
-                            if (period >= goal && periodName.isNotEmpty()) "$periodName goal reached"
-                            else "${HabitCopy.number(period)} of ${HabitCopy.amount(goal, unit)}" + periodWord(r.frequency))
+                        val periodText = periodWord(r.frequency)
+                        // Once a week or month (Deep clean): Not done yet, any day in it; or Done this month and when.
+                        if (goal <= 1) {
+                            val span = rules.period(when (r.frequency) { is Frequency.PerWeek -> PeriodKind.WEEK; is Frequency.PerMonth -> PeriodKind.MONTH; else -> PeriodKind.YEAR }, day)
+                            val last = store.entries(habit.id).filter { it.value > 0 && it.day in span }.maxByOrNull { it.createdAt }
+                            val month = java.time.LocalDate.ofEpochDay(day.toLong()).month.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH)
+                            if (last == null) return DayStatus("Not done yet", "Any day " + (if (r.frequency is Frequency.PerMonth) "in $month" else periodText.trim()))
+                            val at = if (last.day == store.today()) "today at " + clockText(last) else "on " + DayWords.short(last.day)
+                            return DayStatus("Done" + periodText, "Done $at")
+                        }
+                        // Several times a week or month (Call family): "2 of 3 this week", "1 to go" (Figma's Day details).
+                        return DayStatus("${HabitCopy.number(period)} of ${HabitCopy.number(goal)}$periodText",
+                            if (period >= goal) "Goal reached" else "${HabitCopy.number(goal - period)} to go")
                     }
                     if (rules.countsUp(habit, day)) {
                         val goal = rules.dayGoal(r)
@@ -245,9 +253,14 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     if (rules.isTotal(r)) {
                         val total = rules.progress(habit, day)
                         val period = periodWord(r.frequency)
-                        return DayStatus("${today(saved)} $dayWord",
-                            if (r.atMost) "${text(total)}$period · limit ${text(goal)}"
-                            else "${bare(total)} of ${bare(goal)}$period" + (if (total >= goal) " · Goal reached" else ""), running)
+                        if (r.atMost) return DayStatus("${today(saved)} $dayWord", "${text(total)}$period · limit ${text(goal)}", running)
+                        // Figma's Day details for a week's or month's total (Push-ups, Savings, Piano): the card is This
+                        // week or This month, the period's total over its goal — "140 of 300 this week", "$250 of $500",
+                        // "1 h 40 of 3 h" — and what's left at the end of the line: "160 to go", or Goal reached.
+                        val money = unit.trim() in HabitCopy.currencies
+                        fun short(v: Double) = if (timed) Format.minutes(kotlin.math.floor(v)).removeSuffix(" min").let { if (it.contains(" h ")) it else Format.minutes(kotlin.math.floor(v)) } else bare(v)
+                        val title = "${short(total)} of ${short(goal)}" + (if (timed || money) "" else period)
+                        return DayStatus(title, if (running != null) null else if (total >= goal) "Goal reached" else "${short(goal - total)} to go", running)
                     }
                     // A limit says where it stands in words, never in red (Figma 10–11.3, U3).
                     if (r.atMost) return DayStatus("${today(saved)} $dayWord", "Limit ${text(goal)} · " + when {
