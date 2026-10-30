@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 7 |
+| today | 54:5580 | 83 | 8 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **17** |
+| **All** | | **289** | **18** |
 
 ## Bug log
 
@@ -54,6 +54,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 16. Today · Time a habit — at the goal the running timer's ⏸ stayed grey; Figma fills it in the habit's colour the moment the clock passes the goal (723:11579). The row's button reads the live clock through a derived state, so it fills at the goal and the row recomposes once, not every second (`TodayRows.RowButton`).
 17. Today · Time a habit — the Timer screen's day chip was the player's outlined chip; Figma's Timer screen (705:7745) draws it filled (Surface container, no border, 34 high) with a › after “Today”. `AppAssistChip(filled = true)`, asked for by the Timer screen through `HeroCard(filledDayChip)`; the player keeps the outlined one.
 18. Today · Log time manually — a time habit's Day details said “Start timer | Log manually”; Figma says “Start timer | Log time” (725:5688).
+19. Today · Tick checklist steps — **bug:** ticking the last step folded the steps by themselves after the pause; Figma keeps them open (“The steps fold only when you tap ⌃. Nothing folds by itself.”). The fold-later mechanism is gone (`TodayRows.StepsBlock`, `TodayLayout`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -117,7 +118,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 5 | 119:2 | An amount typed each time | Savings $250 of $500 → Log: Add log $50 → Add: $300; Undo · Note → Day details | passed |
 | 6 | 73:2 | Time a habit | Stretch 4 of 10 min → ▶ timer opens and starts → ⌄ row keeps the clock; ⏸ → goal: fills, chimes → ⏸ saved; Undo · Note | passed |
 | 7 | 95:2 | Log time manually | Stretch 4 of 10 → Day details → Add log, 5 min → 9 of 10 → Swipe down: Today | passed |
-| 8 | 75:2 | Tick checklist steps | Skincare 1 of 4 → ⌄ steps open → tick: 2 of 4 → last step: fills → ⌃ folds | not started |
+| 8 | 75:2 | Tick checklist steps | Skincare 1 of 4 → ⌄ steps open → tick: 2 of 4 → last step: fills → ⌃ folds | passed |
 | 9 | 77:2 | A week or month goal | Call family 2 of 3 this week → ✓ 3 of 3 → rest of week stays full | not started |
 | 10 | 120:2 | Do a task on Today | Pick up parcel → ✓ done; Undo · Note → stays done in place | not started |
 | 11 | 79:2 | Quit: log a slip | Smoking 19 days → Day details → Add slip → 1 slip recorded → Swipe down: run starts again | not started |

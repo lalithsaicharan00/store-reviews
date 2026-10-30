@@ -24,7 +24,7 @@ object DemoData {
         val water = h("Water", "drop.fill", HabitColor.BLUE, HabitKind.Amount("glasses", 1.0), goal = 8.0, created = 40)
         val stretch = h("Stretch", "figure.flexibility", HabitColor.TEAL, HabitKind.Duration, listOf(DaySection.MORNING), 10.0, created = 20)
         val skincare = h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, listOf(DaySection.MORNING),
-            steps = listOf("Cleanser", "Serum", "Moisturiser", "Sunscreen").map { Step(name = it) }, created = 20)
+            steps = listOf("Cleanser", "Vitamin C serum, 2 drops", "Moisturiser", "Sunscreen").map { Step(name = it) }, created = 20)
         val teeth = h("Brush teeth", "mouth.fill", HabitColor.MINT, HabitKind.Duration, listOf(DaySection.MORNING), 2.0, created = 100)
         val meds = h("Meds", "pills.fill", HabitColor.RED, HabitKind.Check, listOf(DaySection.MORNING), created = 70)
         val walk = h("Walk", "figure.walk", HabitColor.GREEN, HabitKind.Amount("steps", 1000.0), listOf(DaySection.AFTERNOON), 8000.0, created = 20)
@@ -104,7 +104,7 @@ object DemoData {
                 atMost = atMost, reminders = reminders, remind = reminders.isNotEmpty(), quitSince = quitSince, dueDay = dueDay, createdAt = ago(400))
         val stretch = h("Stretch", "figure.flexibility", HabitColor.TEAL, HabitKind.Duration, DaySection.MORNING, 10.0)
         val skincare = h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, DaySection.MORNING,
-            steps = listOf("Cleanser", "Serum", "Moisturiser", "Sunscreen").map { Step(name = it) })
+            steps = listOf("Cleanser", "Vitamin C serum, 2 drops", "Moisturiser", "Sunscreen").map { Step(name = it) })
         val meds = h("Meds", "pills.fill", HabitColor.RED, HabitKind.Check, DaySection.MORNING, reminders = listOf(ReminderTime(hour = 8, minute = 0)))
         val walk = h("Walk", "figure.walk", HabitColor.GREEN, HabitKind.Amount("steps", 1000.0), DaySection.AFTERNOON, 10000.0)
         val study = h("Study", "book.fill", HabitColor.ORANGE, HabitKind.Check, DaySection.AFTERNOON)
@@ -235,7 +235,7 @@ object DemoData {
                 remind = reminder != null, quitSince = quitSince, archived = archived, createdAt = now - 200 * dayMs)
         val habits = listOf(
             h("Stretch", "figure.flexibility", HabitColor.TEAL, HabitKind.Duration, DaySection.MORNING, 10.0),
-            h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, DaySection.MORNING, steps = listOf("Cleanser", "Serum", "Moisturiser", "Sunscreen")),
+            h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, DaySection.MORNING, steps = listOf("Cleanser", "Vitamin C serum, 2 drops", "Moisturiser", "Sunscreen")),
             h("Meds", "pills.fill", HabitColor.RED, HabitKind.Check, DaySection.MORNING, reminder = 8 * 60),
             h("Meditate", "figure.mind.and.body", HabitColor.PURPLE, HabitKind.Duration, DaySection.MORNING, 15.0),
             h("Walk", "figure.walk", HabitColor.GREEN, HabitKind.Duration, DaySection.AFTERNOON, 30.0),

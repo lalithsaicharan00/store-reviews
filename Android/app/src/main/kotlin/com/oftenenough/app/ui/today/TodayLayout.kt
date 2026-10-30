@@ -23,22 +23,14 @@ class TodayLayout(private val scope: CoroutineScope) {
     private val shownOpen = HashMap<String, Boolean>()
     private var release: Job? = null
 
-    /** Folds waiting for the pause: a checklist whose last step was just ticked (Figma 1.7.2: "then fold"). */
-    private val foldLater = HashSet<String>()
-
     fun hold() {
         holding = true
         release?.cancel()
         release = scope.launch {
             delay(pauseMillis)
             holding = false
-            for (key in foldLater) opened[key] = false
-            foldLater.clear()
         }
     }
-
-    /** Folds [key] once Today settles; a tap that opens it again in the meantime keeps it open. */
-    fun foldAfterHold(key: String) { foldLater.add(key); hold() }
 
     /** Another day: every section follows the rule again, and nothing is held. */
     fun reset() {
@@ -47,7 +39,7 @@ class TodayLayout(private val scope: CoroutineScope) {
         opened.keys.filter { !it.startsWith("steps-") }.forEach { opened.remove(it) }
     }
 
-    fun setOpen(key: String, open: Boolean) { opened[key] = open; foldLater.remove(key) }
+    fun setOpen(key: String, open: Boolean) { opened[key] = open }
     fun choice(key: String): Boolean? = opened[key]
 
     /** Whether a section is open: the person's choice, else the rule; while holding, the fold it was shown with. */

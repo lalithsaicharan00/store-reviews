@@ -311,8 +311,8 @@ private fun RowMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, day: Int
 
 /**
  * A checklist's steps, open in their own block under its row (Figma's Steps open; molecule 4.3, [StepRowBlock] and
- * [StepRow]): ticked steps stay in place, greyed. When the last step is ticked the steps stay through the pause, then
- * fold (TodayLayout.foldAfterHold).
+ * [StepRow]): ticked steps stay in place, greyed. When the last step is ticked they stay open; they fold only when ⌃ is
+ * tapped (Figma's Today, flow 8: "Nothing folds by itself").
  */
 @Composable
 fun StepsBlock(habit: Habit, day: Int, shape: Shape, store: HabitStore, layout: TodayLayout) {
@@ -323,8 +323,8 @@ fun StepsBlock(habit: Habit, day: Int, shape: Shape, store: HabitStore, layout: 
     StepRowBlock(shape, Modifier.semantics { testTag = "steps-${habit.name}" }) {
         for (step in habit.steps) StepRow(step.name, done[step.id] == true, c.habit(habit.color), enabled = canTick, tag = "step-${step.name}", onToggle = {
             layout.hold()
+            // The steps stay open when the last one is ticked: they fold only on ⌃ (Figma's Today, flow 8).
             store.toggleStep(step, habit, day)
-            if (store.rules.isDone(habit, day)) layout.foldAfterHold("steps-${habit.id}")
         })
     }
 }
