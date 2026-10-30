@@ -85,12 +85,12 @@ indicator move from the hand-set versions onto Material's own.
 
 | # | Atom | Figma | Status |
 |---|---|---|---|
-| 3.1 | Form field (the habit and task forms) | 1065:2120 | ☐☑ |
-| 3.2 | Colour swatch | 1074:161495 | ☐☑ |
-| 3.3 | Plus label | 1208:1983 | ☐☑ |
-| 3.4 | Skeleton | 1030:2 | ☐☑ |
-| 3.5 | Medal | 913:29957 | ☐☑ |
-| 3.6 | Day cell | 977:635 | ☐☑ |
+| 3.1 | Form field (the habit and task forms) | 1065:2120 | ☑ |
+| 3.2 | Colour swatch | 1074:161495 | ☑ |
+| 3.3 | Plus label | 1208:1983 | ☑ |
+| 3.4 | Skeleton | 1030:2 | ☑ |
+| 3.5 | Medal | 913:29957 | ☑ |
+| 3.6 | Day cell | 977:635 | ☑ |
 
 Not built: Status bar and Gesture navigation (Android draws them), the Google Drive logo (an image).
 
@@ -3351,8 +3351,9 @@ What each atom changed, newest last.
     nothing draws (`Lock`, `Groups`, `Update`, `SortByAlpha`, …); `AppColors.flame`, a colour that was no role (A75)
     and nothing used; and the imports these left behind.
   - Kept, though nothing reads them: AppType's Display Large / Display Small / Body Large / Body Medium / Body Small
-    Emphasized (Figma's own styles, A74: a style never goes without the user); `MilestoneLine.pageTitle` (a constructor
+    Emphasized (Figma's own styles, A74: a style never goes without the user); `MilestoneNext.pageTitle` (a constructor
     field filled by position).
   - Noted, not changed: stored data was never touched (day notes, groups, App Lock's and the ✏ tip's old prefs stay in
     the files they were in; only the code that read them is gone).
+  - **Built:** run 41071257472 (Android, commit 1dedc0d) passed: assembleDebug, unit tests and lint.
 

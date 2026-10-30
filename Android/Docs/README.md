@@ -10,8 +10,11 @@ lives in the [Current Work Checklist](<../../iOS/Docs/Checklists/Current Work Ch
 whatever we are designing for Android should work for iPhone as well, the same way." One shared core, the same Plus,
 the same words; differences only where a platform forces them.
 
-**Building the app (Current Work 107):** the task is the [build prompt](<Build Prompt — Android App (Delete When Done).md>);
-the work so far is on `claude/android-app`, handed over 13 Oct 2026: start at [Android App — Handoff for the Next Agent](<Android App — Handoff for the Next Agent.md>).
+**Building the app (30 Oct 2026):** the app is built from the Figma file, component by component, on `main`. What was
+built, fixed and noted, newest last, is in [Components — Atoms Build Plan](<Components — Atoms Build Plan.md>); the
+questions for the user are in [Decisions needed](<Decisions needed.md>). The first build (Current Work 107, 13 Oct) is
+history: its [build prompt](<Build Prompt — Android App (Delete When Done).md>) and
+[handoff](<Android App — Handoff for the Next Agent.md>).
 
 ## Read in this order
 
@@ -405,9 +408,8 @@ shared core (`Core/`: `DriveSync`, `DriveStore`, `GoogleDrive`), tested against 
 5. ~~**The Android designs**~~ done, 12–13 Oct 2026: every screen as an image in
    [Android Designs — Every Screen](<Designs/README.md>) (162 frames, onboarding to widgets), the reasons in the
    [handoff](<Android Designs — Handoff.md>).
-6. **Build the Android app** (Current Work 107): a cloud session with
-   [Build Prompt — Android App (Delete When Done)](<Build Prompt — Android App (Delete When Done).md>), on
-   `claude/android-app`.
+6. ~~**Build the Android app**~~ built (Current Work 107, then from Figma, 28–30 Oct 2026): see
+   [Components — Atoms Build Plan](<Components — Atoms Build Plan.md>) and [Decisions needed](<Decisions needed.md>).
 
 **Done by the user, 11 Oct 2026:** a Web OAuth client "Drive sync tests" (`drive.appdata`; redirect
 `https://developers.google.com/oauthplayground`), a test Google account added as a test user, and three GitHub
