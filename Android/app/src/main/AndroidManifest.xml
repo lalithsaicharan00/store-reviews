@@ -7,6 +7,8 @@
     <!-- A running timer's Live Update: Android 16 shows it as a chip in the status bar (A11 D4). -->
     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- An alarm-style reminder fills the screen over the lock screen (5.11.4), only once the person allows it (5.11.5). -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Google Drive: the person's own backup (A4, A39). INTERNET for Drive's own calls and Google's permission
          screen; ACCESS_NETWORK_STATE so the app can say "No internet" instead of waiting on a call that can't go. -->
@@ -70,6 +72,16 @@
             <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_tasks_large" />
         </receiver>
+        <!-- The alarm screen (5.11.4): over the lock screen, its own task, never in Recents. -->
+        <activity
+            android:name=".app.reminders.AlarmActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:showWhenLocked="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.OftenEnough.App"
+            android:turnScreenOn="true" />
         <activity
             android:name=".app.widgets.WidgetSetupActivity"
             android:exported="true"

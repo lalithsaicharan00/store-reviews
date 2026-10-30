@@ -180,7 +180,7 @@ reminder, sync or backup does (the build prompt's rule).
 | 5.11.1 | Notifications & alarms · Notification icon (Often Enough) | 1268:3 | ☑ |
 | 5.11.2 | Notifications & alarms · Reminder notification | 1268:127 | ☑ |
 | 5.11.3 | Notifications & alarms · Reminder group | 1273:903 | ☑ |
-| 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☐ |
+| 5.11.4 | Notifications & alarms · Alarm screen | 1274:1061 | ☑ |
 | 5.11.5 | Notifications & alarms · Let alarms fill the screen | 1274:16200 | ☐ |
 
 ### 6. Figma cleanup (added 29 Oct 2026, Android A77)
@@ -3165,3 +3165,34 @@ What each atom changed, newest last.
     the summary's ring. The full-screen alarm is 5.11.4.
   - The summary's lines say where each stood when it rang; Android removes the summary once every reminder in it is
     logged or swiped.
+  - **Built:** run 41036560057 (Android, commit 028004b) passed: assembleDebug, unit tests and lint.
+- **5.11.4 Notifications & alarms · Alarm screen (30 Oct).** Figma: Alarm screen (1274:1061), Kind Check · Amount · Typed
+  amount · Time · Checklist · Task, and the flows "An alarm: turn it on, then answer it" and "An alarm without full
+  screen". A reminder set to ring as an alarm fills the screen over the lock screen (a full-screen intent) when Android
+  lets it (5.11.5); it rings until answered, and the ring is the notification's, so the screen's buttons stop it as the
+  notification's own buttons do (`Reminders.answer`, the same saving as 5.11.2). On the habit's Fill colour: the clock
+  ("7:00", Display Large) and "Reminder · Tue, 27 Oct" (Body Large, On surface variant), 24 above, 16 under; the hero
+  card (Surface container lowest, 28 corners, 24 by 28 in, 20 between): the cookie (112, glyph 56), the name (Headline
+  Medium Emphasized), the description (Body Large), "Not done yet" (Headline Small) or the count ("3", Display Medium,
+  and "of 8 glasses", Body Large) and the wavy progress (A76: Material's own); a checklist's card: the cookie (56), the
+  name, the progress with "0 of 5 steps" (Label Large) and its steps (Step rows on Surface container, 16 corners, 2
+  apart); a task: "Task · for today". Under it, 16 in, 8 between: the main button (Filled, Large, round, the width):
+  **Done**, **+1 glass**, **Log**, **Start**, **Tick Warm-up**; then Text, Medium: **Log time** (time), **Open** (a
+  checklist) and **Not now**. It is `AlarmActivity` (`app/reminders/`), with `Reminders.canFillScreen`, `answer` and
+  `quiet`; the manifest asks for `USE_FULL_SCREEN_INTENT` and declares the activity (over the lock screen, turns the
+  screen on, its own task, not in Recents). Research: 5.11.1's entry (Android 14's full-screen intent rules).
+  Built:
+  - Done, +1 glass, Start and Tick save as the notification's buttons do, then the screen goes and the notification is
+    left as it now stands, quiet. A step row in the card ticks that step.
+  - **Not now** (and Back) stops the ring and leaves the reminder as an ordinary notification.
+  - **Log**, **Log time** and **Open** stop the ring, ask the phone to unlock (requestDismissKeyguard), then open Add
+    log or the day in the app.
+  Fixed:
+  - An alarm only ever rang as a notification (A11 D3, 12 Oct: "no full screen"); Figma, newer (A77), draws it filling
+    the screen. Without the person's permission it still rings as a notification, as Figma's "An alarm without full
+    screen" (Decisions needed D-35).
+  Noted, not changed:
+  - Figma says Log and Log time "open Add log over the lock screen"; the app's Add log is in the app's own activity, so
+    the phone asks to unlock first. Showing the whole app over the lock screen would show everything without unlocking.
+  - Several alarms at the same minute ring as their group's notification (5.11.3), not one screen each.
+  - The clock is the reminder's own time, written as the phone writes times (24-hour or not).

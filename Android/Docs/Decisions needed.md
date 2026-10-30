@@ -387,4 +387,18 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** keep Open, or drop it and let the tap open the day?
 - **My recommendation:** keep it: on a checklist the tap target isn't obvious and "Open" says where the other steps are.
 
+### D-35. The alarm screen and Google Play's full-screen intent policy
+
+- **Where:** Alarm screen (5.11.4) and Let alarms fill the screen (5.11.5), [Figma 1274:1061](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1274-1061); `app/reminders/AlarmActivity.kt`, `AndroidManifest.xml`.
+- **What Figma shows:** an alarm-style reminder fills the screen over the lock screen. A11 D3 (12 Oct) said "Alarm style
+  rings, no full screen"; Figma is newer, so it's built (A77).
+- **What I did for now:** built as Figma: `USE_FULL_SCREEN_INTENT` in the manifest, used only when Android allows it
+  (`canUseFullScreenIntent()`); otherwise the alarm rings as a notification.
+- **Question:** Google Play allows this permission only for apps "that provide calling and alarms" ([Android 14
+  changes](https://developer.android.com/about/versions/14/behavior-changes-14)), and asks for a declaration in Play
+  Console. Is Often Enough's Alarm style enough to declare it, or should the full screen wait?
+- **My recommendation:** keep it and declare it as alarms the person sets for themselves at a time they choose, which is
+  what the style is; if Play refuses, remove the permission line and the alarm still rings as a notification (nothing
+  else changes).
+
 ## Cleanup

@@ -52,19 +52,21 @@ object Reminders {
     const val ACTION_TICK = "com.oftenenough.app.REMINDER_TICK"
     /** Takes back exactly the log the notification made, by its ID. */
     const val ACTION_UNDO = "com.oftenenough.app.REMINDER_UNDO"
-    private const val EXTRA_STEP = "step"
+    const val EXTRA_STEP = "step"
     private const val EXTRA_ENTRY = "entry"
     private const val EXTRA_SECTION = "section"
     private const val EXTRA_ALARM = "alarm"
     private const val EXTRA_FOLLOW_UP = "followUp"
     private const val EXTRA_PLACE = "place"
     private const val EXTRA_GROUP = "group"
+    const val EXTRA_MINUTE = "minute"
+    private const val ACTION_ALARM_SCREEN = "com.oftenenough.app.REMINDER_ALARM_SCREEN"
     /** The direct reply's text. */
     private const val REPLY = "reply"
     /** How long an updated reminder stays once its goal is met (Figma: "it goes away after a few seconds"). */
     private const val GOES_AFTER_MS = 4_000L
-    private const val EXTRA_HABIT = "habit"
-    private const val EXTRA_DAY = "day"
+    const val EXTRA_HABIT = "habit"
+    const val EXTRA_DAY = "day"
     private const val EXTRA_SLOT = "slot"
     private const val EXTRA_NOTIFICATION = "notification"
     private const val PREFS = "reminders"
@@ -155,7 +157,7 @@ object Reminders {
             val alarm = alert.habit.alert == "alarm"
             val words = if (hide) ReminderPlan.words(alert, store, true) else null
             val notification = notice(context, store, Shown(alert.habit.id, alert.day, alert.placement.slot, alert.section.id, id, alarm, alert.followUp,
-                alert.placement.section.takeIf { alert.placement.slot != null }),
+                alert.placement.section.takeIf { alert.placement.slot != null }, minute = alert.time.minuteOfDay),
                 undo = null, update = false, hidden = words) ?: continue
             // An alarm keeps ringing until it's answered (a button, a tap or a swipe).
             if (alarm) notification.flags = notification.flags or android.app.Notification.FLAG_INSISTENT
@@ -199,6 +201,8 @@ object Reminders {
         val place: String? = null,
         /** The same-minute group it belongs to (5.11.3), so it stays there when it updates. */
         val group: String? = null,
+        /** The reminder's time (minute of the day), for the alarm screen's clock (5.11.4). */
+        val minute: Int = -1,
     )
 
     /** Opens the habit's day (or Today, for a group). */
@@ -259,6 +263,8 @@ object Reminders {
         // In a same-minute group (5.11.3) only the summary rings.
         shown.group?.let { builder.setGroup(it).setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY) }
         goesAfter?.let { builder.setTimeoutAfter(it) }
+        // An alarm fills the screen (5.11.4) when Android lets it; otherwise it rings as this notification (5.11.5).
+        if (shown.alarm && !update && shown.group == null && canFillScreen(context)) builder.setFullScreenIntent(alarmScreen(context, shown), true)
         // Progress: how far toward the goal, as Today's row fills (none where Today's row has no fill).
         val fraction = (item.cardFraction ?: item.fraction)?.coerceIn(0.0, 1.0)
         if (!once && !rule.atMost && rule.kind != HabitKind.Checklist && fraction != null) builder.setProgress(100, (fraction * 100).toInt(), false)
@@ -320,7 +326,7 @@ object Reminders {
         Intent(context, ReminderReceiver::class.java).setAction(action).putExtra(EXTRA_HABIT, shown.habit).putExtra(EXTRA_DAY, shown.day)
             .putExtra(EXTRA_SLOT, shown.slot).putExtra(EXTRA_NOTIFICATION, shown.id).putExtra(EXTRA_SECTION, shown.section)
             .putExtra(EXTRA_ALARM, shown.alarm).putExtra(EXTRA_FOLLOW_UP, shown.followUp).putExtra(EXTRA_PLACE, shown.place)
-            .putExtra(EXTRA_GROUP, shown.group)
+            .putExtra(EXTRA_GROUP, shown.group).putExtra(EXTRA_MINUTE, shown.minute)
 
     private fun actionIntent(context: Context, action: String, shown: Shown, more: Intent.() -> Unit): PendingIntent =
         PendingIntent.getBroadcast(context, shown.id + action.hashCode(), extras(context, action, shown).apply(more),
@@ -334,10 +340,7 @@ object Reminders {
      */
     fun act(context: Context, store: HabitStore, intent: Intent) {
         val manager = NotificationManagerCompat.from(context)
-        val shown = Shown(intent.getStringExtra(EXTRA_HABIT) ?: return, intent.getIntExtra(EXTRA_DAY, store.today()), intent.getStringExtra(EXTRA_SLOT),
-            intent.getStringExtra(EXTRA_SECTION) ?: "", intent.getIntExtra(EXTRA_NOTIFICATION, 0), intent.getBooleanExtra(EXTRA_ALARM, false),
-            intent.getIntExtra(EXTRA_FOLLOW_UP, 0), intent.getStringExtra(EXTRA_PLACE),
-            intent.getStringExtra(EXTRA_GROUP))
+        val shown = shown(intent, store) ?: return
         val habit = store.habit(shown.habit)
         val day = shown.day
         if (habit == null || habit.archived || day > store.today()) return manager.cancel(shown.id)
@@ -380,6 +383,39 @@ object Reminders {
         }
         val undo = if (rule.kind == HabitKind.Check && !dayBased) null else added
         val notification = notice(context, store, shown, undo, update = true, goesAfter = goes) ?: return manager.cancel(shown.id)
+        try { manager.notify(shown.id, notification) } catch (_: SecurityException) {}
+    }
+
+    /** The reminder an intent (a button's, the alarm screen's) is about. */
+    private fun shown(intent: Intent, store: HabitStore): Shown? = Shown(
+        intent.getStringExtra(EXTRA_HABIT) ?: return null, intent.getIntExtra(EXTRA_DAY, store.today()), intent.getStringExtra(EXTRA_SLOT),
+        intent.getStringExtra(EXTRA_SECTION) ?: "", intent.getIntExtra(EXTRA_NOTIFICATION, 0), intent.getBooleanExtra(EXTRA_ALARM, false),
+        intent.getIntExtra(EXTRA_FOLLOW_UP, 0), intent.getStringExtra(EXTRA_PLACE), intent.getStringExtra(EXTRA_GROUP), intent.getIntExtra(EXTRA_MINUTE, -1),
+    )
+
+    /**
+     * Whether an alarm may fill the screen: Android 14 and later ask the person (Full screen notifications, special app
+     * access; Google Play grants it only to alarm and calling apps); Android 13 and lower allow it.
+     */
+    fun canFillScreen(context: Context): Boolean = Build.VERSION.SDK_INT < 34 ||
+        context.getSystemService(NotificationManager::class.java)?.canUseFullScreenIntent() == true
+
+    private fun alarmScreen(context: Context, shown: Shown): PendingIntent =
+        PendingIntent.getActivity(context, shown.id, extras(context, ACTION_ALARM_SCREEN, shown).setClass(context, AlarmActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_USER_ACTION), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+    /** The alarm screen's answer: what the notification's own button with [action] does, for the reminder in [intent]. */
+    fun answer(context: Context, store: HabitStore, intent: Intent, action: String, step: String? = null) {
+        act(context, store, Intent(intent).setAction(action).apply { step?.let { putExtra(EXTRA_STEP, it) } })
+        AppGraph.scope.launch { store.flush(); replan(context, store) }
+    }
+
+    /** Not now: the ring stops and the reminder stays, an ordinary notification (Figma 1274:1061). */
+    fun quiet(context: Context, store: HabitStore, intent: Intent) {
+        val shown = shown(intent, store) ?: return
+        val manager = NotificationManagerCompat.from(context)
+        val notification = notice(context, store, Shown(shown.habit, shown.day, shown.slot, shown.section, shown.id, alarm = false, shown.followUp,
+            shown.place, shown.group, shown.minute), undo = null, update = true) ?: return manager.cancel(shown.id)
         try { manager.notify(shown.id, notification) } catch (_: SecurityException) {}
     }
 
