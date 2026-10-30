@@ -195,7 +195,7 @@ private fun AppMain(
             AllLogsScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, { nav.navigate(Routes.log(it.id)) }) { nav.popBackStack() }
         }
         composable("note/{habit}/{day}") { e ->
-            NoteScreen(e.arguments!!.getString("habit")!!.takeIf { it != "day" }, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
+            NoteScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
         }
         composable(Routes.NEW + "?name={name}&copy={copy}&from={from}") { entry ->
             val a = entry.arguments
@@ -497,7 +497,7 @@ object Routes {
     fun edit(id: String) = "edit/$id"
     fun menu(item: MenuItem) = page(item.title)
     fun allLogs(habit: String, day: Int) = "alllogs/$habit/$day"
-    fun note(habit: String?, day: Int) = "note/${habit ?: "day"}/$day"
+    fun note(habit: String, day: Int) = "note/$habit/$day"
     fun habit(id: String) = "habit/$id"
     fun timer(id: String) = "timer/$id"
     fun pause(id: String) = "pause/$id"
@@ -564,7 +564,7 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
 private fun todayActions(nav: NavHostController, view: android.view.View, openDay: (Habit, Int) -> Unit) = object : TodayActions {
     override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
-    override fun writeNote(habit: Habit?, day: Int) = nav.navigate(Routes.note(habit?.id, day))
+    override fun writeNote(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
     override fun openTimer(habit: Habit) = nav.navigate(Routes.timer(habit.id))
     override fun editHabit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.habit(habit.id))

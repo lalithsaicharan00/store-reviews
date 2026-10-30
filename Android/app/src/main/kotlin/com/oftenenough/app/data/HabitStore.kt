@@ -963,7 +963,6 @@ class HabitStore(
     fun hasNotes(habit: Habit) = habitNotes[habit.id]?.isNotEmpty() == true
     /** Every note on a habit, newest first. */
     fun notes(habit: Habit): List<Pair<Int, String>> = (habitNotes[habit.id] ?: emptyMap()).entries.sortedByDescending { it.key }.map { it.key to it.value }
-    fun dayNote(day: Int): String? = dayNotes[day]
 
     /** Empty text removes the note (kept as an empty value, so an older backup can't bring it back). */
     fun setNote(text: String, habit: Habit, day: Int) {
@@ -974,14 +973,6 @@ class HabitStore(
             if (clean.isEmpty()) days.remove(day) else days[day] = clean
             habitNotes = habitNotes + (habit.id to days)
             changed(habit.id)
-        }
-    }
-
-    fun setDayNote(text: String, day: Int) {
-        val clean = TextLimit.clean(text, TextLimit.NOTE)
-        perform {
-            saveSetting(Keys.DAY_NOTE + dayKey(day), clean)
-            dayNotes = if (clean.isEmpty()) dayNotes - day else dayNotes + (day to clean)
         }
     }
 

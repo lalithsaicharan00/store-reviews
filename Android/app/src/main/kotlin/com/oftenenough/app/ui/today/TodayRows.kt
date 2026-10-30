@@ -70,7 +70,7 @@ import kotlinx.coroutines.delay
 interface TodayActions {
     fun openDay(habit: Habit, day: Int)
     fun addLog(habit: Habit, day: Int)
-    fun writeNote(habit: Habit?, day: Int)
+    fun writeNote(habit: Habit, day: Int)
     fun openTimer(habit: Habit)
     fun editHabit(habit: Habit)
     fun openHabitPage(habit: Habit)

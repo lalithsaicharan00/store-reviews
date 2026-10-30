@@ -198,7 +198,7 @@ search of every page's text).
 |---|---|---|
 | 6.1 | Start from an idea: `IdeasScreen`, its route and its idea lists (no idea screen anywhere in Figma) | ☑ |
 | 6.2 | The old Progress page: `ProgressScreen` and its route (the Habits tab is that page, A54); SpeedTest moves to the Habits tab | ☑ |
-| 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☐ |
+| 6.3 | The day's own note (no habit): Today's day-note card and "Note for the day", and the Note screen's day note (Figma's notes are a habit's, for a day); saved notes stay in the data | ☑ |
 | 6.4 | Groups: Today's group filter and sheet, Show habits by, Put in a group / New group / Move to group, "Nothing from a group", Progress's group filter (A64: groups are gone) | ☐ |
 | 6.5 | App Lock (`PrivacyLock`, `AppLock`): not in Figma and not in the first version | ☐ |
 | 6.6 | Add screens Figma doesn't draw: check what Day details' Tick steps and Log buttons open in Figma's flows (Day details draws a Tick steps button), and delete only a screen no flow opens | ☐ |
@@ -3237,3 +3237,10 @@ What each atom changed, newest last.
   scroll, Week to Year (`habits-range-2`) and the Year scroll, then back on Week for the habit's own page; the old
   separate "Habits list scroll" was the Week scroll again, so it goes. The instrumented speed run isn't dispatched here
   (the prompt), so this test change runs the next time it is.
+  - **Built:** run 41039852058 (Android, commit 08c6c4a) passed: assembleDebug, unit tests and lint.
+- **6.3 Cleanup · The day's own note (30 Oct).** Figma's notes are a habit's, for a day; it draws no note for the day
+  itself. Removed from the screens: Today's day-note card and its "Note for the day" button, the Note screen's day-note
+  mode (a note is always a habit's now; a habit deleted while the screen is open closes it), `Routes.note`'s "day" and
+  `TodayActions.writeNote`'s null habit, `HabitStore.dayNote` and `setDayNote`. **Saved day notes stay** (D rules): they
+  load into `dayNotes`, go in every backup and the spreadsheet export ("Note for the day" rows), and come back with a
+  restore; nothing deletes them.

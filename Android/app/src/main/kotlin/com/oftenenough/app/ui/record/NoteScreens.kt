@@ -2,7 +2,6 @@ package com.oftenenough.app.ui.record
 
 import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppDialog
-import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppAssistChip
 import com.oftenenough.app.ui.theme.AppType
 
@@ -17,14 +16,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,7 +50,7 @@ import com.oftenenough.app.ui.theme.appColors
 
 /**
  * 5.3.8, **Note screen** (Figma 765:1087, Mode Entry · empty · Entry · typed · View; Components — Atoms Build Plan): a
- * note for one habit's day ([habitId]), or the day's own note (null). Built like the Log screen: the Top app bar (✕ and
+ * note for one habit's day ([habitId]). Built like the Log screen: the Top app bar (✕ and
  * "Add note" / "Edit note"; ← and "Note"), the content 16 at the sides, nothing above, 8 apart, the bottom bar 12 / 16.
  *
  * Entry: the habit and the day, 4 above and below, 8 apart (its icon in a 24 dp circle, the name in Title Medium On
@@ -65,13 +62,14 @@ import com.oftenenough.app.ui.theme.appColors
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () -> Unit) {
+fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> Unit) {
     val c = appColors
     val s = MaterialTheme.colorScheme
-    val habit = habitId?.let { store.habit(it) }
+    // A habit deleted while this was open: nothing to write on.
+    val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onDone() }; return }
     val today = store.today()
     var day by rememberSaveable { mutableStateOf(startDay) }
-    fun noteOf(d: Int) = if (habit != null) store.note(habit, d) else store.dayNote(d)
+    fun noteOf(d: Int) = store.note(habit, d)
     val opened = remember { noteOf(startDay) }
     val saved = noteOf(day)
     var editing by rememberSaveable { mutableStateOf(opened == null) }
@@ -89,7 +87,7 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
     val focus = remember { FocusRequester() }
     val changed = text.trim() != (saved ?: "").trim()
     fun close() { if (editing && changed && text.isNotBlank()) discard = true else if (editing && !adding) editing = false else onDone() }
-    fun save(value: String) { if (habit != null) store.setNote(value, habit, day) else store.setDayNote(value, day) }
+    fun save(value: String) = store.setNote(value, habit, day)
     BackHandler { close() }
     LaunchedEffect(editing, day) { if (editing) runCatching { focus.requestFocus() } }
 
@@ -102,9 +100,8 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
             // The habit and the day (Figma's Habit and day): its icon in a 24 circle, the name, then the date.
             Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (habit != null) HabitIcon(habit.symbol, habit.color, size = 24.dp)
-                else Icon(Symbols.CalendarToday, null, tint = s.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                Text(habit?.name ?: "This day", Modifier.weight(1f), style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                HabitIcon(habit.symbol, habit.color, size = 24.dp)
+                Text(habit.name, Modifier.weight(1f), style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 if (editing && adding) AppAssistChip(date, { pickDay = true }, tag = "note-date")
                 else Text(date, Modifier.semantics { testTag = "note-day" }, style = AppType.bodyMedium, color = s.onSurfaceVariant, maxLines = 1)
             }
@@ -142,7 +139,7 @@ fun NoteScreen(habitId: String?, startDay: Int, store: HabitStore, onDone: () ->
     if (confirmDelete) AppDialog("Delete this note?", "Only the note for $shortDay is removed. That day's progress stays.",
         "Delete note", { confirmDelete = false; save(""); onDone() }, { confirmDelete = false }, destructive = true, confirmTag = "note-delete-confirm")
     if (pickDay) {
-        val first = habit?.let { store.rules.startDay(it) } ?: Int.MIN_VALUE
+        val first = store.rules.startDay(habit)
         AppDatePicker(day, { it in first..today }, { pickDay = false }) { day = it }
     }
 }

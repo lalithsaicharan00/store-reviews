@@ -28,11 +28,9 @@ import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppTopBar
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,7 +66,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -406,7 +403,7 @@ class TodayItem(val habit: Habit, val placement: Placement)
 class TodayContent(
     val cards: List<Pair<String, List<TodayItem>>>, val restraint: List<Habit>, val paused: List<Habit>,
     /** The time of day it is now by the clock (on today and earlier days: those cards open; Figma 4.2). */
-    val nowPart: String?, val day: Int, val today: Int, val dayNote: String?, val done: Map<String, Boolean>,
+    val nowPart: String?, val day: Int, val today: Int, val done: Map<String, Boolean>,
 ) {
     val isEmpty: Boolean get() = cards.isEmpty() && restraint.isEmpty() && paused.isEmpty()
     /** Everything planned is done (or skipped): "All done for today." (Figma 1.8). */
@@ -430,8 +427,7 @@ class TodayContent(
             val cards = store.todayCards().mapNotNull { card ->
                 if (card == DaySection.QUITTING) card to emptyList<TodayItem>() else rows[card]?.takeIf { it.isNotEmpty() }?.let { card to it }
             }.filter { (card, items) -> card == DaySection.QUITTING && restraint.isNotEmpty() || items.isNotEmpty() }
-            return TodayContent(cards, restraint, paused, if (day <= today) store.nowSection(now)?.id else null, day, today,
-                if (day <= today) store.dayNote(day) else null, done)
+            return TodayContent(cards, restraint, paused, if (day <= today) store.nowSection(now)?.id else null, day, today, done)
         }
     }
 }
@@ -450,16 +446,6 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
         Text(line, Modifier.fillMaxWidth().padding(bottom = 16.dp).padding(4.dp).semantics { testTag = "today-line" },
             style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
-    content.dayNote?.let { note ->
-        indexed(ix, "day-note") {
-            Row(Modifier.fillMaxWidth().padding(bottom = 16.dp).clip(RoundedCornerShape(24.dp)).background(appColors.surface)
-                .clickable { actions.writeNote(null, day) }.padding(16.dp)) {
-                Icon(Symbols.StickyNote2, null, tint = appColors.secondary)
-                Spacer(Modifier.width(12.dp))
-                Text(note, style = AppType.bodyMedium, color = appColors.ink)
-            }
-        }
-    }
     for ((card, items) in content.cards) {
         if (card == DaySection.QUITTING) quitting(content.restraint, store, layout, actions, day, today, prefs, ix)
         else section(card, items, content, store, layout, actions, nav, prefs, lit, ix)
@@ -475,13 +461,6 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
             indexed(ix, "paused-${h.id}") { Spacer(Modifier.height(2.dp)); PausedRow(h, segmentShape(i + 1, content.paused.size + 1), store, actions) }
         }
         indexed(ix, "gap-paused") { Spacer(Modifier.height(16.dp)) }
-    }
-    if (day <= today && content.dayNote == null) {
-        indexed(ix, "add-day-note") {
-            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                AppButton("Note for the day", { actions.writeNote(null, day) }, style = ButtonStyle.Text)
-            }
-        }
     }
 }
 
