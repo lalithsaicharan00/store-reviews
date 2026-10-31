@@ -144,6 +144,12 @@ class MainActivity : ComponentActivity() {
         } else AppGraph.open(this)
         val store = AppGraph.store
         if (test) store.failNextTap = intent.getBooleanExtra(TestLaunch.FAIL_TAP, false)
+        if (test && intent.getBooleanExtra(TestLaunch.LIVE_UPDATE, false)) {
+            val context = applicationContext
+            com.oftenenough.app.app.reminders.TimerNotice.showInTests = true
+            val before = store.onChange
+            store.onChange = { before?.invoke(); com.oftenenough.app.app.reminders.TimerNotice.sync(context, store) }
+        }
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         pinWidget(intent)
@@ -210,4 +216,6 @@ object TestLaunch {
     const val AWAY = "away"
     /** A quit or cut-down habit's name: its milestone notification, posted now (Figma 112:757). */
     const val ALERT = "alert"
+    /** Shows running timers' Live Update in a test launch too (the player's flow 21, Figma 260:2). */
+    const val LIVE_UPDATE = "liveUpdate"
 }

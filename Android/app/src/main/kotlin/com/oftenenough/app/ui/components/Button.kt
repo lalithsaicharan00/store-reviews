@@ -149,9 +149,12 @@ private fun padding(size: ButtonSize, hasIcon: Boolean, compact: Boolean): Paddi
         start = if (hasIcon) 16.dp else 24.dp, end = 24.dp, top = material.calculateTopPadding(), bottom = material.calculateBottomPadding())
     val most = when { compact -> 12.dp; size == ButtonSize.Large -> 16.dp; else -> return material }
     val direction = LocalLayoutDirection.current
+    // Large is 96 tall and centres its label, so it needs no padding above and below: Material's 32 left 32 for a
+    // label 56 tall at 200 % text, and cut it (QA, the player's flow 24: "the buttons keep their height").
+    val vertical = if (size == ButtonSize.Large) 0.dp else null
     return PaddingValues(
         start = minOf(material.calculateStartPadding(direction), most), end = minOf(material.calculateEndPadding(direction), most),
-        top = material.calculateTopPadding(), bottom = material.calculateBottomPadding(),
+        top = vertical ?: material.calculateTopPadding(), bottom = vertical ?: material.calculateBottomPadding(),
     )
 }
 

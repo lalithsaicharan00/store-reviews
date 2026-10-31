@@ -17,7 +17,7 @@ no screen with a keyboard could be compared with Figma.
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
-| routine player | 234:2 | 24 | 14 |
+| routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **147** |
+| **All** | | **290** | **157** |
 
 ## Bug log
 
@@ -209,6 +209,16 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 171. Routine player 13 · a check several times a day showed "✓ Log one" and "2 of 3"; Figma: "+ Add a check" (as Day details) and "of 3 times". `PlayerWordsTest` follows.
 172. Routine player 14 · "3 times a week" counted as done once checked today ("Done for today", Next) after one check; Figma: Add a check until 3 of 3, then "Goal met this week" and Next. "Done for today" stays for "3 days a week" (Figma's note on 253:397).
 173. Routine player 12 · an amount kept by the month read "of $500 this month" beside the number; Figma: "$250 of $500" with "This month" on the line under it (and "Goal met this month" once met).
+174. Routine player 15 · the end page's Left for later said "0 times logged" for Call family and "Task · Once" for a done task; Figma: each row's Today line ("12/20 min", "2/3 this week") and "Done".
+175. Routine player 17 · on yesterday the day chip said "Fri 30 Oct" and a log said "Saved"; Figma: "Yesterday" and "Saved to yesterday".
+176. Routine player 18 · tapping a row whose timer runs opened Day details; Figma's note: "From Today, the row opens the timer on its own."
+177. Routine player 20 · Add log for a limit said "Records what happened. Your limit stays the same."; Figma: "Adds one session. Other logs stay as they are." as any other log.
+178. Routine player 21 · the Live Update said "Timer", "Goal 10 min", drew a big habit circle with no glyph and a system-blue line; Figma: "Often Enough · Morning", "of 10 min", the habit's glyph (in the status bar chip too) and a line in the habit's colour; "✓ Goal met · of 10 min", "Paused · 4:15 of 10 min". Test launches can show it with `--ez liveUpdate true` (never the person's data, D8).
+179. Widgets and the Live Update · `HabitIconBitmaps` ignored a vector group's move, and every Material symbol sits at y −960 moved down by its group, so each glyph was drawn outside its bitmap (blank). Fixed at the source, so the widgets' habit icons draw too.
+180. Routine player 22, 23 · "Reached in this routine" came after the lists; Figma: first, under the title.
+181. Routine player 24 · a tap on the description did nothing; Figma: a sheet with the whole name and description, and Close.
+182. Routine player 24 · a time habit with time logged before the routine said "Resume" (and "Paused"); Figma: "Start", with Resume and Paused only after Pause in this run (242:2).
+183. Routine player 24 · at 200 % text the 96 dp buttons cut their label (Material's 32 above and below); a Large button now centres its label with no padding above and below.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -226,6 +236,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹⁴ Day details 44: the long name was given through Edit habit (the test launch's demo has none), with the phone's Font size at 200 % set first: changing it restarts a test launch, which starts its demo again.
 ¹⁵ Routine player 1–8: the card's progress line is on the habit's Fill (A90) where most of Figma's player frames draw it on grey; that's D-53, everything else matches.
 ¹⁶ Routine player 3: Figma's "Note saved" here has Undo; Day details' (flow 38) and Today's don't. The app keeps its one rule, "Note saved" without Undo.
+¹⁷ Routine player 21: Android 16 draws the app's own icon in the card's circle and the running clock in its header, not beside the name; a paused clock is still, so it goes in the line. Pause and Resume from the card work without opening the app. The lock-screen frame wasn't checked: the emulator has no screen lock, and setting one is a security setting left to you.
 
 ## Open questions for the user
 
@@ -406,16 +417,16 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | passed |
 | 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | passed |
 | 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | passed |
-| 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | not started |
-| 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | not started |
-| 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | not started |
-| 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | not started |
-| 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | not started |
-| 20 | 258:1282 | The timer against a limit; Log time from the timer | Social media → ▶ → past 30:00 → Log manually → Add → ⌄ → ⏸ | not started |
-| 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | not started |
-| 22 | 266:2 | A milestone in the player: the ribbon | Meds 2 → Mark done: ribbon → Next → ‹ → end: Reached in this routine | not started |
-| 23 | 266:573 | A big milestone in the player: the pop-up waits | Meds 29 → Mark done: ribbon → Finish: pop-up over end page → Close | not started |
-| 24 | 267:2 | Long names, a description and large text | → long name → description → tap: sheet → 200 % | not started |
+| 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | passed |
+| 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | passed |
+| 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | passed |
+| 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | passed |
+| 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | passed |
+| 20 | 258:1282 | The timer against a limit; Log time from the timer | Social media → ▶ → past 30:00 → Log manually → Add → ⌄ → ⏸ | passed |
+| 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | passed ¹⁷ |
+| 22 | 266:2 | A milestone in the player: the ribbon | Meds 2 → Mark done: ribbon → Next → ‹ → end: Reached in this routine | passed |
+| 23 | 266:573 | A big milestone in the player: the pop-up waits | Meds 29 → Mark done: ribbon → Finish: pop-up over end page → Close | passed |
+| 24 | 267:2 | Long names, a description and large text | → long name → description → tap: sheet → 200 % | passed |
 
 ## Habits & tasks (269:148)
 

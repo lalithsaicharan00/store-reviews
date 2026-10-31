@@ -2,7 +2,7 @@ package com.oftenenough.app.ui.player
 
 import com.oftenenough.app.ui.components.belowStatusBar
 import com.oftenenough.app.ui.components.sheetInsets
-import com.oftenenough.app.data.dayResult
+import com.oftenenough.app.data.rowLine
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
@@ -32,6 +32,7 @@ import androidx.compose.ui.zIndex
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.key
 import com.oftenenough.app.data.GoalPeriod
+import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Frequency
 import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.pageIsTotal
@@ -104,6 +105,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -305,7 +307,10 @@ fun RoutinePlayer(
                         count = order.size,
                         done = order.indices.filter { covered[it] }.mapNotNull { store.habit(order[it]) },
                         later = order.indices.filter { !covered[it] }.mapNotNull { i -> store.habit(order[i])?.let { i to it } },
-                        result = { h -> store.dayResult(h, day) },
+                        // Each row says what its Today row says ("12/20 min", "2/3 this week", "Done": Figma 253:721).
+                        // A done task says Done, not its plan.
+                        result = { h -> if (h.kind == HabitKind.Task && store.rules.isComplete(h, day)) PlayerWords.DONE
+                            else store.rowLine(h, day, null, null, store.rules.progress(h, day), store.rules.goal(store.rule(h, day)), false) },
                         onOpen = { i -> session.navigate(i) },
                         reached = splitIds(reachedText.value).mapNotNull { hid ->
                             val h = store.habit(hid) ?: return@mapNotNull null
@@ -527,8 +532,12 @@ private class PlayerSession(
         val before = store.entries(habit.id, day).map { it.id }.toHashSet()
         action()
         val added = if (captureUndo) store.entries(habit.id, day).lastOrNull { it.id !in before }?.id else null
-        feedback = Feedback(message, habit.id, added, unskip = false, serial = ++serial)
+        feedback = Feedback(onDay(message), habit.id, added, unskip = false, serial = ++serial)
     }
+
+    /** On another day a log says where it went: "Saved to yesterday" (Figma 254:741, frame 3). */
+    private fun onDay(message: String): String =
+        if (isToday || message != PlayerWords.SAVED) message else PlayerWords.savedTo(day, store.today())
 
     /** Pause and Resume: no message and no Undo (an Undo there deleted the session's time, found by hand on the iPhone). */
     fun startTimer(habit: Habit) {
@@ -539,10 +548,14 @@ private class PlayerSession(
         com.oftenenough.app.app.reminders.TimerNotice.startedInRoutine(habit.id, part, day)
     }
 
+    /** Timers paused in this run: their button says Resume; time logged before the run still says Start (Figma 242:2, 267:2). */
+    val pausedHere = androidx.compose.runtime.mutableStateListOf<String>()
+
     fun pauseTimer(habit: Habit) {
         if (!live) return
         feedback = null
         store.stopTimer(habit, day, source = EntrySource.ROUTINE)
+        if (habit.id !in pausedHere) pausedHere.add(habit.id)
     }
 
     /** A message alone, with no Undo or Add note ("3 done earlier today. Starting at Water.", Figma 1.2). */
@@ -598,7 +611,7 @@ private class PlayerSession(
         val habit = store.habit(parts[0]) ?: return
         val before = splitIds(parts[2]).toHashSet()
         val added = store.entries(habit.id, day).lastOrNull { it.id !in before }
-        if (added != null) feedback = Feedback(PlayerWords.SAVED, habit.id, added.id, unskip = false, serial = ++serial)
+        if (added != null) feedback = Feedback(onDay(PlayerWords.SAVED), habit.id, added.id, unskip = false, serial = ++serial)
         if (parts[1] == "1" && live && habit.kind == HabitKind.Duration && !store.timers.containsKey(habit.id) && !done(habit)) {
             store.toggleTimer(habit, slotOf(habit))
         }
@@ -718,6 +731,7 @@ private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav, playRi
         onCountTap = if (timed && live && !skipped) ({ session.openLog(habit, nav) }) else null,
         description = store.descriptions[habit.id],
         onStep = if (live && !skipped) ({ step: Step, _: Boolean -> session.toggleStep(habit, step) }) else null,
+        pausedHere = habit.id in session.pausedHere,
     )
 }
 
@@ -740,6 +754,8 @@ internal fun HeroCard(
     identityGap: Dp = 24.dp, namingGap: Dp = 8.dp,
     /** The Timer screen's filled day chip with its › (Figma 705:7745); the player's is outlined. */
     filledDayChip: Boolean = false,
+    /** The player: whether this run paused the timer ("Paused" only then); null, the timer screen's own rule. */
+    pausedHere: Boolean? = null,
 ) {
     val c = appColors
     val running = ruled.kind == HabitKind.Duration && day == store.today() && store.timers.containsKey(habit.id)
@@ -749,7 +765,8 @@ internal fun HeroCard(
     val tick = rememberTicker(running, store.clock)
     val goal = remember(ruled, rev) { store.rules.goal(ruled) }
     // Today, or the day named in full on any other ("Mon 13 Oct", Figma 1.4): the logs go to it.
-    val dayText = if (day == store.today()) "Today" else com.oftenenough.app.data.pageDayDate(day)
+    // "Today", "Yesterday", or the date (Figma 254:741: the chip names the day, so it's clear where logs go).
+    val dayText = DayWords.relative(day, store.today()) ?: com.oftenenough.app.data.pageDayDate(day)
     val checklist = ruled.kind == HabitKind.Checklist
     // Just reached: the cookie pops with a burst of twelve dots as Mark done fills it (RP.1, 0.18–1.0 s of 2.4 s).
     val pop = com.oftenenough.app.ui.today.rememberPlay(if (playMilestone && milestone != null) "pop-${habit.id}" else null, playMilestone && milestone != null, 2400)
@@ -763,7 +780,7 @@ internal fun HeroCard(
             MilestoneRibbonArrival(playMilestone) { MilestoneRibbon(milestone, habit.color, play = playMilestone) }
         }
     }
-    val status = playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped)
+    val status = playerStatus(habit, ruled, day, store, goal, rev, tick, running, skipped, pausedHere)
     if (checklist) {
         // Figma's Checklist (any number of steps): the card holds the header, 20 by 24 in: the cookie (72), 12, the name
         // in Headline Medium Emphasized, the description and the day chip 6 apart, 16, the wave with "1 of 4 steps" 12
@@ -777,7 +794,7 @@ internal fun HeroCard(
                     HabitName(habit.name, AppType.headlineMediumEmphasized, TextAlign.Center, maxLines = 2)
                     if (!description.isNullOrBlank()) {
                         Spacer(Modifier.height(6.dp))
-                        Description(description)
+                        Description(habit.name, description)
                     }
                     // The chip's 48 dp target already gives 8 above and below it.
                     DayChip(dayText, onDay)
@@ -827,7 +844,7 @@ internal fun HeroCard(
                 HabitName(habit.name, AppType.headlineLargeEmphasized, TextAlign.Center, maxLines = 2)
                 if (!description.isNullOrBlank()) {
                     Spacer(Modifier.height(namingGap))
-                    Description(description)
+                    Description(habit.name, description)
                 }
                 // The chip is 32 high with a 48 target: the gap above it is [namingGap] less the target's 8.
                 Spacer(Modifier.height(namingGap - 8.dp))
@@ -868,7 +885,7 @@ private data class PlayerStatus(val icon: ImageVector?, val text: String, val ne
  */
 @Composable
 private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>,
-                         running: Boolean, skipped: Boolean): PlayerStatus? {
+                         running: Boolean, skipped: Boolean, pausedHere: Boolean? = null): PlayerStatus? {
     // Skipped says so, then that nothing is lost (Figma 921:117250-like, the player's 247:2 frame 5): a single check's card
     // already says "Skipped", so its line is only the reassurance.
     if (skipped) return PlayerStatus(null, if (ruled.kind == HabitKind.Check && ruled.frequency.isDayBased || ruled.kind == HabitKind.Task)
@@ -884,7 +901,7 @@ private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore
         val dayGoal = remember(ruled, rev) { store.rules.dayGoal(ruled) }
         if (ruled.atMost && dayGoal > 0 && now > dayGoal) return PlayerStatus(Symbols.Info, PlayerWords.OVER_LIMIT, neutral = true, tag = "player-status")
         if (!ruled.atMost && dayGoal > 0 && now >= dayGoal) return PlayerStatus(Symbols.Check, PlayerWords.GOAL_MET, tag = "player-status")
-        if (today && !running && now > 0) return PlayerStatus(Symbols.Filled.Pause, PlayerWords.PAUSED, tag = "player-status")
+        if (today && !running && now > 0 && pausedHere != false) return PlayerStatus(Symbols.Filled.Pause, PlayerWords.PAUSED, tag = "player-status")
     }
     // An amount at its day's goal says so too, as a time does (Figma 251:2: "8 of 8 glasses · Goal met").
     if ((ruled.kind is HabitKind.Amount || (ruled.kind == HabitKind.Check && store.rules.countsUp(habit, day))) && !ruled.atMost && f.isDayBased && !f.isFlexible) {
@@ -952,9 +969,18 @@ private fun Modifier.cookieBurst(t: Float, color: Color): Modifier = drawWithCon
 
 /** The habit's description under its name: Body Large On surface variant, centred, two lines at most, then … */
 @Composable
-private fun Description(text: String) =
-    Text(text, Modifier.fillMaxWidth().semantics { testTag = "player-description" },
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+private fun Description(name: String, text: String) {
+    // A tap opens the whole name and description in a sheet; Close, a swipe down or a tap outside goes back (Figma 267:2).
+    var open by remember { mutableStateOf(false) }
+    Text(text, Modifier.fillMaxWidth().clickable(onClickLabel = "Read all") { open = true }.semantics { testTag = "player-description" },
         style = AppType.bodyLarge, color = appColors.secondary, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
+    if (open) com.oftenenough.app.ui.components.AppBottomSheet({ open = false }, Modifier.semantics { testTag = "description-sheet"; testTagsAsResourceId = true }, title = name) {
+        Text(text, Modifier.padding(horizontal = 16.dp), style = AppType.bodyMedium, color = appColors.secondary)
+        com.oftenenough.app.ui.components.AppButton("Close", { open = false }, Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 24.dp),
+            style = com.oftenenough.app.ui.components.ButtonStyle.Outlined, tag = "description-close")
+    }
+}
 
 @Composable
 private fun HabitName(name: String, style: TextStyle, align: TextAlign, maxLines: Int) {
@@ -1086,7 +1112,7 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
         remember(habit, rev, timers, index, order.size, isToday) {
             val ruled = store.rule(habit, day)
             PlayerWords.mainAction(ruled, store.rules.goal(ruled), session.done(habit), session.skipped(habit), index == order.size - 1,
-                timers.containsKey(habit.id), store.rules.dayProgress(habit, day) > 0, today = isToday)
+                timers.containsKey(habit.id), habit.id in session.pausedHere, today = isToday)
         }
     }
     val next = order.getOrNull(index + 1)?.let { store.habit(it) }
@@ -1195,6 +1221,14 @@ private fun EndPage(name: String, count: Int, done: List<Habit>, later: List<Pai
                 Text(title, Modifier.padding(start = 16.dp, bottom = 8.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
                 Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) { rows() }
             }
+        // Every milestone the routine's steps reached, once, first under the title (Figma RP.2, 266:2 frame 6), with the same medal as everywhere.
+        if (reached.isNotEmpty()) section("Reached in this routine", "player-reached") {
+            reached.forEachIndexed { i, (h, w) ->
+                AppListItem(w.title, i, reached.size, supporting = h.name,
+                    leading = { com.oftenenough.app.ui.components.Medal(w.number, 40.dp, h.color) },
+                    containerColor = s.surfaceBright, headlineLines = 1)
+            }
+        }
         // What waits comes first, then what was done (Figma 929:126945).
         if (later.isNotEmpty()) section("Left for later", "player-later") {
             later.forEachIndexed { i, (at, h) ->
@@ -1207,14 +1241,6 @@ private fun EndPage(name: String, count: Int, done: List<Habit>, later: List<Pai
             done.forEachIndexed { i, h ->
                 AppListItem(h.name, i, done.size, supporting = result(h), leading = { HabitIcon(h.symbol, h.color) },
                     containerColor = s.surfaceBright, headlineLines = 1, tag = "player-end-done-${h.name}")
-            }
-        }
-        // Every milestone the routine's steps reached, once (Figma RP.2), with the same medal as everywhere.
-        if (reached.isNotEmpty()) section("Reached in this routine", "player-reached") {
-            reached.forEachIndexed { i, (h, w) ->
-                AppListItem(w.title, i, reached.size, supporting = h.name,
-                    leading = { com.oftenenough.app.ui.components.Medal(w.number, 40.dp, h.color) },
-                    containerColor = s.surfaceBright, headlineLines = 1)
             }
         }
     }

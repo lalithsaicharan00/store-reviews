@@ -158,7 +158,8 @@ fun HabitRow(
     HabitRowSwipe(left = skipAction(habit, day, today, model, running, store, layout), right = noteAction(habit, day, today, store, actions), shape = shape, haptics = haptics) {
         HabitRowLayout(
             habit.symbol, habit.color, habit.name, shape,
-            onClick = { actions.openDay(habit, day) }, onLongClick = { menu = true },
+            // A row whose clock runs opens its timer on its own; ⌄ puts it away again (Figma 255:2, frame 4).
+            onClick = { if (running) actions.openTimer(habit) else actions.openDay(habit, day) }, onLongClick = { menu = true },
             modifier = Modifier.semantics { testTag = "row-${habit.name}" },
             // A later day plans, and a limit never fills (A41). Only the draw reads the ticking clock (S3).
             progress = if (future || habit.atMost) null else { {

@@ -37,6 +37,10 @@ object PlayerWords {
     const val SKIPPED = "Skipped for today"
     const val STREAK_SAFE = "Your streak stays safe."
 
+    /** A log on another day: "Saved to yesterday", "Saved to Wed 28 Oct". */
+    fun savedTo(day: Int, today: Int): String =
+        "Saved to " + if (day == today - 1) "yesterday" else pageDayDate(day)
+
     const val QUEUE_FOOTER = "Tap a habit to go to it. Moving never marks anything done."
     /** Your routine · Edit (Figma 7.2). */
     const val QUEUE_FOOTER_EDIT = "Drag to change the order for this run. Today's order stays as it is."

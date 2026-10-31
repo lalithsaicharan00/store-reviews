@@ -332,8 +332,9 @@ private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, 
     val where = when (day) { today -> null; today - 1 -> "yesterday"; else -> recordDate(day) }
     fun adds(what: String) = if (where == null) "$what. Other logs stay as they are." else "$what to $where. Today’s logs stay as they are."
     var text = when (kind) {
-        RecordKind.AMOUNT -> if (ruled.atMost) "Records what happened. Your limit stays the same." else adds("Adds a new log")
-        RecordKind.TIME -> if (ruled.atMost) "Records what happened. Your limit stays the same." else adds("Adds one session")
+        // A limit's log says the same as any other (Figma 258:1282, frame 4).
+        RecordKind.AMOUNT -> adds("Adds a new log")
+        RecordKind.TIME -> adds("Adds one session")
         RecordKind.SLIP -> if (slipOk) "A slip is recorded with its time. You can change or remove it later." else "This day is before this run started."
     }
     if (store.isPaused(ruled, day)) text += " This day is paused. A log still goes into your history."

@@ -105,14 +105,21 @@ object HabitIconBitmaps {
         cache.getOrPut("$symbol|$color|$dark|$sizePx") { draw(symbol, HabitColor.of(color) ?: HabitColor.BLUE, dark, sizePx) }
     }
 
-    private fun draw(symbol: String, habitColor: HabitColor, dark: Boolean, sizePx: Int): Bitmap {
+    /** The glyph alone, white on clear: a notification's small icon, which Android tints (the timer's Live Update). */
+    fun glyph(symbol: String, sizePx: Int): Bitmap = synchronized(cache) {
+        cache.getOrPut("$symbol|glyph|$sizePx") { draw(symbol, null, false, sizePx) }
+    }
+
+    private fun draw(symbol: String, habitColor: HabitColor?, dark: Boolean, sizePx: Int): Bitmap {
         val image = ImageBitmap(sizePx, sizePx)
         val canvas = Canvas(image)
-        val fill = (if (dark) AppColors.dark else AppColors.light).habit(habitColor)
-        val circle = Paint().apply { this.color = fill; isAntiAlias = true }
-        canvas.drawCircle(Offset(sizePx / 2f, sizePx / 2f), sizePx / 2f, circle)
+        if (habitColor != null) {
+            val fill = (if (dark) AppColors.dark else AppColors.light).habit(habitColor)
+            val circle = Paint().apply { this.color = fill; isAntiAlias = true }
+            canvas.drawCircle(Offset(sizePx / 2f, sizePx / 2f), sizePx / 2f, circle)
+        }
         val vector = HabitIcons.icon(symbol)
-        val glyph = sizePx * 0.55f
+        val glyph = sizePx * (if (habitColor == null) 1f else 0.55f)
         val scale = glyph / vector.viewportWidth
         canvas.save()
         canvas.translate((sizePx - glyph) / 2f, (sizePx - glyph) / 2f)
@@ -125,7 +132,16 @@ object HabitIconBitmaps {
                     path.fillType = if (node.pathFillType == PathFillType.EvenOdd) PathFillType.EvenOdd else PathFillType.NonZero
                     canvas.drawPath(path, white)
                 }
-                is VectorGroup -> for (child in node) drawNode(child)
+                // A group's own move, mirror and turn (every Material symbol sits at y −960, moved down by its group).
+                is VectorGroup -> {
+                    canvas.save()
+                    canvas.translate(node.translationX + node.pivotX, node.translationY + node.pivotY)
+                    canvas.rotate(node.rotation)
+                    canvas.scale(node.scaleX, node.scaleY)
+                    canvas.translate(-node.pivotX, -node.pivotY)
+                    for (child in node) drawNode(child)
+                    canvas.restore()
+                }
             }
         }
         drawNode(vector.root)

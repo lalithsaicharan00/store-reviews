@@ -135,14 +135,16 @@ object TimerNotice {
         val habit = store.habit(id) ?: return
         val hidden = AppGraph.hidesNames
         val name = if (hidden) "Timer" else habit.name
-        val goalText = Format.minutes(goal)
-        val title = if (state == "paused") "$name · Paused" else name
-        val text = when (state) {
-            "paused" -> if (goal > 0) Format.clock(done) + " of " + goalText + (if (atMost) " max" else "") else Format.clock(done)
-            "goal" -> "Goal met · $goalText"
-            "over" -> "Over the limit · $goalText max"
-            else -> if (goal <= 0) "Timing" else if (atMost) "Limit $goalText" else "Goal $goalText"
-        }
+        // The card as Figma 260:2 draws it: the name, the clock, "of 10 min", and the state before it once it changes.
+        val of = if (goal > 0) "of " + Format.minutes(goal) + (if (atMost) " max" else "") else ""
+        val title = name
+        val text = listOf(when (state) {
+            "paused" -> "Paused"
+            "goal" -> "✓ Goal met"
+            "over" -> "Over the limit"
+            else -> ""
+        // Android draws a running clock in the card's header; a paused one is still, so its time goes in the line.
+        }, if (state == "paused") (Format.clock(done) + " " + of).trim() else of).filter { it.isNotEmpty() }.joinToString(" · ")
         val color = AppColors.light.habit(habit.color).toArgb()
         val px = (48 * context.resources.displayMetrics.density).toInt()
         // A tap opens what started it: the routine at this habit, or the timer (10.5).
@@ -155,14 +157,21 @@ object TimerNotice {
         val act = PendingIntent.getBroadcast(context, id.hashCode() + action.hashCode(),
             Intent(context, TimerStopReceiver::class.java).setAction(action).putExtra(EXTRA_HABIT, id),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val builder = NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_notification)
-            .setSubText("Timer").setContentTitle(title).setContentText(text).setColor(color)
+        // The habit's own glyph, in its colour (the status bar's chip shows it too); a hidden name keeps the app's.
+        val small = if (hidden) androidx.core.graphics.drawable.IconCompat.createWithResource(context, R.drawable.ic_notification)
+            else androidx.core.graphics.drawable.IconCompat.createWithBitmap(com.oftenenough.app.app.widgets.HabitIconBitmaps.glyph(habit.symbol, px))
+        // "Often Enough · Morning": the routine it was started in, if any.
+        val section = routine?.substringBefore("|")?.let { store.section(it).name }
+        val builder = NotificationCompat.Builder(context, CHANNEL).setSmallIcon(small)
+            .setSubText(section).setContentTitle(title).setContentText(text).setColor(color)
             .setOnlyAlertOnce(true).setCategory(NotificationCompat.CATEGORY_STOPWATCH)
             .setVisibility(if (hidden) NotificationCompat.VISIBILITY_PRIVATE else NotificationCompat.VISIBILITY_PUBLIC)
             .setContentIntent(open)
             .addAction(if (state == "paused") R.drawable.ic_notification else 0, if (state == "paused") "Resume" else "Pause", act)
-        if (!hidden) builder.setLargeIcon(HabitIconBitmaps.get(habit.symbol, habit.color.key, false, px))
-        if (goal > 0) builder.setProgress(1000, ((done / goal).coerceIn(0.0, 1.0) * 1000).toInt(), false)
+        // A line filling in the habit's colour (a limit's stays grey: it never fills toward anything, A41).
+        if (goal > 0) builder.setStyle(NotificationCompat.ProgressStyle()
+            .setProgressSegments(listOf(NotificationCompat.ProgressStyle.Segment(1000).setColor(if (atMost) android.graphics.Color.GRAY else color)))
+            .setProgress(((done / goal).coerceIn(0.0, 1.0) * 1000).toInt()))
         if (start != null) {
             // Running: Android draws the clock, in the shade and in the status bar's chip. It counts today's whole time
             // (12:58, as the app's clock), so it starts that long before now.
