@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 57 |
+| today | 54:5580 | 84 | 58 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **67** |
+| **All** | | **290** | **68** |
 
 ## Bug log
 
@@ -226,7 +226,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | passed |
 | 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | passed |
 | 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | passed |
-| 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | not started |
+| 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | passed (Water sits in Anytime in the demo, Morning in Figma's frames; also checked through Add log: the band rises once the sheet has closed) |
 | 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | not started |
 | 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | not started |
 | 60 | 107:2429 | Milestone on the row: quit, no tap | Open the app: 30 days clean → Quitting on screen: band rises once | not started |
