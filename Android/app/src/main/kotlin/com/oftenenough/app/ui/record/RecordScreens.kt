@@ -123,10 +123,13 @@ fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly
                     singleLine = true, cursorBrush = SolidColor(s.onSurface),
                     modifier = Modifier.widthIn(min = 32.dp).width(widthFor(draft.amount)).let { m -> focus?.let { m.focusRequester(it) } ?: m }
                         .semantics { testTag = "record-amount"; contentDescription = spoken },
-                    decorationBox = { inner -> Box(contentAlignment = Alignment.Center) {
-                        if (draft.amount.isEmpty()) Text("0", style = AppType.displayMedium.copy(color = s.outline), textAlign = TextAlign.Center)
-                        inner()
-                    } })
+                    // Empty, the grey "0" comes first and the caret just after it (Figma 893:6757), never through it.
+                    decorationBox = { inner ->
+                        if (draft.amount.isEmpty()) Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("0", style = AppType.displayMedium.copy(color = s.outline))
+                            Box(Modifier.weight(1f)) { inner() }
+                        } else Box(contentAlignment = Alignment.Center) { inner() }
+                    })
             }
         }
         if (currency == null && unit.isNotBlank()) {
