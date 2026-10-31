@@ -917,9 +917,10 @@ private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore
         }
         val now = if (running) store.rules.dayProgress(habit, day, tick.value) else remember(habit, rev) { store.rules.dayProgress(habit, day) }
         val dayGoal = remember(ruled, rev) { store.rules.dayGoal(ruled) }
-        if (ruled.atMost && dayGoal > 0 && now > dayGoal) return PlayerStatus(Symbols.Info, PlayerWords.OVER_LIMIT, neutral = true, tag = "player-status")
+        // "Paused" and "Over the limit" are words alone; only a goal met has its ✓ (every Figma status line, 31 Oct 2026).
+        if (ruled.atMost && dayGoal > 0 && now > dayGoal) return PlayerStatus(null, PlayerWords.OVER_LIMIT, neutral = true, tag = "player-status")
         if (!ruled.atMost && dayGoal > 0 && now >= dayGoal) return PlayerStatus(Symbols.Check, PlayerWords.GOAL_MET, tag = "player-status")
-        if (today && !running && now > 0 && pausedHere != false) return PlayerStatus(Symbols.Filled.Pause, PlayerWords.PAUSED, tag = "player-status")
+        if (today && !running && now > 0 && pausedHere != false) return PlayerStatus(null, PlayerWords.PAUSED, tag = "player-status")
     }
     // An amount at its day's goal says so too, as a time does (Figma 251:2: "8 of 8 glasses · Goal met").
     if ((ruled.kind is HabitKind.Amount || (ruled.kind == HabitKind.Check && store.rules.countsUp(habit, day))) && !ruled.atMost && f.isDayBased && !f.isFlexible) {

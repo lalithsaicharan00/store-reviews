@@ -225,6 +225,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 187. Every list · Material's list item left 12 between the icon, the words and the trailing part; Figma's List item 16, so every row's words sat 4 dp left (Day details' Meds at 84, Figma 88). Fixed in `AppListItem`.
 188. Routine player 14 · the 96 dp main button cut "Add a check" to "Add a ch…": it kept 16 at its sides, where Figma's content runs to 8.5 from the edges (icon 32, 12, label 123 in 184). Large buttons now keep 8 at the sides, centred.
 189. Routine player 14, Today · TalkBack named a counted check's ✓ on Today "Add 1 to Call family" where the player and Day details say "Add a check to Call family"; now the same (`TodayTest` taps the new name).
+190. Routine player 19, 20 · the status line put ⏸ before "Paused" and ⓘ before "Over the limit"; every Figma status line (16) is words alone except a goal met's ✓.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -429,7 +430,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | passed |
 | 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | passed ↻ |
 | 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | passed ↻ ¹⁹ |
-| 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | passed |
+| 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | passed ↻ ¹⁹ |
 | 20 | 258:1282 | The timer against a limit; Log time from the timer | Social media → ▶ → past 30:00 → Log manually → Add → ⌄ → ⏸ | passed |
 | 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | passed ¹⁷ |
 | 22 | 266:2 | A milestone in the player: the ribbon | Meds 2 → Mark done: ribbon → Next → ‹ → end: Reached in this routine | passed |
