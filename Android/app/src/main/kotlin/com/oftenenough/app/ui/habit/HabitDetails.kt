@@ -327,7 +327,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     }
     if (confirmDelete) {
         AppDialog("Delete ${habit.name}?",
-            "Its logs, notes, streaks and milestones go too. To keep them, archive it instead: Archive is in the same menu.",
+            DeleteHabitWords,
             "Delete", {
                 confirmDelete = false
                 // The page leaves first (U27); the page under it deletes once its Undo has gone.
@@ -491,3 +491,6 @@ private fun HabitMenu(
 
 /** Asks the next habit page to open at All milestones (the landmark pop-up's button). */
 object HabitPageOpen { var milestones: String? = null }
+
+/** Delete <habit>?'s body wherever a habit going on is deleted from its ⋮ (Figma: Habits & Tasks, Habit details). */
+internal const val DeleteHabitWords = "Its logs, notes, streaks and milestones go too. To keep them, archive it instead: Archive is in the same menu."

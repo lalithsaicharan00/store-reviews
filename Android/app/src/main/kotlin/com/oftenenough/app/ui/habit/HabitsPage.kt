@@ -332,7 +332,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     }
     if (deleting.isNotEmpty()) {
         val h = deleting[0]
-        AppDialog("Delete ${h.name}?", "Its history and notes are deleted too. To keep them, archive it instead.",
+        AppDialog("Delete ${h.name}?", DeleteHabitWords,
             "Delete", { deleting = emptyList(); delete(h) }, { deleting = emptyList() },
             destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
     }
