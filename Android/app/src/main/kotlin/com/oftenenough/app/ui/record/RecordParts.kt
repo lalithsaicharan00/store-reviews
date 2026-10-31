@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -134,12 +135,11 @@ fun FactRow(label: String, index: Int, count: Int, content: @Composable () -> Un
 /** The habit a record belongs to (Figma 1.6: its icon in a 40 circle, the name; List item, 2.4). The first piece of the fields. */
 @Composable
 fun HabitFact(habit: Habit, index: Int, count: Int) =
-    AppListItem(habit.name, index, count, headlineLines = 2, leading = { HabitIcon(habit.symbol, habit.color) }, tag = "record-habit")
+    AppListItem(habit.name, index, count, headlineLines = 2, leading = { HabitIcon(habit.symbol, habit.color) },
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = "record-habit")
 
-private val yearFormat = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH)
-
-/** "Today, 12 Oct 2026", "Sat, 10 Oct 2026": a record's date, with its year (Figma's Log screen, Entry and View alike). */
-fun recordDate(day: Int, today: Int): String = DayWords.withDate(day, today) + " " + LocalDate.ofEpochDay(day.toLong()).format(yearFormat)
+/** "12 Oct 2026": a record's date alone, never "Today," before it (the user, 31 Oct 2026; Add, Entry and View alike). */
+fun recordDate(day: Int): String = DayWords.long(day)
 
 /**
  * Date | Time (Figma's Log screen, 687:829): one row of two List items (two lines: Title Medium On surface over Body
@@ -159,10 +159,10 @@ fun DateTimeRows(
     var pickTime by remember { mutableStateOf(false) }
     val bottom = if (last) 24.dp else 4.dp
     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        DatePiece("Date", recordDate(day, today), editableDay,
+        DatePiece("Date", recordDate(day), editableDay,
             RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = 4.dp, bottomStart = bottom), "record-date", Modifier.weight(1f), grow = true) { pickDay = true }
         DatePiece(timeTitle, timeText, editableTime,
-            RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = bottom, bottomStart = 4.dp), "record-time", Modifier) { pickTime = true }
+            RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp, bottomEnd = bottom, bottomStart = 4.dp), "record-time", Modifier.widthIn(min = 144.dp)) { pickTime = true }
     }
     if (pickDay) {
         AppDatePicker(day, { it in range }, { pickDay = false }, onPick = onDay)
@@ -181,8 +181,8 @@ private fun DatePiece(title: String, value: String, opens: Boolean, shape: Round
     val s = MaterialTheme.colorScheme
     Row(modifier.fillMaxHeight().clip(shape).background(s.surfaceContainerLowest).let { if (opens) it.clickable(onClick = onClick) else it }
         .heightIn(min = 72.dp).padding(start = 16.dp, end = if (opens) 8.dp else 16.dp, top = 8.dp, bottom = 8.dp).semantics { testTag = tag },
-        verticalAlignment = Alignment.CenterVertically) {
-        // Only Date grows; Time is as wide as its words (Figma: Date fills, Time hugs).
+        horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+        // Only Date grows; Time is 144 wide (Figma: Date fills, Time is fixed), wider only for larger text.
         Column(if (grow) Modifier.weight(1f) else Modifier) {
             Text(title, style = AppType.titleMedium, color = s.onSurface, maxLines = 1)
             Text(value, style = AppType.bodyMedium, color = s.onSurfaceVariant, maxLines = 1)

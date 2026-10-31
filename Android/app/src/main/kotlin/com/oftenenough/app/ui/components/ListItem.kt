@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -93,9 +94,11 @@ fun AppListItem(
         }
     }
     val colors = ListItemDefaults.segmentedColors(containerColor = containerColor)
+    // Figma's List item is 8 above and below (56 for one line with its 40 avatar); Material's 10 made it 60.
+    val padding = if (below == null) PaddingValues(horizontal = 16.dp, vertical = 8.dp) else ListItemDefaults.ContentPadding
     if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, leading, trailing, supportingContent = support, onLongClick = onLongClick,
-        colors = colors, content = headlineText)
-    else SegmentedListItem(shapes, m, enabled, leading, trailing, supportingContent = support, colors = colors, content = headlineText)
+        colors = colors, contentPadding = padding, content = headlineText)
+    else SegmentedListItem(shapes, m, enabled, leading, trailing, supportingContent = support, colors = colors, contentPadding = padding, content = headlineText)
 }
 
 /** Between the rows of one group (Material's `SegmentedGap`, 2 dp). */

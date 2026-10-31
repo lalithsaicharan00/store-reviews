@@ -339,10 +339,8 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
     val c = appColors
     val rev = store.revision(habit.id)
     val today = store.today()
-    val streaks = store.showsStreaks()
     val history = remember(habit, rev, store.pauses[habit.id]) { store.rules.quitHistory(habit, store.clock()) }
     val ongoing = history.lastOrNull()?.takeIf { it.ending == QuitRun.Ending.ONGOING }?.start
-    val pastBest = history.dropLast(if (ongoing == null) 0 else 1).maxOfOrNull { it.seconds(store.clock()) } ?: 0.0
     val tick = rememberTicker(ongoing != null, store.clock)
     var menu by remember { mutableStateOf(false) }
     val paused = store.isPaused(habit, today)
@@ -360,12 +358,11 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
             modifier = Modifier.semantics { testTag = "row-${habit.name}" },
             pressed = menu,
             line = {
-                val current = ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0
+                // When the run began: "Since 3 Oct" (Figma's Today), or the slip just made.
                 val line = when {
                     paused -> "Paused"
                     lastSlip != null && offer != null -> "Slip at " + DayWords.clock(lastSlip.createdAt)
-                    streaks -> "Best " + Format.days(maxOf(pastBest, current))
-                    else -> ongoing?.let { "Since " + DayWords.short(store.rules.calendarDayOf(it)) } ?: "Paused"
+                    else -> ongoing?.let { "Since " + DayWords.dayMonth(store.rules.calendarDayOf(it)) } ?: "Paused"
                 } + (if (note) " · Note" else "")
                 HabitRowLine(line, Modifier.semantics { testTag = "line-${habit.name}" })
             },

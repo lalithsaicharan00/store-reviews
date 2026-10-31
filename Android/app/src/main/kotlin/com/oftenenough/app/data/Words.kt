@@ -352,9 +352,6 @@ object DayWords {
 
     fun relative(day: Int, today: Int): String? = when (day) { today -> "Today"; today - 1 -> "Yesterday"; else -> null }
 
-    /** "Today, 7 Oct", "Yesterday, 6 Oct", "Sun, 4 Oct". */
-    fun withDate(day: Int, today: Int): String = relative(day, today)?.let { "$it, " + date(day).format(dayMonth) } ?: short(day)
-
     fun short(day: Int): String = date(day).format(shortDate)
     fun dayMonth(day: Int): String = date(day).format(dayMonth)
     fun long(day: Int): String = date(day).format(longDate)

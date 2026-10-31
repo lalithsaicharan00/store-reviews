@@ -17,7 +17,7 @@ object DemoData {
             Habit(name = name, symbol = symbol, color = color, kind = kind, parts = parts, goal = goal, frequency = frequency, steps = steps,
                 quitSince = quitSince, createdAt = ago(created), remind = false)
 
-        val smoking = h("Smoking", "nosign", HabitColor.GRAY, HabitKind.Quit, quitSince = now - (12 * 86400 + 11 * 3600 + 23 * 60) * 1000L, created = 60)
+        val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = now - (12 * 86400 + 11 * 3600 + 23 * 60) * 1000L, created = 60)
         val alcohol = h("Alcohol", "wineglass", HabitColor.GRAY, HabitKind.Quit, quitSince = now - (47 * 86400 + 2 * 3600 + 2 * 60) * 1000L, created = 60)
         val read = h("Read", "book.fill", HabitColor.ORANGE, HabitKind.Duration, goal = 20.0, created = 30)
         val call = h("Call family", "phone.fill", HabitColor.GREEN, HabitKind.Check, frequency = Frequency.PerWeek(3), created = 40)
@@ -120,7 +120,7 @@ object DemoData {
         // Smoking: a first run of 30 days, the best of 45, and the current one 19 days and 12 and a half hours.
         val lastSlip = now - (19 * 86400 + 12 * 3600 + 32 * 60 + 45) * 1000L
         val earlier = lastSlip - 45 * dayMs
-        val smoking = h("Smoking", "nosign", HabitColor.GRAY, HabitKind.Quit, quitSince = earlier - 30 * dayMs).copy(createdAt = earlier - 30 * dayMs)
+        val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = earlier - 30 * dayMs).copy(createdAt = earlier - 30 * dayMs)
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true).copy(createdAt = now)
         val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(7))
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.EVENING, 10.0)
@@ -177,7 +177,7 @@ object DemoData {
         val desk = h("Tidy desk", "sparkles", HabitColor.TEAL, HabitKind.Checklist, steps = listOf("Clear papers", "Wipe the surface", "Put pens away").map { Step(name = it) })
         // Milestones (2143:2): Smoking passed 30 days clean yesterday and Coffee's 30th day within its limit closed
         // yesterday, so both show their band with See when Today opens (R.9, R.10, A.1).
-        val smoking = h("Smoking", "nosign", HabitColor.GRAY, HabitKind.Quit, quitSince = store.rules.dayStart(today - 30) - 3 * 3_600_000L)
+        val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = store.rules.dayStart(today - 30) - 3 * 3_600_000L)
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), 2.0, atMost = true)
             .copy(createdAt = store.rules.dayStart(today - 30) + 3_600_000L)
         val social = h("Social media", "iphone", HabitColor.PINK, HabitKind.Duration, 30.0, atMost = true)

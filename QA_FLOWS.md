@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 10 |
+| today | 54:5580 | 83 | 11 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **20** |
+| **All** | | **289** | **21** |
 
 ## Bug log
 
@@ -55,6 +55,14 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 17. Today · Time a habit — the Timer screen's day chip was the player's outlined chip; Figma's Timer screen (705:7745) draws it filled (Surface container, no border, 34 high) with a › after “Today”. `AppAssistChip(filled = true)`, asked for by the Timer screen through `HeroCard(filledDayChip)`; the player keeps the outlined one.
 18. Today · Log time manually — a time habit's Day details said “Start timer | Log manually”; Figma says “Start timer | Log time” (725:5688).
 19. Today · Tick checklist steps — **bug:** ticking the last step folded the steps by themselves after the pause; Figma keeps them open (“The steps fold only when you tap ⌃. Nothing folds by itself.”). The fold-later mechanism is gone (`TodayRows.StepsBlock`, `TodayLayout`).
+20. Today · Quit: log a slip — the quit row said "Best 45 days"; Figma says when the run began ("Since 3 Oct"). Fixed in QuitRow.
+21. Today · Quit: log a slip — limit rows read "0/2 cups max"; Figma reads "0 of 2 cups · 2 left", "Limit reached · 2 of 2 cups", "Over the limit · 3 of 2 cups", running "12:40 · 17 min left". Fixed in rowLine (limitLine).
+22. Today · Quit: log a slip — Day details' button said "Record a slip"; Figma "Log a slip" / "Log another slip". Fixed in DayDetails' actions.
+23. Today · Quit: log a slip — every record screen's date read "Today, 31 Oct 2026"; the user (31 Oct): the date alone, "31 Oct 2026". Fixed in recordDate. Figma's file still has "Today, 21 Oct 2026" in 60 Date rows.
+24. Today · Quit: log a slip — the record screens' habit card was grey and 60 dp; Figma's List item is white there and 8 dp above and below (56 for one line). Fixed in AppListItem (all list items without content below) and HabitFact.
+25. Today · Quit: log a slip — Time was as wide as its words (117 dp) with › beside the text; Figma's Time is 144 dp with › at the edge. Fixed in DateTimeRows/DatePiece.
+26. Today · Quit: log a slip — "1 slip recorded" was split into a big 1 and small words; Figma has one headline. Fixed with DayStatus.words.
+27. Today · Quit: log a slip — the demos' Smoking used the ⃠ icon; Figma uses smoke_free. Fixed in DemoData.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -121,7 +129,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 8 | 75:2 | Tick checklist steps | Skincare 1 of 4 → ⌄ steps open → tick: 2 of 4 → last step: fills → ⌃ folds | passed |
 | 9 | 77:2 | A week or month goal | Call family 2 of 3 this week → ✓ 3 of 3 → rest of week stays full | passed |
 | 10 | 120:2 | Do a task on Today | Pick up parcel → ✓ done; Undo · Note → stays done in place | passed |
-| 11 | 79:2 | Quit: log a slip | Smoking 19 days → Day details → Add slip → 1 slip recorded → Swipe down: run starts again | not started |
+| 11 | 79:2 | Quit: log a slip | Smoking 19 days → Day details → Add slip → 1 slip recorded → Swipe down: run starts again | passed |
 | 12 | 81:1657 | Log a slip from the menu | Today → hold Smoking: menu → Add slip → back on Today; Undo · Note | not started |
 | 13 | 122:2 | Touch and hold a habit | Today → hold Meds: menu → Skip today: skipped; Undo · Note | not started |
 | 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | not started |

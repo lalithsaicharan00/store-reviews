@@ -314,7 +314,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         val detail = if (running && status.running != null) {
             "Timer running · " + Format.clock((tick.value - status.running) / 60_000.0) + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")
         } else status.detail
-        StatusLine(status.title, detail)
+        StatusLine(status.title, detail, status.words)
         if (showsBar) {
             val goal = maxOf(store.rules.goal(ruled), 1e-9)
             val progress = if (future) 0.0 else if (running) store.rules.progress(habit, day, tick.value) else store.rules.progress(habit, day)
@@ -377,9 +377,9 @@ private fun DayButton(a: DayAction, modifier: Modifier) =
  * or "Done" (28 Medium); the detail at the end of the same line when it fits, else on its own line under it.
  */
 @Composable
-private fun StatusLine(title: String, detail: String?) {
+private fun StatusLine(title: String, detail: String?, words: Boolean = false) {
     val c = appColors
-    val match = Regex("^([$€£₹]?\\d[\\d,.]*)\\s*(.*)$").find(title)
+    val match = if (words) null else Regex("^([$€£₹]?\\d[\\d,.]*)\\s*(.*)$").find(title)
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
     BoxWithConstraints(Modifier.fillMaxWidth()) {
@@ -492,7 +492,7 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
             // Figma's Day details for a time habit: "Start timer | Log time" (Day details flows 13, 23).
             DayAction("Log time", enabled = !skipped, tag = "day-add-entry", run = manual),
         )
-        HabitKind.Quit -> listOf(DayAction(if (hasLogs) "Record another slip" else "Record a slip", tag = "day-add-entry", run = manual))
+        HabitKind.Quit -> listOf(DayAction(if (hasLogs) "Log another slip" else "Log a slip", tag = "day-add-entry", run = manual))
     }
 }
 

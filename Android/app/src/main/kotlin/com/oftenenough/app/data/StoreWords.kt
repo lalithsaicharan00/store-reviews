@@ -1,6 +1,7 @@
 package com.oftenenough.app.data
 
 import java.time.ZoneId
+import kotlin.math.floor
 
 // MOVE TO CORE: the store's words (the iPhone's Words.swift: rowLine, DayStatus, a log's description and Undo), ported
 // unchanged. See Words.kt.
@@ -25,12 +26,28 @@ fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime
         }
     }
     if (habit.kind == HabitKind.Check && f.isDayBased && (slot != null || goal <= 1)) return (if (done) "Done" else "Not done") + t
-    // A limit says where it stands in words, never in red (Figma 1.12, 1.12.1; U3).
-    if (habit.atMost && goal > 0 && progress >= goal) {
-        val counted = goalLine(habit, progress, goal, running).replace(" max", "")
-        return (if (progress > goal) "Over the limit · " else "Limit reached · ") + counted + t
-    }
+    // A limit says where it stands in words, never in red (Figma 1.12, 1.12.1; U3): "0 of 2 cups · 2 left",
+    // "Limit reached · 2 of 2 cups", "Over the limit · 3 of 2 cups"; a running timer "12:40 · 17 min left".
+    if (habit.atMost && goal > 0 && day <= today()) return limitLine(habit, progress, goal, running) + t
     return goalLine(habit, progress, goal, running) + t
+}
+
+private fun limitLine(habit: Habit, progress: Double, goal: Double, running: Boolean): String {
+    val period = when (habit.frequency) { is Frequency.PerWeek -> " this week"; is Frequency.PerMonth -> " this month"; is Frequency.PerYear -> " this year"; else -> "" }
+    val minutes = habit.kind == HabitKind.Duration
+    val done = if (minutes) floor(progress) else progress
+    val counted = if (minutes) "${Format.amount(done)} of ${Format.minutes(goal)}$period"
+        else when (val k = habit.kind) {
+            is HabitKind.Amount -> if (k.unit in HabitCopy.currencies) "${k.unit}${Format.amount(done)} of ${k.unit}${Format.amount(goal)}$period"
+                else "${Format.amount(done)} of ${Format.amount(goal)}${if (k.unit.isEmpty()) "" else " " + k.unit}$period"
+            else -> "${Format.amount(done)} of ${Format.amount(goal)}${habit.checkUnit?.let { " $it" } ?: ""}$period"
+        }
+    return when {
+        progress > goal -> "Over the limit · " + if (running) Format.clock(progress) else counted
+        progress >= goal -> "Limit reached · " + if (running) Format.clock(progress) else counted
+        running -> Format.clock(progress) + " · " + Format.minutes(floor(goal - progress)) + " left"
+        else -> "$counted · ${Format.amount(goal - done)} left"
+    }
 }
 
 /** With several reminders, the next one still to come today (Skincare's 9:00 PM after its 8:00 AM); else [first]. */
@@ -134,7 +151,8 @@ fun clockText(entry: Entry): String {
 }
 
 /** The day's status in Day details: its title ("4 of 8 glasses"), the line under it, and a running timer's start. */
-data class DayStatus(val title: String, val detail: String? = null, val running: Long? = null) {
+/** [words]: the title is one headline, its number never set apart ("1 slip recorded", Figma's Day details). */
+data class DayStatus(val title: String, val detail: String? = null, val running: Long? = null, val words: Boolean = false) {
     companion object {
         fun periodWord(f: Frequency): String = when (f) {
             is Frequency.PerWeek -> " this week"
@@ -188,7 +206,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
             when (r.kind) {
                 HabitKind.Quit -> {
                     val n = entries.size
-                    return if (n == 0) DayStatus("No slips recorded") else DayStatus("$n ${if (n == 1) "slip" else "slips"} recorded", "Tap a slip to see or change it")
+                    return if (n == 0) DayStatus("No slips recorded") else DayStatus("$n ${if (n == 1) "slip" else "slips"} recorded", "Tap a slip to see or change it", words = true)
                 }
                 HabitKind.Task -> {
                     val done = rules.isDone(habit, day)
