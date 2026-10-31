@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -148,7 +149,7 @@ fun HabitRow(
     val tick = rememberTicker(running, store.clock)
     val streaks = store.showsStreaks()
     val note = store.note(habit, day) != null
-    val model = remember(habit, day, today, rev, running, slot, note, streaks) { rowModel(store, habit, day, slot, time, store.clock(), streaks) }
+    val model = remember(habit, day, today, rev, running, slot, time, note, streaks) { rowModel(store, habit, day, slot, time, store.clock(), streaks) }
     val offer = store.afterLog?.takeIf { it.habitId == habit.id && it.day == day && !running }
     var menu by remember { mutableStateOf(false) }
     val moment = rememberRowMilestone(habit, isToday, rev, store)
@@ -196,18 +197,21 @@ fun HabitRow(
  */
 @Composable
 fun rememberShownReminder(store: HabitStore, day: Int, times: List<ReminderTime>): ReminderTime? {
-    var now by remember { mutableStateOf(store.clock()) }
-    val shown = store.shownReminder(times, day, now)
-    if (times.size > 1 && day == store.today()) LaunchedEffect(shown, now) {
-        val t = java.time.Instant.ofEpochMilli(now).atZone(java.time.ZoneId.systemDefault())
-        val minute = t.hour * 60 + t.minute
-        val next = times.map { it.minuteOfDay }.filter { it > minute }.minOrNull() ?: return@LaunchedEffect
-        // Wake a second into that reminder's minute, when it has gone and the next one shows.
-        val wake = t.toLocalDate().atStartOfDay(t.zone).plusMinutes(next.toLong()).toInstant().toEpochMilli()
-        delay(maxOf(1_000L, wake - now + 1_000L))
-        now = store.clock()
+    if (times.size < 2) return times.firstOrNull()
+    val now by produceState(store.clock(), times, day) {
+        value = store.clock()
+        if (day != store.today()) return@produceState
+        while (true) {
+            val t = java.time.Instant.ofEpochMilli(value).atZone(java.time.ZoneId.systemDefault())
+            val minute = t.hour * 60 + t.minute
+            val next = times.map { it.minuteOfDay }.filter { it > minute }.minOrNull() ?: break
+            // Wake a second into that reminder's minute, when it has gone and the next one shows.
+            val wake = t.toLocalDate().atStartOfDay(t.zone).plusMinutes(next.toLong()).toInstant().toEpochMilli()
+            delay(maxOf(1_000L, wake - value + 1_000L))
+            value = store.clock()
+        }
     }
-    return shown
+    return store.shownReminder(times, day, now)
 }
 
 /** Whether a row has its round button: never on a later day (Figma 4.3); a skipped day keeps it, switched off (Figma's Today, flow 13). */

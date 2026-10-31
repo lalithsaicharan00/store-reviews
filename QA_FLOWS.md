@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 17 |
+| today | 54:5580 | 84 | 18 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **27** |
+| **All** | | **290** | **28** |
 
 ## Bug log
 
@@ -83,6 +83,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 45. Today · Resume a habit — Day details' plan line said "Every day · Morning" for Meds; Figma says "Every day · 8:00 AM": a habit with reminders shows their times. Fixed in planLine.
 46. OPEN · Day details — the This day card's label and headline render 18 and 41 dp tall against their 16/36 line heights (Today's rows render exactly), so the card is ~8 dp taller than Figma; not font padding (tried) nor the font's metrics (hhea fits). To find on the Day details page.
 47. Today · Resume a habit, Figma updated to the app (the user, 31 Oct) — Screen=Today's Paused row (752:15728, so all 9 screens): "Paused until 28 Oct", no streak, the ⋮ swapped for Button Style=Text "Resume", 8 at the end and no gap before it (the line 145 wide, as the app's); the flow's note says so.
+48. Today · Several reminders in one time of day (new, the user, 31 Oct) — a row's line took the next of ALL the habit's reminders and never moved on by itself (its model was remembered without the reminder). Now each time of day's row shows its own next reminder (shownReminder), wakes when it passes (rememberShownReminder, one produceState loop, S3) and keeps the last once all have gone; the row model is keyed on it. Seen on the emulator on the real clock: 9:45 → 9:46 at 9:45:00 by itself, then 9:46 stays. Figma: new flow 1714:66792 on the today page (3 screens, arrows, rule notes).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -222,6 +223,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 81 | 114:1551 | Rule: no more than 2 pop-ups in 7 days | Wed, 2 pop-ups → ✓ 30 days: a bar → 5 s band; See opens pop-up | not started |
 | 82 | 114:2107 | Rule: history added later is never celebrated | missed yesterday → ‹ Yesterday → ✓: nothing plays | not started |
 | 83 | 114:2646 | Rule: undone and done again | Meds 2 → ✓ bar → Undo → ✓ again: nothing plays twice | not started |
+| 84 | 1714:66792 | Several reminders in one time of day (added 31 Oct, the user) | Meds 8:00 + 11:00 AM in Morning → 7:30: shows 8:00 AM → 8:00 goes by: 11:00 AM → after 11:00: stays 11:00 AM | passed |
 
 ## Day details (169:1270)
 
