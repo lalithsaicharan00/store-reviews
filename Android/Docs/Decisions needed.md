@@ -100,7 +100,7 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** (a) for the touch targets (Android's accessibility minimum); for the line height, try trimming
   only if you want Figma's exact spacing, since it moves every text in the app by a dp or two.
 
-### D-48. A running timer that crosses its goal: what's saved at that moment?
+### D-48. A running timer that crosses its goal: what's saved at that moment? (Answered 31 Oct 2026: (a), A87)
 
 - **Where:** Today flow 58 ([Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=859-48492)), the timer screen, the routine player; `data/HabitStore.kt` (`toggleTimer`, `stopTimer`), `data/MilestoneCenter.kt`.
 - **What Figma shows / what the app did:** as the clock crosses 10:00 with no tap, the ⏸ fills, the chime plays, 🔥 goes

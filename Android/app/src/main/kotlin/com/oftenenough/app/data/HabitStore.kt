@@ -51,6 +51,10 @@ class HabitStore(
     /** Running timers: habit ID → start (epoch ms). */
     var timers by mutableStateOf<Map<String, Long>>(emptyMap()); private set
     var timerSlots by mutableStateOf<Map<String, String>>(emptyMap()); private set
+    /** A running timer whose goal was reached: the session's own start (its log's ID); [timers] counts on from the goal (A87). */
+    private val timerFrom = HashMap<String, Long>()
+    /** Each running timer's one wake, at the moment it reaches its goal (S3: no ticking). */
+    private val goalWatches = HashMap<String, Job>()
     var skips by mutableStateOf<Map<String, Set<Int>>>(emptyMap()); private set
     var taskMoves by mutableStateOf<Map<String, Map<Int, Int>>>(emptyMap()); private set
     var pauses by mutableStateOf<Map<String, List<HabitPause>>>(emptyMap()); private set
@@ -256,6 +260,7 @@ class HabitStore(
             readSettings()
             rules.setEntries(entries)
             rulesChanged()
+            for (h in habits) if (timers.containsKey(h.id)) watchGoal(h)
             // A reload (a sync, a restore) keeps Undo · Note only while what it offers is still there.
             afterLog = afterLog?.takeIf { o ->
                 when (o) {
@@ -328,6 +333,7 @@ class HabitStore(
         cardOrder = cards
         timers = running
         timerSlots = runningSlots
+        resumeTimers()
         skips = loadedSkips
         taskMoves = loadedMoves
         pauses = loadedPauses
@@ -800,13 +806,20 @@ class HabitStore(
         timerSlots = if (slot != null) timerSlots + (habit.id to slot) else timerSlots - habit.id
         settingRows[Keys.TIMER + habit.id] = now.toString() + (slot?.let { "|$it" } ?: "")
         rulesChanged()
+        watchGoal(habit)
         val value = now.toString() + (slot?.let { "|$it" } ?: "")
         perform { saveSetting(Keys.TIMER + habit.id, value) }
     }
 
-    /** Stopping never loses time: the log's ID comes from the habit and the start, so a second stop is the same log. */
+    /**
+     * Stopping never loses time: the log's ID comes from the habit and the session's start, so a second stop is the same
+     * log. A session that reached its goal already has that log (A87): it becomes the whole session.
+     */
     fun stopTimer(habit: Habit, day: Int, end: Long = clock(), source: EntrySource = EntrySource.TIMER) {
-        val start = timers[habit.id] ?: return
+        if (!timers.containsKey(habit.id)) return
+        goalWatches.remove(habit.id)?.cancel()
+        val start = timerFrom.remove(habit.id) ?: timers.getValue(habit.id)
+        val saved = entry(TimerStop.entryId(habit.id, start))
         val minutes = maxOf(0L, end - start) / 60_000.0
         val before = milestones.before(habit, day)
         val entry = if (minutes >= 1.0 / 60) Entry(
@@ -818,12 +831,71 @@ class HabitStore(
         settingRows.remove(Keys.TIMER + habit.id)
         rulesChanged()
         val wasComplete = rules.isComplete(habit, day)
-        if (entry != null) { insertEntry(entry); offerUndo(entry) }
-        milestones.after(before, habit, source, entry?.value ?: 0.0)
+        if (entry != null) { if (saved != null) replaceEntry(entry) else insertEntry(entry); offerUndo(entry) }
+        milestones.after(before, habit, source, (entry?.value ?: 0.0) - (saved?.value ?: 0.0))
         milestones.timerStopped(habit.id)
         logFeedback(habit, day, wasComplete)
         val key = Keys.TIMER + habit.id
         perform { repository.finishTimer(entry?.record, key) }
+    }
+
+    /** Sleeps until [habit]'s running timer reaches today's goal, then [timerReachedGoal]: one wake, no ticking (S3). */
+    private fun watchGoal(habit: Habit) {
+        goalWatches.remove(habit.id)?.cancel()
+        if (!timers.containsKey(habit.id) || timerFrom.containsKey(habit.id) || habit.archived) return
+        val day = today()
+        val ruled = rule(habit, day)
+        // Already met before this timer: what's saved (the rules count a running timer up to the moment they're asked).
+        if (ruled.kind != HabitKind.Duration || ruled.atMost || rules.progress(habit, day, timers.getValue(habit.id)) >= rules.goal(ruled)) return
+        val left = rules.goal(ruled) - rules.progress(habit, day, clock())
+        goalWatches[habit.id] = scope.launch {
+            if (left > 0) delay((left * 60_000).toLong() + 20)
+            goalWatches.remove(habit.id)
+            timerReachedGoal(habit.id, late = left < -1.0 / 30)
+        }
+    }
+
+    /**
+     * A running timer reaching its goal (A87; Figma 107:1091: "the clock keeps counting on the row, the ⏸ fills with the
+     * chime, the band rises below"): the time so far is saved now as the session's log, so the streak, the chime and a
+     * milestone come at this moment and the goal is safe if the phone dies. The timer counts on from here (in memory:
+     * the saved start stays the session's), and the stop makes that log the whole session ([stopTimer]). [late]: the
+     * goal passed while the app wasn't running, so it's saved without the chime.
+     */
+    private fun timerReachedGoal(habitId: String, late: Boolean) {
+        val habit = habit(habitId) ?: return
+        val start = timers[habitId] ?: return
+        val now = clock()
+        val day = today(now)
+        val ruled = rule(habit, day)
+        if (timerFrom.containsKey(habitId) || rules.progress(habit, day, start) >= rules.goal(ruled)) return
+        if (rules.progress(habit, day, now) + 1e-9 < rules.goal(ruled)) return watchGoal(habit)
+        val before = milestones.before(habit, day)
+        val entry = Entry(id = TimerStop.entryId(habitId, start), habitId = habitId, day = day, value = (now - start) / 60_000.0,
+            slot = timerSlots[habitId], source = EntrySource.TIMER)
+        timerFrom[habitId] = start
+        timers = timers + (habitId to now)
+        settingRows[Keys.TIMER + habitId] = now.toString() + (timerSlots[habitId]?.let { "|$it" } ?: "")
+        insertEntry(entry)
+        rulesChanged()
+        milestones.after(before, habit, EntrySource.TIMER, entry.value)
+        if (!late) logFeedback(habit, day, wasComplete = false)
+        perform { repository.addEntry(entry.record) }
+    }
+
+    /**
+     * After a load: a running timer whose session already has its log reached its goal (A87). It counts on from that
+     * log's end, so the time isn't counted twice; the saved start stays the session's own.
+     */
+    private fun resumeTimers() {
+        timerFrom.clear()
+        for ((id, start) in timers.toMap()) {
+            val saved = entry(TimerStop.entryId(id, start)) ?: continue
+            val from = start + (saved.value * 60_000).toLong()
+            timerFrom[id] = start
+            timers = timers + (id to from)
+            settingRows[Keys.TIMER + id] = from.toString() + (timerSlots[id]?.let { "|$it" } ?: "")
+        }
     }
 
     // ------------------------------------------------------------------ Skips, moves and pauses
