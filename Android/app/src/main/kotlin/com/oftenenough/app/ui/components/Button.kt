@@ -1,6 +1,13 @@
 package com.oftenenough.app.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -85,7 +92,8 @@ enum class ButtonSize(val height: Dp) {
  *   turns a Text or Outlined label Error: Delete, Remove, Erase (D9). A switched-off Filled or Tonal button is
  *   Material's disabled state in our colours: Surface container low (solid, as it can float over a list), its label
  *   On surface at 38 %. Material's On surface at 12 % would be our Surface container highest, an enabled Tonal button.
- * - **Sizes:** [size], see [ButtonSize]; the label is one line, cut with … if it can't fit.
+ * - **Sizes:** [size], see [ButtonSize]; the label is one line, cut with … if it can't fit (side by side, [EqualButtons]
+ *   stacks them before that).
  * - **Shape:** Material's full round by default; [square] gives Expressive's square corners (12, 16, 28: the routine
  *   player's big actions). Both morph a little while pressed, as Material 3 Expressive's buttons do.
  * - **[compact]:** for a button that fills a share of a row (Day details' two logging buttons, Delete | Edit): 12 at
@@ -149,3 +157,25 @@ private fun padding(size: ButtonSize, hasIcon: Boolean, compact: Boolean): Paddi
 
 @Composable
 private fun quietColors(label: androidx.compose.ui.graphics.Color): ButtonColors = ButtonDefaults.textButtonColors(contentColor = label)
+
+/**
+ * Two or three equal buttons side by side (Day details' logging buttons, a record's Delete | Edit, a pop-up's Close |
+ * All milestones), 8 apart, while every label fits whole in its share; with larger text they stack, each the full
+ * width, 8 apart, rather than cut a label with … (Rulebook, "Text that wraps grows its row"). [button] draws the
+ * button at [index] with the modifier it's given.
+ */
+@Composable
+fun EqualButtons(labels: List<String>, size: ButtonSize, compact: Boolean, modifier: Modifier = Modifier, button: @Composable (index: Int, modifier: Modifier) -> Unit) {
+    BoxWithConstraints(modifier.fillMaxWidth()) {
+        val measure = rememberTextMeasurer()
+        val density = LocalDensity.current
+        val style = size.label
+        val pad = padding(size, false, compact)
+        val direction = LocalLayoutDirection.current
+        val sides = pad.calculateStartPadding(direction) + pad.calculateEndPadding(direction)
+        val share = (maxWidth - 8.dp * (labels.size - 1)) / labels.size
+        val fits = labels.all { with(density) { measure.measure(it, style, maxLines = 1).size.width.toDp() } + sides <= share }
+        if (fits) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { labels.indices.forEach { button(it, Modifier.weight(1f)) } }
+        else Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) { labels.indices.forEach { button(it, Modifier.fillMaxWidth()) } }
+    }
+}

@@ -21,6 +21,7 @@ import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.EqualButtons
 import com.oftenenough.app.ui.components.MenuDivider
 import com.oftenenough.app.ui.components.StepRow
 import com.oftenenough.app.ui.components.StepRowPlace
@@ -349,9 +350,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         }
         if (actions.isNotEmpty()) {
             Spacer(Modifier.height(24.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                for (a in actions) DayButton(a, Modifier.weight(1f))
-            }
+            EqualButtons(actions.map { it.title }, ButtonSize.Medium, compact = true) { i, m -> DayButton(actions[i], m) }
         }
         // A checklist's steps: Step rows in the card (molecule 4.3), the ticked box in the habit's colour.
         if (ruled.kind == HabitKind.Checklist && started) {

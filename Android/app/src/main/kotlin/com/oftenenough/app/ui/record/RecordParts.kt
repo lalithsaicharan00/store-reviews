@@ -7,6 +7,7 @@ import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.EqualButtons
 import com.oftenenough.app.ui.theme.AppType
 
 import androidx.compose.foundation.background
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -224,9 +226,11 @@ fun BottomAction(text: String, enabled: Boolean, tag: String = "record-add", onC
  */
 @Composable
 fun DeleteEditBar(noun: String, deleteTag: String, editTag: String, onDelete: () -> Unit, onEdit: () -> Unit) {
-    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        AppButton("Delete $noun", onDelete, Modifier.weight(1f), style = ButtonStyle.Outlined, size = ButtonSize.Medium, destructive = true, tag = deleteTag)
-        AppButton("Edit", onEdit, Modifier.weight(1f), size = ButtonSize.Medium, tag = editTag)
+    Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+        EqualButtons(listOf("Delete $noun", "Edit"), ButtonSize.Medium, compact = false) { i, m ->
+            if (i == 0) AppButton("Delete $noun", onDelete, m, style = ButtonStyle.Outlined, size = ButtonSize.Medium, destructive = true, tag = deleteTag)
+            else AppButton("Edit", onEdit, m, size = ButtonSize.Medium, tag = editTag)
+        }
     }
 }
 

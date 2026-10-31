@@ -113,10 +113,12 @@ fun MilestonePopup(
                     NextMilestone(next.number, next.title, next.detail, next.fraction, color)
                 }
             }
-            Row(Modifier.fillMaxWidth().arrive(950, 8f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(Modifier.fillMaxWidth().arrive(950, 8f)) {
                 // Halves of the row: 12 at the sides (compact), or "All milestones" was cut to "All mileston…" (Figma 872:71403).
-                AppButton("Close", { leave(onClose) }, Modifier.weight(1f), style = ButtonStyle.Outlined, size = ButtonSize.Medium, compact = true, tag = "landmark-close")
-                AppButton(second, { leave(onAll) }, Modifier.weight(1f), size = ButtonSize.Medium, compact = true, tag = "landmark-all")
+                EqualButtons(listOf("Close", second), ButtonSize.Medium, compact = true) { i, m ->
+                    if (i == 0) AppButton("Close", { leave(onClose) }, m, style = ButtonStyle.Outlined, size = ButtonSize.Medium, compact = true, tag = "landmark-close")
+                    else AppButton(second, { leave(onAll) }, m, size = ButtonSize.Medium, compact = true, tag = "landmark-all")
+                }
             }
         }
     }
