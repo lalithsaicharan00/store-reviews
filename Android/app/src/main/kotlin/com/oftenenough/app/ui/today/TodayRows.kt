@@ -77,8 +77,6 @@ interface TodayActions {
     fun openHabitPage(habit: Habit)
     fun pause(habit: Habit)
     fun feedback(done: Boolean)
-    /** Arrange Today, with [habit] lifted (a row's menu, Figma 1.4; the new habit's Move, 1.6). */
-    fun arrange(habit: Habit?)
     /** A milestone's band tapped, or its See: that milestone's pop-up, asked for (Figma R.1, A.1). */
     fun seeMilestone(habit: Habit) {}
 }
@@ -136,7 +134,7 @@ fun HabitStore.showsStreaks(): Boolean = setting("progress.showStreaks") != "fal
 @Composable
 fun HabitRow(
     habit: Habit, day: Int, today: Int, slot: String?, time: ReminderTime?, shape: Shape, store: HabitStore,
-    layout: TodayLayout, actions: TodayActions, stepsOpen: Boolean, onToggleSteps: () -> Unit, lit: Boolean = false,
+    layout: TodayLayout, actions: TodayActions, stepsOpen: Boolean, onToggleSteps: () -> Unit,
     haptics: Boolean = true,
 ) {
     val c = appColors
@@ -166,7 +164,7 @@ fun HabitRow(
                 val progress = if (running) store.rules.progress(habit, day, tick.value) else model.progress
                 (progress / maxOf(model.goal, 1e-9)).toFloat()
             } },
-            pressed = menu, lit = lit,
+            pressed = menu,
             line = {
                 if (running) RunningLine(store, habit, day, slot, time, model.goal, tick)
                 else HabitRowLine(model.line, Modifier.semantics { testTag = "line-${habit.name}" })

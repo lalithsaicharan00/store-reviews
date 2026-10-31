@@ -64,8 +64,7 @@ import com.oftenenough.app.ui.theme.appColors
  * Behind everything, the progress fill: [progress] (0–1, read only when drawn, so a running timer redraws the fill
  * and not the row, Rulebook S3) in the habit's Fill, so two habits at the same progress read equally far along; a
  * cut-down or quit row passes nothing (A41: a limit never fills). Over it, [pressed] lays Material's pressed state, On
- * surface at 10 %, for the moment the row is held for its menu; [lit] flashes the same, softer, for a row Today points
- * to. Tap for [onClick], touch and hold for [onLongClick]; [menu] is that menu, hung from the card's end under the body (above the band).
+ * surface at 10 %, for the moment the row is held for its menu. Tap for [onClick], touch and hold for [onLongClick]; [menu] is that menu, hung from the card's end under the body (above the band).
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -79,7 +78,6 @@ fun HabitRowLayout(
     modifier: Modifier = Modifier,
     progress: (() -> Float)? = null,
     pressed: Boolean = false,
-    lit: Boolean = false,
     line: @Composable () -> Unit,
     streak: (@Composable () -> Unit)? = null,
     action: (@Composable () -> Unit)? = null,
@@ -92,13 +90,11 @@ fun HabitRowLayout(
     val s = MaterialTheme.colorScheme
     val fill = c.habitFill(color)
     val held by animateColorAsState(if (pressed) s.onSurface.copy(alpha = 0.10f) else Color.Transparent, tween(150), label = "held")
-    val flash by animateColorAsState(if (lit) s.onSurface.copy(alpha = 0.08f) else Color.Transparent, tween(600), label = "lit")
     Column(
         modifier.fillMaxWidth().clip(shape).background(s.surface)
             .drawBehind {
                 val p = progress?.invoke()?.coerceIn(0f, 1f) ?: 0f
                 if (p > 0f) drawRect(fill, size = size.copy(width = size.width * p))
-                if (flash.alpha > 0f) drawRect(flash)
                 if (held.alpha > 0f) drawRect(held)
             }
             .combinedClickable(onClick = onClick, onLongClick = onLongClick),

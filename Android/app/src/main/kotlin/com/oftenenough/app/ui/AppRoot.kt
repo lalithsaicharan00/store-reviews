@@ -285,11 +285,7 @@ private fun AppMain(
                 MenuItem.SETTINGS.title -> WithMenu(store, MenuItem.SETTINGS, nav) { openMenu ->
                     SettingsHome(store, prefs, AppGraph.backup, openMenu) { page -> nav.navigate(Routes.page(page)) }
                 }
-                "Arrange your day" -> {
-                    // The habit Arrange… or Move asked for, lifted once (Figma 1.4, 1.6).
-                    val lifted = remember { ArrangeLift.habit.also { ArrangeLift.habit = null } }
-                    ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, lifted) { nav.popBackStack() }
-                }
+                "Arrange your day" -> ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
                 SettingsPage.LICENCES -> LicencesPage { nav.popBackStack() }
                 SettingsPage.NEW_DAY -> com.oftenenough.app.ui.settings.NewDayStartsAtPage(store) { nav.popBackStack() }
                 SettingsPage.WEEK_START -> com.oftenenough.app.ui.settings.WeekStartsOnPage(store) { nav.popBackStack() }
@@ -583,11 +579,7 @@ private fun todayActions(nav: NavHostController, view: android.view.View, pause:
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.habit(habit.id))
     override fun pause(habit: Habit) = pause(habit)
     override fun feedback(done: Boolean) { view.performHapticFeedback(HapticFeedbackConstants.CONFIRM) }
-    override fun arrange(habit: Habit?) { ArrangeLift.habit = habit?.id; nav.navigate(Routes.page("Arrange your day")) }
 }
-
-/** The habit Arrange Today opens with lifted (a row's Arrange…, the new habit's Move; Figma 1.4, 1.6). */
-object ArrangeLift { var habit: String? = null }
 
 /**
  * Today's pages: Undo · Note under the last log stay while one of these is open over Today (the note, Add log, the

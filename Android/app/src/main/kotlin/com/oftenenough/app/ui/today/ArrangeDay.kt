@@ -104,7 +104,7 @@ fun <T> List<T>.moved(from: Int, to: Int): List<T> {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, lifted: String? = null, onBack: () -> Unit) {
+fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack: () -> Unit) {
     val c = appColors
     val today = store.today()
     val cards = store.todayCards()
@@ -152,7 +152,6 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, lifted
     var viewport by remember { mutableIntStateOf(0) }
     var menuFor by remember { mutableStateOf<String?>(null) }
     var moving by remember { mutableStateOf<Habit?>(null) }
-    var liftedNow by remember { mutableStateOf(lifted) }
 
     // Where a habit may go: a quit habit or a limit stays in Quitting, every other one stays out of it.
     fun accepts(card: String, habitId: String): Boolean {
@@ -225,14 +224,6 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, lifted
             withFrameNanos { }
         }
     }
-    // Arrange… on a row: that habit is brought into view, lifted.
-    LaunchedEffect(lifted, tops.size) {
-        val id = lifted ?: return@LaunchedEffect
-        val key = entries.firstOrNull { it is ArrangeEntry.Row && it.habitId == id }?.key ?: return@LaunchedEffect
-        val top = tops[key] ?: return@LaunchedEffect
-        scroll.animateScrollTo(maxOf(0, (top - viewport / 3).roundToInt()))
-        delay(1500); liftedNow = null
-    }
 
     Scaffold(
         containerColor = c.screen,
@@ -264,10 +255,10 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, lifted
                         val all = cardRows.size + (paused[cardAt(i)] ?: emptyList()).size
                         ArrangeRow(
                             habit = h, shape = segmentShape(at, all), subtitle = arrangeSubtitle(h, store),
-                            lifted = dragged || liftedNow == h.id,
+                            lifted = dragged,
                             modifier = Modifier.measured(e.key, tops, heights).zIndex(if (dragged) 1f else 0f)
                                 .graphicsLayer { if (dragged) translationY = dragTop - (tops[e.key] ?: dragTop) },
-                            onDragStart = { drag = e; dragFrom = cardAt(entries.indexOf(e)); dragTop = tops[e.key] ?: 0f; liftedNow = null; menuFor = null },
+                            onDragStart = { drag = e; dragFrom = cardAt(entries.indexOf(e)); dragTop = tops[e.key] ?: 0f; menuFor = null },
                             onDrag = { dy -> dragTop += dy; follow() },
                             onDragEnd = { val d = drag; val from = dragFrom; drag = null; dragFrom = null; if (d != null && from != null) commit(d, from) },
                             onTap = { menuFor = e.key },

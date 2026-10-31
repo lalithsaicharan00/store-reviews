@@ -150,13 +150,15 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     // Kept above Today by the app, so the cards and steps opened stay open while a note or Add log is on top.
     val layout = kept ?: remember { TodayLayout(scope) }
     var calendar by remember { mutableStateOf(false) }
-    var lit by remember { mutableStateOf<String?>(null) }
+    // A habit just added, for Today to show (A47).
+    var added by remember { mutableStateOf<String?>(null) }
     // Another day: the buttons under the last log go, and every card follows its rule again (Figma 1.2). Coming back to
     // Today from a page it opened (a note, Add log) is not another day.
     var lastDay by rememberSaveable { mutableStateOf(day) }
     LaunchedEffect(day) { if (lastDay != day) { lastDay = day; layout.reset(); store.afterLog = null } }
 
-    // A habit just added: Today says where it went, with Move, and lights its row briefly (Figma 1.6).
+    // A habit just added is an ordinary row at the end of its time of day: no highlight, no snackbar, no Move (A47).
+    // Today opens on its day and its time of day, and scrolls to it only when it's off the screen.
     LaunchedEffect(store.justAdded) {
         val (id, at) = store.justAdded ?: return@LaunchedEffect
         store.justAdded = null
@@ -165,15 +167,8 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
         val placement = store.placements(habit).firstOrNull() ?: return@LaunchedEffect
         if (!store.rules.isDue(habit, today)) return@LaunchedEffect
         shownDay = null
-        lit = id
         layout.setOpen(placement.section, true)
-        val where = if (placement.section == DaySection.QUITTING) "Quitting" else store.section(placement.section).name
-        // Shown from Today's own scope: clearing justAdded above restarts this effect, which would cancel it.
-        scope.launch { delay(1600); if (lit == id) lit = null }
-        scope.launch {
-            val result = snackbar.showSnackbar("Added to the end of $where", actionLabel = "Move", duration = SnackbarDuration.Short)
-            if (result == SnackbarResult.ActionPerformed) actions.arrange(habit)
-        }
+        added = id
     }
 
     // A task moved from Day details (Do tomorrow, Another day…) has left the day: Today says where it went, with Undo.
@@ -268,11 +263,14 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                     else Column(Modifier.fillMaxSize()) {
                     val listState = rememberLazyListState()
                     val index = remember { ItemIndex() }
-                    // A habit just added comes into view, lit (Figma 1.6).
-                    LaunchedEffect(lit) {
-                        val id = lit ?: return@LaunchedEffect
+                    // A habit just added comes into view, if it's off the screen (A47).
+                    LaunchedEffect(added) {
+                        val id = added ?: return@LaunchedEffect
+                        added = null
                         delay(100)
-                        index.at.entries.firstOrNull { it.key.startsWith("row-") && it.key.contains(id) }?.value?.let { listState.animateScrollToItem(maxOf(0, it - 1)) }
+                        val at = index.at.entries.firstOrNull { it.key.startsWith("row-") && it.key.contains(id) }?.value ?: return@LaunchedEffect
+                        val seen = listState.layoutInfo.let { info -> info.visibleItemsInfo.any { it.index == at && it.offset >= 0 && it.offset + it.size <= info.viewportEndOffset - info.afterContentPadding } }
+                        if (!seen) listState.animateScrollToItem(maxOf(0, at - 1))
                     }
                     // A notice that comes while Today is at its top is brought into view, not left above it.
                     LaunchedEffect(notice?.key) { if (notice != null && isToday && listState.firstVisibleItemIndex <= 1) listState.animateScrollToItem(0) }
@@ -293,7 +291,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                             NoticeCard(notice, dismissNotice)
                             Spacer(Modifier.height(16.dp))
                         }
-                        todayItems(content, store, layout, actions, nav, prefs, lit, index)
+                        todayItems(content, store, layout, actions, nav, prefs, index)
                     }
                     }
                     BottomFade(Modifier.align(Alignment.BottomCenter))
@@ -438,7 +436,7 @@ class TodayContent(
     }
 }
 
-private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, layout: TodayLayout, actions: TodayActions, nav: TodayNav, prefs: Prefs, lit: String?, ix: ItemIndex) {
+private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, layout: TodayLayout, actions: TodayActions, nav: TodayNav, prefs: Prefs, ix: ItemIndex) {
     val day = content.day
     val today = content.today
     // The line above the cards: everything done today (Figma 1.8), or what a later day is (4.3).
@@ -454,7 +452,7 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
     }
     for ((card, items) in content.cards) {
         if (card == DaySection.QUITTING) quitting(content.restraint, store, layout, actions, day, today, prefs, ix)
-        else section(card, items, content, store, layout, actions, nav, prefs, lit, ix)
+        else section(card, items, content, store, layout, actions, nav, prefs, ix)
     }
     if (content.paused.isNotEmpty()) {
         // Paused opens unfolded, as Figma draws it ("Today, scrolled to the end: the Paused card"); folding it is kept.
@@ -473,7 +471,7 @@ private fun LazyListScope.todayItems(content: TodayContent, store: HabitStore, l
 
 private fun LazyListScope.section(
     card: String, items: List<TodayItem>, content: TodayContent, store: HabitStore, layout: TodayLayout, actions: TodayActions,
-    nav: TodayNav, prefs: Prefs, lit: String?, ix: ItemIndex,
+    nav: TodayNav, prefs: Prefs, ix: ItemIndex,
 ) {
     val day = content.day
     val future = day > content.today
@@ -513,7 +511,7 @@ private fun LazyListScope.section(
             if (!steps) {
                 HabitRow(habit, day, content.today, item.placement.slot, rememberShownReminder(store, day, item.placement.times), shape, store, layout, actions,
                     stepsOpen = layout.choice(stepsKey) == true, onToggleSteps = { layout.setOpen(stepsKey, layout.choice(stepsKey) != true) },
-                    lit = lit == habit.id, haptics = prefs.vibration)
+                    haptics = prefs.vibration)
             } else StepsBlock(habit, day, shape, store, layout)
         }
     }

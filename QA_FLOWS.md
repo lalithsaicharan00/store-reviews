@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 33 |
+| today | 54:5580 | 84 | 34 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **43** |
+| **All** | | **290** | **44** |
 
 ## Bug log
 
@@ -102,6 +102,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 64. Today · demo data — Water showed 🔥 24 on Today where Figma's Today draws 23: its run was 23 days before today plus today. Now 22 before (DemoData.design).
 65. Today · Go to a day — the calendar had Cancel and Go; Figma has neither: one tap on a date goes there (nothing is saved, so nothing to confirm), and tapping outside or Back closes it. AppDatePicker takes atOnce (no buttons, 20 under the weeks, as Figma); Go to a day uses it.
 66. Today · the day bar's date — "Tue, 13 Oct"; Figma's day bar writes "Tue 13 Oct". DayWords.bar.
+67. Today · a new habit (A47) — Add still lit the new row and said "Added to the end of Anytime" with Move; A47 and Figma: a new habit just appears at the end of its time of day, no highlight, no snackbar, no Move. Removed with their code (TodayScreen's snackbar and lit row, HabitRowLayout's flash, TodayActions.arrange and ArrangeLift, Arrange's lifted habit); Today still opens its time of day, and scrolls only when the new row is off the screen.
+68. Today · the day ring — it counted a part-done habit's share (1 of 8 glasses drew a sliver at 0/1); Figma's Floating toolbar: "Set the arc to match Count" (Today's 4/13 arc is exactly 4/13). DayScore.fraction is now done of planned.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -205,7 +207,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 30 | 99:2 | Log yesterday | Today → ‹ Yesterday; Back to today → ✓ Meds for yesterday → Back to today: streak 58 | passed |
 | 31 | 100:2 | Look at tomorrow | Today → › Tomorrow → Water: Day details for tomorrow → ✕ → Back to today | passed |
 | 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | passed |
-| 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | not started |
+| 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | passed |
 | 34 | 104:419 | Nothing planned today | Nothing planned today → › Tomorrow, Gym → Back to today | not started |
 | 35 | 125:2 | Notice: backup is paused | Backup is paused → backed up: notice gone | not started |
 | 36 | 125:371 | Notice: backup is off | Backup is off → Reconnect: account chooser → pick account → Continue: notice gone; snackbar | not started |

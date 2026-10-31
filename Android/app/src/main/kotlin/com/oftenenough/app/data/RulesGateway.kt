@@ -22,7 +22,8 @@ data class Outcome(val kind: Kind, val share: Double) {
 
 /** One day across habits (P-3). */
 data class DayScore(val done: Int = 0, val part: Double = 0.0, val partCount: Int = 0, val planned: Int = 0) {
-    val fraction: Double get() = if (planned == 0) 0.0 else minOf(1.0, (done + part) / planned)
+    /** The day ring's share: habits done of planned, as its count says; a part-done habit adds nothing (Figma's Floating toolbar). */
+    val fraction: Double get() = if (planned == 0) 0.0 else minOf(1.0, done.toDouble() / planned)
 }
 
 /** How a day reads in a habit's calendar (never a harsh mark, U3). */
