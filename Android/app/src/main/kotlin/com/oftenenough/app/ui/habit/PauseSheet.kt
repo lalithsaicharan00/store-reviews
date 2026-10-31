@@ -77,7 +77,7 @@ fun PauseSheet(habits: List<Habit>, store: HabitStore, onDismiss: () -> Unit, on
         PauseOption("Until I resume it", "It waits in Paused", length == PauseLength.OPEN, "pause-open") { length = PauseLength.OPEN }
     }
     if (picking) {
-        DayDialog(chosen ?: (today + 7), { it > today }, { picking = false }) { day -> chosen = day; length = PauseLength.DATE }
+        DayDialog(chosen ?: (today + 1), { it > today }, { picking = false }) { day -> chosen = day; length = PauseLength.DATE }
     }
 }
 

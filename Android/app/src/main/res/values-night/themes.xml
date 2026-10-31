@@ -7,5 +7,7 @@
     </style>
     <style name="Theme.OftenEnough.App" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">@color/screen</item>
+        <!-- A dialog dims what's behind it with Material's scrim, 32 % (Figma's date picker; Android's own default is 60 %). -->
+        <item name="android:backgroundDimAmount">0.32</item>
     </style>
 </resources>

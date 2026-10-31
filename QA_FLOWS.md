@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 14 |
+| today | 54:5580 | 83 | 15 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **24** |
+| **All** | | **289** | **25** |
 
 ## Bug log
 
@@ -74,6 +74,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 36. Today · Pause a habit — Today's snackbar was 16 in and 12 above the day bar; Figma's is 12 in and 20 above. Fixed in TodaySnackbars.
 37. Today · the day bar (the user, 31 Oct: its shadow should stand out as in Figma, with Material's own shadows) — the floating toolbar used Material's default elevation and barely showed (232 against the page's 238 under it); Figma's is 0/6/18 at 18 % + 0/1/4 at 12 %. Fixed with Material's Elevation Level 4 (8 dp, expandedShadowElevation): measured under the bar 184→229 against Figma's 190→238, the sides the same. Level 5 (12 dp) was darker and longer than Figma.
 38. Today · the day bar's shadow (the user, 31 Oct: if Material's own shadow can't match exactly, use exactly the design's) — Material's levels were too weak (Level 3) or too dark and long (Level 4, 5). Now Figma's two shadows exactly with Compose's dropShadow: 0 6 18 black 18 % and 0 1 4 black 12 %, the toolbar's elevation 0; measured under the bar 188→231 against Figma's 190→238, the sides within 3.
+39. Today · Pause until a date — Until a date… opened the picker a week ahead; Figma opens it on tomorrow. Fixed in PauseSheet.
+40. Today · Pause until a date — dialogs dimmed what's behind them by Android's default 60 %; Figma's is Material's 32 % scrim. Fixed in the app theme (android:backgroundDimAmount 0.32, light and dark): an opacity, the same on every device.
+41. Today · Pause until a date — the date picker ran edge to edge on a 360 dp phone (Material's dialog is a fixed 360) and, once narrowed, its week overflowed: Material's grid gives each day a 48 dp target plus 12 at the sides, which needs 360. Now built from Material's parts: 16 in from the screen's sides up to Material's 360, each day's target a seventh of the room up to Material's 48 (LocalMinimumInteractiveComponentSize; 43 on a 360 dp phone, as Figma's 43-wide days), Figma's 112 header (Material's is a fixed 120) with ✏ / 📅 to type, and Material's own button placement. Applies to every date picker (AppDatePicker).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -144,7 +147,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 12 | 81:1657 | Log a slip from the menu | Today → hold Smoking: menu → Add slip → back on Today; Undo · Note | passed |
 | 13 | 122:2 | Touch and hold a habit | Today → hold Meds: menu → Skip today: skipped; Undo · Note | passed |
 | 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | passed |
-| 15 | 137:2 | Pause a habit until a date | Today → menu → Pause sheet (1 week) → Until a date…: date picker → 30 → OK: Back on Fri, 30 Oct → Pause | not started |
+| 15 | 137:2 | Pause a habit until a date | Today → menu → Pause sheet (1 week) → Until a date…: date picker → 30 → OK: Back on Fri, 30 Oct → Pause | passed |
 | 16 | 122:1300 | Resume a habit | Paused card → Day details, Paused → Resume habit; snackbar Undo | not started |
 | 17 | 84:2 | Undo and Note follow the latest log | Water 6 of 8 → + on Water: buttons on Water → ✓ Call family: buttons move → Start a routine: buttons go | not started |
 | 18 | 139:5 | Undo clears the buttons | Water 6 of 8 → + → ✓ Call family → Undo: check taken back, buttons gone | not started |
