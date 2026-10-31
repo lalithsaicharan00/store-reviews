@@ -205,8 +205,8 @@ internal fun TaskDetailsScreen(task: Habit, store: HabitStore, nav: HabitDetails
     if (confirmDelete) {
         AppDialog("Delete ${task.name}?",
             // A repeating task goes whole, with every time it was done (A80).
-            if (task.isRepeatingTask) "It's a repeating task: it goes for good, with every time it was done and its notes. Its progress can't come back."
-            else "Its history and notes are deleted too. To keep them, archive it instead.",
+            if (task.isRepeatingTask) DeleteRepeatingWords
+            else DeleteTaskWords,
             "Delete", {
                 confirmDelete = false
                 // The page leaves first (U27); the page under it says so with Undo and deletes once Undo has gone (D6).
@@ -279,3 +279,7 @@ private fun LazyListScope.taskDays(
         }
     }
 }
+
+/** Delete <one-time task>?'s body (Figma 1132:224527); a repeating task's says it goes whole (A80). */
+internal const val DeleteTaskWords = "It goes for good, with its notes. To keep it out of the way instead, archive it."
+internal const val DeleteRepeatingWords = "It's a repeating task: it goes for good, with every time it was done and its notes. Its progress can't come back."

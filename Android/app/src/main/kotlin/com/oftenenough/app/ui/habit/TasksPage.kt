@@ -279,7 +279,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
         }
     }
     deleting?.let { t ->
-        AppDialog("Delete ${t.name}?", "Its history and notes are deleted too. To keep them, archive it instead.",
+        AppDialog("Delete ${t.name}?", if (t.isRepeatingTask) DeleteRepeatingWords else DeleteTaskWords,
             "Delete", { deleting = null; delete(t) }, { deleting = null }, destructive = true, confirmTag = "delete-confirm", dismissTag = "delete-cancel")
     }
 }

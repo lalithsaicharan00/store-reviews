@@ -176,7 +176,7 @@ class TasksPageTest {
     @Test fun deleteAsksFirstAndDeletesOnlyOnceUndoHasGone() {
         launch()
         menuFor("Pick up dry cleaning", "delete")
-        waitHere(hasText("Its history and notes are deleted too. To keep them, archive it instead."), "the question")
+        waitHere(hasText("It goes for good, with its notes. To keep it out of the way instead, archive it."), "the question") // Figma 1132:224527's words
         here("delete-confirm")
         waitFor(hasText("Pick up dry cleaning deleted"), "the snackbar")
         // Still there until Undo has gone (D6): Undo keeps it.
