@@ -100,7 +100,6 @@ import com.oftenenough.app.ui.components.HistoryYear
 import com.oftenenough.app.ui.components.PrimaryTabs
 import com.oftenenough.app.ui.progress.HeatKeyVisit
 import com.oftenenough.app.ui.progress.ProgressRangeMemory
-import com.oftenenough.app.ui.progress.QuitRunClock
 import com.oftenenough.app.ui.progress.movedAnchor
 import com.oftenenough.app.ui.progress.rememberProgressSnapshot
 import com.oftenenough.app.ui.progress.rememberToday
@@ -405,8 +404,7 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
             MoreMenuButton("More for ${habit.name}", open, { open = true }, { open = false },
                 Modifier.semantics { testTag = "habits-row-more-" + habit.name }, width = 220.dp) { menu(habit) { open = false } }
         }
-        val start = card.runStart
-        if (start != null) HistorySummary(card.detail) { QuitRunClock(start, store.clock) } else HistorySummary(card.headline, card.detail)
+        HistorySummary(card.headline, card.detail)
         val todayIndex = snap.columns.indexOfFirst { it.isToday }.takeIf { it >= 0 }
         when (snap.range) {
             ProgressRange.WEEK -> if (snap.columns.size == card.heat.size)

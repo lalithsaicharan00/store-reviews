@@ -1,24 +1,17 @@
 package com.oftenenough.app.ui.progress
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.ProgressRange
 import com.oftenenough.app.data.ProgressSnapshot
 import com.oftenenough.app.data.progressBuilder
-import com.oftenenough.app.ui.theme.AppType
-import com.oftenenough.app.ui.theme.appColors
 import kotlinx.coroutines.delay
 
 /**
@@ -91,28 +84,4 @@ private object ProgressCache {
     }
 }
 
-private val headlineStyle = AppType.titleLargeEmphasized
 
-/**
- * A quit card's headline: the run going on now, "12 d 11 h current run". Only this text ticks, once a minute, on the
- * run's own minutes (S3, S4).
- */
-@Composable
-internal fun QuitRunClock(start: Long, clock: () -> Long) {
-    val c = appColors
-    var now by remember(start) { mutableLongStateOf(clock()) }
-    LaunchedEffect(start) {
-        while (true) {
-            val t = clock()
-            now = t
-            delay(60_000L - Math.floorMod(t - start, 60_000L))
-        }
-    }
-    Text(
-        buildAnnotatedString {
-            withStyle(AppType.titleLargeEmphasized.toSpanStyle().copy(color = c.ink)) { append(Format.run((now - start) / 1000.0)) }
-            withStyle(AppType.bodyMedium.toSpanStyle().copy(color = c.secondary)) { append(" current run") }
-        },
-        style = headlineStyle.copy(fontFeatureSettings = "tnum"),
-    )
-}

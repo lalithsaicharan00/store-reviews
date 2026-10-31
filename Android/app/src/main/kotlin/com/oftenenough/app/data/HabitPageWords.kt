@@ -343,9 +343,21 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
     var headline: String
     var detail: String?
     when (shape) {
-        ProgressShape.ONCE -> { headline = of(doneDays, counted.size); detail = plusExtra() }
+        // Figma's cards (Habits & Tasks and the details pages): a daily check "Done on 6 of 6 days so far" over its run
+        // ("58 days in a row"); every few days "Done 2 of 2 times so far" over the next time ("Next on Sat"). A past
+        // period says what it held: "7 days that week", "Every 3 days".
+        ProgressShape.ONCE -> if (rule.frequency is Frequency.EveryNDays) {
+            headline = "Done $doneDays of ${if (counted.size == 1) "1 time" else "${counted.size} times"}$soFar"
+            detail = if (running) nextTimeText(habit, today) else HabitCopy.capitalized(HabitCopy.rhythm(rule.frequency, weekStart))
+        } else {
+            headline = "Done on " + of(doneDays, counted.size)
+            detail = if (running) {
+                val run = rules.runs(habit, today).lastOrNull()?.takeIf { it.isCurrent }?.length ?: 0
+                if (run > 0) "${dayCount(run)} in a row" else plusExtra()
+            } else if (doneDays > 0) "${dayCount(doneDays)} $whenText" else plusExtra()
+        }
         ProgressShape.TIMES -> {
-            headline = "Full on " + of(doneDays, counted.size)
+            headline = "Reached on " + of(doneDays, counted.size)
             detail = if (total > 0) HabitCopy.amount(total, unit.ifEmpty { "times" }) + " " + whenText else plusExtra()
         }
         ProgressShape.AMOUNT, ProgressShape.TIME -> {
@@ -363,7 +375,7 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
             headline = if (judged.isEmpty()) {
                 val now = amounts[today] ?: 0.0
                 if (running) "${progressValue(now, rule)} of ${progressValue(rule.goal, rule)} so far today" else "Nothing judged that $noun"
-            } else "Within max on $within of ${dayCount(judged.size)}"
+            } else "Within the limit on $within of ${dayCount(judged.size)}$soFar"
             detail = if (total > 0 && judged.isNotEmpty()) progressValue(total, rule) + " " + whenText else null
         }
         else -> {
@@ -381,6 +393,8 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
             // Figma 1127:58497: a habit made today says so until something is logged.
             if (total == 0.0 && extraDays == 0) detail = "Nothing logged yet"
         } else if (next != null) {
+            // The headline names the day, so a "Next on Mon" under it would say it twice.
+            if (detail?.startsWith("Next on") == true || detail?.startsWith("Planned") == true) detail = null
             headline = if (next.day == today) "Planned for today"
             else if (range == ProgressRange.WEEK) "Planned for " + HabitCopy.fullDays[pageWeekday(next.day) - 1]
             else "Planned for " + DayWords.short(next.day)
@@ -564,7 +578,7 @@ private fun HabitStore.periodText(
         val judged = results.count { it.met != null }
         fun periods(n: Int) = if (kind == GoalPeriod.WEEK) (if (n == 1) "week" else "weeks") else (if (n == 1) "month" else "months")
         val open = results.lastOrNull()?.takeIf { it.met == null && today in it.period }
-        val head = if (shape == ProgressShape.LIMIT_PERIOD) "Within max $met of $judged ${periods(judged)}"
+        val head = if (shape == ProgressShape.LIMIT_PERIOD) "Within the limit in $met of $judged ${periods(judged)}"
         else if (judged == 0 && open != null) {
             (if (shape == ProgressShape.PERIOD_TOTAL) "${pv(open.value)} of ${pv(open.goal)}"
             else "${count(min(open.value, open.goal))} of ${count(open.goal)}") + " this ${periods(1)}"
@@ -633,6 +647,15 @@ private fun HabitStore.checklistDetail(habit: Habit, counted: List<Int>): String
 
 /** "Next planned for Mon, 12 Oct" for a schedule whose next planned day is after this period; null when none within
  *  four months. */
+/** "Next on Sat" (within the week ahead), "Next on 9 Nov"; "Planned for today" while today's is still to do. */
+private fun HabitStore.nextTimeText(habit: Habit, today: Int): String? {
+    if (rules.isDue(habit, today) && !rules.isDone(habit, today)) return "Planned for today"
+    for (day in today + 1..today + 124) if (rules.isDue(habit, day)) {
+        return "Next on " + if (day - today < 7) HabitCopy.shortDays[pageWeekday(day) - 1] else DayWords.dayMonth(day)
+    }
+    return null
+}
+
 private fun HabitStore.nextDueText(habit: Habit, after: Int): String? {
     for (cursor in after + 1..after + 124) if (rules.isDue(habit, cursor)) return "Next planned for " + DayWords.short(cursor)
     return null
@@ -712,9 +735,14 @@ fun HabitStore.quitPeriodCard(habit: Habit, span: IntRange, range: ProgressRange
     val slips = if (count == 0) "No slips $whenText" else if (count == 1) "1 slip $whenText" else "$count slips $whenText"
     val paused = running && isPaused(habit, today)
     if (running && !paused) {
+        // Figma's quit card (Habits & Tasks, the details pages; A23, A56): "19 days clean" over "Since 3 Oct · no slips
+        // this week", the day the current run began.
         val current = rules.quitHistory(habit, now).lastOrNull()?.takeIf { it.ending == QuitRun.Ending.ONGOING }?.start
-        val headline = current?.let { "Current run " + Format.run((now - it) / 1000.0) } ?: slips
-        return PeriodCard(headline, if (current == null) null else slips, strip)
+            ?: return PeriodCard(slips, null, strip)
+        val days = ((now - current) / 86_400_000L).toInt()
+        val clean = if (days >= 1) "$days ${if (days == 1) "day" else "days"} clean" else Format.run((now - current) / 1000.0) + " clean"
+        val since = "Since " + pageShortDate(rules.calendarDayOf(current), today) + " · " + slips.replaceFirstChar { it.lowercase() }
+        return PeriodCard(clean, since, strip)
     }
     return PeriodCard(if (paused) "Paused" else slips, if (paused) slips else null, strip)
 }

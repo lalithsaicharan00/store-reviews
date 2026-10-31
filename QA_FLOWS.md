@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 16 |
+| habits & tasks | 269:148 | 35 | 17 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **173** |
+| **All** | | **290** | **174** |
 
 ## Bug log
 
@@ -256,6 +256,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 218. Every day square (the user, 1 Nov 2026: "within cells … pause should be a filled icon, rather than outline") · a paused day's ⏸ was Material Symbols' outlined pause; Figma's cells draw it filled. `DayCell` draws the filled glyph, so Habits & Tasks' Week and Month, Habit details' Week, Month and Year in Pixels, and What the squares mean all change at once.
 219. Habits & tasks 16 (and 1–15: every card, and search) · the goal under a card's name missed Figma's words, here and on the details pages: Meds and Bed on time said "Every day" (Figma: "Once a day | 8:00 AM", "Once a day | 10:30 PM": a daily check, and its first reminder's time), Study "1 h every Mon, Wed and Fri" ("1 h on Mon, Wed, Fri"), Smoking "Quit · since Wed, 15 Apr" ("Quit"). Earlier flows compared the cards' layout and missed these words. `weekGoalText` writes them all.
 220. Habits & tasks 16 · a habit made today said only "Started today"; Figma adds "Nothing logged yet" under it until something is logged.
+221. Habits & tasks 17 (and Habit details' Week and Month) · a card's words were older than Figma's: a daily check "7 of 7 days" (Figma "Done on 6 of 6 days so far" over its run, "58 days in a row"; a past week "Done on 7 of 7 days" · "7 days that week"); every few days "2 of 2 days · +5 extra days" ("Done 2 of 2 times so far" · "Next on Sat"; a past week "Every 3 days"); several a day "Full on" ("Reached on"); a limit "Within max on 4 of 5 days" ("Within the limit on … days so far"). Figma's own Habits frames leave "so far" off the limit line while its details pages and every other card have it; the app says it.
+222. Habits & tasks 17 · a quit card ticked "45 d 0 h current run" over "No slips this week"; Figma (and A23, A56): "19 days clean" over "Since 3 Oct · no slips this week". The ticking clock (`QuitRunClock`) is gone with it.
+223. Habits & tasks 17 · a card planned for later in the week said its day twice: "Planned for Monday" over "Next on Mon". The line under goes when the headline names the day.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -279,6 +282,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ²⁰ Routine player 20: under the limit, the timer frames draw the track in the wave's own #777777; Today's limit rows (flow 45) draw it Outline variant, and the app keeps that, so the time left stays readable. The frames' waves are drawn lines with no colour variable.
 ²¹ Routine player 24: at the phone's 200 % (Android's own scale, which grows big text less than small) the name and description are larger than Figma's 200 % frame draws them, so the count sits below the card's fold and the card scrolls to it. What the frame's note asks holds: two lines at most for each, then …, and the buttons keep their height.
 ²² Habits & tasks 6: "Reached on 6 of 6 days so far" fits Figma's 296 on one line and wraps in the app: the string is 297.2 dp in the bundled Google Sans Flex at Medium, opsz 22 (fontTools, before kerning); Figma's renderer draws it a hair narrower. Text that wraps grows its card (Rulebook), and the style isn't ours to change (U36).
+²³ Habits & tasks 17: Figma's frames are a Friday; the run was on Sunday 1 Nov, the week's first day, so the kinds were compared on this week (planned, quit, limits) and on last week, 25–31 Oct, against Figma's earlier-week frames (flow 3). The demo has no 3-a-day check or monthly goal; their words come from the same code as Water's and Journal's.
 
 ## Open questions for the user
 
@@ -490,7 +494,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 14 | 296:2 | Search habits and tasks (from Habits) | search → search view → “wa” → Water → ← keeps search | passed ↻ |
 | 15 | 296:602 | Search: no match (from Habits) | “yoga” → Add “yoga” → What do you want to do? → How track? → New habit “yoga” → Add · Show | passed ↻ (the "added" message is this page's, as its frames draw it; Today keeps A47's none) |
 | 16 | 297:2 | +: a new habit | + → What do you want to do? → How track? → New habit Floss → Add · Show → Show scrolls | passed ↻ ("1 h on Mon, Wed, Fri": Figma writes "1 hour" on this card and "1 h" everywhere else) |
-| 17 | 299:2 | Every kind of card (Week) | Checks → Amounts and goals → Skipped, paused, quit → time limit, every few days | not started |
+| 17 | 299:2 | Every kind of card (Week) | Checks → Amounts and goals → Skipped, paused, quit → time limit, every few days | passed ↻ ²³ |
 | 18 | 301:2 | Empty and first states | No habits → all archived → first week → July all paused | not started |
 | 19 | 303:2 | A long name, and Font size 200% | usual → long name → 200 % | not started |
 | 20 | 305:2 | The Tasks tab: One-time | Tasks → One-time → end: No date, Completed, Archived | not started |
