@@ -38,9 +38,11 @@ enum class IconButtonSize(val container: Dp) { Small(40.dp), Medium(56.dp) }
  * - **Done:** the habit's colour with a white glyph (On habit), and only once the goal is met (U2, U14), or the chosen
  *   icon. The change between them fades (220 ms).
  *
- * Switched off (a timer on a past day, a skipped day's ✓): Material's disabled state in our colours, as every
- * switched-off button ([AppButton]): Surface container low, the glyph On surface at 38 %, no habit colour. Material's
- * On surface at 10 % would be our Surface container highest, the enabled neutral button's own colour. [text] replaces the glyph where a number says more ("+250", the habit form's preview).
+ * Switched off (a skipped day's ✓, a later day): Material's disabled state in our colours, as every switched-off button
+ * ([AppButton]): Surface container low, the glyph On surface at 38 %, no habit colour. Material's On surface at 10 %
+ * would be our Surface container highest, the enabled neutral button's own colour. **Done wins over switched off**
+ * (the user, 31 Oct 2026): a goal met stays the habit's colour with white, even where the button can't act (an earlier
+ * day's ▶, which starts no timer), as Figma's every Done row draws it. A limit is never Done (its caller passes false). [text] replaces the glyph where a number says more ("+250", the habit form's preview).
  */
 @Composable
 fun AppFilledIconButton(
@@ -65,8 +67,8 @@ fun AppFilledIconButton(
         enabled,
         colors = IconButtonDefaults.filledIconButtonColors(
             containerColor = container, contentColor = content,
-            disabledContainerColor = s.surfaceContainerLow,
-            disabledContentColor = s.onSurface.copy(alpha = 0.38f),
+            disabledContainerColor = if (done) container else s.surfaceContainerLow,
+            disabledContentColor = if (done) content else s.onSurface.copy(alpha = 0.38f),
         ),
     ) {
         if (text != null) Text(text, style = if (text.length > 3) AppType.labelMedium else AppType.labelLarge, maxLines = 1)

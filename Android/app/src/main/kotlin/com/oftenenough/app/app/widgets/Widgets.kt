@@ -555,7 +555,8 @@ private fun Bar(item: WidgetItem, height: Dp = 8.dp) {
  */
 @Composable
 private fun RoundButton(item: WidgetItem, frame: WidgetFrame) {
-    val filled = item.done && item.action != WidgetAction.TIMER_PAUSE && !item.limit
+    // Every kind fills once its goal is met, a running ⏸ too (Figma's widgets, A91); a limit never does.
+    val filled = item.done && !item.limit
     val back = if (filled) habit(item.color) else Soft
     val tint = if (filled) White else Secondary
     val idle = item.state != null
