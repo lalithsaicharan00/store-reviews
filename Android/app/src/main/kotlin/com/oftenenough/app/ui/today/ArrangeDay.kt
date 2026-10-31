@@ -275,9 +275,15 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
                         )
                     }
                 } }
-                // After the last timed time of day, Add time of day.
+                // An empty time of day: "Drag a habit here" in a dashed box (Figma's Edit Today, a new Night); after the last
+                // timed one, Add time of day.
                 if (entries.getOrNull(i + 1) !is ArrangeEntry.Row) {
                     val card = cardAt(i)
+                    if (e is ArrangeEntry.Header) Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).dropSlot(RoundedCornerShape(24.dp), outline)
+                        .semantics { testTag = "arrange-empty-${e.card}" }, contentAlignment = Alignment.Center) {
+                        Text("Drag a habit here", Modifier.padding(horizontal = 16.dp, vertical = 8.dp), style = AppType.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                    }
                     if (card == lastTimed) {
                         Spacer(Modifier.height(16.dp))
                         AppButton("Add time of day", { onEditSection(null) }, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "arrange-add-time")

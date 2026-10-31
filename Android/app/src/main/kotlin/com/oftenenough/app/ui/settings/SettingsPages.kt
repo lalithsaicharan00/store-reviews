@@ -171,7 +171,8 @@ fun SectionEditorScreen(
     val dayEnd = 24 * 60 + store.dayEndHour * 60
     var start by remember { mutableStateOf(existing?.start ?: SectionPlan.freeStart(store.sections, dayEnd)) }
     var picking by remember { mutableStateOf<String?>(null) }
-    var confirmSplit by remember { mutableStateOf(false) }
+    // A new time of day joins Your day once its start is picked (Figma's Today, flow 52: frame 3 without it, frame 5 with).
+    var startPicked by remember { mutableStateOf(existing != null) }
     var confirmDelete by remember { mutableStateOf(false) }
     var discard by remember { mutableStateOf(false) }
     val trimmed = TextLimit.clean(name, TextLimit.SECTION)
@@ -186,7 +187,7 @@ fun SectionEditorScreen(
     val initialStart = remember { start }
     val changed = name != (existing?.name ?: "") || start != initialStart
     FormPage(if (existing == null) "New time of day" else "Edit time of day", onBack = { if (changed) discard = true else onClose(null) }, close = true, actions = {
-        AppButton(if (existing == null) "Add" else "Save", { if (plan?.split.isNullOrEmpty()) save() else confirmSplit = true },
+        AppButton(if (existing == null) "Add" else "Save", { save() },
             Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null, tag = "section-save")
     }) {
         val s = MaterialTheme.colorScheme
@@ -209,7 +210,7 @@ fun SectionEditorScreen(
             val mine = plan?.rows?.firstOrNull { it.isSubject }
             val endWords = mine?.let { row ->
                 val next = plan.rows.firstOrNull { it.start == row.end && !it.isSubject }
-                DayWords.clockMinute(row.end % (24 * 60)) + ", when ${next?.name ?: "your new day"} starts"
+                DayWords.clockMinute(row.end % (24 * 60)) + (next?.let { ", when ${it.name} starts" } ?: ", when the day ends")
             }
             SegmentedList {
                 val startText = start?.let { DayWords.clockMinute(it % (24 * 60)) } ?: "Choose"
@@ -222,24 +223,22 @@ fun SectionEditorScreen(
                 color = if (plan?.problem != null) s.error else s.onSurfaceVariant)
             if (plan != null) {
                 Label("Your day")
+                val rows = if (startPicked) plan.rows else plan.rows.filter { !it.isSubject }
                 SegmentedList {
-                    plan.rows.forEachIndexed { i, row ->
-                        AppListItem(row.name, i, plan.rows.size, Modifier.semantics(mergeDescendants = true) { testTag = "plan-row-${row.name}" }, row.range,
+                    rows.forEachIndexed { i, row ->
+                        AppListItem(row.name, i, rows.size, Modifier.semantics(mergeDescendants = true) { testTag = "plan-row-${row.name}" }, row.range,
                             trailing = if (row.isSubject) ({ Text(if (existing == null) "New" else "Editing", style = AppType.bodyMedium, color = s.onSurfaceVariant) }) else null,
-                            below = if (!row.isSubject && row.changed) row.oldRange?.let { { Text("Was $it", style = AppType.bodySmall, color = s.onSurfaceVariant) } } else null,
                             containerColor = s.surfaceBright, headlineLines = 1)
                     }
                 }
+                if (existing == null) Text("Each time of day ends when the next one starts. This is your day once you add this one.",
+                    Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
             }
             if (existing != null) AppButton("Delete time of day", { confirmDelete = true }, Modifier.fillMaxWidth().padding(top = 16.dp), style = ButtonStyle.Outlined,
                 size = ButtonSize.Medium, destructive = true, tag = "section-delete")
         }
     }
-    if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }) { start = it }
-    if (confirmSplit && plan != null) AppDialog("Split ${HabitCopy.join(plan.split.map { it.name })}?",
-        plan.rows.filter { it.isSubject || it.changed }.joinToString("\n") { "${it.name}: ${it.range}" },
-        if (existing == null) "Split and add $trimmed" else "Split and save", { confirmSplit = false; save() }, { confirmSplit = false },
-        confirmTag = "section-split-confirm")
+    if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }) { start = it; startPicked = true }
     if (confirmDelete && existing != null) {
         // Figma's "Delete Morning?": Cancel and Delete only (D9), saying where its habits go and that nothing of theirs is lost.
         val habits = store.habits.count { existing.id in it.parts && !it.archived && it.kind != HabitKind.Task }

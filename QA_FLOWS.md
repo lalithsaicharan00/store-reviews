@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 52 |
+| today | 54:5580 | 84 | 54 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **62** |
+| **All** | | **290** | **64** |
 
 ## Bug log
 
@@ -125,6 +125,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 87. Edit Today · a times-a-week habit had an empty second line; Figma: "3 times a week" (arrangeSubtitle falls back to the plan).
 88. Edit Today · while carrying a row, the gap it left was empty; Figma draws "Drop here": a dashed outline, Outline, 1 dp, 6 on 4 off, in the row's shape. Drawn in the row's place, under the carried row.
 89. Today · demo data — paused Meditate was in Evening; Figma's Edit Today has it in Morning (DemoData.design).
+90. New time of day · Your day listed "New time of day · New" before a start was picked, with no footer; Figma lists the new one once its start is chosen, and under Your day says "Each time of day ends when the next one starts. This is your day once you add this one."
+91. Edit time of day · the last time of day's end said "12:00 AM, when your new day starts"; Figma: "12:00 AM, when the day ends".
+92. Edit time of day · Add/Save asked "Split Evening?" and changed rows said "Was …"; neither is in Figma (Add puts Night straight in). Both removed (A77); splitting loses nothing.
+93. Edit Today · an empty time of day showed nothing under its heading; Figma: "Drag a habit here" in a dashed box (Outline, 1 dp, 6 on 4 off, corners 24), the same drawing as the drop slot.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -256,10 +260,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 49 | 232:2 | What a row's second line says, with reminders | goal · reminder after a \| → ✓ Meds: reminder time goes | passed |
 | 50 | 57:2 | Arrange Today | Today → ✏ Edit Today → drag Read into Evening → dropped; Undo → ← Today | passed |
 | 51 | 59:4 | Change a time of day | Today → Edit Today → ✏ Morning: Edit time of day → Starts: time picker → 7:00 AM → Save | passed |
-| 52 | 59:712 | Add a time of day | Today → Edit Today → Add time of day → Starts: picker → 10:00 PM → Add: Night | not started |
+| 52 | 59:712 | Add a time of day | Today → Edit Today → Add time of day → Starts: picker → 10:00 PM → Add: Night | passed |
 | 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | not started |
 | 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | not started |
-| 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | not started |
+| 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | passed |
 | 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | not started |
 | 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | not started |
 | 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | not started |
