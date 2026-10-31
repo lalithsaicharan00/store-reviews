@@ -6,6 +6,7 @@ import com.oftenenough.app.data.rowLine
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import com.oftenenough.app.ui.components.MilestonePopup
 import com.oftenenough.app.ui.components.SnackbarAction
@@ -319,12 +320,13 @@ fun RoutinePlayer(
                     )
                 }
                 if (feedback != null) {
-                    // Over the card's foot, as Figma draws it (2, 3.1, 6.1): 16 from the sides, 4 past the card.
+                    // Over the card's foot, as every Figma frame draws it (13 of them): 12 from the screen's sides, its
+                    // bottom 8 inside the card (it was 16 and 4 past the card: QA Routine player 13).
                     FeedbackBar(
                         feedback,
                         onUndo = { session.undo(feedback) },
                         onNote = { store.habit(feedback.habitId)?.let { nav.writeNote(it, day) } },
-                        modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 16.dp).offset(y = 4.dp),
+                        modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 12.dp).offset(y = (-8).dp),
                     )
                 }
             }
@@ -831,13 +833,15 @@ internal fun HeroCard(
         // status line 12 under it; all centred in the card. Large text (Figma's Habit · 200% text, from Android's font
         // scale 1.5): the cookie 96, 24 by 16 in, 16 under the cookie and 20 between the parts; the card scrolls.
         val large = LocalDensity.current.fontScale >= 1.5f
-        val part = if (large) 20.dp else 32.dp
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
             val minHeight = maxHeight
+            // Figma's 32 is for its 524 dp card; a shorter card (a taller status bar) takes what it's short by out of the
+            // two gaps around the count, down to large text's 20, so the content keeps its room above the save message.
+            val part = if (large) 20.dp else (32.dp - (524.dp - maxHeight).coerceAtLeast(0.dp) / 2).coerceIn(20.dp, 32.dp)
             Column(
                 Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight)
                     .padding(horizontal = if (large) 16.dp else 24.dp, vertical = if (large) 24.dp else 32.dp),
-                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = CenterAboveSnackbar, horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 HabitIcon(habit.symbol, habit.color, size = if (large) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
                 Spacer(Modifier.height(if (large) 16.dp else identityGap))
@@ -861,6 +865,20 @@ internal fun HeroCard(
                 }
             }
         }
+    }
+}
+
+/**
+ * The card's content centred, as Figma draws it, but never lower than 24 above the padding: the save message (48 tall,
+ * 8 over the bottom bar) sits over the card's foot, and Figma's card leaves exactly that room (32 + 24 under its status
+ * line). A phone with a taller status bar has a shorter card; centred, its status line went under the message ("Goal
+ * met" cut, QA Routine player 13), so the content moves up instead. On Figma's 800 dp frame nothing changes.
+ */
+private val CenterAboveSnackbar = object : Arrangement.Vertical {
+    override fun Density.arrange(totalSize: Int, sizes: IntArray, outPositions: IntArray) {
+        val free = totalSize - sizes.sum()
+        var y = minOf(free / 2, free - 24.dp.roundToPx()).coerceAtLeast(0)
+        sizes.forEachIndexed { i, h -> outPositions[i] = y; y += h }
     }
 }
 

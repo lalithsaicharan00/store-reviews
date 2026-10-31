@@ -219,6 +219,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 181. Routine player 24 · a tap on the description did nothing; Figma: a sheet with the whole name and description, and Close.
 182. Routine player 24 · a time habit with time logged before the routine said "Resume" (and "Paused"); Figma: "Start", with Resume and Paused only after Pause in this run (242:2).
 183. Routine player 24 · at 200 % text the 96 dp buttons cut their label (Material's 32 above and below); a Large button now centres its label with no padding above and below.
+184. Every screen · the bundled Google Sans Flex carried a `BASE` table whose Latin extent (1.47× the text size) Android 15+ uses as every line's least height: 32 sp text on its 40 sp line measured 46.7 dp, a 22 sp title 32.7 instead of 28, so big text pushed everything under it down. `BASE` removed from the font (`Fonts.kt` says why); lines are exactly the styles' heights, as Figma.
+185. Routine player 13 · the save message sat 16 from the sides and 4 past the card; every Figma frame (13): 12 from the sides, its bottom 8 inside the card.
+186. Routine player 13 · on a phone with a taller status bar the card is shorter and its centred content ran under the save message ("Goal met" cut); the content keeps 24 free above the card's padding and the two gaps around the count give up what the card is short by (down to 20). On Figma's frame nothing moves.
+187. Every list · Material's list item left 12 between the icon, the words and the trailing part; Figma's List item 16, so every row's words sat 4 dp left (Day details' Meds at 84, Figma 88). Fixed in `AppListItem`.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -237,6 +241,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹⁵ Routine player 1–8: the card's progress line is on the habit's Fill (A90) where most of Figma's player frames draw it on grey; that's D-53, everything else matches.
 ¹⁶ Routine player 3: Figma's "Note saved" here has Undo; Day details' (flow 38) and Today's don't. The app keeps its one rule, "Note saved" without Undo.
 ¹⁷ Routine player 21: Android 16 draws the app's own icon in the card's circle and the running clock in its header, not beside the name; a paused clock is still, so it goes in the line. Pause and Resume from the card work without opening the app. The lock-screen frame wasn't checked: the emulator has no screen lock, and setting one is a security setting left to you.
+¹⁸ Routine player 13 (and every Display Large number): the number's line is 71 dp where Figma's is 64. Android never draws a line shorter than the font's own height (1.25× the size for Google Sans Flex), and Compose has no setting for it; the card's spacing takes up the difference.
 
 ## Open questions for the user
 
@@ -415,7 +420,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 10 | 249:2 | The ⋮ menu in the player | → ⋮ → Go to first unfinished / Change order / End routine | passed |
 | 11 | 251:2 | An amount in the player | Water → +1 → +1 twice: Goal met → Today chip → Log manually → Add, ✕ | passed |
 | 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | passed ↻ |
-| 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | passed |
+| 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | passed ↻ ¹⁸ |
 | 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | passed |
 | 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | passed |
 | 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | passed |

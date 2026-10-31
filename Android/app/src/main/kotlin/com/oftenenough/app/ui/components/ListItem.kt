@@ -101,12 +101,16 @@ fun AppListItem(
             }
         }
     }
+    // Figma's List item has 16 between the leading avatar, the words and the trailing part; Material leaves 12, so
+    // each side gets 4 more (QA, 31 Oct 2026: every row's words sat 4 dp left of Figma's).
+    val lead = leading?.let { l -> @Composable { Box(Modifier.padding(end = 4.dp)) { l() } } }
+    val trail = trailing?.let { t -> @Composable { Box(Modifier.padding(start = 4.dp)) { t() } } }
     val colors = ListItemDefaults.segmentedColors(containerColor = containerColor)
     // Figma's List item is 8 above and below (56 for one line with its 40 avatar); Material's 10 made it 60.
     val padding = if (below == null) PaddingValues(horizontal = 16.dp, vertical = 8.dp) else ListItemDefaults.ContentPadding
-    if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, leading, trailing, supportingContent = support, onLongClick = onLongClick,
+    if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, lead, trail, supportingContent = support, onLongClick = onLongClick,
         colors = colors, contentPadding = padding, content = headlineText)
-    else SegmentedListItem(shapes, m, enabled, leading, trailing, supportingContent = support, colors = colors, contentPadding = padding, content = headlineText)
+    else SegmentedListItem(shapes, m, enabled, lead, trail, supportingContent = support, colors = colors, contentPadding = padding, content = headlineText)
 }
 
 /** Between the rows of one group (Material's `SegmentedGap`, 2 dp). */
