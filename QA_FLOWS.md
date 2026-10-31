@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 55 |
+| today | 54:5580 | 84 | 56 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **65** |
+| **All** | | **290** | **66** |
 
 ## Bug log
 
@@ -132,6 +132,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 94. Edit Today · Anytime's handle stepped the card one place per 64 dp dragged, with nothing lifted and no word when it was let go; Figma 62:2: the whole card (heading and rows) lifts and follows the finger on the page's colour, corners 24, Elevation Level 3, a dashed outline where it will land, the others making room; let go, it's saved and the snackbar says "Anytime moved to the top" with Undo. Built that way (`HabitStore.placeCard`; Undo puts it back); a card passes another when its leading edge crosses that card's middle.
 95. Time picker (Today flows 51, 52; every dialog, menu and sheet in Surface) · the dialog was #DFDFDF, not Figma's #F9F9F9: the theme set Surface tint to Transparent, which Material lays over Surface at its elevation's alpha, so black at ~11 % darkened every raised surface coloured Surface. Surface tint is now Surface's own colour (light and dark), which changes nothing (`ui/theme/Theme.kt`).
 96. Time picker · the focused hour or minute box had a grey (Outline) 2 dp border; Figma (and Material) draw it Primary, #303030. Set in the shared picker (`ui/components/TimePickerDialog.kt`).
+97. Edit time of day · "Delete Morning?" said "Its 4 habits move to Anytime. Their logs, notes and streaks stay."; Figma: "Its 4 habits will move to Anytime."
+98. Every dialog (Dialog 5.3.4) · 280 dp wide, Material's minimum for short text; Figma's component: 312 (the width less 24 each side, 280–560). `AppDialog` now fills the width less 24 each side. Its 12 dp of extra height is D-47.
+99. Delete a time of day · its habits kept their old places among Anytime's (Meds, Stretch and Skincare before Read); Figma: at the end of Anytime, in their order. `deleteSection` puts them there once the move is saved.
+100. Delete a time of day · back on Edit Today the list stayed at its top; Figma's frame 5 shows Anytime, where the habits went. Edit Today now scrolls to Anytime after a delete.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -140,7 +144,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 
 ## Open questions for the user
 
-Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-46, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
+Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-47, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
 
 ---
 
@@ -218,7 +222,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 51 | 59:4 | Change a time of day | Today → Edit Today → ✏ Morning: Edit time of day → Starts: time picker → 7:00 AM → Save | passed |
 | 52 | 59:712 | Add a time of day | Today → Edit Today → Add time of day → Starts: picker → 10:00 PM → Add: Night | passed |
 | 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | passed |
-| 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | not started |
+| 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | passed |
 | 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | passed |
 | 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | not started |
 | 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | not started |

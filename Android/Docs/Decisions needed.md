@@ -86,6 +86,20 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   the layout, and the numbers come from the rules.
 - **My recommendation:** (b).
 
+### D-47. Dialogs are 12 dp taller than Figma's
+
+- **Where:** Dialog (5.3.4), every question in the app (e.g. "Delete Morning?", Today flow 54, [Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=842-65872)); `ui/components/Dialog.kt`, `ui/theme/Type.kt`.
+- **What Figma shows / what the app did:** Figma's dialog is 180 tall; the app's is 192. Width, padding and the buttons'
+  places now match (312 wide, fixed 31 Oct 2026). The 12 dp: (1) Cancel and Delete keep Android's 48 dp touch height
+  where Figma draws 40 (8 dp); (2) Google Sans Flex at 24 sp is about 35 dp tall, more than Headline Small's 32 dp line,
+  and our text styles never cut a line shorter than its font (`LineHeightStyle.Trim.None`), so the title takes 35 (3 dp).
+  The same holds for any style whose line is shorter than the font (Body Medium: 20.3 for 20).
+- **What I did for now:** both as they are.
+- **Question:** (a) keep both (48 dp touch targets; text never clipped); (b) match Figma exactly: 40 dp buttons and lines
+  trimmed to the style's height, everywhere.
+- **My recommendation:** (a) for the touch targets (Android's accessibility minimum); for the line height, try trimming
+  only if you want Figma's exact spacing, since it moves every text in the app by a dp or two.
+
 ### D-41. Go to a day: 525 dp tall against Figma's 516
 
 - **Where:** Go to a day ([Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=705-1025)); `ui/components/DatePickerDialog.kt`.

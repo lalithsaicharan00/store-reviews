@@ -240,12 +240,12 @@ fun SectionEditorScreen(
     }
     if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }) { start = it; startPicked = true }
     if (confirmDelete && existing != null) {
-        // Figma's "Delete Morning?": Cancel and Delete only (D9), saying where its habits go and that nothing of theirs is lost.
+        // Figma's "Delete Morning?" (842:65872): Cancel and Delete only (D9), saying where its habits go.
         val habits = store.habits.count { existing.id in it.parts && !it.archived && it.kind != HabitKind.Task }
         AppDialog("Delete ${existing.name}?", when (habits) {
             0 -> "No habits are in it."
-            1 -> "Its 1 habit moves to Anytime. Its logs, notes and streak stay."
-            else -> "Its $habits habits move to Anytime. Their logs, notes and streaks stay."
+            1 -> "Its 1 habit will move to Anytime."
+            else -> "Its $habits habits will move to Anytime."
         }, "Delete", {
             confirmDelete = false
             val undo = store.deleteSection(existing.id)

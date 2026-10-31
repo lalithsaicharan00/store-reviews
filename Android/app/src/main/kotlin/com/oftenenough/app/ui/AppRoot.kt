@@ -3,6 +3,7 @@ package com.oftenenough.app.ui
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import android.view.View
 import kotlinx.coroutines.CoroutineScope
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.MutableState
 import com.oftenenough.app.ui.newhabit.EditHabitScreen
 import com.oftenenough.app.ui.menu.MenuDrawer
@@ -295,7 +296,12 @@ private fun AppMain(
                 MenuItem.SETTINGS.title -> WithMenu(store, MenuItem.SETTINGS, nav) { openMenu ->
                     SettingsHome(store, prefs, AppGraph.backup, openMenu) { page -> nav.navigate(Routes.page(page)) }
                 }
-                "Arrange your day" -> ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
+                "Arrange your day" -> {
+                    // After a time of day is deleted: Anytime, where its habits went (Figma 842:65986).
+                    val reveal by entry.savedStateHandle.getStateFlow<String?>("reveal", null).collectAsState()
+                    ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, reveal = reveal,
+                        onRevealed = { entry.savedStateHandle["reveal"] = null }) { nav.popBackStack() }
+                }
                 SettingsPage.LICENCES -> LicencesPage { nav.popBackStack() }
                 SettingsPage.NEW_DAY -> com.oftenenough.app.ui.settings.NewDayStartsAtPage(store) { nav.popBackStack() }
                 SettingsPage.WEEK_START -> com.oftenenough.app.ui.settings.WeekStartsOnPage(store) { nav.popBackStack() }
@@ -385,6 +391,7 @@ private fun AppMain(
             // Back on Times of day (5.8.4, Figma's flows): "Changes saved" after an edit (a new one just appears in its
             // place, in time order); "Morning deleted" with Undo, which brings it back with its habits.
             SectionEditorScreen(store, existing, onDeleted = { name, undo ->
+                nav.previousBackStackEntry?.savedStateHandle?.set("reveal", com.oftenenough.app.data.DaySection.ANYTIME)
                 nav.popBackStack()
                 rootScope.launch {
                     snackbar.currentSnackbarData?.dismiss()

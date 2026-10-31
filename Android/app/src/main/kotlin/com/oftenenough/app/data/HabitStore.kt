@@ -1034,7 +1034,11 @@ class HabitStore(
     fun deleteSection(id: String): SectionUndo {
         val moved = habits.filter { id in it.parts }.associate { h -> h.id to (h.parts to h.parts.filter { it != id }.ifEmpty { listOf(DaySection.ANYTIME) }) }
         val undo = SectionUndo(sections, moved)
+        val anytime = rules.cardMembers()[DaySection.ANYTIME].orEmpty()
         saveSections(sections.filter { it.id != id })
+        // Its habits go to the end of Anytime, in their own order (Figma 842:65986), once the move is saved (the queue's order).
+        val arriving = habits.filter { h -> moved[h.id]?.second == listOf(DaySection.ANYTIME) && h.id !in anytime }.map { it.id }
+        if (arriving.isNotEmpty()) perform { reorder(anytime + arriving) }
         return undo
     }
 

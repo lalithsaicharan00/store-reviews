@@ -48,6 +48,9 @@ import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.HabitIcons
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -109,7 +112,9 @@ fun <T> List<T>.moved(from: Int, to: Int): List<T> {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack: () -> Unit) {
+fun ArrangeDayScreen(
+    store: HabitStore, onEditSection: (String?) -> Unit, reveal: String? = null, onRevealed: () -> Unit = {}, onBack: () -> Unit,
+) {
     val c = appColors
     val outline = MaterialTheme.colorScheme.outline
     val today = store.today()
@@ -265,6 +270,14 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
                 if (r == SnackbarResult.ActionPerformed) { store.update(old); store.reorder(before) }
             }
         }
+    }
+
+    // [reveal]: a time of day to bring to the top once the list is laid out (Anytime, after a time of day is deleted).
+    LaunchedEffect(reveal) {
+        val card = reveal ?: return@LaunchedEffect
+        val top = snapshotFlow { tops["h-$card"] }.filterNotNull().first()
+        scroll.animateScrollTo(top.toInt())
+        onRevealed()
     }
 
     // Near the top or bottom of the screen a dragged row, or a carried card, scrolls the page.
