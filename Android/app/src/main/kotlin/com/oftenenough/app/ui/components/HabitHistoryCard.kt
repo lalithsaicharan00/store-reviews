@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalDensity
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.data.YearLayout
@@ -193,12 +194,15 @@ fun HistoryYear(layout: YearLayout, cells: List<HeatCell>, color: HabitColor, on
     val ring = DayCellSize.ring
     val labels = 16.dp + YearGap
     val columns = maxOf(layout.columns, 1)
-    // Room after the last column for a month name that starts there.
-    val width = ring * 2 + pitch * columns - YearGap + 24.dp
     val height = labels + ring * 2 + pitch * 7 - YearGap
     // Another year opens again on its latest weeks: the scroll starts past the end and is kept within its range.
     val scroll = remember(layout) { ScrollState(Int.MAX_VALUE) }
     val names = remember(layout, measurer, labelStyle) { layout.months.map { it.column to measurer.measure(it.name, labelStyle) } }
+    // The latest week sits at the card's edge, as Figma's (1117:13207); only a month name that starts in the last columns
+    // and runs past them gets room after them (a fixed 24 left a strip of nothing beside this week: QA Habits & tasks 2).
+    val density = LocalDensity.current
+    val past = names.maxOfOrNull { (column, name) -> with(density) { name.size.width.toDp() } - pitch * (columns - column) + YearGap } ?: 0.dp
+    val width = ring * 2 + pitch * columns - YearGap + past.coerceAtLeast(0.dp)
     val tap by rememberUpdatedState(onTap)
     Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         Column(Modifier.padding(top = labels + ring).width(12.dp), verticalArrangement = Arrangement.spacedBy(YearGap)) {

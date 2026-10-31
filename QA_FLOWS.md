@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 1 |
+| habits & tasks | 269:148 | 35 | 2 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **158** |
+| **All** | | **290** | **159** |
 
 ## Bug log
 
@@ -230,6 +230,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 192. Routine player 20 · time added from the timer said nothing once back on it; Figma: "8 min added to Social media · Undo" over the card's foot (602 to 650). The add route takes `from=timer`, Undo takes exactly that log back, and the app's message on the timer sits 18 above its buttons, not on them.
 193. Routine player 24 · a long name with a description pushed the card's line onto its bottom edge (6 dp under it): the content kept its full 32 at the top and overflowed at the bottom. Figma lets the padding give way evenly (24 above and below, 267:2); the card now does, down to 16, and scrolls past that.
 194. Habits & tasks 1 (every page with ☰) · the menu filled a 360 dp phone edge to edge, Material's 360 dp sheet; Figma's drawer is 304 wide with the page under its scrim beside it. The sheet is now the screen less 56, never past 360.
+195. Habits & tasks 2 (and every Year grid) · the year's squares left a 24 dp strip of nothing after this week (room kept for a month name that might start there), so 9 weeks showed; Figma's latest week sits at the card's edge, 10 weeks. Room now only when a month name starting in the last columns needs it.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -448,7 +449,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
 | 1 | 283:2 | Open Habits & Tasks from the menu | Today → ☰ → Habits & Tasks, Week | passed |
-| 2 | 283:405 | Week, Month and Year | Week → Month → Year | not started |
+| 2 | 283:405 | Week, Month and Year | Week → Month → Year | passed |
 | 3 | 283:721 | An earlier week, and back to this one | This week → ‹ last week; Back to this week → back | not started |
 | 4 | 283:1332 | Scroll the page | top → scrolled: bars stay → end: Paused, Archived, key | not started |
 | 5 | 284:2 | Tap a card: Habit details, and back | Stretch card → Habit details → ← | not started |
