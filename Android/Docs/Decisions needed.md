@@ -38,15 +38,104 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) the Pale descriptions also name the Streaks page; (b) earlier runs take another colour.
 - **My recommendation:** (a): the bars read well and match the medal they lead to.
 
+### D-37. Filled icons everywhere, or as Figma sets each one?
+
+- **Where:** every icon; found in the QA pass (QA_FLOWS.md, 31 Oct 2026).
+- **What Figma shows / what the app did:** the QA brief says the design uses filled icons everywhere, but Figma sets 449
+  icon glyphs (Material Symbols Rounded) to FILL 0, drawn outlined in Figma too (e.g. `calendar_today` in the Assist
+  chip specimen), and 97 to FILL 1 (a habit's own icon, play/pause, the selected drawer item, Plus's medal, a state
+  that is on).
+- **What I did for now:** each icon has the fill Figma sets on that node.
+- **Question:** (a) as Figma sets each one; (b) every icon filled, and Figma changed to match.
+- **My recommendation:** (a): the outlined ones are deliberate in Figma, and switching all would change the design.
+
 ## Onboarding
 
-(Nothing open: 6.11 in the build plan settles Restoring's Cancel, Plus isn't on this phone and That isn't a backup.)
+### D-38. Two page colours on five onboarding screens
+
+- **Where:** Onboarding: Plus isn't on this phone, No internet, No backup found, That isn't a backup, From a newer version.
+- **What Figma shows / what the app did:** these screens fill the page with `#f0f0f3` (no colour style or variable behind
+  it) under a top app bar of `#eeeeee` (Surface container, every other screen's page colour).
+- **What I did for now:** one page colour, `#eeeeee`.
+- **Question:** (a) one colour, and Figma's five screens changed; (b) the `#f0f0f3` band is meant.
+- **My recommendation:** (a): the value has no style behind it, so it looks accidental.
 
 ## Today
 
-(Nothing open: 6.10 settles Paused, the notices and Edit Today's sorting.)
+### D-39. Savings' wording differs between pages
+
+- **Where:** Today flow 5, Day details flow 22; `data/StoreWords.kt`.
+- **What Figma shows / what the app did:** Today flow 5 draws Savings' row as "$250/$500" and its Day details as "$50
+  today · $200 to go this month"; Figma's own rule for a row's line (Today flow 49) says a month goal reads "… this
+  month", and the Day details page (flow 22) draws "This month · $300 of $500 · $200 to go".
+- **What I did for now:** the rule and the Day details page.
+- **Question:** (a) as the rule and the Day details page; (b) as flow 5 draws it.
+- **My recommendation:** (a).
+
+### D-40. Today's numbers in Figma's flows disagree with themselves
+
+- **Where:** Today flows 10–11, 30–32, 53; the day bar; `data/RulesGateway.kt`, `data/DemoData.kt`.
+- **What Figma shows / what the app did:** flow 30's first frame (786:32343) draws Meds with 🔥 57 though Figma's own
+  rule (142:2) says a missed yesterday hides the 🔥; every Today frame's day bar says "4/13" while its chips (3 + 3 + 2
+  + 2 left of 13) make 3/13; past days (Tue 13 Oct, flow 32) reuse today's streaks (Meds 🔥 57 eighteen days ago).
+  Pick up parcel was on today in flows 10–11 and tomorrow in flow 31: **settled by A86** (a task is on the day it's
+  planned for, "Task · Once", never "due"; the demo's parcel is planned for today).
+- **What I did for now:** the rule (no 🔥 after a missed yesterday: 56 on yesterday, 57 once it's ticked); the day bar
+  counts what the sections show (Today counts 14 with the parcel); a past day's streak is worked out from its history.
+- **Question:** (a) Figma's frames redrawn to agree with the app's numbers; (b) Figma's frames stay as illustrations of
+  the layout, and the numbers come from the rules.
+- **My recommendation:** (b).
+
+### D-41. Go to a day: 525 dp tall against Figma's 516
+
+- **Where:** Go to a day ([Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=705-1025)); `ui/components/DatePickerDialog.kt`.
+- **What Figma shows / what the app did:** Material's own date picker (A76) puts its month row and weekdays a few dp
+  taller than Figma's drawing; everything else lines up.
+- **What I did for now:** Material's picker.
+- **Question:** (a) keep Material's; (b) match Figma's 516 with a picker of our own.
+- **My recommendation:** (a), as A76.
+
+### D-42. A later day's buttons: switched off, or gone?
+
+- **Where:** Today flow 31 (Tomorrow), flow 34; `ui/today/TodayRows.kt`.
+- **What Figma shows / what the app did:** Figma drew Tomorrow's Water with a live + while its own notes say "Nothing can
+  be logged ahead" and "What's planned, with no logging buttons".
+- **What I did for now:** the button stays, switched off as on a skipped day (flow 13); a task's ✓ stays on (done
+  early, as the note says). Figma's three Tomorrow frames now draw Water's + as State=Disabled, and flow 34's Tomorrow
+  its Gym ✓.
+- **Question:** (a) switched off; (b) no button at all on a later day.
+- **My recommendation:** (a): the row keeps its shape from day to day.
+
+### D-43. Alarms & reminders off with the battery Unrestricted can't happen
+
+- **Where:** Today flow 39 (Pixel); `ui/settings/KeepRemindersComing.kt`.
+- **What Figma shows / what the app did:** Figma's Pixel frame has the battery step done and Alarms & reminders still to
+  do; Android grants exact alarms to any app on the battery allowlist and greys out that switch, so this never shows
+  on Android 14 and later.
+- **What I did for now:** the app handles both orders; on a Pixel the late notice comes with the battery step too.
+- **Question:** (a) Figma's frame redrawn (both steps together); (b) leave it.
+- **My recommendation:** (a).
+
+### D-44. The time picker's Hour and Minute labels
+
+- **Where:** Today flows 51, 52 (a time of day's start); Material's time input.
+- **What Figma shows / what the app did:** Material's own time input (A76) puts "Hour" and "Minute" under its fields;
+  Figma's drawing has none.
+- **What I did for now:** Material's.
+- **Question:** (a) keep Material's; (b) remove the labels.
+- **My recommendation:** (a), as A76.
 
 ## Day details
+
+### D-45. Day details for tomorrow is titled "Today" in Figma
+
+- **Where:** Tomorrow's sheet ([Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=788-32597)); the Day details sheet component ([Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=669-234)).
+- **What Figma shows / what the app did:** Tomorrow's sheet is titled "Today"; the app says "Tomorrow". The sheet
+  component draws its own bar with no stop dot, where the Linear progress atom (902:14527) and Material's indicator
+  have one.
+- **What I did for now:** "Tomorrow", and Material's bar with its stop dot.
+- **Question:** (a) as the app, and Figma's sheet fixed; (b) as Figma draws it.
+- **My recommendation:** (a).
 
 ### D-4. Dialogs and pickers: Surface container high or Surface bright?
 
@@ -303,6 +392,17 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   is widget work, so it waits for your yes and is checked on a phone (U28).
 
 ## Plus
+
+### D-46. Blocked: Google Play purchases on the emulator
+
+- **Where:** Onboarding flows 3 and 9, Create new 19–20, the Plus purchases.
+- **What happens:** with real billing, Plus's price loads (₹2,400.00) but buying fails at once: Google Play says "The
+  item you were attempting to purchase could not be found." (also with versionCode 3). The sideloaded debug build isn't
+  one Play will sell to. Before Play Store's data was cleared, Play's cache said this account owns Plus; afterwards it
+  doesn't (a refunded test purchase from 16 Oct is the likely reason).
+- **What I did for now:** the debug build's stand-in store stands in for the free plan; those flows are marked blocked.
+- **Question:** can you install the app from an internal-testing track that the test account is on (or add it), so
+  these flows can be finished?
 
 ### D-28. Plus: the states Figma doesn't draw
 
