@@ -213,7 +213,8 @@ private fun WorkingNoticeCard(notice: TodayNotice, work: NoticeWork, onDismiss: 
     }
     val tag = "notice-${notice.key}"
     when (state) {
-        "working" -> CardNotice(Symbols.CloudUpload, work.working, work.workingBody, working = true, progress = if (of == 0) 0f else saved / of.toFloat(), tag = tag)
+        // Material's moving wave until the files are counted, then the line fills as each is saved (Figma's Today, flow 37).
+        "working" -> CardNotice(Symbols.CloudUpload, work.working, work.workingBody, working = true, progress = if (of == 0) null else saved / of.toFloat(), tag = tag)
         "done" -> CardNotice(Symbols.CloudDone, work.done, work.doneBody, tag = tag)
         "failed" -> CardNotice(notice.icon, notice.title, work.failed, dismiss = notice.dismiss, onDismiss = { TodayNotices.holding = null; onDismiss() },
             action = work.retry, onAction = start, tag = tag)
