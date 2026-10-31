@@ -166,6 +166,10 @@ class MainActivity : ComponentActivity() {
                         store.saveWidgetTap(h.id, store.today(), kind, java.util.UUID.randomUUID().toString(), store.clock())
                     }
                 }
+                // The milestone notification its alarm would post (Figma 112:757), for the test to tap.
+                intent.getStringExtra(TestLaunch.ALERT)?.let { name ->
+                    store.habits.firstOrNull { it.name == name }?.let { com.oftenenough.app.app.reminders.MilestoneAlerts.showForTest(this@MainActivity, store, it) }
+                }
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
@@ -200,4 +204,6 @@ object TestLaunch {
     const val MOMENTS = "moments"
     /** A habit's name: one widget tap for it (✓ or +), saved as a widget saves it, as if made away from the app. */
     const val AWAY = "away"
+    /** A quit or cut-down habit's name: its milestone notification, posted now (Figma 112:757). */
+    const val ALERT = "alert"
 }

@@ -210,7 +210,7 @@ object Reminders {
 
     /** Opens the habit's day (or Today, for a group). */
     private fun openIntent(context: Context, habit: String?, day: Int, section: String): PendingIntent {
-        val open = Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val open = Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra(MainActivity.OPEN_HABIT, habit).putExtra(MainActivity.OPEN_DAY, day)
         return PendingIntent.getActivity(context, (habit ?: section).hashCode() + day, open, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }

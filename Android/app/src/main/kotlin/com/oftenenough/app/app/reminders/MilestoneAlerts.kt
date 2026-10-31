@@ -145,25 +145,43 @@ object MilestoneAlerts {
         return store.streak(d.habit, store.today(now)) == d.value
     }
 
-    /** The words (Figma N.5): "30 days clean" · "Smoking · since 12 Oct. Tap to see your milestone." */
+    /**
+     * The words (Figma 112:757's rule): "Congratulations, 30 days clean!" · "Smoking · a whole month. Tap to see your
+     * milestone." The title names the milestone only; the name goes in as typed, in its own slot, never worked into a
+     * sentence ("without Quit sugar"), since names are the person's own.
+     */
     fun words(store: HabitStore, d: Due, hideNames: Boolean): Pair<String, String> {
         if (hideNames) return "A milestone reached" to "Open Often Enough to see it."
         val habit = d.habit
-        if (d.quit) {
-            val since = store.rules.quitHistory(habit, store.clock()).lastOrNull()?.start ?: habit.createdAt
-            return "${d.value} days clean" to "${habit.name} · since ${DayWords.dayMonth(store.rules.calendarDayOf(since))}. Tap to see your milestone."
+        val bucket = if (d.quit) MilestoneBucket.DAYS else store.rules.milestoneBucket(store.rule(habit, store.today()))
+        val word = when (bucket) { MilestoneBucket.WEEKS -> "weeks"; MilestoneBucket.MONTHS -> "months"; else -> "days" }
+        val title = if (d.quit) "Congratulations, ${d.value} days clean!" else "Congratulations, ${d.value} $word within the limit!"
+        return title to "${habit.name} · ${length(bucket, d.value) ?: "${d.value} $word"}. Tap to see your milestone."
+    }
+
+    /** A pop-up length in words: a month, six months, a whole year, then years. */
+    private fun length(bucket: MilestoneBucket, n: Int): String? {
+        val year = when (bucket) { MilestoneBucket.DAYS -> 365; MilestoneBucket.WEEKS -> 52; MilestoneBucket.MONTHS -> 12; else -> return null }
+        val month = when (bucket) { MilestoneBucket.DAYS -> 30; MilestoneBucket.WEEKS -> 4; else -> 1 }
+        val half = when (bucket) { MilestoneBucket.DAYS -> 180; MilestoneBucket.WEEKS -> 26; else -> 6 }
+        return when {
+            n == month -> "a whole month"
+            n == half -> "six months"
+            n % year == 0 -> if (n == year) "a whole year" else "${n / year} years"
+            else -> null
         }
-        val ruled = store.rule(habit, store.today())
-        val unit = ruled.frequency.streakUnit
-        val limit = com.oftenenough.app.data.MilestoneCenter.limitAmount(ruled)
-        val per = when (unit) { com.oftenenough.app.data.StreakUnit.WEEKS -> "a week"; com.oftenenough.app.data.StreakUnit.MONTHS -> "a month"; else -> "a day" }
-        val word = when (unit) { com.oftenenough.app.data.StreakUnit.WEEKS -> "weeks"; com.oftenenough.app.data.StreakUnit.MONTHS -> "months"; else -> "days" }
-        return "${d.value} $word within the limit" to "${habit.name} · no more than $limit $per, ${d.value} $word in a row. Tap to see it."
+    }
+
+    /** A test launch's notification (D8: nothing of the person's is read or kept): [habit]'s milestone due now, posted. */
+    fun showForTest(context: Context, store: HabitStore, habit: Habit) {
+        val now = store.clock()
+        plan(store, now - 18 * 3_600_000L, also = habit).firstOrNull { it.habit.id == habit.id && it.fire <= now + 60_000 }
+            ?.let { post(context, store, it) }
     }
 
     private fun post(context: Context, store: HabitStore, d: Due) {
         val (title, body) = words(store, d, AppGraph.hidesNames)
-        val open = Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val open = Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra(MainActivity.OPEN_MILESTONE, "${d.habit.id}|${d.value}")
         val content = PendingIntent.getActivity(context, d.id.hashCode(), open, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val notification = NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_notification)

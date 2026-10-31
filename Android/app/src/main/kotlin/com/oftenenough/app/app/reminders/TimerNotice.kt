@@ -148,7 +148,7 @@ object TimerNotice {
         // A tap opens what started it: the routine at this habit, or the timer (10.5).
         val route = routine?.let { r -> "player/" + android.net.Uri.encode(r.substringBefore("|")) + "/" + r.substringAfter("|") + "/" + id } ?: "timer/$id"
         val open = PendingIntent.getActivity(context, id.hashCode(),
-            Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            Intent(context, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 .putExtra(MainActivity.WIDGET_ROUTE, route),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val action = if (state == "paused") ACTION_RESUME else ACTION_PAUSE
