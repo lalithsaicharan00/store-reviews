@@ -125,7 +125,7 @@ private fun rowModel(store: HabitStore, habit: Habit, day: Int, slot: String?, t
 fun HabitStore.showsStreaks(): Boolean = setting("progress.showStreaks") != "false"
 
 /**
- * One habit's row on Today (Figma 1350:2, 1.2–1.13): the icon, the name (two lines at most, the row grows) over one
+ * One habit's row on Today (Figma 1350:2, 1.2–1.13): the icon, the name (one line, then …) over one
  * line, the 🔥 streak 20 dp before the round button, the progress fill behind; Undo · Note under it right after it's
  * logged from Today. Tap the row for Day details, the button to act, touch and hold for the menu; swipe left to skip,
  * right for a note.

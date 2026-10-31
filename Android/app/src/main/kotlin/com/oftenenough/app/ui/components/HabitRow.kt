@@ -49,7 +49,7 @@ import com.oftenenough.app.ui.theme.appColors
  *
  * Surface bright (the theme's Surface), square: the section it sits in gives it its corners through [shape] (24 on
  * the group's outside, 4 inside, 2 apart). The body is 16 before, 12 after and 14 above and below; in it, the habit's
- * 40 dp [HabitIcon], 16, the [name] in Title Medium (two lines at most, the row grows) over the [line], 16, then the
+ * 40 dp [HabitIcon], 16, the [name] in Title Medium (one line, then …) over the [line], 16, then the
  * trailing group, 20 apart: the [streak] ([HabitRowStreak]) and one of:
  *
  * - **[action]**: the round button, a 40 dp [AppFilledIconButton] (✓ + ▶ ⏸ ⌄ ⌃), Neutral until the goal is met, Done
@@ -106,7 +106,8 @@ fun HabitRowLayout(
                 HabitIcon(symbol, color)
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(name, style = AppType.titleMedium, color = s.onSurface, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    // One line always, then … (Figma's Today, flow 48; A49): the full name is in Day details.
+                    Text(name, style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     line()
                 }
                 val end = action ?: trailing
