@@ -171,7 +171,7 @@ object TestLaunch {
     const val CLOCK_HOUR = "clockHour"
     /** "today" (the design's habits), "design" (Today exactly as Figma 1958:2), "year" (a year of history), "many" (30 habits, two years). */
     const val DEMO = "demo"
-    /** A Today notice to show whatever the phone's state ("full", "off", "missed", "notifications", "pending"). */
+    /** A Today notice to show whatever the phone's state ("full", "off", "removed", "missed", "late", "notifications", "pending"). */
     const val NOTICE = "notice"
     /** Plus owned from the start (the stand-in store, as if bought). */
     const val PLUS = "plus"

@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 38 |
+| today | 54:5580 | 84 | 40 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **48** |
+| **All** | | **290** | **50** |
 
 ## Bug log
 
@@ -108,8 +108,12 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 70. Today · notice card (Card notice 795:466) — 168 dp tall with its buttons 5 lower than Figma's 160: the Text buttons' 48 dp touch target added 4 above and below their 40 on top of Figma's 4 and 8. CardNotice now takes that 4 back from the padding on each side (the touch target stays 48); measured 160, buttons at 112, as Figma. (Its body breaks a word earlier in Figma: same style and width, font rendering.)
 71. Today · Backup is off → Reconnect — it reconnected in silence (Play Services handed back the account it knew, no chooser) and said nothing; Figma: Google's account chooser rises over Today, then (only if access was removed) Google's permission page, and back on Today the notice goes with "Google Drive connected · sam@gmail.com". Reconnect now asks with the chooser (connectDrive(pick = true)) and says the account; DriveLink gives its email (BackupScreens' driveEmail no longer parses it out of the name). Checked with the real Drive and the emulator's test account.
 72. Today · Back up again's card — while the files were being counted the bar sat flat and empty for ~4 s (WorkingNoticeCard passed 0); Figma draws the wavy line at work. It now passes no count until there is one, so CardNotice shows Material's moving wave, then the line fills as each file is saved. Checked with the real Drive (test account): deleted → Backing up → Backed up for a moment → the card folds away.
+73. Keep reminders coming's lead — it said the phone's first words ("Two steps keep Often Enough awake.") whatever was done; Figma's flows 38 and 39 say what's left: "… One step left.", "All set. Reminders will come on time.", and with Alarms & reminders off "Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It's Android's setting, not the app's." keepLead works it out (ReminderWordsTest.leadFollowsWhatsLeft).
+74. Today · a missed or late reminder's notice stayed after everything was fixed; Figma: back on Today the notice is gone (a notice ends when its problem is fixed elsewhere). It now goes once Keep reminders coming has nothing left to do, and the reminder it was about is cleared.
+75. Today · a reminder that came late had the paused-bell icon; Figma's late notice has the clock (schedule). Test launches can force it (notice "late", 40 minutes, as Figma draws it).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
+² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
 
 ## Open questions for the user
 
@@ -155,6 +159,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 - **Day details in Figma, for the Day details page.** Tomorrow's sheet (788:32597) is titled "Today"; the app says
   "Tomorrow". The Day details sheet component (669:234) draws its own bar with no stop dot, where the Linear progress
   atom (902:14527) and Material's indicator have one; the app keeps Material's.
+- **Alarms & reminders off with the battery Unrestricted can't happen (Today flow 39).** Android grants exact alarms
+  to any app on the battery allowlist (Unrestricted) and greys out its Alarms & reminders switch, so Figma's Pixel frame
+  (battery ✓, Alarms & reminders to do) never shows on Android 14 and later. The app handles both orders; on a Pixel
+  the late notice comes with the battery step too.
 
 ---
 
@@ -216,8 +224,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 35 | 125:2 | Notice: backup is paused | Backup is paused → backed up: notice gone | passed |
 | 36 | 125:371 | Notice: backup is off | Backup is off → Reconnect: account chooser → pick account → Continue: notice gone; snackbar | passed |
 | 37 | 125:807 | Notice: your backup was removed | Backup deleted → Back up again: backing up → Backed up → card gone | passed |
-| 38 | 125:1173 | Notice: a reminder didn't arrive | Reminder didn't arrive → Show me how: Keep reminders coming → Open → Back → Open → Back: all set | not started |
-| 39 | 151:2 | Notice: a reminder came late | Came late → Show me how: Alarms & reminders off → Open settings → Back: all set → ← Today | not started |
+| 38 | 125:1173 | Notice: a reminder didn't arrive | Reminder didn't arrive → Show me how: Keep reminders coming → Open → Back → Open → Back: all set | passed ² |
+| 39 | 151:2 | Notice: a reminder came late | Came late → Show me how: Alarms & reminders off → Open settings → Back: all set → ← Today | passed |
 | 40 | 151:498 | Keep reminders coming on each phone | Xiaomi notice → Xiaomi → OnePlus/OPPO → vivo → Honor/Huawei → Pixel and others | not started |
 | 41 | 125:1537 | Notice: reminders can't come | Reminders can't come → Turn on: Android's question → Allow: notice gone | not started |
 | 42 | 153:206 | Notice: reminders can't come (won't ask again) | Reminders can't come → Turn on: notification settings → Back: notice gone | not started |

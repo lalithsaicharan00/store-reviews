@@ -146,7 +146,7 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
 
     FormPage("Keep reminders coming", onBack = onBack) {
         Column(Modifier.padding(top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            Text(if (anyReminder) phone.lead else "No habit has a reminder yet. When one does, these steps make sure it comes on time. You can do them now or later.",
+            Text(if (anyReminder) keepLead(phone, notifications, exact, phone.steps.count { done[it.key] != true }) else "No habit has a reminder yet. When one does, these steps make sure it comes on time. You can do them now or later.",
                 Modifier.padding(horizontal = 16.dp).semantics { testTag = "keep-reminders-lead" }, style = AppType.bodyLarge, color = s.onSurfaceVariant)
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Permissions", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
@@ -171,6 +171,23 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
                     style = AppType.bodyMedium, color = s.onSurfaceVariant)
             }
         }
+    }
+}
+
+/**
+ * The lead says what's left, as Figma's flows do (Today flows 38, 39): this phone's words while none of its steps is
+ * done ("Two steps keep Often Enough awake."), then how many are left ("One step left."), "All set." once everything is;
+ * with Alarms & reminders off it leads with that, the one thing that makes reminders late.
+ */
+internal fun keepLead(phone: Maker, notifications: Boolean, exact: Boolean, stepsLeft: Int): String {
+    val why = phone.lead.substringBefore(". ") + "."
+    return when {
+        notifications && exact && stepsLeft == 0 -> "All set. Reminders will come on time."
+        !exact -> "Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It’s Android’s setting, not the app’s."
+        stepsLeft == phone.steps.size && stepsLeft > 0 -> phone.lead
+        stepsLeft == 1 -> "$why One step left."
+        stepsLeft > 1 -> "$why $stepsLeft steps left."
+        else -> "Reminders can’t come while notifications are off for Often Enough."
     }
 }
 

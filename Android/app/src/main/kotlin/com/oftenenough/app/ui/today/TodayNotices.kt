@@ -82,7 +82,8 @@ object TodayNotices {
     fun current(context: Context, store: HabitStore, nav: NoticeNav, now: Long, say: (String) -> Unit = {}): TodayNotice? {
         if (!AppGraph.isOpen) return null
         val all = candidates(context, store, nav, now, say)
-        forced?.let { f -> return all.firstOrNull { it.key == f } }
+        // "late" is the missed reminder's late form (Today flow 39).
+        forced?.let { f -> return all.firstOrNull { it.key == (if (f == "late") "missed" else f) } }
         return all.firstOrNull { !hidden(context, it.key, now) }
     }
 
@@ -129,18 +130,26 @@ object TodayNotices {
             open(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
         }
         val missed = Reminders.missed(context, now)
-        if (missed != null || forced == "missed") {
+        // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about
+        // with it (Figma's Today, flows 38 and 39, the last frame; notices end when the problem is fixed elsewhere).
+        val fixed = (missed != null || forced == "missed" || forced == "late") && com.oftenenough.app.ui.settings.remindersLeftToFix(context) == 0
+        if (fixed) {
+            if (missed != null) Reminders.dismissMissed(context)
+            if (forced == "missed" || forced == "late") TodayNotices.forced = null
+        }
+        if (!fixed && (missed != null || forced == "missed" || forced == "late")) {
             // Figma's words: whose reminder, and why, by this phone's maker (A40); a late one says how late, and an
             // exact-time reminder held back says what to allow.
             val name = missed?.let { store.habit(it.habitId)?.name }
             val time = missed?.let { DayWords.clockMinute(it.minute) } ?: "8:00 AM"
             val whose = name?.let { (if (it.endsWith("s")) "$it'" else "$it's") + " $time reminder" } ?: "Your $time reminder"
-            val late = missed?.lateMinutes
+            val late = missed?.lateMinutes ?: if (forced == "late") 40L else null
             val title = if (late != null) "$whose came $late ${if (late == 1L) "minute" else "minutes"} late" else "$whose didn't arrive"
             val why = if (late != null && !Reminders.canBeExact(context))
                 "Android sends reminders at the exact time only when Alarms & reminders is allowed for Often Enough."
                 else makerReason(android.os.Build.MANUFACTURER ?: "")
-            list += TodayNotice("missed", Symbols.NotificationsPaused, title, why, "Dismiss", "Show me how") { nav.reminders() }
+            // A late one has the clock (Figma's Today, flow 39); one that didn't come, the paused bell (flow 38).
+            list += TodayNotice("missed", if (late != null) Symbols.Schedule else Symbols.NotificationsPaused, title, why, "Dismiss", "Show me how") { nav.reminders() }
         }
         if (AppGraph.plus.pending != null || forced == "pending") list += TodayNotice("pending", Symbols.HourglassTop,
             "Plus is waiting for your payment", "Google Play hasn’t finished it yet. Plus turns on by itself when it does.", "Not now", "Open Google Play") {
@@ -152,7 +161,7 @@ object TodayNotices {
     /** "Not now": hidden for 7 days; a missed reminder's Dismiss ends that one (the next one shows again). */
     fun dismiss(context: Context, notice: TodayNotice, now: Long) {
         if (notice.key == "missed") Reminders.dismissMissed(context) else hide(context, notice.key, now)
-        if (forced == notice.key) forced = null
+        if (forced == notice.key || forced == "late" && notice.key == "missed") forced = null
     }
 
     // A phone without that page opens App info (U40).

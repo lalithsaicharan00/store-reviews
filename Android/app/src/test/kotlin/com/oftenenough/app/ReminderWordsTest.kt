@@ -5,6 +5,7 @@ import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.ReminderTime
 import com.oftenenough.app.ui.settings.hasReminders
+import com.oftenenough.app.ui.settings.keepLead
 import com.oftenenough.app.ui.settings.maker
 import java.util.Locale
 import org.junit.Assert.assertEquals
@@ -42,5 +43,15 @@ class ReminderWordsTest {
         assertEquals(listOf("Allow high background power use", "Turn on Autostart"), maker("iQOO").steps.map { it.title })
         assertEquals(listOf("Manage App launch yourself, all three on"), maker("HONOR").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted"), maker("Google").steps.map { it.title })
+    }
+
+    /** The lead says what's left (Figma's Today, flows 38 and 39). */
+    @Test fun leadFollowsWhatsLeft() {
+        val samsung = maker("samsung")
+        assertEquals(samsung.lead, keepLead(samsung, notifications = true, exact = true, stepsLeft = 2))
+        assertEquals("Samsung puts apps to sleep to save battery, which can stop reminders. One step left.", keepLead(samsung, true, true, 1))
+        assertEquals("All set. Reminders will come on time.", keepLead(samsung, true, true, 0))
+        assertEquals("Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It’s Android’s setting, not the app’s.",
+            keepLead(maker("Google"), true, exact = false, stepsLeft = 0))
     }
 }
