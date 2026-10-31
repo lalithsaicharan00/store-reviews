@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.semantics
@@ -83,8 +82,9 @@ enum class ButtonSize(val height: Dp) {
  *
  * - **Colours:** Filled and Tonal are Material's. Text and Outlined labels are On surface variant (Material's are
  *   Primary), and Outlined's border is Outline variant (Material's is Outline), 2 dp on the Large size. [destructive]
- *   turns a Text or Outlined label Error: Delete, Remove, Erase (D9). A switched-off Filled or Tonal button keeps
- *   Material's disabled colours, made solid on the surface, because it can float over a list.
+ *   turns a Text or Outlined label Error: Delete, Remove, Erase (D9). A switched-off Filled or Tonal button is
+ *   Material's disabled state in our colours: Surface container low (solid, as it can float over a list), its label
+ *   On surface at 38 %. Material's On surface at 12 % would be our Surface container highest, an enabled Tonal button.
  * - **Sizes:** [size], see [ButtonSize]; the label is one line, cut with … if it can't fit.
  * - **Shape:** Material's full round by default; [square] gives Expressive's square corners (12, 16, 28: the routine
  *   player's big actions). Both morph a little while pressed, as Material 3 Expressive's buttons do.
@@ -109,7 +109,8 @@ fun AppButton(
     val shapes = if (square) size.squareShapes() else size.roundShapes()
     val padding = padding(size, icon != null, compact)
     val m = modifier.heightIn(min = size.height).semantics { tag?.let { testTag = it } }
-    val solidOff = s.onSurface.copy(alpha = 0.12f).compositeOver(s.surface)
+    val off = s.surfaceContainerLow
+    val offText = s.onSurface.copy(alpha = 0.38f)
     val quiet = if (destructive) s.error else s.onSurfaceVariant
     val content: @Composable RowScope.() -> Unit = {
         if (icon != null) { Icon(icon, null, Modifier.size(ButtonDefaults.iconSizeFor(size.height))); Spacer(Modifier.width(ButtonDefaults.iconSpacingFor(size.height))) }
@@ -117,9 +118,9 @@ fun AppButton(
     }
     when (style) {
         ButtonStyle.Filled -> Button(onClick, shapes, m, enabled,
-            ButtonDefaults.buttonColors(disabledContainerColor = solidOff), contentPadding = padding, content = content)
+            ButtonDefaults.buttonColors(disabledContainerColor = off, disabledContentColor = offText), contentPadding = padding, content = content)
         ButtonStyle.Tonal -> FilledTonalButton(onClick, shapes, m, enabled,
-            ButtonDefaults.filledTonalButtonColors(disabledContainerColor = solidOff), contentPadding = padding, content = content)
+            ButtonDefaults.filledTonalButtonColors(disabledContainerColor = off, disabledContentColor = offText), contentPadding = padding, content = content)
         ButtonStyle.Text -> TextButton(onClick, shapes, m, enabled, quietColors(quiet), contentPadding = padding, content = content)
         ButtonStyle.Outlined -> OutlinedButton(onClick, shapes, m, enabled, quietColors(quiet),
             border = BorderStroke(if (size == ButtonSize.Large) 2.dp else 1.dp, if (enabled) s.outlineVariant else s.onSurface.copy(alpha = 0.12f)),
