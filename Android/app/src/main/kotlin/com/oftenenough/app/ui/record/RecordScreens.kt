@@ -297,8 +297,7 @@ private fun allLogsFooter(ruled: com.oftenenough.app.data.Habit, logs: List<Entr
         is HabitKind.Amount -> "${HabitCopy.amount(total, k.unit)} in all. Tap a log to change or delete it."
         HabitKind.Duration -> "${Format.minutes(total)} in all. Tap a log to change or delete it."
         HabitKind.Quit -> "${logs.size} ${if (logs.size == 1) "slip" else "slips"} in all. Tap a slip to change or delete it."
-        // A check has nothing to view: its row keeps its own Undo.
-        else -> "${HabitCopy.amount(total, ruled.checkUnit ?: "checks")} in all."
+        else -> "${HabitCopy.amount(total, ruled.checkUnit ?: "checks")} in all. Tap a check to change or delete it."
     }
 }
 
@@ -351,6 +350,7 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
     val habit = store.habit(entry.habitId) ?: run { LaunchedEffect(Unit) { onBack() }; return }
     val ruled = store.rule(habit, entry.day)
     val slip = ruled.kind == HabitKind.Quit
+    val oneCheck = ruled.kind == HabitKind.Check && entry.value == 1.0
     val noun = if (slip) "slip" else "log"
     var editing by rememberSaveable { mutableStateOf(false) }
     var confirmDelete by remember { mutableStateOf(false) }
@@ -369,7 +369,7 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
     val zoneOf = { d: Int -> if (d == entry.day) entry.timeZone else null }
     fun leaveEdit() { if (draft.differs || time != entry.createdAt || day != entry.day) discard = true else editing = false }
     BackHandler(editing) { leaveEdit() }
-    LaunchedEffect(editing) { if (editing && !slip) runCatching { focus.requestFocus() } }
+    LaunchedEffect(editing) { if (editing && !slip && !oneCheck) runCatching { focus.requestFocus() } }
 
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(if (editing) "Edit $noun" else noun.replaceFirstChar { it.uppercase() }, close = editing, onClose = { if (editing) leaveEdit() else onBack() })
@@ -390,7 +390,9 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
                 }
             }
             when (ruled.kind) {
-                is HabitKind.Amount, HabitKind.Check -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit.ifEmpty { if (ruled.kind == HabitKind.Check) "checks" else "" }, focus, readOnly = !editing) }
+                // A single check has no amount to show: the habit, its date and its time (Figma 910:25226).
+                HabitKind.Check -> if (!oneCheck) { SectionTitle("Amount"); AmountCard(draft, ruled.unit.ifEmpty { "checks" }, focus, readOnly = !editing) }
+                is HabitKind.Amount -> { SectionTitle("Amount"); AmountCard(draft, ruled.unit.ifEmpty { if (ruled.kind == HabitKind.Check) "checks" else "" }, focus, readOnly = !editing) }
                 HabitKind.Duration -> { SectionTitle("How long"); if (editing) DurationCard(draft, focus, withSeconds = withSeconds) else DurationValue(draft) }
                 else -> {}
             }
@@ -403,12 +405,12 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
                 slip -> "Changing the time updates your quit run."
                 else -> "Changes this log only. Other logs stay as they are."
             })
-                else entry.originLine(slip)
+                else entry.originLine(ruled)
             footer?.let { Footer(it, problem = editing && problem != null) }
         }
         if (editing) {
             BottomAction("Save", true, tag = "record-save") {
-                val v = if (slip) 1.0 else if (!draft.differs) entry.value else draft.value ?: return@BottomAction
+                val v = if (slip || oneCheck) entry.value else if (!draft.differs) entry.value else draft.value ?: return@BottomAction
                 val moved = day != entry.day
                 store.editEntry(entry.id, v, time, day)
                 editing = false
@@ -416,13 +418,14 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
             }
         } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
-    if (confirmDelete) AppDialog("Delete this $noun?",
+    if (confirmDelete) AppDialog(if (oneCheck) "Delete this check?" else "Delete this $noun?",
         if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
+            else if (oneCheck) "The ${clockText(entry)} check will be removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other checks stay."
             else "${entry.description(ruled)} at ${clockText(entry)} will be removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.",
         "Delete", {
             confirmDelete = false; onBack(); store.undoEntry(entry.id)
             // Undo puts the same log back, with its time (Figma 902:15462, 902:15770).
-            sayUndo(if (slip) "Slip deleted" else "Log deleted") { store.restoreLog(entry) }
+            sayUndo(if (slip) "Slip deleted" else if (oneCheck) "Check deleted" else "Log deleted") { store.restoreLog(entry) }
         }, { confirmDelete = false },
         destructive = true, confirmTag = "confirm-delete")
     // Says exactly what stays (Figma 897:11891): "This log stays 2 glasses at 1:10 PM."

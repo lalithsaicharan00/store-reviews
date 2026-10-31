@@ -130,17 +130,23 @@ fun Entry.opensRecord(habit: Habit): Boolean {
     if (stepId != null) return false
     return when (habit.kind) {
         is HabitKind.Amount, HabitKind.Duration, HabitKind.Quit -> true
-        HabitKind.Check -> value != 1.0
+        // Each check opens its Log too: date and time, Delete log | Edit (Figma 910:25226).
+        HabitKind.Check -> true
         HabitKind.Task, HabitKind.Checklist -> false
     }
 }
 
 /** Where a log came from, in the Log view's footer: "Added by hand at 2:05 PM.", "From the timer. Started 2:09 PM.". */
-fun Entry.originLine(slip: Boolean): String? {
-    // Figma's Log screen, View (687:829): a slip says what it did; a log by hand when it was added; a timer's when it began.
-    if (slip) return "Your run started again from this slip."
+fun Entry.originLine(habit: Habit): String? {
+    // Figma's Log screen, View (687:829): a slip says what it did; a log by hand when it was added; a timer's when it began;
+    // a quick add its step ("Added with +1."); a check from Day details its button ("One check, added with Add a check.").
+    if (habit.kind == HabitKind.Quit) return "Your run started again from this slip."
     val s = source ?: return null
     val verb = "Logged"
+    val check = habit.kind == HabitKind.Check && value == 1.0
+    if (check && s == EntrySource.DAY_SHEET) return "One check, added with Add a check."
+    if (check && s == EntrySource.TODAY) return "One check, added with ✓ on Today."
+    if (habit.kind is HabitKind.Amount && (s == EntrySource.TODAY || s == EntrySource.DAY_SHEET)) return "Added with +${Format.amount(value)}."
     return when (s) {
         EntrySource.MANUAL -> "Added by hand at ${DayWords.clock(createdAt)}."
         EntrySource.TIMER -> "From the timer. Started ${DayWords.clock(createdAt - (value * 60_000).toLong())}."
@@ -196,7 +202,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     HabitKind.Check -> if (rules.countsUp(habit, day)) HabitCopy.amount(total, r.checkUnit ?: "checks") + " saved" else null
                     else -> null
                 }
-                return DayStatus("Skipped", (saved?.let { "$it · " } ?: "") + "Your streak stays safe")  // Figma's Day details, Skipped
+                return DayStatus("Skipped", (saved?.let { "$it · " } ?: "") + "Your streak stays safe.")  // Figma's Day details, Skipped (907:30393)
             }
             if (day < rules.startDay(habit)) return DayStatus("Before it started")
             // A later day plans (Figma 1.4): what the day asks, "For Tue, 13 Oct"; logging waits for the day.
@@ -260,7 +266,8 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     if (rules.countsUp(habit, day)) {
                         val goal = rules.dayGoal(r)
                         val left = goal - progress
-                        val detail = if (left <= 0) "Goal reached" else if (isToday) (if (left == 1.0) "One more reaches today's goal" else "${HabitCopy.number(left)} more reach today's goal") else "For $shortDay"
+                        // "1 to go" (Figma 910:24344), as an amount says what's left.
+                        val detail = if (left <= 0) "Goal reached" else if (isToday) "${HabitCopy.number(left)} to go" else "For $shortDay"
                         return DayStatus("${HabitCopy.number(progress)} of ${HabitCopy.amount(goal, unit)}", detail)
                     }
                     val done = rules.isDayMet(r, day)
@@ -270,7 +277,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         if (count != null) return DayStatus(if (done) "Done" else "Not done", "$count of ${f.n} ${if (f.n == 1) "day" else "days"}" + periodWord(f))
                     }
                     val last = entries.lastOrNull()
-                    if (done && last != null) return DayStatus("Done", "Checked at " + clockText(last))
+                    if (done && last != null) return DayStatus("Done", "Done at " + clockText(last))
                     return DayStatus(if (done) "Done" else "Not done")
                 }
                 is HabitKind.Amount, HabitKind.Duration -> {

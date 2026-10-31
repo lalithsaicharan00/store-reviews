@@ -210,7 +210,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             } else if (!isTask && habit.kind != HabitKind.Quit && started && !habit.atMost && !store.isPaused(habit, day)) {
                 val skipped = store.isSkipped(habit, day)
                 val planned = store.rules.isDue(habit, day, countingSkips = false) || !store.rule(habit, day).frequency.isDayBased || store.rule(habit, day).frequency.isFlexible
-                if (skipped || (planned && store.rules.canSkip(store.rule(habit, day)))) {
+                // A once-a-day check that's done has nothing to skip (Figma 906:92686); a count at its goal keeps Skip.
+                val ticked = store.rule(habit, day).kind == HabitKind.Check && !store.rules.countsUp(habit, day) && store.rules.isDayMet(store.rule(habit, day), day)
+                if (skipped || (planned && !ticked && store.rules.canSkip(store.rule(habit, day)))) {
                     SkipButton(if (skipped) "Undo skip" else if (day == today) "Skip today" else "Skip this day") { store.setSkipped(habit, day, !skipped, offer = !skipped) }  // Today then offers Undo · Note (Figma's Today, flow 19)
                 }
             }
@@ -454,14 +456,12 @@ fun logsTitle(habit: Habit, day: Int, today: Int): String {
     val short = DayWords.short(day).replace(",", "")
     return when (habit.kind) {
         HabitKind.Quit -> if (day == today) "Slips today" else "Slips on $short"
-        HabitKind.Check -> if (day == today) "Checks today" else "Checks on $short"
         else -> if (day == today) "Today’s logs" else "Logs for $short"
     }
 }
 
 fun logCount(n: Int, habit: Habit): String = "$n " + when (habit.kind) {
     HabitKind.Quit -> if (n == 1) "slip" else "slips"
-    HabitKind.Check -> if (n == 1) "check" else "checks"
     else -> if (n == 1) "log" else "logs"
 }
 

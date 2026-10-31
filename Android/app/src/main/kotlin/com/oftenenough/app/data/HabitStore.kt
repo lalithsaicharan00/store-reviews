@@ -610,11 +610,12 @@ class HabitStore(
         perform(FailedTap(habit(entry.habitId)?.name) { removeLogged(id) }) { repository.removeEntry(id, at) }
     }
 
-    /** A log from Today (a tap, Add log, the timer) takes Undo · Note; one made elsewhere by the person ends it. */
+    /** A log from Today or its Day details (a tap, Mark done, Add log, the timer) takes Undo · Note on Today's row
+     *  (Figma's Day details: "✕: Today, Meds filled; Undo · Note"); one made in the routine player ends it. */
     private fun offerUndo(entry: Entry) {
         when (entry.source) {
-            EntrySource.TODAY, EntrySource.MANUAL, EntrySource.TIMER -> afterLog = AfterLog.Log(entry)
-            EntrySource.DAY_SHEET, EntrySource.ROUTINE -> afterLog = null
+            EntrySource.TODAY, EntrySource.MANUAL, EntrySource.TIMER, EntrySource.DAY_SHEET -> afterLog = AfterLog.Log(entry)
+            EntrySource.ROUTINE -> afterLog = null
             else -> {}
         }
     }
@@ -1031,7 +1032,7 @@ class HabitStore(
     fun setTaskMoves(task: Habit, moves: Map<Int, Int>) = setMoves(task.id, moves)
 
     /** A log taken back on the Tasks page (Mark as not done) put back by its Undo, as a new log with the same day, time and value. */
-    fun putBack(entry: Entry) = addLogged(entry.copy(id = newId(), source = EntrySource.DAY_SHEET))
+    fun putBack(entry: Entry) = addLogged(entry.copy(id = newId(), source = EntrySource.DAY_SHEET), offer = false)
 
     /** A deleted log put back by its Undo (Figma 902:15770): the same day, time, value and source, as a new log (the
      *  deletion stays recorded, so a device that saw it agrees); it offers no Undo · Note of its own. */
