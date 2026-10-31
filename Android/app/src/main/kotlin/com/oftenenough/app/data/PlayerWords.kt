@@ -35,6 +35,7 @@ object PlayerWords {
     const val LOGGED = "Logged"
     const val UNDONE = "Undone"
     const val SKIPPED = "Skipped for today"
+    const val STREAK_SAFE = "Your streak stays safe."
 
     const val QUEUE_FOOTER = "Tap a habit to go to it. Moving never marks anything done."
     /** Your routine · Edit (Figma 7.2). */
@@ -102,7 +103,7 @@ object PlayerWords {
      */
     fun mainAction(habit: Habit, goal: Double, done: Boolean, skipped: Boolean, isLast: Boolean, running: Boolean, started: Boolean,
                    today: Boolean = true): MainAction {
-        val onward = if (isLast) MainAction(PlayerAction.FINISH, "Finish routine", "Finish routine")
+        val onward = if (isLast) MainAction(PlayerAction.FINISH, "Finish", "Finish routine")  // Figma: "Finish"
             else MainAction(PlayerAction.NEXT, "Next", "Next habit")
         if (skipped) return onward
         val unit = habit.unit
@@ -146,11 +147,14 @@ object PlayerWords {
     }
 
     /** The end page's title: "Anytime is done" (Figma 1.3, 8.2), or "End of the routine" with some left (8.1, 8.3). */
-    fun endTitle(remaining: Int, name: String): String = if (remaining == 0) "$name is done" else "End of the routine"
+    fun endTitle(remaining: Int, count: Int, name: String): String = if (remaining == 0) "$name is done" else "${count - remaining} of $count done"
 
-    /** "All 12 done today." or "2 left for later. Your progress is saved." */
-    fun endText(remaining: Int, count: Int): String =
-        if (remaining == 0) "All $count done today." else "$remaining left for later. Your progress is saved."
+    /** "All 3 done today." or, by name, what waits: "Stretch and Skincare wait on Today. Pick them up any time." (Figma 929:126945). */
+    fun endText(left: List<String>, count: Int): String = when (left.size) {
+        0 -> "All $count done today."
+        1 -> "${left[0]} waits on Today. Pick it up any time."
+        else -> "${HabitCopy.join(left)} wait on Today. Pick them up any time."
+    }
 
 
     /** The timer's ⌄: putting it away, not stopping, and TalkBack says so. */

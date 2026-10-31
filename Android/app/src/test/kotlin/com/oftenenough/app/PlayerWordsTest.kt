@@ -63,7 +63,7 @@ class PlayerWordsTest {
         assertEquals("Mark done", action(check).label)
         assertEquals("Mark Take vitamins done", action(check).spoken)
         assertEquals("Next", action(check, done = true).label)
-        assertEquals("Finish routine", action(check, done = true, last = true).label)
+        assertEquals("Finish", action(check, done = true, last = true).label)  // Figma: "Finish"; TalkBack says "Finish routine"
         assertEquals(PlayerAction.FINISH, action(check, done = true, last = true).action)
 
         val several = habit(HabitKind.Check, 3.0, name = "Stretch breaks")
@@ -105,10 +105,12 @@ class PlayerWordsTest {
     }
 
     @Test fun endPage() {
-        assertEquals("End of the routine", PlayerWords.endTitle(2, "Anytime"))
-        assertEquals("Anytime is done", PlayerWords.endTitle(0, "Anytime"))
-        assertEquals("2 left for later. Your progress is saved.", PlayerWords.endText(2, 12))
-        assertEquals("All 12 done today.", PlayerWords.endText(0, 12))
+        // Figma 929:126945 (31 Oct 2026): how many of the routine are done, and what waits, by name.
+        assertEquals("1 of 3 done", PlayerWords.endTitle(2, 3, "Morning"))
+        assertEquals("Anytime is done", PlayerWords.endTitle(0, 12, "Anytime"))
+        assertEquals("Stretch and Skincare wait on Today. Pick them up any time.", PlayerWords.endText(listOf("Stretch", "Skincare"), 3))
+        assertEquals("Stretch waits on Today. Pick it up any time.", PlayerWords.endText(listOf("Stretch"), 3))
+        assertEquals("All 12 done today.", PlayerWords.endText(emptyList(), 12))
     }
 
     @Test fun queue() {

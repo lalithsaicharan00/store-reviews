@@ -269,16 +269,8 @@ fun RoutinePlayer(
         session.clearFeedback(shown)
     }
 
-    // Skip today happens in Day details; back in the player it says so, with Undo and Add note (design 13). It stays
-    // on the skipped habit: nothing advances by itself.
-    val currentSkipped = current != null && session.skipped(current)
-    val skipSeen = remember { mutableStateOf<Pair<String, Boolean>?>(null) }
-    LaunchedEffect(current?.id, currentSkipped) {
-        val id = current?.id
-        val before = skipSeen.value
-        if (id != null && before != null && before.first == id && !before.second && currentSkipped) session.saySkipped(id)
-        skipSeen.value = if (id == null) null else id to currentSkipped
-    }
+    // Skip today happens in Day details; back in the player the card says Skipped, with no message: Undo skip is in Day
+    // details (Figma 247:2). It stays on the skipped habit: nothing advances by itself.
 
     val firstUnfinished = covered.indexOfFirst { !it }.takeIf { it >= 0 }
     Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().navigationBarsPadding().semantics { testTag = "routine-player" }) {
@@ -548,10 +540,6 @@ private class PlayerSession(
         if (!live) return
         feedback = null
         store.stopTimer(habit, day, source = EntrySource.ROUTINE)
-    }
-
-    fun saySkipped(habitId: String) {
-        feedback = Feedback(PlayerWords.SKIPPED, habitId, null, unskip = true, serial = ++serial)
     }
 
     /** A message alone, with no Undo or Add note ("3 done earlier today. Starting at Water.", Figma 1.2). */
@@ -861,12 +849,14 @@ internal fun HeroCard(
 private fun SingleState(habit: Habit, day: Int, store: HabitStore, rev: Int) {
     val c = appColors
     val done = remember(habit, rev) { store.rules.isComplete(habit, day) }
-    Text(if (done) PlayerWords.DONE else PlayerWords.NOT_DONE, Modifier.heightIn(min = 64.dp).wrapContentHeight().semantics { testTag = "player-count" },
+    val skipped = remember(habit, rev) { store.isSkipped(habit, day) }
+    // A skipped day says Skipped (Figma 247:2, frame 5), never "Not done".
+    Text(if (done) PlayerWords.DONE else if (skipped) "Skipped" else PlayerWords.NOT_DONE, Modifier.heightIn(min = 64.dp).wrapContentHeight().semantics { testTag = "player-count" },
         style = AppType.displayLarge, color = c.ink, textAlign = TextAlign.Center)
 }
 
 /** The line under the count: an icon and a few neutral words (U3). [neutral]: the bar turns grey (over a limit, 9.2). */
-private data class PlayerStatus(val icon: ImageVector, val text: String, val neutral: Boolean = false, val tag: String)
+private data class PlayerStatus(val icon: ImageVector?, val text: String, val neutral: Boolean = false, val tag: String)
 
 /**
  * Which status line a habit shows, if any: skipped (6.1); a time limit gone over (9.2); a timer at its goal (4.3) or
@@ -876,7 +866,10 @@ private data class PlayerStatus(val icon: ImageVector, val text: String, val neu
 @Composable
 private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore, goal: Double, rev: Int, tick: State<Long>,
                          running: Boolean, skipped: Boolean): PlayerStatus? {
-    if (skipped) return PlayerStatus(Symbols.FastForward, PlayerWords.SKIPPED, tag = "player-skipped")
+    // Skipped says so, then that nothing is lost (Figma 921:117250-like, the player's 247:2 frame 5): a single check's card
+    // already says "Skipped", so its line is only the reassurance.
+    if (skipped) return PlayerStatus(null, if (ruled.kind == HabitKind.Check && ruled.frequency.isDayBased || ruled.kind == HabitKind.Task)
+        PlayerWords.STREAK_SAFE else PlayerWords.SKIPPED + ". " + PlayerWords.STREAK_SAFE, tag = "player-skipped")
     val today = day == store.today()
     val f = ruled.frequency
     if (ruled.kind == HabitKind.Duration) {
@@ -906,8 +899,7 @@ private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore
 private fun StatusLine(s: PlayerStatus) {
     val c = appColors
     Row(Modifier.heightIn(min = 20.dp).semantics(mergeDescendants = true) { testTag = s.tag }, verticalAlignment = Alignment.CenterVertically) {
-        Icon(s.icon, null, Modifier.size(18.dp), tint = c.secondary)
-        Spacer(Modifier.width(4.dp))
+        s.icon?.let { Icon(it, null, Modifier.size(18.dp), tint = c.secondary); Spacer(Modifier.width(4.dp)) }
         Text(s.text, style = AppType.labelLarge, color = c.secondary, maxLines = 2, textAlign = TextAlign.Center)
     }
 }
@@ -1118,12 +1110,13 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
     }
 }
 
+// The main button's glyphs are outlined (Figma's player, Main button: FILL 0), as a Button's icon; Finish goes on →.
 private fun actionIcon(a: PlayerAction): ImageVector? = when (a) {
-    PlayerAction.NEXT -> Symbols.ArrowForward
-    PlayerAction.FINISH, PlayerAction.MARK_DONE, PlayerAction.LOG_ONE, PlayerAction.NONE -> Symbols.Check
+    PlayerAction.NEXT, PlayerAction.FINISH -> Symbols.ArrowForward
+    PlayerAction.MARK_DONE, PlayerAction.LOG_ONE, PlayerAction.NONE -> Symbols.Check
     PlayerAction.LOG_STEP, PlayerAction.LOG_AMOUNT -> null
-    PlayerAction.START, PlayerAction.RESUME -> Symbols.Filled.PlayArrow
-    PlayerAction.PAUSE -> Symbols.Filled.Pause
+    PlayerAction.START, PlayerAction.RESUME -> Symbols.PlayArrow
+    PlayerAction.PAUSE -> Symbols.Pause
 }
 
 /**
@@ -1169,13 +1162,13 @@ private fun EndPage(name: String, count: Int, done: List<Habit>, later: List<Pai
         Card(Modifier.fillMaxWidth().semantics { testTag = "player-end" }, shape = RoundedCornerShape(32.dp)) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 28.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 // Not a pause symbol: it read as a media button (found by hand on the iPhone, 29 Sep).
-                CookieIcon(if (remaining == 0) Symbols.DoneAll else Symbols.History, size = 112.dp, container = s.inverseSurface,
+                CookieIcon(if (remaining == 0) Symbols.DoneAll else Symbols.Pending, size = 112.dp, container = s.inverseSurface,
                     tint = s.inverseOnSurface, glyph = 0.5f)
                 Spacer(Modifier.height(16.dp))
-                Text(PlayerWords.endTitle(remaining, name), style = AppType.headlineMediumEmphasized,
+                Text(PlayerWords.endTitle(remaining, count, name), style = AppType.headlineMediumEmphasized,
                     color = s.onSurface, textAlign = TextAlign.Center, modifier = Modifier.semantics { heading(); testTag = "player-end-title" })
                 Spacer(Modifier.height(8.dp))
-                Text(PlayerWords.endText(remaining, count), style = AppType.bodyLarge, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
+                Text(PlayerWords.endText(later.map { it.second.name }, count), style = AppType.bodyLarge, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             }
         }
         @Composable fun section(title: String, tag: String, rows: @Composable () -> Unit) =
@@ -1183,17 +1176,18 @@ private fun EndPage(name: String, count: Int, done: List<Habit>, later: List<Pai
                 Text(title, Modifier.padding(start = 16.dp, bottom = 8.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
                 Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) { rows() }
             }
-        if (done.isNotEmpty()) section("Done", "player-end-done") {
-            done.forEachIndexed { i, h ->
-                AppListItem(h.name, i, done.size, supporting = result(h), leading = { HabitIcon(h.symbol, h.color) },
-                    containerColor = s.surfaceBright, headlineLines = 1, tag = "player-end-done-${h.name}")
-            }
-        }
+        // What waits comes first, then what was done (Figma 929:126945).
         if (later.isNotEmpty()) section("Left for later", "player-later") {
             later.forEachIndexed { i, (at, h) ->
                 AppListItem(h.name, i, later.size, supporting = result(h), leading = { HabitIcon(h.symbol, h.color) },
                     trailing = { ListChevron() }, onClick = { onOpen(at) }, containerColor = s.surfaceBright, headlineLines = 1,
                     tag = "player-later-${h.name}")
+            }
+        }
+        if (done.isNotEmpty()) section("Done", "player-end-done") {
+            done.forEachIndexed { i, h ->
+                AppListItem(h.name, i, done.size, supporting = result(h), leading = { HabitIcon(h.symbol, h.color) },
+                    containerColor = s.surfaceBright, headlineLines = 1, tag = "player-end-done-${h.name}")
             }
         }
         // Every milestone the routine's steps reached, once (Figma RP.2), with the same medal as everywhere.

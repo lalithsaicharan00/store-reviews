@@ -17,7 +17,7 @@ no screen with a keyboard could be compared with Figma.
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
-| routine player | 234:2 | 24 | 0 |
+| routine player | 234:2 | 24 | 8 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **133** |
+| **All** | | **290** | **141** |
 
 ## Bug log
 
@@ -201,6 +201,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 163. Day details 38 · Edit note opened with the cursor before the note, so typing went in front ("againOffice bottle…"); Figma adds to the end. The field opens with the cursor after the note. Leaving an edit asks "Discard your changes?", as Edit log does.
 164. Day details 41 · Day details showed a note's first line only; Figma: "Note" over the note, two lines, then … (the whole note on its page).
 165. Day details 44 · at 200 % text the name took two lines, the title bar scrolled away with the page, and a log's "2 glasses" was cut to "2 glass…" beside its time; Figma: the name one line with … (and the plan under it), the title bar stays while the rest scrolls, and rows grow. A log whose words and time don't fit side by side now puts the time under the words (`LogListItem`, Day details and All logs alike), so no amount is cut or broken in two.
+166. Routine player 4 · past its goal and still running, the card's line went flat at full; Figma keeps the wave the whole way while a clock runs (Material flattens its wave near the ends; `WavyProgress` keeps it).
+167. Routine player 4–6 · the main button's ▶ and ⏸ were filled and Finish had ✓; Figma's player main button uses outlined glyphs (FILL 0) and Finish → (the round row buttons stay filled).
+168. Routine player 5, 7 · the last habit's button said "Finish routine" and the end page with some left said "End of the routine" · "2 left for later. Your progress is saved." with a clock icon, Done listed before Left for later; Figma: "Finish", ⋯ (pending), "1 of 3 done", "Stretch and Skincare wait on Today. Pick them up any time.", and Left for later first. `PlayerWordsTest` follows the new words.
+169. Routine player 8 · skipping in Day details from the player left the card saying "Not done" with a "Skipped for today" line and a message with Undo; Figma: "Skipped" and "Your streak stays safe.", no message (Undo skip stays in Day details).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -216,6 +220,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹² Day details 7: Figma's Amount View draws › on Date and Time where its Duration and Slip views don't, and nothing opens from a view; the app has none (D-50).
 ¹³ Day details 26: the travel footer (step 10) was checked from the code and Figma's words, not on the emulator: setting its time zone is a device setting this pass doesn't change.
 ¹⁴ Day details 44: the long name was given through Edit habit (the test launch's demo has none), with the phone's Font size at 200 % set first: changing it restarts a test launch, which starts its demo again.
+¹⁵ Routine player 1–8: the card's progress line is on the habit's Fill (A90) where most of Figma's player frames draw it on grey; that's D-53, everything else matches.
+¹⁶ Routine player 3: Figma's "Note saved" here has Undo; Day details' (flow 38) and Today's don't. The app keeps its one rule, "Note saved" without Undo.
 
 ## Open questions for the user
 
@@ -382,14 +388,14 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
-| 1 | 239:2 | Start a routine | Morning, 3 left; Start → player on Meds → ✕ | not started |
-| 2 | 240:2 | A check in the player: Mark done, then Next | Start → Meds → Mark done: Saved · Undo · Add note; Next → Stretch → ✕ | not started |
-| 3 | 241:2 | The Saved snackbar: Undo, and Add note | → Mark done → Undo → Mark done → Add note → Save: Note saved | not started |
-| 4 | 242:2 | A time habit in the player | → › Stretch 4:00 → Start → Pause → Resume → 10:00 Goal met → Pause → Next | not started |
-| 5 | 243:2 | A checklist in the player | → Skincare steps → tick → all: Finish → untick | not started |
-| 6 | 245:2 | The end of the routine: everything done | → Skincare all ticked → Finish: end page → Done | not started |
-| 7 | 246:2 | The end of the routine, with some left | → Meds done → Next → › → › last: end page, 2 left → Return to unfinished → Done | not started |
-| 8 | 247:2 | Day details from the player, and skipping | → Today chip: Day details over player → Skip today → ✕ → Next | not started |
+| 1 | 239:2 | Start a routine | Morning, 3 left; Start → player on Meds → ✕ | passed ¹⁵ |
+| 2 | 240:2 | A check in the player: Mark done, then Next | Start → Meds → Mark done: Saved · Undo · Add note; Next → Stretch → ✕ | passed |
+| 3 | 241:2 | The Saved snackbar: Undo, and Add note | → Mark done → Undo → Mark done → Add note → Save: Note saved | passed ¹⁶ |
+| 4 | 242:2 | A time habit in the player | → › Stretch 4:00 → Start → Pause → Resume → 10:00 Goal met → Pause → Next | passed |
+| 5 | 243:2 | A checklist in the player | → Skincare steps → tick → all: Finish → untick | passed |
+| 6 | 245:2 | The end of the routine: everything done | → Skincare all ticked → Finish: end page → Done | passed |
+| 7 | 246:2 | The end of the routine, with some left | → Meds done → Next → › → › last: end page, 2 left → Return to unfinished → Done | passed |
+| 8 | 247:2 | Day details from the player, and skipping | → Today chip: Day details over player → Skip today → ✕ → Next | passed |
 | 9 | 248:300 | Your routine: jump to a habit, change the order | → Morning ▾: Your routine → Skincare → Edit drag → Done | not started |
 | 10 | 249:2 | The ⋮ menu in the player | → ⋮ → Go to first unfinished / Change order / End routine | not started |
 | 11 | 251:2 | An amount in the player | Water → +1 → +1 twice: Goal met → Today chip → Log manually → Add, ✕ | not started |

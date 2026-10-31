@@ -220,6 +220,17 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** (a). A button that does what a tap on each step already does is one more thing to read, and a
   routine done at another time is rare enough for the steps' own taps.
 
+### D-53. A habit's progress line: on its habit's Fill, or on grey?
+
+- **Where:** the routine player's card ([Figma 919:110647](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=919-110647)), Day details' This day; `ui/components/Progress.kt` (`HabitProgress`).
+- **What Figma shows / what the app did:** the player's card lines are mostly the habit's colour on a grey track (226,
+  226, 226) with a dark end dot; a few are on the habit's own Fill, and Day details' lines are on the Fill. A90 (31 Oct)
+  wrote "the habit's colour on its Fill" for all of them, and the app draws every line that way.
+- **What I did for now:** the app as A90 says; the player flows are passed on everything else.
+- **Question:** (a) every habit line on its habit's Fill, as the app and Day details (Figma's player lines get the Fill);
+  (b) the player's on grey and Day details' on the Fill; (c) every line on grey.
+- **My recommendation:** (a): one rule, and the Fill ties the line to the habit's colour above it.
+
 ### D-4. Dialogs and pickers: Surface container high or Surface bright?
 
 - **Where:** Dialog (5.3.4), Time picker (5.3.5), Date picker (5.3.6); `ui/components/Dialog.kt`, `TimePickerDialog.kt`,

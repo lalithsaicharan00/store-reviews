@@ -38,7 +38,10 @@ fun WavyProgress(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     trackColor: Color = MaterialTheme.colorScheme.secondaryContainer,
-) = LinearWavyProgressIndicator(progress = { progress.coerceIn(0f, 1f) }, modifier = modifier.fillMaxWidth(), color = color, trackColor = trackColor)
+) = LinearWavyProgressIndicator(progress = { progress.coerceIn(0f, 1f) }, modifier = modifier.fillMaxWidth(), color = color, trackColor = trackColor,
+    // The wave runs the whole way while a clock runs, past the goal too (Figma 923:110889); Material's own flattens it
+    // at the ends.
+    amplitude = { p -> if (p <= 0f) 0f else 1f })
 
 /**
  * A habit's progress line (Figma's Linear progress, 902:14527; A90): **wavy only while its timer is [running]**, the
