@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 31 |
+| habits & tasks | 269:148 | 35 | 32 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **188** |
+| **All** | | **290** | **189** |
 
 ## Bug log
 
@@ -524,7 +524,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 29 | 313:426 | Completed tasks: Delete all completed | ⋮ Delete all completed → dialog → Deleted; Undo | passed, with D-58 (Figma empties the page; the app keeps repeating tasks' done days, so 28 rows stay) |
 | 30 | 313:645 | Archived tasks: Restore, Delete | Archived (3) → list → ⋮ → Restore; Undo | passed ↻ (Undo puts it back as archived 17 Sep, in its place) |
 | 31 | 314:2 | Search habits and tasks (from Tasks) | search → “den” → Call the dentist → ← | passed |
-| 32 | 314:466 | Search: no match (from Tasks) | “plumber” → Add → Add a task → New task → Add · Show | not started |
+| 32 | 314:466 | Search: no match (from Tasks) | “plumber” → Add → Add a task → New task → Add · Show | passed (What kind of task? comes between, as Create new's own flows have it; these frames skip it) |
 | 33 | 315:2 | +: a new task | + → New task Buy groceries, Tomorrow → Add · Show → Show | not started |
 | 34 | 315:542 | Tap a task: its details, and back | Car service → Task details → ← | not started |
 | 35 | 316:2 | Tasks: empty states and Font size 200% | No tasks → Repeating none → 200 % | not started |
