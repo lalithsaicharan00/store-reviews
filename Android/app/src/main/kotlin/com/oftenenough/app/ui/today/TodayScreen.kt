@@ -569,7 +569,8 @@ private fun NoHabitsYet(nav: TodayNav) {
 private fun NothingPlanned(nav: TodayNav, isToday: Boolean) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         EmptyState(Symbols.EventAvailable, if (isToday) "Nothing planned today" else "Nothing planned this day",
-            "Your habits are planned for other days. Each shows up on its days.") {
+            // Figma's Nothing planned narrows its body to 280, so it reads in two even lines.
+            "Your habits are planned for other days. Each shows up on its days.", bodyWidth = 280.dp) {
             AppButton("New habit", nav::newHabit, style = ButtonStyle.Tonal, icon = Symbols.Add)
         }
     }
