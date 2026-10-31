@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 18 |
+| habits & tasks | 269:148 | 35 | 19 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **175** |
+| **All** | | **290** | **176** |
 
 ## Bug log
 
@@ -261,6 +261,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 223. Habits & tasks 17 · a card planned for later in the week said its day twice: "Planned for Monday" over "Next on Mon". The line under goes when the headline names the day.
 224. Habits & tasks 18 · with every habit archived, the Archived row sat on the gesture bar (its 24 was measured from the screen's edge); Figma keeps it 24 above the bar.
 225. Habits & tasks 18 (and Habit details' Week, Month and Year) · a period paused through every day it had said "Not planned that month"; Figma: "Paused all of July" · "Paused days don’t count" ("Paused all week", "Paused all of 2026").
+226. Habits & tasks 19 (Habit details' Week too) · at Font size 200 % the day names ran into each other ("SunMonTueWedThu"); Figma's 200 % frame turns them to letters, "S M T W T F S". They do now whenever a name doesn't fit its column.
+227. Habits & tasks 19 · TalkBack read a card as "Stretch. Planned for today. …", without the goal line under the name (the card's spoken words, flow 6, took the place of its text); now "Stretch, 10 min a day. Planned for today. …".
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -499,7 +501,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 16 | 297:2 | +: a new habit | + → What do you want to do? → How track? → New habit Floss → Add · Show → Show scrolls | passed ↻ ("1 h on Mon, Wed, Fri": Figma writes "1 hour" on this card and "1 h" everywhere else) |
 | 17 | 299:2 | Every kind of card (Week) | Checks → Amounts and goals → Skipped, paused, quit → time limit, every few days | passed ↻ ²³ |
 | 18 | 301:2 | Empty and first states | No habits → all archived → first week → July all paused | passed ↻ ²⁴ |
-| 19 | 303:2 | A long name, and Font size 200% | usual → long name → 200 % | not started |
+| 19 | 303:2 | A long name, and Font size 200% | usual → long name → 200 % | passed ↻ (at 200 % the selected Week drops its ✓, as the Rulebook's text rule has a connected button's ✓ step aside; Font size put back to 100 %) |
 | 20 | 305:2 | The Tasks tab: One-time | Tasks → One-time → end: No date, Completed, Archived | not started |
 | 21 | 306:2 | The Tasks tab: Repeating | Repeating → by how often → end | not started |
 | 22 | 308:2 | A task's ⋮: Move to another day | ⋮ Move… → picker → OK; Undo → under Fri 30 Oct | not started |

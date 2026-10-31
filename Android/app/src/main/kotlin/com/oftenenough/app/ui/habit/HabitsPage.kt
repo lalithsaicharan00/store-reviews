@@ -397,7 +397,8 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
     }
     HabitHistoryCard(modifier.semantics {
         testTag = "habits-row-" + habit.name
-        contentDescription = card.accessibility
+        // Its name and goal, then the period ("Stretch, 10 min a day. Reached on …"): the goal line is said too.
+        contentDescription = card.accessibility.replaceFirst(habit.name + ".", habit.name + ", " + card.goal + ".")
         customActions = dayActions
     }, onClick = { nav.open(habit) }, onClickLabel = "Opens the habit") {
         HistoryHabitHeader(habit.symbol, habit.color, habit.name, card.goal) {

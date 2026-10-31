@@ -263,8 +263,16 @@ fun HistorySection(heading: String, modifier: Modifier = Modifier, content: @Com
 
 /** The weekday names, each centred over its 36 dp column, 6 apart; today's in Label Medium On surface. */
 @Composable
-private fun DayNames(names: List<String>, todayColumn: Int?, column: Dp = DayCellSize.week) {
+private fun DayNames(namesIn: List<String>, todayColumn: Int?, column: Dp = DayCellSize.week) {
     val s = MaterialTheme.colorScheme
+    // Names that don't fit their column (large text) turn to letters, "S M T W T F S", as Figma's 200% frame (QA, Habits
+    // & tasks 19: "SunMonTueWed" ran together).
+    val measurer = rememberTextMeasurer()
+    val room = with(LocalDensity.current) { (column + CellGap).roundToPx() }
+    val names = remember(namesIn, room, measurer) {
+        if (namesIn.take(7).any { it.length > 1 && measurer.measure(it, AppType.labelMedium).size.width > room })
+            namesIn.mapIndexed { i, n -> if (i < 7) n.take(1) else n } else namesIn
+    }
     Row(Modifier.padding(horizontal = DayCellSize.ring).clearAndSetSemantics { }, horizontalArrangement = Arrangement.spacedBy(CellGap)) {
         names.forEachIndexed { i, name ->
             val isToday = i == todayColumn
