@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 30 |
+| today | 54:5580 | 84 | 31 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **40** |
+| **All** | | **290** | **41** |
 
 ## Bug log
 
@@ -128,6 +128,11 @@ Each entry: page · flow — what differed — how it was fixed (commit).
   backup, From a newer version) fill the page with `#f0f0f3`, a value with no colour style or variable behind it,
   under a top app bar of `#eeeeee` (*Android / Light / System / Surface container*, the colour of every other screen).
   The app keeps one page colour, `#eeeeee`; say if the band is meant.
+- **Today's numbers in Figma's flows disagree with themselves.** Today flow 30's first frame (786:32343) draws Meds
+  with 🔥 57 though its own rule (142:2) says a missed yesterday hides the 🔥, and every Today frame's day bar says
+  “4/13” while its chips (3 + 3 + 2 + 2 left of 13) make 3/13. Pick up parcel is due today in flows 10–11 and
+  tomorrow in flow 31. The app follows the rule (no 🔥 after a missed yesterday; 56 on yesterday, 57 once it's ticked)
+  and counts what its sections show (the demo's parcel is due today, so Today counts 14).
 
 ---
 
@@ -181,7 +186,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 27 | 91:2 | Change a note | Water → Day details with note → Note → Edit note → Save | passed |
 | 28 | 91:607 | Delete a note | Water → Day details → Note → Delete this note? → Delete; Undo | passed |
 | 29 | 91:1143 | Leave a note unsaved | Water → Day details → note typed → ✕: Discard this note? → Discard | passed |
-| 30 | 99:2 | Log yesterday | Today → ‹ Yesterday; Back to today → ✓ Meds for yesterday → Back to today: streak 58 | not started |
+| 30 | 99:2 | Log yesterday | Today → ‹ Yesterday; Back to today → ✓ Meds for yesterday → Back to today: streak 58 | passed |
 | 31 | 100:2 | Look at tomorrow | Today → › Tomorrow → Water: Day details for tomorrow → ✕ → Back to today | not started |
 | 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | not started |
 | 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | not started |
