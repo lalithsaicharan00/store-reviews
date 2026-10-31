@@ -122,9 +122,11 @@ object DemoData {
         // A test launch's `streak` ("Smoking=30"): the run reached that many days an hour before today began (Figma 107:2429).
         val lastSlip = streaks["Smoking"]?.let { store.rules.dayStart(today) - (it * 86_400L + 3600) * 1000 }
             ?: (now - (19 * 86400 + 12 * 3600 + 32 * 60 + 45) * 1000L)
-        val earlier = lastSlip - 45 * dayMs
+        // `earlier` ("Smoking=45") keeps the runs before the set one: a first of 30, then that best (Figma 111:2992).
+        val firstRun = "Smoking" in streaks && "Smoking" !in runsBefore
+        val earlier = lastSlip - (runsBefore["Smoking"] ?: 45) * dayMs
         // With a set run (`streak`, Figma 107:2429) it's Smoking's first: quitting began then, with no slips before.
-        val quitFrom = if ("Smoking" in streaks) lastSlip else earlier - 30 * dayMs
+        val quitFrom = if (firstRun) lastSlip else earlier - 30 * dayMs
         val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = quitFrom).copy(createdAt = quitFrom)
         // A set Coffee streak ("Coffee=30"): made that many days ago, so its 30th day within the limit closed yesterday.
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true)
@@ -142,7 +144,8 @@ object DemoData {
             for (d in 1..(streaks[habit.name] ?: streak)) log(habit, today - d, habit.goal)
         // A test launch's `earlier` ("Meds=7"): a run of that length before a one-day break (Figma 108:1308).
         for ((name, length) in runsBefore) {
-            val habit = habits.firstOrNull { it.name == name } ?: continue
+            // A quit habit's runs come from its slips (above), never from logs.
+            val habit = habits.firstOrNull { it.name == name && it.kind != HabitKind.Quit } ?: continue
             val from = 1 + (streaks[name] ?: 0) + 1
             for (d in from until from + length) log(habit, today - d, habit.goal)
         }
@@ -152,7 +155,7 @@ object DemoData {
         for (d in 1..(streaks[social.name] ?: 7)) log(social, today - d, 10.0)
         if (clean != null) for (m in 1..streaks.getValue("Deep clean"))
             log(clean, java.time.LocalDate.ofEpochDay(today.toLong()).minusMonths(m.toLong()).withDayOfMonth(10).toEpochDay().toInt(), 1.0)
-        if ("Smoking" !in streaks) {
+        if (!firstRun) {
             log(smoking, store.today(lastSlip), 1.0, at = lastSlip)
             log(smoking, store.today(earlier), 1.0, at = earlier)
         }

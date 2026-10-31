@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 72 |
+| today | 54:5580 | 84 | 75 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **82** |
+| **All** | | **290** | **85** |
 
 ## Bug log
 
@@ -148,6 +148,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 110. Landmark pop-ups' words · every one said "Meds · reached today" and a weekly or monthly run "26 weeks in a row"; Figma: a year of days "every day for a year", 26 weeks "half a year, week after week", 6 months "every month since May", and a week's or month's run is "26 weeks of goals met" / "6 months of goals met" (pop-up and band; the next card keeps "52 weeks in a row"). Built for every pop-up length (days 180, every 365; weeks every 52; months 6 and up). Test launches: a set "Deep clean" streak adds a once-a-month Deep clean.
 111. Milestone band · a band whose pop-up hadn't been seen ended in "See ›"; Figma's rule (156:47): "No › and no See … tapping it quietly opens the pop-up again", and no Figma band has one. Removed.
 112. Cut-down milestones · "30 days within max"; Figma and the later decisions (A42, A44) say "30 days within the limit" (A23's "within max" is from 19 Oct). Milestone titles, totals and the notification say "within the limit" now; the habit and Progress pages' "Within max" lines are checked with their own flows. A limit's pop-up line is Figma's "Coffee · yesterday, no more than 2 cups" (last week / last month for longer limits). The pop-up's medal is read as "Medal, 30 days clean", not with a fixed "reached today".
+113. A total's pop-up · next line "Next · 25 to go · now 25"; Figma: "25 so far" for a total ("now 30" stays for a run).
+114. Back at an earlier length (not the best) · the pop-up said "reached yesterday" and pointed at 60; Figma: "Smoking · back to your earlier run" and "45 days clean · Next · your best is 45". Built for every habit; test launches' `earlier` keeps Smoking's runs before a set one.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -252,9 +254,9 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 69 | 110:2937 | Pop-up: a yearly anniversary | Meds a year ago → ✓ One year of Meds → Close | passed |
 | 70 | 111:2 | Pop-up: quit, from its band | Smoking's band → tap: pop-up → Close | passed |
 | 71 | 111:714 | Pop-up: cut down, from its band | Coffee's band → pop-up → Close | passed |
-| 72 | 111:1426 | Pop-up: from a bar's See | Meds → ✓ 25 times: bar → See: pop-up → Close | not started |
-| 73 | 111:2209 | Pop-up: back to your best | Meds 13 (best 14) → ✓ 14: bar → band: pop-up "again" → Close | not started |
-| 74 | 111:2992 | Pop-up: quit, back after a slip | Smoking's band → pop-up → Close | not started |
+| 72 | 111:1426 | Pop-up: from a bar's See | Meds → ✓ 25 times: bar → See: pop-up → Close | passed |
+| 73 | 111:2209 | Pop-up: back to your best | Meds 13 (best 14) → ✓ 14: bar → band: pop-up "again" → Close | passed |
+| 74 | 111:2992 | Pop-up: quit, back after a slip | Smoking's band → pop-up → Close | passed |
 | 75 | 112:2 | Reached away: from a widget | Open app: Water finished on widget → band plays once | not started |
 | 76 | 112:360 | Reached away: in a folded section | Afternoon folded → open: band plays once | not started |
 | 77 | 112:757 | Reached away: the milestone notification | Lock screen notification → tap: Today with pop-up → Close | not started |

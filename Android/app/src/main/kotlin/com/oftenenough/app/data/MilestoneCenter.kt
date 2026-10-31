@@ -438,13 +438,19 @@ class MilestoneCenter(private val store: HabitStore) {
                 bucket.nextRow(n.toInt())?.let { k ->
                     next = MilestoneAhead("$k", rowTitle(k), "Next · ${k - n.toInt()} to go · now ${n.toInt()}", (n / k).toFloat())
                 }
+                // Back at an earlier length: the next is the best run, when it's still ahead ("Next · your best is 45",
+                // Figma 886:81868).
+                if (reachedBefore(s, habit, quit)) earlierBest(habit, s.day, quit).takeIf { it > n.toInt() }?.let { best ->
+                    next = MilestoneAhead("$best", rowTitle(best), "Next · your best is $best", (n / best).toFloat())
+                }
             }
             MilestoneTrack.IN_TOTAL -> {
                 number = Format.amount(n)
                 title = totalTitle(n)
                 val goal = if (quit || limit) 1.0 else periodGoal(ruled)
                 bucket.nextTotal(goal, n)?.let { v ->
-                    next = MilestoneAhead(Format.amount(v), totalTitle(v), "Next · ${Format.amount(v - n)} to go · now ${Format.amount(n)}", (n / v).toFloat())
+                    // A total counts up: "25 so far" (Figma 884:80684); a run is "now 30".
+                    next = MilestoneAhead(Format.amount(v), totalTitle(v), "Next · ${Format.amount(v - n)} to go · ${Format.amount(n)} so far", (n / v).toFloat())
                 }
             }
             MilestoneTrack.ANNIVERSARY -> {
@@ -467,6 +473,7 @@ class MilestoneCenter(private val store: HabitStore) {
         val subtitle = when {
             s.first -> "$title · ${habit.name}"
             s.again -> "${habit.name} · back to your best run"
+            reachedBefore(s, habit, quit) -> "${habit.name} · back to your earlier run"
             s.track == MilestoneTrack.ANNIVERSARY -> {
                 val first = store.entries(habit.id).minOfOrNull { it.day } ?: s.day
                 val met = store.rules.runs(habit, s.day).sumOf { it.length }
@@ -511,12 +518,14 @@ class MilestoneCenter(private val store: HabitStore) {
      */
     private fun reachedBefore(s: MilestoneShown, habit: Habit, quit: Boolean): Boolean {
         if (s.track != MilestoneTrack.IN_A_ROW || s.again || s.tier != MilestoneTier.ROW) return false
-        val n = s.value.toInt()
-        if (quit) {
-            val runs = store.rules.quitHistory(habit, store.clock()).filter { it.ending != QuitRun.Ending.ONGOING }
-            return runs.any { quitDays(it.start, it.end ?: it.start) >= n }
-        }
-        return store.rules.runs(habit, s.day).any { !it.isCurrent && it.length >= n }
+        return earlierBest(habit, s.day, quit) >= s.value.toInt()
+    }
+
+    /** The longest run before this one (a quit habit's in whole days clean), 0 when there's none. */
+    private fun earlierBest(habit: Habit, day: Int, quit: Boolean): Int {
+        if (quit) return store.rules.quitHistory(habit, store.clock()).filter { it.ending != QuitRun.Ending.ONGOING }
+            .maxOfOrNull { quitDays(it.start, it.end ?: it.start) } ?: 0
+        return store.rules.runs(habit, day).filter { !it.isCurrent }.maxOfOrNull { it.length } ?: 0
     }
 
     companion object {
