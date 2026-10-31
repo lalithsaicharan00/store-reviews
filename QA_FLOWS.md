@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 62 |
+| today | 54:5580 | 84 | 63 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **72** |
+| **All** | | **290** | **73** |
 
 ## Bug log
 
@@ -236,7 +236,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | passed |
 | 60 | 107:2429 | Milestone on the row: quit, no tap | Open the app: 30 days clean → Quitting on screen: band rises once | passed |
 | 61 | 108:2 | Milestone bar: one milestone | Meds 2 → ✓ 3: bar above the day bar → after 5 s/touch: bar goes, band | passed |
-| 62 | 108:561 | Milestone bar: the next one replaces it | Stretch past 10, Meds to do → ✓ Meds: bar → ⏸ Stretch: Stretch's bar → 5 s: band | not started |
+| 62 | 108:561 | Milestone bar: the next one replaces it | Stretch past 10, Meds to do → ✓ Meds: bar → ⏸ Stretch: Stretch's bar → 5 s: band | passed (under A87 Stretch's bar comes as its clock crosses 10:00, not at ⏸, as Figma's own flow 58: tested with Meds' bar up when Stretch crossed; Meds' bar went, its band stayed, Stretch's bar rose, then its band) |
 | 63 | 108:1308 | Milestone: a number reached again | Meds 6 (had 7) → ✓ 7: just the row → band stays | not started |
 | 64 | 110:2 | Pop-up: your first milestone | Meds 2 → ✓ pop-up once taps stop → Close: band | not started |
 | 65 | 110:592 | Pop-up: a month in a row | Meds 29 → ✓ pop-up → Close | not started |
