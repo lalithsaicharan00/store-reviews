@@ -63,6 +63,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
@@ -74,6 +77,7 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitPause
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.HeatCell
+import com.oftenenough.app.data.pageDayDate
 import com.oftenenough.app.data.ProgressRange
 import com.oftenenough.app.data.ProgressSnapshot
 import com.oftenenough.app.data.ProgressWeekCard
@@ -370,7 +374,18 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
         if (d != null && d.heat != HeatCell.Blank && d.day <= snap.today) nav.openDay(habit, d.day) else nav.open(habit)
     }
     var open by remember { mutableStateOf(false) }
-    HabitHistoryCard(modifier.semantics { testTag = "habits-row-" + habit.name }, onClick = { nav.open(habit) }, onClickLabel = "Opens the habit") {
+    // TalkBack: the card is one element, read as its words and each day's state; a Week or Month day up to today is an
+    // action of its own (the squares are drawn, so they can't be focused one by one).
+    val dayActions = remember(card.days, snap.range, snap.today) {
+        if (snap.range == ProgressRange.YEAR) emptyList()
+        else card.days.filter { it.heat != HeatCell.Blank && it.day <= snap.today }
+            .map { d -> CustomAccessibilityAction("Day details, " + pageDayDate(d.day)) { nav.openDay(habit, d.day); true } }
+    }
+    HabitHistoryCard(modifier.semantics {
+        testTag = "habits-row-" + habit.name
+        contentDescription = card.accessibility
+        customActions = dayActions
+    }, onClick = { nav.open(habit) }, onClickLabel = "Opens the habit") {
         HistoryHabitHeader(habit.symbol, habit.color, habit.name, card.goal) {
             Box {
                 StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })

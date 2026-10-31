@@ -281,6 +281,19 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** may the description be rewritten to describe Completed tasks?
 - **My recommendation:** yes.
 
+### D-55. After Add log from a Habits & Tasks square: back to Day details, or to Habits & Tasks?
+
+- **Where:** Habits & Tasks flow 6, [Figma 1119:101180](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1119-101180); `ui/record/RecordScreens.kt`, `ui/AppRoot.kt` (the add route).
+- **What Figma shows:** this frame goes from Add straight back to Habits & Tasks, the square filled and "6 min added to
+  Stretch · Undo". Every other flow through the same Add log (Today 4 and 7, Day details 3, 4, 14 and 22, the player 11)
+  comes back to Day details, which shows the new log, and is closed from there.
+- **What I did for now:** the same everywhere: Add comes back to Day details (the new log in Today's logs, Undo by its
+  Delete); closing it shows the square filled.
+- **Question:** (a) keep one behaviour: back to Day details; (b) from Habits & Tasks only, Add closes Day details too and
+  says "6 min added to Stretch · Undo" on the page.
+- **My recommendation:** (a): Day details was opened to work on that day, and coming back to it shows the log that was
+  added; a second rule for one page is harder to learn. Figma's frame 4 then shows the page after ✕.
+
 ## Details pages
 
 ### D-8. A quit habit's milestones: the page's numbers or the app's?

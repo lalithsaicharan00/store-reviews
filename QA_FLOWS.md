@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 5 |
+| habits & tasks | 269:148 | 35 | 6 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **162** |
+| **All** | | **290** | **163** |
 
 ## Bug log
 
@@ -233,6 +233,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 195. Habits & tasks 2 (and every Year grid) · the year's squares left a 24 dp strip of nothing after this week (room kept for a month name that might start there), so 9 weeks showed; Figma's latest week sits at the card's edge, 10 weeks. Room now only when a month name starting in the last columns needs it.
 196. Habits & tasks 4 (and Habit details › Progress) · a paused card said only "Paused until 1 Nov"; Figma's says "Paused until Fri 30 Oct" (the weekday, as Habit details' notice) over "Paused days don’t count". Today's row keeps its short "Paused until 1 Nov" (A84).
 197. Habits & tasks 4 (Tasks' end too) · the Archived row and What the squares mean showed a bare icon; Figma's List item has it in a 40 dp Surface container highest circle (Leading avatar), 16 in. Both now use `ListAvatar`; the key's row is 8 above and below, 56 tall as Figma's.
+198. Habits & tasks 6 (and every page's card) · TalkBack read a habit's card as its loose words and could never reach a day: the squares are one drawing. The card was given its spoken summary (built, never used: "Stretch. Reached on 6 of 6 days so far. … Saturday partial, 6m.") and an action for each Week or Month day up to today, "Day details, Sat 31 Oct".
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -255,6 +256,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹⁹ Routine player 18 (and the timer frames): the timer's running wave in these frames is a drawn line 12 dp per wave and 2 dp high; the design system's Linear progress (902:14527, Style=Wavy) is 40 dp per wave and 3 dp high, as Material's. The app follows the component; the frames' drawings differ from it.
 ²⁰ Routine player 20: under the limit, the timer frames draw the track in the wave's own #777777; Today's limit rows (flow 45) draw it Outline variant, and the app keeps that, so the time left stays readable. The frames' waves are drawn lines with no colour variable.
 ²¹ Routine player 24: at the phone's 200 % (Android's own scale, which grows big text less than small) the name and description are larger than Figma's 200 % frame draws them, so the count sits below the card's fold and the card scrolls to it. What the frame's note asks holds: two lines at most for each, then …, and the buttons keep their height.
+²² Habits & tasks 6: "Reached on 6 of 6 days so far" fits Figma's 296 on one line and wraps in the app: the string is 297.2 dp in the bundled Google Sans Flex at Medium, opsz 22 (fontTools, before kerning); Figma's renderer draws it a hair narrower. Text that wraps grows its card (Rulebook), and the style isn't ours to change (U36).
 
 ## Open questions for the user
 
@@ -455,7 +457,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 3 | 283:721 | An earlier week, and back to this one | This week → ‹ last week; Back to this week → back | passed |
 | 4 | 283:1332 | Scroll the page | top → scrolled: bars stay → end: Paused, Archived, key | passed |
 | 5 | 284:2 | Tap a card: Habit details, and back | Stretch card → Habit details → ← | passed (←, Back and the edge swipe each land where the page was; Figma's "400 min stretched" is this frame's alone: every details page says "… recorded", as the app does) |
-| 6 | 285:2 | Tap a square: Day details for that day | Stretch Friday → Day details → Log time 6 min → Add: square fills; Undo | not started |
+| 6 | 285:2 | Tap a square: Day details for that day | Stretch Friday → Day details → Log time 6 min → Add: square fills; Undo | passed ²² (Add comes back to Day details, as every other flow through Add log; ✕: the square fills. Figma's frame goes straight to the page with an Undo: D-55) |
 | 7 | 286:2 | A card's ⋮: Edit habit | ⋮ → menu → Edit habit → Save: 15 min a day | not started |
 | 8 | 289:2 | A card's ⋮: Pause… | ⋮ Pause… → sheet → Pause; Undo → in Paused | not started |
 | 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | not started |
