@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 8 |
+| habits & tasks | 269:148 | 35 | 9 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **165** |
+| **All** | | **290** | **166** |
 
 ## Bug log
 
@@ -465,7 +465,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 6 | 285:2 | Tap a square: Day details for that day | Stretch Friday → Day details → Log time 6 min → Add: square fills; Undo | passed ²² (Add comes back to Day details, as every other flow through Add log; ✕: the square fills. Figma's frame goes straight to the page with an Undo: D-55) |
 | 7 | 286:2 | A card's ⋮: Edit habit | ⋮ → menu → Edit habit → Save: 15 min a day | passed ↻ (Undo puts back 10 min a day and its goal history; from Habit details, "Changes saved") |
 | 8 | 289:2 | A card's ⋮: Pause… | ⋮ Pause… → sheet → Pause; Undo → in Paused | passed ↻ (Paused keeps the person's order: Figma's "at the end" is the section's place; the snackbar's "Sat, 7 Nov": D-56) |
-| 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | not started |
+| 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | passed (Stretch first in Morning again; Undo puts the pause back as it was, to its day) |
 | 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | not started |
 | 11 | 292:2 | A card's ⋮: Delete | ⋮ Delete → Delete Stretch? → Delete; Undo → Cancel/Undo | not started |
 | 12 | 293:2 | Archived habits: open, Restore | Archived (3) → list → ⋮ Restore, Delete → Restore; Undo | not started |
