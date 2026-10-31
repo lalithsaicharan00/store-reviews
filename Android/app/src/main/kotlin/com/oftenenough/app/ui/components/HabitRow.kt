@@ -65,7 +65,7 @@ import com.oftenenough.app.ui.theme.appColors
  * and not the row, Rulebook S3) in the habit's Fill, so two habits at the same progress read equally far along; a
  * cut-down or quit row passes nothing (A41: a limit never fills). Over it, [pressed] lays Material's pressed state, On
  * surface at 10 %, for the moment the row is held for its menu; [lit] flashes the same, softer, for a row Today points
- * to. Tap for [onClick], touch and hold for [onLongClick]; [menu] is that menu, anchored under the body (above the band).
+ * to. Tap for [onClick], touch and hold for [onLongClick]; [menu] is that menu, hung from the card's end under the body (above the band).
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -125,8 +125,9 @@ fun HabitRowLayout(
                 Spacer(Modifier.height(10.dp))
                 Box(Modifier.padding(start = 56.dp, end = 4.dp)) { below() }
             }
-            menu?.invoke()
         }
+        // The menu hangs from the card's end, under its body (Figma's Today: right-aligned, 4 below the row).
+        if (menu != null) Box(Modifier.align(Alignment.End)) { menu() }
         band?.invoke(this)
     }
 }

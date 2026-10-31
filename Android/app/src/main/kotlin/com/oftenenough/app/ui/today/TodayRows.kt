@@ -39,6 +39,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
@@ -283,22 +284,21 @@ private fun AfterLogButtons(offer: AfterLog, habit: Habit, day: Int, store: Habi
 }
 
 /**
- * Touch and hold (Figma 1.4, 1.4.1): Edit habit, Arrange…, Pause…, Add note, then Skip today (Log a slip on a quit row),
+ * Touch and hold (Figma 1.4, 1.4.1): Edit habit, Pause, Add note, then Skip today (Log a slip on a quit row),
  * each with its icon, on the menu's own surface; the held row is shaded while it's open. No Delete: it lives in Day
  * details' ⋮ menu, asking first (U14).
  */
 @Composable
 private fun RowMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, day: Int, store: HabitStore, actions: TodayActions, layout: TodayLayout) {
-    AppMenu(open, onDismiss, Modifier.semantics { testTag = "row-menu" }) {
+    AppMenu(open, onDismiss, Modifier.width(220.dp).semantics { testTag = "row-menu" }, offset = DpOffset(0.dp, 4.dp)) {
         val today = store.today()
         @Composable fun item(text: String, icon: ImageVector, action: () -> Unit) = AppMenuItem(text, { onDismiss(); action() }, icon = icon)
         item(if (habit.kind == HabitKind.Task) "Edit task" else "Edit habit", Symbols.Edit) { actions.editHabit(habit) }
-        item("Arrange…", Symbols.SwapVert) { actions.arrange(habit) }
         if (store.rules.canPause(habit)) {
             if (store.isPaused(habit, today)) item("Resume habit", Symbols.PlayCircle) { store.resume(habit) }
-            else item("Pause…", Symbols.PauseCircle) { actions.pause(habit) }
+            else item("Pause", Symbols.PauseCircle) { actions.pause(habit) }
         }
-        item(if (store.note(habit, day) == null) "Add note" else "Edit note", Symbols.StickyNote2) { actions.writeNote(habit, day) }
+        item(if (store.note(habit, day) == null) "Add note" else "Edit note", Symbols.EditNote) { actions.writeNote(habit, day) }
         when {
             habit.kind == HabitKind.Quit -> if (!store.isPaused(habit, today)) item("Log a slip", Symbols.AddCircle) { actions.addLog(habit, today) }
             habit.kind == HabitKind.Task -> {}

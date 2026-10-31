@@ -1,6 +1,7 @@
 package com.oftenenough.app.ui.components
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -25,6 +26,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.AppType
 
 /**
@@ -110,9 +112,12 @@ fun AppMenuItem(
     val leading: (@Composable () -> Unit)? = icon?.let { { Icon(it, null, Modifier.size(MenuDefaults.LeadingIconSize)) } }
     val m = modifier.semantics { tag?.let { testTag = it } }
     val red = if (destructive) MaterialTheme.colorScheme.error else Color.Unspecified
+    // Figma's Menu item: 16 at the sides, 8 above and below. Its 44 high stays Material's 48 (Compose 1.5's
+    // MenuListItemContainerHeight, the touch target).
+    val padding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     if (selected == null) DropdownMenuItem(onClick, label, MenuDefaults.middleItemShape, m, leading, enabled = enabled,
-        colors = MenuDefaults.itemColors(textColor = red, leadingIconColor = red))
+        colors = MenuDefaults.itemColors(textColor = red, leadingIconColor = red), contentPadding = padding)
     else SelectableDropdownMenuItem(selected, onClick, label, MenuDefaults.itemShapes(), m, leading, enabled = enabled,
-        colors = MenuDefaults.selectableItemColors(textColor = red, leadingIconColor = red))
+        colors = MenuDefaults.selectableItemColors(textColor = red, leadingIconColor = red), contentPadding = padding)
 }
 

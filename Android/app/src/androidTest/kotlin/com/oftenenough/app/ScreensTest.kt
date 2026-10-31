@@ -112,10 +112,10 @@ class ScreensTest {
     @Test fun aLongPressOnARowOpensItsMenu() {
         launch()
         compose.onNodeWithTag("row-Water", useUnmergedTree = true).performTouchInput { longClick() }
-        // Figma 1.4: Edit habit, Arrange…, Pause…, Add note, Skip today.
+        // Figma's Today: Edit habit, Pause, Add note, Skip today.
         waitFor(hasText("Edit habit"), "the row's menu")
-        waitFor(hasText("Arrange…"), "Arrange…")
-        tapText("Pause…")
+        waitFor(hasText("Skip today"), "Skip today")
+        tapText("Pause")
         waitFor(hasText("Pause Water"), "the Pause page")
     }
 
