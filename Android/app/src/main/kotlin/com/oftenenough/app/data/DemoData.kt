@@ -168,12 +168,19 @@ object DemoData {
         log(call, week, 1.0, at = now)
         log(call, week, 1.0, at = now)
         repeat(8) { log(water, today, 1.0, at = now) }
-        // A test launch's `today` ("Water=7"): that much logged today instead, one log a unit (a time habit: one log).
+        // A test launch's `today` ("Water=5"): that much logged today instead, as Figma's Day details logs it: an odd one
+        // first, then two at a time, at 7:30 AM, 11:05 AM, 1:10 PM, 3:40 PM … and never later than now (5: 1, 2, 2;
+        // 7: 1, 2, 2, 2, flow 12's four logs). A time habit: one log.
+        val times = listOf(7 * 60 + 30, 11 * 60 + 5, 13 * 60 + 10, 15 * 60 + 40, 17 * 60 + 20, 19 * 60 + 45)
         for ((name, amount) in todays) {
             val habit = habits.firstOrNull { it.name == name } ?: continue
             entries.removeAll { it.habitId == habit.id && it.day == today && it.stepId == null }
-            if (habit.kind == HabitKind.Duration) { if (amount > 0) log(habit, today, amount.toDouble(), at = now) }
-            else repeat(amount) { log(habit, today, 1.0, at = now) }
+            if (habit.kind == HabitKind.Duration) { if (amount > 0) log(habit, today, amount.toDouble(), at = now); continue }
+            val pieces = (if (amount % 2 == 1) listOf(1) else emptyList()) + List(amount / 2) { 2 }
+            pieces.forEachIndexed { i, n ->
+                val at = (store.rules.dayStart(today) + times[minOf(i, times.lastIndex)] * 60_000L).coerceAtMost(now - (pieces.size - i) * 60_000L)
+                log(habit, today, n.toDouble(), at = at)
+            }
         }
         val positioned = habits.mapIndexed { i, hb -> hb.record(i, now) }
         // Figma's order: the times of day, then Anytime, then Quitting.

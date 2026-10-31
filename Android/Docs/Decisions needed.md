@@ -169,6 +169,16 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) as the app, and Figma's sheet fixed; (b) as Figma draws it.
 - **My recommendation:** (a).
 
+### D-49. Day details' wavy line once the goal is met
+
+- **Where:** This day's line, Day details flow 2 ([Figma 888:2645](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=888-2645), 888:2949); `ui/day/DayDetails.kt`.
+- **What Figma shows / what the app did:** every Day details frame draws the same 180 dp wave whatever the count (5, 7, 8
+  or 9 of 8); at 8 of 8 and 9 of 8 only the track is gone, so the line looks 60 % full. The app draws the true length,
+  and at the goal Material's wavy indicator flattens into a full straight line (its own behaviour, A76).
+- **What I did for now:** the true length, and Material's flat line at the goal.
+- **Question:** (a) as the app: full, and flat once the goal is met; (b) full, but still wavy at the goal.
+- **My recommendation:** (a): Material calms the wave as the line completes, so a met goal reads as finished.
+
 ### D-4. Dialogs and pickers: Surface container high or Surface bright?
 
 - **Where:** Dialog (5.3.4), Time picker (5.3.5), Date picker (5.3.6); `ui/components/Dialog.kt`, `TimePickerDialog.kt`,
