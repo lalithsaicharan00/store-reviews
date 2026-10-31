@@ -93,7 +93,7 @@ object DemoData {
      * Today exactly as Figma draws it (`700:3219`, the Android file's Today): the same habits, logs, streaks and pause, so
      * the phone can be put beside the design (test launches and Debug builds only, D8). Launch with clockHour 9.
      */
-    fun design(store: HabitStore, now: Long): Snapshot {
+    fun design(store: HabitStore, now: Long, streaks: Map<String, Int> = emptyMap()): Snapshot {
         val today = store.today(now)
         val dayMs = 86_400_000L
         fun ago(days: Int) = now - days * dayMs
@@ -130,7 +130,7 @@ object DemoData {
         fun log(habit: Habit, day: Int, value: Double, stepId: String? = null, at: Long? = null) =
             entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now)))
         for ((habit, streak) in listOf(stretch to 4, meds to 57, read to 6, water to 22, bed to 30, night to 5, journal to 9, study to 2, refill to 3))
-            for (d in 1..streak) log(habit, today - d, habit.goal)
+            for (d in 1..(streaks[habit.name] ?: streak)) log(habit, today - d, habit.goal)
         for (d in 1..12) for (step in skincare.steps) log(skincare, today - d, 1.0, step.id)
         val week = store.rules.period(PeriodKind.WEEK, today).first
         for (w in 1..4) for (i in 0 until 3) log(call, week - 7 * w + i, 1.0)
@@ -330,13 +330,15 @@ object DemoData {
     }
 
     /** Saves the demo habits into an empty test database, then reads them back. */
-    suspend fun seed(store: HabitStore, year: Boolean = false, many: Boolean = false, design: Boolean = false, days: Boolean = false, habitsPage: Boolean = false, tasks: Boolean = false) {
+    /** [streaks]: the design demo's habits whose days in a row before today differ (a test launch's `streak`, "Meds=29"). */
+    suspend fun seed(store: HabitStore, year: Boolean = false, many: Boolean = false, design: Boolean = false, days: Boolean = false, habitsPage: Boolean = false, tasks: Boolean = false,
+                     streaks: Map<String, Int> = emptyMap()) {
         if (store.habits.isNotEmpty()) return
         store.repo.importAll(when {
             tasks -> tasksPage(store, store.clock())
             habitsPage -> habitsPage(store, store.clock())
             days -> days(store, store.clock())
-            design -> design(store, store.clock())
+            design -> design(store, store.clock(), streaks)
             else -> snapshot(store, store.clock(), year, many)
         })
         store.load()

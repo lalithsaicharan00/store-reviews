@@ -139,6 +139,17 @@ class MilestoneCenter(private val store: HabitStore) {
         save()
     }
 
+    /**
+     * A test launch's `moments=used` (D8; Figma's "after today's pop-up and bar are used up"): today's pop-up and two bars
+     * count as shown, under IDs no habit has, so the next milestone today gets just the row.
+     */
+    fun useUpToday() {
+        ensureDay()
+        val today = store.today()
+        for ((id, tier) in listOf("test-popup" to MilestoneTier.POPUP, "test-bar" to MilestoneTier.BAR))
+            record(MilestoneShown(id, today, MilestoneTrack.IN_A_ROW, 7.0, tier, false, false, MilestoneCause.TAP, false, true))
+    }
+
     /** A habit's records go with it (deleted, or every habit erased). */
     fun forget(habitId: String) {
         ensureDay()
@@ -443,7 +454,8 @@ class MilestoneCenter(private val store: HabitStore) {
             }
         }
         val whenWords = if (s.cause == MilestoneCause.YESTERDAY) "yesterday" else "reached today"
-        val band = "$title · " + (if (s.cause == MilestoneCause.YESTERDAY) "yesterday" else "reached today")
+        // The band and the player's ribbon name the milestone only, in the pop-up's words (Figma 156:47): "30 days in a row".
+        val band = title
         val popupTitle = when {
             s.first -> "Your first milestone"
             s.again -> rowTitle(n.toInt()) + ", again"

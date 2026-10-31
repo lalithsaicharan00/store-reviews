@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 56 |
+| today | 54:5580 | 84 | 57 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **66** |
+| **All** | | **290** | **67** |
 
 ## Bug log
 
@@ -136,6 +136,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 98. Every dialog (Dialog 5.3.4) · 280 dp wide, Material's minimum for short text; Figma's component: 312 (the width less 24 each side, 280–560). `AppDialog` now fills the width less 24 each side. Its 12 dp of extra height is D-47.
 99. Delete a time of day · its habits kept their old places among Anytime's (Meds, Stretch and Skincare before Read); Figma: at the end of Anytime, in their order. `deleteSection` puts them there once the move is saved.
 100. Delete a time of day · back on Edit Today the list stayed at its top; Figma's frame 5 shows Anytime, where the habits went. Edit Today now scrolls to Anytime after a delete.
+101. Milestone band (Today rows, the player's ribbon) · "30 days in a row · reached today" ("· yesterday" for a quit or limit); Figma's rule 156:47: the band names the milestone only, in the pop-up's words, and no Figma band or ribbon has a suffix. The band is the title now ("7 days in a row again" for a repeat); the pop-up keeps "Meds · reached today". Test launches gained `streak` ("Meds=29") and `moments=used` to set up the milestone flows.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -224,7 +225,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | passed |
 | 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | passed |
 | 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | passed |
-| 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | not started |
+| 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | passed |
 | 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | not started |
 | 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | not started |
 | 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | not started |

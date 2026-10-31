@@ -106,13 +106,13 @@ class TodayTest {
     @Test fun milestonesTakeThePopUpThenTheBarThenTheRow() {
         launch(demo = "days")
         // Judged at the day's end: the band, never a pop-up when the app opens (R.9).
-        waitFor(hasText("30 days clean · yesterday"), "Smoking's band")
+        waitFor(hasText("30 days clean"), "Smoking's band")
         // A landmark, the day's first: its pop-up at once; closed, its band stays in the row (P.2, R.1).
         tapLabel("Mark Floss done")
         waitFor(hasTestTag("landmark-popup"), "Floss's pop-up")
         tapTag("landmark-close")
         waitGone(hasTestTag("landmark-popup"), "Floss's pop-up")
-        waitFor(hasText("30 days in a row · reached today"), "Floss's band")
+        waitFor(hasText("30 days in a row"), "Floss's band")
         // Another first: the bar (V3.1). The test's clock runs the bar's 5 s at once, so its record is checked.
         // The sheet's window goes a moment after it's closed; a touch before then is the sheet's.
         Thread.sleep(1_000)
@@ -125,15 +125,15 @@ class TodayTest {
         }
         // Two big moments used: Water's 200th glass is just the row (card 4 B).
         repeat(4) { tapLabel("Add 1 glass to Water") }
-        waitFor(hasText("200 glasses in total · reached today"), "Water's band")
+        waitFor(hasText("200 glasses in total"), "Water's band")
         // Undo takes it back; done again, it's back without a second moment. The row can sit behind the floating day bar,
         // so Undo is pressed through its click action, as TalkBack presses it.
         waitFor(hasTestTag("undo-Water"), "Water's Undo")
         compose.onAllNodes(hasTestTag("undo-Water"), useUnmergedTree = true)[0]
             .performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick)
-        waitGone(hasText("200 glasses in total · reached today"), "Water's band")
+        waitGone(hasText("200 glasses in total"), "Water's band")
         tapLabel("Add 1 glass to Water")
-        waitFor(hasText("200 glasses in total · reached today"), "Water's band again")
+        waitFor(hasText("200 glasses in total"), "Water's band again")
         waitGone(hasTestTag("landmark-popup"), "a second pop-up")
     }
 

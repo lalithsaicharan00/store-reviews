@@ -153,7 +153,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             if (demo != null && (test || BuildConfig.DEBUG)) LaunchedEffect(Unit) {
                 snapshotFlow { store.isLoaded }.first { it }
-                DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits", tasks = demo == "tasks")
+                val streaks = intent.getStringExtra(TestLaunch.STREAK).orEmpty().split(",").mapNotNull { pair ->
+                    pair.split("=").takeIf { it.size == 2 }?.let { (name, days) -> days.trim().toIntOrNull()?.let { name.trim() to it } }
+                }.toMap()
+                DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits",
+                    tasks = demo == "tasks", streaks = streaks)
+                if (intent.getStringExtra(TestLaunch.MOMENTS) == "used") store.milestones.useUpToday()
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
@@ -178,4 +183,8 @@ object TestLaunch {
     const val PLUS = "plus"
     /** The first tap's save fails, to see Couldn't save (Today flow 47). */
     const val FAIL_TAP = "failTap"
+    /** The design demo's days in a row before today, by habit name: "Meds=29,Water=29" (the milestone flows). */
+    const val STREAK = "streak"
+    /** "used": today's milestone pop-up and bars are used up, so a milestone gets just the row (Figma 107:2). */
+    const val MOMENTS = "moments"
 }

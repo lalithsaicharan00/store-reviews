@@ -79,7 +79,7 @@ fun bandInk(color: HabitColor): Color {
 
 /**
  * A milestone in its row for the rest of the day (Figma R.1, "Milestone band"): the full width of the row's foot, 32 dp,
- * the habit's colour at 22 %, a 16 dp medal 72 dp in (under the name), and "60 days in a row · reached today" in the
+ * the habit's colour at 22 %, a 16 dp medal 72 dp in (under the name), and "60 days in a row" in the
  * colour's dark shade; See › at the end for a pop-up's band reached away (A.1). Tapping it opens the pop-up.
  *
  * [raw]: where R.1's 2.6 s timeline is (1 at rest): the band opens from 0.42 s, the medal spins in, the words slide in,

@@ -740,7 +740,7 @@ private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav, playRi
 internal fun HeroCard(
     habit: Habit, ruled: Habit, day: Int, store: HabitStore, rev: Int, skipped: Boolean,
     onDay: (() -> Unit)?, onCountTap: (() -> Unit)?, onStep: ((Step, Boolean) -> Unit)?, modifier: Modifier = Modifier,
-    /** "30 days in a row · reached today": the ribbon across the card's top (RP.1); [playMilestone]: it was just reached. */
+    /** "30 days in a row": the ribbon across the card's top (RP.1); [playMilestone]: it was just reached. */
     milestone: String? = null, playMilestone: Boolean = false,
     /** The habit's description, under its name: two lines at most, then … (Figma 1.6). */
     description: String? = null,
