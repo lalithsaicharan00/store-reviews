@@ -83,6 +83,7 @@ import com.oftenenough.app.data.ProgressRange
 import com.oftenenough.app.data.ProgressSnapshot
 import com.oftenenough.app.data.ProgressWeekCard
 import com.oftenenough.app.data.archivedLine
+import com.oftenenough.app.data.weekGoalText
 import com.oftenenough.app.data.listLine
 import com.oftenenough.app.data.title
 import com.oftenenough.app.ui.components.AppConnectedButtons
@@ -278,10 +279,9 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when {
                     searching -> PageSearch(store, query, today, sections,
-                        onHabit = { h ->
-                            // A habit going on: back to its card on Habits (Figma's Scrolled to Water); archived: its details.
-                            if (h.archived) nav.open(h) else { searching = false; query = ""; tab = 0; pending = h.id }
-                        },
+                        // Any habit opens its details; ← comes back to the search as it was, the keyboard down (Figma
+                        // 1125:204681, 1125:205983; it used to close the search and scroll to the card).
+                        onHabit = { nav.open(it) },
                         onTask = { nav.tasks.open(it) },
                         onAdd = { nav.add(query.trim()) })
                     tab == 1 -> TasksPage(store, nav.tasks)
@@ -463,8 +463,8 @@ internal fun ArchivedRow(count: Int, enabled: Boolean, noun: String = "habit", o
  * tasks, each group only when something in it matches: a subheader ("4 habits") in Label Large Primary, 16 in, 8 over
  * one rounded list of two-line List items 2 apart on Surface bright (the icon in its colour, the name, a line: a
  * habit's time of day and plan or "Archived 12 Oct"; a task's day, its rhythm and next day, or "Completed Wed, 21 Oct"),
- * the tasks' group 16 under the habits'. A habit going on goes back to its card on Habits; an archived one, and a task,
- * open their details. Nothing matching: "Nothing matches “yoga”" in Title Medium and one Tonal button, Add “yoga”, which
+ * the tasks' group 16 under the habits'. A habit, archived or not, and a task
+ * open their details; ← comes back to the search as it was. Nothing matching: "Nothing matches “yoga”" in Title Medium and one Tonal button, Add “yoga”, which
  * opens What do you want to do? with the name filled in (the person, not the app, says what it is).
  */
 @Composable
@@ -489,7 +489,8 @@ private fun PageSearch(
         }
         return
     }
-    fun habitLine(h: Habit): String = if (h.archived) store.archivedLine(h) else listOfNotNull(where[h.id], store.listLine(h, today)).joinToString(" · ")
+    // Its time of day and the goal its card shows ("Afternoon · 30 min a day", Figma 1125:204506).
+    fun habitLine(h: Habit): String = if (h.archived) store.archivedLine(h) else listOfNotNull(where[h.id], store.weekGoalText(h)).joinToString(" · ")
     fun taskLine(t: Habit): String {
         if (t.archived) return store.archivedLine(t)
         if (t.isRepeatingTask) return store.repeatingLine(t, today)
