@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 8 |
+| day details | 169:1270 | 44 | 9 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **102** |
+| **All** | | **290** | **103** |
 
 ## Bug log
 
@@ -168,6 +168,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 130. Day details 9 · Edit log's ✕ asked "Discard your changes to this log?" · "The log stays as it was."; Figma: "Discard your changes?" · "This log stays 2 glasses at 1:10 PM."
 131. Day details 10 · a log couldn't be moved to another day: Edit log's Date was fixed (U19 said "until that move is built, never offer a picker that silently fails"). Built: Date opens the same picker as Add log (the habit's first day to today); the footer says "Moves this log to yesterday. Today goes down by 2 glasses."; Save moves it in one change that keeps its ID (`HabitStore.editEntry(day =)`, `HabitRepository.editEntry(day =)`: its day and moment together, synced as one edit) and says "Moved to yesterday". Today 5 → 3 of 8, yesterday 8 → 10.
 132. Today (the user) · a time habit's ▶ on an earlier day, its goal met (Read 20/20 yesterday), was switched-off grey: Surface container low with a grey ▶, as if nothing were done. A91: a goal met stays the habit's colour with white even where the button can't act; switched-off grey is only for a button not done; a cut-down habit's never fills. Fixed at the source (`AppFilledIconButton`'s disabled colours follow Done), and the widget's running ⏸ now fills past its goal as Figma's widgets draw it. Figma already drew every done row filled (172 rows on Today and Day details checked); the Filled icon button's description now says Done wins over Disabled.
+133. Day details 11 · Delete this log? said "2 glasses at 1:10 PM is removed from today." with a "Delete log" button; Figma: "… will be removed from today. Your other logs stay." · Cancel | Delete.
+134. Day details 11 · Delete went back twice and left a blank screen: the Log page went back, then saw its log gone and went back again, past Today. A record's page (Add log, Log, All logs, Note, Edit habit) now goes back only while it's the screen in front (`AppRoot`'s `back(e)`), and the Log keeps showing its log while it slides away.
+135. Day details 11 · deleting a log said nothing; Figma: "Log deleted · Undo", and Undo puts the same log back with its time (`HabitStore.restoreLog`: day, time, value and source; "Added by hand at 1:10 PM." again). Undo snackbars stay about 10 seconds, as the flow's note says (Material's Long; they were Short, 4 s).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -308,7 +311,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 8 | 182:2 | Edit a log | → Log → Edit → type 3 → Save: snackbar → ← 6 of 8 → ✕ | blocked: all but "Changed at 2:07 PM." under the log, which needs a saved field (D-51) |
 | 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | passed |
 | 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | blocked: all but "Moved from today at 2:08 PM." under the log, which needs a saved field (D-51) |
-| 11 | 185:2 | Delete a log | → Log → Delete this log? → Delete; Undo → Undo → ✕ → (Cancel) | not started |
+| 11 | 185:2 | Delete a log | → Log → Delete this log? → Delete; Undo → Undo → ✕ → (Cancel) | passed |
 | 12 | 186:2 | All logs, and deleting there | Water 7 of 8 → 2 newest + All 4 logs → All logs → Log → Delete → Undo → ← → ✕ | not started |
 | 13 | 188:2 | Time a habit from Day details | → Start timer → ⌄ → Pause: saved → ✕ → (timer) Today › | not started |
 | 14 | 189:2 | Log time from Day details | → Log time: 5 min → 9 of 10 → ✕ | not started |

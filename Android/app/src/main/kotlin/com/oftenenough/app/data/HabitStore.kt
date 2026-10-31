@@ -586,20 +586,20 @@ class HabitStore(
     // ------------------------------------------------------------------ Logging (memory first, S7)
 
     /** A tap's log: shown now, written next in the queue. */
-    private fun addLogged(entry: Entry) {
+    private fun addLogged(entry: Entry, offer: Boolean = true) {
         val habit = habit(entry.habitId)
         val wasComplete = habit?.let { rules.isComplete(it, entry.day) } ?: false
         val before = habit?.let { milestones.before(it, entry.day) }
         val wasMet = before != null && entry.stepId != null && rules.isDayMet(habit!!, entry.day)
         insertEntry(entry)
-        offerUndo(entry)
+        if (offer) offerUndo(entry)
         if (habit != null) {
             // A step adds to a checklist's total only by finishing its day.
             val added = if (entry.stepId == null) entry.value else if (!wasMet && rules.isDayMet(habit, entry.day)) 1.0 else 0.0
             milestones.after(before, habit, entry.source ?: EntrySource.TODAY, added)
             logFeedback(habit, entry.day, wasComplete)
         }
-        perform(FailedTap(habit?.name) { addLogged(entry) }) { repository.addEntry(entry.record) }
+        perform(FailedTap(habit?.name) { addLogged(entry, offer) }) { repository.addEntry(entry.record) }
     }
 
     /** Undoing a tap: gone from the screen now, the removal written next in the queue. */
@@ -1031,6 +1031,10 @@ class HabitStore(
 
     /** A log taken back on the Tasks page (Mark as not done) put back by its Undo, as a new log with the same day, time and value. */
     fun putBack(entry: Entry) = addLogged(entry.copy(id = newId(), source = EntrySource.DAY_SHEET))
+
+    /** A deleted log put back by its Undo (Figma 902:15770): the same day, time, value and source, as a new log (the
+     *  deletion stays recorded, so a device that saw it agrees); it offers no Undo · Note of its own. */
+    fun restoreLog(entry: Entry) = addLogged(entry.copy(id = newId()), offer = false)
 
     private fun setMoves(habitId: String, moves: Map<Int, Int>) {
         taskMoves = if (moves.isEmpty()) taskMoves - habitId else taskMoves + (habitId to moves)

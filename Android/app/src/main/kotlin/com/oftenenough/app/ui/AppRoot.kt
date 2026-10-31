@@ -128,10 +128,11 @@ private fun AppMain(
     var pausing by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
     val askPause: (Habit) -> Unit = { pausing = listOf(it.id) }
     // A message with Undo on whichever page is showing (Today places its own above the day bar).
+    // Undo stays until it's tapped, another action is taken, or about 10 seconds (Figma 902:15770's note: Material's Long).
     val sayUndo: (String, () -> Unit) -> Unit = { text, undo ->
         rootScope.launch {
             snackbar.currentSnackbarData?.dismiss()
-            if (snackbar.showSnackbar(text, "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+            if (snackbar.showSnackbar(text, "Undo", duration = androidx.compose.material3.SnackbarDuration.Long) ==
                 androidx.compose.material3.SnackbarResult.ActionPerformed) undo()
         }
     }
@@ -208,18 +209,19 @@ private fun AppMain(
         }
         composable("add/{habit}/{day}") { e ->
             AddLogScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store,
-                say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } }) { nav.popBackStack() }
+                say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } }) { nav.back(e) }
         }
         composable("log/{id}") { e ->
-            LogScreen(e.arguments!!.getString("id")!!, store, say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } }) { nav.popBackStack() }
+            LogScreen(e.arguments!!.getString("id")!!, store, say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } },
+                sayUndo = sayUndo) { nav.back(e) }
         }
         composable("alllogs/{habit}/{day}") { e ->
-            AllLogsScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, { nav.navigate(Routes.log(it.id)) }) { nav.popBackStack() }
+            AllLogsScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, { nav.navigate(Routes.log(it.id)) }) { nav.back(e) }
         }
         composable("note/{habit}/{day}") { e ->
             NoteScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, say = { text, undo ->
                 if (undo != null) sayUndo(text, undo) else rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) }
-            }) { nav.popBackStack() }
+            }) { nav.back(e) }
         }
         composable(Routes.NEW + "?name={name}&copy={copy}&from={from}") { entry ->
             val a = entry.arguments
@@ -267,7 +269,7 @@ private fun AppMain(
                 title = "Restore a 6th habit")
         }
         composable("edit/{id}") { e ->
-            EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }) { nav.popBackStack() }
+            EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }) { nav.back(e) }
         }
         composable("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {
@@ -606,3 +608,11 @@ private fun todayActions(nav: NavHostController, view: android.view.View, pause:
  * timer, a log, Day details' pages) and go when the person leaves Today for anything else (Figma 1.2).
  */
 private val pagesOverToday = setOf("note/{habit}/{day}", "add/{habit}/{day}", "timer/{id}", "log/{id}", "alllogs/{habit}/{day}")
+
+/**
+ * Back from [e] only while it's the screen in front. A record's page goes back, then its record goes (U27); seeing it
+ * gone, the page would step back again and take Today with it, leaving a blank screen (Day details 11).
+ */
+private fun NavHostController.back(e: androidx.navigation.NavBackStackEntry) {
+    if (currentBackStackEntry?.id == e.id) popBackStack()
+}

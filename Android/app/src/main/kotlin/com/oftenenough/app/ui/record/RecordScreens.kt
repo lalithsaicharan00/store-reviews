@@ -329,10 +329,13 @@ private fun zoneName(zone: String): String? = runCatching {
  * always on. The time stays inside its day; the Date row moves it to another day, today or earlier (Figma 184:2, U19).
  */
 @Composable
-fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, onBack: () -> Unit) {
+fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sayUndo: (String, () -> Unit) -> Unit = { _, _ -> }, onBack: () -> Unit) {
     val c = appColors
     val rev = store.dataVersion
-    val entry: Entry = remember(rev) { store.entry(entryId) } ?: run { LaunchedEffect(Unit) { onBack() }; return }
+    // Deleted from here, the page leaves first (U27) and keeps showing the log while it slides away.
+    var shown by remember { mutableStateOf<Entry?>(null) }
+    remember(rev) { store.entry(entryId) }?.let { shown = it } ?: run { if (shown == null) { LaunchedEffect(Unit) { onBack() }; return } }
+    val entry: Entry = shown!!
     val habit = store.habit(entry.habitId) ?: run { LaunchedEffect(Unit) { onBack() }; return }
     val ruled = store.rule(habit, entry.day)
     val slip = ruled.kind == HabitKind.Quit
@@ -403,8 +406,12 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, on
     }
     if (confirmDelete) AppDialog("Delete this $noun?",
         if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
-            else "${entry.description(ruled)} at ${clockText(entry)} is removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.",
-        "Delete $noun", { confirmDelete = false; onBack(); store.undoEntry(entry.id) }, { confirmDelete = false },
+            else "${entry.description(ruled)} at ${clockText(entry)} will be removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.",
+        "Delete", {
+            confirmDelete = false; onBack(); store.undoEntry(entry.id)
+            // Undo puts the same log back, with its time (Figma 902:15462, 902:15770).
+            sayUndo(if (slip) "Slip deleted" else "Log deleted") { store.restoreLog(entry) }
+        }, { confirmDelete = false },
         destructive = true, confirmTag = "confirm-delete")
     // Says exactly what stays (Figma 897:11891): "This log stays 2 glasses at 1:10 PM."
     if (discard) DiscardDialog("Discard your changes?",
