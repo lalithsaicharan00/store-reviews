@@ -222,7 +222,7 @@ private fun rowButton(habit: Habit, day: Int, isToday: Boolean, future: Boolean,
 private fun skipAction(habit: Habit, day: Int, today: Int, model: RowModel, running: Boolean, store: HabitStore, layout: TodayLayout): SwipeAction? {
     if (habit.kind == HabitKind.Task) return null
     // A skip holds Today still like any log (U4): the row stays where it is, with Undo · Note, until the pause.
-    if (model.skipped) return SwipeAction("Undo", "Undo skip", Symbols.Undo, "row-swipe-undo-skip") { layout.hold(); store.setSkipped(habit, day, false) }
+    if (model.skipped) return SwipeAction("Undo skip", "Undo skip", Symbols.Undo, "row-swipe-undo-skip") { layout.hold(); store.setSkipped(habit, day, false) }
     // Nothing to skip: a week or month goal, a limit, a day already done or a timer running (Figma 7.14, 7.15).
     if (habit.atMost || running || model.done || !store.rules.canSkip(store.rule(habit, day)) || store.isPaused(habit, day)) return null
     val word = if (day == today) "Skip today" else "Skip this day"
@@ -232,7 +232,8 @@ private fun skipAction(habit: Habit, day: Int, today: Int, model: RowModel, runn
 /** Swipe right (Figma 7.17–7.24): Note, on every row; opens the note sheet, where nothing is saved until Save. */
 private fun noteAction(habit: Habit, day: Int, today: Int, store: HabitStore, actions: TodayActions): SwipeAction {
     val has = store.note(habit, day) != null
-    return SwipeAction("Note", if (has) "Edit note" else "Add note", if (has) Symbols.EditNote else Symbols.NoteAdd, "row-swipe-note") {
+    // Figma's swipe: sticky_note_2, the note's own icon, whether it's new or there already.
+    return SwipeAction("Note", if (has) "Edit note" else "Add note", Symbols.StickyNote2, "row-swipe-note") {
         actions.writeNote(habit, day)
     }
 }
@@ -372,7 +373,7 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
     val offer = store.afterLog?.takeIf { it.habitId == habit.id && it.day == today }
     val lastSlip = remember(rev, today) { store.entries(habit.id, today).lastOrNull() }
     val note = store.note(habit, today) != null
-    val slip = if (!paused) SwipeAction("Slip", "Log a slip", Symbols.AddCircle, "row-swipe-slip") { actions.addLog(habit, today) } else null
+    val slip = if (!paused) SwipeAction("Log a slip", "Log a slip", Symbols.AddCircle, "row-swipe-slip") { actions.addLog(habit, today) } else null
     // A run that passed a length yesterday: the band, once, when the row is first seen (Figma R.9, A.1).
     val moment = rememberRowMilestone(habit, true, rev, store)
     HabitRowSwipe(left = slip, right = noteAction(habit, today, today, store, actions), shape = shape, haptics = haptics) {

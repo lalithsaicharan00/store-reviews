@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 20 |
+| today | 54:5580 | 84 | 25 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **30** |
+| **All** | | **290** | **35** |
 
 ## Bug log
 
@@ -87,6 +87,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 49. Today · Skip a day — skipping from Day details left Today's row without Undo · Note; Figma shows them, as a skip from the menu does. Fixed: Day details' Skip offers them (setSkipped offer).
 50. Today · Skip a day — a skipped day said "Doesn't count toward your streak"; Figma's Day details says "Your streak stays safe". Fixed in DayStatus.
 51. Today · Skip a day, Figma — four Buttons faked as disabled by hand-set colours (Mark done, three Saves) now use Button State=Disabled; the cloned Disabled variants (both sets) had lost their Label / Icon glyph links, now relinked (74).
+52. Today · Add a note by swiping right — the Note swipe showed note_add (edit_note with a note); Figma's is sticky_note_2. Fixed in noteAction.
+53. Today · Undo a skip by swiping — before halfway the action said "Undo"; Figma says "Undo skip" all the way. Fixed in skipAction.
+54. Today · Log a slip by swiping — before halfway the action said "Slip"; Figma says "Log a slip". Fixed in QuitRow.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -162,11 +165,11 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 17 | 84:2 | Undo and Note follow the latest log | Water 6 of 8 → + on Water: buttons on Water → ✓ Call family: buttons move → Start a routine: buttons go | passed |
 | 18 | 139:5 | Undo clears the buttons | Water 6 of 8 → + → ✓ Call family → Undo: check taken back, buttons gone | passed |
 | 19 | 85:2 | Skip a day | Meds not done → Day details → Skip today → Swipe down: Meds skipped | passed |
-| 20 | 85:780 | Skip by swiping | Meds → swipe left: Skip → past halfway: dark, Skip today, tick → let go: skipped | not started |
-| 21 | 124:2 | Add a note by swiping right | Today → swipe right Water: Note → past halfway: Add note → let go: Add note | not started |
-| 22 | 124:647 | Undo a skip by swiping | Meds skipped → swipe left: Undo skip → dark → let go: not done | not started |
-| 23 | 124:1376 | Log a slip by swiping | Smoking → swipe left: Log a slip → dark → let go: Add slip | not started |
-| 24 | 124:2081 | Swiping where there's nothing to do | Today → week goal springs back → cut-down springs back → task springs back | not started |
+| 20 | 85:780 | Skip by swiping | Meds → swipe left: Skip → past halfway: dark, Skip today, tick → let go: skipped | passed |
+| 21 | 124:2 | Add a note by swiping right | Today → swipe right Water: Note → past halfway: Add note → let go: Add note | passed |
+| 22 | 124:647 | Undo a skip by swiping | Meds skipped → swipe left: Undo skip → dark → let go: not done | passed |
+| 23 | 124:1376 | Log a slip by swiping | Smoking → swipe left: Log a slip → dark → let go: Add slip | passed |
+| 24 | 124:2081 | Swiping where there's nothing to do | Today → week goal springs back → cut-down springs back → task springs back | passed |
 | 25 | 90:2 | Add a note after a log | Water 5 of 8 → + 6 of 8 → Note: Add note → type: Save on → Save: Note saved → Day details shows it | not started |
 | 26 | 90:828 | Add a note from Day details | Water → Day details → Add a note… → Save: shows here | not started |
 | 27 | 91:2 | Change a note | Water → Day details with note → Note → Edit note → Save | not started |
