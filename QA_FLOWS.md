@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 79 |
+| today | 54:5580 | 84 | 80 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **89** |
+| **All** | | **290** | **90** |
 
 ## Bug log
 
@@ -153,6 +153,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 115. Today 77 · the milestone notification said "30 days clean" · "Smoking · since 30 Sep. Tap to see your milestone." (a cut-down: "…no more than 2 cups a day, 30 days in a row. Tap to see it."); Figma's rule (167:2): "Congratulations, 30 days clean!" · "Smoking · a whole month. Tap to see your milestone." (cut down "Congratulations, 30 days within the limit!"; six months; a whole year). The name keeps its own slot.
 116. Today 77 · tapping a milestone notification with the app open showed no pop-up: its intent (NEW_TASK + CLEAR_TOP) recreated MainActivity, and the finishing one's Today took the milestone first. Every notification that opens the app (milestones, reminders, the timer) now adds SINGLE_TOP, as the widgets do, so the running activity gets it (onNewIntent).
 117. Today 78 · the milestone notification never dropped in at the top with the phone in use: its channel was default importance, which only waits in the shade. It's high importance now, as reminders are (Figma 166:2); Android never raises a channel's importance, so the channel is new ("milestone-alerts") and the old "milestones" is deleted.
+118. Today 79 · a milestone reached from Day details' Log time (Stretch, 3 days) never showed its bar: Add log is its own screen, so coming back drew Today a moment before Day details took the front back, and Today claimed it with its ask from that moment; the bar played hidden under the sheet and only the band was left. `MilestoneCenter.claim` now gives a milestone only to the screen in front; the bar rises over Day details, as Figma's "Milestones from Day details" draws it.
+119. Today 79 · a finished time of day folded by itself (Morning, once Meds, Stretch and Skincare were done), from the rule before A45; Figma keeps it open with its bands and Undo · Note. A time of day now opens or folds by the hour only, and the person's ⌃ (A45: "Nothing folds by itself").
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -161,6 +163,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁵ Today 75: a widget can't reach a test launch's in-memory data (its own folder, the shifted clock), so the test launch's `away` extra saves the one widget tap the widget would (`HabitStore.saveWidgetTap`) before Today opens. Water 8/8, 🔥 30, the band played once, no Undo · Note, nothing opened by itself.
 ⁶ Today 77: posted through its own `post` by a test launch's `alert` extra (the emulator has no lock-screen lock, so it was checked in the shade). Its 30th day ended at 11 PM yesterday, so the pop-up truly says "reached yesterday" where Figma's, reached that morning, says "reached today". Social media's "7 days within the limit" band is D-40.
 ⁷ Today 78: posted with Today in front (a test launch posts once Today is drawn). Android draws a heads-up collapsed, so its body ends "Tap to see…" where Figma draws both lines; pulled down in the shade it shows both (flow 77).
+⁸ Today 79: Stretch was finished from Day details (Log time, 6 min), so its bar rose over the sheet; Figma's frame shows the same bar over Today. The day bar's 6/14 against Figma's 7/13 is D-40.
 
 ## Open questions for the user
 
@@ -267,7 +270,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 76 | 112:360 | Reached away: in a folded section | Afternoon folded → open: band plays once | passed |
 | 77 | 112:757 | Reached away: the milestone notification | Lock screen notification → tap: Today with pop-up → Close | passed ⁶ |
 | 78 | 166:2 | Reached away: notification, phone in use | heads-up notification → tap: pop-up → Close | passed ⁷ |
-| 79 | 114:2 | Rule: a pop-up, a bar, then just the row | Meds 29, Stretch 2, Skincare 6 → pop-up → bar → just the row | not started |
+| 79 | 114:2 | Rule: a pop-up, a bar, then just the row | Meds 29, Stretch 2, Skincare 6 → pop-up → bar → just the row | passed ⁸ |
 | 80 | 114:793 | Rule: two bars, then just the row | Meds 2, Stretch 6, Skincare 13 → bar → bar → row | not started |
 | 81 | 114:1551 | Rule: no more than 2 pop-ups in 7 days | Wed, 2 pop-ups → ✓ 30 days: a bar → 5 s band; See opens pop-up | not started |
 | 82 | 114:2107 | Rule: history added later is never celebrated | missed yesterday → ‹ Yesterday → ✓: nothing plays | not started |

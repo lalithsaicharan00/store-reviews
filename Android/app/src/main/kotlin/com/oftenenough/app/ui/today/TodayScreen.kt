@@ -479,8 +479,9 @@ private fun LazyListScope.section(
     val future = day > content.today
     val isNow = card == content.nowPart
     val left = items.count { content.done[it.habit.id] != true }
-    // Open: the time of day it is now and Anytime, while they have something left; a later day opens Anytime only (4.3).
-    val open = layout.isOpen(card, if (future) card == DaySection.ANYTIME else left > 0 && (isNow || card == DaySection.ANYTIME))
+    // Open: the time of day it is now and Anytime; a later day opens Anytime only (4.3). Finishing one never folds it
+    // (A45: its rows stay open and filled, with Undo · Note on the last log); only the person's ⌃ does.
+    val open = layout.isOpen(card, if (future) card == DaySection.ANYTIME else isNow || card == DaySection.ANYTIME)
     // Done habits stay where they are (A32): nothing on Today moves because something was done, and nothing hides.
     val ordered = layout.order(card, items) { it.habit.id }
     // Every piece of the card, a checklist's steps block included, so the corners are right.

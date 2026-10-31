@@ -357,23 +357,28 @@ class MilestoneCenter(private val store: HabitStore) {
     /** The next milestone waiting for this screen, or null. */
     fun next(surface: Surface): MilestoneHit? {
         ensureDay()
+        return pending.firstOrNull { inFront(it, surface) }
+    }
+
+    private fun inFront(hit: MilestoneHit, surface: Surface): Boolean {
         val f = front
-        return pending.firstOrNull { hit ->
-            when (surface) {
-                Surface.TODAY -> f == MilestoneFront.Today
-                Surface.SHEET -> f is MilestoneFront.Sheet && f.habitId == hit.habitId
-                Surface.PLAYER -> f is MilestoneFront.Player && hit.habitId in f.habitIds
-            }
+        return when (surface) {
+            Surface.TODAY -> f == MilestoneFront.Today
+            Surface.SHEET -> f is MilestoneFront.Sheet && f.habitId == hit.habitId
+            Surface.PLAYER -> f is MilestoneFront.Player && hit.habitId in f.habitIds
         }
     }
 
     /**
      * Takes [hit] for [surface] and decides what it gets, first come first served (card 4 B): the day's first pop-up
      * (at most 2 in any 7 days), at most 2 bars, 2 big moments in all; a refused one goes down a level. Null when an
-     * undo has taken it back meanwhile.
+     * undo has taken it back meanwhile, or when [surface] is no longer in front.
      */
     fun claim(hit: MilestoneHit, surface: Surface): MilestoneShown? {
         ensureDay()
+        // Only the screen in front takes it. Back from Add log, Today is drawn again a moment before Day details takes
+        // the front back over it: Today's ask was from that moment, and its bar played hidden under the sheet.
+        if (!inFront(hit, surface)) return null
         pending.remove(hit)
         val habit = store.habit(hit.habitId) ?: return null
         if (shown.containsKey(habit.id)) return null
