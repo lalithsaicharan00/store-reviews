@@ -288,7 +288,16 @@ private fun AppMain(
                 title = "Restore a 6th habit")
         }
         composable("edit/{id}") { e ->
-            EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }) { nav.back(e) }
+            // Saved, the page it came back to says so (Figma): Habit details "Changes saved"; Habits & Tasks and Tasks
+            // "Stretch saved · Undo". Today shows the change on the row itself.
+            EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }, { nav.back(e) }) { saved, undo ->
+                val from = nav.previousBackStackEntry?.destination?.route
+                nav.back(e)
+                when {
+                    from == "habit/{id}" -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Changes saved") }
+                    from == "page/{title}" -> sayUndo("${saved.name} saved", undo)
+                }
+            }
         }
         composable("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {
@@ -435,9 +444,11 @@ private fun AppMain(
         }
     }
     }
-    // A page with no pinned button (Plus, All logs) has its messages 16 from the sides and the bottom (Figma 7.2.2,
-    // 905:16391: with the snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
-    val nothingPinned = menuItem == MenuItem.PLUS || route?.startsWith("alllogs/") == true
+    // A page with no pinned button (Plus, All logs, Habits & Tasks, Habit details, Archived and Completed) has its
+    // messages 16 from the sides and the bottom (Figma 7.2.2, 905:16391; Habits & Tasks' and Create new's flows, y 712:
+    // with the snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
+    val nothingPinned = menuItem == MenuItem.PLUS || menuItem == MenuItem.HABITS || route == "habit/{id}" ||
+        route == Routes.ARCHIVED || route == Routes.ARCHIVED_TASKS || route == Routes.COMPLETED_TASKS || route?.startsWith("alllogs/") == true
     // The timer's 96 dp buttons: its messages sit over the card's foot, 18 above them (Figma 956:75584: 602 to 650).
     val overTimer = route?.startsWith("timer/") == true
     if (route != null && route != Routes.TODAY) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()

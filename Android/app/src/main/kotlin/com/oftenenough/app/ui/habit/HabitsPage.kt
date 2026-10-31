@@ -8,6 +8,7 @@ import com.oftenenough.app.data.taskWhen
 import com.oftenenough.app.data.repeatingLine
 import com.oftenenough.app.data.taskDay
 import com.oftenenough.app.data.NO_DATE_DAY
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import com.oftenenough.app.ui.components.AppDialog
@@ -70,6 +71,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.DpOffset
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
@@ -389,7 +391,8 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
         HistoryHabitHeader(habit.symbol, habit.color, habit.name, card.goal) {
             Box {
                 StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })
-                AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) { menu(habit) { open = false } }
+                // Figma hangs the menu, 220 wide, from the ⋮ glyph (2 over its foot, its right edge on the glyph's), not the 48 target.
+                AppMenu(open, { open = false }, modifier = Modifier.width(220.dp).semantics { testTagsAsResourceId = true }, offset = DpOffset((-12).dp, (-14).dp)) { menu(habit) { open = false } }
             }
         }
         val start = card.runStart

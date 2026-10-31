@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 6 |
+| habits & tasks | 269:148 | 35 | 7 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **163** |
+| **All** | | **290** | **164** |
 
 ## Bug log
 
@@ -234,6 +234,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 196. Habits & tasks 4 (and Habit details › Progress) · a paused card said only "Paused until 1 Nov"; Figma's says "Paused until Fri 30 Oct" (the weekday, as Habit details' notice) over "Paused days don’t count". Today's row keeps its short "Paused until 1 Nov" (A84).
 197. Habits & tasks 4 (Tasks' end too) · the Archived row and What the squares mean showed a bare icon; Figma's List item has it in a 40 dp Surface container highest circle (Leading avatar), 16 in. Both now use `ListAvatar`; the key's row is 8 above and below, 56 tall as Figma's.
 198. Habits & tasks 6 (and every page's card) · TalkBack read a habit's card as its loose words and could never reach a day: the squares are one drawing. The card was given its spoken summary (built, never used: "Stretch. Reached on 6 of 6 days so far. … Saturday partial, 6m.") and an action for each Week or Month day up to today, "Day details, Sat 31 Oct".
+199. Habits & tasks 7 (and 1–6: every card) · the card's ⋮ sat 12 dp in from Figma's: its 48 target ended at the card's 12 dp inset, where Figma puts the 24 glyph. `HistoryHabitHeader` now lays out a 24 slot there and lets the target spread 12 past each side. Its menu opened under the 48 target and hugged its words; Figma's hangs from the glyph (2 over its foot), 220 wide.
+200. Habits & tasks 7 · saving an edit said nothing anywhere; Figma: "Stretch saved · Undo" back on Habits & Tasks (and Tasks), "Changes saved" back on Habit details. Undo puts back exactly what was there (the record, its goal history, the description and milestone alerts: `HabitStore.undoEdit`). Today, where the row itself shows the change, stays silent as its flows draw it.
+201. Habits & tasks 7 (Habit details, Archived, Completed too) · messages sat 96 above the bottom, room kept for a pinned button these pages don't have; every Figma frame on them puts the snackbar at y 712, 12 from the sides and 16 above the gesture bar.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -458,7 +461,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 4 | 283:1332 | Scroll the page | top → scrolled: bars stay → end: Paused, Archived, key | passed |
 | 5 | 284:2 | Tap a card: Habit details, and back | Stretch card → Habit details → ← | passed (←, Back and the edge swipe each land where the page was; Figma's "400 min stretched" is this frame's alone: every details page says "… recorded", as the app does) |
 | 6 | 285:2 | Tap a square: Day details for that day | Stretch Friday → Day details → Log time 6 min → Add: square fills; Undo | passed ²² (Add comes back to Day details, as every other flow through Add log; ✕: the square fills. Figma's frame goes straight to the page with an Undo: D-55) |
-| 7 | 286:2 | A card's ⋮: Edit habit | ⋮ → menu → Edit habit → Save: 15 min a day | not started |
+| 7 | 286:2 | A card's ⋮: Edit habit | ⋮ → menu → Edit habit → Save: 15 min a day | passed ↻ (Undo puts back 10 min a day and its goal history; from Habit details, "Changes saved") |
 | 8 | 289:2 | A card's ⋮: Pause… | ⋮ Pause… → sheet → Pause; Undo → in Paused | not started |
 | 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | not started |
 | 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | not started |

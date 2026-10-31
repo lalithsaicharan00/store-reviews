@@ -171,11 +171,28 @@ fun NewHabitFlow(
     }
 }
 
-/** Edit habit: the same form on a saved habit, every row as it is now; its type stays (A68). */
+/**
+ * Edit habit: the same form on a saved habit, every row as it is now; its type stays (A68). [onSaved] gets the saved habit
+ * and an Undo that puts back exactly what was there before (the record, its goal history, description and milestone
+ * alerts).
+ */
 @Composable
-fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> Unit, onClose: () -> Unit) {
+fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> Unit, onClose: () -> Unit, onSaved: (Habit, () -> Unit) -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onClose() }; return }
-    HabitForm(ItemType.of(habit), habit, store, onClose, { onClose() }, onPlus)
+    // As it was when the form opened: the habit read again after Save is the edited one.
+    val original = remember { habit }
+    val before = remember {
+        val alerts = com.oftenenough.app.app.reminders.MilestoneAlerts.key(habit.id)
+        Triple(store.goalRules[habit.id] ?: emptyList(), store.descriptions[habit.id] ?: "", alerts to store.setting(alerts))
+    }
+    HabitForm(ItemType.of(habit), habit, store, onClose, { saved ->
+        onSaved(saved) {
+            store.undoEdit(original, before.first)
+            store.setDescription(before.second, habit.id)
+            val (key, value) = before.third
+            if (store.setting(key) != value) store.saveAppSetting(key, value)
+        }
+    }, onPlus)
 }
 
 /**

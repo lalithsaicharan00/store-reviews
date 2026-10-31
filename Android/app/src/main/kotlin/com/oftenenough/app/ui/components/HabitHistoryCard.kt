@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.layout.layout
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -108,7 +109,12 @@ fun HistoryHabitHeader(symbol: String, color: HabitColor, name: String, goal: St
             Text(name, style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(goal, style = AppType.bodyMedium, color = s.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        trailing()
+        // Figma's ⋮ is the 24 glyph at the card's 12 dp inset; its 48 touch target spreads 12 past each side of that slot.
+        Box(Modifier.layout { m, c ->
+            val p = m.measure(c.copy(minWidth = 0))
+            val spill = ((p.width - 24.dp.roundToPx()) / 2).coerceAtLeast(0)
+            layout(p.width - 2 * spill, p.height) { p.place(-spill, 0) }
+        }) { trailing() }
     }
 }
 

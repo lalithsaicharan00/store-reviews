@@ -456,6 +456,19 @@ class HabitStore(
         rulesChanged()
     }
 
+    /** An edit's Undo: the habit exactly as it was, its goal history too (an edit can close the old goal at yesterday). */
+    fun undoEdit(before: Habit, rules: List<HabitRule>) = perform {
+        val i = habits.indexOfFirst { it.id == before.id }
+        if (i < 0) return@perform
+        saveHabitRecord(before, i)
+        if (rules != (goalRules[before.id] ?: emptyList<HabitRule>())) {
+            saveSetting(Keys.RULES + before.id, SwiftJson.rules(rules))
+            goalRules = goalRules + (before.id to rules)
+        }
+        habits = habits.map { if (it.id == before.id) before else it }
+        rulesChanged()
+    }
+
     /** Stops habits for good but keeps all their history. A running timer is saved first. */
     fun archive(list: List<Habit>) {
         for (h in list) if (timers.containsKey(h.id)) stopTimer(h, today())
