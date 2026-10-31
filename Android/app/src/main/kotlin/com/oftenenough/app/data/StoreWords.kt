@@ -16,7 +16,7 @@ fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime
     if (habit.kind == HabitKind.Task) return taskLine(habit, day, weekStart)
     if (isSkipped(habit, day)) return if (day == today()) "Skipped today" else "Skipped"
     val done = slot?.let { isSlotDone(habit, it, day) } ?: (rules.isDone(habit, day) && !habit.atMost)
-    val t = if (time == null || done) "" else " | " + DayWords.clockMinute(nextReminder(habit, day, time).minuteOfDay)
+    val t = if (time == null || done) "" else " | " + DayWords.clockMinute(time.minuteOfDay)
     val f = habit.frequency
     if (f is Frequency.Flexible) {
         val count = rules.flexibleProgress(habit, day)
@@ -50,13 +50,18 @@ private fun limitLine(habit: Habit, progress: Double, goal: Double, running: Boo
     }
 }
 
-/** With several reminders, the next one still to come today (Skincare's 9:00 PM after its 8:00 AM); else [first]. */
-private fun HabitStore.nextReminder(habit: Habit, day: Int, first: ReminderTime): ReminderTime {
-    if (day != today() || habit.reminders.size < 2) return first
-    val zone = java.time.ZoneId.systemDefault()
-    val nowTime = java.time.Instant.ofEpochMilli(clock()).atZone(zone).toLocalTime()
-    val minute = nowTime.hour * 60 + nowTime.minute
-    return habit.reminders.sortedBy { it.minuteOfDay }.firstOrNull { it.minuteOfDay > minute } ?: first
+/**
+ * The one reminder a row shows from the several in its time of day (the user, 31 Oct 2026: "show the next upcoming
+ * one … once that is gone, then show the next"): today, the next still to come, and once the last has passed, that
+ * last one (as a single reminder stays shown after its time); on any other day, the first. Each time of day shows its
+ * own reminders: a habit in Morning and Evening shows each section's on its own row.
+ */
+fun HabitStore.shownReminder(times: List<ReminderTime>, day: Int, now: Long = clock()): ReminderTime? {
+    if (times.size < 2 || day != today()) return times.minByOrNull { it.minuteOfDay }
+    val t = java.time.Instant.ofEpochMilli(now).atZone(java.time.ZoneId.systemDefault()).toLocalTime()
+    val minute = t.hour * 60 + t.minute
+    val sorted = times.sortedBy { it.minuteOfDay }
+    return sorted.firstOrNull { it.minuteOfDay > minute } ?: sorted.last()
 }
 
 /** One day's result, never a weekly total labelled Today. */

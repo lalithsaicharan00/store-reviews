@@ -507,7 +507,7 @@ private fun LazyListScope.section(
             val shape = segmentShape(i + 1, count)
             val stepsKey = "steps-${habit.id}"
             if (!steps) {
-                HabitRow(habit, day, content.today, item.placement.slot, item.placement.times.firstOrNull(), shape, store, layout, actions,
+                HabitRow(habit, day, content.today, item.placement.slot, rememberShownReminder(store, day, item.placement.times), shape, store, layout, actions,
                     stepsOpen = layout.choice(stepsKey) == true, onToggleSteps = { layout.setOpen(stepsKey, layout.choice(stepsKey) != true) },
                     lit = lit == habit.id, haptics = prefs.vibration)
             } else StepsBlock(habit, day, shape, store, layout)
