@@ -126,7 +126,9 @@ object DemoData {
         // With a set run (`streak`, Figma 107:2429) it's Smoking's first: quitting began then, with no slips before.
         val quitFrom = if ("Smoking" in streaks) lastSlip else earlier - 30 * dayMs
         val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = quitFrom).copy(createdAt = quitFrom)
-        val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true).copy(createdAt = now)
+        // A set Coffee streak ("Coffee=30"): made that many days ago, so its 30th day within the limit closed yesterday.
+        val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true)
+            .copy(createdAt = streaks["Coffee"]?.let { store.rules.dayStart(today - it) + 3_600_000L } ?: now)
         val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(streaks["Social media"] ?: 7))
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.MORNING, 10.0)
         // Figma's Today (700:3219, 31 Oct 2026): Morning is Meds, Stretch, Skincare, with Meds still to do (57 days).

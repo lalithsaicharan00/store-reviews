@@ -181,7 +181,7 @@ fun HabitRow(
                 else -> null
             },
             below = offer?.let { o -> { AfterLogButtons(o, habit, day, store, layout, actions, note) } },
-            band = moment.band?.let { b -> { MilestoneBand(moment.text, habit.color, b.see, moment.t, early = !moment.full) { actions.seeMilestone(habit) } } },
+            band = moment.band?.let { { MilestoneBand(moment.text, habit.color, moment.t, early = !moment.full) { actions.seeMilestone(habit) } } },
             menu = { RowMenu(menu, { menu = false }, habit, day, store, actions, layout) },
         )
     }
@@ -394,7 +394,7 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
                     style = AppType.titleMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1)
             },
             below = offer?.let { o -> { AfterLogButtons(o, habit, today, store, layout, actions, note) } },
-            band = moment.band?.let { b -> { MilestoneBand(moment.text, habit.color, b.see, moment.t, early = true) { actions.seeMilestone(habit) } } },
+            band = moment.band?.let { { MilestoneBand(moment.text, habit.color, moment.t, early = true) { actions.seeMilestone(habit) } } },
             menu = { RowMenu(menu, { menu = false }, habit, today, store, actions, layout) },
         )
     }

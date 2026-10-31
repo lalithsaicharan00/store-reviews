@@ -1178,10 +1178,10 @@ fun milestonePeriodWord(n: Int, kind: GoalPeriod, atMost: Boolean): String = whe
     GoalPeriod.YEAR -> if (n == 1) "year" else "years"
 }
 
-/** "10 times in total", "10 weeks of goals met", "10 days within max". */
+/** "10 times in total", "10 weeks of goals met", "10 days within the limit" (A42). */
 fun milestoneTotalTitle(n: Int, kind: GoalPeriod, atMost: Boolean): String {
     val word = milestonePeriodWord(n, kind, atMost)
-    if (atMost) return "$n $word within max"
+    if (atMost) return "$n $word within the limit"
     return if (kind == GoalPeriod.DAY) "$n $word in total" else "$n $word of goals met"
 }
 
@@ -1286,7 +1286,7 @@ private fun HabitStore.totalMilestones(dates: List<Int>, kind: GoalPeriod, atMos
         val word = milestonePeriodWord(n, kind, atMost)
         pageMilestone(Milestone.Track.IN_TOTAL, n, kind.key + (if (atMost) "-limit" else ""), "$n", milestoneTotalTitle(n, kind, atMost),
             if (kind == GoalPeriod.DAY) "$n in total" else "$n $word",
-            if (kind == GoalPeriod.DAY) null else if (atMost) "within max" else "goals met", "$n $word", dates[n - 1], today)
+            if (kind == GoalPeriod.DAY) null else if (atMost) "within the limit" else "goals met", "$n $word", dates[n - 1], today)
     }
 
 /** The day a run reached each of [values] counted days (or weeks, months), in one walk from its start. */

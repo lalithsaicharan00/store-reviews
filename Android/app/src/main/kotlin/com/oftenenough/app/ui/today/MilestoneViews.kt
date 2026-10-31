@@ -80,13 +80,14 @@ fun bandInk(color: HabitColor): Color {
 /**
  * A milestone in its row for the rest of the day (Figma R.1, "Milestone band"): the full width of the row's foot, 32 dp,
  * the habit's colour at 22 %, a 16 dp medal 72 dp in (under the name), and "60 days in a row" in the
- * colour's dark shade; See › at the end for a pop-up's band reached away (A.1). Tapping it opens the pop-up.
+ * colour's dark shade. No See and no › (Figma 156:47: it marks the moment, it doesn't send people anywhere); tapping it
+ * quietly opens the pop-up again.
  *
  * [raw]: where R.1's 2.6 s timeline is (1 at rest): the band opens from 0.42 s, the medal spins in, the words slide in,
  * a sheen and two sparkles. [early]: played on its own (reached away, A.1), from the start.
  */
 @Composable
-fun MilestoneBand(text: String, color: HabitColor, see: Boolean, raw: Float, early: Boolean, onTap: () -> Unit) {
+fun MilestoneBand(text: String, color: HabitColor, raw: Float, early: Boolean, onTap: () -> Unit) {
     val c = appColors
     val base = c.habit(color)
     val ink = bandInk(color)
@@ -133,10 +134,6 @@ fun MilestoneBand(text: String, color: HabitColor, see: Boolean, raw: Float, ear
         val ta = track(t, Key(0f, 0f), Key(0.246f, 0f, Arrive), Key(0.331f, 1f))
         Text(text, Modifier.weight(1f).graphicsLayer { translationX = tx * density.density; alpha = ta },
             style = AppType.labelMedium, color = ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        if (see) {
-            Text("See", Modifier.graphicsLayer { alpha = ta }, style = AppType.labelMedium, color = ink)
-            Icon(Symbols.KeyboardArrowRight, null, Modifier.size(16.dp).graphicsLayer { alpha = ta }, tint = ink)
-        }
     }
 }
 

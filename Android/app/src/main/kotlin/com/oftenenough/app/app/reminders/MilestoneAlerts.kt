@@ -155,14 +155,10 @@ object MilestoneAlerts {
         }
         val ruled = store.rule(habit, store.today())
         val unit = ruled.frequency.streakUnit
-        val limit = when (val k = ruled.kind) {
-            is HabitKind.Amount -> HabitCopy.amount(ruled.goal, k.unit)
-            HabitKind.Duration -> Format.minutes(ruled.goal)
-            else -> Format.amount(ruled.goal)
-        }
+        val limit = com.oftenenough.app.data.MilestoneCenter.limitAmount(ruled)
         val per = when (unit) { com.oftenenough.app.data.StreakUnit.WEEKS -> "a week"; com.oftenenough.app.data.StreakUnit.MONTHS -> "a month"; else -> "a day" }
         val word = when (unit) { com.oftenenough.app.data.StreakUnit.WEEKS -> "weeks"; com.oftenenough.app.data.StreakUnit.MONTHS -> "months"; else -> "days" }
-        return "${d.value} $word within max" to "${habit.name} · no more than $limit $per, ${d.value} $word in a row. Tap to see it."
+        return "${d.value} $word within the limit" to "${habit.name} · no more than $limit $per, ${d.value} $word in a row. Tap to see it."
     }
 
     private fun post(context: Context, store: HabitStore, d: Due) {
@@ -179,7 +175,7 @@ object MilestoneAlerts {
     /** "Next: 30 days clean, around midday on 11 Nov" for the form, once the switch is on (Figma N.3). */
     fun nextText(store: HabitStore, habit: Habit): String? {
         val d = plan(store, store.clock(), also = habit).firstOrNull { it.habit.id == habit.id } ?: return null
-        val title = if (d.quit) "${d.value} days clean" else "${d.value} days within max"
+        val title = if (d.quit) "${d.value} days clean" else "${d.value} days within the limit"
         return "Next: $title, around midday on ${DayWords.dayMonth(store.rules.calendarDayOf(d.fire))}."
     }
 

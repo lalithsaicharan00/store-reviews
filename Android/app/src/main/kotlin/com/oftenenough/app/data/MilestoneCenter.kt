@@ -417,7 +417,7 @@ class MilestoneCenter(private val store: HabitStore) {
         val bucket = if (quit) MilestoneBucket.DAYS else store.rules.milestoneBucket(ruled)
         fun rowTitle(k: Int) = when {
             quit -> "$k ${if (k == 1) "day" else "days"} clean"
-            limit -> "$k ${unit.word(k)} within max"
+            limit -> "$k ${unit.word(k)} within the limit"
             else -> milestoneRowTitle(k, unit)
         }
         // A week's or month's goal met N times in a row: "26 weeks of goals met" (Figma 876:73789, 877:74702); days stay
@@ -425,7 +425,7 @@ class MilestoneCenter(private val store: HabitStore) {
         fun runTitle(k: Int) = if (!quit && !limit && (unit == StreakUnit.WEEKS || unit == StreakUnit.MONTHS)) "$k ${unit.word(k)} of goals met" else rowTitle(k)
         fun totalTitle(v: Double): String = when {
             quit -> "${Format.amount(v)} clean days in total"
-            limit -> "${Format.amount(v)} ${if (v == 1.0) "day" else "days"} within max in total"
+            limit -> "${Format.amount(v)} ${if (v == 1.0) "day" else "days"} within the limit in total"
             else -> milestoneTotalWords(ruled, v)
         }
         val number: String
@@ -472,6 +472,9 @@ class MilestoneCenter(private val store: HabitStore) {
                 val met = store.rules.runs(habit, s.day).sumOf { it.length }
                 "Since ${fullDate(first)} · goal met $met ${if (met == 1) "time" else "times"}"
             }
+            // A limit's run is judged when its day closes: "Coffee · yesterday, no more than 2 cups" (Figma 882:77784).
+            limit && s.track == MilestoneTrack.IN_A_ROW && s.cause == MilestoneCause.YESTERDAY ->
+                "${habit.name} · ${when (unit) { StreakUnit.WEEKS -> "last week"; StreakUnit.MONTHS -> "last month"; else -> "yesterday" }}, no more than ${limitAmount(ruled)}"
             else -> "${habit.name} · " + (landmarkWords(s, habit, bucket, quit || limit)
                 ?: if (s.cause == MilestoneCause.YESTERDAY) "reached yesterday" else "reached today")
         }
@@ -518,6 +521,13 @@ class MilestoneCenter(private val store: HabitStore) {
 
     companion object {
         private const val DAY_MS = 86_400_000L
+
+        /** A limit's amount: "2 cups", "30 min" (the pop-up's line and the milestone notification). */
+        fun limitAmount(ruled: Habit): String = when (val k = ruled.kind) {
+            is HabitKind.Amount -> HabitCopy.amount(ruled.goal, k.unit)
+            HabitKind.Duration -> Format.minutes(ruled.goal)
+            else -> Format.amount(ruled.goal)
+        }
         private val FULL_DATE = java.time.format.DateTimeFormatter.ofPattern("d MMMM yyyy", java.util.Locale.ENGLISH)
         /** "17 October 2025" (Figma P.10). */
         fun fullDate(day: Int): String = java.time.LocalDate.ofEpochDay(day.toLong()).format(FULL_DATE)

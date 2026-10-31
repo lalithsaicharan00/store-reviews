@@ -134,7 +134,8 @@ private fun MedalStage(number: String, title: String, color: HabitColor, t: () -
     val base = c.habit(color)
     val band = c.habitBand(color)
     val pale = c.habitPale(color)
-    Box(Modifier.fillMaxWidth().height(176.dp).semantics { contentDescription = "$title, reached today" }) {
+    // Names the medal only: the title and its line ("reached yesterday", "every day for a year") are read next.
+    Box(Modifier.fillMaxWidth().height(176.dp).semantics { contentDescription = "Medal, $title" }) {
         Canvas(Modifier.matchParentSize()) {
             val now = t()
             val centre = Offset(size.width / 2, 92.dp.toPx())
