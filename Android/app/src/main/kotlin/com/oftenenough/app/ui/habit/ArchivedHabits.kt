@@ -145,7 +145,7 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
         AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
     }
     deleting?.let { h ->
-        AppDialog("Delete ${h.name}?", if (tasks) "Its history and notes are deleted too." else archivedDeleteWords(store, h), "Delete", { deleting = null; delete(h) }, { deleting = null },
+        AppDialog("Delete ${h.name}?", if (tasks) "It goes for good, with its notes. To keep it, leave it archived." else archivedDeleteWords(store, h), "Delete", { deleting = null; delete(h) }, { deleting = null },
             destructive = true, confirmTag = "delete-confirm")
     }
 }

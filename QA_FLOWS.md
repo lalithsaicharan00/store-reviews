@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 29 |
+| habits & tasks | 269:148 | 35 | 30 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **186** |
+| **All** | | **290** | **187** |
 
 ## Bug log
 
@@ -271,6 +271,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 233. Habits & tasks 24 (Task details too) · Delete Pay electricity bill? said "Its history and notes are deleted too. To keep them, archive it instead."; Figma: "It goes for good, with its notes. To keep it out of the way instead, archive it." A repeating task keeps Task details' warning that it goes whole (A80), on the Tasks page too. TasksPageTest asks for Figma's words.
 234. Habits & tasks 25 (Task details too) · Skip this time said "Water plants skipped this time"; Figma: "Skipped on Sun 25 Oct" · Undo, the day it skipped. TasksPageTest asks for Figma's words.
 235. Habits & tasks 26 · Do today's Show went to the Today screen; Figma: it stays on Tasks and brings the task into view at the end of Today's open tasks (and doesn't scroll when it's already in view). The navigation it used (`TasksNav.showToday`) is gone.
+236. Habits & tasks 30 · deleting an archived task said "Its history and notes are deleted too."; Figma has no frame for it, so it now says what an archived habit's question and the task's say: "It goes for good, with its notes. To keep it, leave it archived."
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -521,7 +522,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 27 | 312:2 | A task done on Today, and when the day ends | ✓ on Today → struck through on Tasks → next day: Completed → 14 | passed ²⁵ |
 | 28 | 313:2 | Completed tasks: Mark as not done | Completed → list → ⋮ → Mark as not done; Undo | passed |
 | 29 | 313:426 | Completed tasks: Delete all completed | ⋮ Delete all completed → dialog → Deleted; Undo | passed, with D-58 (Figma empties the page; the app keeps repeating tasks' done days, so 28 rows stay) |
-| 30 | 313:645 | Archived tasks: Restore, Delete | Archived (3) → list → ⋮ → Restore; Undo | not started |
+| 30 | 313:645 | Archived tasks: Restore, Delete | Archived (3) → list → ⋮ → Restore; Undo | passed ↻ (Undo puts it back as archived 17 Sep, in its place) |
 | 31 | 314:2 | Search habits and tasks (from Tasks) | search → “den” → Call the dentist → ← | not started |
 | 32 | 314:466 | Search: no match (from Tasks) | “plumber” → Add → Add a task → New task → Add · Show | not started |
 | 33 | 315:2 | +: a new task | + → New task Buy groceries, Tomorrow → Add · Show → Show | not started |
