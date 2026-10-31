@@ -1,14 +1,11 @@
 package com.oftenenough.app.ui.settings
 
-import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -136,7 +133,7 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
         lifecycle.addObserver(observer)
         onDispose { lifecycle.removeObserver(observer) }
     }
-    val askNotifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { refresh++ }
+    val turnOn = rememberTurnOnNotifications { refresh++ }
     val prefs = remember { context.getSharedPreferences(PREFS, Context.MODE_PRIVATE) }
     val phone = remember { maker(Build.MANUFACTURER ?: "") }
     val notifications = remember(refresh) { Reminders.canPost(context) }
@@ -152,10 +149,7 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
                 Text("Permissions", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
                 SegmentedList {
                     val count = 2 + phone.steps.size
-                    PermissionRow(Symbols.Notifications, "Allow notifications", "App info › Notifications", notifications, "Allow", 0, count, "check-notifications") {
-                        if (Build.VERSION.SDK_INT >= 33) askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        else openSettingsPage(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
-                    }
+                    PermissionRow(Symbols.Notifications, "Allow notifications", "App info › Notifications", notifications, "Allow", 0, count, "check-notifications", turnOn)
                     PermissionRow(Symbols.Alarm, "Allow alarms & reminders", "Special app access › Alarms & reminders", exact, "Open settings", 1, count, "check-exact") {
                         if (Build.VERSION.SDK_INT >= 31) openSettingsPage(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
                     }

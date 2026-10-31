@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
@@ -62,7 +63,7 @@ object TodayNotices {
     private val PREFS: String get() = if (AppGraph.isTest) "uitest-today-notices" else "today-notices"
     private const val HIDDEN_MS = 7 * 24 * 3_600_000L
 
-    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "notifications", "pending"). */
+    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "late", "notifications", "pending"). */
     var forced: String? = null
 
     /** A notice doing its own work stays on Today until its card folds away, even once the state it reported is gone. */
@@ -79,16 +80,16 @@ object TodayNotices {
      * The notice to show now, the most important first: anything that could cost data (deletes held from another device,
      * backup off, backup paused), then reminders that can't come or didn't, then a payment Google Play hasn't finished.
      */
-    fun current(context: Context, store: HabitStore, nav: NoticeNav, now: Long, say: (String) -> Unit = {}): TodayNotice? {
+    fun current(context: Context, store: HabitStore, nav: NoticeNav, now: Long, say: (String) -> Unit = {}, turnOn: () -> Unit = {}): TodayNotice? {
         if (!AppGraph.isOpen) return null
-        val all = candidates(context, store, nav, now, say)
+        val all = candidates(context, store, nav, now, say, turnOn)
         // "late" is the missed reminder's late form (Today flow 39).
         forced?.let { f -> return all.firstOrNull { it.key == (if (f == "late") "missed" else f) } }
         return all.firstOrNull { !hidden(context, it.key, now) }
     }
 
-    /** [say] shows a snackbar on Today (a notice fixed from its own button says so). */
-    private fun candidates(context: Context, store: HabitStore, nav: NoticeNav, now: Long, say: (String) -> Unit): List<TodayNotice> {
+    /** [say] shows a snackbar on Today (a notice fixed from its own button says so); [turnOn] asks for notifications. */
+    private fun candidates(context: Context, store: HabitStore, nav: NoticeNav, now: Long, say: (String) -> Unit, turnOn: () -> Unit): List<TodayNotice> {
         val list = ArrayList<TodayNotice>()
         val forced = forced
         val status = AppGraph.backup.status
@@ -126,9 +127,8 @@ object TodayNotices {
         }
         val wantsReminders = store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() }
         if ((wantsReminders && !Reminders.canPost(context)) || forced == "notifications") list += TodayNotice("notifications", Symbols.NotificationsOff,
-            "Reminders can’t come", "Notifications for Often Enough are off in your phone’s settings.", "Not now", "Turn on") {
-            open(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
-        }
+            // Android's own question, or its notification settings once it won't ask again (Today flows 41, 42).
+            "Reminders can’t come", "Notifications for Often Enough are off in your phone’s settings.", "Not now", "Turn on") { turnOn() }
         val missed = Reminders.missed(context, now)
         // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about
         // with it (Figma's Today, flows 38 and 39, the last frame; notices end when the problem is fixed elsewhere).
@@ -173,11 +173,22 @@ object TodayNotices {
 fun rememberTodayNotice(store: HabitStore, nav: NoticeNav, say: (String) -> Unit): Pair<TodayNotice?, () -> Unit> {
     val context = LocalContext.current
     var refresh by remember { mutableIntStateOf(0) }
+    // Turned on: the notice goes and Today says so (Figma's Today, flows 41 and 42: "Reminders are on").
+    val turnOn = com.oftenenough.app.ui.settings.rememberTurnOnNotifications { on ->
+        if (on) {
+            if (TodayNotices.forced == "notifications") TodayNotices.forced = null
+            say("Reminders are on")
+        }
+        refresh++
+    }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { refresh++ }
     val status = if (AppGraph.isOpen) AppGraph.backup.status else null
     val pending = if (AppGraph.isOpen) AppGraph.plus.pending else null
-    val notice = remember(refresh, status, pending, store.dataVersion / 50, TodayNotices.forced, TodayNotices.holding) {
-        TodayNotices.current(context, store, nav, store.clock(), say)
+    // Whether any habit wants reminders, read once per change of the habits (S5): the first reminder, or a restore that
+    // brings some, shows Reminders can't come at once rather than on the next return to the app (Today flow 41).
+    val wantsReminders by remember { derivedStateOf { store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() } } }
+    val notice = remember(refresh, status, pending, store.dataVersion / 50, wantsReminders, TodayNotices.forced, TodayNotices.holding) {
+        TodayNotices.current(context, store, nav, store.clock(), say, turnOn)
     }
     return notice to { notice?.let { TodayNotices.dismiss(context, it, store.clock()) }; refresh++ }
 }

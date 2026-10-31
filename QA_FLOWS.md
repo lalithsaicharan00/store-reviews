@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 41 |
+| today | 54:5580 | 84 | 43 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **51** |
+| **All** | | **290** | **53** |
 
 ## Bug log
 
@@ -111,6 +111,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 73. Keep reminders coming's lead — it said the phone's first words ("Two steps keep Often Enough awake.") whatever was done; Figma's flows 38 and 39 say what's left: "… One step left.", "All set. Reminders will come on time.", and with Alarms & reminders off "Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It's Android's setting, not the app's." keepLead works it out (ReminderWordsTest.leadFollowsWhatsLeft).
 74. Today · a missed or late reminder's notice stayed after everything was fixed; Figma: back on Today the notice is gone (a notice ends when its problem is fixed elsewhere). It now goes once Keep reminders coming has nothing left to do, and the reminder it was about is cleared.
 75. Today · a reminder that came late had the paused-bell icon; Figma's late notice has the clock (schedule). Test launches can force it (notice "late", 40 minutes, as Figma draws it).
+76. Today · Reminders can't come → Turn on — it went straight to Android's notification settings; Figma asks with Android's own question while Android will still ask, and only after two refusals opens the settings (flow 42); either way, back on Today the notice goes with "Reminders are on". One shared helper does it (rememberTurnOnNotifications, beside openSettingsPage), used by Today's notice and Keep reminders coming's Allow.
+77. Today · the notice didn't show when the first habit with reminders arrived (a restore, or the demo), only on the next return to the app: it was worked out again only every 50 data changes. Whether any habit wants reminders is now one of its keys.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -228,8 +230,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 38 | 125:1173 | Notice: a reminder didn't arrive | Reminder didn't arrive → Show me how: Keep reminders coming → Open → Back → Open → Back: all set | passed ² |
 | 39 | 151:2 | Notice: a reminder came late | Came late → Show me how: Alarms & reminders off → Open settings → Back: all set → ← Today | passed |
 | 40 | 151:498 | Keep reminders coming on each phone | Xiaomi notice → Xiaomi → OnePlus/OPPO → vivo → Honor/Huawei → Pixel and others | passed ³ |
-| 41 | 125:1537 | Notice: reminders can't come | Reminders can't come → Turn on: Android's question → Allow: notice gone | not started |
-| 42 | 153:206 | Notice: reminders can't come (won't ask again) | Reminders can't come → Turn on: notification settings → Back: notice gone | not started |
+| 41 | 125:1537 | Notice: reminders can't come | Reminders can't come → Turn on: Android's question → Allow: notice gone | passed |
+| 42 | 153:206 | Notice: reminders can't come (won't ask again) | Reminders can't come → Turn on: notification settings → Back: notice gone | passed |
 | 43 | 125:1901 | Notice: Plus is waiting for payment | Plus waiting for payment → Plus is on: notice gone | not started |
 | 44 | 116:2 | Cut down: an amount | Coffee 1 of 2 → + Limit reached → + Over the limit → Day details | not started |
 | 45 | 116:987 | Cut down: a time limit | Social media 0 of 30 → ▶ timer vs limit → ⌄ → 30:00 Limit reached → ⏸ at 42 min: Over the limit | not started |
