@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 2 |
+| habits & tasks | 269:148 | 35 | 3 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **159** |
+| **All** | | **290** | **160** |
 
 ## Bug log
 
@@ -450,7 +450,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 |---|---|---|---|---|
 | 1 | 283:2 | Open Habits & Tasks from the menu | Today → ☰ → Habits & Tasks, Week | passed |
 | 2 | 283:405 | Week, Month and Year | Week → Month → Year | passed |
-| 3 | 283:721 | An earlier week, and back to this one | This week → ‹ last week; Back to this week → back | not started |
+| 3 | 283:721 | An earlier week, and back to this one | This week → ‹ last week; Back to this week → back | passed |
 | 4 | 283:1332 | Scroll the page | top → scrolled: bars stay → end: Paused, Archived, key | not started |
 | 5 | 284:2 | Tap a card: Habit details, and back | Stretch card → Habit details → ← | not started |
 | 6 | 285:2 | Tap a square: Day details for that day | Stretch Friday → Day details → Log time 6 min → Add: square fills; Undo | not started |
