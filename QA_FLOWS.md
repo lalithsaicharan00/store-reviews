@@ -228,6 +228,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 190. Routine player 19, 20 · the status line put ⏸ before "Paused" and ⓘ before "Over the limit"; every Figma status line (16) is words alone except a goal met's ✓.
 191. Routine player 20 · over the limit, the timer's line went flat and dark grey; Figma: it keeps waving while the clock runs, in Outline grey (#777777), as the design system's Linear progress says (wavy while a timer counts, a limit's too).
 192. Routine player 20 · time added from the timer said nothing once back on it; Figma: "8 min added to Social media · Undo" over the card's foot (602 to 650). The add route takes `from=timer`, Undo takes exactly that log back, and the app's message on the timer sits 18 above its buttons, not on them.
+193. Routine player 24 · a long name with a description pushed the card's line onto its bottom edge (6 dp under it): the content kept its full 32 at the top and overflowed at the bottom. Figma lets the padding give way evenly (24 above and below, 267:2); the card now does, down to 16, and scrolls past that.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -249,6 +250,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹⁸ Routine player 13 (and every Display Large number): the number's line is 71 dp where Figma's is 64. Android never draws a line shorter than the font's own height (1.25× the size for Google Sans Flex), and Compose has no setting for it; the card's spacing takes up the difference.
 ¹⁹ Routine player 18 (and the timer frames): the timer's running wave in these frames is a drawn line 12 dp per wave and 2 dp high; the design system's Linear progress (902:14527, Style=Wavy) is 40 dp per wave and 3 dp high, as Material's. The app follows the component; the frames' drawings differ from it.
 ²⁰ Routine player 20: under the limit, the timer frames draw the track in the wave's own #777777; Today's limit rows (flow 45) draw it Outline variant, and the app keeps that, so the time left stays readable. The frames' waves are drawn lines with no colour variable.
+²¹ Routine player 24: at the phone's 200 % (Android's own scale, which grows big text less than small) the name and description are larger than Figma's 200 % frame draws them, so the count sits below the card's fold and the card scrolls to it. What the frame's note asks holds: two lines at most for each, then …, and the buttons keep their height.
 
 ## Open questions for the user
 
@@ -438,7 +440,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | passed ↻ ¹⁷ |
 | 22 | 266:2 | A milestone in the player: the ribbon | Meds 2 → Mark done: ribbon → Next → ‹ → end: Reached in this routine | passed |
 | 23 | 266:573 | A big milestone in the player: the pop-up waits | Meds 29 → Mark done: ribbon → Finish: pop-up over end page → Close | passed |
-| 24 | 267:2 | Long names, a description and large text | → long name → description → tap: sheet → 200 % | passed |
+| 24 | 267:2 | Long names, a description and large text | → long name → description → tap: sheet → 200 % | passed ↻ ²¹ |
 
 ## Habits & tasks (269:148)
 

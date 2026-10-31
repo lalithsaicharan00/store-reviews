@@ -840,8 +840,8 @@ internal fun HeroCard(
             val part = if (large) 20.dp else (32.dp - (524.dp - maxHeight).coerceAtLeast(0.dp) / 2).coerceIn(20.dp, 32.dp)
             Column(
                 Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = minHeight)
-                    .padding(horizontal = if (large) 16.dp else 24.dp, vertical = if (large) 24.dp else 32.dp),
-                verticalArrangement = CenterAboveSnackbar, horizontalAlignment = Alignment.CenterHorizontally,
+                    .padding(horizontal = if (large) 16.dp else 24.dp, vertical = 16.dp),
+                verticalArrangement = centerAboveSnackbar(if (large) 8.dp else 16.dp), horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 HabitIcon(habit.symbol, habit.color, size = if (large) 96.dp else 144.dp, shape = CookieShape(), modifier = cookie, glyph = 0.44f)
                 Spacer(Modifier.height(if (large) 16.dp else identityGap))
@@ -869,15 +869,19 @@ internal fun HeroCard(
 }
 
 /**
- * The card's content centred, as Figma draws it, but never lower than 24 above the padding: the save message (48 tall,
- * 8 over the bottom bar) sits over the card's foot, and Figma's card leaves exactly that room (32 + 24 under its status
- * line). A phone with a taller status bar has a shorter card; centred, its status line went under the message ("Goal
- * met" cut, QA Routine player 13), so the content moves up instead. On Figma's 800 dp frame nothing changes.
+ * The card's content, as Figma lays it out (32 above and below, 24 under large text: 16 of it the column's own padding,
+ * [extra] the rest): centred, but never lower than 24 above that padding, because the save message (48 tall, 8 over the
+ * bottom bar) sits over the card's foot and Figma's card leaves exactly that room. A shorter card (a taller status bar)
+ * moved its centred status line under the message ("Goal met" cut, QA Routine player 13), so the content moves up
+ * instead. Content taller than the room eats into the padding evenly, as Figma's long name with a description does
+ * (267:2, 24 left above and below; QA Routine player 24), and past that the card scrolls.
  */
-private val CenterAboveSnackbar = object : Arrangement.Vertical {
+private fun centerAboveSnackbar(extra: Dp) = object : Arrangement.Vertical {
     override fun Density.arrange(totalSize: Int, sizes: IntArray, outPositions: IntArray) {
         val free = totalSize - sizes.sum()
-        var y = minOf(free / 2, free - 24.dp.roundToPx()).coerceAtLeast(0)
+        val pad = extra.roundToPx()
+        var y = if (free >= 2 * pad) pad + minOf((free - 2 * pad) / 2, free - 2 * pad - 24.dp.roundToPx()).coerceAtLeast(0)
+            else (free / 2).coerceAtLeast(0)
         sizes.forEachIndexed { i, h -> outPositions[i] = y; y += h }
     }
 }
