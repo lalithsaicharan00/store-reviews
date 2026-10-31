@@ -190,9 +190,9 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
             val rules = store.rules
             val entries = store.entries(habit.id, day).filter { it.stepId == null }
             if (store.isPaused(habit, day)) {
-                // When it's back, in the card's label (Figma's Day details, Paused): "Back on Wed, 28 Oct", or "Until you resume it".
+                // When it's back, beside Paused under This day (Figma 929:41836): "Back on Wed, 28 Oct", or "Until you resume it".
                 val back = store.pause(habit, day)?.through?.let { "Back on " + DayWords.short(it + 1) } ?: "Until you resume it"
-                return DayStatus("Paused", label = back)
+                return DayStatus("Paused", back)
             }
             if (store.isSkipped(habit, day)) {
                 val total = entries.sumOf { it.value }
@@ -235,7 +235,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     val last = (if (r.dueDay == null) entries else store.entries(habit.id)).lastOrNull()
                     if (!done || last == null) return DayStatus(if (done) "Done" else "Not done")
                     val whenText = if (last.day == day) clockText(last) else DayWords.short(last.day) + " at " + clockText(last)
-                    return DayStatus("Done", "Completed " + (if (last.day == day) "at " else "on ") + whenText)
+                    return DayStatus("Done", "Done " + (if (last.day == day) "at " else "on ") + whenText)  // Figma 926:110554
                 }
                 HabitKind.Checklist -> {
                     val done = rules.dayProgress(r, day).toInt()

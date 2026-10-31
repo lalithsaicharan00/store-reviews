@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 23 |
+| day details | 169:1270 | 44 | 28 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **117** |
+| **All** | | **290** | **122** |
 
 ## Bug log
 
@@ -192,6 +192,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 154. Day details 26 · Edit slip said "Changing the time updates your quit run.", Save said "Slip changed" with nothing to take it back, and Delete asked "The slip at 8:15 AM is removed, and your quit run is worked out again."; Figma: "Changes this slip only. Your run counts from the new time.", "Slip changed · Undo" (Undo puts its time back), and "The 8:15 AM slip will be removed. Your run goes back to 19 days." (or that the run stays as it is when a later slip holds it).
 155. Day details 26 · a slip logged in another time zone had a "Recorded in Greenwich Mean Time" row and showed that zone's clock; Figma: the time here in the Time row and the footer "Logged at 2:40 PM London time (9:40 AM here). It counts on the day it was logged." (any record: a log the same).
 156. Day details 28 · a running time limit said "0:02 of 30 min · Running · Limit 30 min"; Figma: "42:10 today" and where it stands, live: "Limit 30 min · Over the limit" ("· 30 min left", "· Limit reached"). What's left of a time limit counts whole minutes, as Today's row does (13 s used: "30 min left", it said 29).
+157. Day details 29 · a task said "Task · Planned for Sat, 31 Oct" on its own day, its card didn't open, "Completed at 2:30 PM", and Reschedule's rows had icons and no date; Figma: "Task · Today" ("Task · Tomorrow"), the card › opens Task details, "Done at 2:05 PM", and "Do tomorrow · Thu, 22 Oct ›", "Another day… ›".
+158. Day details 30 · moving a task said "Pick up parcel moved to tomorrow" for 4 seconds, and Another day… opened a picker titled "Another day" with a day already picked and "Move"; Figma: "Moved to tomorrow" / "Moved to Sun, 25 Oct" with Undo (about 10 s), and Android's own picker, nothing picked ("Selected date") and OK. Figma's one "Select a day" there is now Material's "Selected date", as its Details pages say.
+159. Day details 31 · a paused habit's card said "Back on Sat, 7 Nov" where "This day" goes; Figma: This day, Paused, "Back on Wed, 28 Oct" beside it.
+160. Day details 32 · an earlier day's list was "Logs for Fri 30 Oct", and +1 there said "Added 1 glass to Fri 30 Oct"; Figma: "Yesterday’s logs" (an older day by its date) and no message ("Nothing celebrates history added later").
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -204,8 +208,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁹ Today 82, 83: checked against Figma's frames as read before the Figma connection dropped (their captions and states). 82: Meds' 29 days ended the day before yesterday (`streak Meds=0`, `earlier Meds=29`); ✓ on Yesterday makes 🔥 30 and nothing plays, there or back on Today. 83: ✓ gives the bar; Undo takes the check, the 3 and the band; ✓ again shows 🔥 3 and the band at rest (it stands again), with no bar, burst or roll.
 ¹⁰ Day details 2: Figma's frames draw one 180 dp wave for every count; the app draws the true length (D-49, settled by A90: flat unless a timer runs). Test launches' `today` now logs an amount as Figma does (an odd one, then twos, at 7:30 AM, 11:05 AM, 1:10 PM …), so Day details' log lists match its frames.
 ¹¹ Day details 3: Add log's date says "31 Oct 2026" (dates alone; Figma's "Today, 21 Oct 2026" is older). Gboard floated on 31 Oct afternoon again (it took the emulator's "AT Translated Set 2 keyboard" for a physical one after `adb input`), so the keyboard's place was taken from Today 4, the same Add log against the same frame, checked with the keyboard docked.
-¹³ Day details 26: the travel footer (step 10) was checked from the code and Figma's words, not on the emulator: setting its time zone is a device setting this pass doesn't change.
 ¹² Day details 7: Figma's Amount View draws › on Date and Time where its Duration and Slip views don't, and nothing opens from a view; the app has none (D-50).
+¹³ Day details 26: the travel footer (step 10) was checked from the code and Figma's words, not on the emulator: setting its time zone is a device setting this pass doesn't change.
 
 ## Open questions for the user
 
@@ -351,11 +355,11 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 26 | 201:2 | Open a slip: change its time, or delete it | → Slip view → Edit slip → time 8:15 → Save → Delete slip? → Delete; Undo → ✕ → travel time zone | blocked: all but "Changed at 2:10 PM." under the slip, which needs a saved field (D-51) ¹³ |
 | 27 | 202:2 | Cut down: an amount, from Day details | Coffee 1 of 2 → +1 Limit reached → +1 Over the limit → ✕ | passed |
 | 28 | 203:2 | Cut down: a time limit, from Day details | Social media → Start timer → ⌄ at 42 min → Pause → ✕ | passed |
-| 29 | 204:2 | A task in Day details: mark it done | Pick up parcel → Mark done; Reschedule → Done → ✕ | not started |
-| 30 | 204:820 | A task in Day details: reschedule it | → Reschedule → Do tomorrow; Undo → Another day… picker → 25 → OK → Undo | not started |
-| 31 | 205:2 | A paused habit: resume it from Day details | Paused card → Day details Paused → Resume habit | not started |
-| 32 | 206:2 | Day details for an earlier day | ‹ Yesterday → Water → Day details Yesterday → +1 twice → ✕ → Back to today | not started |
-| 33 | 207:1000 | Day details for a later day | › Tomorrow → Water → ✕ → Back to today | not started |
+| 29 | 204:2 | A task in Day details: mark it done | Pick up parcel → Mark done; Reschedule → Done → ✕ | passed |
+| 30 | 204:820 | A task in Day details: reschedule it | → Reschedule → Do tomorrow; Undo → Another day… picker → 25 → OK → Undo | passed |
+| 31 | 205:2 | A paused habit: resume it from Day details | Paused card → Day details Paused → Resume habit | passed |
+| 32 | 206:2 | Day details for an earlier day | ‹ Yesterday → Water → Day details Yesterday → +1 twice → ✕ → Back to today | passed |
+| 33 | 207:1000 | Day details for a later day | › Tomorrow → Water → ✕ → Back to today | passed |
 | 34 | 210:2 | The ⋮ menu: archive a habit | Water → ⋮ → Archive; Undo → Undo | not started |
 | 35 | 210:1012 | The ⋮ menu: delete a habit | Water → ⋮ → Delete Water? → Delete; Undo | not started |
 | 36 | 210:2089 | The ⋮ menu: pause a habit | Water → ⋮ → Pause… → Pause Water sheet → Pause; Undo | not started |

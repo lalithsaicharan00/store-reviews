@@ -179,7 +179,8 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
         if (store.clock() - moved.at > 15_000) return@LaunchedEffect
         val where = if (moved.to == today + 1) "tomorrow" else DayWords.short(moved.to)
         scope.launch {
-            val result = snackbar.showSnackbar("${habit.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+            // "Moved to tomorrow", "Moved to Sun, 25 Oct" (Figma 928:40040, 928:41540); Undo stays about 10 seconds.
+            val result = snackbar.showSnackbar("Moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Long)
             if (result == SnackbarResult.ActionPerformed) moved.undo()
         }
     }

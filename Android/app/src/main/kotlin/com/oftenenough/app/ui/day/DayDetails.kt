@@ -122,7 +122,8 @@ interface DayNav {
  */
 fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     HabitKind.Quit -> "Quitting since " + DayWords.long(store.rules.calendarDayOf(habit.quitSince ?: habit.createdAt))
-    HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
+    // "Task · Today" on its day (Figma 926:110121), "Task · Tomorrow", else the day it's planned for.
+    HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else when (it - store.today()) { 0 -> "Task · Today"; 1 -> "Task · Tomorrow"; else -> "Task · Planned for " + DayWords.short(it) } } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
     else -> {
         // A unit that only repeats the name is left out beside it: Push-ups, "300 a week" (Figma 915:106625).
         val unit = (habit.kind as? HabitKind.Amount)?.unit?.trim().orEmpty()
@@ -212,8 +213,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             DayActivity(habit, day, editable, started, rev, store, nav, onAdded, onDismiss)
             if (isTask && store.canReschedule(habit, day)) {
                 SectionList("Reschedule") {
-                    RowAction("Do tomorrow", Symbols.Redo, 0, 2, "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
-                    RowAction("Another day…", Symbols.CalendarMonth, 1, 2, "day-another-day") { reschedule = true }
+                    // Figma 926:110121: "Do tomorrow · Thu, 22 Oct ›", "Another day… ›"; no icons.
+                    RowAction("Do tomorrow", DayWords.short(today + 1), 0, 2, "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
+                    RowAction("Another day…", null, 1, 2, "day-another-day") { reschedule = true }
                 }
             } else if (!isTask && habit.kind != HabitKind.Quit && started && !habit.atMost && !store.isPaused(habit, day)) {
                 val skipped = store.isSkipped(habit, day)
@@ -271,8 +273,9 @@ private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: H
 private fun IdentityCard(habit: Habit, store: HabitStore, nav: DayNav) {
     val isTask = habit.kind == HabitKind.Task
     AppListItem(habit.name, 0, 1, supporting = planLine(habit, store), headlineLines = 2, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        leading = { HabitIcon(habit.symbol, habit.color, size = 40.dp) }, trailing = if (isTask) null else ({ ListChevron() }),
-        onClick = if (isTask) null else ({ nav.habitPage(habit) }), tag = "day-identity")
+        // The card opens the habit's page, a task's Task details (Figma 926:110121's note).
+        leading = { HabitIcon(habit.symbol, habit.color, size = 40.dp) }, trailing = { ListChevron() },
+        onClick = { nav.habitPage(habit) }, tag = "day-identity")
 }
 
 /** A section under This day (Figma's Today's logs): its title in Label Large On surface variant, 16 in, 8 over its rows. */
@@ -285,8 +288,14 @@ private fun SectionList(title: String, rows: @Composable () -> Unit) {
 }
 
 @Composable
-private fun RowAction(text: String, icon: ImageVector, index: Int, count: Int, tag: String, onClick: () -> Unit) =
-    AppListItem(text, index, count, leading = { Icon(icon, null) }, onClick = onClick, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = tag)
+private fun RowAction(text: String, trailingText: String?, index: Int, count: Int, tag: String, onClick: () -> Unit) =
+    AppListItem(text, index, count, onClick = onClick, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = tag,
+        trailing = {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                trailingText?.let { Text(it, style = AppType.bodyMedium) }
+                ListChevron()
+            }
+        })
 
 /** Skip today, last and plain (Figma: the Medium Outlined button): skipping isn't an action to invite (U17). */
 @Composable
@@ -496,8 +505,9 @@ fun logsTitle(habit: Habit, day: Int, today: Int, period: IntRange? = null): Str
         return if (today in period) "This $noun’s $what" else "${what.replaceFirstChar { it.uppercase() }}, $noun of ${DayWords.short(period.first)}"
     }
     return when (habit.kind) {
-        HabitKind.Quit -> if (day == today) "Slips today" else "Slips on $short"
-        else -> if (day == today) "Today’s logs" else "Logs for $short"
+        HabitKind.Quit -> if (day == today) "Slips today" else if (day == today - 1) "Slips yesterday" else "Slips on $short"
+        // "Yesterday’s logs" (Figma 930:42775); an older day by its date.
+        else -> if (day == today) "Today’s logs" else if (day == today - 1) "Yesterday’s logs" else "Logs for $short"
     }
 }
 
@@ -532,8 +542,6 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
                        onAdded: ((String) -> Unit)? = null, close: () -> Unit = {}): List<DayAction> {
     if (!editable) return emptyList()
     val today = store.today()
-    // On a past day, a quick add says so: "Added 1 glass to Sat 19 Sep" (Figma 4.3); today's shows on the screen itself.
-    val said = { what: String -> if (day != today) onAdded?.invoke("Added $what to " + com.oftenenough.app.data.pageDayDate(day)) }
     val skipped = store.isSkipped(habit, day)
     val src = EntrySource.DAY_SHEET
     val manual = { nav.addLog(habit, day) }
@@ -557,7 +565,7 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
                 if (done) store.undoLast(habit, day) else store.addProgress(habit, 1.0, day, source = src)
             })
         } else if (store.rules.countsUp(habit, day)) {
-            listOf(DayAction("Add a check", ask, !skipped, tag = "day-add-one") { store.addProgress(habit, 1.0, day, source = src); said("a check") })
+            listOf(DayAction("Add a check", ask, !skipped, tag = "day-add-one") { store.addProgress(habit, 1.0, day, source = src) })
         } else {
             val done = store.rules.isDayMet(ruled, day)
             listOf(DayAction(if (done) "Undo done" else "Mark done", !done && ask, !skipped, tag = "day-done") { store.setDayDone(!done, habit, day) })
@@ -569,8 +577,8 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
             if (step == null) listOf(DayAction("Log", ask, !skipped, tag = "day-add-entry", run = manual))
             else listOf(
                 DayAction("+" + Format.amount(step), ask, !skipped, "Add " + HabitCopy.amount(step, k.unit), "day-add-step") {
+                    // A past day's log says nothing: history added later isn't celebrated (Figma 930:43143).
                     store.increment(habit, day, src)
-                    said(HabitCopy.amount(step, k.unit))
                 },
                 DayAction("Log", enabled = !skipped, tag = "day-add-entry", run = manual),
             )
@@ -591,7 +599,8 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
 @Composable
 private fun RescheduleDialog(habit: Habit, day: Int, store: HabitStore, onDismiss: () -> Unit, onMoved: () -> Unit) {
     val range = store.rescheduleRange(habit, day) ?: run { onDismiss(); return }
-    AppDatePicker(range.first, { it in range }, onDismiss, title = "Another day", confirm = "Move", confirmTag = null) { picked ->
+    // Android's own picker with nothing picked yet (Figma 928:40378: "Select date", "Select a day", Cancel | OK).
+    AppDatePicker(null, { it in range }, onDismiss) { picked ->
         store.reschedule(habit, day, picked)
         onMoved()
     }
