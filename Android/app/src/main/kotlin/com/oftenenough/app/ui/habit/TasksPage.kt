@@ -42,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -88,8 +89,6 @@ interface TasksNav {
     fun newTask(name: String? = null)
     fun completed()
     fun archived()
-    /** A task moved to today: the snackbar's Show, which opens Today. */
-    fun showToday()
 }
 
 /** One section of a tab: its heading, an optional note, and its tasks. */
@@ -169,7 +168,15 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
         for (sec in sections) {
             at++ // its title
             val i = sec.tasks.indexOfFirst { it.id == id }
-            if (i >= 0) { (if (tab == 0) oneTimeList else repeatingList).animateScrollToItem(at + i); break }
+            if (i >= 0) {
+                // Only when it isn't already wholly in view, as on Habits.
+                val list = if (tab == 0) oneTimeList else repeatingList
+                withFrameNanos { }
+                val info = list.layoutInfo
+                val seen = info.visibleItemsInfo.firstOrNull { it.key == id }
+                if (seen == null || seen.offset < 0 || seen.offset + seen.size > info.viewportEndOffset) list.animateScrollToItem(at + i)
+                break
+            }
             at += sec.tasks.size
         }
         showing = null // last: it's this effect's own key
@@ -183,7 +190,8 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
             if (from != null && from != day && day in (store.taskMoveRange(t, today) ?: IntRange.EMPTY)) store.moveOccurrence(t, from, day)
         }
         // On Today now (Figma's Moved to Today): Show goes there. Elsewhere it says where, with Undo.
-        if (day == today) say("${t.name} is on Today", "Show") { nav.showToday() }
+        // Show stays on this page and brings it into view, at the end of Today's open tasks (Figma 1132:226325).
+        if (day == today) say("${t.name} is on Today", "Show") { tab = 0; showing = t.id }
         else {
             val where = when (day) { null -> "No date"; today + 1 -> "Tomorrow"; else -> taskDay(day) }
             say("Moved to $where") { if (t.isOneTimeTask) store.update(t) else store.setTaskMoves(t, moves) }
