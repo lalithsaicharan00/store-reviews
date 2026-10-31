@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 5 |
+| day details | 169:1270 | 44 | 6 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **99** |
+| **All** | | **290** | **100** |
 
 ## Bug log
 
@@ -297,7 +297,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 3 | 176:2 | Log from Day details | Water 5 of 8 → Day details → Log: Add log, 2 → Added: 7 of 8 → ✕ | passed ¹¹ |
 | 4 | 178:2 | Add log on another day and time | → Add log → Date: picker → 20 → OK → Time: picker → OK → Add: snackbar says where | passed |
 | 5 | 179:2 | Add log: nothing typed, or a time later than now | → Add log empty → Add: error line → type 2 → Time 6:00 PM → OK: stays 2:05 PM, says why → Add → ✕ | passed |
-| 6 | 180:2 | Add log: ✕ after typing | → 2 typed → ✕: Discard this log? → Keep editing → ✕ → Discard → ✕ | not started |
+| 6 | 180:2 | Add log: ✕ after typing | → 2 typed → ✕: Discard this log? → Keep editing → ✕ → Discard → ✕ | passed |
 | 7 | 181:2 | Open a log | → Day details → tap log: Log view → ← → ✕ | not started |
 | 8 | 182:2 | Edit a log | → Log → Edit → type 3 → Save: snackbar → ← 6 of 8 → ✕ | not started |
 | 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | not started |
