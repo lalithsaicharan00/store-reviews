@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 35 |
+| today | 54:5580 | 84 | 36 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **45** |
+| **All** | | **290** | **46** |
 
 ## Bug log
 
@@ -105,6 +105,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 67. Today · a new habit (A47) — Add still lit the new row and said "Added to the end of Anytime" with Move; A47 and Figma: a new habit just appears at the end of its time of day, no highlight, no snackbar, no Move. Removed with their code (TodayScreen's snackbar and lit row, HabitRowLayout's flash, TodayActions.arrange and ArrangeLift, Arrange's lifted habit); Today still opens its time of day, and scrolls only when the new row is off the screen.
 68. Today · the day ring — it counted a part-done habit's share (1 of 8 glasses drew a sliver at 0/1); Figma's Floating toolbar: "Set the arc to match Count" (Today's 4/13 arc is exactly 4/13). DayScore.fraction is now done of planned.
 69. Today · Nothing planned — its words ran the screen's width (one long line and a short one); Figma's Nothing planned narrows them to 280 dp. EmptyState takes bodyWidth, a cap, so it still fits any phone and font size.
+70. Today · notice card (Card notice 795:466) — 168 dp tall with its buttons 5 lower than Figma's 160: the Text buttons' 48 dp touch target added 4 above and below their 40 on top of Figma's 4 and 8. CardNotice now takes that 4 back from the padding on each side (the touch target stays 48); measured 160, buttons at 112, as Figma. (Its body breaks a word earlier in Figma: same style and width, font rendering.)
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -210,7 +211,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | passed |
 | 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | passed |
 | 34 | 104:419 | Nothing planned today | Nothing planned today → › Tomorrow, Gym → Back to today | passed |
-| 35 | 125:2 | Notice: backup is paused | Backup is paused → backed up: notice gone | not started |
+| 35 | 125:2 | Notice: backup is paused | Backup is paused → backed up: notice gone | passed |
 | 36 | 125:371 | Notice: backup is off | Backup is off → Reconnect: account chooser → pick account → Continue: notice gone; snackbar | not started |
 | 37 | 125:807 | Notice: your backup was removed | Backup deleted → Back up again: backing up → Backed up → card gone | not started |
 | 38 | 125:1173 | Notice: a reminder didn't arrive | Reminder didn't arrive → Show me how: Keep reminders coming → Open → Back → Open → Back: all set | not started |

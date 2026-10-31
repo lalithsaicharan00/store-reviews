@@ -80,7 +80,10 @@ fun CardNotice(
         colors = CardDefaults.cardColors(containerColor = s.surface, contentColor = s.onSurface),
     ) {
         Column(
-            if (atEnd) Modifier.padding(start = 16.dp, top = 16.dp, end = 8.dp, bottom = 8.dp) else Modifier.padding(16.dp),
+            // The Text buttons keep their 48 dp touch target, 4 past their 40 above and below: so the card is 4 less at
+            // the bottom and the buttons 4 less from the words, and every edge lands where Figma draws it (Card notice
+            // 795:466: 4 above the buttons, 8 under them; 160 tall for a three-line notice).
+            if (atEnd) Modifier.padding(start = 16.dp, top = 16.dp, end = 8.dp, bottom = 4.dp) else Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Row(Modifier.padding(end = if (atEnd) 8.dp else 0.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -100,7 +103,7 @@ fun CardNotice(
                 }
             }
             if (atEnd) {
-                FlowRow(Modifier.fillMaxWidth().padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
+                FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
                     if (dismiss != null) AppButton(dismiss, onDismiss, style = ButtonStyle.Text, tag = "notice-dismiss")
                     AppButton(action, onAction, style = ButtonStyle.Text, enabled = actionEnabled, tag = actionTag)
                 }
