@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 31 |
+| today | 54:5580 | 84 | 32 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **41** |
+| **All** | | **290** | **42** |
 
 ## Bug log
 
@@ -96,6 +96,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 58. Today · Change a note — Save stayed on the note's view; Figma goes back to Day details with "Note saved". Fixed in NoteScreen.
 59. Today · Delete a note — the dialog said "Only the note for … is removed. That day's progress stays." · Delete note, and no Undo after; Figma: "Your logs for this day stay as they are." · Cancel | Delete, then "Note deleted" · Undo. Fixed in NoteScreen.
 60. Today · Leave a note unsaved — the dialog said "What you wrote won’t be saved." · Keep writing; Figma: "What you typed won’t be saved." · Keep editing. Fixed in NoteScreen.
+61. Today · Look at tomorrow — the "Planned for …" line was there but out of sight: the list kept its first card (Morning) in place when the line was added above it. A line that appears above the cards (Planned for, All done for today) now brings the list to its top when it was there already (TodayScreen).
+62. Today · a folded section's discs — on Tomorrow, "4 planned" left Afternoon's name as "After…" and "Starts 1…"; Figma shows one disc and +3. The discs now give way to the name and time: as many as fit beside them whole, down to one and +N (SectionHeader, measured, so it works at any width and font size).
+63. Today · a later day's rows — they said "8 glasses" with no 🔥 or button, and a task had a "Done today" button; Figma's Tomorrow draws "0/8 glasses", 🔥 23 and the round button. Rows now show the line and streak as on their own day, with the round button switched off (nothing is logged ahead) and a task's ✓ on, marking it done today (TodayRows; DoneTodayButton removed).
+64. Today · demo data — Water showed 🔥 24 on Today where Figma's Today draws 23: its run was 23 days before today plus today. Now 22 before (DemoData.design).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -133,6 +137,13 @@ Each entry: page · flow — what differed — how it was fixed (commit).
   “4/13” while its chips (3 + 3 + 2 + 2 left of 13) make 3/13. Pick up parcel is due today in flows 10–11 and
   tomorrow in flow 31. The app follows the rule (no 🔥 after a missed yesterday; 56 on yesterday, 57 once it's ticked)
   and counts what its sections show (the demo's parcel is due today, so Today counts 14).
+- **A later day's buttons (Today flow 31).** Figma drew Tomorrow's Water with a live + (State Neutral) while its own
+  notes say "Nothing can be logged ahead" and "What's planned, with no logging buttons". The app keeps the button,
+  switched off as on a skipped day (flow 13), and a task's ✓ stays on (done early, as the note says); Figma's three
+  Tomorrow frames now draw Water's + as State=Disabled. Say if the + should go altogether instead.
+- **Day details in Figma, for the Day details page.** Tomorrow's sheet (788:32597) is titled "Today"; the app says
+  "Tomorrow". The Day details sheet component (669:234) draws its own bar with no stop dot, where the Linear progress
+  atom (902:14527) and Material's indicator have one; the app keeps Material's.
 
 ---
 
@@ -187,7 +198,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 28 | 91:607 | Delete a note | Water → Day details → Note → Delete this note? → Delete; Undo | passed |
 | 29 | 91:1143 | Leave a note unsaved | Water → Day details → note typed → ✕: Discard this note? → Discard | passed |
 | 30 | 99:2 | Log yesterday | Today → ‹ Yesterday; Back to today → ✓ Meds for yesterday → Back to today: streak 58 | passed |
-| 31 | 100:2 | Look at tomorrow | Today → › Tomorrow → Water: Day details for tomorrow → ✕ → Back to today | not started |
+| 31 | 100:2 | Look at tomorrow | Today → › Tomorrow → Water: Day details for tomorrow → ✕ → Back to today | passed |
 | 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | not started |
 | 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | not started |
 | 34 | 104:419 | Nothing planned today | Nothing planned today → › Tomorrow, Gym → Back to today | not started |

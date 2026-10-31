@@ -129,7 +129,7 @@ object DemoData {
         val entries = ArrayList<Entry>()
         fun log(habit: Habit, day: Int, value: Double, stepId: String? = null, at: Long? = null) =
             entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now)))
-        for ((habit, streak) in listOf(stretch to 4, meds to 57, read to 6, water to 23, bed to 30, night to 5, journal to 9, study to 2, refill to 3))
+        for ((habit, streak) in listOf(stretch to 4, meds to 57, read to 6, water to 22, bed to 30, night to 5, journal to 9, study to 2, refill to 3))
             for (d in 1..streak) log(habit, today - d, habit.goal)
         for (d in 1..12) for (step in skincare.steps) log(skincare, today - d, 1.0, step.id)
         val week = store.rules.period(PeriodKind.WEEK, today).first

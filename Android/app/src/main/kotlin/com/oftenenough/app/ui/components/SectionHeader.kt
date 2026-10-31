@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -35,6 +36,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
@@ -58,7 +60,8 @@ data class SectionHabit(val name: String, val symbol: String, val color: HabitCo
  * - The [name] in Title Medium, On surface, over the [time] ("Starts 6 AM", "Stop, or do less") in Body Small, On
  *   surface variant. They take the room that's left.
  * - Closed: the [habits] in it, 28 dp discs of each habit's Colour with its filled icon (16, On habit), ringed 2 dp in
- *   Surface bright and overlapping by 6; past three, a "+N" disc of Surface container highest in Label Medium.
+ *   Surface bright and overlapping by 6; past three, a "+N" disc of Surface container highest in Label Medium. Fewer
+ *   discs show when the name and time would otherwise be cut short, down to one and "+N".
  * - The [count] ("2 left", "Done", "3 planned"): a neutral pill, 24 tall, corners 12, 10 at the sides, Label Medium On
  *   surface on Surface container highest. Not Material's `Badge` (that's the red error dot).
  * - Open: Start ([onStart]), Material's extra-small button: 32 tall, round, Primary with On primary, the filled play
@@ -94,11 +97,29 @@ fun SectionHeader(
     val chevron = @Composable { StandardIconButton(if (open) Symbols.ExpandLess else Symbols.ExpandMore, action, onToggle) }
     if (!large) {
         Row(box.heightIn(min = 64.dp).padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(name, style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                if (time != null) Text(time, style = AppType.bodySmall, color = s.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            val words = @Composable { m: Modifier ->
+                Column(m) {
+                    Text(name, style = AppType.titleMedium, color = s.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    if (time != null) Text(time, style = AppType.bodySmall, color = s.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
             }
-            if (discs) { Spacer(Modifier.width(12.dp)); SectionDiscs(habits) }
+            if (!discs) words(Modifier.weight(1f))
+            else BoxWithConstraints(Modifier.weight(1f)) {
+                // The discs give way to the name: as many as fit beside it whole, down to one and "+N" (Figma's Tomorrow,
+                // Afternoon: one disc and +3 beside "4 planned", where Today's "3 left" leaves room for three and +1).
+                val measure = rememberTextMeasurer()
+                val wanted = with(LocalDensity.current) {
+                    maxOf(measure.measure(name, AppType.titleMedium, maxLines = 1).size.width,
+                        time?.let { measure.measure(it, AppType.bodySmall, maxLines = 1).size.width } ?: 0).toDp()
+                }
+                val room = maxWidth - wanted - 12.dp
+                val most = (minOf(3, habits.size) downTo 1).firstOrNull { discsWidth(it, habits.size) <= room } ?: 1
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    words(Modifier.weight(1f))
+                    Spacer(Modifier.width(12.dp))
+                    SectionDiscs(habits, most = most)
+                }
+            }
             if (count != null) { Spacer(Modifier.width(12.dp)); SectionCount(count) }
             if (start) { Spacer(Modifier.width(12.dp)); StartButton(name, onStart) }
             Spacer(Modifier.width(8.dp))
@@ -162,15 +183,18 @@ private fun StartButton(name: String, onStart: () -> Unit, modifier: Modifier = 
     }
 }
 
+/** How wide [k] of [count] discs are: 28 each, overlapping by 6, and the "+N" disc after them when some are left out. */
+private fun discsWidth(k: Int, count: Int) = 28.dp + 22.dp * (k - 1) + (if (count > k) 22.dp else 0.dp)
+
 /**
- * A folded section's habits: three discs at most, then "+N". Each ring is Surface bright painted behind a 24 dp disc,
+ * A folded section's habits: three discs at most ([most] when the name needs the room), then "+N". Each ring is Surface bright painted behind a 24 dp disc,
  * never a stroke over it (a stroke leaves a fringe of the colour). The "+N" grows into a pill with large text.
  */
 @Composable
-private fun SectionDiscs(habits: List<SectionHabit>, modifier: Modifier = Modifier) {
+private fun SectionDiscs(habits: List<SectionHabit>, modifier: Modifier = Modifier, most: Int = 3) {
     val ring = MaterialTheme.colorScheme.surface
     val c = appColors
-    val shown = habits.take(3)
+    val shown = habits.take(most)
     val more = habits.size - shown.size
     Row(
         modifier.semantics(mergeDescendants = true) { contentDescription = habits.joinToString(", ") { it.name } },

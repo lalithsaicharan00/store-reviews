@@ -276,6 +276,10 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                     }
                     // A notice that comes while Today is at its top is brought into view, not left above it.
                     LaunchedEffect(notice?.key) { if (notice != null && isToday && listState.firstVisibleItemIndex <= 1) listState.animateScrollToItem(0) }
+                    // So is the line above the cards ("Planned for …", "All done for today."): the list keeps its first
+                    // card where it was, which left the new line above the screen (Today flow 31).
+                    val topLine = day > today || content.allDone
+                    LaunchedEffect(day, topLine) { if (topLine && listState.firstVisibleItemIndex <= 1) listState.scrollToItem(0) }
                     LazyColumn(
                         Modifier.fillMaxSize().semantics { testTag = "today-list" },
                         state = listState,

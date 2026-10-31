@@ -116,8 +116,6 @@ private fun rowModel(store: HabitStore, habit: Habit, day: Int, slot: String?, t
     val streak = if (habit.kind == HabitKind.Task) 0 else store.streak(habit, day)
     val running = store.timers.containsKey(habit.id) && day == today
     var line = store.rowLine(habit, day, slot, time, progress, goal, running)
-    // A later day plans, so its line is the goal alone: "8 glasses", "20 min" (Figma 4.3).
-    if (day > today) line = line.replace(Regex("^[0-9][0-9,.:]*/"), "")
     // A milestone keeps the row's own line; its band says it, below (Figma R.1, decided 17 Oct 2026).
     // A day with a note says so (Figma 7.18).
     if (day <= today && store.note(habit, day) != null) line += " · Note"
@@ -173,15 +171,14 @@ fun HabitRow(
                 if (running) RunningLine(store, habit, day, slot, time, model.goal, tick)
                 else HabitRowLine(model.line, Modifier.semantics { testTag = "line-${habit.name}" })
             },
-            streak = if (streaks && model.streak > 0 && !future) { { HabitRowStreak(model.streak, store.rule(habit, day).frequency.streakUnit, roll = moment.rolling) } } else null,
+            streak = if (streaks && model.streak > 0) { { HabitRowStreak(model.streak, store.rule(habit, day).frequency.streakUnit, roll = moment.rolling) } } else null,
             action = if (trailing && !typed) { {
                 Box(if (moment.full) Modifier.milestoneBurst(moment.t, c.habit(habit.color)) else Modifier) {
                     RowButton(habit, day, isToday, slot, model, store, layout, actions, stepsOpen, onToggleSteps, running, tick)
                 }
             } } else null,
             trailing = when {
-                trailing && typed -> { { AppButton("Log", { actions.addLog(habit, day) }, style = ButtonStyle.Tonal, tag = "log-${habit.name}") } }
-                future && habit.kind == HabitKind.Task -> { { DoneTodayButton(habit, store, layout) } }
+                trailing && typed -> { { AppButton("Log", { actions.addLog(habit, day) }, style = ButtonStyle.Tonal, enabled = !future && !model.skipped, tag = "log-${habit.name}") } }
                 else -> null
             },
             below = offer?.let { o -> { AfterLogButtons(o, habit, day, store, layout, actions, note) } },
@@ -214,9 +211,12 @@ fun rememberShownReminder(store: HabitStore, day: Int, times: List<ReminderTime>
     return store.shownReminder(times, day, now)
 }
 
-/** Whether a row has its round button: never on a later day (Figma 4.3); a skipped day keeps it, switched off (Figma's Today, flow 13). */
+/**
+ * Whether a row has its round button: every row but a quit one. A skipped day keeps it, switched off (Figma's Today,
+ * flow 13), and so does a later day, where nothing is logged ahead but a task can be done early (Today flow 31).
+ */
 private fun rowButton(habit: Habit, day: Int, isToday: Boolean, future: Boolean, slot: String?, model: RowModel, running: Boolean): Boolean =
-    !future && habit.kind != HabitKind.Quit
+    habit.kind != HabitKind.Quit
 
 /** Swipe left (Figma 7.1–7.16, 7.24): Skip on a day it can be skipped, Undo skip on a skipped day, nothing otherwise. */
 private fun skipAction(habit: Habit, day: Int, today: Int, model: RowModel, running: Boolean, store: HabitStore, layout: TodayLayout): SwipeAction? {
@@ -253,21 +253,24 @@ private fun RowButton(
     actions: TodayActions, stepsOpen: Boolean, onToggleSteps: () -> Unit, running: Boolean, tick: State<Long>? = null,
 ) {
     fun log(change: () -> Unit) { layout.hold(); change() }
+    // A later day is planned, not logged (Today flow 31): its button stays, switched off, as on a skipped day.
+    val on = !model.skipped && day <= store.today()
     when (val k = habit.kind) {
-        HabitKind.Checklist -> AppFilledIconButton(if (stepsOpen) Symbols.ExpandLess else Symbols.ExpandMore, if (stepsOpen) "Hide ${habit.name} steps" else "Show ${habit.name} steps", onToggleSteps, done = model.done, color = habit.color, enabled = !model.skipped)
+        HabitKind.Checklist -> AppFilledIconButton(if (stepsOpen) Symbols.ExpandLess else Symbols.ExpandMore, if (stepsOpen) "Hide ${habit.name} steps" else "Show ${habit.name} steps", onToggleSteps, done = model.done, color = habit.color, enabled = on)
         HabitKind.Check -> if (slot == null && model.countsUp) {
             // Ticked several times a day, or N a week: still a ✓; each tap adds one and never takes one back (U14).
-            AppFilledIconButton(Symbols.Check, "Add 1 to ${habit.name}", { log { store.addProgress(habit, 1.0, day) } }, done = model.done, color = habit.color, enabled = !model.skipped)
+            AppFilledIconButton(Symbols.Check, "Add 1 to ${habit.name}", { log { store.addProgress(habit, 1.0, day) } }, done = model.done, color = habit.color, enabled = on)
         } else {
-            AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { if (slot != null) store.toggleSlot(habit, slot, day) else store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color, enabled = !model.skipped)
+            AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { if (slot != null) store.toggleSlot(habit, slot, day) else store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color, enabled = on)
         }
-        HabitKind.Task -> AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color, enabled = !model.skipped)
+        // A task planned for a later day can be done early: its ✓ marks it done today (Today flow 31).
+        HabitKind.Task -> AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { store.toggleCheck(habit, minOf(day, store.today())) } }, done = model.ticked, color = habit.color, enabled = !model.skipped)
         is HabitKind.Amount -> {
             // A limit's + stays plain however much is logged (Figma 1.12: never filled as if done).
             val filled = model.done && !habit.atMost
             val step = habit.quickIncrement
-            if (step != null) AppFilledIconButton(Symbols.Add, "Add ${HabitCopy.amount(step, k.unit)} to ${habit.name}", { log { store.increment(habit, day) } }, done = filled, color = habit.color, enabled = !model.skipped)
-            else AppFilledIconButton(Symbols.Add, "Add an amount to ${habit.name}", { actions.addLog(habit, day) }, done = filled, color = habit.color, enabled = !model.skipped)
+            if (step != null) AppFilledIconButton(Symbols.Add, "Add ${HabitCopy.amount(step, k.unit)} to ${habit.name}", { log { store.increment(habit, day) } }, done = filled, color = habit.color, enabled = on)
+            else AppFilledIconButton(Symbols.Add, "Add an amount to ${habit.name}", { actions.addLog(habit, day) }, done = filled, color = habit.color, enabled = on)
         }
         HabitKind.Duration -> {
             // Past the goal the button fills, running or not (Figma 1.3.2, Today flow 6 "The goal": the ⏸ fills in the
@@ -279,16 +282,11 @@ private fun RowButton(
             val filled = !habit.atMost && (model.done || reached || (running && store.rules.isDone(habit, day)))
             AppFilledIconButton(if (running) Symbols.Filled.Pause else Symbols.Filled.PlayArrow, if (running) "Stop ${habit.name} timer" else "Start ${habit.name} timer", {
                     if (!running) { store.toggleTimer(habit, slot); actions.openTimer(habit) } else log { store.toggleTimer(habit, slot) }
-                }, done = filled, color = habit.color, enabled = isToday && !model.skipped)
+                }, done = filled, color = habit.color, enabled = isToday && on)
         }
         HabitKind.Quit -> {}
     }
 }
-
-/** A task planned for a later day can still be done today (Figma 4.3): "Done today", a tonal Small button, as the row's Log. */
-@Composable
-private fun DoneTodayButton(habit: Habit, store: HabitStore, layout: TodayLayout) =
-    AppButton("Done today", { layout.hold(); store.toggleCheck(habit, store.today()) }, style = ButtonStyle.Tonal, tag = "done-today-${habit.name}")
 
 /**
  * Undo · Note (Figma 1.2): under the row of the last thing done from Today, 12 dp below its line and lined up with the
