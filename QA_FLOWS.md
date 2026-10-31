@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 12 |
+| today | 54:5580 | 83 | 13 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **22** |
+| **All** | | **289** | **23** |
 
 ## Bug log
 
@@ -66,6 +66,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 28. Today · Log a slip from the menu — the row menu had Arrange… and Pause…; Figma's is Edit habit · Pause · Add note · Skip today / Log a slip, with Add note's edit_note icon. Fixed in RowMenu (ScreensTest updated).
 29. Today · Log a slip from the menu — the menu opened from the row's left at its words' width; Figma hangs it from the card's right edge, 4 below, 220 wide. Fixed in HabitRowLayout's anchor and RowMenu.
 30. Today · Log a slip from the menu — menu items had Material's 12 at the sides; Figma's Menu item has 16. Fixed in AppMenuItem. Items stay Material's 48 high (Compose 1.5 hard-codes MenuListItemContainerHeight 48, the touch target) against Figma's 44; Material also opens the menu above a row near the bottom edge, where Figma draws it overlapping the bottom bar.
+31. Today · Touch and hold a habit — a skipped row lost its round button; every Figma skipped row keeps it, switched off. Fixed in rowButton/RowButton.
+32. Today · Touch and hold a habit — a switched-off filled icon button used Material's disabled greys (E3E3E3); Figma's is the button at 38 % (F0F0F0, tick B5). Fixed in AppFilledIconButton (also a past day's timer).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -134,7 +136,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 10 | 120:2 | Do a task on Today | Pick up parcel → ✓ done; Undo · Note → stays done in place | passed |
 | 11 | 79:2 | Quit: log a slip | Smoking 19 days → Day details → Add slip → 1 slip recorded → Swipe down: run starts again | passed |
 | 12 | 81:1657 | Log a slip from the menu | Today → hold Smoking: menu → Add slip → back on Today; Undo · Note | passed |
-| 13 | 122:2 | Touch and hold a habit | Today → hold Meds: menu → Skip today: skipped; Undo · Note | not started |
+| 13 | 122:2 | Touch and hold a habit | Today → hold Meds: menu → Skip today: skipped; Undo · Note | passed |
 | 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | not started |
 | 15 | 137:2 | Pause a habit until a date | Today → menu → Pause sheet (1 week) → Until a date…: date picker → 30 → OK: Back on Fri, 30 Oct → Pause | not started |
 | 16 | 122:1300 | Resume a habit | Paused card → Day details, Paused → Resume habit; snackbar Undo | not started |

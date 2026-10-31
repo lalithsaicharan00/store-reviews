@@ -189,9 +189,9 @@ fun HabitRow(
     }
 }
 
-/** Whether a row has its round button: never on a later day or a skipped day (Figma 4.3, 7.10). */
+/** Whether a row has its round button: never on a later day (Figma 4.3); a skipped day keeps it, switched off (Figma's Today, flow 13). */
 private fun rowButton(habit: Habit, day: Int, isToday: Boolean, future: Boolean, slot: String?, model: RowModel, running: Boolean): Boolean =
-    !future && !model.skipped && habit.kind != HabitKind.Quit
+    !future && habit.kind != HabitKind.Quit
 
 /** Swipe left (Figma 7.1–7.16, 7.24): Skip on a day it can be skipped, Undo skip on a skipped day, nothing otherwise. */
 private fun skipAction(habit: Habit, day: Int, today: Int, model: RowModel, running: Boolean, store: HabitStore, layout: TodayLayout): SwipeAction? {
@@ -228,20 +228,20 @@ private fun RowButton(
 ) {
     fun log(change: () -> Unit) { layout.hold(); change() }
     when (val k = habit.kind) {
-        HabitKind.Checklist -> AppFilledIconButton(if (stepsOpen) Symbols.ExpandLess else Symbols.ExpandMore, if (stepsOpen) "Hide ${habit.name} steps" else "Show ${habit.name} steps", onToggleSteps, done = model.done, color = habit.color)
+        HabitKind.Checklist -> AppFilledIconButton(if (stepsOpen) Symbols.ExpandLess else Symbols.ExpandMore, if (stepsOpen) "Hide ${habit.name} steps" else "Show ${habit.name} steps", onToggleSteps, done = model.done, color = habit.color, enabled = !model.skipped)
         HabitKind.Check -> if (slot == null && model.countsUp) {
             // Ticked several times a day, or N a week: still a ✓; each tap adds one and never takes one back (U14).
-            AppFilledIconButton(Symbols.Check, "Add 1 to ${habit.name}", { log { store.addProgress(habit, 1.0, day) } }, done = model.done, color = habit.color)
+            AppFilledIconButton(Symbols.Check, "Add 1 to ${habit.name}", { log { store.addProgress(habit, 1.0, day) } }, done = model.done, color = habit.color, enabled = !model.skipped)
         } else {
-            AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { if (slot != null) store.toggleSlot(habit, slot, day) else store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color)
+            AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { if (slot != null) store.toggleSlot(habit, slot, day) else store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color, enabled = !model.skipped)
         }
-        HabitKind.Task -> AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color)
+        HabitKind.Task -> AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color, enabled = !model.skipped)
         is HabitKind.Amount -> {
             // A limit's + stays plain however much is logged (Figma 1.12: never filled as if done).
             val filled = model.done && !habit.atMost
             val step = habit.quickIncrement
-            if (step != null) AppFilledIconButton(Symbols.Add, "Add ${HabitCopy.amount(step, k.unit)} to ${habit.name}", { log { store.increment(habit, day) } }, done = filled, color = habit.color)
-            else AppFilledIconButton(Symbols.Add, "Add an amount to ${habit.name}", { actions.addLog(habit, day) }, done = filled, color = habit.color)
+            if (step != null) AppFilledIconButton(Symbols.Add, "Add ${HabitCopy.amount(step, k.unit)} to ${habit.name}", { log { store.increment(habit, day) } }, done = filled, color = habit.color, enabled = !model.skipped)
+            else AppFilledIconButton(Symbols.Add, "Add an amount to ${habit.name}", { actions.addLog(habit, day) }, done = filled, color = habit.color, enabled = !model.skipped)
         }
         HabitKind.Duration -> {
             // Past the goal the button fills, running or not (Figma 1.3.2, Today flow 6 "The goal": the ⏸ fills in the
@@ -253,7 +253,7 @@ private fun RowButton(
             val filled = !habit.atMost && (model.done || reached || (running && store.rules.isDone(habit, day)))
             AppFilledIconButton(if (running) Symbols.Filled.Pause else Symbols.Filled.PlayArrow, if (running) "Stop ${habit.name} timer" else "Start ${habit.name} timer", {
                     if (!running) { store.toggleTimer(habit, slot); actions.openTimer(habit) } else log { store.toggleTimer(habit, slot) }
-                }, done = filled, color = habit.color, enabled = isToday)
+                }, done = filled, color = habit.color, enabled = isToday && !model.skipped)
         }
         HabitKind.Quit -> {}
     }

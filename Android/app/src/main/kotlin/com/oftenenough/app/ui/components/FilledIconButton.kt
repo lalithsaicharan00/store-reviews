@@ -38,8 +38,8 @@ enum class IconButtonSize(val container: Dp) { Small(40.dp), Medium(56.dp) }
  * - **Done:** the habit's colour with a white glyph (On habit), and only once the goal is met (U2, U14), or the chosen
  *   icon. The change between them fades (220 ms).
  *
- * Switched off (a timer on a past day), Material's disabled colours; a done one keeps its colour, faded, so a past
- * day still reads as done. [text] replaces the glyph where a number says more ("+250", the habit form's preview).
+ * Switched off (a timer on a past day, a skipped day's ✓), the button as it is at 38 % (Figma's disabled state), so a
+ * done one still reads as done. [text] replaces the glyph where a number says more ("+250", the habit form's preview).
  */
 @Composable
 fun AppFilledIconButton(
@@ -57,7 +57,6 @@ fun AppFilledIconButton(
     val s = MaterialTheme.colorScheme
     val container by animateColorAsState(if (done) appColors.habit(color) else s.surfaceContainerHighest, tween(220), label = "filled-icon")
     val content = if (done) Color.White else s.onSurfaceVariant
-    val off = IconButtonDefaults.filledIconButtonColors()
     FilledIconButton(
         onClick,
         // Material's button is 40 dp on its own (in a 48 dp target); only the larger size is set.
@@ -65,8 +64,8 @@ fun AppFilledIconButton(
         enabled,
         colors = IconButtonDefaults.filledIconButtonColors(
             containerColor = container, contentColor = content,
-            disabledContainerColor = if (done) container.copy(alpha = 0.38f) else off.disabledContainerColor,
-            disabledContentColor = if (done) content.copy(alpha = 0.38f) else off.disabledContentColor,
+            disabledContainerColor = container.copy(alpha = 0.38f),
+            disabledContentColor = content.copy(alpha = 0.38f),
         ),
     ) {
         if (text != null) Text(text, style = if (text.length > 3) AppType.labelMedium else AppType.labelLarge, maxLines = 1)
