@@ -127,7 +127,7 @@ fun Stepper(label: String, value: Int, range: IntRange, tag: String, unit: (Int)
     val s = androidx.compose.material3.MaterialTheme.colorScheme
     Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp).semantics { testTag = tag },
         horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(label, Modifier.weight(1f), style = AppType.bodyLarge, color = s.onSurface)
+        Text(label, Modifier.weight(1f).padding(vertical = 8.dp), style = AppType.bodyLarge, color = s.onSurface)
         StepButton(Symbols.Remove, "Fewer", value > range.first) { onChange(maxOf(range.first, value - 1)) }
         BasicTextField(
             value.toString(), { text -> text.filter { it.isDigit() }.take(5).toIntOrNull()?.let { onChange(it.coerceIn(range)) } },

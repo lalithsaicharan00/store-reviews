@@ -82,14 +82,20 @@ fun AppListItem(
 ) {
     val shapes = listItemShapes(index, count)
     val m = modifier.semantics { tag?.let { testTag = it } }
+    val hasSupport = supporting != null || below != null
+    // The words keep the room they have on one line whatever their length (the user, 31 Oct 2026: a line that wraps grows
+    // the row; it never eats the padding). The row's 8 is the avatar's; the words take the rest of Figma's 56 (16 round
+    // one line) or 72 (14 round a headline and its line) as their own, so a second line adds its height and nothing else.
+    val words = when { below != null -> 0.dp; hasSupport -> 6.dp; else -> 8.dp }
     val headlineText: @Composable () -> Unit = {
         val text = @Composable { m: Modifier -> Text(headline, m, style = headlineStyle, color = headlineColor, maxLines = headlineLines, overflow = TextOverflow.Ellipsis) }
-        if (beside == null) text(Modifier)
-        else Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) { text(Modifier.weight(1f, fill = false)); beside() }
+        val room = Modifier.padding(top = words, bottom = if (hasSupport) 0.dp else words)
+        if (beside == null) text(room)
+        else Row(room, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) { text(Modifier.weight(1f, fill = false)); beside() }
     }
-    val support: (@Composable () -> Unit)? = if (supporting == null && below == null) null else {
+    val support: (@Composable () -> Unit)? = if (!hasSupport) null else {
         {
-            Column(verticalArrangement = Arrangement.Top) {
+            Column(Modifier.padding(bottom = words), verticalArrangement = Arrangement.Top) {
                 if (supporting != null) Text(supporting, style = AppType.bodyMedium, maxLines = supportingLines, overflow = TextOverflow.Ellipsis)
                 below?.invoke(this)
             }

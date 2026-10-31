@@ -25,7 +25,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
@@ -428,12 +431,23 @@ private fun NameGroup(form: FormState, typed: TypedText, describing: TypedText, 
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
         NameField(typed, form.type.namePlaceholder, focus, autoFocus = !form.editing && typed.text.isEmpty())
         DescriptionField(describing)
-        Row(Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-            HalfRow("Icon", "icon-row", RoundedCornerShape(4.dp, 4.dp, 4.dp, 24.dp), Modifier.weight(1f), onIcon) {
-                HabitIcon(form.symbol, form.color, 40.dp)
-            }
-            HalfRow("Colour", "colour-row", RoundedCornerShape(4.dp, 4.dp, 24.dp, 4.dp), Modifier.weight(1f), onColour) {
-                Box(Modifier.size(40.dp).clip(CircleShape).background(appColors.habit(form.color)))
+        val icon = @Composable { shape: RoundedCornerShape, m: Modifier -> HalfRow("Icon", "icon-row", shape, m, onIcon) { HabitIcon(form.symbol, form.color, 40.dp) } }
+        val colour = @Composable { shape: RoundedCornerShape, m: Modifier ->
+            HalfRow("Colour", "colour-row", shape, m, onColour) { Box(Modifier.size(40.dp).clip(CircleShape).background(appColors.habit(form.color))) }
+        }
+        // Side by side while each word fits whole in its half (16, the 40 lead, 8, the word, the 24 ›, 12); with larger
+        // text the two take a row each rather than break "Colour" in two.
+        BoxWithConstraints {
+            val measure = rememberTextMeasurer()
+            val word = with(LocalDensity.current) { measure.measure("Colour", AppType.titleMedium, maxLines = 1).size.width.toDp() }
+            if ((maxWidth - 2.dp) / 2 >= 16.dp + 40.dp + 8.dp + word + 24.dp + 12.dp) {
+                Row(Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                    icon(RoundedCornerShape(4.dp, 4.dp, 4.dp, 24.dp), Modifier.weight(1f))
+                    colour(RoundedCornerShape(4.dp, 4.dp, 24.dp, 4.dp), Modifier.weight(1f))
+                }
+            } else Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                icon(RoundedCornerShape(4.dp), Modifier.fillMaxWidth())
+                colour(RoundedCornerShape(4.dp, 4.dp, 24.dp, 24.dp), Modifier.fillMaxWidth())
             }
         }
     }
@@ -467,7 +481,7 @@ private fun HalfRow(title: String, tag: String, shape: RoundedCornerShape, modif
         .padding(start = 16.dp, end = 12.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
         lead()
         Spacer(Modifier.width(8.dp))
-        Text(title, Modifier.weight(1f), style = AppType.titleMedium, color = s.onSurface)
+        Text(title, Modifier.weight(1f).padding(vertical = 8.dp), style = AppType.titleMedium, color = s.onSurface)
         Icon(Symbols.ChevronRight, null, tint = s.onSurfaceVariant)
     }
 }
@@ -577,7 +591,7 @@ private fun HalfValue(title: String, value: String, tag: String, shape: RoundedC
     Row(modifier.fillMaxHeight().clip(shape).background(rowColor).clickable(onClick = onClick)
         .semantics(mergeDescendants = true) { testTag = tag; contentDescription = "$title, $value" }
         .heightIn(min = 72.dp).padding(start = 16.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-        Column(Modifier.weight(1f)) {
+        Column(Modifier.weight(1f).padding(vertical = 14.dp)) {
             Text(title, style = AppType.titleMedium, color = s.onSurface, maxLines = 1)
             Text(value, style = AppType.bodyMedium, color = s.onSurfaceVariant)
         }

@@ -19,6 +19,7 @@ import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.SelectableDropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -103,7 +104,8 @@ fun AppMenuItem(
     tag: String? = null,
 ) {
     val label: @Composable () -> Unit = {
-        if (supporting == null) Text(text, style = AppType.bodyLarge)
+        // One line keeps the 12 it has in the 48 when it wraps (8 of the item's, 4 of its own).
+        if (supporting == null) Text(text, Modifier.padding(vertical = 4.dp), style = AppType.bodyLarge)
         else androidx.compose.foundation.layout.Column {
             Text(text, style = AppType.bodyLarge)
             Text(supporting, style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)

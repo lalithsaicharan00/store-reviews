@@ -84,7 +84,7 @@ fun HabitKeyCard(open: Boolean, onToggle: () -> Unit, color: HabitColor, modifie
                 },
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text("What the squares mean", Modifier.weight(1f), style = AppType.titleMedium, color = c.ink)
+            Text("What the squares mean", Modifier.weight(1f).padding(vertical = 4.dp), style = AppType.titleMedium, color = c.ink)
             Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = c.ink)
         }
         if (open) {
@@ -147,7 +147,7 @@ fun HeatKeyCard(open: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifi
             // Figma's What the squares mean (Habits & Tasks, 5.5.1): help, 16, the title in Title Medium, then the fold arrow.
             Icon(Symbols.Help, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(Modifier.width(16.dp))
-            Text("What the squares mean", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, color = c.ink)
+            Text("What the squares mean", Modifier.weight(1f).padding(vertical = 4.dp), style = MaterialTheme.typography.titleMedium, color = c.ink)
             Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         if (open) {

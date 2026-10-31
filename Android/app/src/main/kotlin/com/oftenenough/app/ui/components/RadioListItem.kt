@@ -1,6 +1,8 @@
 package com.oftenenough.app.ui.components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.RadioButton
@@ -30,10 +32,13 @@ fun RadioListItem(
     supporting: String? = null,
     tag: String? = null,
 ) {
+    // The words keep the room they have on one line however long they get, as [AppListItem]'s do: Material's 8 is the
+    // radio's, the rest of its 56 (or 72 with a line under) is theirs.
+    val words = if (supporting != null) 6.dp else 8.dp
     ListItem(
         modifier = modifier.selectable(selected, onClick = onClick, role = Role.RadioButton).semantics { tag?.let { testTag = it } },
-        supportingContent = supporting?.let { { Text(it) } },
+        supportingContent = supporting?.let { { Text(it, Modifier.padding(bottom = words)) } },
         leadingContent = { RadioButton(selected, null) },
         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-    ) { Text(label) }
+    ) { Text(label, Modifier.padding(top = words, bottom = if (supporting != null) 0.dp else words)) }
 }

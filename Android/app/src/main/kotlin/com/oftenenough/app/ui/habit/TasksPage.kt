@@ -308,7 +308,7 @@ internal fun TaskRow(
         ) {
             HabitIcon(task.symbol, task.color)
             Spacer(Modifier.width(16.dp))
-            Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp)) {
+            Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp).padding(vertical = 6.dp)) {
                 Text(task.name, style = AppType.titleMedium, color = if (done) c.secondary else c.ink)
                 for (l in lines) Text(l, style = AppType.bodyMedium, color = c.secondary)
             }

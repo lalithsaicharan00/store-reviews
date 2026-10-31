@@ -2,6 +2,7 @@ package com.oftenenough.app.ui.components
 
 import com.oftenenough.app.ui.theme.Symbols
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,9 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
 /**
@@ -33,16 +37,26 @@ import androidx.compose.ui.unit.dp
  * One setting of the design's: not chosen is **Secondary container** (Material's is Surface container, the page's own
  * colour, where the buttons would vanish); chosen is Material's Primary. With three or more, 12 at the sides instead
  * of Material's 16, so "✓ Weeks" fits a third of a 360 dp phone (Figma's 97 dp). A long label wraps to a second line
- * rather than being cut. TalkBack reads each as a radio button. [tag] names the group; each button is "[tag]-[index]".
+ * rather than being cut, and the ✓ gives way before a word would break. TalkBack reads each as a radio button. [tag] names the group; each button is "[tag]-[index]".
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun <T> AppConnectedButtons(options: List<Pair<T, String>>, selected: T, modifier: Modifier = Modifier, tag: String? = null, onPick: (T) -> Unit) {
     val s = MaterialTheme.colorScheme
     val colors = ToggleButtonDefaults.colors(containerColor = s.secondaryContainer, contentColor = s.onSecondaryContainer)
-    Row(modifier.fillMaxWidth().semantics { tag?.let { testTag = it } }, horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)) {
+    BoxWithConstraints(modifier.fillMaxWidth()) {
+    // Each button's room for its label: its share of the row, less its padding at the sides.
+    val side = if (options.size >= 3) 12.dp else ButtonDefaults.ContentPadding.calculateLeftPadding(LayoutDirection.Ltr)
+    val room = (maxWidth - ButtonGroupDefaults.ConnectedSpaceBetween * (options.size - 1)) / options.size - side * 2
+    val measure = rememberTextMeasurer()
+    val density = LocalDensity.current
+    Row(Modifier.fillMaxWidth().semantics { tag?.let { testTag = it } }, horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)) {
         options.forEachIndexed { i, (value, label) ->
             val on = value == selected
+            // The ✓ only while the label still fits beside it on one line: with larger text it gives way, and the chosen
+            // one shows by its fill, rather than a word ("One-time") breaking in two.
+            val width = with(density) { measure.measure(label, MaterialTheme.typography.labelLarge, maxLines = 1).size.width.toDp() }
+            val check = on && width + ToggleButtonDefaults.IconSize + ToggleButtonDefaults.IconSpacing <= room
             ToggleButton(
                 checked = on,
                 onCheckedChange = { onPick(value) },
@@ -55,9 +69,10 @@ fun <T> AppConnectedButtons(options: List<Pair<T, String>>, selected: T, modifie
                 colors = colors,
                 contentPadding = if (options.size >= 3) PaddingValues(horizontal = 12.dp, vertical = 8.dp) else ButtonDefaults.ContentPadding,
             ) {
-                if (on) { Icon(Symbols.Check, null, Modifier.size(ToggleButtonDefaults.IconSize)); Spacer(Modifier.size(ToggleButtonDefaults.IconSpacing)) }
+                if (check) { Icon(Symbols.Check, null, Modifier.size(ToggleButtonDefaults.IconSize)); Spacer(Modifier.size(ToggleButtonDefaults.IconSpacing)) }
                 Text(label, maxLines = 2, textAlign = TextAlign.Center)
             }
         }
+    }
     }
 }
