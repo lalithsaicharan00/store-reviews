@@ -390,7 +390,8 @@ private fun LazyListScope.stateCards(habit: Habit, store: HabitStore, today: Int
             if (replaced != null) CardNotice(Symbols.Archive, "Archived" + (on?.let { " $it" } ?: "") + ", when ${habit.name} changed to " + countedIn(replaced),
                 "Everything it recorded is kept here.", Modifier.pageItem(), action = "Open the new ${replaced.name}", onAction = { onOpen(replaced) },
                 actionTag = "habit-archived-action", tag = "habit-archived")
-            else CardNotice(Symbols.Archive, "Archived" + (on?.let { " $it" } ?: ""), "Everything it recorded is kept. Restore it to log again.",
+            // Figma's card (1020:4052, and Habits & Tasks 13): "Archived on 3 Sep", "Archived today".
+            else CardNotice(Symbols.Archive, "Archived" + (on?.let { if (it == "today") " today" else " on $it" } ?: ""), "Everything it recorded is kept. Restore it to log again.",
                 Modifier.pageItem(), action = "Restore", onAction = onRestore, actionTag = "habit-archived-action", tag = "habit-archived")
         }
         return

@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 12 |
+| habits & tasks | 269:148 | 35 | 13 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **169** |
+| **All** | | **290** | **170** |
 
 ## Bug log
 
@@ -245,6 +245,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 207. Habits & tasks 12 · Undo on "Water plants restored" archived it again as of today: it jumped to the top of the list as "Archived 31 Oct", and kept the pause the restore had put over its archived days. `HabitStore.undoRestore` puts it back exactly: archived 15 Sep, in its place, its pauses as they were.
 208. Habits & tasks 12 (every page) · most Undo snackbars were Material's Short, about 4 s (Archived, Completed, Habits & Tasks, Tasks, Arrange, Day details, Habit details, Make room); Figma: Undo "stays until it's tapped, another action is taken, or about 10 seconds", Long, as Today's already were. All are Long now.
 209. Habits & tasks 12 · Restore a 6th habit on the free plan with 16 habits said "16 of 5 free habits" (Plus ended with more than five: a refund); it now says "16 habits · Free has 5", the words of Unlimited habits under it.
+210. Habits & tasks 13 · deleting an archived habit said "Its history and notes are deleted too."; Figma: "Its 22 days of logs, notes and streaks go too. To keep them, leave it archived." (the days it has logs); with no logs, "It goes for good, with its notes. To keep it, leave it archived."
+211. Habits & tasks 13 (Habit details) · an archived habit's card said "Archived 15 Sep"; Figma's (here and on the details pages): "Archived on 3 Sep" ("Archived today" the same day).
+212. Habits & tasks 13 (every empty state) · the body ran the width of its title; every Figma empty state's body is 24 further in (280 on a 360 phone), so "When you archive a habit, it waits / here with its history." `EmptyState` does it for all (Today's Nothing planned had its own 280).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -475,7 +478,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | passed ↻ |
 | 11 | 292:2 | A card's ⋮: Delete | ⋮ Delete → Delete Stretch? → Delete; Undo → Cancel/Undo | passed ↻ (without Undo it's gone for good: not in Archived, which stays 3) |
 | 12 | 293:2 | Archived habits: open, Restore | Archived (3) → list → ⋮ Restore, Delete → Restore; Undo | passed ↻ (on Plus, as Figma's frames; on the free plan with more than five, Restore opens Restore a 6th habit) |
-| 13 | 293:849 | Archived habits: Delete, open one, the last one restored | ⋮ Delete → dialog → tap Push-ups: read-only details → empty | not started |
+| 13 | 293:849 | Archived habits: Delete, open one, the last one restored | ⋮ Delete → dialog → tap Push-ups: read-only details → empty | passed ↻ (Figma's frame adds "· Archived" to the goal line and ends the record at the archive day; the details pages' own component, 1020:4052, has neither, and the app follows it) |
 | 14 | 296:2 | Search habits and tasks (from Habits) | search → search view → “wa” → Water → ← keeps search | not started |
 | 15 | 296:602 | Search: no match (from Habits) | “yoga” → Add “yoga” → What do you want to do? → How track? → New habit “yoga” → Add · Show | not started |
 | 16 | 297:2 | +: a new habit | + → What do you want to do? → How track? → New habit Floss → Add · Show → Show scrolls | not started |

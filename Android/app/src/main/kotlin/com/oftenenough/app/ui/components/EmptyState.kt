@@ -23,7 +23,7 @@ import com.oftenenough.app.ui.theme.AppType
  *
  * The header, 16 apart: the [icon] (Material Symbols, 48) in a 112 dp cookie of Surface container highest, On surface;
  * the [title] in Headline Small Emphasized On surface over the [body] in Body Large On surface variant, 8 apart, both
- * centred and the full width (the body at most [bodyWidth] when a screen's design narrows it). The [actions] (Material's Small buttons, a Filled one first, then Tonal) sit centred
+ * centred, the title the full width and the body 24 in from it (at most [bodyWidth] when a screen's design narrows it). The [actions] (Material's Small buttons, a Filled one first, then Tonal) sit centred
  * under it, 8 apart.
  */
 @Composable
@@ -34,7 +34,8 @@ fun EmptyState(icon: ImageVector, title: String, body: String, modifier: Modifie
             CookieIcon(icon, size = 112.dp, container = s.surfaceContainerHighest, tint = s.onSurface, glyph = 48f / 112f)
             Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(title, Modifier.fillMaxWidth(), style = AppType.headlineSmallEmphasized, color = s.onSurface, textAlign = TextAlign.Center)
-                Text(body, Modifier.widthIn(max = bodyWidth).fillMaxWidth(), style = AppType.bodyLarge, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
+                // Every Figma empty state's body is 24 further in than its title (280 on a 360 phone; QA, Habits & tasks 13).
+                Text(body, Modifier.padding(horizontal = 24.dp).widthIn(max = bodyWidth).fillMaxWidth(), style = AppType.bodyLarge, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             }
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp), content = actions)

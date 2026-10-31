@@ -145,7 +145,14 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
         AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
     }
     deleting?.let { h ->
-        AppDialog("Delete ${h.name}?", "Its history and notes are deleted too.", "Delete", { deleting = null; delete(h) }, { deleting = null },
+        AppDialog("Delete ${h.name}?", if (tasks) "Its history and notes are deleted too." else archivedDeleteWords(store, h), "Delete", { deleting = null; delete(h) }, { deleting = null },
             destructive = true, confirmTag = "delete-confirm")
     }
+}
+
+/** Delete <archived habit>? (Figma 1125:202025): what goes, in days of logs, and that leaving it archived keeps it. */
+private fun archivedDeleteWords(store: HabitStore, h: Habit): String {
+    val days = store.entries(h.id).mapTo(HashSet()) { it.day }.size
+    return if (days == 0) "It goes for good, with its notes. To keep it, leave it archived."
+    else "Its $days ${if (days == 1) "day" else "days"} of logs, notes and streaks go too. To keep them, leave it archived."
 }
