@@ -836,10 +836,11 @@ class HabitStore(
         goalWatches.remove(habit.id)?.cancel()
         val start = timerFrom.remove(habit.id) ?: timers.getValue(habit.id)
         val saved = entry(TimerStop.entryId(habit.id, start))
-        val minutes = maxOf(0L, end - start) / 60_000.0
+        // Whole seconds: a time is never kept or shown with a fraction of a second (the user, 31 Oct 2026).
+        val minutes = (maxOf(0L, end - start) / 1000) / 60.0
         val before = milestones.before(habit, day)
         val entry = if (minutes >= 1.0 / 60) Entry(
-            id = TimerStop.entryId(habit.id, start), habitId = habit.id, day = day, value = minutes,
+            id = TimerStop.entryId(habit.id, start), habitId = habit.id, day = day, value = minutes, createdAt = end,
             slot = timerSlots[habit.id], source = source,
         ) else null
         timers = timers - habit.id
@@ -887,8 +888,8 @@ class HabitStore(
         if (timerFrom.containsKey(habitId) || rules.progress(habit, day, start) >= rules.goal(ruled)) return
         if (rules.progress(habit, day, now) + 1e-9 < rules.goal(ruled)) return watchGoal(habit)
         val before = milestones.before(habit, day)
-        val entry = Entry(id = TimerStop.entryId(habitId, start), habitId = habitId, day = day, value = (now - start) / 60_000.0,
-            slot = timerSlots[habitId], source = EntrySource.TIMER)
+        val entry = Entry(id = TimerStop.entryId(habitId, start), habitId = habitId, day = day, value = ((now - start) / 1000) / 60.0,
+            createdAt = now, slot = timerSlots[habitId], source = EntrySource.TIMER)
         timerFrom[habitId] = start
         timers = timers + (habitId to now)
         settingRows[Keys.TIMER + habitId] = now.toString() + (timerSlots[habitId]?.let { "|$it" } ?: "")

@@ -198,6 +198,10 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Also (Day details 10, [Figma 901:13800](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=901-13800)):**
   a moved log says "Added by hand at 1:10 PM. Moved from today at 2:08 PM." The move is built (Edit log's Date; one
   change that keeps the log's ID); where it came from and when need the same kind of saved field (`moved_from`, `changed_at`).
+- **Also (Day details 15, [Figma 906:90374](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=906-90374)):**
+  "From the timer. Started 2:09 PM. Changed at 2:15 PM." After an edit Figma keeps the timer's own start; the app works
+  "Started" out from the finish time and the length, so making it longer moves the start earlier. Keeping it needs
+  the start saved too (`started_at`), or "Started" left out once a timer's log is changed.
 - **Question:** build it? It's a new saved field on every log (`changed_at`, and `moved_from` for a move): a database upgrade tested from every past
   version (D2), the backup file's `data.json` on both phones (D5), and the iPhone app the same.
 - **My recommendation:** yes, with the next database upgrade, so a changed log says so wherever it's read (it helps when

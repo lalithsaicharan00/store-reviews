@@ -182,7 +182,7 @@ fun DurationCard(draft: ValueDraft, focus: FocusRequester?, withSeconds: Boolean
                         field = v.copy(text = clean, selection = TextRange(minOf(v.selection.end, clean.length))); set(clean)
                     },
                         textStyle = AppType.displayMediumEmphasized.copy(color = if (focused) s.onSurface else s.onSurfaceVariant, textAlign = TextAlign.Center),
-                        keyboardOptions = KeyboardOptions(keyboardType = if (label == "Seconds") KeyboardType.Decimal else KeyboardType.Number,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,
                             imeAction = if (i < fields.lastIndex) ImeAction.Next else ImeAction.Done),
                         singleLine = true, cursorBrush = SolidColor(s.onSurface),
                         modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused }
@@ -361,7 +361,7 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
     val focus = remember { FocusRequester() }
     val today = store.today()
     // A timer's log keeps its seconds (Figma 2.5); one typed by hand has whole minutes.
-    val withSeconds = ruled.kind == HabitKind.Duration && Math.abs(entry.value - Math.rint(entry.value)) > 1e-6
+    val withSeconds = ruled.kind == HabitKind.Duration && kotlin.math.floor(entry.value * 60 + 1e-6).toLong() % 60 != 0L
     val zone = zoneName(entry.timeZone)
     val first = if (slip) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
     val range = minOf(first, entry.day, today)..today
@@ -408,7 +408,7 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
         }
         if (editing) {
             BottomAction("Save", true, tag = "record-save") {
-                val v = if (slip) 1.0 else draft.value ?: return@BottomAction
+                val v = if (slip) 1.0 else if (!draft.differs) entry.value else draft.value ?: return@BottomAction
                 val moved = day != entry.day
                 store.editEntry(entry.id, v, time, day)
                 editing = false

@@ -96,9 +96,10 @@ class ValueDraft(val kind: HabitKind, initial: Double? = null) {
 
     init {
         if (kind == HabitKind.Duration && initial != null) {
-            val totalSeconds = Math.rint(initial * 6000) / 100
-            val whole = (totalSeconds / 60).toInt()
-            hours = (whole / 60).toString(); minutes = (whole % 60).toString(); seconds = GoalNumber.text(totalSeconds - whole * 60)
+            // Whole seconds, as Figma shows a timer's log ("2 min 42 s"); an unchanged draft saves the log's own value.
+            val totalSeconds = Math.floor(initial * 60 + 1e-6).toLong()
+            val whole = totalSeconds / 60
+            hours = (whole / 60).toString(); minutes = (whole % 60).toString(); seconds = (totalSeconds % 60).toString()
         }
         opened = listOf(amount, hours, minutes, seconds)
     }
@@ -114,8 +115,9 @@ class ValueDraft(val kind: HabitKind, initial: Double? = null) {
             val h = GoalNumber.parse(part(hours), 0) ?: return null to "Hours are a whole number."
             val m = GoalNumber.parse(part(minutes), 0) ?: return null to "Minutes are a whole number."
             if (m >= 60) return null to "Minutes go up to 59."
-            val s = GoalNumber.parse(part(seconds)) ?: return null to "Seconds take up to 2 decimal places."
-            if (s >= 60) return null to "Seconds go up to 59.99."
+            // Seconds are whole, as everywhere a time is shown (the user, 31 Oct 2026: never a fraction of a second).
+            val s = GoalNumber.parse(part(seconds), 0) ?: return null to "Seconds are a whole number."
+            if (s >= 60) return null to "Seconds go up to 59."
             val v = h * 60 + m + s / 60
             if (v <= 0) return null to "Enter more than zero."
             return if (v <= GOAL_MAXIMUM) v to null else null to "That's longer than a log can hold."

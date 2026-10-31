@@ -567,6 +567,7 @@ private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String,
     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
     override fun pause(habit: Habit) = pause(habit)
     override fun resumed(habit: Habit, undo: () -> Unit) = say("${habit.name} resumed", undo)
+    override fun timer(habit: Habit) { if (nav.currentDestination?.route?.startsWith("timer") != true) nav.navigate(Routes.timer(habit.id)) }
 }
 
 /**

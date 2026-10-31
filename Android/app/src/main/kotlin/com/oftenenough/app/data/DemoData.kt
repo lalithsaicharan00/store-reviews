@@ -159,7 +159,9 @@ object DemoData {
             log(smoking, store.today(lastSlip), 1.0, at = lastSlip)
             log(smoking, store.today(earlier), 1.0, at = earlier)
         }
-        log(stretch, today, 4.0, at = now)
+        // Figma's Day details: Stretch's 4 min at 7:30 AM (never later than now).
+        val morning = (store.rules.dayStart(today) + (7 * 60 + 30) * 60_000L).coerceAtMost(now)
+        log(stretch, today, 4.0, at = morning, source = EntrySource.MANUAL)
         log(skincare, today, 1.0, skincare.steps[0].id, at = now)
         // Afternoon and Evening each have one done already: 3 left and 2 left, as Figma's Today.
         log(vitamins, today, 1.0, at = now)
@@ -175,7 +177,7 @@ object DemoData {
         for ((name, amount) in todays) {
             val habit = habits.firstOrNull { it.name == name } ?: continue
             entries.removeAll { it.habitId == habit.id && it.day == today && it.stepId == null }
-            if (habit.kind == HabitKind.Duration) { if (amount > 0) log(habit, today, amount.toDouble(), at = now); continue }
+            if (habit.kind == HabitKind.Duration) { if (amount > 0) log(habit, today, amount.toDouble(), at = morning, source = EntrySource.MANUAL); continue }
             val pieces = (if (amount % 2 == 1) listOf(1) else emptyList()) + List(amount / 2) { 2 }
             pieces.forEachIndexed { i, n ->
                 val at = (store.rules.dayStart(today) + times[minOf(i, times.lastIndex)] * 60_000L).coerceAtMost(now - (pieces.size - i) * 60_000L)

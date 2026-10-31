@@ -99,7 +99,11 @@ fun Entry.description(habit: Habit): String {
     if (stepId != null) return habit.steps.firstOrNull { it.id == stepId }?.name ?: "Checklist step"
     return when (val k = habit.kind) {
         is HabitKind.Amount -> HabitCopy.amount(value, k.unit)
-        HabitKind.Duration -> if (value < 1) "${HabitCopy.number(kotlin.math.floor(value * 60))} sec" else Format.minutes(kotlin.math.floor(value))
+        // A timer's log keeps its seconds (Figma's Day details: "2 min 42 s", "5 s"); one typed by hand has none.
+        HabitKind.Duration -> {
+            val seconds = kotlin.math.floor(value * 60 + 1e-6).toLong()
+            if (seconds < 60) "$seconds s" else Format.minutes((seconds / 60).toDouble()) + if (seconds % 60 > 0) " ${seconds % 60} s" else ""
+        }
         HabitKind.Quit -> "Slip"
         HabitKind.Check -> if (value == 1.0) "Check" else HabitCopy.amount(value, habit.checkUnit ?: "checks")
         HabitKind.Task -> "Done"
@@ -300,11 +304,14 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         (if (timed) floor(saved) else saved) >= goal -> "Limit reached"
                         else -> "${text(goal - saved)} left"
                     }, running)
+                    // A time with seconds (a timer's) keeps them: "6:42 of 10 min" (Figma 906:87291).
+                    val seconds = kotlin.math.floor(saved * 60 + 1e-6).toLong() % 60 != 0L
                     val title = if (timed) {
-                        if (goal < 60 && saved < 60) "${kotlin.math.floor(saved).toInt()} of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"
+                        if (goal < 60 && saved < 60) (if (seconds) Format.clock(saved) else "${kotlin.math.floor(saved).toInt()}") + " of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"
                     } else if (unit.trim() in HabitCopy.currencies) "${HabitCopy.amount(saved, unit)} of ${HabitCopy.amount(goal, unit)}"
                     else "${HabitCopy.number(saved)} of ${HabitCopy.amount(goal, unit)}"
-                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (isToday) "${text(goal - (if (timed) kotlin.math.floor(saved) else saved))} to go" else "For $shortDay"
+                    // What's left in whole minutes, never under 1 while any is left (6:42 of 10: "3 min to go").
+                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (isToday) "${text(if (timed) maxOf(1.0, kotlin.math.floor(goal - saved)) else goal - saved)} to go" else "For $shortDay"
                     val f = r.frequency
                     if (f is Frequency.Flexible) {
                         val count = rules.flexibleProgress(habit, day)

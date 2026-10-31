@@ -111,6 +111,8 @@ interface DayNav {
     fun resumed(habit: Habit, undo: () -> Unit) {}
     /** The habit's page, open at All milestones (the landmark pop-up's button, Figma 14.1). */
     fun allMilestones(habit: Habit) = habitPage(habit)
+    /** The full-screen timer, just started (Day details 13: the same timer as ▶ on Today); ⌄ comes back here. */
+    fun timer(habit: Habit) {}
 }
 
 /**
@@ -334,10 +336,13 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         val cardName = status.label ?: when (ruled.frequency) { is Frequency.PerWeek -> "This week"; is Frequency.PerMonth -> "This month"; is Frequency.PerYear -> "This year"; else -> "This day" }
         Text(cardName, style = AppType.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(4.dp))
+        // While it runs, the day's whole time ticks in the count (6:42 of 10 min), and the line says Running (Figma 906:86998).
         val detail = if (running && status.running != null) {
-            "Timer running · " + Format.clock((tick.value - status.running) / 60_000.0) + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")
+            "Running" + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")
         } else status.detail
-        StatusLine(status.title, detail, status.words)
+        val title = if (running && status.running != null)
+            Format.clock(store.rules.progress(habit, day, tick.value)) + " of " + Format.minutes(store.rules.goal(ruled)) else status.title
+        StatusLine(title, detail, status.words)
         if (showsBar) {
             val goal = maxOf(store.rules.goal(ruled), 1e-9)
             val progress = if (future) 0.0 else if (running) store.rules.progress(habit, day, tick.value) else store.rules.progress(habit, day)
@@ -401,7 +406,7 @@ private fun DayButton(a: DayAction, modifier: Modifier) =
 @Composable
 private fun StatusLine(title: String, detail: String?, words: Boolean = false) {
     val c = appColors
-    val match = if (words) null else Regex("^([$€£₹]?\\d[\\d,.]*)\\s*(.*)$").find(title)
+    val match = if (words) null else Regex("^([$€£₹]?\\d[\\d,.:]*)\\s*(.*)$").find(title)
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
     BoxWithConstraints(Modifier.fillMaxWidth()) {
@@ -509,8 +514,9 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
         }
         HabitKind.Duration -> if (day != today) listOf(DayAction("Log time", ask, !skipped, tag = "day-add-entry", run = manual))
         else listOf(
-            if (store.timers.containsKey(habit.id)) DayAction("Stop and save", ask, !skipped, tag = "day-stop-timer") { store.stopTimer(habit, day) }
-            else DayAction("Start timer", ask, !skipped, tag = "day-start-timer") { store.toggleTimer(habit) },
+            // Pause saves the time as one log, with its seconds (Figma 906:87291); Start timer opens the full-screen timer.
+            if (store.timers.containsKey(habit.id)) DayAction("Pause", ask, !skipped, tag = "day-stop-timer") { store.stopTimer(habit, day) }
+            else DayAction("Start timer", ask, !skipped, tag = "day-start-timer") { store.toggleTimer(habit); nav.timer(habit) },
             // Figma's Day details for a time habit: "Start timer | Log time" (Day details flows 13, 23).
             DayAction("Log time", enabled = !skipped, tag = "day-add-entry", run = manual),
         )
