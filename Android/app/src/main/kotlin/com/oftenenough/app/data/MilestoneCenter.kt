@@ -420,6 +420,9 @@ class MilestoneCenter(private val store: HabitStore) {
             limit -> "$k ${unit.word(k)} within max"
             else -> milestoneRowTitle(k, unit)
         }
+        // A week's or month's goal met N times in a row: "26 weeks of goals met" (Figma 876:73789, 877:74702); days stay
+        // "in a row", and the next one's card keeps "52 weeks in a row".
+        fun runTitle(k: Int) = if (!quit && !limit && (unit == StreakUnit.WEEKS || unit == StreakUnit.MONTHS)) "$k ${unit.word(k)} of goals met" else rowTitle(k)
         fun totalTitle(v: Double): String = when {
             quit -> "${Format.amount(v)} clean days in total"
             limit -> "${Format.amount(v)} ${if (v == 1.0) "day" else "days"} within max in total"
@@ -431,7 +434,7 @@ class MilestoneCenter(private val store: HabitStore) {
         when (s.track) {
             MilestoneTrack.IN_A_ROW -> {
                 number = Format.amount(n)
-                title = rowTitle(n.toInt()) + if (s.again || reachedBefore(s, habit, quit)) " again" else ""
+                title = runTitle(n.toInt()) + if (s.again || reachedBefore(s, habit, quit)) " again" else ""
                 bucket.nextRow(n.toInt())?.let { k ->
                     next = MilestoneAhead("$k", rowTitle(k), "Next · ${k - n.toInt()} to go · now ${n.toInt()}", (n / k).toFloat())
                 }
@@ -458,7 +461,7 @@ class MilestoneCenter(private val store: HabitStore) {
         val band = title
         val popupTitle = when {
             s.first -> "Your first milestone"
-            s.again || reachedBefore(s, habit, quit) -> rowTitle(n.toInt()) + ", again"
+            s.again || reachedBefore(s, habit, quit) -> runTitle(n.toInt()) + ", again"
             else -> title
         }
         val subtitle = when {
@@ -469,10 +472,34 @@ class MilestoneCenter(private val store: HabitStore) {
                 val met = store.rules.runs(habit, s.day).sumOf { it.length }
                 "Since ${fullDate(first)} · goal met $met ${if (met == 1) "time" else "times"}"
             }
-            else -> "${habit.name} · ${if (s.cause == MilestoneCause.YESTERDAY) "reached yesterday" else "reached today"}"
+            else -> "${habit.name} · " + (landmarkWords(s, habit, bucket, quit || limit)
+                ?: if (s.cause == MilestoneCause.YESTERDAY) "reached yesterday" else "reached today")
         }
         val second = if (s.track == MilestoneTrack.ANNIVERSARY) "See the year" else "All milestones"
         return MilestoneWords(number, title, band, popupTitle, subtitle, next, "${habit.name}: $title, $whenWords", second)
+    }
+
+    /**
+     * What a pop-up's length means, under its title (Figma's pop-ups): a year of days "every day for a year", half a year
+     * "every day for half a year"; weeks "half a year, week after week", "a year, week after week"; months "every month
+     * since April". Null for the rest (a month of days: "reached today").
+     */
+    private fun landmarkWords(s: MilestoneShown, habit: Habit, bucket: MilestoneBucket, quitOrLimit: Boolean): String? {
+        if (s.track != MilestoneTrack.IN_A_ROW || quitOrLimit || !bucket.isLandmark(s.value.toInt())) return null
+        val n = s.value.toInt()
+        fun years(y: Int) = if (y == 1) "a year" else "$y years"
+        return when (bucket) {
+            MilestoneBucket.DAYS -> when { n == 180 -> "every day for half a year"; n % 365 == 0 -> "every day for ${years(n / 365)}"; else -> null }
+            MilestoneBucket.WEEKS -> when { n == 26 -> "half a year, week after week"; n % 52 == 0 -> "${years(n / 52)}, week after week"; else -> null }
+            MilestoneBucket.MONTHS -> {
+                val start = store.rules.runs(habit, s.day).lastOrNull { it.isCurrent }?.start ?: return null
+                val from = java.time.LocalDate.ofEpochDay(start.toLong())
+                val today = java.time.LocalDate.ofEpochDay(s.day.toLong())
+                val month = from.month.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH)
+                "every month since " + if (from.year == today.year) month else "$month ${from.year}"
+            }
+            MilestoneBucket.YEARS -> null
+        }
     }
 
     /**

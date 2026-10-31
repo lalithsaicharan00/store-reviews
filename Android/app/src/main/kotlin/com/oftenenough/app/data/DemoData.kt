@@ -130,7 +130,9 @@ object DemoData {
         val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(streaks["Social media"] ?: 7))
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.MORNING, 10.0)
         // Figma's Today (700:3219, 31 Oct 2026): Morning is Meds, Stretch, Skincare, with Meds still to do (57 days).
-        val habits = listOf(meds, stretch, skincare, walk, study, refill, vitamins, bed, night, journal, read, call, water, parcel, smoking, coffee, social, meditate)
+        // A test launch's `streak` "Deep clean=5": a once-a-month habit with that many months met (Figma 110:2353).
+        val clean = streaks["Deep clean"]?.let { h("Deep clean", "house.fill", HabitColor.RED, HabitKind.Check, frequency = Frequency.PerMonth(1)) }
+        val habits = listOfNotNull(meds, stretch, skincare, walk, study, refill, vitamins, bed, night, journal, read, call, water, parcel, clean, smoking, coffee, social, meditate)
         val entries = ArrayList<Entry>()
         fun log(habit: Habit, day: Int, value: Double, stepId: String? = null, at: Long? = null) =
             entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now)))
@@ -146,6 +148,8 @@ object DemoData {
         val week = store.rules.period(PeriodKind.WEEK, today).first
         for (w in 1..(streaks[call.name] ?: 4)) for (i in 0 until 3) log(call, week - 7 * w + i, 1.0)
         for (d in 1..(streaks[social.name] ?: 7)) log(social, today - d, 10.0)
+        if (clean != null) for (m in 1..streaks.getValue("Deep clean"))
+            log(clean, java.time.LocalDate.ofEpochDay(today.toLong()).minusMonths(m.toLong()).withDayOfMonth(10).toEpochDay().toInt(), 1.0)
         if ("Smoking" !in streaks) {
             log(smoking, store.today(lastSlip), 1.0, at = lastSlip)
             log(smoking, store.today(earlier), 1.0, at = earlier)

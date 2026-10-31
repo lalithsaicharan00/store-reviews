@@ -80,6 +80,8 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   + 2 left of 13) make 3/13; past days (Tue 13 Oct, flow 32) reuse today's streaks (Meds 🔥 57 eighteen days ago).
   Social media shows 🔥 7 with no band, though by Figma's own rule (R.10) a limit whose 7th day within max closed
   yesterday shows "7 days within max" today, as the app does.
+  Deep clean's 6 months (flow 68) say "since April" where six months met up to October began in May, and its next
+  card says 12 months where the decided ladder (`MilestoneRule`: 2, 3, 6, 9, 12) has 9 next; the app follows the rule.
   Pick up parcel was on today in flows 10–11 and tomorrow in flow 31: **settled by A86** (a task is on the day it's
   planned for, "Task · Once", never "due"; the demo's parcel is planned for today).
 - **What I did for now:** the rule (no 🔥 after a missed yesterday: 56 on yesterday, 57 once it's ticked); the day bar
