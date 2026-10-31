@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 16 |
+| today | 54:5580 | 83 | 17 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **26** |
+| **All** | | **289** | **27** |
 
 ## Bug log
 
@@ -155,7 +155,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | passed |
 | 15 | 137:2 | Pause a habit until a date | Today → menu → Pause sheet (1 week) → Until a date…: date picker → 30 → OK: Back on Fri, 30 Oct → Pause | passed |
 | 16 | 122:1300 | Resume a habit | Paused card → Day details, Paused → Resume habit; snackbar Undo | passed |
-| 17 | 84:2 | Undo and Note follow the latest log | Water 6 of 8 → + on Water: buttons on Water → ✓ Call family: buttons move → Start a routine: buttons go | not started |
+| 17 | 84:2 | Undo and Note follow the latest log | Water 6 of 8 → + on Water: buttons on Water → ✓ Call family: buttons move → Start a routine: buttons go | passed |
 | 18 | 139:5 | Undo clears the buttons | Water 6 of 8 → + → ✓ Call family → Undo: check taken back, buttons gone | not started |
 | 19 | 85:2 | Skip a day | Meds not done → Day details → Skip today → Swipe down: Meds skipped | not started |
 | 20 | 85:780 | Skip by swiping | Meds → swipe left: Skip → past halfway: dark, Skip today, tick → let go: skipped | not started |
