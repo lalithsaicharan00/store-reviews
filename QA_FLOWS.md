@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 21 |
+| habits & tasks | 269:148 | 35 | 22 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **178** |
+| **All** | | **290** | **179** |
 
 ## Bug log
 
@@ -507,7 +507,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 19 | 303:2 | A long name, and Font size 200% | usual → long name → 200 % | passed ↻ (at 200 % the selected Week drops its ✓, as the Rulebook's text rule has a connected button's ✓ step aside; Font size put back to 100 %) |
 | 20 | 305:2 | The Tasks tab: One-time | Tasks → One-time → end: No date, Completed, Archived | passed ↻ |
 | 21 | 306:2 | The Tasks tab: Repeating | Repeating → by how often → end | passed ↻ ("Next Mon, 2 Nov" keeps the comma of the Tasks tab's other dates: Figma's Repeating rows go without, D-56) |
-| 22 | 308:2 | A task's ⋮: Move to another day | ⋮ Move… → picker → OK; Undo → under Fri 30 Oct | not started |
+| 22 | 308:2 | A task's ⋮: Move to another day | ⋮ Move… → picker → OK; Undo → under Fri 30 Oct | passed (30 Nov, a month on: under November; the menu hugs its words, 232 to Figma's 244, with the same right edge) |
 | 23 | 309:2 | A task's ⋮: Edit task and Duplicate | Edit task → Save → Duplicate → New task copy → Add · Show | not started |
 | 24 | 309:761 | A task's ⋮: Archive and Delete | Archive; Undo → Delete dialog → Delete; Undo | not started |
 | 25 | 310:2 | A repeating task's ⋮: Skip this time | ⋮ Skip this time → next Wed 28 Oct; Undo → Today unchanged | not started |
