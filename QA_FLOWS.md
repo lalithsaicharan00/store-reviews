@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 75 |
+| today | 54:5580 | 84 | 77 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **85** |
+| **All** | | **290** | **87** |
 
 ## Bug log
 
@@ -155,6 +155,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
 ³ Today 40: each maker's lead, steps, paths and icons compared word for word with Figma's six pages (KeepRemindersComing.maker, ReminderWordsTest); the Pixel page run on the emulator. The other makers' pages open their own settings screens and need real phones (A40, Figma's note).
 ⁴ Today 43: the notice (forced) matches Figma and Open Google Play opens Play; a payment that Play holds and then finishes can't be made on this emulator (see the Play purchase question). The notice reads PlayPlusStore.pending, which is observable state, so it goes when Play finishes.
+⁵ Today 75: a widget can't reach a test launch's in-memory data (its own folder, the shifted clock), so the test launch's `away` extra saves the one widget tap the widget would (`HabitStore.saveWidgetTap`) before Today opens. Water 8/8, 🔥 30, the band played once, no Undo · Note, nothing opened by itself.
 
 ## Open questions for the user
 
@@ -257,8 +258,8 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 72 | 111:1426 | Pop-up: from a bar's See | Meds → ✓ 25 times: bar → See: pop-up → Close | passed |
 | 73 | 111:2209 | Pop-up: back to your best | Meds 13 (best 14) → ✓ 14: bar → band: pop-up "again" → Close | passed |
 | 74 | 111:2992 | Pop-up: quit, back after a slip | Smoking's band → pop-up → Close | passed |
-| 75 | 112:2 | Reached away: from a widget | Open app: Water finished on widget → band plays once | not started |
-| 76 | 112:360 | Reached away: in a folded section | Afternoon folded → open: band plays once | not started |
+| 75 | 112:2 | Reached away: from a widget | Open app: Water finished on widget → band plays once | passed ⁵ |
+| 76 | 112:360 | Reached away: in a folded section | Afternoon folded → open: band plays once | passed |
 | 77 | 112:757 | Reached away: the milestone notification | Lock screen notification → tap: Today with pop-up → Close | not started |
 | 78 | 166:2 | Reached away: notification, phone in use | heads-up notification → tap: pop-up → Close | not started |
 | 79 | 114:2 | Rule: a pop-up, a bar, then just the row | Meds 29, Stretch 2, Skincare 6 → pop-up → bar → just the row | not started |

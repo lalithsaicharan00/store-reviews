@@ -159,6 +159,13 @@ class MainActivity : ComponentActivity() {
                 DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits",
                     tasks = demo == "tasks", streaks = named(TestLaunch.STREAK), todays = named(TestLaunch.TODAY), runsBefore = named(TestLaunch.EARLIER))
                 if (intent.getStringExtra(TestLaunch.MOMENTS) == "used") store.milestones.useUpToday()
+                // A widget's tap, saved through the widget's own path (Figma 112:2: reached away), after the demo is in.
+                intent.getStringExtra(TestLaunch.AWAY)?.let { name ->
+                    store.habits.firstOrNull { it.name == name }?.let { h ->
+                        val kind = if (h.kind == com.oftenenough.app.data.HabitKind.Check) "check" else "add"
+                        store.saveWidgetTap(h.id, store.today(), kind, java.util.UUID.randomUUID().toString(), store.clock())
+                    }
+                }
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
@@ -191,4 +198,6 @@ object TestLaunch {
     const val EARLIER = "earlier"
     /** "used": today's milestone pop-up and bars are used up, so a milestone gets just the row (Figma 107:2). */
     const val MOMENTS = "moments"
+    /** A habit's name: one widget tap for it (✓ or +), saved as a widget saves it, as if made away from the app. */
+    const val AWAY = "away"
 }
