@@ -103,7 +103,7 @@ private fun glyph(icon: ImageVector): Path =
 
 private val check by lazy { glyph(Symbols.Check) }
 private val close by lazy { glyph(Symbols.Close) }
-private val pause by lazy { glyph(Symbols.Pause) }
+private val pause by lazy { glyph(Symbols.Filled.Pause) } // filled, as Figma's cells (the user, 1 Nov 2026)
 private val redo by lazy { glyph(Symbols.Redo) }
 
 /**
