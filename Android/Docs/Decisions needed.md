@@ -100,6 +100,20 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** (a) for the touch targets (Android's accessibility minimum); for the line height, try trimming
   only if you want Figma's exact spacing, since it moves every text in the app by a dp or two.
 
+### D-48. A running timer that crosses its goal: what's saved at that moment?
+
+- **Where:** Today flow 58 ([Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=859-48492)), the timer screen, the routine player; `data/HabitStore.kt` (`toggleTimer`, `stopTimer`), `data/MilestoneCenter.kt`.
+- **What Figma shows / what the app did:** as the clock crosses 10:00 with no tap, the ⏸ fills, the chime plays, 🔥 goes
+  29 → 30 and the band rises. The app fills the ⏸ only: nothing is saved while a timer runs, so the streak, the chime
+  and the milestone wait for the timer to stop.
+- **What I did for now:** nothing; flow 58 is blocked on this.
+- **Question:** at the crossing, (a) save the time so far as the session's log and keep counting; when the timer stops
+  that same log grows to the full time (one log; the streak, chime and band come at the crossing; the goal is safe even
+  if the phone dies); (b) count the running time without saving anything until the timer stops (one log, but a phone
+  that dies loses it, and every rule must learn to count a running timer); (c) keep it as it is: they come when the
+  timer stops.
+- **My recommendation:** (a).
+
 ### D-41. Go to a day: 525 dp tall against Figma's 516
 
 - **Where:** Go to a day ([Figma](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=705-1025)); `ui/components/DatePickerDialog.kt`.

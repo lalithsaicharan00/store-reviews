@@ -1017,7 +1017,9 @@ private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore
     }
     val target = if (byDay) remember(ruled, rev) { store.rules.dayGoal(ruled) } else goal
     val fraction = (progress / maxOf(target, 0.001)).toFloat().coerceIn(0f, 1f)
-    val bar = modifier.fillMaxWidth().padding(horizontal = inset).height(16.dp)
+    // Material's 10 dp line, as Figma's atom (902:14527) and the player's frames: the wave grows with its height, so 16
+    // drew it taller than the design's.
+    val bar = modifier.fillMaxWidth().padding(horizontal = inset).height(10.dp)
         .semantics { progressBarRangeInfo = ProgressBarRangeInfo(fraction, 0f..1f); testTag = "player-bar" }
     if (neutral) {
         Box(bar, contentAlignment = Alignment.Center) {

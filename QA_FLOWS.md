@@ -137,6 +137,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 99. Delete a time of day · its habits kept their old places among Anytime's (Meds, Stretch and Skincare before Read); Figma: at the end of Anytime, in their order. `deleteSection` puts them there once the move is saved.
 100. Delete a time of day · back on Edit Today the list stayed at its top; Figma's frame 5 shows Anytime, where the habits went. Edit Today now scrolls to Anytime after a delete.
 101. Milestone band (Today rows, the player's ribbon) · "30 days in a row · reached today" ("· yesterday" for a quit or limit); Figma's rule 156:47: the band names the milestone only, in the pop-up's words, and no Figma band or ribbon has a suffix. The band is the title now ("7 days in a row again" for a repeat); the pop-up keeps "Meds · reached today". Test launches gained `streak` ("Meds=29") and `moments=used` to set up the milestone flows.
+102. Timer screen and routine player · the wavy line drew a taller wave than Figma's: the player gave Material's line 16 dp and its wave grows with its height; Figma's atom (902:14527) and frames are 10 dp. Now 10. (The timer frame's own hand-drawn wave is tighter than the atom; the app follows the atom, Material's.)
+103. A running row's line · "9:24 of 10 min" had wide spaces: tabular figures on the whole line widen Google Sans Flex's spaces; Figma's line is plain Body Medium. Only the clock takes them now (`HabitRowLine`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -145,7 +147,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 
 ## Open questions for the user
 
-Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-47, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
+Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
 
 ---
 
@@ -227,7 +229,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | passed |
 | 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | passed |
 | 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | passed (Water sits in Anytime in the demo, Morning in Figma's frames; also checked through Add log: the band rises once the sheet has closed) |
-| 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | not started |
+| 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | blocked: 58.1–58.3 pass; at 10:00 the ⏸ fills but 🔥, the chime and the band wait for the timer to stop (D-48) |
 | 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | not started |
 | 60 | 107:2429 | Milestone on the row: quit, no tap | Open the app: 30 days clean → Quitting on screen: band rises once | not started |
 | 61 | 108:2 | Milestone bar: one milestone | Meds 2 → ✓ 3: bar above the day bar → after 5 s/touch: bar goes, band | not started |
