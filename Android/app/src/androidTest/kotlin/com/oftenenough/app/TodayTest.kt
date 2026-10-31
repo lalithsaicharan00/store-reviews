@@ -175,7 +175,7 @@ class TodayTest {
         launch(demo = "today")
         showRow("Call family")
         val before = line("Call family")
-        tapLabel("Add 1 to Call family")
+        tapLabel("Add a check to Call family")
         waitFor(hasTestTag("undo-Call family"), "Call family's Undo")
         assertNotEquals("Call family's line after ✓; on screen: ${screen()}", before, line("Call family"))
         tapTag("undo-Call family")

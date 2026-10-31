@@ -259,7 +259,7 @@ private fun RowButton(
         HabitKind.Checklist -> AppFilledIconButton(if (stepsOpen) Symbols.ExpandLess else Symbols.ExpandMore, if (stepsOpen) "Hide ${habit.name} steps" else "Show ${habit.name} steps", onToggleSteps, done = model.done, color = habit.color, enabled = on)
         HabitKind.Check -> if (slot == null && model.countsUp) {
             // Ticked several times a day, or N a week: still a ✓; each tap adds one and never takes one back (U14).
-            AppFilledIconButton(Symbols.Check, "Add 1 to ${habit.name}", { log { store.addProgress(habit, 1.0, day) } }, done = model.done, color = habit.color, enabled = on)
+            AppFilledIconButton(Symbols.Check, "Add a check to ${habit.name}", { log { store.addProgress(habit, 1.0, day) } }, done = model.done, color = habit.color, enabled = on)
         } else {
             AppFilledIconButton(Symbols.Check, if (model.ticked) "Undo ${habit.name}" else "Mark ${habit.name} done", { log { if (slot != null) store.toggleSlot(habit, slot, day) else store.toggleCheck(habit, day) } }, done = model.ticked, color = habit.color, enabled = on)
         }

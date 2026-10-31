@@ -62,8 +62,9 @@ enum class ButtonSize(val height: Dp) {
     Medium(ButtonDefaults.MediumContainerHeight),
     /**
      * 96 dp: the routine player's, the timer's and the alarm's one big action. Every one fills a set width (a slot of
-     * the player's bar, the screen), so its content is centred and 16 at the sides is only the least room: Material's
-     * 48 cut "Mark done" to "Ma…" in the player's 184 dp slot, where Figma's own drawing runs past its 48.
+     * the player's bar, the screen), so its content is centred and 8 at the sides is only the least room: Material's
+     * 48 cut "Mark done" to "Ma…" in the player's 184 dp slot, and 16 cut "Add a check" to "Add a ch…", where Figma's
+     * own drawing runs to 8.5 from the button's edges (QA Routine player 14).
      */
     Large(ButtonDefaults.LargeContainerHeight);
 
@@ -139,7 +140,7 @@ fun AppButton(
 /**
  * Material's padding for the size (more at the start before an icon's gap is counted), with three settings of ours:
  * Small is Figma's Button (500:26), ButtonDefaults' 24/24, 16/24 with an icon, not Expressive's 16/16 (QA, 31 Oct
- * 2026: New habit drew 8 dp narrower than Figma's 137); Large keeps 16 at the sides (see [ButtonSize.Large]); and
+ * 2026: New habit drew 8 dp narrower than Figma's 137); Large keeps 8 at the sides (see [ButtonSize.Large]); and
  * [compact] keeps 12 at the sides for a button sharing a row.
  */
 @Composable
@@ -147,7 +148,7 @@ private fun padding(size: ButtonSize, hasIcon: Boolean, compact: Boolean): Paddi
     val material = ButtonDefaults.contentPaddingFor(size.height, hasIcon, false)
     if (size == ButtonSize.Small && !compact) return PaddingValues(
         start = if (hasIcon) 16.dp else 24.dp, end = 24.dp, top = material.calculateTopPadding(), bottom = material.calculateBottomPadding())
-    val most = when { compact -> 12.dp; size == ButtonSize.Large -> 16.dp; else -> return material }
+    val most = when { compact -> 12.dp; size == ButtonSize.Large -> 8.dp; else -> return material }
     val direction = LocalLayoutDirection.current
     // Large is 96 tall and centres its label, so it needs no padding above and below: Material's 32 left 32 for a
     // label 56 tall at 200 % text, and cut it (QA, the player's flow 24: "the buttons keep their height").

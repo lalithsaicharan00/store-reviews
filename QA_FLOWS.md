@@ -223,6 +223,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 185. Routine player 13 · the save message sat 16 from the sides and 4 past the card; every Figma frame (13): 12 from the sides, its bottom 8 inside the card.
 186. Routine player 13 · on a phone with a taller status bar the card is shorter and its centred content ran under the save message ("Goal met" cut); the content keeps 24 free above the card's padding and the two gaps around the count give up what the card is short by (down to 20). On Figma's frame nothing moves.
 187. Every list · Material's list item left 12 between the icon, the words and the trailing part; Figma's List item 16, so every row's words sat 4 dp left (Day details' Meds at 84, Figma 88). Fixed in `AppListItem`.
+188. Routine player 14 · the 96 dp main button cut "Add a check" to "Add a ch…": it kept 16 at its sides, where Figma's content runs to 8.5 from the edges (icon 32, 12, label 123 in 184). Large buttons now keep 8 at the sides, centred.
+189. Routine player 14, Today · TalkBack named a counted check's ✓ on Today "Add 1 to Call family" where the player and Day details say "Add a check to Call family"; now the same (`TodayTest` taps the new name).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -421,7 +423,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 11 | 251:2 | An amount in the player | Water → +1 → +1 twice: Goal met → Today chip → Log manually → Add, ✕ | passed |
 | 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | passed ↻ |
 | 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | passed ↻ ¹⁸ |
-| 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | passed |
+| 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | passed ↻ |
 | 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | passed |
 | 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | passed |
 | 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | passed |
