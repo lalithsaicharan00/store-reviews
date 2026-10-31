@@ -32,6 +32,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.tabular
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -440,7 +441,7 @@ private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: Ha
 @Composable
 internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, onUndo: () -> Unit) =
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text(clockText(entry), style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"))
+        Text(tabular(clockText(entry)), style = AppType.bodyMedium)
         if (opens) ListChevron()
         else AppButton("Undo", onUndo, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }, style = ButtonStyle.Text)
     }

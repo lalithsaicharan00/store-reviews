@@ -96,6 +96,7 @@ import com.oftenenough.app.ui.progress.movedAnchor
 import com.oftenenough.app.ui.progress.rememberProgressSnapshot
 import com.oftenenough.app.ui.progress.rememberToday
 import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.tabular
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.BackToButton
 import kotlinx.coroutines.launch
@@ -335,8 +336,8 @@ private fun PeriodRow(snap: ProgressSnapshot, background: Color, move: (Int) -> 
     Row(Modifier.fillMaxWidth().background(background).heightIn(min = 56.dp).padding(start = 16.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
-            Text(snap.title, Modifier.semantics { testTag = "habits-period" }, maxLines = 1,
-                style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = s.onSurface)
+            Text(tabular(snap.title), Modifier.semantics { testTag = "habits-period" }, maxLines = 1,
+                style = AppType.titleMedium, color = s.onSurface)
             snap.caption?.let { Text(it, maxLines = 1, style = AppType.bodySmall, color = s.onSurfaceVariant) }
         }
         StandardIconButton(Symbols.ChevronLeft, "Previous $noun", { move(-1) }, Modifier.semantics { testTag = "habits-previous" }, enabled = snap.canGoBack)

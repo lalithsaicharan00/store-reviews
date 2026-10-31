@@ -55,6 +55,7 @@ import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HeatCell
 import com.oftenenough.app.data.YearLayout
 import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.tabular
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.theme.appColors
 import kotlin.math.floor
@@ -143,7 +144,7 @@ fun HistorySummary(summary: String, detail: String?) = HistorySummary(detail) {
 fun HistorySummary(detail: String?, summary: @Composable () -> Unit) {
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
         summary()
-        detail?.let { Text(it, style = AppType.bodyMedium.copy(fontFeatureSettings = "tnum"), color = MaterialTheme.colorScheme.onSurfaceVariant) }
+        detail?.let { Text(tabular(it), style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
     }
 }
 

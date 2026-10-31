@@ -1,7 +1,10 @@
 package com.oftenenough.app.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
@@ -81,4 +84,14 @@ object AppType {
         bodyLarge = bodyLarge, bodyMedium = bodyMedium, bodySmall = bodySmall,
         labelLarge = labelLarge, labelMedium = labelMedium, labelSmall = labelSmall,
     )
+}
+
+/**
+ * [text] with tabular figures (`tnum`), so a clock or a count keeps its width as it changes, everywhere but its spaces:
+ * Google Sans Flex's tabular spaces are figure-wide, which opened "30d 11:30:18" and "9:24 of 10 min" up beyond
+ * Figma's (plain) lines.
+ */
+fun tabular(text: String): AnnotatedString = buildAnnotatedString {
+    append(text)
+    Regex("[^ ]+").findAll(text).forEach { addStyle(SpanStyle(fontFeatureSettings = "tnum"), it.range.first, it.range.last + 1) }
 }

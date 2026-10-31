@@ -78,6 +78,8 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **What Figma shows / what the app did:** flow 30's first frame (786:32343) draws Meds with 🔥 57 though Figma's own
   rule (142:2) says a missed yesterday hides the 🔥; every Today frame's day bar says "4/13" while its chips (3 + 3 + 2
   + 2 left of 13) make 3/13; past days (Tue 13 Oct, flow 32) reuse today's streaks (Meds 🔥 57 eighteen days ago).
+  Social media shows 🔥 7 with no band, though by Figma's own rule (R.10) a limit whose 7th day within max closed
+  yesterday shows "7 days within max" today, as the app does.
   Pick up parcel was on today in flows 10–11 and tomorrow in flow 31: **settled by A86** (a task is on the day it's
   planned for, "Task · Once", never "due"; the demo's parcel is planned for today).
 - **What I did for now:** the rule (no 🔥 after a missed yesterday: 56 on yesterday, 57 once it's ticked); the day bar

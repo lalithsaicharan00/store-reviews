@@ -37,13 +37,12 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.StreakUnit
 import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.tabular
 import com.oftenenough.app.ui.theme.appColors
 
 /**
@@ -135,20 +134,12 @@ fun HabitRowLayout(
 
 /**
  * The line under a row's name: Body Medium in On surface variant, one line ("4/10 min", "Every day · 8:00 AM").
- * [numbers]: a running clock ("9:24 of 10 min"): only the clock takes tabular figures, so it doesn't jiggle as it ticks;
- * on the whole line they widened its spaces (Figma's line is plain Body Medium).
+ * [numbers]: a running clock ("9:24 of 10 min") in tabular figures, so it doesn't jiggle as it ticks ([tabular]).
  */
 @Composable
-fun HabitRowLine(text: String, modifier: Modifier = Modifier, numbers: Boolean = false) {
-    val shown = remember(text, numbers) {
-        if (!numbers) AnnotatedString(text) else buildAnnotatedString {
-            append(text)
-            val clock = text.indexOf(' ').let { if (it < 0) text.length else it }
-            addStyle(SpanStyle(fontFeatureSettings = "tnum"), 0, clock)
-        }
-    }
-    Text(shown, modifier, style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
-}
+fun HabitRowLine(text: String, modifier: Modifier = Modifier, numbers: Boolean = false) =
+    Text(if (numbers) tabular(text) else AnnotatedString(text), modifier, style = AppType.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
 
 /**
  * "🔥 58", "🔥 4 wk": the emoji in Body Small, 2 from the count in Label Large, both On surface (the iPhone's rule, the

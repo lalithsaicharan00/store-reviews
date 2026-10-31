@@ -15,6 +15,7 @@ import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.tabular
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -389,8 +390,8 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
                 HabitRowLine(line, Modifier.semantics { testTag = "line-${habit.name}" })
             },
             trailing = {
-                Text(Format.elapsed(ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0),
-                    style = AppType.titleMedium.copy(fontFeatureSettings = "tnum"), color = MaterialTheme.colorScheme.onSurface, maxLines = 1)
+                Text(tabular(Format.elapsed(ongoing?.let { maxOf(0L, tick.value - it) / 1000.0 } ?: 0.0)),
+                    style = AppType.titleMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1)
             },
             below = offer?.let { o -> { AfterLogButtons(o, habit, today, store, layout, actions, note) } },
             band = moment.band?.let { b -> { MilestoneBand(moment.text, habit.color, b.see, moment.t, early = true) { actions.seeMilestone(habit) } } },

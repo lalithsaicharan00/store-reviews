@@ -118,7 +118,9 @@ object DemoData {
         val water = h("Water", "drop.fill", HabitColor.BLUE, HabitKind.Amount("glasses", 1.0), goal = 8.0)
         val parcel = h("Pick up parcel", "shippingbox.fill", HabitColor.BROWN, HabitKind.Task, dueDay = today)
         // Smoking: a first run of 30 days, the best of 45, and the current one 19 days and 12 and a half hours.
-        val lastSlip = now - (19 * 86400 + 12 * 3600 + 32 * 60 + 45) * 1000L
+        // A test launch's `streak` ("Smoking=30"): the run reached that many days an hour before today began (Figma 107:2429).
+        val lastSlip = streaks["Smoking"]?.let { store.rules.dayStart(today) - (it * 86_400L + 3600) * 1000 }
+            ?: (now - (19 * 86400 + 12 * 3600 + 32 * 60 + 45) * 1000L)
         val earlier = lastSlip - 45 * dayMs
         val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = earlier - 30 * dayMs).copy(createdAt = earlier - 30 * dayMs)
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true).copy(createdAt = now)
