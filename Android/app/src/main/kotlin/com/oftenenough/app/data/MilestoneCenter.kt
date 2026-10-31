@@ -150,6 +150,14 @@ class MilestoneCenter(private val store: HabitStore) {
             record(MilestoneShown(id, today, MilestoneTrack.IN_A_ROW, 7.0, tier, false, false, MilestoneCause.TAP, false, true))
     }
 
+    /** A test launch's `moments=week` (Figma 114:1551): pop-ups were shown on each of the last two days, the week's two. */
+    fun popupsThisWeek() {
+        ensureDay()
+        val today = store.today()
+        popupDays = (popupDays + listOf(today - 2, today - 1)).distinct()
+        save()
+    }
+
     /** A habit's records go with it (deleted, or every habit erased). */
     fun forget(habitId: String) {
         ensureDay()

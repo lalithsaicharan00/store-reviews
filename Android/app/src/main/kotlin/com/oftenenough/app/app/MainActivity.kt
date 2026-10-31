@@ -158,7 +158,10 @@ class MainActivity : ComponentActivity() {
                 }.toMap()
                 DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits",
                     tasks = demo == "tasks", streaks = named(TestLaunch.STREAK), todays = named(TestLaunch.TODAY), runsBefore = named(TestLaunch.EARLIER))
-                if (intent.getStringExtra(TestLaunch.MOMENTS) == "used") store.milestones.useUpToday()
+                when (intent.getStringExtra(TestLaunch.MOMENTS)) {
+                    "used" -> store.milestones.useUpToday()
+                    "week" -> store.milestones.popupsThisWeek()
+                }
                 // A widget's tap, saved through the widget's own path (Figma 112:2: reached away), after the demo is in.
                 intent.getStringExtra(TestLaunch.AWAY)?.let { name ->
                     store.habits.firstOrNull { it.name == name }?.let { h ->
@@ -200,7 +203,8 @@ object TestLaunch {
     const val TODAY = "today"
     /** The design demo's earlier run before a one-day break, by habit name: "Meds=7" (a number reached again). */
     const val EARLIER = "earlier"
-    /** "used": today's milestone pop-up and bars are used up, so a milestone gets just the row (Figma 107:2). */
+    /** "used": today's milestone pop-up and bars are used up, so a milestone gets just the row (Figma 107:2); "week": the
+     *  last two days each had a pop-up, the most in 7 days, so today's goes down to a bar (Figma 114:1551). */
     const val MOMENTS = "moments"
     /** A habit's name: one widget tap for it (✓ or +), saved as a widget saves it, as if made away from the app. */
     const val AWAY = "away"

@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 80 |
+| today | 54:5580 | 84 | 82 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **90** |
+| **All** | | **290** | **92** |
 
 ## Bug log
 
@@ -271,8 +271,8 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 77 | 112:757 | Reached away: the milestone notification | Lock screen notification → tap: Today with pop-up → Close | passed ⁶ |
 | 78 | 166:2 | Reached away: notification, phone in use | heads-up notification → tap: pop-up → Close | passed ⁷ |
 | 79 | 114:2 | Rule: a pop-up, a bar, then just the row | Meds 29, Stretch 2, Skincare 6 → pop-up → bar → just the row | passed ⁸ |
-| 80 | 114:793 | Rule: two bars, then just the row | Meds 2, Stretch 6, Skincare 13 → bar → bar → row | not started |
-| 81 | 114:1551 | Rule: no more than 2 pop-ups in 7 days | Wed, 2 pop-ups → ✓ 30 days: a bar → 5 s band; See opens pop-up | not started |
+| 80 | 114:793 | Rule: two bars, then just the row | Meds 2, Stretch 6, Skincare 13 → bar → bar → row | passed |
+| 81 | 114:1551 | Rule: no more than 2 pop-ups in 7 days | Wed, 2 pop-ups → ✓ 30 days: a bar → 5 s band; See opens pop-up | passed |
 | 82 | 114:2107 | Rule: history added later is never celebrated | missed yesterday → ‹ Yesterday → ✓: nothing plays | not started |
 | 83 | 114:2646 | Rule: undone and done again | Meds 2 → ✓ bar → Undo → ✓ again: nothing plays twice | not started |
 | 84 | 1714:66792 | Several reminders in one time of day (added 31 Oct, the user) | Meds 8:00 + 11:00 AM in Morning → 7:30: shows 8:00 AM → 8:00 goes by: 11:00 AM → after 11:00: stays 11:00 AM | passed |
