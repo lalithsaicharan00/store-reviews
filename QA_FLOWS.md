@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 9 |
+| day details | 169:1270 | 44 | 10 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **103** |
+| **All** | | **290** | **104** |
 
 ## Bug log
 
@@ -171,6 +171,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 133. Day details 11 · Delete this log? said "2 glasses at 1:10 PM is removed from today." with a "Delete log" button; Figma: "… will be removed from today. Your other logs stay." · Cancel | Delete.
 134. Day details 11 · Delete went back twice and left a blank screen: the Log page went back, then saw its log gone and went back again, past Today. A record's page (Add log, Log, All logs, Note, Edit habit) now goes back only while it's the screen in front (`AppRoot`'s `back(e)`), and the Log keeps showing its log while it slides away.
 135. Day details 11 · deleting a log said nothing; Figma: "Log deleted · Undo", and Undo puts the same log back with its time (`HabitStore.restoreLog`: day, time, value and source; "Added by hand at 1:10 PM." again). Undo snackbars stay about 10 seconds, as the flow's note says (Material's Long; they were Short, 4 s).
+136. Day details 12 · All logs had no footer; Figma: "7 glasses in all. Tap a log to change or delete it." (a time habit's minutes, a quit's slips; a check's rows keep their own Undo, so its footer is the total alone).
+137. Day details 12 · All logs' snackbar sat 96 dp up, the room kept for a pinned button it doesn't have; Figma puts "Log deleted · Undo" at the bottom, as on Plus (AppRoot's `nothingPinned`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -312,7 +314,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | passed |
 | 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | blocked: all but "Moved from today at 2:08 PM." under the log, which needs a saved field (D-51) |
 | 11 | 185:2 | Delete a log | → Log → Delete this log? → Delete; Undo → Undo → ✕ → (Cancel) | passed |
-| 12 | 186:2 | All logs, and deleting there | Water 7 of 8 → 2 newest + All 4 logs → All logs → Log → Delete → Undo → ← → ✕ | not started |
+| 12 | 186:2 | All logs, and deleting there | Water 7 of 8 → 2 newest + All 4 logs → All logs → Log → Delete → Undo → ← → ✕ | passed |
 | 13 | 188:2 | Time a habit from Day details | → Start timer → ⌄ → Pause: saved → ✕ → (timer) Today › | not started |
 | 14 | 189:2 | Log time from Day details | → Log time: 5 min → 9 of 10 → ✕ | not started |
 | 15 | 190:2 | A timer's log: view and change it | → timer's log → Log with seconds → Edit H/M/S → 3 → Save → ← → ✕ | not started |

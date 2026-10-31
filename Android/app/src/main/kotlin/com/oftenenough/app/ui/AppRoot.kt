@@ -416,10 +416,11 @@ private fun AppMain(
         }
     }
     }
-    // Plus has no pinned button, so its messages sit 16 from the sides and the bottom (Figma 7.2.2: with the
-    // snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
+    // A page with no pinned button (Plus, All logs) has its messages 16 from the sides and the bottom (Figma 7.2.2,
+    // 905:16391: with the snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
+    val nothingPinned = menuItem == MenuItem.PLUS || route?.startsWith("alllogs/") == true
     if (route != null && route != Routes.TODAY) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
-        .let { if (menuItem == MenuItem.PLUS) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
+        .let { if (nothingPinned) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
     }
     }
     val toPause = pausing.mapNotNull { store.habit(it) }.filter { store.rules.canPause(it) }

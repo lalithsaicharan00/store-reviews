@@ -290,6 +290,18 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     }, { discard = false }, onDone)
 }
 
+/** Under All logs, the day's total and what a tap does (Figma 905:16051): "7 glasses in all. Tap a log to change or delete it." */
+private fun allLogsFooter(ruled: com.oftenenough.app.data.Habit, logs: List<Entry>): String {
+    val total = logs.sumOf { it.value }
+    return when (val k = ruled.kind) {
+        is HabitKind.Amount -> "${HabitCopy.amount(total, k.unit)} in all. Tap a log to change or delete it."
+        HabitKind.Duration -> "${Format.minutes(total)} in all. Tap a log to change or delete it."
+        HabitKind.Quit -> "${logs.size} ${if (logs.size == 1) "slip" else "slips"} in all. Tap a slip to change or delete it."
+        // A check has nothing to view: its row keeps its own Undo.
+        else -> "${HabitCopy.amount(total, ruled.checkUnit ?: "checks")} in all."
+    }
+}
+
 /** A day as the footers and messages name it: today, yesterday, or its date alone ("28 Oct 2026"). */
 private fun dayName(day: Int, today: Int) = when (day) { today -> "today"; today - 1 -> "yesterday"; else -> recordDate(day) }
 
@@ -445,6 +457,7 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
                         trailing = { com.oftenenough.app.ui.day.LogTrailing(e, ruled, opens) { store.undoEntry(e.id) } })
                 }
             }
+            if (logs.isNotEmpty()) Footer(allLogsFooter(ruled, logs))
         }
     }
 }
