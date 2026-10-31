@@ -190,7 +190,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     HabitKind.Check -> if (rules.countsUp(habit, day)) HabitCopy.amount(total, r.checkUnit ?: "checks") + " saved" else null
                     else -> null
                 }
-                return DayStatus("Skipped", (saved?.let { "$it · " } ?: "") + "Doesn't count toward your streak")
+                return DayStatus("Skipped", (saved?.let { "$it · " } ?: "") + "Your streak stays safe")  // Figma's Day details, Skipped
             }
             if (day < rules.startDay(habit)) return DayStatus("Before it started")
             // A later day plans (Figma 1.4): what the day asks, "For Tue, 13 Oct"; logging waits for the day.

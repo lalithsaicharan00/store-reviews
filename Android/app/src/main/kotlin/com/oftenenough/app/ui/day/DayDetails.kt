@@ -201,7 +201,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
                 val skipped = store.isSkipped(habit, day)
                 val planned = store.rules.isDue(habit, day, countingSkips = false) || !store.rule(habit, day).frequency.isDayBased || store.rule(habit, day).frequency.isFlexible
                 if (skipped || (planned && store.rules.canSkip(store.rule(habit, day)))) {
-                    SkipButton(if (skipped) "Undo skip" else if (day == today) "Skip today" else "Skip this day") { store.setSkipped(habit, day, !skipped) }
+                    SkipButton(if (skipped) "Undo skip" else if (day == today) "Skip today" else "Skip this day") { store.setSkipped(habit, day, !skipped, offer = !skipped) }  // Today then offers Undo · Note (Figma's Today, flow 19)
                 }
             }
         }
