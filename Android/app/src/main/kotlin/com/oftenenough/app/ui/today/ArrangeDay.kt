@@ -1,6 +1,8 @@
 package com.oftenenough.app.ui.today
 
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.translate
 import com.oftenenough.app.ui.components.StandardIconButton
@@ -137,7 +139,9 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
             list.forEach { entries.add(ArrangeEntry.Row(it.id, card)) }
         }
     }
-    LaunchedEffect(members, cards) { if (drag == null) rebuild() }
+    // Anytime or Quitting carried by its handle: the whole card (heading and rows) lifts and follows the finger.
+    var held by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(members, cards) { if (drag == null && held == null) rebuild() }
     if (entries.isEmpty() && members.isNotEmpty()) rebuild()
 
     /** The card the item at [index] is in: the header above it. */
@@ -193,6 +197,57 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
         }
     }
 
+    // A carried card: where its top is now, its height, and where it was among the cards when lifted.
+    var heldTop by remember { mutableFloatStateOf(0f) }
+    var heldHeight by remember { mutableFloatStateOf(0f) }
+    /** Where a card's heading starts and its last row ends, in the list. */
+    fun span(card: String): Pair<Float, Float>? {
+        val top = tops["h-$card"] ?: return null
+        val last = rowsOf(card).lastOrNull()?.key ?: "h-$card"
+        return top to (tops[last] ?: return null) + (heights[last] ?: 0f)
+    }
+    /** Moves a card's heading and rows together in the list. */
+    fun moveBlock(card: String, before: String?) {
+        val from = entries.indexOfFirst { it is ArrangeEntry.Header && it.card == card }
+        val block = listOf(entries[from]) + rowsOf(card)
+        entries.removeAll(block)
+        val at = before?.let { b -> entries.indexOfFirst { it is ArrangeEntry.Header && it.card == b } } ?: entries.size
+        entries.addAll(at, block)
+    }
+    // After a card moves, the list's positions are old until it's laid out again: wait for that before the next move.
+    val laidOut = remember { booleanArrayOf(true) }
+    /**
+     * Moves the carried card past the card next to it once its leading edge crosses that card's middle (its top going
+     * up, its bottom going down): cards are tall, and a middle-to-middle rule couldn't pass a card already at the top.
+     */
+    fun followCard() {
+        val card = held ?: return
+        if (!laidOut[0]) return
+        val order = entries.filterIsInstance<ArrangeEntry.Header>().map { it.card }
+        val i = order.indexOf(card)
+        fun middle(other: String) = span(other)?.let { (a, b) -> (a + b) / 2 }
+        val next = order.getOrNull(i + 1)
+        val prev = order.getOrNull(i - 1)
+        if (next != null && middle(next)?.let { heldTop + heldHeight > it } == true) { laidOut[0] = false; moveBlock(card, order.getOrNull(i + 2)) }
+        else if (prev != null && middle(prev)?.let { heldTop < it } == true) { laidOut[0] = false; moveBlock(card, prev) }
+    }
+    /** Saves where a carried card was dropped, and says so with Undo ("Anytime moved to the top", Figma 62:2). */
+    fun dropCard(card: String) {
+        val order = entries.filterIsInstance<ArrangeEntry.Header>().map { it.card }
+        val at = order.indexOf(card)
+        val was = store.todayCards().indexOf(card)
+        val others = store.todayCards().filter { it != card }
+        val to = order.getOrNull(at + 1)?.let { others.indexOf(it) } ?: others.size
+        if (to == was) return
+        store.placeCard(card, to)
+        fun name(id: String) = if (id == DaySection.QUITTING) "Quitting" else store.section(id).name
+        val where = when (at) { 0 -> "to the top"; order.size - 1 -> "to the bottom"; else -> "after ${name(order[at - 1])}" }
+        scope.launch {
+            val r = snackbar.showSnackbar("${name(card)} moved $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+            if (r == SnackbarResult.ActionPerformed) store.placeCard(card, was)
+        }
+    }
+
     /** Saves what the list shows: each card's order, and the dragged habit's new time of day (its reminders stay). */
     fun commit(row: ArrangeEntry.Row, fromCard: String) {
         val before = store.habits.map { it.id }
@@ -212,17 +267,23 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
         }
     }
 
-    // Near the top or bottom of the screen a dragged row scrolls the page.
-    LaunchedEffect(drag != null) {
-        while (drag != null) {
-            val finger = dragTop - scroll.value
+    // Near the top or bottom of the screen a dragged row, or a carried card, scrolls the page.
+    LaunchedEffect(drag != null || held != null) {
+        while (drag != null || held != null) {
+            val card = held != null
+            val top = if (card) heldTop else dragTop
+            val tall = if (card) heldHeight else drag?.let { heights[it.key] } ?: 0f
+            val finger = top - scroll.value
             val edge = with(density) { 72.dp.toPx() }
             val speed = when {
                 finger < edge -> -((edge - finger) / edge * 24f)
-                finger + (heights[drag!!.key] ?: 0f) > viewport - edge -> ((finger + (heights[drag!!.key] ?: 0f) - viewport + edge) / edge * 24f)
+                finger + tall > viewport - edge -> ((finger + tall - viewport + edge) / edge * 24f)
                 else -> 0f
             }
-            if (speed != 0f) { val used = scroll.scrollBy(speed); dragTop += used; follow() }
+            if (speed != 0f) {
+                val used = scroll.scrollBy(speed)
+                if (card) { heldTop += used; followCard() } else { dragTop += used; follow() }
+            }
             withFrameNanos { }
         }
     }
@@ -236,16 +297,24 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
         },
         snackbarHost = { AppSnackbarHost(snackbar) },
     ) { padding ->
+        Box(Modifier.fillMaxSize().padding(padding)) {
         Column(
-            Modifier.fillMaxSize().padding(padding).onSizeChanged { viewport = it.height }.verticalScroll(scroll, enabled = drag == null)
+            Modifier.fillMaxSize().onSizeChanged { viewport = it.height }.verticalScroll(scroll, enabled = drag == null && held == null)
                 .padding(start = 16.dp, end = 16.dp, bottom = 40.dp),
         ) {
             entries.forEachIndexed { i, e ->
+                // A carried card keeps its place here, unseen (its handle's gesture lives here), and moves as it passes others.
+                val unseen = held != null && cardAt(i) == held
                 // Keyed: as a dragged row moves, its composition (and its gesture) moves with it.
                 key(e.key) { when (e) {
                     is ArrangeEntry.Header -> {
                         if (i > 0) Spacer(Modifier.height(16.dp))
-                        ArrangeHeader(e, cards, store, Modifier.measured(e.key, tops, heights), onEdit = onEditSection)
+                        ArrangeHeader(e, cards, store, Modifier.measured(e.key, tops, heights).graphicsLayer { if (unseen) alpha = 0f }
+                            .onGloballyPositioned { if (unseen) laidOut[0] = true },
+                            onEdit = onEditSection,
+                            onLift = { held = e.card; menuFor = null; laidOut[0] = true; heldTop = tops[e.key] ?: 0f; heldHeight = span(e.card)?.let { (a, b) -> b - a } ?: 0f },
+                            onCarry = { dy -> heldTop += dy; followCard() },
+                            onDrop = { val card = held; held = null; if (card != null) dropCard(card) })
                         Spacer(Modifier.height(8.dp))
                     }
                     is ArrangeEntry.Row -> {
@@ -258,7 +327,7 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
                         ArrangeRow(
                             habit = h, shape = segmentShape(at, all), subtitle = if (store.isPaused(h, today)) "Paused" else arrangeSubtitle(h, store),
                             lifted = dragged,
-                            modifier = Modifier.measured(e.key, tops, heights).zIndex(if (dragged) 1f else 0f)
+                            modifier = Modifier.measured(e.key, tops, heights).zIndex(if (dragged) 1f else 0f).graphicsLayer { if (unseen) alpha = 0f }
                                 // Where it will land while it's carried: a dashed outline in the row's place (Figma's Edit
                                 // Today, "Drop here": Outline, 1 dp, 6 on 4 off), drawn before the layer that moves the row.
                                 .then(if (dragged) Modifier.dropSlot(segmentShape(at, all), outline) else Modifier)
@@ -279,17 +348,36 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
                 // timed one, Add time of day.
                 if (entries.getOrNull(i + 1) !is ArrangeEntry.Row) {
                     val card = cardAt(i)
-                    if (e is ArrangeEntry.Header) Box(Modifier.fillMaxWidth().heightIn(min = 56.dp).dropSlot(RoundedCornerShape(24.dp), outline)
-                        .semantics { testTag = "arrange-empty-${e.card}" }, contentAlignment = Alignment.Center) {
-                        Text("Drag a habit here", Modifier.padding(horizontal = 16.dp, vertical = 8.dp), style = AppType.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-                    }
+                    if (e is ArrangeEntry.Header) EmptyCard(Modifier.graphicsLayer { if (unseen) alpha = 0f }.semantics { testTag = "arrange-empty-${e.card}" })
                     if (card == lastTimed) {
                         Spacer(Modifier.height(16.dp))
                         AppButton("Add time of day", { onEditSection(null) }, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "arrange-add-time")
                     }
                 }
             }
+        }
+        // The carried card over the list, where the finger has it (Figma 62:2, "Anytime · held"): its heading and rows on
+        // the page's colour, corners 24, Elevation Level 3; under it, a dashed outline where it will land.
+        held?.let { card ->
+            val slot = span(card)
+            val shape = RoundedCornerShape(24.dp)
+            if (slot != null) Box(Modifier.padding(horizontal = 16.dp).offset { IntOffset(0, (slot.first - scroll.value).roundToInt()) }.fillMaxWidth()
+                .height(with(density) { (slot.second - slot.first).toDp() }).dropSlot(shape, outline))
+            Column(Modifier.padding(horizontal = 16.dp).offset { IntOffset(0, (heldTop - scroll.value).roundToInt()) }.fillMaxWidth()
+                .shadow(6.dp, shape).background(c.screen, shape).clearAndSetSemantics { }) {
+                ArrangeHeader(ArrangeEntry.Header(card), cards, store, Modifier, onEdit = {}, onLift = {}, onCarry = {}, onDrop = {})
+                Spacer(Modifier.height(8.dp))
+                val rows = rowsOf(card)
+                rows.forEachIndexed { at, r ->
+                    val h = store.habit(r.habitId) ?: return@forEachIndexed
+                    if (at > 0) Spacer(Modifier.height(2.dp))
+                    ArrangeRow(h, segmentShape(at, rows.size), if (store.isPaused(h, today)) "Paused" else arrangeSubtitle(h, store), lifted = false,
+                        modifier = Modifier, onDragStart = {}, onDrag = {}, onDragEnd = {}, onTap = null, menuOpen = false, onMenuDismiss = {},
+                        canUp = false, canDown = false, onUp = {}, onDown = {}, onMoveTo = null)
+                }
+                if (rows.isEmpty()) EmptyCard(Modifier)
+            }
+        }
         }
     }
     moving?.let { h -> MoveToDialog(h, cards.filter { it != DaySection.QUITTING }, store, onDismiss = { moving = null }) { to ->
@@ -314,6 +402,16 @@ sealed class ArrangeEntry {
     data class Header(val card: String) : ArrangeEntry() { override val key get() = "h-$card" }
     /** [home]: the card it was in when the list was built (part of its key, so a habit in two cards has two keys). */
     data class Row(val habitId: String, val home: String) : ArrangeEntry() { override val key get() = "r-$habitId-$home" }
+}
+
+/** An empty time of day: "Drag a habit here" in a dashed box (Figma's Edit Today, a new Night). */
+@Composable
+private fun EmptyCard(modifier: Modifier) {
+    Box(modifier.fillMaxWidth().heightIn(min = 56.dp).dropSlot(RoundedCornerShape(24.dp), MaterialTheme.colorScheme.outline),
+        contentAlignment = Alignment.Center) {
+        Text("Drag a habit here", Modifier.padding(horizontal = 16.dp, vertical = 8.dp), style = AppType.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+    }
 }
 
 /** Remembers where an item sits in the list (its layout, before any drag offset). */
@@ -345,7 +443,10 @@ private fun arrangeSubtitle(h: Habit, store: HabitStore): String? {
  * move as a whole, a row's height a place (TalkBack: Move up, Move down).
  */
 @Composable
-private fun ArrangeHeader(e: ArrangeEntry.Header, cards: List<String>, store: HabitStore, modifier: Modifier, onEdit: (String?) -> Unit) {
+private fun ArrangeHeader(
+    e: ArrangeEntry.Header, cards: List<String>, store: HabitStore, modifier: Modifier, onEdit: (String?) -> Unit,
+    onLift: () -> Unit, onCarry: (Float) -> Unit, onDrop: () -> Unit,
+) {
     val s = MaterialTheme.colorScheme
     val card = e.card
     val section = if (card == DaySection.QUITTING) null else store.section(card)
@@ -365,15 +466,11 @@ private fun ArrangeHeader(e: ArrangeEntry.Header, cards: List<String>, store: Ha
             StandardIconButton(Symbols.Edit, "Edit $title", { onEdit(section.id) }, Modifier.semantics { testTag = "arrange-edit-$title" })
         }
         if (movable) {
-            // The handle moves the whole time of day: one place up or down per row's height dragged.
-            var dy by remember { mutableFloatStateOf(0f) }
-            val step = with(LocalDensity.current) { 64.dp.toPx() }
+            // The handle carries the whole time of day: it lifts and follows the finger, and is saved where it's let go.
             val i = cards.indexOf(card)
             Box(Modifier.size(48.dp).pointerInput(card) {
-                detectVerticalDragGestures(onDragEnd = { dy = 0f }, onDragCancel = { dy = 0f }) { change, amount ->
-                    change.consume(); dy += amount
-                    if (dy <= -step) { store.moveCard(card, HabitStore.CardMove.UP); dy = 0f }
-                    if (dy >= step) { store.moveCard(card, HabitStore.CardMove.DOWN); dy = 0f }
+                detectVerticalDragGestures(onDragStart = { onLift() }, onDragEnd = onDrop, onDragCancel = onDrop) { change, amount ->
+                    change.consume(); onCarry(amount)
                 }
             }.semantics {
                 testTag = "arrange-card-handle-$title"; contentDescription = "Move $title"

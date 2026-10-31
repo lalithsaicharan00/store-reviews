@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 54 |
+| today | 54:5580 | 84 | 55 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **64** |
+| **All** | | **290** | **65** |
 
 ## Bug log
 
@@ -129,6 +129,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 91. Edit time of day · the last time of day's end said "12:00 AM, when your new day starts"; Figma: "12:00 AM, when the day ends".
 92. Edit time of day · Add/Save asked "Split Evening?" and changed rows said "Was …"; neither is in Figma (Add puts Night straight in). Both removed (A77); splitting loses nothing.
 93. Edit Today · an empty time of day showed nothing under its heading; Figma: "Drag a habit here" in a dashed box (Outline, 1 dp, 6 on 4 off, corners 24), the same drawing as the drop slot.
+94. Edit Today · Anytime's handle stepped the card one place per 64 dp dragged, with nothing lifted and no word when it was let go; Figma 62:2: the whole card (heading and rows) lifts and follows the finger on the page's colour, corners 24, Elevation Level 3, a dashed outline where it will land, the others making room; let go, it's saved and the snackbar says "Anytime moved to the top" with Undo. Built that way (`HabitStore.placeCard`; Undo puts it back); a card passes another when its leading edge crosses that card's middle.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -137,54 +138,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 
 ## Open questions for the user
 
-- **Savings' wording differs between pages.** Today flow 5 draws Savings' row as “\$250/\$500” and its Day details as
-  “\$50 today · \$200 to go this month”; Figma's own rule for a row's line (Today flow 49) says a month goal reads
-  “… this month”, and the Day details page (flow 22) draws “This month · \$300 of \$500 · \$200 to go”. The app follows
-  the rule and the Day details page.
-
-- **Add log's date in one flow frame.** Today flow 4's Add log (721:4184) says “21 Oct 2026”; Figma's own Log screen
-  component (687:829) and every other frame say “Today, 21 Oct 2026”. The app follows the component.
-
-- **Blocked: Google Play purchases on the emulator.** With real billing (`-PrealBilling`), Plus's price loads
-  (₹2,400.00) but buying fails at once: Google Play says “The item you were attempting to purchase could not be
-  found.” (also with versionCode 3). The app's Play page answers “Item not found” for this account too, so the
-  sideloaded debug build isn't one Play will sell to. Needed: install from an internal-testing track that
-  jeffreyjohn0112@gmail.com is on (or add it), then flows Onboarding 3 and 9, Create new 19–20 and the Plus purchases
-  can be finished. Until then the debug build's stand-in store (`FakePlusStore`) stands in for the free plan.
-- **Plus seemed owned, then wasn't.** Before Play Store's data was cleared, Play's cache on the emulator answered that
-  this account owns Plus; after it, Google Play says it doesn't (Get Plus is offered). A refunded test purchase from
-  16 Oct is the likely reason.
-
-- **Filled icons.** The brief says the design uses filled icons everywhere, but the Figma file sets 449 icon glyphs
-  (Material Symbols Rounded) to FILL 0 — drawn outlined in Figma too, e.g. `calendar_today` in the Assist chip
-  specimen — and 97 to FILL 1 (a habit's own icon, play/pause, the selected drawer item, Plus's medal, a state that is
-  on). Following "the design wins", each icon matches the fill Figma sets on that node; switching every icon to
-  filled would be a change to the design itself.
-- **Two page colours.** Four onboarding screens (Plus isn’t on this phone, No internet, No backup found, That isn’t a
-  backup, From a newer version) fill the page with `#f0f0f3`, a value with no colour style or variable behind it,
-  under a top app bar of `#eeeeee` (*Android / Light / System / Surface container*, the colour of every other screen).
-  The app keeps one page colour, `#eeeeee`; say if the band is meant.
-- **Today's numbers in Figma's flows disagree with themselves.** Today flow 30's first frame (786:32343) draws Meds
-  with 🔥 57 though its own rule (142:2) says a missed yesterday hides the 🔥, and every Today frame's day bar says
-  “4/13” while its chips (3 + 3 + 2 + 2 left of 13) make 3/13. Pick up parcel is due today in flows 10–11 and
-  tomorrow in flow 31. The app follows the rule (no 🔥 after a missed yesterday; 56 on yesterday, 57 once it's ticked)
-  and counts what its sections show (the demo's parcel is due today, so Today counts 14). Past days in Figma (Tue 13
-  Oct, flow 32) reuse today's streaks (Meds 🔥 57 eighteen days ago); the app works them out from the history (40).
-- **Go to a day's height.** Material's own date picker (A76) puts its month row and weekdays a few dp taller than
-  Figma's drawing (705:1025), so the dialog is 525 dp tall against Figma's 516; everything else lines up.
-- **A later day's buttons (Today flow 31).** Figma drew Tomorrow's Water with a live + (State Neutral) while its own
-  notes say "Nothing can be logged ahead" and "What's planned, with no logging buttons". The app keeps the button,
-  switched off as on a skipped day (flow 13), and a task's ✓ stays on (done early, as the note says); Figma's three
-  Tomorrow frames now draw Water's + as State=Disabled, and flow 34's Tomorrow its Gym ✓. Say if the + should go altogether instead.
-- **Day details in Figma, for the Day details page.** Tomorrow's sheet (788:32597) is titled "Today"; the app says
-  "Tomorrow". The Day details sheet component (669:234) draws its own bar with no stop dot, where the Linear progress
-  atom (902:14527) and Material's indicator have one; the app keeps Material's.
-- **Alarms & reminders off with the battery Unrestricted can't happen (Today flow 39).** Android grants exact alarms
-  to any app on the battery allowlist (Unrestricted) and greys out its Alarms & reminders switch, so Figma's Pixel frame
-  (battery ✓, Alarms & reminders to do) never shows on Android 14 and later. The app handles both orders; on a Pixel
-  the late notice comes with the battery step too.
-- **The time picker's labels (Today flows 51, 52).** Material's own time input (A76) puts "Hour" and "Minute" under its
-  fields; Figma's drawing of Android's time picker has none. The app keeps Material's.
+Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-46, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
 
 ---
 
@@ -261,7 +215,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 50 | 57:2 | Arrange Today | Today → ✏ Edit Today → drag Read into Evening → dropped; Undo → ← Today | passed |
 | 51 | 59:4 | Change a time of day | Today → Edit Today → ✏ Morning: Edit time of day → Starts: time picker → 7:00 AM → Save | passed |
 | 52 | 59:712 | Add a time of day | Today → Edit Today → Add time of day → Starts: picker → 10:00 PM → Add: Night | passed |
-| 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | not started |
+| 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | passed |
 | 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | not started |
 | 55 | 65:717 | Fill a new time of day | Today → Night empty → drag Bed on time into Night → dropped | passed |
 | 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | not started |

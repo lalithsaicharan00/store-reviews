@@ -1067,7 +1067,15 @@ class HabitStore(
         val from = cards.indexOf(id)
         if (from < 0) return
         val to = when (move) { CardMove.UP -> maxOf(0, from - 1); CardMove.DOWN -> minOf(cards.size - 1, from + 1); CardMove.TOP -> 0; CardMove.BOTTOM -> cards.size - 1 }
-        if (to == from) return
+        placeCard(id, to)
+    }
+
+    /** Puts Anytime or Quit or cut down at [to] among the cards (a drag's drop, or its Undo). */
+    fun placeCard(id: String, to: Int) {
+        if (id != DaySection.ANYTIME && id != DaySection.QUITTING) return
+        val cards = todayCards().toMutableList()
+        val from = cards.indexOf(id)
+        if (from < 0 || to == from || to !in cards.indices) return
         cards.removeAt(from)
         cards.add(to, id)
         perform {
