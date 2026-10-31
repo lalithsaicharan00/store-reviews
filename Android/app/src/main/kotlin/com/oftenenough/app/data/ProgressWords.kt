@@ -202,16 +202,28 @@ object ProgressWords {
 /** The first day any habit Progress shows counts from: ‹ stops at the period holding it. */
 fun HabitStore.earliestProgressDay(): Int? = habits.filter { it.kind != HabitKind.Task }.minOfOrNull { rules.startDay(it) }
 
-/** The goal in words under a card's name: "8,000 steps a day", "3 times a week", "4 steps a day". */
+/**
+ * The goal in words under a card's name, as Figma's Habits & Tasks and details pages write it: "8,000 steps a day",
+ * "3 times a week", "4 steps a day", "Once a day" for a daily check, "1 h on Mon, Wed, Fri", "Quit"; then " | " and
+ * the first reminder's time when it has one ("Once a day | 8:00 AM").
+ */
 fun HabitStore.weekGoalText(habit: Habit): String {
-    if (habit.kind == HabitKind.Checklist) {
+    if (habit.kind == HabitKind.Quit) return "Quit"
+    val goal = if (habit.kind == HabitKind.Checklist) {
         val n = habit.steps.size
         val steps = if (n == 1) "1 step" else "$n steps"
-        if (habit.frequency == Frequency.Daily) return "$steps a day"
         val rhythm = HabitCopy.rhythm(habit.frequency, weekStart, short = true)
-        return if (rhythm.isEmpty()) steps else "$steps, $rhythm"
+        if (habit.frequency == Frequency.Daily) "$steps a day" else if (rhythm.isEmpty()) steps else "$steps, $rhythm"
+    } else if (habit.kind == HabitKind.Check && habit.frequency == Frequency.Daily && habit.goal <= 1 && habit.checkUnit.isNullOrEmpty()) {
+        "Once a day"
+    } else {
+        var plan = HabitCopy.plan(habit, weekStart, short = true)
+        // Chosen days read as a list: "on Mon, Wed, Fri", never "every Mon, Wed and Fri".
+        if (habit.frequency is Frequency.Weekdays) plan = plan.replace(" every ", " on ").replace(Regex("^every "), "on ").replace(" and ", ", ")
+        HabitCopy.capitalized(plan)
     }
-    return HabitCopy.capitalized(HabitCopy.plan(habit, weekStart, short = true))
+    val first = habit.reminders.minByOrNull { it.hour * 60 + it.minute } ?: return goal
+    return goal + " | " + DayWords.clockMinute(first.hour * 60 + first.minute)
 }
 
 /**
@@ -324,7 +336,7 @@ internal fun HabitStore.progressQuitCard(habit: Habit, span: IntRange, range: Pr
         }
         card.days.map { d -> (perDay[d.day] ?: 0).let { n -> if (n > 1) "$n×" else "" } }
     }
-    val goal = "Quit · since " + DayWords.short(rules.quitStartDay(habit))
+    val goal = weekGoalText(habit)
     val spoken = ProgressWords.spoken(habit.name, card.headline, card.detail, if (week) card.days else emptyList(), values, false)
     return ProgressWeekCard(habit, goal, card.headline, card.detail, card.days, spoken, runStart = runStart, isQuit = true)
 }

@@ -378,6 +378,8 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
         val next = strip.firstOrNull { it.mark == DayMark.UPCOMING || it.mark == DayMark.OPEN || (it.day == today && it.mark == DayMark.SOME && !it.extra) }
         if (start == today && running) {
             headline = "Started today"
+            // Figma 1127:58497: a habit made today says so until something is logged.
+            if (total == 0.0 && extraDays == 0) detail = "Nothing logged yet"
         } else if (next != null) {
             headline = if (next.day == today) "Planned for today"
             else if (range == ProgressRange.WEEK) "Planned for " + HabitCopy.fullDays[pageWeekday(next.day) - 1]
