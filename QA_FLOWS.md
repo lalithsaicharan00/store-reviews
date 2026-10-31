@@ -3,7 +3,7 @@
 Written by Claude (Claude Code), 31 October 2026, for the flow-by-flow QA pass the user asked for. Figma file:
 [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app) (`sJptV3HAKYauEIGUxYS3qs`). Each flow is
 a row of screens under a title frame; its node ID opens it (`?node-id=<id with - for :>`). Screens are listed in order,
-by the caption Figma gives each one. Status: **not started** · **in progress** · **passed** · **blocked** (why).
+by the caption Figma gives each one. Status: **not started** · **in progress** · **passed** · **blocked** (why). **↻**: re-run from its first screen after the fixes, 31 Oct 2026 (an earlier pass had re-checked only the fixed screen).
 
 Emulator: Pixel 10 Pro AVD (`emulator-5554`), Android 16, 1080 × 2400 at 480 dpi (Figma's 360 × 800 dp), account
 `jeffreyjohn0112@gmail.com` (license tester). Set to `hw.keyboard=no` on 31 Oct 2026 (the old config is in
@@ -414,7 +414,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 9 | 248:300 | Your routine: jump to a habit, change the order | → Morning ▾: Your routine → Skincare → Edit drag → Done | passed |
 | 10 | 249:2 | The ⋮ menu in the player | → ⋮ → Go to first unfinished / Change order / End routine | passed |
 | 11 | 251:2 | An amount in the player | Water → +1 → +1 twice: Goal met → Today chip → Log manually → Add, ✕ | passed |
-| 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | passed |
+| 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | passed ↻ |
 | 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | passed |
 | 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | passed |
 | 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | passed |
