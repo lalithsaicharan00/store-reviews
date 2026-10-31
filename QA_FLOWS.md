@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 26 |
+| habits & tasks | 269:148 | 35 | 27 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **183** |
+| **All** | | **290** | **184** |
 
 ## Bug log
 
@@ -296,6 +296,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ²² Habits & tasks 6: "Reached on 6 of 6 days so far" fits Figma's 296 on one line and wraps in the app: the string is 297.2 dp in the bundled Google Sans Flex at Medium, opsz 22 (fontTools, before kerning); Figma's renderer draws it a hair narrower. Text that wraps grows its card (Rulebook), and the style isn't ours to change (U36).
 ²³ Habits & tasks 17: Figma's frames are a Friday; the run was on Sunday 1 Nov, the week's first day, so the kinds were compared on this week (planned, quit, limits) and on last week, 25–31 Oct, against Figma's earlier-week frames (flow 3). The demo has no 3-a-day check or monthly goal; their words come from the same code as Water's and Journal's.
 ²⁴ Habits & tasks 18: no habits from an empty test launch; every habit archived by archiving all 16 demo habits; a month paused all through by restoring Water plants (archived 15 Sep), whose October then reads "Paused all of October". The first week (every habit started Wed) can't be made from the demos: its parts (‹ off before the earliest start, blank days before a start, "so far") were seen on Floss, flow 16, and on the Habits page's first week in flows 2 and 3.
+²⁵ Habits & tasks 27: ✓ on Today's Pay electricity bill puts it at the end of Tasks' Today, "Done 10:30 AM", faded as flow 20's done rows (Figma's frame caption says struck through; its frame isn't). The next day can't be reached on a test launch, whose clock sets the hour, not the date: the move to Completed at the day's end was seen on this demo's 32 tasks done before today.
 
 ## Open questions for the user
 
@@ -517,7 +518,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 24 | 309:761 | A task's ⋮: Archive and Delete | Archive; Undo → Delete dialog → Delete; Undo | passed ↻ |
 | 25 | 310:2 | A repeating task's ⋮: Skip this time | ⋮ Skip this time → next Wed 28 Oct; Undo → Today unchanged | passed ↻ |
 | 26 | 311:2 | A task with No date: Do today, or Pick a day | No date ⋮ → Do today · Show → Show → Pick a day… | passed ↻ |
-| 27 | 312:2 | A task done on Today, and when the day ends | ✓ on Today → struck through on Tasks → next day: Completed → 14 | not started |
+| 27 | 312:2 | A task done on Today, and when the day ends | ✓ on Today → struck through on Tasks → next day: Completed → 14 | passed ²⁵ |
 | 28 | 313:2 | Completed tasks: Mark as not done | Completed → list → ⋮ → Mark as not done; Undo | not started |
 | 29 | 313:426 | Completed tasks: Delete all completed | ⋮ Delete all completed → dialog → Deleted; Undo | not started |
 | 30 | 313:645 | Archived tasks: Restore, Delete | Archived (3) → list → ⋮ → Restore; Undo | not started |
