@@ -231,6 +231,16 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   (b) the player's on grey and Day details' on the Fill; (c) every line on grey.
 - **My recommendation:** (a): one rule, and the Fill ties the line to the habit's colour above it.
 
+### D-54. Filled icons everywhere, or the player's outlined ▶ and ⏸?
+
+- **Where:** the routine player's and the timer's big main button ([Figma 919:110647](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=919-110647)); `ui/player/RoutinePlayer.kt` (`actionIcon`).
+- **What Figma shows / what the QA brief says:** the brief says every icon is the filled variant. Figma's player draws
+  this one button's play_arrow and pause outlined (FILL 0); its round row buttons are filled.
+- **What I did for now:** followed Figma (QA bug 167): the big button's ▶ and ⏸ are outlined, every other icon filled.
+- **Question:** (a) keep them outlined, as Figma; (b) filled, as the brief, and change Figma's player to match.
+- **My recommendation:** (b): one rule ("filled everywhere") is easier to keep than one exception, and filled ▶/⏸
+  read better at 32 dp on the dark button.
+
 ### D-4. Dialogs and pickers: Surface container high or Surface bright?
 
 - **Where:** Dialog (5.3.4), Time picker (5.3.5), Date picker (5.3.6); `ui/components/Dialog.kt`, `TimePickerDialog.kt`,
