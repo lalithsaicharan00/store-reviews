@@ -93,6 +93,16 @@ fun AppRoot(store: HabitStore, prefs: Prefs) {
         }
     }
     LaunchedEffect(store.problem) { store.problem?.let { snackbar.showSnackbar(it); store.problem = null } }
+    // A tap that couldn't be saved: Today is as it was, and Try again taps it again (Figma's Today, flow 47).
+    LaunchedEffect(store.failedTap) {
+        val tap = store.failedTap ?: return@LaunchedEffect
+        val said = "Couldn't save ${tap.name ?: "that"}. Nothing changed."
+        val again = snackbar.showSnackbar(said, "Try again", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+            androidx.compose.material3.SnackbarResult.ActionPerformed
+        // Cleared once shown: clearing it first would restart this effect and take the snackbar away.
+        if (store.failedTap === tap) store.failedTap = null
+        if (again) tap.retry()
+    }
     if (!store.isLoaded) { Box(Modifier.fillMaxSize().background(appColors.screen)); return }
     // **No onboarding** (the new Figma file, 22 October 2026): Android's own splash, then Today. Someone new sees
     // Today's "No habits yet" (Figma `36:32`), which offers New habit and Restore from a backup, and that is the whole

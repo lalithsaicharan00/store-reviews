@@ -39,6 +39,10 @@ class HabitStore(
     var isLoaded by mutableStateOf(false); private set
     /** Shown to the person when a write fails or the data can't be read. */
     var problem by mutableStateOf<String?>(null)
+    /** A tap whose save failed (Figma's Today, flow 47): "Couldn't save Meds. Nothing changed." with Try again. */
+    var failedTap by mutableStateOf<FailedTap?>(null)
+    /** Test launches only: the next tap's write fails, so a failed save can be seen (Today flow 47). */
+    var failNextTap = false
     var sections by mutableStateOf(DaySection.defaults); private set
     var cardOrder by mutableStateOf<List<String>>(emptyList()); private set
     var dayEndHour by mutableIntStateOf(0); private set
@@ -344,13 +348,16 @@ class HabitStore(
 
     // ------------------------------------------------------------------ The write queue
 
-    private val queue = Channel<Pair<Boolean, suspend () -> Unit>>(Channel.UNLIMITED)
+    private val queue = Channel<Pair<FailedTap?, suspend () -> Unit>>(Channel.UNLIMITED)
     private var pendingWrites = 0
     private var reloadWhenWritten = false
     private var worker: Job? = null
 
-    /** Runs database writes one at a time, in the order they were made. [tap]: a log from a tap (its own words if it fails). */
-    fun perform(tap: Boolean = false, change: suspend () -> Unit) {
+    /**
+     * Runs database writes one at a time, in the order they were made. [tap]: a tap's save, which, if it fails, says so
+     * by the habit's name and offers to try again.
+     */
+    fun perform(tap: FailedTap? = null, change: suspend () -> Unit) {
         if (!isLoaded) {
             problem = "Your habits haven't loaded, so that change wasn't saved. Please restart the app."
             return
@@ -358,15 +365,17 @@ class HabitStore(
         pendingWrites++
         queue.trySend(tap to change)
         if (worker == null) worker = scope.launch {
-            for ((isTap, job) in queue) {
+            for ((tap, job) in queue) {
                 try {
+                    if (tap != null && failNextTap) { failNextTap = false; throw java.io.IOException("a test launch's failed save") }
                     job()
                     dataVersion++
                     onChange?.invoke()
                 } catch (e: Exception) {
                     changeIsFromSync = false
-                    // Figma 1.5: Today reloads and says so in a snackbar above the day bar (S7).
-                    problem = if (isTap) "Couldn’t save that tap. It’s undone." else "That change couldn't be saved, so it was undone. Please try again."
+                    // Figma 1.5: Today reloads and says so in a snackbar above the day bar (S7); a tap by the habit's name,
+                    // with Try again (Today flow 47).
+                    if (tap != null) failedTap = tap else problem = "That change couldn't be saved, so it was undone. Please try again."
                     reloadWhenWritten = true
                 }
                 changeIsFromSync = false
@@ -584,15 +593,15 @@ class HabitStore(
             milestones.after(before, habit, entry.source ?: EntrySource.TODAY, added)
             logFeedback(habit, entry.day, wasComplete)
         }
-        perform(tap = true) { repository.addEntry(entry.record) }
+        perform(FailedTap(habit?.name) { addLogged(entry) }) { repository.addEntry(entry.record) }
     }
 
     /** Undoing a tap: gone from the screen now, the removal written next in the queue. */
     private fun removeLogged(id: String) {
-        removeEntry(id) ?: return
+        val entry = removeEntry(id) ?: return
         if ((afterLog as? AfterLog.Log)?.entry?.id == id) afterLog = null
         val at = clock()
-        perform(tap = true) { repository.removeEntry(id, at) }
+        perform(FailedTap(habit(entry.habitId)?.name) { removeLogged(id) }) { repository.removeEntry(id, at) }
     }
 
     /** A log from Today (a tap, Add log, the timer) takes Undo · Note; one made elsewhere by the person ends it. */
@@ -1124,3 +1133,6 @@ sealed class AfterLog {
 
     data class Skip(override val habitId: String, override val day: Int) : AfterLog()
 }
+
+/** A tap whose save failed: whose ([name], or null) and how to [retry] it, as tapping again would. */
+class FailedTap(val name: String?, val retry: () -> Unit)

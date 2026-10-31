@@ -143,6 +143,7 @@ class MainActivity : ComponentActivity() {
                 plus = intent.getBooleanExtra(TestLaunch.PLUS, false))
         } else AppGraph.open(this)
         val store = AppGraph.store
+        if (test) store.failNextTap = intent.getBooleanExtra(TestLaunch.FAIL_TAP, false)
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         pinWidget(intent)
@@ -175,4 +176,6 @@ object TestLaunch {
     const val NOTICE = "notice"
     /** Plus owned from the start (the stand-in store, as if bought). */
     const val PLUS = "plus"
+    /** The first tap's save fails, to see Couldn't save (Today flow 47). */
+    const val FAIL_TAP = "failTap"
 }

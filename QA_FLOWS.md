@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 46 |
+| today | 54:5580 | 84 | 48 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **56** |
+| **All** | | **290** | **58** |
 
 ## Bug log
 
@@ -117,6 +117,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 79. Timer · a limit's wave was in the habit's colour; Figma: "The wave stays neutral" (Outline on Outline variant). ProgressLine draws a limit's wave neutral below the limit (over it, the flat grey line as before).
 80. Day details · a limit not yet reached said "Limit 30 min · within max"; Figma: "Limit 30 min · 30 min left", "Limit 2 cups · 1 cup left" (StoreWords).
 81. Today · a timed limit's running line said "29:07 · 0 min left" in its last minute, and called 30:20 over the limit while its count said 30 of 30: it now says at least "1 min left" and counts whole minutes, so 30:00–30:59 reads "Limit reached · 30:xx" (Figma's frame 4), on the row and in Day details alike.
+82. Today · a tap that couldn't be saved said "Couldn’t save that tap. It’s undone." with nothing to do; Figma: "Couldn't save Meds. Nothing changed." with Try again. A failed tap now carries the habit's name and a retry (HabitStore.failedTap); the snackbar is cleared only once shown (clearing it first restarted the effect and took the snackbar away). Test launches can fail the first tap's save (failTap) to see it.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -240,8 +241,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 43 | 125:1901 | Notice: Plus is waiting for payment | Plus waiting for payment → Plus is on: notice gone | passed ⁴ |
 | 44 | 116:2 | Cut down: an amount | Coffee 1 of 2 → + Limit reached → + Over the limit → Day details | passed |
 | 45 | 116:987 | Cut down: a time limit | Social media 0 of 30 → ▶ timer vs limit → ⌄ → 30:00 Limit reached → ⏸ at 42 min: Over the limit | passed |
-| 46 | 126:362 | A new habit appears | Today (after + → form → Add) → Journal at the end of Morning | not started |
-| 47 | 126:900 | Couldn't save a tap | Meds → ✓ shows at once → save failed: goes back; snackbar | not started |
+| 46 | 126:362 | A new habit appears | Today (after + → form → Add) → Journal at the end of Morning | passed |
+| 47 | 126:900 | Couldn't save a tap | Meds → ✓ shows at once → save failed: goes back; snackbar | passed |
 | 48 | 126:1437 | Long names and large text | Today → 24-letter name, one line … → 200 % font | not started |
 | 49 | 232:2 | What a row's second line says, with reminders | goal · reminder after a \| → ✓ Meds: reminder time goes | not started |
 | 50 | 57:2 | Arrange Today | Today → ✏ Edit Today → drag Read into Evening → dropped; Undo → ← Today | not started |
