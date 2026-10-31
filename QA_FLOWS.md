@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 43 |
+| today | 54:5580 | 84 | 44 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **53** |
+| **All** | | **290** | **54** |
 
 ## Bug log
 
@@ -117,6 +117,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
 ³ Today 40: each maker's lead, steps, paths and icons compared word for word with Figma's six pages (KeepRemindersComing.maker, ReminderWordsTest); the Pixel page run on the emulator. The other makers' pages open their own settings screens and need real phones (A40, Figma's note).
+⁴ Today 43: the notice (forced) matches Figma and Open Google Play opens Play; a payment that Play holds and then finishes can't be made on this emulator (see the Play purchase question). The notice reads PlayPlusStore.pending, which is observable state, so it goes when Play finishes.
 
 ## Open questions for the user
 
@@ -232,7 +233,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 40 | 151:498 | Keep reminders coming on each phone | Xiaomi notice → Xiaomi → OnePlus/OPPO → vivo → Honor/Huawei → Pixel and others | passed ³ |
 | 41 | 125:1537 | Notice: reminders can't come | Reminders can't come → Turn on: Android's question → Allow: notice gone | passed |
 | 42 | 153:206 | Notice: reminders can't come (won't ask again) | Reminders can't come → Turn on: notification settings → Back: notice gone | passed |
-| 43 | 125:1901 | Notice: Plus is waiting for payment | Plus waiting for payment → Plus is on: notice gone | not started |
+| 43 | 125:1901 | Notice: Plus is waiting for payment | Plus waiting for payment → Plus is on: notice gone | passed ⁴ |
 | 44 | 116:2 | Cut down: an amount | Coffee 1 of 2 → + Limit reached → + Over the limit → Day details | not started |
 | 45 | 116:987 | Cut down: a time limit | Social media 0 of 30 → ▶ timer vs limit → ⌄ → 30:00 Limit reached → ⏸ at 42 min: Over the limit | not started |
 | 46 | 126:362 | A new habit appears | Today (after + → form → Add) → Journal at the end of Morning | not started |
