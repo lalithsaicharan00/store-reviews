@@ -118,9 +118,15 @@ interface DayNav {
 fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     HabitKind.Quit -> "Quitting since " + DayWords.long(store.rules.calendarDayOf(habit.quitSince ?: habit.createdAt))
     HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
-    else -> shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) } + " · " +
-        (if (habit.remind && habit.reminders.isNotEmpty()) habit.reminders.sortedBy { it.minuteOfDay }.joinToString(", ") { DayWords.clockMinute(it.minuteOfDay) }
-        else if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name })))
+    else -> {
+        val plan = shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) }
+        // A cut-down habit sits in Quitting, not in a time of day: its plan alone ("At most 2 cups a day", Figma's Today,
+        // flow 44), or with its reminder times.
+        val where = if (habit.remind && habit.reminders.isNotEmpty()) habit.reminders.sortedBy { it.minuteOfDay }.joinToString(", ") { DayWords.clockMinute(it.minuteOfDay) }
+            else if (habit.atMost) null
+            else if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name }))
+        if (where == null) plan else "$plan · $where"
+    }
 }
 
 /** A check on set days names them short, in week order (Figma 3.3: "Mon, Wed, Fri · Morning"); otherwise empty. */
