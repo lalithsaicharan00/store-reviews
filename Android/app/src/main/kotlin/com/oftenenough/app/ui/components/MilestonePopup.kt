@@ -114,8 +114,9 @@ fun MilestonePopup(
                 }
             }
             Row(Modifier.fillMaxWidth().arrive(950, 8f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                AppButton("Close", { leave(onClose) }, Modifier.weight(1f), style = ButtonStyle.Outlined, size = ButtonSize.Medium, tag = "landmark-close")
-                AppButton(second, { leave(onAll) }, Modifier.weight(1f), size = ButtonSize.Medium, tag = "landmark-all")
+                // Halves of the row: 12 at the sides (compact), or "All milestones" was cut to "All mileston…" (Figma 872:71403).
+                AppButton("Close", { leave(onClose) }, Modifier.weight(1f), style = ButtonStyle.Outlined, size = ButtonSize.Medium, compact = true, tag = "landmark-close")
+                AppButton(second, { leave(onAll) }, Modifier.weight(1f), size = ButtonSize.Medium, compact = true, tag = "landmark-all")
             }
         }
     }

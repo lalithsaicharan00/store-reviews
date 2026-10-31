@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 64 |
+| today | 54:5580 | 84 | 65 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **74** |
+| **All** | | **290** | **75** |
 
 ## Bug log
 
@@ -143,6 +143,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 105. Quit clock and every clock or count with a space ("30d 11:30:18", a log's "10:30 AM", the Habits page's period, the history card's detail, the running line) · tabular figures on the whole text widened its spaces beyond Figma's plain lines. One helper, `tabular()` beside the text styles, applies them to everything but the spaces; all five use it.
 106. Milestone bar · 16 dp above the day bar; Figma: 10 (614–686, day bar at 696). The empty snackbar host kept its 8 dp under the bar's own 8; it now takes its 8 only while a snackbar shows, and the bar has Figma's 10.
 107. A number reached again · the band read "7 days in a row"; Figma: "7 days in a row again" (its bands say "again" for a length reached before a break: "30 days clean again" too). The app said it only for a best run again (14 or more); it now says it for any length reached before, worked out from the earlier runs, so a first-time milestone shown as just the row stays plain. Test launches gained `earlier` ("Meds=7"); a set Smoking run is its first.
+108. Milestone pop-up · "All milestones" was cut to "All mileston…": its two half-width buttons kept 24 at the sides; they're `compact` (12), as every button that shares a row in halves.
+109. Milestone pop-up and every bottom sheet · the buttons sat on the gesture bar (0 gap), in Figma's components too (the user). A88: 12 above the 24 dp gesture area. Figma's Bottom sheet and Milestone pop-up components now keep 36 at the bottom, their 13 placements moved up 12 (one Day details sheet that ran 8 past its screen now ends on it); `AppBottomSheet` keeps 36.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -239,7 +241,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 61 | 108:2 | Milestone bar: one milestone | Meds 2 → ✓ 3: bar above the day bar → after 5 s/touch: bar goes, band | passed |
 | 62 | 108:561 | Milestone bar: the next one replaces it | Stretch past 10, Meds to do → ✓ Meds: bar → ⏸ Stretch: Stretch's bar → 5 s: band | passed (under A87 Stretch's bar comes as its clock crosses 10:00, not at ⏸, as Figma's own flow 58: tested with Meds' bar up when Stretch crossed; Meds' bar went, its band stayed, Stretch's bar rose, then its band) |
 | 63 | 108:1308 | Milestone: a number reached again | Meds 6 (had 7) → ✓ 7: just the row → band stays | passed |
-| 64 | 110:2 | Pop-up: your first milestone | Meds 2 → ✓ pop-up once taps stop → Close: band | not started |
+| 64 | 110:2 | Pop-up: your first milestone | Meds 2 → ✓ pop-up once taps stop → Close: band | passed |
 | 65 | 110:592 | Pop-up: a month in a row | Meds 29 → ✓ pop-up → Close | not started |
 | 66 | 110:1179 | Pop-up: a year in a row | Meds 364 → ✓ pop-up → Close | not started |
 | 67 | 110:1766 | Pop-up: weeks of goals met | Call family 2 of 3 (25 weeks) → ✓ pop-up → Close | not started |

@@ -127,7 +127,7 @@ object DemoData {
         val quitFrom = if ("Smoking" in streaks) lastSlip else earlier - 30 * dayMs
         val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = quitFrom).copy(createdAt = quitFrom)
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true).copy(createdAt = now)
-        val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(7))
+        val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(streaks["Social media"] ?: 7))
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.MORNING, 10.0)
         // Figma's Today (700:3219, 31 Oct 2026): Morning is Meds, Stretch, Skincare, with Meds still to do (57 days).
         val habits = listOf(meds, stretch, skincare, walk, study, refill, vitamins, bed, night, journal, read, call, water, parcel, smoking, coffee, social, meditate)
@@ -144,8 +144,8 @@ object DemoData {
         }
         for (d in 1..(streaks[skincare.name] ?: 12)) for (step in skincare.steps) log(skincare, today - d, 1.0, step.id)
         val week = store.rules.period(PeriodKind.WEEK, today).first
-        for (w in 1..4) for (i in 0 until 3) log(call, week - 7 * w + i, 1.0)
-        for (d in 1..7) log(social, today - d, 10.0)
+        for (w in 1..(streaks[call.name] ?: 4)) for (i in 0 until 3) log(call, week - 7 * w + i, 1.0)
+        for (d in 1..(streaks[social.name] ?: 7)) log(social, today - d, 10.0)
         if ("Smoking" !in streaks) {
             log(smoking, store.today(lastSlip), 1.0, at = lastSlip)
             log(smoking, store.today(earlier), 1.0, at = earlier)
