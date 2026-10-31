@@ -29,7 +29,8 @@ import kotlinx.coroutines.launch
 import com.oftenenough.app.ui.newhabit.NewHabitFlow
 import com.oftenenough.app.ui.habit.HabitDetailsNav
 import com.oftenenough.app.ui.habit.HabitDetailsScreen
-import com.oftenenough.app.ui.habit.PauseScreen
+import com.oftenenough.app.ui.habit.PauseSheet
+import com.oftenenough.app.ui.habit.pausedWords
 import com.oftenenough.app.ui.habit.ArchivedNav
 import com.oftenenough.app.ui.habit.ArchivedHabitsScreen
 import com.oftenenough.app.ui.habit.HabitsNav
@@ -112,6 +113,9 @@ private fun AppMain(
     val todayLayout = remember { com.oftenenough.app.ui.today.TodayLayout(rootScope) }
     // Day details over Today: kept while a page it opened is on top, so going back returns to it.
     var dayTarget by rememberSaveable { mutableStateOf<String?>(null) }
+    // Pause's one sheet, over whichever page asked (Today's menu, Day details, a habit's page): Figma's Pause sheet.
+    var pausing by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+    val askPause: (Habit) -> Unit = { pausing = listOf(it.id) }
     // Plus turned on from a Plus screen (Figma's flows: "the snackbar says Plus is on").
     val plusOn: () -> Unit = { rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Plus is on") } }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
@@ -147,7 +151,7 @@ private fun AppMain(
     LaunchedEffect(AppGraph.dayToOpen) {
         AppGraph.dayToOpen?.let { target -> AppGraph.dayToOpen = null; nav.popBackStack(Routes.TODAY, inclusive = false); dayTarget = target }
     }
-    val dayNav = dayNav(nav) { dayTarget = null }
+    val dayNav = dayNav(nav, askPause) { dayTarget = null }
     // Today places its own messages above the day bar; every other page shows them here, at the bottom.
     val entry = nav.currentBackStackEntryAsState().value
     val route = entry?.destination?.route
@@ -158,6 +162,7 @@ private fun AppMain(
         "page/{title}" -> entry?.arguments?.getString("title")?.let { t -> MenuItem.entries.firstOrNull { it.title == t } }
         else -> null
     }
+    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause) {
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
     val appContext = androidx.compose.ui.platform.LocalContext.current
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
@@ -169,14 +174,14 @@ private fun AppMain(
             androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
             // With the sidebar (tablets, unfolded foldables) there's no drawer to open; the phone is untouched.
             if (LocalSidebar.current) {
-                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
+                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             } else ModalNavigationDrawer(drawerContent = {
                 MenuDrawer(store, MenuItem.TODAY) { item ->
                     scope.launch { drawer.close() }
                     openMenuItem(item, nav, appContext)
                 }
             }, drawerState = drawer) {
-                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
+                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             }
             dayTarget?.split("|")?.let { (id, d) ->
                 DayDetailsSheet(id, d.toInt(), store, dayNav) { dayTarget = null }
@@ -295,7 +300,7 @@ private fun AppMain(
                     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
                     override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
                     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
-                    override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+                    override fun pause(habit: Habit) = askPause(habit)
                     override fun openHabit(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                     override fun duplicate(habit: Habit) = nav.navigate(Routes.NEW + "?copy=${habit.id}&from=tasks")
                     override fun plus() = nav.navigate(Routes.plus(PlusReason.YEAR))
@@ -347,7 +352,6 @@ private fun AppMain(
                 if (fromSettings || !done) rootScope.launch { snackbar.showSnackbar(message, duration = androidx.compose.material3.SnackbarDuration.Long) }
             }
         }
-        composable("pause/{ids}") { e -> PauseScreen(e.arguments!!.getString("ids")!!.split(","), store) { nav.popBackStack() } }
         composable(Routes.NEW_TASK) {
             NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
                 task = true, onPlusOn = plusOn)
@@ -389,8 +393,24 @@ private fun AppMain(
     if (route != null && route != Routes.TODAY) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
         .let { if (menuItem == MenuItem.PLUS) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
     }
+    }
+    val toPause = pausing.mapNotNull { store.habit(it) }.filter { store.rules.canPause(it) }
+    if (toPause.isNotEmpty()) {
+        val before = toPause.associate { it.id to (store.pauses[it.id] ?: emptyList()) }
+        PauseSheet(toPause, store, { pausing = emptyList() }) { back ->
+            pausing = emptyList()
+            rootScope.launch {
+                snackbar.currentSnackbarData?.dismiss()
+                if (snackbar.showSnackbar(pausedWords(toPause, back), "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+                    androidx.compose.material3.SnackbarResult.ActionPerformed) toPause.forEach { store.setPauses(it, before[it.id] ?: emptyList()) }
+            }
+        }
+    } else if (pausing.isNotEmpty()) pausing = emptyList()
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
 }
+
+/** Asks for Pause's sheet for a habit, from any page under [AppMain]. */
+private val LocalPause = androidx.compose.runtime.staticCompositionLocalOf<(Habit) -> Unit> { {} }
 
 /**
  * What a menu row does (Figma `12:5259`). Four open a page; **Contact us** and **Send feedback** open the person's own
@@ -485,8 +505,6 @@ object Routes {
     fun note(habit: String, day: Int) = "note/$habit/$day"
     fun habit(id: String) = "habit/$id"
     fun timer(id: String) = "timer/$id"
-    fun pause(id: String) = "pause/$id"
-    fun pause(ids: List<String>) = "pause/" + ids.joinToString(",")
     fun routine(part: String, day: Int, ids: List<String>, at: String? = null) =
         "routine/" + android.net.Uri.encode(part) + "/$day/" + ids.joinToString(",") + (at?.let { "?at=$it" } ?: "")
 }
@@ -511,7 +529,7 @@ private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostControlle
 }
 
 /** Day details' way out to the pages it opens; [close] closes the sheet first where a page replaces it. */
-private fun dayNav(nav: NavHostController, close: () -> Unit) = object : DayNav {
+private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, close: () -> Unit) = object : DayNav {
     override fun habitPage(habit: Habit) { close(); nav.navigate(Routes.habit(habit.id)) }
     override fun allMilestones(habit: Habit) { com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id; habitPage(habit) }
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
@@ -519,7 +537,7 @@ private fun dayNav(nav: NavHostController, close: () -> Unit) = object : DayNav 
     override fun log(habit: Habit, entry: Entry) = nav.navigate(Routes.log(entry.id))
     override fun allLogs(habit: Habit, day: Int) = nav.navigate(Routes.allLogs(habit.id, day))
     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
-    override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+    override fun pause(habit: Habit) = pause(habit)
 }
 
 /**
@@ -531,7 +549,7 @@ private fun WithDay(store: HabitStore, nav: NavHostController, content: @Composa
     var target by rememberSaveable { mutableStateOf<String?>(null) }
     content { h, d -> target = h.id + "|" + d }
     target?.split("|")?.let { (id, d) ->
-        DayDetailsSheet(id, d.toInt(), store, dayNav(nav) { target = null }) { target = null }
+        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current) { target = null }) { target = null }
     }
 }
 
@@ -546,14 +564,14 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun reminders() = nav.navigate(Routes.page(SettingsPage.REMINDERS))
 }
 
-private fun todayActions(nav: NavHostController, view: android.view.View, openDay: (Habit, Int) -> Unit) = object : TodayActions {
+private fun todayActions(nav: NavHostController, view: android.view.View, pause: (Habit) -> Unit, openDay: (Habit, Int) -> Unit) = object : TodayActions {
     override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
     override fun writeNote(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
     override fun openTimer(habit: Habit) = nav.navigate(Routes.timer(habit.id))
     override fun editHabit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
     override fun openHabitPage(habit: Habit) = nav.navigate(Routes.habit(habit.id))
-    override fun pause(habit: Habit) = nav.navigate(Routes.pause(habit.id))
+    override fun pause(habit: Habit) = pause(habit)
     override fun feedback(done: Boolean) { view.performHapticFeedback(HapticFeedbackConstants.CONFIRM) }
     override fun arrange(habit: Habit?) { ArrangeLift.habit = habit?.id; nav.navigate(Routes.page("Arrange your day")) }
 }

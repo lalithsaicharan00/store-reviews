@@ -360,9 +360,12 @@ private fun BottomFade(modifier: Modifier) {
     }
 }
 
-/** Today's messages, 12 dp above the day bar (Figma 1.5, 1.6): the Snackbar (2.6). */
+/**
+ * Today's messages (Figma's Today: 12 in from the sides, 20 above the day bar): the Snackbar (2.6). Material's snackbar
+ * keeps 12 around itself, so the host adds only the 8 more below it.
+ */
 @Composable
-private fun TodaySnackbars(snackbar: SnackbarHostState) = AppSnackbarHost(snackbar, Modifier.padding(horizontal = 4.dp))
+private fun TodaySnackbars(snackbar: SnackbarHostState) = AppSnackbarHost(snackbar, Modifier.padding(bottom = 8.dp))
 
 /**
  * "Back to today" (Figma's Back to today), and Habits & Tasks' "Back to this week" (5.5.1): Material's Small Tonal

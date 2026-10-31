@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 13 |
+| today | 54:5580 | 83 | 14 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **23** |
+| **All** | | **289** | **24** |
 
 ## Bug log
 
@@ -69,6 +69,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 31. Today · Touch and hold a habit — a skipped row lost its round button; every Figma skipped row keeps it, switched off. Fixed in rowButton/RowButton.
 32. Today · Touch and hold a habit — a switched-off filled icon button used Material's disabled greys (E3E3E3); Figma's is the button at 38 % (F0F0F0, tick B5). Fixed in AppFilledIconButton (also a past day's timer).
 33. Today · Touch and hold a habit (the user, 31 Oct: disabled as Material 3 Expressive, in our colours) — Material's disabled is On surface 10–12 % for the container and 38 % for the content, not an opacity; on our neutral palette On surface 10 % is Surface container highest (E2E2E2), the enabled neutral and Tonal colour, so a literal copy reads as enabled. Ours: Surface container low (F3F3F3 / 2A2A2D dark), content On surface at 38 %, no habit colour, for every Filled, Tonal and icon button; Outlined's border Surface container highest. App: AppFilledIconButton, AppButton. Figma: State=Disabled added to Filled icon button (559:24, 2 variants) and Button (500:26, State property, 48 disabled variants); the 6 skipped rows on the today page use it.
+34. Today · Pause a habit — Today's menu, Day details and the habit page opened a full Pause page (Pause until, Choose a date, Until I turn it back on, Starts, no snackbar); Figma has one Pause sheet everywhere. Fixed: AppRoot shows the Habits page's PauseSheet for all of them, with "Meds paused until Wed, 28 Oct" · Undo; PauseScreen, its route and pauseSummary deleted (A77), PauseWordsTest rewritten.
+35. Today · Pause a habit — a bottom sheet added 24 under its buttons on top of the gesture bar (48 in all); Figma's 24 include the gesture bar. Fixed in AppBottomSheet.
+36. Today · Pause a habit — Today's snackbar was 16 in and 12 above the day bar; Figma's is 12 in and 20 above. Fixed in TodaySnackbars.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -138,7 +141,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 11 | 79:2 | Quit: log a slip | Smoking 19 days → Day details → Add slip → 1 slip recorded → Swipe down: run starts again | passed |
 | 12 | 81:1657 | Log a slip from the menu | Today → hold Smoking: menu → Add slip → back on Today; Undo · Note | passed |
 | 13 | 122:2 | Touch and hold a habit | Today → hold Meds: menu → Skip today: skipped; Undo · Note | passed |
-| 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | not started |
+| 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | passed |
 | 15 | 137:2 | Pause a habit until a date | Today → menu → Pause sheet (1 week) → Until a date…: date picker → 30 → OK: Back on Fri, 30 Oct → Pause | not started |
 | 16 | 122:1300 | Resume a habit | Paused card → Day details, Paused → Resume habit; snackbar Undo | not started |
 | 17 | 84:2 | Undo and Note follow the latest log | Water 6 of 8 → + on Water: buttons on Water → ✓ Call family: buttons move → Start a routine: buttons go | not started |

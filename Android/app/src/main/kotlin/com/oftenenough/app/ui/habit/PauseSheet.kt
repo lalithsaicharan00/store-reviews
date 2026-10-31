@@ -26,9 +26,25 @@ import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
 
+/** How long a pause lasts. */
+enum class PauseLength { WEEK, TWO_WEEKS, DATE, OPEN }
+
+/** The day a pause of [length] from [from] comes back on ([chosen] for a date the person picked). */
+fun pauseBack(length: PauseLength, from: Int, chosen: Int): Int? = when (length) {
+    PauseLength.WEEK -> from + 7
+    PauseLength.TWO_WEEKS -> from + 14
+    PauseLength.DATE -> maxOf(chosen, from + 1)
+    PauseLength.OPEN -> null
+}
+
+/** The snackbar once it's paused: "Meds paused until Wed, 28 Oct" (Figma's Today, flow 14), "3 habits paused". */
+fun pausedWords(habits: List<Habit>, back: Int?): String =
+    (if (habits.size == 1) habits[0].name else "${habits.size} habits") + " paused" + (back?.let { " until " + DayWords.short(it) } ?: "")
+
 /**
- * The Habits page's Pause… (Figma 2106:2, 2.3–2.3.3, 2.7, 3.4): a sheet over the list, from today, for 1 week, 2 weeks,
- * until a date (tomorrow and later) or until resumed. A quit habit's sheet says first that its current run ends and is
+ * Pause (Figma 2106:2, 2.3–2.3.3, 2.7, 3.4; Today's flow 14): one sheet from every Pause, over the page that asked (Today's
+ * menu, Day details, a habit's page, the Habits page): from today, for 1 week, 2 weeks, until a date (tomorrow and
+ * later) or until resumed. A quit habit's sheet says first that its current run ends and is
  * kept. [onPaused] gets the day each habit is back (null: until resumed) once Pause is tapped.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,12 +62,7 @@ fun PauseSheet(habits: List<Habit>, store: HabitStore, onDismiss: () -> Unit, on
         actions = {
             AppButton("Cancel", onDismiss, Modifier.semantics { testTag = "pause-cancel" }, style = ButtonStyle.Text)
             AppButton("Pause", {
-                val back = when (length) {
-                    PauseLength.WEEK -> today + 7
-                    PauseLength.TWO_WEEKS -> today + 14
-                    PauseLength.DATE -> chosen ?: (today + 7)
-                    PauseLength.OPEN -> null
-                }
+                val back = pauseBack(length, today, chosen ?: (today + 7))
                 for (h in habits) store.pause(h, today, back?.let { it - 1 })
                 onPaused(back)
             }, Modifier.semantics { testTag = "confirm-pause" })

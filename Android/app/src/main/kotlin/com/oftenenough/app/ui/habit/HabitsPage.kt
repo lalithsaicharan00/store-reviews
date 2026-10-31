@@ -312,8 +312,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
         val before = list1.associate { it.id to (store.pauses[it.id] ?: emptyList<HabitPause>()) }
         PauseSheet(list1, store, { pausing = emptyList() }) { back ->
             pausing = emptyList()
-            val until = back?.let { " until " + DayWords.dayMonth(it) } ?: ""
-            say("${list1[0].name} paused$until", "Undo") { list1.forEach { h -> store.setPauses(h, before[h.id] ?: emptyList()) } }
+            say(pausedWords(list1, back), "Undo") { list1.forEach { h -> store.setPauses(h, before[h.id] ?: emptyList()) } }
         }
     }
     if (deleting.isNotEmpty()) {

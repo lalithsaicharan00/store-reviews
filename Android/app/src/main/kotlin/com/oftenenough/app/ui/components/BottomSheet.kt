@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
  * - a **header**: [title] in a Top app bar (1.6) on the sheet's colour, Title Large Emphasized, 16 dp in;
  * - the **content**: anything; it brings its own side padding (16 for text and cards; list items run edge to edge);
  * - **actions**: Text and Filled buttons, right-aligned, 16 dp in, 8 apart, 16 under the content;
- * - 24 dp under everything.
+ * - 24 dp under everything, the gesture bar counted in it (Figma's sheet: its 24 at the bottom are the gesture bar's).
  *
  * Day details and the milestone pop-up are sheets of their own built on `ModalBottomSheet` with these same defaults.
  */
@@ -61,7 +61,9 @@ fun AppBottomSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 content = actions,
             )
-            Spacer(Modifier.height(24.dp))
+            // The sheet already sits above the navigation bar (sheetInsets), so only what's left of the 24 is added.
+            val nav = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            Spacer(Modifier.height((24.dp - nav).coerceAtLeast(0.dp)))
         }
     }
 }
