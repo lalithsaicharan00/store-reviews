@@ -82,6 +82,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 44. Today · Resume a habit — a paused day said "Paused days don't count toward your streak" beside Paused; Figma puts "Back on Wed, 28 Oct" in the card's label instead of This day. Fixed with DayStatus.label ("Until you resume it" with no end).
 45. Today · Resume a habit — Day details' plan line said "Every day · Morning" for Meds; Figma says "Every day · 8:00 AM": a habit with reminders shows their times. Fixed in planLine.
 46. OPEN · Day details — the This day card's label and headline render 18 and 41 dp tall against their 16/36 line heights (Today's rows render exactly), so the card is ~8 dp taller than Figma; not font padding (tried) nor the font's metrics (hhea fits). To find on the Day details page.
+47. Today · Resume a habit, Figma updated to the app (the user, 31 Oct) — Screen=Today's Paused row (752:15728, so all 9 screens): "Paused until 28 Oct", no streak, the ⋮ swapped for Button Style=Text "Resume", 8 at the end and no gap before it (the line 145 wide, as the app's); the flow's note says so.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
