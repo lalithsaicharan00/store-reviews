@@ -426,7 +426,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | passed ↻ |
 | 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | passed |
 | 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | passed |
-| 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | passed |
+| 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | passed ↻ |
 | 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | passed |
 | 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | passed |
 | 20 | 258:1282 | The timer against a limit; Log time from the timer | Social media → ▶ → past 30:00 → Log manually → Add → ⌄ → ⏸ | passed |
