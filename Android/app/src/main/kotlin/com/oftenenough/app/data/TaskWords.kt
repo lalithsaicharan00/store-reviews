@@ -140,12 +140,30 @@ fun HabitStore.taskMoveRange(task: Habit, today: Int): IntRange? {
  * rhythm ("8:00 AM · Next today"). Done today and not due again today: "Done today". Waiting since an earlier day it
  * wasn't done: "Waiting since Mon, 19 Oct" (never "missed", U3).
  */
+/** A repeating task's rhythm as Figma's task rows say it: "Tuesdays", "The 1st", "Every year", "Every 3 days". */
+fun HabitStore.taskRhythmText(f: Frequency): String {
+    val days = when (f) {
+        is Frequency.Weekdays -> f.days
+        is Frequency.Calendar -> f.rule.weekdays.takeIf { f.rule.unit == GoalPeriod.WEEK && f.rule.interval <= 1 }
+        else -> null
+    }?.filter { it in 1..7 }
+    if (days != null && days.size in 1..4) {
+        return HabitCopy.join(days.sortedBy { ((it - weekStart) % 7 + 7) % 7 }.map { HabitCopy.fullDays[(it - 1 + 7) % 7] + "s" })
+    }
+    val text = HabitCopy.rhythm(f, weekStart)
+    return when {
+        text.startsWith("every year") -> "Every year"
+        text.startsWith("on the ") -> HabitCopy.capitalized(text.removePrefix("on "))
+        else -> HabitCopy.capitalized(text)
+    }
+}
+
 fun HabitStore.repeatingLine(task: Habit, today: Int): String {
     val n = taskNext(task, today)
     if (!n.today && n.waitingSince == null && entries(task.id).any { it.day == today }) return "Done today"
     val time = task.dueMinute?.let { DayWords.clockMinute(it) }
     val first = if (taskRhythm(task.frequency) == TaskRhythm.DAY && time != null) time
-        else HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart))
+        else taskRhythmText(task.frequency)
     val second = when {
         n.waitingSince != null -> "Waiting since " + taskDay(n.waitingSince)
         n.today -> "Next today"
@@ -168,7 +186,7 @@ fun HabitStore.taskDetailsLine(task: Habit, today: Int): String {
             n.next != null -> "Next " + taskDay(n.next, today)
             else -> null
         }
-        return listOfNotNull(HabitCopy.capitalized(HabitCopy.rhythm(task.frequency, weekStart)), second).joinToString(" · ")
+        return listOfNotNull(taskRhythmText(task.frequency), second).joinToString(" · ")
     }
     doneEntry(task)?.let { return "One-time · done " + if (it.day == today) "today" else taskDay(it.day, today) }
     return "One-time · " + (taskPlannedFor(task, today) ?: "No date")
