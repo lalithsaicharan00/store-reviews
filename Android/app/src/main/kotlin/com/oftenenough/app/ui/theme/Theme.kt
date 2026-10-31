@@ -1,6 +1,15 @@
 package com.oftenenough.app.ui.theme
 
+import android.app.UiModeManager
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.compose.LocalActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -247,7 +256,37 @@ private val typography = AppType.material
 fun OftenEnoughTheme(theme: String = "system", content: @Composable () -> Unit) {
     val dark = when (theme) { "light" -> false; "dark" -> true; else -> isSystemInDarkTheme() }
     val colors = if (dark) AppColors.dark else AppColors.light
+    FollowTheTheme(theme, dark, colors.screen)
     CompositionLocalProvider(LocalAppColors provides colors) {
         MaterialTheme(colorScheme = if (dark) darkScheme else lightScheme, typography = typography, content = content)
+    }
+}
+
+/**
+ * What's drawn outside Compose follows the app's Theme too, not the phone's (the user, 31 Oct 2026: "once the user
+ * changes it … even if the system default is dark mode … it should change into the light mode"). Light on a phone in
+ * dark mode had white status-bar and navigation-bar icons on the light screen: `enableEdgeToEdge`'s own style reads the
+ * phone's mode. So the bars' icons follow [dark], the window behind the content (seen as the keyboard moves) is the
+ * screen's colour, and on Android 12 and later the app's own night mode is set to the choice, so the splash screen and
+ * anything Android draws from `values-night` follow it as well (System leaves it to the phone).
+ */
+@Composable
+private fun FollowTheTheme(theme: String, dark: Boolean, screen: Color) {
+    val activity = LocalActivity.current as? ComponentActivity ?: return
+    LaunchedEffect(dark, screen) {
+        val scrimLight = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+        val scrimDark = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+        activity.enableEdgeToEdge(
+            SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT) { dark },
+            SystemBarStyle.auto(scrimLight, scrimDark) { dark },
+        )
+        // enableEdgeToEdge sets the navigation bar's contrast again; the screen's own colour shows under it (MainActivity).
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) activity.window.isNavigationBarContrastEnforced = false
+        activity.window.setBackgroundDrawable(ColorDrawable(screen.toArgb()))
+    }
+    LaunchedEffect(theme) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return@LaunchedEffect
+        val mode = when (theme) { "light" -> UiModeManager.MODE_NIGHT_NO; "dark" -> UiModeManager.MODE_NIGHT_YES; else -> UiModeManager.MODE_NIGHT_AUTO }
+        activity.getSystemService(UiModeManager::class.java)?.setApplicationNightMode(mode)
     }
 }

@@ -29,8 +29,10 @@
         android:theme="@style/Theme.OftenEnough">
         <activity
             android:name=".app.MainActivity"
+            android:configChanges="uiMode"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
+            <!-- uiMode: a theme change (the app's own or the phone's) redraws in place; Compose follows it (Theme.kt). -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
