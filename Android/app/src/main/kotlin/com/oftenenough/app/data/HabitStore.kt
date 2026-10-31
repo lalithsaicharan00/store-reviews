@@ -740,26 +740,42 @@ class HabitStore(
         return entry.id
     }
 
-    /** Correct one log's value and time, within its own tracked day; never another day, never later than now. */
-    fun editEntry(id: String, value: Double, at: Long? = null) {
+    /**
+     * Correct one log's value and time, never later than now. [day] moves it to another day, today or earlier (U19, the
+     * user, 14 Oct 2026): one move that keeps its ID and moves its moment and its day indexes together; a slip's quit run
+     * follows, as the run is worked out from the slips. A checklist step or a task is never moved.
+     */
+    fun editEntry(id: String, value: Double, at: Long? = null, day: Int? = null) {
         if (!value.isFinite() || value <= 0 || value > GOAL_MAXIMUM) return
         val entry = entries.firstOrNull { it.id == id } ?: return
         val habit = habit(entry.habitId) ?: return
         val kind = rule(habit, entry.day).kind
         if (entry.day > today() || entry.stepId != null || kind == HabitKind.Task) return
         if (kind == HabitKind.Check && Math.rint(value) != value) return
+        val to = day ?: entry.day
+        if (to != entry.day && (to > today() || to < rules.startDay(habit) || rule(habit, to).kind != kind)) return
         val wasComplete = rules.isComplete(habit, entry.day)
         val before = milestones.before(habit, entry.day)
         var updated = entry.copy(value = value)
-        if (at != null && at != entry.createdAt) {
-            if (at !in rules.dayBounds(entry.day, entry.timeZone) || at > maxOf(clock(), entry.createdAt)) return
-            if (kind == HabitKind.Quit && at < minOf(habit.quitSince ?: habit.createdAt, habit.createdAt)) return
-            updated = updated.copy(createdAt = at)
+        val time = at ?: entry.createdAt
+        if (time != entry.createdAt || to != entry.day) {
+            val zone = if (to == entry.day) entry.timeZone else null
+            if (time !in rules.dayBounds(to, zone) || time > maxOf(clock(), entry.createdAt)) return
+            if (kind == HabitKind.Quit && time < minOf(habit.quitSince ?: habit.createdAt, habit.createdAt)) return
+            updated = updated.copy(createdAt = time)
         }
-        replaceEntry(updated)
-        milestones.after(before, habit, EntrySource.MANUAL, value - entry.value)
+        if (to != entry.day) {
+            removeEntry(entry.id)
+            insertEntry(updated.copy(day = to, timeZone = ZoneId.systemDefault().id))
+            updated = updated.copy(day = to, timeZone = ZoneId.systemDefault().id)
+            milestones.after(before, habit, EntrySource.MANUAL, -entry.value)
+        } else {
+            replaceEntry(updated)
+            milestones.after(before, habit, EntrySource.MANUAL, value - entry.value)
+        }
         logFeedback(habit, entry.day, wasComplete)
-        perform { repository.editEntry(updated.id, updated.value, updated.createdAt) }
+        val moved = if (to != entry.day) dayKey(to) else null
+        perform { repository.editEntry(updated.id, updated.value, updated.createdAt, moved) }
     }
 
     /** A day's logs (no checklist steps), newest first by their time. */

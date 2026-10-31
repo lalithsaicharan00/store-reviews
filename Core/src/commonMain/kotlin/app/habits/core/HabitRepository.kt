@@ -58,11 +58,14 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     @Throws(Exception::class)
     suspend fun addEntry(entry: EntryRecord) = dao.synced(clock()) { sync -> addEntry(sync, entry) }
 
-    /** Correct one live entry without changing its ID, provenance or deletion state. Synced like any edit. */
+    /**
+     * Correct one live entry without changing its ID, provenance or deletion state. Synced like any edit. A [day] moves it
+     * to another day: its day and its moment change together, in one change (U19).
+     */
     @Throws(Exception::class)
-    suspend fun editEntry(id: String, value: Double, createdAt: Long) = dao.synced(clock()) { sync ->
+    suspend fun editEntry(id: String, value: Double, createdAt: Long, day: String? = null) = dao.synced(clock()) { sync ->
         val entry = dao.entryById(id)?.takeIf { it.deletedAt == null } ?: return@synced
-        sync.change(SyncCodec.ENTRY, id, SyncCodec.entry(entry.copy(value = value, createdAt = createdAt)))
+        sync.change(SyncCodec.ENTRY, id, SyncCodec.entry(entry.copy(value = value, createdAt = createdAt, day = day ?: entry.day)))
     }
 
     /** Undo keeps a tombstone rather than deleting the row (Architecture 05 §7). */

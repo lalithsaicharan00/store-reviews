@@ -195,7 +195,10 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **What Figma shows / what the app did:** "Added by hand at 1:10 PM. Changed at 2:07 PM." The app has nowhere to keep
   when a log was changed: a record holds when it happened (`created_at`) and when it was deleted, nothing else.
 - **What I did for now:** "Added by hand at 1:10 PM." alone; Save says "Log changed" in a snackbar, as Figma.
-- **Question:** build it? It's a new saved field on every log (`changed_at`): a database upgrade tested from every past
+- **Also (Day details 10, [Figma 901:13800](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=901-13800)):**
+  a moved log says "Added by hand at 1:10 PM. Moved from today at 2:08 PM." The move is built (Edit log's Date; one
+  change that keeps the log's ID); where it came from and when need the same kind of saved field (`moved_from`, `changed_at`).
+- **Question:** build it? It's a new saved field on every log (`changed_at`, and `moved_from` for a move): a database upgrade tested from every past
   version (D2), the backup file's `data.json` on both phones (D5), and the iPhone app the same.
 - **My recommendation:** yes, with the next database upgrade, so a changed log says so wherever it's read (it helps when
   a number looks wrong). Until then the footer leaves it out.

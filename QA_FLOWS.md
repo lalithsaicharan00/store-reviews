@@ -166,6 +166,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 128. Day details 7 · a log's view had no "Added by hand at 1:10 PM.": the design demo's logs carried no source. Test launches' `today` logs are by hand now (the app's own logs already said so).
 129. Day details 8 · Edit log had no footer (Figma: "Changes this log only. Other logs stay as they are."), and Save said nothing (Figma: "Log changed"). Both added; "Changed at 2:07 PM." needs a saved field (D-51).
 130. Day details 9 · Edit log's ✕ asked "Discard your changes to this log?" · "The log stays as it was."; Figma: "Discard your changes?" · "This log stays 2 glasses at 1:10 PM."
+131. Day details 10 · a log couldn't be moved to another day: Edit log's Date was fixed (U19 said "until that move is built, never offer a picker that silently fails"). Built: Date opens the same picker as Add log (the habit's first day to today); the footer says "Moves this log to yesterday. Today goes down by 2 glasses."; Save moves it in one change that keeps its ID (`HabitStore.editEntry(day =)`, `HabitRepository.editEntry(day =)`: its day and moment together, synced as one edit) and says "Moved to yesterday". Today 5 → 3 of 8, yesterday 8 → 10.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -305,7 +306,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 7 | 181:2 | Open a log | → Day details → tap log: Log view → ← → ✕ | passed ¹² |
 | 8 | 182:2 | Edit a log | → Log → Edit → type 3 → Save: snackbar → ← 6 of 8 → ✕ | blocked: all but "Changed at 2:07 PM." under the log, which needs a saved field (D-51) |
 | 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | passed |
-| 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | not started |
+| 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | blocked: all but "Moved from today at 2:08 PM." under the log, which needs a saved field (D-51) |
 | 11 | 185:2 | Delete a log | → Log → Delete this log? → Delete; Undo → Undo → ✕ → (Cancel) | not started |
 | 12 | 186:2 | All logs, and deleting there | Water 7 of 8 → 2 newest + All 4 logs → All logs → Log → Delete → Undo → ← → ✕ | not started |
 | 13 | 188:2 | Time a habit from Day details | → Start timer → ⌄ → Pause: saved → ✕ → (timer) Today › | not started |

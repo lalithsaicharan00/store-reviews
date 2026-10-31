@@ -211,4 +211,17 @@ class HabitRepositoryTest {
         repo.close()
     }
 
+    @Test fun movingAnEntryToAnotherDayKeepsItsIdAndMovesItsDayAndMomentTogether() = runTest {
+        var repo = HabitRepository.open(path)
+        repo.saveHabit(habit(), emptyList(), emptyList(), 1_000)
+        val first = entry("e1").copy(source = "manual")
+        repo.addEntry(first)
+        repo.editEntry("e1", first.value, first.createdAt - 86_400_000, day = "2026-10-20")
+        repo.close()
+        repo = HabitRepository.open(path)
+        val moved = repo.load().entries.single()
+        assertEquals(first.copy(day = "2026-10-20", createdAt = first.createdAt - 86_400_000), moved)
+        repo.close()
+    }
+
 }

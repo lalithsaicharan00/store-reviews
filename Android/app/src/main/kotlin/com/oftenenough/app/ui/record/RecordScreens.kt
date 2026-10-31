@@ -290,6 +290,16 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
     }, { discard = false }, onDone)
 }
 
+/** A day as the footers and messages name it: today, yesterday, or its date alone ("28 Oct 2026"). */
+private fun dayName(day: Int, today: Int) = when (day) { today -> "today"; today - 1 -> "yesterday"; else -> recordDate(day) }
+
+/** "Moves this log to yesterday. Today goes down by 2 glasses." A slip moves its quit run with it. */
+private fun moveText(slip: Boolean, entry: Entry, ruled: com.oftenenough.app.data.Habit, day: Int, today: Int): String {
+    if (slip) return "Moves this slip to ${dayName(day, today)}. Your quit run is worked out again."
+    val from = dayName(entry.day, today).replaceFirstChar { it.uppercase() }
+    return "Moves this log to ${dayName(day, today)}. $from goes down by ${entry.description(ruled)}."
+}
+
 /** Exactly what will happen, then a paused or skipped day's note (the iPhone's footers). */
 private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, day: Int, today: Int, at: Long, store: HabitStore, slipOk: Boolean): String {
     // Another day says where it goes (Figma: "Adds a new log to yesterday. Today's logs stay as they are."); an older
@@ -316,7 +326,7 @@ private fun zoneName(zone: String): String? = runCatching {
 /**
  * One saved record (U19; Figma 1.8, 2.5, 9.3): the Log or Slip view (the habit, Date | Time, the amount or how long,
  * where it came from) with Delete | Edit at the bottom; Edit opens Edit log / Edit slip with the value focused and Save
- * always on. The day itself never changes; the time stays inside it.
+ * always on. The time stays inside its day; the Date row moves it to another day, today or earlier (Figma 184:2, U19).
  */
 @Composable
 fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, onBack: () -> Unit) {
@@ -332,12 +342,17 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, on
     var discard by remember { mutableStateOf(false) }
     val draft = remember(editing) { ValueDraft(ruled.kind, entry.value) }
     var time by remember(editing) { mutableStateOf(entry.createdAt) }
+    var day by remember(editing) { mutableStateOf(entry.day) }
     val focus = remember { FocusRequester() }
     val today = store.today()
     // A timer's log keeps its seconds (Figma 2.5); one typed by hand has whole minutes.
     val withSeconds = ruled.kind == HabitKind.Duration && Math.abs(entry.value - Math.rint(entry.value)) > 1e-6
     val zone = zoneName(entry.timeZone)
-    fun leaveEdit() { if (draft.differs || time != entry.createdAt) discard = true else editing = false }
+    val first = if (slip) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
+    val range = minOf(first, entry.day, today)..today
+    // Moved, it takes the chosen day's clock and zone; kept, its own (a log made on a trip stays in that zone's day).
+    val zoneOf = { d: Int -> if (d == entry.day) entry.timeZone else null }
+    fun leaveEdit() { if (draft.differs || time != entry.createdAt || day != entry.day) discard = true else editing = false }
     BackHandler(editing) { leaveEdit() }
     LaunchedEffect(editing) { if (editing && !slip) runCatching { focus.requestFocus() } }
 
@@ -350,9 +365,10 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, on
             verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 HabitFact(habit, 0, 2)
-                DateTimeRows(entry.day, today, entry.day..entry.day, time, if (ruled.kind == HabitKind.Duration) "Finished at" else "Time",
-                    onDay = {}, onTime = { t -> time = store.logTime(t, entry.day, entry.timeZone) },
-                    editableDay = false, editableTime = editing, last = zone == null,
+                DateTimeRows(if (editing) day else entry.day, today, range, time, if (ruled.kind == HabitKind.Duration) "Finished at" else "Time",
+                    onDay = { d -> time = store.logTime(store.sameClockTime(time, d), d, zoneOf(d)); day = d },
+                    onTime = { t -> time = store.logTime(t, day, zoneOf(day)) },
+                    editableDay = editing, editableTime = editing, last = zone == null,
                     timeText = if (editing) DayWords.clock(time) else clockText(entry).removeSuffix(" " + entry.timeZone))
                 if (zone != null) Row(Modifier.fillMaxWidth().clip(segmentShape(1, 2)).background(c.surface).padding(horizontal = 16.dp, vertical = 12.dp)) {
                     Text("Recorded in $zone", style = AppType.bodyMedium, color = c.secondary)
@@ -365,16 +381,23 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, on
             }
             val problem = draft.check().second
             // Editing says what Save will do (Figma 896:96313): this record only.
-            val footer = if (editing) (problem ?: if (slip) "Changing the time updates your quit run." else "Changes this log only. Other logs stay as they are.")
+            // Moved, it says where to and what the day it leaves loses (Figma 901:13683: "Moves this log to yesterday.
+            // Today goes down by 2 glasses.").
+            val footer = if (editing) (problem ?: when {
+                day != entry.day -> moveText(slip, entry, ruled, day, today)
+                slip -> "Changing the time updates your quit run."
+                else -> "Changes this log only. Other logs stay as they are."
+            })
                 else entry.originLine(slip)
             footer?.let { Footer(it, problem = editing && problem != null) }
         }
         if (editing) {
             BottomAction("Save", true, tag = "record-save") {
                 val v = if (slip) 1.0 else draft.value ?: return@BottomAction
-                store.editEntry(entry.id, v, time)
+                val moved = day != entry.day
+                store.editEntry(entry.id, v, time, day)
                 editing = false
-                say(if (slip) "Slip changed" else "Log changed")
+                say(if (moved) "Moved to ${dayName(day, today)}" else if (slip) "Slip changed" else "Log changed")
             }
         } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
