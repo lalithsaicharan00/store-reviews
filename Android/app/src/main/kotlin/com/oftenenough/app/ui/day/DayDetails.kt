@@ -126,8 +126,12 @@ fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     else -> {
         // A unit that only repeats the name is left out beside it: Push-ups, "300 a week" (Figma 915:106625).
         val unit = (habit.kind as? HabitKind.Amount)?.unit?.trim().orEmpty()
-        val plan = shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) }
+        // A checklist says how many steps first: "4 steps, every day" (Figma 919:112323).
+        val steps = if (habit.kind == HabitKind.Checklist) "${habit.steps.size} ${if (habit.steps.size == 1) "step" else "steps"}, " else ""
+        val plan = shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(steps + HabitCopy.plan(habit, store.weekStart)) }
             .let { if (unit.isNotEmpty() && unit.equals(habit.name.trim(), ignoreCase = true)) it.replaceFirst(" $unit ", " ") else it }
+            // Whole hours in words: "3 hours a week" (Figma 919:31077).
+            .let { Regex("^(\\d+) h (a|on|every)\\b").replace(it) { m -> m.groupValues[1] + (if (m.groupValues[1] == "1") " hour " else " hours ") + m.groupValues[2] } }
         // A cut-down habit sits in Quitting, not in a time of day: its plan alone ("At most 2 cups a day", Figma's Today,
         // flow 44), or with its reminder times.
         val where = if (habit.remind && habit.reminders.isNotEmpty()) habit.reminders.sortedBy { it.minuteOfDay }.joinToString(", ") { DayWords.clockMinute(it.minuteOfDay) }
@@ -215,7 +219,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
                 val skipped = store.isSkipped(habit, day)
                 val planned = store.rules.isDue(habit, day, countingSkips = false) || !store.rule(habit, day).frequency.isDayBased || store.rule(habit, day).frequency.isFlexible
                 // A once-a-day check that's done has nothing to skip (Figma 906:92686); a count at its goal keeps Skip.
-                val ticked = store.rule(habit, day).kind == HabitKind.Check && !store.rules.countsUp(habit, day) && store.rules.isDayMet(store.rule(habit, day), day)
+                // A checklist with every step done the same (Figma 919:113195: "Skip today goes").
+                val r = store.rule(habit, day)
+                val ticked = ((r.kind == HabitKind.Check && !store.rules.countsUp(habit, day)) || r.kind == HabitKind.Checklist) && store.rules.isDayMet(r, day)
                 if (skipped || (planned && !ticked && store.rules.canSkip(store.rule(habit, day)))) {
                     SkipButton(if (skipped) "Undo skip" else if (day == today) "Skip today" else "Skip this day") { store.setSkipped(habit, day, !skipped, offer = !skipped) }  // Today then offers Undo · Note (Figma's Today, flow 19)
                 }
@@ -348,8 +354,13 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         val detail = if (running && status.running != null) {
             "Running" + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")
         } else status.detail
-        val title = if (running && status.running != null)
-            Format.clock(store.rules.progress(habit, day, tick.value)) + " of " + Format.minutes(store.rules.goal(ruled)) else status.title
+        // Under an hour it ticks by the second ("6:42 of 10 min"); past an hour by the minute ("1 h 52 of 3 h", Figma 919:31554).
+        val title = if (running && status.running != null) {
+            val p = store.rules.progress(habit, day, tick.value)
+            val goal = Format.minutes(store.rules.goal(ruled))
+            if (p < 60) Format.clock(p) + " of " + goal
+            else Format.minutes(kotlin.math.floor(p)).removeSuffix(" min") + " of " + goal.removeSuffix(" min").let { if (it.contains(" h")) it else "$it min" }
+        } else status.title
         StatusLine(title, detail, status.words)
         if (showsBar) {
             val goal = maxOf(store.rules.goal(ruled), 1e-9)
@@ -414,7 +425,7 @@ private fun DayButton(a: DayAction, modifier: Modifier) =
 @Composable
 private fun StatusLine(title: String, detail: String?, words: Boolean = false) {
     val c = appColors
-    val match = if (words) null else Regex("^([$€£₹]?\\d[\\d,.:]*)\\s*(.*)$").find(title)
+    val match = if (words) null else Regex("^([$€£₹]?\\d[\\d,.:]*(?: h(?: \\d+)?)?)\\s*(.*)$").find(title)
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
     BoxWithConstraints(Modifier.fillMaxWidth()) {
@@ -453,13 +464,15 @@ private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: Ha
 @Composable
 internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, today: Int? = null, onUndo: () -> Unit) =
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        // A period's list says the day too: "Today, 2:05 PM", "Tue, 6:40 PM" in a week, "21 Oct, 9:00 AM" in a month.
-        val dayText = today?.let { t -> when {
-            entry.day == t -> "Today, "
-            habit.frequency.periodNoun == "week" -> DayWords.short(entry.day).substringBefore(",") + ", "
-            else -> DayWords.dayMonth(entry.day) + ", "
-        } } ?: ""
-        Text(tabular(dayText + clockText(entry)), style = AppType.bodyMedium)
+        // A period's list says the day too: "Today, 2:05 PM", "Tue, 6:40 PM" in a week; in a month or year an earlier
+        // day by its date alone, "Mon, 12 Oct" (Figma 917:30014).
+        val text = when {
+            today == null -> clockText(entry)
+            entry.day == today -> "Today, " + clockText(entry)
+            habit.frequency.periodNoun == "week" -> DayWords.short(entry.day).substringBefore(",") + ", " + clockText(entry)
+            else -> DayWords.short(entry.day)
+        }
+        Text(tabular(text), style = AppType.bodyMedium)
         if (opens) ListChevron()
         else AppButton("Undo", onUndo, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }, style = ButtonStyle.Text)
     }

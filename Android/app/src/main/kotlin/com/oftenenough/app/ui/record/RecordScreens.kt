@@ -112,13 +112,14 @@ fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly
     val spoken = if (unit.isBlank() || currency != null) "Amount" else "Amount, in $unit"
     ValueCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            if (currency != null) Text(currency, style = AppType.displayMedium, color = s.onSurfaceVariant)
+            // The sign is part of the number: the same colour, right against it (Figma 917:30448: "$50").
+            if (currency != null) Text(currency, style = AppType.displayMedium, color = if (readOnly || draft.amount.isNotEmpty()) s.onSurface else s.outline)
             if (readOnly) Text(draft.amount, Modifier.semantics { testTag = "record-amount" }, style = AppType.displayMedium, color = s.onSurface)
             else {
                 var field by remember { mutableStateOf(TextFieldValue(draft.amount, TextRange(draft.amount.length))) }
                 if (field.text != draft.amount) field = TextFieldValue(draft.amount, TextRange(draft.amount.length))
                 BasicTextField(field, { field = it.copy(text = it.text.take(16)); draft.amount = field.text },
-                    textStyle = AppType.displayMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
+                    textStyle = AppType.displayMedium.copy(color = s.onSurface, textAlign = if (currency != null) TextAlign.Start else TextAlign.Center),
                     keyboardOptions = KeyboardOptions(keyboardType = if (draft.kind == HabitKind.Check) KeyboardType.Number else KeyboardType.Decimal),
                     singleLine = true, cursorBrush = SolidColor(s.onSurface),
                     modifier = Modifier.widthIn(min = 32.dp).width(widthFor(draft.amount)).let { m -> focus?.let { m.focusRequester(it) } ?: m }
@@ -135,6 +136,10 @@ fun AmountCard(draft: ValueDraft, unit: String, focus: FocusRequester?, readOnly
         if (currency == null && unit.isNotBlank()) {
             val one = draft.value == 1.0
             Text(if (one) HabitCopy.unitWord(1.0, unit) else unit, style = AppType.bodyLarge, color = s.onSurfaceVariant)
+        } else if (currency != null) {
+            // The currency by name under the number, as any unit (Figma 917:30448: "$50", "dollars").
+            val name = when (currency) { "$" -> "dollar"; "€" -> "euro"; "£" -> "pound"; else -> "rupee" }
+            Text(if (draft.value == 1.0) name else name + "s", style = AppType.bodyLarge, color = s.onSurfaceVariant)
         }
     }
 }

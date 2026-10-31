@@ -226,7 +226,7 @@ object DemoData {
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, 10.0)
         val pushups = h("Push-ups", "figure.strengthtraining.traditional", HabitColor.GREEN, HabitKind.Amount("push-ups", 20.0), 300.0, Frequency.PerWeek(1))
         val savings = h("Savings", "banknote.fill", HabitColor.GREEN, HabitKind.Amount("$", 0.0), 500.0, Frequency.PerMonth(1))
-        val piano = h("Piano", "pianokeys", HabitColor.PURPLE, HabitKind.Duration, 180.0, Frequency.PerWeek(1), DaySection.EVENING)
+        val piano = h("Piano", "guitars.fill", HabitColor.BROWN, HabitKind.Duration, 180.0, Frequency.PerWeek(1), DaySection.EVENING)
         val habits = listOf(water, read, vitamins, floss, breaks, call, clean, gym, run, desk, smoking, coffee, social, bill, meditate, pushups, savings, piano)
         val entries = ArrayList<Entry>()
         fun at(day: Int, hour: Int, minute: Int = 0) = (store.rules.dayStart(day) + (hour * 60 + minute) * 60_000L).coerceAtMost(now)

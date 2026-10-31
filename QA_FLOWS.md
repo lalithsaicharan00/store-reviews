@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 18 |
+| day details | 169:1270 | 44 | 20 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **112** |
+| **All** | | **290** | **114** |
 
 ## Bug log
 
@@ -185,6 +185,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 147. Day details 19, 21 · a week's or month's goal listed nothing in Day details; Figma lists that period's logs with their days, newest first ("This week’s checks": "Today, 2:05 PM", "Tue, 6:40 PM"; the two newest then "All 5 logs this week"), and All logs shows the whole week (`logPeriod`, `HabitStore.periodLogs`). The design demo's two calls now sit on Mon 7:15 PM and Tue 6:40 PM, as Figma's.
 148. Day details 20 · a once-a-month habit had Add a check and a Today's logs list; Figma: Mark done, then "Done this month · Done today at 2:05 PM" with Undo done (which takes that month's check back on any of its days), and no list. Add a check stays for more than once a month.
 149. Day details 21 · Push-ups said "300 push-ups a week" and its Today row "180/300 push-ups this week"; Figma: "300 a week · Anytime" (a unit that only repeats the name is left out beside it) and "160/300 this week" (a period's total is its numbers only; money "$250/$500"; time past an hour "1 h 40/3 h this week"). `WordsTest.rowLines` follows the new words.
+150. Day details 22 · a month's earlier logs said "26 Oct, 12:00 PM"; Figma: the date alone, "Mon, 12 Oct" (today's keep their time: "Today, 2:05 PM").
+151. Day details 22 · Savings' Add log showed a grey "$" with a gap before the number and nothing under it; Figma: "$50" in one colour, tight, with "dollars" under it (euros, pounds, rupees the same).
+152. Day details 23 · Piano said "3 h a week", split its count as "1" over "h 30 of 3 h", and while running ticked "1:52:10"; Figma: "3 hours a week", "1 h 40" big with "of 3 h", and "1 h 52 of 3 h · Running" past an hour (by the second under an hour, as Stretch's "6:42"). What's left rounds to the nearest minute ("1 h 8 to go" for 1 h 52 m 10 s; "3 min to go" for 6:42). The design demo's Piano has Figma's piano icon and brown.
+153. Day details 24 · a checklist said "Every day · Morning" and "One step left", kept Skip today with every step done, and lost Undo · Note on Today after one step was unticked; Figma: "4 steps, every day · Morning", "1 step left", Skip goes when all steps are done, and Today keeps "Undo Last Step" for the steps still ticked.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -336,9 +340,9 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 19 | 194:638 | A week goal: checks count toward the week | Call family 2 of 3 → This week, no Skip → Add a check → ✕ → stays full → next Monday 0 of 3 | passed |
 | 20 | 195:2 | A month goal: done once this month | Deep clean → This month → Mark done → ✕ → stays full → done on Wed, 21 Oct | passed |
 | 21 | 196:178 | An amount week goal: Push-ups, 300 a week | 140 of 300 → +20 \| Log → +20 → ✕ → Saturday goal | passed |
-| 22 | 197:2 | An amount typed each time: Savings | $250 of $500 → one Log → Add log $50 → Add → ✕ | not started |
-| 23 | 198:2 | A time week goal: Piano, 3 hours a week | 1 h 40 of 3 h → Start timer → ⌄ → Pause → ✕ | not started |
-| 24 | 199:2 | A checklist: tick steps in Day details | Skincare 1 of 4 → steps in This day → tick → all done → untick → ✕ | not started |
+| 22 | 197:2 | An amount typed each time: Savings | $250 of $500 → one Log → Add log $50 → Add → ✕ | passed |
+| 23 | 198:2 | A time week goal: Piano, 3 hours a week | 1 h 40 of 3 h → Start timer → ⌄ → Pause → ✕ | passed |
+| 24 | 199:2 | A checklist: tick steps in Day details | Skincare 1 of 4 → steps in This day → tick → all done → untick → ✕ | blocked: all but Figma's filled "Tick steps" button under the steps, which nothing in the file defines (D-52) |
 | 25 | 200:2 | Log a slip from Day details | Smoking → Day details → Add slip → 1 slip recorded → ✕ | not started |
 | 26 | 201:2 | Open a slip: change its time, or delete it | → Slip view → Edit slip → time 8:15 → Save → Delete slip? → Delete; Undo → ✕ → travel time zone | not started |
 | 27 | 202:2 | Cut down: an amount, from Day details | Coffee 1 of 2 → +1 Limit reached → +1 Over the limit → ✕ | not started |

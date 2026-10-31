@@ -667,7 +667,13 @@ class HabitStore(
 
     fun toggleStep(step: Step, habit: Habit, day: Int, time: Long? = null, source: EntrySource = EntrySource.TODAY) {
         val last = entries(habit.id, day).lastOrNull { it.stepId == step.id }
-        if (last != null) removeLogged(last.id)
+        if (last != null) {
+            val offered = (afterLog as? AfterLog.Log)?.entry?.id == last.id
+            removeLogged(last.id)
+            // Unticking one step keeps Undo Last Step for the steps still ticked (Figma 919:114083: "3 of 4; Undo · Note").
+            if (offered && source != EntrySource.ROUTINE)
+                entries(habit.id, day).filter { it.stepId != null }.maxByOrNull { it.createdAt }?.let { afterLog = AfterLog.Log(it) }
+        }
         else addLogged(Entry(habitId = habit.id, stepId = step.id, day = day, value = 1.0, createdAt = stamp(time, day), source = source))
     }
 

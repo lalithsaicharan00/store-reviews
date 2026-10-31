@@ -241,7 +241,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     val done = rules.dayProgress(r, day).toInt()
                     val all = r.steps.size
                     val left = all - done
-                    return DayStatus("$done of $all steps done", if (left <= 0) "All steps done" else if (left == 1) "One step left" else "$left steps left")
+                    return DayStatus("$done of $all steps done", if (left <= 0) "All steps done" else if (left == 1) "1 step left" else "$left steps left")
                 }
                 HabitKind.Check -> {
                     val unit = r.checkUnit ?: "times"
@@ -301,7 +301,8 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         val money = unit.trim() in HabitCopy.currencies
                         fun short(v: Double) = if (timed) Format.minutes(kotlin.math.floor(v)).removeSuffix(" min").let { if (it.contains(" h ")) it else Format.minutes(kotlin.math.floor(v)) } else bare(v)
                         val title = "${short(total)} of ${short(goal)}" + (if (timed || money) "" else period)
-                        return DayStatus(title, if (running != null) null else if (total >= goal) "Goal reached" else "${short(goal - total)} to go", running)
+                        // Time left to the nearest minute (1 h 52 m 10 s of 3 h: "1 h 8 to go", Figma 919:31988).
+                        return DayStatus(title, if (running != null) null else if (total >= goal) "Goal reached" else "${short(if (timed) maxOf(1.0, Math.rint(goal - total)) else goal - total)} to go", running)
                     }
                     // A limit says where it stands in words, never in red (Figma 10–11.3, U3): "Limit 30 min · 30 min left",
                     // "· Limit reached", "· Over the limit" (Figma's Day details).
@@ -317,8 +318,8 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         if (goal < 60 && saved < 60) (if (seconds) Format.clock(saved) else "${kotlin.math.floor(saved).toInt()}") + " of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"
                     } else if (unit.trim() in HabitCopy.currencies) "${HabitCopy.amount(saved, unit)} of ${HabitCopy.amount(goal, unit)}"
                     else "${HabitCopy.number(saved)} of ${HabitCopy.amount(goal, unit)}"
-                    // What's left in whole minutes, never under 1 while any is left (6:42 of 10: "3 min to go").
-                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (isToday) "${text(if (timed) maxOf(1.0, kotlin.math.floor(goal - saved)) else goal - saved)} to go" else "For $shortDay"
+                    // What's left to the nearest minute, never under 1 while any is left (6:42 of 10: "3 min to go"; Figma).
+                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (isToday) "${text(if (timed) maxOf(1.0, Math.rint(goal - saved)) else goal - saved)} to go" else "For $shortDay"
                     val f = r.frequency
                     if (f is Frequency.Flexible) {
                         val count = rules.flexibleProgress(habit, day)

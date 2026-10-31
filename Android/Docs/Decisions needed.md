@@ -207,6 +207,19 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** yes, with the next database upgrade, so a changed log says so wherever it's read (it helps when
   a number looks wrong). Until then the footer leaves it out.
 
+### D-52. A checklist's Day details: what does "Tick steps" do?
+
+- **Where:** Day details for a checklist ([Figma 919:112323](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=919-112323), flow 24, and the Day details sheet's Kind=Checklist); `ui/day/DayDetails.kt` (`dayActions`).
+- **What Figma shows / what the app did:** a filled **Tick steps** button under the steps, in every frame of the flow. The
+  flow's own note says "a tap on a step ticks it. There's no Log and no separate logs list", and no screen in the file
+  shows what the button opens or does. The app has the steps, each ticked with a tap, and no button.
+- **What I did for now:** no button; flow 24 is blocked on this, everything else in it matches.
+- **Question:** (a) no button: the steps are already one tap each, and Figma loses it; (b) it ticks every step left at
+  once ("Tick all"), and after that turns into Untick?; (c) it opens a screen to tick steps at another time (Date, Time,
+  the steps), as Add log does for an amount.
+- **My recommendation:** (a). A button that does what a tap on each step already does is one more thing to read, and a
+  routine done at another time is rare enough for the steps' own taps.
+
 ### D-4. Dialogs and pickers: Surface container high or Surface bright?
 
 - **Where:** Dialog (5.3.4), Time picker (5.3.5), Date picker (5.3.6); `ui/components/Dialog.kt`, `TimePickerDialog.kt`,
