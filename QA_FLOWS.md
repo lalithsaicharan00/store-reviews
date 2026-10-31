@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 7 |
+| day details | 169:1270 | 44 | 8 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **101** |
+| **All** | | **290** | **102** |
 
 ## Bug log
 
@@ -165,6 +165,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 127. Day details 5 · the empty amount's caret ran through the grey "0"; Figma puts it just after (893:6757). Empty, the amount card draws the 0, then the field.
 128. Day details 7 · a log's view had no "Added by hand at 1:10 PM.": the design demo's logs carried no source. Test launches' `today` logs are by hand now (the app's own logs already said so).
 129. Day details 8 · Edit log had no footer (Figma: "Changes this log only. Other logs stay as they are."), and Save said nothing (Figma: "Log changed"). Both added; "Changed at 2:07 PM." needs a saved field (D-51).
+130. Day details 9 · Edit log's ✕ asked "Discard your changes to this log?" · "The log stays as it was."; Figma: "Discard your changes?" · "This log stays 2 glasses at 1:10 PM."
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -303,7 +304,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 6 | 180:2 | Add log: ✕ after typing | → 2 typed → ✕: Discard this log? → Keep editing → ✕ → Discard → ✕ | passed |
 | 7 | 181:2 | Open a log | → Day details → tap log: Log view → ← → ✕ | passed ¹² |
 | 8 | 182:2 | Edit a log | → Log → Edit → type 3 → Save: snackbar → ← 6 of 8 → ✕ | blocked: all but "Changed at 2:07 PM." under the log, which needs a saved field (D-51) |
-| 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | not started |
+| 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | passed |
 | 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | not started |
 | 11 | 185:2 | Delete a log | → Log → Delete this log? → Delete; Undo → Undo → ✕ → (Cancel) | not started |
 | 12 | 186:2 | All logs, and deleting there | Water 7 of 8 → 2 newest + All 4 logs → All logs → Log → Delete → Undo → ← → ✕ | not started |

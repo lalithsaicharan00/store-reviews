@@ -383,7 +383,10 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, on
             else "${entry.description(ruled)} at ${clockText(entry)} is removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.",
         "Delete $noun", { confirmDelete = false; onBack(); store.undoEntry(entry.id) }, { confirmDelete = false },
         destructive = true, confirmTag = "confirm-delete")
-    if (discard) DiscardDialog("Discard your changes to this $noun?", "The $noun stays as it was.", { discard = false }, { discard = false; editing = false })
+    // Says exactly what stays (Figma 897:11891): "This log stays 2 glasses at 1:10 PM."
+    if (discard) DiscardDialog("Discard your changes?",
+        if (slip) "This slip stays at ${clockText(entry)}." else "This log stays ${entry.description(ruled)} at ${clockText(entry)}.",
+        { discard = false }, { discard = false; editing = false })
 }
 
 /**
