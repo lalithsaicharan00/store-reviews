@@ -207,7 +207,8 @@ private fun AppMain(
             }
         }
         composable("add/{habit}/{day}") { e ->
-            AddLogScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
+            AddLogScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store,
+                say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } }) { nav.popBackStack() }
         }
         composable("log/{id}") { e -> LogScreen(e.arguments!!.getString("id")!!, store) { nav.popBackStack() } }
         composable("alllogs/{habit}/{day}") { e ->

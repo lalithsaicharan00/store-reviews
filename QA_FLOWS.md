@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 3 |
+| day details | 169:1270 | 44 | 4 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **97** |
+| **All** | | **290** | **98** |
 
 ## Bug log
 
@@ -160,6 +160,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 122. All pages (the user, on their phone) · with the phone in dark mode and Settings › Theme on Light, the status bar and navigation bar kept white icons on the light screen, and the splash and window background stayed dark: `enableEdgeToEdge` and the app's resources followed the phone. Everything outside Compose now follows the app's choice (A89); checked live in all five cases (phone light/dark × System/Light/Dark) and on a cold start (splash light on a dark phone).
 123. Larger text cut a button's label: Day details' "Stop and s…" beside Log time. Equal buttons side by side (Day details' logging buttons, a record's Delete | Edit, the milestone pop-up's Close | All milestones) now stack, full width, when a label wouldn't fit whole in its half (`EqualButtons`); at the usual size they're halves as before.
 124. Every habit's progress line was Material's wave, Water's too (the user: it only makes sense while a timer runs). A90: flat everywhere (Day details, the player, the alarm screen) unless that habit's timer is running (`HabitProgress`); Figma's atom, Day details sheet, timer screen and alarm components updated first, and their frames set to match (103 Day details sheets, 88 player lines, 4 alarm components; Wavy kept only where a clock runs).
+125. Day details 4 · Add log for yesterday kept saying "Adds a new log. Other logs stay as they are."; Figma: "Adds a new log to yesterday. Today’s logs stay as they are." Another day now names where it goes (yesterday, or its date alone: "to 28 Oct 2026"), a time habit's session the same.
+126. Day details 4 · a log added to another day came back to today's Day details with nothing said; Figma's snackbar says "2 glasses added to yesterday". Add log now says where a log went when it isn't the day it was opened from (the app's snackbar, over the sheet).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -292,7 +294,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 1 | 173:2 | Open Day details and close it | Today → Day details → drag down/✕/Back → Today | passed |
 | 2 | 175:2 | +1 to the goal, and past it | Water 7 of 8 → 1 glass to go → +1: Goal reached → +1: 9 of 8 → ✕ | passed ¹⁰ |
 | 3 | 176:2 | Log from Day details | Water 5 of 8 → Day details → Log: Add log, 2 → Added: 7 of 8 → ✕ | passed ¹¹ |
-| 4 | 178:2 | Add log on another day and time | → Add log → Date: picker → 20 → OK → Time: picker → OK → Add: snackbar says where | not started |
+| 4 | 178:2 | Add log on another day and time | → Add log → Date: picker → 20 → OK → Time: picker → OK → Add: snackbar says where | passed |
 | 5 | 179:2 | Add log: nothing typed, or a time later than now | → Add log empty → Add: error line → type 2 → Time 6:00 PM → OK: stays 2:05 PM, says why → Add → ✕ | not started |
 | 6 | 180:2 | Add log: ✕ after typing | → 2 typed → ✕: Discard this log? → Keep editing → ✕ → Discard → ✕ | not started |
 | 7 | 181:2 | Open a log | → Day details → tap log: Log view → ← → ✕ | not started |

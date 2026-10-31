@@ -203,7 +203,7 @@ fun DurationCard(draft: ValueDraft, focus: FocusRequester?, withSeconds: Boolean
  * (Figma 1.6.4); a time later than now stays at now, and says so (1.6.5).
  */
 @Composable
-fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: EntrySource = EntrySource.MANUAL, onDone: () -> Unit) {
+fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: EntrySource = EntrySource.MANUAL, say: (String) -> Unit = {}, onDone: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onDone() }; return }
     val c = appColors
     val today = store.today()
@@ -239,6 +239,12 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
         when (kind) {
             RecordKind.AMOUNT, RecordKind.TIME -> store.addProgress(habit, value!!, day, at, source)
             RecordKind.SLIP -> store.slip(habit, day, time.coerceIn(slipLower, maxOf(slipLower, slipUpper)), source)
+        }
+        // Gone to a day other than the one it came from, it says where (Figma 891:93890: "2 glasses added to yesterday").
+        if (day != startDay && kind != RecordKind.SLIP) {
+            val what = if (kind == RecordKind.TIME) Format.minutes(value!!) else HabitCopy.amount(value!!, ruled.unit)
+            val where = when (day) { today -> "today"; today - 1 -> "yesterday"; else -> recordDate(day) }
+            say("$what added to $where")
         }
         onDone()
     }
@@ -283,9 +289,13 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
 
 /** Exactly what will happen, then a paused or skipped day's note (the iPhone's footers). */
 private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, day: Int, today: Int, at: Long, store: HabitStore, slipOk: Boolean): String {
+    // Another day says where it goes (Figma: "Adds a new log to yesterday. Today's logs stay as they are."); an older
+    // day by its date alone, as the Date row writes it.
+    val where = when (day) { today -> null; today - 1 -> "yesterday"; else -> recordDate(day) }
+    fun adds(what: String) = if (where == null) "$what. Other logs stay as they are." else "$what to $where. Today’s logs stay as they are."
     var text = when (kind) {
-        RecordKind.AMOUNT -> if (ruled.atMost) "Records what happened. Your limit stays the same." else "Adds a new log. Other logs stay as they are."
-        RecordKind.TIME -> if (ruled.atMost) "Records what happened. Your limit stays the same." else "Adds one session. Other logs stay as they are."
+        RecordKind.AMOUNT -> if (ruled.atMost) "Records what happened. Your limit stays the same." else adds("Adds a new log")
+        RecordKind.TIME -> if (ruled.atMost) "Records what happened. Your limit stays the same." else adds("Adds one session")
         RecordKind.SLIP -> if (slipOk) "A slip is recorded with its time. You can change or remove it later." else "This day is before this run started."
     }
     if (store.isPaused(ruled, day)) text += " This day is paused. A log still goes into your history."
