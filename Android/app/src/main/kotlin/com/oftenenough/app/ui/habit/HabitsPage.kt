@@ -17,6 +17,7 @@ import com.oftenenough.app.ui.components.AppMenuItem
 import androidx.compose.ui.graphics.Color
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.components.ListChevron
+import com.oftenenough.app.ui.components.ListAvatar
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonStyle
@@ -426,13 +427,13 @@ private fun HabitMenuItems(
 }
 
 /**
- * The Archived row (Figma's Archived, a List item on its own): inventory_2, "Archived" over its count ("3 habits"), ›,
+ * The Archived row (Figma's Archived, a List item on its own): inventory_2 in its 40 dp circle, "Archived" over its count ("3 habits"), ›,
  * on Surface container lowest; it opens Archived habits (or tasks).
  */
 @Composable
 internal fun ArchivedRow(count: Int, enabled: Boolean, noun: String = "habit", onClick: () -> Unit) =
     AppListItem("Archived", 0, 1, Modifier.semantics(mergeDescendants = true) {}, if (count == 1) "1 $noun" else "$count ${noun}s",
-        leading = { Icon(Symbols.Inventory2, null) }, trailing = { ListChevron() }, onClick = onClick, enabled = enabled,
+        leading = { ListAvatar(Symbols.Inventory2) }, trailing = { ListChevron() }, onClick = onClick, enabled = enabled,
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = "habits-archived")
 
 /**

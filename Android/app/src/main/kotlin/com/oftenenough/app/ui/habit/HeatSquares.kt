@@ -3,6 +3,7 @@ package com.oftenenough.app.ui.habit
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.components.DayCell
+import com.oftenenough.app.ui.components.ListAvatar
 import com.oftenenough.app.ui.components.DayCellDraw
 import com.oftenenough.app.ui.components.DayCellSize
 import com.oftenenough.app.ui.components.dayCellColors
@@ -137,15 +138,16 @@ fun HeatKeyCard(open: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifi
     val c = appColors
     Column(modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).animateContentSize()) {
         Row(
-            Modifier.fillMaxWidth().clickable(onClick = onToggle).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 12.dp)
+            Modifier.fillMaxWidth().clickable(onClick = onToggle).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp)
                 .semantics(mergeDescendants = true) {
                     stateDescription = if (open) "Shown" else "Hidden"
                     testTag = "heat-key-toggle"
                 },
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Figma's What the squares mean (Habits & Tasks, 5.5.1): help, 16, the title in Title Medium, then the fold arrow.
-            Icon(Symbols.Help, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            // Figma's What the squares mean (Habits & Tasks, 5.5.1): help in its 40 dp circle, 16, the title in Title Medium,
+            // then the fold arrow; 8 above and below, as a one-line List item.
+            ListAvatar(Symbols.Help)
             Spacer(Modifier.width(16.dp))
             Text("What the squares mean", Modifier.weight(1f).padding(vertical = 4.dp), style = MaterialTheme.typography.titleMedium, color = c.ink)
             Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)

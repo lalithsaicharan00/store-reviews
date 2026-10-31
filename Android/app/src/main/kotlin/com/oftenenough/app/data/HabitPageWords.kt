@@ -389,7 +389,8 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
     }
     if (running && !habit.archived) {
         val p = pause(habit, today)
-        if (p != null && today in p) { headline = DayWords.paused(p); detail = null }
+        // Figma's paused card (Habits & Tasks 5.5.1): "Paused until Fri 30 Oct" (the day it's back), "Paused days don't count".
+        if (p != null && today in p) { headline = p.through?.let { "Paused until " + pageDayDate(it + 1) } ?: "Paused"; detail = "Paused days don’t count" }
     }
     val anything = strip.any { it.mark == DayMark.DONE || it.mark == DayMark.SOME || it.mark == DayMark.MISSED }
     if (habit.archived && !anything && total == 0.0) return null
