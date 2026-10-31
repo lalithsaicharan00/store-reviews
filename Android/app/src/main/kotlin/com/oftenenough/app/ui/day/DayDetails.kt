@@ -94,7 +94,7 @@ import com.oftenenough.app.data.MilestoneTier
 import com.oftenenough.app.data.opensRecord
 import com.oftenenough.app.data.undoLabel
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.WavyProgress
+import com.oftenenough.app.ui.components.HabitProgress
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.rememberTicker
 
@@ -283,7 +283,7 @@ private class DayAction(val title: String, val prominent: Boolean = false, val e
 
 /**
  * This day (Figma: white, corners 28): the ribbon on a milestone day; "This day"; the count (Display Medium) with its
- * words, or the state (28 Medium); the wavy bar toward the goal; the logging buttons (52 high) or a checklist's steps;
+ * words, or the state (28 Medium); the bar toward the goal (wavy while its timer runs, A90); the logging buttons (52 high) or a checklist's steps;
  * the note behind a divider. The day's logs follow below the card.
  */
 @Composable
@@ -342,7 +342,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             val goal = maxOf(store.rules.goal(ruled), 1e-9)
             val progress = if (future) 0.0 else if (running) store.rules.progress(habit, day, tick.value) else store.rules.progress(habit, day)
             Spacer(Modifier.height(8.dp))
-            WavyProgress((progress / goal).toFloat(), color = c.habit(habit.color), trackColor = c.habitFill(habit.color))
+            HabitProgress((progress / goal).toFloat(), running, color = c.habit(habit.color), trackColor = c.habitFill(habit.color))
         }
         if (future && !skipped) {
             Spacer(Modifier.height(12.dp))

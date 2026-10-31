@@ -51,7 +51,7 @@ import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.components.StepRow
 import com.oftenenough.app.ui.components.StepRowPlace
-import com.oftenenough.app.ui.components.WavyProgress
+import com.oftenenough.app.ui.components.HabitProgress
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.OftenEnoughTheme
 import com.oftenenough.app.ui.theme.Symbols
@@ -69,7 +69,7 @@ import java.time.format.DateTimeFormatter
  * variant), 24 above, 16 under; the hero card (Surface container lowest, 28 corners, 24 by 28 in, 20 between, centred):
  * the habit's cookie (112, its glyph 56), its name (Headline Medium Emphasized) and description (Body Large, On surface
  * variant), then "Not done yet" (Headline Small) or the count ("3", Display Medium, and "of 8 glasses", Body Large) and
- * the wavy progress; a checklist's card is its cookie (56), name, progress with "0 of 5 steps" and its steps. Under it,
+ * the progress line (wavy while its timer runs, A90); a checklist's card is its cookie (56), name, progress with "0 of 5 steps" and its steps. Under it,
  * 16 in: the main button (Filled, Large, round, the width), exactly Today's round button: **Done**, **+1 glass**,
  * **Log**, **Start**, **Tick Warm-up**; then Text buttons: **Log time** (time), **Open** (a checklist) and **Not now**
  * (the ring stops; the reminder stays as an ordinary notification). Log, Log time and Open ask to unlock, then open Add
@@ -196,7 +196,7 @@ class AlarmActivity : ComponentActivity() {
             }
             val fraction = ((item.cardFraction ?: item.fraction) ?: 0.0).toFloat()
             val bar: @Composable (Modifier) -> Unit = { m ->
-                if (!rule.atMost) WavyProgress(fraction, m, color = c.habit(habit.color), trackColor = c.habitFill(habit.color))
+                if (!rule.atMost) HabitProgress(fraction, store.timers.containsKey(habit.id), m, color = c.habit(habit.color), trackColor = c.habitFill(habit.color))
             }
             when {
                 checklist -> {

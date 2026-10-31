@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LinearWavyProgressIndicator
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import com.oftenenough.app.data.HabitColor
@@ -23,8 +25,8 @@ import androidx.compose.ui.unit.dp
  * Atom 1.20, **Linear progress, wavy** (Figma 902:14527, Style=Wavy; Components — Atoms Build Plan): Material 3
  * Expressive's own `LinearWavyProgressIndicator` as it is (Material 1.5, Android A76): its 10 dp height, 4 dp wave,
  * gap, track and stop dot, and its own way of flattening the wave near 0 and 100. Material's colours by default
- * (Primary on Secondary container, as in the notice card); a habit's own progress passes its colour and Fill
- * (`c.habit`, `c.habitFill`).
+ * (Primary on Secondary container, as in the notice card: work under way). A habit's line is [HabitProgress], wavy
+ * only while its timer runs (A90).
  *
  * The flat style (Style=Flat: where a routine is, a count) is Material's own `LinearProgressIndicator` as it is,
  * with no wrapper: 4 dp, Primary on Secondary container, the same 4 dp gap and stop dot.
@@ -37,6 +39,21 @@ fun WavyProgress(
     color: Color = MaterialTheme.colorScheme.primary,
     trackColor: Color = MaterialTheme.colorScheme.secondaryContainer,
 ) = LinearWavyProgressIndicator(progress = { progress.coerceIn(0f, 1f) }, modifier = modifier.fillMaxWidth(), color = color, trackColor = trackColor)
+
+/**
+ * A habit's progress line (Figma's Linear progress, 902:14527; A90): **wavy only while its timer is [running]**, the
+ * flat line otherwise: a count, a check, a checklist, a timer paused or not started (the user, 31 Oct 2026: "it's not
+ * something that a user is going to look at throughout the day … only when the timer is actively running"). Its
+ * [color] on its [trackColor]; the flat line sits centred in the wave's 10 dp, so nothing moves when a timer starts.
+ */
+@Composable
+fun HabitProgress(progress: Float, running: Boolean, modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary,
+                  trackColor: Color = MaterialTheme.colorScheme.secondaryContainer) {
+    if (running) WavyProgress(progress, modifier, color, trackColor)
+    else Box(modifier.fillMaxWidth().height(10.dp), contentAlignment = Alignment.Center) {
+        LinearProgressIndicator(progress = { progress.coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth(), color = color, trackColor = trackColor)
+    }
+}
 
 /**
  * Atom 1.21, **Circular progress** (Figma 1007:5): Material's own determinate `CircularProgressIndicator` with its own

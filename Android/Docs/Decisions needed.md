@@ -169,7 +169,7 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) as the app, and Figma's sheet fixed; (b) as Figma draws it.
 - **My recommendation:** (a).
 
-### D-49. Day details' wavy line once the goal is met
+### D-49. Day details' wavy line once the goal is met (Answered 31 Oct 2026: flat except while a timer runs, A90)
 
 - **Where:** This day's line, Day details flow 2 ([Figma 888:2645](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=888-2645), 888:2949); `ui/day/DayDetails.kt`.
 - **What Figma shows / what the app did:** every Day details frame draws the same 180 dp wave whatever the count (5, 7, 8

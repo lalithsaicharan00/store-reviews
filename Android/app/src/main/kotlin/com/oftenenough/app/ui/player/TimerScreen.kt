@@ -54,8 +54,8 @@ import kotlinx.coroutines.launch
  * 5.3.7, **Timer screen** (Figma 705:7745, State Running · Paused; Components — Atoms Build Plan): one habit's timer,
  * full screen, opened by Start timer on a Today row or in Day details. A scaffold: the Top app bar (64) with ⌄
  * (expand_more: it minimises, the timer keeps running) and "Timer"; the content 16 at the sides, the routine player's
- * hero card filling it (the clock counts up from the saved start in Display Large, "of 10 min" beside it, the wavy
- * bar); the bottom bar, 12 above and below, 16 at the sides, 8 apart: Log time (Large square Tonal) and Pause, or
+ * hero card filling it (the clock counts up from the saved start in Display Large, "of 10 min" beside it, the bar,
+ * wavy while it runs); the bottom bar, 12 above and below, 16 at the sides, 8 apart: Log time (Large square Tonal) and Pause, or
  * Resume (the Wide Large icon button, Filled). Pause stops the timer and saves the time, exactly as ⏸ on Today's row;
  * Resume (or Start) runs it again.
  *

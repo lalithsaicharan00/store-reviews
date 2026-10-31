@@ -123,7 +123,7 @@ import com.oftenenough.app.ui.components.Card
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.WavyProgress
+import com.oftenenough.app.ui.components.HabitProgress
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.today.rememberTicker
@@ -156,7 +156,7 @@ interface PlayerNav {
  * The routine player: a time of day's habits one at a time (the iPhone's `RoutinePlayer`, iOS/Habits/Today/RoutinePlayer.swift),
  * in the Android designs' Material 3 Expressive form (Android/Docs/Designs/README.md §10): a top bar with ✕, "Anytime ▾ /
  * Habit 4 of 12" (opens Your routine) and ⋮; thin routine segments; one large hero card per habit (the cookie icon, the
- * name, the "Today ›" chip that opens Day details, the count and the wavy bar); a button group ‹ · main action · ›.
+ * name, the "Today ›" chip that opens Day details, the count and the bar, wavy while its timer runs); a button group ‹ · main action · ›.
  *
  * Moving never logs, skips or asks; nothing advances by itself. Habit logs and timers stay the source of truth: a timed
  * habit's clock starts on arrival and its time is saved on leaving (the iPhone's P1, "Next, Skip and Close save before
@@ -733,7 +733,7 @@ private fun HabitPage(id: String, session: PlayerSession, nav: PlayerNav, playRi
 /**
  * The Expressive hero card (Figma's Routine player, 5.4.1), shared with the timer screen: Surface container lowest,
  * corners 32; the habit's icon in the cookie, its name, its description, the day chip, the count ("2 of 8 glasses", a
- * running clock, or "Not done" / "Done") and the wavy bar. A checklist's card holds only its header, and its steps
+ * running clock, or "Not done" / "Done") and the bar (wavy while its timer runs). A checklist's card holds only its header, and its steps
  * follow under it. Only the count and the bar read the ticking clock, and only while the timer runs (S3).
  */
 @Composable
@@ -1001,7 +1001,7 @@ private fun CountLine(
 }
 
 /**
- * Expressive's wavy bar in the habit's colour (a limit's too: its words say "max", never red, U3). Over a limit it's a
+ * The habit's bar in its colour, wavy while its timer runs (A90) (a limit's too: its words say "max", never red, U3). Over a limit it's a
  * full grey line (Figma 9.2); a week total fills toward the week (4.5). 8 in from the card's content, as Figma (32 of 328).
  */
 @Composable
@@ -1028,9 +1028,9 @@ private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore
     } else if (ruled.atMost) {
         // A limit isn't a goal: its wave stays neutral, Outline on Outline variant (Figma's Today, flow 45).
         val s = MaterialTheme.colorScheme
-        WavyProgress(fraction, bar, s.outline, s.outlineVariant)
+        HabitProgress(fraction, running, bar, s.outline, s.outlineVariant)
     } else {
-        WavyProgress(fraction, bar, color, c.habitFill(habit.color))
+        HabitProgress(fraction, running, bar, color, c.habitFill(habit.color))
     }
 }
 
